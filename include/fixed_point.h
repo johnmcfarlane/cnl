@@ -443,7 +443,7 @@ namespace sg14
 
 		// c'tor taking a fixed-point type
 		template <typename FROM_REPR_TYPE, int FROM_EXPONENT>
-		explicit constexpr fixed_point(fixed_point<FROM_REPR_TYPE, FROM_EXPONENT> const & rhs) noexcept
+		explicit constexpr fixed_point(const fixed_point<FROM_REPR_TYPE, FROM_EXPONENT> & rhs) noexcept
 			: _repr(fixed_point_to_repr(rhs))
 		{
 		}
@@ -466,7 +466,7 @@ namespace sg14
 
 		// copy assignement operator taking a fixed-point type
 		template <typename FROM_REPR_TYPE, int FROM_EXPONENT>
-		fixed_point & operator=(fixed_point<FROM_REPR_TYPE, FROM_EXPONENT> const & rhs) noexcept
+		fixed_point & operator=(const fixed_point<FROM_REPR_TYPE, FROM_EXPONENT> & rhs) noexcept
 		{
 			_repr = fixed_point_to_repr(rhs);
 			return *this;
@@ -506,29 +506,29 @@ namespace sg14
 		}
 
 		// comparison
-		friend constexpr bool operator==(fixed_point const & lhs, fixed_point const & rhs) noexcept
+		friend constexpr bool operator==(const fixed_point & lhs, const fixed_point & rhs) noexcept
 		{
 			return lhs._repr == rhs._repr;
 		}
-		friend constexpr bool operator!=(fixed_point const & lhs, fixed_point const & rhs) noexcept
+		friend constexpr bool operator!=(const fixed_point & lhs, const fixed_point & rhs) noexcept
 		{
 			return ! (lhs == rhs);
 		}
 
-		friend constexpr bool operator>(fixed_point const & lhs, fixed_point const & rhs) noexcept
+		friend constexpr bool operator>(const fixed_point & lhs, const fixed_point & rhs) noexcept
 		{
 			return lhs._repr > rhs._repr;
 		}
-		friend constexpr bool operator<(fixed_point const & lhs, fixed_point const & rhs) noexcept
+		friend constexpr bool operator<(const fixed_point & lhs, const fixed_point & rhs) noexcept
 		{
 			return lhs._repr < rhs._repr;
 		}
 
-		friend constexpr bool operator>=(fixed_point const & lhs, fixed_point const & rhs) noexcept
+		friend constexpr bool operator>=(const fixed_point & lhs, const fixed_point & rhs) noexcept
 		{
 			return lhs._repr >= rhs._repr;
 		}
-		friend constexpr bool operator<=(fixed_point const & lhs, fixed_point const & rhs) noexcept
+		friend constexpr bool operator<=(const fixed_point & lhs, const fixed_point & rhs) noexcept
 		{
 			return lhs._repr <= rhs._repr;
 		}
@@ -584,7 +584,7 @@ namespace sg14
 		}
 
 		template <typename FROM_REPR_TYPE, int FROM_EXPONENT>
-		static constexpr repr_type fixed_point_to_repr(fixed_point<FROM_REPR_TYPE, FROM_EXPONENT> const & rhs) noexcept
+		static constexpr repr_type fixed_point_to_repr(const fixed_point<FROM_REPR_TYPE, FROM_EXPONENT> & rhs) noexcept
 		{
 			return _impl::shift_right<(exponent - FROM_EXPONENT), repr_type>(rhs.data());
 		}
@@ -695,8 +695,8 @@ namespace sg14
 
 	template <typename LHS_REPR_TYPE, int LHS_EXPONENT, typename RHS_REPR_TYPE, int RHS_EXPONENT>
 	constexpr bool operator ==(
-		fixed_point<LHS_REPR_TYPE, LHS_EXPONENT> const & lhs,
-		fixed_point<RHS_REPR_TYPE, RHS_EXPONENT> const & rhs) noexcept
+		const fixed_point<LHS_REPR_TYPE, LHS_EXPONENT> & lhs,
+		const fixed_point<RHS_REPR_TYPE, RHS_EXPONENT> & rhs) noexcept
 	{
 		using fixed_point = common_type<fixed_point<LHS_REPR_TYPE, LHS_EXPONENT>, fixed_point<RHS_REPR_TYPE, RHS_EXPONENT>>;
 		return static_cast<fixed_point>(lhs) == static_cast<fixed_point>(rhs);
@@ -704,8 +704,8 @@ namespace sg14
 
 	template <typename LHS_REPR_TYPE, int LHS_EXPONENT, typename RHS_REPR_TYPE, int RHS_EXPONENT>
 	constexpr bool operator !=(
-		fixed_point<LHS_REPR_TYPE, LHS_EXPONENT> const & lhs,
-		fixed_point<RHS_REPR_TYPE, RHS_EXPONENT> const & rhs) noexcept
+		const fixed_point<LHS_REPR_TYPE, LHS_EXPONENT> & lhs,
+		const fixed_point<RHS_REPR_TYPE, RHS_EXPONENT> & rhs) noexcept
 	{
 		using fixed_point = common_type<fixed_point<LHS_REPR_TYPE, LHS_EXPONENT>, fixed_point<RHS_REPR_TYPE, RHS_EXPONENT>>;
 		return static_cast<fixed_point>(lhs) != static_cast<fixed_point>(rhs);
@@ -713,8 +713,8 @@ namespace sg14
 
 	template <typename LHS_REPR_TYPE, int LHS_EXPONENT, typename RHS_REPR_TYPE, int RHS_EXPONENT>
 	constexpr bool operator <(
-		fixed_point<LHS_REPR_TYPE, LHS_EXPONENT> const & lhs,
-		fixed_point<RHS_REPR_TYPE, RHS_EXPONENT> const & rhs) noexcept
+		const fixed_point<LHS_REPR_TYPE, LHS_EXPONENT> & lhs,
+		const fixed_point<RHS_REPR_TYPE, RHS_EXPONENT> & rhs) noexcept
 	{
 		using fixed_point = common_type<fixed_point<LHS_REPR_TYPE, LHS_EXPONENT>, fixed_point<RHS_REPR_TYPE, RHS_EXPONENT>>;
 		return static_cast<fixed_point>(lhs) < static_cast<fixed_point>(rhs);
@@ -722,8 +722,8 @@ namespace sg14
 
 	template <typename LHS_REPR_TYPE, int LHS_EXPONENT, typename RHS_REPR_TYPE, int RHS_EXPONENT>
 	constexpr bool operator >(
-		fixed_point<LHS_REPR_TYPE, LHS_EXPONENT> const & lhs,
-		fixed_point<RHS_REPR_TYPE, RHS_EXPONENT> const & rhs) noexcept
+		const fixed_point<LHS_REPR_TYPE, LHS_EXPONENT> & lhs,
+		const fixed_point<RHS_REPR_TYPE, RHS_EXPONENT> & rhs) noexcept
 	{
 		using fixed_point = common_type<fixed_point<LHS_REPR_TYPE, LHS_EXPONENT>, fixed_point<RHS_REPR_TYPE, RHS_EXPONENT>>;
 		return static_cast<fixed_point>(lhs) > static_cast<fixed_point>(rhs);
@@ -731,8 +731,8 @@ namespace sg14
 
 	template <typename LHS_REPR_TYPE, int LHS_EXPONENT, typename RHS_REPR_TYPE, int RHS_EXPONENT>
 	constexpr bool operator >=(
-		fixed_point<LHS_REPR_TYPE, LHS_EXPONENT> const & lhs,
-		fixed_point<RHS_REPR_TYPE, RHS_EXPONENT> const & rhs) noexcept
+		const fixed_point<LHS_REPR_TYPE, LHS_EXPONENT> & lhs,
+		const fixed_point<RHS_REPR_TYPE, RHS_EXPONENT> & rhs) noexcept
 	{
 		using fixed_point = common_type<fixed_point<LHS_REPR_TYPE, LHS_EXPONENT>, fixed_point<RHS_REPR_TYPE, RHS_EXPONENT>>;
 		return static_cast<fixed_point>(lhs) >= static_cast<fixed_point>(rhs);
@@ -740,8 +740,8 @@ namespace sg14
 
 	template <typename LHS_REPR_TYPE, int LHS_EXPONENT, typename RHS_REPR_TYPE, int RHS_EXPONENT>
 	constexpr bool operator <=(
-		fixed_point<LHS_REPR_TYPE, LHS_EXPONENT> const & lhs,
-		fixed_point<RHS_REPR_TYPE, RHS_EXPONENT> const & rhs) noexcept
+		const fixed_point<LHS_REPR_TYPE, LHS_EXPONENT> & lhs,
+		const fixed_point<RHS_REPR_TYPE, RHS_EXPONENT> & rhs) noexcept
 	{
 		using fixed_point = common_type<fixed_point<LHS_REPR_TYPE, LHS_EXPONENT>, fixed_point<RHS_REPR_TYPE, RHS_EXPONENT>>;
 		return static_cast<fixed_point>(lhs) <= static_cast<fixed_point>(rhs);
@@ -752,7 +752,7 @@ namespace sg14
 
 	template <typename REPR_TYPE, int EXPONENT, typename std::enable_if<_impl::is_signed<REPR_TYPE>::value, int>::type dummy = 0>
 	constexpr fixed_point<REPR_TYPE, EXPONENT>
-	abs(fixed_point<REPR_TYPE, EXPONENT> const & x) noexcept
+	abs(const fixed_point<REPR_TYPE, EXPONENT> & x) noexcept
 	{
 		return (x.data() >= 0) ? x : - x;
 	}
@@ -764,7 +764,7 @@ namespace sg14
 	// slow when calculated at run-time?
 	template <typename REPR_TYPE, int EXPONENT>
 	constexpr fixed_point<REPR_TYPE, EXPONENT>
-	sqrt(fixed_point<REPR_TYPE, EXPONENT> const & x) noexcept
+	sqrt(const fixed_point<REPR_TYPE, EXPONENT> & x) noexcept
 	{
 		return fixed_point<REPR_TYPE, EXPONENT>::from_data(
 			static_cast<REPR_TYPE>(_impl::sqrt_solve1(promote(x).data())));
@@ -781,7 +781,7 @@ namespace sg14
 	{
 		template <typename REPR_TYPE, int EXPONENT, _impl::get_float_t<sizeof(REPR_TYPE)>(*F)(_impl::get_float_t<sizeof(REPR_TYPE)>)>
 		constexpr fixed_point<REPR_TYPE, EXPONENT>
-			crib(fixed_point<REPR_TYPE, EXPONENT> const & x) noexcept
+			crib(const fixed_point<REPR_TYPE, EXPONENT> & x) noexcept
 		{
 			using floating_point = _impl::get_float_t<sizeof(REPR_TYPE)>;
 			return static_cast<fixed_point<REPR_TYPE, EXPONENT>>(F(static_cast<floating_point>(x)));
@@ -790,14 +790,14 @@ namespace sg14
 
 	template <typename REPR_TYPE, int EXPONENT>
 	constexpr fixed_point<REPR_TYPE, EXPONENT>
-		sin(fixed_point<REPR_TYPE, EXPONENT> const & x) noexcept
+		sin(const fixed_point<REPR_TYPE, EXPONENT> & x) noexcept
 	{
 		return _impl::crib<REPR_TYPE, EXPONENT, std::sin>(x);
 	}
 
 	template <typename REPR_TYPE, int EXPONENT>
 	constexpr fixed_point<REPR_TYPE, EXPONENT>
-		cos(fixed_point<REPR_TYPE, EXPONENT> const & x) noexcept
+		cos(const fixed_point<REPR_TYPE, EXPONENT> & x) noexcept
 	{
 		return _impl::crib<REPR_TYPE, EXPONENT, std::cos>(x);
 	}
@@ -808,7 +808,7 @@ namespace sg14
 	namespace _impl
 	{
 		template <typename RESULT, typename LHS, typename RHS>
-		constexpr RESULT multiply(LHS const & lhs, RHS const & rhs) noexcept
+		constexpr RESULT multiply(const LHS & lhs, const RHS & rhs) noexcept
 		{
 			using result_repr_type = typename RESULT::repr_type;
 			using intermediate_repr_type = _impl::next_size_t<typename common_type<LHS, RHS>::repr_type>;
@@ -833,14 +833,14 @@ namespace sg14
 	namespace _impl
 	{
 		template <typename RESULT_TYPE, typename FIXED_POINT, typename HEAD>
-		constexpr RESULT_TYPE add(HEAD const & addend_head)
+		constexpr RESULT_TYPE add(const HEAD & addend_head)
 		{
 			static_assert(std::is_same<FIXED_POINT, HEAD>::value, "mismatched trunc_add parameters");
 			return static_cast<RESULT_TYPE>(addend_head);
 		}
 
 		template <typename RESULT_TYPE, typename FIXED_POINT, typename HEAD, typename ... TAIL>
-		constexpr RESULT_TYPE add(HEAD const & addend_head, TAIL const & ... addend_tail)
+		constexpr RESULT_TYPE add(const HEAD & addend_head, const TAIL & ... addend_tail)
 		{
 			static_assert(std::is_same<FIXED_POINT, HEAD>::value, "mismatched trunc_add parameters");
 			return add<RESULT_TYPE, FIXED_POINT, TAIL ...>(addend_tail ...) + static_cast<RESULT_TYPE>(addend_head);
@@ -849,7 +849,7 @@ namespace sg14
 
 	template <typename FIXED_POINT, typename ... TAIL>
 	trunc_add_result_t<FIXED_POINT, sizeof...(TAIL) + 1>
-	constexpr trunc_add(FIXED_POINT const & addend1, TAIL const & ... addend_tail)
+	constexpr trunc_add(const FIXED_POINT & addend1, const TAIL & ... addend_tail)
 	{
 		using output_type = trunc_add_result_t<FIXED_POINT, sizeof...(TAIL) + 1>;
 		return _impl::add<output_type, FIXED_POINT>(addend1, addend_tail ...);
@@ -867,7 +867,7 @@ namespace sg14
 
 	template <typename LHS, typename RHS>
 	trunc_subtract_result_t<LHS, RHS>
-	constexpr trunc_subtract(LHS const & minuend, RHS const & subtrahend)
+	constexpr trunc_subtract(const LHS & minuend, const RHS & subtrahend)
 	{
 		using output_type = trunc_subtract_result_t<LHS, RHS>;
 		return static_cast<output_type>(minuend) - static_cast<output_type>(subtrahend);
@@ -887,7 +887,7 @@ namespace sg14
 	// ready for safe binary multiply
 	template <typename LHS, typename RHS>
 	trunc_multiply_result_t<LHS, RHS>
-	constexpr trunc_multiply(LHS const & lhs, RHS const & rhs) noexcept
+	constexpr trunc_multiply(const LHS & lhs, const RHS & rhs) noexcept
 	{
 		using result_type = trunc_multiply_result_t<LHS, RHS>;
 		return _impl::multiply<result_type>(lhs, rhs);
@@ -981,7 +981,7 @@ namespace sg14
 	// sg14::fixed_point streaming - (placeholder implementation)
 
 	template <typename REPR_TYPE, int EXPONENT>
-	::std::ostream & operator << (::std::ostream & out, fixed_point<REPR_TYPE, EXPONENT> const & fp)
+	::std::ostream & operator << (::std::ostream & out, const fixed_point<REPR_TYPE, EXPONENT> & fp)
 	{
 		return out << static_cast<long double>(fp);
 	}
@@ -1000,7 +1000,7 @@ namespace sg14
 
 	template <typename REPR_TYPE, int EXPONENT>
 	constexpr fixed_point<REPR_TYPE, EXPONENT> operator-(
-		fixed_point<REPR_TYPE, EXPONENT> const & rhs) noexcept
+		const fixed_point<REPR_TYPE, EXPONENT> & rhs) noexcept
 	{
 		static_assert(_impl::is_signed<REPR_TYPE>::value, "unary negation of unsigned value");
 
@@ -1009,32 +1009,32 @@ namespace sg14
 
 	template <typename REPR_TYPE, int EXPONENT>
 	constexpr fixed_point<REPR_TYPE, EXPONENT> operator+(
-		fixed_point<REPR_TYPE, EXPONENT> const & lhs,
-		fixed_point<REPR_TYPE, EXPONENT> const & rhs) noexcept
+		const fixed_point<REPR_TYPE, EXPONENT> & lhs,
+		const fixed_point<REPR_TYPE, EXPONENT> & rhs) noexcept
 	{
 		return fixed_point<REPR_TYPE, EXPONENT>::from_data(lhs.data() + rhs.data());
 	}
 
 	template <typename REPR_TYPE, int EXPONENT>
 	constexpr fixed_point<REPR_TYPE, EXPONENT> operator-(
-		fixed_point<REPR_TYPE, EXPONENT> const & lhs,
-		fixed_point<REPR_TYPE, EXPONENT> const & rhs) noexcept
+		const fixed_point<REPR_TYPE, EXPONENT> & lhs,
+		const fixed_point<REPR_TYPE, EXPONENT> & rhs) noexcept
 	{
 		return fixed_point<REPR_TYPE, EXPONENT>::from_data(lhs.data() - rhs.data());
 	}
 
 	template <typename REPR_TYPE, int EXPONENT>
 	constexpr fixed_point<REPR_TYPE, EXPONENT> operator*(
-		fixed_point<REPR_TYPE, EXPONENT> const & lhs,
-		fixed_point<REPR_TYPE, EXPONENT> const & rhs) noexcept
+		const fixed_point<REPR_TYPE, EXPONENT> & lhs,
+		const fixed_point<REPR_TYPE, EXPONENT> & rhs) noexcept
 	{
 		return _impl::multiply<fixed_point<REPR_TYPE, EXPONENT>>(lhs, rhs);
 	}
 
 	template <typename REPR_TYPE, int EXPONENT>
 	constexpr fixed_point<REPR_TYPE, EXPONENT> operator/(
-		fixed_point<REPR_TYPE, EXPONENT> const & lhs,
-		fixed_point<REPR_TYPE, EXPONENT> const & rhs) noexcept
+		const fixed_point<REPR_TYPE, EXPONENT> & lhs,
+		const fixed_point<REPR_TYPE, EXPONENT> & rhs) noexcept
 	{
 		return fixed_point<REPR_TYPE, EXPONENT>::from_data(
 			REPR_TYPE(_impl::shift_right<EXPONENT, _impl::next_size_t<REPR_TYPE>>(lhs.data()) / rhs.data()));
@@ -1043,7 +1043,7 @@ namespace sg14
 	template <typename REPR_TYPE, int EXPONENT>
 	fixed_point<REPR_TYPE, EXPONENT> & operator+=(
 		fixed_point<REPR_TYPE, EXPONENT> & lhs,
-		fixed_point<REPR_TYPE, EXPONENT> const & rhs) noexcept
+		const fixed_point<REPR_TYPE, EXPONENT> & rhs) noexcept
 	{
 		return lhs = lhs + rhs;
 	}
@@ -1051,7 +1051,7 @@ namespace sg14
 	template <typename REPR_TYPE, int EXPONENT>
 	fixed_point<REPR_TYPE, EXPONENT> & operator-=(
 		fixed_point<REPR_TYPE, EXPONENT> & lhs,
-		fixed_point<REPR_TYPE, EXPONENT> const & rhs) noexcept
+		const fixed_point<REPR_TYPE, EXPONENT> & rhs) noexcept
 	{
 		return lhs = lhs - rhs;
 	}
@@ -1059,7 +1059,7 @@ namespace sg14
 	template <typename REPR_TYPE, int EXPONENT>
 	fixed_point<REPR_TYPE, EXPONENT> & operator*=(
 		fixed_point<REPR_TYPE, EXPONENT> & lhs,
-		fixed_point<REPR_TYPE, EXPONENT> const & rhs) noexcept
+		const fixed_point<REPR_TYPE, EXPONENT> & rhs) noexcept
 	{
 		return lhs = lhs * rhs;
 	}
@@ -1067,7 +1067,7 @@ namespace sg14
 	template <typename REPR_TYPE, int EXPONENT>
 	fixed_point<REPR_TYPE, EXPONENT> & operator/=(
 		fixed_point<REPR_TYPE, EXPONENT> & lhs,
-		fixed_point<REPR_TYPE, EXPONENT> const & rhs) noexcept
+		const fixed_point<REPR_TYPE, EXPONENT> & rhs) noexcept
 	{
 		return lhs = lhs / rhs;
 	}
