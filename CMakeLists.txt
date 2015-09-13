@@ -13,7 +13,9 @@ set(SG14_TEST_SOURCE_DIRECTORY "src")
 
 set(SOURCE_FILES
     ${SG14_TEST_SOURCE_DIRECTORY}/main.cpp
-    ${SG14_TEST_SOURCE_DIRECTORY}/fixed_point_test.cpp)
+    ${SG14_TEST_SOURCE_DIRECTORY}/fixed_point_test.cpp 
+    ${SG14_TEST_SOURCE_DIRECTORY}/fixed_point_utils_test.cpp
+    ${SG14_TEST_SOURCE_DIRECTORY}/proposal_test.cpp)
 
 add_executable(fixed_point_test ${SOURCE_FILES})
 

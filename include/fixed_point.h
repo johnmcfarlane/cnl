@@ -1,14 +1,9 @@
 #if ! defined(_SG14_FIXED_POINT)
 #define _SG14_FIXED_POINT 1
 
-#include <algorithm>
 #include <climits>
-#include <cmath>
 #include <cinttypes>
-#include <limits>
 #include <type_traits>
-#include <ostream>
-#include <istream>
 
 #if defined(__clang__) || defined(__GNUG__)
 // sg14::float_point only fully supports 64-bit types with the help of 128-bit ints.
@@ -596,20 +591,6 @@ namespace sg14
 	};
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::is_fixed_point
-
-	template <class T>
-	struct is_fixed_point;
-
-	template <class T>
-	struct is_fixed_point
-		: public std::integral_constant<bool, false> {};
-
-	template <class ReprType, int Exponent>
-	struct is_fixed_point <fixed_point<ReprType, Exponent>>
-		: public std::integral_constant<bool, true> {};
-
-	////////////////////////////////////////////////////////////////////////////////
 	// sg14::make_fixed
 
 	// given the desired number of integer and fractional digits,
@@ -748,16 +729,6 @@ namespace sg14
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::abs
-
-	template <class ReprType, int Exponent, typename std::enable_if<_impl::is_signed<ReprType>::value, int>::type Dummy = 0>
-	constexpr fixed_point<ReprType, Exponent>
-	abs(const fixed_point<ReprType, Exponent> & x) noexcept
-	{
-		return (x.data() >= 0) ? x : - x;
-	}
-
-	////////////////////////////////////////////////////////////////////////////////
 	// sg14::sqrt
 
 	// https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_.28base_2.29
@@ -768,38 +739,6 @@ namespace sg14
 	{
 		return fixed_point<ReprType, Exponent>::from_data(
 			static_cast<ReprType>(_impl::sqrt_solve1(promote(x).data())));
-	}
-
-	////////////////////////////////////////////////////////////////////////////////
-	// sg14::trig
-	//
-	// Placeholder implementations fall back on <cmath> functions which is slow
-	// due to conversion to and from floating-point types; also inconvenient as
-	// many <cmath> functions are not constexpr.
-
-	namespace _impl
-	{
-		template <class ReprType, int Exponent, _impl::get_float_t<sizeof(ReprType)>(*F)(_impl::get_float_t<sizeof(ReprType)>)>
-		constexpr fixed_point<ReprType, Exponent>
-			crib(const fixed_point<ReprType, Exponent> & x) noexcept
-		{
-			using floating_point = _impl::get_float_t<sizeof(ReprType)>;
-			return static_cast<fixed_point<ReprType, Exponent>>(F(static_cast<floating_point>(x)));
-		}
-	}
-
-	template <class ReprType, int Exponent>
-	constexpr fixed_point<ReprType, Exponent>
-		sin(const fixed_point<ReprType, Exponent> & x) noexcept
-	{
-		return _impl::crib<ReprType, Exponent, std::sin>(x);
-	}
-
-	template <class ReprType, int Exponent>
-	constexpr fixed_point<ReprType, Exponent>
-		cos(const fixed_point<ReprType, Exponent> & x) noexcept
-	{
-		return _impl::crib<ReprType, Exponent, std::cos>(x);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -975,24 +914,6 @@ namespace sg14
 		return output_type::from_data(
 			_impl::shift_left<(FixedPoint::exponent * 2 - output_type::exponent), output_repr_type>(
 				static_cast<output_repr_type>(root.data()) * static_cast<output_repr_type>(root.data())));
-	}
-
-	////////////////////////////////////////////////////////////////////////////////
-	// sg14::fixed_point streaming - (placeholder implementation)
-
-	template <class ReprType, int Exponent>
-	::std::ostream & operator << (::std::ostream & out, const fixed_point<ReprType, Exponent> & fp)
-	{
-		return out << static_cast<long double>(fp);
-	}
-
-	template <class ReprType, int Exponent>
-	::std::istream & operator >> (::std::istream & in, fixed_point<ReprType, Exponent> & fp)
-	{
-		long double ld;
-		in >> ld;
-		fp = ld;
-		return in;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
