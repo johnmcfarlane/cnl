@@ -659,42 +659,42 @@ namespace sg14
 	//
 	// compare two objects of different fixed_point specializations
 
-	template <class Lhs, class Rhs>
+	template <class Lhs, class Rhs, typename std::enable_if<is_fixed_point<Lhs>::value || is_fixed_point<Rhs>::value, int>::type Dummy = 0>
 	constexpr bool operator==(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = common_type<Lhs, Rhs>;
 		return static_cast<common_type>(lhs).data() == static_cast<common_type>(rhs).data();
 	}
 
-	template <class Lhs, class Rhs>
+	template <class Lhs, class Rhs, typename std::enable_if<is_fixed_point<Lhs>::value || is_fixed_point<Rhs>::value, int>::type Dummy = 0>
 	constexpr bool operator!=(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = common_type<Lhs, Rhs>;
 		return static_cast<common_type>(lhs).data() != static_cast<common_type>(rhs).data();
 	}
 
-	template <class Lhs, class Rhs>
+	template <class Lhs, class Rhs, typename std::enable_if<is_fixed_point<Lhs>::value || is_fixed_point<Rhs>::value, int>::type Dummy = 0>
 	constexpr bool operator<(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = common_type<Lhs, Rhs>;
 		return static_cast<common_type>(lhs).data() < static_cast<common_type>(rhs).data();
 	}
 
-	template <class Lhs, class Rhs>
+	template <class Lhs, class Rhs, typename std::enable_if<is_fixed_point<Lhs>::value || is_fixed_point<Rhs>::value, int>::type Dummy = 0>
 	constexpr bool operator>(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = common_type<Lhs, Rhs>;
 		return static_cast<common_type>(lhs).data() > static_cast<common_type>(rhs).data();
 	}
 
-	template <class Lhs, class Rhs>
+	template <class Lhs, class Rhs, typename std::enable_if<is_fixed_point<Lhs>::value || is_fixed_point<Rhs>::value, int>::type Dummy = 0>
 	constexpr bool operator>=(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = common_type<Lhs, Rhs>;
 		return static_cast<common_type>(lhs).data() >= static_cast<common_type>(rhs).data();
 	}
 
-	template <class Lhs, class Rhs>
+	template <class Lhs, class Rhs, typename std::enable_if<is_fixed_point<Lhs>::value || is_fixed_point<Rhs>::value, int>::type Dummy = 0>
 	constexpr bool operator<=(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = common_type<Lhs, Rhs>;
