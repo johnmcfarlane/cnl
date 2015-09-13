@@ -286,9 +286,14 @@ static_assert(make_fixed_from_repr<std::int32_t, 27>::integer_digits == 27, "sg1
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::common_type
 
-static_assert(std::is_same<common_type<fixed_point<std::uint8_t, -4>, fixed_point<std::int8_t, -4>>, fixed_point<int8_t, -3>>::value, "sg14::common_type");
-static_assert(std::is_same<common_type<fixed_point<std::int16_t, -4>, fixed_point<std::int32_t, -14>>, fixed_point<int32_t, -14>>::value, "sg14::common_type");
-static_assert(std::is_same<common_type<fixed_point<std::int16_t, 0>, fixed_point<std::uint64_t, -60>>, fixed_point<int64_t, -48>>::value, "sg14::common_type");
+// conversion never occurs when inputs are the same type
+static_assert(std::is_same<_impl::common_type<fixed_point<std::int8_t, -3>, fixed_point<std::int8_t, -3>>, fixed_point<int8_t, -3>>::value, "sg14::common_type");
+static_assert(std::is_same<_impl::common_type<fixed_point<std::int32_t, -14>, fixed_point<std::int32_t, -14>>, fixed_point<int32_t, -14>>::value, "sg14::common_type");
+static_assert(std::is_same<_impl::common_type<fixed_point<std::int64_t, -48>, fixed_point<std::int64_t, -48>>, fixed_point<int64_t, -48>>::value, "sg14::common_type");
+
+static_assert(std::is_same<_impl::common_type<fixed_point<std::uint8_t, -4>, fixed_point<std::int8_t, -4>>, fixed_point<int8_t, -3>>::value, "sg14::common_type");
+static_assert(std::is_same<_impl::common_type<fixed_point<std::int16_t, -4>, fixed_point<std::int32_t, -14>>, fixed_point<int32_t, -14>>::value, "sg14::common_type");
+static_assert(std::is_same<_impl::common_type<fixed_point<std::int16_t, 0>, fixed_point<std::uint64_t, -60>>, fixed_point<int64_t, -48>>::value, "sg14::common_type");
 
 ////////////////////////////////////////////////////////////////////////////////
 // comparison
