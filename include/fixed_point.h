@@ -499,34 +499,6 @@ namespace sg14
 			return fixed_point(repr, 0);
 		}
 
-		// comparison
-		friend constexpr bool operator==(const fixed_point & lhs, const fixed_point & rhs) noexcept
-		{
-			return lhs._repr == rhs._repr;
-		}
-		friend constexpr bool operator!=(const fixed_point & lhs, const fixed_point & rhs) noexcept
-		{
-			return ! (lhs == rhs);
-		}
-
-		friend constexpr bool operator>(const fixed_point & lhs, const fixed_point & rhs) noexcept
-		{
-			return lhs._repr > rhs._repr;
-		}
-		friend constexpr bool operator<(const fixed_point & lhs, const fixed_point & rhs) noexcept
-		{
-			return lhs._repr < rhs._repr;
-		}
-
-		friend constexpr bool operator>=(const fixed_point & lhs, const fixed_point & rhs) noexcept
-		{
-			return lhs._repr >= rhs._repr;
-		}
-		friend constexpr bool operator<=(const fixed_point & lhs, const fixed_point & rhs) noexcept
-		{
-			return lhs._repr <= rhs._repr;
-		}
-
 	private:
 		template <class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
 		static constexpr S one() noexcept
@@ -673,58 +645,46 @@ namespace sg14
 	//
 	// compare two objects of different fixed_point specializations
 
-	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
-	constexpr bool operator ==(
-		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	template <class Lhs, class Rhs>
+	constexpr bool operator==(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
-		using fixed_point = common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
-		return static_cast<fixed_point>(lhs) == static_cast<fixed_point>(rhs);
+		using common_type = common_type<Lhs, Rhs>;
+		return static_cast<common_type>(lhs).data() == static_cast<common_type>(rhs).data();
 	}
 
-	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
-	constexpr bool operator !=(
-		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	template <class Lhs, class Rhs>
+	constexpr bool operator!=(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
-		using fixed_point = common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
-		return static_cast<fixed_point>(lhs) != static_cast<fixed_point>(rhs);
+		using common_type = common_type<Lhs, Rhs>;
+		return static_cast<common_type>(lhs).data() != static_cast<common_type>(rhs).data();
 	}
 
-	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
-	constexpr bool operator <(
-		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	template <class Lhs, class Rhs>
+	constexpr bool operator<(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
-		using fixed_point = common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
-		return static_cast<fixed_point>(lhs) < static_cast<fixed_point>(rhs);
+		using common_type = common_type<Lhs, Rhs>;
+		return static_cast<common_type>(lhs).data() < static_cast<common_type>(rhs).data();
 	}
 
-	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
-	constexpr bool operator >(
-		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	template <class Lhs, class Rhs>
+	constexpr bool operator>(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
-		using fixed_point = common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
-		return static_cast<fixed_point>(lhs) > static_cast<fixed_point>(rhs);
+		using common_type = common_type<Lhs, Rhs>;
+		return static_cast<common_type>(lhs).data() > static_cast<common_type>(rhs).data();
 	}
 
-	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
-	constexpr bool operator >=(
-		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	template <class Lhs, class Rhs>
+	constexpr bool operator>=(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
-		using fixed_point = common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
-		return static_cast<fixed_point>(lhs) >= static_cast<fixed_point>(rhs);
+		using common_type = common_type<Lhs, Rhs>;
+		return static_cast<common_type>(lhs).data() >= static_cast<common_type>(rhs).data();
 	}
 
-	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
-	constexpr bool operator <=(
-		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	template <class Lhs, class Rhs>
+	constexpr bool operator<=(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
-		using fixed_point = common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
-		return static_cast<fixed_point>(lhs) <= static_cast<fixed_point>(rhs);
+		using common_type = common_type<Lhs, Rhs>;
+		return static_cast<common_type>(lhs).data() <= static_cast<common_type>(rhs).data();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
