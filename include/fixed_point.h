@@ -192,7 +192,7 @@ namespace sg14
 			typename std::enable_if<
 				!(EXPONENT <= 0) && sizeof(OUTPUT) <= sizeof(INPUT) && _impl::is_unsigned<INPUT>::value,
 				int>::type dummy = 0>
-			constexpr OUTPUT shift_left(INPUT i) noexcept
+		constexpr OUTPUT shift_left(INPUT i) noexcept
 		{
 			return shift_left<0, OUTPUT, INPUT>(i) << EXPONENT;
 		}
