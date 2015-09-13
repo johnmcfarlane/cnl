@@ -5,3 +5,7 @@ Makefile
 cmake_install.cmake
 cmake
 fixed_point_test
+
+# CLion
+.idea/workspace.xml
+.idea/dictionaries
