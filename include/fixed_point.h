@@ -562,6 +562,20 @@ namespace sg14
 	};
 
 	////////////////////////////////////////////////////////////////////////////////
+	// sg14::is_fixed_point
+
+	template <class T>
+	struct is_fixed_point;
+
+	template <class T>
+	struct is_fixed_point
+		: public std::integral_constant<bool, false> {};
+
+	template <class ReprType, int Exponent>
+	struct is_fixed_point <fixed_point<ReprType, Exponent>>
+		: public std::integral_constant<bool, true> {};
+
+	////////////////////////////////////////////////////////////////////////////////
 	// sg14::make_fixed
 
 	// given the desired number of integer and fractional digits,
