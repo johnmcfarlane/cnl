@@ -494,7 +494,6 @@ namespace sg14
 		}
 
 		// creates an instance given the underlying representation value
-		// TODO: constexpr with c++14?
 		static constexpr fixed_point from_data(repr_type repr) noexcept
 		{
 			return fixed_point(repr, 0);
