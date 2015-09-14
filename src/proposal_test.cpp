@@ -22,8 +22,8 @@ void proposal_test()
 
 	// Class Template
 
-	static_assert(fixed_point<uint16_t>::integer_digits == 8, "Incorrect information in proposal section, Class Template");
-	static_assert(fixed_point<uint16_t>::fractional_digits == 8, "Incorrect information in proposal section, Class Template");
+	static_assert(fixed_point<uint16_t>::integer_digits == 16, "Incorrect information in proposal section, Class Template");
+	static_assert(fixed_point<uint16_t>::fractional_digits == 0, "Incorrect information in proposal section, Class Template");
 
 	static_assert(static_cast<float>(fixed_point<int32_t, -1>(10.5)) == 10.5, "Incorrect information in proposal section, Class Template");
 
@@ -31,7 +31,7 @@ void proposal_test()
 	static_assert(static_cast<float>(fixed_point<uint8_t, -8>(.999999)) < 1, "Incorrect information in proposal section, Class Template");
 	static_assert(static_cast<float>(fixed_point<uint8_t, -8>(.999999)) > .99, "Incorrect information in proposal section, Class Template");
 
-	static_assert(fixed_point<>::fractional_digits == _impl::num_bits<int>() / 2, "Incorrect information in proposal section, Class Template");
+	static_assert(fixed_point<>::fractional_digits == 0, "Incorrect information in proposal section, Class Template");
 
 	// Conversion
 

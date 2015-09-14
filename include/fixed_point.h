@@ -278,15 +278,6 @@ namespace sg14
 		}
 
 		////////////////////////////////////////////////////////////////////////////////
-		// sg14::_impl::default_exponent
-
-		template <class ReprType>
-		constexpr int default_exponent() noexcept
-		{
-			return num_bits<ReprType>() / -2;
-		}
-
-		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::pow2
 
 		// returns given power of 2
@@ -395,7 +386,7 @@ namespace sg14
 	// approximates a real number using a built-in integral type;
 	// somewhat like a floating-point number but with exponent determined at run-time
 
-	template <class ReprType = int, int Exponent = _impl::default_exponent<ReprType>()>
+	template <class ReprType = int, int Exponent = 0>
 	class fixed_point
 	{
 	public:

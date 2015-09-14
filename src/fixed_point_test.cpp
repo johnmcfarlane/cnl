@@ -12,7 +12,7 @@ void fixed_point_test()
 	// copy assignment
 
 	// from fixed_point
-	auto rhs = fixed_point<>(123.456);
+	auto rhs = fixed_point<uint32_t, -16>(123.456);
 	auto lhs = rhs;
 	ASSERT_EQUAL(lhs, fixed_point<>(123.456));
 
@@ -147,19 +147,19 @@ static_assert(std::is_same<_impl::necessary_repr_t<128, true>, __int128>::value,
 ////////////////////////////////////////////////////////////////////////////////
 // default second template parameter
 
-static_assert(std::is_same<fixed_point<std::int8_t>, fixed_point<std::int8_t, -4>>::value, "sg14::fixed_point test failed");
-static_assert(std::is_same<fixed_point<std::uint8_t>, fixed_point<std::uint8_t, -4>>::value, "sg14::fixed_point test failed");
-static_assert(std::is_same<fixed_point<std::int16_t>, fixed_point<std::int16_t, -8>>::value, "sg14::fixed_point test failed");
-static_assert(std::is_same<fixed_point<std::uint16_t>, fixed_point<std::uint16_t, -8>>::value, "sg14::fixed_point test failed");
-static_assert(std::is_same<fixed_point<std::int32_t>, fixed_point<std::int32_t, -16>>::value, "sg14::fixed_point test failed");
-static_assert(std::is_same<fixed_point<std::uint32_t>, fixed_point<std::uint32_t, -16>>::value, "sg14::fixed_point test failed");
-static_assert(std::is_same<fixed_point<std::int64_t>, fixed_point<std::int64_t, -32>>::value, "sg14::fixed_point test failed");
-static_assert(std::is_same<fixed_point<std::uint64_t>, fixed_point<std::uint64_t, -32>>::value, "sg14::fixed_point test failed");
+static_assert(std::is_same<fixed_point<std::int8_t>, fixed_point<std::int8_t, 0>>::value, "sg14::fixed_point test failed");
+static_assert(std::is_same<fixed_point<std::uint8_t>, fixed_point<std::uint8_t, 0>>::value, "sg14::fixed_point test failed");
+static_assert(std::is_same<fixed_point<std::int16_t>, fixed_point<std::int16_t, 0>>::value, "sg14::fixed_point test failed");
+static_assert(std::is_same<fixed_point<std::uint16_t>, fixed_point<std::uint16_t, 0>>::value, "sg14::fixed_point test failed");
+static_assert(std::is_same<fixed_point<std::int32_t>, fixed_point<std::int32_t, 0>>::value, "sg14::fixed_point test failed");
+static_assert(std::is_same<fixed_point<std::uint32_t>, fixed_point<std::uint32_t, 0>>::value, "sg14::fixed_point test failed");
+static_assert(std::is_same<fixed_point<std::int64_t>, fixed_point<std::int64_t, 0>>::value, "sg14::fixed_point test failed");
+static_assert(std::is_same<fixed_point<std::uint64_t>, fixed_point<std::uint64_t, 0>>::value, "sg14::fixed_point test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // default first template parameter
 
-static_assert(std::is_same<fixed_point<int, _impl::num_bits<int>() / -2>, fixed_point<>>::value, "sg14::fixed_point test failed");
+static_assert(std::is_same<fixed_point<int, 0>, fixed_point<>>::value, "sg14::fixed_point test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // conversion
@@ -307,15 +307,15 @@ static_assert(!(fixed_point<uint8_t>(4.5) != fixed_point<int16_t>(4.5)), "sg14::
 static_assert(fixed_point<uint8_t>(4.5) < fixed_point<int16_t>(5.6), "sg14::fixed_point test failed");
 static_assert(!(fixed_point<int8_t>(-4.5) < fixed_point<int16_t>(-5.6)), "sg14::fixed_point test failed");
 
-static_assert(fixed_point<uint8_t>(4.6) > fixed_point<int16_t>(4.5), "sg14::fixed_point test failed");
-static_assert(!(fixed_point<uint8_t>(4.6) < fixed_point<int16_t>(-4.5)), "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8_t, -4>(4.6) > fixed_point<int16_t, -8>(4.5), "sg14::fixed_point test failed");
+static_assert(!(fixed_point<uint8_t, -4>(4.6) < fixed_point<int16_t, -8>(-4.5)), "sg14::fixed_point test failed");
 
-static_assert(fixed_point<uint8_t>(4.5) <= fixed_point<int16_t>(4.5), "sg14::fixed_point test failed");
-static_assert(!(fixed_point<uint8_t>(4.5) <= fixed_point<int16_t>(-4.5)), "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8_t, -4>(4.5) <= fixed_point<int16_t, -8>(4.5), "sg14::fixed_point test failed");
+static_assert(!(fixed_point<uint8_t, -4>(4.5) <= fixed_point<int16_t, -8>(-4.5)), "sg14::fixed_point test failed");
 
-static_assert(fixed_point<uint8_t>(4.5) >= fixed_point<int16_t>(4.5), "sg14::fixed_point test failed");
-static_assert(fixed_point<uint8_t>(4.5) >= fixed_point<int16_t>(-4.5), "sg14::fixed_point test failed");
-static_assert(!(fixed_point<uint8_t>(4.5) >= fixed_point<int16_t>(4.6)), "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8_t, -4>(4.5) >= fixed_point<int16_t, -8>(4.5), "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8_t, -4>(4.5) >= fixed_point<int16_t, -8>(-4.5), "sg14::fixed_point test failed");
+static_assert(!(fixed_point<uint8_t, -4>(4.5) >= fixed_point<int16_t, -8>(4.6)), "sg14::fixed_point test failed");
 
 // TODO: Is this acceptable?
 static_assert(fixed_point<uint8_t, -1>(.5) == fixed_point<uint8_t, 0>(0), "sg14::fixed_point test failed");
