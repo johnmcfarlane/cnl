@@ -51,6 +51,9 @@ static_assert(static_cast<int>(-2.9) == -2, "incorrect assumption about default 
 static_assert(static_cast<int>(-3.0) == -3, "incorrect assumption about default rounding");
 static_assert(static_cast<int>(-3.9) == -3, "incorrect assumption about default rounding");
 
+// mixed-mode operations DO lose precision because exponent is more important than significand
+static_assert(std::is_same<std::common_type<float, std::uint32_t>::type, float>::value, "incorrect assumption about promotion");
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl
