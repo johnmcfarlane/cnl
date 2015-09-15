@@ -734,42 +734,42 @@ namespace sg14
 	//
 	// compare two objects of different fixed_point specializations
 
-	template <class Lhs, class Rhs, typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, int>::type Dummy = 0>
+	template <class Lhs, class Rhs>
 	constexpr bool operator==(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
 		return static_cast<common_type>(lhs).data() == static_cast<common_type>(rhs).data();
 	}
 
-	template <class Lhs, class Rhs, typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, int>::type Dummy = 0>
+	template <class Lhs, class Rhs>
 	constexpr bool operator!=(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
 		return static_cast<common_type>(lhs).data() != static_cast<common_type>(rhs).data();
 	}
 
-	template <class Lhs, class Rhs, typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, int>::type Dummy = 0>
+	template <class Lhs, class Rhs>
 	constexpr bool operator<(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
 		return static_cast<common_type>(lhs).data() < static_cast<common_type>(rhs).data();
 	}
 
-	template <class Lhs, class Rhs, typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, int>::type Dummy = 0>
+	template <class Lhs, class Rhs>
 	constexpr bool operator>(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
 		return static_cast<common_type>(lhs).data() > static_cast<common_type>(rhs).data();
 	}
 
-	template <class Lhs, class Rhs, typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, int>::type Dummy = 0>
+	template <class Lhs, class Rhs>
 	constexpr bool operator>=(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
 		return static_cast<common_type>(lhs).data() >= static_cast<common_type>(rhs).data();
 	}
 
-	template <class Lhs, class Rhs, typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, int>::type Dummy = 0>
+	template <class Lhs, class Rhs>
 	constexpr bool operator<=(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
