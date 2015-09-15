@@ -643,16 +643,60 @@ namespace sg14
 			: public std::integral_constant<bool, true> {};
 
 		////////////////////////////////////////////////////////////////////////////////
+		// sg14::_impl::_common_type
+
+		template <class Lhs, class Rhs, class _Enable = void>
+		struct _common_type;
+
+		// given two fixed-point, produces the type that is best suited to both of them
+		template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
+		struct _common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>
+		{
+			using type = make_fixed_from_repr<
+				_impl::common_repr_type<LhsReprType, RhsReprType>,
+				_impl::max(
+					fixed_point<LhsReprType, LhsExponent>::integer_digits,
+					fixed_point<RhsReprType, RhsExponent>::integer_digits)>;
+		};
+
+		// given a fixed-point and a integer type, 
+		// generates a floating-point that is as big as both of them (or as close as possible)
+		template <class LhsReprType, int LhsExponent, class Integer>
+		struct _common_type<
+			fixed_point<LhsReprType, LhsExponent>,
+			Integer,
+			typename std::enable_if<_impl::is_integral<Integer>::value>::type>
+		: _common_type<
+			fixed_point<LhsReprType, LhsExponent>,
+			fixed_point<Integer>>
+		{
+		};
+
+		// given a fixed-point and a floating-point type, 
+		// generates a floating-point that is as big as both of them (or as close as possible)
+		template <class LhsReprType, int LhsExponent, class Float>
+		struct _common_type<
+			fixed_point<LhsReprType, LhsExponent>,
+			Float,
+			typename std::enable_if<std::is_floating_point<Float>::value>::type>
+		: std::common_type<_impl::get_float_t<sizeof(LhsReprType)>, Float>
+		{
+		};
+
+		// when first type is not fixed-point and second type is, reverse the order
+		template <class Lhs, class RhsReprType, int Exponent>
+		struct _common_type<Lhs, fixed_point<RhsReprType, Exponent>>
+		: _common_type<fixed_point<RhsReprType, Exponent>, Lhs>
+		{
+		};
+
+		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::common_type
 
-		// given two fixed-point types or one fixed-point type and one arithmetic type, 
-		// produces the type that is best suited to both of them
-		template <class Lhs, class Rhs>
-		using common_type = make_fixed_from_repr<
-			_impl::common_repr_type<typename Lhs::repr_type, typename Rhs::repr_type>,
-			_impl::max(
-				Lhs::integer_digits,
-				Rhs::integer_digits)>;
+		// similar to std::common_type 
+		// but one or both input types must be fixed_point
+		template <typename Lhs, typename Rhs>
+		using common_type = typename _common_type<Lhs, Rhs>::type;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::multiply
