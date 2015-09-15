@@ -730,6 +730,60 @@ namespace sg14
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
+	// homogeneous comparison operators
+	//
+	// compare two fixed-point objects of identity type
+
+	template <class ReprType, int Exponent>
+	constexpr bool operator==(
+		const fixed_point<ReprType, Exponent> & lhs,
+		const fixed_point<ReprType, Exponent> & rhs) noexcept
+	{
+		return lhs.data() == rhs.data();
+	}
+
+	template <class ReprType, int Exponent>
+	constexpr bool operator!=(
+		const fixed_point<ReprType, Exponent> & lhs,
+		const fixed_point<ReprType, Exponent> & rhs) noexcept
+	{
+		return lhs.data() != rhs.data();
+	}
+
+	template <class ReprType, int Exponent>
+	constexpr bool operator<(
+		const fixed_point<ReprType, Exponent> & lhs,
+		const fixed_point<ReprType, Exponent> & rhs) noexcept
+	{
+		return lhs.data() < rhs.data();
+	}
+
+	template <class ReprType, int Exponent>
+	constexpr bool operator>(
+		const fixed_point<ReprType, Exponent> & lhs,
+		const fixed_point<ReprType, Exponent> & rhs) noexcept
+	{
+		return lhs.data() > rhs.data();
+	}
+
+	template <class ReprType, int Exponent>
+	constexpr bool operator>=(
+		const fixed_point<ReprType, Exponent> & lhs,
+		const fixed_point<ReprType, Exponent> & rhs) noexcept
+	{
+		return lhs.data() >= rhs.data();
+	}
+
+	template <class ReprType, int Exponent>
+	constexpr bool operator<=(
+		const fixed_point<ReprType, Exponent> & lhs,
+		const fixed_point<ReprType, Exponent> & rhs) noexcept
+	{
+		return lhs.data() <= rhs.data();
+	}
+
+
+	////////////////////////////////////////////////////////////////////////////////
 	// heterogeneous comparison operators
 	//
 	// compare two objects of different fixed_point specializations
@@ -738,42 +792,42 @@ namespace sg14
 	constexpr bool operator==(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
-		return static_cast<common_type>(lhs).data() == static_cast<common_type>(rhs).data();
+		return static_cast<common_type>(lhs) == static_cast<common_type>(rhs);
 	}
 
 	template <class Lhs, class Rhs>
 	constexpr bool operator!=(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
-		return static_cast<common_type>(lhs).data() != static_cast<common_type>(rhs).data();
+		return static_cast<common_type>(lhs) != static_cast<common_type>(rhs);
 	}
 
 	template <class Lhs, class Rhs>
 	constexpr bool operator<(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
-		return static_cast<common_type>(lhs).data() < static_cast<common_type>(rhs).data();
+		return static_cast<common_type>(lhs) < static_cast<common_type>(rhs);
 	}
 
 	template <class Lhs, class Rhs>
 	constexpr bool operator>(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
-		return static_cast<common_type>(lhs).data() > static_cast<common_type>(rhs).data();
+		return static_cast<common_type>(lhs) > static_cast<common_type>(rhs);
 	}
 
 	template <class Lhs, class Rhs>
 	constexpr bool operator>=(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
-		return static_cast<common_type>(lhs).data() >= static_cast<common_type>(rhs).data();
+		return static_cast<common_type>(lhs) >= static_cast<common_type>(rhs);
 	}
 
 	template <class Lhs, class Rhs>
 	constexpr bool operator<=(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
-		return static_cast<common_type>(lhs).data() <= static_cast<common_type>(rhs).data();
+		return static_cast<common_type>(lhs) <= static_cast<common_type>(rhs);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
