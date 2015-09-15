@@ -338,6 +338,16 @@ static_assert(!(fixed_point<uint8_t, -4>(4.5) >= fixed_point<int16_t, -8>(4.6)),
 // TODO: Is this acceptable?
 static_assert(fixed_point<uint8_t, -1>(.5) == fixed_point<uint8_t, 0>(0), "sg14::fixed_point test failed");
 
+// heterogeneous fixed-point to arithmetic comparison
+static_assert(fixed_point<uint8_t, -4>(4.5) == 4.5, "sg14::fixed_point test failed");
+static_assert(!(4 == fixed_point<int16_t, -7>(-4.5)), "sg14::fixed_point test failed");
+
+static_assert(4.5f != fixed_point<int16_t, -7>(-4.5), "sg14::fixed_point test failed");
+static_assert(!(fixed_point<uint64_t, -4>(4.5) != 4.5L), "sg14::fixed_point test failed");
+
+static_assert(4.5 < fixed_point<int16_t, -7>(5.6), "sg14::fixed_point test failed");
+static_assert(!(fixed_point<int32_t, -3>(-4.5) < -5.6), "sg14::fixed_point test failed");
+
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_add_result_t
 
