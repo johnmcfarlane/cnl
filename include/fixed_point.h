@@ -1,14 +1,9 @@
 #if ! defined(_SG14_FIXED_POINT)
 #define _SG14_FIXED_POINT 1
 
-#include <algorithm>
 #include <climits>
-#include <cmath>
 #include <cinttypes>
-#include <limits>
 #include <type_traits>
-#include <ostream>
-#include <istream>
 
 #if defined(__clang__) || defined(__GNUG__)
 // sg14::float_point only fully supports 64-bit types with the help of 128-bit ints.
@@ -18,6 +13,9 @@
 
 namespace sg14
 {
+	////////////////////////////////////////////////////////////////////////////////
+	// general-purpose _impl definitions
+
 	namespace _impl
 	{
 		////////////////////////////////////////////////////////////////////////////////
@@ -280,15 +278,6 @@ namespace sg14
 		}
 
 		////////////////////////////////////////////////////////////////////////////////
-		// sg14::_impl::default_exponent
-
-		template <class ReprType>
-		constexpr int default_exponent() noexcept
-		{
-			return num_bits<ReprType>() / -2;
-		}
-
-		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::pow2
 
 		// returns given power of 2
@@ -397,7 +386,7 @@ namespace sg14
 	// approximates a real number using a built-in integral type;
 	// somewhat like a floating-point number but with exponent determined at run-time
 
-	template <class ReprType = int, int Exponent = _impl::default_exponent<ReprType>()>
+	template <class ReprType = int, int Exponent = 0>
 	class fixed_point
 	{
 	public:
@@ -499,38 +488,9 @@ namespace sg14
 		}
 
 		// creates an instance given the underlying representation value
-		// TODO: constexpr with c++14?
 		static constexpr fixed_point from_data(repr_type repr) noexcept
 		{
 			return fixed_point(repr, 0);
-		}
-
-		// comparison
-		friend constexpr bool operator==(const fixed_point & lhs, const fixed_point & rhs) noexcept
-		{
-			return lhs._repr == rhs._repr;
-		}
-		friend constexpr bool operator!=(const fixed_point & lhs, const fixed_point & rhs) noexcept
-		{
-			return ! (lhs == rhs);
-		}
-
-		friend constexpr bool operator>(const fixed_point & lhs, const fixed_point & rhs) noexcept
-		{
-			return lhs._repr > rhs._repr;
-		}
-		friend constexpr bool operator<(const fixed_point & lhs, const fixed_point & rhs) noexcept
-		{
-			return lhs._repr < rhs._repr;
-		}
-
-		friend constexpr bool operator>=(const fixed_point & lhs, const fixed_point & rhs) noexcept
-		{
-			return lhs._repr >= rhs._repr;
-		}
-		friend constexpr bool operator<=(const fixed_point & lhs, const fixed_point & rhs) noexcept
-		{
-			return lhs._repr <= rhs._repr;
 		}
 
 	private:
@@ -596,20 +556,6 @@ namespace sg14
 	};
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::is_fixed_point
-
-	template <class T>
-	struct is_fixed_point;
-
-	template <class T>
-	struct is_fixed_point
-		: public std::integral_constant<bool, false> {};
-
-	template <class ReprType, int Exponent>
-	struct is_fixed_point <fixed_point<ReprType, Exponent>>
-		: public std::integral_constant<bool, true> {};
-
-	////////////////////////////////////////////////////////////////////////////////
 	// sg14::make_fixed
 
 	// given the desired number of integer and fractional digits,
@@ -638,17 +584,6 @@ namespace sg14
 	using make_fixed_from_repr = fixed_point<
 		ReprType,
 		IntegerDigits + _impl::is_signed<ReprType>::value - (signed)sizeof(ReprType) * CHAR_BIT>;
-
-	////////////////////////////////////////////////////////////////////////////////
-	// sg14::common_type
-
-	// given two fixed-point types, produces the type that is best suited to both of them
-	template <class Lhs, class Rhs>
-	using common_type = make_fixed_from_repr<
-		_impl::common_repr_type<typename Lhs::repr_type, typename Rhs::repr_type>,
-		_impl::max(
-			Lhs::integer_digits,
-			Rhs::integer_digits)>;
 
 	////////////////////////////////////////////////////////////////////////////////
 	// sg14::fixed_point_promotion_t / promote
@@ -689,72 +624,112 @@ namespace sg14
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
+	// sg14::fixed_point-aware _impl definitions
+
+	namespace _impl
+	{
+		////////////////////////////////////////////////////////////////////////////////
+		// sg14::_impl::is_fixed_point
+
+		template <class T>
+		struct is_fixed_point;
+
+		template <class T>
+		struct is_fixed_point
+			: public std::integral_constant<bool, false> {};
+
+		template <class ReprType, int Exponent>
+		struct is_fixed_point <fixed_point<ReprType, Exponent>>
+			: public std::integral_constant<bool, true> {};
+
+		////////////////////////////////////////////////////////////////////////////////
+		// sg14::_impl::common_type
+
+		// given two fixed-point types or one fixed-point type and one arithmetic type, 
+		// produces the type that is best suited to both of them
+		template <class Lhs, class Rhs>
+		using common_type = make_fixed_from_repr<
+			_impl::common_repr_type<typename Lhs::repr_type, typename Rhs::repr_type>,
+			_impl::max(
+				Lhs::integer_digits,
+				Rhs::integer_digits)>;
+
+		////////////////////////////////////////////////////////////////////////////////
+		// sg14::_impl::multiply
+
+		template <class Result, class Lhs, class Rhs>
+		constexpr Result multiply(const Lhs & lhs, const Rhs & rhs) noexcept
+		{
+			using result_repr_type = typename Result::repr_type;
+			using intermediate_repr_type = _impl::next_size_t<typename common_type<Lhs, Rhs>::repr_type>;
+			return Result::from_data(
+				_impl::shift_left<(Lhs::exponent + Rhs::exponent - Result::exponent), result_repr_type>(
+					static_cast<intermediate_repr_type>(lhs.data()) * static_cast<intermediate_repr_type>(rhs.data())));
+		}
+
+		////////////////////////////////////////////////////////////////////////////////
+		// sg14::_impl::add
+
+		template <class Result, class FixedPoint, class Head>
+		constexpr Result add(const Head & addend_head)
+		{
+			static_assert(std::is_same<FixedPoint, Head>::value, "mismatched trunc_add parameters");
+			return static_cast<Result>(addend_head);
+		}
+
+		template <class Result, class FixedPoint, class Head, class ... Tail>
+		constexpr Result add(const Head & addend_head, const Tail & ... addend_tail)
+		{
+			static_assert(std::is_same<FixedPoint, Head>::value, "mismatched trunc_add parameters");
+			return add<Result, FixedPoint, Tail ...>(addend_tail ...) + static_cast<Result>(addend_head);
+		}
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
 	// heterogeneous comparison operators
 	//
 	// compare two objects of different fixed_point specializations
 
-	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
-	constexpr bool operator ==(
-		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	template <class Lhs, class Rhs, typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, int>::type Dummy = 0>
+	constexpr bool operator==(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
-		using fixed_point = common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
-		return static_cast<fixed_point>(lhs) == static_cast<fixed_point>(rhs);
+		using common_type = _impl::common_type<Lhs, Rhs>;
+		return static_cast<common_type>(lhs).data() == static_cast<common_type>(rhs).data();
 	}
 
-	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
-	constexpr bool operator !=(
-		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	template <class Lhs, class Rhs, typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, int>::type Dummy = 0>
+	constexpr bool operator!=(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
-		using fixed_point = common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
-		return static_cast<fixed_point>(lhs) != static_cast<fixed_point>(rhs);
+		using common_type = _impl::common_type<Lhs, Rhs>;
+		return static_cast<common_type>(lhs).data() != static_cast<common_type>(rhs).data();
 	}
 
-	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
-	constexpr bool operator <(
-		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	template <class Lhs, class Rhs, typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, int>::type Dummy = 0>
+	constexpr bool operator<(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
-		using fixed_point = common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
-		return static_cast<fixed_point>(lhs) < static_cast<fixed_point>(rhs);
+		using common_type = _impl::common_type<Lhs, Rhs>;
+		return static_cast<common_type>(lhs).data() < static_cast<common_type>(rhs).data();
 	}
 
-	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
-	constexpr bool operator >(
-		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	template <class Lhs, class Rhs, typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, int>::type Dummy = 0>
+	constexpr bool operator>(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
-		using fixed_point = common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
-		return static_cast<fixed_point>(lhs) > static_cast<fixed_point>(rhs);
+		using common_type = _impl::common_type<Lhs, Rhs>;
+		return static_cast<common_type>(lhs).data() > static_cast<common_type>(rhs).data();
 	}
 
-	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
-	constexpr bool operator >=(
-		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	template <class Lhs, class Rhs, typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, int>::type Dummy = 0>
+	constexpr bool operator>=(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
-		using fixed_point = common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
-		return static_cast<fixed_point>(lhs) >= static_cast<fixed_point>(rhs);
+		using common_type = _impl::common_type<Lhs, Rhs>;
+		return static_cast<common_type>(lhs).data() >= static_cast<common_type>(rhs).data();
 	}
 
-	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
-	constexpr bool operator <=(
-		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	template <class Lhs, class Rhs, typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, int>::type Dummy = 0>
+	constexpr bool operator<=(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
-		using fixed_point = common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
-		return static_cast<fixed_point>(lhs) <= static_cast<fixed_point>(rhs);
-	}
-
-	////////////////////////////////////////////////////////////////////////////////
-	// sg14::abs
-
-	template <class ReprType, int Exponent, typename std::enable_if<_impl::is_signed<ReprType>::value, int>::type Dummy = 0>
-	constexpr fixed_point<ReprType, Exponent>
-	abs(const fixed_point<ReprType, Exponent> & x) noexcept
-	{
-		return (x.data() >= 0) ? x : - x;
+		using common_type = _impl::common_type<Lhs, Rhs>;
+		return static_cast<common_type>(lhs).data() <= static_cast<common_type>(rhs).data();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -771,54 +746,6 @@ namespace sg14
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::trig
-	//
-	// Placeholder implementations fall back on <cmath> functions which is slow
-	// due to conversion to and from floating-point types; also inconvenient as
-	// many <cmath> functions are not constexpr.
-
-	namespace _impl
-	{
-		template <class ReprType, int Exponent, _impl::get_float_t<sizeof(ReprType)>(*F)(_impl::get_float_t<sizeof(ReprType)>)>
-		constexpr fixed_point<ReprType, Exponent>
-			crib(const fixed_point<ReprType, Exponent> & x) noexcept
-		{
-			using floating_point = _impl::get_float_t<sizeof(ReprType)>;
-			return static_cast<fixed_point<ReprType, Exponent>>(F(static_cast<floating_point>(x)));
-		}
-	}
-
-	template <class ReprType, int Exponent>
-	constexpr fixed_point<ReprType, Exponent>
-		sin(const fixed_point<ReprType, Exponent> & x) noexcept
-	{
-		return _impl::crib<ReprType, Exponent, std::sin>(x);
-	}
-
-	template <class ReprType, int Exponent>
-	constexpr fixed_point<ReprType, Exponent>
-		cos(const fixed_point<ReprType, Exponent> & x) noexcept
-	{
-		return _impl::crib<ReprType, Exponent, std::cos>(x);
-	}
-
-	////////////////////////////////////////////////////////////////////////////////
-	// sg14::_impl::multiply
-
-	namespace _impl
-	{
-		template <class Result, class Lhs, class Rhs>
-		constexpr Result multiply(const Lhs & lhs, const Rhs & rhs) noexcept
-		{
-			using result_repr_type = typename Result::repr_type;
-			using intermediate_repr_type = _impl::next_size_t<typename common_type<Lhs, Rhs>::repr_type>;
-			return Result::from_data(
-				_impl::shift_left<(Lhs::exponent + Rhs::exponent - Result::exponent), result_repr_type>(
-					static_cast<intermediate_repr_type>(lhs.data()) * static_cast<intermediate_repr_type>(rhs.data())));
-		}
-	}
-
-	////////////////////////////////////////////////////////////////////////////////
 	// sg14::trunc_add_result_t / trunc_add
 
 	// yields specialization of fixed_point with integral bits necessary to store
@@ -829,23 +756,6 @@ namespace sg14
 		fixed_point<
 			typename FixedPoint::repr_type,
 			FixedPoint::exponent>::integer_digits + _impl::capacity<N - 1>::value>;
-
-	namespace _impl
-	{
-		template <class Result, class FixedPoint, class Head>
-		constexpr Result add(const Head & addend_head)
-		{
-			static_assert(std::is_same<FixedPoint, Head>::value, "mismatched trunc_add parameters");
-			return static_cast<Result>(addend_head);
-		}
-
-		template <class Result, class FixedPoint, class Head, class ... Tail>
-		constexpr Result add(const Head & addend_head, const Tail & ... addend_tail)
-		{
-			static_assert(std::is_same<FixedPoint, Head>::value, "mismatched trunc_add parameters");
-			return add<Result, FixedPoint, Tail ...>(addend_tail ...) + static_cast<Result>(addend_head);
-		}
-	}
 
 	template <class FixedPoint, class ... Tail>
 	trunc_add_result_t<FixedPoint, sizeof...(Tail) + 1>
@@ -941,7 +851,7 @@ namespace sg14
 	// yields specialization of fixed_point with capacity necessary to store
 	// result of a multiply between values of fixed_point<ReprType, Exponent>
 	template <class Lhs, class Rhs = Lhs>
-	using promote_multiply_result_t = fixed_point_promotion_t<common_type<Lhs, Rhs>>;
+	using promote_multiply_result_t = fixed_point_promotion_t<_impl::common_type<Lhs, Rhs>>;
 
 	// as promote_multiply_result_t but converts parameter, factor,
 	// ready for safe binary multiply
@@ -975,24 +885,6 @@ namespace sg14
 		return output_type::from_data(
 			_impl::shift_left<(FixedPoint::exponent * 2 - output_type::exponent), output_repr_type>(
 				static_cast<output_repr_type>(root.data()) * static_cast<output_repr_type>(root.data())));
-	}
-
-	////////////////////////////////////////////////////////////////////////////////
-	// sg14::fixed_point streaming - (placeholder implementation)
-
-	template <class ReprType, int Exponent>
-	::std::ostream & operator << (::std::ostream & out, const fixed_point<ReprType, Exponent> & fp)
-	{
-		return out << static_cast<long double>(fp);
-	}
-
-	template <class ReprType, int Exponent>
-	::std::istream & operator >> (::std::istream & in, fixed_point<ReprType, Exponent> & fp)
-	{
-		long double ld;
-		in >> ld;
-		fp = ld;
-		return in;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////

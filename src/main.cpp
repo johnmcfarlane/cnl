@@ -1,11 +1,12 @@
-namespace sg14_test
-{
-	void fixed_point_test();
-}
+void fixed_point_test();
+void fixed_point_utils_test();
+void proposal_test();
 
 int main(int, char *[])
 {
-	sg14_test::fixed_point_test();
+	fixed_point_test();
+	fixed_point_utils_test();
+	proposal_test();
 
 	return 0;
 }
