@@ -747,9 +747,9 @@ namespace sg14
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// homogeneous comparison operators
+	// homogeneous operator overloads
 	//
-	// compare two fixed-point objects of identity type
+	// taking one or two identical fixed_point specializations
 
 	template <class ReprType, int Exponent>
 	constexpr bool operator==(
@@ -799,9 +799,82 @@ namespace sg14
 		return lhs.data() <= rhs.data();
 	}
 
+	// arithmetic
+	template <class ReprType, int Exponent>
+	constexpr fixed_point<ReprType, Exponent> operator-(
+		const fixed_point<ReprType, Exponent> & rhs) noexcept
+	{
+		static_assert(_impl::is_signed<ReprType>::value, "unary negation of unsigned value");
+
+		return fixed_point<ReprType, Exponent>::from_data(-rhs.data());
+	}
+
+	template <class ReprType, int Exponent>
+	constexpr fixed_point<ReprType, Exponent> operator+(
+		const fixed_point<ReprType, Exponent> & lhs,
+		const fixed_point<ReprType, Exponent> & rhs) noexcept
+	{
+		return fixed_point<ReprType, Exponent>::from_data(lhs.data() + rhs.data());
+	}
+
+	template <class ReprType, int Exponent>
+	constexpr fixed_point<ReprType, Exponent> operator-(
+		const fixed_point<ReprType, Exponent> & lhs,
+		const fixed_point<ReprType, Exponent> & rhs) noexcept
+	{
+		return fixed_point<ReprType, Exponent>::from_data(lhs.data() - rhs.data());
+	}
+
+	template <class ReprType, int Exponent>
+	constexpr fixed_point<ReprType, Exponent> operator*(
+		const fixed_point<ReprType, Exponent> & lhs,
+		const fixed_point<ReprType, Exponent> & rhs) noexcept
+	{
+		return _impl::multiply<fixed_point<ReprType, Exponent>>(lhs, rhs);
+	}
+
+	template <class ReprType, int Exponent>
+	constexpr fixed_point<ReprType, Exponent> operator/(
+		const fixed_point<ReprType, Exponent> & lhs,
+		const fixed_point<ReprType, Exponent> & rhs) noexcept
+	{
+		return _impl::divide<fixed_point<ReprType, Exponent>>(lhs, rhs);
+	}
+
+	template <class ReprType, int Exponent>
+	fixed_point<ReprType, Exponent> & operator+=(
+		fixed_point<ReprType, Exponent> & lhs,
+		const fixed_point<ReprType, Exponent> & rhs) noexcept
+	{
+		return lhs = lhs + rhs;
+	}
+
+	template <class ReprType, int Exponent>
+	fixed_point<ReprType, Exponent> & operator-=(
+		fixed_point<ReprType, Exponent> & lhs,
+		const fixed_point<ReprType, Exponent> & rhs) noexcept
+	{
+		return lhs = lhs - rhs;
+	}
+
+	template <class ReprType, int Exponent>
+	fixed_point<ReprType, Exponent> & operator*=(
+		fixed_point<ReprType, Exponent> & lhs,
+		const fixed_point<ReprType, Exponent> & rhs) noexcept
+	{
+		return lhs = lhs * rhs;
+	}
+
+	template <class ReprType, int Exponent>
+	fixed_point<ReprType, Exponent> & operator/=(
+		fixed_point<ReprType, Exponent> & lhs,
+		const fixed_point<ReprType, Exponent> & rhs) noexcept
+	{
+		return lhs = lhs / rhs;
+	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// heterogeneous comparison operators
+	// heterogeneous operator overloads
 	//
 	// compare two objects of different fixed_point specializations
 
@@ -1000,83 +1073,6 @@ namespace sg14
 		return output_type::from_data(
 			_impl::shift_left<(FixedPoint::exponent * 2 - output_type::exponent), output_repr_type>(
 				static_cast<output_repr_type>(root.data()) * static_cast<output_repr_type>(root.data())));
-	}
-
-	////////////////////////////////////////////////////////////////////////////////
-	// fixed_point arithmetic operator overloads
-
-	template <class ReprType, int Exponent>
-	constexpr fixed_point<ReprType, Exponent> operator-(
-		const fixed_point<ReprType, Exponent> & rhs) noexcept
-	{
-		static_assert(_impl::is_signed<ReprType>::value, "unary negation of unsigned value");
-
-		return fixed_point<ReprType, Exponent>::from_data(-rhs.data());
-	}
-
-	template <class ReprType, int Exponent>
-	constexpr fixed_point<ReprType, Exponent> operator+(
-		const fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) noexcept
-	{
-		return fixed_point<ReprType, Exponent>::from_data(lhs.data() + rhs.data());
-	}
-
-	template <class ReprType, int Exponent>
-	constexpr fixed_point<ReprType, Exponent> operator-(
-		const fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) noexcept
-	{
-		return fixed_point<ReprType, Exponent>::from_data(lhs.data() - rhs.data());
-	}
-
-	template <class ReprType, int Exponent>
-	constexpr fixed_point<ReprType, Exponent> operator*(
-		const fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) noexcept
-	{
-		return _impl::multiply<fixed_point<ReprType, Exponent>>(lhs, rhs);
-	}
-
-	template <class ReprType, int Exponent>
-	constexpr fixed_point<ReprType, Exponent> operator/(
-		const fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) noexcept
-	{
-		return fixed_point<ReprType, Exponent>::from_data(
-			ReprType(_impl::shift_right<Exponent, _impl::next_size_t<ReprType>>(lhs.data()) / rhs.data()));
-	}
-
-	template <class ReprType, int Exponent>
-	fixed_point<ReprType, Exponent> & operator+=(
-		fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) noexcept
-	{
-		return lhs = lhs + rhs;
-	}
-
-	template <class ReprType, int Exponent>
-	fixed_point<ReprType, Exponent> & operator-=(
-		fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) noexcept
-	{
-		return lhs = lhs - rhs;
-	}
-
-	template <class ReprType, int Exponent>
-	fixed_point<ReprType, Exponent> & operator*=(
-		fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) noexcept
-	{
-		return lhs = lhs * rhs;
-	}
-
-	template <class ReprType, int Exponent>
-	fixed_point<ReprType, Exponent> & operator/=(
-		fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) noexcept
-	{
-		return lhs = lhs / rhs;
 	}
 }
 

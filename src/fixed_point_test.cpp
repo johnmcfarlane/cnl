@@ -261,7 +261,7 @@ static_assert((make_ufixed<56, 8>(1003006) * make_ufixed<56, 8>(7)) == 7021042, 
 #endif
 
 // division
-static_assert((fixed_point<std::int8_t, -1>(63) / fixed_point<std::int8_t, -1>(-4)) == -15.5, "sg14::fixed_point test failed");
+static_assert((fixed_point<std::int8_t, -1>(63) / fixed_point<std::int8_t, -1>(-4)) == -16, "sg14::fixed_point test failed");
 static_assert((fixed_point<std::int8_t, 1>(-255) / fixed_point<std::int8_t, 1>(-8)) == 32, "sg14::fixed_point test failed");
 static_assert((make_fixed<31, 0>(-999) / make_fixed<31, 0>(3)) == -333, "sg14::fixed_point test failed");
 #if defined(_SG14_FIXED_POINT_128)
@@ -316,6 +316,11 @@ static_assert(std::is_same<_impl::common_type<fixed_point<std::int16_t, 0>, doub
 // sg14::_impl::multiply
 
 static_assert(_impl::multiply<make_ufixed<4, 4>>(make_ufixed<4, 4>(2), make_ufixed<4, 4>(7.5)) == 15, "sg14::_impl::multiply test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::_impl::divide
+
+//static_assert(_impl::divide<fixed_point<>>(fixed_point<>(15), fixed_point<>(2)) == 15 / 2, "sg14::_impl::multiply test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // comparison
