@@ -712,6 +712,23 @@ namespace sg14
 		}
 
 		////////////////////////////////////////////////////////////////////////////////
+		// sg14::_impl::divide
+
+		template <class Result, class Lhs, class Rhs>
+		constexpr Result divide(const Lhs & lhs, const Rhs & rhs) noexcept
+		{
+			using result_repr_type = typename Result::repr_type;
+			using common_type = typename _impl::common_type<Lhs, Rhs>;
+			using common_repr_type = typename common_type::repr_type;
+			using intermediate_repr_type = _impl::next_size_t<common_repr_type>;
+
+			return Result::from_data(
+				_impl::shift_left<(Lhs::exponent - Rhs::exponent - Result::exponent - num_bits<common_repr_type>()), result_repr_type>(
+					(_impl::shift_left<(num_bits<common_repr_type>()), intermediate_repr_type>(lhs.data())) 
+						/ rhs.data()));
+		}
+
+		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::add
 
 		template <class Result, class FixedPoint, class Head>
