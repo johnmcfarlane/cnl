@@ -313,6 +313,11 @@ static_assert(std::is_same<_impl::common_type<fixed_point<std::int16_t, 0>, doub
 //static_assert(std::is_same<_impl::common_type<std::int8_t, std::int8_t>, fixed_point<std::int64_t, -56>>::value, "sg14::_impl::common_type test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
+// sg14::_impl::multiply
+
+static_assert(_impl::multiply<make_ufixed<4, 4>>(make_ufixed<4, 4>(2), make_ufixed<4, 4>(7.5)) == 15, "sg14::_impl::multiply test failed");
+
+////////////////////////////////////////////////////////////////////////////////
 // comparison
 
 // heterogeneous fixed-point to fixed-point comparison
