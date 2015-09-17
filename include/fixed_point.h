@@ -660,7 +660,7 @@ namespace sg14
 		};
 
 		// given a fixed-point and a integer type, 
-		// generates a floating-point that is as big as both of them (or as close as possible)
+		// generates a fixed-point type that is as big as both of them (or as close as possible)
 		template <class LhsReprType, int LhsExponent, class Integer>
 		struct _common_type<
 			fixed_point<LhsReprType, LhsExponent>,
@@ -673,7 +673,7 @@ namespace sg14
 		};
 
 		// given a fixed-point and a floating-point type, 
-		// generates a floating-point that is as big as both of them (or as close as possible)
+		// generates a floating-point type that is as big as both of them (or as close as possible)
 		template <class LhsReprType, int LhsExponent, class Float>
 		struct _common_type<
 			fixed_point<LhsReprType, LhsExponent>,
