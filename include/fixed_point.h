@@ -481,6 +481,12 @@ namespace sg14
 			return _repr != 0;
 		}
 
+		template <class Rhs>
+		fixed_point & operator*=(const Rhs & rhs) noexcept;
+
+		template <class Rhs>
+		fixed_point & operator/=(const Rhs & rhs) noexcept;
+
 		// returns internal representation of value
 		constexpr repr_type data() const noexcept
 		{
@@ -747,7 +753,7 @@ namespace sg14
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// homogeneous operator overloads
+	// homogeneous (mixed-mode) operator overloads
 	//
 	// taking one or two identical fixed_point specializations
 
@@ -823,22 +829,6 @@ namespace sg14
 		const fixed_point<ReprType, Exponent> & rhs) noexcept
 	{
 		return fixed_point<ReprType, Exponent>::from_data(lhs.data() - rhs.data());
-	}
-
-	template <class ReprType, int Exponent>
-	constexpr fixed_point<ReprType, Exponent> operator*(
-		const fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) noexcept
-	{
-		return _impl::multiply<fixed_point<ReprType, Exponent>>(lhs, rhs);
-	}
-
-	template <class ReprType, int Exponent>
-	constexpr fixed_point<ReprType, Exponent> operator/(
-		const fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) noexcept
-	{
-		return _impl::divide<fixed_point<ReprType, Exponent>>(lhs, rhs);
 	}
 
 	template <class ReprType, int Exponent>
@@ -918,6 +908,173 @@ namespace sg14
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
 		return static_cast<common_type>(lhs) <= static_cast<common_type>(rhs);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	// arithmetic
+	
+	template <class Lhs, class Rhs>
+	constexpr auto operator+(
+		const Lhs & lhs,
+		const Rhs & rhs) noexcept
+	-> _impl::common_type<Lhs, Rhs>
+	{
+		using common_type = _impl::common_type<Lhs, Rhs>;
+		return static_cast<common_type>(lhs) + static_cast<common_type>(rhs);
+	}
+
+	template <class Lhs, class Rhs>
+	constexpr auto operator-(
+		const Lhs & lhs,
+		const Rhs & rhs) noexcept
+	-> _impl::common_type<Lhs, Rhs>
+	{
+		using common_type = _impl::common_type<Lhs, Rhs>;
+		return static_cast<common_type>(lhs) - static_cast<common_type>(rhs);
+	}
+
+	// fixed-point, fixed-point -> fixed-point
+	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
+	constexpr auto operator*(
+		const fixed_point<LhsReprType, LhsExponent> & lhs,
+		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	-> _impl::common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>
+	{
+		using result_type = _impl::common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
+		return _impl::multiply<result_type>(lhs, rhs);
+	}
+
+	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
+	constexpr auto operator/(
+		const fixed_point<LhsReprType, LhsExponent> & lhs,
+		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	-> _impl::common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>
+	{
+		using result_type = _impl::common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
+		return _impl::divide<result_type>(lhs, rhs);
+	}
+
+	// fixed-point, integer -> fixed-point
+	template <class LhsReprType, int LhsExponent, class Integer>
+	constexpr auto operator*(
+		const fixed_point<LhsReprType, LhsExponent> & lhs,
+		const Integer & rhs) noexcept
+	-> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<LhsReprType, LhsExponent>>::type
+	{
+		using result_type = fixed_point<LhsReprType, LhsExponent>;
+		return _impl::multiply<result_type>(lhs, fixed_point<Integer>(rhs));
+	}
+
+	template <class LhsReprType, int LhsExponent, class Integer>
+	constexpr auto operator/(
+		const fixed_point<LhsReprType, LhsExponent> & lhs,
+		const Integer & rhs) noexcept
+	-> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<LhsReprType, LhsExponent>>::type
+	{
+		using result_type = fixed_point<LhsReprType, LhsExponent>;
+		return _impl::divide<result_type>(lhs, fixed_point<Integer>(rhs));
+	}
+
+	// integer. fixed-point -> fixed-point
+	template <class Integer, class RhsReprType, int RhsExponent>
+	constexpr auto operator*(
+		const Integer & lhs,
+		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	-> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<RhsReprType, RhsExponent>>::type
+	{
+		using result_type = fixed_point<RhsReprType, RhsExponent>;
+		return _impl::multiply<result_type>(fixed_point<Integer>(lhs), rhs);
+	}
+
+	template <class Integer, class RhsReprType, int RhsExponent>
+	constexpr auto operator/(
+		const Integer & lhs,
+		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	-> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<RhsReprType, RhsExponent>>::type
+	{
+		using result_type = fixed_point<RhsReprType, RhsExponent>;
+		return _impl::divide<result_type>(fixed_point<Integer>(lhs), rhs);
+	}
+
+	// fixed-point, floating-point -> floating-point
+	template <class LhsReprType, int LhsExponent, class Float>
+	constexpr auto operator*(
+		const fixed_point<LhsReprType, LhsExponent> & lhs,
+		const Float & rhs) noexcept
+	-> _impl::common_type<
+		fixed_point<LhsReprType, LhsExponent>,
+		typename std::enable_if<std::is_floating_point<Float>::value, Float>::type>
+	{
+		using result_type = _impl::common_type<fixed_point<LhsReprType, LhsExponent>, Float>;
+		return static_cast<result_type>(lhs) * rhs;
+	}
+
+	template <class LhsReprType, int LhsExponent, class Float>
+	constexpr auto operator/(
+		const fixed_point<LhsReprType, LhsExponent> & lhs,
+		const Float & rhs) noexcept
+	-> _impl::common_type<
+		fixed_point<LhsReprType, LhsExponent>,
+		typename std::enable_if<std::is_floating_point<Float>::value, Float>::type>
+	{
+		using result_type = _impl::common_type<fixed_point<LhsReprType, LhsExponent>, Float>;
+		return static_cast<result_type>(lhs) / rhs;
+	}
+
+	// floating-point, fixed-point -> floating-point
+	template <class Float, class RhsReprType, int RhsExponent>
+	constexpr auto operator*(
+		const Float & lhs,
+		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	-> _impl::common_type<
+		typename std::enable_if<std::is_floating_point<Float>::value, Float>::type,
+		fixed_point<RhsReprType, RhsExponent>>
+	{
+		using result_type = _impl::common_type<fixed_point<RhsReprType, RhsExponent>, Float>;
+		return lhs * static_cast<result_type>(rhs);
+	}
+
+	template <class Float, class RhsReprType, int RhsExponent>
+	constexpr auto operator/(
+		const Float & lhs,
+		const fixed_point<RhsReprType, RhsExponent> & rhs) noexcept
+	-> _impl::common_type<
+		typename std::enable_if<std::is_floating_point<Float>::value, Float>::type,
+		fixed_point<RhsReprType, RhsExponent>>
+	{
+		using result_type = _impl::common_type<fixed_point<RhsReprType, RhsExponent>, Float>;
+		return lhs /
+			static_cast<result_type>(rhs);
+	}
+
+	template <class LhsReprType, int Exponent, class Rhs>
+	fixed_point<LhsReprType, Exponent> & operator+=(fixed_point<LhsReprType, Exponent> & lhs, const Rhs & rhs) noexcept
+	{
+		return lhs += fixed_point<LhsReprType, Exponent>(rhs);
+	}
+
+	template <class LhsReprType, int Exponent, class Rhs>
+	fixed_point<LhsReprType, Exponent> & operator-=(fixed_point<LhsReprType, Exponent> & lhs, const Rhs & rhs) noexcept
+	{
+		return lhs -= fixed_point<LhsReprType, Exponent>(rhs);
+	}
+
+	template <class LhsReprType, int Exponent>
+	template <class Rhs>
+	fixed_point<LhsReprType, Exponent> &
+	fixed_point<LhsReprType, Exponent>::operator*=(const Rhs & rhs) noexcept
+	{
+		_repr *= rhs;
+		return * this;
+	}
+
+	template <class LhsReprType, int Exponent>
+	template <class Rhs>
+	fixed_point<LhsReprType, Exponent> &
+	fixed_point<LhsReprType, Exponent>::operator/=(const Rhs & rhs) noexcept
+	{
+		_repr /= rhs;
+		return * this;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////

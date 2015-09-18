@@ -27,6 +27,17 @@ void fixed_point_test()
 	// from alternative specialization
 	lhs = fixed_point<uint8_t>(87.65);
 	ASSERT_EQUAL(static_cast<fixed_point<uint8_t>>(lhs), fixed_point<uint8_t>(87.65));
+
+	////////////////////////////////////////////////////////////////////////////////
+	// compound assignment
+
+	auto x = make_fixed<7, 8>(22.75);
+	ASSERT_EQUAL(x += 12.5, 35.25L);
+	ASSERT_EQUAL(x -= 35.5, -.25);
+	ASSERT_EQUAL(x /= 4, -.0625);
+	ASSERT_EQUAL(x -= -10, 9.9375f);
+	ASSERT_EQUAL(x *= -3, -29.8125);
+	ASSERT_EQUAL(x -= 0.1875, -30);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -247,6 +258,8 @@ static_assert(! fixed_point<>(0), "sg14::fixed_point test failed");
 // addition
 static_assert((make_fixed<31, 0>(123) + make_fixed<31, 0>(123)) == 246, "sg14::fixed_point test failed");
 static_assert((make_fixed<15, 16>(123.125) + make_fixed<15, 16>(123.75)) == 246.875, "sg14::fixed_point test failed");
+static_assert((make_fixed<24>(123) + make_ufixed<31, 0>(123)) == 246, "sg14::fixed_point test failed");
+static_assert((make_fixed<15, 16>(123.125) + make_fixed<15, 16>(123.75)) == 246.875, "sg14::fixed_point test failed");
 
 // subtraction
 static_assert((make_fixed<31, 0>(999) - make_fixed<31, 0>(369)) == 630, "sg14::fixed_point test failed");
@@ -320,7 +333,7 @@ static_assert(_impl::multiply<make_ufixed<4, 4>>(make_ufixed<4, 4>(2), make_ufix
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::divide
 
-//static_assert(_impl::divide<fixed_point<>>(fixed_point<>(15), fixed_point<>(2)) == 15 / 2, "sg14::_impl::multiply test failed");
+static_assert(_impl::divide<fixed_point<>>(fixed_point<>(15), fixed_point<>(2)) == 15 / 2, "sg14::_impl::multiply test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // comparison
@@ -357,6 +370,59 @@ static_assert(!(fixed_point<uint64_t, -4>(4.5) != 4.5L), "sg14::fixed_point test
 
 static_assert(4.5 < fixed_point<int16_t, -7>(5.6), "sg14::fixed_point test failed");
 static_assert(!(fixed_point<int32_t, -3>(-4.5) < -5.6), "sg14::fixed_point test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// arithmetic operators
+
+// addition
+static_assert(make_fixed<2, 5>(2.125) + make_fixed<2, 5>(-3.25) == -1.125f, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(make_fixed<2, 5>(2.125) + make_fixed<2, 5>(-3.25)), make_fixed<2, 5>>::value, "arithmetic operators test failed");
+
+static_assert(fixed_point<std::uint8_t, 10>(10240) + 2048 == 12288, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(fixed_point<std::uint8_t, 10>(10240) + 2048), fixed_point<int, 0>>::value, "arithmetic operators test failed");
+static_assert(2048 + fixed_point<std::uint8_t, 10>(10240) == 12288, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(2048 + fixed_point<std::uint8_t, 10>(10240)), fixed_point<int, 0>>::value, "arithmetic operators test failed");
+
+static_assert(765.432f + make_fixed<31, 32>(16777215.996093750) == 16777981.428100586, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(765.432f + make_fixed<31, 32>(16777215.996093750)), double>::value, "arithmetic operators test failed");
+static_assert(make_fixed<31, 32>(16777215.996093750) + 765.432f == 16777981.428100586, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(make_fixed<31, 32>(16777215.996093750) + 765.432f), double>::value, "arithmetic operators test failed");
+
+// subtraction
+static_assert(make_fixed<2, 5>(2.125) - make_fixed<2, 5>(3.25) == -1.125f, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(make_fixed<2, 5>(2.125) - make_fixed<2, 5>(-3.25)), make_fixed<2, 5>>::value, "arithmetic operators test failed");
+static_assert(fixed_point<std::uint8_t, 10>(10240) - 2048 == 8192, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(fixed_point<std::uint8_t, 10>(10240) - 2048), fixed_point<int, 0>>::value, "arithmetic operators test failed");
+static_assert(765.432f - make_fixed<31, 32>(16777215.996093750) == -16776450.564086914, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(765.432f - make_fixed<31, 32>(16777215.996093750)), double>::value, "arithmetic operators test failed");
+
+// multiplication
+static_assert(make_fixed<2, 5>(2.125) * make_fixed<2, 5>(-1.75f) == -3.71875, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(make_fixed<2, 5>(2.125) * make_fixed<2, 5>(-3.25)), make_fixed<2, 5>>::value, "arithmetic operators test failed");
+
+static_assert(fixed_point<std::uint8_t, 10>(10240) * 3u == 30720, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(fixed_point<std::uint8_t, 10>(10240) * 3u), fixed_point<std::uint8_t, 10>>::value, "arithmetic operators test failed");
+static_assert(3u * fixed_point<std::uint8_t, 10>(10240) == 30720, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(3u * fixed_point<std::uint8_t, 10>(10240)), fixed_point<std::uint8_t, 10>>::value, "arithmetic operators test failed");
+
+static_assert(-123.654f * make_fixed<31, 32>(16777215.996093750) == -2074569855.5169766, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(765.432f * make_fixed<31, 32>(16777215.996093750)), double>::value, "arithmetic operators test failed");
+static_assert(make_fixed<31, 32>(16777215.996093750) * -123.654f == -2074569855.5169766, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(make_fixed<31, 32>(16777215.996093750) * -123.654f), double>::value, "arithmetic operators test failed");
+
+// division
+static_assert(make_fixed<2, 5>(2.5) / make_fixed<2, 5>(-4.f) == -.625, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(make_fixed<2, 5>(2.5) / make_fixed<2, 5>(-4.f)), make_fixed<2, 5>>::value, "arithmetic operators test failed");
+
+static_assert(fixed_point<std::uint8_t, 10>(10240) / 3u == 3072, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(fixed_point<std::uint8_t, 10>(10240) / 3u), fixed_point<std::uint8_t, 10>>::value, "arithmetic operators test failed");
+static_assert(10 / fixed_point<std::uint8_t, -2>(0.25) == 40.L, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(10 / fixed_point<std::uint8_t, -2>(0.25)), fixed_point<std::uint8_t, -2>>::value, "arithmetic operators test failed");
+
+static_assert(16777215.996093750 / make_fixed<31, 32>(-123.654f) == -135678.71712347874, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(16777215.996093750 / make_fixed<31, 32>(-123.654f)), double>::value, "arithmetic operators test failed");
+static_assert(make_fixed<31, 32>(16777215.996093750) / -123.654f == -135678.71712347874, "arithmetic operators test failed");
+static_assert(std::is_same<decltype(make_fixed<31, 32>(16777215.996093750) / -123.654f), double>::value, "arithmetic operators test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_add_result_t
