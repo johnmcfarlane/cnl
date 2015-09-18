@@ -660,7 +660,7 @@ namespace sg14
 		{
 			using type = make_fixed_from_repr<
 				_impl::common_repr_type<LhsReprType, RhsReprType>,
-				_impl::max(
+				_impl::max<int>(
 					fixed_point<LhsReprType, LhsExponent>::integer_digits,
 					fixed_point<RhsReprType, RhsExponent>::integer_digits)>;
 		};
