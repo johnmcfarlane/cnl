@@ -684,9 +684,9 @@ namespace sg14
 		};
 
 		// when first type is not fixed-point and second type is, reverse the order
-		template <class Lhs, class RhsReprType, int Exponent>
-		struct _common_type<Lhs, fixed_point<RhsReprType, Exponent>>
-		: _common_type<fixed_point<RhsReprType, Exponent>, Lhs>
+		template <class Lhs, class RhsReprType, int RhsExponent>
+		struct _common_type<Lhs, fixed_point<RhsReprType, RhsExponent>>
+		: _common_type<fixed_point<RhsReprType, RhsExponent>, Lhs>
 		{
 		};
 
