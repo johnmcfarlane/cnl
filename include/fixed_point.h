@@ -1149,6 +1149,26 @@ namespace sg14
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
+	// sg14::trunc_divide_result_t / trunc_divide
+
+	// yields specialization of fixed_point with integral bits necessary to store
+	// result of a divide between values of fixed_point<ReprType, Exponent>
+	template <class Lhs, class Rhs = Lhs>
+	using trunc_divide_result_t = make_fixed_from_repr<
+		_impl::common_repr_type<typename Lhs::repr_type, typename Rhs::repr_type>,
+		Lhs::integer_digits + Rhs::fractional_digits>;
+
+	// as trunc_divide_result_t but converts parameter, factor,
+	// ready for safe binary divide
+	template <class Lhs, class Rhs>
+	trunc_divide_result_t<Lhs, Rhs>
+	constexpr trunc_divide(const Lhs & lhs, const Rhs & rhs) noexcept
+	{
+		using result_type = trunc_divide_result_t<Lhs, Rhs>;
+		return _impl::divide<result_type>(lhs, rhs);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
 	// sg14::trunc_square_result_t / trunc_square
 
 	// yields specialization of fixed_point with integral bits necessary to store

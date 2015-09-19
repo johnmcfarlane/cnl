@@ -476,6 +476,27 @@ static_assert(trunc_multiply(make_fixed<4, 3>(-16), make_fixed<4, 3>(-15.875)) =
 static_assert(trunc_multiply(make_fixed<4, 3>(-16), make_fixed<4, 3>(-16)) == -256, "sg14::trunc_multiply test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
+// sg14::trunc_divide_result_t
+
+static_assert(trunc_divide_result_t<fixed_point<std::uint8_t, -4>>::integer_digits == 8, "sg14::trunc_divide_result_t test failed");
+static_assert(trunc_divide_result_t<make_fixed<4, 3>>::integer_digits == 7, "sg14::trunc_divide_result_t test failed");
+static_assert(trunc_divide_result_t<fixed_point<std::int32_t, -25>>::integer_digits == 31, "sg14::trunc_divide_result_t test failed");
+static_assert(trunc_divide_result_t<fixed_point<std::uint8_t, 0>>::integer_digits == 8, "sg14::trunc_divide_result_t test failed");
+static_assert(std::is_same<trunc_divide_result_t<make_fixed<15, 0>, make_fixed<7, 8>>, fixed_point<std::int16_t, 8>>::value, "sg14::trunc_divide_result_t test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::trunc_divide
+
+static_assert(trunc_divide(make_fixed<15, 0>(16129), make_fixed<15, 0>(127)) == 127, "sg14::trunc_divide test failed");
+static_assert(trunc_divide(make_ufixed<8, 0>(240), make_ufixed<4, 4>(.9375)) == 256, "sg14::trunc_divide test failed");
+static_assert(trunc_divide(make_ufixed<4, 4>(0.0625), make_ufixed<4, 4>(0.0625)) == 1.f, "sg14::trunc_divide test failed");
+static_assert(trunc_divide(make_ufixed<8, 0>(0), make_ufixed<8, 0>(1)) == 0.f, "sg14::trunc_divide test failed");
+static_assert(trunc_divide(fixed_point<std::uint16_t, 0>(4096), make_ufixed<8, 0>(25)) == 163., "sg14::trunc_divide test failed");
+static_assert(trunc_divide(make_fixed<14, 0, false>(4288), make_fixed<6, 2, false>(25)) == 171, "sg14::trunc_divide test failed");
+static_assert((trunc_divide(make_fixed<20>(1040352), make_fixed<16, 0, false>(65535))) == 15.87451171875, "sg14::trunc_divide test failed");
+static_assert(trunc_divide(make_fixed<15>(254), make_fixed<4, 3>(-15.875)) == -16, "sg14::trunc_divide test failed");
+
+////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_square_result_t
 
 static_assert(std::is_same<trunc_square_result_t<make_ufixed<4, 4>>, make_ufixed<8, 0>>::value, "sg14::trunc_square_result_t test failed");
