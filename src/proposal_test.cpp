@@ -41,7 +41,7 @@ void proposal_test()
 	ASSERT_EQUAL(conversion_lhs, conversion_rhs);
 
 	// Arithmetic Operators (Overflow)
-	static_assert(make_fixed<4, 3>(15) + make_fixed<4, 3>(1) != 16, "Incorrect information in proposal section, Overflow");
+	static_assert(static_cast<int>(make_fixed<4, 3>(15) + make_fixed<4, 3>(1)) != 16, "Incorrect information in proposal section, Overflow");
 
 	// Arithmetic Operators (Underflow)
 	static_assert(make_fixed<7, 0>(15) / make_fixed<7, 0>(2) == 7.f, "Incorrect information in proposal section, Underflow");
@@ -67,7 +67,7 @@ void proposal_test()
 	ASSERT_EQUAL(square, 0);
 
 	// Underflow
-	static_assert(trunc_square(make_ufixed<8, 0>(15)) != 15 * 15, "wrong behavior reported in 'Overflow and Underflow' section");
+	static_assert(static_cast<int>(trunc_square(make_ufixed<8, 0>(15))) != 15 * 15, "wrong behavior reported in 'Overflow and Underflow' section");
 
 	// Examples
 	static_assert(magnitude(

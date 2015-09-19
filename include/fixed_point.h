@@ -667,15 +667,13 @@ namespace sg14
 
 		// given a fixed-point and a integer type, 
 		// generates a fixed-point type that is as big as both of them (or as close as possible)
-		template <class LhsReprType, int LhsExponent, class Integer>
+		template <class LhsReprType, int LhsExponent, class RhsInteger>
 		struct _common_type<
 			fixed_point<LhsReprType, LhsExponent>,
-			Integer,
-			typename std::enable_if<_impl::is_integral<Integer>::value>::type>
-		: _common_type<
-			fixed_point<LhsReprType, LhsExponent>,
-			fixed_point<Integer>>
+			RhsInteger,
+			typename std::enable_if<_impl::is_integral<RhsInteger>::value>::type>
 		{
+			using type = fixed_point<LhsReprType, LhsExponent>;
 		};
 
 		// given a fixed-point and a floating-point type, 
