@@ -667,15 +667,13 @@ namespace sg14
 
 		// given a fixed-point and a integer type, 
 		// generates a fixed-point type that is as big as both of them (or as close as possible)
-		template <class LhsReprType, int LhsExponent, class Integer>
+		template <class LhsReprType, int LhsExponent, class RhsInteger>
 		struct _common_type<
 			fixed_point<LhsReprType, LhsExponent>,
-			Integer,
-			typename std::enable_if<_impl::is_integral<Integer>::value>::type>
-		: _common_type<
-			fixed_point<LhsReprType, LhsExponent>,
-			fixed_point<Integer>>
+			RhsInteger,
+			typename std::enable_if<_impl::is_integral<RhsInteger>::value>::type>
 		{
+			using type = fixed_point<LhsReprType, LhsExponent>;
 		};
 
 		// given a fixed-point and a floating-point type, 
@@ -720,18 +718,20 @@ namespace sg14
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::divide
 
-		template <class Result, class Lhs, class Rhs>
-		constexpr Result divide(const Lhs & lhs, const Rhs & rhs) noexcept
+		template <class FixedPointQuotient, class FixedPointDividend, class FixedPointDivisor>
+		constexpr FixedPointQuotient divide(const FixedPointDividend & lhs, const FixedPointDivisor & rhs) noexcept
 		{
-			using result_repr_type = typename Result::repr_type;
-			using common_type = typename _impl::common_type<Lhs, Rhs>;
+			using result_repr_type = typename FixedPointQuotient::repr_type;
+			using common_type = typename _impl::common_type<FixedPointDividend, FixedPointDivisor>;
 			using common_repr_type = typename common_type::repr_type;
 			using intermediate_repr_type = _impl::next_size_t<common_repr_type>;
 
-			return Result::from_data(
-				_impl::shift_left<(Lhs::exponent - Rhs::exponent - Result::exponent - num_bits<common_repr_type>()), result_repr_type>(
-					(_impl::shift_left<(num_bits<common_repr_type>()), intermediate_repr_type>(lhs.data())) 
-						/ rhs.data()));
+			return FixedPointQuotient::from_data(
+				_impl::shift_left<(
+					FixedPointDividend::exponent - FixedPointDivisor::exponent - FixedPointQuotient::exponent - num_bits<common_repr_type>()),
+					result_repr_type>(
+						(_impl::shift_left<(num_bits<common_repr_type>()), intermediate_repr_type>(lhs.data()))
+							/ rhs.data()));
 		}
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -1146,6 +1146,26 @@ namespace sg14
 	{
 		using result_type = trunc_multiply_result_t<Lhs, Rhs>;
 		return _impl::multiply<result_type>(lhs, rhs);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	// sg14::trunc_divide_result_t / trunc_divide
+
+	// yields specialization of fixed_point with integral bits necessary to store
+	// result of a divide between values of types, Lhs and Rhs
+	template <class FixedPointDividend, class FixedPointDivisor = FixedPointDividend>
+	using trunc_divide_result_t = make_fixed_from_repr<
+		_impl::common_repr_type<typename FixedPointDividend::repr_type, typename FixedPointDivisor::repr_type>,
+		FixedPointDividend::integer_digits + FixedPointDivisor::fractional_digits>;
+
+	// as trunc_divide_result_t but converts parameter, factor,
+	// ready for safe binary divide
+	template <class FixedPointDividend, class FixedPointDivisor>
+	trunc_divide_result_t<FixedPointDividend, FixedPointDivisor>
+	constexpr trunc_divide(const FixedPointDividend & lhs, const FixedPointDivisor & rhs) noexcept
+	{
+		using result_type = trunc_divide_result_t<FixedPointDividend, FixedPointDivisor>;
+		return _impl::divide<result_type>(lhs, rhs);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
