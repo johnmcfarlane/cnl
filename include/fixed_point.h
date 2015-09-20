@@ -722,8 +722,9 @@ namespace sg14
 		constexpr FixedPointQuotient divide(const FixedPointDividend & lhs, const FixedPointDivisor & rhs) noexcept
 		{
 			using result_repr_type = typename FixedPointQuotient::repr_type;
-			using common_type = typename _impl::common_type<FixedPointDividend, FixedPointDivisor>;
-			using common_repr_type = typename common_type::repr_type;
+			using common_repr_type = typename _impl::common_repr_type<
+				typename FixedPointDividend::repr_type,
+				typename FixedPointDivisor::repr_type>;
 			using intermediate_repr_type = _impl::next_size_t<common_repr_type>;
 
 			return FixedPointQuotient::from_data(
