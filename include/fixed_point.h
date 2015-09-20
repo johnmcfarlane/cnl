@@ -722,13 +722,14 @@ namespace sg14
 		constexpr FixedPointQuotient divide(const FixedPointDividend & lhs, const FixedPointDivisor & rhs) noexcept
 		{
 			using result_repr_type = typename FixedPointQuotient::repr_type;
-			using common_type = typename _impl::common_type<FixedPointDividend, FixedPointDivisor>;
-			using common_repr_type = typename common_type::repr_type;
+			using common_repr_type = typename _impl::common_repr_type<
+				typename FixedPointDividend::repr_type,
+				typename FixedPointDivisor::repr_type>;
 			using intermediate_repr_type = _impl::next_size_t<common_repr_type>;
 
 			return FixedPointQuotient::from_data(
-				_impl::shift_left<(
-					FixedPointDividend::exponent - FixedPointDivisor::exponent - FixedPointQuotient::exponent - num_bits<common_repr_type>()),
+				_impl::shift_left<
+					(FixedPointDividend::exponent - FixedPointDivisor::exponent - FixedPointQuotient::exponent - num_bits<common_repr_type>()),
 					result_repr_type>(
 						(_impl::shift_left<(num_bits<common_repr_type>()), intermediate_repr_type>(lhs.data()))
 							/ rhs.data()));
@@ -1166,6 +1167,30 @@ namespace sg14
 	{
 		using result_type = trunc_divide_result_t<FixedPointDividend, FixedPointDivisor>;
 		return _impl::divide<result_type>(lhs, rhs);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	// sg14::trunc_reciprocal_result_t / trunc_reciprocal
+
+	// yields specialization of fixed_point with integral bits necessary to store
+	// result of inverse of value of type FixedPoint
+	template <class FixedPoint>
+	using trunc_reciprocal_result_t = make_fixed_from_repr<
+		typename FixedPoint::repr_type,
+		FixedPoint::fractional_digits + 1>;
+
+	// returns reciprocal of fixed_point in same-sized fixed-point type
+	// that can comfortably store significant digits of result
+	template <class FixedPoint>
+	trunc_reciprocal_result_t<FixedPoint>
+	constexpr trunc_reciprocal(const FixedPoint & fixed_point) noexcept
+	{
+		using result_type = trunc_reciprocal_result_t<FixedPoint>;
+		using result_repr_type = typename result_type::repr_type;
+
+		using dividend_type = make_fixed_from_repr<result_repr_type, 1>;
+
+		return _impl::divide<result_type>(dividend_type(1), fixed_point);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
