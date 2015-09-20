@@ -314,12 +314,29 @@ namespace sg14
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::common_repr_type
 
-		// given two integral types, produces a common type with enough capacity to
-		// store values of either EXCEPT when one is signed and both are same size
-		template <class ReprType1, class ReprType2>
-		using common_repr_type = typename _impl::get_int<
-			_impl::is_signed<ReprType1>::value | _impl::is_signed<ReprType2>::value,
-			_impl::max(sizeof(ReprType1), sizeof(ReprType2))>::type;
+		// given two or more integral types, produces a common type with enough capacity
+		// to store values of either EXCEPT when one is signed and both are same size
+		template <class ... ReprTypes>
+		struct _common_repr_type;
+
+		template <class ReprTypeHead>
+		struct _common_repr_type <ReprTypeHead>
+		{
+			using type = ReprTypeHead;
+		};
+
+		template <class ReprTypeHead, class ... ReprTypeTail>
+		struct _common_repr_type <ReprTypeHead, ReprTypeTail...>
+		{
+			using _tail_type = typename _common_repr_type<ReprTypeTail...>::type;
+
+			using type = typename _impl::get_int<
+				_impl::is_signed<ReprTypeHead>::value | _impl::is_signed<_tail_type>::value,
+				_impl::max(sizeof(ReprTypeHead), sizeof(_tail_type))>::type;
+		};
+
+		template <class ... ReprTypes>
+		using common_repr_type = typename _common_repr_type<ReprTypes...>::type;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::capacity

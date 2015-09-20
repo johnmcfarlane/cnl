@@ -299,6 +299,27 @@ static_assert(make_fixed_from_repr<uint8_t, 8>::integer_digits == 8, "sg14::make
 static_assert(make_fixed_from_repr<int32_t, 27>::integer_digits == 27, "sg14::make_fixed_from_repr test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
+// sg14::_impl::common_repr_type
+
+// unary - pretty simple
+static_assert(is_same<_impl::common_repr_type<int8_t>, int8_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<uint64_t>, uint64_t>::value, "sg14::_impl::common_repr_type test failed");
+
+// binary
+static_assert(is_same<_impl::common_repr_type<uint8_t, uint8_t>, uint8_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int8_t, uint64_t>, int64_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<uint32_t, int8_t>, int32_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int16_t, int16_t>, int16_t>::value, "sg14::_impl::common_repr_type test failed");
+
+// and beyond
+static_assert(is_same<_impl::common_repr_type<uint32_t, uint8_t, int64_t>, int64_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int64_t, uint8_t, int32_t>, int64_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<uint32_t, int32_t, uint16_t>, int32_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int8_t, int16_t, uint8_t>, int16_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int8_t, int8_t, int8_t, int8_t, uint8_t>, int8_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int8_t, uint16_t, int32_t, uint64_t>, int64_t>::value, "sg14::_impl::common_repr_type test failed");
+
+////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::common_type
 
 // commonality never occurs when inputs are the same fixed_point type
