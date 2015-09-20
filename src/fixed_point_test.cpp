@@ -501,6 +501,23 @@ static_assert((trunc_divide(make_fixed<20>(1040352), make_fixed<16, 0, false>(65
 static_assert(trunc_divide(make_fixed<15>(254), make_fixed<4, 3>(-15.875)) == -16, "sg14::trunc_divide test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
+// sg14::trunc_reciprocal_result_t
+
+static_assert(is_same<trunc_reciprocal_result_t<fixed_point<uint8_t, -4>>, fixed_point<uint8_t, -3>>::value, "sg14::trunc_reciprocal_result_t test failed");
+static_assert(is_same<trunc_reciprocal_result_t<make_fixed<4, 3>>, make_fixed<4, 3>>::value, "sg14::trunc_reciprocal_result_t test failed");
+static_assert(is_same<trunc_reciprocal_result_t<fixed_point<int32_t, -25>>, fixed_point<int32_t, -5>>::value, "sg14::trunc_reciprocal_result_t test failed");
+static_assert(is_same<trunc_reciprocal_result_t<fixed_point<uint8_t, 0>>, fixed_point<uint8_t, -7>>::value, "sg14::trunc_reciprocal_result_t test failed");
+static_assert(is_same<trunc_reciprocal_result_t<make_fixed<15, 0>>, fixed_point<int16_t, -14>>::value, "sg14::trunc_reciprocal_result_t test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::trunc_reciprocal
+
+static_assert(trunc_reciprocal(make_ufixed<4, 4>(4)) == .25, "sg14::trunc_reciprocal test failed");
+static_assert(trunc_reciprocal(make_fixed<7, 0>(127)) == 0, "sg14::trunc_reciprocal test failed");
+static_assert(trunc_reciprocal(make_fixed<4, 3>(.125)) == 8, "sg14::trunc_reciprocal test failed");
+static_assert(trunc_reciprocal(make_ufixed<4, 4>(0.0625)) == 16, "sg14::trunc_reciprocal test failed");
+
+////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_square_result_t
 
 static_assert(is_same<trunc_square_result_t<make_ufixed<4, 4>>, make_ufixed<8, 0>>::value, "sg14::trunc_square_result_t test failed");
