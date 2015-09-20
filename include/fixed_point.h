@@ -1294,6 +1294,24 @@ namespace sg14
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
+	// sg14::promote_divide_result_t / promote_divide
+
+	// yields specialization of fixed_point with capacity necessary to store
+	// result of a divide between values of fixed_point<ReprType, Exponent>
+	template <class Lhs, class Rhs = Lhs>
+	using promote_divide_result_t = fixed_point_promotion_t<_impl::common_type<Lhs, Rhs>>;
+
+	// as promote_divide_result_t but converts parameter, factor,
+	// ready for safe binary divide
+	template <class Lhs, class Rhs>
+	promote_divide_result_t<Lhs, Rhs>
+	constexpr promote_divide(const Lhs & lhs, const Rhs & rhs) noexcept
+	{
+		using result_type = promote_divide_result_t<Lhs, Rhs>;
+		return _impl::divide<result_type>(lhs, rhs);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
 	// sg14::promote_square_result_t / promote_square
 
 	// yields specialization of fixed_point with integral bits necessary to store

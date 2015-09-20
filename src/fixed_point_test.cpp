@@ -592,6 +592,12 @@ static_assert(promote_multiply(make_fixed<4, 3>(-16), make_fixed<4, 3>(-15.875))
 static_assert(promote_multiply(make_fixed<4, 3>(-16), make_fixed<4, 3>(-16)) == 256, "sg14::promote_multiply test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
+// sg14::promote_divide
+
+static_assert(promote_divide(make_fixed<2, 5>(2.5), make_fixed<2, 5>(-4.f)) == -.625, "arithmetic operators test failed");
+static_assert(is_same<decltype(promote_divide(make_fixed<2, 5>(2.5), make_fixed<2, 5>(-4.f))), make_fixed<5, 10>>::value, "arithmetic operators test failed");
+
+////////////////////////////////////////////////////////////////////////////////
 // sg14::promote_square_result_t
 
 static_assert(is_same<promote_square_result_t<make_ufixed<4, 4>>, make_ufixed<8, 8>>::value, "sg14::promote_square_result_t test failed");
