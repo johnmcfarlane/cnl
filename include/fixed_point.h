@@ -1236,6 +1236,26 @@ namespace sg14
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
+	// sg14::trunc_shift_left
+
+	template <int Integer, class ReprType, int Exponent>
+	constexpr fixed_point<ReprType, Exponent + Integer>
+	trunc_shift_left(const fixed_point<ReprType, Exponent> & fp) noexcept
+	{
+		return fixed_point<ReprType, Exponent + Integer>::from_data(fp.data());
+	};
+
+	////////////////////////////////////////////////////////////////////////////////
+	// sg14::trunc_shift_right
+
+	template <int Integer, class ReprType, int Exponent>
+	constexpr fixed_point<ReprType, Exponent - Integer>
+	trunc_shift_right(const fixed_point<ReprType, Exponent> & fp) noexcept
+	{
+		return fixed_point<ReprType, Exponent - Integer>::from_data(fp.data());
+	};
+
+	////////////////////////////////////////////////////////////////////////////////
 	// sg14::promote_multiply_result_t / promote_multiply
 
 	// yields specialization of fixed_point with capacity necessary to store
