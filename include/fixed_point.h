@@ -728,8 +728,8 @@ namespace sg14
 			using intermediate_repr_type = _impl::next_size_t<common_repr_type>;
 
 			return FixedPointQuotient::from_data(
-				_impl::shift_left<(
-					FixedPointDividend::exponent - FixedPointDivisor::exponent - FixedPointQuotient::exponent - num_bits<common_repr_type>()),
+				_impl::shift_left<
+					(FixedPointDividend::exponent - FixedPointDivisor::exponent - FixedPointQuotient::exponent - num_bits<common_repr_type>()),
 					result_repr_type>(
 						(_impl::shift_left<(num_bits<common_repr_type>()), intermediate_repr_type>(lhs.data()))
 							/ rhs.data()));
