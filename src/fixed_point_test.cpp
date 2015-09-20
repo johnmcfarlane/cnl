@@ -335,6 +335,7 @@ static_assert(_impl::multiply<make_ufixed<4, 4>>(make_ufixed<4, 4>(2), make_ufix
 // sg14::_impl::divide
 
 static_assert(_impl::divide<fixed_point<>>(fixed_point<>(15), fixed_point<>(2)) == 15 / 2, "sg14::_impl::multiply test failed");
+static_assert(_impl::divide<make_fixed<1, 14>>(make_fixed<1, 6>(1), make_fixed<7, 0>(127)) == make_fixed<1, 14>(1. / 127), "sg14::trunc_divide test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // comparison
