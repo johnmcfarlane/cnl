@@ -739,17 +739,20 @@ namespace sg14
 		constexpr FixedPointQuotient divide(const FixedPointDividend & lhs, const FixedPointDivisor & rhs) noexcept
 		{
 			using result_repr_type = typename FixedPointQuotient::repr_type;
-			using common_repr_type = typename _impl::common_repr_type<
-				typename FixedPointDividend::repr_type,
-				typename FixedPointDivisor::repr_type>;
-			using intermediate_repr_type = _impl::next_size_t<common_repr_type>;
+
+			// a fixed-point type which is capable of holding the value passed in to lhs
+			// and the result of the lhs / rhs; depending greately on the exponent of each
+			using intermediate_type = make_fixed<
+				_impl::max(FixedPointQuotient::integer_digits, FixedPointDividend::integer_digits + FixedPointDivisor::fractional_digits),
+				_impl::max(FixedPointQuotient::fractional_digits, FixedPointDividend::fractional_digits + FixedPointDivisor::integer_digits),
+				_impl::is_signed<typename FixedPointQuotient::repr_type>::value
+				|| _impl::is_signed<typename FixedPointDividend::repr_type>::value>;
 
 			return FixedPointQuotient::from_data(
 				_impl::shift_left<
-					(FixedPointDividend::exponent - FixedPointDivisor::exponent - FixedPointQuotient::exponent - num_bits<common_repr_type>()),
-					result_repr_type>(
-						(_impl::shift_left<(num_bits<common_repr_type>()), intermediate_repr_type>(lhs.data()))
-							/ rhs.data()));
+					(intermediate_type::exponent - FixedPointDivisor::exponent - FixedPointQuotient::exponent),
+					result_repr_type>
+					(static_cast<intermediate_type>(lhs).data() / rhs.data()));
 		}
 
 		////////////////////////////////////////////////////////////////////////////////
