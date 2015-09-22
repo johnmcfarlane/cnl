@@ -314,12 +314,29 @@ namespace sg14
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::common_repr_type
 
-		// given two integral types, produces a common type with enough capacity to
-		// store values of either EXCEPT when one is signed and both are same size
-		template <class ReprType1, class ReprType2>
-		using common_repr_type = typename _impl::get_int<
-			_impl::is_signed<ReprType1>::value | _impl::is_signed<ReprType2>::value,
-			_impl::max(sizeof(ReprType1), sizeof(ReprType2))>::type;
+		// given two or more integral types, produces a common type with enough capacity
+		// to store values of either EXCEPT when one is signed and both are same size
+		template <class ... ReprTypes>
+		struct _common_repr_type;
+
+		template <class ReprTypeHead>
+		struct _common_repr_type <ReprTypeHead>
+		{
+			using type = ReprTypeHead;
+		};
+
+		template <class ReprTypeHead, class ... ReprTypeTail>
+		struct _common_repr_type <ReprTypeHead, ReprTypeTail...>
+		{
+			using _tail_type = typename _common_repr_type<ReprTypeTail...>::type;
+
+			using type = typename _impl::get_int<
+				_impl::is_signed<ReprTypeHead>::value | _impl::is_signed<_tail_type>::value,
+				_impl::max(sizeof(ReprTypeHead), sizeof(_tail_type))>::type;
+		};
+
+		template <class ... ReprTypes>
+		using common_repr_type = typename _common_repr_type<ReprTypes...>::type;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::capacity
@@ -722,17 +739,20 @@ namespace sg14
 		constexpr FixedPointQuotient divide(const FixedPointDividend & lhs, const FixedPointDivisor & rhs) noexcept
 		{
 			using result_repr_type = typename FixedPointQuotient::repr_type;
-			using common_repr_type = typename _impl::common_repr_type<
-				typename FixedPointDividend::repr_type,
-				typename FixedPointDivisor::repr_type>;
-			using intermediate_repr_type = _impl::next_size_t<common_repr_type>;
+
+			// a fixed-point type which is capable of holding the value passed in to lhs
+			// and the result of the lhs / rhs; depending greately on the exponent of each
+			using intermediate_type = make_fixed<
+				_impl::max(FixedPointQuotient::integer_digits, FixedPointDividend::integer_digits + FixedPointDivisor::fractional_digits),
+				_impl::max(FixedPointQuotient::fractional_digits, FixedPointDividend::fractional_digits + FixedPointDivisor::integer_digits),
+				_impl::is_signed<typename FixedPointQuotient::repr_type>::value
+				|| _impl::is_signed<typename FixedPointDividend::repr_type>::value>;
 
 			return FixedPointQuotient::from_data(
 				_impl::shift_left<
-					(FixedPointDividend::exponent - FixedPointDivisor::exponent - FixedPointQuotient::exponent - num_bits<common_repr_type>()),
-					result_repr_type>(
-						(_impl::shift_left<(num_bits<common_repr_type>()), intermediate_repr_type>(lhs.data()))
-							/ rhs.data()));
+					(intermediate_type::exponent - FixedPointDivisor::exponent - FixedPointQuotient::exponent),
+					result_repr_type>
+					(static_cast<intermediate_type>(lhs).data() / rhs.data()));
 		}
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -1236,6 +1256,26 @@ namespace sg14
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
+	// sg14::trunc_shift_left
+
+	template <int Integer, class ReprType, int Exponent>
+	constexpr fixed_point<ReprType, Exponent + Integer>
+	trunc_shift_left(const fixed_point<ReprType, Exponent> & fp) noexcept
+	{
+		return fixed_point<ReprType, Exponent + Integer>::from_data(fp.data());
+	};
+
+	////////////////////////////////////////////////////////////////////////////////
+	// sg14::trunc_shift_right
+
+	template <int Integer, class ReprType, int Exponent>
+	constexpr fixed_point<ReprType, Exponent - Integer>
+	trunc_shift_right(const fixed_point<ReprType, Exponent> & fp) noexcept
+	{
+		return fixed_point<ReprType, Exponent - Integer>::from_data(fp.data());
+	};
+
+	////////////////////////////////////////////////////////////////////////////////
 	// sg14::promote_multiply_result_t / promote_multiply
 
 	// yields specialization of fixed_point with capacity necessary to store
@@ -1251,6 +1291,24 @@ namespace sg14
 	{
 		using result_type = promote_multiply_result_t<Lhs, Rhs>;
 		return _impl::multiply<result_type>(lhs, rhs);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	// sg14::promote_divide_result_t / promote_divide
+
+	// yields specialization of fixed_point with capacity necessary to store
+	// result of a divide between values of fixed_point<ReprType, Exponent>
+	template <class Lhs, class Rhs = Lhs>
+	using promote_divide_result_t = fixed_point_promotion_t<_impl::common_type<Lhs, Rhs>>;
+
+	// as promote_divide_result_t but converts parameter, factor,
+	// ready for safe binary divide
+	template <class Lhs, class Rhs>
+	promote_divide_result_t<Lhs, Rhs>
+	constexpr promote_divide(const Lhs & lhs, const Rhs & rhs) noexcept
+	{
+		using result_type = promote_divide_result_t<Lhs, Rhs>;
+		return _impl::divide<result_type>(lhs, rhs);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////

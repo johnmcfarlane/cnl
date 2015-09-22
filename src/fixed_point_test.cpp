@@ -299,6 +299,27 @@ static_assert(make_fixed_from_repr<uint8_t, 8>::integer_digits == 8, "sg14::make
 static_assert(make_fixed_from_repr<int32_t, 27>::integer_digits == 27, "sg14::make_fixed_from_repr test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
+// sg14::_impl::common_repr_type
+
+// unary - pretty simple
+static_assert(is_same<_impl::common_repr_type<int8_t>, int8_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<uint64_t>, uint64_t>::value, "sg14::_impl::common_repr_type test failed");
+
+// binary
+static_assert(is_same<_impl::common_repr_type<uint8_t, uint8_t>, uint8_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int8_t, uint64_t>, int64_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<uint32_t, int8_t>, int32_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int16_t, int16_t>, int16_t>::value, "sg14::_impl::common_repr_type test failed");
+
+// and beyond
+static_assert(is_same<_impl::common_repr_type<uint32_t, uint8_t, int64_t>, int64_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int64_t, uint8_t, int32_t>, int64_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<uint32_t, int32_t, uint16_t>, int32_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int8_t, int16_t, uint8_t>, int16_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int8_t, int8_t, int8_t, int8_t, uint8_t>, int8_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int8_t, uint16_t, int32_t, uint64_t>, int64_t>::value, "sg14::_impl::common_repr_type test failed");
+
+////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::common_type
 
 // commonality never occurs when inputs are the same fixed_point type
@@ -543,6 +564,14 @@ static_assert(trunc_sqrt(make_fixed<14, 1>(16128)) == 126.5, "sg14::trunc_sqrt t
 static_assert(trunc_sqrt(make_ufixed<8, 0>(240)) == 15.f, "sg14::trunc_sqrt test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
+// sg14::trunc_shift_left / trunc_shift_right
+
+static_assert(trunc_shift_left<8>(fixed_point<uint16_t>(0x1234)) == 0x123400, "sg14::trunc_sqrt test failed");
+static_assert(trunc_shift_left<-2>(fixed_point<uint16_t>(128)) == 32, "sg14::trunc_sqrt test failed");
+static_assert(trunc_shift_right<-8>(fixed_point<uint16_t>(0x1234)) == 0x123400, "sg14::trunc_sqrt test failed");
+static_assert(trunc_shift_right<2>(fixed_point<uint16_t>(128)) == 32, "sg14::trunc_sqrt test failed");
+
+////////////////////////////////////////////////////////////////////////////////
 // sg14::promote_multiply_result_t
 
 static_assert(is_same<promote_multiply_result_t<make_ufixed<4, 4>>, make_ufixed<8, 8>>::value, "sg14::promote_multiply_result_t test failed");
@@ -561,6 +590,12 @@ static_assert(promote_multiply(make_ufixed<8, 0>(174), make_ufixed<6, 2>(25)) ==
 static_assert((promote_multiply(make_fixed<4, 3>(15.875), make_ufixed<16, 0>(65535))) == 1040368, "sg14::promote_multiply test failed");
 static_assert(promote_multiply(make_fixed<4, 3>(-16), make_fixed<4, 3>(-15.875)) == 254, "sg14::promote_multiply test failed");
 static_assert(promote_multiply(make_fixed<4, 3>(-16), make_fixed<4, 3>(-16)) == 256, "sg14::promote_multiply test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::promote_divide
+
+static_assert(promote_divide(make_fixed<2, 5>(2.5), make_fixed<2, 5>(-4.f)) == -.625, "arithmetic operators test failed");
+static_assert(is_same<decltype(promote_divide(make_fixed<2, 5>(2.5), make_fixed<2, 5>(-4.f))), make_fixed<5, 10>>::value, "arithmetic operators test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::promote_square_result_t
