@@ -15,6 +15,8 @@ int main(int, char *[])
 	fixed_point_utils_test();
 	proposal_test();
 
+	std::puts("Tests complete.");
+
 	return 0;
 }
 
