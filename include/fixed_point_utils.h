@@ -5,6 +5,7 @@
 
 #include <cmath>
 #include <istream>
+#include <limits>
 #include <ostream>
 
 namespace sg14
@@ -68,6 +69,35 @@ namespace sg14
 		fp = ld;
 		return in;
 	}
+}
+
+namespace std
+{
+	////////////////////////////////////////////////////////////////////////////////
+	// std::numeric_limits
+
+	template<class ReprType, int Exponent>
+	struct numeric_limits <sg14::fixed_point<ReprType, Exponent>>
+	{
+		using _value_type = sg14::fixed_point<ReprType, Exponent>;
+		using _repr_type = typename _value_type::repr_type;
+		using _repr_numeric_limits = numeric_limits<_repr_type>;
+
+		static constexpr _value_type max() noexcept
+		{
+			return _value_type::from_data(_repr_numeric_limits::max());
+		}
+
+		static constexpr _value_type min() noexcept
+		{
+			return _value_type::from_data(1);
+		}
+
+		static constexpr _value_type lowest() noexcept
+		{
+			return _value_type::from_data(_repr_numeric_limits::lowest());
+		}
+	};
 }
 
 #endif	// defined(_SG14_FIXED_POINT_UTILS_H)
