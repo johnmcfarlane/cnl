@@ -4,6 +4,7 @@ CMakeFiles
 Makefile
 cmake_install.cmake
 cmake
+fixed_point_benchmark
 fixed_point_test
 
 # CLion

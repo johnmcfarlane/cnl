@@ -15,3 +15,15 @@ For an overview of the API, see draft proposal,
 
     git clone https://github.com/johnmcfarlane/fixed_point.git --recursive
 
+### Run Tests
+
+    cmake -DCMAKE_BUILD_TYPE=Debug -DRUN_TESTS=ON -DRUN_BENCHMARKS=OFF
+    make
+    ./fixed_point_test
+
+### Run Benchmarks
+
+    cmake -DCMAKE_BUILD_TYPE=Release -DRUN_TESTS=OFF -DRUN_BENCHMARKS=ON
+    make
+    ./fixed_point_benchmark
+

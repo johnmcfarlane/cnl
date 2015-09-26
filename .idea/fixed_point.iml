@@ -39,6 +39,7 @@
       <sourceFolder url="file://$MODULE_DIR$/benchmark/test/filter_test.cc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/benchmark/test/fixture_test.cc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/benchmark/test/options_test.cc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/benchmark.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/fixed_point_test.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/fixed_point_utils_test.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main.cpp" isTestSource="false" />
