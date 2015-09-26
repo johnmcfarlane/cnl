@@ -34,11 +34,41 @@ void clobber()
 template <typename T>
 static void add(benchmark::State& state)
 {
-	static auto v = numeric_limits<T>::max() / 2;
-	for (auto input = 0u; state.KeepRunning(); ++ input)
+	auto addend1 = numeric_limits<T>::max() / 5;
+	auto addend2 = numeric_limits<T>::max() / 3;
+	while (state.KeepRunning())
 	{
-		escape(&v);
-		auto value = v + v;
+		escape(&addend1);
+		escape(&addend2);
+		auto value = addend1 + addend2;
+		escape(& value);
+	}
+}
+
+template <typename T>
+static void sub(benchmark::State& state)
+{
+	auto minuend = numeric_limits<T>::max() / 5;
+	auto subtrahend = numeric_limits<T>::max() / 3;
+	while (state.KeepRunning())
+	{
+		escape(&minuend);
+		escape(&subtrahend);
+		auto value = minuend + subtrahend;
+		escape(& value);
+	}
+}
+
+template <typename T>
+static void mul(benchmark::State& state)
+{
+	auto factor1 = numeric_limits<T>::max() / 5;
+	auto factor2 = numeric_limits<T>::max() / 3;
+	while (state.KeepRunning())
+	{
+		escape(&factor1);
+		escape(&factor2);
+		auto value = factor1 * factor2;
 		escape(& value);
 	}
 }
@@ -46,9 +76,9 @@ static void add(benchmark::State& state)
 template <typename T>
 static void div(benchmark::State& state)
 {
-	static auto nume = numeric_limits<T>::max() / 5;
-	static auto denom = numeric_limits<T>::max() / 3;
-	for (auto input = 0u; state.KeepRunning(); ++ input)
+	auto nume = numeric_limits<T>::max() / 5;
+	auto denom = numeric_limits<T>::max() / 3;
+	while (state.KeepRunning())
 	{
 		escape(&nume);
 		escape(&denom);
@@ -99,6 +129,8 @@ using u64_0 = make_ufixed<64, 0>;
 	BENCHMARK_TEMPLATE1(fn, u0_64);
 
 FIXED_POINT_BENCHMARK_COMPLETE(add);
+FIXED_POINT_BENCHMARK_COMPLETE(sub);
+FIXED_POINT_BENCHMARK_COMPLETE(mul);
 FIXED_POINT_BENCHMARK_PARTIAL(div);
 
 #endif	// RUN_BENCHMARKS
