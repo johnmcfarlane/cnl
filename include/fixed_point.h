@@ -761,14 +761,14 @@ namespace sg14
 		template <class Result, class FixedPoint, class Head>
 		constexpr Result add(const Head & addend_head)
 		{
-			static_assert(std::is_same<FixedPoint, Head>::value, "mismatched trunc_add parameters");
+			static_assert(std::is_same<FixedPoint, Head>::value, "mismatched add parameters");
 			return static_cast<Result>(addend_head);
 		}
 
 		template <class Result, class FixedPoint, class Head, class ... Tail>
 		constexpr Result add(const Head & addend_head, const Tail & ... addend_tail)
 		{
-			static_assert(std::is_same<FixedPoint, Head>::value, "mismatched trunc_add parameters");
+			static_assert(std::is_same<FixedPoint, Head>::value, "mismatched add parameters");
 			return add<Result, FixedPoint, Tail ...>(addend_tail ...) + static_cast<Result>(addend_head);
 		}
 	}
