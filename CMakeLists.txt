@@ -12,17 +12,14 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DNDEBUG -fno-rtti -Ofast") # -fno-omit-frame-pointer
 set(CMAKE_EXE_LINKER_FLAGS "-g")
 
-set(SG14_SOURCE_DIRECTORY "include")
-set(SG14_TEST_SOURCE_DIRECTORY "src")
-
 set(SOURCE_FILES
-    ${SG14_TEST_SOURCE_DIRECTORY}/main.cpp
-    ${SG14_TEST_SOURCE_DIRECTORY}/fixed_point_test.cpp
-    ${SG14_TEST_SOURCE_DIRECTORY}/fixed_point_utils_test.cpp
-    ${SG14_TEST_SOURCE_DIRECTORY}/proposal_test.cpp
-    ${SG14_TEST_SOURCE_DIRECTORY}/benchmark.cpp)
+    src/main.cpp
+    src/fixed_point_test.cpp
+    src/fixed_point_utils_test.cpp
+    src/proposal_test.cpp
+    src/benchmark.cpp)
 
-include_directories("${SG14_SOURCE_DIRECTORY}")
+include_directories("include")
 
 if (RUN_BENCHMARKS)
     add_executable(fixed_point_benchmark ${SOURCE_FILES})
