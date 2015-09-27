@@ -1108,7 +1108,7 @@ namespace sg14
 	// sg14::sqrt
 
 	// https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_.28base_2.29
-	// slow when calculated at run-time?
+	// placeholder implementation; slow when calculated at run-time?
 	template <class ReprType, int Exponent>
 	constexpr fixed_point<ReprType, Exponent>
 	sqrt(const fixed_point<ReprType, Exponent> & x) noexcept
