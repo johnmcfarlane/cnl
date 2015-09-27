@@ -29,11 +29,11 @@ namespace sg14
 
 	namespace _impl
 	{
-		template <class ReprType, int Exponent, _impl::get_float_t<sizeof(ReprType)>(*F)(_impl::get_float_t<sizeof(ReprType)>)>
+		template <class ReprType, int Exponent, _impl::make_float<sizeof(ReprType)>(*F)(_impl::make_float<sizeof(ReprType)>)>
 		constexpr fixed_point<ReprType, Exponent>
 		crib(const fixed_point<ReprType, Exponent> & x) noexcept
 		{
-			using floating_point = _impl::get_float_t<sizeof(ReprType)>;
+			using floating_point = _impl::make_float<sizeof(ReprType)>;
 			return static_cast<fixed_point<ReprType, Exponent>>(F(static_cast<floating_point>(x)));
 		}
 	}
