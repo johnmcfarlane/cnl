@@ -498,10 +498,10 @@ namespace sg14
 			return _repr != 0;
 		}
 
-		template <class Rhs>
-		fixed_point & operator*=(const Rhs & rhs) noexcept;
+		template <class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy = 0>
+		fixed_point &operator*=(const Rhs & rhs) noexcept;
 
-		template <class Rhs>
+		template <class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy = 0>
 		fixed_point & operator/=(const Rhs & rhs) noexcept;
 
 		// returns internal representation of value
@@ -1087,7 +1087,7 @@ namespace sg14
 	}
 
 	template <class LhsReprType, int Exponent>
-	template <class Rhs>
+	template <class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy>
 	fixed_point<LhsReprType, Exponent> &
 	fixed_point<LhsReprType, Exponent>::operator*=(const Rhs & rhs) noexcept
 	{
@@ -1096,7 +1096,7 @@ namespace sg14
 	}
 
 	template <class LhsReprType, int Exponent>
-	template <class Rhs>
+	template <class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy>
 	fixed_point<LhsReprType, Exponent> &
 	fixed_point<LhsReprType, Exponent>::operator/=(const Rhs & rhs) noexcept
 	{
