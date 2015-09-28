@@ -1131,9 +1131,7 @@ namespace sg14
 	template <class FixedPoint, unsigned N = 2>
 	using trunc_add_result = make_fixed_from_repr<
 		typename FixedPoint::repr_type,
-		fixed_point<
-			typename FixedPoint::repr_type,
-			FixedPoint::exponent>::integer_digits + _impl::capacity<N - 1>::value>;
+		FixedPoint::integer_digits + _impl::capacity<N - 1>::value>;
 
 	template <class FixedPoint, class ... Tail>
 	trunc_add_result<FixedPoint, sizeof...(Tail) + 1>
