@@ -572,6 +572,33 @@ static_assert(trunc_shift_right<-8>(fixed_point<uint16_t>(0x1234)) == 0x123400, 
 static_assert(trunc_shift_right<2>(fixed_point<uint16_t>(128)) == 32, "sg14::trunc_sqrt test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
+// sg14::promote_add_result
+
+static_assert(promote_add_result<fixed_point<uint8_t, -4>>::integer_digits == 5, "sg14::promote_add_result test failed");
+static_assert(promote_add_result<fixed_point<int32_t, -25>, 4>::integer_digits == 8, "sg14::promote_add_result test failed");
+static_assert(is_same<promote_add_result<fixed_point<int8_t, 0>, 2>, fixed_point<int16_t, -7>>::value, "sg14::promote_add_result test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::promote_add
+
+static_assert(promote_add(make_ufixed<7, 1>(127), make_ufixed<7, 1>(127)) == 254, "sg14::promote_add test failed");
+static_assert(promote_add(make_ufixed<4, 4>(15.5), make_ufixed<4, 4>(14.25), make_ufixed<4, 4>(13.5)) == 43.25, "sg14::promote_add test failed");
+static_assert(promote_add(make_fixed<7, 0>(-128), make_fixed<7, 0>(-128)) == -256, "sg14::promote_add test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::promote_subtract_result
+
+static_assert(is_same<promote_subtract_result<make_ufixed<4, 4>>, make_fixed<5, 10>>::value, "sg14::promote_subtract_result test failed");
+static_assert(is_same<promote_subtract_result<make_fixed<4, 3>>, make_fixed<5, 10>>::value, "sg14::promote_subtract_result test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::promote_subtract
+
+static_assert(promote_subtract(make_ufixed<7, 1>(127), make_ufixed<7, 1>(127)) == 0, "sg14::promote_subtract test failed");
+static_assert(promote_subtract(make_ufixed<4, 4>(15.5), make_ufixed<4, 4>(14.25)) == 1.25, "sg14::promote_subtract test failed");
+static_assert(promote_subtract(make_fixed<7, 0>(-128), make_fixed<7, 0>(127)) == -255, "sg14::promote_subtract test failed");
+
+////////////////////////////////////////////////////////////////////////////////
 // sg14::promote_multiply_result
 
 static_assert(is_same<promote_multiply_result<make_ufixed<4, 4>>, make_ufixed<8, 8>>::value, "sg14::promote_multiply_result test failed");

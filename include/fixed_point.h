@@ -1302,6 +1302,44 @@ namespace sg14
 	};
 
 	////////////////////////////////////////////////////////////////////////////////
+	// sg14::promote_add_result / promote_add
+
+	// yields specialization of fixed_point with double the capacity necessary to
+	// store result of an add between values of fixed_point<ReprType, Exponent>
+	template <class FixedPoint, unsigned N = 2>
+	using promote_add_result = make_fixed_from_repr<
+		_impl::next_size<typename FixedPoint::repr_type>,
+		FixedPoint::integer_digits + _impl::capacity<N - 1>::value>;
+
+	template <class FixedPoint, class ... Tail>
+	promote_add_result<FixedPoint, sizeof...(Tail) + 1>
+	constexpr promote_add(const FixedPoint & addend1, const Tail & ... addend_tail)
+	{
+		using output_type = promote_add_result<FixedPoint, sizeof...(Tail) + 1>;
+		return _impl::add<output_type, FixedPoint>(addend1, addend_tail ...);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	// sg14::promote_subtract_result / promote_subtract
+
+	// yields specialization of fixed_point with double the capacity necessary to
+	// store result of an subtract between values of fixed_point<ReprType, Exponent>
+	template <class Lhs, class Rhs = Lhs>
+	using promote_subtract_result = make_fixed_from_repr<
+		typename _impl::next_size<_impl::subtract_result_repr<typename Lhs::repr_type, typename Rhs::repr_type>>,
+		_impl::max(Lhs::integer_digits, Rhs::integer_digits) + 1>;
+
+	// as promote_subtract_result but converts parameter, factor,
+	// ready for safe binary subtract
+	template <class Lhs, class Rhs>
+	promote_subtract_result<Lhs, Rhs>
+	constexpr promote_subtract(const Lhs & lhs, const Rhs & rhs) noexcept
+	{
+		using result_type = promote_subtract_result<Lhs, Rhs>;
+		return static_cast<result_type>(lhs) - static_cast<result_type>(rhs);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
 	// sg14::promote_multiply_result / promote_multiply
 
 	// yields specialization of fixed_point with capacity necessary to store
