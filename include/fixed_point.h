@@ -726,6 +726,22 @@ namespace sg14
 		using common_type = typename _common_type<Lhs, Rhs>::type;
 
 		////////////////////////////////////////////////////////////////////////////////
+		// arithmetic result types
+
+		template <typename LhsFixedPoint, typename RhsFixedPoint>
+		using subtract_result_repr = make_signed<common_repr_type<LhsFixedPoint, RhsFixedPoint>>;
+
+		template <typename FixedPoint>
+		using square_result_repr = make_unsigned<FixedPoint>;
+
+		template <typename FixedPoint>
+		using sqrt_result_repr = make_unsigned<FixedPoint>;
+
+		// all other operations
+		template <typename LhsFixedPoint, typename RhsFixedPoint>
+		using arithmetic_result_repr = common_repr_type<LhsFixedPoint, RhsFixedPoint>;
+
+		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::multiply
 
 		template <class Result, class Lhs, class Rhs>
@@ -1148,7 +1164,7 @@ namespace sg14
 	// result of an subtraction between N values of fixed_point<ReprType, Exponent>
 	template <class Lhs, class Rhs = Lhs>
 	using trunc_subtract_result = make_fixed_from_repr<
-		_impl::make_int<true, _impl::max(sizeof(typename Lhs::repr_type), sizeof(typename Rhs::repr_type))>,
+		_impl::subtract_result_repr<typename Lhs::repr_type, typename Rhs::repr_type>,
 		_impl::max(Lhs::integer_digits, Rhs::integer_digits) + 1>;
 
 	template <class Lhs, class Rhs>
@@ -1166,7 +1182,7 @@ namespace sg14
 	// result of a multiply between values of fixed_point<ReprType, Exponent>
 	template <class Lhs, class Rhs = Lhs>
 	using trunc_multiply_result = make_fixed_from_repr<
-		_impl::common_repr_type<typename Lhs::repr_type, typename Rhs::repr_type>,
+		_impl::arithmetic_result_repr<typename Lhs::repr_type, typename Rhs::repr_type>,
 		Lhs::integer_digits + Rhs::integer_digits>;
 
 	// as trunc_multiply_result but converts parameter, factor,
@@ -1186,7 +1202,7 @@ namespace sg14
 	// result of a divide between values of types, Lhs and Rhs
 	template <class FixedPointDividend, class FixedPointDivisor = FixedPointDividend>
 	using trunc_divide_result = make_fixed_from_repr<
-		_impl::common_repr_type<typename FixedPointDividend::repr_type, typename FixedPointDivisor::repr_type>,
+		_impl::arithmetic_result_repr<typename FixedPointDividend::repr_type, typename FixedPointDivisor::repr_type>,
 		FixedPointDividend::integer_digits + FixedPointDivisor::fractional_digits>;
 
 	// as trunc_divide_result but converts parameter, factor,
@@ -1231,7 +1247,7 @@ namespace sg14
 	// whose sign bit is set to the same value
 	template <class FixedPoint>
 	using trunc_square_result = make_fixed_from_repr<
-		_impl::make_unsigned<typename FixedPoint::repr_type>,
+		_impl::square_result_repr<typename FixedPoint::repr_type>,
 		FixedPoint::integer_digits * 2>;
 
 	// as trunc_square_result but converts parameter, factor,
@@ -1252,7 +1268,7 @@ namespace sg14
 	// fixed_point<ReprType, Exponent>
 	template <class FixedPoint>
 	using trunc_sqrt_result = make_fixed_from_repr<
-		_impl::make_unsigned<typename FixedPoint::repr_type>,
+		_impl::sqrt_result_repr<typename FixedPoint::repr_type>,
 		(FixedPoint::integer_digits + 1) / 2>;
 
 	// as trunc_sqrt_result but converts parameter, factor,
