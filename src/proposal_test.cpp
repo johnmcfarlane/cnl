@@ -1,16 +1,8 @@
 #include <fixed_point_utils.h>
 
+#include "sample_functions.h"
 #include "test_utils.h"
 
-namespace
-{
-	template <typename FP>
-	constexpr auto magnitude(FP const & x, FP const & y, FP const & z)
-	-> decltype(trunc_sqrt(trunc_add(trunc_square(x), trunc_square(y), trunc_square(z))))
-	{
-		return trunc_sqrt(trunc_add(trunc_square(x), trunc_square(y), trunc_square(z)));
-	}
-}
 
 void proposal_test()
 {
@@ -59,7 +51,7 @@ void proposal_test()
 	static_assert(is_same<decltype(type_demotion), decltype(unpromoted_type)>::value, "Incorrect information in proposal section, Type Promotion");
 
 	// Examples
-	static_assert(magnitude(
+	static_assert(magnitude_trunc(
 		make_ufixed<4, 12>(1),
 		make_ufixed<4, 12>(4),
 		make_ufixed<4, 12>(9)) == 9.890625, "unexpected result from magnitude");

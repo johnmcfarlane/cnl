@@ -55,10 +55,6 @@
           <root url="file://$MODULE_DIR$/include" />
           <root url="file:///usr/include" />
           <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include" />
-          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed" />
-          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include/cilk" />
-          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include/objc" />
-          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include/sanitizer" />
           <root url="file:///usr/local/include" />
         </CLASSES>
         <SOURCES>
@@ -67,10 +63,6 @@
           <root url="file://$MODULE_DIR$/include" />
           <root url="file:///usr/include" />
           <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include" />
-          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed" />
-          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include/cilk" />
-          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include/objc" />
-          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.9/include/sanitizer" />
           <root url="file:///usr/local/include" />
         </SOURCES>
         <excluded>

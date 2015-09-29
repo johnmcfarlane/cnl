@@ -28,43 +28,43 @@ namespace sg14
 		}
 
 		////////////////////////////////////////////////////////////////////////////////
-		// sg14::_impl::get_int_t
+		// sg14::_impl::make_int
 
 		template <bool Signed, int NumBytes>
-		struct get_int;
-
-		template <bool Signed, int NumBytes>
-		using get_int_t = typename get_int<Signed, NumBytes>::type;
+		struct _make_int;
 
 		// specializations
-		template <> struct get_int<false, 1> { using type = std::uint8_t; };
-		template <> struct get_int<true, 1> { using type = std::int8_t; };
-		template <> struct get_int<false, 2> { using type = std::uint16_t; };
-		template <> struct get_int<true, 2> { using type = std::int16_t; };
-		template <> struct get_int<false, 4> { using type = std::uint32_t; };
-		template <> struct get_int<true, 4> { using type = std::int32_t; };
-		template <> struct get_int<false, 8> { using type = std::uint64_t; };
-		template <> struct get_int<true, 8> { using type = std::int64_t; };
+		template <> struct _make_int<false, 1> { using type = std::uint8_t; };
+		template <> struct _make_int<true, 1> { using type = std::int8_t; };
+		template <> struct _make_int<false, 2> { using type = std::uint16_t; };
+		template <> struct _make_int<true, 2> { using type = std::int16_t; };
+		template <> struct _make_int<false, 4> { using type = std::uint32_t; };
+		template <> struct _make_int<true, 4> { using type = std::int32_t; };
+		template <> struct _make_int<false, 8> { using type = std::uint64_t; };
+		template <> struct _make_int<true, 8> { using type = std::int64_t; };
 #if defined(_SG14_FIXED_POINT_128)
-		template <> struct get_int<false, 16> { using type = unsigned __int128; };
-		template <> struct get_int<true, 16> { using type = __int128; };
+		template <> struct _make_int<false, 16> { using type = unsigned __int128; };
+		template <> struct _make_int<true, 16> { using type = __int128; };
 #endif
 
+		template <bool Signed, int NumBytes>
+		using make_int = typename _make_int<Signed, NumBytes>::type;
+
 		////////////////////////////////////////////////////////////////////////////////
-		// sg14::_impl::get_float_t
+		// sg14::_impl::make_float
 
 		template <int NumBytes>
-		struct get_float;
-
-		template <int NumBytes>
-		using get_float_t = typename get_float<NumBytes>::type;
+		struct _make_float;
 
 		// specializations
-		template <> struct get_float<1> { using type = float; };
-		template <> struct get_float<2> { using type = float; };
-		template <> struct get_float<4> { using type = float; };
-		template <> struct get_float<8> { using type = double; };
-		template <> struct get_float<16> { using type = long double; };
+		template <> struct _make_float<1> { using type = float; };
+		template <> struct _make_float<2> { using type = float; };
+		template <> struct _make_float<4> { using type = float; };
+		template <> struct _make_float<8> { using type = double; };
+		template <> struct _make_float<16> { using type = long double; };
+
+		template <int NumBytes>
+		using make_float = typename _make_float<NumBytes>::type;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::is_integral
@@ -95,7 +95,7 @@ namespace sg14
 		struct is_signed
 		{
 			static_assert(is_integral<T>::value, "sg14::_impl::is_signed only intended for use with integral types");
-			static constexpr bool value = std::is_same<typename get_int<true, sizeof(T)>::type, T>::value;
+			static constexpr bool value = std::is_same<make_int<true, sizeof(T)>, T>::value;
 		};
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -105,42 +105,48 @@ namespace sg14
 		struct is_unsigned
 		{
 			static_assert(is_integral<T>::value, "sg14::_impl::is_unsigned only intended for use with integral types");
-			static constexpr bool value = std::is_same<typename get_int<false, sizeof(T)>::type, T>::value;
+			static constexpr bool value = std::is_same<make_int<false, sizeof(T)>, T>::value;
 		};
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::make_signed
 
 		template <class T>
-		struct make_signed
+		struct _make_signed
 		{
-			using type = typename get_int<true, sizeof(T)>::type;
+			using type = make_int<true, sizeof(T)>;
 		};
+
+		template <class T>
+		using make_signed = typename _make_signed<T>::type;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::make_unsigned
 
 		template <class T>
-		struct make_unsigned
+		struct _make_unsigned
 		{
-			using type = typename get_int<false, sizeof(T)>::type;
+			using type = make_int<false, sizeof(T)>;
 		};
 
+		template <class T>
+		using make_unsigned = typename _make_unsigned<T>::type;
+
 		////////////////////////////////////////////////////////////////////////////////
-		// sg14::_impl::next_size_t
+		// sg14::_impl::next_size
 
 		// given an integral type, IntType,
 		// provides the integral type of the equivalent type with twice the size
 		template <class IntType>
-		using next_size_t = get_int_t<_impl::is_signed<IntType>::value, sizeof(IntType) * 2>;
+		using next_size = make_int<_impl::is_signed<IntType>::value, sizeof(IntType) * 2>;
 
 		////////////////////////////////////////////////////////////////////////////////
-		// sg14::_impl::previous_size_t
+		// sg14::_impl::previous_size
 
 		// given an integral type, IntType,
 		// provides the integral type of the equivalent type with half the size
 		template <class IntType>
-		using previous_size_t = get_int_t<_impl::is_signed<IntType>::value, sizeof(IntType) / 2>;
+		using previous_size = make_int<_impl::is_signed<IntType>::value, sizeof(IntType) / 2>;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::shift_left and sg14::_impl::shift_right
@@ -242,8 +248,8 @@ namespace sg14
 				int>::type Dummy = 0>
 		constexpr Output shift_left(Input i) noexcept
 		{
-			using unsigned_input = typename _impl::make_unsigned<Input>::type;
-			using signed_output = typename _impl::make_signed<Output>::type;
+			using unsigned_input = _impl::make_unsigned<Input>;
+			using signed_output = _impl::make_signed<Output>;
 
 			return (i >= 0)
 				? shift_left<Exponent, signed_output, unsigned_input>(i)
@@ -330,9 +336,9 @@ namespace sg14
 		{
 			using _tail_type = typename _common_repr_type<ReprTypeTail...>::type;
 
-			using type = typename _impl::get_int<
+			using type = _impl::make_int<
 				_impl::is_signed<ReprTypeHead>::value | _impl::is_signed<_tail_type>::value,
-				_impl::max(sizeof(ReprTypeHead), sizeof(_tail_type))>::type;
+				_impl::max(sizeof(ReprTypeHead), sizeof(_tail_type))>;
 		};
 
 		template <class ... ReprTypes>
@@ -358,13 +364,13 @@ namespace sg14
 		};
 
 		////////////////////////////////////////////////////////////////////////////////
-		// _impl::necessary_repr_t
+		// _impl::sufficient_repr
 
 		// given a required number of bits a type should have and whether it is signed,
 		// provides a built-in integral type with necessary capacity
 		template <unsigned RequiredBits, bool IsSigned>
-		using necessary_repr_t 
-			= typename get_int<IsSigned, 1 << (capacity<((RequiredBits + 7) / 8) - 1>::value)>::type;
+		using sufficient_repr 
+			= make_int<IsSigned, 1 << (capacity<((RequiredBits + 7) / 8) - 1>::value)>;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::sqrt helper functions
@@ -498,10 +504,10 @@ namespace sg14
 			return _repr != 0;
 		}
 
-		template <class Rhs>
-		fixed_point & operator*=(const Rhs & rhs) noexcept;
+		template <class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy = 0>
+		fixed_point &operator*=(const Rhs & rhs) noexcept;
 
-		template <class Rhs>
+		template <class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy = 0>
 		fixed_point & operator/=(const Rhs & rhs) noexcept;
 
 		// returns internal representation of value
@@ -588,8 +594,8 @@ namespace sg14
 	//   fixed_point<>::fractional_digits >= FractionalDigits,
 	template <unsigned IntegerDigits, unsigned FractionalDigits = 0, bool IsSigned = true>
 	using make_fixed = fixed_point<
-		typename _impl::necessary_repr_t<IntegerDigits + FractionalDigits + IsSigned, IsSigned>,
-		(signed)(IntegerDigits + IsSigned) - _impl::num_bits<typename _impl::necessary_repr_t<IntegerDigits + FractionalDigits + IsSigned, IsSigned>>()>;
+		_impl::sufficient_repr<IntegerDigits + FractionalDigits + IsSigned, IsSigned>,
+		(signed)(IntegerDigits + IsSigned) - _impl::num_bits<_impl::sufficient_repr<IntegerDigits + FractionalDigits + IsSigned, IsSigned>>()>;
 
 	////////////////////////////////////////////////////////////////////////////////
 	// sg14::make_ufixed
@@ -609,41 +615,41 @@ namespace sg14
 		IntegerDigits + _impl::is_signed<ReprType>::value - (signed)sizeof(ReprType) * CHAR_BIT>;
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::fixed_point_promotion_t / promote
+	// sg14::promote_result / promote
 
 	// given template parameters of a fixed_point specialization, 
 	// yields alternative specialization with twice the fractional bits
 	// and twice the integral/sign bits
 	template <class FixedPoint>
-	using fixed_point_promotion_t = fixed_point<
-		_impl::next_size_t<typename FixedPoint::repr_type>,
+	using promote_result = fixed_point<
+		_impl::next_size<typename FixedPoint::repr_type>,
 		FixedPoint::exponent * 2>;
 
-	// as fixed_point_promotion_t but promotes parameter, from
+	// as promote_result but promotes parameter, from
 	template <class FixedPoint>
-	fixed_point_promotion_t<FixedPoint>
+	promote_result<FixedPoint>
 	constexpr promote(const FixedPoint & from) noexcept
 	{
-		return fixed_point_promotion_t<FixedPoint>(from);
+		return promote_result<FixedPoint>(from);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::fixed_point_demotion_t / demote
+	// sg14::demote_result / demote
 
 	// given template parameters of a fixed_point specialization, 
 	// yields alternative specialization with half the fractional bits
 	// and half the integral/sign bits (assuming Exponent is even)
 	template <class FixedPoint>
-	using fixed_point_demotion_t = fixed_point<
-		_impl::previous_size_t<typename FixedPoint::repr_type>,
+	using demote_result = fixed_point<
+		_impl::previous_size<typename FixedPoint::repr_type>,
 		FixedPoint::exponent / 2>;
 
-	// as fixed_point_demotion_t but demotes parameter, from
+	// as demote_result but demotes parameter, from
 	template <class FixedPoint>
-	fixed_point_demotion_t<FixedPoint>
+	demote_result<FixedPoint>
 	constexpr demote(const FixedPoint & from) noexcept
 	{
-		return fixed_point_demotion_t<FixedPoint>(from);
+		return demote_result<FixedPoint>(from);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -700,7 +706,7 @@ namespace sg14
 			fixed_point<LhsReprType, LhsExponent>,
 			Float,
 			typename std::enable_if<std::is_floating_point<Float>::value>::type>
-		: std::common_type<_impl::get_float_t<sizeof(LhsReprType)>, Float>
+		: std::common_type<_impl::make_float<sizeof(LhsReprType)>, Float>
 		{
 		};
 
@@ -716,8 +722,24 @@ namespace sg14
 
 		// similar to std::common_type 
 		// but one or both input types must be fixed_point
-		template <typename Lhs, typename Rhs>
+		template <class Lhs, class Rhs>
 		using common_type = typename _common_type<Lhs, Rhs>::type;
+
+		////////////////////////////////////////////////////////////////////////////////
+		// arithmetic result types
+
+		template <typename LhsFixedPoint, typename RhsFixedPoint>
+		using subtract_result_repr = make_signed<common_repr_type<LhsFixedPoint, RhsFixedPoint>>;
+
+		template <typename FixedPoint>
+		using square_result_repr = make_unsigned<FixedPoint>;
+
+		template <typename FixedPoint>
+		using sqrt_result_repr = make_unsigned<FixedPoint>;
+
+		// all other operations
+		template <typename LhsFixedPoint, typename RhsFixedPoint>
+		using arithmetic_result_repr = common_repr_type<LhsFixedPoint, RhsFixedPoint>;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::multiply
@@ -726,7 +748,7 @@ namespace sg14
 		constexpr Result multiply(const Lhs & lhs, const Rhs & rhs) noexcept
 		{
 			using result_repr_type = typename Result::repr_type;
-			using intermediate_repr_type = _impl::next_size_t<typename common_type<Lhs, Rhs>::repr_type>;
+			using intermediate_repr_type = _impl::next_size<typename common_type<Lhs, Rhs>::repr_type>;
 			return Result::from_data(
 				_impl::shift_left<(Lhs::exponent + Rhs::exponent - Result::exponent), result_repr_type>(
 					static_cast<intermediate_repr_type>(lhs.data()) * static_cast<intermediate_repr_type>(rhs.data())));
@@ -761,14 +783,14 @@ namespace sg14
 		template <class Result, class FixedPoint, class Head>
 		constexpr Result add(const Head & addend_head)
 		{
-			static_assert(std::is_same<FixedPoint, Head>::value, "mismatched trunc_add parameters");
+			static_assert(std::is_same<FixedPoint, Head>::value, "mismatched add parameters");
 			return static_cast<Result>(addend_head);
 		}
 
 		template <class Result, class FixedPoint, class Head, class ... Tail>
 		constexpr Result add(const Head & addend_head, const Tail & ... addend_tail)
 		{
-			static_assert(std::is_same<FixedPoint, Head>::value, "mismatched trunc_add parameters");
+			static_assert(std::is_same<FixedPoint, Head>::value, "mismatched add parameters");
 			return add<Result, FixedPoint, Tail ...>(addend_tail ...) + static_cast<Result>(addend_head);
 		}
 	}
@@ -1087,7 +1109,7 @@ namespace sg14
 	}
 
 	template <class LhsReprType, int Exponent>
-	template <class Rhs>
+	template <class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy>
 	fixed_point<LhsReprType, Exponent> &
 	fixed_point<LhsReprType, Exponent>::operator*=(const Rhs & rhs) noexcept
 	{
@@ -1096,7 +1118,7 @@ namespace sg14
 	}
 
 	template <class LhsReprType, int Exponent>
-	template <class Rhs>
+	template <class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy>
 	fixed_point<LhsReprType, Exponent> &
 	fixed_point<LhsReprType, Exponent>::operator/=(const Rhs & rhs) noexcept
 	{
@@ -1108,7 +1130,7 @@ namespace sg14
 	// sg14::sqrt
 
 	// https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_.28base_2.29
-	// slow when calculated at run-time?
+	// placeholder implementation; slow when calculated at run-time?
 	template <class ReprType, int Exponent>
 	constexpr fixed_point<ReprType, Exponent>
 	sqrt(const fixed_point<ReprType, Exponent> & x) noexcept
@@ -1118,100 +1140,98 @@ namespace sg14
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::trunc_add_result_t / trunc_add
+	// sg14::trunc_add_result / trunc_add
 
 	// yields specialization of fixed_point with integral bits necessary to store
 	// result of an addition between N values of fixed_point<ReprType, Exponent>
 	template <class FixedPoint, unsigned N = 2>
-	using trunc_add_result_t = make_fixed_from_repr<
+	using trunc_add_result = make_fixed_from_repr<
 		typename FixedPoint::repr_type,
-		fixed_point<
-			typename FixedPoint::repr_type,
-			FixedPoint::exponent>::integer_digits + _impl::capacity<N - 1>::value>;
+		FixedPoint::integer_digits + _impl::capacity<N - 1>::value>;
 
 	template <class FixedPoint, class ... Tail>
-	trunc_add_result_t<FixedPoint, sizeof...(Tail) + 1>
+	trunc_add_result<FixedPoint, sizeof...(Tail) + 1>
 	constexpr trunc_add(const FixedPoint & addend1, const Tail & ... addend_tail)
 	{
-		using output_type = trunc_add_result_t<FixedPoint, sizeof...(Tail) + 1>;
+		using output_type = trunc_add_result<FixedPoint, sizeof...(Tail) + 1>;
 		return _impl::add<output_type, FixedPoint>(addend1, addend_tail ...);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::trunc_subtract_result_t / trunc_subtract
+	// sg14::trunc_subtract_result / trunc_subtract
 
 	// yields specialization of fixed_point with integral bits necessary to store
 	// result of an subtraction between N values of fixed_point<ReprType, Exponent>
 	template <class Lhs, class Rhs = Lhs>
-	using trunc_subtract_result_t = make_fixed_from_repr<
-		_impl::get_int_t<true, _impl::max(sizeof(typename Lhs::repr_type), sizeof(typename Rhs::repr_type))>,
+	using trunc_subtract_result = make_fixed_from_repr<
+		_impl::subtract_result_repr<typename Lhs::repr_type, typename Rhs::repr_type>,
 		_impl::max(Lhs::integer_digits, Rhs::integer_digits) + 1>;
 
 	template <class Lhs, class Rhs>
-	trunc_subtract_result_t<Lhs, Rhs>
+	trunc_subtract_result<Lhs, Rhs>
 	constexpr trunc_subtract(const Lhs & minuend, const Rhs & subtrahend)
 	{
-		using output_type = trunc_subtract_result_t<Lhs, Rhs>;
+		using output_type = trunc_subtract_result<Lhs, Rhs>;
 		return static_cast<output_type>(minuend) - static_cast<output_type>(subtrahend);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::trunc_multiply_result_t / trunc_multiply
+	// sg14::trunc_multiply_result / trunc_multiply
 
 	// yields specialization of fixed_point with integral bits necessary to store
 	// result of a multiply between values of fixed_point<ReprType, Exponent>
 	template <class Lhs, class Rhs = Lhs>
-	using trunc_multiply_result_t = make_fixed_from_repr<
-		_impl::common_repr_type<typename Lhs::repr_type, typename Rhs::repr_type>,
+	using trunc_multiply_result = make_fixed_from_repr<
+		_impl::arithmetic_result_repr<typename Lhs::repr_type, typename Rhs::repr_type>,
 		Lhs::integer_digits + Rhs::integer_digits>;
 
-	// as trunc_multiply_result_t but converts parameter, factor,
+	// as trunc_multiply_result but converts parameter, factor,
 	// ready for safe binary multiply
 	template <class Lhs, class Rhs>
-	trunc_multiply_result_t<Lhs, Rhs>
+	trunc_multiply_result<Lhs, Rhs>
 	constexpr trunc_multiply(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
-		using result_type = trunc_multiply_result_t<Lhs, Rhs>;
+		using result_type = trunc_multiply_result<Lhs, Rhs>;
 		return _impl::multiply<result_type>(lhs, rhs);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::trunc_divide_result_t / trunc_divide
+	// sg14::trunc_divide_result / trunc_divide
 
 	// yields specialization of fixed_point with integral bits necessary to store
 	// result of a divide between values of types, Lhs and Rhs
 	template <class FixedPointDividend, class FixedPointDivisor = FixedPointDividend>
-	using trunc_divide_result_t = make_fixed_from_repr<
-		_impl::common_repr_type<typename FixedPointDividend::repr_type, typename FixedPointDivisor::repr_type>,
+	using trunc_divide_result = make_fixed_from_repr<
+		_impl::arithmetic_result_repr<typename FixedPointDividend::repr_type, typename FixedPointDivisor::repr_type>,
 		FixedPointDividend::integer_digits + FixedPointDivisor::fractional_digits>;
 
-	// as trunc_divide_result_t but converts parameter, factor,
+	// as trunc_divide_result but converts parameter, factor,
 	// ready for safe binary divide
 	template <class FixedPointDividend, class FixedPointDivisor>
-	trunc_divide_result_t<FixedPointDividend, FixedPointDivisor>
+	trunc_divide_result<FixedPointDividend, FixedPointDivisor>
 	constexpr trunc_divide(const FixedPointDividend & lhs, const FixedPointDivisor & rhs) noexcept
 	{
-		using result_type = trunc_divide_result_t<FixedPointDividend, FixedPointDivisor>;
+		using result_type = trunc_divide_result<FixedPointDividend, FixedPointDivisor>;
 		return _impl::divide<result_type>(lhs, rhs);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::trunc_reciprocal_result_t / trunc_reciprocal
+	// sg14::trunc_reciprocal_result / trunc_reciprocal
 
 	// yields specialization of fixed_point with integral bits necessary to store
 	// result of inverse of value of type FixedPoint
 	template <class FixedPoint>
-	using trunc_reciprocal_result_t = make_fixed_from_repr<
+	using trunc_reciprocal_result = make_fixed_from_repr<
 		typename FixedPoint::repr_type,
 		FixedPoint::fractional_digits + 1>;
 
 	// returns reciprocal of fixed_point in same-sized fixed-point type
 	// that can comfortably store significant digits of result
 	template <class FixedPoint>
-	trunc_reciprocal_result_t<FixedPoint>
+	trunc_reciprocal_result<FixedPoint>
 	constexpr trunc_reciprocal(const FixedPoint & fixed_point) noexcept
 	{
-		using result_type = trunc_reciprocal_result_t<FixedPoint>;
+		using result_type = trunc_reciprocal_result<FixedPoint>;
 		using result_repr_type = typename result_type::repr_type;
 
 		using dividend_type = make_fixed_from_repr<result_repr_type, 1>;
@@ -1220,44 +1240,44 @@ namespace sg14
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::trunc_square_result_t / trunc_square
+	// sg14::trunc_square_result / trunc_square
 
 	// yields specialization of fixed_point with integral bits necessary to store
 	// result of a multiply between values of fixed_point<ReprType, Exponent>
 	// whose sign bit is set to the same value
 	template <class FixedPoint>
-	using trunc_square_result_t = make_fixed_from_repr<
-		typename _impl::make_unsigned<typename FixedPoint::repr_type>::type,
+	using trunc_square_result = make_fixed_from_repr<
+		_impl::square_result_repr<typename FixedPoint::repr_type>,
 		FixedPoint::integer_digits * 2>;
 
-	// as trunc_square_result_t but converts parameter, factor,
+	// as trunc_square_result but converts parameter, factor,
 	// ready for safe binary multiply-by-self
 	template <class FixedPoint>
-	trunc_square_result_t<FixedPoint>
+	trunc_square_result<FixedPoint>
 	constexpr trunc_square(const FixedPoint & root) noexcept
 	{
-		using result_type = trunc_square_result_t<FixedPoint>;
+		using result_type = trunc_square_result<FixedPoint>;
 		return _impl::multiply<result_type>(root, root);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::trunc_sqrt_result_t / trunc_sqrt
+	// sg14::trunc_sqrt_result / trunc_sqrt
 
 	// yields specialization of fixed_point with integral bits necessary to store
 	// the positive result of a square root operation on an object of type,
 	// fixed_point<ReprType, Exponent>
 	template <class FixedPoint>
-	using trunc_sqrt_result_t = make_fixed_from_repr<
-		typename _impl::make_unsigned<typename FixedPoint::repr_type>::type,
+	using trunc_sqrt_result = make_fixed_from_repr<
+		_impl::sqrt_result_repr<typename FixedPoint::repr_type>,
 		(FixedPoint::integer_digits + 1) / 2>;
 
-	// as trunc_sqrt_result_t but converts parameter, factor,
+	// as trunc_sqrt_result but converts parameter, factor,
 	// ready for safe sqrt operation
 	template <class FixedPoint>
-	trunc_sqrt_result_t<FixedPoint>
+	trunc_sqrt_result<FixedPoint>
 	constexpr trunc_sqrt(const FixedPoint & square) noexcept
 	{
-		using output_type = trunc_sqrt_result_t<FixedPoint>;
+		using output_type = trunc_sqrt_result<FixedPoint>;
 		return output_type(sqrt(square));
 	}
 
@@ -1282,59 +1302,97 @@ namespace sg14
 	};
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::promote_multiply_result_t / promote_multiply
+	// sg14::promote_add_result / promote_add
+
+	// yields specialization of fixed_point with double the capacity necessary to
+	// store result of an add between values of fixed_point<ReprType, Exponent>
+	template <class FixedPoint, unsigned N = 2>
+	using promote_add_result = make_fixed_from_repr<
+		_impl::next_size<typename FixedPoint::repr_type>,
+		FixedPoint::integer_digits + _impl::capacity<N - 1>::value>;
+
+	template <class FixedPoint, class ... Tail>
+	promote_add_result<FixedPoint, sizeof...(Tail) + 1>
+	constexpr promote_add(const FixedPoint & addend1, const Tail & ... addend_tail)
+	{
+		using output_type = promote_add_result<FixedPoint, sizeof...(Tail) + 1>;
+		return _impl::add<output_type, FixedPoint>(addend1, addend_tail ...);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	// sg14::promote_subtract_result / promote_subtract
+
+	// yields specialization of fixed_point with double the capacity necessary to
+	// store result of an subtract between values of fixed_point<ReprType, Exponent>
+	template <class Lhs, class Rhs = Lhs>
+	using promote_subtract_result = make_fixed_from_repr<
+		typename _impl::next_size<_impl::subtract_result_repr<typename Lhs::repr_type, typename Rhs::repr_type>>,
+		_impl::max(Lhs::integer_digits, Rhs::integer_digits) + 1>;
+
+	// as promote_subtract_result but converts parameter, factor,
+	// ready for safe binary subtract
+	template <class Lhs, class Rhs>
+	promote_subtract_result<Lhs, Rhs>
+	constexpr promote_subtract(const Lhs & lhs, const Rhs & rhs) noexcept
+	{
+		using result_type = promote_subtract_result<Lhs, Rhs>;
+		return static_cast<result_type>(lhs) - static_cast<result_type>(rhs);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	// sg14::promote_multiply_result / promote_multiply
 
 	// yields specialization of fixed_point with capacity necessary to store
 	// result of a multiply between values of fixed_point<ReprType, Exponent>
 	template <class Lhs, class Rhs = Lhs>
-	using promote_multiply_result_t = fixed_point_promotion_t<_impl::common_type<Lhs, Rhs>>;
+	using promote_multiply_result = promote_result<_impl::common_type<Lhs, Rhs>>;
 
-	// as promote_multiply_result_t but converts parameter, factor,
+	// as promote_multiply_result but converts parameter, factor,
 	// ready for safe binary multiply
 	template <class Lhs, class Rhs>
-	promote_multiply_result_t<Lhs, Rhs>
+	promote_multiply_result<Lhs, Rhs>
 		constexpr promote_multiply(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
-		using result_type = promote_multiply_result_t<Lhs, Rhs>;
+		using result_type = promote_multiply_result<Lhs, Rhs>;
 		return _impl::multiply<result_type>(lhs, rhs);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::promote_divide_result_t / promote_divide
+	// sg14::promote_divide_result / promote_divide
 
 	// yields specialization of fixed_point with capacity necessary to store
 	// result of a divide between values of fixed_point<ReprType, Exponent>
 	template <class Lhs, class Rhs = Lhs>
-	using promote_divide_result_t = fixed_point_promotion_t<_impl::common_type<Lhs, Rhs>>;
+	using promote_divide_result = promote_result<_impl::common_type<Lhs, Rhs>>;
 
-	// as promote_divide_result_t but converts parameter, factor,
+	// as promote_divide_result but converts parameter, factor,
 	// ready for safe binary divide
 	template <class Lhs, class Rhs>
-	promote_divide_result_t<Lhs, Rhs>
+	promote_divide_result<Lhs, Rhs>
 	constexpr promote_divide(const Lhs & lhs, const Rhs & rhs) noexcept
 	{
-		using result_type = promote_divide_result_t<Lhs, Rhs>;
+		using result_type = promote_divide_result<Lhs, Rhs>;
 		return _impl::divide<result_type>(lhs, rhs);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::promote_square_result_t / promote_square
+	// sg14::promote_square_result / promote_square
 
 	// yields specialization of fixed_point with integral bits necessary to store
 	// result of a multiply between values of fixed_point<ReprType, Exponent>
 	// whose sign bit is set to the same value
 	template <class FixedPoint>
-	using promote_square_result_t = make_ufixed<
+	using promote_square_result = make_ufixed<
 		FixedPoint::integer_digits * 2,
 		FixedPoint::fractional_digits * 2>;
 
-	// as promote_square_result_t but converts parameter, factor,
+	// as promote_square_result but converts parameter, factor,
 	// ready for safe binary multiply-by-self
 	template <class FixedPoint>
-	promote_square_result_t<FixedPoint>
+	promote_square_result<FixedPoint>
 		constexpr promote_square(const FixedPoint & root) noexcept
 	{
-		using output_type = promote_square_result_t<FixedPoint>;
+		using output_type = promote_square_result<FixedPoint>;
 		using output_repr_type = typename output_type::repr_type;
 		return output_type::from_data(
 			_impl::shift_left<(FixedPoint::exponent * 2 - output_type::exponent), output_repr_type>(
