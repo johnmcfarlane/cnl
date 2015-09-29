@@ -5,8 +5,6 @@
 template <typename FP>
 constexpr FP magnitude_squared(const FP & x, const FP & y, const FP & z)
 {
-	using namespace std;
-	using namespace sg14;
 	return x * x + y * y + z * z;
 }
 
