@@ -8,7 +8,7 @@ built-in integer types. It is developed as part of
 [SG14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14) and
 SG6.
 For an overview of the API, see draft proposal,
-[LEWG, EWG, SG14, SG6: P0037](https://github.com/WG21-SG14/SG14/blob/master/Docs/Proposals/Fixed_Point_Library_Proposal.md).
+[LEWG, EWG, SG14, SG6: P0037](http://johnmcfarlane.github.io/fixed_point/docs/papers/p0037.html).
 
 ## Intructions
 
