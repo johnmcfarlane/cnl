@@ -1,13 +1,8 @@
-#if defined(RUN_BENCHMARKS)
-
 #include "sample_functions.h"
 
 #include <fixed_point_utils.h>
 
 #include <benchmark/benchmark.h>
-
-#include <iostream>
-#include <limits>
 
 using namespace sg14;
 using namespace std;
@@ -264,5 +259,3 @@ FIXED_POINT_BENCHMARK_FIXED(bm_circle_intersect_trunc);
 // tests involving unoptimized math function, sg14::sqrt
 //FIXED_POINT_BENCHMARK_REAL(bm_sqrt);
 //FIXED_POINT_BENCHMARK_FIXED(bm_magnitude_trunc);
-
-#endif	// RUN_BENCHMARKS
