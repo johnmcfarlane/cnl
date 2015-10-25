@@ -10,20 +10,18 @@ SG6.
 For an overview of the API, see draft proposal,
 [LEWG, EWG, SG14, SG6: P0037](http://johnmcfarlane.github.io/fixed_point/docs/papers/p0037.html).
 
-## Intructions
+## Linux Intructions
 
-### Get
-
-    git clone https://github.com/johnmcfarlane/fixed_point.git --recursive
+Tested on Debian GNU/Linux 8.2.
 
 ### Run Tests
 
-    cmake -DCMAKE_BUILD_TYPE=Debug -DRUN_TESTS=ON -DRUN_BENCHMARKS=OFF
-    make
-    ./fixed_point_test
+    cmake -DCMAKE_BUILD_TYPE=Debug
+    make run_tests
+    ./run_tests
 
 ### Run Benchmarks
 
-    cmake -DCMAKE_BUILD_TYPE=Release -DRUN_TESTS=OFF -DRUN_BENCHMARKS=ON
-    make
-    ./fixed_point_benchmark
+    cmake -DCMAKE_BUILD_TYPE=Release
+    make run_benchmarks
+    ./run_benchmarks

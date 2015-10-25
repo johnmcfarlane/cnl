@@ -22,7 +22,7 @@
       <sourceFolder url="file://$MODULE_DIR$/benchmark/src/json_reporter.cc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/benchmark/src/log.cc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/benchmark/src/log.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/benchmark/src/re_std.cc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/benchmark/src/re_posix.cc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/benchmark/src/reporter.cc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/benchmark/src/sleep.cc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/benchmark/src/sleep.h" isTestSource="false" />
@@ -42,8 +42,10 @@
       <sourceFolder url="file://$MODULE_DIR$/src/benchmark.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/fixed_point_test.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/fixed_point_utils_test.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/proposal_test.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/run_tests.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/sample_functions.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test_utils.h" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -67,6 +69,7 @@
         </SOURCES>
         <excluded>
           <root url="file://$MODULE_DIR$/benchmark/src/console_reporter.cc" />
+          <root url="file://$MODULE_DIR$/benchmark/src/re_posix.cc" />
           <root url="file://$MODULE_DIR$/benchmark/src/csv_reporter.cc" />
           <root url="file://$MODULE_DIR$/benchmark/src/walltime.cc" />
           <root url="file://$MODULE_DIR$/benchmark/src/sysinfo.h" />
@@ -79,7 +82,6 @@
           <root url="file://$MODULE_DIR$/benchmark/src/log.cc" />
           <root url="file://$MODULE_DIR$/benchmark/src/colorprint.cc" />
           <root url="file://$MODULE_DIR$/benchmark/src/log.h" />
-          <root url="file://$MODULE_DIR$/benchmark/src/re_std.cc" />
           <root url="file://$MODULE_DIR$/benchmark/src/commandlineflags.h" />
           <root url="file://$MODULE_DIR$/benchmark/src/commandlineflags.cc" />
           <root url="file://$MODULE_DIR$/benchmark/src/string_util.h" />
