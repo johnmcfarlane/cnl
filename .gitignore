@@ -8,8 +8,7 @@ run_benchmarks
 run_tests
 
 # CLion
-.idea/workspace.xml
-.idea/dictionaries
+.idea
 
 # Visual Studio
 vs/.vs
