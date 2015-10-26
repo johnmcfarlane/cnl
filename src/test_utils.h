@@ -45,6 +45,7 @@ void assert_true(const Expression & expression, char const * expression_name, ch
 	test_break();
 }
 
+#if defined(_SG14_EXCEPTIONS_ENABLED)
 template <typename Exception, typename Expression>
 void assert_throws(const Expression & expression, char const * expression_name, char const * file, int line)
 {
@@ -63,6 +64,7 @@ void assert_throws(const Expression & expression, char const * expression_name, 
 		FAIL_STREAM << "Threw wrong exception: (" << expression_name << ')' << std::endl;
 	}
 }
+#endif
 
 #define ASSERT_EQUAL(A, B) do { assert_equal(A, B, #A, #B, __FILE__, __LINE__); } while (false)
 #define ASSERT_TRUE(EXPR) do { assert_true(EXPR, #EXPR, __FILE__, __LINE__)); } while (false)
