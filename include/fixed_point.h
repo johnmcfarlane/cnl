@@ -18,6 +18,17 @@
 #define _SG14_FIXED_POINT_128
 #endif
 
+////////////////////////////////////////////////////////////////////////////////
+// _SG14_EXCEPTIONS_ENABLED macro definition 
+
+#if defined(_SG14_EXCEPTIONS_ENABLED)
+#error _SG14_EXCEPTIONS_ENABLED already defined
+#endif
+
+#if __EXCEPTIONS
+#define _SG14_EXCEPTIONS_ENABLED
+#endif
+
 namespace sg14
 {
 	////////////////////////////////////////////////////////////////////////////////
