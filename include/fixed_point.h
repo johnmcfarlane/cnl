@@ -5,6 +5,13 @@
 #include <cinttypes>
 #include <type_traits>
 
+////////////////////////////////////////////////////////////////////////////////
+// _SG14_FIXED_POINT_128 macro definition 
+
+#if defined(_SG14_FIXED_POINT_128)
+#error _SG14_FIXED_POINT_128 already defined
+#endif
+
 #if defined(__clang__) || defined(__GNUG__)
 // sg14::float_point only fully supports 64-bit types with the help of 128-bit ints.
 // Clang and GCC use (__int128) and (unsigned __int128) for 128-bit ints.
