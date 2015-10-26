@@ -19,13 +19,13 @@ Tested on Debian GNU/Linux 8.2.
 
 ### Run Tests
 
-    cmake -DCMAKE_BUILD_TYPE=Debug
+    cmake .
     make run_tests
     ./run_tests
 
 ### Run Benchmarks
 
-    cmake -DCMAKE_BUILD_TYPE=Release
+    cmake .
     make run_benchmarks
     ./run_benchmarks
 
