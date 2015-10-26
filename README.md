@@ -13,7 +13,7 @@ SG6.
 For an overview of the API, see draft proposal,
 [LEWG, EWG, SG14, SG6: P0037](http://johnmcfarlane.github.io/fixed_point/docs/papers/p0037.html).
 
-## Linux Intructions
+## Linux Instructions
 
 Tested on Debian GNU/Linux 8.2.
 
