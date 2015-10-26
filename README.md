@@ -29,9 +29,12 @@ Tested on Debian GNU/Linux 8.2.
     make run_benchmarks
     ./run_benchmarks
 
+### Exceptions
+
+To disable exception handling, add `-DEXCEPTIONS=OFF` to the `cmake` command line parameters.
+
 ## Windows Instructions
 
-Requires Visual Studio 2015. Tested on Windows 7 Professional.
+Requires version 14.0 of MSBuild. Tested on Windows 7 Professional.
 
-    C:\Users\john\fixed_point>"c:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"
-vs\fixed_point_test.sln
+    "c:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" vs\fixed_point_test.sln

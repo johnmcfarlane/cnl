@@ -1,11 +1,15 @@
 cmake_minimum_required(VERSION 2.8.4)
 project(fixed_point)
 
+# build flags
+if (EXCEPTIONS)
+    set(EXCEPTION_FLAGS "-fexceptions -frtti")
+else (EXCEPTIONS)
+    set(EXCEPTION_FLAGS "-fno-exceptions -fno-rtti")
+endif (EXCEPTIONS)
+
 set(WARNING_FLAGS "-Wall -Wextra -Wfatal-errors -Werror -Wzero-as-null-pointer-constant")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WARNING_FLAGS} -std=c++11")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DNDEBUG -fno-rtti -Ofast -fno-omit-frame-pointer")
-set(CMAKE_EXE_LINKER_FLAGS "-g")
+set(COMMON_CXX_FLAGS "${WARNING_FLAGS} ${EXCEPTION_FLAGS} -std=c++11")
 
 add_executable(
         run_tests
@@ -15,12 +19,18 @@ add_executable(
         src/run_tests.cpp
         src/test_utils.h
 )
+set_target_properties(
+        run_tests
+        PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS}")
 
 add_executable(
         run_benchmarks
         src/benchmark.cpp
         src/sample_functions.h
 )
+set_target_properties(
+        run_benchmarks
+        PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} -fno-omit-frame-pointer")
 
 include_directories("include")
 add_subdirectory(benchmark EXCLUDE_FROM_ALL)
