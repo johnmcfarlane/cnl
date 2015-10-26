@@ -29,6 +29,10 @@
 #define _SG14_EXCEPTIONS_ENABLED
 #endif
 
+#if defined(_SG14_EXCEPTIONS_ENABLED)
+#include <stdexcept>
+#endif
+
 namespace sg14
 {
 	////////////////////////////////////////////////////////////////////////////////
@@ -1151,10 +1155,15 @@ namespace sg14
 	// placeholder implementation; slow when calculated at run-time?
 	template <class ReprType, int Exponent>
 	constexpr fixed_point<ReprType, Exponent>
-	sqrt(const fixed_point<ReprType, Exponent> & x) noexcept
+	sqrt(const fixed_point<ReprType, Exponent> & x)
 	{
-		return fixed_point<ReprType, Exponent>::from_data(
-			static_cast<ReprType>(_impl::sqrt_solve1(promote(x).data())));
+		return
+#if defined(_SG14_EXCEPTIONS_ENABLED)
+			(x < fixed_point<ReprType, Exponent>(0))
+				? throw std::invalid_argument("cannot represent square root of negative value") :
+#endif
+				fixed_point<ReprType, Exponent>::from_data(
+					static_cast<ReprType>(_impl::sqrt_solve1(promote(x).data())));
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
