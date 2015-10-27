@@ -28,10 +28,10 @@
     <ClCompile Include="..\src\fixed_point_utils_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\main.cpp">
+    <ClCompile Include="..\src\proposal_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\proposal_test.cpp">
+    <ClCompile Include="..\src\run_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
