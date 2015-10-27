@@ -1,5 +1,7 @@
 # C++ Binary Fixed-Point Arithmetic
 
+[![Build status](https://ci.appveyor.com/api/projects/status/u8gvlnbi8puo2eee?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/fixed-point)
+
 ## Introduction
 
 The [fixed_point](https://github.com/johnmcfarlane/fixed_point)
