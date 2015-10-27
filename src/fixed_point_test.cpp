@@ -37,6 +37,13 @@ void fixed_point_test()
 	ASSERT_EQUAL(x -= -10, 9.9375f);
 	ASSERT_EQUAL(x *= -3, -29.8125);
 	ASSERT_EQUAL(x -= 0.1875, -30);
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// sqrt exception throwing
+
+#if defined(_SG14_EXCEPTIONS_ENABLED)
+	ASSERT_THROWS(sqrt(fixed_point<>(-1)), std::invalid_argument);
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -13,25 +13,28 @@ SG6.
 For an overview of the API, see draft proposal,
 [LEWG, EWG, SG14, SG6: P0037](http://johnmcfarlane.github.io/fixed_point/docs/papers/p0037.html).
 
-## Linux Intructions
+## Linux Instructions
 
 Tested on Debian GNU/Linux 8.2.
 
 ### Run Tests
 
-    cmake -DCMAKE_BUILD_TYPE=Debug
+    cmake .
     make run_tests
     ./run_tests
 
 ### Run Benchmarks
 
-    cmake -DCMAKE_BUILD_TYPE=Release
+    cmake .
     make run_benchmarks
     ./run_benchmarks
 
+### Exceptions
+
+To disable exception handling, add `-DEXCEPTIONS=OFF` to the `cmake` command line parameters.
+
 ## Windows Instructions
 
-Requires Visual Studio 2015. Tested on Windows 7 Professional.
+Requires version 14.0 of MSBuild. Tested on Windows 7 Professional.
 
-    C:\Users\john\fixed_point>"c:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"
-vs\fixed_point_test.sln
+    "c:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" vs\fixed_point_test.sln
