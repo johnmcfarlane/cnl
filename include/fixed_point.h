@@ -1113,7 +1113,7 @@ namespace sg14
 	fixed_point<LhsReprType, Exponent> &
 	fixed_point<LhsReprType, Exponent>::operator*=(const Rhs & rhs) noexcept
 	{
-		_repr *= rhs;
+		_repr *= static_cast<repr_type>(rhs);
 		return * this;
 	}
 
@@ -1122,7 +1122,7 @@ namespace sg14
 	fixed_point<LhsReprType, Exponent> &
 	fixed_point<LhsReprType, Exponent>::operator/=(const Rhs & rhs) noexcept
 	{
-		_repr /= rhs;
+		_repr /= static_cast<repr_type>(rhs);
 		return * this;
 	}
 
