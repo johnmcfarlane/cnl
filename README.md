@@ -1,5 +1,7 @@
 # C++ Binary Fixed-Point Arithmetic
 
+[![Build status](https://ci.appveyor.com/api/projects/status/u8gvlnbi8puo2eee?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/fixed-point)
+
 ## Introduction
 
 The [fixed_point](https://github.com/johnmcfarlane/fixed_point)
@@ -25,3 +27,10 @@ Tested on Debian GNU/Linux 8.2.
     cmake -DCMAKE_BUILD_TYPE=Release
     make run_benchmarks
     ./run_benchmarks
+
+## Windows Instructions
+
+Requires Visual Studio 2015. Tested on Windows 7 Professional.
+
+    C:\Users\john\fixed_point>"c:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"
+vs\fixed_point_test.sln

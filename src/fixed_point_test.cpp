@@ -76,6 +76,8 @@ static_assert(_impl::is_integral<int>(), "sg14::_impl::is_integral test failed")
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::shift_left/right positive RHS
 
+#pragma warning(push)
+#pragma warning(disable: 4310)
 static_assert(_impl::shift_left<8, uint16_t>((uint16_t)0x1234) == 0x3400, "sg14::_impl::shift_left test failed");
 static_assert(_impl::shift_left<8, uint16_t>((uint8_t)0x1234) == 0x3400, "sg14::_impl::shift_left test failed");
 static_assert(_impl::shift_left<8, uint8_t>((uint16_t)0x1234) == 0x0, "sg14::_impl::shift_left test failed");
@@ -85,10 +87,13 @@ static_assert(_impl::shift_right<8, uint16_t>((uint16_t)0x1234) == 0x12, "sg14::
 static_assert(_impl::shift_right<8, uint16_t>((uint8_t)0x1234) == 0x0, "sg14::_impl::shift_right test failed");
 static_assert(_impl::shift_right<8, uint8_t>((uint16_t)0x1234) == 0x12, "sg14::_impl::shift_right test failed");
 static_assert(_impl::shift_right<8, int16_t>(-31488) == -123, "sg14::_impl::shift_right test failed");
+#pragma warning(pop)
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::shift_left/right negative RHS
 
+#pragma warning(push)
+#pragma warning(disable: 4310)
 static_assert(_impl::shift_right<-8, uint16_t>((uint16_t)0x1234) == 0x3400, "sg14::_impl::shift_right test failed");
 static_assert(_impl::shift_right<-8, uint16_t>((uint8_t)0x1234) == 0x3400, "sg14::_impl::shift_right test failed");
 static_assert(_impl::shift_right<-8, uint8_t>((uint16_t)0x1234) == 0x0, "sg14::_impl::shift_right test failed");
@@ -98,6 +103,7 @@ static_assert(_impl::shift_left<-8, uint16_t>((uint16_t)0x1234) == 0x12, "sg14::
 static_assert(_impl::shift_left<-8, uint16_t>((uint8_t)0x1234) == 0x0, "sg14::_impl::shift_left test failed");
 static_assert(_impl::shift_left<-8, uint8_t>((uint16_t)0x1234) == 0x12, "sg14::_impl::shift_left test failed");
 static_assert(_impl::shift_left<-8, int16_t>(-31488) == -123, "sg14::_impl::shift_left test failed");
+#pragma warning(pop)
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::pow2

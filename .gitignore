@@ -17,6 +17,7 @@ vs/Debug
 vs/Release
 vs/fixed_point_test.opensdf
 vs/fixed_point_test.sdf
+vs/x64
 
 # perf
 perf.data*
