@@ -8,7 +8,7 @@ else (EXCEPTIONS)
     set(EXCEPTION_FLAGS "-fno-exceptions -fno-rtti")
 endif (EXCEPTIONS)
 
-set(WARNING_FLAGS "-Wall -Wextra -Wfatal-errors -Werror -Wzero-as-null-pointer-constant")
+set(WARNING_FLAGS "-Wall -Wextra -Wfatal-errors -Werror")
 set(COMMON_CXX_FLAGS "${WARNING_FLAGS} ${EXCEPTION_FLAGS} -std=c++11")
 
 add_executable(
