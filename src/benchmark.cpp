@@ -257,5 +257,5 @@ FIXED_POINT_BENCHMARK_REAL(bm_circle_intersect_generic);
 FIXED_POINT_BENCHMARK_FIXED(bm_circle_intersect_trunc);
 
 // tests involving unoptimized math function, sg14::sqrt
-//FIXED_POINT_BENCHMARK_REAL(bm_sqrt);
-//FIXED_POINT_BENCHMARK_FIXED(bm_magnitude_trunc);
+FIXED_POINT_BENCHMARK_REAL(bm_sqrt);
+FIXED_POINT_BENCHMARK_FIXED(bm_magnitude_trunc);
