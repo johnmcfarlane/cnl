@@ -21,10 +21,9 @@ matrix:
 
 before_script:
     - source .travis-setup.sh
-    - mkdir build && cd build
 
 script:
-    - cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DEXCEPTIONS="${EXCEPTIONS}"
+    - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DEXCEPTIONS="${EXCEPTIONS}"
     - make run_tests run_benchmarks
     - ./run_tests
     - ./run_benchmarks
