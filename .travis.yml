@@ -28,5 +28,5 @@ script:
     - make run_tests run_benchmarks
     - ./run_tests
     - ./run_benchmarks --benchmark_format=csv>result.csv
-    - ./submit.py result.csv
+    - ./report.py result.csv
     - ls -l run_benchmarks run_tests
