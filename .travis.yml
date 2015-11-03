@@ -23,7 +23,6 @@ before_script:
     - source .travis-setup.sh
 
 script:
-    - python3 --version
     - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DEXCEPTIONS="${EXCEPTIONS}"
     - make run_tests run_benchmarks
     - ./run_tests
