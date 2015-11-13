@@ -1,16 +1,8 @@
+#include <gtest/gtest.h>
+
 #include <cstdio>
 
-void fixed_point_test();
-void fixed_point_utils_test();
-void proposal_test();
-
-int main(int, char *[])
-{
-	fixed_point_test();
-	fixed_point_utils_test();
-	proposal_test();
-
-	std::puts("Tests complete.");
-
-	return 0;
+int main(int argc, char **argv) {
+	::testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }
