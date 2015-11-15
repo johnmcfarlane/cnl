@@ -44,6 +44,16 @@ To run benchmarks:
 
     ./run_benchmarks
 
+To profile benchmarks:
+
+1. in *CMakeLists.txt*, append `-fno-omit-frame-pointer` to `COMMON_CXX_FLAGS`
+
+2. then run:
+   ```
+   perf stat ./run_benchmarks
+   perf report -g 'graph,0.5,caller'`
+   ```
+
 ### Windows
 
 Tested on Windows 7 Professional. Requires version 14.0 of MSBuild. (You can probably find it in `c:\Program Files (x86)\MSBuild\14.0\Bin`.)
