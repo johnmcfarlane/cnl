@@ -15,6 +15,7 @@ BENCHMARK_MAIN();
 ////////////////////////////////////////////////////////////////////////////////
 // optimization circumvention - https://youtu.be/nXaxk27zwlk?t=40m40s
 
+#if defined(__clang__) || defined(__GNUG__)
 void escape(void const *p)
 {
 	asm volatile(""::"g"(p):"memory");
@@ -24,6 +25,16 @@ void clobber()
 {
 	asm volatile("":::"memory");
 }
+#else
+// TODO: Find equivalents `if defined(_MSC_VER)`
+void escape(void const *)
+{
+}
+
+void clobber()
+{
+}
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // benchmarking functions
@@ -225,6 +236,7 @@ using s31_32 = make_fixed<31, 32>;
 	BENCHMARK_TEMPLATE1(fn, uint64_t);
 
 // types that can store values >= 1
+#if defined(_SG14_FIXED_POINT_128)
 #define FIXED_POINT_BENCHMARK_FIXED(fn) \
 	BENCHMARK_TEMPLATE1(fn, u4_4); \
 	BENCHMARK_TEMPLATE1(fn, s3_4); \
@@ -234,6 +246,15 @@ using s31_32 = make_fixed<31, 32>;
 	BENCHMARK_TEMPLATE1(fn, s15_16); \
 	BENCHMARK_TEMPLATE1(fn, u32_32); \
 	BENCHMARK_TEMPLATE1(fn, s31_32);
+#else
+#define FIXED_POINT_BENCHMARK_FIXED(fn) \
+	BENCHMARK_TEMPLATE1(fn, u4_4); \
+	BENCHMARK_TEMPLATE1(fn, s3_4); \
+	BENCHMARK_TEMPLATE1(fn, u8_8); \
+	BENCHMARK_TEMPLATE1(fn, s7_8); \
+	BENCHMARK_TEMPLATE1(fn, u16_16); \
+	BENCHMARK_TEMPLATE1(fn, s15_16);
+#endif
 
 #define FIXED_POINT_BENCHMARK_REAL(fn) \
 	FIXED_POINT_BENCHMARK_FLOAT(fn); \
