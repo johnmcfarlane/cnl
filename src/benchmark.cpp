@@ -13,11 +13,11 @@ using namespace std;
 BENCHMARK_MAIN();
 
 ////////////////////////////////////////////////////////////////////////////////
-// optimization circumvention
+// optimization circumvention - https://youtu.be/nXaxk27zwlk?t=40m40s
 
 void escape(void const *p)
 {
-	asm volatile("":"+r"(p)::"memory");
+	asm volatile(""::"g"(p):"memory");
 }
 
 void clobber()
