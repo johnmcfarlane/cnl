@@ -1,49 +1,9 @@
-cmake_minimum_required(VERSION 2.8.4)
 project(fixed_point)
+cmake_minimum_required(VERSION 2.8.4)
 
-######################################################################
-# build flags
+# runs a suite of compile-time tests using `static_assert`
+# and run-time tests using gtest
+include("src/test/CMakeLists.txt")
 
-if (EXCEPTIONS)
-    set(EXCEPTION_FLAGS "-fexceptions -frtti")
-else (EXCEPTIONS)
-    set(EXCEPTION_FLAGS "-fno-exceptions -fno-rtti")
-endif (EXCEPTIONS)
-
-set(WARNING_FLAGS "-Wall -Wextra -Wfatal-errors -Werror")
-set(COMMON_CXX_FLAGS "${WARNING_FLAGS} ${EXCEPTION_FLAGS} -std=c++11")
-
-include_directories(SYSTEM "include")
-
-######################################################################
-# run_tests
-
-add_executable(
-        run_tests
-        src/fixed_point_test.cpp
-        src/fixed_point_utils_test.cpp
-        src/proposal_test.cpp
-        src/run_tests.cpp
-)
-set_target_properties(
-        run_tests
-        PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS}"
-)
-add_subdirectory(googletest/googletest EXCLUDE_FROM_ALL)
-target_link_libraries(run_tests gtest)
-include_directories(SYSTEM "googletest/googletest/include")
-
-######################################################################
-# run_benchmarks
-
-add_executable(
-        run_benchmarks
-        src/benchmark.cpp
-        src/sample_functions.h
-)
-set_target_properties(
-        run_benchmarks
-        PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS}"
-)
-add_subdirectory(benchmark EXCLUDE_FROM_ALL)
-target_link_libraries(run_benchmarks benchmark)
+# performs a selection of benchmark tests using googletest
+include("src/benchmark/CMakeLists.txt")

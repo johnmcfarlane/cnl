@@ -24,8 +24,8 @@ before_script:
 
 script:
     - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DEXCEPTIONS="${EXCEPTIONS}"
-    - make run_tests run_benchmarks
-    - ./run_tests
-    - ./run_benchmarks --benchmark_format=csv>result.csv
+    - make fp_test fp_benchmark
+    - ./fp_test
+    - ./fp_benchmark --benchmark_format=csv>result.csv
     - ./report.py result.csv
-    - ls -l run_benchmarks run_tests
+    - ls -l fp_benchmark fp_test
