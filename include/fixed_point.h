@@ -24,7 +24,15 @@
 #error _SG14_EXCEPTIONS_ENABLED already defined
 #endif
 
-#if __EXCEPTIONS
+#if defined(_MSC_VER)
+#if defined(_CPPUNWIND)
+#define _SG14_EXCEPTIONS_ENABLED
+#endif
+#elif defined(__clang__) || defined(__GNUG__)
+#if defined(__EXCEPTIONS)
+#define _SG14_EXCEPTIONS_ENABLED
+#endif
+#else
 #define _SG14_EXCEPTIONS_ENABLED
 #endif
 

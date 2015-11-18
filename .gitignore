@@ -3,20 +3,10 @@ CMakeCache.txt
 CMakeFiles
 Makefile
 cmake_install.cmake
-cmake
-run_benchmarks
-run_tests
-
-# CLion
-.idea
-
-# Visual Studio
-vs/.vs
-vs/Debug
-vs/Release
-vs/fixed_point_test.opensdf
-vs/fixed_point_test.sdf
-vs/x64
+google_benchmark-prefix/
+google_test-prefix/
+fp_benchmark
+fp_test
 
 # perf
 perf.data*

@@ -1,7 +1,7 @@
 # C++ Binary Fixed-Point Arithmetic
 
 [![Build Status](https://travis-ci.org/johnmcfarlane/fixed_point.svg)](https://travis-ci.org/johnmcfarlane/fixed_point)
-[![Build status](https://ci.appveyor.com/api/projects/status/u8gvlnbi8puo2eee?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/fixed-point)
+[![Build status](https://ci.appveyor.com/api/projects/status/p60lpkq9u90h83fi?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/fixed-point)
 
 ## Introduction
 
@@ -38,14 +38,41 @@ To disable exception handling, add `-DEXCEPTIONS=OFF` to the `cmake` command:
 
 To run tests:
 
-    ./run_tests
+    ./fp_tests
 
 To run benchmarks:
 
-    ./run_benchmarks
+    ./fp_benchmarks
+
+To profile benchmarks:
+
+1. in *src/benchmark/CMakeLists.txt*, append `-fno-omit-frame-pointer` to `COMPILE_FLAGS`:
+   ```
+   PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} -fno-omit-frame-pointer"
+   ```
+
+2. then run:
+   ```
+   perf stat ./run_benchmarks
+   perf report -g 'graph,0.5,caller'`
+   ```
 
 ### Windows
 
-Tested on Windows 7 Professional. Requires version 14.0 of MSBuild. (You can probably find it in `c:\Program Files (x86)\MSBuild\14.0\Bin`.)
+Tested on *Windows 7 Professional* with *CMake 3.4.0*. Requires:
 
-    msbuild vs\fixed_point_test.sln
+- MSBuild 14.0
+- CMake 2.8.4
+
+To build *vs/Release/fp_test.exe* and *vs/Release/fp_benchmark.exe*:
+
+    cmake .
+    MSBuild.exe /m fixed_point.sln /p:Configuration=Release
+
+For 64-bit builds, append `Win64` to the `-G` option above:
+
+    cmake -G "Visual Studio 14 2015 Win64" .
+
+To clean the project files:
+
+    git clean -Xdf .

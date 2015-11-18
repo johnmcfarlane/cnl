@@ -1,50 +1,64 @@
 #include <fixed_point_utils.h>
 
-#include "test_utils.h"
+#include <gtest/gtest.h>
 
 using namespace sg14;
 using namespace std;
 
-void fixed_point_test()
+////////////////////////////////////////////////////////////////////////////////
+// copy assignment
+
+TEST(copy_assignment, from_fixed_point)
 {
-	////////////////////////////////////////////////////////////////////////////////
-	// copy assignment
+	auto lhs = fixed_point<uint32_t, -16>(0);
+	lhs = fixed_point<uint32_t, -16>(123.456);
+	EXPECT_EQ(lhs, fixed_point<>(123.456));
+}
 
-	// from fixed_point
-	auto rhs = fixed_point<uint32_t, -16>(123.456);
-	auto lhs = rhs;
-	ASSERT_EQUAL(lhs, fixed_point<>(123.456));
-
-	// from floating-point type
+TEST(copy_assignment, from_floating_point)
+{
+	auto lhs = fixed_point<uint32_t, -16>(0);
 	lhs = 234.567;
-	ASSERT_EQUAL(lhs, 234.56698608398438);
+	ASSERT_EQ(lhs, 234.56698608398438);
+}
 
-	// from integer
+TEST(copy_assignment, from_integer)
+{
+	auto lhs = fixed_point<uint32_t, -16>(0);
 	lhs = 543;
-	ASSERT_EQUAL(lhs, 543);
+	ASSERT_EQ(lhs, 543);
+}
 
-	// from alternative specialization
+TEST(copy_assignment, from_alternative_specialization)
+{
+	auto lhs = fixed_point<uint32_t, -16>(0);
 	lhs = fixed_point<uint8_t>(87.65);
-	ASSERT_EQUAL(static_cast<fixed_point<uint8_t>>(lhs), fixed_point<uint8_t>(87.65));
+	ASSERT_EQ(static_cast<fixed_point<uint8_t>>(lhs), fixed_point<uint8_t>(87.65));
+}
 
-	////////////////////////////////////////////////////////////////////////////////
-	// compound assignment
+////////////////////////////////////////////////////////////////////////////////
+// compound assignment
 
+TEST(compound_assignment, from_compound_assignment)
+{
 	auto x = make_fixed<7, 8>(22.75);
-	ASSERT_EQUAL(x += 12.5, 35.25L);
-	ASSERT_EQUAL(x -= 35.5, -.25);
-	ASSERT_EQUAL(x /= 4, -.0625);
-	ASSERT_EQUAL(x -= -10, 9.9375f);
-	ASSERT_EQUAL(x *= -3, -29.8125);
-	ASSERT_EQUAL(x -= 0.1875, -30);
-	
-	////////////////////////////////////////////////////////////////////////////////
-	// sqrt exception throwing
+	ASSERT_EQ(x += 12.5, 35.25L);
+	ASSERT_EQ(x -= 35.5, -.25);
+	ASSERT_EQ(x /= 4, -.0625);
+	ASSERT_EQ(x -= -10, 9.9375f);
+	ASSERT_EQ(x *= -3, -29.8125);
+	ASSERT_EQ(x -= 0.1875, -30);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// sqrt exception throwing
 
 #if defined(_SG14_EXCEPTIONS_ENABLED)
-	ASSERT_THROWS(sqrt(fixed_point<>(-1)), std::invalid_argument);
-#endif
+TEST(sqrt_exception, from_alternative_specialization)
+{
+	ASSERT_THROW(sqrt(fixed_point<>(-1)), std::invalid_argument);
 }
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
