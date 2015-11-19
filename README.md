@@ -73,6 +73,8 @@ For 64-bit builds, append `Win64` to the `-G` option above:
 
     cmake -G "Visual Studio 14 2015 Win64" .
 
-To clean the project files:
+### Cleaning
 
-    git clean -Xdf .
+To clean the project files. (Warning: this purges *everything* that isn't bolted down):
+
+    git clean -Xdff .
