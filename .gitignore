@@ -10,3 +10,6 @@ fp_test
 
 # perf
 perf.data*
+
+# Clion
+.idea
