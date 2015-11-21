@@ -1,5 +1,7 @@
 project(fixed_point)
-cmake_minimum_required(VERSION 2.8.4)
+
+# CMake 2.8.11 is required by Google Benchmarks
+cmake_minimum_required(VERSION 2.8.11)
 
 # runs a suite of compile-time tests using `static_assert`
 # and run-time tests using gtest
