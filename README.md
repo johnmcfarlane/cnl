@@ -22,6 +22,13 @@ The library is hosted on [GitHub](https://github.com/):
     git clone https://github.com/johnmcfarlane/fixed_point.git --recursive
     cd fixed_point
 
+### Includes
+
+A single header, [include/fixed_point.h](include/fixed_point.h), 
+contains all of the necessary definitions to use the `fixed_point` type.
+Additional supporting definitions can be found in 
+[include/fixed_point_utils.h](include/fixed_point_utils.h).
+
 ### Linux
 
 Tested on Debian GNU/Linux 8.2 using GCC 4.9 and Clang 3.5
