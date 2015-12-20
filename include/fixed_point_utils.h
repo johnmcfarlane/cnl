@@ -26,6 +26,13 @@ namespace sg14
 		return (x.data() >= 0) ? x : - x;
 	}
 
+	template <class ReprType, int Exponent, typename std::enable_if<_impl::is_unsigned<ReprType>::value, int>::type Dummy = 0>
+	constexpr fixed_point<ReprType, Exponent>
+	abs(const fixed_point<ReprType, Exponent> & x) noexcept
+	{
+		return x;
+	}
+
 	////////////////////////////////////////////////////////////////////////////////
 	// sg14::trig
 	//

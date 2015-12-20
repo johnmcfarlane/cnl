@@ -39,3 +39,7 @@ static_assert(abs(make_fixed<7, 0>(-123)) == 123, "sg14::abs test failed");
 static_assert(abs(make_fixed<63, 0>(9223372036854775807)) == 9223372036854775807LL, "sg14::abs test failed");
 static_assert(abs(make_fixed<63, 0>(-9223372036854775807)) == 9223372036854775807LL, "sg14::abs test failed");
 static_assert(abs(make_fixed<7, 8>(-5)) == 5, "sg14::abs test failed");
+
+static_assert(abs(make_ufixed<8, 0>(66)) == 66, "sg14::abs test failed");
+static_assert(abs(make_ufixed<8, 0>(123)) == 123, "sg14::abs test failed");
+static_assert(abs(make_ufixed<8, 8>(5)) == 5, "sg14::abs test failed");
