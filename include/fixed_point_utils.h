@@ -17,6 +17,19 @@
 namespace sg14
 {
 	////////////////////////////////////////////////////////////////////////////////
+	// additional traits for sg14::fixed_point
+
+	// is_fixed_point
+	template <class T>
+	struct is_fixed_point : _impl::is_fixed_point<T> { };
+
+	// is_real
+	template <class T>
+	using is_real = std::integral_constant<
+		bool,
+		std::is_floating_point<T>::value || sg14::is_fixed_point<T>::value>;
+
+	////////////////////////////////////////////////////////////////////////////////
 	// sg14::abs
 
 	template <class ReprType, int Exponent, typename std::enable_if<_impl::is_signed<ReprType>::value, int>::type Dummy = 0>
