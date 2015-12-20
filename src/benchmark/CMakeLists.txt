@@ -19,6 +19,7 @@ set_target_properties(
 ExternalProject_Add(
   google_benchmark
   GIT_REPOSITORY "https://github.com/google/benchmark.git"
+  GIT_TAG "v0.1.0"
   INSTALL_COMMAND ""
 )
 ExternalProject_Get_Property(google_benchmark source_dir)
