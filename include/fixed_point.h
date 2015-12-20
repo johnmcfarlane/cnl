@@ -135,7 +135,6 @@ namespace sg14
 		template <class T>
 		struct is_signed
 		{
-			static_assert(is_integral<T>::value, "sg14::_impl::is_signed only intended for use with integral types");
 			static constexpr bool value = std::is_same<make_int<true, sizeof(T)>, T>::value;
 		};
 
