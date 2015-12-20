@@ -72,6 +72,13 @@ namespace sg14
 		return _impl::crib<ReprType, Exponent, std::exp>(x);
 	}
 
+	template <class ReprType, int Exponent>
+	constexpr fixed_point<ReprType, Exponent>
+	pow(const fixed_point<ReprType, Exponent> & x) noexcept
+	{
+		return _impl::crib<ReprType, Exponent, std::pow>(x);
+	}
+
 	////////////////////////////////////////////////////////////////////////////////
 	// sg14::fixed_point streaming - (placeholder implementation)
 
