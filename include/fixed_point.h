@@ -24,25 +24,25 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// _SG14_EXCEPTIONS_ENABLED macro definition 
+// _SG14_FIXED_POINT_EXCEPTIONS_ENABLED macro definition 
 
-#if defined(_SG14_EXCEPTIONS_ENABLED)
-#error _SG14_EXCEPTIONS_ENABLED already defined
+#if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
+#error _SG14_FIXED_POINT_EXCEPTIONS_ENABLED already defined
 #endif
 
 #if defined(_MSC_VER)
 #if defined(_CPPUNWIND)
-#define _SG14_EXCEPTIONS_ENABLED
+#define _SG14_FIXED_POINT_EXCEPTIONS_ENABLED
 #endif
 #elif defined(__clang__) || defined(__GNUG__)
 #if defined(__EXCEPTIONS)
-#define _SG14_EXCEPTIONS_ENABLED
+#define _SG14_FIXED_POINT_EXCEPTIONS_ENABLED
 #endif
 #else
-#define _SG14_EXCEPTIONS_ENABLED
+#define _SG14_FIXED_POINT_EXCEPTIONS_ENABLED
 #endif
 
-#if defined(_SG14_EXCEPTIONS_ENABLED)
+#if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
 #include <stdexcept>
 #endif
 
@@ -1176,7 +1176,7 @@ namespace sg14
 	sqrt(const fixed_point<ReprType, Exponent> & x)
 	{
 		return
-#if defined(_SG14_EXCEPTIONS_ENABLED)
+#if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
 			(x < fixed_point<ReprType, Exponent>(0))
 				? throw std::invalid_argument("cannot represent square root of negative value") :
 #endif
