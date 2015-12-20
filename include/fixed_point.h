@@ -228,7 +228,7 @@ namespace sg14
 			return static_cast<Output>(i);
 		}
 
-		// sizeof(Input) > sizeof(Output)
+		// sizeof(Input) >= sizeof(Output)
 		template <
 			int Exponent,
 			class Output,
@@ -253,7 +253,7 @@ namespace sg14
 			return shift_right<0, Output, Input>(i >> Exponent);
 		}
 
-		// sizeof(Input) <= sizeof(Output)
+		// sizeof(Input) < sizeof(Output)
 		template <
 			int Exponent, 
 			class Output, 
@@ -640,7 +640,7 @@ namespace sg14
 	////////////////////////////////////////////////////////////////////////////////
 	// sg14::make_ufixed
 
-	// unsigned short-hanrd for make_fixed
+	// unsigned short-hand for make_fixed
 	template <unsigned IntegerDigits, unsigned FractionalDigits = 0>
 	using make_ufixed = make_fixed<IntegerDigits, FractionalDigits, false>;
 
