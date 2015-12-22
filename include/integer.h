@@ -272,7 +272,27 @@ namespace sg14 {
 
   template<typename Repr>
   using saturated_integer = integer<Repr, saturated_overflow_policy>;
+}
 
+////////////////////////////////////////////////////////////////////////////////
+// sg14::integer-specific specializations to std templates
+
+namespace std
+{
+  // std::is_integral<sg14::integer<>>
+  template <typename Repr, typename OverflowPolicy>
+  struct is_integral<sg14::integer<Repr, OverflowPolicy>>
+          : integral_constant<bool, true> {};
+
+  // std::is_unsigned<sg14::integer<>>
+  template <typename Repr, typename OverflowPolicy>
+  struct is_unsigned<sg14::integer<Repr, OverflowPolicy>>
+          : integral_constant<bool, std::is_unsigned<Repr>::value> {};
+
+  // std::is_unsigned<sg14::integer<>>
+  template <typename Repr, typename OverflowPolicy>
+  struct is_signed<sg14::integer<Repr, OverflowPolicy>>
+          : integral_constant<bool, std::is_signed<Repr>::value> {};
 }
 
 #endif	// defined(_SG14_INTEGER)
