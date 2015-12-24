@@ -4,7 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <fixed_point_utils.h>
+#include <fixed_point.h>
 
 #include <gtest/gtest.h>
 
@@ -94,11 +94,6 @@ static_assert(is_same<common_type<float, uint32_t>::type, float>::value, "incorr
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl
-
-////////////////////////////////////////////////////////////////////////////////
-// sg14::_impl::is_integral
-
-static_assert(_impl::is_integral<int>(), "sg14::_impl::is_integral test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::shift_left/right positive RHS
@@ -313,17 +308,11 @@ static_assert((make_fixed<11, 4>(123.125) - make_fixed<11, 4>(246.875)) == -123.
 // multiplication
 static_assert((make_ufixed<8, 0>(0x55) * make_ufixed<8, 0>(2)) == 0xaa, "sg14::fixed_point test failed");
 static_assert((make_fixed<15, 16>(123.75) * make_fixed<15, 16>(44.5)) == 5506.875, "sg14::fixed_point test failed");
-#if defined(_SG14_FIXED_POINT_128)
-static_assert((make_ufixed<56, 8>(1003006) * make_ufixed<56, 8>(7)) == 7021042, "sg14::fixed_point test failed");
-#endif
 
 // division
 static_assert((fixed_point<int8_t, -1>(63) / fixed_point<int8_t, -1>(-4)) == -16, "sg14::fixed_point test failed");
 static_assert((fixed_point<int8_t, 1>(-255) / fixed_point<int8_t, 1>(-8)) == 32, "sg14::fixed_point test failed");
 static_assert((make_fixed<31, 0>(-999) / make_fixed<31, 0>(3)) == -333, "sg14::fixed_point test failed");
-#if defined(_SG14_FIXED_POINT_128)
-static_assert(static_cast<int>((fixed_point<uint64_t, -8>(65535) / fixed_point<uint64_t, -8>(256))) == 255, "sg14::fixed_point test failed");
-#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::promote_result
@@ -694,6 +683,3 @@ static_assert(sqrt(make_fixed<5, 2>(9)) == 3, "sg14::sqrt test failed");
 static_assert(sqrt(make_ufixed<4, 4>(4)) == 2, "sg14::sqrt test failed");
 static_assert(static_cast<float>(sqrt(make_fixed<7, 24>(3.141592654))) > 1.7724537849426, "sg14::sqrt test failed");
 static_assert(static_cast<float>(sqrt(make_fixed<7, 24>(3.141592654))) < 1.7724537849427, "sg14::sqrt test failed");
-#if defined(_SG14_FIXED_POINT_128)
-static_assert(sqrt(make_fixed<63, 0>(9223372036854775807)) == 3037000499LL, "sg14::sqrt test failed");
-#endif

@@ -32,14 +32,14 @@ namespace sg14
 	////////////////////////////////////////////////////////////////////////////////
 	// sg14::abs
 
-	template <class ReprType, int Exponent, typename std::enable_if<_impl::is_signed<ReprType>::value, int>::type Dummy = 0>
+	template <class ReprType, int Exponent, typename std::enable_if<std::is_signed<ReprType>::value, int>::type Dummy = 0>
 	constexpr fixed_point<ReprType, Exponent>
 	abs(const fixed_point<ReprType, Exponent> & x) noexcept
 	{
 		return (x.data() >= 0) ? x : - x;
 	}
 
-	template <class ReprType, int Exponent, typename std::enable_if<_impl::is_unsigned<ReprType>::value, int>::type Dummy = 0>
+	template <class ReprType, int Exponent, typename std::enable_if<std::is_unsigned<ReprType>::value, int>::type Dummy = 0>
 	constexpr fixed_point<ReprType, Exponent>
 	abs(const fixed_point<ReprType, Exponent> & x) noexcept
 	{
@@ -211,6 +211,55 @@ namespace std
 		static constexpr bool tinyness_before = false;
 		static constexpr float_round_style round_style = _repr_numeric_limits::round_style;
 	};
+}
+
+#if defined(_GLIBCXX_USE_INT128)
+// std type specializations required to promote 128-bit integers to first-class integers under GCC/Clang
+namespace std
+{
+  // std::is_integral - related to https://llvm.org/bugs/show_bug.cgi?id=23156
+  template <>
+  struct is_integral<__int128> : std::true_type { };
+
+  template <>
+  struct is_integral<unsigned __int128> : std::true_type { };
+
+  // std::is_signed
+  template <>
+  struct is_signed<__int128> : std::true_type { };
+
+  template <>
+  struct is_signed<unsigned __int128> : std::false_type { };
+
+  // std::is_signed
+  template <>
+  struct is_unsigned<__int128> : std::false_type { };
+
+  template <>
+  struct is_unsigned<unsigned __int128> : std::true_type { };
+
+  // std::make_signed
+  template <>
+  struct make_signed<__int128> {
+	using type = __int128;
+  };
+
+  template <>
+  struct make_signed<unsigned __int128> {
+	using type = __int128;
+  };
+
+  // std::make_signed
+  template <>
+  struct make_unsigned<__int128> {
+	using type = unsigned __int128;
+  };
+
+  template <>
+  struct make_unsigned<unsigned __int128> {
+	using type = __int128;
+  };
+#endif
 }
 
 #endif	// defined(_SG14_FIXED_POINT_UTILS_H)
