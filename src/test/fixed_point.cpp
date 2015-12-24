@@ -9,7 +9,8 @@
 #include <gtest/gtest.h>
 
 using namespace sg14;
-using namespace std;
+using std::is_same;
+using std::common_type;
 
 ////////////////////////////////////////////////////////////////////////////////
 // copy assignment
