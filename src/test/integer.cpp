@@ -13,6 +13,27 @@ static_assert(is_same<
         saturated_integer<int8_t>>::value, "sg14::_integer_impl::common_type test failure");
 
 ////////////////////////////////////////////////////////////////////////////////
+// sg14::_integer_impl::is_integer_class
+
+static_assert(! _integer_impl::is_integer_class<uint8_t>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(! _integer_impl::is_integer_class<int8_t>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(! _integer_impl::is_integer_class<uint16_t>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(! _integer_impl::is_integer_class<int16_t>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(! _integer_impl::is_integer_class<uint32_t>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(! _integer_impl::is_integer_class<int32_t>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(! _integer_impl::is_integer_class<uint64_t>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(! _integer_impl::is_integer_class<int64_t>::value, "sg14::_integer_impl::is_integer_class test failed");
+
+static_assert(_integer_impl::is_integer_class<saturated_integer<uint8_t>>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(_integer_impl::is_integer_class<saturated_integer<int8_t>>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(_integer_impl::is_integer_class<saturated_integer<uint16_t>>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(_integer_impl::is_integer_class<saturated_integer<int16_t>>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(_integer_impl::is_integer_class<saturated_integer<uint32_t>>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(_integer_impl::is_integer_class<saturated_integer<int32_t>>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(_integer_impl::is_integer_class<saturated_integer<uint64_t>>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(_integer_impl::is_integer_class<saturated_integer<int64_t>>::value, "sg14::_integer_impl::is_integer_class test failed");
+
+////////////////////////////////////////////////////////////////////////////////
 // sg14::_integer_impl::positive_digits
 
 static_assert(sg14::_integer_impl::positive_digits<int8_t>::value == 7, "sg14::_integer_impl::positive_digits test failed");

@@ -98,10 +98,24 @@ namespace sg14 {
     };
   };
 
-  ////////////////////////////////////////////////////////////////////////////////
-  // overflow detection
-
   namespace _integer_impl {
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::_integer_impl::is_integer_class - trait to identify sg14::integer<>
+
+    template <typename T>
+    struct is_integer_class;
+
+    template <typename T>
+    struct is_integer_class
+            : std::false_type {};
+
+    template <typename Repr, typename OverflowPolicy>
+    struct is_integer_class<integer<Repr, OverflowPolicy>>
+            : std::true_type {};
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // overflow detection
+
     // positive_digits
     template<typename T>
     struct positive_digits: public std::integral_constant<int, std::numeric_limits<T>::digits> { };
