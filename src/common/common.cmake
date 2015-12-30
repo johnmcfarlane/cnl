@@ -17,6 +17,7 @@ else ()
   message(FATAL_ERROR "unrecognized compiler: ${CMAKE_CXX_COMPILER_ID}")
 endif ()
 
+set(EXCEPTIONS ON CACHE BOOL "compile with exceptions enabled")
 if (EXCEPTIONS)
     set(EXCEPTION_FLAGS "${EXCEPTION_ENABLED_FLAGS}")
 else (EXCEPTIONS)
