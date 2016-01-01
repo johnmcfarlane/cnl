@@ -211,7 +211,7 @@ namespace sg14 {
   };
 
   ////////////////////////////////////////////////////////////////////////////////
-  // integer<>
+  // sg14::integer<>
 
   // an integer which can be customized to react in different ways to overflow
   template<typename Repr, typename OverflowPolicy>
