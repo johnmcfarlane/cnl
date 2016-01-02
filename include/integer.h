@@ -33,50 +33,42 @@ namespace sg14 {
 
   // basic definitions
 #define _SG14_INTEGER_COMPARISON_DEFINE(OP) \
-    template <typename LhsRepr, typename LhsOverflowPolicy, typename RhsRepr, typename RhsOverflowPolicy> \
-    friend constexpr bool operator OP (const integer<LhsRepr, LhsOverflowPolicy>& lhs, const integer<RhsRepr, RhsOverflowPolicy>& rhs) { \
-        return lhs.data() OP rhs.data(); } \
-    \
-    template <typename Lhs, typename RhsRepr, typename RhsOverflowPolicy, typename std::enable_if<std::is_arithmetic<Lhs>::value, int>::type dummy = 0> \
-    friend constexpr bool operator OP (const Lhs& lhs, const integer<RhsRepr, RhsOverflowPolicy>& rhs) { \
-        using common_type = typename std::common_type<Lhs, RhsRepr>::type; \
-        return static_cast<common_type>(lhs) OP static_cast<common_type>(rhs.data()); } \
-    \
-    template <typename LhsRepr, typename LhsOverflowPolicy, typename Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type dummy = 0> \
-    friend constexpr bool operator OP (const integer<LhsRepr, LhsOverflowPolicy>& lhs, const Rhs& rhs) { \
-        using common_type = typename std::common_type<LhsRepr, Rhs>::type; \
-        return static_cast<common_type>(lhs.data()) OP static_cast<common_type>(rhs); }
+    template <class Lhs, class Rhs> \
+    constexpr auto operator OP (const Lhs& lhs, const Rhs& rhs) \
+    -> typename std::enable_if<sg14::_integer_impl::is_integer_class<Lhs>::value || sg14::_integer_impl::is_integer_class<Rhs>::value, bool>::type { \
+        using common_type = typename std::common_type<Lhs, Rhs>::type; \
+        return static_cast<common_type>(lhs).data() OP static_cast<common_type>(rhs).data(); }
 
 #define _SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(OP) \
-    template <typename LhsRepr, typename LhsOverflowPolicy, typename RhsRepr, typename RhsOverflowPolicy> \
-    friend constexpr auto operator OP (const integer<LhsRepr, LhsOverflowPolicy>& lhs, const integer<RhsRepr, RhsOverflowPolicy>& rhs) \
-    -> typename sg14::_integer_impl::common_type<integer<LhsRepr, LhsOverflowPolicy>, integer<RhsRepr, RhsOverflowPolicy>>::type { \
-        using Result = typename sg14::_integer_impl::common_type<integer<LhsRepr, LhsOverflowPolicy>, integer<RhsRepr, RhsOverflowPolicy>>::type; \
+    template <class LhsRepr, class RhsRepr, class OverflowPolicy> \
+    constexpr auto operator OP (const integer<LhsRepr, OverflowPolicy>& lhs, const integer<RhsRepr, OverflowPolicy>& rhs) \
+    -> typename sg14::_integer_impl::common_type<integer<LhsRepr, OverflowPolicy>, integer<RhsRepr, OverflowPolicy>>::type { \
+        using Result = typename sg14::_integer_impl::common_type<integer<LhsRepr, OverflowPolicy>, integer<RhsRepr, OverflowPolicy>>::type; \
         return static_cast<Result>(lhs.data() OP rhs.data()); } \
     \
-    template <typename Lhs, typename RhsRepr, typename RhsOverflowPolicy, typename std::enable_if<std::is_arithmetic<Lhs>::value, int>::type dummy = 0> \
-    friend constexpr auto operator OP (const Lhs& lhs, const integer<RhsRepr, RhsOverflowPolicy>& rhs) \
+    template <class Lhs, class RhsRepr, class RhsOverflowPolicy, typename std::enable_if<! sg14::_integer_impl::is_integer_class<Lhs>::value, int>::type dummy = 0> \
+    constexpr auto operator OP (const Lhs& lhs, const integer<RhsRepr, RhsOverflowPolicy>& rhs) \
     -> integer<typename sg14::_integer_impl::common_type<Lhs, RhsRepr>::type, RhsOverflowPolicy> { \
         return lhs OP rhs.data(); } \
     \
-    template <typename LhsRepr, typename LhsOverflowPolicy, typename Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type dummy = 0> \
-    friend constexpr auto operator OP (const integer<LhsRepr, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
+    template <class LhsRepr, class LhsOverflowPolicy, class Rhs, typename std::enable_if<! sg14::_integer_impl::is_integer_class<Rhs>::value, int>::type dummy = 0> \
+    constexpr auto operator OP (const integer<LhsRepr, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
     -> integer<typename sg14::_integer_impl::common_type<LhsRepr, Rhs>::type, LhsOverflowPolicy> { \
         return lhs.data() OP rhs; }
 
 #define _SG14_INTEGER_BIT_SHIFT_DEFINE(OP) \
-    template <typename LhsRepr, typename LhsOverflowPolicy, typename RhsRepr, typename RhsOverflowPolicy> \
-    friend constexpr auto operator OP (const integer<LhsRepr, LhsOverflowPolicy>& lhs, const integer<RhsRepr, RhsOverflowPolicy>& rhs) \
+    template <class LhsRepr, class LhsOverflowPolicy, class RhsRepr, class RhsOverflowPolicy> \
+    constexpr auto operator OP (const integer<LhsRepr, LhsOverflowPolicy>& lhs, const integer<RhsRepr, RhsOverflowPolicy>& rhs) \
     -> integer<LhsRepr, LhsOverflowPolicy> { \
         return lhs.data() OP rhs.data(); } \
     \
-    template <typename Lhs, typename RhsRepr, typename RhsOverflowPolicy, typename std::enable_if<std::is_arithmetic<Lhs>::value, int>::type dummy = 0> \
-    friend constexpr auto operator OP (const Lhs& lhs, const integer<RhsRepr, RhsOverflowPolicy>& rhs) \
+    template <class Lhs, class RhsRepr, class RhsOverflowPolicy, typename std::enable_if<! sg14::_integer_impl::is_integer_class<Lhs>::value, int>::type dummy = 0> \
+    constexpr auto operator OP (const Lhs& lhs, const integer<RhsRepr, RhsOverflowPolicy>& rhs) \
     -> Lhs { \
         return lhs OP rhs.data(); } \
     \
-    template <typename LhsRepr, typename LhsOverflowPolicy, typename Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type dummy = 0> \
-    friend constexpr auto operator OP (const integer<LhsRepr, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
+    template <class LhsRepr, class LhsOverflowPolicy, class Rhs, typename std::enable_if<! sg14::_integer_impl::is_integer_class<Rhs>::value, int>::type dummy = 0> \
+    constexpr auto operator OP (const integer<LhsRepr, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
     -> integer<LhsRepr, LhsOverflowPolicy> { \
         return lhs.data() OP rhs; }
 
@@ -87,15 +79,8 @@ namespace sg14 {
   class integer;
 
   namespace _integer_impl {
-    template<typename Lhs, typename Rhs>
+    template<class, class, class = void>
     struct common_type;
-
-    template<typename LhsRepr, typename RhsRepr, typename OverflowPolicy>
-    struct common_type<
-            integer<LhsRepr, OverflowPolicy>,
-            integer<RhsRepr, OverflowPolicy>> {
-      using type = integer<typename std::common_type<LhsRepr, RhsRepr>::type, OverflowPolicy>;
-    };
   };
 
   namespace _integer_impl {
@@ -229,6 +214,47 @@ namespace sg14 {
     }
   };
 
+  namespace _integer_impl {
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::_integer_impl::common_type
+
+    // given two integer<>, produces the type that is best suited to both of them
+    template<class LhsRepr, class RhsRepr, class OverflowPolicy>
+    struct common_type<
+            integer<LhsRepr, OverflowPolicy>,
+            integer<RhsRepr, OverflowPolicy>> {
+      using type = integer<
+              typename std::common_type<LhsRepr, RhsRepr>::type,
+              OverflowPolicy>;
+    };
+
+    // given a integer<> and a built-in integer type,
+    // generates a integer<> type that is as big as both of them (or as close as possible)
+    template<class LhsRepr, class LhsOverflowPolicy, class RhsInteger>
+    struct common_type<
+            integer<LhsRepr, LhsOverflowPolicy>,
+            RhsInteger,
+            typename std::enable_if<! _integer_impl::is_integer_class<RhsInteger>::value>::type> {
+      using type = typename sg14::integer<typename std::common_type<LhsRepr, RhsInteger>::type, LhsOverflowPolicy>;
+    };
+
+    // given a integer<> and a floating-point type,
+    // generates a floating-point type that is as big as both of them (or as close as possible)
+    template<class LhsRepr, class LhsOverflowPolicy, class Float>
+    struct common_type<
+            integer<LhsRepr, LhsOverflowPolicy>,
+            Float,
+            typename std::enable_if<std::is_floating_point<Float>::value>::type> {
+      using type = std::common_type<LhsRepr, Float>;
+    };
+
+    // when first type is not integer<> and second type is, reverse the order
+    template<class Lhs, class RhsRepr, class RhsOverflowPolicy>
+    struct common_type<Lhs, integer<RhsRepr, RhsOverflowPolicy>>
+            : common_type<integer<RhsRepr, RhsOverflowPolicy>, Lhs> {
+    };
+  }
+
   ////////////////////////////////////////////////////////////////////////////////
   // sg14::integer<>
 
@@ -245,15 +271,15 @@ namespace sg14 {
       ////////////////////////////////////////////////////////////////////////////////
       // functions
 
-      template<typename RhsRepr, typename std::enable_if<std::is_integral<RhsRepr>::value, int>::type dummy = 0>
-      constexpr integer(const RhsRepr& rhs)
+      template<class RhsRepr, typename std::enable_if<! _integer_impl::is_integer_class<RhsRepr>::value, int>::type dummy = 0>
+      constexpr explicit integer(const RhsRepr& rhs)
               :repr(OverflowPolicy{}.template convert<repr_type>(rhs))
       {
       }
 
-      template<typename RhsRepr, typename std::enable_if<! std::is_integral<RhsRepr>::value, int>::type dummy = 0>
-      constexpr explicit integer(const RhsRepr& rhs)
-              :repr(OverflowPolicy{}.template convert<repr_type>(rhs))
+      template<class Rhs, typename std::enable_if<_integer_impl::is_integer_class<Rhs>::value, int>::type dummy = 0>
+      constexpr explicit integer(const Rhs& rhs)
+              :repr(OverflowPolicy{}.template convert<repr_type>(rhs.data()))
       {
       }
 
@@ -267,22 +293,7 @@ namespace sg14 {
           return integer(- rhs.repr);
       }
 
-      _SG14_INTEGER_COMPARISON_DEFINE(==);
-      _SG14_INTEGER_COMPARISON_DEFINE(!=);
-      _SG14_INTEGER_COMPARISON_DEFINE(<);
-      _SG14_INTEGER_COMPARISON_DEFINE(>);
-      _SG14_INTEGER_COMPARISON_DEFINE(<=);
-      _SG14_INTEGER_COMPARISON_DEFINE(>=);
-
-      _SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(+);
-      _SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(-);
-      _SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(*);
-      _SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(/);
-
-      _SG14_INTEGER_BIT_SHIFT_DEFINE(>>);
-      _SG14_INTEGER_BIT_SHIFT_DEFINE(<<);
-
-      constexpr repr_type const & data() const
+      constexpr repr_type const& data() const
       {
           return repr;
       }
@@ -293,6 +304,21 @@ namespace sg14 {
 
       repr_type repr;
   };
+
+    _SG14_INTEGER_COMPARISON_DEFINE(==);
+    _SG14_INTEGER_COMPARISON_DEFINE(!=);
+    _SG14_INTEGER_COMPARISON_DEFINE(<);
+    _SG14_INTEGER_COMPARISON_DEFINE(>);
+    _SG14_INTEGER_COMPARISON_DEFINE(<=);
+    _SG14_INTEGER_COMPARISON_DEFINE(>=);
+
+    _SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(+);
+    _SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(-);
+    _SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(*);
+    _SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(/);
+
+    _SG14_INTEGER_BIT_SHIFT_DEFINE(>>);
+    _SG14_INTEGER_BIT_SHIFT_DEFINE(<<);
 
   ////////////////////////////////////////////////////////////////////////////////
   // integer<> partial specializations
@@ -315,17 +341,50 @@ namespace std
   // std::is_integral<sg14::integer<>>
   template <typename Repr, typename OverflowPolicy>
   struct is_integral<sg14::integer<Repr, OverflowPolicy>>
-          : integral_constant<bool, true> {};
+          : integral_constant<bool, std::is_integral<Repr>::value> {
+  };
 
   // std::is_unsigned<sg14::integer<>>
   template <typename Repr, typename OverflowPolicy>
   struct is_unsigned<sg14::integer<Repr, OverflowPolicy>>
-          : integral_constant<bool, std::is_unsigned<Repr>::value> {};
+          : integral_constant<bool, std::is_unsigned<Repr>::value> {
+  };
 
-  // std::is_unsigned<sg14::integer<>>
+  // std::is_signed<sg14::integer<>>
   template <typename Repr, typename OverflowPolicy>
   struct is_signed<sg14::integer<Repr, OverflowPolicy>>
           : integral_constant<bool, std::is_signed<Repr>::value> {};
+
+    // std::common_type<> - with sg14::integer
+    template<
+            class Lhs,
+            class RhsRepr, class RhsOverflowPolicy>
+    struct common_type<
+            Lhs,
+            sg14::integer<RhsRepr, RhsOverflowPolicy>>
+            : sg14::_integer_impl::common_type<
+                    Lhs,
+                    sg14::integer<RhsRepr, RhsOverflowPolicy>> { };
+
+    template<
+            class LhsRepr, class LhsOverflowPolicy,
+            class Rhs>
+    struct common_type<
+            sg14::integer<LhsRepr, LhsOverflowPolicy>,
+            Rhs>
+            : sg14::_integer_impl::common_type<
+                    sg14::integer<LhsRepr, LhsOverflowPolicy>,
+                    Rhs> { };
+
+    template<
+            class LhsRepr, class LhsOverflowPolicy,
+            class RhsRepr, class RhsOverflowPolicy>
+    struct common_type<
+            sg14::integer<LhsRepr, LhsOverflowPolicy>,
+            sg14::integer<RhsRepr, RhsOverflowPolicy>>
+            : sg14::_integer_impl::common_type<
+                    sg14::integer<LhsRepr, LhsOverflowPolicy>,
+                    sg14::integer<RhsRepr, RhsOverflowPolicy>> { };
 }
 
 #endif	// defined(_SG14_INTEGER)

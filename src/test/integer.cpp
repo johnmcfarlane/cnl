@@ -4,13 +4,15 @@ using namespace sg14;
 using namespace std;
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_integer_impl::common_type
+// std::common_type with sg14::integer parameter
 
 static_assert(is_same<
-        _integer_impl::common_type<
-                saturated_integer<int8_t>,
-                saturated_integer<int8_t>>::type,
-        saturated_integer<int8_t>>::value, "sg14::_integer_impl::common_type test failure");
+		std::common_type<int32_t, saturated_integer<int16_t>>::type,
+		saturated_integer<int32_t>>::value, "sg14::_integer_impl::common_type test failure");
+
+static_assert(is_same<
+		std::common_type<saturated_integer<int8_t>, saturated_integer<int8_t>>::type,
+		saturated_integer<int8_t>>::value, "sg14::_integer_impl::common_type test failure");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_integer_impl::is_integer_class
