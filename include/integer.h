@@ -234,7 +234,10 @@ namespace sg14 {
     struct common_type<
             integer<LhsRepr, LhsOverflowPolicy>,
             RhsInteger,
-            typename std::enable_if<! _integer_impl::is_integer_class<RhsInteger>::value>::type> {
+            typename std::enable_if<
+                    ! _integer_impl::is_integer_class<RhsInteger>::value
+                            && std::is_integral<RhsInteger>::value
+            >::type> {
       using type = typename sg14::integer<typename std::common_type<LhsRepr, RhsInteger>::type, LhsOverflowPolicy>;
     };
 
@@ -245,7 +248,7 @@ namespace sg14 {
             integer<LhsRepr, LhsOverflowPolicy>,
             Float,
             typename std::enable_if<std::is_floating_point<Float>::value>::type> {
-      using type = std::common_type<LhsRepr, Float>;
+      using type = typename std::common_type<LhsRepr, Float>::type;
     };
 
     // when first type is not integer<> and second type is, reverse the order

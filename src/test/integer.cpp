@@ -14,6 +14,10 @@ static_assert(is_same<
 		std::common_type<saturated_integer<int8_t>, saturated_integer<int8_t>>::type,
 		saturated_integer<int8_t>>::value, "sg14::_integer_impl::common_type test failure");
 
+static_assert(is_same<
+		std::common_type<saturated_integer<uint32_t>, float>::type,
+		float>::value, "incorrect assumption about promotion");
+
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_integer_impl::is_integer_class
 
