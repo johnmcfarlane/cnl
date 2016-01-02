@@ -192,7 +192,7 @@ namespace sg14 {
     }
   };
 
-#if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
+#if defined(_SG14_INTEGER_EXCEPTIONS_ENABLED)
   struct throwing_overflow_policy {
       template <typename Lhs, typename Rhs>
       constexpr Lhs convert(const Rhs& rhs) const
