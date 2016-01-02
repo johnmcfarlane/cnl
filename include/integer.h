@@ -129,8 +129,9 @@ namespace sg14 {
     // is_positive_overflow
     template<
             typename Destination, typename Source,
-            typename std::enable_if<!(positive_digits<Destination>::value<positive_digits<Source>::value),
-                                    int>::type dummy = 0>
+            typename std::enable_if<
+                    !(positive_digits<Destination>::value<positive_digits<Source>::value),
+                    int>::type dummy = 0>
     constexpr bool is_positive_overflow(Source const&)
     {
         static_assert(! is_integer_class<Destination>::value, "this function helps convert values *to* sg14::integer");
@@ -143,8 +144,9 @@ namespace sg14 {
 
     template<
             typename Destination, typename Source,
-            typename std::enable_if<positive_digits<Destination>::value<positive_digits<Source>::value, int>::type
-                                    dummy = 0>
+            typename std::enable_if<
+                    (positive_digits<Destination>::value<positive_digits<Source>::value),
+                    int>::type dummy = 0>
     constexpr bool is_positive_overflow(Source const& source)
     {
         static_assert(! is_integer_class<Destination>::value, "this function helps convert values *to* sg14::integer");
@@ -156,8 +158,9 @@ namespace sg14 {
     // is_negative_overflow
     template<
             typename Destination, typename Source,
-            typename std::enable_if<!(negative_digits<Destination>::value<negative_digits<Source>::value),
-                                    int>::type dummy = 0>
+            typename std::enable_if<
+                    !(negative_digits<Destination>::value<negative_digits<Source>::value),
+                    int>::type dummy = 0>
     constexpr bool is_negative_overflow(Source const&)
     {
         static_assert(! is_integer_class<Destination>::value, "this function helps convert values *to* sg14::integer");
@@ -170,8 +173,9 @@ namespace sg14 {
 
     template<
             typename Destination, typename Source,
-            typename std::enable_if<negative_digits<Destination>::value<negative_digits<Source>::value, int>::type
-                                    dummy = 0>
+            typename std::enable_if<
+                    (negative_digits<Destination>::value < negative_digits<Source>::value),
+                    int>::type dummy = 0>
     constexpr bool is_negative_overflow(Source const& source)
     {
         static_assert(! is_integer_class<Destination>::value, "this function helps convert values *to* sg14::integer");
