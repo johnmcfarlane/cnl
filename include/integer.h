@@ -355,7 +355,7 @@ namespace std
   struct is_signed<sg14::integer<Repr, OverflowPolicy>>
           : integral_constant<bool, std::is_signed<Repr>::value> {};
 
-    // std::common_type<> - with sg14::integer
+    // std::common_type<T, sg14::integer>
     template<
             class Lhs,
             class RhsRepr, class RhsOverflowPolicy>
@@ -366,6 +366,7 @@ namespace std
                     Lhs,
                     sg14::integer<RhsRepr, RhsOverflowPolicy>> { };
 
+    // std::common_type<sg14::integer, T>
     template<
             class LhsRepr, class LhsOverflowPolicy,
             class Rhs>
@@ -376,6 +377,7 @@ namespace std
                     sg14::integer<LhsRepr, LhsOverflowPolicy>,
                     Rhs> { };
 
+    // std::common_type<sg14::integer, sg14::integer>
     template<
             class LhsRepr, class LhsOverflowPolicy,
             class RhsRepr, class RhsOverflowPolicy>
