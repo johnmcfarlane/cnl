@@ -133,6 +133,9 @@ namespace sg14 {
                                     int>::type dummy = 0>
     constexpr bool is_positive_overflow(Source const&)
     {
+        static_assert(! is_integer_class<Destination>::value, "this function helps convert values *to* sg14::integer");
+        static_assert(! is_integer_class<Source>::value, "this function helps convert values *to* sg14::integer");
+
         // If positive capacity of Destination is equal to or exceeds that of Source,
         // positive overflow cannot occur.
         return false;
@@ -144,6 +147,9 @@ namespace sg14 {
                                     dummy = 0>
     constexpr bool is_positive_overflow(Source const& source)
     {
+        static_assert(! is_integer_class<Destination>::value, "this function helps convert values *to* sg14::integer");
+        static_assert(! is_integer_class<Source>::value, "this function helps convert values *to* sg14::integer");
+
         return source>static_cast<Source>(std::numeric_limits<Destination>::max());
     }
 
@@ -154,6 +160,9 @@ namespace sg14 {
                                     int>::type dummy = 0>
     constexpr bool is_negative_overflow(Source const&)
     {
+        static_assert(! is_integer_class<Destination>::value, "this function helps convert values *to* sg14::integer");
+        static_assert(! is_integer_class<Source>::value, "this function helps convert values *to* sg14::integer");
+
         // If positive capacity of Destination is equal to or exceeds that of Source,
         // positive overflow cannot occur.
         return false;
@@ -165,6 +174,9 @@ namespace sg14 {
                                     dummy = 0>
     constexpr bool is_negative_overflow(Source const& source)
     {
+        static_assert(! is_integer_class<Destination>::value, "this function helps convert values *to* sg14::integer");
+        static_assert(! is_integer_class<Source>::value, "this function helps convert values *to* sg14::integer");
+
         return source<static_cast<Source>(std::numeric_limits<Destination>::lowest());
     }
   }
@@ -200,6 +212,9 @@ namespace sg14 {
     template<typename Lhs, typename Rhs>
     constexpr Lhs convert(const Rhs& rhs) const
     {
+        static_assert(! _integer_impl::is_integer_class<Lhs>::value, "this function helps convert values *to* sg14::integer");
+        static_assert(! _integer_impl::is_integer_class<Rhs>::value, "this function helps convert values *to* sg14::integer");
+
         using LhsNumericLimits = std::numeric_limits<Lhs>;
         return
                 _integer_impl::is_positive_overflow<Lhs>(rhs)
