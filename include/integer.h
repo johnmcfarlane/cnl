@@ -70,7 +70,7 @@ namespace sg14 {
     template <class LhsRepr, class LhsOverflowPolicy, class Rhs, typename std::enable_if<! sg14::_integer_impl::is_integer_class<Rhs>::value, int>::type dummy = 0> \
     constexpr auto operator OP (const integer<LhsRepr, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
     -> integer<LhsRepr, LhsOverflowPolicy> { \
-        return lhs.data() OP rhs; }
+        return integer<LhsRepr, LhsOverflowPolicy>(lhs.data() OP rhs); }
 
   ////////////////////////////////////////////////////////////////////////////////
   // forward-declarations
