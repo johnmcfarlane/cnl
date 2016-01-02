@@ -12,35 +12,44 @@ using namespace sg14;
 using std::is_same;
 using std::common_type;
 
+using int8 = std::int8_t;
+using int16 = std::int16_t;
+using int32 = std::int32_t;
+using int64 = std::int64_t;
+using uint8 = std::uint8_t;
+using uint16 = std::uint16_t;
+using uint32 = std::uint32_t;
+using uint64 = std::uint64_t;
+
 ////////////////////////////////////////////////////////////////////////////////
 // copy assignment
 
 TEST(copy_assignment, from_fixed_point)
 {
-	auto lhs = fixed_point<uint32_t, -16>(0);
-	lhs = fixed_point<uint32_t, -16>(123.456);
+	auto lhs = fixed_point<uint32, -16>(0);
+	lhs = fixed_point<uint32, -16>(123.456);
 	EXPECT_EQ(lhs, fixed_point<>(123.456));
 }
 
 TEST(copy_assignment, from_floating_point)
 {
-	auto lhs = fixed_point<uint32_t, -16>(0);
+	auto lhs = fixed_point<uint32, -16>(0);
 	lhs = 234.567;
 	ASSERT_EQ(lhs, 234.56698608398438);
 }
 
 TEST(copy_assignment, from_integer)
 {
-	auto lhs = fixed_point<uint32_t, -16>(0);
+	auto lhs = fixed_point<uint32, -16>(0);
 	lhs = 543;
 	ASSERT_EQ(lhs, 543);
 }
 
 TEST(copy_assignment, from_alternative_specialization)
 {
-	auto lhs = fixed_point<uint32_t, -16>(0);
-	lhs = fixed_point<uint8_t>(87.65);
-	ASSERT_EQ(static_cast<fixed_point<uint8_t>>(lhs), fixed_point<uint8_t>(87.65));
+	auto lhs = fixed_point<uint32, -16>(0);
+	lhs = fixed_point<uint8>(87.65);
+	ASSERT_EQ(static_cast<fixed_point<uint8>>(lhs), fixed_point<uint8>(87.65));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +99,7 @@ static_assert(static_cast<int>(-3.0) == -3, "incorrect assumption about default 
 static_assert(static_cast<int>(-3.9) == -3, "incorrect assumption about default rounding");
 
 // mixed-mode operations DO lose precision because exponent is more important than significand
-static_assert(is_same<common_type<float, uint32_t>::type, float>::value, "incorrect assumption about promotion");
+static_assert(is_same<common_type<float, uint32>::type, float>::value, "incorrect assumption about promotion");
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -104,15 +113,15 @@ static_assert(is_same<common_type<float, uint32_t>::type, float>::value, "incorr
 #pragma warning(disable: 4310)
 #endif
 
-static_assert(_impl::shift_left<8, uint16_t>((uint16_t)0x1234) == 0x3400, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<8, uint16_t>((uint8_t)0x1234) == 0x3400, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<8, uint8_t>((uint16_t)0x1234) == 0x0, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<8, int16_t>(-123) == -31488, "sg14::_impl::shift_left test failed");
+static_assert(_impl::shift_left<8, uint16>((uint16)0x1234) == 0x3400, "sg14::_impl::shift_left test failed");
+static_assert(_impl::shift_left<8, uint16>((uint8)0x1234) == 0x3400, "sg14::_impl::shift_left test failed");
+static_assert(_impl::shift_left<8, uint8>((uint16)0x1234) == 0x0, "sg14::_impl::shift_left test failed");
+static_assert(_impl::shift_left<8, int16>(-123) == -31488, "sg14::_impl::shift_left test failed");
 
-static_assert(_impl::shift_right<8, uint16_t>((uint16_t)0x1234) == 0x12, "sg14::_impl::shift_right test failed");
-static_assert(_impl::shift_right<8, uint16_t>((uint8_t)0x1234) == 0x0, "sg14::_impl::shift_right test failed");
-static_assert(_impl::shift_right<8, uint8_t>((uint16_t)0x1234) == 0x12, "sg14::_impl::shift_right test failed");
-static_assert(_impl::shift_right<8, int16_t>(-31488) == -123, "sg14::_impl::shift_right test failed");
+static_assert(_impl::shift_right<8, uint16>((uint16)0x1234) == 0x12, "sg14::_impl::shift_right test failed");
+static_assert(_impl::shift_right<8, uint16>((uint8)0x1234) == 0x0, "sg14::_impl::shift_right test failed");
+static_assert(_impl::shift_right<8, uint8>((uint16)0x1234) == 0x12, "sg14::_impl::shift_right test failed");
+static_assert(_impl::shift_right<8, int16>(-31488) == -123, "sg14::_impl::shift_right test failed");
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
@@ -126,15 +135,15 @@ static_assert(_impl::shift_right<8, int16_t>(-31488) == -123, "sg14::_impl::shif
 #pragma warning(disable: 4310)
 #endif
 
-static_assert(_impl::shift_right<-8, uint16_t>((uint16_t)0x1234) == 0x3400, "sg14::_impl::shift_right test failed");
-static_assert(_impl::shift_right<-8, uint16_t>((uint8_t)0x1234) == 0x3400, "sg14::_impl::shift_right test failed");
-static_assert(_impl::shift_right<-8, uint8_t>((uint16_t)0x1234) == 0x0, "sg14::_impl::shift_right test failed");
-static_assert(_impl::shift_right<-8, int16_t>(-123) == -31488, "sg14::_impl::shift_right test failed");
+static_assert(_impl::shift_right<-8, uint16>((uint16)0x1234) == 0x3400, "sg14::_impl::shift_right test failed");
+static_assert(_impl::shift_right<-8, uint16>((uint8)0x1234) == 0x3400, "sg14::_impl::shift_right test failed");
+static_assert(_impl::shift_right<-8, uint8>((uint16)0x1234) == 0x0, "sg14::_impl::shift_right test failed");
+static_assert(_impl::shift_right<-8, int16>(-123) == -31488, "sg14::_impl::shift_right test failed");
 
-static_assert(_impl::shift_left<-8, uint16_t>((uint16_t)0x1234) == 0x12, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<-8, uint16_t>((uint8_t)0x1234) == 0x0, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<-8, uint8_t>((uint16_t)0x1234) == 0x12, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<-8, int16_t>(-31488) == -123, "sg14::_impl::shift_left test failed");
+static_assert(_impl::shift_left<-8, uint16>((uint16)0x1234) == 0x12, "sg14::_impl::shift_left test failed");
+static_assert(_impl::shift_left<-8, uint16>((uint8)0x1234) == 0x0, "sg14::_impl::shift_left test failed");
+static_assert(_impl::shift_left<-8, uint8>((uint16)0x1234) == 0x12, "sg14::_impl::shift_left test failed");
+static_assert(_impl::shift_left<-8, int16>(-31488) == -123, "sg14::_impl::shift_left test failed");
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
@@ -167,25 +176,25 @@ static_assert(_impl::capacity<16>::value == 5, "sg14::_impl::capacity test faile
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::sufficient_repr
 
-static_assert(is_same<_impl::sufficient_repr<1, false>, uint8_t>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<1, true>, int8_t>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<8, false>, uint8_t>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<8, true>, int8_t>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<1, false>, uint8>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<1, true>, int8>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<8, false>, uint8>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<8, true>, int8>::value, "sg14::_impl::sufficient_repr");
 
-static_assert(is_same<_impl::sufficient_repr<9, false>, uint16_t>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<9, true>, int16_t>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<16, false>, uint16_t>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<16, true>, int16_t>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<9, false>, uint16>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<9, true>, int16>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<16, false>, uint16>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<16, true>, int16>::value, "sg14::_impl::sufficient_repr");
 
-static_assert(is_same<_impl::sufficient_repr<17, false>, uint32_t>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<17, true>, int32_t>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<32, false>, uint32_t>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<32, true>, int32_t>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<17, false>, uint32>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<17, true>, int32>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<32, false>, uint32>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<32, true>, int32>::value, "sg14::_impl::sufficient_repr");
 
-static_assert(is_same<_impl::sufficient_repr<33, false>, uint64_t>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<33, true>, int64_t>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<64, false>, uint64_t>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<64, true>, int64_t>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<33, false>, uint64>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<33, true>, int64>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<64, false>, uint64>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<64, true>, int64>::value, "sg14::_impl::sufficient_repr");
 
 #if defined(_SG14_FIXED_POINT_128)
 static_assert(is_same<_impl::sufficient_repr<65, false>, unsigned __int128>::value, "sg14::_impl::sufficient_repr");
@@ -201,14 +210,14 @@ static_assert(is_same<_impl::sufficient_repr<128, true>, __int128>::value, "sg14
 ////////////////////////////////////////////////////////////////////////////////
 // default second template parameter
 
-static_assert(is_same<fixed_point<int8_t>, fixed_point<int8_t, 0>>::value, "sg14::fixed_point test failed");
-static_assert(is_same<fixed_point<uint8_t>, fixed_point<uint8_t, 0>>::value, "sg14::fixed_point test failed");
-static_assert(is_same<fixed_point<int16_t>, fixed_point<int16_t, 0>>::value, "sg14::fixed_point test failed");
-static_assert(is_same<fixed_point<uint16_t>, fixed_point<uint16_t, 0>>::value, "sg14::fixed_point test failed");
-static_assert(is_same<fixed_point<int32_t>, fixed_point<int32_t, 0>>::value, "sg14::fixed_point test failed");
-static_assert(is_same<fixed_point<uint32_t>, fixed_point<uint32_t, 0>>::value, "sg14::fixed_point test failed");
-static_assert(is_same<fixed_point<int64_t>, fixed_point<int64_t, 0>>::value, "sg14::fixed_point test failed");
-static_assert(is_same<fixed_point<uint64_t>, fixed_point<uint64_t, 0>>::value, "sg14::fixed_point test failed");
+static_assert(is_same<fixed_point<int8>, fixed_point<int8, 0>>::value, "sg14::fixed_point test failed");
+static_assert(is_same<fixed_point<uint8>, fixed_point<uint8, 0>>::value, "sg14::fixed_point test failed");
+static_assert(is_same<fixed_point<int16>, fixed_point<int16, 0>>::value, "sg14::fixed_point test failed");
+static_assert(is_same<fixed_point<uint16>, fixed_point<uint16, 0>>::value, "sg14::fixed_point test failed");
+static_assert(is_same<fixed_point<int32>, fixed_point<int32, 0>>::value, "sg14::fixed_point test failed");
+static_assert(is_same<fixed_point<uint32>, fixed_point<uint32, 0>>::value, "sg14::fixed_point test failed");
+static_assert(is_same<fixed_point<int64>, fixed_point<int64, 0>>::value, "sg14::fixed_point test failed");
+static_assert(is_same<fixed_point<uint64>, fixed_point<uint64, 0>>::value, "sg14::fixed_point test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // default first template parameter
@@ -230,60 +239,60 @@ static_assert(make_fixed<31, 0>(-12.34f) == -12.f, "sg14::fixed_point test faile
 static_assert((make_fixed<63, 0>(-12.34f)) == -12.f, "sg14::fixed_point test failed");
 
 // exponent = -1
-static_assert(fixed_point<uint8_t, -1>(127.5) == 127.5, "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, -1>(127.5) == 127.5, "sg14::fixed_point test failed");
 
-static_assert(fixed_point<int8_t, -1>(63.5) == 63.5, "sg14::fixed_point test failed");
-static_assert(fixed_point<int8_t, -1>(-63.5) == -63.5, "sg14::fixed_point test failed");
+static_assert(fixed_point<int8, -1>(63.5) == 63.5, "sg14::fixed_point test failed");
+static_assert(fixed_point<int8, -1>(-63.5) == -63.5, "sg14::fixed_point test failed");
 
 // exponent == -7
-static_assert(fixed_point<uint8_t, -7>(.125f) == .125f, "sg14::fixed_point test failed");
-static_assert(fixed_point<uint16_t, -8>(232.125f) == 232.125f, "sg14::fixed_point test failed");
-static_assert(fixed_point<uint32_t, -7>(232.125f) == 232.125f, "sg14::fixed_point test failed");
-static_assert(fixed_point<uint64_t, -7>(232.125f) == 232.125f, "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, -7>(.125f) == .125f, "sg14::fixed_point test failed");
+static_assert(fixed_point<uint16, -8>(232.125f) == 232.125f, "sg14::fixed_point test failed");
+static_assert(fixed_point<uint32, -7>(232.125f) == 232.125f, "sg14::fixed_point test failed");
+static_assert(fixed_point<uint64, -7>(232.125f) == 232.125f, "sg14::fixed_point test failed");
 
-static_assert(fixed_point<int8_t, -7>(.125f) == .125f, "sg14::fixed_point test failed");
-static_assert(fixed_point<int16_t, -7>(123.125f) == 123.125f, "sg14::fixed_point test failed");
-static_assert(fixed_point<int32_t, -7>(123.125f) == 123.125f, "sg14::fixed_point test failed");
-static_assert(fixed_point<int64_t, -7>(123.125f) == 123.125f, "sg14::fixed_point test failed");
+static_assert(fixed_point<int8, -7>(.125f) == .125f, "sg14::fixed_point test failed");
+static_assert(fixed_point<int16, -7>(123.125f) == 123.125f, "sg14::fixed_point test failed");
+static_assert(fixed_point<int32, -7>(123.125f) == 123.125f, "sg14::fixed_point test failed");
+static_assert(fixed_point<int64, -7>(123.125f) == 123.125f, "sg14::fixed_point test failed");
 
-static_assert((fixed_point<uint8_t, -7>(.125f)) == .125f, "sg14::fixed_point test failed");
-static_assert(fixed_point<uint16_t, -8>(232.125f) == 232.125L, "sg14::fixed_point test failed");
-static_assert((fixed_point<uint32_t, -7>(232.125f)) == 232.125f, "sg14::fixed_point test failed");
-static_assert(fixed_point<uint64_t, -7>(232.125f) == 232.125L, "sg14::fixed_point test failed");
+static_assert((fixed_point<uint8, -7>(.125f)) == .125f, "sg14::fixed_point test failed");
+static_assert(fixed_point<uint16, -8>(232.125f) == 232.125L, "sg14::fixed_point test failed");
+static_assert((fixed_point<uint32, -7>(232.125f)) == 232.125f, "sg14::fixed_point test failed");
+static_assert(fixed_point<uint64, -7>(232.125f) == 232.125L, "sg14::fixed_point test failed");
 
-static_assert(fixed_point<int8_t, -7>(1) != 1.L, "sg14::fixed_point test failed");
-static_assert(fixed_point<int8_t, -7>(.5) == .5f, "sg14::fixed_point test failed");
-static_assert(fixed_point<int8_t, -7>(.125f) == .125L, "sg14::fixed_point test failed");
-static_assert(fixed_point<int16_t, -7>(123.125f) != 123, "sg14::fixed_point test failed");
-static_assert(fixed_point<int32_t, -7>(123.125f) == 123.125, "sg14::fixed_point test failed");
-static_assert(fixed_point<int64_t, -7>(123.125l) == 123.125f, "sg14::fixed_point test failed");
+static_assert(fixed_point<int8, -7>(1) != 1.L, "sg14::fixed_point test failed");
+static_assert(fixed_point<int8, -7>(.5) == .5f, "sg14::fixed_point test failed");
+static_assert(fixed_point<int8, -7>(.125f) == .125L, "sg14::fixed_point test failed");
+static_assert(fixed_point<int16, -7>(123.125f) != 123, "sg14::fixed_point test failed");
+static_assert(fixed_point<int32, -7>(123.125f) == 123.125, "sg14::fixed_point test failed");
+static_assert(fixed_point<int64, -7>(123.125l) == 123.125f, "sg14::fixed_point test failed");
 
 // exponent == 16
-static_assert(fixed_point<uint8_t, 16>(65536) == 65536.f, "sg14::fixed_point test failed");
-static_assert(fixed_point<uint16_t, 16>(6553.) == 0, "sg14::fixed_point test failed");
-static_assert((fixed_point<uint32_t, 16>(4294967296l)) == 4294967296.f, "sg14::fixed_point test failed");
-static_assert((fixed_point<uint64_t, 16>(1125895611875328l)) == 1125895611875328l, "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, 16>(65536) == 65536.f, "sg14::fixed_point test failed");
+static_assert(fixed_point<uint16, 16>(6553.) == 0, "sg14::fixed_point test failed");
+static_assert((fixed_point<uint32, 16>(4294967296l)) == 4294967296.f, "sg14::fixed_point test failed");
+static_assert((fixed_point<uint64, 16>(1125895611875328l)) == 1125895611875328l, "sg14::fixed_point test failed");
 
-static_assert(fixed_point<int8_t, 16>(-65536) == -65536.f, "sg14::fixed_point test failed");
-static_assert(fixed_point<int16_t, 16>(-6553.) == 0, "sg14::fixed_point test failed");
-static_assert((fixed_point<int32_t, 16>(-4294967296l)) == -4294967296.f, "sg14::fixed_point test failed");
-static_assert((fixed_point<int64_t, 16>(-1125895611875328l)) == -1125895611875328l, "sg14::fixed_point test failed");
+static_assert(fixed_point<int8, 16>(-65536) == -65536.f, "sg14::fixed_point test failed");
+static_assert(fixed_point<int16, 16>(-6553.) == 0, "sg14::fixed_point test failed");
+static_assert((fixed_point<int32, 16>(-4294967296l)) == -4294967296.f, "sg14::fixed_point test failed");
+static_assert((fixed_point<int64, 16>(-1125895611875328l)) == -1125895611875328l, "sg14::fixed_point test failed");
 
 // exponent = 1
-static_assert(fixed_point<uint8_t, 1>(510) == 510, "sg14::fixed_point test failed");
-static_assert(fixed_point<uint8_t, 1>(511) == 510, "sg14::fixed_point test failed");
-static_assert(fixed_point<int8_t, 1>(123.5) == 122, "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, 1>(510) == 510, "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, 1>(511) == 510, "sg14::fixed_point test failed");
+static_assert(fixed_point<int8, 1>(123.5) == 122, "sg14::fixed_point test failed");
 
-static_assert(fixed_point<int8_t, 1>(255) == 254, "sg14::fixed_point test failed");
-static_assert(fixed_point<int8_t, 1>(254) == 254, "sg14::fixed_point test failed");
-static_assert(fixed_point<int8_t, 1>(-5) == -6, "sg14::fixed_point test failed");
+static_assert(fixed_point<int8, 1>(255) == 254, "sg14::fixed_point test failed");
+static_assert(fixed_point<int8, 1>(254) == 254, "sg14::fixed_point test failed");
+static_assert(fixed_point<int8, 1>(-5) == -6, "sg14::fixed_point test failed");
 
 // conversion between fixed_point specializations
 static_assert(make_ufixed<4, 4>(make_fixed<7, 8>(1.5)) == 1.5, "sg14::fixed_point test failed");
 static_assert(make_ufixed<8, 8>(make_fixed<3, 4>(3.25)) == 3.25, "sg14::fixed_point test failed");
-static_assert(fixed_point<uint8_t, 4>(fixed_point<int16_t, -4>(768)) == 768, "sg14::fixed_point test failed");
-static_assert(fixed_point<uint64_t, -48>(fixed_point<uint32_t, -24>(3.141592654)) > 3.1415923f, "sg14::fixed_point test failed");
-static_assert(fixed_point<uint64_t, -48>(fixed_point<uint32_t, -24>(3.141592654)) < 3.1415927f, "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, 4>(fixed_point<int16, -4>(768)) == 768, "sg14::fixed_point test failed");
+static_assert(fixed_point<uint64, -48>(fixed_point<uint32, -24>(3.141592654)) > 3.1415923f, "sg14::fixed_point test failed");
+static_assert(fixed_point<uint64, -48>(fixed_point<uint32, -24>(3.141592654)) < 3.1415927f, "sg14::fixed_point test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // boolean
@@ -311,74 +320,74 @@ static_assert((make_ufixed<8, 0>(0x55) * make_ufixed<8, 0>(2)) == 0xaa, "sg14::f
 static_assert((make_fixed<15, 16>(123.75) * make_fixed<15, 16>(44.5)) == 5506.875, "sg14::fixed_point test failed");
 
 // division
-static_assert((fixed_point<int8_t, -1>(63) / fixed_point<int8_t, -1>(-4)) == -16, "sg14::fixed_point test failed");
-static_assert((fixed_point<int8_t, 1>(-255) / fixed_point<int8_t, 1>(-8)) == 32, "sg14::fixed_point test failed");
+static_assert((fixed_point<int8, -1>(63) / fixed_point<int8, -1>(-4)) == -16, "sg14::fixed_point test failed");
+static_assert((fixed_point<int8, 1>(-255) / fixed_point<int8, 1>(-8)) == 32, "sg14::fixed_point test failed");
 static_assert((make_fixed<31, 0>(-999) / make_fixed<31, 0>(3)) == -333, "sg14::fixed_point test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::promote_result
 
-static_assert(is_same<promote_result<fixed_point<int8_t, -4>>, fixed_point<int16_t, -8>>::value, "sg14::promote_result test failed");
-static_assert(is_same<promote_result<fixed_point<uint32_t, 44>>, fixed_point<uint64_t, 88>>::value, "sg14::promote_result test failed");
+static_assert(is_same<promote_result<fixed_point<int8, -4>>, fixed_point<int16, -8>>::value, "sg14::promote_result test failed");
+static_assert(is_same<promote_result<fixed_point<uint32, 44>>, fixed_point<uint64, 88>>::value, "sg14::promote_result test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::demote_result
 
-static_assert(is_same<fixed_point<int8_t, -4>, demote_result<fixed_point<int16_t, -9>>>::value, "sg14::demote_result test failed");
-static_assert(is_same<fixed_point<uint32_t, 44>, demote_result<fixed_point<uint64_t, 88>>>::value, "sg14::demote_result test failed");
+static_assert(is_same<fixed_point<int8, -4>, demote_result<fixed_point<int16, -9>>>::value, "sg14::demote_result test failed");
+static_assert(is_same<fixed_point<uint32, 44>, demote_result<fixed_point<uint64, 88>>>::value, "sg14::demote_result test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::make_fixed_from_repr
 
-static_assert(make_fixed_from_repr<uint8_t, 8>::integer_digits == 8, "sg14::make_fixed_from_repr test failed");
-static_assert(make_fixed_from_repr<int32_t, 27>::integer_digits == 27, "sg14::make_fixed_from_repr test failed");
+static_assert(make_fixed_from_repr<uint8, 8>::integer_digits == 8, "sg14::make_fixed_from_repr test failed");
+static_assert(make_fixed_from_repr<int32, 27>::integer_digits == 27, "sg14::make_fixed_from_repr test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::common_repr_type
 
 // unary - pretty simple
-static_assert(is_same<_impl::common_repr_type<int8_t>, int8_t>::value, "sg14::_impl::common_repr_type test failed");
-static_assert(is_same<_impl::common_repr_type<uint64_t>, uint64_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int8>, int8>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<uint64>, uint64>::value, "sg14::_impl::common_repr_type test failed");
 
 // binary
-static_assert(is_same<_impl::common_repr_type<uint8_t, uint8_t>, uint8_t>::value, "sg14::_impl::common_repr_type test failed");
-static_assert(is_same<_impl::common_repr_type<int8_t, uint64_t>, int64_t>::value, "sg14::_impl::common_repr_type test failed");
-static_assert(is_same<_impl::common_repr_type<uint32_t, int8_t>, int32_t>::value, "sg14::_impl::common_repr_type test failed");
-static_assert(is_same<_impl::common_repr_type<int16_t, int16_t>, int16_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<uint8, uint8>, uint8>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int8, uint64>, int64>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<uint32, int8>, int32>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int16, int16>, int16>::value, "sg14::_impl::common_repr_type test failed");
 
 // and beyond
-static_assert(is_same<_impl::common_repr_type<uint32_t, uint8_t, int64_t>, int64_t>::value, "sg14::_impl::common_repr_type test failed");
-static_assert(is_same<_impl::common_repr_type<int64_t, uint8_t, int32_t>, int64_t>::value, "sg14::_impl::common_repr_type test failed");
-static_assert(is_same<_impl::common_repr_type<uint32_t, int32_t, uint16_t>, int32_t>::value, "sg14::_impl::common_repr_type test failed");
-static_assert(is_same<_impl::common_repr_type<int8_t, int16_t, uint8_t>, int16_t>::value, "sg14::_impl::common_repr_type test failed");
-static_assert(is_same<_impl::common_repr_type<int8_t, int8_t, int8_t, int8_t, uint8_t>, int8_t>::value, "sg14::_impl::common_repr_type test failed");
-static_assert(is_same<_impl::common_repr_type<int8_t, uint16_t, int32_t, uint64_t>, int64_t>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<uint32, uint8, int64>, int64>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int64, uint8, int32>, int64>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<uint32, int32, uint16>, int32>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int8, int16, uint8>, int16>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int8, int8, int8, int8, uint8>, int8>::value, "sg14::_impl::common_repr_type test failed");
+static_assert(is_same<_impl::common_repr_type<int8, uint16, int32, uint64>, int64>::value, "sg14::_impl::common_repr_type test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::common_type
 
 // commonality never occurs when inputs are the same fixed_point type
-static_assert(is_same<_impl::common_type<fixed_point<int8_t, -3>, fixed_point<int8_t, -3>>, fixed_point<int8_t, -3>>::value, "sg14::_impl::common_type test failed");
-static_assert(is_same<_impl::common_type<fixed_point<int32_t, -14>, fixed_point<int32_t, -14>>, fixed_point<int32_t, -14>>::value, "sg14::_impl::common_type test failed");
-static_assert(is_same<_impl::common_type<fixed_point<int64_t, -48>, fixed_point<int64_t, -48>>, fixed_point<int64_t, -48>>::value, "sg14::_impl::common_type test failed");
+static_assert(is_same<_impl::common_type<fixed_point<int8, -3>, fixed_point<int8, -3>>, fixed_point<int8, -3>>::value, "sg14::_impl::common_type test failed");
+static_assert(is_same<_impl::common_type<fixed_point<int32, -14>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value, "sg14::_impl::common_type test failed");
+static_assert(is_same<_impl::common_type<fixed_point<int64, -48>, fixed_point<int64, -48>>, fixed_point<int64, -48>>::value, "sg14::_impl::common_type test failed");
 
 // commonality between homogeneous fixed_point types
-static_assert(is_same<_impl::common_type<fixed_point<uint8_t, -4>, fixed_point<int8_t, -4>>, fixed_point<int8_t, -3>>::value, "sg14::_impl::common_type test failed");
-static_assert(is_same<_impl::common_type<fixed_point<int16_t, -4>, fixed_point<int32_t, -14>>, fixed_point<int32_t, -14>>::value, "v");
-static_assert(is_same<_impl::common_type<fixed_point<int16_t, 0>, fixed_point<uint64_t, -60>>, fixed_point<int64_t, -48>>::value, "sg14::_impl::common_type test failed");
+static_assert(is_same<_impl::common_type<fixed_point<uint8, -4>, fixed_point<int8, -4>>, fixed_point<int8, -3>>::value, "sg14::_impl::common_type test failed");
+static_assert(is_same<_impl::common_type<fixed_point<int16, -4>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value, "v");
+static_assert(is_same<_impl::common_type<fixed_point<int16, 0>, fixed_point<uint64, -60>>, fixed_point<int64, -48>>::value, "sg14::_impl::common_type test failed");
 
 // commonality between arithmetic and fixed_point types
-static_assert(is_same<_impl::common_type<float, fixed_point<int8_t, -4>>, float>::value, "sg14::_impl::common_type test failed");
-static_assert(is_same<_impl::common_type<double, fixed_point<int32_t, -14>>, double>::value, "sg14::_impl::common_type test failed");
-static_assert(is_same<_impl::common_type<int8_t, fixed_point<uint64_t, -60>>, fixed_point<uint64_t, -60>>::value, "sg14::_impl::common_type test failed");
-static_assert(is_same<_impl::common_type<fixed_point<uint8_t, -4>, uint32_t>, fixed_point<uint8_t, -4>>::value, "sg14::_impl::common_type test failed");
-static_assert(is_same<_impl::common_type<fixed_point<int16_t, -4>, float>, float>::value, "sg14::_impl::common_type test failed");
-static_assert(is_same<_impl::common_type<fixed_point<int16_t, 0>, double>, double>::value, "sg14::_impl::common_type test failed");
+static_assert(is_same<_impl::common_type<float, fixed_point<int8, -4>>, float>::value, "sg14::_impl::common_type test failed");
+static_assert(is_same<_impl::common_type<double, fixed_point<int32, -14>>, double>::value, "sg14::_impl::common_type test failed");
+static_assert(is_same<_impl::common_type<int8, fixed_point<uint64, -60>>, fixed_point<uint64, -60>>::value, "sg14::_impl::common_type test failed");
+static_assert(is_same<_impl::common_type<fixed_point<uint8, -4>, uint32>, fixed_point<uint8, -4>>::value, "sg14::_impl::common_type test failed");
+static_assert(is_same<_impl::common_type<fixed_point<int16, -4>, float>, float>::value, "sg14::_impl::common_type test failed");
+static_assert(is_same<_impl::common_type<fixed_point<int16, 0>, double>, double>::value, "sg14::_impl::common_type test failed");
 
 // commonality between two non-fixed-point types (won't compile)
 //static_assert(is_same<_impl::common_type<float, float>, float>::value, "sg14::_impl::common_type test failed");
-//static_assert(is_same<_impl::common_type<double, uint16_t>, double>::value, "sg14::_impl::common_type test failed");
-//static_assert(is_same<_impl::common_type<int8_t, int8_t>, fixed_point<int64_t, -56>>::value, "sg14::_impl::common_type test failed");
+//static_assert(is_same<_impl::common_type<double, uint16>, double>::value, "sg14::_impl::common_type test failed");
+//static_assert(is_same<_impl::common_type<int8, int8>, fixed_point<int64, -56>>::value, "sg14::_impl::common_type test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::multiply
@@ -395,37 +404,37 @@ static_assert(_impl::divide<make_fixed<1, 14>>(make_fixed<1, 6>(1), make_fixed<7
 // comparison
 
 // heterogeneous fixed-point to fixed-point comparison
-static_assert(fixed_point<uint8_t, -4>(4.5) == fixed_point<int16_t, -7>(4.5), "sg14::fixed_point test failed");
-static_assert(!(fixed_point<uint8_t, -4>(4.5) == fixed_point<int16_t, -7>(-4.5)), "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, -4>(4.5) == fixed_point<int16, -7>(4.5), "sg14::fixed_point test failed");
+static_assert(!(fixed_point<uint8, -4>(4.5) == fixed_point<int16, -7>(-4.5)), "sg14::fixed_point test failed");
 
-static_assert(fixed_point<uint8_t, -4>(4.5) != fixed_point<int16_t, -7>(-4.5), "sg14::fixed_point test failed");
-static_assert(!(fixed_point<uint8_t, -4>(4.5) != fixed_point<int16_t, -7>(4.5)), "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, -4>(4.5) != fixed_point<int16, -7>(-4.5), "sg14::fixed_point test failed");
+static_assert(!(fixed_point<uint8, -4>(4.5) != fixed_point<int16, -7>(4.5)), "sg14::fixed_point test failed");
 
-static_assert(fixed_point<uint8_t, -4>(4.5) < fixed_point<int16_t, -7>(5.6), "sg14::fixed_point test failed");
-static_assert(!(fixed_point<int8_t, -3>(-4.5) < fixed_point<int16_t, -7>(-5.6)), "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, -4>(4.5) < fixed_point<int16, -7>(5.6), "sg14::fixed_point test failed");
+static_assert(!(fixed_point<int8, -3>(-4.5) < fixed_point<int16, -7>(-5.6)), "sg14::fixed_point test failed");
 
-static_assert(fixed_point<uint8_t, -4>(4.6) > fixed_point<int16_t, -8>(4.5), "sg14::fixed_point test failed");
-static_assert(!(fixed_point<uint8_t, -4>(4.6) < fixed_point<int16_t, -8>(-4.5)), "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, -4>(4.6) > fixed_point<int16, -8>(4.5), "sg14::fixed_point test failed");
+static_assert(!(fixed_point<uint8, -4>(4.6) < fixed_point<int16, -8>(-4.5)), "sg14::fixed_point test failed");
 
-static_assert(fixed_point<uint8_t, -4>(4.5) <= fixed_point<int16_t, -8>(4.5), "sg14::fixed_point test failed");
-static_assert(!(fixed_point<uint8_t, -4>(4.5) <= fixed_point<int16_t, -8>(-4.5)), "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, -4>(4.5) <= fixed_point<int16, -8>(4.5), "sg14::fixed_point test failed");
+static_assert(!(fixed_point<uint8, -4>(4.5) <= fixed_point<int16, -8>(-4.5)), "sg14::fixed_point test failed");
 
-static_assert(fixed_point<uint8_t, -4>(4.5) >= fixed_point<int16_t, -8>(4.5), "sg14::fixed_point test failed");
-static_assert(fixed_point<uint8_t, -4>(4.5) >= fixed_point<int16_t, -8>(-4.5), "sg14::fixed_point test failed");
-static_assert(!(fixed_point<uint8_t, -4>(4.5) >= fixed_point<int16_t, -8>(4.6)), "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, -4>(4.5) >= fixed_point<int16, -8>(4.5), "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, -4>(4.5) >= fixed_point<int16, -8>(-4.5), "sg14::fixed_point test failed");
+static_assert(!(fixed_point<uint8, -4>(4.5) >= fixed_point<int16, -8>(4.6)), "sg14::fixed_point test failed");
 
 // TODO: Is this acceptable?
-static_assert(fixed_point<uint8_t, -1>(.5) == fixed_point<uint8_t, 0>(0), "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, -1>(.5) == fixed_point<uint8, 0>(0), "sg14::fixed_point test failed");
 
 // heterogeneous fixed-point to arithmetic comparison
-static_assert(fixed_point<uint8_t, -4>(4.5) == 4.5, "sg14::fixed_point test failed");
-static_assert(!(4 == fixed_point<int16_t, -7>(-4.5)), "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, -4>(4.5) == 4.5, "sg14::fixed_point test failed");
+static_assert(!(4 == fixed_point<int16, -7>(-4.5)), "sg14::fixed_point test failed");
 
-static_assert(4.5f != fixed_point<int16_t, -7>(-4.5), "sg14::fixed_point test failed");
-static_assert(!(fixed_point<uint64_t, -4>(4.5) != 4.5L), "sg14::fixed_point test failed");
+static_assert(4.5f != fixed_point<int16, -7>(-4.5), "sg14::fixed_point test failed");
+static_assert(!(fixed_point<uint64, -4>(4.5) != 4.5L), "sg14::fixed_point test failed");
 
-static_assert(4.5 < fixed_point<int16_t, -7>(5.6), "sg14::fixed_point test failed");
-static_assert(!(fixed_point<int32_t, -3>(-4.5) < -5.6), "sg14::fixed_point test failed");
+static_assert(4.5 < fixed_point<int16, -7>(5.6), "sg14::fixed_point test failed");
+static_assert(!(fixed_point<int32, -3>(-4.5) < -5.6), "sg14::fixed_point test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // arithmetic operators
@@ -434,23 +443,23 @@ static_assert(!(fixed_point<int32_t, -3>(-4.5) < -5.6), "sg14::fixed_point test 
 static_assert(make_fixed<2, 5>(2.125) + make_fixed<2, 5>(-3.25) == -1.125f, "arithmetic operators test failed");
 static_assert(is_same<decltype(make_fixed<2, 5>(2.125) + make_fixed<2, 5>(-3.25)), make_fixed<2, 5>>::value, "arithmetic operators test failed");
 
-static_assert(fixed_point<uint8_t, 10>(10240) + 2048 == 12288, "arithmetic operators test failed");
-static_assert(is_same<decltype(fixed_point<uint8_t, 10>(10240) + 2048), fixed_point<uint8_t, 10>>::value, "arithmetic operators test failed");
-static_assert(2048 + fixed_point<uint8_t, 10>(10240) == 12288, "arithmetic operators test failed");
-static_assert(is_same<decltype(2048 + fixed_point<uint8_t, 10>(10240)), fixed_point<uint8_t, 10>>::value, "arithmetic operators test failed");
+static_assert(fixed_point<uint8, 10>(10240) + 2048 == 12288, "arithmetic operators test failed");
+static_assert(is_same<decltype(fixed_point<uint8, 10>(10240) + 2048), fixed_point<uint8, 10>>::value, "arithmetic operators test failed");
+static_assert(2048 + fixed_point<uint8, 10>(10240) == 12288, "arithmetic operators test failed");
+static_assert(is_same<decltype(2048 + fixed_point<uint8, 10>(10240)), fixed_point<uint8, 10>>::value, "arithmetic operators test failed");
 
 static_assert(765.432f + make_fixed<31, 32>(16777215.996093750) == 16777981.428100586, "arithmetic operators test failed");
 static_assert(is_same<decltype(765.432f + make_fixed<31, 32>(16777215.996093750)), double>::value, "arithmetic operators test failed");
 static_assert(make_fixed<31, 32>(16777215.996093750) + 765.432f == 16777981.428100586, "arithmetic operators test failed");
 static_assert(is_same<decltype(make_fixed<31, 32>(16777215.996093750) + 765.432f), double>::value, "arithmetic operators test failed");
 
-static_assert(fixed_point<int32_t,-16>(.5) + 2 == 2.5, "arithmetic operators test failed");
+static_assert(fixed_point<int32,-16>(.5) + 2 == 2.5, "arithmetic operators test failed");
 
 // subtraction
 static_assert(make_fixed<2, 5>(2.125) - make_fixed<2, 5>(3.25) == -1.125f, "arithmetic operators test failed");
 static_assert(is_same<decltype(make_fixed<2, 5>(2.125) - make_fixed<2, 5>(-3.25)), make_fixed<2, 5>>::value, "arithmetic operators test failed");
-static_assert(fixed_point<uint8_t, 10>(10240) - 2048 == 8192, "arithmetic operators test failed");
-static_assert(is_same<decltype(fixed_point<uint8_t, 10>(10240) - 2048), fixed_point<uint8_t, 10>>::value, "arithmetic operators test failed");
+static_assert(fixed_point<uint8, 10>(10240) - 2048 == 8192, "arithmetic operators test failed");
+static_assert(is_same<decltype(fixed_point<uint8, 10>(10240) - 2048), fixed_point<uint8, 10>>::value, "arithmetic operators test failed");
 static_assert(765.432f - make_fixed<31, 32>(16777215.996093750) == -16776450.564086914, "arithmetic operators test failed");
 static_assert(is_same<decltype(765.432f - make_fixed<31, 32>(16777215.996093750)), double>::value, "arithmetic operators test failed");
 
@@ -458,10 +467,10 @@ static_assert(is_same<decltype(765.432f - make_fixed<31, 32>(16777215.996093750)
 static_assert(make_fixed<2, 5>(2.125) * make_fixed<2, 5>(-1.75f) == -3.71875, "arithmetic operators test failed");
 static_assert(is_same<decltype(make_fixed<2, 5>(2.125) * make_fixed<2, 5>(-3.25)), make_fixed<2, 5>>::value, "arithmetic operators test failed");
 
-static_assert(fixed_point<uint8_t, 10>(10240) * 3u == 30720, "arithmetic operators test failed");
-static_assert(is_same<decltype(fixed_point<uint8_t, 10>(10240) * 3u), fixed_point<uint8_t, 10>>::value, "arithmetic operators test failed");
-static_assert(3u * fixed_point<uint8_t, 10>(10240) == 30720, "arithmetic operators test failed");
-static_assert(is_same<decltype(3u * fixed_point<uint8_t, 10>(10240)), fixed_point<uint8_t, 10>>::value, "arithmetic operators test failed");
+static_assert(fixed_point<uint8, 10>(10240) * 3u == 30720, "arithmetic operators test failed");
+static_assert(is_same<decltype(fixed_point<uint8, 10>(10240) * 3u), fixed_point<uint8, 10>>::value, "arithmetic operators test failed");
+static_assert(3u * fixed_point<uint8, 10>(10240) == 30720, "arithmetic operators test failed");
+static_assert(is_same<decltype(3u * fixed_point<uint8, 10>(10240)), fixed_point<uint8, 10>>::value, "arithmetic operators test failed");
 
 static_assert(-123.654f * make_fixed<31, 32>(16777215.996093750) == -2074569855.5169766, "arithmetic operators test failed");
 static_assert(is_same<decltype(765.432f * make_fixed<31, 32>(16777215.996093750)), double>::value, "arithmetic operators test failed");
@@ -472,10 +481,10 @@ static_assert(is_same<decltype(make_fixed<31, 32>(16777215.996093750) * -123.654
 static_assert(make_fixed<2, 5>(2.5) / make_fixed<2, 5>(-4.f) == -.625, "arithmetic operators test failed");
 static_assert(is_same<decltype(make_fixed<2, 5>(2.5) / make_fixed<2, 5>(-4.f)), make_fixed<2, 5>>::value, "arithmetic operators test failed");
 
-static_assert(fixed_point<uint8_t, 10>(10240) / 3u == 3072, "arithmetic operators test failed");
-static_assert(is_same<decltype(fixed_point<uint8_t, 10>(10240) / 3u), fixed_point<uint8_t, 10>>::value, "arithmetic operators test failed");
-static_assert(10 / fixed_point<uint8_t, -2>(0.25) == 40.L, "arithmetic operators test failed");
-static_assert(is_same<decltype(10 / fixed_point<uint8_t, -2>(0.25)), fixed_point<uint8_t, -2>>::value, "arithmetic operators test failed");
+static_assert(fixed_point<uint8, 10>(10240) / 3u == 3072, "arithmetic operators test failed");
+static_assert(is_same<decltype(fixed_point<uint8, 10>(10240) / 3u), fixed_point<uint8, 10>>::value, "arithmetic operators test failed");
+static_assert(10 / fixed_point<uint8, -2>(0.25) == 40.L, "arithmetic operators test failed");
+static_assert(is_same<decltype(10 / fixed_point<uint8, -2>(0.25)), fixed_point<uint8, -2>>::value, "arithmetic operators test failed");
 
 static_assert(16777215.996093750 / make_fixed<31, 32>(-123.654f) == -135678.71712347874, "arithmetic operators test failed");
 static_assert(is_same<decltype(16777215.996093750 / make_fixed<31, 32>(-123.654f)), double>::value, "arithmetic operators test failed");
@@ -485,9 +494,9 @@ static_assert(is_same<decltype(make_fixed<31, 32>(16777215.996093750) / -123.654
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_add_result
 
-static_assert(trunc_add_result<fixed_point<uint8_t, -4>>::integer_digits == 5, "sg14::trunc_add_result test failed");
-static_assert(trunc_add_result<fixed_point<int32_t, -25>, 4>::integer_digits == 8, "sg14::trunc_add_result test failed");
-static_assert(is_same<trunc_add_result<fixed_point<int8_t, 0>, 2>, fixed_point<int8_t, 1>>::value, "sg14::trunc_add_result test failed");
+static_assert(trunc_add_result<fixed_point<uint8, -4>>::integer_digits == 5, "sg14::trunc_add_result test failed");
+static_assert(trunc_add_result<fixed_point<int32, -25>, 4>::integer_digits == 8, "sg14::trunc_add_result test failed");
+static_assert(is_same<trunc_add_result<fixed_point<int8, 0>, 2>, fixed_point<int8, 1>>::value, "sg14::trunc_add_result test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_add
@@ -516,9 +525,9 @@ static_assert(trunc_subtract(make_fixed<7, 0>(-128), make_fixed<7, 0>(127)) == -
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_multiply_result
 
-static_assert(trunc_multiply_result<fixed_point<uint8_t, -4>>::integer_digits == 8, "sg14::trunc_multiply_result test failed");
-static_assert(trunc_multiply_result<fixed_point<int32_t, -25>>::integer_digits == 12, "sg14::trunc_multiply_result test failed");
-static_assert(trunc_multiply_result<fixed_point<uint8_t, 0>>::integer_digits == 16, "sg14::trunc_multiply_result test failed");
+static_assert(trunc_multiply_result<fixed_point<uint8, -4>>::integer_digits == 8, "sg14::trunc_multiply_result test failed");
+static_assert(trunc_multiply_result<fixed_point<int32, -25>>::integer_digits == 12, "sg14::trunc_multiply_result test failed");
+static_assert(trunc_multiply_result<fixed_point<uint8, 0>>::integer_digits == 16, "sg14::trunc_multiply_result test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_multiply
@@ -536,11 +545,11 @@ static_assert(trunc_multiply(make_fixed<4, 3>(-16), make_fixed<4, 3>(-16)) == -2
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_divide_result
 
-static_assert(trunc_divide_result<fixed_point<uint8_t, -4>>::integer_digits == 8, "sg14::trunc_divide_result test failed");
+static_assert(trunc_divide_result<fixed_point<uint8, -4>>::integer_digits == 8, "sg14::trunc_divide_result test failed");
 static_assert(trunc_divide_result<make_fixed<4, 3>>::integer_digits == 7, "sg14::trunc_divide_result test failed");
-static_assert(trunc_divide_result<fixed_point<int32_t, -25>>::integer_digits == 31, "sg14::trunc_divide_result test failed");
-static_assert(trunc_divide_result<fixed_point<uint8_t, 0>>::integer_digits == 8, "sg14::trunc_divide_result test failed");
-static_assert(is_same<trunc_divide_result<make_fixed<15, 0>, make_fixed<7, 8>>, fixed_point<int16_t, 8>>::value, "sg14::trunc_divide_result test failed");
+static_assert(trunc_divide_result<fixed_point<int32, -25>>::integer_digits == 31, "sg14::trunc_divide_result test failed");
+static_assert(trunc_divide_result<fixed_point<uint8, 0>>::integer_digits == 8, "sg14::trunc_divide_result test failed");
+static_assert(is_same<trunc_divide_result<make_fixed<15, 0>, make_fixed<7, 8>>, fixed_point<int16, 8>>::value, "sg14::trunc_divide_result test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_divide
@@ -549,7 +558,7 @@ static_assert(trunc_divide(make_fixed<15, 0>(16129), make_fixed<15, 0>(127)) == 
 static_assert(trunc_divide(make_ufixed<8, 0>(240), make_ufixed<4, 4>(.9375)) == 256, "sg14::trunc_divide test failed");
 static_assert(trunc_divide(make_ufixed<4, 4>(0.0625), make_ufixed<4, 4>(0.0625)) == 1.f, "sg14::trunc_divide test failed");
 static_assert(trunc_divide(make_ufixed<8, 0>(0), make_ufixed<8, 0>(1)) == 0.f, "sg14::trunc_divide test failed");
-static_assert(trunc_divide(fixed_point<uint16_t, 0>(4096), make_ufixed<8, 0>(25)) == 163., "sg14::trunc_divide test failed");
+static_assert(trunc_divide(fixed_point<uint16, 0>(4096), make_ufixed<8, 0>(25)) == 163., "sg14::trunc_divide test failed");
 static_assert(trunc_divide(make_fixed<14, 0, false>(4288), make_fixed<6, 2, false>(25)) == 171, "sg14::trunc_divide test failed");
 static_assert((trunc_divide(make_fixed<20>(1040352), make_fixed<16, 0, false>(65535))) == 15.87451171875, "sg14::trunc_divide test failed");
 static_assert(trunc_divide(make_fixed<15>(254), make_fixed<4, 3>(-15.875)) == -16, "sg14::trunc_divide test failed");
@@ -557,11 +566,11 @@ static_assert(trunc_divide(make_fixed<15>(254), make_fixed<4, 3>(-15.875)) == -1
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_reciprocal_result
 
-static_assert(is_same<trunc_reciprocal_result<fixed_point<uint8_t, -4>>, fixed_point<uint8_t, -3>>::value, "sg14::trunc_reciprocal_result test failed");
+static_assert(is_same<trunc_reciprocal_result<fixed_point<uint8, -4>>, fixed_point<uint8, -3>>::value, "sg14::trunc_reciprocal_result test failed");
 static_assert(is_same<trunc_reciprocal_result<make_fixed<4, 3>>, make_fixed<4, 3>>::value, "sg14::trunc_reciprocal_result test failed");
-static_assert(is_same<trunc_reciprocal_result<fixed_point<int32_t, -25>>, fixed_point<int32_t, -5>>::value, "sg14::trunc_reciprocal_result test failed");
-static_assert(is_same<trunc_reciprocal_result<fixed_point<uint8_t, 0>>, fixed_point<uint8_t, -7>>::value, "sg14::trunc_reciprocal_result test failed");
-static_assert(is_same<trunc_reciprocal_result<make_fixed<15, 0>>, fixed_point<int16_t, -14>>::value, "sg14::trunc_reciprocal_result test failed");
+static_assert(is_same<trunc_reciprocal_result<fixed_point<int32, -25>>, fixed_point<int32, -5>>::value, "sg14::trunc_reciprocal_result test failed");
+static_assert(is_same<trunc_reciprocal_result<fixed_point<uint8, 0>>, fixed_point<uint8, -7>>::value, "sg14::trunc_reciprocal_result test failed");
+static_assert(is_same<trunc_reciprocal_result<make_fixed<15, 0>>, fixed_point<int16, -14>>::value, "sg14::trunc_reciprocal_result test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_reciprocal
@@ -601,17 +610,17 @@ static_assert(trunc_sqrt(make_ufixed<8, 0>(240)) == 15.f, "sg14::trunc_sqrt test
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_shift_left / trunc_shift_right
 
-static_assert(trunc_shift_left<8>(fixed_point<uint16_t>(0x1234)) == 0x123400, "sg14::trunc_sqrt test failed");
-static_assert(trunc_shift_left<-2>(fixed_point<uint16_t>(128)) == 32, "sg14::trunc_sqrt test failed");
-static_assert(trunc_shift_right<-8>(fixed_point<uint16_t>(0x1234)) == 0x123400, "sg14::trunc_sqrt test failed");
-static_assert(trunc_shift_right<2>(fixed_point<uint16_t>(128)) == 32, "sg14::trunc_sqrt test failed");
+static_assert(trunc_shift_left<8>(fixed_point<uint16>(0x1234)) == 0x123400, "sg14::trunc_sqrt test failed");
+static_assert(trunc_shift_left<-2>(fixed_point<uint16>(128)) == 32, "sg14::trunc_sqrt test failed");
+static_assert(trunc_shift_right<-8>(fixed_point<uint16>(0x1234)) == 0x123400, "sg14::trunc_sqrt test failed");
+static_assert(trunc_shift_right<2>(fixed_point<uint16>(128)) == 32, "sg14::trunc_sqrt test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::promote_add_result
 
-static_assert(promote_add_result<fixed_point<uint8_t, -4>>::integer_digits == 5, "sg14::promote_add_result test failed");
-static_assert(promote_add_result<fixed_point<int32_t, -25>, 4>::integer_digits == 8, "sg14::promote_add_result test failed");
-static_assert(is_same<promote_add_result<fixed_point<int8_t, 0>, 2>, fixed_point<int16_t, -7>>::value, "sg14::promote_add_result test failed");
+static_assert(promote_add_result<fixed_point<uint8, -4>>::integer_digits == 5, "sg14::promote_add_result test failed");
+static_assert(promote_add_result<fixed_point<int32, -25>, 4>::integer_digits == 8, "sg14::promote_add_result test failed");
+static_assert(is_same<promote_add_result<fixed_point<int8, 0>, 2>, fixed_point<int16, -7>>::value, "sg14::promote_add_result test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::promote_add
@@ -638,7 +647,7 @@ static_assert(promote_subtract(make_fixed<7, 0>(-128), make_fixed<7, 0>(127)) ==
 
 static_assert(is_same<promote_multiply_result<make_ufixed<4, 4>>, make_ufixed<8, 8>>::value, "sg14::promote_multiply_result test failed");
 static_assert(is_same<promote_multiply_result<make_fixed<6, 25>>, make_fixed<13, 50>>::value, "sg14::promote_multiply_result test failed");
-static_assert(promote_multiply_result<fixed_point<uint8_t, 0>>::integer_digits == 16, "sg14::promote_multiply_result test failed");
+static_assert(promote_multiply_result<fixed_point<uint8, 0>>::integer_digits == 16, "sg14::promote_multiply_result test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::promote_multiply
@@ -670,7 +679,7 @@ static_assert(is_same<promote_square_result<make_fixed<6, 25>>, make_ufixed<12, 
 
 static_assert(promote_square(make_ufixed<7, 1>(127.5)) == 16256.25f, "sg14::promote_square test failed");
 static_assert(promote_square(make_ufixed<4, 4>(15.5)) == 240.25f, "sg14::promote_square test failed");
-static_assert(static_cast<uint64_t>(promote_square(make_fixed<31>(2000000000))) == 4000000000000000000ULL, "sg14::promote_square test failed");
+static_assert(static_cast<uint64>(promote_square(make_fixed<31>(2000000000))) == 4000000000000000000ULL, "sg14::promote_square test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::sqrt
