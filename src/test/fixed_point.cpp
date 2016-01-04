@@ -113,6 +113,8 @@ static_assert(is_same<common_type<float, uint32>::type, float>::value, "incorrec
 #pragma warning(disable: 4310)
 #endif
 
+static_assert(_impl::shift_left<1, int8>(int8(0)) == 0, "sg14::_impl::shift_left test failed");
+
 static_assert(_impl::shift_left<8, uint16>((uint16)0x1234) == 0x3400, "sg14::_impl::shift_left test failed");
 static_assert(_impl::shift_left<8, uint16>((uint8)0x1234) == 0x3400, "sg14::_impl::shift_left test failed");
 static_assert(_impl::shift_left<8, uint8>((uint16)0x1234) == 0x0, "sg14::_impl::shift_left test failed");
