@@ -226,9 +226,9 @@ namespace sg14
 			using unsigned_input = typename std::make_unsigned<Input>::type;
 			using signed_output = typename std::make_signed<Output>::type;
 
-			return (i >= 0)
-				? shift_left<Exponent, signed_output, unsigned_input>(i)
-				: -shift_left<Exponent, signed_output, unsigned_input>(-i);
+			return static_cast<Output>((i >= 0)
+				? shift_left<Exponent, signed_output>(static_cast<unsigned_input>(i))
+				: -shift_left<Exponent, signed_output>(static_cast<unsigned_input>(-i)));
 		}
 
 		// Exponent < 0
