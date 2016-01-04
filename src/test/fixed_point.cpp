@@ -8,10 +8,23 @@
 
 #include <gtest/gtest.h>
 
+//#define TEST_INTEGER_CLASS
+
 using namespace sg14;
 using std::is_same;
 using std::common_type;
 
+#if defined(TEST_INTEGER_CLASS)
+#include <integer.h>
+using int8 = saturated_integer<std::int8_t>;
+using int16 = saturated_integer<std::int16_t>;
+using int32 = saturated_integer<std::int32_t>;
+using int64 = saturated_integer<std::int64_t>;
+using uint8 = saturated_integer<std::uint8_t>;
+using uint16 = saturated_integer<std::uint16_t>;
+using uint32 = saturated_integer<std::uint32_t>;
+using uint64 = saturated_integer<std::uint64_t>;
+#else
 using int8 = std::int8_t;
 using int16 = std::int16_t;
 using int32 = std::int32_t;
@@ -20,6 +33,7 @@ using uint8 = std::uint8_t;
 using uint16 = std::uint16_t;
 using uint32 = std::uint32_t;
 using uint64 = std::uint64_t;
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // copy assignment
@@ -115,9 +129,15 @@ static_assert(is_same<common_type<float, uint32>::type, float>::value, "incorrec
 
 static_assert(_impl::shift_left<1, int8>(int8(0)) == 0, "sg14::_impl::shift_left test failed");
 
+#if defined(TEST_INTEGER_CLASS)
+static_assert(_impl::shift_left<8, uint16>((uint16)0x1234) == 0xffff, "sg14::_impl::shift_left test failed");
+static_assert(_impl::shift_left<8, uint16>((uint8)0x1234) == 0xff00, "sg14::_impl::shift_left test failed");
+static_assert(_impl::shift_left<8, uint8>((uint16)0x1234) == 0xff, "sg14::_impl::shift_left test failed");
+#else
 static_assert(_impl::shift_left<8, uint16>((uint16)0x1234) == 0x3400, "sg14::_impl::shift_left test failed");
 static_assert(_impl::shift_left<8, uint16>((uint8)0x1234) == 0x3400, "sg14::_impl::shift_left test failed");
 static_assert(_impl::shift_left<8, uint8>((uint16)0x1234) == 0x0, "sg14::_impl::shift_left test failed");
+#endif
 static_assert(_impl::shift_left<8, int16>(-123) == -31488, "sg14::_impl::shift_left test failed");
 
 static_assert(_impl::shift_right<8, uint16>((uint16)0x1234) == 0x12, "sg14::_impl::shift_right test failed");
@@ -137,9 +157,15 @@ static_assert(_impl::shift_right<8, int16>(-31488) == -123, "sg14::_impl::shift_
 #pragma warning(disable: 4310)
 #endif
 
+#if defined(TEST_INTEGER_CLASS)
+static_assert(_impl::shift_right<-8, uint16>((uint16)0x1234) == 0xffff, "sg14::_impl::shift_right test failed");
+static_assert(_impl::shift_right<-8, uint16>((uint8)0x1234) == 0xff00, "sg14::_impl::shift_right test failed");
+static_assert(_impl::shift_right<-8, uint8>((uint16)0x1234) == 0xff, "sg14::_impl::shift_right test failed");
+#else
 static_assert(_impl::shift_right<-8, uint16>((uint16)0x1234) == 0x3400, "sg14::_impl::shift_right test failed");
 static_assert(_impl::shift_right<-8, uint16>((uint8)0x1234) == 0x3400, "sg14::_impl::shift_right test failed");
 static_assert(_impl::shift_right<-8, uint8>((uint16)0x1234) == 0x0, "sg14::_impl::shift_right test failed");
+#endif
 static_assert(_impl::shift_right<-8, int16>(-123) == -31488, "sg14::_impl::shift_right test failed");
 
 static_assert(_impl::shift_left<-8, uint16>((uint16)0x1234) == 0x12, "sg14::_impl::shift_left test failed");
@@ -178,6 +204,7 @@ static_assert(_impl::capacity<16>::value == 5, "sg14::_impl::capacity test faile
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::sufficient_repr
 
+#if ! defined(TEST_INTEGER_CLASS)
 static_assert(is_same<_impl::sufficient_repr<1, false>, uint8>::value, "sg14::_impl::sufficient_repr");
 static_assert(is_same<_impl::sufficient_repr<1, true>, int8>::value, "sg14::_impl::sufficient_repr");
 static_assert(is_same<_impl::sufficient_repr<8, false>, uint8>::value, "sg14::_impl::sufficient_repr");
@@ -203,6 +230,7 @@ static_assert(is_same<_impl::sufficient_repr<65, false>, unsigned __int128>::val
 static_assert(is_same<_impl::sufficient_repr<65, true>, __int128>::value, "sg14::_impl::sufficient_repr");
 static_assert(is_same<_impl::sufficient_repr<128, false>, unsigned __int128>::value, "sg14::_impl::sufficient_repr");
 static_assert(is_same<_impl::sufficient_repr<128, true>, __int128>::value, "sg14::_impl::sufficient_repr");
+#endif
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -322,6 +350,8 @@ static_assert((make_ufixed<8, 0>(0x55) * make_ufixed<8, 0>(2)) == 0xaa, "sg14::f
 static_assert((make_fixed<15, 16>(123.75) * make_fixed<15, 16>(44.5)) == 5506.875, "sg14::fixed_point test failed");
 
 // division
+constexpr auto divide_result = _impl::shift_left<1, int8>(int8(0));
+
 static_assert((fixed_point<int8, -1>(63) / fixed_point<int8, -1>(-4)) == -16, "sg14::fixed_point test failed");
 static_assert((fixed_point<int8, 1>(-255) / fixed_point<int8, 1>(-8)) == 32, "sg14::fixed_point test failed");
 static_assert((make_fixed<31, 0>(-999) / make_fixed<31, 0>(3)) == -333, "sg14::fixed_point test failed");
