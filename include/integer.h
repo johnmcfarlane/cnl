@@ -360,6 +360,18 @@ namespace std
   struct is_signed<sg14::integer<Repr, OverflowPolicy>>
           : integral_constant<bool, std::is_signed<Repr>::value> {};
 
+    // std::make_unsigned<sg14::integer<>>
+    template <typename Repr, typename OverflowPolicy>
+    struct make_unsigned<sg14::integer<Repr, OverflowPolicy>> {
+        using type = sg14::integer<typename make_unsigned<Repr>::type, OverflowPolicy>;
+    };
+
+    // std::make_signed<sg14::integer<>>
+    template <typename Repr, typename OverflowPolicy>
+    struct make_signed<sg14::integer<Repr, OverflowPolicy>> {
+        using type = sg14::integer<typename make_signed<Repr>::type, OverflowPolicy>;
+    };
+
     // std::common_type<T, sg14::integer>
     template<
             class Lhs,
