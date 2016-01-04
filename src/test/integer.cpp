@@ -175,6 +175,7 @@ static_assert(saturated_integer<uint8_t>(100) - saturated_integer<int16_t>(10000
 static_assert(saturated_integer<int8_t>(-5) * saturated_integer<int32_t>(-14) == 70, "sg14::saturated_integer test failed");
 static_assert(saturated_integer<uint32_t>(1) / saturated_integer<int16_t>(-10) == 0, "sg14::saturated_integer test failed");
 static_assert(saturated_integer<int16_t>(77) / saturated_integer<int8_t>(-11) == -7, "sg14::saturated_integer test failed");
+static_assert(int16_t(31) / saturated_integer<int8_t>(-2) == -15, "sg14::saturated_integer test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // traits

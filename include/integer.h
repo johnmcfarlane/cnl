@@ -48,13 +48,15 @@ namespace sg14 {
     \
     template <class Lhs, class RhsRepr, class RhsOverflowPolicy, typename std::enable_if<! sg14::_integer_impl::is_integer_class<Lhs>::value, int>::type dummy = 0> \
     constexpr auto operator OP (const Lhs& lhs, const integer<RhsRepr, RhsOverflowPolicy>& rhs) \
-    -> integer<typename sg14::_integer_impl::common_type<Lhs, RhsRepr>::type, RhsOverflowPolicy> { \
-        return lhs OP rhs.data(); } \
+    -> integer<typename std::common_type<Lhs, RhsRepr>::type, RhsOverflowPolicy> { \
+        using Result = integer<typename std::common_type<Lhs, RhsRepr>::type, RhsOverflowPolicy>; \
+        return static_cast<Result>(lhs OP rhs.data()); } \
     \
     template <class LhsRepr, class LhsOverflowPolicy, class Rhs, typename std::enable_if<! sg14::_integer_impl::is_integer_class<Rhs>::value, int>::type dummy = 0> \
     constexpr auto operator OP (const integer<LhsRepr, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
-    -> integer<typename sg14::_integer_impl::common_type<LhsRepr, Rhs>::type, LhsOverflowPolicy> { \
-        return lhs.data() OP rhs; }
+    -> integer<typename std::common_type<LhsRepr, Rhs>::type, LhsOverflowPolicy> { \
+        using Result = integer<typename std::common_type<LhsRepr, Rhs>::type, LhsOverflowPolicy>; \
+        return static_cast<Result>(lhs.data() OP rhs); }
 
 #define _SG14_INTEGER_BIT_SHIFT_DEFINE(OP) \
     template <class LhsRepr, class LhsOverflowPolicy, class RhsRepr, class RhsOverflowPolicy> \
