@@ -738,7 +738,7 @@ namespace sg14
 			using result_repr_type = typename FixedPointQuotient::repr_type;
 
 			// a fixed-point type which is capable of holding the value passed in to lhs
-			// and the result of the lhs / rhs; depending greately on the exponent of each
+			// and the result of the lhs / rhs; depending greatly on the exponent of each
 			using intermediate_type = make_fixed<
 				_impl::max(FixedPointQuotient::integer_digits, FixedPointDividend::integer_digits + FixedPointDivisor::fractional_digits),
 				_impl::max(FixedPointQuotient::fractional_digits, FixedPointDividend::fractional_digits + FixedPointDivisor::integer_digits),
