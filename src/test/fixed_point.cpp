@@ -205,31 +205,31 @@ static_assert(_impl::capacity<16>::value == 5, "sg14::_impl::capacity test faile
 // sg14::_impl::sufficient_repr
 
 #if ! defined(TEST_INTEGER_CLASS)
-static_assert(is_same<_impl::sufficient_repr<1, false>, uint8>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<1, true>, int8>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<8, false>, uint8>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<8, true>, int8>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<1, unsigned>, uint8>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<1, signed>, int8>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<8, unsigned>, uint8>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<8, signed>, int8>::value, "sg14::_impl::sufficient_repr");
 
-static_assert(is_same<_impl::sufficient_repr<9, false>, uint16>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<9, true>, int16>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<16, false>, uint16>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<16, true>, int16>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<9, unsigned>, uint16>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<9, signed>, int16>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<16, unsigned>, uint16>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<16, signed>, int16>::value, "sg14::_impl::sufficient_repr");
 
-static_assert(is_same<_impl::sufficient_repr<17, false>, uint32>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<17, true>, int32>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<32, false>, uint32>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<32, true>, int32>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<17, unsigned>, uint32>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<17, signed>, int32>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<32, unsigned>, uint32>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<32, signed>, int32>::value, "sg14::_impl::sufficient_repr");
 
-static_assert(is_same<_impl::sufficient_repr<33, false>, uint64>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<33, true>, int64>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<64, false>, uint64>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<64, true>, int64>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<33, unsigned>, uint64>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<33, signed>, int64>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<64, unsigned>, uint64>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<64, signed>, int64>::value, "sg14::_impl::sufficient_repr");
 
 #if defined(_SG14_FIXED_POINT_128)
-static_assert(is_same<_impl::sufficient_repr<65, false>, unsigned __int128>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<65, true>, __int128>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<128, false>, unsigned __int128>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<128, true>, __int128>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<65, unsigned>, unsigned __int128>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<65, signed>, __int128>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<128, unsigned>, unsigned __int128>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<128, signed>, __int128>::value, "sg14::_impl::sufficient_repr");
 #endif
 #endif
 
@@ -377,23 +377,10 @@ static_assert(make_fixed_from_repr<int32, 27>::integer_digits == 27, "sg14::make
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::common_repr_type
 
-// unary - pretty simple
-static_assert(is_same<_impl::common_repr_type<int8>, int8>::value, "sg14::_impl::common_repr_type test failed");
-static_assert(is_same<_impl::common_repr_type<uint64>, uint64>::value, "sg14::_impl::common_repr_type test failed");
-
-// binary
 static_assert(is_same<_impl::common_repr_type<uint8, uint8>, uint8>::value, "sg14::_impl::common_repr_type test failed");
 static_assert(is_same<_impl::common_repr_type<int8, uint64>, int64>::value, "sg14::_impl::common_repr_type test failed");
 static_assert(is_same<_impl::common_repr_type<uint32, int8>, int32>::value, "sg14::_impl::common_repr_type test failed");
 static_assert(is_same<_impl::common_repr_type<int16, int16>, int16>::value, "sg14::_impl::common_repr_type test failed");
-
-// and beyond
-static_assert(is_same<_impl::common_repr_type<uint32, uint8, int64>, int64>::value, "sg14::_impl::common_repr_type test failed");
-static_assert(is_same<_impl::common_repr_type<int64, uint8, int32>, int64>::value, "sg14::_impl::common_repr_type test failed");
-static_assert(is_same<_impl::common_repr_type<uint32, int32, uint16>, int32>::value, "sg14::_impl::common_repr_type test failed");
-static_assert(is_same<_impl::common_repr_type<int8, int16, uint8>, int16>::value, "sg14::_impl::common_repr_type test failed");
-static_assert(is_same<_impl::common_repr_type<int8, int8, int8, int8, uint8>, int8>::value, "sg14::_impl::common_repr_type test failed");
-static_assert(is_same<_impl::common_repr_type<int8, uint16, int32, uint64>, int64>::value, "sg14::_impl::common_repr_type test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::common_type
@@ -569,8 +556,8 @@ static_assert(trunc_multiply(make_ufixed<4, 4>(15.9375), make_ufixed<4, 4>(15.93
 static_assert(trunc_multiply(make_ufixed<4, 4>(0.0625), make_ufixed<4, 4>(0.0625)) == 0.f, "sg14::trunc_multiply test failed");
 static_assert(trunc_multiply(make_ufixed<8, 0>(1), make_ufixed<8, 0>(1)) == 0.f, "sg14::trunc_multiply test failed");
 static_assert(trunc_multiply(make_ufixed<8, 0>(174), make_ufixed<8, 0>(25)) == 4096.f, "sg14::trunc_multiply test failed");
-static_assert(trunc_multiply(make_fixed<8, 0, false>(174), make_fixed<6, 2, false>(25)) == 4288, "sg14::trunc_multiply test failed");
-static_assert((trunc_multiply(make_fixed<4, 3>(15.875), make_fixed<16, 0, false>(65535))) == 1040352, "sg14::trunc_multiply test failed");
+static_assert(trunc_multiply(make_ufixed<8, 0>(174), make_ufixed<6, 2>(25)) == 4288, "sg14::trunc_multiply test failed");
+static_assert((trunc_multiply(make_fixed<4, 3>(15.875), make_ufixed<16, 0>(65535))) == 1040352, "sg14::trunc_multiply test failed");
 static_assert(trunc_multiply(make_fixed<4, 3>(-16), make_fixed<4, 3>(-15.875)) == 254, "sg14::trunc_multiply test failed");
 static_assert(trunc_multiply(make_fixed<4, 3>(-16), make_fixed<4, 3>(-16)) == -256, "sg14::trunc_multiply test failed");
 
@@ -591,8 +578,8 @@ static_assert(trunc_divide(make_ufixed<8, 0>(240), make_ufixed<4, 4>(.9375)) == 
 static_assert(trunc_divide(make_ufixed<4, 4>(0.0625), make_ufixed<4, 4>(0.0625)) == 1.f, "sg14::trunc_divide test failed");
 static_assert(trunc_divide(make_ufixed<8, 0>(0), make_ufixed<8, 0>(1)) == 0.f, "sg14::trunc_divide test failed");
 static_assert(trunc_divide(fixed_point<uint16, 0>(4096), make_ufixed<8, 0>(25)) == 163., "sg14::trunc_divide test failed");
-static_assert(trunc_divide(make_fixed<14, 0, false>(4288), make_fixed<6, 2, false>(25)) == 171, "sg14::trunc_divide test failed");
-static_assert((trunc_divide(make_fixed<20>(1040352), make_fixed<16, 0, false>(65535))) == 15.87451171875, "sg14::trunc_divide test failed");
+static_assert(trunc_divide(make_ufixed<14, 0>(4288), make_ufixed<6, 2>(25)) == 171, "sg14::trunc_divide test failed");
+static_assert((trunc_divide(make_fixed<20>(1040352), make_ufixed<16, 0>(65535))) == 15.87451171875, "sg14::trunc_divide test failed");
 static_assert(trunc_divide(make_fixed<15>(254), make_fixed<4, 3>(-15.875)) == -16, "sg14::trunc_divide test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
