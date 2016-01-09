@@ -179,7 +179,7 @@ namespace sg14 {
     template<typename Lhs, typename Rhs>
     constexpr Lhs convert(const Rhs& rhs) const
     {
-        return rhs;
+        return static_cast<Lhs>(rhs);
     }
   };
 
@@ -192,7 +192,7 @@ namespace sg14 {
                  ? throw std::overflow_error("positive overflow in coversion")
                  : _integer_impl::is_negative_overflow<Lhs>(rhs)
                    ? throw std::overflow_error("negative overflow in coversion")
-                   : rhs;
+                   : static_cast<Lhs>(rhs);
       }
   };
 #else
@@ -212,7 +212,7 @@ namespace sg14 {
                 ? LhsNumericLimits::max()
                 : _integer_impl::is_negative_overflow<Lhs>(rhs)
                   ? LhsNumericLimits::lowest()
-                  : rhs;
+                  : static_cast<Lhs>(rhs);
     }
   };
 
