@@ -259,7 +259,7 @@ namespace std
   struct make_unsigned<unsigned __int128> {
 	using type = __int128;
   };
-#endif
 }
+#endif
 
 #endif	// defined(_SG14_FIXED_POINT_UTILS_H)
