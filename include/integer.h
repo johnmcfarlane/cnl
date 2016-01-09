@@ -464,7 +464,7 @@ namespace std
         static constexpr bool is_signed = _repr_numeric_limits::is_signed;
 
         static constexpr bool is_integer = true;
-        static_assert(is_integer == 2, "integer must be represented using binary type");
+        static_assert(is_integer, "integer must be represented using binary type");
 
         static constexpr bool is_exact = _repr_numeric_limits::is_exact;
 
