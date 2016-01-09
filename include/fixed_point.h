@@ -55,6 +55,18 @@
 namespace sg14
 {
 	////////////////////////////////////////////////////////////////////////////////
+	// sg14::resize
+
+	template <class Archetype, int NumBytes>
+	struct resize;
+
+	// given a type and a size, e.g. <uint8_t, 4>, yields a similar type of given
+	// size, e.g. uint32_t; if specialized for non-built-in types, those types can
+	// be used as the Repr parameter to sg14::fixed_point<Repr, Exponent>
+	template <class Archetype, int NumBytes>
+	using resize_t = typename resize<Archetype, NumBytes>::type;
+
+	////////////////////////////////////////////////////////////////////////////////
 	// general-purpose _impl definitions
 
 	namespace _impl
@@ -71,19 +83,25 @@ namespace sg14
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::_resize
 
-		// supports sg14::resize
+		// supports sg14::resize specialization for built-in integer types
 		template <class Archetype, int NumBytes, class _Enable = void>
 		struct _resize;
 
 		template <class FundamentalSignedInteger>
 		struct _fsi : public std::integral_constant<
 				bool,
-				std::is_signed<FundamentalSignedInteger>::value && std::is_integral<FundamentalSignedInteger>::value && std::is_fundamental<FundamentalSignedInteger>::value> {};
+				std::is_signed<FundamentalSignedInteger>::value
+						&& std::is_integral<FundamentalSignedInteger>::value
+						&& std::is_fundamental<FundamentalSignedInteger>::value> {
+		};
 
 		template <class FundamentalUnsignedInteger>
 		struct _fui : public std::integral_constant<
 				bool,
-				std::is_unsigned<FundamentalUnsignedInteger>::value && std::is_integral<FundamentalUnsignedInteger>::value && std::is_fundamental<FundamentalUnsignedInteger>::value> {};
+				std::is_unsigned<FundamentalUnsignedInteger>::value
+						&& std::is_integral<FundamentalUnsignedInteger>::value
+						&& std::is_fundamental<FundamentalUnsignedInteger>::value> {
+		};
 
 		// specializations
 		template <class FundamentalUnsignedInteger> struct _resize<
@@ -155,7 +173,7 @@ namespace sg14
 		// given an integral type, IntType,
 		// provides the integral type of the equivalent type with twice the size
 		template <class IntType>
-		using next_size = typename _resize<IntType, sizeof(IntType) * 2>::type;
+		using next_size = typename sg14::resize_t<IntType, sizeof(IntType) * 2>;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::previous_size
@@ -163,7 +181,7 @@ namespace sg14
 		// given an integral type, IntType,
 		// provides the integral type of the equivalent type with half the size
 		template <class IntType>
-		using previous_size = typename _resize<IntType, sizeof(IntType) / 2>::type;
+		using previous_size = typename sg14::resize_t<IntType, sizeof(IntType) / 2>;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::shift_left and sg14::_impl::shift_right
@@ -340,12 +358,12 @@ namespace sg14
 		// given two integral types, produces a common type with enough capacity to
 		// store values of either (except when one is signed and both are same size)
 		template <class LhsReprType, class RhsReprType>
-		using common_repr_type = typename _impl::_resize<
+		using common_repr_type = typename sg14::resize_t<
 				typename std::conditional<
 						std::is_signed<LhsReprType>::value | std::is_signed<RhsReprType>::value,
-						signed,
-						unsigned>::type,
-				_impl::max(sizeof(LhsReprType), sizeof(RhsReprType))>::type;
+						typename std::make_signed<typename std::common_type<LhsReprType, RhsReprType>::type>::type,
+						typename std::make_unsigned<typename std::common_type<LhsReprType, RhsReprType>::type>::type>::type,
+				_impl::max(sizeof(LhsReprType), sizeof(RhsReprType))>;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::capacity
@@ -373,7 +391,7 @@ namespace sg14
 		// provides a built-in integral type with necessary capacity
 		template <unsigned RequiredBits, class Archetype>
 		using sufficient_repr 
-			= typename _resize<Archetype, 1 << (capacity<((RequiredBits + 7) / 8) - 1>::value)>::type;
+			= sg14::resize_t<Archetype, 1 << (capacity<((RequiredBits + 7) / 8) - 1>::value)>;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::sqrt helper functions
@@ -405,15 +423,6 @@ namespace sg14
 			return sqrt_solve3<ReprType>(n, sqrt_bit<ReprType>(n), 0);
 		}
 	}
-
-	////////////////////////////////////////////////////////////////////////////////
-	// sg14::resize
-
-	// given a type and a size, e.g. <uint8_t, 4>, yields a similar type of given
-	// size, e.g. uint32_t; if specialized for non-built-in types, those types can
-	// be used as the Repr parameter to sg14::fixed_point<Repr, Exponent>
-	template <class Archetype, int NumBytes>
-	using resize = typename _impl::_resize<Archetype, NumBytes>::type;
 
 	////////////////////////////////////////////////////////////////////////////////
 	// sg14::fixed_point class template definition
@@ -630,6 +639,16 @@ namespace sg14
 	using make_fixed_from_repr = fixed_point<
 		ReprType,
 		IntegerDigits + std::is_signed<ReprType>::value - (signed)sizeof(ReprType) * CHAR_BIT>;
+
+	////////////////////////////////////////////////////////////////////////////////
+	// sg14::resize specialization for built-in integer
+
+	template <class FundamentalInteger, int NumBytes>
+	struct resize
+			: std::enable_if<
+					std::is_fundamental<FundamentalInteger>::value,
+					_impl::_resize<FundamentalInteger, NumBytes>>::type {
+	};
 
 	////////////////////////////////////////////////////////////////////////////////
 	// sg14::promote_result / promote
