@@ -175,7 +175,7 @@ namespace sg14 {
   ////////////////////////////////////////////////////////////////////////////////
   // policies
 
-  struct undefined_overflow_policy {
+  struct native_overflow_policy {
     template<typename Lhs, typename Rhs>
     constexpr Lhs convert(const Rhs& rhs) const
     {
@@ -196,7 +196,7 @@ namespace sg14 {
       }
   };
 #else
-  using throwing_overflow_policy = undefined_overflow_policy;
+  using throwing_overflow_policy = native_overflow_policy;
 #endif
 
   struct saturated_overflow_policy {
@@ -329,7 +329,7 @@ namespace sg14 {
   // integer<> partial specializations
 
   template<typename Repr>
-  using undefined_integer = integer<Repr, undefined_overflow_policy>;
+  using native_integer = integer<Repr, native_overflow_policy>;
 
   template<typename Repr>
   using throwing_integer = integer<Repr, throwing_overflow_policy>;
