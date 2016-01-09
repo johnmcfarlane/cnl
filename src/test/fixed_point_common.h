@@ -4,62 +4,71 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <fixed_point.h>
-
 #include <gtest/gtest.h>
 
-//#define TEST_INTEGER_CLASS
+#include <fixed_point.h>
 
-using namespace sg14;
+////////////////////////////////////////////////////////////////////////////////
+// imports from std
+
 using std::is_same;
 using std::common_type;
 
-#if defined(TEST_INTEGER_CLASS)
-#include <integer.h>
-using int8 = saturated_integer<std::int8_t>;
-using int16 = saturated_integer<std::int16_t>;
-using int32 = saturated_integer<std::int32_t>;
-using int64 = saturated_integer<std::int64_t>;
-using uint8 = saturated_integer<std::uint8_t>;
-using uint16 = saturated_integer<std::uint16_t>;
-using uint32 = saturated_integer<std::uint32_t>;
-using uint64 = saturated_integer<std::uint64_t>;
-#else
-using int8 = std::int8_t;
-using int16 = std::int16_t;
-using int32 = std::int32_t;
-using int64 = std::int64_t;
-using uint8 = std::uint8_t;
-using uint16 = std::uint16_t;
-using uint32 = std::uint32_t;
-using uint64 = std::uint64_t;
-#endif
+////////////////////////////////////////////////////////////////////////////////
+// imports from sg14
+
+using namespace sg14;
+
+/*template <class Repr = test_int, int Exponent = 0>
+using fixed_point = sg14::fixed_point<Repr, Exponent>;
+
+template <unsigned IntegerDigits, unsigned FractionalDigits = 0, class Archetype = test_signed>
+using make_fixed = sg14::make_fixed<IntegerDigits, FractionalDigits, Archetype>;
+
+template <unsigned IntegerDigits, unsigned FractionalDigits = 0>
+using make_ufixed = sg14::make_ufixed<IntegerDigits, FractionalDigits>;
+
+template <class FixedPoint>
+using promote_result = sg14::promote_result<FixedPoint>;
+
+template <class FixedPoint>
+using demote_result = sg14::demote_result<FixedPoint>;
+
+template <class ReprType, int IntegerDigits>
+using make_fixed_from_repr = sg14::make_fixed_from_repr<ReprType, IntegerDigits>;
+
+namespace _impl {
+	using namespace sg14::_impl;
+}*/
 
 ////////////////////////////////////////////////////////////////////////////////
 // copy assignment
 
-TEST(copy_assignment, from_fixed_point)
+#define TOKENPASTE(x, y) x ## y
+#define TOKENPASTE2(x, y) TOKENPASTE(x, y)
+
+TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_fixed_point)
 {
 	auto lhs = fixed_point<uint32, -16>(0);
 	lhs = fixed_point<uint32, -16>(123.456);
 	EXPECT_EQ(lhs, fixed_point<>(123.456));
 }
 
-TEST(copy_assignment, from_floating_point)
+TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_floating_point)
 {
 	auto lhs = fixed_point<uint32, -16>(0);
 	lhs = 234.567;
 	ASSERT_EQ(lhs, 234.56698608398438);
 }
 
-TEST(copy_assignment, from_integer)
+TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_integer)
 {
 	auto lhs = fixed_point<uint32, -16>(0);
 	lhs = 543;
 	ASSERT_EQ(lhs, 543);
 }
 
-TEST(copy_assignment, from_alternative_specialization)
+TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_alternative_specialization)
 {
 	auto lhs = fixed_point<uint32, -16>(0);
 	lhs = fixed_point<uint8>(87.65);
@@ -69,7 +78,7 @@ TEST(copy_assignment, from_alternative_specialization)
 ////////////////////////////////////////////////////////////////////////////////
 // compound assignment
 
-TEST(compound_assignment, from_compound_assignment)
+TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), from_compound_assignment)
 {
 	auto x = make_fixed<7, 8>(22.75);
 	ASSERT_EQ(x += 12.5, 35.25L);
@@ -83,8 +92,8 @@ TEST(compound_assignment, from_compound_assignment)
 ////////////////////////////////////////////////////////////////////////////////
 // sqrt exception throwing
 
-#if defined(_SG14_EXCEPTIONS_ENABLED)
-TEST(sqrt_exception, from_alternative_specialization)
+#if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
+ TEST(TOKENPASTE2(TEST_LABEL, sqrt_exception), from_alternative_specialization)
 {
 	ASSERT_THROW(sqrt(fixed_point<>(-1)), std::invalid_argument);
 }
@@ -120,6 +129,18 @@ static_assert(is_same<common_type<float, uint32>::type, float>::value, "incorrec
 // sg14::_impl
 
 ////////////////////////////////////////////////////////////////////////////////
+// sg14::_impl::next_size
+
+static_assert(is_same<_impl::next_size<int8_t>, int16_t>::value, "sg14::_impl::next_size text failed");
+static_assert(is_same<_impl::next_size<uint32_t>, uint64_t>::value, "sg14::_impl::next_size text failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::_impl::previous_size
+
+static_assert(is_same<_impl::previous_size<int64_t>, int32_t>::value, "sg14::_impl::previous_size text failed");
+static_assert(is_same<_impl::previous_size<uint16_t>, uint8_t>::value, "sg14::_impl::previous_size text failed");
+
+////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::shift_left/right positive RHS
 
 #if defined(_MSC_VER)
@@ -127,51 +148,55 @@ static_assert(is_same<common_type<float, uint32>::type, float>::value, "incorrec
 #pragma warning(disable: 4310)
 #endif
 
+static_assert(_impl::shift_left<1, int8>(uint8(0)) == 0, "sg14::_impl::shift_left test failed");
 static_assert(_impl::shift_left<1, int8>(int8(0)) == 0, "sg14::_impl::shift_left test failed");
 
-#if defined(TEST_INTEGER_CLASS)
-static_assert(_impl::shift_left<8, uint16>((uint16)0x1234) == 0xffff, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<8, uint16>((uint8)0x1234) == 0xff00, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<8, uint8>((uint16)0x1234) == 0xff, "sg14::_impl::shift_left test failed");
-#else
+#if defined(TEST_NATIVE_OVERFLOW)
 static_assert(_impl::shift_left<8, uint16>((uint16)0x1234) == 0x3400, "sg14::_impl::shift_left test failed");
 static_assert(_impl::shift_left<8, uint16>((uint8)0x1234) == 0x3400, "sg14::_impl::shift_left test failed");
 static_assert(_impl::shift_left<8, uint8>((uint16)0x1234) == 0x0, "sg14::_impl::shift_left test failed");
 #endif
+
+#if defined(TEST_SATURATED_OVERFLOW)
+static_assert(_impl::shift_left<8, uint16>((uint16)0x1234) == 0xffff, "sg14::_impl::shift_left test failed");
+static_assert(_impl::shift_left<8, uint16>((uint8)0x1234) == 0xff00, "sg14::_impl::shift_left test failed");
+static_assert(_impl::shift_left<8, uint8>((uint16)0x1234) == 0xff, "sg14::_impl::shift_left test failed");
+#endif
+
 static_assert(_impl::shift_left<8, int16>(-123) == -31488, "sg14::_impl::shift_left test failed");
 
 static_assert(_impl::shift_right<8, uint16>((uint16)0x1234) == 0x12, "sg14::_impl::shift_right test failed");
-static_assert(_impl::shift_right<8, uint16>((uint8)0x1234) == 0x0, "sg14::_impl::shift_right test failed");
 static_assert(_impl::shift_right<8, uint8>((uint16)0x1234) == 0x12, "sg14::_impl::shift_right test failed");
 static_assert(_impl::shift_right<8, int16>(-31488) == -123, "sg14::_impl::shift_right test failed");
 
-#if defined(_MSC_VER)
-#pragma warning(pop)
+#if ! defined(TEST_THROWING_OVERFLOW)
+static_assert(_impl::shift_right<8, uint16>((uint8)0x1234) == 0x0, "sg14::_impl::shift_right test failed");
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::shift_left/right negative RHS
 
-#if defined(_MSC_VER)
-#pragma warning(push)
-#pragma warning(disable: 4310)
-#endif
-
-#if defined(TEST_INTEGER_CLASS)
-static_assert(_impl::shift_right<-8, uint16>((uint16)0x1234) == 0xffff, "sg14::_impl::shift_right test failed");
-static_assert(_impl::shift_right<-8, uint16>((uint8)0x1234) == 0xff00, "sg14::_impl::shift_right test failed");
-static_assert(_impl::shift_right<-8, uint8>((uint16)0x1234) == 0xff, "sg14::_impl::shift_right test failed");
-#else
+#if defined(TEST_NATIVE_OVERFLOW)
 static_assert(_impl::shift_right<-8, uint16>((uint16)0x1234) == 0x3400, "sg14::_impl::shift_right test failed");
 static_assert(_impl::shift_right<-8, uint16>((uint8)0x1234) == 0x3400, "sg14::_impl::shift_right test failed");
 static_assert(_impl::shift_right<-8, uint8>((uint16)0x1234) == 0x0, "sg14::_impl::shift_right test failed");
 #endif
+
+#if defined(TEST_SATURATED_OVERFLOW)
+static_assert(_impl::shift_right<-8, uint16>((uint16)0x1234) == 0xffff, "sg14::_impl::shift_right test failed");
+static_assert(_impl::shift_right<-8, uint16>((uint8)0x1234) == 0xff00, "sg14::_impl::shift_right test failed");
+static_assert(_impl::shift_right<-8, uint8>((uint16)0x1234) == 0xff, "sg14::_impl::shift_right test failed");
+#endif
+
 static_assert(_impl::shift_right<-8, int16>(-123) == -31488, "sg14::_impl::shift_right test failed");
 
 static_assert(_impl::shift_left<-8, uint16>((uint16)0x1234) == 0x12, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<-8, uint16>((uint8)0x1234) == 0x0, "sg14::_impl::shift_left test failed");
 static_assert(_impl::shift_left<-8, uint8>((uint16)0x1234) == 0x12, "sg14::_impl::shift_left test failed");
 static_assert(_impl::shift_left<-8, int16>(-31488) == -123, "sg14::_impl::shift_left test failed");
+
+#if ! defined(TEST_THROWING_OVERFLOW)
+static_assert(_impl::shift_left<-8, uint16>((uint8)0x1234) == 0x0, "sg14::_impl::shift_left test failed");
+#endif
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
@@ -204,33 +229,31 @@ static_assert(_impl::capacity<16>::value == 5, "sg14::_impl::capacity test faile
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::sufficient_repr
 
-#if ! defined(TEST_INTEGER_CLASS)
-static_assert(is_same<_impl::sufficient_repr<1, unsigned>, uint8>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<1, signed>, int8>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<8, unsigned>, uint8>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<8, signed>, int8>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<1, test_unsigned>, uint8>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<1, test_signed>, int8>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<8, test_unsigned>, uint8>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<8, test_signed>, int8>::value, "sg14::_impl::sufficient_repr");
 
-static_assert(is_same<_impl::sufficient_repr<9, unsigned>, uint16>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<9, signed>, int16>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<16, unsigned>, uint16>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<16, signed>, int16>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<9, test_unsigned>, uint16>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<9, test_signed>, int16>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<16, test_unsigned>, uint16>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<16, test_signed>, int16>::value, "sg14::_impl::sufficient_repr");
 
-static_assert(is_same<_impl::sufficient_repr<17, unsigned>, uint32>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<17, signed>, int32>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<32, unsigned>, uint32>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<32, signed>, int32>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<17, test_unsigned>, uint32>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<17, test_signed>, int32>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<32, test_unsigned>, uint32>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<32, test_signed>, int32>::value, "sg14::_impl::sufficient_repr");
 
-static_assert(is_same<_impl::sufficient_repr<33, unsigned>, uint64>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<33, signed>, int64>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<64, unsigned>, uint64>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<64, signed>, int64>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<33, test_unsigned>, uint64>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<33, test_signed>, int64>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<64, test_unsigned>, uint64>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<64, test_signed>, int64>::value, "sg14::_impl::sufficient_repr");
 
-#if defined(_SG14_FIXED_POINT_128)
-static_assert(is_same<_impl::sufficient_repr<65, unsigned>, unsigned __int128>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<65, signed>, __int128>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<128, unsigned>, unsigned __int128>::value, "sg14::_impl::sufficient_repr");
-static_assert(is_same<_impl::sufficient_repr<128, signed>, __int128>::value, "sg14::_impl::sufficient_repr");
-#endif
+#if defined(_GLIBCXX_USE_INT128)
+static_assert(is_same<_impl::sufficient_repr<65, test_unsigned>, uint128>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<65, test_signed>, int128>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<128, test_unsigned>, uint128>::value, "sg14::_impl::sufficient_repr");
+static_assert(is_same<_impl::sufficient_repr<128, test_signed>, int128>::value, "sg14::_impl::sufficient_repr");
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -290,7 +313,10 @@ static_assert(fixed_point<uint16, -8>(232.125f) == 232.125L, "sg14::fixed_point 
 static_assert((fixed_point<uint32, -7>(232.125f)) == 232.125f, "sg14::fixed_point test failed");
 static_assert(fixed_point<uint64, -7>(232.125f) == 232.125L, "sg14::fixed_point test failed");
 
+#if ! defined(TEST_THROWING_OVERFLOW)
 static_assert(fixed_point<int8, -7>(1) != 1.L, "sg14::fixed_point test failed");
+#endif
+
 static_assert(fixed_point<int8, -7>(.5) == .5f, "sg14::fixed_point test failed");
 static_assert(fixed_point<int8, -7>(.125f) == .125L, "sg14::fixed_point test failed");
 static_assert(fixed_point<int16, -7>(123.125f) != 123, "sg14::fixed_point test failed");
@@ -353,7 +379,15 @@ static_assert((make_fixed<15, 16>(123.75) * make_fixed<15, 16>(44.5)) == 5506.87
 constexpr auto divide_result = _impl::shift_left<1, int8>(int8(0));
 
 static_assert((fixed_point<int8, -1>(63) / fixed_point<int8, -1>(-4)) == -16, "sg14::fixed_point test failed");
+
+#if defined(TEST_NATIVE_OVERFLOW)
 static_assert((fixed_point<int8, 1>(-255) / fixed_point<int8, 1>(-8)) == 32, "sg14::fixed_point test failed");
+#endif
+
+#if defined(TEST_SATURATED_OVERFLOW)
+static_assert((fixed_point<int8, 1>(-255) / fixed_point<int8, 1>(-8)) == 30, "sg14::fixed_point test failed");
+#endif
+
 static_assert((make_fixed<31, 0>(-999) / make_fixed<31, 0>(3)) == -333, "sg14::fixed_point test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -568,7 +602,7 @@ static_assert(trunc_divide_result<fixed_point<uint8, -4>>::integer_digits == 8, 
 static_assert(trunc_divide_result<make_fixed<4, 3>>::integer_digits == 7, "sg14::trunc_divide_result test failed");
 static_assert(trunc_divide_result<fixed_point<int32, -25>>::integer_digits == 31, "sg14::trunc_divide_result test failed");
 static_assert(trunc_divide_result<fixed_point<uint8, 0>>::integer_digits == 8, "sg14::trunc_divide_result test failed");
-static_assert(is_same<trunc_divide_result<make_fixed<15, 0>, make_fixed<7, 8>>, fixed_point<int16, 8>>::value, "sg14::trunc_divide_result test failed");
+static_assert(is_same<trunc_divide_result<make_fixed<15, 0, int8>, make_fixed<7, 8, int8>>, fixed_point<int16, 8>>::value, "sg14::trunc_divide_result test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_divide
@@ -589,7 +623,7 @@ static_assert(is_same<trunc_reciprocal_result<fixed_point<uint8, -4>>, fixed_poi
 static_assert(is_same<trunc_reciprocal_result<make_fixed<4, 3>>, make_fixed<4, 3>>::value, "sg14::trunc_reciprocal_result test failed");
 static_assert(is_same<trunc_reciprocal_result<fixed_point<int32, -25>>, fixed_point<int32, -5>>::value, "sg14::trunc_reciprocal_result test failed");
 static_assert(is_same<trunc_reciprocal_result<fixed_point<uint8, 0>>, fixed_point<uint8, -7>>::value, "sg14::trunc_reciprocal_result test failed");
-static_assert(is_same<trunc_reciprocal_result<make_fixed<15, 0>>, fixed_point<int16, -14>>::value, "sg14::trunc_reciprocal_result test failed");
+static_assert(is_same<trunc_reciprocal_result<make_fixed<15, 0, int8>>, fixed_point<int16, -14>>::value, "sg14::trunc_reciprocal_result test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_reciprocal
@@ -698,7 +732,7 @@ static_assert(is_same<promote_square_result<make_fixed<6, 25>>, make_ufixed<12, 
 
 static_assert(promote_square(make_ufixed<7, 1>(127.5)) == 16256.25f, "sg14::promote_square test failed");
 static_assert(promote_square(make_ufixed<4, 4>(15.5)) == 240.25f, "sg14::promote_square test failed");
-static_assert(static_cast<uint64>(promote_square(make_fixed<31>(2000000000))) == 4000000000000000000ULL, "sg14::promote_square test failed");
+static_assert(static_cast<uint64>(promote_square(make_fixed<31, 0, int8>(2000000000))) == 4000000000000000000ULL, "sg14::promote_square test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::sqrt

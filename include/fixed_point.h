@@ -12,18 +12,6 @@
 #include <type_traits>
 
 ////////////////////////////////////////////////////////////////////////////////
-// _SG14_FIXED_POINT_128 macro definition 
-
-#if defined(_SG14_FIXED_POINT_128)
-#error _SG14_FIXED_POINT_128 already defined
-#endif
-
-#if defined(_GLIBCXX_USE_INT128)
-// sg14::float_point only fully supports 64-bit types with the help of 128-bit ints.
-#define _SG14_FIXED_POINT_128
-#endif
-
-////////////////////////////////////////////////////////////////////////////////
 // _SG14_FIXED_POINT_EXCEPTIONS_ENABLED macro definition 
 
 #if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
@@ -140,7 +128,7 @@ namespace sg14
 				typename std::enable_if<_fsi<FundamentalSignedInteger>::value>::type> {
 			using type = std::int64_t; };
 
-        #if defined(_SG14_FIXED_POINT_128)
+#if defined(_GLIBCXX_USE_INT128)
 		template <class FundamentalUnsignedInteger> struct _resize<
                 FundamentalUnsignedInteger, 16,
 				typename std::enable_if<_fui<FundamentalUnsignedInteger>::value>::type> {
