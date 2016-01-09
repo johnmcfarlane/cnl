@@ -336,6 +336,18 @@ namespace sg14 {
 
   template<typename Repr>
   using saturated_integer = integer<Repr, saturated_overflow_policy>;
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::resize<integer<>, > partial specialization
+
+    // forward-declaration
+    template <class Archetype, int NumBytes>
+    struct resize;
+
+    template <class Repr, class OverflowPolicy, int NumBytes>
+    struct resize<integer<Repr, OverflowPolicy>, NumBytes> {
+        using type = integer<typename resize<Repr, NumBytes>::type, OverflowPolicy>;
+    };
 }
 
 ////////////////////////////////////////////////////////////////////////////////
