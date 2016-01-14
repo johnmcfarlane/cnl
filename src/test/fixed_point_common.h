@@ -19,27 +19,9 @@ using std::common_type;
 
 using namespace sg14;
 
-/*template <class Repr = test_int, int Exponent = 0>
-using fixed_point = sg14::fixed_point<Repr, Exponent>;
 
-template <unsigned IntegerDigits, unsigned FractionalDigits = 0, class Archetype = test_signed>
-using make_fixed = sg14::make_fixed<IntegerDigits, FractionalDigits, Archetype>;
 
-template <unsigned IntegerDigits, unsigned FractionalDigits = 0>
-using make_ufixed = sg14::make_ufixed<IntegerDigits, FractionalDigits>;
 
-template <class FixedPoint>
-using promote_result = sg14::promote_result<FixedPoint>;
-
-template <class FixedPoint>
-using demote_result = sg14::demote_result<FixedPoint>;
-
-template <class ReprType, int IntegerDigits>
-using make_fixed_from_repr = sg14::make_fixed_from_repr<ReprType, IntegerDigits>;
-
-namespace _impl {
-	using namespace sg14::_impl;
-}*/
 
 ////////////////////////////////////////////////////////////////////////////////
 // copy assignment
