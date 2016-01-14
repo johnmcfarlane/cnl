@@ -311,12 +311,16 @@ static_assert((fixed_point<uint32, -7>(232.125f)) == 232.125f, "sg14::fixed_poin
 static_assert(fixed_point<uint64, -7>(232.125f) == 232.125L, "sg14::fixed_point test failed");
 
 #if ! defined(TEST_THROWING_OVERFLOW)
+#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED)
 static_assert(fixed_point<int8, -7>(1) != 1.L, "sg14::fixed_point test failed");
+#endif
 #endif
 
 static_assert(fixed_point<int8, -7>(.5) == .5f, "sg14::fixed_point test failed");
 static_assert(fixed_point<int8, -7>(.125f) == .125L, "sg14::fixed_point test failed");
+#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(fixed_point<int16, -7>(123.125f) != 123, "sg14::fixed_point test failed");
+#endif
 static_assert(fixed_point<int32, -7>(123.125f) == 123.125, "sg14::fixed_point test failed");
 static_assert(fixed_point<int64, -7>(123.125l) == 123.125f, "sg14::fixed_point test failed");
 
@@ -342,10 +346,14 @@ static_assert(fixed_point<int8, 1>(-5) == -6, "sg14::fixed_point test failed");
 
 // conversion between fixed_point specializations
 static_assert(make_ufixed<4, 4>(make_fixed<7, 8>(1.5)) == 1.5, "sg14::fixed_point test failed");
+#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE)
 static_assert(make_ufixed<8, 8>(make_fixed<3, 4>(3.25)) == 3.25, "sg14::fixed_point test failed");
+#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
 static_assert(fixed_point<uint8, 4>(fixed_point<int16, -4>(768)) == 768, "sg14::fixed_point test failed");
+#endif
 static_assert(fixed_point<uint64, -48>(fixed_point<uint32, -24>(3.141592654)) > 3.1415923f, "sg14::fixed_point test failed");
 static_assert(fixed_point<uint64, -48>(fixed_point<uint32, -24>(3.141592654)) < 3.1415927f, "sg14::fixed_point test failed");
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // boolean
@@ -375,7 +383,9 @@ static_assert((make_fixed<15, 16>(123.75) * make_fixed<15, 16>(44.5)) == 5506.87
 // division
 constexpr auto divide_result = _impl::shift_left<1, int8>(int8(0));
 
+#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert((fixed_point<int8, -1>(63) / fixed_point<int8, -1>(-4)) == -16, "sg14::fixed_point test failed");
+#endif
 
 #if defined(TEST_NATIVE_OVERFLOW)
 static_assert((fixed_point<int8, 1>(-255) / fixed_point<int8, 1>(-8)) == 32, "sg14::fixed_point test failed");
@@ -461,7 +471,9 @@ static_assert(fixed_point<uint8, -4>(4.5) != fixed_point<int16, -7>(-4.5), "sg14
 static_assert(!(fixed_point<uint8, -4>(4.5) != fixed_point<int16, -7>(4.5)), "sg14::fixed_point test failed");
 
 static_assert(fixed_point<uint8, -4>(4.5) < fixed_point<int16, -7>(5.6), "sg14::fixed_point test failed");
+#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(!(fixed_point<int8, -3>(-4.5) < fixed_point<int16, -7>(-5.6)), "sg14::fixed_point test failed");
+#endif
 
 static_assert(fixed_point<uint8, -4>(4.6) > fixed_point<int16, -8>(4.5), "sg14::fixed_point test failed");
 static_assert(!(fixed_point<uint8, -4>(4.6) < fixed_point<int16, -8>(-4.5)), "sg14::fixed_point test failed");
@@ -474,11 +486,15 @@ static_assert(fixed_point<uint8, -4>(4.5) >= fixed_point<int16, -8>(-4.5), "sg14
 static_assert(!(fixed_point<uint8, -4>(4.5) >= fixed_point<int16, -8>(4.6)), "sg14::fixed_point test failed");
 
 // TODO: Is this acceptable?
+#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(fixed_point<uint8, -1>(.5) == fixed_point<uint8, 0>(0), "sg14::fixed_point test failed");
+#endif
 
 // heterogeneous fixed-point to arithmetic comparison
 static_assert(fixed_point<uint8, -4>(4.5) == 4.5, "sg14::fixed_point test failed");
+#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(!(4 == fixed_point<int16, -7>(-4.5)), "sg14::fixed_point test failed");
+#endif
 
 static_assert(4.5f != fixed_point<int16, -7>(-4.5), "sg14::fixed_point test failed");
 static_assert(!(fixed_point<uint64, -4>(4.5) != 4.5L), "sg14::fixed_point test failed");
@@ -503,7 +519,9 @@ static_assert(is_same<decltype(765.432f + make_fixed<31, 32>(16777215.996093750)
 static_assert(make_fixed<31, 32>(16777215.996093750) + 765.432f == 16777981.428100586, "arithmetic operators test failed");
 static_assert(is_same<decltype(make_fixed<31, 32>(16777215.996093750) + 765.432f), double>::value, "arithmetic operators test failed");
 
+#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(fixed_point<int32,-16>(.5) + 2 == 2.5, "arithmetic operators test failed");
+#endif
 
 // subtraction
 static_assert(make_fixed<2, 5>(2.125) - make_fixed<2, 5>(3.25) == -1.125f, "arithmetic operators test failed");

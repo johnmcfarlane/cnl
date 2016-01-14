@@ -5,9 +5,15 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <integer.h>
+#include <fixed_point.h>
 
 #define TEST_NATIVE_OVERFLOW
 #define TEST_LABEL native_integer_
+
+#if defined(_MSC_VER)
+#define TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE
+#define TEST_IGNORE_MSVC_INTERNAL_ERRORS
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Repr type

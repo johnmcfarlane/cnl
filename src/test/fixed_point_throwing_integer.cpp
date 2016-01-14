@@ -15,6 +15,11 @@
 #define TEST_LABEL hobbled_throwing_integer_
 #endif
 
+#if defined(_MSC_VER)
+#define TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING
+#define TEST_IGNORE_MSVC_INTERNAL_ERRORS
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Repr type
 
@@ -32,13 +37,13 @@ using test_signed = sg14::throwing_integer<signed>;
 #if defined(TEST_THROWING_OVERFLOW)
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_right)
 {
-	constexpr auto shift_right_fn = _impl::shift_right<8, uint16, uint8>;
+	auto shift_right_fn = _impl::shift_right<8, uint16, uint8>;
 	ASSERT_THROW(shift_right_fn((uint8)0x1234), std::overflow_error);
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_left)
 {
-	constexpr auto shift_right_fn = _impl::shift_left<-8, uint16, uint8>;
+	auto shift_right_fn = _impl::shift_left<-8, uint16, uint8>;
 	ASSERT_THROW(shift_right_fn((uint8)0x1234), std::overflow_error);
 }
 
