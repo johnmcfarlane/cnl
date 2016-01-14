@@ -291,7 +291,7 @@ namespace sg14 {
       template<typename LhsRepr>
       constexpr explicit operator LhsRepr() const
       {
-          return repr;
+          return static_cast<LhsRepr>(repr);
       }
 
       constexpr friend integer operator-(const integer& rhs) {
