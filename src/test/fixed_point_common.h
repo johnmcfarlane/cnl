@@ -6,8 +6,6 @@
 
 #include <gtest/gtest.h>
 
-#include <fixed_point.h>
-
 ////////////////////////////////////////////////////////////////////////////////
 // imports from std
 
@@ -19,9 +17,26 @@ using std::common_type;
 
 using namespace sg14;
 
+////////////////////////////////////////////////////////////////////////////////
+// integer definitions
+//
+// depends upon test_signed and test_unsigned defined in including source file
 
+using test_int = test_signed;
 
+using int8 = sg14::resize_t<test_signed, 1>;
+using uint8 = sg14::resize_t<test_unsigned, 1>;
+using int16 = sg14::resize_t<test_signed, 2>;
+using uint16 = sg14::resize_t<test_unsigned, 2>;
+using int32 = sg14::resize_t<test_signed, 4>;
+using uint32 = sg14::resize_t<test_unsigned, 4>;
+using int64 = sg14::resize_t<test_signed, 8>;
+using uint64 = sg14::resize_t<test_unsigned, 8>;
 
+#if defined(_GLIBCXX_USE_INT128)
+using int128 = sg14::resize_t<test_signed, 16>;
+using uint128 = sg14::resize_t<test_unsigned, 16>;
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // copy assignment
