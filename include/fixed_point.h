@@ -615,8 +615,11 @@ namespace sg14
 	// sg14::make_ufixed
 
 	// unsigned short-hand for make_fixed
-	template <unsigned IntegerDigits, unsigned FractionalDigits = 0>
-	using make_ufixed = make_fixed<IntegerDigits, FractionalDigits, unsigned>;
+	template <unsigned IntegerDigits, unsigned FractionalDigits = 0, class Archetype = unsigned>
+	using make_ufixed = make_fixed<
+			IntegerDigits,
+			FractionalDigits,
+			typename std::make_unsigned<Archetype>::type>;
 
 	////////////////////////////////////////////////////////////////////////////////
 	// sg14::make_fixed_from_repr
