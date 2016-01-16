@@ -629,7 +629,7 @@ namespace sg14
 	////////////////////////////////////////////////////////////////////////////////
 	// sg14::make_fixed_from_repr
 
-	// yields a float_point with Exponent calculated such that
+	// yields a fixed_point with Exponent calculated such that
 	// fixed_point<ReprType, Exponent>::integer_bits == IntegerDigits
 	template <class ReprType, int IntegerDigits>
 	using make_fixed_from_repr = fixed_point<
