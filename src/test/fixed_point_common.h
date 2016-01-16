@@ -416,6 +416,18 @@ static_assert(make_fixed_from_repr<uint8, 8>::integer_digits == 8, "sg14::make_f
 static_assert(make_fixed_from_repr<int32, 27>::integer_digits == 27, "sg14::make_fixed_from_repr test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
+// sg14::resize_t
+
+static_assert(is_same<resize_t<uint8, 1>, uint8>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<int8, 2>, int16>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<uint16, 3>, uint32>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<int16, 4>, int32>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<uint32, 5>, uint64>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<int32, 6>, int64>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<uint64, 7>, uint64>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<int64, 8>, int64>::value, "sg14::resize_t test failed");
+
+////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::common_repr_type
 
 static_assert(is_same<_impl::common_repr_type<uint8, uint8>, uint8>::value, "sg14::_impl::common_repr_type test failed");

@@ -139,6 +139,11 @@ namespace sg14
 			using type = __int128; };
 #endif
 
+		template <class FundamentalInteger, int NumBytes> struct _resize<
+				FundamentalInteger, NumBytes,
+				typename std::enable_if<(((1 << NumBytes) & 0xfee8) != 0)>::type> {
+			using type = typename _resize<FundamentalInteger, NumBytes + 1>::type; };
+
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::make_float
 
