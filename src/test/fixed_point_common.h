@@ -24,18 +24,18 @@ using namespace sg14;
 
 using test_int = test_signed;
 
-using int8 = sg14::resize_t<test_signed, 1>;
-using uint8 = sg14::resize_t<test_unsigned, 1>;
-using int16 = sg14::resize_t<test_signed, 2>;
-using uint16 = sg14::resize_t<test_unsigned, 2>;
-using int32 = sg14::resize_t<test_signed, 4>;
-using uint32 = sg14::resize_t<test_unsigned, 4>;
-using int64 = sg14::resize_t<test_signed, 8>;
-using uint64 = sg14::resize_t<test_unsigned, 8>;
+using int8 = resize_t<test_signed, 1>;
+using uint8 = resize_t<test_unsigned, 1>;
+using int16 = resize_t<test_signed, 2>;
+using uint16 = resize_t<test_unsigned, 2>;
+using int32 = resize_t<test_signed, 4>;
+using uint32 = resize_t<test_unsigned, 4>;
+using int64 = resize_t<test_signed, 8>;
+using uint64 = resize_t<test_unsigned, 8>;
 
 #if defined(_GLIBCXX_USE_INT128)
-using int128 = sg14::resize_t<test_signed, 16>;
-using uint128 = sg14::resize_t<test_unsigned, 16>;
+using int128 = resize_t<test_signed, 16>;
+using uint128 = resize_t<test_unsigned, 16>;
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
