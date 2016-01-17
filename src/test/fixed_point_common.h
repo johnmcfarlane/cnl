@@ -255,6 +255,29 @@ static_assert(is_same<_impl::sufficient_repr<128, test_signed>, int128>::value, 
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+// sg14::resize_t<fixed_point<>, >
+
+static_assert(is_same<resize_t<fixed_point<std::uint8_t, -8>, 1>, fixed_point<std::uint8_t, -8>>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<fixed_point<std::int8_t, 8>, 2>, fixed_point<std::int16_t, 8>>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<fixed_point<std::uint16_t, -16>, 3>, fixed_point<std::uint32_t, -16>>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<fixed_point<std::int16_t, 16>, 4>, fixed_point<std::int32_t, 16>>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<fixed_point<std::uint32_t, -45>, 5>, fixed_point<std::uint64_t, -45>>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<fixed_point<std::int32_t, -8>, 6>, fixed_point<std::int64_t, -8>>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<fixed_point<std::uint64_t, 8>, 7>, fixed_point<std::uint64_t, 8>>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<fixed_point<std::int64_t, -16>, 8>, fixed_point<std::int64_t, -16>>::value, "sg14::resize_t test failed");
+#if defined(_GLIBCXX_USE_INT128)
+static_assert(is_same<resize_t<fixed_point<std::uint8_t, 16>, 9>, fixed_point<unsigned __int128, 16>>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<fixed_point<std::int8_t, -45>, 10>, fixed_point<__int128, -45>>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<fixed_point<std::uint16_t, -8>, 11>, fixed_point<unsigned __int128, -8>>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<fixed_point<std::int16_t, 8>, 12>, fixed_point<__int128, 8>>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<fixed_point<std::uint32_t, -16>, 13>, fixed_point<unsigned __int128, -16>>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<fixed_point<std::int32_t, 16>, 14>, fixed_point<__int128, 16>>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<fixed_point<std::uint64_t, -45>, 15>, fixed_point<unsigned __int128, -45>>::value, "sg14::resize_t test failed");
+static_assert(is_same<resize_t<fixed_point<std::int64_t, -8>, 16>, fixed_point<__int128, -8>>::value, "sg14::resize_t test failed");
+#endif
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // sg14::fixed_point
 
 ////////////////////////////////////////////////////////////////////////////////

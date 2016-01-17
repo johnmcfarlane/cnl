@@ -550,6 +550,14 @@ namespace sg14
 		IntegerDigits + std::is_signed<ReprType>::value - (signed)sizeof(ReprType) * CHAR_BIT>;
 
 	////////////////////////////////////////////////////////////////////////////////
+	// sg14::resize<fixed_point<>, T>
+
+	template <class ReprType, int Exponent, int NumBytes>
+	struct resize<fixed_point<ReprType, Exponent>, NumBytes> {
+		using type = fixed_point<resize_t<ReprType, NumBytes>, Exponent>;
+	};
+
+	////////////////////////////////////////////////////////////////////////////////
 	// sg14::promote_result / promote
 
 	// given template parameters of a fixed_point specialization, 
