@@ -10,7 +10,6 @@
 // imports from std
 
 using std::is_same;
-using std::common_type;
 
 ////////////////////////////////////////////////////////////////////////////////
 // imports from sg14
@@ -119,7 +118,7 @@ static_assert(static_cast<int>(-3.0) == -3, "incorrect assumption about default 
 static_assert(static_cast<int>(-3.9) == -3, "incorrect assumption about default rounding");
 
 // mixed-mode operations DO lose precision because exponent is more important than significand
-static_assert(is_same<common_type<float, uint32>::type, float>::value, "incorrect assumption about promotion");
+static_assert(is_same<std::common_type<float, uint32>::type, float>::value, "incorrect assumption about promotion");
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
