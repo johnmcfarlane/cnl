@@ -21,7 +21,8 @@ using namespace sg14;
 //
 // depends upon test_signed and test_unsigned defined in including source file
 
-using test_int = test_signed;
+using test_signed = test_int;
+using test_unsigned = std::make_unsigned<test_signed>::type;
 
 using int8 = resize_t<test_signed, 1>;
 using uint8 = resize_t<test_unsigned, 1>;

@@ -18,8 +18,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Repr type
 
-using test_unsigned = sg14::saturated_integer<unsigned>;
-using test_signed = sg14::saturated_integer<signed>;
+using test_int = sg14::saturated_integer<>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // perform fixed_point tests with this type of fixed_point specialization
