@@ -350,7 +350,7 @@ namespace sg14 {
 
     template <class Repr, class OverflowPolicy, int NumBytes>
     struct resize<integer<Repr, OverflowPolicy>, NumBytes> {
-        using type = integer<typename resize<Repr, NumBytes>::type, OverflowPolicy>;
+        using type = integer<resize_t<Repr, NumBytes>, OverflowPolicy>;
     };
 }
 
