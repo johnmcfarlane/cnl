@@ -4,6 +4,8 @@
 #include <limits>
 #include <stdexcept>
 
+#include "type_traits.h"
+
 ////////////////////////////////////////////////////////////////////////////////
 // _SG14_INTEGER_EXCEPTIONS_ENABLED macro definition 
 
@@ -339,10 +341,6 @@ namespace sg14 {
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::resize<integer<>, > partial specialization
-
-    // forward-declaration
-    template <class Archetype, int NumBytes>
-    struct resize;
 
     template <class Repr, class OverflowPolicy, int NumBytes>
     struct resize<integer<Repr, OverflowPolicy>, NumBytes> {

@@ -9,7 +9,8 @@
 
 #include <climits>
 #include <cinttypes>
-#include <type_traits>
+
+#include "type_traits.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // _SG14_FIXED_POINT_EXCEPTIONS_ENABLED macro definition 
@@ -43,18 +44,6 @@
 namespace sg14
 {
 	////////////////////////////////////////////////////////////////////////////////
-	// sg14::resize
-
-	template <class Archetype, int NumBytes>
-	struct resize;
-
-	// given a type and a size, e.g. <uint8_t, 4>, yields a similar type of given
-	// size, e.g. uint32_t; if specialized for non-built-in types, those types can
-	// be used as the Repr parameter to sg14::fixed_point<Repr, Exponent>
-	template <class Archetype, int NumBytes>
-	using resize_t = typename resize<Archetype, NumBytes>::type;
-
-	////////////////////////////////////////////////////////////////////////////////
 	// general-purpose _impl definitions
 
 	namespace _impl
@@ -67,82 +56,6 @@ namespace sg14
 		{
 			return sizeof(T) * CHAR_BIT;
 		}
-
-		////////////////////////////////////////////////////////////////////////////////
-		// sg14::_impl::_resize
-
-		// supports sg14::resize specialization for built-in integer types
-		template <class Archetype, int NumBytes, class _Enable = void>
-		struct _resize;
-
-		template <class FundamentalSignedInteger>
-		struct _fsi : public std::integral_constant<
-				bool,
-				std::is_signed<FundamentalSignedInteger>::value
-						&& std::is_integral<FundamentalSignedInteger>::value
-						&& std::is_fundamental<FundamentalSignedInteger>::value> {
-		};
-
-		template <class FundamentalUnsignedInteger>
-		struct _fui : public std::integral_constant<
-				bool,
-				std::is_unsigned<FundamentalUnsignedInteger>::value
-						&& std::is_integral<FundamentalUnsignedInteger>::value
-						&& std::is_fundamental<FundamentalUnsignedInteger>::value> {
-		};
-
-		// specializations
-		template <class FundamentalUnsignedInteger> struct _resize<
-                FundamentalUnsignedInteger, 1,
-				typename std::enable_if<_fui<FundamentalUnsignedInteger>::value>::type> {
-			using type = std::uint8_t; };
-		template <class FundamentalSignedInteger> struct _resize<
-                FundamentalSignedInteger, 1,
-				typename std::enable_if<_fsi<FundamentalSignedInteger>::value>::type> {
-			using type = std::int8_t; };
-
-		template <class FundamentalUnsignedInteger> struct _resize<
-                FundamentalUnsignedInteger, 2,
-				typename std::enable_if<_fui<FundamentalUnsignedInteger>::value>::type> {
-			using type = std::uint16_t; };
-		template <class FundamentalSignedInteger> struct _resize<
-                FundamentalSignedInteger, 2,
-				typename std::enable_if<_fsi<FundamentalSignedInteger>::value>::type> {
-			using type = std::int16_t; };
-
-		template <class FundamentalUnsignedInteger> struct _resize<
-                FundamentalUnsignedInteger, 4,
-				typename std::enable_if<_fui<FundamentalUnsignedInteger>::value>::type> {
-			using type = std::uint32_t; };
-		template <class FundamentalSignedInteger> struct _resize<
-                FundamentalSignedInteger, 4,
-				typename std::enable_if<_fsi<FundamentalSignedInteger>::value>::type> {
-			using type = std::int32_t; };
-
-		template <class FundamentalUnsignedInteger> struct _resize<
-                FundamentalUnsignedInteger, 8,
-				typename std::enable_if<_fui<FundamentalUnsignedInteger>::value>::type> {
-			using type = std::uint64_t; };
-		template <class FundamentalSignedInteger> struct _resize<
-                FundamentalSignedInteger, 8,
-				typename std::enable_if<_fsi<FundamentalSignedInteger>::value>::type> {
-			using type = std::int64_t; };
-
-#if defined(_GLIBCXX_USE_INT128)
-		template <class FundamentalUnsignedInteger> struct _resize<
-                FundamentalUnsignedInteger, 16,
-				typename std::enable_if<_fui<FundamentalUnsignedInteger>::value>::type> {
-			using type = unsigned __int128; };
-		template <class FundamentalSignedInteger> struct _resize<
-                FundamentalSignedInteger, 16,
-				typename std::enable_if<_fsi<FundamentalSignedInteger>::value>::type> {
-			using type = __int128; };
-#endif
-
-		template <class FundamentalInteger, int NumBytes> struct _resize<
-				FundamentalInteger, NumBytes,
-				typename std::enable_if<(((1 << NumBytes) & 0xfee8) != 0)>::type> {
-			using type = typename _resize<FundamentalInteger, NumBytes + 1>::type; };
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::make_float
@@ -635,16 +548,6 @@ namespace sg14
 	using make_fixed_from_repr = fixed_point<
 		ReprType,
 		IntegerDigits + std::is_signed<ReprType>::value - (signed)sizeof(ReprType) * CHAR_BIT>;
-
-	////////////////////////////////////////////////////////////////////////////////
-	// sg14::resize specialization for built-in integer
-
-	template <class FundamentalInteger, int NumBytes>
-	struct resize
-			: std::enable_if<
-					std::is_fundamental<FundamentalInteger>::value,
-					_impl::_resize<FundamentalInteger, NumBytes>>::type {
-	};
 
 	////////////////////////////////////////////////////////////////////////////////
 	// sg14::promote_result / promote
