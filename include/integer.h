@@ -272,7 +272,7 @@ namespace sg14 {
   // sg14::integer<>
 
   // an integer which can be customized to react in different ways to overflow
-  template<typename Repr, typename OverflowPolicy>
+  template<typename Repr = int, typename OverflowPolicy = native_overflow_policy>
   class integer {
   public:
       ////////////////////////////////////////////////////////////////////////////////
@@ -336,13 +336,13 @@ namespace sg14 {
   ////////////////////////////////////////////////////////////////////////////////
   // integer<> partial specializations
 
-  template<typename Repr>
+  template<typename Repr = int>
   using native_integer = integer<Repr, native_overflow_policy>;
 
-  template<typename Repr>
+  template<typename Repr = int>
   using throwing_integer = integer<Repr, throwing_overflow_policy>;
 
-  template<typename Repr>
+  template<typename Repr = int>
   using saturated_integer = integer<Repr, saturated_overflow_policy>;
 
     ////////////////////////////////////////////////////////////////////////////////
