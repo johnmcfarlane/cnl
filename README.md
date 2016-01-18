@@ -21,12 +21,12 @@ The library is [hosted](https://github.com/johnmcfarlane/fixed_point) on GitHub:
 
 1. Add the [*include*](include) directory to your list of system headers. 
 
-1. Essential definitions are in, [*fixed_point.h*](include/fixed_point.h):
+1. Essential definitions are in [*fixed_point.h*](include/fixed_point.h):
    ```
    #include <fixed_point.h>
    ```
 
-1. Supplemental definitions are in, [*fixed_point_utils.h*](include/fixed_point_utils.h):
+1. Supplemental definitions are in [*fixed_point_utils.h*](include/fixed_point_utils.h):
    ```
    #include <fixed_point_utils.h>
    ```
@@ -49,11 +49,11 @@ The library is [hosted](https://github.com/johnmcfarlane/fixed_point) on GitHub:
 1. Alternatively, use `make_fixed` and `make_ufixed` to instantiate signed and unsigned variables 
    with exactly the number of integer and fractional digits you require:
    ```
-   sg14::make_fixed<3, 28> pi(3.1415926535);
+   make_fixed<3, 28> pi(3.1415926535);
    ```
 
-1. See paper, [P0037](http://johnmcfarlane.github.io/fixed_point/docs/papers/p0037.html),
-   for full details of `sg14::fixed_point`.
+1. See proposal, [P0037](http://johnmcfarlane.github.io/fixed_point/docs/papers/p0037.html),
+   for mode details.
 
 ## Tests and Benchmarks
 
@@ -112,6 +112,8 @@ For 64-bit builds, append `Win64` to the `-G` option above:
 
 ### Cleaning
 
-To clean the project files. (Warning: this purges *everything* that isn't bolted down):
+To clean the project files:
 
     git clean -Xdff .
+
+(Use with caution!)
