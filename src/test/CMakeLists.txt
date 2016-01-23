@@ -9,11 +9,11 @@ include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
 
 # helpful example [here](https://gist.github.com/Fraser999/5351180)
 ExternalProject_Add(
-  google_test
-  GIT_REPOSITORY "https://github.com/google/googletest.git"
-  GIT_TAG "release-1.7.0"
-  INSTALL_COMMAND ""
-  CMAKE_ARGS -Dgtest_force_shared_crt=ON
+        google_test
+        GIT_REPOSITORY "https://github.com/google/googletest.git"
+        GIT_TAG "release-1.7.0"
+        INSTALL_COMMAND ""
+        CMAKE_ARGS -Dgtest_force_shared_crt=ON
 )
 ExternalProject_Get_Property(google_test source_dir)
 include_directories(SYSTEM ${source_dir}/include)
@@ -22,11 +22,17 @@ include_directories(SYSTEM ${source_dir}/include)
 # fp_test target
 
 add_executable(
-  fp_test
-  ${CMAKE_CURRENT_LIST_DIR}/fixed_point.cpp
-  ${CMAKE_CURRENT_LIST_DIR}/main.cpp
-  ${CMAKE_CURRENT_LIST_DIR}/proposal.cpp
-  ${CMAKE_CURRENT_LIST_DIR}/utils.cpp
+        fp_test
+        ${CMAKE_CURRENT_LIST_DIR}/main.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/proposal.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/utils.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/integer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/fixed_point_built_in.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/fixed_point_saturated_integer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/fixed_point_native_integer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/fixed_point_throwing_integer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/type_traits.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/readme.cpp
 )
 set_target_properties(
         fp_test
@@ -41,15 +47,15 @@ add_dependencies(fp_test google_test)
 ExternalProject_Get_Property(google_test binary_dir)
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
-  target_link_libraries(
-    fp_test
-    debug ${binary_dir}/Debug/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}
-    optimized ${binary_dir}/Release/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}
-  )
+    target_link_libraries(
+            fp_test
+            debug ${binary_dir}/Debug/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}
+            optimized ${binary_dir}/Release/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}
+    )
 else ()
-  target_link_libraries(
-    fp_test
-    general ${binary_dir}/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a
-    general pthread
-  )
-endif()
+    target_link_libraries(
+            fp_test
+            general ${binary_dir}/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a
+            general pthread
+    )
+endif ()

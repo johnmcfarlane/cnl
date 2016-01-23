@@ -39,3 +39,16 @@ static_assert(abs(make_fixed<7, 0>(-123)) == 123, "sg14::abs test failed");
 static_assert(abs(make_fixed<63, 0>(9223372036854775807)) == 9223372036854775807LL, "sg14::abs test failed");
 static_assert(abs(make_fixed<63, 0>(-9223372036854775807)) == 9223372036854775807LL, "sg14::abs test failed");
 static_assert(abs(make_fixed<7, 8>(-5)) == 5, "sg14::abs test failed");
+
+static_assert(abs(make_ufixed<8, 0>(66)) == 66, "sg14::abs test failed");
+static_assert(abs(make_ufixed<8, 0>(123)) == 123, "sg14::abs test failed");
+static_assert(abs(make_ufixed<8, 8>(5)) == 5, "sg14::abs test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// std specializations for 128-bit integer facilitate certain 64-bit operations
+
+#if defined(_GLIBCXX_USE_INT128)
+static_assert((make_ufixed<56, 8>(1003006) * make_ufixed<56, 8>(7)) == 7021042, "sg14::fixed_point test failed");
+static_assert(static_cast<int>((fixed_point<uint64_t, -8>(65535) / fixed_point<uint64_t, -8>(256))) == 255, "sg14::fixed_point test failed");
+static_assert(sqrt(make_fixed<63, 0>(9223372036854775807)) == 3037000499LL, "sg14::sqrt test failed");
+#endif

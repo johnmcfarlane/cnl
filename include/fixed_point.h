@@ -9,40 +9,29 @@
 
 #include <climits>
 #include <cinttypes>
-#include <type_traits>
+
+#include "type_traits.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-// _SG14_FIXED_POINT_128 macro definition 
+// _SG14_FIXED_POINT_EXCEPTIONS_ENABLED macro definition 
 
-#if defined(_SG14_FIXED_POINT_128)
-#error _SG14_FIXED_POINT_128 already defined
-#endif
-
-#if defined(_GLIBCXX_USE_INT128)
-// sg14::float_point only fully supports 64-bit types with the help of 128-bit ints.
-#define _SG14_FIXED_POINT_128
-#endif
-
-////////////////////////////////////////////////////////////////////////////////
-// _SG14_EXCEPTIONS_ENABLED macro definition 
-
-#if defined(_SG14_EXCEPTIONS_ENABLED)
-#error _SG14_EXCEPTIONS_ENABLED already defined
+#if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
+#error _SG14_FIXED_POINT_EXCEPTIONS_ENABLED already defined
 #endif
 
 #if defined(_MSC_VER)
 #if defined(_CPPUNWIND)
-#define _SG14_EXCEPTIONS_ENABLED
+#define _SG14_FIXED_POINT_EXCEPTIONS_ENABLED
 #endif
 #elif defined(__clang__) || defined(__GNUG__)
 #if defined(__EXCEPTIONS)
-#define _SG14_EXCEPTIONS_ENABLED
+#define _SG14_FIXED_POINT_EXCEPTIONS_ENABLED
 #endif
 #else
-#define _SG14_EXCEPTIONS_ENABLED
+#define _SG14_FIXED_POINT_EXCEPTIONS_ENABLED
 #endif
 
-#if defined(_SG14_EXCEPTIONS_ENABLED)
+#if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
 #include <stdexcept>
 #endif
 
@@ -69,29 +58,6 @@ namespace sg14
 		}
 
 		////////////////////////////////////////////////////////////////////////////////
-		// sg14::_impl::make_int
-
-		template <bool Signed, int NumBytes>
-		struct _make_int;
-
-		// specializations
-		template <> struct _make_int<false, 1> { using type = std::uint8_t; };
-		template <> struct _make_int<true, 1> { using type = std::int8_t; };
-		template <> struct _make_int<false, 2> { using type = std::uint16_t; };
-		template <> struct _make_int<true, 2> { using type = std::int16_t; };
-		template <> struct _make_int<false, 4> { using type = std::uint32_t; };
-		template <> struct _make_int<true, 4> { using type = std::int32_t; };
-		template <> struct _make_int<false, 8> { using type = std::uint64_t; };
-		template <> struct _make_int<true, 8> { using type = std::int64_t; };
-#if defined(_SG14_FIXED_POINT_128)
-		template <> struct _make_int<false, 16> { using type = unsigned __int128; };
-		template <> struct _make_int<true, 16> { using type = __int128; };
-#endif
-
-		template <bool Signed, int NumBytes>
-		using make_int = typename _make_int<Signed, NumBytes>::type;
-
-		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::make_float
 
 		template <int NumBytes>
@@ -108,78 +74,12 @@ namespace sg14
 		using make_float = typename _make_float<NumBytes>::type;
 
 		////////////////////////////////////////////////////////////////////////////////
-		// sg14::_impl::is_integral
-
-		template <class T>
-		struct is_integral;
-
-		// exception to std::is_integral as fixed_point::operator bool is a special case
-		template <>
-		struct is_integral<bool> : std::false_type { };
-
-#if defined(_SG14_FIXED_POINT_128)
-		// addresses https://llvm.org/bugs/show_bug.cgi?id=23156
-		template <>
-		struct is_integral<__int128> : std::true_type { };
-
-		template <>
-		struct is_integral<unsigned __int128> : std::true_type { };
-#endif
-
-		template <class T>
-		struct is_integral : std::is_integral<T> { };
-
-		////////////////////////////////////////////////////////////////////////////////
-		// sg14::_impl::is_signed
-
-		template <class T>
-		struct is_signed
-		{
-			static_assert(is_integral<T>::value, "sg14::_impl::is_signed only intended for use with integral types");
-			static constexpr bool value = std::is_same<make_int<true, sizeof(T)>, T>::value;
-		};
-
-		////////////////////////////////////////////////////////////////////////////////
-		// sg14::_impl::is_unsigned
-
-		template <class T>
-		struct is_unsigned
-		{
-			static_assert(is_integral<T>::value, "sg14::_impl::is_unsigned only intended for use with integral types");
-			static constexpr bool value = std::is_same<make_int<false, sizeof(T)>, T>::value;
-		};
-
-		////////////////////////////////////////////////////////////////////////////////
-		// sg14::_impl::make_signed
-
-		template <class T>
-		struct _make_signed
-		{
-			using type = make_int<true, sizeof(T)>;
-		};
-
-		template <class T>
-		using make_signed = typename _make_signed<T>::type;
-
-		////////////////////////////////////////////////////////////////////////////////
-		// sg14::_impl::make_unsigned
-
-		template <class T>
-		struct _make_unsigned
-		{
-			using type = make_int<false, sizeof(T)>;
-		};
-
-		template <class T>
-		using make_unsigned = typename _make_unsigned<T>::type;
-
-		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::next_size
 
 		// given an integral type, IntType,
 		// provides the integral type of the equivalent type with twice the size
 		template <class IntType>
-		using next_size = make_int<_impl::is_signed<IntType>::value, sizeof(IntType) * 2>;
+		using next_size = typename sg14::resize_t<IntType, sizeof(IntType) * 2>;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::previous_size
@@ -187,7 +87,7 @@ namespace sg14
 		// given an integral type, IntType,
 		// provides the integral type of the equivalent type with half the size
 		template <class IntType>
-		using previous_size = make_int<_impl::is_signed<IntType>::value, sizeof(IntType) / 2>;
+		using previous_size = typename sg14::resize_t<IntType, sizeof(IntType) / 2>;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::shift_left and sg14::_impl::shift_right
@@ -206,8 +106,8 @@ namespace sg14
 				int>::type Dummy = 0>
 		constexpr Output shift_left(Input i) _SG14_FN_QUALIFIER
 		{
-			static_assert(_impl::is_integral<Input>::value, "Input must be integral type");
-			static_assert(_impl::is_integral<Output>::value, "Output must be integral type");
+			static_assert(std::is_integral<Input>::value, "Input must be integral type");
+			static_assert(std::is_integral<Output>::value, "Output must be integral type");
 
 			// cast only
 			return static_cast<Output>(i);
@@ -222,20 +122,20 @@ namespace sg14
 				int>::type Dummy = 0>
 		constexpr Output shift_right(Input i) _SG14_FN_QUALIFIER
 		{
-			static_assert(_impl::is_integral<Input>::value, "Input must be integral type");
-			static_assert(_impl::is_integral<Output>::value, "Output must be integral type");
+			static_assert(std::is_integral<Input>::value, "Input must be integral type");
+			static_assert(std::is_integral<Output>::value, "Output must be integral type");
 
 			// cast only
 			return static_cast<Output>(i);
 		}
 
-		// sizeof(Input) > sizeof(Output)
+		// sizeof(Input) >= sizeof(Output)
 		template <
 			int Exponent,
 			class Output,
 			class Input,
 			typename std::enable_if<
-				!(Exponent <= 0) && sizeof(Output) <= sizeof(Input) && _impl::is_unsigned<Input>::value,
+				!(Exponent <= 0) && sizeof(Output) <= sizeof(Input) && std::is_unsigned<Input>::value,
 				int>::type Dummy = 0>
 		constexpr Output shift_left(Input i) _SG14_FN_QUALIFIER
 		{
@@ -254,13 +154,13 @@ namespace sg14
 			return shift_right<0, Output, Input>(i >> Exponent);
 		}
 
-		// sizeof(Input) <= sizeof(Output)
+		// sizeof(Input) < sizeof(Output)
 		template <
 			int Exponent, 
 			class Output, 
 			class Input, 
 			typename std::enable_if<
-				!(Exponent <= 0) && !(sizeof(Output) <= sizeof(Input)) && _impl::is_unsigned<Input>::value,
+				!(Exponent <= 0) && !(sizeof(Output) <= sizeof(Input)) && std::is_unsigned<Input>::value,
 				char>::type Dummy = 0>
 		constexpr Output shift_left(Input i) _SG14_FN_QUALIFIER
 		{
@@ -285,16 +185,16 @@ namespace sg14
 			class Output,
 			class Input,
 			typename std::enable_if<
-				!(Exponent <= 0) && _impl::is_signed<Input>::value,
+				!(Exponent <= 0) && std::is_signed<Input>::value,
 				int>::type Dummy = 0>
 		constexpr Output shift_left(Input i) _SG14_FN_QUALIFIER
 		{
-			using unsigned_input = _impl::make_unsigned<Input>;
-			using signed_output = _impl::make_signed<Output>;
+			using unsigned_input = typename std::make_unsigned<Input>::type;
+			using signed_output = typename std::make_signed<Output>::type;
 
-			return (i >= 0)
-				? shift_left<Exponent, signed_output, unsigned_input>(i)
-				: -shift_left<Exponent, signed_output, unsigned_input>(-i);
+			return static_cast<Output>((i >= 0)
+				? shift_left<Exponent, signed_output>(static_cast<unsigned_input>(i))
+				: -shift_left<Exponent, signed_output>(static_cast<unsigned_input>(-i)));
 		}
 
 		// Exponent < 0
@@ -361,29 +261,15 @@ namespace sg14
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::common_repr_type
 
-		// given two or more integral types, produces a common type with enough capacity
-		// to store values of either EXCEPT when one is signed and both are same size
-		template <class ... ReprTypes>
-		struct _common_repr_type;
-
-		template <class ReprTypeHead>
-		struct _common_repr_type <ReprTypeHead>
-		{
-			using type = ReprTypeHead;
-		};
-
-		template <class ReprTypeHead, class ... ReprTypeTail>
-		struct _common_repr_type <ReprTypeHead, ReprTypeTail...>
-		{
-			using _tail_type = typename _common_repr_type<ReprTypeTail...>::type;
-
-			using type = _impl::make_int<
-				_impl::is_signed<ReprTypeHead>::value | _impl::is_signed<_tail_type>::value,
-				_impl::max(sizeof(ReprTypeHead), sizeof(_tail_type))>;
-		};
-
-		template <class ... ReprTypes>
-		using common_repr_type = typename _common_repr_type<ReprTypes...>::type;
+		// given two integral types, produces a common type with enough capacity to
+		// store values of either (except when one is signed and both are same size)
+		template <class LhsReprType, class RhsReprType>
+		using common_repr_type = typename sg14::resize_t<
+				typename std::conditional<
+						std::is_signed<LhsReprType>::value | std::is_signed<RhsReprType>::value,
+						typename std::make_signed<typename std::common_type<LhsReprType, RhsReprType>::type>::type,
+						typename std::make_unsigned<typename std::common_type<LhsReprType, RhsReprType>::type>::type>::type,
+				_impl::max(sizeof(LhsReprType), sizeof(RhsReprType))>;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::_impl::capacity
@@ -409,9 +295,9 @@ namespace sg14
 
 		// given a required number of bits a type should have and whether it is signed,
 		// provides a built-in integral type with necessary capacity
-		template <unsigned RequiredBits, bool IsSigned>
+		template <unsigned RequiredBits, class Archetype>
 		using sufficient_repr 
-			= make_int<IsSigned, 1 << (capacity<((RequiredBits + 7) / 8) - 1>::value)>;
+			= sg14::resize_t<Archetype, 1 << (capacity<((RequiredBits + 7) / 8) - 1>::value)>;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// sg14::sqrt helper functions
@@ -463,7 +349,7 @@ namespace sg14
 		// constants
 
 		constexpr static int exponent = Exponent;
-		constexpr static int digits = _impl::num_bits<ReprType>() - _impl::is_signed<repr_type>::value;
+		constexpr static int digits = _impl::num_bits<ReprType>() - std::is_signed<repr_type>::value;
 		constexpr static int integer_digits = digits + exponent;
 		constexpr static int fractional_digits = digits - integer_digits;
 
@@ -481,7 +367,7 @@ namespace sg14
 		fixed_point() _SG14_FN_QUALIFIER {}
 
 		// c'tor taking an integer type
-		template <class S, typename std::enable_if<_impl::is_integral<S>::value, int>::type Dummy = 0>
+		template <class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
 		explicit constexpr fixed_point(S s) _SG14_FN_QUALIFIER
 			: _repr(integral_to_repr(s))
 		{
@@ -502,7 +388,7 @@ namespace sg14
 		}
 
 		// copy assignment operator taking an integer type
-		template <class S, typename std::enable_if<_impl::is_integral<S>::value, int>::type Dummy = 0>
+		template <class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
 		fixed_point & operator=(S s) _SG14_FN_QUALIFIER
 		{
 			_repr = integral_to_repr(s);
@@ -526,7 +412,7 @@ namespace sg14
 		}
 
 		// returns value represented as a floating-point
-		template <class S, typename std::enable_if<_impl::is_integral<S>::value, int>::type Dummy = 0>
+		template <class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
 		explicit constexpr operator S() const _SG14_FN_QUALIFIER
 		{
 			return repr_to_integral<S>(_repr);
@@ -570,7 +456,7 @@ namespace sg14
 			return _impl::pow2<S, - exponent>();
 		}
 
-		template <class S, typename std::enable_if<_impl::is_integral<S>::value, int>::type Dummy = 0>
+		template <class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
 		static constexpr S one() _SG14_FN_QUALIFIER
 		{
 			return integral_to_repr<S>(1);
@@ -586,7 +472,7 @@ namespace sg14
 		template <class S>
 		static constexpr repr_type integral_to_repr(S s) _SG14_FN_QUALIFIER
 		{
-			static_assert(_impl::is_integral<S>::value, "S must be unsigned integral type");
+			static_assert(std::is_integral<S>::value, "S must be unsigned integral type");
 
 			return _impl::shift_right<exponent, repr_type>(s);
 		}
@@ -594,7 +480,7 @@ namespace sg14
 		template <class S>
 		static constexpr S repr_to_integral(repr_type r) _SG14_FN_QUALIFIER
 		{
-			static_assert(_impl::is_integral<S>::value, "S must be unsigned integral type");
+			static_assert(std::is_integral<S>::value, "S must be unsigned integral type");
 
 			return _impl::shift_left<exponent, S>(r);
 		}
@@ -633,27 +519,43 @@ namespace sg14
 	//   fixed_point<>::integer_digits == IntegerDigits,
 	// and
 	//   fixed_point<>::fractional_digits >= FractionalDigits,
-	template <unsigned IntegerDigits, unsigned FractionalDigits = 0, bool IsSigned = true>
+	template <unsigned IntegerDigits, unsigned FractionalDigits = 0, class Archetype = signed>
 	using make_fixed = fixed_point<
-		_impl::sufficient_repr<IntegerDigits + FractionalDigits + IsSigned, IsSigned>,
-		(signed)(IntegerDigits + IsSigned) - _impl::num_bits<_impl::sufficient_repr<IntegerDigits + FractionalDigits + IsSigned, IsSigned>>()>;
+		_impl::sufficient_repr<IntegerDigits + FractionalDigits + std::is_signed<Archetype>::value, Archetype>,
+		int(IntegerDigits)
+                + int(std::is_signed<Archetype>::value)
+                - _impl::num_bits<
+                        _impl::sufficient_repr<
+                                IntegerDigits + FractionalDigits + int(std::is_signed<Archetype>::value),
+                                Archetype>>()>;
 
 	////////////////////////////////////////////////////////////////////////////////
 	// sg14::make_ufixed
 
-	// unsigned short-hanrd for make_fixed
-	template <unsigned IntegerDigits, unsigned FractionalDigits = 0>
-	using make_ufixed = make_fixed<IntegerDigits, FractionalDigits, false>;
+	// unsigned short-hand for make_fixed
+	template <unsigned IntegerDigits, unsigned FractionalDigits = 0, class Archetype = unsigned>
+	using make_ufixed = make_fixed<
+			IntegerDigits,
+			FractionalDigits,
+			typename std::make_unsigned<Archetype>::type>;
 
 	////////////////////////////////////////////////////////////////////////////////
 	// sg14::make_fixed_from_repr
 
-	// yields a float_point with Exponent calculated such that
+	// yields a fixed_point with Exponent calculated such that
 	// fixed_point<ReprType, Exponent>::integer_bits == IntegerDigits
 	template <class ReprType, int IntegerDigits>
 	using make_fixed_from_repr = fixed_point<
 		ReprType,
-		IntegerDigits + _impl::is_signed<ReprType>::value - (signed)sizeof(ReprType) * CHAR_BIT>;
+		IntegerDigits + std::is_signed<ReprType>::value - (signed)sizeof(ReprType) * CHAR_BIT>;
+
+	////////////////////////////////////////////////////////////////////////////////
+	// sg14::resize<fixed_point<>, T>
+
+	template <class ReprType, int Exponent, int NumBytes>
+	struct resize<fixed_point<ReprType, Exponent>, NumBytes> {
+		using type = fixed_point<resize_t<ReprType, NumBytes>, Exponent>;
+	};
 
 	////////////////////////////////////////////////////////////////////////////////
 	// sg14::promote_result / promote
@@ -735,7 +637,7 @@ namespace sg14
 		struct _common_type<
 			fixed_point<LhsReprType, LhsExponent>,
 			RhsInteger,
-			typename std::enable_if<_impl::is_integral<RhsInteger>::value>::type>
+			typename std::enable_if<std::is_integral<RhsInteger>::value>::type>
 		{
 			using type = fixed_point<LhsReprType, LhsExponent>;
 		};
@@ -770,13 +672,13 @@ namespace sg14
 		// arithmetic result types
 
 		template <typename LhsFixedPoint, typename RhsFixedPoint>
-		using subtract_result_repr = make_signed<common_repr_type<LhsFixedPoint, RhsFixedPoint>>;
+		using subtract_result_repr = typename std::make_signed<common_repr_type<LhsFixedPoint, RhsFixedPoint>>::type;
+
+		template <typename Repr>
+		using square_result_repr = typename std::make_unsigned<Repr>::type;
 
 		template <typename FixedPoint>
-		using square_result_repr = make_unsigned<FixedPoint>;
-
-		template <typename FixedPoint>
-		using sqrt_result_repr = make_unsigned<FixedPoint>;
+		using sqrt_result_repr = typename std::make_unsigned<FixedPoint>::type;
 
 		// all other operations
 		template <typename LhsFixedPoint, typename RhsFixedPoint>
@@ -804,12 +706,14 @@ namespace sg14
 			using result_repr_type = typename FixedPointQuotient::repr_type;
 
 			// a fixed-point type which is capable of holding the value passed in to lhs
-			// and the result of the lhs / rhs; depending greately on the exponent of each
+			// and the result of the lhs / rhs; depending greatly on the exponent of each
 			using intermediate_type = make_fixed<
-				_impl::max(FixedPointQuotient::integer_digits, FixedPointDividend::integer_digits + FixedPointDivisor::fractional_digits),
-				_impl::max(FixedPointQuotient::fractional_digits, FixedPointDividend::fractional_digits + FixedPointDivisor::integer_digits),
-				_impl::is_signed<typename FixedPointQuotient::repr_type>::value
-				|| _impl::is_signed<typename FixedPointDividend::repr_type>::value>;
+					_impl::max(FixedPointQuotient::integer_digits, FixedPointDividend::integer_digits + FixedPointDivisor::fractional_digits),
+					_impl::max(FixedPointQuotient::fractional_digits, FixedPointDividend::fractional_digits + FixedPointDivisor::integer_digits),
+					typename std::conditional<
+							std::is_signed<typename FixedPointQuotient::repr_type>::value | std::is_signed<typename FixedPointDividend::repr_type>::value,
+							signed,
+							unsigned>::type>;
 
 			return FixedPointQuotient::from_data(
 				_impl::shift_left<
@@ -894,7 +798,7 @@ namespace sg14
 	constexpr fixed_point<ReprType, Exponent> operator-(
 		const fixed_point<ReprType, Exponent> & rhs) _SG14_FN_QUALIFIER
 	{
-		static_assert(_impl::is_signed<ReprType>::value, "unary negation of unsigned value");
+		static_assert(std::is_signed<ReprType>::value, "unary negation of unsigned value");
 
 		return fixed_point<ReprType, Exponent>::from_data(-rhs.data());
 	}
@@ -1177,7 +1081,7 @@ namespace sg14
 	sqrt(const fixed_point<ReprType, Exponent> & x)
 	{
 		return
-#if defined(_SG14_EXCEPTIONS_ENABLED)
+#if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
 			(x < fixed_point<ReprType, Exponent>(0))
 				? throw std::invalid_argument("cannot represent square root of negative value") :
 #endif
