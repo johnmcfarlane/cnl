@@ -14,7 +14,7 @@ using namespace std;
 using namespace sg14;
 
 ////////////////////////////////////////////////////////////////////////////////
-// Tests of Examples in docs/papers/p0037.html
+// Tests of Examples in doc/papers/p0037.html
 
 TEST(proposal, make_ufixed)
 {
