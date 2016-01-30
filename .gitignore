@@ -8,6 +8,9 @@ google_test-prefix/
 fp_benchmark
 fp_test
 
+# doxygen
+doc/html
+
 # perf
 perf.data*
 
