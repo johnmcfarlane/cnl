@@ -9,3 +9,6 @@ include("src/test/CMakeLists.txt")
 
 # performs a selection of benchmark tests using googletest
 include("src/benchmark/CMakeLists.txt")
+
+# generate documentation
+include("doc/CMakeLists.txt")
