@@ -4,6 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+/// \file
+/// essential definitions related to the `sg14::fixed_point` type
+
 #if ! defined(_SG14_FIXED_POINT)
 #define _SG14_FIXED_POINT 1
 
@@ -41,6 +44,7 @@
 // appended to all function signatures
 #define _SG14_FN_QUALIFIER
 
+/// project namespace, represents work from study group 14 of the C++ working group
 namespace sg14
 {
 	////////////////////////////////////////////////////////////////////////////////
