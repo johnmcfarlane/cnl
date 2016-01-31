@@ -20,8 +20,7 @@ namespace sg14 {
 
     // is_fixed_point
     template<class T>
-    struct is_fixed_point : _impl::is_fixed_point<T> {
-    };
+    using is_fixed_point = _impl::is_fixed_point<T>;
 
     // is_real
     template<class T>
