@@ -38,12 +38,6 @@
 #include <stdexcept>
 #endif
 
-////////////////////////////////////////////////////////////////////////////////
-// _SG14_FN_QUALIFIER macro definition 
-
-// appended to all function signatures
-#define _SG14_FN_QUALIFIER
-
 /// project namespace, represents work from study group 14 of the C++ working group
 namespace sg14
 {
@@ -108,7 +102,7 @@ namespace sg14
 			typename std::enable_if<
 				(Exponent == 0),
 				int>::type Dummy = 0>
-		constexpr Output shift_left(Input i) _SG14_FN_QUALIFIER
+		constexpr Output shift_left(Input i)
 		{
 			static_assert(std::is_integral<Input>::value, "Input must be integral type");
 			static_assert(std::is_integral<Output>::value, "Output must be integral type");
@@ -124,7 +118,7 @@ namespace sg14
 			typename std::enable_if<
 				Exponent == 0,
 				int>::type Dummy = 0>
-		constexpr Output shift_right(Input i) _SG14_FN_QUALIFIER
+		constexpr Output shift_right(Input i)
 		{
 			static_assert(std::is_integral<Input>::value, "Input must be integral type");
 			static_assert(std::is_integral<Output>::value, "Output must be integral type");
@@ -141,7 +135,7 @@ namespace sg14
 			typename std::enable_if<
 				!(Exponent <= 0) && sizeof(Output) <= sizeof(Input) && std::is_unsigned<Input>::value,
 				int>::type Dummy = 0>
-		constexpr Output shift_left(Input i) _SG14_FN_QUALIFIER
+		constexpr Output shift_left(Input i)
 		{
 			return shift_left<0, Output, Input>(i) << Exponent;
 		}
@@ -153,7 +147,7 @@ namespace sg14
 			typename std::enable_if<
 				!(Exponent <= 0) && sizeof(Output) <= sizeof(Input),
 				int>::type Dummy = 0>
-		constexpr Output shift_right(Input i) _SG14_FN_QUALIFIER
+		constexpr Output shift_right(Input i)
 		{
 			return shift_right<0, Output, Input>(i >> Exponent);
 		}
@@ -166,7 +160,7 @@ namespace sg14
 			typename std::enable_if<
 				!(Exponent <= 0) && !(sizeof(Output) <= sizeof(Input)) && std::is_unsigned<Input>::value,
 				char>::type Dummy = 0>
-		constexpr Output shift_left(Input i) _SG14_FN_QUALIFIER
+		constexpr Output shift_left(Input i)
 		{
 			return shift_left<0, Output, Input>(i) << Exponent;
 		}
@@ -178,7 +172,7 @@ namespace sg14
 			typename std::enable_if<
 				!(Exponent <= 0) && !(sizeof(Output) <= sizeof(Input)),
 				char>::type Dummy = 0>
-		constexpr Output shift_right(Input i) _SG14_FN_QUALIFIER
+		constexpr Output shift_right(Input i)
 		{
 			return shift_right<0, Output, Input>(i) >> Exponent;
 		}
@@ -191,7 +185,7 @@ namespace sg14
 			typename std::enable_if<
 				!(Exponent <= 0) && std::is_signed<Input>::value,
 				int>::type Dummy = 0>
-		constexpr Output shift_left(Input i) _SG14_FN_QUALIFIER
+		constexpr Output shift_left(Input i)
 		{
 			using unsigned_input = typename std::make_unsigned<Input>::type;
 			using signed_output = typename std::make_signed<Output>::type;
@@ -209,7 +203,7 @@ namespace sg14
 			typename std::enable_if<
 				(Exponent < 0),
 				int>::type Dummy = 0>
-		constexpr Output shift_left(Input i) _SG14_FN_QUALIFIER
+		constexpr Output shift_left(Input i)
 		{
 			// negate Exponent and flip from left to right
 			return shift_right<-Exponent, Output, Input>(i);
@@ -222,7 +216,7 @@ namespace sg14
 			typename std::enable_if<
 				Exponent < 0,
 				int>::type Dummy = 0>
-		constexpr Output shift_right(Input i) _SG14_FN_QUALIFIER
+		constexpr Output shift_right(Input i)
 		{
 			// negate Exponent and flip from right to left
 			return shift_left<-Exponent, Output, Input>(i);
@@ -233,21 +227,21 @@ namespace sg14
 
 		// returns given power of 2
 		template <class S, int Exponent, typename std::enable_if<Exponent == 0, int>::type Dummy = 0>
-		constexpr S pow2() _SG14_FN_QUALIFIER
+		constexpr S pow2()
 		{
 			static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
 			return 1;
 		}
 
 		template <class S, int Exponent, typename std::enable_if<!(Exponent <= 0), int>::type Dummy = 0>
-		constexpr S pow2() _SG14_FN_QUALIFIER
+		constexpr S pow2()
 		{
 			static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
 			return pow2<S, Exponent - 1>() * S(2);
 		}
 
 		template <class S, int Exponent, typename std::enable_if<!(Exponent >= 0), int>::type Dummy = 0>
-		constexpr S pow2() _SG14_FN_QUALIFIER
+		constexpr S pow2()
 		{
 			static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
 			return pow2<S, Exponent + 1>() * S(.5);
@@ -309,7 +303,7 @@ namespace sg14
 		template <class ReprType>
 		constexpr ReprType sqrt_bit(
 			ReprType n,
-			ReprType bit = ReprType(1) << (num_bits<ReprType>() - 2)) _SG14_FN_QUALIFIER
+			ReprType bit = ReprType(1) << (num_bits<ReprType>() - 2))
 		{
 			return (bit > n) ? sqrt_bit<ReprType>(n, bit >> 2) : bit;
 		}
@@ -318,7 +312,7 @@ namespace sg14
 		constexpr ReprType sqrt_solve3(
 			ReprType n,
 			ReprType bit,
-			ReprType result) _SG14_FN_QUALIFIER
+			ReprType result)
 		{
 			return bit
 				   ? (n >= result + bit)
@@ -328,7 +322,7 @@ namespace sg14
 		}
 
 		template <class ReprType>
-		constexpr ReprType sqrt_solve1(ReprType n) _SG14_FN_QUALIFIER
+		constexpr ReprType sqrt_solve1(ReprType n)
 		{
 			return sqrt_solve3<ReprType>(n, sqrt_bit<ReprType>(n), 0);
 		}
@@ -362,38 +356,38 @@ namespace sg14
 
 	private:
 		// constructor taking representation explicitly using operator++(int)-style trick
-		constexpr fixed_point(repr_type repr, int) _SG14_FN_QUALIFIER
+		constexpr fixed_point(repr_type repr, int)
 			: _repr(repr)
 		{
 		}
 	public:
 		// default c'tor
-		fixed_point() _SG14_FN_QUALIFIER {}
+		fixed_point() {}
 
 		// c'tor taking an integer type
 		template <class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
-		explicit constexpr fixed_point(S s) _SG14_FN_QUALIFIER
+		explicit constexpr fixed_point(S s)
 			: _repr(integral_to_repr(s))
 		{
 		}
 
 		// c'tor taking a floating-point type
 		template <class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
-		explicit constexpr fixed_point(S s) _SG14_FN_QUALIFIER
+		explicit constexpr fixed_point(S s)
 			: _repr(floating_point_to_repr(s))
 		{
 		}
 
 		// c'tor taking a fixed-point type
 		template <class FromReprType, int FromExponent>
-		explicit constexpr fixed_point(const fixed_point<FromReprType, FromExponent> & rhs) _SG14_FN_QUALIFIER
+		explicit constexpr fixed_point(const fixed_point<FromReprType, FromExponent> & rhs)
 			: _repr(fixed_point_to_repr(rhs))
 		{
 		}
 
 		// copy assignment operator taking an integer type
 		template <class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
-		fixed_point & operator=(S s) _SG14_FN_QUALIFIER
+		fixed_point & operator=(S s)
 		{
 			_repr = integral_to_repr(s);
 			return *this;
@@ -401,7 +395,7 @@ namespace sg14
 
 		// copy assignment operator taking a floating-point type
 		template <class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
-		fixed_point & operator=(S s) _SG14_FN_QUALIFIER
+		fixed_point & operator=(S s)
 		{
 			_repr = floating_point_to_repr(s);
 			return *this;
@@ -409,7 +403,7 @@ namespace sg14
 
 		// copy assignement operator taking a fixed-point type
 		template <class FromReprType, int FromExponent>
-		fixed_point & operator=(const fixed_point<FromReprType, FromExponent> & rhs) _SG14_FN_QUALIFIER
+		fixed_point & operator=(const fixed_point<FromReprType, FromExponent> & rhs)
 		{
 			_repr = fixed_point_to_repr(rhs);
 			return *this;
@@ -417,64 +411,64 @@ namespace sg14
 
 		// returns value represented as a floating-point
 		template <class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
-		explicit constexpr operator S() const _SG14_FN_QUALIFIER
+		explicit constexpr operator S() const
 		{
 			return repr_to_integral<S>(_repr);
 		}
 
 		// returns value represented as integral
 		template <class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
-		explicit constexpr operator S() const _SG14_FN_QUALIFIER
+		explicit constexpr operator S() const
 		{
 			return repr_to_floating_point<S>(_repr);
 		}
 
 		// returns non-zeroness represented as boolean
-		explicit constexpr operator bool() const _SG14_FN_QUALIFIER
+		explicit constexpr operator bool() const
 		{
 			return _repr != 0;
 		}
 
 		template <class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy = 0>
-		fixed_point &operator*=(const Rhs & rhs) _SG14_FN_QUALIFIER;
+		fixed_point &operator*=(const Rhs & rhs);
 
 		template <class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy = 0>
-		fixed_point & operator/=(const Rhs & rhs) _SG14_FN_QUALIFIER;
+		fixed_point & operator/=(const Rhs & rhs);
 
 		// returns internal representation of value
-		constexpr repr_type data() const _SG14_FN_QUALIFIER
+		constexpr repr_type data() const
 		{
 			return _repr;
 		}
 
 		// creates an instance given the underlying representation value
-		static constexpr fixed_point from_data(repr_type repr) _SG14_FN_QUALIFIER
+		static constexpr fixed_point from_data(repr_type repr)
 		{
 			return fixed_point(repr, 0);
 		}
 
 	private:
 		template <class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
-		static constexpr S one() _SG14_FN_QUALIFIER
+		static constexpr S one()
 		{
 			return _impl::pow2<S, - exponent>();
 		}
 
 		template <class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
-		static constexpr S one() _SG14_FN_QUALIFIER
+		static constexpr S one()
 		{
 			return integral_to_repr<S>(1);
 		}
 
 		template <class S>
-		static constexpr S inverse_one() _SG14_FN_QUALIFIER
+		static constexpr S inverse_one()
 		{
 			static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
 			return _impl::pow2<S, exponent>();
 		}
 
 		template <class S>
-		static constexpr repr_type integral_to_repr(S s) _SG14_FN_QUALIFIER
+		static constexpr repr_type integral_to_repr(S s)
 		{
 			static_assert(std::is_integral<S>::value, "S must be unsigned integral type");
 
@@ -482,7 +476,7 @@ namespace sg14
 		}
 
 		template <class S>
-		static constexpr S repr_to_integral(repr_type r) _SG14_FN_QUALIFIER
+		static constexpr S repr_to_integral(repr_type r)
 		{
 			static_assert(std::is_integral<S>::value, "S must be unsigned integral type");
 
@@ -490,21 +484,21 @@ namespace sg14
 		}
 
 		template <class S>
-		static constexpr repr_type floating_point_to_repr(S s) _SG14_FN_QUALIFIER
+		static constexpr repr_type floating_point_to_repr(S s)
 		{
 			static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
 			return static_cast<repr_type>(s * one<S>());
 		}
 
 		template <class S>
-		static constexpr S repr_to_floating_point(repr_type r) _SG14_FN_QUALIFIER
+		static constexpr S repr_to_floating_point(repr_type r)
 		{
 			static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
 			return S(r) * inverse_one<S>();
 		}
 
 		template <class FromReprType, int FromExponent>
-		static constexpr repr_type fixed_point_to_repr(const fixed_point<FromReprType, FromExponent> & rhs) _SG14_FN_QUALIFIER
+		static constexpr repr_type fixed_point_to_repr(const fixed_point<FromReprType, FromExponent> & rhs)
 		{
 			return _impl::shift_right<(exponent - FromExponent), repr_type>(rhs.data());
 		}
@@ -575,7 +569,7 @@ namespace sg14
 	// as promote_result but promotes parameter, from
 	template <class FixedPoint>
 	promote_result<FixedPoint>
-	constexpr promote(const FixedPoint & from) _SG14_FN_QUALIFIER
+	constexpr promote(const FixedPoint & from)
 	{
 		return promote_result<FixedPoint>(from);
 	}
@@ -594,7 +588,7 @@ namespace sg14
 	// as demote_result but demotes parameter, from
 	template <class FixedPoint>
 	demote_result<FixedPoint>
-	constexpr demote(const FixedPoint & from) _SG14_FN_QUALIFIER
+	constexpr demote(const FixedPoint & from)
 	{
 		return demote_result<FixedPoint>(from);
 	}
@@ -692,7 +686,7 @@ namespace sg14
 		// sg14::_impl::multiply
 
 		template <class Result, class Lhs, class Rhs>
-		constexpr Result multiply(const Lhs & lhs, const Rhs & rhs) _SG14_FN_QUALIFIER
+		constexpr Result multiply(const Lhs & lhs, const Rhs & rhs)
 		{
 			using result_repr_type = typename Result::repr_type;
 			using intermediate_repr_type = _impl::next_size<typename common_type<Lhs, Rhs>::repr_type>;
@@ -705,7 +699,7 @@ namespace sg14
 		// sg14::_impl::divide
 
 		template <class FixedPointQuotient, class FixedPointDividend, class FixedPointDivisor>
-		constexpr FixedPointQuotient divide(const FixedPointDividend & lhs, const FixedPointDivisor & rhs) _SG14_FN_QUALIFIER
+		constexpr FixedPointQuotient divide(const FixedPointDividend & lhs, const FixedPointDivisor & rhs)
 		{
 			using result_repr_type = typename FixedPointQuotient::repr_type;
 
@@ -752,7 +746,7 @@ namespace sg14
 	template <class ReprType, int Exponent>
 	constexpr bool operator==(
 		const fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<ReprType, Exponent> & rhs)
 	{
 		return lhs.data() == rhs.data();
 	}
@@ -760,7 +754,7 @@ namespace sg14
 	template <class ReprType, int Exponent>
 	constexpr bool operator!=(
 		const fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<ReprType, Exponent> & rhs)
 	{
 		return lhs.data() != rhs.data();
 	}
@@ -768,7 +762,7 @@ namespace sg14
 	template <class ReprType, int Exponent>
 	constexpr bool operator<(
 		const fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<ReprType, Exponent> & rhs)
 	{
 		return lhs.data() < rhs.data();
 	}
@@ -776,7 +770,7 @@ namespace sg14
 	template <class ReprType, int Exponent>
 	constexpr bool operator>(
 		const fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<ReprType, Exponent> & rhs)
 	{
 		return lhs.data() > rhs.data();
 	}
@@ -784,7 +778,7 @@ namespace sg14
 	template <class ReprType, int Exponent>
 	constexpr bool operator>=(
 		const fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<ReprType, Exponent> & rhs)
 	{
 		return lhs.data() >= rhs.data();
 	}
@@ -792,7 +786,7 @@ namespace sg14
 	template <class ReprType, int Exponent>
 	constexpr bool operator<=(
 		const fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<ReprType, Exponent> & rhs)
 	{
 		return lhs.data() <= rhs.data();
 	}
@@ -800,7 +794,7 @@ namespace sg14
 	// arithmetic
 	template <class ReprType, int Exponent>
 	constexpr fixed_point<ReprType, Exponent> operator-(
-		const fixed_point<ReprType, Exponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<ReprType, Exponent> & rhs)
 	{
 		static_assert(std::is_signed<ReprType>::value, "unary negation of unsigned value");
 
@@ -810,7 +804,7 @@ namespace sg14
 	template <class ReprType, int Exponent>
 	constexpr fixed_point<ReprType, Exponent> operator+(
 		const fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<ReprType, Exponent> & rhs)
 	{
 		return fixed_point<ReprType, Exponent>::from_data(lhs.data() + rhs.data());
 	}
@@ -818,7 +812,7 @@ namespace sg14
 	template <class ReprType, int Exponent>
 	constexpr fixed_point<ReprType, Exponent> operator-(
 		const fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<ReprType, Exponent> & rhs)
 	{
 		return fixed_point<ReprType, Exponent>::from_data(lhs.data() - rhs.data());
 	}
@@ -826,7 +820,7 @@ namespace sg14
 	template <class ReprType, int Exponent>
 	fixed_point<ReprType, Exponent> & operator+=(
 		fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<ReprType, Exponent> & rhs)
 	{
 		return lhs = lhs + rhs;
 	}
@@ -834,7 +828,7 @@ namespace sg14
 	template <class ReprType, int Exponent>
 	fixed_point<ReprType, Exponent> & operator-=(
 		fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<ReprType, Exponent> & rhs)
 	{
 		return lhs = lhs - rhs;
 	}
@@ -842,7 +836,7 @@ namespace sg14
 	template <class ReprType, int Exponent>
 	fixed_point<ReprType, Exponent> & operator*=(
 		fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<ReprType, Exponent> & rhs)
 	{
 		return lhs = lhs * rhs;
 	}
@@ -850,7 +844,7 @@ namespace sg14
 	template <class ReprType, int Exponent>
 	fixed_point<ReprType, Exponent> & operator/=(
 		fixed_point<ReprType, Exponent> & lhs,
-		const fixed_point<ReprType, Exponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<ReprType, Exponent> & rhs)
 	{
 		return lhs = lhs / rhs;
 	}
@@ -861,7 +855,7 @@ namespace sg14
 	// compare two objects of different fixed_point specializations
 
 	template <class Lhs, class Rhs>
-	constexpr auto operator==(const Lhs & lhs, const Rhs & rhs) _SG14_FN_QUALIFIER
+	constexpr auto operator==(const Lhs & lhs, const Rhs & rhs)
 	-> typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, bool>::type
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
@@ -869,7 +863,7 @@ namespace sg14
 	}
 
 	template <class Lhs, class Rhs>
-	constexpr auto operator!=(const Lhs & lhs, const Rhs & rhs) _SG14_FN_QUALIFIER
+	constexpr auto operator!=(const Lhs & lhs, const Rhs & rhs)
 	-> typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, bool>::type
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
@@ -877,7 +871,7 @@ namespace sg14
 	}
 
 	template <class Lhs, class Rhs>
-	constexpr auto operator<(const Lhs & lhs, const Rhs & rhs) _SG14_FN_QUALIFIER
+	constexpr auto operator<(const Lhs & lhs, const Rhs & rhs)
 	-> typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, bool>::type
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
@@ -885,7 +879,7 @@ namespace sg14
 	}
 
 	template <class Lhs, class Rhs>
-	constexpr auto operator>(const Lhs & lhs, const Rhs & rhs) _SG14_FN_QUALIFIER
+	constexpr auto operator>(const Lhs & lhs, const Rhs & rhs)
 	-> typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, bool>::type
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
@@ -893,7 +887,7 @@ namespace sg14
 	}
 
 	template <class Lhs, class Rhs>
-	constexpr auto operator>=(const Lhs & lhs, const Rhs & rhs) _SG14_FN_QUALIFIER
+	constexpr auto operator>=(const Lhs & lhs, const Rhs & rhs)
 	-> typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, bool>::type
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
@@ -901,7 +895,7 @@ namespace sg14
 	}
 
 	template <class Lhs, class Rhs>
-	constexpr auto operator<=(const Lhs & lhs, const Rhs & rhs) _SG14_FN_QUALIFIER
+	constexpr auto operator<=(const Lhs & lhs, const Rhs & rhs)
 	-> typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, bool>::type
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
@@ -914,7 +908,7 @@ namespace sg14
 	template <class Lhs, class Rhs>
 	constexpr auto operator+(
 		const Lhs & lhs,
-		const Rhs & rhs) _SG14_FN_QUALIFIER
+		const Rhs & rhs)
 	-> _impl::common_type<Lhs, Rhs>
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
@@ -924,7 +918,7 @@ namespace sg14
 	template <class Lhs, class Rhs>
 	constexpr auto operator-(
 		const Lhs & lhs,
-		const Rhs & rhs) _SG14_FN_QUALIFIER
+		const Rhs & rhs)
 	-> _impl::common_type<Lhs, Rhs>
 	{
 		using common_type = _impl::common_type<Lhs, Rhs>;
@@ -935,7 +929,7 @@ namespace sg14
 	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
 	constexpr auto operator*(
 		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<RhsReprType, RhsExponent> & rhs)
 	-> _impl::common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>
 	{
 		using result_type = _impl::common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
@@ -945,7 +939,7 @@ namespace sg14
 	template <class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
 	constexpr auto operator/(
 		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<RhsReprType, RhsExponent> & rhs)
 	-> _impl::common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>
 	{
 		using result_type = _impl::common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
@@ -956,7 +950,7 @@ namespace sg14
 	template <class LhsReprType, int LhsExponent, class Integer>
 	constexpr auto operator*(
 		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const Integer & rhs) _SG14_FN_QUALIFIER
+		const Integer & rhs)
 	-> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<LhsReprType, LhsExponent>>::type
 	{
 		using result_type = fixed_point<LhsReprType, LhsExponent>;
@@ -966,7 +960,7 @@ namespace sg14
 	template <class LhsReprType, int LhsExponent, class Integer>
 	constexpr auto operator/(
 		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const Integer & rhs) _SG14_FN_QUALIFIER
+		const Integer & rhs)
 	-> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<LhsReprType, LhsExponent>>::type
 	{
 		using result_type = fixed_point<LhsReprType, LhsExponent>;
@@ -977,7 +971,7 @@ namespace sg14
 	template <class Integer, class RhsReprType, int RhsExponent>
 	constexpr auto operator*(
 		const Integer & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<RhsReprType, RhsExponent> & rhs)
 	-> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<RhsReprType, RhsExponent>>::type
 	{
 		using result_type = fixed_point<RhsReprType, RhsExponent>;
@@ -987,7 +981,7 @@ namespace sg14
 	template <class Integer, class RhsReprType, int RhsExponent>
 	constexpr auto operator/(
 		const Integer & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<RhsReprType, RhsExponent> & rhs)
 	-> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<RhsReprType, RhsExponent>>::type
 	{
 		using result_type = fixed_point<RhsReprType, RhsExponent>;
@@ -998,7 +992,7 @@ namespace sg14
 	template <class LhsReprType, int LhsExponent, class Float>
 	constexpr auto operator*(
 		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const Float & rhs) _SG14_FN_QUALIFIER
+		const Float & rhs)
 	-> _impl::common_type<
 		fixed_point<LhsReprType, LhsExponent>,
 		typename std::enable_if<std::is_floating_point<Float>::value, Float>::type>
@@ -1010,7 +1004,7 @@ namespace sg14
 	template <class LhsReprType, int LhsExponent, class Float>
 	constexpr auto operator/(
 		const fixed_point<LhsReprType, LhsExponent> & lhs,
-		const Float & rhs) _SG14_FN_QUALIFIER
+		const Float & rhs)
 	-> _impl::common_type<
 		fixed_point<LhsReprType, LhsExponent>,
 		typename std::enable_if<std::is_floating_point<Float>::value, Float>::type>
@@ -1023,7 +1017,7 @@ namespace sg14
 	template <class Float, class RhsReprType, int RhsExponent>
 	constexpr auto operator*(
 		const Float & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<RhsReprType, RhsExponent> & rhs)
 	-> _impl::common_type<
 		typename std::enable_if<std::is_floating_point<Float>::value, Float>::type,
 		fixed_point<RhsReprType, RhsExponent>>
@@ -1035,7 +1029,7 @@ namespace sg14
 	template <class Float, class RhsReprType, int RhsExponent>
 	constexpr auto operator/(
 		const Float & lhs,
-		const fixed_point<RhsReprType, RhsExponent> & rhs) _SG14_FN_QUALIFIER
+		const fixed_point<RhsReprType, RhsExponent> & rhs)
 	-> _impl::common_type<
 		typename std::enable_if<std::is_floating_point<Float>::value, Float>::type,
 		fixed_point<RhsReprType, RhsExponent>>
@@ -1046,13 +1040,13 @@ namespace sg14
 	}
 
 	template <class LhsReprType, int Exponent, class Rhs>
-	fixed_point<LhsReprType, Exponent> & operator+=(fixed_point<LhsReprType, Exponent> & lhs, const Rhs & rhs) _SG14_FN_QUALIFIER
+	fixed_point<LhsReprType, Exponent> & operator+=(fixed_point<LhsReprType, Exponent> & lhs, const Rhs & rhs)
 	{
 		return lhs += fixed_point<LhsReprType, Exponent>(rhs);
 	}
 
 	template <class LhsReprType, int Exponent, class Rhs>
-	fixed_point<LhsReprType, Exponent> & operator-=(fixed_point<LhsReprType, Exponent> & lhs, const Rhs & rhs) _SG14_FN_QUALIFIER
+	fixed_point<LhsReprType, Exponent> & operator-=(fixed_point<LhsReprType, Exponent> & lhs, const Rhs & rhs)
 	{
 		return lhs -= fixed_point<LhsReprType, Exponent>(rhs);
 	}
@@ -1060,7 +1054,7 @@ namespace sg14
 	template <class LhsReprType, int Exponent>
 	template <class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy>
 	fixed_point<LhsReprType, Exponent> &
-	fixed_point<LhsReprType, Exponent>::operator*=(const Rhs & rhs) _SG14_FN_QUALIFIER
+	fixed_point<LhsReprType, Exponent>::operator*=(const Rhs & rhs)
 	{
 		_repr *= static_cast<repr_type>(rhs);
 		return * this;
@@ -1069,7 +1063,7 @@ namespace sg14
 	template <class LhsReprType, int Exponent>
 	template <class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy>
 	fixed_point<LhsReprType, Exponent> &
-	fixed_point<LhsReprType, Exponent>::operator/=(const Rhs & rhs) _SG14_FN_QUALIFIER
+	fixed_point<LhsReprType, Exponent>::operator/=(const Rhs & rhs)
 	{
 		_repr /= static_cast<repr_type>(rhs);
 		return * this;
@@ -1143,7 +1137,7 @@ namespace sg14
 	// ready for safe binary multiply
 	template <class Lhs, class Rhs>
 	trunc_multiply_result<Lhs, Rhs>
-	constexpr trunc_multiply(const Lhs & lhs, const Rhs & rhs) _SG14_FN_QUALIFIER
+	constexpr trunc_multiply(const Lhs & lhs, const Rhs & rhs)
 	{
 		using result_type = trunc_multiply_result<Lhs, Rhs>;
 		return _impl::multiply<result_type>(lhs, rhs);
@@ -1163,7 +1157,7 @@ namespace sg14
 	// ready for safe binary divide
 	template <class FixedPointDividend, class FixedPointDivisor>
 	trunc_divide_result<FixedPointDividend, FixedPointDivisor>
-	constexpr trunc_divide(const FixedPointDividend & lhs, const FixedPointDivisor & rhs) _SG14_FN_QUALIFIER
+	constexpr trunc_divide(const FixedPointDividend & lhs, const FixedPointDivisor & rhs)
 	{
 		using result_type = trunc_divide_result<FixedPointDividend, FixedPointDivisor>;
 		return _impl::divide<result_type>(lhs, rhs);
@@ -1183,7 +1177,7 @@ namespace sg14
 	// that can comfortably store significant digits of result
 	template <class FixedPoint>
 	trunc_reciprocal_result<FixedPoint>
-	constexpr trunc_reciprocal(const FixedPoint & fixed_point) _SG14_FN_QUALIFIER
+	constexpr trunc_reciprocal(const FixedPoint & fixed_point)
 	{
 		using result_type = trunc_reciprocal_result<FixedPoint>;
 		using result_repr_type = typename result_type::repr_type;
@@ -1208,7 +1202,7 @@ namespace sg14
 	// ready for safe binary multiply-by-self
 	template <class FixedPoint>
 	trunc_square_result<FixedPoint>
-	constexpr trunc_square(const FixedPoint & root) _SG14_FN_QUALIFIER
+	constexpr trunc_square(const FixedPoint & root)
 	{
 		using result_type = trunc_square_result<FixedPoint>;
 		return _impl::multiply<result_type>(root, root);
@@ -1229,7 +1223,7 @@ namespace sg14
 	// ready for safe sqrt operation
 	template <class FixedPoint>
 	trunc_sqrt_result<FixedPoint>
-	constexpr trunc_sqrt(const FixedPoint & square) _SG14_FN_QUALIFIER
+	constexpr trunc_sqrt(const FixedPoint & square)
 	{
 		using output_type = trunc_sqrt_result<FixedPoint>;
 		return output_type(sqrt(square));
@@ -1240,7 +1234,7 @@ namespace sg14
 
 	template <int Integer, class ReprType, int Exponent>
 	constexpr fixed_point<ReprType, Exponent + Integer>
-	trunc_shift_left(const fixed_point<ReprType, Exponent> & fp) _SG14_FN_QUALIFIER
+	trunc_shift_left(const fixed_point<ReprType, Exponent> & fp)
 	{
 		return fixed_point<ReprType, Exponent + Integer>::from_data(fp.data());
 	};
@@ -1250,7 +1244,7 @@ namespace sg14
 
 	template <int Integer, class ReprType, int Exponent>
 	constexpr fixed_point<ReprType, Exponent - Integer>
-	trunc_shift_right(const fixed_point<ReprType, Exponent> & fp) _SG14_FN_QUALIFIER
+	trunc_shift_right(const fixed_point<ReprType, Exponent> & fp)
 	{
 		return fixed_point<ReprType, Exponent - Integer>::from_data(fp.data());
 	};
@@ -1287,7 +1281,7 @@ namespace sg14
 	// ready for safe binary subtract
 	template <class Lhs, class Rhs>
 	promote_subtract_result<Lhs, Rhs>
-	constexpr promote_subtract(const Lhs & lhs, const Rhs & rhs) _SG14_FN_QUALIFIER
+	constexpr promote_subtract(const Lhs & lhs, const Rhs & rhs)
 	{
 		using result_type = promote_subtract_result<Lhs, Rhs>;
 		return static_cast<result_type>(lhs) - static_cast<result_type>(rhs);
@@ -1305,7 +1299,7 @@ namespace sg14
 	// ready for safe binary multiply
 	template <class Lhs, class Rhs>
 	promote_multiply_result<Lhs, Rhs>
-		constexpr promote_multiply(const Lhs & lhs, const Rhs & rhs) _SG14_FN_QUALIFIER
+		constexpr promote_multiply(const Lhs & lhs, const Rhs & rhs)
 	{
 		using result_type = promote_multiply_result<Lhs, Rhs>;
 		return _impl::multiply<result_type>(lhs, rhs);
@@ -1323,7 +1317,7 @@ namespace sg14
 	// ready for safe binary divide
 	template <class Lhs, class Rhs>
 	promote_divide_result<Lhs, Rhs>
-	constexpr promote_divide(const Lhs & lhs, const Rhs & rhs) _SG14_FN_QUALIFIER
+	constexpr promote_divide(const Lhs & lhs, const Rhs & rhs)
 	{
 		using result_type = promote_divide_result<Lhs, Rhs>;
 		return _impl::divide<result_type>(lhs, rhs);
@@ -1344,7 +1338,7 @@ namespace sg14
 	// ready for safe binary multiply-by-self
 	template <class FixedPoint>
 	promote_square_result<FixedPoint>
-		constexpr promote_square(const FixedPoint & root) _SG14_FN_QUALIFIER
+		constexpr promote_square(const FixedPoint & root)
 	{
 		using output_type = promote_square_result<FixedPoint>;
 		using output_repr_type = typename output_type::repr_type;
