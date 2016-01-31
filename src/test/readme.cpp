@@ -21,15 +21,15 @@ using namespace sg14;
 
 TEST(readme, instance)
 {
-   std::stringstream std_cout;
+    std::stringstream std_cout;
 
-   // 5. Use the `fixed_point` type to define variables.
-   fixed_point<std::int32_t, -28> pi(3.1415926535);
-   std_cout << "pi=" << std::setprecision(10) << pi;
+    // 5. Use the `fixed_point` type to define variables.
+    fixed_point<std::int32_t, -28> pi(3.1415926535);
+    std_cout << "pi=" << std::setprecision(10) << pi;
 
-   ASSERT_EQ(std_cout.str(), "pi=3.141592652");
+    ASSERT_EQ(std_cout.str(), "pi=3.141592652");
 
-   // 6. Alternatively, use `make_fixed` and `make_ufixed` to instantiate signed and unsigned variables
-   //    with exactly the number of integer and fractional digits you require:
-   static_assert(std::is_same<decltype(pi), sg14::make_fixed<3, 28>>::value, "error in README.md example code");
+    // 6. Alternatively, use `make_fixed` and `make_ufixed` to instantiate signed and unsigned variables
+    //    with exactly the number of integer and fractional digits you require:
+    static_assert(std::is_same<decltype(pi), sg14::make_fixed<3, 28>>::value, "error in README.md example code");
 }
