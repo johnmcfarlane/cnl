@@ -4,6 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+/// \file
+/// \brief supplemental definitions related to the `sg14::fixed_point` type
+
 #if !defined(_SG14_FIXED_POINT_UTILS_H)
 #define _SG14_FIXED_POINT_UTILS_H 1
 
@@ -14,11 +17,12 @@
 #include <limits>
 #include <ostream>
 
+/// study group 14 of the C++ working group
 namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // additional traits for sg14::fixed_point
 
-    // is_fixed_point
+    /// is_fixed_point
     template<class T>
     using is_fixed_point = _impl::is_fixed_point<T>;
 

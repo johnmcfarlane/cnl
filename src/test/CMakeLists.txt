@@ -33,6 +33,7 @@ add_executable(
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_throwing_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/type_traits.cpp
         ${CMAKE_CURRENT_LIST_DIR}/readme.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/doc/doc_tests.cpp
 )
 set_target_properties(
         fp_test

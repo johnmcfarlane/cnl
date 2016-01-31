@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// essential definitions related to the `sg14::fixed_point` type
+/// \brief essential definitions related to the `sg14::fixed_point` type
 
 #if !defined(_SG14_FIXED_POINT)
 #define _SG14_FIXED_POINT 1
@@ -40,7 +40,7 @@
 
 #endif
 
-/// project namespace, represents work from study group 14 of the C++ working group
+/// study group 14 of the C++ working group
 namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // general-purpose _impl definitions
@@ -342,11 +342,15 @@ namespace sg14 {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::fixed_point class template definition
-    //
-    // approximates a real number using a built-in integral type;
-    // somewhat like a floating-point number but with exponent determined at run-time
+    /// \brief literal arithmetic type which approximates a real number
+    ///
+    /// \anchor ReprType \param ReprType the underlying type used to represent the value
+    /// \anchor Exponent \param Exponent the value by which to scale the integer value in order to get the real value
+    ///
+    /// \par Examples
+    ///
+    /// To store the value, -2.75, in a 1-byte variable with 3 integer and 4 fractional digits:
+    /// \include sg14_fixed_point.h
 
     template<class ReprType = int, int Exponent = 0>
     class fixed_point {
@@ -354,14 +358,25 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // types
 
+        /// alias to template parameter, \ref ReprType
         using repr_type = ReprType;
 
         ////////////////////////////////////////////////////////////////////////////////
         // constants
 
+        /// value of template parameter, \ref Exponent
         constexpr static int exponent = Exponent;
+
+        /// number of binary digits this type can represent;
+        /// equivalent to [std::numeric_limits::digits](http://en.cppreference.com/w/cpp/types/numeric_limits/digits)
         constexpr static int digits = _impl::num_bits<ReprType>()-std::is_signed<repr_type>::value;
+
+        /// number of binary digits devoted to integer part of value;
+        /// can be negative for specializations with especially small ranges
         constexpr static int integer_digits = digits+exponent;
+
+        /// number of binary digits devoted to fractional part of value;
+        /// can be negative for specializations with especially large ranges
         constexpr static int fractional_digits = digits-integer_digits;
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -375,31 +390,31 @@ namespace sg14 {
         }
 
     public:
-        // default c'tor
+        /// default constructor
         fixed_point() { }
 
-        // c'tor taking an integer type
+        /// constructor taking an integer type
         template<class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
         explicit constexpr fixed_point(S s)
                 :_repr(integral_to_repr(s))
         {
         }
 
-        // c'tor taking a floating-point type
+        /// constructor taking a floating-point type
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         explicit constexpr fixed_point(S s)
                 :_repr(floating_point_to_repr(s))
         {
         }
 
-        // c'tor taking a fixed-point type
+        /// constructor taking a fixed-point type
         template<class FromReprType, int FromExponent>
         explicit constexpr fixed_point(const fixed_point<FromReprType, FromExponent>& rhs)
                 :_repr(fixed_point_to_repr(rhs))
         {
         }
 
-        // copy assignment operator taking an integer type
+        /// copy assignment operator taking an integer type
         template<class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
         fixed_point& operator=(S s)
         {
@@ -407,7 +422,7 @@ namespace sg14 {
             return *this;
         }
 
-        // copy assignment operator taking a floating-point type
+        /// copy assignment operator taking a floating-point type
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         fixed_point& operator=(S s)
         {
@@ -415,7 +430,7 @@ namespace sg14 {
             return *this;
         }
 
-        // copy assignement operator taking a fixed-point type
+        /// copy assignement operator taking a fixed-point type
         template<class FromReprType, int FromExponent>
         fixed_point& operator=(const fixed_point<FromReprType, FromExponent>& rhs)
         {
@@ -423,21 +438,21 @@ namespace sg14 {
             return *this;
         }
 
-        // returns value represented as a floating-point
+        /// returns value represented as a floating-point
         template<class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
         explicit constexpr operator S() const
         {
             return repr_to_integral<S>(_repr);
         }
 
-        // returns value represented as integral
+        /// returns value represented as integral
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         explicit constexpr operator S() const
         {
             return repr_to_floating_point<S>(_repr);
         }
 
-        // returns non-zeroness represented as boolean
+        /// returns non-zeroness represented as boolean
         explicit constexpr operator bool() const
         {
             return _repr!=0;
@@ -449,13 +464,13 @@ namespace sg14 {
         template<class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy = 0>
         fixed_point& operator/=(const Rhs& rhs);
 
-        // returns internal representation of value
+        /// returns internal representation of value
         constexpr repr_type data() const
         {
             return _repr;
         }
 
-        // creates an instance given the underlying representation value
+        /// creates an instance given the underlying representation value
         static constexpr fixed_point from_data(repr_type repr)
         {
             return fixed_point(repr, 0);
@@ -523,14 +538,13 @@ namespace sg14 {
         repr_type _repr;
     };
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_fixed
+    /// specializes fixed_point with the given number of integer and fractional digits
+    ///
+    /// generates a fixed_point type such that:
+    ///   fixed_point<>::integer_digits == IntegerDigits,
+    /// and
+    ///   fixed_point<>::fractional_digits >= FractionalDigits
 
-    // given the desired number of integer and fractional digits,
-    // generates a fixed_point type such that:
-    //   fixed_point<>::integer_digits == IntegerDigits,
-    // and
-    //   fixed_point<>::fractional_digits >= FractionalDigits,
     template<unsigned IntegerDigits, unsigned FractionalDigits = 0, class Archetype = signed>
     using make_fixed = fixed_point<
             _impl::sufficient_repr<IntegerDigits+FractionalDigits+std::is_signed<Archetype>::value, Archetype>,
@@ -541,10 +555,7 @@ namespace sg14 {
                                     IntegerDigits+FractionalDigits+int(std::is_signed<Archetype>::value),
                                     Archetype>>()>;
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_ufixed
-
-    // unsigned short-hand for make_fixed
+    /// unsigned short-hand for @ref make_fixed
     template<unsigned IntegerDigits, unsigned FractionalDigits = 0, class Archetype = unsigned>
     using make_ufixed = make_fixed<
             IntegerDigits,
@@ -561,11 +572,14 @@ namespace sg14 {
             ReprType,
             IntegerDigits+std::is_signed<ReprType>::value-(signed) sizeof(ReprType)*CHAR_BIT>;
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::resize<fixed_point<>, T>
-
+    /// converts given fixed-point type to equivalent type of given size
+    ///
+    /// \param ReprType the @ref ReprType parameter of @ref fixed_point
+    /// \param Exponent the @ref Exponent parameter of @ref fixed_point
+    /// \anchor NumBytes \param NumBytes the desired size of the resultant type such that `(sizeof(type) >= NumBytes)`
     template<class ReprType, int Exponent, int NumBytes>
     struct resize<fixed_point<ReprType, Exponent>, NumBytes> {
+        /// resultant type; a fixed_point specialization that is at least @ref NumBytes bytes in size
         using type = fixed_point<resize_t<ReprType, NumBytes>, Exponent>;
     };
 

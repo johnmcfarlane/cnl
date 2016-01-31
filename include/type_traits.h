@@ -4,12 +4,16 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+/// \file
+/// \brief trait definitions related to the `sg14::fixed_point` type
+
 #if !defined(_SG14_TYPE_TRAITS)
 #define _SG14_TYPE_TRAITS 1
 
 #include <cinttypes>
 #include <type_traits>
 
+/// study group 14 of the C++ working group
 namespace sg14 {
     namespace _type_traits_impl {
         ////////////////////////////////////////////////////////////////////////////////
@@ -114,12 +118,8 @@ namespace sg14 {
         };
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::resize
-
-    // given a type and a size, e.g. <uint8_t, 4>, yields a similar type of given
-    // size, e.g. uint32_t; if specialized for non-built-in types, those types can
-    // be used as the Repr parameter to sg14::fixed_point<Repr, Exponent>
+    /// resizes a type;
+    /// see @ref resize_t for details
     template<class Archetype, int NumBytes>
     struct resize;
 
@@ -131,9 +131,21 @@ namespace sg14 {
                     _type_traits_impl::resize<FundamentalInteger, NumBytes>>::type {
     };
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::resize_t
-
+    /// resizes a type
+    ///
+    /// \param Archetype the type to resize
+    /// \param NumBytes the desired size
+    ///
+    /// \par Examples
+    ///
+    /// To resize an native-sized unsigned int to 2-bytes:
+    /// \include sg14_resize1.h
+    ///
+    /// To resize a signed byte type to a built-in signed type of at least 5 bytes:
+    /// \include sg14_resize2.h
+    ///
+    /// To resize a signed, 1-byte fixed-point type to a fixed-point type of at least 3 bytes:
+    /// \include sg14_resize3.h
     template<class Archetype, int NumBytes>
     using resize_t = typename resize<Archetype, NumBytes>::type;
 }
