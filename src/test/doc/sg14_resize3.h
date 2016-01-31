@@ -1,0 +1,2 @@
+using new_type = resize_t<fixed_point<int8_t>, 3>;
+static_assert(std::is_same<new_type, fixed_point<int32_t>>::value, "failed to resize a signed, 1-byte fixed-point type to a fixed-point type of at least 3 bytes");

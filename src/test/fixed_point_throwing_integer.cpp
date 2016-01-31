@@ -34,21 +34,23 @@ using test_int = sg14::throwing_integer<>;
 // throwing_integer-specific exceptions tests
 
 #if defined(TEST_THROWING_OVERFLOW)
+
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_right)
 {
-	auto shift_right_fn = _impl::shift_right<8, uint16, uint8>;
-	ASSERT_THROW(shift_right_fn((uint8)0x1234), std::overflow_error);
+    auto shift_right_fn = _impl::shift_right<8, uint16, uint8>;
+    ASSERT_THROW(shift_right_fn((uint8) 0x1234), std::overflow_error);
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_left)
 {
-	auto shift_right_fn = _impl::shift_left<-8, uint16, uint8>;
-	ASSERT_THROW(shift_right_fn((uint8)0x1234), std::overflow_error);
+    auto shift_right_fn = _impl::shift_left<-8, uint16, uint8>;
+    ASSERT_THROW(shift_right_fn((uint8) 0x1234), std::overflow_error);
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), assignment)
 {
-	using fp_type = fixed_point<int8, -7>;
-	ASSERT_THROW(fp_type(1), std::overflow_error);
+    using fp_type = fixed_point<int8, -7>;
+    ASSERT_THROW(fp_type(1), std::overflow_error);
 }
+
 #endif

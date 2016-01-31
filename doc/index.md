@@ -1,9 +1,9 @@
-# C++ Binary Fixed-Point Arithmetic
+User Manual       {#mainpage}
+===========
 
-[![Build Status](https://travis-ci.org/johnmcfarlane/fixed_point.svg?branch=master)](https://travis-ci.org/johnmcfarlane/fixed_point)
-[![Build status](https://ci.appveyor.com/api/projects/status/p60lpkq9u90h83fi/branch/master?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/fixed-point/branch/master)
+\tableofcontents
 
-## Introduction
+\section introduction Introduction
 
 The [fixed_point](https://github.com/johnmcfarlane/fixed_point)
 library is designed to represent binary fixed-point real numbers using integer types. It is developed as part of
@@ -11,53 +11,45 @@ library is designed to represent binary fixed-point real numbers using integer t
 For an overview of the API, see proposal,
 [LEWG, EWG, SG14, SG6: P0037](http://johnmcfarlane.github.io/fixed_point/doc/papers/p0037.html).
 
-## Repository
+\section repository Repository
 
 The library is [hosted](https://github.com/johnmcfarlane/fixed_point) on GitHub:
 
     git clone https://github.com/johnmcfarlane/fixed_point.git
 
-## Usage
+\section usage Usage
 
-1. Add the [*include*](include) directory to your list of system headers. 
+1. Add the [include](../../include) directory to your list of system headers. 
 
-1. Essential definitions are in [*fixed_point.h*](include/fixed_point.h):
-   ```
-   #include <fixed_point.h>
-   ```
+2. Essential definitions are in [fixed_point.h](@ref fixed_point.h):
 
-1. Supplemental definitions are in [*fixed_point_utils.h*](include/fixed_point_utils.h):
-   ```
-   #include <fixed_point_utils.h>
-   ```
+       #include <fixed_point.h>
 
-1. All definitions are in the `sg14` namespace:
-   ```
-   using namespace sg14;
-   ```
+3. Supplemental definitions are in [fixed_point_utils.h](@ref fixed_point_utils.h):
+
+       #include <fixed_point_utils.h>
+
+4. All definitions are in the [sg14](@ref sg14) namespace:
+
+       using namespace sg14;
    
-1. Use the `fixed_point` type to define variables.
-   ```
-   fixed_point<std::int32_t, -28> pi(3.1415926535);
-   std::cout << "pi=" << std::setprecision(10) << pi;
-   ```
+5. Use the [fixed_point](@ref sg14::fixed_point) type to define variables.
+
+       fixed_point<std::int32_t, -28> pi(3.1415926535);
+       std::cout << "pi=" << std::setprecision(10) << pi;
    
    Output:
    
    >pi=3.141592652
 
-1. Alternatively, use `make_fixed` and `make_ufixed` to instantiate signed and unsigned variables 
+6. Alternatively, use [make_fixed](@ref sg14::make_fixed) and [make_ufixed](@ref sg14::make_ufixed) to instantiate signed and unsigned variables 
    with exactly the number of integer and fractional digits you require:
-   ```
-   make_fixed<3, 28> pi(3.1415926535);
-   ```
 
-1. See proposal, [P0037](http://johnmcfarlane.github.io/fixed_point/doc/papers/p0037.html),
-   for mode details.
+       make_fixed<3, 28> pi(3.1415926535);
 
-## Tests and Benchmarks
+\section tests_and_benchmarks Tests and Benchmarks
 
-### Linux / UNIX
+\subsection linux_and_unix Linux / UNIX
 
 Tested on [Travis](https://travis-ci.org/johnmcfarlane/fixed_point) (Ubuntu 12.04) using GCC 4.8 and Clang 3.5
 and [Debian GNU/Linux 8.2](https://www.debian.org/releases/stable/) using GCC 4.9.2 and Clang 3.5.0. 
@@ -93,7 +85,7 @@ To profile benchmarks:
    perf report -g 'graph,0.5,caller'`
    ```
 
-### Windows
+\subsection windows Windows
 
 Tested on [AppVeyor](https://ci.appveyor.com/project/johnmcfarlane/fixed-point/branch/master)
 and on *Windows 7 Professional* with *CMake 3.4.0*. Requires:
@@ -110,7 +102,7 @@ For 64-bit builds, append `Win64` to the `-G` option above:
 
     cmake -G "Visual Studio 14 2015 Win64" .
 
-### Cleaning
+\subsection cleaning Cleaning
 
 To clean the project files:
 
