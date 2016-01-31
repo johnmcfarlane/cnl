@@ -48,7 +48,7 @@ TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_fixed_point)
 {
     auto lhs = fixed_point<uint32, -16>(0);
     lhs = fixed_point<uint32, -16>(123.456);
-    EXPECT_EQ(lhs, fixed_point<>(123.456));
+    ASSERT_EQ(lhs, fixed_point<>(123.456));
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_floating_point)
