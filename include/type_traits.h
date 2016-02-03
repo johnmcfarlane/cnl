@@ -119,11 +119,13 @@ namespace sg14 {
     }
 
     /// resizes a type;
-    /// see @ref resize_t for details
+    /// can be specialized for any type for which resizing that type makes sense
+    ///
+    /// \sa resize_t
     template<class Archetype, int NumBytes>
     struct resize;
 
-    // specialization for built-in integer
+    /// specialization of @ref resize for built-in integer types
     template<class FundamentalInteger, int NumBytes>
     struct resize
             : std::enable_if<
@@ -133,19 +135,19 @@ namespace sg14 {
 
     /// resizes a type
     ///
-    /// \param Archetype the type to resize
-    /// \param NumBytes the desired size
+    /// \tparam Archetype the type to resize
+    /// \tparam NumBytes the desired size
     ///
     /// \par Examples
     ///
     /// To resize an native-sized unsigned int to 2-bytes:
-    /// \include sg14_resize1.h
+    /// \snippet snippets.cpp use resize 1
     ///
     /// To resize a signed byte type to a built-in signed type of at least 5 bytes:
-    /// \include sg14_resize2.h
+    /// \snippet snippets.cpp use resize 2
     ///
     /// To resize a signed, 1-byte fixed-point type to a fixed-point type of at least 3 bytes:
-    /// \include sg14_resize3.h
+    /// \snippet snippets.cpp use resize 3
     template<class Archetype, int NumBytes>
     using resize_t = typename resize<Archetype, NumBytes>::type;
 }
