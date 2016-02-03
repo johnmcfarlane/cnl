@@ -344,13 +344,13 @@ namespace sg14 {
 
     /// \brief literal arithmetic type which approximates a real number
     ///
-    /// \anchor ReprType \param ReprType the underlying type used to represent the value
-    /// \anchor Exponent \param Exponent the value by which to scale the integer value in order to get the real value
+    /// \tparam ReprType the underlying type used to represent the value
+    /// \tparam Exponent the value by which to scale the integer value in order to get the real value
     ///
     /// \par Examples
     ///
-    /// To store the value, -2.75, in a 1-byte variable with 3 integer and 4 fractional digits:
-    /// \include sg14_fixed_point.h
+    /// To define a fixed-point value 1 byte in size with a sign bit, 3 integer bits and 4 fractional bits:
+    /// \snippet snippets.cpp define a fixed_point value
 
     template<class ReprType = int, int Exponent = 0>
     class fixed_point {
@@ -358,13 +358,13 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // types
 
-        /// alias to template parameter, \ref ReprType
+        /// alias to template parameter, \a ReprType
         using repr_type = ReprType;
 
         ////////////////////////////////////////////////////////////////////////////////
         // constants
 
-        /// value of template parameter, \ref Exponent
+        /// value of template parameter, \a Exponent
         constexpr static int exponent = Exponent;
 
         /// number of binary digits this type can represent;
@@ -438,7 +438,7 @@ namespace sg14 {
             return *this;
         }
 
-        /// returns value represented as a floating-point
+        /// returns value represented as floating-point
         template<class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
         explicit constexpr operator S() const
         {
@@ -538,13 +538,23 @@ namespace sg14 {
         repr_type _repr;
     };
 
-    /// specializes fixed_point with the given number of integer and fractional digits
+    /// \brief Produce a fixed-point type with the given number of integer and fractional digits.
     ///
-    /// generates a fixed_point type such that:
-    ///   fixed_point<>::integer_digits == IntegerDigits,
-    /// and
-    ///   fixed_point<>::fractional_digits >= FractionalDigits
-
+    /// \tparam IntegerDigits specifies minimum value of @ref fixed_point::integer_digits
+    /// \tparam FractionalDigits specifies minimum value of @ref fixed_point::fractional_digits
+    /// \tparam Archetype hints at the type of @ref fixed_point::repr_type
+    ///
+    /// \remarks The signage of \a Archetype specifies signage of the resultant fixed-point type.
+    /// \remarks Typical choices for \a Archetype, `signed` and `unsigned`,
+    /// result in a type that uses built-in integers for \a fixed_point::repr_type.
+    /// \remarks Resultant type is signed by default.
+    ///
+    /// \par Example:
+    ///
+    /// To generate a 2-byte fixed-point type with a sign bit, 7 integer bits and 8 fractional bits:
+    /// \snippet snippets.cpp use make_fixed
+    ///
+    /// \sa make_ufixed
     template<unsigned IntegerDigits, unsigned FractionalDigits = 0, class Archetype = signed>
     using make_fixed = fixed_point<
             _impl::sufficient_repr<IntegerDigits+FractionalDigits+std::is_signed<Archetype>::value, Archetype>,
@@ -555,7 +565,9 @@ namespace sg14 {
                                     IntegerDigits+FractionalDigits+int(std::is_signed<Archetype>::value),
                                     Archetype>>()>;
 
-    /// unsigned short-hand for @ref make_fixed
+    /// \brief Produce an unsigned fixed-point type with the given number of integer and fractional digits.
+    ///
+    /// \sa make_fixed
     template<unsigned IntegerDigits, unsigned FractionalDigits = 0, class Archetype = unsigned>
     using make_ufixed = make_fixed<
             IntegerDigits,
@@ -572,14 +584,16 @@ namespace sg14 {
             ReprType,
             IntegerDigits+std::is_signed<ReprType>::value-(signed) sizeof(ReprType)*CHAR_BIT>;
 
-    /// converts given fixed-point type to equivalent type of given size
+    /// produces equivalent fixed-point type at a new size
     ///
-    /// \param ReprType the @ref ReprType parameter of @ref fixed_point
-    /// \param Exponent the @ref Exponent parameter of @ref fixed_point
-    /// \anchor NumBytes \param NumBytes the desired size of the resultant type such that `(sizeof(type) >= NumBytes)`
+    /// \tparam ReprType the \a ReprType parameter of @ref fixed_point
+    /// \tparam Exponent the \a Exponent parameter of @ref fixed_point
+    /// \tparam NumBytes the desired size of the resultant type such that `(sizeof(type) >= NumBytes)`
+    ///
+    /// \sa resize_t
     template<class ReprType, int Exponent, int NumBytes>
     struct resize<fixed_point<ReprType, Exponent>, NumBytes> {
-        /// resultant type; a fixed_point specialization that is at least @ref NumBytes bytes in size
+        /// resultant type; a fixed_point specialization that is at least \a NumBytes bytes in size
         using type = fixed_point<resize_t<ReprType, NumBytes>, Exponent>;
     };
 
