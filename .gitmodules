@@ -1,4 +1,4 @@
 [submodule "doc/gh-pages"]
 	path = doc/gh-pages
-	url = git@github.com:johnmcfarlane/fixed_point
+	url = https://github.com/johnmcfarlane/fixed_point.git
 	branch = gh-pages
