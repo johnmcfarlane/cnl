@@ -9,15 +9,19 @@ if (DOXYGEN_FOUND)
             COMMENT "Generating API documentation with Doxygen" VERBATIM)
 endif (DOXYGEN_FOUND)
 
-# run cmake (if installed) on papers
+# add a target to generate HTML files from commonmark files
 find_program(CMARK_EXECUTABLE cmark)
 if (CMARK_EXECUTABLE)
     foreach(PAPER p0037 p0037r0)
-        message("${CMAKE_CURRENT_LIST_DIR}/${PAPER}.md -> ${CMAKE_CURRENT_LIST_DIR}/gh-pages/${PAPER}.html")
-        execute_process(
-                COMMAND ${CMARK_EXECUTABLE}
-                INPUT_FILE ${CMAKE_CURRENT_LIST_DIR}/${PAPER}.md
-                OUTPUT_FILE ${CMAKE_CURRENT_LIST_DIR}/gh-pages/${PAPER}.html
+        set(HTML_FILE ${CMAKE_CURRENT_LIST_DIR}/gh-pages/${PAPER}.html)
+        set(COMMONMARK_FILE ${CMAKE_CURRENT_LIST_DIR}/${PAPER}.md)
+        add_custom_command(
+                OUTPUT ${HTML_FILE}
+                COMMAND ${CMARK_EXECUTABLE} ${COMMONMARK_FILE} > ${HTML_FILE}
+                DEPENDS ${COMMONMARK_FILE}
+        )
+        add_custom_target("commonmark_${PAPER}" ALL echo
+                DEPENDS ${HTML_FILE}
         )
     endforeach(PAPER)
 endif (CMARK_EXECUTABLE)
