@@ -21,6 +21,7 @@ ExternalProject_Add(
   GIT_REPOSITORY "https://github.com/google/benchmark.git"
   GIT_TAG cd525ae85d4a46ecb2e3bdbdd1df101e48c5195e
   INSTALL_COMMAND ""
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
 )
 ExternalProject_Get_Property(google_benchmark source_dir)
 include_directories(SYSTEM ${source_dir}/include)
