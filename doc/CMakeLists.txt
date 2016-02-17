@@ -15,13 +15,10 @@ if (CMARK_EXECUTABLE)
     foreach(PAPER p0037 p0037r0)
         set(HTML_FILE ${CMAKE_CURRENT_LIST_DIR}/gh-pages/${PAPER}.html)
         set(COMMONMARK_FILE ${CMAKE_CURRENT_LIST_DIR}/${PAPER}.md)
-        add_custom_command(
-                OUTPUT ${HTML_FILE}
+        add_custom_target(
+                "commonmark_${PAPER}" ALL
                 COMMAND ${CMARK_EXECUTABLE} ${COMMONMARK_FILE} > ${HTML_FILE}
                 DEPENDS ${COMMONMARK_FILE}
-        )
-        add_custom_target("commonmark_${PAPER}" ALL echo
-                DEPENDS ${HTML_FILE}
         )
     endforeach(PAPER)
 endif (CMARK_EXECUTABLE)

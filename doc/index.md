@@ -40,7 +40,7 @@ The library is [hosted](https://github.com/johnmcfarlane/fixed_point) on GitHub:
    
    Output:
    
-   >pi=3.141592652
+> pi=3.141592652
 
 6. Alternatively, use [make_fixed](@ref sg14::make_fixed) and [make_ufixed](@ref sg14::make_ufixed) to instantiate signed and unsigned variables 
    with exactly the number of integer and fractional digits you require:
@@ -75,15 +75,13 @@ To run benchmarks:
 To profile benchmarks:
 
 1. in *src/benchmark/CMakeLists.txt*, append `-fno-omit-frame-pointer` to `COMPILE_FLAGS`:
-   ```
-   PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} -fno-omit-frame-pointer"
-   ```
+
+       PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} -fno-omit-frame-pointer"
 
 2. then run:
-   ```
-   perf stat ./run_benchmarks
-   perf report -g 'graph,0.5,caller'`
-   ```
+
+       perf stat ./run_benchmarks
+       perf report -g 'graph,0.5,caller'
 
 \subsection windows Windows
 
