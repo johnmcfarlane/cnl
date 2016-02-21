@@ -13,7 +13,7 @@ endif (DOXYGEN_FOUND)
 find_program(CMARK_EXECUTABLE cmark)
 if (CMARK_EXECUTABLE)
     foreach(PAPER p0037 p0037r0)
-        set(HTML_FILE ${CMAKE_CURRENT_LIST_DIR}/gh-pages/${PAPER}.html)
+        set(HTML_FILE ${CMAKE_CURRENT_LIST_DIR}/gh-pages/papers/${PAPER}.html)
         set(COMMONMARK_FILE ${CMAKE_CURRENT_LIST_DIR}/${PAPER}.md)
         add_custom_target(
                 "commonmark_${PAPER}" ALL
