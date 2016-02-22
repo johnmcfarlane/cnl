@@ -18,6 +18,7 @@ if (CMARK_EXECUTABLE)
         set(COMMONMARK_FILE ${CMAKE_CURRENT_LIST_DIR}/${PAPER}.md)
         add_custom_target(
                 "commonmark_${PAPER}" ALL
+                COMMAND mkdir -p ${HTML_DIR}
                 COMMAND ${CMARK_EXECUTABLE} ${COMMONMARK_FILE} > ${HTML_FILE}
                 DEPENDS ${COMMONMARK_FILE}
         )
