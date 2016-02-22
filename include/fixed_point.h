@@ -747,11 +747,10 @@ namespace sg14 {
         constexpr Result multiply(const Lhs& lhs, const Rhs& rhs)
         {
             using result_repr_type = typename Result::repr_type;
-            using intermediate_repr_type = _impl::next_size<typename common_type<Lhs, Rhs>::repr_type>;
             return Result::from_data(
                     _impl::shift_left<(Lhs::exponent+Rhs::exponent-Result::exponent), result_repr_type>(
-                            static_cast<intermediate_repr_type>(lhs.data())
-                                    *static_cast<intermediate_repr_type>(rhs.data())));
+                            static_cast<result_repr_type>(lhs.data())
+                                    *static_cast<result_repr_type>(rhs.data())));
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -994,8 +993,12 @@ namespace sg14 {
             const fixed_point<RhsReprType, RhsExponent>& rhs)
     -> _impl::common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>
     {
-        using result_type = _impl::common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
-        return _impl::multiply<result_type>(lhs, rhs);
+        using lhs_type = fixed_point<LhsReprType, LhsExponent>;
+        using rhs_type = fixed_point<RhsReprType, RhsExponent>;
+        using result_type = _impl::common_type<lhs_type, rhs_type>;
+        using intermediate_type = _impl::promote_fast_result<result_type>;
+
+        return static_cast<result_type>(_impl::multiply<intermediate_type>(lhs, rhs));
     }
 
     template<class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
@@ -1202,7 +1205,8 @@ namespace sg14 {
     constexpr trunc_multiply(const Lhs& lhs, const Rhs& rhs)
     {
         using result_type = trunc_multiply_result<Lhs, Rhs>;
-        return _impl::multiply<result_type>(lhs, rhs);
+        using intermediate_type = _impl::promote_fast_result<result_type>;
+        return static_cast<result_type>(_impl::multiply<intermediate_type>(lhs, rhs));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
