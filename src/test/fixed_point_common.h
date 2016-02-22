@@ -123,6 +123,10 @@ static_assert(static_cast<int>(-3.9)==-3, "incorrect assumption about default ro
 // mixed-mode operations DO lose precision because exponent is more important than significand
 static_assert(is_same<std::common_type<float, uint32>::type, float>::value, "incorrect assumption about promotion");
 
+// promotion doesn't always tend towards int
+static_assert(is_same<std::common_type<int64_t, uint32_t>::type, int64_t>::value, "incorrect assumption about promotion");
+static_assert(is_same<std::common_type<int32_t, uint64_t>::type, uint64_t>::value, "incorrect assumption about promotion");
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl
