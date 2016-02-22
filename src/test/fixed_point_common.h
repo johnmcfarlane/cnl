@@ -529,6 +529,22 @@ static_assert(is_same<_impl::common_type<fixed_point<int16, 0>, double>, double>
 //static_assert(is_same<_impl::common_type<int8, int8>, fixed_point<int64, -56>>::value, "sg14::_impl::common_type test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
+// sg14::_impl::promote_fast_result
+
+static_assert(is_same<make_fixed<47, 16>, _impl::promote_fast_result<make_fixed<15, 16>>>::value, "promote_fast_result test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::_impl::promote_fast
+
+// tests that no shifting was necessary
+static_assert(_impl::promote_fast(make_ufixed<4, 4>::from_data(0xa5)).data() == 0xa5, "sg14::_impl::promote_fast test failed");
+static_assert(_impl::promote_fast(make_fixed<15, 16>::from_data(-2123456789)).data() == -2123456789, "sg14::_impl::promote_fast test failed");
+
+// tests that value was unchanged
+static_assert(_impl::promote_fast(make_fixed<15, 16>(123.75)) == 123.75, "");
+static_assert(_impl::promote_fast(make_fixed<15, 16>(44.5)) == 44.5, "");
+
+////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::multiply
 
 static_assert(_impl::multiply<make_ufixed<4, 4>>(make_ufixed<4, 4>(2), make_ufixed<4, 4>(7.5))==15,

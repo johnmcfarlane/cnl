@@ -722,6 +722,25 @@ namespace sg14 {
         using arithmetic_result_repr = common_repr_type<LhsFixedPoint, RhsFixedPoint>;
 
         ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::promote_fast_result / promote_fast
+
+        // given template parameters of a fixed_point specialization,
+        // yields alternative specialization with twice the capacity
+        // and the same number of factional bits; requires no bit shift
+        template<class FixedPoint>
+        using promote_fast_result = fixed_point<
+                _impl::next_size<typename FixedPoint::repr_type>,
+                FixedPoint::exponent>;
+
+        // as promote_result but promotes parameter, from
+        template<class FixedPoint>
+        promote_fast_result<FixedPoint>
+        constexpr promote_fast(const FixedPoint& from)
+        {
+            return promote_fast_result<FixedPoint>(from);
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////
         // sg14::_impl::multiply
 
         template<class Result, class Lhs, class Rhs>
