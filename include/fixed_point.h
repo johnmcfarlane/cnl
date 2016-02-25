@@ -1271,7 +1271,8 @@ namespace sg14 {
     constexpr trunc_square(const FixedPoint& root)
     {
         using result_type = trunc_square_result<FixedPoint>;
-        return _impl::multiply<result_type>(root, root);
+		using intermediate_type = _impl::promote_fast_result<result_type>;
+		return static_cast<result_type>(_impl::multiply<intermediate_type>(root, root));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
