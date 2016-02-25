@@ -747,8 +747,6 @@ static_assert((trunc_multiply(make_fixed<4, 3>(7), make_ufixed<16, 0>(13)))==91,
         "sg14::trunc_multiply test failed");
 static_assert((trunc_multiply(make_fixed<4, 3>(15.875), make_ufixed<16, 0>(65535)))==1040352,
         "sg14::trunc_multiply test failed");
-static_assert((trunc_multiply(make_fixed<4, 3>(15.875), make_ufixed<16, 0>(65535)))==1040352,
-        "sg14::trunc_multiply test failed");
 static_assert(trunc_multiply(make_fixed<4, 3>(-16), make_fixed<4, 3>(-15.875))==254,
         "sg14::trunc_multiply test failed");
 static_assert(trunc_multiply(make_fixed<4, 3>(-16), make_fixed<4, 3>(-16))==-256, "sg14::trunc_multiply test failed");
