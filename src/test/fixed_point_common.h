@@ -123,6 +123,10 @@ static_assert(static_cast<int>(-3.9)==-3, "incorrect assumption about default ro
 // mixed-mode operations DO lose precision because exponent is more important than significand
 static_assert(is_same<std::common_type<float, uint32>::type, float>::value, "incorrect assumption about promotion");
 
+// promotion doesn't always tend towards int
+static_assert(is_same<std::common_type<int64_t, uint32_t>::type, int64_t>::value, "incorrect assumption about promotion");
+static_assert(is_same<std::common_type<int32_t, uint64_t>::type, uint64_t>::value, "incorrect assumption about promotion");
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl
@@ -529,6 +533,22 @@ static_assert(is_same<_impl::common_type<fixed_point<int16, 0>, double>, double>
 //static_assert(is_same<_impl::common_type<int8, int8>, fixed_point<int64, -56>>::value, "sg14::_impl::common_type test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
+// sg14::_impl::promote_fast_result
+
+static_assert(is_same<make_fixed<47, 16>, _impl::promote_fast_result<make_fixed<15, 16>>>::value, "promote_fast_result test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::_impl::promote_fast
+
+// tests that no shifting was necessary
+static_assert(_impl::promote_fast(make_ufixed<4, 4>::from_data(0xa5)).data() == 0xa5, "sg14::_impl::promote_fast test failed");
+static_assert(_impl::promote_fast(make_fixed<15, 16>::from_data(-2123456789)).data() == -2123456789, "sg14::_impl::promote_fast test failed");
+
+// tests that value was unchanged
+static_assert(_impl::promote_fast(make_fixed<15, 16>(123.75)) == 123.75, "");
+static_assert(_impl::promote_fast(make_fixed<15, 16>(44.5)) == 44.5, "");
+
+////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::multiply
 
 static_assert(_impl::multiply<make_ufixed<4, 4>>(make_ufixed<4, 4>(2), make_ufixed<4, 4>(7.5))==15,
@@ -723,6 +743,8 @@ static_assert(trunc_multiply(make_ufixed<8, 0>(1), make_ufixed<8, 0>(1))==0.f, "
 static_assert(trunc_multiply(make_ufixed<8, 0>(174), make_ufixed<8, 0>(25))==4096.f,
         "sg14::trunc_multiply test failed");
 static_assert(trunc_multiply(make_ufixed<8, 0>(174), make_ufixed<6, 2>(25))==4288, "sg14::trunc_multiply test failed");
+static_assert((trunc_multiply(make_fixed<4, 3>(7), make_ufixed<16, 0>(13)))==91,
+        "sg14::trunc_multiply test failed");
 static_assert((trunc_multiply(make_fixed<4, 3>(15.875), make_ufixed<16, 0>(65535)))==1040352,
         "sg14::trunc_multiply test failed");
 static_assert(trunc_multiply(make_fixed<4, 3>(-16), make_fixed<4, 3>(-15.875))==254,

@@ -89,7 +89,7 @@ Tested on [AppVeyor](https://ci.appveyor.com/project/johnmcfarlane/fixed-point/b
 and on *Windows 7 Professional* with *CMake 3.4.0*. Requires:
 
 - MSBuild 14.0
-- CMake 2.8.4
+- [CMake](https://cmake.org/download/) 2.8.4
 
 To build *vs/Release/fp_test.exe* and *vs/Release/fp_benchmark.exe*:
 
