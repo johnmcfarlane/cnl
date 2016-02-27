@@ -100,6 +100,8 @@ For 64-bit builds, append `Win64` to the `-G` option above:
 
     cmake -G "Visual Studio 14 2015 Win64" .
 
+Note that *fp_benchmark* is unlikely to produce valid results due to missing `escape` and `clobber` functions.
+
 \subsection cleaning Cleaning
 
 To clean the project files:
