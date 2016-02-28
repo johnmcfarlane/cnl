@@ -47,7 +47,8 @@ void clobber()
 
 #else
 // TODO: Find equivalents `if defined(_MSC_VER)`
-void escape(void const *)
+template <typename T>
+void escape_cppcon2015(T&&)
 {
 }
 
