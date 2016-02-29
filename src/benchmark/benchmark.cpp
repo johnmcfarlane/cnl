@@ -10,6 +10,10 @@
 
 #include <benchmark/benchmark.h>
 
+#define ESCAPE(X) escape_cppcon2015(&X)
+//#define ESCAPE(X) escape_codedive2015(&X)
+//#define ESCAPE(x) benchmark::DoNotOptimize(x)
+
 using namespace sg14;
 using namespace std;
 
@@ -19,13 +23,21 @@ using namespace std;
 BENCHMARK_MAIN();
 
 ////////////////////////////////////////////////////////////////////////////////
-// optimization circumvention - https://youtu.be/nXaxk27zwlk?t=40m40s
+// optimization circumvention:
+// https://youtu.be/nXaxk27zwlk?t=40m40s or
+// https://youtu.be/vrfYLlR8X8k?t=29m25s
 
 #if defined(__clang__) || defined(__GNUG__)
 
-void escape(void const* p)
+void escape_cppcon2015(void const* p)
 {
     asm volatile(""::"g"(p):"memory");
+}
+
+template <typename T>
+void escape_codedive2015(T&& p)
+{
+    asm volatile("": "+r" (p));
 }
 
 void clobber()
@@ -35,7 +47,8 @@ void clobber()
 
 #else
 // TODO: Find equivalents `if defined(_MSC_VER)`
-void escape(void const *)
+template <typename T>
+void escape_cppcon2015(T&&)
 {
 }
 
@@ -53,10 +66,10 @@ static void add(benchmark::State& state)
     auto addend1 = numeric_limits<T>::max()/5;
     auto addend2 = numeric_limits<T>::max()/3;
     while (state.KeepRunning()) {
-        escape(&addend1);
-        escape(&addend2);
+        ESCAPE(addend1);
+        ESCAPE(addend2);
         auto value = addend1+addend2;
-        escape(&value);
+        ESCAPE(value);
     }
 }
 
@@ -66,10 +79,10 @@ static void sub(benchmark::State& state)
     auto minuend = numeric_limits<T>::max()/5;
     auto subtrahend = numeric_limits<T>::max()/3;
     while (state.KeepRunning()) {
-        escape(&minuend);
-        escape(&subtrahend);
+        ESCAPE(minuend);
+        ESCAPE(subtrahend);
         auto value = minuend+subtrahend;
-        escape(&value);
+        ESCAPE(value);
     }
 }
 
@@ -79,10 +92,10 @@ static void mul(benchmark::State& state)
     auto factor1 = numeric_limits<T>::max()/5;
     auto factor2 = numeric_limits<T>::max()/3;
     while (state.KeepRunning()) {
-        escape(&factor1);
-        escape(&factor2);
+        ESCAPE(factor1);
+        ESCAPE(factor2);
         auto value = factor1*factor2;
-        escape(&value);
+        ESCAPE(value);
     }
 }
 
@@ -92,10 +105,10 @@ static void div(benchmark::State& state)
     auto nume = numeric_limits<T>::max()/5;
     auto denom = numeric_limits<T>::max()/3;
     while (state.KeepRunning()) {
-        escape(&nume);
-        escape(&denom);
+        ESCAPE(nume);
+        ESCAPE(denom);
         auto value = nume/denom;
-        escape(&value);
+        ESCAPE(value);
     }
 }
 
@@ -104,9 +117,9 @@ static void bm_sqrt(benchmark::State& state)
 {
     auto input = numeric_limits<T>::max()/5;
     while (state.KeepRunning()) {
-        escape(&input);
+        ESCAPE(input);
         auto output = sqrt(input);
-        escape(&output);
+        ESCAPE(output);
     }
 }
 
@@ -117,11 +130,11 @@ static void bm_magnitude_squared(benchmark::State& state)
     auto y = T {4};
     auto z = T {9};
     while (state.KeepRunning()) {
-        escape(&x);
-        escape(&y);
-        escape(&z);
+        ESCAPE(x);
+        ESCAPE(y);
+        ESCAPE(z);
         auto value = magnitude_squared(x, y, z);
-        escape(&value);
+        ESCAPE(value);
     }
 }
 
@@ -132,11 +145,11 @@ static void bm_magnitude_trunc(benchmark::State& state)
     auto y = T {4};
     auto z = T {9};
     while (state.KeepRunning()) {
-        escape(&x);
-        escape(&y);
-        escape(&z);
+        ESCAPE(x);
+        ESCAPE(y);
+        ESCAPE(z);
         auto value = magnitude_trunc(x, y, z);
-        escape(&value);
+        ESCAPE(value);
     }
 }
 
@@ -150,14 +163,14 @@ static void bm_circle_intersect_generic(benchmark::State& state)
     auto y2 = T {13};
     auto r2 = T {9};
     while (state.KeepRunning()) {
-        escape(&x1);
-        escape(&y1);
-        escape(&r1);
-        escape(&x2);
-        escape(&y2);
-        escape(&r2);
+        ESCAPE(x1);
+        ESCAPE(y1);
+        ESCAPE(r1);
+        ESCAPE(x2);
+        ESCAPE(y2);
+        ESCAPE(r2);
         auto value = circle_intersect_generic(x1, y1, r1, x2, y2, r2);
-        escape(&value);
+        ESCAPE(value);
     }
 }
 
@@ -171,14 +184,14 @@ static void circle_intersect_generic(benchmark::State& state)
     auto y2 = T {13};
     auto r2 = T {9};
     while (state.KeepRunning()) {
-        escape(&x1);
-        escape(&y1);
-        escape(&r1);
-        escape(&x2);
-        escape(&y2);
-        escape(&r2);
+        ESCAPE(x1);
+        ESCAPE(y1);
+        ESCAPE(r1);
+        ESCAPE(x2);
+        ESCAPE(y2);
+        ESCAPE(r2);
         auto value = circle_intersect_generic(x1, y1, r1, x2, y2, r2);
-        escape(&value);
+        ESCAPE(value);
     }
 }
 
@@ -192,14 +205,14 @@ static void bm_circle_intersect_trunc(benchmark::State& state)
     auto y2 = T {13};
     auto r2 = T {9};
     while (state.KeepRunning()) {
-        escape(&x1);
-        escape(&y1);
-        escape(&r1);
-        escape(&x2);
-        escape(&y2);
-        escape(&r2);
+        ESCAPE(x1);
+        ESCAPE(y1);
+        ESCAPE(r1);
+        ESCAPE(x2);
+        ESCAPE(y2);
+        ESCAPE(r2);
         auto value = circle_intersect_trunc(x1, y1, r1, x2, y2, r2);
-        escape(&value);
+        ESCAPE(value);
     }
 }
 
