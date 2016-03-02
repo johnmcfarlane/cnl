@@ -272,19 +272,6 @@ namespace sg14 {
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::common_repr_type
-
-        // given two integral types, produces a common type with enough capacity to
-        // store values of either (except when one is signed and both are same size)
-        template<class LhsReprType, class RhsReprType>
-        using common_repr_type = typename sg14::resize_t<
-                typename std::conditional<
-                        std::is_signed<LhsReprType>::value | std::is_signed<RhsReprType>::value,
-                        typename std::make_signed<typename std::common_type<LhsReprType, RhsReprType>::type>::type,
-                        typename std::make_unsigned<typename std::common_type<LhsReprType, RhsReprType>::type>::type>::type,
-                _impl::max(sizeof(LhsReprType), sizeof(RhsReprType))>;
-
-        ////////////////////////////////////////////////////////////////////////////////
         // sg14::_impl::capacity
 
         // has value that, given a value N,
@@ -661,14 +648,18 @@ namespace sg14 {
         template<class Lhs, class Rhs, class _Enable = void>
         struct _common_type;
 
-        // given two fixed-point, produces the type that is best suited to both of them
+        // given two fixed-point types, produces the type that is best suited to both of them
         template<class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
         struct _common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>> {
-            using type = make_fixed_from_repr<
-                    _impl::common_repr_type<LhsReprType, RhsReprType>,
-                    _impl::max<int>(
-                            fixed_point<LhsReprType, LhsExponent>::integer_digits,
-                            fixed_point<RhsReprType, RhsExponent>::integer_digits)>;
+            using lhs = fixed_point<LhsReprType, LhsExponent>;
+            using rhs = fixed_point<RhsReprType, RhsExponent>;
+            using type = fixed_point<
+                    typename std::common_type<LhsReprType, RhsReprType>::type,
+                    (lhs::integer_digits>rhs::integer_digits)
+                    ? lhs::exponent
+                    : (rhs::integer_digits>lhs::integer_digits)
+                      ? rhs::exponent
+                      : _impl::max(lhs::exponent, rhs::exponent)>;
         };
 
         // given a fixed-point and a integer type,
@@ -678,7 +669,7 @@ namespace sg14 {
                 fixed_point<LhsReprType, LhsExponent>,
                 RhsInteger,
                 typename std::enable_if<std::is_integral<RhsInteger>::value>::type> {
-            using type = fixed_point<LhsReprType, LhsExponent>;
+            using type = fixed_point<typename std::common_type<LhsReprType, RhsInteger>::type, LhsExponent>;
         };
 
         // given a fixed-point and a floating-point type,
@@ -709,7 +700,7 @@ namespace sg14 {
         // arithmetic result types
 
         template<typename LhsFixedPoint, typename RhsFixedPoint>
-        using subtract_result_repr = typename std::make_signed<common_repr_type<LhsFixedPoint, RhsFixedPoint>>::type;
+        using subtract_result_repr = typename std::make_signed<typename std::common_type<LhsFixedPoint, RhsFixedPoint>::type>::type;
 
         template<typename Repr>
         using square_result_repr = typename std::make_unsigned<Repr>::type;
@@ -719,7 +710,7 @@ namespace sg14 {
 
         // all other operations
         template<typename LhsFixedPoint, typename RhsFixedPoint>
-        using arithmetic_result_repr = common_repr_type<LhsFixedPoint, RhsFixedPoint>;
+        using arithmetic_result_repr = typename std::common_type<LhsFixedPoint, RhsFixedPoint>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_impl::promote_fast_result / promote_fast
