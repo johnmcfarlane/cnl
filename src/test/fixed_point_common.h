@@ -508,7 +508,7 @@ static_assert(is_same<_impl::common_type<fixed_point<uint8, -4>, fixed_point<int
         "sg14::_impl::common_type test failed");
 static_assert(
         is_same<_impl::common_type<fixed_point<int16, -4>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value,
-        "v");
+        "sg14::_impl::common_type test failed");
 static_assert(
         is_same<_impl::common_type<fixed_point<int16, 0>, fixed_point<uint64, -60>>, fixed_point<int64, -48>>::value,
         "sg14::_impl::common_type test failed");
