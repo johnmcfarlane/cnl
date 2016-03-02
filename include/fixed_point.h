@@ -1147,7 +1147,7 @@ namespace sg14 {
 #if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
                 (x<fixed_point<ReprType, Exponent>(0))
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
-                #endif
+#endif
                 fixed_point<ReprType, Exponent>::from_data(
                         static_cast<ReprType>(_impl::sqrt_solve1(promote(x).data())));
     }
