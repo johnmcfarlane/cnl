@@ -516,11 +516,6 @@ static_assert(is_same<_impl::common_type<fixed_point<int16, -4>, float>, float>:
 static_assert(is_same<_impl::common_type<fixed_point<int16, 0>, double>, double>::value,
         "sg14::_impl::common_type test failed");
 
-// commonality between two non-fixed-point types (won't compile)
-//static_assert(is_same<_impl::common_type<float, float>, float>::value, "sg14::_impl::common_type test failed");
-//static_assert(is_same<_impl::common_type<double, uint16>, double>::value, "sg14::_impl::common_type test failed");
-//static_assert(is_same<_impl::common_type<int8, int8>, fixed_point<int64, -56>>::value, "sg14::_impl::common_type test failed");
-
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::promote_fast_result
 
