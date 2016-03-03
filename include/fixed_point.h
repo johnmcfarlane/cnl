@@ -438,14 +438,14 @@ namespace sg14 {
             return *this;
         }
 
-        /// returns value represented as floating-point
+        /// returns value represented as integral
         template<class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
         explicit constexpr operator S() const
         {
             return repr_to_integral<S>(_repr);
         }
 
-        /// returns value represented as integral
+        /// returns value represented as floating-point
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         explicit constexpr operator S() const
         {
