@@ -542,7 +542,7 @@ namespace sg14 {
     /// \snippet snippets.cpp use make_fixed
     ///
     /// \sa make_ufixed
-    template<unsigned IntegerDigits, unsigned FractionalDigits = 0, class Archetype = signed>
+    template<int IntegerDigits, int FractionalDigits = 0, class Archetype = signed>
     using make_fixed = fixed_point<
             _impl::sufficient_repr<IntegerDigits+FractionalDigits+std::is_signed<Archetype>::value, Archetype>,
             int(IntegerDigits)
@@ -555,7 +555,7 @@ namespace sg14 {
     /// \brief Produce an unsigned fixed-point type with the given number of integer and fractional digits.
     ///
     /// \sa make_fixed
-    template<unsigned IntegerDigits, unsigned FractionalDigits = 0, class Archetype = unsigned>
+    template<int IntegerDigits, int FractionalDigits = 0, class Archetype = unsigned>
     using make_ufixed = make_fixed<
             IntegerDigits,
             FractionalDigits,
