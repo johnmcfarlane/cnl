@@ -480,41 +480,44 @@ static_assert(is_same<resize_t<uint64, 7>, uint64>::value, "sg14::resize_t test 
 static_assert(is_same<resize_t<int64, 8>, int64>::value, "sg14::resize_t test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_impl::common_type
+// sg14::_impl::common_type_t
 
 // commonality never occurs when inputs are the same fixed_point type
-static_assert(is_same<_impl::common_type<fixed_point<int8, -3>, fixed_point<int8, -3>>, fixed_point<int8, -3>>::value,
-        "sg14::_impl::common_type test failed");
+static_assert(is_same<_impl::common_type_t<fixed_point<int8, -3>, fixed_point<int8, -3>>, fixed_point<int8, -3>>::value,
+        "sg14::_impl::common_type_t test failed");
 static_assert(
-        is_same<_impl::common_type<fixed_point<int32, -14>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value,
-        "sg14::_impl::common_type test failed");
+        is_same<_impl::common_type_t<fixed_point<int32, -14>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value,
+        "sg14::_impl::common_type_t test failed");
 static_assert(
-        is_same<_impl::common_type<fixed_point<int64, -48>, fixed_point<int64, -48>>, fixed_point<int64, -48>>::value,
-        "sg14::_impl::common_type test failed");
+        is_same<_impl::common_type_t<fixed_point<int64, -48>, fixed_point<int64, -48>>, fixed_point<int64, -48>>::value,
+        "sg14::_impl::common_type_t test failed");
 
 // commonality between homogeneous fixed_point types
-static_assert(is_same<_impl::common_type<fixed_point<uint8, -4>, fixed_point<int8, -4>>, fixed_point<test_int, -4>>::value,
-        "sg14::_impl::common_type test failed");
+static_assert(is_same<_impl::common_type_t<fixed_point<uint8, -4>, fixed_point<int8, -4>>, fixed_point<test_int, -4>>::value,
+        "sg14::_impl::common_type_t test failed");
 static_assert(
-        is_same<_impl::common_type<fixed_point<int16, -4>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value,
-        "sg14::_impl::common_type test failed");
+        is_same<_impl::common_type_t<fixed_point<int16, -4>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value,
+        "sg14::_impl::common_type_t test failed");
 static_assert(
-        is_same<_impl::common_type<fixed_point<int16, 0>, fixed_point<uint64, -60>>, fixed_point<uint64, 0>>::value,
-        "sg14::_impl::common_type test failed");
+        is_same<_impl::common_type_t<fixed_point<int16, 0>, fixed_point<uint64, -60>>, fixed_point<uint64, 0>>::value,
+        "sg14::_impl::common_type_t test failed");
 
 // commonality between arithmetic and fixed_point types
-static_assert(is_same<_impl::common_type<float, fixed_point<int8, -4>>, float>::value,
-        "sg14::_impl::common_type test failed");
-static_assert(is_same<_impl::common_type<double, fixed_point<int32, -14>>, double>::value,
-        "sg14::_impl::common_type test failed");
-static_assert(is_same<_impl::common_type<int8, fixed_point<uint64, -60>>, fixed_point<uint64, -60>>::value,
-        "sg14::_impl::common_type test failed");
-static_assert(is_same<_impl::common_type<fixed_point<uint8, -4>, uint32>, fixed_point<test_unsigned, -4>>::value,
-        "sg14::_impl::common_type test failed");
-static_assert(is_same<_impl::common_type<fixed_point<int16, -4>, float>, float>::value,
-        "sg14::_impl::common_type test failed");
-static_assert(is_same<_impl::common_type<fixed_point<int16, 0>, double>, double>::value,
-        "sg14::_impl::common_type test failed");
+static_assert(is_same<_impl::common_type_t<float, fixed_point<int8, -4>>, float>::value,
+        "sg14::_impl::common_type_t test failed");
+static_assert(is_same<_impl::common_type_t<double, fixed_point<int32, -14>>, double>::value,
+        "sg14::_impl::common_type_t test failed");
+static_assert(is_same<_impl::common_type_t<int8, fixed_point<uint64, -60>>, fixed_point<uint64, -60>>::value,
+        "sg14::_impl::common_type_t test failed");
+static_assert(is_same<_impl::common_type_t<fixed_point<uint8, -4>, uint32>, fixed_point<test_unsigned, -4>>::value,
+        "sg14::_impl::common_type_t test failed");
+static_assert(is_same<_impl::common_type_t<fixed_point<int16, -4>, float>, float>::value,
+        "sg14::_impl::common_type_t test failed");
+static_assert(is_same<_impl::common_type_t<fixed_point<int16, 0>, double>, double>::value,
+        "sg14::_impl::common_type_t test failed");
+static_assert(is_same<
+        _impl::common_type_t<fixed_point<uint8, 10>, test_int>,
+        fixed_point<test_int, 10>>::value, "");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::promote_fast_result
