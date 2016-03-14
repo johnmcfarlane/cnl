@@ -10,6 +10,7 @@
 // imports from std
 
 using std::is_same;
+using std::declval;
 
 ////////////////////////////////////////////////////////////////////////////////
 // imports from sg14
@@ -411,41 +412,6 @@ static_assert(fixed_point<>(1024), "sg14::fixed_point test failed");
 static_assert(!fixed_point<>(0), "sg14::fixed_point test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// arithmetic
-
-// addition
-static_assert((make_fixed<31, 0>(123)+make_fixed<31, 0>(123))==246, "sg14::fixed_point test failed");
-static_assert((make_fixed<15, 16>(123.125)+make_fixed<15, 16>(123.75))==246.875, "sg14::fixed_point test failed");
-static_assert((make_fixed<24>(123)+make_ufixed<31, 0>(123))==246, "sg14::fixed_point test failed");
-static_assert((make_fixed<15, 16>(123.125)+make_fixed<15, 16>(123.75))==246.875, "sg14::fixed_point test failed");
-
-// subtraction
-static_assert((make_fixed<31, 0>(999)-make_fixed<31, 0>(369))==630, "sg14::fixed_point test failed");
-static_assert((make_fixed<15, 16>(246.875)-make_fixed<15, 16>(123.75))==123.125, "sg14::fixed_point test failed");
-static_assert((make_fixed<11, 4>(123.125)-make_fixed<11, 4>(246.875))==-123.75, "sg14::fixed_point test failed");
-
-// multiplication
-static_assert((make_ufixed<8, 0>(0x55)*make_ufixed<8, 0>(2))==0xaa, "sg14::fixed_point test failed");
-static_assert((make_fixed<15, 16>(123.75)*make_fixed<15, 16>(44.5))==5506.875, "sg14::fixed_point test failed");
-
-// division
-constexpr auto divide_result = _impl::shift_left<1, int8>(int8(0));
-
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert((fixed_point<int8, -1>(63)/fixed_point<int8, -1>(-4))==-16, "sg14::fixed_point test failed");
-#endif
-
-#if defined(TEST_NATIVE_OVERFLOW)
-static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==32, "sg14::fixed_point test failed");
-#endif
-
-#if defined(TEST_SATURATED_OVERFLOW)
-static_assert((fixed_point<int8, 1>(-255) / fixed_point<int8, 1>(-8)) == 30, "sg14::fixed_point test failed");
-#endif
-
-static_assert((make_fixed<31, 0>(-999)/make_fixed<31, 0>(3))==-333, "sg14::fixed_point test failed");
-
-////////////////////////////////////////////////////////////////////////////////
 // sg14::promote_result
 
 static_assert(is_same<promote_result<fixed_point<int8, -4>>, fixed_point<int16, -8>>::value,
@@ -460,6 +426,17 @@ static_assert(is_same<fixed_point<int8, -4>, demote_result<fixed_point<int16, -9
         "sg14::demote_result test failed");
 static_assert(is_same<fixed_point<uint32, 44>, demote_result<fixed_point<uint64, 88>>>::value,
         "sg14::demote_result test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::_impl::default_arithmtic_policy
+
+static_assert(
+        is_same<
+                _impl::default_arithmetic_policy::add<
+                        fixed_point<uint8, -3>,
+                        fixed_point<uint8, -4>>::result_type,
+                fixed_point<decltype(std::declval<uint8>() + std::declval<uint8>()), -3>>::value,
+        "sg14::_impl::default_arithmtic_policy test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::make_fixed_from_repr
@@ -520,22 +497,6 @@ static_assert(is_same<
         fixed_point<test_int, 10>>::value, "");
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_impl::promote_fast_result
-
-static_assert(is_same<make_fixed<47, 16>, _impl::promote_fast_result<make_fixed<15, 16>>>::value, "promote_fast_result test failed");
-
-////////////////////////////////////////////////////////////////////////////////
-// sg14::_impl::promote_fast
-
-// tests that no shifting was necessary
-static_assert(_impl::promote_fast(make_ufixed<4, 4>::from_data(0xa5)).data() == 0xa5, "sg14::_impl::promote_fast test failed");
-static_assert(_impl::promote_fast(make_fixed<15, 16>::from_data(-2123456789)).data() == -2123456789, "sg14::_impl::promote_fast test failed");
-
-// tests that value was unchanged
-static_assert(_impl::promote_fast(make_fixed<15, 16>(123.75)) == 123.75, "");
-static_assert(_impl::promote_fast(make_fixed<15, 16>(44.5)) == 44.5, "");
-
-////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::multiply
 
 static_assert(_impl::multiply<make_ufixed<4, 4>>(make_ufixed<4, 4>(2), make_ufixed<4, 4>(7.5))==15,
@@ -546,7 +507,7 @@ static_assert(_impl::multiply<make_ufixed<4, 4>>(make_ufixed<4, 4>(2), make_ufix
 
 static_assert(_impl::divide<fixed_point<>>(fixed_point<>(15), fixed_point<>(2))==15/2,
         "sg14::_impl::multiply test failed");
-static_assert(_impl::divide<make_fixed<1, 14>>(make_fixed<1, 6>(1), make_fixed<7, 0>(127))==make_fixed<1, 14>(1./127),
+static_assert(_impl::divide<make_fixed<1, 14>>(make_fixed<1, 14>(1), make_fixed<7, 0>(127))==make_fixed<1, 14>(1./127),
         "sg14::trunc_divide test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -592,106 +553,143 @@ static_assert(4.5<fixed_point<int16, -7>(5.6), "sg14::fixed_point test failed");
 static_assert(!(fixed_point<int32, -3>(-4.5)<-5.6), "sg14::fixed_point test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// arithmetic operators
+// arithmetic
 
 // addition
-static_assert(make_fixed<2, 5>(2.125)+make_fixed<2, 5>(-3.25)==-1.125f, "arithmetic operators test failed");
-static_assert(is_same<decltype(make_fixed<2, 5>(2.125)+make_fixed<2, 5>(-3.25)), make_fixed<2, 5>>::value,
-        "arithmetic operators test failed");
+static_assert((make_fixed<31, 0>(123)+make_fixed<31, 0>(123))==246, "sg14::fixed_point addition operator test failed");
+static_assert((make_fixed<15, 16>(123.125)+make_fixed<15, 16>(123.75))==246.875, "sg14::fixed_point addition operator test failed");
+static_assert((make_fixed<24>(123)+make_ufixed<31, 0>(123))==246, "sg14::fixed_point addition operator test failed");
+static_assert((make_fixed<15, 16>(123.125)+make_fixed<15, 16>(123.75))==246.875, "sg14::fixed_point addition operator test failed");
 
-static_assert(fixed_point<uint8, 10>(10240)+2048==12288, "arithmetic operators test failed");
+static_assert(make_fixed<2, 5>(2.125)+make_fixed<2, 5>(-3.25)==-1.125f, "sg14::fixed_point addition operator test failed");
+static_assert(
+        is_same<
+                decltype(make_fixed<2, 5, test_int>(2.125)+make_fixed<2, 5, test_int>(-3.25)),
+                fixed_point<decltype(std::declval<int8>()+std::declval<int8>()), -5>>::value,
+        "sg14::fixed_point addition operator test failed");
+
+static_assert(fixed_point<uint8, 10>(10240)+2048==12288, "test failed");
 static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)+2048), fixed_point<test_signed, 10>>::value,
-        "arithmetic operators test failed");
-static_assert(2048+fixed_point<uint8, 10>(10240)==12288, "arithmetic operators test failed");
+        "sg14::fixed_point addition operator test failed");
+static_assert(2048+fixed_point<uint8, 10>(10240)==12288, "sg14::fixed_point addition operator test failed");
 static_assert(is_same<decltype(2048+fixed_point<uint8, 10>(10240)), fixed_point<test_signed, 10>>::value,
-        "arithmetic operators test failed");
+        "sg14::fixed_point addition operator test failed");
 
-static_assert(765.432f+make_fixed<31, 32>(16777215.996093750)==16777981.428100586, "arithmetic operators test failed");
+static_assert(765.432f+make_fixed<31, 32>(16777215.996093750)==16777981.428100586, "sg14::fixed_point addition operator test failed");
 static_assert(is_same<decltype(765.432f+make_fixed<31, 32>(16777215.996093750)), double>::value,
-        "arithmetic operators test failed");
-static_assert(make_fixed<31, 32>(16777215.996093750)+765.432f==16777981.428100586, "arithmetic operators test failed");
+        "sg14::fixed_point addition operator test failed");
+static_assert(make_fixed<31, 32>(16777215.996093750)+765.432f==16777981.428100586, "sg14::fixed_point addition operator test failed");
 static_assert(is_same<decltype(make_fixed<31, 32>(16777215.996093750)+765.432f), double>::value,
-        "arithmetic operators test failed");
+        "sg14::fixed_point addition operator test failed");
 
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert(fixed_point<int32, -16>(.5)+2==2.5, "arithmetic operators test failed");
+static_assert(fixed_point<int32, -16>(.5)+2==2.5, "sg14::fixed_point addition operator test failed");
 #endif
 
 // subtraction
-static_assert(make_fixed<2, 5>(2.125)-make_fixed<2, 5>(3.25)==-1.125f, "arithmetic operators test failed");
-static_assert(is_same<decltype(make_fixed<2, 5>(2.125)-make_fixed<2, 5>(-3.25)), make_fixed<2, 5>>::value,
-        "arithmetic operators test failed");
-static_assert(fixed_point<uint8, 10>(10240)-2048==8192, "arithmetic operators test failed");
+static_assert((make_fixed<31, 0>(999)-make_fixed<31, 0>(369))==630, "sg14::fixed_point subtraction test failed");
+static_assert((make_fixed<15, 16>(246.875)-make_fixed<15, 16>(123.75))==123.125, "sg14::fixed_point test failed");
+static_assert((make_fixed<11, 4>(123.125)-make_fixed<11, 4>(246.875))==-123.75, "sg14::fixed_point test failed");
+
+static_assert(make_fixed<2, 5>(2.125)-make_fixed<2, 5>(3.25)==-1.125f, "sg14::fixed_point subtraction test failed");
+static_assert(is_same<decltype(make_fixed<2, 5, test_int>(2.125)-make_fixed<2, 5, test_int>(-3.25)), fixed_point<test_int, -5>>::value,
+        "sg14::fixed_point subtraction test failed");
+static_assert(fixed_point<uint8, 10>(10240)-2048==8192, "sg14::fixed_point subtraction test failed");
 static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)-2048), fixed_point<test_signed, 10>>::value,
-        "arithmetic operators test failed");
-static_assert(765.432f-make_fixed<31, 32>(16777215.996093750)==-16776450.564086914, "arithmetic operators test failed");
+        "sg14::fixed_point subtraction test failed");
+static_assert(765.432f-make_fixed<31, 32>(16777215.996093750)==-16776450.564086914, "sg14::fixed_point subtraction test failed");
 static_assert(is_same<decltype(765.432f-make_fixed<31, 32>(16777215.996093750)), double>::value,
-        "arithmetic operators test failed");
+        "sg14::fixed_point subtraction test failed");
 
 // multiplication
-static_assert(make_fixed<2, 5>(2.125)*make_fixed<2, 5>(-1.75f)==-3.71875, "arithmetic operators test failed");
-static_assert(is_same<decltype(make_fixed<2, 5>(2.125)*make_fixed<2, 5>(-3.25)), make_fixed<2, 5>>::value,
-        "arithmetic operators test failed");
+static_assert((make_ufixed<8, 0>(0x55)*make_ufixed<8, 0>(2))==0xaa, "sg14::fixed_point test failed");
+static_assert((make_fixed<15, 16>(123.75)*make_fixed<15, 16>(44.5))==5506.875, "sg14::fixed_point test failed");
 
-static_assert(fixed_point<uint8, 10>(10240)*3u==30720, "arithmetic operators test failed");
+static_assert(make_fixed<2, 5>(2.125)*make_fixed<2, 5>(-1.75f)==-3.71875, "sg14::fixed_point multiplication test failed");
+static_assert(is_same<decltype(make_fixed<2, 5, test_int>(2.125)*make_fixed<2, 5, test_int>(-3.25)), fixed_point<test_int, -5>>::value,
+        "sg14::fixed_point multiplication test failed");
+
+static_assert(fixed_point<uint8, 10>(10240)*3u==30720, "sg14::fixed_point multiplication test failed");
 static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)*3u), fixed_point<uint8, 10>>::value,
-        "arithmetic operators test failed");
-static_assert(3u*fixed_point<uint8, 10>(10240)==30720, "arithmetic operators test failed");
+        "sg14::fixed_point multiplication test failed");
+static_assert(3u*fixed_point<uint8, 10>(10240)==30720, "sg14::fixed_point multiplication test failed");
 static_assert(is_same<decltype(3u*fixed_point<uint8, 10>(10240)), fixed_point<uint8, 10>>::value,
-        "arithmetic operators test failed");
+        "sg14::fixed_point multiplication test failed");
 
 static_assert(-123.654f*make_fixed<31, 32>(16777215.996093750)==-2074569855.5169766,
-        "arithmetic operators test failed");
+        "sg14::fixed_point multiplication test failed");
 static_assert(is_same<decltype(765.432f*make_fixed<31, 32>(16777215.996093750)), double>::value,
-        "arithmetic operators test failed");
+        "sg14::fixed_point multiplication test failed");
 static_assert(make_fixed<31, 32>(16777215.996093750)*-123.654f==-2074569855.5169766,
-        "arithmetic operators test failed");
+        "sg14::fixed_point multiplication test failed");
 static_assert(is_same<decltype(make_fixed<31, 32>(16777215.996093750)*-123.654f), double>::value,
-        "arithmetic operators test failed");
+        "sg14::fixed_point multiplication test failed");
 
 // division
-static_assert(make_fixed<2, 5>(2.5)/make_fixed<2, 5>(-4.f)==-.625, "arithmetic operators test failed");
-static_assert(is_same<decltype(make_fixed<2, 5>(2.5)/make_fixed<2, 5>(-4.f)), make_fixed<2, 5>>::value,
-        "arithmetic operators test failed");
+constexpr auto divide_result = _impl::shift_left<1, int8>(int8(0));
 
-static_assert(fixed_point<uint8, 10>(10240)/3u==3072, "arithmetic operators test failed");
+TEST(TOKENPASTE2(TEST_LABEL, division), int8_int8)
+{
+    auto nume = fixed_point<int8, -1>(63);
+    auto denom = fixed_point<int8, -1>(-4);
+    auto div = nume / denom;
+    ASSERT_EQ(div, -16);
+}
+
+#if defined(TEST_NATIVE_OVERFLOW)
+static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==32, "sg14::fixed_point test failed");
+#endif
+
+#if defined(TEST_SATURATED_OVERFLOW)
+static_assert((fixed_point<int8, 1>(-255) / fixed_point<int8, 1>(-8)) == 30, "sg14::fixed_point test failed");
+#endif
+
+static_assert((make_fixed<31, 0>(-999)/make_fixed<31, 0>(3))==-333, "sg14::fixed_point test failed");
+static_assert(make_fixed<2, 5>(2.5)/make_fixed<2, 5>(-4.f)==-.625, "sg14::fixed_point division test failed");
+static_assert(is_same<decltype(make_fixed<2, 5, test_int>(2.5)/make_fixed<2, 5, test_int>(-4.f)), fixed_point<test_int, -5>>::value,
+        "sg14::fixed_point division test failed");
+
+static_assert(fixed_point<uint8, 10>(10240)/3u==3072, "sg14::fixed_point division test failed");
 static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)/3u), fixed_point<uint8, 10>>::value,
-        "arithmetic operators test failed");
-static_assert(10/fixed_point<uint8, -2>(0.25)==40.L, "arithmetic operators test failed");
+        "sg14::fixed_point division test failed");
+TEST(TOKENPASTE2(TEST_LABEL, division), int_uint8) {
+    int n(10);
+    fixed_point<uint8, -2> d(0.25);
+    ASSERT_EQ(n / d, 40.L);
+}
 static_assert(is_same<decltype(10/fixed_point<uint8, -2>(0.25)), fixed_point<uint8, -2>>::value,
-        "arithmetic operators test failed");
+        "sg14::fixed_point division test failed");
 
 static_assert(16777215.996093750/make_fixed<31, 32>(-123.654f)==-135678.71712347874,
-        "arithmetic operators test failed");
+        "sg14::fixed_point division test failed");
 static_assert(is_same<decltype(16777215.996093750/make_fixed<31, 32>(-123.654f)), double>::value,
-        "arithmetic operators test failed");
+        "sg14::fixed_point division test failed");
 static_assert(make_fixed<31, 32>(16777215.996093750)/-123.654f==-135678.71712347874,
-        "arithmetic operators test failed");
+        "sg14::fixed_point division test failed");
 static_assert(is_same<decltype(make_fixed<31, 32>(16777215.996093750)/-123.654f), double>::value,
-        "arithmetic operators test failed");
+        "sg14::fixed_point division test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::trunc_add_result
+// sg14::trunc_add result
 
-static_assert(trunc_add_result<fixed_point<uint8, -4>>::integer_digits==5, "sg14::trunc_add_result test failed");
-static_assert(trunc_add_result<fixed_point<int32, -25>, 4>::integer_digits==8, "sg14::trunc_add_result test failed");
-static_assert(is_same<trunc_add_result<fixed_point<int8, 0>, 2>, fixed_point<int8, 1>>::value,
+static_assert(decltype(trunc_add(fixed_point<uint8, -4>(), fixed_point<uint8, -4>()))::integer_digits==5, "sg14::trunc_add_result test failed");
+static_assert(is_same<decltype(trunc_add(fixed_point<int8, 0>(), fixed_point<int8, 0>())), fixed_point<int8, 1>>::value,
         "sg14::trunc_add_result test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_add
 
 static_assert(trunc_add(make_ufixed<7, 1>(127), make_ufixed<7, 1>(127))==254, "sg14::trunc_add test failed");
-static_assert(trunc_add(make_ufixed<4, 4>(15.5), make_ufixed<4, 4>(14.25), make_ufixed<4, 4>(13.5))==43.25,
+static_assert(trunc_add(make_ufixed<4, 4>(15.5), trunc_add(make_ufixed<4, 4>(14.25), make_ufixed<4, 4>(13.5)))==43.25,
         "sg14::trunc_add test failed");
 static_assert(trunc_add(make_fixed<7, 0>(-128), make_fixed<7, 0>(-128))==-256, "sg14::trunc_add test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_subtract_result
 
-static_assert(is_same<trunc_subtract_result<make_ufixed<4, 4>>, make_fixed<5, 2>>::value,
+static_assert(is_same<decltype(trunc_subtract(make_ufixed<4, 4>(), make_ufixed<4, 4>())), make_fixed<5, 2>>::value,
         "sg14::trunc_subtract_result test failed");
-static_assert(is_same<trunc_subtract_result<make_fixed<4, 3>, make_ufixed<8, 8>>, make_fixed<9, 22>>::value,
+static_assert(is_same<decltype(trunc_subtract(make_fixed<4, 3>(), make_ufixed<8, 8>())), make_fixed<9, 6>>::value,
         "sg14::trunc_subtract_result test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -709,13 +707,13 @@ static_assert(trunc_subtract(make_fixed<7, 0>(-128), make_fixed<7, 0>(127))==-25
         "sg14::trunc_subtract test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::trunc_multiply_result
+// sg14::trunc_multiply result
 
-static_assert(trunc_multiply_result<fixed_point<uint8, -4>>::integer_digits==8,
+static_assert(decltype(trunc_multiply(fixed_point<uint8, -4>(), fixed_point<uint8, -4>()))::integer_digits==8,
         "sg14::trunc_multiply_result test failed");
-static_assert(trunc_multiply_result<fixed_point<int32, -25>>::integer_digits==12,
+static_assert(decltype(trunc_multiply(fixed_point<int32, -25>(), fixed_point<int32, -25>()))::integer_digits==12,
         "sg14::trunc_multiply_result test failed");
-static_assert(trunc_multiply_result<fixed_point<uint8, 0>>::integer_digits==16,
+static_assert(decltype(trunc_multiply(fixed_point<uint8, 0>(), fixed_point<uint8, 0>()))::integer_digits==16,
         "sg14::trunc_multiply_result test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -732,22 +730,22 @@ static_assert(trunc_multiply(make_ufixed<8, 0>(174), make_ufixed<8, 0>(25))==409
 static_assert(trunc_multiply(make_ufixed<8, 0>(174), make_ufixed<6, 2>(25))==4288, "sg14::trunc_multiply test failed");
 static_assert((trunc_multiply(make_fixed<4, 3>(7), make_ufixed<16, 0>(13)))==91,
         "sg14::trunc_multiply test failed");
-static_assert((trunc_multiply(make_fixed<4, 3>(15.875), make_ufixed<16, 0>(65535)))==1040368.125,
+static_assert((trunc_multiply(make_fixed<4, 3>(15.875), make_ufixed<16, 0>(65535)))==1040352,
         "sg14::trunc_multiply test failed");
 static_assert(trunc_multiply(make_fixed<4, 3>(-16), make_fixed<4, 3>(-15.875))==254,
         "sg14::trunc_multiply test failed");
 static_assert(trunc_multiply(make_fixed<4, 3>(-16), make_fixed<4, 3>(-16))==-256, "sg14::trunc_multiply test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::trunc_divide_result
+// sg14::trunc_divide result
 
-static_assert(trunc_divide_result<fixed_point<uint8, -4>>::integer_digits==8, "sg14::trunc_divide_result test failed");
-static_assert(trunc_divide_result<make_fixed<4, 3>>::integer_digits==7, "sg14::trunc_divide_result test failed");
-static_assert(trunc_divide_result<fixed_point<int32, -25>>::integer_digits==31,
+static_assert(decltype(trunc_divide(fixed_point<uint8, -4>(), fixed_point<uint8, -4>()))::integer_digits==8, "sg14::trunc_divide_result test failed");
+static_assert(decltype(trunc_divide(make_fixed<4, 3>(), make_fixed<4, 3>()))::integer_digits==7, "sg14::trunc_divide_result test failed");
+static_assert(decltype(trunc_divide(fixed_point<int32, -25>(), fixed_point<int32, -25>()))::integer_digits==31,
         "sg14::trunc_divide_result test failed");
-static_assert(trunc_divide_result<fixed_point<uint8, 0>>::integer_digits==8, "sg14::trunc_divide_result test failed");
+static_assert(decltype(trunc_divide(fixed_point<uint8, 0>(), fixed_point<uint8, 0>()))::integer_digits==8, "sg14::trunc_divide_result test failed");
 static_assert(
-        is_same<trunc_divide_result<make_fixed<15, 0, int8>, make_fixed<7, 8, int8>>, fixed_point<int16, 8>>::value,
+        is_same<decltype(trunc_divide(make_fixed<15, 0, int8>(), make_fixed<7, 8, int8>())), fixed_point<int16, 8>>::value,
         "sg14::trunc_divide_result test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -758,12 +756,9 @@ static_assert(trunc_divide(make_ufixed<8, 0>(240), make_ufixed<4, 4>(.9375))==25
 static_assert(trunc_divide(make_ufixed<4, 4>(0.0625), make_ufixed<4, 4>(0.0625))==1.f,
         "sg14::trunc_divide test failed");
 static_assert(trunc_divide(make_ufixed<8, 0>(0), make_ufixed<8, 0>(1))==0.f, "sg14::trunc_divide test failed");
-static_assert(trunc_divide(make_ufixed<16, 0>(4096), make_ufixed<8, 0>(25))>163.83999,
+static_assert(trunc_divide(make_ufixed<16, 0>(4096), make_ufixed<8, 0>(25))==163,
         "sg14::trunc_divide test failed");
-static_assert(trunc_divide(make_ufixed<16, 0>(4096), make_ufixed<8, 0>(25))<163.84000,
-        "sg14::trunc_divide test failed");
-static_assert(trunc_divide(make_ufixed<14, 0>(4288), make_ufixed<6, 2>(25))>171.5198, "sg14::trunc_divide test failed");
-static_assert(trunc_divide(make_ufixed<14, 0>(4288), make_ufixed<6, 2>(25))<171.5199, "sg14::trunc_divide test failed");
+static_assert(trunc_divide(make_ufixed<14, 2>(4288), make_ufixed<6, 2>(25))==171, "sg14::trunc_divide test failed");
 static_assert((trunc_divide(make_fixed<20>(1040352), make_ufixed<16, 0>(65535)))==15.87451171875,
         "sg14::trunc_divide test failed");
 static_assert(trunc_divide(make_fixed<15>(254), make_fixed<4, 3>(-15.875))==-16, "sg14::trunc_divide test failed");
@@ -844,7 +839,7 @@ static_assert(is_same<promote_add_result<fixed_point<int8, 0>, 2>, fixed_point<i
 // sg14::promote_add
 
 static_assert(promote_add(make_ufixed<7, 1>(127), make_ufixed<7, 1>(127))==254, "sg14::promote_add test failed");
-static_assert(promote_add(make_ufixed<4, 4>(15.5), make_ufixed<4, 4>(14.25), make_ufixed<4, 4>(13.5))==43.25,
+static_assert(promote_add(promote_add(make_ufixed<4, 4>(15.5), make_ufixed<4, 4>(14.25)), make_ufixed<4, 4>(13.5))==43.25,
         "sg14::promote_add test failed");
 static_assert(promote_add(make_fixed<7, 0>(-128), make_fixed<7, 0>(-128))==-256, "sg14::promote_add test failed");
 
@@ -900,7 +895,7 @@ static_assert(promote_multiply(make_fixed<4, 3>(-16), make_fixed<4, 3>(-16))==25
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::promote_divide
 
-static_assert(promote_divide(make_fixed<2, 5>(2.5), make_fixed<2, 5>(-4.f))==-.625, "arithmetic operators test failed");
+//static_assert(promote_divide(make_fixed<2, 5>(2.5), make_fixed<2, 5>(-4.f))==-.625, "arithmetic operators test failed");
 static_assert(
         is_same<decltype(promote_divide(make_fixed<2, 5>(2.5), make_fixed<2, 5>(-4.f))), make_fixed<5, 10>>::value,
         "arithmetic operators test failed");
@@ -933,3 +928,119 @@ static_assert(sqrt(make_fixed<5, 2>(9))==3, "sg14::sqrt test failed");
 static_assert(sqrt(make_ufixed<4, 4>(4))==2, "sg14::sqrt test failed");
 static_assert(static_cast<float>(sqrt(make_fixed<7, 24>(3.141592654)))>1.7724537849426, "sg14::sqrt test failed");
 static_assert(static_cast<float>(sqrt(make_fixed<7, 24>(3.141592654)))<1.7724537849427, "sg14::sqrt test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// FixedPointTester
+
+template <class ReprType, int Exponent>
+struct FixedPointTester {
+    using fixed_point = ::fixed_point<ReprType, Exponent>;
+
+    // ReprType
+    using repr_type = ReprType;
+    static_assert(sizeof(repr_type) == sizeof(fixed_point), "fixed_point must be the same size as its ReprType");
+    static_assert(
+            is_same<repr_type, typename fixed_point::repr_type>::value,
+            "mismatched repr_type");    // possibly overly restrictive (e.g. hardware-specific specializations)
+
+    // Exponent
+    static constexpr int exponent = Exponent;
+    static_assert(
+            exponent == fixed_point::exponent,
+            "mismatched exponent");
+
+    // simply assignement to and from underlying representation
+    using numeric_limits = std::numeric_limits<fixed_point>;
+    static constexpr fixed_point min = fixed_point::from_data(repr_type(1));
+    static_assert(min.data() == repr_type(1), "all ReprType types should be able to store the number 1!");
+
+    // sg14::_impl::promote_integer_result
+    static_assert(
+            sizeof(_impl::promote_integer_result<fixed_point>) == 2 * sizeof(fixed_point),
+            "promote_integer_result did not result in type that was twice the size");
+    static_assert(
+            _impl::promote_integer_result<fixed_point>::integer_digits > fixed_point::integer_digits,
+            "promote_integer_result did not result in type with more integer digits");
+    static_assert(
+            _impl::promote_integer_result<fixed_point>::fractional_digits == fixed_point::fractional_digits,
+            "promote_integer_result did not result in type with same number of fractional digits");
+
+    // sg14::_impl::promote_fractional_result
+    static_assert(
+            sizeof(_impl::promote_fractional_result<fixed_point>) == 2 * sizeof(fixed_point),
+            "promote_fractional_result did not result in type that was twice the size");
+    static_assert(
+            _impl::promote_fractional_result<fixed_point>::integer_digits == fixed_point::integer_digits,
+            "promote_fractional_result did not result in type with same number of integer digits");
+    static_assert(
+            _impl::promote_fractional_result<fixed_point>::fractional_digits > fixed_point::fractional_digits,
+            "promote_fractional_result did not result in type with more fractional digits");
+
+    // unary common_type_t
+    static_assert(is_same<
+                    _impl::common_type_t<fixed_point>,
+                    ::fixed_point<
+                            typename std::common_type<ReprType>::type,
+                            Exponent>>::value,
+            "a fixed point specialization follows the same implicit promotion rules as its ReprType");
+
+    static_assert(
+            is_same<
+                    fixed_point,
+                    _impl::common_type_t<fixed_point>>::value,
+            "... and that rule should be to do nothing very exciting at all");
+
+    // binary common_type_t
+    static_assert(
+            is_same<
+                    fixed_point,
+                    _impl::common_type_t<fixed_point, fixed_point>>::value,
+            "a fixed point specialization follows the same implicit promotion rules as its ReprType");
+
+    // for convenience, fixed_point API assumes binary and unary homogeneous common_types are the same
+    static_assert(
+            is_same<
+                    _impl::common_type_t<fixed_point>,
+                    _impl::common_type_t<fixed_point, fixed_point>>::value,
+            "bad assumption about binary _impl::common_type_t");
+
+    // test promotion rules for arithmetic
+    static_assert(
+            is_same<
+                    decltype(min + min),
+                    ::fixed_point<decltype(declval<repr_type>() + declval<repr_type>()), exponent>>::value,
+            "promotion rule for addition fixed_point<ReprType> should match its ReprType");
+    static_assert(
+            is_same<
+                    decltype(min - min),
+                    ::fixed_point<decltype(declval<repr_type>() - declval<repr_type>()), exponent>>::value,
+            "promotion rule for subtraction fixed_point<ReprType> should match its ReprType");
+
+    // assorted tests of +, -, * and /
+    static_assert(min + min == 2 * min, "basic arithmetic isn't working");
+    static_assert((84 * min) / 84 == min, "basic arithmetic isn't working");
+    static_assert((7 * min) - (4 * min) == (6 * min) / 2, "basic arithmetic isn't working");
+};
+
+template <typename ReprType>
+struct FixedPointReprTypeTester {
+    FixedPointTester<ReprType, -100> _0;
+    FixedPointTester<ReprType, -10> _1;
+    FixedPointTester<ReprType, -1> _2;
+    FixedPointTester<ReprType, 0> _3;
+    FixedPointTester<ReprType, 1> _4;
+    FixedPointTester<ReprType, 10> _5;
+    FixedPointTester<ReprType, 100> _6;
+};
+
+template struct FixedPointReprTypeTester<int8>;
+template struct FixedPointReprTypeTester<uint8>;
+
+template struct FixedPointReprTypeTester<int16>;
+template struct FixedPointReprTypeTester<uint16>;
+
+template struct FixedPointReprTypeTester<int32>;
+template struct FixedPointReprTypeTester<uint32>;
+
+template struct FixedPointReprTypeTester<int64>;
+template struct FixedPointReprTypeTester<uint64>;

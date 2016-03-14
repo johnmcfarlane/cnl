@@ -20,26 +20,16 @@
 /// study group 14 of the C++ working group
 namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
-    // additional traits for sg14::fixed_point
-
-    /// is_fixed_point
-    template<class T>
-    using is_fixed_point = _impl::is_fixed_point<T>;
-
-    // is_real
-    template<class T>
-    using is_real = std::integral_constant<
-            bool,
-            std::is_floating_point<T>::value || sg14::is_fixed_point<T>::value>;
-
-    ////////////////////////////////////////////////////////////////////////////////
     // sg14::abs
 
     template<class ReprType, int Exponent, typename std::enable_if<std::is_signed<ReprType>::value, int>::type Dummy = 0>
-    constexpr fixed_point <ReprType, Exponent>
-    abs(const fixed_point <ReprType, Exponent>& x) noexcept
+    constexpr auto abs(const fixed_point <ReprType, Exponent>& x) noexcept
+    -> _impl::common_type_t<decltype(x), decltype(-x)>
     {
-        return (x.data()>=0) ? x : -x;
+        using common_type = _impl::common_type_t<decltype(x), decltype(-x)>;
+        return (x.data()>=0)
+               ? static_cast<common_type>(x)
+               : static_cast<common_type>(-x);
     }
 
     template<class ReprType, int Exponent, typename std::enable_if<std::is_unsigned<ReprType>::value, int>::type Dummy = 0>
