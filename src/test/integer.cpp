@@ -257,7 +257,7 @@ static_assert(saturated_integer<int8_t>(1e38f)==127, "sg14::saturated_integer te
 
 // arithmetic
 
-static_assert(saturated_integer<int8_t>(100)+saturated_integer<int8_t>(100)==numeric_limits<int8_t>::max(),
+static_assert(saturated_integer<int8_t>(saturated_integer<int8_t>(100)+saturated_integer<int8_t>(100))==numeric_limits<int8_t>::max(),
         "sg14::saturated_integer test failed");
 static_assert(saturated_integer<uint8_t>(100)-saturated_integer<int16_t>(100000)==100-numeric_limits<int16_t>::max(),
         "sg14::saturated_integer test failed");
