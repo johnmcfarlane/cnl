@@ -48,7 +48,8 @@ static_assert(is_same<decltype(make_ufixed<5, 3>{8}+float{3}), decltype(float{11
         "Incorrect information in proposal section, Operator Overloads");
 
 // Overflow
-static_assert(static_cast<int>(make_fixed<4, 3>(15)+make_fixed<4, 3>(1))!=16,
+static_assert(
+        sizeof(int)!=4 || make_ufixed<2, 30>(3)+make_ufixed<2, 30>(1)==0,
         "Incorrect information in proposal section, Overflow");
 
 // Underflow
