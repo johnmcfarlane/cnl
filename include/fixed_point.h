@@ -14,6 +14,7 @@
 #include <cinttypes>
 
 #include "type_traits.h"
+#include "int128.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // _SG14_FIXED_POINT_EXCEPTIONS_ENABLED macro definition 
