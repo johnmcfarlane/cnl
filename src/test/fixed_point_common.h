@@ -821,10 +821,10 @@ static_assert(trunc_sqrt(make_ufixed<8, 0>(240))==15.f, "sg14::trunc_sqrt test f
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::trunc_shift_left / trunc_shift_right
 
-static_assert(trunc_shift_left<8>(fixed_point<uint16>(0x1234))==0x123400, "sg14::trunc_sqrt test failed");
-static_assert(trunc_shift_left<-2>(fixed_point<uint16>(128))==32, "sg14::trunc_sqrt test failed");
-static_assert(trunc_shift_right<-8>(fixed_point<uint16>(0x1234))==0x123400, "sg14::trunc_sqrt test failed");
-static_assert(trunc_shift_right<2>(fixed_point<uint16>(128))==32, "sg14::trunc_sqrt test failed");
+static_assert(trunc_shift_left<8>(fixed_point<uint16>(0x1234))==0x123400, "sg14::trunc_shift_left test failed");
+static_assert(trunc_shift_left<-2>(fixed_point<uint16>(128))==32, "sg14::trunc_shift_left test failed");
+static_assert(trunc_shift_right<-8>(fixed_point<uint16>(0x1234))==0x123400, "sg14::trunc_shift_right test failed");
+static_assert(trunc_shift_right<2>(fixed_point<uint16>(128))==32, "sg14::trunc_shift_right test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::promote_add_result
