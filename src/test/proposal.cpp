@@ -48,9 +48,22 @@ static_assert(is_same<decltype(make_ufixed<5, 3>{8}+float{3}), decltype(float{11
         "Incorrect information in proposal section, Operator Overloads");
 
 // Overflow
-static_assert(
-        sizeof(int)!=4 || make_ufixed<2, 30>(3)+make_ufixed<2, 30>(1)==0,
-        "Incorrect information in proposal section, Overflow");
+TEST(proposal, overflow) {
+    switch (sizeof(int)) {
+    case 4: {
+        auto sum = make_ufixed<2, 30>(3) + make_ufixed<2, 30>(1);
+        ASSERT_TRUE(sum == 0);
+        break;
+    }
+    case 8: {
+        auto sum = make_ufixed<2, 62>(3) + make_ufixed<2, 62>(1);
+        ASSERT_TRUE(sum == 0);
+        break;
+    }
+    default:
+        FAIL() << "dying to know what architecture this is";
+    }
+}
 
 // Underflow
 static_assert(make_fixed<7, 0>(15)/make_fixed<7, 0>(2)==7.f, "Incorrect information in proposal section, Underflow");
