@@ -692,7 +692,7 @@ namespace sg14 {
                     ? Lhs::exponent
                     : (Rhs::integer_digits>Lhs::integer_digits)
                       ? Rhs::exponent
-                      : _impl::max(Lhs::exponent, Rhs::exponent)>;
+                      : _impl::max<int>(Lhs::exponent, Rhs::exponent)>;
 
             template<class Lhs, class Rhs>
             using common_type = fixed_point<
@@ -777,14 +777,14 @@ namespace sg14 {
             struct add : operator_base<Lhs, Rhs> {
                 using result_type = make_fixed_from_repr<
                         common_repr_type<typename Lhs::repr_type, typename Rhs::repr_type>,
-                        max(Lhs::integer_digits, Rhs::integer_digits) + 1>;
+                        max<int>(Lhs::integer_digits, Rhs::integer_digits) + 1>;
             };
 
             template<class Lhs, class Rhs>
             struct subtract : operator_base<Lhs, Rhs> {
                 using result_type = make_fixed_from_repr<
                         signed_repr_type<typename Lhs::repr_type, typename Rhs::repr_type>,
-                        max(Lhs::integer_digits + 1, Rhs::integer_digits + 1)>;
+                        max<int>(Lhs::integer_digits + 1, Rhs::integer_digits + 1)>;
             };
 
             template<class Lhs, class Rhs>
@@ -1287,13 +1287,13 @@ namespace sg14 {
     template<class LhsReprType, int Exponent, class Rhs>
     fixed_point<LhsReprType, Exponent>& operator+=(fixed_point<LhsReprType, Exponent>& lhs, const Rhs& rhs)
     {
-        return lhs += fixed_point<LhsReprType, Exponent>(rhs);
+        return lhs = lhs + fixed_point<LhsReprType, Exponent>(rhs);
     }
 
     template<class LhsReprType, int Exponent, class Rhs>
     fixed_point<LhsReprType, Exponent>& operator-=(fixed_point<LhsReprType, Exponent>& lhs, const Rhs& rhs)
     {
-        return lhs -= fixed_point<LhsReprType, Exponent>(rhs);
+        return lhs = lhs - fixed_point<LhsReprType, Exponent>(rhs);
     }
 
     template<class LhsReprType, int Exponent>
