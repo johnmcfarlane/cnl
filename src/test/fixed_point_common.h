@@ -636,11 +636,11 @@ TEST(TOKENPASTE2(TEST_LABEL, division), int8_int8)
     ASSERT_EQ(div, -16);
 }
 
-#if defined(TEST_NATIVE_OVERFLOW)
+#if defined(TEST_NATIVE_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==32, "sg14::fixed_point test failed");
 #endif
 
-#if defined(TEST_SATURATED_OVERFLOW)
+#if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert((fixed_point<int8, 1>(-255) / fixed_point<int8, 1>(-8)) == 30, "sg14::fixed_point test failed");
 #endif
 
@@ -822,9 +822,13 @@ static_assert(trunc_sqrt(make_ufixed<8, 0>(240))==15.f, "sg14::trunc_sqrt test f
 // sg14::trunc_shift_left / trunc_shift_right
 
 static_assert(trunc_shift_left<8>(fixed_point<uint16>(0x1234))==0x123400, "sg14::trunc_shift_left test failed");
+#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(trunc_shift_left<-2>(fixed_point<uint16>(128))==32, "sg14::trunc_shift_left test failed");
+#endif
 static_assert(trunc_shift_right<-8>(fixed_point<uint16>(0x1234))==0x123400, "sg14::trunc_shift_right test failed");
+#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(trunc_shift_right<2>(fixed_point<uint16>(128))==32, "sg14::trunc_shift_right test failed");
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::promote_add_result
