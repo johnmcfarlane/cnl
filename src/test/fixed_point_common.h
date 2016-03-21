@@ -1046,5 +1046,7 @@ template struct FixedPointReprTypeTester<uint16>;
 template struct FixedPointReprTypeTester<int32>;
 template struct FixedPointReprTypeTester<uint32>;
 
+#if defined(_GLIBCXX_USE_INT128)
 template struct FixedPointReprTypeTester<int64>;
 template struct FixedPointReprTypeTester<uint64>;
+#endif
