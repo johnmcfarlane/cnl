@@ -7,6 +7,19 @@
 #ifndef _SG14_INT128_H
 #define _SG14_INT128_H
 
+#if defined(_MSC_VER)
+namespace std {
+    // std::is_integral
+    template<>
+    struct is_integral<__int64> : std::true_type {
+    };
+
+    template<>
+    struct is_integral<unsigned __int64> : std::true_type {
+    };
+}
+#endif
+
 #if defined(_GLIBCXX_USE_INT128)
 // std specializations required to use 128-bit integers with fixed_point under GCC/Clang
 namespace std {
