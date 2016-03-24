@@ -1193,47 +1193,47 @@ namespace sg14 {
 
     // fixed-point, integer -> fixed-point
     template<
-        class FixedPoint, 
+        class ReprType, int Exponent,
         class Integer, 
-        typename = std::enable_if<_impl::is_fixed_point<FixedPoint>::value && std::is_integral<Integer>::value>::type>
-    constexpr auto operator*(const FixedPoint& lhs, const Integer& rhs)
-    -> fixed_point<decltype(std::declval<FixedPoint::repr_type>() * std::declval<Integer>()), FixedPoint::exponent>
+        typename = typename std::enable_if<std::is_integral<Integer>::value>::type>
+    constexpr auto operator*(const fixed_point<ReprType, Exponent>& lhs, const Integer& rhs)
+    -> fixed_point<decltype(std::declval<ReprType>() * std::declval<Integer>()), Exponent>
     {
-        using repr_type = fixed_point<decltype(std::declval<FixedPoint::repr_type>() * std::declval<Integer>()), FixedPoint::exponent>;
+        using repr_type = fixed_point<decltype(std::declval<ReprType>() * std::declval<Integer>()), Exponent>;
         return _impl::multiply<repr_type>(lhs, fixed_point<Integer>(rhs));
     }
 
     template<
-        class FixedPoint, 
+        class ReprType, int Exponent,
         class Integer,
-        typename = std::enable_if<_impl::is_fixed_point<FixedPoint>::value && std::is_integral<Integer>::value>::type>
-    constexpr auto operator/(const FixedPoint& lhs, const Integer& rhs)
-    -> fixed_point<decltype(std::declval<FixedPoint::repr_type>() / std::declval<Integer>()), FixedPoint::exponent>
+        typename = typename std::enable_if<std::is_integral<Integer>::value>::type>
+    constexpr auto operator/(const fixed_point<ReprType, Exponent>& lhs, const Integer& rhs)
+    -> fixed_point<decltype(std::declval<ReprType>() / std::declval<Integer>()), Exponent>
     {
-        using result_type = fixed_point<decltype(std::declval<FixedPoint::repr_type>() / std::declval<Integer>()), FixedPoint::exponent>;
+        using result_type = fixed_point<decltype(std::declval<ReprType>() / std::declval<Integer>()), Exponent>;
         return _impl::divide<result_type>(lhs, fixed_point<Integer>(rhs));
     }
 
     // integer. fixed-point -> fixed-point
     template<
-        class Integer, 
-        class FixedPoint,
-        typename = std::enable_if<std::is_integral<Integer>::value && _impl::is_fixed_point<FixedPoint>::value>::type>
-    constexpr auto operator*(const Integer& lhs, const FixedPoint& rhs) 
-    -> fixed_point<decltype(std::declval<Integer>() * std::declval<FixedPoint::repr_type>()), FixedPoint::exponent>
+        class Integer,
+        class ReprType, int Exponent,
+        typename = typename std::enable_if<std::is_integral<Integer>::value>::type>
+    constexpr auto operator*(const Integer& lhs, const fixed_point<ReprType, Exponent>& rhs)
+    -> fixed_point<decltype(std::declval<Integer>() * std::declval<ReprType>()), Exponent>
     {
-        using result_type = fixed_point<decltype(std::declval<Integer>() * std::declval<FixedPoint::repr_type>()), FixedPoint::exponent>;
+        using result_type = fixed_point<decltype(std::declval<Integer>() * std::declval<ReprType>()), Exponent>;
         return _impl::multiply<result_type>(fixed_point<Integer>(lhs), rhs);
     }
 
     template<
-        class Integer, 
-        class FixedPoint, 
-        typename = std::enable_if<std::is_integral<Integer>::value && _impl::is_fixed_point<FixedPoint>::value>::type>
-    constexpr auto operator/(const Integer& lhs, const FixedPoint& rhs)
-    -> fixed_point<decltype(std::declval<Integer>() / std::declval<FixedPoint::repr_type>()), FixedPoint::exponent>
+        class Integer,
+        class ReprType, int Exponent,
+        typename = typename std::enable_if<std::is_integral<Integer>::value>::type>
+    constexpr auto operator/(const Integer& lhs, const fixed_point<ReprType, Exponent>& rhs)
+    -> fixed_point<decltype(std::declval<Integer>() / std::declval<ReprType>()), Exponent>
     {
-        using result_type = fixed_point<decltype(std::declval<Integer>() / std::declval<FixedPoint::repr_type>()), FixedPoint::exponent>;
+        using result_type = fixed_point<decltype(std::declval<Integer>() / std::declval<ReprType>()), Exponent>;
         return _impl::divide<result_type>(fixed_point<Integer>(lhs), rhs);
     }
 
