@@ -1021,9 +1021,11 @@ struct FixedPointTester {
             "promotion rule for subtraction fixed_point<ReprType> should match its ReprType");
 
     // assorted tests of +, -, * and /
+#if ! defined(_MSC_VER)
     static_assert(min + min == 2 * min, "basic arithmetic isn't working");
     static_assert((84 * min) / 84 == min, "basic arithmetic isn't working");
     static_assert((7 * min) - (4 * min) == (6 * min) / 2, "basic arithmetic isn't working");
+#endif
 };
 
 template <typename ReprType>
