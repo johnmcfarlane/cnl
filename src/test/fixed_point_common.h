@@ -610,10 +610,10 @@ static_assert(is_same<decltype(make_fixed<2, 5, test_int>(2.125)*make_fixed<2, 5
         "sg14::fixed_point multiplication test failed");
 
 static_assert(fixed_point<uint8, 10>(10240)*3u==30720, "sg14::fixed_point multiplication test failed");
-static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)*3u), fixed_point<uint8, 10>>::value,
+static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)*3u), fixed_point<test_unsigned, 10>>::value,
         "sg14::fixed_point multiplication test failed");
 static_assert(3u*fixed_point<uint8, 10>(10240)==30720, "sg14::fixed_point multiplication test failed");
-static_assert(is_same<decltype(3u*fixed_point<uint8, 10>(10240)), fixed_point<uint8, 10>>::value,
+static_assert(is_same<decltype(3u*fixed_point<uint8, 10>(10240)), fixed_point<test_unsigned, 10>>::value,
         "sg14::fixed_point multiplication test failed");
 
 static_assert(-123.654f*make_fixed<31, 32>(16777215.996093750)==-2074569855.5169766,
@@ -650,14 +650,14 @@ static_assert(is_same<decltype(make_fixed<2, 5, test_int>(2.5)/make_fixed<2, 5, 
         "sg14::fixed_point division test failed");
 
 static_assert(fixed_point<uint8, 10>(10240)/3u==3072, "sg14::fixed_point division test failed");
-static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)/3u), fixed_point<uint8, 10>>::value,
+static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)/3u), fixed_point<test_unsigned, 10>>::value,
         "sg14::fixed_point division test failed");
 TEST(TOKENPASTE2(TEST_LABEL, division), int_uint8) {
     int n(10);
     fixed_point<uint8, -2> d(0.25);
     ASSERT_EQ(n / d, 40.L);
 }
-static_assert(is_same<decltype(10/fixed_point<uint8, -2>(0.25)), fixed_point<uint8, -2>>::value,
+static_assert(is_same<decltype(10/fixed_point<uint8, -2>(0.25)), fixed_point<test_signed, -2>>::value,
         "sg14::fixed_point division test failed");
 
 static_assert(16777215.996093750/make_fixed<31, 32>(-123.654f)==-135678.71712347874,

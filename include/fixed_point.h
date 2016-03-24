@@ -1192,44 +1192,48 @@ namespace sg14 {
     }
 
     // fixed-point, integer -> fixed-point
-    template<class LhsReprType, int LhsExponent, class Integer>
-    constexpr auto operator*(
-            const fixed_point<LhsReprType, LhsExponent>& lhs,
-            const Integer& rhs)
-    -> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<LhsReprType, LhsExponent>>::type
+    template<
+        class FixedPoint, 
+        class Integer, 
+        typename = std::enable_if<_impl::is_fixed_point<FixedPoint>::value && std::is_integral<Integer>::value>::type>
+    constexpr auto operator*(const FixedPoint& lhs, const Integer& rhs)
+    -> fixed_point<decltype(std::declval<FixedPoint::repr_type>() * std::declval<Integer>()), FixedPoint::exponent>
     {
-        using result_type = fixed_point<LhsReprType, LhsExponent>;
-        return _impl::multiply<result_type>(lhs, fixed_point<Integer>(rhs));
+        using repr_type = fixed_point<decltype(std::declval<FixedPoint::repr_type>() * std::declval<Integer>()), FixedPoint::exponent>;
+        return _impl::multiply<repr_type>(lhs, fixed_point<Integer>(rhs));
     }
 
-    template<class LhsReprType, int LhsExponent, class Integer>
-    constexpr auto operator/(
-            const fixed_point<LhsReprType, LhsExponent>& lhs,
-            const Integer& rhs)
-    -> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<LhsReprType, LhsExponent>>::type
+    template<
+        class FixedPoint, 
+        class Integer,
+        typename = std::enable_if<_impl::is_fixed_point<FixedPoint>::value && std::is_integral<Integer>::value>::type>
+    constexpr auto operator/(const FixedPoint& lhs, const Integer& rhs)
+    -> fixed_point<decltype(std::declval<FixedPoint::repr_type>() / std::declval<Integer>()), FixedPoint::exponent>
     {
-        using result_type = fixed_point<LhsReprType, LhsExponent>;
+        using result_type = fixed_point<decltype(std::declval<FixedPoint::repr_type>() / std::declval<Integer>()), FixedPoint::exponent>;
         return _impl::divide<result_type>(lhs, fixed_point<Integer>(rhs));
     }
 
     // integer. fixed-point -> fixed-point
-    template<class Integer, class RhsReprType, int RhsExponent>
-    constexpr auto operator*(
-            const Integer& lhs,
-            const fixed_point<RhsReprType, RhsExponent>& rhs)
-    -> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<RhsReprType, RhsExponent>>::type
+    template<
+        class Integer, 
+        class FixedPoint,
+        typename = std::enable_if<std::is_integral<Integer>::value && _impl::is_fixed_point<FixedPoint>::value>::type>
+    constexpr auto operator*(const Integer& lhs, const FixedPoint& rhs) 
+    -> fixed_point<decltype(std::declval<Integer>() * std::declval<FixedPoint::repr_type>()), FixedPoint::exponent>
     {
-        using result_type = fixed_point<RhsReprType, RhsExponent>;
+        using result_type = fixed_point<decltype(std::declval<Integer>() * std::declval<FixedPoint::repr_type>()), FixedPoint::exponent>;
         return _impl::multiply<result_type>(fixed_point<Integer>(lhs), rhs);
     }
 
-    template<class Integer, class RhsReprType, int RhsExponent>
-    constexpr auto operator/(
-            const Integer& lhs,
-            const fixed_point<RhsReprType, RhsExponent>& rhs)
-    -> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<RhsReprType, RhsExponent>>::type
+    template<
+        class Integer, 
+        class FixedPoint, 
+        typename = std::enable_if<std::is_integral<Integer>::value && _impl::is_fixed_point<FixedPoint>::value>::type>
+    constexpr auto operator/(const Integer& lhs, const FixedPoint& rhs)
+    -> fixed_point<decltype(std::declval<Integer>() / std::declval<FixedPoint::repr_type>()), FixedPoint::exponent>
     {
-        using result_type = fixed_point<RhsReprType, RhsExponent>;
+        using result_type = fixed_point<decltype(std::declval<Integer>() / std::declval<FixedPoint::repr_type>()), FixedPoint::exponent>;
         return _impl::divide<result_type>(fixed_point<Integer>(lhs), rhs);
     }
 
