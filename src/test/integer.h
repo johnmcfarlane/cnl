@@ -53,20 +53,20 @@ namespace sg14 {
 #define _SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(OP) \
     template <class LhsRepr, class RhsRepr, class OverflowPolicy> \
     constexpr auto operator OP (const integer<LhsRepr, OverflowPolicy>& lhs, const integer<RhsRepr, OverflowPolicy>& rhs) \
-    -> typename sg14::_integer_impl::common_type<integer<LhsRepr, OverflowPolicy>, integer<RhsRepr, OverflowPolicy>>::type { \
-        using Result = typename sg14::_integer_impl::common_type<integer<LhsRepr, OverflowPolicy>, integer<RhsRepr, OverflowPolicy>>::type; \
+    -> integer<decltype(std::declval<LhsRepr>() OP std::declval<RhsRepr>()), OverflowPolicy> { \
+        using Result = integer<decltype(std::declval<LhsRepr>() OP std::declval<RhsRepr>()), OverflowPolicy>; \
         return static_cast<Result>(lhs.data() OP rhs.data()); } \
     \
-    template <class Lhs, class RhsRepr, class RhsOverflowPolicy, typename std::enable_if<! sg14::_integer_impl::is_integer_class<Lhs>::value, int>::type dummy = 0> \
+    template <class Lhs, class RhsRepr, class RhsOverflowPolicy, typename std::enable_if<std::is_fundamental<Lhs>::value, int>::type dummy = 0> \
     constexpr auto operator OP (const Lhs& lhs, const integer<RhsRepr, RhsOverflowPolicy>& rhs) \
-    -> integer<typename std::common_type<Lhs, RhsRepr>::type, RhsOverflowPolicy> { \
-        using Result = integer<typename std::common_type<Lhs, RhsRepr>::type, RhsOverflowPolicy>; \
+    -> integer<decltype(std::declval<Lhs>() OP std::declval<RhsRepr>()), RhsOverflowPolicy> { \
+        using Result = integer<decltype(std::declval<Lhs>() OP std::declval<RhsRepr>()), RhsOverflowPolicy>; \
         return static_cast<Result>(lhs OP rhs.data()); } \
     \
-    template <class LhsRepr, class LhsOverflowPolicy, class Rhs, typename std::enable_if<! sg14::_integer_impl::is_integer_class<Rhs>::value, int>::type dummy = 0> \
+    template <class LhsRepr, class LhsOverflowPolicy, class Rhs, typename std::enable_if<std::is_fundamental<Rhs>::value, int>::type dummy = 0> \
     constexpr auto operator OP (const integer<LhsRepr, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
-    -> integer<typename std::common_type<LhsRepr, Rhs>::type, LhsOverflowPolicy> { \
-        using Result = integer<typename std::common_type<LhsRepr, Rhs>::type, LhsOverflowPolicy>; \
+    -> integer<decltype(std::declval<LhsRepr>() OP std::declval<Rhs>()), LhsOverflowPolicy> { \
+        using Result = integer<decltype(std::declval<LhsRepr>() OP std::declval<Rhs>()), LhsOverflowPolicy>; \
         return static_cast<Result>(lhs.data() OP rhs); }
 
 #define _SG14_INTEGER_BIT_SHIFT_DEFINE(OP) \
@@ -75,12 +75,12 @@ namespace sg14 {
     -> integer<LhsRepr, LhsOverflowPolicy> { \
         return lhs.data() OP rhs.data(); } \
     \
-    template <class Lhs, class RhsRepr, class RhsOverflowPolicy, typename std::enable_if<! sg14::_integer_impl::is_integer_class<Lhs>::value, int>::type dummy = 0> \
+    template <class Lhs, class RhsRepr, class RhsOverflowPolicy, typename std::enable_if<std::is_fundamental<Lhs>::value, int>::type dummy = 0> \
     constexpr auto operator OP (const Lhs& lhs, const integer<RhsRepr, RhsOverflowPolicy>& rhs) \
     -> Lhs { \
         return lhs OP rhs.data(); } \
     \
-    template <class LhsRepr, class LhsOverflowPolicy, class Rhs, typename std::enable_if<! sg14::_integer_impl::is_integer_class<Rhs>::value, int>::type dummy = 0> \
+    template <class LhsRepr, class LhsOverflowPolicy, class Rhs, typename std::enable_if<std::is_fundamental<Rhs>::value, int>::type dummy = 0> \
     constexpr auto operator OP (const integer<LhsRepr, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
     -> integer<LhsRepr, LhsOverflowPolicy> { \
         return integer<LhsRepr, LhsOverflowPolicy>(lhs.data() OP rhs); }

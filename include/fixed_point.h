@@ -14,6 +14,7 @@
 #include <cinttypes>
 
 #include "type_traits.h"
+#include "int128.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // _SG14_FIXED_POINT_EXCEPTIONS_ENABLED macro definition 
@@ -270,19 +271,6 @@ namespace sg14 {
         {
             return (a<b) ? b : a;
         }
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::common_repr_type
-
-        // given two integral types, produces a common type with enough capacity to
-        // store values of either (except when one is signed and both are same size)
-        template<class LhsReprType, class RhsReprType>
-        using common_repr_type = typename sg14::resize_t<
-                typename std::conditional<
-                        std::is_signed<LhsReprType>::value | std::is_signed<RhsReprType>::value,
-                        typename std::make_signed<typename std::common_type<LhsReprType, RhsReprType>::type>::type,
-                        typename std::make_unsigned<typename std::common_type<LhsReprType, RhsReprType>::type>::type>::type,
-                _impl::max(sizeof(LhsReprType), sizeof(RhsReprType))>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_impl::capacity
@@ -555,7 +543,7 @@ namespace sg14 {
     /// \snippet snippets.cpp use make_fixed
     ///
     /// \sa make_ufixed
-    template<unsigned IntegerDigits, unsigned FractionalDigits = 0, class Archetype = signed>
+    template<int IntegerDigits, int FractionalDigits = 0, class Archetype = signed>
     using make_fixed = fixed_point<
             _impl::sufficient_repr<IntegerDigits+FractionalDigits+std::is_signed<Archetype>::value, Archetype>,
             int(IntegerDigits)
@@ -568,7 +556,7 @@ namespace sg14 {
     /// \brief Produce an unsigned fixed-point type with the given number of integer and fractional digits.
     ///
     /// \sa make_fixed
-    template<unsigned IntegerDigits, unsigned FractionalDigits = 0, class Archetype = unsigned>
+    template<int IntegerDigits, int FractionalDigits = 0, class Archetype = unsigned>
     using make_ufixed = make_fixed<
             IntegerDigits,
             FractionalDigits,
@@ -656,60 +644,245 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::_common_type
+        // sg14::_impl::promote_integer_result / promote_integer
+
+        // given template parameters of a fixed_point specialization,
+        // yields alternative specialization with twice the capacity
+        // and the same number of factional bits; requires no bit shift
+        template<class FixedPoint>
+        using promote_integer_result = fixed_point<
+                _impl::next_size<typename FixedPoint::repr_type>,
+                FixedPoint::exponent>;
+
+        // as promote_integer_result but promotes parameter
+        template<class FixedPoint>
+        promote_integer_result<FixedPoint>
+        constexpr promote_integer(const FixedPoint& from)
+        {
+            return promote_integer_result<FixedPoint>(from);
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::promote_fractional_result / promote_fractional
+
+        // given template parameters of a fixed_point specialization,
+        // yields alternative specialization with twice the capacity
+        // and the same number of integer bits
+        template<class FixedPoint>
+        using promote_fractional_result = fixed_point<
+                _impl::next_size<typename FixedPoint::repr_type>,
+                FixedPoint::exponent - num_bits<typename FixedPoint::repr_type>()>;
+
+        // as promote_fractional_result but promotes parameter
+        template<class FixedPoint>
+        promote_fractional_result<FixedPoint>
+        constexpr promote_fractional(const FixedPoint& from)
+        {
+            return promote_fractional_result<FixedPoint>(from);
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // default arithmtic policy
+
+        struct default_arithmetic_policy {
+            template<class Lhs, class Rhs>
+            using exponent = std::integral_constant<
+                    int,
+                    (Lhs::integer_digits>Rhs::integer_digits)
+                    ? Lhs::exponent
+                    : (Rhs::integer_digits>Lhs::integer_digits)
+                      ? Rhs::exponent
+                      : _impl::max<int>(Lhs::exponent, Rhs::exponent)>;
+
+            template<class Lhs, class Rhs>
+            using common_type = fixed_point<
+                    typename std::common_type<typename Lhs::repr_type, typename Rhs::repr_type>::type,
+                    exponent<Lhs, Rhs>::value>;
+
+            template<class Lhs, class Rhs>
+            struct operator_base {
+                static_assert(is_fixed_point<Lhs>::value, "only fixed-point types supported");
+                static_assert(is_fixed_point<Rhs>::value, "only fixed-point types supported");
+
+                using lhs_type = Lhs;
+                using rhs_type = Rhs;
+            };
+
+            template<class Rhs>
+            struct negate {
+                using result_type = fixed_point<
+                        decltype(- std::declval<typename Rhs::repr_type>()),
+                        Rhs::exponent>;
+
+                using rhs_type = Rhs;
+            };
+
+            template<class Lhs, class Rhs>
+            struct add : operator_base<Lhs, Rhs> {
+                using result_type = fixed_point<
+                        decltype(std::declval<typename Lhs::repr_type>() + std::declval<typename Rhs::repr_type>()),
+                        exponent<Lhs, Rhs>::value>;
+            };
+
+            template<class Lhs, class Rhs>
+            struct subtract : operator_base<Lhs, Rhs> {
+                using result_type = fixed_point<
+                        decltype(std::declval<typename Lhs::repr_type>() - std::declval<typename Rhs::repr_type>()),
+                        exponent<Lhs, Rhs>::value>;
+            };
+
+            template<class Lhs, class Rhs>
+            struct multiply : operator_base<Lhs, Rhs> {
+                using result_type = fixed_point<
+                        decltype(std::declval<typename Lhs::repr_type>() * std::declval<typename Rhs::repr_type>()),
+                        exponent<Lhs, Rhs>::value>;
+                using lhs_type = promote_integer_result<Lhs>;
+            };
+
+            template<class Lhs, class Rhs>
+            struct divide : operator_base<Lhs, Rhs> {
+                using result_type = fixed_point<
+                        decltype(std::declval<typename Lhs::repr_type>() / std::declval<typename Rhs::repr_type>()),
+                        exponent<Lhs, Rhs>::value>;
+                using lhs_type = promote_fractional_result<Lhs>;
+            };
+        };
+
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // trunc arithmtic policy
+
+        struct trunc_arithmetic_policy {
+            // signed if either input is signed and as big as either input
+            template<class LhsRepr, class RhsRepr>
+            using common_repr_type =
+            resize_t<
+                    typename std::conditional<std::is_signed<LhsRepr>::value, LhsRepr, RhsRepr>::type,
+                    _impl::max(sizeof(LhsRepr), sizeof(RhsRepr))>;
+
+            // repr_type of subtract is special case: always signed
+            template<class LhsRepr, class RhsRepr>
+            using signed_repr_type =
+            resize_t<
+                    typename std::make_signed<LhsRepr>::type,
+                    _impl::max(sizeof(LhsRepr), sizeof(RhsRepr))>;
+
+            template<class Lhs, class Rhs>
+            struct operator_base {
+                using lhs_type = Lhs;
+                using rhs_type = Rhs;
+            };
+
+            template<class Lhs, class Rhs>
+            struct add : operator_base<Lhs, Rhs> {
+                using result_type = make_fixed_from_repr<
+                        common_repr_type<typename Lhs::repr_type, typename Rhs::repr_type>,
+                        max<int>(Lhs::integer_digits, Rhs::integer_digits) + 1>;
+            };
+
+            template<class Lhs, class Rhs>
+            struct subtract : operator_base<Lhs, Rhs> {
+                using result_type = make_fixed_from_repr<
+                        signed_repr_type<typename Lhs::repr_type, typename Rhs::repr_type>,
+                        max<int>(Lhs::integer_digits + 1, Rhs::integer_digits + 1)>;
+            };
+
+            template<class Lhs, class Rhs>
+            struct multiply : operator_base<Lhs, Rhs> {
+                using result_type = make_fixed_from_repr<
+                        common_repr_type<typename Lhs::repr_type, typename Rhs::repr_type>,
+                        Lhs::integer_digits + Rhs::integer_digits>;
+            };
+
+            template<class Lhs, class Rhs>
+            struct divide : operator_base<Lhs, Rhs> {
+                using result_type = make_fixed_from_repr<
+                        common_repr_type<typename Lhs::repr_type, typename Rhs::repr_type>,
+                        Lhs::integer_digits + Rhs::fractional_digits>;
+            };
+
+            template<class Rhs>
+            struct negate : operator_base<Rhs, Rhs> {
+                using result_type = make_fixed_from_repr<
+                        decltype(- std::declval<typename Rhs::repr_type>()),
+                        Rhs::integer_digits>;
+            };
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::_common_type_mixed
 
         template<class Lhs, class Rhs, class _Enable = void>
-        struct _common_type;
-
-        // given two fixed-point, produces the type that is best suited to both of them
-        template<class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
-        struct _common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>> {
-            using type = make_fixed_from_repr<
-                    _impl::common_repr_type<LhsReprType, RhsReprType>,
-                    _impl::max<int>(
-                            fixed_point<LhsReprType, LhsExponent>::integer_digits,
-                            fixed_point<RhsReprType, RhsExponent>::integer_digits)>;
-        };
+        struct _common_type_mixed;
 
         // given a fixed-point and a integer type,
         // generates a fixed-point type that is as big as both of them (or as close as possible)
         template<class LhsReprType, int LhsExponent, class RhsInteger>
-        struct _common_type<
+        struct _common_type_mixed<
                 fixed_point<LhsReprType, LhsExponent>,
                 RhsInteger,
                 typename std::enable_if<std::is_integral<RhsInteger>::value>::type> {
-            using type = fixed_point<LhsReprType, LhsExponent>;
+            using type = fixed_point<typename std::common_type<LhsReprType, RhsInteger>::type, LhsExponent>;
         };
 
         // given a fixed-point and a floating-point type,
         // generates a floating-point type that is as big as both of them (or as close as possible)
         template<class LhsReprType, int LhsExponent, class Float>
-        struct _common_type<
+        struct _common_type_mixed<
                 fixed_point<LhsReprType, LhsExponent>,
                 Float,
                 typename std::enable_if<std::is_floating_point<Float>::value>::type>
                 : std::common_type<_impl::make_float<sizeof(LhsReprType)>, Float> {
         };
 
-        // when first type is not fixed-point and second type is, reverse the order
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::common_type - like std::common_type for fixed-point types
+
+        template <class ... T>
+        struct common_type;
+
+        template<class ReprType, int Exponent>
+        struct common_type<fixed_point<ReprType, Exponent>> {
+            using type = fixed_point<
+                    typename std::common_type<ReprType>::type,
+                    Exponent>;
+        };
+
+        template<class LhsReprType, int LhsExponent, class Rhs>
+        struct common_type<fixed_point<LhsReprType, LhsExponent>, Rhs> {
+            static_assert(! _impl::is_fixed_point<Rhs>::value, "fixed-point Rhs type");
+            using type = typename _common_type_mixed<fixed_point<LhsReprType, LhsExponent>, Rhs>::type;
+        };
+
         template<class Lhs, class RhsReprType, int RhsExponent>
-        struct _common_type<Lhs, fixed_point<RhsReprType, RhsExponent>>
-                : _common_type<fixed_point<RhsReprType, RhsExponent>, Lhs> {
+        struct common_type<Lhs, fixed_point<RhsReprType, RhsExponent>> {
+            static_assert(! _impl::is_fixed_point<Lhs>::value, "fixed-point Lhs type");
+            using type = typename _common_type_mixed<fixed_point<RhsReprType, RhsExponent>, Lhs>::type;
+        };
+
+        template<class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
+        struct common_type<
+                fixed_point<LhsReprType, LhsExponent>,
+                fixed_point<RhsReprType, RhsExponent>> {
+            using type =
+            typename default_arithmetic_policy::common_type<
+                    fixed_point<LhsReprType, LhsExponent>,
+                    fixed_point<RhsReprType, RhsExponent>>;
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::common_type
+        // sg14::_impl::common_type_t
 
         // similar to std::common_type
         // but one or both input types must be fixed_point
-        template<class Lhs, class Rhs>
-        using common_type = typename _common_type<Lhs, Rhs>::type;
+        template<class ... T>
+        using common_type_t = typename common_type<typename std::decay<T>::type ...>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
         // arithmetic result types
 
         template<typename LhsFixedPoint, typename RhsFixedPoint>
-        using subtract_result_repr = typename std::make_signed<common_repr_type<LhsFixedPoint, RhsFixedPoint>>::type;
+        using subtract_result_repr = typename std::make_signed<typename std::common_type<LhsFixedPoint, RhsFixedPoint>::type>::type;
 
         template<typename Repr>
         using square_result_repr = typename std::make_unsigned<Repr>::type;
@@ -717,92 +890,119 @@ namespace sg14 {
         template<typename FixedPoint>
         using sqrt_result_repr = typename std::make_unsigned<FixedPoint>::type;
 
-        // all other operations
-        template<typename LhsFixedPoint, typename RhsFixedPoint>
-        using arithmetic_result_repr = common_repr_type<LhsFixedPoint, RhsFixedPoint>;
-
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::promote_fast_result / promote_fast
+        // named fixed-point arithmetic - used by all other fixed-point arithmetic fns
 
-        // given template parameters of a fixed_point specialization,
-        // yields alternative specialization with twice the capacity
-        // and the same number of factional bits; requires no bit shift
-        template<class FixedPoint>
-        using promote_fast_result = fixed_point<
-                _impl::next_size<typename FixedPoint::repr_type>,
-                FixedPoint::exponent>;
-
-        // as promote_result but promotes parameter, from
-        template<class FixedPoint>
-        promote_fast_result<FixedPoint>
-        constexpr promote_fast(const FixedPoint& from)
+        // sg14::_impl::negate
+        template<class Result, class Rhs>
+        constexpr Result negate(const Rhs& rhs)
         {
-            return promote_fast_result<FixedPoint>(from);
+            static_assert(std::is_signed<typename Result::repr_type>::value, "unary negation of unsigned value");
+
+            return Result::from_data(-static_cast<Result>(rhs).data());
         }
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::multiply
+        // sg14::_impl::add
+        template<class Result, class Lhs, class Rhs>
+        constexpr Result add(const Lhs& lhs, const Rhs& rhs)
+        {
+            return Result::from_data(
+                    static_cast<typename Result::repr_type>(
+                            static_cast<Result>(lhs).data()
+                                    +static_cast<Result>(rhs).data()));
+        }
 
+        // sg14::_impl::subtract
+        template<class Result, class Lhs, class Rhs>
+        constexpr Result subtract(const Lhs& lhs, const Rhs& rhs)
+        {
+            return Result::from_data(
+                    static_cast<Result>(lhs).data()
+                            -static_cast<Result>(rhs).data());
+        }
+
+        // sg14::_impl::multiply
         template<class Result, class Lhs, class Rhs>
         constexpr Result multiply(const Lhs& lhs, const Rhs& rhs)
         {
             using result_repr_type = typename Result::repr_type;
             return Result::from_data(
-                    _impl::shift_left<(Lhs::exponent+Rhs::exponent-Result::exponent), result_repr_type>(
-                            static_cast<result_repr_type>(lhs.data())
-                                    *static_cast<result_repr_type>(rhs.data())));
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::divide
-
-        template<class FixedPointQuotient, class FixedPointDividend, class FixedPointDivisor>
-        constexpr FixedPointQuotient divide(const FixedPointDividend& lhs, const FixedPointDivisor& rhs)
-        {
-            using result_repr_type = typename FixedPointQuotient::repr_type;
-
-            // a fixed-point type which is capable of holding the value passed in to lhs
-            // and the result of the lhs / rhs; depending greatly on the exponent of each
-            using intermediate_type = make_fixed<
-                    _impl::max(FixedPointQuotient::integer_digits,
-                            FixedPointDividend::integer_digits+FixedPointDivisor::fractional_digits),
-                    _impl::max(FixedPointQuotient::fractional_digits,
-                            FixedPointDividend::fractional_digits+FixedPointDivisor::integer_digits),
-                    typename std::conditional<
-                            std::is_signed<typename FixedPointQuotient::repr_type>::value
-                                    | std::is_signed<typename FixedPointDividend::repr_type>::value,
-                            signed,
-                            unsigned>::type>;
-
-            return FixedPointQuotient::from_data(
                     _impl::shift_left<
-                            (intermediate_type::exponent-FixedPointDivisor::exponent-FixedPointQuotient::exponent),
-                            result_repr_type>
-                            (static_cast<intermediate_type>(lhs).data()/rhs.data()));
+                            (Lhs::exponent+Rhs::exponent-Result::exponent),
+                            result_repr_type>(lhs.data()*rhs.data()));
+        }
+
+        // sg14::_impl::divide
+        template<class Result, class Lhs, class Rhs>
+        constexpr Result divide(const Lhs& lhs, const Rhs& rhs)
+        {
+            using result_repr_type = typename Result::repr_type;
+            return Result::from_data(
+                    _impl::shift_left<
+                            (Lhs::exponent-Rhs::exponent-Result::exponent),
+                            result_repr_type>(lhs.data()/rhs.data()));
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::add
+        // policy-based fixed-point arithmetic - customizable arithmetic
 
-        template<class Result, class FixedPoint, class Head>
-        constexpr Result add(const Head& addend_head)
+        // sg14::_impl::policy_negate
+        template<class Policy, class Rhs>
+        constexpr auto policy_negate(const Rhs& rhs)
+        -> typename Policy::template negate<Rhs>::result_type
         {
-            static_assert(std::is_same<FixedPoint, Head>::value, "mismatched add parameters");
-            return static_cast<Result>(addend_head);
+            using operator_policy = typename Policy::template negate<Rhs>;
+            return negate<typename operator_policy::result_type>(
+                    static_cast<typename operator_policy::rhs_type>(rhs));
         }
 
-        template<class Result, class FixedPoint, class Head, class ... Tail>
-        constexpr Result add(const Head& addend_head, const Tail& ... addend_tail)
+        // sg14::_impl::policy_add
+        template<class Policy, class Lhs, class Rhs>
+        constexpr auto policy_add(const Lhs& lhs, const Rhs& rhs)
+        -> typename Policy::template add<Lhs, Rhs>::result_type
         {
-            static_assert(std::is_same<FixedPoint, Head>::value, "mismatched add parameters");
-            return add<Result, FixedPoint, Tail ...>(addend_tail ...)+static_cast<Result>(addend_head);
+            using operator_policy = typename Policy::template add<Lhs, Rhs>;
+            return add<typename operator_policy::result_type>(
+                    static_cast<typename operator_policy::lhs_type>(lhs),
+                    static_cast<typename operator_policy::rhs_type>(rhs));
+        }
+
+        // sg14::_impl::policy_subtract
+        template<class Policy, class Lhs, class Rhs>
+        constexpr auto policy_subtract(const Lhs& lhs, const Rhs& rhs)
+        -> typename Policy::template subtract<Lhs, Rhs>::result_type
+        {
+            using operator_policy = typename Policy::template subtract<Lhs, Rhs>;
+            return subtract<typename operator_policy::result_type>(
+                    static_cast<typename operator_policy::lhs_type>(lhs),
+                    static_cast<typename operator_policy::rhs_type>(rhs));
+        }
+
+        // sg14::_impl::policy_multiply
+        template<class Policy, class Lhs, class Rhs>
+        constexpr auto policy_multiply(const Lhs& lhs, const Rhs& rhs)
+        -> typename Policy::template multiply<Lhs, Rhs>::result_type
+        {
+            using operator_policy = typename Policy::template multiply<Lhs, Rhs>;
+            return multiply<typename operator_policy::result_type>(
+                    static_cast<typename operator_policy::lhs_type>(lhs),
+                    static_cast<typename operator_policy::rhs_type>(rhs));
+        }
+
+        // sg14::_impl::policy_divide
+        template<class Policy, class Lhs, class Rhs>
+        constexpr auto policy_divide(const Lhs& lhs, const Rhs& rhs)
+        -> typename Policy::template divide<Lhs, Rhs>::result_type
+        {
+            using operator_policy = typename Policy::template divide<Lhs, Rhs>;
+            return divide<typename operator_policy::result_type>(
+                    static_cast<typename operator_policy::lhs_type>(lhs),
+                    static_cast<typename operator_policy::rhs_type>(rhs));
         }
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // homogeneous (mixed-mode) operator overloads
-    //
-    // taking one or two identical fixed_point specializations
+    // (fixed_point @ fixed_point) comparison operators
 
     template<class ReprType, int Exponent>
     constexpr bool operator==(
@@ -852,62 +1052,67 @@ namespace sg14 {
         return lhs.data()<=rhs.data();
     }
 
-    // arithmetic
-    template<class ReprType, int Exponent>
-    constexpr fixed_point<ReprType, Exponent> operator-(
-            const fixed_point<ReprType, Exponent>& rhs)
-    {
-        static_assert(std::is_signed<ReprType>::value, "unary negation of unsigned value");
+    ////////////////////////////////////////////////////////////////////////////////
+    // (fixed_point @ fixed_point) arithmetic operators
 
-        return fixed_point<ReprType, Exponent>::from_data(-rhs.data());
+    // negate
+    template<class RhsReprType, int RhsExponent>
+    constexpr auto operator-(const fixed_point<RhsReprType, RhsExponent>& rhs)
+    -> typename _impl::default_arithmetic_policy::negate<
+            fixed_point<RhsReprType, RhsExponent>>::result_type
+    {
+        return _impl::policy_negate<_impl::default_arithmetic_policy>(rhs);
     }
 
-    template<class ReprType, int Exponent>
-    constexpr fixed_point<ReprType, Exponent> operator+(
-            const fixed_point<ReprType, Exponent>& lhs,
-            const fixed_point<ReprType, Exponent>& rhs)
+    template<
+            class LhsReprType, int LhsExponent,
+            class RhsReprType, int RhsExponent>
+    constexpr auto operator+(
+            const fixed_point<LhsReprType, LhsExponent>& lhs,
+            const fixed_point<RhsReprType, RhsExponent>& rhs)
+    -> typename _impl::default_arithmetic_policy::add<
+            fixed_point<LhsReprType, LhsExponent>,
+            fixed_point<RhsReprType, RhsExponent>>::result_type
     {
-        return fixed_point<ReprType, Exponent>::from_data(lhs.data()+rhs.data());
+        return _impl::policy_add<_impl::default_arithmetic_policy>(lhs, rhs);
     }
 
-    template<class ReprType, int Exponent>
-    constexpr fixed_point<ReprType, Exponent> operator-(
-            const fixed_point<ReprType, Exponent>& lhs,
-            const fixed_point<ReprType, Exponent>& rhs)
+    template<
+            class LhsReprType, int LhsExponent,
+            class RhsReprType, int RhsExponent>
+    constexpr auto operator-(
+            const fixed_point<LhsReprType, LhsExponent>& lhs,
+            const fixed_point<RhsReprType, RhsExponent>& rhs)
+    -> typename _impl::default_arithmetic_policy::subtract<
+            fixed_point<LhsReprType, LhsExponent>,
+            fixed_point<RhsReprType, RhsExponent>>::result_type
     {
-        return fixed_point<ReprType, Exponent>::from_data(lhs.data()-rhs.data());
+        return _impl::policy_subtract<_impl::default_arithmetic_policy>(lhs, rhs);
     }
 
-    template<class ReprType, int Exponent>
-    fixed_point<ReprType, Exponent>& operator+=(
-            fixed_point<ReprType, Exponent>& lhs,
-            const fixed_point<ReprType, Exponent>& rhs)
+    // fixed-point, fixed-point -> fixed-point
+    template<
+            class LhsReprType, int LhsExponent,
+            class RhsReprType, int RhsExponent>
+    constexpr auto operator*(
+            const fixed_point<LhsReprType, LhsExponent>& lhs,
+            const fixed_point<RhsReprType, RhsExponent>& rhs)
+    -> typename _impl::default_arithmetic_policy::multiply<
+            fixed_point<LhsReprType, LhsExponent>,
+            fixed_point<RhsReprType, RhsExponent>>::result_type
     {
-        return lhs = lhs+rhs;
+        return _impl::policy_multiply<_impl::default_arithmetic_policy>(lhs, rhs);
     }
 
-    template<class ReprType, int Exponent>
-    fixed_point<ReprType, Exponent>& operator-=(
-            fixed_point<ReprType, Exponent>& lhs,
-            const fixed_point<ReprType, Exponent>& rhs)
+    template<class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
+    constexpr auto operator/(
+            const fixed_point<LhsReprType, LhsExponent>& lhs,
+            const fixed_point<RhsReprType, RhsExponent>& rhs)
+    -> typename _impl::default_arithmetic_policy::divide<
+            fixed_point<LhsReprType, LhsExponent>,
+            fixed_point<RhsReprType, RhsExponent>>::result_type
     {
-        return lhs = lhs-rhs;
-    }
-
-    template<class ReprType, int Exponent>
-    fixed_point<ReprType, Exponent>& operator*=(
-            fixed_point<ReprType, Exponent>& lhs,
-            const fixed_point<ReprType, Exponent>& rhs)
-    {
-        return lhs = lhs*rhs;
-    }
-
-    template<class ReprType, int Exponent>
-    fixed_point<ReprType, Exponent>& operator/=(
-            fixed_point<ReprType, Exponent>& lhs,
-            const fixed_point<ReprType, Exponent>& rhs)
-    {
-        return lhs = lhs/rhs;
+        return _impl::policy_divide<_impl::default_arithmetic_policy>(lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -919,7 +1124,7 @@ namespace sg14 {
     constexpr auto operator==(const Lhs& lhs, const Rhs& rhs)
     -> typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, bool>::type
     {
-        using common_type = _impl::common_type<Lhs, Rhs>;
+        using common_type = _impl::common_type_t<Lhs, Rhs>;
         return static_cast<common_type>(lhs)==static_cast<common_type>(rhs);
     }
 
@@ -927,7 +1132,7 @@ namespace sg14 {
     constexpr auto operator!=(const Lhs& lhs, const Rhs& rhs)
     -> typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, bool>::type
     {
-        using common_type = _impl::common_type<Lhs, Rhs>;
+        using common_type = _impl::common_type_t<Lhs, Rhs>;
         return static_cast<common_type>(lhs)!=static_cast<common_type>(rhs);
     }
 
@@ -935,7 +1140,7 @@ namespace sg14 {
     constexpr auto operator<(const Lhs& lhs, const Rhs& rhs)
     -> typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, bool>::type
     {
-        using common_type = _impl::common_type<Lhs, Rhs>;
+        using common_type = _impl::common_type_t<Lhs, Rhs>;
         return static_cast<common_type>(lhs)<static_cast<common_type>(rhs);
     }
 
@@ -943,7 +1148,7 @@ namespace sg14 {
     constexpr auto operator>(const Lhs& lhs, const Rhs& rhs)
     -> typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, bool>::type
     {
-        using common_type = _impl::common_type<Lhs, Rhs>;
+        using common_type = _impl::common_type_t<Lhs, Rhs>;
         return static_cast<common_type>(lhs)>static_cast<common_type>(rhs);
     }
 
@@ -951,7 +1156,7 @@ namespace sg14 {
     constexpr auto operator>=(const Lhs& lhs, const Rhs& rhs)
     -> typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, bool>::type
     {
-        using common_type = _impl::common_type<Lhs, Rhs>;
+        using common_type = _impl::common_type_t<Lhs, Rhs>;
         return static_cast<common_type>(lhs)>=static_cast<common_type>(rhs);
     }
 
@@ -959,20 +1164,20 @@ namespace sg14 {
     constexpr auto operator<=(const Lhs& lhs, const Rhs& rhs)
     -> typename std::enable_if<_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value, bool>::type
     {
-        using common_type = _impl::common_type<Lhs, Rhs>;
+        using common_type = _impl::common_type_t<Lhs, Rhs>;
         return static_cast<common_type>(lhs)<=static_cast<common_type>(rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // arithmetic
+    // (fixed_point @ non-fixed_point) arithmetic operators
 
     template<class Lhs, class Rhs>
     constexpr auto operator+(
             const Lhs& lhs,
             const Rhs& rhs)
-    -> _impl::common_type<Lhs, Rhs>
+    -> _impl::common_type_t<Lhs, Rhs>
     {
-        using common_type = _impl::common_type<Lhs, Rhs>;
+        using common_type = _impl::common_type_t<Lhs, Rhs>;
         return static_cast<common_type>(lhs)+static_cast<common_type>(rhs);
     }
 
@@ -980,76 +1185,55 @@ namespace sg14 {
     constexpr auto operator-(
             const Lhs& lhs,
             const Rhs& rhs)
-    -> _impl::common_type<Lhs, Rhs>
+    -> _impl::common_type_t<Lhs, Rhs>
     {
-        using common_type = _impl::common_type<Lhs, Rhs>;
+        using common_type = _impl::common_type_t<Lhs, Rhs>;
         return static_cast<common_type>(lhs)-static_cast<common_type>(rhs);
     }
 
-    // fixed-point, fixed-point -> fixed-point
-    template<class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
-    constexpr auto operator*(
-            const fixed_point<LhsReprType, LhsExponent>& lhs,
-            const fixed_point<RhsReprType, RhsExponent>& rhs)
-    -> _impl::common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>
-    {
-        using lhs_type = fixed_point<LhsReprType, LhsExponent>;
-        using rhs_type = fixed_point<RhsReprType, RhsExponent>;
-        using result_type = _impl::common_type<lhs_type, rhs_type>;
-        using intermediate_type = _impl::promote_fast_result<result_type>;
-
-        return static_cast<result_type>(_impl::multiply<intermediate_type>(lhs, rhs));
-    }
-
-    template<class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
-    constexpr auto operator/(
-            const fixed_point<LhsReprType, LhsExponent>& lhs,
-            const fixed_point<RhsReprType, RhsExponent>& rhs)
-    -> _impl::common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>
-    {
-        using result_type = _impl::common_type<fixed_point<LhsReprType, LhsExponent>, fixed_point<RhsReprType, RhsExponent>>;
-        return _impl::divide<result_type>(lhs, rhs);
-    }
-
     // fixed-point, integer -> fixed-point
-    template<class LhsReprType, int LhsExponent, class Integer>
-    constexpr auto operator*(
-            const fixed_point<LhsReprType, LhsExponent>& lhs,
-            const Integer& rhs)
-    -> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<LhsReprType, LhsExponent>>::type
+    template<
+        class ReprType, int Exponent,
+        class Integer, 
+        typename = typename std::enable_if<std::is_integral<Integer>::value>::type>
+    constexpr auto operator*(const fixed_point<ReprType, Exponent>& lhs, const Integer& rhs)
+    -> fixed_point<decltype(std::declval<ReprType>() * std::declval<Integer>()), Exponent>
     {
-        using result_type = fixed_point<LhsReprType, LhsExponent>;
-        return _impl::multiply<result_type>(lhs, fixed_point<Integer>(rhs));
+        using repr_type = fixed_point<decltype(std::declval<ReprType>() * std::declval<Integer>()), Exponent>;
+        return _impl::multiply<repr_type>(lhs, fixed_point<Integer>(rhs));
     }
 
-    template<class LhsReprType, int LhsExponent, class Integer>
-    constexpr auto operator/(
-            const fixed_point<LhsReprType, LhsExponent>& lhs,
-            const Integer& rhs)
-    -> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<LhsReprType, LhsExponent>>::type
+    template<
+        class ReprType, int Exponent,
+        class Integer,
+        typename = typename std::enable_if<std::is_integral<Integer>::value>::type>
+    constexpr auto operator/(const fixed_point<ReprType, Exponent>& lhs, const Integer& rhs)
+    -> fixed_point<decltype(std::declval<ReprType>() / std::declval<Integer>()), Exponent>
     {
-        using result_type = fixed_point<LhsReprType, LhsExponent>;
+        using result_type = fixed_point<decltype(std::declval<ReprType>() / std::declval<Integer>()), Exponent>;
         return _impl::divide<result_type>(lhs, fixed_point<Integer>(rhs));
     }
 
     // integer. fixed-point -> fixed-point
-    template<class Integer, class RhsReprType, int RhsExponent>
-    constexpr auto operator*(
-            const Integer& lhs,
-            const fixed_point<RhsReprType, RhsExponent>& rhs)
-    -> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<RhsReprType, RhsExponent>>::type
+    template<
+        class Integer,
+        class ReprType, int Exponent,
+        typename = typename std::enable_if<std::is_integral<Integer>::value>::type>
+    constexpr auto operator*(const Integer& lhs, const fixed_point<ReprType, Exponent>& rhs)
+    -> fixed_point<decltype(std::declval<Integer>() * std::declval<ReprType>()), Exponent>
     {
-        using result_type = fixed_point<RhsReprType, RhsExponent>;
+        using result_type = fixed_point<decltype(std::declval<Integer>() * std::declval<ReprType>()), Exponent>;
         return _impl::multiply<result_type>(fixed_point<Integer>(lhs), rhs);
     }
 
-    template<class Integer, class RhsReprType, int RhsExponent>
-    constexpr auto operator/(
-            const Integer& lhs,
-            const fixed_point<RhsReprType, RhsExponent>& rhs)
-    -> typename std::enable_if<std::is_integral<Integer>::value, fixed_point<RhsReprType, RhsExponent>>::type
+    template<
+        class Integer,
+        class ReprType, int Exponent,
+        typename = typename std::enable_if<std::is_integral<Integer>::value>::type>
+    constexpr auto operator/(const Integer& lhs, const fixed_point<ReprType, Exponent>& rhs)
+    -> fixed_point<decltype(std::declval<Integer>() / std::declval<ReprType>()), Exponent>
     {
-        using result_type = fixed_point<RhsReprType, RhsExponent>;
+        using result_type = fixed_point<decltype(std::declval<Integer>() / std::declval<ReprType>()), Exponent>;
         return _impl::divide<result_type>(fixed_point<Integer>(lhs), rhs);
     }
 
@@ -1058,11 +1242,11 @@ namespace sg14 {
     constexpr auto operator*(
             const fixed_point<LhsReprType, LhsExponent>& lhs,
             const Float& rhs)
-    -> _impl::common_type<
+    -> _impl::common_type_t<
             fixed_point<LhsReprType, LhsExponent>,
             typename std::enable_if<std::is_floating_point<Float>::value, Float>::type>
     {
-        using result_type = _impl::common_type<fixed_point<LhsReprType, LhsExponent>, Float>;
+        using result_type = _impl::common_type_t<fixed_point<LhsReprType, LhsExponent>, Float>;
         return static_cast<result_type>(lhs)*rhs;
     }
 
@@ -1070,11 +1254,11 @@ namespace sg14 {
     constexpr auto operator/(
             const fixed_point<LhsReprType, LhsExponent>& lhs,
             const Float& rhs)
-    -> _impl::common_type<
+    -> _impl::common_type_t<
             fixed_point<LhsReprType, LhsExponent>,
             typename std::enable_if<std::is_floating_point<Float>::value, Float>::type>
     {
-        using result_type = _impl::common_type<fixed_point<LhsReprType, LhsExponent>, Float>;
+        using result_type = _impl::common_type_t<fixed_point<LhsReprType, LhsExponent>, Float>;
         return static_cast<result_type>(lhs)/rhs;
     }
 
@@ -1083,11 +1267,11 @@ namespace sg14 {
     constexpr auto operator*(
             const Float& lhs,
             const fixed_point<RhsReprType, RhsExponent>& rhs)
-    -> _impl::common_type<
+    -> _impl::common_type_t<
             typename std::enable_if<std::is_floating_point<Float>::value, Float>::type,
             fixed_point<RhsReprType, RhsExponent>>
     {
-        using result_type = _impl::common_type<fixed_point<RhsReprType, RhsExponent>, Float>;
+        using result_type = _impl::common_type_t<fixed_point<RhsReprType, RhsExponent>, Float>;
         return lhs*static_cast<result_type>(rhs);
     }
 
@@ -1095,11 +1279,11 @@ namespace sg14 {
     constexpr auto operator/(
             const Float& lhs,
             const fixed_point<RhsReprType, RhsExponent>& rhs)
-    -> _impl::common_type<
+    -> _impl::common_type_t<
             typename std::enable_if<std::is_floating_point<Float>::value, Float>::type,
             fixed_point<RhsReprType, RhsExponent>>
     {
-        using result_type = _impl::common_type<fixed_point<RhsReprType, RhsExponent>, Float>;
+        using result_type = _impl::common_type_t<fixed_point<RhsReprType, RhsExponent>, Float>;
         return lhs/
                 static_cast<result_type>(rhs);
     }
@@ -1107,13 +1291,13 @@ namespace sg14 {
     template<class LhsReprType, int Exponent, class Rhs>
     fixed_point<LhsReprType, Exponent>& operator+=(fixed_point<LhsReprType, Exponent>& lhs, const Rhs& rhs)
     {
-        return lhs += fixed_point<LhsReprType, Exponent>(rhs);
+        return lhs = lhs + fixed_point<LhsReprType, Exponent>(rhs);
     }
 
     template<class LhsReprType, int Exponent, class Rhs>
     fixed_point<LhsReprType, Exponent>& operator-=(fixed_point<LhsReprType, Exponent>& lhs, const Rhs& rhs)
     {
-        return lhs -= fixed_point<LhsReprType, Exponent>(rhs);
+        return lhs = lhs - fixed_point<LhsReprType, Exponent>(rhs);
     }
 
     template<class LhsReprType, int Exponent>
@@ -1147,86 +1331,113 @@ namespace sg14 {
 #if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
                 (x<fixed_point<ReprType, Exponent>(0))
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
-                #endif
+#endif
                 fixed_point<ReprType, Exponent>::from_data(
                         static_cast<ReprType>(_impl::sqrt_solve1(promote(x).data())));
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::trunc_add_result / trunc_add
-
-    // yields specialization of fixed_point with integral bits necessary to store
-    // result of an addition between N values of fixed_point<ReprType, Exponent>
-    template<class FixedPoint, unsigned N = 2>
-    using trunc_add_result = make_fixed_from_repr<
-            typename FixedPoint::repr_type,
-            FixedPoint::integer_digits+_impl::capacity<N-1>::value>;
-
-    template<class FixedPoint, class ... Tail>
-    trunc_add_result<FixedPoint, sizeof...(Tail)+1>
-    constexpr trunc_add(const FixedPoint& addend1, const Tail& ... addend_tail)
-    {
-        using output_type = trunc_add_result<FixedPoint, sizeof...(Tail)+1>;
-        return _impl::add<output_type, FixedPoint>(addend1, addend_tail ...);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::trunc_subtract_result / trunc_subtract
-
-    // yields specialization of fixed_point with integral bits necessary to store
-    // result of an subtraction between N values of fixed_point<ReprType, Exponent>
+    /// \brief truncated addition operation
+    ///
+    /// \param lhs, ths terms to be added
+    ///
+    /// \return the sum of \c lhs + \c rhs
+    ///
+    /// \tparam Lhs, Rhs specializations of \ref fixed_point
+    ///
+    /// \remarks The function adds \c lhs to \c rhs.
+    /// \remarks The return type is signed if either input is signed.
+    /// \remarks The size of the return type is the larger of the two inputs.
+    /// \remarks The return type contains enough integer bits to avoid overflow (*).
+    ///
+    /// \warning Overflow is avoided by dropping the least-significant bit.
+    /// \warning As a result, there is a low risk the result will be in a flushed state.
+    ///
+    /// \warning (*) Overflow can occur if \c rhs is the
+    /// <a href="https://en.wikipedia.org/wiki/Two's_complement#Most_negative_number">most negative number</a>.
+    ///
+    /// \sa trunc_subtract, trunc_multiply, trunc_divide, promote_subtract
     template<class Lhs, class Rhs = Lhs>
-    using trunc_subtract_result = make_fixed_from_repr<
-            _impl::subtract_result_repr<typename Lhs::repr_type, typename Rhs::repr_type>,
-            _impl::max(Lhs::integer_digits, Rhs::integer_digits)+1>;
-
-    template<class Lhs, class Rhs>
-    trunc_subtract_result<Lhs, Rhs>
-    constexpr trunc_subtract(const Lhs& minuend, const Rhs& subtrahend)
+    constexpr auto trunc_add(const Lhs& lhs, const Rhs& rhs)
+    -> typename _impl::trunc_arithmetic_policy::add<Lhs, Rhs>::result_type
     {
-        using output_type = trunc_subtract_result<Lhs, Rhs>;
-        return static_cast<output_type>(minuend)-static_cast<output_type>(subtrahend);
+        return _impl::policy_add<_impl::trunc_arithmetic_policy>(lhs, rhs);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::trunc_multiply_result / trunc_multiply
-
-    // yields specialization of fixed_point with integral bits necessary to store
-    // result of a multiply between values of fixed_point<ReprType, Exponent>
+    /// \brief truncated subtraction operation
+    ///
+    /// \param lhs minuend from which to subtract
+    /// \param ths subtrahend to subtract from
+    ///
+    /// \return the result of \c lhs - \c rhs
+    ///
+    /// \tparam Lhs, Rhs specializations of \ref fixed_point
+    ///
+    /// \remarks The function subtracts \c lhs from \c rhs.
+    /// \remarks The return type is signed if either input is signed.
+    /// \remarks The size of the return type is the larger of the two inputs.
+    /// \remarks The return type contains enough integer bits to avoid overflow (*).
+    ///
+    /// \warning Overflow is avoided by dropping the least-significant bit.
+    /// \warning As a result, there is a low risk the result will be in a flushed state.
+    ///
+    /// \warning (*) Overflow can occur if \c rhs is the
+    /// <a href="https://en.wikipedia.org/wiki/Two's_complement#Most_negative_number">most negative number</a>.
+    ///
+    /// \sa trunc_add, trunc_multiply, trunc_divide, promote_subtract
     template<class Lhs, class Rhs = Lhs>
-    using trunc_multiply_result = make_fixed_from_repr<
-            _impl::arithmetic_result_repr<typename Lhs::repr_type, typename Rhs::repr_type>,
-            Lhs::integer_digits+Rhs::integer_digits>;
-
-    // as trunc_multiply_result but converts parameter, factor,
-    // ready for safe binary multiply
-    template<class Lhs, class Rhs>
-    trunc_multiply_result<Lhs, Rhs>
-    constexpr trunc_multiply(const Lhs& lhs, const Rhs& rhs)
+    constexpr auto trunc_subtract(const Lhs& lhs, const Rhs& rhs)
+    -> typename _impl::trunc_arithmetic_policy::subtract<Lhs, Rhs>::result_type
     {
-        using result_type = trunc_multiply_result<Lhs, Rhs>;
-        using intermediate_type = _impl::promote_fast_result<result_type>;
-        return static_cast<result_type>(_impl::multiply<intermediate_type>(lhs, rhs));
+        return _impl::policy_subtract<_impl::trunc_arithmetic_policy>(lhs, rhs);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::trunc_divide_result / trunc_divide
-
-    // yields specialization of fixed_point with integral bits necessary to store
-    // result of a divide between values of types, Lhs and Rhs
-    template<class FixedPointDividend, class FixedPointDivisor = FixedPointDividend>
-    using trunc_divide_result = make_fixed_from_repr<
-            _impl::arithmetic_result_repr<typename FixedPointDividend::repr_type, typename FixedPointDivisor::repr_type>,
-            FixedPointDividend::integer_digits+FixedPointDivisor::fractional_digits>;
-
-    // as trunc_divide_result but converts parameter, factor,
-    // ready for safe binary divide
-    template<class FixedPointDividend, class FixedPointDivisor>
-    trunc_divide_result<FixedPointDividend, FixedPointDivisor>
-    constexpr trunc_divide(const FixedPointDividend& lhs, const FixedPointDivisor& rhs)
+    /// \brief truncated multiplication operation
+    ///
+    /// \param lhs, ths factors to be multiplied
+    ///
+    /// \return the product of \c lhs * \c rhs
+    ///
+    /// \tparam Lhs, Rhs specializations of \ref fixed_point
+    ///
+    /// \remarks The function multiplies \c lhs by \c rhs.
+    /// \remarks The return type is signed if either input is signed.
+    /// \remarks The size of the return type is the larger of the two inputs.
+    /// \remarks The return type contains enough integer bits to avoid overflow (*).
+    ///
+    /// \warning Overflow is avoided by dropping half of the lower-precision bits.
+    /// \warning As a result, there is a high risk the result will be in a flushed state.
+    ///
+    /// \warning (*) Overflow can occur if \c rhs is the
+    /// <a href="https://en.wikipedia.org/wiki/Two's_complement#Most_negative_number">most negative number</a>.
+    ///
+    /// \sa trunc_add, trunc_subtract, trunc_divide, promote_multiply
+    template<class Lhs, class Rhs = Lhs>
+    constexpr auto trunc_multiply(const Lhs& lhs, const Rhs& rhs)
+    -> typename _impl::trunc_arithmetic_policy::multiply<Lhs, Rhs>::result_type
     {
-        using result_type = trunc_divide_result<FixedPointDividend, FixedPointDivisor>;
-        return _impl::divide<result_type>(lhs, rhs);
+        return _impl::policy_multiply<_impl::trunc_arithmetic_policy>(lhs, rhs);
+    }
+
+    /// \brief truncated division operation
+    ///
+    /// \param lhs the dividend or numerator
+    /// \param ths the divisor or denominator
+    ///
+    /// \return the quotient of \c lhs / \c rhs
+    ///
+    /// \tparam Lhs, Rhs specializations of \ref fixed_point
+    ///
+    /// \remarks The function divides \c lhs by \c rhs.
+    /// \remarks The return type is signed if either input is signed.
+    /// \remarks The size of the return type is the larger of the two inputs.
+    /// \remarks The return type contains enough integer bits to avoid overflow (most negative number excepted).
+    ///
+    /// \sa trunc_add, trunc_subtract, trunc_multiply, promote_divide
+    template<class Lhs, class Rhs>
+    constexpr auto trunc_divide(const Lhs& lhs, const Rhs& rhs)
+    -> typename _impl::trunc_arithmetic_policy::divide<Lhs, Rhs>::result_type
+    {
+        return _impl::policy_divide<_impl::trunc_arithmetic_policy>(lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -1271,7 +1482,7 @@ namespace sg14 {
     constexpr trunc_square(const FixedPoint& root)
     {
         using result_type = trunc_square_result<FixedPoint>;
-		using intermediate_type = _impl::promote_fast_result<result_type>;
+		using intermediate_type = _impl::promote_integer_result<result_type>;
 		return static_cast<result_type>(_impl::multiply<intermediate_type>(root, root));
     }
 
@@ -1351,7 +1562,7 @@ namespace sg14 {
     constexpr promote_subtract(const Lhs& lhs, const Rhs& rhs)
     {
         using result_type = promote_subtract_result<Lhs, Rhs>;
-        return static_cast<result_type>(lhs)-static_cast<result_type>(rhs);
+        return _impl::subtract<result_type>(lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -1360,7 +1571,7 @@ namespace sg14 {
     // yields specialization of fixed_point with capacity necessary to store
     // result of a multiply between values of fixed_point<ReprType, Exponent>
     template<class Lhs, class Rhs = Lhs>
-    using promote_multiply_result = promote_result<_impl::common_type<Lhs, Rhs>>;
+    using promote_multiply_result = promote_result<_impl::common_type_t<Lhs, Rhs>>;
 
     // as promote_multiply_result but converts parameter, factor,
     // ready for safe binary multiply
@@ -1378,7 +1589,7 @@ namespace sg14 {
     // yields specialization of fixed_point with capacity necessary to store
     // result of a divide between values of fixed_point<ReprType, Exponent>
     template<class Lhs, class Rhs = Lhs>
-    using promote_divide_result = promote_result<_impl::common_type<Lhs, Rhs>>;
+    using promote_divide_result = promote_result<_impl::common_type_t<Lhs, Rhs>>;
 
     // as promote_divide_result but converts parameter, factor,
     // ready for safe binary divide

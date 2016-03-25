@@ -32,14 +32,14 @@ TEST(proposal, make_fixed)
 static_assert(make_ufixed<4, 4>{.006}==make_ufixed<4, 4>{0}, "Incorrect information in proposal section, Conversion");
 
 // Operator Overloads
-static_assert(make_ufixed<5, 3>{8}+make_ufixed<4, 4>{3}==make_ufixed<5, 3>{11},
+static_assert(fixed_point<uint8_t, -3>{8} + fixed_point<uint8_t, -4>{3} == fixed_point<unsigned, -3>{11},
         "Incorrect information in proposal section, Operator Overloads");
-static_assert(is_same<decltype(make_ufixed<5, 3>{8}+make_ufixed<4, 4>{3}), decltype(make_ufixed<5, 3>{11})>::value,
+static_assert(is_same<decltype(fixed_point<uint8_t, -3>{8} + fixed_point<int8_t, -4>{3}), decltype(fixed_point<int, -3>{11})>::value,
         "Incorrect information in proposal section, Operator Overloads");
 
-static_assert(make_ufixed<5, 3>{8}+3==make_ufixed<5, 3>{11},
+static_assert(make_ufixed<5, 3>{8}+3==fixed_point<signed, -3>{11},
         "Incorrect information in proposal section, Operator Overloads");
-static_assert(is_same<decltype(make_ufixed<5, 3>{8}+3), decltype(make_ufixed<5, 3>{11})>::value,
+static_assert(is_same<decltype(make_ufixed<5, 3>{8}+3), decltype(fixed_point<signed, -3>{11})>::value,
         "Incorrect information in proposal section, Operator Overloads");
 
 static_assert(make_ufixed<5, 3>{8}+float{3}==float{11},
@@ -48,8 +48,22 @@ static_assert(is_same<decltype(make_ufixed<5, 3>{8}+float{3}), decltype(float{11
         "Incorrect information in proposal section, Operator Overloads");
 
 // Overflow
-static_assert(static_cast<int>(make_fixed<4, 3>(15)+make_fixed<4, 3>(1))!=16,
-        "Incorrect information in proposal section, Overflow");
+TEST(proposal, overflow) {
+    switch (sizeof(int)) {
+    case 4: {
+        auto sum = make_ufixed<2, 30>(3) + make_ufixed<2, 30>(1);
+        ASSERT_TRUE(sum == 0);
+        break;
+    }
+    case 8: {
+        auto sum = make_ufixed<2, 62>(3) + make_ufixed<2, 62>(1);
+        ASSERT_TRUE(sum == 0);
+        break;
+    }
+    default:
+        FAIL() << "dying to know what architecture this is";
+    }
+}
 
 // Underflow
 static_assert(make_fixed<7, 0>(15)/make_fixed<7, 0>(2)==7.f, "Incorrect information in proposal section, Underflow");

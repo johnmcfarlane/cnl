@@ -11,14 +11,14 @@
 template <typename FP>
 constexpr FP magnitude_squared(const FP & x, const FP & y, const FP & z)
 {
-	return x * x + y * y + z * z;
+	return static_cast<FP>(x * x + y * y + z * z);
 }
 
 template <typename FP>
 constexpr auto magnitude_trunc(const FP & x, const FP & y, const FP & z)
--> decltype(trunc_sqrt(trunc_add(trunc_square(x), trunc_square(y), trunc_square(z))))
+-> decltype(trunc_sqrt(trunc_add(trunc_square(x), trunc_add(trunc_square(y), trunc_square(z)))))
 {
-	return trunc_sqrt(trunc_add(trunc_square(x), trunc_square(y), trunc_square(z)));
+	return trunc_sqrt(trunc_add(trunc_square(x), trunc_add(trunc_square(y), trunc_square(z))));
 }
 
 template <typename Real>
