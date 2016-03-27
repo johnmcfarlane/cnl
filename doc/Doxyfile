@@ -16,13 +16,16 @@ CALLER_GRAPH = NO
 OUTPUT_DIRECTORY =
 OUTPUT_LANGUAGE = English
 INPUT = \
+ ../include/elastic.h \
  ../include/fixed_point.h \
  ../include/fixed_point_utils.h \
  ../include/type_traits.h \
  index.md
-EXCLUDE_SYMBOLS = sg14::_impl \
-sg14::_type_traits_impl \
-_SG14_FN_QUALIFIER
+EXCLUDE_SYMBOLS = \
+ sg14::_elastic_impl \
+ sg14::_impl \
+ sg14::_type_traits_impl \
+ _SG14_FN_QUALIFIER
 FILE_PATTERNS = *.h *.md
 RECURSIVE = YES
 EXCLUDE =
