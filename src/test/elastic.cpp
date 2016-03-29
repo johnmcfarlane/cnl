@@ -65,7 +65,8 @@ struct positive_elastic_test {
     // useful constants
 
     static constexpr fixed_point_type fixed_point_zero{0.};
-    static constexpr elastic_type zero{fixed_point_zero};
+    static constexpr elastic_type zero{ fixed_point_zero };
+    static constexpr elastic_type negative_zero{ -zero };
 
     static constexpr fixed_point_type fixed_point_min{fixed_point_type::from_data(1)};
     static constexpr elastic_type min{fixed_point_min};
@@ -102,7 +103,7 @@ struct positive_elastic_test {
     static_assert(elastic_type{0.}==elastic_type{0.}, "comparison of same-type default-initialized types failed");
     static_assert(zero==elastic_type(), "default-initialized value is not represented using zero");
     static_assert(zero==elastic_type{0.}, "zero-initialized value is not represented using zero");
-    static_assert(zero==-zero, "negative zero is not zero");
+    static_assert(zero==negative_zero, "negative zero is not zero");
 
     // comparisons between zero
     static_assert((zero==zero)==true, "comparison of zero and zero failed");
