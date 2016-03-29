@@ -51,6 +51,51 @@ template
 struct test_traits<std::int64_t, true>;
 
 ////////////////////////////////////////////////////////////////////////////////
+// test specific operations
+
+// Lhs == Rhs
+template <class T>
+constexpr bool is_equal_to(const T& Lhs, const T& Rhs) {
+    return ((Lhs == Rhs) == false) ? (throw std::logic_error("Lhs is *not* equal to Rhs"))
+            : ((Lhs != Rhs) == true) ? (throw std::logic_error("Lhs *is* not equal to Rhs"))
+            : ((Lhs < Rhs) == true) ? (throw std::logic_error("Lhs is less than Rhs"))
+            : ((Lhs > Rhs) == true) ? (throw std::logic_error("Lhs is greater than Rhs"))
+            : ((Lhs <= Rhs) == false) ? (throw std::logic_error("Lhs is not less than or equal to Rhs"))
+            : ((Lhs >= Rhs) == false) ? (throw std::logic_error("Lhs is not greater than or equal to Rhs"))
+            : true;
+}
+
+static_assert(is_equal_to<int>(0, 0), "less_than_test test failed");
+
+// Lesser < Greater
+template <class T>
+constexpr bool is_less_than(const T& Lesser, const T& Greater) {
+    return ((Lesser == Greater) == true) ? (throw std::logic_error("Lesser is equal to Greater"))
+            : ((Lesser != Greater) == false) ? (throw std::logic_error("Lesser is not not equal to Greater"))
+            : ((Lesser < Greater) == false) ? (throw std::logic_error("Lesser is not less than Greater"))
+            : ((Lesser > Greater) == true) ? (throw std::logic_error("Lesser is greater than Greater"))
+            : ((Lesser <= Greater) == false) ? (throw std::logic_error("Lesser is not less than or equal to Greater"))
+            : ((Lesser >= Greater) == true) ? (throw std::logic_error("Lesser is greater than or equal to Greater"))
+            : true;
+}
+
+static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
+
+// Greater > Lesser
+template <class T>
+constexpr bool is_greater_than(const T& Greater, const T& Lesser) {
+    return ((Greater == Lesser) == true) ? (throw std::logic_error("Greater is equal to Lesser"))
+            : ((Greater != Lesser) == false) ? (throw std::logic_error("Greater is not not equal to Lesser"))
+            : ((Greater < Lesser) == true) ? (throw std::logic_error("Greater is less than Lesser"))
+            : ((Greater > Lesser) == false) ? (throw std::logic_error("Greater is not greater than Lesser"))
+            : ((Greater <= Lesser) == true) ? (throw std::logic_error("Greater is less than or equal to Lesser"))
+            : ((Greater >= Lesser) == false) ? (throw std::logic_error("Greater is not greater than or equal to Lesser"))
+            : true;
+}
+
+static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
+
+////////////////////////////////////////////////////////////////////////////////
 // test how elastic handles non-negative values;
 // should pass for all specializations
 
@@ -99,43 +144,26 @@ struct positive_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // test comparison operators
 
-    // before we set any bits at all
-    static_assert(elastic_type{0.}==elastic_type{0.}, "comparison of same-type default-initialized types failed");
-    static_assert(zero==elastic_type(), "default-initialized value is not represented using zero");
-    static_assert(zero==elastic_type{0.}, "zero-initialized value is not represented using zero");
-    static_assert(zero==negative_zero, "negative zero is not zero");
-
     // comparisons between zero
-    static_assert((zero==zero)==true, "comparison of zero and zero failed");
-    static_assert((zero!=zero)==false, "comparison of zero and zero failed");
-    static_assert((zero<zero)==false, "comparison of zero and zero failed");
-    static_assert((zero>zero)==false, "comparison of zero and zero failed");
-    static_assert((zero<=zero)==true, "comparison of zero and zero failed");
-    static_assert((zero>=zero)==true, "comparison of zero and zero failed");
+    static_assert(is_equal_to<elastic_type>(zero, zero), "comparison test error");
+
+    // comparisons between zero and default-initialized value
+    static_assert(zero==elastic_type(), "default-initialized value is not represented using zero");
+
+    // comparisons between zero and zero-initialized value
+    static_assert(zero==elastic_type{0.}, "zero-initialized value is not represented using zero");
+
+    // comparisons between zero and negative zero
+    static_assert(is_equal_to<elastic_type>(zero, negative_zero), "comparison test error");
 
     // comparisons between minimum value
-    static_assert((min==min)==true, "comparison of min and min failed");
-    static_assert((min!=min)==false, "comparison of min and min failed");
-    static_assert((min<min)==false, "comparison of min and min failed");
-    static_assert((min>min)==false, "comparison of min and min failed");
-    static_assert((min<=min)==true, "comparison of min and min failed");
-    static_assert((min>=min)==true, "comparison of min and min failed");
+    static_assert(is_equal_to<elastic_type>(min, min), "comparison test error");
 
     // zero vs min
-    static_assert((zero==min)==false, "comparison of zero and min failed");
-    static_assert((zero!=min)==true, "comparison of zero and min failed");
-    static_assert((zero<min)==true, "comparison of zero and min failed");
-    static_assert((zero>min)==false, "comparison of zero and min failed");
-    static_assert((zero<=min)==true, "comparison of zero and min failed");
-    static_assert((zero>=min)==false, "comparison of zero and min failed");
+    static_assert(is_less_than<elastic_type>(zero, min), "comparison test error");
 
     // min vs zero
-    static_assert((min==zero)==false, "comparison of min and zero failed");
-    static_assert((min!=zero)==true, "comparison of min and zero failed");
-    static_assert((min<zero)==false, "comparison of min and zero failed");
-    static_assert((min>zero)==true, "comparison of min and zero failed");
-    static_assert((min<=zero)==false, "comparison of min and zero failed");
-    static_assert((min>=zero)==true, "comparison of min and zero failed");
+    static_assert(is_greater_than<elastic_type>(min, zero), "comparison test error");
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -173,28 +201,13 @@ struct negative_elastic_test {
     // test comparison operators
 
     // comparisons between negative_min
-    static_assert((negative_min==negative_min)==true, "comparison of negative_min and negative_min failed");
-    static_assert((negative_min!=negative_min)==false, "comparison of negative_min and negative_min failed");
-    static_assert((negative_min<negative_min)==false, "comparison of negative_min and negative_min failed");
-    static_assert((negative_min>negative_min)==false, "comparison of negative_min and negative_min failed");
-    static_assert((negative_min<=negative_min)==true, "comparison of negative_min and negative_min failed");
-    static_assert((negative_min>=negative_min)==true, "comparison of negative_min and negative_min failed");
+    static_assert(is_equal_to<elastic_type>(negative_min, negative_min), "comparison test error");
 
     // min vs negative_min
-    static_assert((min==negative_min)==false, "comparison of min and negative_min failed");
-    static_assert((min!=negative_min)==true, "comparison of min and negative_min failed");
-    static_assert((min<negative_min)==false, "comparison of min and negative_min failed");
-    static_assert((min>negative_min)==true, "comparison of min and negative_min failed");
-    static_assert((min<=negative_min)==false, "comparison of min and negative_min failed");
-    static_assert((min>=negative_min)==true, "comparison of min and negative_min failed");
+    static_assert(is_greater_than<elastic_type>(min, negative_min), "comparison test error");
 
     // negative_min vs zero
-    static_assert((negative_min==zero)==false, "comparison of negative_min and zero failed");
-    static_assert((negative_min!=zero)==true, "comparison of negative_min and zero failed");
-    static_assert((negative_min<zero)==true, "comparison of negative_min and zero failed");
-    static_assert((negative_min>zero)==false, "comparison of negative_min and zero failed");
-    static_assert((negative_min<=zero)==true, "comparison of negative_min and zero failed");
-    static_assert((negative_min>=zero)==false, "comparison of negative_min and zero failed");
+    static_assert(is_less_than<elastic_type>(negative_min, zero), "comparison test error");
 };
 
 ////////////////////////////////////////////////////////////////////////////////
