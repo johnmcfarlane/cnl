@@ -239,70 +239,70 @@ struct elastic_test_with_integer_digits :
 // trigger elastic tests against a range of values for IntegerDigits parameter
 
 template
-struct elastic_test_with_integer_digits<-43>;
-
-template
-struct elastic_test_with_integer_digits<-31>;
-
-template
-struct elastic_test_with_integer_digits<-27>;
-
-template
-struct elastic_test_with_integer_digits<-19>;
-
-template
-struct elastic_test_with_integer_digits<-16>;
-
-template
-struct elastic_test_with_integer_digits<-13>;
-
-template
-struct elastic_test_with_integer_digits<-8>;
-
-template
-struct elastic_test_with_integer_digits<-6>;
-
-template
-struct elastic_test_with_integer_digits<-5>;
-
-template
-struct elastic_test_with_integer_digits<-2>;
-
-template
-struct elastic_test_with_integer_digits<-1>;
-
-template
 struct elastic_test_with_integer_digits<0>;
 
 template
 struct elastic_test_with_integer_digits<1>;
 
 template
+struct elastic_test_with_integer_digits<-1>;
+
+template
 struct elastic_test_with_integer_digits<2>;
+
+template
+struct elastic_test_with_integer_digits<-2>;
 
 template
 struct elastic_test_with_integer_digits<5>;
 
 template
+struct elastic_test_with_integer_digits<-5>;
+
+template
 struct elastic_test_with_integer_digits<6>;
+
+template
+struct elastic_test_with_integer_digits<-6>;
 
 template
 struct elastic_test_with_integer_digits<8>;
 
 template
+struct elastic_test_with_integer_digits<-8>;
+
+template
 struct elastic_test_with_integer_digits<13>;
+
+template
+struct elastic_test_with_integer_digits<-13>;
 
 template
 struct elastic_test_with_integer_digits<16>;
 
 template
+struct elastic_test_with_integer_digits<-16>;
+
+template
 struct elastic_test_with_integer_digits<19>;
+
+template
+struct elastic_test_with_integer_digits<-19>;
 
 template
 struct elastic_test_with_integer_digits<27>;
 
 template
+struct elastic_test_with_integer_digits<-27>;
+
+template
 struct elastic_test_with_integer_digits<31>;
 
 template
+struct elastic_test_with_integer_digits<-31>;
+
+template
 struct elastic_test_with_integer_digits<43>;
+
+template
+struct elastic_test_with_integer_digits<-43>;
