@@ -14,7 +14,7 @@ using sg14::elastic;
 ////////////////////////////////////////////////////////////////////////////////
 // useful constants
 
-template <typename T, bool IsSigned>
+template <class T, bool IsSigned>
 struct test_traits {
     static_assert(sg14::is_signed<T>::value == IsSigned, "sg14::is_signed fails for give type, T");
     static_assert(sg14::is_unsigned<T>::value != IsSigned, "sg14::is_signed fails for give type, T");
@@ -54,7 +54,7 @@ struct test_traits<std::int64_t, true>;
 // test how elastic handles non-negative values;
 // should pass for all specializations
 
-template<typename Elastic>
+template<class Elastic>
 struct positive_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // core definitions
@@ -142,7 +142,7 @@ struct positive_elastic_test {
 // test how elastic handles negative values;
 // should pass for all signed specializations
 
-template<typename Elastic>
+template<class Elastic>
 struct negative_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // core definitions
