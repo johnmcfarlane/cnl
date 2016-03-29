@@ -97,7 +97,7 @@ struct positive_elastic_test {
             "too many fractional digits in fixed-point type to represent elastic values accurately");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // test operators
+    // test comparison operators
 
     // before we set any bits at all
     static_assert(elastic_type{0.}==elastic_type{0.}, "comparison of same-type default-initialized types failed");
@@ -170,7 +170,7 @@ struct negative_elastic_test {
     static_assert(is_same<typename sg14::make_signed<elastic_type>::type, elastic_type>::value, "subject of test class is not reported as signed");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // test operators
+    // test comparison operators
 
     // comparisons between negative_min
     static_assert((negative_min==negative_min)==true, "comparison of negative_min and negative_min failed");
