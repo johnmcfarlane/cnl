@@ -182,7 +182,7 @@ namespace sg14 {
         /// copy constructor (guaranteed never to throw)
         template<int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
         explicit constexpr elastic(const elastic<RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>& rhs)
-                :_value(rhs._value) { }
+                :_value(rhs._data()) { }
 
         /// constructor taking fixed_point type
         template<typename RhsReprType, int RhsExponent>
