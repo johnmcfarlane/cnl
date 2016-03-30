@@ -106,7 +106,7 @@ namespace sg14 {
 
 namespace std {
     ////////////////////////////////////////////////////////////////////////////////
-    // std::numeric_limits for fixed-point
+    // std::numeric_limits for sg14::fixed_point
 
     // note: some members are guessed,
     // some are temporary (assuming rounding style, traps etc.)
