@@ -953,7 +953,7 @@ struct FixedPointTester {
             exponent == fixed_point::exponent,
             "mismatched exponent");
 
-    // simply assignement to and from underlying representation
+    // simply assignment to and from underlying representation
     using numeric_limits = std::numeric_limits<fixed_point>;
     static constexpr fixed_point min = fixed_point::from_data(repr_type(1));
     static_assert(min.data() == repr_type(1), "all ReprType types should be able to store the number 1!");
