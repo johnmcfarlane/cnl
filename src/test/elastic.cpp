@@ -297,6 +297,33 @@ struct signed_elastic_test {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
+// test how elastic handles positive values;
+// should pass for all unsigned specializations
+
+template<class Elastic>
+struct unsigned_elastic_test {
+    ////////////////////////////////////////////////////////////////////////////////
+    // core definitions
+
+    using elastic_type = Elastic;
+    using numeric_limits = std::numeric_limits<elastic_type>;
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // useful constants
+
+    static constexpr elastic_type zero{0.};
+
+    static constexpr elastic_type min{numeric_limits::min()};
+    static constexpr elastic_type lowest{numeric_limits::lowest()};
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // test numeric_limits<elastic>
+
+    static_assert(is_equal_to(lowest, zero), "numeric_limits test failed");
+    static_assert(is_less_than(lowest, min), "numeric_limits test failed");
+};
+
+////////////////////////////////////////////////////////////////////////////////
 // given values for IntegerDigits and FractionalDigits parameters,
 // triggers elastic<> tests with signed and unsigned specializations
 
@@ -304,6 +331,9 @@ template<int IntegerDigits, int FractionalDigits>
 struct elastic_test :
         // perform positive value tests against unsigned elastic specialization
         positive_elastic_test<elastic<IntegerDigits, FractionalDigits, unsigned>>,
+
+        // perform unsigned-specific value tests against unsigned elastic specialization
+        unsigned_elastic_test<elastic<IntegerDigits, FractionalDigits, unsigned>>,
 
         // perform positive value tests against signed elastic specialization
         positive_elastic_test<elastic<IntegerDigits, FractionalDigits, signed>>,
