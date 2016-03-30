@@ -87,42 +87,42 @@ struct print_num_as_error {
 
 // Lhs == Rhs
 template <class T>
-constexpr bool is_equal_to(const T& Lhs, const T& Rhs) {
-    return ((Lhs == Rhs) == false) ? (throw std::logic_error("Lhs is *not* equal to Rhs"))
-            : ((Lhs != Rhs) == true) ? (throw std::logic_error("Lhs *is* not equal to Rhs"))
-            : ((Lhs < Rhs) == true) ? (throw std::logic_error("Lhs is less than Rhs"))
-            : ((Lhs > Rhs) == true) ? (throw std::logic_error("Lhs is greater than Rhs"))
-            : ((Lhs <= Rhs) == false) ? (throw std::logic_error("Lhs is not less than or equal to Rhs"))
-            : ((Lhs >= Rhs) == false) ? (throw std::logic_error("Lhs is not greater than or equal to Rhs"))
-            : true;
+constexpr bool is_equal_to(const T& Lhs, const T& Rhs)
+{
+    return ((Lhs==Rhs)==true)
+            && ((Lhs!=Rhs)==false)
+            && ((Lhs<Rhs)==false)
+            && ((Lhs>Rhs)==false)
+            && ((Lhs<=Rhs)==true)
+            && ((Lhs>=Rhs)==true);
 }
 
 static_assert(is_equal_to<int>(0, 0), "less_than_test test failed");
 
 // Lesser < Greater
 template <class T>
-constexpr bool is_less_than(const T& Lesser, const T& Greater) {
-    return ((Lesser == Greater) == true) ? (throw std::logic_error("Lesser is equal to Greater"))
-            : ((Lesser != Greater) == false) ? (throw std::logic_error("Lesser is not not equal to Greater"))
-            : ((Lesser < Greater) == false) ? (throw std::logic_error("Lesser is not less than Greater"))
-            : ((Lesser > Greater) == true) ? (throw std::logic_error("Lesser is greater than Greater"))
-            : ((Lesser <= Greater) == false) ? (throw std::logic_error("Lesser is not less than or equal to Greater"))
-            : ((Lesser >= Greater) == true) ? (throw std::logic_error("Lesser is greater than or equal to Greater"))
-            : true;
+constexpr bool is_less_than(const T& Lesser, const T& Greater)
+{
+    return ((Lesser==Greater)==false)
+            && ((Lesser!=Greater)==true)
+            && ((Lesser<Greater)==true)
+            && ((Lesser>Greater)==false)
+            && ((Lesser<=Greater)==true)
+            && ((Lesser>=Greater)==false);
 }
 
 static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
 
 // Greater > Lesser
 template <class T>
-constexpr bool is_greater_than(const T& Greater, const T& Lesser) {
-    return ((Greater == Lesser) == true) ? (throw std::logic_error("Greater is equal to Lesser"))
-            : ((Greater != Lesser) == false) ? (throw std::logic_error("Greater is not not equal to Lesser"))
-            : ((Greater < Lesser) == true) ? (throw std::logic_error("Greater is less than Lesser"))
-            : ((Greater > Lesser) == false) ? (throw std::logic_error("Greater is not greater than Lesser"))
-            : ((Greater <= Lesser) == true) ? (throw std::logic_error("Greater is less than or equal to Lesser"))
-            : ((Greater >= Lesser) == false) ? (throw std::logic_error("Greater is not greater than or equal to Lesser"))
-            : true;
+constexpr bool is_greater_than(const T& Greater, const T& Lesser)
+{
+    return ((Greater==Lesser)==false)
+            && ((Greater!=Lesser)==true)
+            && ((Greater<Lesser)==false)
+            && ((Greater>Lesser)==true)
+            && ((Greater<=Lesser)==false)
+            && ((Greater>=Lesser)==true);
 }
 
 static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
