@@ -146,6 +146,10 @@ struct positive_elastic_test {
     static constexpr elastic_type max{numeric_limits::max()};
     static constexpr elastic_type lowest{numeric_limits::lowest()};
 
+    static constexpr int integer_digits = elastic_type::integer_digits;
+    static constexpr int fractional_digits = elastic_type::fractional_digits;
+    static constexpr int digits = integer_digits+fractional_digits;
+    
     ////////////////////////////////////////////////////////////////////////////////
     // test traits
 
@@ -161,15 +165,27 @@ struct positive_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // test fixed-point type
 
-    static constexpr int integer_digits = elastic_type::integer_digits;
-    static constexpr int fractional_digits = elastic_type::fractional_digits;
-
     static_assert(fixed_point_type::integer_digits>=integer_digits,
             "not enough integer digits in fixed-point type to represent elastic values");
     static_assert(fixed_point_type::fractional_digits>=fractional_digits,
             "not enough fractional digits in fixed-point type to represent elastic values");
     static_assert(fixed_point_type::fractional_digits==fractional_digits,
             "too many fractional digits in fixed-point type to represent elastic values accurately");
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // test traits
+
+    static_assert(sg14::is_elastic<elastic_type>::value, "sg14::is_elastic test failed");
+    static_assert(!sg14::is_elastic<fixed_point_type>::value, "sg14::is_elastic test failed");
+    static_assert(!sg14::is_elastic<typename fixed_point_type::repr_type>::value, "sg14::is_elastic test failed");
+
+    static_assert(sg14::is_signed<elastic_type>::value==sg14::is_signed<fixed_point_type>::value,
+            "signedness of elastic type differns from underlying fixed-point type");
+
+    static_assert(sg14::is_signed<typename sg14::make_signed<elastic_type>::type>::value,
+            "signed version of elastic type is not signed");
+    static_assert(sg14::is_unsigned<typename sg14::make_unsigned<elastic_type>::type>::value,
+            "signed version of elastic type is not signed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test numeric_limits<elastic>
@@ -181,6 +197,9 @@ struct positive_elastic_test {
     static_assert(is_greater_than(min, lowest), "numeric_limits test failed");
     static_assert(sg14::is_signed<elastic_type>::value == numeric_limits::is_signed, "numeric_limits test failed");
     //static_assert(numeric_limits::is_integer == elastic_type{.5} != .5, "numeric_limits test failed");
+
+    static constexpr typename elastic_type::_integer_type max_integer{max._data().data()};
+    static_assert(bit_count(max_integer)==digits, "numeric_limits test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test comparison operators
