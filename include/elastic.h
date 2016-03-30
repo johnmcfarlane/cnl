@@ -289,6 +289,32 @@ namespace sg14 {
         return result_type{-static_cast<result_fixed_point_type>(rhs._data())};
     }
 
+    // add
+    namespace _elastic_impl {
+        template<
+                int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
+                int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
+        using add_result_type = elastic<
+                sg14::_impl::max(LhsIntegerDigits, RhsIntegerDigits)+1,
+                sg14::_impl::max(LhsFractionalDigits, RhsFractionalDigits),
+                typename std::conditional<
+                        sg14::is_signed<LhsArchetype>::value || sg14::is_signed<RhsArchetype>::value,
+                        typename sg14::make_signed<LhsArchetype>::type,
+                        typename sg14::make_unsigned<RhsArchetype>::type>::type>;
+    }
+
+    template<
+            int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
+            int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
+    constexpr auto operator+(
+            const elastic<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype>& lhs,
+            const elastic<RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>& rhs)
+    -> _elastic_impl::add_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>
+    {
+        using result_type = _elastic_impl::add_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>;
+
+        return static_cast<result_type>(lhs)._data()+static_cast<result_type>(rhs)._data();
+    }
 }
 
 namespace std {
