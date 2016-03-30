@@ -245,7 +245,7 @@ struct positive_elastic_test {
 // should pass for all signed specializations
 
 template<class Elastic>
-struct negative_elastic_test {
+struct signed_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // core definitions
 
@@ -310,7 +310,7 @@ struct elastic_test :
         positive_elastic_test<elastic<IntegerDigits, FractionalDigits, signed>>,
 
         // perform negative value tests against signed elastic specialization
-        negative_elastic_test<elastic<IntegerDigits, FractionalDigits, signed>> {
+        signed_elastic_test<elastic<IntegerDigits, FractionalDigits, signed>> {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
