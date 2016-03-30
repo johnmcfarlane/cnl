@@ -288,6 +288,107 @@ namespace sg14 {
 
         return result_type{-static_cast<result_fixed_point_type>(rhs._data())};
     }
+
+}
+
+namespace std {
+    ////////////////////////////////////////////////////////////////////////////////
+    // std::numeric_limits for sg14::elastic
+
+    // note: some members are guessed,
+    // some are temporary (assuming rounding style, traps etc.)
+    // and some are undefined
+    template<int IntegerDigits, int FractionalDigits, class Archetype>
+    struct numeric_limits<sg14::elastic<IntegerDigits, FractionalDigits, Archetype>> {
+        // fixed-point-specific helpers
+        using _value_type = sg14::elastic<IntegerDigits, FractionalDigits, Archetype>;
+        using _fixed_point_type = typename _value_type::_fixed_point_type;
+        using _fixed_point_limits = numeric_limits<_fixed_point_type>;
+
+        // standard members
+
+        static constexpr bool is_specialized = true;
+
+        static constexpr _value_type min() noexcept
+        {
+            return _fixed_point_limits::min();
+        }
+
+        static constexpr _value_type max() noexcept
+        {
+            return _fixed_point_limits::max();
+        }
+
+        static constexpr _value_type lowest() noexcept
+        {
+            return _fixed_point_limits::lowest();
+        }
+
+        static constexpr int digits = _value_type::integer_digits + _value_type::fractional_digits;
+
+        //static constexpr int digits10 = ?;
+        //static constexpr int max_digits10 = ?;
+
+        static constexpr bool is_signed = _fixed_point_limits::is_signed;
+        static constexpr bool is_integer = _value_type::fractional_digits <= 0;
+
+        // TODO: not entirely certain
+        static constexpr bool is_exact = true;
+
+        static constexpr int radix = _fixed_point_limits::radix;
+        static_assert(radix==2, "fixed-point must be represented using binary type");
+
+        static constexpr _value_type epsilon() noexcept
+        {
+            return _value_type::from_data(1);
+        }
+
+        static constexpr _value_type round_error() noexcept
+        {
+            return _fixed_point_limits::round_error();
+        }
+
+        // TODO: verify
+        static constexpr int min_exponent = _value_type::exponent;
+        static constexpr int max_exponent = _value_type::exponent;
+
+        //static constexpr int min_exponent10 = ?;
+        //static constexpr int max_exponent10 = ?;
+
+        static constexpr bool has_infinity = false;
+        static constexpr bool has_quiet_NaN = false;
+        static constexpr bool has_signaling_NaN = false;
+        static constexpr float_denorm_style has_denorm = denorm_absent;
+        static constexpr bool has_denorm_loss = false;
+
+        static constexpr _value_type infinity() noexcept
+        {
+            return static_cast<_value_type>(0);
+        }
+
+        static constexpr _value_type quiet_NaN() noexcept
+        {
+            return static_cast<_value_type>(0);
+        }
+
+        static constexpr _value_type signaling_NaN() noexcept
+        {
+            return static_cast<_value_type>(0);
+        }
+
+        static constexpr _value_type denorm_min() noexcept
+        {
+            return static_cast<_value_type>(0);
+        }
+
+        static constexpr bool is_iec559 = false;
+        static constexpr bool is_bounded = true;
+        static constexpr bool is_modulo = _fixed_point_limits::is_modulo;
+
+        static constexpr bool traps = _fixed_point_limits::traps;
+        static constexpr bool tinyness_before = false;
+        static constexpr float_round_style round_style = _fixed_point_limits::round_style;
+    };
 }
 
 #endif //_SG14_ELASTIC
