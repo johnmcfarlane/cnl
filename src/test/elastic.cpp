@@ -72,6 +72,12 @@ static_assert(bit_count(55)==5, "bit_count test failed");
 static_assert(bit_count(89)==4, "bit_count test failed");
 static_assert(bit_count(144)==2, "bit_count test failed");
 
+// http://stackoverflow.com/a/5775825/671509
+template<size_t size>
+struct print_num_as_error {
+    operator char() { return size+256; }
+}; //always overflow
+
 ////////////////////////////////////////////////////////////////////////////////
 // test specific operations
 
