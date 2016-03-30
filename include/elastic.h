@@ -305,6 +305,7 @@ namespace std {
         using _fixed_point_type = typename _value_type::_fixed_point_type;
         using _fixed_point_limits = numeric_limits<_fixed_point_type>;
         static_assert(_fixed_point_limits::is_specialized, "specialization of sg14::fixed_point<> is necessary for specialization of sg14::elastic<>");
+        using _fixed_point_repr_type = typename _fixed_point_type::repr_type;
 
         // standard members
 
@@ -317,7 +318,9 @@ namespace std {
 
         static constexpr _value_type max() noexcept
         {
-            return _fixed_point_limits::max();
+            return _fixed_point_type::from_data(
+                    numeric_limits<_fixed_point_repr_type>::max()
+                    >> (numeric_limits<_fixed_point_repr_type>::digits - digits));
         }
 
         static constexpr _value_type lowest() noexcept
