@@ -156,6 +156,7 @@ namespace std {
             return _value_type::from_data(1);
         }
 
+        // TODO: not even sure about this when repr_type is built-in integral
         static constexpr _value_type round_error() noexcept
         {
             return static_cast<_value_type>(1);
