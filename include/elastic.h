@@ -325,7 +325,9 @@ namespace std {
 
         static constexpr _value_type lowest() noexcept
         {
-            return _fixed_point_limits::lowest();
+            return _fixed_point_type::from_data(
+                    numeric_limits<_fixed_point_repr_type>::lowest()
+                            >> (numeric_limits<_fixed_point_repr_type>::digits - digits));
         }
 
         static constexpr int digits = _value_type::integer_digits + _value_type::fractional_digits;
