@@ -14,16 +14,20 @@ using sg14::elastic;
 ////////////////////////////////////////////////////////////////////////////////
 // useful constants
 
-template <class T, bool IsSigned>
+template<class T, bool IsSigned>
 struct test_traits {
-    static_assert(sg14::is_signed<T>::value == IsSigned, "sg14::is_signed fails for give type, T");
-    static_assert(sg14::is_unsigned<T>::value != IsSigned, "sg14::is_signed fails for give type, T");
+    static_assert(sg14::is_signed<T>::value==IsSigned, "sg14::is_signed fails for give type, T");
+    static_assert(sg14::is_unsigned<T>::value!=IsSigned, "sg14::is_signed fails for give type, T");
 
-    static_assert(sg14::is_signed<typename sg14::make_signed<T>::type>::value, "sg14::make_signed failed sg14::is_signed test; please reboot");
-    static_assert(! sg14::is_unsigned<typename sg14::make_signed<T>::type>::value, "sg14::make_signed failed sg14::is_unsigned test; please reboot");
+    static_assert(sg14::is_signed<typename sg14::make_signed<T>::type>::value,
+            "sg14::make_signed failed sg14::is_signed test; please reboot");
+    static_assert(!sg14::is_unsigned<typename sg14::make_signed<T>::type>::value,
+            "sg14::make_signed failed sg14::is_unsigned test; please reboot");
 
-    static_assert(! sg14::is_signed<typename sg14::make_unsigned<T>::type>::value, "sg14::make_unsigned failed sg14::is_signed test; please reboot");
-    static_assert(sg14::is_unsigned<typename sg14::make_unsigned<T>::type>::value, "sg14::make_unsigned failed sg14::is_unsigned test; please reboot");
+    static_assert(!sg14::is_signed<typename sg14::make_unsigned<T>::type>::value,
+            "sg14::make_unsigned failed sg14::is_signed test; please reboot");
+    static_assert(sg14::is_unsigned<typename sg14::make_unsigned<T>::type>::value,
+            "sg14::make_unsigned failed sg14::is_unsigned test; please reboot");
 };
 
 template
@@ -139,8 +143,8 @@ struct positive_elastic_test {
     // useful constants
 
     static constexpr fixed_point_type fixed_point_zero{0.};
-    static constexpr elastic_type zero{ fixed_point_zero };
-    static constexpr elastic_type negative_zero{ -zero };
+    static constexpr elastic_type zero{fixed_point_zero};
+    static constexpr elastic_type negative_zero{-zero};
 
     static constexpr elastic_type min{numeric_limits::min()};
     static constexpr elastic_type max{numeric_limits::max()};
@@ -191,11 +195,11 @@ struct positive_elastic_test {
     // test numeric_limits<elastic>
 
     static_assert(min == elastic_type{fixed_point_type::from_data(1)}, "numeric_limits test failed");
-    static_assert(min <= max, "numeric_limits test failed");
-    static_assert(min > zero, "numeric_limits test failed");
-    static_assert(lowest <= zero, "numeric_limits test failed");
+    static_assert(min<=max, "numeric_limits test failed");
+    static_assert(min>zero, "numeric_limits test failed");
+    static_assert(lowest<=zero, "numeric_limits test failed");
     static_assert(is_greater_than(min, lowest), "numeric_limits test failed");
-    static_assert(sg14::is_signed<elastic_type>::value == numeric_limits::is_signed, "numeric_limits test failed");
+    static_assert(sg14::is_signed<elastic_type>::value==numeric_limits::is_signed, "numeric_limits test failed");
     //static_assert(numeric_limits::is_integer == elastic_type{.5} != .5, "numeric_limits test failed");
 
     static constexpr typename elastic_type::_integer_type max_integer{max._data().data()};
@@ -230,8 +234,10 @@ struct positive_elastic_test {
 
     using negate_result = decltype(-zero);
     static_assert(sg14::is_signed<negate_result>::value, "negative of positive value is not signed");
-    static_assert(negate_result::integer_digits == elastic_type::integer_digits, "negative of positive value has wrong number of integer digits");
-    static_assert(negate_result::fractional_digits == elastic_type::fractional_digits, "negative of positive value has wrong number of fractional digits");
+    static_assert(
+            negate_result::integer_digits == elastic_type::integer_digits, "negative of positive value has wrong number of integer digits");
+    static_assert(
+            negate_result::fractional_digits == elastic_type::fractional_digits, "negative of positive value has wrong number of fractional digits");
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -264,12 +270,14 @@ struct negative_elastic_test {
 
     // not much point testing negative value properties of unsigned type, eh?
     static_assert(sg14::is_signed<elastic_type>::value, "subject of test class is not reported as signed");
-    static_assert(is_same<typename sg14::make_signed<elastic_type>::type, elastic_type>::value, "subject of test class is not reported as signed");
+    static_assert(is_same<typename sg14::make_signed<elastic_type>::type, elastic_type>::value,
+            "subject of test class is not reported as signed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test numeric_limits<elastic>
 
-    static_assert(negative_min == elastic_type{fixed_point_type::from_data(-1)}, "numeric_limits test failed");
+    static_assert(negative_min == elastic_type{fixed_point_type::from_data(-1)},
+            "numeric_limits test failed");
     static_assert(numeric_limits::is_signed, "numeric_limits test failed");
     //static_assert(numeric_limits::is_integer == elastic_type{-.5} != -.5, "numeric_limits test failed");
 
@@ -311,20 +319,20 @@ struct elastic_test :
 
 template<int IntegerDigits>
 struct elastic_test_with_integer_digits :
-        elastic_test<IntegerDigits, - IntegerDigits + 1>,
-        elastic_test<IntegerDigits, - IntegerDigits + 2>,
-        elastic_test<IntegerDigits, - IntegerDigits + 3>,
-        elastic_test<IntegerDigits, - IntegerDigits + 5>,
-        elastic_test<IntegerDigits, - IntegerDigits + 7>,
-        elastic_test<IntegerDigits, - IntegerDigits + 8>,
-        elastic_test<IntegerDigits, - IntegerDigits + 12>,
-        elastic_test<IntegerDigits, - IntegerDigits + 16>,
-        elastic_test<IntegerDigits, - IntegerDigits + 21>,
-        elastic_test<IntegerDigits, - IntegerDigits + 27>,
-        elastic_test<IntegerDigits, - IntegerDigits + 32>,
-        elastic_test<IntegerDigits, - IntegerDigits + 39>,
-        elastic_test<IntegerDigits, - IntegerDigits + 44>,
-        elastic_test<IntegerDigits, - IntegerDigits + 55> {
+        elastic_test<IntegerDigits, -IntegerDigits+1>,
+        elastic_test<IntegerDigits, -IntegerDigits+2>,
+        elastic_test<IntegerDigits, -IntegerDigits+3>,
+        elastic_test<IntegerDigits, -IntegerDigits+5>,
+        elastic_test<IntegerDigits, -IntegerDigits+7>,
+        elastic_test<IntegerDigits, -IntegerDigits+8>,
+        elastic_test<IntegerDigits, -IntegerDigits+12>,
+        elastic_test<IntegerDigits, -IntegerDigits+16>,
+        elastic_test<IntegerDigits, -IntegerDigits+21>,
+        elastic_test<IntegerDigits, -IntegerDigits+27>,
+        elastic_test<IntegerDigits, -IntegerDigits+32>,
+        elastic_test<IntegerDigits, -IntegerDigits+39>,
+        elastic_test<IntegerDigits, -IntegerDigits+44>,
+        elastic_test<IntegerDigits, -IntegerDigits+55> {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
