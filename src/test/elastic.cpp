@@ -256,7 +256,6 @@ struct signed_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // useful constants
 
-
     static constexpr fixed_point_type fixed_point_zero{0.};
     static constexpr elastic_type zero{fixed_point_zero};
 
