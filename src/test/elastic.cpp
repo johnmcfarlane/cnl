@@ -51,6 +51,28 @@ template
 struct test_traits<std::int64_t, true>;
 
 ////////////////////////////////////////////////////////////////////////////////
+// useful functions
+
+template<typename T>
+constexpr int bit_count(const T& n)
+{
+    return n ? 1+bit_count(n & (n-1)) : 0;
+}
+
+static_assert(bit_count(0)==0, "bit_count test failed");
+static_assert(bit_count(1)==1, "bit_count test failed");
+static_assert(bit_count(2)==1, "bit_count test failed");
+static_assert(bit_count(3)==2, "bit_count test failed");
+static_assert(bit_count(5)==2, "bit_count test failed");
+static_assert(bit_count(8)==1, "bit_count test failed");
+static_assert(bit_count(13)==3, "bit_count test failed");
+static_assert(bit_count(21)==3, "bit_count test failed");
+static_assert(bit_count(34)==2, "bit_count test failed");
+static_assert(bit_count(55)==5, "bit_count test failed");
+static_assert(bit_count(89)==4, "bit_count test failed");
+static_assert(bit_count(144)==2, "bit_count test failed");
+
+////////////////////////////////////////////////////////////////////////////////
 // test specific operations
 
 // Lhs == Rhs
