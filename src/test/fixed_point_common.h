@@ -934,6 +934,13 @@ static_assert(static_cast<float>(sqrt(make_fixed<7, 24>(3.141592654)))>1.7724537
 static_assert(static_cast<float>(sqrt(make_fixed<7, 24>(3.141592654)))<1.7724537849427, "sg14::sqrt test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
+// https://groups.google.com/a/isocpp.org/forum/?utm_medium=email&utm_source=footer#!msg/sg14/cDZIcB1LNfE/heaucUIAAgAJ
+
+static constexpr make_fixed<15, 16> x{1.5};
+static constexpr auto y = 6.5*x - 4;
+static_assert(y == 5.75, "usage test failed");
+
+////////////////////////////////////////////////////////////////////////////////
 // FixedPointTester
 
 template <class ReprType, int Exponent>
