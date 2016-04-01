@@ -267,7 +267,7 @@ namespace sg14 {
         // sg14::_impl::max
 
         template<class T>
-        constexpr const T& max(const T& a, const T& b)
+        constexpr T max(T a, T b)
         {
             return (a<b) ? b : a;
         }
