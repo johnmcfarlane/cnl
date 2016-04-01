@@ -306,6 +306,11 @@ struct signed_elastic_test {
 
     // negative_min vs lowest
     static_assert(is_greater_than(negative_min, lowest), "comparison test error");
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // test operator+
+
+    static_assert(elastic_type{min + max + lowest} == elastic_type{0.}, "operator+ test failed");
 };
 
 ////////////////////////////////////////////////////////////////////////////////
