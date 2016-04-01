@@ -11,6 +11,9 @@
 using std::is_same;
 using sg14::elastic;
 
+template <class T>
+using numeric_limits = std::numeric_limits<T>;
+
 ////////////////////////////////////////////////////////////////////////////////
 // useful constants
 
@@ -140,6 +143,15 @@ struct positive_elastic_test {
             "not enough fractional digits in fixed-point type to represent elastic values");
     static_assert(fixed_point_type::fractional_digits==fractional_digits,
             "too many fractional digits in fixed-point type to represent elastic values accurately");
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // test numeric_limits<elastic>
+
+    static_assert(is_equal_to(min, numeric_limits<elastic_type>::min()), "numeric_limits test failed");
+    static_assert(min <= numeric_limits<elastic_type>::max(), "numeric_limits test failed");
+    static_assert(is_greater_than(min, numeric_limits<elastic_type>::lowest()), "numeric_limits test failed");
+    static_assert(sg14::is_signed<elastic_type>::value == numeric_limits<elastic_type>::is_signed, "numeric_limits test failed");
+    //static_assert(numeric_limits<elastic_type>::is_integer == elastic_type{.5} != .5, "numeric_limits test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test comparison operators

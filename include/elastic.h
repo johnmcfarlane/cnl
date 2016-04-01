@@ -9,7 +9,7 @@
 #if !defined(_SG14_ELASTIC)
 #define _SG14_ELASTIC 1
 
-#include <fixed_point.h>
+#include <fixed_point_utils.h>
 #include <type_traits.h>
 
 /// study group 14 of the C++ working group
@@ -304,6 +304,7 @@ namespace std {
         using _value_type = sg14::elastic<IntegerDigits, FractionalDigits, Archetype>;
         using _fixed_point_type = typename _value_type::_fixed_point_type;
         using _fixed_point_limits = numeric_limits<_fixed_point_type>;
+        static_assert(_fixed_point_limits::is_specialized, "specialization of sg14::fixed_point<> is necessary for specialization of sg14::elastic<>");
 
         // standard members
 
@@ -349,8 +350,8 @@ namespace std {
         }
 
         // TODO: verify
-        static constexpr int min_exponent = _value_type::exponent;
-        static constexpr int max_exponent = _value_type::exponent;
+        static constexpr int min_exponent = _fixed_point_type::exponent;
+        static constexpr int max_exponent = _fixed_point_type::exponent;
 
         //static constexpr int min_exponent10 = ?;
         //static constexpr int max_exponent10 = ?;
