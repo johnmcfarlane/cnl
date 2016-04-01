@@ -336,8 +336,10 @@ namespace sg14 {
     -> _elastic_impl::add_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>
     {
         using result_type = _elastic_impl::add_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>;
+        using fixed_point_result_type = typename result_type::_fixed_point_type;
 
-        return static_cast<result_type>(lhs)._data()+static_cast<result_type>(rhs)._data();
+        return sg14::add<fixed_point_result_type>(lhs._data(), rhs._data());
+
     }
 }
 
