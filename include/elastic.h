@@ -54,7 +54,7 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::is_elastic
 
-    template<typename T>
+    template<class T>
     struct is_elastic : _elastic_impl::is_elastic<T> {
     };
 
@@ -65,10 +65,10 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::is_signed
 
-    template<typename T>
+    template<class T>
     struct is_signed;
 
-    template<typename T>
+    template<class T>
     struct is_signed : std::is_signed<T> {
     };
 
@@ -77,7 +77,7 @@ namespace sg14 {
             : sg14::is_signed<Archetype> {
     };
 
-    template<typename ReprType, int Exponent>
+    template<class ReprType, int Exponent>
     struct is_signed<fixed_point<ReprType, Exponent>>
             : sg14::is_signed<ReprType> {
     };
@@ -85,14 +85,14 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::is_unsigned
 
-    template<typename T>
+    template<class T>
     struct is_unsigned : std::integral_constant<bool, !is_signed<T>::value> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::make_signed
 
-    template<typename T>
+    template<class T>
     struct make_signed;
 
     template<int IntegerDigits, int FractionalDigits, class Archetype>
@@ -100,7 +100,7 @@ namespace sg14 {
         using type = elastic<IntegerDigits, FractionalDigits, typename sg14::make_signed<Archetype>::type>;
     };
 
-    template<typename T>
+    template<class T>
     struct make_signed : std::make_signed<T> {
     };
 
@@ -113,7 +113,7 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::make_unsigned
 
-    template<typename T>
+    template<class T>
     struct make_unsigned;
 
     template<int IntegerDigits, int FractionalDigits, class Archetype>
@@ -177,7 +177,7 @@ namespace sg14 {
         using _fixed_point_type = sg14::fixed_point<_integer_type, exponent>;
 
     private:
-        template<typename Integer>
+        template<class Integer>
         static constexpr bool is_relative()
         {
             return std::is_same<sg14::resize<Integer, sizeof(archetype)>, archetype>::value;
@@ -201,7 +201,7 @@ namespace sg14 {
                 :_value(rhs._data()) { }
 
         /// constructor taking fixed_point type
-        template<typename RhsReprType, int RhsExponent>
+        template<class RhsReprType, int RhsExponent>
         constexpr elastic(const fixed_point<RhsReprType, RhsExponent>& value)
                 :_value(value) { }
 
