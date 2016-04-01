@@ -238,6 +238,18 @@ struct positive_elastic_test {
             negate_result::integer_digits == elastic_type::integer_digits, "negative of positive value has wrong number of integer digits");
     static_assert(
             negate_result::fractional_digits == elastic_type::fractional_digits, "negative of positive value has wrong number of fractional digits");
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // test operator+
+
+    static_assert(elastic_type{zero + zero} == zero, "operator+ test failed");
+    static_assert(sg14::is_signed<decltype(zero+zero)>::value==sg14::is_signed<elastic_type>::value,
+            "negative of positive value is not signed");
+    static_assert(is_same<
+            typename sg14::_elastic_impl::add_result_type<
+                    integer_digits, fractional_digits, typename elastic_type::archetype,
+                    integer_digits, fractional_digits, typename elastic_type::archetype>,
+            elastic<integer_digits+1, fractional_digits, typename elastic_type::archetype>>::value, "sg14::_elastic_impl::add_result_type test failed");
 };
 
 ////////////////////////////////////////////////////////////////////////////////
