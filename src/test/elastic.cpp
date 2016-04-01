@@ -11,9 +11,6 @@
 using std::is_same;
 using sg14::elastic;
 
-template <class T>
-using numeric_limits = std::numeric_limits<T>;
-
 ////////////////////////////////////////////////////////////////////////////////
 // useful constants
 
@@ -108,6 +105,7 @@ struct positive_elastic_test {
     // core definitions
     using elastic_type = Elastic;
     using fixed_point_type = typename elastic_type::_fixed_point_type;
+    using numeric_limits = std::numeric_limits<elastic_type>;
 
     ////////////////////////////////////////////////////////////////////////////////
     // useful constants
@@ -116,8 +114,9 @@ struct positive_elastic_test {
     static constexpr elastic_type zero{ fixed_point_zero };
     static constexpr elastic_type negative_zero{ -zero };
 
-    static constexpr fixed_point_type fixed_point_min{fixed_point_type::from_data(1)};
-    static constexpr elastic_type min{fixed_point_min};
+    static constexpr elastic_type min{numeric_limits::min()};
+    static constexpr elastic_type max{numeric_limits::max()};
+    static constexpr elastic_type lowest{numeric_limits::lowest()};
 
     ////////////////////////////////////////////////////////////////////////////////
     // test traits
@@ -147,11 +146,13 @@ struct positive_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // test numeric_limits<elastic>
 
-    static_assert(is_equal_to(min, numeric_limits<elastic_type>::min()), "numeric_limits test failed");
-    static_assert(min <= numeric_limits<elastic_type>::max(), "numeric_limits test failed");
-    static_assert(is_greater_than(min, numeric_limits<elastic_type>::lowest()), "numeric_limits test failed");
-    static_assert(sg14::is_signed<elastic_type>::value == numeric_limits<elastic_type>::is_signed, "numeric_limits test failed");
-    //static_assert(numeric_limits<elastic_type>::is_integer == elastic_type{.5} != .5, "numeric_limits test failed");
+    static_assert(min == elastic_type{fixed_point_type::from_data(1)}, "numeric_limits test failed");
+    static_assert(min <= max, "numeric_limits test failed");
+    static_assert(min > zero, "numeric_limits test failed");
+    static_assert(lowest <= zero, "numeric_limits test failed");
+    static_assert(is_greater_than(min, lowest), "numeric_limits test failed");
+    static_assert(sg14::is_signed<elastic_type>::value == numeric_limits::is_signed, "numeric_limits test failed");
+    //static_assert(numeric_limits::is_integer == elastic_type{.5} != .5, "numeric_limits test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test comparison operators
@@ -197,18 +198,19 @@ struct negative_elastic_test {
 
     using elastic_type = Elastic;
     using fixed_point_type = typename elastic_type::_fixed_point_type;
+    using numeric_limits = std::numeric_limits<elastic_type>;
 
     ////////////////////////////////////////////////////////////////////////////////
     // useful constants
 
+
     static constexpr fixed_point_type fixed_point_zero{0.};
     static constexpr elastic_type zero{fixed_point_zero};
 
-    static constexpr fixed_point_type fixed_point_min{fixed_point_type::from_data(1)};
-    static constexpr elastic_type min{fixed_point_min};
-
-    static constexpr fixed_point_type fixed_point_negative_min{fixed_point_type::from_data(-1)};
-    static constexpr elastic_type negative_min{fixed_point_negative_min};
+    static constexpr elastic_type min{numeric_limits::min()};
+    static constexpr elastic_type max{numeric_limits::max()};
+    static constexpr elastic_type lowest{numeric_limits::lowest()};
+    static constexpr elastic_type negative_min{-min};
 
     ////////////////////////////////////////////////////////////////////////////////
     // test traits
@@ -216,6 +218,13 @@ struct negative_elastic_test {
     // not much point testing negative value properties of unsigned type, eh?
     static_assert(sg14::is_signed<elastic_type>::value, "subject of test class is not reported as signed");
     static_assert(is_same<typename sg14::make_signed<elastic_type>::type, elastic_type>::value, "subject of test class is not reported as signed");
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // test numeric_limits<elastic>
+
+    static_assert(negative_min == elastic_type{fixed_point_type::from_data(-1)}, "numeric_limits test failed");
+    static_assert(numeric_limits::is_signed, "numeric_limits test failed");
+    //static_assert(numeric_limits::is_integer == elastic_type{-.5} != -.5, "numeric_limits test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test comparison operators
@@ -228,6 +237,9 @@ struct negative_elastic_test {
 
     // negative_min vs zero
     static_assert(is_less_than<elastic_type>(negative_min, zero), "comparison test error");
+
+    // negative_min vs lowest
+    static_assert(is_greater_than(negative_min, lowest), "comparison test error");
 };
 
 ////////////////////////////////////////////////////////////////////////////////
