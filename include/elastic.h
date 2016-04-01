@@ -144,37 +144,49 @@ namespace sg14 {
     class elastic {
         ////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////
-        // constants
+        // template parameter definitions
 
     public:
-        /// see `IntegerDigits`
+        /// see \a IntegerDigits
         static constexpr int integer_digits = IntegerDigits;
 
-        /// the number of fractional bits of storage
+        /// see `FractionalDigits`
         static constexpr int fractional_digits = FractionalDigits;
+
+        /// a type like the one used to represent to store this value
+        using archetype = Archetype;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        // digit count constants
 
     private:
         static constexpr int exponent = -fractional_digits;
 
         static constexpr int digits = integer_digits+fractional_digits;
-        static_assert(digits>0, "sum of integer and fractional digits must be positive");
+        static_assert(digits>=0, "sum of integer and fractional digits must be positive");
 
         static constexpr int bits = digits+is_signed<Archetype>::value;
         static constexpr int bytes = (bits+CHAR_BIT-1)/CHAR_BIT;
 
         ////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////
-        // types
+        // underlying interger type-related definitions
 
     public:
-        /// a type like the one used to represent to store this value
-        using archetype = Archetype;
-
         /// \private implementation-specific
         using _integer_type = typename sg14::resize<archetype, bytes>::type;
 
         /// \private implementation-specific
         using _fixed_point_type = sg14::fixed_point<_integer_type, exponent>;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        // value constants
+
+        ////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        // functions
 
     private:
         template<class Integer>
@@ -182,10 +194,6 @@ namespace sg14 {
         {
             return std::is_same<sg14::resize<Integer, sizeof(archetype)>, archetype>::value;
         }
-
-        ////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////
-        // functions
 
         ////////////////////////////////////////////////////////////////////////////////
         // constructors
