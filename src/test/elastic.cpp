@@ -164,6 +164,14 @@ struct positive_elastic_test {
 
     // min vs zero
     static_assert(is_greater_than<elastic_type>(min, zero), "comparison test error");
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // test negate operators
+
+    using negate_result = decltype(-zero);
+    static_assert(sg14::is_signed<negate_result>::value, "negative of positive value is not signed");
+    static_assert(negate_result::integer_digits == elastic_type::integer_digits, "negative of positive value has wrong number of integer digits");
+    static_assert(negate_result::fractional_digits == elastic_type::fractional_digits, "negative of positive value has wrong number of fractional digits");
 };
 
 ////////////////////////////////////////////////////////////////////////////////
