@@ -10,6 +10,8 @@
 
 using std::is_same;
 using sg14::elastic;
+using sg14::make_signed_t;
+using sg14::make_unsigned_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // useful constants
@@ -139,6 +141,9 @@ struct positive_elastic_test {
     using fixed_point_type = typename elastic_type::_fixed_point_type;
     using numeric_limits = std::numeric_limits<elastic_type>;
 
+    using signed_type = make_signed_t<elastic_type>;
+    using unsigned_type = make_unsigned_t<elastic_type>;
+
     ////////////////////////////////////////////////////////////////////////////////
     // useful constants
 
@@ -243,8 +248,9 @@ struct positive_elastic_test {
     // test operator+
 
     static_assert(elastic_type{zero + zero} == zero, "operator+ test failed");
-    static_assert(sg14::is_signed<decltype(zero+zero)>::value==sg14::is_signed<elastic_type>::value,
-            "negative of positive value is not signed");
+    static_assert(sg14::is_signed<decltype(zero+zero)>::value
+                    ==sg14::is_signed<elastic_type>::value,
+            "signedness is lost during add");
     static_assert(is_same<
             typename sg14::_elastic_impl::add_result_type<
                     integer_digits, fractional_digits, typename elastic_type::archetype,

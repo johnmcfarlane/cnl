@@ -101,6 +101,12 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
+    // sg14::make_signed_t
+
+    template<class T>
+    using make_signed_t = typename make_signed<T>::type;
+
+    ////////////////////////////////////////////////////////////////////////////////
     // sg14::make_unsigned
 
     template<typename T>
@@ -111,9 +117,15 @@ namespace sg14 {
         using type = elastic<IntegerDigits, FractionalDigits, typename sg14::make_unsigned<Archetype>::type>;
     };
 
-    template<typename T>
+    template<class T>
     struct make_unsigned : std::make_unsigned<T> {
     };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::make_unsigned_t
+
+    template<class T>
+    using make_unsigned_t = typename make_unsigned<T>::type;
 
     /// \brief general-purpose real number approximation that avoids overflow
     ///
@@ -280,9 +292,9 @@ namespace sg14 {
     // negate
     template<int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
     constexpr auto operator-(const elastic<RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>& rhs)
-    -> elastic<RhsIntegerDigits, RhsFractionalDigits, typename sg14::make_signed<RhsArchetype>::type>
+    -> elastic<RhsIntegerDigits, RhsFractionalDigits, make_signed_t<RhsArchetype>>
     {
-        using result_archetype = typename sg14::make_signed<RhsArchetype>::type;
+        using result_archetype = make_signed_t<RhsArchetype>;
         using result_type = elastic<RhsIntegerDigits, RhsFractionalDigits, result_archetype>;
         using result_fixed_point_type = typename result_type::_fixed_point_type;
 
@@ -299,8 +311,8 @@ namespace sg14 {
                 sg14::_impl::max(LhsFractionalDigits, RhsFractionalDigits),
                 typename std::conditional<
                         sg14::is_signed<LhsArchetype>::value || sg14::is_signed<RhsArchetype>::value,
-                        typename sg14::make_signed<LhsArchetype>::type,
-                        typename sg14::make_unsigned<RhsArchetype>::type>::type>;
+                        make_signed_t<LhsArchetype>,
+                        make_unsigned_t<RhsArchetype>>::type>;
     }
 
     template<
