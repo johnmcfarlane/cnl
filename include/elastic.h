@@ -214,9 +214,14 @@ namespace sg14 {
                 :_value(value) { }
 
         /// constructor converting from any other type
-        template<class Rhs/*, typename = typename std::enable_if<std::is_integral<Integer>::value>::type*/>
+        template<class Rhs>
         explicit constexpr elastic(const Rhs& rhs)
                 :elastic(static_cast<_fixed_point_type>(rhs)) { }
+
+        /// conversion operator returning fixed_point type
+        explicit constexpr operator const _fixed_point_type&() const {
+            return _value;
+        }
 
         ////////////////////////////////////////////////////////////////////////////////
         // leakage (not part of the API)
