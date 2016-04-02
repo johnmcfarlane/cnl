@@ -88,7 +88,7 @@ struct print_num_as_error {
 // test specific operations
 
 // Lhs == Rhs
-template <class T>
+template<class T>
 constexpr bool is_equal_to(const T& Lhs, const T& Rhs)
 {
     return ((Lhs==Rhs)==true)
@@ -102,7 +102,7 @@ constexpr bool is_equal_to(const T& Lhs, const T& Rhs)
 static_assert(is_equal_to<int>(0, 0), "less_than_test test failed");
 
 // Lesser < Greater
-template <class T>
+template<class T>
 constexpr bool is_less_than(const T& Lesser, const T& Greater)
 {
     return ((Lesser==Greater)==false)
@@ -116,7 +116,7 @@ constexpr bool is_less_than(const T& Lesser, const T& Greater)
 static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
 
 // Greater > Lesser
-template <class T>
+template<class T>
 constexpr bool is_greater_than(const T& Greater, const T& Lesser)
 {
     return ((Greater==Lesser)==false)
@@ -158,18 +158,21 @@ struct positive_elastic_test {
     static constexpr int integer_digits = elastic_type::integer_digits;
     static constexpr int fractional_digits = elastic_type::fractional_digits;
     static constexpr int digits = integer_digits+fractional_digits;
-    
+
     ////////////////////////////////////////////////////////////////////////////////
     // test traits
 
     static_assert(sg14::is_elastic<elastic_type>::value, "sg14::is_elastic test failed");
-    static_assert(! sg14::is_elastic<fixed_point_type>::value, "sg14::is_elastic test failed");
-    static_assert(! sg14::is_elastic<typename fixed_point_type::repr_type>::value, "sg14::is_elastic test failed");
+    static_assert(!sg14::is_elastic<fixed_point_type>::value, "sg14::is_elastic test failed");
+    static_assert(!sg14::is_elastic<typename fixed_point_type::repr_type>::value, "sg14::is_elastic test failed");
 
-    static_assert(sg14::is_signed<elastic_type>::value == sg14::is_signed<fixed_point_type>::value, "signedness of elastic type differns from underlying fixed-point type");
+    static_assert(sg14::is_signed<elastic_type>::value==sg14::is_signed<fixed_point_type>::value,
+            "signedness of elastic type differns from underlying fixed-point type");
 
-    static_assert(sg14::is_signed<typename sg14::make_signed<elastic_type>::type>::value, "signed version of elastic type is not signed");
-    static_assert(sg14::is_unsigned<typename sg14::make_unsigned<elastic_type>::type>::value, "signed version of elastic type is not signed");
+    static_assert(sg14::is_signed<typename sg14::make_signed<elastic_type>::type>::value,
+            "signed version of elastic type is not signed");
+    static_assert(sg14::is_unsigned<typename sg14::make_unsigned<elastic_type>::type>::value,
+            "signed version of elastic type is not signed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test fixed-point type
@@ -199,7 +202,7 @@ struct positive_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // test numeric_limits<elastic>
 
-    static_assert(min == elastic_type{fixed_point_type::from_data(1)}, "numeric_limits test failed");
+    static_assert(min==elastic_type{fixed_point_type::from_data(1)}, "numeric_limits test failed");
     static_assert(min<=max, "numeric_limits test failed");
     static_assert(min>zero, "numeric_limits test failed");
     static_assert(lowest<=zero, "numeric_limits test failed");
@@ -240,9 +243,11 @@ struct positive_elastic_test {
     using negate_result = decltype(-zero);
     static_assert(sg14::is_signed<negate_result>::value, "negative of positive value is not signed");
     static_assert(
-            negate_result::integer_digits == elastic_type::integer_digits, "negative of positive value has wrong number of integer digits");
+            negate_result::integer_digits==elastic_type::integer_digits,
+            "negative of positive value has wrong number of integer digits");
     static_assert(
-            negate_result::fractional_digits == elastic_type::fractional_digits, "negative of positive value has wrong number of fractional digits");
+            negate_result::fractional_digits==elastic_type::fractional_digits,
+            "negative of positive value has wrong number of fractional digits");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test operator+
@@ -293,7 +298,7 @@ struct signed_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // test numeric_limits<elastic>
 
-    static_assert(negative_min == elastic_type{fixed_point_type::from_data(-1)},
+    static_assert(negative_min==elastic_type{fixed_point_type::from_data(-1)},
             "numeric_limits test failed");
     static_assert(numeric_limits::is_signed, "numeric_limits test failed");
     //static_assert(numeric_limits::is_integer == elastic_type{-.5} != -.5, "numeric_limits test failed");

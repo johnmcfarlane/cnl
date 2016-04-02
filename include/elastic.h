@@ -361,7 +361,8 @@ namespace std {
         using _value_type = sg14::elastic<IntegerDigits, FractionalDigits, Archetype>;
         using _fixed_point_type = typename _value_type::_fixed_point_type;
         using _fixed_point_limits = numeric_limits<_fixed_point_type>;
-        static_assert(_fixed_point_limits::is_specialized, "specialization of sg14::fixed_point<> is necessary for specialization of sg14::elastic<>");
+        static_assert(_fixed_point_limits::is_specialized,
+                "specialization of sg14::fixed_point<> is necessary for specialization of sg14::elastic<>");
         using _fixed_point_repr_type = typename _fixed_point_type::repr_type;
 
         // standard members
@@ -377,23 +378,23 @@ namespace std {
         {
             return _fixed_point_type::from_data(
                     numeric_limits<_fixed_point_repr_type>::max()
-                    >> (numeric_limits<_fixed_point_repr_type>::digits - digits));
+                            >> (numeric_limits<_fixed_point_repr_type>::digits-digits));
         }
 
         static constexpr _value_type lowest() noexcept
         {
             return _fixed_point_type::from_data(
                     numeric_limits<_fixed_point_repr_type>::lowest()
-                            >> (numeric_limits<_fixed_point_repr_type>::digits - digits));
+                            >> (numeric_limits<_fixed_point_repr_type>::digits-digits));
         }
 
-        static constexpr int digits = _value_type::integer_digits + _value_type::fractional_digits;
+        static constexpr int digits = _value_type::integer_digits+_value_type::fractional_digits;
 
         //static constexpr int digits10 = ?;
         //static constexpr int max_digits10 = ?;
 
         static constexpr bool is_signed = _fixed_point_limits::is_signed;
-        static constexpr bool is_integer = _value_type::fractional_digits <= 0;
+        static constexpr bool is_integer = _value_type::fractional_digits<=0;
 
         // TODO: not entirely certain
         static constexpr bool is_exact = true;
