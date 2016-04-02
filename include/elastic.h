@@ -282,64 +282,52 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::elastic comparison operators
 
-    template<
-            class LhsElastic,
-            class RhsElastic,
-            typename = std::enable_if<sg14::is_elastic<LhsElastic>::value && sg14::is_elastic<LhsElastic>::value>>
-    constexpr auto operator<(const LhsElastic& lhs, const RhsElastic& rhs)
-    -> decltype(lhs._data()<rhs._data())
+    template<class Lhs, class Rhs>
+    constexpr auto operator==(const Lhs& lhs, const Rhs& rhs)
+    -> typename std::enable_if<_elastic_impl::either_is_elastic<Lhs, Rhs>(), bool>::type
     {
-        return lhs._data()<rhs._data();
+        return static_cast<_elastic_impl::remove_elasticity_t<Lhs>>(lhs)
+                ==static_cast<_elastic_impl::remove_elasticity_t<Rhs>>(rhs);
     }
 
-    template<
-            class LhsElastic,
-            class RhsElastic,
-            typename = std::enable_if<sg14::is_elastic<LhsElastic>::value && sg14::is_elastic<LhsElastic>::value>>
-    constexpr auto operator>(const LhsElastic& lhs, const RhsElastic& rhs)
-    -> decltype(lhs._data()>rhs._data())
+    template<class Lhs, class Rhs>
+    constexpr auto operator!=(const Lhs& lhs, const Rhs& rhs)
+    -> typename std::enable_if<_elastic_impl::either_is_elastic<Lhs, Rhs>(), bool>::type
     {
-        return lhs._data()>rhs._data();
+        return static_cast<_elastic_impl::remove_elasticity_t<Lhs>>(lhs)
+                !=static_cast<_elastic_impl::remove_elasticity_t<Rhs>>(rhs);
     }
 
-    template<
-            class LhsElastic,
-            class RhsElastic,
-            typename = std::enable_if<sg14::is_elastic<LhsElastic>::value && sg14::is_elastic<LhsElastic>::value>>
-    constexpr auto operator<=(const LhsElastic& lhs, const RhsElastic& rhs)
-    -> decltype(lhs._data()<=rhs._data())
+    template<class Lhs, class Rhs>
+    constexpr auto operator<(const Lhs& lhs, const Rhs& rhs)
+    -> typename std::enable_if<_elastic_impl::either_is_elastic<Lhs, Rhs>(), bool>::type
     {
-        return lhs._data()<=rhs._data();
+        return static_cast<_elastic_impl::remove_elasticity_t<Lhs>>(lhs)
+                <static_cast<_elastic_impl::remove_elasticity_t<Rhs>>(rhs);
     }
 
-    template<
-            class LhsElastic,
-            class RhsElastic,
-            typename = std::enable_if<sg14::is_elastic<LhsElastic>::value && sg14::is_elastic<LhsElastic>::value>>
-    constexpr auto operator>=(const LhsElastic& lhs, const RhsElastic& rhs)
-    -> decltype(lhs._data()>=rhs._data())
+    template<class Lhs, class Rhs>
+    constexpr auto operator>(const Lhs& lhs, const Rhs& rhs)
+    -> typename std::enable_if<_elastic_impl::either_is_elastic<Lhs, Rhs>(), bool>::type
     {
-        return lhs._data()>=rhs._data();
+        return static_cast<_elastic_impl::remove_elasticity_t<Lhs>>(lhs)
+                >static_cast<_elastic_impl::remove_elasticity_t<Rhs>>(rhs);
     }
 
-    template<
-            class LhsElastic,
-            class RhsElastic,
-            typename = std::enable_if<sg14::is_elastic<LhsElastic>::value && sg14::is_elastic<LhsElastic>::value>>
-    constexpr auto operator==(const LhsElastic& lhs, const RhsElastic& rhs)
-    -> decltype(lhs._data()==rhs._data())
+    template<class Lhs, class Rhs>
+    constexpr auto operator<=(const Lhs& lhs, const Rhs& rhs)
+    -> typename std::enable_if<_elastic_impl::either_is_elastic<Lhs, Rhs>(), bool>::type
     {
-        return lhs._data()==rhs._data();
+        return static_cast<_elastic_impl::remove_elasticity_t<Lhs>>(lhs)
+                <=static_cast<_elastic_impl::remove_elasticity_t<Rhs>>(rhs);
     }
 
-    template<
-            class LhsElastic,
-            class RhsElastic,
-            typename = std::enable_if<sg14::is_elastic<LhsElastic>::value && sg14::is_elastic<LhsElastic>::value>>
-    constexpr auto operator!=(const LhsElastic& lhs, const RhsElastic& rhs)
-    -> decltype(lhs._data()!=rhs._data())
+    template<class Lhs, class Rhs>
+    constexpr auto operator>=(const Lhs& lhs, const Rhs& rhs)
+    -> typename std::enable_if<_elastic_impl::either_is_elastic<Lhs, Rhs>(), bool>::type
     {
-        return lhs._data()!=rhs._data();
+        return static_cast<_elastic_impl::remove_elasticity_t<Lhs>>(lhs)
+                >=static_cast<_elastic_impl::remove_elasticity_t<Rhs>>(rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
