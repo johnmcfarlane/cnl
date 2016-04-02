@@ -88,43 +88,43 @@ struct print_num_as_error {
 // test specific operations
 
 // Lhs == Rhs
-template<class T>
-constexpr bool is_equal_to(const T& Lhs, const T& Rhs)
+template<class Lhs, class Rhs>
+constexpr bool is_equal_to(const Lhs& lhs, const Rhs& rhs)
 {
-    return ((Lhs==Rhs)==true)
-            && ((Lhs!=Rhs)==false)
-            && ((Lhs<Rhs)==false)
-            && ((Lhs>Rhs)==false)
-            && ((Lhs<=Rhs)==true)
-            && ((Lhs>=Rhs)==true);
+    return ((lhs==rhs)==true)
+            && ((lhs!=rhs)==false)
+            && ((lhs<rhs)==false)
+            && ((lhs>rhs)==false)
+            && ((lhs<=rhs)==true)
+            && ((lhs>=rhs)==true);
 }
 
 static_assert(is_equal_to<int>(0, 0), "less_than_test test failed");
 
-// Lesser < Greater
-template<class T>
-constexpr bool is_less_than(const T& Lesser, const T& Greater)
+// lesser < greater
+template<class Lesser, class Greater>
+constexpr bool is_less_than(const Lesser& lesser, const Greater& greater)
 {
-    return ((Lesser==Greater)==false)
-            && ((Lesser!=Greater)==true)
-            && ((Lesser<Greater)==true)
-            && ((Lesser>Greater)==false)
-            && ((Lesser<=Greater)==true)
-            && ((Lesser>=Greater)==false);
+    return ((lesser==greater)==false)
+            && ((lesser!=greater)==true)
+            && ((lesser<greater)==true)
+            && ((lesser>greater)==false)
+            && ((lesser<=greater)==true)
+            && ((lesser>=greater)==false);
 }
 
 static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
 
-// Greater > Lesser
-template<class T>
-constexpr bool is_greater_than(const T& Greater, const T& Lesser)
+// greater > lesser
+template<class Greater, class Lesser>
+constexpr bool is_greater_than(const Greater& greater, const Lesser& lesser)
 {
-    return ((Greater==Lesser)==false)
-            && ((Greater!=Lesser)==true)
-            && ((Greater<Lesser)==false)
-            && ((Greater>Lesser)==true)
-            && ((Greater<=Lesser)==false)
-            && ((Greater>=Lesser)==true);
+    return ((greater==lesser)==false)
+            && ((greater!=lesser)==true)
+            && ((greater<lesser)==false)
+            && ((greater>lesser)==true)
+            && ((greater<=lesser)==false)
+            && ((greater>=lesser)==true);
 }
 
 static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
