@@ -203,12 +203,12 @@ struct positive_elastic_test {
     // test numeric_limits<elastic>
 
     static_assert(min==elastic_type{fixed_point_type::from_data(1)}, "numeric_limits test failed");
-    static_assert(min<=max, "numeric_limits test failed");
-    static_assert(min>zero, "numeric_limits test failed");
-    static_assert(lowest<=zero, "numeric_limits test failed");
+    static_assert(!is_less_than(max, min), "numeric_limits test failed");
+    static_assert(is_greater_than(min, zero), "numeric_limits test failed");
+    static_assert(!is_greater_than(lowest, zero), "numeric_limits test failed");
     static_assert(is_greater_than(min, lowest), "numeric_limits test failed");
     static_assert(sg14::is_signed<elastic_type>::value==numeric_limits::is_signed, "numeric_limits test failed");
-    //static_assert(numeric_limits::is_integer == elastic_type{.5} != .5, "numeric_limits test failed");
+    static_assert(!numeric_limits::is_integer || (elastic_type{.5} != .5), "numeric_limits test failed");
 
     static constexpr typename elastic_type::_integer_type max_integer{max._data().data()};
     static_assert(bit_count(max_integer)==digits, "numeric_limits test failed");
@@ -217,19 +217,22 @@ struct positive_elastic_test {
     // test comparison operators
 
     // comparisons between zero
-    static_assert(is_equal_to<elastic_type>(zero, zero), "comparison test error");
+    static_assert(is_equal_to(zero, zero), "comparison test error");
+
+    // comparisons between zero and literal zero
+    static_assert(is_equal_to(zero, 0.), "comparison test error");
 
     // comparisons between zero and default-initialized value
-    static_assert(zero==elastic_type(), "default-initialized value is not represented using zero");
+    static_assert(is_equal_to(zero, elastic_type()), "default-initialized value is not represented using zero");
 
     // comparisons between zero and zero-initialized value
-    static_assert(zero==elastic_type{0.}, "zero-initialized value is not represented using zero");
+    static_assert(is_equal_to(zero, elastic_type{0.}), "zero-initialized value is not represented using zero");
 
     // comparisons between zero and negative zero
-    static_assert(is_equal_to<elastic_type>(zero, negative_zero), "comparison test error");
+    static_assert(is_equal_to(zero, negative_zero), "comparison test error");
 
     // comparisons between minimum value
-    static_assert(is_equal_to<elastic_type>(min, min), "comparison test error");
+    static_assert(is_equal_to(min, min), "comparison test error");
 
     // zero vs min
     static_assert(is_less_than<elastic_type>(zero, min), "comparison test error");
@@ -252,10 +255,19 @@ struct positive_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // test operator+
 
-    static_assert(elastic_type{zero + zero} == zero, "operator+ test failed");
+    static_assert(zero+zero==zero, "operator+ test failed");
+    static_assert(zero+zero+zero==zero, "operator+ test failed");
     static_assert(sg14::is_signed<decltype(zero+zero)>::value
                     ==sg14::is_signed<elastic_type>::value,
             "signedness is lost during add");
+    static_assert(sg14::is_signed<decltype(signed_type{zero}+unsigned_type{zero})>::value,
+            "signedness is lost during add");
+    static_assert(is_same<
+                    typename sg14::_elastic_impl::add_result_type<
+                            integer_digits, fractional_digits, typename elastic_type::archetype,
+                            integer_digits, fractional_digits, typename elastic_type::archetype>,
+                    elastic<integer_digits+1, fractional_digits, typename elastic_type::archetype>>::value,
+            "sg14::_elastic_impl::add_result_type test failed");
     static_assert(is_same<
             typename sg14::_elastic_impl::add_result_type<
                     integer_digits, fractional_digits, typename elastic_type::archetype,
@@ -303,16 +315,18 @@ struct signed_elastic_test :
     ////////////////////////////////////////////////////////////////////////////////
     // test numeric_limits<elastic>
 
-    static_assert(negative_min==elastic_type{fixed_point_type::from_data(-1)},
+    static_assert(is_equal_to(negative_min, elastic_type{fixed_point_type::from_data(-1)}),
             "numeric_limits test failed");
+    static_assert(is_greater_than(-max, lowest), "comparison test error");
+    static_assert(is_equal_to(elastic_type{min+max+lowest}, zero), "comparison test error");
     static_assert(numeric_limits::is_signed, "numeric_limits test failed");
-    //static_assert(numeric_limits::is_integer == elastic_type{-.5} != -.5, "numeric_limits test failed");
+    static_assert(!numeric_limits::is_integer || elastic_type{-.5} != -.5, "numeric_limits test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test comparison operators
 
     // comparisons between negative_min
-    static_assert(is_equal_to<elastic_type>(negative_min, negative_min), "comparison test error");
+    static_assert(is_equal_to(negative_min, negative_min), "comparison test error");
 
     // min vs negative_min
     static_assert(is_greater_than<elastic_type>(min, negative_min), "comparison test error");
@@ -326,7 +340,7 @@ struct signed_elastic_test :
     ////////////////////////////////////////////////////////////////////////////////
     // test operator+
 
-    static_assert(elastic_type{min + max + lowest} == elastic_type{0.}, "operator+ test failed");
+    static_assert(is_equal_to(min+max+lowest, elastic_type{0.}), "operator+ test failed");
 };
 
 ////////////////////////////////////////////////////////////////////////////////
