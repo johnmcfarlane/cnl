@@ -9,7 +9,9 @@
 #include <tuple>
 
 using std::is_same;
+
 using sg14::elastic;
+using sg14::elasticate;
 using sg14::make_signed_t;
 using sg14::make_unsigned_t;
 
@@ -128,6 +130,85 @@ constexpr bool is_greater_than(const Greater& greater, const Lesser& lesser)
 }
 
 static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// tests for sg14::elasticate
+
+template<std::int64_t Value>
+struct elasticate_test {
+    using elastic_type = decltype(elasticate<Value>());
+    static constexpr elastic_type elastic_value = elasticate<Value>();
+//    using x = print_num_as_error<((Value/2)*2)>();
+
+    static_assert(Value==0 || (Value/(1LL << elastic_type::integer_digits))==0, "elastic type capacity is too big");
+    static_assert(Value==0 || (Value >> (elastic_type::integer_digits-1))!=0, "elastic type capacity is too small");
+    static_assert(Value || elastic_type::integer_digits==1, "elastic type capacity is too small");
+
+    static constexpr int lsz = 1 << (-elastic_type::fractional_digits);
+    static_assert(Value==((Value/lsz)*lsz), "fractional_digits is too low");
+
+    static constexpr int lsz1 = lsz * 2;
+    static_assert(Value==0 || Value!=((Value/lsz1)*lsz1), "fractional_digits is too high");
+
+    static_assert(sg14::is_signed<elastic_type>::value==(Value<0), "signage doesn't match value");
+    static_assert(elastic_value==elastic<63, 0>{Value}, "elasticated value doesn't equal its source value");
+};
+
+static_assert(sizeof(elasticate<0>()) <= 1, "using too many bytes to represent 0");
+static_assert(sizeof(elasticate<1>()) == 1, "using too many bytes to represent 1");
+static_assert(sizeof(elasticate<255>()) == 1, "using too many bytes to represent 255");
+static_assert(sizeof(elasticate<256>()) == 1, "using too many bytes to represent 256");
+static_assert(sizeof(elasticate<257>()) == 2, "using too many bytes to represent 257");
+static_assert(sizeof(elasticate<510>()) == 1, "using too many bytes to represent 510");
+static_assert(sizeof(elasticate<511>()) == 2, "using too many bytes to represent 511");
+static_assert(sizeof(elasticate<512>()) == 1, "using too many bytes to represent 512");
+
+static_assert(sizeof(elasticate<-1>()) == 1, "using too many bytes to represent -1");
+static_assert(sizeof(elasticate<-127>()) == 1, "using too many bytes to represent -127");
+static_assert(sizeof(elasticate<-128>()) == 1, "using too many bytes to represent -128");
+static_assert(sizeof(elasticate<-129>()) == 2, "using too many bytes to represent -129");
+static_assert(sizeof(elasticate<-254>()) == 1, "using too many bytes to represent -254");
+static_assert(sizeof(elasticate<-255>()) == 2, "using too many bytes to represent -255");
+static_assert(sizeof(elasticate<-256>()) == 1, "using too many bytes to represent -256");
+
+template
+struct elasticate_test<-0>;
+template
+struct elasticate_test<1>;
+template
+struct elasticate_test<-1>;
+template
+struct elasticate_test<2>;
+template
+struct elasticate_test<-2>;
+template
+struct elasticate_test<3>;
+template
+struct elasticate_test<-3>;
+template
+struct elasticate_test<-13>;
+template
+struct elasticate_test<169>;
+template
+struct elasticate_test<-2197>;
+template
+struct elasticate_test<28561>;
+template
+struct elasticate_test<-371293>;
+template
+struct elasticate_test<4826809>;
+template
+struct elasticate_test<-62748517>;
+template
+struct elasticate_test<815730721>;
+template
+struct elasticate_test<-10604499373>;
+template
+struct elasticate_test<137858491849>;
+template
+struct elasticate_test<std::numeric_limits<std::int64_t>::max()>;
+template
+struct elasticate_test<-std::numeric_limits<std::int64_t>::max()>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // test how elastic handles non-negative values;
