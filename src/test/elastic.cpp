@@ -268,7 +268,12 @@ struct positive_elastic_test {
 // should pass for all signed specializations
 
 template<class Elastic>
-struct signed_elastic_test {
+struct signed_elastic_test :
+        // test type traits given this type is signed
+        test_traits<Elastic, true>,
+
+        // perform positive value tests against signed elastic specialization
+        positive_elastic_test<Elastic> {
     ////////////////////////////////////////////////////////////////////////////////
     // core definitions
 
@@ -329,7 +334,12 @@ struct signed_elastic_test {
 // should pass for all unsigned specializations
 
 template<class Elastic>
-struct unsigned_elastic_test {
+struct unsigned_elastic_test :
+        // test type traits given this type is not signed
+        test_traits<Elastic, false>,
+
+        // perform positive value tests against unsigned elastic specialization
+        positive_elastic_test<Elastic> {
     ////////////////////////////////////////////////////////////////////////////////
     // core definitions
 
@@ -357,14 +367,8 @@ struct unsigned_elastic_test {
 
 template<int IntegerDigits, int FractionalDigits>
 struct elastic_test :
-        // perform positive value tests against unsigned elastic specialization
-        positive_elastic_test<elastic<IntegerDigits, FractionalDigits, unsigned>>,
-
         // perform unsigned-specific value tests against unsigned elastic specialization
         unsigned_elastic_test<elastic<IntegerDigits, FractionalDigits, unsigned>>,
-
-        // perform positive value tests against signed elastic specialization
-        positive_elastic_test<elastic<IntegerDigits, FractionalDigits, signed>>,
 
         // perform negative value tests against signed elastic specialization
         signed_elastic_test<elastic<IntegerDigits, FractionalDigits, signed>> {
