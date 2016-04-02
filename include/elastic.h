@@ -1,3 +1,4 @@
+
 //          Copyright John McFarlane 2015 - 2016.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
@@ -274,6 +275,58 @@ namespace sg14 {
     //template<class Archetype>
     //class elastic<0, 0, Archetype> {
     //};
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::elasticate
+
+    // sg14::elasticate helper definitions
+    namespace _elastic_impl {
+        template<class Integer>
+        constexpr int num_integer_bits(Integer value)
+        {
+            return value ? 1+num_integer_bits(value/2) : 0;
+        }
+
+        template<class Integer>
+        constexpr int num_fractional_bits(Integer value)
+        {
+            return (((value / 2) * 2) == value) ? num_fractional_bits(value / 2) - 1 : 0;
+        }
+
+        template<class Integer, Integer value>
+        struct elastication {
+            static_assert(std::is_integral<Integer>::value, "template parameter, Integer, is not integral");
+
+            using type = elastic<
+                    sg14::_impl::max(1, num_integer_bits(value)),
+                    value ? num_fractional_bits(value) : 0,
+                    typename std::conditional<(value>=0), unsigned, signed>::type>;
+        };
+
+        template<class Integer, Integer Value, class Archetype = resize_t<Integer, sizeof(int)>>
+        using elasticate_t = typename _elastic_impl::elastication<Integer, Value>::type;
+    }
+
+    /// \brief generate an \ref elastic object of given value
+    ///
+    /// \param Value the integer number to be represented
+    ///
+    /// \return the given value represented using an \ref elastic type
+    ///
+    /// \note The return type is guaranteed to be no larger than is necessary to represent the value.
+    ///
+    /// \par Example
+    ///
+    /// To define an object with value 1024:
+    /// \snippet snippets.cpp define an object using elasticate
+
+    template<std::int64_t Value>
+    constexpr auto elasticate()
+    -> _elastic_impl::elasticate_t<std::int64_t, Value>
+    {
+        return _elastic_impl::elasticate_t<std::int64_t, Value>{Value};
+    }
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////

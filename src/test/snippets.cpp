@@ -5,6 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <fixed_point.h>
+#include <elastic.h>
 
 using namespace sg14;
 
@@ -16,6 +17,15 @@ namespace define_a_fixed_point_value {
 constexpr auto n = fixed_point<char, -3>{-2.75};
 static_assert(n==-2.75, "fixed-point type was unable to store the value");
 //! [define a fixed_point value]
+}
+
+namespace define_an_object_using_elasticate {
+//! [define an object using elasticate]
+constexpr auto n = elasticate<1024>();
+
+static_assert(n==1024, "n now has the value, 1024");
+static_assert(sizeof(n)==1, "elasticate uses the smallest type it can");
+//! [define an object using elasticate]
 }
 
 namespace use_resize_1 {
