@@ -45,6 +45,40 @@ namespace sg14 {
         struct is_elastic
                 : std::false_type {
         };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_elastic_impl::either_is_elastic
+        //
+        // useful for defining operators overloads
+
+        template<class Lhs, class Rhs>
+        constexpr bool either_is_elastic()
+        {
+            return is_elastic<Lhs>::value || is_elastic<Rhs>::value;
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_elastic_impl::remove_elasticity
+
+        // ensures type isn't elastic; converts elastic to its fixed_point value
+        template<class T>
+        struct remove_elasticity;
+
+        template<int I, int F, class A>
+        struct remove_elasticity<elastic<I, F, A>> {
+            using type = typename elastic<I, F, A>::_fixed_point_type;
+        };
+
+        template<class T>
+        struct remove_elasticity {
+            using type = T;
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_elastic_impl::remove_elasticity_t
+
+        template<class T>
+        using remove_elasticity_t = typename remove_elasticity<T>::type;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
