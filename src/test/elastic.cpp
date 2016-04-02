@@ -349,11 +349,25 @@ struct positive_elastic_test {
                             integer_digits, fractional_digits, typename elastic_type::archetype>,
                     elastic<integer_digits+1, fractional_digits, typename elastic_type::archetype>>::value,
             "sg14::_elastic_impl::add_result_type test failed");
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // test operator*
+
+    static_assert(is_equal_to(min*elasticate<0>(), zero), "operator+ test failed");
+    static_assert(is_equal_to(min*elasticate<1>(), min), "operator+ test failed");
+    static_assert(is_equal_to(min*elasticate<2>(), min+min), "operator+ test failed");
+    static_assert(is_equal_to(min*elasticate<3>(), min+min+min), "operator+ test failed");
+    static_assert(sg14::is_signed<decltype(zero*zero)>::value
+                    ==sg14::is_signed<elastic_type>::value,
+            "signedness is lost during multiply");
+    static_assert(sg14::is_signed<decltype(signed_type{zero}*unsigned_type{zero})>::value,
+            "signedness is lost during multiply");
     static_assert(is_same<
-            typename sg14::_elastic_impl::add_result_type<
-                    integer_digits, fractional_digits, typename elastic_type::archetype,
-                    integer_digits, fractional_digits, typename elastic_type::archetype>,
-            elastic<integer_digits+1, fractional_digits, typename elastic_type::archetype>>::value, "sg14::_elastic_impl::add_result_type test failed");
+                    typename sg14::_elastic_impl::add_result_type<
+                            integer_digits, fractional_digits, typename elastic_type::archetype,
+                            integer_digits, fractional_digits, typename elastic_type::archetype>,
+                    elastic<integer_digits+1, fractional_digits, typename elastic_type::archetype>>::value,
+            "sg14::_elastic_impl::add_result_type test failed");
 };
 
 ////////////////////////////////////////////////////////////////////////////////
