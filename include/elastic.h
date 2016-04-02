@@ -424,7 +424,34 @@ namespace sg14 {
         using fixed_point_result_type = typename result_type::_fixed_point_type;
 
         return sg14::add<fixed_point_result_type>(lhs._data(), rhs._data());
+    }
 
+    // multiply
+    namespace _elastic_impl {
+        template<
+                int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
+                int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
+        using multiply_result_type = elastic<
+                LhsIntegerDigits+RhsIntegerDigits,
+                LhsFractionalDigits+RhsFractionalDigits,
+                typename std::conditional<
+                        sg14::is_signed<LhsArchetype>::value || sg14::is_signed<RhsArchetype>::value,
+                        make_signed_t<LhsArchetype>,
+                        make_unsigned_t<RhsArchetype>>::type>;
+    }
+
+    template<
+            int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
+            int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
+    constexpr auto operator*(
+            const elastic<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype>& lhs,
+            const elastic<RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>& rhs)
+    -> _elastic_impl::multiply_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>
+    {
+        using result_type = _elastic_impl::multiply_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>;
+        using fixed_point_result_type = typename result_type::_fixed_point_type;
+
+        return sg14::multiply<fixed_point_result_type>(lhs._data(), rhs._data());
     }
 }
 
