@@ -245,7 +245,7 @@ namespace sg14 {
 
         /// constructor taking fixed_point type
         template<class RhsReprType, int RhsExponent>
-        constexpr elastic(const fixed_point<RhsReprType, RhsExponent>& value)
+		explicit constexpr elastic(const fixed_point<RhsReprType, RhsExponent>& value)
                 :_value(value) { }
 
         /// constructor converting from any other type
@@ -423,7 +423,8 @@ namespace sg14 {
         using result_type = _elastic_impl::add_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>;
         using fixed_point_result_type = typename result_type::_fixed_point_type;
 
-        return sg14::add<fixed_point_result_type>(lhs._data(), rhs._data());
+        return static_cast<result_type>(
+                sg14::add<fixed_point_result_type>(lhs._data(), rhs._data()));
     }
 
     // multiply
@@ -451,7 +452,8 @@ namespace sg14 {
         using result_type = _elastic_impl::multiply_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>;
         using fixed_point_result_type = typename result_type::_fixed_point_type;
 
-        return sg14::multiply<fixed_point_result_type>(lhs._data(), rhs._data());
+        return static_cast<result_type>(
+                sg14::multiply<fixed_point_result_type>(lhs._data(), rhs._data()));
     }
 }
 
@@ -478,21 +480,23 @@ namespace std {
 
         static constexpr _value_type min() noexcept
         {
-            return _fixed_point_limits::min();
+            return static_cast<_value_type>(_fixed_point_limits::min());
         }
 
         static constexpr _value_type max() noexcept
         {
-            return _fixed_point_type::from_data(
-                    numeric_limits<_fixed_point_repr_type>::max()
-                            >> (numeric_limits<_fixed_point_repr_type>::digits-digits));
+            return static_cast<_value_type>(
+                    _fixed_point_type::from_data(
+                            numeric_limits<_fixed_point_repr_type>::max()
+                                    >> (numeric_limits<_fixed_point_repr_type>::digits-digits)));
         }
 
         static constexpr _value_type lowest() noexcept
         {
-            return _fixed_point_type::from_data(
-                    numeric_limits<_fixed_point_repr_type>::lowest()
-                            >> (numeric_limits<_fixed_point_repr_type>::digits-digits));
+            return static_cast<_value_type>(
+                    _fixed_point_type::from_data(
+                            numeric_limits<_fixed_point_repr_type>::lowest()
+                                    >> (numeric_limits<_fixed_point_repr_type>::digits-digits)));
         }
 
         static constexpr int digits = _value_type::integer_digits+_value_type::fractional_digits;

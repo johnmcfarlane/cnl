@@ -151,7 +151,9 @@ struct elasticate_test {
     static_assert(Value==0 || Value!=((Value/lsz1)*lsz1), "fractional_digits is too high");
 
     static_assert(sg14::is_signed<elastic_type>::value==(Value<0), "signage doesn't match value");
+#if ! defined(_MSC_VER)
     static_assert(elastic_value==elastic<63, 0>{Value}, "elasticated value doesn't equal its source value");
+#endif
 };
 
 static_assert(sizeof(elasticate<0>()) <= 1, "using too many bytes to represent 0");
@@ -412,7 +414,7 @@ struct signed_elastic_test :
 
     static_assert(is_equal_to(negative_min, elastic_type{fixed_point_type::from_data(-1)}),
             "numeric_limits test failed");
-    static_assert(is_greater_than(-max, lowest), "comparison test error");
+    static_assert(is_greater_than(-decltype(max){max}, lowest), "comparison test error");
     static_assert(is_equal_to(elastic_type{min+max+lowest}, zero), "comparison test error");
     static_assert(numeric_limits::is_signed, "numeric_limits test failed");
     static_assert(!numeric_limits::is_integer || elastic_type{-.5} != -.5, "numeric_limits test failed");
