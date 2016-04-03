@@ -4,14 +4,15 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <fixed_point_utils.h>
-
 #include "sample_functions.h"
 
 #include <gtest/gtest.h>
 
-using namespace std;
-using namespace sg14;
+using sg14::fixed_point;
+using sg14::make_fixed;
+using sg14::make_ufixed;
+using sg14::multiply;
+using std::is_same;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Tests of Examples in P0037
@@ -68,39 +69,36 @@ TEST(proposal, overflow) {
 // Underflow
 static_assert(make_fixed<7, 0>(15)/make_fixed<7, 0>(2)==7.f, "Incorrect information in proposal section, Underflow");
 
-TEST(proposal, type_promotion)
+// Named Arithmetic Functions
+TEST(proposal, named_arithmetic1)
 {
-    auto unpromoted_type = make_fixed<5, 2>(15.5);
-    auto type_promotion = promote(unpromoted_type);
-    static_assert(is_same<decltype(type_promotion), make_fixed<11, 4>>::value,
-            "Incorrect information in proposal section, Type Promotion");
-    ASSERT_EQ(type_promotion, 15.5f);
+    auto f = make_ufixed<4, 4>{15.9375};
+    auto p = multiply<make_ufixed<8, 8>>(f, f);
 
-    auto type_demotion = demote(type_promotion);
-    static_assert(is_same<decltype(type_demotion), decltype(unpromoted_type)>::value,
-            "Incorrect information in proposal section, Type Promotion");
-    ASSERT_EQ(type_demotion, 15.5f);
+    static_assert(is_same<decltype(p), make_ufixed<8, 8>>::value, "Incorrect formation in proposal section, Named Arithmetic Functions");
+    ASSERT_EQ(p, 254.00390625);
 }
 
-// Examples
-static_assert(magnitude_trunc(
-        make_ufixed<4, 12>(1),
-        make_ufixed<4, 12>(4),
-        make_ufixed<4, 12>(9))==9.890625, "unexpected result from magnitude");
+TEST(proposal, named_arithmetic2)
+{
+    auto f = make_ufixed<4, 4>{15.9375};
+    auto p = multiply<make_ufixed<4, 4>>(f, f);
+
+    static_assert(is_same<decltype(p), make_ufixed<4, 4>>::value, "Incorrect formation in proposal section, Named Arithmetic Functions");
+    ASSERT_EQ(p, 14.00000000);
+}
+
+TEST(proposal, named_arithmetic3)
+{
+    auto f = make_ufixed<4, 4>{15.9375};
+    auto p = f * f;
+
+    static_assert(is_same<decltype(p), make_fixed<27, 4>>::value, "Incorrect formation in proposal section, Named Arithmetic Functions");
+    ASSERT_EQ(p, 254.00000000);
+}
 
 TEST(proposal, zero)
 {
     static fixed_point<> zero;
     ASSERT_EQ(zero, fixed_point<>(0));
-}
-
-TEST(proposal, bounded_integers)
-{
-    make_ufixed<2, 6> three(3);
-    auto n = trunc_square(trunc_square(three));
-    ASSERT_EQ(n, 81);
-    static_assert(is_same<decltype(n), make_ufixed<8, 0>>::value,
-            "bad assumption about type in 'Bounded Integers' section");
-    auto eighty_one = make_ufixed<7, 1>(81);
-    ASSERT_EQ(eighty_one, 81);
 }

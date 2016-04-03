@@ -18,11 +18,12 @@ OUTPUT_LANGUAGE = English
 INPUT = \
  ../include/elastic.h \
  ../include/fixed_point.h \
- ../include/fixed_point_utils.h \
+ ../include/bits/fixed_point_extras.h \
  ../include/type_traits.h \
  index.md
 EXCLUDE_SYMBOLS = \
  sg14::_elastic_impl \
+ sg14::_fixed_point_impl \
  sg14::_impl \
  sg14::_type_traits_impl \
  _SG14_FN_QUALIFIER

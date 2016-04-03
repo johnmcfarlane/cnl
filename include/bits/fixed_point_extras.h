@@ -5,17 +5,15 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief supplemental definitions related to the `sg14::fixed_point` type
+/// \brief supplemental definitions related to the `sg14::fixed_point` type;
+/// definitions that straddle two 'homes, e.g. fixed_point.h and cmath, traits or limits
 
 #if !defined(_SG14_FIXED_POINT_UTILS_H)
 #define _SG14_FIXED_POINT_UTILS_H 1
 
-#include "fixed_point.h"
-
 #include <cmath>
 #include <istream>
 #include <limits>
-#include <ostream>
 
 /// study group 14 of the C++ working group
 namespace sg14 {
@@ -24,9 +22,9 @@ namespace sg14 {
 
     template<class ReprType, int Exponent, typename std::enable_if<std::is_signed<ReprType>::value, int>::type Dummy = 0>
     constexpr auto abs(const fixed_point <ReprType, Exponent>& x) noexcept
-    -> _impl::common_type_t<decltype(x), decltype(-x)>
+    -> _fixed_point_impl::common_type_t<decltype(x), decltype(-x)>
     {
-        using common_type = _impl::common_type_t<decltype(x), decltype(-x)>;
+        using common_type = _fixed_point_impl::common_type_t<decltype(x), decltype(-x)>;
         return (x.data()>=0)
                ? static_cast<common_type>(x)
                : static_cast<common_type>(-x);
@@ -40,19 +38,73 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
+    // sg14::sqrt helper functions
+
+    namespace _fixed_point_impl {
+        template<class ReprType>
+        constexpr ReprType sqrt_bit(
+                ReprType n,
+                ReprType bit = ReprType(1) << (num_bits<ReprType>()-2))
+        {
+            return (bit>n) ? sqrt_bit<ReprType>(n, bit >> 2) : bit;
+        }
+
+        template<class ReprType>
+        constexpr ReprType sqrt_solve3(
+                ReprType n,
+                ReprType bit,
+                ReprType result)
+        {
+            return (bit != ReprType{ 0 })
+                   ? (n>=result+bit)
+                     ? sqrt_solve3<ReprType>(
+                                    static_cast<ReprType>(n-(result+bit)),
+                                    bit >> 2,
+                                    static_cast<ReprType>((result >> 1)+bit))
+                     : sqrt_solve3<ReprType>(n, bit >> 2, result >> 1)
+                   : result;
+        }
+
+        template<class ReprType>
+        constexpr ReprType sqrt_solve1(ReprType n)
+        {
+            return sqrt_solve3<ReprType>(n, sqrt_bit<ReprType>(n), ReprType{0});
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::sqrt
+
+    // https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_.28base_2.29
+    // placeholder implementation; slow when calculated at run-time?
+    template<class ReprType, int Exponent>
+    constexpr fixed_point<ReprType, Exponent>
+    sqrt(const fixed_point<ReprType, Exponent>& x)
+    {
+        using widened_type = fixed_point<resize_t<ReprType, sizeof(ReprType)*2>, Exponent*2>;
+        return
+#if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
+            (x<fixed_point<ReprType, Exponent>(0))
+                ? throw std::invalid_argument("cannot represent square root of negative value") :
+#endif
+                fixed_point<ReprType, Exponent>::from_data(
+                        static_cast<ReprType>(_fixed_point_impl::sqrt_solve1(widened_type{x}.data())));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
     // sg14::trig
     //
     // Placeholder implementations fall back on <cmath> functions which is slow
     // due to conversion to and from floating-point types; also inconvenient as
     // many <cmath> functions are not constexpr.
 
-    namespace _impl {
-        template<class ReprType, int Exponent, _impl::make_float<sizeof(ReprType)>(* F)(
-                _impl::make_float<sizeof(ReprType)>)>
+    namespace _fixed_point_impl {
+        template<class ReprType, int Exponent, _fixed_point_impl::make_float<sizeof(ReprType)>(* F)(
+                _fixed_point_impl::make_float<sizeof(ReprType)>)>
         constexpr fixed_point <ReprType, Exponent>
         crib(const fixed_point <ReprType, Exponent>& x) noexcept
         {
-            using floating_point = _impl::make_float<sizeof(ReprType)>;
+            using floating_point = _fixed_point_impl::make_float<sizeof(ReprType)>;
             return static_cast<fixed_point<ReprType, Exponent>>(F(static_cast<floating_point>(x)));
         }
     }
@@ -61,28 +113,28 @@ namespace sg14 {
     constexpr fixed_point <ReprType, Exponent>
     sin(const fixed_point <ReprType, Exponent>& x) noexcept
     {
-        return _impl::crib<ReprType, Exponent, std::sin>(x);
+        return _fixed_point_impl::crib<ReprType, Exponent, std::sin>(x);
     }
 
     template<class ReprType, int Exponent>
     constexpr fixed_point <ReprType, Exponent>
     cos(const fixed_point <ReprType, Exponent>& x) noexcept
     {
-        return _impl::crib<ReprType, Exponent, std::cos>(x);
+        return _fixed_point_impl::crib<ReprType, Exponent, std::cos>(x);
     }
 
     template<class ReprType, int Exponent>
     constexpr fixed_point <ReprType, Exponent>
     exp(const fixed_point <ReprType, Exponent>& x) noexcept
     {
-        return _impl::crib<ReprType, Exponent, std::exp>(x);
+        return _fixed_point_impl::crib<ReprType, Exponent, std::exp>(x);
     }
 
     template<class ReprType, int Exponent>
     constexpr fixed_point <ReprType, Exponent>
     pow(const fixed_point <ReprType, Exponent>& x) noexcept
     {
-        return _impl::crib<ReprType, Exponent, std::pow>(x);
+        return _fixed_point_impl::crib<ReprType, Exponent, std::pow>(x);
     }
 
     ////////////////////////////////////////////////////////////////////////////////

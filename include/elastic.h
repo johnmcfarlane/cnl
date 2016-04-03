@@ -10,7 +10,7 @@
 #if !defined(_SG14_ELASTIC)
 #define _SG14_ELASTIC 1
 
-#include <fixed_point_utils.h>
+#include <fixed_point.h>
 #include <type_traits.h>
 
 /// study group 14 of the C++ working group
@@ -166,7 +166,8 @@ namespace sg14 {
     template<class T>
     using make_unsigned_t = typename make_unsigned<T>::type;
 
-    /// \brief general-purpose real number approximation that avoids overflow
+    /// \brief literal real number approximation that uses fixed-point arithmetic
+    /// and performs operations with expanded results to avoid overflow
     ///
     /// \tparam IntegerDigits the number of integer bits of storage
     /// \tparam FractionalDigits the number of fractional bits of storage
@@ -185,7 +186,7 @@ namespace sg14 {
         /// see \a IntegerDigits
         static constexpr int integer_digits = IntegerDigits;
 
-        /// see `FractionalDigits`
+        /// see \a FractionalDigits
         static constexpr int fractional_digits = FractionalDigits;
 
         /// a type like the one used to represent to store this value
@@ -261,7 +262,7 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // leakage (not part of the API)
 
-        // private member accessor; do not use!
+        /// \private private member accessor; do not use!
         constexpr const _fixed_point_type& _data() const noexcept
         {
             return _value;

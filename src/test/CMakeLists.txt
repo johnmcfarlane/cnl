@@ -23,6 +23,14 @@ include_directories(SYSTEM ${source_dir}/include)
 
 add_executable(
         fp_test
+        ${CMAKE_CURRENT_LIST_DIR}/elastic1.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/elastic2.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/elastic3.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/elastic4.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/elastic5.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/elastic6.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/elastic7.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/elastic8.cpp
         ${CMAKE_CURRENT_LIST_DIR}/main.cpp
         ${CMAKE_CURRENT_LIST_DIR}/proposal.cpp
         ${CMAKE_CURRENT_LIST_DIR}/utils.cpp
@@ -31,7 +39,6 @@ add_executable(
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_saturated_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_native_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_throwing_integer.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/elastic.cpp
         ${CMAKE_CURRENT_LIST_DIR}/type_traits.cpp
         ${CMAKE_CURRENT_LIST_DIR}/readme.cpp
         ${CMAKE_CURRENT_LIST_DIR}/snippets.cpp

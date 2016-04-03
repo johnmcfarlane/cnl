@@ -29,24 +29,20 @@ The library is [hosted](https://github.com/johnmcfarlane/fixed_point) on GitHub:
 
        #include <fixed_point.h>
 
-3. Supplemental definitions are in [fixed_point_utils.h](@ref fixed_point_utils.h):
-
-       #include <fixed_point_utils.h>
-
-4. All definitions are in the [sg14](@ref sg14) namespace:
+3. All definitions are in the [sg14](@ref sg14) namespace:
 
        using namespace sg14;
    
-5. Use the [fixed_point](@ref sg14::fixed_point) type to define variables.
+4. Use the [fixed_point](@ref sg14::fixed_point) type to define variables.
 
        fixed_point<std::int32_t, -28> pi(3.1415926535);
        std::cout << "pi=" << std::setprecision(10) << pi;
    
    Output:
    
-> pi=3.141592652
+    *pi=3.141592652*
 
-6. Alternatively, use [make_fixed](@ref sg14::make_fixed) and [make_ufixed](@ref sg14::make_ufixed) to instantiate signed and unsigned variables 
+5. Alternatively, use [make_fixed](@ref sg14::make_fixed) and [make_ufixed](@ref sg14::make_ufixed) to instantiate signed and unsigned variables 
    with exactly the number of integer and fractional digits you require:
 
        make_fixed<3, 28> pi(3.1415926535);

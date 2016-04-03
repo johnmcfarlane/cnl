@@ -6,8 +6,17 @@
 
 #include "integer.h"
 
-using namespace sg14;
-using namespace std;
+using sg14::_integer_impl::is_integer_class;
+using sg14::_integer_impl::is_negative_overflow;
+using sg14::_integer_impl::is_positive_overflow;
+using sg14::saturated_integer;
+using std::is_integral;
+using std::is_same;
+using std::is_signed;
+using std::is_unsigned;
+using std::make_signed;
+using std::make_unsigned;
+using std::numeric_limits;
 
 ////////////////////////////////////////////////////////////////////////////////
 // std::common_type with sg14::integer parameter
@@ -31,30 +40,30 @@ static_assert(is_same<
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_integer_impl::is_integer_class
 
-static_assert(!_integer_impl::is_integer_class<uint8_t>::value, "sg14::_integer_impl::is_integer_class test failed");
-static_assert(!_integer_impl::is_integer_class<int8_t>::value, "sg14::_integer_impl::is_integer_class test failed");
-static_assert(!_integer_impl::is_integer_class<uint16_t>::value, "sg14::_integer_impl::is_integer_class test failed");
-static_assert(!_integer_impl::is_integer_class<int16_t>::value, "sg14::_integer_impl::is_integer_class test failed");
-static_assert(!_integer_impl::is_integer_class<uint32_t>::value, "sg14::_integer_impl::is_integer_class test failed");
-static_assert(!_integer_impl::is_integer_class<int32_t>::value, "sg14::_integer_impl::is_integer_class test failed");
-static_assert(!_integer_impl::is_integer_class<uint64_t>::value, "sg14::_integer_impl::is_integer_class test failed");
-static_assert(!_integer_impl::is_integer_class<int64_t>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(!is_integer_class<uint8_t>::value, "sg14::is_integer_class test failed");
+static_assert(!is_integer_class<int8_t>::value, "sg14::is_integer_class test failed");
+static_assert(!is_integer_class<uint16_t>::value, "sg14::is_integer_class test failed");
+static_assert(!is_integer_class<int16_t>::value, "sg14::is_integer_class test failed");
+static_assert(!is_integer_class<uint32_t>::value, "sg14::is_integer_class test failed");
+static_assert(!is_integer_class<int32_t>::value, "sg14::is_integer_class test failed");
+static_assert(!is_integer_class<uint64_t>::value, "sg14::is_integer_class test failed");
+static_assert(!is_integer_class<int64_t>::value, "sg14::is_integer_class test failed");
 
-static_assert(_integer_impl::is_integer_class<saturated_integer<uint8_t>>::value,
+static_assert(is_integer_class<saturated_integer<uint8_t>>::value,
+        "sg14::is_integer_class test failed");
+static_assert(is_integer_class<saturated_integer<int8_t>>::value,
+        "sg14::is_integer_class test failed");
+static_assert(is_integer_class<saturated_integer<uint16_t>>::value,
         "sg14::_integer_impl::is_integer_class test failed");
-static_assert(_integer_impl::is_integer_class<saturated_integer<int8_t>>::value,
+static_assert(is_integer_class<saturated_integer<int16_t>>::value,
         "sg14::_integer_impl::is_integer_class test failed");
-static_assert(_integer_impl::is_integer_class<saturated_integer<uint16_t>>::value,
+static_assert(is_integer_class<saturated_integer<uint32_t>>::value,
         "sg14::_integer_impl::is_integer_class test failed");
-static_assert(_integer_impl::is_integer_class<saturated_integer<int16_t>>::value,
+static_assert(is_integer_class<saturated_integer<int32_t>>::value,
         "sg14::_integer_impl::is_integer_class test failed");
-static_assert(_integer_impl::is_integer_class<saturated_integer<uint32_t>>::value,
+static_assert(is_integer_class<saturated_integer<uint64_t>>::value,
         "sg14::_integer_impl::is_integer_class test failed");
-static_assert(_integer_impl::is_integer_class<saturated_integer<int32_t>>::value,
-        "sg14::_integer_impl::is_integer_class test failed");
-static_assert(_integer_impl::is_integer_class<saturated_integer<uint64_t>>::value,
-        "sg14::_integer_impl::is_integer_class test failed");
-static_assert(_integer_impl::is_integer_class<saturated_integer<int64_t>>::value,
+static_assert(is_integer_class<saturated_integer<int64_t>>::value,
         "sg14::_integer_impl::is_integer_class test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -100,117 +109,117 @@ static_assert(sg14::_integer_impl::negative_digits<uint64_t>::value==0,
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_integer_impl::is_positive_overflow
 
-static_assert(!_integer_impl::is_positive_overflow<uint8_t, int8_t>(-1),
+static_assert(!is_positive_overflow<uint8_t, int8_t>(-1),
         "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<uint8_t, int8_t>(127),
+static_assert(!is_positive_overflow<uint8_t, int8_t>(127),
         "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<uint8_t, uint16_t>(0),
+static_assert(!is_positive_overflow<uint8_t, uint16_t>(0),
         "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<uint8_t, uint16_t>(255),
+static_assert(!is_positive_overflow<uint8_t, uint16_t>(255),
         "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(_integer_impl::is_positive_overflow<uint8_t, uint16_t>(256),
+static_assert(is_positive_overflow<uint8_t, uint16_t>(256),
         "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<uint8_t, int16_t>(-1),
+static_assert(!is_positive_overflow<uint8_t, int16_t>(-1),
         "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<uint8_t, int16_t>(0),
+static_assert(!is_positive_overflow<uint8_t, int16_t>(0),
         "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<uint8_t, int16_t>(255),
+static_assert(!is_positive_overflow<uint8_t, int16_t>(255),
         "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(_integer_impl::is_positive_overflow<uint8_t, int16_t>(256),
+static_assert(is_positive_overflow<uint8_t, int16_t>(256),
         "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<uint8_t, int16_t>(-1),
-        "sg14::_integer_impl::is_positive_overflow test failed");
-
-static_assert(!_integer_impl::is_positive_overflow<int8_t, uint8_t>(0),
-        "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<int8_t, uint8_t>(127),
-        "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(_integer_impl::is_positive_overflow<int8_t, uint8_t>(128),
-        "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<int8_t, uint16_t>(0),
-        "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<int8_t, uint16_t>(127),
-        "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(_integer_impl::is_positive_overflow<int8_t, uint16_t>(128),
-        "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<int8_t, int16_t>(-1),
-        "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<int8_t, int16_t>(0),
-        "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<int8_t, int16_t>(127),
-        "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(_integer_impl::is_positive_overflow<int8_t, int16_t>(128),
+static_assert(!is_positive_overflow<uint8_t, int16_t>(-1),
         "sg14::_integer_impl::is_positive_overflow test failed");
 
-static_assert(!_integer_impl::is_positive_overflow<uint16_t, uint8_t>(0),
+static_assert(!is_positive_overflow<int8_t, uint8_t>(0),
         "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<uint16_t, uint8_t>(255),
+static_assert(!is_positive_overflow<int8_t, uint8_t>(127),
         "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<uint16_t, int8_t>(-128),
+static_assert(is_positive_overflow<int8_t, uint8_t>(128),
         "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<uint16_t, int8_t>(127),
+static_assert(!is_positive_overflow<int8_t, uint16_t>(0),
         "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<uint16_t, int16_t>(-32768),
+static_assert(!is_positive_overflow<int8_t, uint16_t>(127),
         "sg14::_integer_impl::is_positive_overflow test failed");
-static_assert(!_integer_impl::is_positive_overflow<uint16_t, int16_t>(32767),
+static_assert(is_positive_overflow<int8_t, uint16_t>(128),
+        "sg14::_integer_impl::is_positive_overflow test failed");
+static_assert(!is_positive_overflow<int8_t, int16_t>(-1),
+        "sg14::_integer_impl::is_positive_overflow test failed");
+static_assert(!is_positive_overflow<int8_t, int16_t>(0),
+        "sg14::_integer_impl::is_positive_overflow test failed");
+static_assert(!is_positive_overflow<int8_t, int16_t>(127),
+        "sg14::_integer_impl::is_positive_overflow test failed");
+static_assert(is_positive_overflow<int8_t, int16_t>(128),
+        "sg14::_integer_impl::is_positive_overflow test failed");
+
+static_assert(!is_positive_overflow<uint16_t, uint8_t>(0),
+        "sg14::_integer_impl::is_positive_overflow test failed");
+static_assert(!is_positive_overflow<uint16_t, uint8_t>(255),
+        "sg14::_integer_impl::is_positive_overflow test failed");
+static_assert(!is_positive_overflow<uint16_t, int8_t>(-128),
+        "sg14::_integer_impl::is_positive_overflow test failed");
+static_assert(!is_positive_overflow<uint16_t, int8_t>(127),
+        "sg14::_integer_impl::is_positive_overflow test failed");
+static_assert(!is_positive_overflow<uint16_t, int16_t>(-32768),
+        "sg14::_integer_impl::is_positive_overflow test failed");
+static_assert(!is_positive_overflow<uint16_t, int16_t>(32767),
         "sg14::_integer_impl::is_positive_overflow test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_integer_impl::is_negative_overflow
 
-static_assert(_integer_impl::is_negative_overflow<uint8_t, int8_t>(-1),
+static_assert(is_negative_overflow<uint8_t, int8_t>(-1),
         "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<uint8_t, int8_t>(127),
+static_assert(!is_negative_overflow<uint8_t, int8_t>(127),
         "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<uint8_t, uint16_t>(0),
+static_assert(!is_negative_overflow<uint8_t, uint16_t>(0),
         "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<uint8_t, uint16_t>(255),
+static_assert(!is_negative_overflow<uint8_t, uint16_t>(255),
         "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<uint8_t, uint16_t>(256),
+static_assert(!is_negative_overflow<uint8_t, uint16_t>(256),
         "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(_integer_impl::is_negative_overflow<uint8_t, int16_t>(-1),
+static_assert(is_negative_overflow<uint8_t, int16_t>(-1),
         "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<uint8_t, int16_t>(0),
+static_assert(!is_negative_overflow<uint8_t, int16_t>(0),
         "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<uint8_t, int16_t>(255),
+static_assert(!is_negative_overflow<uint8_t, int16_t>(255),
         "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<uint8_t, int16_t>(256),
+static_assert(!is_negative_overflow<uint8_t, int16_t>(256),
         "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(_integer_impl::is_negative_overflow<uint8_t, int16_t>(-1),
-        "sg14::_integer_impl::is_negative_overflow test failed");
-
-static_assert(!_integer_impl::is_negative_overflow<int8_t, uint8_t>(0),
-        "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<int8_t, uint8_t>(127),
-        "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<int8_t, uint8_t>(128),
-        "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<int8_t, uint16_t>(0),
-        "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<int8_t, uint16_t>(127),
-        "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<int8_t, uint16_t>(128),
-        "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(_integer_impl::is_negative_overflow<int8_t, int16_t>(-129),
-        "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<int8_t, int16_t>(-128),
-        "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<int8_t, int16_t>(0),
+static_assert(is_negative_overflow<uint8_t, int16_t>(-1),
         "sg14::_integer_impl::is_negative_overflow test failed");
 
-static_assert(!_integer_impl::is_negative_overflow<uint16_t, uint8_t>(0),
+static_assert(!is_negative_overflow<int8_t, uint8_t>(0),
         "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<uint16_t, uint8_t>(255),
+static_assert(!is_negative_overflow<int8_t, uint8_t>(127),
         "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(_integer_impl::is_negative_overflow<uint16_t, int8_t>(-1),
+static_assert(!is_negative_overflow<int8_t, uint8_t>(128),
         "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<uint16_t, int8_t>(0),
+static_assert(!is_negative_overflow<int8_t, uint16_t>(0),
         "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<uint16_t, int8_t>(127),
+static_assert(!is_negative_overflow<int8_t, uint16_t>(127),
         "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(_integer_impl::is_negative_overflow<uint16_t, int16_t>(-32768),
+static_assert(!is_negative_overflow<int8_t, uint16_t>(128),
         "sg14::_integer_impl::is_negative_overflow test failed");
-static_assert(!_integer_impl::is_negative_overflow<uint16_t, int16_t>(32767),
+static_assert(is_negative_overflow<int8_t, int16_t>(-129),
+        "sg14::_integer_impl::is_negative_overflow test failed");
+static_assert(!is_negative_overflow<int8_t, int16_t>(-128),
+        "sg14::_integer_impl::is_negative_overflow test failed");
+static_assert(!is_negative_overflow<int8_t, int16_t>(0),
+        "sg14::_integer_impl::is_negative_overflow test failed");
+
+static_assert(!is_negative_overflow<uint16_t, uint8_t>(0),
+        "sg14::_integer_impl::is_negative_overflow test failed");
+static_assert(!is_negative_overflow<uint16_t, uint8_t>(255),
+        "sg14::_integer_impl::is_negative_overflow test failed");
+static_assert(is_negative_overflow<uint16_t, int8_t>(-1),
+        "sg14::_integer_impl::is_negative_overflow test failed");
+static_assert(!is_negative_overflow<uint16_t, int8_t>(0),
+        "sg14::_integer_impl::is_negative_overflow test failed");
+static_assert(!is_negative_overflow<uint16_t, int8_t>(127),
+        "sg14::_integer_impl::is_negative_overflow test failed");
+static_assert(is_negative_overflow<uint16_t, int16_t>(-32768),
+        "sg14::_integer_impl::is_negative_overflow test failed");
+static_assert(!is_negative_overflow<uint16_t, int16_t>(32767),
         "sg14::_integer_impl::is_negative_overflow test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
