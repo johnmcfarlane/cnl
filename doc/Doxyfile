@@ -18,7 +18,7 @@ OUTPUT_LANGUAGE = English
 INPUT = \
  ../include/elastic.h \
  ../include/fixed_point.h \
- ../include/bits/fixed_point_utils.h \
+ ../include/bits/fixed_point_extras.h \
  ../include/type_traits.h \
  index.md
 EXCLUDE_SYMBOLS = \

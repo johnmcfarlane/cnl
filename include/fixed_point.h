@@ -293,7 +293,7 @@ namespace sg14 {
         = sg14::resize_t<Archetype, 1 << (capacity<((RequiredBits+7)/8)-1>::value)>;
     }
 
-    /// \brief literal arithmetic type which approximates a real number
+    /// \brief literal real number approximation that uses fixed-point arithmetic
     ///
     /// \tparam ReprType the underlying type used to represent the value
     /// \tparam Exponent the value by which to scale the integer value in order to get the real value
