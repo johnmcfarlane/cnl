@@ -514,8 +514,10 @@ static_assert(multiply<make_ufixed<4, 4>>(make_ufixed<4, 4>(2), make_ufixed<4, 4
 
 static_assert(divide<fixed_point<>>(fixed_point<>(15), fixed_point<>(2))==15/2,
         "sg14::multiply test failed");
+#if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(divide<make_fixed<1, 14>>(make_fixed<1, 14>(1), make_fixed<7, 0>(127))==make_fixed<1, 14>(1./127),
         "sg14::divide test failed");
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // comparison
@@ -565,7 +567,9 @@ static_assert(!(fixed_point<int32, -3>(-4.5)<-5.6), "sg14::fixed_point test fail
 // addition
 static_assert((make_fixed<31, 0>(123)+make_fixed<31, 0>(123))==246, "sg14::fixed_point addition operator test failed");
 static_assert((make_fixed<15, 16>(123.125)+make_fixed<15, 16>(123.75))==246.875, "sg14::fixed_point addition operator test failed");
+#if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert((make_fixed<24>(123)+make_ufixed<31, 0>(123))==246, "sg14::fixed_point addition operator test failed");
+#endif
 static_assert((make_fixed<15, 16>(123.125)+make_fixed<15, 16>(123.75))==246.875, "sg14::fixed_point addition operator test failed");
 
 static_assert(make_fixed<2, 5>(2.125)+make_fixed<2, 5>(-3.25)==-1.125f, "sg14::fixed_point addition operator test failed");
@@ -589,7 +593,7 @@ static_assert(make_fixed<31, 32>(16777215.996093750)+765.432f==16777981.42810058
 static_assert(is_same<decltype(make_fixed<31, 32>(16777215.996093750)+765.432f), double>::value,
         "sg14::fixed_point addition operator test failed");
 
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
+#if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(fixed_point<int32, -16>(.5)+2==2.5, "sg14::fixed_point addition operator test failed");
 #endif
 
@@ -651,8 +655,10 @@ static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==32, "sg14::
 static_assert((fixed_point<int8, 1>(-255) / fixed_point<int8, 1>(-8)) == 30, "sg14::fixed_point test failed");
 #endif
 
+#if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert((make_fixed<31, 0>(-999)/make_fixed<31, 0>(3))==-333, "sg14::fixed_point test failed");
 static_assert(make_fixed<2, 5>(2.5)/make_fixed<2, 5>(-4.f)==-.625, "sg14::fixed_point division test failed");
+#endif
 static_assert(is_same<decltype(make_fixed<2, 5, test_int>(2.5)/make_fixed<2, 5, test_int>(-4.f)), fixed_point<test_int, -5>>::value,
         "sg14::fixed_point division test failed");
 
@@ -682,12 +688,16 @@ static_assert(is_same<decltype(make_fixed<31, 32>(16777215.996093750)/-123.654f)
 static_assert(sqrt(make_ufixed<8, 0>(225))==15, "sg14::sqrt test failed");
 static_assert(sqrt(make_fixed<7, 0>(81))==9, "sg14::sqrt test failed");
 
+#if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(sqrt(make_ufixed<7, 1>(4))==2, "sg14::sqrt test failed");
 static_assert(sqrt(make_fixed<5, 2>(9))==3, "sg14::sqrt test failed");
+#endif
 
+#if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(sqrt(make_ufixed<4, 4>(4))==2, "sg14::sqrt test failed");
 static_assert(static_cast<float>(sqrt(make_fixed<7, 24>(3.141592654)))>1.7724537849426, "sg14::sqrt test failed");
 static_assert(static_cast<float>(sqrt(make_fixed<7, 24>(3.141592654)))<1.7724537849427, "sg14::sqrt test failed");
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // https://groups.google.com/a/isocpp.org/forum/?utm_medium=email&utm_source=footer#!msg/sg14/cDZIcB1LNfE/heaucUIAAgAJ
