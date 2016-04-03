@@ -4,7 +4,7 @@
      <DisplayString>{repr+0}</DisplayString>
    </Type>
 
-   <Type Name="sg14::fixed_point&lt;*&gt;">
+   <!--<Type Name="sg14::fixed_point&lt;*&gt;">
      <DisplayString>{_repr}</DisplayString>
      <Expand>
        <Item Name="_repr">_repr</Item>
@@ -13,9 +13,9 @@
        <Item Name="integer_digits">integer_digits</Item>
        <Item Name="fractional_digits">fractional_digits</Item>
      </Expand>
-   </Type>
+   </Type>-->
    
-   <!--<Type Name="sg14::fixed_point&lt;*&gt;">
+   <Type Name="sg14::fixed_point&lt;*&gt;">
      <DisplayString Condition="exponent==0 &amp;&amp; _repr*0-1&lt;0"  >{(long double)_repr} u{integer_digits}:{fractional_digits}</DisplayString>
      <DisplayString Condition="exponent==0 &amp;&amp; _repr*0-1&gt;0"  >{(long double)_repr} s{integer_digits}:{fractional_digits}</DisplayString>
      <DisplayString Condition="exponent&lt;0 &amp;&amp; _repr*0-1&lt;0">{(long double)_repr/(1&lt;&lt;-exponent)} u{integer_digits}:{fractional_digits}</DisplayString>
@@ -29,5 +29,5 @@
        <Item Name="integer_digits">integer_digits</Item>
        <Item Name="fractional_digits">fractional_digits</Item>
      </Expand>
-   </Type>-->
+   </Type>
  </AutoVisualizer>
