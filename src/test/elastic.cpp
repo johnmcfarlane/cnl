@@ -414,7 +414,9 @@ struct signed_elastic_test :
 
     static_assert(is_equal_to(negative_min, elastic_type{fixed_point_type::from_data(-1)}),
             "numeric_limits test failed");
-    static_assert(is_greater_than(-decltype(max){max}, lowest), "comparison test error");
+#if ! defined(_MSC_VER)
+    static_assert(is_greater_than(-max, lowest), "comparison test error");
+#endif
     static_assert(is_equal_to(elastic_type{min+max+lowest}, zero), "comparison test error");
     static_assert(numeric_limits::is_signed, "numeric_limits test failed");
     static_assert(!numeric_limits::is_integer || elastic_type{-.5} != -.5, "numeric_limits test failed");
