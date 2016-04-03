@@ -499,7 +499,7 @@ static_assert(is_same<_impl::common_type_t<fixed_point<int16, 0>, double>, doubl
         "sg14::_impl::common_type_t test failed");
 static_assert(is_same<
         _impl::common_type_t<fixed_point<uint8, 10>, test_int>,
-        fixed_point<test_int, 10>>::value, "");
+        fixed_point<test_int, 10>>::value, "sg14::_impl::common_type_t test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::multiply
