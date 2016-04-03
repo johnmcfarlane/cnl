@@ -4,7 +4,7 @@ include(ExternalProject)
 # build flags
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-  set(MISC_FLAGS "/W4 /WX /errorReport:prompt /nologo")
+  set(MISC_FLAGS "/W4 /WX /wd4309 /errorReport:prompt /nologo")
 
   set(EXCEPTION_ENABLED_FLAGS "/EHsc")
   set(EXCEPTION_DISABLED_FLAGS "")
