@@ -504,8 +504,10 @@ static_assert(is_same<
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::multiply
 
+#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(multiply<make_ufixed<4, 4>>(make_ufixed<4, 4>(2), make_ufixed<4, 4>(7.5))==15,
         "sg14::multiply test failed");
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::divide
