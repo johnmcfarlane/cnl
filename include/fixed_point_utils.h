@@ -106,7 +106,7 @@ namespace sg14 {
 
 namespace std {
     ////////////////////////////////////////////////////////////////////////////////
-    // std::numeric_limits for fixed-point
+    // std::numeric_limits for sg14::fixed_point
 
     // note: some members are guessed,
     // some are temporary (assuming rounding style, traps etc.)
@@ -143,7 +143,7 @@ namespace std {
         //static constexpr int max_digits10 = ?;
 
         static constexpr bool is_signed = _repr_numeric_limits::is_signed;
-        static constexpr bool is_integer = false;
+        static constexpr bool is_integer = _repr_numeric_limits::is_integer;
 
         // TODO: not entirely certain
         static constexpr bool is_exact = true;
@@ -156,6 +156,7 @@ namespace std {
             return _value_type::from_data(1);
         }
 
+        // TODO: not even sure about this when repr_type is built-in integral
         static constexpr _value_type round_error() noexcept
         {
             return static_cast<_value_type>(1);

@@ -8,8 +8,12 @@ User Manual       {#mainpage}
 The [fixed_point](https://github.com/johnmcfarlane/fixed_point)
 library is designed to represent binary fixed-point real numbers using integer types. It is developed as part of
 [SG14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14) and SG6.
+
 For an overview of the API, see proposal,
 [P0037](http://johnmcfarlane.github.io/fixed_point/papers/p0037.html).
+
+For an example of how to use the API to make a general-purpose fixed-point type, see 
+[this paper](http://johnmcfarlane.github.io/fixed_point/papers/elastic.html).
 
 \section repository Repository
 

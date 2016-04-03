@@ -267,7 +267,7 @@ namespace sg14 {
         // sg14::_impl::max
 
         template<class T>
-        constexpr const T& max(const T& a, const T& b)
+        constexpr T max(T a, T b)
         {
             return (a<b) ? b : a;
         }
@@ -889,60 +889,62 @@ namespace sg14 {
 
         template<typename FixedPoint>
         using sqrt_result_repr = typename std::make_unsigned<FixedPoint>::type;
+    }
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // named fixed-point arithmetic - used by all other fixed-point arithmetic fns
+    ////////////////////////////////////////////////////////////////////////////////
+    // named fixed-point arithmetic - used by all other fixed-point arithmetic fns
 
-        // sg14::_impl::negate
-        template<class Result, class Rhs>
-        constexpr Result negate(const Rhs& rhs)
-        {
-            static_assert(std::is_signed<typename Result::repr_type>::value, "unary negation of unsigned value");
+    // sg14::_impl::negate
+    template<class Result, class Rhs>
+    constexpr Result negate(const Rhs& rhs)
+    {
+        static_assert(std::is_signed<typename Result::repr_type>::value, "unary negation of unsigned value");
 
-            return Result::from_data(-static_cast<Result>(rhs).data());
-        }
+        return Result::from_data(-static_cast<Result>(rhs).data());
+    }
 
-        // sg14::_impl::add
-        template<class Result, class Lhs, class Rhs>
-        constexpr Result add(const Lhs& lhs, const Rhs& rhs)
-        {
-            return Result::from_data(
-                    static_cast<typename Result::repr_type>(
-                            static_cast<Result>(lhs).data()
-                                    +static_cast<Result>(rhs).data()));
-        }
+    // sg14::add
+    template<class Result, class Lhs, class Rhs>
+    constexpr Result add(const Lhs& lhs, const Rhs& rhs)
+    {
+        return Result::from_data(
+                static_cast<typename Result::repr_type>(
+                        static_cast<Result>(lhs).data()
+                                +static_cast<Result>(rhs).data()));
+    }
 
-        // sg14::_impl::subtract
-        template<class Result, class Lhs, class Rhs>
-        constexpr Result subtract(const Lhs& lhs, const Rhs& rhs)
-        {
-            return Result::from_data(
-                    static_cast<Result>(lhs).data()
-                            -static_cast<Result>(rhs).data());
-        }
+    // sg14::subtract
+    template<class Result, class Lhs, class Rhs>
+    constexpr Result subtract(const Lhs& lhs, const Rhs& rhs)
+    {
+        return Result::from_data(
+                static_cast<Result>(lhs).data()
+                        -static_cast<Result>(rhs).data());
+    }
 
-        // sg14::_impl::multiply
-        template<class Result, class Lhs, class Rhs>
-        constexpr Result multiply(const Lhs& lhs, const Rhs& rhs)
-        {
-            using result_repr_type = typename Result::repr_type;
-            return Result::from_data(
-                    _impl::shift_left<
-                            (Lhs::exponent+Rhs::exponent-Result::exponent),
-                            result_repr_type>(lhs.data()*rhs.data()));
-        }
+    // sg14::multiply
+    template<class Result, class Lhs, class Rhs>
+    constexpr Result multiply(const Lhs& lhs, const Rhs& rhs)
+    {
+        using result_repr_type = typename Result::repr_type;
+        return Result::from_data(
+                _impl::shift_left<
+                        (Lhs::exponent+Rhs::exponent-Result::exponent),
+                        result_repr_type>(lhs.data()*rhs.data()));
+    }
 
-        // sg14::_impl::divide
-        template<class Result, class Lhs, class Rhs>
-        constexpr Result divide(const Lhs& lhs, const Rhs& rhs)
-        {
-            using result_repr_type = typename Result::repr_type;
-            return Result::from_data(
-                    _impl::shift_left<
-                            (Lhs::exponent-Rhs::exponent-Result::exponent),
-                            result_repr_type>(lhs.data()/rhs.data()));
-        }
+    // sg14::divide
+    template<class Result, class Lhs, class Rhs>
+    constexpr Result divide(const Lhs& lhs, const Rhs& rhs)
+    {
+        using result_repr_type = typename Result::repr_type;
+        return Result::from_data(
+                _impl::shift_left<
+                        (Lhs::exponent-Rhs::exponent-Result::exponent),
+                        result_repr_type>(lhs.data()/rhs.data()));
+    }
 
+    namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
         // policy-based fixed-point arithmetic - customizable arithmetic
 
@@ -1200,7 +1202,7 @@ namespace sg14 {
     -> fixed_point<decltype(std::declval<ReprType>() * std::declval<Integer>()), Exponent>
     {
         using repr_type = fixed_point<decltype(std::declval<ReprType>() * std::declval<Integer>()), Exponent>;
-        return _impl::multiply<repr_type>(lhs, fixed_point<Integer>(rhs));
+        return multiply<repr_type>(lhs, fixed_point<Integer>(rhs));
     }
 
     template<
@@ -1211,7 +1213,7 @@ namespace sg14 {
     -> fixed_point<decltype(std::declval<ReprType>() / std::declval<Integer>()), Exponent>
     {
         using result_type = fixed_point<decltype(std::declval<ReprType>() / std::declval<Integer>()), Exponent>;
-        return _impl::divide<result_type>(lhs, fixed_point<Integer>(rhs));
+        return divide<result_type>(lhs, fixed_point<Integer>(rhs));
     }
 
     // integer. fixed-point -> fixed-point
@@ -1223,7 +1225,7 @@ namespace sg14 {
     -> fixed_point<decltype(std::declval<Integer>() * std::declval<ReprType>()), Exponent>
     {
         using result_type = fixed_point<decltype(std::declval<Integer>() * std::declval<ReprType>()), Exponent>;
-        return _impl::multiply<result_type>(fixed_point<Integer>(lhs), rhs);
+        return multiply<result_type>(fixed_point<Integer>(lhs), rhs);
     }
 
     template<
@@ -1234,7 +1236,7 @@ namespace sg14 {
     -> fixed_point<decltype(std::declval<Integer>() / std::declval<ReprType>()), Exponent>
     {
         using result_type = fixed_point<decltype(std::declval<Integer>() / std::declval<ReprType>()), Exponent>;
-        return _impl::divide<result_type>(fixed_point<Integer>(lhs), rhs);
+        return divide<result_type>(fixed_point<Integer>(lhs), rhs);
     }
 
     // fixed-point, floating-point -> floating-point
@@ -1461,7 +1463,7 @@ namespace sg14 {
 
         using dividend_type = make_fixed_from_repr<result_repr_type, 1>;
 
-        return _impl::divide<result_type>(dividend_type(1), fixed_point);
+        return divide<result_type>(dividend_type(1), fixed_point);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -1483,7 +1485,7 @@ namespace sg14 {
     {
         using result_type = trunc_square_result<FixedPoint>;
 		using intermediate_type = _impl::promote_integer_result<result_type>;
-		return static_cast<result_type>(_impl::multiply<intermediate_type>(root, root));
+		return static_cast<result_type>(multiply<intermediate_type>(root, root));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -1542,7 +1544,7 @@ namespace sg14 {
     constexpr promote_add(const FixedPoint& addend1, const Tail& ... addend_tail)
     {
         using output_type = promote_add_result<FixedPoint, sizeof...(Tail)+1>;
-        return _impl::add<output_type, FixedPoint>(addend1, addend_tail ...);
+        return add<output_type, FixedPoint>(addend1, addend_tail ...);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -1562,7 +1564,7 @@ namespace sg14 {
     constexpr promote_subtract(const Lhs& lhs, const Rhs& rhs)
     {
         using result_type = promote_subtract_result<Lhs, Rhs>;
-        return _impl::subtract<result_type>(lhs, rhs);
+        return subtract<result_type>(lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -1580,7 +1582,7 @@ namespace sg14 {
     constexpr promote_multiply(const Lhs& lhs, const Rhs& rhs)
     {
         using result_type = promote_multiply_result<Lhs, Rhs>;
-        return _impl::multiply<result_type>(lhs, rhs);
+        return multiply<result_type>(lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -1598,7 +1600,7 @@ namespace sg14 {
     constexpr promote_divide(const Lhs& lhs, const Rhs& rhs)
     {
         using result_type = promote_divide_result<Lhs, Rhs>;
-        return _impl::divide<result_type>(lhs, rhs);
+        return divide<result_type>(lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
