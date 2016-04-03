@@ -57,7 +57,10 @@ namespace sg14 {
         {
             return bit
                    ? (n>=result+bit)
-                     ? sqrt_solve3<ReprType>(n-(result+bit), bit >> 2, (result >> 1)+bit)
+                     ? sqrt_solve3<ReprType>(
+                                    static_cast<ReprType>(n-(result+bit)),
+                                    bit >> 2,
+                                    static_cast<ReprType>((result >> 1)+bit))
                      : sqrt_solve3<ReprType>(n, bit >> 2, result >> 1)
                    : result;
         }
@@ -65,7 +68,7 @@ namespace sg14 {
         template<class ReprType>
         constexpr ReprType sqrt_solve1(ReprType n)
         {
-            return sqrt_solve3<ReprType>(n, sqrt_bit<ReprType>(n), 0);
+            return sqrt_solve3<ReprType>(n, sqrt_bit<ReprType>(n), ReprType{0});
         }
     }
 
