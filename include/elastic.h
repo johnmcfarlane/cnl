@@ -10,7 +10,7 @@
 #if !defined(_SG14_ELASTIC)
 #define _SG14_ELASTIC 1
 
-#include <fixed_point_utils.h>
+#include <fixed_point.h>
 #include <type_traits.h>
 
 /// study group 14 of the C++ working group

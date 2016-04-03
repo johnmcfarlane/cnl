@@ -4,14 +4,14 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <fixed_point_utils.h>
-
 #include "sample_functions.h"
 
 #include <gtest/gtest.h>
 
-using namespace std;
-using namespace sg14;
+using sg14::fixed_point;
+using sg14::make_fixed;
+using sg14::make_ufixed;
+using std::is_same;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Tests of Examples in P0037

@@ -6,16 +6,15 @@
 
 #include "sample_functions.h"
 
-#include <fixed_point_utils.h>
-
 #include <benchmark/benchmark.h>
 
 #define ESCAPE(X) escape_cppcon2015(&X)
 //#define ESCAPE(X) escape_codedive2015(&X)
 //#define ESCAPE(x) benchmark::DoNotOptimize(x)
 
-using namespace sg14;
-using namespace std;
+using std::numeric_limits;
+using sg14::make_fixed;
+using sg14::make_ufixed;
 
 ////////////////////////////////////////////////////////////////////////////////
 // entry point

@@ -15,7 +15,29 @@ using std::declval;
 ////////////////////////////////////////////////////////////////////////////////
 // imports from sg14
 
-using namespace sg14;
+namespace _impl {
+    // namespace injection avoids noisy change following renaming of internal namespace
+    using namespace sg14::_fixed_point_impl;
+}
+
+using sg14::demote_result;
+using sg14::divide;
+using sg14::fixed_point;
+using sg14::make_fixed;
+using sg14::make_fixed_from_repr;
+using sg14::make_ufixed;
+using sg14::multiply;
+using sg14::promote_add_result;
+using sg14::promote_multiply_result;
+using sg14::promote_result;
+using sg14::promote_square_result;
+using sg14::promote_subtract_result;
+using sg14::resize_t;
+using sg14::trunc_reciprocal_result;
+using sg14::trunc_shift_left;
+using sg14::trunc_shift_right;
+using sg14::trunc_sqrt_result;
+using sg14::trunc_square_result;
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer definitions

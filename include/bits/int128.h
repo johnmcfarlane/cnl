@@ -7,6 +7,8 @@
 #ifndef _SG14_INT128_H
 #define _SG14_INT128_H
 
+// This file contains tweaks to standard traits that integers more conducive to generic programming.
+
 #if defined(_MSC_VER)
 namespace std {
     // std::is_integral
