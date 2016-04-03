@@ -68,25 +68,8 @@ TEST(proposal, overflow) {
 // Underflow
 static_assert(make_fixed<7, 0>(15)/make_fixed<7, 0>(2)==7.f, "Incorrect information in proposal section, Underflow");
 
-// Examples
-static_assert(magnitude_trunc(
-        make_ufixed<4, 12>(1),
-        make_ufixed<4, 12>(4),
-        make_ufixed<4, 12>(9))==9.890625, "unexpected result from magnitude");
-
 TEST(proposal, zero)
 {
     static fixed_point<> zero;
     ASSERT_EQ(zero, fixed_point<>(0));
-}
-
-TEST(proposal, bounded_integers)
-{
-    make_ufixed<2, 6> three(3);
-    auto n = trunc_square(trunc_square(three));
-    ASSERT_EQ(n, 81);
-    static_assert(is_same<decltype(n), make_ufixed<8, 0>>::value,
-            "bad assumption about type in 'Bounded Integers' section");
-    auto eighty_one = make_ufixed<7, 1>(81);
-    ASSERT_EQ(eighty_one, 81);
 }

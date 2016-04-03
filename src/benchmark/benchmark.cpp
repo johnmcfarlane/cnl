@@ -138,21 +138,6 @@ static void bm_magnitude_squared(benchmark::State& state)
 }
 
 template<typename T>
-static void bm_magnitude_trunc(benchmark::State& state)
-{
-    auto x = T {1};
-    auto y = T {4};
-    auto z = T {9};
-    while (state.KeepRunning()) {
-        ESCAPE(x);
-        ESCAPE(y);
-        ESCAPE(z);
-        auto value = magnitude_trunc(x, y, z);
-        ESCAPE(value);
-    }
-}
-
-template<typename T>
 static void bm_circle_intersect_generic(benchmark::State& state)
 {
     auto x1 = T {0};
@@ -190,27 +175,6 @@ static void circle_intersect_generic(benchmark::State& state)
         ESCAPE(y2);
         ESCAPE(r2);
         auto value = circle_intersect_generic(x1, y1, r1, x2, y2, r2);
-        ESCAPE(value);
-    }
-}
-
-template<typename T>
-static void bm_circle_intersect_trunc(benchmark::State& state)
-{
-    auto x1 = T {0};
-    auto y1 = T {10};
-    auto r1 = T {14};
-    auto x2 = T {4};
-    auto y2 = T {13};
-    auto r2 = T {9};
-    while (state.KeepRunning()) {
-        ESCAPE(x1);
-        ESCAPE(y1);
-        ESCAPE(r1);
-        ESCAPE(x2);
-        ESCAPE(y2);
-        ESCAPE(r2);
-        auto value = circle_intersect_trunc(x1, y1, r1, x2, y2, r2);
         ESCAPE(value);
     }
 }
@@ -285,8 +249,6 @@ FIXED_POINT_BENCHMARK_COMPLETE(div);
 FIXED_POINT_BENCHMARK_REAL(bm_magnitude_squared);
 
 FIXED_POINT_BENCHMARK_REAL(bm_circle_intersect_generic);
-FIXED_POINT_BENCHMARK_FIXED(bm_circle_intersect_trunc);
 
 // tests involving unoptimized math function, sg14::sqrt
 FIXED_POINT_BENCHMARK_REAL(bm_sqrt);
-FIXED_POINT_BENCHMARK_FIXED(bm_magnitude_trunc);
