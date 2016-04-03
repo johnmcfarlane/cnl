@@ -11,6 +11,7 @@
 using sg14::fixed_point;
 using sg14::make_fixed;
 using sg14::make_ufixed;
+using sg14::multiply;
 using std::is_same;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -67,6 +68,34 @@ TEST(proposal, overflow) {
 
 // Underflow
 static_assert(make_fixed<7, 0>(15)/make_fixed<7, 0>(2)==7.f, "Incorrect information in proposal section, Underflow");
+
+// Named Arithmetic Functions
+TEST(proposal, named_arithmetic1)
+{
+    auto f = make_ufixed<4, 4>{15.9375};
+    auto p = multiply<make_ufixed<8, 8>>(f, f);
+
+    static_assert(is_same<decltype(p), make_ufixed<8, 8>>::value, "Incorrect formation in proposal section, Named Arithmetic Functions");
+    ASSERT_EQ(p, 254.00390625);
+}
+
+TEST(proposal, named_arithmetic2)
+{
+    auto f = make_ufixed<4, 4>{15.9375};
+    auto p = multiply<make_ufixed<4, 4>>(f, f);
+
+    static_assert(is_same<decltype(p), make_ufixed<4, 4>>::value, "Incorrect formation in proposal section, Named Arithmetic Functions");
+    ASSERT_EQ(p, 14.00000000);
+}
+
+TEST(proposal, named_arithmetic3)
+{
+    auto f = make_ufixed<4, 4>{15.9375};
+    auto p = f * f;
+
+    static_assert(is_same<decltype(p), make_fixed<27, 4>>::value, "Incorrect formation in proposal section, Named Arithmetic Functions");
+    ASSERT_EQ(p, 254.00000000);
+}
 
 TEST(proposal, zero)
 {
