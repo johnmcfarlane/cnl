@@ -716,6 +716,7 @@ struct FixedPointTester {
             exponent == fixed_point::exponent,
             "mismatched exponent");
 
+#if ! defined(_MSC_VER)
     // simply assignment to and from underlying representation
     using numeric_limits = std::numeric_limits<fixed_point>;
     static constexpr fixed_point min = fixed_point::from_data(repr_type(1));
@@ -784,7 +785,6 @@ struct FixedPointTester {
             "promotion rule for subtraction fixed_point<ReprType> should match its ReprType");
 
     // assorted tests of +, -, * and /
-#if ! defined(_MSC_VER)
     static_assert(min + min == 2 * min, "basic arithmetic isn't working");
     static_assert((84 * min) / 84 == min, "basic arithmetic isn't working");
     static_assert((7 * min) - (4 * min) == (6 * min) / 2, "basic arithmetic isn't working");
