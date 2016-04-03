@@ -13,22 +13,6 @@ using std::is_same;
 using std::declval;
 
 ////////////////////////////////////////////////////////////////////////////////
-// imports from sg14
-
-namespace _impl {
-    // namespace injection avoids noisy change following renaming of internal namespace
-    using namespace sg14::_fixed_point_impl;
-}
-
-using sg14::divide;
-using sg14::fixed_point;
-using sg14::make_fixed;
-using sg14::make_fixed_from_repr;
-using sg14::make_ufixed;
-using sg14::multiply;
-using sg14::resize_t;
-
-////////////////////////////////////////////////////////////////////////////////
 // integer definitions
 //
 // depends upon test_signed and test_unsigned defined in including source file
@@ -36,19 +20,45 @@ using sg14::resize_t;
 using test_signed = test_int;
 using test_unsigned = std::make_unsigned<test_signed>::type;
 
-using int8 = resize_t<test_signed, 1>;
-using uint8 = resize_t<test_unsigned, 1>;
-using int16 = resize_t<test_signed, 2>;
-using uint16 = resize_t<test_unsigned, 2>;
-using int32 = resize_t<test_signed, 4>;
-using uint32 = resize_t<test_unsigned, 4>;
-using int64 = resize_t<test_signed, 8>;
-using uint64 = resize_t<test_unsigned, 8>;
+using int8 = sg14::resize_t<test_signed, 1>;
+using uint8 = sg14::resize_t<test_unsigned, 1>;
+using int16 = sg14::resize_t<test_signed, 2>;
+using uint16 = sg14::resize_t<test_unsigned, 2>;
+using int32 = sg14::resize_t<test_signed, 4>;
+using uint32 = sg14::resize_t<test_unsigned, 4>;
+using int64 = sg14::resize_t<test_signed, 8>;
+using uint64 = sg14::resize_t<test_unsigned, 8>;
 
 #if defined(_GLIBCXX_USE_INT128)
-using int128 = resize_t<test_signed, 16>;
-using uint128 = resize_t<test_unsigned, 16>;
+using int128 = sg14::resize_t<test_signed, 16>;
+using uint128 = sg14::resize_t<test_unsigned, 16>;
 #endif
+
+////////////////////////////////////////////////////////////////////////////////
+// imports from sg14
+
+namespace _impl {
+    // namespace injection avoids noisy change following renaming of internal namespace
+    using namespace sg14::_fixed_point_impl;
+}
+
+template <typename ReprType=test_int, int Exponent=0>
+using fixed_point = sg14::fixed_point<ReprType, Exponent>;
+
+template<int IntegerDigits, int FractionalDigits = 0, class Archetype = test_signed>
+using make_fixed = sg14::make_fixed<IntegerDigits, FractionalDigits, Archetype>;
+
+template<class ReprType, int IntegerDigits>
+using make_fixed_from_repr = sg14::make_fixed_from_repr<ReprType, IntegerDigits>;
+
+template<int IntegerDigits, int FractionalDigits = 0, class Archetype = test_unsigned>
+using make_ufixed = sg14::make_ufixed<IntegerDigits, FractionalDigits, Archetype>;
+
+template<class Archetype, int NumBytes>
+using resize_t = sg14::resize_t<Archetype, NumBytes>;
+
+using sg14::divide;
+using sg14::multiply;
 
 ////////////////////////////////////////////////////////////////////////////////
 // copy assignment
@@ -136,9 +146,9 @@ static_assert(static_cast<int>(-3.9)==-3, "incorrect assumption about default ro
 static_assert(is_same<std::common_type<float, uint32>::type, float>::value, "incorrect assumption about promotion");
 
 // promotion doesn't always tend towards int
-static_assert(is_same<std::common_type<int64_t, uint32_t>::type, int64_t>::value, "incorrect assumption about promotion");
-static_assert(is_same<std::common_type<int32_t, uint64_t>::type, uint64_t>::value, "incorrect assumption about promotion");
-static_assert(is_same<decltype(int8_t(0) + int8_t(0)), int>::value, "incorrect assumption about promotion");
+static_assert(is_same<std::common_type<int64, uint32>::type, int64>::value, "incorrect assumption about promotion");
+static_assert(is_same<std::common_type<int32, uint64>::type, uint64>::value, "incorrect assumption about promotion");
+static_assert(is_same<decltype(int8(0) + int8(0)), test_int>::value, "incorrect assumption about promotion");
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -147,14 +157,14 @@ static_assert(is_same<decltype(int8_t(0) + int8_t(0)), int>::value, "incorrect a
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::next_size
 
-static_assert(is_same<_impl::next_size<int8_t>, int16_t>::value, "sg14::_impl::next_size text failed");
-static_assert(is_same<_impl::next_size<uint32_t>, uint64_t>::value, "sg14::_impl::next_size text failed");
+static_assert(is_same<_impl::next_size<int8>, int16>::value, "sg14::_impl::next_size text failed");
+static_assert(is_same<_impl::next_size<uint32>, uint64>::value, "sg14::_impl::next_size text failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::previous_size
 
-static_assert(is_same<_impl::previous_size<int64_t>, int32_t>::value, "sg14::_impl::previous_size text failed");
-static_assert(is_same<_impl::previous_size<uint16_t>, uint8_t>::value, "sg14::_impl::previous_size text failed");
+static_assert(is_same<_impl::previous_size<int64>, int32>::value, "sg14::_impl::previous_size text failed");
+static_assert(is_same<_impl::previous_size<uint16>, uint8>::value, "sg14::_impl::previous_size text failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::shift_left/right positive RHS
@@ -276,38 +286,38 @@ static_assert(is_same<_impl::sufficient_repr<128, test_signed>, int128>::value, 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::resize_t<fixed_point<>, >
 
-static_assert(is_same<resize_t<fixed_point<std::uint8_t, -8>, 1>, fixed_point<std::uint8_t, -8>>::value,
+static_assert(is_same<resize_t<fixed_point<uint8, -8>, 1>, fixed_point<uint8, -8>>::value,
         "sg14::resize_t test failed");
-static_assert(is_same<resize_t<fixed_point<std::int8_t, 8>, 2>, fixed_point<std::int16_t, 8>>::value,
+static_assert(is_same<resize_t<fixed_point<int8, 8>, 2>, fixed_point<int16, 8>>::value,
         "sg14::resize_t test failed");
-static_assert(is_same<resize_t<fixed_point<std::uint16_t, -16>, 3>, fixed_point<std::uint32_t, -16>>::value,
+static_assert(is_same<resize_t<fixed_point<uint16, -16>, 3>, fixed_point<uint32, -16>>::value,
         "sg14::resize_t test failed");
-static_assert(is_same<resize_t<fixed_point<std::int16_t, 16>, 4>, fixed_point<std::int32_t, 16>>::value,
+static_assert(is_same<resize_t<fixed_point<int16, 16>, 4>, fixed_point<int32, 16>>::value,
         "sg14::resize_t test failed");
-static_assert(is_same<resize_t<fixed_point<std::uint32_t, -45>, 5>, fixed_point<std::uint64_t, -45>>::value,
+static_assert(is_same<resize_t<fixed_point<uint32, -45>, 5>, fixed_point<uint64, -45>>::value,
         "sg14::resize_t test failed");
-static_assert(is_same<resize_t<fixed_point<std::int32_t, -8>, 6>, fixed_point<std::int64_t, -8>>::value,
+static_assert(is_same<resize_t<fixed_point<int32, -8>, 6>, fixed_point<int64, -8>>::value,
         "sg14::resize_t test failed");
-static_assert(is_same<resize_t<fixed_point<std::uint64_t, 8>, 7>, fixed_point<std::uint64_t, 8>>::value,
+static_assert(is_same<resize_t<fixed_point<uint64, 8>, 7>, fixed_point<uint64, 8>>::value,
         "sg14::resize_t test failed");
-static_assert(is_same<resize_t<fixed_point<std::int64_t, -16>, 8>, fixed_point<std::int64_t, -16>>::value,
+static_assert(is_same<resize_t<fixed_point<int64, -16>, 8>, fixed_point<int64, -16>>::value,
         "sg14::resize_t test failed");
 #if defined(_GLIBCXX_USE_INT128)
-static_assert(is_same<resize_t<fixed_point<std::uint8_t, 16>, 9>, fixed_point<unsigned __int128, 16>>::value,
+static_assert(is_same<resize_t<fixed_point<uint8, 16>, 9>, fixed_point<uint128, 16>>::value,
         "sg14::resize_t test failed");
-static_assert(is_same<resize_t<fixed_point<std::int8_t, -45>, 10>, fixed_point<__int128, -45>>::value,
+static_assert(is_same<resize_t<fixed_point<int8, -45>, 10>, fixed_point<int128, -45>>::value,
         "sg14::resize_t test failed");
-static_assert(is_same<resize_t<fixed_point<std::uint16_t, -8>, 11>, fixed_point<unsigned __int128, -8>>::value,
+static_assert(is_same<resize_t<fixed_point<uint16, -8>, 11>, fixed_point<uint128, -8>>::value,
         "sg14::resize_t test failed");
-static_assert(is_same<resize_t<fixed_point<std::int16_t, 8>, 12>, fixed_point<__int128, 8>>::value,
+static_assert(is_same<resize_t<fixed_point<int16, 8>, 12>, fixed_point<int128, 8>>::value,
         "sg14::resize_t test failed");
-static_assert(is_same<resize_t<fixed_point<std::uint32_t, -16>, 13>, fixed_point<unsigned __int128, -16>>::value,
+static_assert(is_same<resize_t<fixed_point<uint32, -16>, 13>, fixed_point<uint128, -16>>::value,
         "sg14::resize_t test failed");
-static_assert(is_same<resize_t<fixed_point<std::int32_t, 16>, 14>, fixed_point<__int128, 16>>::value,
+static_assert(is_same<resize_t<fixed_point<int32, 16>, 14>, fixed_point<int128, 16>>::value,
         "sg14::resize_t test failed");
-static_assert(is_same<resize_t<fixed_point<std::uint64_t, -45>, 15>, fixed_point<unsigned __int128, -45>>::value,
+static_assert(is_same<resize_t<fixed_point<uint64, -45>, 15>, fixed_point<uint128, -45>>::value,
         "sg14::resize_t test failed");
-static_assert(is_same<resize_t<fixed_point<std::int64_t, -8>, 16>, fixed_point<__int128, -8>>::value,
+static_assert(is_same<resize_t<fixed_point<int64, -8>, 16>, fixed_point<int128, -8>>::value,
         "sg14::resize_t test failed");
 #endif
 
@@ -330,7 +340,7 @@ static_assert(is_same<fixed_point<uint64>, fixed_point<uint64, 0>>::value, "sg14
 ////////////////////////////////////////////////////////////////////////////////
 // default first template parameter
 
-static_assert(is_same<fixed_point<int, 0>, fixed_point<>>::value, "sg14::fixed_point test failed");
+static_assert(is_same<fixed_point<test_int, 0>, fixed_point<>>::value, "sg14::fixed_point test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // conversion
