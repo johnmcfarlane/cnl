@@ -68,20 +68,6 @@ TEST(proposal, overflow) {
 // Underflow
 static_assert(make_fixed<7, 0>(15)/make_fixed<7, 0>(2)==7.f, "Incorrect information in proposal section, Underflow");
 
-TEST(proposal, type_promotion)
-{
-    auto unpromoted_type = make_fixed<5, 2>(15.5);
-    auto type_promotion = promote(unpromoted_type);
-    static_assert(is_same<decltype(type_promotion), make_fixed<11, 4>>::value,
-            "Incorrect information in proposal section, Type Promotion");
-    ASSERT_EQ(type_promotion, 15.5f);
-
-    auto type_demotion = demote(type_promotion);
-    static_assert(is_same<decltype(type_demotion), decltype(unpromoted_type)>::value,
-            "Incorrect information in proposal section, Type Promotion");
-    ASSERT_EQ(type_demotion, 15.5f);
-}
-
 // Examples
 static_assert(magnitude_trunc(
         make_ufixed<4, 12>(1),

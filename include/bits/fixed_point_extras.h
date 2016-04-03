@@ -78,13 +78,14 @@ namespace sg14 {
     constexpr fixed_point<ReprType, Exponent>
     sqrt(const fixed_point<ReprType, Exponent>& x)
     {
+        using widened_type = fixed_point<resize_t<ReprType, sizeof(ReprType)*2>, Exponent*2>;
         return
 #if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
             (x<fixed_point<ReprType, Exponent>(0))
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
 #endif
                 fixed_point<ReprType, Exponent>::from_data(
-                        static_cast<ReprType>(_fixed_point_impl::sqrt_solve1(promote(x).data())));
+                        static_cast<ReprType>(_fixed_point_impl::sqrt_solve1(widened_type{x}.data())));
     }
 
     ////////////////////////////////////////////////////////////////////////////////

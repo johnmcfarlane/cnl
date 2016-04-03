@@ -549,44 +549,6 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::promote_result / promote
-
-    // given template parameters of a fixed_point specialization,
-    // yields alternative specialization with twice the fractional bits
-    // and twice the integral/sign bits
-    template<class FixedPoint>
-    using promote_result = fixed_point<
-            _fixed_point_impl::next_size<typename FixedPoint::repr_type>,
-            FixedPoint::exponent*2>;
-
-    // as promote_result but promotes parameter, from
-    template<class FixedPoint>
-    promote_result<FixedPoint>
-    constexpr promote(const FixedPoint& from)
-    {
-        return promote_result<FixedPoint>(from);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::demote_result / demote
-
-    // given template parameters of a fixed_point specialization,
-    // yields alternative specialization with half the fractional bits
-    // and half the integral/sign bits (assuming Exponent is even)
-    template<class FixedPoint>
-    using demote_result = fixed_point<
-            _fixed_point_impl::previous_size<typename FixedPoint::repr_type>,
-            FixedPoint::exponent/2>;
-
-    // as demote_result but demotes parameter, from
-    template<class FixedPoint>
-    demote_result<FixedPoint>
-    constexpr demote(const FixedPoint& from)
-    {
-        return demote_result<FixedPoint>(from);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
     // sg14::fixed_point-aware _fixed_point_impl definitions
 
     namespace _fixed_point_impl {
@@ -607,41 +569,41 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_fixed_point_impl::promote_integer_result / promote_integer
+        // sg14::_fixed_point_impl::widen_integer_result / widen_integer
 
         // given template parameters of a fixed_point specialization,
         // yields alternative specialization with twice the capacity
         // and the same number of factional bits; requires no bit shift
         template<class FixedPoint>
-        using promote_integer_result = fixed_point<
+        using widen_integer_result = fixed_point<
                 _fixed_point_impl::next_size<typename FixedPoint::repr_type>,
                 FixedPoint::exponent>;
 
-        // as promote_integer_result but promotes parameter
+        // as widen_integer_result but widens parameter
         template<class FixedPoint>
-        promote_integer_result<FixedPoint>
-        constexpr promote_integer(const FixedPoint& from)
+        widen_integer_result<FixedPoint>
+        constexpr widen_integer(const FixedPoint& from)
         {
-            return promote_integer_result<FixedPoint>(from);
+            return widen_integer_result<FixedPoint>(from);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_fixed_point_impl::promote_fractional_result / promote_fractional
+        // sg14::_fixed_point_impl::widen_fractional_result / widen_fractional
 
         // given template parameters of a fixed_point specialization,
         // yields alternative specialization with twice the capacity
         // and the same number of integer bits
         template<class FixedPoint>
-        using promote_fractional_result = fixed_point<
+        using widen_fractional_result = fixed_point<
                 _fixed_point_impl::next_size<typename FixedPoint::repr_type>,
                 FixedPoint::exponent - num_bits<typename FixedPoint::repr_type>()>;
 
-        // as promote_fractional_result but promotes parameter
+        // as widen_fractional_result but widens parameter
         template<class FixedPoint>
-        promote_fractional_result<FixedPoint>
-        constexpr promote_fractional(const FixedPoint& from)
+        widen_fractional_result<FixedPoint>
+        constexpr widen_fractional(const FixedPoint& from)
         {
-            return promote_fractional_result<FixedPoint>(from);
+            return widen_fractional_result<FixedPoint>(from);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -699,7 +661,7 @@ namespace sg14 {
                 using result_type = fixed_point<
                         decltype(std::declval<typename Lhs::repr_type>() * std::declval<typename Rhs::repr_type>()),
                         exponent<Lhs, Rhs>::value>;
-                using lhs_type = promote_integer_result<Lhs>;
+                using lhs_type = widen_integer_result<Lhs>;
             };
 
             template<class Lhs, class Rhs>
@@ -707,7 +669,7 @@ namespace sg14 {
                 using result_type = fixed_point<
                         decltype(std::declval<typename Lhs::repr_type>() / std::declval<typename Rhs::repr_type>()),
                         exponent<Lhs, Rhs>::value>;
-                using lhs_type = promote_fractional_result<Lhs>;
+                using lhs_type = widen_fractional_result<Lhs>;
             };
         };
 
@@ -1302,7 +1264,7 @@ namespace sg14 {
     /// \warning (*) Overflow can occur if \c rhs is the
     /// <a href="https://en.wikipedia.org/wiki/Two's_complement#Most_negative_number">most negative number</a>.
     ///
-    /// \sa trunc_subtract, trunc_multiply, trunc_divide, promote_subtract
+    /// \sa trunc_subtract, trunc_multiply, trunc_divide
     template<class Lhs, class Rhs = Lhs>
     constexpr auto trunc_add(const Lhs& lhs, const Rhs& rhs)
     -> typename _fixed_point_impl::trunc_arithmetic_policy::add<Lhs, Rhs>::result_type
@@ -1330,7 +1292,7 @@ namespace sg14 {
     /// \warning (*) Overflow can occur if \c rhs is the
     /// <a href="https://en.wikipedia.org/wiki/Two's_complement#Most_negative_number">most negative number</a>.
     ///
-    /// \sa trunc_add, trunc_multiply, trunc_divide, promote_subtract
+    /// \sa trunc_add, trunc_multiply, trunc_divide
     template<class Lhs, class Rhs = Lhs>
     constexpr auto trunc_subtract(const Lhs& lhs, const Rhs& rhs)
     -> typename _fixed_point_impl::trunc_arithmetic_policy::subtract<Lhs, Rhs>::result_type
@@ -1357,7 +1319,7 @@ namespace sg14 {
     /// \warning (*) Overflow can occur if \c rhs is the
     /// <a href="https://en.wikipedia.org/wiki/Two's_complement#Most_negative_number">most negative number</a>.
     ///
-    /// \sa trunc_add, trunc_subtract, trunc_divide, promote_multiply
+    /// \sa trunc_add, trunc_subtract, trunc_divide
     template<class Lhs, class Rhs = Lhs>
     constexpr auto trunc_multiply(const Lhs& lhs, const Rhs& rhs)
     -> typename _fixed_point_impl::trunc_arithmetic_policy::multiply<Lhs, Rhs>::result_type
@@ -1379,7 +1341,7 @@ namespace sg14 {
     /// \remarks The size of the return type is the larger of the two inputs.
     /// \remarks The return type contains enough integer bits to avoid overflow (most negative number excepted).
     ///
-    /// \sa trunc_add, trunc_subtract, trunc_multiply, promote_divide
+    /// \sa trunc_add, trunc_subtract, trunc_multiply
     template<class Lhs, class Rhs>
     constexpr auto trunc_divide(const Lhs& lhs, const Rhs& rhs)
     -> typename _fixed_point_impl::trunc_arithmetic_policy::divide<Lhs, Rhs>::result_type
@@ -1429,7 +1391,7 @@ namespace sg14 {
     constexpr trunc_square(const FixedPoint& root)
     {
         using result_type = trunc_square_result<FixedPoint>;
-		using intermediate_type = _fixed_point_impl::promote_integer_result<result_type>;
+		using intermediate_type = _fixed_point_impl::widen_integer_result<result_type>;
 		return static_cast<result_type>(multiply<intermediate_type>(root, root));
     }
 
@@ -1473,104 +1435,6 @@ namespace sg14 {
     {
         return fixed_point<ReprType, Exponent-Integer>::from_data(fp.data());
     };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::promote_add_result / promote_add
-
-    // yields specialization of fixed_point with double the capacity necessary to
-    // store result of an add between values of fixed_point<ReprType, Exponent>
-    template<class FixedPoint, unsigned N = 2>
-    using promote_add_result = make_fixed_from_repr<
-            _fixed_point_impl::next_size<typename FixedPoint::repr_type>,
-            FixedPoint::integer_digits+_fixed_point_impl::capacity<N-1>::value>;
-
-    template<class FixedPoint, class ... Tail>
-    promote_add_result<FixedPoint, sizeof...(Tail)+1>
-    constexpr promote_add(const FixedPoint& addend1, const Tail& ... addend_tail)
-    {
-        using output_type = promote_add_result<FixedPoint, sizeof...(Tail)+1>;
-        return add<output_type, FixedPoint>(addend1, addend_tail ...);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::promote_subtract_result / promote_subtract
-
-    // yields specialization of fixed_point with double the capacity necessary to
-    // store result of an subtract between values of fixed_point<ReprType, Exponent>
-    template<class Lhs, class Rhs = Lhs>
-    using promote_subtract_result = make_fixed_from_repr<
-            typename _fixed_point_impl::next_size<_fixed_point_impl::subtract_result_repr<typename Lhs::repr_type, typename Rhs::repr_type>>,
-            _impl::max(Lhs::integer_digits, Rhs::integer_digits)+1>;
-
-    // as promote_subtract_result but converts parameter, factor,
-    // ready for safe binary subtract
-    template<class Lhs, class Rhs>
-    promote_subtract_result<Lhs, Rhs>
-    constexpr promote_subtract(const Lhs& lhs, const Rhs& rhs)
-    {
-        using result_type = promote_subtract_result<Lhs, Rhs>;
-        return subtract<result_type>(lhs, rhs);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::promote_multiply_result / promote_multiply
-
-    // yields specialization of fixed_point with capacity necessary to store
-    // result of a multiply between values of fixed_point<ReprType, Exponent>
-    template<class Lhs, class Rhs = Lhs>
-    using promote_multiply_result = promote_result<_fixed_point_impl::common_type_t<Lhs, Rhs>>;
-
-    // as promote_multiply_result but converts parameter, factor,
-    // ready for safe binary multiply
-    template<class Lhs, class Rhs>
-    promote_multiply_result<Lhs, Rhs>
-    constexpr promote_multiply(const Lhs& lhs, const Rhs& rhs)
-    {
-        using result_type = promote_multiply_result<Lhs, Rhs>;
-        return multiply<result_type>(lhs, rhs);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::promote_divide_result / promote_divide
-
-    // yields specialization of fixed_point with capacity necessary to store
-    // result of a divide between values of fixed_point<ReprType, Exponent>
-    template<class Lhs, class Rhs = Lhs>
-    using promote_divide_result = promote_result<_fixed_point_impl::common_type_t<Lhs, Rhs>>;
-
-    // as promote_divide_result but converts parameter, factor,
-    // ready for safe binary divide
-    template<class Lhs, class Rhs>
-    promote_divide_result<Lhs, Rhs>
-    constexpr promote_divide(const Lhs& lhs, const Rhs& rhs)
-    {
-        using result_type = promote_divide_result<Lhs, Rhs>;
-        return divide<result_type>(lhs, rhs);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::promote_square_result / promote_square
-
-    // yields specialization of fixed_point with integral bits necessary to store
-    // result of a multiply between values of fixed_point<ReprType, Exponent>
-    // whose sign bit is set to the same value
-    template<class FixedPoint>
-    using promote_square_result = make_ufixed<
-            FixedPoint::integer_digits*2,
-            FixedPoint::fractional_digits*2>;
-
-    // as promote_square_result but converts parameter, factor,
-    // ready for safe binary multiply-by-self
-    template<class FixedPoint>
-    promote_square_result<FixedPoint>
-    constexpr promote_square(const FixedPoint& root)
-    {
-        using output_type = promote_square_result<FixedPoint>;
-        using output_repr_type = typename output_type::repr_type;
-        return output_type::from_data(
-                _fixed_point_impl::shift_left<(FixedPoint::exponent*2-output_type::exponent), output_repr_type>(
-                        static_cast<output_repr_type>(root.data())*static_cast<output_repr_type>(root.data())));
-    }
 }
 
 #include "bits/fixed_point_extras.h"
