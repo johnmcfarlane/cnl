@@ -55,7 +55,7 @@ namespace sg14 {
                 ReprType bit,
                 ReprType result)
         {
-            return bit
+            return (bit != ReprType{ 0 })
                    ? (n>=result+bit)
                      ? sqrt_solve3<ReprType>(
                                     static_cast<ReprType>(n-(result+bit)),
