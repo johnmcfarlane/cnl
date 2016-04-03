@@ -69,6 +69,13 @@ namespace sg14 {
         using Result = integer<decltype(std::declval<LhsRepr>() OP std::declval<Rhs>()), LhsOverflowPolicy>; \
         return static_cast<Result>(lhs.data() OP rhs); }
 
+#define _SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(OP, BIN_OP) \
+    template <class Rhs> \
+    auto operator OP (const Rhs& rhs) \
+    -> integer& { \
+        repr = static_cast<repr_type>(repr BIN_OP rhs); \
+        return *this; }
+
 #define _SG14_INTEGER_BIT_SHIFT_DEFINE(OP) \
     template <class LhsRepr, class LhsOverflowPolicy, class RhsRepr, class RhsOverflowPolicy> \
     constexpr auto operator OP (const integer<LhsRepr, LhsOverflowPolicy>& lhs, const integer<RhsRepr, RhsOverflowPolicy>& rhs) \
@@ -320,6 +327,11 @@ namespace sg14 {
         {
             return integer(-rhs.repr);
         }
+
+        _SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(+=, +);
+        _SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(-=, -);
+        _SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(*=, *);
+        _SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(/=, /);
 
         constexpr repr_type const& data() const
         {
