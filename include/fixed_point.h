@@ -525,16 +525,6 @@ namespace sg14 {
             FractionalDigits,
             typename std::make_unsigned<Archetype>::type>;
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_fixed_from_repr
-
-    // yields a fixed_point with Exponent calculated such that
-    // fixed_point<ReprType, Exponent>::integer_bits == IntegerDigits
-    template<class ReprType, int IntegerDigits>
-    using make_fixed_from_repr = fixed_point<
-            ReprType,
-            IntegerDigits+std::is_signed<ReprType>::value-(signed) sizeof(ReprType)*CHAR_BIT>;
-
     /// produces equivalent fixed-point type at a new size
     ///
     /// \tparam ReprType the \a ReprType parameter of @ref fixed_point
