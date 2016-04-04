@@ -48,9 +48,6 @@ using fixed_point = sg14::fixed_point<ReprType, Exponent>;
 template<int IntegerDigits, int FractionalDigits = 0, class Archetype = test_signed>
 using make_fixed = sg14::make_fixed<IntegerDigits, FractionalDigits, Archetype>;
 
-template<class ReprType, int IntegerDigits>
-using make_fixed_from_repr = sg14::make_fixed_from_repr<ReprType, IntegerDigits>;
-
 template<int IntegerDigits, int FractionalDigits = 0, class Archetype = test_unsigned>
 using make_ufixed = sg14::make_ufixed<IntegerDigits, FractionalDigits, Archetype>;
 
@@ -442,12 +439,6 @@ static_assert(
                         fixed_point<uint8, -4>>::result_type,
                 fixed_point<decltype(std::declval<uint8>() + std::declval<uint8>()), -3>>::value,
         "sg14::_impl::default_arithmtic_policy test failed");
-
-////////////////////////////////////////////////////////////////////////////////
-// sg14::make_fixed_from_repr
-
-static_assert(make_fixed_from_repr<uint8, 8>::integer_digits==8, "sg14::make_fixed_from_repr test failed");
-static_assert(make_fixed_from_repr<int32, 27>::integer_digits==27, "sg14::make_fixed_from_repr test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::resize_t

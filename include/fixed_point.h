@@ -492,7 +492,7 @@ namespace sg14 {
     /// \brief Produce a fixed-point type with the given number of integer and fractional digits.
     ///
     /// \tparam IntegerDigits specifies minimum value of @ref fixed_point::integer_digits
-    /// \tparam FractionalDigits specifies minimum value of @ref fixed_point::fractional_digits
+    /// \tparam FractionalDigits specifies the exact value of @ref fixed_point::fractional_digits
     /// \tparam Archetype hints at the type of @ref fixed_point::repr_type
     ///
     /// \remarks The signage of \a Archetype specifies signage of the resultant fixed-point type.
@@ -502,19 +502,14 @@ namespace sg14 {
     ///
     /// \par Example:
     ///
-    /// To generate a 2-byte fixed-point type with a sign bit, 7 integer bits and 8 fractional bits:
+    /// To generate a fixed-point type with a sign bit, 8 fractional bits and at least 7 integer bits:
     /// \snippet snippets.cpp use make_fixed
     ///
     /// \sa make_ufixed
     template<int IntegerDigits, int FractionalDigits = 0, class Archetype = signed>
     using make_fixed = fixed_point<
             _fixed_point_impl::sufficient_repr<IntegerDigits+FractionalDigits+std::is_signed<Archetype>::value, Archetype>,
-            int(IntegerDigits)
-                    +int(std::is_signed<Archetype>::value)
-                    -_fixed_point_impl::num_bits<
-                            _fixed_point_impl::sufficient_repr<
-                                    IntegerDigits+FractionalDigits+int(std::is_signed<Archetype>::value),
-                                    Archetype>>()>;
+            -FractionalDigits>;
 
     /// \brief Produce an unsigned fixed-point type with the given number of integer and fractional digits.
     ///
@@ -524,16 +519,6 @@ namespace sg14 {
             IntegerDigits,
             FractionalDigits,
             typename std::make_unsigned<Archetype>::type>;
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_fixed_from_repr
-
-    // yields a fixed_point with Exponent calculated such that
-    // fixed_point<ReprType, Exponent>::integer_bits == IntegerDigits
-    template<class ReprType, int IntegerDigits>
-    using make_fixed_from_repr = fixed_point<
-            ReprType,
-            IntegerDigits+std::is_signed<ReprType>::value-(signed) sizeof(ReprType)*CHAR_BIT>;
 
     /// produces equivalent fixed-point type at a new size
     ///

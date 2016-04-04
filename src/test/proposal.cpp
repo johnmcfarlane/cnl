@@ -12,6 +12,7 @@ using sg14::fixed_point;
 using sg14::make_fixed;
 using sg14::make_ufixed;
 using sg14::multiply;
+using sg14::sqrt;
 using std::is_same;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -95,6 +96,24 @@ TEST(proposal, named_arithmetic3)
 
     static_assert(is_same<decltype(p), make_fixed<27, 4>>::value, "Incorrect formation in proposal section, Named Arithmetic Functions");
     ASSERT_EQ(p, 254.00000000);
+}
+
+// Examples
+template<class Fp>
+constexpr auto magnitude(Fp x, Fp y, Fp z)
+-> decltype(sqrt(x*x+y*y+z*z))
+{
+    return sqrt(x*x+y*y+z*z);
+}
+
+TEST(proposal, examples)
+{
+    auto m = magnitude(
+            make_ufixed<4, 12>(1),
+            make_ufixed<4, 12>(4),
+            make_ufixed<4, 12>(9));
+    static_assert(is_same<decltype(m), make_fixed<19, 12>>::value, "Incorrect formation in proposal section, Examples");
+    ASSERT_EQ(m, 9.8994140625);
 }
 
 TEST(proposal, zero)
