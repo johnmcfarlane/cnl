@@ -32,7 +32,7 @@ namespace sg14 {
 #if defined(_MSC_VER)
         using float_family = std::tuple<float, double>;
 #else
-        using float_family = std::tuple<float, double, long double>>;
+        using float_family = std::tuple<float, double, long double>;
 #endif
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -65,118 +65,71 @@ namespace sg14 {
 
         template<std::size_t MinNumBytes, class Family>
         using first_fit_t = typename first_fit<MinNumBytes, Family>::type;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // is_member - resolves to std::size_t if successful
-
-        template<class Member, class Family>
-        struct is_member;
-
-        template<class Member>
-        struct is_member<
-                Member,
-                std::tuple<>>
-                : std::false_type {
-        };
-
-        template<class Member, class ... FamilyMembersTail>
-        struct is_member<
-                Member,
-                std::tuple<Member, FamilyMembersTail...>>
-                : std::true_type {
-        };
-
-        template<class Member, class FamilyMembersHead, class ... FamilyMembersTail>
-        struct is_member<
-                Member,
-                std::tuple<FamilyMembersHead, FamilyMembersTail ...>>
-                : is_member<Member, std::tuple<FamilyMembersTail ...>> {
-        };
-
-        template<class Archetype, class Family>
-        using is_member_t = typename is_member<Archetype, Family>::type;
-
-        template<class Archetype, class Family, class Enabled = std::size_t>
-        using enable_if_member_t = typename std::enable_if<is_member_t<Archetype, Family>::value, Enabled>::type;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // resize_family
-
-        template<class Archetype, std::size_t NumBytes, class FamilyTuple>
-        struct resize_family {
-            static_assert(is_member<Archetype, FamilyTuple>::value, "Archetype must be in FamilyTuple");
-            using type = first_fit_t<NumBytes, FamilyTuple>;
-        };
     }
 
     /// resizes a type;
     /// can be specialized for any type for which resizing that type makes sense
     ///
     /// \sa resize_t
-    template<class Archetype, std::size_t NumBytes, class = void>
+    template<class Archetype, std::size_t NumBytes>
     struct resize;
 
-#if defined(_MSC_VER)
-    // resize<signed-integer, NumBytes>
+    // sg14::resize specialized for 8-bit built-in integers
     template<std::size_t NumBytes>
     struct resize<std::int8_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
     };
     template<std::size_t NumBytes>
-    struct resize<std::int16_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
-    };
-    template<std::size_t NumBytes>
-    struct resize<std::int32_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
-    };
-    template<std::size_t NumBytes>
-    struct resize<std::int64_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
+    struct resize<std::uint8_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
     };
 
-    // resize<unsigned-integer, NumBytes>
+    // sg14::resize specialized for 16-bit built-in integers
     template<std::size_t NumBytes>
-    struct resize<std::uint8_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    struct resize<std::int16_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
     };
     template<std::size_t NumBytes>
     struct resize<std::uint16_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
     };
+
+    // sg14::resize specialized for 32-bit built-in integers
+    template<std::size_t NumBytes>
+    struct resize<std::int32_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
+    };
     template<std::size_t NumBytes>
     struct resize<std::uint32_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    };
+
+    // sg14::resize specialized for 64-bit built-in integers
+    template<std::size_t NumBytes>
+    struct resize<std::int64_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
     };
     template<std::size_t NumBytes>
     struct resize<std::uint64_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
     };
 
-    // resize<unsigned-integer, NumBytes>
+#if defined(_GLIBCXX_USE_INT128)
+    // sg14::resize specialized for 128-bit built-in integers
+    template<std::size_t NumBytes>
+    struct resize<__int128, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
+    };
+    template<std::size_t NumBytes>
+    struct resize<unsigned __int128, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    };
+#endif
+
+    // sg14::resize specialized for float
     template<std::size_t NumBytes>
     struct resize<float, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::float_family> {
     };
+
+    // sg14::resize specialized for double
     template<std::size_t NumBytes>
     struct resize<double, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::float_family> {
     };
-#else
-    // resize<signed-integer, NumBytes>
-    template<
-            class Archetype,
-            _type_traits_impl::enable_if_member_t<Archetype, _type_traits_impl::signed_family> NumBytes>
-    struct resize<Archetype, NumBytes>
-            : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
-    };
 
-    // resize<unsigned-integer, NumBytes>
-    template<
-            class Archetype,
-            _type_traits_impl::enable_if_member_t<Archetype, _type_traits_impl::unsigned_family> NumBytes>
-    struct resize<Archetype, NumBytes>
-            : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    // sg14::resize specialized for long double
+    template<std::size_t NumBytes>
+    struct resize<long double, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::float_family> {
     };
-
-    // resize<floating-point, NumBytes>
-    template<
-            class Archetype,
-            _type_traits_impl::enable_if_member_t<Archetype, _type_traits_impl::float_family> NumBytes>
-    struct resize<Archetype, NumBytes>
-            : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::float_family> {
-    };
-#endif
 
     /// resizes a type
     ///
