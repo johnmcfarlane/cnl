@@ -59,37 +59,6 @@ namespace sg14 {
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_fixed_point_impl::make_float
-
-        template<int NumBytes>
-        struct _make_float;
-
-        // specializations
-        template<>
-        struct _make_float<1> {
-            using type = float;
-        };
-        template<>
-        struct _make_float<2> {
-            using type = float;
-        };
-        template<>
-        struct _make_float<4> {
-            using type = float;
-        };
-        template<>
-        struct _make_float<8> {
-            using type = double;
-        };
-        template<>
-        struct _make_float<16> {
-            using type = long double;
-        };
-
-        template<int NumBytes>
-        using make_float = typename _make_float<NumBytes>::type;
-
-        ////////////////////////////////////////////////////////////////////////////////
         // sg14::_fixed_point_impl::next_size
 
         // given an integral type, IntType,
@@ -681,7 +650,7 @@ namespace sg14 {
                 fixed_point<LhsReprType, LhsExponent>,
                 Float,
                 typename std::enable_if<std::is_floating_point<Float>::value>::type>
-                : std::common_type<_fixed_point_impl::make_float<sizeof(LhsReprType)>, Float> {
+                : std::common_type<resize_t<float, sizeof(LhsReprType)>, Float> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
