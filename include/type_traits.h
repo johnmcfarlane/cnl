@@ -10,85 +10,98 @@
 #define _SG14_TYPE_TRAITS 1
 
 #include <cinttypes>
+#include <tuple>
 #include <type_traits>
+
+#include "bits/int128.h"
 
 /// study group 14 of the C++ working group
 namespace sg14 {
     namespace _type_traits_impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_type_traits_impl::resize_family
+        // built-in families
 
-        template<class ... Types>
-        struct resize_family;
-
-        template<>
-        struct resize_family<> {
-            template<class T>
-            using is_member = std::false_type;
-
-            template<int, class Smallest = void>
-            using resize = Smallest;
-        };
-
-        template<class TypesHead, class ... TypesTail>
-        struct resize_family<TypesHead, TypesTail...> {
-            template<class T>
-            using is_member = typename std::conditional<
-                    std::is_same<T, TypesHead>::value,
-                    std::true_type,
-                    typename resize_family<TypesTail...>::template is_member<T>
-            >::type;
-
-            static constexpr std::size_t head_size = sizeof(TypesHead);
-
-            template<int NumBytes, class Smallest = TypesHead>
-            using resize = typename resize_family<TypesTail...>::template resize<
-                    NumBytes,
-                    typename std::conditional<
-                            head_size>=NumBytes && head_size<sizeof(Smallest),
-                            TypesHead,
-                            Smallest>::type>;
-        };
-
-        using signed_resize_family = resize_family<
 #if defined(_GLIBCXX_USE_INT128)
-                __int128,
+        using signed_family = std::tuple<std::int8_t, std::int16_t, std::int32_t, std::int64_t, __int128>;
+        using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t, unsigned __int128>;
+#else
+        using signed_family = std::tuple<std::int8_t std::int16_t, std::int32_t, std::int64_t>;
+    using unsigned_family = std::tuple<std::uint8_t std::uint16_t, std::uint32_t, std::uint64_t>;
 #endif
-                std::int64_t,
-                std::int32_t,
-                std::int16_t,
-                std::int8_t>;
-
-        using unsigned_resize_family = resize_family<
-#if defined(_GLIBCXX_USE_INT128)
-                unsigned __int128,
-#endif
-                std::uint64_t,
-                std::uint32_t,
-                std::uint16_t,
-                std::uint8_t>;
-
-        using floating_resize_family = resize_family<
-                long double,
-                double,
-                float>;
+        using float_family = std::tuple<float, double, long double>;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_type_traits_impl::resize_family_base
+        // first_fit
 
-        template<
-                class Archetype,
-                std::size_t NumBytes,
-                class Family>
-        struct resize_family_base {
-            using type = typename Family::template resize<NumBytes>;
+        template<std::size_t MinNumBytes, class Family, class = void>
+        struct first_fit;
+
+        template<std::size_t MinNumBytes, class FamilyMembersHead, class ... FamilyMembersTail>
+        struct first_fit<
+                MinNumBytes,
+                std::tuple<FamilyMembersHead, FamilyMembersTail ...>,
+                typename std::enable_if<sizeof(FamilyMembersHead)>=MinNumBytes>::type> {
+            using type = FamilyMembersHead;
         };
 
-        template<class T, class Family>
-        constexpr bool is_member()
-        {
-            return Family::template is_member<T>::value;
-        }
+        template<std::size_t MinNumBytes, class FamilyMembersHead, class ... FamilyMembersTail>
+        struct first_fit<
+                MinNumBytes,
+                std::tuple<FamilyMembersHead, FamilyMembersTail ...>,
+                typename std::enable_if<sizeof(FamilyMembersHead)<MinNumBytes>::type> {
+            using _tail_base = first_fit<MinNumBytes, std::tuple<FamilyMembersTail ...>>;
+            using _tail_type = typename _tail_base::type;
+        public:
+            using type = typename std::conditional<
+                    sizeof(FamilyMembersHead)>=MinNumBytes,
+                    FamilyMembersHead,
+                    _tail_type>::type;
+        };
+
+        template<std::size_t MinNumBytes, class Family>
+        using first_fit_t = typename first_fit<MinNumBytes, Family>::type;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // is_member - resolves to std::size_t if successful
+
+        template<class Member, class Family>
+        struct is_member;
+
+        template<class Member>
+        struct is_member<
+                Member,
+                std::tuple<>>
+                : std::false_type {
+        };
+
+        template<class Member, class ... FamilyMembersTail>
+        struct is_member<
+                Member,
+                std::tuple<Member, FamilyMembersTail...>>
+                : std::true_type {
+        };
+
+        template<class Member, class FamilyMembersHead, class ... FamilyMembersTail>
+        struct is_member<
+                Member,
+                std::tuple<FamilyMembersHead, FamilyMembersTail ...>>
+                : is_member<Member, std::tuple<FamilyMembersTail ...>> {
+        };
+
+        template<class Archetype, class Family>
+        using is_member_t = typename is_member<Archetype, Family>::type;
+
+        template<class Archetype, class Family, class Enabled = std::size_t>
+        using enable_if_member_t = typename std::enable_if<is_member_t<Archetype, Family>::value, Enabled>::type;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // resize_family
+
+        template<class Archetype, std::size_t NumBytes, class FamilyTuple>
+        struct resize_family {
+            static_assert(is_member<Archetype, FamilyTuple>::value, "Archetype must be in FamilyTuple");
+            using type = first_fit_t<NumBytes, FamilyTuple>;
+        };
     }
 
     /// resizes a type;
@@ -99,31 +112,27 @@ namespace sg14 {
     struct resize;
 
     // resize<signed-integer, NumBytes>
-
     template<
             class Archetype,
-            typename std::enable_if<
-                    _type_traits_impl::is_member<Archetype, _type_traits_impl::signed_resize_family>(), std::size_t>::type NumBytes>
+            _type_traits_impl::enable_if_member_t<Archetype, _type_traits_impl::signed_family> NumBytes>
     struct resize<Archetype, NumBytes>
-            : _type_traits_impl::resize_family_base<Archetype, NumBytes, _type_traits_impl::signed_resize_family> {
+            : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
     };
 
     // resize<unsigned-integer, NumBytes>
     template<
             class Archetype,
-            typename std::enable_if<
-                    _type_traits_impl::is_member<Archetype, _type_traits_impl::unsigned_resize_family>(), std::size_t>::type NumBytes>
+            _type_traits_impl::enable_if_member_t<Archetype, _type_traits_impl::unsigned_family> NumBytes>
     struct resize<Archetype, NumBytes>
-            : _type_traits_impl::resize_family_base<Archetype, NumBytes, _type_traits_impl::unsigned_resize_family> {
+            : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
     };
 
     // resize<floating-point, NumBytes>
     template<
             class Archetype,
-            typename std::enable_if<
-                    _type_traits_impl::is_member<Archetype, _type_traits_impl::floating_resize_family>(), std::size_t>::type NumBytes>
+            _type_traits_impl::enable_if_member_t<Archetype, _type_traits_impl::float_family> NumBytes>
     struct resize<Archetype, NumBytes>
-            : _type_traits_impl::resize_family_base<Archetype, NumBytes, _type_traits_impl::floating_resize_family> {
+            : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::float_family> {
     };
 
     /// resizes a type

@@ -6,7 +6,37 @@
 
 #include <type_traits.h>
 
+using sg14::_type_traits_impl::first_fit_t;
+using sg14::_type_traits_impl::is_member_t;
+using sg14::_type_traits_impl::resize_family;
 using std::is_same;
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::_type_traits_impl::first_fit_t
+
+static_assert(
+        std::is_same<first_fit_t<2, std::tuple<std::int8_t, std::int16_t, std::int32_t>>, std::int16_t>::value, "");
+static_assert(
+        std::is_same<first_fit_t<2, std::tuple<std::int32_t, std::int16_t, std::int8_t>>, std::int32_t>::value, "");
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::_type_traits_impl::is_member_t
+
+static_assert(
+        is_member_t<std::int8_t, std::tuple<std::int8_t>>::value,
+        "");
+static_assert(
+        is_member_t<std::int8_t, std::tuple<std::int8_t, std::int16_t, std::int32_t>>::value,
+        "");
+static_assert(
+        is_member_t<int8_t, std::tuple<std::int32_t, std::int16_t, std::int8_t>>::value,
+        "");
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::_type_traits_impl::resize_family
+
+static_assert(std::is_same<resize_family<unsigned, 2, std::tuple<std::uint8_t, std::uint16_t, std::uint32_t>>::type, std::uint16_t>::value, "");
+static_assert(std::is_same<resize_family<unsigned, 2, std::tuple<std::uint32_t, std::uint16_t, std::uint8_t>>::type, std::uint32_t>::value, "");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::resize_t
