@@ -527,7 +527,7 @@ namespace sg14 {
     /// \tparam NumBytes the desired size of the resultant type such that `(sizeof(type) >= NumBytes)`
     ///
     /// \sa resize_t
-    template<class ReprType, int Exponent, int NumBytes>
+    template<class ReprType, int Exponent, std::size_t NumBytes>
     struct resize<fixed_point<ReprType, Exponent>, NumBytes> {
         /// resultant type; a fixed_point specialization that is at least \a NumBytes bytes in size
         using type = fixed_point<resize_t<ReprType, NumBytes>, Exponent>;

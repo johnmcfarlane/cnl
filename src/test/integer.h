@@ -384,7 +384,7 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::resize<integer<>, > partial specialization
 
-    template<class Repr, class OverflowPolicy, int NumBytes>
+    template<class Repr, class OverflowPolicy, std::size_t NumBytes>
     struct resize<integer<Repr, OverflowPolicy>, NumBytes> {
         using type = integer<resize_t<Repr, NumBytes>, OverflowPolicy>;
     };
