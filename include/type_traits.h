@@ -25,8 +25,8 @@ namespace sg14 {
         using signed_family = std::tuple<std::int8_t, std::int16_t, std::int32_t, std::int64_t, __int128>;
         using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t, unsigned __int128>;
 #else
-        using signed_family = std::tuple<std::int8_t std::int16_t, std::int32_t, std::int64_t>;
-    using unsigned_family = std::tuple<std::uint8_t std::uint16_t, std::uint32_t, std::uint64_t>;
+        using signed_family = std::tuple<std::int8_t, std::int16_t, std::int32_t, std::int64_t>;
+		using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t>;
 #endif
         using float_family = std::tuple<float, double, long double>;
 
