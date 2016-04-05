@@ -116,6 +116,43 @@ namespace sg14 {
     template<class Archetype, std::size_t NumBytes, class = void>
     struct resize;
 
+#if defined(_MSC_VER)
+    // resize<signed-integer, NumBytes>
+    template<std::size_t NumBytes>
+    struct resize<std::int8_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
+    };
+    template<std::size_t NumBytes>
+    struct resize<std::int16_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
+    };
+    template<std::size_t NumBytes>
+    struct resize<std::int32_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
+    };
+    template<std::size_t NumBytes>
+    struct resize<std::int64_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
+    };
+
+    // resize<unsigned-integer, NumBytes>
+    template<std::size_t NumBytes>
+    struct resize<std::uint8_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    };
+    template<std::size_t NumBytes>
+    struct resize<std::uint16_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    };
+    template<std::size_t NumBytes>
+    struct resize<std::uint32_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    };
+    template<std::size_t NumBytes>
+    struct resize<std::uint64_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    };
+
+    // resize<unsigned-integer, NumBytes>
+    template<std::size_t NumBytes>
+    struct resize<float, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::float_family> {
+    };
+    template<std::size_t NumBytes>
+    struct resize<double, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::float_family> {
+    };
+#else
     // resize<signed-integer, NumBytes>
     template<
             class Archetype,
@@ -139,6 +176,7 @@ namespace sg14 {
     struct resize<Archetype, NumBytes>
             : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::float_family> {
     };
+#endif
 
     /// resizes a type
     ///
