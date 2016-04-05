@@ -397,7 +397,7 @@ namespace std {
     // std::is_fundamental<sg14::integer<>>
     template<typename Repr, typename OverflowPolicy>
     struct is_fundamental<sg14::integer<Repr, OverflowPolicy>>
-            : integral_constant<bool, false> {
+            : false_type {
     };
 
     // std::is_integral<sg14::integer<>>

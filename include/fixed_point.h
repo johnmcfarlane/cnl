@@ -545,12 +545,12 @@ namespace sg14 {
 
         template<class T>
         struct is_fixed_point
-                : public std::integral_constant<bool, false> {
+                : public std::false_type {
         };
 
         template<class ReprType, int Exponent>
         struct is_fixed_point<fixed_point<ReprType, Exponent>>
-                : public std::integral_constant<bool, true> {
+                : public std::true_type {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
