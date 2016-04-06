@@ -387,7 +387,7 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::elastic arithmetic operators
 
-    // negate
+    // unary operator-
     template<int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
     constexpr auto operator-(const elastic<RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>& rhs)
     -> elastic<RhsIntegerDigits, RhsFractionalDigits, make_signed_t<RhsArchetype>>
@@ -399,7 +399,7 @@ namespace sg14 {
         return result_type{-static_cast<result_fixed_point_type>(rhs._data())};
     }
 
-    // add
+    // implementation-specific definitions for binary operator+
     namespace _elastic_impl {
         template<
                 int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
@@ -413,6 +413,7 @@ namespace sg14 {
                         make_unsigned_t<RhsArchetype>>::type>;
     }
 
+    // binary operator+
     template<
             int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
             int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
@@ -428,7 +429,7 @@ namespace sg14 {
                 sg14::add<fixed_point_result_type>(lhs._data(), rhs._data()));
     }
 
-    // multiply
+    // implementation-specific definitions for binary operator*
     namespace _elastic_impl {
         template<
                 int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
@@ -442,6 +443,7 @@ namespace sg14 {
                         make_unsigned_t<RhsArchetype>>::type>;
     }
 
+    // binary operator*
     template<
             int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
             int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
