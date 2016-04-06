@@ -18,7 +18,7 @@ using std::declval;
 // depends upon test_signed and test_unsigned defined in including source file
 
 using test_signed = test_int;
-using test_unsigned = std::make_unsigned<test_signed>::type;
+using test_unsigned = sg14::make_unsigned<test_signed>::type;
 
 using int8 = sg14::resize_t<test_signed, 1>;
 using uint8 = sg14::resize_t<test_unsigned, 1>;
@@ -140,11 +140,11 @@ static_assert(static_cast<int>(-3.0)==-3, "incorrect assumption about default ro
 static_assert(static_cast<int>(-3.9)==-3, "incorrect assumption about default rounding");
 
 // mixed-mode operations DO lose precision because exponent is more important than significand
-static_assert(is_same<std::common_type<float, uint32>::type, float>::value, "incorrect assumption about promotion");
+static_assert(is_same<sg14::common_type<float, uint32>::type, float>::value, "incorrect assumption about promotion");
 
 // promotion doesn't always tend towards int
-static_assert(is_same<std::common_type<int64, uint32>::type, int64>::value, "incorrect assumption about promotion");
-static_assert(is_same<std::common_type<int32, uint64>::type, uint64>::value, "incorrect assumption about promotion");
+static_assert(is_same<sg14::common_type<int64, uint32>::type, int64>::value, "incorrect assumption about promotion");
+static_assert(is_same<sg14::common_type<int32, uint64>::type, uint64>::value, "incorrect assumption about promotion");
 static_assert(is_same<decltype(int8(0) + int8(0)), test_int>::value, "incorrect assumption about promotion");
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -749,7 +749,7 @@ struct FixedPointTester {
     static_assert(is_same<
                     _impl::common_type_t<fixed_point>,
                     ::fixed_point<
-                            typename std::common_type<ReprType>::type,
+                            typename sg14::common_type<ReprType>::type,
                             Exponent>>::value,
             "a fixed point specialization follows the same implicit promotion rules as its ReprType");
 

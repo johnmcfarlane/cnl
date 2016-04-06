@@ -11,7 +11,6 @@
 #define _SG14_FIXED_POINT 1
 
 #include <climits>
-#include <cinttypes>
 
 #include "type_traits.h"
 
@@ -90,8 +89,8 @@ namespace sg14 {
                         int>::type Dummy = 0>
         constexpr Output shift_left(Input i)
         {
-            static_assert(std::is_integral<Input>::value, "Input must be integral type");
-            static_assert(std::is_integral<Output>::value, "Output must be integral type");
+            static_assert(is_integral<Input>::value, "Input must be integral type");
+            static_assert(is_integral<Output>::value, "Output must be integral type");
 
             // cast only
             return static_cast<Output>(i);
@@ -106,8 +105,8 @@ namespace sg14 {
                         int>::type Dummy = 0>
         constexpr Output shift_right(Input i)
         {
-            static_assert(std::is_integral<Input>::value, "Input must be integral type");
-            static_assert(std::is_integral<Output>::value, "Output must be integral type");
+            static_assert(is_integral<Input>::value, "Input must be integral type");
+            static_assert(is_integral<Output>::value, "Output must be integral type");
 
             // cast only
             return static_cast<Output>(i);
@@ -119,7 +118,7 @@ namespace sg14 {
                 class Output,
                 class Input,
                 typename std::enable_if<
-                        !(Exponent<=0) && sizeof(Output)<=sizeof(Input) && std::is_unsigned<Input>::value,
+                        !(Exponent<=0) && sizeof(Output)<=sizeof(Input) && is_unsigned<Input>::value,
                         int>::type Dummy = 0>
         constexpr Output shift_left(Input i)
         {
@@ -144,7 +143,7 @@ namespace sg14 {
                 class Output,
                 class Input,
                 typename std::enable_if<
-                        !(Exponent<=0) && !(sizeof(Output)<=sizeof(Input)) && std::is_unsigned<Input>::value,
+                        !(Exponent<=0) && !(sizeof(Output)<=sizeof(Input)) && is_unsigned<Input>::value,
                         char>::type Dummy = 0>
         constexpr Output shift_left(Input i)
         {
@@ -169,12 +168,12 @@ namespace sg14 {
                 class Output,
                 class Input,
                 typename std::enable_if<
-                        !(Exponent<=0) && std::is_signed<Input>::value,
+                        !(Exponent<=0) && is_signed<Input>::value,
                         int>::type Dummy = 0>
         constexpr Output shift_left(Input i)
         {
-            using unsigned_input = typename std::make_unsigned<Input>::type;
-            using signed_output = typename std::make_signed<Output>::type;
+            using unsigned_input = typename make_unsigned<Input>::type;
+            using signed_output = typename make_signed<Output>::type;
 
             return static_cast<Output>((i>=0)
                                        ? shift_left<Exponent, signed_output>(static_cast<unsigned_input>(i))
@@ -288,7 +287,7 @@ namespace sg14 {
 
         /// number of binary digits this type can represent;
         /// equivalent to [std::numeric_limits::digits](http://en.cppreference.com/w/cpp/types/numeric_limits/digits)
-        constexpr static int digits = _fixed_point_impl::num_bits<ReprType>()-std::is_signed<repr_type>::value;
+        constexpr static int digits = _fixed_point_impl::num_bits<ReprType>()-is_signed<repr_type>::value;
 
         /// number of binary digits devoted to integer part of value;
         /// can be negative for specializations with especially small ranges
@@ -313,7 +312,7 @@ namespace sg14 {
         fixed_point() { }
 
         /// constructor taking an integer type
-        template<class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
+        template<class S, typename std::enable_if<is_integral<S>::value, int>::type Dummy = 0>
         explicit constexpr fixed_point(S s)
                 :_repr(integral_to_repr(s))
         {
@@ -334,7 +333,7 @@ namespace sg14 {
         }
 
         /// copy assignment operator taking an integer type
-        template<class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
+        template<class S, typename std::enable_if<is_integral<S>::value, int>::type Dummy = 0>
         fixed_point& operator=(S s)
         {
             _repr = integral_to_repr(s);
@@ -358,7 +357,7 @@ namespace sg14 {
         }
 
         /// returns value represented as integral
-        template<class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
+        template<class S, typename std::enable_if<is_integral<S>::value, int>::type Dummy = 0>
         explicit constexpr operator S() const
         {
             return repr_to_integral<S>(_repr);
@@ -402,7 +401,7 @@ namespace sg14 {
             return _fixed_point_impl::pow2<S, -exponent>();
         }
 
-        template<class S, typename std::enable_if<std::is_integral<S>::value, int>::type Dummy = 0>
+        template<class S, typename std::enable_if<is_integral<S>::value, int>::type Dummy = 0>
         static constexpr S one()
         {
             return integral_to_repr<S>(1);
@@ -418,7 +417,7 @@ namespace sg14 {
         template<class S>
         static constexpr repr_type integral_to_repr(S s)
         {
-            static_assert(std::is_integral<S>::value, "S must be unsigned integral type");
+            static_assert(is_integral<S>::value, "S must be unsigned integral type");
 
             return _fixed_point_impl::shift_right<exponent, repr_type>(s);
         }
@@ -426,7 +425,7 @@ namespace sg14 {
         template<class S>
         static constexpr S repr_to_integral(repr_type r)
         {
-            static_assert(std::is_integral<S>::value, "S must be unsigned integral type");
+            static_assert(is_integral<S>::value, "S must be unsigned integral type");
 
             return _fixed_point_impl::shift_left<exponent, S>(r);
         }
@@ -476,7 +475,7 @@ namespace sg14 {
     /// \sa make_ufixed
     template<int IntegerDigits, int FractionalDigits = 0, class Archetype = signed>
     using make_fixed = fixed_point<
-            _fixed_point_impl::sufficient_repr<IntegerDigits+FractionalDigits+std::is_signed<Archetype>::value, Archetype>,
+            _fixed_point_impl::sufficient_repr<IntegerDigits+FractionalDigits+is_signed<Archetype>::value, Archetype>,
             -FractionalDigits>;
 
     /// \brief Produce an unsigned fixed-point type with the given number of integer and fractional digits.
@@ -486,7 +485,7 @@ namespace sg14 {
     using make_ufixed = make_fixed<
             IntegerDigits,
             FractionalDigits,
-            typename std::make_unsigned<Archetype>::type>;
+            typename make_unsigned<Archetype>::type>;
 
     /// produces equivalent fixed-point type at a new size
     ///
@@ -574,7 +573,7 @@ namespace sg14 {
 
             template<class Lhs, class Rhs>
             using common_type = fixed_point<
-                    typename std::common_type<typename Lhs::repr_type, typename Rhs::repr_type>::type,
+                    typename common_type<typename Lhs::repr_type, typename Rhs::repr_type>::type,
                     exponent<Lhs, Rhs>::value>;
 
             template<class Lhs, class Rhs>
@@ -638,8 +637,8 @@ namespace sg14 {
         struct _common_type_mixed<
                 fixed_point<LhsReprType, LhsExponent>,
                 RhsInteger,
-                typename std::enable_if<std::is_integral<RhsInteger>::value>::type> {
-            using type = fixed_point<typename std::common_type<LhsReprType, RhsInteger>::type, LhsExponent>;
+                typename std::enable_if<is_integral<RhsInteger>::value>::type> {
+            using type = fixed_point<typename common_type<LhsReprType, RhsInteger>::type, LhsExponent>;
         };
 
         // given a fixed-point and a floating-point type,
@@ -649,11 +648,11 @@ namespace sg14 {
                 fixed_point<LhsReprType, LhsExponent>,
                 Float,
                 typename std::enable_if<std::is_floating_point<Float>::value>::type>
-                : std::common_type<resize_t<float, sizeof(LhsReprType)>, Float> {
+                : common_type<resize_t<float, sizeof(LhsReprType)>, Float> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_fixed_point_impl::common_type - like std::common_type for fixed-point types
+        // sg14::_fixed_point_impl::common_type - like common_type for fixed-point types
 
         template <class ... T>
         struct common_type;
@@ -661,7 +660,7 @@ namespace sg14 {
         template<class ReprType, int Exponent>
         struct common_type<fixed_point<ReprType, Exponent>> {
             using type = fixed_point<
-                    typename std::common_type<ReprType>::type,
+                    typename sg14::common_type<ReprType>::type,
                     Exponent>;
         };
 
@@ -690,7 +689,7 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_fixed_point_impl::common_type_t
 
-        // similar to std::common_type
+        // similar to sg14::common_type
         // but one or both input types must be fixed_point
         template<class ... T>
         using common_type_t = typename common_type<typename std::decay<T>::type ...>::type;
@@ -699,13 +698,13 @@ namespace sg14 {
         // arithmetic result types
 
         template<typename LhsFixedPoint, typename RhsFixedPoint>
-        using subtract_result_repr = typename std::make_signed<typename std::common_type<LhsFixedPoint, RhsFixedPoint>::type>::type;
+        using subtract_result_repr = typename make_signed<typename sg14::common_type<LhsFixedPoint, RhsFixedPoint>::type>::type;
 
         template<typename Repr>
-        using square_result_repr = typename std::make_unsigned<Repr>::type;
+        using square_result_repr = typename make_unsigned<Repr>::type;
 
         template<typename FixedPoint>
-        using sqrt_result_repr = typename std::make_unsigned<FixedPoint>::type;
+        using sqrt_result_repr = typename make_unsigned<FixedPoint>::type;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -715,7 +714,7 @@ namespace sg14 {
     template<class Result, class Rhs>
     constexpr Result negate(const Rhs& rhs)
     {
-        static_assert(std::is_signed<typename Result::repr_type>::value, "unary negation of unsigned value");
+        static_assert(is_signed<typename Result::repr_type>::value, "unary negation of unsigned value");
 
         return Result::from_data(-static_cast<Result>(rhs).data());
     }
@@ -1014,7 +1013,7 @@ namespace sg14 {
     template<
         class ReprType, int Exponent,
         class Integer, 
-        typename = typename std::enable_if<std::is_integral<Integer>::value>::type>
+        typename = typename std::enable_if<is_integral<Integer>::value>::type>
     constexpr auto operator*(const fixed_point<ReprType, Exponent>& lhs, const Integer& rhs)
     -> fixed_point<decltype(std::declval<ReprType>() * std::declval<Integer>()), Exponent>
     {
@@ -1025,7 +1024,7 @@ namespace sg14 {
     template<
         class ReprType, int Exponent,
         class Integer,
-        typename = typename std::enable_if<std::is_integral<Integer>::value>::type>
+        typename = typename std::enable_if<is_integral<Integer>::value>::type>
     constexpr auto operator/(const fixed_point<ReprType, Exponent>& lhs, const Integer& rhs)
     -> fixed_point<decltype(std::declval<ReprType>() / std::declval<Integer>()), Exponent>
     {
@@ -1037,7 +1036,7 @@ namespace sg14 {
     template<
         class Integer,
         class ReprType, int Exponent,
-        typename = typename std::enable_if<std::is_integral<Integer>::value>::type>
+        typename = typename std::enable_if<is_integral<Integer>::value>::type>
     constexpr auto operator*(const Integer& lhs, const fixed_point<ReprType, Exponent>& rhs)
     -> fixed_point<decltype(std::declval<Integer>() * std::declval<ReprType>()), Exponent>
     {
@@ -1048,7 +1047,7 @@ namespace sg14 {
     template<
         class Integer,
         class ReprType, int Exponent,
-        typename = typename std::enable_if<std::is_integral<Integer>::value>::type>
+        typename = typename std::enable_if<is_integral<Integer>::value>::type>
     constexpr auto operator/(const Integer& lhs, const fixed_point<ReprType, Exponent>& rhs)
     -> fixed_point<decltype(std::declval<Integer>() / std::declval<ReprType>()), Exponent>
     {

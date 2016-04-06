@@ -15,8 +15,8 @@ using std::is_same;
 
 using sg14::elastic;
 using sg14::elasticate;
-using sg14::make_signed_t;
-using sg14::make_unsigned_t;
+using sg14::make_signed;
+using sg14::make_unsigned;
 
 ////////////////////////////////////////////////////////////////////////////////
 // useful constants
@@ -227,8 +227,8 @@ struct positive_elastic_test {
     using fixed_point_type = typename elastic_type::_fixed_point_type;
     using numeric_limits = std::numeric_limits<elastic_type>;
 
-    using signed_type = make_signed_t<elastic_type>;
-    using unsigned_type = make_unsigned_t<elastic_type>;
+    using signed_type = typename make_signed<elastic_type>::type;
+    using unsigned_type = typename make_unsigned<elastic_type>::type;
 
     ////////////////////////////////////////////////////////////////////////////////
     // useful constants
