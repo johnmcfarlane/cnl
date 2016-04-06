@@ -573,7 +573,7 @@ namespace sg14 {
 
             template<class Lhs, class Rhs>
             using common_type = fixed_point<
-                    typename common_type<typename Lhs::repr_type, typename Rhs::repr_type>::type,
+                    typename sg14::common_type<typename Lhs::repr_type, typename Rhs::repr_type>::type,
                     exponent<Lhs, Rhs>::value>;
 
             template<class Lhs, class Rhs>
@@ -638,7 +638,7 @@ namespace sg14 {
                 fixed_point<LhsReprType, LhsExponent>,
                 RhsInteger,
                 typename std::enable_if<is_integral<RhsInteger>::value>::type> {
-            using type = fixed_point<typename common_type<LhsReprType, RhsInteger>::type, LhsExponent>;
+            using type = fixed_point<typename sg14::common_type<LhsReprType, RhsInteger>::type, LhsExponent>;
         };
 
         // given a fixed-point and a floating-point type,
@@ -648,7 +648,7 @@ namespace sg14 {
                 fixed_point<LhsReprType, LhsExponent>,
                 Float,
                 typename std::enable_if<std::is_floating_point<Float>::value>::type>
-                : common_type<resize_t<float, sizeof(LhsReprType)>, Float> {
+                : sg14::common_type<resize_t<float, sizeof(LhsReprType)>, Float> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
