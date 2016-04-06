@@ -15,7 +15,6 @@
 
 #include "type_traits.h"
 
-#include "bits/int128.h"
 #include "bits/common.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -57,37 +56,6 @@ namespace sg14 {
         {
             return sizeof(T)*CHAR_BIT;
         }
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_fixed_point_impl::make_float
-
-        template<int NumBytes>
-        struct _make_float;
-
-        // specializations
-        template<>
-        struct _make_float<1> {
-            using type = float;
-        };
-        template<>
-        struct _make_float<2> {
-            using type = float;
-        };
-        template<>
-        struct _make_float<4> {
-            using type = float;
-        };
-        template<>
-        struct _make_float<8> {
-            using type = double;
-        };
-        template<>
-        struct _make_float<16> {
-            using type = long double;
-        };
-
-        template<int NumBytes>
-        using make_float = typename _make_float<NumBytes>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_fixed_point_impl::next_size
@@ -527,7 +495,7 @@ namespace sg14 {
     /// \tparam NumBytes the desired size of the resultant type such that `(sizeof(type) >= NumBytes)`
     ///
     /// \sa resize_t
-    template<class ReprType, int Exponent, int NumBytes>
+    template<class ReprType, int Exponent, std::size_t NumBytes>
     struct resize<fixed_point<ReprType, Exponent>, NumBytes> {
         /// resultant type; a fixed_point specialization that is at least \a NumBytes bytes in size
         using type = fixed_point<resize_t<ReprType, NumBytes>, Exponent>;
@@ -545,12 +513,12 @@ namespace sg14 {
 
         template<class T>
         struct is_fixed_point
-                : public std::integral_constant<bool, false> {
+                : public std::false_type {
         };
 
         template<class ReprType, int Exponent>
         struct is_fixed_point<fixed_point<ReprType, Exponent>>
-                : public std::integral_constant<bool, true> {
+                : public std::true_type {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -681,7 +649,7 @@ namespace sg14 {
                 fixed_point<LhsReprType, LhsExponent>,
                 Float,
                 typename std::enable_if<std::is_floating_point<Float>::value>::type>
-                : std::common_type<_fixed_point_impl::make_float<sizeof(LhsReprType)>, Float> {
+                : std::common_type<resize_t<float, sizeof(LhsReprType)>, Float> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////

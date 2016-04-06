@@ -1,4 +1,3 @@
-
 //          Copyright John McFarlane 2015 - 2016.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
@@ -11,126 +10,125 @@
 #define _SG14_TYPE_TRAITS 1
 
 #include <cinttypes>
+#include <tuple>
 #include <type_traits>
+
+#include "bits/int128.h"
 
 /// study group 14 of the C++ working group
 namespace sg14 {
     namespace _type_traits_impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_type_traits_impl::resize
-
-        template<class FundamentalSignedInteger>
-        struct fsi : public std::integral_constant<
-                bool,
-                std::is_signed<FundamentalSignedInteger>::value
-                        && std::is_integral<FundamentalSignedInteger>::value
-                        && std::is_fundamental<FundamentalSignedInteger>::value> {
-        };
-
-        template<class FundamentalUnsignedInteger>
-        struct fui : public std::integral_constant<
-                bool,
-                std::is_unsigned<FundamentalUnsignedInteger>::value
-                        && std::is_integral<FundamentalUnsignedInteger>::value
-                        && std::is_fundamental<FundamentalUnsignedInteger>::value> {
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_type_traits_impl::resize
-
-        // supports sg14::resize specialization for built-in integer types
-        template<class Archetype, int NumBytes, class _Enable = void>
-        struct resize;
-
-        // specializations
-        template<class FundamentalUnsignedInteger>
-        struct resize<
-                FundamentalUnsignedInteger, 1,
-                typename std::enable_if<fui<FundamentalUnsignedInteger>::value>::type> {
-            using type = std::uint8_t;
-        };
-        template<class FundamentalSignedInteger>
-        struct resize<
-                FundamentalSignedInteger, 1,
-                typename std::enable_if<fsi<FundamentalSignedInteger>::value>::type> {
-            using type = std::int8_t;
-        };
-
-        template<class FundamentalUnsignedInteger>
-        struct resize<
-                FundamentalUnsignedInteger, 2,
-                typename std::enable_if<fui<FundamentalUnsignedInteger>::value>::type> {
-            using type = std::uint16_t;
-        };
-        template<class FundamentalSignedInteger>
-        struct resize<
-                FundamentalSignedInteger, 2,
-                typename std::enable_if<fsi<FundamentalSignedInteger>::value>::type> {
-            using type = std::int16_t;
-        };
-
-        template<class FundamentalUnsignedInteger>
-        struct resize<
-                FundamentalUnsignedInteger, 4,
-                typename std::enable_if<fui<FundamentalUnsignedInteger>::value>::type> {
-            using type = std::uint32_t;
-        };
-        template<class FundamentalSignedInteger>
-        struct resize<
-                FundamentalSignedInteger, 4,
-                typename std::enable_if<fsi<FundamentalSignedInteger>::value>::type> {
-            using type = std::int32_t;
-        };
-
-        template<class FundamentalUnsignedInteger>
-        struct resize<
-                FundamentalUnsignedInteger, 8,
-                typename std::enable_if<fui<FundamentalUnsignedInteger>::value>::type> {
-            using type = std::uint64_t;
-        };
-        template<class FundamentalSignedInteger>
-        struct resize<
-                FundamentalSignedInteger, 8,
-                typename std::enable_if<fsi<FundamentalSignedInteger>::value>::type> {
-            using type = std::int64_t;
-        };
+        // built-in families
 
 #if defined(_GLIBCXX_USE_INT128)
-        template<class FundamentalUnsignedInteger>
-        struct resize<
-                FundamentalUnsignedInteger, 16,
-                typename std::enable_if<fui<FundamentalUnsignedInteger>::value>::type> {
-            using type = unsigned __int128;
-        };
-        template<class FundamentalSignedInteger>
-        struct resize<
-                FundamentalSignedInteger, 16,
-                typename std::enable_if<fsi<FundamentalSignedInteger>::value>::type> {
-            using type = __int128;
-        };
+        using signed_family = std::tuple<std::int8_t, std::int16_t, std::int32_t, std::int64_t, __int128>;
+        using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t, unsigned __int128>;
+#else
+        using signed_family = std::tuple<std::int8_t, std::int16_t, std::int32_t, std::int64_t>;
+		using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t>;
 #endif
 
-        template<class FundamentalInteger, int NumBytes>
-        struct resize<
-                FundamentalInteger, NumBytes,
-                typename std::enable_if<(((1 << NumBytes) & 0xfee8)!=0)>::type> {
-            using type = typename resize<FundamentalInteger, NumBytes+1>::type;
+#if defined(_MSC_VER)
+        using float_family = std::tuple<float, double>;
+#else
+        using float_family = std::tuple<float, double, long double>;
+#endif
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // first_fit
+
+        template<std::size_t MinNumBytes, class Family, class = void>
+        struct first_fit;
+
+        template<std::size_t MinNumBytes, class FamilyMembersHead, class ... FamilyMembersTail>
+        struct first_fit<
+                MinNumBytes,
+                std::tuple<FamilyMembersHead, FamilyMembersTail ...>,
+                typename std::enable_if<sizeof(FamilyMembersHead)>=MinNumBytes>::type> {
+            using type = FamilyMembersHead;
         };
+
+        template<std::size_t MinNumBytes, class FamilyMembersHead, class ... FamilyMembersTail>
+        struct first_fit<
+                MinNumBytes,
+                std::tuple<FamilyMembersHead, FamilyMembersTail ...>,
+                typename std::enable_if<sizeof(FamilyMembersHead)<MinNumBytes>::type> {
+            using _tail_base = first_fit<MinNumBytes, std::tuple<FamilyMembersTail ...>>;
+            using _tail_type = typename _tail_base::type;
+        public:
+            using type = typename std::conditional<
+                    sizeof(FamilyMembersHead)>=MinNumBytes,
+                    FamilyMembersHead,
+                    _tail_type>::type;
+        };
+
+        template<std::size_t MinNumBytes, class Family>
+        using first_fit_t = typename first_fit<MinNumBytes, Family>::type;
     }
 
     /// resizes a type;
     /// can be specialized for any type for which resizing that type makes sense
     ///
     /// \sa resize_t
-    template<class Archetype, int NumBytes>
+    template<class Archetype, std::size_t NumBytes>
     struct resize;
 
-    /// specialization of @ref resize for built-in integer types
-    template<class FundamentalInteger, int NumBytes>
-    struct resize
-            : std::enable_if<
-                    std::is_fundamental<FundamentalInteger>::value,
-                    _type_traits_impl::resize<FundamentalInteger, NumBytes>>::type {
+    // sg14::resize specialized for 8-bit built-in integers
+    template<std::size_t NumBytes>
+    struct resize<std::int8_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
+    };
+    template<std::size_t NumBytes>
+    struct resize<std::uint8_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    };
+
+    // sg14::resize specialized for 16-bit built-in integers
+    template<std::size_t NumBytes>
+    struct resize<std::int16_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
+    };
+    template<std::size_t NumBytes>
+    struct resize<std::uint16_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    };
+
+    // sg14::resize specialized for 32-bit built-in integers
+    template<std::size_t NumBytes>
+    struct resize<std::int32_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
+    };
+    template<std::size_t NumBytes>
+    struct resize<std::uint32_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    };
+
+    // sg14::resize specialized for 64-bit built-in integers
+    template<std::size_t NumBytes>
+    struct resize<std::int64_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
+    };
+    template<std::size_t NumBytes>
+    struct resize<std::uint64_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    };
+
+#if defined(_GLIBCXX_USE_INT128)
+    // sg14::resize specialized for 128-bit built-in integers
+    template<std::size_t NumBytes>
+    struct resize<__int128, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
+    };
+    template<std::size_t NumBytes>
+    struct resize<unsigned __int128, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    };
+#endif
+
+    // sg14::resize specialized for float
+    template<std::size_t NumBytes>
+    struct resize<float, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::float_family> {
+    };
+
+    // sg14::resize specialized for double
+    template<std::size_t NumBytes>
+    struct resize<double, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::float_family> {
+    };
+
+    // sg14::resize specialized for long double
+    template<std::size_t NumBytes>
+    struct resize<long double, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::float_family> {
     };
 
     /// resizes a type
@@ -148,7 +146,7 @@ namespace sg14 {
     ///
     /// To resize a signed, 1-byte fixed-point type to a fixed-point type of at least 3 bytes:
     /// \snippet snippets.cpp use resize 3
-    template<class Archetype, int NumBytes>
+    template<class Archetype, std::size_t NumBytes>
     using resize_t = typename resize<Archetype, NumBytes>::type;
 }
 

@@ -99,12 +99,12 @@ namespace sg14 {
     // many <cmath> functions are not constexpr.
 
     namespace _fixed_point_impl {
-        template<class ReprType, int Exponent, _fixed_point_impl::make_float<sizeof(ReprType)>(* F)(
-                _fixed_point_impl::make_float<sizeof(ReprType)>)>
+        template<class ReprType, int Exponent, resize_t<float, sizeof(ReprType)>(* F)(
+                resize_t<float, sizeof(ReprType)>)>
         constexpr fixed_point <ReprType, Exponent>
         crib(const fixed_point <ReprType, Exponent>& x) noexcept
         {
-            using floating_point = _fixed_point_impl::make_float<sizeof(ReprType)>;
+            using floating_point = resize_t<float, sizeof(ReprType)>;
             return static_cast<fixed_point<ReprType, Exponent>>(F(static_cast<floating_point>(x)));
         }
     }

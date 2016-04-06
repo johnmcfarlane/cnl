@@ -51,7 +51,7 @@ using make_fixed = sg14::make_fixed<IntegerDigits, FractionalDigits, Archetype>;
 template<int IntegerDigits, int FractionalDigits = 0, class Archetype = test_unsigned>
 using make_ufixed = sg14::make_ufixed<IntegerDigits, FractionalDigits, Archetype>;
 
-template<class Archetype, int NumBytes>
+template<class Archetype, std::size_t NumBytes>
 using resize_t = sg14::resize_t<Archetype, NumBytes>;
 
 using sg14::divide;
