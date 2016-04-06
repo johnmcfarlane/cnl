@@ -429,6 +429,33 @@ namespace sg14 {
                 sg14::add<fixed_point_result_type>(lhs._data(), rhs._data()));
     }
 
+    // implementation-specific definitions for binary operator-
+    namespace _elastic_impl {
+        template<
+                int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
+                int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
+        using subtract_result_type = elastic<
+                sg14::_impl::max(LhsIntegerDigits, RhsIntegerDigits)+1,
+                sg14::_impl::max(LhsFractionalDigits, RhsFractionalDigits),
+                typename std::make_signed<typename std::common_type<LhsArchetype, RhsArchetype>::type>::type>;
+    }
+
+    // binary operator-
+    template<
+            int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
+            int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
+    constexpr auto operator-(
+            const elastic<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype>& lhs,
+            const elastic<RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>& rhs)
+    -> _elastic_impl::subtract_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>
+    {
+        using result_type = _elastic_impl::subtract_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>;
+        using fixed_point_result_type = typename result_type::_fixed_point_type;
+
+        return static_cast<result_type>(
+                sg14::subtract<fixed_point_result_type>(lhs._data(), rhs._data()));
+    }
+
     // implementation-specific definitions for binary operator*
     namespace _elastic_impl {
         template<
