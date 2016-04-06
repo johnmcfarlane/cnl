@@ -408,6 +408,14 @@ namespace sg14 {
                 LhsIntegerDigits+RhsIntegerDigits,
                 LhsFractionalDigits+RhsFractionalDigits,
                 either_signed<LhsArchetype, RhsArchetype>>;
+
+        template<
+                int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
+                int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
+        using divide_result_type = elastic<
+                LhsIntegerDigits+RhsFractionalDigits,
+                LhsFractionalDigits+RhsIntegerDigits+1,
+                either_signed<LhsArchetype, RhsArchetype>>;
     }
 
     // binary operator+
@@ -456,6 +464,22 @@ namespace sg14 {
 
         return static_cast<result_type>(
                 sg14::multiply<fixed_point_result_type>(lhs._data(), rhs._data()));
+    }
+
+    // binary operator/
+    template<
+            int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
+            int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
+    constexpr auto operator/(
+            const elastic<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype>& lhs,
+            const elastic<RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>& rhs)
+    -> _elastic_impl::divide_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>
+    {
+        using result_type = _elastic_impl::divide_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>;
+        using fixed_point_result_type = typename result_type::_fixed_point_type;
+
+        return static_cast<result_type>(
+                divide<fixed_point_result_type>(lhs._data(), rhs._data()));
     }
 }
 
