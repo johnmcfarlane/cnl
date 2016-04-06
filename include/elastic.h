@@ -371,18 +371,43 @@ namespace sg14 {
         return result_type{-static_cast<result_fixed_point_type>(rhs._data())};
     }
 
-    // implementation-specific definitions for binary operator+
+    // implementation-specific definitions for arithmetic operators
     namespace _elastic_impl {
+        template <class LhsArchetype, class RhsArchetype>
+        using binary_signed = typename make_signed<typename std::common_type<LhsArchetype, RhsArchetype>::type>::type;
+
+        template <class LhsArchetype, class RhsArchetype>
+        using binary_unsigned = typename make_unsigned<typename std::common_type<LhsArchetype, RhsArchetype>::type>::type;
+
+        template <class LhsArchetype, class RhsArchetype>
+        using either_signed = typename std::conditional<
+                is_signed<LhsArchetype>::value || is_signed<RhsArchetype>::value,
+                binary_signed<LhsArchetype, RhsArchetype>,
+                binary_unsigned<LhsArchetype, RhsArchetype>>::type;
+
         template<
                 int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
                 int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
         using add_result_type = elastic<
-                sg14::_impl::max(LhsIntegerDigits, RhsIntegerDigits)+1,
-                sg14::_impl::max(LhsFractionalDigits, RhsFractionalDigits),
-                typename std::conditional<
-                        sg14::is_signed<LhsArchetype>::value || sg14::is_signed<RhsArchetype>::value,
-                        typename make_signed<LhsArchetype>::type,
-                        typename make_unsigned<RhsArchetype>::type>::type>;
+                _impl::max(LhsIntegerDigits, RhsIntegerDigits)+1,
+                _impl::max(LhsFractionalDigits, RhsFractionalDigits),
+                either_signed<LhsArchetype, RhsArchetype>>;
+
+        template<
+                int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
+                int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
+        using subtract_result_type = elastic<
+                _impl::max(LhsIntegerDigits, RhsIntegerDigits)+1,
+                _impl::max(LhsFractionalDigits, RhsFractionalDigits),
+                binary_signed<LhsArchetype, RhsArchetype>>;
+
+        template<
+                int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
+                int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
+        using multiply_result_type = elastic<
+                LhsIntegerDigits+RhsIntegerDigits,
+                LhsFractionalDigits+RhsFractionalDigits,
+                either_signed<LhsArchetype, RhsArchetype>>;
     }
 
     // binary operator+
@@ -401,17 +426,6 @@ namespace sg14 {
                 sg14::add<fixed_point_result_type>(lhs._data(), rhs._data()));
     }
 
-    // implementation-specific definitions for binary operator-
-    namespace _elastic_impl {
-        template<
-                int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
-                int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
-        using subtract_result_type = elastic<
-                sg14::_impl::max(LhsIntegerDigits, RhsIntegerDigits)+1,
-                sg14::_impl::max(LhsFractionalDigits, RhsFractionalDigits),
-                typename std::make_signed<typename std::common_type<LhsArchetype, RhsArchetype>::type>::type>;
-    }
-
     // binary operator-
     template<
             int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
@@ -426,20 +440,6 @@ namespace sg14 {
 
         return static_cast<result_type>(
                 sg14::subtract<fixed_point_result_type>(lhs._data(), rhs._data()));
-    }
-
-    // implementation-specific definitions for binary operator*
-    namespace _elastic_impl {
-        template<
-                int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
-                int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
-        using multiply_result_type = elastic<
-                LhsIntegerDigits+RhsIntegerDigits,
-                LhsFractionalDigits+RhsFractionalDigits,
-                typename std::conditional<
-                        sg14::is_signed<LhsArchetype>::value || sg14::is_signed<RhsArchetype>::value,
-                        typename make_signed<LhsArchetype>::type,
-                        typename make_unsigned<RhsArchetype>::type>::type>;
     }
 
     // binary operator*
