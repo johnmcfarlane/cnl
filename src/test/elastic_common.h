@@ -356,6 +356,32 @@ struct positive_elastic_test {
             "sg14::_elastic_impl::add_result_type test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
+    // test operator-
+
+    static_assert(is_equal_to(zero-zero, zero), "operator- test failed");
+    static_assert(is_equal_to(zero-zero-zero, zero), "operator- test failed");
+
+    static_assert(is_equal_to(min-min, zero), "operator- test failed");
+    static_assert(is_equal_to(min-zero, min), "operator- test failed");
+
+    static_assert(is_equal_to(max-max, zero), "operator- test failed");
+    static_assert(is_less_than(max-min, max), "operator- test failed");
+
+    static_assert(sg14::is_signed<decltype(zero-zero)>::value,
+            "signedness is lost during subtract");
+    static_assert(sg14::is_signed<decltype(signed_type{zero}-unsigned_type{zero})>::value,
+            "signedness is lost during subtract");
+    static_assert(is_same<
+                    typename sg14::_elastic_impl::subtract_result_type<
+                            integer_digits, fractional_digits, typename elastic_type::archetype,
+                            integer_digits, fractional_digits, typename elastic_type::archetype>,
+                    elastic<
+                            integer_digits+1,
+                            fractional_digits,
+                            typename std::make_signed<typename elastic_type::archetype>::type>>::value,
+            "sg14::_elastic_impl::add_result_type test failed");
+
+    ////////////////////////////////////////////////////////////////////////////////
     // test operator*
 
     static_assert(is_equal_to(min*elasticate<0>(), zero), "operator+ test failed");
