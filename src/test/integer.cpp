@@ -9,33 +9,33 @@
 using sg14::_integer_impl::is_integer_class;
 using sg14::_integer_impl::is_negative_overflow;
 using sg14::_integer_impl::is_positive_overflow;
+using sg14::is_integral;
+using sg14::is_signed;
+using sg14::is_unsigned;
+using sg14::make_signed;
+using sg14::make_unsigned;
 using sg14::saturated_integer;
-using std::is_integral;
 using std::is_same;
-using std::is_signed;
-using std::is_unsigned;
-using std::make_signed;
-using std::make_unsigned;
 using std::numeric_limits;
 
 ////////////////////////////////////////////////////////////////////////////////
 // std::common_type with sg14::integer parameter
 
 static_assert(is_same<
-        std::common_type<int32_t, saturated_integer<int16_t>>::type,
+        typename sg14::common_type<int32_t, saturated_integer<int16_t>>::type,
         saturated_integer<int32_t>>::value, "sg14::_integer_impl::common_type test failure");
 
 static_assert(is_same<
-        std::common_type<saturated_integer<int8_t>, saturated_integer<int8_t>>::type,
+        sg14::common_type<saturated_integer<int8_t>, saturated_integer<int8_t>>::type,
         saturated_integer<int8_t>>::value, "sg14::_integer_impl::common_type test failure");
 
 static_assert(is_same<
-        std::common_type<saturated_integer<uint32_t>, float>::type,
+        sg14::common_type<saturated_integer<uint32_t>, float>::type,
         float>::value, "incorrect assumption about promotion");
 
 static_assert(is_same<
-        std::common_type<saturated_integer<uint32_t>, saturated_integer<int16_t>>::type,
-        saturated_integer<uint32_t >>::value, "std::common_type test failed");
+        sg14::common_type<saturated_integer<uint32_t>, saturated_integer<int16_t>>::type,
+        saturated_integer<uint32_t >>::value, "sg14::common_type test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_integer_impl::is_integer_class
@@ -280,23 +280,23 @@ static_assert(int16_t(31)/saturated_integer<int8_t>(-2)==-15, "sg14::saturated_i
 ////////////////////////////////////////////////////////////////////////////////
 // traits
 
-// std::is_integral<sg14::integer<>>
+// sg14::is_integral<sg14::integer<>>
 static_assert(is_integral<sg14::integer<int8_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_integral<sg14::integer<>> test failed");
+        "sg14::is_integral<sg14::integer<>> test failed");
 static_assert(is_integral<sg14::integer<uint8_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_integral<sg14::integer<>> test failed");
+        "sg14::is_integral<sg14::integer<>> test failed");
 static_assert(is_integral<sg14::integer<int16_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_integral<sg14::integer<>> test failed");
+        "sg14::is_integral<sg14::integer<>> test failed");
 static_assert(is_integral<sg14::integer<uint16_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_integral<sg14::integer<>> test failed");
+        "sg14::is_integral<sg14::integer<>> test failed");
 static_assert(is_integral<sg14::integer<int32_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_integral<sg14::integer<>> test failed");
+        "sg14::is_integral<sg14::integer<>> test failed");
 static_assert(is_integral<sg14::integer<uint32_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_integral<sg14::integer<>> test failed");
+        "sg14::is_integral<sg14::integer<>> test failed");
 static_assert(is_integral<sg14::integer<int64_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_integral<sg14::integer<>> test failed");
+        "sg14::is_integral<sg14::integer<>> test failed");
 static_assert(is_integral<sg14::integer<uint64_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_integral<sg14::integer<>> test failed");
+        "sg14::is_integral<sg14::integer<>> test failed");
 
 // std::is_signed<sg14::integer<>>
 static_assert(is_signed<sg14::integer<int8_t, sg14::saturated_overflow_policy>>::value,

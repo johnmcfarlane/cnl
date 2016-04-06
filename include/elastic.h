@@ -1,4 +1,3 @@
-
 //          Copyright John McFarlane 2015 - 2016.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
@@ -11,7 +10,6 @@
 #define _SG14_ELASTIC 1
 
 #include <fixed_point.h>
-#include <type_traits.h>
 
 /// study group 14 of the C++ working group
 namespace sg14 {
@@ -100,71 +98,44 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::is_signed
 
-    template<class T>
-    struct is_signed;
-
-    template<class T>
-    struct is_signed : std::is_signed<T> {
-    };
-
     template<int IntegerDigits, int FractionalDigits, class Archetype>
     struct is_signed<elastic<IntegerDigits, FractionalDigits, Archetype>>
-            : sg14::is_signed<Archetype> {
+            : is_signed<Archetype> {
     };
 
     template<class ReprType, int Exponent>
     struct is_signed<fixed_point<ReprType, Exponent>>
-            : sg14::is_signed<ReprType> {
+            : is_signed<ReprType> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::is_unsigned
 
-    template<class T>
-    struct is_unsigned : std::integral_constant<bool, !is_signed<T>::value> {
+    template<int IntegerDigits, int FractionalDigits, class Archetype>
+    struct is_unsigned<elastic<IntegerDigits, FractionalDigits, Archetype>>
+            : is_unsigned<Archetype> {
+    };
+
+    template<class ReprType, int Exponent>
+    struct is_unsigned<fixed_point<ReprType, Exponent>>
+            : is_unsigned<ReprType> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_signed
-
-    template<class T>
-    struct make_signed;
+    // sg14::make_signed<elastic<>>
 
     template<int IntegerDigits, int FractionalDigits, class Archetype>
     struct make_signed<elastic<IntegerDigits, FractionalDigits, Archetype>> {
-        using type = elastic<IntegerDigits, FractionalDigits, typename sg14::make_signed<Archetype>::type>;
-    };
-
-    template<class T>
-    struct make_signed : std::make_signed<T> {
+        using type = elastic<IntegerDigits, FractionalDigits, typename make_signed<Archetype>::type>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_signed_t
-
-    template<class T>
-    using make_signed_t = typename make_signed<T>::type;
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_unsigned
-
-    template<class T>
-    struct make_unsigned;
+    // sg14::make_unsigned<elastic<>>
 
     template<int IntegerDigits, int FractionalDigits, class Archetype>
     struct make_unsigned<elastic<IntegerDigits, FractionalDigits, Archetype>> {
-        using type = elastic<IntegerDigits, FractionalDigits, typename sg14::make_unsigned<Archetype>::type>;
+        using type = elastic<IntegerDigits, FractionalDigits, typename make_unsigned<Archetype>::type>;
     };
-
-    template<class T>
-    struct make_unsigned : std::make_unsigned<T> {
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_unsigned_t
-
-    template<class T>
-    using make_unsigned_t = typename make_unsigned<T>::type;
 
     /// \brief literal real number approximation that uses fixed-point arithmetic
     /// and performs operations with expanded results to avoid overflow
@@ -246,7 +217,7 @@ namespace sg14 {
 
         /// constructor taking fixed_point type
         template<class RhsReprType, int RhsExponent>
-		explicit constexpr elastic(const fixed_point<RhsReprType, RhsExponent>& value)
+        explicit constexpr elastic(const fixed_point<RhsReprType, RhsExponent>& value)
                 :_value(value) { }
 
         /// constructor converting from any other type
@@ -255,7 +226,8 @@ namespace sg14 {
                 :elastic(static_cast<_fixed_point_type>(rhs)) { }
 
         /// conversion operator returning fixed_point type
-        explicit constexpr operator const _fixed_point_type&() const {
+        explicit constexpr operator const _fixed_point_type&() const
+        {
             return _value;
         }
 
@@ -292,7 +264,7 @@ namespace sg14 {
         template<class Integer>
         constexpr int num_fractional_bits(Integer value)
         {
-            return (((value / 2) * 2) == value) ? num_fractional_bits(value / 2) - 1 : 0;
+            return (((value/2)*2)==value) ? num_fractional_bits(value/2)-1 : 0;
         }
 
         template<class Integer, Integer value>
@@ -387,32 +359,66 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::elastic arithmetic operators
 
-    // negate
+    // unary operator-
     template<int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
     constexpr auto operator-(const elastic<RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>& rhs)
-    -> elastic<RhsIntegerDigits, RhsFractionalDigits, make_signed_t<RhsArchetype>>
+    -> elastic<RhsIntegerDigits, RhsFractionalDigits, typename make_signed<RhsArchetype>::type>
     {
-        using result_archetype = make_signed_t<RhsArchetype>;
+        using result_archetype = typename make_signed<RhsArchetype>::type;
         using result_type = elastic<RhsIntegerDigits, RhsFractionalDigits, result_archetype>;
         using result_fixed_point_type = typename result_type::_fixed_point_type;
 
         return result_type{-static_cast<result_fixed_point_type>(rhs._data())};
     }
 
-    // add
+    // implementation-specific definitions for arithmetic operators
     namespace _elastic_impl {
+        template <class LhsArchetype, class RhsArchetype>
+        using binary_signed = typename make_signed<typename std::common_type<LhsArchetype, RhsArchetype>::type>::type;
+
+        template <class LhsArchetype, class RhsArchetype>
+        using binary_unsigned = typename make_unsigned<typename std::common_type<LhsArchetype, RhsArchetype>::type>::type;
+
+        template <class LhsArchetype, class RhsArchetype>
+        using either_signed = typename std::conditional<
+                is_signed<LhsArchetype>::value || is_signed<RhsArchetype>::value,
+                binary_signed<LhsArchetype, RhsArchetype>,
+                binary_unsigned<LhsArchetype, RhsArchetype>>::type;
+
         template<
                 int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
                 int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
         using add_result_type = elastic<
-                sg14::_impl::max(LhsIntegerDigits, RhsIntegerDigits)+1,
-                sg14::_impl::max(LhsFractionalDigits, RhsFractionalDigits),
-                typename std::conditional<
-                        sg14::is_signed<LhsArchetype>::value || sg14::is_signed<RhsArchetype>::value,
-                        make_signed_t<LhsArchetype>,
-                        make_unsigned_t<RhsArchetype>>::type>;
+                _impl::max(LhsIntegerDigits, RhsIntegerDigits)+1,
+                _impl::max(LhsFractionalDigits, RhsFractionalDigits),
+                either_signed<LhsArchetype, RhsArchetype>>;
+
+        template<
+                int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
+                int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
+        using subtract_result_type = elastic<
+                _impl::max(LhsIntegerDigits, RhsIntegerDigits)+1,
+                _impl::max(LhsFractionalDigits, RhsFractionalDigits),
+                binary_signed<LhsArchetype, RhsArchetype>>;
+
+        template<
+                int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
+                int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
+        using multiply_result_type = elastic<
+                LhsIntegerDigits+RhsIntegerDigits,
+                LhsFractionalDigits+RhsFractionalDigits,
+                either_signed<LhsArchetype, RhsArchetype>>;
+
+        template<
+                int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
+                int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
+        using divide_result_type = elastic<
+                LhsIntegerDigits+RhsFractionalDigits,
+                LhsFractionalDigits+RhsIntegerDigits+1,
+                either_signed<LhsArchetype, RhsArchetype>>;
     }
 
+    // binary operator+
     template<
             int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
             int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
@@ -428,20 +434,23 @@ namespace sg14 {
                 sg14::add<fixed_point_result_type>(lhs._data(), rhs._data()));
     }
 
-    // multiply
-    namespace _elastic_impl {
-        template<
-                int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
-                int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
-        using multiply_result_type = elastic<
-                LhsIntegerDigits+RhsIntegerDigits,
-                LhsFractionalDigits+RhsFractionalDigits,
-                typename std::conditional<
-                        sg14::is_signed<LhsArchetype>::value || sg14::is_signed<RhsArchetype>::value,
-                        make_signed_t<LhsArchetype>,
-                        make_unsigned_t<RhsArchetype>>::type>;
+    // binary operator-
+    template<
+            int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
+            int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
+    constexpr auto operator-(
+            const elastic<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype>& lhs,
+            const elastic<RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>& rhs)
+    -> _elastic_impl::subtract_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>
+    {
+        using result_type = _elastic_impl::subtract_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>;
+        using fixed_point_result_type = typename result_type::_fixed_point_type;
+
+        return static_cast<result_type>(
+                sg14::subtract<fixed_point_result_type>(lhs._data(), rhs._data()));
     }
 
+    // binary operator*
     template<
             int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
             int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
@@ -455,6 +464,22 @@ namespace sg14 {
 
         return static_cast<result_type>(
                 sg14::multiply<fixed_point_result_type>(lhs._data(), rhs._data()));
+    }
+
+    // binary operator/
+    template<
+            int LhsIntegerDigits, int LhsFractionalDigits, class LhsArchetype,
+            int RhsIntegerDigits, int RhsFractionalDigits, class RhsArchetype>
+    constexpr auto operator/(
+            const elastic<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype>& lhs,
+            const elastic<RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>& rhs)
+    -> _elastic_impl::divide_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>
+    {
+        using result_type = _elastic_impl::divide_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>;
+        using fixed_point_result_type = typename result_type::_fixed_point_type;
+
+        return static_cast<result_type>(
+                divide<fixed_point_result_type>(lhs._data(), rhs._data()));
     }
 }
 

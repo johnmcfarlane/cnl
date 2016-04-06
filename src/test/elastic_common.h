@@ -15,8 +15,8 @@ using std::is_same;
 
 using sg14::elastic;
 using sg14::elasticate;
-using sg14::make_signed_t;
-using sg14::make_unsigned_t;
+using sg14::make_signed;
+using sg14::make_unsigned;
 
 ////////////////////////////////////////////////////////////////////////////////
 // useful constants
@@ -227,8 +227,8 @@ struct positive_elastic_test {
     using fixed_point_type = typename elastic_type::_fixed_point_type;
     using numeric_limits = std::numeric_limits<elastic_type>;
 
-    using signed_type = make_signed_t<elastic_type>;
-    using unsigned_type = make_unsigned_t<elastic_type>;
+    using signed_type = typename make_signed<elastic_type>::type;
+    using unsigned_type = typename make_unsigned<elastic_type>::type;
 
     ////////////////////////////////////////////////////////////////////////////////
     // useful constants
@@ -356,23 +356,68 @@ struct positive_elastic_test {
             "sg14::_elastic_impl::add_result_type test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
+    // test operator-
+
+    static_assert(is_equal_to(zero-zero, zero), "operator- test failed");
+    static_assert(is_equal_to(zero-zero-zero, zero), "operator- test failed");
+
+    static_assert(is_equal_to(min-min, zero), "operator- test failed");
+    static_assert(is_equal_to(min-zero, min), "operator- test failed");
+
+    static_assert(is_equal_to(max-max, zero), "operator- test failed");
+    static_assert(is_less_than(max-min, max), "operator- test failed");
+
+    static_assert(sg14::is_signed<decltype(zero-zero)>::value,
+            "signedness is lost during subtract");
+    static_assert(sg14::is_signed<decltype(signed_type{zero}-unsigned_type{zero})>::value,
+            "signedness is lost during subtract");
+    static_assert(is_same<
+                    typename sg14::_elastic_impl::subtract_result_type<
+                            integer_digits, fractional_digits, typename elastic_type::archetype,
+                            integer_digits, fractional_digits, typename elastic_type::archetype>,
+                    elastic<
+                            integer_digits+1,
+                            fractional_digits,
+                            typename std::make_signed<typename elastic_type::archetype>::type>>::value,
+            "sg14::_elastic_impl::add_result_type test failed");
+
+    ////////////////////////////////////////////////////////////////////////////////
     // test operator*
 
-    static_assert(is_equal_to(min*elasticate<0>(), zero), "operator+ test failed");
-    static_assert(is_equal_to(min*elasticate<1>(), min), "operator+ test failed");
-    static_assert(is_equal_to(min*elasticate<2>(), min+min), "operator+ test failed");
-    static_assert(is_equal_to(min*elasticate<3>(), min+min+min), "operator+ test failed");
+    static_assert(is_equal_to(min*elasticate<0>(), zero), "operator* test failed");
+    static_assert(is_equal_to(min*elasticate<1>(), min), "operator* test failed");
+    static_assert(is_equal_to(min*elasticate<2>(), min+min), "operator* test failed");
+    static_assert(is_equal_to(min*elasticate<3>(), min+min+min), "operator* test failed");
     static_assert(sg14::is_signed<decltype(zero*zero)>::value
                     ==sg14::is_signed<elastic_type>::value,
             "signedness is lost during multiply");
     static_assert(sg14::is_signed<decltype(signed_type{zero}*unsigned_type{zero})>::value,
             "signedness is lost during multiply");
     static_assert(is_same<
-                    typename sg14::_elastic_impl::add_result_type<
+                    typename sg14::_elastic_impl::multiply_result_type<
                             integer_digits, fractional_digits, typename elastic_type::archetype,
                             integer_digits, fractional_digits, typename elastic_type::archetype>,
-                    elastic<integer_digits+1, fractional_digits, typename elastic_type::archetype>>::value,
-            "sg14::_elastic_impl::add_result_type test failed");
+                    elastic<integer_digits*2, fractional_digits*2, typename elastic_type::archetype>>::value,
+            "sg14::_elastic_impl::multiply_result_type test failed");
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // test operator/
+
+    static_assert(!is_greater_than(min/elasticate<2>(), min), "operator/ test failed");
+    static_assert(is_equal_to(min/elasticate<1>(), min), "operator/ test failed");
+    static_assert(is_equal_to((min+min)/elasticate<2>(), min), "operator/ test failed");
+    static_assert(is_equal_to((min+min+min)/elasticate<3>(), min), "operator/ test failed");
+    static_assert(sg14::is_signed<decltype(zero/zero)>::value
+                    ==sg14::is_signed<elastic_type>::value,
+            "signedness is lost during multiply");
+    static_assert(sg14::is_signed<decltype(signed_type{zero}/unsigned_type{zero})>::value,
+            "signedness is lost during multiply");
+    static_assert(is_same<
+                    typename sg14::_elastic_impl::divide_result_type<
+                            integer_digits, fractional_digits, typename elastic_type::archetype,
+                            integer_digits, fractional_digits, typename elastic_type::archetype>,
+                    elastic<integer_digits+fractional_digits, integer_digits+fractional_digits+1, typename elastic_type::archetype>>::value,
+            "sg14::_elastic_impl::divide_result_type test failed");
 };
 
 ////////////////////////////////////////////////////////////////////////////////
