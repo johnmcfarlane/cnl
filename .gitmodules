@@ -2,3 +2,84 @@
 	path = doc/gh-pages
 	url = https://github.com/johnmcfarlane/fixed_point.git
 	branch = gh-pages
+[submodule "src/boost/multiprecision"]
+	path = src/boost/multiprecision
+	url = https://github.com/boostorg/multiprecision.git
+[submodule "src/boost/config"]
+	path = src/boost/config
+	url = https://github.com/boostorg/config.git
+[submodule "src/boost/mpl"]
+	path = src/boost/mpl
+	url = https://github.com/boostorg/mpl.git
+[submodule "src/boost/preprocessor"]
+	path = src/boost/preprocessor
+	url = https://github.com/boostorg/preprocessor.git
+[submodule "src/boost/type_traits"]
+	path = src/boost/type_traits
+	url = https://github.com/boostorg/type_traits.git
+[submodule "src/boost/assert"]
+	path = src/boost/assert
+	url = https://github.com/boostorg/assert.git
+[submodule "src/boost/static_assert"]
+	path = src/boost/static_assert
+	url = https://github.com/boostorg/static_assert.git
+[submodule "src/boost/throw_exception"]
+	path = src/boost/throw_exception
+	url = https://github.com/boostorg/throw_exception.git
+[submodule "src/boost/math"]
+	path = src/boost/math
+	url = https://github.com/boostorg/math.git
+[submodule "src/boost/predef"]
+	path = src/boost/predef
+	url = https://github.com/boostorg/predef.git
+[submodule "src/boost/format"]
+	path = src/boost/format
+	url = https://github.com/boostorg/format.git
+[submodule "src/boost/optional"]
+	path = src/boost/optional
+	url = https://github.com/boostorg/optional.git
+[submodule "src/boost/core"]
+	path = src/boost/core
+	url = https://github.com/boostorg/core.git
+[submodule "src/boost/move"]
+	path = src/boost/move
+	url = https://github.com/boostorg/move.git
+[submodule "src/boost/utility"]
+	path = src/boost/utility
+	url = https://github.com/boostorg/utility.git
+[submodule "src/boost/smart_ptr"]
+	path = src/boost/smart_ptr
+	url = https://github.com/boostorg/smart_ptr.git
+[submodule "src/boost/lexical_cast"]
+	path = src/boost/lexical_cast
+	url = https://github.com/boostorg/lexical_cast.git
+[submodule "src/boost/range"]
+	path = src/boost/range
+	url = https://github.com/boostorg/range.git
+[submodule "src/boost/iterator"]
+	path = src/boost/iterator
+	url = https://github.com/boostorg/iterator.git
+[submodule "src/boost/detail"]
+	path = src/boost/detail
+	url = https://github.com/boostorg/detail.git
+[submodule "src/boost/concept_check"]
+	path = src/boost/concept_check
+	url = https://github.com/boostorg/concept_check.git
+[submodule "src/boost/ublas"]
+	path = src/boost/ublas
+	url = https://github.com/boostorg/ublas.git
+[submodule "src/boost/numeric_conversion"]
+	path = src/boost/numeric_conversion
+	url = https://github.com/boostorg/numeric_conversion.git
+[submodule "src/boost/integer"]
+	path = src/boost/integer
+	url = get@github.com:boostorg/integer.git
+[submodule "src/boost/array"]
+	path = src/boost/array
+	url = get@github.com:boostorg/array.git
+[submodule "src/boost/container"]
+	path = src/boost/container
+	url = get@github.com:boostorg/container.git
+[submodule "src/boost/rational"]
+	path = src/boost/rational
+	url = get@github.com:boostorg/rational.git

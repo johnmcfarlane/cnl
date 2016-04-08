@@ -32,6 +32,34 @@ set_target_properties(
         OUTPUT_NAME "fp_test"
 )
 
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/assert/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/array/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/concept_check/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/config/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/container/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/core/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/detail/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/format/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/iterator/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/integer/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/lexical_cast/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/math/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/move/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/mpl/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/multiprecision/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/numeric_conversion/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/optional/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/predef/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/preprocessor/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/range/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/rational/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/smart_ptr/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/static_assert/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/throw_exception/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/type_traits/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/ublas/include)
+target_include_directories(fp_test PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../boost/utility/include)
+
 ######################################################################
 # add external project, google_test
 
