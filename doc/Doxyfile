@@ -16,10 +16,10 @@ CALLER_GRAPH = NO
 OUTPUT_DIRECTORY =
 OUTPUT_LANGUAGE = English
 INPUT = \
- ../include/elastic.h \
- ../include/fixed_point.h \
- ../include/bits/fixed_point_extras.h \
- ../include/type_traits.h \
+ ../include/sg14/elastic.h \
+ ../include/sg14/fixed_point.h \
+ ../include/sg14/bits/fixed_point_extras.h \
+ ../include/sg14/type_traits.h \
  index.md
 EXCLUDE_SYMBOLS = \
  sg14::_elastic_impl \

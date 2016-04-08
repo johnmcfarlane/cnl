@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include "integer.h"
-#include <fixed_point.h>
+#include <sg14/fixed_point.h>
 
 #if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
 #define TEST_THROWING_OVERFLOW

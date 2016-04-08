@@ -25,9 +25,9 @@ The library is [hosted](https://github.com/johnmcfarlane/fixed_point) on GitHub:
 
 1. Add the [include](../../include) directory to your list of system headers. 
 
-2. Essential definitions are in [fixed_point.h](@ref fixed_point.h):
+2. Essential definitions are in [sg14/fixed_point.h](@ref fixed_point.h):
 
-       #include <fixed_point.h>
+       #include <sg14/fixed_point.h>
 
 3. All definitions are in the [sg14](@ref sg14) namespace:
 

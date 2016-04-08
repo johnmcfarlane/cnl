@@ -6,8 +6,7 @@
 #if !defined(_SG14_INTEGER)
 #define _SG14_INTEGER 1
 
-#include "bits/common.h"
-#include "type_traits.h"
+#include <sg14/type_traits.h>
 
 #include <limits>
 #include <stdexcept>

@@ -148,6 +148,57 @@ namespace sg14 {
     /// \snippet snippets.cpp use resize 3
     template<class Archetype, std::size_t NumBytes>
     using resize_t = typename resize<Archetype, NumBytes>::type;
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // import selected <type_traits> definitions from std namespace
+
+    // common_type
+    template<class ...T>
+    struct common_type;
+
+    template<class ...T>
+    struct common_type : std::common_type<T...> {
+    };
+
+    // is_integral
+    template<class T>
+    struct is_integral;
+
+    template<class T>
+    struct is_integral : std::is_integral<T> {
+    };
+
+    // is_signed
+    template<class T>
+    struct is_signed;
+
+    template<class T>
+    struct is_signed : std::is_signed<T> {
+    };
+
+    // is_unsigned
+    template<class T>
+    struct is_unsigned;
+
+    template<class T>
+    struct is_unsigned : std::is_unsigned<T> {
+    };
+
+    // make_signed
+    template<class T>
+    struct make_signed;
+
+    template<class T>
+    struct make_signed : std::make_signed<T> {
+    };
+
+    // make_unsigned
+    template<class T>
+    struct make_unsigned;
+
+    template<class T>
+    struct make_unsigned : std::make_unsigned<T> {
+    };
 }
 
 #endif	// _SG14_TYPE_TRAITS

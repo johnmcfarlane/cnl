@@ -6,7 +6,8 @@
 
 /// \file
 /// \brief supplemental definitions related to the `sg14::fixed_point` type;
-/// definitions that straddle two 'homes, e.g. fixed_point.h and cmath, traits or limits
+/// definitions that straddle two 'homes, e.g. fixed_point.h and cmath, traits or limits;
+/// included from sg14/fixed_point.h - do not include directly!
 
 #if !defined(_SG14_FIXED_POINT_UTILS_H)
 #define _SG14_FIXED_POINT_UTILS_H 1

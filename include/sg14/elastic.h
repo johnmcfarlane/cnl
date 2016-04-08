@@ -9,7 +9,7 @@
 #if !defined(_SG14_ELASTIC)
 #define _SG14_ELASTIC 1
 
-#include <fixed_point.h>
+#include <sg14/fixed_point.h>
 
 /// study group 14 of the C++ working group
 namespace sg14 {

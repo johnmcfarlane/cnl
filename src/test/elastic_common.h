@@ -7,7 +7,7 @@
 // like fixed_point_common.h this file contains tests which can be
 // performed on different types from different .cpp files.
 
-#include <elastic.h>
+#include <sg14/elastic.h>
 
 #include <tuple>
 
