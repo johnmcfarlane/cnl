@@ -283,7 +283,7 @@ namespace sg14 {
 
     /// \brief generate an \ref elastic object of given value
     ///
-    /// \param Value the integer number to be represented
+    /// \tparam Value the integer number to be represented
     ///
     /// \return the given value represented using an \ref elastic type
     ///
