@@ -303,6 +303,33 @@ namespace sg14 {
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
+    // sg14::make_elastic
+
+    // sg14::make_elastic helper definitions
+    namespace _elastic_impl {
+    }
+
+    /// \brief generate an \ref elastic object of given value
+    ///
+    /// \param value the integer value to be represented
+    ///
+    /// \tparam Type the type of the value
+    ///
+    /// \return the given value represented using an \ref elastic type
+    ///
+    /// \note The return type is guaranteed to have the capacity than is necessary to represent any value of th given type.
+    ///
+    ///
+
+    template<class Type>
+    constexpr auto make_elastic(const Type& value)
+    -> elastic<std::numeric_limits<Type>::digits, 0, Type>
+    {
+        return elastic<std::numeric_limits<Type>::digits, 0, Type>{value};
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
     // sg14::elastic operator overloads
 
     ////////////////////////////////////////////////////////////////////////////////

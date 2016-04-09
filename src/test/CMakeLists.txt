@@ -35,6 +35,11 @@ set(    SOURCES
 # ...so the entire library is sought
 find_package(Boost)
 
+if(Boost_FOUND)
+    # only compile multiprecision.cpp if Boost.Multiprecision is available
+    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp)
+endif(Boost_FOUND)
+
 ######################################################################
 # fp_test target
 
