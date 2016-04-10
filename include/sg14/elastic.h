@@ -234,6 +234,13 @@ namespace sg14 {
             return _value;
         }
 
+        /// conversion operator returning value as arbitrary type
+        template <class T, class = typename std::enable_if<!_fixed_point_impl::is_fixed_point<T>::value>::type>
+        explicit constexpr operator T() const
+        {
+            return static_cast<T>(_value);
+        }
+
         ////////////////////////////////////////////////////////////////////////////////
         // leakage (not part of the API)
 
