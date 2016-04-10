@@ -61,16 +61,22 @@ static_assert(is_unsigned<make_unsigned<unsigned_multiprecision<10 >>::type>::va
         "sg14::make_unsigned<signed_multiprecision<>> test failed");
 
 // test sg14::resize<{un}signed_multiprecision>
-static_assert(sizeof(signed_multiprecision<11>)>=11, "sizeof(signed_multiprecision) test failed");
-static_assert(sizeof(unsigned_multiprecision<12>)>=12, "sizeof(signed_multiprecision) test failed");
+static_assert(width<signed_multiprecision<11>>::value>=11, "width<signed_multiprecision> test failed");
+static_assert(width<unsigned_multiprecision<12>>::value>=12, "width<signed_multiprecision> test failed");
 
-static_assert(sizeof(resize<signed_multiprecision<13>, 57>::type)>=57, "sizeof(signed_multiprecision) test failed");
-static_assert(sizeof(resize<unsigned_multiprecision<14>, 3>::type)>=3, "sizeof(unsigned_multiprecision) test failed");
+static_assert(
+        width<
+                resize<
+                        signed_multiprecision<13>,
+                        57
+                >::type
+        >::value>=57, "width<signed_multiprecision> test failed");
+static_assert(width<resize<unsigned_multiprecision<14>, 3>::type>::value>=3, "width<unsigned_multiprecision> test failed");
 
-static_assert(sizeof(resize<signed_multiprecision<15>, 3>::type)<=sizeof(signed_multiprecision<15>),
-        "sizeof(signed_multiprecision) test failed");
-static_assert(sizeof(unsigned_multiprecision<16>)>=sizeof(resize<unsigned_multiprecision<16>, 16>::type),
-        "sizeof(signed_multiprecision) test failed");
+static_assert(width<resize<signed_multiprecision<120>, 3>::type>::value<=width<signed_multiprecision<120>>::value,
+        "width<signed_multiprecision> test failed");
+static_assert(width<unsigned_multiprecision<128>>::value>=width<resize<unsigned_multiprecision<128>, 16>::type>::value,
+        "width<signed_multiprecision>::value test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::multiprecision arithmetic

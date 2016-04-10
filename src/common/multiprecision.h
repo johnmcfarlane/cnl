@@ -132,9 +132,10 @@ namespace sg14 {
             class Backend,
             expression_template_option ExpressionTemplates,
             std::size_t NumBytes>
-    struct resize<number<
-            Backend,
-            ExpressionTemplates>,
+    struct resize<
+            number<
+                    Backend,
+                    ExpressionTemplates>,
             NumBytes> {
         using type = number<
                 typename resize<Backend, NumBytes>::type,
@@ -159,28 +160,28 @@ namespace sg14 {
     // aliases of boost::multiprecision types
 
     namespace _sized_integer_impl {
-        template<std::size_t NumBytes, cpp_integer_type SignType>
+        template<unsigned NumBits, cpp_integer_type SignType>
         using backend = cpp_int_backend<
-                NumBytes*CHAR_BIT, NumBytes*CHAR_BIT, SignType, unchecked, void>;
+                NumBits, NumBits, SignType, unchecked, void>;
     }
 
     // sg14::signed_multiprecision - a signed integer of arbitrary size
-    template<std::size_t NumBytes = sizeof(int)>
-    using signed_multiprecision = number<_sized_integer_impl::backend<NumBytes, signed_magnitude>, et_off>;
+    template<unsigned NumBits = width<int>::value>
+    using signed_multiprecision = number<_sized_integer_impl::backend<NumBits, signed_magnitude>, et_off>;
 
     // sg14::unsigned_multiprecision - an unsigned integer of arbitrary size
-    template<std::size_t NumBytes = sizeof(int)>
-    using unsigned_multiprecision = number<_sized_integer_impl::backend<NumBytes, unsigned_magnitude>, et_off>;
+    template<unsigned NumBits = width<int>::value>
+    using unsigned_multiprecision = number<_sized_integer_impl::backend<NumBits, unsigned_magnitude>, et_off>;
 
     // sg14::unsigned_multiprecision - an integer of arbitrary size
-    template<std::size_t NumBytes = sizeof(int)>
-    using multiprecision = signed_multiprecision<NumBytes>;
+    template<unsigned NumBits = width<int>::value>
+    using multiprecision = signed_multiprecision<NumBits>;
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     // elastic_multiprecision - elastic type with virtually no top limit on capacity
 
-    template<int IntegerDigits, int FractionalDigits, bool IsSigned>
+    template<int IntegerDigits, int FractionalDigits = 0, bool IsSigned = true>
     using elastic_multiprecision = elastic<
             IntegerDigits,
             FractionalDigits,
