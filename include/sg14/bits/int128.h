@@ -11,9 +11,13 @@
 
 // This file contains tweaks to standard traits that integers more conducive to generic programming.
 
-#if defined(_MSC_VER)
 namespace sg14 {
+    ////////////////////////////////////////////////////////////////////////////////
+    // MSVC++ hacks to get 64-bit integers working a little better
+
+#if defined(_MSC_VER)
     // sg14::is_integral
+    // TODO: is this really necessary? https://msdn.microsoft.com/en-us/library/bb983099.aspx
     template<>
     struct is_integral<__int64> : std::true_type {
     };
@@ -21,12 +25,12 @@ namespace sg14 {
     template<>
     struct is_integral<unsigned __int64> : std::true_type {
     };
-}
 #endif
 
+    ////////////////////////////////////////////////////////////////////////////////
+    // Clang/GCC hacks to get 128-bit integers working with fixed_point
+
 #if defined(_GLIBCXX_USE_INT128)
-// sg14 trait specializations required to use 128-bit integers with fixed_point under GCC/Clang
-namespace sg14 {
     // sg14::is_integral - related to https://llvm.org/bugs/show_bug.cgi?id=23156
     template<>
     struct is_integral<__int128> : std::true_type {
