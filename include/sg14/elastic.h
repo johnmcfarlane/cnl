@@ -225,6 +225,9 @@ namespace sg14 {
         explicit constexpr elastic(const Rhs& rhs)
                 :elastic(static_cast<_fixed_point_type>(rhs)) { }
 
+        ////////////////////////////////////////////////////////////////////////////////
+        // conversions
+
         /// conversion operator returning fixed_point type
         explicit constexpr operator const _fixed_point_type&() const
         {

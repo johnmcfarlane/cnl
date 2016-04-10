@@ -56,7 +56,7 @@ namespace sg14 {
                 ReprType bit,
                 ReprType result)
         {
-            return (bit != ReprType{ 0 })
+            return (bit!=ReprType{0})
                    ? (n>=result+bit)
                      ? sqrt_solve3<ReprType>(
                                     static_cast<ReprType>(n-(result+bit)),
@@ -79,13 +79,13 @@ namespace sg14 {
     // https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_.28base_2.29
     // placeholder implementation; slow when calculated at run-time?
     template<class ReprType, int Exponent>
-    constexpr fixed_point<ReprType, Exponent>
-    sqrt(const fixed_point<ReprType, Exponent>& x)
+    constexpr fixed_point <ReprType, Exponent>
+    sqrt(const fixed_point <ReprType, Exponent>& x)
     {
         using widened_type = fixed_point<resize_t<ReprType, sizeof(ReprType)*2>, Exponent*2>;
         return
 #if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
-            (x<fixed_point<ReprType, Exponent>(0))
+                (x<fixed_point<ReprType, Exponent>(0))
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
 #endif
                 fixed_point<ReprType, Exponent>::from_data(

@@ -26,7 +26,7 @@ namespace sg14 {
         using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t, unsigned __int128>;
 #else
         using signed_family = std::tuple<std::int8_t, std::int16_t, std::int32_t, std::int64_t>;
-		using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t>;
+        using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t>;
 #endif
 
 #if defined(_MSC_VER)
@@ -87,7 +87,8 @@ namespace sg14 {
     struct resize<std::int16_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
     };
     template<std::size_t NumBytes>
-    struct resize<std::uint16_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    struct resize<std::uint16_t, NumBytes>
+            : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
     };
 
     // sg14::resize specialized for 32-bit built-in integers
@@ -95,7 +96,8 @@ namespace sg14 {
     struct resize<std::int32_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
     };
     template<std::size_t NumBytes>
-    struct resize<std::uint32_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    struct resize<std::uint32_t, NumBytes>
+            : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
     };
 
     // sg14::resize specialized for 64-bit built-in integers
@@ -122,7 +124,7 @@ namespace sg14 {
     struct resize<long double, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::float_family> {
     };
 
-    /// resizes a type
+    /// \brief resizes a type
     ///
     /// \tparam Archetype the type to resize
     /// \tparam NumBytes the desired size
