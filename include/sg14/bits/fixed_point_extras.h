@@ -45,7 +45,7 @@ namespace sg14 {
         template<class ReprType>
         constexpr ReprType sqrt_bit(
                 ReprType n,
-                ReprType bit = ReprType(1) << (num_bits<ReprType>()-2))
+                ReprType bit = ReprType(1) << (width<ReprType>::value-2))
         {
             return (bit>n) ? sqrt_bit<ReprType>(n, bit >> 2) : bit;
         }

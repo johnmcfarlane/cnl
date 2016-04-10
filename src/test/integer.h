@@ -392,6 +392,13 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
+    // sg14::width<integer<>> partial specialization
+
+    template<class Repr, class OverflowPolicy>
+    struct width<integer<Repr, OverflowPolicy>> : width<Repr> {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
     // sg14::integer-specific specializations to std-like templates
 
     // sg14::is_integral<sg14::integer<>>

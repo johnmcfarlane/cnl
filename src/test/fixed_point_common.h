@@ -4,6 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <sg14/bits/int128.h>
+
 #include <gtest/gtest.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -723,27 +725,27 @@ struct FixedPointTester {
     static constexpr fixed_point min = fixed_point::from_data(repr_type(1));
     static_assert(min.data() == repr_type(1), "all ReprType types should be able to store the number 1!");
 
-    // sg14::_impl::widen_integer_result
+    // sg14::_impl::widen_integer_result_t
     static_assert(
-            sizeof(_impl::widen_integer_result<fixed_point>) == 2 * sizeof(fixed_point),
-            "widen_integer_result did not result in type that was twice the size");
+            sizeof(_impl::widen_integer_result_t<fixed_point>) == 2 * sizeof(fixed_point),
+            "widen_integer_result_t did not result in type that was twice the size");
     static_assert(
-            _impl::widen_integer_result<fixed_point>::integer_digits > fixed_point::integer_digits,
-            "widen_integer_result did not result in type with more integer digits");
+            _impl::widen_integer_result_t<fixed_point>::integer_digits > fixed_point::integer_digits,
+            "widen_integer_result_t did not result in type with more integer digits");
     static_assert(
-            _impl::widen_integer_result<fixed_point>::fractional_digits == fixed_point::fractional_digits,
-            "widen_integer_result did not result in type with same number of fractional digits");
+            _impl::widen_integer_result_t<fixed_point>::fractional_digits == fixed_point::fractional_digits,
+            "widen_integer_result_t did not result in type with same number of fractional digits");
 
-    // sg14::_impl::widen_fractional_result
+    // sg14::_impl::widen_fractional_result_t
     static_assert(
-            sizeof(_impl::widen_fractional_result<fixed_point>) == 2 * sizeof(fixed_point),
-            "widen_fractional_result did not result in type that was twice the size");
+            sizeof(_impl::widen_fractional_result_t<fixed_point>) == 2 * sizeof(fixed_point),
+            "widen_fractional_result_t did not result in type that was twice the size");
     static_assert(
-            _impl::widen_fractional_result<fixed_point>::integer_digits == fixed_point::integer_digits,
-            "widen_fractional_result did not result in type with same number of integer digits");
+            _impl::widen_fractional_result_t<fixed_point>::integer_digits == fixed_point::integer_digits,
+            "widen_fractional_result_t did not result in type with same number of integer digits");
     static_assert(
-            _impl::widen_fractional_result<fixed_point>::fractional_digits > fixed_point::fractional_digits,
-            "widen_fractional_result did not result in type with more fractional digits");
+            _impl::widen_fractional_result_t<fixed_point>::fractional_digits > fixed_point::fractional_digits,
+            "widen_fractional_result_t did not result in type with more fractional digits");
 
     // unary common_type_t
     static_assert(is_same<

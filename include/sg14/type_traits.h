@@ -11,10 +11,9 @@
 #define _SG14_TYPE_TRAITS 1
 
 #include <cinttypes>
+#include <climits>
 #include <tuple>
 #include <type_traits>
-
-#include "bits/int128.h"
 
 /// study group 14 of the C++ working group
 namespace sg14 {
@@ -104,18 +103,9 @@ namespace sg14 {
     struct resize<std::int64_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
     };
     template<std::size_t NumBytes>
-    struct resize<std::uint64_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    struct resize<std::uint64_t, NumBytes>
+            : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
     };
-
-#if defined(_GLIBCXX_USE_INT128)
-    // sg14::resize specialized for 128-bit built-in integers
-    template<std::size_t NumBytes>
-    struct resize<__int128, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
-    };
-    template<std::size_t NumBytes>
-    struct resize<unsigned __int128, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
-    };
-#endif
 
     // sg14::resize specialized for float
     template<std::size_t NumBytes>
@@ -149,6 +139,55 @@ namespace sg14 {
     /// \snippet snippets.cpp use resize 3
     template<class Archetype, std::size_t NumBytes>
     using resize_t = typename resize<Archetype, NumBytes>::type;
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // width - new type property which returns number of bits of information
+
+    /// \brief provides width of numeric type
+    ///
+    /// \tparam T given numeric type
+    ///
+    /// \var value the width of the given numeric type in bits
+    ///
+    /// \remarks If \ref T is a fixed-point numeric type such as an integral type,
+    /// \ref is the width of T in bits.
+    /// \remarks The width is defined as the number of digits including any sign bit.
+
+    template<class T>
+    struct width;
+
+    template<>
+    struct width<std::int8_t> : std::integral_constant<int, sizeof(std::int8_t)*CHAR_BIT> {
+    };
+    template<>
+    struct width<std::uint8_t> : std::integral_constant<int, sizeof(std::uint8_t)*CHAR_BIT> {
+    };
+    template<>
+    struct width<std::int16_t> : std::integral_constant<int, sizeof(std::int16_t)*CHAR_BIT> {
+    };
+    template<>
+    struct width<std::uint16_t> : std::integral_constant<int, sizeof(std::uint16_t)*CHAR_BIT> {
+    };
+    template<>
+    struct width<std::int32_t> : std::integral_constant<int, sizeof(std::int32_t)*CHAR_BIT> {
+    };
+    template<>
+    struct width<std::uint32_t> : std::integral_constant<int, sizeof(std::uint32_t)*CHAR_BIT> {
+    };
+    template<>
+    struct width<std::int64_t> : std::integral_constant<int, sizeof(std::int64_t)*CHAR_BIT> {
+    };
+    template<>
+    struct width<std::uint64_t> : std::integral_constant<int, sizeof(std::uint64_t)*CHAR_BIT> {
+    };
+
+    // TODO: figure out why these specialization might be necessary
+    template<>
+    struct width<char> : std::integral_constant<int, sizeof(char)*CHAR_BIT> {
+    };
+    template<>
+    struct width<long long> : std::integral_constant<int, sizeof(long long)*CHAR_BIT> {
+    };
 
     ////////////////////////////////////////////////////////////////////////////////
     // import selected <type_traits> definitions from std namespace

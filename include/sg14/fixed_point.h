@@ -10,8 +10,6 @@
 #if !defined(_SG14_FIXED_POINT)
 #define _SG14_FIXED_POINT 1
 
-#include <climits>
-
 #include "type_traits.h"
 
 #include "bits/common.h"
@@ -47,15 +45,6 @@ namespace sg14 {
     // general-purpose _fixed_point_impl definitions
 
     namespace _fixed_point_impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // num_bits
-
-        template<typename T>
-        constexpr int num_bits()
-        {
-            return sizeof(T)*CHAR_BIT;
-        }
-
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_fixed_point_impl::next_size
 
@@ -287,7 +276,7 @@ namespace sg14 {
 
         /// number of binary digits this type can represent;
         /// equivalent to [std::numeric_limits::digits](http://en.cppreference.com/w/cpp/types/numeric_limits/digits)
-        constexpr static int digits = _fixed_point_impl::num_bits<ReprType>()-is_signed<repr_type>::value;
+        constexpr static int digits = width<ReprType>::value - is_signed<ReprType>::value;
 
         /// number of binary digits devoted to integer part of value;
         /// can be negative for specializations with especially small ranges
@@ -527,16 +516,21 @@ namespace sg14 {
         // yields alternative specialization with twice the capacity
         // and the same number of factional bits; requires no bit shift
         template<class FixedPoint>
-        using widen_integer_result = fixed_point<
-                _fixed_point_impl::next_size<typename FixedPoint::repr_type>,
-                FixedPoint::exponent>;
+        struct widen_integer_result {
+            using type = fixed_point<
+                    _fixed_point_impl::next_size<typename FixedPoint::repr_type>,
+                    FixedPoint::exponent>;
+        };
+
+        template<class FixedPoint>
+        using widen_integer_result_t = typename widen_integer_result<FixedPoint>::type;
 
         // as widen_integer_result but widens parameter
         template<class FixedPoint>
-        widen_integer_result<FixedPoint>
+        widen_integer_result_t<FixedPoint>
         constexpr widen_integer(const FixedPoint& from)
         {
-            return widen_integer_result<FixedPoint>(from);
+            return widen_integer_result_t<FixedPoint>(from);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -546,16 +540,24 @@ namespace sg14 {
         // yields alternative specialization with twice the capacity
         // and the same number of integer bits
         template<class FixedPoint>
-        using widen_fractional_result = fixed_point<
-                _fixed_point_impl::next_size<typename FixedPoint::repr_type>,
-                FixedPoint::exponent - num_bits<typename FixedPoint::repr_type>()>;
+        struct widen_fractional_result {
+            using prev_repr_type = typename FixedPoint::repr_type;
+            using next_repr_type = _fixed_point_impl::next_size<prev_repr_type>;
+
+            using type = fixed_point<
+                    next_repr_type,
+                    FixedPoint::exponent + width<prev_repr_type>::value - width<next_repr_type>::value>;
+        };
+
+        template<class FixedPoint>
+        using widen_fractional_result_t = typename widen_fractional_result<FixedPoint>::type;
 
         // as widen_fractional_result but widens parameter
         template<class FixedPoint>
-        widen_fractional_result<FixedPoint>
+        widen_fractional_result_t<FixedPoint>
         constexpr widen_fractional(const FixedPoint& from)
         {
-            return widen_fractional_result<FixedPoint>(from);
+            return widen_fractional_result_t<FixedPoint>(from);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -613,7 +615,7 @@ namespace sg14 {
                 using result_type = fixed_point<
                         decltype(std::declval<typename Lhs::repr_type>() * std::declval<typename Rhs::repr_type>()),
                         exponent<Lhs, Rhs>::value>;
-                using lhs_type = widen_integer_result<Lhs>;
+                using lhs_type = widen_integer_result_t<Lhs>;
             };
 
             template<class Lhs, class Rhs>
@@ -621,7 +623,7 @@ namespace sg14 {
                 using result_type = fixed_point<
                         decltype(std::declval<typename Lhs::repr_type>() / std::declval<typename Rhs::repr_type>()),
                         exponent<Lhs, Rhs>::value>;
-                using lhs_type = widen_fractional_result<Lhs>;
+                using lhs_type = widen_fractional_result_t<Lhs>;
             };
         };
 

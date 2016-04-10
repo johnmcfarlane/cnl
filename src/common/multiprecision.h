@@ -142,6 +142,19 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
+    // sg14::width specializations
+
+    // sg14::width<boost::multiprecision::cpp_int_backend<>>
+    template<unsigned MinBits, unsigned MaxBits, cpp_integer_type SignType, cpp_int_check_type Checked>
+    struct width<cpp_int_backend<MinBits, MaxBits, SignType, Checked>> : std::integral_constant<int, MaxBits> {
+    };
+
+    // sg14::width<boost::multiprecision::number>
+    template<class Backend, expression_template_option ExpressionTemplates>
+    struct width<number<Backend, ExpressionTemplates>> : width<Backend> {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     // aliases of boost::multiprecision types
 

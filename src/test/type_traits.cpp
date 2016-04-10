@@ -5,6 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <sg14/type_traits.h>
+#include <sg14/bits/int128.h>
 
 using sg14::_type_traits_impl::first_fit_t;
 using std::is_same;
@@ -58,4 +59,23 @@ static_assert(is_same<resize_t<float, 13>, long double>::value, "sg14::resize_t 
 static_assert(is_same<resize_t<double, 14>, long double>::value, "sg14::resize_t test failed");
 static_assert(is_same<resize_t<long double, 15>, long double>::value, "sg14::resize_t test failed");
 static_assert(is_same<resize_t<float, 16>, long double>::value, "sg14::resize_t test failed");
+#endif
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::width
+
+using sg14::width;
+
+static_assert(width<std::int8_t>::value == 8, "sg14::width test failed");
+static_assert(width<std::uint8_t>::value == 8, "sg14::width test failed");
+static_assert(width<std::int16_t>::value == 16, "sg14::width test failed");
+static_assert(width<std::uint16_t>::value == 16, "sg14::width test failed");
+static_assert(width<std::int32_t>::value == 32, "sg14::width test failed");
+static_assert(width<std::uint32_t>::value == 32, "sg14::width test failed");
+static_assert(width<std::int64_t>::value == 64, "sg14::width test failed");
+static_assert(width<std::uint64_t>::value == 64, "sg14::width test failed");
+
+#if defined(_GLIBCXX_USE_INT128)
+static_assert(width<__int128>::value == 128, "sg14::width test failed");
+static_assert(width<unsigned __int128>::value == 128, "sg14::width test failed");
 #endif
