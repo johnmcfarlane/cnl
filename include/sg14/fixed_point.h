@@ -46,20 +46,26 @@ namespace sg14 {
 
     namespace _fixed_point_impl {
         ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_fixed_point_impl::float_of_same_size
+
+        template<class T>
+        using float_of_same_size = set_width_t<float, width<T>::value>;
+
+        ////////////////////////////////////////////////////////////////////////////////
         // sg14::_fixed_point_impl::next_size
 
         // given an integral type, IntType,
-        // provides the integral type of the equivalent type with twice the size
+        // provides the integral type of the equivalent type with twice the width
         template<class IntType>
-        using next_size = typename sg14::resize_t<IntType, sizeof(IntType)*2>;
+        using next_size = typename sg14::set_width_t<IntType, width<IntType>::value*2>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_fixed_point_impl::previous_size
 
         // given an integral type, IntType,
-        // provides the integral type of the equivalent type with half the size
+        // provides the integral type of the equivalent type with half the width
         template<class IntType>
-        using previous_size = typename sg14::resize_t<IntType, sizeof(IntType)/2>;
+        using previous_size = typename sg14::set_width_t<IntType, width<IntType>::value/2>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_fixed_point_impl::shift_left and sg14::_fixed_point_impl::shift_right
@@ -238,15 +244,6 @@ namespace sg14 {
         struct capacity {
             static constexpr int value = capacity<N/2>::value+1;
         };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // _fixed_point_impl::sufficient_repr
-
-        // given a required number of bits a type should have and whether it is signed,
-        // provides a built-in integral type with necessary capacity
-        template<unsigned RequiredBits, class Archetype>
-        using sufficient_repr
-        = sg14::resize_t<Archetype, 1 << (capacity<((RequiredBits+7)/8)-1>::value)>;
     }
 
     /// \brief literal real number approximation that uses fixed-point arithmetic
@@ -464,7 +461,7 @@ namespace sg14 {
     /// \sa make_ufixed
     template<int IntegerDigits, int FractionalDigits = 0, class Archetype = signed>
     using make_fixed = fixed_point<
-            _fixed_point_impl::sufficient_repr<IntegerDigits+FractionalDigits+is_signed<Archetype>::value, Archetype>,
+            set_width_t<Archetype, IntegerDigits+FractionalDigits+is_signed<Archetype>::value>,
             -FractionalDigits>;
 
     /// \brief Produce an unsigned fixed-point type with the given number of integer and fractional digits.
@@ -476,17 +473,17 @@ namespace sg14 {
             FractionalDigits,
             typename make_unsigned<Archetype>::type>;
 
-    /// produces equivalent fixed-point type at a new size
+    /// produces equivalent fixed-point type at a new width
     ///
     /// \tparam ReprType the \a ReprType parameter of @ref fixed_point
     /// \tparam Exponent the \a Exponent parameter of @ref fixed_point
-    /// \tparam NumBytes the desired size of the resultant type such that `(sizeof(type) >= NumBytes)`
+    /// \tparam MinNumBits the desired size of the resultant type such that `(width<type>::value >= MinNumBytes)`
     ///
-    /// \sa resize_t
-    template<class ReprType, int Exponent, std::size_t NumBytes>
-    struct resize<fixed_point<ReprType, Exponent>, NumBytes> {
-        /// resultant type; a fixed_point specialization that is at least \a NumBytes bytes in size
-        using type = fixed_point<resize_t<ReprType, NumBytes>, Exponent>;
+    /// \sa set_width_t
+    template<class ReprType, int Exponent, _width_type MinNumBits>
+    struct set_width<fixed_point<ReprType, Exponent>, MinNumBits> {
+        /// resultant type; a fixed_point specialization that is at least \a MinNumBits bytes in width
+        using type = fixed_point<set_width_t<ReprType, MinNumBits>, Exponent>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -546,7 +543,8 @@ namespace sg14 {
 
             using type = fixed_point<
                     next_repr_type,
-                    FixedPoint::exponent+width<prev_repr_type>::value-width<next_repr_type>::value>;
+                    FixedPoint::exponent+static_cast<int>(width<prev_repr_type>::value)
+                            -static_cast<int>(width<next_repr_type>::value)>;
         };
 
         template<class FixedPoint>
@@ -650,7 +648,7 @@ namespace sg14 {
                 fixed_point<LhsReprType, LhsExponent>,
                 Float,
                 typename std::enable_if<std::is_floating_point<Float>::value>::type>
-                : sg14::common_type<resize_t<float, sizeof(LhsReprType)>, Float> {
+                : sg14::common_type<float_of_same_size<LhsReprType>, Float> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////

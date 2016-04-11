@@ -174,7 +174,6 @@ namespace sg14 {
         static_assert(digits>=0, "sum of integer and fractional digits must be positive");
 
         static constexpr int bits = digits+is_signed<Archetype>::value;
-        static constexpr int bytes = (bits+CHAR_BIT-1)/CHAR_BIT;
 
         ////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////
@@ -182,7 +181,7 @@ namespace sg14 {
 
     public:
         /// \private implementation-specific
-        using _integer_type = typename sg14::resize<archetype, bytes>::type;
+        using _integer_type = typename set_width<archetype, bits>::type;
 
         /// \private implementation-specific
         using _fixed_point_type = sg14::fixed_point<_integer_type, exponent>;
@@ -199,7 +198,7 @@ namespace sg14 {
         template<class Integer>
         static constexpr bool is_relative()
         {
-            return std::is_same<sg14::resize<Integer, sizeof(archetype)>, archetype>::value;
+            return std::is_same<set_width<Integer, width<archetype>::value>, archetype>::value;
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -287,7 +286,7 @@ namespace sg14 {
                     typename std::conditional<(value>=0), unsigned, signed>::type>;
         };
 
-        template<class Integer, Integer Value, class Archetype = resize_t<Integer, sizeof(int)>>
+        template<class Integer, Integer Value, class Archetype = set_width_t<Integer, width<int>::value>>
         using elasticate_t = typename _elastic_impl::elastication<Integer, Value>::type;
     }
 

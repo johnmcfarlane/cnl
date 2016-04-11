@@ -81,21 +81,21 @@ namespace sg14 {
     };
 
     // sg14::resize
-    template<std::size_t NumBytes>
-    struct resize<__int128, NumBytes> : resize<signed, NumBytes> {
+    template<_width_type MinNumBits>
+    struct set_width<__int128, MinNumBits> : set_width<signed, MinNumBits> {
     };
 
-    template<std::size_t NumBytes>
-    struct resize<unsigned __int128, NumBytes> : resize<unsigned, NumBytes> {
+    template<_width_type MinNumBits>
+    struct set_width<unsigned __int128, MinNumBits> : set_width<unsigned, MinNumBits> {
     };
 
     // sg14::width
     template<>
-    struct width<__int128> : std::integral_constant<int, sizeof(__int128)*CHAR_BIT> {
+    struct width<__int128> : std::integral_constant<_width_type, sizeof(__int128)*CHAR_BIT> {
     };
 
     template<>
-    struct width<unsigned __int128> : std::integral_constant<int, sizeof(unsigned __int128)*CHAR_BIT> {
+    struct width<unsigned __int128> : std::integral_constant<_width_type, sizeof(unsigned __int128)*CHAR_BIT> {
     };
 #endif
 }

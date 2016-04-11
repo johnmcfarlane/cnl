@@ -82,7 +82,7 @@ namespace sg14 {
     constexpr fixed_point <ReprType, Exponent>
     sqrt(const fixed_point <ReprType, Exponent>& x)
     {
-        using widened_type = fixed_point<resize_t<ReprType, sizeof(ReprType)*2>, Exponent*2>;
+        using widened_type = fixed_point<set_width_t<ReprType, width<ReprType>::value*2>, Exponent*2>;
         return
 #if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
                 (x<fixed_point<ReprType, Exponent>(0))
@@ -100,12 +100,12 @@ namespace sg14 {
     // many <cmath> functions are not constexpr.
 
     namespace _fixed_point_impl {
-        template<class ReprType, int Exponent, resize_t<float, sizeof(ReprType)>(* F)(
-                resize_t<float, sizeof(ReprType)>)>
+        template<class ReprType, int Exponent, float_of_same_size<ReprType>(* F)(
+                float_of_same_size<ReprType>)>
         constexpr fixed_point <ReprType, Exponent>
         crib(const fixed_point <ReprType, Exponent>& x) noexcept
         {
-            using floating_point = resize_t<float, sizeof(ReprType)>;
+            using floating_point = float_of_same_size<ReprType>;
             return static_cast<fixed_point<ReprType, Exponent>>(F(static_cast<floating_point>(x)));
         }
     }

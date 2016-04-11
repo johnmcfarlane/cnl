@@ -17,7 +17,7 @@ using sg14::make_unsigned;
 using sg14::multiprecision;
 using sg14::elastic_multiprecision;
 using sg14::elasticate;
-using sg14::resize;
+using sg14::set_width_t;
 using sg14::signed_multiprecision;
 using sg14::unsigned_multiprecision;
 using sg14::width;
@@ -63,23 +63,16 @@ static_assert(is_unsigned<make_unsigned<signed_multiprecision<9 >>::type>::value
 static_assert(is_unsigned<make_unsigned<unsigned_multiprecision<10 >>::type>::value,
         "sg14::make_unsigned<signed_multiprecision<>> test failed");
 
-// test sg14::resize<{un}signed_multiprecision>
+// test sg14::width<{un}signed_multiprecision>
 static_assert(width<signed_multiprecision<11>>::value>=11, "width<signed_multiprecision> test failed");
 static_assert(width<unsigned_multiprecision<12>>::value>=12, "width<signed_multiprecision> test failed");
 
-static_assert(
-        width<
-                resize<
-                        signed_multiprecision<13>,
-                        57
-                >::type
-        >::value>=57, "width<signed_multiprecision> test failed");
-static_assert(width<resize<unsigned_multiprecision<14>, 3>::type>::value>=3, "width<unsigned_multiprecision> test failed");
+// test sg14::set_width_t<{un}signed_multiprecision>
+static_assert(width<set_width_t<signed_multiprecision<13>, 57>>::value>=57, "width<signed_multiprecision> test failed");
+static_assert(width<set_width_t<unsigned_multiprecision<14>, 3>>::value>=3, "width<unsigned_multiprecision> test failed");
 
-static_assert(width<resize<signed_multiprecision<120>, 3>::type>::value<=width<signed_multiprecision<120>>::value,
-        "width<signed_multiprecision> test failed");
-static_assert(width<unsigned_multiprecision<128>>::value>=width<resize<unsigned_multiprecision<128>, 16>::type>::value,
-        "width<signed_multiprecision>::value test failed");
+static_assert(width<set_width_t<signed_multiprecision<120>, 3>>::value<=width<signed_multiprecision<120>>::value, "width<signed_multiprecision> test failed");
+static_assert(width<unsigned_multiprecision<128>>::value>=width<set_width_t<unsigned_multiprecision<128>, 16>>::value, "width<signed_multiprecision>::value test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::multiprecision arithmetic
