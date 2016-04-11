@@ -159,36 +159,41 @@ namespace sg14 {
     struct width;
 
     template<>
-    struct width<std::int8_t> : std::integral_constant<int, sizeof(std::int8_t)*CHAR_BIT> {
-    };
-    template<>
-    struct width<std::uint8_t> : std::integral_constant<int, sizeof(std::uint8_t)*CHAR_BIT> {
-    };
-    template<>
-    struct width<std::int16_t> : std::integral_constant<int, sizeof(std::int16_t)*CHAR_BIT> {
-    };
-    template<>
-    struct width<std::uint16_t> : std::integral_constant<int, sizeof(std::uint16_t)*CHAR_BIT> {
-    };
-    template<>
-    struct width<std::int32_t> : std::integral_constant<int, sizeof(std::int32_t)*CHAR_BIT> {
-    };
-    template<>
-    struct width<std::uint32_t> : std::integral_constant<int, sizeof(std::uint32_t)*CHAR_BIT> {
-    };
-    template<>
-    struct width<std::int64_t> : std::integral_constant<int, sizeof(std::int64_t)*CHAR_BIT> {
-    };
-    template<>
-    struct width<std::uint64_t> : std::integral_constant<int, sizeof(std::uint64_t)*CHAR_BIT> {
-    };
-
-    // TODO: figure out why these specialization might be necessary
-    template<>
     struct width<char> : std::integral_constant<int, sizeof(char)*CHAR_BIT> {
     };
     template<>
-    struct width<long long> : std::integral_constant<int, sizeof(long long)*CHAR_BIT> {
+    struct width<signed char> : std::integral_constant<int, sizeof(signed char)*CHAR_BIT> {
+    };
+    template<>
+    struct width<unsigned char> : std::integral_constant<int, sizeof(unsigned char)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<signed short> : std::integral_constant<int, sizeof(signed short)*CHAR_BIT> {
+    };
+    template<>
+    struct width<unsigned short> : std::integral_constant<int, sizeof(unsigned short)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<signed int> : std::integral_constant<int, sizeof(signed int)*CHAR_BIT> {
+    };
+    template<>
+    struct width<unsigned int> : std::integral_constant<int, sizeof(unsigned int)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<signed long> : std::integral_constant<int, sizeof(signed long)*CHAR_BIT> {
+    };
+    template<>
+    struct width<unsigned long> : std::integral_constant<int, sizeof(unsigned long)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<signed long long> : std::integral_constant<int, sizeof(signed long long)*CHAR_BIT> {
+    };
+    template<>
+    struct width<unsigned long long> : std::integral_constant<int, sizeof(unsigned long long)*CHAR_BIT> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
