@@ -6,6 +6,8 @@
 
 #include "sample_functions.h"
 
+#include <sg14/bits/int128.h>
+
 #include <benchmark/benchmark.h>
 
 #define ESCAPE(X) escape_cppcon2015(&X)

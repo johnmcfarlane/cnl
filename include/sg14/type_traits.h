@@ -1,3 +1,4 @@
+
 //          Copyright John McFarlane 2015 - 2016.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
@@ -10,10 +11,9 @@
 #define _SG14_TYPE_TRAITS 1
 
 #include <cinttypes>
+#include <climits>
 #include <tuple>
 #include <type_traits>
-
-#include "bits/int128.h"
 
 /// study group 14 of the C++ working group
 namespace sg14 {
@@ -26,7 +26,7 @@ namespace sg14 {
         using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t, unsigned __int128>;
 #else
         using signed_family = std::tuple<std::int8_t, std::int16_t, std::int32_t, std::int64_t>;
-		using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t>;
+        using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t>;
 #endif
 
 #if defined(_MSC_VER)
@@ -87,7 +87,8 @@ namespace sg14 {
     struct resize<std::int16_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
     };
     template<std::size_t NumBytes>
-    struct resize<std::uint16_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    struct resize<std::uint16_t, NumBytes>
+            : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
     };
 
     // sg14::resize specialized for 32-bit built-in integers
@@ -95,7 +96,8 @@ namespace sg14 {
     struct resize<std::int32_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
     };
     template<std::size_t NumBytes>
-    struct resize<std::uint32_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    struct resize<std::uint32_t, NumBytes>
+            : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
     };
 
     // sg14::resize specialized for 64-bit built-in integers
@@ -103,18 +105,9 @@ namespace sg14 {
     struct resize<std::int64_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
     };
     template<std::size_t NumBytes>
-    struct resize<std::uint64_t, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
+    struct resize<std::uint64_t, NumBytes>
+            : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
     };
-
-#if defined(_GLIBCXX_USE_INT128)
-    // sg14::resize specialized for 128-bit built-in integers
-    template<std::size_t NumBytes>
-    struct resize<__int128, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::signed_family> {
-    };
-    template<std::size_t NumBytes>
-    struct resize<unsigned __int128, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::unsigned_family> {
-    };
-#endif
 
     // sg14::resize specialized for float
     template<std::size_t NumBytes>
@@ -131,7 +124,7 @@ namespace sg14 {
     struct resize<long double, NumBytes> : _type_traits_impl::first_fit<NumBytes, _type_traits_impl::float_family> {
     };
 
-    /// resizes a type
+    /// \brief resizes a type
     ///
     /// \tparam Archetype the type to resize
     /// \tparam NumBytes the desired size
@@ -148,6 +141,111 @@ namespace sg14 {
     /// \snippet snippets.cpp use resize 3
     template<class Archetype, std::size_t NumBytes>
     using resize_t = typename resize<Archetype, NumBytes>::type;
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // width - new type property which returns number of bits of information
+
+    /// \brief provides width of numeric type
+    ///
+    /// \tparam T given numeric type
+    ///
+    /// \var value the width of the given numeric type in bits
+    ///
+    /// \remarks If \ref T is a fixed-point numeric type such as an integral type,
+    /// \ref is the width of T in bits.
+    /// \remarks The width is defined as the number of digits including any sign bit.
+
+    template<class T>
+    struct width;
+
+    template<>
+    struct width<char> : std::integral_constant<int, sizeof(char)*CHAR_BIT> {
+    };
+    template<>
+    struct width<signed char> : std::integral_constant<int, sizeof(signed char)*CHAR_BIT> {
+    };
+    template<>
+    struct width<unsigned char> : std::integral_constant<int, sizeof(unsigned char)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<signed short> : std::integral_constant<int, sizeof(signed short)*CHAR_BIT> {
+    };
+    template<>
+    struct width<unsigned short> : std::integral_constant<int, sizeof(unsigned short)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<signed int> : std::integral_constant<int, sizeof(signed int)*CHAR_BIT> {
+    };
+    template<>
+    struct width<unsigned int> : std::integral_constant<int, sizeof(unsigned int)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<signed long> : std::integral_constant<int, sizeof(signed long)*CHAR_BIT> {
+    };
+    template<>
+    struct width<unsigned long> : std::integral_constant<int, sizeof(unsigned long)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<signed long long> : std::integral_constant<int, sizeof(signed long long)*CHAR_BIT> {
+    };
+    template<>
+    struct width<unsigned long long> : std::integral_constant<int, sizeof(unsigned long long)*CHAR_BIT> {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // import selected <type_traits> definitions from std namespace
+
+    // common_type
+    template<class ...T>
+    struct common_type;
+
+    template<class ...T>
+    struct common_type : std::common_type<T...> {
+    };
+
+    // is_integral
+    template<class T>
+    struct is_integral;
+
+    template<class T>
+    struct is_integral : std::is_integral<T> {
+    };
+
+    // is_signed
+    template<class T>
+    struct is_signed;
+
+    template<class T>
+    struct is_signed : std::is_signed<T> {
+    };
+
+    // is_unsigned
+    template<class T>
+    struct is_unsigned;
+
+    template<class T>
+    struct is_unsigned : std::is_unsigned<T> {
+    };
+
+    // make_signed
+    template<class T>
+    struct make_signed;
+
+    template<class T>
+    struct make_signed : std::make_signed<T> {
+    };
+
+    // make_unsigned
+    template<class T>
+    struct make_unsigned;
+
+    template<class T>
+    struct make_unsigned : std::make_unsigned<T> {
+    };
 }
 
 #endif	// _SG14_TYPE_TRAITS

@@ -6,7 +6,8 @@
 
 /// \file
 /// \brief supplemental definitions related to the `sg14::fixed_point` type;
-/// definitions that straddle two 'homes, e.g. fixed_point.h and cmath, traits or limits
+/// definitions that straddle two 'homes, e.g. fixed_point.h and cmath, traits or limits;
+/// included from sg14/fixed_point.h - do not include directly!
 
 #if !defined(_SG14_FIXED_POINT_UTILS_H)
 #define _SG14_FIXED_POINT_UTILS_H 1
@@ -44,7 +45,7 @@ namespace sg14 {
         template<class ReprType>
         constexpr ReprType sqrt_bit(
                 ReprType n,
-                ReprType bit = ReprType(1) << (num_bits<ReprType>()-2))
+                ReprType bit = ReprType(1) << (width<ReprType>::value-2))
         {
             return (bit>n) ? sqrt_bit<ReprType>(n, bit >> 2) : bit;
         }
@@ -55,7 +56,7 @@ namespace sg14 {
                 ReprType bit,
                 ReprType result)
         {
-            return (bit != ReprType{ 0 })
+            return (bit!=ReprType{0})
                    ? (n>=result+bit)
                      ? sqrt_solve3<ReprType>(
                                     static_cast<ReprType>(n-(result+bit)),
@@ -78,13 +79,13 @@ namespace sg14 {
     // https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_.28base_2.29
     // placeholder implementation; slow when calculated at run-time?
     template<class ReprType, int Exponent>
-    constexpr fixed_point<ReprType, Exponent>
-    sqrt(const fixed_point<ReprType, Exponent>& x)
+    constexpr fixed_point <ReprType, Exponent>
+    sqrt(const fixed_point <ReprType, Exponent>& x)
     {
         using widened_type = fixed_point<resize_t<ReprType, sizeof(ReprType)*2>, Exponent*2>;
         return
 #if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
-            (x<fixed_point<ReprType, Exponent>(0))
+                (x<fixed_point<ReprType, Exponent>(0))
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
 #endif
                 fixed_point<ReprType, Exponent>::from_data(

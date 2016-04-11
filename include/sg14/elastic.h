@@ -9,7 +9,7 @@
 #if !defined(_SG14_ELASTIC)
 #define _SG14_ELASTIC 1
 
-#include <fixed_point.h>
+#include <sg14/fixed_point.h>
 
 /// study group 14 of the C++ working group
 namespace sg14 {
@@ -225,10 +225,20 @@ namespace sg14 {
         explicit constexpr elastic(const Rhs& rhs)
                 :elastic(static_cast<_fixed_point_type>(rhs)) { }
 
+        ////////////////////////////////////////////////////////////////////////////////
+        // conversions
+
         /// conversion operator returning fixed_point type
         explicit constexpr operator const _fixed_point_type&() const
         {
             return _value;
+        }
+
+        /// conversion operator returning value as arbitrary type
+        template <class T, class = typename std::enable_if<!_fixed_point_impl::is_fixed_point<T>::value>::type>
+        explicit constexpr operator T() const
+        {
+            return static_cast<T>(_value);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -283,7 +293,7 @@ namespace sg14 {
 
     /// \brief generate an \ref elastic object of given value
     ///
-    /// \param Value the integer number to be represented
+    /// \tparam Value the integer number to be represented
     ///
     /// \return the given value represented using an \ref elastic type
     ///
@@ -299,6 +309,33 @@ namespace sg14 {
     -> _elastic_impl::elasticate_t<std::int64_t, Value>
     {
         return _elastic_impl::elasticate_t<std::int64_t, Value>{Value};
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::make_elastic
+
+    // sg14::make_elastic helper definitions
+    namespace _elastic_impl {
+    }
+
+    /// \brief generate an \ref elastic object of given value
+    ///
+    /// \param value the integer value to be represented
+    ///
+    /// \tparam Type the type of the value
+    ///
+    /// \return the given value represented using an \ref elastic type
+    ///
+    /// \note The return type is guaranteed to have the capacity than is necessary to represent any value of th given type.
+    ///
+    ///
+
+    template<class Type>
+    constexpr auto make_elastic(const Type& value)
+    -> elastic<std::numeric_limits<Type>::digits, 0, Type>
+    {
+        return elastic<std::numeric_limits<Type>::digits, 0, Type>{value};
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -461,9 +498,15 @@ namespace sg14 {
     {
         using result_type = _elastic_impl::multiply_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>;
         using fixed_point_result_type = typename result_type::_fixed_point_type;
+        using fixed_point_result_repr_type = typename fixed_point_result_type::repr_type;
+
+        using lhs_intermediate_fixed_point_type = fixed_point<fixed_point_result_repr_type, -LhsFractionalDigits>;
+        using rhs_intermediate_fixed_point_type = fixed_point<fixed_point_result_repr_type, -RhsFractionalDigits>;
 
         return static_cast<result_type>(
-                sg14::multiply<fixed_point_result_type>(lhs._data(), rhs._data()));
+                sg14::multiply<fixed_point_result_type>(
+                        static_cast<lhs_intermediate_fixed_point_type>(lhs._data()),
+                        static_cast<rhs_intermediate_fixed_point_type>(rhs._data())));
     }
 
     // binary operator/

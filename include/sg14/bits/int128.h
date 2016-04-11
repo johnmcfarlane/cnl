@@ -7,11 +7,17 @@
 #ifndef _SG14_INT128_H
 #define _SG14_INT128_H
 
+#include "../type_traits.h"
+
 // This file contains tweaks to standard traits that integers more conducive to generic programming.
 
+namespace sg14 {
+    ////////////////////////////////////////////////////////////////////////////////
+    // MSVC++ hacks to get 64-bit integers working a little better
+
 #if defined(_MSC_VER)
-namespace std {
-    // std::is_integral
+    // sg14::is_integral
+    // TODO: is this really necessary? https://msdn.microsoft.com/en-us/library/bb983099.aspx
     template<>
     struct is_integral<__int64> : std::true_type {
     };
@@ -19,13 +25,13 @@ namespace std {
     template<>
     struct is_integral<unsigned __int64> : std::true_type {
     };
-}
 #endif
 
+    ////////////////////////////////////////////////////////////////////////////////
+    // Clang/GCC hacks to get 128-bit integers working with fixed_point
+
 #if defined(_GLIBCXX_USE_INT128)
-// std specializations required to use 128-bit integers with fixed_point under GCC/Clang
-namespace std {
-    // std::is_integral - related to https://llvm.org/bugs/show_bug.cgi?id=23156
+    // sg14::is_integral - related to https://llvm.org/bugs/show_bug.cgi?id=23156
     template<>
     struct is_integral<__int128> : std::true_type {
     };
@@ -34,7 +40,7 @@ namespace std {
     struct is_integral<unsigned __int128> : std::true_type {
     };
 
-    // std::is_signed
+    // sg14::is_signed
     template<>
     struct is_signed<__int128> : std::true_type {
     };
@@ -43,7 +49,7 @@ namespace std {
     struct is_signed<unsigned __int128> : std::false_type {
     };
 
-    // std::is_signed
+    // sg14::is_signed
     template<>
     struct is_unsigned<__int128> : std::false_type {
     };
@@ -52,7 +58,7 @@ namespace std {
     struct is_unsigned<unsigned __int128> : std::true_type {
     };
 
-    // std::make_signed
+    // sg14::make_signed
     template<>
     struct make_signed<__int128> {
         using type = __int128;
@@ -63,7 +69,7 @@ namespace std {
         using type = __int128;
     };
 
-    // std::make_signed
+    // sg14::make_signed
     template<>
     struct make_unsigned<__int128> {
         using type = unsigned __int128;
@@ -73,7 +79,25 @@ namespace std {
     struct make_unsigned<unsigned __int128> {
         using type = __int128;
     };
-}
+
+    // sg14::resize
+    template<std::size_t NumBytes>
+    struct resize<__int128, NumBytes> : resize<signed, NumBytes> {
+    };
+
+    template<std::size_t NumBytes>
+    struct resize<unsigned __int128, NumBytes> : resize<unsigned, NumBytes> {
+    };
+
+    // sg14::width
+    template<>
+    struct width<__int128> : std::integral_constant<int, sizeof(__int128)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<unsigned __int128> : std::integral_constant<int, sizeof(unsigned __int128)*CHAR_BIT> {
+    };
 #endif
+}
 
 #endif //_SG14_INT128_H
