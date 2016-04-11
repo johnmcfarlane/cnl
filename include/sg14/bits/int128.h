@@ -97,7 +97,7 @@ namespace sg14 {
     template<>
     struct width<unsigned __int128> : std::integral_constant<int, sizeof(unsigned __int128)*CHAR_BIT> {
     };
-}
 #endif
+}
 
 #endif //_SG14_INT128_H
