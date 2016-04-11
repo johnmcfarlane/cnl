@@ -498,9 +498,15 @@ namespace sg14 {
     {
         using result_type = _elastic_impl::multiply_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>;
         using fixed_point_result_type = typename result_type::_fixed_point_type;
+        using fixed_point_result_repr_type = typename fixed_point_result_type::repr_type;
+
+        using lhs_intermediate_fixed_point_type = fixed_point<fixed_point_result_repr_type, -LhsFractionalDigits>;
+        using rhs_intermediate_fixed_point_type = fixed_point<fixed_point_result_repr_type, -RhsFractionalDigits>;
 
         return static_cast<result_type>(
-                sg14::multiply<fixed_point_result_type>(lhs._data(), rhs._data()));
+                sg14::multiply<fixed_point_result_type>(
+                        static_cast<lhs_intermediate_fixed_point_type>(lhs._data()),
+                        static_cast<rhs_intermediate_fixed_point_type>(rhs._data())));
     }
 
     // binary operator/
