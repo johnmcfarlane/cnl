@@ -18,6 +18,7 @@ using sg14::elasticate;
 using sg14::resize;
 using sg14::signed_multiprecision;
 using sg14::unsigned_multiprecision;
+using sg14::width;
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::multiprecision traits
