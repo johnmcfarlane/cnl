@@ -115,14 +115,14 @@ namespace sg14 {
             unsigned MaxBits,
             cpp_integer_type SignType,
             cpp_int_check_type Checked,
-            std::size_t NumBytes>
-    struct resize<
+            _width_type MinNumBits>
+    struct set_width<
             cpp_int_backend<
                     MinBits, MaxBits, SignType, Checked>,
-            NumBytes> {
+            MinNumBits> {
         using type = cpp_int_backend<
-                NumBytes*CHAR_BIT,
-                NumBytes*CHAR_BIT,
+                MinNumBits,
+                MinNumBits,
                 unsigned_magnitude,
                 Checked>;
     };
@@ -131,14 +131,14 @@ namespace sg14 {
     template<
             class Backend,
             expression_template_option ExpressionTemplates,
-            std::size_t NumBytes>
-    struct resize<
+            _width_type MinNumBits>
+    struct set_width<
             number<
                     Backend,
                     ExpressionTemplates>,
-            NumBytes> {
+            MinNumBits> {
         using type = number<
-                typename resize<Backend, NumBytes>::type,
+                typename set_width<Backend, MinNumBits>::type,
                 ExpressionTemplates>;
     };
 

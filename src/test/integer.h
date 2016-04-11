@@ -384,11 +384,11 @@ namespace sg14 {
     using saturated_integer = integer<Repr, saturated_overflow_policy>;
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::resize<integer<>, > partial specialization
+    // sg14::set_width<integer<>, > partial specialization
 
-    template<class Repr, class OverflowPolicy, std::size_t NumBytes>
-    struct resize<integer<Repr, OverflowPolicy>, NumBytes> {
-        using type = integer<resize_t<Repr, NumBytes>, OverflowPolicy>;
+    template<class Repr, class OverflowPolicy, _width_type MinNumBits>
+    struct set_width<integer<Repr, OverflowPolicy>, MinNumBits> {
+        using type = integer<set_width_t<Repr, MinNumBits>, OverflowPolicy>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////

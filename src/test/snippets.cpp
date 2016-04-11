@@ -29,24 +29,24 @@ static_assert(sizeof(n)==1, "elasticate uses the smallest type it can");
 }
 
 namespace use_resize_1 {
-//! [use resize 1]
-using new_type = resize_t<unsigned, 2>;
-static_assert(std::is_same<new_type, uint16_t>::value, "failed to resize an native-sized unsigned int to 2-bytes");
-//! [use resize 1]
+//! [use set_width 1]
+using new_type = set_width_t<unsigned, 16>;
+static_assert(std::is_same<new_type, uint16_t>::value, "failed to resize an unsigned int to 16-bytes");
+//! [use set_width 1]
 }
 
 namespace use_resize_2 {
-//! [use resize 2]
-using new_type = resize_t<signed char, 5>;
-static_assert(std::is_same<new_type, int64_t>::value, "failed to resize a signed byte type to a built-in signed type of at least 5 bytes");
-//! [use resize 2]
+//! [use set_width 2]
+using new_type = set_width_t<signed char, 35>;
+static_assert(std::is_same<new_type, int64_t>::value, "failed to resize a signed char to a type of at least 35 bits");
+//! [use set_width 2]
 }
 
 namespace use_resize_3 {
-//! [use resize 3]
-using new_type = resize_t<fixed_point<int8_t>, 3>;
+//! [use set_width 3]
+using new_type = set_width_t<fixed_point<int8_t>, 24>;
 static_assert(std::is_same<new_type, fixed_point<int32_t>>::value, "failed to resize a signed, 1-byte fixed-point type to a fixed-point type of at least 3 bytes");
-//! [use resize 3]
+//! [use set_width 3]
 }
 
 namespace use_make_fixed {

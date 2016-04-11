@@ -7,58 +7,58 @@
 #include <sg14/type_traits.h>
 #include <sg14/bits/int128.h>
 
-using sg14::_type_traits_impl::first_fit_t;
+using sg14::_type_traits_impl::first_fit;
 using std::is_same;
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_type_traits_impl::first_fit_t
 
 static_assert(
-        std::is_same<first_fit_t<2, std::tuple<std::int8_t, std::int16_t, std::int32_t>>, std::int16_t>::value, "");
+        std::is_same<typename first_fit<16, std::tuple<std::int8_t, std::int16_t, std::int32_t>>::type, std::int16_t>::value, "");
 static_assert(
-        std::is_same<first_fit_t<2, std::tuple<std::int32_t, std::int16_t, std::int8_t>>, std::int32_t>::value, "");
+        std::is_same<typename first_fit<16, std::tuple<std::int32_t, std::int16_t, std::int8_t>>::type, std::int32_t>::value, "");
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::resize_t
+// sg14::set_width_t
 
-using sg14::resize_t;
+using sg14::set_width_t;
 
-static_assert(is_same<resize_t<std::uint8_t, 1>, std::uint8_t>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<std::int8_t, 2>, std::int16_t>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<std::uint16_t, 3>, std::uint32_t>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<std::int16_t, 4>, std::int32_t>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<std::uint32_t, 5>, std::uint64_t>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<std::int32_t, 6>, std::int64_t>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<std::uint64_t, 7>, std::uint64_t>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<std::int64_t, 8>, std::int64_t>::value, "sg14::resize_t test failed");
+static_assert(is_same<set_width_t<std::uint8_t, 8>, std::uint8_t>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::int8_t, 16>, std::int16_t>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::uint16_t, 24>, std::uint32_t>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::int16_t, 32>, std::int32_t>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::uint32_t, 40>, std::uint64_t>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::int32_t, 48>, std::int64_t>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::uint64_t, 56>, std::uint64_t>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::int64_t, 64>, std::int64_t>::value, "sg14::set_width_t test failed");
 #if defined(_GLIBCXX_USE_INT128)
-static_assert(is_same<resize_t<std::uint8_t, 9>, unsigned __int128>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<std::int8_t, 10>, __int128>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<std::uint16_t, 11>, unsigned __int128>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<std::int16_t, 12>, __int128>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<std::uint32_t, 13>, unsigned __int128>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<std::int32_t, 14>, __int128>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<std::uint64_t, 15>, unsigned __int128>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<std::int64_t, 16>, __int128>::value, "sg14::resize_t test failed");
+static_assert(is_same<set_width_t<std::uint8_t, 72>, unsigned __int128>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::int8_t, 80>, __int128>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::uint16_t, 88>, unsigned __int128>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::int16_t, 96>, __int128>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::uint32_t, 104>, unsigned __int128>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::int32_t, 112>, __int128>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::uint64_t, 120>, unsigned __int128>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::int64_t, 128>, __int128>::value, "sg14::set_width_t test failed");
 #endif
 
-static_assert(is_same<resize_t<double, 1>, float>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<double, 2>, float>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<double, 3>, float>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<float, 4>, float>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<double, 5>, double>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<float, 6>, double>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<float, 7>, double>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<double, 8>, double>::value, "sg14::resize_t test failed");
+static_assert(is_same<set_width_t<double, 8>, float>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<double, 16>, float>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<double, 24>, float>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<float, 32>, float>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<double, 40>, double>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<float, 48>, double>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<float, 56>, double>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<double, 64>, double>::value, "sg14::set_width_t test failed");
 #if !defined(_MSC_VER)
-static_assert(is_same<resize_t<long double, 9>, long double>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<float, 10>, long double>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<double, 11>, long double>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<long double, 12>, long double>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<float, 13>, long double>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<double, 14>, long double>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<long double, 15>, long double>::value, "sg14::resize_t test failed");
-static_assert(is_same<resize_t<float, 16>, long double>::value, "sg14::resize_t test failed");
+static_assert(is_same<set_width_t<long double, 72>, long double>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<float, 80>, long double>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<double, 88>, long double>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<long double, 96>, long double>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<float, 104>, long double>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<double, 112>, long double>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<long double, 120>, long double>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<float, 128>, long double>::value, "sg14::set_width_t test failed");
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
