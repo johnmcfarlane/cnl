@@ -246,3 +246,72 @@ TEST(elastic_multiprecision, divide)
 
     ASSERT_EQ(quotient, expected);
 }
+
+TEST(elastic_multiprecision, high_capacity)
+{
+    using int64 = elastic_multiprecision<64, 0, false>;
+
+    auto factor0 = int64{1};
+    auto factor1 = int64{839265835237486943LL};
+    auto factor2 = factor1*factor1;
+    auto factor3 = factor2*factor1;
+    auto factor4 = factor3*factor1;
+    auto factor5 = factor4*factor1;
+    auto factor6 = factor5*factor1;
+
+    ASSERT_EQ(factor0*factor6, factor6);
+    ASSERT_EQ(factor1*factor5, factor6);
+    ASSERT_EQ(factor2*factor4, factor6);
+    ASSERT_EQ(factor3*factor3, factor6);
+    ASSERT_EQ(factor4*factor2, factor6);
+    ASSERT_EQ(factor5*factor1, factor6);
+    ASSERT_EQ(factor6*factor0, factor6);
+
+    ASSERT_EQ(factor0*factor5, factor5);
+    ASSERT_EQ(factor1*factor4, factor5);
+    ASSERT_EQ(factor2*factor3, factor5);
+    ASSERT_EQ(factor3*factor2, factor5);
+    ASSERT_EQ(factor4*factor1, factor5);
+    ASSERT_EQ(factor5*factor0, factor5);
+    ASSERT_EQ(factor6/factor1, factor5);
+
+    ASSERT_EQ(factor0*factor4, factor4);
+    ASSERT_EQ(factor1*factor3, factor4);
+    ASSERT_EQ(factor2*factor2, factor4);
+    ASSERT_EQ(factor3*factor1, factor4);
+    ASSERT_EQ(factor4*factor0, factor4);
+    ASSERT_EQ(factor5/factor1, factor4);
+    ASSERT_EQ(factor6/factor2, factor4);
+
+    ASSERT_EQ(factor0*factor3, factor3);
+    ASSERT_EQ(factor1*factor2, factor3);
+    ASSERT_EQ(factor2*factor1, factor3);
+    ASSERT_EQ(factor3*factor0, factor3);
+    ASSERT_EQ(factor4/factor1, factor3);
+    ASSERT_EQ(factor5/factor2, factor3);
+    ASSERT_EQ(factor6/factor3, factor3);
+
+    ASSERT_EQ(factor0*factor2, factor2);
+    ASSERT_EQ(factor1*factor1, factor2);
+    ASSERT_EQ(factor2*factor0, factor2);
+    ASSERT_EQ(factor3/factor1, factor2);
+    ASSERT_EQ(factor4/factor2, factor2);
+    ASSERT_EQ(factor5/factor3, factor2);
+    ASSERT_EQ(factor6/factor4, factor2);
+
+    ASSERT_EQ(factor0*factor1, factor1);
+    ASSERT_EQ(factor1/factor0, factor1);
+    ASSERT_EQ(factor2/factor1, factor1);
+    ASSERT_EQ(factor3/factor2, factor1);
+    ASSERT_EQ(factor4/factor3, factor1);
+    ASSERT_EQ(factor5/factor4, factor1);
+    ASSERT_EQ(factor6/factor5, factor1);
+
+    ASSERT_EQ(factor0/factor0, factor0);
+    ASSERT_EQ(factor1/factor1, factor0);
+    ASSERT_EQ(factor2/factor2, factor0);
+    ASSERT_EQ(factor3/factor3, factor0);
+    ASSERT_EQ(factor4/factor4, factor0);
+    ASSERT_EQ(factor5/factor5, factor0);
+    ASSERT_EQ(factor6/factor6, factor0);
+}
