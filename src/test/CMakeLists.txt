@@ -13,6 +13,7 @@ set(    SOURCES
         ${CMAKE_CURRENT_LIST_DIR}/elastic6.cpp
         ${CMAKE_CURRENT_LIST_DIR}/elastic7.cpp
         ${CMAKE_CURRENT_LIST_DIR}/elastic8.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/index.cpp
         ${CMAKE_CURRENT_LIST_DIR}/main.cpp
         ${CMAKE_CURRENT_LIST_DIR}/proposal.cpp
         ${CMAKE_CURRENT_LIST_DIR}/utils.cpp
