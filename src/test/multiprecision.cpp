@@ -11,11 +11,11 @@
 using sg14::is_integral;
 using sg14::is_signed;
 using sg14::is_unsigned;
+using sg14::elastic;
 using sg14::fixed_point;
 using sg14::make_signed;
 using sg14::make_unsigned;
 using sg14::multiprecision;
-using sg14::elastic_multiprecision;
 using sg14::elasticate;
 using sg14::set_width_t;
 using sg14::signed_multiprecision;
@@ -185,11 +185,11 @@ TEST(fixed_point_multiprecision, divide)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::elastic_multiprecision arithmetic
+// sg14::elastic<multiprecision> arithmetic
 
 TEST(elastic_multiprecision, add)
 {
-    using int64 = elastic_multiprecision<64, 0, false>;
+    using int64 = elastic<64, 0, unsigned_multiprecision<>>;
 
     auto augend = int64{123456789012345678LL};
     auto addend = int64{876543210987654321LL};
@@ -202,7 +202,7 @@ TEST(elastic_multiprecision, add)
 
 TEST(elastic_multiprecision, subtract)
 {
-    using int64 = elastic_multiprecision<64, 0, false>;
+    using int64 = elastic<64, 0, unsigned_multiprecision<>>;
 
     auto minuend = int64{999999999999999999LL};
     auto subtrahend = int64{876543210987654321LL};
@@ -215,8 +215,8 @@ TEST(elastic_multiprecision, subtract)
 
 TEST(elastic_multiprecision, multiply)
 {
-    using int64 = elastic_multiprecision<64, 0, false>;
-    using int128 = elastic_multiprecision<128, 0, false>;
+    using int64 = elastic<64, 0, unsigned_multiprecision<>>;
+    using int128 = elastic<128, 0, unsigned_multiprecision<>>;
 
     auto factor = int64{123456789012345678LL};
 
@@ -230,7 +230,7 @@ TEST(elastic_multiprecision, multiply)
 
 TEST(elastic_multiprecision, divide)
 {
-    using int64 = elastic_multiprecision<64, 0, false>;
+    using int64 = elastic<64, 0, unsigned_multiprecision<>>;
 
     auto div = int64{123456789012345678LL};
 
@@ -242,7 +242,7 @@ TEST(elastic_multiprecision, divide)
 
 TEST(elastic_multiprecision, high_capacity)
 {
-    using int64 = elastic_multiprecision<64, 0, false>;
+    using int64 = elastic<64, 0, unsigned_multiprecision<>>;
 
     auto factor0 = int64{1};
     auto factor1 = int64{839265835237486943LL};

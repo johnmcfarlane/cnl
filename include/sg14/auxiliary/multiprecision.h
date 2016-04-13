@@ -176,19 +176,6 @@ namespace sg14 {
     // sg14::unsigned_multiprecision - an integer of arbitrary size
     template<unsigned NumBits = width<int>::value>
     using multiprecision = signed_multiprecision<NumBits>;
-
-    ////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
-    // elastic_multiprecision - elastic type with virtually no top limit on capacity
-
-    template<int IntegerDigits, int FractionalDigits = 0, bool IsSigned = true>
-    using elastic_multiprecision = elastic<
-            IntegerDigits,
-            FractionalDigits,
-            typename std::conditional<
-                    IsSigned,
-                    signed_multiprecision<>,
-                    unsigned_multiprecision<>>::type>;
 }
 
 #endif // _SG14_SIZED_INTEGER
