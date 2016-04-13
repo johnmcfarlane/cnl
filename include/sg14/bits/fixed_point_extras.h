@@ -168,8 +168,8 @@ namespace std {
     struct numeric_limits<sg14::fixed_point<Rep, Exponent>> {
         // fixed-point-specific helpers
         using _value_type = sg14::fixed_point<Rep, Exponent>;
-        using _repr_type = typename _value_type::repr_type;
-        using _repr_numeric_limits = numeric_limits<_repr_type>;
+        using _rep = typename _value_type::rep;
+        using _repr_numeric_limits = numeric_limits<_rep>;
 
         // standard members
 
@@ -209,7 +209,7 @@ namespace std {
             return _value_type::from_data(1);
         }
 
-        // TODO: not even sure about this when repr_type is built-in integral
+        // TODO: not even sure about this when rep is built-in integral
         static constexpr _value_type round_error() noexcept
         {
             return static_cast<_value_type>(1);

@@ -670,11 +670,11 @@ struct FixedPointTester {
     using fixed_point = ::fixed_point<Rep, Exponent>;
 
     // Rep
-    using repr_type = Rep;
-    static_assert(sizeof(repr_type) == sizeof(fixed_point), "fixed_point must be the same size as its Rep");
+    using rep = Rep;
+    static_assert(sizeof(rep) == sizeof(fixed_point), "fixed_point must be the same size as its Rep");
     static_assert(
-            is_same<repr_type, typename fixed_point::repr_type>::value,
-            "mismatched repr_type");    // possibly overly restrictive (e.g. hardware-specific specializations)
+            is_same<rep, typename fixed_point::rep>::value,
+            "mismatched rep");    // possibly overly restrictive (e.g. hardware-specific specializations)
 
     // Exponent
     static constexpr int exponent = Exponent;
@@ -685,8 +685,8 @@ struct FixedPointTester {
 #if ! defined(_MSC_VER)
     // simply assignment to and from underlying representation
     using numeric_limits = std::numeric_limits<fixed_point>;
-    static constexpr fixed_point min = fixed_point::from_data(repr_type(1));
-    static_assert(min.data() == repr_type(1), "all Rep types should be able to store the number 1!");
+    static constexpr fixed_point min = fixed_point::from_data(rep(1));
+    static_assert(min.data() == rep(1), "all Rep types should be able to store the number 1!");
 
     // sg14::_impl::widen_integer_result_t
     static_assert(
@@ -742,12 +742,12 @@ struct FixedPointTester {
     static_assert(
             is_same<
                     decltype(min + min),
-                    ::fixed_point<decltype(declval<repr_type>() + declval<repr_type>()), exponent>>::value,
+                    ::fixed_point<decltype(declval<rep>() + declval<rep>()), exponent>>::value,
             "promotion rule for addition fixed_point<Rep> should match its Rep");
     static_assert(
             is_same<
                     decltype(min - min),
-                    ::fixed_point<decltype(declval<repr_type>() - declval<repr_type>()), exponent>>::value,
+                    ::fixed_point<decltype(declval<rep>() - declval<rep>()), exponent>>::value,
             "promotion rule for subtraction fixed_point<Rep> should match its Rep");
 
     // assorted tests of +, -, * and /

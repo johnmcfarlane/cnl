@@ -263,7 +263,7 @@ namespace sg14 {
         // types
 
         /// alias to template parameter, \a Rep
-        using repr_type = Rep;
+        using rep = Rep;
 
         ////////////////////////////////////////////////////////////////////////////////
         // constants
@@ -288,7 +288,7 @@ namespace sg14 {
 
     private:
         // constructor taking representation explicitly using operator++(int)-style trick
-        constexpr fixed_point(repr_type r, int)
+        constexpr fixed_point(rep r, int)
                 :_r(r)
         {
         }
@@ -369,13 +369,13 @@ namespace sg14 {
         fixed_point& operator/=(const Rhs& rhs);
 
         /// returns internal representation of value
-        constexpr repr_type data() const
+        constexpr rep data() const
         {
             return _r;
         }
 
         /// creates an instance given the underlying representation value
-        static constexpr fixed_point from_data(repr_type r)
+        static constexpr fixed_point from_data(rep r)
         {
             return fixed_point(r, 0);
         }
@@ -401,15 +401,15 @@ namespace sg14 {
         }
 
         template<class S>
-        static constexpr repr_type integral_to_repr(S s)
+        static constexpr rep integral_to_repr(S s)
         {
             static_assert(is_integral<S>::value, "S must be unsigned integral type");
 
-            return _fixed_point_impl::shift_right<exponent, repr_type>(s);
+            return _fixed_point_impl::shift_right<exponent, rep>(s);
         }
 
         template<class S>
-        static constexpr S repr_to_integral(repr_type r)
+        static constexpr S repr_to_integral(rep r)
         {
             static_assert(is_integral<S>::value, "S must be unsigned integral type");
 
@@ -417,40 +417,40 @@ namespace sg14 {
         }
 
         template<class S>
-        static constexpr repr_type floating_point_to_repr(S s)
+        static constexpr rep floating_point_to_repr(S s)
         {
             static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
-            return static_cast<repr_type>(s*one<S>());
+            return static_cast<rep>(s*one<S>());
         }
 
         template<class S>
-        static constexpr S repr_to_floating_point(repr_type r)
+        static constexpr S repr_to_floating_point(rep r)
         {
             static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
             return S(r)*inverse_one<S>();
         }
 
         template<class FromRep, int FromExponent>
-        static constexpr repr_type fixed_point_to_repr(const fixed_point<FromRep, FromExponent>& rhs)
+        static constexpr rep fixed_point_to_repr(const fixed_point<FromRep, FromExponent>& rhs)
         {
-            return _fixed_point_impl::shift_right<(exponent-FromExponent), repr_type>(rhs.data());
+            return _fixed_point_impl::shift_right<(exponent-FromExponent), rep>(rhs.data());
         }
 
         ////////////////////////////////////////////////////////////////////////////////
         // variables
 
-        repr_type _r;
+        rep _r;
     };
 
     /// \brief Produce a fixed-point type with the given number of integer and fractional digits.
     ///
     /// \tparam IntegerDigits specifies minimum value of @ref fixed_point::integer_digits
     /// \tparam FractionalDigits specifies the exact value of @ref fixed_point::fractional_digits
-    /// \tparam Archetype hints at the type of @ref fixed_point::repr_type
+    /// \tparam Archetype hints at the type of @ref fixed_point::rep
     ///
     /// \remarks The signage of \a Archetype specifies signage of the resultant fixed-point type.
     /// \remarks Typical choices for \a Archetype, `signed` and `unsigned`,
-    /// result in a type that uses built-in integers for \a fixed_point::repr_type.
+    /// result in a type that uses built-in integers for \a fixed_point::rep.
     /// \remarks Resultant type is signed by default.
     ///
     /// \par Example:
@@ -515,7 +515,7 @@ namespace sg14 {
         template<class FixedPoint>
         struct widen_integer_result {
             using type = fixed_point<
-                    _fixed_point_impl::next_size<typename FixedPoint::repr_type>,
+                    _fixed_point_impl::next_size<typename FixedPoint::rep>,
                     FixedPoint::exponent>;
         };
 
@@ -538,13 +538,13 @@ namespace sg14 {
         // and the same number of integer bits
         template<class FixedPoint>
         struct widen_fractional_result {
-            using prev_repr_type = typename FixedPoint::repr_type;
-            using next_repr_type = _fixed_point_impl::next_size<prev_repr_type>;
+            using prev_rep = typename FixedPoint::rep;
+            using next_rep = _fixed_point_impl::next_size<prev_rep>;
 
             using type = fixed_point<
-                    next_repr_type,
-                    FixedPoint::exponent+static_cast<int>(width<prev_repr_type>::value)
-                            -static_cast<int>(width<next_repr_type>::value)>;
+                    next_rep,
+                    FixedPoint::exponent+static_cast<int>(width<prev_rep>::value)
+                            -static_cast<int>(width<next_rep>::value)>;
         };
 
         template<class FixedPoint>
@@ -573,7 +573,7 @@ namespace sg14 {
 
             template<class Lhs, class Rhs>
             using common_type = fixed_point<
-                    typename sg14::common_type<typename Lhs::repr_type, typename Rhs::repr_type>::type,
+                    typename sg14::common_type<typename Lhs::rep, typename Rhs::rep>::type,
                     exponent<Lhs, Rhs>::value>;
 
             template<class Lhs, class Rhs>
@@ -588,7 +588,7 @@ namespace sg14 {
             template<class Rhs>
             struct negate {
                 using result_type = fixed_point<
-                        decltype(-std::declval<typename Rhs::repr_type>()),
+                        decltype(-std::declval<typename Rhs::rep>()),
                         Rhs::exponent>;
 
                 using rhs_type = Rhs;
@@ -597,21 +597,21 @@ namespace sg14 {
             template<class Lhs, class Rhs>
             struct add : operator_base<Lhs, Rhs> {
                 using result_type = fixed_point<
-                        decltype(std::declval<typename Lhs::repr_type>()+std::declval<typename Rhs::repr_type>()),
+                        decltype(std::declval<typename Lhs::rep>()+std::declval<typename Rhs::rep>()),
                         exponent<Lhs, Rhs>::value>;
             };
 
             template<class Lhs, class Rhs>
             struct subtract : operator_base<Lhs, Rhs> {
                 using result_type = fixed_point<
-                        decltype(std::declval<typename Lhs::repr_type>()-std::declval<typename Rhs::repr_type>()),
+                        decltype(std::declval<typename Lhs::rep>()-std::declval<typename Rhs::rep>()),
                         exponent<Lhs, Rhs>::value>;
             };
 
             template<class Lhs, class Rhs>
             struct multiply : operator_base<Lhs, Rhs> {
                 using result_type = fixed_point<
-                        decltype(std::declval<typename Lhs::repr_type>()*std::declval<typename Rhs::repr_type>()),
+                        decltype(std::declval<typename Lhs::rep>()*std::declval<typename Rhs::rep>()),
                         exponent<Lhs, Rhs>::value>;
                 using lhs_type = widen_integer_result_t<Lhs>;
             };
@@ -619,7 +619,7 @@ namespace sg14 {
             template<class Lhs, class Rhs>
             struct divide : operator_base<Lhs, Rhs> {
                 using result_type = fixed_point<
-                        decltype(std::declval<typename Lhs::repr_type>()/std::declval<typename Rhs::repr_type>()),
+                        decltype(std::declval<typename Lhs::rep>()/std::declval<typename Rhs::rep>()),
                         exponent<Lhs, Rhs>::value>;
                 using lhs_type = widen_fractional_result_t<Lhs>;
             };
@@ -714,7 +714,7 @@ namespace sg14 {
     template<class Result, class Rhs>
     constexpr Result negate(const Rhs& rhs)
     {
-        static_assert(is_signed<typename Result::repr_type>::value, "unary negation of unsigned value");
+        static_assert(is_signed<typename Result::rep>::value, "unary negation of unsigned value");
 
         return Result::from_data(-static_cast<Result>(rhs).data());
     }
@@ -724,7 +724,7 @@ namespace sg14 {
     constexpr Result add(const Lhs& lhs, const Rhs& rhs)
     {
         return Result::from_data(
-                static_cast<typename Result::repr_type>(
+                static_cast<typename Result::rep>(
                         static_cast<Result>(lhs).data()
                                 +static_cast<Result>(rhs).data()));
     }
@@ -742,22 +742,22 @@ namespace sg14 {
     template<class Result, class Lhs, class Rhs>
     constexpr Result multiply(const Lhs& lhs, const Rhs& rhs)
     {
-        using result_repr_type = typename Result::repr_type;
+        using result_rep = typename Result::rep;
         return Result::from_data(
                 _fixed_point_impl::shift_left<
                         (Lhs::exponent+Rhs::exponent-Result::exponent),
-                        result_repr_type>(lhs.data()*rhs.data()));
+                        result_rep>(lhs.data()*rhs.data()));
     }
 
     // sg14::divide
     template<class Result, class Lhs, class Rhs>
     constexpr Result divide(const Lhs& lhs, const Rhs& rhs)
     {
-        using result_repr_type = typename Result::repr_type;
+        using result_rep = typename Result::rep;
         return Result::from_data(
                 _fixed_point_impl::shift_left<
                         (Lhs::exponent-Rhs::exponent-Result::exponent),
-                        result_repr_type>(lhs.data()/rhs.data()));
+                        result_rep>(lhs.data()/rhs.data()));
     }
 
     namespace _fixed_point_impl {
@@ -1023,8 +1023,8 @@ namespace sg14 {
     constexpr auto operator*(const fixed_point<Rep, Exponent>& lhs, const Integer& rhs)
     -> fixed_point<decltype(std::declval<Rep>()*std::declval<Integer>()), Exponent>
     {
-        using repr_type = fixed_point<decltype(std::declval<Rep>()*std::declval<Integer>()), Exponent>;
-        return multiply<repr_type>(lhs, fixed_point<Integer>(rhs));
+        using rep = fixed_point<decltype(std::declval<Rep>()*std::declval<Integer>()), Exponent>;
+        return multiply<rep>(lhs, fixed_point<Integer>(rhs));
     }
 
     template<
@@ -1129,7 +1129,7 @@ namespace sg14 {
     fixed_point<LhsRep, Exponent>&
     fixed_point<LhsRep, Exponent>::operator*=(const Rhs& rhs)
     {
-        _r *= static_cast<repr_type>(rhs);
+        _r *= static_cast<rep>(rhs);
         return *this;
     }
 
@@ -1138,7 +1138,7 @@ namespace sg14 {
     fixed_point<LhsRep, Exponent>&
     fixed_point<LhsRep, Exponent>::operator/=(const Rhs& rhs)
     {
-        _r /= static_cast<repr_type>(rhs);
+        _r /= static_cast<rep>(rhs);
         return *this;
     }
 }

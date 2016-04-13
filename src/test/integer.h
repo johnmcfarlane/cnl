@@ -73,7 +73,7 @@ namespace sg14 {
     template <class Rhs> \
     auto operator OP (const Rhs& rhs) \
     -> integer& { \
-        _r = static_cast<repr_type>(_r BIN_OP rhs); \
+        _r = static_cast<rep>(_r BIN_OP rhs); \
         return *this; }
 
 #define _SG14_INTEGER_BIT_SHIFT_DEFINE(OP) \
@@ -299,7 +299,7 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // types
 
-        using repr_type = Rep;
+        using rep = Rep;
         using overflow = OverflowPolicy;
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -307,13 +307,13 @@ namespace sg14 {
 
         template<class RhsRep, typename std::enable_if<!_integer_impl::is_integer_class<RhsRep>::value, int>::type dummy = 0>
         constexpr explicit integer(const RhsRep& rhs)
-                :_r(OverflowPolicy{}.template convert<repr_type>(rhs))
+                :_r(OverflowPolicy{}.template convert<rep>(rhs))
         {
         }
 
         template<class Rhs, typename std::enable_if<_integer_impl::is_integer_class<Rhs>::value, int>::type dummy = 0>
         constexpr explicit integer(const Rhs& rhs)
-                :_r(OverflowPolicy{}.template convert<repr_type>(rhs.data()))
+                :_r(OverflowPolicy{}.template convert<rep>(rhs.data()))
         {
         }
 
@@ -336,7 +336,7 @@ namespace sg14 {
 
         _SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(/=, /);
 
-        constexpr repr_type const& data() const
+        constexpr rep const& data() const
         {
             return _r;
         }
@@ -345,7 +345,7 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // variables
 
-        repr_type _r;
+        rep _r;
     };
 
     _SG14_INTEGER_COMPARISON_DEFINE(==);
@@ -480,8 +480,8 @@ namespace std {
     struct numeric_limits<sg14::integer<Rep, OverflowPolicy>> {
         // integer-specific helpers
         using _value_type = sg14::integer<Rep, OverflowPolicy>;
-        using _repr_type = typename _value_type::repr_type;
-        using _repr_numeric_limits = numeric_limits<_repr_type>;
+        using _rep = typename _value_type::rep;
+        using _repr_numeric_limits = numeric_limits<_rep>;
 
         // standard members
 
