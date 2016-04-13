@@ -169,7 +169,7 @@ namespace std {
         // fixed-point-specific helpers
         using _value_type = sg14::fixed_point<Rep, Exponent>;
         using _rep = typename _value_type::rep;
-        using _repr_numeric_limits = numeric_limits<_rep>;
+        using _rep_numeric_limits = numeric_limits<_rep>;
 
         // standard members
 
@@ -182,26 +182,26 @@ namespace std {
 
         static constexpr _value_type max() noexcept
         {
-            return _value_type::from_data(_repr_numeric_limits::max());
+            return _value_type::from_data(_rep_numeric_limits::max());
         }
 
         static constexpr _value_type lowest() noexcept
         {
-            return _value_type::from_data(_repr_numeric_limits::lowest());
+            return _value_type::from_data(_rep_numeric_limits::lowest());
         }
 
-        static constexpr int digits = _repr_numeric_limits::digits;
+        static constexpr int digits = _rep_numeric_limits::digits;
 
         //static constexpr int digits10 = ?;
         //static constexpr int max_digits10 = ?;
 
-        static constexpr bool is_signed = _repr_numeric_limits::is_signed;
-        static constexpr bool is_integer = _repr_numeric_limits::is_integer;
+        static constexpr bool is_signed = _rep_numeric_limits::is_signed;
+        static constexpr bool is_integer = _rep_numeric_limits::is_integer;
 
         // TODO: not entirely certain
         static constexpr bool is_exact = true;
 
-        static constexpr int radix = _repr_numeric_limits::radix;
+        static constexpr int radix = _rep_numeric_limits::radix;
         static_assert(radix==2, "fixed-point must be represented using binary type");
 
         static constexpr _value_type epsilon() noexcept
@@ -250,11 +250,11 @@ namespace std {
 
         static constexpr bool is_iec559 = false;
         static constexpr bool is_bounded = true;
-        static constexpr bool is_modulo = _repr_numeric_limits::is_modulo;
+        static constexpr bool is_modulo = _rep_numeric_limits::is_modulo;
 
-        static constexpr bool traps = _repr_numeric_limits::traps;
+        static constexpr bool traps = _rep_numeric_limits::traps;
         static constexpr bool tinyness_before = false;
-        static constexpr float_round_style round_style = _repr_numeric_limits::round_style;
+        static constexpr float_round_style round_style = _rep_numeric_limits::round_style;
     };
 }
 

@@ -481,7 +481,7 @@ namespace std {
         // integer-specific helpers
         using _value_type = sg14::integer<Rep, OverflowPolicy>;
         using _rep = typename _value_type::rep;
-        using _repr_numeric_limits = numeric_limits<_rep>;
+        using _rep_numeric_limits = numeric_limits<_rep>;
 
         // standard members
 
@@ -489,84 +489,84 @@ namespace std {
 
         static constexpr _value_type min() noexcept
         {
-            return _value_type(_repr_numeric_limits::min());
+            return _value_type(_rep_numeric_limits::min());
         }
 
         static constexpr _value_type max() noexcept
         {
-            return _value_type(_repr_numeric_limits::max());
+            return _value_type(_rep_numeric_limits::max());
         }
 
         static constexpr _value_type lowest() noexcept
         {
-            return _value_type(_repr_numeric_limits::lowest());
+            return _value_type(_rep_numeric_limits::lowest());
         }
 
-        static constexpr int digits = _repr_numeric_limits::digits;
+        static constexpr int digits = _rep_numeric_limits::digits;
 
-        static constexpr int digits10 = _repr_numeric_limits::digits10;
-        static constexpr int max_digits10 = _repr_numeric_limits::max_digits10;
+        static constexpr int digits10 = _rep_numeric_limits::digits10;
+        static constexpr int max_digits10 = _rep_numeric_limits::max_digits10;
 
-        static constexpr bool is_signed = _repr_numeric_limits::is_signed;
+        static constexpr bool is_signed = _rep_numeric_limits::is_signed;
 
         static constexpr bool is_integer = true;
         static_assert(is_integer, "integer must be represented using binary type");
 
-        static constexpr bool is_exact = _repr_numeric_limits::is_exact;
+        static constexpr bool is_exact = _rep_numeric_limits::is_exact;
 
-        static constexpr int radix = _repr_numeric_limits::radix;
+        static constexpr int radix = _rep_numeric_limits::radix;
         static_assert(radix==2, "integer must be represented using binary type");
 
         static constexpr _value_type epsilon() noexcept
         {
-            return _repr_numeric_limits::epsilon();
+            return _rep_numeric_limits::epsilon();
         }
 
         static constexpr _value_type round_error() noexcept
         {
-            return _repr_numeric_limits::round_error();
+            return _rep_numeric_limits::round_error();
         }
 
         // TODO: verify
-        static constexpr int min_exponent = _repr_numeric_limits::min_exponent;
-        static constexpr int max_exponent = _repr_numeric_limits::max_exponent;
+        static constexpr int min_exponent = _rep_numeric_limits::min_exponent;
+        static constexpr int max_exponent = _rep_numeric_limits::max_exponent;
 
-        static constexpr int min_exponent10 = _repr_numeric_limits::min_exponent10;
-        static constexpr int max_exponent10 = _repr_numeric_limits::max_exponent10;
+        static constexpr int min_exponent10 = _rep_numeric_limits::min_exponent10;
+        static constexpr int max_exponent10 = _rep_numeric_limits::max_exponent10;
 
-        static constexpr bool has_infinity = _repr_numeric_limits::has_infinity;
-        static constexpr bool has_quiet_NaN = _repr_numeric_limits::has_quiet_NaN;
-        static constexpr bool has_signaling_NaN = _repr_numeric_limits::has_signaling_NaN;
-        static constexpr float_denorm_style has_denorm = _repr_numeric_limits::has_denorm;
-        static constexpr bool has_denorm_loss = _repr_numeric_limits::has_denorm_loss;
+        static constexpr bool has_infinity = _rep_numeric_limits::has_infinity;
+        static constexpr bool has_quiet_NaN = _rep_numeric_limits::has_quiet_NaN;
+        static constexpr bool has_signaling_NaN = _rep_numeric_limits::has_signaling_NaN;
+        static constexpr float_denorm_style has_denorm = _rep_numeric_limits::has_denorm;
+        static constexpr bool has_denorm_loss = _rep_numeric_limits::has_denorm_loss;
 
         static constexpr _value_type infinity() noexcept
         {
-            return _repr_numeric_limits::infinity();
+            return _rep_numeric_limits::infinity();
         }
 
         static constexpr _value_type quiet_NaN() noexcept
         {
-            return _repr_numeric_limits::quiet_NaN();
+            return _rep_numeric_limits::quiet_NaN();
         }
 
         static constexpr _value_type signaling_NaN() noexcept
         {
-            return _repr_numeric_limits::signaling_NaN();
+            return _rep_numeric_limits::signaling_NaN();
         }
 
         static constexpr _value_type denorm_min() noexcept
         {
-            return _repr_numeric_limits::denorm_min();
+            return _rep_numeric_limits::denorm_min();
         }
 
-        static constexpr bool is_iec559 = _repr_numeric_limits::is_iec559;
-        static constexpr bool is_bounded = _repr_numeric_limits::is_bounded;
-        static constexpr bool is_modulo = _repr_numeric_limits::is_modulo;
+        static constexpr bool is_iec559 = _rep_numeric_limits::is_iec559;
+        static constexpr bool is_bounded = _rep_numeric_limits::is_bounded;
+        static constexpr bool is_modulo = _rep_numeric_limits::is_modulo;
 
-        static constexpr bool traps = _repr_numeric_limits::traps;
-        static constexpr bool tinyness_before = _repr_numeric_limits::tinyness_before;
-        static constexpr float_round_style round_style = _repr_numeric_limits::round_style;
+        static constexpr bool traps = _rep_numeric_limits::traps;
+        static constexpr bool tinyness_before = _rep_numeric_limits::tinyness_before;
+        static constexpr float_round_style round_style = _rep_numeric_limits::round_style;
     };
 }
 
