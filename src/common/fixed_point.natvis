@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
  <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
    <Type Name="sg14::integer&lt;*&gt;">
-     <DisplayString>{repr+0}</DisplayString>
+     <DisplayString>{_r+0}</DisplayString>
    </Type>
 
    <!--<Type Name="sg14::fixed_point&lt;*&gt;">
