@@ -69,7 +69,7 @@ To profile benchmarks:
 
 2. then run:
 
-       perf stat ./run_benchmarks
+       perf record -g ./fp_benchmark
        perf report -g 'graph,0.5,caller'
 
 \subsection windows Windows
