@@ -54,7 +54,7 @@ set_target_properties(
 
 # add external lib, Boost
 if(Boost_FOUND)
-    target_include_directories(fp_test PRIVATE ${Boost_INCLUDE_DIR})
+    target_include_directories(fp_test SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
     target_link_libraries(fp_test ${Boost_LIBRARIES})
 endif(Boost_FOUND)
 
