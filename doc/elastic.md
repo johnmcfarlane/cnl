@@ -220,7 +220,7 @@ It must also support bit-shift and comparison operations.
 
 In addition to these operators, `Archetype` needs for certain type traits to be specialized. 
 Ideally, standard traits which describe built-in types would be permitted to be specialized for this purpose.
-Existing traits include: `is_signed` and `is_unsigned`, `make_signed` and `make_unsigned`, `is_integral` and `common_type`.
+Existing traits include: `is_signed`. `is_unsigned`, `make_signed`, `make_unsigned` and `is_integral`.
 
 Two additional traits that are needed involve the ability to get and set the width of a type in bits. 
 They could take the following form
