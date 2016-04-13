@@ -222,18 +222,21 @@ In addition to these operators, `Archetype` needs for certain type traits to be 
 Ideally, standard traits which describe built-in types would be permitted to be specialized for this purpose.
 Existing traits include: `is_signed` and `is_unsigned`, `make_signed` and `make_unsigned`, `is_integral` and `common_type`.
 
-An additional trait that is needed is one which can statically resize types. 
-It could take the following form
+Two additional traits that are needed involve the ability to get and set the width of a type in bits. 
+They could take the following form
 
-```
-template <typename T, std::size_t S>
-struct resize;
+```c++
+template <class Type>
+struct width;
+
+template <class Type, unsigned NumBits>
+struct set_width;
 ```
 
-such that `sizeof(resize<T, S>::type> >= S)` always holds.
-The template would come ready-specialized for built-in types such that `resize<int, 2>::type` would produce `int16_t`
-and `resize<uint8_t, 8>` would produce `uint64_t`. 
-It could be specialized for any custom type in order to make that type suitable for use with `elastic`.
+such that `width<set_width<T, S>::type>::value >= S)` always holds.
+The templates would come ready-specialized for built-in types such that `set_width<int, 16>::type` would produce `int16_t`
+and `width<uint64_t>::value` would equal `64`. 
+They could be specialized for any custom type in order to make that type suitable for use with `elastic`.
 Notably, while it might not be possible to resize built-ins to types that are larger than `long long`,
 no similar limit would be placed on user-defined integers.
 

@@ -5,15 +5,11 @@ User Manual       {#mainpage}
 
 \section introduction Introduction
 
-The [fixed_point](https://github.com/johnmcfarlane/fixed_point)
-library is designed to represent binary fixed-point real numbers using integer types. It is developed as part of
+This header-only C++11 library uses fixed-point arithmetic to approximate real numbers.
+It forms the reference implementation of a standard library proposal presented in paper, [P0037](papers/p0037.html).
+It is developed as part of study groups,
 [SG14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14) and SG6.
 
-For an overview of the API, see proposal,
-[P0037](http://johnmcfarlane.github.io/fixed_point/papers/p0037.html).
-
-For an example of how to use the API to make a general-purpose fixed-point type, see 
-[this paper](http://johnmcfarlane.github.io/fixed_point/papers/elastic.html).
 
 \section repository Repository
 
@@ -26,26 +22,19 @@ The library is [hosted](https://github.com/johnmcfarlane/fixed_point) on GitHub:
 1. Add the [include](../../include) directory to your list of system headers. 
 
 2. Essential definitions are in [sg14/fixed_point.h](@ref fixed_point.h):
-
-       #include <sg14/fixed_point.h>
+  \snippet index.cpp include the header
 
 3. All definitions are in the [sg14](@ref sg14) namespace:
+  \snippet index.cpp using directive
 
-       using namespace sg14;
-   
 4. Use the [fixed_point](@ref sg14::fixed_point) type to define variables.
+  \snippet index.cpp print pi
 
-       fixed_point<std::int32_t, -28> pi(3.1415926535);
-       std::cout << "pi=" << std::setprecision(10) << pi;
-   
-   Output:
-   
-    *pi=3.141592652*
+  > *pi=3.141592652*
 
 5. Alternatively, use [make_fixed](@ref sg14::make_fixed) and [make_ufixed](@ref sg14::make_ufixed) to instantiate signed and unsigned variables 
    with exactly the number of integer and fractional digits you require:
-
-       make_fixed<3, 28> pi(3.1415926535);
+  \snippet index.cpp print pi again
 
 \section tests_and_benchmarks Tests and Benchmarks
 
@@ -109,3 +98,15 @@ To clean the project files:
     git clean -Xdff .
 
 (Use with caution!)
+
+
+\section further Further Reading
+
+For an overview of the API, see proposal,
+[P0037](http://johnmcfarlane.github.io/fixed_point/papers/p0037.html).
+
+For an example of how to use the API to make a general-purpose fixed-point type, see 
+[this paper](http://johnmcfarlane.github.io/fixed_point/papers/elastic.html).
+
+It is developed as part of
+[SG14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14) and SG6.
