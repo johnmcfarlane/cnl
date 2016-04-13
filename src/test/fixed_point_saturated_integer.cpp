@@ -16,7 +16,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// integer types used as fixed_point Repr type
+// integer types used as fixed_point Rep type
 
 using test_int = sg14::saturated_integer<>;
 

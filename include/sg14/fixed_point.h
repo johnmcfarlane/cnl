@@ -700,8 +700,8 @@ namespace sg14 {
         template<typename LhsFixedPoint, typename RhsFixedPoint>
         using subtract_result_repr = typename make_signed<typename sg14::common_type<LhsFixedPoint, RhsFixedPoint>::type>::type;
 
-        template<typename Repr>
-        using square_result_repr = typename make_unsigned<Repr>::type;
+        template<typename Rep>
+        using square_result_repr = typename make_unsigned<Rep>::type;
 
         template<typename FixedPoint>
         using sqrt_result_repr = typename make_unsigned<FixedPoint>::type;
