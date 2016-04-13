@@ -289,7 +289,7 @@ namespace sg14 {
     private:
         // constructor taking representation explicitly using operator++(int)-style trick
         constexpr fixed_point(repr_type repr, int)
-                :_repr(repr)
+                :_r(repr)
         {
         }
 
@@ -300,21 +300,21 @@ namespace sg14 {
         /// constructor taking an integer type
         template<class S, typename std::enable_if<is_integral<S>::value, int>::type Dummy = 0>
         explicit constexpr fixed_point(S s)
-                :_repr(integral_to_repr(s))
+                :_r(integral_to_repr(s))
         {
         }
 
         /// constructor taking a floating-point type
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         explicit constexpr fixed_point(S s)
-                :_repr(floating_point_to_repr(s))
+                :_r(floating_point_to_repr(s))
         {
         }
 
         /// constructor taking a fixed-point type
         template<class FromRep, int FromExponent>
         explicit constexpr fixed_point(const fixed_point<FromRep, FromExponent>& rhs)
-                :_repr(fixed_point_to_repr(rhs))
+                :_r(fixed_point_to_repr(rhs))
         {
         }
 
@@ -322,7 +322,7 @@ namespace sg14 {
         template<class S, typename std::enable_if<is_integral<S>::value, int>::type Dummy = 0>
         fixed_point& operator=(S s)
         {
-            _repr = integral_to_repr(s);
+            _r = integral_to_repr(s);
             return *this;
         }
 
@@ -330,7 +330,7 @@ namespace sg14 {
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         fixed_point& operator=(S s)
         {
-            _repr = floating_point_to_repr(s);
+            _r = floating_point_to_repr(s);
             return *this;
         }
 
@@ -338,7 +338,7 @@ namespace sg14 {
         template<class FromRep, int FromExponent>
         fixed_point& operator=(const fixed_point<FromRep, FromExponent>& rhs)
         {
-            _repr = fixed_point_to_repr(rhs);
+            _r = fixed_point_to_repr(rhs);
             return *this;
         }
 
@@ -346,20 +346,20 @@ namespace sg14 {
         template<class S, typename std::enable_if<is_integral<S>::value, int>::type Dummy = 0>
         explicit constexpr operator S() const
         {
-            return repr_to_integral<S>(_repr);
+            return repr_to_integral<S>(_r);
         }
 
         /// returns value represented as floating-point
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         explicit constexpr operator S() const
         {
-            return repr_to_floating_point<S>(_repr);
+            return repr_to_floating_point<S>(_r);
         }
 
         /// returns non-zeroness represented as boolean
         explicit constexpr operator bool() const
         {
-            return _repr!=0;
+            return _r!=0;
         }
 
         template<class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy = 0>
@@ -371,7 +371,7 @@ namespace sg14 {
         /// returns internal representation of value
         constexpr repr_type data() const
         {
-            return _repr;
+            return _r;
         }
 
         /// creates an instance given the underlying representation value
@@ -439,7 +439,7 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // variables
 
-        repr_type _repr;
+        repr_type _r;
     };
 
     /// \brief Produce a fixed-point type with the given number of integer and fractional digits.
@@ -1129,7 +1129,7 @@ namespace sg14 {
     fixed_point<LhsRep, Exponent>&
     fixed_point<LhsRep, Exponent>::operator*=(const Rhs& rhs)
     {
-        _repr *= static_cast<repr_type>(rhs);
+        _r *= static_cast<repr_type>(rhs);
         return *this;
     }
 
@@ -1138,7 +1138,7 @@ namespace sg14 {
     fixed_point<LhsRep, Exponent>&
     fixed_point<LhsRep, Exponent>::operator/=(const Rhs& rhs)
     {
-        _repr /= static_cast<repr_type>(rhs);
+        _r /= static_cast<repr_type>(rhs);
         return *this;
     }
 }

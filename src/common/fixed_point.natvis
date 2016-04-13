@@ -5,9 +5,9 @@
    </Type>
 
    <!--<Type Name="sg14::fixed_point&lt;*&gt;">
-     <DisplayString>{_repr}</DisplayString>
+     <DisplayString>{_r}</DisplayString>
      <Expand>
-       <Item Name="_repr">_repr</Item>
+       <Item Name="_r">_r</Item>
        <Item Name="exponent">exponent</Item>
        <Item Name="digits">digits</Item>
        <Item Name="integer_digits">integer_digits</Item>
@@ -16,14 +16,14 @@
    </Type>-->
    
    <Type Name="sg14::fixed_point&lt;*&gt;">
-     <DisplayString Condition="exponent==0 &amp;&amp; _repr*0-1&lt;0"  >{(long double)_repr} u{integer_digits}:{fractional_digits}</DisplayString>
-     <DisplayString Condition="exponent==0 &amp;&amp; _repr*0-1&gt;0"  >{(long double)_repr} s{integer_digits}:{fractional_digits}</DisplayString>
-     <DisplayString Condition="exponent&lt;0 &amp;&amp; _repr*0-1&lt;0">{(long double)_repr/(1&lt;&lt;-exponent)} u{integer_digits}:{fractional_digits}</DisplayString>
-     <DisplayString Condition="exponent&lt;0 &amp;&amp; _repr*0-1&gt;0">{(long double)_repr/(1&lt;&lt;-exponent)} s{integer_digits}:{fractional_digits}</DisplayString>
-     <DisplayString Condition="exponent&gt;0 &amp;&amp; _repr*0-1&lt;0">{(long double)_repr*(1&lt;&lt;+exponent)} u{integer_digits}:{fractional_digits}</DisplayString>
-     <DisplayString Condition="exponent&gt;0 &amp;&amp; _repr*0-1&gt;0">{(long double)_repr*(1&lt;&lt;+exponent)} s{integer_digits}:{fractional_digits}</DisplayString>
+     <DisplayString Condition="exponent==0 &amp;&amp; _r*0-1&lt;0"  >{(long double)_r} u{integer_digits}:{fractional_digits}</DisplayString>
+     <DisplayString Condition="exponent==0 &amp;&amp; _r*0-1&gt;0"  >{(long double)_r} s{integer_digits}:{fractional_digits}</DisplayString>
+     <DisplayString Condition="exponent&lt;0 &amp;&amp; _r*0-1&lt;0">{(long double)_r/(1&lt;&lt;-exponent)} u{integer_digits}:{fractional_digits}</DisplayString>
+     <DisplayString Condition="exponent&lt;0 &amp;&amp; _r*0-1&gt;0">{(long double)_r/(1&lt;&lt;-exponent)} s{integer_digits}:{fractional_digits}</DisplayString>
+     <DisplayString Condition="exponent&gt;0 &amp;&amp; _r*0-1&lt;0">{(long double)_r*(1&lt;&lt;+exponent)} u{integer_digits}:{fractional_digits}</DisplayString>
+     <DisplayString Condition="exponent&gt;0 &amp;&amp; _r*0-1&gt;0">{(long double)_r*(1&lt;&lt;+exponent)} s{integer_digits}:{fractional_digits}</DisplayString>
      <Expand>
-       <Item Name="_repr">_repr</Item>
+       <Item Name="_r">_r</Item>
        <Item Name="exponent">exponent</Item>
        <Item Name="digits">digits</Item>
        <Item Name="integer_digits">integer_digits</Item>
