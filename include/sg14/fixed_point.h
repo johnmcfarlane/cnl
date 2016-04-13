@@ -300,21 +300,21 @@ namespace sg14 {
         /// constructor taking an integer type
         template<class S, typename std::enable_if<is_integral<S>::value, int>::type Dummy = 0>
         explicit constexpr fixed_point(S s)
-                :_r(integral_to_repr(s))
+                :_r(integral_to_rep(s))
         {
         }
 
         /// constructor taking a floating-point type
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         explicit constexpr fixed_point(S s)
-                :_r(floating_point_to_repr(s))
+                :_r(floating_point_to_rep(s))
         {
         }
 
         /// constructor taking a fixed-point type
         template<class FromRep, int FromExponent>
         explicit constexpr fixed_point(const fixed_point<FromRep, FromExponent>& rhs)
-                :_r(fixed_point_to_repr(rhs))
+                :_r(fixed_point_to_rep(rhs))
         {
         }
 
@@ -322,7 +322,7 @@ namespace sg14 {
         template<class S, typename std::enable_if<is_integral<S>::value, int>::type Dummy = 0>
         fixed_point& operator=(S s)
         {
-            _r = integral_to_repr(s);
+            _r = integral_to_rep(s);
             return *this;
         }
 
@@ -330,7 +330,7 @@ namespace sg14 {
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         fixed_point& operator=(S s)
         {
-            _r = floating_point_to_repr(s);
+            _r = floating_point_to_rep(s);
             return *this;
         }
 
@@ -338,7 +338,7 @@ namespace sg14 {
         template<class FromRep, int FromExponent>
         fixed_point& operator=(const fixed_point<FromRep, FromExponent>& rhs)
         {
-            _r = fixed_point_to_repr(rhs);
+            _r = fixed_point_to_rep(rhs);
             return *this;
         }
 
@@ -346,14 +346,14 @@ namespace sg14 {
         template<class S, typename std::enable_if<is_integral<S>::value, int>::type Dummy = 0>
         explicit constexpr operator S() const
         {
-            return repr_to_integral<S>(_r);
+            return rep_to_integral<S>(_r);
         }
 
         /// returns value represented as floating-point
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         explicit constexpr operator S() const
         {
-            return repr_to_floating_point<S>(_r);
+            return rep_to_floating_point<S>(_r);
         }
 
         /// returns non-zeroness represented as boolean
@@ -390,7 +390,7 @@ namespace sg14 {
         template<class S, typename std::enable_if<is_integral<S>::value, int>::type Dummy = 0>
         static constexpr S one()
         {
-            return integral_to_repr<S>(1);
+            return integral_to_rep<S>(1);
         }
 
         template<class S>
@@ -401,7 +401,7 @@ namespace sg14 {
         }
 
         template<class S>
-        static constexpr rep integral_to_repr(S s)
+        static constexpr rep integral_to_rep(S s)
         {
             static_assert(is_integral<S>::value, "S must be unsigned integral type");
 
@@ -409,7 +409,7 @@ namespace sg14 {
         }
 
         template<class S>
-        static constexpr S repr_to_integral(rep r)
+        static constexpr S rep_to_integral(rep r)
         {
             static_assert(is_integral<S>::value, "S must be unsigned integral type");
 
@@ -417,21 +417,21 @@ namespace sg14 {
         }
 
         template<class S>
-        static constexpr rep floating_point_to_repr(S s)
+        static constexpr rep floating_point_to_rep(S s)
         {
             static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
             return static_cast<rep>(s*one<S>());
         }
 
         template<class S>
-        static constexpr S repr_to_floating_point(rep r)
+        static constexpr S rep_to_floating_point(rep r)
         {
             static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
             return S(r)*inverse_one<S>();
         }
 
         template<class FromRep, int FromExponent>
-        static constexpr rep fixed_point_to_repr(const fixed_point<FromRep, FromExponent>& rhs)
+        static constexpr rep fixed_point_to_rep(const fixed_point<FromRep, FromExponent>& rhs)
         {
             return _fixed_point_impl::shift_right<(exponent-FromExponent), rep>(rhs.data());
         }
@@ -698,13 +698,13 @@ namespace sg14 {
         // arithmetic result types
 
         template<typename LhsFixedPoint, typename RhsFixedPoint>
-        using subtract_result_repr = typename make_signed<typename sg14::common_type<LhsFixedPoint, RhsFixedPoint>::type>::type;
+        using subtract_result_rep = typename make_signed<typename sg14::common_type<LhsFixedPoint, RhsFixedPoint>::type>::type;
 
         template<typename Rep>
-        using square_result_repr = typename make_unsigned<Rep>::type;
+        using square_result_rep = typename make_unsigned<Rep>::type;
 
         template<typename FixedPoint>
-        using sqrt_result_repr = typename make_unsigned<FixedPoint>::type;
+        using sqrt_result_rep = typename make_unsigned<FixedPoint>::type;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
