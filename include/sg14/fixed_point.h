@@ -248,7 +248,7 @@ namespace sg14 {
 
     /// \brief literal real number approximation that uses fixed-point arithmetic
     ///
-    /// \tparam ReprType the underlying type used to represent the value
+    /// \tparam Rep the underlying type used to represent the value
     /// \tparam Exponent the value by which to scale the integer value in order to get the real value
     ///
     /// \par Examples
@@ -256,14 +256,14 @@ namespace sg14 {
     /// To define a fixed-point value 1 byte in size with a sign bit, 3 integer bits and 4 fractional bits:
     /// \snippet snippets.cpp define a fixed_point value
 
-    template<class ReprType = int, int Exponent = 0>
+    template<class Rep = int, int Exponent = 0>
     class fixed_point {
     public:
         ////////////////////////////////////////////////////////////////////////////////
         // types
 
-        /// alias to template parameter, \a ReprType
-        using repr_type = ReprType;
+        /// alias to template parameter, \a Rep
+        using repr_type = Rep;
 
         ////////////////////////////////////////////////////////////////////////////////
         // constants
@@ -273,7 +273,7 @@ namespace sg14 {
 
         /// number of binary digits this type can represent;
         /// equivalent to [std::numeric_limits::digits](http://en.cppreference.com/w/cpp/types/numeric_limits/digits)
-        constexpr static int digits = width<ReprType>::value-is_signed<ReprType>::value;
+        constexpr static int digits = width<Rep>::value-is_signed<Rep>::value;
 
         /// number of binary digits devoted to integer part of value;
         /// can be negative for specializations with especially small ranges
@@ -312,8 +312,8 @@ namespace sg14 {
         }
 
         /// constructor taking a fixed-point type
-        template<class FromReprType, int FromExponent>
-        explicit constexpr fixed_point(const fixed_point<FromReprType, FromExponent>& rhs)
+        template<class FromRep, int FromExponent>
+        explicit constexpr fixed_point(const fixed_point<FromRep, FromExponent>& rhs)
                 :_repr(fixed_point_to_repr(rhs))
         {
         }
@@ -335,8 +335,8 @@ namespace sg14 {
         }
 
         /// copy assignement operator taking a fixed-point type
-        template<class FromReprType, int FromExponent>
-        fixed_point& operator=(const fixed_point<FromReprType, FromExponent>& rhs)
+        template<class FromRep, int FromExponent>
+        fixed_point& operator=(const fixed_point<FromRep, FromExponent>& rhs)
         {
             _repr = fixed_point_to_repr(rhs);
             return *this;
@@ -430,8 +430,8 @@ namespace sg14 {
             return S(r)*inverse_one<S>();
         }
 
-        template<class FromReprType, int FromExponent>
-        static constexpr repr_type fixed_point_to_repr(const fixed_point<FromReprType, FromExponent>& rhs)
+        template<class FromRep, int FromExponent>
+        static constexpr repr_type fixed_point_to_repr(const fixed_point<FromRep, FromExponent>& rhs)
         {
             return _fixed_point_impl::shift_right<(exponent-FromExponent), repr_type>(rhs.data());
         }
@@ -475,15 +475,15 @@ namespace sg14 {
 
     /// produces equivalent fixed-point type at a new width
     ///
-    /// \tparam ReprType the \a ReprType parameter of @ref fixed_point
+    /// \tparam Rep the \a Rep parameter of @ref fixed_point
     /// \tparam Exponent the \a Exponent parameter of @ref fixed_point
     /// \tparam MinNumBits the desired size of the resultant type such that `(width<type>::value >= MinNumBytes)`
     ///
     /// \sa set_width_t
-    template<class ReprType, int Exponent, _width_type MinNumBits>
-    struct set_width<fixed_point<ReprType, Exponent>, MinNumBits> {
+    template<class Rep, int Exponent, _width_type MinNumBits>
+    struct set_width<fixed_point<Rep, Exponent>, MinNumBits> {
         /// resultant type; a fixed_point specialization that is at least \a MinNumBits bytes in width
-        using type = fixed_point<set_width_t<ReprType, MinNumBits>, Exponent>;
+        using type = fixed_point<set_width_t<Rep, MinNumBits>, Exponent>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -501,8 +501,8 @@ namespace sg14 {
                 : public std::false_type {
         };
 
-        template<class ReprType, int Exponent>
-        struct is_fixed_point<fixed_point<ReprType, Exponent>>
+        template<class Rep, int Exponent>
+        struct is_fixed_point<fixed_point<Rep, Exponent>>
                 : public std::true_type {
         };
 
@@ -633,22 +633,22 @@ namespace sg14 {
 
         // given a fixed-point and a integer type,
         // generates a fixed-point type that is as big as both of them (or as close as possible)
-        template<class LhsReprType, int LhsExponent, class RhsInteger>
+        template<class LhsRep, int LhsExponent, class RhsInteger>
         struct _common_type_mixed<
-                fixed_point<LhsReprType, LhsExponent>,
+                fixed_point<LhsRep, LhsExponent>,
                 RhsInteger,
                 typename std::enable_if<is_integral<RhsInteger>::value>::type> {
-            using type = fixed_point<typename sg14::common_type<LhsReprType, RhsInteger>::type, LhsExponent>;
+            using type = fixed_point<typename sg14::common_type<LhsRep, RhsInteger>::type, LhsExponent>;
         };
 
         // given a fixed-point and a floating-point type,
         // generates a floating-point type that is as big as both of them (or as close as possible)
-        template<class LhsReprType, int LhsExponent, class Float>
+        template<class LhsRep, int LhsExponent, class Float>
         struct _common_type_mixed<
-                fixed_point<LhsReprType, LhsExponent>,
+                fixed_point<LhsRep, LhsExponent>,
                 Float,
                 typename std::enable_if<std::is_floating_point<Float>::value>::type>
-                : sg14::common_type<float_of_same_size<LhsReprType>, Float> {
+                : sg14::common_type<float_of_same_size<LhsRep>, Float> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -657,33 +657,33 @@ namespace sg14 {
         template<class ... T>
         struct common_type;
 
-        template<class ReprType, int Exponent>
-        struct common_type<fixed_point<ReprType, Exponent>> {
+        template<class Rep, int Exponent>
+        struct common_type<fixed_point<Rep, Exponent>> {
             using type = fixed_point<
-                    typename sg14::common_type<ReprType>::type,
+                    typename sg14::common_type<Rep>::type,
                     Exponent>;
         };
 
-        template<class LhsReprType, int LhsExponent, class Rhs>
-        struct common_type<fixed_point<LhsReprType, LhsExponent>, Rhs> {
+        template<class LhsRep, int LhsExponent, class Rhs>
+        struct common_type<fixed_point<LhsRep, LhsExponent>, Rhs> {
             static_assert(!_fixed_point_impl::is_fixed_point<Rhs>::value, "fixed-point Rhs type");
-            using type = typename _common_type_mixed<fixed_point<LhsReprType, LhsExponent>, Rhs>::type;
+            using type = typename _common_type_mixed<fixed_point<LhsRep, LhsExponent>, Rhs>::type;
         };
 
-        template<class Lhs, class RhsReprType, int RhsExponent>
-        struct common_type<Lhs, fixed_point<RhsReprType, RhsExponent>> {
+        template<class Lhs, class RhsRep, int RhsExponent>
+        struct common_type<Lhs, fixed_point<RhsRep, RhsExponent>> {
             static_assert(!_fixed_point_impl::is_fixed_point<Lhs>::value, "fixed-point Lhs type");
-            using type = typename _common_type_mixed<fixed_point<RhsReprType, RhsExponent>, Lhs>::type;
+            using type = typename _common_type_mixed<fixed_point<RhsRep, RhsExponent>, Lhs>::type;
         };
 
-        template<class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
+        template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
         struct common_type<
-                fixed_point<LhsReprType, LhsExponent>,
-                fixed_point<RhsReprType, RhsExponent>> {
+                fixed_point<LhsRep, LhsExponent>,
+                fixed_point<RhsRep, RhsExponent>> {
             using type =
             typename default_arithmetic_policy::common_type<
-                    fixed_point<LhsReprType, LhsExponent>,
-                    fixed_point<RhsReprType, RhsExponent>>;
+                    fixed_point<LhsRep, LhsExponent>,
+                    fixed_point<RhsRep, RhsExponent>>;
         };
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -822,50 +822,50 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // (fixed_point @ fixed_point) comparison operators
 
-    template<class ReprType, int Exponent>
+    template<class Rep, int Exponent>
     constexpr bool operator==(
-            const fixed_point<ReprType, Exponent>& lhs,
-            const fixed_point<ReprType, Exponent>& rhs)
+            const fixed_point<Rep, Exponent>& lhs,
+            const fixed_point<Rep, Exponent>& rhs)
     {
         return lhs.data()==rhs.data();
     }
 
-    template<class ReprType, int Exponent>
+    template<class Rep, int Exponent>
     constexpr bool operator!=(
-            const fixed_point<ReprType, Exponent>& lhs,
-            const fixed_point<ReprType, Exponent>& rhs)
+            const fixed_point<Rep, Exponent>& lhs,
+            const fixed_point<Rep, Exponent>& rhs)
     {
         return lhs.data()!=rhs.data();
     }
 
-    template<class ReprType, int Exponent>
+    template<class Rep, int Exponent>
     constexpr bool operator<(
-            const fixed_point<ReprType, Exponent>& lhs,
-            const fixed_point<ReprType, Exponent>& rhs)
+            const fixed_point<Rep, Exponent>& lhs,
+            const fixed_point<Rep, Exponent>& rhs)
     {
         return lhs.data()<rhs.data();
     }
 
-    template<class ReprType, int Exponent>
+    template<class Rep, int Exponent>
     constexpr bool operator>(
-            const fixed_point<ReprType, Exponent>& lhs,
-            const fixed_point<ReprType, Exponent>& rhs)
+            const fixed_point<Rep, Exponent>& lhs,
+            const fixed_point<Rep, Exponent>& rhs)
     {
         return lhs.data()>rhs.data();
     }
 
-    template<class ReprType, int Exponent>
+    template<class Rep, int Exponent>
     constexpr bool operator>=(
-            const fixed_point<ReprType, Exponent>& lhs,
-            const fixed_point<ReprType, Exponent>& rhs)
+            const fixed_point<Rep, Exponent>& lhs,
+            const fixed_point<Rep, Exponent>& rhs)
     {
         return lhs.data()>=rhs.data();
     }
 
-    template<class ReprType, int Exponent>
+    template<class Rep, int Exponent>
     constexpr bool operator<=(
-            const fixed_point<ReprType, Exponent>& lhs,
-            const fixed_point<ReprType, Exponent>& rhs)
+            const fixed_point<Rep, Exponent>& lhs,
+            const fixed_point<Rep, Exponent>& rhs)
     {
         return lhs.data()<=rhs.data();
     }
@@ -874,61 +874,61 @@ namespace sg14 {
     // (fixed_point @ fixed_point) arithmetic operators
 
     // negate
-    template<class RhsReprType, int RhsExponent>
-    constexpr auto operator-(const fixed_point<RhsReprType, RhsExponent>& rhs)
+    template<class RhsRep, int RhsExponent>
+    constexpr auto operator-(const fixed_point<RhsRep, RhsExponent>& rhs)
     -> typename _fixed_point_impl::default_arithmetic_policy::negate<
-            fixed_point<RhsReprType, RhsExponent>>::result_type
+            fixed_point<RhsRep, RhsExponent>>::result_type
     {
         return _fixed_point_impl::policy_negate<_fixed_point_impl::default_arithmetic_policy>(rhs);
     }
 
     template<
-            class LhsReprType, int LhsExponent,
-            class RhsReprType, int RhsExponent>
+            class LhsRep, int LhsExponent,
+            class RhsRep, int RhsExponent>
     constexpr auto operator+(
-            const fixed_point<LhsReprType, LhsExponent>& lhs,
-            const fixed_point<RhsReprType, RhsExponent>& rhs)
+            const fixed_point<LhsRep, LhsExponent>& lhs,
+            const fixed_point<RhsRep, RhsExponent>& rhs)
     -> typename _fixed_point_impl::default_arithmetic_policy::add<
-            fixed_point<LhsReprType, LhsExponent>,
-            fixed_point<RhsReprType, RhsExponent>>::result_type
+            fixed_point<LhsRep, LhsExponent>,
+            fixed_point<RhsRep, RhsExponent>>::result_type
     {
         return _fixed_point_impl::policy_add<_fixed_point_impl::default_arithmetic_policy>(lhs, rhs);
     }
 
     template<
-            class LhsReprType, int LhsExponent,
-            class RhsReprType, int RhsExponent>
+            class LhsRep, int LhsExponent,
+            class RhsRep, int RhsExponent>
     constexpr auto operator-(
-            const fixed_point<LhsReprType, LhsExponent>& lhs,
-            const fixed_point<RhsReprType, RhsExponent>& rhs)
+            const fixed_point<LhsRep, LhsExponent>& lhs,
+            const fixed_point<RhsRep, RhsExponent>& rhs)
     -> typename _fixed_point_impl::default_arithmetic_policy::subtract<
-            fixed_point<LhsReprType, LhsExponent>,
-            fixed_point<RhsReprType, RhsExponent>>::result_type
+            fixed_point<LhsRep, LhsExponent>,
+            fixed_point<RhsRep, RhsExponent>>::result_type
     {
         return _fixed_point_impl::policy_subtract<_fixed_point_impl::default_arithmetic_policy>(lhs, rhs);
     }
 
     // fixed-point, fixed-point -> fixed-point
     template<
-            class LhsReprType, int LhsExponent,
-            class RhsReprType, int RhsExponent>
+            class LhsRep, int LhsExponent,
+            class RhsRep, int RhsExponent>
     constexpr auto operator*(
-            const fixed_point<LhsReprType, LhsExponent>& lhs,
-            const fixed_point<RhsReprType, RhsExponent>& rhs)
+            const fixed_point<LhsRep, LhsExponent>& lhs,
+            const fixed_point<RhsRep, RhsExponent>& rhs)
     -> typename _fixed_point_impl::default_arithmetic_policy::multiply<
-            fixed_point<LhsReprType, LhsExponent>,
-            fixed_point<RhsReprType, RhsExponent>>::result_type
+            fixed_point<LhsRep, LhsExponent>,
+            fixed_point<RhsRep, RhsExponent>>::result_type
     {
         return _fixed_point_impl::policy_multiply<_fixed_point_impl::default_arithmetic_policy>(lhs, rhs);
     }
 
-    template<class LhsReprType, int LhsExponent, class RhsReprType, int RhsExponent>
+    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
     constexpr auto operator/(
-            const fixed_point<LhsReprType, LhsExponent>& lhs,
-            const fixed_point<RhsReprType, RhsExponent>& rhs)
+            const fixed_point<LhsRep, LhsExponent>& lhs,
+            const fixed_point<RhsRep, RhsExponent>& rhs)
     -> typename _fixed_point_impl::default_arithmetic_policy::divide<
-            fixed_point<LhsReprType, LhsExponent>,
-            fixed_point<RhsReprType, RhsExponent>>::result_type
+            fixed_point<LhsRep, LhsExponent>,
+            fixed_point<RhsRep, RhsExponent>>::result_type
     {
         return _fixed_point_impl::policy_divide<_fixed_point_impl::default_arithmetic_policy>(lhs, rhs);
     }
@@ -1017,126 +1017,126 @@ namespace sg14 {
 
     // fixed-point, integer -> fixed-point
     template<
-            class ReprType, int Exponent,
+            class Rep, int Exponent,
             class Integer,
             typename = typename std::enable_if<is_integral<Integer>::value>::type>
-    constexpr auto operator*(const fixed_point<ReprType, Exponent>& lhs, const Integer& rhs)
-    -> fixed_point<decltype(std::declval<ReprType>()*std::declval<Integer>()), Exponent>
+    constexpr auto operator*(const fixed_point<Rep, Exponent>& lhs, const Integer& rhs)
+    -> fixed_point<decltype(std::declval<Rep>()*std::declval<Integer>()), Exponent>
     {
-        using repr_type = fixed_point<decltype(std::declval<ReprType>()*std::declval<Integer>()), Exponent>;
+        using repr_type = fixed_point<decltype(std::declval<Rep>()*std::declval<Integer>()), Exponent>;
         return multiply<repr_type>(lhs, fixed_point<Integer>(rhs));
     }
 
     template<
-            class ReprType, int Exponent,
+            class Rep, int Exponent,
             class Integer,
             typename = typename std::enable_if<is_integral<Integer>::value>::type>
-    constexpr auto operator/(const fixed_point<ReprType, Exponent>& lhs, const Integer& rhs)
-    -> fixed_point<decltype(std::declval<ReprType>()/std::declval<Integer>()), Exponent>
+    constexpr auto operator/(const fixed_point<Rep, Exponent>& lhs, const Integer& rhs)
+    -> fixed_point<decltype(std::declval<Rep>()/std::declval<Integer>()), Exponent>
     {
-        using result_type = fixed_point<decltype(std::declval<ReprType>()/std::declval<Integer>()), Exponent>;
+        using result_type = fixed_point<decltype(std::declval<Rep>()/std::declval<Integer>()), Exponent>;
         return divide<result_type>(lhs, fixed_point<Integer>(rhs));
     }
 
     // integer. fixed-point -> fixed-point
     template<
             class Integer,
-            class ReprType, int Exponent,
+            class Rep, int Exponent,
             typename = typename std::enable_if<is_integral<Integer>::value>::type>
-    constexpr auto operator*(const Integer& lhs, const fixed_point<ReprType, Exponent>& rhs)
-    -> fixed_point<decltype(std::declval<Integer>()*std::declval<ReprType>()), Exponent>
+    constexpr auto operator*(const Integer& lhs, const fixed_point<Rep, Exponent>& rhs)
+    -> fixed_point<decltype(std::declval<Integer>()*std::declval<Rep>()), Exponent>
     {
-        using result_type = fixed_point<decltype(std::declval<Integer>()*std::declval<ReprType>()), Exponent>;
+        using result_type = fixed_point<decltype(std::declval<Integer>()*std::declval<Rep>()), Exponent>;
         return multiply<result_type>(fixed_point<Integer>(lhs), rhs);
     }
 
     template<
             class Integer,
-            class ReprType, int Exponent,
+            class Rep, int Exponent,
             typename = typename std::enable_if<is_integral<Integer>::value>::type>
-    constexpr auto operator/(const Integer& lhs, const fixed_point<ReprType, Exponent>& rhs)
-    -> fixed_point<decltype(std::declval<Integer>()/std::declval<ReprType>()), Exponent>
+    constexpr auto operator/(const Integer& lhs, const fixed_point<Rep, Exponent>& rhs)
+    -> fixed_point<decltype(std::declval<Integer>()/std::declval<Rep>()), Exponent>
     {
-        using result_type = fixed_point<decltype(std::declval<Integer>()/std::declval<ReprType>()), Exponent>;
+        using result_type = fixed_point<decltype(std::declval<Integer>()/std::declval<Rep>()), Exponent>;
         return divide<result_type>(fixed_point<Integer>(lhs), rhs);
     }
 
     // fixed-point, floating-point -> floating-point
-    template<class LhsReprType, int LhsExponent, class Float>
+    template<class LhsRep, int LhsExponent, class Float>
     constexpr auto operator*(
-            const fixed_point<LhsReprType, LhsExponent>& lhs,
+            const fixed_point<LhsRep, LhsExponent>& lhs,
             const Float& rhs)
     -> _fixed_point_impl::common_type_t<
-            fixed_point<LhsReprType, LhsExponent>,
+            fixed_point<LhsRep, LhsExponent>,
             typename std::enable_if<std::is_floating_point<Float>::value, Float>::type>
     {
-        using result_type = _fixed_point_impl::common_type_t<fixed_point<LhsReprType, LhsExponent>, Float>;
+        using result_type = _fixed_point_impl::common_type_t<fixed_point<LhsRep, LhsExponent>, Float>;
         return static_cast<result_type>(lhs)*rhs;
     }
 
-    template<class LhsReprType, int LhsExponent, class Float>
+    template<class LhsRep, int LhsExponent, class Float>
     constexpr auto operator/(
-            const fixed_point<LhsReprType, LhsExponent>& lhs,
+            const fixed_point<LhsRep, LhsExponent>& lhs,
             const Float& rhs)
     -> _fixed_point_impl::common_type_t<
-            fixed_point<LhsReprType, LhsExponent>,
+            fixed_point<LhsRep, LhsExponent>,
             typename std::enable_if<std::is_floating_point<Float>::value, Float>::type>
     {
-        using result_type = _fixed_point_impl::common_type_t<fixed_point<LhsReprType, LhsExponent>, Float>;
+        using result_type = _fixed_point_impl::common_type_t<fixed_point<LhsRep, LhsExponent>, Float>;
         return static_cast<result_type>(lhs)/rhs;
     }
 
     // floating-point, fixed-point -> floating-point
-    template<class Float, class RhsReprType, int RhsExponent>
+    template<class Float, class RhsRep, int RhsExponent>
     constexpr auto operator*(
             const Float& lhs,
-            const fixed_point<RhsReprType, RhsExponent>& rhs)
+            const fixed_point<RhsRep, RhsExponent>& rhs)
     -> _fixed_point_impl::common_type_t<
             typename std::enable_if<std::is_floating_point<Float>::value, Float>::type,
-            fixed_point<RhsReprType, RhsExponent>>
+            fixed_point<RhsRep, RhsExponent>>
     {
-        using result_type = _fixed_point_impl::common_type_t<fixed_point<RhsReprType, RhsExponent>, Float>;
+        using result_type = _fixed_point_impl::common_type_t<fixed_point<RhsRep, RhsExponent>, Float>;
         return lhs*static_cast<result_type>(rhs);
     }
 
-    template<class Float, class RhsReprType, int RhsExponent>
+    template<class Float, class RhsRep, int RhsExponent>
     constexpr auto operator/(
             const Float& lhs,
-            const fixed_point<RhsReprType, RhsExponent>& rhs)
+            const fixed_point<RhsRep, RhsExponent>& rhs)
     -> _fixed_point_impl::common_type_t<
             typename std::enable_if<std::is_floating_point<Float>::value, Float>::type,
-            fixed_point<RhsReprType, RhsExponent>>
+            fixed_point<RhsRep, RhsExponent>>
     {
-        using result_type = _fixed_point_impl::common_type_t<fixed_point<RhsReprType, RhsExponent>, Float>;
+        using result_type = _fixed_point_impl::common_type_t<fixed_point<RhsRep, RhsExponent>, Float>;
         return lhs/
                 static_cast<result_type>(rhs);
     }
 
-    template<class LhsReprType, int Exponent, class Rhs>
-    fixed_point<LhsReprType, Exponent>& operator+=(fixed_point<LhsReprType, Exponent>& lhs, const Rhs& rhs)
+    template<class LhsRep, int Exponent, class Rhs>
+    fixed_point<LhsRep, Exponent>& operator+=(fixed_point<LhsRep, Exponent>& lhs, const Rhs& rhs)
     {
-        return lhs = lhs+fixed_point<LhsReprType, Exponent>(rhs);
+        return lhs = lhs+fixed_point<LhsRep, Exponent>(rhs);
     }
 
-    template<class LhsReprType, int Exponent, class Rhs>
-    fixed_point<LhsReprType, Exponent>& operator-=(fixed_point<LhsReprType, Exponent>& lhs, const Rhs& rhs)
+    template<class LhsRep, int Exponent, class Rhs>
+    fixed_point<LhsRep, Exponent>& operator-=(fixed_point<LhsRep, Exponent>& lhs, const Rhs& rhs)
     {
-        return lhs = lhs-fixed_point<LhsReprType, Exponent>(rhs);
+        return lhs = lhs-fixed_point<LhsRep, Exponent>(rhs);
     }
 
-    template<class LhsReprType, int Exponent>
+    template<class LhsRep, int Exponent>
     template<class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy>
-    fixed_point<LhsReprType, Exponent>&
-    fixed_point<LhsReprType, Exponent>::operator*=(const Rhs& rhs)
+    fixed_point<LhsRep, Exponent>&
+    fixed_point<LhsRep, Exponent>::operator*=(const Rhs& rhs)
     {
         _repr *= static_cast<repr_type>(rhs);
         return *this;
     }
 
-    template<class LhsReprType, int Exponent>
+    template<class LhsRep, int Exponent>
     template<class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy>
-    fixed_point<LhsReprType, Exponent>&
-    fixed_point<LhsReprType, Exponent>::operator/=(const Rhs& rhs)
+    fixed_point<LhsRep, Exponent>&
+    fixed_point<LhsRep, Exponent>::operator/=(const Rhs& rhs)
     {
         _repr /= static_cast<repr_type>(rhs);
         return *this;

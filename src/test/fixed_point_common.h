@@ -49,8 +49,8 @@ namespace _impl {
     using namespace sg14::_fixed_point_impl;
 }
 
-template <typename ReprType=test_int, int Exponent=0>
-using fixed_point = sg14::fixed_point<ReprType, Exponent>;
+template <typename Rep=test_int, int Exponent=0>
+using fixed_point = sg14::fixed_point<Rep, Exponent>;
 
 template<int IntegerDigits, int FractionalDigits = 0, class Archetype = test_signed>
 using make_fixed = sg14::make_fixed<IntegerDigits, FractionalDigits, Archetype>;
@@ -665,13 +665,13 @@ static_assert(y == 5.75, "usage test failed");
 ////////////////////////////////////////////////////////////////////////////////
 // FixedPointTester
 
-template <class ReprType, int Exponent>
+template <class Rep, int Exponent>
 struct FixedPointTester {
-    using fixed_point = ::fixed_point<ReprType, Exponent>;
+    using fixed_point = ::fixed_point<Rep, Exponent>;
 
-    // ReprType
-    using repr_type = ReprType;
-    static_assert(sizeof(repr_type) == sizeof(fixed_point), "fixed_point must be the same size as its ReprType");
+    // Rep
+    using repr_type = Rep;
+    static_assert(sizeof(repr_type) == sizeof(fixed_point), "fixed_point must be the same size as its Rep");
     static_assert(
             is_same<repr_type, typename fixed_point::repr_type>::value,
             "mismatched repr_type");    // possibly overly restrictive (e.g. hardware-specific specializations)
@@ -686,7 +686,7 @@ struct FixedPointTester {
     // simply assignment to and from underlying representation
     using numeric_limits = std::numeric_limits<fixed_point>;
     static constexpr fixed_point min = fixed_point::from_data(repr_type(1));
-    static_assert(min.data() == repr_type(1), "all ReprType types should be able to store the number 1!");
+    static_assert(min.data() == repr_type(1), "all Rep types should be able to store the number 1!");
 
     // sg14::_impl::widen_integer_result_t
     static_assert(
@@ -714,9 +714,9 @@ struct FixedPointTester {
     static_assert(is_same<
                     _impl::common_type_t<fixed_point>,
                     ::fixed_point<
-                            typename sg14::common_type<ReprType>::type,
+                            typename sg14::common_type<Rep>::type,
                             Exponent>>::value,
-            "a fixed point specialization follows the same implicit promotion rules as its ReprType");
+            "a fixed point specialization follows the same implicit promotion rules as its Rep");
 
     static_assert(
             is_same<
@@ -729,7 +729,7 @@ struct FixedPointTester {
             is_same<
                     fixed_point,
                     _impl::common_type_t<fixed_point, fixed_point>>::value,
-            "a fixed point specialization follows the same implicit promotion rules as its ReprType");
+            "a fixed point specialization follows the same implicit promotion rules as its Rep");
 
     // for convenience, fixed_point API assumes binary and unary homogeneous common_types are the same
     static_assert(
@@ -743,12 +743,12 @@ struct FixedPointTester {
             is_same<
                     decltype(min + min),
                     ::fixed_point<decltype(declval<repr_type>() + declval<repr_type>()), exponent>>::value,
-            "promotion rule for addition fixed_point<ReprType> should match its ReprType");
+            "promotion rule for addition fixed_point<Rep> should match its Rep");
     static_assert(
             is_same<
                     decltype(min - min),
                     ::fixed_point<decltype(declval<repr_type>() - declval<repr_type>()), exponent>>::value,
-            "promotion rule for subtraction fixed_point<ReprType> should match its ReprType");
+            "promotion rule for subtraction fixed_point<Rep> should match its Rep");
 
     // assorted tests of +, -, * and /
     static_assert(min + min == 2 * min, "basic arithmetic isn't working");
@@ -757,27 +757,27 @@ struct FixedPointTester {
 #endif
 };
 
-template <typename ReprType>
-struct FixedPointReprTypeTester {
-    FixedPointTester<ReprType, -100> _0;
-    FixedPointTester<ReprType, -10> _1;
-    FixedPointTester<ReprType, -1> _2;
-    FixedPointTester<ReprType, 0> _3;
-    FixedPointTester<ReprType, 1> _4;
-    FixedPointTester<ReprType, 10> _5;
-    FixedPointTester<ReprType, 100> _6;
+template <typename Rep>
+struct FixedPointRepTester {
+    FixedPointTester<Rep, -100> _0;
+    FixedPointTester<Rep, -10> _1;
+    FixedPointTester<Rep, -1> _2;
+    FixedPointTester<Rep, 0> _3;
+    FixedPointTester<Rep, 1> _4;
+    FixedPointTester<Rep, 10> _5;
+    FixedPointTester<Rep, 100> _6;
 };
 
-template struct FixedPointReprTypeTester<int8>;
-template struct FixedPointReprTypeTester<uint8>;
+template struct FixedPointRepTester<int8>;
+template struct FixedPointRepTester<uint8>;
 
-template struct FixedPointReprTypeTester<int16>;
-template struct FixedPointReprTypeTester<uint16>;
+template struct FixedPointRepTester<int16>;
+template struct FixedPointRepTester<uint16>;
 
-template struct FixedPointReprTypeTester<int32>;
-template struct FixedPointReprTypeTester<uint32>;
+template struct FixedPointRepTester<int32>;
+template struct FixedPointRepTester<uint32>;
 
 #if defined(_GLIBCXX_USE_INT128)
-template struct FixedPointReprTypeTester<int64>;
-template struct FixedPointReprTypeTester<uint64>;
+template struct FixedPointRepTester<int64>;
+template struct FixedPointRepTester<uint64>;
 #endif

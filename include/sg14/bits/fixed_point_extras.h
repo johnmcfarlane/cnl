@@ -21,8 +21,8 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::abs
 
-    template<class ReprType, int Exponent, typename std::enable_if<std::is_signed<ReprType>::value, int>::type Dummy = 0>
-    constexpr auto abs(const fixed_point <ReprType, Exponent>& x) noexcept
+    template<class Rep, int Exponent, typename std::enable_if<std::is_signed<Rep>::value, int>::type Dummy = 0>
+    constexpr auto abs(const fixed_point <Rep, Exponent>& x) noexcept
     -> _fixed_point_impl::common_type_t<decltype(x), decltype(-x)>
     {
         using common_type = _fixed_point_impl::common_type_t<decltype(x), decltype(-x)>;
@@ -31,9 +31,9 @@ namespace sg14 {
                : static_cast<common_type>(-x);
     }
 
-    template<class ReprType, int Exponent, typename std::enable_if<std::is_unsigned<ReprType>::value, int>::type Dummy = 0>
-    constexpr fixed_point <ReprType, Exponent>
-    abs(const fixed_point <ReprType, Exponent>& x) noexcept
+    template<class Rep, int Exponent, typename std::enable_if<std::is_unsigned<Rep>::value, int>::type Dummy = 0>
+    constexpr fixed_point <Rep, Exponent>
+    abs(const fixed_point <Rep, Exponent>& x) noexcept
     {
         return x;
     }
@@ -42,34 +42,34 @@ namespace sg14 {
     // sg14::sqrt helper functions
 
     namespace _fixed_point_impl {
-        template<class ReprType>
-        constexpr ReprType sqrt_bit(
-                ReprType n,
-                ReprType bit = ReprType(1) << (width<ReprType>::value-2))
+        template<class Rep>
+        constexpr Rep sqrt_bit(
+                Rep n,
+                Rep bit = Rep(1) << (width<Rep>::value-2))
         {
-            return (bit>n) ? sqrt_bit<ReprType>(n, bit >> 2) : bit;
+            return (bit>n) ? sqrt_bit<Rep>(n, bit >> 2) : bit;
         }
 
-        template<class ReprType>
-        constexpr ReprType sqrt_solve3(
-                ReprType n,
-                ReprType bit,
-                ReprType result)
+        template<class Rep>
+        constexpr Rep sqrt_solve3(
+                Rep n,
+                Rep bit,
+                Rep result)
         {
-            return (bit!=ReprType{0})
+            return (bit!=Rep{0})
                    ? (n>=result+bit)
-                     ? sqrt_solve3<ReprType>(
-                                    static_cast<ReprType>(n-(result+bit)),
+                     ? sqrt_solve3<Rep>(
+                                    static_cast<Rep>(n-(result+bit)),
                                     bit >> 2,
-                                    static_cast<ReprType>((result >> 1)+bit))
-                     : sqrt_solve3<ReprType>(n, bit >> 2, result >> 1)
+                                    static_cast<Rep>((result >> 1)+bit))
+                     : sqrt_solve3<Rep>(n, bit >> 2, result >> 1)
                    : result;
         }
 
-        template<class ReprType>
-        constexpr ReprType sqrt_solve1(ReprType n)
+        template<class Rep>
+        constexpr Rep sqrt_solve1(Rep n)
         {
-            return sqrt_solve3<ReprType>(n, sqrt_bit<ReprType>(n), ReprType{0});
+            return sqrt_solve3<Rep>(n, sqrt_bit<Rep>(n), Rep{0});
         }
     }
 
@@ -78,18 +78,18 @@ namespace sg14 {
 
     // https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_.28base_2.29
     // placeholder implementation; slow when calculated at run-time?
-    template<class ReprType, int Exponent>
-    constexpr fixed_point <ReprType, Exponent>
-    sqrt(const fixed_point <ReprType, Exponent>& x)
+    template<class Rep, int Exponent>
+    constexpr fixed_point <Rep, Exponent>
+    sqrt(const fixed_point <Rep, Exponent>& x)
     {
-        using widened_type = fixed_point<set_width_t<ReprType, width<ReprType>::value*2>, Exponent*2>;
+        using widened_type = fixed_point<set_width_t<Rep, width<Rep>::value*2>, Exponent*2>;
         return
 #if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
-                (x<fixed_point<ReprType, Exponent>(0))
+                (x<fixed_point<Rep, Exponent>(0))
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
 #endif
-                fixed_point<ReprType, Exponent>::from_data(
-                        static_cast<ReprType>(_fixed_point_impl::sqrt_solve1(widened_type{x}.data())));
+                fixed_point<Rep, Exponent>::from_data(
+                        static_cast<Rep>(_fixed_point_impl::sqrt_solve1(widened_type{x}.data())));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -100,55 +100,55 @@ namespace sg14 {
     // many <cmath> functions are not constexpr.
 
     namespace _fixed_point_impl {
-        template<class ReprType, int Exponent, float_of_same_size<ReprType>(* F)(
-                float_of_same_size<ReprType>)>
-        constexpr fixed_point <ReprType, Exponent>
-        crib(const fixed_point <ReprType, Exponent>& x) noexcept
+        template<class Rep, int Exponent, float_of_same_size<Rep>(* F)(
+                float_of_same_size<Rep>)>
+        constexpr fixed_point <Rep, Exponent>
+        crib(const fixed_point <Rep, Exponent>& x) noexcept
         {
-            using floating_point = float_of_same_size<ReprType>;
-            return static_cast<fixed_point<ReprType, Exponent>>(F(static_cast<floating_point>(x)));
+            using floating_point = float_of_same_size<Rep>;
+            return static_cast<fixed_point<Rep, Exponent>>(F(static_cast<floating_point>(x)));
         }
     }
 
-    template<class ReprType, int Exponent>
-    constexpr fixed_point <ReprType, Exponent>
-    sin(const fixed_point <ReprType, Exponent>& x) noexcept
+    template<class Rep, int Exponent>
+    constexpr fixed_point <Rep, Exponent>
+    sin(const fixed_point <Rep, Exponent>& x) noexcept
     {
-        return _fixed_point_impl::crib<ReprType, Exponent, std::sin>(x);
+        return _fixed_point_impl::crib<Rep, Exponent, std::sin>(x);
     }
 
-    template<class ReprType, int Exponent>
-    constexpr fixed_point <ReprType, Exponent>
-    cos(const fixed_point <ReprType, Exponent>& x) noexcept
+    template<class Rep, int Exponent>
+    constexpr fixed_point <Rep, Exponent>
+    cos(const fixed_point <Rep, Exponent>& x) noexcept
     {
-        return _fixed_point_impl::crib<ReprType, Exponent, std::cos>(x);
+        return _fixed_point_impl::crib<Rep, Exponent, std::cos>(x);
     }
 
-    template<class ReprType, int Exponent>
-    constexpr fixed_point <ReprType, Exponent>
-    exp(const fixed_point <ReprType, Exponent>& x) noexcept
+    template<class Rep, int Exponent>
+    constexpr fixed_point <Rep, Exponent>
+    exp(const fixed_point <Rep, Exponent>& x) noexcept
     {
-        return _fixed_point_impl::crib<ReprType, Exponent, std::exp>(x);
+        return _fixed_point_impl::crib<Rep, Exponent, std::exp>(x);
     }
 
-    template<class ReprType, int Exponent>
-    constexpr fixed_point <ReprType, Exponent>
-    pow(const fixed_point <ReprType, Exponent>& x) noexcept
+    template<class Rep, int Exponent>
+    constexpr fixed_point <Rep, Exponent>
+    pow(const fixed_point <Rep, Exponent>& x) noexcept
     {
-        return _fixed_point_impl::crib<ReprType, Exponent, std::pow>(x);
+        return _fixed_point_impl::crib<Rep, Exponent, std::pow>(x);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::fixed_point streaming - (placeholder implementation)
 
-    template<class ReprType, int Exponent>
-    ::std::ostream& operator<<(::std::ostream& out, const fixed_point <ReprType, Exponent>& fp)
+    template<class Rep, int Exponent>
+    ::std::ostream& operator<<(::std::ostream& out, const fixed_point <Rep, Exponent>& fp)
     {
         return out << static_cast<long double>(fp);
     }
 
-    template<class ReprType, int Exponent>
-    ::std::istream& operator>>(::std::istream& in, fixed_point <ReprType, Exponent>& fp)
+    template<class Rep, int Exponent>
+    ::std::istream& operator>>(::std::istream& in, fixed_point <Rep, Exponent>& fp)
     {
         long double ld;
         in >> ld;
@@ -164,10 +164,10 @@ namespace std {
     // note: some members are guessed,
     // some are temporary (assuming rounding style, traps etc.)
     // and some are undefined
-    template<class ReprType, int Exponent>
-    struct numeric_limits<sg14::fixed_point<ReprType, Exponent>> {
+    template<class Rep, int Exponent>
+    struct numeric_limits<sg14::fixed_point<Rep, Exponent>> {
         // fixed-point-specific helpers
-        using _value_type = sg14::fixed_point<ReprType, Exponent>;
+        using _value_type = sg14::fixed_point<Rep, Exponent>;
         using _repr_type = typename _value_type::repr_type;
         using _repr_numeric_limits = numeric_limits<_repr_type>;
 

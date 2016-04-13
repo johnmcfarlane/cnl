@@ -107,18 +107,18 @@ using custom_integer = overflow_integer<Covf, rounding_integer<Crnd, sized_integ
 ### The `fixed_point` Class Template
 
 This class template is described in detail in [P0037](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0037r1.html).
-It stores an integer of type, `ReprType`, which is left-shifted by fixed amount, `Exponent`, 
+It stores an integer of type, `Rep`, which is left-shifted by fixed amount, `Exponent`, 
 to produce an approximation of a real number.
 
 ```
-template <typename ReprType = int, int Exponent = 0>
+template <typename Rep = int, int Exponent = 0>
 class fixed_point;
 ```
 
 The intention is to treat integers as the sub-set of fixed-point numbers that have exponent, zero.
 As far as practically possible, `fixed_point<T, 0>` should be interchangeable with `T`.
 
-While the most obvious choices for `ReprType` are built-in integers, any integer-like type is acceptable.
+While the most obvious choices for `Rep` are built-in integers, any integer-like type is acceptable.
 The `custom_integer` type described above is an ideal candidate 
 and illustrates how `fixed_point` is designed to be extensible.
 For example, a u16.16 fixed-point type with high-fidelity rounding characteristics might be expressed as:

@@ -103,9 +103,9 @@ namespace sg14 {
             : is_signed<Archetype> {
     };
 
-    template<class ReprType, int Exponent>
-    struct is_signed<fixed_point<ReprType, Exponent>>
-            : is_signed<ReprType> {
+    template<class Rep, int Exponent>
+    struct is_signed<fixed_point<Rep, Exponent>>
+            : is_signed<Rep> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -116,9 +116,9 @@ namespace sg14 {
             : is_unsigned<Archetype> {
     };
 
-    template<class ReprType, int Exponent>
-    struct is_unsigned<fixed_point<ReprType, Exponent>>
-            : is_unsigned<ReprType> {
+    template<class Rep, int Exponent>
+    struct is_unsigned<fixed_point<Rep, Exponent>>
+            : is_unsigned<Rep> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -215,8 +215,8 @@ namespace sg14 {
                 :_value(rhs._data()) { }
 
         /// constructor taking fixed_point type
-        template<class RhsReprType, int RhsExponent>
-        explicit constexpr elastic(const fixed_point<RhsReprType, RhsExponent>& value)
+        template<class RhsRep, int RhsExponent>
+        explicit constexpr elastic(const fixed_point<RhsRep, RhsExponent>& value)
                 :_value(value) { }
 
         /// constructor converting from any other type
