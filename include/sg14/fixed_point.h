@@ -288,8 +288,8 @@ namespace sg14 {
 
     private:
         // constructor taking representation explicitly using operator++(int)-style trick
-        constexpr fixed_point(repr_type repr, int)
-                :_r(repr)
+        constexpr fixed_point(repr_type r, int)
+                :_r(r)
         {
         }
 
@@ -375,9 +375,9 @@ namespace sg14 {
         }
 
         /// creates an instance given the underlying representation value
-        static constexpr fixed_point from_data(repr_type repr)
+        static constexpr fixed_point from_data(repr_type r)
         {
-            return fixed_point(repr, 0);
+            return fixed_point(r, 0);
         }
 
     private:
