@@ -12,30 +12,22 @@
 #include <sg14/auxiliary/elastic.h>
 
 namespace sg14 {
-    using boost::multiprecision::cpp_int_backend;
-    using boost::multiprecision::cpp_int_check_type;
-    using boost::multiprecision::cpp_integer_type;
-    using boost::multiprecision::et_off;
-    using boost::multiprecision::expression_template_option;
-    using boost::multiprecision::is_signed_number;
-    using boost::multiprecision::is_unsigned_number;
-    using boost::multiprecision::number;
-    using boost::multiprecision::signed_magnitude;
-    using boost::multiprecision::unchecked;
-    using boost::multiprecision::unsigned_magnitude;
+    namespace _bmp {
+        using namespace boost::multiprecision;
+    }
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
-    // type trait specializations of boost::multiprecision types
+    // type trait specializations of _bmp types
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::is_signed<{un}signed_multiprecision>
 
     template<
             class Backend,
-            expression_template_option ExpressionTemplates>
-    struct is_signed<number<Backend, ExpressionTemplates>>
-            : is_signed_number<number<Backend, ExpressionTemplates>> {
+            _bmp::expression_template_option ExpressionTemplates>
+    struct is_signed<_bmp::number<Backend, ExpressionTemplates>>
+            : _bmp::is_signed_number<_bmp::number<Backend, ExpressionTemplates>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -43,30 +35,30 @@ namespace sg14 {
 
     template<
             class Backend,
-            expression_template_option ExpressionTemplates>
-    struct is_unsigned<number<Backend, ExpressionTemplates>>
-            : is_unsigned_number<number<Backend, ExpressionTemplates>> {
+            _bmp::expression_template_option ExpressionTemplates>
+    struct is_unsigned<_bmp::number<Backend, ExpressionTemplates>>
+            : _bmp::is_unsigned_number<_bmp::number<Backend, ExpressionTemplates>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::make_signed specializations
 
-    // sg14::make_signed<cpp_int_backend<>>
-    template<unsigned MinBits, unsigned MaxBits, cpp_integer_type SignType, cpp_int_check_type Checked, class Allocator>
-    struct make_signed<cpp_int_backend<
+    // sg14::make_signed<_bmp::cpp_int_backend<>>
+    template<unsigned MinBits, unsigned MaxBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
+    struct make_signed<_bmp::cpp_int_backend<
             MinBits, MaxBits, SignType, Checked, Allocator>> {
-        using type = cpp_int_backend<
-                MinBits, MaxBits, signed_magnitude, Checked, Allocator>;
+        using type = _bmp::cpp_int_backend<
+                MinBits, MaxBits, _bmp::signed_magnitude, Checked, Allocator>;
     };
 
-    // sg14::make_signed<number>
+    // sg14::make_signed<_bmp::number>
     template<
             class Backend,
-            expression_template_option ExpressionTemplates>
-    struct make_signed<number<
+            _bmp::expression_template_option ExpressionTemplates>
+    struct make_signed<_bmp::number<
             Backend,
             ExpressionTemplates>> {
-        using type = number<
+        using type = _bmp::number<
                 typename make_signed<Backend>::type,
                 ExpressionTemplates>;
     };
@@ -74,22 +66,22 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::make_unsigned specializations
 
-    // sg14::make_unsigned<cpp_int_backend<>>
-    template<unsigned MinBits, unsigned MaxBits, cpp_integer_type SignType, cpp_int_check_type Checked, class Allocator>
-    struct make_unsigned<cpp_int_backend<
+    // sg14::make_unsigned<_bmp::cpp_int_backend<>>
+    template<unsigned MinBits, unsigned MaxBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
+    struct make_unsigned<_bmp::cpp_int_backend<
             MinBits, MaxBits, SignType, Checked, Allocator>> {
-        using type = cpp_int_backend<
-                MinBits, MaxBits, unsigned_magnitude, Checked, Allocator>;
+        using type = _bmp::cpp_int_backend<
+                MinBits, MaxBits, _bmp::unsigned_magnitude, Checked, Allocator>;
     };
 
-    // sg14::make_unsigned<number>
+    // sg14::make_unsigned<_bmp::number>
     template<
             class Backend,
-            expression_template_option ExpressionTemplates>
-    struct make_unsigned<number<
+            _bmp::expression_template_option ExpressionTemplates>
+    struct make_unsigned<_bmp::number<
             Backend,
             ExpressionTemplates>> {
-        using type = number<
+        using type = _bmp::number<
                 typename make_unsigned<Backend>::type,
                 ExpressionTemplates>;
     };
@@ -97,47 +89,47 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::is_integral specialization
 
-    // sg14::is_integral<number<>>
+    // sg14::is_integral<_bmp::number<>>
     template<
             class Backend,
-            expression_template_option ExpressionTemplates>
-    struct is_integral<number<
+            _bmp::expression_template_option ExpressionTemplates>
+    struct is_integral<_bmp::number<
             Backend,
             ExpressionTemplates>> : std::true_type {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::resize specializations
+    // sg14::set_width specializations
 
-    // sg14::resize<cpp_int_backend<>>
+    // sg14::set_width<_bmp::cpp_int_backend<>>
     template<
             unsigned MinBits,
             unsigned MaxBits,
-            cpp_integer_type SignType,
-            cpp_int_check_type Checked,
+            _bmp::cpp_integer_type SignType,
+            _bmp::cpp_int_check_type Checked,
             _width_type MinNumBits>
     struct set_width<
-            cpp_int_backend<
+            _bmp::cpp_int_backend<
                     MinBits, MaxBits, SignType, Checked>,
             MinNumBits> {
-        using type = cpp_int_backend<
+        using type = _bmp::cpp_int_backend<
                 MinNumBits,
                 MinNumBits,
-                unsigned_magnitude,
+                _bmp::unsigned_magnitude,
                 Checked>;
     };
 
-    // sg14::resize<number>
+    // sg14::set_width<_bmp::number>
     template<
             class Backend,
-            expression_template_option ExpressionTemplates,
+            _bmp::expression_template_option ExpressionTemplates,
             _width_type MinNumBits>
     struct set_width<
-            number<
+            _bmp::number<
                     Backend,
                     ExpressionTemplates>,
             MinNumBits> {
-        using type = number<
+        using type = _bmp::number<
                 typename set_width<Backend, MinNumBits>::type,
                 ExpressionTemplates>;
     };
@@ -145,50 +137,37 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::width specializations
 
-    // sg14::width<boost::multiprecision::cpp_int_backend<>>
-    template<unsigned MinBits, unsigned MaxBits, cpp_integer_type SignType, cpp_int_check_type Checked>
-    struct width<cpp_int_backend<MinBits, MaxBits, SignType, Checked>> : std::integral_constant<int, MaxBits> {
+    // sg14::width<_bmp::cpp_int_backend<>>
+    template<unsigned MinBits, unsigned MaxBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked>
+    struct width<_bmp::cpp_int_backend<MinBits, MaxBits, SignType, Checked>> : std::integral_constant<int, MaxBits> {
     };
 
-    // sg14::width<boost::multiprecision::number>
-    template<class Backend, expression_template_option ExpressionTemplates>
-    struct width<number<Backend, ExpressionTemplates>> : width<Backend> {
+    // sg14::width<_bmp::number>
+    template<class Backend, _bmp::expression_template_option ExpressionTemplates>
+    struct width<_bmp::number<Backend, ExpressionTemplates>> : width<Backend> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
-    // aliases of boost::multiprecision types
+    // aliases of _bmp types
 
     namespace _sized_integer_impl {
-        template<unsigned NumBits, cpp_integer_type SignType>
-        using backend = cpp_int_backend<
-                NumBits, NumBits, SignType, unchecked, void>;
+        template<unsigned NumBits, _bmp::cpp_integer_type SignType>
+        using backend = _bmp::cpp_int_backend<
+                NumBits, NumBits, SignType, _bmp::unchecked, void>;
     }
 
     // sg14::signed_multiprecision - a signed integer of arbitrary size
     template<unsigned NumBits = width<int>::value>
-    using signed_multiprecision = number<_sized_integer_impl::backend<NumBits, signed_magnitude>, et_off>;
+    using signed_multiprecision = _bmp::number<_sized_integer_impl::backend<NumBits, _bmp::signed_magnitude>, _bmp::et_off>;
 
     // sg14::unsigned_multiprecision - an unsigned integer of arbitrary size
     template<unsigned NumBits = width<int>::value>
-    using unsigned_multiprecision = number<_sized_integer_impl::backend<NumBits, unsigned_magnitude>, et_off>;
+    using unsigned_multiprecision = _bmp::number<_sized_integer_impl::backend<NumBits, _bmp::unsigned_magnitude>, _bmp::et_off>;
 
     // sg14::unsigned_multiprecision - an integer of arbitrary size
     template<unsigned NumBits = width<int>::value>
     using multiprecision = signed_multiprecision<NumBits>;
-
-    ////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
-    // elastic_multiprecision - elastic type with virtually no top limit on capacity
-
-    template<int IntegerDigits, int FractionalDigits = 0, bool IsSigned = true>
-    using elastic_multiprecision = elastic<
-            IntegerDigits,
-            FractionalDigits,
-            typename std::conditional<
-                    IsSigned,
-                    signed_multiprecision<>,
-                    unsigned_multiprecision<>>::type>;
 }
 
 #endif // _SG14_SIZED_INTEGER

@@ -110,7 +110,7 @@ This class template is described in detail in [P0037](http://www.open-std.org/jt
 It stores an integer of type, `Rep`, which is left-shifted by fixed amount, `Exponent`, 
 to produce an approximation of a real number.
 
-```
+```c++
 template <typename Rep = int, int Exponent = 0>
 class fixed_point;
 ```
@@ -123,7 +123,7 @@ The `custom_integer` type described above is an ideal candidate
 and illustrates how `fixed_point` is designed to be extensible.
 For example, a u16.16 fixed-point type with high-fidelity rounding characteristics might be expressed as:
 
-```
+```c++
 fixed_point<
     custom_integer<
         rounding::tie_to_odd,  // high-fidelity rounding 
@@ -138,7 +138,7 @@ fixed_point<
 The third and final quality required in order to build our general-purpose numeric type is referred to here as elasticity: 
 the ability to avoid run-time overflow by increasing the capacity of types resulting from arithmetic operations. 
 
-```
+```c++
 template <int IntegerDigits, int FractionalDigits = 0, typename Archetype = signed>
 class elastic;
 ```
@@ -147,7 +147,7 @@ Like `nonnegative` and `negatable`, the return type of arithmetic operations bet
 are chosen to accommodate the added digits necessary to represent the result.
 Consider the example of calculating a hypotenuse:
 
-```
+```c++
 using inout = elastic<7, 8, signed>;  // type used for input and output values, s7.8
 inout x = ???, y = ???;  // inputs; s7.8 
 
@@ -190,7 +190,7 @@ Putting all of these three components together, it is possible to express numeri
 
 A high-precision, exception-throwing, (but slow) real-number type might be
 
-```
+```c++
 elastic<7, 8, integer<rounding::tie_to_odd, overflow::exception>>
 ```
 
@@ -198,7 +198,7 @@ which privately uses `fixed_point<integer<rounding::tie_to_odd, overflow::except
 
 A faster (but error prone and imprecise) type might be
 
-```
+```c++
 elastic<7, 8, int>;
 ```
 
@@ -206,7 +206,7 @@ which privately uses `fixed_point<int16_t, -8>` and requires the inclusion of si
 
 A fully customizable type of the kind proposed in [P0106](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/p0106r0.html) might look like:
 
-```
+```c++
 template <int Range, int Resolution, round Crnd = rounding::tie_to_odd, overflow Covf = overflow::exception>
 using negatable = elastic<Range, - Resolution, custom_integer<Crnd, Covf>>;
 ```
@@ -220,7 +220,7 @@ It must also support bit-shift and comparison operations.
 
 In addition to these operators, `Archetype` needs for certain type traits to be specialized. 
 Ideally, standard traits which describe built-in types would be permitted to be specialized for this purpose.
-Existing traits include: `is_signed` and `is_unsigned`, `make_signed` and `make_unsigned`, `is_integral` and `common_type`.
+Existing traits include: `is_signed`. `is_unsigned`, `make_signed`, `make_unsigned` and `is_integral`.
 
 Two additional traits that are needed involve the ability to get and set the width of a type in bits. 
 They could take the following form
@@ -256,7 +256,7 @@ The method of specifying the base of a fixed-point type in a user-friendly way i
 Accessibility of the existing API by the intended audience is already prohibitive. 
 At the very least the proposed types would need to be moved to type aliases such as
 
-```
+```c++
 using binary_fixed_point = fixed_point<int, -8, 2>;
 ```
 
