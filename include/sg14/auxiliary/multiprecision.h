@@ -9,7 +9,7 @@
 
 #include <boost/multiprecision/cpp_int.hpp>
 
-#include <sg14/elastic.h>
+#include <sg14/auxiliary/elastic.h>
 
 namespace sg14 {
     using boost::multiprecision::cpp_int_backend;

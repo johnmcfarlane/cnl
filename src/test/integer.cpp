@@ -4,7 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "integer.h"
+#include "sg14/auxiliary/integer.h"
 
 using sg14::_integer_impl::is_integer_class;
 using sg14::_integer_impl::is_negative_overflow;
