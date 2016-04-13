@@ -103,9 +103,9 @@ namespace sg14 {
             : is_signed<Archetype> {
     };
 
-    template<class ReprType, int Exponent>
-    struct is_signed<fixed_point<ReprType, Exponent>>
-            : is_signed<ReprType> {
+    template<class Rep, int Exponent>
+    struct is_signed<fixed_point<Rep, Exponent>>
+            : is_signed<Rep> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -116,9 +116,9 @@ namespace sg14 {
             : is_unsigned<Archetype> {
     };
 
-    template<class ReprType, int Exponent>
-    struct is_unsigned<fixed_point<ReprType, Exponent>>
-            : is_unsigned<ReprType> {
+    template<class Rep, int Exponent>
+    struct is_unsigned<fixed_point<Rep, Exponent>>
+            : is_unsigned<Rep> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -215,8 +215,8 @@ namespace sg14 {
                 :_value(rhs._data()) { }
 
         /// constructor taking fixed_point type
-        template<class RhsReprType, int RhsExponent>
-        explicit constexpr elastic(const fixed_point<RhsReprType, RhsExponent>& value)
+        template<class RhsRep, int RhsExponent>
+        explicit constexpr elastic(const fixed_point<RhsRep, RhsExponent>& value)
                 :_value(value) { }
 
         /// constructor converting from any other type
@@ -497,10 +497,10 @@ namespace sg14 {
     {
         using result_type = _elastic_impl::multiply_result_type<LhsIntegerDigits, LhsFractionalDigits, LhsArchetype, RhsIntegerDigits, RhsFractionalDigits, RhsArchetype>;
         using fixed_point_result_type = typename result_type::_fixed_point_type;
-        using fixed_point_result_repr_type = typename fixed_point_result_type::repr_type;
+        using fixed_point_result_rep = typename fixed_point_result_type::rep;
 
-        using lhs_intermediate_fixed_point_type = fixed_point<fixed_point_result_repr_type, -LhsFractionalDigits>;
-        using rhs_intermediate_fixed_point_type = fixed_point<fixed_point_result_repr_type, -RhsFractionalDigits>;
+        using lhs_intermediate_fixed_point_type = fixed_point<fixed_point_result_rep, -LhsFractionalDigits>;
+        using rhs_intermediate_fixed_point_type = fixed_point<fixed_point_result_rep, -RhsFractionalDigits>;
 
         return static_cast<result_type>(
                 sg14::multiply<fixed_point_result_type>(
@@ -540,7 +540,7 @@ namespace std {
         using _fixed_point_limits = numeric_limits<_fixed_point_type>;
         static_assert(_fixed_point_limits::is_specialized,
                 "specialization of sg14::fixed_point<> is necessary for specialization of sg14::elastic<>");
-        using _fixed_point_repr_type = typename _fixed_point_type::repr_type;
+        using _fixed_point_rep = typename _fixed_point_type::rep;
 
         // standard members
 
@@ -555,16 +555,16 @@ namespace std {
         {
             return static_cast<_value_type>(
                     _fixed_point_type::from_data(
-                            numeric_limits<_fixed_point_repr_type>::max()
-                                    >> (numeric_limits<_fixed_point_repr_type>::digits-digits)));
+                            numeric_limits<_fixed_point_rep>::max()
+                                    >> (numeric_limits<_fixed_point_rep>::digits-digits)));
         }
 
         static constexpr _value_type lowest() noexcept
         {
             return static_cast<_value_type>(
                     _fixed_point_type::from_data(
-                            numeric_limits<_fixed_point_repr_type>::lowest()
-                                    >> (numeric_limits<_fixed_point_repr_type>::digits-digits)));
+                            numeric_limits<_fixed_point_rep>::lowest()
+                                    >> (numeric_limits<_fixed_point_rep>::digits-digits)));
         }
 
         static constexpr int digits = _value_type::integer_digits+_value_type::fractional_digits;

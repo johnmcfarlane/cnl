@@ -252,7 +252,7 @@ struct positive_elastic_test {
 
     static_assert(sg14::is_elastic<elastic_type>::value, "sg14::is_elastic test failed");
     static_assert(!sg14::is_elastic<fixed_point_type>::value, "sg14::is_elastic test failed");
-    static_assert(!sg14::is_elastic<typename fixed_point_type::repr_type>::value, "sg14::is_elastic test failed");
+    static_assert(!sg14::is_elastic<typename fixed_point_type::rep>::value, "sg14::is_elastic test failed");
 
     static_assert(sg14::is_signed<elastic_type>::value==sg14::is_signed<fixed_point_type>::value,
             "signedness of elastic type differns from underlying fixed-point type");
@@ -277,7 +277,7 @@ struct positive_elastic_test {
 
     static_assert(sg14::is_elastic<elastic_type>::value, "sg14::is_elastic test failed");
     static_assert(!sg14::is_elastic<fixed_point_type>::value, "sg14::is_elastic test failed");
-    static_assert(!sg14::is_elastic<typename fixed_point_type::repr_type>::value, "sg14::is_elastic test failed");
+    static_assert(!sg14::is_elastic<typename fixed_point_type::rep>::value, "sg14::is_elastic test failed");
 
     static_assert(sg14::is_signed<elastic_type>::value==sg14::is_signed<fixed_point_type>::value,
             "signedness of elastic type differns from underlying fixed-point type");

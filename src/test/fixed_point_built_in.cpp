@@ -12,7 +12,7 @@
 #define TEST_LABEL built_in_
 
 ////////////////////////////////////////////////////////////////////////////////
-// integer types used as fixed_point Repr type
+// integer types used as fixed_point Rep type
 
 using test_int = int;
 
