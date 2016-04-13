@@ -99,9 +99,9 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::resize specializations
+    // sg14::set_width specializations
 
-    // sg14::resize<_bmp::cpp_int_backend<>>
+    // sg14::set_width<_bmp::cpp_int_backend<>>
     template<
             unsigned MinBits,
             unsigned MaxBits,
@@ -119,7 +119,7 @@ namespace sg14 {
                 Checked>;
     };
 
-    // sg14::resize<_bmp::number>
+    // sg14::set_width<_bmp::number>
     template<
             class Backend,
             _bmp::expression_template_option ExpressionTemplates,
