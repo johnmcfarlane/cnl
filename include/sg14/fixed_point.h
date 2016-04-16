@@ -1204,7 +1204,7 @@ namespace sg14 {
     }
 
     template<class LhsRep, int Exponent>
-    template<class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy>
+    template<class Rhs>
     fixed_point<LhsRep, Exponent>&
     fixed_point<LhsRep, Exponent>::operator*=(const Rhs& rhs)
     {
@@ -1213,7 +1213,7 @@ namespace sg14 {
     }
 
     template<class LhsRep, int Exponent>
-    template<class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy>
+    template<class Rhs>
     fixed_point<LhsRep, Exponent>&
     fixed_point<LhsRep, Exponent>::operator/=(const Rhs& rhs)
     {
