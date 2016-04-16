@@ -724,7 +724,20 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // named fixed-point arithmetic - used by all other fixed-point arithmetic fns
 
-    // sg14::_fixed_point_impl::negate
+    /// \brief calculates the negative of a \ref fixed_point value
+    ///
+    /// \param rhs input value
+    ///
+    /// \tparam Result return type
+    /// \tparam Rhs type of rhs (typically deduced)
+    ///
+    /// \return negative: - rhs
+    ///
+    /// \note This function provides complete control over the result type.
+    /// The caller can choose the exact capacity and precision of the result.
+    ///
+    /// \sa add, subtract, multiply, divide
+
     template<class Result, class Rhs>
     constexpr Result negate(const Rhs& rhs)
     {
@@ -733,7 +746,20 @@ namespace sg14 {
         return Result::from_data(-static_cast<Result>(rhs).data());
     }
 
-    // sg14::add
+    /// \brief calculates the sum of two \ref fixed_point values
+    ///
+    /// \param lhs, rhs augend and addend
+    ///
+    /// \tparam Result sum type
+    /// \tparam Lhs, Rhs types of lhs and rhs (typically deduced)
+    ///
+    /// \return difference: lhs + rhs
+    ///
+    /// \note This function provides complete control over the result type.
+    /// The caller can choose the exact capacity and precision of the result.
+    ///
+    /// \sa negate, subtract, multiply, divide
+
     template<class Result, class Lhs, class Rhs>
     constexpr Result add(const Lhs& lhs, const Rhs& rhs)
     {
@@ -743,7 +769,20 @@ namespace sg14 {
                                 +static_cast<Result>(rhs).data()));
     }
 
-    // sg14::subtract
+    /// \brief calculates the difference of two \ref fixed_point values
+    ///
+    /// \param lhs, rhs minuend and subtrahend
+    ///
+    /// \tparam Result difference type
+    /// \tparam Lhs, Rhs types of lhs and rhs (typically deduced)
+    ///
+    /// \return difference: lhs - rhs
+    ///
+    /// \note This function provides complete control over the result type.
+    /// The caller can choose the exact capacity and precision of the result.
+    ///
+    /// \sa negate, add, multiply, divide
+
     template<class Result, class Lhs, class Rhs>
     constexpr Result subtract(const Lhs& lhs, const Rhs& rhs)
     {
@@ -752,7 +791,20 @@ namespace sg14 {
                         -static_cast<Result>(rhs).data());
     }
 
-    // sg14::multiply
+    /// \brief calculates the product of two \ref fixed_point factors
+    ///
+    /// \param lhs, rhs the factors
+    ///
+    /// \tparam Result product type
+    /// \tparam Lhs, Rhs types of lhs and rhs (typically deduced)
+    ///
+    /// \return product: lhs * rhs
+    ///
+    /// \note This function provides complete control over the result type.
+    /// The caller can choose the exact capacity and precision of the result.
+    ///
+    /// \sa negate, add, subtract, divide
+
     template<class Result, class Lhs, class Rhs>
     constexpr Result multiply(const Lhs& lhs, const Rhs& rhs)
     {
@@ -763,7 +815,20 @@ namespace sg14 {
                         result_rep>(lhs.data()*rhs.data()));
     }
 
-    // sg14::divide
+    /// \brief calculates the quotient of two \ref fixed_point values
+    ///
+    /// \param lhs, rhs dividend and divisor
+    ///
+    /// \tparam Result product type
+    /// \tparam Lhs, Rhs types of lhs and rhs (typically deduced)
+    ///
+    /// \return quotient: lhs / rhs
+    ///
+    /// \note This function provides complete control over the result type.
+    /// The caller can choose the exact capacity and precision of the result.
+    ///
+    /// \sa negate, add, subtract, multiply
+
     template<class Result, class Lhs, class Rhs>
     constexpr Result divide(const Lhs& lhs, const Rhs& rhs)
     {
