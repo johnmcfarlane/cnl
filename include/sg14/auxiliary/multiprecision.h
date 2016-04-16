@@ -4,8 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(_SG14_SIZED_INTEGER)
-#define _SG14_SIZED_INTEGER 1
+#if !defined(_SG14_MULTIPRECISION)
+#define _SG14_MULTIPRECISION 1
 
 #include <boost/multiprecision/cpp_int.hpp>
 
@@ -18,11 +18,15 @@ namespace sg14 {
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
-    // type trait specializations of _bmp types
+    // type trait specializations of boost::multiprecision types
+    //
+    // These are the definitions needed to use any custom integer type with
+    // sg14::fixed_point and sg14::elastic
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::is_signed<{un}signed_multiprecision>
+    // sg14::is_signed
 
+    // sg14::is_signed<boost::multiprecision::number<>>
     template<
             class Backend,
             _bmp::expression_template_option ExpressionTemplates>
@@ -31,8 +35,9 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::is_unsigned<{un}signed_multiprecision>
+    // sg14::is_unsigned
 
+    // sg14::is_unsigned<boost::multiprecision::number<>>
     template<
             class Backend,
             _bmp::expression_template_option ExpressionTemplates>
@@ -41,9 +46,9 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_signed specializations
+    // sg14::make_signed
 
-    // sg14::make_signed<_bmp::cpp_int_backend<>>
+    // sg14::make_signed<<boost::multiprecision::cpp_int_backend<>>
     template<unsigned MinBits, unsigned MaxBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
     struct make_signed<_bmp::cpp_int_backend<
             MinBits, MaxBits, SignType, Checked, Allocator>> {
@@ -51,7 +56,7 @@ namespace sg14 {
                 MinBits, MaxBits, _bmp::signed_magnitude, Checked, Allocator>;
     };
 
-    // sg14::make_signed<_bmp::number>
+    // sg14::make_signed<boost::multiprecision::number<>>
     template<
             class Backend,
             _bmp::expression_template_option ExpressionTemplates>
@@ -64,9 +69,9 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_unsigned specializations
+    // sg14::make_unsigned
 
-    // sg14::make_unsigned<_bmp::cpp_int_backend<>>
+    // sg14::make_unsigned<<boost::multiprecision::cpp_int_backend<>>
     template<unsigned MinBits, unsigned MaxBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
     struct make_unsigned<_bmp::cpp_int_backend<
             MinBits, MaxBits, SignType, Checked, Allocator>> {
@@ -74,7 +79,7 @@ namespace sg14 {
                 MinBits, MaxBits, _bmp::unsigned_magnitude, Checked, Allocator>;
     };
 
-    // sg14::make_unsigned<_bmp::number>
+    // sg14::make_unsigned<boost::multiprecision::number<>>
     template<
             class Backend,
             _bmp::expression_template_option ExpressionTemplates>
@@ -87,9 +92,9 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::is_integral specialization
+    // sg14::is_integral
 
-    // sg14::is_integral<_bmp::number<>>
+    // sg14::is_integral<boost::multiprecision::number<>>
     template<
             class Backend,
             _bmp::expression_template_option ExpressionTemplates>
@@ -99,9 +104,9 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::set_width specializations
+    // sg14::set_width
 
-    // sg14::set_width<_bmp::cpp_int_backend<>>
+    // sg14::set_width<boost::multiprecision::cpp_int_backend<>>
     template<
             unsigned MinBits,
             unsigned MaxBits,
@@ -119,7 +124,7 @@ namespace sg14 {
                 Checked>;
     };
 
-    // sg14::set_width<_bmp::number>
+    // sg14::set_width<boost::multiprecision::number<>>
     template<
             class Backend,
             _bmp::expression_template_option ExpressionTemplates,
@@ -135,14 +140,14 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::width specializations
+    // sg14::width
 
-    // sg14::width<_bmp::cpp_int_backend<>>
+    // sg14::width<boost::multiprecision::cpp_int_backend<>>
     template<unsigned MinBits, unsigned MaxBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked>
     struct width<_bmp::cpp_int_backend<MinBits, MaxBits, SignType, Checked>> : std::integral_constant<int, MaxBits> {
     };
 
-    // sg14::width<_bmp::number>
+    // sg14::width<boost::multiprecision::number<>>
     template<class Backend, _bmp::expression_template_option ExpressionTemplates>
     struct width<_bmp::number<Backend, ExpressionTemplates>> : width<Backend> {
     };
@@ -170,4 +175,4 @@ namespace sg14 {
     using multiprecision = signed_multiprecision<NumBits>;
 }
 
-#endif // _SG14_SIZED_INTEGER
+#endif // _SG14_MULTIPRECISION
