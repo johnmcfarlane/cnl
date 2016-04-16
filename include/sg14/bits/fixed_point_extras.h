@@ -9,8 +9,8 @@
 /// definitions that straddle two 'homes, e.g. fixed_point.h and cmath, traits or limits;
 /// included from sg14/fixed_point.h - do not include directly!
 
-#if !defined(_SG14_FIXED_POINT_UTILS_H)
-#define _SG14_FIXED_POINT_UTILS_H 1
+#if !defined(SG14_FIXED_POINT_EXTRAS_H)
+#define SG14_FIXED_POINT_EXTRAS_H 1
 
 #include <cmath>
 #include <istream>
@@ -84,7 +84,7 @@ namespace sg14 {
     {
         using widened_type = fixed_point<set_width_t<Rep, width<Rep>::value*2>, Exponent*2>;
         return
-#if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
+#if defined(SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
                 (x<fixed_point<Rep, Exponent>(0))
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
 #endif
@@ -258,4 +258,4 @@ namespace std {
     };
 }
 
-#endif	// defined(_SG14_FIXED_POINT_UTILS_H)
+#endif	// SG14_FIXED_POINT_EXTRAS_H

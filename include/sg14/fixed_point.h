@@ -7,33 +7,33 @@
 /// \file
 /// \brief essential definitions related to the `sg14::fixed_point` type
 
-#if !defined(_SG14_FIXED_POINT)
-#define _SG14_FIXED_POINT 1
+#if !defined(SG14_FIXED_POINT_H)
+#define SG14_FIXED_POINT_H 1
 
 #include "type_traits.h"
 
 #include "bits/common.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-// _SG14_FIXED_POINT_EXCEPTIONS_ENABLED macro definition 
+// SG14_FIXED_POINT_EXCEPTIONS_ENABLED macro definition 
 
-#if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
-#error _SG14_FIXED_POINT_EXCEPTIONS_ENABLED already defined
+#if defined(SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
+#error SG14_FIXED_POINT_EXCEPTIONS_ENABLED already defined
 #endif
 
 #if defined(_MSC_VER)
 #if defined(_CPPUNWIND)
-#define _SG14_FIXED_POINT_EXCEPTIONS_ENABLED
+#define SG14_FIXED_POINT_EXCEPTIONS_ENABLED
 #endif
 #elif defined(__clang__) || defined(__GNUG__)
 #if defined(__EXCEPTIONS)
-#define _SG14_FIXED_POINT_EXCEPTIONS_ENABLED
+#define SG14_FIXED_POINT_EXCEPTIONS_ENABLED
 #endif
 #else
-#define _SG14_FIXED_POINT_EXCEPTIONS_ENABLED
+#define SG14_FIXED_POINT_EXCEPTIONS_ENABLED
 #endif
 
-#if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
+#if defined(SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
 
 #include <stdexcept>
 
@@ -213,18 +213,32 @@ namespace sg14 {
             return 1;
         }
 
-        template<class S, int Exponent, typename std::enable_if<!(Exponent<=0), int>::type Dummy = 0>
+        template<class S, int Exponent, typename std::enable_if<!(Exponent<=0) && (Exponent<8), int>::type Dummy = 0>
         constexpr S pow2()
         {
             static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
             return pow2<S, Exponent-1>()*S(2);
         }
 
-        template<class S, int Exponent, typename std::enable_if<!(Exponent>=0), int>::type Dummy = 0>
+        template<class S, int Exponent, typename std::enable_if<(Exponent>=8), int>::type Dummy = 0>
+        constexpr S pow2()
+        {
+            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+            return pow2<S, Exponent-8>()*S(256);
+        }
+
+        template<class S, int Exponent, typename std::enable_if<!(Exponent>=0) && (Exponent>-8), int>::type Dummy = 0>
         constexpr S pow2()
         {
             static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
             return pow2<S, Exponent+1>()*S(.5);
+        }
+
+        template<class S, int Exponent, typename std::enable_if<(Exponent<=-8), int>::type Dummy = 0>
+        constexpr S pow2()
+        {
+            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+            return pow2<S, Exponent+8>()*S(.003906250);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -362,10 +376,10 @@ namespace sg14 {
             return _r!=0;
         }
 
-        template<class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy = 0>
+        template<class Rhs>
         fixed_point& operator*=(const Rhs& rhs);
 
-        template<class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy = 0>
+        template<class Rhs>
         fixed_point& operator/=(const Rhs& rhs);
 
         /// returns internal representation of value
@@ -710,7 +724,20 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // named fixed-point arithmetic - used by all other fixed-point arithmetic fns
 
-    // sg14::_fixed_point_impl::negate
+    /// \brief calculates the negative of a \ref fixed_point value
+    ///
+    /// \param rhs input value
+    ///
+    /// \tparam Result return type
+    /// \tparam Rhs type of rhs (typically deduced)
+    ///
+    /// \return negative: - rhs
+    ///
+    /// \note This function provides complete control over the result type.
+    /// The caller can choose the exact capacity and precision of the result.
+    ///
+    /// \sa add, subtract, multiply, divide
+
     template<class Result, class Rhs>
     constexpr Result negate(const Rhs& rhs)
     {
@@ -719,7 +746,20 @@ namespace sg14 {
         return Result::from_data(-static_cast<Result>(rhs).data());
     }
 
-    // sg14::add
+    /// \brief calculates the sum of two \ref fixed_point values
+    ///
+    /// \param lhs, rhs augend and addend
+    ///
+    /// \tparam Result sum type
+    /// \tparam Lhs, Rhs types of lhs and rhs (typically deduced)
+    ///
+    /// \return difference: lhs + rhs
+    ///
+    /// \note This function provides complete control over the result type.
+    /// The caller can choose the exact capacity and precision of the result.
+    ///
+    /// \sa negate, subtract, multiply, divide
+
     template<class Result, class Lhs, class Rhs>
     constexpr Result add(const Lhs& lhs, const Rhs& rhs)
     {
@@ -729,7 +769,20 @@ namespace sg14 {
                                 +static_cast<Result>(rhs).data()));
     }
 
-    // sg14::subtract
+    /// \brief calculates the difference of two \ref fixed_point values
+    ///
+    /// \param lhs, rhs minuend and subtrahend
+    ///
+    /// \tparam Result difference type
+    /// \tparam Lhs, Rhs types of lhs and rhs (typically deduced)
+    ///
+    /// \return difference: lhs - rhs
+    ///
+    /// \note This function provides complete control over the result type.
+    /// The caller can choose the exact capacity and precision of the result.
+    ///
+    /// \sa negate, add, multiply, divide
+
     template<class Result, class Lhs, class Rhs>
     constexpr Result subtract(const Lhs& lhs, const Rhs& rhs)
     {
@@ -738,7 +791,20 @@ namespace sg14 {
                         -static_cast<Result>(rhs).data());
     }
 
-    // sg14::multiply
+    /// \brief calculates the product of two \ref fixed_point factors
+    ///
+    /// \param lhs, rhs the factors
+    ///
+    /// \tparam Result product type
+    /// \tparam Lhs, Rhs types of lhs and rhs (typically deduced)
+    ///
+    /// \return product: lhs * rhs
+    ///
+    /// \note This function provides complete control over the result type.
+    /// The caller can choose the exact capacity and precision of the result.
+    ///
+    /// \sa negate, add, subtract, divide
+
     template<class Result, class Lhs, class Rhs>
     constexpr Result multiply(const Lhs& lhs, const Rhs& rhs)
     {
@@ -749,7 +815,20 @@ namespace sg14 {
                         result_rep>(lhs.data()*rhs.data()));
     }
 
-    // sg14::divide
+    /// \brief calculates the quotient of two \ref fixed_point values
+    ///
+    /// \param lhs, rhs dividend and divisor
+    ///
+    /// \tparam Result product type
+    /// \tparam Lhs, Rhs types of lhs and rhs (typically deduced)
+    ///
+    /// \return quotient: lhs / rhs
+    ///
+    /// \note This function provides complete control over the result type.
+    /// The caller can choose the exact capacity and precision of the result.
+    ///
+    /// \sa negate, add, subtract, multiply
+
     template<class Result, class Lhs, class Rhs>
     constexpr Result divide(const Lhs& lhs, const Rhs& rhs)
     {
@@ -1125,7 +1204,7 @@ namespace sg14 {
     }
 
     template<class LhsRep, int Exponent>
-    template<class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy>
+    template<class Rhs>
     fixed_point<LhsRep, Exponent>&
     fixed_point<LhsRep, Exponent>::operator*=(const Rhs& rhs)
     {
@@ -1134,7 +1213,7 @@ namespace sg14 {
     }
 
     template<class LhsRep, int Exponent>
-    template<class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy>
+    template<class Rhs>
     fixed_point<LhsRep, Exponent>&
     fixed_point<LhsRep, Exponent>::operator/=(const Rhs& rhs)
     {
@@ -1145,4 +1224,4 @@ namespace sg14 {
 
 #include "bits/fixed_point_extras.h"
 
-#endif	// defined(_SG14_FIXED_POINT)
+#endif	// SG14_FIXED_POINT_H

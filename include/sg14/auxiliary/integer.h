@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(_SG14_INTEGER)
-#define _SG14_INTEGER 1
+#if !defined(SG14_INTEGER_H)
+#define SG14_INTEGER_H 1
 
 #include <sg14/type_traits.h>
 
@@ -13,25 +13,25 @@
 #include <stdexcept>
 
 ////////////////////////////////////////////////////////////////////////////////
-// _SG14_INTEGER_EXCEPTIONS_ENABLED macro definition 
+// SG14_INTEGER_EXCEPTIONS_ENABLED macro definition 
 
-#if defined(_SG14_INTEGER_EXCEPTIONS_ENABLED)
-#error _SG14_INTEGER_EXCEPTIONS_ENABLED already defined
+#if defined(SG14_INTEGER_EXCEPTIONS_ENABLED)
+#error SG14_INTEGER_EXCEPTIONS_ENABLED already defined
 #endif
 
 #if defined(_MSC_VER)
 #if defined(_CPPUNWIND)
-#define _SG14_INTEGER_EXCEPTIONS_ENABLED
+#define SG14_INTEGER_EXCEPTIONS_ENABLED
 #endif
 #elif defined(__clang__) || defined(__GNUG__)
 #if defined(__EXCEPTIONS)
-#define _SG14_INTEGER_EXCEPTIONS_ENABLED
+#define SG14_INTEGER_EXCEPTIONS_ENABLED
 #endif
 #else
-#define _SG14_INTEGER_EXCEPTIONS_ENABLED
+#define SG14_INTEGER_EXCEPTIONS_ENABLED
 #endif
 
-#if defined(_SG14_INTEGER_EXCEPTIONS_ENABLED)
+#if defined(SG14_INTEGER_EXCEPTIONS_ENABLED)
 
 #include <stdexcept>
 
@@ -43,14 +43,14 @@ namespace sg14 {
     // macros
 
     // basic definitions
-#define _SG14_INTEGER_COMPARISON_DEFINE(OP) \
+#define SG14_INTEGER_COMPARISON_DEFINE(OP) \
     template <class Lhs, class Rhs> \
     constexpr auto operator OP (const Lhs& lhs, const Rhs& rhs) \
     -> typename std::enable_if<sg14::_integer_impl::is_integer_class<Lhs>::value || sg14::_integer_impl::is_integer_class<Rhs>::value, bool>::type { \
         using common_type = typename common_type<Lhs, Rhs>::type; \
         return static_cast<common_type>(lhs).data() OP static_cast<common_type>(rhs).data(); }
 
-#define _SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(OP) \
+#define SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(OP) \
     template <class LhsRep, class RhsRep, class OverflowPolicy> \
     constexpr auto operator OP (const integer<LhsRep, OverflowPolicy>& lhs, const integer<RhsRep, OverflowPolicy>& rhs) \
     -> integer<decltype(std::declval<LhsRep>() OP std::declval<RhsRep>()), OverflowPolicy> { \
@@ -69,14 +69,14 @@ namespace sg14 {
         using Result = integer<decltype(std::declval<LhsRep>() OP std::declval<Rhs>()), LhsOverflowPolicy>; \
         return static_cast<Result>(lhs.data() OP rhs); }
 
-#define _SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(OP, BIN_OP) \
+#define SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(OP, BIN_OP) \
     template <class Rhs> \
     auto operator OP (const Rhs& rhs) \
     -> integer& { \
         _r = static_cast<rep>(_r BIN_OP rhs); \
         return *this; }
 
-#define _SG14_INTEGER_BIT_SHIFT_DEFINE(OP) \
+#define SG14_INTEGER_BIT_SHIFT_DEFINE(OP) \
     template <class LhsRep, class LhsOverflowPolicy, class RhsRep, class RhsOverflowPolicy> \
     constexpr auto operator OP (const integer<LhsRep, LhsOverflowPolicy>& lhs, const integer<RhsRep, RhsOverflowPolicy>& rhs) \
     -> integer<LhsRep, LhsOverflowPolicy> { \
@@ -208,7 +208,7 @@ namespace sg14 {
         }
     };
 
-#if defined(_SG14_INTEGER_EXCEPTIONS_ENABLED)
+#if defined(SG14_INTEGER_EXCEPTIONS_ENABLED)
 
     struct throwing_overflow_policy {
         template<typename Lhs, typename Rhs>
@@ -328,13 +328,13 @@ namespace sg14 {
             return integer(-rhs._r);
         }
 
-        _SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(+=, +);
+        SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(+=, +);
 
-        _SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(-=, -);
+        SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(-=, -);
 
-        _SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(*=, *);
+        SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(*=, *);
 
-        _SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(/=, /);
+        SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(/=, /);
 
         constexpr rep const& data() const
         {
@@ -348,29 +348,29 @@ namespace sg14 {
         rep _r;
     };
 
-    _SG14_INTEGER_COMPARISON_DEFINE(==);
+    SG14_INTEGER_COMPARISON_DEFINE(==);
 
-    _SG14_INTEGER_COMPARISON_DEFINE(!=);
+    SG14_INTEGER_COMPARISON_DEFINE(!=);
 
-    _SG14_INTEGER_COMPARISON_DEFINE(<);
+    SG14_INTEGER_COMPARISON_DEFINE(<);
 
-    _SG14_INTEGER_COMPARISON_DEFINE(>);
+    SG14_INTEGER_COMPARISON_DEFINE(>);
 
-    _SG14_INTEGER_COMPARISON_DEFINE(<=);
+    SG14_INTEGER_COMPARISON_DEFINE(<=);
 
-    _SG14_INTEGER_COMPARISON_DEFINE(>=);
+    SG14_INTEGER_COMPARISON_DEFINE(>=);
 
-    _SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(+);
+    SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(+);
 
-    _SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(-);
+    SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(-);
 
-    _SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(*);
+    SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(*);
 
-    _SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(/);
+    SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(/);
 
-    _SG14_INTEGER_BIT_SHIFT_DEFINE(>>);
+    SG14_INTEGER_BIT_SHIFT_DEFINE(>>);
 
-    _SG14_INTEGER_BIT_SHIFT_DEFINE(<<);
+    SG14_INTEGER_BIT_SHIFT_DEFINE(<<);
 
     ////////////////////////////////////////////////////////////////////////////////
     // integer<> partial specializations
@@ -570,4 +570,4 @@ namespace std {
     };
 }
 
-#endif	// defined(_SG14_INTEGER)
+#endif	// SG14_INTEGER_H

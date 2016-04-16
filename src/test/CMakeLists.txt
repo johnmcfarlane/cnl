@@ -15,6 +15,7 @@ set(    SOURCES
         ${CMAKE_CURRENT_LIST_DIR}/elastic8.cpp
         ${CMAKE_CURRENT_LIST_DIR}/index.cpp
         ${CMAKE_CURRENT_LIST_DIR}/main.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
         ${CMAKE_CURRENT_LIST_DIR}/proposal.cpp
         ${CMAKE_CURRENT_LIST_DIR}/utils.cpp
         ${CMAKE_CURRENT_LIST_DIR}/integer.cpp
@@ -38,7 +39,7 @@ find_package(Boost)
 
 if(Boost_FOUND)
     # only compile multiprecision.cpp if Boost.Multiprecision is available
-    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp)
+    set(BOOST_FOUND_CXX_FLAGS "-DSG14_BOOST_ENABLED")
 endif(Boost_FOUND)
 
 ######################################################################
@@ -48,7 +49,7 @@ add_executable(fp_test ${SOURCES})
 
 set_target_properties(
         fp_test
-        PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS}"
+        PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${BOOST_FOUND_CXX_FLAGS}"
         OUTPUT_NAME "fp_test"
 )
 

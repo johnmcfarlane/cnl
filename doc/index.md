@@ -5,36 +5,55 @@ User Manual       {#mainpage}
 
 \section introduction Introduction
 
-This header-only C++11 library uses fixed-point arithmetic to approximate real numbers.
-It forms the reference implementation of a standard library proposal presented in paper, [P0037](papers/p0037.html).
-It is developed as part of study groups,
-[SG14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14) and SG6.
+The [fixed_point](https://github.com/johnmcfarlane/fixed_point) library provides 
+a header-only C++ API for approximating real numbers using binary fixed-point arithmetic.
+It forms the reference implementation of a standard library proposal presented in paper, [P0037](papers/p0037.html)
+and is developed as part of study groups, [SG14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14) and SG6.
 
 
-\section repository Repository
+\section declaration Declaring a Value
+
+The [fixed_point<Rep, Exponent>](@ref sg14::fixed_point) class template
+represents a real number using an integer type, scaled by a power of two.
+ 
+\snippet index.cpp declaration example
+
+
+\section basic_arithmetic Basic Arithmetic
+
+Specializations of [fixed_point<>](@ref sg14::fixed_point) behave a lot like native C/C++ numeric types.
+
+\snippet index.cpp basic arithmetic example
+
+
+\section advanced_arithmetic Advanced Arithmetic
+
+Unlike floating-point types, fixed-point numbers overflow easily.
+Named functions are provided for fine-tuned control, e.g. [multiply<>](@ref sg14::multiply).
+
+\snippet index.cpp advanced arithmetic example
+
+
+\section boost Boost.Multiprecision Example
+
+The API is designed with extensibility in mind
+and the `Rep` template parameter is not limited to built-in integer types.
+For instance, the `number` types defined in [Boost.Multiprecision](http://www.boost.org/doc/libs/release/libs/multiprecision/)
+can be used to produce fixed-point types of arbitrary range and resolution.
+
+To illustrate this, a header, [sg14/auxiliary/multiprecision.h](../../include/sg14/auxiliary/multiprecision.h),
+contains all the definitions necessary to adapt 
+[Boost.Multiprecision](http://www.boost.org/doc/libs/release/libs/multiprecision/) 
+for use with [fixed_point](@ref sg14::fixed_point).
+
+\snippet index.cpp boost example
+
+
+\section installation Installation
 
 The library is [hosted](https://github.com/johnmcfarlane/fixed_point) on GitHub:
 
     git clone https://github.com/johnmcfarlane/fixed_point.git
-
-\section usage Usage
-
-1. Add the [include](../../include) directory to your list of system headers. 
-
-2. Essential definitions are in [sg14/fixed_point.h](@ref fixed_point.h):
-  \snippet index.cpp include the header
-
-3. All definitions are in the [sg14](@ref sg14) namespace:
-  \snippet index.cpp using directive
-
-4. Use the [fixed_point](@ref sg14::fixed_point) type to define variables.
-  \snippet index.cpp print pi
-
-  > *pi=3.141592652*
-
-5. Alternatively, use [make_fixed](@ref sg14::make_fixed) and [make_ufixed](@ref sg14::make_ufixed) to instantiate signed and unsigned variables 
-   with exactly the number of integer and fractional digits you require:
-  \snippet index.cpp print pi again
 
 \section tests_and_benchmarks Tests and Benchmarks
 

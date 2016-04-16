@@ -6,8 +6,8 @@
 /// \file
 /// \brief essential definitions related to the `sg14::elastic` type
 
-#if !defined(_SG14_ELASTIC)
-#define _SG14_ELASTIC 1
+#if !defined(SG14_ELASTIC_H)
+#define SG14_ELASTIC_H 1
 
 #include <sg14/fixed_point.h>
 
@@ -634,4 +634,4 @@ namespace std {
     };
 }
 
-#endif //_SG14_ELASTIC
+#endif // SG14_ELASTIC_H

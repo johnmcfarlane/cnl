@@ -7,8 +7,8 @@
 /// \file
 /// \brief trait definitions related to the `sg14::fixed_point` type
 
-#if !defined(_SG14_TYPE_TRAITS)
-#define _SG14_TYPE_TRAITS 1
+#if !defined(SG14_TYPE_TRAITS_H)
+#define SG14_TYPE_TRAITS_H 1
 
 #include <cinttypes>
 #include <climits>
@@ -257,4 +257,4 @@ namespace sg14 {
     };
 }
 
-#endif	// _SG14_TYPE_TRAITS
+#endif	// SG14_TYPE_TRAITS_H

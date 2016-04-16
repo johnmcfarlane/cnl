@@ -4,6 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#if defined(SG14_BOOST_ENABLED)
+
 #include <sg14/auxiliary/multiprecision.h>
 
 #include <gtest/gtest.h>
@@ -308,3 +310,5 @@ TEST(elastic_multiprecision, high_capacity)
     ASSERT_EQ(factor5/factor5, factor0);
     ASSERT_EQ(factor6/factor6, factor0);
 }
+
+#endif  // SG14_BOOST_ENABLED
