@@ -4,6 +4,9 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+/// \file
+/// \brief essential definitions related to the `sg14::elastic` type
+
 #if !defined(SG14_MULTIPRECISION_H)
 #define SG14_MULTIPRECISION_H 1
 

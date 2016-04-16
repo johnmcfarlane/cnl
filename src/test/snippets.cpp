@@ -19,13 +19,22 @@ static_assert(n==-2.75, "fixed-point type was unable to store the value");
 //! [define a fixed_point value]
 }
 
-namespace define_an_object_using_elasticate {
-//! [define an object using elasticate]
+namespace define_a_fast_object_using_elasticate {
+//! [define a fast object using elasticate]
 constexpr auto n = elasticate<1024>();
 
 static_assert(n==1024, "n now has the value, 1024");
-static_assert(sizeof(n)==1, "elasticate uses the smallest type it can");
-//! [define an object using elasticate]
+static_assert(sizeof(n)==sizeof(int), "by default elasticate uses the most eficient type it can");
+//! [define a fast object using elasticate]
+}
+
+namespace define_a_small_object_using_elasticate {
+//! [define a small object using elasticate]
+constexpr auto n = elasticate<1024, char>();
+
+static_assert(n==1024, "n now has the value, 1024");
+static_assert(sizeof(n)==sizeof(char), "by default elasticate uses the most eficient type it can");
+//! [define a small object using elasticate]
 }
 
 namespace use_resize_1 {

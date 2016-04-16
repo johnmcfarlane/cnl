@@ -1,3 +1,4 @@
+
 //          Copyright John McFarlane 2015 - 2016.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
@@ -91,59 +92,14 @@ namespace sg14 {
     struct is_elastic : _elastic_impl::is_elastic<T> {
     };
 
-    ////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14:elastic specializations of std templates
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::is_signed
-
-    template<int IntegerDigits, int FractionalDigits, class Archetype>
-    struct is_signed<elastic<IntegerDigits, FractionalDigits, Archetype>>
-            : is_signed<Archetype> {
-    };
-
-    template<class Rep, int Exponent>
-    struct is_signed<fixed_point<Rep, Exponent>>
-            : is_signed<Rep> {
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::is_unsigned
-
-    template<int IntegerDigits, int FractionalDigits, class Archetype>
-    struct is_unsigned<elastic<IntegerDigits, FractionalDigits, Archetype>>
-            : is_unsigned<Archetype> {
-    };
-
-    template<class Rep, int Exponent>
-    struct is_unsigned<fixed_point<Rep, Exponent>>
-            : is_unsigned<Rep> {
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_signed<elastic<>>
-
-    template<int IntegerDigits, int FractionalDigits, class Archetype>
-    struct make_signed<elastic<IntegerDigits, FractionalDigits, Archetype>> {
-        using type = elastic<IntegerDigits, FractionalDigits, typename make_signed<Archetype>::type>;
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_unsigned<elastic<>>
-
-    template<int IntegerDigits, int FractionalDigits, class Archetype>
-    struct make_unsigned<elastic<IntegerDigits, FractionalDigits, Archetype>> {
-        using type = elastic<IntegerDigits, FractionalDigits, typename make_unsigned<Archetype>::type>;
-    };
-
     /// \brief literal real number approximation that uses fixed-point arithmetic
     /// and performs operations with expanded results to avoid overflow
     ///
     /// \tparam IntegerDigits the number of integer bits of storage
     /// \tparam FractionalDigits the number of fractional bits of storage
-    /// \tparam Archetype a type like the one used to represent to store this value
+    /// \tparam Archetype the smallest type used are storage
     ///
+    /// \note If a larger type than Archetype is required, it is determined using \ref set_width.
     /// \note This type illustrates an application of @ref fixed_point as put forth in
     /// <a href="http://johnmcfarlane.github.io/fixed_point/papers/elastic.html">this paper</a>.
 
@@ -181,7 +137,10 @@ namespace sg14 {
 
     public:
         /// \private implementation-specific
-        using _integer_type = typename set_width<archetype, bits>::type;
+        static constexpr _width_type _integer_bits = sg14::_impl::max<_width_type>(width<archetype>::value, bits);
+
+        /// \private implementation-specific
+        using _integer_type = typename set_width<archetype, _integer_bits>::type;
 
         /// \private implementation-specific
         using _fixed_point_type = sg14::fixed_point<_integer_type, exponent>;
@@ -234,7 +193,7 @@ namespace sg14 {
         }
 
         /// conversion operator returning value as arbitrary type
-        template <class T, class = typename std::enable_if<!_fixed_point_impl::is_fixed_point<T>::value>::type>
+        template<class T, class = typename std::enable_if<!_fixed_point_impl::is_fixed_point<T>::value>::type>
         explicit constexpr operator T() const
         {
             return static_cast<T>(_value);
@@ -260,6 +219,52 @@ namespace sg14 {
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
+    // sg14:elastic specializations of std templates
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::is_signed
+
+    template<int IntegerDigits, int FractionalDigits, class Archetype>
+    struct is_signed<elastic<IntegerDigits, FractionalDigits, Archetype>>
+            : is_signed<Archetype> {
+    };
+
+    template<class Rep, int Exponent>
+    struct is_signed<fixed_point<Rep, Exponent>>
+            : is_signed<Rep> {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::is_unsigned
+
+    template<int IntegerDigits, int FractionalDigits, class Archetype>
+    struct is_unsigned<elastic<IntegerDigits, FractionalDigits, Archetype>>
+            : is_unsigned<Archetype> {
+    };
+
+    template<class Rep, int Exponent>
+    struct is_unsigned<fixed_point<Rep, Exponent>>
+            : is_unsigned<Rep> {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::make_signed<elastic<>>
+
+    template<int IntegerDigits, int FractionalDigits, class Archetype>
+    struct make_signed<elastic<IntegerDigits, FractionalDigits, Archetype>> {
+        using type = elastic<IntegerDigits, FractionalDigits, typename make_signed<Archetype>::type>;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::make_unsigned<elastic<>>
+
+    template<int IntegerDigits, int FractionalDigits, class Archetype>
+    struct make_unsigned<elastic<IntegerDigits, FractionalDigits, Archetype>> {
+        using type = elastic<IntegerDigits, FractionalDigits, typename make_unsigned<Archetype>::type>;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
     // sg14::elasticate
 
     // sg14::elasticate helper definitions
@@ -276,23 +281,26 @@ namespace sg14 {
             return (((value/2)*2)==value) ? num_fractional_bits(value/2)-1 : 0;
         }
 
-        template<class Integer, Integer value>
+        template<class Integer, Integer value, class Archetype>
         struct elastication {
             static_assert(std::is_integral<Integer>::value, "template parameter, Integer, is not integral");
 
             using type = elastic<
                     sg14::_impl::max(1, num_integer_bits(value)),
                     value ? num_fractional_bits(value) : 0,
-                    typename std::conditional<(value>=0), unsigned, signed>::type>;
+                    typename std::conditional<(value>=0),
+                            typename make_unsigned<Archetype>::type,
+                            typename make_signed<Archetype>::type>::type>;
         };
 
-        template<class Integer, Integer Value, class Archetype = set_width_t<Integer, width<int>::value>>
-        using elasticate_t = typename _elastic_impl::elastication<Integer, Value>::type;
+        template<class Integer, Integer Value, class Archetype>
+        using elasticate_t = typename _elastic_impl::elastication<Integer, Value, Archetype>::type;
     }
 
     /// \brief generate an \ref elastic object of given value
     ///
     /// \tparam Value the integer number to be represented
+    /// \tparam Archetype the archetype of the resultant \ref elastic object
     ///
     /// \return the given value represented using an \ref elastic type
     ///
@@ -300,14 +308,17 @@ namespace sg14 {
     ///
     /// \par Example
     ///
-    /// To define an object with value 1024:
-    /// \snippet snippets.cpp define an object using elasticate
+    /// To define a 1-byte object with value 1024:
+    /// \snippet snippets.cpp define a small object using elasticate
+    ///
+    /// To define a int-sized object with value 1024:
+    /// \snippet snippets.cpp define a fast object using elasticate
 
-    template<std::int64_t Value>
+    template<std::int64_t Value, class Archetype = int>
     constexpr auto elasticate()
-    -> _elastic_impl::elasticate_t<std::int64_t, Value>
+    -> _elastic_impl::elasticate_t<std::int64_t, Value, Archetype>
     {
-        return _elastic_impl::elasticate_t<std::int64_t, Value>{Value};
+        return _elastic_impl::elasticate_t<std::int64_t, Value, Archetype>{Value};
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -409,13 +420,13 @@ namespace sg14 {
 
     // implementation-specific definitions for arithmetic operators
     namespace _elastic_impl {
-        template <class LhsArchetype, class RhsArchetype>
+        template<class LhsArchetype, class RhsArchetype>
         using binary_signed = typename make_signed<typename std::common_type<LhsArchetype, RhsArchetype>::type>::type;
 
-        template <class LhsArchetype, class RhsArchetype>
+        template<class LhsArchetype, class RhsArchetype>
         using binary_unsigned = typename make_unsigned<typename std::common_type<LhsArchetype, RhsArchetype>::type>::type;
 
-        template <class LhsArchetype, class RhsArchetype>
+        template<class LhsArchetype, class RhsArchetype>
         using either_signed = typename std::conditional<
                 is_signed<LhsArchetype>::value || is_signed<RhsArchetype>::value,
                 binary_signed<LhsArchetype, RhsArchetype>,
@@ -522,6 +533,21 @@ namespace sg14 {
 
         return static_cast<result_type>(
                 divide<fixed_point_result_type>(lhs._data(), rhs._data()));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::elastic streaming - (placeholder implementation)
+
+    template<int IntegerDigits, int FractionalDigits, class Archetype>
+    ::std::ostream& operator<<(::std::ostream& out, const elastic <IntegerDigits, FractionalDigits, Archetype>& e)
+    {
+        return out << e._data();
+    }
+
+    template<int IntegerDigits, int FractionalDigits, class Archetype>
+    ::std::istream& operator>>(::std::istream& in, elastic <IntegerDigits, FractionalDigits, Archetype>& e)
+    {
+        return in >> e._data();
     }
 }
 

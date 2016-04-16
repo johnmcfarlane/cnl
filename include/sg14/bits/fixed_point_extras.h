@@ -139,6 +139,34 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
+    // sg14::fixed_point type trait specializations
+
+    /// determines the width of given fixed_point type
+    ///
+    /// \tparam Rep the \a Rep parameter of @ref fixed_point
+    /// \tparam Exponent the \a Exponent parameter of @ref fixed_point
+    ///
+    /// \sa set_width
+    template<class Rep, int Exponent>
+    struct width<fixed_point<Rep, Exponent>> {
+        /// width of the given fixed_point type
+        static constexpr _width_type value = width<Rep>::value;
+    };
+
+    /// produces equivalent fixed-point type at a new width
+    ///
+    /// \tparam Rep the \a Rep parameter of @ref fixed_point
+    /// \tparam Exponent the \a Exponent parameter of @ref fixed_point
+    /// \tparam MinNumBits the desired size of the resultant type such that \c `(sg14::width<fixed_point<Rep, Exponent>>::value >= MinNumBytes)`
+    ///
+    /// \sa width
+    template<class Rep, int Exponent, _width_type MinNumBits>
+    struct set_width<fixed_point<Rep, Exponent>, MinNumBits> {
+        /// resultant type; a fixed_point specialization that is at least \a MinNumBits bytes in width
+        using type = fixed_point<set_width_t<Rep, MinNumBits>, Exponent>;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
     // sg14::fixed_point streaming - (placeholder implementation)
 
     template<class Rep, int Exponent>

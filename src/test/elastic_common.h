@@ -161,22 +161,48 @@ struct elasticate_test {
 #endif
 };
 
-static_assert(sizeof(elasticate<0>()) <= 1, "using too many bytes to represent 0");
-static_assert(sizeof(elasticate<1>()) == 1, "using too many bytes to represent 1");
-static_assert(sizeof(elasticate<255>()) == 1, "using too many bytes to represent 255");
-static_assert(sizeof(elasticate<256>()) == 1, "using too many bytes to represent 256");
-static_assert(sizeof(elasticate<257>()) == 2, "using too many bytes to represent 257");
-static_assert(sizeof(elasticate<510>()) == 1, "using too many bytes to represent 510");
-static_assert(sizeof(elasticate<511>()) == 2, "using too many bytes to represent 511");
-static_assert(sizeof(elasticate<512>()) == 1, "using too many bytes to represent 512");
+// by default, elasticate generates types that are machine-optimal for speed...
+static_assert(sizeof(elasticate<0>()) <= sizeof(int), "using too many bytes to represent 0");
+static_assert(sizeof(elasticate<1>()) == sizeof(int), "using too many bytes to represent 1");
+static_assert(sizeof(elasticate<255>()) == sizeof(int), "using too many bytes to represent 255");
+static_assert(sizeof(elasticate<256>()) == sizeof(int), "using too many bytes to represent 256");
+static_assert(sizeof(elasticate<257>()) == sizeof(int), "using too many bytes to represent 257");
+static_assert(sizeof(elasticate<510>()) == sizeof(int), "using too many bytes to represent 510");
+static_assert(sizeof(elasticate<511>()) == sizeof(int), "using too many bytes to represent 511");
+static_assert(sizeof(elasticate<512>()) == sizeof(int), "using too many bytes to represent 512");
 
-static_assert(sizeof(elasticate<-1>()) == 1, "using too many bytes to represent -1");
-static_assert(sizeof(elasticate<-127>()) == 1, "using too many bytes to represent -127");
-static_assert(sizeof(elasticate<-128>()) == 1, "using too many bytes to represent -128");
-static_assert(sizeof(elasticate<-129>()) == 2, "using too many bytes to represent -129");
-static_assert(sizeof(elasticate<-254>()) == 1, "using too many bytes to represent -254");
-static_assert(sizeof(elasticate<-255>()) == 2, "using too many bytes to represent -255");
-static_assert(sizeof(elasticate<-256>()) == 1, "using too many bytes to represent -256");
+static_assert(sizeof(elasticate<-1>()) == sizeof(int), "using too many bytes to represent -1");
+static_assert(sizeof(elasticate<-127>()) == sizeof(int), "using too many bytes to represent -127");
+static_assert(sizeof(elasticate<-128>()) == sizeof(int), "using too many bytes to represent -128");
+static_assert(sizeof(elasticate<-129>()) == sizeof(int), "using too many bytes to represent -129");
+static_assert(sizeof(elasticate<-254>()) == sizeof(int), "using too many bytes to represent -254");
+static_assert(sizeof(elasticate<-255>()) == sizeof(int), "using too many bytes to represent -255");
+static_assert(sizeof(elasticate<-256>()) == sizeof(int), "using too many bytes to represent -256");
+
+// ... but a more compact type can be chosen if size is the constraint
+static_assert(sizeof(elasticate<0, char>()) <= 1, "using too many bytes to represent 0");
+static_assert(sizeof(elasticate<1, char>()) == 1, "using too many bytes to represent 1");
+static_assert(sizeof(elasticate<255, char>()) == 1, "using too many bytes to represent 255");
+static_assert(sizeof(elasticate<256, char>()) == 1, "using too many bytes to represent 256");
+static_assert(sizeof(elasticate<257, char>()) == 2, "using too many bytes to represent 257");
+static_assert(sizeof(elasticate<510, char>()) == 1, "using too many bytes to represent 510");
+static_assert(sizeof(elasticate<511, char>()) == 2, "using too many bytes to represent 511");
+static_assert(sizeof(elasticate<512, char>()) == 1, "using too many bytes to represent 512");
+
+static_assert(sizeof(elasticate<-1, char>()) == 1, "using too many bytes to represent -1");
+static_assert(sizeof(elasticate<-127, char>()) == 1, "using too many bytes to represent -127");
+static_assert(sizeof(elasticate<-128, char>()) == 1, "using too many bytes to represent -128");
+static_assert(sizeof(elasticate<-129, char>()) == 2, "using too many bytes to represent -129");
+static_assert(sizeof(elasticate<-254, char>()) == 1, "using too many bytes to represent -254");
+static_assert(sizeof(elasticate<-255, char>()) == 2, "using too many bytes to represent -255");
+static_assert(sizeof(elasticate<-256, char>()) == 1, "using too many bytes to represent -256");
+
+// some numbers are so big that you don't have the luxury of choosing
+static_assert(sizeof(elasticate<static_cast<long long>(std::numeric_limits<unsigned>::max()) + 1>()) == sizeof(int), "using too many bytes to represent 2^32");
+static_assert(sizeof(elasticate<static_cast<long long>(std::numeric_limits<unsigned>::max()) + 1, char>()) == 1, "using too many bytes to represent 2^32");
+
+static_assert(sizeof(elasticate<static_cast<long long>(std::numeric_limits<unsigned>::max()) + 2>()) > sizeof(int), "using too many bytes to represent 2^32 + 1");
+static_assert(sizeof(elasticate<static_cast<long long>(std::numeric_limits<unsigned>::max()) + 2, char>()) > sizeof(int), "using too many bytes to represent 2^32 + 1");
 
 template
 struct elasticate_test<-0>;

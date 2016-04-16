@@ -487,19 +487,6 @@ namespace sg14 {
             FractionalDigits,
             typename make_unsigned<Archetype>::type>;
 
-    /// produces equivalent fixed-point type at a new width
-    ///
-    /// \tparam Rep the \a Rep parameter of @ref fixed_point
-    /// \tparam Exponent the \a Exponent parameter of @ref fixed_point
-    /// \tparam MinNumBits the desired size of the resultant type such that `(width<type>::value >= MinNumBytes)`
-    ///
-    /// \sa set_width_t
-    template<class Rep, int Exponent, _width_type MinNumBits>
-    struct set_width<fixed_point<Rep, Exponent>, MinNumBits> {
-        /// resultant type; a fixed_point specialization that is at least \a MinNumBits bytes in width
-        using type = fixed_point<set_width_t<Rep, MinNumBits>, Exponent>;
-    };
-
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::fixed_point-aware _fixed_point_impl definitions
 

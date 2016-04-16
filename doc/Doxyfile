@@ -17,6 +17,7 @@ OUTPUT_DIRECTORY =
 OUTPUT_LANGUAGE = English
 INPUT = \
  ../include/sg14/auxiliary/elastic.h \
+ ../include/sg14/auxiliary/multiprecision.h \
  ../include/sg14/fixed_point.h \
  ../include/sg14/bits/fixed_point_extras.h \
  ../include/sg14/type_traits.h \
