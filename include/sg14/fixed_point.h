@@ -376,10 +376,10 @@ namespace sg14 {
             return _r!=0;
         }
 
-        template<class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy = 0>
+        template<class Rhs>
         fixed_point& operator*=(const Rhs& rhs);
 
-        template<class Rhs, typename std::enable_if<std::is_arithmetic<Rhs>::value, int>::type Dummy = 0>
+        template<class Rhs>
         fixed_point& operator/=(const Rhs& rhs);
 
         /// returns internal representation of value
