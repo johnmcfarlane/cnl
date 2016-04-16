@@ -91,52 +91,6 @@ namespace sg14 {
     struct is_elastic : _elastic_impl::is_elastic<T> {
     };
 
-    ////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14:elastic specializations of std templates
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::is_signed
-
-    template<int IntegerDigits, int FractionalDigits, class Archetype>
-    struct is_signed<elastic<IntegerDigits, FractionalDigits, Archetype>>
-            : is_signed<Archetype> {
-    };
-
-    template<class Rep, int Exponent>
-    struct is_signed<fixed_point<Rep, Exponent>>
-            : is_signed<Rep> {
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::is_unsigned
-
-    template<int IntegerDigits, int FractionalDigits, class Archetype>
-    struct is_unsigned<elastic<IntegerDigits, FractionalDigits, Archetype>>
-            : is_unsigned<Archetype> {
-    };
-
-    template<class Rep, int Exponent>
-    struct is_unsigned<fixed_point<Rep, Exponent>>
-            : is_unsigned<Rep> {
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_signed<elastic<>>
-
-    template<int IntegerDigits, int FractionalDigits, class Archetype>
-    struct make_signed<elastic<IntegerDigits, FractionalDigits, Archetype>> {
-        using type = elastic<IntegerDigits, FractionalDigits, typename make_signed<Archetype>::type>;
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_unsigned<elastic<>>
-
-    template<int IntegerDigits, int FractionalDigits, class Archetype>
-    struct make_unsigned<elastic<IntegerDigits, FractionalDigits, Archetype>> {
-        using type = elastic<IntegerDigits, FractionalDigits, typename make_unsigned<Archetype>::type>;
-    };
-
     /// \brief literal real number approximation that uses fixed-point arithmetic
     /// and performs operations with expanded results to avoid overflow
     ///
@@ -257,6 +211,52 @@ namespace sg14 {
     //template<class Archetype>
     //class elastic<0, 0, Archetype> {
     //};
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14:elastic specializations of std templates
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::is_signed
+
+    template<int IntegerDigits, int FractionalDigits, class Archetype>
+    struct is_signed<elastic<IntegerDigits, FractionalDigits, Archetype>>
+            : is_signed<Archetype> {
+    };
+
+    template<class Rep, int Exponent>
+    struct is_signed<fixed_point<Rep, Exponent>>
+            : is_signed<Rep> {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::is_unsigned
+
+    template<int IntegerDigits, int FractionalDigits, class Archetype>
+    struct is_unsigned<elastic<IntegerDigits, FractionalDigits, Archetype>>
+            : is_unsigned<Archetype> {
+    };
+
+    template<class Rep, int Exponent>
+    struct is_unsigned<fixed_point<Rep, Exponent>>
+            : is_unsigned<Rep> {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::make_signed<elastic<>>
+
+    template<int IntegerDigits, int FractionalDigits, class Archetype>
+    struct make_signed<elastic<IntegerDigits, FractionalDigits, Archetype>> {
+        using type = elastic<IntegerDigits, FractionalDigits, typename make_signed<Archetype>::type>;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::make_unsigned<elastic<>>
+
+    template<int IntegerDigits, int FractionalDigits, class Archetype>
+    struct make_unsigned<elastic<IntegerDigits, FractionalDigits, Archetype>> {
+        using type = elastic<IntegerDigits, FractionalDigits, typename make_unsigned<Archetype>::type>;
+    };
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
