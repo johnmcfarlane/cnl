@@ -6,8 +6,8 @@
 
 // definitions that are directly required by more than one header of the API
 
-#if !defined(_SG14_COMMON_H)
-#define _SG14_COMMON_H 1
+#if !defined(SG14_COMMON_H)
+#define SG14_COMMON_H 1
 
 namespace sg14 {
     namespace _impl {
@@ -22,4 +22,4 @@ namespace sg14 {
     }
 }
 
-#endif  // _SG14_COMMON_H
+#endif  // SG14_COMMON_H

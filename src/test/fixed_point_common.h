@@ -115,7 +115,7 @@ TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), from_compound_assignment)
 ////////////////////////////////////////////////////////////////////////////////
 // sqrt exception throwing
 
-#if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
+#if defined(SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
 
 TEST(TOKENPASTE2(TEST_LABEL, sqrt_exception), from_alternative_specialization)
 {

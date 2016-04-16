@@ -4,8 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef _SG14_INT128_H
-#define _SG14_INT128_H
+#ifndef SG14_INT128_H
+#define SG14_INT128_H
 
 #include "../type_traits.h"
 
@@ -100,4 +100,4 @@ namespace sg14 {
 #endif
 }
 
-#endif //_SG14_INT128_H
+#endif // SG14_INT128_H

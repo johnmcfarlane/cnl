@@ -4,8 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(_SG14_MULTIPRECISION)
-#define _SG14_MULTIPRECISION 1
+#if !defined(SG14_MULTIPRECISION_H)
+#define SG14_MULTIPRECISION_H 1
 
 #include <boost/multiprecision/cpp_int.hpp>
 
@@ -175,4 +175,4 @@ namespace sg14 {
     using multiprecision = signed_multiprecision<NumBits>;
 }
 
-#endif // _SG14_MULTIPRECISION
+#endif // SG14_MULTIPRECISION_H

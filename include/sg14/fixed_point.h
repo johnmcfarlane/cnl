@@ -7,33 +7,33 @@
 /// \file
 /// \brief essential definitions related to the `sg14::fixed_point` type
 
-#if !defined(_SG14_FIXED_POINT)
-#define _SG14_FIXED_POINT 1
+#if !defined(SG14_FIXED_POINT_H)
+#define SG14_FIXED_POINT_H 1
 
 #include "type_traits.h"
 
 #include "bits/common.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-// _SG14_FIXED_POINT_EXCEPTIONS_ENABLED macro definition 
+// SG14_FIXED_POINT_EXCEPTIONS_ENABLED macro definition 
 
-#if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
-#error _SG14_FIXED_POINT_EXCEPTIONS_ENABLED already defined
+#if defined(SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
+#error SG14_FIXED_POINT_EXCEPTIONS_ENABLED already defined
 #endif
 
 #if defined(_MSC_VER)
 #if defined(_CPPUNWIND)
-#define _SG14_FIXED_POINT_EXCEPTIONS_ENABLED
+#define SG14_FIXED_POINT_EXCEPTIONS_ENABLED
 #endif
 #elif defined(__clang__) || defined(__GNUG__)
 #if defined(__EXCEPTIONS)
-#define _SG14_FIXED_POINT_EXCEPTIONS_ENABLED
+#define SG14_FIXED_POINT_EXCEPTIONS_ENABLED
 #endif
 #else
-#define _SG14_FIXED_POINT_EXCEPTIONS_ENABLED
+#define SG14_FIXED_POINT_EXCEPTIONS_ENABLED
 #endif
 
-#if defined(_SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
+#if defined(SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
 
 #include <stdexcept>
 
@@ -1224,4 +1224,4 @@ namespace sg14 {
 
 #include "bits/fixed_point_extras.h"
 
-#endif	// defined(_SG14_FIXED_POINT)
+#endif	// SG14_FIXED_POINT_H
