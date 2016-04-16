@@ -213,18 +213,32 @@ namespace sg14 {
             return 1;
         }
 
-        template<class S, int Exponent, typename std::enable_if<!(Exponent<=0), int>::type Dummy = 0>
+        template<class S, int Exponent, typename std::enable_if<!(Exponent<=0) && (Exponent<8), int>::type Dummy = 0>
         constexpr S pow2()
         {
             static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
             return pow2<S, Exponent-1>()*S(2);
         }
 
-        template<class S, int Exponent, typename std::enable_if<!(Exponent>=0), int>::type Dummy = 0>
+        template<class S, int Exponent, typename std::enable_if<(Exponent>=8), int>::type Dummy = 0>
+        constexpr S pow2()
+        {
+            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+            return pow2<S, Exponent-8>()*S(256);
+        }
+
+        template<class S, int Exponent, typename std::enable_if<!(Exponent>=0) && (Exponent>-8), int>::type Dummy = 0>
         constexpr S pow2()
         {
             static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
             return pow2<S, Exponent+1>()*S(.5);
+        }
+
+        template<class S, int Exponent, typename std::enable_if<(Exponent<=-8), int>::type Dummy = 0>
+        constexpr S pow2()
+        {
+            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+            return pow2<S, Exponent+8>()*S(.003906250);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
