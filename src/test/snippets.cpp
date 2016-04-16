@@ -25,7 +25,7 @@ constexpr auto n = elasticate<1024>();
 
 static_assert(n==1024, "n now has the value, 1024");
 static_assert(sizeof(n)==sizeof(int), "by default elasticate uses the most eficient type it can");
-//! [define a fast using elasticate]
+//! [define a fast object using elasticate]
 }
 
 namespace define_a_small_object_using_elasticate {
@@ -34,7 +34,7 @@ constexpr auto n = elasticate<1024, char>();
 
 static_assert(n==1024, "n now has the value, 1024");
 static_assert(sizeof(n)==sizeof(char), "by default elasticate uses the most eficient type it can");
-//! [define a small using elasticate]
+//! [define a small object using elasticate]
 }
 
 namespace use_resize_1 {

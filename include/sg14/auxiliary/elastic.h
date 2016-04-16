@@ -308,8 +308,11 @@ namespace sg14 {
     ///
     /// \par Example
     ///
-    /// To define an object with value 1024:
-    /// \snippet snippets.cpp define an object using elasticate
+    /// To define a 1-byte object with value 1024:
+    /// \snippet snippets.cpp define a small object using elasticate
+    ///
+    /// To define a int-sized object with value 1024:
+    /// \snippet snippets.cpp define a fast object using elasticate
 
     template<std::int64_t Value, class Archetype = int>
     constexpr auto elasticate()
