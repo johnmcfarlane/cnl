@@ -530,6 +530,21 @@ namespace sg14 {
         return static_cast<result_type>(
                 divide<fixed_point_result_type>(lhs._data(), rhs._data()));
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::elastic streaming - (placeholder implementation)
+
+    template<int IntegerDigits, int FractionalDigits, class Archetype>
+    ::std::ostream& operator<<(::std::ostream& out, const elastic <IntegerDigits, FractionalDigits, Archetype>& e)
+    {
+        return out << e._data();
+    }
+
+    template<int IntegerDigits, int FractionalDigits, class Archetype>
+    ::std::istream& operator>>(::std::istream& in, elastic <IntegerDigits, FractionalDigits, Archetype>& e)
+    {
+        return in >> e._data();
+    }
 }
 
 namespace std {
