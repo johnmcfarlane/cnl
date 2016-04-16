@@ -25,8 +25,7 @@ EXCLUDE_SYMBOLS = \
  sg14::_elastic_impl \
  sg14::_fixed_point_impl \
  sg14::_impl \
- sg14::_type_traits_impl \
- _SG14_FN_QUALIFIER
+ sg14::_type_traits_impl
 FILE_PATTERNS = *.h *.md
 RECURSIVE = YES
 EXCLUDE =
