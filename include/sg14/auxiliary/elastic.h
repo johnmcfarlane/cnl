@@ -1,3 +1,4 @@
+
 //          Copyright John McFarlane 2015 - 2016.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
@@ -192,7 +193,7 @@ namespace sg14 {
         }
 
         /// conversion operator returning value as arbitrary type
-        template <class T, class = typename std::enable_if<!_fixed_point_impl::is_fixed_point<T>::value>::type>
+        template<class T, class = typename std::enable_if<!_fixed_point_impl::is_fixed_point<T>::value>::type>
         explicit constexpr operator T() const
         {
             return static_cast<T>(_value);
@@ -416,13 +417,13 @@ namespace sg14 {
 
     // implementation-specific definitions for arithmetic operators
     namespace _elastic_impl {
-        template <class LhsArchetype, class RhsArchetype>
+        template<class LhsArchetype, class RhsArchetype>
         using binary_signed = typename make_signed<typename std::common_type<LhsArchetype, RhsArchetype>::type>::type;
 
-        template <class LhsArchetype, class RhsArchetype>
+        template<class LhsArchetype, class RhsArchetype>
         using binary_unsigned = typename make_unsigned<typename std::common_type<LhsArchetype, RhsArchetype>::type>::type;
 
-        template <class LhsArchetype, class RhsArchetype>
+        template<class LhsArchetype, class RhsArchetype>
         using either_signed = typename std::conditional<
                 is_signed<LhsArchetype>::value || is_signed<RhsArchetype>::value,
                 binary_signed<LhsArchetype, RhsArchetype>,
