@@ -84,6 +84,7 @@ void advanced_arithmetic_example()
 //! [advanced arithmetic example]
 
 
+#if defined(SG14_BOOST_ENABLED)
 ////////////////////////////////////////////////////////////////////////////////
 //! [boost example]
 #include <sg14/auxiliary/multiprecision.h>
@@ -108,6 +109,7 @@ void boost_example()
     cout << big_number{1}/googol << endl;
 }
 //! [boost example]
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // test the examples
@@ -137,5 +139,8 @@ TEST(index, examples)
     test_function(declaration_example, "7\n3.5\n1.5\n");
     test_function(basic_arithmetic_example, "6.28319\n360\n");
     test_function(advanced_arithmetic_example, "14\n254\n254.00390625\n");
+
+#if defined(SG14_BOOST_ENABLED)
     test_function(boost_example, "1e+100\n1e-100\n");
+#endif
 }
