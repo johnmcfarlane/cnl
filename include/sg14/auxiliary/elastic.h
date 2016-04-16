@@ -96,8 +96,9 @@ namespace sg14 {
     ///
     /// \tparam IntegerDigits the number of integer bits of storage
     /// \tparam FractionalDigits the number of fractional bits of storage
-    /// \tparam Archetype a type like the one used to represent to store this value
+    /// \tparam Archetype the smallest type used are storage
     ///
+    /// \note If a larger type than Archetype is required, it is determined using \ref set_width.
     /// \note This type illustrates an application of @ref fixed_point as put forth in
     /// <a href="http://johnmcfarlane.github.io/fixed_point/papers/elastic.html">this paper</a>.
 
@@ -135,7 +136,10 @@ namespace sg14 {
 
     public:
         /// \private implementation-specific
-        using _integer_type = typename set_width<archetype, bits>::type;
+        static constexpr _width_type _integer_bits = sg14::_impl::max<_width_type>(width<archetype>::value, bits);
+
+        /// \private implementation-specific
+        using _integer_type = typename set_width<archetype, _integer_bits>::type;
 
         /// \private implementation-specific
         using _fixed_point_type = sg14::fixed_point<_integer_type, exponent>;
@@ -276,23 +280,26 @@ namespace sg14 {
             return (((value/2)*2)==value) ? num_fractional_bits(value/2)-1 : 0;
         }
 
-        template<class Integer, Integer value>
+        template<class Integer, Integer value, class Archetype>
         struct elastication {
             static_assert(std::is_integral<Integer>::value, "template parameter, Integer, is not integral");
 
             using type = elastic<
                     sg14::_impl::max(1, num_integer_bits(value)),
                     value ? num_fractional_bits(value) : 0,
-                    typename std::conditional<(value>=0), unsigned, signed>::type>;
+                    typename std::conditional<(value>=0),
+                            typename make_unsigned<Archetype>::type,
+                            typename make_signed<Archetype>::type>::type>;
         };
 
-        template<class Integer, Integer Value, class Archetype = set_width_t<Integer, width<int>::value>>
-        using elasticate_t = typename _elastic_impl::elastication<Integer, Value>::type;
+        template<class Integer, Integer Value, class Archetype>
+        using elasticate_t = typename _elastic_impl::elastication<Integer, Value, Archetype>::type;
     }
 
     /// \brief generate an \ref elastic object of given value
     ///
     /// \tparam Value the integer number to be represented
+    /// \tparam Archetype the archetype of the resultant \ref elastic object
     ///
     /// \return the given value represented using an \ref elastic type
     ///
@@ -303,11 +310,11 @@ namespace sg14 {
     /// To define an object with value 1024:
     /// \snippet snippets.cpp define an object using elasticate
 
-    template<std::int64_t Value>
+    template<std::int64_t Value, class Archetype = int>
     constexpr auto elasticate()
-    -> _elastic_impl::elasticate_t<std::int64_t, Value>
+    -> _elastic_impl::elasticate_t<std::int64_t, Value, Archetype>
     {
-        return _elastic_impl::elasticate_t<std::int64_t, Value>{Value};
+        return _elastic_impl::elasticate_t<std::int64_t, Value, Archetype>{Value};
     }
 
     ////////////////////////////////////////////////////////////////////////////////
