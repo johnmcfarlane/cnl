@@ -1,11 +1,11 @@
-# C++ Binary Fixed-Point Arithmetic
+# fixed_point
 
 [![Build Status](https://travis-ci.org/johnmcfarlane/fixed_point.svg?branch=master)](https://travis-ci.org/johnmcfarlane/fixed_point)
 [![Build status](https://ci.appveyor.com/api/projects/status/p60lpkq9u90h83fi/branch/master?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/fixed-point/branch/master)
 
 The [fixed_point](https://github.com/johnmcfarlane/fixed_point) library provides 
 a header-only C++11 API for approximating real numbers using binary fixed-point arithmetic.
-It forms the reference implementation of a standard library proposal presented in paper, [P0037](papers/p0037.html)
+It forms the reference implementation of a standard library proposal presented in paper, [P0037](doc/p0037.md)
 and is developed as part of study groups, [SG14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14) and SG6.
 
 ## Installation
@@ -18,6 +18,7 @@ $ git clone https://github.com/johnmcfarlane/fixed_point.git
 
 The API is exposed through headers in the [include](./include/) directory.
 Add this to your system header list and include, e.g.:
+
 ```c++
 #include <sg14/fixed_point.h>
 ```
@@ -25,8 +26,8 @@ Add this to your system header list and include, e.g.:
 ## Documentation
 
 Full documentation: [johnmcfarlane.github.io/fixed_point/](http://johnmcfarlane.github.io/fixed_point/)  
-C++ standard library proposal, P0037: [johnmcfarlane.github.io/fixed_point/papers/p0037.html](http://johnmcfarlane.github.io/fixed_point/papers/p0037.html)  
-A position paper illustrating the elastic numeric type: [johnmcfarlane.github.io/fixed_point/papers/elastic.html](http://johnmcfarlane.github.io/fixed_point/papers/elastic.html)  
+Latest draft of C++ standard library proposal, P0037: [doc/p0037.md](doc/p0037.md)  
+A position paper illustrating the elastic numeric type: [doc/elastic.md](doc/elastic.md)  
 The Study Group 14 forum: [groups.google.com/a/isocpp.org/forum/#!forum/sg14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14)  
 
 ## Tests and Benchmarks
