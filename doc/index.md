@@ -49,3 +49,18 @@ is provided, containing all the necessary definitions.
 
 \snippet index.cpp boost example
 
+
+\section elastic Extensible
+
+Because one size does not fit all, [fixed_point<>](@ref sg14::fixed_point) is designed to make it easy to tailor new arithmetic types. 
+The [elastic<>](@ref sg14::elastic) type illustrates this.
+As each calculation requires more digits, so the results of [elastic<>](@ref sg14::elastic) operations allocate more storage.
+
+\snippet index.cpp elastic example
+
+
+\section tests Reliable
+
+The library includes an extensive range of compile-time and run-time tests.
+Even [the examples on this page](https://github.com/johnmcfarlane/fixed_point/blob/master/src/test/index.cpp) are tested against each new change.
+
