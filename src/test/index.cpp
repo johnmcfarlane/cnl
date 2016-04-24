@@ -112,6 +112,37 @@ void boost_example()
 //! [boost example]
 #endif
 
+
+////////////////////////////////////////////////////////////////////////////////
+//! [elastic example]
+#include <sg14/auxiliary/elastic.h>
+
+void elastic_example()
+{
+    // this variable has 4 integer and 4 fractional digits
+    auto x = elastic<4, 4, unsigned>{15.9375};
+    cout << x << endl;  // "15.9375"
+
+    // unlike fixed_point, operations on elastic types often produce bigger types
+    auto xx = x*x;
+    static_assert(is_same<decltype(xx), elastic<8, 8, unsigned>>::value, "");
+    cout << xx << endl;  // "254.00390625"
+
+    // the 'archetype' of x is unsigned which means it uses machine-efficient types
+    static_assert(sizeof(x) == sizeof(unsigned), "");
+
+    // if storage is the main concern, a different archetype can be used
+    auto compact_x = elastic<4, 4, uint8_t>(x);
+    static_assert(sizeof(compact_x) == sizeof(uint8_t), "");
+    cout << compact_x << endl;  // "15.9375"
+
+    // but don't worry: it's a lower limit and storage still increases as required
+    auto compact_xx = elastic<8, 8, uint8_t>(xx);
+    static_assert(sizeof(compact_xx) == sizeof(uint16_t), "");
+    cout << compact_xx << endl;	 // "254.00390625"
+}
+//! [elastic example]
+
 ////////////////////////////////////////////////////////////////////////////////
 // test the examples
 
@@ -144,4 +175,6 @@ TEST(index, examples)
 #if defined(SG14_BOOST_ENABLED)
     test_function(boost_example, "1e+100\n1e-100\n");
 #endif
+
+    test_function(elastic_example, "15.9375\n254.00390625\n15.9375\n254.00390625\n");
 }
