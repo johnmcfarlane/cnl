@@ -20,7 +20,8 @@ void declaration_example()
     auto x = fixed_point<int, -1>{3.5};
 
     // another way to specify a fixed-point type is with make_fixed or make_ufixed
-    static_assert(is_same<decltype(x), make_fixed<30, 1>>::value, "");  // assumes that int is 32-bit
+    auto y = make_fixed<30, 1>{3.5};  // (s30:1)
+    static_assert(is_same<decltype(x), decltype(y)>::value, "");  // assumes that int is 32-bit
 
     // under the hood, x stores a whole number
     cout << x.data() << endl;  // "7"
@@ -92,7 +93,7 @@ void advanced_arithmetic_example()
 void boost_example()
 {
     // define an unsigned type with 400 integer digits and 400 fractional digits
-    // and use boost::multiprecision::uint128_t as the model for the Rep type
+    // and use boost::multiprecision::uint128_t as the archetype for the Rep type
     using big_number = make_ufixed<400, 400, boost::multiprecision::uint128_t>;
     static_assert(big_number::digits==800, "");
 
@@ -116,7 +117,7 @@ void boost_example()
 
 #include <gtest/gtest.h>
 
-// calls the given function and checks that produces the given output
+// calls the given function and checks that it produces the expected output
 void test_function(void(* function)(), char const* output)
 {
     // substitute cout for a string
