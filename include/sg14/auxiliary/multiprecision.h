@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief essential definitions related to the `sg14::elastic` type
+/// \brief definitions and specializations that adapt Boost.Multiprecision for use with @ref sg14::fixed_point
 
 #if !defined(SG14_MULTIPRECISION_H)
 #define SG14_MULTIPRECISION_H 1
