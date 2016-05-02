@@ -1,3 +1,5 @@
+# fixed_point
+
 [![Build Status](https://travis-ci.org/johnmcfarlane/fixed_point.svg?branch=master)](https://travis-ci.org/johnmcfarlane/fixed_point)
 [![Build status](https://ci.appveyor.com/api/projects/status/p60lpkq9u90h83fi/branch/master?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/fixed-point/branch/master)
 
@@ -5,13 +7,6 @@ The [fixed_point](https://github.com/johnmcfarlane/fixed_point) library provides
 a header-only C++11 API for approximating real numbers using binary fixed-point arithmetic.
 It forms the reference implementation of a standard library proposal presented in paper, [P0037](doc/p0037.md)
 and is developed as part of study groups, [SG14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14) and SG6.
-
-## Further Reading
-
-Full documentation: [johnmcfarlane.github.io/fixed_point/](http://johnmcfarlane.github.io/fixed_point/)  
-Latest draft of C++ standard library proposal, P0037: [doc/p0037.md](doc/p0037.md)  
-A position paper illustrating the elastic numeric type: [doc/elastic.md](doc/elastic.md)  
-The Study Group 14 forum: [groups.google.com/a/isocpp.org/forum/#!forum/sg14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14)  
 
 ## Installation
 
@@ -125,3 +120,20 @@ To clean the project files:
     git clean -Xdff .
 
 (Use with caution!)
+
+## Further Reading
+
+- [documentation](http://johnmcfarlane.github.io/fixed_point/)
+- [latest draft](doc/p0037.md) of C++ Standard Library proposal, [P0037](doc/p0037.md) 
+  ([revision 1](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0037r1.html), 
+  [revision 0](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/p0037r0.html))
+- position paper illustrating the [elastic numeric type](doc/elastic.md)  
+- forum of [Study Group 14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14)
+
+## Contact Information
+
+All feedback greatly appreciated.
+
+- [GitHub](https://github.com/johnmcfarlane)
+- [SG14 forum](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14)
+- [fixed-point@john.mcfarlane.name](mailto:fixed-point@john.mcfarlane.name)
