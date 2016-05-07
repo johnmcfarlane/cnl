@@ -23,13 +23,6 @@ Add this to your system header list and include, e.g.:
 #include <sg14/fixed_point.h>
 ```
 
-## Documentation
-
-Full documentation: [johnmcfarlane.github.io/fixed_point/](http://johnmcfarlane.github.io/fixed_point/)  
-Latest draft of C++ standard library proposal, P0037: [doc/p0037.md](doc/p0037.md)  
-A position paper illustrating the elastic numeric type: [doc/elastic.md](doc/elastic.md)  
-The Study Group 14 forum: [groups.google.com/a/isocpp.org/forum/#!forum/sg14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14)  
-
 ## Tests and Benchmarks
 
 ### Linux
@@ -101,7 +94,7 @@ To profile benchmarks:
    $ perf report -g 'graph,0.5,caller'
    ```
 
-### Windows
+#### Windows
 
 Tested on [AppVeyor](https://ci.appveyor.com/project/johnmcfarlane/fixed-point/branch/master)
 and on *Windows 7 Professional* with *CMake 3.4.0*. Requires:
@@ -128,3 +121,19 @@ To clean the project files:
 
 (Use with caution!)
 
+## Further Reading
+
+- [documentation](http://johnmcfarlane.github.io/fixed_point/)
+- [latest draft](doc/p0037.md) of C++ Standard Library proposal, [P0037](doc/p0037.md) 
+  ([revision 1](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0037r1.html), 
+  [revision 0](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/p0037r0.html))
+- position paper illustrating the [elastic numeric type](doc/elastic.md)  
+- forum of [Study Group 14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14)
+
+## Contact Information
+
+All feedback greatly appreciated.
+
+- [GitHub](https://github.com/johnmcfarlane)
+- [SG14 forum](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14)
+- [fixed-point@john.mcfarlane.name](mailto:fixed-point@john.mcfarlane.name)
