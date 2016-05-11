@@ -11,6 +11,3 @@ struct elastic_test_with_integer_digits<2>;
 
 template
 struct elastic_test_with_integer_digits<13>;
-
-template
-struct elastic_test_with_integer_digits<-19>;
