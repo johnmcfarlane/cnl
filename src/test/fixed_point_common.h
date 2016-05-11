@@ -361,6 +361,7 @@ static_assert(fixed_point<int8, -7>(1)!=1.L, "sg14::fixed_point test failed");
 static_assert(fixed_point<int8, -7>(.5)==.5f, "sg14::fixed_point test failed");
 static_assert(fixed_point<int8, -7>(.125f)==.125L, "sg14::fixed_point test failed");
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
+static_assert(!(fixed_point<int16, -7>(123.125f)==123), "sg14::fixed_point test failed");
 static_assert(fixed_point<int16, -7>(123.125f)!=123, "sg14::fixed_point test failed");
 #endif
 static_assert(fixed_point<int32, -7>(123.125f)==123.125, "sg14::fixed_point test failed");
@@ -384,7 +385,7 @@ static_assert(fixed_point<int8, 1>(123.5)==122, "sg14::fixed_point test failed")
 
 static_assert(fixed_point<int8, 1>(255)==254, "sg14::fixed_point test failed");
 static_assert(fixed_point<int8, 1>(254)==254, "sg14::fixed_point test failed");
-static_assert(fixed_point<int8, 1>(-5)==-6, "sg14::fixed_point test failed");
+static_assert(fixed_point<int8, 1>(-5)==-4, "sg14::fixed_point test failed");
 
 // conversion between fixed_point specializations
 static_assert(make_ufixed<4, 4>(make_fixed<7, 8>(1.5))==1.5, "sg14::fixed_point test failed");
@@ -593,18 +594,10 @@ static_assert(is_same<decltype(make_fixed<31, 32>(16777215.996093750)*-123.654f)
         "sg14::fixed_point multiplication test failed");
 
 // division
-constexpr auto divide_result = _impl::shift_left<1, int8>(int8(0));
-
-TEST(TOKENPASTE2(TEST_LABEL, division), int8_int8)
-{
-    auto nume = fixed_point<int8, -1>(63);
-    auto denom = fixed_point<int8, -1>(-4);
-    auto div = nume / denom;
-    ASSERT_EQ(div, -16);
-}
+static_assert(fixed_point<int8, -1>(63) / fixed_point<int8, -1>(-4) == -15.5, "sg14::fixed_point test failed");
 
 #if defined(TEST_NATIVE_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==32, "sg14::fixed_point test failed");
+static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==31, "sg14::fixed_point test failed");
 #endif
 
 #if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
