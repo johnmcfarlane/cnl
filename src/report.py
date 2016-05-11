@@ -4,6 +4,8 @@ import csv
 import itertools
 import sys
 
+help_text = "please provide CSV-formatted google/benchmark output"
+
 def sum_from_rows(rows):
     return ["total"] + [str(sum(float(cell) for cell in column)) for
     column in itertools.islice(zip(*rows), 1, None)]
