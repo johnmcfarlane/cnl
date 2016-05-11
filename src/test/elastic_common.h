@@ -7,6 +7,9 @@
 // like fixed_point_common.h this file contains tests which can be
 // performed on different types from different .cpp files.
 
+#if !defined(SG14_ELASTIC_COMMON_H)
+#define SG14_ELASTIC_COMMON_H 1
+
 #include <sg14/auxiliary/elastic.h>
 
 #include <sg14/bits/int128.h>
@@ -592,3 +595,5 @@ struct elastic_test_with_integer_digits
 // trigger elastic tests against a range of values for IntegerDigits parameter
 
 // (from elastic?.cpp source files)
+
+#endif  // defined(SG14_ELASTIC_COMMON_H)
