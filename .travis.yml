@@ -27,5 +27,5 @@ script:
     - make fp_test fp_benchmark
     - ./fp_test
     - ./fp_benchmark --benchmark_format=csv>result.csv
-    - ./report.py result.csv
+    - ./src/report.py result.csv
     - ls -l fp_benchmark fp_test
