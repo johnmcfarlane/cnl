@@ -4,8 +4,9 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-// like fixed_point_common.h this file contains tests which can be
-// performed on different types from different .cpp files.
+/// \file
+/// \brief like fixed_point_common.h this file contains tests which can be
+/// performed on different types from different .cpp files.
 
 #if !defined(SG14_ELASTIC_COMMON_H)
 #define SG14_ELASTIC_COMMON_H 1
