@@ -5,14 +5,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
 # list fp_test source files
 
 set(    SOURCES
-        ${CMAKE_CURRENT_LIST_DIR}/elastic1.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/elastic2.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/elastic3.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/elastic4.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/elastic5.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/elastic6.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/elastic7.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/elastic8.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/elastic.cpp
         ${CMAKE_CURRENT_LIST_DIR}/index.cpp
         ${CMAKE_CURRENT_LIST_DIR}/main.cpp
         ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
