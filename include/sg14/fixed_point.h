@@ -107,17 +107,20 @@ namespace sg14 {
             return static_cast<Output>(i);
         }
 
-        // sizeof(Input) >= sizeof(Output)
+        // Exponent >= 0
         template<
                 int Exponent,
                 class Output,
                 class Input,
                 typename std::enable_if<
-                        !(Exponent<=0) && sizeof(Output)<=sizeof(Input) && is_unsigned<Input>::value,
+                        !(Exponent<=0),
                         int>::type Dummy = 0>
         constexpr Output shift_left(Input i)
         {
-            return shift_left<0, Output, Input>(i) << Exponent;
+            using larger = typename std::conditional<
+                    width<Input>::value<=width<Output>::value,
+                    Output, Input>::type;
+            return static_cast<Output>(static_cast<larger>(i)*(larger{1} << Exponent));
         }
 
         template<
@@ -125,54 +128,14 @@ namespace sg14 {
                 class Output,
                 class Input,
                 typename std::enable_if<
-                        !(Exponent<=0) && sizeof(Output)<=sizeof(Input),
+                        !(Exponent<=0),
                         int>::type Dummy = 0>
         constexpr Output shift_right(Input i)
         {
-            return shift_right<0, Output, Input>(i >> Exponent);
-        }
-
-        // sizeof(Input) < sizeof(Output)
-        template<
-                int Exponent,
-                class Output,
-                class Input,
-                typename std::enable_if<
-                        !(Exponent<=0) && !(sizeof(Output)<=sizeof(Input)) && is_unsigned<Input>::value,
-                        char>::type Dummy = 0>
-        constexpr Output shift_left(Input i)
-        {
-            return shift_left<0, Output, Input>(i) << Exponent;
-        }
-
-        template<
-                int Exponent,
-                class Output,
-                class Input,
-                typename std::enable_if<
-                        !(Exponent<=0) && !(sizeof(Output)<=sizeof(Input)),
-                        char>::type Dummy = 0>
-        constexpr Output shift_right(Input i)
-        {
-            return shift_right<0, Output, Input>(i) >> Exponent;
-        }
-
-        // is_signed<Input>
-        template<
-                int Exponent,
-                class Output,
-                class Input,
-                typename std::enable_if<
-                        !(Exponent<=0) && is_signed<Input>::value,
-                        int>::type Dummy = 0>
-        constexpr Output shift_left(Input i)
-        {
-            using unsigned_input = typename make_unsigned<Input>::type;
-            using signed_output = typename make_signed<Output>::type;
-
-            return static_cast<Output>((i>=0)
-                                       ? shift_left<Exponent, signed_output>(static_cast<unsigned_input>(i))
-                                       : -shift_left<Exponent, signed_output>(static_cast<unsigned_input>(-i)));
+            using larger = typename std::conditional<
+                    width<Input>::value<=width<Output>::value,
+                    Output, Input>::type;
+            return static_cast<Output>(static_cast<larger>(i)/(larger{1} << Exponent));
         }
 
         // Exponent < 0
