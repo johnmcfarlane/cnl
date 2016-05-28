@@ -101,9 +101,7 @@ namespace sg14 {
     namespace _integer_impl {
         template<class, class, class = void>
         struct common_type;
-    };
 
-    namespace _integer_impl {
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_integer_impl::is_integer_class - trait to identify sg14::integer<>
 
