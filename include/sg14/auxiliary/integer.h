@@ -429,17 +429,19 @@ namespace sg14 {
     struct make_signed<integer<Rep, OverflowPolicy>> {
         using type = integer<typename make_signed<Rep>::type, OverflowPolicy>;
     };
+}
 
+namespace std {
     // std::common_type<T, sg14::integer>
     template<
             class Lhs,
             class RhsRep, class RhsOverflowPolicy>
     struct common_type<
             Lhs,
-            integer<RhsRep, RhsOverflowPolicy>>
-            : _integer_impl::common_type<
+            sg14::integer<RhsRep, RhsOverflowPolicy>>
+            : sg14::_integer_impl::common_type<
                     Lhs,
-                    integer<RhsRep, RhsOverflowPolicy>> {
+                    sg14::integer<RhsRep, RhsOverflowPolicy>> {
     };
 
     // std::common_type<sg14::integer, T>
@@ -447,10 +449,10 @@ namespace sg14 {
             class LhsRep, class LhsOverflowPolicy,
             class Rhs>
     struct common_type<
-            integer<LhsRep, LhsOverflowPolicy>,
+            sg14::integer<LhsRep, LhsOverflowPolicy>,
             Rhs>
-            : _integer_impl::common_type<
-                    integer<LhsRep, LhsOverflowPolicy>,
+            : sg14::_integer_impl::common_type<
+                    sg14::integer<LhsRep, LhsOverflowPolicy>,
                     Rhs> {
     };
 
@@ -459,15 +461,13 @@ namespace sg14 {
             class LhsRep, class LhsOverflowPolicy,
             class RhsRep, class RhsOverflowPolicy>
     struct common_type<
-            integer<LhsRep, LhsOverflowPolicy>,
-            integer<RhsRep, RhsOverflowPolicy>>
-            : _integer_impl::common_type<
-                    integer<LhsRep, LhsOverflowPolicy>,
-                    integer<RhsRep, RhsOverflowPolicy>> {
+            sg14::integer<LhsRep, LhsOverflowPolicy>,
+            sg14::integer<RhsRep, RhsOverflowPolicy>>
+            : sg14::_integer_impl::common_type<
+                    sg14::integer<LhsRep, LhsOverflowPolicy>,
+                    sg14::integer<RhsRep, RhsOverflowPolicy>> {
     };
-}
 
-namespace std {
     ////////////////////////////////////////////////////////////////////////////////
     // std::numeric_limits specialization for integer
 

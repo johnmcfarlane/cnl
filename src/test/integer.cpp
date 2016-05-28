@@ -22,20 +22,20 @@ using std::numeric_limits;
 // std::common_type with sg14::integer parameter
 
 static_assert(is_same<
-        typename sg14::common_type<int32_t, saturated_integer<int16_t>>::type,
+        typename std::common_type<int32_t, saturated_integer<int16_t>>::type,
         saturated_integer<int32_t>>::value, "sg14::_integer_impl::common_type test failure");
 
 static_assert(is_same<
-        sg14::common_type<saturated_integer<int8_t>, saturated_integer<int8_t>>::type,
+        std::common_type<saturated_integer<int8_t>, saturated_integer<int8_t>>::type,
         saturated_integer<int8_t>>::value, "sg14::_integer_impl::common_type test failure");
 
 static_assert(is_same<
-        sg14::common_type<saturated_integer<uint32_t>, float>::type,
+        std::common_type<saturated_integer<uint32_t>, float>::type,
         float>::value, "incorrect assumption about promotion");
 
 static_assert(is_same<
-        sg14::common_type<saturated_integer<uint32_t>, saturated_integer<int16_t>>::type,
-        saturated_integer<uint32_t >>::value, "sg14::common_type test failed");
+        std::common_type<saturated_integer<uint32_t>, saturated_integer<int16_t>>::type,
+        saturated_integer<uint32_t >>::value, "std::common_type test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_integer_impl::is_integer_class
