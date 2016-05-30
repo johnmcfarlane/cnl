@@ -4,8 +4,6 @@
 
 #include <boost/integer.hpp>
 
-static_assert(__cplusplus>=201402L, "C++14 features required to compile this unit");
-
 using std::declval;
 using std::is_same;
 
@@ -33,6 +31,7 @@ namespace sample1 {
     }
 }
 
+#if (__cplusplus>=201402L)
 namespace sample2 {
     // range of a*b is UINT_MAX*UINT_MAX but range of return value is UINT_MAX
     auto multiply(unsigned a, unsigned b)
@@ -121,14 +120,15 @@ namespace sample5 {
                 static_cast<uint64_t>(multiply(UINT_MAX, UINT_MAX)));
     }
 }
+#endif
 
 namespace determining {
-    using sg14::width_v;
+    using sg14::width;
 
-    static_assert(width_v<uint16_t> == 16, "the width of uint16_t is exactly 16 bits");
-    static_assert(width_v<long long> >= 64, "long long has a width of at least 64 bits");
-    static_assert(width_v<long> >= width_v<short>, "short is not longer than long");
-    static_assert(width_v<wchar_t> >= width_v<char>, "a wide character is at least wide as a character");
+    static_assert(width<uint16_t>::value == 16, "the width of uint16_t is exactly 16 bits");
+    static_assert(width<long long>::value >= 64, "long long has a width of at least 64 bits");
+    static_assert(width<long>::value >= width<short>::value, "short is not longer than long");
+    static_assert(width<wchar_t>::value >= width<char>::value, "a wide character is at least wide as a character");
 }
 
 namespace specifiying {

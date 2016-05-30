@@ -11,8 +11,8 @@ using sg14::_type_traits_impl::first_fit;
 using std::is_same;
 using std::is_signed;
 using std::is_unsigned;
-using std::make_signed_t;
-using std::make_unsigned_t;
+using std::make_signed;
+using std::make_unsigned;
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::width
@@ -36,7 +36,7 @@ static_assert(width<unsigned __int128>::value == 128, "sg14::width test failed")
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::width_v
 
-static_assert(__cplusplus >= 201402L, "C++14 features required to perform these tests");
+#if (__cplusplus >= 201402L)
 
 using sg14::width_v;
 
@@ -52,6 +52,8 @@ static_assert(width_v<std::uint64_t> == 64, "sg14::width_v test failed");
 #if defined(_GLIBCXX_USE_INT128)
 static_assert(width_v<__int128> == 128, "sg14::width_v test failed");
 static_assert(width_v<unsigned __int128> == 128, "sg14::width_v test failed");
+#endif
+
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -120,7 +122,7 @@ struct test_built_in_set_width : test_built_in_set_width<T, NumBits-1> {
     // get alias to result
     using result_type = set_width_t<T, NumBits>;
 
-    static_assert(width_v<result_type> >= NumBits,
+    static_assert(width<result_type>::value >= NumBits,
             "result of set_width must be at least the desired width in bits");
 
     static_assert(is_signed<T>::value==is_signed<result_type>::value,
@@ -128,9 +130,9 @@ struct test_built_in_set_width : test_built_in_set_width<T, NumBits-1> {
     static_assert(is_unsigned<T>::value==is_unsigned<result_type>::value,
             "incorrect signage in result of set_width_t");
 
-    static_assert(is_same<make_signed_t<result_type>, set_width_t<make_signed_t<T>, NumBits>>::value,
+    static_assert(is_same<typename make_signed<result_type>::type, set_width_t<typename make_signed<T>::type, NumBits>>::value,
             "incorrect signage in result of set_width_t");
-    static_assert(is_same<make_unsigned_t<result_type>, set_width_t<make_unsigned_t<T>, NumBits>>::value,
+    static_assert(is_same<typename make_unsigned<result_type>::type, set_width_t<typename make_unsigned<T>::type, NumBits>>::value,
             "incorrect signage in result of set_width_t");
 };
 
