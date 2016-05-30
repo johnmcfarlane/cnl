@@ -131,8 +131,8 @@ namespace determining {
 
     static_assert(width<uint16_t>::value == 16, "the width of uint16_t is exactly 16 bits");
     static_assert(width<long long>::value >= 64, "long long has a width of at least 64 bits");
-    static_assert(width<long>::value >= width<short>::value, "short is not longer than long");
-    static_assert(width<wchar_t>::value >= width<char>::value, "a wide character is at least wide as a character");
+    static_assert(width<long>::value >= width<short>::value, "short is no longer than long");
+    static_assert(width<wchar_t>::value >= width<char>::value, "a wide character is at least as wide as a character");
 }
 
 namespace specifiying {
