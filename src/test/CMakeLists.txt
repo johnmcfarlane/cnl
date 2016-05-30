@@ -6,6 +6,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
 
 set(    SOURCES
         ${CMAKE_CURRENT_LIST_DIR}/elastic.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/p0381.cpp
         ${CMAKE_CURRENT_LIST_DIR}/index.cpp
         ${CMAKE_CURRENT_LIST_DIR}/main.cpp
         ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
@@ -51,6 +52,10 @@ if(Boost_FOUND)
     target_include_directories(fp_test SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
     target_link_libraries(fp_test ${Boost_LIBRARIES})
 endif(Boost_FOUND)
+
+# make code in p0381.cpp a special case
+set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/p0381.cpp PROPERTIES COMPILE_FLAGS -std=c++1z)
+set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/type_traits.cpp PROPERTIES COMPILE_FLAGS -std=c++1z)
 
 ######################################################################
 # add external project, google_test

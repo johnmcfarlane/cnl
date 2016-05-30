@@ -9,6 +9,50 @@
 
 using sg14::_type_traits_impl::first_fit;
 using std::is_same;
+using std::is_signed;
+using std::is_unsigned;
+using std::make_signed_t;
+using std::make_unsigned_t;
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::width
+
+using sg14::width;
+
+static_assert(width<std::int8_t>::value == 8, "sg14::width test failed");
+static_assert(width<std::uint8_t>::value == 8, "sg14::width test failed");
+static_assert(width<std::int16_t>::value == 16, "sg14::width test failed");
+static_assert(width<std::uint16_t>::value == 16, "sg14::width test failed");
+static_assert(width<std::int32_t>::value == 32, "sg14::width test failed");
+static_assert(width<std::uint32_t>::value == 32, "sg14::width test failed");
+static_assert(width<std::int64_t>::value == 64, "sg14::width test failed");
+static_assert(width<std::uint64_t>::value == 64, "sg14::width test failed");
+
+#if defined(_GLIBCXX_USE_INT128)
+static_assert(width<__int128>::value == 128, "sg14::width test failed");
+static_assert(width<unsigned __int128>::value == 128, "sg14::width test failed");
+#endif
+
+////////////////////////////////////////////////////////////////////////////////
+// sg14::width_v
+
+static_assert(__cplusplus >= 201402L, "C++14 features required to perform these tests");
+
+using sg14::width_v;
+
+static_assert(width_v<std::int8_t> == 8, "sg14::width_v test failed");
+static_assert(width_v<std::uint8_t> == 8, "sg14::width_v test failed");
+static_assert(width_v<std::int16_t> == 16, "sg14::width_v test failed");
+static_assert(width_v<std::uint16_t> == 16, "sg14::width_v test failed");
+static_assert(width_v<std::int32_t> == 32, "sg14::width_v test failed");
+static_assert(width_v<std::uint32_t> == 32, "sg14::width_v test failed");
+static_assert(width_v<std::int64_t> == 64, "sg14::width_v test failed");
+static_assert(width_v<std::uint64_t> == 64, "sg14::width_v test failed");
+
+#if defined(_GLIBCXX_USE_INT128)
+static_assert(width_v<__int128> == 128, "sg14::width_v test failed");
+static_assert(width_v<unsigned __int128> == 128, "sg14::width_v test failed");
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_type_traits_impl::first_fit_t
@@ -62,20 +106,64 @@ static_assert(is_same<set_width_t<float, 128>, long double>::value, "sg14::set_w
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::width
+// lots more width / set_width
 
-using sg14::width;
+template<typename T, int NumBits>
+struct test_built_in_set_width;
 
-static_assert(width<std::int8_t>::value == 8, "sg14::width test failed");
-static_assert(width<std::uint8_t>::value == 8, "sg14::width test failed");
-static_assert(width<std::int16_t>::value == 16, "sg14::width test failed");
-static_assert(width<std::uint16_t>::value == 16, "sg14::width test failed");
-static_assert(width<std::int32_t>::value == 32, "sg14::width test failed");
-static_assert(width<std::uint32_t>::value == 32, "sg14::width test failed");
-static_assert(width<std::int64_t>::value == 64, "sg14::width test failed");
-static_assert(width<std::uint64_t>::value == 64, "sg14::width test failed");
+template<typename T>
+struct test_built_in_set_width<T, 0> {
+};
 
-#if defined(_GLIBCXX_USE_INT128)
-static_assert(width<__int128>::value == 128, "sg14::width test failed");
-static_assert(width<unsigned __int128>::value == 128, "sg14::width test failed");
-#endif
+template<typename T, int NumBits>
+struct test_built_in_set_width : test_built_in_set_width<T, NumBits-1> {
+    // get alias to result
+    using result_type = set_width_t<T, NumBits>;
+
+    static_assert(width_v<result_type> >= NumBits,
+            "result of set_width must be at least the desired width in bits");
+
+    static_assert(is_signed<T>::value==is_signed<result_type>::value,
+            "incorrect signage in result of set_width_t");
+    static_assert(is_unsigned<T>::value==is_unsigned<result_type>::value,
+            "incorrect signage in result of set_width_t");
+
+    static_assert(is_same<make_signed_t<result_type>, set_width_t<make_signed_t<T>, NumBits>>::value,
+            "incorrect signage in result of set_width_t");
+    static_assert(is_same<make_unsigned_t<result_type>, set_width_t<make_unsigned_t<T>, NumBits>>::value,
+            "incorrect signage in result of set_width_t");
+};
+
+template<typename T>
+struct test_built_in_width {
+    static_assert(width<T>::value==sizeof(T)*CHAR_BIT,
+            "incorrect assumption about width of built-in integral type, T");
+};
+
+template<typename T>
+struct test_built_in
+        : test_built_in_width<T>, test_built_in_set_width<T, 64> {
+};
+
+template
+struct test_built_in<char>;
+template
+struct test_built_in<unsigned char>;
+template
+struct test_built_in<signed char>;
+template
+struct test_built_in<unsigned short>;
+template
+struct test_built_in<signed short>;
+template
+struct test_built_in<unsigned>;
+template
+struct test_built_in<signed>;
+template
+struct test_built_in<unsigned long>;
+template
+struct test_built_in<signed long>;
+template
+struct test_built_in<unsigned long long>;
+template
+struct test_built_in<signed long long>;
