@@ -134,6 +134,20 @@ namespace sg14 {
         };
     }
 
+#if (__cplusplus >= 201402L)
+    ////////////////////////////////////////////////////////////////////////////////
+    // width_v - equals number of bits of information in given type
+
+    /// \brief provides width of numeric type
+    ///
+    /// \tparam T given numeric type
+    ///
+    /// \remarks The width is defined as the number of digits including any sign bit.
+
+    template<class T>
+    constexpr unsigned width_v = width<T>::value;
+#endif
+
     /// resizes a type;
     /// can be specialized for any type for which resizing that type makes sense
     ///
