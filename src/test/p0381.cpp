@@ -2,7 +2,9 @@
 
 #include <gtest/gtest.h>
 
+#if defined(SG14_BOOST_ENABLED)
 #include <boost/integer.hpp>
+#endif
 
 using std::declval;
 using std::is_same;
@@ -86,6 +88,7 @@ namespace sample4 {
     // Sample 4 intentionally does not exist. If it did, there would be no need for P0381!
 }
 
+#if defined(SG14_BOOST_ENABLED)
 namespace sample5 {
     template<class Operand>
     auto multiply(Operand a, Operand b)
@@ -120,7 +123,8 @@ namespace sample5 {
                 static_cast<uint64_t>(multiply(UINT_MAX, UINT_MAX)));
     }
 }
-#endif
+#endif  // defined(SG14_BOOST_ENABLED)
+#endif  // C++14
 
 namespace determining {
     using sg14::width;
