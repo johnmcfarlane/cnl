@@ -39,6 +39,10 @@ namespace sg14 {
     struct width<char> : std::integral_constant<_width_type, sizeof(char)*CHAR_BIT> {
     };
     template<>
+    struct width<wchar_t> : std::integral_constant<_width_type, sizeof(wchar_t)*CHAR_BIT> {
+    };
+
+    template<>
     struct width<signed char> : std::integral_constant<_width_type, sizeof(signed char)*CHAR_BIT> {
     };
     template<>
