@@ -13,6 +13,8 @@
 
 #include <gtest/gtest.h>
 
+static_assert(__cplusplus == 201103L, "this unit intended to test C++11 features only");
+
 ////////////////////////////////////////////////////////////////////////////////
 // imports from std
 

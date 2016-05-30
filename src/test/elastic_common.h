@@ -17,6 +17,8 @@
 
 #include <tuple>
 
+static_assert(__cplusplus == 201103L, "this unit intended to test C++11 features only");
+
 using std::is_same;
 
 using sg14::elastic;
