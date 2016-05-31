@@ -39,6 +39,10 @@ namespace sg14 {
     struct width<char> : std::integral_constant<_width_type, sizeof(char)*CHAR_BIT> {
     };
     template<>
+    struct width<wchar_t> : std::integral_constant<_width_type, sizeof(wchar_t)*CHAR_BIT> {
+    };
+
+    template<>
     struct width<signed char> : std::integral_constant<_width_type, sizeof(signed char)*CHAR_BIT> {
     };
     template<>
@@ -130,6 +134,20 @@ namespace sg14 {
         };
     }
 
+#if (__cplusplus >= 201402L)
+    ////////////////////////////////////////////////////////////////////////////////
+    // width_v - equals number of bits of information in given type
+
+    /// \brief provides width of numeric type
+    ///
+    /// \tparam T given numeric type
+    ///
+    /// \remarks The width is defined as the number of digits including any sign bit.
+
+    template<class T>
+    constexpr unsigned width_v = width<T>::value;
+#endif
+
     /// resizes a type;
     /// can be specialized for any type for which resizing that type makes sense
     ///
@@ -137,38 +155,55 @@ namespace sg14 {
     template<class Archetype, _width_type MinNumBits>
     struct set_width;
 
-    // sg14::set_width specialized for 8-bit built-in integers
+    // sg14::set_width specialized for char/wchar_t
     template<_width_type MinNumBits>
-    struct set_width<std::int8_t, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+    struct set_width<char, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, typename std::conditional<std::is_signed<char>::value, _type_traits_impl::signed_family, _type_traits_impl::unsigned_family>::type> {
     };
     template<_width_type MinNumBits>
-    struct set_width<std::uint8_t, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
+    struct set_width<wchar_t, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, typename std::conditional<std::is_signed<char>::value, _type_traits_impl::signed_family, _type_traits_impl::unsigned_family>::type> {
+    };
+
+    // sg14::set_width specialized for 8-bit built-in integers
+    template<_width_type MinNumBits>
+    struct set_width<signed char, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+    };
+    template<_width_type MinNumBits>
+    struct set_width<unsigned char, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
     };
 
     // sg14::set_width specialized for 16-bit built-in integers
     template<_width_type MinNumBits>
-    struct set_width<std::int16_t, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+    struct set_width<signed short, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
     };
     template<_width_type MinNumBits>
-    struct set_width<std::uint16_t, MinNumBits>
+    struct set_width<unsigned short, MinNumBits>
             : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
     };
 
     // sg14::set_width specialized for 32-bit built-in integers
     template<_width_type MinNumBits>
-    struct set_width<std::int32_t, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+    struct set_width<signed int, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
     };
     template<_width_type MinNumBits>
-    struct set_width<std::uint32_t, MinNumBits>
+    struct set_width<unsigned int, MinNumBits>
             : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
     };
 
     // sg14::set_width specialized for 64-bit built-in integers
     template<_width_type MinNumBits>
-    struct set_width<std::int64_t, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+    struct set_width<signed long, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
     };
     template<_width_type MinNumBits>
-    struct set_width<std::uint64_t, MinNumBits>
+    struct set_width<unsigned long, MinNumBits>
+            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
+    };
+
+    // sg14::set_width specialized for 64-bit built-in integers
+    template<_width_type MinNumBits>
+    struct set_width<signed long long, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+    };
+    template<_width_type MinNumBits>
+    struct set_width<unsigned long long, MinNumBits>
             : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
     };
 
