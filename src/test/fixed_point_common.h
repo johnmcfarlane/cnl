@@ -13,10 +13,6 @@
 
 #include <gtest/gtest.h>
 
-#if ! defined(_MSC_VER)
-static_assert(__cplusplus == 201103L, "this unit intended to test C++11 features only");
-#endif
-
 ////////////////////////////////////////////////////////////////////////////////
 // imports from std
 
