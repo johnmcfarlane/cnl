@@ -1,3 +1,4 @@
+dist: trusty
 sudo: required
 
 language: cpp
@@ -7,17 +8,17 @@ language: cpp
 matrix:
     include:
         - compiler: gcc
-          env: COMPILER=g++-4.8 BUILD_TYPE=Release EXCEPTIONS=ON
+          env: COMPILER=g++ BUILD_TYPE=Release EXCEPTIONS=ON
         - compiler: gcc
-          env: COMPILER=g++-4.8 BUILD_TYPE=Release EXCEPTIONS=OFF
+          env: COMPILER=g++ BUILD_TYPE=Release EXCEPTIONS=OFF
         - compiler: clang
-          env: COMPILER=clang++-3.5 BUILD_TYPE=Release  EXCEPTIONS=ON
+          env: COMPILER=clang++ BUILD_TYPE=Release  EXCEPTIONS=ON
         - compiler: clang
-          env: COMPILER=clang++-3.5 BUILD_TYPE=Release  EXCEPTIONS=OFF
+          env: COMPILER=clang++ BUILD_TYPE=Release  EXCEPTIONS=OFF
         - compiler: gcc
-          env: COMPILER=g++-4.8 BUILD_TYPE=Debug EXCEPTIONS=ON
+          env: COMPILER=g++ BUILD_TYPE=Debug EXCEPTIONS=ON
         - compiler: clang
-          env: COMPILER=clang++-3.5 BUILD_TYPE=Debug EXCEPTIONS=ON
+          env: COMPILER=clang++ BUILD_TYPE=Debug EXCEPTIONS=ON
 
 before_script:
     - source .travis-setup.sh
@@ -27,5 +28,5 @@ script:
     - make fp_test fp_benchmark
     - ./fp_test
     - ./fp_benchmark --benchmark_format=csv>result.csv
-    - ./src/report.py result.csv
+    - ./src/benchmark/report.py result.csv
     - ls -l fp_benchmark fp_test
