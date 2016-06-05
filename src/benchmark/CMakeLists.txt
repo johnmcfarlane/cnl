@@ -19,7 +19,7 @@ set_target_properties(
 ExternalProject_Add(
   google_benchmark
   GIT_REPOSITORY "https://github.com/google/benchmark.git"
-  GIT_TAG cd525ae85d4a46ecb2e3bdbdd1df101e48c5195e
+  GIT_TAG "v1.0.0"
   INSTALL_COMMAND ""
   CMAKE_ARGS -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
 )
