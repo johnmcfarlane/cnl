@@ -137,9 +137,10 @@ namespace determining {
 
 namespace specifiying {
     using sg14::set_width_t;
+    using sg14::width;
     static_assert(is_same<set_width_t<signed, 8>, int8_t>::value, "int8_t is a signed 8-bit integer");
     static_assert(is_same<set_width_t<unsigned, 32>, uint32_t>::value, "uint32_t is an unsigned 32-bit integer");
     static_assert(is_same<set_width_t<uint64_t, 16>, uint16_t>::value, "a 64-bit unsigned integer was narrowed to 16-bits");
     static_assert(is_same<set_width_t<char, 64>, int64_t>::value || is_same<set_width_t<char, 64>, uint64_t>::value, "char may or may not be signed so the result may be uint64_t or int64_t");
-    static_assert(is_same<set_width_t<int, 10>, int16_t>::value, "result must be at least 10 bits wide");
+    static_assert(width<set_width_t<int, 10>>::value >= 10, "result must be at least 10 bits wide");
 }
