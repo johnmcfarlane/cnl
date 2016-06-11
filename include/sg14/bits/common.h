@@ -19,6 +19,15 @@ namespace sg14 {
         {
             return (a<b) ? b : a;
         }
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::max
+
+        template<class T>
+        constexpr T min(T a, T b)
+        {
+            return (a<b) ? a : b;
+        }
     }
 }
 
