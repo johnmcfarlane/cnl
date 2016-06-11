@@ -564,26 +564,26 @@ namespace sg14 {
             template<class Lhs, class Rhs>
             struct add : operator_base<Lhs, Rhs> {
                 using result_type = fixed_point<decltype(std::declval<typename Lhs::rep>()
-                        +std::declval<typename Rhs::rep>()), _impl::min(Lhs::exponent, Rhs::exponent)>;
+                        +std::declval<typename Rhs::rep>()), _impl::min<int>(Lhs::exponent, Rhs::exponent)>;
             };
 
             template<class Lhs, class Rhs>
             struct subtract : operator_base<Lhs, Rhs> {
                 using result_type = fixed_point<decltype(std::declval<typename Lhs::rep>()
-                        -std::declval<typename Rhs::rep>()), _impl::min(Lhs::exponent, Rhs::exponent)>;
+                        -std::declval<typename Rhs::rep>()), _impl::min<int>(Lhs::exponent, Rhs::exponent)>;
             };
 
             template<class Lhs, class Rhs>
             struct multiply : operator_base<Lhs, Rhs> {
                 using result_type = fixed_point<decltype(std::declval<typename Lhs::rep>()
-                        *std::declval<typename Rhs::rep>()), _impl::min(Lhs::exponent, Rhs::exponent)>;
+                        *std::declval<typename Rhs::rep>()), _impl::min<int>(Lhs::exponent, Rhs::exponent)>;
                 using lhs_type = widen_integer_result_t<Lhs>;
             };
 
             template<class Lhs, class Rhs>
             struct divide : operator_base<Lhs, Rhs> {
                 using result_type = fixed_point<decltype(std::declval<typename Lhs::rep>()
-                        /std::declval<typename Rhs::rep>()), _impl::min(Lhs::exponent, Rhs::exponent)>;
+                        /std::declval<typename Rhs::rep>()), _impl::min<int>(Lhs::exponent, Rhs::exponent)>;
                 using lhs_type = widen_fractional_result_t<Lhs>;
             };
         };
