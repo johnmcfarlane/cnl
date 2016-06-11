@@ -601,7 +601,7 @@ namespace sg14 {
         template<class Lhs, class Rhs, class _Enable = void>
         struct _common_type_mixed;
 
-        // given a fixed-point and a integer type,
+        // given a fixed-point and an integer type,
         // generates a fixed-point type that is as big as both of them (or as close as possible)
         template<class LhsRep, int LhsExponent, class RhsInteger>
         struct _common_type_mixed<
