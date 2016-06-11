@@ -36,20 +36,10 @@ TEST(proposal, make_fixed)
 static_assert(make_ufixed<4, 4>{.006}==make_ufixed<4, 4>{0}, "Incorrect information in proposal section, Conversion");
 
 // Operator Overloads
-static_assert(fixed_point<uint8_t, -3>{8} + fixed_point<uint8_t, -4>{3} == fixed_point<unsigned, -3>{11},
-        "Incorrect information in proposal section, Operator Overloads");
-static_assert(is_same<decltype(fixed_point<uint8_t, -3>{8} + fixed_point<int8_t, -4>{3}), decltype(fixed_point<int, -3>{11})>::value,
-        "Incorrect information in proposal section, Operator Overloads");
 
-static_assert(make_ufixed<5, 3>{8}+3==fixed_point<signed, -3>{11},
-        "Incorrect information in proposal section, Operator Overloads");
-static_assert(is_same<decltype(make_ufixed<5, 3>{8}+3), decltype(fixed_point<signed, -3>{11})>::value,
-        "Incorrect information in proposal section, Operator Overloads");
-
-static_assert(make_ufixed<5, 3>{8}+float{3}==float{11},
-        "Incorrect information in proposal section, Operator Overloads");
-static_assert(is_same<decltype(make_ufixed<5, 3>{8}+float{3}), decltype(float{11})>::value,
-        "Incorrect information in proposal section, Operator Overloads");
+static_assert(sg14::_impl::equal_value_and_type(fixed_point<uint8_t, -3>{8} + fixed_point<int8_t, -4>{3}, fixed_point<int, -4>{11}), "Incorrect information in P0037 section, Operator Overloads");
+static_assert(sg14::_impl::equal_value_and_type(fixed_point<uint8_t, -3>{8} + 3, fixed_point<int, -3>{11}), "Incorrect information in P0037 section, Operator Overloads");
+static_assert(sg14::_impl::equal_value_and_type(fixed_point<uint8_t, -3>{8} + float{3}, float{11}), "Incorrect information in P0037 section, Operator Overloads");
 
 // Overflow
 TEST(proposal, overflow) {

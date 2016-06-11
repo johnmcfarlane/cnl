@@ -23,9 +23,9 @@ namespace sg14 {
 
     template<class Rep, int Exponent, typename std::enable_if<std::is_signed<Rep>::value, int>::type Dummy = 0>
     constexpr auto abs(const fixed_point <Rep, Exponent>& x) noexcept
-    -> _fixed_point_impl::common_type_t<decltype(x), decltype(-x)>
+    -> _impl::common_type_t<decltype(x), decltype(-x)>
     {
-        using common_type = _fixed_point_impl::common_type_t<decltype(x), decltype(-x)>;
+        using common_type = _impl::common_type_t<decltype(x), decltype(-x)>;
         return (x.data()>=0)
                ? static_cast<common_type>(x)
                : static_cast<common_type>(-x);
