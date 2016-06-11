@@ -46,6 +46,12 @@ namespace sg14 {
 
     namespace _fixed_point_impl {
         ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_fixed_point_impl::digits
+
+        template<class T>
+        using digits = std::integral_constant<int, width<T>::value-is_signed<T>::value>;
+
+        ////////////////////////////////////////////////////////////////////////////////
         // sg14::_fixed_point_impl::float_of_same_size
 
         template<class T>
@@ -250,7 +256,7 @@ namespace sg14 {
 
         /// number of binary digits this type can represent;
         /// equivalent to [std::numeric_limits::digits](http://en.cppreference.com/w/cpp/types/numeric_limits/digits)
-        constexpr static int digits = width<Rep>::value-is_signed<Rep>::value;
+        constexpr static int digits = _fixed_point_impl::digits<Rep>::value;
 
         /// number of binary digits devoted to integer part of value;
         /// can be negative for specializations with especially small ranges
