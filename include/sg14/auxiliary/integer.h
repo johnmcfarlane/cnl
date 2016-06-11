@@ -7,7 +7,7 @@
 #if !defined(SG14_INTEGER_H)
 #define SG14_INTEGER_H 1
 
-#include <sg14/type_traits.h>
+#include <sg14/fixed_point.h>
 
 #include <limits>
 #include <stdexcept>
@@ -456,6 +456,30 @@ namespace std {
                     Rhs> {
     };
 
+    // std::common_type<sg14::integer, sg14::fixed_point>
+    template<
+            class LhsRep, class LhsOverflowPolicy,
+            class RhsRep, int RhsExponent>
+    struct common_type<
+            sg14::integer<LhsRep, LhsOverflowPolicy>,
+            sg14::fixed_point<RhsRep, RhsExponent>>
+            : std::common_type<
+                    sg14::fixed_point<sg14::integer<LhsRep, LhsOverflowPolicy>, 0>,
+                    sg14::fixed_point<RhsRep, RhsExponent>> {
+    };
+
+    // std::common_type<sg14::fixed_point, sg14::integer>
+    template<
+            class LhsRep, int LhsExponent,
+            class RhsRep, class RhsOverflowPolicy>
+    struct common_type<
+            sg14::fixed_point<LhsRep, LhsExponent>,
+            sg14::integer<RhsRep, RhsOverflowPolicy>>
+            : std::common_type<
+                    sg14::fixed_point<LhsRep, LhsExponent>,
+                    sg14::fixed_point<sg14::integer<RhsRep, RhsOverflowPolicy>, 0>> {
+    };
+    
     // std::common_type<sg14::integer, sg14::integer>
     template<
             class LhsRep, class LhsOverflowPolicy,
