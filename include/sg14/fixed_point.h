@@ -534,7 +534,7 @@ namespace sg14 {
         struct default_arithmetic_policy {
             template<class Lhs, class Rhs>
             struct common_type {
-                using result_rep = typename sg14::common_type<typename Lhs::rep, typename Rhs::rep>::type;
+                using result_rep = typename std::common_type<typename Lhs::rep, typename Rhs::rep>::type;
 
                 // exponent is the lower of the two operands' unless that could cause overflow in which case it is adjusted downward
                 static constexpr int capacity = width<result_rep>::value;  // 64
@@ -589,15 +589,15 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_fixed_point_impl::_common_type_mixed
+        // sg14::_fixed_point_impl::common_type_mixed
 
         template<class Lhs, class Rhs, class _Enable = void>
-        struct _common_type_mixed;
+        struct common_type_mixed;
 
         // given a fixed-point and an integer type,
         // generates a fixed-point type that is as big as both of them (or as close as possible)
         template<class LhsRep, int LhsExponent, class RhsInteger>
-        struct _common_type_mixed<
+        struct common_type_mixed<
                 fixed_point<LhsRep, LhsExponent>,
                 RhsInteger,
                 typename std::enable_if<is_integral<RhsInteger>::value>::type>
@@ -607,7 +607,7 @@ namespace sg14 {
         // given a fixed-point and a floating-point type,
         // generates a floating-point type that is as big as both of them (or as close as possible)
         template<class LhsRep, int LhsExponent, class Float>
-        struct _common_type_mixed<
+        struct common_type_mixed<
                 fixed_point<LhsRep, LhsExponent>,
                 Float,
                 typename std::enable_if<std::is_floating_point<Float>::value>::type>
@@ -617,39 +617,36 @@ namespace sg14 {
 }
 
 namespace std {
-        ////////////////////////////////////////////////////////////////////////////////
-        // std::common_type<> specializations related to sg14::sg14::fixed_point<>
+    ////////////////////////////////////////////////////////////////////////////////
+    // std::common_type<> specializations related to sg14::sg14::fixed_point<>
 
-        template<class ... T>
-        struct common_type;
+    // std::common_type<fixed_point<>>
+    template<class Rep, int Exponent>
+    struct common_type<sg14::fixed_point<Rep, Exponent>> {
+        using type = sg14::fixed_point<
+                typename std::common_type<Rep>::type,
+                Exponent>;
+    };
 
-        template<class Rep, int Exponent>
-        struct common_type<sg14::fixed_point<Rep, Exponent>> {
-            using type = sg14::fixed_point<
-                    typename std::common_type<Rep>::type,
-                    Exponent>;
-        };
+    // std::common_type<fixed_point<>, not-fixed-point>
+    template<class LhsRep, int LhsExponent, class Rhs>
+    struct common_type<sg14::fixed_point<LhsRep, LhsExponent>, Rhs> {
+        static_assert(!sg14::_fixed_point_impl::is_fixed_point<Rhs>::value, "fixed-point Rhs type");
+        using type = typename sg14::_fixed_point_impl::common_type_mixed<sg14::fixed_point<LhsRep, LhsExponent>, Rhs>::type;
+    };
 
-        template<class LhsRep, int LhsExponent, class Rhs>
-        struct common_type<sg14::fixed_point<LhsRep, LhsExponent>, Rhs> {
-            static_assert(!sg14::_fixed_point_impl::is_fixed_point<Rhs>::value, "fixed-point Rhs type");
-            using type = typename sg14::_fixed_point_impl::_common_type_mixed<sg14::fixed_point<LhsRep, LhsExponent>, Rhs>::type;
-        };
+    // std::common_type<not-fixed-point, fixed_point<>>
+    template<class Lhs, class RhsRep, int RhsExponent>
+    struct common_type<Lhs, sg14::fixed_point<RhsRep, RhsExponent>> {
+        static_assert(!sg14::_fixed_point_impl::is_fixed_point<Lhs>::value, "fixed-point Lhs type");
+        using type = typename sg14::_fixed_point_impl::common_type_mixed<sg14::fixed_point<RhsRep, RhsExponent>, Lhs>::type;
+    };
 
-        template<class Lhs, class RhsRep, int RhsExponent>
-        struct common_type<Lhs, sg14::fixed_point<RhsRep, RhsExponent>> {
-            static_assert(!sg14::_fixed_point_impl::is_fixed_point<Lhs>::value, "fixed-point Lhs type");
-            using type = typename sg14::_fixed_point_impl::_common_type_mixed<sg14::fixed_point<RhsRep, RhsExponent>, Lhs>::type;
-        };
-
-        template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
-        struct common_type<
-                sg14::fixed_point<LhsRep, LhsExponent>, sg14::fixed_point<RhsRep, RhsExponent>> {
-            using
-type =
-            typename sg14::_fixed_point_impl::default_arithmetic_policy::common_type<
-                    sg14::fixed_point<LhsRep, LhsExponent>, sg14::fixed_point<RhsRep, RhsExponent>>::type;
-        };
+    // std::common_type<fixed_point<>, fixed_point<>>
+    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+    struct common_type<sg14::fixed_point<LhsRep, LhsExponent>, sg14::fixed_point<RhsRep, RhsExponent>> {
+        using type = typename sg14::_fixed_point_impl::default_arithmetic_policy::common_type<sg14::fixed_point<LhsRep, LhsExponent>, sg14::fixed_point<RhsRep, RhsExponent>>::type;
+    };
 }
 
 namespace sg14 {
@@ -658,7 +655,7 @@ namespace sg14 {
         // arithmetic result types
 
         template<typename LhsFixedPoint, typename RhsFixedPoint>
-        using subtract_result_rep = typename make_signed<typename sg14::common_type<LhsFixedPoint, RhsFixedPoint>::type>::type;
+        using subtract_result_rep = typename make_signed<typename std::common_type<LhsFixedPoint, RhsFixedPoint>::type>::type;
 
         template<typename Rep>
         using square_result_rep = typename make_unsigned<Rep>::type;

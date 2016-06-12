@@ -47,7 +47,7 @@ namespace sg14 {
     template <class Lhs, class Rhs> \
     constexpr auto operator OP (const Lhs& lhs, const Rhs& rhs) \
     -> typename std::enable_if<sg14::_integer_impl::is_integer_class<Lhs>::value || sg14::_integer_impl::is_integer_class<Rhs>::value, bool>::type { \
-        using common_type = typename common_type<Lhs, Rhs>::type; \
+        using common_type = typename std::common_type<Lhs, Rhs>::type; \
         return static_cast<common_type>(lhs).data() OP static_cast<common_type>(rhs).data(); }
 
 #define SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(OP) \
@@ -253,7 +253,7 @@ namespace sg14 {
                 integer<LhsRep, OverflowPolicy>,
                 integer<RhsRep, OverflowPolicy>> {
             using type = integer<
-                    typename sg14::common_type<LhsRep, RhsRep>::type,
+                    typename std::common_type<LhsRep, RhsRep>::type,
                     OverflowPolicy>;
         };
 
@@ -267,7 +267,7 @@ namespace sg14 {
                         !_integer_impl::is_integer_class<RhsInteger>::value
                                 && std::is_integral<RhsInteger>::value
                 >::type> {
-            using type = typename sg14::integer<typename sg14::common_type<LhsRep, RhsInteger>::type, LhsOverflowPolicy>;
+            using type = typename sg14::integer<typename std::common_type<LhsRep, RhsInteger>::type, LhsOverflowPolicy>;
         };
 
         // given a integer<> and a floating-point type,
@@ -277,7 +277,7 @@ namespace sg14 {
                 integer<LhsRep, LhsOverflowPolicy>,
                 Float,
                 typename std::enable_if<std::is_floating_point<Float>::value>::type> {
-            using type = typename sg14::common_type<LhsRep, Float>::type;
+            using type = typename std::common_type<LhsRep, Float>::type;
         };
 
         // when first type is not integer<> and second type is, reverse the order

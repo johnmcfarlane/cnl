@@ -746,7 +746,7 @@ struct FixedPointTester {
     static_assert(is_same<
                     sg14::_impl::common_type_t<fixed_point>,
                     ::fixed_point<
-                            typename sg14::common_type<Rep>::type,
+                            typename std::common_type<Rep>::type,
                             Exponent>>::value,
             "a fixed point specialization follows the same implicit promotion rules as its Rep");
 

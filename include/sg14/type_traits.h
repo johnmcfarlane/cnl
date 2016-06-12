@@ -244,15 +244,7 @@ namespace sg14 {
 
     ////////////////////////////////////////////////////////////////////////////////
     // import selected <type_traits> definitions from std namespace
-
-    // common_type
-    template<class ...T>
-    struct common_type;
-
-    template<class ...T>
-    struct common_type : std::common_type<T...> {
-    };
-
+    
     // is_integral
     template<class T>
     struct is_integral;
