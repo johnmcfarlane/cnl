@@ -452,6 +452,9 @@ static_assert(
         is_same<sg14::_impl::common_type_t<fixed_point<uint8, -4>, fixed_point<int8, -4>>, fixed_point<test_int, -4>>::value,
         "sg14::_impl::common_type_t test failed");
 static_assert(
+        is_same<sg14::_impl::common_type_t<fixed_point<uint64, -50>, fixed_point<int8, 0>>, fixed_point<uint64, -50>>::value,
+        "sg14::_impl::common_type_t test failed");
+static_assert(
         is_same<sg14::_impl::common_type_t<fixed_point<int16, -4>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value,
         "sg14::_impl::common_type_t test failed");
 static_assert(
