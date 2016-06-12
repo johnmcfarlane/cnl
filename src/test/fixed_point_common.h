@@ -147,12 +147,16 @@ static_assert(static_cast<int>(-3.0)==-3, "incorrect assumption about default ro
 static_assert(static_cast<int>(-3.9)==-3, "incorrect assumption about default rounding");
 
 // mixed-mode operations DO lose precision because exponent is more important than significand
-static_assert(is_same<sg14::common_type<float, uint32>::type, float>::value, "incorrect assumption about promotion");
+static_assert(is_same<std::common_type<float, uint32>::type, float>::value, "incorrect assumption about promotion");
 
 // promotion doesn't always tend towards int
-static_assert(is_same<sg14::common_type<int64, uint32>::type, int64>::value, "incorrect assumption about promotion");
-static_assert(is_same<sg14::common_type<int32, uint64>::type, uint64>::value, "incorrect assumption about promotion");
-static_assert(is_same<decltype(int8(0) + int8(0)), test_int>::value, "incorrect assumption about promotion");
+static_assert(is_same<std::common_type<int64, uint32>::type, int64>::value, "incorrect assumption about promotion");
+static_assert(is_same<std::common_type<int32, uint64>::type, uint64>::value, "incorrect assumption about promotion");
+static_assert(is_same<std::common_type<int8, int8>::type, int8>::value, "incorrect assumption about promotion");
+static_assert(is_same<decltype(int8(0)+int8(0)), test_int>::value, "incorrect assumption about promotion");
+static_assert(is_same<decltype(int8(0)+int8(0)), test_int>::value, "incorrect assumption about promotion");
+static_assert(is_same<decltype(uint8(0)+int8(0)), test_int>::value, "incorrect assumption about promotion");
+static_assert(is_same<decltype(uint8(0)+uint8(0)), test_int>::value, "incorrect assumption about promotion");
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -361,8 +365,7 @@ static_assert(fixed_point<int8, -7>(1)!=1.L, "sg14::fixed_point test failed");
 static_assert(fixed_point<int8, -7>(.5)==.5f, "sg14::fixed_point test failed");
 static_assert(fixed_point<int8, -7>(.125f)==.125L, "sg14::fixed_point test failed");
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert(!(fixed_point<int16, -7>(123.125f)==123), "sg14::fixed_point test failed");
-static_assert(fixed_point<int16, -7>(123.125f)!=123, "sg14::fixed_point test failed");
+static_assert(fixed_point<int16, -7>(123.125f)==123.125f, "sg14::fixed_point test failed");
 #endif
 static_assert(fixed_point<int32, -7>(123.125f)==123.125, "sg14::fixed_point test failed");
 static_assert(fixed_point<int64, -7>(123.125l)==123.125f, "sg14::fixed_point test failed");
@@ -427,48 +430,52 @@ static_assert(
                 _impl::default_arithmetic_policy::add<
                         fixed_point<uint8, -3>,
                         fixed_point<uint8, -4>>::result_type,
-                fixed_point<decltype(std::declval<uint8>() + std::declval<uint8>()), -3>>::value,
+                fixed_point<decltype(std::declval<uint8>()+std::declval<uint8>()), -4>>::value,
         "sg14::_impl::default_arithmtic_policy test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::common_type_t
 
 // commonality never occurs when inputs are the same fixed_point type
-static_assert(is_same<_impl::common_type_t<fixed_point<int8, -3>, fixed_point<int8, -3>>, fixed_point<int8, -3>>::value,
+static_assert(
+        is_same<sg14::_impl::common_type_t<fixed_point<int8, -3>, fixed_point<int8, -3>>, fixed_point<int8, -3>>::value,
         "sg14::_impl::common_type_t test failed");
 static_assert(
-        is_same<_impl::common_type_t<fixed_point<int32, -14>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value,
+        is_same<sg14::_impl::common_type_t<fixed_point<int32, -14>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value,
         "sg14::_impl::common_type_t test failed");
 static_assert(
-        is_same<_impl::common_type_t<fixed_point<int64, -48>, fixed_point<int64, -48>>, fixed_point<int64, -48>>::value,
+        is_same<sg14::_impl::common_type_t<fixed_point<int64, -48>, fixed_point<int64, -48>>, fixed_point<int64, -48>>::value,
         "sg14::_impl::common_type_t test failed");
 
 // commonality between homogeneous fixed_point types
-static_assert(is_same<_impl::common_type_t<fixed_point<uint8, -4>, fixed_point<int8, -4>>, fixed_point<test_int, -4>>::value,
+static_assert(
+        is_same<sg14::_impl::common_type_t<fixed_point<uint8, -4>, fixed_point<int8, -4>>, fixed_point<test_int, -4>>::value,
         "sg14::_impl::common_type_t test failed");
 static_assert(
-        is_same<_impl::common_type_t<fixed_point<int16, -4>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value,
+        is_same<sg14::_impl::common_type_t<fixed_point<int16, -4>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value,
         "sg14::_impl::common_type_t test failed");
 static_assert(
-        is_same<_impl::common_type_t<fixed_point<int16, 0>, fixed_point<uint64, -60>>, fixed_point<uint64, 0>>::value,
+        is_same<sg14::_impl::common_type_t<fixed_point<int16, 0>, fixed_point<uint64, -60>>, fixed_point<uint64, -49>>::value,
         "sg14::_impl::common_type_t test failed");
 
 // commonality between arithmetic and fixed_point types
-static_assert(is_same<_impl::common_type_t<float, fixed_point<int8, -4>>, float>::value,
+static_assert(is_same<sg14::_impl::common_type_t<float, fixed_point<int8, -4>>, float>::value,
         "sg14::_impl::common_type_t test failed");
-static_assert(is_same<_impl::common_type_t<double, fixed_point<int32, -14>>, double>::value,
+static_assert(is_same<sg14::_impl::common_type_t<double, fixed_point<int32, -14>>, double>::value,
         "sg14::_impl::common_type_t test failed");
-static_assert(is_same<_impl::common_type_t<int8, fixed_point<uint64, -60>>, fixed_point<uint64, -60>>::value,
+static_assert(is_same<sg14::_impl::common_type_t<int8, fixed_point<uint64, -60>>, fixed_point<uint64, -57>>::value,
         "sg14::_impl::common_type_t test failed");
-static_assert(is_same<_impl::common_type_t<fixed_point<uint8, -4>, uint32>, fixed_point<test_unsigned, -4>>::value,
+
+static_assert(
+        is_same<sg14::_impl::common_type_t<fixed_point<uint8, -4>, uint32>, fixed_point<test_unsigned, 0>>::value,
         "sg14::_impl::common_type_t test failed");
-static_assert(is_same<_impl::common_type_t<fixed_point<int16, -4>, float>, float>::value,
+static_assert(is_same<sg14::_impl::common_type_t<fixed_point<int16, -4>, float>, float>::value,
         "sg14::_impl::common_type_t test failed");
-static_assert(is_same<_impl::common_type_t<fixed_point<int16, 0>, double>, double>::value,
+static_assert(is_same<sg14::_impl::common_type_t<fixed_point<int16, 0>, double>, double>::value,
         "sg14::_impl::common_type_t test failed");
 static_assert(is_same<
-        _impl::common_type_t<fixed_point<uint8, 10>, test_int>,
-        fixed_point<test_int, 10>>::value, "sg14::_impl::common_type_t test failed");
+        sg14::_impl::common_type_t<fixed_point<uint8, 10>, test_int>,
+        fixed_point<test_int, 0>>::value, "sg14::_impl::common_type_t test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::multiply
@@ -555,12 +562,12 @@ static_assert(
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(fixed_point<uint8, 10>(10240)+2048==12288, "test failed");
 #endif
-static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)+2048), fixed_point<test_signed, 10>>::value,
+static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)+2048), fixed_point<test_signed, 0>>::value,
         "sg14::fixed_point addition operator test failed");
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(2048+fixed_point<uint8, 10>(10240)==12288, "sg14::fixed_point addition operator test failed");
 #endif
-static_assert(is_same<decltype(2048+fixed_point<uint8, 10>(10240)), fixed_point<test_signed, 10>>::value,
+static_assert(is_same<decltype(2048+fixed_point<uint8, 10>(10240)), fixed_point<test_signed, 0>>::value,
         "sg14::fixed_point addition operator test failed");
 
 static_assert(765.432f+make_fixed<31, 32>(16777215.996093750)==16777981.428100586, "sg14::fixed_point addition operator test failed");
@@ -585,7 +592,7 @@ static_assert(is_same<decltype(make_fixed<2, 5, test_int>(2.125)-make_fixed<2, 5
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(fixed_point<uint8, 10>(10240)-2048==8192, "sg14::fixed_point subtraction test failed");
 #endif
-static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)-2048), fixed_point<test_signed, 10>>::value,
+static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)-2048), fixed_point<test_signed, 0>>::value,
         "sg14::fixed_point subtraction test failed");
 static_assert(765.432f-make_fixed<31, 32>(16777215.996093750)==-16776450.564086914, "sg14::fixed_point subtraction test failed");
 static_assert(is_same<decltype(765.432f-make_fixed<31, 32>(16777215.996093750)), double>::value,
@@ -622,8 +629,12 @@ static_assert(is_same<decltype(make_fixed<31, 32>(16777215.996093750)*-123.654f)
 // division
 static_assert(fixed_point<int8, -1>(63) / fixed_point<int8, -1>(-4) == -15.5, "sg14::fixed_point test failed");
 
+static_assert(
+        is_same<decltype(declval<fixed_point<int8, 1>>()
+                /declval<fixed_point<int8, 1>>()), fixed_point<test_int, 1>>::value,
+        "std::fixed_point test failed");
 #if defined(TEST_NATIVE_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==31, "sg14::fixed_point test failed");
+static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==30, "sg14::fixed_point test failed");
 #endif
 
 #if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
@@ -733,7 +744,7 @@ struct FixedPointTester {
 
     // unary common_type_t
     static_assert(is_same<
-                    _impl::common_type_t<fixed_point>,
+                    sg14::_impl::common_type_t<fixed_point>,
                     ::fixed_point<
                             typename sg14::common_type<Rep>::type,
                             Exponent>>::value,
@@ -742,22 +753,22 @@ struct FixedPointTester {
     static_assert(
             is_same<
                     fixed_point,
-                    _impl::common_type_t<fixed_point>>::value,
+                    sg14::_impl::common_type_t<fixed_point>>::value,
             "... and that rule should be to do nothing very exciting at all");
 
     // binary common_type_t
     static_assert(
             is_same<
                     fixed_point,
-                    _impl::common_type_t<fixed_point, fixed_point>>::value,
+                    sg14::_impl::common_type_t<fixed_point, fixed_point>>::value,
             "a fixed point specialization follows the same implicit promotion rules as its Rep");
 
     // for convenience, fixed_point API assumes binary and unary homogeneous common_types are the same
     static_assert(
             is_same<
-                    _impl::common_type_t<fixed_point>,
-                    _impl::common_type_t<fixed_point, fixed_point>>::value,
-            "bad assumption about binary _impl::common_type_t");
+                    sg14::_impl::common_type_t<fixed_point>,
+                    sg14::_impl::common_type_t<fixed_point, fixed_point>>::value,
+            "bad assumption about binary sg14::_impl::common_type_t");
 
     // test promotion rules for arithmetic
     static_assert(

@@ -7,7 +7,7 @@
 #if !defined(SG14_INTEGER_H)
 #define SG14_INTEGER_H 1
 
-#include <sg14/type_traits.h>
+#include <sg14/fixed_point.h>
 
 #include <limits>
 #include <stdexcept>
@@ -101,9 +101,7 @@ namespace sg14 {
     namespace _integer_impl {
         template<class, class, class = void>
         struct common_type;
-    };
 
-    namespace _integer_impl {
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_integer_impl::is_integer_class - trait to identify sg14::integer<>
 
@@ -431,17 +429,19 @@ namespace sg14 {
     struct make_signed<integer<Rep, OverflowPolicy>> {
         using type = integer<typename make_signed<Rep>::type, OverflowPolicy>;
     };
+}
 
+namespace std {
     // std::common_type<T, sg14::integer>
     template<
             class Lhs,
             class RhsRep, class RhsOverflowPolicy>
     struct common_type<
             Lhs,
-            integer<RhsRep, RhsOverflowPolicy>>
-            : _integer_impl::common_type<
+            sg14::integer<RhsRep, RhsOverflowPolicy>>
+            : sg14::_integer_impl::common_type<
                     Lhs,
-                    integer<RhsRep, RhsOverflowPolicy>> {
+                    sg14::integer<RhsRep, RhsOverflowPolicy>> {
     };
 
     // std::common_type<sg14::integer, T>
@@ -449,27 +449,49 @@ namespace sg14 {
             class LhsRep, class LhsOverflowPolicy,
             class Rhs>
     struct common_type<
-            integer<LhsRep, LhsOverflowPolicy>,
+            sg14::integer<LhsRep, LhsOverflowPolicy>,
             Rhs>
-            : _integer_impl::common_type<
-                    integer<LhsRep, LhsOverflowPolicy>,
+            : sg14::_integer_impl::common_type<
+                    sg14::integer<LhsRep, LhsOverflowPolicy>,
                     Rhs> {
     };
 
+    // std::common_type<sg14::integer, sg14::fixed_point>
+    template<
+            class LhsRep, class LhsOverflowPolicy,
+            class RhsRep, int RhsExponent>
+    struct common_type<
+            sg14::integer<LhsRep, LhsOverflowPolicy>,
+            sg14::fixed_point<RhsRep, RhsExponent>>
+            : std::common_type<
+                    sg14::fixed_point<sg14::integer<LhsRep, LhsOverflowPolicy>, 0>,
+                    sg14::fixed_point<RhsRep, RhsExponent>> {
+    };
+
+    // std::common_type<sg14::fixed_point, sg14::integer>
+    template<
+            class LhsRep, int LhsExponent,
+            class RhsRep, class RhsOverflowPolicy>
+    struct common_type<
+            sg14::fixed_point<LhsRep, LhsExponent>,
+            sg14::integer<RhsRep, RhsOverflowPolicy>>
+            : std::common_type<
+                    sg14::fixed_point<LhsRep, LhsExponent>,
+                    sg14::fixed_point<sg14::integer<RhsRep, RhsOverflowPolicy>, 0>> {
+    };
+    
     // std::common_type<sg14::integer, sg14::integer>
     template<
             class LhsRep, class LhsOverflowPolicy,
             class RhsRep, class RhsOverflowPolicy>
     struct common_type<
-            integer<LhsRep, LhsOverflowPolicy>,
-            integer<RhsRep, RhsOverflowPolicy>>
-            : _integer_impl::common_type<
-                    integer<LhsRep, LhsOverflowPolicy>,
-                    integer<RhsRep, RhsOverflowPolicy>> {
+            sg14::integer<LhsRep, LhsOverflowPolicy>,
+            sg14::integer<RhsRep, RhsOverflowPolicy>>
+            : sg14::_integer_impl::common_type<
+                    sg14::integer<LhsRep, LhsOverflowPolicy>,
+                    sg14::integer<RhsRep, RhsOverflowPolicy>> {
     };
-}
 
-namespace std {
     ////////////////////////////////////////////////////////////////////////////////
     // std::numeric_limits specialization for integer
 
