@@ -90,9 +90,6 @@ namespace sg14 {
                         int>::type Dummy = 0>
         constexpr Output shift_left(Input i)
         {
-            static_assert(is_integral<Input>::value, "Input must be integral type");
-            static_assert(is_integral<Output>::value, "Output must be integral type");
-
             // cast only
             return static_cast<Output>(i);
         }
@@ -106,9 +103,6 @@ namespace sg14 {
                         int>::type Dummy = 0>
         constexpr Output shift_right(Input i)
         {
-            static_assert(is_integral<Input>::value, "Input must be integral type");
-            static_assert(is_integral<Output>::value, "Output must be integral type");
-
             // cast only
             return static_cast<Output>(i);
         }
