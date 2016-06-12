@@ -537,11 +537,11 @@ namespace sg14 {
                 using result_rep = typename std::common_type<typename Lhs::rep, typename Rhs::rep>::type;
 
                 // exponent is the lower of the two operands' unless that could cause overflow in which case it is adjusted downward
-                static constexpr int capacity = width<result_rep>::value;  // 64
-                static constexpr int ideal_max_top = _impl::max(Lhs::integer_digits, Rhs::integer_digits);  // 15
-                static constexpr int ideal_exponent = _impl::min(Lhs::exponent, Rhs::exponent); // -60
+                static constexpr int capacity = digits<result_rep>::value;
+                static constexpr int ideal_max_top = _impl::max(Lhs::integer_digits, Rhs::integer_digits);
+                static constexpr int ideal_exponent = _impl::min(Lhs::exponent, Rhs::exponent);
                 static constexpr int exponent = ((ideal_max_top-ideal_exponent)<=capacity) ? ideal_exponent :
-                                                ideal_max_top-capacity;  // -4
+                                                ideal_max_top-capacity;
 
                 using type = fixed_point<result_rep, exponent>;
             };
