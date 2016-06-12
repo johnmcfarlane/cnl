@@ -1211,6 +1211,21 @@ namespace sg14 {
         _r /= static_cast<rep>(rhs);
         return *this;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // shift operators
+
+    template<typename LhsRep, int LhsExponent, typename Rhs>
+    constexpr fixed_point<LhsRep, LhsExponent>
+    operator<<(const fixed_point<LhsRep, LhsExponent>& lhs, const Rhs& rhs) {
+        return fixed_point<LhsRep, LhsExponent>::from_data(lhs.data() << rhs);
+    };
+
+    template<typename LhsRep, int LhsExponent, typename Rhs>
+    constexpr fixed_point<LhsRep, LhsExponent>
+    operator>>(const fixed_point<LhsRep, LhsExponent>& lhs, const Rhs& rhs) {
+        return fixed_point<LhsRep, LhsExponent>::from_data(lhs.data() >> rhs);
+    };
 }
 
 #include "bits/fixed_point_extras.h"
