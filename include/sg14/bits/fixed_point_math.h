@@ -22,23 +22,17 @@ constexpr auto rounding_conversion(double d) {
 	return fp::from_data((in.data() + 1) >> 1);
 }
 
-/*template<typename Rep, int Exponent>
-inline auto exp2m1_0to1(fixed_point<Rep, Exponent> x);*/
 //If the exponent is not negative, there is no fractional part,
 //so this is always zero
-//TODO: get the enable_if's working correctly so that this is
-//picked also when Exponent > 0.
-//For some reason using them keeps any overload from being picked...
-/*template<typename Rep>
-inline fixed_point<Rep, Exponent> exp2m1_0to1(fixed_point<Rep, Exponent>
-		, typename std::enable_if<(Exponent >= 0)>::type dummy = 0
-		) {
+template<typename Rep, int Exponent,
+			typename std::enable_if<(Exponent >= 0), int>::type dummy = 0>
+inline auto exp2m1_0to1(fixed_point<Rep, Exponent>) {
 	return fixed_point<Rep, Exponent>{0};
-}*/
+}
 
 //Computes 2^x - 1 for a number x between 0 and 1, strictly less than 1
 template<typename Rep, int Exponent
- //,	typename std::enable_if<(Exponent < 0)>::type dummy = 0
+ ,	typename std::enable_if<(Exponent < 0), int>::type dummy = 0
 >
 inline auto exp2m1_0to1(fixed_point<Rep, Exponent> x) {
 

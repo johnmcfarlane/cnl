@@ -9,7 +9,7 @@
 #include <sg14/bits/fixed_point_math.h>
 
 //Fails due to cast being out-of-range:
-//#include "fixed_point_math_Q0.cpp"
+#include "fixed_point_math_Q0.cpp"
 #include "fixed_point_math_Q1.cpp"
 #include "fixed_point_math_Q15.cpp"
 #include "fixed_point_math_Q31.cpp"
