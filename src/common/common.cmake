@@ -12,7 +12,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   set(PROFILE_DISABLED_FLAGS "")
   # NOTE: to omit frame pointer: "/Oy"
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
-  set(MISC_FLAGS "-std=c++11 -pthread -Wall -Wextra -Wfatal-errors -Werror")
+  set(MISC_FLAGS "-std=c++14 -pthread -Wall -Wextra -Wfatal-errors -Werror")
 
   set(EXCEPTION_ENABLED_FLAGS "-fexceptions -frtti")
   set(EXCEPTION_DISABLED_FLAGS "-fno-exceptions -fno-rtti")
