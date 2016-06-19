@@ -110,6 +110,13 @@ namespace sg14 {
 
     } // namespace _fixed_point_impl
 
+    /// Calculates exp2(x), i.e. 2^x
+    ///
+    /// Accurate to 1LSB for up to 32 bit underlying representation.
+    ///
+    /// \tparam x the input value as a fixed_point
+    ///
+    /// \return the result of the exponential, in the same representation as x
     template<class Rep, int Exponent>
     constexpr fixed_point<Rep, Exponent> exp2(fixed_point<Rep, Exponent> x) {
         using namespace _fixed_point_impl;
