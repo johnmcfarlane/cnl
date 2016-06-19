@@ -7,6 +7,7 @@
 
 #include <sg14/bits/fixed_point_math.h>
 #include <stdint.h>
+#include <algorithm>
 
 
 TEST(math, FPTESTFORMAT){
@@ -34,10 +35,10 @@ if (fp::fractional_digits > 0) {
 //TODO: it should be possible in a non-routine unit test to test over all
 //2^32 values of a 32-bit integer
 constexpr std::array<double, 13> fracts{
-				static_cast<double>(fp::from_data(1)), //As close to zero as possible
+				static_cast<double>(fp::from_data{1}), //As close to zero as possible
 				0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,
 				0.0001, 0.9999,
-				static_cast<double>(fp::from_data((1ll << -fp::exponent) - 1)) //As close to one as possible
+				static_cast<double>(fp::from_data(1ll << -fp::exponent) - 1) //As close to one as possible
 			};
 
 for (int i = -fp::fractional_digits; i < fp::integer_digits; i++) {
