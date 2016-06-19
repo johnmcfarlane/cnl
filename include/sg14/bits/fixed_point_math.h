@@ -17,16 +17,16 @@ namespace sg14 {
 
     namespace _fixed_point_impl {
 
-        template<typename FixedPoint>
+        template<class FixedPoint>
         constexpr FixedPoint rounding_conversion(double d) {
             using one_longer = make_fixed<FixedPoint::integer_digits, FixedPoint::fractional_digits + 1>;
             return FixedPoint::from_data((one_longer { d }.data() + 1) >> 1);
         }
 
-        template<typename FixedPoint>
+        template<class FixedPoint>
         using unsigned_rep = typename std::make_unsigned<typename FixedPoint::rep>::type;
 
-        template<typename Input>
+        template<class Input>
         using make_largest_ufraction = fixed_point<unsigned_rep<Input>, -std::numeric_limits<unsigned_rep<Input>>::digits>;
 
         static_assert(std::is_same<make_largest_ufraction<fixed_point<int32_t, -15>>, fixed_point<uint32_t, -32>>::value, "");
@@ -36,7 +36,7 @@ namespace sg14 {
         //Define the coefficients as constexpr,
         //to make sure they're converted to fp
         //at compile time
-        template<typename CoeffType>
+        template<class CoeffType>
         struct poly_coeffs {
             static constexpr CoeffType a1 { rounding_conversion<CoeffType>(0.6931471860838825) };
             static constexpr CoeffType a2 { rounding_conversion<CoeffType>(0.2402263846181129) };
@@ -52,22 +52,22 @@ namespace sg14 {
                     0.000021498763160402416) };
         };
 
-        template<typename CoeffType>
+        template<class CoeffType>
         constexpr CoeffType poly_coeffs<CoeffType>::a1;
-        template<typename CoeffType>
+        template<class CoeffType>
         constexpr CoeffType poly_coeffs<CoeffType>::a2;
-        template<typename CoeffType>
+        template<class CoeffType>
         constexpr CoeffType poly_coeffs<CoeffType>::a3;
-        template<typename CoeffType>
+        template<class CoeffType>
         constexpr CoeffType poly_coeffs<CoeffType>::a4;
-        template<typename CoeffType>
+        template<class CoeffType>
         constexpr CoeffType poly_coeffs<CoeffType>::a5;
-        template<typename CoeffType>
+        template<class CoeffType>
         constexpr CoeffType poly_coeffs<CoeffType>::a6;
-        template<typename CoeffType>
+        template<class CoeffType>
         constexpr CoeffType poly_coeffs<CoeffType>::a7;
 
-        template<typename Rep, int Exponent>
+        template<class Rep, int Exponent>
         constexpr inline fixed_point<Rep, Exponent> evaluate_polynomial(
                 fixed_point<Rep, Exponent> xf) {
             //Use a polynomial min-max approximation to generate the exponential of
@@ -81,7 +81,7 @@ namespace sg14 {
         //Computes 2^x - 1 for a number x between 0 and 1, strictly less than 1
         //If the exponent is not negative, there is no fractional part,
         //so this is always zero
-        template<typename Rep, int Exponent, typename std::enable_if<
+        template<class Rep, int Exponent, typename std::enable_if<
                 (Exponent >= 0), int>::type dummy = 0>
         inline constexpr make_largest_ufraction<fixed_point<Rep, Exponent>> exp2m1_0to1(
                 fixed_point<Rep, Exponent>) {
@@ -89,7 +89,7 @@ namespace sg14 {
                     0); //Cannot construct from 0, since that would be a shift by more than width of type!
         }
         //for a positive exponent, some work needs to be done
-        template<typename Rep, int Exponent, typename std::enable_if<
+        template<class Rep, int Exponent, typename std::enable_if<
                 (Exponent < 0), int>::type dummy = 0>
         constexpr inline make_largest_ufraction<fixed_point<Rep, Exponent>> exp2m1_0to1(
                 fixed_point<Rep, Exponent> x) {
@@ -103,14 +103,14 @@ namespace sg14 {
             return evaluate_polynomial(im{x}); //Important: convert the type once, to keep every multiply from costing a cast
         }
 
-        template<typename Rep, int Exponent>
+        template<class Rep, int Exponent>
         constexpr inline Rep floor(fixed_point<Rep, Exponent> x) {
             return Rep { (x.data()) >> -Exponent };
         }
 
     } // namespace _fixed_point_impl
 
-    template<typename Rep, int Exponent>
+    template<class Rep, int Exponent>
     constexpr fixed_point<Rep, Exponent> exp2(fixed_point<Rep, Exponent> x) {
         using namespace _fixed_point_impl;
 
