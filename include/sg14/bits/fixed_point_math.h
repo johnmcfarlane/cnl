@@ -120,14 +120,14 @@ namespace sg14 {
 
         //Calculate the final result by shifting the fractional part around.
         //Remember to add the 1 which is left out to get 1 bit more resolution
-        return floor(x) <= Exponent ?
-                out_type::from_data(1)//return immediately if the shift would result in all bits being shifted out
-                        :
-                out_type::from_data((	//Do the shifts manually. Once the branch with shift operators is merged, could use those
-                (exp2m1_0to1<Rep, Exponent>(x - floor(x))).data()//Calculate the exponent of the fractional part
-                >> (-im::exponent + Exponent - floor(x)))//shift it to the right place
-                + (Rep { 1 } << (floor(x) - Exponent))); //The constant term must be one, to make integer powers correct
-
+        return out_type::from_data(
+                floor(x) <= Exponent ?
+                    typename im::rep{1}//return immediately if the shift would result in all bits being shifted out
+                                     :
+                    	//Do the shifts manually. Once the branch with shift operators is merged, could use those
+                    (exp2m1_0to1<Rep, Exponent>(x - floor(x)).data()//Calculate the exponent of the fractional part
+                    >> (-im::exponent + Exponent - floor(x)))//shift it to the right place
+                    + (Rep { 1 } << (floor(x) - Exponent))); //The constant term must be one, to make integer powers correct
     }
 
 }
