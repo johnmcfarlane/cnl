@@ -14,6 +14,12 @@
 #include <gtest/gtest.h>
 
 ////////////////////////////////////////////////////////////////////////////////
+// test name generation
+
+#define TOKENPASTE(x, y) x ## y
+#define TOKENPASTE2(x, y) TOKENPASTE(x, y)
+
+////////////////////////////////////////////////////////////////////////////////
 // imports from std
 
 using std::is_same;
@@ -66,9 +72,6 @@ using sg14::multiply;
 
 ////////////////////////////////////////////////////////////////////////////////
 // copy assignment
-
-#define TOKENPASTE(x, y) x ## y
-#define TOKENPASTE2(x, y) TOKENPASTE(x, y)
 
 TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_fixed_point)
 {
