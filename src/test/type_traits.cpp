@@ -28,9 +28,9 @@ static_assert(width<std::uint32_t>::value == 32, "sg14::width test failed");
 static_assert(width<std::int64_t>::value == 64, "sg14::width test failed");
 static_assert(width<std::uint64_t>::value == 64, "sg14::width test failed");
 
-#if defined(_GLIBCXX_USE_INT128)
-static_assert(width<__int128>::value == 128, "sg14::width test failed");
-static_assert(width<unsigned __int128>::value == 128, "sg14::width test failed");
+#if defined(SG14_INT128_ENABLED)
+static_assert(width<SG14_INT128>::value == 128, "sg14::width test failed");
+static_assert(width<SG14_UINT128>::value == 128, "sg14::width test failed");
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -49,9 +49,9 @@ static_assert(width_v<std::uint32_t> == 32, "sg14::width_v test failed");
 static_assert(width_v<std::int64_t> == 64, "sg14::width_v test failed");
 static_assert(width_v<std::uint64_t> == 64, "sg14::width_v test failed");
 
-#if defined(_GLIBCXX_USE_INT128)
-static_assert(width_v<__int128> == 128, "sg14::width_v test failed");
-static_assert(width_v<unsigned __int128> == 128, "sg14::width_v test failed");
+#if defined(SG14_INT128_ENABLED)
+static_assert(width_v<SG14_INT128> == 128, "sg14::width_v test failed");
+static_assert(width_v<SG14_UINT128> == 128, "sg14::width_v test failed");
 #endif
 
 #endif
@@ -77,15 +77,15 @@ static_assert(is_same<set_width_t<std::uint32_t, 40>, std::uint64_t>::value, "sg
 static_assert(is_same<set_width_t<std::int32_t, 48>, std::int64_t>::value, "sg14::set_width_t test failed");
 static_assert(is_same<set_width_t<std::uint64_t, 56>, std::uint64_t>::value, "sg14::set_width_t test failed");
 static_assert(is_same<set_width_t<std::int64_t, 64>, std::int64_t>::value, "sg14::set_width_t test failed");
-#if defined(_GLIBCXX_USE_INT128)
-static_assert(is_same<set_width_t<std::uint8_t, 72>, unsigned __int128>::value, "sg14::set_width_t test failed");
-static_assert(is_same<set_width_t<std::int8_t, 80>, __int128>::value, "sg14::set_width_t test failed");
-static_assert(is_same<set_width_t<std::uint16_t, 88>, unsigned __int128>::value, "sg14::set_width_t test failed");
-static_assert(is_same<set_width_t<std::int16_t, 96>, __int128>::value, "sg14::set_width_t test failed");
-static_assert(is_same<set_width_t<std::uint32_t, 104>, unsigned __int128>::value, "sg14::set_width_t test failed");
-static_assert(is_same<set_width_t<std::int32_t, 112>, __int128>::value, "sg14::set_width_t test failed");
-static_assert(is_same<set_width_t<std::uint64_t, 120>, unsigned __int128>::value, "sg14::set_width_t test failed");
-static_assert(is_same<set_width_t<std::int64_t, 128>, __int128>::value, "sg14::set_width_t test failed");
+#if defined(SG14_INT128_ENABLED)
+static_assert(is_same<set_width_t<std::uint8_t, 72>, SG14_UINT128>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::int8_t, 80>, SG14_INT128>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::uint16_t, 88>, SG14_UINT128>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::int16_t, 96>, SG14_INT128>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::uint32_t, 104>, SG14_UINT128>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::int32_t, 112>, SG14_INT128>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::uint64_t, 120>, SG14_UINT128>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<std::int64_t, 128>, SG14_INT128>::value, "sg14::set_width_t test failed");
 #endif
 
 static_assert(is_same<set_width_t<double, 8>, float>::value, "sg14::set_width_t test failed");
