@@ -15,7 +15,6 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 
   set(PROFILE_ENABLED_FLAGS "/Oy-")
   set(PROFILE_DISABLED_FLAGS "")
-  # NOTE: to omit frame pointer: "/Oy"
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
   set(MISC_FLAGS "-std=c++11 -pthread -Wall -Wextra -Wfatal-errors -Werror")
 
@@ -27,7 +26,6 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} ST
 
   set(PROFILE_ENABLED_FLAGS "-fno-omit-frame-pointer")
   set(PROFILE_DISABLED_FLAGS "")
-  # NOTE: to omit frame pointer: "-fomit-frame-pointer"
 else ()
   message(FATAL_ERROR "unrecognized compiler: ${CMAKE_CXX_COMPILER_ID}")
 endif ()
