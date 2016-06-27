@@ -212,7 +212,7 @@ using s31_32 = make_fixed<31, 32>;
     BENCHMARK_TEMPLATE1(fn, uint64_t);
 
 // types that can store values >= 1
-#if defined(_GLIBCXX_USE_INT128)
+#if defined(SG14_INT128_ENABLED)
 #define FIXED_POINT_BENCHMARK_FIXED(fn) \
     BENCHMARK_TEMPLATE1(fn, u4_4); \
     BENCHMARK_TEMPLATE1(fn, s3_4); \

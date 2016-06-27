@@ -36,7 +36,7 @@ using uint32 = sg14::set_width_t<test_unsigned, 32>;
 using int64 = sg14::set_width_t<test_signed, 64>;
 using uint64 = sg14::set_width_t<test_unsigned, 64>;
 
-#if defined(_GLIBCXX_USE_INT128)
+#if defined(SG14_INT128_ENABLED)
 using int128 = sg14::set_width_t<test_signed, 128>;
 using uint128 = sg14::set_width_t<test_unsigned, 128>;
 #endif
@@ -280,7 +280,7 @@ static_assert(is_same<set_width_t<fixed_point<uint64, 8>, 56>, fixed_point<uint6
         "sg14::set_width_t test failed");
 static_assert(is_same<set_width_t<fixed_point<int64, -16>, 64>, fixed_point<int64, -16>>::value,
         "sg14::set_width_t test failed");
-#if defined(_GLIBCXX_USE_INT128)
+#if defined(SG14_INT128_ENABLED)
 static_assert(is_same<set_width_t<fixed_point<uint8, 16>, 72>, fixed_point<uint128, 16>>::value,
         "sg14::set_width_t test failed");
 static_assert(is_same<set_width_t<fixed_point<int8, -45>, 80>, fixed_point<int128, -45>>::value,
@@ -809,7 +809,7 @@ template struct FixedPointRepTester<uint16>;
 template struct FixedPointRepTester<int32>;
 template struct FixedPointRepTester<uint32>;
 
-#if defined(_GLIBCXX_USE_INT128)
+#if defined(SG14_INT128_ENABLED)
 template struct FixedPointRepTester<int64>;
 template struct FixedPointRepTester<uint64>;
 #endif

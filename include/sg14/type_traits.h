@@ -10,6 +10,8 @@
 #if !defined(SG14_TYPE_TRAITS_H)
 #define SG14_TYPE_TRAITS_H 1
 
+#include "bits/config.h"
+
 #include <cinttypes>
 #include <climits>
 #include <tuple>
@@ -91,9 +93,9 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // built-in families
 
-#if defined(_GLIBCXX_USE_INT128)
-        using signed_family = std::tuple<std::int8_t, std::int16_t, std::int32_t, std::int64_t, __int128>;
-        using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t, unsigned __int128>;
+#if defined(SG14_INT128_ENABLED)
+        using signed_family = std::tuple<std::int8_t, std::int16_t, std::int32_t, std::int64_t, SG14_INT128>;
+        using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t, SG14_UINT128>;
 #else
         using signed_family = std::tuple<std::int8_t, std::int16_t, std::int32_t, std::int64_t>;
         using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t>;
