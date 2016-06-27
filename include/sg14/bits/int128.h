@@ -7,6 +7,8 @@
 #ifndef SG14_INT128_H
 #define SG14_INT128_H
 
+#include "config.h"
+
 #include "../type_traits.h"
 
 // This file contains tweaks to standard traits that integers more conducive to generic programming.
@@ -30,72 +32,72 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // Clang/GCC hacks to get 128-bit integers working with fixed_point
 
-#if defined(_GLIBCXX_USE_INT128)
+#if defined(SG14_INT128_ENABLED)
     // sg14::is_integral - related to https://llvm.org/bugs/show_bug.cgi?id=23156
     template<>
-    struct is_integral<__int128> : std::true_type {
+    struct is_integral<SG14_INT128> : std::true_type {
     };
 
     template<>
-    struct is_integral<unsigned __int128> : std::true_type {
-    };
-
-    // sg14::is_signed
-    template<>
-    struct is_signed<__int128> : std::true_type {
-    };
-
-    template<>
-    struct is_signed<unsigned __int128> : std::false_type {
+    struct is_integral<SG14_UINT128> : std::true_type {
     };
 
     // sg14::is_signed
     template<>
-    struct is_unsigned<__int128> : std::false_type {
+    struct is_signed<SG14_INT128> : std::true_type {
     };
 
     template<>
-    struct is_unsigned<unsigned __int128> : std::true_type {
+    struct is_signed<SG14_UINT128> : std::false_type {
+    };
+
+    // sg14::is_signed
+    template<>
+    struct is_unsigned<SG14_INT128> : std::false_type {
+    };
+
+    template<>
+    struct is_unsigned<SG14_UINT128> : std::true_type {
     };
 
     // sg14::make_signed
     template<>
-    struct make_signed<__int128> {
-        using type = __int128;
+    struct make_signed<SG14_INT128> {
+        using type = SG14_INT128;
     };
 
     template<>
-    struct make_signed<unsigned __int128> {
-        using type = __int128;
+    struct make_signed<SG14_UINT128> {
+        using type = SG14_INT128;
     };
 
     // sg14::make_signed
     template<>
-    struct make_unsigned<__int128> {
-        using type = unsigned __int128;
+    struct make_unsigned<SG14_INT128> {
+        using type = SG14_UINT128;
     };
 
     template<>
-    struct make_unsigned<unsigned __int128> {
-        using type = __int128;
+    struct make_unsigned<SG14_UINT128> {
+        using type = SG14_INT128;
     };
 
     // sg14::resize
     template<_width_type MinNumBits>
-    struct set_width<__int128, MinNumBits> : set_width<signed, MinNumBits> {
+    struct set_width<SG14_INT128, MinNumBits> : set_width<signed, MinNumBits> {
     };
 
     template<_width_type MinNumBits>
-    struct set_width<unsigned __int128, MinNumBits> : set_width<unsigned, MinNumBits> {
+    struct set_width<SG14_UINT128, MinNumBits> : set_width<unsigned, MinNumBits> {
     };
 
     // sg14::width
     template<>
-    struct width<__int128> : std::integral_constant<_width_type, sizeof(__int128)*CHAR_BIT> {
+    struct width<SG14_INT128> : std::integral_constant<_width_type, sizeof(SG14_INT128)*CHAR_BIT> {
     };
 
     template<>
-    struct width<unsigned __int128> : std::integral_constant<_width_type, sizeof(unsigned __int128)*CHAR_BIT> {
+    struct width<SG14_UINT128> : std::integral_constant<_width_type, sizeof(SG14_UINT128)*CHAR_BIT> {
     };
 #endif
 }

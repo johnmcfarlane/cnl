@@ -311,4 +311,12 @@ TEST(elastic_multiprecision, high_capacity)
     ASSERT_EQ(factor6/factor6, factor0);
 }
 
+#if defined(BOOST_NO_EXCEPTIONS)
+namespace boost {
+    void throw_exception(std::exception const &) {
+        std::terminate();
+    }
+}
+#endif
+
 #endif  // SG14_BOOST_ENABLED
