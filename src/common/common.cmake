@@ -7,7 +7,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   set(MISC_FLAGS "/W4 /WX /wd4309 /errorReport:prompt /nologo")
 
   set(EXCEPTION_ENABLED_FLAGS "/EHsc")
-  set(EXCEPTION_DISABLED_FLAGS "")
+  set(EXCEPTION_DISABLED_FLAGS "-DBOOST_NO_EXCEPTIONS")
 
   # 128-bit integers are not supported in MSVC
   set(INT128_ENABLED_FLAGS "")
@@ -19,7 +19,7 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} ST
   set(MISC_FLAGS "-std=c++11 -pthread -Wall -Wextra -Wfatal-errors -Werror")
 
   set(EXCEPTION_ENABLED_FLAGS "-fexceptions -frtti")
-  set(EXCEPTION_DISABLED_FLAGS "-fno-exceptions -fno-rtti")
+  set(EXCEPTION_DISABLED_FLAGS "-DBOOST_NO_EXCEPTIONS -fno-exceptions -fno-rtti")
 
   set(INT128_ENABLED_FLAGS "-DSG14_USE_INT128")
   set(INT128_DISABLED_FLAGS "")
