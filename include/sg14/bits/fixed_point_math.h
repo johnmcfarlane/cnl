@@ -20,7 +20,7 @@ namespace sg14 {
         template<class FixedPoint>
         constexpr FixedPoint rounding_conversion(double d) {
             using one_longer = make_fixed<FixedPoint::integer_digits, FixedPoint::fractional_digits + 1>;
-            return FixedPoint::from_data((one_longer { d }.data() + 1) >> 1);
+            return FixedPoint::from_data(static_cast<FixedPoint::rep>((one_longer{ d }.data() + 1) >> 1));
         }
 
         template<class FixedPoint>
