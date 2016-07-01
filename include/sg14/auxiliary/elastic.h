@@ -226,12 +226,7 @@ namespace sg14 {
 
     template<int IntegerDigits, int FractionalDigits, class Archetype>
     struct is_signed<elastic<IntegerDigits, FractionalDigits, Archetype>>
-            : is_signed<Archetype> {
-    };
-
-    template<class Rep, int Exponent>
-    struct is_signed<fixed_point<Rep, Exponent>>
-            : is_signed<Rep> {
+            : std::is_signed<Archetype> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -240,11 +235,6 @@ namespace sg14 {
     template<int IntegerDigits, int FractionalDigits, class Archetype>
     struct is_unsigned<elastic<IntegerDigits, FractionalDigits, Archetype>>
             : is_unsigned<Archetype> {
-    };
-
-    template<class Rep, int Exponent>
-    struct is_unsigned<fixed_point<Rep, Exponent>>
-            : is_unsigned<Rep> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////

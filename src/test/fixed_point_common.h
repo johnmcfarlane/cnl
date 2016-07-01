@@ -14,6 +14,12 @@
 #include <gtest/gtest.h>
 
 ////////////////////////////////////////////////////////////////////////////////
+// test name generation
+
+#define TOKENPASTE(x, y) x ## y
+#define TOKENPASTE2(x, y) TOKENPASTE(x, y)
+
+////////////////////////////////////////////////////////////////////////////////
 // imports from std
 
 using std::is_same;
@@ -66,9 +72,6 @@ using sg14::multiply;
 
 ////////////////////////////////////////////////////////////////////////////////
 // copy assignment
-
-#define TOKENPASTE(x, y) x ## y
-#define TOKENPASTE2(x, y) TOKENPASTE(x, y)
 
 TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_fixed_point)
 {
@@ -452,6 +455,9 @@ static_assert(
         is_same<sg14::_impl::common_type_t<fixed_point<uint8, -4>, fixed_point<int8, -4>>, fixed_point<test_int, -4>>::value,
         "sg14::_impl::common_type_t test failed");
 static_assert(
+        is_same<sg14::_impl::common_type_t<fixed_point<uint64, -50>, fixed_point<int8, 0>>, fixed_point<uint64, -50>>::value,
+        "sg14::_impl::common_type_t test failed");
+static_assert(
         is_same<sg14::_impl::common_type_t<fixed_point<int16, -4>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value,
         "sg14::_impl::common_type_t test failed");
 static_assert(
@@ -746,7 +752,7 @@ struct FixedPointTester {
     static_assert(is_same<
                     sg14::_impl::common_type_t<fixed_point>,
                     ::fixed_point<
-                            typename sg14::common_type<Rep>::type,
+                            typename std::common_type<Rep>::type,
                             Exponent>>::value,
             "a fixed point specialization follows the same implicit promotion rules as its Rep");
 
