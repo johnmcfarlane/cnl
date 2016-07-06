@@ -74,6 +74,45 @@ namespace sg14 {
         using previous_size = typename sg14::set_width_t<IntType, width<IntType>::value/2>;
 
         ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_fixed_point_impl::pow2
+
+        // returns given power of 2
+        template<class S, int Exponent, typename std::enable_if<Exponent==0, int>::type Dummy = 0>
+        constexpr S pow2()
+        {
+            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+            return 1;
+        }
+
+        template<class S, int Exponent, typename std::enable_if<!(Exponent<=0) && (Exponent<8), int>::type Dummy = 0>
+        constexpr S pow2()
+        {
+            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+            return pow2<S, Exponent-1>()*S(2);
+        }
+
+        template<class S, int Exponent, typename std::enable_if<(Exponent>=8), int>::type Dummy = 0>
+        constexpr S pow2()
+        {
+            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+            return pow2<S, Exponent-8>()*S(256);
+        }
+
+        template<class S, int Exponent, typename std::enable_if<!(Exponent>=0) && (Exponent>-8), int>::type Dummy = 0>
+        constexpr S pow2()
+        {
+            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+            return pow2<S, Exponent+1>()*S(.5);
+        }
+
+        template<class S, int Exponent, typename std::enable_if<(Exponent<=-8), int>::type Dummy = 0>
+        constexpr S pow2()
+        {
+            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+            return pow2<S, Exponent+8>()*S(.003906250);
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////
         // sg14::_fixed_point_impl::shift_left and sg14::_fixed_point_impl::shift_right
 
         // performs a shift operation by a fixed number of bits avoiding two pitfalls:
@@ -163,45 +202,6 @@ namespace sg14 {
         {
             // negate Exponent and flip from right to left
             return shift_left<-Exponent, Output, Input>(i);
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_fixed_point_impl::pow2
-
-        // returns given power of 2
-        template<class S, int Exponent, typename std::enable_if<Exponent==0, int>::type Dummy = 0>
-        constexpr S pow2()
-        {
-            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
-            return 1;
-        }
-
-        template<class S, int Exponent, typename std::enable_if<!(Exponent<=0) && (Exponent<8), int>::type Dummy = 0>
-        constexpr S pow2()
-        {
-            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
-            return pow2<S, Exponent-1>()*S(2);
-        }
-
-        template<class S, int Exponent, typename std::enable_if<(Exponent>=8), int>::type Dummy = 0>
-        constexpr S pow2()
-        {
-            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
-            return pow2<S, Exponent-8>()*S(256);
-        }
-
-        template<class S, int Exponent, typename std::enable_if<!(Exponent>=0) && (Exponent>-8), int>::type Dummy = 0>
-        constexpr S pow2()
-        {
-            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
-            return pow2<S, Exponent+1>()*S(.5);
-        }
-
-        template<class S, int Exponent, typename std::enable_if<(Exponent<=-8), int>::type Dummy = 0>
-        constexpr S pow2()
-        {
-            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
-            return pow2<S, Exponent+8>()*S(.003906250);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
