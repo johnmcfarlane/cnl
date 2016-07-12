@@ -303,21 +303,6 @@ struct positive_elastic_test {
             "too many fractional digits in fixed-point type to represent elastic values accurately");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // test traits
-
-    static_assert(sg14::is_elastic<elastic_type>::value, "sg14::is_elastic test failed");
-    static_assert(!sg14::is_elastic<fixed_point_type>::value, "sg14::is_elastic test failed");
-    static_assert(!sg14::is_elastic<typename fixed_point_type::rep>::value, "sg14::is_elastic test failed");
-
-    static_assert(sg14::is_signed<elastic_type>::value==sg14::is_signed<fixed_point_type>::value,
-            "signedness of elastic type differns from underlying fixed-point type");
-
-    static_assert(sg14::is_signed<typename sg14::make_signed<elastic_type>::type>::value,
-            "signed version of elastic type is not signed");
-    static_assert(sg14::is_unsigned<typename sg14::make_unsigned<elastic_type>::type>::value,
-            "signed version of elastic type is not signed");
-
-    ////////////////////////////////////////////////////////////////////////////////
     // test numeric_limits<elastic>
 
     static_assert(min==elastic_type{fixed_point_type::from_data(1)}, "numeric_limits test failed");
