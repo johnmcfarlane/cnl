@@ -351,38 +351,38 @@ static_assert(!is_unsigned<sg14::integer<int64_t, sg14::saturated_overflow_polic
 static_assert(is_unsigned<sg14::integer<uint64_t, sg14::saturated_overflow_policy>>::value,
         "std::is_unsigned<sg14::integer<>> test failed");
 
-// std::make_signed<sg14::saturated_integer<>>
+// sg14::make_signed<sg14::saturated_integer<>>
 static_assert(is_same<make_signed<saturated_integer<int8_t >>::type, saturated_integer<int8_t >>::value,
-        "std::make_signed<sg14::saturated_integer<>> test failed");
+        "sg14::make_signed<sg14::saturated_integer<>> test failed");
 static_assert(is_same<make_signed<saturated_integer<uint8_t >>::type, saturated_integer<int8_t >>::value,
-        "std::make_signed<sg14::saturated_integer<>> test failed");
+        "sg14::make_signed<sg14::saturated_integer<>> test failed");
 static_assert(is_same<make_signed<saturated_integer<int16_t>>::type, saturated_integer<int16_t>>::value,
-        "std::make_signed<sg14::saturated_integer<>> test failed");
+        "sg14::make_signed<sg14::saturated_integer<>> test failed");
 static_assert(is_same<make_signed<saturated_integer<uint16_t>>::type, saturated_integer<int16_t>>::value,
-        "std::make_signed<sg14::saturated_integer<>> test failed");
+        "sg14::make_signed<sg14::saturated_integer<>> test failed");
 static_assert(is_same<make_signed<saturated_integer<int32_t>>::type, saturated_integer<int32_t>>::value,
-        "std::make_signed<sg14::saturated_integer<>> test failed");
+        "sg14::make_signed<sg14::saturated_integer<>> test failed");
 static_assert(is_same<make_signed<saturated_integer<uint32_t>>::type, saturated_integer<int32_t>>::value,
-        "std::make_signed<sg14::saturated_integer<>> test failed");
+        "sg14::make_signed<sg14::saturated_integer<>> test failed");
 static_assert(is_same<make_signed<saturated_integer<int64_t>>::type, saturated_integer<int64_t>>::value,
-        "std::make_signed<sg14::saturated_integer<>> test failed");
+        "sg14::make_signed<sg14::saturated_integer<>> test failed");
 static_assert(is_same<make_signed<saturated_integer<uint64_t>>::type, saturated_integer<int64_t>>::value,
-        "std::make_signed<sg14::saturated_integer<>> test failed");
+        "sg14::make_signed<sg14::saturated_integer<>> test failed");
 
-// std::make_unsigned<sg14::saturated_integer<>>
+// sg14::make_unsigned<sg14::saturated_integer<>>
 static_assert(is_same<make_unsigned<saturated_integer<int8_t >>::type, saturated_integer<uint8_t >>::value,
-        "std::make_unsigned<sg14::saturated_integer<>> test failed");
+        "sg14::make_unsigned<sg14::saturated_integer<>> test failed");
 static_assert(is_same<make_unsigned<saturated_integer<uint8_t >>::type, saturated_integer<uint8_t >>::value,
-        "std::make_unsigned<sg14::saturated_integer<>> test failed");
+        "sg14::make_unsigned<sg14::saturated_integer<>> test failed");
 static_assert(is_same<make_unsigned<saturated_integer<int16_t>>::type, saturated_integer<uint16_t>>::value,
-        "std::make_unsigned<sg14::saturated_integer<>> test failed");
+        "sg14::make_unsigned<sg14::saturated_integer<>> test failed");
 static_assert(is_same<make_unsigned<saturated_integer<uint16_t>>::type, saturated_integer<uint16_t>>::value,
-        "std::make_unsigned<sg14::saturated_integer<>> test failed");
+        "sg14::make_unsigned<sg14::saturated_integer<>> test failed");
 static_assert(is_same<make_unsigned<saturated_integer<int32_t>>::type, saturated_integer<uint32_t>>::value,
-        "std::make_unsigned<sg14::saturated_integer<>> test failed");
+        "sg14::make_unsigned<sg14::saturated_integer<>> test failed");
 static_assert(is_same<make_unsigned<saturated_integer<uint32_t>>::type, saturated_integer<uint32_t>>::value,
-        "std::make_unsigned<sg14::saturated_integer<>> test failed");
+        "sg14::make_unsigned<sg14::saturated_integer<>> test failed");
 static_assert(is_same<make_unsigned<saturated_integer<int64_t>>::type, saturated_integer<uint64_t>>::value,
-        "std::make_unsigned<sg14::saturated_integer<>> test failed");
+        "sg14::make_unsigned<sg14::saturated_integer<>> test failed");
 static_assert(is_same<make_unsigned<saturated_integer<uint64_t>>::type, saturated_integer<uint64_t>>::value,
-        "std::make_unsigned<sg14::saturated_integer<>> test failed");
+        "sg14::make_unsigned<sg14::saturated_integer<>> test failed");

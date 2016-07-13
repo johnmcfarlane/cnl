@@ -395,7 +395,7 @@ struct positive_elastic_test {
                     elastic<
                             integer_digits+1,
                             fractional_digits,
-                            typename std::make_signed<typename elastic_type::archetype>::type>>::value,
+                            typename sg14::make_signed<typename elastic_type::archetype>::type>>::value,
             "sg14::_elastic_impl::add_result_type test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
