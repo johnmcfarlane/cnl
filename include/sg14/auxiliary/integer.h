@@ -46,7 +46,7 @@ namespace sg14 {
 #define SG14_INTEGER_COMPARISON_DEFINE(OP) \
     template <class Lhs, class Rhs> \
     constexpr auto operator OP (const Lhs& lhs, const Rhs& rhs) \
-    -> typename std::enable_if<sg14::_integer_impl::is_integer_class<Lhs>::value || sg14::_integer_impl::is_integer_class<Rhs>::value, bool>::type { \
+    -> typename std::enable_if<sg14::_integer_impl::is_integer_class_operation<Lhs, Rhs>::value, bool>::type { \
         using common_type = typename std::common_type<Lhs, Rhs>::type; \
         return static_cast<common_type>(lhs).data() OP static_cast<common_type>(rhs).data(); }
 
@@ -127,6 +127,36 @@ namespace sg14 {
         struct is_integer_class<integer<Rep, OverflowPolicy>>
                 : std::true_type {
         };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_integer_impl::is_integer_or_float - trait to identify 'traditional' arithmetic concept
+
+        template<class T>
+        struct is_integer_or_float : std::integral_constant<
+                bool,
+                std::numeric_limits<T>::is_integer || std::is_floating_point<T>::value> {
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_integer_impl::is_integer_class_operation - basically identifies
+        // operands that should go into a function defined here; filters out fixed-point
+
+        template<class Lhs, class Rhs>
+        struct is_integer_class_operation {
+            static constexpr int integer_class = is_integer_class<Lhs>::value + is_integer_class<Rhs>::value;
+            static constexpr int integer_or_float = is_integer_or_float<Lhs>::value + is_integer_or_float<Rhs>::value;
+            static constexpr bool value = (integer_class >= 1) && (integer_or_float == 2);
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_integer_impl::arithmetic_result - should op return integer<>
+        // or floating-point?
+
+        template<class IntegerClass, class Operand, class RepResult>
+        struct arithmetic_result;
+
+        template<class IntegerClass, class Operand, class RepResult>
+        struct arithmetic_result;
 
         ////////////////////////////////////////////////////////////////////////////////
         // overflow detection
