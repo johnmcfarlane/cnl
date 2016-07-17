@@ -57,17 +57,27 @@ namespace sg14 {
         using Result = integer<decltype(std::declval<LhsRep>() OP std::declval<RhsRep>()), OverflowPolicy>; \
         return static_cast<Result>(lhs.data() OP rhs.data()); } \
     \
-    template <class Lhs, class RhsRep, class RhsOverflowPolicy, typename std::enable_if<std::is_fundamental<Lhs>::value, int>::type dummy = 0> \
+    template <class Lhs, class RhsRep, class RhsOverflowPolicy, typename std::enable_if<std::is_integral<Lhs>::value, int>::type dummy = 0> \
     constexpr auto operator OP (const Lhs& lhs, const integer<RhsRep, RhsOverflowPolicy>& rhs) \
     -> integer<decltype(std::declval<Lhs>() OP std::declval<RhsRep>()), RhsOverflowPolicy> { \
         using Result = integer<decltype(std::declval<Lhs>() OP std::declval<RhsRep>()), RhsOverflowPolicy>; \
         return static_cast<Result>(lhs OP rhs.data()); } \
     \
-    template <class LhsRep, class LhsOverflowPolicy, class Rhs, typename std::enable_if<std::is_fundamental<Rhs>::value, int>::type dummy = 0> \
+    template <class LhsRep, class LhsOverflowPolicy, class Rhs, typename std::enable_if<std::is_integral<Rhs>::value, int>::type dummy = 0> \
     constexpr auto operator OP (const integer<LhsRep, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
     -> integer<decltype(std::declval<LhsRep>() OP std::declval<Rhs>()), LhsOverflowPolicy> { \
         using Result = integer<decltype(std::declval<LhsRep>() OP std::declval<Rhs>()), LhsOverflowPolicy>; \
-        return static_cast<Result>(lhs.data() OP rhs); }
+        return static_cast<Result>(lhs.data() OP rhs); } \
+    \
+    template <class Lhs, class RhsRep, class RhsOverflowPolicy, typename std::enable_if<std::is_floating_point<Lhs>::value, int>::type dummy = 0> \
+    constexpr auto operator OP (const Lhs& lhs, const integer<RhsRep, RhsOverflowPolicy>& rhs) \
+    -> decltype(std::declval<Lhs>() OP std::declval<RhsRep>()) { \
+        return lhs OP rhs.data(); } \
+    \
+    template <class LhsRep, class LhsOverflowPolicy, class Rhs, typename std::enable_if<std::is_floating_point<Rhs>::value, int>::type dummy = 0> \
+    constexpr auto operator OP (const integer<LhsRep, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
+    -> decltype(std::declval<LhsRep>() OP std::declval<Rhs>()) { \
+        return lhs.data() OP rhs; }
 
 #define SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(OP, BIN_OP) \
     template <class Rhs> \
