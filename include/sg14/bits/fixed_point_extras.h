@@ -254,7 +254,7 @@ namespace std {
         //static constexpr int max_digits10 = ?;
 
         static constexpr bool is_signed = _rep_numeric_limits::is_signed;
-        static constexpr bool is_integer = _rep_numeric_limits::is_integer;
+        static constexpr bool is_integer = false;
 
         // TODO: not entirely certain
         static constexpr bool is_exact = true;
