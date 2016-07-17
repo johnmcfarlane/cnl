@@ -6,8 +6,8 @@
 
 #include "sg14/auxiliary/integer.h"
 
+using sg14::_impl::is_integer_or_float;
 using sg14::_integer_impl::is_integer_class;
-using sg14::_integer_impl::is_integer_or_float;
 using sg14::_integer_impl::is_negative_overflow;
 using sg14::_integer_impl::is_positive_overflow;
 using sg14::is_integral;
@@ -69,7 +69,7 @@ static_assert(is_integer_class<saturated_integer<int64_t>>::value,
         "sg14::_integer_impl::is_integer_class test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_integer_impl::is_integer_or_float
+// sg14::_impl::is_integer_or_float
 
 static_assert(is_integer_or_float<saturated_integer<int64_t>>::value, "sg14::_integer_impl::is_integer_class test failed");
 static_assert(is_integer_or_float<uint8_t>::value, "sg14::_integer_impl::is_integer_class test failed");

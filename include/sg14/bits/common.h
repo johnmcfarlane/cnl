@@ -9,6 +9,8 @@
 #if !defined(SG14_COMMON_H)
 #define SG14_COMMON_H 1
 
+#include <limits>
+
 namespace sg14 {
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
@@ -45,6 +47,15 @@ namespace sg14 {
         {
             static_assert(std::is_same<A, B>::value, "different types");
             return a==b;
+        }
+        
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::is_integer_or_float - trait to identify 'traditional' arithmetic concept
+
+        template<class T>
+        struct is_integer_or_float : std::integral_constant<
+                bool,
+                std::numeric_limits<T>::is_integer || std::is_floating_point<T>::value> {
         };
     }
 }
