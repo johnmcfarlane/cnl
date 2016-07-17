@@ -46,7 +46,7 @@ namespace sg14 {
 #define SG14_INTEGER_COMPARISON_DEFINE(OP) \
     template <class Lhs, class Rhs> \
     constexpr auto operator OP (const Lhs& lhs, const Rhs& rhs) \
-    -> typename std::enable_if<sg14::_integer_impl::is_integer_class<Lhs>::value || sg14::_integer_impl::is_integer_class<Rhs>::value, bool>::type { \
+    -> typename std::enable_if<sg14::_integer_impl::is_integer_class_operation<Lhs, Rhs>::value, bool>::type { \
         using common_type = typename std::common_type<Lhs, Rhs>::type; \
         return static_cast<common_type>(lhs).data() OP static_cast<common_type>(rhs).data(); }
 
@@ -57,17 +57,27 @@ namespace sg14 {
         using Result = integer<decltype(std::declval<LhsRep>() OP std::declval<RhsRep>()), OverflowPolicy>; \
         return static_cast<Result>(lhs.data() OP rhs.data()); } \
     \
-    template <class Lhs, class RhsRep, class RhsOverflowPolicy, typename std::enable_if<std::is_fundamental<Lhs>::value, int>::type dummy = 0> \
+    template <class Lhs, class RhsRep, class RhsOverflowPolicy, typename std::enable_if<std::is_integral<Lhs>::value, int>::type dummy = 0> \
     constexpr auto operator OP (const Lhs& lhs, const integer<RhsRep, RhsOverflowPolicy>& rhs) \
     -> integer<decltype(std::declval<Lhs>() OP std::declval<RhsRep>()), RhsOverflowPolicy> { \
         using Result = integer<decltype(std::declval<Lhs>() OP std::declval<RhsRep>()), RhsOverflowPolicy>; \
         return static_cast<Result>(lhs OP rhs.data()); } \
     \
-    template <class LhsRep, class LhsOverflowPolicy, class Rhs, typename std::enable_if<std::is_fundamental<Rhs>::value, int>::type dummy = 0> \
+    template <class LhsRep, class LhsOverflowPolicy, class Rhs, typename std::enable_if<std::is_integral<Rhs>::value, int>::type dummy = 0> \
     constexpr auto operator OP (const integer<LhsRep, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
     -> integer<decltype(std::declval<LhsRep>() OP std::declval<Rhs>()), LhsOverflowPolicy> { \
         using Result = integer<decltype(std::declval<LhsRep>() OP std::declval<Rhs>()), LhsOverflowPolicy>; \
-        return static_cast<Result>(lhs.data() OP rhs); }
+        return static_cast<Result>(lhs.data() OP rhs); } \
+    \
+    template <class Lhs, class RhsRep, class RhsOverflowPolicy, typename std::enable_if<std::is_floating_point<Lhs>::value, int>::type dummy = 0> \
+    constexpr auto operator OP (const Lhs& lhs, const integer<RhsRep, RhsOverflowPolicy>& rhs) \
+    -> decltype(std::declval<Lhs>() OP std::declval<RhsRep>()) { \
+        return lhs OP rhs.data(); } \
+    \
+    template <class LhsRep, class LhsOverflowPolicy, class Rhs, typename std::enable_if<std::is_floating_point<Rhs>::value, int>::type dummy = 0> \
+    constexpr auto operator OP (const integer<LhsRep, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
+    -> decltype(std::declval<LhsRep>() OP std::declval<Rhs>()) { \
+        return lhs.data() OP rhs; }
 
 #define SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(OP, BIN_OP) \
     template <class Rhs> \
@@ -117,6 +127,36 @@ namespace sg14 {
         struct is_integer_class<integer<Rep, OverflowPolicy>>
                 : std::true_type {
         };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_integer_impl::is_integer_or_float - trait to identify 'traditional' arithmetic concept
+
+        template<class T>
+        struct is_integer_or_float : std::integral_constant<
+                bool,
+                std::numeric_limits<T>::is_integer || std::is_floating_point<T>::value> {
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_integer_impl::is_integer_class_operation - basically identifies
+        // operands that should go into a function defined here; filters out fixed-point
+
+        template<class Lhs, class Rhs>
+        struct is_integer_class_operation {
+            static constexpr int integer_class = is_integer_class<Lhs>::value + is_integer_class<Rhs>::value;
+            static constexpr int integer_or_float = is_integer_or_float<Lhs>::value + is_integer_or_float<Rhs>::value;
+            static constexpr bool value = (integer_class >= 1) && (integer_or_float == 2);
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_integer_impl::arithmetic_result - should op return integer<>
+        // or floating-point?
+
+        template<class IntegerClass, class Operand, class RepResult>
+        struct arithmetic_result;
+
+        template<class IntegerClass, class Operand, class RepResult>
+        struct arithmetic_result;
 
         ////////////////////////////////////////////////////////////////////////////////
         // overflow detection
