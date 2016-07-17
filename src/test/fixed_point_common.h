@@ -70,6 +70,8 @@ using set_width_t = sg14::set_width_t<Archetype, MinNumBits>;
 using sg14::divide;
 using sg14::multiply;
 
+using std::numeric_limits;
+
 ////////////////////////////////////////////////////////////////////////////////
 // copy assignment
 
@@ -675,6 +677,53 @@ static_assert(make_fixed<31, 32>(16777215.996093750)/-123.654f==-135678.71712347
         "sg14::fixed_point division test failed");
 static_assert(is_same<decltype(make_fixed<31, 32>(16777215.996093750)/-123.654f), double>::value,
         "sg14::fixed_point division test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// std::numeric_limits<fixed_point<>>
+
+static_assert(numeric_limits<fixed_point<test_int, -256>>::lowest() < -.1e-67, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, -256>>::min() > 0., "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, -256>>::min() < .1e-76, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, -256>>::max() > .1e-67, "std::numeric_limits<fixed_point> test failed");
+
+static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::lowest() == 0., "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::min() > 0., "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::min() < .1e-76, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::max() > .1e-67, "std::numeric_limits<fixed_point> test failed");
+
+static_assert(numeric_limits<fixed_point<test_int, -16>>::lowest() == numeric_limits<test_int>::lowest() / 65536., "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, -16>>::min() == 1 / 65536., "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, -16>>::max() == numeric_limits<test_int>::max() / 65536., "std::numeric_limits<fixed_point> test failed");
+
+static_assert(numeric_limits<fixed_point<test_unsigned, -16>>::lowest() == 0, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, -16>>::min() == 1 / 65536., "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, -16>>::max() == numeric_limits<test_unsigned>::max() / 65536., "std::numeric_limits<fixed_point> test failed");
+
+static_assert(numeric_limits<fixed_point<test_int, 0>>::lowest() == numeric_limits<test_int>::lowest(), "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, 0>>::min() == 1, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, 0>>::max() == numeric_limits<test_int>::max(), "std::numeric_limits<fixed_point> test failed");
+
+static_assert(numeric_limits<fixed_point<test_unsigned, 0>>::lowest() == 0, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, 0>>::min() == 1, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, 0>>::max() == numeric_limits<test_unsigned>::max(), "std::numeric_limits<fixed_point> test failed");
+
+static_assert(numeric_limits<fixed_point<test_int, 16>>::lowest() == numeric_limits<test_int>::lowest() * 65536LL, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, 16>>::min() == 65536, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, 16>>::max() == numeric_limits<test_int>::max() * 65536LL, "std::numeric_limits<fixed_point> test failed");
+
+static_assert(numeric_limits<fixed_point<test_unsigned, 16>>::lowest() == 0, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, 16>>::min() == 65536, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, 16>>::max() == numeric_limits<test_unsigned>::max() * 65536LL, "std::numeric_limits<fixed_point> test failed");
+
+static_assert(numeric_limits<fixed_point<test_int, 256>>::lowest() < -1.e86, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, 256>>::min() > 1.e77, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, 256>>::min() < 1.e78, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, 256>>::max() > 1.e86, "std::numeric_limits<fixed_point> test failed");
+
+static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::lowest() == 0., "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::min() > 1.e77, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::min() < 1.e78, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::max() > 1.e86, "std::numeric_limits<fixed_point> test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::sqrt
