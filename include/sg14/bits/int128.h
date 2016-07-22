@@ -7,9 +7,9 @@
 #ifndef SG14_INT128_H
 #define SG14_INT128_H
 
-#include "config.h"
+#include <limits>
 
-#include "../type_traits.h"
+#include "config.h"
 
 // This file contains tweaks to standard traits that integers more conducive to generic programming.
 
