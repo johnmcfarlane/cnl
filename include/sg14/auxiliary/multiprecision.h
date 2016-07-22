@@ -10,9 +10,9 @@
 #if !defined(SG14_MULTIPRECISION_H)
 #define SG14_MULTIPRECISION_H 1
 
-#include <boost/multiprecision/cpp_int.hpp>
-
 #include <sg14/auxiliary/elastic.h>
+
+#include <boost/multiprecision/cpp_int.hpp>
 
 namespace sg14 {
     namespace _bmp {

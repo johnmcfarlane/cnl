@@ -4,15 +4,16 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <limits>
+
 #include <sg14/type_traits.h>
-#include <sg14/bits/int128.h>
 
 using sg14::_type_traits_impl::first_fit;
 using std::is_same;
-using std::is_signed;
-using std::is_unsigned;
-using std::make_signed;
-using std::make_unsigned;
+using sg14::is_signed;
+using sg14::is_unsigned;
+using sg14::make_signed;
+using sg14::make_unsigned;
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::width
@@ -63,6 +64,13 @@ static_assert(
         std::is_same<typename first_fit<16, std::tuple<std::int8_t, std::int16_t, std::int32_t>>::type, std::int16_t>::value, "");
 static_assert(
         std::is_same<typename first_fit<16, std::tuple<std::int32_t, std::int16_t, std::int8_t>>::type, std::int32_t>::value, "");
+
+////////////////////////////////////////////////////////////////////////////////
+// some random sg14::set_width
+
+#if defined(SG14_INT128_ENABLED)
+static_assert(is_same<sg14::set_width<unsigned long, 78>::type, SG14_UINT128>::value, "sg14::set_width_t test failed");
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::set_width_t
@@ -126,9 +134,13 @@ struct test_built_in_set_width : test_built_in_set_width<T, NumBits-1> {
             "result of set_width must be at least the desired width in bits");
 
     static_assert(is_signed<T>::value==is_signed<result_type>::value,
-            "incorrect signage in result of set_width_t");
+            "incorrect signage in result of set_width_t (according to is_signed)");
     static_assert(is_unsigned<T>::value==is_unsigned<result_type>::value,
-            "incorrect signage in result of set_width_t");
+            "incorrect signage in result of set_width_t (according to is_unsigned)");
+
+    static_assert(std::numeric_limits<result_type>::is_specialized, "numeric_limits<result_type> is not specialized");
+    static_assert(std::numeric_limits<T>::is_signed==std::numeric_limits<result_type>::is_signed,
+            "incorrect signage in result of set_width_t (according to numeric_limits)");
 
     static_assert(is_same<typename make_signed<result_type>::type, set_width_t<typename make_signed<T>::type, NumBits>>::value,
             "incorrect signage in result of set_width_t");
@@ -144,7 +156,14 @@ struct test_built_in_width {
 
 template<typename T>
 struct test_built_in
-        : test_built_in_width<T>, test_built_in_set_width<T, 64> {
+        : test_built_in_width<T>,
+#if defined(SG14_INT128_ENABLED)
+          test_built_in_set_width<T, 128>
+#else
+          test_built_in_set_width<T, 64>
+#endif
+{
+    static_assert(std::numeric_limits<T>::is_specialized, "numeric_limits<T> is not specialized");
 };
 
 template
@@ -169,3 +188,9 @@ template
 struct test_built_in<unsigned long long>;
 template
 struct test_built_in<signed long long>;
+#if defined(SG14_INT128_ENABLED)
+template
+struct test_built_in<SG14_UINT128>;
+template
+struct test_built_in<SG14_INT128>;
+#endif

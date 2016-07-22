@@ -286,4 +286,6 @@ namespace sg14 {
     };
 }
 
+#include "bits/int128.h"
+
 #endif	// SG14_TYPE_TRAITS_H
