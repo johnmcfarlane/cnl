@@ -143,7 +143,13 @@ struct test_built_in_width {
 
 template<typename T>
 struct test_built_in
-        : test_built_in_width<T>, test_built_in_set_width<T, 64> {
+        : test_built_in_width<T>,
+#if defined(SG14_INT128_ENABLED)
+          test_built_in_set_width<T, 128>
+#else
+          test_built_in_set_width<T, 64>
+#endif
+{
 };
 
 template
@@ -168,3 +174,9 @@ template
 struct test_built_in<unsigned long long>;
 template
 struct test_built_in<signed long long>;
+#if defined(SG14_INT128_ENABLED)
+template
+struct test_built_in<SG14_UINT128>;
+template
+struct test_built_in<SG14_INT128>;
+#endif
