@@ -103,6 +103,7 @@ namespace sg14 {
 }
 
 namespace std {
+#if defined(SG14_INT128_ENABLED)
     template<>
     struct numeric_limits<SG14_INT128> : numeric_limits<long long> {
         static const int digits = CHAR_BIT*sizeof(SG14_INT128)-1;
@@ -156,6 +157,7 @@ namespace std {
             return min();
         }
     };
+#endif
 }
 
 #endif // SG14_INT128_H
