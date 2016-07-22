@@ -8,10 +8,10 @@
 
 using sg14::_type_traits_impl::first_fit;
 using std::is_same;
-using std::is_signed;
-using std::is_unsigned;
-using std::make_signed;
-using std::make_unsigned;
+using sg14::is_signed;
+using sg14::is_unsigned;
+using sg14::make_signed;
+using sg14::make_unsigned;
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::width
