@@ -102,4 +102,60 @@ namespace sg14 {
 #endif
 }
 
+namespace std {
+    template<>
+    struct numeric_limits<SG14_INT128> : numeric_limits<long long> {
+        static const int digits = CHAR_BIT*sizeof(SG14_INT128)-1;
+        static const int digits10 = 38;
+
+        struct _s {
+            constexpr _s(uint64_t upper, uint64_t lower) : value(lower + (SG14_INT128{upper} << 64)) {}
+            constexpr operator SG14_INT128() const { return value; }
+            SG14_INT128 value;
+        };
+
+        static constexpr SG14_INT128 min()
+        {
+            return _s(0x8000000000000000, 0x0000000000000000);
+        }
+
+        static constexpr SG14_INT128 max()
+        {
+            return _s(0x7fffffffffffffff, 0xffffffffffffffff);
+        }
+
+        static constexpr SG14_INT128 lowest()
+        {
+            return min();
+        }
+    };
+
+    template<>
+    struct numeric_limits<SG14_UINT128> : numeric_limits<unsigned long long> {
+        static const int digits = CHAR_BIT*sizeof(SG14_INT128);
+        static const int digits10 = 38;
+
+        struct _s {
+            constexpr _s(uint64_t upper, uint64_t lower) : value(lower + (SG14_UINT128{upper} << 64)) {}
+            constexpr operator SG14_INT128() const { return value; }
+            SG14_UINT128 value;
+        };
+
+        static constexpr SG14_INT128 min()
+        {
+            return 0;
+        }
+
+        static constexpr SG14_INT128 max()
+        {
+            return _s(0xffffffffffffffff, 0xffffffffffffffff);
+        }
+
+        static constexpr SG14_INT128 lowest()
+        {
+            return min();
+        }
+    };
+}
+
 #endif // SG14_INT128_H
