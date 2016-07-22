@@ -79,7 +79,7 @@ namespace sg14 {
 
     template<>
     struct make_unsigned<SG14_UINT128> {
-        using type = SG14_INT128;
+        using type = SG14_UINT128;
     };
 
     // sg14::resize
