@@ -16,6 +16,7 @@ using sg14::set_width_t;
 using sg14::sqrt;
 using sg14::width;
 using std::is_same;
+using sg14::_impl::identical;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Tests of Examples in P0037
@@ -37,9 +38,9 @@ static_assert(make_ufixed<4, 4>{.006}==make_ufixed<4, 4>{0}, "Incorrect informat
 
 // Operator Overloads
 
-static_assert(sg14::_impl::equal_value_and_type(fixed_point<uint8_t, -3>{8} + fixed_point<int8_t, -4>{3}, fixed_point<int, -4>{11}), "Incorrect information in P0037 section, Operator Overloads");
-static_assert(sg14::_impl::equal_value_and_type(fixed_point<uint8_t, -3>{8} + 3, fixed_point<int, -3>{11}), "Incorrect information in P0037 section, Operator Overloads");
-static_assert(sg14::_impl::equal_value_and_type(fixed_point<uint8_t, -3>{8} + float{3}, float{11}), "Incorrect information in P0037 section, Operator Overloads");
+static_assert(identical(fixed_point<uint8_t, -3>{8} + fixed_point<int8_t, -4>{3}, fixed_point<int, -4>{11}), "Incorrect information in P0037 section, Operator Overloads");
+static_assert(identical(fixed_point<uint8_t, -3>{8} + 3, fixed_point<int, -3>{11}), "Incorrect information in P0037 section, Operator Overloads");
+static_assert(identical(fixed_point<uint8_t, -3>{8} + float{3}, float{11}), "Incorrect information in P0037 section, Operator Overloads");
 
 // Overflow
 TEST(proposal, overflow) {

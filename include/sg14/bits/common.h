@@ -38,12 +38,14 @@ namespace sg14 {
         using common_type_t = typename std::common_type<typename std::decay<T>::type ...>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::equal_value_and_type
+        // sg14::_impl::identical - compiles iff same type; returns true iff equal
 
-        template<class Lhs, class Rhs>
-        constexpr bool equal_value_and_type(Lhs&& lhs, Rhs&& rhs) {
-            return std::is_same<Lhs, Rhs>::value && lhs == rhs;
-        }
+        template<typename A, typename B>
+        constexpr bool identical(const A& a, const B& b)
+        {
+            static_assert(std::is_same<A, B>::value, "different types");
+            return a==b;
+        };
     }
 }
 
