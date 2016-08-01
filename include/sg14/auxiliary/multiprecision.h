@@ -10,7 +10,7 @@
 #if !defined(SG14_MULTIPRECISION_H)
 #define SG14_MULTIPRECISION_H 1
 
-#include <sg14/auxiliary/elastic.h>
+#include <sg14/fixed_point.h>
 
 #include <boost/multiprecision/cpp_int.hpp>
 
@@ -22,7 +22,7 @@ namespace sg14 {
     // type trait specializations of boost::multiprecision types
     //
     // These are the definitions needed to use any custom integer type with
-    // sg14::fixed_point and sg14::elastic
+    // sg14::fixed_point
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::is_signed
