@@ -157,7 +157,7 @@ namespace sg14 {
 
     template<class Rep, int Exponent>
     struct make_signed<fixed_point<Rep, Exponent> > {
-        using type = fixed_point<typename std::make_signed<Rep>::type, Exponent>;
+        using type = fixed_point<typename sg14::make_signed<Rep>::type, Exponent>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -165,7 +165,7 @@ namespace sg14 {
 
     template<class Rep, int Exponent>
     struct make_unsigned<fixed_point<Rep, Exponent>> {
-    using type = fixed_point<typename std::make_unsigned<Rep>::type, Exponent>;
+    using type = fixed_point<typename sg14::make_unsigned<Rep>::type, Exponent>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////

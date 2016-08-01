@@ -9,6 +9,8 @@
 #if !defined(SG14_COMMON_H)
 #define SG14_COMMON_H 1
 
+#include <limits>
+
 namespace sg14 {
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
@@ -38,12 +40,23 @@ namespace sg14 {
         using common_type_t = typename std::common_type<typename std::decay<T>::type ...>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::equal_value_and_type
+        // sg14::_impl::identical - compiles iff same type; returns true iff equal
 
-        template<class Lhs, class Rhs>
-        constexpr bool equal_value_and_type(Lhs&& lhs, Rhs&& rhs) {
-            return std::is_same<Lhs, Rhs>::value && lhs == rhs;
+        template<typename A, typename B>
+        constexpr bool identical(const A& a, const B& b)
+        {
+            static_assert(std::is_same<A, B>::value, "different types");
+            return a==b;
         }
+        
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::is_integer_or_float - trait to identify 'traditional' arithmetic concept
+
+        template<class T>
+        struct is_integer_or_float : std::integral_constant<
+                bool,
+                std::numeric_limits<T>::is_integer || std::is_floating_point<T>::value> {
+        };
     }
 }
 

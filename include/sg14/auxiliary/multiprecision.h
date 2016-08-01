@@ -147,7 +147,7 @@ namespace sg14 {
 
     // sg14::width<boost::multiprecision::cpp_int_backend<>>
     template<unsigned MinBits, unsigned MaxBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked>
-    struct width<_bmp::cpp_int_backend<MinBits, MaxBits, SignType, Checked>> : std::integral_constant<int, MaxBits> {
+    struct width<_bmp::cpp_int_backend<MinBits, MaxBits, SignType, Checked>> : std::integral_constant<_width_type, MaxBits> {
     };
 
     // sg14::width<boost::multiprecision::number<>>
