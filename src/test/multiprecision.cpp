@@ -13,12 +13,10 @@
 using sg14::is_integral;
 using sg14::is_signed;
 using sg14::is_unsigned;
-using sg14::elastic;
 using sg14::fixed_point;
 using sg14::make_signed;
 using sg14::make_unsigned;
 using sg14::multiprecision;
-using sg14::elasticate;
 using sg14::set_width_t;
 using sg14::signed_multiprecision;
 using sg14::unsigned_multiprecision;
@@ -187,129 +185,7 @@ TEST(fixed_point_multiprecision, divide)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::elastic<multiprecision> arithmetic
-
-TEST(elastic_multiprecision, add)
-{
-    using int64 = elastic<64, 0, unsigned_multiprecision<>>;
-
-    auto augend = int64{123456789012345678LL};
-    auto addend = int64{876543210987654321LL};
-
-    auto sum = augend+addend;
-    auto expected = int64{999999999999999999LL};
-
-    ASSERT_EQ(sum, expected);
-}
-
-TEST(elastic_multiprecision, subtract)
-{
-    using int64 = elastic<64, 0, unsigned_multiprecision<>>;
-
-    auto minuend = int64{999999999999999999LL};
-    auto subtrahend = int64{876543210987654321LL};
-
-    auto difference = minuend-subtrahend;
-    auto expected = int64{123456789012345678LL};
-
-    ASSERT_EQ(difference, expected);
-}
-
-TEST(elastic_multiprecision, multiply)
-{
-    using int64 = elastic<64, 0, unsigned_multiprecision<>>;
-    using int128 = elastic<128, 0, unsigned_multiprecision<>>;
-
-    auto factor = int64{123456789012345678LL};
-
-    auto product = factor*factor;
-    static_assert(std::is_same<int128, decltype(product)>::value, "");
-    ASSERT_GT(product, factor);
-
-    auto quotient = product/factor;
-    ASSERT_EQ(factor, quotient);
-}
-
-TEST(elastic_multiprecision, divide)
-{
-    using int64 = elastic<64, 0, unsigned_multiprecision<>>;
-
-    auto div = int64{123456789012345678LL};
-
-    auto quotient = div/div;
-    auto expected = 1;
-
-    ASSERT_EQ(quotient, expected);
-}
-
-TEST(elastic_multiprecision, high_capacity)
-{
-    using int64 = elastic<64, 0, unsigned_multiprecision<>>;
-
-    auto factor0 = int64{1};
-    auto factor1 = int64{839265835237486943LL};
-    auto factor2 = factor1*factor1;
-    auto factor3 = factor2*factor1;
-    auto factor4 = factor3*factor1;
-    auto factor5 = factor4*factor1;
-    auto factor6 = factor5*factor1;
-
-    ASSERT_EQ(factor0*factor6, factor6);
-    ASSERT_EQ(factor1*factor5, factor6);
-    ASSERT_EQ(factor2*factor4, factor6);
-    ASSERT_EQ(factor3*factor3, factor6);
-    ASSERT_EQ(factor4*factor2, factor6);
-    ASSERT_EQ(factor5*factor1, factor6);
-    ASSERT_EQ(factor6*factor0, factor6);
-
-    ASSERT_EQ(factor0*factor5, factor5);
-    ASSERT_EQ(factor1*factor4, factor5);
-    ASSERT_EQ(factor2*factor3, factor5);
-    ASSERT_EQ(factor3*factor2, factor5);
-    ASSERT_EQ(factor4*factor1, factor5);
-    ASSERT_EQ(factor5*factor0, factor5);
-    ASSERT_EQ(factor6/factor1, factor5);
-
-    ASSERT_EQ(factor0*factor4, factor4);
-    ASSERT_EQ(factor1*factor3, factor4);
-    ASSERT_EQ(factor2*factor2, factor4);
-    ASSERT_EQ(factor3*factor1, factor4);
-    ASSERT_EQ(factor4*factor0, factor4);
-    ASSERT_EQ(factor5/factor1, factor4);
-    ASSERT_EQ(factor6/factor2, factor4);
-
-    ASSERT_EQ(factor0*factor3, factor3);
-    ASSERT_EQ(factor1*factor2, factor3);
-    ASSERT_EQ(factor2*factor1, factor3);
-    ASSERT_EQ(factor3*factor0, factor3);
-    ASSERT_EQ(factor4/factor1, factor3);
-    ASSERT_EQ(factor5/factor2, factor3);
-    ASSERT_EQ(factor6/factor3, factor3);
-
-    ASSERT_EQ(factor0*factor2, factor2);
-    ASSERT_EQ(factor1*factor1, factor2);
-    ASSERT_EQ(factor2*factor0, factor2);
-    ASSERT_EQ(factor3/factor1, factor2);
-    ASSERT_EQ(factor4/factor2, factor2);
-    ASSERT_EQ(factor5/factor3, factor2);
-    ASSERT_EQ(factor6/factor4, factor2);
-
-    ASSERT_EQ(factor0*factor1, factor1);
-    ASSERT_EQ(factor1/factor0, factor1);
-    ASSERT_EQ(factor2/factor1, factor1);
-    ASSERT_EQ(factor3/factor2, factor1);
-    ASSERT_EQ(factor4/factor3, factor1);
-    ASSERT_EQ(factor5/factor4, factor1);
-    ASSERT_EQ(factor6/factor5, factor1);
-
-    ASSERT_EQ(factor0/factor0, factor0);
-    ASSERT_EQ(factor1/factor1, factor0);
-    ASSERT_EQ(factor2/factor2, factor0);
-    ASSERT_EQ(factor3/factor3, factor0);
-    ASSERT_EQ(factor4/factor4, factor0);
-    ASSERT_EQ(factor5/factor5, factor0);
-    ASSERT_EQ(factor6/factor6, factor0);
-}
+// boost::throw_exception
 
 #if defined(BOOST_NO_EXCEPTIONS)
 namespace boost {

@@ -10,21 +10,19 @@
 #if !defined(SG14_MULTIPRECISION_H)
 #define SG14_MULTIPRECISION_H 1
 
-#include <sg14/auxiliary/elastic.h>
+#include <sg14/fixed_point.h>
 
 #include <boost/multiprecision/cpp_int.hpp>
 
 namespace sg14 {
-    namespace _bmp {
-        using namespace boost::multiprecision;
-    }
+    namespace _bmp = boost::multiprecision;
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     // type trait specializations of boost::multiprecision types
     //
     // These are the definitions needed to use any custom integer type with
-    // sg14::fixed_point and sg14::elastic
+    // sg14::fixed_point
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::is_signed
@@ -147,7 +145,8 @@ namespace sg14 {
 
     // sg14::width<boost::multiprecision::cpp_int_backend<>>
     template<unsigned MinBits, unsigned MaxBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked>
-    struct width<_bmp::cpp_int_backend<MinBits, MaxBits, SignType, Checked>> : std::integral_constant<_width_type, MaxBits> {
+    struct width<_bmp::cpp_int_backend<MinBits, MaxBits, SignType, Checked>>
+            : std::integral_constant<_width_type, MaxBits> {
     };
 
     // sg14::width<boost::multiprecision::number<>>
