@@ -136,6 +136,23 @@ namespace sg14 {
 
         template<class OperationTag, class Lhs, class Rhs>
         using op_result = decltype(op_fn<OperationTag, Lhs, Rhs>(std::declval<Lhs>(), std::declval<Rhs>()));
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::make_signed - std::make_signed with IsSigned parameter
+
+        template<class T, bool IsSigned>
+        struct make_signed;
+
+        template<class T>
+        struct make_signed<T, true> : sg14::make_signed<T> {
+        };
+
+        template<class T>
+        struct make_signed<T, false> : sg14::make_unsigned<T> {
+        };
+
+        template<class T, bool IsSigned>
+        using make_signed_t = typename make_signed<T, IsSigned>::type;
     }
 }
 
