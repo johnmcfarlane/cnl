@@ -57,6 +57,102 @@ namespace sg14 {
                 bool,
                 std::numeric_limits<T>::is_integer || std::is_floating_point<T>::value> {
         };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        // operator helpers
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // operation tags
+
+        struct negate_tag;
+
+        struct add_tag;
+
+        struct subtract_tag;
+
+        struct multiply_tag;
+
+        struct divide_tag;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::op
+
+        template<class OperationTag, class ... Operands>
+        struct op;
+
+        template<class Rhs>
+        struct op<negate_tag, Rhs> {
+            constexpr auto operator()(const Rhs& rhs) const -> decltype(-rhs)
+            {
+                return -rhs;
+            }
+        };
+
+        template<class Lhs, class Rhs>
+        struct op<add_tag, Lhs, Rhs> {
+            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs+rhs)
+            {
+                return lhs+rhs;
+            }
+        };
+
+        template<class Lhs, class Rhs>
+        struct op<subtract_tag, Lhs, Rhs> {
+            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs-rhs)
+            {
+                return lhs-rhs;
+            }
+        };
+
+        template<class Lhs, class Rhs>
+        struct op<multiply_tag, Lhs, Rhs> {
+            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs*rhs)
+            {
+                return lhs*rhs;
+            }
+        };
+
+        template<class Lhs, class Rhs>
+        struct op<divide_tag, Lhs, Rhs> {
+            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs/rhs)
+            {
+                return lhs/rhs;
+            }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::rep_op_fn
+
+        template<class OperationTag, class Lhs, class Rhs>
+        constexpr auto op_fn(const Lhs& lhs, const Rhs& rhs)
+        -> decltype(op<OperationTag, Lhs, Rhs>()(lhs, rhs))
+        {
+            return op<OperationTag, Lhs, Rhs>()(lhs, rhs);
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::rep_op_result
+
+        template<class OperationTag, class Lhs, class Rhs>
+        using op_result = decltype(op_fn<OperationTag, Lhs, Rhs>(std::declval<Lhs>(), std::declval<Rhs>()));
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::make_signed - std::make_signed with IsSigned parameter
+
+        template<class T, bool IsSigned>
+        struct make_signed;
+
+        template<class T>
+        struct make_signed<T, true> : sg14::make_signed<T> {
+        };
+
+        template<class T>
+        struct make_signed<T, false> : sg14::make_unsigned<T> {
+        };
+
+        template<class T, bool IsSigned>
+        using make_signed_t = typename make_signed<T, IsSigned>::type;
     }
 }
 

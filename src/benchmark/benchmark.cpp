@@ -64,8 +64,8 @@ void clobber()
 template<typename T>
 static void add(benchmark::State& state)
 {
-    auto addend1 = numeric_limits<T>::max()/5;
-    auto addend2 = numeric_limits<T>::max()/3;
+    auto addend1 = static_cast<T>(numeric_limits<T>::max()/5);
+    auto addend2 = static_cast<T>(numeric_limits<T>::max()/3);
     while (state.KeepRunning()) {
         ESCAPE(addend1);
         ESCAPE(addend2);
@@ -77,8 +77,8 @@ static void add(benchmark::State& state)
 template<typename T>
 static void sub(benchmark::State& state)
 {
-    auto minuend = numeric_limits<T>::max()/5;
-    auto subtrahend = numeric_limits<T>::max()/3;
+    auto minuend = static_cast<T>(numeric_limits<T>::max()/5);
+    auto subtrahend = static_cast<T>(numeric_limits<T>::max()/3);
     while (state.KeepRunning()) {
         ESCAPE(minuend);
         ESCAPE(subtrahend);
@@ -103,8 +103,8 @@ static void mul(benchmark::State& state)
 template<typename T>
 static void div(benchmark::State& state)
 {
-    auto nume = numeric_limits<T>::max()/5;
-    auto denom = numeric_limits<T>::max()/3;
+    auto nume = static_cast<T>(numeric_limits<T>::max()/int8_t{5});
+    auto denom = static_cast<T>(numeric_limits<T>::max()/int8_t{3});
     while (state.KeepRunning()) {
         ESCAPE(nume);
         ESCAPE(denom);

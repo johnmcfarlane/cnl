@@ -34,6 +34,7 @@ ExternalProject_Get_Property(google_test binary_dir)
 
 add_executable(fp_test
         ${CMAKE_CURRENT_LIST_DIR}/elastic.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/elastic_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/index.cpp
         ${CMAKE_CURRENT_LIST_DIR}/main.cpp
         ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
