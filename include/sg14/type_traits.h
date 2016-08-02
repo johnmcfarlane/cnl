@@ -110,29 +110,38 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // first_fit
 
-        template<_width_type MinNumBits, class Family, class = void>
-        struct first_fit;
+        template<_width_type MinNumBits, class, class ... FamilyMembers>
+        struct first_fit_helper;
+
+        template<_width_type MinNumBits>
+        struct first_fit_helper<MinNumBits, void> {
+            using type = void;
+        };
 
         template<_width_type MinNumBits, class FamilyMembersHead, class ... FamilyMembersTail>
-        struct first_fit<
+        struct first_fit_helper<
                 MinNumBits,
-                std::tuple<FamilyMembersHead, FamilyMembersTail ...>,
-                typename std::enable_if<width<FamilyMembersHead>::value>=MinNumBits>::type> {
+                typename std::enable_if<width<FamilyMembersHead>::value>=MinNumBits>::type,
+                FamilyMembersHead, FamilyMembersTail ...> {
             using type = FamilyMembersHead;
         };
 
         template<_width_type MinNumBits, class FamilyMembersHead, class ... FamilyMembersTail>
-        struct first_fit<
+        struct first_fit_helper<
                 MinNumBits,
-                std::tuple<FamilyMembersHead, FamilyMembersTail ...>,
-                typename std::enable_if<width<FamilyMembersHead>::value<MinNumBits>::type> {
-            using _tail_base = first_fit<MinNumBits, std::tuple<FamilyMembersTail ...>>;
-            using _tail_type = typename _tail_base::type;
-        public:
-            using type = typename std::conditional<
-                    width<FamilyMembersHead>::value>=MinNumBits,
-                    FamilyMembersHead,
-                    _tail_type>::type;
+                typename std::enable_if<width<FamilyMembersHead>::value<MinNumBits>::type,
+                FamilyMembersHead, FamilyMembersTail ...> {
+            using _tail_base = first_fit_helper<MinNumBits, void, FamilyMembersTail ...>;
+            using type = typename _tail_base::type;
+        };
+
+        template<_width_type MinNumBits, class Family>
+        struct first_fit;
+
+        template<_width_type MinNumBits, class ... FamilyMembers>
+        struct first_fit<MinNumBits, std::tuple<FamilyMembers...>> {
+            using type = typename first_fit_helper<MinNumBits, void, FamilyMembers...>::type;
+            static_assert(!std::is_void<type>::value, "cannot find wide enough type");
         };
     }
 
