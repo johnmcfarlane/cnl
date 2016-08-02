@@ -46,17 +46,6 @@ namespace sg14 {
         /// the actual type used to store the value; closely related to Archetype but may be a different width
         using rep = set_width_t<Archetype, _rep_width>;
 
-    private:
-        // constructor taking representation explicitly using operator++(int)-style trick
-        constexpr elastic_integer(rep r, int)
-                :_r(r)
-        {
-        }
-
-    public:
-        /// default constructor
-        elastic_integer() = default;
-
         /// common copy constructor
         template<class S>
         explicit constexpr elastic_integer(S s)
@@ -95,7 +84,7 @@ namespace sg14 {
         /// creates an instance given the underlying representation value
         static constexpr elastic_integer from_data(rep r)
         {
-            return elastic_integer(r, 0);
+            return elastic_integer(r);
         }
 
     private:
