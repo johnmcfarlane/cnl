@@ -235,7 +235,7 @@ namespace std {
 
         static constexpr _value_type min() noexcept
         {
-            return _value_type::from_data(_rep{1});
+            return _value_type::from_data(sg14::_impl::min(_rep{1}, _rep_numeric_limits::max()));
         }
 
         static constexpr _value_type max() noexcept
