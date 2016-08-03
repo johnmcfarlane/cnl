@@ -5,13 +5,48 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief a sort of unity build; the following 8 files can be compiled separately for a marginal speed-up
+/// \brief tests sg14::elastic type with a variety of instantiations
 
-#include "elastic1.cpp"
-#include "elastic2.cpp"
-#include "elastic3.cpp"
-#include "elastic4.cpp"
-#include "elastic5.cpp"
-#include "elastic6.cpp"
-#include "elastic7.cpp"
-#include "elastic8.cpp"
+#include "elastic_common.h"
+
+template
+struct elastic_test_with_integer_digits<-43>;
+
+template
+struct elastic_test_with_integer_digits<-31>;
+
+template
+struct elastic_test_with_integer_digits<-19>;
+
+template
+struct elastic_test_with_integer_digits<-5>;
+
+template
+struct elastic_test_with_integer_digits<-1>;
+
+template
+struct elastic_test_with_integer_digits<0>;
+
+template
+struct elastic_test_with_integer_digits<1>;
+
+template
+struct elastic_test_with_integer_digits<2>;
+
+template
+struct elastic_test_with_integer_digits<5>;
+
+template
+struct elastic_test_with_integer_digits<8>;
+
+template
+struct elastic_test_with_integer_digits<13>;
+
+template
+struct elastic_test_with_integer_digits<16>;
+
+template
+struct elastic_test_with_integer_digits<19>;
+
+template
+struct elastic_test_with_integer_digits<31>;

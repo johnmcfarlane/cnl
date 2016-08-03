@@ -561,17 +561,14 @@ struct elastic_test_with_integer_digits
         : elastic_test<IntegerDigits, -IntegerDigits+1>
         , elastic_test<IntegerDigits, -IntegerDigits+2>
         , elastic_test<IntegerDigits, -IntegerDigits+3>
-        , elastic_test<IntegerDigits, -IntegerDigits+5>
         , elastic_test<IntegerDigits, -IntegerDigits+7>
         , elastic_test<IntegerDigits, -IntegerDigits+8>
         , elastic_test<IntegerDigits, -IntegerDigits+12>
         , elastic_test<IntegerDigits, -IntegerDigits+16>
-        , elastic_test<IntegerDigits, -IntegerDigits+21>
         , elastic_test<IntegerDigits, -IntegerDigits+27>
-        , elastic_test<IntegerDigits, -IntegerDigits+31>
 #if defined(SG14_INT128_ENABLED)
+        , elastic_test<IntegerDigits, -IntegerDigits+31>
         , elastic_test<IntegerDigits, -IntegerDigits+39>
-        , elastic_test<IntegerDigits, -IntegerDigits+44>
         , elastic_test<IntegerDigits, -IntegerDigits+55>
 #endif
         {
