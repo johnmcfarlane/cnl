@@ -345,7 +345,7 @@ namespace sg14 {
 
     template<int Digits, class Archetype, _width_type MinNumBits>
     struct set_width<elastic_integer<Digits, Archetype>, MinNumBits> {
-        using type = elastic_integer<MinNumBits, Archetype>;
+        using type = elastic_integer<MinNumBits - std::numeric_limits<Archetype>::is_signed, Archetype>;
     };
 }
 
