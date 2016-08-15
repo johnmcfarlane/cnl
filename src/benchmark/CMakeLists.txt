@@ -1,4 +1,8 @@
 cmake_minimum_required(VERSION 2.8.4)
+if (POLICY CMP0054)
+  cmake_policy(SET CMP0054 NEW)
+endif()
+
 include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
 
 ######################################################################
@@ -39,7 +43,7 @@ find_package(Threads REQUIRED)
 add_dependencies(fp_benchmark google_benchmark)
 ExternalProject_Get_Property(google_benchmark binary_dir)
 
-if (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
   target_link_libraries(
     fp_benchmark
     debug ${binary_dir}/src/Debug/${CMAKE_FIND_LIBRARY_PREFIXES}benchmark${CMAKE_FIND_LIBRARY_SUFFIXES}
