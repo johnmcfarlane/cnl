@@ -276,9 +276,10 @@ namespace sg14 {
     // unary operator-
     template<int RhsDigits, class RhsArchetype>
     constexpr auto operator-(const elastic_integer<RhsDigits, RhsArchetype>& rhs)
-    -> elastic_integer<RhsDigits, RhsArchetype>
+    -> elastic_integer<RhsDigits, typename sg14::make_signed<RhsArchetype>::type>
     {
-        return elastic_integer<RhsDigits, RhsArchetype>::from_data(-rhs.data());
+        using result_type = elastic_integer<RhsDigits, typename sg14::make_signed<RhsArchetype>::type>;
+        return result_type::from_data(-static_cast<result_type>(rhs).data());
     }
 
     // binary operator+

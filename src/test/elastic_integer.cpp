@@ -13,8 +13,11 @@ namespace {
     using std::is_same;
     using sg14::_width_type;
     using sg14::elastic_integer;
+    using sg14::_impl::identical;
     using sg14::is_signed;
     using sg14::is_unsigned;
+
+    static_assert(identical(-elastic_integer<1, unsigned>{1}, elastic_integer<1, signed>{-1}), "elastic_integer test failed");
 
     template<typename ElasticInteger, long long Lowest, long long Min, long long Max>
     struct elastic_integer_test {
