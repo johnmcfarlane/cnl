@@ -70,12 +70,14 @@ namespace sg14 {
         template<class Rep, int Exponent>
         constexpr inline fixed_point<Rep, Exponent> evaluate_polynomial(
                 fixed_point<Rep, Exponent> xf) {
+            using fp = fixed_point<Rep, Exponent>;
+
             //Use a polynomial min-max approximation to generate the exponential of
             //the fractional part. Note that the constant 1 of the polynomial is added later,
             //this gives us one more bit of precision here for free
-            using coeffs = poly_coeffs<fixed_point<Rep, Exponent>>;
-            return xf * (coeffs::a1 + xf * (coeffs::a2 + xf * (coeffs::a3 + xf * (coeffs::a4
-                            + xf * (coeffs::a5 + xf * (coeffs::a6 + xf * coeffs::a7))))));
+            using coeffs = poly_coeffs<fp>;
+            return fp{xf*(coeffs::a1+fp{xf*(coeffs::a2+fp{xf*(coeffs::a3+fp{xf*(coeffs::a4
+                    +fp{xf*(coeffs::a5+fp{xf*(coeffs::a6+fp{fp{coeffs::a7}*fp{xf}})})})})})})};
         }
 
         //Computes 2^x - 1 for a number x between 0 and 1, strictly less than 1
@@ -132,7 +134,7 @@ namespace sg14 {
                     typename im::rep{1}//return immediately if the shift would result in all bits being shifted out
                                      :
                     	//Do the shifts manually. Once the branch with shift operators is merged, could use those
-                    (exp2m1_0to1<Rep, Exponent>(x - floor(x)).data()//Calculate the exponent of the fractional part
+                    (exp2m1_0to1<Rep, Exponent>(static_cast<out_type>(x - floor(x))).data()//Calculate the exponent of the fractional part
                     >> (-im::exponent + Exponent - floor(x)))//shift it to the right place
                     + (Rep { 1 } << (floor(x) - Exponent))); //The constant term must be one, to make integer powers correct
     }
