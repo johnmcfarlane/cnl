@@ -31,7 +31,8 @@ void declaration_example()
     cout << x << endl;  // "3.5"
 
     // like an int, x has limited precision
-    cout << x/2 << endl;  // "1.5"
+    x /= 2;
+    cout << x << endl;  // "1.5"
 }
 //! [declaration example]
 
@@ -41,18 +42,18 @@ void declaration_example()
 void basic_arithmetic_example()
 {
     // define a constant signed value with 3 integer and 28 fractional bits (s3:28)
-    constexpr auto pi = fixed_point<int32_t, -28>{3.1415926535};
+    auto pi = fixed_point<int32_t, -28>{3.1415926535};
 
     // expressions involving integers return fixed_point results
-    constexpr auto tau = pi*2;
-    static_assert(is_same<decltype(tau), decltype(pi)>::value, "");
+    auto tau = pi*2;
+    static_assert(is_same<decltype(tau), fixed_point<int64_t, -28>>::value, "");
 
     // "6.28319"
     cout << tau << endl;
 
     // expressions involving floating-point values return floating-point results
-    constexpr auto degrees = tau*(180/3.1415926534);
-    static_assert(is_same<decltype(degrees), const double>::value, "");
+    auto degrees = tau*(180/3.1415926534);
+    static_assert(is_same<decltype(degrees), double>::value, "");
 
     // "360"
     cout << degrees << '\n';
@@ -72,16 +73,19 @@ void advanced_arithmetic_example()
     // 15.9375 * 15.9375 = 254.00390625 ... overflow!
     cout << fixed_point<uint8_t, -4>{x*x} << endl;  // "14" instead!
 
-    // by default, fixed-point follows similar promotion rules to native types
+    // fixed-point multiplication operator widens result
     auto xx = x*x;
 
-    // x * x has type fixed_point<int, -4>
-    static_assert(is_same<decltype(xx), fixed_point<int, -4>>::value, "");
-    cout << x*x << endl;  // "254" - better but not perfect
+    // x * x has type fixed_point<uint16_t, -8>
+    static_assert(is_same<decltype(xx), fixed_point<uint16_t, -8>>::value, "");
+    cout << setprecision(12) << xx << endl;  // "254.00390625" - correct
 
-    // for full control, use named functions:
-    cout << setprecision(12)
-            << multiply<fixed_point<uint16_t, -8>>(x, x) << endl;  // 254.00390625
+    // for maximum efficiency, use named functions:
+    auto named_xx = multiply(x, x);
+
+    // multiply result is same as underlying representation's operation
+    static_assert(is_same<decltype(named_xx), fixed_point<int, -8>>::value, "");
+    cout << named_xx << endl;  // "254.00390625" - also correct but prone to overflow
 }
 //! [advanced arithmetic example]
 
@@ -116,31 +120,37 @@ void boost_example()
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [elastic example]
-#include <sg14/auxiliary/elastic.h>
+#include <sg14/auxiliary/elastic_integer.h>
 
-void elastic_example()
+void elastic_example1()
 {
-    // this variable has 4 integer and 4 fractional digits
-    auto x = elastic<4, 4, unsigned>{15.9375};
-    cout << x << endl;  // "15.9375"
+    // Consider an integer type which keeps count of the bits that it uses.
+    auto a = elastic_integer<6, int8_t>{ 63 };
 
-    // unlike fixed_point, operations on elastic types often produce bigger types
-    auto xx = x*x;
-    static_assert(is_same<decltype(xx), elastic<8, 8, unsigned>>::value, "");
-    cout << xx << endl;  // "254.00390625"
+    // Results of its operations widen as required.
+    auto aa = a*a;
+    static_assert(is_same<decltype(aa), elastic_integer<12, int8_t >> ::value, "");
 
-    // the 'archetype' of x is unsigned which means it uses machine-efficient types
-    static_assert(sizeof(x) == sizeof(unsigned), "");
+    // Obviously, this type no longer fits in a byte.
+    static_assert(sizeof(aa)==2, "");
 
-    // if storage is the main concern, a different archetype can be used
-    auto compact_x = elastic<4, 4, uint8_t>(x);
-    static_assert(sizeof(compact_x) == sizeof(uint8_t), "");
-    cout << compact_x << endl;  // "15.9375"
+    // Addition requires smaller results
+    auto a2 = a+a;
+    static_assert(is_same<decltype(a2), elastic_integer<7, int8_t >> ::value, "");
+}
 
-    // but don't worry: it's a lower limit and storage still increases as required
-    auto compact_xx = elastic<8, 8, uint8_t>(xx);
-    static_assert(sizeof(compact_xx) == sizeof(uint16_t), "");
-    cout << compact_xx << endl;	 // "254.00390625"
+// Such a type can be used to specialize fixed_point.
+template<int IntegerDigits, int FractionalDigits, typename Archetype>
+using elastic = fixed_point<elastic_integer<IntegerDigits+FractionalDigits, Archetype>, -FractionalDigits>;
+
+void elastic_example2()
+{
+    // Now arithmetic operations are more efficient and less error-prone.
+    auto b = elastic<4, 28, unsigned>{15.9375};
+    auto bb = b*b;
+
+    cout << bb << endl;  // "254.00390625"
+    static_assert(is_same<decltype(bb), elastic<8, 56, unsigned>>::value, "");
 }
 //! [elastic example]
 
@@ -171,11 +181,12 @@ TEST(index, examples)
 {
     test_function(declaration_example, "7\n3.5\n1.5\n");
     test_function(basic_arithmetic_example, "6.28319\n360\n");
-    test_function(advanced_arithmetic_example, "14\n254\n254.00390625\n");
+    test_function(advanced_arithmetic_example, "14\n254.00390625\n254.00390625\n");
 
 #if defined(SG14_BOOST_ENABLED)
     test_function(boost_example, "1e+100\n1e-100\n");
 #endif
 
-    test_function(elastic_example, "15.9375\n254.00390625\n15.9375\n254.00390625\n");
+    test_function(elastic_example1, "");
+    test_function(elastic_example2, "254.00390625\n");
 }
