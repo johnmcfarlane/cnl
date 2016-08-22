@@ -267,9 +267,9 @@ namespace sg14 {
         {
             using result_type = typename operate_params<OperationTag, Lhs, Rhs>::result_type;
             return result_type::from_data(
-                    _impl::op_fn<OperationTag>(
+                    static_cast<typename result_type::rep>(_impl::op_fn<OperationTag>(
                             static_cast<result_type>(lhs).data(),
-                            static_cast<result_type>(rhs).data()));
+                            static_cast<result_type>(rhs).data())));
         };
     }
 
