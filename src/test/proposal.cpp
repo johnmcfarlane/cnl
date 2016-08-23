@@ -81,9 +81,7 @@ TEST(proposal, named_arithmetic2)
     auto p = multiply(f, f);
 
     static_assert(is_same<decltype(p), fixed_point<unsigned, -56>>::value, "Incorrect formation in proposal section, Named Arithmetic Functions");
-#if ! defined(_MSC_VER)
-    ASSERT_EQ(p, 0);
-#endif
+    ASSERT_FALSE(p);
 }
 
 TEST(proposal, named_arithmetic3)
