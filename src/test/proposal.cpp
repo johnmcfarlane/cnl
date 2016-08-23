@@ -8,6 +8,8 @@
 
 #include <gtest/gtest.h>
 
+#include <type_traits>
+
 using sg14::fixed_point;
 using sg14::make_fixed;
 using sg14::make_ufixed;
@@ -39,7 +41,7 @@ static_assert(make_ufixed<4, 4>{.006}==make_ufixed<4, 4>{0}, "Incorrect informat
 // Operator Overloads
 
 static_assert(identical(fixed_point<uint8_t, -3>{8} + fixed_point<int8_t, -4>{3}, fixed_point<int, -4>{11}), "Incorrect information in P0037 section, Operator Overloads");
-static_assert(identical(fixed_point<uint8_t, -3>{8} + 3, fixed_point<int, -3>{11}), "Incorrect information in P0037 section, Operator Overloads");
+static_assert(identical(fixed_point<uint8_t, -3>{8} + 3, fixed_point<int64_t, -3>{11}), "Incorrect information in P0037 section, Operator Overloads");
 static_assert(identical(fixed_point<uint8_t, -3>{8} + float{3}, float{11}), "Incorrect information in P0037 section, Operator Overloads");
 
 // Overflow
@@ -61,34 +63,34 @@ TEST(proposal, overflow) {
 }
 
 // Underflow
-static_assert(make_fixed<7, 0>(15)/make_fixed<7, 0>(2)==7.f, "Incorrect information in proposal section, Underflow");
+static_assert(identical(make_fixed<7, 0>(15)/make_fixed<7, 0>(2), fixed_point<int, -7>(7.5f)),
+        "Incorrect information in proposal section, Underflow");
 
 // Named Arithmetic Functions
 TEST(proposal, named_arithmetic1)
 {
-    auto f = make_ufixed<4, 4>{15.9375};
-    auto p = multiply<make_ufixed<8, 8>>(f, f);
+    constexpr auto f = fixed_point<uint8_t, -4>{15.9375};
+    constexpr auto p = multiply(f, f);
 
-    static_assert(is_same<decltype(p), make_ufixed<8, 8>>::value, "Incorrect formation in proposal section, Named Arithmetic Functions");
-    ASSERT_EQ(p, 254.00390625);
+    static_assert(identical(p, fixed_point<int, -8>{254.00390625}), "Incorrect formation in proposal section, Named Arithmetic Functions");
 }
 
 TEST(proposal, named_arithmetic2)
 {
-    auto f = make_ufixed<4, 4>{15.9375};
-    auto p = multiply<make_ufixed<4, 4>>(f, f);
+    auto f = fixed_point<unsigned, -28>{15.9375};
+    auto p = multiply(f, f);
 
-    static_assert(is_same<decltype(p), make_ufixed<4, 4>>::value, "Incorrect formation in proposal section, Named Arithmetic Functions");
-    ASSERT_EQ(p, 14.00000000);
+    static_assert(is_same<decltype(p), fixed_point<unsigned, -56>>::value, "Incorrect formation in proposal section, Named Arithmetic Functions");
+    ASSERT_FALSE(p);
 }
 
 TEST(proposal, named_arithmetic3)
 {
-    auto f = make_ufixed<4, 4>{15.9375};
-    auto p = f * f;
+    constexpr auto f = fixed_point<unsigned, -28>{15.9375};
+    constexpr auto p = f * f;
 
-    static_assert(is_same<decltype(p), make_fixed<27, 4>>::value, "Incorrect formation in proposal section, Named Arithmetic Functions");
-    ASSERT_EQ(p, 254.00000000);
+    static_assert(identical(p, fixed_point<uint64_t, -56>{254.00390625}),
+            "Incorrect formation in proposal section, Named Arithmetic Functions");
 }
 
 // The `width` Helper Type
@@ -107,12 +109,18 @@ constexpr auto magnitude(Fp x, Fp y, Fp z)
 
 TEST(proposal, examples)
 {
-    auto m = magnitude(
-            make_ufixed<4, 12>(1),
-            make_ufixed<4, 12>(4),
-            make_ufixed<4, 12>(9));
-    static_assert(is_same<decltype(m), make_fixed<19, 12>>::value, "Incorrect formation in proposal section, Examples");
-    ASSERT_EQ(m, 9.8994140625);
+    constexpr auto m = magnitude(
+            fixed_point<uint16_t, -12>(1),
+            fixed_point<uint16_t, -12>(4),
+            fixed_point<uint16_t, -12>(9));
+#if defined(_MSC_VER)
+    static_assert(std::is_same<decltype(m), const sg14::fixed_point<uint32_t, -24>> ::value, "Incorrect formation in proposal section, Examples");
+    constexpr auto expected = fixed_point<uint32_t, -24>{ 9.8994948863983154 };
+    ASSERT_EQ(expected, m);
+#else
+    static_assert(identical(m, fixed_point<uint32_t, -24>{9.8994948863983154}),
+            "Incorrect formation in proposal section, Examples");
+#endif
 }
 
 TEST(proposal, zero)

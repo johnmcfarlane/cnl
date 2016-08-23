@@ -45,7 +45,7 @@ namespace sg14 {
 #define SG14_INTEGER_COMPARISON_DEFINE(OP) \
     template <class Lhs, class Rhs> \
     constexpr auto operator OP (const Lhs& lhs, const Rhs& rhs) \
-    -> typename std::enable_if<sg14::_integer_impl::is_integer_class_operation<Lhs, Rhs>::value, bool>::type { \
+    -> typename std::enable_if<sg14::_integer_impl::are_integer_class_operands<Lhs, Rhs>::value, bool>::type { \
         using common_type = typename std::common_type<Lhs, Rhs>::type; \
         return static_cast<common_type>(lhs).data() OP static_cast<common_type>(rhs).data(); }
 
@@ -128,11 +128,11 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_integer_impl::is_integer_class_operation - basically identifies
+        // sg14::_integer_impl::are_integer_class_operands - basically identifies
         // operands that should go into a function defined here; filters out fixed-point
 
         template<class Lhs, class Rhs>
-        struct is_integer_class_operation {
+        struct are_integer_class_operands {
             static constexpr int integer_class = is_integer_class<Lhs>::value + is_integer_class<Rhs>::value;
             static constexpr int integer_or_float = _impl::is_integer_or_float<Lhs>::value + _impl::is_integer_or_float<Rhs>::value;
             static constexpr bool value = (integer_class >= 1) && (integer_or_float == 2);

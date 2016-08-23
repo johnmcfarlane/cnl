@@ -267,18 +267,19 @@ namespace sg14 {
         {
             using result_type = typename operate_params<OperationTag, Lhs, Rhs>::result_type;
             return result_type::from_data(
-                    _impl::op_fn<OperationTag>(
+                    static_cast<typename result_type::rep>(_impl::op_fn<OperationTag>(
                             static_cast<result_type>(lhs).data(),
-                            static_cast<result_type>(rhs).data()));
+                            static_cast<result_type>(rhs).data())));
         };
     }
 
     // unary operator-
     template<int RhsDigits, class RhsArchetype>
     constexpr auto operator-(const elastic_integer<RhsDigits, RhsArchetype>& rhs)
-    -> elastic_integer<RhsDigits, RhsArchetype>
+    -> elastic_integer<RhsDigits, typename sg14::make_signed<RhsArchetype>::type>
     {
-        return elastic_integer<RhsDigits, RhsArchetype>::from_data(-rhs.data());
+        using result_type = elastic_integer<RhsDigits, typename sg14::make_signed<RhsArchetype>::type>;
+        return result_type::from_data(-static_cast<result_type>(rhs).data());
     }
 
     // binary operator+
@@ -345,7 +346,7 @@ namespace sg14 {
 
     template<int Digits, class Archetype, _width_type MinNumBits>
     struct set_width<elastic_integer<Digits, Archetype>, MinNumBits> {
-        using type = elastic_integer<MinNumBits, Archetype>;
+        using type = elastic_integer<MinNumBits - std::numeric_limits<Archetype>::is_signed, Archetype>;
     };
 }
 

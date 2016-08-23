@@ -90,8 +90,8 @@ static void sub(benchmark::State& state)
 template<typename T>
 static void mul(benchmark::State& state)
 {
-    auto factor1 = numeric_limits<T>::max()/5;
-    auto factor2 = numeric_limits<T>::max()/3;
+    auto factor1 = static_cast<T>(numeric_limits<T>::max()/int8_t{5});
+    auto factor2 = static_cast<T>(numeric_limits<T>::max()/int8_t{3});
     while (state.KeepRunning()) {
         ESCAPE(factor1);
         ESCAPE(factor2);
@@ -116,7 +116,7 @@ static void div(benchmark::State& state)
 template<typename T>
 static void bm_sqrt(benchmark::State& state)
 {
-    auto input = numeric_limits<T>::max()/5;
+    auto input = static_cast<T>(numeric_limits<T>::max()/int8_t{5});
     while (state.KeepRunning()) {
         ESCAPE(input);
         auto output = sqrt(input);
