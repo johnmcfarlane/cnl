@@ -1,0 +1,23 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{cpp,h}]
+indent_size = 4
+
+[{CMakeLists.txt,*.cmake}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.py]
+indent_size = 4
