@@ -13,24 +13,39 @@ env:
 - BUILD_TYPE=Debug CPP14=ON EXCEPTIONS=OFF INT128=ON
 - BUILD_TYPE=Debug CPP14=ON EXCEPTIONS=ON INT128=OFF
 
+os:
+- osx
+- linux
+
 compiler:
 - gcc
 - clang
 
 matrix:
   exclude:
-    - compiler: clang
+    - os: linux
+      compiler: clang
       env: BUILD_TYPE=Release CPP14=ON EXCEPTIONS=OFF INT128=ON
-    - compiler: clang
+    - os: linux
+      compiler: clang
       env: BUILD_TYPE=Release CPP14=ON EXCEPTIONS=ON INT128=OFF
-    - compiler: clang
+    - os: linux
+      compiler: clang
       env: BUILD_TYPE=Debug CPP14=ON EXCEPTIONS=OFF INT128=ON
-    - compiler: clang
+    - os: linux
+      compiler: clang
       env: BUILD_TYPE=Debug CPP14=ON EXCEPTIONS=ON INT128=OFF
+    - os: osx
+      env: BUILD_TYPE=Release CPP14=OFF EXCEPTIONS=OFF INT128=ON
+    - os: osx
+      env: BUILD_TYPE=Release CPP14=ON EXCEPTIONS=OFF INT128=ON
+    - os: osx
+      env: BUILD_TYPE=Debug CPP14=OFF EXCEPTIONS=OFF INT128=ON
+    - os: osx
+      env: BUILD_TYPE=Debug CPP14=ON EXCEPTIONS=OFF INT128=ON
 
-
-before_script:
-    - source .travis-setup.sh
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source .travis-setup-linux.sh ; fi
 
 script:
     - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCPP14="${CPP14}" -DEXCEPTIONS="${EXCEPTIONS}" -DINT128="${INT128}"

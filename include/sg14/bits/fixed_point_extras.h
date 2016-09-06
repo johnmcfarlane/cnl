@@ -250,8 +250,8 @@ namespace std {
 
         static constexpr int digits = _rep_numeric_limits::digits;
 
-        //static constexpr int digits10 = ?;
-        //static constexpr int max_digits10 = ?;
+        static constexpr int digits10 = _rep_numeric_limits::digits10;
+        static constexpr int max_digits10 = _rep_numeric_limits::max_digits10;
 
         static constexpr bool is_signed = _rep_numeric_limits::is_signed;
         static constexpr bool is_integer = false;
@@ -277,8 +277,8 @@ namespace std {
         static constexpr int min_exponent = _value_type::exponent;
         static constexpr int max_exponent = _value_type::exponent;
 
-        //static constexpr int min_exponent10 = ?;
-        //static constexpr int max_exponent10 = ?;
+        static constexpr int min_exponent10 = _rep_numeric_limits::min_exponent10;
+        static constexpr int max_exponent10 = _rep_numeric_limits::max_exponent10;
 
         static constexpr bool has_infinity = false;
         static constexpr bool has_quiet_NaN = false;
