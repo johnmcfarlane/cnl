@@ -25,7 +25,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
   set(MISC_FLAGS "-pthread -Wall -Wextra -Wfatal-errors -Werror")
 
-  set(CPP14_ENABLED_FLAGS "-std=c++14")
+  set(CPP14_ENABLED_FLAGS "-std=c++1y")
   set(CPP14_DISABLED_FLAGS "-std=c++11")
 
   set(EXCEPTION_ENABLED_FLAGS "-fexceptions -frtti")

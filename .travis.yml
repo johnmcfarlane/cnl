@@ -3,28 +3,37 @@ sudo: required
 
 language: cpp
 
-# NOTE: The COMPILER variable is unused. It simply makes the display on
-# travis-ci.org more readable.
+env:
+- BUILD_TYPE=Release CPP14=OFF EXCEPTIONS=OFF INT128=ON
+- BUILD_TYPE=Release CPP14=OFF EXCEPTIONS=ON INT128=OFF
+- BUILD_TYPE=Release CPP14=ON EXCEPTIONS=OFF INT128=ON
+- BUILD_TYPE=Release CPP14=ON EXCEPTIONS=ON INT128=OFF
+- BUILD_TYPE=Debug CPP14=OFF EXCEPTIONS=OFF INT128=ON
+- BUILD_TYPE=Debug CPP14=OFF EXCEPTIONS=ON INT128=OFF
+- BUILD_TYPE=Debug CPP14=ON EXCEPTIONS=OFF INT128=ON
+- BUILD_TYPE=Debug CPP14=ON EXCEPTIONS=ON INT128=OFF
+
+compiler:
+- gcc
+- clang
+
 matrix:
-    include:
-        - compiler: gcc
-          env: COMPILER=g++ BUILD_TYPE=Release EXCEPTIONS=ON
-        - compiler: gcc
-          env: COMPILER=g++ BUILD_TYPE=Release EXCEPTIONS=OFF
-        - compiler: clang
-          env: COMPILER=clang++ BUILD_TYPE=Release  EXCEPTIONS=ON
-        - compiler: clang
-          env: COMPILER=clang++ BUILD_TYPE=Release  EXCEPTIONS=OFF
-        - compiler: gcc
-          env: COMPILER=g++ BUILD_TYPE=Debug EXCEPTIONS=ON
-        - compiler: clang
-          env: COMPILER=clang++ BUILD_TYPE=Debug EXCEPTIONS=ON
+  exclude:
+    - compiler: clang
+      env: BUILD_TYPE=Release CPP14=ON EXCEPTIONS=OFF INT128=ON
+    - compiler: clang
+      env: BUILD_TYPE=Release CPP14=ON EXCEPTIONS=ON INT128=OFF
+    - compiler: clang
+      env: BUILD_TYPE=Debug CPP14=ON EXCEPTIONS=OFF INT128=ON
+    - compiler: clang
+      env: BUILD_TYPE=Debug CPP14=ON EXCEPTIONS=ON INT128=OFF
+
 
 before_script:
     - source .travis-setup.sh
 
 script:
-    - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DEXCEPTIONS="${EXCEPTIONS}"
+    - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCPP14="${CPP14}" -DEXCEPTIONS="${EXCEPTIONS}" -DINT128="${INT128}"
     - make fp_test fp_benchmark
     - ./fp_test
     - ./fp_benchmark --benchmark_format=csv>result.csv
