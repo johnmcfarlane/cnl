@@ -11,26 +11,7 @@
 
 #include <stdexcept>
 
-////////////////////////////////////////////////////////////////////////////////
-// SG14_INTEGER_EXCEPTIONS_ENABLED macro definition 
-
-#if defined(SG14_INTEGER_EXCEPTIONS_ENABLED)
-#error SG14_INTEGER_EXCEPTIONS_ENABLED already defined
-#endif
-
-#if defined(_MSC_VER)
-#if defined(_CPPUNWIND)
-#define SG14_INTEGER_EXCEPTIONS_ENABLED
-#endif
-#elif defined(__clang__) || defined(__GNUG__)
-#if defined(__EXCEPTIONS)
-#define SG14_INTEGER_EXCEPTIONS_ENABLED
-#endif
-#else
-#define SG14_INTEGER_EXCEPTIONS_ENABLED
-#endif
-
-#if defined(SG14_INTEGER_EXCEPTIONS_ENABLED)
+#if defined(SG14_EXCEPTIONS_ENABLED)
 
 #include <stdexcept>
 
@@ -236,7 +217,7 @@ namespace sg14 {
         }
     };
 
-#if defined(SG14_INTEGER_EXCEPTIONS_ENABLED)
+#if defined(SG14_EXCEPTIONS_ENABLED)
 
     struct throwing_overflow_policy {
         template<typename Lhs, typename Rhs>
