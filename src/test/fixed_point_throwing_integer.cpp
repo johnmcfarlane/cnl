@@ -7,7 +7,7 @@
 #include "sg14/auxiliary/integer.h"
 #include <sg14/fixed_point.h>
 
-#if defined(SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
+#if defined(SG14_EXCEPTIONS_ENABLED)
 #define TEST_THROWING_OVERFLOW
 #define TEST_LABEL throwing_integer_
 #else

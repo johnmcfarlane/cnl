@@ -84,7 +84,7 @@ namespace sg14 {
     {
         using widened_type = fixed_point<set_width_t<Rep, width<Rep>::value*2>, Exponent*2>;
         return
-#if defined(SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
+#if defined(SG14_EXCEPTIONS_ENABLED)
                 (x<fixed_point<Rep, Exponent>(0))
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
 #endif
