@@ -1,16 +1,13 @@
 # cmake
-build
 CMakeCache.txt
 CMakeFiles
 Makefile
 cmake_install.cmake
-google_benchmark-prefix/
-google_test-prefix/
 fp_benchmark
 fp_test
-
-# doxygen
-doc/html
+google_benchmark-prefix/
+google_test-prefix/
+libfixed_point.a
 
 # perf
 perf.data*
