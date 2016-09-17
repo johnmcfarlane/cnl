@@ -13,6 +13,7 @@
 #include <sg14/fixed_point.h>
 #include <type_traits>
 
+/// study group 14 of the C++ working group
 namespace sg14 {
 
     namespace _fixed_point_impl {
