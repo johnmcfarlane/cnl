@@ -23,7 +23,7 @@ TEST(math, FPTESTFORMAT) {
 
     //Test negative integer powers (which are representable in the format)
 #if (FPTESTEXP < 0)
-    for (int i = std::max(-fp::fractional_digits, -(sg14::_fixed_point_impl::shift_left<fp::integer_digits, int32_t>(1)) + 1); i < std::min(0, fp::integer_digits - 1); i++) {
+    for (int i = std::max(-fp::fractional_digits, -(sg14::_impl::shift_left<fp::integer_digits, int32_t>(1)) + 1); i < std::min(0, fp::integer_digits - 1); i++) {
         fp lhs{ exp2(fp{ i }) };
         EXPECT_EQ(lhs, fp::from_data(1 << (-fp::exponent + i)))
             << "i = " << i << ", fixed point raw: " << lhs.data() << " should be: " << (1 << (-fp::exponent + i))

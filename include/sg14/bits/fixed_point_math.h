@@ -114,6 +114,7 @@ namespace sg14 {
     } // namespace _fixed_point_impl
 
     /// Calculates exp2(x), i.e. 2^x
+    /// \headerfile sg14/fixed_point.h
     ///
     /// Accurate to 1LSB for up to 32 bit underlying representation.
     ///

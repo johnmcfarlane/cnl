@@ -52,13 +52,12 @@ using uint128 = sg14::set_width_t<test_unsigned, 128>;
 ////////////////////////////////////////////////////////////////////////////////
 // imports from sg14
 
-namespace _impl {
-    // namespace injection avoids noisy change following renaming of internal namespace
-    using namespace sg14::_fixed_point_impl;
-}
-
 template <typename Rep=test_int, int Exponent=0>
 using fixed_point = sg14::fixed_point<Rep, Exponent>;
+
+using sg14::_impl::shift_left;
+using sg14::_impl::shift_right;
+using sg14::_fixed_point_def_impl::pow2;
 
 template<int IntegerDigits, int FractionalDigits = 0, class Archetype = test_signed>
 using make_fixed = sg14::make_fixed<IntegerDigits, FractionalDigits, Archetype>;
@@ -172,73 +171,61 @@ static_assert(is_same<decltype(uint8(0)+uint8(0)), test_int>::value, "incorrect 
 // sg14::_impl
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_impl::next_size
-
-static_assert(is_same<_impl::next_size<int8>, int16>::value, "sg14::_impl::next_size text failed");
-static_assert(is_same<_impl::next_size<uint32>, uint64>::value, "sg14::_impl::next_size text failed");
-
-////////////////////////////////////////////////////////////////////////////////
-// sg14::_impl::previous_size
-
-static_assert(is_same<_impl::previous_size<int64>, int32>::value, "sg14::_impl::previous_size text failed");
-static_assert(is_same<_impl::previous_size<uint16>, uint8>::value, "sg14::_impl::previous_size text failed");
-
-////////////////////////////////////////////////////////////////////////////////
-// sg14::_impl::shift_left/right positive RHS
+// sg14::_fixed_point_def_impl::shift_left/right positive RHS
 
 #if defined(_MSC_VER)
 #pragma warning(push)
 #pragma warning(disable: 4310)
 #endif
 
-static_assert(_impl::shift_left<1, int8>(uint8(0))==0, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<1, int8>(int8(0))==0, "sg14::_impl::shift_left test failed");
+static_assert(shift_left<1, int8>(uint8(0))==0, "sg14::shift_left test failed");
+static_assert(shift_left<1, int8>(int8(0))==0, "sg14::shift_left test failed");
 
 #if defined(TEST_NATIVE_OVERFLOW)
-static_assert(_impl::shift_left<8, uint16>((uint16) 0x1234)==0x3400, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<8, uint16>((uint8) 0x1234)==0x3400, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<8, uint8>((uint16) 0x1234)==0x0, "sg14::_impl::shift_left test failed");
+static_assert(shift_left<8, uint16>((uint16) 0x1234)==0x3400, "sg14::shift_left test failed");
+static_assert(shift_left<8, uint16>((uint8) 0x1234)==0x3400, "sg14::shift_left test failed");
+static_assert(shift_left<8, uint8>((uint16) 0x1234)==0x0, "sg14::shift_left test failed");
 #endif
 
 #if defined(TEST_SATURATED_OVERFLOW)
-static_assert(_impl::shift_left<8, uint16>((uint16)0x1234) == 0xffff, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<8, uint16>((uint8)0x1234) == 0xff00, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<8, uint8>((uint16)0x1234) == 0xff, "sg14::_impl::shift_left test failed");
+static_assert(shift_left<8, uint16>((uint16)0x1234) == 0xffff, "sg14::shift_left test failed");
+static_assert(shift_left<8, uint16>((uint8)0x1234) == 0xff00, "sg14::shift_left test failed");
+static_assert(shift_left<8, uint8>((uint16)0x1234) == 0xff, "sg14::shift_left test failed");
 #endif
 
-static_assert(_impl::shift_left<8, int16>(-123)==-31488, "sg14::_impl::shift_left test failed");
+static_assert(shift_left<8, int16>(-123)==-31488, "sg14::shift_left test failed");
 
-static_assert(_impl::shift_right<8, uint16>((uint16) 0x1234)==0x12, "sg14::_impl::shift_right test failed");
-static_assert(_impl::shift_right<8, uint8>((uint16) 0x1234)==0x12, "sg14::_impl::shift_right test failed");
-static_assert(_impl::shift_right<8, int16>(-31488)==-123, "sg14::_impl::shift_right test failed");
+static_assert(shift_right<8, uint16>((uint16) 0x1234)==0x12, "sg14::shift_right test failed");
+static_assert(shift_right<8, uint8>((uint16) 0x1234)==0x12, "sg14::shift_right test failed");
+static_assert(shift_right<8, int16>(-31488)==-123, "sg14::shift_right test failed");
 
 #if !defined(TEST_THROWING_OVERFLOW)
-static_assert(_impl::shift_right<8, uint16>((uint8) 0x1234)==0x0, "sg14::_impl::shift_right test failed");
+static_assert(shift_right<8, uint16>((uint8) 0x1234)==0x0, "sg14::shift_right test failed");
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_impl::shift_left/right negative RHS
+// sg14::_fixed_point_def_impl::shift_left/right negative RHS
 
 #if defined(TEST_NATIVE_OVERFLOW)
-static_assert(_impl::shift_right<-8, uint16>((uint16) 0x1234)==0x3400, "sg14::_impl::shift_right test failed");
-static_assert(_impl::shift_right<-8, uint16>((uint8) 0x1234)==0x3400, "sg14::_impl::shift_right test failed");
-static_assert(_impl::shift_right<-8, uint8>((uint16) 0x1234)==0x0, "sg14::_impl::shift_right test failed");
+static_assert(shift_right<-8, uint16>((uint16) 0x1234)==0x3400, "sg14::shift_right test failed");
+static_assert(shift_right<-8, uint16>((uint8) 0x1234)==0x3400, "sg14::shift_right test failed");
+static_assert(shift_right<-8, uint8>((uint16) 0x1234)==0x0, "sg14::shift_right test failed");
 #endif
 
 #if defined(TEST_SATURATED_OVERFLOW)
-static_assert(_impl::shift_right<-8, uint16>((uint16)0x1234) == 0xffff, "sg14::_impl::shift_right test failed");
-static_assert(_impl::shift_right<-8, uint16>((uint8)0x1234) == 0xff00, "sg14::_impl::shift_right test failed");
-static_assert(_impl::shift_right<-8, uint8>((uint16)0x1234) == 0xff, "sg14::_impl::shift_right test failed");
+static_assert(shift_right<-8, uint16>((uint16)0x1234) == 0xffff, "sg14::shift_right test failed");
+static_assert(shift_right<-8, uint16>((uint8)0x1234) == 0xff00, "sg14::shift_right test failed");
+static_assert(shift_right<-8, uint8>((uint16)0x1234) == 0xff, "sg14::shift_right test failed");
 #endif
 
-static_assert(_impl::shift_right<-8, int16>(-123)==-31488, "sg14::_impl::shift_right test failed");
+static_assert(shift_right<-8, int16>(-123)==-31488, "sg14::shift_right test failed");
 
-static_assert(_impl::shift_left<-8, uint16>((uint16) 0x1234)==0x12, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<-8, uint8>((uint16) 0x1234)==0x12, "sg14::_impl::shift_left test failed");
-static_assert(_impl::shift_left<-8, int16>(-31488)==-123, "sg14::_impl::shift_left test failed");
+static_assert(shift_left<-8, uint16>((uint16) 0x1234)==0x12, "sg14::shift_left test failed");
+static_assert(shift_left<-8, uint8>((uint16) 0x1234)==0x12, "sg14::shift_left test failed");
+static_assert(shift_left<-8, int16>(-31488)==-123, "sg14::shift_left test failed");
 
 #if !defined(TEST_THROWING_OVERFLOW)
-static_assert(_impl::shift_left<-8, uint16>((uint8) 0x1234)==0x0, "sg14::_impl::shift_left test failed");
+static_assert(shift_left<-8, uint16>((uint8) 0x1234)==0x0, "sg14::shift_left test failed");
 #endif
 
 #if defined(_MSC_VER)
@@ -246,28 +233,15 @@ static_assert(_impl::shift_left<-8, uint16>((uint8) 0x1234)==0x0, "sg14::_impl::
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_impl::pow2
+// sg14::_fixed_point_def_impl::pow2
 
-static_assert(_impl::pow2<float, 0>()==1, "sg14::_impl::pow2 test failed");
-static_assert(_impl::pow2<double, -1>()==.5, "sg14::_impl::pow2 test failed");
-static_assert(_impl::pow2<long double, 1>()==2, "sg14::_impl::pow2 test failed");
-static_assert(_impl::pow2<float, -3>()==.125, "sg14::_impl::pow2 test failed");
-static_assert(_impl::pow2<double, 7>()==128, "sg14::_impl::pow2 test failed");
-static_assert(_impl::pow2<long double, 10>()==1024, "sg14::_impl::pow2 test failed");
-static_assert(_impl::pow2<float, 20>()==1048576, "sg14::_impl::pow2 test failed");
-
-////////////////////////////////////////////////////////////////////////////////
-// sg14::_impl::capacity
-
-static_assert(_impl::capacity<0>::value==0, "sg14::_impl::capacity test failed");
-static_assert(_impl::capacity<1>::value==1, "sg14::_impl::capacity test failed");
-static_assert(_impl::capacity<2>::value==2, "sg14::_impl::capacity test failed");
-static_assert(_impl::capacity<3>::value==2, "sg14::_impl::capacity test failed");
-static_assert(_impl::capacity<4>::value==3, "sg14::_impl::capacity test failed");
-static_assert(_impl::capacity<7>::value==3, "sg14::_impl::capacity test failed");
-static_assert(_impl::capacity<8>::value==4, "sg14::_impl::capacity test failed");
-static_assert(_impl::capacity<15>::value==4, "sg14::_impl::capacity test failed");
-static_assert(_impl::capacity<16>::value==5, "sg14::_impl::capacity test failed");
+static_assert(pow2<float, 0>()==1, "sg14::_fixed_point_def_impl::pow2 test failed");
+static_assert(pow2<double, -1>()==.5, "sg14::_fixed_point_def_impl::pow2 test failed");
+static_assert(pow2<long double, 1>()==2, "sg14::_fixed_point_def_impl::pow2 test failed");
+static_assert(pow2<float, -3>()==.125, "sg14::_fixed_point_def_impl::pow2 test failed");
+static_assert(pow2<double, 7>()==128, "sg14::_fixed_point_def_impl::pow2 test failed");
+static_assert(pow2<long double, 10>()==1024, "sg14::_fixed_point_def_impl::pow2 test failed");
+static_assert(pow2<float, 20>()==1048576, "sg14::_fixed_point_def_impl::pow2 test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -330,6 +304,7 @@ static_assert(is_same<fixed_point<uint64>, fixed_point<uint64, 0>>::value, "sg14
 ////////////////////////////////////////////////////////////////////////////////
 // default first template parameter
 
+static_assert(identical(fixed_point<test_int, 0>{0}, fixed_point<>{0}), "sg14::fixed_point test failed");
 static_assert(is_same<fixed_point<test_int, 0>, fixed_point<>>::value, "sg14::fixed_point test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -489,13 +464,13 @@ namespace test_operate {
     using sg14::_impl::multiply_tag;
     using sg14::_impl::divide_tag;
 
-    using sg14::_fixed_point_impl::wide_tag;
-    using sg14::_fixed_point_impl::lean_tag;
+    using sg14::_fixed_point_named_impl::wide_tag;
+    using sg14::_fixed_point_named_impl::lean_tag;
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::_fixed_point_impl::rep_op_exponent
 
-    using sg14::_fixed_point_impl::rep_op_exponent;
+    using sg14::_fixed_point_named_impl::rep_op_exponent;
 
     static_assert(rep_op_exponent<multiply_tag, make_ufixed<4, 4>, make_ufixed<4, 4>>::value==-8,
             "sg14::_fixed_point_impl::rep_op_exponent test failed");
@@ -505,23 +480,23 @@ namespace test_operate {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::_fixed_point_impl::result
 
-    using sg14::_fixed_point_impl::result;
+    using sg14::_fixed_point_named_impl::result;
 
-    // sg14::_fixed_point_impl::result::type
+    // sg14::_fixed_point_named_impl::result::type
     static_assert(identical(
             result<lean_tag, add_tag, fixed_point<test_int, 0>, fixed_point<uint8, 10>>::type{12288},
-            fixed_point<test_int, 0>{12288}), "sg14::_fixed_point_impl::result test failed");
+            fixed_point<test_int, 0>{12288}), "sg14::_fixed_point_named_impl::result test failed");
 
     static_assert(identical(
             result<wide_tag, multiply_tag, make_ufixed<4, 4>, make_ufixed<4, 4>>::type{0},
-            make_ufixed<8, 8>{0}), "sg14::_fixed_point_impl::result test failed");
+            make_ufixed<8, 8>{0}), "sg14::_fixed_point_named_impl::result test failed");
     static_assert(identical(
             result<wide_tag, multiply_tag, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::type{1},
             fixed_point<uint64, 0>{1}), "sg14::fixed_point test failed");
 
     static_assert(identical(
             result<wide_tag, divide_tag, make_fixed<1, 14>, make_fixed<7, 0>>::type{1.5},
-            fixed_point<test_int, -21>{1.5}), "sg14::_fixed_point_impl::result test failed");
+            fixed_point<test_int, -21>{1.5}), "sg14::_fixed_point_named_impl::result test failed");
     static_assert(identical(
             result<wide_tag, divide_tag, make_ufixed<7, 1>, make_ufixed<5, 3>>::type{15.75},
             fixed_point<test_unsigned, -6>{15.75}), "sg14::fixed_point test failed");
@@ -534,25 +509,25 @@ namespace test_operate {
             result<lean_tag, divide_tag, fixed_point<int8, -1>, fixed_point<int8, -1>>::type{-15.75},
             fixed_point<test_int, 0>{-15.75}), "sg14::fixed_point test failed");
 
-    // sg14::_fixed_point_impl::result::rep_op_result
+    // sg14::_fixed_point_named_impl::result::rep_op_result
     static_assert(identical(
             result<wide_tag, multiply_tag, make_ufixed<7, 1>, make_ufixed<5, 3>>::rep_op_result{65535},
             test_int{65535}), "sg14::fixed_point test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::_fixed_point_impl::intermediate
+    // sg14::_fixed_point_named_impl::intermediate
 
-    using sg14::_fixed_point_impl::intermediate;
+    using sg14::_fixed_point_named_impl::intermediate;
 
-    // sg14::_fixed_point_impl::intermediate::rep_type
+    // sg14::_fixed_point_named_impl::intermediate::rep_type
     static_assert(identical(
             intermediate<wide_tag, divide_tag, make_ufixed<7, 1>, make_ufixed<5, 3>>::rep_type{65537},
             test_unsigned{65537}), "sg14::fixed_point test failed");
 
-    // sg14::_fixed_point_impl::intermediate::lhs_type
+    // sg14::_fixed_point_named_impl::intermediate::lhs_type
     static_assert(identical(
             intermediate<wide_tag, multiply_tag, make_ufixed<4, 4>, make_ufixed<4, 4>>::lhs_type{0},
-            fixed_point<uint8, -4>{0}), "sg14::_fixed_point_impl::intermediate test failed");
+            fixed_point<uint8, -4>{0}), "sg14::_fixed_point_named_impl::intermediate test failed");
     static_assert(identical(
             intermediate<wide_tag, multiply_tag, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::lhs_type{1},
             fixed_point<uint64, 0>{1}), "sg14::fixed_point test failed");
@@ -568,10 +543,10 @@ namespace test_operate {
 
     static_assert(identical(
             intermediate<lean_tag, add_tag, fixed_point<test_int, 0>, fixed_point<uint8, 10>>::lhs_type{12288},
-            fixed_point<test_int, 0>{12288}), "sg14::_fixed_point_impl::intermediate test failed");
+            fixed_point<test_int, 0>{12288}), "sg14::_fixed_point_named_impl::intermediate test failed");
     static_assert(identical(
             intermediate<lean_tag, add_tag, fixed_point<test_int, 0>, fixed_point<uint8, 10>>::rhs_type{12288},
-            fixed_point<test_int, 0>{12288}), "sg14::_fixed_point_impl::intermediate test failed");
+            fixed_point<test_int, 0>{12288}), "sg14::_fixed_point_named_impl::intermediate test failed");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

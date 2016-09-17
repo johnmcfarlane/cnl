@@ -17,10 +17,16 @@ OUTPUT_DIRECTORY =
 OUTPUT_LANGUAGE = English
 INPUT = \
  ../include/sg14/auxiliary/elastic.h \
+ ../include/sg14/auxiliary/elastic_integer.h \
  ../include/sg14/auxiliary/multiprecision.h \
  ../include/sg14/fixed_point.h \
  ../include/sg14/bits/fixed_point_extras.h \
  ../include/sg14/bits/fixed_point_math.h \
+ ../include/sg14/bits/fixed_point_make.h \
+ ../include/sg14/bits/fixed_point_named.h \
+ ../include/sg14/bits/fixed_point_operators.h \
+ ../include/sg14/bits/fixed_point_common_type.h \
+ ../include/sg14/bits/fixed_point_type.h \
  ../include/sg14/type_traits.h \
  index.md
 EXCLUDE_SYMBOLS = \
