@@ -28,11 +28,10 @@ namespace sg14 {
     ///
     /// \tparam T given numeric type
     ///
-    /// \var value the width of the given numeric type in bits
-    ///
-    /// \remarks If \ref T is a fixed-point numeric type such as an integral type,
-    /// \ref is the width of T in bits.
+    /// \remarks If \c T is a fixed-point numeric type such as an integral type,
+    /// \c width<T>::value is the width of T in bits.
     /// \remarks The width is defined as the number of digits including any sign bit.
+    /// \remarks The template may be specialized for custom types.
 
     template<class T>
     struct width;
