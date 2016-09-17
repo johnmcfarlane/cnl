@@ -25,9 +25,7 @@ INPUT = \
  index.md
 EXCLUDE_SYMBOLS = \
  sg14::_elastic_impl \
- sg14::_fixed_point_impl \
- sg14::_impl \
- sg14::_type_traits_impl
+ sg14::_*
 FILE_PATTERNS = *.h *.md
 RECURSIVE = YES
 EXCLUDE =
