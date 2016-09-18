@@ -8,6 +8,8 @@
 
 #include <sg14/auxiliary/multiprecision.h>
 
+#include <sg14/fixed_point.h>
+
 #include <gtest/gtest.h>
 
 using sg14::is_integral;
