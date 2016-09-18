@@ -71,6 +71,14 @@ is provided, containing all the necessary definitions.
 
 \snippet index.cpp boost example
 
+Another supported library is 
+[safe_numerics](https://github.com/robertramey/safe_numerics).
+It defines an integer type, 
+[boost::numeric::safe](https://htmlpreview.github.io/?https://raw.githubusercontent.com/robertramey/safe_numerics/master/doc/html/safe.html), 
+which guards against overflow.
+
+\snippet index.cpp safe numerics example
+
 
 \subsection elastic Extensible
 

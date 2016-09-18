@@ -6,6 +6,30 @@
 
 // example code presented on the front page of the Doxygen documentation
 
+////////////////////////////////////////////////////////////////////////////////
+// test_function - run given function and test its output
+
+#include <gtest/gtest.h>
+#include <iostream>
+
+// calls the given function and checks that it produces the expected output
+void test_function(void(* function)(), char const* output)
+{
+    // substitute cout for a string
+    std::stringstream captured_cout;
+    std::streambuf* coutbuf = std::cout.rdbuf();
+    std::cout.rdbuf(captured_cout.rdbuf()); //redirect cout to out.txt!
+
+    // run example from documentation
+    function();
+
+    // restore cout
+    std::cout.rdbuf(coutbuf); //reset to standard output again
+
+    // test the content of the string
+    ASSERT_EQ(output, captured_cout.str());
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [declaration example]
@@ -36,6 +60,11 @@ void declaration_example()
 }
 //! [declaration example]
 
+TEST(index, declaration_example)
+{
+    test_function(declaration_example, "7\n3.5\n1.5\n");
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [basic arithmetic example]
@@ -59,6 +88,11 @@ void basic_arithmetic_example()
     cout << degrees << '\n';
 }
 //! [basic arithmetic example]
+
+TEST(index, basic_arithmetic_example)
+{
+    test_function(basic_arithmetic_example, "6.28319\n360\n");
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -89,6 +123,11 @@ void advanced_arithmetic_example()
 }
 //! [advanced arithmetic example]
 
+TEST(index, advanced_arithmetic_example)
+{
+    test_function(advanced_arithmetic_example, "14\n254.00390625\n254.00390625\n");
+}
+
 
 #if defined(SG14_BOOST_ENABLED)
 ////////////////////////////////////////////////////////////////////////////////
@@ -115,6 +154,49 @@ void boost_example()
     cout << big_number{1}/googol << endl;
 }
 //! [boost example]
+
+TEST(index, boost_example)
+{
+    test_function(boost_example, "1e+100\n1e-100\n");
+}
+#endif
+
+
+#if defined(SG14_EXCEPTIONS_ENABLED) && defined(SG14_SAFE_NUMERICS_ENABLED)
+////////////////////////////////////////////////////////////////////////////////
+//! [safe numerics example]
+#include <sg14/auxiliary/safe_integer.h>
+
+#include <gtest/gtest.h>
+void safe_integer_example()
+{
+    // a safe, 8-bit fixed-point type with range -8 <= x < 7.9375
+    using safe_byte = make_fixed<3, 4, boost::numeric::safe<int>>;
+
+    // prints "-8"
+    try {
+        auto a = safe_byte{-8};
+        cout << a << endl;
+    }
+    catch (std::range_error e) {
+        cout << e.what() << endl;
+    }
+
+    // prints "Value out of range for this safe type"
+    try {
+        auto b = safe_byte{10};
+        cout << b << endl;
+    }
+    catch (std::range_error e) {
+        cout << e.what() << endl;
+    }
+}
+//! [safe numerics example]
+
+TEST(index, safe_integer_example)
+{
+    test_function(safe_integer_example, "-8\nValue out of range for this safe type\n");
+}
 #endif
 
 
@@ -154,39 +236,8 @@ void elastic_example2()
 }
 //! [elastic example]
 
-////////////////////////////////////////////////////////////////////////////////
-// test the examples
-
-#include <gtest/gtest.h>
-
-// calls the given function and checks that it produces the expected output
-void test_function(void(* function)(), char const* output)
+TEST(index, elastic_example)
 {
-    // substitute cout for a string
-    stringstream captured_cout;
-    streambuf* coutbuf = cout.rdbuf();
-    cout.rdbuf(captured_cout.rdbuf()); //redirect cout to out.txt!
-
-    // run example from documentation
-    function();
-
-    // restore cout
-    cout.rdbuf(coutbuf); //reset to standard output again
-
-    // test the content of the string
-    ASSERT_EQ(output, captured_cout.str());
-}
-
-TEST(index, examples)
-{
-    test_function(declaration_example, "7\n3.5\n1.5\n");
-    test_function(basic_arithmetic_example, "6.28319\n360\n");
-    test_function(advanced_arithmetic_example, "14\n254.00390625\n254.00390625\n");
-
-#if defined(SG14_BOOST_ENABLED)
-    test_function(boost_example, "1e+100\n1e-100\n");
-#endif
-
     test_function(elastic_example1, "");
     test_function(elastic_example2, "254.00390625\n");
 }
