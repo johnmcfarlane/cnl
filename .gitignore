@@ -8,6 +8,7 @@ fp_test
 google_benchmark-prefix/
 google_test-prefix/
 libfixed_point.a
+safe_numerics-prefix
 
 # perf
 perf.data*

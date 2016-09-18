@@ -6,34 +6,6 @@ endif()
 include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
 
 ######################################################################
-# find external lib, boost.multiprecision
-
-# older versions of CMake don't know how to find multiprecision...
-#find_package(Boost COMPONENTS multiprecision)
-
-# ...so the entire library is sought
-find_package(Boost)
-
-if(Boost_FOUND)
-    # only compile multiprecision.cpp if Boost.Multiprecision is available
-    set(BOOST_FOUND_CXX_FLAGS "-DSG14_BOOST_ENABLED")
-endif(Boost_FOUND)
-
-######################################################################
-# add external project, google_test
-
-# helpful example [here](https://gist.github.com/Fraser999/5351180)
-ExternalProject_Add(
-        google_test
-        GIT_REPOSITORY "https://github.com/google/googletest.git"
-        GIT_TAG "release-1.7.0"
-        INSTALL_COMMAND ""
-        CMAKE_ARGS -Dgtest_force_shared_crt=ON
-)
-ExternalProject_Get_Property(google_test source_dir)
-ExternalProject_Get_Property(google_test binary_dir)
-
-######################################################################
 # fp_test target
 
 add_executable(fp_test
@@ -54,21 +26,43 @@ add_executable(fp_test
         ${CMAKE_CURRENT_LIST_DIR}/type_traits.cpp
         ${CMAKE_CURRENT_LIST_DIR}/readme.cpp
         ${CMAKE_CURRENT_LIST_DIR}/snippets.cpp
-	${CMAKE_CURRENT_LIST_DIR}/fixed_point_math.cpp
-        )
-
-set_target_properties(
-        fp_test
-        PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${BOOST_FOUND_CXX_FLAGS}"
-        OUTPUT_NAME "fp_test"
+        ${CMAKE_CURRENT_LIST_DIR}/fixed_point_math.cpp
 )
 
-# add external lib, Boost
+add_dependencies(
+        fp_test
+        fixed_point
+)
+
+######################################################################
+# find external lib, boost.multiprecision
+
+# older versions of CMake don't know how to find multiprecision...
+#find_package(Boost COMPONENTS multiprecision)
+
+# ...so the entire library is sought
+find_package(Boost)
+
 if(Boost_FOUND)
+    # only compile multiprecision.cpp if Boost.Multiprecision is available
+    set(BOOST_FOUND_CXX_FLAGS "-DSG14_BOOST_ENABLED")
     target_include_directories(fp_test SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
     target_link_libraries(fp_test ${Boost_LIBRARIES})
 endif(Boost_FOUND)
 
+######################################################################
+# pull external project, google_test
+
+# helpful example [here](https://gist.github.com/Fraser999/5351180)
+ExternalProject_Add(
+        google_test
+        GIT_REPOSITORY "https://github.com/google/googletest.git"
+        GIT_TAG "release-1.7.0"
+        INSTALL_COMMAND ""
+        CMAKE_ARGS -Dgtest_force_shared_crt=ON
+)
+
+ExternalProject_Get_Property(google_test source_dir)
 target_include_directories(
         fp_test
         PRIVATE
@@ -76,11 +70,7 @@ target_include_directories(
         ${source_dir}/include
 )
 
-######################################################################
-# hitch google_test to fp_test
-
-add_dependencies(fp_test google_test)
-
+ExternalProject_Get_Property(google_test binary_dir)
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     target_link_libraries(
             fp_test
@@ -94,3 +84,44 @@ else ()
             general pthread
     )
 endif ()
+
+add_dependencies(
+        fp_test
+        google_test
+)
+
+######################################################################
+# pull external project, safe_numerics
+
+if(Boost_FOUND AND CPP14 AND NOT APPLE)
+    ExternalProject_Add(
+            safe_numerics
+            GIT_REPOSITORY "https://github.com/johnmcfarlane/safe_numerics.git"
+            GIT_TAG "d28240ebd67bdb0378d983fe09ac87a8f98c5339"
+            INSTALL_COMMAND ""
+    )
+
+    ExternalProject_Get_Property(safe_numerics SOURCE_DIR)
+    target_include_directories(
+            fp_test
+            PRIVATE
+            SYSTEM
+            ${SOURCE_DIR}/include
+    )
+
+    add_dependencies(
+            fp_test
+            safe_numerics
+    )
+
+    target_compile_definitions(fp_test PRIVATE SG14_SAFE_NUMERICS_ENABLED=1)
+endif()
+
+######################################################################
+# fp_test compiler flags
+
+set_target_properties(
+        fp_test
+        PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${BOOST_FOUND_CXX_FLAGS}"
+        OUTPUT_NAME "fp_test"
+)
