@@ -7,7 +7,7 @@
 #include "sg14/auxiliary/integer.h"
 #include <sg14/fixed_point.h>
 
-#if defined(SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
+#if defined(SG14_EXCEPTIONS_ENABLED)
 #define TEST_THROWING_OVERFLOW
 #define TEST_LABEL throwing_integer_
 #else
@@ -37,13 +37,13 @@ using test_int = sg14::throwing_integer<>;
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_right)
 {
-    auto shift_right_fn = _impl::shift_right<8, uint16, uint8>;
+    auto shift_right_fn = shift_right<8, uint16, uint8>;
     ASSERT_THROW(shift_right_fn((uint8) 0x1234), std::overflow_error);
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_left)
 {
-    auto shift_right_fn = _impl::shift_left<-8, uint16, uint8>;
+    auto shift_right_fn = shift_left<-8, uint16, uint8>;
     ASSERT_THROW(shift_right_fn((uint8) 0x1234), std::overflow_error);
 }
 

@@ -14,11 +14,11 @@ namespace {
     // fast tests of sg14::elastic<> at its limits;
     // if something broke it may show up here first
 
-    using sg14::_fixed_point_impl::intermediate;
-    using sg14::_fixed_point_impl::result;
-    using sg14::_fixed_point_impl::shift_left;
-    using sg14::_fixed_point_impl::shift_right;
-    using sg14::_fixed_point_impl::wide_tag;
+    using sg14::_fixed_point_named_impl::intermediate;
+    using sg14::_fixed_point_named_impl::result;
+    using sg14::_impl::shift_left;
+    using sg14::_impl::shift_right;
+    using sg14::_fixed_point_named_impl::wide_tag;
     using sg14::_impl::divide_tag;
     using sg14::_impl::identical;
     using sg14::_impl::multiply_tag;

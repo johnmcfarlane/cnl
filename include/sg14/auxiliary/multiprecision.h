@@ -14,6 +14,7 @@
 
 #include <boost/multiprecision/cpp_int.hpp>
 
+/// study group 14 of the C++ working group
 namespace sg14 {
     namespace _bmp = boost::multiprecision;
 

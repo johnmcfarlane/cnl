@@ -16,6 +16,10 @@
 #include <istream>
 #include <limits>
 
+#include "fixed_point_type.h"
+
+#include <sg14/bits/common.h>
+
 /// study group 14 of the C++ working group
 namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
@@ -41,7 +45,7 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::sqrt helper functions
 
-    namespace _fixed_point_impl {
+    namespace _fixed_point_extras_impl {
         template<class Rep>
         constexpr Rep sqrt_bit(
                 Rep n,
@@ -76,20 +80,34 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::sqrt
 
+    /// \brief calculates the square root of a \ref fixed_point value
+    /// \headerfile sg14/fixed_point.h
+    ///
+    /// \param x input parameter
+    ///
+    /// \return square root of x
+    ///
+    /// \note This function is a placeholder implementation with poor run-time performance characteristics.
+    /// \note It uses
+    /// divides the values
+    /// without performing any additional scaling or conversion.
+    ///
+    /// \sa negate, add, subtract, multiply
+
     // https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_.28base_2.29
-    // placeholder implementation; slow when calculated at run-time?
+    // ?
     template<class Rep, int Exponent>
     constexpr fixed_point <Rep, Exponent>
     sqrt(const fixed_point <Rep, Exponent>& x)
     {
         using widened_type = fixed_point<set_width_t<Rep, width<Rep>::value*2>, Exponent*2>;
         return
-#if defined(SG14_FIXED_POINT_EXCEPTIONS_ENABLED)
+#if defined(SG14_EXCEPTIONS_ENABLED)
                 (x<fixed_point<Rep, Exponent>(0))
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
 #endif
                 fixed_point<Rep, Exponent>::from_data(
-                        static_cast<Rep>(_fixed_point_impl::sqrt_solve1(widened_type{x}.data())));
+                        static_cast<Rep>(_fixed_point_extras_impl::sqrt_solve1(widened_type{x}.data())));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -99,13 +117,13 @@ namespace sg14 {
     // due to conversion to and from floating-point types; also inconvenient as
     // many <cmath> functions are not constexpr.
 
-    namespace _fixed_point_impl {
-        template<class Rep, int Exponent, float_of_same_size<Rep>(* F)(
-                float_of_same_size<Rep>)>
+    namespace _fixed_point_extras_impl {
+        template<class Rep, int Exponent, _impl::float_of_same_size<Rep>(* F)(
+                _impl::float_of_same_size<Rep>)>
         constexpr fixed_point <Rep, Exponent>
         crib(const fixed_point <Rep, Exponent>& x) noexcept
         {
-            using floating_point = float_of_same_size<Rep>;
+            using floating_point = _impl::float_of_same_size<Rep>;
             return static_cast<fixed_point<Rep, Exponent>>(F(static_cast<floating_point>(x)));
         }
     }
@@ -114,28 +132,28 @@ namespace sg14 {
     constexpr fixed_point <Rep, Exponent>
     sin(const fixed_point <Rep, Exponent>& x) noexcept
     {
-        return _fixed_point_impl::crib<Rep, Exponent, std::sin>(x);
+        return _fixed_point_extras_impl::crib<Rep, Exponent, std::sin>(x);
     }
 
     template<class Rep, int Exponent>
     constexpr fixed_point <Rep, Exponent>
     cos(const fixed_point <Rep, Exponent>& x) noexcept
     {
-        return _fixed_point_impl::crib<Rep, Exponent, std::cos>(x);
+        return _fixed_point_extras_impl::crib<Rep, Exponent, std::cos>(x);
     }
 
     template<class Rep, int Exponent>
     constexpr fixed_point <Rep, Exponent>
     exp(const fixed_point <Rep, Exponent>& x) noexcept
     {
-        return _fixed_point_impl::crib<Rep, Exponent, std::exp>(x);
+        return _fixed_point_extras_impl::crib<Rep, Exponent, std::exp>(x);
     }
 
     template<class Rep, int Exponent>
     constexpr fixed_point <Rep, Exponent>
     pow(const fixed_point <Rep, Exponent>& x) noexcept
     {
-        return _fixed_point_impl::crib<Rep, Exponent, std::pow>(x);
+        return _fixed_point_extras_impl::crib<Rep, Exponent, std::pow>(x);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -183,11 +201,12 @@ namespace sg14 {
         static constexpr _width_type value = width<Rep>::value;
     };
 
-    /// produces equivalent fixed-point type at a new width
+    /// \brief produces equivalent fixed-point type at a new width
+    /// \headerfile sg14/fixed_point.h
     ///
     /// \tparam Rep the \a Rep parameter of @ref fixed_point
     /// \tparam Exponent the \a Exponent parameter of @ref fixed_point
-    /// \tparam MinNumBits the desired size of the resultant type such that \c `(sg14::width<fixed_point<Rep, Exponent>>::value >= MinNumBytes)`
+    /// \tparam MinNumBits the desired size of the resultant type such that <tt>(sg14::width<fixed_point<Rep, Exponent>>\::value >= MinNumBytes)</tt>
     ///
     /// \sa width
     template<class Rep, int Exponent, _width_type MinNumBits>

@@ -26,6 +26,8 @@ namespace sg14 {
     /// \note Arithmetic operations result in types with an adjusted Digits parameter accordingly.
     /// For instance, when two \ref elastic_integer values are multiplied together,
     /// the resultant type has Digits set to the sum of the operands.
+    ///
+    /// \sa elastic
 
     template<int Digits, class Archetype = int>
     class elastic_integer {

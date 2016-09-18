@@ -19,6 +19,14 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14-specific definitions
 
+    /// \brief literal real number approximation that uses fixed-point arithmetic and auto-widens to avoid overflow
+    ///
+    /// \tparam IntegerDigits the number of inteteger digits that can be stored
+    /// \tparam FractionalDigits the number of fractional digits that can be stored
+    /// \tparam Archetype the kind of integer type to use to represent values
+    ///
+    /// \sa elastic_integer
+
     template<int IntegerDigits, int FractionalDigits = 0, class Archetype = signed>
     using elastic = fixed_point<elastic_integer<IntegerDigits+FractionalDigits, Archetype>, -FractionalDigits>;
 
