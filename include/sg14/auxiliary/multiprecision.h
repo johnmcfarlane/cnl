@@ -10,7 +10,7 @@
 #if !defined(SG14_MULTIPRECISION_H)
 #define SG14_MULTIPRECISION_H 1
 
-#include <sg14/fixed_point.h>
+#include <sg14/type_traits.h>
 
 #include <boost/multiprecision/cpp_int.hpp>
 
@@ -50,7 +50,7 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::make_signed
 
-    // sg14::make_signed<<boost::multiprecision::cpp_int_backend<>>
+    // sg14::make_signed<boost::multiprecision::cpp_int_backend<>>
     template<unsigned MinBits, unsigned MaxBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
     struct make_signed<_bmp::cpp_int_backend<
             MinBits, MaxBits, SignType, Checked, Allocator>> {
@@ -73,7 +73,7 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::make_unsigned
 
-    // sg14::make_unsigned<<boost::multiprecision::cpp_int_backend<>>
+    // sg14::make_unsigned<boost::multiprecision::cpp_int_backend<>>
     template<unsigned MinBits, unsigned MaxBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
     struct make_unsigned<_bmp::cpp_int_backend<
             MinBits, MaxBits, SignType, Checked, Allocator>> {
