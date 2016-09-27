@@ -1,4 +1,4 @@
-# fixed_point
+# fixed_point Numerics Library
 
 [![Build Status](https://travis-ci.org/johnmcfarlane/fixed_point.svg?branch=master)](https://travis-ci.org/johnmcfarlane/fixed_point)
 [![Build status](https://ci.appveyor.com/api/projects/status/p60lpkq9u90h83fi/branch/master?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/fixed-point/branch/master)
