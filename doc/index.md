@@ -64,7 +64,7 @@ Named functions - such as [multiply](@ref sg14::multiply) - provide fine-tuned c
 
 The API is designed with composability in mind
 and the `Rep` template parameter is not limited to built-in integer types.
-For instance, the `number` types defined in [Boost.Multiprecision](http://www.boost.org/doc/libs/release/libs/multiprecision/)
+For instance, [`boost::multiprecision::number`](http://www.boost.org/doc/libs/1_58_0/libs/multiprecision/doc/html/boost_multiprecision/ref/number.html)
 can be adapted to produce fixed-point types of arbitrary range and resolution.
 To illustrate this, a header, [sg14/auxiliary/multiprecision.h](../../include/sg14/auxiliary/multiprecision.h),
 is provided, containing all the necessary definitions.

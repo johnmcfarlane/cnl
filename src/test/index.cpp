@@ -136,10 +136,11 @@ TEST(index, advanced_arithmetic_example)
 
 void boost_example()
 {
-    // define an unsigned type with 400 integer digits and 400 fractional digits
-    // and use boost::multiprecision::uint128_t as the archetype for the Rep type
-    using big_number = make_ufixed<400, 400, boost::multiprecision::uint128_t>;
-    static_assert(big_number::digits==800, "");
+    using namespace boost::multiprecision;
+
+    // Define an unsigned type with 400 integer digits and 0 fractional digits
+    // and use boost::multiprecision::uint128_t as the archetype.
+    using big_number = make_ufixed<400, 0, uint128_t>;
 
     // a googol is 10^100
     auto googol = big_number{1};
@@ -150,8 +151,14 @@ void boost_example()
     // "1e+100"
     cout << googol << endl;
 
-    // "1e-100" although this calculation is only approximate
-    cout << big_number{1}/googol << endl;
+    // Dividing a s31:0 number by a u400:0 number
+    auto googolth = 1 / googol;
+
+    // produces a s31::400 number.
+    static_assert(is_same<decltype(googolth), make_fixed<31, 400, int128_t>>::value, "");
+
+    // Prints "1e-100" (although this value is only approximate).
+    cout << googolth << endl;
 }
 //! [boost example]
 
