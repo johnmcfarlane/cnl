@@ -3,41 +3,41 @@ sudo: required
 
 language: cpp
 
-env:
-- BUILD_TYPE=Release CPP14=OFF EXCEPTIONS=OFF INT128=OFF
-- BUILD_TYPE=Release CPP14=ON EXCEPTIONS=ON INT128=ON
-- BUILD_TYPE=Debug CPP14=OFF EXCEPTIONS=OFF INT128=OFF
-- BUILD_TYPE=Debug CPP14=ON EXCEPTIONS=ON INT128=ON
-
 os:
-- osx
 - linux
+- osx
 
 compiler:
 - gcc
 - clang
+
+env:
+- BUILD_TYPE=Release CPP14=ON  EXCEPTIONS=ON  INT128=ON  SAFE_NUMERICS=OFF
+- BUILD_TYPE=Release CPP14=OFF EXCEPTIONS=OFF INT128=OFF SAFE_NUMERICS=OFF
+- BUILD_TYPE=Debug   CPP14=ON  EXCEPTIONS=ON  INT128=ON  SAFE_NUMERICS=OFF
+- BUILD_TYPE=Debug   CPP14=OFF EXCEPTIONS=OFF INT128=OFF SAFE_NUMERICS=OFF
 
 matrix:
   exclude:
     # Clang uses GCC's standard lib and fails when C++14 is enabled
     - os: linux
       compiler: clang
-      env: BUILD_TYPE=Release CPP14=ON EXCEPTIONS=ON INT128=ON
+      env: BUILD_TYPE=Release CPP14=ON  EXCEPTIONS=ON  INT128=ON  SAFE_NUMERICS=OFF
     - os: linux
       compiler: clang
-      env: BUILD_TYPE=Debug CPP14=ON EXCEPTIONS=ON INT128=ON
+      env: BUILD_TYPE=Debug   CPP14=ON  EXCEPTIONS=ON  INT128=ON  SAFE_NUMERICS=OFF
 
     # OS X has Boost 1.55 installed which requires exceptions
     - os: osx
-      env: BUILD_TYPE=Release CPP14=OFF EXCEPTIONS=OFF INT128=OFF
+      env: BUILD_TYPE=Release CPP14=OFF EXCEPTIONS=OFF INT128=OFF SAFE_NUMERICS=OFF
     - os: osx
-      env: BUILD_TYPE=Debug CPP14=OFF EXCEPTIONS=OFF INT128=OFF
+      env: BUILD_TYPE=Debug   CPP14=OFF EXCEPTIONS=OFF INT128=OFF SAFE_NUMERICS=OFF
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source .travis-setup-linux.sh ; fi
 
 script:
-    - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCPP14="${CPP14}" -DEXCEPTIONS="${EXCEPTIONS}" -DINT128="${INT128}"
+    - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCPP14="${CPP14}" -DEXCEPTIONS="${EXCEPTIONS}" -DINT128="${INT128}" -DSAFE_NUMERICS="${SAFE_NUMERICS}"
     - make fp_test fp_benchmark
     - ./fp_test
     - ./fp_benchmark --benchmark_format=csv>result.csv

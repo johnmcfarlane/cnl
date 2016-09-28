@@ -93,7 +93,17 @@ add_dependencies(
 ######################################################################
 # pull external project, safe_numerics
 
-if(Boost_FOUND AND CPP14 AND NOT APPLE)
+set(SAFE_NUMERICS ON CACHE BOOL "compile with support for safe_numerics library")
+if(SAFE_NUMERICS AND Boost_FOUND AND NOT APPLE)
+    # test conditions necessary to use safe_numerics
+    if (NOT CPP14)
+        message(FATAL_ERROR "safe_numerics library requires C++14 (CPP14=ON)")
+    endif (NOT CPP14)
+
+    if (NOT EXCEPTIONS)
+        message(FATAL_ERROR "safe_numerics library requires exception handling (EXCEPTIONS=ON)")
+    endif (NOT EXCEPTIONS)
+
     ExternalProject_Add(
             safe_numerics
             GIT_REPOSITORY "https://github.com/johnmcfarlane/safe_numerics.git"
