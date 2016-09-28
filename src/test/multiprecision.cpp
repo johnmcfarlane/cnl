@@ -12,9 +12,6 @@
 
 #include <gtest/gtest.h>
 
-using sg14::is_integral;
-using sg14::is_signed;
-using sg14::is_unsigned;
 using sg14::fixed_point;
 using sg14::make_signed;
 using sg14::make_unsigned;
@@ -27,42 +24,34 @@ using sg14::width;
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::multiprecision traits
 
-// test sg14::is_signed<{un}signed_multiprecision>
-static_assert(is_signed<signed_multiprecision<1 >>::value, "sg14::is_signed<signed_multiprecision<>> test failed");
-static_assert(is_signed<signed_multiprecision<3 >>::value, "sg14::is_signed<signed_multiprecision<>> test failed");
-static_assert(
-        !is_signed<unsigned_multiprecision<5 >>::value, "sg14::is_signed<unsigned_multiprecision<>> test failed");
-static_assert(
-        !is_signed<unsigned_multiprecision<7 >>::value, "sg14::is_signed<unsigned_multiprecision<>> test failed");
-
-// test sg14::is_unsigned<{un}signed_multiprecision>
-static_assert(
-        !is_unsigned<signed_multiprecision<2 >>::value, "sg14::is_unsigned<signed_multiprecision<>> test failed");
-static_assert(
-        !is_unsigned<signed_multiprecision<4 >>::value, "sg14::is_unsigned<signed_multiprecision<>> test failed");
-static_assert(
-        is_unsigned<unsigned_multiprecision<6 >>::value, "sg14::is_unsigned<unsigned_multiprecision<>> test failed");
-static_assert(
-        is_unsigned<unsigned_multiprecision<8 >>::value, "sg14::is_unsigned<unsigned_multiprecision<>> test failed");
+// test std::numeric_limits<{un}signed_multiprecision>::is_signed
+static_assert(std::numeric_limits<signed_multiprecision<1 >>::is_signed,
+        "std::numeric_limits<signed_multiprecision<>>::is_signed test failed");
+static_assert(std::numeric_limits<signed_multiprecision<3 >>::is_signed,
+        "std::numeric_limits<signed_multiprecision<>>::is_signed test failed");
+static_assert(!std::numeric_limits<unsigned_multiprecision<5 >>::is_signed,
+        "std::numeric_limits<unsigned_multiprecision<>>::is_signed test failed");
+static_assert(!std::numeric_limits<unsigned_multiprecision<7 >>::is_signed,
+        "std::numeric_limits<unsigned_multiprecision<>>::is_signed test failed");
 
 // test sg14::make_signed<{un}signed_multiprecision>
-static_assert(is_signed<make_signed<signed_multiprecision<9 >>::type>::value,
+static_assert(std::numeric_limits<make_signed<signed_multiprecision<9 >>::type>::is_signed,
         "sg14::make_signed<signed_multiprecision<>> test failed");
-static_assert(is_signed<make_signed<unsigned_multiprecision<10 >>::type>::value,
+static_assert(std::numeric_limits<make_signed<unsigned_multiprecision<10 >>::type>::is_signed,
         "sg14::make_signed<signed_multiprecision<>> test failed");
-static_assert(!is_unsigned<make_signed<signed_multiprecision<9 >>::type>::value,
+static_assert(std::numeric_limits<make_signed<signed_multiprecision<9 >>::type>::is_signed,
         "sg14::make_signed<signed_multiprecision<>> test failed");
-static_assert(!is_unsigned<make_signed<unsigned_multiprecision<10 >>::type>::value,
+static_assert(std::numeric_limits<make_signed<unsigned_multiprecision<10 >>::type>::is_signed,
         "sg14::make_signed<signed_multiprecision<>> test failed");
 
 // test sg14::make_unsigned<{un}signed_multiprecision>
-static_assert(!is_signed<make_unsigned<signed_multiprecision<9 >>::type>::value,
+static_assert(!std::numeric_limits<make_unsigned<signed_multiprecision<9 >>::type>::is_signed,
         "sg14::make_unsigned<signed_multiprecision<>> test failed");
-static_assert(!is_signed<make_unsigned<unsigned_multiprecision<10 >>::type>::value,
+static_assert(!std::numeric_limits<make_unsigned<unsigned_multiprecision<10 >>::type>::is_signed,
         "sg14::make_unsigned<signed_multiprecision<>> test failed");
-static_assert(is_unsigned<make_unsigned<signed_multiprecision<9 >>::type>::value,
+static_assert(!std::numeric_limits<make_unsigned<signed_multiprecision<9 >>::type>::is_signed,
         "sg14::make_unsigned<signed_multiprecision<>> test failed");
-static_assert(is_unsigned<make_unsigned<unsigned_multiprecision<10 >>::type>::value,
+static_assert(!std::numeric_limits<make_unsigned<unsigned_multiprecision<10 >>::type>::is_signed,
         "sg14::make_unsigned<signed_multiprecision<>> test failed");
 
 // test sg14::width<{un}signed_multiprecision>

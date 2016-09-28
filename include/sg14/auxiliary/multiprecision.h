@@ -26,28 +26,6 @@ namespace sg14 {
     // sg14::fixed_point
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::is_signed
-
-    // sg14::is_signed<boost::multiprecision::number<>>
-    template<
-            class Backend,
-            _bmp::expression_template_option ExpressionTemplates>
-    struct is_signed<_bmp::number<Backend, ExpressionTemplates>>
-            : _bmp::is_signed_number<_bmp::number<Backend, ExpressionTemplates>> {
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::is_unsigned
-
-    // sg14::is_unsigned<boost::multiprecision::number<>>
-    template<
-            class Backend,
-            _bmp::expression_template_option ExpressionTemplates>
-    struct is_unsigned<_bmp::number<Backend, ExpressionTemplates>>
-            : _bmp::is_unsigned_number<_bmp::number<Backend, ExpressionTemplates>> {
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
     // sg14::make_signed
 
     // sg14::make_signed<boost::multiprecision::cpp_int_backend<>>
@@ -91,18 +69,6 @@ namespace sg14 {
         using type = _bmp::number<
                 typename make_unsigned<Backend>::type,
                 ExpressionTemplates>;
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::is_integral
-
-    // sg14::is_integral<boost::multiprecision::number<>>
-    template<
-            class Backend,
-            _bmp::expression_template_option ExpressionTemplates>
-    struct is_integral<_bmp::number<
-            Backend,
-            ExpressionTemplates>> : std::true_type {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
