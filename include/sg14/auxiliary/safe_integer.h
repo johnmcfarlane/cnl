@@ -10,6 +10,14 @@
 #if !defined(SG14_SAFE_INTEGER_H)
 #define SG14_SAFE_INTEGER_H 1
 
+#if ! defined(SG14_SAFE_NUMERICS_ENABLED)
+#error This header should not be included unless SG14_SAFE_NUMERICS_ENABLED is defined
+#endif
+
+#if ! defined(SG14_EXCEPTIONS_ENABLED)
+#error Exceptions and RTTI are required to use safe_numerics
+#endif
+
 #if ! defined(SG14_BOOST_ENABLED)
 #error Boost is required to use safe_numerics
 #endif
