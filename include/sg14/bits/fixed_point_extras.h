@@ -157,20 +157,6 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::is_signed<fixed_point<>>
-
-    template<class Rep, int Exponent>
-    struct is_signed<fixed_point<Rep, Exponent>> : is_signed<Rep> {
-    };
-    
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::is_unsigned<fixed_point<>>
-    
-    template<class Rep, int Exponent>
-    struct is_unsigned<fixed_point<Rep, Exponent>> : is_unsigned<Rep> {
-    };
-    
-    ////////////////////////////////////////////////////////////////////////////////
     // sg14::make_signed<fixed_point<>>
 
     template<class Rep, int Exponent>

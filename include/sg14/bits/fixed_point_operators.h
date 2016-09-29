@@ -197,7 +197,7 @@ namespace sg14 {
     template<
             class LhsRep, int LhsExponent,
             class RhsInteger,
-            typename = typename std::enable_if<is_integral<RhsInteger>::value>::type>
+            typename = typename std::enable_if<std::numeric_limits<RhsInteger>::is_integer>::type>
     constexpr auto operator+(const fixed_point<LhsRep, LhsExponent>& lhs, const RhsInteger& rhs)
     -> decltype(lhs + fixed_point<RhsInteger, 0>{rhs})
     {
@@ -207,7 +207,7 @@ namespace sg14 {
     template<
             class LhsRep, int LhsExponent,
             class RhsInteger,
-            typename = typename std::enable_if<is_integral<RhsInteger>::value>::type>
+            typename = typename std::enable_if<std::numeric_limits<RhsInteger>::is_integer>::type>
     constexpr auto operator-(const fixed_point<LhsRep, LhsExponent>& lhs, const RhsInteger& rhs)
     -> decltype(lhs - fixed_point<RhsInteger, 0>{rhs})
     {
@@ -217,7 +217,7 @@ namespace sg14 {
     template<
             class LhsRep, int LhsExponent,
             class RhsInteger,
-            typename = typename std::enable_if<is_integral<RhsInteger>::value>::type>
+            typename = typename std::enable_if<std::numeric_limits<RhsInteger>::is_integer>::type>
     constexpr auto operator*(const fixed_point<LhsRep, LhsExponent>& lhs, const RhsInteger& rhs)
     -> decltype(lhs*fixed_point<RhsInteger>(rhs))
     {
@@ -227,7 +227,7 @@ namespace sg14 {
     template<
             class LhsRep, int LhsExponent,
             class RhsInteger,
-            typename = typename std::enable_if<is_integral<RhsInteger>::value>::type>
+            typename = typename std::enable_if<std::numeric_limits<RhsInteger>::is_integer>::type>
     constexpr auto operator/(const fixed_point<LhsRep, LhsExponent>& lhs, const RhsInteger& rhs)
     -> decltype(lhs/fixed_point<RhsInteger>{rhs})
     {
@@ -238,7 +238,7 @@ namespace sg14 {
     template<
             class LhsInteger,
             class RhsRep, int RhsExponent,
-            typename = typename std::enable_if<is_integral<LhsInteger>::value>::type>
+            typename = typename std::enable_if<std::numeric_limits<LhsInteger>::is_integer>::type>
     constexpr auto operator+(const LhsInteger& lhs, const fixed_point<RhsRep, RhsExponent>& rhs)
     -> decltype(fixed_point<LhsInteger, 0>{lhs} + rhs)
     {
@@ -248,7 +248,7 @@ namespace sg14 {
     template<
             class LhsInteger,
             class RhsRep, int RhsExponent,
-            typename = typename std::enable_if<is_integral<LhsInteger>::value>::type>
+            typename = typename std::enable_if<std::numeric_limits<LhsInteger>::is_integer>::type>
     constexpr auto operator-(const LhsInteger& lhs, const fixed_point<RhsRep, RhsExponent>& rhs)
     -> decltype(fixed_point<LhsInteger>{lhs}-rhs)
     {
@@ -258,7 +258,7 @@ namespace sg14 {
     template<
             class LhsInteger,
             class RhsRep, int RhsExponent,
-            typename = typename std::enable_if<is_integral<LhsInteger>::value>::type>
+            typename = typename std::enable_if<std::numeric_limits<LhsInteger>::is_integer>::type>
     constexpr auto operator*(const LhsInteger& lhs, const fixed_point<RhsRep, RhsExponent>& rhs)
     -> decltype(fixed_point<LhsInteger>{lhs}*rhs)
     {
@@ -268,7 +268,7 @@ namespace sg14 {
     template<
             class LhsInteger,
             class RhsRep, int RhsExponent,
-            typename = typename std::enable_if<is_integral<LhsInteger>::value>::type>
+            typename = typename std::enable_if<std::numeric_limits<LhsInteger>::is_integer>::type>
     constexpr auto operator/(const LhsInteger& lhs, const fixed_point<RhsRep, RhsExponent>& rhs)
     -> decltype(fixed_point<LhsInteger>{lhs}/rhs)
     {

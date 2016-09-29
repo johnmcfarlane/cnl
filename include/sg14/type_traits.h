@@ -252,30 +252,6 @@ namespace sg14 {
 
     ////////////////////////////////////////////////////////////////////////////////
     // import selected <type_traits> definitions from std namespace
-    
-    // is_integral
-    template<class T>
-    struct is_integral;
-
-    template<class T>
-    struct is_integral : std::is_integral<T> {
-    };
-
-    // is_signed
-    template<class T>
-    struct is_signed;
-
-    template<class T>
-    struct is_signed : std::is_signed<T> {
-    };
-
-    // is_unsigned
-    template<class T>
-    struct is_unsigned;
-
-    template<class T>
-    struct is_unsigned : std::is_unsigned<T> {
-    };
 
     // make_signed
     template<class T>

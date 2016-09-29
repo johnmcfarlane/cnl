@@ -324,14 +324,6 @@ namespace sg14 {
     // traits
 
     template<int Digits, class Archetype>
-    struct is_signed<elastic_integer<Digits, Archetype>> : is_signed<Archetype> {
-    };
-
-    template<int Digits, class Archetype>
-    struct is_unsigned<elastic_integer<Digits, Archetype>> : is_unsigned<Archetype> {
-    };
-
-    template<int Digits, class Archetype>
     struct make_signed<elastic_integer<Digits, Archetype>> {
         using type = elastic_integer<Digits, typename make_signed<Archetype>::type>;
     };
