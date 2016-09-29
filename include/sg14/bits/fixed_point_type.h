@@ -91,7 +91,7 @@ namespace sg14 {
         }
 
         /// copy assignment operator taking an integer type
-        template<class S, typename std::enable_if<is_integral<S>::value, int>::type Dummy = 0>
+        template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
         fixed_point& operator=(S s)
         {
             _r = integral_to_rep(s);
@@ -115,7 +115,7 @@ namespace sg14 {
         }
 
         /// returns value represented as integral
-        template<class S, typename std::enable_if<is_integral<S>::value, int>::type Dummy = 0>
+        template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
         explicit constexpr operator S() const
         {
             return rep_to_integral<S>(_r);
@@ -156,7 +156,7 @@ namespace sg14 {
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         static constexpr S one();
 
-        template<class S, typename std::enable_if<is_integral<S>::value, int>::type Dummy = 0>
+        template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
         static constexpr S one();
 
         template<class S>
@@ -353,7 +353,7 @@ namespace sg14 {
     }
 
     template<class Rep, int Exponent>
-    template<class S, typename std::enable_if<is_integral<S>::value, int>::type Dummy>
+    template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy>
     constexpr S fixed_point<Rep, Exponent>::one()
     {
         return integral_to_rep<S>(1);
@@ -380,7 +380,7 @@ namespace sg14 {
     template<class S>
     constexpr S fixed_point<Rep, Exponent>::rep_to_integral(rep r)
     {
-        static_assert(is_integral<S>::value, "S must be unsigned integral type");
+        static_assert(std::numeric_limits<S>::is_integer, "S must be integral type");
 
         return _impl::shift_left<exponent, S>(r);
     }

@@ -35,7 +35,7 @@ namespace sg14 {
     /// \sa make_ufixed
     template<int IntegerDigits, int FractionalDigits = 0, class Archetype = signed>
     using make_fixed = fixed_point<
-            set_width_t<Archetype, IntegerDigits+FractionalDigits+is_signed<Archetype>::value>,
+            set_width_t<Archetype, IntegerDigits+FractionalDigits+std::numeric_limits<Archetype>::is_signed>,
             -FractionalDigits>;
 
     /// \brief specializes \ref fixed_point with the given number of integer and fractional digits; produces an unsigned type

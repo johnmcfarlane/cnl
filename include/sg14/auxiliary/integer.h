@@ -411,24 +411,6 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::integer-specific specializations to std-like templates
 
-    // sg14::is_integral<sg14::integer<>>
-    template<typename Rep, typename OverflowPolicy>
-    struct is_integral<integer<Rep, OverflowPolicy>>
-            : std::integral_constant<bool, is_integral<Rep>::value> {
-    };
-
-    // sg14::is_unsigned<sg14::integer<>>
-    template<typename Rep, typename OverflowPolicy>
-    struct is_unsigned<integer<Rep, OverflowPolicy>>
-            : std::integral_constant<bool, is_unsigned<Rep>::value> {
-    };
-
-    // sg14::is_signed<sg14::integer<>>
-    template<typename Rep, typename OverflowPolicy>
-    struct is_signed<integer<Rep, OverflowPolicy>>
-            : std::integral_constant<bool, is_signed<Rep>::value> {
-    };
-
     // sg14::make_unsigned<sg14::integer<>>
     template<typename Rep, typename OverflowPolicy>
     struct make_unsigned<integer<Rep, OverflowPolicy>> {

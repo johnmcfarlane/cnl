@@ -10,9 +10,6 @@ using sg14::_impl::is_integer_or_float;
 using sg14::_integer_impl::is_integer_class;
 using sg14::_integer_impl::is_negative_overflow;
 using sg14::_integer_impl::is_positive_overflow;
-using sg14::is_integral;
-using sg14::is_signed;
-using sg14::is_unsigned;
 using sg14::make_signed;
 using sg14::make_unsigned;
 using sg14::saturated_integer;
@@ -297,59 +294,41 @@ static_assert(is_same<decltype(declval<saturated_integer<>>() / declval<double>(
 ////////////////////////////////////////////////////////////////////////////////
 // traits
 
-// sg14::is_integral<sg14::integer<>>
-static_assert(is_integral<sg14::integer<int8_t, sg14::saturated_overflow_policy>>::value,
-        "sg14::is_integral<sg14::integer<>> test failed");
-static_assert(is_integral<sg14::integer<uint8_t, sg14::saturated_overflow_policy>>::value,
-        "sg14::is_integral<sg14::integer<>> test failed");
-static_assert(is_integral<sg14::integer<int16_t, sg14::saturated_overflow_policy>>::value,
-        "sg14::is_integral<sg14::integer<>> test failed");
-static_assert(is_integral<sg14::integer<uint16_t, sg14::saturated_overflow_policy>>::value,
-        "sg14::is_integral<sg14::integer<>> test failed");
-static_assert(is_integral<sg14::integer<int32_t, sg14::saturated_overflow_policy>>::value,
-        "sg14::is_integral<sg14::integer<>> test failed");
-static_assert(is_integral<sg14::integer<uint32_t, sg14::saturated_overflow_policy>>::value,
-        "sg14::is_integral<sg14::integer<>> test failed");
-static_assert(is_integral<sg14::integer<int64_t, sg14::saturated_overflow_policy>>::value,
-        "sg14::is_integral<sg14::integer<>> test failed");
-static_assert(is_integral<sg14::integer<uint64_t, sg14::saturated_overflow_policy>>::value,
-        "sg14::is_integral<sg14::integer<>> test failed");
+// std::numeric_limits<sg14::integer<>>::is_integer
+static_assert(numeric_limits<sg14::integer<int8_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::integer<>> test failed");
+static_assert(numeric_limits<sg14::integer<uint8_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::integer<>> test failed");
+static_assert(numeric_limits<sg14::integer<int16_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::integer<>> test failed");
+static_assert(numeric_limits<sg14::integer<uint16_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::integer<>> test failed");
+static_assert(numeric_limits<sg14::integer<int32_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::integer<>> test failed");
+static_assert(numeric_limits<sg14::integer<uint32_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::integer<>> test failed");
+static_assert(numeric_limits<sg14::integer<int64_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::integer<>> test failed");
+static_assert(numeric_limits<sg14::integer<uint64_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::integer<>> test failed");
 
-// std::is_signed<sg14::integer<>>
-static_assert(is_signed<sg14::integer<int8_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_signed<sg14::integer<>> test failed");
-static_assert(!is_signed<sg14::integer<uint8_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_signed<sg14::integer<>> test failed");
-static_assert(is_signed<sg14::integer<int16_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_signed<sg14::integer<>> test failed");
-static_assert(!is_signed<sg14::integer<uint16_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_signed<sg14::integer<>> test failed");
-static_assert(is_signed<sg14::integer<int32_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_signed<sg14::integer<>> test failed");
-static_assert(!is_signed<sg14::integer<uint32_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_signed<sg14::integer<>> test failed");
-static_assert(is_signed<sg14::integer<int64_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_signed<sg14::integer<>> test failed");
-static_assert(!is_signed<sg14::integer<uint64_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_signed<sg14::integer<>> test failed");
-
-// std::is_unsigned<sg14::integer<>>
-static_assert(!is_unsigned<sg14::integer<int8_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_unsigned<sg14::integer<>> test failed");
-static_assert(is_unsigned<sg14::integer<uint8_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_unsigned<sg14::integer<>> test failed");
-static_assert(!is_unsigned<sg14::integer<int16_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_unsigned<sg14::integer<>> test failed");
-static_assert(is_unsigned<sg14::integer<uint16_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_unsigned<sg14::integer<>> test failed");
-static_assert(!is_unsigned<sg14::integer<int32_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_unsigned<sg14::integer<>> test failed");
-static_assert(is_unsigned<sg14::integer<uint32_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_unsigned<sg14::integer<>> test failed");
-static_assert(!is_unsigned<sg14::integer<int64_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_unsigned<sg14::integer<>> test failed");
-static_assert(is_unsigned<sg14::integer<uint64_t, sg14::saturated_overflow_policy>>::value,
-        "std::is_unsigned<sg14::integer<>> test failed");
+// std::numeric_limits<sg14::integer<>>::is_signed
+static_assert(numeric_limits<sg14::integer<int8_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::integer<>> test failed");
+static_assert(!numeric_limits<sg14::integer<uint8_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::integer<>> test failed");
+static_assert(numeric_limits<sg14::integer<int16_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::integer<>> test failed");
+static_assert(!numeric_limits<sg14::integer<uint16_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::integer<>> test failed");
+static_assert(numeric_limits<sg14::integer<int32_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::integer<>> test failed");
+static_assert(!numeric_limits<sg14::integer<uint32_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::integer<>> test failed");
+static_assert(numeric_limits<sg14::integer<int64_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::integer<>> test failed");
+static_assert(!numeric_limits<sg14::integer<uint64_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::integer<>> test failed");
 
 // sg14::make_signed<sg14::saturated_integer<>>
 static_assert(is_same<make_signed<saturated_integer<int8_t >>::type, saturated_integer<int8_t >>::value,

@@ -14,8 +14,6 @@ namespace {
     using sg14::_width_type;
     using sg14::elastic_integer;
     using sg14::_impl::identical;
-    using sg14::is_signed;
-    using sg14::is_unsigned;
 
     static_assert(identical(-elastic_integer<1, unsigned>{1}, elastic_integer<1, signed>{-1}), "elastic_integer test failed");
 
@@ -39,7 +37,7 @@ namespace {
         ////////////////////////////////////////////////////////////////////////////////
         // type traits
 
-        static_assert(sg14::is_signed<archetype>::value==sg14::is_signed<typename value_type::rep>::value,
+        static_assert(is_signed==std::numeric_limits<typename value_type::rep>::is_signed,
                 "signage of archetype and rep should be the same");
 
         ////////////////////////////////////////////////////////////////////////////////

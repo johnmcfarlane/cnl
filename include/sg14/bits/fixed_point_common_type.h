@@ -30,7 +30,7 @@ namespace sg14 {
         // generates a fixed-point type that is as big as both of them (or as close as possible)
         template<class LhsRep, int LhsExponent, class RhsInteger>
         struct common_type_mixed<fixed_point
-                <LhsRep, LhsExponent>, RhsInteger, typename std::enable_if<is_integral<RhsInteger>::value>::type> : std::common_type<
+                <LhsRep, LhsExponent>, RhsInteger, typename std::enable_if<std::numeric_limits<RhsInteger>::is_integer>::type> : std::common_type<
                 fixed_point<LhsRep, LhsExponent>, fixed_point<RhsInteger, 0>> {
         };
 

@@ -40,13 +40,13 @@ namespace sg14 {
 
         template<class LhsRep, int LhsExponent, class Rhs>
         struct binary_pair<fixed_point<LhsRep, LhsExponent>, Rhs> : binary_pair_base<LhsRep, LhsExponent, Rhs, 0> {
-            static_assert(sg14::is_integral<Rhs>::value,
+            static_assert(std::numeric_limits<Rhs>::is_integer,
                     "named arithmetic functions take only fixed_point and integral types");
         };
 
         template<class Lhs, class RhsRep, int RhsExponent>
         struct binary_pair<Lhs, fixed_point<RhsRep, RhsExponent>> : binary_pair_base<Lhs, 0, RhsRep, RhsExponent> {
-            static_assert(sg14::is_integral<Lhs>::value,
+            static_assert(std::numeric_limits<Lhs>::is_integer,
                     "named arithmetic functions take only fixed_point and integral types");
         };
 

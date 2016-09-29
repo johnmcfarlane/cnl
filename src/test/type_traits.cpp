@@ -10,8 +10,6 @@
 
 using sg14::_type_traits_impl::first_fit;
 using std::is_same;
-using sg14::is_signed;
-using sg14::is_unsigned;
 using sg14::make_signed;
 using sg14::make_unsigned;
 
@@ -132,11 +130,6 @@ struct test_built_in_set_width : test_built_in_set_width<T, NumBits-1> {
 
     static_assert(width<result_type>::value >= NumBits,
             "result of set_width must be at least the desired width in bits");
-
-    static_assert(is_signed<T>::value==is_signed<result_type>::value,
-            "incorrect signage in result of set_width_t (according to is_signed)");
-    static_assert(is_unsigned<T>::value==is_unsigned<result_type>::value,
-            "incorrect signage in result of set_width_t (according to is_unsigned)");
 
     static_assert(std::numeric_limits<result_type>::is_specialized, "numeric_limits<result_type> is not specialized");
     static_assert(std::numeric_limits<T>::is_signed==std::numeric_limits<result_type>::is_signed,
