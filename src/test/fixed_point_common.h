@@ -81,7 +81,7 @@ using sg14::_impl::identical;
 TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_fixed_point)
 {
     auto lhs = fixed_point<uint32, -16>(0);
-    lhs = fixed_point<uint32, -16>(123.456);
+    lhs = static_cast<fixed_point<uint32, -16>>(123.456);
     ASSERT_EQ(lhs, fixed_point<>(123.456));
 }
 
@@ -95,7 +95,7 @@ TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_floating_point)
 TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_integer)
 {
     auto lhs = fixed_point<uint32, -16>(0);
-    lhs = 543;
+    lhs = static_cast<fixed_point<uint32, -16>>(543);
     ASSERT_EQ(lhs, 543);
 }
 

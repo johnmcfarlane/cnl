@@ -16,6 +16,27 @@
 
 /// study group 14 of the C++ working group
 namespace sg14 {
+    // forward declaration
+    template<class Rep = int, int Exponent = 0>
+    class fixed_point;
+
+    namespace _impl {
+        template<class From, class To>
+        struct is_implicitly_convertible;
+
+        template<class FromRep, int FromExponent, class ToRep, int ToExponent>
+        struct is_implicitly_convertible<fixed_point<FromRep, FromExponent>, fixed_point<ToRep, ToExponent>> {
+            using from_limits = std::numeric_limits<FromRep>;
+            static constexpr int from_integer_digits = from_limits::digits+FromExponent;
+
+            using to_limits = std::numeric_limits<ToRep>;
+            static constexpr int to_integer_digits = to_limits::digits+ToExponent;
+
+            static constexpr bool value =
+                    to_limits::is_signed>=from_limits::is_signed && to_integer_digits>=from_integer_digits
+                            && ToExponent<=FromExponent;
+        };
+    }
 
     /// \brief literal real number approximation that uses fixed-point arithmetic
     /// \headerfile sg14/fixed_point.h
@@ -28,7 +49,7 @@ namespace sg14 {
     /// To define a fixed-point value 1 byte in size with a sign bit, 3 integer bits and 4 fractional bits:
     /// \snippet snippets.cpp define a fixed_point value
 
-    template<class Rep = int, int Exponent = 0>
+    template<class Rep, int Exponent>
     class fixed_point {
     public:
         ////////////////////////////////////////////////////////////////////////////////
@@ -69,16 +90,32 @@ namespace sg14 {
         /// default constructor
         fixed_point() { }
 
-        /// constructor taking a fixed-point type
-        template<class FromRep, int FromExponent>
+        /// constructor taking a fixed-point type explicitly
+        template<class FromRep, int FromExponent, typename std::enable_if<!_impl::is_implicitly_convertible<fixed_point<FromRep, FromExponent>, fixed_point>::value, int>::type Dummy = 0>
         explicit constexpr fixed_point(const fixed_point<FromRep, FromExponent>& rhs)
                 :_r(fixed_point_to_rep(rhs))
         {
         }
 
-        /// constructor taking an integer type
-        template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
+        /// constructor taking a fixed-point type implicitly
+        template<class FromRep, int FromExponent, typename std::enable_if<_impl::is_implicitly_convertible<fixed_point<FromRep, FromExponent>, fixed_point>::value, int>::type Dummy = 0>
+        constexpr fixed_point(const fixed_point<FromRep, FromExponent>& rhs)
+                : _r(fixed_point_to_rep(rhs))
+        {
+        }
+
+        /// constructor taking an integer type explicitly
+        template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer
+                && !_impl::is_implicitly_convertible<fixed_point<S>, fixed_point>::value, int>::type Dummy = 0>
         explicit constexpr fixed_point(S s)
+                : fixed_point(fixed_point<S, 0>::from_data(s))
+        {
+        }
+
+        /// constructor taking an integer type implicitly
+        template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer
+                && _impl::is_implicitly_convertible<fixed_point<S>, fixed_point>::value, int>::type Dummy = 0>
+        constexpr fixed_point(S s)
                 : fixed_point(fixed_point<S, 0>::from_data(s))
         {
         }
@@ -91,7 +128,8 @@ namespace sg14 {
         }
 
         /// copy assignment operator taking an integer type
-        template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
+        template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer
+                && _impl::is_implicitly_convertible<fixed_point<S>, fixed_point>::value, int>::type Dummy = 0>
         fixed_point& operator=(S s)
         {
             return operator=(fixed_point<S, 0>::from_data(s));
@@ -106,7 +144,7 @@ namespace sg14 {
         }
 
         /// copy assignement operator taking a fixed-point type
-        template<class FromRep, int FromExponent>
+        template<class FromRep, int FromExponent, typename std::enable_if<_impl::is_implicitly_convertible<fixed_point<FromRep, FromExponent>, fixed_point>::value, int>::type Dummy = 0>
         fixed_point& operator=(const fixed_point<FromRep, FromExponent>& rhs)
         {
             _r = fixed_point_to_rep(rhs);
