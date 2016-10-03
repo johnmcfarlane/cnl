@@ -72,7 +72,7 @@ namespace sg14 {
         /// constructor taking an integer type
         template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
         explicit constexpr fixed_point(S s)
-                :_r(integral_to_rep(s))
+                : fixed_point(fixed_point<S, 0>::from_data(s))
         {
         }
 
@@ -94,8 +94,7 @@ namespace sg14 {
         template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
         fixed_point& operator=(S s)
         {
-            _r = integral_to_rep(s);
-            return *this;
+            return operator=(fixed_point<S, 0>::from_data(s));
         }
 
         /// copy assignment operator taking a floating-point type
@@ -161,9 +160,6 @@ namespace sg14 {
 
         template<class S>
         static constexpr S inverse_one();
-
-        template<class S>
-        static constexpr rep integral_to_rep(S s);
 
         template<class S>
         static constexpr S rep_to_integral(rep r);
@@ -356,7 +352,7 @@ namespace sg14 {
     template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy>
     constexpr S fixed_point<Rep, Exponent>::one()
     {
-        return integral_to_rep<S>(1);
+        return fixed_point<S, 0>::from_data(1);
     }
 
     template<class Rep, int Exponent>
@@ -365,15 +361,6 @@ namespace sg14 {
     {
         static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
         return _fixed_point_def_impl::pow2<S, exponent>();
-    }
-
-    template<class Rep, int Exponent>
-    template<class S>
-    constexpr typename fixed_point<Rep, Exponent>::rep fixed_point<Rep, Exponent>::integral_to_rep(S s)
-    {
-        static_assert(std::numeric_limits<S>::is_integer, "S must be unsigned integral type");
-
-        return _impl::shift_right<exponent, rep>(s);
     }
 
     template<class Rep, int Exponent>
