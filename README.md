@@ -54,7 +54,7 @@ $ cmake -DCMAKE_BUILD_TYPE=Release
 $ make
 ```
 
-To disable exception handling, add `-DEXCEPTIONS=OFF` to the `cmake` command:
+To disable exception handling (incompatible with Boost 1.55 or lower), add `-DEXCEPTIONS=OFF` to the `cmake` command:
 
 ```shell
 $ cmake -DCMAKE_BUILD_TYPE=Release -DEXCEPTIONS=OFF
