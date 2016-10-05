@@ -32,7 +32,7 @@ and [Debian GNU/Linux 8.3](https://www.debian.org/releases/stable/) using GCC 4.
 
 Requires:
 
-- GCC 4.8.4
+- G++ 4.8.4
 - [CMake](https://cmake.org/download/) 2.8.11
 
 Optional:
