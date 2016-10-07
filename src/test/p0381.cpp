@@ -101,8 +101,10 @@ namespace sample5 {
     // sample 5 tests are a lot like sample 3 tests
 
     // they are more generic
+#if ! defined(__APPLE__)    // uint64_t is a different type depending on the version of XCode
     static_assert(is_same<uint64_t, decltype(multiply(declval<uint32_t>(), declval<uint32_t>()))>::value,
             "incorrect assumption about result of multiply function");
+#endif
     static_assert(is_same<uint32_t, decltype(multiply(declval<uint16_t>(), declval<uint16_t>()))>::value,
             "incorrect assumption about result of multiply function");
 
