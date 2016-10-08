@@ -69,6 +69,13 @@ namespace sg14 {
         /// default constructor
         fixed_point() { }
 
+        /// constructor taking a fixed-point type
+        template<class FromRep, int FromExponent>
+        explicit constexpr fixed_point(const fixed_point<FromRep, FromExponent>& rhs)
+                :_r(fixed_point_to_rep(rhs))
+        {
+        }
+
         /// constructor taking an integer type
         template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
         explicit constexpr fixed_point(S s)
@@ -80,13 +87,6 @@ namespace sg14 {
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         explicit constexpr fixed_point(S s)
                 :_r(floating_point_to_rep(s))
-        {
-        }
-
-        /// constructor taking a fixed-point type
-        template<class FromRep, int FromExponent>
-        explicit constexpr fixed_point(const fixed_point<FromRep, FromExponent>& rhs)
-                :_r(fixed_point_to_rep(rhs))
         {
         }
 
