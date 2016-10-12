@@ -10,10 +10,11 @@
 #if !defined(SG14_FIXED_POINT_OPERATORS_H)
 #define SG14_FIXED_POINT_OPERATORS_H 1
 
-#include "fixed_point_named.h"
+#include "fixed_point_arithmetic.h"
 
 /// study group 14 of the C++ working group
 namespace sg14 {
+
     ////////////////////////////////////////////////////////////////////////////////
     // (fixed_point @ fixed_point) comparison operators
 
