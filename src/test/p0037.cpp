@@ -36,6 +36,13 @@ TEST(proposal, make_fixed)
 }
 
 // Conversion
+fixed_point<uint16_t, -8> a = uint8_t{};
+//fixed_point<uint16_t, -8> b = uint16_t{};  // maximum value exceeded
+//fixed_point<uint16_t, -8> c = int8_t{};  // minimum value exceeded
+//fixed_point<uint16_t, -8> d = fixed_point<uint16_t, -16>{};  // precision loss
+//uint16_t e = fixed_point<uint16_t, -8>{};  // precision loss
+//fixed_point<uint16_t, -8> f = double{};  // all of the above
+
 static_assert(fixed_point<int, -1>{.499}==0.0, "Incorrect information in proposal section, Conversion");
 
 // Operator Overloads
