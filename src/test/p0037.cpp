@@ -36,7 +36,7 @@ TEST(proposal, make_fixed)
 }
 
 // Conversion
-static_assert(make_ufixed<4, 4>{.006}==make_ufixed<4, 4>{0}, "Incorrect information in proposal section, Conversion");
+static_assert(fixed_point<int, -1>{.499}==0.0, "Incorrect information in proposal section, Conversion");
 
 // Operator Overloads
 
