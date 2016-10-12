@@ -151,9 +151,16 @@ namespace sg14 {
             return *this;
         }
 
-        /// returns value represented as integral
+        /// returns value represented as integral explicitly
         template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
         explicit constexpr operator S() const
+        {
+            return rep_to_integral<S>(_r);
+        }
+
+        /// returns value represented as integral implicitly
+        template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer && _impl::is_implicitly_convertible<fixed_point, fixed_point<S>>::value, int>::type Dummy = 0>
+        constexpr operator S() const
         {
             return rep_to_integral<S>(_r);
         }
