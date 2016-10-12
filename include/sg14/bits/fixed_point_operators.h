@@ -357,13 +357,13 @@ namespace sg14 {
     template<class LhsRep, int Exponent, class Rhs>
     fixed_point<LhsRep, Exponent>& operator+=(fixed_point<LhsRep, Exponent>& lhs, const Rhs& rhs)
     {
-        return lhs = lhs+fixed_point<LhsRep, Exponent>(rhs);
+        return lhs = static_cast<fixed_point<LhsRep, Exponent>>(lhs+rhs);
     }
 
     template<class LhsRep, int Exponent, class Rhs>
     fixed_point<LhsRep, Exponent>& operator-=(fixed_point<LhsRep, Exponent>& lhs, const Rhs& rhs)
     {
-        return lhs = lhs-fixed_point<LhsRep, Exponent>(rhs);
+        return lhs = static_cast<fixed_point<LhsRep, Exponent>>(lhs-rhs);
     }
 
     template<class LhsRep, int Exponent>

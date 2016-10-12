@@ -32,7 +32,7 @@ and [Debian GNU/Linux 8.3](https://www.debian.org/releases/stable/) using GCC 4.
 
 Requires:
 
-- GCC 4.8.4
+- G++ 4.8.4
 - [CMake](https://cmake.org/download/) 2.8.11
 
 Optional:
@@ -54,7 +54,7 @@ $ cmake -DCMAKE_BUILD_TYPE=Release
 $ make
 ```
 
-To disable exception handling, add `-DEXCEPTIONS=OFF` to the `cmake` command:
+To disable exception handling (incompatible with Boost 1.55 or lower), add `-DEXCEPTIONS=OFF` to the `cmake` command:
 
 ```shell
 $ cmake -DCMAKE_BUILD_TYPE=Release -DEXCEPTIONS=OFF
