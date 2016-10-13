@@ -51,9 +51,9 @@ namespace sg14 {
 
     template<class Lhs, class Rhs>
     constexpr auto add(const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_fixed_point_impl::operate<_fixed_point_impl::named_function_tag, _impl::add_tag>(lhs, rhs))
+    -> decltype(_impl::fp::operate<_impl::fp::named_function_tag, _impl::add_tag>(lhs, rhs))
     {
-        return _fixed_point_impl::operate<_fixed_point_impl::named_function_tag, _impl::add_tag>(lhs, rhs);
+        return _impl::fp::operate<_impl::fp::named_function_tag, _impl::add_tag>(lhs, rhs);
     }
 
     /// \brief calculates the difference of two \ref fixed_point values
@@ -70,10 +70,10 @@ namespace sg14 {
 
     template<class Lhs, class Rhs>
     constexpr auto subtract(const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_fixed_point_impl::operate<_fixed_point_impl::named_function_tag, _impl::subtract_tag>(lhs,
+    -> decltype(_impl::fp::operate<_impl::fp::named_function_tag, _impl::subtract_tag>(lhs,
             rhs))
     {
-        return _fixed_point_impl::operate<_fixed_point_impl::named_function_tag, _impl::subtract_tag>(lhs,
+        return _impl::fp::operate<_impl::fp::named_function_tag, _impl::subtract_tag>(lhs,
                 rhs);
     }
 
@@ -91,9 +91,9 @@ namespace sg14 {
 
     template<class Lhs, class Rhs>
     constexpr auto multiply(const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_fixed_point_impl::operate<_fixed_point_impl::named_function_tag, _impl::multiply_tag>(lhs, rhs))
+    -> decltype(_impl::fp::operate<_impl::fp::named_function_tag, _impl::multiply_tag>(lhs, rhs))
     {
-        return _fixed_point_impl::operate<_fixed_point_impl::named_function_tag, _impl::multiply_tag>(lhs, rhs);
+        return _impl::fp::operate<_impl::fp::named_function_tag, _impl::multiply_tag>(lhs, rhs);
     }
 
     /// \brief calculates the quotient of two \ref fixed_point values
@@ -110,10 +110,10 @@ namespace sg14 {
 
     template<class Lhs, class Rhs>
     constexpr auto divide(const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_fixed_point_impl::operate<_fixed_point_impl::named_function_tag, _impl::divide_tag>(lhs,
+    -> decltype(_impl::fp::operate<_impl::fp::named_function_tag, _impl::divide_tag>(lhs,
             rhs))
     {
-        return _fixed_point_impl::operate<_fixed_point_impl::named_function_tag, _impl::divide_tag>(lhs,
+        return _impl::fp::operate<_impl::fp::named_function_tag, _impl::divide_tag>(lhs,
                 rhs);
     }
 }

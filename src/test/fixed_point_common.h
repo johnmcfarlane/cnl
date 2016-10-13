@@ -57,7 +57,7 @@ using fixed_point = sg14::fixed_point<Rep, Exponent>;
 
 using sg14::_impl::shift_left;
 using sg14::_impl::shift_right;
-using sg14::_fixed_point_def_impl::pow2;
+using sg14::_impl::fp::type::pow2;
 
 template<int IntegerDigits, int FractionalDigits = 0, class Archetype = test_signed>
 using make_fixed = sg14::make_fixed<IntegerDigits, FractionalDigits, Archetype>;
@@ -171,7 +171,7 @@ static_assert(is_same<decltype(uint8(0)+uint8(0)), test_int>::value, "incorrect 
 // sg14::_impl
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_fixed_point_def_impl::shift_left/right positive RHS
+// sg14::_impl::fp::type::shift_left/right positive RHS
 
 #if defined(_MSC_VER)
 #pragma warning(push)
@@ -204,7 +204,7 @@ static_assert(shift_right<8, uint16>((uint8) 0x1234)==0x0, "sg14::shift_right te
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_fixed_point_def_impl::shift_left/right negative RHS
+// sg14::_impl::fp::type::shift_left/right negative RHS
 
 #if defined(TEST_NATIVE_OVERFLOW)
 static_assert(shift_right<-8, uint16>((uint16) 0x1234)==0x3400, "sg14::shift_right test failed");
@@ -233,15 +233,15 @@ static_assert(shift_left<-8, uint16>((uint8) 0x1234)==0x0, "sg14::shift_left tes
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_fixed_point_def_impl::pow2
+// sg14::_impl::fp::type::pow2
 
-static_assert(pow2<float, 0>()==1, "sg14::_fixed_point_def_impl::pow2 test failed");
-static_assert(pow2<double, -1>()==.5, "sg14::_fixed_point_def_impl::pow2 test failed");
-static_assert(pow2<long double, 1>()==2, "sg14::_fixed_point_def_impl::pow2 test failed");
-static_assert(pow2<float, -3>()==.125, "sg14::_fixed_point_def_impl::pow2 test failed");
-static_assert(pow2<double, 7>()==128, "sg14::_fixed_point_def_impl::pow2 test failed");
-static_assert(pow2<long double, 10>()==1024, "sg14::_fixed_point_def_impl::pow2 test failed");
-static_assert(pow2<float, 20>()==1048576, "sg14::_fixed_point_def_impl::pow2 test failed");
+static_assert(pow2<float, 0>()==1, "sg14::_impl::fp::type::pow2 test failed");
+static_assert(pow2<double, -1>()==.5, "sg14::_impl::fp::type::pow2 test failed");
+static_assert(pow2<long double, 1>()==2, "sg14::_impl::fp::type::pow2 test failed");
+static_assert(pow2<float, -3>()==.125, "sg14::_impl::fp::type::pow2 test failed");
+static_assert(pow2<double, 7>()==128, "sg14::_impl::fp::type::pow2 test failed");
+static_assert(pow2<long double, 10>()==1024, "sg14::_impl::fp::type::pow2 test failed");
+static_assert(pow2<float, 20>()==1048576, "sg14::_impl::fp::type::pow2 test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -464,13 +464,13 @@ namespace test_operate {
     using sg14::_impl::multiply_tag;
     using sg14::_impl::divide_tag;
 
-    using sg14::_fixed_point_arithmetic_impl::wide_tag;
-    using sg14::_fixed_point_arithmetic_impl::lean_tag;
+    using sg14::_impl::fp::arithmetic::wide_tag;
+    using sg14::_impl::fp::arithmetic::lean_tag;
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::_fixed_point_impl::rep_op_exponent
 
-    using sg14::_fixed_point_arithmetic_impl::rep_op_exponent;
+    using sg14::_impl::fp::arithmetic::rep_op_exponent;
 
     static_assert(rep_op_exponent<multiply_tag, make_ufixed<4, 4>, make_ufixed<4, 4>>::value==-8,
             "sg14::_fixed_point_impl::rep_op_exponent test failed");
@@ -480,23 +480,23 @@ namespace test_operate {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::_fixed_point_impl::result
 
-    using sg14::_fixed_point_arithmetic_impl::result;
+    using sg14::_impl::fp::arithmetic::result;
 
-    // sg14::_fixed_point_arithmetic_impl::result::type
+    // sg14::_impl::fp::arithmetic::result::type
     static_assert(identical(
             result<lean_tag, add_tag, fixed_point<test_int, 0>, fixed_point<uint8, 10>>::type{12288},
-            fixed_point<test_int, 0>{12288}), "sg14::_fixed_point_arithmetic_impl::result test failed");
+            fixed_point<test_int, 0>{12288}), "sg14::_impl::fp::arithmetic::result test failed");
 
     static_assert(identical(
             result<wide_tag, multiply_tag, make_ufixed<4, 4>, make_ufixed<4, 4>>::type{0},
-            make_ufixed<8, 8>{0}), "sg14::_fixed_point_arithmetic_impl::result test failed");
+            make_ufixed<8, 8>{0}), "sg14::_impl::fp::arithmetic::result test failed");
     static_assert(identical(
             result<wide_tag, multiply_tag, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::type{1},
             fixed_point<uint64, 0>{1}), "sg14::fixed_point test failed");
 
     static_assert(identical(
             result<wide_tag, divide_tag, make_fixed<1, 14>, make_fixed<7, 0>>::type{1.5},
-            fixed_point<test_int, -21>{1.5}), "sg14::_fixed_point_arithmetic_impl::result test failed");
+            fixed_point<test_int, -21>{1.5}), "sg14::_impl::fp::arithmetic::result test failed");
     static_assert(identical(
             result<wide_tag, divide_tag, make_ufixed<7, 1>, make_ufixed<5, 3>>::type{15.75},
             fixed_point<test_unsigned, -6>{15.75}), "sg14::fixed_point test failed");
@@ -509,25 +509,25 @@ namespace test_operate {
             result<lean_tag, divide_tag, fixed_point<int8, -1>, fixed_point<int8, -1>>::type{-15.75},
             fixed_point<test_int, 0>{-15.75}), "sg14::fixed_point test failed");
 
-    // sg14::_fixed_point_arithmetic_impl::result::rep_op_result
+    // sg14::_impl::fp::arithmetic::result::rep_op_result
     static_assert(identical(
             result<wide_tag, multiply_tag, make_ufixed<7, 1>, make_ufixed<5, 3>>::rep_op_result{65535},
             test_int{65535}), "sg14::fixed_point test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::_fixed_point_arithmetic_impl::intermediate
+    // sg14::_impl::fp::arithmetic::intermediate
 
-    using sg14::_fixed_point_arithmetic_impl::intermediate;
+    using sg14::_impl::fp::arithmetic::intermediate;
 
-    // sg14::_fixed_point_arithmetic_impl::intermediate::rep_type
+    // sg14::_impl::fp::arithmetic::intermediate::rep_type
     static_assert(identical(
             intermediate<wide_tag, divide_tag, make_ufixed<7, 1>, make_ufixed<5, 3>>::rep_type{65537},
             test_unsigned{65537}), "sg14::fixed_point test failed");
 
-    // sg14::_fixed_point_arithmetic_impl::intermediate::lhs_type
+    // sg14::_impl::fp::arithmetic::intermediate::lhs_type
     static_assert(identical(
             intermediate<wide_tag, multiply_tag, make_ufixed<4, 4>, make_ufixed<4, 4>>::lhs_type{0},
-            fixed_point<uint8, -4>{0}), "sg14::_fixed_point_arithmetic_impl::intermediate test failed");
+            fixed_point<uint8, -4>{0}), "sg14::_impl::fp::arithmetic::intermediate test failed");
     static_assert(identical(
             intermediate<wide_tag, multiply_tag, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::lhs_type{1},
             fixed_point<uint64, 0>{1}), "sg14::fixed_point test failed");
@@ -543,10 +543,10 @@ namespace test_operate {
 
     static_assert(identical(
             intermediate<lean_tag, add_tag, fixed_point<test_int, 0>, fixed_point<uint8, 10>>::lhs_type{12288},
-            fixed_point<test_int, 0>{12288}), "sg14::_fixed_point_arithmetic_impl::intermediate test failed");
+            fixed_point<test_int, 0>{12288}), "sg14::_impl::fp::arithmetic::intermediate test failed");
     static_assert(identical(
             intermediate<lean_tag, add_tag, fixed_point<test_int, 0>, fixed_point<uint8, 10>>::rhs_type{12288},
-            fixed_point<test_int, 0>{12288}), "sg14::_fixed_point_arithmetic_impl::intermediate test failed");
+            fixed_point<test_int, 0>{12288}), "sg14::_impl::fp::arithmetic::intermediate test failed");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

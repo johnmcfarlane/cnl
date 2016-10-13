@@ -85,10 +85,10 @@ namespace sg14 {
     constexpr auto operator+(
             const fixed_point<LhsRep, LhsExponent>& lhs,
             const fixed_point<RhsRep, RhsExponent>& rhs)
-    -> decltype(_fixed_point_impl::operate<_fixed_point_impl::arithmetic_operator_tag, _impl::add_tag>(lhs,
+    -> decltype(_impl::fp::operate<_impl::fp::arithmetic_operator_tag, _impl::add_tag>(lhs,
             rhs))
     {
-        return _fixed_point_impl::operate<_fixed_point_impl::arithmetic_operator_tag, _impl::add_tag>(lhs,
+        return _impl::fp::operate<_impl::fp::arithmetic_operator_tag, _impl::add_tag>(lhs,
                 rhs);
     }
 
@@ -99,10 +99,10 @@ namespace sg14 {
     constexpr auto operator-(
             const fixed_point<LhsRep, LhsExponent>& lhs,
             const fixed_point<RhsRep, RhsExponent>& rhs)
-    -> decltype(_fixed_point_impl::operate<_fixed_point_impl::arithmetic_operator_tag, _impl::subtract_tag>(
+    -> decltype(_impl::fp::operate<_impl::fp::arithmetic_operator_tag, _impl::subtract_tag>(
             lhs, rhs))
     {
-        return _fixed_point_impl::operate<_fixed_point_impl::arithmetic_operator_tag, _impl::subtract_tag>(
+        return _impl::fp::operate<_impl::fp::arithmetic_operator_tag, _impl::subtract_tag>(
                 lhs, rhs);
     }
 
@@ -113,10 +113,10 @@ namespace sg14 {
     constexpr auto operator*(
             const fixed_point<LhsRep, LhsExponent>& lhs,
             const fixed_point<RhsRep, RhsExponent>& rhs)
-    -> decltype(_fixed_point_impl::operate<_fixed_point_impl::arithmetic_operator_tag, _impl::multiply_tag>(
+    -> decltype(_impl::fp::operate<_impl::fp::arithmetic_operator_tag, _impl::multiply_tag>(
             lhs, rhs))
     {
-        return _fixed_point_impl::operate<_fixed_point_impl::arithmetic_operator_tag, _impl::multiply_tag>(
+        return _impl::fp::operate<_impl::fp::arithmetic_operator_tag, _impl::multiply_tag>(
                 lhs, rhs);
     }
 
@@ -125,10 +125,10 @@ namespace sg14 {
     constexpr auto operator/(
             const fixed_point<LhsRep, LhsExponent>& lhs,
             const fixed_point<RhsRep, RhsExponent>& rhs)
-    -> decltype(_fixed_point_impl::operate<_fixed_point_impl::arithmetic_operator_tag, _impl::divide_tag>(
+    -> decltype(_impl::fp::operate<_impl::fp::arithmetic_operator_tag, _impl::divide_tag>(
             lhs, rhs))
     {
-        return _fixed_point_impl::operate<_fixed_point_impl::arithmetic_operator_tag, _impl::divide_tag>(
+        return _impl::fp::operate<_impl::fp::arithmetic_operator_tag, _impl::divide_tag>(
                 lhs, rhs);
     }
 

@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief essential named definitions related to the `sg14::fixed_point` type
+/// \brief essential definitions related to `sg14::fixed_point` arithmetic
 
 #if !defined(SG14_FIXED_POINT_ARITHMETIC_H)
 #define SG14_FIXED_POINT_ARITHMETIC_H 1
@@ -18,285 +18,283 @@
 namespace sg14 {
 
     ////////////////////////////////////////////////////////////////////////////////
-    // project-wide implementation-specific definitions
+    // implementation-specific definitions
 
-    namespace _fixed_point_impl {
+    namespace _impl {
+        namespace fp {
+            namespace arithmetic {
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // tags
+                ////////////////////////////////////////////////////////////////////////////////
+                // tags
 
-        // strategy
-        struct lean_tag;    // like-for-like interger arithmetic
-        struct wide_tag;    // effort is made to widen to accommodate results of multiplication and division
+                // strategy
+                struct lean_tag;    // like-for-like interger arithmetic
+                struct wide_tag;    // effort is made to widen to accommodate results of multiplication and division
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // mappings from named function strategies to public API
+                ////////////////////////////////////////////////////////////////////////////////
+                // file-local implementation-specific definitions
 
-        // strategy aliases - for ease of flip-flopping
-        using named_function_tag = lean_tag;
-        using arithmetic_operator_tag = wide_tag;
-    }
+                using ::sg14::fixed_point;
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // file-local implementation-specific definitions
+                ////////////////////////////////////////////////////////////////////////////////
+                // sg14::_impl::fp::arithmetic::binary_pair
 
-    namespace _fixed_point_arithmetic_impl {
-        using _fixed_point_impl::lean_tag;
-        using _fixed_point_impl::wide_tag;
+                template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+                struct binary_pair_base {
+                    using lhs_type = fixed_point<LhsRep, LhsExponent>;
+                    using rhs_type = fixed_point<RhsRep, RhsExponent>;
+                };
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // binary_pair
+                template<class Lhs, class Rhs>
+                struct binary_pair;
 
-        template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
-        struct binary_pair_base {
-            using lhs_type = fixed_point<LhsRep, LhsExponent>;
-            using rhs_type = fixed_point<RhsRep, RhsExponent>;
-        };
+                template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+                struct binary_pair<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>>
+                        : binary_pair_base<LhsRep, LhsExponent, RhsRep, RhsExponent> {
+                };
 
-        template<class Lhs, class Rhs>
-        struct binary_pair;
+                template<class LhsRep, int LhsExponent, class Rhs>
+                struct binary_pair<fixed_point<LhsRep, LhsExponent>, Rhs>
+                        : binary_pair_base<LhsRep, LhsExponent, Rhs, 0> {
+                    static_assert(std::numeric_limits<Rhs>::is_integer,
+                            "named arithmetic functions take only fixed_point and integral types");
+                };
 
-        template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
-        struct binary_pair<fixed_point<LhsRep, LhsExponent>, fixed_point <RhsRep, RhsExponent>>
-            : binary_pair_base<LhsRep, LhsExponent, RhsRep, RhsExponent> {
-        };
+                template<class Lhs, class RhsRep, int RhsExponent>
+                struct binary_pair<Lhs, fixed_point<RhsRep, RhsExponent>>
+                        : binary_pair_base<Lhs, 0, RhsRep, RhsExponent> {
+                    static_assert(std::numeric_limits<Lhs>::is_integer,
+                            "named arithmetic functions take only fixed_point and integral types");
+                };
 
-        template<class LhsRep, int LhsExponent, class Rhs>
-        struct binary_pair<fixed_point<LhsRep, LhsExponent>, Rhs> : binary_pair_base<LhsRep, LhsExponent, Rhs, 0> {
-        static_assert(std::numeric_limits<Rhs>::is_integer,
-                "named arithmetic functions take only fixed_point and integral types");
-        };
+                ////////////////////////////////////////////////////////////////////////////////
+                // sg14::_impl::fp::arithmetic::rep_op_exponent
 
-        template<class Lhs, class RhsRep, int RhsExponent>
-        struct binary_pair<Lhs, fixed_point<RhsRep, RhsExponent>> : binary_pair_base<Lhs, 0, RhsRep, RhsExponent> {
-        static_assert(std::numeric_limits<Lhs>::is_integer,
-                "named arithmetic functions take only fixed_point and integral types");
-        };
+                template<class OperationTag, class ... Operands>
+                struct rep_op_exponent;
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_fixed_point_arithmetic_impl::rep_op_exponent
+                template<class Rhs>
+                struct rep_op_exponent<_impl::negate_tag, Rhs> : public std::integral_constant<int, Rhs::exponent> {
+                };
 
-        template<class OperationTag, class ... Operands>
-        struct rep_op_exponent;
+                template<class Lhs, class Rhs>
+                struct rep_op_exponent<_impl::add_tag, Lhs, Rhs> : public std::integral_constant<int, _impl::min<int>(
+                        Lhs::exponent,
+                        Rhs::exponent)> {
+                };
 
-        template<class Rhs>
-        struct rep_op_exponent<_impl::negate_tag, Rhs> : public std::integral_constant<int, Rhs::exponent> {
-        };
+                template<class Lhs, class Rhs>
+                struct rep_op_exponent<_impl::subtract_tag, Lhs, Rhs>
+                        : public std::integral_constant<int, _impl::min<int>(
+                                Lhs::exponent,
+                                Rhs::exponent)> {
+                };
 
-        template<class Lhs, class Rhs>
-        struct rep_op_exponent<_impl::add_tag, Lhs, Rhs> : public std::integral_constant<int, _impl::min<int>(
-                Lhs::exponent,
-                Rhs::exponent)> {
-        };
+                template<class Lhs, class Rhs>
+                struct rep_op_exponent<_impl::multiply_tag, Lhs, Rhs> : public std::integral_constant<int,
+                        Lhs::exponent+Rhs::exponent> {
+                };
 
-        template<class Lhs, class Rhs>
-        struct rep_op_exponent<_impl::subtract_tag, Lhs, Rhs> : public std::integral_constant<int, _impl::min<int>(
-                Lhs::exponent,
-                Rhs::exponent)> {
-        };
+                template<class Lhs, class Rhs>
+                struct rep_op_exponent<_impl::divide_tag, Lhs, Rhs> : public std::integral_constant<int,
+                        Lhs::exponent-Rhs::exponent> {
+                };
 
-        template<class Lhs, class Rhs>
-        struct rep_op_exponent<_impl::multiply_tag, Lhs, Rhs> : public std::integral_constant<int,
-                Lhs::exponent+Rhs::exponent> {
-        };
+                ////////////////////////////////////////////////////////////////////////////////
+                // sg14::_impl::fp::arithmetic::result
 
-        template<class Lhs, class Rhs>
-        struct rep_op_exponent<_impl::divide_tag, Lhs, Rhs> : public std::integral_constant<int,
-                Lhs::exponent-Rhs::exponent> {
-        };
+                template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
+                struct result;
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_fixed_point_arithmetic_impl::result
+                // result<lean_tag>
+                template<class OperationTag, class Lhs, class Rhs>
+                struct result<lean_tag, OperationTag, Lhs, Rhs> {
+                    using lhs_rep = typename Lhs::rep;
+                    using rhs_rep = typename Rhs::rep;
+                    using rep_op_result = _impl::op_result<OperationTag, lhs_rep, rhs_rep>;
 
-        template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
-        struct result;
+                    static constexpr int exponent = rep_op_exponent<OperationTag, Lhs, Rhs>::value;
 
-        // result<lean_tag>
-        template<class OperationTag, class Lhs, class Rhs>
-        struct result<lean_tag, OperationTag, Lhs, Rhs> {
-            using lhs_rep = typename Lhs::rep;
-            using rhs_rep = typename Rhs::rep;
-            using rep_op_result = _impl::op_result<OperationTag, lhs_rep, rhs_rep>;
+                    using type = fixed_point<rep_op_result, exponent>;
+                };
 
-            static constexpr int exponent = rep_op_exponent<OperationTag, Lhs, Rhs>::value;
+                // result<wide_tag>
+                template<class OperationTag, class Lhs, class Rhs>
+                struct result<wide_tag, OperationTag, Lhs, Rhs> {
+                    using lhs_rep = typename Lhs::rep;
+                    using rhs_rep = typename Rhs::rep;
+                    using rep_op_result = _impl::op_result<OperationTag, lhs_rep, rhs_rep>;
 
-            using type = fixed_point<rep_op_result, exponent>;
-        };
+                    // 'Wide' doesn't guarantee avoiding overflow. Adding a single bit to add/subtract results would often lead to double the width being used.
+                    static constexpr int sufficient_sign_bits = std::is_signed<rep_op_result>::value;
+                    static constexpr int sufficient_integer_digits = _impl::max(Lhs::integer_digits,
+                            Rhs::integer_digits);
+                    static constexpr int sufficient_fractional_digits = _impl::max(Lhs::fractional_digits,
+                            Rhs::fractional_digits);
+                    static constexpr _width_type sufficient_width =
+                            sufficient_sign_bits+sufficient_integer_digits+sufficient_fractional_digits;
+                    static constexpr int result_width = _impl::max(sufficient_width, width<rep_op_result>::value);
 
-        // result<wide_tag>
-        template<class OperationTag, class Lhs, class Rhs>
-        struct result<wide_tag, OperationTag, Lhs, Rhs> {
-            using lhs_rep = typename Lhs::rep;
-            using rhs_rep = typename Rhs::rep;
-            using rep_op_result = _impl::op_result<OperationTag, lhs_rep, rhs_rep>;
+                    using rep_type = set_width_t<rep_op_result, result_width>;
+                    using type = fixed_point<rep_type, -sufficient_fractional_digits>;
+                };
 
-            // 'Wide' doesn't guarantee avoiding overflow. Adding a single bit to add/subtract results would often lead to double the width being used.
-            static constexpr int sufficient_sign_bits = std::is_signed<rep_op_result>::value;
-            static constexpr int sufficient_integer_digits = _impl::max(Lhs::integer_digits,
-                    Rhs::integer_digits);
-            static constexpr int sufficient_fractional_digits = _impl::max(Lhs::fractional_digits,
-                    Rhs::fractional_digits);
-            static constexpr _width_type sufficient_width =
-                    sufficient_sign_bits+sufficient_integer_digits+sufficient_fractional_digits;
-            static constexpr int result_width = _impl::max(sufficient_width, width<rep_op_result>::value);
+                template<class Lhs, class Rhs>
+                struct result<wide_tag, _impl::multiply_tag, Lhs, Rhs> {
+                    using lhs_rep = typename Lhs::rep;
+                    using rhs_rep = typename Rhs::rep;
+                    using rep_op_result = _impl::op_result<_impl::multiply_tag, lhs_rep, rhs_rep>;
 
-            using rep_type = set_width_t<rep_op_result, result_width>;
-            using type = fixed_point<rep_type, -sufficient_fractional_digits>;
-        };
+                    static constexpr int digits = Lhs::digits+Rhs::digits;
+                    static constexpr bool is_signed =
+                            std::numeric_limits<lhs_rep>::is_signed || std::numeric_limits<rhs_rep>::is_signed;
+                    static constexpr int width = digits+is_signed;
 
-        template<class Lhs, class Rhs>
-        struct result<wide_tag, _impl::multiply_tag, Lhs, Rhs> {
-            using lhs_rep = typename Lhs::rep;
-            using rhs_rep = typename Rhs::rep;
-            using rep_op_result = _impl::op_result<_impl::multiply_tag, lhs_rep, rhs_rep>;
+                    using prewidened_result_rep = _impl::make_signed_t<rep_op_result, is_signed>;
+                    using rep_type = set_width_t<prewidened_result_rep, width>;
 
-            static constexpr int digits = Lhs::digits+Rhs::digits;
-            static constexpr bool is_signed =
-                    std::numeric_limits<lhs_rep>::is_signed || std::numeric_limits<rhs_rep>::is_signed;
-            static constexpr int width = digits+is_signed;
+                    static constexpr int rep_exponent = rep_op_exponent<_impl::multiply_tag, Lhs, Rhs>::value;
 
-            using prewidened_result_rep = _impl::make_signed_t<rep_op_result, is_signed>;
-            using rep_type = set_width_t<prewidened_result_rep, width>;
+                    using type = fixed_point<rep_type, rep_exponent>;
+                };
 
-            static constexpr int rep_exponent = rep_op_exponent<_impl::multiply_tag, Lhs, Rhs>::value;
+                template<class Lhs, class Rhs>
+                struct result<wide_tag, _impl::divide_tag, Lhs, Rhs> {
+                    using lhs_rep = typename Lhs::rep;
+                    using rhs_rep = typename Rhs::rep;
+                    using rep_op_result = _impl::op_result<_impl::multiply_tag, lhs_rep, rhs_rep>;
 
-            using type = fixed_point<rep_type, rep_exponent>;
-        };
+                    static constexpr int integer_digits = Lhs::integer_digits+Rhs::fractional_digits;
+                    static constexpr int fractional_digits = Lhs::fractional_digits+Rhs::integer_digits;
+                    static constexpr int digits = integer_digits+fractional_digits;
+                    static constexpr bool is_signed =
+                            std::numeric_limits<lhs_rep>::is_signed || std::numeric_limits<rhs_rep>::is_signed;
 
-        template<class Lhs, class Rhs>
-        struct result<wide_tag, _impl::divide_tag, Lhs, Rhs> {
-            using lhs_rep = typename Lhs::rep;
-            using rhs_rep = typename Rhs::rep;
-            using rep_op_result = _impl::op_result<_impl::multiply_tag, lhs_rep, rhs_rep>;
+                    static constexpr int necessary_width = digits+is_signed;
+                    static constexpr int promotion_width = width<rep_op_result>::value;
+                    static constexpr int width = _impl::max(necessary_width, promotion_width);
 
-            static constexpr int integer_digits = Lhs::integer_digits+Rhs::fractional_digits;
-            static constexpr int fractional_digits = Lhs::fractional_digits+Rhs::integer_digits;
-            static constexpr int digits = integer_digits+fractional_digits;
-            static constexpr bool is_signed =
-                    std::numeric_limits<lhs_rep>::is_signed || std::numeric_limits<rhs_rep>::is_signed;
+                    using prewidened_result_rep = _impl::make_signed_t<rep_op_result, is_signed>;
+                    using rep_type = set_width_t<prewidened_result_rep, width>;
 
-            static constexpr int necessary_width = digits+is_signed;
-            static constexpr int promotion_width = width<rep_op_result>::value;
-            static constexpr int width = _impl::max(necessary_width, promotion_width);
+                    static constexpr int rep_exponent = -fractional_digits;
 
-            using prewidened_result_rep = _impl::make_signed_t<rep_op_result, is_signed>;
-            using rep_type = set_width_t<prewidened_result_rep, width>;
+                    using type = fixed_point<rep_type, rep_exponent>;
+                };
 
-            static constexpr int rep_exponent = -fractional_digits;
+                ////////////////////////////////////////////////////////////////////////////////
+                // sg14::_impl::fp::arithmetic::intermediate
 
-            using type = fixed_point<rep_type, rep_exponent>;
-        };
+                template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
+                struct intermediate;
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_fixed_point_arithmetic_impl::intermediate
+                // bare add / subtract
 
-        template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
-        struct intermediate;
+                template<class OperationTag, class Lhs, class Rhs>
+                struct intermediate<lean_tag, OperationTag, Lhs, Rhs> {
+                    using _result = result<lean_tag, OperationTag, Lhs, Rhs>;
+                    using lhs_type = typename _result::type;
+                    using rhs_type = lhs_type;
+                };
 
-        // bare add / subtract
+                template<class Lhs, class Rhs>
+                struct intermediate<lean_tag, _impl::multiply_tag, Lhs, Rhs> {
+                    using lhs_type = Lhs;
+                    using rhs_type = Rhs;
+                };
 
-        template<class OperationTag, class Lhs, class Rhs>
-        struct intermediate<lean_tag, OperationTag, Lhs, Rhs> {
-            using _result = result<lean_tag, OperationTag, Lhs, Rhs>;
-            using lhs_type = typename _result::type;
-            using rhs_type = lhs_type;
-        };
+                template<class Lhs, class Rhs>
+                struct intermediate<lean_tag, _impl::divide_tag, Lhs, Rhs> {
+                    using lhs_type = Lhs;
+                    using rhs_type = Rhs;
+                };
 
-        template<class Lhs, class Rhs>
-        struct intermediate<lean_tag, _impl::multiply_tag, Lhs, Rhs> {
-            using lhs_type = Lhs;
-            using rhs_type = Rhs;
-        };
+                // intermediate - wide
 
-        template<class Lhs, class Rhs>
-        struct intermediate<lean_tag, _impl::divide_tag, Lhs, Rhs> {
-            using lhs_type = Lhs;
-            using rhs_type = Rhs;
-        };
+                // wide - add/subtract
+                template<class OperationTag, class Lhs, class Rhs>
+                struct intermediate<wide_tag, OperationTag, Lhs, Rhs> {
+                    using _result = result<wide_tag, OperationTag, Lhs, Rhs>;
+                    using lhs_type = typename _result::type;
+                    using rhs_type = lhs_type;
+                };
 
-        // intermediate - wide
+                template<class Lhs, class Rhs>
+                struct intermediate<wide_tag, _impl::multiply_tag, Lhs, Rhs> {
+                    using _result = result<wide_tag, _impl::multiply_tag, Lhs, Rhs>;
+                    using result_rep = typename _result::rep_type;
+                    using prewidened_result_rep = typename _result::prewidened_result_rep;
 
-        // wide - add/subtract
-        template<class OperationTag, class Lhs, class Rhs>
-        struct intermediate<wide_tag, OperationTag, Lhs, Rhs> {
-            using _result = result<wide_tag, OperationTag, Lhs, Rhs>;
-            using lhs_type = typename _result::type;
-            using rhs_type = lhs_type;
-        };
+                    // If the 'natural' result of the rep op is wide enough, stick with it.
+                    // This ensures that auto-widening rep types (e.g. elastic_integer) don't get widened twice
+                    // but types that need a little help (e.g. built-ins) get widened going into the op.
+                    using rep_type = typename std::conditional<
+                            width<prewidened_result_rep>::value>=_result::width,
+                            typename Lhs::rep, result_rep>::type;
 
-        template<class Lhs, class Rhs>
-        struct intermediate<wide_tag, _impl::multiply_tag, Lhs, Rhs> {
-            using _result = result<wide_tag, _impl::multiply_tag, Lhs, Rhs>;
-            using result_rep = typename _result::rep_type;
-            using prewidened_result_rep = typename _result::prewidened_result_rep;
+                    using lhs_type = fixed_point<rep_type, Lhs::exponent>;
+                    using rhs_type = Rhs;
+                };
 
-            // If the 'natural' result of the rep op is wide enough, stick with it.
-            // This ensures that auto-widening rep types (e.g. elastic_integer) don't get widened twice
-            // but types that need a little help (e.g. built-ins) get widened going into the op.
-            using rep_type = typename std::conditional<
-                    width<prewidened_result_rep>::value>=_result::width,
-                    typename Lhs::rep, result_rep>::type;
+                template<class Lhs, class Rhs>
+                struct intermediate<wide_tag, _impl::divide_tag, Lhs, Rhs> {
+                    using wide_result = result<wide_tag, _impl::divide_tag, Lhs, Rhs>;
+                    using rep_type = typename wide_result::rep_type;
 
-            using lhs_type = fixed_point<rep_type, Lhs::exponent>;
-            using rhs_type = Rhs;
-        };
+                    static constexpr int exponent = Lhs::exponent-Rhs::digits;
 
-        template<class Lhs, class Rhs>
-        struct intermediate<wide_tag, _impl::divide_tag, Lhs, Rhs> {
-            using wide_result = result<wide_tag, _impl::divide_tag, Lhs, Rhs>;
-            using rep_type = typename wide_result::rep_type;
+                    using lhs_type = fixed_point<rep_type, exponent>;
+                    using rhs_type = Rhs;
+                };
 
-            static constexpr int exponent = Lhs::exponent-Rhs::digits;
+                ////////////////////////////////////////////////////////////////////////////////
+                // sg14::_impl::fp::arithmetic::operate_params
 
-            using lhs_type = fixed_point<rep_type, exponent>;
-            using rhs_type = Rhs;
-        };
+                template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
+                struct operate_params;
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_fixed_point_arithmetic_impl::operate_params
+                template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
+                struct operate_params {
+                    using _binary_pair = binary_pair<Lhs, Rhs>;
+                    using lhs_type = typename _binary_pair::lhs_type;
+                    using rhs_type = typename _binary_pair::rhs_type;
 
-        template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
-        struct operate_params;
+                    using _intermediate = intermediate<PolicyTag, OperationTag, lhs_type, rhs_type>;
+                    using intermediate_lhs = typename _intermediate::lhs_type;
+                    using intermediate_rhs = typename _intermediate::rhs_type;
 
-        template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
-        struct operate_params {
-            using _binary_pair = binary_pair<Lhs, Rhs>;
-            using lhs_type = typename _binary_pair::lhs_type;
-            using rhs_type = typename _binary_pair::rhs_type;
+                    using _result = result<PolicyTag, OperationTag, lhs_type, rhs_type>;
+                    using result_type = typename _result::type;
+                };
+            }
 
-            using _intermediate = intermediate<PolicyTag, OperationTag, lhs_type, rhs_type>;
-            using intermediate_lhs = typename _intermediate::lhs_type;
-            using intermediate_rhs = typename _intermediate::rhs_type;
+            ////////////////////////////////////////////////////////////////////////////////
+            // mappings from named function strategies to public API
 
-            using _result = result<PolicyTag, OperationTag, lhs_type, rhs_type>;
-            using result_type = typename _result::type;
-        };
-    }
+            // strategy aliases - for ease of flip-flopping
+            using named_function_tag = arithmetic::lean_tag;
+            using arithmetic_operator_tag = arithmetic::wide_tag;
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // general-purpose implementation-specific definitions
+            ////////////////////////////////////////////////////////////////////////////////
+            // sg14::_impl::fixed_point::operate
 
-    namespace _fixed_point_impl {
+            template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
+            constexpr auto operate(const Lhs& lhs, const Rhs& rhs)
+            -> typename arithmetic::operate_params<PolicyTag, OperationTag, Lhs, Rhs>::result_type
+            {
+                using params = arithmetic::operate_params<PolicyTag, OperationTag, Lhs, Rhs>;
+                using intermediate_lhs = typename params::intermediate_lhs;
+                using intermediate_rhs = typename params::intermediate_rhs;
+                using result_type = typename params::result_type;
+                using result_rep = typename result_type::rep;
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_fixed_point_impl::operate
-
-        template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
-        constexpr auto operate(const Lhs& lhs, const Rhs& rhs)
-        -> typename _fixed_point_arithmetic_impl::operate_params<PolicyTag, OperationTag, Lhs, Rhs>::result_type
-        {
-            using params = _fixed_point_arithmetic_impl::operate_params<PolicyTag, OperationTag, Lhs, Rhs>;
-            using intermediate_lhs = typename params::intermediate_lhs;
-            using intermediate_rhs = typename params::intermediate_rhs;
-            using result_type = typename params::result_type;
-            using result_rep = typename result_type::rep;
-
-            return result_type::from_data(
-                    static_cast<result_rep>(
-                            _impl::op_fn<OperationTag>(
-                                    static_cast<intermediate_lhs>(lhs).data(),
-                                    static_cast<intermediate_rhs>(rhs).data())));
-        };
+                return result_type::from_data(
+                        static_cast<result_rep>(
+                                _impl::op_fn<OperationTag>(
+                                        static_cast<intermediate_lhs>(lhs).data(),
+                                        static_cast<intermediate_rhs>(rhs).data())));
+            };
+        }
     }
 }
 

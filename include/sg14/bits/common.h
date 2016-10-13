@@ -157,7 +157,7 @@ namespace sg14 {
         using make_signed_t = typename make_signed<T, IsSigned>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_fixed_point_impl::float_of_same_size
+        // sg14::_impl::float_of_same_size
 
         template<class T>
         using float_of_same_size = set_width_t<float, width<T>::value>;

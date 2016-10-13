@@ -20,22 +20,27 @@ namespace sg14 {
     template<class Rep = int, int Exponent = 0>
     class fixed_point;
 
+    ////////////////////////////////////////////////////////////////////////////////
+    // implementation-specific definitions
+
     namespace _impl {
-        template<class From, class To>
-        struct is_implicitly_convertible;
+        namespace fp {
+            template<class From, class To>
+            struct is_implicitly_convertible;
 
-        template<class FromRep, int FromExponent, class ToRep, int ToExponent>
-        struct is_implicitly_convertible<fixed_point<FromRep, FromExponent>, fixed_point<ToRep, ToExponent>> {
-            using from_limits = std::numeric_limits<FromRep>;
-            static constexpr int from_integer_digits = from_limits::digits+FromExponent;
+            template<class FromRep, int FromExponent, class ToRep, int ToExponent>
+            struct is_implicitly_convertible<fixed_point<FromRep, FromExponent>, fixed_point<ToRep, ToExponent>> {
+                using from_limits = std::numeric_limits<FromRep>;
+                static constexpr int from_integer_digits = from_limits::digits+FromExponent;
 
-            using to_limits = std::numeric_limits<ToRep>;
-            static constexpr int to_integer_digits = to_limits::digits+ToExponent;
+                using to_limits = std::numeric_limits<ToRep>;
+                static constexpr int to_integer_digits = to_limits::digits+ToExponent;
 
-            static constexpr bool value =
-                    to_limits::is_signed>=from_limits::is_signed && to_integer_digits>=from_integer_digits
-                            && ToExponent<=FromExponent;
-        };
+                static constexpr bool value =
+                        to_limits::is_signed>=from_limits::is_signed && to_integer_digits>=from_integer_digits
+                                && ToExponent<=FromExponent;
+            };
+        }
     }
 
     /// \brief literal real number approximation that uses fixed-point arithmetic
@@ -91,14 +96,14 @@ namespace sg14 {
         fixed_point() { }
 
         /// constructor taking a fixed-point type explicitly
-        template<class FromRep, int FromExponent, typename std::enable_if<!_impl::is_implicitly_convertible<fixed_point<FromRep, FromExponent>, fixed_point>::value, int>::type Dummy = 0>
+        template<class FromRep, int FromExponent, typename std::enable_if<!_impl::fp::is_implicitly_convertible<fixed_point<FromRep, FromExponent>, fixed_point>::value, int>::type Dummy = 0>
         explicit constexpr fixed_point(const fixed_point<FromRep, FromExponent>& rhs)
                 :_r(fixed_point_to_rep(rhs))
         {
         }
 
         /// constructor taking a fixed-point type implicitly
-        template<class FromRep, int FromExponent, typename std::enable_if<_impl::is_implicitly_convertible<fixed_point<FromRep, FromExponent>, fixed_point>::value, int>::type Dummy = 0>
+        template<class FromRep, int FromExponent, typename std::enable_if<_impl::fp::is_implicitly_convertible<fixed_point<FromRep, FromExponent>, fixed_point>::value, int>::type Dummy = 0>
         constexpr fixed_point(const fixed_point<FromRep, FromExponent>& rhs)
                 : _r(fixed_point_to_rep(rhs))
         {
@@ -106,7 +111,7 @@ namespace sg14 {
 
         /// constructor taking an integer type explicitly
         template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer
-                && !_impl::is_implicitly_convertible<fixed_point<S>, fixed_point>::value, int>::type Dummy = 0>
+                && !_impl::fp::is_implicitly_convertible<fixed_point<S>, fixed_point>::value, int>::type Dummy = 0>
         explicit constexpr fixed_point(S s)
                 : fixed_point(fixed_point<S, 0>::from_data(s))
         {
@@ -114,7 +119,7 @@ namespace sg14 {
 
         /// constructor taking an integer type implicitly
         template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer
-                && _impl::is_implicitly_convertible<fixed_point<S>, fixed_point>::value, int>::type Dummy = 0>
+                && _impl::fp::is_implicitly_convertible<fixed_point<S>, fixed_point>::value, int>::type Dummy = 0>
         constexpr fixed_point(S s)
                 : fixed_point(fixed_point<S, 0>::from_data(s))
         {
@@ -129,7 +134,7 @@ namespace sg14 {
 
         /// copy assignment operator taking an integer type
         template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer
-                && _impl::is_implicitly_convertible<fixed_point<S>, fixed_point>::value, int>::type Dummy = 0>
+                && _impl::fp::is_implicitly_convertible<fixed_point<S>, fixed_point>::value, int>::type Dummy = 0>
         fixed_point& operator=(S s)
         {
             return operator=(fixed_point<S, 0>::from_data(s));
@@ -144,7 +149,7 @@ namespace sg14 {
         }
 
         /// copy assignement operator taking a fixed-point type
-        template<class FromRep, int FromExponent, typename std::enable_if<_impl::is_implicitly_convertible<fixed_point<FromRep, FromExponent>, fixed_point>::value, int>::type Dummy = 0>
+        template<class FromRep, int FromExponent, typename std::enable_if<_impl::fp::is_implicitly_convertible<fixed_point<FromRep, FromExponent>, fixed_point>::value, int>::type Dummy = 0>
         fixed_point& operator=(const fixed_point<FromRep, FromExponent>& rhs)
         {
             _r = fixed_point_to_rep(rhs);
@@ -159,7 +164,8 @@ namespace sg14 {
         }
 
         /// returns value represented as integral implicitly
-        template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer && _impl::is_implicitly_convertible<fixed_point, fixed_point<S>>::value, int>::type Dummy = 0>
+        template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer
+                && _impl::fp::is_implicitly_convertible<fixed_point, fixed_point<S>>::value, int>::type Dummy = 0>
         constexpr operator S() const
         {
             return rep_to_integral<S>(_r);
@@ -341,45 +347,50 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // file-local implementation-specific definitions
 
-    namespace _fixed_point_def_impl {
+    namespace _impl {
+        namespace fp {
+            namespace type {
+                ////////////////////////////////////////////////////////////////////////////////
+                // sg14::_impl::fp::type::pow2
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_fixed_point_def_impl::pow2
+                // returns given power of 2
+                template<class S, int Exponent, typename std::enable_if<Exponent==0, int>::type Dummy = 0>
+                constexpr S pow2()
+                {
+                    static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+                    return 1;
+                }
 
-        // returns given power of 2
-        template<class S, int Exponent, typename std::enable_if<Exponent==0, int>::type Dummy = 0>
-        constexpr S pow2()
-        {
-            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
-            return 1;
-        }
+                template<class S, int Exponent, typename std::enable_if<
+                        !(Exponent<=0) && (Exponent<8), int>::type Dummy = 0>
+                constexpr S pow2()
+                {
+                    static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+                    return pow2<S, Exponent-1>()*S(2);
+                }
 
-        template<class S, int Exponent, typename std::enable_if<!(Exponent<=0) && (Exponent<8), int>::type Dummy = 0>
-        constexpr S pow2()
-        {
-            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
-            return pow2<S, Exponent-1>()*S(2);
-        }
+                template<class S, int Exponent, typename std::enable_if<(Exponent>=8), int>::type Dummy = 0>
+                constexpr S pow2()
+                {
+                    static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+                    return pow2<S, Exponent-8>()*S(256);
+                }
 
-        template<class S, int Exponent, typename std::enable_if<(Exponent>=8), int>::type Dummy = 0>
-        constexpr S pow2()
-        {
-            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
-            return pow2<S, Exponent-8>()*S(256);
-        }
+                template<class S, int Exponent, typename std::enable_if<
+                        !(Exponent>=0) && (Exponent>-8), int>::type Dummy = 0>
+                constexpr S pow2()
+                {
+                    static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+                    return pow2<S, Exponent+1>()*S(.5);
+                }
 
-        template<class S, int Exponent, typename std::enable_if<!(Exponent>=0) && (Exponent>-8), int>::type Dummy = 0>
-        constexpr S pow2()
-        {
-            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
-            return pow2<S, Exponent+1>()*S(.5);
-        }
-
-        template<class S, int Exponent, typename std::enable_if<(Exponent<=-8), int>::type Dummy = 0>
-        constexpr S pow2()
-        {
-            static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
-            return pow2<S, Exponent+8>()*S(.003906250);
+                template<class S, int Exponent, typename std::enable_if<(Exponent<=-8), int>::type Dummy = 0>
+                constexpr S pow2()
+                {
+                    static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+                    return pow2<S, Exponent+8>()*S(.003906250);
+                }
+            }
         }
     }
 
@@ -390,7 +401,7 @@ namespace sg14 {
     template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy>
     constexpr S fixed_point<Rep, Exponent>::one()
     {
-        return _fixed_point_def_impl::pow2<S, -exponent>();
+        return _impl::fp::type::pow2<S, -exponent>();
     }
 
     template<class Rep, int Exponent>
@@ -405,7 +416,7 @@ namespace sg14 {
     constexpr S fixed_point<Rep, Exponent>::inverse_one()
     {
         static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
-        return _fixed_point_def_impl::pow2<S, exponent>();
+        return _impl::fp::type::pow2<S, exponent>();
     }
 
     template<class Rep, int Exponent>
