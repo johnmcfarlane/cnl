@@ -556,7 +556,7 @@ static_assert(std::numeric_limits<uint8>::max()/5==51, "");
 static_assert(std::numeric_limits<uint8>::max()/3==85, "");
 
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert(identical(multiply(make_ufixed<4, 4>{2}, make_ufixed<4, 4>{7.5}), fixed_point<test_int, -8>{15}),
+static_assert(identical(multiply(make_ufixed<4, 4>{2}, make_ufixed<4, 4>{7.5}), fixed_point<uint16, -8>{15}),
         "sg14::multiply test failed");
 #endif
 
@@ -644,9 +644,9 @@ static_assert(is_same<decltype(make_fixed<31, 32>(16777215.996093750)+765.432f),
         "sg14::fixed_point addition operator test failed");
 
 #if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
-static_assert(identical(fixed_point<int32, -16>{.5}+2, fixed_point<int64, -16>{2.5}),
+static_assert(identical(add(fixed_point<int32, -16>{.5}, 2), fixed_point<int64, -16>{2.5}),
         "sg14::fixed_point addition operator test failed");
-static_assert(identical(add(fixed_point<int32, -16>{.5}, 2), fixed_point<test_int, -16>{2.5}),
+static_assert(identical(fixed_point<int32, -16>{.5} + 2, fixed_point<test_int, -16>{2.5}),
         "sg14::fixed_point addition operator test failed");
 #endif
 
@@ -668,31 +668,31 @@ static_assert(is_same<decltype(765.432f-make_fixed<31, 32>(16777215.996093750)),
         "sg14::fixed_point subtraction test failed");
 
 // multiplication
-static_assert(identical(make_ufixed<8, 0>{0x55}*make_ufixed<8, 0>{2}, fixed_point<uint16, 0>{0xaa}),
+static_assert(identical(multiply(make_ufixed<8, 0>{0x55}, make_ufixed<8, 0>{2}), fixed_point<uint16, 0>{0xaa}),
         "sg14::fixed_point test failed");
-static_assert(identical(multiply(make_ufixed<8, 0>{0x55}, make_ufixed<8, 0>{2}), fixed_point<test_int, 0>{0xaa}),
-        "sg14::fixed_point test failed");
-
-static_assert(identical(make_fixed<15, 16>{123.75}*make_fixed<15, 16>{44.5}, make_fixed<31, 32>{5506.875}),
-        "sg14::fixed_point test failed");
-static_assert(identical(multiply(make_fixed<47, 16>{123.75}, make_fixed<15, 16>(44.5)), make_fixed<31, 32>{5506.875}),
+static_assert(identical(make_ufixed<8, 0>{0x55} * make_ufixed<8, 0>{2}, fixed_point<test_int, 0>{0xaa}),
         "sg14::fixed_point test failed");
 
-static_assert(identical(make_fixed<2, 5>{2.125}*make_fixed<2, 5>{-3.25}, fixed_point<int16, -10>{-6.90625}),
+static_assert(identical(multiply(make_fixed<15, 16>{123.75}, make_fixed<15, 16>{44.5}), make_fixed<31, 32>{5506.875}),
+        "sg14::fixed_point test failed");
+static_assert(identical(make_fixed<47, 16>{123.75} * make_fixed<15, 16>(44.5), make_fixed<31, 32>{5506.875}),
+        "sg14::fixed_point test failed");
+
+static_assert(identical(multiply(make_fixed<2, 5>{2.125}, make_fixed<2, 5>{-3.25}), fixed_point<int16, -10>{-6.90625}),
         "sg14::fixed_point multiplication test failed");
 static_assert(
-        identical(multiply(make_fixed<2, 5>{2.125}, make_fixed<2, 5>{-3.25}), fixed_point<test_int, -10>{-6.90625}),
+        identical(make_fixed<2, 5>{2.125} * make_fixed<2, 5>{-3.25}, fixed_point<test_int, -10>{-6.90625}),
         "sg14::fixed_point multiplication test failed");
 
 #if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
-static_assert(identical(fixed_point<uint8, 10>{10240}*3u, fixed_point<uint64, 10>{30720}),
+static_assert(identical(multiply(fixed_point<uint8, 10>{10240}, 3u), fixed_point<uint64, 10>{30720}),
         "sg14::fixed_point multiplication test failed");
-static_assert(identical(multiply(fixed_point<uint8, 10>{10240}, 3u), fixed_point<test_unsigned, 10>{30720}),
+static_assert(identical(fixed_point<uint8, 10>{10240} * 3u, fixed_point<test_unsigned, 10>{30720}),
         "sg14::fixed_point multiplication test failed");
 
-static_assert(identical(3u*fixed_point<uint8, 10>{10240}, fixed_point<uint64, 10>{30720}),
+static_assert(identical(multiply(3u, fixed_point<uint8, 10>{10240}), fixed_point<uint64, 10>{30720}),
         "sg14::fixed_point multiplication test failed");
-static_assert(identical(multiply(3u, fixed_point<uint8, 10>{10240}), fixed_point<test_unsigned, 10>{30720}),
+static_assert(identical(3u * fixed_point<uint8, 10>{10240}, fixed_point<test_unsigned, 10>{30720}),
         "sg14::fixed_point multiplication test failed");
 #endif
 
@@ -708,6 +708,8 @@ static_assert(is_same<decltype(make_fixed<31, 32>(16777215.996093750)*-123.654f)
 // division
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(identical(fixed_point<int8, -1>{63}/fixed_point<int8, -1>{-4}, fixed_point<test_int, -7>{-15.75}),
+        "sg14::fixed_point test failed");
+static_assert(identical(fixed_point<test_int, -1>{63}/fixed_point<int8, -1>{-4}, fixed_point<int64, -7>{-15.75}),
         "sg14::fixed_point test failed");
 #endif
 #if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)

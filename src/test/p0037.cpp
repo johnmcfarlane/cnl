@@ -48,7 +48,7 @@ static_assert(fixed_point<int, -1>{.499}==0.0, "Incorrect information in proposa
 // Operator Overloads
 
 static_assert(identical(fixed_point<uint8_t, -3>{8} + fixed_point<int8_t, -4>{3}, fixed_point<int, -4>{11}), "Incorrect information in P0037 section, Operator Overloads");
-static_assert(identical(fixed_point<uint8_t, -3>{8} + 3, fixed_point<int64_t, -3>{11}), "Incorrect information in P0037 section, Operator Overloads");
+static_assert(identical(fixed_point<uint8_t, -3>{8} + 3, fixed_point<int, -3>{11}), "Incorrect information in P0037 section, Operator Overloads");
 static_assert(identical(fixed_point<uint8_t, -3>{8} + float{3}, float{11}), "Incorrect information in P0037 section, Operator Overloads");
 
 // Overflow
@@ -74,30 +74,47 @@ static_assert(identical(make_fixed<7, 0>(15)/make_fixed<7, 0>(2), fixed_point<in
         "Incorrect information in proposal section, Underflow");
 
 // Named Arithmetic Functions
-TEST(proposal, named_arithmetic1)
-{
+namespace named_arithmetic1 {
     constexpr auto f = fixed_point<uint8_t, -4>{15.9375};
     constexpr auto p = multiply(f, f);
 
-    static_assert(identical(p, fixed_point<int, -8>{254.00390625}), "Incorrect formation in proposal section, Named Arithmetic Functions");
+    static_assert(identical(p, fixed_point<uint16_t, -8>{254.00390625}), "Incorrect information in proposal section, Named Arithmetic Functions");
 }
 
 TEST(proposal, named_arithmetic2)
 {
     auto f = fixed_point<unsigned, -28>{15.9375};
-    auto p = multiply(f, f);
+    auto p = f * f;
 
-    static_assert(is_same<decltype(p), fixed_point<unsigned, -56>>::value, "Incorrect formation in proposal section, Named Arithmetic Functions");
-    ASSERT_FALSE(p);
+    static_assert(is_same<decltype(p), fixed_point<unsigned, -56>>::value, "Incorrect information in proposal section, Named Arithmetic Functions");
+    ASSERT_EQ(p, 0.);
 }
 
-TEST(proposal, named_arithmetic3)
-{
+namespace named_arithmetic3 {
     constexpr auto f = fixed_point<unsigned, -28>{15.9375};
-    constexpr auto p = f * f;
+    constexpr auto p = multiply(f, f);
 
     static_assert(identical(p, fixed_point<uint64_t, -56>{254.00390625}),
-            "Incorrect formation in proposal section, Named Arithmetic Functions");
+            "Incorrect information in proposal section, Named Arithmetic Functions");
+}
+
+namespace named_arithmetic4 {
+    constexpr auto a1 = fixed_point<int8_t, 32>{0x7f00000000LL};
+    constexpr auto a2 = fixed_point<int8_t, 0>{0x7f};
+    constexpr auto s = add(a1, a2);
+
+    static_assert(identical(s, fixed_point<int64_t, 0>{0x7f0000007fLL}), "Incorrect information in proposal section, Named Arithmetic Functions");
+}
+
+namespace named_arithmetic5 {
+    constexpr auto n = fixed_point<uint32_t, -16>{1};
+    constexpr auto d = fixed_point<uint32_t, -16>{2};
+
+    constexpr auto q1 = n/d;
+    static_assert(identical(q1, fixed_point<uint64_t, -32>{0.5}), "Incorrect information in proposal section, Named Arithmetic Functions");
+
+    constexpr auto q2 = divide(n, d);
+    static_assert(identical(q2, fixed_point<uint32_t, 0>{0}), "Incorrect information in proposal section, Named Arithmetic Functions");
 }
 
 // The `width` Helper Type
@@ -117,16 +134,15 @@ constexpr auto magnitude(Fp x, Fp y, Fp z)
 TEST(proposal, examples)
 {
     constexpr auto m = magnitude(
-            fixed_point<uint16_t, -12>(1),
-            fixed_point<uint16_t, -12>(4),
-            fixed_point<uint16_t, -12>(9));
+            make_ufixed<4, 12>(1),
+            make_ufixed<4, 12>(4),
+            make_ufixed<4, 12>(9));
 #if defined(_MSC_VER)
-    static_assert(std::is_same<decltype(m), const sg14::fixed_point<uint32_t, -24>> ::value, "Incorrect formation in proposal section, Examples");
-    constexpr auto expected = fixed_point<uint32_t, -24>{ 9.8994948863983154 };
+    constexpr auto expected = make_fixed<7, 24>{9.8994948864};
+    static_assert(std::is_same<decltype(m), decltype(expected)>::value, "Incorrect formation in proposal section, Examples");
     ASSERT_EQ(expected, m);
 #else
-    static_assert(identical(m, fixed_point<uint32_t, -24>{9.8994948863983154}),
-            "Incorrect formation in proposal section, Examples");
+    static_assert(identical(m, make_fixed<7, 24>{9.8994948864}), "Incorrect information in proposal section, Examples");
 #endif
 }
 

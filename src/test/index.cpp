@@ -75,7 +75,7 @@ void basic_arithmetic_example()
 
     // expressions involving integers return fixed_point results
     auto tau = pi*2;
-    static_assert(is_same<decltype(tau), fixed_point<int64_t, -28>>::value, "");
+    static_assert(is_same<decltype(tau), fixed_point<int32_t, -28>>::value, "");
 
     // "6.28319"
     cout << tau << endl;
@@ -110,15 +110,15 @@ void advanced_arithmetic_example()
     // fixed-point multiplication operator widens result
     auto xx = x*x;
 
-    // x * x has type fixed_point<uint16_t, -8>
-    static_assert(is_same<decltype(xx), fixed_point<uint16_t, -8>>::value, "");
+    // x*x is promoted to fixed_point<int, -8>
+    static_assert(is_same<decltype(xx), fixed_point<int, -8>>::value, "");
     cout << setprecision(12) << xx << endl;  // "254.00390625" - correct
 
-    // for maximum efficiency, use named functions:
+    // you can avoid the pitfalls of integer promotion using the multiply function
     auto named_xx = multiply(x, x);
 
     // multiply result is same as underlying representation's operation
-    static_assert(is_same<decltype(named_xx), fixed_point<int, -8>>::value, "");
+    static_assert(is_same<decltype(named_xx), fixed_point<uint16_t, -8>>::value, "");
     cout << named_xx << endl;  // "254.00390625" - also correct but prone to overflow
 }
 //! [advanced arithmetic example]
@@ -223,7 +223,7 @@ void elastic_example1()
     // Obviously, this type no longer fits in a byte.
     static_assert(sizeof(aa)==2, "");
 
-    // Addition requires smaller results
+    // Addition requires smaller results.
     auto a2 = a+a;
     static_assert(is_same<decltype(a2), elastic_integer<7, int8_t >> ::value, "");
 }
