@@ -45,35 +45,39 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::sqrt helper functions
 
-    namespace _fixed_point_extras_impl {
-        template<class Rep>
-        constexpr Rep sqrt_bit(
-                Rep n,
-                Rep bit = Rep(1) << (width<Rep>::value-2))
-        {
-            return (bit>n) ? sqrt_bit<Rep>(n, bit >> 2) : bit;
-        }
+    namespace _impl {
+        namespace fp {
+            namespace extras {
+                template<class Rep>
+                constexpr Rep sqrt_bit(
+                        Rep n,
+                        Rep bit = Rep(1) << (width<Rep>::value-2))
+                {
+                    return (bit>n) ? sqrt_bit<Rep>(n, bit >> 2) : bit;
+                }
 
-        template<class Rep>
-        constexpr Rep sqrt_solve3(
-                Rep n,
-                Rep bit,
-                Rep result)
-        {
-            return (bit!=Rep{0})
-                   ? (n>=result+bit)
-                     ? sqrt_solve3<Rep>(
-                                    static_cast<Rep>(n-(result+bit)),
-                                    bit >> 2,
-                                    static_cast<Rep>((result >> 1)+bit))
-                     : sqrt_solve3<Rep>(n, bit >> 2, result >> 1)
-                   : result;
-        }
+                template<class Rep>
+                constexpr Rep sqrt_solve3(
+                        Rep n,
+                        Rep bit,
+                        Rep result)
+                {
+                    return (bit!=Rep{0})
+                           ? (n>=result+bit)
+                             ? sqrt_solve3<Rep>(
+                                            static_cast<Rep>(n-(result+bit)),
+                                            bit >> 2,
+                                            static_cast<Rep>((result >> 1)+bit))
+                             : sqrt_solve3<Rep>(n, bit >> 2, result >> 1)
+                           : result;
+                }
 
-        template<class Rep>
-        constexpr Rep sqrt_solve1(Rep n)
-        {
-            return sqrt_solve3<Rep>(n, sqrt_bit<Rep>(n), Rep{0});
+                template<class Rep>
+                constexpr Rep sqrt_solve1(Rep n)
+                {
+                    return sqrt_solve3<Rep>(n, sqrt_bit<Rep>(n), Rep{0});
+                }
+            }
         }
     }
 
@@ -107,7 +111,7 @@ namespace sg14 {
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
 #endif
                 fixed_point<Rep, Exponent>::from_data(
-                        static_cast<Rep>(_fixed_point_extras_impl::sqrt_solve1(widened_type{x}.data())));
+                        static_cast<Rep>(_impl::fp::extras::sqrt_solve1(widened_type{x}.data())));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -117,14 +121,18 @@ namespace sg14 {
     // due to conversion to and from floating-point types; also inconvenient as
     // many <cmath> functions are not constexpr.
 
-    namespace _fixed_point_extras_impl {
-        template<class Rep, int Exponent, _impl::float_of_same_size<Rep>(* F)(
-                _impl::float_of_same_size<Rep>)>
-        constexpr fixed_point <Rep, Exponent>
-        crib(const fixed_point <Rep, Exponent>& x) noexcept
-        {
-            using floating_point = _impl::float_of_same_size<Rep>;
-            return static_cast<fixed_point<Rep, Exponent>>(F(static_cast<floating_point>(x)));
+    namespace _impl {
+        namespace fp {
+            namespace extras {
+                template<class Rep, int Exponent, _impl::float_of_same_size<Rep>(* F)(
+                        _impl::float_of_same_size<Rep>)>
+                constexpr fixed_point <Rep, Exponent>
+                crib(const fixed_point <Rep, Exponent>& x) noexcept
+                {
+                    using floating_point = _impl::float_of_same_size<Rep>;
+                    return static_cast<fixed_point<Rep, Exponent>>(F(static_cast<floating_point>(x)));
+                }
+            }
         }
     }
 
@@ -132,28 +140,28 @@ namespace sg14 {
     constexpr fixed_point <Rep, Exponent>
     sin(const fixed_point <Rep, Exponent>& x) noexcept
     {
-        return _fixed_point_extras_impl::crib<Rep, Exponent, std::sin>(x);
+        return _impl::fp::extras::crib<Rep, Exponent, std::sin>(x);
     }
 
     template<class Rep, int Exponent>
     constexpr fixed_point <Rep, Exponent>
     cos(const fixed_point <Rep, Exponent>& x) noexcept
     {
-        return _fixed_point_extras_impl::crib<Rep, Exponent, std::cos>(x);
+        return _impl::fp::extras::crib<Rep, Exponent, std::cos>(x);
     }
 
     template<class Rep, int Exponent>
     constexpr fixed_point <Rep, Exponent>
     exp(const fixed_point <Rep, Exponent>& x) noexcept
     {
-        return _fixed_point_extras_impl::crib<Rep, Exponent, std::exp>(x);
+        return _impl::fp::extras::crib<Rep, Exponent, std::exp>(x);
     }
 
     template<class Rep, int Exponent>
     constexpr fixed_point <Rep, Exponent>
     pow(const fixed_point <Rep, Exponent>& x) noexcept
     {
-        return _fixed_point_extras_impl::crib<Rep, Exponent, std::pow>(x);
+        return _impl::fp::extras::crib<Rep, Exponent, std::pow>(x);
     }
 
     ////////////////////////////////////////////////////////////////////////////////

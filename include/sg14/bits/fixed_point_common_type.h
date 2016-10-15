@@ -17,32 +17,36 @@
 namespace sg14 {
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::fixed_point-aware _fixed_point_common_type_impl definitions
+    // implementation-specific definitions
 
-    namespace _fixed_point_common_type_impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_fixed_point_common_type_impl::common_type_mixed
+    namespace _impl {
+        namespace fp {
+            namespace ct {
 
-        template<class Lhs, class Rhs, class _Enable = void>
-        struct common_type_mixed;
+                ////////////////////////////////////////////////////////////////////////////////
+                // sg14::_impl::fp::ct::common_type_mixed
 
-        // given a fixed-point and an integer type,
-        // generates a fixed-point type that is as big as both of them (or as close as possible)
-        template<class LhsRep, int LhsExponent, class RhsInteger>
-        struct common_type_mixed<fixed_point
-                <LhsRep, LhsExponent>, RhsInteger, typename std::enable_if<std::numeric_limits<RhsInteger>::is_integer>::type> : std::common_type<
-                fixed_point<LhsRep, LhsExponent>, fixed_point<RhsInteger, 0>> {
-        };
+                template<class Lhs, class Rhs, class _Enable = void>
+                struct common_type_mixed;
 
-        // given a fixed-point and a floating-point type,
-        // generates a floating-point type that is as big as both of them (or as close as possible)
-        template<class LhsRep, int LhsExponent, class Float>
-        struct common_type_mixed<
-                fixed_point<LhsRep, LhsExponent>,
-        Float,
-        typename std::enable_if<std::is_floating_point<Float>::value>::type>
-        : std::common_type<_impl::float_of_same_size<LhsRep>, Float> {
-        };
+                // given a fixed-point and an integer type,
+                // generates a fixed-point type that is as big as both of them (or as close as possible)
+                template<class LhsRep, int LhsExponent, class RhsInteger>
+                struct common_type_mixed<fixed_point
+                        <LhsRep, LhsExponent>, RhsInteger, typename std::enable_if<std::numeric_limits<RhsInteger>::is_integer>::type> : std::common_type<
+                        fixed_point<LhsRep, LhsExponent>, fixed_point<RhsInteger, 0>> {
+                };
+
+                // given a fixed-point and a floating-point type,
+                // generates a floating-point type that is as big as both of them (or as close as possible)
+                template<class LhsRep, int LhsExponent, class Float>
+                struct common_type_mixed<
+                        fixed_point<LhsRep, LhsExponent>,
+                        Float,
+                        typename std::enable_if<std::is_floating_point<Float>::value>::type> : std::common_type<_impl::float_of_same_size<LhsRep>, Float> {
+                };
+            }
+        }
     }
 }
 
@@ -80,14 +84,14 @@ namespace std {
     template<class LhsRep, int LhsExponent, class Rhs>
     struct common_type<sg14::fixed_point<LhsRep, LhsExponent>, Rhs> {
         static_assert(!sg14::_impl::is_fixed_point<Rhs>::value, "fixed-point Rhs type");
-        using type = typename sg14::_fixed_point_common_type_impl::common_type_mixed<sg14::fixed_point<LhsRep, LhsExponent>, Rhs>::type;
+        using type = typename sg14::_impl::fp::ct::common_type_mixed<sg14::fixed_point<LhsRep, LhsExponent>, Rhs>::type;
     };
 
     // std::common_type<not-fixed-point, fixed_point<>>
     template<class Lhs, class RhsRep, int RhsExponent>
     struct common_type<Lhs, sg14::fixed_point<RhsRep, RhsExponent>> {
         static_assert(!sg14::_impl::is_fixed_point<Lhs>::value, "fixed-point Lhs type");
-        using type = typename sg14::_fixed_point_common_type_impl::common_type_mixed<sg14::fixed_point<RhsRep, RhsExponent>, Lhs>::type;
+        using type = typename sg14::_impl::fp::ct::common_type_mixed<sg14::fixed_point<RhsRep, RhsExponent>, Lhs>::type;
     };
 
     // std::common_type<fixed_point<>, fixed_point<>>
