@@ -28,6 +28,7 @@ namespace sg14 {
                 // tags
 
                 // strategy
+                struct raw_tag;
                 struct lean_tag;    // like-for-like interger arithmetic
                 struct wide_tag;    // effort is made to widen to accommodate results of multiplication and division
 
@@ -106,9 +107,9 @@ namespace sg14 {
                 template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
                 struct result;
 
-                // result<lean_tag>
+                // result<raw_tag>
                 template<class OperationTag, class Lhs, class Rhs>
-                struct result<lean_tag, OperationTag, Lhs, Rhs> {
+                struct result<raw_tag, OperationTag, Lhs, Rhs> {
                     using lhs_rep = typename Lhs::rep;
                     using rhs_rep = typename Rhs::rep;
                     using rep_op_result = _impl::op_result<OperationTag, lhs_rep, rhs_rep>;
@@ -117,6 +118,10 @@ namespace sg14 {
 
                     using type = fixed_point<rep_op_result, exponent>;
                 };
+
+                // result<lean_tag>
+                template<class OperationTag, class Lhs, class Rhs>
+                struct result<lean_tag, OperationTag, Lhs, Rhs> : result<raw_tag, OperationTag, Lhs, Rhs> {};
 
                 // result<wide_tag>
                 template<class OperationTag, class Lhs, class Rhs>
@@ -272,8 +277,10 @@ namespace sg14 {
             // mappings from named function strategies to public API
 
             // strategy aliases - for ease of flip-flopping
-            using named_function_tag = arithmetic::lean_tag;
-            using arithmetic_operator_tag = arithmetic::wide_tag;
+            using arithmetic_operator_tag = arithmetic::lean_tag;
+            using division_arithmetic_operator_tag = arithmetic::wide_tag;
+            using named_function_tag = arithmetic::wide_tag;
+            using division_named_function_tag = arithmetic::lean_tag;
 
             ////////////////////////////////////////////////////////////////////////////////
             // sg14::_impl::fixed_point::operate

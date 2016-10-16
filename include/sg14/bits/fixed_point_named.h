@@ -110,10 +110,10 @@ namespace sg14 {
 
     template<class Lhs, class Rhs>
     constexpr auto divide(const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_impl::fp::operate<_impl::fp::named_function_tag, _impl::divide_tag>(lhs,
+    -> decltype(_impl::fp::operate<_impl::fp::division_named_function_tag, _impl::divide_tag>(lhs,
             rhs))
     {
-        return _impl::fp::operate<_impl::fp::named_function_tag, _impl::divide_tag>(lhs,
+        return _impl::fp::operate<_impl::fp::division_named_function_tag, _impl::divide_tag>(lhs,
                 rhs);
     }
 }

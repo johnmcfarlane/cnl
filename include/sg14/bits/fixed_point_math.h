@@ -81,8 +81,8 @@ namespace sg14 {
                 //the fractional part. Note that the constant 1 of the polynomial is added later,
                 //this gives us one more bit of precision here for free
                 using coeffs = poly_coeffs<fp>;
-                return fp{xf*(coeffs::a1+fp{xf*(coeffs::a2+fp{xf*(coeffs::a3+fp{xf*(coeffs::a4
-                        +fp{xf*(coeffs::a5+fp{xf*(coeffs::a6+fp{fp{coeffs::a7}*fp{xf}})})})})})})};
+                return fp{multiply(xf, (coeffs::a1+fp{multiply(xf, (coeffs::a2+fp{multiply(xf, (coeffs::a3+fp{multiply(xf, (coeffs::a4
+                        +fp{multiply(xf, (coeffs::a5+fp{multiply(xf, (coeffs::a6+fp{multiply(fp{coeffs::a7}, fp{xf})}))}))}))}))}))}))};
             }
 
             //Computes 2^x - 1 for a number x between 0 and 1, strictly less than 1

@@ -125,10 +125,10 @@ namespace sg14 {
     constexpr auto operator/(
             const fixed_point<LhsRep, LhsExponent>& lhs,
             const fixed_point<RhsRep, RhsExponent>& rhs)
-    -> decltype(_impl::fp::operate<_impl::fp::arithmetic_operator_tag, _impl::divide_tag>(
+    -> decltype(_impl::fp::operate<_impl::fp::division_arithmetic_operator_tag, _impl::divide_tag>(
             lhs, rhs))
     {
-        return _impl::fp::operate<_impl::fp::arithmetic_operator_tag, _impl::divide_tag>(
+        return _impl::fp::operate<_impl::fp::division_arithmetic_operator_tag, _impl::divide_tag>(
                 lhs, rhs);
     }
 
