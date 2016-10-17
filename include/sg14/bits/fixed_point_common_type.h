@@ -10,7 +10,6 @@
 #if !defined(SG14_FIXED_POINT_COMMON_TYPE_H)
 #define SG14_FIXED_POINT_COMMON_TYPE_H 1
 
-#include "common.h"
 #include "fixed_point_type.h"
 
 /// study group 14 of the C++ working group
@@ -43,7 +42,7 @@ namespace sg14 {
                 struct common_type_mixed<
                         fixed_point<LhsRep, LhsExponent>,
                         Float,
-                        typename std::enable_if<std::is_floating_point<Float>::value>::type> : std::common_type<_impl::float_of_same_size<LhsRep>, Float> {
+                        typename std::enable_if<std::is_floating_point<Float>::value>::type> : std::common_type<_impl::fp::float_of_same_size<LhsRep>, Float> {
                 };
             }
         }

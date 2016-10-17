@@ -1,0 +1,286 @@
+
+//          Copyright John McFarlane 2015 - 2016.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file ../LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
+/// \file
+/// \brief additions to <cstdint> proposed in P0381
+
+#if !defined(SG14_CSTDINT_H)
+#define SG14_CSTDINT_H 1
+
+#include "bits/config.h"
+
+#include <climits>
+#include <cstdint>
+#include <tuple>
+#include <type_traits>
+
+/// study group 14 of the C++ working group
+namespace sg14 {
+    using _width_type = unsigned;
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // width - new type property which returns number of bits of information
+
+    /// \brief provides width of numeric type
+    ///
+    /// \tparam T given numeric type
+    ///
+    /// \remarks If \c T is a fixed-point numeric type such as an integral type,
+    /// \c width<T>::value is the width of T in bits.
+    /// \remarks The width is defined as the number of digits including any sign bit.
+    /// \remarks The template may be specialized for custom types.
+
+    template<class T>
+    struct width;
+
+    template<>
+    struct width<char> : std::integral_constant<_width_type, sizeof(char)*CHAR_BIT> {
+    };
+    template<>
+    struct width<wchar_t> : std::integral_constant<_width_type, sizeof(wchar_t)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<signed char> : std::integral_constant<_width_type, sizeof(signed char)*CHAR_BIT> {
+    };
+    template<>
+    struct width<unsigned char> : std::integral_constant<_width_type, sizeof(unsigned char)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<signed short> : std::integral_constant<_width_type, sizeof(signed short)*CHAR_BIT> {
+    };
+    template<>
+    struct width<unsigned short> : std::integral_constant<_width_type, sizeof(unsigned short)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<signed int> : std::integral_constant<_width_type, sizeof(signed int)*CHAR_BIT> {
+    };
+    template<>
+    struct width<unsigned int> : std::integral_constant<_width_type, sizeof(unsigned int)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<signed long> : std::integral_constant<_width_type, sizeof(signed long)*CHAR_BIT> {
+    };
+    template<>
+    struct width<unsigned long> : std::integral_constant<_width_type, sizeof(unsigned long)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<signed long long> : std::integral_constant<_width_type, sizeof(signed long long)*CHAR_BIT> {
+    };
+    template<>
+    struct width<unsigned long long> : std::integral_constant<_width_type, sizeof(unsigned long long)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<float> : std::integral_constant<_width_type, sizeof(float)*CHAR_BIT> {
+    };
+    template<>
+    struct width<double> : std::integral_constant<_width_type, sizeof(double)*CHAR_BIT> {
+    };
+    template<>
+    struct width<long double> : std::integral_constant<_width_type, sizeof(long double)*CHAR_BIT> {
+    };
+
+    namespace _type_traits_impl {
+        ////////////////////////////////////////////////////////////////////////////////
+        // built-in families
+
+#if defined(SG14_INT128_ENABLED)
+        using signed_family = std::tuple<std::int8_t, std::int16_t, std::int32_t, std::int64_t, SG14_INT128>;
+        using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t, SG14_UINT128>;
+#else
+        using signed_family = std::tuple<std::int8_t, std::int16_t, std::int32_t, std::int64_t>;
+        using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t>;
+#endif
+
+#if defined(_MSC_VER)
+        using float_family = std::tuple<float, double>;
+#else
+        using float_family = std::tuple<float, double, long double>;
+#endif
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // first_fit
+
+        template<_width_type MinNumBits, class, class ... FamilyMembers>
+        struct first_fit_helper;
+
+        template<_width_type MinNumBits>
+        struct first_fit_helper<MinNumBits, void> {
+            using type = void;
+        };
+
+        template<_width_type MinNumBits, class FamilyMembersHead, class ... FamilyMembersTail>
+        struct first_fit_helper<
+                MinNumBits,
+                typename std::enable_if<width<FamilyMembersHead>::value>=MinNumBits>::type,
+                FamilyMembersHead, FamilyMembersTail ...> {
+            using type = FamilyMembersHead;
+        };
+
+        template<_width_type MinNumBits, class FamilyMembersHead, class ... FamilyMembersTail>
+        struct first_fit_helper<
+                MinNumBits,
+                typename std::enable_if<width<FamilyMembersHead>::value<MinNumBits>::type,
+                        FamilyMembersHead, FamilyMembersTail ...> {
+                        using _tail_base = first_fit_helper<MinNumBits, void, FamilyMembersTail ...>;
+                        using type = typename _tail_base::type;
+                };
+
+        template<_width_type MinNumBits, class Family>
+        struct first_fit;
+
+        template<_width_type MinNumBits, class ... FamilyMembers>
+        struct first_fit<MinNumBits, std::tuple<FamilyMembers...>> {
+            using type = typename first_fit_helper<MinNumBits, void, FamilyMembers...>::type;
+            static_assert(!std::is_void<type>::value, "cannot find wide enough type");
+        };
+    }
+
+#if (__cplusplus>=201402L)
+    ////////////////////////////////////////////////////////////////////////////////
+    // width_v - equals number of bits of information in given type
+
+    /// \brief provides width of numeric type
+    ///
+    /// \tparam T given numeric type
+    ///
+    /// \remarks The width is defined as the number of digits including any sign bit.
+
+    template<class T>
+    constexpr unsigned width_v = width<T>::value;
+#endif
+
+    /// resizes a type;
+    /// can be specialized for any type for which resizing that type makes sense
+    ///
+    /// \sa set_width_t
+    template<class Archetype, _width_type MinNumBits>
+    struct set_width;
+
+    // sg14::set_width specialized for char/wchar_t
+    template<_width_type MinNumBits>
+    struct set_width<char, MinNumBits>
+            : _type_traits_impl::first_fit<MinNumBits, typename std::conditional<std::is_signed<char>::value, _type_traits_impl::signed_family, _type_traits_impl::unsigned_family>::type> {
+    };
+    template<_width_type MinNumBits>
+    struct set_width<wchar_t, MinNumBits>
+            : _type_traits_impl::first_fit<MinNumBits, typename std::conditional<std::is_signed<char>::value, _type_traits_impl::signed_family, _type_traits_impl::unsigned_family>::type> {
+    };
+
+    // sg14::set_width specialized for 8-bit built-in integers
+    template<_width_type MinNumBits>
+    struct set_width<signed char, MinNumBits>
+            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+    };
+    template<_width_type MinNumBits>
+    struct set_width<unsigned char, MinNumBits>
+            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
+    };
+
+    // sg14::set_width specialized for 16-bit built-in integers
+    template<_width_type MinNumBits>
+    struct set_width<signed short, MinNumBits>
+            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+    };
+    template<_width_type MinNumBits>
+    struct set_width<unsigned short, MinNumBits>
+            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
+    };
+
+    // sg14::set_width specialized for 32-bit built-in integers
+    template<_width_type MinNumBits>
+    struct set_width<signed int, MinNumBits>
+            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+    };
+    template<_width_type MinNumBits>
+    struct set_width<unsigned int, MinNumBits>
+            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
+    };
+
+    // sg14::set_width specialized for 64-bit built-in integers
+    template<_width_type MinNumBits>
+    struct set_width<signed long, MinNumBits>
+            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+    };
+    template<_width_type MinNumBits>
+    struct set_width<unsigned long, MinNumBits>
+            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
+    };
+
+    // sg14::set_width specialized for 64-bit built-in integers
+    template<_width_type MinNumBits>
+    struct set_width<signed long long, MinNumBits>
+            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+    };
+    template<_width_type MinNumBits>
+    struct set_width<unsigned long long, MinNumBits>
+            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
+    };
+
+    // sg14::set_width specialized for float
+    template<_width_type MinNumBits>
+    struct set_width<float, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::float_family> {
+    };
+
+    // sg14::set_width specialized for double
+    template<_width_type MinNumBits>
+    struct set_width<double, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::float_family> {
+    };
+
+    // sg14::set_width specialized for long double
+    template<_width_type MinNumBits>
+    struct set_width<long double, MinNumBits>
+            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::float_family> {
+    };
+
+    /// \brief resizes a type
+    ///
+    /// \tparam Archetype the type to resize
+    /// \tparam MinNumBits the desired width in bits
+    ///
+    /// \par Examples
+    ///
+    /// To resize a native-sized unsigned int to 2-bytes:
+    /// \snippet snippets.cpp use set_width 1
+    ///
+    /// To resize a signed byte type to a built-in signed type of at least 5 bytes:
+    /// \snippet snippets.cpp use set_width 2
+    ///
+    /// To resize a signed, 1-byte fixed-point type to a fixed-point type of at least 3 bytes:
+    /// \snippet snippets.cpp use set_width 3
+    template<class Archetype, _width_type MinNumBits>
+    using set_width_t = typename set_width<Archetype, MinNumBits>::type;
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Clang/GCC hacks to get 128-bit integers working with fixed_point
+
+#if defined(SG14_INT128_ENABLED)
+    // sg14::set_width
+    template<_width_type MinNumBits>
+    struct set_width<SG14_INT128, MinNumBits> : set_width<signed, MinNumBits> {
+    };
+
+    template<_width_type MinNumBits>
+    struct set_width<SG14_UINT128, MinNumBits> : set_width<unsigned, MinNumBits> {
+    };
+
+    // sg14::width
+    template<>
+    struct width<SG14_INT128> : std::integral_constant<_width_type, sizeof(SG14_INT128)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<SG14_UINT128> : std::integral_constant<_width_type, sizeof(SG14_UINT128)*CHAR_BIT> {
+    };
+#endif
+}
+
+#endif	// SG14_CSTDINT_H

@@ -10,6 +10,8 @@
 #if !defined(SG14_MULTIPRECISION_H)
 #define SG14_MULTIPRECISION_H 1
 
+#include <sg14/cstdint>
+#include <sg14/limits>
 #include <sg14/type_traits.h>
 
 #include <boost/multiprecision/cpp_int.hpp>

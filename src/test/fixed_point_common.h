@@ -9,8 +9,6 @@
 // The tests may fail on types which are not compact,
 // i.e. where (sizeof(test_int)*CHAR_BIT > sg14::width(test_int)::value).
 
-#include <sg14/bits/int128.h>
-
 #include <gtest/gtest.h>
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -1,67 +1,24 @@
 
 //          Copyright John McFarlane 2015 - 2016.
 // Distributed under the Boost Software License, Version 1.0.
-//  (See accompanying file ../../LICENSE_1_0.txt or copy at
+//    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef SG14_INT128_H
-#define SG14_INT128_H
+/// \file
+/// \brief specialization of `std::numeric_limits` for 128-bit integer types
 
+#if !defined(SG14_LIMITS_H)
+#define SG14_LIMITS_H 1
+
+#include "bits/config.h"
+
+#include <climits>
+#include <cstdint>
 #include <limits>
 
-#include "config.h"
-
-// This file contains tweaks to standard traits that integers more conducive to generic programming.
-
-namespace sg14 {
-    ////////////////////////////////////////////////////////////////////////////////
-    // Clang/GCC hacks to get 128-bit integers working with fixed_point
-
 #if defined(SG14_INT128_ENABLED)
-    // sg14::make_signed
-    template<>
-    struct make_signed<SG14_INT128> {
-        using type = SG14_INT128;
-    };
-
-    template<>
-    struct make_signed<SG14_UINT128> {
-        using type = SG14_INT128;
-    };
-
-    // sg14::make_signed
-    template<>
-    struct make_unsigned<SG14_INT128> {
-        using type = SG14_UINT128;
-    };
-
-    template<>
-    struct make_unsigned<SG14_UINT128> {
-        using type = SG14_UINT128;
-    };
-
-    // sg14::resize
-    template<_width_type MinNumBits>
-    struct set_width<SG14_INT128, MinNumBits> : set_width<signed, MinNumBits> {
-    };
-
-    template<_width_type MinNumBits>
-    struct set_width<SG14_UINT128, MinNumBits> : set_width<unsigned, MinNumBits> {
-    };
-
-    // sg14::width
-    template<>
-    struct width<SG14_INT128> : std::integral_constant<_width_type, sizeof(SG14_INT128)*CHAR_BIT> {
-    };
-
-    template<>
-    struct width<SG14_UINT128> : std::integral_constant<_width_type, sizeof(SG14_UINT128)*CHAR_BIT> {
-    };
-#endif
-}
 
 namespace std {
-#if defined(SG14_INT128_ENABLED)
     template<>
     struct numeric_limits<SG14_INT128> : numeric_limits<long long> {
         static const int digits = CHAR_BIT*sizeof(SG14_INT128)-1;
@@ -115,7 +72,8 @@ namespace std {
             return min();
         }
     };
-#endif
 }
 
-#endif // SG14_INT128_H
+#endif  // SG14_INT128_ENABLED
+
+#endif	// SG14_LIMITS_H

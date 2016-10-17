@@ -12,13 +12,10 @@
 #if !defined(SG14_FIXED_POINT_EXTRAS_H)
 #define SG14_FIXED_POINT_EXTRAS_H 1
 
-#include <cmath>
-#include <istream>
-#include <limits>
-
 #include "fixed_point_type.h"
 
-#include <sg14/bits/common.h>
+#include <cmath>
+#include <istream>
 
 /// study group 14 of the C++ working group
 namespace sg14 {
@@ -124,12 +121,12 @@ namespace sg14 {
     namespace _impl {
         namespace fp {
             namespace extras {
-                template<class Rep, int Exponent, _impl::float_of_same_size<Rep>(* F)(
-                        _impl::float_of_same_size<Rep>)>
+                template<class Rep, int Exponent, _impl::fp::float_of_same_size<Rep>(* F)(
+                        _impl::fp::float_of_same_size<Rep>)>
                 constexpr fixed_point <Rep, Exponent>
                 crib(const fixed_point <Rep, Exponent>& x) noexcept
                 {
-                    using floating_point = _impl::float_of_same_size<Rep>;
+                    using floating_point = _impl::fp::float_of_same_size<Rep>;
                     return static_cast<fixed_point<Rep, Exponent>>(F(static_cast<floating_point>(x)));
                 }
             }

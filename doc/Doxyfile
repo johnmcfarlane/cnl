@@ -27,6 +27,8 @@ INPUT = \
  ../include/sg14/bits/fixed_point_operators.h \
  ../include/sg14/bits/fixed_point_common_type.h \
  ../include/sg14/bits/fixed_point_type.h \
+ ../include/sg14/cstdint \
+ ../include/sg14/limits \
  ../include/sg14/type_traits.h \
  index.md
 EXCLUDE_SYMBOLS = \

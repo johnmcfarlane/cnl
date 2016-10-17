@@ -12,6 +12,9 @@
 
 #include "fixed_point_type.h"
 
+#include <sg14/cstdint>
+#include <sg14/type_traits.h>
+
 /// study group 14 of the C++ working group
 namespace sg14 {
 

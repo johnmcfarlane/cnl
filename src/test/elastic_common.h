@@ -13,8 +13,6 @@
 
 #include <sg14/auxiliary/elastic.h>
 
-#include <sg14/bits/int128.h>
-
 #include <tuple>
 
 using std::is_same;

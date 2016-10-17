@@ -10,10 +10,9 @@
 #if !defined(SG14_ELASTIC_INTEGER_H)
 #define SG14_ELASTIC_INTEGER_H 1
 
-#include <sg14/type_traits.h>
 #include <sg14/bits/common.h>
-
-#include <limits>
+#include <sg14/cstdint>
+#include <sg14/limits>
 
 /// study group 14 of the C++ working group
 namespace sg14 {
