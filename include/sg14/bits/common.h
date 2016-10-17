@@ -9,7 +9,7 @@
 #if !defined(SG14_COMMON_H)
 #define SG14_COMMON_H 1
 
-#include <sg14/type_traits.h>
+#include <sg14/type_traits>
 #include <sg14/limits>
 
 namespace sg14 {

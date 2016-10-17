@@ -29,7 +29,7 @@ INPUT = \
  ../include/sg14/bits/fixed_point_type.h \
  ../include/sg14/cstdint \
  ../include/sg14/limits \
- ../include/sg14/type_traits.h \
+ ../include/sg14/type_traits \
  index.md
 EXCLUDE_SYMBOLS = \
  sg14::_elastic_impl \

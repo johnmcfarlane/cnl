@@ -23,7 +23,7 @@ add_library(
         include/sg14/cstdint
         include/sg14/fixed_point.h
         include/sg14/limits
-        include/sg14/type_traits.h
+        include/sg14/type_traits
 )
 set_target_properties(fixed_point PROPERTIES LINKER_LANGUAGE CXX)
 include_directories(SYSTEM ${CMAKE_CURRENT_LIST_DIR})

@@ -12,7 +12,7 @@
 
 #include <sg14/cstdint>
 #include <sg14/limits>
-#include <sg14/type_traits.h>
+#include <sg14/type_traits>
 
 #include <boost/multiprecision/cpp_int.hpp>
 
