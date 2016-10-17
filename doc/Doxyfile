@@ -32,9 +32,8 @@ INPUT = \
  ../include/sg14/type_traits \
  index.md
 EXCLUDE_SYMBOLS = \
- sg14::_elastic_impl \
  sg14::_*
-FILE_PATTERNS = *.h *.md
+FILE_PATTERNS = *
 RECURSIVE = YES
 EXCLUDE =
 EXAMPLE_PATH = ../src/test
