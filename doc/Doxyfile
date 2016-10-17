@@ -19,7 +19,7 @@ INPUT = \
  ../include/sg14/auxiliary/elastic.h \
  ../include/sg14/auxiliary/elastic_integer.h \
  ../include/sg14/auxiliary/multiprecision.h \
- ../include/sg14/fixed_point.h \
+ ../include/sg14/fixed_point \
  ../include/sg14/bits/fixed_point_extras.h \
  ../include/sg14/bits/fixed_point_math.h \
  ../include/sg14/bits/fixed_point_make.h \

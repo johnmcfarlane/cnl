@@ -54,7 +54,7 @@ namespace std {
     // std::common_type<> specializations related to sg14::sg14::fixed_point<>
 
     /// \brief Produce a fixed-point type with the given number of integer and fractional digits.
-    /// \headerfile sg14/fixed_point.h
+    /// \headerfile sg14/fixed_point
     ///
     /// \tparam IntegerDigits specifies minimum value of @ref sg14::fixed_point::integer_digits
     /// \tparam FractionalDigits specifies the exact value of @ref sg14::fixed_point::fractional_digits

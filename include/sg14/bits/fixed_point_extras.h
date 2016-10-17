@@ -6,8 +6,8 @@
 
 /// \file
 /// \brief supplemental definitions related to the `sg14::fixed_point` type;
-/// definitions that straddle two homes, e.g. fixed_point.h and cmath, traits or limits;
-/// included from sg14/fixed_point.h - do not include directly!
+/// definitions that straddle two homes, e.g. fixed_point and cmath, traits or limits;
+/// included from sg14/fixed_point - do not include directly!
 
 #if !defined(SG14_FIXED_POINT_EXTRAS_H)
 #define SG14_FIXED_POINT_EXTRAS_H 1
@@ -82,7 +82,7 @@ namespace sg14 {
     // sg14::sqrt
 
     /// \brief calculates the square root of a \ref fixed_point value
-    /// \headerfile sg14/fixed_point.h
+    /// \headerfile sg14/fixed_point
     ///
     /// \param x input parameter
     ///
@@ -193,7 +193,7 @@ namespace sg14 {
     };
 
     /// \brief produces equivalent fixed-point type at a new width
-    /// \headerfile sg14/fixed_point.h
+    /// \headerfile sg14/fixed_point
     ///
     /// \tparam Rep the \a Rep parameter of @ref fixed_point
     /// \tparam Exponent the \a Exponent parameter of @ref fixed_point

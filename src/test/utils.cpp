@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <sg14/type_traits>
-#include <sg14/fixed_point.h>
+#include <sg14/fixed_point>
 
 #include <gtest/gtest.h>
 

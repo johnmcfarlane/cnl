@@ -8,7 +8,7 @@
 
 #include <sg14/auxiliary/multiprecision.h>
 
-#include <sg14/fixed_point.h>
+#include <sg14/fixed_point>
 
 #include <gtest/gtest.h>
 

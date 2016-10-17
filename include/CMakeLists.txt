@@ -21,7 +21,7 @@ add_library(
         include/sg14/bits/common.h
         include/sg14/bits/config.h
         include/sg14/cstdint
-        include/sg14/fixed_point.h
+        include/sg14/fixed_point
         include/sg14/limits
         include/sg14/type_traits
 )

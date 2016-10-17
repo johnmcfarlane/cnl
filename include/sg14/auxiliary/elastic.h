@@ -11,7 +11,7 @@
 #define SG14_ELASTIC_H 1
 
 #include "elastic_integer.h"
-#include <sg14/fixed_point.h>
+#include <sg14/fixed_point>
 
 /// study group 14 of the C++ working group
 namespace sg14 {

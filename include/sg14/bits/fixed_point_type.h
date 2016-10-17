@@ -49,7 +49,7 @@ namespace sg14 {
     }
 
     /// \brief literal real number approximation that uses fixed-point arithmetic
-    /// \headerfile sg14/fixed_point.h
+    /// \headerfile sg14/fixed_point
     ///
     /// \tparam Rep the underlying type used to represent the value
     /// \tparam Exponent the value by which to scale the integer value in order to get the real value

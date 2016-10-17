@@ -10,8 +10,8 @@
 
 // 1. Add the [*include*](include) directory to your list of system headers.
 
-// 2. Essential definitions are in, [*fixed_point.h*](include/sg14/fixed_point.h):
-#include <sg14/fixed_point.h>
+// 2. Essential definitions are in, [*fixed_point*](include/sg14/fixed_point):
+#include <sg14/fixed_point>
 
 // 5. All definitions are in the `sg14` namespace:
 using namespace sg14;

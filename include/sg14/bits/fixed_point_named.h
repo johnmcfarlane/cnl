@@ -18,7 +18,7 @@
 namespace sg14 {
 
     /// \brief calculates the negative of a \ref fixed_point value
-    /// \headerfile sg14/fixed_point.h
+    /// \headerfile sg14/fixed_point
     ///
     /// \param rhs input value
     ///
@@ -38,7 +38,7 @@ namespace sg14 {
     }
 
     /// \brief calculates the sum of two \ref fixed_point values
-    /// \headerfile sg14/fixed_point.h
+    /// \headerfile sg14/fixed_point
     ///
     /// \param lhs, rhs augend and addend
     ///
@@ -57,7 +57,7 @@ namespace sg14 {
     }
 
     /// \brief calculates the difference of two \ref fixed_point values
-    /// \headerfile sg14/fixed_point.h
+    /// \headerfile sg14/fixed_point
     ///
     /// \param lhs, rhs minuend and subtrahend
     ///
@@ -78,7 +78,7 @@ namespace sg14 {
     }
 
     /// \brief calculates the product of two \ref fixed_point factors
-    /// \headerfile sg14/fixed_point.h
+    /// \headerfile sg14/fixed_point
     ///
     /// \param lhs, rhs the factors
     ///
@@ -97,7 +97,7 @@ namespace sg14 {
     }
 
     /// \brief calculates the quotient of two \ref fixed_point values
-    /// \headerfile sg14/fixed_point.h
+    /// \headerfile sg14/fixed_point
     ///
     /// \param lhs, rhs dividend and divisor
     ///
