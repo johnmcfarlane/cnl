@@ -10,9 +10,8 @@
 #if !defined(SG14_FIXED_POINT_DEF_H)
 #define SG14_FIXED_POINT_DEF_H 1
 
-#include <sg14/type_traits.h>
-
-#include <limits>
+#include <sg14/cstdint>
+#include <sg14/limits>
 
 /// study group 14 of the C++ working group
 namespace sg14 {
@@ -40,11 +39,17 @@ namespace sg14 {
                         to_limits::is_signed>=from_limits::is_signed && to_integer_digits>=from_integer_digits
                                 && ToExponent<=FromExponent;
             };
+
+            ////////////////////////////////////////////////////////////////////////////////
+            // sg14::_impl::float_of_same_size
+
+            template<class T>
+            using float_of_same_size = set_width_t<float, width<T>::value>;
         }
     }
 
     /// \brief literal real number approximation that uses fixed-point arithmetic
-    /// \headerfile sg14/fixed_point.h
+    /// \headerfile sg14/fixed_point
     ///
     /// \tparam Rep the underlying type used to represent the value
     /// \tparam Exponent the value by which to scale the integer value in order to get the real value

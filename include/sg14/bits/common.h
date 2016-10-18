@@ -9,9 +9,8 @@
 #if !defined(SG14_COMMON_H)
 #define SG14_COMMON_H 1
 
-#include <sg14/type_traits.h>
-
-#include <limits>
+#include <sg14/type_traits>
+#include <sg14/limits>
 
 namespace sg14 {
     namespace _impl {
@@ -155,12 +154,6 @@ namespace sg14 {
 
         template<class T, bool IsSigned>
         using make_signed_t = typename make_signed<T, IsSigned>::type;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::float_of_same_size
-
-        template<class T>
-        using float_of_same_size = set_width_t<float, width<T>::value>;
     }
 }
 

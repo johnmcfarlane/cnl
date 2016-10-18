@@ -10,7 +10,7 @@
 #ifndef FIXED_POINT_MATH_H_
 #define FIXED_POINT_MATH_H_
 
-#include <sg14/fixed_point.h>
+#include <sg14/fixed_point>
 #include <type_traits>
 
 /// study group 14 of the C++ working group
@@ -119,7 +119,7 @@ namespace sg14 {
     }
 
     /// Calculates exp2(x), i.e. 2^x
-    /// \headerfile sg14/fixed_point.h
+    /// \headerfile sg14/fixed_point
     ///
     /// Accurate to 1LSB for up to 32 bit underlying representation.
     ///

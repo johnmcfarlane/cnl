@@ -4,9 +4,11 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <limits>
+//#include <limits>
 
-#include <sg14/type_traits.h>
+#include <sg14/cstdint>
+#include <sg14/limits>
+#include <sg14/type_traits>
 
 using sg14::_type_traits_impl::first_fit;
 using std::is_same;

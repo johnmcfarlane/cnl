@@ -12,11 +12,14 @@
 
 #include "fixed_point_type.h"
 
+#include <sg14/cstdint>
+#include <sg14/type_traits>
+
 /// study group 14 of the C++ working group
 namespace sg14 {
 
     /// \brief specializes \ref fixed_point with the given number of integer and fractional digits
-    /// \headerfile sg14/fixed_point.h
+    /// \headerfile sg14/fixed_point
     ///
     /// \tparam IntegerDigits specifies minimum value of @ref fixed_point::integer_digits
     /// \tparam FractionalDigits specifies the exact value of @ref fixed_point::fractional_digits
@@ -39,7 +42,7 @@ namespace sg14 {
             -FractionalDigits>;
 
     /// \brief specializes \ref fixed_point with the given number of integer and fractional digits; produces an unsigned type
-    /// \headerfile sg14/fixed_point.h
+    /// \headerfile sg14/fixed_point
     ///
     ///
     /// \sa make_fixed

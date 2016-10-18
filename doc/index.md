@@ -15,12 +15,12 @@ Installation instructions are provided on the [project page](https://github.com/
 
 \subsection Features
 
-Header, [sg14/fixed_point.h](@ref fixed_point.h), defines class template, [fixed_point](@ref sg14::fixed_point), with:
+Header, [sg14/fixed_point](@ref fixed_point), defines class template, [fixed_point](@ref sg14::fixed_point), with:
   * a simple, flexible generic design;
   * operator overloads that interface [fixed_point](@ref sg14::fixed_point) with other numeric types;
   * a set of function templates, (e.g. [multiply](@ref sg14::multiply)), for fine-grain control.
 
-Header, [sg14/type_traits.h](@ref type_traits.h), contains additions (such as [set_width](@ref sg14::set_width)) 
+Header, [sg14/cstdint](@ref cstdint), contains additions (such as [set_width](@ref sg14::set_width)) 
 that support widening of arithmetic types in order to deal with precision loss.
 
 Auxiliary modules:

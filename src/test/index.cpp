@@ -33,7 +33,7 @@ void test_function(void(* function)(), char const* output)
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [declaration example]
-#include <sg14/fixed_point.h>
+#include <sg14/fixed_point>
 #include <iostream>
 
 using namespace sg14;

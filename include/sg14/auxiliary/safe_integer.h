@@ -22,7 +22,7 @@
 #error Boost is required to use safe_numerics
 #endif
 
-#include <sg14/type_traits.h>
+#include <sg14/type_traits>
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"

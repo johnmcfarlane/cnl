@@ -7,7 +7,7 @@
 #if !defined(SG14_INTEGER_H)
 #define SG14_INTEGER_H 1
 
-#include <sg14/fixed_point.h>
+#include <sg14/fixed_point>
 
 #include <stdexcept>
 
