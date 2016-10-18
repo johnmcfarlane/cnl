@@ -65,19 +65,23 @@ TEST(math, FPTESTFORMAT) {
         }
     }
 
-    //the largest exponent which's result doesn't overflow
-    auto maximum = fp::from_data(fp{ fp::integer_digits }.data() - 1);
+    using numeric_limits = std::numeric_limits<fp>;
+    if (numeric_limits::max() >= int(fp::integer_digits)
+            && numeric_limits::lowest() <= -fp::fractional_digits) {
+        //the largest exponent which's result doesn't overflow
+        auto maximum = fp::from_data(fp{ fp::integer_digits }.data() - 1);
 
-    //The next-to-smallest exponent whose result doesn't overflow
-    //(The very smallest was already tested with the integer exponents)
-    auto minimum = fp::from_data(fp{ -fp::fractional_digits }.data() + 1);
+        //The next-to-smallest exponent whose result doesn't overflow
+        //(The very smallest was already tested with the integer exponents)
+        auto minimum = fp::from_data(fp{ -fp::fractional_digits }.data() + 1);
 
-    double doublerep{ maximum };
-    double doublerepmini{ minimum };
+        double doublerep{ maximum };
+        double doublerepmini{ minimum };
 
-    EXPECT_LE(std::abs(exp2(maximum).data() - fp{ exp2(doublerep) }.data()), 1)
+        EXPECT_LE(std::abs(exp2(maximum).data() - fp{ exp2(doublerep) }.data()), 1)
         << "fixed point raw: " << exp2(maximum).data() << ", double raw: " << fp{ exp2(doublerep) }.data();
 
-    EXPECT_EQ(exp2(minimum), fp{ exp2(doublerepmini) });
+        EXPECT_EQ(exp2(minimum), fp{ exp2(doublerepmini) });
+    }
 }
 
