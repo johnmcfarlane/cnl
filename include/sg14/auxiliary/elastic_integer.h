@@ -48,9 +48,15 @@ namespace sg14 {
         using rep = set_width_t<Archetype, _rep_width>;
 
         /// common copy constructor
-        template<class S>
-        explicit constexpr elastic_integer(S s)
-                :_r(static_cast<rep>(s))
+        constexpr elastic_integer(const elastic_integer& rhs)
+            : _r(rhs._r)
+        {
+        }
+
+        /// construct from integer type
+        template<class Number, typename std::enable_if<std::numeric_limits<Number>::is_specialized, int>::type Dummy = 0>
+        constexpr elastic_integer(Number n)
+            : _r(static_cast<rep>(n))
         {
         }
 

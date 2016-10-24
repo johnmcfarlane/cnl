@@ -301,7 +301,8 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::integer<>
 
-    // an integer which can be customized to react in different ways to overflow
+    // an integer which can be customized to react in different ways to overflow;
+    // currently doesn't correctly detect overflow from operators
     template<typename Rep = int, typename OverflowPolicy = native_overflow_policy>
     class integer {
     public:
@@ -313,6 +314,16 @@ namespace sg14 {
 
         ////////////////////////////////////////////////////////////////////////////////
         // functions
+
+        constexpr integer(const integer& rhs)
+            :_r(rhs._r)
+        {
+        }
+
+        constexpr integer(const rep& rhs)
+            :_r(rhs)
+        {
+        }
 
         template<class RhsRep, typename std::enable_if<!_integer_impl::is_integer_class<RhsRep>::value, int>::type dummy = 0>
         constexpr explicit integer(const RhsRep& rhs)
