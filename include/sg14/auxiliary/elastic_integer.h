@@ -347,6 +347,18 @@ namespace sg14 {
     struct set_width<elastic_integer<Digits, Archetype>, MinNumBits> {
         using type = elastic_integer<MinNumBits - std::numeric_limits<Archetype>::is_signed, Archetype>;
     };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::scale<elastic_integer>
+
+    template<int Digits, class Archetype>
+    struct scale<elastic_integer<Digits, Archetype>> {
+        using Integer = elastic_integer<Digits, Archetype>;
+
+        constexpr Integer operator()(const Integer& i, int base, int exp) const {
+            return Integer{scale<typename Integer::rep>()(i.data(), base, exp)};
+        }
+    };
 }
 
 namespace std {

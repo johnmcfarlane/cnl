@@ -37,8 +37,8 @@ using test_int = sg14::throwing_integer<>;
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_right)
 {
-    auto shift_right_fn = shift_right<8, uint16, uint8>;
-    ASSERT_THROW(shift_right_fn((uint8) 0x1234), std::overflow_error);
+    auto shift_left_fn = shift_left<-8, uint16, uint8>;
+    ASSERT_THROW(shift_left_fn((uint8) 0x1234), std::overflow_error);
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_left)

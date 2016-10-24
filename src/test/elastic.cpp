@@ -17,7 +17,6 @@ namespace {
     using sg14::_impl::fp::arithmetic::intermediate;
     using sg14::_impl::fp::arithmetic::result;
     using sg14::_impl::shift_left;
-    using sg14::_impl::shift_right;
     using sg14::_impl::fp::arithmetic::wide_tag;
     using sg14::_impl::divide_tag;
     using sg14::_impl::identical;
