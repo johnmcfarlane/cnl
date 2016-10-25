@@ -54,7 +54,6 @@ template <typename Rep=test_int, int Exponent=0>
 using fixed_point = sg14::fixed_point<Rep, Exponent>;
 
 using sg14::_impl::shift_left;
-using sg14::_impl::shift_right;
 using sg14::_impl::fp::type::pow2;
 
 template<int IntegerDigits, int FractionalDigits = 0, class Archetype = test_signed>
@@ -169,7 +168,7 @@ static_assert(is_same<decltype(uint8(0)+uint8(0)), test_int>::value, "incorrect 
 // sg14::_impl
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_impl::fp::type::shift_left/right positive RHS
+// sg14::_impl::fp::type::shift_left positive RHS
 
 #if defined(_MSC_VER)
 #pragma warning(push)
@@ -183,6 +182,9 @@ static_assert(shift_left<1, int8>(int8(0))==0, "sg14::shift_left test failed");
 static_assert(shift_left<8, uint16>((uint16) 0x1234)==0x3400, "sg14::shift_left test failed");
 static_assert(shift_left<8, uint16>((uint8) 0x1234)==0x3400, "sg14::shift_left test failed");
 static_assert(shift_left<8, uint8>((uint16) 0x1234)==0x0, "sg14::shift_left test failed");
+static_assert(shift_left<8, uint16>((uint16) 0x1234)==0x3400, "sg14::shift_left test failed");
+static_assert(shift_left<8, uint16>((uint8) 0x1234)==0x3400, "sg14::shift_left test failed");
+static_assert(shift_left<8, uint8>((uint16) 0x1234)==0x0, "sg14::shift_left test failed");
 #endif
 
 #if defined(TEST_SATURATED_OVERFLOW)
@@ -193,30 +195,16 @@ static_assert(shift_left<8, uint8>((uint16)0x1234) == 0xff, "sg14::shift_left te
 
 static_assert(shift_left<8, int16>(-123)==-31488, "sg14::shift_left test failed");
 
-static_assert(shift_right<8, uint16>((uint16) 0x1234)==0x12, "sg14::shift_right test failed");
-static_assert(shift_right<8, uint8>((uint16) 0x1234)==0x12, "sg14::shift_right test failed");
-static_assert(shift_right<8, int16>(-31488)==-123, "sg14::shift_right test failed");
-
-#if !defined(TEST_THROWING_OVERFLOW)
-static_assert(shift_right<8, uint16>((uint8) 0x1234)==0x0, "sg14::shift_right test failed");
+#if defined(TEST_SATURATED_OVERFLOW)
+static_assert(shift_left<8, uint16>((uint16)0x1234) == 0xffff, "sg14::shift_left test failed");
+static_assert(shift_left<8, uint16>((uint8)0x1234) == 0xff00, "sg14::shift_left test failed");
+static_assert(shift_left<8, uint8>((uint16)0x1234) == 0xff, "sg14::shift_left test failed");
 #endif
+
+static_assert(shift_left<8, int16>(-123)==-31488, "sg14::shift_left test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_impl::fp::type::shift_left/right negative RHS
-
-#if defined(TEST_NATIVE_OVERFLOW)
-static_assert(shift_right<-8, uint16>((uint16) 0x1234)==0x3400, "sg14::shift_right test failed");
-static_assert(shift_right<-8, uint16>((uint8) 0x1234)==0x3400, "sg14::shift_right test failed");
-static_assert(shift_right<-8, uint8>((uint16) 0x1234)==0x0, "sg14::shift_right test failed");
-#endif
-
-#if defined(TEST_SATURATED_OVERFLOW)
-static_assert(shift_right<-8, uint16>((uint16)0x1234) == 0xffff, "sg14::shift_right test failed");
-static_assert(shift_right<-8, uint16>((uint8)0x1234) == 0xff00, "sg14::shift_right test failed");
-static_assert(shift_right<-8, uint8>((uint16)0x1234) == 0xff, "sg14::shift_right test failed");
-#endif
-
-static_assert(shift_right<-8, int16>(-123)==-31488, "sg14::shift_right test failed");
+// sg14::_impl::fp::type::shift_left negative RHS
 
 static_assert(shift_left<-8, uint16>((uint16) 0x1234)==0x12, "sg14::shift_left test failed");
 static_assert(shift_left<-8, uint8>((uint16) 0x1234)==0x12, "sg14::shift_left test failed");
@@ -228,6 +216,13 @@ static_assert(shift_left<-8, uint16>((uint8) 0x1234)==0x0, "sg14::shift_left tes
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
+#endif
+static_assert(shift_left<-8, uint16>((uint16) 0x1234)==0x12, "sg14::shift_left test failed");
+static_assert(shift_left<-8, uint8>((uint16) 0x1234)==0x12, "sg14::shift_left test failed");
+static_assert(shift_left<-8, int16>(-31488)==-123, "sg14::shift_left test failed");
+
+#if !defined(TEST_THROWING_OVERFLOW)
+static_assert(shift_left<-8, uint16>((uint8) 0x34)==0x0, "sg14::shift_left test failed");
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -302,7 +297,7 @@ static_assert(is_same<fixed_point<uint64>, fixed_point<uint64, 0>>::value, "sg14
 ////////////////////////////////////////////////////////////////////////////////
 // default first template parameter
 
-static_assert(identical(fixed_point<test_int, 0>{0}, fixed_point<>{0}), "sg14::fixed_point test failed");
+static_assert(identical(fixed_point<test_int, 0>{test_int{ 0 }}, fixed_point<>{test_int{ 0 }}), "sg14::fixed_point test failed");
 static_assert(is_same<fixed_point<test_int, 0>, fixed_point<>>::value, "sg14::fixed_point test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -356,7 +351,7 @@ static_assert(fixed_point<int32, -7>(123.125f)==123.125, "sg14::fixed_point test
 static_assert(fixed_point<int64, -7>(123.125l)==123.125f, "sg14::fixed_point test failed");
 
 // exponent == 16
-static_assert(fixed_point<uint8, 16>(65536)==65536.f, "sg14::fixed_point test failed");
+static_assert(fixed_point<uint8, 16>(test_int{ 65536 }) == 65536.f, "sg14::fixed_point test failed");
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(fixed_point<uint16, 16>(6553.)==0, "sg14::fixed_point test failed");
 #endif

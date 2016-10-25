@@ -38,7 +38,9 @@ TEST(math, FPTESTFORMAT) {
     constexpr std::array<double, 13> fracts{ {
         static_cast<double>(fp::from_data(1)), //As close to zero as possible
         0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,
-        static_cast<double>(fp::from_data(1ll << -fp::exponent) - 1) //As close to one as possible
+        fp::integer_digits
+            ? 1
+            : static_cast<double>(std::numeric_limits<fp>::max()) //As close to one as possible
     } };
 
     for (int i = -fp::fractional_digits; i < fp::integer_digits; i++) {

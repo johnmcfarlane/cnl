@@ -48,9 +48,15 @@ namespace sg14 {
         using rep = set_width_t<Archetype, _rep_width>;
 
         /// common copy constructor
-        template<class S>
-        explicit constexpr elastic_integer(S s)
-                :_r(static_cast<rep>(s))
+        constexpr elastic_integer(const elastic_integer& rhs)
+            : _r(rhs._r)
+        {
+        }
+
+        /// construct from integer type
+        template<class Number, typename std::enable_if<std::numeric_limits<Number>::is_specialized, int>::type Dummy = 0>
+        constexpr elastic_integer(Number n)
+            : _r(static_cast<rep>(n))
         {
         }
 
@@ -340,6 +346,18 @@ namespace sg14 {
     template<int Digits, class Archetype, _width_type MinNumBits>
     struct set_width<elastic_integer<Digits, Archetype>, MinNumBits> {
         using type = elastic_integer<MinNumBits - std::numeric_limits<Archetype>::is_signed, Archetype>;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::scale<elastic_integer>
+
+    template<int Digits, class Archetype>
+    struct scale<elastic_integer<Digits, Archetype>> {
+        using Integer = elastic_integer<Digits, Archetype>;
+
+        constexpr Integer operator()(const Integer& i, int base, int exp) const {
+            return Integer{scale<typename Integer::rep>()(i.data(), base, exp)};
+        }
     };
 }
 

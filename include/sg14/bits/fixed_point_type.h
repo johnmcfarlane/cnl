@@ -257,102 +257,28 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::shift_left and sg14::_impl::shift_right
+        // sg14::_impl::shift_left
 
         // performs a shift operation by a fixed number of bits avoiding two pitfalls:
         // 1) shifting by a negative amount causes undefined behavior
         // 2) converting between integer types of different sizes can lose significant bits during shift right
 
         // Exponent == 0
-        template<
-                int Exponent,
-                class Output,
-                class Input,
-                typename std::enable_if<
-                        (Exponent==0),
-                        int>::type Dummy = 0>
-        constexpr Output shift_left(Input i)
-        {
-            // cast only
-            return static_cast<Output>(i);
-        }
-
-        template<
-                int Exponent,
-                class Output,
-                class Input,
-                typename std::enable_if<
-                        Exponent==0,
-                        int>::type Dummy = 0>
-        constexpr Output shift_right(Input i)
-        {
-            // cast only
-            return static_cast<Output>(i);
-        }
-
-        // Exponent >= 0
-        template<
-                int Exponent,
-                class Output,
-                class Input,
-                typename std::enable_if<
-                        !(Exponent<=0),
-                        int>::type Dummy = 0>
+        template<int exp, class Output, class Input>
         constexpr Output shift_left(Input i)
         {
             using larger = typename std::conditional<
                     width<Input>::value<=width<Output>::value,
                     Output, Input>::type;
-            return static_cast<Output>(static_cast<larger>(i)*(larger{1} << Exponent));
+
+            return (exp>-std::numeric_limits<larger>::digits)
+                   ? static_cast<Output>(sg14::scale<larger>()(static_cast<larger>(i), 2, exp))
+                   : Output{0};
         }
 
-        template<
-                int Exponent,
-                class Output,
-                class Input,
-                typename std::enable_if<
-                        !(Exponent<=0),
-                        int>::type Dummy = 0>
-        constexpr Output shift_right(Input i)
-        {
-            using larger = typename std::conditional<
-                    width<Input>::value<=width<Output>::value,
-                    Output, Input>::type;
-            return static_cast<Output>(static_cast<larger>(i)/(larger{1} << Exponent));
-        }
+        ////////////////////////////////////////////////////////////////////////////////
+        // file-local implementation-specific definitions
 
-        // Exponent < 0
-        template<
-                int Exponent,
-                class Output,
-                class Input,
-                typename std::enable_if<
-                        (Exponent<0),
-                        int>::type Dummy = 0>
-        constexpr Output shift_left(Input i)
-        {
-            // negate Exponent and flip from left to right
-            return shift_right<-Exponent, Output, Input>(i);
-        }
-
-        template<
-                int Exponent,
-                class Output,
-                class Input,
-                typename std::enable_if<
-                        Exponent<0,
-                        int>::type Dummy = 0>
-        constexpr Output shift_right(Input i)
-        {
-            // negate Exponent and flip from right to left
-            return shift_left<-Exponent, Output, Input>(i);
-        }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // file-local implementation-specific definitions
-
-    namespace _impl {
         namespace fp {
             namespace type {
                 ////////////////////////////////////////////////////////////////////////////////
@@ -453,7 +379,7 @@ namespace sg14 {
     template<class FromRep, int FromExponent>
     constexpr typename fixed_point<Rep, Exponent>::rep fixed_point<Rep, Exponent>::fixed_point_to_rep(const fixed_point<FromRep, FromExponent>& rhs)
     {
-        return _impl::shift_right<(exponent-FromExponent), rep>(rhs.data());
+        return _impl::shift_left<FromExponent-exponent, rep>(rhs.data());
     }
 }
 
