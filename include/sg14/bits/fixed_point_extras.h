@@ -22,21 +22,11 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::abs
 
-    template<class Rep, int Exponent, typename std::enable_if<std::is_signed<Rep>::value, int>::type Dummy = 0>
-    constexpr auto abs(const fixed_point <Rep, Exponent>& x) noexcept
-    -> _impl::common_type_t<decltype(x), decltype(-x)>
+    template<class Rep, int Exponent>
+    constexpr auto abs(const fixed_point<Rep, Exponent>& x) noexcept
+    -> decltype(-x)
     {
-        using common_type = _impl::common_type_t<decltype(x), decltype(-x)>;
-        return (x.data()>=0)
-               ? static_cast<common_type>(x)
-               : static_cast<common_type>(-x);
-    }
-
-    template<class Rep, int Exponent, typename std::enable_if<std::is_unsigned<Rep>::value, int>::type Dummy = 0>
-    constexpr fixed_point <Rep, Exponent>
-    abs(const fixed_point <Rep, Exponent>& x) noexcept
-    {
-        return x;
+        return (x >= 0) ? x : -x;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
