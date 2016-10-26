@@ -223,15 +223,13 @@ namespace std {
     // some are temporary (assuming rounding style, traps etc.)
     // and some are undefined
     template<class Rep, int Exponent>
-    struct numeric_limits<sg14::fixed_point<Rep, Exponent>> {
+    struct numeric_limits<sg14::fixed_point<Rep, Exponent>> : public std::numeric_limits<Rep> {
         // fixed-point-specific helpers
         using _value_type = sg14::fixed_point<Rep, Exponent>;
         using _rep = typename _value_type::rep;
         using _rep_numeric_limits = numeric_limits<_rep>;
 
         // standard members
-
-        static constexpr bool is_specialized = true;
 
         static constexpr _value_type min() noexcept
         {
@@ -248,43 +246,17 @@ namespace std {
             return _value_type::from_data(_rep_numeric_limits::lowest());
         }
 
-        static constexpr int digits = _rep_numeric_limits::digits;
-
-        static constexpr int digits10 = _rep_numeric_limits::digits10;
-        static constexpr int max_digits10 = _rep_numeric_limits::max_digits10;
-
-        static constexpr bool is_signed = _rep_numeric_limits::is_signed;
         static constexpr bool is_integer = false;
-
-        // TODO: not entirely certain
-        static constexpr bool is_exact = true;
-
-        static constexpr int radix = _rep_numeric_limits::radix;
-        static_assert(radix==2, "fixed-point must be represented using binary type");
 
         static constexpr _value_type epsilon() noexcept
         {
             return _value_type::from_data(1);
         }
 
-        // TODO: not even sure about this when rep is built-in integral
         static constexpr _value_type round_error() noexcept
         {
-            return static_cast<_value_type>(1);
+            return static_cast<_value_type>(0);
         }
-
-        // TODO: verify
-        static constexpr int min_exponent = _value_type::exponent;
-        static constexpr int max_exponent = _value_type::exponent;
-
-        static constexpr int min_exponent10 = _rep_numeric_limits::min_exponent10;
-        static constexpr int max_exponent10 = _rep_numeric_limits::max_exponent10;
-
-        static constexpr bool has_infinity = false;
-        static constexpr bool has_quiet_NaN = false;
-        static constexpr bool has_signaling_NaN = false;
-        static constexpr float_denorm_style has_denorm = denorm_absent;
-        static constexpr bool has_denorm_loss = false;
 
         static constexpr _value_type infinity() noexcept
         {
@@ -305,14 +277,6 @@ namespace std {
         {
             return static_cast<_value_type>(0);
         }
-
-        static constexpr bool is_iec559 = false;
-        static constexpr bool is_bounded = true;
-        static constexpr bool is_modulo = _rep_numeric_limits::is_modulo;
-
-        static constexpr bool traps = _rep_numeric_limits::traps;
-        static constexpr bool tinyness_before = false;
-        static constexpr float_round_style round_style = _rep_numeric_limits::round_style;
     };
 }
 
