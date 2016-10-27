@@ -935,7 +935,5 @@ template struct FixedPointRepTester<uint16>;
 template struct FixedPointRepTester<int32>;
 template struct FixedPointRepTester<uint32>;
 
-#if defined(SG14_INT128_ENABLED)
 template struct FixedPointRepTester<int64>;
 template struct FixedPointRepTester<uint64>;
-#endif
