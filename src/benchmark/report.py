@@ -23,10 +23,13 @@ def table_from_benchmarks(table):
 def report_from_benchmarks(table):
     return report_from_table(table_from_benchmarks(table))
 
+def benchmarks_from_buffer(buffer):
+    return list(csv.reader(buffer, delimiter=',', quotechar='"'))
+
 def report_from_file(filename):
     with open(filename) as file:
         return report_from_benchmarks(
-            list(csv.reader(file, delimiter=',', quotechar='"')))
+            benchmarks_from_buffer(file))
 
 def csv_from_report(table):
     return '\n'.join([','.join(row) for row in table])
