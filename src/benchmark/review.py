@@ -55,7 +55,8 @@ def get_commits(args):
                        "--merges" if args.merges else "--no-merges",
                        "--date-order",
                        "--reverse",
-                       "--format=format:%H"
+                       "--format=format:%H",
+                       args.range or "--all"
                    ] + (["-{}".format(args.max_commits)] if args.max_commits else []) + ([] if args.merges else watch_files)
     return run_from_repo(args, ["git", "log"] + git_log_args).split('\n')
 
@@ -107,6 +108,7 @@ if __name__ == "__main__":
     parser = ArgumentParser(description="For each commit (chronologically) of the repository, run the benchmarking target and chart results as a table of benchmarks by commit.")
     parser.add_argument("repo", help="path to the fixed_point repository - preferably a different copy than the one from which this script is run")
     parser.add_argument("--build", help="path to cmake build folder; defaults to current folder", default=curdir)
+    parser.add_argument("--range", help="range or revisions to visit")
     parser.add_argument("--filter", help="filters benchmarks based on regex pattern", default=".*")
     parser.add_argument("--merges", help="benchmark merge commits instead of non-merge changes", type=bool, default=True)
     parser.add_argument("--max_commits", help="maximum number of commits to test (going back from most recent)", type=int)
