@@ -50,9 +50,8 @@ def make_row(commit, benchmarks, names):
 # get a list of the commit SHAs in ascending chronological order
 def get_commits(args):
     watch_files = ["--", "include", "src/benchmarks/*", "CMakeLists.txt", "*.cmake"]
-    git_log_args = [
+    git_log_args = (["--merges"] if args.merges else []) + (["--no-merges"] if args.no_merges else []) + [
                        "--all",
-                       "--merges" if args.merges else "--no-merges",
                        "--date-order",
                        "--reverse",
                        "--format=format:%H",
@@ -110,7 +109,8 @@ if __name__ == "__main__":
     parser.add_argument("--build", help="path to cmake build folder; defaults to current folder", default=curdir)
     parser.add_argument("--range", help="range or revisions to visit")
     parser.add_argument("--filter", help="filters benchmarks based on regex pattern", default=".*")
-    parser.add_argument("--merges", help="benchmark merge commits instead of non-merge changes", type=bool, default=True)
+    parser.add_argument("--merges", help="visit only merge commits", type=bool, default=False)
+    parser.add_argument("--no-merges", help="skip merge commits", type=bool, default=False)
     parser.add_argument("--max_commits", help="maximum number of commits to test (going back from most recent)", type=int)
     parser.add_argument("-j", "--jobs", help="number of parallel build jobs", type=int, default=1)
 
