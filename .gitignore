@@ -18,6 +18,7 @@ perf.data*
 
 # Clion
 .idea
+cmake-build-*/
 
 # VS
 *.cache
