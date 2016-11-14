@@ -127,5 +127,10 @@ endif()
 set_target_properties(
         fp_test
         PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${BOOST_FOUND_CXX_FLAGS}"
-        OUTPUT_NAME "fp_test"
 )
+
+######################################################################
+# testing
+
+enable_testing()
+add_test(all_tests fp_test)
