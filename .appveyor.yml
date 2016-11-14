@@ -1,0 +1,17 @@
+version: 0.1.{build}
+image: Visual Studio 2015
+configuration: Release
+platform:
+  - x86
+  - x64
+build_script:
+- cmd: >-
+    cmake .
+
+    MSBuild.exe /m fixed_point.sln /p:Configuration=Release /p:Platform=win32
+test_script:
+- cmd: >-
+    Release\fp_test.exe
+
+    Release\fp_benchmark.exe
+shallow_clone: true
