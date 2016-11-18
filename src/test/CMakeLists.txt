@@ -129,6 +129,15 @@ set_target_properties(
         PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${BOOST_FOUND_CXX_FLAGS}"
 )
 
+# avoid GCC6 warning
+# http://stackoverflow.com/a/38650955/671509
+if (${CMAKE_COMPILER_IS_GNUCXX})
+    set_source_files_properties(
+            ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
+            ${CMAKE_CURRENT_LIST_DIR}/index.cpp
+            PROPERTIES COMPILE_FLAGS "-fpermissive")
+endif ()
+
 ######################################################################
 # testing
 
