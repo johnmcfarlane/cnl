@@ -22,10 +22,9 @@ set_target_properties(
 
 ExternalProject_Add(
   google_benchmark
-  GIT_REPOSITORY "https://github.com/google/benchmark.git"
-  GIT_TAG "v1.0.0"
-  INSTALL_COMMAND ""
-  CMAKE_ARGS -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+  URL "https://github.com/google/benchmark/archive/v1.1.0.tar.gz"
+  URL_MD5 "66b2a23076cf70739525be0092fc3ae3"
+  CMAKE_ARGS -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX:STRING=<INSTALL_DIR>
 )
 ExternalProject_Get_Property(google_benchmark source_dir)
 include_directories(SYSTEM ${source_dir}/include)
