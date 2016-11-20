@@ -10,10 +10,12 @@
 #if !defined(SG14_MAKE_FIXED_H)
 #define SG14_MAKE_FIXED_H 1
 
+#if ! defined(SG14_GODBOLT_ORG)
 #include "fixed_point_type.h"
 
 #include <sg14/cstdint>
 #include <sg14/type_traits>
+#endif
 
 /// study group 14 of the C++ working group
 namespace sg14 {

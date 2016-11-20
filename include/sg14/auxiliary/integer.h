@@ -7,14 +7,14 @@
 #if !defined(SG14_INTEGER_H)
 #define SG14_INTEGER_H 1
 
+#if ! defined(SG14_GODBOLT_ORG)
 #include <sg14/fixed_point>
+#endif
 
 #include <stdexcept>
 
 #if defined(SG14_EXCEPTIONS_ENABLED)
-
 #include <stdexcept>
-
 #endif
 
 /// study group 14 of the C++ working group
