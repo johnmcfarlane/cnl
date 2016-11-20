@@ -94,6 +94,14 @@ To profile benchmarks:
    $ perf report -g 'graph,0.5,caller'
    ```
 
+To install:
+
+```shell
+$ cmake -DCMAKE_BUILD_TYPE=Release
+$ make
+$ sudo make install
+```
+
 #### Windows
 
 Tested on [AppVeyor](https://ci.appveyor.com/project/johnmcfarlane/fixed-point/branch/master)
