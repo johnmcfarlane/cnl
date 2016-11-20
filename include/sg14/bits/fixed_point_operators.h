@@ -10,7 +10,9 @@
 #if !defined(SG14_FIXED_POINT_OPERATORS_H)
 #define SG14_FIXED_POINT_OPERATORS_H 1
 
+#if ! defined(SG14_GODBOLT_ORG)
 #include "fixed_point_arithmetic.h"
+#endif
 
 /// study group 14 of the C++ working group
 namespace sg14 {

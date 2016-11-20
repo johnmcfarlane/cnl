@@ -9,8 +9,10 @@
 #if !defined(SG14_COMMON_H)
 #define SG14_COMMON_H 1
 
+#if ! defined(SG14_GODBOLT_ORG)
 #include <sg14/type_traits>
 #include <sg14/limits>
+#endif
 
 namespace sg14 {
     namespace _impl {

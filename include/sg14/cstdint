@@ -10,7 +10,9 @@
 #if !defined(SG14_CSTDINT_H)
 #define SG14_CSTDINT_H 1
 
+#if ! defined(SG14_GODBOLT_ORG)
 #include "bits/config.h"
+#endif
 
 #include <climits>
 #include <cstdint>

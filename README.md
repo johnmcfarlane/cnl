@@ -8,7 +8,7 @@ a header-only C++11 API for approximating real numbers using binary fixed-point 
 It forms the reference implementation of a standard library proposal presented in paper, [P0037](doc/p0037.md)
 and is developed as part of study groups, [SG14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14) and SG6.
 
-## Installation
+## Download
 
 The library is [hosted](https://github.com/johnmcfarlane/fixed_point) on GitHub:
 
