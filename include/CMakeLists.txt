@@ -27,3 +27,7 @@ add_library(
 )
 set_target_properties(fixed_point PROPERTIES LINKER_LANGUAGE CXX)
 include_directories(SYSTEM ${CMAKE_CURRENT_LIST_DIR})
+install(
+        DIRECTORY include/sg14
+        DESTINATION include
+)

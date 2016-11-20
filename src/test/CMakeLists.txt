@@ -87,7 +87,7 @@ add_dependencies(
 ######################################################################
 # pull external project, safe_numerics
 
-set(SAFE_NUMERICS ON CACHE BOOL "compile with support for safe_numerics library")
+set(SAFE_NUMERICS OFF CACHE BOOL "compile with support for safe_numerics library")
 if(SAFE_NUMERICS AND Boost_FOUND AND NOT APPLE)
     # test conditions necessary to use safe_numerics
     if (NOT CPP14)

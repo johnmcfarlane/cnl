@@ -27,7 +27,7 @@ Add this to your system header list and include, e.g.:
 
 ### Linux
 
-Tested on [Travis](https://travis-ci.org/johnmcfarlane/fixed_point) (Ubuntu 12.04) using GCC 4.8 and Clang 3.5
+Tested on [Travis](https://travis-ci.org/johnmcfarlane/fixed_point) (Ubuntu 14.04) using GCC 4.8 and Clang 3.5
 and [Debian GNU/Linux 8.3](https://www.debian.org/releases/stable/) using GCC 4.9.2 and Clang 3.5.0. 
 
 Requires:
@@ -93,6 +93,14 @@ To profile benchmarks:
    $ perf record -g ./fp_benchmark
    $ perf report -g 'graph,0.5,caller'
    ```
+
+To install:
+
+```shell
+$ cmake -DCMAKE_BUILD_TYPE=Release
+$ make
+$ sudo make install
+```
 
 #### Windows
 
