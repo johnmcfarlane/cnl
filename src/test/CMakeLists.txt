@@ -11,6 +11,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
 add_executable(fp_test
         ${CMAKE_CURRENT_LIST_DIR}/elastic.cpp
         ${CMAKE_CURRENT_LIST_DIR}/elastic_integer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/glm.cpp
         ${CMAKE_CURRENT_LIST_DIR}/index.cpp
         ${CMAKE_CURRENT_LIST_DIR}/main.cpp
         ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
@@ -43,6 +44,29 @@ if(Boost_FOUND)
     target_include_directories(fp_test SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
     target_link_libraries(fp_test ${Boost_LIBRARIES})
 endif(Boost_FOUND)
+
+######################################################################
+# pull external project, glm
+
+ExternalProject_Add(
+    glm
+    URL "https://github.com/johnmcfarlane/glm/archive/a4d22127522833607d646ea3622a3a1e329ea67b.zip"
+    URL_MD5 "9d866b271b271f84be456e709bc51c6d"
+    CMAKE_ARGS GLM_TEST_ENABLE_CXX_11:BOOL=ON -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+)
+
+ExternalProject_Get_Property(glm source_dir)
+target_include_directories(
+    fp_test
+    PRIVATE
+    SYSTEM
+    ${source_dir}
+)
+
+add_dependencies(
+    fp_test
+    glm
+)
 
 ######################################################################
 # pull external project, google_test
