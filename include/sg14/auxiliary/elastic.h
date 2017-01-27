@@ -34,9 +34,9 @@ namespace sg14 {
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::elasticate
+    // sg14::make_elastic
 
-    // sg14::elasticate helper definitions
+    // sg14::make_elastic helper definitions
     namespace _elastic_impl {
         template<class Integer>
         constexpr int num_integer_bits(Integer value)
@@ -73,7 +73,7 @@ namespace sg14 {
         };
 
         template<class Integer, Integer Value, class Archetype>
-        using elasticate_t = typename _elastic_impl::elastication<Integer, Value, Archetype>::type;
+        using make_elastic_t = typename _elastic_impl::elastication<Integer, Value, Archetype>::type;
     }
 
     /// \brief generate an \ref elastic object of given value
@@ -88,16 +88,16 @@ namespace sg14 {
     /// \par Example
     ///
     /// To define a 1-byte object with value 1024:
-    /// \snippet snippets.cpp define a small object using elasticate
+    /// \snippet snippets.cpp define a small object using make_elastic
     ///
     /// To define a int-sized object with value 1024:
-    /// \snippet snippets.cpp define a fast object using elasticate
+    /// \snippet snippets.cpp define a fast object using make_elastic
 
     template<std::int64_t Value, class Archetype = int>
-    constexpr auto elasticate()
-    -> _elastic_impl::elasticate_t<std::int64_t, Value, Archetype>
+    constexpr auto make_elastic()
+    -> _elastic_impl::make_elastic_t<std::int64_t, Value, Archetype>
     {
-        return _elastic_impl::elasticate_t<std::int64_t, Value, Archetype>{Value};
+        return _elastic_impl::make_elastic_t<std::int64_t, Value, Archetype>{Value};
     }
 }
 
