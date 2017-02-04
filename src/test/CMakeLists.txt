@@ -10,6 +10,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
 
 add_executable(fp_test
         ${CMAKE_CURRENT_LIST_DIR}/elastic.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/common.cpp
         ${CMAKE_CURRENT_LIST_DIR}/elastic_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/glm.cpp
         ${CMAKE_CURRENT_LIST_DIR}/index.cpp
