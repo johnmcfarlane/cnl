@@ -28,7 +28,7 @@ namespace sg14 {
     constexpr auto abs(const fixed_point<Rep, Exponent>& x) noexcept
     -> decltype(-x)
     {
-        return (x >= 0) ? x : -x;
+        return (x >= 0) ? static_cast<decltype(-x)>(x) : -x;
     }
 
     ////////////////////////////////////////////////////////////////////////////////

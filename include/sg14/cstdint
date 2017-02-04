@@ -90,6 +90,9 @@ namespace sg14 {
     struct width<long double> : std::integral_constant<_width_type, sizeof(long double)*CHAR_BIT> {
     };
 
+	template<class T>
+    struct width : width<typename std::remove_cv<T>::type> {};
+
     namespace _type_traits_impl {
         ////////////////////////////////////////////////////////////////////////////////
         // built-in families
