@@ -397,12 +397,27 @@ namespace sg14 {
         return fixed_point<LhsRep, LhsExponent>::from_data(lhs.data() << rhs);
     };
 
+    template<class LhsRep, int LhsExponent, class RhsIntegral, RhsIntegral RhsValue>
+    constexpr fixed_point<LhsRep, LhsExponent+RhsValue>
+    operator<<(const fixed_point<LhsRep, LhsExponent>& lhs, const_integer<RhsIntegral, RhsValue> const&)
+    {
+        return fixed_point<LhsRep, LhsExponent+RhsValue>::from_data(lhs.data());
+    }
+
     template<class LhsRep, int LhsExponent, class Rhs>
-    constexpr fixed_point<LhsRep, LhsExponent>
+    constexpr auto
     operator>>(const fixed_point<LhsRep, LhsExponent>& lhs, const Rhs& rhs)
+    -> typename std::enable_if<!is_const_integer<Rhs>::value, fixed_point<LhsRep, LhsExponent>>::type
     {
         return fixed_point<LhsRep, LhsExponent>::from_data(lhs.data() >> rhs);
     };
+
+    template<class LhsRep, int LhsExponent, class RhsIntegral, RhsIntegral RhsValue>
+    constexpr fixed_point<LhsRep, LhsExponent-static_cast<int>(RhsValue)>
+    operator>>(const fixed_point<LhsRep, LhsExponent>& lhs, const_integer<RhsIntegral, RhsValue> const&)
+    {
+        return fixed_point<LhsRep, LhsExponent-RhsValue>::from_data(lhs.data());
+    }
 }
 
 #endif	// SG14_FIXED_POINT_OPERATORS_H

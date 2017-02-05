@@ -13,6 +13,7 @@
 #if ! defined(SG14_GODBOLT_ORG)
 #include <sg14/cstdint>
 #include <sg14/limits>
+#include <sg14/auxiliary/const_integer.h>
 #endif
 
 /// study group 14 of the C++ working group
@@ -84,7 +85,11 @@ namespace sg14 {
 
     public:
         /// default constructor
+#if defined(_MSC_VER)
         fixed_point() { }
+#else
+        constexpr fixed_point() { }
+#endif
 
         /// constructor taking a fixed-point type
         template<class FromRep, int FromExponent>
@@ -103,7 +108,14 @@ namespace sg14 {
         /// constructor taking an integer type
         template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
         constexpr fixed_point(S s)
-                : fixed_point(fixed_point<S, 0>::from_data(s))
+            : fixed_point(fixed_point<S, 0>::from_data(s))
+        {
+        }
+
+        /// constructor taking an integral_constant type
+        template<class Integral, Integral Value, int Digits>
+        constexpr fixed_point(const_integer<Integral, Value, Exponent, Digits> ci)
+            : _r(ci << Exponent)
         {
         }
 
