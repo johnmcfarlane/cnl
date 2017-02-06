@@ -11,6 +11,7 @@
 #define SG14_ELASTIC_INTEGER_H 1
 
 #if ! defined(SG14_GODBOLT_ORG)
+#include <sg14/auxiliary/const_integer.h>
 #include <sg14/bits/common.h>
 #include <sg14/cstdint>
 #include <sg14/limits>
@@ -361,6 +362,16 @@ namespace sg14 {
             return Integer{scale<typename Integer::rep>()(i.data(), base, exp)};
         }
     };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::make_elastic_integer
+
+    template<
+            class Integeral, Integeral Value>
+    constexpr auto make_elastic_integer(const_integer<Integeral, Value>)
+    -> elastic_integer<_const_integer_impl::num_integer_bits(Value)> {
+        return elastic_integer<_const_integer_impl::num_integer_bits(Value)>{Value};
+    }
 }
 
 namespace std {
