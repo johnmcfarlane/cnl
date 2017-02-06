@@ -15,7 +15,15 @@ namespace {
     using sg14::elastic_integer;
     using sg14::_impl::identical;
 
+    // simple one-off tests
     static_assert(identical(-elastic_integer<1, unsigned>{1}, elastic_integer<1, signed>{-1}), "elastic_integer test failed");
+
+    namespace {
+        using sg14::_elastic_integer_impl::is_elastic_integer;
+        static_assert(!is_elastic_integer<int>::value, "sg14::_elastic_integer_impl::is_elastic_integer test failed");
+        static_assert(is_elastic_integer<elastic_integer<10, int>>::value,
+                      "sg14::_elastic_integer_impl::is_elastic_integer test failed");
+    }
 
     template<typename ElasticInteger, long long Lowest, long long Min, long long Max>
     struct elastic_integer_test {
