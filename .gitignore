@@ -1,24 +1,5 @@
-# cmake
-CMakeCache.txt
-CMakeFiles
-Makefile
-cmake_install.cmake
-fp_benchmark
-fp_test
-google_benchmark-prefix/
-google_test-prefix/
-libfixed_point.a
-safe_numerics-prefix
-
 # python
 *.pyc
-
-# perf
-perf.data*
-
-# Clion
-.idea
-cmake-build-*/
 
 # VS
 *.cache
