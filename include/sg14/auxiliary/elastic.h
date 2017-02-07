@@ -36,46 +36,6 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::make_elastic
 
-    // sg14::make_elastic helper definitions
-    namespace _elastic_impl {
-        template<class Integer>
-        constexpr int num_integer_bits(Integer value)
-        {
-            return value ? 1+num_integer_bits(value/2) : 0;
-        }
-
-        template<class Integer>
-        constexpr int num_fractional_bits(Integer value)
-        {
-            return (((value/2)*2)==value) ? num_fractional_bits(value/2)-1 : 0;
-        }
-
-        template<class Integer, Integer Value, class Archetype, class Enabled = void>
-        struct elastication;
-
-        template<class Integer, Integer Value, class Archetype>
-        struct elastication<Integer, Value, Archetype, typename std::enable_if<Value==0>::type> {
-            using type = elastic<1, 0, typename make_unsigned<Archetype>::type>;
-        };
-
-        template<class Integer, Integer Value, class Archetype>
-        struct elastication<Integer, Value, Archetype, typename std::enable_if<Value!=0>::type> {
-            static_assert(std::is_integral<Integer>::value, "template parameter, Integer, is not integral");
-
-            using archetype = typename std::conditional<(Value>=0),
-                    typename make_unsigned<Archetype>::type,
-                    typename make_signed<Archetype>::type>::type;
-
-            using type = elastic<
-                    sg14::_impl::max(1, num_integer_bits(Value)),
-                    num_fractional_bits(Value),
-                    archetype>;
-        };
-
-        template<class Integer, Integer Value, class Archetype>
-        using make_elastic_t = typename _elastic_impl::elastication<Integer, Value, Archetype>::type;
-    }
-
     /// \brief generate an \ref elastic object of given value
     ///
     /// \tparam Value the integer number to be represented
@@ -94,10 +54,10 @@ namespace sg14 {
     /// \snippet snippets.cpp define a fast object using make_elastic
 
     template<std::int64_t Value, class Archetype = int>
-    constexpr auto make_elastic()
-    -> _elastic_impl::make_elastic_t<std::int64_t, Value, Archetype>
+    constexpr auto make_elastic(std::integral_constant<std::int64_t, Value> = std::integral_constant<std::int64_t, Value>())
+    -> elastic<_const_integer_impl::num_integer_bits(Value), -_const_integer_impl::num_integer_zeros(Value), Archetype>
     {
-        return _elastic_impl::make_elastic_t<std::int64_t, Value, Archetype>{Value};
+        return Value;
     }
 }
 
