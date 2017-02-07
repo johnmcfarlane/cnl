@@ -34,6 +34,14 @@ namespace {
                       "sg14::_elastic_integer_impl::make_elastic_integer test failed");
     }
 
+    namespace {
+        static_assert(identical(elastic_integer<10>{777} / elastic_integer<4>{10}, elastic_integer<10>{77}),
+                      "sg14::elastic_integer test failed");
+        static_assert(identical(elastic_integer<10>{777} / 10_c, elastic_integer<10>{77}),
+                      "sg14::elastic_integer test failed");
+    }
+
+    // parameterized tests
     template<typename ElasticInteger, long long Lowest, long long Min, long long Max>
     struct elastic_integer_test {
         using value_type = ElasticInteger;

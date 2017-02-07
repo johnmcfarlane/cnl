@@ -335,6 +335,16 @@ namespace sg14 {
         return _elastic_integer_impl::operate<_impl::divide_tag>(lhs, rhs);
     }
 
+    template<
+        int LhsDigits, class LhsArchetype,
+        class RhsIntegral, RhsIntegral RhsValue>
+    constexpr auto
+    operator/(const elastic_integer<LhsDigits, LhsArchetype>& lhs, const const_integer<RhsIntegral, RhsValue>& rhs)
+    -> decltype(lhs/make_elastic_integer(rhs))
+    {
+        return lhs/make_elastic_integer(rhs);
+    }
+
     ////////////////////////////////////////////////////////////////////////////////
     // traits
 
