@@ -59,6 +59,30 @@ namespace sg14 {
     {
         return Value;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::literals::operator "" _elastic
+
+    /// \brief generate an \ref sg14::elastic object using a literal
+    ///
+    /// \return the given value represented using an \ref sg14::elastic type
+    ///
+    /// \note The return type is guaranteed to be no larger than is necessary to represent the value.
+    ///
+    /// \par Example
+    ///
+    /// To define an int-sized object with value 1536:
+    /// \snippet snippets.cpp define a small object using elastic literal
+
+    namespace literals {
+        template<char... Digits>
+        constexpr auto operator "" _elastic()
+        -> decltype(make_elastic<_const_integer_impl::digits_to_integral<Digits...>()>())
+        {
+            return make_elastic<_const_integer_impl::digits_to_integral<Digits...>()>();
+        }
+    }
 }
 
 #endif // SG14_ELASTIC_H

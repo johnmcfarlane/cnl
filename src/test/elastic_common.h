@@ -197,6 +197,12 @@ static_assert(sizeof(make_elastic<-254, char>()) == 1, "using too many bytes to 
 static_assert(sizeof(make_elastic<-255, char>()) == 2, "using too many bytes to represent -255");
 static_assert(sizeof(make_elastic<-256, char>()) == 1, "using too many bytes to represent -256");
 
+namespace test_elastic_constant_literal {
+    using namespace sg14::literals;
+    using sg14::_impl::identical;
+    static_assert(identical(0_elastic, elastic<0, 0>{0}), "");
+}
+
 // some numbers are so big that you don't have the luxury of choosing
 static_assert(sizeof(make_elastic<static_cast<long long>(std::numeric_limits<unsigned>::max()) + 1>()) == sizeof(int), "using too many bytes to represent 2^32");
 static_assert(sizeof(make_elastic<static_cast<long long>(std::numeric_limits<unsigned>::max()) + 1, char>()) == 1, "using too many bytes to represent 2^32");
