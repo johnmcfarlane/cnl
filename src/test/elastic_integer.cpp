@@ -100,4 +100,13 @@ namespace {
     template
     struct elastic_integer_test<elastic_integer<39, unsigned int>, 0, 1, (1LL << 39)-1>;
 #endif
+
+    // user-defined literal initialization
+#if (__cplusplus > 201402L)
+    // with class template deduction
+    static_assert(identical(elastic_integer(1_c), elastic_integer<1>{1}), "");
+#else
+    // without class template deduction
+    static_assert(identical(elastic_integer<1>(1_c), elastic_integer<1>{1}), "");
+#endif
 }

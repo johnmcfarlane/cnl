@@ -70,6 +70,13 @@ namespace sg14 {
         {
         }
 
+        /// constructor taking an integral constant
+        template<typename Integral, Integral Value, int Exponent>
+        constexpr elastic_integer(const_integer<Integral, Value, Digits, Exponent>)
+            : _r(Value)
+        {
+        }
+
         /// copy assignment operator taking a floating-point type
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         elastic_integer& operator=(S s)
