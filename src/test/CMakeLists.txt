@@ -10,16 +10,19 @@ include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
 
 add_executable(fp_test
         ${CMAKE_CURRENT_LIST_DIR}/elastic.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/const_integer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/common.cpp
         ${CMAKE_CURRENT_LIST_DIR}/elastic_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/glm.cpp
         ${CMAKE_CURRENT_LIST_DIR}/index.cpp
         ${CMAKE_CURRENT_LIST_DIR}/main.cpp
         ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/p0381.cpp
         ${CMAKE_CURRENT_LIST_DIR}/p0037.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/p0381.cpp
         ${CMAKE_CURRENT_LIST_DIR}/utils.cpp
         ${CMAKE_CURRENT_LIST_DIR}/integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_built_in.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/fixed_point_const_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_saturated_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_native_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_throwing_integer.cpp
@@ -27,6 +30,8 @@ add_executable(fp_test
         ${CMAKE_CURRENT_LIST_DIR}/readme.cpp
         ${CMAKE_CURRENT_LIST_DIR}/snippets.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_math.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/zero_cost_average.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/zero_cost_square.cpp
 )
 
 ######################################################################
@@ -50,9 +55,10 @@ endif(Boost_FOUND)
 
 ExternalProject_Add(
     glm
-    URL "https://github.com/johnmcfarlane/glm/archive/a4d22127522833607d646ea3622a3a1e329ea67b.zip"
-    URL_MD5 "9d866b271b271f84be456e709bc51c6d"
-    CMAKE_ARGS GLM_TEST_ENABLE_CXX_11:BOOL=ON -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+    GIT_REPOSITORY "https://github.com/johnmcfarlane/glm.git"
+    GIT_TAG "a4d22127522833607d646ea3622a3a1e329ea67b"
+    UPDATE_COMMAND ""
+    INSTALL_COMMAND ""
 )
 
 ExternalProject_Get_Property(glm source_dir)
@@ -75,7 +81,8 @@ add_dependencies(
 ExternalProject_Add(
         google_test
         GIT_REPOSITORY "https://github.com/google/googletest.git"
-        GIT_TAG "release-1.7.0"
+        GIT_TAG "c99458533a9b4c743ed51537e25989ea55944908"
+        UPDATE_COMMAND ""
         INSTALL_COMMAND ""
         CMAKE_ARGS -Dgtest_force_shared_crt=ON
 )

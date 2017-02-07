@@ -15,8 +15,33 @@ namespace {
     using sg14::elastic_integer;
     using sg14::_impl::identical;
 
+    // simple one-off tests
     static_assert(identical(-elastic_integer<1, unsigned>{1}, elastic_integer<1, signed>{-1}), "elastic_integer test failed");
 
+    namespace {
+        using sg14::_elastic_integer_impl::is_elastic_integer;
+        static_assert(!is_elastic_integer<int>::value, "sg14::_elastic_integer_impl::is_elastic_integer test failed");
+        static_assert(is_elastic_integer<elastic_integer<10, int>>::value,
+                      "sg14::_elastic_integer_impl::is_elastic_integer test failed");
+    }
+
+    namespace {
+        using sg14::make_elastic_integer;
+        using namespace sg14::literals;
+        static_assert(identical(make_elastic_integer(136_c), elastic_integer<8, int>{136}),
+                      "sg14::_elastic_integer_impl::make_elastic_integer test failed");
+        static_assert(identical(make_elastic_integer(1000000000000_c), elastic_integer<40, int>{1000000000000}),
+                      "sg14::_elastic_integer_impl::make_elastic_integer test failed");
+    }
+
+    namespace {
+        static_assert(identical(elastic_integer<10>{777} / elastic_integer<4>{10}, elastic_integer<10>{77}),
+                      "sg14::elastic_integer test failed");
+        static_assert(identical(elastic_integer<10>{777} / 10_c, elastic_integer<10>{77}),
+                      "sg14::elastic_integer test failed");
+    }
+
+    // parameterized tests
     template<typename ElasticInteger, long long Lowest, long long Min, long long Max>
     struct elastic_integer_test {
         using value_type = ElasticInteger;
@@ -82,5 +107,14 @@ namespace {
 #if defined(SG14_INT128_ENABLED)
     template
     struct elastic_integer_test<elastic_integer<39, unsigned int>, 0, 1, (1LL << 39)-1>;
+#endif
+
+    // user-defined literal initialization
+#if (__cplusplus > 201402L)
+    // with class template deduction
+    static_assert(identical(elastic_integer(1_c), elastic_integer<1>{1}), "");
+#else
+    // without class template deduction
+    static_assert(identical(elastic_integer<1>(1_c), elastic_integer<1>{1}), "");
 #endif
 }

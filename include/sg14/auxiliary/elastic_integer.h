@@ -11,6 +11,7 @@
 #define SG14_ELASTIC_INTEGER_H 1
 
 #if ! defined(SG14_GODBOLT_ORG)
+#include <sg14/auxiliary/const_integer.h>
 #include <sg14/bits/common.h>
 #include <sg14/cstdint>
 #include <sg14/limits>
@@ -66,6 +67,13 @@ namespace sg14 {
         template<int FromWidth, class FromArchetype>
         explicit constexpr elastic_integer(const elastic_integer<FromWidth, FromArchetype>& rhs)
                 :_r(rhs)
+        {
+        }
+
+        /// constructor taking an integral constant
+        template<typename Integral, Integral Value, int Exponent>
+        constexpr elastic_integer(const_integer<Integral, Value, Digits, Exponent>)
+            : _r(Value)
         {
         }
 
@@ -327,6 +335,16 @@ namespace sg14 {
         return _elastic_integer_impl::operate<_impl::divide_tag>(lhs, rhs);
     }
 
+    template<
+        int LhsDigits, class LhsArchetype,
+        class RhsIntegral, RhsIntegral RhsValue>
+    constexpr auto
+    operator/(const elastic_integer<LhsDigits, LhsArchetype>& lhs, const const_integer<RhsIntegral, RhsValue>& rhs)
+    -> decltype(lhs/make_elastic_integer(rhs))
+    {
+        return lhs/make_elastic_integer(rhs);
+    }
+
     ////////////////////////////////////////////////////////////////////////////////
     // traits
 
@@ -361,6 +379,16 @@ namespace sg14 {
             return Integer{scale<typename Integer::rep>()(i.data(), base, exp)};
         }
     };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::make_elastic_integer
+
+    template<
+            class Integeral, Integeral Value>
+    constexpr auto make_elastic_integer(const_integer<Integeral, Value>)
+    -> elastic_integer<_const_integer_impl::num_integer_bits(Value)> {
+        return elastic_integer<_const_integer_impl::num_integer_bits(Value)>{Value};
+    }
 }
 
 namespace std {

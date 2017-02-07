@@ -19,22 +19,32 @@ static_assert(n==-2.75, "fixed-point type was unable to store the value");
 //! [define a fixed_point value]
 }
 
-namespace define_a_fast_object_using_elasticate {
-//! [define a fast object using elasticate]
-constexpr auto n = elasticate<1024>();
+namespace define_a_fast_object_using_make_elastic {
+//! [define a fast object using make_elastic]
+constexpr auto n = make_elastic<1024>();
 
 static_assert(n==1024, "n now has the value, 1024");
-static_assert(sizeof(n)==sizeof(int), "by default elasticate uses the most eficient type it can");
-//! [define a fast object using elasticate]
+static_assert(sizeof(n)==sizeof(int), "by default make_elastic uses the most eficient type it can");
+//! [define a fast object using make_elastic]
 }
 
-namespace define_a_small_object_using_elasticate {
-//! [define a small object using elasticate]
-constexpr auto n = elasticate<1024, char>();
+namespace define_a_small_object_using_make_elastic {
+//! [define a small object using make_elastic]
+constexpr auto n = make_elastic<1024, char>();
 
 static_assert(n==1024, "n now has the value, 1024");
-static_assert(sizeof(n)==sizeof(char), "by default elasticate uses the most eficient type it can");
-//! [define a small object using elasticate]
+static_assert(sizeof(n)==sizeof(char), "by default make_elastic uses the most eficient type it can");
+//! [define a small object using make_elastic]
+}
+
+namespace define_a_fast_object_using_elastic_literal {
+//! [define a small object using elastic literal]
+    using namespace sg14::literals;
+    constexpr auto n = 1536_elastic;
+
+    static_assert(n==1536, "n now has the value, 1536");
+    static_assert(std::is_same<decltype(n), const elastic<11, -9>>::value, "type only uses 1 bit of range");
+//! [define a small object using elastic literal]
 }
 
 namespace use_resize_1 {

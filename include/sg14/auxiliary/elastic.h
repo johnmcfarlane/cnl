@@ -34,47 +34,7 @@ namespace sg14 {
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::elasticate
-
-    // sg14::elasticate helper definitions
-    namespace _elastic_impl {
-        template<class Integer>
-        constexpr int num_integer_bits(Integer value)
-        {
-            return value ? 1+num_integer_bits(value/2) : 0;
-        }
-
-        template<class Integer>
-        constexpr int num_fractional_bits(Integer value)
-        {
-            return (((value/2)*2)==value) ? num_fractional_bits(value/2)-1 : 0;
-        }
-
-        template<class Integer, Integer Value, class Archetype, class Enabled = void>
-        struct elastication;
-
-        template<class Integer, Integer Value, class Archetype>
-        struct elastication<Integer, Value, Archetype, typename std::enable_if<Value==0>::type> {
-            using type = elastic<1, 0, typename make_unsigned<Archetype>::type>;
-        };
-
-        template<class Integer, Integer Value, class Archetype>
-        struct elastication<Integer, Value, Archetype, typename std::enable_if<Value!=0>::type> {
-            static_assert(std::is_integral<Integer>::value, "template parameter, Integer, is not integral");
-
-            using archetype = typename std::conditional<(Value>=0),
-                    typename make_unsigned<Archetype>::type,
-                    typename make_signed<Archetype>::type>::type;
-
-            using type = elastic<
-                    sg14::_impl::max(1, num_integer_bits(Value)),
-                    num_fractional_bits(Value),
-                    archetype>;
-        };
-
-        template<class Integer, Integer Value, class Archetype>
-        using elasticate_t = typename _elastic_impl::elastication<Integer, Value, Archetype>::type;
-    }
+    // sg14::make_elastic
 
     /// \brief generate an \ref elastic object of given value
     ///
@@ -88,16 +48,40 @@ namespace sg14 {
     /// \par Example
     ///
     /// To define a 1-byte object with value 1024:
-    /// \snippet snippets.cpp define a small object using elasticate
+    /// \snippet snippets.cpp define a small object using make_elastic
     ///
     /// To define a int-sized object with value 1024:
-    /// \snippet snippets.cpp define a fast object using elasticate
+    /// \snippet snippets.cpp define a fast object using make_elastic
 
     template<std::int64_t Value, class Archetype = int>
-    constexpr auto elasticate()
-    -> _elastic_impl::elasticate_t<std::int64_t, Value, Archetype>
+    constexpr auto make_elastic(std::integral_constant<std::int64_t, Value> = std::integral_constant<std::int64_t, Value>())
+    -> elastic<_const_integer_impl::num_integer_bits(Value), -_const_integer_impl::num_integer_zeros(Value), Archetype>
     {
-        return _elastic_impl::elasticate_t<std::int64_t, Value, Archetype>{Value};
+        return Value;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::literals::operator "" _elastic
+
+    /// \brief generate an \ref sg14::elastic object using a literal
+    ///
+    /// \return the given value represented using an \ref sg14::elastic type
+    ///
+    /// \note The return type is guaranteed to be no larger than is necessary to represent the value.
+    ///
+    /// \par Example
+    ///
+    /// To define an int-sized object with value 1536:
+    /// \snippet snippets.cpp define a small object using elastic literal
+
+    namespace literals {
+        template<char... Digits>
+        constexpr auto operator "" _elastic()
+        -> decltype(make_elastic<_const_integer_impl::digits_to_integral<Digits...>()>())
+        {
+            return make_elastic<_const_integer_impl::digits_to_integral<Digits...>()>();
+        }
     }
 }
 

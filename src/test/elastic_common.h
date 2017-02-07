@@ -18,7 +18,8 @@
 using std::is_same;
 
 using sg14::elastic;
-using sg14::elasticate;
+using sg14::make_elastic;
+using namespace sg14::literals;
 using sg14::make_signed;
 using sg14::make_unsigned;
 
@@ -133,20 +134,20 @@ constexpr bool is_greater_than(const Greater& greater, const Lesser& lesser)
 static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// tests for sg14::elasticate
+// tests for sg14::make_elastic
 
 template<std::int64_t Value>
-struct elasticate_test {
-    using elastic_type = decltype(elasticate<Value>());
-    static constexpr elastic_type elastic_value = elasticate<Value>();
+struct make_elastic_test {
+    using elastic_type = decltype(make_elastic<Value>());
+    static constexpr elastic_type elastic_value = make_elastic<Value>();
 
     static_assert(Value<=0 || (Value/(1LL << elastic_type::integer_digits))==0, "elastic type capacity is too big");
     static_assert(Value>=0 || elastic_type::integer_digits>=60
                     || (Value/(1LL << (elastic_type::integer_digits+1)))==0,
             "elastic type capacity is too big");
-    static_assert(Value<=0 || (Value >> (elastic_type::integer_digits-1))!=0, "elastic type capacity is too small");
+    static_assert(Value<=0 || (Value >> sg14::_impl::max<int>(0, elastic_type::integer_digits-1))!=0, "elastic type capacity is too small");
     static_assert(Value>=0 || (Value >> (elastic_type::integer_digits))!=0, "elastic type capacity is too small");
-    static_assert(Value || elastic_type::integer_digits==1, "elastic type capacity is too small");
+    static_assert(Value || elastic_type::integer_digits==0, "elastic type capacity is too small");
 
     static constexpr int lsz = 1 << (-elastic_type::fractional_digits);
     static_assert(Value==((Value/lsz)*lsz), "fractional_digits is too low");
@@ -154,98 +155,104 @@ struct elasticate_test {
     static constexpr int lsz1 = lsz * 2;
     static_assert(Value==0 || Value!=((Value/lsz1)*lsz1), "fractional_digits is too high");
 
-    static_assert(std::numeric_limits<elastic_type>::is_signed==(Value<0), "signage doesn't match value");
+    static_assert(std::numeric_limits<elastic_type>::is_signed, "signage doesn't match value");
 #if ! defined(_MSC_VER)
-//    static_assert(elastic_value==elastic<63, 0>{Value}, "elasticated value doesn't equal its source value");
+//    static_assert(elastic_value==elastic<63, 0>{Value}, "make_elasticd value doesn't equal its source value");
 #endif
 };
 
-// by default, elasticate generates types that are machine-optimal for speed...
-static_assert(sizeof(elasticate<0>()) <= sizeof(int), "using too many bytes to represent 0");
-static_assert(sizeof(elasticate<1>()) == sizeof(int), "using too many bytes to represent 1");
-static_assert(sizeof(elasticate<255>()) == sizeof(int), "using too many bytes to represent 255");
-static_assert(sizeof(elasticate<256>()) == sizeof(int), "using too many bytes to represent 256");
-static_assert(sizeof(elasticate<257>()) == sizeof(int), "using too many bytes to represent 257");
-static_assert(sizeof(elasticate<510>()) == sizeof(int), "using too many bytes to represent 510");
-static_assert(sizeof(elasticate<511>()) == sizeof(int), "using too many bytes to represent 511");
-static_assert(sizeof(elasticate<512>()) == sizeof(int), "using too many bytes to represent 512");
+// by default, make_elastic generates types that are machine-optimal for speed...
+static_assert(sizeof(make_elastic<0>()) <= sizeof(int), "using too many bytes to represent 0");
+static_assert(sizeof(make_elastic<1>()) == sizeof(int), "using too many bytes to represent 1");
+static_assert(sizeof(make_elastic<255>()) == sizeof(int), "using too many bytes to represent 255");
+static_assert(sizeof(make_elastic<256>()) == sizeof(int), "using too many bytes to represent 256");
+static_assert(sizeof(make_elastic<257>()) == sizeof(int), "using too many bytes to represent 257");
+static_assert(sizeof(make_elastic<510>()) == sizeof(int), "using too many bytes to represent 510");
+static_assert(sizeof(make_elastic<511>()) == sizeof(int), "using too many bytes to represent 511");
+static_assert(sizeof(make_elastic<512>()) == sizeof(int), "using too many bytes to represent 512");
 
-static_assert(sizeof(elasticate<-1>()) == sizeof(int), "using too many bytes to represent -1");
-static_assert(sizeof(elasticate<-127>()) == sizeof(int), "using too many bytes to represent -127");
-static_assert(sizeof(elasticate<-128>()) == sizeof(int), "using too many bytes to represent -128");
-static_assert(sizeof(elasticate<-129>()) == sizeof(int), "using too many bytes to represent -129");
-static_assert(sizeof(elasticate<-254>()) == sizeof(int), "using too many bytes to represent -254");
-static_assert(sizeof(elasticate<-255>()) == sizeof(int), "using too many bytes to represent -255");
-static_assert(sizeof(elasticate<-256>()) == sizeof(int), "using too many bytes to represent -256");
+static_assert(sizeof(make_elastic<-1>()) == sizeof(int), "using too many bytes to represent -1");
+static_assert(sizeof(make_elastic<-127>()) == sizeof(int), "using too many bytes to represent -127");
+static_assert(sizeof(make_elastic<-128>()) == sizeof(int), "using too many bytes to represent -128");
+static_assert(sizeof(make_elastic<-129>()) == sizeof(int), "using too many bytes to represent -129");
+static_assert(sizeof(make_elastic<-254>()) == sizeof(int), "using too many bytes to represent -254");
+static_assert(sizeof(make_elastic<-255>()) == sizeof(int), "using too many bytes to represent -255");
+static_assert(sizeof(make_elastic<-256>()) == sizeof(int), "using too many bytes to represent -256");
 
 // ... but a more compact type can be chosen if size is the constraint
-static_assert(sizeof(elasticate<0, char>()) <= 1, "using too many bytes to represent 0");
-static_assert(sizeof(elasticate<1, char>()) == 1, "using too many bytes to represent 1");
-static_assert(sizeof(elasticate<255, char>()) == 1, "using too many bytes to represent 255");
-static_assert(sizeof(elasticate<256, char>()) == 1, "using too many bytes to represent 256");
-static_assert(sizeof(elasticate<257, char>()) == 2, "using too many bytes to represent 257");
-static_assert(sizeof(elasticate<510, char>()) == 1, "using too many bytes to represent 510");
-static_assert(sizeof(elasticate<511, char>()) == 2, "using too many bytes to represent 511");
-static_assert(sizeof(elasticate<512, char>()) == 1, "using too many bytes to represent 512");
+static_assert(sizeof(make_elastic<0, char>()) <= 1, "using too many bytes to represent 0");
+static_assert(sizeof(make_elastic<1, char>()) == 1, "using too many bytes to represent 1");
+static_assert(sizeof(make_elastic<255, char>()) == 2, "using too many bytes to represent 255");
+static_assert(sizeof(make_elastic<256, char>()) == 1, "using too many bytes to represent 256");
+static_assert(sizeof(make_elastic<257, char>()) == 2, "using too many bytes to represent 257");
+static_assert(sizeof(make_elastic<510, char>()) == 2, "using too many bytes to represent 510");
+static_assert(sizeof(make_elastic<511, char>()) == 2, "using too many bytes to represent 511");
+static_assert(sizeof(make_elastic<512, char>()) == 1, "using too many bytes to represent 512");
 
-static_assert(sizeof(elasticate<-1, char>()) == 1, "using too many bytes to represent -1");
-static_assert(sizeof(elasticate<-127, char>()) == 1, "using too many bytes to represent -127");
-static_assert(sizeof(elasticate<-128, char>()) == 1, "using too many bytes to represent -128");
-static_assert(sizeof(elasticate<-129, char>()) == 2, "using too many bytes to represent -129");
-static_assert(sizeof(elasticate<-254, char>()) == 1, "using too many bytes to represent -254");
-static_assert(sizeof(elasticate<-255, char>()) == 2, "using too many bytes to represent -255");
-static_assert(sizeof(elasticate<-256, char>()) == 1, "using too many bytes to represent -256");
+static_assert(sizeof(make_elastic<-1, char>()) == 1, "using too many bytes to represent -1");
+static_assert(sizeof(make_elastic<-127, char>()) == 1, "using too many bytes to represent -127");
+static_assert(sizeof(make_elastic<-128, char>()) == 1, "using too many bytes to represent -128");
+static_assert(sizeof(make_elastic<-129, char>()) == 2, "using too many bytes to represent -129");
+static_assert(sizeof(make_elastic<-254, char>()) == 1, "using too many bytes to represent -254");
+static_assert(sizeof(make_elastic<-255, char>()) == 2, "using too many bytes to represent -255");
+static_assert(sizeof(make_elastic<-256, char>()) == 1, "using too many bytes to represent -256");
+
+namespace test_elastic_constant_literal {
+    using namespace sg14::literals;
+    using sg14::_impl::identical;
+    static_assert(identical(0_elastic, elastic<0, 0>{0}), "");
+}
 
 // some numbers are so big that you don't have the luxury of choosing
-static_assert(sizeof(elasticate<static_cast<long long>(std::numeric_limits<unsigned>::max()) + 1>()) == sizeof(int), "using too many bytes to represent 2^32");
-static_assert(sizeof(elasticate<static_cast<long long>(std::numeric_limits<unsigned>::max()) + 1, char>()) == 1, "using too many bytes to represent 2^32");
+static_assert(sizeof(make_elastic<static_cast<long long>(std::numeric_limits<unsigned>::max()) + 1>()) == sizeof(int), "using too many bytes to represent 2^32");
+static_assert(sizeof(make_elastic<static_cast<long long>(std::numeric_limits<unsigned>::max()) + 1, char>()) == 1, "using too many bytes to represent 2^32");
 
-static_assert(sizeof(elasticate<static_cast<long long>(std::numeric_limits<unsigned>::max()) + 2>()) > sizeof(int), "using too many bytes to represent 2^32 + 1");
-static_assert(sizeof(elasticate<static_cast<long long>(std::numeric_limits<unsigned>::max()) + 2, char>()) > sizeof(int), "using too many bytes to represent 2^32 + 1");
+static_assert(sizeof(make_elastic<static_cast<long long>(std::numeric_limits<unsigned>::max()) + 2>()) > sizeof(int), "using too many bytes to represent 2^32 + 1");
+static_assert(sizeof(make_elastic<static_cast<long long>(std::numeric_limits<unsigned>::max()) + 2, char>()) > sizeof(int), "using too many bytes to represent 2^32 + 1");
 
 template
-struct elasticate_test<-0>;
+struct make_elastic_test<-0>;
 template
-struct elasticate_test<1>;
+struct make_elastic_test<1>;
 template
-struct elasticate_test<-1>;
+struct make_elastic_test<-1>;
 template
-struct elasticate_test<2>;
+struct make_elastic_test<2>;
 template
-struct elasticate_test<-2>;
+struct make_elastic_test<-2>;
 template
-struct elasticate_test<3>;
+struct make_elastic_test<3>;
 template
-struct elasticate_test<-3>;
+struct make_elastic_test<-3>;
 template
-struct elasticate_test<-13>;
+struct make_elastic_test<-13>;
 template
-struct elasticate_test<169>;
+struct make_elastic_test<169>;
 template
-struct elasticate_test<-2197>;
+struct make_elastic_test<-2197>;
 template
-struct elasticate_test<28561>;
+struct make_elastic_test<28561>;
 template
-struct elasticate_test<-371293>;
+struct make_elastic_test<-371293>;
 template
-struct elasticate_test<4826809>;
+struct make_elastic_test<4826809>;
 template
-struct elasticate_test<-62748517>;
+struct make_elastic_test<-62748517>;
 template
-struct elasticate_test<815730721>;
+struct make_elastic_test<815730721>;
 template
-struct elasticate_test<-10604499373>;
+struct make_elastic_test<-10604499373>;
 template
-struct elasticate_test<137858491849>;
+struct make_elastic_test<137858491849>;
 template
-struct elasticate_test<std::numeric_limits<std::int64_t>::max()/2>;
+struct make_elastic_test<std::numeric_limits<std::int64_t>::max()/2>;
 template
-struct elasticate_test<-std::numeric_limits<std::int64_t>::max()/2>;
+struct make_elastic_test<-std::numeric_limits<std::int64_t>::max()/2>;
 #if ! defined(_MSC_VER)
 template
-struct elasticate_test<std::numeric_limits<std::int64_t>::max()>;
+struct make_elastic_test<std::numeric_limits<std::int64_t>::max()>;
 template
-struct elasticate_test<-std::numeric_limits<std::int64_t>::max()>;
+struct make_elastic_test<-std::numeric_limits<std::int64_t>::max()>;
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -373,12 +380,12 @@ struct positive_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // test operator*
 
-    static_assert(is_equal_to(min*elasticate<0>(), zero), "operator* test failed");
-    static_assert(is_equal_to(min*elasticate<1>(), min), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic<0>(), zero), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic<1>(), min), "operator* test failed");
 #if ! defined(_MSC_VER)
-    static_assert(is_equal_to(min*elasticate<2>(), min+min), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic<2>(), min+min), "operator* test failed");
 #endif
-    static_assert(is_equal_to(min*elasticate<3>(), min+min+min), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic<3>(), min+min+min), "operator* test failed");
 
     static_assert(std::numeric_limits<decltype(zero*zero)>::is_signed
                     ==std::numeric_limits<decltype(zero)>::is_signed,
@@ -393,11 +400,11 @@ struct positive_elastic_test {
     // test operator/
 
 #if ! defined(_MSC_VER)
-    static_assert(!is_greater_than(min/elasticate<2>(), min), "operator/ test failed");
+    static_assert(!is_greater_than(min/make_elastic<2>(), min), "operator/ test failed");
 #endif
-    static_assert(is_equal_to(min/elasticate<1>(), min), "operator/ test failed");
-    static_assert(is_equal_to((min+min)/elasticate<2>(), min), "operator/ test failed");
-    static_assert(is_equal_to((min+min+min)/elasticate<3>(), min), "operator/ test failed");
+    static_assert(is_equal_to(min/make_elastic<1>(), min), "operator/ test failed");
+    static_assert(is_equal_to((min+min)/make_elastic<2>(), min), "operator/ test failed");
+    static_assert(is_equal_to((min+min+min)/make_elastic<3>(), min), "operator/ test failed");
     static_assert(std::numeric_limits<decltype(zero/zero)>::is_signed
                     ==std::numeric_limits<elastic_type>::is_signed,
             "signedness is lost during multiply");
