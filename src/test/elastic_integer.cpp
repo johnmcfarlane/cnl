@@ -14,20 +14,20 @@ namespace {
     using sg14::_width_type;
     using sg14::elastic_integer;
     using sg14::_impl::identical;
+    using namespace sg14::literals;
 
     // simple one-off tests
     static_assert(identical(-elastic_integer<1, unsigned>{1}, elastic_integer<1, signed>{-1}), "elastic_integer test failed");
 
-    namespace {
+    namespace test_is_elastic_integer {
         using sg14::_elastic_integer_impl::is_elastic_integer;
         static_assert(!is_elastic_integer<int>::value, "sg14::_elastic_integer_impl::is_elastic_integer test failed");
         static_assert(is_elastic_integer<elastic_integer<10, int>>::value,
                       "sg14::_elastic_integer_impl::is_elastic_integer test failed");
     }
 
-    namespace {
+    namespace test_make_elastic_integer {
         using sg14::make_elastic_integer;
-        using namespace sg14::literals;
         static_assert(identical(make_elastic_integer(136_c), elastic_integer<8, int>{136}),
                       "sg14::_elastic_integer_impl::make_elastic_integer test failed");
         static_assert(identical(make_elastic_integer(1000000000000_c), elastic_integer<40, int>{1000000000000}),

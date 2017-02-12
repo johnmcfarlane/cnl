@@ -12,6 +12,7 @@
 using std::is_same;
 
 using sg14::elastic;
+using namespace sg14::literals;
 using sg14::make_elastic;
 using sg14::make_signed;
 using sg14::make_unsigned;
@@ -310,12 +311,12 @@ struct positive_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // test operator*
 
-    static_assert(is_equal_to(min*make_elastic<0>(), zero), "operator* test failed");
-    static_assert(is_equal_to(min*make_elastic<1>(), min), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic(0_c), zero), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic(1_c), min), "operator* test failed");
 #if ! defined(_MSC_VER)
-    static_assert(is_equal_to(min*make_elastic<2>(), min+min), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic(2_c), min+min), "operator* test failed");
 #endif
-    static_assert(is_equal_to(min*make_elastic<3>(), min+min+min), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic(3_c), min+min+min), "operator* test failed");
 
     static_assert(std::numeric_limits<decltype(zero*zero)>::is_signed
                   ==std::numeric_limits<decltype(zero)>::is_signed,
@@ -330,11 +331,11 @@ struct positive_elastic_test {
     // test operator/
 
 #if ! defined(_MSC_VER)
-    static_assert(!is_greater_than(min/make_elastic<2>(), min), "operator/ test failed");
+    static_assert(!is_greater_than(min/make_elastic(2_c), min), "operator/ test failed");
 #endif
-    static_assert(is_equal_to(min/make_elastic<1>(), min), "operator/ test failed");
-    static_assert(is_equal_to((min+min)/make_elastic<2>(), min), "operator/ test failed");
-    static_assert(is_equal_to((min+min+min)/make_elastic<3>(), min), "operator/ test failed");
+    static_assert(is_equal_to(min/make_elastic(1_c), min), "operator/ test failed");
+    static_assert(is_equal_to((min+min)/make_elastic(2_c), min), "operator/ test failed");
+    static_assert(is_equal_to((min+min+min)/make_elastic(3_c), min), "operator/ test failed");
     static_assert(std::numeric_limits<decltype(zero/zero)>::is_signed
                   ==std::numeric_limits<elastic_type>::is_signed,
                   "signedness is lost during multiply");
