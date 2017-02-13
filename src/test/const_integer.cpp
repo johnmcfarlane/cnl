@@ -121,9 +121,9 @@ namespace {
         namespace test_digits_to_integral {
             using sg14::_const_integer_impl::digits_to_integral;
 
-            static_assert(identical(digits_to_integral<'0'>(), UINTMAX_C(0)),
+            static_assert(identical(digits_to_integral<'0'>::value, INTMAX_C(0)),
                 "sg14::_const_integer_impl::digits_to_integral test failed");
-            static_assert(identical(digits_to_integral<'1'>(), UINTMAX_C(1)),
+            static_assert(identical(digits_to_integral<'1'>::value, INTMAX_C(1)),
                 "sg14::_const_integer_impl::digits_to_integral test failed");
         }
     }
@@ -131,6 +131,24 @@ namespace {
     namespace test_const_integer {
         using sg14::const_integer;
 
+        static_assert(
+                identical(const_integer<int, -1>{}, const_integer<int, -1, 1, 0>{}),
+                "sg14::const_integer construction test failed");
+
+        // unary minus
+#if ! defined(_MSC_VER) || (_MSC_VER > 1900)
+        static_assert(
+                identical(-const_integer<std::uint8_t, 1>{}, const_integer<int, -1>{}),
+                "sg14::const_integer unary minus test failed");
+        static_assert(
+                identical(-const_integer<std::uint8_t, 2>{}, const_integer<int, -2>{}),
+                "sg14::const_integer unary minus test failed");
+        static_assert(
+                identical(-const_integer<unsigned, 1>{}, const_integer<unsigned, std::numeric_limits<unsigned>::max()>{}),
+                "sg14::const_integer unary minus test failed");
+#endif
+
+        // binary plus
         static_assert(identical(const_integer<std::uint8_t, 2>{} + const_integer<std::intmax_t, 3>{}, const_integer<std::intmax_t, 5>{}), "sg14::const_integer addition test failed");
 
         // conversion to int
@@ -141,17 +159,28 @@ namespace {
         using namespace sg14::literals;
         using sg14::const_integer;
 
-        static_assert(identical(0_c, const_integer<uintmax_t, UINTMAX_C(0)>()),
+        static_assert(identical(0_c, const_integer<intmax_t, INTMAX_C(0)>()),
             "sg14::literals test failed");
-        static_assert(identical(1_c, const_integer<uintmax_t, UINTMAX_C(1)>()),
+        static_assert(identical(1_c, const_integer<intmax_t, INTMAX_C(1)>()),
             "sg14::literals test failed");
-        static_assert(identical(2_c, const_integer<uintmax_t, UINTMAX_C(2)>()),
+        static_assert(identical(2_c, const_integer<intmax_t, INTMAX_C(2)>()),
             "sg14::literals test failed");
-        static_assert(3_c == const_integer<std::int8_t, UINTMAX_C(3)>(),
+        static_assert(3_c == const_integer<std::int8_t, INTMAX_C(3)>(),
             "sg14::literals test failed");
-        static_assert(identical(13971581_c, const_integer<uintmax_t, UINTMAX_C(13971581)>()),
+        static_assert(identical(13971581_c, const_integer<intmax_t, INTMAX_C(13971581)>()),
             "sg14::literals test failed");
-        static_assert(identical(18446744073709551615_c, const_integer<uintmax_t, UINTMAX_MAX>()),
+        static_assert(identical(9223372036854775807_c, const_integer<intmax_t, INT64_MAX>()),
             "sg14::literals test failed");
+
+        static_assert(identical(0x10000_c, const_integer<intmax_t, 65536>()),
+                      "sg14::literals test failed");
+        static_assert(identical(0x91827364564738_c, const_integer<intmax_t, 0x91827364564738>()),
+                      "sg14::literals test failed");
+
+#if ! defined(_MSC_VER) || (_MSC_VER > 1900)
+        static_assert(
+                identical(-1_c, const_integer<intmax_t, -1>{}),
+                "sg14::const_integer addition test failed");
+#endif
     }
 }

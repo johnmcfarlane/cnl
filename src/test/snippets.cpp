@@ -20,31 +20,32 @@ static_assert(n==-2.75, "fixed-point type was unable to store the value");
 }
 
 namespace define_a_fast_object_using_make_elastic {
-//! [define a fast object using make_elastic]
-constexpr auto n = make_elastic<1024>();
+//! [define an int-sized object using make_elastic and const_integer]
+// std::uint8_t specifies the type of const_integer - not elastic
+constexpr auto n = make_elastic(const_integer<std::uint8_t, 0xAA>{});
 
-static_assert(n==1024, "n now has the value, 1024");
-static_assert(sizeof(n)==sizeof(int), "by default make_elastic uses the most eficient type it can");
-//! [define a fast object using make_elastic]
+static_assert(n==0xAA, "n now has the value, 1024");
+static_assert(std::is_same<decltype(n), const elastic<8, -1, int>>::value, "by default make_elastic uses the most eficient type it can");
+//! [define an int-sized object using make_elastic and const_integer]
 }
 
 namespace define_a_small_object_using_make_elastic {
-//! [define a small object using make_elastic]
-constexpr auto n = make_elastic<1024, char>();
+//! [define a byte-sized object using make_elastic and _c]
+constexpr auto n = make_elastic<char>(const_integer<short, 1536>{});
 
-static_assert(n==1024, "n now has the value, 1024");
-static_assert(sizeof(n)==sizeof(char), "by default make_elastic uses the most eficient type it can");
-//! [define a small object using make_elastic]
+static_assert(n==1536, "n now has the value, 1536");
+static_assert(std::is_same<decltype(n), const elastic<11, -9, char>>::value, "by default make_elastic uses the most eficient type it can");
+//! [define a byte-sized object using make_elastic and _c]
 }
 
 namespace define_a_fast_object_using_elastic_literal {
-//! [define a small object using elastic literal]
-    using namespace sg14::literals;
-    constexpr auto n = 1536_elastic;
+//! [define an object using elastic literal]
+using namespace sg14::literals;
+constexpr auto n = 34_elastic;
 
-    static_assert(n==1536, "n now has the value, 1536");
-    static_assert(std::is_same<decltype(n), const elastic<11, -9>>::value, "type only uses 1 bit of range");
-//! [define a small object using elastic literal]
+static_assert(n==34, "n now has the value, 1536");
+static_assert(std::is_same<decltype(n), const elastic<6, -1>>::value, "type only uses 1 bit of range");
+//! [define an object using elastic literal]
 }
 
 namespace use_resize_1 {

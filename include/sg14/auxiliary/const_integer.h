@@ -140,18 +140,18 @@ namespace sg14 {
         //
         // return intrgral_constant given string of digits
 
-        constexpr std::uintmax_t combine(std::uintmax_t p)
+        constexpr std::intmax_t combine(int, std::intmax_t p)
         {
             return p;
         }
 
         template<class... TT>
-        constexpr std::uintmax_t combine(std::uintmax_t val, int p0, TT... pp)
+        constexpr std::intmax_t combine(int base, std::intmax_t val, int p0, TT... pp)
         {
-            return combine(val*10+p0, pp...);
+            return combine(base, val * base + p0, pp...);
         }
 
-        constexpr int parse(char C)
+        constexpr int parse_dec(char C)
         {
 #if defined(SG14_EXCEPTIONS_ENABLED)
             return (C>='0' && C<='9')
@@ -162,10 +162,35 @@ namespace sg14 {
 #endif
         }
 
-        template<char... Digits>
-        constexpr uintmax_t digits_to_integral() {
-            return combine(0, parse(Digits)...);
+        constexpr int parse_hex(char C) {
+            return (C >= '0' && C <= '9')
+                   ? C - '0'
+                   : (C >= 'a' && C <= 'f')
+                     ? C - 'a'
+                     : (C >= 'A' && C <= 'F')
+                       ? C - 'A'
+#if defined(SG14_EXCEPTIONS_ENABLED)
+                       : throw std::out_of_range("only decimal digits are allowed")
+#else
+                : 0
+#endif
+                    ;
         }
+
+        template<char... Digits>
+        struct digits_to_integral {
+            static constexpr intmax_t value = combine(10, 0, parse_dec(Digits)...);
+        };
+
+        template<char... Digits>
+        struct digits_to_integral<'0', 'x', Digits...> {
+            static constexpr intmax_t value = combine(16, 0, parse_hex(Digits)...);
+        };
+
+        template<char... Digits>
+        struct digits_to_integral<'0', 'X', Digits...> {
+            static constexpr intmax_t value = combine(16, 0, parse_hex(Digits)...);
+        };
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -199,6 +224,15 @@ namespace sg14 {
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::const_integer operator overloads
+
+#if ! defined(_MSC_VER) || (_MSC_VER > 1900)
+    template<class RhsIntegral, RhsIntegral RhsValue>
+    constexpr const_integer<decltype(-RhsValue), -RhsValue>
+    operator-(const_integer<RhsIntegral, RhsValue>) noexcept
+    {
+        return const_integer<decltype(-RhsValue), -RhsValue>{};
+    }
+#endif
 
     template<
         class LhsIntegral, LhsIntegral LhsValue,
@@ -260,7 +294,7 @@ namespace sg14 {
     namespace literals {
         template<char... Digits>
         constexpr auto operator "" _c()
-        -> const_integer<std::uintmax_t, _const_integer_impl::digits_to_integral<Digits...>()>
+        -> const_integer<std::intmax_t, _const_integer_impl::digits_to_integral<Digits...>::value>
         {
             return {};
         }

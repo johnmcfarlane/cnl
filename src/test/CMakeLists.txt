@@ -16,6 +16,7 @@ add_executable(fp_test
         ${CMAKE_CURRENT_LIST_DIR}/glm.cpp
         ${CMAKE_CURRENT_LIST_DIR}/index.cpp
         ${CMAKE_CURRENT_LIST_DIR}/main.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/make_elastic.cpp
         ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
         ${CMAKE_CURRENT_LIST_DIR}/p0037.cpp
         ${CMAKE_CURRENT_LIST_DIR}/p0381.cpp
