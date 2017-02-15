@@ -5,20 +5,20 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests of sg14::elastic alias
+/// \brief tests of sg14::elastic_fixed_point alias
 
-#include <sg14/auxiliary/elastic.h>
+#include <sg14/auxiliary/elastic_fixed_point.h>
 
 using std::is_same;
 
-using sg14::elastic;
+using sg14::elastic_fixed_point;
 using namespace sg14::literals;
-using sg14::make_elastic;
+using sg14::make_elastic_fixed_point;
 using sg14::make_signed;
 using sg14::make_unsigned;
 
 ////////////////////////////////////////////////////////////////////////////////
-// fast tests of sg14::elastic<> at its limits;
+// fast tests of sg14::elastic_fixed_point<> at its limits;
 // if something broke it may show up here first
 
 namespace {
@@ -183,11 +183,11 @@ static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
 namespace test_elastic_constant_literal {
     using namespace sg14::literals;
     using sg14::_impl::identical;
-    static_assert(identical(0_elastic, elastic<0, 0>{0}), "");
+    static_assert(identical(0_elastic, elastic_fixed_point<0, 0>{0}), "");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// test how elastic handles non-negative values;
+// test how elastic_fixed_point handles non-negative values;
 // should pass for all specializations
 
 template<class Elastic>
@@ -220,18 +220,18 @@ struct positive_elastic_test {
     // test traits
 
     static_assert(std::numeric_limits<elastic_type>::is_signed==std::numeric_limits<rep>::is_signed,
-                  "signedness of elastic type differns from underlying fixed-point type");
+                  "signedness of elastic_fixed_point type differns from underlying fixed-point type");
     static_assert(std::numeric_limits<typename sg14::make_signed<elastic_type>::type>::is_signed,
-                  "signed version of elastic type is not signed");
+                  "signed version of elastic_fixed_point type is not signed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test elastic_integer type
 
     static_assert(rep::digits>=digits,
-                  "not enough digits in rep type to represent elastic values");
+                  "not enough digits in rep type to represent elastic_fixed_point values");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // test numeric_limits<elastic>
+    // test numeric_limits<elastic_fixed_point>
 
     static_assert(min==elastic_type::from_data(rep{1}), "numeric_limits test failed");
     static_assert(!is_less_than(max, min), "numeric_limits test failed");
@@ -311,12 +311,12 @@ struct positive_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // test operator*
 
-    static_assert(is_equal_to(min*make_elastic(0_c), zero), "operator* test failed");
-    static_assert(is_equal_to(min*make_elastic(1_c), min), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic_fixed_point(0_c), zero), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic_fixed_point(1_c), min), "operator* test failed");
 #if ! defined(_MSC_VER)
-    static_assert(is_equal_to(min*make_elastic(2_c), min+min), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic_fixed_point(2_c), min+min), "operator* test failed");
 #endif
-    static_assert(is_equal_to(min*make_elastic(3_c), min+min+min), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic_fixed_point(3_c), min+min+min), "operator* test failed");
 
     static_assert(std::numeric_limits<decltype(zero*zero)>::is_signed
                   ==std::numeric_limits<decltype(zero)>::is_signed,
@@ -331,11 +331,11 @@ struct positive_elastic_test {
     // test operator/
 
 #if ! defined(_MSC_VER)
-    static_assert(!is_greater_than(min/make_elastic(2_c), min), "operator/ test failed");
+    static_assert(!is_greater_than(min/make_elastic_fixed_point(2_c), min), "operator/ test failed");
 #endif
-    static_assert(is_equal_to(min/make_elastic(1_c), min), "operator/ test failed");
-    static_assert(is_equal_to((min+min)/make_elastic(2_c), min), "operator/ test failed");
-    static_assert(is_equal_to((min+min+min)/make_elastic(3_c), min), "operator/ test failed");
+    static_assert(is_equal_to(min/make_elastic_fixed_point(1_c), min), "operator/ test failed");
+    static_assert(is_equal_to((min+min)/make_elastic_fixed_point(2_c), min), "operator/ test failed");
+    static_assert(is_equal_to((min+min+min)/make_elastic_fixed_point(3_c), min), "operator/ test failed");
     static_assert(std::numeric_limits<decltype(zero/zero)>::is_signed
                   ==std::numeric_limits<elastic_type>::is_signed,
                   "signedness is lost during multiply");
@@ -344,7 +344,7 @@ struct positive_elastic_test {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-// test how elastic handles negative values;
+// test how elastic_fixed_point handles negative values;
 // should pass for all signed specializations
 
 template<class Elastic>
@@ -352,7 +352,7 @@ struct signed_elastic_test :
         // test type traits given this type is signed
         test_traits<Elastic, true>,
 
-        // perform positive value tests against signed elastic specialization
+        // perform positive value tests against signed elastic_fixed_point specialization
         positive_elastic_test<Elastic> {
     ////////////////////////////////////////////////////////////////////////////////
     // core definitions
@@ -381,7 +381,7 @@ struct signed_elastic_test :
                   "subject of test class is not reported as signed");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // test numeric_limits<elastic>
+    // test numeric_limits<elastic_fixed_point>
 
     static_assert(is_greater_than(min, negative_min), "numeric_limits test failed");
 #if ! defined(_MSC_VER)
@@ -413,7 +413,7 @@ struct signed_elastic_test :
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-// test how elastic handles positive values;
+// test how elastic_fixed_point handles positive values;
 // should pass for all unsigned specializations
 
 template<class Elastic>
@@ -421,7 +421,7 @@ struct unsigned_elastic_test :
         // test type traits given this type is not signed
         test_traits<Elastic, false>,
 
-        // perform positive value tests against unsigned elastic specialization
+        // perform positive value tests against unsigned elastic_fixed_point specialization
         positive_elastic_test<Elastic> {
     ////////////////////////////////////////////////////////////////////////////////
     // core definitions
@@ -438,7 +438,7 @@ struct unsigned_elastic_test :
     static constexpr elastic_type lowest{numeric_limits::lowest()};
 
     ////////////////////////////////////////////////////////////////////////////////
-    // test numeric_limits<elastic>
+    // test numeric_limits<elastic_fixed_point>
 
     static_assert(is_equal_to(lowest, zero), "numeric_limits test failed");
     static_assert(is_less_than(lowest, min), "numeric_limits test failed");
@@ -446,20 +446,20 @@ struct unsigned_elastic_test :
 
 ////////////////////////////////////////////////////////////////////////////////
 // given values for IntegerDigits and FractionalDigits parameters,
-// triggers elastic<> tests with signed and unsigned specializations
+// triggers elastic_fixed_point<> tests with signed and unsigned specializations
 
 template<int IntegerDigits, int FractionalDigits>
 struct elastic_test :
-        // perform unsigned-specific value tests against unsigned elastic specialization
-        unsigned_elastic_test<elastic<IntegerDigits, FractionalDigits, unsigned>>,
+        // perform unsigned-specific value tests against unsigned elastic_fixed_point specialization
+        unsigned_elastic_test<elastic_fixed_point<IntegerDigits, FractionalDigits, unsigned>>,
 
-        // perform negative value tests against signed elastic specialization
-        signed_elastic_test<elastic<IntegerDigits, FractionalDigits, signed>> {
+        // perform negative value tests against signed elastic_fixed_point specialization
+        signed_elastic_test<elastic_fixed_point<IntegerDigits, FractionalDigits, signed>> {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // given a value for IntegerDigits parameter,
-// triggers elastic<> tests against a range of values for FractionalDigits parameter
+// triggers elastic_fixed_point<> tests against a range of values for FractionalDigits parameter
 
 template<int IntegerDigits>
 struct elastic_test_with_integer_digits
@@ -476,7 +476,7 @@ struct elastic_test_with_integer_digits
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-// trigger elastic tests against a range of values for IntegerDigits parameter
+// trigger elastic_fixed_point tests against a range of values for IntegerDigits parameter
 
 template
 struct elastic_test_with_integer_digits<-43>;

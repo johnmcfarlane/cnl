@@ -8,7 +8,7 @@ add_library(
         include/sg14/auxiliary/multiprecision.h
         include/sg14/auxiliary/elastic_integer.h
         include/sg14/auxiliary/integer.h
-        include/sg14/auxiliary/elastic.h
+        include/sg14/auxiliary/elastic_fixed_point.h
         include/sg14/bits/fixed_point_math.h
         include/sg14/bits/fixed_point_operators.h
         include/sg14/bits/fixed_point_make.h

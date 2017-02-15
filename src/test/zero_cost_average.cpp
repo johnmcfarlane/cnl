@@ -5,9 +5,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief Signed 15:16 Fixed-Point Average Function Using sg14::elastic
+/// \brief Signed 15:16 Fixed-Point Average Function Using sg14::elastic_fixed_point
 
-#include <sg14/auxiliary/elastic.h>
+#include <sg14/auxiliary/elastic_fixed_point.h>
 #include <gtest/gtest.h>
 
 using namespace sg14;
@@ -70,12 +70,12 @@ CONSTEXPR float average_elastic(float input1, float input2) {
     // and 1_elastic/65536_elastic uses 3 bits of storage!
     using namespace literals;
 
-    // elastic<15, 16> aliases to fixed_point<elastic_integer<31, int>, -16>
-    auto elastic1 = elastic<15, 16>{input1};
-    auto elastic2 = elastic<15, 16>{input2};
+    // elastic_fixed_point<15, 16> aliases to fixed_point<elastic_integer<31, int>, -16>
+    auto fixed1 = elastic_fixed_point<15, 16>{input1};
+    auto fixed2 = elastic_fixed_point<15, 16>{input2};
 
     // concise, overflow-resistant and zero-cost!
-    auto sum = elastic1 + elastic2;
+    auto sum = fixed1 + fixed2;
     auto avg = sum / 2_elastic;
 
     return static_cast<float>(avg);
@@ -83,8 +83,8 @@ CONSTEXPR float average_elastic(float input1, float input2) {
 
 using namespace literals;
 using sg14::_impl::identical;
-static_assert(identical(65536_elastic, elastic<17, -16>{65536}), "mistaken comment in average_elastic");
-static_assert(identical(1_elastic/65536_elastic, elastic<-15, 17>{0.0000152587890625}), "mistaken comment in average_elastic");
+static_assert(identical(65536_elastic, elastic_fixed_point<17, -16>{65536}), "mistaken comment in average_elastic");
+static_assert(identical(1_elastic/65536_elastic, elastic_fixed_point<-15, 17>{0.0000152587890625}), "mistaken comment in average_elastic");
 
 #if (__cplusplus>=201402L)
 static_assert(identical(average_integer(32000.125, 27805.75), 29902.9375f), "average_integer test failed");
@@ -104,7 +104,7 @@ TEST(zero_cost_average, fixed_point) {
     ASSERT_EQ(average_fixed_point(30000, 0.125), 15000.0625f);
 }
 
-TEST(zero_cost_average, elastic) {
+TEST(zero_cost_average, elastic_fixed_point) {
     ASSERT_EQ(average_elastic(30000, 0.125), 15000.0625f);
 }
 #endif

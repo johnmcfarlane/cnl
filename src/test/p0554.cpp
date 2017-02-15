@@ -4,7 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/auxiliary/elastic.h>
+#include <sg14/auxiliary/elastic_fixed_point.h>
 
 namespace {
     using sg14::fixed_point;
@@ -29,9 +29,9 @@ namespace {
     }
 
     namespace division {
-        using sg14::elastic;
-        constexpr elastic<1, 6> numerator = 0.5, denominator = 1.0;
+        using sg14::elastic_fixed_point;
+        constexpr elastic_fixed_point<1, 6> numerator = 0.5, denominator = 1.0;
         constexpr auto quotient = numerator / denominator;
-        static_assert(identical(quotient, elastic<7, 7>{.5}), "position_paper test failed");
+        static_assert(identical(quotient, elastic_fixed_point<7, 7>{.5}), "position_paper test failed");
     }
 }

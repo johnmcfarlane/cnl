@@ -29,7 +29,7 @@ namespace sg14 {
     /// For instance, when two \ref elastic_integer values are multiplied together,
     /// the resultant type has Digits set to the sum of the operands.
     ///
-    /// \sa elastic
+    /// \sa elastic_fixed_point
 
     template<int Digits, class Archetype = int>
     class elastic_integer {

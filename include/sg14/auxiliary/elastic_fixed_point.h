@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief essential definitions related to the `sg14::elastic` type
+/// \brief essential definitions related to the `sg14::elastic_fixed_point` type
 
 #if !defined(SG14_ELASTIC_H)
 #define SG14_ELASTIC_H 1
@@ -30,34 +30,34 @@ namespace sg14 {
     /// \sa elastic_integer
 
     template<int IntegerDigits, int FractionalDigits = 0, class Archetype = signed>
-    using elastic = fixed_point<elastic_integer<IntegerDigits+FractionalDigits, Archetype>, -FractionalDigits>;
+    using elastic_fixed_point = fixed_point<elastic_integer<IntegerDigits+FractionalDigits, Archetype>, -FractionalDigits>;
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_elastic
+    // sg14::make_elastic_fixed_point
 
-    /// \brief generate an \ref sg14::elastic object of given value
+    /// \brief generate an \ref sg14::elastic_fixed_point object of given value
     ///
-    /// \tparam Archetype the archetype of the resultant \ref sg14::elastic object
+    /// \tparam Archetype the archetype of the resultant \ref sg14::elastic_fixed_point object
     /// \tparam Integral the type of Value
     /// \tparam Value the integer number to be represented
     ///
-    /// \return the given value to be represented using an \ref sg14::elastic type
+    /// \return the given value to be represented using an \ref sg14::elastic_fixed_point type
     ///
     /// \note The return type is guaranteed to be no larger than is necessary to represent the value.
     ///
     /// \par Example
     ///
-    /// To define an int-sized object using \ref make_elastic and \ref const_integer:
-    /// \snippet snippets.cpp define an int-sized object using make_elastic and const_integer
+    /// To define an int-sized object using \ref make_elastic_fixed_point and \ref const_integer:
+    /// \snippet snippets.cpp define an int-sized object using make_elastic_fixed_point and const_integer
 
     template<
             typename Archetype = int,
             typename Integral = int,
             Integral Value = 0>
-    constexpr auto make_elastic(
+    constexpr auto make_elastic_fixed_point(
             const_integer<Integral, Value> = const_integer<Integral, Value>{})
-    -> elastic<
+    -> elastic_fixed_point<
             _const_integer_impl::num_integer_bits(Value),
             -_const_integer_impl::num_integer_zeros(Value),
              Archetype>
@@ -67,23 +67,23 @@ namespace sg14 {
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_elastic
+    // sg14::make_elastic_fixed_point
 
     ///
-    /// \tparam Archetype the archetype of the resultant \ref sg14::elastic object
+    /// \tparam Archetype the archetype of the resultant \ref sg14::elastic_fixed_point object
     /// \tparam Integral the type of \ref value
     ///
     /// \note The return type is guaranteed to be no larger than is necessary to represent the value.
     ///
     /// \par Example
     ///
-    /// To define a byte-sized object using make_elastic and _c:
-    /// \snippet snippets.cpp define a byte-sized object using \ref make_elastic and \ref _c
+    /// To define a byte-sized object using make_elastic_fixed_point and _c:
+    /// \snippet snippets.cpp define a byte-sized object using \ref make_elastic_fixed_point and \ref _c
 
-    /// \brief generate an \ref sg14::elastic object of given value
+    /// \brief generate an \ref sg14::elastic_fixed_point object of given value
     template<class Archetype = int, class Integral = int>
-    constexpr auto make_elastic(Integral value)
-    -> elastic<std::numeric_limits<Integral>::digits, 0, Archetype> {
+    constexpr auto make_elastic_fixed_point(Integral value)
+    -> elastic_fixed_point<std::numeric_limits<Integral>::digits, 0, Archetype> {
         return {value};
     }
 
@@ -91,11 +91,11 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::literals::operator "" _elastic
 
-    /// \brief generate an \ref sg14::elastic object using a literal
+    /// \brief generate an \ref sg14::elastic_fixed_point object using a literal
     ///
     /// \tparam Digits the characters of the literal sequence
     ///
-    /// \return the given value to be represented using an \ref sg14::elastic type
+    /// \return the given value to be represented using an \ref sg14::elastic_fixed_point type
     ///
     /// \note The return type is guaranteed to be no larger
     /// than is necessary to represent the maximum value of Integral.
@@ -108,8 +108,8 @@ namespace sg14 {
     namespace literals {
         template<char... Digits>
         constexpr auto operator "" _elastic()
-        -> decltype(make_elastic<int, std::intmax_t, _const_integer_impl::digits_to_integral<Digits...>::value>()) {
-            return make_elastic<int, std::intmax_t, _const_integer_impl::digits_to_integral<Digits...>::value>();
+        -> decltype(make_elastic_fixed_point<int, std::intmax_t, _const_integer_impl::digits_to_integral<Digits...>::value>()) {
+            return make_elastic_fixed_point<int, std::intmax_t, _const_integer_impl::digits_to_integral<Digits...>::value>();
         }
     }
 }
