@@ -60,26 +60,6 @@ Named functions - such as [multiply](@ref sg14::multiply) - provide fine-tuned c
 \snippet index.cpp advanced arithmetic example
 
 
-\subsection boost Composable
-
-The API is designed with composability in mind
-and the `Rep` template parameter is not limited to built-in integer types.
-For instance, [`boost::multiprecision::number`](http://www.boost.org/doc/libs/1_58_0/libs/multiprecision/doc/html/boost_multiprecision/ref/number.html)
-can be adapted to produce fixed-point types of arbitrary range and resolution.
-To illustrate this, a header, [sg14/auxiliary/multiprecision.h](../../include/sg14/auxiliary/multiprecision.h),
-is provided, containing all the necessary definitions.
-
-\snippet index.cpp boost example
-
-Another supported library is 
-[safe_numerics](https://github.com/robertramey/safe_numerics).
-It defines an integer type, 
-[boost::numeric::safe](https://htmlpreview.github.io/?https://raw.githubusercontent.com/robertramey/safe_numerics/master/doc/html/safe.html), 
-which guards against overflow.
-
-\snippet index.cpp safe numerics example
-
-
 \subsection elastic Extensible
 
 Because one size does not fit all, [fixed_point](@ref sg14::fixed_point) is designed to make it easy to tailor new arithmetic types. 

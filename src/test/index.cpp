@@ -169,44 +169,6 @@ TEST(index, boost_example)
 #endif
 
 
-#if defined(SG14_EXCEPTIONS_ENABLED) && defined(SG14_SAFE_NUMERICS_ENABLED)
-////////////////////////////////////////////////////////////////////////////////
-//! [safe numerics example]
-#include <sg14/auxiliary/safe_integer.h>
-
-#include <gtest/gtest.h>
-void safe_integer_example()
-{
-    // a safe, 8-bit fixed-point type with range -8 <= x < 7.9375
-    using safe_byte = make_fixed<3, 4, boost::numeric::safe<int>>;
-
-    // prints "-8"
-    try {
-        auto a = safe_byte{-8};
-        cout << a << endl;
-    }
-    catch (std::range_error e) {
-        cout << e.what() << endl;
-    }
-
-    // prints "Value out of range for this safe type"
-    try {
-        auto b = safe_byte{10};
-        cout << b << endl;
-    }
-    catch (std::range_error e) {
-        cout << e.what() << endl;
-    }
-}
-//! [safe numerics example]
-
-TEST(index, safe_integer_example)
-{
-    test_function(safe_integer_example, "-8\nValue out of range for this safe type\n");
-}
-#endif
-
-
 ////////////////////////////////////////////////////////////////////////////////
 //! [elastic example]
 #include <sg14/auxiliary/elastic_integer.h>
