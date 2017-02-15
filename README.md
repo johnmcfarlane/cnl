@@ -132,10 +132,8 @@ To clean the project files:
 ## Further Reading
 
 - [documentation](http://johnmcfarlane.github.io/fixed_point/)
-- [latest draft](doc/p0037.md) of C++ Standard Library proposal, [P0037](doc/p0037.md) 
-  ([revision 1](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0037r1.html), 
-  [revision 0](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/p0037r0.html))
-- position paper illustrating the [elastic numeric type](doc/elastic.md)  
+- [latest draft](doc/p0037.md) of C++ Standard Library proposal, [P0037](doc/p0037.md)
+- position paper illustrating the compositonal approach, [P0554](doc/p0554.md)
 - forum of [Study Group 14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14)
 
 ## Contact Information
