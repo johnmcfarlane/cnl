@@ -4,8 +4,11 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(SG14_INTEGER_H)
-#define SG14_INTEGER_H 1
+/// \file
+/// \brief essential definitions related to the `sg14::safe_integer` type
+
+#if !defined(SG14_SAFE_INTEGER_H)
+#define SG14_SAFE_INTEGER_H 1
 
 #if ! defined(SG14_GODBOLT_ORG)
 #include <sg14/fixed_point>
@@ -23,7 +26,7 @@ namespace sg14 {
     // macros
 
     // basic definitions
-#define SG14_INTEGER_COMPARISON_DEFINE(OP) \
+#define SG14_SAFE_INTEGER_COMPARISON_DEFINE(OP) \
     template <class Lhs, class Rhs> \
     constexpr auto operator OP (const Lhs& lhs, const Rhs& rhs) \
     -> typename std::enable_if<sg14::_integer_impl::are_integer_class_operands<Lhs, Rhs>::value, bool>::type { \
@@ -32,68 +35,68 @@ namespace sg14 {
 
 #define SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(OP) \
     template <class LhsRep, class RhsRep, class OverflowPolicy> \
-    constexpr auto operator OP (const integer<LhsRep, OverflowPolicy>& lhs, const integer<RhsRep, OverflowPolicy>& rhs) \
-    -> integer<decltype(std::declval<LhsRep>() OP std::declval<RhsRep>()), OverflowPolicy> { \
-        using Result = integer<decltype(std::declval<LhsRep>() OP std::declval<RhsRep>()), OverflowPolicy>; \
+    constexpr auto operator OP (const safe_integer<LhsRep, OverflowPolicy>& lhs, const safe_integer<RhsRep, OverflowPolicy>& rhs) \
+    -> safe_integer<decltype(std::declval<LhsRep>() OP std::declval<RhsRep>()), OverflowPolicy> { \
+        using Result = safe_integer<decltype(std::declval<LhsRep>() OP std::declval<RhsRep>()), OverflowPolicy>; \
         return static_cast<Result>(lhs.data() OP rhs.data()); } \
     \
     template <class Lhs, class RhsRep, class RhsOverflowPolicy, typename std::enable_if<std::is_integral<Lhs>::value, int>::type dummy = 0> \
-    constexpr auto operator OP (const Lhs& lhs, const integer<RhsRep, RhsOverflowPolicy>& rhs) \
-    -> integer<decltype(std::declval<Lhs>() OP std::declval<RhsRep>()), RhsOverflowPolicy> { \
-        using Result = integer<decltype(std::declval<Lhs>() OP std::declval<RhsRep>()), RhsOverflowPolicy>; \
+    constexpr auto operator OP (const Lhs& lhs, const safe_integer<RhsRep, RhsOverflowPolicy>& rhs) \
+    -> safe_integer<decltype(std::declval<Lhs>() OP std::declval<RhsRep>()), RhsOverflowPolicy> { \
+        using Result = safe_integer<decltype(std::declval<Lhs>() OP std::declval<RhsRep>()), RhsOverflowPolicy>; \
         return static_cast<Result>(lhs OP rhs.data()); } \
     \
     template <class LhsRep, class LhsOverflowPolicy, class Rhs, typename std::enable_if<std::is_integral<Rhs>::value, int>::type dummy = 0> \
-    constexpr auto operator OP (const integer<LhsRep, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
-    -> integer<decltype(std::declval<LhsRep>() OP std::declval<Rhs>()), LhsOverflowPolicy> { \
-        using Result = integer<decltype(std::declval<LhsRep>() OP std::declval<Rhs>()), LhsOverflowPolicy>; \
+    constexpr auto operator OP (const safe_integer<LhsRep, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
+    -> safe_integer<decltype(std::declval<LhsRep>() OP std::declval<Rhs>()), LhsOverflowPolicy> { \
+        using Result = safe_integer<decltype(std::declval<LhsRep>() OP std::declval<Rhs>()), LhsOverflowPolicy>; \
         return static_cast<Result>(lhs.data() OP rhs); } \
     \
     template <class Lhs, class RhsRep, class RhsOverflowPolicy, typename std::enable_if<std::is_floating_point<Lhs>::value, int>::type dummy = 0> \
-    constexpr auto operator OP (const Lhs& lhs, const integer<RhsRep, RhsOverflowPolicy>& rhs) \
+    constexpr auto operator OP (const Lhs& lhs, const safe_integer<RhsRep, RhsOverflowPolicy>& rhs) \
     -> decltype(std::declval<Lhs>() OP std::declval<RhsRep>()) { \
         return lhs OP rhs.data(); } \
     \
     template <class LhsRep, class LhsOverflowPolicy, class Rhs, typename std::enable_if<std::is_floating_point<Rhs>::value, int>::type dummy = 0> \
-    constexpr auto operator OP (const integer<LhsRep, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
+    constexpr auto operator OP (const safe_integer<LhsRep, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
     -> decltype(std::declval<LhsRep>() OP std::declval<Rhs>()) { \
         return lhs.data() OP rhs; }
 
 #define SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(OP, BIN_OP) \
     template <class Rhs> \
     auto operator OP (const Rhs& rhs) \
-    -> integer& { \
+    -> safe_integer& { \
         _r = static_cast<rep>(_r BIN_OP rhs); \
         return *this; }
 
 #define SG14_INTEGER_BIT_SHIFT_DEFINE(OP) \
     template <class LhsRep, class LhsOverflowPolicy, class RhsRep, class RhsOverflowPolicy> \
-    constexpr auto operator OP (const integer<LhsRep, LhsOverflowPolicy>& lhs, const integer<RhsRep, RhsOverflowPolicy>& rhs) \
-    -> integer<LhsRep, LhsOverflowPolicy> { \
+    constexpr auto operator OP (const safe_integer<LhsRep, LhsOverflowPolicy>& lhs, const safe_integer<RhsRep, RhsOverflowPolicy>& rhs) \
+    -> safe_integer<LhsRep, LhsOverflowPolicy> { \
         return lhs.data() OP rhs.data(); } \
     \
     template <class Lhs, class RhsRep, class RhsOverflowPolicy, typename std::enable_if<std::is_fundamental<Lhs>::value, int>::type dummy = 0> \
-    constexpr auto operator OP (const Lhs& lhs, const integer<RhsRep, RhsOverflowPolicy>& rhs) \
+    constexpr auto operator OP (const Lhs& lhs, const safe_integer<RhsRep, RhsOverflowPolicy>& rhs) \
     -> Lhs { \
         return lhs OP rhs.data(); } \
     \
     template <class LhsRep, class LhsOverflowPolicy, class Rhs, typename std::enable_if<std::is_fundamental<Rhs>::value, int>::type dummy = 0> \
-    constexpr auto operator OP (const integer<LhsRep, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
-    -> integer<LhsRep, LhsOverflowPolicy> { \
-        return integer<LhsRep, LhsOverflowPolicy>(lhs.data() OP rhs); }
+    constexpr auto operator OP (const safe_integer<LhsRep, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
+    -> safe_integer<LhsRep, LhsOverflowPolicy> { \
+        return safe_integer<LhsRep, LhsOverflowPolicy>(lhs.data() OP rhs); }
 
     ////////////////////////////////////////////////////////////////////////////////
     // forward-declarations
 
     template<typename Rep, typename OverflowPolicy>
-    class integer;
+    class safe_integer;
 
     namespace _integer_impl {
         template<class, class, class = void>
         struct common_type;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_integer_impl::is_integer_class - trait to identify sg14::integer<>
+        // sg14::_integer_impl::is_integer_class - trait to identify sg14::safe_integer<>
 
         template<typename T>
         struct is_integer_class;
@@ -104,7 +107,7 @@ namespace sg14 {
         };
 
         template<typename Rep, typename OverflowPolicy>
-        struct is_integer_class<integer<Rep, OverflowPolicy>>
+        struct is_integer_class<safe_integer<Rep, OverflowPolicy>>
                 : std::true_type {
         };
 
@@ -120,7 +123,7 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_integer_impl::arithmetic_result - should op return integer<>
+        // sg14::_integer_impl::arithmetic_result - should op return safe_integer<>
         // or floating-point?
 
         template<class IntegerClass, class Operand, class RepResult>
@@ -152,8 +155,8 @@ namespace sg14 {
         constexpr bool is_positive_overflow(Source const&)
         {
             static_assert(!is_integer_class<Destination>::value,
-                    "this function helps convert values *to* sg14::integer");
-            static_assert(!is_integer_class<Source>::value, "this function helps convert values *to* sg14::integer");
+                    "this function helps convert values *to* sg14::safe_integer");
+            static_assert(!is_integer_class<Source>::value, "this function helps convert values *to* sg14::safe_integer");
 
             // If positive capacity of Destination is equal to or exceeds that of Source,
             // positive overflow cannot occur.
@@ -168,8 +171,8 @@ namespace sg14 {
         constexpr bool is_positive_overflow(Source const& source)
         {
             static_assert(!is_integer_class<Destination>::value,
-                    "this function helps convert values *to* sg14::integer");
-            static_assert(!is_integer_class<Source>::value, "this function helps convert values *to* sg14::integer");
+                    "this function helps convert values *to* sg14::safe_integer");
+            static_assert(!is_integer_class<Source>::value, "this function helps convert values *to* sg14::safe_integer");
 
             return source>static_cast<Source>(std::numeric_limits<Destination>::max());
         }
@@ -183,8 +186,8 @@ namespace sg14 {
         constexpr bool is_negative_overflow(Source const&)
         {
             static_assert(!is_integer_class<Destination>::value,
-                    "this function helps convert values *to* sg14::integer");
-            static_assert(!is_integer_class<Source>::value, "this function helps convert values *to* sg14::integer");
+                    "this function helps convert values *to* sg14::safe_integer");
+            static_assert(!is_integer_class<Source>::value, "this function helps convert values *to* sg14::safe_integer");
 
             // If positive capacity of Destination is equal to or exceeds that of Source,
             // positive overflow cannot occur.
@@ -199,8 +202,8 @@ namespace sg14 {
         constexpr bool is_negative_overflow(Source const& source)
         {
             static_assert(!is_integer_class<Destination>::value,
-                    "this function helps convert values *to* sg14::integer");
-            static_assert(!is_integer_class<Source>::value, "this function helps convert values *to* sg14::integer");
+                    "this function helps convert values *to* sg14::safe_integer");
+            static_assert(!is_integer_class<Source>::value, "this function helps convert values *to* sg14::safe_integer");
 
             return source<static_cast<Source>(std::numeric_limits<Destination>::lowest());
         }
@@ -240,9 +243,9 @@ namespace sg14 {
         constexpr Lhs convert(const Rhs& rhs) const
         {
             static_assert(!_integer_impl::is_integer_class<Lhs>::value,
-                    "this function helps convert values *to* sg14::integer");
+                    "this function helps convert values *to* sg14::safe_integer");
             static_assert(!_integer_impl::is_integer_class<Rhs>::value,
-                    "this function helps convert values *to* sg14::integer");
+                    "this function helps convert values *to* sg14::safe_integer");
 
             using LhsNumericLimits = std::numeric_limits<Lhs>;
             return
@@ -258,53 +261,53 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_integer_impl::common_type
 
-        // given two integer<>, produces the type that is best suited to both of them
+        // given two safe_integer<>, produces the type that is best suited to both of them
         template<class LhsRep, class RhsRep, class OverflowPolicy>
         struct common_type<
-                integer<LhsRep, OverflowPolicy>,
-                integer<RhsRep, OverflowPolicy>> {
-            using type = integer<
+                safe_integer<LhsRep, OverflowPolicy>,
+                safe_integer<RhsRep, OverflowPolicy>> {
+            using type = safe_integer<
                     typename std::common_type<LhsRep, RhsRep>::type,
                     OverflowPolicy>;
         };
 
-        // given a integer<> and a built-in integer type,
-        // generates a integer<> type that is as big as both of them (or as close as possible)
+        // given a safe_integer<> and a built-in integer type,
+        // generates a safe_integer<> type that is as big as both of them (or as close as possible)
         template<class LhsRep, class LhsOverflowPolicy, class RhsInteger>
         struct common_type<
-                integer<LhsRep, LhsOverflowPolicy>,
+                safe_integer<LhsRep, LhsOverflowPolicy>,
                 RhsInteger,
                 typename std::enable_if<
                         !_integer_impl::is_integer_class<RhsInteger>::value
                                 && std::is_integral<RhsInteger>::value
                 >::type> {
-            using type = typename sg14::integer<typename std::common_type<LhsRep, RhsInteger>::type, LhsOverflowPolicy>;
+            using type = typename sg14::safe_integer<typename std::common_type<LhsRep, RhsInteger>::type, LhsOverflowPolicy>;
         };
 
-        // given a integer<> and a floating-point type,
+        // given a safe_integer<> and a floating-point type,
         // generates a floating-point type that is as big as both of them (or as close as possible)
         template<class LhsRep, class LhsOverflowPolicy, class Float>
         struct common_type<
-                integer<LhsRep, LhsOverflowPolicy>,
+                safe_integer<LhsRep, LhsOverflowPolicy>,
                 Float,
                 typename std::enable_if<std::is_floating_point<Float>::value>::type> {
             using type = typename std::common_type<LhsRep, Float>::type;
         };
 
-        // when first type is not integer<> and second type is, reverse the order
+        // when first type is not safe_integer<> and second type is, reverse the order
         template<class Lhs, class RhsRep, class RhsOverflowPolicy>
-        struct common_type<Lhs, integer<RhsRep, RhsOverflowPolicy>>
-                : common_type<integer<RhsRep, RhsOverflowPolicy>, Lhs> {
+        struct common_type<Lhs, safe_integer<RhsRep, RhsOverflowPolicy>>
+                : common_type<safe_integer<RhsRep, RhsOverflowPolicy>, Lhs> {
         };
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::integer<>
+    // sg14::safe_integer<>
 
     // an integer which can be customized to react in different ways to overflow;
     // currently doesn't correctly detect overflow from operators
     template<typename Rep = int, typename OverflowPolicy = native_overflow_policy>
-    class integer {
+    class safe_integer {
     public:
         ////////////////////////////////////////////////////////////////////////////////
         // types
@@ -315,24 +318,24 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // functions
 
-        constexpr integer(const integer& rhs)
+        constexpr safe_integer(const safe_integer& rhs)
             :_r(rhs._r)
         {
         }
 
-        constexpr integer(const rep& rhs)
+        constexpr safe_integer(const rep& rhs)
             :_r(rhs)
         {
         }
 
         template<class RhsRep, typename std::enable_if<!_integer_impl::is_integer_class<RhsRep>::value, int>::type dummy = 0>
-        constexpr explicit integer(const RhsRep& rhs)
+        constexpr explicit safe_integer(const RhsRep& rhs)
                 :_r(OverflowPolicy{}.template convert<rep>(rhs))
         {
         }
 
         template<class Rhs, typename std::enable_if<_integer_impl::is_integer_class<Rhs>::value, int>::type dummy = 0>
-        constexpr explicit integer(const Rhs& rhs)
+        constexpr explicit safe_integer(const Rhs& rhs)
                 :_r(OverflowPolicy{}.template convert<rep>(rhs.data()))
         {
         }
@@ -343,9 +346,9 @@ namespace sg14 {
             return static_cast<LhsRep>(_r);
         }
 
-        constexpr friend integer operator-(const integer& rhs)
+        constexpr friend safe_integer operator-(const safe_integer& rhs)
         {
-            return integer(-rhs._r);
+            return safe_integer(-rhs._r);
         }
 
         SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(+=, +);
@@ -368,17 +371,17 @@ namespace sg14 {
         rep _r;
     };
 
-    SG14_INTEGER_COMPARISON_DEFINE(==);
+    SG14_SAFE_INTEGER_COMPARISON_DEFINE(==);
 
-    SG14_INTEGER_COMPARISON_DEFINE(!=);
+    SG14_SAFE_INTEGER_COMPARISON_DEFINE(!=);
 
-    SG14_INTEGER_COMPARISON_DEFINE(<);
+    SG14_SAFE_INTEGER_COMPARISON_DEFINE(<);
 
-    SG14_INTEGER_COMPARISON_DEFINE(>);
+    SG14_SAFE_INTEGER_COMPARISON_DEFINE(>);
 
-    SG14_INTEGER_COMPARISON_DEFINE(<=);
+    SG14_SAFE_INTEGER_COMPARISON_DEFINE(<=);
 
-    SG14_INTEGER_COMPARISON_DEFINE(>=);
+    SG14_SAFE_INTEGER_COMPARISON_DEFINE(>=);
 
     SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(+);
 
@@ -393,119 +396,119 @@ namespace sg14 {
     SG14_INTEGER_BIT_SHIFT_DEFINE(<<);
 
     ////////////////////////////////////////////////////////////////////////////////
-    // integer<> partial specializations
+    // safe_integer<> partial specializations
 
     template<typename Rep = int>
-    using native_integer = integer<Rep, native_overflow_policy>;
+    using native_integer = safe_integer<Rep, native_overflow_policy>;
 
     template<typename Rep = int>
-    using throwing_integer = integer<Rep, throwing_overflow_policy>;
+    using throwing_integer = safe_integer<Rep, throwing_overflow_policy>;
 
     template<typename Rep = int>
-    using saturated_integer = integer<Rep, saturated_overflow_policy>;
+    using saturated_integer = safe_integer<Rep, saturated_overflow_policy>;
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::set_width<integer<>, > partial specialization
+    // sg14::set_width<safe_integer<>, > partial specialization
 
     template<class Rep, class OverflowPolicy, _width_type MinNumBits>
-    struct set_width<integer<Rep, OverflowPolicy>, MinNumBits> {
-        using type = integer<set_width_t<Rep, MinNumBits>, OverflowPolicy>;
+    struct set_width<safe_integer<Rep, OverflowPolicy>, MinNumBits> {
+        using type = safe_integer<set_width_t<Rep, MinNumBits>, OverflowPolicy>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::width<integer<>> partial specialization
+    // sg14::width<safe_integer<>> partial specialization
 
     template<class Rep, class OverflowPolicy>
-    struct width<integer<Rep, OverflowPolicy>> : width<Rep> {
+    struct width<safe_integer<Rep, OverflowPolicy>> : width<Rep> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::integer-specific specializations to std-like templates
+    // sg14::safe_integer-specific specializations to std-like templates
 
-    // sg14::make_unsigned<sg14::integer<>>
+    // sg14::make_unsigned<sg14::safe_integer<>>
     template<typename Rep, typename OverflowPolicy>
-    struct make_unsigned<integer<Rep, OverflowPolicy>> {
-        using type = integer<typename make_unsigned<Rep>::type, OverflowPolicy>;
+    struct make_unsigned<safe_integer<Rep, OverflowPolicy>> {
+        using type = safe_integer<typename make_unsigned<Rep>::type, OverflowPolicy>;
     };
 
-    // sg14::make_signed<sg14::integer<>>
+    // sg14::make_signed<sg14::safe_integer<>>
     template<typename Rep, typename OverflowPolicy>
-    struct make_signed<integer<Rep, OverflowPolicy>> {
-        using type = integer<typename make_signed<Rep>::type, OverflowPolicy>;
+    struct make_signed<safe_integer<Rep, OverflowPolicy>> {
+        using type = safe_integer<typename make_signed<Rep>::type, OverflowPolicy>;
     };
 }
 
 namespace std {
-    // std::common_type<T, sg14::integer>
+    // std::common_type<T, sg14::safe_integer>
     template<
             class Lhs,
             class RhsRep, class RhsOverflowPolicy>
     struct common_type<
             Lhs,
-            sg14::integer<RhsRep, RhsOverflowPolicy>>
+            sg14::safe_integer<RhsRep, RhsOverflowPolicy>>
             : sg14::_integer_impl::common_type<
                     Lhs,
-                    sg14::integer<RhsRep, RhsOverflowPolicy>> {
+                    sg14::safe_integer<RhsRep, RhsOverflowPolicy>> {
     };
 
-    // std::common_type<sg14::integer, T>
+    // std::common_type<sg14::safe_integer, T>
     template<
             class LhsRep, class LhsOverflowPolicy,
             class Rhs>
     struct common_type<
-            sg14::integer<LhsRep, LhsOverflowPolicy>,
+            sg14::safe_integer<LhsRep, LhsOverflowPolicy>,
             Rhs>
             : sg14::_integer_impl::common_type<
-                    sg14::integer<LhsRep, LhsOverflowPolicy>,
+                    sg14::safe_integer<LhsRep, LhsOverflowPolicy>,
                     Rhs> {
     };
 
-    // std::common_type<sg14::integer, sg14::fixed_point>
+    // std::common_type<sg14::safe_integer, sg14::fixed_point>
     template<
             class LhsRep, class LhsOverflowPolicy,
             class RhsRep, int RhsExponent>
     struct common_type<
-            sg14::integer<LhsRep, LhsOverflowPolicy>,
+            sg14::safe_integer<LhsRep, LhsOverflowPolicy>,
             sg14::fixed_point<RhsRep, RhsExponent>>
             : std::common_type<
-                    sg14::fixed_point<sg14::integer<LhsRep, LhsOverflowPolicy>, 0>,
+                    sg14::fixed_point<sg14::safe_integer<LhsRep, LhsOverflowPolicy>, 0>,
                     sg14::fixed_point<RhsRep, RhsExponent>> {
     };
 
-    // std::common_type<sg14::fixed_point, sg14::integer>
+    // std::common_type<sg14::fixed_point, sg14::safe_integer>
     template<
             class LhsRep, int LhsExponent,
             class RhsRep, class RhsOverflowPolicy>
     struct common_type<
             sg14::fixed_point<LhsRep, LhsExponent>,
-            sg14::integer<RhsRep, RhsOverflowPolicy>>
+            sg14::safe_integer<RhsRep, RhsOverflowPolicy>>
             : std::common_type<
                     sg14::fixed_point<LhsRep, LhsExponent>,
-                    sg14::fixed_point<sg14::integer<RhsRep, RhsOverflowPolicy>, 0>> {
+                    sg14::fixed_point<sg14::safe_integer<RhsRep, RhsOverflowPolicy>, 0>> {
     };
     
-    // std::common_type<sg14::integer, sg14::integer>
+    // std::common_type<sg14::safe_integer, sg14::safe_integer>
     template<
             class LhsRep, class LhsOverflowPolicy,
             class RhsRep, class RhsOverflowPolicy>
     struct common_type<
-            sg14::integer<LhsRep, LhsOverflowPolicy>,
-            sg14::integer<RhsRep, RhsOverflowPolicy>>
+            sg14::safe_integer<LhsRep, LhsOverflowPolicy>,
+            sg14::safe_integer<RhsRep, RhsOverflowPolicy>>
             : sg14::_integer_impl::common_type<
-                    sg14::integer<LhsRep, LhsOverflowPolicy>,
-                    sg14::integer<RhsRep, RhsOverflowPolicy>> {
+                    sg14::safe_integer<LhsRep, LhsOverflowPolicy>,
+                    sg14::safe_integer<RhsRep, RhsOverflowPolicy>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // std::numeric_limits specialization for integer
+    // std::numeric_limits specialization for safe_integer
 
     // note: some members are guessed,
     // some are temporary (assuming rounding style, traps etc.)
     // and some are undefined
     template<class Rep, class OverflowPolicy>
-    struct numeric_limits<sg14::integer<Rep, OverflowPolicy>> {
-        // integer-specific helpers
-        using _value_type = sg14::integer<Rep, OverflowPolicy>;
+    struct numeric_limits<sg14::safe_integer<Rep, OverflowPolicy>> {
+        // safe_integer-specific helpers
+        using _value_type = sg14::safe_integer<Rep, OverflowPolicy>;
         using _rep = typename _value_type::rep;
         using _rep_numeric_limits = numeric_limits<_rep>;
 
@@ -536,12 +539,12 @@ namespace std {
         static constexpr bool is_signed = _rep_numeric_limits::is_signed;
 
         static constexpr bool is_integer = true;
-        static_assert(is_integer, "integer must be represented using binary type");
+        static_assert(is_integer, "safe_integer must be represented using binary type");
 
         static constexpr bool is_exact = _rep_numeric_limits::is_exact;
 
         static constexpr int radix = _rep_numeric_limits::radix;
-        static_assert(radix==2, "integer must be represented using binary type");
+        static_assert(radix==2, "safe_integer must be represented using binary type");
 
         static constexpr _value_type epsilon() noexcept
         {
@@ -596,4 +599,4 @@ namespace std {
     };
 }
 
-#endif	// SG14_INTEGER_H
+#endif	// SG14_SAFE_INTEGER_H

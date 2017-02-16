@@ -4,7 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "sg14/auxiliary/integer.h"
+#include "sg14/auxiliary/safe_integer.h"
 
 using sg14::_impl::is_integer_or_float;
 using sg14::_integer_impl::is_integer_class;
@@ -18,7 +18,7 @@ using std::is_same;
 using std::numeric_limits;
 
 ////////////////////////////////////////////////////////////////////////////////
-// std::common_type with sg14::integer parameter
+// std::common_type with sg14::safe_integer parameter
 
 static_assert(is_same<
         typename std::common_type<int32_t, saturated_integer<int16_t>>::type,
@@ -289,41 +289,41 @@ static_assert(is_same<decltype(declval<saturated_integer<>>() / declval<double>(
 ////////////////////////////////////////////////////////////////////////////////
 // traits
 
-// std::numeric_limits<sg14::integer<>>::is_integer
-static_assert(numeric_limits<sg14::integer<int8_t, sg14::saturated_overflow_policy>>::is_integer,
-        "std::numeric_limits<sg14::integer<>> test failed");
-static_assert(numeric_limits<sg14::integer<uint8_t, sg14::saturated_overflow_policy>>::is_integer,
-        "std::numeric_limits<sg14::integer<>> test failed");
-static_assert(numeric_limits<sg14::integer<int16_t, sg14::saturated_overflow_policy>>::is_integer,
-        "std::numeric_limits<sg14::integer<>> test failed");
-static_assert(numeric_limits<sg14::integer<uint16_t, sg14::saturated_overflow_policy>>::is_integer,
-        "std::numeric_limits<sg14::integer<>> test failed");
-static_assert(numeric_limits<sg14::integer<int32_t, sg14::saturated_overflow_policy>>::is_integer,
-        "std::numeric_limits<sg14::integer<>> test failed");
-static_assert(numeric_limits<sg14::integer<uint32_t, sg14::saturated_overflow_policy>>::is_integer,
-        "std::numeric_limits<sg14::integer<>> test failed");
-static_assert(numeric_limits<sg14::integer<int64_t, sg14::saturated_overflow_policy>>::is_integer,
-        "std::numeric_limits<sg14::integer<>> test failed");
-static_assert(numeric_limits<sg14::integer<uint64_t, sg14::saturated_overflow_policy>>::is_integer,
-        "std::numeric_limits<sg14::integer<>> test failed");
+// std::numeric_limits<sg14::safe_integer<>>::is_integer
+static_assert(numeric_limits<sg14::safe_integer<int8_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
+static_assert(numeric_limits<sg14::safe_integer<uint8_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
+static_assert(numeric_limits<sg14::safe_integer<int16_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
+static_assert(numeric_limits<sg14::safe_integer<uint16_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
+static_assert(numeric_limits<sg14::safe_integer<int32_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
+static_assert(numeric_limits<sg14::safe_integer<uint32_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
+static_assert(numeric_limits<sg14::safe_integer<int64_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
+static_assert(numeric_limits<sg14::safe_integer<uint64_t, sg14::saturated_overflow_policy>>::is_integer,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
 
-// std::numeric_limits<sg14::integer<>>::is_signed
-static_assert(numeric_limits<sg14::integer<int8_t, sg14::saturated_overflow_policy>>::is_signed,
-        "std::numeric_limits<sg14::integer<>> test failed");
-static_assert(!numeric_limits<sg14::integer<uint8_t, sg14::saturated_overflow_policy>>::is_signed,
-        "std::numeric_limits<sg14::integer<>> test failed");
-static_assert(numeric_limits<sg14::integer<int16_t, sg14::saturated_overflow_policy>>::is_signed,
-        "std::numeric_limits<sg14::integer<>> test failed");
-static_assert(!numeric_limits<sg14::integer<uint16_t, sg14::saturated_overflow_policy>>::is_signed,
-        "std::numeric_limits<sg14::integer<>> test failed");
-static_assert(numeric_limits<sg14::integer<int32_t, sg14::saturated_overflow_policy>>::is_signed,
-        "std::numeric_limits<sg14::integer<>> test failed");
-static_assert(!numeric_limits<sg14::integer<uint32_t, sg14::saturated_overflow_policy>>::is_signed,
-        "std::numeric_limits<sg14::integer<>> test failed");
-static_assert(numeric_limits<sg14::integer<int64_t, sg14::saturated_overflow_policy>>::is_signed,
-        "std::numeric_limits<sg14::integer<>> test failed");
-static_assert(!numeric_limits<sg14::integer<uint64_t, sg14::saturated_overflow_policy>>::is_signed,
-        "std::numeric_limits<sg14::integer<>> test failed");
+// std::numeric_limits<sg14::safe_integer<>>::is_signed
+static_assert(numeric_limits<sg14::safe_integer<int8_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
+static_assert(!numeric_limits<sg14::safe_integer<uint8_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
+static_assert(numeric_limits<sg14::safe_integer<int16_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
+static_assert(!numeric_limits<sg14::safe_integer<uint16_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
+static_assert(numeric_limits<sg14::safe_integer<int32_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
+static_assert(!numeric_limits<sg14::safe_integer<uint32_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
+static_assert(numeric_limits<sg14::safe_integer<int64_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
+static_assert(!numeric_limits<sg14::safe_integer<uint64_t, sg14::saturated_overflow_policy>>::is_signed,
+        "std::numeric_limits<sg14::safe_integer<>> test failed");
 
 // sg14::make_signed<sg14::saturated_integer<>>
 static_assert(is_same<make_signed<saturated_integer<int8_t >>::type, saturated_integer<int8_t >>::value,

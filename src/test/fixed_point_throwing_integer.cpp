@@ -4,7 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "sg14/auxiliary/integer.h"
+#include <sg14/auxiliary/safe_integer.h>
 #include <sg14/fixed_point>
 
 #if defined(SG14_EXCEPTIONS_ENABLED)

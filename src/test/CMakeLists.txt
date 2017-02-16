@@ -22,7 +22,7 @@ add_executable(fp_test
         ${CMAKE_CURRENT_LIST_DIR}/p0381.cpp
         ${CMAKE_CURRENT_LIST_DIR}/p0554.cpp
         ${CMAKE_CURRENT_LIST_DIR}/utils.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/integer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/safe_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_built_in.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_const_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_saturated_integer.cpp
