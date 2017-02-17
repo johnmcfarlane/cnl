@@ -18,6 +18,13 @@ using std::is_same;
 using std::numeric_limits;
 
 ////////////////////////////////////////////////////////////////////////////////
+// sg14::safe_integer template parameters default
+
+static_assert(
+        is_same<sg14::safe_integer<>, sg14::safe_integer<int, sg14::throwing_overflow_policy>>::value,
+        "wrong default template parameters for sg14::safe_integer");
+
+////////////////////////////////////////////////////////////////////////////////
 // std::common_type with sg14::safe_integer parameter
 
 static_assert(is_same<
