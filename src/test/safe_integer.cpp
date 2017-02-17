@@ -7,7 +7,7 @@
 #include "sg14/auxiliary/safe_integer.h"
 
 using sg14::_impl::is_integer_or_float;
-using sg14::_integer_impl::is_integer_class;
+using sg14::_integer_impl::is_safe_integer;
 using sg14::_integer_impl::is_negative_overflow;
 using sg14::_integer_impl::is_positive_overflow;
 using sg14::make_signed;
@@ -56,38 +56,38 @@ static_assert(is_same<
         saturated_integer<uint32_t >>::value, "std::common_type test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_integer_impl::is_integer_class
+// sg14::_integer_impl::is_safe_integer
 
-static_assert(!is_integer_class<uint8_t>::value, "sg14::is_integer_class test failed");
-static_assert(!is_integer_class<int8_t>::value, "sg14::is_integer_class test failed");
-static_assert(!is_integer_class<uint16_t>::value, "sg14::is_integer_class test failed");
-static_assert(!is_integer_class<int16_t>::value, "sg14::is_integer_class test failed");
-static_assert(!is_integer_class<uint32_t>::value, "sg14::is_integer_class test failed");
-static_assert(!is_integer_class<int32_t>::value, "sg14::is_integer_class test failed");
-static_assert(!is_integer_class<uint64_t>::value, "sg14::is_integer_class test failed");
-static_assert(!is_integer_class<int64_t>::value, "sg14::is_integer_class test failed");
+static_assert(!is_safe_integer<uint8_t>::value, "sg14::is_safe_integer test failed");
+static_assert(!is_safe_integer<int8_t>::value, "sg14::is_safe_integer test failed");
+static_assert(!is_safe_integer<uint16_t>::value, "sg14::is_safe_integer test failed");
+static_assert(!is_safe_integer<int16_t>::value, "sg14::is_safe_integer test failed");
+static_assert(!is_safe_integer<uint32_t>::value, "sg14::is_safe_integer test failed");
+static_assert(!is_safe_integer<int32_t>::value, "sg14::is_safe_integer test failed");
+static_assert(!is_safe_integer<uint64_t>::value, "sg14::is_safe_integer test failed");
+static_assert(!is_safe_integer<int64_t>::value, "sg14::is_safe_integer test failed");
 
-static_assert(is_integer_class<saturated_integer<uint8_t>>::value,
-        "sg14::is_integer_class test failed");
-static_assert(is_integer_class<saturated_integer<int8_t>>::value,
-        "sg14::is_integer_class test failed");
-static_assert(is_integer_class<saturated_integer<uint16_t>>::value,
-        "sg14::_integer_impl::is_integer_class test failed");
-static_assert(is_integer_class<saturated_integer<int16_t>>::value,
-        "sg14::_integer_impl::is_integer_class test failed");
-static_assert(is_integer_class<saturated_integer<uint32_t>>::value,
-        "sg14::_integer_impl::is_integer_class test failed");
-static_assert(is_integer_class<saturated_integer<int32_t>>::value,
-        "sg14::_integer_impl::is_integer_class test failed");
-static_assert(is_integer_class<saturated_integer<uint64_t>>::value,
-        "sg14::_integer_impl::is_integer_class test failed");
-static_assert(is_integer_class<saturated_integer<int64_t>>::value,
-        "sg14::_integer_impl::is_integer_class test failed");
+static_assert(is_safe_integer<saturated_integer<uint8_t>>::value,
+        "sg14::is_safe_integer test failed");
+static_assert(is_safe_integer<saturated_integer<int8_t>>::value,
+        "sg14::is_safe_integer test failed");
+static_assert(is_safe_integer<saturated_integer<uint16_t>>::value,
+        "sg14::_integer_impl::is_safe_integer test failed");
+static_assert(is_safe_integer<saturated_integer<int16_t>>::value,
+        "sg14::_integer_impl::is_safe_integer test failed");
+static_assert(is_safe_integer<saturated_integer<uint32_t>>::value,
+        "sg14::_integer_impl::is_safe_integer test failed");
+static_assert(is_safe_integer<saturated_integer<int32_t>>::value,
+        "sg14::_integer_impl::is_safe_integer test failed");
+static_assert(is_safe_integer<saturated_integer<uint64_t>>::value,
+        "sg14::_integer_impl::is_safe_integer test failed");
+static_assert(is_safe_integer<saturated_integer<int64_t>>::value,
+        "sg14::_integer_impl::is_safe_integer test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_impl::is_integer_or_float
 
-static_assert(is_integer_or_float<saturated_integer<int64_t>>::value, "sg14::_integer_impl::is_integer_class test failed");
+static_assert(is_integer_or_float<saturated_integer<int64_t>>::value, "sg14::_integer_impl::is_safe_integer test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::_integer_impl::positive_digits

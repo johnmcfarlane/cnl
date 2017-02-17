@@ -96,18 +96,18 @@ namespace sg14 {
         struct common_type;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_integer_impl::is_integer_class - trait to identify sg14::safe_integer<>
+        // sg14::_integer_impl::is_safe_integer - trait to identify sg14::safe_integer<>
 
         template<typename T>
-        struct is_integer_class;
+        struct is_safe_integer;
 
         template<typename T>
-        struct is_integer_class
+        struct is_safe_integer
                 : std::false_type {
         };
 
         template<typename Rep, typename OverflowPolicy>
-        struct is_integer_class<safe_integer<Rep, OverflowPolicy>>
+        struct is_safe_integer<safe_integer<Rep, OverflowPolicy>>
                 : std::true_type {
         };
 
@@ -117,7 +117,7 @@ namespace sg14 {
 
         template<class Lhs, class Rhs>
         struct are_integer_class_operands {
-            static constexpr int integer_class = is_integer_class<Lhs>::value + is_integer_class<Rhs>::value;
+            static constexpr int integer_class = is_safe_integer<Lhs>::value + is_safe_integer<Rhs>::value;
             static constexpr int integer_or_float = _impl::is_integer_or_float<Lhs>::value + _impl::is_integer_or_float<Rhs>::value;
             static constexpr bool value = (integer_class >= 1) && (integer_or_float == 2);
         };
@@ -154,9 +154,9 @@ namespace sg14 {
                         int>::type dummy = 0>
         constexpr bool is_positive_overflow(Source const&)
         {
-            static_assert(!is_integer_class<Destination>::value,
+            static_assert(!is_safe_integer<Destination>::value,
                     "this function helps convert values *to* sg14::safe_integer");
-            static_assert(!is_integer_class<Source>::value, "this function helps convert values *to* sg14::safe_integer");
+            static_assert(!is_safe_integer<Source>::value, "this function helps convert values *to* sg14::safe_integer");
 
             // If positive capacity of Destination is equal to or exceeds that of Source,
             // positive overflow cannot occur.
@@ -170,9 +170,9 @@ namespace sg14 {
                         int>::type dummy = 0>
         constexpr bool is_positive_overflow(Source const& source)
         {
-            static_assert(!is_integer_class<Destination>::value,
+            static_assert(!is_safe_integer<Destination>::value,
                     "this function helps convert values *to* sg14::safe_integer");
-            static_assert(!is_integer_class<Source>::value, "this function helps convert values *to* sg14::safe_integer");
+            static_assert(!is_safe_integer<Source>::value, "this function helps convert values *to* sg14::safe_integer");
 
             return source>static_cast<Source>(std::numeric_limits<Destination>::max());
         }
@@ -185,9 +185,9 @@ namespace sg14 {
                         int>::type dummy = 0>
         constexpr bool is_negative_overflow(Source const&)
         {
-            static_assert(!is_integer_class<Destination>::value,
+            static_assert(!is_safe_integer<Destination>::value,
                     "this function helps convert values *to* sg14::safe_integer");
-            static_assert(!is_integer_class<Source>::value, "this function helps convert values *to* sg14::safe_integer");
+            static_assert(!is_safe_integer<Source>::value, "this function helps convert values *to* sg14::safe_integer");
 
             // If positive capacity of Destination is equal to or exceeds that of Source,
             // positive overflow cannot occur.
@@ -201,9 +201,9 @@ namespace sg14 {
                         int>::type dummy = 0>
         constexpr bool is_negative_overflow(Source const& source)
         {
-            static_assert(!is_integer_class<Destination>::value,
+            static_assert(!is_safe_integer<Destination>::value,
                     "this function helps convert values *to* sg14::safe_integer");
-            static_assert(!is_integer_class<Source>::value, "this function helps convert values *to* sg14::safe_integer");
+            static_assert(!is_safe_integer<Source>::value, "this function helps convert values *to* sg14::safe_integer");
 
             return source<static_cast<Source>(std::numeric_limits<Destination>::lowest());
         }
@@ -242,9 +242,9 @@ namespace sg14 {
         template<typename Lhs, typename Rhs>
         constexpr Lhs convert(const Rhs& rhs) const
         {
-            static_assert(!_integer_impl::is_integer_class<Lhs>::value,
+            static_assert(!_integer_impl::is_safe_integer<Lhs>::value,
                     "this function helps convert values *to* sg14::safe_integer");
-            static_assert(!_integer_impl::is_integer_class<Rhs>::value,
+            static_assert(!_integer_impl::is_safe_integer<Rhs>::value,
                     "this function helps convert values *to* sg14::safe_integer");
 
             using LhsNumericLimits = std::numeric_limits<Lhs>;
@@ -278,7 +278,7 @@ namespace sg14 {
                 safe_integer<LhsRep, LhsOverflowPolicy>,
                 RhsInteger,
                 typename std::enable_if<
-                        !_integer_impl::is_integer_class<RhsInteger>::value
+                        !_integer_impl::is_safe_integer<RhsInteger>::value
                                 && std::is_integral<RhsInteger>::value
                 >::type> {
             using type = typename sg14::safe_integer<typename std::common_type<LhsRep, RhsInteger>::type, LhsOverflowPolicy>;
@@ -328,13 +328,13 @@ namespace sg14 {
         {
         }
 
-        template<class RhsRep, typename std::enable_if<!_integer_impl::is_integer_class<RhsRep>::value, int>::type dummy = 0>
+        template<class RhsRep, typename std::enable_if<!_integer_impl::is_safe_integer<RhsRep>::value, int>::type dummy = 0>
         constexpr explicit safe_integer(const RhsRep& rhs)
                 :_r(OverflowPolicy{}.template convert<rep>(rhs))
         {
         }
 
-        template<class Rhs, typename std::enable_if<_integer_impl::is_integer_class<Rhs>::value, int>::type dummy = 0>
+        template<class Rhs, typename std::enable_if<_integer_impl::is_safe_integer<Rhs>::value, int>::type dummy = 0>
         constexpr explicit safe_integer(const Rhs& rhs)
                 :_r(OverflowPolicy{}.template convert<rep>(rhs.data()))
         {
