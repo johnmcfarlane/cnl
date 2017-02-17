@@ -12,10 +12,22 @@ using sg14::_integer_impl::is_negative_overflow;
 using sg14::_integer_impl::is_positive_overflow;
 using sg14::make_signed;
 using sg14::make_unsigned;
-using sg14::saturated_integer;
+using sg14::safe_integer;
 using std::declval;
 using std::is_same;
 using std::numeric_limits;
+
+////////////////////////////////////////////////////////////////////////////////
+// aliases for different partial instantiations of sg14::safe_integer
+
+template<typename Rep = int>
+using native_integer = safe_integer<Rep, sg14::native_overflow_policy>;
+
+template<typename Rep = int>
+using throwing_integer = safe_integer<Rep, sg14::throwing_overflow_policy>;
+
+template<typename Rep = int>
+using saturated_integer = safe_integer<Rep, sg14::saturated_overflow_policy>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::safe_integer template parameters default

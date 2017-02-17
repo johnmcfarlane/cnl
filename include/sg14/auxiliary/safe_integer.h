@@ -396,18 +396,6 @@ namespace sg14 {
     SG14_INTEGER_BIT_SHIFT_DEFINE(<<);
 
     ////////////////////////////////////////////////////////////////////////////////
-    // safe_integer<> partial specializations
-
-    template<typename Rep = int>
-    using native_integer = safe_integer<Rep, native_overflow_policy>;
-
-    template<typename Rep = int>
-    using throwing_integer = safe_integer<Rep, throwing_overflow_policy>;
-
-    template<typename Rep = int>
-    using saturated_integer = safe_integer<Rep, saturated_overflow_policy>;
-
-    ////////////////////////////////////////////////////////////////////////////////
     // sg14::set_width<safe_integer<>, > partial specialization
 
     template<class Rep, class OverflowPolicy, _width_type MinNumBits>

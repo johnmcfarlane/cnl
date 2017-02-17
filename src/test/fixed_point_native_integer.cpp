@@ -18,7 +18,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Rep type
 
-using test_int = sg14::native_integer<>;
+using test_int = sg14::safe_integer<int, sg14::native_overflow_policy>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // perform fixed_point tests with this type of fixed_point specialization
