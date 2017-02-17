@@ -306,7 +306,7 @@ namespace sg14 {
 
     // an integer which can be customized to react in different ways to overflow;
     // currently doesn't correctly detect overflow from operators
-    template<typename Rep = int, typename OverflowPolicy = native_overflow_policy>
+    template<typename Rep = int, typename OverflowPolicy = throwing_overflow_policy>
     class safe_integer {
     public:
         ////////////////////////////////////////////////////////////////////////////////
