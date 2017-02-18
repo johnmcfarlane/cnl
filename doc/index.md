@@ -25,7 +25,7 @@ that support widening of arithmetic types in order to deal with precision loss.
 
 Auxiliary modules:
   * [sg14/auxiliary/multiprecision.h](@ref multiprecision.h) adapts Boost.Multiprecision for use in fixed-point types;
-  * [sg14/auxiliary/elastic.h](@ref elastic.h) defins [elastic](@ref sg14::elastic), an numeric type that uses fixed-point to avoid overflow.
+  * [sg14/auxiliary/elastic_fixed_point.h](@ref elastic_fixed_point.h) defins [elastic_fixed_point](@ref sg14::elastic_fixed_point), an numeric type that uses fixed-point to avoid overflow.
 
 
 \section Examples
@@ -60,30 +60,10 @@ Named functions - such as [multiply](@ref sg14::multiply) - provide fine-tuned c
 \snippet index.cpp advanced arithmetic example
 
 
-\subsection boost Composable
-
-The API is designed with composability in mind
-and the `Rep` template parameter is not limited to built-in integer types.
-For instance, [`boost::multiprecision::number`](http://www.boost.org/doc/libs/1_58_0/libs/multiprecision/doc/html/boost_multiprecision/ref/number.html)
-can be adapted to produce fixed-point types of arbitrary range and resolution.
-To illustrate this, a header, [sg14/auxiliary/multiprecision.h](../../include/sg14/auxiliary/multiprecision.h),
-is provided, containing all the necessary definitions.
-
-\snippet index.cpp boost example
-
-Another supported library is 
-[safe_numerics](https://github.com/robertramey/safe_numerics).
-It defines an integer type, 
-[boost::numeric::safe](https://htmlpreview.github.io/?https://raw.githubusercontent.com/robertramey/safe_numerics/master/doc/html/safe.html), 
-which guards against overflow.
-
-\snippet index.cpp safe numerics example
-
-
 \subsection elastic Extensible
 
 Because one size does not fit all, [fixed_point](@ref sg14::fixed_point) is designed to make it easy to tailor new arithmetic types. 
-The [elastic](@ref sg14::elastic) type illustrates this.
-As each calculation requires more digits, so the results of [elastic](@ref sg14::elastic) operations allocate more storage.
+The [elastic_fixed_point](@ref sg14::elastic_fixed_point) type illustrates this.
+As each calculation requires more digits, so the results of [elastic_fixed_point](@ref sg14::elastic_fixed_point) operations allocate more storage.
 
 \snippet index.cpp elastic example

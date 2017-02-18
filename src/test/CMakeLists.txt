@@ -9,20 +9,20 @@ include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
 # fp_test target
 
 add_executable(fp_test
-        ${CMAKE_CURRENT_LIST_DIR}/elastic.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/elastic_fixed_point.cpp
         ${CMAKE_CURRENT_LIST_DIR}/const_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/common.cpp
         ${CMAKE_CURRENT_LIST_DIR}/elastic_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/glm.cpp
         ${CMAKE_CURRENT_LIST_DIR}/index.cpp
         ${CMAKE_CURRENT_LIST_DIR}/main.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/make_elastic.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/make_elastic_fixed_point.cpp
         ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
         ${CMAKE_CURRENT_LIST_DIR}/p0037.cpp
         ${CMAKE_CURRENT_LIST_DIR}/p0381.cpp
         ${CMAKE_CURRENT_LIST_DIR}/p0554.cpp
         ${CMAKE_CURRENT_LIST_DIR}/utils.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/integer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/safe_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_built_in.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_const_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_saturated_integer.cpp
@@ -116,43 +116,6 @@ add_dependencies(
         fp_test
         google_test
 )
-
-######################################################################
-# pull external project, safe_numerics
-
-set(SAFE_NUMERICS OFF CACHE BOOL "compile with support for safe_numerics library")
-if(SAFE_NUMERICS AND Boost_FOUND AND NOT APPLE)
-    # test conditions necessary to use safe_numerics
-    if (NOT CPP14)
-        message(FATAL_ERROR "safe_numerics library requires C++14 (CPP14=ON)")
-    endif (NOT CPP14)
-
-    if (NOT EXCEPTIONS)
-        message(FATAL_ERROR "safe_numerics library requires exception handling (EXCEPTIONS=ON)")
-    endif (NOT EXCEPTIONS)
-
-    ExternalProject_Add(
-            safe_numerics
-            GIT_REPOSITORY "https://github.com/johnmcfarlane/safe_numerics.git"
-            GIT_TAG "d28240ebd67bdb0378d983fe09ac87a8f98c5339"
-            INSTALL_COMMAND ""
-    )
-
-    ExternalProject_Get_Property(safe_numerics SOURCE_DIR)
-    target_include_directories(
-            fp_test
-            PRIVATE
-            SYSTEM
-            ${SOURCE_DIR}/include
-    )
-
-    add_dependencies(
-            fp_test
-            safe_numerics
-    )
-
-    target_compile_definitions(fp_test PRIVATE SG14_SAFE_NUMERICS_ENABLED=1)
-endif()
 
 ######################################################################
 # fp_test compiler flags

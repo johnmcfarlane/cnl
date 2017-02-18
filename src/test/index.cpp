@@ -169,44 +169,6 @@ TEST(index, boost_example)
 #endif
 
 
-#if defined(SG14_EXCEPTIONS_ENABLED) && defined(SG14_SAFE_NUMERICS_ENABLED)
-////////////////////////////////////////////////////////////////////////////////
-//! [safe numerics example]
-#include <sg14/auxiliary/safe_integer.h>
-
-#include <gtest/gtest.h>
-void safe_integer_example()
-{
-    // a safe, 8-bit fixed-point type with range -8 <= x < 7.9375
-    using safe_byte = make_fixed<3, 4, boost::numeric::safe<int>>;
-
-    // prints "-8"
-    try {
-        auto a = safe_byte{-8};
-        cout << a << endl;
-    }
-    catch (std::range_error e) {
-        cout << e.what() << endl;
-    }
-
-    // prints "Value out of range for this safe type"
-    try {
-        auto b = safe_byte{10};
-        cout << b << endl;
-    }
-    catch (std::range_error e) {
-        cout << e.what() << endl;
-    }
-}
-//! [safe numerics example]
-
-TEST(index, safe_integer_example)
-{
-    test_function(safe_integer_example, "-8\nValue out of range for this safe type\n");
-}
-#endif
-
-
 ////////////////////////////////////////////////////////////////////////////////
 //! [elastic example]
 #include <sg14/auxiliary/elastic_integer.h>
@@ -230,16 +192,16 @@ void elastic_example1()
 
 // Such a type can be used to specialize fixed_point.
 template<int IntegerDigits, int FractionalDigits, typename Archetype>
-using elastic = fixed_point<elastic_integer<IntegerDigits+FractionalDigits, Archetype>, -FractionalDigits>;
+using elastic_fixed_point = fixed_point<elastic_integer<IntegerDigits+FractionalDigits, Archetype>, -FractionalDigits>;
 
 void elastic_example2()
 {
     // Now arithmetic operations are more efficient and less error-prone.
-    auto b = elastic<4, 28, unsigned>{15.9375};
+    auto b = elastic_fixed_point<4, 28, unsigned>{15.9375};
     auto bb = b*b;
 
     cout << bb << endl;  // "254.00390625"
-    static_assert(is_same<decltype(bb), elastic<8, 56, unsigned>>::value, "");
+    static_assert(is_same<decltype(bb), elastic_fixed_point<8, 56, unsigned>>::value, "");
 }
 //! [elastic example]
 

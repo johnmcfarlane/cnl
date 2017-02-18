@@ -196,8 +196,13 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::const_integer
 
-    // a compile-time-only integer type
-    // like a std::integral_constant with arithmetic support
+    /// \brief a compile-time-only integer type like a std::integral_constant with arithmetic support
+    ///
+    /// \tparam Integral the type of Value
+    /// \tparam Value the integer number to be represented
+    /// \tparam Digits automatically calculated value (leave defaulted)
+    /// \tparam Exponent automatically calculated value (leave defaulted)
+
     template<
         class Integral,
         Integral Value,
