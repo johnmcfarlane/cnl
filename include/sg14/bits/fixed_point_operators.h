@@ -21,49 +21,55 @@ namespace sg14 {
     // (fixed_point @ fixed_point) comparison operators
 
     template<class Rep, int Exponent>
-    constexpr bool operator==(
+    constexpr auto operator==(
             const fixed_point<Rep, Exponent>& lhs,
             const fixed_point<Rep, Exponent>& rhs)
+    -> decltype(lhs.data()==rhs.data())
     {
         return lhs.data()==rhs.data();
     }
 
     template<class Rep, int Exponent>
-    constexpr bool operator!=(
+    constexpr auto operator!=(
             const fixed_point<Rep, Exponent>& lhs,
             const fixed_point<Rep, Exponent>& rhs)
+    -> decltype(lhs.data()!=rhs.data())
     {
         return lhs.data()!=rhs.data();
     }
 
     template<class Rep, int Exponent>
-    constexpr bool operator<(
+    constexpr auto operator<(
             const fixed_point<Rep, Exponent>& lhs,
             const fixed_point<Rep, Exponent>& rhs)
+    -> decltype(lhs.data()<rhs.data())
     {
         return lhs.data()<rhs.data();
     }
 
     template<class Rep, int Exponent>
-    constexpr bool operator>(
+    constexpr auto operator>(
             const fixed_point<Rep, Exponent>& lhs,
             const fixed_point<Rep, Exponent>& rhs)
+    -> decltype(lhs.data()>rhs.data())
     {
         return lhs.data()>rhs.data();
     }
 
     template<class Rep, int Exponent>
-    constexpr bool operator>=(
+    constexpr auto operator>=(
             const fixed_point<Rep, Exponent>& lhs,
             const fixed_point<Rep, Exponent>& rhs)
+    -> decltype(lhs.data()>=rhs.data())
     {
         return lhs.data()>=rhs.data();
     }
 
     template<class Rep, int Exponent>
-    constexpr bool operator<=(
+    constexpr auto operator<=(
             const fixed_point<Rep, Exponent>& lhs,
             const fixed_point<Rep, Exponent>& rhs)
+    -> decltype(lhs.data()<=rhs.data())
     {
         return lhs.data()<=rhs.data();
     }
