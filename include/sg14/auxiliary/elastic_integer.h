@@ -22,8 +22,7 @@ namespace sg14 {
     /// \brief literal integer type that encodes its width in bits within its type
     ///
     /// \tparam Digits a count of the number of digits needed to express the number
-    /// \tparam Archetype an integer type (typically `signed` or `unsigned`)
-    /// that acts as a hint about what integer type should actually be used to represent the value
+    /// \tparam Narrowest the most narrow integer type to use for storage
     ///
     /// \note Arithmetic operations result in types with an adjusted Digits parameter accordingly.
     /// For instance, when two \ref elastic_integer values are multiplied together,
@@ -31,24 +30,24 @@ namespace sg14 {
     ///
     /// \sa elastic_fixed_point
 
-    template<int Digits, class Archetype = int>
+    template<int Digits, class Narrowest = int>
     class elastic_integer {
     public:
         /// alias to template parameter, \a Digits
         static constexpr int digits = Digits;
 
-        /// alias to template parameter, \a Archetype
-        using archetype = Archetype;
+        /// alias to template parameter, \a Narrowest
+        using narrowest = Narrowest;
 
         /// width of value
-        static constexpr int width = digits+std::numeric_limits<Archetype>::is_signed;
+        static constexpr int width = digits+std::numeric_limits<narrowest>::is_signed;
 
     private:
-        static constexpr int _min_width = sg14::width<Archetype>::value;
+        static constexpr int _min_width = sg14::width<narrowest>::value;
         static constexpr int _rep_width = _impl::max(_min_width, width);
     public:
-        /// the actual type used to store the value; closely related to Archetype but may be a different width
-        using rep = set_width_t<Archetype, _rep_width>;
+        /// the actual type used to store the value; closely related to Narrowest but may be a different width
+        using rep = set_width_t<narrowest, _rep_width>;
 
         /// common copy constructor
         constexpr elastic_integer(const elastic_integer& rhs)
@@ -64,8 +63,8 @@ namespace sg14 {
         }
 
         /// constructor taking an elastic_integer type
-        template<int FromWidth, class FromArchetype>
-        explicit constexpr elastic_integer(const elastic_integer<FromWidth, FromArchetype>& rhs)
+        template<int FromWidth, class FromNarrowest>
+        explicit constexpr elastic_integer(const elastic_integer<FromWidth, FromNarrowest>& rhs)
                 :_r(rhs)
         {
         }
@@ -122,8 +121,8 @@ namespace sg14 {
         struct is_elastic_integer : std::false_type {
         };
 
-        template<int Digits, class Archetype>
-        struct is_elastic_integer<elastic_integer<Digits, Archetype>> : std::true_type {
+        template<int Digits, class Narrowest>
+        struct is_elastic_integer<elastic_integer<Digits, Narrowest>> : std::true_type {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -143,15 +142,15 @@ namespace sg14 {
     // bitwise operators
 
     // operator<<
-    template<int LhsDigits, class LhsArchetype, class Rhs>
-    constexpr auto operator<<(const elastic_integer<LhsDigits, LhsArchetype>& lhs, const Rhs& rhs)
-    -> elastic_integer<LhsDigits, LhsArchetype>
+    template<int LhsDigits, class LhsNarrowest, class Rhs>
+    constexpr auto operator<<(const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const Rhs& rhs)
+    -> elastic_integer<LhsDigits, LhsNarrowest>
     {
-        return elastic_integer<LhsDigits, LhsArchetype>::from_data(lhs.data() << rhs);
+        return elastic_integer<LhsDigits, LhsNarrowest>::from_data(lhs.data() << rhs);
     }
 
-    template<class Lhs, int RhsDigits, class RhsArchetype>
-    constexpr auto operator<<(const Lhs& lhs, const elastic_integer<RhsDigits, RhsArchetype>& rhs)
+    template<class Lhs, int RhsDigits, class RhsNarrowest>
+    constexpr auto operator<<(const Lhs& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
     -> decltype(lhs << 0)
     {
         return lhs << rhs.data();
@@ -161,37 +160,37 @@ namespace sg14 {
     // comparison operators
 
 #define SG14_ELASTIC_INTEGER_COMPARISON_OP(OP) \
-    template<int LhsDigits, class LhsArchetype, int RhsDigits, class RhsArchetype>\
+    template<int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>\
     constexpr auto \
-    operator OP (const elastic_integer<LhsDigits, LhsArchetype>& lhs, const elastic_integer<RhsDigits, RhsArchetype>& rhs) \
+    operator OP (const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs) \
     -> decltype(lhs.data() OP rhs.data()) \
     { \
         return lhs.data() OP rhs.data(); \
     } \
  \
-    template<int LhsDigits, class LhsArchetype, class RhsInteger> \
-    constexpr auto operator OP (const elastic_integer<LhsDigits, LhsArchetype>& lhs, const RhsInteger& rhs) \
+    template<int LhsDigits, class LhsNarrowest, class RhsInteger> \
+    constexpr auto operator OP (const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const RhsInteger& rhs) \
     -> typename std::enable_if<std::numeric_limits<RhsInteger>::is_integer, decltype(lhs.data() OP rhs)>::type \
     { \
         return lhs.data() OP rhs; \
     } \
  \
-    template<int LhsDigits, class LhsArchetype, class RhsFloat> \
-    constexpr auto operator OP (const elastic_integer<LhsDigits, LhsArchetype>& lhs, const RhsFloat& rhs) \
+    template<int LhsDigits, class LhsNarrowest, class RhsFloat> \
+    constexpr auto operator OP (const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const RhsFloat& rhs) \
     -> typename std::enable_if<std::is_floating_point<RhsFloat>::value, decltype(lhs.data() OP rhs)>::type \
     { \
         return lhs.data() OP rhs; \
     } \
  \
-    template<class LhsInteger, int RhsDigits, class RhsArchetype> \
-    constexpr auto operator OP (const LhsInteger& lhs, const elastic_integer<RhsDigits, RhsArchetype>& rhs) \
+    template<class LhsInteger, int RhsDigits, class RhsNarrowest> \
+    constexpr auto operator OP (const LhsInteger& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs) \
     -> typename std::enable_if<std::numeric_limits<LhsInteger>::is_integer, decltype(lhs OP rhs.data())>::type \
     { \
         return lhs OP rhs.data(); \
     } \
  \
-    template<class LhsFloat, int RhsDigits, class RhsArchetype> \
-    constexpr auto operator OP (const LhsFloat& lhs, const elastic_integer<RhsDigits, RhsArchetype>& rhs) \
+    template<class LhsFloat, int RhsDigits, class RhsNarrowest> \
+    constexpr auto operator OP (const LhsFloat& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs) \
     -> typename std::enable_if<std::is_floating_point<LhsFloat>::value, decltype(lhs OP rhs.data())>::type \
     { \
         return lhs OP rhs.data(); \
@@ -268,11 +267,10 @@ namespace sg14 {
             using rhs_rep = typename Rhs::rep;
             using rep_result = typename _impl::op_result<OperationTag, lhs_rep, rhs_rep>;
 
-            // width of result archetype is greater of widths of operand archetypes
-            static constexpr _width_type archetype_width = _impl::max(width<typename Lhs::archetype>::value,
-                    width<typename Rhs::archetype>::value);
-            using archetype = set_width_t<_impl::make_signed_t<rep_result, policy::is_signed>, archetype_width>;
-            using result_type = elastic_integer<policy::digits, archetype>;
+            static constexpr _width_type narrowest_width = _impl::max(width<typename Lhs::narrowest>::value,
+                    width<typename Rhs::narrowest>::value);
+            using narrowest = set_width_t<_impl::make_signed_t<rep_result, policy::is_signed>, narrowest_width>;
+            using result_type = elastic_integer<policy::digits, narrowest>;
         };
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -291,55 +289,55 @@ namespace sg14 {
     }
 
     // unary operator-
-    template<int RhsDigits, class RhsArchetype>
-    constexpr auto operator-(const elastic_integer<RhsDigits, RhsArchetype>& rhs)
-    -> elastic_integer<RhsDigits, typename sg14::make_signed<RhsArchetype>::type>
+    template<int RhsDigits, class RhsNarrowest>
+    constexpr auto operator-(const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
+    -> elastic_integer<RhsDigits, typename sg14::make_signed<RhsNarrowest>::type>
     {
-        using result_type = elastic_integer<RhsDigits, typename sg14::make_signed<RhsArchetype>::type>;
+        using result_type = elastic_integer<RhsDigits, typename sg14::make_signed<RhsNarrowest>::type>;
         return result_type::from_data(-static_cast<result_type>(rhs).data());
     }
 
     // binary operator+
-    template<int LhsDigits, class LhsArchetype, int RhsDigits, class RhsArchetype>
+    template<int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
     constexpr auto
-    operator+(const elastic_integer<LhsDigits, LhsArchetype>& lhs, const elastic_integer<RhsDigits, RhsArchetype>& rhs)
+    operator+(const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
     -> decltype(_elastic_integer_impl::operate<_impl::add_tag>(lhs, rhs))
     {
         return _elastic_integer_impl::operate<_impl::add_tag>(lhs, rhs);
     }
 
     // binary operator-
-    template<int LhsDigits, class LhsArchetype, int RhsDigits, class RhsArchetype>
+    template<int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
     constexpr auto
-    operator-(const elastic_integer<LhsDigits, LhsArchetype>& lhs, const elastic_integer<RhsDigits, RhsArchetype>& rhs)
+    operator-(const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
     -> decltype(_elastic_integer_impl::operate<_impl::subtract_tag>(lhs, rhs))
     {
         return _elastic_integer_impl::operate<_impl::subtract_tag>(lhs, rhs);
     }
 
     // operator*
-    template<int LhsDigits, class LhsArchetype, int RhsDigits, class RhsArchetype>
+    template<int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
     constexpr auto
-    operator*(const elastic_integer<LhsDigits, LhsArchetype>& lhs, const elastic_integer<RhsDigits, RhsArchetype>& rhs)
+    operator*(const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
     -> decltype(_elastic_integer_impl::operate<_impl::multiply_tag>(lhs, rhs))
     {
         return _elastic_integer_impl::operate<_impl::multiply_tag>(lhs, rhs);
     }
 
     // operator/
-    template<int LhsDigits, class LhsArchetype, int RhsDigits, class RhsArchetype>
+    template<int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
     constexpr auto
-    operator/(const elastic_integer<LhsDigits, LhsArchetype>& lhs, const elastic_integer<RhsDigits, RhsArchetype>& rhs)
+    operator/(const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
     -> decltype(_elastic_integer_impl::operate<_impl::divide_tag>(lhs, rhs))
     {
         return _elastic_integer_impl::operate<_impl::divide_tag>(lhs, rhs);
     }
 
     template<
-        int LhsDigits, class LhsArchetype,
+        int LhsDigits, class LhsNarrowest,
         class RhsIntegral, RhsIntegral RhsValue>
     constexpr auto
-    operator/(const elastic_integer<LhsDigits, LhsArchetype>& lhs, const const_integer<RhsIntegral, RhsValue>& rhs)
+    operator/(const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const const_integer<RhsIntegral, RhsValue>& rhs)
     -> decltype(lhs/make_elastic_integer(rhs))
     {
         return lhs/make_elastic_integer(rhs);
@@ -348,32 +346,32 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // traits
 
-    template<int Digits, class Archetype>
-    struct make_signed<elastic_integer<Digits, Archetype>> {
-        using type = elastic_integer<Digits, typename make_signed<Archetype>::type>;
+    template<int Digits, class Narrowest>
+    struct make_signed<elastic_integer<Digits, Narrowest>> {
+        using type = elastic_integer<Digits, typename make_signed<Narrowest>::type>;
     };
 
-    template<int Digits, class Archetype>
-    struct make_unsigned<elastic_integer<Digits, Archetype>> {
-        using type = elastic_integer<Digits, typename make_unsigned<Archetype>::type>;
+    template<int Digits, class Narrowest>
+    struct make_unsigned<elastic_integer<Digits, Narrowest>> {
+        using type = elastic_integer<Digits, typename make_unsigned<Narrowest>::type>;
     };
 
-    template<int Digits, class Archetype>
-    struct width<elastic_integer<Digits, Archetype>>
-            : std::integral_constant<_width_type, elastic_integer<Digits, Archetype>::width> {
+    template<int Digits, class Narrowest>
+    struct width<elastic_integer<Digits, Narrowest>>
+            : std::integral_constant<_width_type, elastic_integer<Digits, Narrowest>::width> {
     };
 
-    template<int Digits, class Archetype, _width_type MinNumBits>
-    struct set_width<elastic_integer<Digits, Archetype>, MinNumBits> {
-        using type = elastic_integer<MinNumBits - std::numeric_limits<Archetype>::is_signed, Archetype>;
+    template<int Digits, class Narrowest, _width_type MinNumBits>
+    struct set_width<elastic_integer<Digits, Narrowest>, MinNumBits> {
+        using type = elastic_integer<MinNumBits - std::numeric_limits<Narrowest>::is_signed, Narrowest>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::scale<elastic_integer>
 
-    template<int Digits, class Archetype>
-    struct scale<elastic_integer<Digits, Archetype>> {
-        using Integer = elastic_integer<Digits, Archetype>;
+    template<int Digits, class Narrowest>
+    struct scale<elastic_integer<Digits, Narrowest>> {
+        using Integer = elastic_integer<Digits, Narrowest>;
 
         constexpr Integer operator()(const Integer& i, int base, int exp) const {
             return Integer{scale<typename Integer::rep>()(i.data(), base, exp)};
@@ -392,20 +390,20 @@ namespace sg14 {
 }
 
 namespace std {
-    template<int LhsDigits, class LhsArchetype, int RhsDigits, class RhsArchetype>
-    struct common_type<sg14::elastic_integer<LhsDigits, LhsArchetype>, sg14::elastic_integer<RhsDigits, RhsArchetype>> {
+    template<int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
+    struct common_type<sg14::elastic_integer<LhsDigits, LhsNarrowest>, sg14::elastic_integer<RhsDigits, RhsNarrowest>> {
         using type = typename std::conditional<RhsDigits
-                <LhsDigits, sg14::elastic_integer<LhsDigits, LhsArchetype>, sg14::elastic_integer<RhsDigits, RhsArchetype>>::type;
+                <LhsDigits, sg14::elastic_integer<LhsDigits, LhsNarrowest>, sg14::elastic_integer<RhsDigits, RhsNarrowest>>::type;
     };
 
-    template<int LhsDigits, class LhsArchetype, class Rhs>
-    struct common_type<sg14::elastic_integer<LhsDigits, LhsArchetype>, Rhs>
-            : common_type<sg14::elastic_integer<LhsDigits, LhsArchetype>, sg14::elastic_integer<std::numeric_limits<Rhs>::digits, Rhs>> {
+    template<int LhsDigits, class LhsNarrowest, class Rhs>
+    struct common_type<sg14::elastic_integer<LhsDigits, LhsNarrowest>, Rhs>
+            : common_type<sg14::elastic_integer<LhsDigits, LhsNarrowest>, sg14::elastic_integer<std::numeric_limits<Rhs>::digits, Rhs>> {
     };
 
-    template<class Lhs, int RhsDigits, class RhsArchetype>
-    struct common_type<Lhs, sg14::elastic_integer<RhsDigits, RhsArchetype>>
-            : common_type<sg14::elastic_integer<std::numeric_limits<Lhs>::digits, Lhs>, sg14::elastic_integer<RhsDigits, RhsArchetype>> {
+    template<class Lhs, int RhsDigits, class RhsNarrowest>
+    struct common_type<Lhs, sg14::elastic_integer<RhsDigits, RhsNarrowest>>
+            : common_type<sg14::elastic_integer<std::numeric_limits<Lhs>::digits, Lhs>, sg14::elastic_integer<RhsDigits, RhsNarrowest>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -414,11 +412,11 @@ namespace std {
     // note: some members are guessed,
     // some are temporary (assuming rounding style, traps etc.)
     // and some are undefined
-    template<int Digits, class Archetype>
-    struct numeric_limits<sg14::elastic_integer<Digits, Archetype>> : numeric_limits<Archetype> {
+    template<int Digits, class Narrowest>
+    struct numeric_limits<sg14::elastic_integer<Digits, Narrowest>> : numeric_limits<Narrowest> {
         // elastic integer-specific helpers
-        using _archetype_numeric_limits = numeric_limits<Archetype>;
-        using _value_type = sg14::elastic_integer<Digits, Archetype>;
+        using _narrowest_numeric_limits = numeric_limits<Narrowest>;
+        using _value_type = sg14::elastic_integer<Digits, Narrowest>;
         using _rep = typename _value_type::rep;
         using _rep_numeric_limits = numeric_limits<_rep>;
 

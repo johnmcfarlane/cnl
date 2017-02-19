@@ -25,12 +25,12 @@ namespace sg14 {
     ///
     /// \tparam IntegerDigits the number of integer digits that can be stored
     /// \tparam FractionalDigits the number of fractional digits that can be stored
-    /// \tparam Archetype the kind of integer type to use to represent values
+    /// \tparam Narrowest the most narrow integer type to use to represent values
     ///
     /// \sa elastic_integer
 
-    template<int IntegerDigits, int FractionalDigits = 0, class Archetype = signed>
-    using elastic_fixed_point = fixed_point<elastic_integer<IntegerDigits+FractionalDigits, Archetype>, -FractionalDigits>;
+    template<int IntegerDigits, int FractionalDigits = 0, class Narrowest = signed>
+    using elastic_fixed_point = fixed_point<elastic_integer<IntegerDigits+FractionalDigits, Narrowest>, -FractionalDigits>;
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
@@ -38,7 +38,8 @@ namespace sg14 {
 
     /// \brief generate an \ref sg14::elastic_fixed_point object of given value
     ///
-    /// \tparam Archetype the archetype of the resultant \ref sg14::elastic_fixed_point object
+    /// \tparam Narrowest the narrowest type to use as storage
+    /// in the resultant \ref sg14::elastic_fixed_point object
     /// \tparam Integral the type of Value
     /// \tparam Value the integer number to be represented
     ///
@@ -52,7 +53,7 @@ namespace sg14 {
     /// \snippet snippets.cpp define an int-sized object using make_elastic_fixed_point and const_integer
 
     template<
-            typename Archetype = int,
+            typename Narrowest = int,
             typename Integral = int,
             Integral Value = 0>
     constexpr auto make_elastic_fixed_point(
@@ -60,7 +61,7 @@ namespace sg14 {
     -> elastic_fixed_point<
             _const_integer_impl::num_integer_bits(Value),
             -_const_integer_impl::num_integer_zeros(Value),
-             Archetype>
+            Narrowest>
     {
         return Value;
     }
@@ -70,7 +71,7 @@ namespace sg14 {
     // sg14::make_elastic_fixed_point
 
     ///
-    /// \tparam Archetype the archetype of the resultant \ref sg14::elastic_fixed_point object
+    /// \tparam Narrowest the most narrow storage type of the resultant \ref sg14::elastic_fixed_point object
     /// \tparam Integral the type of \ref value
     ///
     /// \note The return type is guaranteed to be no larger than is necessary to represent the value.
@@ -81,9 +82,9 @@ namespace sg14 {
     /// \snippet snippets.cpp define a byte-sized object using \ref make_elastic_fixed_point and \ref _c
 
     /// \brief generate an \ref sg14::elastic_fixed_point object of given value
-    template<class Archetype = int, class Integral = int>
+    template<class Narrowest = int, class Integral = int>
     constexpr auto make_elastic_fixed_point(Integral value)
-    -> elastic_fixed_point<std::numeric_limits<Integral>::digits, 0, Archetype> {
+    -> elastic_fixed_point<std::numeric_limits<Integral>::digits, 0, Narrowest> {
         return {value};
     }
 
