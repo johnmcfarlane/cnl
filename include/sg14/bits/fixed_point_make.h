@@ -25,10 +25,10 @@ namespace sg14 {
     ///
     /// \tparam IntegerDigits specifies minimum value of @ref fixed_point::integer_digits
     /// \tparam FractionalDigits specifies the exact value of @ref fixed_point::fractional_digits
-    /// \tparam Archetype hints at the type of @ref fixed_point::rep
+    /// \tparam Narrowest hints at the type of @ref fixed_point::rep
     ///
-    /// \remarks The signage of \a Archetype specifies signage of the resultant fixed-point type.
-    /// \remarks Typical choices for \a Archetype, `signed` and `unsigned`,
+    /// \remarks The signage of \a Narrowest specifies signage of the resultant fixed-point type.
+    /// \remarks Typical choices for \a Narrowest, `signed` and `unsigned`,
     /// result in a type that uses built-in integers for \a fixed_point::rep.
     /// \remarks Resultant type is signed by default.
     ///
@@ -38,21 +38,20 @@ namespace sg14 {
     /// \snippet snippets.cpp use make_fixed
     ///
     /// \sa make_ufixed
-    template<int IntegerDigits, int FractionalDigits = 0, class Archetype = signed>
+    template<int IntegerDigits, int FractionalDigits = 0, class Narrowest = signed>
     using make_fixed = fixed_point<
-            set_width_t<Archetype, IntegerDigits+FractionalDigits+std::numeric_limits<Archetype>::is_signed>,
+            set_width_t<Narrowest, IntegerDigits+FractionalDigits+std::numeric_limits<Narrowest>::is_signed>,
             -FractionalDigits>;
 
     /// \brief specializes \ref fixed_point with the given number of integer and fractional digits; produces an unsigned type
     /// \headerfile sg14/fixed_point
     ///
-    ///
     /// \sa make_fixed
-    template<int IntegerDigits, int FractionalDigits = 0, class Archetype = unsigned>
+    template<int IntegerDigits, int FractionalDigits = 0, class Narrowest = unsigned>
     using make_ufixed = make_fixed<
             IntegerDigits,
             FractionalDigits,
-            typename make_unsigned<Archetype>::type>;
+            typename make_unsigned<Narrowest>::type>;
 }
 
 #endif	// SG14_MAKE_FIXED_H

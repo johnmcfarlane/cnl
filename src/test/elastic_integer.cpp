@@ -45,7 +45,7 @@ namespace {
     template<typename ElasticInteger, long long Lowest, long long Min, long long Max>
     struct elastic_integer_test {
         using value_type = ElasticInteger;
-        using archetype = typename ElasticInteger::archetype;
+        using narrowest = typename ElasticInteger::narrowest;
 
         static constexpr value_type lowest{Lowest};
         static constexpr value_type min{Min};
@@ -56,14 +56,14 @@ namespace {
 
         static constexpr int width = value_type::width;
         static constexpr int digits = value_type::digits;
-        static constexpr bool is_signed = std::numeric_limits<archetype>::is_signed;
+        static constexpr bool is_signed = std::numeric_limits<narrowest>::is_signed;
         static_assert(width==digits+is_signed, "some of our bits are missing");
 
         ////////////////////////////////////////////////////////////////////////////////
         // type traits
 
         static_assert(is_signed==std::numeric_limits<typename value_type::rep>::is_signed,
-                "signage of archetype and rep should be the same");
+                "signage of narrowest and rep should be the same");
 
         ////////////////////////////////////////////////////////////////////////////////
         // constructors
@@ -80,7 +80,7 @@ namespace {
 
         static constexpr auto zero_squared = zero*zero;
         using zero_squared_type = decltype(zero_squared);
-        using zero_squared_archetype = typename zero_squared_type::archetype;
+        using zero_squared_narrowest = typename zero_squared_type::narrowest;
         static_assert(
                 std::numeric_limits<decltype(zero)>::is_signed==std::numeric_limits<decltype(zero*zero)>::is_signed,
                 "elastic_integer arithmetic test failed");

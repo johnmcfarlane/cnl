@@ -139,7 +139,7 @@ void boost_example()
     using namespace boost::multiprecision;
 
     // Define an unsigned type with 400 integer digits and 0 fractional digits
-    // and use boost::multiprecision::uint128_t as the archetype.
+    // and use boost::multiprecision::uint128_t as the source type.
     using big_number = make_ufixed<400, 0, uint128_t>;
 
     // a googol is 10^100
@@ -191,8 +191,8 @@ void elastic_example1()
 }
 
 // Such a type can be used to specialize fixed_point.
-template<int IntegerDigits, int FractionalDigits, typename Archetype>
-using elastic_fixed_point = fixed_point<elastic_integer<IntegerDigits+FractionalDigits, Archetype>, -FractionalDigits>;
+template<int IntegerDigits, int FractionalDigits, typename Narrowest>
+using elastic_fixed_point = fixed_point<elastic_integer<IntegerDigits+FractionalDigits, Narrowest>, -FractionalDigits>;
 
 void elastic_example2()
 {

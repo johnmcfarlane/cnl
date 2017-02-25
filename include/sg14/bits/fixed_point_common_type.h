@@ -55,25 +55,7 @@ namespace std {
     ////////////////////////////////////////////////////////////////////////////////
     // std::common_type<> specializations related to sg14::sg14::fixed_point<>
 
-    /// \brief Produce a fixed-point type with the given number of integer and fractional digits.
-    /// \headerfile sg14/fixed_point
-    ///
-    /// \tparam IntegerDigits specifies minimum value of @ref sg14::fixed_point::integer_digits
-    /// \tparam FractionalDigits specifies the exact value of @ref sg14::fixed_point::fractional_digits
-    /// \tparam Archetype hints at the type of @ref sg14::fixed_point::rep
-    ///
-    /// \remarks The signage of \a Archetype specifies signage of the resultant fixed-point type.
-    /// \remarks Typical choices for \a Archetype, `signed` and `unsigned`,
-    /// result in a type that uses built-in integers for \a fixed_point::rep.
-    /// \remarks Resultant type is signed by default.
-    ///
-    /// \par Example:
-    ///
-    /// To generate a fixed-point type with a sign bit, 8 fractional bits and at least 7 integer bits:
-    /// \snippet snippets.cpp use make_fixed
-    ///
-    /// \sa make_ufixed
-
+    // std::common_type<fixed_point<>>
     template<class Rep, int Exponent>
     struct common_type<sg14::fixed_point<Rep, Exponent>> {
         using type = sg14::fixed_point<

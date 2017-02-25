@@ -28,14 +28,14 @@ namespace sg14 {
 
     /// \brief provides width of numeric type
     ///
-    /// \tparam T given numeric type
+    /// \tparam Type given numeric type
     ///
-    /// \remarks If \c T is a fixed-point numeric type such as an integral type,
-    /// \c width<T>::value is the width of T in bits.
+    /// \remarks If \c Type is a fixed-point numeric type such as an integral type,
+    /// \c width<Type>::value is the width of Type in bits.
     /// \remarks The width is defined as the number of digits including any sign bit.
     /// \remarks The template may be specialized for custom types.
 
-    template<class T>
+    template<class Type>
     struct width;
 
     template<>
@@ -90,8 +90,8 @@ namespace sg14 {
     struct width<long double> : std::integral_constant<_width_type, sizeof(long double)*CHAR_BIT> {
     };
 
-	template<class T>
-    struct width : width<typename std::remove_cv<T>::type> {};
+	template<class Type>
+    struct width : width<typename std::remove_cv<Type>::type> {};
 
     namespace _type_traits_impl {
         ////////////////////////////////////////////////////////////////////////////////
@@ -155,19 +155,19 @@ namespace sg14 {
 
     /// \brief provides width of numeric type
     ///
-    /// \tparam T given numeric type
+    /// \tparam Type given numeric type
     ///
     /// \remarks The width is defined as the number of digits including any sign bit.
 
-    template<class T>
-    constexpr unsigned width_v = width<T>::value;
+    template<class Type>
+    constexpr unsigned width_v = width<Type>::value;
 #endif
 
     /// resizes a type;
     /// can be specialized for any type for which resizing that type makes sense
     ///
     /// \sa set_width_t
-    template<class Archetype, _width_type MinNumBits>
+    template<class Type, _width_type MinNumBits>
     struct set_width;
 
     // sg14::set_width specialized for char/wchar_t
@@ -248,7 +248,7 @@ namespace sg14 {
 
     /// \brief resizes a type
     ///
-    /// \tparam Archetype the type to resize
+    /// \tparam Type the type to resize
     /// \tparam MinNumBits the desired width in bits
     ///
     /// \par Examples
@@ -261,8 +261,8 @@ namespace sg14 {
     ///
     /// To resize a signed, 1-byte fixed-point type to a fixed-point type of at least 3 bytes:
     /// \snippet snippets.cpp use set_width 3
-    template<class Archetype, _width_type MinNumBits>
-    using set_width_t = typename set_width<Archetype, MinNumBits>::type;
+    template<class Type, _width_type MinNumBits>
+    using set_width_t = typename set_width<Type, MinNumBits>::type;
 
     ////////////////////////////////////////////////////////////////////////////////
     // Clang/GCC hacks to get 128-bit integers working with fixed_point

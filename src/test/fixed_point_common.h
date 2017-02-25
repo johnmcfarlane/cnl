@@ -56,14 +56,14 @@ using fixed_point = sg14::fixed_point<Rep, Exponent>;
 using sg14::_impl::shift_left;
 using sg14::_impl::fp::type::pow2;
 
-template<int IntegerDigits, int FractionalDigits = 0, class Archetype = test_signed>
-using make_fixed = sg14::make_fixed<IntegerDigits, FractionalDigits, Archetype>;
+template<int IntegerDigits, int FractionalDigits = 0, class Narrowest = test_signed>
+using make_fixed = sg14::make_fixed<IntegerDigits, FractionalDigits, Narrowest>;
 
-template<int IntegerDigits, int FractionalDigits = 0, class Archetype = test_unsigned>
-using make_ufixed = sg14::make_ufixed<IntegerDigits, FractionalDigits, Archetype>;
+template<int IntegerDigits, int FractionalDigits = 0, class Narrowest = test_unsigned>
+using make_ufixed = sg14::make_ufixed<IntegerDigits, FractionalDigits, Narrowest>;
 
-template<class Archetype, sg14::_width_type MinNumBits>
-using set_width_t = sg14::set_width_t<Archetype, MinNumBits>;
+template<class Type, sg14::_width_type MinNumBits>
+using set_width_t = sg14::set_width_t<Type, MinNumBits>;
 
 using sg14::divide;
 using sg14::multiply;
