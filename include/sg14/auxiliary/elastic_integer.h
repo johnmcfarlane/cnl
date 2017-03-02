@@ -141,6 +141,19 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // bitwise operators
 
+    // operator~
+    template<int RhsDigits, class RhsNarrowest>
+    constexpr auto operator~(const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
+    -> elastic_integer<RhsDigits, RhsNarrowest>
+    {
+        using elastic_integer = elastic_integer<RhsDigits, RhsNarrowest>;
+        using rep = typename elastic_integer::rep;
+        return elastic_integer::from_data(
+            static_cast<rep>(
+                rhs.data()
+                ^ ((static_cast<rep>(~0)) >> (std::numeric_limits<rep>::digits - RhsDigits))));
+    }
+
     // operator<<
     template<int LhsDigits, class LhsNarrowest, class Rhs>
     constexpr auto operator<<(const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const Rhs& rhs)

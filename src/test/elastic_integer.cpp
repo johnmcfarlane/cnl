@@ -41,6 +41,14 @@ namespace {
                       "sg14::elastic_integer test failed");
     }
 
+    namespace test_bitwise_not {
+        static_assert(~elastic_integer<12, std::uint16_t>{0}==0xFFF, "sg14::elastic_integer test failed");
+        static_assert(~elastic_integer<12, int>{0x050}==~0x50, "sg14::elastic_integer test failed");
+        static_assert(~elastic_integer<12, unsigned>{0}==0xFFFU, "sg14::elastic_integer test failed");
+        static_assert(~elastic_integer<7, std::int8_t>{0x5a}==~0x5a, "sg14::elastic_integer test failed");
+        static_assert(~elastic_integer<50, std::int64_t>{0x987654321LL}==~0x987654321LL, "sg14::elastic_integer test failed");
+    }
+
     // parameterized tests
     template<typename ElasticInteger, long long Lowest, long long Min, long long Max>
     struct elastic_integer_test {
