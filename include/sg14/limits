@@ -18,7 +18,9 @@
 #include <cstdint>
 #include <limits>
 
-#if defined(SG14_INT128_ENABLED)
+#define SG14_NUMERIC_LIMITS_128_PROVIDED (defined(__GNUG__) && (__cplusplus <= 201402L))
+
+#if defined(SG14_INT128_ENABLED) && !SG14_NUMERIC_LIMITS_128_PROVIDED
 
 namespace std {
     template<>

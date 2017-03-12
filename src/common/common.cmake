@@ -10,8 +10,8 @@ include(ExternalProject)
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
   set(MISC_FLAGS "/W4 /WX /wd4309 /errorReport:prompt /nologo")
 
-  set(CPP14_ENABLED_FLAGS "")
-  set(CPP14_DISABLED_FLAGS "")
+  # no tested
+  set(CPP17_ENABLED_FLAGS "/std:c++latest")
 
   set(EXCEPTION_ENABLED_FLAGS "/EHsc")
   set(EXCEPTION_DISABLED_FLAGS "-DBOOST_NO_EXCEPTIONS -DBOOST_NO_RTTI")
@@ -25,8 +25,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
   set(MISC_FLAGS "-pthread -Wall -Wextra -Wfatal-errors -Werror")
 
-  set(CPP14_ENABLED_FLAGS "-std=c++1y")
-  set(CPP14_DISABLED_FLAGS "-std=c++11")
+  set(CPP17_ENABLED_FLAGS "-std=c++17")
 
   set(EXCEPTION_ENABLED_FLAGS "-fexceptions -frtti")
   set(EXCEPTION_DISABLED_FLAGS "-DBOOST_NO_EXCEPTIONS -DBOOST_NO_RTTI -fno-exceptions -fno-rtti")
@@ -40,12 +39,12 @@ else ()
   message(FATAL_ERROR "unrecognized compiler: ${CMAKE_CXX_COMPILER_ID}")
 endif ()
 
-set(CPP14 ON CACHE BOOL "compile with C++14 compatability enabled")
-if (CPP14)
-    set(CPP14_FLAGS "${CPP14_ENABLED_FLAGS}")
-else (CPP14)
-    set(CPP14_FLAGS "${CPP14_DISABLED_FLAGS}")
-endif (CPP14)
+set(STD 14 CACHE BOOL "version of C++ standard: 11, 14 or 17 (experimental)")
+if (${STD} STREQUAL "17")
+    set(STD_FLAGS "${CPP17_ENABLED_FLAGS}")
+else ()
+    set(CMAKE_CXX_STANDARD ${STD})
+endif ()
 
 set(EXCEPTIONS ON CACHE BOOL "compile with exceptions enabled")
 if (EXCEPTIONS)
@@ -68,7 +67,7 @@ else (PROFILE)
     set(PROFILE_FLAGS "${PROFILE_DISABLED_FLAGS}")
 endif (PROFILE)
 
-set(COMMON_CXX_FLAGS "${MISC_FLAGS} ${CPP14_FLAGS} ${EXCEPTION_FLAGS} ${INT128_FLAGS} ${PROFILE_FLAGS}")
+set(COMMON_CXX_FLAGS "${MISC_FLAGS} ${STD_FLAGS} ${EXCEPTION_FLAGS} ${INT128_FLAGS} ${PROFILE_FLAGS}")
 
 include_directories("${CMAKE_CURRENT_LIST_DIR}/.")
 
