@@ -379,3 +379,48 @@ static_assert(is_same<make_unsigned<saturated_integer<int64_t>>::type, saturated
         "sg14::make_unsigned<sg14::saturated_integer<>> test failed");
 static_assert(is_same<make_unsigned<saturated_integer<uint64_t>>::type, saturated_integer<uint64_t>>::value,
         "sg14::make_unsigned<sg14::saturated_integer<>> test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// common safe_integer characteristics
+
+namespace {
+    template<class Rep, class Overflow>
+    struct test_common {
+        using safe_integer = sg14::safe_integer<Rep, Overflow>;
+
+        static_assert(is_same<typename safe_integer::rep, Rep>::value, "sg14::safe_integer test failed");
+        static_assert(is_same<typename safe_integer::overflow, Overflow>::value, "sg14::safe_integer test failed");
+
+        static constexpr auto default_initialized = safe_integer{};
+        static_assert(default_initialized == 0, "sg14::safe_integer test failed");
+
+        static_assert(+default_initialized == default_initialized, "sg14::safe_integer test failed");
+        static_assert(-default_initialized == default_initialized, "sg14::safe_integer test failed");
+        static_assert(default_initialized+default_initialized == default_initialized, "sg14::safe_integer test failed");
+        static_assert(default_initialized-default_initialized == default_initialized, "sg14::safe_integer test failed");
+        static_assert(default_initialized*default_initialized == default_initialized, "sg14::safe_integer test failed");
+        static_assert(default_initialized/1 == default_initialized, "sg14::safe_integer test failed");
+    };
+
+    template<class Rep>
+    struct test_common_for_rep
+            : test_common<Rep, sg14::native_overflow_policy>
+#if defined(SG14_EXCEPTIONS_ENABLED)
+            , test_common<Rep, sg14::throwing_overflow_policy>
+#endif
+            , test_common<Rep, sg14::saturated_overflow_policy> {
+    };
+
+    template struct test_common_for_rep<bool>;
+    template struct test_common_for_rep<char>;
+    template struct test_common_for_rep<unsigned char>;
+    template struct test_common_for_rep<signed char>;
+    template struct test_common_for_rep<unsigned short>;
+    template struct test_common_for_rep<signed short>;
+    template struct test_common_for_rep<unsigned>;
+    template struct test_common_for_rep<signed>;
+    template struct test_common_for_rep<unsigned long>;
+    template struct test_common_for_rep<signed long>;
+    template struct test_common_for_rep<unsigned long long>;
+    template struct test_common_for_rep<signed long long>;
+}
