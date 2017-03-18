@@ -13,12 +13,64 @@
 #if ! defined(SG14_GODBOLT_ORG)
 #include <sg14/auxiliary/const_integer.h>
 #include <sg14/bits/common.h>
+#include <sg14/bits/number_base.h>
 #include <sg14/cstdint>
 #include <sg14/limits>
 #endif
 
 /// study group 14 of the C++ working group
 namespace sg14 {
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // forward-declaration
+
+    template<int Digits, class Narrowest>
+    class elastic_integer;
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // traits
+
+    template<int Digits, class Narrowest>
+    struct make_signed<elastic_integer<Digits, Narrowest>> {
+        using type = elastic_integer<Digits, typename make_signed<Narrowest>::type>;
+    };
+
+    template<int Digits, class Narrowest>
+    struct make_unsigned<elastic_integer<Digits, Narrowest>> {
+        using type = elastic_integer<Digits, typename make_unsigned<Narrowest>::type>;
+    };
+
+    template<int Digits, class Narrowest>
+    struct width<elastic_integer<Digits, Narrowest>>
+            : std::integral_constant<_width_type, Digits+std::numeric_limits<Narrowest>::is_signed> {
+    };
+
+    template<int Digits, class Narrowest, _width_type MinNumBits>
+    struct set_width<elastic_integer<Digits, Narrowest>, MinNumBits> {
+        using type = elastic_integer<MinNumBits-std::numeric_limits<Narrowest>::is_signed, Narrowest>;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // implementation details
+
+    namespace _elastic_integer_impl {
+        template<int Digits, class Narrowest>
+        constexpr _width_type rep_width() noexcept
+        {
+            return _impl::max(
+                    sg14::width<Narrowest>::value,
+                    width<elastic_integer<Digits, Narrowest>>::value);
+        }
+
+        template<int Digits, class Narrowest>
+        using rep = set_width_t<Narrowest, rep_width<Digits, Narrowest>()>;
+
+        template<int Digits, class Narrowest>
+        using base = _impl::number_base<
+                elastic_integer<Digits, Narrowest>,
+                _elastic_integer_impl::rep<Digits, Narrowest>>;
+    }
+
     /// \brief literal integer type that encodes its width in bits within its type
     ///
     /// \tparam Digits a count of the number of digits needed to express the number
@@ -31,7 +83,8 @@ namespace sg14 {
     /// \sa elastic_fixed_point
 
     template<int Digits, class Narrowest = int>
-    class elastic_integer {
+    class elastic_integer : public _elastic_integer_impl::base<Digits, Narrowest> {
+        using _base = _elastic_integer_impl::base<Digits, Narrowest>;
     public:
         /// alias to template parameter, \a Digits
         static constexpr int digits = Digits;
@@ -39,40 +92,33 @@ namespace sg14 {
         /// alias to template parameter, \a Narrowest
         using narrowest = Narrowest;
 
-        /// width of value
-        static constexpr int width = digits+std::numeric_limits<narrowest>::is_signed;
-
-    private:
-        static constexpr int _min_width = sg14::width<narrowest>::value;
-        static constexpr int _rep_width = _impl::max(_min_width, width);
-    public:
         /// the actual type used to store the value; closely related to Narrowest but may be a different width
-        using rep = set_width_t<narrowest, _rep_width>;
+        using rep = typename _base::rep;
 
         /// common copy constructor
         constexpr elastic_integer(const elastic_integer& rhs)
-            : _r(rhs._r)
+                :_base(rhs)
         {
         }
 
         /// construct from integer type
         template<class Number, typename std::enable_if<std::numeric_limits<Number>::is_specialized, int>::type Dummy = 0>
         constexpr elastic_integer(Number n)
-            : _r(static_cast<rep>(n))
+                : _base(static_cast<rep>(n))
         {
         }
 
         /// constructor taking an elastic_integer type
         template<int FromWidth, class FromNarrowest>
         explicit constexpr elastic_integer(const elastic_integer<FromWidth, FromNarrowest>& rhs)
-                :_r(rhs)
+                :_base(rhs)
         {
         }
 
         /// constructor taking an integral constant
         template<typename Integral, Integral Value, int Exponent>
         constexpr elastic_integer(const_integer<Integral, Value, Digits, Exponent>)
-            : _r(Value)
+                : _base(Value)
         {
         }
 
@@ -80,7 +126,7 @@ namespace sg14 {
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         elastic_integer& operator=(S s)
         {
-            _r = floating_point_to_rep(s);
+            _base::operator=(floating_point_to_rep(s));
             return *this;
         }
 
@@ -88,27 +134,27 @@ namespace sg14 {
         template<class S>
         explicit constexpr operator S() const
         {
-            return static_cast<S>(_r);
+            return static_cast<S>(to_rep(*this));
         }
-
-        /// returns internal representation of value
-        constexpr rep data() const
-        {
-            return _r;
-        }
-
-        /// creates an instance given the underlying representation value
-        static constexpr elastic_integer from_data(rep r)
-        {
-            return elastic_integer(r);
-        }
-
-    private:
-        ////////////////////////////////////////////////////////////////////////////////
-        // variables
-
-        rep _r;
     };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::make_elastic_integer
+
+    template<
+            class Integral, Integral Value>
+    constexpr auto make_elastic_integer(const_integer<Integral, Value>)
+    -> elastic_integer<_const_integer_impl::num_integer_bits(Value)>
+    {
+        return elastic_integer<_const_integer_impl::num_integer_bits(Value)>{Value};
+    }
+
+    template<class Narrowest = int, class Integral, typename std::enable_if<!is_const_integer<Integral>::value, int>::type Dummy = 0>
+    constexpr auto make_elastic_integer(const Integral& value)
+    -> decltype(elastic_integer<std::numeric_limits<Integral>::digits, Narrowest>{value})
+    {
+        return elastic_integer<std::numeric_limits<Integral>::digits, Narrowest>{value};
+    }
 
     namespace _elastic_integer_impl {
         ////////////////////////////////////////////////////////////////////////////////
@@ -337,6 +383,22 @@ namespace sg14 {
         return _elastic_integer_impl::operate<_impl::multiply_tag>(lhs, rhs);
     }
 
+    template<int LhsDigits, class LhsNarrowest, class Rhs, typename std::enable_if<!_elastic_integer_impl::is_elastic_integer<Rhs>::value, int>::type Dummy = 0>
+    constexpr auto
+    operator*(const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const Rhs& rhs)
+    -> decltype(lhs*make_elastic_integer(rhs))
+    {
+        return lhs*make_elastic_integer(rhs);
+    }
+
+    template<class Lhs, int RhsDigits, class RhsNarrowest, typename std::enable_if<!_elastic_integer_impl::is_elastic_integer<Lhs>::value, int>::type Dummy = 0>
+    constexpr auto
+    operator*(const Lhs& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
+    -> decltype(make_elastic_integer(lhs)*rhs)
+    {
+        return make_elastic_integer(lhs)*rhs;
+    }
+
     // operator/
     template<int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
     constexpr auto
@@ -357,29 +419,6 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // traits
-
-    template<int Digits, class Narrowest>
-    struct make_signed<elastic_integer<Digits, Narrowest>> {
-        using type = elastic_integer<Digits, typename make_signed<Narrowest>::type>;
-    };
-
-    template<int Digits, class Narrowest>
-    struct make_unsigned<elastic_integer<Digits, Narrowest>> {
-        using type = elastic_integer<Digits, typename make_unsigned<Narrowest>::type>;
-    };
-
-    template<int Digits, class Narrowest>
-    struct width<elastic_integer<Digits, Narrowest>>
-            : std::integral_constant<_width_type, elastic_integer<Digits, Narrowest>::width> {
-    };
-
-    template<int Digits, class Narrowest, _width_type MinNumBits>
-    struct set_width<elastic_integer<Digits, Narrowest>, MinNumBits> {
-        using type = elastic_integer<MinNumBits - std::numeric_limits<Narrowest>::is_signed, Narrowest>;
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
     // sg14::scale<elastic_integer>
 
     template<int Digits, class Narrowest>
@@ -390,16 +429,6 @@ namespace sg14 {
             return Integer{scale<typename Integer::rep>()(i.data(), base, exp)};
         }
     };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_elastic_integer
-
-    template<
-            class Integeral, Integeral Value>
-    constexpr auto make_elastic_integer(const_integer<Integeral, Value>)
-    -> elastic_integer<_const_integer_impl::num_integer_bits(Value)> {
-        return elastic_integer<_const_integer_impl::num_integer_bits(Value)>{Value};
-    }
 }
 
 namespace std {

@@ -14,6 +14,7 @@
 #include <sg14/cstdint>
 #include <sg14/limits>
 #include <sg14/auxiliary/const_integer.h>
+#include <sg14/bits/number_base.h>
 #endif
 
 /// study group 14 of the C++ working group
@@ -47,7 +48,9 @@ namespace sg14 {
     /// \snippet snippets.cpp define a fixed_point value
 
     template<class Rep, int Exponent>
-    class fixed_point {
+    class fixed_point
+            : public _impl::number_base<fixed_point<Rep, Exponent>, Rep> {
+        using _base = _impl::number_base<fixed_point<Rep, Exponent>, Rep>;
     public:
         ////////////////////////////////////////////////////////////////////////////////
         // types
@@ -79,7 +82,7 @@ namespace sg14 {
     private:
         // constructor taking representation explicitly using operator++(int)-style trick
         constexpr fixed_point(rep r, int)
-                :_r(r)
+                :_base(r)
         {
         }
 
@@ -88,13 +91,13 @@ namespace sg14 {
 #if defined(_MSC_VER)
         fixed_point() { }
 #else
-        constexpr fixed_point() { }
+        constexpr fixed_point() : _base() { }
 #endif
 
         /// constructor taking a fixed-point type
         template<class FromRep, int FromExponent>
         constexpr fixed_point(const fixed_point<FromRep, FromExponent>& rhs)
-                : _r(fixed_point_to_rep(rhs))
+                : _base(fixed_point_to_rep(rhs))
         {
         }
 
@@ -115,14 +118,14 @@ namespace sg14 {
         /// constructor taking an integral_constant type
         template<class Integral, Integral Value, int Digits>
         constexpr fixed_point(const_integer<Integral, Value, Exponent, Digits> ci)
-            : _r(ci << Exponent)
+            : _base(ci << Exponent)
         {
         }
 
         /// constructor taking a floating-point type
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         constexpr fixed_point(S s)
-                :_r(floating_point_to_rep(s))
+                :_base(floating_point_to_rep(s))
         {
         }
 
@@ -137,7 +140,7 @@ namespace sg14 {
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         fixed_point& operator=(S s)
         {
-            _r = floating_point_to_rep(s);
+            _base::operator=(floating_point_to_rep(s));
             return *this;
         }
 
@@ -145,7 +148,7 @@ namespace sg14 {
         template<class FromRep, int FromExponent>
         fixed_point& operator=(const fixed_point<FromRep, FromExponent>& rhs)
         {
-            _r = fixed_point_to_rep(rhs);
+            _base::operator=(fixed_point_to_rep(rhs));
             return *this;
         }
 
@@ -153,32 +156,14 @@ namespace sg14 {
         template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
         constexpr operator S() const
         {
-            return rep_to_integral<S>(_r);
+            return rep_to_integral<S>(_base::data());
         }
 
         /// returns value represented as floating-point
         template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
         explicit constexpr operator S() const
         {
-            return rep_to_floating_point<S>(_r);
-        }
-
-        /// returns non-zeroness represented as boolean
-        explicit constexpr operator bool() const
-        {
-            return _r!=0;
-        }
-
-        template<class Rhs>
-        fixed_point& operator*=(const Rhs& rhs);
-
-        template<class Rhs>
-        fixed_point& operator/=(const Rhs& rhs);
-
-        /// returns internal representation of value
-        constexpr rep const & data() const
-        {
-            return _r;
+            return rep_to_floating_point<S>(_base::data());
         }
 
         /// creates an instance given the underlying representation value
@@ -208,11 +193,6 @@ namespace sg14 {
 
         template<class FromRep, int FromExponent>
         static constexpr rep fixed_point_to_rep(const fixed_point<FromRep, FromExponent>& rhs);
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // variables
-
-        rep _r;
     };
 
     ////////////////////////////////////////////////////////////////////////////////

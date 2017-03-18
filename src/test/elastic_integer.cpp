@@ -62,7 +62,7 @@ namespace {
         ////////////////////////////////////////////////////////////////////////////////
         // members
 
-        static constexpr int width = value_type::width;
+        static constexpr int width = sg14::width<value_type>::value;
         static constexpr int digits = value_type::digits;
         static constexpr bool is_signed = std::numeric_limits<narrowest>::is_signed;
         static_assert(width==digits+is_signed, "some of our bits are missing");
