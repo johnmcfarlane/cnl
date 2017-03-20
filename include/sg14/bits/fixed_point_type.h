@@ -12,7 +12,6 @@
 
 #if ! defined(SG14_GODBOLT_ORG)
 #include <sg14/cstdint>
-#include <sg14/limits>
 #include <sg14/auxiliary/const_integer.h>
 #include <sg14/bits/number_base.h>
 #endif

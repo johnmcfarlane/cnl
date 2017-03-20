@@ -7,6 +7,7 @@
 #if !defined(SG14_number_base_H)
 #define SG14_number_base_H 1
 
+#include <limits>
 #include <type_traits>
 
 namespace sg14 {
@@ -248,6 +249,67 @@ namespace sg14 {
     -> Rep const& {
         return component;
     }
+}
+
+namespace std {
+    ////////////////////////////////////////////////////////////////////////////////
+    // std::numeric_limits for sg14::_impl::numeric_limits
+
+    template<class Derived, class Rep>
+    struct numeric_limits<sg14::_impl::number_base<Derived, Rep>>
+    : numeric_limits<Rep> {
+        // fixed-point-specific helpers
+        using _value_type = Derived;
+        using _rep = typename _value_type::rep;
+        using _rep_numeric_limits = numeric_limits<_rep>;
+
+        // standard members
+
+        static constexpr _value_type min() noexcept
+        {
+            return sg14::from_rep<_value_type>(_rep_numeric_limits::min());
+        }
+
+        static constexpr _value_type max() noexcept
+        {
+            return _value_type::from_data(_rep_numeric_limits::max());
+        }
+
+        static constexpr _value_type lowest() noexcept
+        {
+            return _value_type::from_data(_rep_numeric_limits::lowest());
+        }
+
+        static constexpr _value_type epsilon() noexcept
+        {
+            return _value_type::from_data(_rep_numeric_limits::round_error());
+        }
+
+        static constexpr _value_type round_error() noexcept
+        {
+            return static_cast<_value_type>(_rep_numeric_limits::round_error());
+        }
+
+        static constexpr _value_type infinity() noexcept
+        {
+            return static_cast<_value_type>(_rep_numeric_limits::infinity());
+        }
+
+        static constexpr _value_type quiet_NaN() noexcept
+        {
+            return static_cast<_value_type>(_rep_numeric_limits::quiet_NaN());
+        }
+
+        static constexpr _value_type signaling_NaN() noexcept
+        {
+            return static_cast<_value_type>(_rep_numeric_limits::signaling_NaN());
+        }
+
+        static constexpr _value_type denorm_min() noexcept
+        {
+            return static_cast<_value_type>(_rep_numeric_limits::denorm_min());
+        }
+    };
 }
 
 #endif
