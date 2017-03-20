@@ -176,35 +176,77 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::rep
+    // sg14::to_rep
 
-    template<class Rep, class Enable = void>
-    struct rep;
+    namespace _to_rep_impl {
+        template<class Rep, class Enable = void>
+        struct to_rep;
 
-    template<class Rep>
-    struct rep<Rep, typename std::enable_if<!_impl::is_number<Rep>::value>::type> {
-        constexpr const Rep& operator()(const Rep& component) const
-        {
-            static_assert(!_impl::is_number<Rep>::value, "");
-            static_assert(!_impl::is_number_base<Rep>::value, "");
-            static_assert(!_impl::is_number<typename std::decay<Rep>::type>::value, "");
-            static_assert(!_impl::is_number_base<typename std::decay<Rep>::type>::value, "");
-            return component;
-        }
-    };
+        template<class Rep>
+        struct to_rep<Rep, typename std::enable_if<!_impl::is_number<Rep>::value>::type> {
+            constexpr const Rep& operator()(const Rep& component) const
+            {
+                static_assert(!_impl::is_number<Rep>::value, "");
+                static_assert(!_impl::is_number_base<Rep>::value, "");
+                static_assert(!_impl::is_number<typename std::decay<Rep>::type>::value, "");
+                static_assert(!_impl::is_number_base<typename std::decay<Rep>::type>::value, "");
+                return component;
+            }
+        };
 
-    template<class Derived>
-    struct rep<Derived, typename std::enable_if<_impl::is_number<Derived>::value>::type> {
-        constexpr const typename Derived::rep& operator()(const Derived& component) const
-        {
-            return component.data();
-        }
-    };
+        template<class Derived>
+        struct to_rep<Derived, typename std::enable_if<_impl::is_number<Derived>::value>::type> {
+            constexpr const typename Derived::rep& operator()(const Derived& component) const
+            {
+                return component.data();
+            }
+        };
+    }
 
     template<class Component>
     constexpr auto to_rep(Component&& component)
-    -> decltype(rep<typename std::decay<Component>::type>()(component)) {
-        return rep<typename std::decay<Component>::type>()(component);
+    -> decltype(_to_rep_impl::to_rep<typename std::decay<Component>::type>()(component)) {
+        return _to_rep_impl::to_rep<typename std::decay<Component>::type>()(component);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::from_rep
+
+    namespace _from_rep_impl {
+        template<class Rep, class Enable = void>
+        struct from_rep;
+
+        template<class Rep>
+        struct from_rep<Rep, typename std::enable_if<!_impl::is_number<Rep>::value>::type> {
+            constexpr const Rep& operator()(const Rep& component) const
+            {
+                static_assert(!_impl::is_number<Rep>::value, "");
+                static_assert(!_impl::is_number_base<Rep>::value, "");
+                static_assert(!_impl::is_number<typename std::decay<Rep>::type>::value, "");
+                static_assert(!_impl::is_number_base<typename std::decay<Rep>::type>::value, "");
+                return component;
+            }
+        };
+
+        template<class Derived>
+        struct from_rep<Derived, typename std::enable_if<_impl::is_number<Derived>::value>::type> {
+            constexpr const Derived operator()(const typename Derived::rep& rep) const
+            {
+                return Derived::from_data(rep);
+            }
+        };
+    }
+
+    template<class Derived, class Rep>
+    constexpr auto from_rep(Rep const& rep)
+    -> decltype(_from_rep_impl::from_rep<Derived>()(rep)) {
+        return _from_rep_impl::from_rep<Derived>()(rep);
+    }
+
+    template<class Rep>
+    constexpr auto from_rep(Rep const& component)
+    -> Rep const& {
+        return component;
     }
 }
 
