@@ -455,7 +455,8 @@ namespace std {
     // some are temporary (assuming rounding style, traps etc.)
     // and some are undefined
     template<int Digits, class Narrowest>
-    struct numeric_limits<sg14::elastic_integer<Digits, Narrowest>> : numeric_limits<Narrowest> {
+    struct numeric_limits<sg14::elastic_integer<Digits, Narrowest>>
+            : numeric_limits<sg14::_elastic_integer_impl::base<Digits, Narrowest>> {
         // elastic integer-specific helpers
         using _narrowest_numeric_limits = numeric_limits<Narrowest>;
         using _value_type = sg14::elastic_integer<Digits, Narrowest>;
