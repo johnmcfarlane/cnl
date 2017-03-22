@@ -888,9 +888,9 @@ struct FixedPointTesterOutsize {
     // simply assignment to and from underlying representation
     using numeric_limits = std::numeric_limits<fixed_point>;
     static constexpr fixed_point min = fixed_point::from_data(rep(1));
+#if !defined(_MSC_VER)
     static_assert(min.data() == rep(1), "all Rep types should be able to store the number 1!");
 
-#if !defined(_MSC_VER)
     // unary common_type_t
     static_assert(is_same<
                     sg14::_impl::common_type_t<fixed_point>,

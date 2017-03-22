@@ -395,7 +395,9 @@ namespace {
         static_assert(default_initialized == 0, "sg14::safe_integer test failed");
 
         static_assert(+default_initialized == default_initialized, "sg14::safe_integer test failed");
+#if !defined(_MSC_VER)
         static_assert(-default_initialized == default_initialized, "sg14::safe_integer test failed");
+#endif
         static_assert(default_initialized+default_initialized == default_initialized, "sg14::safe_integer test failed");
         static_assert(default_initialized-default_initialized == default_initialized, "sg14::safe_integer test failed");
         static_assert(default_initialized*default_initialized == default_initialized, "sg14::safe_integer test failed");
@@ -411,7 +413,6 @@ namespace {
             , test_common<Rep, sg14::saturated_overflow_policy> {
     };
 
-    template struct test_common_for_rep<bool>;
     template struct test_common_for_rep<char>;
     template struct test_common_for_rep<unsigned char>;
     template struct test_common_for_rep<signed char>;

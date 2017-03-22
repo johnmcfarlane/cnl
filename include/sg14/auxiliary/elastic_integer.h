@@ -118,8 +118,10 @@ namespace sg14 {
         /// constructor taking an integral constant
         template<typename Integral, Integral Value, int Exponent>
         constexpr elastic_integer(const_integer<Integral, Value, Digits, Exponent>)
-                : _base(Value)
+                : _base(static_cast<rep>(Value))
         {
+            static_assert(Value <= std::numeric_limits<rep>::max(), "initialization by out-of-range value");
+            static_assert(Value >= std::numeric_limits<rep>::lowest(), "initialization by out-of-range value");
         }
 
         /// copy assignment operator taking a floating-point type
