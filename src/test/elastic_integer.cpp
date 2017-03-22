@@ -18,6 +18,7 @@ namespace {
 
     // simple one-off tests
     static_assert(identical(-elastic_integer<1, unsigned>{1}, elastic_integer<1, signed>{-1}), "elastic_integer test failed");
+    static_assert(sg14::width<elastic_integer<7, int>>::value == 8, "elastic_integer test failed");
 
     namespace test_is_elastic_integer {
         using sg14::_elastic_integer_impl::is_elastic_integer;
@@ -46,7 +47,19 @@ namespace {
         static_assert(~elastic_integer<12, int>{0x050}==~0x50, "sg14::elastic_integer test failed");
         static_assert(~elastic_integer<12, unsigned>{0}==0xFFFU, "sg14::elastic_integer test failed");
         static_assert(~elastic_integer<7, std::int8_t>{0x5a}==~0x5a, "sg14::elastic_integer test failed");
-        static_assert(~elastic_integer<50, std::int64_t>{0x987654321LL}==~0x987654321LL, "sg14::elastic_integer test failed");
+        static_assert(~elastic_integer<50, std::int64_t>{INT64_C(0x987654321)}==~INT64_C(0x987654321), "sg14::elastic_integer test failed");
+    }
+
+    namespace test_multiply {
+        using sg14::make_elastic_integer;
+        static_assert(identical(elastic_integer<0>{0} * INT64_C(0), sg14::elastic_integer<63, int>{0}),
+                      "sg14::elastic_integer test failed");
+        static_assert(identical(make_elastic_integer(177_c), sg14::elastic_integer<8, int>{177}),
+                      "sg14::elastic_integer test failed");
+#if defined(SG14_INT128_ENABLED)
+        static_assert(identical(make_elastic_integer(177_c) * INT64_C(9218), sg14::elastic_integer<71, int>{1631586}),
+                      "sg14::elastic_integer test failed");
+#endif
     }
 
     // parameterized tests
@@ -62,7 +75,7 @@ namespace {
         ////////////////////////////////////////////////////////////////////////////////
         // members
 
-        static constexpr int width = value_type::width;
+        static constexpr int width = sg14::width<value_type>::value;
         static constexpr int digits = value_type::digits;
         static constexpr bool is_signed = std::numeric_limits<narrowest>::is_signed;
         static_assert(width==digits+is_signed, "some of our bits are missing");
@@ -114,7 +127,7 @@ namespace {
     struct elastic_integer_test<elastic_integer<0, int>, -1, 1, 0>;
 #if defined(SG14_INT128_ENABLED)
     template
-    struct elastic_integer_test<elastic_integer<39, unsigned int>, 0, 1, (1LL << 39)-1>;
+    struct elastic_integer_test<elastic_integer<39, unsigned int>, 0, 1, (INT64_C(1) << 39)-1>;
 #endif
 
     // user-defined literal initialization

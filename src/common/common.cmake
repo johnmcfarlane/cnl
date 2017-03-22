@@ -39,7 +39,7 @@ else ()
   message(FATAL_ERROR "unrecognized compiler: ${CMAKE_CXX_COMPILER_ID}")
 endif ()
 
-set(STD 14 CACHE BOOL "version of C++ standard: 11, 14 or 17 (experimental)")
+set(STD 14 CACHE STRING "version of C++ standard: 11, 14 or 17 (experimental)")
 if (${STD} STREQUAL "17")
     set(STD_FLAGS "${CPP17_ENABLED_FLAGS}")
 else ()

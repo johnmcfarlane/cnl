@@ -62,13 +62,6 @@ namespace sg14 {
     -> decltype(std::declval<LhsRep>() OP std::declval<Rhs>()) { \
         return lhs.data() OP rhs; }
 
-#define SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(OP, BIN_OP) \
-    template <class Rhs> \
-    auto operator OP (const Rhs& rhs) \
-    -> safe_integer& { \
-        _r = static_cast<rep>(_r BIN_OP rhs); \
-        return *this; }
-
 #define SG14_INTEGER_BIT_SHIFT_DEFINE(OP) \
     template <class LhsRep, class LhsOverflowPolicy, class RhsRep, class RhsOverflowPolicy> \
     constexpr auto operator OP (const safe_integer<LhsRep, LhsOverflowPolicy>& lhs, const safe_integer<RhsRep, RhsOverflowPolicy>& rhs) \
@@ -307,7 +300,8 @@ namespace sg14 {
     // an integer which can be customized to react in different ways to overflow;
     // currently doesn't correctly detect overflow from operators
     template<typename Rep = int, typename OverflowPolicy = throwing_overflow_policy>
-    class safe_integer {
+    class safe_integer : public _impl::number_base<safe_integer<Rep, OverflowPolicy>, Rep> {
+        using _base = _impl::number_base<safe_integer<Rep, OverflowPolicy>, Rep>;
     public:
         ////////////////////////////////////////////////////////////////////////////////
         // types
@@ -318,57 +312,35 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // functions
 
+        constexpr safe_integer() = default;
+
         constexpr safe_integer(const safe_integer& rhs)
-            :_r(rhs._r)
+                :_base(rhs)
         {
         }
 
         constexpr safe_integer(const rep& rhs)
-            :_r(rhs)
+                :_base(rhs)
         {
         }
 
         template<class RhsRep, typename std::enable_if<!_integer_impl::is_safe_integer<RhsRep>::value, int>::type dummy = 0>
         constexpr explicit safe_integer(const RhsRep& rhs)
-                :_r(OverflowPolicy{}.template convert<rep>(rhs))
+                :_base(OverflowPolicy{}.template convert<rep>(rhs))
         {
         }
 
         template<class Rhs, typename std::enable_if<_integer_impl::is_safe_integer<Rhs>::value, int>::type dummy = 0>
         constexpr explicit safe_integer(const Rhs& rhs)
-                :_r(OverflowPolicy{}.template convert<rep>(rhs.data()))
+                :_base(OverflowPolicy{}.template convert<rep>(rhs.data()))
         {
         }
 
         template<typename LhsRep>
         constexpr explicit operator LhsRep() const
         {
-            return static_cast<LhsRep>(_r);
+            return static_cast<LhsRep>(to_rep(*this));
         }
-
-        constexpr friend safe_integer operator-(const safe_integer& rhs)
-        {
-            return safe_integer(-rhs._r);
-        }
-
-        SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(+=, +);
-
-        SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(-=, -);
-
-        SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(*=, *);
-
-        SG14_INTEGER_COMPOUND_ASSIGN_DEFINE(/=, /);
-
-        constexpr rep const& data() const
-        {
-            return _r;
-        }
-
-    private:
-        ////////////////////////////////////////////////////////////////////////////////
-        // variables
-
-        rep _r;
     };
 
     SG14_SAFE_INTEGER_COMPARISON_DEFINE(==);

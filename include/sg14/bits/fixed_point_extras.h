@@ -225,7 +225,8 @@ namespace std {
     // some are temporary (assuming rounding style, traps etc.)
     // and some are undefined
     template<class Rep, int Exponent>
-    struct numeric_limits<sg14::fixed_point<Rep, Exponent>> : public std::numeric_limits<Rep> {
+    struct numeric_limits<sg14::fixed_point<Rep, Exponent>>
+            : std::numeric_limits<sg14::_impl::number_base<sg14::fixed_point<Rep, Exponent>, Rep>> {
         // fixed-point-specific helpers
         using _value_type = sg14::fixed_point<Rep, Exponent>;
         using _rep = typename _value_type::rep;
@@ -235,7 +236,7 @@ namespace std {
 
         static constexpr _value_type min() noexcept
         {
-            return _value_type::from_data(sg14::_impl::min(_rep{1}, _rep_numeric_limits::max()));
+            return _value_type::from_data(_rep{1});
         }
 
         static constexpr _value_type max() noexcept
@@ -252,32 +253,32 @@ namespace std {
 
         static constexpr _value_type epsilon() noexcept
         {
-            return _value_type::from_data(1);
+            return _value_type::from_data(_rep{1});
         }
 
         static constexpr _value_type round_error() noexcept
         {
-            return static_cast<_value_type>(0);
+            return static_cast<_value_type>(.5);
         }
 
         static constexpr _value_type infinity() noexcept
         {
-            return static_cast<_value_type>(0);
+            return _value_type::from_data(_rep{0});
         }
 
         static constexpr _value_type quiet_NaN() noexcept
         {
-            return static_cast<_value_type>(0);
+            return _value_type::from_data(_rep{0});
         }
 
         static constexpr _value_type signaling_NaN() noexcept
         {
-            return static_cast<_value_type>(0);
+            return _value_type::from_data(_rep{0});
         }
 
         static constexpr _value_type denorm_min() noexcept
         {
-            return static_cast<_value_type>(0);
+            return _value_type::from_data(_rep{1});
         }
     };
 }
