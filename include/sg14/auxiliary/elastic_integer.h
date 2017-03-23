@@ -229,30 +229,20 @@ namespace sg14 {
         return lhs.data() OP rhs.data(); \
     } \
  \
-    template<int LhsDigits, class LhsNarrowest, class RhsInteger> \
-    constexpr auto operator OP (const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const RhsInteger& rhs) \
-    -> typename std::enable_if<std::numeric_limits<RhsInteger>::is_integer, decltype(lhs.data() OP rhs)>::type \
+    template< \
+        int LhsDigits, class LhsNarrowest, class Rhs, \
+        typename std::enable_if<std::numeric_limits<Rhs>::is_integer || std::is_floating_point<Rhs>::value, int>::type = 0> \
+    constexpr auto operator OP (const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const Rhs& rhs) \
+    -> decltype(lhs.data() OP rhs) \
     { \
         return lhs.data() OP rhs; \
     } \
  \
-    template<int LhsDigits, class LhsNarrowest, class RhsFloat> \
-    constexpr auto operator OP (const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const RhsFloat& rhs) \
-    -> typename std::enable_if<std::is_floating_point<RhsFloat>::value, decltype(lhs.data() OP rhs)>::type \
-    { \
-        return lhs.data() OP rhs; \
-    } \
- \
-    template<class LhsInteger, int RhsDigits, class RhsNarrowest> \
-    constexpr auto operator OP (const LhsInteger& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs) \
-    -> typename std::enable_if<std::numeric_limits<LhsInteger>::is_integer, decltype(lhs OP rhs.data())>::type \
-    { \
-        return lhs OP rhs.data(); \
-    } \
- \
-    template<class LhsFloat, int RhsDigits, class RhsNarrowest> \
-    constexpr auto operator OP (const LhsFloat& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs) \
-    -> typename std::enable_if<std::is_floating_point<LhsFloat>::value, decltype(lhs OP rhs.data())>::type \
+    template< \
+        class Lhs, int RhsDigits, class RhsNarrowest, \
+        typename std::enable_if<std::numeric_limits<Lhs>::is_integer || std::is_floating_point<Lhs>::value, unsigned>::type = 0> \
+    constexpr auto operator OP (const Lhs& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs) \
+    -> decltype(lhs OP rhs.data()) \
     { \
         return lhs OP rhs.data(); \
     }
