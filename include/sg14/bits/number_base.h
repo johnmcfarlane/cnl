@@ -73,56 +73,68 @@ namespace sg14 {
 
         // comparison
 
-        template<class Derived>
+        template<
+                class Derived,
+                typename = std::enable_if<_impl::is_number<Derived>::value>>
         constexpr auto operator==(
                 const _impl::number_base<Derived, typename Derived::rep>& lhs,
                 const _impl::number_base<Derived, typename Derived::rep>& rhs)
-        -> typename std::enable_if<_impl::is_number<Derived>::value, bool>::type
+        -> decltype(lhs.data()==rhs.data())
         {
             return lhs.data()==rhs.data();
         }
 
-        template<class Derived>
+        template<
+                class Derived,
+                typename = std::enable_if<_impl::is_number<Derived>::value>>
         constexpr auto operator!=(
                 const _impl::number_base<Derived, typename Derived::rep>& lhs,
                 const _impl::number_base<Derived, typename Derived::rep>& rhs)
-        -> typename std::enable_if<_impl::is_number<Derived>::value, bool>::type
+        -> decltype(lhs.data()!=rhs.data())
         {
             return lhs.data()!=rhs.data();
         }
 
-        template<class Derived>
+        template<
+                class Derived,
+                typename = std::enable_if<_impl::is_number<Derived>::value>>
         constexpr auto operator>(
                 const _impl::number_base<Derived, typename Derived::rep>& lhs,
                 const _impl::number_base<Derived, typename Derived::rep>& rhs)
-        -> typename std::enable_if<_impl::is_number<Derived>::value, bool>::type
+        -> decltype(lhs.data()>rhs.data())
         {
             return lhs.data()>rhs.data();
         }
 
-        template<class Derived>
+        template<
+                class Derived,
+                typename = std::enable_if<_impl::is_number<Derived>::value>>
         constexpr auto operator<(
                 const _impl::number_base<Derived, typename Derived::rep>& lhs,
                 const _impl::number_base<Derived, typename Derived::rep>& rhs)
-        -> typename std::enable_if<_impl::is_number<Derived>::value, bool>::type
+        -> decltype(lhs.data()<=rhs.data())
         {
             return lhs.data()<rhs.data();
         }
 
-        template<class Derived>
+        template<
+                class Derived,
+                typename = std::enable_if<_impl::is_number<Derived>::value>>
         constexpr auto operator>=(
                 const _impl::number_base<Derived, typename Derived::rep>& lhs,
                 const _impl::number_base<Derived, typename Derived::rep>& rhs)
-        -> typename std::enable_if<_impl::is_number<Derived>::value, bool>::type
+        -> decltype(lhs.data()>=rhs.data())
         {
             return lhs.data()>=rhs.data();
         }
 
-        template<class Derived>
+        template<
+                class Derived,
+                typename = std::enable_if<_impl::is_number<Derived>::value>>
         constexpr auto operator<=(
                 const _impl::number_base<Derived, typename Derived::rep>& lhs,
                 const _impl::number_base<Derived, typename Derived::rep>& rhs)
-        -> typename std::enable_if<_impl::is_number<Derived>::value, bool>::type
+        -> decltype(lhs.data()<=rhs.data())
         {
             return lhs.data()<=rhs.data();
         }

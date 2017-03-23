@@ -96,52 +96,58 @@ namespace sg14 {
         }
     }
 
-    template<class Lhs, class Rhs>
+    template<
+            class Lhs, class Rhs,
+            class = typename std::enable_if<_fixed_point_operators_impl::is_heterogeneous<Lhs, Rhs>()>::type>
     constexpr auto operator==(const Lhs& lhs, const Rhs& rhs)
-    -> typename std::enable_if<_fixed_point_operators_impl::is_heterogeneous<Lhs, Rhs>(), bool>::type
+    -> decltype(static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs)==static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs))
     {
-        using common_type = _impl::common_type_t<Lhs, Rhs>;
-        return static_cast<common_type>(lhs)==static_cast<common_type>(rhs);
+        return static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs)==static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs);
     }
 
-    template<class Lhs, class Rhs>
+    template<
+            class Lhs, class Rhs,
+            class = typename std::enable_if<_fixed_point_operators_impl::is_heterogeneous<Lhs, Rhs>()>::type>
     constexpr auto operator!=(const Lhs& lhs, const Rhs& rhs)
-    -> typename std::enable_if<_fixed_point_operators_impl::is_heterogeneous<Lhs, Rhs>(), bool>::type
+    -> decltype(static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs)!=static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs))
     {
-        using common_type = _impl::common_type_t<Lhs, Rhs>;
-        return static_cast<common_type>(lhs)!=static_cast<common_type>(rhs);
+        return static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs)!=static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs);
     }
 
-    template<class Lhs, class Rhs>
+    template<
+            class Lhs, class Rhs,
+            class = typename std::enable_if<_fixed_point_operators_impl::is_heterogeneous<Lhs, Rhs>()>::type>
     constexpr auto operator<(const Lhs& lhs, const Rhs& rhs)
-    -> typename std::enable_if<_fixed_point_operators_impl::is_heterogeneous<Lhs, Rhs>(), bool>::type
+    -> decltype(static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs)<static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs))
     {
-        using common_type = _impl::common_type_t<Lhs, Rhs>;
-        return static_cast<common_type>(lhs)<static_cast<common_type>(rhs);
+        return static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs)<static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs);
     }
 
-    template<class Lhs, class Rhs>
+    template<
+            class Lhs, class Rhs,
+            class = typename std::enable_if<_fixed_point_operators_impl::is_heterogeneous<Lhs, Rhs>()>::type>
     constexpr auto operator>(const Lhs& lhs, const Rhs& rhs)
-    -> typename std::enable_if<_fixed_point_operators_impl::is_heterogeneous<Lhs, Rhs>(), bool>::type
+    -> decltype(static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs)>static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs))
     {
-        using common_type = _impl::common_type_t<Lhs, Rhs>;
-        return static_cast<common_type>(lhs)>static_cast<common_type>(rhs);
+        return static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs)>static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs);
     }
 
-    template<class Lhs, class Rhs>
+    template<
+            class Lhs, class Rhs,
+            class = typename std::enable_if<_fixed_point_operators_impl::is_heterogeneous<Lhs, Rhs>()>::type>
     constexpr auto operator>=(const Lhs& lhs, const Rhs& rhs)
-    -> typename std::enable_if<_fixed_point_operators_impl::is_heterogeneous<Lhs, Rhs>(), bool>::type
+    -> decltype(static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs)>=static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs))
     {
-        using common_type = _impl::common_type_t<Lhs, Rhs>;
-        return static_cast<common_type>(lhs)>=static_cast<common_type>(rhs);
+        return static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs)>=static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs);
     }
 
-    template<class Lhs, class Rhs>
+    template<
+            class Lhs, class Rhs,
+            class = typename std::enable_if<_fixed_point_operators_impl::is_heterogeneous<Lhs, Rhs>()>::type>
     constexpr auto operator<=(const Lhs& lhs, const Rhs& rhs)
-    -> typename std::enable_if<_fixed_point_operators_impl::is_heterogeneous<Lhs, Rhs>(), bool>::type
+    -> decltype(static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs)<=static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs))
     {
-        using common_type = _impl::common_type_t<Lhs, Rhs>;
-        return static_cast<common_type>(lhs)<=static_cast<common_type>(rhs);
+        return static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs)<=static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
