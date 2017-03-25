@@ -113,16 +113,6 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_integer_impl::arithmetic_result - should op return safe_integer<>
-        // or floating-point?
-
-        template<class IntegerClass, class Operand, class RepResult>
-        struct arithmetic_result;
-
-        template<class IntegerClass, class Operand, class RepResult>
-        struct arithmetic_result;
-
-        ////////////////////////////////////////////////////////////////////////////////
         // overflow detection
 
         // positive_digits

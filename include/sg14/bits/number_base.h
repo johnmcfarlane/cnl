@@ -49,7 +49,7 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_impl::is_number_base
 
-        template<class T, class Enable = void>
+        template<class T>
         struct is_number_base : std::false_type {};
 
         template<class Derived, class Rep>
