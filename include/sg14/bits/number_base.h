@@ -187,10 +187,6 @@ namespace sg14 {
         struct to_rep<Rep, typename std::enable_if<!_impl::is_number<Rep>::value>::type> {
             constexpr const Rep& operator()(const Rep& component) const
             {
-                static_assert(!_impl::is_number<Rep>::value, "");
-                static_assert(!_impl::is_number_base<Rep>::value, "");
-                static_assert(!_impl::is_number<typename std::decay<Rep>::type>::value, "");
-                static_assert(!_impl::is_number_base<typename std::decay<Rep>::type>::value, "");
                 return component;
             }
         };
