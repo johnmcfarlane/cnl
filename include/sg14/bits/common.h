@@ -44,7 +44,7 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_impl::identical - compiles iff same type; returns true iff equal
 
-        template<typename A, typename B>
+        template<class A, class B>
         constexpr bool identical(const A& a, const B& b)
         {
             static_assert(std::is_same<A, B>::value, "different types");

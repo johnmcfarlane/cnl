@@ -120,14 +120,14 @@ static_assert(is_same<set_width_t<float, 128>, long double>::value, "sg14::set_w
 ////////////////////////////////////////////////////////////////////////////////
 // lots more width / set_width
 
-template<typename T, int NumBits>
+template<class T, int NumBits>
 struct test_built_in_set_width;
 
-template<typename T>
+template<class T>
 struct test_built_in_set_width<T, 0> {
 };
 
-template<typename T, int NumBits>
+template<class T, int NumBits>
 struct test_built_in_set_width : test_built_in_set_width<T, NumBits-1> {
     // get alias to result
     using result_type = set_width_t<T, NumBits>;
@@ -145,13 +145,13 @@ struct test_built_in_set_width : test_built_in_set_width<T, NumBits-1> {
             "incorrect signage in result of set_width_t");
 };
 
-template<typename T>
+template<class T>
 struct test_built_in_width {
     static_assert(width<T>::value==sizeof(T)*CHAR_BIT,
             "incorrect assumption about width of built-in integral type, T");
 };
 
-template<typename T>
+template<class T>
 struct test_built_in
         : test_built_in_width<T>,
 #if defined(SG14_INT128_ENABLED)

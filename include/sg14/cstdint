@@ -290,10 +290,10 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::scale<>
 
-    template<typename Integer>
+    template<class Integer>
     struct scale;
 
-    template<typename Integer>
+    template<class Integer>
     struct scale {
         using result_type = decltype(std::declval<Integer>()*std::declval<Integer>());
 

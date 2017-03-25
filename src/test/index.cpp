@@ -191,7 +191,7 @@ void elastic_example1()
 }
 
 // Such a type can be used to specialize fixed_point.
-template<int IntegerDigits, int FractionalDigits, typename Narrowest>
+template<int IntegerDigits, int FractionalDigits, class Narrowest>
 using elastic_fixed_point = fixed_point<elastic_integer<IntegerDigits+FractionalDigits, Narrowest>, -FractionalDigits>;
 
 void elastic_example2()

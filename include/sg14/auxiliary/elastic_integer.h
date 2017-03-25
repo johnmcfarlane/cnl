@@ -116,7 +116,7 @@ namespace sg14 {
         }
 
         /// constructor taking an integral constant
-        template<typename Integral, Integral Value, int Exponent>
+        template<class Integral, Integral Value, int Exponent>
         constexpr elastic_integer(const_integer<Integral, Value, Digits, Exponent>)
                 : _base(static_cast<rep>(Value))
         {

@@ -33,7 +33,7 @@ void escape_cppcon2015(void const* p)
     asm volatile(""::"g"(p):"memory");
 }
 
-template <typename T>
+template <class T>
 void escape_codedive2015(T&& p)
 {
     asm volatile("": "+r" (p));
@@ -46,7 +46,7 @@ void clobber()
 
 #else
 // TODO: Find equivalents `if defined(_MSC_VER)`
-template <typename T>
+template <class T>
 void escape_cppcon2015(T&&)
 {
 }
@@ -59,7 +59,7 @@ void clobber()
 ////////////////////////////////////////////////////////////////////////////////
 // benchmarking functions
 
-template<typename T>
+template<class T>
 static void add(benchmark::State& state)
 {
     auto addend1 = static_cast<T>(numeric_limits<T>::max()/5);
@@ -72,7 +72,7 @@ static void add(benchmark::State& state)
     }
 }
 
-template<typename T>
+template<class T>
 static void sub(benchmark::State& state)
 {
     auto minuend = static_cast<T>(numeric_limits<T>::max()/5);
@@ -85,7 +85,7 @@ static void sub(benchmark::State& state)
     }
 }
 
-template<typename T>
+template<class T>
 static void mul(benchmark::State& state)
 {
     auto factor1 = static_cast<T>(numeric_limits<T>::max()/int8_t{5});
@@ -98,7 +98,7 @@ static void mul(benchmark::State& state)
     }
 }
 
-template<typename T>
+template<class T>
 static void div(benchmark::State& state)
 {
     auto nume = static_cast<T>(numeric_limits<T>::max()/int8_t{5});
@@ -111,7 +111,7 @@ static void div(benchmark::State& state)
     }
 }
 
-template<typename T>
+template<class T>
 static void bm_sqrt(benchmark::State& state)
 {
     auto input = static_cast<T>(numeric_limits<T>::max()/int8_t{5});
@@ -122,7 +122,7 @@ static void bm_sqrt(benchmark::State& state)
     }
 }
 
-template<typename T>
+template<class T>
 static void bm_magnitude_squared(benchmark::State& state)
 {
     auto x = T {1};
@@ -137,7 +137,7 @@ static void bm_magnitude_squared(benchmark::State& state)
     }
 }
 
-template<typename T>
+template<class T>
 static void bm_circle_intersect_generic(benchmark::State& state)
 {
     auto x1 = T {0};
@@ -158,7 +158,7 @@ static void bm_circle_intersect_generic(benchmark::State& state)
     }
 }
 
-template<typename T>
+template<class T>
 static void circle_intersect_generic(benchmark::State& state)
 {
     auto x1 = T {0};

@@ -89,7 +89,7 @@ namespace sg14 {
     // compare two objects of different fixed_point specializations
 
     namespace _fixed_point_operators_impl {
-        template<typename Lhs, typename Rhs>
+        template<class Lhs, class Rhs>
         constexpr bool is_heterogeneous() {
             return (!std::is_same<Lhs, Rhs>::value) &&
                    (_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value);
