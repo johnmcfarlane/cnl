@@ -93,61 +93,16 @@ namespace sg14 {
 	template<class Type>
     struct width : width<typename std::remove_cv<Type>::type> {};
 
-    namespace _type_traits_impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // built-in families
-
 #if defined(SG14_INT128_ENABLED)
-        using signed_family = std::tuple<std::int8_t, std::int16_t, std::int32_t, std::int64_t, SG14_INT128>;
-        using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t, SG14_UINT128>;
-#else
-        using signed_family = std::tuple<std::int8_t, std::int16_t, std::int32_t, std::int64_t>;
-        using unsigned_family = std::tuple<std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t>;
+    // sg14::width
+    template<>
+    struct width<SG14_INT128> : std::integral_constant<_width_type, sizeof(SG14_INT128)*CHAR_BIT> {
+    };
+
+    template<>
+    struct width<SG14_UINT128> : std::integral_constant<_width_type, sizeof(SG14_UINT128)*CHAR_BIT> {
+    };
 #endif
-
-#if defined(_MSC_VER)
-        using float_family = std::tuple<float, double>;
-#else
-        using float_family = std::tuple<float, double, long double>;
-#endif
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // first_fit
-
-        template<_width_type MinNumBits, class, class ... FamilyMembers>
-        struct first_fit_helper;
-
-        template<_width_type MinNumBits>
-        struct first_fit_helper<MinNumBits, void> {
-            using type = void;
-        };
-
-        template<_width_type MinNumBits, class FamilyMembersHead, class ... FamilyMembersTail>
-        struct first_fit_helper<
-                MinNumBits,
-                typename std::enable_if<width<FamilyMembersHead>::value>=MinNumBits>::type,
-                FamilyMembersHead, FamilyMembersTail ...> {
-            using type = FamilyMembersHead;
-        };
-
-        template<_width_type MinNumBits, class FamilyMembersHead, class ... FamilyMembersTail>
-        struct first_fit_helper<
-                MinNumBits,
-                typename std::enable_if<width<FamilyMembersHead>::value<MinNumBits>::type,
-                        FamilyMembersHead, FamilyMembersTail ...> {
-                        using _tail_base = first_fit_helper<MinNumBits, void, FamilyMembersTail ...>;
-                        using type = typename _tail_base::type;
-                };
-
-        template<_width_type MinNumBits, class Family>
-        struct first_fit;
-
-        template<_width_type MinNumBits, class ... FamilyMembers>
-        struct first_fit<MinNumBits, std::tuple<FamilyMembers...>> {
-            using type = typename first_fit_helper<MinNumBits, void, FamilyMembers...>::type;
-            static_assert(!std::is_void<type>::value, "cannot find wide enough type");
-        };
-    }
 
 #if (__cplusplus>=201402L)
     ////////////////////////////////////////////////////////////////////////////////
@@ -163,6 +118,109 @@ namespace sg14 {
     constexpr unsigned width_v = width<Type>::value;
 #endif
 
+    namespace _set_width_impl {
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_set_width_impl::enable_for_range
+
+        template<_width_type MinNumBits, class Smaller, class T>
+        struct enable_for_range
+                : std::enable_if<MinNumBits<=CHAR_BIT*sizeof(T)&&CHAR_BIT*sizeof(Smaller)<MinNumBits> {};
+
+        template<_width_type MinNumBits, class Smallest>
+        struct enable_for_range<MinNumBits, void, Smallest>
+                : std::enable_if<MinNumBits<=CHAR_BIT*sizeof(Smallest)> {};
+
+        template<_width_type MinNumBits, class Smaller, class T>
+        using enable_for_range_t = typename enable_for_range<MinNumBits, Smaller, T>::type;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_set_width_impl::set_width_signed
+
+        template<_width_type MinNumBits, class Enable = void>
+        struct set_width_signed;
+
+        template<_width_type MinNumBits>
+        struct set_width_signed<MinNumBits, enable_for_range_t<MinNumBits, void, std::int8_t>> {
+            using type = std::int8_t;
+        };
+
+        template<_width_type MinNumBits>
+        struct set_width_signed<MinNumBits, enable_for_range_t<MinNumBits, std::int8_t, std::int16_t>> {
+            using type = std::int16_t;
+        };
+
+        template<_width_type MinNumBits>
+        struct set_width_signed<MinNumBits, enable_for_range_t<MinNumBits, std::int16_t, std::int32_t>> {
+            using type = std::int32_t;
+        };
+
+        template<_width_type MinNumBits>
+        struct set_width_signed<MinNumBits, enable_for_range_t<MinNumBits, std::int32_t, std::int64_t>> {
+            using type = std::int64_t;
+        };
+
+#if defined(SG14_INT128_ENABLED)
+        template<_width_type MinNumBits>
+        struct set_width_signed<MinNumBits, enable_for_range_t<MinNumBits, std::int64_t, SG14_INT128>> {
+            using type = SG14_INT128;
+        };
+#endif
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_set_width_impl::set_width_unsigned
+
+        template<_width_type MinNumBits, class Enable = void>
+        struct set_width_unsigned;
+
+        template<_width_type MinNumBits>
+        struct set_width_unsigned<MinNumBits, enable_for_range_t<MinNumBits, void, std::uint8_t>> {
+            using type = std::uint8_t;
+        };
+
+        template<_width_type MinNumBits>
+        struct set_width_unsigned<MinNumBits, enable_for_range_t<MinNumBits, std::uint8_t, std::uint16_t>> {
+            using type = std::uint16_t;
+        };
+
+        template<_width_type MinNumBits>
+        struct set_width_unsigned<MinNumBits, enable_for_range_t<MinNumBits, std::uint16_t, std::uint32_t>> {
+            using type = std::uint32_t;
+        };
+
+        template<_width_type MinNumBits>
+        struct set_width_unsigned<MinNumBits, enable_for_range_t<MinNumBits, std::uint32_t, std::uint64_t>> {
+            using type = std::uint64_t;
+        };
+
+#if defined(SG14_INT128_ENABLED)
+        template<_width_type MinNumBits>
+        struct set_width_unsigned<MinNumBits, enable_for_range_t<MinNumBits, std::uint64_t, SG14_UINT128>> {
+            using type = SG14_UINT128;
+        };
+#endif
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_set_width_impl::set_width_float
+
+        template<_width_type MinNumBits, class Enable = void>
+        struct set_width_float;
+
+        template<_width_type MinNumBits>
+        struct set_width_float<MinNumBits, enable_for_range_t<MinNumBits, void, float>> {
+            using type = float;
+        };
+
+        template<_width_type MinNumBits>
+        struct set_width_float<MinNumBits, enable_for_range_t<MinNumBits, float, double>> {
+            using type = double;
+        };
+
+        template<_width_type MinNumBits>
+        struct set_width_float<MinNumBits, enable_for_range_t<MinNumBits, double, long double>> {
+            using type = long double;
+        };
+    }
+
     /// resizes a type;
     /// can be specialized for any type for which resizing that type makes sense
     ///
@@ -170,80 +228,108 @@ namespace sg14 {
     template<class Type, _width_type MinNumBits>
     struct set_width;
 
+    // signed/unsigned -> type of correct width
+    template<>
+    struct set_width<char, sizeof(char) * CHAR_BIT> {
+        using type = char;
+    };
+    template<>
+    struct set_width<wchar_t, sizeof(wchar_t) * CHAR_BIT> {
+        using type = wchar_t;
+    };
+
     // sg14::set_width specialized for char/wchar_t
     template<_width_type MinNumBits>
     struct set_width<char, MinNumBits>
-            : _type_traits_impl::first_fit<MinNumBits, typename std::conditional<std::is_signed<char>::value, _type_traits_impl::signed_family, _type_traits_impl::unsigned_family>::type> {
+            : std::conditional<std::is_signed<char>::value,
+                    _set_width_impl::set_width_signed<MinNumBits>,
+                    _set_width_impl::set_width_unsigned<MinNumBits>>::type {
     };
     template<_width_type MinNumBits>
     struct set_width<wchar_t, MinNumBits>
-            : _type_traits_impl::first_fit<MinNumBits, typename std::conditional<std::is_signed<char>::value, _type_traits_impl::signed_family, _type_traits_impl::unsigned_family>::type> {
+            : std::conditional<std::is_signed<wchar_t>::value,
+                    _set_width_impl::set_width_signed<MinNumBits>,
+                    _set_width_impl::set_width_unsigned<MinNumBits>> {
     };
 
     // sg14::set_width specialized for 8-bit built-in integers
     template<_width_type MinNumBits>
     struct set_width<signed char, MinNumBits>
-            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+            : _set_width_impl::set_width_signed<MinNumBits> {
     };
     template<_width_type MinNumBits>
     struct set_width<unsigned char, MinNumBits>
-            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
+            : _set_width_impl::set_width_unsigned<MinNumBits> {
     };
 
     // sg14::set_width specialized for 16-bit built-in integers
     template<_width_type MinNumBits>
     struct set_width<signed short, MinNumBits>
-            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+            : _set_width_impl::set_width_signed<MinNumBits> {
     };
     template<_width_type MinNumBits>
     struct set_width<unsigned short, MinNumBits>
-            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
+            : _set_width_impl::set_width_unsigned<MinNumBits> {
     };
 
     // sg14::set_width specialized for 32-bit built-in integers
     template<_width_type MinNumBits>
     struct set_width<signed int, MinNumBits>
-            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+            : _set_width_impl::set_width_signed<MinNumBits> {
     };
     template<_width_type MinNumBits>
     struct set_width<unsigned int, MinNumBits>
-            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
+            : _set_width_impl::set_width_unsigned<MinNumBits> {
     };
 
     // sg14::set_width specialized for 64-bit built-in integers
     template<_width_type MinNumBits>
     struct set_width<signed long, MinNumBits>
-            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+            : _set_width_impl::set_width_signed<MinNumBits> {
     };
     template<_width_type MinNumBits>
     struct set_width<unsigned long, MinNumBits>
-            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
+            : _set_width_impl::set_width_unsigned<MinNumBits> {
     };
 
     // sg14::set_width specialized for 64-bit built-in integers
     template<_width_type MinNumBits>
     struct set_width<signed long long, MinNumBits>
-            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::signed_family> {
+            : _set_width_impl::set_width_signed<MinNumBits> {
     };
     template<_width_type MinNumBits>
     struct set_width<unsigned long long, MinNumBits>
-            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::unsigned_family> {
+            : _set_width_impl::set_width_unsigned<MinNumBits> {
     };
+
+    // sg14::set_width specialized for 128-bit built-in integers on Clang/GCC
+#if defined(SG14_INT128_ENABLED)
+    template<_width_type MinNumBits>
+    struct set_width<SG14_INT128, MinNumBits>
+            : _set_width_impl::set_width_signed<MinNumBits> {
+    };
+    template<_width_type MinNumBits>
+    struct set_width<SG14_UINT128, MinNumBits>
+            : _set_width_impl::set_width_unsigned<MinNumBits> {
+    };
+#endif
 
     // sg14::set_width specialized for float
     template<_width_type MinNumBits>
-    struct set_width<float, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::float_family> {
+    struct set_width<float, MinNumBits>
+            : _set_width_impl::set_width_float<MinNumBits> {
     };
 
     // sg14::set_width specialized for double
     template<_width_type MinNumBits>
-    struct set_width<double, MinNumBits> : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::float_family> {
+    struct set_width<double, MinNumBits>
+            : _set_width_impl::set_width_float<MinNumBits> {
     };
 
     // sg14::set_width specialized for long double
     template<_width_type MinNumBits>
     struct set_width<long double, MinNumBits>
-            : _type_traits_impl::first_fit<MinNumBits, _type_traits_impl::float_family> {
+        : _set_width_impl::set_width_float<MinNumBits> {
     };
 
     /// \brief resizes a type
@@ -263,29 +349,6 @@ namespace sg14 {
     /// \snippet snippets.cpp use set_width 3
     template<class Type, _width_type MinNumBits>
     using set_width_t = typename set_width<Type, MinNumBits>::type;
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // Clang/GCC hacks to get 128-bit integers working with fixed_point
-
-#if defined(SG14_INT128_ENABLED)
-    // sg14::set_width
-    template<_width_type MinNumBits>
-    struct set_width<SG14_INT128, MinNumBits> : set_width<signed, MinNumBits> {
-    };
-
-    template<_width_type MinNumBits>
-    struct set_width<SG14_UINT128, MinNumBits> : set_width<unsigned, MinNumBits> {
-    };
-
-    // sg14::width
-    template<>
-    struct width<SG14_INT128> : std::integral_constant<_width_type, sizeof(SG14_INT128)*CHAR_BIT> {
-    };
-
-    template<>
-    struct width<SG14_UINT128> : std::integral_constant<_width_type, sizeof(SG14_UINT128)*CHAR_BIT> {
-    };
-#endif
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::scale<>

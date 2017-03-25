@@ -11,7 +11,6 @@
 #include <sg14/type_traits>
 #include <sg14/bits/common.h>
 
-using sg14::_type_traits_impl::first_fit;
 using sg14::_impl::identical;
 using std::is_same;
 using sg14::make_signed;
@@ -60,14 +59,6 @@ static_assert(width_v<SG14_UINT128> == 128, "sg14::width_v test failed");
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_type_traits_impl::first_fit_t
-
-static_assert(
-        std::is_same<typename first_fit<16, std::tuple<std::int8_t, std::int16_t, std::int32_t>>::type, std::int16_t>::value, "");
-static_assert(
-        std::is_same<typename first_fit<16, std::tuple<std::int32_t, std::int16_t, std::int8_t>>::type, std::int32_t>::value, "");
-
-////////////////////////////////////////////////////////////////////////////////
 // some random sg14::set_width
 
 #if defined(SG14_INT128_ENABLED)
@@ -96,6 +87,8 @@ static_assert(is_same<set_width_t<std::uint32_t, 104>, SG14_UINT128>::value, "sg
 static_assert(is_same<set_width_t<std::int32_t, 112>, SG14_INT128>::value, "sg14::set_width_t test failed");
 static_assert(is_same<set_width_t<std::uint64_t, 120>, SG14_UINT128>::value, "sg14::set_width_t test failed");
 static_assert(is_same<set_width_t<std::int64_t, 128>, SG14_INT128>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<SG14_INT128, 1>, std::int8_t>::value, "sg14::set_width_t test failed");
+static_assert(is_same<set_width_t<SG14_UINT128, 29>, std::uint32_t>::value, "sg14::set_width_t test failed");
 #endif
 
 static_assert(is_same<set_width_t<double, 8>, float>::value, "sg14::set_width_t test failed");
