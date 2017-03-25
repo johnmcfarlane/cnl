@@ -203,9 +203,6 @@ namespace sg14 {
         // sg14::_impl::is_fixed_point
 
         template<class T>
-        struct is_fixed_point;
-
-        template<class T>
         struct is_fixed_point
                 : public std::false_type {
         };

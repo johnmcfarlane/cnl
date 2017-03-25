@@ -49,7 +49,7 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_impl::is_number_base
 
-        template<class T, class Enable = void>
+        template<class T>
         struct is_number_base : std::false_type {};
 
         template<class Derived, class Rep>
@@ -73,9 +73,7 @@ namespace sg14 {
 
         // comparison
 
-        template<
-                class Derived,
-                typename = std::enable_if<_impl::is_number<Derived>::value>>
+        template<class Derived>
         constexpr auto operator==(
                 const _impl::number_base<Derived, typename Derived::rep>& lhs,
                 const _impl::number_base<Derived, typename Derived::rep>& rhs)
@@ -84,9 +82,7 @@ namespace sg14 {
             return lhs.data()==rhs.data();
         }
 
-        template<
-                class Derived,
-                typename = std::enable_if<_impl::is_number<Derived>::value>>
+        template<class Derived>
         constexpr auto operator!=(
                 const _impl::number_base<Derived, typename Derived::rep>& lhs,
                 const _impl::number_base<Derived, typename Derived::rep>& rhs)
@@ -95,9 +91,7 @@ namespace sg14 {
             return lhs.data()!=rhs.data();
         }
 
-        template<
-                class Derived,
-                typename = std::enable_if<_impl::is_number<Derived>::value>>
+        template<class Derived>
         constexpr auto operator>(
                 const _impl::number_base<Derived, typename Derived::rep>& lhs,
                 const _impl::number_base<Derived, typename Derived::rep>& rhs)
@@ -106,20 +100,16 @@ namespace sg14 {
             return lhs.data()>rhs.data();
         }
 
-        template<
-                class Derived,
-                typename = std::enable_if<_impl::is_number<Derived>::value>>
+        template<class Derived>
         constexpr auto operator<(
                 const _impl::number_base<Derived, typename Derived::rep>& lhs,
                 const _impl::number_base<Derived, typename Derived::rep>& rhs)
-        -> decltype(lhs.data()<=rhs.data())
+        -> decltype(lhs.data()<rhs.data())
         {
             return lhs.data()<rhs.data();
         }
 
-        template<
-                class Derived,
-                typename = std::enable_if<_impl::is_number<Derived>::value>>
+        template<class Derived>
         constexpr auto operator>=(
                 const _impl::number_base<Derived, typename Derived::rep>& lhs,
                 const _impl::number_base<Derived, typename Derived::rep>& rhs)
@@ -128,9 +118,7 @@ namespace sg14 {
             return lhs.data()>=rhs.data();
         }
 
-        template<
-                class Derived,
-                typename = std::enable_if<_impl::is_number<Derived>::value>>
+        template<class Derived>
         constexpr auto operator<=(
                 const _impl::number_base<Derived, typename Derived::rep>& lhs,
                 const _impl::number_base<Derived, typename Derived::rep>& rhs)
@@ -199,10 +187,6 @@ namespace sg14 {
         struct to_rep<Rep, typename std::enable_if<!_impl::is_number<Rep>::value>::type> {
             constexpr const Rep& operator()(const Rep& component) const
             {
-                static_assert(!_impl::is_number<Rep>::value, "");
-                static_assert(!_impl::is_number_base<Rep>::value, "");
-                static_assert(!_impl::is_number<typename std::decay<Rep>::type>::value, "");
-                static_assert(!_impl::is_number_base<typename std::decay<Rep>::type>::value, "");
                 return component;
             }
         };

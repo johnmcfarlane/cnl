@@ -81,7 +81,7 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // forward-declarations
 
-    template<typename Rep, typename OverflowPolicy>
+    template<class Rep, class OverflowPolicy>
     class safe_integer;
 
     namespace _integer_impl {
@@ -91,15 +91,12 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_integer_impl::is_safe_integer - trait to identify sg14::safe_integer<>
 
-        template<typename T>
-        struct is_safe_integer;
-
-        template<typename T>
+        template<class T>
         struct is_safe_integer
                 : std::false_type {
         };
 
-        template<typename Rep, typename OverflowPolicy>
+        template<class Rep, class OverflowPolicy>
         struct is_safe_integer<safe_integer<Rep, OverflowPolicy>>
                 : std::true_type {
         };
@@ -116,24 +113,14 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_integer_impl::arithmetic_result - should op return safe_integer<>
-        // or floating-point?
-
-        template<class IntegerClass, class Operand, class RepResult>
-        struct arithmetic_result;
-
-        template<class IntegerClass, class Operand, class RepResult>
-        struct arithmetic_result;
-
-        ////////////////////////////////////////////////////////////////////////////////
         // overflow detection
 
         // positive_digits
-        template<typename T>
+        template<class T>
         struct positive_digits : public std::integral_constant<int, std::numeric_limits<T>::digits> {
         };
 
-        template<typename T>
+        template<class T>
         struct negative_digits : public std::integral_constant<int,
                 std::is_signed<T>::value ? std::numeric_limits<T>::digits
                                          : 0> {
@@ -141,7 +128,7 @@ namespace sg14 {
 
         // is_positive_overflow
         template<
-                typename Destination, typename Source,
+                class Destination, class Source,
                 typename std::enable_if<
                         !(positive_digits<Destination>::value<positive_digits<Source>::value),
                         int>::type dummy = 0>
@@ -157,7 +144,7 @@ namespace sg14 {
         }
 
         template<
-                typename Destination, typename Source,
+                class Destination, class Source,
                 typename std::enable_if<
                         (positive_digits<Destination>::value<positive_digits<Source>::value),
                         int>::type dummy = 0>
@@ -172,7 +159,7 @@ namespace sg14 {
 
         // is_negative_overflow
         template<
-                typename Destination, typename Source,
+                class Destination, class Source,
                 typename std::enable_if<
                         !(negative_digits<Destination>::value<negative_digits<Source>::value),
                         int>::type dummy = 0>
@@ -188,7 +175,7 @@ namespace sg14 {
         }
 
         template<
-                typename Destination, typename Source,
+                class Destination, class Source,
                 typename std::enable_if<
                         (negative_digits<Destination>::value<negative_digits<Source>::value),
                         int>::type dummy = 0>
@@ -206,7 +193,7 @@ namespace sg14 {
     // policies
 
     struct native_overflow_policy {
-        template<typename Lhs, typename Rhs>
+        template<class Lhs, class Rhs>
         constexpr Lhs convert(const Rhs& rhs) const
         {
             return static_cast<Lhs>(rhs);
@@ -216,7 +203,7 @@ namespace sg14 {
 #if defined(SG14_EXCEPTIONS_ENABLED)
 
     struct throwing_overflow_policy {
-        template<typename Lhs, typename Rhs>
+        template<class Lhs, class Rhs>
         constexpr Lhs convert(const Rhs& rhs) const
         {
             return _integer_impl::is_positive_overflow<Lhs>(rhs)
@@ -232,7 +219,7 @@ namespace sg14 {
 #endif
 
     struct saturated_overflow_policy {
-        template<typename Lhs, typename Rhs>
+        template<class Lhs, class Rhs>
         constexpr Lhs convert(const Rhs& rhs) const
         {
             static_assert(!_integer_impl::is_safe_integer<Lhs>::value,
@@ -299,7 +286,7 @@ namespace sg14 {
 
     // an integer which can be customized to react in different ways to overflow;
     // currently doesn't correctly detect overflow from operators
-    template<typename Rep = int, typename OverflowPolicy = throwing_overflow_policy>
+    template<class Rep = int, class OverflowPolicy = throwing_overflow_policy>
     class safe_integer : public _impl::number_base<safe_integer<Rep, OverflowPolicy>, Rep> {
         using _base = _impl::number_base<safe_integer<Rep, OverflowPolicy>, Rep>;
     public:
@@ -336,7 +323,7 @@ namespace sg14 {
         {
         }
 
-        template<typename LhsRep>
+        template<class LhsRep>
         constexpr explicit operator LhsRep() const
         {
             return static_cast<LhsRep>(to_rep(*this));
@@ -386,13 +373,13 @@ namespace sg14 {
     // sg14::safe_integer-specific specializations to std-like templates
 
     // sg14::make_unsigned<sg14::safe_integer<>>
-    template<typename Rep, typename OverflowPolicy>
+    template<class Rep, class OverflowPolicy>
     struct make_unsigned<safe_integer<Rep, OverflowPolicy>> {
         using type = safe_integer<typename make_unsigned<Rep>::type, OverflowPolicy>;
     };
 
     // sg14::make_signed<sg14::safe_integer<>>
-    template<typename Rep, typename OverflowPolicy>
+    template<class Rep, class OverflowPolicy>
     struct make_signed<safe_integer<Rep, OverflowPolicy>> {
         using type = safe_integer<typename make_signed<Rep>::type, OverflowPolicy>;
     };

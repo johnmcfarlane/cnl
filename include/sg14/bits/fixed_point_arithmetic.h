@@ -258,9 +258,6 @@ namespace sg14 {
                 // sg14::_impl::fp::arithmetic::operate_params
 
                 template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
-                struct operate_params;
-
-                template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
                 struct operate_params {
                     using _binary_pair = binary_pair<Lhs, Rhs>;
                     using lhs_type = typename _binary_pair::lhs_type;
