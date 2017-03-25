@@ -163,9 +163,6 @@ namespace sg14 {
         // sg14::_elastic_integer_impl::is_elastic_integer
 
         template<class ElasticInteger>
-        struct is_elastic_integer;
-
-        template<class ElasticInteger>
         struct is_elastic_integer : std::false_type {
         };
 

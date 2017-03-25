@@ -92,9 +92,6 @@ namespace sg14 {
         // sg14::_integer_impl::is_safe_integer - trait to identify sg14::safe_integer<>
 
         template<typename T>
-        struct is_safe_integer;
-
-        template<typename T>
         struct is_safe_integer
                 : std::false_type {
         };
