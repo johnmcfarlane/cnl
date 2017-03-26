@@ -169,7 +169,7 @@ static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
 namespace test_elastic_constant_literal {
     using namespace sg14::literals;
     using sg14::_impl::identical;
-    static_assert(identical(0_elastic, elastic_fixed_point<0, 0>{0}), "");
+    static_assert(identical(0_elastic, elastic_fixed_point<1, 0>{0}), "");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

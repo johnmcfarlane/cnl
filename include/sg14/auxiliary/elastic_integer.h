@@ -84,6 +84,7 @@ namespace sg14 {
 
     template<int Digits, class Narrowest = int>
     class elastic_integer : public _elastic_integer_impl::base<Digits, Narrowest> {
+        static_assert(Digits > 0, "type requires positive number of digits");
         using _base = _elastic_integer_impl::base<Digits, Narrowest>;
     public:
         /// alias to template parameter, \a Digits

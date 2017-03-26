@@ -42,7 +42,7 @@ namespace sg14 {
         template<class Integer, class Enable = void>
         struct _num_integer_bits {
             static constexpr int f(Integer value) {
-                return value ? num_integer_bits_positive(value) : 0;
+                return value ? num_integer_bits_positive(value) : 1;
             }
         };
 
@@ -56,7 +56,7 @@ namespace sg14 {
                     ? num_integer_bits_positive(value)
                     : (value < 0)
                     ? num_integer_bits_positive(-value)
-                    : 0;
+                    : 1;
             }
         };
 
@@ -76,7 +76,7 @@ namespace sg14 {
                    ? num_integer_bits_positive(value)
                    : (value<0)
                      ? num_integer_bits_positive(-value)
-                     : 0;
+                     : 1;
         }
 #endif
 

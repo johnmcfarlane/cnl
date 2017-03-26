@@ -56,7 +56,7 @@ namespace {
                 "sg14::_const_integer_impl::num_integer_bits test failed");
             static_assert(num_integer_bits(std::numeric_limits<int64_t>::max())==63,
                 "sg14::_const_integer_impl::num_integer_bits test failed");
-            static_assert(num_integer_bits(std::numeric_limits<uint64_t>::min())==0,
+            static_assert(num_integer_bits(std::numeric_limits<uint64_t>::min())==1,
                 "sg14::_const_integer_impl::num_integer_bits test failed");
             static_assert(num_integer_bits(std::numeric_limits<uint64_t>::max())==64,
                 "sg14::_const_integer_impl::num_integer_bits test failed");

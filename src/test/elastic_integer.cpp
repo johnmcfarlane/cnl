@@ -52,11 +52,13 @@ namespace {
 
     namespace test_multiply {
         using sg14::make_elastic_integer;
-        static_assert(identical(elastic_integer<0>{0} * INT64_C(0), sg14::elastic_integer<63, int>{0}),
+        static_assert(identical(elastic_integer<1>{0} * INT32_C(0), sg14::elastic_integer<32, int>{0}),
                       "sg14::elastic_integer test failed");
         static_assert(identical(make_elastic_integer(177_c), sg14::elastic_integer<8, int>{177}),
                       "sg14::elastic_integer test failed");
 #if defined(SG14_INT128_ENABLED)
+        static_assert(identical(elastic_integer<1>{0} * INT64_C(0), sg14::elastic_integer<64, int>{0}),
+                      "sg14::elastic_integer test failed");
         static_assert(identical(make_elastic_integer(177_c) * INT64_C(9218), sg14::elastic_integer<71, int>{1631586}),
                       "sg14::elastic_integer test failed");
 #endif
@@ -124,7 +126,7 @@ namespace {
     template
     struct elastic_integer_test<elastic_integer<7, int>, -128, 1, 127>;
     template
-    struct elastic_integer_test<elastic_integer<0, int>, -1, 1, 0>;
+    struct elastic_integer_test<elastic_integer<1, int>, -2, 1, 1>;
 #if defined(SG14_INT128_ENABLED)
     template
     struct elastic_integer_test<elastic_integer<39, unsigned int>, 0, 1, (INT64_C(1) << 39)-1>;
