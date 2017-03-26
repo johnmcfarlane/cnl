@@ -273,11 +273,9 @@ namespace sg14 {
             static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed;
         };
 
-        // TODO: if both operands are unsigned and LhsTraits::digits>=RhsTraits::digits,
-        // TODO: then digits=LhsTraits::digits and is_signed=false
         template<class LhsTraits, class RhsTraits>
         struct policy<_impl::subtract_tag, LhsTraits, RhsTraits> {
-            static constexpr int digits = _impl::max(LhsTraits::digits, RhsTraits::digits);
+            static constexpr int digits = _impl::max(LhsTraits::digits, RhsTraits::digits) + (LhsTraits::is_signed | RhsTraits::is_signed);
             static constexpr bool is_signed = true;
         };
 
@@ -294,21 +292,12 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // traits
-
-        template<class Param>
-        struct traits {
-            static constexpr int digits = std::numeric_limits<Param>::digits;
-            static constexpr bool is_signed = std::numeric_limits<Param>::is_signed;
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
         // operate_params
 
         template<class OperationTag, class Lhs, class Rhs>
         struct operate_params {
-            using lhs_traits = traits<Lhs>;
-            using rhs_traits = traits<Rhs>;
+            using lhs_traits = std::numeric_limits<Lhs>;
+            using rhs_traits = std::numeric_limits<Rhs>;
 
             using policy = typename _elastic_integer_impl::policy<OperationTag, lhs_traits, rhs_traits>;
 
@@ -441,9 +430,31 @@ namespace std {
     ////////////////////////////////////////////////////////////////////////////////
     // std::numeric_limits for sg14::elastic_integer
 
-    // note: some members are guessed,
-    // some are temporary (assuming rounding style, traps etc.)
-    // and some are undefined
+    namespace _elastic_integer_impl {
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_elastic_integer_impl::lowest
+
+        // helper for std::numeric_limits<sg14::elastic_integer<>>::lowest()
+        template<class Rep, bool IsSigned>
+        struct lowest;
+
+        template<class Rep>
+        struct lowest<Rep, true> {
+            constexpr Rep operator()(const Rep& max) const noexcept
+            {
+                return -max;
+            }
+        };
+
+        template<class Rep>
+        struct lowest<Rep, false> {
+            constexpr Rep operator()(const Rep&) const noexcept
+            {
+                return 0;
+            }
+        };
+    };
+
     template<int Digits, class Narrowest>
     struct numeric_limits<sg14::elastic_integer<Digits, Narrowest>>
             : numeric_limits<sg14::_elastic_integer_impl::base<Digits, Narrowest>> {
@@ -453,13 +464,13 @@ namespace std {
         using _rep = typename _value_type::rep;
         using _rep_numeric_limits = numeric_limits<_rep>;
 
+        static constexpr _rep _rep_max() noexcept
+        {
+            return _rep_numeric_limits::max() >> (_rep_numeric_limits::digits-digits);
+        }
+
         // standard members
         static constexpr int digits = Digits;
-
-        static constexpr _value_type lowest() noexcept
-        {
-            return _value_type::from_data(_rep_numeric_limits::lowest() >> (_rep_numeric_limits::digits-digits));
-        }
 
         static constexpr _value_type min() noexcept
         {
@@ -468,7 +479,12 @@ namespace std {
 
         static constexpr _value_type max() noexcept
         {
-            return _value_type::from_data(_rep_numeric_limits::max() >> (_rep_numeric_limits::digits-digits));
+            return _value_type::from_data(_rep_max());
+        }
+
+        static constexpr _value_type lowest() noexcept
+        {
+            return _elastic_integer_impl::lowest<_rep, _narrowest_numeric_limits::is_signed>()(_rep_max());
         }
     };
 }

@@ -190,7 +190,6 @@ struct positive_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // useful constants
 
-    static constexpr rep rep_zero{0.};
     static constexpr elastic_type zero{0.};
     static constexpr elastic_type negative_zero{-zero};
 
@@ -206,7 +205,7 @@ struct positive_elastic_test {
     // test traits
 
     static_assert(std::numeric_limits<elastic_type>::is_signed==std::numeric_limits<rep>::is_signed,
-                  "signedness of elastic_fixed_point type differns from underlying fixed-point type");
+                  "signedness of elastic_fixed_point type differs from underlying fixed-point type");
     static_assert(std::numeric_limits<typename sg14::make_signed<elastic_type>::type>::is_signed,
                   "signed version of elastic_fixed_point type is not signed");
 
@@ -347,7 +346,6 @@ struct signed_elastic_test :
     ////////////////////////////////////////////////////////////////////////////////
     // useful constants
 
-    static constexpr rep rep_zero{0.};
     static constexpr elastic_type zero{0.};
 
     static constexpr elastic_type min{numeric_limits::min()};
@@ -368,9 +366,9 @@ struct signed_elastic_test :
 
     static_assert(is_less_than(negative_min, min), "numeric_limits test failed");
 #if ! defined(_MSC_VER)
-    static_assert(is_less_than(lowest, -max), "comparison test error");
+    static_assert(is_equal_to(-max, lowest), "comparison test error");
 #endif
-    static_assert(is_equal_to(elastic_type{min+max+lowest}, zero), "comparison test error");
+    //static_assert(is_equal_to(elastic_type{min+max+lowest}, elastic_type{1}), "comparison test error");
     static_assert(numeric_limits::is_signed, "numeric_limits test failed");
     static_assert(!numeric_limits::is_integer || elastic_type{-.5} != -.5, "numeric_limits test failed");
 
@@ -387,12 +385,14 @@ struct signed_elastic_test :
     static_assert(is_less_than<elastic_type>(negative_min, zero), "comparison test error");
 
     // negative_min vs lowest
-    static_assert(is_less_than(lowest, negative_min), "comparison test error");
+    static_assert(numeric_limits::is_signed
+                  ? !is_less_than(negative_min, lowest)
+                  : is_less_than(negative_min, lowest), "comparison test error");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test operator+
 
-    static_assert(is_equal_to(min+max+lowest, elastic_type{0.}), "operator+ test failed");
+    static_assert(is_equal_to(min+max+lowest, min), "operator+ test failed");
 };
 
 ////////////////////////////////////////////////////////////////////////////////
