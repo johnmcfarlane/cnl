@@ -166,20 +166,6 @@ constexpr bool is_less_than(const Lesser& lesser, const Greater& greater)
 
 static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
 
-// greater > lesser
-template<class Greater, class Lesser>
-constexpr bool is_greater_than(const Greater& greater, const Lesser& lesser)
-{
-    return ((greater==lesser)==false)
-           && ((greater!=lesser)==true)
-           && ((greater<lesser)==false)
-           && ((greater>lesser)==true)
-           && ((greater<=lesser)==false)
-           && ((greater>=lesser)==true);
-}
-
-static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
-
 namespace test_elastic_constant_literal {
     using namespace sg14::literals;
     using sg14::_impl::identical;
@@ -235,9 +221,9 @@ struct positive_elastic_test {
 
     static_assert(min==elastic_type::from_data(rep{1}), "numeric_limits test failed");
     static_assert(!is_less_than(max, min), "numeric_limits test failed");
-    static_assert(is_greater_than(min, zero), "numeric_limits test failed");
-    static_assert(!is_greater_than(lowest, zero), "numeric_limits test failed");
-    static_assert(is_greater_than(min, lowest), "numeric_limits test failed");
+    static_assert(is_less_than(zero, min), "numeric_limits test failed");
+    static_assert(!is_less_than(zero, lowest), "numeric_limits test failed");
+    static_assert(is_less_than(lowest, min), "numeric_limits test failed");
     static_assert(std::numeric_limits<elastic_type>::is_signed==numeric_limits::is_signed,
                   "numeric_limits test failed");
     static_assert(!numeric_limits::is_integer || (elastic_type{.5} != .5), "numeric_limits test failed");
@@ -265,9 +251,6 @@ struct positive_elastic_test {
 
     // zero vs min
     static_assert(is_less_than<elastic_type>(zero, min), "comparison test error");
-
-    // min vs zero
-    static_assert(is_greater_than<elastic_type>(min, zero), "comparison test error");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test negate operators
@@ -331,7 +314,7 @@ struct positive_elastic_test {
     // test operator/
 
 #if ! defined(_MSC_VER)
-    static_assert(!is_greater_than(min/make_elastic_fixed_point(2_c), min), "operator/ test failed");
+    static_assert(!is_less_than(min, min/make_elastic_fixed_point(2_c)), "operator/ test failed");
 #endif
     static_assert(is_equal_to(min/make_elastic_fixed_point(1_c), min), "operator/ test failed");
     static_assert(is_equal_to((min+min)/make_elastic_fixed_point(2_c), min), "operator/ test failed");
@@ -383,9 +366,9 @@ struct signed_elastic_test :
     ////////////////////////////////////////////////////////////////////////////////
     // test numeric_limits<elastic_fixed_point>
 
-    static_assert(is_greater_than(min, negative_min), "numeric_limits test failed");
+    static_assert(is_less_than(negative_min, min), "numeric_limits test failed");
 #if ! defined(_MSC_VER)
-    static_assert(is_greater_than(-max, lowest), "comparison test error");
+    static_assert(is_less_than(lowest, -max), "comparison test error");
 #endif
     static_assert(is_equal_to(elastic_type{min+max+lowest}, zero), "comparison test error");
     static_assert(numeric_limits::is_signed, "numeric_limits test failed");
@@ -398,13 +381,13 @@ struct signed_elastic_test :
     static_assert(is_equal_to(negative_min, negative_min), "comparison test error");
 
     // min vs negative_min
-    static_assert(is_greater_than<elastic_type>(min, negative_min), "comparison test error");
+    static_assert(is_less_than<elastic_type>(negative_min, min), "comparison test error");
 
     // negative_min vs zero
     static_assert(is_less_than<elastic_type>(negative_min, zero), "comparison test error");
 
     // negative_min vs lowest
-    static_assert(is_greater_than(negative_min, lowest), "comparison test error");
+    static_assert(is_less_than(lowest, negative_min), "comparison test error");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test operator+
