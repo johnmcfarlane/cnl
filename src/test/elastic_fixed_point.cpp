@@ -448,12 +448,8 @@ template<int IntegerDigits>
 struct elastic_test_with_integer_digits
         : elastic_test<IntegerDigits, -IntegerDigits+1>
                 , elastic_test<IntegerDigits, -IntegerDigits+2>
-                , elastic_test<IntegerDigits, -IntegerDigits+3>
-                , elastic_test<IntegerDigits, -IntegerDigits+7>
                 , elastic_test<IntegerDigits, -IntegerDigits+8>
-                , elastic_test<IntegerDigits, -IntegerDigits+12>
                 , elastic_test<IntegerDigits, -IntegerDigits+16>
-                , elastic_test<IntegerDigits, -IntegerDigits+27>
                 , elastic_test<IntegerDigits, -IntegerDigits+31>
 {
 };
@@ -462,43 +458,28 @@ struct elastic_test_with_integer_digits
 // trigger elastic_fixed_point tests against a range of values for IntegerDigits parameter
 
 template
-struct elastic_test_with_integer_digits<-43>;
-
-template
-struct elastic_test_with_integer_digits<-31>;
-
-template
-struct elastic_test_with_integer_digits<-19>;
-
-template
-struct elastic_test_with_integer_digits<-5>;
-
-template
-struct elastic_test_with_integer_digits<-1>;
-
-template
-struct elastic_test_with_integer_digits<0>;
-
-template
 struct elastic_test_with_integer_digits<1>;
 
 template
-struct elastic_test_with_integer_digits<2>;
+struct elastic_test_with_integer_digits<-2>;
 
 template
 struct elastic_test_with_integer_digits<5>;
 
 template
-struct elastic_test_with_integer_digits<8>;
+struct elastic_test_with_integer_digits<-8>;
 
 template
 struct elastic_test_with_integer_digits<13>;
 
 template
-struct elastic_test_with_integer_digits<16>;
+struct elastic_test_with_integer_digits<-16>;
 
 template
 struct elastic_test_with_integer_digits<19>;
 
 template
-struct elastic_test_with_integer_digits<31>;
+struct elastic_test_with_integer_digits<-31>;
+
+template
+struct elastic_test_with_integer_digits<43>;
