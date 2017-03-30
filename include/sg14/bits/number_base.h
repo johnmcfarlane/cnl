@@ -217,10 +217,6 @@ namespace sg14 {
         struct from_rep<Rep, typename std::enable_if<!_impl::is_number<Rep>::value>::type> {
             constexpr const Rep& operator()(const Rep& component) const
             {
-                static_assert(!_impl::is_number<Rep>::value, "");
-                static_assert(!_impl::is_number_base<Rep>::value, "");
-                static_assert(!_impl::is_number<typename std::decay<Rep>::type>::value, "");
-                static_assert(!_impl::is_number_base<typename std::decay<Rep>::type>::value, "");
                 return component;
             }
         };
@@ -235,13 +231,13 @@ namespace sg14 {
     }
 
     template<class Derived, class Rep>
-    constexpr auto from_rep(Rep const& rep)
+    constexpr auto from_rep(const Rep& rep)
     -> decltype(_from_rep_impl::from_rep<Derived>()(rep)) {
         return _from_rep_impl::from_rep<Derived>()(rep);
     }
 
     template<class Rep>
-    constexpr auto from_rep(Rep const& component)
+    constexpr auto from_rep(const Rep& component)
     -> Rep const& {
         return component;
     }

@@ -38,7 +38,7 @@ namespace {
         using sg14::elastic_integer;
 
         static_assert(
-                is_same<precise_safe_elastic_fixed_point<0>::rep::rep::rep::rep, int>::value,
+                is_same<precise_safe_elastic_fixed_point<1>::rep::rep::rep::rep, int>::value,
                 "sg14::precise_integer parameter default test failed");
     }
 }

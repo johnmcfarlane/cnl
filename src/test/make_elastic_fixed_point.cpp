@@ -127,8 +127,6 @@ struct make_elastic_test {
 };
 
 template
-struct make_elastic_test<-0>;
-template
 struct make_elastic_test<1>;
 template
 struct make_elastic_test<-1>;
