@@ -96,6 +96,9 @@ namespace sg14 {
         /// the actual type used to store the value; closely related to Narrowest but may be a different width
         using rep = typename _base::rep;
 
+        /// default constructor
+        constexpr elastic_integer() = default;
+        
         /// common copy constructor
         constexpr elastic_integer(const elastic_integer& rhs)
                 :_base(rhs)
