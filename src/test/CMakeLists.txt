@@ -59,8 +59,8 @@ endif(Boost_FOUND)
 
 ExternalProject_Add(
     glm
-    GIT_REPOSITORY "https://github.com/johnmcfarlane/glm.git"
-    GIT_TAG "a4d22127522833607d646ea3622a3a1e329ea67b"
+    URL "https://github.com/johnmcfarlane/glm/archive/a4d22127522833607d646ea3622a3a1e329ea67b.zip"
+    URL_MD5 "9d866b271b271f84be456e709bc51c6d"
     UPDATE_COMMAND ""
     INSTALL_COMMAND ""
 )
@@ -81,11 +81,10 @@ add_dependencies(
 ######################################################################
 # pull external project, google_test
 
-# helpful example [here](https://gist.github.com/Fraser999/5351180)
 ExternalProject_Add(
         google_test
-        GIT_REPOSITORY "https://github.com/google/googletest.git"
-        GIT_TAG "c99458533a9b4c743ed51537e25989ea55944908"
+        URL "https://github.com/google/googletest/archive/c99458533a9b4c743ed51537e25989ea55944908.zip"
+        URL_MD5 "4552721bde3dcaab1eaa9582afc28c9d"
         UPDATE_COMMAND ""
         INSTALL_COMMAND ""
         CMAKE_ARGS -Dgtest_force_shared_crt=ON

@@ -143,9 +143,11 @@ namespace {
         static_assert(
                 identical(-const_integer<std::uint8_t, 2>{}, const_integer<int, -2>{}),
                 "sg14::const_integer unary minus test failed");
+#if ! defined(_MSC_VER)
         static_assert(
                 identical(-const_integer<unsigned, 1>{}, const_integer<unsigned, std::numeric_limits<unsigned>::max()>{}),
                 "sg14::const_integer unary minus test failed");
+#endif
 #endif
 
         // binary plus
