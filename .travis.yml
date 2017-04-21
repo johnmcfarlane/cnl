@@ -3,41 +3,59 @@ sudo: required
 
 language: cpp
 
-os:
-- linux
-- osx
-
-compiler:
-- gcc
-- clang
-
-env:
-- BUILD_TYPE=Release STD=14  EXCEPTIONS=ON  INT128=ON
-- BUILD_TYPE=Release STD=11 EXCEPTIONS=OFF INT128=OFF
-- BUILD_TYPE=Debug   STD=14  EXCEPTIONS=ON  INT128=ON
-- BUILD_TYPE=Debug   STD=11 EXCEPTIONS=OFF INT128=OFF
-
 matrix:
-  exclude:
-    # Clang uses GCC's standard lib and fails when C++14 is enabled
+  include:
     - os: linux
-      compiler: clang
-      env: BUILD_TYPE=Release STD=14  EXCEPTIONS=ON  INT128=ON
-    - os: linux
-      compiler: clang
-      env: BUILD_TYPE=Debug   STD=14  EXCEPTIONS=ON  INT128=ON
+      addons: &gcc5
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+      env: COMPILER=g++-5 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
 
-    # OS X has Boost 1.55 installed which requires exceptions
+    - os: linux
+      addons: *gcc5
+      env: COMPILER=g++-5 BUILD_TYPE=Release STD=11 EXCEPTIONS=OFF INT128=OFF
+
+    - os: linux
+      addons: *gcc5
+      env: COMPILER=g++-5 BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=ON
+
+    - os: linux
+      addons: *gcc5
+      env: COMPILER=g++-5 BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF
+
+    - os: linux
+      compiler: clang
+      env: COMPILER=clang++ BUILD_TYPE=Release STD=11 EXCEPTIONS=OFF INT128=OFF
+
+    - os: linux
+      compiler: clang
+      env: COMPILER=clang++ BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF
+
     - os: osx
-      env: BUILD_TYPE=Release STD=11 EXCEPTIONS=OFF INT128=OFF
+      compiler: g++
+      env: COMPILER=c++ BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
+
     - os: osx
-      env: BUILD_TYPE=Debug   STD=11 EXCEPTIONS=OFF INT128=OFF
+      compiler: g++
+      env: COMPILER=c++ BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=ON
+
+    - os: osx
+      compiler: clang
+      env: COMPILER=c++ BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
+
+    - os: osx
+      compiler: clang
+      env: COMPILER=c++ BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=ON
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source .travis-setup-linux.sh ; fi
 
 script:
-    - cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DSTD="${STD}" -DEXCEPTIONS="${EXCEPTIONS}" -DINT128="${INT128}"
+    - export CXX="${COMPILER}"
+    - cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -DSTD="${STD}" -DEXCEPTIONS="${EXCEPTIONS}" -DINT128="${INT128}"
     - make fp_test fp_benchmark
     - ./fp_test
     - ./fp_benchmark --benchmark_format=csv>result.csv
