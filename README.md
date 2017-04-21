@@ -27,12 +27,12 @@ Add this to your system header list and include, e.g.:
 
 ### Linux
 
-Tested on [Travis](https://travis-ci.org/johnmcfarlane/fixed_point) (Ubuntu 14.04) using GCC 4.8 and Clang 3.5
-and [Debian GNU/Linux 8.3](https://www.debian.org/releases/stable/) using GCC 4.9.2 and Clang 3.5.0. 
+Tested on [Travis](https://travis-ci.org/johnmcfarlane/fixed_point) (Ubuntu 14.04) using GCC 5.4 and Clang 3.5
+and [Debian GNU/Linux 8.3](https://www.debian.org/releases/stable/) using GCC 5.4 and Clang 3.5.0. 
 
 Requires:
 
-- G++ 4.8.4
+- G++ 5.4
 - [CMake](https://cmake.org/download/) 2.8.11
 
 Optional:
