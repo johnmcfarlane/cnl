@@ -59,8 +59,8 @@ endif(Boost_FOUND)
 
 ExternalProject_Add(
     glm
-    URL "https://github.com/johnmcfarlane/glm/archive/a4d22127522833607d646ea3622a3a1e329ea67b.zip"
-    URL_MD5 "9d866b271b271f84be456e709bc51c6d"
+    URL "https://github.com/johnmcfarlane/glm/archive/878086621522255b14017c26d1df3b9fb0b36009.zip"
+    URL_MD5 "fe3b032c230df63474bc26549526aaec"
     UPDATE_COMMAND ""
     INSTALL_COMMAND ""
 )
