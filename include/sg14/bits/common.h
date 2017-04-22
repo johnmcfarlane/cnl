@@ -74,16 +74,38 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // operation tags
 
-        struct negate_tag;
+        struct tag_base {
+            static constexpr bool is_arithmetic = false;
+            static constexpr bool is_comparison = false;
+        };
 
-        struct add_tag;
+        struct arithmetic_tag : tag_base {
+            static constexpr bool is_arithmetic = true;
+        };
 
-        struct subtract_tag;
+        struct comparison_tag : tag_base {
+            static constexpr bool is_comparison = true;
+        };
 
-        struct multiply_tag;
+        struct plus_tag : arithmetic_tag {};
+        struct minus_tag : arithmetic_tag {};
 
-        struct divide_tag;
+        struct add_tag : arithmetic_tag {};
+        struct subtract_tag : arithmetic_tag {};
+        struct multiply_tag : arithmetic_tag {};
+        struct divide_tag : arithmetic_tag {};
 
+        struct bitwise_or_tag : arithmetic_tag {};
+        struct bitwise_and_tag : arithmetic_tag {};
+        struct bitwise_xor_tag : arithmetic_tag {};
+
+        struct equal_tag : comparison_tag {};
+        struct not_equal_tag : comparison_tag {};
+        struct less_than_tag : comparison_tag {};
+        struct greater_than_tag : comparison_tag {};
+        struct less_then_or_equal_tag : comparison_tag {};
+        struct greater_then_or_equal_tag : comparison_tag {};
+        
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_impl::op
 
@@ -91,10 +113,18 @@ namespace sg14 {
         struct op;
 
         template<class Rhs>
-        struct op<negate_tag, Rhs> {
+        struct op<minus_tag, Rhs> {
             constexpr auto operator()(const Rhs& rhs) const -> decltype(-rhs)
             {
                 return -rhs;
+            }
+        };
+
+        template<class Rhs>
+        struct op<plus_tag, Rhs> {
+            constexpr auto operator()(const Rhs& rhs) const -> decltype(+rhs)
+            {
+                return +rhs;
             }
         };
 
@@ -130,6 +160,78 @@ namespace sg14 {
             }
         };
 
+        template<class Lhs, class Rhs>
+        struct op<bitwise_or_tag, Lhs, Rhs> {
+            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs|rhs)
+            {
+                return lhs|rhs;
+            }
+        };
+
+        template<class Lhs, class Rhs>
+        struct op<bitwise_and_tag, Lhs, Rhs> {
+            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs&rhs)
+            {
+                return lhs&rhs;
+            }
+        };
+
+        template<class Lhs, class Rhs>
+        struct op<bitwise_xor_tag, Lhs, Rhs> {
+            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs^rhs)
+            {
+                return lhs^rhs;
+            }
+        };
+
+        template<class Lhs, class Rhs>
+        struct op<equal_tag, Lhs, Rhs> {
+            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs==rhs)
+            {
+                return lhs==rhs;
+            }
+        };
+
+        template<class Lhs, class Rhs>
+        struct op<not_equal_tag, Lhs, Rhs> {
+            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs!=rhs)
+            {
+                return lhs!=rhs;
+            }
+        };
+
+        template<class Lhs, class Rhs>
+        struct op<less_than_tag, Lhs, Rhs> {
+            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs<rhs)
+            {
+                return lhs<rhs;
+            }
+        };
+
+        template<class Lhs, class Rhs>
+        struct op<greater_than_tag, Lhs, Rhs> {
+            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs>rhs)
+            {
+                return lhs>rhs;
+            }
+        };
+
+        template<class Lhs, class Rhs>
+        struct op<less_then_or_equal_tag, Lhs, Rhs> {
+            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs<=rhs)
+            {
+                return lhs<=rhs;
+            }
+        };
+
+        template<class Lhs, class Rhs>
+        struct op<greater_then_or_equal_tag, Lhs, Rhs> {
+            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs>=rhs)
+            {
+                return lhs>=rhs;
+            }
+        };
+
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_impl::rep_op_fn
 
@@ -138,6 +240,13 @@ namespace sg14 {
         -> decltype(op<OperationTag, Lhs, Rhs>()(lhs, rhs))
         {
             return op<OperationTag, Lhs, Rhs>()(lhs, rhs);
+        };
+
+        template<class OperationTag, class Rhs>
+        constexpr auto op_fn(const Rhs& rhs)
+        -> decltype(op<OperationTag, Rhs>()(rhs))
+        {
+            return op<OperationTag, Rhs>()(rhs);
         };
 
         ////////////////////////////////////////////////////////////////////////////////
