@@ -77,6 +77,10 @@ namespace sg14 {
                 struct rep_op_exponent;
 
                 template<class Rhs>
+                struct rep_op_exponent<_impl::plus_tag, Rhs> : public std::integral_constant<int, Rhs::exponent> {
+                };
+
+                template<class Rhs>
                 struct rep_op_exponent<_impl::minus_tag, Rhs> : public std::integral_constant<int, Rhs::exponent> {
                 };
 
