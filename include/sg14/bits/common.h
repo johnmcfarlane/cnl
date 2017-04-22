@@ -42,6 +42,13 @@ namespace sg14 {
         using common_type_t = typename std::common_type<T ...>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::enable_if_t
+
+        // pre-C++14 enable_if_t
+        template<bool C, class ... T>
+        using enable_if_t = typename std::enable_if<C, T ...>::type;
+
+        ////////////////////////////////////////////////////////////////////////////////
         // sg14::_impl::identical - compiles iff same type; returns true iff equal
 
         template<class A, class B>
