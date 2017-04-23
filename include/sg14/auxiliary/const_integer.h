@@ -48,7 +48,7 @@ namespace sg14 {
         };
 
         template<class Integer>
-        struct _num_integer_bits<Integer, typename std::enable_if<std::numeric_limits<Integer>::is_signed>::type> {
+        struct _num_integer_bits<Integer, _impl::enable_if_t<std::numeric_limits<Integer>::is_signed>> {
             static constexpr int f(Integer value) {
                 // Most negative number is not exploited;
                 // thus negating the result or subtracting it from something else
@@ -103,7 +103,7 @@ namespace sg14 {
         };
 
         template<class Integer>
-        struct _num_integer_zeros<Integer, typename std::enable_if<std::numeric_limits<Integer>::is_signed>::type> {
+        struct _num_integer_zeros<Integer, _impl::enable_if_t<std::numeric_limits<Integer>::is_signed>> {
             static constexpr int f(Integer value) {
                 // Most negative number is not exploited;
                 // thus negating the result or subtracting it from something else

@@ -29,12 +29,12 @@ namespace sg14 {
     -> safe_integer<LhsRep, LhsOverflowTag> { \
         return lhs.data() OP rhs.data(); } \
     \
-    template <class Lhs, class RhsRep, class RhsOverflowTag, typename std::enable_if<std::is_fundamental<Lhs>::value, int>::type dummy = 0> \
+    template <class Lhs, class RhsRep, class RhsOverflowTag, _impl::enable_if_t<std::is_fundamental<Lhs>::value, int> dummy = 0> \
     constexpr auto operator OP (const Lhs& lhs, const safe_integer<RhsRep, RhsOverflowTag>& rhs) \
     -> Lhs { \
         return lhs OP rhs.data(); } \
     \
-    template <class LhsRep, class LhsOverflowTag, class Rhs, typename std::enable_if<std::is_fundamental<Rhs>::value, int>::type dummy = 0> \
+    template <class LhsRep, class LhsOverflowTag, class Rhs, _impl::enable_if_t<std::is_fundamental<Rhs>::value, int> dummy = 0> \
     constexpr auto operator OP (const safe_integer<LhsRep, LhsOverflowTag>& lhs, const Rhs& rhs) \
     -> safe_integer<LhsRep, LhsOverflowTag> { \
         return safe_integer<LhsRep, LhsOverflowTag>(lhs.data() OP rhs); }
@@ -90,9 +90,7 @@ namespace sg14 {
         // is_positive_overflow
         template<
                 class Destination, class Source,
-                typename std::enable_if<
-                        !(positive_digits<Destination>::value<positive_digits<Source>::value),
-                        int>::type dummy = 0>
+                _impl::enable_if_t<!(positive_digits<Destination>::value<positive_digits<Source>::value), int> dummy = 0>
         constexpr bool is_positive_overflow(Source const&)
         {
             static_assert(!is_safe_integer<Destination>::value,
@@ -106,9 +104,7 @@ namespace sg14 {
 
         template<
                 class Destination, class Source,
-                typename std::enable_if<
-                        (positive_digits<Destination>::value<positive_digits<Source>::value),
-                        int>::type dummy = 0>
+                _impl::enable_if_t<(positive_digits<Destination>::value<positive_digits<Source>::value), int> dummy = 0>
         constexpr bool is_positive_overflow(Source const& source)
         {
             static_assert(!is_safe_integer<Destination>::value,
@@ -121,9 +117,7 @@ namespace sg14 {
         // is_negative_overflow
         template<
                 class Destination, class Source,
-                typename std::enable_if<
-                        !(negative_digits<Destination>::value<negative_digits<Source>::value),
-                        int>::type dummy = 0>
+                _impl::enable_if_t<!(negative_digits<Destination>::value<negative_digits<Source>::value), int> dummy = 0>
         constexpr bool is_negative_overflow(Source const&)
         {
             static_assert(!is_safe_integer<Destination>::value,
@@ -137,9 +131,7 @@ namespace sg14 {
 
         template<
                 class Destination, class Source,
-                typename std::enable_if<
-                        (negative_digits<Destination>::value<negative_digits<Source>::value),
-                        int>::type dummy = 0>
+                _impl::enable_if_t<(negative_digits<Destination>::value<negative_digits<Source>::value), int> dummy = 0>
         constexpr bool is_negative_overflow(Source const& source)
         {
             static_assert(!is_safe_integer<Destination>::value,
@@ -427,12 +419,9 @@ namespace sg14 {
         // generates a safe_integer<> type that is as big as both of them (or as close as possible)
         template<class LhsRep, class LhsOverflowTag, class RhsInteger>
         struct common_type<
-                safe_integer<LhsRep, LhsOverflowTag>,
-                RhsInteger,
-                typename std::enable_if<
-                        !_integer_impl::is_safe_integer<RhsInteger>::value
-                                && std::is_integral<RhsInteger>::value
-                >::type> {
+                safe_integer<LhsRep, LhsOverflowTag>, RhsInteger,
+                _impl::enable_if_t<
+                        !_integer_impl::is_safe_integer<RhsInteger>::value && std::is_integral<RhsInteger>::value>> {
             using type = typename sg14::safe_integer<typename std::common_type<LhsRep, RhsInteger>::type, LhsOverflowTag>;
         };
 
@@ -440,9 +429,8 @@ namespace sg14 {
         // generates a floating-point type that is as big as both of them (or as close as possible)
         template<class LhsRep, class LhsOverflowTag, class Float>
         struct common_type<
-                safe_integer<LhsRep, LhsOverflowTag>,
-                Float,
-                typename std::enable_if<std::is_floating_point<Float>::value>::type> {
+                safe_integer<LhsRep, LhsOverflowTag>, Float,
+                _impl::enable_if_t<std::is_floating_point<Float>::value>> {
             using type = typename std::common_type<LhsRep, Float>::type;
         };
 
@@ -478,7 +466,7 @@ namespace sg14 {
         {
         }
 
-        template<class Rhs, typename std::enable_if<!_integer_impl::is_safe_integer<Rhs>::value, int>::type dummy = 0>
+        template<class Rhs, _impl::enable_if_t<!_integer_impl::is_safe_integer<Rhs>::value, int> dummy = 0>
         constexpr safe_integer(const Rhs& rhs)
                 :_base(overflow_convert<overflow_tag>().template operator()<rep>(rhs))
         {

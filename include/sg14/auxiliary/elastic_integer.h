@@ -106,7 +106,7 @@ namespace sg14 {
         }
 
         /// construct from numeric type
-        template<class Number, typename std::enable_if<std::numeric_limits<Number>::is_specialized, int>::type Dummy = 0>
+        template<class Number, _impl::enable_if_t<std::numeric_limits<Number>::is_specialized, int> Dummy = 0>
         constexpr elastic_integer(Number n)
                 : _base(static_cast<rep>(n))
         {
@@ -129,7 +129,7 @@ namespace sg14 {
         }
 
         /// copy assignment operator taking a floating-point type
-        template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
+        template<class S, _impl::enable_if_t<std::is_floating_point<S>::value, int> Dummy = 0>
         elastic_integer& operator=(S s)
         {
             _base::operator=(floating_point_to_rep(s));
@@ -155,7 +155,7 @@ namespace sg14 {
         return elastic_integer<_const_integer_impl::num_integer_bits(Value)>{Value};
     }
 
-    template<class Narrowest = int, class Integral, typename std::enable_if<!is_const_integer<Integral>::value, int>::type Dummy = 0>
+    template<class Narrowest = int, class Integral, _impl::enable_if_t<!is_const_integer<Integral>::value, int> Dummy = 0>
     constexpr auto make_elastic_integer(const Integral& value)
     -> decltype(elastic_integer<std::numeric_limits<Integral>::digits, Narrowest>{value})
     {

@@ -34,11 +34,11 @@ namespace sg14 {
 
         constexpr precise_integer() = default;
 
-        template<class T, typename std::enable_if<std::numeric_limits<T>::is_integer, int>::type Dummy = 0>
+        template<class T, _impl::enable_if_t<std::numeric_limits<T>::is_integer, int> Dummy = 0>
         constexpr precise_integer(const T& v)
                 : super(v) { }
 
-        template<class T, typename std::enable_if<!std::numeric_limits<T>::is_integer, int>::type Dummy = 0>
+        template<class T, _impl::enable_if_t<!std::numeric_limits<T>::is_integer, int> Dummy = 0>
         constexpr precise_integer(const T& v)
                 : super(rounding::template convert<Rep>(v)) { }
 
@@ -77,7 +77,7 @@ namespace sg14 {
     template<
             class Lhs,
             class RhsRep, class RhsRoundingPolicy,
-            typename std::enable_if<!_precise_integer_impl::is_precise_integer<Lhs>::value, int>::type = 0>
+            enable_if_t<!_precise_integer_impl::is_precise_integer<Lhs>::value, int>::type = 0>
     constexpr auto operator==(const Lhs& lhs, const precise_integer<RhsRep, RhsRoundingPolicy>& rhs)
     -> decltype(lhs==rhs.data())
     {
@@ -87,7 +87,7 @@ namespace sg14 {
     template<
             class LhsRep, class LhsRoundingPolicy,
             class Rhs,
-            typename std::enable_if<!_precise_integer_impl::is_precise_integer<Rhs>::value, int>::type = 0>
+            enable_if_t<!_precise_integer_impl::is_precise_integer<Rhs>::value, int>::type = 0>
     constexpr auto operator==(const precise_integer<LhsRep, LhsRoundingPolicy>& lhs, const Rhs& rhs)
     -> decltype(lhs.data()==rhs)
     {
