@@ -284,8 +284,6 @@ namespace sg14 {
         constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
         -> decltype(lhs/rhs)
         {
-            using result_type = decltype(lhs/rhs);
-            using numeric_limits = std::numeric_limits<result_type>;
             return rhs
                    ? lhs/rhs    // TODO: does this deal adequately with mixed signed/unsigned?
                    : throw std::overflow_error("divide by zero");

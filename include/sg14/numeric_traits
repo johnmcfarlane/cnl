@@ -12,9 +12,8 @@
 
 #if !defined(SG14_GODBOLT_ORG)
 #include "cstdint"
+#include "type_traits"
 #endif
-
-#include <type_traits>
 
 /// study group 14 of the C++ working group
 namespace sg14 {
