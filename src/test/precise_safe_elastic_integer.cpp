@@ -4,7 +4,6 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/fixed_point>
 #include <sg14/auxiliary/elastic_integer.h>
 #include <sg14/auxiliary/precise_integer.h>
 #include <sg14/auxiliary/safe_integer.h>
@@ -13,22 +12,18 @@ namespace sg14 {
     // precise safe elastic fixed-point
     template<
             int IntegerDigits,
-            int FractionalDigits = 0,
             class OverflowTag = safe_integer<>::overflow_tag,
             class RoundingPolicy = precise_integer<>::rounding,
             class Narrowest = int>
-    using psefp = fixed_point<
-            elastic_integer<
-                    IntegerDigits+FractionalDigits,
-                    precise_integer<
-                            safe_integer<
-                                    Narrowest,
-                                    OverflowTag
-                            >,
-                            RoundingPolicy
-                    >
-            >,
-            -FractionalDigits
+    using psei = elastic_integer<
+            IntegerDigits,
+            precise_integer<
+                    safe_integer<
+                            Narrowest,
+                            OverflowTag
+                    >,
+                    RoundingPolicy
+            >
     >;
 
     template<
@@ -36,19 +31,19 @@ namespace sg14 {
             class RoundingPolicy = precise_integer<>::rounding,
             class Narrowest = int,
             class Input = int>
-    psefp<
-            std::numeric_limits<Input>::digits, 0,
+    psei<
+            std::numeric_limits<Input>::digits,
             OverflowTag, RoundingPolicy,
             Narrowest>
-    constexpr make_psefp(Input const& input)
+    constexpr make_psei(Input const& input)
     {
         return input;
     }
 }
 
 namespace {
-    using sg14::make_psefp;
-    using sg14::psefp;
+    using sg14::make_psei;
+    using sg14::psei;
     using std::is_same;
     using sg14::_impl::identical;
 
@@ -58,17 +53,17 @@ namespace {
         using sg14::elastic_integer;
 
         static_assert(
-                is_same<psefp<1>::rep::rep::rep::rep, int>::value,
+                is_same<psei<1>::rep::rep::rep, int>::value,
                 "sg14::precise_integer parameter default test failed");
     }
 
-    namespace test_make_psefp {
+    namespace test_make_psei {
         using namespace sg14::literals;
-        static_assert(identical(make_psefp(std::int16_t{7}), psefp<15>{7}), "");
-        static_assert(identical(make_psefp(444_c), psefp<9>{444}), "");
+        static_assert(identical(make_psei(std::int16_t{7}), psei<15>{7}), "");
+        static_assert(identical(make_psei(7_c), psei<3>{7}), "");
     }
 
     namespace test_multiply {
-        static_assert(identical(sg14::psefp<6>{7}*sg14::psefp<13>{321}, sg14::psefp<19>{2247}), "");
+        static_assert(identical(sg14::psei<6>{7}*sg14::psei<13>{321}, sg14::psei<19>{2247}), "");
     }
 }

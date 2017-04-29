@@ -36,7 +36,7 @@ namespace sg14 {
 
         template<class T, _impl::enable_if_t<std::numeric_limits<T>::is_integer, int> Dummy = 0>
         constexpr precise_integer(const T& v)
-                : super(v) { }
+                : super(static_cast<Rep>(v)) { }
 
         template<class T, _impl::enable_if_t<!std::numeric_limits<T>::is_integer, int> Dummy = 0>
         constexpr precise_integer(const T& v)

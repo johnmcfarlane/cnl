@@ -54,8 +54,9 @@ template<class Number>
 struct number_test {
     using value_type = Number;
     using numeric_limits = std::numeric_limits<value_type>;
-
-    static constexpr value_type zero = 0.;
+    using numeric_traits = sg14::numeric_traits<value_type>;
+    
+    static constexpr value_type zero = numeric_traits::from_rep(0);
 #if defined(_MSC_VER)
     static constexpr value_type negative_zero{ zero };
 #else
@@ -132,8 +133,6 @@ struct number_test {
     
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::numeric_traits
-
-    using numeric_traits = sg14::numeric_traits<value_type>;
 
     static_assert(
             std::is_same<typename numeric_traits::value_type, value_type>::value,

@@ -9,32 +9,46 @@ include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
 # fp_test target
 
 add_executable(fp_test
+        # slowest
         ${CMAKE_CURRENT_LIST_DIR}/elastic_fixed_point.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/const_integer.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/common.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/elastic_integer.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/glm.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/index.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/main.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/make_elastic_fixed_point.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/p0037.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/p0381.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/p0554.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/precise_integer.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/utils.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/precise_safe_elastic_fixed_point.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/safe_integer.cpp
+
+        # still pretty slow
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_built_in.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_saturated_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_native_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_throwing_integer.cpp
+
+        ${CMAKE_CURRENT_LIST_DIR}/safe_integer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/precise_integer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/const_integer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/utils.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/common.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/elastic_integer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/glm.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/index.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/make_elastic_fixed_point.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/number_test.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/numeric_traits.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/p0037.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/p0381.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/p0554.cpp
         ${CMAKE_CURRENT_LIST_DIR}/cstdint.cpp
         ${CMAKE_CURRENT_LIST_DIR}/readme.cpp
         ${CMAKE_CURRENT_LIST_DIR}/snippets.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_math.cpp
         ${CMAKE_CURRENT_LIST_DIR}/zero_cost_average.cpp
         ${CMAKE_CURRENT_LIST_DIR}/zero_cost_square.cpp
+
+        # likely to fail if other files with simpler tests fail
+        ${CMAKE_CURRENT_LIST_DIR}/safe_elastic_integer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/precise_elastic_integer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/precise_fixed_point.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/precise_safe_elastic_fixed_point.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/precise_safe_elastic_integer.cpp
+
+        # pointless unless the rest compiles
+        ${CMAKE_CURRENT_LIST_DIR}/main.cpp
 )
 
 ######################################################################

@@ -242,11 +242,9 @@ namespace sg14 {
         {
             using result_type = decltype(lhs+rhs);
             using numeric_limits = std::numeric_limits<result_type>;
-            return (rhs>0)
-                   ? (lhs>numeric_limits::max()-rhs) ? throw std::overflow_error("positive overflow in addition") : lhs
-                            +rhs
-                   : (lhs<numeric_limits::lowest()-rhs) ? throw std::overflow_error("negative overflow in addition") :
-                     lhs+rhs;
+            return ((rhs>=numeric_traits<Rhs>::from_rep(0))?(lhs>numeric_limits::max()-rhs):(lhs<numeric_limits::lowest()-rhs))
+                   ? throw std::overflow_error("overflow in addition") 
+                 : lhs+rhs;
         }
     };
 
@@ -258,11 +256,9 @@ namespace sg14 {
         {
             using result_type = decltype(lhs-rhs);
             using numeric_limits = std::numeric_limits<result_type>;
-            return (rhs<0)
-                   ? (lhs>numeric_limits::max()+rhs) ? throw std::overflow_error("positive overflow in subtraction") :
-                     lhs-rhs
-                   : (lhs<numeric_limits::lowest()+rhs) ? throw std::overflow_error("negative overflow in subtraction")
-                                                        : lhs-rhs;
+            return ((rhs<numeric_traits<Rhs>::from_rep(0))?(lhs>numeric_limits::max()+rhs):(lhs<numeric_limits::lowest()+rhs))
+                   ? throw std::overflow_error("positive overflow in subtraction") 
+                   : lhs-rhs;
         }
     };
 
