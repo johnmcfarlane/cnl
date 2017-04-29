@@ -36,11 +36,9 @@ TEST(math, FPTESTFORMAT) {
     //TODO: it should be possible in a non-routine unit test to test over all
     //2^32 values of a 32-bit integer
     constexpr std::array<double, 13> fracts{ {
-        static_cast<double>(fp::from_data(1)), //As close to zero as possible
+        static_cast<double>(std::numeric_limits<fp>::min()), //As close to zero as possible
         0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,
-        fp::integer_digits
-            ? 1
-            : static_cast<double>(std::numeric_limits<fp>::max()) //As close to one as possible
+            sg14::_impl::min(1., static_cast<double>(std::numeric_limits<fp>::max())) //As close to one as possible
     } };
 
     for (int i = -fp::fractional_digits; i < fp::integer_digits; i++) {
