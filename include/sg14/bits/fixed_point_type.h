@@ -109,7 +109,7 @@ namespace sg14 {
 
         /// constructor taking an integer type
         template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
-        constexpr fixed_point(S s)
+        constexpr fixed_point(const S& s)
             : fixed_point(fixed_point<S, 0>::from_data(s))
         {
         }
@@ -149,6 +149,12 @@ namespace sg14 {
         {
             _base::operator=(fixed_point_to_rep(rhs));
             return *this;
+        }
+
+        /// returns value represented as bool
+        constexpr operator bool() const
+        {
+            return static_cast<bool>(_base::data());
         }
 
         /// returns value represented as integral
@@ -194,6 +200,25 @@ namespace sg14 {
         static constexpr rep fixed_point_to_rep(const fixed_point<FromRep, FromExponent>& rhs);
     };
 
+    /// value of template parameter, \a Exponent
+    template<class Rep, int Exponent>
+    constexpr int fixed_point<Rep, Exponent>::exponent;
+
+    /// number of binary digits this type can represent;
+    /// equivalent to [std::numeric_limits::digits](http://en.cppreference.com/w/cpp/types/numeric_limits/digits)
+    template<class Rep, int Exponent>
+    constexpr int fixed_point<Rep, Exponent>::digits;
+
+    /// number of binary digits devoted to integer part of value;
+    /// can be negative for specializations with especially small ranges
+    template<class Rep, int Exponent>
+    constexpr int fixed_point<Rep, Exponent>::integer_digits;
+
+    /// number of binary digits devoted to fractional part of value;
+    /// can be negative for specializations with especially large ranges
+    template<class Rep, int Exponent>
+    constexpr int fixed_point<Rep, Exponent>::fractional_digits;
+
     ////////////////////////////////////////////////////////////////////////////////
     // general-purpose implementation-specific definitions
 
@@ -228,7 +253,7 @@ namespace sg14 {
                     Output, Input>::type;
 
             return (exp>-std::numeric_limits<larger>::digits)
-                   ? static_cast<Output>(sg14::scale<larger>()(static_cast<larger>(i), 2, exp))
+                   ? static_cast<Output>(sg14::numeric_traits<larger>::scale(static_cast<larger>(i), 2, exp))
                    : Output{0};
         }
 

@@ -349,36 +349,6 @@ namespace sg14 {
     /// \snippet snippets.cpp use set_width 3
     template<class Type, _width_type MinNumBits>
     using set_width_t = typename set_width<Type, MinNumBits>::type;
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::scale<>
-
-    template<class Integer>
-    struct scale;
-
-    template<class Integer>
-    struct scale {
-        using result_type = decltype(std::declval<Integer>()*std::declval<Integer>());
-
-        static constexpr result_type pown(int base, int exp) {
-            return exp
-                   ? pown(base, exp - 1) * static_cast<result_type>(base)
-                   : static_cast<result_type>(1);
-        }
-
-        static constexpr result_type pow2(int exp) {
-            return result_type{1} << exp;
-        }
-
-        static constexpr result_type pow(int base, int exp)
-        {
-            return (base==2) ? pow2(exp) : pown(base, exp);
-        }
-
-        constexpr result_type operator()(const Integer& i, int base, int exp) const {
-            return (exp < 0) ? i / pow(base, -exp) : i * pow(base, exp);
-        }
-    };
 }
 
 #endif	// SG14_CSTDINT

@@ -7,6 +7,12 @@
 #if !defined(SG14_number_base_H)
 #define SG14_number_base_H 1
 
+#if !defined(SG14_GODBOLT_ORG)
+#include <sg14/auxiliary/const_integer.h>
+#include <sg14/bits/common.h>
+#include <sg14/numeric_traits>
+#endif
+
 #include <limits>
 #include <type_traits>
 
@@ -23,13 +29,18 @@ namespace sg14 {
 
             number_base() = default;
 
-            template<class T>
-            constexpr number_base(const T& r)
+            constexpr number_base(const rep& r)
                 : _rep(r) { }
+
+            template<class T>
+            number_base& operator=(const T& r) {
+                _rep = r;
+                return static_cast<Derived&>(*this);
+            }
 
             explicit constexpr operator bool() const
             {
-                return data() != rep{};
+                return data() != 0;
             }
 
             constexpr const rep& data() const
@@ -37,7 +48,7 @@ namespace sg14 {
                 return _rep;
             }
 
-            static constexpr Derived from_data(rep r)
+            static constexpr Derived from_data(const rep& r)
             {
                 return Derived(r);
             }
@@ -47,200 +58,285 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::is_number_base
+        // sg14::_impl::is_class_derived_from_number_base
 
-        template<class T>
-        struct is_number_base : std::false_type {};
+        // true iff T's base class is sg14::_impl::number_base;
+        // T must be a class;
+        // used by sg14::_impl::is_derived_from_number_base
+        template<class Derived, class Enable = void>
+        struct is_class_derived_from_number_base : std::false_type {};
 
-        template<class Derived, class Rep>
-        struct is_number_base<number_base<Derived, Rep>> : std::true_type {
+        template<class Derived>
+        struct is_class_derived_from_number_base<
+                Derived,
+                enable_if_t<std::is_base_of<number_base<Derived, typename Derived::rep>, Derived>::value>>
+                : std::true_type {};
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::is_derived_from_number_base
+
+        // true if T is the Derived parameter of a number_base type
+        template<class T, class Enable = void>
+        struct is_derived_from_number_base : std::false_type {};
+
+        template<class Derived>
+        struct is_derived_from_number_base<Derived, enable_if_t<std::is_class<Derived>::value>>
+        : is_class_derived_from_number_base<Derived> { };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::enable_if_precedes
+        
+        template<class Former, class Latter>
+        struct precedes {
+            static constexpr bool value =
+                    (std::is_floating_point<Former>::value && !std::is_floating_point<Latter>::value)
+                            || (is_derived_from_number_base<Former>::value &&
+                                    !(is_derived_from_number_base<Latter>::value
+                                            || std::is_floating_point<Latter>::value));
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::is_number
+        // sg14::_impl::operate
 
-        template<class T, class Enable = void>
-        struct is_number : std::false_type {};
+        // higher OP number_base<>
+        template<
+                class Operator, class Lhs, class RhsDerived, class RhsRep,
+                enable_if_t <precedes<Lhs, RhsDerived>::value, std::nullptr_t> = nullptr>
+        constexpr auto operate(const Lhs& lhs, const number_base<RhsDerived, RhsRep>& rhs, Operator)
+        -> decltype(op_fn<Operator>(lhs, to_rep(static_cast<const RhsDerived&>(rhs))))
+        {
+            return op_fn<Operator>(lhs, to_rep(static_cast<const RhsDerived&>(rhs)));
+        }
 
-        template<class Derived>
-        struct is_number<Derived, typename std::enable_if<std::is_class<Derived>::value>::type> {
-            static constexpr bool value
-                    = std::is_base_of<number_base<Derived, typename Derived::rep>, Derived>::value;
-        };
+        // number_base<> OP higher
+        template<
+                class Operator, class LhsDerived, class LhsRep, class Rhs,
+                enable_if_t <precedes<Rhs, LhsDerived>::value, std::nullptr_t> = nullptr>
+        constexpr auto operate(const number_base<LhsDerived, LhsRep>& lhs, const Rhs& rhs, Operator)
+        -> decltype(op_fn<Operator>(to_rep(static_cast<const LhsDerived&>(lhs)), rhs))
+        {
+            return op_fn<Operator>(to_rep(static_cast<const LhsDerived&>(lhs)), rhs);
+        }
+
+        // lower OP number_base<>
+        template<
+                class Operator, class Lhs, class RhsDerived, class RhsRep,
+                enable_if_t <precedes<RhsDerived, Lhs>::value, std::nullptr_t> = nullptr>
+        constexpr auto operate(const Lhs& lhs, const number_base<RhsDerived, RhsRep>& rhs, Operator)
+        -> decltype(op_fn<Operator>(
+                        numeric_traits<RhsDerived>::make(lhs),
+                        static_cast<const RhsDerived&>(rhs))) {
+            return op_fn<Operator>(
+                    numeric_traits<RhsDerived>::make(lhs),
+                    static_cast<const RhsDerived&>(rhs));
+        }
+
+        // number_base<> OP lower
+        template<
+                class Operator, class LhsDerived, class LhsRep, class Rhs,
+                enable_if_t <precedes<LhsDerived, Rhs>::value, std::nullptr_t> = nullptr>
+        constexpr auto operate(const number_base<LhsDerived, LhsRep>& lhs, const Rhs& rhs, Operator)
+        -> decltype(op_fn<Operator>(
+                static_cast<const LhsDerived&>(lhs),
+                numeric_traits<LhsDerived>::make(rhs)))
+        {
+            return op_fn<Operator>(
+                    static_cast<const LhsDerived&>(lhs),
+                    numeric_traits<LhsDerived>::make(rhs));
+        }
+
+        // unary operate
+        template<class Operator, class RhsDerived, class RhsRep>
+        constexpr auto operate(const number_base<RhsDerived, RhsRep>& rhs, Operator)
+#if ! defined(_MSC_VER)
+        -> decltype(op_fn<Operator>(rhs.data()))
+#endif
+        {
+            return op_fn<Operator>(rhs.data());
+        }
 
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_impl::number_base operators
 
-        // comparison
-
-        template<class Derived>
-        constexpr auto operator==(
-                const _impl::number_base<Derived, typename Derived::rep>& lhs,
-                const _impl::number_base<Derived, typename Derived::rep>& rhs)
-        -> decltype(lhs.data()==rhs.data())
-        {
-            return lhs.data()==rhs.data();
-        }
-
-        template<class Derived>
-        constexpr auto operator!=(
-                const _impl::number_base<Derived, typename Derived::rep>& lhs,
-                const _impl::number_base<Derived, typename Derived::rep>& rhs)
-        -> decltype(lhs.data()!=rhs.data())
-        {
-            return lhs.data()!=rhs.data();
-        }
-
-        template<class Derived>
-        constexpr auto operator>(
-                const _impl::number_base<Derived, typename Derived::rep>& lhs,
-                const _impl::number_base<Derived, typename Derived::rep>& rhs)
-        -> decltype(lhs.data()>rhs.data())
-        {
-            return lhs.data()>rhs.data();
-        }
-
-        template<class Derived>
-        constexpr auto operator<(
-                const _impl::number_base<Derived, typename Derived::rep>& lhs,
-                const _impl::number_base<Derived, typename Derived::rep>& rhs)
-        -> decltype(lhs.data()<rhs.data())
-        {
-            return lhs.data()<rhs.data();
-        }
-
-        template<class Derived>
-        constexpr auto operator>=(
-                const _impl::number_base<Derived, typename Derived::rep>& lhs,
-                const _impl::number_base<Derived, typename Derived::rep>& rhs)
-        -> decltype(lhs.data()>=rhs.data())
-        {
-            return lhs.data()>=rhs.data();
-        }
-
-        template<class Derived>
-        constexpr auto operator<=(
-                const _impl::number_base<Derived, typename Derived::rep>& lhs,
-                const _impl::number_base<Derived, typename Derived::rep>& rhs)
-        -> decltype(lhs.data()<=rhs.data())
-        {
-            return lhs.data()<=rhs.data();
-        }
-
         // compound assignment
 
-        template<class Lhs, class Rhs>
+        template<class Lhs, class Rhs, class = enable_if_t <is_derived_from_number_base<Lhs>::value>>
         auto operator+=(Lhs& lhs, const Rhs& rhs)
-        -> typename std::enable_if<_impl::is_number<Lhs>::value, Lhs&>::type
+        -> decltype(lhs = lhs + rhs)
         {
             return lhs = lhs + rhs;
         }
 
-        template<class Lhs, class Rhs>
+        template<class Lhs, class Rhs, class = enable_if_t <is_derived_from_number_base<Lhs>::value>>
         auto operator-=(Lhs& lhs, const Rhs& rhs)
-        -> typename std::enable_if<_impl::is_number<Lhs>::value, Lhs&>::type
+        -> decltype(lhs = lhs - rhs)
         {
             return lhs = lhs - rhs;
         }
 
-        template<class Lhs, class Rhs>
+        template<class Lhs, class Rhs, class = enable_if_t <is_derived_from_number_base<Lhs>::value>>
         auto operator*=(Lhs& lhs, const Rhs& rhs)
-        -> typename std::enable_if<_impl::is_number<Lhs>::value, Lhs&>::type
+        -> decltype(lhs = lhs * rhs)
         {
             return lhs = lhs * rhs;
         }
 
-        template<class Lhs, class Rhs>
+        template<class Lhs, class Rhs, class = enable_if_t <is_derived_from_number_base<Lhs>::value>>
         auto operator/=(Lhs& lhs, const Rhs& rhs)
-        -> typename std::enable_if<_impl::is_number<Lhs>::value, Lhs&>::type
+        -> decltype(lhs = lhs / rhs)
         {
             return lhs = lhs / rhs;
         }
 
-        // unary
+        // unary operators
 
-        template<class Rhs>
-        constexpr auto operator+(
-                const Rhs& rhs)
-        -> typename std::enable_if<_impl::is_number<Rhs>::value, Rhs>::type
+        template<class RhsDerived, class RhsRep>
+        constexpr auto operator+(const number_base<RhsDerived, RhsRep>& rhs)
+        -> decltype(operate(rhs, plus_tag))
         {
-            return rhs;
+            return operate(rhs, plus_tag);
         }
 
-        template<class Rhs>
-        constexpr auto operator-(
-                const Rhs& rhs)
-        -> typename std::enable_if<_impl::is_number<Rhs>::value, Rhs>::type
+        template<class RhsDerived, class RhsRep>
+        constexpr auto operator-(const number_base<RhsDerived, RhsRep>& rhs)
+#if ! defined(_MSC_VER)
+        -> decltype(operate(rhs, minus_tag))
+#endif
         {
-            return Rhs::from_data(-rhs.data());
+            return operate(rhs, minus_tag);
+        }
+
+        // binary arithmetic operators
+
+        template<class Lhs, class Rhs>
+        constexpr auto operator+(const Lhs& lhs, const Rhs& rhs)
+        -> decltype(operate(lhs, rhs, add_tag))
+        {
+            return operate(lhs, rhs, add_tag);
+        }
+
+        template<class Lhs, class Rhs>
+        constexpr auto operator-(const Lhs& lhs, const Rhs& rhs)
+        -> decltype(operate(lhs, rhs, subtract_tag))
+        {
+            return operate(lhs, rhs, subtract_tag);
+        }
+
+        template<class Lhs, class Rhs>
+        constexpr auto operator*(const Lhs& lhs, const Rhs& rhs)
+        -> decltype(operate(lhs, rhs, multiply_tag))
+        {
+            return operate(lhs, rhs, multiply_tag);
+        }
+
+        template<class Lhs, class Rhs>
+        constexpr auto operator/(const Lhs& lhs, const Rhs& rhs)
+        -> decltype(operate(lhs, rhs, divide_tag))
+        {
+            return operate(lhs, rhs, divide_tag);
+        }
+
+        // binary bitwise logic operators
+        
+        template<class Lhs, class Rhs>
+        constexpr auto operator|(const Lhs& lhs, const Rhs& rhs)
+        -> decltype(operate(lhs, rhs, bitwise_or_tag))
+        {
+            return operate(lhs, rhs, bitwise_or_tag);
+        }
+        
+        template<class Lhs, class Rhs>
+        constexpr auto operator&(const Lhs& lhs, const Rhs& rhs)
+        -> decltype(operate(lhs, rhs, bitwise_and_tag))
+        {
+            return operate(lhs, rhs, bitwise_and_tag);
+        }
+        
+        template<class Lhs, class Rhs>
+        constexpr auto operator^(const Lhs& lhs, const Rhs& rhs)
+        -> decltype(operate(lhs, rhs, bitwise_xor_tag))
+        {
+            return operate(lhs, rhs, bitwise_xor_tag);
+        }
+
+        // comparison operator
+
+        template<class Lhs, class Rhs>
+        constexpr auto operator==(const Lhs& lhs, const Rhs& rhs)
+        -> decltype(operate(lhs, rhs, equal_tag))
+        {
+            return operate(lhs, rhs, equal_tag);
+        }
+
+        template<class Lhs, class Rhs>
+        constexpr auto operator!=(const Lhs& lhs, const Rhs& rhs)
+        -> decltype(operate(lhs, rhs, not_equal_tag))
+        {
+            return operate(lhs, rhs, not_equal_tag);
+        }
+
+        template<class Lhs, class Rhs>
+        constexpr auto operator<(const Lhs& lhs, const Rhs& rhs)
+        -> decltype(operate(lhs, rhs, less_than_tag))
+        {
+            return operate(lhs, rhs, less_than_tag);
+        }
+
+        template<class Lhs, class Rhs>
+        constexpr auto operator>(const Lhs& lhs, const Rhs& rhs)
+        -> decltype(operate(lhs, rhs, greater_than_tag))
+        {
+            return operate(lhs, rhs, greater_than_tag);
+        }
+
+        template<class Lhs, class Rhs>
+        constexpr auto operator<=(const Lhs& lhs, const Rhs& rhs)
+        -> decltype(operate(lhs, rhs, less_than_or_equal_tag))
+        {
+            return operate(lhs, rhs, less_than_or_equal_tag);
+        }
+
+        template<class Lhs, class Rhs>
+        constexpr auto operator>=(const Lhs& lhs, const Rhs& rhs)
+        -> decltype(operate(lhs, rhs, greater_than_or_equal_tag))
+        {
+            return operate(lhs, rhs, greater_than_or_equal_tag);
         }
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::to_rep
-
-    namespace _to_rep_impl {
-        template<class Rep, class Enable = void>
-        struct to_rep;
-
-        template<class Rep>
-        struct to_rep<Rep, typename std::enable_if<!_impl::is_number<Rep>::value>::type> {
-            constexpr const Rep& operator()(const Rep& component) const
-            {
-                return component;
-            }
-        };
-
-        template<class Derived>
-        struct to_rep<Derived, typename std::enable_if<_impl::is_number<Derived>::value>::type> {
-            constexpr const typename Derived::rep& operator()(const Derived& component) const
-            {
-                return component.data();
-            }
-        };
-    }
-
-    template<class Component>
-    constexpr auto to_rep(Component&& component)
-    -> decltype(_to_rep_impl::to_rep<typename std::decay<Component>::type>()(component)) {
-        return _to_rep_impl::to_rep<typename std::decay<Component>::type>()(component);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::from_rep
-
-    namespace _from_rep_impl {
-        template<class Rep, class Enable = void>
-        struct from_rep;
-
-        template<class Rep>
-        struct from_rep<Rep, typename std::enable_if<!_impl::is_number<Rep>::value>::type> {
-            constexpr const Rep& operator()(const Rep& component) const
-            {
-                return component;
-            }
-        };
-
-        template<class Derived>
-        struct from_rep<Derived, typename std::enable_if<_impl::is_number<Derived>::value>::type> {
-            constexpr const Derived operator()(const typename Derived::rep& rep) const
-            {
-                return Derived::from_data(rep);
-            }
-        };
-    }
+    // sg14::numeric_traits<_impl::number_base<>>
 
     template<class Derived, class Rep>
-    constexpr auto from_rep(const Rep& rep)
-    -> decltype(_from_rep_impl::from_rep<Derived>()(rep)) {
-        return _from_rep_impl::from_rep<Derived>()(rep);
-    }
+    struct numeric_traits<_impl::number_base<Derived, Rep>> {
+        using _rep = Rep;
+        using _rep_numeric_traits = numeric_traits<_rep>;
 
-    template<class Rep>
-    constexpr auto from_rep(const Rep& component)
-    -> Rep const& {
-        return component;
-    }
+        using _number_base = _impl::number_base<Derived, _rep>;
+        using value_type = Derived;
+
+        static constexpr bool is_specialized = true;
+
+        static constexpr value_type from_rep(const _rep& r)
+        {
+            return _number_base::from_data(r);
+        }
+
+        static constexpr _rep to_rep(const value_type& number)
+        {
+            return number.data();
+        }
+        
+        template<typename Input>
+        static constexpr value_type make(const Input& input) {
+            return value_type(input);
+        }
+
+        static constexpr value_type scale(const value_type& number, int base, int exp)
+        {
+            return from_rep(sg14::scale(to_rep(number), base, exp));
+        }
+    };
 }
 
 namespace std {
@@ -259,7 +355,7 @@ namespace std {
 
         static constexpr _value_type min() noexcept
         {
-            return sg14::from_rep<_value_type>(_rep_numeric_limits::min());
+            return sg14::numeric_traits<_value_type>::from_rep(_rep_numeric_limits::min());
         }
 
         static constexpr _value_type max() noexcept
@@ -304,4 +400,4 @@ namespace std {
     };
 }
 
-#endif
+#endif  // SG14_NUMBER_BASE_H

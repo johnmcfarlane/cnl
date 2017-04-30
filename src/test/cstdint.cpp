@@ -16,6 +16,11 @@ using std::is_same;
 using sg14::make_signed;
 using sg14::make_unsigned;
 
+#if defined(SG14_INT128_ENABLED)
+static_assert(std::numeric_limits<SG14_INT128>::is_specialized, "numeric_limits<SG14_INT128> is not specialized");
+static_assert(std::numeric_limits<SG14_UINT128>::is_specialized, "numeric_limits<SG14_UINT128> is not specialized");
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::width
 
@@ -184,27 +189,3 @@ struct test_built_in<SG14_UINT128>;
 template
 struct test_built_in<SG14_INT128>;
 #endif
-
-////////////////////////////////////////////////////////////////////////////////
-// sg14::scale
-
-using sg14::scale;
-
-static_assert(identical(scale<uint8_t>()(0b11110101, 2, 8), 0b1111010100000000), "sg14::scale test failed");
-static_assert(scale<uint8_t>()(0b10110110, 2, 4) == 0b101101100000, "sg14::scale test failed");
-static_assert(scale<uint8_t>()(0b00111010, 2, 2) == 0b11101000, "sg14::scale test failed");
-static_assert(scale<uint8_t>()(0b11101011, 2, 0) == 0b11101011, "sg14::scale test failed");
-static_assert(scale<uint8_t>()(0b01100100, 2, -2) == 0b00011001, "sg14::scale test failed");
-static_assert(scale<uint8_t>()(0b00111001, 2, -4) == 0b00000011, "sg14::scale test failed");
-static_assert(scale<uint8_t>()(0b10110011, 2, -8) == 0, "sg14::scale test failed");
-
-static_assert(scale<int8_t>()(-0b1110101, 2, 8) == -0b111010100000000, "sg14::scale test failed");
-static_assert(scale<int8_t>()(-0b0110110, 2, 4) == -0b01101100000, "sg14::scale test failed");
-static_assert(scale<int8_t>()(+0b0011010, 2, 2) == +0b1101000, "sg14::scale test failed");
-static_assert(scale<int8_t>()(-0b1101011, 2, 0) == -0b1101011, "sg14::scale test failed");
-static_assert(scale<int8_t>()(+0b1100100, 2, -2) == +0b0011001, "sg14::scale test failed");
-static_assert(scale<int8_t>()(+0b0111001, 2, -4) == +0b0000011, "sg14::scale test failed");
-static_assert(scale<int8_t>()(-0b0110011, 2, -8) == -0b0000000, "sg14::scale test failed");
-
-static_assert(scale<int32_t>()(1, 2, 30) == 0x40000000, "sg14::scale test failed");
-static_assert(scale<uint64_t>()(1, 2, 4) == 16, "sg14::scale test failed");

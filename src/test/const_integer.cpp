@@ -133,12 +133,12 @@ namespace {
             using namespace _impl;
             using _const_integer_impl::operate;
             static_assert(
-                    identical(operate<_impl::add_tag>(
+                    identical(operate(
                             const_integer<std::uint8_t, 2>{},
-                            const_integer<std::intmax_t, 3>{}),
+                            const_integer<std::intmax_t, 3>{}, _impl::add_tag),
                             const_integer<std::intmax_t, 5>{}),
                     "sg14::_const_integer_impl::digits_to_integral test failed");
-            static_assert(identical(_const_integer_impl::operate<_impl::divide_tag>(777, 10_c), INTMAX_C(77)),
+            static_assert(identical(_const_integer_impl::operate(777, 10_c, _impl::divide_tag), INTMAX_C(77)),
                     "sg14::elastic_integer test failed");
         }
     }

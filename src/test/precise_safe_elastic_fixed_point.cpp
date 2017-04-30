@@ -10,27 +10,47 @@
 #include <sg14/auxiliary/safe_integer.h>
 
 namespace sg14 {
+    // precise safe elastic fixed-point
     template<
             int IntegerDigits,
             int FractionalDigits = 0,
-            class OverflowPolicy = safe_integer<>::overflow,
+            class OverflowTag = safe_integer<>::overflow_tag,
             class RoundingPolicy = precise_integer<>::rounding,
             class Narrowest = int>
-    using precise_safe_elastic_fixed_point =
-    fixed_point<
-            precise_integer<
-                    safe_integer<
-                            elastic_integer<
-                                    IntegerDigits,
-                                    Narrowest>,
-                            OverflowPolicy>,
-                    RoundingPolicy>,
-            -FractionalDigits>;
+    using psefp = fixed_point<
+            elastic_integer<
+                    IntegerDigits,
+                    precise_integer<
+                            safe_integer<
+                                    Narrowest,
+                                    OverflowTag
+                            >,
+                            RoundingPolicy
+                    >
+            >,
+            -FractionalDigits
+    >;
+
+    template<
+            class OverflowTag = safe_integer<>::overflow_tag,
+            class RoundingPolicy = precise_integer<>::rounding,
+            class Narrowest = int,
+            class Input = int>
+    psefp<
+            std::numeric_limits<Input>::digits, 0,
+            OverflowTag, RoundingPolicy,
+            Narrowest>
+    constexpr make_psefp(Input const& input)
+    {
+        return input;
+    }
 }
 
 namespace {
-    using sg14::precise_safe_elastic_fixed_point;
+    using sg14::make_psefp;
+    using sg14::psefp;
     using std::is_same;
+    using sg14::_impl::identical;
 
     namespace default_parameters {
         using sg14::precise_integer;
@@ -38,7 +58,17 @@ namespace {
         using sg14::elastic_integer;
 
         static_assert(
-                is_same<precise_safe_elastic_fixed_point<1>::rep::rep::rep::rep, int>::value,
+                is_same<psefp<1>::rep::rep::rep::rep, int>::value,
                 "sg14::precise_integer parameter default test failed");
+    }
+
+    namespace test_make_psefp {
+        using namespace sg14::literals;
+        static_assert(identical(make_psefp(std::int16_t{7}), psefp<15>{7}), "");
+        static_assert(identical(make_psefp(444_c), psefp<9>{444}), "");
+    }
+
+    namespace test_multiply {
+        static_assert(identical(sg14::psefp<6>{7}*sg14::psefp<13>{321}, sg14::psefp<19>{2247}), "");
     }
 }

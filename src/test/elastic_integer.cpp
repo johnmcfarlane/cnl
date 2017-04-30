@@ -17,6 +17,52 @@ namespace {
     using namespace sg14::literals;
 
     // simple one-off tests
+    namespace test_operate {
+        using sg14::_impl::is_derived_from_number_base;
+        using sg14::_impl::equal_tag;
+        using sg14::_impl::equal_tag_t;
+        using sg14::_impl::multiply_tag;
+        using sg14::_impl::op_fn;
+        using sg14::_impl::operate;
+        using sg14::_impl::precedes;
+        using sg14::to_rep;
+
+        static_assert(is_derived_from_number_base<elastic_integer<1>>::value,
+                "sg14::_impl::is_derived_from_number_base test failed");
+        static_assert(precedes<elastic_integer<1>, int32_t>::value, "");
+        static_assert(!precedes<int32_t, elastic_integer<1>>::value, "");
+        static_assert(
+                operate(elastic_integer<31>{0x7fffffff}, elastic_integer<31>{std::numeric_limits<std::int32_t>::min()}, sg14::_impl::greater_than_tag),
+                "sg14::elastic_integer test failed");
+        static_assert(identical(
+                typename std::common_type<elastic_integer<31>, elastic_integer<32, unsigned>>::type{},
+                elastic_integer<32>{}),
+                "sg14::elastic_integer test failed");
+        static_assert(elastic_integer<31>{-1} < elastic_integer<31, unsigned>{1},
+                "sg14::elastic_integer test failed");
+        static_assert(sg14::_impl::op_fn<sg14::_impl::less_than_tag_t>(elastic_integer<31, unsigned>{-1},
+                elastic_integer<31>{1}),
+                "sg14::elastic_integer test failed");
+        static_assert(operate(elastic_integer<1>{0}, INT32_C(0), sg14::_impl::equal_tag),
+                "sg14::elastic_integer test failed");
+        static_assert(identical(
+                operate(elastic_integer<1>{0}, INT32_C(0), multiply_tag), elastic_integer<32, int>{0}),
+                "sg14::elastic_integer test failed");
+
+
+        static_assert(
+                op_fn<equal_tag_t>(
+                        to_rep(static_cast<int>(elastic_integer<8>{1L})),
+                        to_rep(static_cast<int>(elastic_integer<8>{1L}))), "");
+
+        static_assert(operate(elastic_integer<8>{1L}, elastic_integer<8>{1}, equal_tag),
+                "elastic_integer comparison test failed");
+        static_assert(operate(elastic_integer<12, std::uint16_t>{1324}, 1324, equal_tag),
+                "sg14::elastic_integer test failed");
+        static_assert(operate(~elastic_integer<12, std::uint16_t>{0}, 0xFFF, equal_tag),
+                "sg14::elastic_integer test failed");
+    }
+
     static_assert(identical(elastic_integer<8>{1L}, elastic_integer<8>{1}), "elastic_integer test failed");
     static_assert(identical(-elastic_integer<1, unsigned>{1}, elastic_integer<1, signed>{-1}), "elastic_integer test failed");
     static_assert(sg14::width<elastic_integer<7, int>>::value == 8, "elastic_integer test failed");
@@ -37,6 +83,13 @@ namespace {
     }
 
     namespace test_subtract {
+        // 0-0
+        static_assert(
+                identical(
+                        elastic_integer<5>{0}-elastic_integer<5>{0},
+                        elastic_integer<6>{0}),
+                "sg14::elastic_integer test failed");
+
         // unsigned{0}-unsigned{max}
         static_assert(
                 identical(
@@ -69,6 +122,8 @@ namespace {
     namespace test_divide {
         static_assert(identical(elastic_integer<10>{777}/elastic_integer<4>{10}, elastic_integer<10>{77}),
                 "sg14::elastic_integer test failed");
+        static_assert(identical(elastic_integer<5>{32}/3, elastic_integer<5>{10}),
+                "sg14::elastic_integer test failed");
         static_assert(identical(elastic_integer<10>{777}/10_c, elastic_integer<10>{77}),
                 "sg14::elastic_integer test failed");
     }
@@ -83,10 +138,21 @@ namespace {
 
     namespace test_multiply {
         using sg14::make_elastic_integer;
+        using sg14::_impl::multiply_tag;
+
+        static_assert(sg14::_impl::precedes<elastic_integer<1>, int32_t>::value, "");
+        static_assert(identical(
+                sg14::_impl::operate(elastic_integer<1>{0}, INT32_C(0), multiply_tag),
+                sg14::elastic_integer<32, int>{0}),
+                "sg14::elastic_integer test failed");
         static_assert(identical(elastic_integer<1>{0} * INT32_C(0), sg14::elastic_integer<32, int>{0}),
                       "sg14::elastic_integer test failed");
         static_assert(identical(make_elastic_integer(177_c), sg14::elastic_integer<8, int>{177}),
                       "sg14::elastic_integer test failed");
+        static_assert(!sg14::_impl::precedes<sg14::elastic_integer<1>, double>::value,
+                "sg14::elastic_integer test failed");
+        static_assert(identical(3.*make_elastic_integer(3210), 9630.),
+                "sg14::elastic_integer test failed");
 #if defined(SG14_INT128_ENABLED)
         static_assert(identical(elastic_integer<1>{0} * INT64_C(0), sg14::elastic_integer<64, int>{0}),
                       "sg14::elastic_integer test failed");

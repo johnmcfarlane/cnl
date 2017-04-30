@@ -53,9 +53,9 @@ namespace sg14 {
 
     template<class Lhs, class Rhs>
     constexpr auto add(const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_impl::fp::operate<_impl::fp::named_function_tag, _impl::add_tag>(lhs, rhs))
+    -> decltype(_impl::fp::operate<_impl::fp::named_function_tag>(lhs, rhs, _impl::add_tag))
     {
-        return _impl::fp::operate<_impl::fp::named_function_tag, _impl::add_tag>(lhs, rhs);
+        return _impl::fp::operate<_impl::fp::named_function_tag>(lhs, rhs, _impl::add_tag);
     }
 
     /// \brief calculates the difference of two \ref fixed_point values
@@ -72,11 +72,9 @@ namespace sg14 {
 
     template<class Lhs, class Rhs>
     constexpr auto subtract(const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_impl::fp::operate<_impl::fp::named_function_tag, _impl::subtract_tag>(lhs,
-            rhs))
+    -> decltype(_impl::fp::operate<_impl::fp::named_function_tag>(lhs, rhs, _impl::subtract_tag))
     {
-        return _impl::fp::operate<_impl::fp::named_function_tag, _impl::subtract_tag>(lhs,
-                rhs);
+        return _impl::fp::operate<_impl::fp::named_function_tag>(lhs, rhs, _impl::subtract_tag);
     }
 
     /// \brief calculates the product of two \ref fixed_point factors
@@ -93,9 +91,9 @@ namespace sg14 {
 
     template<class Lhs, class Rhs>
     constexpr auto multiply(const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_impl::fp::operate<_impl::fp::named_function_tag, _impl::multiply_tag>(lhs, rhs))
+    -> decltype(_impl::fp::operate<_impl::fp::named_function_tag>(lhs, rhs, _impl::multiply_tag))
     {
-        return _impl::fp::operate<_impl::fp::named_function_tag, _impl::multiply_tag>(lhs, rhs);
+        return _impl::fp::operate<_impl::fp::named_function_tag>(lhs, rhs, _impl::multiply_tag);
     }
 
     /// \brief calculates the quotient of two \ref fixed_point values
@@ -112,11 +110,9 @@ namespace sg14 {
 
     template<class Lhs, class Rhs>
     constexpr auto divide(const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_impl::fp::operate<_impl::fp::division_named_function_tag, _impl::divide_tag>(lhs,
-            rhs))
+    -> decltype(_impl::fp::operate<_impl::fp::division_named_function_tag>(lhs, rhs, _impl::divide_tag))
     {
-        return _impl::fp::operate<_impl::fp::division_named_function_tag, _impl::divide_tag>(lhs,
-                rhs);
+        return _impl::fp::operate<_impl::fp::division_named_function_tag>(lhs, rhs, _impl::divide_tag);
     }
 }
 

@@ -1,0 +1,109 @@
+
+//          Copyright John McFarlane 2015 - 2017.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file ../LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
+/// \file
+/// \brief definitions supporting generic treatment of numeric types
+
+#if !defined(SG14_NUMERIC_TRAITS)
+#define SG14_NUMERIC_TRAITS 1
+
+#if !defined(SG14_GODBOLT_ORG)
+#include "cstdint"
+#endif
+
+#include <type_traits>
+
+/// study group 14 of the C++ working group
+namespace sg14 {
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::numeric_traits
+
+    template<class T>
+    struct numeric_traits {
+        using value_type = T;
+
+        static constexpr bool is_specialized = false;
+
+        static constexpr value_type to_rep(const value_type& number)
+        {
+            return number;
+        }
+
+        static constexpr value_type from_rep(const value_type& rep)
+        {
+            return rep;
+        }
+        
+        template<class Input>
+        static constexpr const Input& make(const Input& number)
+        {
+            return number;
+        }
+
+    private:
+        using result_type = decltype(std::declval<T>()*std::declval<T>());
+
+        static constexpr result_type pown(int base, int exp)
+        {
+            return exp
+                   ? pown(base, exp-1)*static_cast<result_type>(base)
+                   : static_cast<result_type>(1);
+        }
+
+        static constexpr result_type pow2(int exp)
+        {
+            return result_type{1} << exp;
+        }
+
+        static constexpr result_type pow(int base, int exp)
+        {
+            return (base==2) ? pow2(exp) : pown(base, exp);
+        }
+
+    public:
+        static constexpr result_type scale(const T& i, int base, int exp)
+        {
+            return numeric_traits<result_type>::from_rep(
+                    (exp<0)
+                    ? to_rep(i)/pow(base, -exp)
+                    : to_rep(i)*pow(base, exp));
+        }
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::to_rep
+
+    template<class Component>
+    constexpr auto to_rep(Component const& component)
+    -> decltype(::sg14::numeric_traits<Component>::to_rep(component))
+    {
+        return ::sg14::numeric_traits<Component>::to_rep(component);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::from_rep
+
+    template<class Component, class Rep>
+    constexpr auto from_rep(Rep rep)
+    -> decltype(::sg14::numeric_traits<Component>::from_rep(rep))
+    {
+        return ::sg14::numeric_traits<Component>::from_rep(rep);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::scale
+
+    template<class InputType>
+    constexpr auto scale(InputType const& input, int base, int exp)
+    -> decltype(numeric_traits<InputType>::scale(input, base, exp))
+    {
+        return numeric_traits<InputType>::scale(input, base, exp);
+    }
+
+}
+
+#endif    // SG14_NUMERIC_TRAITS
