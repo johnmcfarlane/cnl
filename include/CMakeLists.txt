@@ -22,7 +22,8 @@ target_sources(fixed_point INTERFACE
         include/sg14/cstdint
         include/sg14/fixed_point
         include/sg14/limits
-        include/sg14/type_traits)
+        include/sg14/type_traits
+)
 
 include_directories(SYSTEM ${CMAKE_CURRENT_LIST_DIR})
 install(
