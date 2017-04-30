@@ -39,7 +39,7 @@ TEST(safft, fft_double)
         ref_angle = twopi*(double)index/(double)fftSize;
         ref = std::complex<double>(cos(ref_angle),-sin(ref_angle));
         //This will be pretty accurate...
-        ASSERT_EQ(std::abs(ptr[i]-ref)<0.00000000000001,1);
+        ASSERT_LT(std::abs(ptr[i]-ref), 0.00000000000001);
     }
 }
 
@@ -73,8 +73,8 @@ TEST(safft, fft_fixed_point)
         ref = std::complex<double>(cos(ref_angle),-sin(ref_angle));
         //Accuracy vs. double will be smaller
         //TODO: Acceptable FFT accuracy
-        ASSERT_EQ(std::abs((double)fix_ptr[i].real()-ref.real())<0.0005,1);
-        ASSERT_EQ(std::abs((double)fix_ptr[i].imag()-ref.imag())<0.0005,1);
+        ASSERT_LT(std::abs((double)fix_ptr[i].real()-ref.real()), 0.0005);
+        ASSERT_LT(std::abs((double)fix_ptr[i].imag()-ref.imag()), 0.0005);
     }
 }
 
@@ -108,7 +108,7 @@ TEST(safft, fft_elastic_fixed_point)
         ref = std::complex<double>(cos(ref_angle),-sin(ref_angle));
         //Accuracy vs. double will be smaller
         //TODO: Acceptable FFT accuracy
-        ASSERT_EQ(std::abs((double)ptr[i].real()-ref.real())<0.0005,1);
-        ASSERT_EQ(std::abs((double)ptr[i].imag()-ref.imag())<0.0005,1);
+        ASSERT_LT(std::abs((double)ptr[i].real()-ref.real()), 0.0005);
+        ASSERT_LT(std::abs((double)ptr[i].imag()-ref.imag()), 0.0005);
     }
 }
