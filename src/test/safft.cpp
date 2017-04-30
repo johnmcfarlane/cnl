@@ -4,6 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#define _USE_MATH_DEFINES // define M_PI in <cmath>
 
 #include <iostream>
 #include <iomanip>
