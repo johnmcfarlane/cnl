@@ -16,8 +16,6 @@
 //#define CALCULATE_WITH_COMPLEX_DATATYPE
 //#define USE_MULTIPLY_OPERATOR
 
-using namespace sg14;
-
 namespace Algorithms {
 
 /**
