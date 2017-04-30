@@ -92,21 +92,22 @@ namespace Algorithms {
     SaFFT<T>::~SaFFT() {
     }
 
-    template<class T>
-    unsigned int fft_core(std::vector<std::complex<T>> &vec1,
-                          std::vector<std::complex<T>> &vec2,
-                          std::vector<std::complex<T>> &twiddles,
-                          int direction_flag,
-                          typename std::enable_if<sg14::_impl::is_fixed_point<T>::value>::type *dummy __attribute__((unused)) = 0) {
+    template<class Rep, int Exponent>
+    unsigned int fft_core(std::vector<std::complex<sg14::fixed_point<Rep, Exponent>>> &vec1,
+                          std::vector<std::complex<sg14::fixed_point<Rep, Exponent>>> &vec2,
+                          std::vector<std::complex<sg14::fixed_point<Rep, Exponent>>> &twiddles,
+                          int direction_flag) {
+        using fixed_point = sg14::fixed_point<Rep, Exponent>;
+        using complex = std::complex<fixed_point>;
         unsigned int N = (unsigned int) vec1.size();
         unsigned int S = (unsigned int) (std::log10((double) N) /
                                          std::log10((double) 2));
         unsigned int stride = ((unsigned int) twiddles.size()) * 2 / N;
 
         unsigned int r, L_s, r_s;
-        std::complex<T> w, tau;
+        complex w, tau;
 
-        std::complex<T> *xp, *yp, *tp;
+        complex *xp, *yp, *tp;
         yp = &vec1[0]; //Initial input buffer
         xp = &vec2[0]; //Initial output buffer
 
@@ -126,22 +127,22 @@ namespace Algorithms {
                     xp[(j + L_s) * r + k] = yp[j * r_s + k] - tau; //FAILS
 #else //CALCULATE_WITH_COMPLEX_DATATYPE
 #ifdef USE_MULTIPLY_OPERATOR
-                    tau = std::complex<T>(
+                    tau = complex(
                             w.real()*yp[j * r_s + k + r].real() -
                             w.imag()*yp[j * r_s + k + r].imag(),
                             w.imag()*yp[j * r_s + k + r].real() +
                             w.real()*yp[j * r_s + k + r].imag());
 #else //USE_MULTIPLY_OPERATOR
-                    tau = std::complex<T>(
+                    tau = complex(
                             multiply(w.real(), yp[j * r_s + k + r].real()) -
                             multiply(w.imag(), yp[j * r_s + k + r].imag()),
                             multiply(w.imag(), yp[j * r_s + k + r].real()) +
                             multiply(w.real(), yp[j * r_s + k + r].imag()));
 #endif //USE_MULTIPLY_OPERATOR
-                    xp[j * r + k] = std::complex<T>(
+                    xp[j * r + k] = complex(
                             yp[j * r_s + k].real() + tau.real(),
                             yp[j * r_s + k].imag() + tau.imag());
-                    xp[(j + L_s) * r + k] = std::complex<T>(
+                    xp[(j + L_s) * r + k] = complex(
                             yp[j * r_s + k].real() - tau.real(),
                             yp[j * r_s + k].imag() - tau.imag());
 #endif //CALCULATE_WITH_COMPLEX_DATATYPE
@@ -161,8 +162,7 @@ namespace Algorithms {
     unsigned int fft_core(std::vector<std::complex<T>> &vec1,
                           std::vector<std::complex<T>> &vec2,
                           std::vector<std::complex<T>> &twiddles,
-                          int direction_flag,
-                          typename std::enable_if<std::is_floating_point<T>::value>::type *dummy __attribute__((unused)) = 0) {
+                          int direction_flag) {
         unsigned int N = (unsigned int) vec1.size();
         unsigned int S = (unsigned int) (std::log10((double) N) /
                                          std::log10((double) 2));
