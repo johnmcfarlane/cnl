@@ -34,7 +34,7 @@ namespace sg14 {
                 // generates a fixed-point type that is as big as both of them (or as close as possible)
                 template<class LhsRep, int LhsExponent, class RhsInteger>
                 struct common_type_mixed<fixed_point
-                        <LhsRep, LhsExponent>, RhsInteger, typename std::enable_if<std::numeric_limits<RhsInteger>::is_integer>::type> : std::common_type<
+                        <LhsRep, LhsExponent>, RhsInteger, _impl::enable_if_t<std::numeric_limits<RhsInteger>::is_integer>> : std::common_type<
                         fixed_point<LhsRep, LhsExponent>, fixed_point<RhsInteger, 0>> {
                 };
 
@@ -42,9 +42,9 @@ namespace sg14 {
                 // generates a floating-point type that is as big as both of them (or as close as possible)
                 template<class LhsRep, int LhsExponent, class Float>
                 struct common_type_mixed<
-                        fixed_point<LhsRep, LhsExponent>,
-                        Float,
-                        typename std::enable_if<std::is_floating_point<Float>::value>::type> : std::common_type<_impl::fp::float_of_same_size<LhsRep>, Float> {
+                        fixed_point<LhsRep, LhsExponent>, Float,
+                        _impl::enable_if_t<std::is_floating_point<Float>::value>>
+                    : std::common_type<_impl::fp::float_of_same_size<LhsRep>, Float> {
                 };
             }
         }

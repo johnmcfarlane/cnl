@@ -22,6 +22,28 @@
 /// study group 14 of the C++ working group
 namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
+    // sg14::numeric_traits
+
+    template<class Rep, int Exponent>
+    struct numeric_traits<fixed_point<Rep, Exponent>>
+        : numeric_traits<_impl::number_base<fixed_point<Rep, Exponent>, Rep>> {
+        using _base = numeric_traits<_impl::number_base<fixed_point<Rep, Exponent>, Rep>>;
+        using value_type = typename _base::value_type;
+
+        static constexpr value_type from_rep(const Rep& rep)
+        {
+            return value_type::from_data(rep);
+        }
+
+        template<class Input>
+        static constexpr fixed_point <Input>
+        make(const Input& input)
+        {
+            return input;
+        }
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
     // sg14::abs
 
     template<class Rep, int Exponent>

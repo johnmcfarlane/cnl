@@ -22,6 +22,7 @@
 
 using std::is_same;
 using std::declval;
+using std::numeric_limits;
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer definitions
@@ -68,7 +69,8 @@ using set_width_t = sg14::set_width_t<Type, MinNumBits>;
 using sg14::divide;
 using sg14::multiply;
 
-using std::numeric_limits;
+using sg14::from_rep;
+using sg14::to_rep;
 
 using sg14::_impl::identical;
 
@@ -77,8 +79,8 @@ using sg14::_impl::identical;
 
 TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_fixed_point)
 {
-    auto lhs = fixed_point<uint32, -16>(0);
-    lhs = static_cast<fixed_point<uint32, -16>>(123.456);
+    auto lhs = fixed_point<int32, -16>(0);
+    lhs = static_cast<fixed_point<int32, -16>>(123.456);
     ASSERT_EQ(lhs, fixed_point<>(123.456));
 }
 
@@ -91,8 +93,8 @@ TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_floating_point)
 
 TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_integer)
 {
-    auto lhs = fixed_point<uint32, -16>(0);
-    lhs = static_cast<fixed_point<uint32, -16>>(543);
+    auto lhs = fixed_point<int32, -16>(0);
+    lhs = static_cast<fixed_point<int32, -16>>(543);
     ASSERT_EQ(lhs, 543);
 }
 
@@ -300,6 +302,12 @@ static_assert(is_same<fixed_point<uint64>, fixed_point<uint64, 0>>::value, "sg14
 static_assert(identical(fixed_point<test_int, 0>{test_int{ 0 }}, fixed_point<>{test_int{ 0 }}), "sg14::fixed_point test failed");
 static_assert(is_same<fixed_point<test_int, 0>, fixed_point<>>::value, "sg14::fixed_point test failed");
 
+namespace test_glvalue_error {
+#if ! defined(__GNUG__) // Bug 71504?
+    constexpr auto q = fixed_point<test_int, 0>{1}/1;
+#endif
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // conversion
 
@@ -357,7 +365,7 @@ static_assert(fixed_point<uint16, 16>(6553.)==0, "sg14::fixed_point test failed"
 #endif
 static_assert((fixed_point<uint32, 16>(4294967296l))==4294967296.f, "sg14::fixed_point test failed");
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert((fixed_point<uint64, 16>(1125895611875328l))==1125895611875328l, "sg14::fixed_point test failed");
+static_assert((fixed_point<uint64, 16>(1125895611875328l))==1125895611875328ul, "sg14::fixed_point test failed");
 #endif
 
 static_assert(fixed_point<int8, 16>(-65536)==-65536.f, "sg14::fixed_point test failed");
@@ -453,9 +461,9 @@ static_assert(is_same<
 // fixed-point arithmetic support types
 
 namespace test_operate {
-    using sg14::_impl::add_tag;
-    using sg14::_impl::multiply_tag;
-    using sg14::_impl::divide_tag;
+    using sg14::_impl::add_tag_t;
+    using sg14::_impl::multiply_tag_t;
+    using sg14::_impl::divide_tag_t;
 
     using sg14::_impl::fp::arithmetic::wide_tag;
     using sg14::_impl::fp::arithmetic::lean_tag;
@@ -465,9 +473,9 @@ namespace test_operate {
 
     using sg14::_impl::fp::arithmetic::rep_op_exponent;
 
-    static_assert(rep_op_exponent<multiply_tag, make_ufixed<4, 4>, make_ufixed<4, 4>>::value==-8,
+    static_assert(rep_op_exponent<multiply_tag_t, make_ufixed<4, 4>, make_ufixed<4, 4>>::value==-8,
             "sg14::_fixed_point_impl::rep_op_exponent test failed");
-    static_assert(rep_op_exponent<divide_tag, make_fixed<1, 14>, make_fixed<7, 0>>::value==-14,
+    static_assert(rep_op_exponent<divide_tag_t, make_fixed<1, 14>, make_fixed<7, 0>>::value==-14,
             "sg14::_fixed_point_impl::rep_op_exponent test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -477,34 +485,34 @@ namespace test_operate {
 
     // sg14::_impl::fp::arithmetic::result::type
     static_assert(identical(
-            result<lean_tag, add_tag, fixed_point<test_int, 0>, fixed_point<uint8, 10>>::type{12288},
+            result<lean_tag, add_tag_t, fixed_point<test_int, 0>, fixed_point<uint8, 10>>::type{12288},
             fixed_point<test_int, 0>{12288}), "sg14::_impl::fp::arithmetic::result test failed");
 
     static_assert(identical(
-            result<wide_tag, multiply_tag, make_ufixed<4, 4>, make_ufixed<4, 4>>::type{0},
+            result<wide_tag, multiply_tag_t, make_ufixed<4, 4>, make_ufixed<4, 4>>::type{0},
             make_ufixed<8, 8>{0}), "sg14::_impl::fp::arithmetic::result test failed");
     static_assert(identical(
-            result<wide_tag, multiply_tag, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::type{1},
+            result<wide_tag, multiply_tag_t, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::type{1},
             fixed_point<uint64, 0>{1}), "sg14::fixed_point test failed");
 
     static_assert(identical(
-            result<wide_tag, divide_tag, make_fixed<1, 14>, make_fixed<7, 0>>::type{1.5},
+            result<wide_tag, divide_tag_t, make_fixed<1, 14>, make_fixed<7, 0>>::type{1.5},
             fixed_point<test_int, -21>{1.5}), "sg14::_impl::fp::arithmetic::result test failed");
     static_assert(identical(
-            result<wide_tag, divide_tag, make_ufixed<7, 1>, make_ufixed<5, 3>>::type{15.75},
+            result<wide_tag, divide_tag_t, make_ufixed<7, 1>, make_ufixed<5, 3>>::type{15.75},
             fixed_point<test_unsigned, -6>{15.75}), "sg14::fixed_point test failed");
 #if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
     static_assert(identical(
-            result<wide_tag, divide_tag, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::type{1},
+            result<wide_tag, divide_tag_t, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::type{1},
             fixed_point<uint64, -32>{1}), "sg14::fixed_point test failed");
 #endif
     static_assert(identical(
-            result<lean_tag, divide_tag, fixed_point<int8, -1>, fixed_point<int8, -1>>::type{-15.75},
+            result<lean_tag, divide_tag_t, fixed_point<int8, -1>, fixed_point<int8, -1>>::type{-15.75},
             fixed_point<test_int, 0>{-15.75}), "sg14::fixed_point test failed");
 
     // sg14::_impl::fp::arithmetic::result::rep_op_result
     static_assert(identical(
-            result<wide_tag, multiply_tag, make_ufixed<7, 1>, make_ufixed<5, 3>>::rep_op_result{65535},
+            result<wide_tag, multiply_tag_t, make_ufixed<7, 1>, make_ufixed<5, 3>>::rep_op_result{65535},
             test_int{65535}), "sg14::fixed_point test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -514,31 +522,31 @@ namespace test_operate {
 
     // sg14::_impl::fp::arithmetic::intermediate::rep_type
     static_assert(identical(
-            intermediate<wide_tag, divide_tag, make_ufixed<7, 1>, make_ufixed<5, 3>>::rep_type{65537},
+            intermediate<wide_tag, divide_tag_t, make_ufixed<7, 1>, make_ufixed<5, 3>>::rep_type{65537},
             test_unsigned{65537}), "sg14::fixed_point test failed");
 
     // sg14::_impl::fp::arithmetic::intermediate::lhs_type
     static_assert(identical(
-            intermediate<wide_tag, multiply_tag, make_ufixed<4, 4>, make_ufixed<4, 4>>::lhs_type{0},
+            intermediate<wide_tag, multiply_tag_t, make_ufixed<4, 4>, make_ufixed<4, 4>>::lhs_type{0},
             fixed_point<uint8, -4>{0}), "sg14::_impl::fp::arithmetic::intermediate test failed");
     static_assert(identical(
-            intermediate<wide_tag, multiply_tag, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::lhs_type{1},
+            intermediate<wide_tag, multiply_tag_t, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::lhs_type{1},
             fixed_point<uint64, 0>{1}), "sg14::fixed_point test failed");
 
     static_assert(identical(
-            intermediate<wide_tag, divide_tag, make_ufixed<7, 1>, make_ufixed<5, 3>>::lhs_type{15.75},
+            intermediate<wide_tag, divide_tag_t, make_ufixed<7, 1>, make_ufixed<5, 3>>::lhs_type{15.75},
             fixed_point<test_unsigned, -9>{15.75}), "sg14::fixed_point test failed");
 #if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
     static_assert(identical(
-            intermediate<wide_tag, divide_tag, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::lhs_type{1},
+            intermediate<wide_tag, divide_tag_t, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::lhs_type{1},
             fixed_point<uint64, -32>{1}), "sg14::fixed_point test failed");
 #endif
 
     static_assert(identical(
-            intermediate<lean_tag, add_tag, fixed_point<test_int, 0>, fixed_point<uint8, 10>>::lhs_type{12288},
+            intermediate<lean_tag, add_tag_t, fixed_point<test_int, 0>, fixed_point<uint8, 10>>::lhs_type{12288},
             fixed_point<test_int, 0>{12288}), "sg14::_impl::fp::arithmetic::intermediate test failed");
     static_assert(identical(
-            intermediate<lean_tag, add_tag, fixed_point<test_int, 0>, fixed_point<uint8, 10>>::rhs_type{12288},
+            intermediate<lean_tag, add_tag_t, fixed_point<test_int, 0>, fixed_point<uint8, 10>>::rhs_type{12288},
             fixed_point<test_int, 0>{12288}), "sg14::_impl::fp::arithmetic::intermediate test failed");
 }
 
@@ -677,7 +685,7 @@ static_assert(
         identical(make_fixed<2, 5>{2.125} * make_fixed<2, 5>{-3.25}, fixed_point<test_int, -10>{-6.90625}),
         "sg14::fixed_point multiplication test failed");
 
-#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
+#if defined(__clang__)
 static_assert(identical(multiply(fixed_point<uint8, 10>{10240}, 3u), fixed_point<uint64, 10>{30720}),
         "sg14::fixed_point multiplication test failed");
 static_assert(identical(fixed_point<uint8, 10>{10240} * 3u, fixed_point<test_unsigned, 10>{30720}),
@@ -723,6 +731,7 @@ static_assert(identical(divide(fixed_point<uint32, 10>{10240}, fixed_point<uint3
         10>{3413.3333333}), "sg14::fixed_point division test failed");
 static_assert(identical(10/fixed_point<uint8, -6>(0.25), fixed_point<int64, -2>{40}),
         "sg14::fixed_point division test failed");
+#if ! defined(__GNUG__) // Bug 71504?
 static_assert(
         identical(fixed_point<uint8, 10>{10240}/static_cast<uint16_t>(3), fixed_point<test_unsigned, -6>{3413.3333333}),
         "sg14::fixed_point division test failed");
@@ -731,6 +740,7 @@ static_assert(identical(test_int{10}/fixed_point<uint8, -2>{0.25}, fixed_point<i
         "sg14::fixed_point division test failed");
 static_assert(identical(divide(10, fixed_point<uint8, -2>{0.25}), fixed_point<test_int, 2>{40}),
         "sg14::fixed_point division test failed");
+#endif
 #endif
 
 static_assert(16777215.996093750/make_fixed<31, 32>(-123.654f)==-135678.71712347874,
@@ -787,8 +797,8 @@ constexpr bool test_numeric_limits(Min min, Max max, Lowest lowest)
     static_assert(!nl::tinyness_before, "numeric_limits<fixed_point>::tinyness_before");
     static_assert(nl::round_error()==static_cast<Rep>(.5), "numeric_limits<fixed_point>::round_error");
     static_assert(nl::infinity()==rnl::infinity(), "numeric_limits<fixed_point>::infinity");
-    static_assert(nl::quiet_NaN()==0, "numeric_limits<fixed_point>::quiet_NaN");
-    static_assert(nl::signaling_NaN()==0, "numeric_limits<fixed_point>::signaling_NaN");
+    static_assert(nl::quiet_NaN()==Rep(0), "numeric_limits<fixed_point>::quiet_NaN");
+    static_assert(nl::signaling_NaN()== Rep(0), "numeric_limits<fixed_point>::signaling_NaN");
 
     return nl::min()==min
             && nl::lowest()==lowest
@@ -819,7 +829,7 @@ static_assert(test_numeric_limits<test_signed, 0>(1,
         std::numeric_limits<test_signed>::max(),
         std::numeric_limits<test_signed>::lowest()), "");
 
-static_assert(test_numeric_limits<test_unsigned, 0>(1,
+static_assert(test_numeric_limits<test_unsigned, 0U>(1U,
         std::numeric_limits<test_unsigned>::max(),
         std::numeric_limits<test_unsigned>::lowest()), "");
 
@@ -887,7 +897,7 @@ struct FixedPointTesterOutsize {
 
     // simply assignment to and from underlying representation
     using numeric_limits = std::numeric_limits<fixed_point>;
-    static constexpr fixed_point min = fixed_point::from_data(rep(1));
+    static constexpr fixed_point min = from_rep<fixed_point>(rep(1));
 #if !defined(_MSC_VER)
     static_assert(min.data() == rep(1), "all Rep types should be able to store the number 1!");
 
@@ -941,7 +951,7 @@ struct FixedPointTester : public FixedPointTesterOutsize<Rep, Exponent> {
     using fixed_point = typename super::fixed_point;
     static constexpr fixed_point min = super::min;
 
-#if !defined(_MSC_VER) && defined(TEST_NATIVE_OVERFLOW)
+#if defined(__clang__) && defined(TEST_NATIVE_OVERFLOW)
     // assorted tests of +, -, * and /
     static_assert(min + min == 2 * min, "basic arithmetic isn't working");
     static_assert(divide(84 * min, 84) == min, "basic arithmetic isn't working");

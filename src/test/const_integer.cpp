@@ -126,6 +126,21 @@ namespace {
             static_assert(identical(digits_to_integral<'1'>::value, INTMAX_C(1)),
                 "sg14::_const_integer_impl::digits_to_integral test failed");
         }
+
+        namespace test_operate {
+            using namespace sg14;
+            using namespace literals;
+            using namespace _impl;
+            using _const_integer_impl::operate;
+            static_assert(
+                    identical(operate(
+                            const_integer<std::uint8_t, 2>{},
+                            const_integer<std::intmax_t, 3>{}, _impl::add_tag),
+                            const_integer<std::intmax_t, 5>{}),
+                    "sg14::_const_integer_impl::digits_to_integral test failed");
+            static_assert(identical(_const_integer_impl::operate(777, 10_c, _impl::divide_tag), INTMAX_C(77)),
+                    "sg14::elastic_integer test failed");
+        }
     }
 
     namespace test_const_integer {
@@ -152,6 +167,11 @@ namespace {
 
         // binary plus
         static_assert(identical(const_integer<std::uint8_t, 2>{} + const_integer<std::intmax_t, 3>{}, const_integer<std::intmax_t, 5>{}), "sg14::const_integer addition test failed");
+
+        // divide
+        using namespace sg14::literals;
+        static_assert(identical(777/ 10_c, INTMAX_C(77)),
+                "sg14::elastic_integer test failed");
 
         // conversion to int
         static_assert(identical(static_cast<int>(const_integer<long, 77213>{}), 77213), "sg14::const_integer test failed");

@@ -105,19 +105,19 @@ $ sudo make install
 #### Windows
 
 Tested on [AppVeyor](https://ci.appveyor.com/project/johnmcfarlane/fixed-point/branch/master)
-and on *Windows 7 Professional* with *CMake 3.4.0*. Requires:
+and on *Windows 10 Professional* with *CMake 3.8.0*. Requires:
 
-- MSBuild 14.0
-- [CMake](https://cmake.org/download/) 2.8.11
+- MSBuild 15.0 (VS 2017)
+- [CMake](https://cmake.org/download/) 3.8.0
 
 To build *vs/Release/fp_test.exe* and *vs/Release/fp_benchmark.exe*:
 
-    cmake .
+    cmake -G "Visual Studio 15 2017" .
     MSBuild.exe /m fixed_point.sln /p:Configuration=Release
 
 For 64-bit builds, append `Win64` to the `-G` option above:
 
-    cmake -G "Visual Studio 14 2015 Win64" .
+    cmake -G "Visual Studio 15 2017 Win64" .
 
 Note that *fp_benchmark* is unlikely to produce valid results due to missing `escape` and `clobber` functions.
 

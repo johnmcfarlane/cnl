@@ -105,8 +105,8 @@ namespace sg14 {
         {
         }
 
-        /// construct from integer type
-        template<class Number, typename std::enable_if<std::numeric_limits<Number>::is_specialized, int>::type Dummy = 0>
+        /// construct from numeric type
+        template<class Number, _impl::enable_if_t<std::numeric_limits<Number>::is_specialized, int> Dummy = 0>
         constexpr elastic_integer(Number n)
                 : _base(static_cast<rep>(n))
         {
@@ -115,7 +115,7 @@ namespace sg14 {
         /// constructor taking an elastic_integer type
         template<int FromWidth, class FromNarrowest>
         explicit constexpr elastic_integer(const elastic_integer<FromWidth, FromNarrowest>& rhs)
-                :_base(rhs)
+                :_base(static_cast<rep>(rhs.data()))
         {
         }
 
@@ -129,7 +129,7 @@ namespace sg14 {
         }
 
         /// copy assignment operator taking a floating-point type
-        template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
+        template<class S, _impl::enable_if_t<std::is_floating_point<S>::value, int> Dummy = 0>
         elastic_integer& operator=(S s)
         {
             _base::operator=(floating_point_to_rep(s));
@@ -140,7 +140,7 @@ namespace sg14 {
         template<class S>
         explicit constexpr operator S() const
         {
-            return static_cast<S>(to_rep(*this));
+            return static_cast<S>(_base::data());
         }
     };
 
@@ -155,7 +155,7 @@ namespace sg14 {
         return elastic_integer<_const_integer_impl::num_integer_bits(Value)>{Value};
     }
 
-    template<class Narrowest = int, class Integral, typename std::enable_if<!is_const_integer<Integral>::value, int>::type Dummy = 0>
+    template<class Narrowest = int, class Integral, _impl::enable_if_t<!is_const_integer<Integral>::value, int> Dummy = 0>
     constexpr auto make_elastic_integer(const Integral& value)
     -> decltype(elastic_integer<std::numeric_limits<Integral>::digits, Narrowest>{value})
     {
@@ -221,49 +221,42 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // comparison operators
 
-#define SG14_ELASTIC_INTEGER_COMPARISON_OP(OP) \
-    template<int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>\
-    constexpr auto \
-    operator OP (const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs) \
-    -> decltype(lhs.data() OP rhs.data()) \
-    { \
-        return lhs.data() OP rhs.data(); \
-    } \
- \
-    template< \
-        int LhsDigits, class LhsNarrowest, class Rhs, \
-        typename std::enable_if<std::numeric_limits<Rhs>::is_integer || std::is_floating_point<Rhs>::value, int>::type = 0> \
-    constexpr auto operator OP (const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const Rhs& rhs) \
-    -> decltype(lhs.data() OP rhs) \
-    { \
-        return lhs.data() OP rhs; \
-    } \
- \
-    template< \
-        class Lhs, int RhsDigits, class RhsNarrowest, \
-        typename std::enable_if<std::numeric_limits<Lhs>::is_integer || std::is_floating_point<Lhs>::value, unsigned>::type = 0> \
-    constexpr auto operator OP (const Lhs& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs) \
-    -> decltype(lhs OP rhs.data()) \
-    { \
-        return lhs OP rhs.data(); \
+    namespace _impl {
+        template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
+#if defined(__GNUG__)
+        bool Enable = Operator::is_comparison>
+#else
+        enable_if_t<Operator::is_comparison>...>
+#endif
+        constexpr auto operate(
+                const elastic_integer<LhsDigits, LhsNarrowest>& lhs,
+                const elastic_integer<RhsDigits, RhsNarrowest>& rhs,
+                Operator)
+#if ! defined(_MSC_VER)
+        -> decltype(_impl::op_fn<Operator>(
+                    static_cast<typename std::common_type<elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>>::type>(lhs),
+                    static_cast<typename std::common_type<elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>>::type>(rhs)))
+#endif
+        {
+            return _impl::op_fn<Operator>(
+                    static_cast<typename std::common_type<elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>>::type>(lhs),
+                    static_cast<typename std::common_type<elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>>::type>(rhs));
+        }
+
+        template<class Operator, int Digits, class Narrowest,
+                class = enable_if_t<Operator::is_comparison>>
+        constexpr auto
+        operate(const elastic_integer<Digits, Narrowest>& lhs, const elastic_integer<Digits, Narrowest>& rhs, Operator)
+        -> decltype(_impl::op_fn<Operator>(lhs.data(), rhs.data()))
+        {
+            return _impl::op_fn<Operator>(lhs.data(), rhs.data());
+        }
     }
-
-    SG14_ELASTIC_INTEGER_COMPARISON_OP(==);
-
-    SG14_ELASTIC_INTEGER_COMPARISON_OP(!=);
-
-    SG14_ELASTIC_INTEGER_COMPARISON_OP(<);
-
-    SG14_ELASTIC_INTEGER_COMPARISON_OP(>);
-
-    SG14_ELASTIC_INTEGER_COMPARISON_OP(<=);
-
-    SG14_ELASTIC_INTEGER_COMPARISON_OP(>=);
 
     ////////////////////////////////////////////////////////////////////////////////
     // arithmetic operators
 
-    namespace _elastic_integer_impl {
+    namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
         // policies
 
@@ -271,144 +264,132 @@ namespace sg14 {
         struct policy;
 
         template<class LhsTraits, class RhsTraits>
-        struct policy<_impl::add_tag, LhsTraits, RhsTraits> {
+        struct policy<_impl::add_tag_t, LhsTraits, RhsTraits> {
             static constexpr int digits = _impl::max(LhsTraits::digits, RhsTraits::digits)+1;
             static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed;
         };
 
         template<class LhsTraits, class RhsTraits>
-        struct policy<_impl::subtract_tag, LhsTraits, RhsTraits> {
+        struct policy<_impl::subtract_tag_t, LhsTraits, RhsTraits> {
             static constexpr int digits = _impl::max(LhsTraits::digits, RhsTraits::digits) + (LhsTraits::is_signed | RhsTraits::is_signed);
             static constexpr bool is_signed = true;
         };
 
         template<class LhsTraits, class RhsTraits>
-        struct policy<_impl::multiply_tag, LhsTraits, RhsTraits> {
+        struct policy<_impl::multiply_tag_t, LhsTraits, RhsTraits> {
             static constexpr int digits = LhsTraits::digits+RhsTraits::digits;
             static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed;
         };
 
         template<class LhsTraits, class RhsTraits>
-        struct policy<_impl::divide_tag, LhsTraits, RhsTraits> {
+        struct policy<_impl::divide_tag_t, LhsTraits, RhsTraits> {
             static constexpr int digits = LhsTraits::digits;
             static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed;
+        };
+
+        template<class LhsTraits, class RhsTraits>
+        struct policy<_impl::bitwise_or_tag_t, LhsTraits, RhsTraits> {
+            static constexpr int digits = _impl::max(LhsTraits::digits, RhsTraits::digits);
+            static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed; 
+        };
+
+        template<class LhsTraits, class RhsTraits>
+        struct policy<_impl::bitwise_and_tag_t, LhsTraits, RhsTraits> {
+            static constexpr int digits = _impl::min(LhsTraits::digits, RhsTraits::digits);
+            static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed; 
+        };
+
+        template<class LhsTraits, class RhsTraits>
+        struct policy<_impl::bitwise_xor_tag_t, LhsTraits, RhsTraits> {
+            static constexpr int digits = _impl::max(LhsTraits::digits, RhsTraits::digits);
+            static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed; 
         };
 
         ////////////////////////////////////////////////////////////////////////////////
         // operate_params
 
-        template<class OperationTag, class Lhs, class Rhs>
+        template<class OperationTag, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
+                class = enable_if_t<OperationTag::is_arithmetic>>
         struct operate_params {
-            using lhs_traits = std::numeric_limits<Lhs>;
-            using rhs_traits = std::numeric_limits<Rhs>;
+            using lhs = elastic_integer<LhsDigits, LhsNarrowest>;
+            using rhs = elastic_integer<RhsDigits, RhsNarrowest>;
+            using lhs_traits = std::numeric_limits<lhs>;
+            using rhs_traits = std::numeric_limits<rhs>;
 
-            using policy = typename _elastic_integer_impl::policy<OperationTag, lhs_traits, rhs_traits>;
+            using policy = typename _impl::policy<OperationTag, lhs_traits, rhs_traits>;
 
-            using lhs_rep = typename Lhs::rep;
-            using rhs_rep = typename Rhs::rep;
+            using lhs_rep = typename lhs::rep;
+            using rhs_rep = typename rhs::rep;
             using rep_result = typename _impl::op_result<OperationTag, lhs_rep, rhs_rep>;
 
-            static constexpr _width_type narrowest_width = _impl::max(width<typename Lhs::narrowest>::value,
-                    width<typename Rhs::narrowest>::value);
+            static constexpr _width_type narrowest_width = _impl::max(width<LhsNarrowest>::value,
+                    width<RhsNarrowest>::value);
             using narrowest = set_width_t<_impl::make_signed_t<rep_result, policy::is_signed>, narrowest_width>;
             using result_type = elastic_integer<policy::digits, narrowest>;
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_elastic_integer_impl::operate
+        // sg14::_impl::operate
 
-        template<class OperationTag, class Lhs, class Rhs>
-        constexpr auto operate(const Lhs& lhs, const Rhs& rhs)
-        -> typename operate_params<OperationTag, Lhs, Rhs>::result_type
+        template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
+#if defined(__GNUG__)
+                bool Enable = Operator::is_arithmetic>
+#else
+                enable_if_t<Operator::is_arithmetic>...>
+#endif
+        constexpr auto operate(
+                const elastic_integer<LhsDigits, LhsNarrowest>& lhs,
+                const elastic_integer<RhsDigits, RhsNarrowest>& rhs,
+                Operator)
+#if ! defined(_MSC_VER)
+        -> typename operate_params<Operator, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::result_type
+#endif
         {
-            using result_type = typename operate_params<OperationTag, Lhs, Rhs>::result_type;
+            using result_type = typename operate_params<Operator, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::result_type;
             return result_type::from_data(
-                    static_cast<typename result_type::rep>(_impl::op_fn<OperationTag>(
+                    static_cast<typename result_type::rep>(_impl::op_fn<Operator>(
                             static_cast<result_type>(lhs).data(),
                             static_cast<result_type>(rhs).data())));
-        };
+        }
     }
 
     // unary operator-
     template<int RhsDigits, class RhsNarrowest>
     constexpr auto operator-(const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
+#if ! defined(_MSC_VER)
     -> elastic_integer<RhsDigits, typename sg14::make_signed<RhsNarrowest>::type>
+#endif
     {
         using result_type = elastic_integer<RhsDigits, typename sg14::make_signed<RhsNarrowest>::type>;
         return result_type::from_data(-static_cast<result_type>(rhs).data());
     }
 
-    // binary operator+
-    template<int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
-    constexpr auto
-    operator+(const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
-    -> decltype(_elastic_integer_impl::operate<_impl::add_tag>(lhs, rhs))
-    {
-        return _elastic_integer_impl::operate<_impl::add_tag>(lhs, rhs);
-    }
-
-    // binary operator-
-    template<int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
-    constexpr auto
-    operator-(const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
-    -> decltype(_elastic_integer_impl::operate<_impl::subtract_tag>(lhs, rhs))
-    {
-        return _elastic_integer_impl::operate<_impl::subtract_tag>(lhs, rhs);
-    }
-
-    // operator*
-    template<int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
-    constexpr auto
-    operator*(const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
-    -> decltype(_elastic_integer_impl::operate<_impl::multiply_tag>(lhs, rhs))
-    {
-        return _elastic_integer_impl::operate<_impl::multiply_tag>(lhs, rhs);
-    }
-
-    template<int LhsDigits, class LhsNarrowest, class Rhs, typename std::enable_if<!_elastic_integer_impl::is_elastic_integer<Rhs>::value, int>::type Dummy = 0>
-    constexpr auto
-    operator*(const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const Rhs& rhs)
-    -> decltype(lhs*make_elastic_integer(rhs))
-    {
-        return lhs*make_elastic_integer(rhs);
-    }
-
-    template<class Lhs, int RhsDigits, class RhsNarrowest, typename std::enable_if<!_elastic_integer_impl::is_elastic_integer<Lhs>::value, int>::type Dummy = 0>
-    constexpr auto
-    operator*(const Lhs& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
-    -> decltype(make_elastic_integer(lhs)*rhs)
-    {
-        return make_elastic_integer(lhs)*rhs;
-    }
-
-    // operator/
-    template<int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
-    constexpr auto
-    operator/(const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
-    -> decltype(_elastic_integer_impl::operate<_impl::divide_tag>(lhs, rhs))
-    {
-        return _elastic_integer_impl::operate<_impl::divide_tag>(lhs, rhs);
-    }
-
-    template<
-        int LhsDigits, class LhsNarrowest,
-        class RhsIntegral, RhsIntegral RhsValue>
-    constexpr auto
-    operator/(const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const const_integer<RhsIntegral, RhsValue>& rhs)
-    -> decltype(lhs/make_elastic_integer(rhs))
-    {
-        return lhs/make_elastic_integer(rhs);
-    }
-
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::scale<elastic_integer>
+    // sg14::numeric_traits<elastic_integer>
 
     template<int Digits, class Narrowest>
-    struct scale<elastic_integer<Digits, Narrowest>> {
-        using Integer = elastic_integer<Digits, Narrowest>;
+    struct numeric_traits<elastic_integer<Digits, Narrowest>>
+            : numeric_traits<_impl::number_base<
+                    elastic_integer<Digits, Narrowest>,
+                    typename elastic_integer<Digits, Narrowest>::rep>> {
+        using value_type = elastic_integer<Digits, Narrowest>;
 
-        constexpr Integer operator()(const Integer& i, int base, int exp) const {
-            return Integer{scale<typename Integer::rep>()(i.data(), base, exp)};
+        using _rep_type = typename value_type::rep;
+        using _number_base = _impl::number_base<value_type, _rep_type>;
+
+        using result_type = value_type;
+        
+        template<class Input>
+        static constexpr elastic_integer<std::numeric_limits<Input>::digits, Narrowest>
+        make(const Input& input) {
+            return input;
+        }
+
+        static constexpr result_type scale(const value_type& i, int base, int exp)
+        {
+            return result_type{
+                    numeric_traits<_rep_type>::scale(i.data(), base, exp)
+            };
         }
     };
 }
@@ -416,8 +397,9 @@ namespace sg14 {
 namespace std {
     template<int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
     struct common_type<sg14::elastic_integer<LhsDigits, LhsNarrowest>, sg14::elastic_integer<RhsDigits, RhsNarrowest>> {
-        using type = typename std::conditional<RhsDigits
-                <LhsDigits, sg14::elastic_integer<LhsDigits, LhsNarrowest>, sg14::elastic_integer<RhsDigits, RhsNarrowest>>::type;
+        using type = sg14::elastic_integer<
+                sg14::_impl::max(LhsDigits, RhsDigits), 
+                sg14::_impl::common_signedness_t<LhsNarrowest, RhsNarrowest>>;
     };
 
     template<int LhsDigits, class LhsNarrowest, class Rhs>

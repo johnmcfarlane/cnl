@@ -14,8 +14,6 @@
 #include <sg14/fixed_point>
 #endif
 
-#include <stdexcept>
-
 #if defined(SG14_EXCEPTIONS_ENABLED)
 #include <stdexcept>
 #endif
@@ -25,63 +23,26 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // macros
 
-    // basic definitions
-#define SG14_SAFE_INTEGER_COMPARISON_DEFINE(OP) \
-    template <class Lhs, class Rhs> \
-    constexpr auto operator OP (const Lhs& lhs, const Rhs& rhs) \
-    -> typename std::enable_if<sg14::_integer_impl::are_integer_class_operands<Lhs, Rhs>::value, bool>::type { \
-        using common_type = typename std::common_type<Lhs, Rhs>::type; \
-        return static_cast<common_type>(lhs).data() OP static_cast<common_type>(rhs).data(); }
-
-#define SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(OP) \
-    template <class LhsRep, class RhsRep, class OverflowPolicy> \
-    constexpr auto operator OP (const safe_integer<LhsRep, OverflowPolicy>& lhs, const safe_integer<RhsRep, OverflowPolicy>& rhs) \
-    -> safe_integer<decltype(std::declval<LhsRep>() OP std::declval<RhsRep>()), OverflowPolicy> { \
-        using Result = safe_integer<decltype(std::declval<LhsRep>() OP std::declval<RhsRep>()), OverflowPolicy>; \
-        return static_cast<Result>(lhs.data() OP rhs.data()); } \
-    \
-    template <class Lhs, class RhsRep, class RhsOverflowPolicy, typename std::enable_if<std::is_integral<Lhs>::value, int>::type dummy = 0> \
-    constexpr auto operator OP (const Lhs& lhs, const safe_integer<RhsRep, RhsOverflowPolicy>& rhs) \
-    -> safe_integer<decltype(std::declval<Lhs>() OP std::declval<RhsRep>()), RhsOverflowPolicy> { \
-        using Result = safe_integer<decltype(std::declval<Lhs>() OP std::declval<RhsRep>()), RhsOverflowPolicy>; \
-        return static_cast<Result>(lhs OP rhs.data()); } \
-    \
-    template <class LhsRep, class LhsOverflowPolicy, class Rhs, typename std::enable_if<std::is_integral<Rhs>::value, int>::type dummy = 0> \
-    constexpr auto operator OP (const safe_integer<LhsRep, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
-    -> safe_integer<decltype(std::declval<LhsRep>() OP std::declval<Rhs>()), LhsOverflowPolicy> { \
-        using Result = safe_integer<decltype(std::declval<LhsRep>() OP std::declval<Rhs>()), LhsOverflowPolicy>; \
-        return static_cast<Result>(lhs.data() OP rhs); } \
-    \
-    template <class Lhs, class RhsRep, class RhsOverflowPolicy, typename std::enable_if<std::is_floating_point<Lhs>::value, int>::type dummy = 0> \
-    constexpr auto operator OP (const Lhs& lhs, const safe_integer<RhsRep, RhsOverflowPolicy>& rhs) \
-    -> decltype(std::declval<Lhs>() OP std::declval<RhsRep>()) { \
-        return lhs OP rhs.data(); } \
-    \
-    template <class LhsRep, class LhsOverflowPolicy, class Rhs, typename std::enable_if<std::is_floating_point<Rhs>::value, int>::type dummy = 0> \
-    constexpr auto operator OP (const safe_integer<LhsRep, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
-    -> decltype(std::declval<LhsRep>() OP std::declval<Rhs>()) { \
-        return lhs.data() OP rhs; }
-
 #define SG14_INTEGER_BIT_SHIFT_DEFINE(OP) \
-    template <class LhsRep, class LhsOverflowPolicy, class RhsRep, class RhsOverflowPolicy> \
-    constexpr auto operator OP (const safe_integer<LhsRep, LhsOverflowPolicy>& lhs, const safe_integer<RhsRep, RhsOverflowPolicy>& rhs) \
-    -> safe_integer<LhsRep, LhsOverflowPolicy> { \
+    template <class LhsRep, class LhsOverflowTag, class RhsRep, class RhsOverflowTag> \
+    constexpr auto operator OP (const safe_integer<LhsRep, LhsOverflowTag>& lhs, const safe_integer<RhsRep, RhsOverflowTag>& rhs) \
+    -> safe_integer<LhsRep, LhsOverflowTag> { \
         return lhs.data() OP rhs.data(); } \
     \
-    template <class Lhs, class RhsRep, class RhsOverflowPolicy, typename std::enable_if<std::is_fundamental<Lhs>::value, int>::type dummy = 0> \
-    constexpr auto operator OP (const Lhs& lhs, const safe_integer<RhsRep, RhsOverflowPolicy>& rhs) \
+    template <class Lhs, class RhsRep, class RhsOverflowTag, _impl::enable_if_t<std::is_fundamental<Lhs>::value, int> dummy = 0> \
+    constexpr auto operator OP (const Lhs& lhs, const safe_integer<RhsRep, RhsOverflowTag>& rhs) \
     -> Lhs { \
         return lhs OP rhs.data(); } \
     \
-    template <class LhsRep, class LhsOverflowPolicy, class Rhs, typename std::enable_if<std::is_fundamental<Rhs>::value, int>::type dummy = 0> \
-    constexpr auto operator OP (const safe_integer<LhsRep, LhsOverflowPolicy>& lhs, const Rhs& rhs) \
-    -> safe_integer<LhsRep, LhsOverflowPolicy> { \
-        return safe_integer<LhsRep, LhsOverflowPolicy>(lhs.data() OP rhs); }
+    template <class LhsRep, class LhsOverflowTag, class Rhs, _impl::enable_if_t<std::is_fundamental<Rhs>::value, int> dummy = 0> \
+    constexpr auto operator OP (const safe_integer<LhsRep, LhsOverflowTag>& lhs, const Rhs& rhs) \
+    -> safe_integer<LhsRep, LhsOverflowTag> { \
+        return safe_integer<LhsRep, LhsOverflowTag>(lhs.data() OP rhs); }
 
     ////////////////////////////////////////////////////////////////////////////////
     // forward-declarations
 
-    template<class Rep, class OverflowPolicy>
+    template<class Rep, class OverflowTag>
     class safe_integer;
 
     namespace _integer_impl {
@@ -96,8 +57,8 @@ namespace sg14 {
                 : std::false_type {
         };
 
-        template<class Rep, class OverflowPolicy>
-        struct is_safe_integer<safe_integer<Rep, OverflowPolicy>>
+        template<class Rep, class OverflowTag>
+        struct is_safe_integer<safe_integer<Rep, OverflowTag>>
                 : std::true_type {
         };
 
@@ -129,9 +90,7 @@ namespace sg14 {
         // is_positive_overflow
         template<
                 class Destination, class Source,
-                typename std::enable_if<
-                        !(positive_digits<Destination>::value<positive_digits<Source>::value),
-                        int>::type dummy = 0>
+                _impl::enable_if_t<!(positive_digits<Destination>::value<positive_digits<Source>::value), int> dummy = 0>
         constexpr bool is_positive_overflow(Source const&)
         {
             static_assert(!is_safe_integer<Destination>::value,
@@ -145,9 +104,7 @@ namespace sg14 {
 
         template<
                 class Destination, class Source,
-                typename std::enable_if<
-                        (positive_digits<Destination>::value<positive_digits<Source>::value),
-                        int>::type dummy = 0>
+                _impl::enable_if_t<(positive_digits<Destination>::value<positive_digits<Source>::value), int> dummy = 0>
         constexpr bool is_positive_overflow(Source const& source)
         {
             static_assert(!is_safe_integer<Destination>::value,
@@ -160,9 +117,7 @@ namespace sg14 {
         // is_negative_overflow
         template<
                 class Destination, class Source,
-                typename std::enable_if<
-                        !(negative_digits<Destination>::value<negative_digits<Source>::value),
-                        int>::type dummy = 0>
+                _impl::enable_if_t<!(negative_digits<Destination>::value<negative_digits<Source>::value), int> dummy = 0>
         constexpr bool is_negative_overflow(Source const&)
         {
             static_assert(!is_safe_integer<Destination>::value,
@@ -176,9 +131,7 @@ namespace sg14 {
 
         template<
                 class Destination, class Source,
-                typename std::enable_if<
-                        (negative_digits<Destination>::value<negative_digits<Source>::value),
-                        int>::type dummy = 0>
+                _impl::enable_if_t<(negative_digits<Destination>::value<negative_digits<Source>::value), int> dummy = 0>
         constexpr bool is_negative_overflow(Source const& source)
         {
             static_assert(!is_safe_integer<Destination>::value,
@@ -192,48 +145,253 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // policies
 
-    struct native_overflow_policy {
-        template<class Lhs, class Rhs>
-        constexpr Lhs convert(const Rhs& rhs) const
+    template<class OverflowTag>
+    struct overflow_convert;
+
+    template<class OverflowTag, class Operator>
+    struct overflow_operator;
+
+    // native_overflow_tag
+
+    struct native_overflow_tag {};
+
+    template<>
+    struct overflow_convert<native_overflow_tag> {
+        template<class Result, class Input>
+        constexpr Result operator()(const Input& rhs) const
         {
-            return static_cast<Lhs>(rhs);
+            return static_cast<Result>(rhs);
         }
     };
 
-#if defined(SG14_EXCEPTIONS_ENABLED)
-
-    struct throwing_overflow_policy {
+    template<>
+    struct overflow_operator<native_overflow_tag, _impl::add_tag_t> {
         template<class Lhs, class Rhs>
-        constexpr Lhs convert(const Rhs& rhs) const
+        constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
+        -> decltype(lhs+rhs)
         {
-            return _integer_impl::is_positive_overflow<Lhs>(rhs)
-                   ? throw std::overflow_error("positive overflow in coversion")
-                   : _integer_impl::is_negative_overflow<Lhs>(rhs)
-                     ? throw std::overflow_error("negative overflow in coversion")
-                     : static_cast<Lhs>(rhs);
+            return lhs+rhs;
+        }
+    };
+
+    template<>
+    struct overflow_operator<native_overflow_tag, _impl::subtract_tag_t> {
+        template<class Lhs, class Rhs>
+        constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
+        -> decltype(lhs-rhs)
+        {
+            return lhs-rhs;
+        }
+    };
+
+    template<>
+    struct overflow_operator<native_overflow_tag, _impl::multiply_tag_t> {
+        template<class Lhs, class Rhs>
+        constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
+        -> decltype(lhs*rhs)
+        {
+            return lhs*rhs;
+        }
+    };
+
+    template<>
+    struct overflow_operator<native_overflow_tag, _impl::divide_tag_t> {
+        template<class Lhs, class Rhs>
+        constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
+        -> decltype(lhs/rhs)
+        {
+            return lhs/rhs;
+        }
+    };
+
+    template<class Operator>
+    struct overflow_operator<_impl::enable_if_t<Operator::is_comparison, native_overflow_tag>, Operator> {
+        template<class Lhs, class Rhs>
+        constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
+        -> _impl::op_result<Operator, Lhs, Rhs>
+        {
+            return _impl::op_fn<Operator>(lhs, rhs);
+        }
+    };
+
+    // native_overflow_tag
+
+#if defined(SG14_EXCEPTIONS_ENABLED)
+    struct throwing_overflow_tag {};
+
+    template<>
+    struct overflow_convert<throwing_overflow_tag> {
+        template<class Result, class Input>
+        constexpr Result operator()(const Input& rhs) const
+        {
+            return !_impl::encompasses<Result, Input>::value
+                   ? _integer_impl::is_positive_overflow<Result>(rhs)
+                     ? throw std::overflow_error("positive overflow in conversion")
+                     : _integer_impl::is_negative_overflow<Result>(rhs)
+                       ? throw std::overflow_error("negative overflow in conversion")
+                       : static_cast<Result>(rhs)
+                   : static_cast<Result>(rhs);
+        }
+    };
+
+    template<>
+    struct overflow_operator<throwing_overflow_tag, _impl::add_tag_t> {
+        template<class Lhs, class Rhs>
+        constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
+        -> decltype(lhs+rhs)
+        {
+            using result_type = decltype(lhs+rhs);
+            using numeric_limits = std::numeric_limits<result_type>;
+            return ((rhs>=numeric_traits<Rhs>::from_rep(0))?(lhs>numeric_limits::max()-rhs):(lhs<numeric_limits::lowest()-rhs))
+                   ? throw std::overflow_error("overflow in addition") 
+                 : lhs+rhs;
+        }
+    };
+
+    template<>
+    struct overflow_operator<throwing_overflow_tag, _impl::subtract_tag_t> {
+        template<class Lhs, class Rhs>
+        constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
+        -> decltype(lhs-rhs)
+        {
+            using result_type = decltype(lhs-rhs);
+            using numeric_limits = std::numeric_limits<result_type>;
+            return ((rhs<numeric_traits<Rhs>::from_rep(0))?(lhs>numeric_limits::max()+rhs):(lhs<numeric_limits::lowest()+rhs))
+                   ? throw std::overflow_error("positive overflow in subtraction") 
+                   : lhs-rhs;
+        }
+    };
+
+    template<>
+    struct overflow_operator<throwing_overflow_tag, _impl::multiply_tag_t> {
+        template<class Lhs, class Rhs>
+        constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
+        -> decltype(lhs*rhs)
+        {
+            return (lhs ? (((rhs*lhs)/lhs)==rhs) : rhs ? (((lhs*rhs)/rhs)==lhs) : true)
+                   ? lhs*rhs
+                   : throw std::overflow_error("overflow in multiplication");
+        }
+    };
+
+    template<>
+    struct overflow_operator<throwing_overflow_tag, _impl::divide_tag_t> {
+        template<class Lhs, class Rhs>
+        constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
+        -> decltype(lhs/rhs)
+        {
+            return rhs
+                   ? lhs/rhs    // TODO: does this deal adequately with mixed signed/unsigned?
+                   : throw std::overflow_error("divide by zero");
+        }
+    };
+
+    template<class Operator>
+    struct overflow_operator<_impl::enable_if_t<Operator::is_comparison, throwing_overflow_tag>, Operator> {
+        template<class Lhs, class Rhs>
+        constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
+        -> _impl::op_result<Operator, Lhs, Rhs>
+        {
+            return _impl::op_fn<Operator>(lhs, rhs);
         }
     };
 
 #else
-    using throwing_overflow_policy = native_overflow_policy;
+    using throwing_overflow_tag = native_overflow_tag;
 #endif
 
-    struct saturated_overflow_policy {
-        template<class Lhs, class Rhs>
-        constexpr Lhs convert(const Rhs& rhs) const
-        {
-            static_assert(!_integer_impl::is_safe_integer<Lhs>::value,
-                    "this function helps convert values *to* sg14::safe_integer");
-            static_assert(!_integer_impl::is_safe_integer<Rhs>::value,
-                    "this function helps convert values *to* sg14::safe_integer");
+    // native_overflow_tag
 
-            using LhsNumericLimits = std::numeric_limits<Lhs>;
-            return
-                    _integer_impl::is_positive_overflow<Lhs>(rhs)
-                    ? LhsNumericLimits::max()
-                    : _integer_impl::is_negative_overflow<Lhs>(rhs)
-                      ? LhsNumericLimits::lowest()
-                      : static_cast<Lhs>(rhs);
+    struct saturated_overflow_tag {};
+
+    template<>
+    struct overflow_convert<saturated_overflow_tag> {
+        template<class Result, class Input>
+        constexpr Result operator()(const Input& rhs) const
+        {
+            using numeric_limits = std::numeric_limits<Result>;
+            return !_impl::encompasses<Result, Input>::value
+                   ?
+                   _integer_impl::is_positive_overflow<Result>(rhs)
+                   ? numeric_limits::max()
+                   : _integer_impl::is_negative_overflow<Result>(rhs)
+                     ? numeric_limits::lowest()
+                     : static_cast<Result>(rhs)
+                   : static_cast<Result>(rhs);
+        }
+    };
+
+    template<>
+    struct overflow_operator<saturated_overflow_tag, _impl::add_tag_t> {
+        template<class Lhs, class Rhs>
+        constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
+        -> _impl::op_result<_impl::add_tag_t, Lhs, Rhs>
+        {
+            using result_type = decltype(lhs+rhs);
+            using numeric_limits = std::numeric_limits<result_type>;
+            return (rhs>0)
+                   ? (lhs>numeric_limits::max()-rhs) ? numeric_limits::max() : lhs+rhs
+                   : (lhs<numeric_limits::lowest()-rhs) ? numeric_limits::lowest() : lhs+rhs;
+        }
+    };
+
+    template<>
+    struct overflow_operator<saturated_overflow_tag, _impl::subtract_tag_t> {
+        template<class Lhs, class Rhs>
+        constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
+        -> _impl::op_result<_impl::subtract_tag_t, Lhs, Rhs>
+        {
+            using result_type = decltype(lhs-rhs);
+            using numeric_limits = std::numeric_limits<result_type>;
+            return (rhs<0)
+                   ? (lhs>numeric_limits::max()+rhs) ? numeric_limits::max() : lhs-rhs
+                   : (lhs<numeric_limits::lowest()+rhs) ? numeric_limits::lowest() : lhs-rhs;
+        }
+    };
+
+    template<>
+    struct overflow_operator<saturated_overflow_tag, _impl::multiply_tag_t> {
+        template<class Lhs, class Rhs>
+        constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
+        -> _impl::op_result<_impl::multiply_tag_t, Lhs, Rhs>
+        {
+            using result_type = decltype(lhs*rhs);
+            return (lhs ? (((rhs*lhs)/lhs)==rhs) : rhs ? (((lhs*rhs)/rhs)==lhs) : true)
+                   ? lhs*rhs
+                   : ((lhs>0) ^ (rhs>0))
+                     ? std::numeric_limits<result_type>::lowest()
+                     : std::numeric_limits<result_type>::max();
+        }
+    };
+
+    template<>
+    struct overflow_operator<saturated_overflow_tag, _impl::divide_tag_t> {
+        template<class Lhs, class Rhs>
+        constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
+        -> _impl::op_result<_impl::divide_tag_t, Lhs, Rhs>
+        {
+            using result_type = decltype(lhs/rhs);
+            using numeric_limits = std::numeric_limits<result_type>;
+            return rhs
+                   ? (numeric_limits::is_signed || (lhs<0==rhs<0)) ? lhs/rhs : 0
+                   : (lhs>0)
+                     ? numeric_limits::max()
+                     : numeric_limits::lowest();
+        }
+    };
+
+    template<class Operator>
+    struct overflow_operator<_impl::enable_if_t<Operator::is_comparison, saturated_overflow_tag>, Operator> {
+        template<class Lhs, class Rhs>
+        constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
+        -> _impl::op_result<Operator, Lhs, Rhs>
+        {
+            // assumes all arithmetic-induced implicit convertion goes the same
+            // or at least that `|` is a less "promotion-inducing" operation
+            using converted = decltype(lhs | rhs);
+            return _impl::op_fn<Operator>(
+                    overflow_convert<saturated_overflow_tag>().template operator()<converted>(lhs),
+                    overflow_convert<saturated_overflow_tag>().template operator()<converted>(rhs));
         }
     };
 
@@ -242,42 +400,38 @@ namespace sg14 {
         // sg14::_integer_impl::common_type
 
         // given two safe_integer<>, produces the type that is best suited to both of them
-        template<class LhsRep, class RhsRep, class OverflowPolicy>
+        template<class LhsRep, class RhsRep, class OverflowTag>
         struct common_type<
-                safe_integer<LhsRep, OverflowPolicy>,
-                safe_integer<RhsRep, OverflowPolicy>> {
+                safe_integer<LhsRep, OverflowTag>,
+                safe_integer<RhsRep, OverflowTag>> {
             using type = safe_integer<
                     typename std::common_type<LhsRep, RhsRep>::type,
-                    OverflowPolicy>;
+                    OverflowTag>;
         };
 
         // given a safe_integer<> and a built-in integer type,
         // generates a safe_integer<> type that is as big as both of them (or as close as possible)
-        template<class LhsRep, class LhsOverflowPolicy, class RhsInteger>
+        template<class LhsRep, class LhsOverflowTag, class RhsInteger>
         struct common_type<
-                safe_integer<LhsRep, LhsOverflowPolicy>,
-                RhsInteger,
-                typename std::enable_if<
-                        !_integer_impl::is_safe_integer<RhsInteger>::value
-                                && std::is_integral<RhsInteger>::value
-                >::type> {
-            using type = typename sg14::safe_integer<typename std::common_type<LhsRep, RhsInteger>::type, LhsOverflowPolicy>;
+                safe_integer<LhsRep, LhsOverflowTag>, RhsInteger,
+                _impl::enable_if_t<
+                        !_integer_impl::is_safe_integer<RhsInteger>::value && std::is_integral<RhsInteger>::value>> {
+            using type = typename sg14::safe_integer<typename std::common_type<LhsRep, RhsInteger>::type, LhsOverflowTag>;
         };
 
         // given a safe_integer<> and a floating-point type,
         // generates a floating-point type that is as big as both of them (or as close as possible)
-        template<class LhsRep, class LhsOverflowPolicy, class Float>
+        template<class LhsRep, class LhsOverflowTag, class Float>
         struct common_type<
-                safe_integer<LhsRep, LhsOverflowPolicy>,
-                Float,
-                typename std::enable_if<std::is_floating_point<Float>::value>::type> {
+                safe_integer<LhsRep, LhsOverflowTag>, Float,
+                _impl::enable_if_t<std::is_floating_point<Float>::value>> {
             using type = typename std::common_type<LhsRep, Float>::type;
         };
 
         // when first type is not safe_integer<> and second type is, reverse the order
-        template<class Lhs, class RhsRep, class RhsOverflowPolicy>
-        struct common_type<Lhs, safe_integer<RhsRep, RhsOverflowPolicy>>
-                : common_type<safe_integer<RhsRep, RhsOverflowPolicy>, Lhs> {
+        template<class Lhs, class RhsRep, class RhsOverflowTag>
+        struct common_type<Lhs, safe_integer<RhsRep, RhsOverflowTag>>
+                : common_type<safe_integer<RhsRep, RhsOverflowTag>, Lhs> {
         };
     }
 
@@ -286,69 +440,135 @@ namespace sg14 {
 
     // an integer which can be customized to react in different ways to overflow;
     // currently doesn't correctly detect overflow from operators
-    template<class Rep = int, class OverflowPolicy = throwing_overflow_policy>
-    class safe_integer : public _impl::number_base<safe_integer<Rep, OverflowPolicy>, Rep> {
-        using _base = _impl::number_base<safe_integer<Rep, OverflowPolicy>, Rep>;
+    template<class Rep = int, class OverflowTag = throwing_overflow_tag>
+    class safe_integer : public _impl::number_base<safe_integer<Rep, OverflowTag>, Rep> {
+        using _base = _impl::number_base<safe_integer<Rep, OverflowTag>, Rep>;
     public:
         ////////////////////////////////////////////////////////////////////////////////
         // types
 
         using rep = Rep;
-        using overflow = OverflowPolicy;
+        using overflow_tag = OverflowTag;
 
         ////////////////////////////////////////////////////////////////////////////////
         // functions
 
-        constexpr safe_integer() = default;
+        constexpr safe_integer() = delete;
 
         constexpr safe_integer(const safe_integer& rhs)
-                :_base(rhs)
+                :_base(rhs.data())
         {
         }
 
-        constexpr safe_integer(const rep& rhs)
-                :_base(rhs)
+        template<class Rhs, _impl::enable_if_t<!_integer_impl::is_safe_integer<Rhs>::value, int> dummy = 0>
+        constexpr safe_integer(const Rhs& rhs)
+                :_base(overflow_convert<overflow_tag>().template operator()<rep>(rhs))
         {
         }
 
-        template<class RhsRep, typename std::enable_if<!_integer_impl::is_safe_integer<RhsRep>::value, int>::type dummy = 0>
-        constexpr explicit safe_integer(const RhsRep& rhs)
-                :_base(OverflowPolicy{}.template convert<rep>(rhs))
+        template<class T>
+        constexpr explicit operator T() const
         {
-        }
-
-        template<class Rhs, typename std::enable_if<_integer_impl::is_safe_integer<Rhs>::value, int>::type dummy = 0>
-        constexpr explicit safe_integer(const Rhs& rhs)
-                :_base(OverflowPolicy{}.template convert<rep>(rhs.data()))
-        {
-        }
-
-        template<class LhsRep>
-        constexpr explicit operator LhsRep() const
-        {
-            return static_cast<LhsRep>(to_rep(*this));
+            return static_cast<T>(_base::data());
         }
     };
 
-    SG14_SAFE_INTEGER_COMPARISON_DEFINE(==);
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::numeric_traits<safe_integer<>>
+    template<class Rep, class OverflowTag>
+    struct numeric_traits<safe_integer<Rep, OverflowTag>>
+    : numeric_traits<_impl::number_base<safe_integer<Rep, OverflowTag>, Rep>> {
+        using value_type = safe_integer<Rep, OverflowTag>;
+        
+        template<typename Input>
+        static constexpr auto make(const Input& input) 
+        -> safe_integer<Input, OverflowTag> {
+            return input;
+        }
 
-    SG14_SAFE_INTEGER_COMPARISON_DEFINE(!=);
+    private:
+        // TODO: dupe of code from specialization in <numeric_traits>
+        using _base = numeric_traits<_impl::number_base<safe_integer<Rep, OverflowTag>, Rep>>;
+        using _rep = typename _base::_rep;
+        using result_type = decltype(make(sg14::scale(std::declval<_rep>(), 0, 0)));
 
-    SG14_SAFE_INTEGER_COMPARISON_DEFINE(<);
+        static constexpr result_type pown(int base, int exp)
+        {
+            return exp
+                   ? pown(base, exp-1)*static_cast<result_type>(base)
+                   : static_cast<result_type>(1);
+        }
 
-    SG14_SAFE_INTEGER_COMPARISON_DEFINE(>);
+        static constexpr result_type pow2(int exp)
+        {
+            return result_type{1} << exp;
+        }
 
-    SG14_SAFE_INTEGER_COMPARISON_DEFINE(<=);
+        static constexpr result_type pow(int base, int exp)
+        {
+            return (base==2) ? pow2(exp) : pown(base, exp);
+        }
 
-    SG14_SAFE_INTEGER_COMPARISON_DEFINE(>=);
+    public:
+        static constexpr result_type scale(const value_type& i, int base, int exp)
+        {
+            return (exp<0)
+                    ? to_rep(i)/pow(base, -exp)
+                    : to_rep(i)*pow(base, exp);
+        }
+    };
 
-    SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(+);
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::make_safe_integer
 
-    SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(-);
+    template<class OverflowTag, class Rep>
+    constexpr auto make_safe_integer(Rep const& value)
+    -> safe_integer<Rep, OverflowTag>
+    {
+        return value;
+    }
 
-    SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(*);
+    ////////////////////////////////////////////////////////////////////////////////
+    // binary arithmetic
 
-    SG14_INTEGER_BINARY_ARITHMETIC_DEFINE(/);
+    namespace _impl {
+        ////////////////////////////////////////////////////////////////////////////////
+        // arithmetc
+
+        // for operands with a common policy
+        template<class Operator, class OverflowTag, class LhsRep, class RhsRep, class = enable_if_t<Operator::is_arithmetic>>
+        constexpr auto operate_common_policy(
+                const safe_integer<LhsRep, OverflowTag>& lhs,
+                const safe_integer<RhsRep, OverflowTag>& rhs)
+        -> decltype(make_safe_integer<OverflowTag>(overflow_operator<OverflowTag, Operator>()(lhs.data(), rhs.data())))
+        {
+            return make_safe_integer<OverflowTag>(overflow_operator<OverflowTag, Operator>()(lhs.data(), rhs.data()));
+        }
+    
+        // for arithmetic operands with different policies
+        template<class Operator, class OverflowTag, class LhsRep, class RhsRep, class = enable_if_t<Operator::is_comparison>>
+        constexpr auto operate_common_policy(
+                const safe_integer<LhsRep, OverflowTag>& lhs,
+                const safe_integer<RhsRep, OverflowTag>& rhs)
+        -> decltype(overflow_operator<OverflowTag, Operator>()(lhs.data(), rhs.data()))
+        {
+            return overflow_operator<OverflowTag, Operator>()(lhs.data(), rhs.data());
+        }
+    
+        // for arithmetic operands with different policies
+        template<class Operator, class LhsRep, class LhsPolicy, class RhsRep, class RhsPolicy>
+        constexpr auto operate(
+                const safe_integer<LhsRep, LhsPolicy>& lhs,
+                const safe_integer<RhsRep, RhsPolicy>& rhs,
+                Operator)
+        -> decltype(operate_common_policy<Operator, common_type_t<LhsPolicy, RhsPolicy>>(lhs, rhs))
+        {
+            return operate_common_policy<Operator, common_type_t<LhsPolicy, RhsPolicy>>(lhs, rhs);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // binary bit-wise
 
     SG14_INTEGER_BIT_SHIFT_DEFINE(>>);
 
@@ -357,31 +577,31 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::set_width<safe_integer<>, > partial specialization
 
-    template<class Rep, class OverflowPolicy, _width_type MinNumBits>
-    struct set_width<safe_integer<Rep, OverflowPolicy>, MinNumBits> {
-        using type = safe_integer<set_width_t<Rep, MinNumBits>, OverflowPolicy>;
+    template<class Rep, class OverflowTag, _width_type MinNumBits>
+    struct set_width<safe_integer<Rep, OverflowTag>, MinNumBits> {
+        using type = safe_integer<set_width_t<Rep, MinNumBits>, OverflowTag>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::width<safe_integer<>> partial specialization
 
-    template<class Rep, class OverflowPolicy>
-    struct width<safe_integer<Rep, OverflowPolicy>> : width<Rep> {
+    template<class Rep, class OverflowTag>
+    struct width<safe_integer<Rep, OverflowTag>> : width<Rep> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::safe_integer-specific specializations to std-like templates
 
     // sg14::make_unsigned<sg14::safe_integer<>>
-    template<class Rep, class OverflowPolicy>
-    struct make_unsigned<safe_integer<Rep, OverflowPolicy>> {
-        using type = safe_integer<typename make_unsigned<Rep>::type, OverflowPolicy>;
+    template<class Rep, class OverflowTag>
+    struct make_unsigned<safe_integer<Rep, OverflowTag>> {
+        using type = safe_integer<typename make_unsigned<Rep>::type, OverflowTag>;
     };
 
     // sg14::make_signed<sg14::safe_integer<>>
-    template<class Rep, class OverflowPolicy>
-    struct make_signed<safe_integer<Rep, OverflowPolicy>> {
-        using type = safe_integer<typename make_signed<Rep>::type, OverflowPolicy>;
+    template<class Rep, class OverflowTag>
+    struct make_signed<safe_integer<Rep, OverflowTag>> {
+        using type = safe_integer<typename make_signed<Rep>::type, OverflowTag>;
     };
 }
 
@@ -389,161 +609,69 @@ namespace std {
     // std::common_type<T, sg14::safe_integer>
     template<
             class Lhs,
-            class RhsRep, class RhsOverflowPolicy>
+            class RhsRep, class RhsOverflowTag>
     struct common_type<
             Lhs,
-            sg14::safe_integer<RhsRep, RhsOverflowPolicy>>
+            sg14::safe_integer<RhsRep, RhsOverflowTag>>
             : sg14::_integer_impl::common_type<
                     Lhs,
-                    sg14::safe_integer<RhsRep, RhsOverflowPolicy>> {
+                    sg14::safe_integer<RhsRep, RhsOverflowTag>> {
     };
 
     // std::common_type<sg14::safe_integer, T>
     template<
-            class LhsRep, class LhsOverflowPolicy,
+            class LhsRep, class LhsOverflowTag,
             class Rhs>
     struct common_type<
-            sg14::safe_integer<LhsRep, LhsOverflowPolicy>,
+            sg14::safe_integer<LhsRep, LhsOverflowTag>,
             Rhs>
             : sg14::_integer_impl::common_type<
-                    sg14::safe_integer<LhsRep, LhsOverflowPolicy>,
+                    sg14::safe_integer<LhsRep, LhsOverflowTag>,
                     Rhs> {
     };
 
     // std::common_type<sg14::safe_integer, sg14::fixed_point>
     template<
-            class LhsRep, class LhsOverflowPolicy,
+            class LhsRep, class LhsOverflowTag,
             class RhsRep, int RhsExponent>
     struct common_type<
-            sg14::safe_integer<LhsRep, LhsOverflowPolicy>,
+            sg14::safe_integer<LhsRep, LhsOverflowTag>,
             sg14::fixed_point<RhsRep, RhsExponent>>
             : std::common_type<
-                    sg14::fixed_point<sg14::safe_integer<LhsRep, LhsOverflowPolicy>, 0>,
+                    sg14::fixed_point<sg14::safe_integer<LhsRep, LhsOverflowTag>, 0>,
                     sg14::fixed_point<RhsRep, RhsExponent>> {
     };
 
     // std::common_type<sg14::fixed_point, sg14::safe_integer>
     template<
             class LhsRep, int LhsExponent,
-            class RhsRep, class RhsOverflowPolicy>
+            class RhsRep, class RhsOverflowTag>
     struct common_type<
             sg14::fixed_point<LhsRep, LhsExponent>,
-            sg14::safe_integer<RhsRep, RhsOverflowPolicy>>
+            sg14::safe_integer<RhsRep, RhsOverflowTag>>
             : std::common_type<
                     sg14::fixed_point<LhsRep, LhsExponent>,
-                    sg14::fixed_point<sg14::safe_integer<RhsRep, RhsOverflowPolicy>, 0>> {
+                    sg14::fixed_point<sg14::safe_integer<RhsRep, RhsOverflowTag>, 0>> {
     };
     
     // std::common_type<sg14::safe_integer, sg14::safe_integer>
     template<
-            class LhsRep, class LhsOverflowPolicy,
-            class RhsRep, class RhsOverflowPolicy>
+            class LhsRep, class LhsOverflowTag,
+            class RhsRep, class RhsOverflowTag>
     struct common_type<
-            sg14::safe_integer<LhsRep, LhsOverflowPolicy>,
-            sg14::safe_integer<RhsRep, RhsOverflowPolicy>>
+            sg14::safe_integer<LhsRep, LhsOverflowTag>,
+            sg14::safe_integer<RhsRep, RhsOverflowTag>>
             : sg14::_integer_impl::common_type<
-                    sg14::safe_integer<LhsRep, LhsOverflowPolicy>,
-                    sg14::safe_integer<RhsRep, RhsOverflowPolicy>> {
+                    sg14::safe_integer<LhsRep, LhsOverflowTag>,
+                    sg14::safe_integer<RhsRep, RhsOverflowTag>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
     // std::numeric_limits specialization for safe_integer
 
-    // note: some members are guessed,
-    // some are temporary (assuming rounding style, traps etc.)
-    // and some are undefined
-    template<class Rep, class OverflowPolicy>
-    struct numeric_limits<sg14::safe_integer<Rep, OverflowPolicy>> {
-        // safe_integer-specific helpers
-        using _value_type = sg14::safe_integer<Rep, OverflowPolicy>;
-        using _rep = typename _value_type::rep;
-        using _rep_numeric_limits = numeric_limits<_rep>;
-
-        // standard members
-
-        static constexpr bool is_specialized = true;
-
-        static constexpr _value_type min() noexcept
-        {
-            return _value_type(_rep_numeric_limits::min());
-        }
-
-        static constexpr _value_type max() noexcept
-        {
-            return _value_type(_rep_numeric_limits::max());
-        }
-
-        static constexpr _value_type lowest() noexcept
-        {
-            return _value_type(_rep_numeric_limits::lowest());
-        }
-
-        static constexpr int digits = _rep_numeric_limits::digits;
-
-        static constexpr int digits10 = _rep_numeric_limits::digits10;
-        static constexpr int max_digits10 = _rep_numeric_limits::max_digits10;
-
-        static constexpr bool is_signed = _rep_numeric_limits::is_signed;
-
-        static constexpr bool is_integer = true;
-        static_assert(is_integer, "safe_integer must be represented using binary type");
-
-        static constexpr bool is_exact = _rep_numeric_limits::is_exact;
-
-        static constexpr int radix = _rep_numeric_limits::radix;
-        static_assert(radix==2, "safe_integer must be represented using binary type");
-
-        static constexpr _value_type epsilon() noexcept
-        {
-            return _rep_numeric_limits::epsilon();
-        }
-
-        static constexpr _value_type round_error() noexcept
-        {
-            return _rep_numeric_limits::round_error();
-        }
-
-        // TODO: verify
-        static constexpr int min_exponent = _rep_numeric_limits::min_exponent;
-        static constexpr int max_exponent = _rep_numeric_limits::max_exponent;
-
-        static constexpr int min_exponent10 = _rep_numeric_limits::min_exponent10;
-        static constexpr int max_exponent10 = _rep_numeric_limits::max_exponent10;
-
-        static constexpr bool has_infinity = _rep_numeric_limits::has_infinity;
-        static constexpr bool has_quiet_NaN = _rep_numeric_limits::has_quiet_NaN;
-        static constexpr bool has_signaling_NaN = _rep_numeric_limits::has_signaling_NaN;
-        static constexpr float_denorm_style has_denorm = _rep_numeric_limits::has_denorm;
-        static constexpr bool has_denorm_loss = _rep_numeric_limits::has_denorm_loss;
-
-        static constexpr _value_type infinity() noexcept
-        {
-            return _rep_numeric_limits::infinity();
-        }
-
-        static constexpr _value_type quiet_NaN() noexcept
-        {
-            return _rep_numeric_limits::quiet_NaN();
-        }
-
-        static constexpr _value_type signaling_NaN() noexcept
-        {
-            return _rep_numeric_limits::signaling_NaN();
-        }
-
-        static constexpr _value_type denorm_min() noexcept
-        {
-            return _rep_numeric_limits::denorm_min();
-        }
-
-        static constexpr bool is_iec559 = _rep_numeric_limits::is_iec559;
-        static constexpr bool is_bounded = _rep_numeric_limits::is_bounded;
-        static constexpr bool is_modulo = _rep_numeric_limits::is_modulo;
-
-        static constexpr bool traps = _rep_numeric_limits::traps;
-        static constexpr bool tinyness_before = _rep_numeric_limits::tinyness_before;
-        static constexpr float_round_style round_style = _rep_numeric_limits::round_style;
-    };
+    template<class Rep, class OverflowTag>
+    struct numeric_limits<sg14::safe_integer<Rep, OverflowTag>>
+    : numeric_limits<sg14::_impl::number_base<sg14::safe_integer<Rep, OverflowTag>, Rep>> {};
 }
 
 #endif	// SG14_SAFE_INTEGER_H

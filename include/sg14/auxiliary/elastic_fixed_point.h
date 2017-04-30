@@ -56,12 +56,11 @@ namespace sg14 {
             typename Narrowest = int,
             typename Integral = int,
             Integral Value = 0>
-    constexpr auto make_elastic_fixed_point(
-            const_integer<Integral, Value> = const_integer<Integral, Value>{})
-    -> elastic_fixed_point<
-            _const_integer_impl::num_integer_bits(Value),
-            -_const_integer_impl::num_integer_zeros(Value),
-            Narrowest>
+    constexpr elastic_fixed_point<
+        _const_integer_impl::num_integer_bits(Value),
+        -_const_integer_impl::num_integer_zeros(Value),
+        Narrowest>
+    make_elastic_fixed_point(const_integer<Integral, Value> = const_integer<Integral, Value>{})
     {
         return Value;
     }
@@ -83,8 +82,9 @@ namespace sg14 {
 
     /// \brief generate an \ref sg14::elastic_fixed_point object of given value
     template<class Narrowest = int, class Integral = int>
-    constexpr auto make_elastic_fixed_point(Integral value)
-    -> elastic_fixed_point<std::numeric_limits<Integral>::digits, 0, Narrowest> {
+    constexpr elastic_fixed_point<std::numeric_limits<Integral>::digits, 0, Narrowest> 
+    make_elastic_fixed_point(Integral value)
+    {
         return {value};
     }
 

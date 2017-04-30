@@ -108,8 +108,8 @@ namespace sg14 {
         }
 
         /// constructor taking an integer type
-        template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
-        constexpr fixed_point(S s)
+        template<class S, _impl::enable_if_t<std::numeric_limits<S>::is_integer, int> Dummy = 0>
+        constexpr fixed_point(const S& s)
             : fixed_point(fixed_point<S, 0>::from_data(s))
         {
         }
@@ -122,21 +122,21 @@ namespace sg14 {
         }
 
         /// constructor taking a floating-point type
-        template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
+        template<class S, _impl::enable_if_t<std::is_floating_point<S>::value, int> Dummy = 0>
         constexpr fixed_point(S s)
                 :_base(floating_point_to_rep(s))
         {
         }
 
         /// copy assignment operator taking an integer type
-        template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
+        template<class S, _impl::enable_if_t<std::numeric_limits<S>::is_integer, int> Dummy = 0>
         fixed_point& operator=(S s)
         {
             return operator=(fixed_point<S, 0>::from_data(s));
         }
 
         /// copy assignment operator taking a floating-point type
-        template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
+        template<class S, _impl::enable_if_t<std::is_floating_point<S>::value, int> Dummy = 0>
         fixed_point& operator=(S s)
         {
             _base::operator=(floating_point_to_rep(s));
@@ -151,15 +151,21 @@ namespace sg14 {
             return *this;
         }
 
+        /// returns value represented as bool
+        constexpr operator bool() const
+        {
+            return static_cast<bool>(_base::data());
+        }
+
         /// returns value represented as integral
-        template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
+        template<class S, _impl::enable_if_t<std::numeric_limits<S>::is_integer, int> Dummy = 0>
         constexpr operator S() const
         {
             return rep_to_integral<S>(_base::data());
         }
 
         /// returns value represented as floating-point
-        template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
+        template<class S, _impl::enable_if_t<std::is_floating_point<S>::value, int> Dummy = 0>
         explicit constexpr operator S() const
         {
             return rep_to_floating_point<S>(_base::data());
@@ -172,10 +178,10 @@ namespace sg14 {
         }
 
     private:
-        template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy = 0>
+        template<class S, _impl::enable_if_t<std::is_floating_point<S>::value, int> Dummy = 0>
         static constexpr S one();
 
-        template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy = 0>
+        template<class S, _impl::enable_if_t<std::numeric_limits<S>::is_integer, int> Dummy = 0>
         static constexpr S one();
 
         template<class S>
@@ -193,6 +199,25 @@ namespace sg14 {
         template<class FromRep, int FromExponent>
         static constexpr rep fixed_point_to_rep(const fixed_point<FromRep, FromExponent>& rhs);
     };
+
+    /// value of template parameter, \a Exponent
+    template<class Rep, int Exponent>
+    constexpr int fixed_point<Rep, Exponent>::exponent;
+
+    /// number of binary digits this type can represent;
+    /// equivalent to [std::numeric_limits::digits](http://en.cppreference.com/w/cpp/types/numeric_limits/digits)
+    template<class Rep, int Exponent>
+    constexpr int fixed_point<Rep, Exponent>::digits;
+
+    /// number of binary digits devoted to integer part of value;
+    /// can be negative for specializations with especially small ranges
+    template<class Rep, int Exponent>
+    constexpr int fixed_point<Rep, Exponent>::integer_digits;
+
+    /// number of binary digits devoted to fractional part of value;
+    /// can be negative for specializations with especially large ranges
+    template<class Rep, int Exponent>
+    constexpr int fixed_point<Rep, Exponent>::fractional_digits;
 
     ////////////////////////////////////////////////////////////////////////////////
     // general-purpose implementation-specific definitions
@@ -228,7 +253,7 @@ namespace sg14 {
                     Output, Input>::type;
 
             return (exp>-std::numeric_limits<larger>::digits)
-                   ? static_cast<Output>(sg14::scale<larger>()(static_cast<larger>(i), 2, exp))
+                   ? static_cast<Output>(sg14::numeric_traits<larger>::scale(static_cast<larger>(i), 2, exp))
                    : Output{0};
         }
 
@@ -241,37 +266,37 @@ namespace sg14 {
                 // sg14::_impl::fp::type::pow2
 
                 // returns given power of 2
-                template<class S, int Exponent, typename std::enable_if<Exponent==0, int>::type Dummy = 0>
+                template<class S, int Exponent, enable_if_t<Exponent==0, int> Dummy = 0>
                 constexpr S pow2()
                 {
                     static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
                     return 1;
                 }
 
-                template<class S, int Exponent, typename std::enable_if<
-                        !(Exponent<=0) && (Exponent<8), int>::type Dummy = 0>
+                template<class S, int Exponent, 
+                        enable_if_t<!(Exponent<=0) && (Exponent<8), int> Dummy = 0>
                 constexpr S pow2()
                 {
                     static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
                     return pow2<S, Exponent-1>()*S(2);
                 }
 
-                template<class S, int Exponent, typename std::enable_if<(Exponent>=8), int>::type Dummy = 0>
+                template<class S, int Exponent, enable_if_t<(Exponent>=8), int> Dummy = 0>
                 constexpr S pow2()
                 {
                     static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
                     return pow2<S, Exponent-8>()*S(256);
                 }
 
-                template<class S, int Exponent, typename std::enable_if<
-                        !(Exponent>=0) && (Exponent>-8), int>::type Dummy = 0>
+                template<class S, int Exponent, 
+                        enable_if_t<!(Exponent>=0) && (Exponent>-8), int> Dummy = 0>
                 constexpr S pow2()
                 {
                     static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
                     return pow2<S, Exponent+1>()*S(.5);
                 }
 
-                template<class S, int Exponent, typename std::enable_if<(Exponent<=-8), int>::type Dummy = 0>
+                template<class S, int Exponent, enable_if_t<(Exponent<=-8), int> Dummy = 0>
                 constexpr S pow2()
                 {
                     static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
@@ -285,14 +310,14 @@ namespace sg14 {
     // sg14::fixed_point<> member definitions
 
     template<class Rep, int Exponent>
-    template<class S, typename std::enable_if<std::is_floating_point<S>::value, int>::type Dummy>
+    template<class S, _impl::enable_if_t<std::is_floating_point<S>::value, int> Dummy>
     constexpr S fixed_point<Rep, Exponent>::one()
     {
         return _impl::fp::type::pow2<S, -exponent>();
     }
 
     template<class Rep, int Exponent>
-    template<class S, typename std::enable_if<std::numeric_limits<S>::is_integer, int>::type Dummy>
+    template<class S, _impl::enable_if_t<std::numeric_limits<S>::is_integer, int> Dummy>
     constexpr S fixed_point<Rep, Exponent>::one()
     {
         return fixed_point<S, 0>::from_data(1);

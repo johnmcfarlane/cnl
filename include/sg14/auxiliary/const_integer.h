@@ -1,4 +1,4 @@
-
+﻿
 //          Copyright John McFarlane 2015 - 2016.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
@@ -11,6 +11,7 @@
 #define SG14_CONST_INTEGER_H 1
 
 #if ! defined(SG14_GODBOLT_ORG)
+#include <sg14/bits/common.h>
 #include <sg14/cstdint>
 #include <sg14/limits>
 #include <sg14/type_traits>
@@ -47,7 +48,7 @@ namespace sg14 {
         };
 
         template<class Integer>
-        struct _num_integer_bits<Integer, typename std::enable_if<std::numeric_limits<Integer>::is_signed>::type> {
+        struct _num_integer_bits<Integer, _impl::enable_if_t<std::numeric_limits<Integer>::is_signed>> {
             static constexpr int f(Integer value) {
                 // Most negative number is not exploited;
                 // thus negating the result or subtracting it from something else
@@ -102,7 +103,7 @@ namespace sg14 {
         };
 
         template<class Integer>
-        struct _num_integer_zeros<Integer, typename std::enable_if<std::numeric_limits<Integer>::is_signed>::type> {
+        struct _num_integer_zeros<Integer, _impl::enable_if_t<std::numeric_limits<Integer>::is_signed>> {
             static constexpr int f(Integer value) {
                 // Most negative number is not exploited;
                 // thus negating the result or subtracting it from something else
@@ -179,17 +180,17 @@ namespace sg14 {
 
         template<char... Digits>
         struct digits_to_integral {
-            static constexpr intmax_t value = combine(10, 0, parse_dec(Digits)...);
+            static constexpr std::intmax_t value = combine(10, 0, parse_dec(Digits)...);
         };
 
         template<char... Digits>
         struct digits_to_integral<'0', 'x', Digits...> {
-            static constexpr intmax_t value = combine(16, 0, parse_hex(Digits)...);
+            static constexpr std::intmax_t value = combine(16, 0, parse_hex(Digits)...);
         };
 
         template<char... Digits>
         struct digits_to_integral<'0', 'X', Digits...> {
-            static constexpr intmax_t value = combine(16, 0, parse_hex(Digits)...);
+            static constexpr std::intmax_t value = combine(16, 0, parse_hex(Digits)...);
         };
     }
 
@@ -228,7 +229,140 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::const_integer operator overloads
+    // sg14::const_integer arithmetic operator overloads
+
+    namespace _const_integer_impl {
+        template<class Lhs, class Rhs, class Type>
+        struct enable_if_op;
+
+        template<
+                class LhsIntegral, LhsIntegral LhsValue, int LhsDigits, int LhsExponent,
+                class RhsIntegral, RhsIntegral RhsValue, int RhsDigits, int RhsExponent,
+                class Type>
+        struct enable_if_op<
+                const_integer<LhsIntegral, LhsValue, LhsDigits, LhsExponent>,
+                const_integer<RhsIntegral, RhsValue, RhsDigits, RhsExponent>,
+                Type> {
+            using type = Type;
+        };
+
+        template<
+                class LhsIntegral, LhsIntegral LhsValue, int LhsDigits, int LhsExponent,
+                class Rhs,
+                class Type>
+        struct enable_if_op<
+                const_integer<LhsIntegral, LhsValue, LhsDigits, LhsExponent>,
+                Rhs,
+                Type> {
+            using type = Type;
+        };
+
+        template<
+                class Lhs,
+                class RhsIntegral, RhsIntegral RhsValue, int RhsDigits, int RhsExponent,
+                class Type>
+        struct enable_if_op<
+                Lhs,
+                const_integer<RhsIntegral, RhsValue, RhsDigits, RhsExponent>,
+                Type> {
+            using type = Type;
+        };
+
+        // Lhs OP const_integer
+        template<
+                class Operator,
+                class Lhs,
+                class RhsIntegral, RhsIntegral RhsValue, int RhsDigits, int RhsExponent,
+                class = _impl::enable_if_t<std::is_integral<Lhs>::value>>
+        constexpr auto operate(
+                const Lhs& lhs,
+                const const_integer<RhsIntegral, RhsValue, RhsDigits, RhsExponent>&,
+                Operator)
+        -> decltype(_impl::op_fn<Operator>(lhs, RhsValue)) {
+            return _impl::op_fn<Operator>(lhs, RhsValue);
+        }
+
+        // const_integer OP Lhs
+        template<
+                class Operator,
+                class LhsIntegral, LhsIntegral LhsValue, int LhsDigits, int LhsExponent,
+                class Rhs,
+                class = _impl::enable_if_t<std::is_integral<Rhs>::value, int>>
+        constexpr auto operate(
+                const const_integer<LhsIntegral, LhsValue, LhsDigits, LhsExponent>&,
+                const Rhs& rhs,
+                Operator)
+        -> decltype(_impl::op_fn<Operator>(LhsValue, rhs)) {
+            return _impl::op_fn<Operator>(LhsValue, rhs);
+        }
+
+        // const_integer OP const_integer
+        template<
+                class Operator,
+                class LhsIntegral, LhsIntegral LhsValue, int LhsDigits, int LhsExponent,
+                class RhsIntegral, RhsIntegral RhsValue, int RhsDigits, int RhsExponent>
+        constexpr auto operate(
+                const const_integer<LhsIntegral, LhsValue, LhsDigits, LhsExponent>&,
+                const const_integer<RhsIntegral, RhsValue, RhsDigits, RhsExponent>&,
+                Operator)
+        -> decltype(const_integer<_impl::op_result<Operator, LhsIntegral, RhsIntegral>, _impl::op_fn<Operator>(LhsValue, RhsValue)>{}) {
+            return const_integer<_impl::op_result<Operator, LhsIntegral, RhsIntegral>, _impl::op_fn<Operator>(LhsValue, RhsValue)>{};
+        }
+    }
+
+    template<class Lhs, class Rhs, typename _const_integer_impl::enable_if_op<Lhs, Rhs, int>::type dummy = 0>
+    constexpr auto operator+(const Lhs& lhs, const Rhs& rhs)
+    -> decltype(_const_integer_impl::operate(lhs, rhs, _impl::add_tag))
+    {
+        return _const_integer_impl::operate(lhs, rhs, _impl::add_tag);
+    }
+
+    template<class Lhs, class Rhs, typename _const_integer_impl::enable_if_op<Lhs, Rhs, int>::type dummy = 0>
+    constexpr auto operator-(const Lhs& lhs, const Rhs& rhs)
+    -> decltype(_const_integer_impl::operate(lhs, rhs, _impl::subtract_tag))
+    {
+        return _const_integer_impl::operate(lhs, rhs, _impl::subtract_tag);
+    }
+
+    template<class Lhs, class Rhs, typename _const_integer_impl::enable_if_op<Lhs, Rhs, int>::type dummy = 0> 
+    constexpr auto operator*(const Lhs& lhs, const Rhs& rhs)
+    -> decltype(_const_integer_impl::operate(lhs, rhs, _impl::multiply_tag))
+    {
+        return _const_integer_impl::operate(lhs, rhs, _impl::multiply_tag);
+    }
+
+    template<class Lhs, class Rhs, typename _const_integer_impl::enable_if_op<Lhs, Rhs, int>::type dummy = 0>
+    constexpr auto operator/(const Lhs& lhs, const Rhs& rhs)
+    -> decltype(_const_integer_impl::operate(lhs, rhs, _impl::divide_tag))
+    {
+        return _const_integer_impl::operate(lhs, rhs, _impl::divide_tag);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::const_integer comparison operator overloads
+
+    namespace _const_integer_impl {
+        // const_integer OP const_integer
+        template<
+                class Operator,
+                class LhsIntegral, LhsIntegral LhsValue, int LhsDigits, int LhsExponent,
+                class RhsIntegral, RhsIntegral RhsValue, int RhsDigits, int RhsExponent>
+        constexpr auto compare(
+                const const_integer<LhsIntegral, LhsValue, LhsDigits, LhsExponent>&,
+                const const_integer<RhsIntegral, RhsValue, RhsDigits, RhsExponent>&,
+                Operator) 
+        -> decltype(_impl::op_fn<Operator>(LhsValue, RhsValue)) 
+        {
+            return _impl::op_fn<Operator>(LhsValue, RhsValue);
+        }
+    }
+    
+    template<class Lhs, class Rhs, typename _const_integer_impl::enable_if_op<Lhs, Rhs, int>::type dummy = 0>
+    constexpr auto operator==(const Lhs& lhs, const Rhs& rhs)
+    -> decltype(_const_integer_impl::compare(lhs, rhs, _impl::equal_tag))
+    {
+        return _const_integer_impl::compare(lhs, rhs, _impl::equal_tag);
+    }
 
 #if ! defined(_MSC_VER) || (_MSC_VER > 1900)
     template<class RhsIntegral, RhsIntegral RhsValue>
@@ -238,30 +372,6 @@ namespace sg14 {
         return const_integer<decltype(-RhsValue), -RhsValue>{};
     }
 #endif
-
-    template<
-        class LhsIntegral, LhsIntegral LhsValue,
-        class RhsIntegral, RhsIntegral RhsValue>
-    constexpr const_integer<decltype(LhsValue + RhsValue), LhsValue + RhsValue>
-    operator+(const_integer<LhsIntegral, LhsValue>, const_integer<RhsIntegral, RhsValue>) noexcept {
-        return {};
-    }
-
-    template<
-        class LhsIntegral, LhsIntegral LhsValue,
-        class RhsIntegral, RhsIntegral RhsValue>
-    constexpr const_integer<decltype(LhsValue * RhsValue), LhsValue * RhsValue>
-    operator*(const_integer<LhsIntegral, LhsValue>, const_integer<RhsIntegral, RhsValue>) noexcept {
-        return {};
-    }
-
-    template<
-        class LhsIntegral, LhsIntegral LhsValue,
-        class RhsIntegral, RhsIntegral RhsValue>
-    constexpr typename std::conditional<LhsValue==RhsValue, std::true_type, std::false_type>::type
-    operator==(const_integer<LhsIntegral, LhsValue>, const_integer<RhsIntegral, RhsValue>) noexcept {
-        return {};
-    }
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::const_integer type traits
@@ -305,19 +415,28 @@ namespace sg14 {
         }
     }
 }
-
-////////////////////////////////////////////////////////////////////////////////
-// std::common_type<const_integer<>, ...>
-
 namespace std {
-    template<class Integral, Integral Value, int Ditits, int Zeros, class Rhs>
-    struct common_type<sg14::const_integer<Integral, Value, Ditits, Zeros>, Rhs>
+    ////////////////////////////////////////////////////////////////////////////////
+    // std::common_type<const_integer<>, ...>
+    
+    template<class Integral, Integral Value, int Digits, int Zeros, class Rhs>
+    struct common_type<sg14::const_integer<Integral, Value, Digits, Zeros>, Rhs>
         : common_type<Integral, Rhs> {
     };
 
-    template<class Lhs, class Integral, Integral Value, int Ditits, int Zeros>
-    struct common_type<Lhs, sg14::const_integer<Integral, Value, Ditits, Zeros>>
+    template<class Lhs, class Integral, Integral Value, int Digits, int Zeros>
+    struct common_type<Lhs, sg14::const_integer<Integral, Value, Digits, Zeros>>
         : common_type<Lhs, Integral> {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // std::numeric_limits<const_integer<>>
+
+    template<class Integral, Integral Value, int Digits, int Zeros>
+    struct numeric_limits<sg14::const_integer<Integral, Value, Digits, Zeros>>
+    : numeric_limits<Integral> {
+        /// alias to template parameter, \a Digits
+        static constexpr int digits = Digits;
     };
 }
 

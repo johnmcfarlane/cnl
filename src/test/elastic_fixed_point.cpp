@@ -8,6 +8,7 @@
 /// \brief tests of sg14::elastic_fixed_point alias
 
 #include <sg14/auxiliary/elastic_fixed_point.h>
+#include "number_test.h"
 
 using std::is_same;
 
@@ -26,13 +27,17 @@ namespace {
     using sg14::_impl::fp::arithmetic::result;
     using sg14::_impl::shift_left;
     using sg14::_impl::fp::arithmetic::wide_tag;
-    using sg14::_impl::divide_tag;
+    using sg14::_impl::divide_tag_t;
     using sg14::_impl::identical;
-    using sg14::_impl::multiply_tag;
+    using sg14::_impl::multiply_tag_t;
     using sg14::elastic_integer;
     using sg14::fixed_point;
     using sg14::set_width_t;
     using sg14::width;
+
+    using namespace sg14::literals;
+
+    static_assert(identical(0_elastic, elastic_fixed_point<1, 0>{0}), "");
 
     static_assert(identical(
             elastic_integer<15, int>{0x7fff}*elastic_integer<16, unsigned>{0xffff},
@@ -47,20 +52,20 @@ namespace {
     static_assert(shift_left<1, sg14::elastic_integer<64, unsigned>>(0) == 0u, "");
 
     static_assert(identical(
-            result<wide_tag, divide_tag, fixed_point<elastic_integer<15, int>, 0>, fixed_point<elastic_integer<15, int>, 0>>::type{0},
+            result<wide_tag, divide_tag_t, fixed_point<elastic_integer<15, int>, 0>, fixed_point<elastic_integer<15, int>, 0>>::type{0},
             fixed_point<elastic_integer<30, int>, -15>{0}), "sg14::elastic_integer test failed");
     static_assert(identical(
-            result<wide_tag, divide_tag, fixed_point<elastic_integer<16, unsigned>, 0>, fixed_point<elastic_integer<16, unsigned>, 0>>::type{0},
+            result<wide_tag, divide_tag_t, fixed_point<elastic_integer<16, unsigned>, 0>, fixed_point<elastic_integer<16, unsigned>, 0>>::type{0},
             fixed_point<elastic_integer<32, unsigned>, -16>{0}), "sg14::elastic_integer test failed");
     static_assert(identical(
-            result<wide_tag, divide_tag, fixed_point<elastic_integer<31, int>, 0>, fixed_point<elastic_integer<31, int>, 0>>::type{0},
+            result<wide_tag, divide_tag_t, fixed_point<elastic_integer<31, int>, 0>, fixed_point<elastic_integer<31, int>, 0>>::type{0},
             fixed_point<elastic_integer<62, int>, -31>{0}), "sg14::elastic_integer test failed");
     static_assert(identical(
-            result<wide_tag, divide_tag, fixed_point<elastic_integer<32, unsigned>, 0>, fixed_point<elastic_integer<32, unsigned>, 0>>::type{0},
+            result<wide_tag, divide_tag_t, fixed_point<elastic_integer<32, unsigned>, 0>, fixed_point<elastic_integer<32, unsigned>, 0>>::type{0},
             fixed_point<elastic_integer<64, unsigned>, -32>{0}), "sg14::elastic_integer test failed");
 
     static_assert(identical(
-            intermediate<wide_tag, multiply_tag, fixed_point<elastic_integer<27, unsigned int>, -27>, fixed_point<elastic_integer<27, unsigned int>, -27>>::lhs_type{0},
+            intermediate<wide_tag, multiply_tag_t, fixed_point<elastic_integer<27, unsigned int>, -27>, fixed_point<elastic_integer<27, unsigned int>, -27>>::lhs_type{0},
             fixed_point<elastic_integer<27, unsigned int>, -27>{0}), "sg14::elastic_integer test failed");
 
     static_assert(width<set_width_t<elastic_integer<15, uint8_t>, 22>>::value == 22, "sg14::elastic_integer test failed");
@@ -135,37 +140,6 @@ struct print_num_as_error {
     operator char() { return size+256; }
 }; //always overflow
 
-////////////////////////////////////////////////////////////////////////////////
-// test specific operations
-
-// Lhs == Rhs
-template<class Lhs, class Rhs>
-constexpr bool is_equal_to(const Lhs& lhs, const Rhs& rhs)
-{
-    return ((lhs==rhs)==true)
-           && ((lhs!=rhs)==false)
-           && ((lhs<rhs)==false)
-           && ((lhs>rhs)==false)
-           && ((lhs<=rhs)==true)
-           && ((lhs>=rhs)==true);
-}
-
-static_assert(is_equal_to<int>(0, 0), "less_than_test test failed");
-
-// lesser < greater
-template<class Lesser, class Greater>
-constexpr bool is_less_than(const Lesser& lesser, const Greater& greater)
-{
-    return ((lesser==greater)==false)
-           && ((lesser!=greater)==true)
-           && ((lesser<greater)==true)
-           && ((lesser>greater)==false)
-           && ((lesser<=greater)==true)
-           && ((lesser>=greater)==false);
-}
-
-static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
-
 namespace test_elastic_constant_literal {
     using namespace sg14::literals;
     using sg14::_impl::identical;
@@ -177,7 +151,8 @@ namespace test_elastic_constant_literal {
 // should pass for all specializations
 
 template<class Elastic>
-struct positive_elastic_test {
+struct positive_elastic_test
+        : number_test<Elastic> {
     ////////////////////////////////////////////////////////////////////////////////
     // core definitions
     using elastic_type = Elastic;
@@ -233,20 +208,8 @@ struct positive_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // test comparison operators
 
-    // comparisons between zero
-    static_assert(is_equal_to(zero, zero), "comparison test error");
-
-    // comparisons between zero and literal zero
-    static_assert(is_equal_to(zero, 0.), "comparison test error");
-
-    // comparisons between zero and zero-initialized value
-    static_assert(is_equal_to(zero, elastic_type{0.}), "zero-initialized value is not represented using zero");
-
     // comparisons between zero and negative zero
     static_assert(is_equal_to(zero, negative_zero), "comparison test error");
-
-    // comparisons between minimum value
-    static_assert(is_equal_to(min, min), "comparison test error");
 
     // zero vs min
     static_assert(is_less_than<elastic_type>(zero, min), "comparison test error");
@@ -265,8 +228,6 @@ struct positive_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // test operator+
 
-    static_assert(zero+zero==zero, "operator+ test failed");
-    static_assert(zero+zero+zero==zero, "operator+ test failed");
     static_assert(std::numeric_limits<decltype(zero+zero)>::is_signed
                   ==std::numeric_limits<elastic_type>::is_signed,
                   "signedness is lost during add");
@@ -276,13 +237,6 @@ struct positive_elastic_test {
     ////////////////////////////////////////////////////////////////////////////////
     // test operator-
 
-    static_assert(is_equal_to(zero-zero, zero), "operator- test failed");
-    static_assert(is_equal_to(zero-zero-zero, zero), "operator- test failed");
-
-    static_assert(is_equal_to(min-min, zero), "operator- test failed");
-    static_assert(is_equal_to(min-zero, min), "operator- test failed");
-
-    static_assert(is_equal_to(max-max, zero), "operator- test failed");
     static_assert(is_less_than(max-min, max), "operator- test failed");
 
     static_assert(std::numeric_limits<decltype(zero-zero)>::is_signed,
@@ -448,8 +402,6 @@ template<int IntegerDigits>
 struct elastic_test_with_integer_digits
         : elastic_test<IntegerDigits, -IntegerDigits+1>
                 , elastic_test<IntegerDigits, -IntegerDigits+2>
-                , elastic_test<IntegerDigits, -IntegerDigits+8>
-                , elastic_test<IntegerDigits, -IntegerDigits+16>
                 , elastic_test<IntegerDigits, -IntegerDigits+31>
 {
 };
@@ -467,19 +419,7 @@ template
 struct elastic_test_with_integer_digits<5>;
 
 template
-struct elastic_test_with_integer_digits<-8>;
-
-template
-struct elastic_test_with_integer_digits<13>;
-
-template
 struct elastic_test_with_integer_digits<-16>;
 
 template
-struct elastic_test_with_integer_digits<19>;
-
-template
-struct elastic_test_with_integer_digits<-31>;
-
-template
-struct elastic_test_with_integer_digits<43>;
+struct elastic_test_with_integer_digits<63>;

@@ -1,16 +1,16 @@
 ﻿version: 0.1.{build}
-image: Visual Studio 2015
+image: Visual Studio 2017
 
 environment:
   fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
   matrix:
     - platform: x86
       configuration: Release
-      cmake_generator: "Visual Studio 14 2015"
+      cmake_generator: "Visual Studio 15 2017"
       msbuild_property: win32
     - platform: x64
       configuration: Release
-      cmake_generator: "Visual Studio 14 2015 Win64"
+      cmake_generator: "Visual Studio 15 2017 Win64"
       msbuild_property: x64
 
 build_script:
