@@ -3,8 +3,8 @@ project(fixed_point)
 # CMake 2.8.11 is required by Google Benchmarks
 cmake_minimum_required(VERSION 2.8.11)
 
-add_library(
-        fixed_point STATIC
+add_library(fixed_point INTERFACE)
+target_sources(fixed_point INTERFACE
         include/sg14/auxiliary/multiprecision.h
         include/sg14/auxiliary/elastic_integer.h
         include/sg14/auxiliary/elastic_fixed_point.h
@@ -22,9 +22,8 @@ add_library(
         include/sg14/cstdint
         include/sg14/fixed_point
         include/sg14/limits
-        include/sg14/type_traits
-)
-set_target_properties(fixed_point PROPERTIES LINKER_LANGUAGE CXX)
+        include/sg14/type_traits)
+
 include_directories(SYSTEM ${CMAKE_CURRENT_LIST_DIR})
 install(
         DIRECTORY include/sg14
