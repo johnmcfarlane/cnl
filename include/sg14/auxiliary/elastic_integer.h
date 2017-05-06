@@ -125,7 +125,7 @@ namespace sg14 {
                 : _base(static_cast<rep>(Value))
         {
             static_assert(Value <= std::numeric_limits<rep>::max(), "initialization by out-of-range value");
-            static_assert(Value >= std::numeric_limits<rep>::lowest(), "initialization by out-of-range value");
+            static_assert(!std::numeric_limits<Integral>::is_signed || Value >= std::numeric_limits<rep>::lowest(), "initialization by out-of-range value");
         }
 
         /// copy assignment operator taking a floating-point type
