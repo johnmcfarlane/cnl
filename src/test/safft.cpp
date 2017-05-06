@@ -4,6 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#define _USE_MATH_DEFINES // define M_PI in <cmath>
 
 #include <iostream>
 #include <iomanip>
@@ -38,7 +39,7 @@ TEST(safft, fft_double)
         ref_angle = twopi*(double)index/(double)fftSize;
         ref = std::complex<double>(cos(ref_angle),-sin(ref_angle));
         //This will be pretty accurate...
-        ASSERT_EQ(std::abs(ptr[i]-ref)<0.00000000000001,1);
+        ASSERT_LT(std::abs(ptr[i]-ref), 0.00000000000001);
     }
 }
 
@@ -48,16 +49,18 @@ TEST(safft, fft_fixed_point)
     unsigned int impulseLoc =15; //Some index smaller than fftSize
     double twopi = M_PI*2.0;
 
-    fixed_point<int32_t,-16> zero = static_cast<fixed_point<int32_t,-16>>(0);
-    fixed_point<int32_t,-16> one = static_cast<fixed_point<int32_t,-16>>(1);
-    std::complex<fixed_point<int32_t,-16> > czero = std::complex<fixed_point<int32_t,-16>> (zero,zero);
-    std::complex<fixed_point<int32_t,-16> > cone = std::complex<fixed_point<int32_t,-16>> (one,zero);
+    using elastic_fixed_point = sg14::elastic_fixed_point<14, 16>;
+    using complex = std::complex<elastic_fixed_point>;
+    elastic_fixed_point zero = 0;
+    elastic_fixed_point one = 1;
+    complex czero = complex (zero,zero);
+    complex cone = complex (one,zero);
 
-    std::vector <std::complex<fixed_point<int32_t,-16> > > fix_vec1(fftSize, czero);
+    std::vector <complex> fix_vec1(fftSize, czero);
     fix_vec1[impulseLoc] = cone;
-    std::vector <std::complex<fixed_point<int32_t,-16> > > fix_vec2(fftSize, czero);
+    std::vector <complex> fix_vec2(fftSize, czero);
 
-    Algorithms::SaFFT<fixed_point<int32_t,-16>> fix_engine(fftSize);
+    Algorithms::SaFFT<elastic_fixed_point> fix_engine(fftSize);
 
     unsigned int fix_ret = fix_engine.fft(fix_vec1, fix_vec2);
     auto fix_ptr = (fix_ret == 0) ? &fix_vec1[0] : &fix_vec2[0];
@@ -72,8 +75,8 @@ TEST(safft, fft_fixed_point)
         ref = std::complex<double>(cos(ref_angle),-sin(ref_angle));
         //Accuracy vs. double will be smaller
         //TODO: Acceptable FFT accuracy
-        ASSERT_EQ(std::abs((double)fix_ptr[i].real()-ref.real())<0.0005,1);
-        ASSERT_EQ(std::abs((double)fix_ptr[i].imag()-ref.imag())<0.0005,1);
+        ASSERT_LT(std::abs((double)fix_ptr[i].real()-ref.real()), 0.0005);
+        ASSERT_LT(std::abs((double)fix_ptr[i].imag()-ref.imag()), 0.0005);
     }
 }
 
@@ -83,16 +86,17 @@ TEST(safft, fft_elastic_fixed_point)
     unsigned int impulseLoc = 15; //Some index smaller than fftSize
     double twopi = M_PI*2.0;
 
-    elastic_fixed_point<16,16> zero = static_cast<elastic_fixed_point<16,16>>(0);
-    elastic_fixed_point<16,16> one = static_cast<elastic_fixed_point<16,16>>(1);
-    std::complex<elastic_fixed_point<16,16> > czero = std::complex<elastic_fixed_point<16,16>> (zero,zero);
-    std::complex<elastic_fixed_point<16,16> > cone = std::complex<elastic_fixed_point<16,16>> (one,zero);
+    using elastic_fixed_point = sg14::elastic_fixed_point<14, 16>;
+    elastic_fixed_point zero = static_cast<elastic_fixed_point>(0);
+    elastic_fixed_point one = static_cast<elastic_fixed_point>(1);
+    std::complex<elastic_fixed_point > czero = std::complex<elastic_fixed_point> (zero,zero);
+    std::complex<elastic_fixed_point > cone = std::complex<elastic_fixed_point> (one,zero);
 
-    std::vector <std::complex<elastic_fixed_point<16,16> > > vec1(fftSize, czero);
+    std::vector <std::complex<elastic_fixed_point > > vec1(fftSize, czero);
     vec1[impulseLoc] = cone;
-    std::vector <std::complex<elastic_fixed_point<16,16> > > vec2(fftSize, czero);
+    std::vector <std::complex<elastic_fixed_point > > vec2(fftSize, czero);
 
-    Algorithms::SaFFT<elastic_fixed_point<16,16>> fix_engine(fftSize);
+    Algorithms::SaFFT<elastic_fixed_point> fix_engine(fftSize);
 
     unsigned int ret = fix_engine.fft(vec1, vec2);
     auto ptr = (ret == 0) ? &vec1[0] : &vec2[0];
@@ -107,7 +111,7 @@ TEST(safft, fft_elastic_fixed_point)
         ref = std::complex<double>(cos(ref_angle),-sin(ref_angle));
         //Accuracy vs. double will be smaller
         //TODO: Acceptable FFT accuracy
-        ASSERT_EQ(std::abs((double)ptr[i].real()-ref.real())<0.0005,1);
-        ASSERT_EQ(std::abs((double)ptr[i].imag()-ref.imag())<0.0005,1);
+        ASSERT_LT(std::abs((double)ptr[i].real()-ref.real()), 0.0005);
+        ASSERT_LT(std::abs((double)ptr[i].imag()-ref.imag()), 0.0005);
     }
 }
