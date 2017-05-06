@@ -63,9 +63,17 @@ namespace {
                 "sg14::elastic_integer test failed");
     }
 
-    static_assert(identical(elastic_integer<8>{1L}, elastic_integer<8>{1}), "elastic_integer test failed");
-    static_assert(identical(-elastic_integer<1, unsigned>{1}, elastic_integer<1, signed>{-1}), "elastic_integer test failed");
-    static_assert(sg14::width<elastic_integer<7, int>>::value == 8, "elastic_integer test failed");
+    namespace test_width {
+        static_assert(sg14::width<elastic_integer<7, int>>::value == 8, "elastic_integer test failed");
+    }
+
+    namespace test_ctor {
+        static_assert(identical(elastic_integer<8>{1L}, elastic_integer<8>{1}), "elastic_integer test failed");
+        static_assert(identical(-elastic_integer<1, unsigned>{1}, elastic_integer<1, signed>{-1}), "elastic_integer test failed");
+
+        static_assert(identical(elastic_integer<4>{10_c}, elastic_integer<4>{10}), "");
+        static_assert(identical(elastic_integer<10>{sg14::const_integer<unsigned, 1000>{}}, elastic_integer<10>{1000}), "");
+    }
 
     namespace test_is_elastic_integer {
         using sg14::_elastic_integer_impl::is_elastic_integer;
