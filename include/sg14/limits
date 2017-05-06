@@ -18,9 +18,15 @@
 #include <cstdint>
 #include <limits>
 
-#define SG14_NUMERIC_LIMITS_128_PROVIDED (!defined(__clang__) && defined(__GNUG__) && (__cplusplus <= 201402L))
+// SG14_NUMERIC_LIMITS_128_PROVIDED defined if
+// standard library specializes std::numeric_limits for 128-bit integer
+#if !defined(__clang__) && defined(__GNUG__) && (__cplusplus <= 201402L)
+#define SG14_NUMERIC_LIMITS_128_PROVIDED
+#elif defined(SG14_NUMERIC_LIMITS_128_PROVIDED)
+#error SG14_NUMERIC_LIMITS_128_PROVIDED already defined
+#endif
 
-#if (defined(SG14_INT128_ENABLED) && (!SG14_NUMERIC_LIMITS_128_PROVIDED))
+#if defined(SG14_INT128_ENABLED) && !defined(SG14_NUMERIC_LIMITS_128_PROVIDED)
 
 namespace std {
     template<>
