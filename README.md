@@ -33,7 +33,7 @@ and [Debian GNU/Linux 8.3](https://www.debian.org/releases/stable/) using GCC 5.
 Requires:
 
 - G++ 5.4
-- [CMake](https://cmake.org/download/) 2.8.11
+- [CMake](https://cmake.org/download/) 3.2
 
 Optional:
 
