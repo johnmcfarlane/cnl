@@ -7,8 +7,8 @@
 /// \file
 /// \brief essential definitions related to the `sg14::elastic_fixed_point` type
 
-#if !defined(SG14_ELASTIC_H)
-#define SG14_ELASTIC_H 1
+#if !defined(SG14_ELASTIC_FIXED_POINT_H)
+#define SG14_ELASTIC_FIXED_POINT_H 1
 
 #if ! defined(SG14_GODBOLT_ORG)
 #include "elastic_integer.h"
@@ -115,4 +115,4 @@ namespace sg14 {
     }
 }
 
-#endif // SG14_ELASTIC_H
+#endif // SG14_ELASTIC_FIXED_POINT_H
