@@ -320,7 +320,7 @@ static_assert(saturated_integer<int8_t>(127.)==127, "sg14::saturated_integer tes
 static_assert(saturated_integer<int8_t>(1e38f)==127, "sg14::saturated_integer test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_impl::numeric_base<saturating_integer<>>
+// sg14::_impl::numeric_base<saturated_integer<>>
 
 namespace {
     using namespace sg14::_impl;
