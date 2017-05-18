@@ -63,10 +63,16 @@ add_executable(fp_test
 find_package(Boost)
 
 if(Boost_FOUND)
-    # only compile multiprecision.cpp if Boost.Multiprecision is available
-    set(BOOST_FOUND_CXX_FLAGS "-DSG14_BOOST_ENABLED")
-    target_include_directories(fp_test SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
-    target_link_libraries(fp_test ${Boost_LIBRARIES})
+    if(BOOST_VERSION GREATER 105500 OR EXCEPTIONS)
+        # only compile multiprecision.cpp if Boost.Multiprecision is available
+        set(BOOST_FOUND_CXX_FLAGS "-DSG14_BOOST_ENABLED")
+        target_include_directories(fp_test SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
+        target_link_libraries(fp_test ${Boost_LIBRARIES})
+    else(BOOST_VERSION GREATER 105500 OR EXCEPTIONS)
+        message("Boost version is too low to use without exception handling")
+    endif(BOOST_VERSION GREATER 105500 OR EXCEPTIONS)
+else(Boost_FOUND)
+    message("Boost not found")
 endif(Boost_FOUND)
 
 ######################################################################
