@@ -137,10 +137,10 @@ TEST(index, advanced_arithmetic_example)
 void boost_example()
 {
     using namespace boost::multiprecision;
+    using rep = number<cpp_int_backend<400, 400, unsigned_magnitude, unchecked, void>>;
 
-    // Define an unsigned type with 400 integer digits and 0 fractional digits
-    // and use boost::multiprecision::uint128_t as the source type.
-    using big_number = make_ufixed<400, 0, uint128_t>;
+    // Define an unsigned type with 400 integer digits and 0 fractional digits.
+    using big_number = fixed_point<rep, 0>;
 
     // a googol is 10^100
     auto googol = big_number{1};
