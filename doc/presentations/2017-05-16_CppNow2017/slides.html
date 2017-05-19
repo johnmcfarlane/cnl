@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Composite Arithmetic Types Are > the + of Their Parts</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle
+
+# Composite Arithmetic Types Are > the + of Their Parts
+
+## John McFarlane
+
+### A9.com
+
+???
+Hi, my name is John McFarlane. I work at A9.com in Palo Alto, California.
+Today I'd like to share my ideas on the future of numeric types in C++.
+
+---
+
+# Background
+
+???
+First, a little bit about how I got here.
+--
+* Game Development
+
+???
+I worked for many years in games development where code reuse is traditionally quite low.
+Often parts of the STL will be reinvented and for some good and some bad reasons.
+--
+
+* Study Group 14 - Low Latency (Games, Embedded, HFT, etc.)
+
+???
+Then a couple of years ago I found out about SG14.
+This is a place where game developers and others connect with the C++ committee for mutual benefit.
+--
+
+ * P0037: "Fixed-Point Real Numbers"
+
+???
+Around that time, I started toying with a fixed-point type.
+I floated an idea on the SG14 forum and soon I was presenting a proposal.
+--
+
+* Study Group 6 - Numerics
+
+???
+This made me aware of the Numerics Study Group where similar work was already going on.
+SG6's aim is to produce a technical specification containing numeric types and other utilities.
+--
+
+ * Platforms: PCs, Cloud, Mobile devices, Embedded systems, GPUs / FPGAs,
+
+???
+This endeavor is huge.
+We care much more about energy consumption so integer arithmetic is regaining ground from floating-point.
+--
+
+ * Applications: Simulation, Image Processing, Machine Learning, Information Security
+
+???
+And we need to do heavy duty number crunching across all of these platforms
+from facial recognition on your phone to autonomous robots navigating public spaces.
+And correctness of security-critical systems is a very high-profile concern.
+--
+
+ * P0554: "Composition of Arithmetic Types"
+
+???
+So now I'm trying put the case for my fixed-point type within a much wider context.
+--
+
+* Should SG14 Produce a Low-latency Library?
+
+???
+And at the same time there is some discussion 
+of gathering a common body of work in SG16 into a usable library.
+I and others really need to publish a library that is more appealing to users.
+
+So something I'd like you to take away and consider is how we might go about this.
+Should SG16 create one or more low-latency-related libraries? Should we do this within Boost?
+
+
+
+
+
+---
+# Disclaimer
+
+In the interest of time, this talk does not mention:
+
+* user-defined literals, 
+* integral constants
+* class template deduction
+* operator overload resolution
+* <=>
+* `std::common_type`
+* `noexcept`
+* `constexpr`
+* trig functions
+* UB, nasal demons or why `signed>unsigned`
+* Unum
+* decimal representation
+* rationals
+* variable-width integers
+* two's complement, ternary architecture or qubits
+
+???
+Numerics is broad. This talk is short.
+Please ask questions and give feedback
+but expect me to brush over some details in my slides.
+
+
+
+
+
+---
+# The Pitch
+
+???
+But first the rousing mission statement....
+--
+> Do for `int` what the STL did for `[]`
+
+???
+I think as a C++ library writer there is no better inspiration than the STL.
+Specifically, there are some interesting parallels to be drawn in terms of safety, usability and abstraction.
+And of course, what's the single best quality of the STL?
+--
+
+```c++
+template<typename T>
+using Composite = map<string, vector<unique_ptr<T>>>
+```
+
+???
+Composability!
+
+
+
+
+
+---
+class: center, middle
+# Composability is a GOOD THING
+
+<img style="float: center; width: 25%; height: 25%" src="https://media.giphy.com/media/uXbXCQ9c3irpC/giphy.gif">
++
+<img style="float: center; width: 50%; height: 25%" src="https://pbs.twimg.com/media/C_WQ3EBXgAEa0MJ.jpg">
+
+=
+<img style="float: center; width: 50%; height: 25%" src="https://pbs.twimg.com/media/C_3NwnoWsAAcXT_.jpg">
+
+
+
+
+
+---
+# How can I tell if my type is composite?
+
+???
+So what is a composite arithmetic type?
+--
+Four telltale signs:
+
+???
+Let's first identify some common characteristics.
+--
+
+1. Can be composed from fundamental arithmetic types
+
+???
+The user should be able to choose a built-in integer type as the building block for a composite type.
+--
+
+1. Can be substituted for fundamental arithmetic types
+
+???
+The more easily you can replace built-ins with your type, the better things will be.
+Not only is this useful for retrofitting an existing codebase with some shiny new functionality
+but also, it makes it more likely that your type ...
+--
+
+1. Can be used to compose other arithmetic types
+
+???
+...can be used to compose other arithmetic types.
+And forth,
+--
+
+1. Separation of concerns
+
+???
+Smaller, simpler arithmetic types have certain advantages over kitchen sink solutions.
+For instance, they are much easier to reason about.
+But before we examine each bullet in detail,
+I'd like to introduce two types that I'm going to use for illustrative purposes.
+
+
+
+
+
+---
+# Example Numeric Types
+
+???
+Type number one is everyone's favorite,
+--
+
+Example Type #1: `safe_integer<>`:
+
+```c++
+template<typename Rep>
+class safe_integer {
+public:
+    // ...
+private:
+    Rep _rep;
+};
+```
+
+???
+</typename>
+... the safe integer.
+`safe_integer<>` behaves like a built-in integer except it catches overflow and UB at run-time.
+This simple version will throw an exception to ensure that incorrect results cannot escape.
+--
+
+```c++
+// multiplication of safe_integer<int> cannot exceed numeric limits
+auto a = safe_integer<int>{numeric_limits<int>::max()} * 2;  // exception!
+
+// difference from safe_integer<unsigned> cannot be negative
+auto b = safe_integer<unsigned>{0} - 1;  // exception!
+
+// conversion to safe_integer<char> cannot exceed numeric limits
+auto c = safe_integer<char>{numeric_limits<double>::max()};  // exception!
+
+// value of safe_integer<int> cannot be indeterminate
+auto d = safe_integer<int>{};  // compiler error? exception? zero-initialization?
+```
+
+???
+The idea is that you cannot use `safe_integer<>` to get a result that is incorrect due to overflow.
+Neither `a`, `b` nor `c` ever make it into scope.
+`d` is an interesting design question.
+One way or another, we wish to prevent reading of an uninitialized variable.
+
+
+
+
+
+---
+# Example Numeric Types
+
+???
+My second example tackles similar problems but it trades versatility for power.
+--
+
+Example Type #2: `elastic_integer<>`:
+
+```c++
+template<int Digits, typename Narrowest>
+class elastic_integer {
+  // ...
+  private:
+    Rep _rep;  // Narrowest or something wider
+};
+```
+
+???
+</int>Rather than catch overflow errors at runtime,
+`elastic_integer<>` tries to avoid them at compile time.
+You'll often find this behavior bundled in with safe integers
+but I think those concerns can be separated.
+--
+
+```c++
+// elastic_integer holding 4 digits
+auto a = elastic_integer<4, unsigned>{10};
+
+// result of addition is 1 digit wider
+auto b = a+a;  // elastic_integer<5, unsigned>;
+
+// result of subtraction is signed
+auto c = -b;  // elastic_integer<5, signed>;
+
+// run-time overflow is of no concern to elastic_integer
+auto d = elastic_integer<8, signed>{256};
+```
+
+???
+This type is actually parameterized on the number of bits it needs to store a value.
+Arithmetic operations increase required capacity.
+This type can keep one step ahead of overflow by producing widened results.
+Addition and subtraction return results which are one bit wider.
+Subtraction and negation convert unsigned types to signed types.
+Multiplication doubles width and so on.
+
+So, back to our list...
+
+
+
+
+
+---
+# How can I tell if my type is composite?
+
+Four telltale signs:
+
+1. **Can be composed from fundamental arithmetic types**
+
+1. Can be substituted for fundamental arithmetic types
+
+1. Can be built from composite arithmetic types
+
+1. Separation of concerns
+
+???
+Starting with composition *from* fundamental types.
+
+
+
+
+
+---
+# Telltale Sign #1
+
+## Can be composed from fundamental arithmetic types
+
+```c++
+// good
+template<typename Rep>
+class safe_integer;
+```
+
+???
+I'll use `safe_integer<>` to exemplify the right interface.
+--
+
+```c++
+// bad
+template<int Digits, bool IsSigned>
+class safe_integer;
+```
+
+???
+Here is the pattern I see quite a bit.
+It's indicative of a library writer who has been grazed 
+by `int`'s rough edges and thinks: "I can fix this!"
+--
+
+```c++
+using good = safe_integer<int>;
+```
+
+???
+But `int`s not nearly as broke as you might think. It certainly looks broke on first inspection.
+But it gives you the very best speed, storage, portability tradeoff.
+--
+
+```c++
+using bad = safe_integer<31, true>;
+```
+
+???
+So when I specify a 32-bit signed type here, I'm simply pessimising for a bunch of platforms.
+--
+
+```c++
+using bad = safe_integer<numeric_limits<int>::digits, true>;
+```
+
+???
+No problem, the user can choose to use `int` this way.
+Smelly. Not idiomatic.
+--
+
+```c++
+using good = safe_integer<int32_t>;
+```
+
+???
+The compositional interface makes specifying the width easy because we're working *with* C++ and not *against* it.
+There are plenty more reasons why the former style is better.
+But lets move on.
+
+
+
+
+
+---
+# How can I tell if my type is composite?
+
+Four telltale signs:
+
+1. Can be composed from fundamental arithmetic types
+
+1. **Can be substituted for fundamental arithmetic types**
+
+1. Can be built from composite arithmetic types
+
+1. Separation of concerns
+
+???
+Number two: up to a point, the more a custom numeric type can act like a built-in type, the better.
+I say up to a point. If it doesn't do anything different, it's worthless
+and if it passes the `std::is_same` test, you cheated!
+
+
+
+
+
+---
+# Telltale Sign #2
+
+## Can be substituted for fundamental arithmetic types
+
+???
+Lets look at the case of a project where run-time performance is paramount
+but where we want to catch lots of bugs during development.
+--
+
+```c++
+// pch.h
+#include <cstdint>
+#include <safe_integer.h>
+
+namespace acme {
+#if defined(NDEBUG)
+    template<typename Rep>
+    using integer = Rep;
+#else
+    template<typename Rep>
+    using integer = safe_integer<Rep>;
+#endif
+}
+```
+
+???
+Here's a header that we're going to include everywhere in our project.
+It uses the `NDEBUG` macro of `assert` fame
+to differentiate between production builds that need speed
+and development builds which do not.
+
+There's a challenge here.
+Making your types transparent to code which is expecting fundamental types means understanding how they behave.
+And if you get it wrong, you end up with incorrect, sub-optimal code.
+--
+
+```c++
+auto square(acme::integer<short> f)
+{
+  return f * f;
+}
+```
+
+???
+For instance, what does our `square` function return?
+
+
+
+
+
+---
+# Writing Transparent Operators
+
+???
+Lets write a multiply operator.
+--
+
+```c++
+template<typename Rep>
+auto operator*(safe_integer<Rep> const& a, safe_integer<Rep> const& b)
+{
+    Rep sum = a.data() * b.data();
+
+    // do some overflow checking
+
+    return safe_integer<Rep>{sum};
+}
+```
+
+???
+This is a naive attempt at a multiplication operator.
+It takes two `safe_integer`-of-`Rep`s and returns one `safe_integer`-of-`Rep`.
+Note that the class has an accessor, `data()`, that leaks the internal representation.
+There are two problems with the use of `Rep` here.
+Firstly, there's an implicit conversion when `sum` is defined.
+--
+
+```c++
+safe_integer<short>{2} * safe_integer<short>{3};
+```
+
+???
+In this example, `sum` is `short` but it is initialized with `int`.
+--
+
+```c++
+safe_integer<short>{6} * safe_integer<int>{7};
+```
+
+???
+And in this example, the operands are different types and the function doesn't resolve.
+Let's fix that.
+
+
+
+
+
+---
+# Writing Transparent Operators
+
+```c++
+template<typename Rep1, typename Rep2>
+auto operator*(safe_integer<Rep1> const& a, safe_integer<Rep2> const& b)
+{
+    auto sum = a.data()*b.data();
+
+    // do some overflow checking
+
+    return safe_integer<decltype(sum)>{sum};
+}
+```
+
+```c++
+safe_integer<short>{2} * safe_integer<short>{3};
+```
+
+```c++
+safe_integer<short>{6} * safe_integer<int>{7};
+```
+
+???
+Two changes:
+the operands can be different types and the return type is deduced.
+This is way better.
+And it's getting easier to make these improvements.
+Type deduction is happening twice here where you see `auto`.
+And a third place in C++17: you can remove the template parameter in the `return` statement.
+
+The benefits of this approach extend way beyond the types I'm discussing here.
+For example, many linear algebra libraries won't work with some numeric types or work sub-optimally 
+due to homogeneous operands and implicit conversion.
+
+
+
+
+
+---
+# Friendly Advice
+
+> When you use a type's operator, don't assume its return type.
+
+???
+Of course, that's just for arithmetic operators.
+For comparison, say, it's safe to return `bool`.
+Right?
+--
+
+```c++
+// oh crap
+auto c = safe_integer<simd::pack<int>>{} != safe_integer<simd::pack<int>>{}
+```
+
+(Courtesy of Joël Falcou)
+
+
+
+
+
+---
+# Telltale Sign #2
+
+## Can be substituted for fundamental arithmetic types
+
+```c++
+// pch.h
+#include <cstdint>
+#include <safe_integer.h>
+
+namespace acme {
+#if defined(NDEBUG)
+    template<typename Rep>
+    using integer = Rep;
+#else
+    template<typename Rep>
+    using integer = safe_integer<Rep>;
+#endif
+}
+```
+
+```c++
+auto square(acme::integer<short> f)
+{
+  return f * f;
+}
+```
+
+???
+Returning to our square function,
+it now returns an `int` no matter what build.
+It does this because the operator tries as hard as possible
+not to interfere with the operations of its `Rep` type.
+I call this the prime directive of composite arithmetic types.
+
+
+
+
+
+---
+# The Prime Directive
+
+> "The Prime Directive is not just a set of rules. It is a philosophy, and a very correct one. History has proved again and again that whenever mankind interferes with a less developed civilization, no matter how well intentioned that interference may be, the results are invariably disastrous."
+
+— Jean-Luc Picard
+
+???
+
+
+
+
+
+---
+# How can I tell if my type is composite?
+
+Four telltale signs:
+
+1. Can be composed from fundamental arithmetic types
+
+1. Can be substituted for fundamental arithmetic types
+
+1. **Can be built from composite arithmetic types**
+
+1. Separation of concerns
+
+???
+Next up, we fit the pieces together.
+
+
+
+
+
+---
+# Telltale Sign #3
+
+## Can be built from composite arithmetic types
+
+```c++
+template<typename Rep>
+class safe_integer;
+
+template<int Digits, typename Narrowest = int>
+class elastic_integer;
+```
+
+???
+Here are our two composite arithmetic types.
+--
+
+```c++
+template<int Digits, typename Narrowest = int>
+class safe_elastic_integer;
+```
+
+???
+Here's a third type we might like:
+something that returns widen results where possible
+and performs run-time overflow checks everywhere else.
+How might we go about this? (Clue in the title of the talk.)
+
+
+
+
+
+---
+# Telltale Sign #3
+
+## Can be built from composite arithmetic types
+
+```c++
+template<typename Rep>
+class safe_integer;
+
+template<int Digits, typename Narrowest = int>
+class elastic_integer;
+```
+
+```c++
+template<int Digits, typename Narrowest = int>
+using safe_elastic_integer = 
+  safe_integer<elastic_integer<Digits, Narrowest>>;
+```
+
+???
+And here we have a composite arithmetic type.
+Note in the definition of `safe_elastic_integer` I'm defaulting `Narrowest` to `int` for brevity.
+So what happens when we multiply these together?
+(And why compose this way 'round?)
+
+
+
+
+
+---
+# `safe_elastic_integer`
+
+```c++
+template<typename Rep1, typename Rep2>
+auto operator*(safe_integer<Rep1> const& a, safe_integer<Rep2> const& b)
+{
+    auto sum = a.data()*b.data();
+
+    // do some overflow checking
+
+    return safe_integer<decltype(sum)>{sum};
+}
+```
+
+```c++
+template<int Digits, typename Narrowest = int>
+using safe_elastic_integer = 
+  safe_integer<elastic_integer<Digits, Narrowest>>;
+```
+
+```c++
+auto a = safe_elastic_integer<4, int>{14} * safe_elastic_integer<3, int>{6};
+```
+
+???
+Here, `Rep1` is `elastic_integer<4, int>` and `Rep2` is `elastic_integer<3, int>`
+so `sum` is of type, `elastic_integer<7, int>`.
+`sum` cannot possibly overflow so overflow checking is a waste of time here.
+How do we fix this?
+
+
+
+
+
+---
+# `safe_elastic_integer`
+
+```c++
+template<typename Rep1, typename Rep2>
+constexpr auto operator*(safe_integer<Rep1> const& a, safe_integer<Rep2> const& b)
+{
+    auto sum = a.data()*b.data();
+
+    if (numeric_limits<Rep1>::digits+numeric_limits<Rep2>::digits
+            >numeric_limits<decltype(sum)>::digits) {
+        // do some overflow checking
+    }
+
+    return safe_integer<decltype(sum)>{sum};
+}
+```
+
+```c++
+template<int Digits, typename Narrowest = int>
+using safe_elastic_integer = 
+  safe_integer<elastic_integer<Digits, Narrowest>>;
+```
+
+```c++
+auto a = safe_elastic_integer<4>{14}*safe_elastic_integer<3>{6};
+```
+
+???
+Pretty easily. And in C++17, this `if` can be `constexpr`.
+But doesn't it seem a little wrong adding a special case into `safe_integer` code 
+in order to accommodate `elastic_integer`?
+--
+
+```c++
+auto b = safe_integer<short>{14} * safe_integer<short>{6};
+```
+
+???
+No, because it's not a special case. 
+Again, multiplying two `short`s together 
+carries no risk of overflow on most systems.
+`elastic_integer` turns out to be a generalization of 
+a classic design decision that's been quietly preventing bugs for decades.
+
+
+
+
+
+---
+# How can I tell if my type is composite?
+
+Four telltale signs:
+
+1. Can be composed from fundamental arithmetic types
+
+1. Can be substituted for fundamental arithmetic types
+
+1. Can be built from composite arithmetic types
+
+1. **Separation of concerns**
+
+???
+Anyway, I believe that we can do a lot better than two components. 
+We concentrated on two types and shown how we get a third type for free.
+Those two types are often grouped together but I think they can be independent.
+Let's see some more types...
+
+
+
+
+
+---
+# Let's Keep Going...
+
+???
+I've been working on a couple of other types which are designed to be components.
+--
+
+```c++
+template<class Rep, int Exponent> 
+class fixed_point;
+```
+???
+Fixed-point takes an integral type and scales it by the given power of two.
+--
+
+```c++
+template<int Digits, class Narrowest = int> 
+class elastic_integer;
+```
+???
+`elastic_integer` you've seen.
+--
+
+```c++
+template<class Rep = int, class RoundingTag = rounding_closest_tag> 
+class precise_integer;
+```
+???
+`precise_integer<>` provides better rounding modes for division, shift right and float-to-int conversion.
+--
+
+```c++
+template<class Rep = int, class OverflowTag = throwing_overflow_tag> 
+class safe_integer;
+```
+???
+And finally here's `safe_integer` with an additional parameter 
+that allows you to choose what happens when overflow occurs.
+What can we make with these?
+
+
+
+
+
+---
+# `precise_safe_elastic_fixed_point`
+
+```c++
+// precise safe elastic fixed-point
+template<
+        int IntegerDigits,
+        int FractionalDigits = 0,
+        class OverflowTag = throwing_overflow_tag,
+        class RoundingTag = rounding_closest_tag,
+        class Narrowest = int>
+using precise_safe_elastic_fixed_point = fixed_point<
+        elastic_integer<
+                IntegerDigits+FractionalDigits,
+                precise_integer<
+                        safe_integer<
+                                Narrowest,
+                                OverflowTag
+                        >,
+                        RoundingTag
+                >
+        >,
+        -FractionalDigits
+>;
+```
+???
+AND...
+When beetles fight these battles
+in a bottle with their paddles
+and the bottle's on a poodle
+and the poodle's eating noodles...
+
+...they call this a 
+muddle puddle
+tweetle poodle
+beetle noodle
+bottle paddle battle.
+
+From this list, the biggest omission is a `wide_integer` type that can break through the 64-bit boundary.
+For example, if you multiply two 64-bit `elastic_integer`s together, you need an least 127-bits to store the result.
+I haven't started on such a type yet although there are solutions out there one of which I'll mention in a few slides.
+
+
+
+
+
+---
+# fixed_point + elastic_integer
+
+???
+Now I haven't mentioned efficiency yet but for many types in many applications
+this is a deal-breaker. Precision and safety are added features on top of existing types.
+But `fixed_point` and `elastic_integer` are designed 
+purely to be wrappers over low-level integer arithmetic.
+--
+
+```c++
+// square a number using 15:16 fixed-point arithmetic
+float square_int(float input)
+{
+    // user must scale values by the correct amount
+	auto fixed = static_cast<int32_t>(input * 65536.f);
+  
+    // user must remember to widen the result to avoid overflow
+	auto prod = int64_t{fixed} * fixed;
+  
+    // user must remember that the scale also was squared
+    return prod / 4294967296.f;
+}
+
+// same function with added type safety
+float square_fixed_point(float input)
+{
+    // alias to fixed_point<elastic_integer<31, int>, -16>
+	auto fixed = elastic_fixed_point<15, 16>{input};
+
+    // concise, safe and zero-cost!
+	auto prod = fixed * fixed;
+
+	return static_cast<float>(prod);
+}
+```
+
+???
+These two functions do exactly the same work.
+These type types are meant to wrap existing functionality and absolutely *nothing else*.
+
+
+
+
+
+---
+# https://godbolt.org/g/C30RXx
+
+```asm
+square_int(float):
+        mulss   xmm0, DWORD PTR .LC0[rip]
+        cvttss2si       eax, xmm0
+        pxor    xmm0, xmm0
+        cdqe
+        imul    rax, rax
+        cvtsi2ssq       xmm0, rax
+        mulss   xmm0, DWORD PTR .LC1[rip]
+        ret
+square_fixed_point(float):
+        mulss   xmm0, DWORD PTR .LC0[rip]
+        cvttss2si       eax, xmm0
+        pxor    xmm0, xmm0
+        cdqe
+        imul    rax, rax
+        cvtsi2ssq       xmm0, rax
+        mulss   xmm0, DWORD PTR .LC1[rip]
+        ret
+.LC0:
+        .long   1199570944
+.LC1:
+        .long   796917760
+```
+
+
+
+
+
+---
+# fixed_point + Boost.Multiprecision
+
+???
+Here's one you may have heard of.
+Can someone give me a big number.
+--
+```c++
+#include <sg14/auxiliary/multiprecision.h>
+
+void boost_example()
+{
+    using namespace boost::multiprecision;
+    using rep = number<
+        cpp_int_backend<400, 400, unsigned_magnitude, unchecked, void>>;
+    using big_number = fixed_point<rep, 0>;
+    
+    auto googol = big_number{1};
+    for (auto zeros = 0; zeros!=100; ++zeros) {
+        googol *= 10;
+    }
+    cout << googol << endl;  // "1e+100"
+    
+    auto googolth = 1 / googol;
+    cout << googolth << endl;  // "1e-100"
+}
+```
+
+???
+The first half of this function is fairly unremarkable.
+It uses Boost.Multiprecision to generate a number with 100 zeros.
+Note that those are decimal zeros which are five times bigger than binary zeros.
+But when the inverse is computed, it is returned in a type with 400 fractional digits.
+
+You'll notice I'm including a header that isn't from the Boost library.
+It contains some glue code. 
+It doesn't require much but there are some and it is needed for all types that hope to join the party.
+
+
+
+
+
+---
+# The Small Print
+
+???
+Types such as `elastic_integer` and `fixed_point` don't always return the same types from their operators.
+Notably, they may return types which are a different width or a different signedness.
+There is no standard way to choose an integer type based on those properties.
+And even if there were, you would need to extend it to cover novel types.
+--
+
+```c++
+template<int Digits, typename Narrowest>
+using make_signed_t<elastic_integer<Digits, Narrowest>>
+    = elastic_integer<Digits, make_signed_t<Narrowest>>;
+    
+// elastic_integer<10, signed>
+using a = make_signed_t<elastic_integer<10, unsigned>>;
+```
+???
+Firstly, there's no extensible way to set signedness.
+This use of `std::make_signed` is not allowed.
+--
+
+```c++
+template<typename T>
+using twice_as_wide = set_num_digits<T, numeric_limits<T>::digits * 2>;
+
+// uint16_t
+using b = twice_as_wide<uint8_t>;
+```
+???
+Secondly, we can get the width of an integer at compile time using `numeric_limits`
+and we're allowed to specialize `numeric_limits` for new types.
+But we can't generate a type from a given number of bits ---
+not even fundamental integer types.
+--
+
+```c++
+auto c = safe_integer<int>{...};
+auto d = multiply_overflow(saturate, c, 2);
+```
+???
+And types are not always the best way to get things done.
+Sometimes a function is better.
+Here's a function that keeps the result of a multiplication within the numeric limits of its product.
+We want to handle overflow by throwing exceptions *except* for this one line of code.
+This is easy enough if we're only supporting a known set of types such as all fundamental arithmetic types.
+But to write general-purpose functions which can be extended to take yet-to-be-imagined types,
+we need to provide generic accessors that let us mine down through the layers to the root.
+
+
+
+
+
+---
+# `numeric_traits`
+
+???
+I don't know what form this kinds of scaffolding should take.
+But maybe a class template along the lines of `numeric_limits` might work.
+--
+
+```c++
+namespace std {
+  template<class T>
+  struct numeric_traits {
+    static constexpr bool is_specialized = false;
+    // ...
+  };
+    
+  template<>
+  struct numeric_traits<int> {
+    // ...
+  };
+}
+```
+???
+Here's a class template called `numeric_traits` which comes ready-specialized for fundamental arithmetic types.
+
+
+
+
+
+---
+# `numeric_traits`
+
+```c++
+namespace std {
+  template<class Rep>
+  struct numeric_traits<safe_integer<Rep>> {
+    static constexpr bool is_specialized = false;
+    
+    using make_signed_t = safe_integer<numeric_traits<Rep>::make_signed_t>;
+    using make_unsigned_t = safe_integer<numeric_traits<Rep>::make_unsigned_t>;
+    using set_width_t = safe_integer<numeric_traits<Rep>::make_unsigned_t>;
+    
+    Rep to_rep(safe_integer<Rep> const& si) {
+      return si._rep;
+    }
+    
+    safe_integer<Rep> from_rep(Rep const& r) {
+      return safe_integer<Rep>{r};
+    }
+    
+    // ...
+  };
+}
+```
+???
+And here I've specialized it for my `safe_integer` type.
+I also need to specialize `numeric_limits` like normal
+if only for `is_signed` and `digits` members.
+
+Nobody likes that we need stuff like `iterator_traits`.
+But when you want to do generic work across class objects and fundamental types alike
+there needs to be a 
+
+
+
+
+
+---
+# Thanks
+
+John McFarlane, @JSAMcFarlane
+
+Links:
+
+* fixed-point - [github.com/johnmcfarlane/fixed_point](https://github.com/johnmcfarlane/fixed_point)
+
+* SG14 forum - [groups.google.com/a/isocpp.org/d/forum/sg14](https://groups.google.com/a/isocpp.org/d/forum/sg14)
+
+Papers:
+
+* P0554: Composition of Arithmetic Types - [wg21.link/p0554](http://wg21.link/p0554)
+
+* P0037: Fixed-Point Real Numbers - [wg21.link/p0037](http://wg21.link/p0037)
+
+* P0101: Numeric TS Outline - [wg21.link/p0101](http://wg21.link/p0101)
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>

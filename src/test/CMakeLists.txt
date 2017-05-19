@@ -40,6 +40,7 @@ add_executable(fp_test
         ${CMAKE_CURRENT_LIST_DIR}/zero_cost_average.cpp
         ${CMAKE_CURRENT_LIST_DIR}/zero_cost_square.cpp
         ${CMAKE_CURRENT_LIST_DIR}/safft.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/cppnow2017.cpp
 
         # likely to fail if other files with simpler tests fail
         ${CMAKE_CURRENT_LIST_DIR}/safe_elastic_integer.cpp
@@ -62,10 +63,16 @@ add_executable(fp_test
 find_package(Boost)
 
 if(Boost_FOUND)
-    # only compile multiprecision.cpp if Boost.Multiprecision is available
-    set(BOOST_FOUND_CXX_FLAGS "-DSG14_BOOST_ENABLED")
-    target_include_directories(fp_test SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
-    target_link_libraries(fp_test ${Boost_LIBRARIES})
+    if(BOOST_VERSION GREATER 105500 OR EXCEPTIONS)
+        # only compile multiprecision.cpp if Boost.Multiprecision is available
+        set(BOOST_FOUND_CXX_FLAGS "-DSG14_BOOST_ENABLED")
+        target_include_directories(fp_test SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
+        target_link_libraries(fp_test ${Boost_LIBRARIES})
+    else(BOOST_VERSION GREATER 105500 OR EXCEPTIONS)
+        message("Boost version is too low to use without exception handling")
+    endif(BOOST_VERSION GREATER 105500 OR EXCEPTIONS)
+else(Boost_FOUND)
+    message("Boost not found")
 endif(Boost_FOUND)
 
 ######################################################################

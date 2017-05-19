@@ -90,6 +90,14 @@ namespace {
                       "sg14::_elastic_integer_impl::make_elastic_integer test failed");
     }
 
+    namespace test_compare {
+        static_assert(elastic_integer<4, signed>{10} > elastic_integer<4, signed>{-7}, "elastic_integer comparison test failed");
+    }
+
+    namespace test_negate {
+        static_assert(identical(-elastic_integer<8, unsigned>{432}, elastic_integer<8, signed>{-432}), "operator- elastic_integer test failed");
+    }
+
     namespace test_subtract {
         // 0-0
         static_assert(
