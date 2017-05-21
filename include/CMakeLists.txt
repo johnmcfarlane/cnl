@@ -8,6 +8,7 @@ target_sources(fixed_point INTERFACE
         include/sg14/auxiliary/multiprecision.h
         include/sg14/auxiliary/elastic_integer.h
         include/sg14/auxiliary/elastic_fixed_point.h
+        include/sg14/auxiliary/overflow.h
         include/sg14/auxiliary/safe_integer.h
         include/sg14/bits/fixed_point_math.h
         include/sg14/bits/fixed_point_operators.h

@@ -18,6 +18,7 @@ add_executable(fp_test
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_native_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_throwing_integer.cpp
 
+        ${CMAKE_CURRENT_LIST_DIR}/overflow.cpp
         ${CMAKE_CURRENT_LIST_DIR}/safe_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/precise_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/const_integer.cpp
