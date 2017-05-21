@@ -40,7 +40,7 @@ namespace sg14 {
 
             explicit constexpr operator bool() const
             {
-                return data() != 0;
+                return static_cast<bool>(_rep);
             }
 
             constexpr const rep& data() const
