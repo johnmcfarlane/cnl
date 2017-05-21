@@ -45,7 +45,7 @@ namespace {
                 is_same<safe_elastic_integer<1>::rep::rep, int>::value,
                 "sg14::safe_elastic_integer parameter default test failed");
     }
-    
+
     namespace test_numeric_traits {
         using numeric_traits = sg14::numeric_traits<sg14::safe_integer<sg14::elastic_integer<33, char>, sg14::saturated_overflow_tag>>;
         static_assert(std::is_same<numeric_traits::value_type, sg14::safe_integer<sg14::elastic_integer<33, char>, sg14::saturated_overflow_tag>>::value, "");
@@ -98,23 +98,23 @@ namespace {
     }
 }
 
-//// given a rounding policy, invokes number_test_suite for precise_integers of all built-in types
-//template<int NumDigits, class OverflowTag>
-//struct test_safe_elastic_integer {
-//    template<class Rep>
-//    using test_subject = safe_elastic_integer<NumDigits, OverflowTag, Rep>;
-//
-//    constexpr static number_test_by_rep<test_subject> instance{};
-//};
-//
-//template struct test_safe_elastic_integer<1, sg14::throwing_overflow_tag>;
+// given a rounding policy, invokes number_test_suite for precise_integers of all built-in types
+template<int NumDigits, class OverflowTag>
+struct test_safe_elastic_integer {
+    template<class Rep>
+    using test_subject = safe_elastic_integer<NumDigits, OverflowTag, Rep>;
+
+    constexpr static number_test_by_rep<test_subject> instance{};
+};
+
+template struct test_safe_elastic_integer<1, sg14::throwing_overflow_tag>;
 //template struct test_safe_elastic_integer<2, sg14::saturated_overflow_tag>;
-//template struct test_safe_elastic_integer<3, sg14::native_overflow_tag>;
-//
-//template struct test_safe_elastic_integer<5, sg14::throwing_overflow_tag>;
+template struct test_safe_elastic_integer<3, sg14::native_overflow_tag>;
+
+template struct test_safe_elastic_integer<5, sg14::throwing_overflow_tag>;
 //template struct test_safe_elastic_integer<8, sg14::saturated_overflow_tag>;
-//template struct test_safe_elastic_integer<13, sg14::native_overflow_tag>;
-//
-//template struct test_safe_elastic_integer<21, sg14::throwing_overflow_tag>;
+template struct test_safe_elastic_integer<13, sg14::native_overflow_tag>;
+
+template struct test_safe_elastic_integer<21, sg14::throwing_overflow_tag>;
 //template struct test_safe_elastic_integer<34, sg14::saturated_overflow_tag>;
-//template struct test_safe_elastic_integer<55, sg14::native_overflow_tag>;
+template struct test_safe_elastic_integer<55, sg14::native_overflow_tag>;
