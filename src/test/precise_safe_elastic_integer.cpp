@@ -57,13 +57,13 @@ namespace {
                 "sg14::precise_integer parameter default test failed");
     }
 
+    namespace test_multiply {
+        static_assert(identical(sg14::psei<6>{7}*sg14::psei<13>{321}, sg14::psei<19>{2247}), "");
+    }
+
     namespace test_make_psei {
         using namespace sg14::literals;
         static_assert(identical(make_psei(std::int16_t{7}), psei<15>{7}), "");
         static_assert(identical(make_psei(7_c), psei<3>{7}), "");
-    }
-
-    namespace test_multiply {
-        static_assert(identical(sg14::psei<6>{7}*sg14::psei<13>{321}, sg14::psei<19>{2247}), "");
     }
 }

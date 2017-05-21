@@ -7,13 +7,8 @@
 #include <sg14/auxiliary/safe_integer.h>
 #include <sg14/fixed_point>
 
-#if defined(SG14_EXCEPTIONS_ENABLED)
 #define TEST_THROWING_OVERFLOW
 #define TEST_LABEL throwing_integer_
-#else
-#define TEST_NATIVE_OVERFLOW
-#define TEST_LABEL hobbled_throwing_integer_
-#endif
 
 #if defined(_MSC_VER)
 #define TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING
@@ -33,7 +28,8 @@ using test_int = sg14::safe_integer<>;
 ////////////////////////////////////////////////////////////////////////////////
 // throwing_integer-specific exceptions tests
 
-#if defined(TEST_THROWING_OVERFLOW)
+
+#if defined(TEST_THROWING_OVERFLOW) && defined(SG14_EXCEPTIONS_ENABLED)
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_right)
 {
