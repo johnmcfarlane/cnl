@@ -216,14 +216,14 @@ namespace {
         static_assert(identical(add(native_overflow, UINT32_C(0xFFFFFFFF), UINT32_C(0x12345678)), UINT32_C(0xFFFFFFFF)+UINT32_C(0x12345678)), "sg14::add test failed");
 
         // subtract
-        static_assert(identical(sg14::_overflow_impl::operate<sg14::native_overflow_tag, sg14::_impl::subtract_tag_t>()(INT8_C(0), INT8_C(0)), 0), "sg14::subtract test failed");
+        static_assert(identical(sg14::_overflow_impl::operate<sg14::native_overflow_tag, sg14::_impl::subtract_op>()(INT8_C(0), INT8_C(0)), 0), "sg14::subtract test failed");
         static_assert(identical(subtract(native_overflow, INT8_C(0), INT8_C(0)), 0), "sg14::subtract test failed");
 
         // multiply
         static_assert(identical(multiply(native_overflow, UINT16_C(576), INT32_C(22)), decltype(UINT16_C(576)*INT32_C(22)){12672}), "sg14::multiply test failed");
 
         // compare
-        static_assert(sg14::_overflow_impl::operate<sg14::native_overflow_tag, sg14::_impl::less_than_tag_t>()(-1, 1u) == (-1 < 1u), "sg14::_overflow_impl::operate test failed");
+        static_assert(sg14::_overflow_impl::operate<sg14::native_overflow_tag, sg14::_impl::less_than_op>()(-1, 1u) == (-1 < 1u), "sg14::_overflow_impl::operate test failed");
     }
 
     namespace test_throwing_overflow {
@@ -251,6 +251,6 @@ namespace {
         static_assert(identical(multiply(saturated_overflow, UINT16_C(576), INT32_C(22)), decltype(UINT16_C(576)*INT32_C(22)){12672}), "sg14::add test failed");
 
         // compare
-        static_assert(sg14::_overflow_impl::operate<sg14::saturated_overflow_tag, sg14::_impl::less_than_tag_t>()(-1, 1u), "sg14::_overflow_impl::operate test failed");
+        static_assert(sg14::_overflow_impl::operate<sg14::saturated_overflow_tag, sg14::_impl::less_than_op>()(-1, 1u), "sg14::_overflow_impl::operate test failed");
     }
 }

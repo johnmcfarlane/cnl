@@ -27,9 +27,9 @@ namespace {
     using sg14::_impl::fp::arithmetic::result;
     using sg14::_impl::shift_left;
     using sg14::_impl::fp::arithmetic::wide_tag;
-    using sg14::_impl::divide_tag_t;
+    using sg14::_impl::divide_op;
     using sg14::_impl::identical;
-    using sg14::_impl::multiply_tag_t;
+    using sg14::_impl::multiply_op;
     using sg14::elastic_integer;
     using sg14::fixed_point;
     using sg14::set_width_t;
@@ -52,20 +52,20 @@ namespace {
     static_assert(shift_left<1, sg14::elastic_integer<64, unsigned>>(0) == 0u, "");
 
     static_assert(identical(
-            result<wide_tag, divide_tag_t, fixed_point<elastic_integer<15, int>, 0>, fixed_point<elastic_integer<15, int>, 0>>::type{0},
+            result<wide_tag, divide_op, fixed_point<elastic_integer<15, int>, 0>, fixed_point<elastic_integer<15, int>, 0>>::type{0},
             fixed_point<elastic_integer<30, int>, -15>{0}), "sg14::elastic_integer test failed");
     static_assert(identical(
-            result<wide_tag, divide_tag_t, fixed_point<elastic_integer<16, unsigned>, 0>, fixed_point<elastic_integer<16, unsigned>, 0>>::type{0},
+            result<wide_tag, divide_op, fixed_point<elastic_integer<16, unsigned>, 0>, fixed_point<elastic_integer<16, unsigned>, 0>>::type{0},
             fixed_point<elastic_integer<32, unsigned>, -16>{0}), "sg14::elastic_integer test failed");
     static_assert(identical(
-            result<wide_tag, divide_tag_t, fixed_point<elastic_integer<31, int>, 0>, fixed_point<elastic_integer<31, int>, 0>>::type{0},
+            result<wide_tag, divide_op, fixed_point<elastic_integer<31, int>, 0>, fixed_point<elastic_integer<31, int>, 0>>::type{0},
             fixed_point<elastic_integer<62, int>, -31>{0}), "sg14::elastic_integer test failed");
     static_assert(identical(
-            result<wide_tag, divide_tag_t, fixed_point<elastic_integer<32, unsigned>, 0>, fixed_point<elastic_integer<32, unsigned>, 0>>::type{0},
+            result<wide_tag, divide_op, fixed_point<elastic_integer<32, unsigned>, 0>, fixed_point<elastic_integer<32, unsigned>, 0>>::type{0},
             fixed_point<elastic_integer<64, unsigned>, -32>{0}), "sg14::elastic_integer test failed");
 
     static_assert(identical(
-            intermediate<wide_tag, multiply_tag_t, fixed_point<elastic_integer<27, unsigned int>, -27>, fixed_point<elastic_integer<27, unsigned int>, -27>>::lhs_type{0},
+            intermediate<wide_tag, multiply_op, fixed_point<elastic_integer<27, unsigned int>, -27>, fixed_point<elastic_integer<27, unsigned int>, -27>>::lhs_type{0},
             fixed_point<elastic_integer<27, unsigned int>, -27>{0}), "sg14::elastic_integer test failed");
 
     static_assert(width<set_width_t<elastic_integer<15, uint8_t>, 22>>::value == 22, "sg14::elastic_integer test failed");

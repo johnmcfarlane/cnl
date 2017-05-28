@@ -74,200 +74,158 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // operation tags
 
-        struct arithmetic_tag {
+        struct arithmetic_op {
             static constexpr bool is_arithmetic = true;
         };
 
-        struct comparison_tag {
+        struct comparison_op {
             static constexpr bool is_comparison = true;
         };
 
-        struct plus_tag_t : arithmetic_tag {};
-        struct minus_tag_t : arithmetic_tag {};
-
-        struct add_tag_t : arithmetic_tag {};
-        struct subtract_tag_t : arithmetic_tag {};
-        struct multiply_tag_t : arithmetic_tag {};
-        struct divide_tag_t : arithmetic_tag {};
-
-        struct bitwise_or_tag_t : arithmetic_tag {};
-        struct bitwise_and_tag_t : arithmetic_tag {};
-        struct bitwise_xor_tag_t : arithmetic_tag {};
-
-        struct equal_tag_t : comparison_tag {};
-        struct not_equal_tag_t : comparison_tag {};
-        struct less_than_tag_t : comparison_tag {};
-        struct greater_than_tag_t : comparison_tag {};
-        struct less_than_or_equal_tag_t : comparison_tag {};
-        struct greater_than_or_equal_tag_t : comparison_tag {};
-
-        static constexpr plus_tag_t plus_tag {};
-        static constexpr minus_tag_t minus_tag {};
-
-        static constexpr add_tag_t add_tag {};
-        static constexpr subtract_tag_t subtract_tag {};
-        static constexpr multiply_tag_t multiply_tag {};
-        static constexpr divide_tag_t divide_tag {};
-
-        static constexpr bitwise_or_tag_t bitwise_or_tag {};
-        static constexpr bitwise_and_tag_t bitwise_and_tag {};
-        static constexpr bitwise_xor_tag_t bitwise_xor_tag {};
-
-        static constexpr equal_tag_t equal_tag {};
-        static constexpr not_equal_tag_t not_equal_tag {};
-        static constexpr less_than_tag_t less_than_tag {};
-        static constexpr greater_than_tag_t greater_than_tag {};
-        static constexpr less_than_or_equal_tag_t less_than_or_equal_tag {};
-        static constexpr greater_than_or_equal_tag_t greater_than_or_equal_tag {};
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::op
-
-        template<class OperationTag, class ... Operands>
-        struct op;
-
-        template<class Rhs>
-        struct op<minus_tag_t, Rhs> {
+        struct minus_op : arithmetic_op {
+            template<class Rhs>
             constexpr auto operator()(const Rhs& rhs) const -> decltype(-rhs)
             {
                 return -rhs;
             }
         };
 
-        template<class Rhs>
-        struct op<plus_tag_t, Rhs> {
+        struct plus_op : arithmetic_op {
+            template<class Rhs>
             constexpr auto operator()(const Rhs& rhs) const -> decltype(+rhs)
             {
                 return +rhs;
             }
         };
 
-        template<class Lhs, class Rhs>
-        struct op<add_tag_t, Lhs, Rhs> {
+        struct add_op : arithmetic_op {
+            template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs+rhs)
             {
                 return lhs+rhs;
             }
         };
 
-        template<class Lhs, class Rhs>
-        struct op<subtract_tag_t, Lhs, Rhs> {
+        struct subtract_op : arithmetic_op {
+            template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs-rhs)
             {
                 return lhs-rhs;
             }
         };
 
-        template<class Lhs, class Rhs>
-        struct op<multiply_tag_t, Lhs, Rhs> {
+        struct multiply_op : arithmetic_op {
+            template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs*rhs)
             {
                 return lhs*rhs;
             }
         };
 
-        template<class Lhs, class Rhs>
-        struct op<divide_tag_t, Lhs, Rhs> {
+        struct divide_op : arithmetic_op {
+            template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs/rhs)
             {
                 return lhs/rhs;
             }
         };
 
-        template<class Lhs, class Rhs>
-        struct op<bitwise_or_tag_t, Lhs, Rhs> {
+        struct bitwise_or_op : arithmetic_op {
+            template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs|rhs)
             {
                 return lhs|rhs;
             }
         };
 
-        template<class Lhs, class Rhs>
-        struct op<bitwise_and_tag_t, Lhs, Rhs> {
+        struct bitwise_and_op : arithmetic_op {
+            template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs&rhs)
             {
                 return lhs&rhs;
             }
         };
 
-        template<class Lhs, class Rhs>
-        struct op<bitwise_xor_tag_t, Lhs, Rhs> {
+        struct bitwise_xor_op : arithmetic_op {
+            template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs^rhs)
             {
                 return lhs^rhs;
             }
         };
 
-        template<class Lhs, class Rhs>
-        struct op<equal_tag_t, Lhs, Rhs> {
+        struct equal_op : comparison_op {
+            template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs==rhs)
             {
                 return lhs==rhs;
             }
         };
 
-        template<class Lhs, class Rhs>
-        struct op<not_equal_tag_t, Lhs, Rhs> {
+        struct not_equal_op : comparison_op {
+            template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs!=rhs)
             {
                 return lhs!=rhs;
             }
         };
 
-        template<class Lhs, class Rhs>
-        struct op<less_than_tag_t, Lhs, Rhs> {
+        struct less_than_op : comparison_op {
+            template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs<rhs)
             {
                 return lhs<rhs;
             }
         };
 
-        template<class Lhs, class Rhs>
-        struct op<greater_than_tag_t, Lhs, Rhs> {
+        struct greater_than_op : comparison_op {
+            template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs>rhs)
             {
                 return lhs>rhs;
             }
         };
 
-        template<class Lhs, class Rhs>
-        struct op<less_than_or_equal_tag_t, Lhs, Rhs> {
+        struct less_than_or_equal_op : comparison_op {
+            template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs<=rhs)
             {
                 return lhs<=rhs;
             }
         };
 
-        template<class Lhs, class Rhs>
-        struct op<greater_than_or_equal_tag_t, Lhs, Rhs> {
+        struct greater_than_or_equal_op : comparison_op {
+            template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs>=rhs)
             {
                 return lhs>=rhs;
             }
         };
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::rep_op_fn
+        static constexpr plus_op plus_tag {};
+        static constexpr minus_op minus_tag {};
 
-        template<class OperationTag, class Lhs, class Rhs>
-        constexpr auto op_fn(const Lhs& lhs, const Rhs& rhs)
-        -> decltype(op<OperationTag, Lhs, Rhs>()(lhs, rhs))
-        {
-            return op<OperationTag, Lhs, Rhs>()(lhs, rhs);
-        };
+        static constexpr add_op add_tag {};
+        static constexpr subtract_op subtract_tag {};
+        static constexpr multiply_op multiply_tag {};
+        static constexpr divide_op divide_tag {};
 
-        template<class OperationTag, class Rhs>
-        constexpr auto op_fn(const Rhs& rhs)
-        -> decltype(op<OperationTag, Rhs>()(rhs))
-        {
-            return op<OperationTag, Rhs>()(rhs);
-        };
+        static constexpr bitwise_or_op bitwise_or_tag {};
+        static constexpr bitwise_and_op bitwise_and_tag {};
+        static constexpr bitwise_xor_op bitwise_xor_tag {};
+
+        static constexpr equal_op equal_tag {};
+        static constexpr not_equal_op not_equal_tag {};
+        static constexpr less_than_op less_than_tag {};
+        static constexpr greater_than_op greater_than_tag {};
+        static constexpr less_than_or_equal_op less_than_or_equal_tag {};
+        static constexpr greater_than_or_equal_op greater_than_or_equal_tag {};
 
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_impl::rep_op_result
 
-        template<class OperationTag, class Lhs, class Rhs>
-        using op_result = decltype(op_fn<OperationTag, Lhs, Rhs>(std::declval<Lhs>(), std::declval<Rhs>()));
+        template<class Operator, class Lhs, class Rhs>
+        using op_result = decltype(Operator()(std::declval<Lhs>(), std::declval<Rhs>()));
 
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_impl::make_signed - std::make_signed with IsSigned parameter

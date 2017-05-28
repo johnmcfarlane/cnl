@@ -222,6 +222,19 @@ namespace sg14 {
     // comparison operators
 
     namespace _impl {
+        template<int FromDigits, class FromNarrowest, int OtherDigits, class OtherNarrowest,
+                _impl::enable_if_t<FromDigits!=OtherDigits || !std::is_same<FromNarrowest, OtherNarrowest>::value, std::nullptr_t> Dummy = nullptr>
+        constexpr auto cast_to_common_type(
+                const elastic_integer<FromDigits, FromNarrowest>& from,
+                const elastic_integer<OtherDigits, OtherNarrowest>&)
+        -> decltype(static_cast<_impl::common_type_t<
+                elastic_integer<FromDigits, FromNarrowest>,
+                elastic_integer<OtherDigits, OtherNarrowest>>>(from)) {
+            return static_cast<_impl::common_type_t<
+                    elastic_integer<FromDigits, FromNarrowest>,
+                    elastic_integer<OtherDigits, OtherNarrowest>>>(from);
+        };
+
         template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
 #if defined(__GNUG__)
         bool Enable = Operator::is_comparison>
@@ -231,25 +244,21 @@ namespace sg14 {
         constexpr auto operate(
                 const elastic_integer<LhsDigits, LhsNarrowest>& lhs,
                 const elastic_integer<RhsDigits, RhsNarrowest>& rhs,
-                Operator)
+                Operator op)
 #if ! defined(_MSC_VER)
-        -> decltype(_impl::op_fn<Operator>(
-                    static_cast<typename std::common_type<elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>>::type>(lhs),
-                    static_cast<typename std::common_type<elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>>::type>(rhs)))
+        -> decltype(op(cast_to_common_type(lhs, rhs), cast_to_common_type(rhs, lhs)))
 #endif
         {
-            return _impl::op_fn<Operator>(
-                    static_cast<typename std::common_type<elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>>::type>(lhs),
-                    static_cast<typename std::common_type<elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>>::type>(rhs));
+            return op(cast_to_common_type(lhs, rhs), cast_to_common_type(rhs, lhs));
         }
 
         template<class Operator, int Digits, class Narrowest,
                 class = enable_if_t<Operator::is_comparison>>
         constexpr auto
-        operate(const elastic_integer<Digits, Narrowest>& lhs, const elastic_integer<Digits, Narrowest>& rhs, Operator)
-        -> decltype(_impl::op_fn<Operator>(lhs.data(), rhs.data()))
+        operate(const elastic_integer<Digits, Narrowest>& lhs, const elastic_integer<Digits, Narrowest>& rhs, Operator op)
+        -> decltype(op(lhs.data(), rhs.data()))
         {
-            return _impl::op_fn<Operator>(lhs.data(), rhs.data());
+            return op(lhs.data(), rhs.data());
         }
     }
 
@@ -264,43 +273,43 @@ namespace sg14 {
         struct policy;
 
         template<class LhsTraits, class RhsTraits>
-        struct policy<_impl::add_tag_t, LhsTraits, RhsTraits> {
+        struct policy<_impl::add_op, LhsTraits, RhsTraits> {
             static constexpr int digits = _impl::max(LhsTraits::digits, RhsTraits::digits)+1;
             static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed;
         };
 
         template<class LhsTraits, class RhsTraits>
-        struct policy<_impl::subtract_tag_t, LhsTraits, RhsTraits> {
+        struct policy<_impl::subtract_op, LhsTraits, RhsTraits> {
             static constexpr int digits = _impl::max(LhsTraits::digits, RhsTraits::digits) + (LhsTraits::is_signed | RhsTraits::is_signed);
             static constexpr bool is_signed = true;
         };
 
         template<class LhsTraits, class RhsTraits>
-        struct policy<_impl::multiply_tag_t, LhsTraits, RhsTraits> {
+        struct policy<_impl::multiply_op, LhsTraits, RhsTraits> {
             static constexpr int digits = LhsTraits::digits+RhsTraits::digits;
             static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed;
         };
 
         template<class LhsTraits, class RhsTraits>
-        struct policy<_impl::divide_tag_t, LhsTraits, RhsTraits> {
+        struct policy<_impl::divide_op, LhsTraits, RhsTraits> {
             static constexpr int digits = LhsTraits::digits;
             static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed;
         };
 
         template<class LhsTraits, class RhsTraits>
-        struct policy<_impl::bitwise_or_tag_t, LhsTraits, RhsTraits> {
+        struct policy<_impl::bitwise_or_op, LhsTraits, RhsTraits> {
             static constexpr int digits = _impl::max(LhsTraits::digits, RhsTraits::digits);
             static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed; 
         };
 
         template<class LhsTraits, class RhsTraits>
-        struct policy<_impl::bitwise_and_tag_t, LhsTraits, RhsTraits> {
+        struct policy<_impl::bitwise_and_op, LhsTraits, RhsTraits> {
             static constexpr int digits = _impl::min(LhsTraits::digits, RhsTraits::digits);
             static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed; 
         };
 
         template<class LhsTraits, class RhsTraits>
-        struct policy<_impl::bitwise_xor_tag_t, LhsTraits, RhsTraits> {
+        struct policy<_impl::bitwise_xor_op, LhsTraits, RhsTraits> {
             static constexpr int digits = _impl::max(LhsTraits::digits, RhsTraits::digits);
             static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed; 
         };
@@ -340,14 +349,14 @@ namespace sg14 {
         constexpr auto operate(
                 const elastic_integer<LhsDigits, LhsNarrowest>& lhs,
                 const elastic_integer<RhsDigits, RhsNarrowest>& rhs,
-                Operator)
+                Operator op)
 #if ! defined(_MSC_VER)
         -> typename operate_params<Operator, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::result_type
 #endif
         {
             using result_type = typename operate_params<Operator, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::result_type;
             return result_type::from_data(
-                    static_cast<typename result_type::rep>(_impl::op_fn<Operator>(
+                    static_cast<typename result_type::rep>(op(
                             static_cast<result_type>(lhs).data(),
                             static_cast<result_type>(rhs).data())));
         }

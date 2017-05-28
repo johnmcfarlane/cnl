@@ -180,7 +180,7 @@ namespace {
 
     static_assert(identical(
         sg14::make_safe_integer<sg14::saturated_overflow_tag>(sg14::_overflow_impl::operate
-                <sg14::saturated_overflow_tag, multiply_tag_t>()(
+                <sg14::saturated_overflow_tag, multiply_op>()(
             sg14::safe_integer<signed char, sg14::saturated_overflow_tag>{30}.data(),
             sg14::safe_integer<signed char, sg14::saturated_overflow_tag>{40}.data())),
         sg14::safe_integer<int, sg14::saturated_overflow_tag>{1200}), "");
