@@ -20,9 +20,7 @@
 
 // SG14_NUMERIC_LIMITS_128_PROVIDED defined if
 // standard library specializes std::numeric_limits for 128-bit integer
-#if defined(_GLIBCXX_USE_INT128)
-#define SG14_NUMERIC_LIMITS_128_PROVIDED
-#elif !defined(__clang__) && defined(__GNUG__) && (__cplusplus <= 201402L)
+#if !defined(__clang__) && defined(__GNUG__) && (__cplusplus <= 201402L)
 #define SG14_NUMERIC_LIMITS_128_PROVIDED
 #elif defined(SG14_NUMERIC_LIMITS_128_PROVIDED)
 #error SG14_NUMERIC_LIMITS_128_PROVIDED already defined
