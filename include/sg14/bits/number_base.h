@@ -102,57 +102,49 @@ namespace sg14 {
         template<
                 class Operator, class Lhs, class RhsDerived, class RhsRep,
                 enable_if_t <precedes<Lhs, RhsDerived>::value, std::nullptr_t> = nullptr>
-        constexpr auto operate(const Lhs& lhs, const number_base<RhsDerived, RhsRep>& rhs, Operator)
-        -> decltype(op_fn<Operator>(lhs, to_rep(static_cast<const RhsDerived&>(rhs))))
+        constexpr auto operate(const Lhs& lhs, const number_base<RhsDerived, RhsRep>& rhs, Operator op)
+        -> decltype(op(lhs, to_rep(static_cast<const RhsDerived&>(rhs))))
         {
-            return op_fn<Operator>(lhs, to_rep(static_cast<const RhsDerived&>(rhs)));
+            return op(lhs, to_rep(static_cast<const RhsDerived&>(rhs)));
         }
 
         // number_base<> OP higher
         template<
                 class Operator, class LhsDerived, class LhsRep, class Rhs,
                 enable_if_t <precedes<Rhs, LhsDerived>::value, std::nullptr_t> = nullptr>
-        constexpr auto operate(const number_base<LhsDerived, LhsRep>& lhs, const Rhs& rhs, Operator)
-        -> decltype(op_fn<Operator>(to_rep(static_cast<const LhsDerived&>(lhs)), rhs))
+        constexpr auto operate(const number_base<LhsDerived, LhsRep>& lhs, const Rhs& rhs, Operator op)
+        -> decltype(op(to_rep(static_cast<const LhsDerived&>(lhs)), rhs))
         {
-            return op_fn<Operator>(to_rep(static_cast<const LhsDerived&>(lhs)), rhs);
+            return op(to_rep(static_cast<const LhsDerived&>(lhs)), rhs);
         }
 
         // lower OP number_base<>
         template<
                 class Operator, class Lhs, class RhsDerived, class RhsRep,
                 enable_if_t <precedes<RhsDerived, Lhs>::value, std::nullptr_t> = nullptr>
-        constexpr auto operate(const Lhs& lhs, const number_base<RhsDerived, RhsRep>& rhs, Operator)
-        -> decltype(op_fn<Operator>(
-                        numeric_traits<RhsDerived>::make(lhs),
-                        static_cast<const RhsDerived&>(rhs))) {
-            return op_fn<Operator>(
-                    numeric_traits<RhsDerived>::make(lhs),
-                    static_cast<const RhsDerived&>(rhs));
+        constexpr auto operate(const Lhs& lhs, const number_base<RhsDerived, RhsRep>& rhs, Operator op)
+        -> decltype(op(numeric_traits<RhsDerived>::make(lhs), static_cast<const RhsDerived&>(rhs))) {
+            return op(numeric_traits<RhsDerived>::make(lhs), static_cast<const RhsDerived&>(rhs));
         }
 
         // number_base<> OP lower
         template<
                 class Operator, class LhsDerived, class LhsRep, class Rhs,
                 enable_if_t <precedes<LhsDerived, Rhs>::value, std::nullptr_t> = nullptr>
-        constexpr auto operate(const number_base<LhsDerived, LhsRep>& lhs, const Rhs& rhs, Operator)
-        -> decltype(op_fn<Operator>(
-                static_cast<const LhsDerived&>(lhs),
-                numeric_traits<LhsDerived>::make(rhs)))
+        constexpr auto operate(const number_base<LhsDerived, LhsRep>& lhs, const Rhs& rhs, Operator op)
+        -> decltype(op(static_cast<const LhsDerived&>(lhs), numeric_traits<LhsDerived>::make(rhs)))
         {
-            return op_fn<Operator>(
-                    static_cast<const LhsDerived&>(lhs),
-                    numeric_traits<LhsDerived>::make(rhs));
+            return op(static_cast<const LhsDerived&>(lhs), numeric_traits<LhsDerived>::make(rhs));
         }
 
         // unary operate
         template<class Operator, class RhsDerived, class RhsRep>
-        constexpr auto operate(const number_base<RhsDerived, RhsRep>& rhs, Operator)
+        constexpr auto operate(const number_base<RhsDerived, RhsRep>& rhs, Operator op)
 #if ! defined(_MSC_VER)
-        -> decltype(op_fn<Operator>(rhs.data()))
+        -> decltype(op(rhs.data()))
 #endif
         {
-            return op_fn<Operator>(rhs.data());
+            return op(rhs.data());
         }
 
         ////////////////////////////////////////////////////////////////////////////////

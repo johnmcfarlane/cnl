@@ -63,6 +63,9 @@ namespace {
     }
 
     namespace test_comparison {
+        static_assert(identical(
+                sg14::convert<sg14::elastic_integer<10>>(sg14::throwing_overflow, 0),
+                sg14::elastic_integer<10>{0}), "");
         static_assert(safe_elastic_integer<10>(0b1010101010)==safe_elastic_integer<10>(0b1010101010), "");
     }
 
@@ -108,13 +111,15 @@ struct test_safe_elastic_integer {
 };
 
 template struct test_safe_elastic_integer<1, sg14::throwing_overflow_tag>;
-//template struct test_safe_elastic_integer<2, sg14::saturated_overflow_tag>;
-template struct test_safe_elastic_integer<3, sg14::native_overflow_tag>;
-
 template struct test_safe_elastic_integer<5, sg14::throwing_overflow_tag>;
-//template struct test_safe_elastic_integer<8, sg14::saturated_overflow_tag>;
-template struct test_safe_elastic_integer<13, sg14::native_overflow_tag>;
-
 template struct test_safe_elastic_integer<21, sg14::throwing_overflow_tag>;
-//template struct test_safe_elastic_integer<34, sg14::saturated_overflow_tag>;
+
+#if defined(__clang__) || ! defined(__GNUG__) || (__GNUG__ > 6)
+template struct test_safe_elastic_integer<2, sg14::saturated_overflow_tag>;
+template struct test_safe_elastic_integer<8, sg14::saturated_overflow_tag>;
+template struct test_safe_elastic_integer<34, sg14::saturated_overflow_tag>;
+#endif
+
+template struct test_safe_elastic_integer<3, sg14::native_overflow_tag>;
+template struct test_safe_elastic_integer<13, sg14::native_overflow_tag>;
 template struct test_safe_elastic_integer<55, sg14::native_overflow_tag>;

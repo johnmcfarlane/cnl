@@ -120,10 +120,10 @@ namespace sg14 {
         constexpr auto operate_common_policy(
                 const precise_integer<LhsRep, RoundingPolicy>& lhs,
                 const precise_integer<RhsRep, RoundingPolicy>& rhs)
-        -> decltype(sg14::numeric_traits<precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingPolicy>>::from_rep(op_fn<Operator>(lhs.data(), rhs.data())))
+        -> decltype(sg14::numeric_traits<precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingPolicy>>::from_rep(Operator()(lhs.data(), rhs.data())))
         {
             using result_numeric_traits = sg14::numeric_traits<precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingPolicy>>;
-            return result_numeric_traits::from_rep(op_fn<Operator>(lhs.data(), rhs.data()));
+            return result_numeric_traits::from_rep(Operator()(lhs.data(), rhs.data()));
         }
 
         // for arithmetic operands with different policies
@@ -131,9 +131,9 @@ namespace sg14 {
         constexpr auto operate_common_policy(
                 const precise_integer<LhsRep, RoundingPolicy>& lhs,
                 const precise_integer<RhsRep, RoundingPolicy>& rhs)
-        -> decltype(op_fn<Operator>(lhs.data(), rhs.data()))
+        -> decltype(Operator()(lhs.data(), rhs.data()))
         {
-            return op_fn<Operator>(lhs.data(), rhs.data());
+            return Operator()(lhs.data(), rhs.data());
         }
 
         // for arithmetic operands with different policies

@@ -277,9 +277,9 @@ namespace sg14 {
         constexpr auto operate(
                 const Lhs& lhs,
                 const const_integer<RhsIntegral, RhsValue, RhsDigits, RhsExponent>&,
-                Operator)
-        -> decltype(_impl::op_fn<Operator>(lhs, RhsValue)) {
-            return _impl::op_fn<Operator>(lhs, RhsValue);
+                Operator op)
+        -> decltype(op(lhs, RhsValue)) {
+            return op(lhs, RhsValue);
         }
 
         // const_integer OP Lhs
@@ -291,9 +291,9 @@ namespace sg14 {
         constexpr auto operate(
                 const const_integer<LhsIntegral, LhsValue, LhsDigits, LhsExponent>&,
                 const Rhs& rhs,
-                Operator)
-        -> decltype(_impl::op_fn<Operator>(LhsValue, rhs)) {
-            return _impl::op_fn<Operator>(LhsValue, rhs);
+                Operator op)
+        -> decltype(op(LhsValue, rhs)) {
+            return op(LhsValue, rhs);
         }
 
         // const_integer OP const_integer
@@ -305,8 +305,8 @@ namespace sg14 {
                 const const_integer<LhsIntegral, LhsValue, LhsDigits, LhsExponent>&,
                 const const_integer<RhsIntegral, RhsValue, RhsDigits, RhsExponent>&,
                 Operator)
-        -> decltype(const_integer<_impl::op_result<Operator, LhsIntegral, RhsIntegral>, _impl::op_fn<Operator>(LhsValue, RhsValue)>{}) {
-            return const_integer<_impl::op_result<Operator, LhsIntegral, RhsIntegral>, _impl::op_fn<Operator>(LhsValue, RhsValue)>{};
+        -> decltype(const_integer<_impl::op_result<Operator, LhsIntegral, RhsIntegral>, Operator()(LhsValue, RhsValue)>{}) {
+            return const_integer<_impl::op_result<Operator, LhsIntegral, RhsIntegral>, Operator()(LhsValue, RhsValue)>{};
         }
     }
 
@@ -350,10 +350,10 @@ namespace sg14 {
         constexpr auto compare(
                 const const_integer<LhsIntegral, LhsValue, LhsDigits, LhsExponent>&,
                 const const_integer<RhsIntegral, RhsValue, RhsDigits, RhsExponent>&,
-                Operator) 
-        -> decltype(_impl::op_fn<Operator>(LhsValue, RhsValue)) 
+                Operator op)
+        -> decltype(op(LhsValue, RhsValue))
         {
-            return _impl::op_fn<Operator>(LhsValue, RhsValue);
+            return op(LhsValue, RhsValue);
         }
     }
     

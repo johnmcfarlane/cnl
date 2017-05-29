@@ -127,7 +127,7 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // operate
 
-        template<class OverflowTag, class OperatorTag, class Enable = void>
+        template<class OverflowTag, class Operator, class Enable = void>
         struct operate;
     }
 
@@ -170,7 +170,7 @@ namespace sg14 {
     // implementation details
     namespace _overflow_impl {
         template<>
-        struct operate<native_overflow_tag, _impl::add_tag_t> {
+        struct operate<native_overflow_tag, _impl::add_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
             -> decltype(lhs+rhs)
@@ -180,7 +180,7 @@ namespace sg14 {
         };
 
         template<>
-        struct operate<throwing_overflow_tag, _impl::add_tag_t> {
+        struct operate<throwing_overflow_tag, _impl::add_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
             -> decltype(lhs+rhs)
@@ -197,10 +197,10 @@ namespace sg14 {
         };
 
         template<>
-        struct operate<saturated_overflow_tag, _impl::add_tag_t> {
+        struct operate<saturated_overflow_tag, _impl::add_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
-            -> _impl::op_result<_impl::add_tag_t, Lhs, Rhs>
+            -> _impl::op_result<_impl::add_op, Lhs, Rhs>
             {
                 using result_type = decltype(lhs+rhs);
                 using numeric_limits = std::numeric_limits<result_type>;
@@ -213,9 +213,9 @@ namespace sg14 {
 
     template<class OverflowTag, class Lhs, class Rhs>
     constexpr auto add(OverflowTag, const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_overflow_impl::operate<OverflowTag, _impl::add_tag_t>()(lhs, rhs))
+    -> decltype(_overflow_impl::operate<OverflowTag, _impl::add_op>()(lhs, rhs))
     {
-        return _overflow_impl::operate<OverflowTag, _impl::add_tag_t>()(lhs, rhs);
+        return _overflow_impl::operate<OverflowTag, _impl::add_op>()(lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -224,7 +224,7 @@ namespace sg14 {
     // implementation details
     namespace _overflow_impl {
         template<>
-        struct operate<native_overflow_tag, _impl::subtract_tag_t> {
+        struct operate<native_overflow_tag, _impl::subtract_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
             -> decltype(lhs-rhs)
@@ -234,7 +234,7 @@ namespace sg14 {
         };
 
         template<>
-        struct operate<throwing_overflow_tag, _impl::subtract_tag_t> {
+        struct operate<throwing_overflow_tag, _impl::subtract_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
             -> decltype(lhs-rhs)
@@ -251,10 +251,10 @@ namespace sg14 {
         };
 
         template<>
-        struct operate<saturated_overflow_tag, _impl::subtract_tag_t> {
+        struct operate<saturated_overflow_tag, _impl::subtract_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
-            -> _impl::op_result<_impl::subtract_tag_t, Lhs, Rhs>
+            -> _impl::op_result<_impl::subtract_op, Lhs, Rhs>
             {
                 using result_type = decltype(lhs-rhs);
                 using numeric_limits = std::numeric_limits<result_type>;
@@ -267,9 +267,9 @@ namespace sg14 {
 
     template<class OverflowTag, class Lhs, class Rhs>
     constexpr auto subtract(OverflowTag, const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_overflow_impl::operate<OverflowTag, _impl::subtract_tag_t>()(lhs, rhs))
+    -> decltype(_overflow_impl::operate<OverflowTag, _impl::subtract_op>()(lhs, rhs))
     {
-        return _overflow_impl::operate<OverflowTag, _impl::subtract_tag_t>()(lhs, rhs);
+        return _overflow_impl::operate<OverflowTag, _impl::subtract_op>()(lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -278,7 +278,7 @@ namespace sg14 {
     // implementation details
     namespace _overflow_impl {
         template<>
-        struct operate<native_overflow_tag, _impl::multiply_tag_t> {
+        struct operate<native_overflow_tag, _impl::multiply_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
             -> decltype(lhs*rhs)
@@ -297,7 +297,7 @@ namespace sg14 {
         }
 
         template<>
-        struct operate<throwing_overflow_tag, _impl::multiply_tag_t> {
+        struct operate<throwing_overflow_tag, _impl::multiply_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
             -> decltype(lhs*rhs)
@@ -309,10 +309,10 @@ namespace sg14 {
         };
 
         template<>
-        struct operate<saturated_overflow_tag, _impl::multiply_tag_t> {
+        struct operate<saturated_overflow_tag, _impl::multiply_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
-            -> _impl::op_result<_impl::multiply_tag_t, Lhs, Rhs>
+            -> _impl::op_result<_impl::multiply_op, Lhs, Rhs>
             {
                 using result_type = decltype(lhs*rhs);
                 return (lhs ? (((rhs*lhs)/lhs)==rhs) : rhs ? (((lhs*rhs)/rhs)==lhs) : true)
@@ -326,9 +326,9 @@ namespace sg14 {
 
     template<class OverflowTag, class Lhs, class Rhs>
     constexpr auto multiply(OverflowTag, const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_overflow_impl::operate<OverflowTag, _impl::multiply_tag_t>()(lhs, rhs))
+    -> decltype(_overflow_impl::operate<OverflowTag, _impl::multiply_op>()(lhs, rhs))
     {
-        return _overflow_impl::operate<OverflowTag, _impl::multiply_tag_t>()(lhs, rhs);
+        return _overflow_impl::operate<OverflowTag, _impl::multiply_op>()(lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -337,7 +337,7 @@ namespace sg14 {
     // implementation details
     namespace _overflow_impl {
         template<>
-        struct operate<native_overflow_tag, _impl::divide_tag_t> {
+        struct operate<native_overflow_tag, _impl::divide_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
             -> decltype(lhs/rhs)
@@ -347,7 +347,7 @@ namespace sg14 {
         };
 
         template<>
-        struct operate<throwing_overflow_tag, _impl::divide_tag_t> {
+        struct operate<throwing_overflow_tag, _impl::divide_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
             -> decltype(lhs/rhs)
@@ -357,10 +357,10 @@ namespace sg14 {
         };
 
         template<>
-        struct operate<saturated_overflow_tag, _impl::divide_tag_t> {
+        struct operate<saturated_overflow_tag, _impl::divide_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
-            -> _impl::op_result<_impl::divide_tag_t, Lhs, Rhs>
+            -> _impl::op_result<_impl::divide_op, Lhs, Rhs>
             {
                 using result_type = decltype(lhs/rhs);
                 using numeric_limits = std::numeric_limits<result_type>;
@@ -375,9 +375,9 @@ namespace sg14 {
 
     template<class OverflowTag, class Lhs, class Rhs>
     constexpr auto divide(OverflowTag, const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_overflow_impl::operate<OverflowTag, _impl::divide_tag_t>()(lhs, rhs))
+    -> decltype(_overflow_impl::operate<OverflowTag, _impl::divide_op>()(lhs, rhs))
     {
-        return _overflow_impl::operate<OverflowTag, _impl::divide_tag_t>()(lhs, rhs);
+        return _overflow_impl::operate<OverflowTag, _impl::divide_op>()(lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -385,39 +385,39 @@ namespace sg14 {
 
     // implementation details
     namespace _overflow_impl {
-        template<class OperatorTag>
-        struct operate<native_overflow_tag, OperatorTag,
-                _impl::enable_if_t<OperatorTag::is_comparison>> {
+        template<class Operator>
+        struct operate<native_overflow_tag, Operator,
+                _impl::enable_if_t<Operator::is_comparison>> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
-        -> decltype(_impl::op_fn<OperatorTag>(lhs, rhs))
+        -> decltype(Operator()(lhs, rhs))
         {
-            return _impl::op_fn<OperatorTag>(lhs, rhs);
+            return Operator()(lhs, rhs);
         }
         };
 
-        template<class OperatorTag>
-        struct operate<throwing_overflow_tag, OperatorTag,
-                _impl::enable_if_t<OperatorTag::is_comparison>> {
+        template<class Operator>
+        struct operate<throwing_overflow_tag, Operator,
+                _impl::enable_if_t<Operator::is_comparison>> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
-            -> _impl::op_result<OperatorTag, Lhs, Rhs>
+            -> _impl::op_result<Operator, Lhs, Rhs>
             {
-                return _impl::op_fn<OperatorTag>(lhs, rhs);
+                return Operator()(lhs, rhs);
             }
         };
 
-        template<class OperatorTag>
-        struct operate<saturated_overflow_tag, OperatorTag,
-                _impl::enable_if_t<OperatorTag::is_comparison>> {
+        template<class Operator>
+        struct operate<saturated_overflow_tag, Operator,
+                _impl::enable_if_t<Operator::is_comparison>> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
-            -> _impl::op_result<OperatorTag, Lhs, Rhs>
+            -> _impl::op_result<Operator, Lhs, Rhs>
             {
                 // assumes all arithmetic-induced implicit convertion goes the same
                 // or at least that `|` is a less "promotion-inducing" operation
                 using converted = decltype(lhs | rhs);
-                return _impl::op_fn<OperatorTag>(
+                return Operator()(
                         convert<converted>(saturated_overflow, lhs),
                         convert<converted>(saturated_overflow, rhs));
             }

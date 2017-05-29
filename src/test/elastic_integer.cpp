@@ -20,9 +20,8 @@ namespace {
     namespace test_operate {
         using sg14::_impl::is_derived_from_number_base;
         using sg14::_impl::equal_tag;
-        using sg14::_impl::equal_tag_t;
+        using sg14::_impl::equal_op;
         using sg14::_impl::multiply_tag;
-        using sg14::_impl::op_fn;
         using sg14::_impl::operate;
         using sg14::_impl::precedes;
         using sg14::to_rep;
@@ -34,15 +33,18 @@ namespace {
         static_assert(
                 operate(elastic_integer<31>{0x7fffffff}, elastic_integer<31>{std::numeric_limits<std::int32_t>::min()}, sg14::_impl::greater_than_tag),
                 "sg14::elastic_integer test failed");
+        static_assert(operate(
+                elastic_integer<31>{0x7fffffff},
+                elastic_integer<31>{std::numeric_limits<std::int32_t>::min()},
+                sg14::_impl::greater_than_tag),
+                      "sg14::elastic_integer test failed");
         static_assert(identical(
                 typename std::common_type<elastic_integer<31>, elastic_integer<32, unsigned>>::type{},
                 elastic_integer<32>{}),
                 "sg14::elastic_integer test failed");
-        static_assert(elastic_integer<31>{-1} < elastic_integer<31, unsigned>{1},
-                "sg14::elastic_integer test failed");
-        static_assert(sg14::_impl::op_fn<sg14::_impl::less_than_tag_t>(elastic_integer<31, unsigned>{-1},
-                elastic_integer<31>{1}),
-                "sg14::elastic_integer test failed");
+        static_assert(sg14::_impl::less_than_tag(elastic_integer<31, unsigned>{-1},
+                                                 elastic_integer<31>{1}),
+                      "sg14::elastic_integer test failed");
         static_assert(operate(elastic_integer<1>{0}, INT32_C(0), sg14::_impl::equal_tag),
                 "sg14::elastic_integer test failed");
         static_assert(identical(
@@ -51,7 +53,7 @@ namespace {
 
 
         static_assert(
-                op_fn<equal_tag_t>(
+                equal_tag(
                         to_rep(static_cast<int>(elastic_integer<8>{1L})),
                         to_rep(static_cast<int>(elastic_integer<8>{1L}))), "");
 
@@ -91,6 +93,12 @@ namespace {
     }
 
     namespace test_compare {
+        static_assert(elastic_integer<31>{-1} < elastic_integer<31, unsigned>{1}, "sg14::elastic_integer test failed");
+        static_assert(elastic_integer<31>{-1} < elastic_integer<31>{1}, "sg14::elastic_integer test failed");
+        static_assert(sg14::elastic_integer<10>{0} == 0, "sg14::elastic_integer test failed");
+        static_assert(elastic_integer<31>{-1} < elastic_integer<31, unsigned>{1}, "sg14::elastic_integer test failed");
+        static_assert(!sg14::_impl::encompasses<sg14::elastic_integer<10>, int>::value,
+                      "sg14::elastic_integer test failed");
         static_assert(elastic_integer<4, signed>{10} > elastic_integer<4, signed>{-7}, "elastic_integer comparison test failed");
     }
 

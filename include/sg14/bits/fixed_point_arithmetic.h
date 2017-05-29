@@ -77,33 +77,33 @@ namespace sg14 {
                 struct rep_op_exponent;
 
                 template<class Rhs>
-                struct rep_op_exponent<_impl::plus_tag_t, Rhs> : public std::integral_constant<int, Rhs::exponent> {
+                struct rep_op_exponent<_impl::plus_op, Rhs> : public std::integral_constant<int, Rhs::exponent> {
                 };
 
                 template<class Rhs>
-                struct rep_op_exponent<_impl::minus_tag_t, Rhs> : public std::integral_constant<int, Rhs::exponent> {
+                struct rep_op_exponent<_impl::minus_op, Rhs> : public std::integral_constant<int, Rhs::exponent> {
                 };
 
                 template<class Lhs, class Rhs>
-                struct rep_op_exponent<_impl::add_tag_t, Lhs, Rhs> : public std::integral_constant<int, _impl::min<int>(
+                struct rep_op_exponent<_impl::add_op, Lhs, Rhs> : public std::integral_constant<int, _impl::min<int>(
                         Lhs::exponent,
                         Rhs::exponent)> {
                 };
 
                 template<class Lhs, class Rhs>
-                struct rep_op_exponent<_impl::subtract_tag_t, Lhs, Rhs>
+                struct rep_op_exponent<_impl::subtract_op, Lhs, Rhs>
                         : public std::integral_constant<int, _impl::min<int>(
                                 Lhs::exponent,
                                 Rhs::exponent)> {
                 };
 
                 template<class Lhs, class Rhs>
-                struct rep_op_exponent<_impl::multiply_tag_t, Lhs, Rhs> : public std::integral_constant<int,
+                struct rep_op_exponent<_impl::multiply_op, Lhs, Rhs> : public std::integral_constant<int,
                         Lhs::exponent+Rhs::exponent> {
                 };
 
                 template<class Lhs, class Rhs>
-                struct rep_op_exponent<_impl::divide_tag_t, Lhs, Rhs> : public std::integral_constant<int,
+                struct rep_op_exponent<_impl::divide_op, Lhs, Rhs> : public std::integral_constant<int,
                         Lhs::exponent-Rhs::exponent> {
                 };
 
@@ -151,10 +151,10 @@ namespace sg14 {
                 };
 
                 template<class Lhs, class Rhs>
-                struct result<wide_tag, _impl::multiply_tag_t, Lhs, Rhs> {
+                struct result<wide_tag, _impl::multiply_op, Lhs, Rhs> {
                     using lhs_rep = typename Lhs::rep;
                     using rhs_rep = typename Rhs::rep;
-                    using rep_op_result = _impl::op_result<_impl::multiply_tag_t, lhs_rep, rhs_rep>;
+                    using rep_op_result = _impl::op_result<_impl::multiply_op, lhs_rep, rhs_rep>;
 
                     static constexpr int digits = Lhs::digits+Rhs::digits;
                     static constexpr bool is_signed =
@@ -164,16 +164,16 @@ namespace sg14 {
                     using prewidened_result_rep = _impl::make_signed_t<rep_op_result, is_signed>;
                     using rep_type = set_width_t<prewidened_result_rep, width>;
 
-                    static constexpr int rep_exponent = rep_op_exponent<_impl::multiply_tag_t, Lhs, Rhs>::value;
+                    static constexpr int rep_exponent = rep_op_exponent<_impl::multiply_op, Lhs, Rhs>::value;
 
                     using type = fixed_point<rep_type, rep_exponent>;
                 };
 
                 template<class Lhs, class Rhs>
-                struct result<wide_tag, _impl::divide_tag_t, Lhs, Rhs> {
+                struct result<wide_tag, _impl::divide_op, Lhs, Rhs> {
                     using lhs_rep = typename Lhs::rep;
                     using rhs_rep = typename Rhs::rep;
-                    using rep_op_result = _impl::op_result<_impl::multiply_tag_t, lhs_rep, rhs_rep>;
+                    using rep_op_result = _impl::op_result<_impl::multiply_op, lhs_rep, rhs_rep>;
 
                     static constexpr int integer_digits = Lhs::integer_digits+Rhs::fractional_digits;
                     static constexpr int fractional_digits = Lhs::fractional_digits+Rhs::integer_digits;
@@ -209,13 +209,13 @@ namespace sg14 {
                 };
 
                 template<class Lhs, class Rhs>
-                struct intermediate<lean_tag, _impl::multiply_tag_t, Lhs, Rhs> {
+                struct intermediate<lean_tag, _impl::multiply_op, Lhs, Rhs> {
                     using lhs_type = Lhs;
                     using rhs_type = Rhs;
                 };
 
                 template<class Lhs, class Rhs>
-                struct intermediate<lean_tag, _impl::divide_tag_t, Lhs, Rhs> {
+                struct intermediate<lean_tag, _impl::divide_op, Lhs, Rhs> {
                     using lhs_type = Lhs;
                     using rhs_type = Rhs;
                 };
@@ -231,8 +231,8 @@ namespace sg14 {
                 };
 
                 template<class Lhs, class Rhs>
-                struct intermediate<wide_tag, _impl::multiply_tag_t, Lhs, Rhs> {
-                    using _result = result<wide_tag, _impl::multiply_tag_t, Lhs, Rhs>;
+                struct intermediate<wide_tag, _impl::multiply_op, Lhs, Rhs> {
+                    using _result = result<wide_tag, _impl::multiply_op, Lhs, Rhs>;
                     using result_rep = typename _result::rep_type;
                     using prewidened_result_rep = typename _result::prewidened_result_rep;
 
@@ -248,8 +248,8 @@ namespace sg14 {
                 };
 
                 template<class Lhs, class Rhs>
-                struct intermediate<wide_tag, _impl::divide_tag_t, Lhs, Rhs> {
-                    using wide_result = result<wide_tag, _impl::divide_tag_t, Lhs, Rhs>;
+                struct intermediate<wide_tag, _impl::divide_op, Lhs, Rhs> {
+                    using wide_result = result<wide_tag, _impl::divide_op, Lhs, Rhs>;
                     using rep_type = typename wide_result::rep_type;
 
                     static constexpr int exponent = Lhs::exponent-Rhs::digits;
@@ -288,11 +288,11 @@ namespace sg14 {
             ////////////////////////////////////////////////////////////////////////////////
             // sg14::_impl::fixed_point::operate
 
-            template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
-            constexpr auto operate(const Lhs& lhs, const Rhs& rhs, OperationTag)
-            -> typename arithmetic::operate_params<PolicyTag, OperationTag, Lhs, Rhs>::result_type
+            template<class PolicyTag, class Operation, class Lhs, class Rhs>
+            constexpr auto operate(const Lhs& lhs, const Rhs& rhs, Operation)
+            -> typename arithmetic::operate_params<PolicyTag, Operation, Lhs, Rhs>::result_type
             {
-                using params = arithmetic::operate_params<PolicyTag, OperationTag, Lhs, Rhs>;
+                using params = arithmetic::operate_params<PolicyTag, Operation, Lhs, Rhs>;
                 using intermediate_lhs = typename params::intermediate_lhs;
                 using intermediate_rhs = typename params::intermediate_rhs;
                 using result_type = typename params::result_type;
@@ -300,7 +300,7 @@ namespace sg14 {
 
                 return result_type::from_data(
                         static_cast<result_rep>(
-                                _impl::op_fn<OperationTag>(
+                                Operation()(
                                         static_cast<intermediate_lhs>(lhs).data(),
                                         static_cast<intermediate_rhs>(rhs).data())));
             };
