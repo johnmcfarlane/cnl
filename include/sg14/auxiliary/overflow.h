@@ -315,11 +315,11 @@ namespace sg14 {
             -> _impl::op_result<_impl::multiply_op, Lhs, Rhs>
             {
                 using result_type = decltype(lhs*rhs);
-                return (lhs ? (((rhs*lhs)/lhs)==rhs) : rhs ? (((lhs*rhs)/rhs)==lhs) : true)
-                       ? lhs*rhs
-                       : ((lhs>0) ^ (rhs>0))
+                return is_multiply_overflow(lhs, rhs)
+                       ? ((lhs>0) ^ (rhs>0))
                          ? std::numeric_limits<result_type>::lowest()
-                         : std::numeric_limits<result_type>::max();
+                         : std::numeric_limits<result_type>::max()
+                       : lhs*rhs;
             }
         };
     }
