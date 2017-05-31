@@ -245,12 +245,26 @@ namespace {
         static_assert(identical(convert<std::int32_t>(saturated_overflow, std::uint8_t{55}), 55), "sg14::convert test failed");
 
         // subtract
-        static_assert(identical(subtract(saturated_overflow, INT8_C(0), INT8_C(0)), 0), "sg14::add test failed");
+        static_assert(identical(subtract(saturated_overflow, INT8_C(0), INT8_C(0)), 0), "sg14::subtract test failed");
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable: 4308)
+#endif
+        static_assert(identical(subtract(saturated_overflow, 0U, -1), 1U), "sg14::subtract test failed");
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
         // multiply
-        static_assert(identical(multiply(saturated_overflow, UINT16_C(576), INT32_C(22)), decltype(UINT16_C(576)*INT32_C(22)){12672}), "sg14::add test failed");
+        static_assert(identical(multiply(saturated_overflow, UINT16_C(576), INT32_C(22)),
+                decltype(UINT16_C(576)*INT32_C(22)){12672}), "sg14::multiply test failed");
+        static_assert(identical(
+                multiply(saturated_overflow, std::numeric_limits<int32_t>::max(), INT32_C(2)),
+                std::numeric_limits<int32_t>::max()), "sg14::multiply test failed");
 
         // compare
         static_assert(sg14::_overflow_impl::operate<sg14::saturated_overflow_tag, sg14::_impl::less_than_op>()(-1, 1u), "sg14::_overflow_impl::operate test failed");
+        static_assert(identical(convert<short>(saturated_overflow, std::numeric_limits<double>::max()),
+                std::numeric_limits<short>::max()), "sg14::convert test failed");
     }
 }
