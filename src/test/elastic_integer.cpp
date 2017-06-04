@@ -17,6 +17,14 @@ namespace {
     using namespace sg14::literals;
 
     // simple one-off tests
+    namespace test_width {
+        using sg14::numeric_traits;
+
+        static_assert(numeric_traits<elastic_integer<7, int>>::width==8, "elastic_integer test failed");
+        static_assert(identical(numeric_traits<elastic_integer<3>>::make(1),
+                elastic_integer<std::numeric_limits<int>::digits>{1}), "elastic_integer test failed");
+    }
+
     namespace test_operate {
         using sg14::_impl::is_derived_from_number_base;
         using sg14::_impl::equal_tag;
@@ -24,7 +32,7 @@ namespace {
         using sg14::_impl::multiply_tag;
         using sg14::_impl::operate;
         using sg14::_impl::precedes;
-        using sg14::to_rep;
+        using sg14::_impl::to_rep;
 
         static_assert(is_derived_from_number_base<elastic_integer<1>>::value,
                 "sg14::_impl::is_derived_from_number_base test failed");
@@ -51,7 +59,6 @@ namespace {
                 operate(elastic_integer<1>{0}, INT32_C(0), multiply_tag), elastic_integer<32, int>{0}),
                 "sg14::elastic_integer test failed");
 
-
         static_assert(
                 equal_tag(
                         to_rep(static_cast<int>(elastic_integer<8>{1L})),
@@ -63,10 +70,6 @@ namespace {
                 "sg14::elastic_integer test failed");
         static_assert(operate(~elastic_integer<12, std::uint16_t>{0}, 0xFFF, equal_tag),
                 "sg14::elastic_integer test failed");
-    }
-
-    namespace test_width {
-        static_assert(sg14::width<elastic_integer<7, int>>::value == 8, "elastic_integer test failed");
     }
 
     namespace test_ctor {
@@ -169,6 +172,7 @@ namespace {
                 sg14::_impl::operate(elastic_integer<1>{0}, INT32_C(0), multiply_tag),
                 sg14::elastic_integer<32, int>{0}),
                 "sg14::elastic_integer test failed");
+        static_assert(identical(sg14::_impl::to_rep(elastic_integer<4>{13}), 13), "sg14::elastic_integer test failed");
         static_assert(identical(elastic_integer<1>{0} * INT32_C(0), sg14::elastic_integer<32, int>{0}),
                       "sg14::elastic_integer test failed");
         static_assert(identical(make_elastic_integer(177_c), sg14::elastic_integer<8, int>{177}),
@@ -199,7 +203,7 @@ namespace {
         ////////////////////////////////////////////////////////////////////////////////
         // members
 
-        static constexpr int width = sg14::width<value_type>::value;
+        static constexpr int width = sg14::numeric_traits<value_type>::width;
         static constexpr int digits = value_type::digits;
         static constexpr bool is_signed = numeric_limits::is_signed;
         static_assert(is_signed==std::numeric_limits<narrowest>::is_signed, "narrowest is different signedness");

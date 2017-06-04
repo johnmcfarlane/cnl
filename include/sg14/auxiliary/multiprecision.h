@@ -10,9 +10,7 @@
 #if !defined(SG14_MULTIPRECISION_H)
 #define SG14_MULTIPRECISION_H 1
 
-#include <sg14/cstdint>
-#include <sg14/limits>
-#include <sg14/type_traits>
+#include <sg14/numeric_traits>
 
 #include <boost/multiprecision/cpp_int.hpp>
 
@@ -27,100 +25,33 @@ namespace sg14 {
     // These are the definitions needed to use any custom integer type with
     // sg14::fixed_point
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_signed
+    // numeric_traits<boost::multiprecision::cpp_int_backend<...>>
+    template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
+    struct numeric_traits<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked, Allocator>> {
 
-    // sg14::make_signed<boost::multiprecision::cpp_int_backend<>>
-    template<unsigned MinBits, unsigned MaxBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
-    struct make_signed<_bmp::cpp_int_backend<
-            MinBits, MaxBits, SignType, Checked, Allocator>> {
-        using type = _bmp::cpp_int_backend<
-                MinBits, MaxBits, _bmp::signed_magnitude, Checked, Allocator>;
+        using make_signed = _bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude, Checked, Allocator>;
+        using make_unsigned = _bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude, Checked, Allocator>;
+
+        static_assert(SignType == _bmp::signed_magnitude || SignType == _bmp::unsigned_magnitude, "following sign test may fail");
+        static constexpr _width_type width = NumBits + (SignType == _bmp::signed_magnitude);
+
+        template<_width_type NewNumBits>
+        using set_width = _bmp::cpp_int_backend<NewNumBits, NewNumBits, SignType, Checked, Allocator>;
     };
 
-    // sg14::make_signed<boost::multiprecision::number<>>
-    template<
-            class Backend,
-            _bmp::expression_template_option ExpressionTemplates>
-    struct make_signed<_bmp::number<
-            Backend,
-            ExpressionTemplates>> {
-        using type = _bmp::number<
-                typename make_signed<Backend>::type,
-                ExpressionTemplates>;
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_unsigned
-
-    // sg14::make_unsigned<boost::multiprecision::cpp_int_backend<>>
-    template<unsigned MinBits, unsigned MaxBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
-    struct make_unsigned<_bmp::cpp_int_backend<
-            MinBits, MaxBits, SignType, Checked, Allocator>> {
-        using type = _bmp::cpp_int_backend<
-                MinBits, MaxBits, _bmp::unsigned_magnitude, Checked, Allocator>;
-    };
-
-    // sg14::make_unsigned<boost::multiprecision::number<>>
-    template<
-            class Backend,
-            _bmp::expression_template_option ExpressionTemplates>
-    struct make_unsigned<_bmp::number<
-            Backend,
-            ExpressionTemplates>> {
-        using type = _bmp::number<
-                typename make_unsigned<Backend>::type,
-                ExpressionTemplates>;
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::set_width
-
-    // sg14::set_width<boost::multiprecision::cpp_int_backend<>>
-    template<
-            unsigned MinBits,
-            unsigned MaxBits,
-            _bmp::cpp_integer_type SignType,
-            _bmp::cpp_int_check_type Checked,
-            _width_type MinNumBits>
-    struct set_width<
-            _bmp::cpp_int_backend<
-                    MinBits, MaxBits, SignType, Checked>,
-            MinNumBits> {
-        using type = _bmp::cpp_int_backend<
-                MinNumBits,
-                MinNumBits,
-                _bmp::unsigned_magnitude,
-                Checked>;
-    };
-
-    // sg14::set_width<boost::multiprecision::number<>>
-    template<
-            class Backend,
-            _bmp::expression_template_option ExpressionTemplates,
-            _width_type MinNumBits>
-    struct set_width<
-            _bmp::number<
-                    Backend,
-                    ExpressionTemplates>,
-            MinNumBits> {
-        using type = _bmp::number<
-                typename set_width<Backend, MinNumBits>::type,
-                ExpressionTemplates>;
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::width
-
-    // sg14::width<boost::multiprecision::cpp_int_backend<>>
-    template<unsigned MinBits, unsigned MaxBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked>
-    struct width<_bmp::cpp_int_backend<MinBits, MaxBits, SignType, Checked>>
-            : std::integral_constant<_width_type, MaxBits> {
-    };
-
-    // sg14::width<boost::multiprecision::number<>>
+    // numeric_traits<boost::multiprecision::number<>>
     template<class Backend, _bmp::expression_template_option ExpressionTemplates>
-    struct width<_bmp::number<Backend, ExpressionTemplates>> : width<Backend> {
+    struct numeric_traits<_bmp::number<Backend, ExpressionTemplates>>
+    : sg14::_impl::numeric_traits_base<_bmp::number<Backend, ExpressionTemplates>> {
+        using _backend_traits = numeric_traits<Backend>;
+
+        using make_signed = _bmp::number<typename _backend_traits::make_signed, ExpressionTemplates>;
+        using make_unsigned = _bmp::number<typename _backend_traits::make_unsigned, ExpressionTemplates>;
+
+        static constexpr _width_type width = _backend_traits::width;
+
+        template<_width_type NumBits>
+        using set_width = _bmp::number<typename _backend_traits::template set_width<NumBits>, ExpressionTemplates>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -134,15 +65,15 @@ namespace sg14 {
     }
 
     // sg14::signed_multiprecision - a signed integer of arbitrary size
-    template<unsigned NumBits = width<int>::value>
+    template<unsigned NumBits = numeric_traits<int>::width>
     using signed_multiprecision = _bmp::number<_sized_integer_impl::backend<NumBits, _bmp::signed_magnitude>, _bmp::et_off>;
 
     // sg14::unsigned_multiprecision - an unsigned integer of arbitrary size
-    template<unsigned NumBits = width<int>::value>
+    template<unsigned NumBits = numeric_traits<int>::width>
     using unsigned_multiprecision = _bmp::number<_sized_integer_impl::backend<NumBits, _bmp::unsigned_magnitude>, _bmp::et_off>;
 
     // sg14::unsigned_multiprecision - an integer of arbitrary size
-    template<unsigned NumBits = width<int>::value>
+    template<unsigned NumBits = numeric_traits<int>::width>
     using multiprecision = signed_multiprecision<NumBits>;
 }
 

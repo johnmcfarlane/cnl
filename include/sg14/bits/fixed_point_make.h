@@ -13,8 +13,7 @@
 #if ! defined(SG14_GODBOLT_ORG)
 #include "fixed_point_type.h"
 
-#include <sg14/cstdint>
-#include <sg14/type_traits>
+#include <sg14/bits/type_traits.h>
 #endif
 
 /// study group 14 of the C++ working group
@@ -40,7 +39,7 @@ namespace sg14 {
     /// \sa make_ufixed
     template<int IntegerDigits, int FractionalDigits = 0, class Narrowest = signed>
     using make_fixed = fixed_point<
-            set_width_t<Narrowest, IntegerDigits+FractionalDigits+std::numeric_limits<Narrowest>::is_signed>,
+            _impl::set_width_t<Narrowest, IntegerDigits+FractionalDigits+std::numeric_limits<Narrowest>::is_signed>,
             -FractionalDigits>;
 
     /// \brief specializes \ref fixed_point with the given number of integer and fractional digits; produces an unsigned type
@@ -51,7 +50,7 @@ namespace sg14 {
     using make_ufixed = make_fixed<
             IntegerDigits,
             FractionalDigits,
-            typename make_unsigned<Narrowest>::type>;
+            typename numeric_traits<Narrowest>::make_unsigned>;
 }
 
 #endif	// SG14_MAKE_FIXED_H

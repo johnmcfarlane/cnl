@@ -144,7 +144,7 @@ namespace sg14 {
                             Rhs::fractional_digits);
                     static constexpr _width_type sufficient_width =
                             sufficient_sign_bits+sufficient_integer_digits+sufficient_fractional_digits;
-                    static constexpr int result_width = _impl::max(sufficient_width, width<rep_op_result>::value);
+                    static constexpr int result_width = _impl::max(sufficient_width, numeric_traits<rep_op_result>::width);
 
                     using rep_type = set_width_t<rep_op_result, result_width>;
                     using type = fixed_point<rep_type, -sufficient_fractional_digits>;
@@ -182,7 +182,7 @@ namespace sg14 {
                             std::numeric_limits<lhs_rep>::is_signed || std::numeric_limits<rhs_rep>::is_signed;
 
                     static constexpr int necessary_width = digits+is_signed;
-                    static constexpr int promotion_width = width<rep_op_result>::value;
+                    static constexpr int promotion_width = numeric_traits<rep_op_result>::width;
                     static constexpr int width = _impl::max(necessary_width, promotion_width);
 
                     using prewidened_result_rep = _impl::make_signed_t<rep_op_result, is_signed>;
@@ -240,7 +240,7 @@ namespace sg14 {
                     // This ensures that auto-widening rep types (e.g. elastic_integer) don't get widened twice
                     // but types that need a little help (e.g. built-ins) get widened going into the op.
                     using rep_type = typename std::conditional<
-                            width<prewidened_result_rep>::value>=_result::width,
+                            numeric_traits<prewidened_result_rep>::width>=_result::width,
                             typename Lhs::rep, result_rep>::type;
 
                     using lhs_type = fixed_point<rep_type, Lhs::exponent>;

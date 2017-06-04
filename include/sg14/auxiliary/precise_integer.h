@@ -8,10 +8,7 @@
 #define SG14_PRECISE_INTEGER_H 1
 
 #if !defined(SG14_GODBOLT_ORG)
-
 #include <sg14/bits/number_base.h>
-#include <sg14/cstdint>
-
 #endif
 
 #include <limits>
@@ -55,6 +52,13 @@ namespace sg14 {
     template<class Rep, class RoundingPolicy>
     struct numeric_traits<precise_integer<Rep, RoundingPolicy>> :
             numeric_traits<_impl::number_base<precise_integer<Rep, RoundingPolicy>, Rep>> {
+        using make_signed = precise_integer<typename numeric_traits<Rep>::make_signed, RoundingPolicy>;
+        using make_unsigned = precise_integer<typename numeric_traits<Rep>::make_unsigned, RoundingPolicy>;
+
+        static constexpr _width_type width = numeric_traits<Rep>::width;
+
+        template<_width_type NumBits>
+        using set_width = precise_integer<typename numeric_traits<Rep>::template set_width<NumBits>, RoundingPolicy>;
     };
 
     namespace _precise_integer_impl {
@@ -69,47 +73,6 @@ namespace sg14 {
         struct is_precise_integer<precise_integer<Rep, RoundingPolicy>> : std::true_type {
         };
     }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // comparison operators
-
-#if 0
-    template<
-            class Lhs,
-            class RhsRep, class RhsRoundingPolicy,
-            enable_if_t<!_precise_integer_impl::is_precise_integer<Lhs>::value, int>::type = 0>
-    constexpr auto operator==(const Lhs& lhs, const precise_integer<RhsRep, RhsRoundingPolicy>& rhs)
-    -> decltype(lhs==rhs.data())
-    {
-        return lhs==rhs.data();
-    };
-
-    template<
-            class LhsRep, class LhsRoundingPolicy,
-            class Rhs,
-            enable_if_t<!_precise_integer_impl::is_precise_integer<Rhs>::value, int>::type = 0>
-    constexpr auto operator==(const precise_integer<LhsRep, LhsRoundingPolicy>& lhs, const Rhs& rhs)
-    -> decltype(lhs.data()==rhs)
-    {
-        return lhs.data()==rhs;
-    };
-#endif
-    
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::width<sg14::precise_integer<>>
-
-    template<class Rep, class RoundingPolicy>
-    struct width<precise_integer<Rep, RoundingPolicy>>
-            : width<Rep> {
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::set_width<sg14::precise_integer<>>
-
-    template<class Rep, class RoundingPolicy, _width_type MinNumBits>
-    struct set_width<precise_integer<Rep, RoundingPolicy>, MinNumBits> {
-        using type = precise_integer<set_width_t<Rep, MinNumBits>, RoundingPolicy>;
-    };
 
     ////////////////////////////////////////////////////////////////////////////////
     // binary arithmetic
@@ -161,21 +124,6 @@ namespace sg14 {
                 decltype(to_rep(lhs) << rhs),
                 LhsRoundingPolicy>>::from_rep(to_rep(lhs) << rhs);
     }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::precise_integer-specific specializations to std-like templates
-    
-    // sg14::make_unsigned<sg14::precise_integer<>>
-    template<class Rep, class RoundingPolicy>
-    struct make_unsigned<precise_integer<Rep, RoundingPolicy>> {
-        using type = precise_integer<typename make_unsigned<Rep>::type, RoundingPolicy>;
-    };
-    
-    // sg14::make_signed<sg14::precise_integer<>>
-    template<class Rep, class RoundingPolicy>
-    struct make_signed<precise_integer<Rep, RoundingPolicy>> {
-        using type = precise_integer<typename make_signed<Rep>::type, RoundingPolicy>;
-    };
 }
 
 namespace std {

@@ -50,21 +50,21 @@ static_assert(std::is_same<decltype(n), const elastic_fixed_point<6, -1>>::value
 
 namespace use_resize_1 {
 //! [use set_width 1]
-using new_type = set_width_t<unsigned, 16>;
+using new_type = _impl::set_width_t<unsigned, 16>;
 static_assert(std::is_same<new_type, uint16_t>::value, "failed to resize an unsigned int to 16-bytes");
 //! [use set_width 1]
 }
 
 namespace use_resize_2 {
 //! [use set_width 2]
-using new_type = set_width_t<signed char, 35>;
+using new_type = _impl::set_width_t<signed char, 35>;
 static_assert(std::is_same<new_type, int64_t>::value, "failed to resize a signed char to a type of at least 35 bits");
 //! [use set_width 2]
 }
 
 namespace use_resize_3 {
 //! [use set_width 3]
-using new_type = set_width_t<fixed_point<int8_t>, 24>;
+using new_type = _impl::set_width_t<fixed_point<int8_t>, 24>;
 static_assert(std::is_same<new_type, fixed_point<int32_t>>::value, "failed to resize a signed, 1-byte fixed-point type to a fixed-point type of at least 3 bytes");
 //! [use set_width 3]
 }

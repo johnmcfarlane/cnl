@@ -13,13 +13,11 @@
 #include <gtest/gtest.h>
 
 using sg14::fixed_point;
-using sg14::make_signed;
-using sg14::make_unsigned;
 using sg14::multiprecision;
-using sg14::set_width_t;
+using sg14::numeric_traits;
+using sg14::_impl::set_width_t;
 using sg14::signed_multiprecision;
 using sg14::unsigned_multiprecision;
-using sg14::width;
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::multiprecision traits
@@ -34,36 +32,36 @@ static_assert(!std::numeric_limits<unsigned_multiprecision<5 >>::is_signed,
 static_assert(!std::numeric_limits<unsigned_multiprecision<7 >>::is_signed,
         "std::numeric_limits<unsigned_multiprecision<>>::is_signed test failed");
 
-// test sg14::make_signed<{un}signed_multiprecision>
-static_assert(std::numeric_limits<make_signed<signed_multiprecision<9 >>::type>::is_signed,
-        "sg14::make_signed<signed_multiprecision<>> test failed");
-static_assert(std::numeric_limits<make_signed<unsigned_multiprecision<10 >>::type>::is_signed,
-        "sg14::make_signed<signed_multiprecision<>> test failed");
-static_assert(std::numeric_limits<make_signed<signed_multiprecision<9 >>::type>::is_signed,
-        "sg14::make_signed<signed_multiprecision<>> test failed");
-static_assert(std::numeric_limits<make_signed<unsigned_multiprecision<10 >>::type>::is_signed,
-        "sg14::make_signed<signed_multiprecision<>> test failed");
+// test sg14::numeric_traits<{un}signed_multiprecision>::make_signed
+static_assert(std::numeric_limits<numeric_traits<signed_multiprecision<9>>::make_signed>::is_signed,
+        "sg14::numeric_traits<{un}signed_multiprecision>::make_signed test failed");
+static_assert(std::numeric_limits<numeric_traits<unsigned_multiprecision<10 >>::make_signed>::is_signed,
+        "sg14::numeric_traits<{un}signed_multiprecision>::make_signed test failed");
+static_assert(std::numeric_limits<numeric_traits<signed_multiprecision<9 >>::make_signed>::is_signed,
+        "sg14::numeric_traits<{un}signed_multiprecision>::make_signed test failed");
+static_assert(std::numeric_limits<numeric_traits<unsigned_multiprecision<10 >>::make_signed>::is_signed,
+        "sg14::numeric_traits<{un}signed_multiprecision>::make_signed test failed");
 
-// test sg14::make_unsigned<{un}signed_multiprecision>
-static_assert(!std::numeric_limits<make_unsigned<signed_multiprecision<9 >>::type>::is_signed,
-        "sg14::make_unsigned<signed_multiprecision<>> test failed");
-static_assert(!std::numeric_limits<make_unsigned<unsigned_multiprecision<10 >>::type>::is_signed,
-        "sg14::make_unsigned<signed_multiprecision<>> test failed");
-static_assert(!std::numeric_limits<make_unsigned<signed_multiprecision<9 >>::type>::is_signed,
-        "sg14::make_unsigned<signed_multiprecision<>> test failed");
-static_assert(!std::numeric_limits<make_unsigned<unsigned_multiprecision<10 >>::type>::is_signed,
-        "sg14::make_unsigned<signed_multiprecision<>> test failed");
+// test sg14::numeric_traits<{un}signed_multiprecision>::make_unsigned
+static_assert(!std::numeric_limits<numeric_traits<signed_multiprecision<9 >>::make_unsigned>::is_signed,
+        "sg14::numeric_traits<{un}signed_multiprecision>::make_unsigned test failed");
+static_assert(!std::numeric_limits<numeric_traits<unsigned_multiprecision<10 >>::make_unsigned>::is_signed,
+        "sg14::numeric_traits<{un}signed_multiprecision>::make_unsigned test failed");
+static_assert(!std::numeric_limits<numeric_traits<signed_multiprecision<9 >>::make_unsigned>::is_signed,
+        "sg14::numeric_traits<{un}signed_multiprecision>::make_unsigned test failed");
+static_assert(!std::numeric_limits<numeric_traits<unsigned_multiprecision<10 >>::make_unsigned>::is_signed,
+        "sg14::numeric_traits<{un}signed_multiprecision>::make_unsigned test failed");
 
 // test sg14::width<{un}signed_multiprecision>
-static_assert(width<signed_multiprecision<11>>::value>=11, "width<signed_multiprecision> test failed");
-static_assert(width<unsigned_multiprecision<12>>::value>=12, "width<signed_multiprecision> test failed");
+static_assert(numeric_traits<signed_multiprecision<11>>::width>=11, "numeric_traits<signed_multiprecision>::width test failed");
+static_assert(numeric_traits<unsigned_multiprecision<12>>::width>=12, "numeric_traits<signed_multiprecision>::width test failed");
 
 // test sg14::set_width_t<{un}signed_multiprecision>
-static_assert(width<set_width_t<signed_multiprecision<13>, 57>>::value>=57, "width<signed_multiprecision> test failed");
-static_assert(width<set_width_t<unsigned_multiprecision<14>, 3>>::value>=3, "width<unsigned_multiprecision> test failed");
+static_assert(numeric_traits<set_width_t<signed_multiprecision<13>, 57>>::width>=57, "numeric_traits<signed_multiprecision>::width test failed");
+static_assert(numeric_traits<set_width_t<unsigned_multiprecision<14>, 3>>::width>=3, "numeric_traits<unsigned_multiprecision>::width test failed");
 
-static_assert(width<set_width_t<signed_multiprecision<120>, 3>>::value<=width<signed_multiprecision<120>>::value, "width<signed_multiprecision> test failed");
-static_assert(width<unsigned_multiprecision<128>>::value>=width<set_width_t<unsigned_multiprecision<128>, 16>>::value, "width<signed_multiprecision>::value test failed");
+static_assert(numeric_traits<set_width_t<signed_multiprecision<120>, 3>>::width<=numeric_traits<signed_multiprecision<120>>::width, "numeric_traits<signed_multiprecision>::width test failed");
+static_assert(numeric_traits<unsigned_multiprecision<128>>::width>=numeric_traits<set_width_t<unsigned_multiprecision<128>, 16>>::width, "numeric_traits<signed_multiprecision>::value::width test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::multiprecision arithmetic

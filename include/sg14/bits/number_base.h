@@ -326,7 +326,7 @@ namespace sg14 {
 
         static constexpr value_type scale(const value_type& number, int base, int exp)
         {
-            return from_rep(sg14::scale(to_rep(number), base, exp));
+            return from_rep(sg14::_impl::scale(to_rep(number), base, exp));
         }
     };
 }

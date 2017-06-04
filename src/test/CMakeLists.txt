@@ -34,7 +34,6 @@ add_executable(fp_test
         ${CMAKE_CURRENT_LIST_DIR}/p0037.cpp
         ${CMAKE_CURRENT_LIST_DIR}/p0381.cpp
         ${CMAKE_CURRENT_LIST_DIR}/p0554.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/cstdint.cpp
         ${CMAKE_CURRENT_LIST_DIR}/readme.cpp
         ${CMAKE_CURRENT_LIST_DIR}/snippets.cpp
         ${CMAKE_CURRENT_LIST_DIR}/fixed_point_math.cpp

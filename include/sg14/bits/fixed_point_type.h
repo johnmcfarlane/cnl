@@ -11,7 +11,6 @@
 #define SG14_FIXED_POINT_DEF_H 1
 
 #if ! defined(SG14_GODBOLT_ORG)
-#include <sg14/cstdint>
 #include <sg14/auxiliary/const_integer.h>
 #include <sg14/bits/number_base.h>
 #endif
@@ -31,7 +30,7 @@ namespace sg14 {
             // sg14::_impl::float_of_same_size
 
             template<class T>
-            using float_of_same_size = set_width_t<float, width<T>::value>;
+            using float_of_same_size = set_width_t<float, numeric_traits<T>::width>;
         }
     }
 
@@ -249,11 +248,11 @@ namespace sg14 {
         constexpr Output shift_left(Input i)
         {
             using larger = typename std::conditional<
-                    width<Input>::value<=width<Output>::value,
+                    numeric_traits<Input>::width<=numeric_traits<Output>::width,
                     Output, Input>::type;
 
             return (exp>-std::numeric_limits<larger>::digits)
-                   ? static_cast<Output>(sg14::numeric_traits<larger>::scale(static_cast<larger>(i), 2, exp))
+                   ? static_cast<Output>(numeric_traits<larger>::scale(static_cast<larger>(i), 2, exp))
                    : Output{0};
         }
 
