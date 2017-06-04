@@ -13,6 +13,12 @@
 namespace {
     using sg14::_impl::identical;
 
+    namespace test_width_type {
+        static_assert(std::is_same<
+                typename std::remove_cv<decltype(std::numeric_limits<void>::digits)>::type,
+                sg14::_width_type>::value, "sg14::_width_type test failed");
+    }
+
     namespace test_numeric_traits {
         using sg14::numeric_traits;
 

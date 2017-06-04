@@ -18,7 +18,7 @@
 /// study group 14 of the C++ working group
 namespace sg14 {
 
-    using _width_type = unsigned;
+    using _width_type = int;
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::numeric_traits
