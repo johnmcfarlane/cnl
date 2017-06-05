@@ -10,9 +10,9 @@
 #define SG14_COMMON_H 1
 
 #if ! defined(SG14_GODBOLT_ORG)
-#include <sg14/type_traits>
-#include <sg14/limits>
 #endif
+
+#include <utility>
 
 namespace sg14 {
     namespace _impl {
@@ -26,46 +26,13 @@ namespace sg14 {
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::max
+        // sg14::_impl::min
 
         template<class T>
         constexpr T min(T a, T b)
         {
             return (a<b) ? a : b;
         }
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::common_type_t
-
-        // pre-C++14 common_type_t
-        template<class ... T>
-        using common_type_t = typename std::common_type<T ...>::type;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::enable_if_t
-
-        // pre-C++14 enable_if_t
-        template<bool C, class ... T>
-        using enable_if_t = typename std::enable_if<C, T ...>::type;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::identical - compiles iff same type; returns true iff equal
-
-        template<class A, class B>
-        constexpr bool identical(const A& a, const B& b)
-        {
-            static_assert(std::is_same<A, B>::value, "different types");
-            return a==b;
-        }
-        
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::is_integer_or_float - trait to identify 'traditional' arithmetic concept
-
-        template<class T>
-        struct is_integer_or_float : std::integral_constant<
-                bool,
-                std::numeric_limits<T>::is_integer || std::is_floating_point<T>::value> {
-        };
 
         ////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////
@@ -226,86 +193,6 @@ namespace sg14 {
 
         template<class Operator, class Lhs, class Rhs>
         using op_result = decltype(Operator()(std::declval<Lhs>(), std::declval<Rhs>()));
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::make_signed - std::make_signed with IsSigned parameter
-
-        template<class T, bool IsSigned = true>
-        struct make_signed;
-
-        template<class T>
-        struct make_signed<T, true> : sg14::make_signed<T> {
-        };
-
-        template<class T>
-        struct make_signed<T, false> : sg14::make_unsigned<T> {
-        };
-
-        template<class T, bool IsSigned>
-        using make_signed_t = typename make_signed<T, IsSigned>::type;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::common_signedness
-        
-        template<class T1, class T2>
-        struct common_signedness {
-            static constexpr bool _are_signed = std::numeric_limits<T1>::is_signed|std::numeric_limits<T2>::is_signed;
-            
-            using type = typename std::common_type<make_signed_t<T1, _are_signed>, make_signed_t<T2, _are_signed>>::type;
-        };
-
-        template<class T1, class T2>
-        using common_signedness_t = typename common_signedness<T1, T2>::type;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::encompasses
-
-        template<class T, class Enable = void>
-        struct unsigned_or_float;
-
-        template<class T>
-        struct unsigned_or_float<T, enable_if_t<std::numeric_limits<T>::is_iec559>> {
-            using type = T;
-        };
-
-        template<class T>
-        struct unsigned_or_float<T, enable_if_t<!std::numeric_limits<T>::is_iec559>>
-            : make_signed<T, false> {
-        };
-
-        template<class T>
-        using unsigned_or_float_t = typename unsigned_or_float<T>::type;
-
-        template<class Encompasser, class Encompassed, class Enable = void>
-        struct encompasses_lower;
-
-        template<class Encompasser, class Encompassed>
-        struct encompasses_lower<Encompasser, Encompassed,
-                enable_if_t<std::numeric_limits<Encompasser>::is_signed && std::numeric_limits<Encompassed>::is_signed>> {
-            static constexpr bool value = std::numeric_limits<Encompasser>::lowest()
-                    <=std::numeric_limits<Encompassed>::lowest();
-        };
-
-        template<class Encompasser, class Encompassed>
-        struct encompasses_lower<Encompasser, Encompassed,
-                enable_if_t<!std::numeric_limits<Encompassed>::is_signed>> : std::true_type {
-        };
-
-        template<class Encompasser, class Encompassed>
-        struct encompasses_lower<Encompasser, Encompassed,
-                enable_if_t<!std::numeric_limits<Encompasser>::is_signed && std::numeric_limits<Encompassed>::is_signed>> : std::false_type {
-        };
-
-        // true if Encompassed can be cast to Encompasser without chance of overflow
-        template<class Encompasser, class Encompassed>
-        struct encompasses {
-            static constexpr bool _lower = encompasses_lower<Encompasser, Encompassed>::value;
-            static constexpr bool _upper = 
-                static_cast<unsigned_or_float_t<Encompasser>>(std::numeric_limits<Encompasser>::max())
-                >= static_cast<unsigned_or_float_t<Encompassed>>(std::numeric_limits<Encompassed>::max());
-
-            static constexpr bool value = _lower && _upper;
-        };
     }
 }
 

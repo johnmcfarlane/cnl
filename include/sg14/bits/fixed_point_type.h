@@ -11,7 +11,6 @@
 #define SG14_FIXED_POINT_DEF_H 1
 
 #if ! defined(SG14_GODBOLT_ORG)
-#include <sg14/cstdint>
 #include <sg14/auxiliary/const_integer.h>
 #include <sg14/bits/number_base.h>
 #endif
@@ -28,10 +27,31 @@ namespace sg14 {
     namespace _impl {
         namespace fp {
             ////////////////////////////////////////////////////////////////////////////////
+            // sg14::_impl::float_of_size
+
+            template<int NumBits, class Enable = void>
+            struct float_of_size;
+
+            template<int NumBits>
+            struct float_of_size<NumBits, enable_if_t<NumBits <= sizeof(float)*CHAR_BIT>> {
+                using type = float;
+            };
+
+            template<int NumBits>
+            struct float_of_size<NumBits, enable_if_t<sizeof(float)*CHAR_BIT < NumBits && NumBits <= sizeof(double)*CHAR_BIT>> {
+                using type = double;
+            };
+
+            template<int NumBits>
+            struct float_of_size<NumBits, enable_if_t<sizeof(double)*CHAR_BIT < NumBits && NumBits <= sizeof(long double)*CHAR_BIT>> {
+                using type = long double;
+            };
+
+            ////////////////////////////////////////////////////////////////////////////////
             // sg14::_impl::float_of_same_size
 
             template<class T>
-            using float_of_same_size = set_width_t<float, width<T>::value>;
+            using float_of_same_size = typename float_of_size<numeric_traits<T>::digits + numeric_traits<T>::is_signed>::type;
         }
     }
 
@@ -116,7 +136,7 @@ namespace sg14 {
 
         /// constructor taking an integral_constant type
         template<class Integral, Integral Value, int Digits>
-        constexpr fixed_point(const_integer<Integral, Value, Exponent, Digits> ci)
+        constexpr fixed_point(const_integer<Integral, Value, Digits, Exponent> ci)
             : _base(ci << Exponent)
         {
         }
@@ -249,11 +269,11 @@ namespace sg14 {
         constexpr Output shift_left(Input i)
         {
             using larger = typename std::conditional<
-                    width<Input>::value<=width<Output>::value,
+                    numeric_traits<Input>::digits<=numeric_traits<Output>::digits,
                     Output, Input>::type;
 
             return (exp>-std::numeric_limits<larger>::digits)
-                   ? static_cast<Output>(sg14::numeric_traits<larger>::scale(static_cast<larger>(i), 2, exp))
+                   ? static_cast<Output>(numeric_traits<larger>::scale(static_cast<larger>(i), 2, exp))
                    : Output{0};
         }
 

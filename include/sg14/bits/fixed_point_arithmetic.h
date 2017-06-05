@@ -142,11 +142,10 @@ namespace sg14 {
                             Rhs::integer_digits);
                     static constexpr int sufficient_fractional_digits = _impl::max(Lhs::fractional_digits,
                             Rhs::fractional_digits);
-                    static constexpr _width_type sufficient_width =
-                            sufficient_sign_bits+sufficient_integer_digits+sufficient_fractional_digits;
-                    static constexpr int result_width = _impl::max(sufficient_width, width<rep_op_result>::value);
+                    static constexpr _digits_type sufficient_digits = sufficient_integer_digits+sufficient_fractional_digits;
+                    static constexpr int result_digits = _impl::max(sufficient_digits, numeric_traits<rep_op_result>::digits);
 
-                    using rep_type = set_width_t<rep_op_result, result_width>;
+                    using rep_type = set_digits_t<rep_op_result, result_digits>;
                     using type = fixed_point<rep_type, -sufficient_fractional_digits>;
                 };
 
@@ -159,10 +158,9 @@ namespace sg14 {
                     static constexpr int digits = Lhs::digits+Rhs::digits;
                     static constexpr bool is_signed =
                             std::numeric_limits<lhs_rep>::is_signed || std::numeric_limits<rhs_rep>::is_signed;
-                    static constexpr int width = digits+is_signed;
 
                     using prewidened_result_rep = _impl::make_signed_t<rep_op_result, is_signed>;
-                    using rep_type = set_width_t<prewidened_result_rep, width>;
+                    using rep_type = set_digits_t<prewidened_result_rep, digits>;
 
                     static constexpr int rep_exponent = rep_op_exponent<_impl::multiply_op, Lhs, Rhs>::value;
 
@@ -177,16 +175,15 @@ namespace sg14 {
 
                     static constexpr int integer_digits = Lhs::integer_digits+Rhs::fractional_digits;
                     static constexpr int fractional_digits = Lhs::fractional_digits+Rhs::integer_digits;
-                    static constexpr int digits = integer_digits+fractional_digits;
+                    static constexpr int necessary_digits = integer_digits+fractional_digits;
                     static constexpr bool is_signed =
                             std::numeric_limits<lhs_rep>::is_signed || std::numeric_limits<rhs_rep>::is_signed;
 
-                    static constexpr int necessary_width = digits+is_signed;
-                    static constexpr int promotion_width = width<rep_op_result>::value;
-                    static constexpr int width = _impl::max(necessary_width, promotion_width);
+                    static constexpr int promotion_digits = numeric_traits<rep_op_result>::digits;
+                    static constexpr int digits = _impl::max(necessary_digits, promotion_digits);
 
                     using prewidened_result_rep = _impl::make_signed_t<rep_op_result, is_signed>;
-                    using rep_type = set_width_t<prewidened_result_rep, width>;
+                    using rep_type = set_digits_t<prewidened_result_rep, digits>;
 
                     static constexpr int rep_exponent = -fractional_digits;
 
@@ -240,7 +237,7 @@ namespace sg14 {
                     // This ensures that auto-widening rep types (e.g. elastic_integer) don't get widened twice
                     // but types that need a little help (e.g. built-ins) get widened going into the op.
                     using rep_type = typename std::conditional<
-                            width<prewidened_result_rep>::value>=_result::width,
+                            numeric_traits<prewidened_result_rep>::digits>=_result::digits,
                             typename Lhs::rep, result_rep>::type;
 
                     using lhs_type = fixed_point<rep_type, Lhs::exponent>;

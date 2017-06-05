@@ -8,16 +8,25 @@
 
 #include <sg14/bits/common.h>
 
+#include <string>
+
 namespace {
     using sg14::_impl::identical;
+
+    namespace test_digits_type {
+        static_assert(std::is_same<
+                typename std::remove_cv<decltype(std::numeric_limits<void>::digits)>::type,
+                sg14::_digits_type>::value, "sg14::_digits_type test failed");
+    }
 
     namespace test_numeric_traits {
         using sg14::numeric_traits;
 
+        static_assert(identical(numeric_traits<std::int32_t>::template set_digits<32>{0}, std::int64_t{0}), "");
         static_assert(std::is_same<numeric_traits<int>::value_type, int>::value, "sg14::numeric_traits<> test failed");
         static_assert(!numeric_traits<float>::is_specialized, "sg14::numeric_traits<> test failed");
+        static_assert(!numeric_traits<std::string>::is_specialized, "sg14::numeric_traits<> test failed");
         static_assert(identical(numeric_traits<std::uint64_t>::to_rep(UINT64_C(0xFEDCBA9876543210)), UINT64_C(0xFEDCBA9876543210)), "sg14::numeric_traits<> test failed");
-        static_assert(identical(numeric_traits<double>::from_rep(.987), .987), "sg14::numeric_traits<> test failed");
         static_assert(identical(numeric_traits<unsigned>::scale(3, 2, 15), 98304U), "sg14::numeric_traits<> test failed");
     }
 
@@ -25,7 +34,7 @@ namespace {
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::scale
 
-        using sg14::scale;
+        using sg14::_impl::scale;
 
         static_assert(identical(scale<uint8_t>(0b11110101, 2, 8), 0b1111010100000000), "sg14::scale test failed");
         static_assert(scale<uint8_t>(0b10110110, 2, 4) == 0b101101100000, "sg14::scale test failed");
@@ -46,4 +55,14 @@ namespace {
         static_assert(scale<int32_t>(1, 2, 30) == 0x40000000, "sg14::scale test failed");
         static_assert(scale<uint64_t>(1, 2, 4) == 16, "sg14::scale test failed");
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::_impl::is_integer_or_float
+
+    using sg14::_impl::is_integer_or_float;
+    static_assert(is_integer_or_float<uint8_t>::value, "sg14::_integer_impl::is_integer_or_float test failed");
+    static_assert(is_integer_or_float<float>::value, "sg14::_integer_impl::is_integer_or_float test failed");
+    static_assert(!is_integer_or_float<void>::value, "sg14::_integer_impl::is_integer_or_float test failed");
+    static_assert(!is_integer_or_float<int*>::value, "sg14::_integer_impl::is_integer_or_float test failed");
+    static_assert(!is_integer_or_float<std::string>::value, "sg14::_integer_impl::is_integer_or_float test failed");
 }

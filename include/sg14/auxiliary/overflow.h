@@ -17,6 +17,9 @@
 
 #if defined(SG14_EXCEPTIONS_ENABLED)
 #include <stdexcept>
+#else
+#include <cstdio>
+#include <exception>
 #endif
 
 /// study group 14 of the C++ working group

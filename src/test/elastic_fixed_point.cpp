@@ -15,8 +15,7 @@ using std::is_same;
 using sg14::elastic_fixed_point;
 using namespace sg14::literals;
 using sg14::make_elastic_fixed_point;
-using sg14::make_signed;
-using sg14::make_unsigned;
+using sg14::numeric_traits;
 
 ////////////////////////////////////////////////////////////////////////////////
 // fast tests of sg14::elastic_fixed_point<> at its limits;
@@ -32,8 +31,7 @@ namespace {
     using sg14::_impl::multiply_op;
     using sg14::elastic_integer;
     using sg14::fixed_point;
-    using sg14::set_width_t;
-    using sg14::width;
+    using sg14::_impl::set_digits_t;
 
     using namespace sg14::literals;
 
@@ -68,10 +66,10 @@ namespace {
             intermediate<wide_tag, multiply_op, fixed_point<elastic_integer<27, unsigned int>, -27>, fixed_point<elastic_integer<27, unsigned int>, -27>>::lhs_type{0},
             fixed_point<elastic_integer<27, unsigned int>, -27>{0}), "sg14::elastic_integer test failed");
 
-    static_assert(width<set_width_t<elastic_integer<15, uint8_t>, 22>>::value == 22, "sg14::elastic_integer test failed");
+    static_assert(numeric_traits<set_digits_t<elastic_integer<15, uint8_t>, 22>>::digits == 22, "sg14::elastic_integer test failed");
 
     static_assert(identical(
-            set_width_t<elastic_integer<15, uint8_t>, 22>{10000},
+            set_digits_t<elastic_integer<15, uint8_t>, 22>{10000},
             elastic_integer<22, uint8_t>{10000}), "sg14::elastic_integer test failed");
 }
 
@@ -82,9 +80,9 @@ template<class T, bool IsSigned>
 struct test_traits {
     static_assert(std::numeric_limits<T>::is_signed==IsSigned,
                   "std::numeric_limits<T>::is_signed fails for give type, T");
-    static_assert(std::numeric_limits<typename sg14::make_signed<T>::type>::is_signed,
+    static_assert(std::numeric_limits<typename numeric_traits<T>::make_signed>::is_signed,
                   "sg14::make_signed failed std::numeric_limits test; please reboot");
-    static_assert(!std::numeric_limits<typename sg14::make_unsigned<T>::type>::is_signed,
+    static_assert(!std::numeric_limits<typename numeric_traits<T>::make_unsigned>::is_signed,
                   "sg14::make_unsigned failed std::numeric_limits test; please reboot");
 };
 
@@ -158,9 +156,10 @@ struct positive_elastic_test
     using elastic_type = Elastic;
     using rep = typename elastic_type::rep;
     using numeric_limits = std::numeric_limits<elastic_type>;
+    using numeric_traits = sg14::numeric_traits<elastic_type>;
 
-    using signed_type = typename make_signed<elastic_type>::type;
-    using unsigned_type = typename make_unsigned<elastic_type>::type;
+    using signed_type = typename numeric_traits::make_signed;
+    using unsigned_type = typename numeric_traits::make_unsigned;
 
     ////////////////////////////////////////////////////////////////////////////////
     // useful constants
@@ -181,7 +180,7 @@ struct positive_elastic_test
 
     static_assert(std::numeric_limits<elastic_type>::is_signed==std::numeric_limits<rep>::is_signed,
                   "signedness of elastic_fixed_point type differs from underlying fixed-point type");
-    static_assert(std::numeric_limits<typename sg14::make_signed<elastic_type>::type>::is_signed,
+    static_assert(std::numeric_limits<typename numeric_traits::make_signed>::is_signed,
                   "signed version of elastic_fixed_point type is not signed");
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -296,6 +295,7 @@ struct signed_elastic_test :
     using elastic_type = Elastic;
     using rep = typename elastic_type::rep;
     using numeric_limits = std::numeric_limits<elastic_type>;
+    using numeric_traits = sg14::numeric_traits<elastic_type>;
 
     ////////////////////////////////////////////////////////////////////////////////
     // useful constants
@@ -312,7 +312,7 @@ struct signed_elastic_test :
 
     // not much point testing negative value properties of unsigned type, eh?
     static_assert(std::numeric_limits<elastic_type>::is_signed, "subject of test class is not reported as signed");
-    static_assert(is_same<typename sg14::make_signed<elastic_type>::type, elastic_type>::value,
+    static_assert(is_same<typename numeric_traits::make_signed, elastic_type>::value,
                   "subject of test class is not reported as signed");
 
     ////////////////////////////////////////////////////////////////////////////////

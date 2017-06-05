@@ -11,98 +11,398 @@
 #define SG14_NUMERIC_TRAITS 1
 
 #if !defined(SG14_GODBOLT_ORG)
-#include "cstdint"
-#include "type_traits"
+#include "bits/limits.h"
+#include "bits/type_traits.h"
 #endif
 
 /// study group 14 of the C++ working group
 namespace sg14 {
 
+    using _digits_type = int;
+
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::numeric_traits
 
+    /// \brief a type trait class that provides uniform interface to the properties of numeric types.
+    /// \headerfile sg14/numeric_traits
+    ///
+    /// \tparam T the numeric type for which to retrieve properties
+
     template<class T>
     struct numeric_traits {
-        using value_type = T;
-
         static constexpr bool is_specialized = false;
-
-        static constexpr value_type to_rep(const value_type& number)
-        {
-            return number;
-        }
-
-        static constexpr value_type from_rep(const value_type& rep)
-        {
-            return rep;
-        }
-        
-        template<class Input>
-        static constexpr const Input& make(const Input& number)
-        {
-            return number;
-        }
-
-    private:
-        using result_type = decltype(std::declval<T>()*std::declval<T>());
-
-        static constexpr result_type pown(int base, int exp)
-        {
-            return exp
-                   ? pown(base, exp-1)*static_cast<result_type>(base)
-                   : static_cast<result_type>(1);
-        }
-
-        static constexpr result_type pow2(int exp)
-        {
-            return result_type{1} << exp;
-        }
-
-        static constexpr result_type pow(int base, int exp)
-        {
-            return (base==2) ? pow2(exp) : pown(base, exp);
-        }
-
-    public:
-        static constexpr result_type scale(const T& i, int base, int exp)
-        {
-            return numeric_traits<result_type>::from_rep(
-                    (exp<0)
-                    ? to_rep(i)/pow(base, -exp)
-                    : to_rep(i)*pow(base, exp));
-        }
     };
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::to_rep
+    namespace _impl {
 
-    template<class Component>
-    constexpr auto to_rep(Component const& component)
-    -> decltype(::sg14::numeric_traits<Component>::to_rep(component))
-    {
-        return ::sg14::numeric_traits<Component>::to_rep(component);
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::numeric_traits_base
+
+        template<class T>
+        struct numeric_traits_base {
+            using value_type = T;
+
+            static constexpr bool is_specialized = true;
+
+            static constexpr value_type to_rep(const value_type& number)
+            {
+                return number;
+            }
+
+            static constexpr value_type from_rep(const value_type& rep)
+            {
+                return rep;
+            }
+
+            template<class Input>
+            static constexpr const Input& make(const Input& number)
+            {
+                return number;
+            }
+
+        private:
+            using result_type = decltype(std::declval<T>()*std::declval<T>());
+
+            static constexpr result_type pown(int base, int exp)
+            {
+                return exp
+                       ? pown(base, exp-1)*static_cast<result_type>(base)
+                       : static_cast<result_type>(1);
+            }
+
+            static constexpr result_type pow2(int exp)
+            {
+                return result_type{1} << exp;
+            }
+
+            static constexpr result_type pow(int base, int exp)
+            {
+                return (base==2) ? pow2(exp) : pown(base, exp);
+            }
+
+        public:
+            static constexpr result_type scale(const T& i, int base, int exp)
+            {
+                return numeric_traits<result_type>::from_rep(
+                        (exp<0)
+                        ? to_rep(i)/pow(base, -exp)
+                        : to_rep(i)*pow(base, exp));
+            }
+        };
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::from_rep
+    namespace _numeric_traits_impl {
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_set_digits_impl::enable_for_range
 
-    template<class Component, class Rep>
-    constexpr auto from_rep(Rep rep)
-    -> decltype(::sg14::numeric_traits<Component>::from_rep(rep))
-    {
-        return ::sg14::numeric_traits<Component>::from_rep(rep);
+        template<_digits_type MinNumDigits, class Smaller, class T>
+        struct enable_for_range
+                : std::enable_if<MinNumDigits<=std::numeric_limits<T>::digits && std::numeric_limits<Smaller>::digits<MinNumDigits> {
+        };
+
+        template<_digits_type MinNumDigits, class Smallest>
+        struct enable_for_range<MinNumDigits, void, Smallest>
+                : std::enable_if<MinNumDigits<=std::numeric_limits<Smallest>::digits> {
+        };
+
+        template<_digits_type MinNumDigits, class Smaller, class T>
+        using enable_for_range_t = typename enable_for_range<MinNumDigits, Smaller, T>::type;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_numeric_traits_impl::set_digits_signed
+
+        template<_digits_type MinNumDigits, class Enable = void>
+        struct set_digits_signed;
+
+        template<_digits_type MinNumDigits>
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, void, std::int8_t>> {
+            using type = std::int8_t;
+        };
+
+        template<_digits_type MinNumDigits>
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, std::int8_t, std::int16_t>> {
+            using type = std::int16_t;
+        };
+
+        template<_digits_type MinNumDigits>
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, std::int16_t, std::int32_t>> {
+            using type = std::int32_t;
+        };
+
+        template<_digits_type MinNumDigits>
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, std::int32_t, std::int64_t>> {
+            using type = std::int64_t;
+        };
+
+#if defined(SG14_INT128_ENABLED)
+        template<_digits_type MinNumDigits>
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, std::int64_t, SG14_INT128>> {
+            using type = SG14_INT128;
+        };
+#endif
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_numeric_traits_impl::set_digits_unsigned
+
+        template<_digits_type MinNumDigits, class Enable = void>
+        struct set_digits_unsigned;
+
+        template<_digits_type MinNumDigits>
+        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, void, std::uint8_t>> {
+            using type = std::uint8_t;
+        };
+
+        template<_digits_type MinNumDigits>
+        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, std::uint8_t, std::uint16_t>> {
+            using type = std::uint16_t;
+        };
+
+        template<_digits_type MinNumDigits>
+        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, std::uint16_t, std::uint32_t>> {
+            using type = std::uint32_t;
+        };
+
+        template<_digits_type MinNumDigits>
+        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, std::uint32_t, std::uint64_t>> {
+            using type = std::uint64_t;
+        };
+
+#if defined(SG14_INT128_ENABLED)
+        template<_digits_type MinNumDigits>
+        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, std::uint64_t, SG14_UINT128>> {
+            using type = SG14_UINT128;
+        };
+#endif
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_numeric_traits_impl::set_digits_integer
+
+        template<class Integer, _digits_type MinNumDigits>
+        using set_digits_integer = typename std::conditional<
+                std::numeric_limits<Integer>::is_signed,
+                set_digits_signed<MinNumDigits>,
+                set_digits_unsigned<MinNumDigits>>::type;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_numeric_traits_impl::integer_numeric_traits
+
+        template<class Integer>
+        class integer_numeric_traits
+                : public _impl::numeric_traits_base<Integer> {
+            using _base = _impl::numeric_traits_base<Integer>;
+            using _numeric_limits = std::numeric_limits<Integer>;
+        public:
+            using value_type = Integer;
+
+            static constexpr bool is_signed = _numeric_limits::is_signed;
+            static constexpr _digits_type digits = _numeric_limits::digits;
+
+            template<_digits_type NumDigits>
+            using set_digits = typename set_digits_integer<value_type, NumDigits>::type;
+        };
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::scale
+    template<> struct numeric_traits<char>: _numeric_traits_impl::integer_numeric_traits<char> {
+        using make_signed = signed char;
+        using make_unsigned = unsigned char;
+    };
+    template<> struct numeric_traits<wchar_t>: _numeric_traits_impl::integer_numeric_traits<wchar_t> {
+        using make_signed = typename std::make_signed<wchar_t>::type;
+        using make_unsigned = typename std::make_unsigned<wchar_t>::type;
+    };
 
-    template<class InputType>
-    constexpr auto scale(InputType const& input, int base, int exp)
-    -> decltype(numeric_traits<InputType>::scale(input, base, exp))
-    {
-        return numeric_traits<InputType>::scale(input, base, exp);
+    template<> struct numeric_traits<signed char>: _numeric_traits_impl::integer_numeric_traits<signed char> {
+        using make_signed = signed char;
+        using make_unsigned = unsigned char;
+    };
+    template<> struct numeric_traits<unsigned char>: _numeric_traits_impl::integer_numeric_traits<unsigned char> {
+        using make_signed = signed char;
+        using make_unsigned = unsigned char;
+    };
+
+    template<> struct numeric_traits<signed short>: _numeric_traits_impl::integer_numeric_traits<signed short> {
+        using make_signed = signed short;
+        using make_unsigned = unsigned short;
+    };
+    template<> struct numeric_traits<unsigned short>: _numeric_traits_impl::integer_numeric_traits<unsigned short> {
+        using make_signed = signed short;
+        using make_unsigned = unsigned short;
+    };
+
+    template<> struct numeric_traits<signed int>: _numeric_traits_impl::integer_numeric_traits<signed int> {
+        using make_signed = signed int;
+        using make_unsigned = unsigned int;
+    };
+    template<> struct numeric_traits<unsigned int>: _numeric_traits_impl::integer_numeric_traits<unsigned int> {
+        using make_signed = signed int;
+        using make_unsigned = unsigned int;
+    };
+
+    template<> struct numeric_traits<signed long>: _numeric_traits_impl::integer_numeric_traits<signed long> {
+        using make_signed = signed long;
+        using make_unsigned = unsigned long;
+    };
+    template<> struct numeric_traits<unsigned long>: _numeric_traits_impl::integer_numeric_traits<unsigned long> {
+        using make_signed = signed long;
+        using make_unsigned = unsigned long;
+    };
+
+    template<>
+    struct numeric_traits<signed long long>: _numeric_traits_impl::integer_numeric_traits<signed long long> {
+        using make_signed = signed long long;
+        using make_unsigned = unsigned long long;
+    };
+    template<>
+    struct numeric_traits<unsigned long long>: _numeric_traits_impl::integer_numeric_traits<unsigned long long> {
+        using make_signed = signed long long;
+        using make_unsigned = unsigned long long;
+    };
+
+#if defined(SG14_INT128_ENABLED)
+    template<> struct numeric_traits<SG14_INT128> : _numeric_traits_impl::integer_numeric_traits<SG14_INT128> {
+        using make_signed = SG14_INT128;
+        using make_unsigned = SG14_UINT128;
+    };
+    template<> struct numeric_traits<SG14_UINT128> : _numeric_traits_impl::integer_numeric_traits<SG14_UINT128> {
+        using make_signed = SG14_INT128;
+        using make_unsigned = SG14_UINT128;
+    };
+#endif
+
+    template<class T> struct numeric_traits<const T> : numeric_traits<T> {};
+    template<class T> struct numeric_traits<volatile T> : numeric_traits<T> {};
+
+    namespace _impl {
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::make_signed - std::make_signed with IsSigned parameter
+
+        template<class T, bool IsSigned = true>
+        struct make_signed;
+
+        template<class T>
+        struct make_signed<T, true> {
+            using type = typename numeric_traits<T>::make_signed;
+        };
+
+        template<class T>
+        struct make_signed<T, false> {
+            using type = typename numeric_traits<T>::make_unsigned;
+        };
+
+        template<class T, bool IsSigned>
+        using make_signed_t = typename make_signed<T, IsSigned>::type;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::common_signedness
+
+        template<class T1, class T2>
+        struct common_signedness {
+            static constexpr bool _are_signed = std::numeric_limits<T1>::is_signed | std::numeric_limits<T2>::is_signed;
+
+            using type = typename std::common_type<make_signed_t<T1, _are_signed>,
+                                                   make_signed_t<T2, _are_signed>>::type;
+        };
+
+        template<class T1, class T2>
+        using common_signedness_t = typename common_signedness<T1, T2>::type;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::encompasses
+
+        template<class T, class Enable = void>
+        struct unsigned_or_float;
+
+        template<class T>
+        struct unsigned_or_float<T, enable_if_t<std::numeric_limits<T>::is_iec559>> {
+            using type = T;
+        };
+
+        template<class T>
+        struct unsigned_or_float<T, enable_if_t<!std::numeric_limits<T>::is_iec559>> {
+            using type = typename numeric_traits<T>::make_unsigned;
+        };
+
+        template<class T>
+        using unsigned_or_float_t = typename unsigned_or_float<T>::type;
+
+        template<class Encompasser, class Encompassed, class Enable = void>
+        struct encompasses_lower;
+
+        template<class Encompasser, class Encompassed>
+        struct encompasses_lower<Encompasser, Encompassed,
+                                 enable_if_t<std::numeric_limits<Encompasser>::is_signed
+                                                     && std::numeric_limits<Encompassed>::is_signed>> {
+            static constexpr bool value = std::numeric_limits<Encompasser>::lowest()
+                    <=std::numeric_limits<Encompassed>::lowest();
+        };
+
+        template<class Encompasser, class Encompassed>
+        struct encompasses_lower<Encompasser, Encompassed,
+                                 enable_if_t<!std::numeric_limits<Encompassed>::is_signed>>: std::true_type {
+        };
+
+        template<class Encompasser, class Encompassed>
+        struct encompasses_lower<Encompasser, Encompassed,
+                                 enable_if_t<!std::numeric_limits<Encompasser>::is_signed
+                                                     && std::numeric_limits<Encompassed>::is_signed>>: std::false_type {
+        };
+
+        // true if Encompassed can be cast to Encompasser without chance of overflow
+        template<class Encompasser, class Encompassed>
+        struct encompasses {
+            static constexpr bool _lower = encompasses_lower<Encompasser, Encompassed>::value;
+            static constexpr bool _upper =
+                    static_cast<unsigned_or_float_t<Encompasser>>(std::numeric_limits<Encompasser>::max())
+                            >=static_cast<unsigned_or_float_t<Encompassed>>(std::numeric_limits<Encompassed>::max());
+
+            static constexpr bool value = _lower && _upper;
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::is_integer_or_float - trait to identify 'traditional' arithmetic concept
+
+        template<class T>
+        struct is_integer_or_float: std::integral_constant<
+                bool,
+                std::numeric_limits<T>::is_integer || std::numeric_limits<T>::is_iec559> {
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::set_digits_t
+
+        template<class Type, _digits_type MinNumDigits>
+        using set_digits_t = typename numeric_traits<Type>::template set_digits<MinNumDigits>;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::to_rep
+
+        template<class Component>
+        constexpr auto to_rep(Component const& component)
+        -> decltype(numeric_traits<Component>::to_rep(component))
+        {
+            return numeric_traits<Component>::to_rep(component);
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::from_rep
+
+        template<class Component, class Rep>
+        constexpr auto from_rep(Rep rep)
+        -> decltype(numeric_traits<Component>::from_rep(rep))
+        {
+            return numeric_traits<Component>::from_rep(rep);
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::scale
+
+        template<class InputType>
+        constexpr auto scale(InputType const& input, int base, int exp)
+        -> decltype(numeric_traits<InputType>::scale(input, base, exp))
+        {
+            return numeric_traits<InputType>::scale(input, base, exp);
+        }
     }
-
 }
 
 #endif    // SG14_NUMERIC_TRAITS

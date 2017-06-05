@@ -96,11 +96,11 @@ namespace {
 template<class PreciseInteger>
 struct precise_integer_tests {
     // from_rep
-    static_assert(identical(precise_integer<>{123}, sg14::from_rep<precise_integer<>>(123)), "sg14::from_rep<precise_integer<>> test failed");
+    static_assert(identical(precise_integer<>{123}, sg14::_impl::from_rep<precise_integer<>>(123)), "sg14::_impl::from_rep<precise_integer<>> test failed");
 
     // to_rep
-    static_assert(identical(123, sg14::to_rep(123)), "sg14::to_rep test failed");
-    static_assert(identical(321, to_rep(precise_integer<>{321})), "sg14::to_rep test failed");
+    static_assert(identical(123, sg14::_impl::to_rep(123)), "sg14::_impl::to_rep test failed");
+    static_assert(identical(321, to_rep(precise_integer<>{321})), "sg14::_impl::to_rep test failed");
 };
 
 template struct number_test_by_rep_by_policy<precise_integer, sg14::closest_rounding_policy, precise_integer_tests>;

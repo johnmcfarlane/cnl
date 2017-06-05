@@ -27,6 +27,7 @@ namespace sg14 {
     template<class Rep, int Exponent>
     struct numeric_traits<fixed_point<Rep, Exponent>>
         : numeric_traits<_impl::number_base<fixed_point<Rep, Exponent>, Rep>> {
+        using _rep_numeric_traits = numeric_traits<Rep>;
         using _base = numeric_traits<_impl::number_base<fixed_point<Rep, Exponent>, Rep>>;
         using value_type = typename _base::value_type;
 
@@ -41,6 +42,14 @@ namespace sg14 {
         {
             return input;
         }
+
+        using make_signed = fixed_point<typename _rep_numeric_traits::make_signed, Exponent>;
+        using make_unsigned = fixed_point<typename _rep_numeric_traits::make_unsigned, Exponent>;
+
+        static constexpr _digits_type digits = _rep_numeric_traits::digits;
+
+        template<_digits_type NumDigits>
+        using set_digits = fixed_point<_impl::set_digits_t<Rep, NumDigits>, Exponent>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +71,7 @@ namespace sg14 {
                 template<class Rep>
                 constexpr Rep sqrt_bit(
                         Rep n,
-                        Rep bit = Rep(1) << (width<Rep>::value-2))
+                        Rep bit = Rep(1) << ((numeric_traits<Rep>::digits+numeric_traits<Rep>::is_signed)-2))
                 {
                     return (bit>n) ? sqrt_bit<Rep>(n, bit >> 2) : bit;
                 }
@@ -115,7 +124,7 @@ namespace sg14 {
     constexpr fixed_point <Rep, Exponent>
     sqrt(const fixed_point <Rep, Exponent>& x)
     {
-        using widened_type = fixed_point<set_width_t<Rep, width<Rep>::value*2>, Exponent*2>;
+        using widened_type = fixed_point<_impl::set_digits_t<Rep, numeric_traits<Rep>::digits*2>, Exponent*2>;
         return
 #if defined(SG14_EXCEPTIONS_ENABLED)
                 (x<fixed_point<Rep, Exponent>(0))
@@ -174,51 +183,6 @@ namespace sg14 {
     {
         return _impl::fp::extras::crib<Rep, Exponent, std::pow>(x);
     }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_signed<fixed_point<>>
-
-    template<class Rep, int Exponent>
-    struct make_signed<fixed_point<Rep, Exponent> > {
-        using type = fixed_point<typename sg14::make_signed<Rep>::type, Exponent>;
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_unsigned<fixed_point<>>
-
-    template<class Rep, int Exponent>
-    struct make_unsigned<fixed_point<Rep, Exponent>> {
-    using type = fixed_point<typename sg14::make_unsigned<Rep>::type, Exponent>;
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::fixed_point type trait specializations
-
-    /// determines the width of given fixed_point type
-    ///
-    /// \tparam Rep the \a Rep parameter of @ref fixed_point
-    /// \tparam Exponent the \a Exponent parameter of @ref fixed_point
-    ///
-    /// \sa set_width
-    template<class Rep, int Exponent>
-    struct width<fixed_point<Rep, Exponent>> {
-        /// width of the given fixed_point type
-        static constexpr _width_type value = width<Rep>::value;
-    };
-
-    /// \brief produces equivalent fixed-point type at a new width
-    /// \headerfile sg14/fixed_point
-    ///
-    /// \tparam Rep the \a Rep parameter of @ref fixed_point
-    /// \tparam Exponent the \a Exponent parameter of @ref fixed_point
-    /// \tparam MinNumBits the desired size of the resultant type such that <tt>(sg14::width<fixed_point<Rep, Exponent>>\::value >= MinNumBytes)</tt>
-    ///
-    /// \sa width
-    template<class Rep, int Exponent, _width_type MinNumBits>
-    struct set_width<fixed_point<Rep, Exponent>, MinNumBits> {
-        /// resultant type; a fixed_point specialization that is at least \a MinNumBits bytes in width
-        using type = fixed_point<set_width_t<Rep, MinNumBits>, Exponent>;
-    };
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::fixed_point streaming - (placeholder implementation)

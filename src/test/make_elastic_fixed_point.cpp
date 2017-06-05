@@ -62,23 +62,23 @@ static_assert(sizeof(make_elastic_fixed_point(-256_c)) == sizeof(int), "using to
 #endif
 
 // ... but a more compact type can be chosen if size is the constraint
-static_assert(sizeof(make_elastic_fixed_point<char>(0_c)) == 1, "using too many bytes to represent 0");
-static_assert(sizeof(make_elastic_fixed_point<char>(1_c)) == 1, "using too many bytes to represent 1");
-static_assert(sizeof(make_elastic_fixed_point<char>(255_c)) == 2, "using too many bytes to represent 255");
-static_assert(sizeof(make_elastic_fixed_point<char>(256_c)) == 1, "using too many bytes to represent 256");
-static_assert(sizeof(make_elastic_fixed_point<char>(257_c)) == 2, "using too many bytes to represent 257");
-static_assert(sizeof(make_elastic_fixed_point<char>(510_c)) == 2, "using too many bytes to represent 510");
-static_assert(sizeof(make_elastic_fixed_point<char>(511_c)) == 2, "using too many bytes to represent 511");
-static_assert(sizeof(make_elastic_fixed_point<char>(512_c)) == 1, "using too many bytes to represent 512");
+static_assert(sizeof(make_elastic_fixed_point<signed char>(0_c)) == 1, "using too many bytes to represent 0");
+static_assert(sizeof(make_elastic_fixed_point<signed char>(1_c)) == 1, "using too many bytes to represent 1");
+static_assert(sizeof(make_elastic_fixed_point<signed char>(255_c)) == 2, "using too many bytes to represent 255");
+static_assert(sizeof(make_elastic_fixed_point<signed char>(256_c)) == 1, "using too many bytes to represent 256");
+static_assert(sizeof(make_elastic_fixed_point<signed char>(257_c)) == 2, "using too many bytes to represent 257");
+static_assert(sizeof(make_elastic_fixed_point<signed char>(510_c)) == 2, "using too many bytes to represent 510");
+static_assert(sizeof(make_elastic_fixed_point<signed char>(511_c)) == 2, "using too many bytes to represent 511");
+static_assert(sizeof(make_elastic_fixed_point<signed char>(512_c)) == 1, "using too many bytes to represent 512");
 
 #if ! defined(_MSC_VER) || (_MSC_VER > 1900)
-static_assert(sizeof(make_elastic_fixed_point<char>(-1_c)) == 1, "using too many bytes to represent -1");
-static_assert(sizeof(make_elastic_fixed_point<char>(-127_c)) == 1, "using too many bytes to represent -127");
-static_assert(sizeof(make_elastic_fixed_point<char>(-128_c)) == 1, "using too many bytes to represent -128");
-static_assert(sizeof(make_elastic_fixed_point<char>(-129_c)) == 2, "using too many bytes to represent -129");
-static_assert(sizeof(make_elastic_fixed_point<char>(-254_c)) == 1, "using too many bytes to represent -254");
-static_assert(sizeof(make_elastic_fixed_point<char>(-255_c)) == 2, "using too many bytes to represent -255");
-static_assert(sizeof(make_elastic_fixed_point<char>(-256_c)) == 1, "using too many bytes to represent -256");
+static_assert(sizeof(make_elastic_fixed_point<signed char>(-1_c)) == 1, "using too many bytes to represent -1");
+static_assert(sizeof(make_elastic_fixed_point<signed char>(-127_c)) == 1, "using too many bytes to represent -127");
+static_assert(sizeof(make_elastic_fixed_point<signed char>(-128_c)) == 1, "using too many bytes to represent -128");
+static_assert(sizeof(make_elastic_fixed_point<signed char>(-129_c)) == 2, "using too many bytes to represent -129");
+static_assert(sizeof(make_elastic_fixed_point<signed char>(-254_c)) == 1, "using too many bytes to represent -254");
+static_assert(sizeof(make_elastic_fixed_point<signed char>(-255_c)) == 2, "using too many bytes to represent -255");
+static_assert(sizeof(make_elastic_fixed_point<signed char>(-256_c)) == 1, "using too many bytes to represent -256");
 #endif
 
 // some numbers are so big that you don't have the luxury of choosing

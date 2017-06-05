@@ -14,9 +14,8 @@ using sg14::fixed_point;
 using sg14::make_fixed;
 using sg14::make_ufixed;
 using sg14::multiply;
-using sg14::set_width_t;
+using sg14::_impl::set_digits_t;
 using sg14::sqrt;
-using sg14::width;
 using std::is_same;
 using sg14::_impl::identical;
 
@@ -108,10 +107,10 @@ namespace named_arithmetic5 {
 }
 
 // The `width` Helper Type
-static_assert(width<int16_t>::value == 16, "Incorrect information in proposal section, The `width` Helper Type");
+static_assert(sg14::numeric_traits<int16_t>::digits == 15, "Incorrect information in proposal section, The `width` Helper Type");
 
-// The `set_width` and `set_width_t` Helper Types
-static_assert(is_same<set_width_t<int8_t, 64>, int64_t>::value, "Incorrect information in proposal section, The `set_width` and `set_width_t` Helper Types");
+// The `set_width` and `set_digits_t` Helper Types
+static_assert(is_same<set_digits_t<int8_t, 63>, int64_t>::value, "Incorrect information in proposal section, The `set_width` and `set_digits_t` Helper Types");
 
 // Examples
 template<class Fp>

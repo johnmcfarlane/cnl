@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/limits>
+#include <sg14/numeric_traits>
 #include "number_test.h"
 
 template struct number_test<char>;
@@ -25,7 +25,3 @@ template struct number_test<std::uint64_t>;
 template struct number_test<SG14_INT128>;
 template struct number_test<SG14_UINT128>;
 #endif
-
-template struct number_test<float>;
-template struct number_test<double>;
-template struct number_test<long double>;

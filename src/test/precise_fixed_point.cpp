@@ -20,7 +20,7 @@ namespace {
     }
 
     namespace test_ctor {
-        using sg14::from_rep;
+        using sg14::_impl::from_rep;
 
         static_assert(identical(
                 precise_fixed_point<>(-8).data(),

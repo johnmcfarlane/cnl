@@ -4,7 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/cstdint>
+#include <sg14/numeric_traits>
 
 #include <gtest/gtest.h>
 
@@ -135,20 +135,20 @@ namespace sample5 {
 #endif  // C++14
 
 namespace determining {
-    using sg14::width;
+    using sg14::numeric_traits;
 
-    static_assert(width<uint16_t>::value == 16, "the width of uint16_t is exactly 16 bits");
-    static_assert(width<long long>::value >= 64, "long long has a width of at least 64 bits");
-    static_assert(width<long>::value >= width<short>::value, "short is no longer than long");
-    static_assert(width<wchar_t>::value >= width<char>::value, "a wide character is at least as wide as a character");
+    static_assert(numeric_traits<uint16_t>::digits == 16, "the digits of uint16_t is exactly 16 bits");
+    static_assert(numeric_traits<long long>::digits >= 63, "long long has a digits of at least 64 bits");
+    static_assert(numeric_traits<long>::digits >= numeric_traits<short>::digits, "short is no longer than long");
+    static_assert(numeric_traits<wchar_t>::digits >= numeric_traits<char>::digits, "a wide character is at least as wide as a character");
 }
 
 namespace specifiying {
-    using sg14::set_width_t;
-    using sg14::width;
-    static_assert(is_same<set_width_t<signed, 8>, int8_t>::value, "int8_t is a signed 8-bit integer");
-    static_assert(is_same<set_width_t<unsigned, 32>, uint32_t>::value, "uint32_t is an unsigned 32-bit integer");
-    static_assert(is_same<set_width_t<uint64_t, 16>, uint16_t>::value, "a 64-bit unsigned integer was narrowed to 16-bits");
-    static_assert(is_same<set_width_t<char, 64>, int64_t>::value || is_same<set_width_t<char, 64>, uint64_t>::value, "char may or may not be signed so the result may be uint64_t or int64_t");
-    static_assert(width<set_width_t<int, 10>>::value >= 10, "result must be at least 10 bits wide");
+    using sg14::_impl::set_digits_t;
+    using sg14::numeric_traits;
+    static_assert(is_same<set_digits_t<signed, 7>, int8_t>::value, "int8_t is a signed 8-bit integer");
+    static_assert(is_same<set_digits_t<unsigned, 32>, uint32_t>::value, "uint32_t is an unsigned 32-bit integer");
+    static_assert(is_same<set_digits_t<uint64_t, 16>, uint16_t>::value, "a 64-bit unsigned integer was narrowed to 16-bits");
+    static_assert(is_same<set_digits_t<char, 63>, int64_t>::value || is_same<set_digits_t<char, 63>, uint64_t>::value, "char may or may not be signed so the result may be uint64_t or int64_t");
+    static_assert(numeric_traits<set_digits_t<int, 10>>::digits >= 10, "result must be at least 10 bits wide");
 }

@@ -13,7 +13,6 @@
 #if ! defined(SG14_GODBOLT_ORG)
 #include <sg14/bits/number_base.h>
 #include <sg14/fixed_point>
-#include <sg14/numeric_traits>
 #include "overflow.h"
 #endif
 
@@ -151,22 +150,37 @@ namespace sg14 {
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::numeric_traits<safe_integer<>>
+
     template<class Rep, class OverflowTag>
     struct numeric_traits<safe_integer<Rep, OverflowTag>>
     : numeric_traits<_impl::number_base<safe_integer<Rep, OverflowTag>, Rep>> {
+        using _rep_numeric_traits = numeric_traits<Rep>;
+
+        template<class _Rep>
+        using _safe_integer = safe_integer<_Rep, OverflowTag>;
+
         using value_type = safe_integer<Rep, OverflowTag>;
-        
+
         template<typename Input>
         static constexpr auto make(const Input& input) 
-        -> safe_integer<Input, OverflowTag> {
+        -> _safe_integer<Input> {
             return input;
         }
+
+        using make_signed = _safe_integer<typename _rep_numeric_traits::make_signed>;
+        using make_unsigned = _safe_integer<typename _rep_numeric_traits::make_unsigned>;
+
+        static constexpr bool is_signed = numeric_traits<Rep>::is_signed;
+        static constexpr _digits_type digits = _rep_numeric_traits::digits;
+
+        template<_digits_type NumDigits>
+        using set_digits = _safe_integer<typename _rep_numeric_traits::template set_digits<NumDigits>>;
 
     private:
         // TODO: dupe of code from specialization in <numeric_traits>
         using _base = numeric_traits<_impl::number_base<safe_integer<Rep, OverflowTag>, Rep>>;
         using _rep = typename _base::_rep;
-        using result_type = decltype(make(sg14::scale(std::declval<_rep>(), 0, 0)));
+        using result_type = decltype(make(sg14::_impl::scale(std::declval<_rep>(), 0, 0)));
 
         static constexpr result_type pown(int base, int exp)
         {
@@ -253,36 +267,6 @@ namespace sg14 {
     SG14_INTEGER_BIT_SHIFT_DEFINE(>>);
 
     SG14_INTEGER_BIT_SHIFT_DEFINE(<<);
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::set_width<safe_integer<>, > partial specialization
-
-    template<class Rep, class OverflowTag, _width_type MinNumBits>
-    struct set_width<safe_integer<Rep, OverflowTag>, MinNumBits> {
-        using type = safe_integer<set_width_t<Rep, MinNumBits>, OverflowTag>;
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::width<safe_integer<>> partial specialization
-
-    template<class Rep, class OverflowTag>
-    struct width<safe_integer<Rep, OverflowTag>> : width<Rep> {
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::safe_integer-specific specializations to std-like templates
-
-    // sg14::make_unsigned<sg14::safe_integer<>>
-    template<class Rep, class OverflowTag>
-    struct make_unsigned<safe_integer<Rep, OverflowTag>> {
-        using type = safe_integer<typename make_unsigned<Rep>::type, OverflowTag>;
-    };
-
-    // sg14::make_signed<sg14::safe_integer<>>
-    template<class Rep, class OverflowTag>
-    struct make_signed<safe_integer<Rep, OverflowTag>> {
-        using type = safe_integer<typename make_signed<Rep>::type, OverflowTag>;
-    };
 }
 
 namespace std {

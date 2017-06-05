@@ -44,6 +44,24 @@ namespace sg14 {
     {
         return input;
     }
+
+    template<
+            class OverflowTag = safe_integer<>::overflow_tag,
+            class RoundingPolicy = precise_integer<>::rounding,
+            class Narrowest = int,
+            class Input = int,
+            class Integral,
+            Integral Value,
+            int Digits,
+            int Exponent>
+    psefp<
+            Digits, -Exponent,
+            OverflowTag, RoundingPolicy,
+            Narrowest>
+    constexpr make_psefp(const const_integer<Integral, Value, Digits, Exponent>&)
+    {
+        return Value;
+    }
 }
 
 namespace {
@@ -65,7 +83,7 @@ namespace {
     namespace test_make_psefp {
         using namespace sg14::literals;
         static_assert(identical(make_psefp(std::int16_t{7}), psefp<15>{7}), "");
-        static_assert(identical(make_psefp(444_c), psefp<9>{444}), "");
+        static_assert(identical(make_psefp(444_c), psefp<9, -2>{444}), "");
     }
 
     namespace test_multiply {

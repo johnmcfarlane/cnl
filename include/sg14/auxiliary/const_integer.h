@@ -12,9 +12,8 @@
 
 #if ! defined(SG14_GODBOLT_ORG)
 #include <sg14/bits/common.h>
-#include <sg14/cstdint>
-#include <sg14/limits>
-#include <sg14/type_traits>
+#include <sg14/bits/type_traits.h>
+#include <sg14/numeric_traits>
 #endif
 
 #include <climits>
@@ -382,23 +381,19 @@ namespace sg14 {
     template<class Integral, Integral Value>
     struct is_const_integer<const_integer<Integral, Value>> : std::true_type {};
 
-    template<class Integral, Integral Value>
-    struct make_unsigned<const_integer<Integral, Value>> {
-        using type = const_integer<typename std::make_unsigned<Integral>::type, Value>;
-    };
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::numeric_traits<sg14::const_integer>
 
     template<class Integral, Integral Value>
-    struct make_signed<const_integer<Integral, Value>> {
-        using type = const_integer<typename std::make_signed<Integral>::type, Value>;
-    };
+    struct numeric_traits<const_integer<Integral, Value>>
+            : _impl::numeric_traits_base<const_integer<Integral, Value>> {
+        using value_type = const_integer<Integral, Value>;
 
-    template<class Integral, Integral Value, int Digits>
-    struct width<const_integer<Integral, Value, Digits>>
-    : std::integral_constant<_width_type, Digits + std::numeric_limits<Integral>::is_signed> {};
+        using _integral_numeric_traits = numeric_traits<Integral>;
+        using make_unsigned = const_integer<typename _integral_numeric_traits::make_unsigned, Value>;
+        using make_signed = const_integer<typename _integral_numeric_traits::make_signed, Value>;
 
-    template<class Integral, Integral Value, _width_type MinNumBits>
-    struct set_width<const_integer<Integral, Value>, MinNumBits> {
-        using type = const_integer<typename sg14::set_width<Integral, MinNumBits>::type, Value>;
+        static constexpr _digits_type digits = value_type::digits + std::numeric_limits<Integral>::is_signed;
     };
 
     ////////////////////////////////////////////////////////////////////////////////

@@ -4,8 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/cstdint>
-#include <sg14/limits>
+#include <sg14/bits/limits.h>
 #include <sg14/numeric_traits>
 
 #include <sg14/bits/common.h>
@@ -103,16 +102,16 @@ struct number_test {
     static_assert(is_equal_to(zero, value_type(0.)), "zero-initialized value is not represented using zero");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::width / sg14::set_width
+    // sg14::width / sg14::_impl::set_width_t
 
-    static_assert(sg14::width<value_type>::value
-                    ==sg14::width<sg14::set_width_t<value_type, sg14::width<value_type>::value>>::value,
+    static_assert(sg14::numeric_traits<value_type>::digits
+                    ==sg14::numeric_traits<sg14::_impl::set_digits_t<value_type, sg14::numeric_traits<value_type>::digits>>::digits,
             "sg14::width / sg14::set_width test failed");
 
-    static_assert(sg14::width<sg14::set_width_t<value_type, 3>>::value>=3, "sg14::width / sg14::set_width test failed");
-    static_assert(sg14::width<sg14::set_width_t<value_type, 9>>::value>=9, "sg14::width / sg14::set_width test failed");
-    static_assert(sg14::width<sg14::set_width_t<value_type, 64>>::value>=64,
-            "sg14::width / sg14::set_width test failed");
+    static_assert(sg14::numeric_traits<sg14::_impl::set_digits_t<value_type, 3>>::digits>=3, "sg14::digits / sg14::set_digits test failed");
+    static_assert(sg14::numeric_traits<sg14::_impl::set_digits_t<value_type, 9>>::digits>=9, "sg14::digits / sg14::set_digits test failed");
+    static_assert(sg14::numeric_traits<sg14::_impl::set_digits_t<value_type, 63>>::digits>32,
+            "sg14::digits / sg14::set_digits test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test operator+
@@ -138,24 +137,17 @@ struct number_test {
             std::is_same<typename numeric_traits::value_type, value_type>::value,
             "numeric_traits::value_type test failed");
     static_assert(
-            numeric_traits::is_specialized!=std::is_fundamental<value_type>::value,
+            numeric_traits::is_specialized,
             "numeric_traits::is_specialized test failed");
 
-    static_assert(
-            identical(
-                    numeric_traits::from_rep(numeric_traits::to_rep(lowest)),
-                    lowest),
-            "numeric_traits::to_rep & from_rep test failed");
-    static_assert(
-            identical(
-                    numeric_traits::from_rep(numeric_traits::to_rep(zero)),
-                    zero),
-            "numeric_traits::to_rep & from_rep test failed");
-    static_assert(
-            identical(
-                    numeric_traits::from_rep(numeric_traits::to_rep(max)),
-                    max),
-            "numeric_traits::to_rep & from_rep test failed");
+    static constexpr auto lowest_from_rep = numeric_traits::from_rep(numeric_traits::to_rep(lowest));
+    static_assert(identical(lowest_from_rep, lowest), "numeric_traits::to_rep & from_rep test failed");
+
+    static constexpr auto zero_from_rep = numeric_traits::from_rep(numeric_traits::to_rep(zero));
+    static_assert(identical(zero_from_rep, zero), "numeric_traits::to_rep & from_rep test failed");
+
+    static constexpr auto max_from_rep = numeric_traits::from_rep(numeric_traits::to_rep(max));
+    static_assert(identical(max_from_rep, max), "numeric_traits::to_rep & from_rep test failed");
 };
 
 // performs tests that should pass for all numeric types (except maybe const_integer);
