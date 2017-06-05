@@ -136,7 +136,7 @@ namespace sg14 {
 
         /// constructor taking an integral_constant type
         template<class Integral, Integral Value, int Digits>
-        constexpr fixed_point(const_integer<Integral, Value, Exponent, Digits> ci)
+        constexpr fixed_point(const_integer<Integral, Value, Digits, Exponent> ci)
             : _base(ci << Exponent)
         {
         }
