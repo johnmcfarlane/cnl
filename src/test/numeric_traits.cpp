@@ -23,10 +23,9 @@ namespace {
         using sg14::numeric_traits;
 
         static_assert(std::is_same<numeric_traits<int>::value_type, int>::value, "sg14::numeric_traits<> test failed");
-        static_assert(numeric_traits<float>::is_specialized, "sg14::numeric_traits<> test failed");
+        static_assert(!numeric_traits<float>::is_specialized, "sg14::numeric_traits<> test failed");
         static_assert(!numeric_traits<std::string>::is_specialized, "sg14::numeric_traits<> test failed");
         static_assert(identical(numeric_traits<std::uint64_t>::to_rep(UINT64_C(0xFEDCBA9876543210)), UINT64_C(0xFEDCBA9876543210)), "sg14::numeric_traits<> test failed");
-        static_assert(identical(numeric_traits<double>::from_rep(.987), .987), "sg14::numeric_traits<> test failed");
         static_assert(identical(numeric_traits<unsigned>::scale(3, 2, 15), 98304U), "sg14::numeric_traits<> test failed");
     }
 

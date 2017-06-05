@@ -27,10 +27,31 @@ namespace sg14 {
     namespace _impl {
         namespace fp {
             ////////////////////////////////////////////////////////////////////////////////
+            // sg14::_impl::float_of_size
+
+            template<int NumBits, class Enable = void>
+            struct float_of_size;
+
+            template<int NumBits>
+            struct float_of_size<NumBits, enable_if_t<NumBits <= sizeof(float)*CHAR_BIT>> {
+                using type = float;
+            };
+
+            template<int NumBits>
+            struct float_of_size<NumBits, enable_if_t<sizeof(float)*CHAR_BIT < NumBits && NumBits <= sizeof(double)*CHAR_BIT>> {
+                using type = double;
+            };
+
+            template<int NumBits>
+            struct float_of_size<NumBits, enable_if_t<sizeof(double)*CHAR_BIT < NumBits && NumBits <= sizeof(long double)*CHAR_BIT>> {
+                using type = long double;
+            };
+
+            ////////////////////////////////////////////////////////////////////////////////
             // sg14::_impl::float_of_same_size
 
             template<class T>
-            using float_of_same_size = set_width_t<float, numeric_traits<T>::width>;
+            using float_of_same_size = typename float_of_size<numeric_traits<T>::width>::type;
         }
     }
 

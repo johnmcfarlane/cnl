@@ -175,27 +175,6 @@ namespace sg14 {
 #endif
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_numeric_traits_impl::set_width_float
-
-        template<_width_type MinNumBits, class Enable = void>
-        struct set_width_float;
-
-        template<_width_type MinNumBits>
-        struct set_width_float<MinNumBits, enable_for_range_t<MinNumBits, void, float>> {
-            using type = float;
-        };
-
-        template<_width_type MinNumBits>
-        struct set_width_float<MinNumBits, enable_for_range_t<MinNumBits, float, double>> {
-            using type = double;
-        };
-
-        template<_width_type MinNumBits>
-        struct set_width_float<MinNumBits, enable_for_range_t<MinNumBits, double, long double>> {
-            using type = long double;
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
         // sg14::_numeric_traits_impl::set_width_integer
 
         template<class Integer, _width_type MinNumBits>
@@ -218,22 +197,6 @@ namespace sg14 {
 
             template<_width_type NumBits>
             using set_width = typename set_width_integer<value_type, NumBits>::type;
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // floating_point_numeric_traits
-
-        template<class FloatingPoint>
-        class floating_point_numeric_traits
-                : public _impl::numeric_traits_base<FloatingPoint> {
-            using _base = _impl::numeric_traits_base<FloatingPoint>;
-        public:
-            using value_type = typename _base::value_type;
-
-            static constexpr _width_type width = sizeof(value_type)*CHAR_BIT;
-
-            template<_width_type NumBits>
-            using set_width = typename set_width_float<NumBits>::type;
         };
     }
 
@@ -303,10 +266,6 @@ namespace sg14 {
         using make_unsigned = SG14_UINT128;
     };
 #endif
-
-    template<> struct numeric_traits<float>: _numeric_traits_impl::floating_point_numeric_traits<float> { };
-    template<> struct numeric_traits<double>: _numeric_traits_impl::floating_point_numeric_traits<double> { };
-    template<> struct numeric_traits<long double>: _numeric_traits_impl::floating_point_numeric_traits<long double> { };
 
     template<class T> struct numeric_traits<const T> : numeric_traits<T> {};
     template<class T> struct numeric_traits<volatile T> : numeric_traits<T> {};
