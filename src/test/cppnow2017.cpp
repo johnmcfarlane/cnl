@@ -158,11 +158,11 @@ namespace operator_overload1 {
     template<typename Rep>
     auto operator*(safe_integer<Rep> const& a, safe_integer<Rep> const& b)
     {
-        Rep sum = a.data()*b.data();
+        Rep product = a.data()*b.data();
 
         // do some overflow checking
 
-        return safe_integer<Rep>{sum};
+        return safe_integer<Rep>{product};
     }
 
     static_assert(
@@ -179,11 +179,11 @@ namespace operator_overload2 {
     template<typename Rep1, typename Rep2>
     auto operator*(safe_integer<Rep1> const& a, safe_integer<Rep2> const& b)
     {
-        auto sum = a.data()*b.data();
+        auto product = a.data()*b.data();
 
         // do some overflow checking
 
-        return safe_integer<decltype(sum)>{sum};
+        return safe_integer<decltype(product)>{product};
     }
 
     static_assert(
@@ -208,14 +208,14 @@ namespace composite {
     template<typename Rep1, typename Rep2>
     constexpr auto operator*(safe_integer<Rep1> const& a, safe_integer<Rep2> const& b)
     {
-        auto sum = a.data()*b.data();
+        auto product = a.data()*b.data();
 
         if (numeric_limits<Rep1>::digits+numeric_limits<Rep2>::digits
-                >numeric_limits<decltype(sum)>::digits) {
+                >numeric_limits<decltype(product)>::digits) {
             // do some overflow checking
         }
 
-        return safe_integer<decltype(sum)>{sum};
+        return safe_integer<decltype(product)>{product};
     }
 
     auto a = safe_elastic_integer<4>{14}*safe_elastic_integer<3>{6};

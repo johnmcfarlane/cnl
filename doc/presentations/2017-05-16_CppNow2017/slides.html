@@ -301,7 +301,7 @@ auto b = a+a;  // elastic_integer<5, unsigned>;
 // result of subtraction is signed
 auto c = -b;  // elastic_integer<5, signed>;
 
-// run-time overflow is of no concern to elastic_integer
+// run-time overflow is not the concern of elastic_integer
 auto d = elastic_integer<8, signed>{256};
 ```
 
@@ -489,11 +489,11 @@ Lets write a multiply operator.
 template<typename Rep>
 auto operator*(safe_integer<Rep> const& a, safe_integer<Rep> const& b)
 {
-    Rep sum = a.data() * b.data();
+    Rep product = a.data() * b.data();
 
     // do some overflow checking
 
-    return safe_integer<Rep>{sum};
+    return safe_integer<Rep>{product};
 }
 ```
 
@@ -502,7 +502,7 @@ This is a naive attempt at a multiplication operator.
 It takes two `safe_integer`-of-`Rep`s and returns one `safe_integer`-of-`Rep`.
 Note that the class has an accessor, `data()`, that leaks the internal representation.
 There are two problems with the use of `Rep` here.
-Firstly, there's an implicit conversion when `sum` is defined.
+Firstly, there's an implicit conversion when `product` is defined.
 --
 
 ```c++
@@ -510,7 +510,7 @@ safe_integer<short>{2} * safe_integer<short>{3};
 ```
 
 ???
-In this example, `sum` is `short` but it is initialized with `int`.
+In this example, `product` is `short` but it is initialized with `int`.
 --
 
 ```c++
@@ -532,11 +532,11 @@ Let's fix that.
 template<typename Rep1, typename Rep2>
 auto operator*(safe_integer<Rep1> const& a, safe_integer<Rep2> const& b)
 {
-    auto sum = a.data()*b.data();
+    auto product = a.data()*b.data();
 
     // do some overflow checking
 
-    return safe_integer<decltype(sum)>{sum};
+    return safe_integer<decltype(product)>{product};
 }
 ```
 
@@ -726,11 +726,11 @@ So what happens when we multiply these together?
 template<typename Rep1, typename Rep2>
 auto operator*(safe_integer<Rep1> const& a, safe_integer<Rep2> const& b)
 {
-    auto sum = a.data()*b.data();
+    auto product = a.data()*b.data();
 
     // do some overflow checking
 
-    return safe_integer<decltype(sum)>{sum};
+    return safe_integer<decltype(product)>{product};
 }
 ```
 
@@ -746,8 +746,8 @@ auto a = safe_elastic_integer<4, int>{14} * safe_elastic_integer<3, int>{6};
 
 ???
 Here, `Rep1` is `elastic_integer<4, int>` and `Rep2` is `elastic_integer<3, int>`
-so `sum` is of type, `elastic_integer<7, int>`.
-`sum` cannot possibly overflow so overflow checking is a waste of time here.
+so `product` is of type, `elastic_integer<7, int>`.
+`product` cannot possibly overflow so overflow checking is a waste of time here.
 How do we fix this?
 
 
@@ -761,14 +761,14 @@ How do we fix this?
 template<typename Rep1, typename Rep2>
 constexpr auto operator*(safe_integer<Rep1> const& a, safe_integer<Rep2> const& b)
 {
-    auto sum = a.data()*b.data();
+    auto product = a.data()*b.data();
 
     if (numeric_limits<Rep1>::digits+numeric_limits<Rep2>::digits
-            >numeric_limits<decltype(sum)>::digits) {
+            >numeric_limits<decltype(product)>::digits) {
         // do some overflow checking
     }
 
-    return safe_integer<decltype(sum)>{sum};
+    return safe_integer<decltype(product)>{product};
 }
 ```
 
