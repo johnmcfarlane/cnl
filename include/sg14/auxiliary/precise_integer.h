@@ -55,10 +55,11 @@ namespace sg14 {
         using make_signed = precise_integer<typename numeric_traits<Rep>::make_signed, RoundingPolicy>;
         using make_unsigned = precise_integer<typename numeric_traits<Rep>::make_unsigned, RoundingPolicy>;
 
-        static constexpr _width_type width = numeric_traits<Rep>::width;
+        static constexpr bool is_signed = numeric_traits<Rep>::is_signed;
+        static constexpr _digits_type digits = numeric_traits<Rep>::digits;
 
-        template<_width_type NumBits>
-        using set_width = precise_integer<typename numeric_traits<Rep>::template set_width<NumBits>, RoundingPolicy>;
+        template<_digits_type NumDigits>
+        using set_digits = precise_integer<typename numeric_traits<Rep>::template set_digits<NumDigits>, RoundingPolicy>;
     };
 
     namespace _precise_integer_impl {

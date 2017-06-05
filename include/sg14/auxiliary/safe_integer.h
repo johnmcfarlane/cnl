@@ -170,10 +170,11 @@ namespace sg14 {
         using make_signed = _safe_integer<typename _rep_numeric_traits::make_signed>;
         using make_unsigned = _safe_integer<typename _rep_numeric_traits::make_unsigned>;
 
-        static constexpr _width_type width = _rep_numeric_traits::width;
+        static constexpr bool is_signed = numeric_traits<Rep>::is_signed;
+        static constexpr _digits_type digits = _rep_numeric_traits::digits;
 
-        template<_width_type NumBits>
-        using set_width = _safe_integer<typename _rep_numeric_traits::template set_width<NumBits>>;
+        template<_digits_type NumDigits>
+        using set_digits = _safe_integer<typename _rep_numeric_traits::template set_digits<NumDigits>>;
 
     private:
         // TODO: dupe of code from specialization in <numeric_traits>

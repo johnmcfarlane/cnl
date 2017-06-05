@@ -15,7 +15,7 @@
 using sg14::fixed_point;
 using sg14::multiprecision;
 using sg14::numeric_traits;
-using sg14::_impl::set_width_t;
+using sg14::_impl::set_digits_t;
 using sg14::signed_multiprecision;
 using sg14::unsigned_multiprecision;
 
@@ -53,15 +53,15 @@ static_assert(!std::numeric_limits<numeric_traits<unsigned_multiprecision<10 >>:
         "sg14::numeric_traits<{un}signed_multiprecision>::make_unsigned test failed");
 
 // test sg14::width<{un}signed_multiprecision>
-static_assert(numeric_traits<signed_multiprecision<11>>::width>=11, "numeric_traits<signed_multiprecision>::width test failed");
-static_assert(numeric_traits<unsigned_multiprecision<12>>::width>=12, "numeric_traits<signed_multiprecision>::width test failed");
+static_assert(numeric_traits<signed_multiprecision<11>>::digits>=11, "numeric_traits<signed_multiprecision>::digits test failed");
+static_assert(numeric_traits<unsigned_multiprecision<12>>::digits>=12, "numeric_traits<signed_multiprecision>::digits test failed");
 
-// test sg14::set_width_t<{un}signed_multiprecision>
-static_assert(numeric_traits<set_width_t<signed_multiprecision<13>, 57>>::width>=57, "numeric_traits<signed_multiprecision>::width test failed");
-static_assert(numeric_traits<set_width_t<unsigned_multiprecision<14>, 3>>::width>=3, "numeric_traits<unsigned_multiprecision>::width test failed");
+// test sg14::set_digits_t<{un}signed_multiprecision>
+static_assert(numeric_traits<set_digits_t<signed_multiprecision<13>, 57>>::digits>=57, "set_digits_t<signed_multiprecision> test failed");
+static_assert(numeric_traits<set_digits_t<unsigned_multiprecision<14>, 3>>::digits>=3, "set_digits_t<signed_multiprecision> test failed");
 
-static_assert(numeric_traits<set_width_t<signed_multiprecision<120>, 3>>::width<=numeric_traits<signed_multiprecision<120>>::width, "numeric_traits<signed_multiprecision>::width test failed");
-static_assert(numeric_traits<unsigned_multiprecision<128>>::width>=numeric_traits<set_width_t<unsigned_multiprecision<128>, 16>>::width, "numeric_traits<signed_multiprecision>::value::width test failed");
+static_assert(numeric_traits<set_digits_t<signed_multiprecision<120>, 3>>::digits<=numeric_traits<signed_multiprecision<120>>::digits, "set_digits_t<signed_multiprecision> test failed");
+static_assert(numeric_traits<unsigned_multiprecision<128>>::digits>=numeric_traits<set_digits_t<unsigned_multiprecision<128>, 16>>::digits, "set_digits_t<signed_multiprecision> test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // sg14::multiprecision arithmetic

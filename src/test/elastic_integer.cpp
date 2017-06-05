@@ -11,16 +11,15 @@
 
 namespace {
     using std::is_same;
-    using sg14::_width_type;
     using sg14::elastic_integer;
     using sg14::_impl::identical;
     using namespace sg14::literals;
 
     // simple one-off tests
-    namespace test_width {
+    namespace test_digits {
         using sg14::numeric_traits;
 
-        static_assert(numeric_traits<elastic_integer<7, int>>::width==8, "elastic_integer test failed");
+        static_assert(numeric_traits<elastic_integer<7, int>>::digits==7, "elastic_integer test failed");
         static_assert(identical(numeric_traits<elastic_integer<3>>::make(1),
                 elastic_integer<std::numeric_limits<int>::digits>{1}), "elastic_integer test failed");
     }
@@ -203,11 +202,9 @@ namespace {
         ////////////////////////////////////////////////////////////////////////////////
         // members
 
-        static constexpr int width = sg14::numeric_traits<value_type>::width;
         static constexpr int digits = value_type::digits;
         static constexpr bool is_signed = numeric_limits::is_signed;
         static_assert(is_signed==std::numeric_limits<narrowest>::is_signed, "narrowest is different signedness");
-        static_assert(width==digits+is_signed, "some of our bits are missing");
 
         ////////////////////////////////////////////////////////////////////////////////
         // type traits

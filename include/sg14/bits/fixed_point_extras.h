@@ -46,10 +46,10 @@ namespace sg14 {
         using make_signed = fixed_point<typename _rep_numeric_traits::make_signed, Exponent>;
         using make_unsigned = fixed_point<typename _rep_numeric_traits::make_unsigned, Exponent>;
 
-        static constexpr _width_type width = _rep_numeric_traits::width;
+        static constexpr _digits_type digits = _rep_numeric_traits::digits;
 
-        template<_width_type NumBits>
-        using set_width = fixed_point<typename _rep_numeric_traits::template set_width<NumBits>, Exponent>;
+        template<_digits_type NumDigits>
+        using set_digits = fixed_point<_impl::set_digits_t<Rep, NumDigits>, Exponent>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -71,7 +71,7 @@ namespace sg14 {
                 template<class Rep>
                 constexpr Rep sqrt_bit(
                         Rep n,
-                        Rep bit = Rep(1) << (numeric_traits<Rep>::width-2))
+                        Rep bit = Rep(1) << ((numeric_traits<Rep>::digits+numeric_traits<Rep>::is_signed)-2))
                 {
                     return (bit>n) ? sqrt_bit<Rep>(n, bit >> 2) : bit;
                 }
@@ -124,7 +124,7 @@ namespace sg14 {
     constexpr fixed_point <Rep, Exponent>
     sqrt(const fixed_point <Rep, Exponent>& x)
     {
-        using widened_type = fixed_point<_impl::set_width_t<Rep, numeric_traits<Rep>::width*2>, Exponent*2>;
+        using widened_type = fixed_point<_impl::set_digits_t<Rep, numeric_traits<Rep>::digits*2>, Exponent*2>;
         return
 #if defined(SG14_EXCEPTIONS_ENABLED)
                 (x<fixed_point<Rep, Exponent>(0))

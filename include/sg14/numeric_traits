@@ -18,7 +18,7 @@
 /// study group 14 of the C++ working group
 namespace sg14 {
 
-    using _width_type = int;
+    using _digits_type = int;
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::numeric_traits
@@ -93,95 +93,95 @@ namespace sg14 {
 
     namespace _numeric_traits_impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_set_width_impl::enable_for_range
+        // sg14::_set_digits_impl::enable_for_range
 
-        template<_width_type MinNumBits, class Smaller, class T>
+        template<_digits_type MinNumDigits, class Smaller, class T>
         struct enable_for_range
-                : std::enable_if<MinNumBits<=CHAR_BIT*sizeof(T) && CHAR_BIT*sizeof(Smaller)<MinNumBits> {
+                : std::enable_if<MinNumDigits<=std::numeric_limits<T>::digits && std::numeric_limits<Smaller>::digits<MinNumDigits> {
         };
 
-        template<_width_type MinNumBits, class Smallest>
-        struct enable_for_range<MinNumBits, void, Smallest>
-                : std::enable_if<MinNumBits<=CHAR_BIT*sizeof(Smallest)> {
+        template<_digits_type MinNumDigits, class Smallest>
+        struct enable_for_range<MinNumDigits, void, Smallest>
+                : std::enable_if<MinNumDigits<=std::numeric_limits<Smallest>::digits> {
         };
 
-        template<_width_type MinNumBits, class Smaller, class T>
-        using enable_for_range_t = typename enable_for_range<MinNumBits, Smaller, T>::type;
+        template<_digits_type MinNumDigits, class Smaller, class T>
+        using enable_for_range_t = typename enable_for_range<MinNumDigits, Smaller, T>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_numeric_traits_impl::set_width_signed
+        // sg14::_numeric_traits_impl::set_digits_signed
 
-        template<_width_type MinNumBits, class Enable = void>
-        struct set_width_signed;
+        template<_digits_type MinNumDigits, class Enable = void>
+        struct set_digits_signed;
 
-        template<_width_type MinNumBits>
-        struct set_width_signed<MinNumBits, enable_for_range_t<MinNumBits, void, std::int8_t>> {
+        template<_digits_type MinNumDigits>
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, void, std::int8_t>> {
             using type = std::int8_t;
         };
 
-        template<_width_type MinNumBits>
-        struct set_width_signed<MinNumBits, enable_for_range_t<MinNumBits, std::int8_t, std::int16_t>> {
+        template<_digits_type MinNumDigits>
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, std::int8_t, std::int16_t>> {
             using type = std::int16_t;
         };
 
-        template<_width_type MinNumBits>
-        struct set_width_signed<MinNumBits, enable_for_range_t<MinNumBits, std::int16_t, std::int32_t>> {
+        template<_digits_type MinNumDigits>
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, std::int16_t, std::int32_t>> {
             using type = std::int32_t;
         };
 
-        template<_width_type MinNumBits>
-        struct set_width_signed<MinNumBits, enable_for_range_t<MinNumBits, std::int32_t, std::int64_t>> {
+        template<_digits_type MinNumDigits>
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, std::int32_t, std::int64_t>> {
             using type = std::int64_t;
         };
 
 #if defined(SG14_INT128_ENABLED)
-        template<_width_type MinNumBits>
-        struct set_width_signed<MinNumBits, enable_for_range_t<MinNumBits, std::int64_t, SG14_INT128>> {
+        template<_digits_type MinNumDigits>
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, std::int64_t, SG14_INT128>> {
             using type = SG14_INT128;
         };
 #endif
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_numeric_traits_impl::set_width_unsigned
+        // sg14::_numeric_traits_impl::set_digits_unsigned
 
-        template<_width_type MinNumBits, class Enable = void>
-        struct set_width_unsigned;
+        template<_digits_type MinNumDigits, class Enable = void>
+        struct set_digits_unsigned;
 
-        template<_width_type MinNumBits>
-        struct set_width_unsigned<MinNumBits, enable_for_range_t<MinNumBits, void, std::uint8_t>> {
+        template<_digits_type MinNumDigits>
+        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, void, std::uint8_t>> {
             using type = std::uint8_t;
         };
 
-        template<_width_type MinNumBits>
-        struct set_width_unsigned<MinNumBits, enable_for_range_t<MinNumBits, std::uint8_t, std::uint16_t>> {
+        template<_digits_type MinNumDigits>
+        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, std::uint8_t, std::uint16_t>> {
             using type = std::uint16_t;
         };
 
-        template<_width_type MinNumBits>
-        struct set_width_unsigned<MinNumBits, enable_for_range_t<MinNumBits, std::uint16_t, std::uint32_t>> {
+        template<_digits_type MinNumDigits>
+        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, std::uint16_t, std::uint32_t>> {
             using type = std::uint32_t;
         };
 
-        template<_width_type MinNumBits>
-        struct set_width_unsigned<MinNumBits, enable_for_range_t<MinNumBits, std::uint32_t, std::uint64_t>> {
+        template<_digits_type MinNumDigits>
+        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, std::uint32_t, std::uint64_t>> {
             using type = std::uint64_t;
         };
 
 #if defined(SG14_INT128_ENABLED)
-        template<_width_type MinNumBits>
-        struct set_width_unsigned<MinNumBits, enable_for_range_t<MinNumBits, std::uint64_t, SG14_UINT128>> {
+        template<_digits_type MinNumDigits>
+        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, std::uint64_t, SG14_UINT128>> {
             using type = SG14_UINT128;
         };
 #endif
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_numeric_traits_impl::set_width_integer
+        // sg14::_numeric_traits_impl::set_digits_integer
 
-        template<class Integer, _width_type MinNumBits>
-        using set_width_integer = typename std::conditional<
+        template<class Integer, _digits_type MinNumDigits>
+        using set_digits_integer = typename std::conditional<
                 std::numeric_limits<Integer>::is_signed,
-                set_width_signed<MinNumBits>,
-                set_width_unsigned<MinNumBits>>::type;
+                set_digits_signed<MinNumDigits>,
+                set_digits_unsigned<MinNumDigits>>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_numeric_traits_impl::integer_numeric_traits
@@ -190,13 +190,15 @@ namespace sg14 {
         class integer_numeric_traits
                 : public _impl::numeric_traits_base<Integer> {
             using _base = _impl::numeric_traits_base<Integer>;
+            using _numeric_limits = std::numeric_limits<Integer>;
         public:
             using value_type = Integer;
 
-            static constexpr _width_type width = sizeof(value_type)*CHAR_BIT;
+            static constexpr bool is_signed = _numeric_limits::is_signed;
+            static constexpr _digits_type digits = _numeric_limits::digits;
 
-            template<_width_type NumBits>
-            using set_width = typename set_width_integer<value_type, NumBits>::type;
+            template<_digits_type NumDigits>
+            using set_digits = typename set_digits_integer<value_type, NumDigits>::type;
         };
     }
 
@@ -366,10 +368,10 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::set_width_t
+        // sg14::_impl::set_digits_t
 
-        template<class Type, _width_type MinNumBits>
-        using set_width_t = typename numeric_traits<Type>::template set_width<MinNumBits>;
+        template<class Type, _digits_type MinNumDigits>
+        using set_digits_t = typename numeric_traits<Type>::template set_digits<MinNumDigits>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_impl::to_rep

@@ -393,7 +393,7 @@ namespace sg14 {
         using make_unsigned = const_integer<typename _integral_numeric_traits::make_unsigned, Value>;
         using make_signed = const_integer<typename _integral_numeric_traits::make_signed, Value>;
 
-        static constexpr _width_type width = value_type::digits + std::numeric_limits<Integral>::is_signed;
+        static constexpr _digits_type digits = value_type::digits + std::numeric_limits<Integral>::is_signed;
     };
 
     ////////////////////////////////////////////////////////////////////////////////

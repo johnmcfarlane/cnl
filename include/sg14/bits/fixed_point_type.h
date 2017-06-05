@@ -51,7 +51,7 @@ namespace sg14 {
             // sg14::_impl::float_of_same_size
 
             template<class T>
-            using float_of_same_size = typename float_of_size<numeric_traits<T>::width>::type;
+            using float_of_same_size = typename float_of_size<numeric_traits<T>::digits + numeric_traits<T>::is_signed>::type;
         }
     }
 
@@ -269,7 +269,7 @@ namespace sg14 {
         constexpr Output shift_left(Input i)
         {
             using larger = typename std::conditional<
-                    numeric_traits<Input>::width<=numeric_traits<Output>::width,
+                    numeric_traits<Input>::digits<=numeric_traits<Output>::digits,
                     Output, Input>::type;
 
             return (exp>-std::numeric_limits<larger>::digits)

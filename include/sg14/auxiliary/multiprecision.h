@@ -33,10 +33,12 @@ namespace sg14 {
         using make_unsigned = _bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude, Checked, Allocator>;
 
         static_assert(SignType == _bmp::signed_magnitude || SignType == _bmp::unsigned_magnitude, "following sign test may fail");
-        static constexpr _width_type width = NumBits + (SignType == _bmp::signed_magnitude);
+        static constexpr bool is_signed = (SignType == _bmp::signed_magnitude);
 
-        template<_width_type NewNumBits>
-        using set_width = _bmp::cpp_int_backend<NewNumBits, NewNumBits, SignType, Checked, Allocator>;
+        static constexpr _digits_type digits = NumBits-is_signed;
+
+        template<_digits_type NewNumDigits>
+        using set_digits = _bmp::cpp_int_backend<NewNumDigits+is_signed, NewNumDigits+is_signed, SignType, Checked, Allocator>;
     };
 
     // numeric_traits<boost::multiprecision::number<>>
@@ -48,10 +50,10 @@ namespace sg14 {
         using make_signed = _bmp::number<typename _backend_traits::make_signed, ExpressionTemplates>;
         using make_unsigned = _bmp::number<typename _backend_traits::make_unsigned, ExpressionTemplates>;
 
-        static constexpr _width_type width = _backend_traits::width;
+        static constexpr _digits_type digits = _backend_traits::digits;
 
-        template<_width_type NumBits>
-        using set_width = _bmp::number<typename _backend_traits::template set_width<NumBits>, ExpressionTemplates>;
+        template<_digits_type NumDigits>
+        using set_digits = _bmp::number<_impl::set_digits_t<Backend, NumDigits>, ExpressionTemplates>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -65,16 +67,16 @@ namespace sg14 {
     }
 
     // sg14::signed_multiprecision - a signed integer of arbitrary size
-    template<unsigned NumBits = numeric_traits<int>::width>
-    using signed_multiprecision = _bmp::number<_sized_integer_impl::backend<NumBits, _bmp::signed_magnitude>, _bmp::et_off>;
+    template<unsigned NumDigits = numeric_traits<int>::digits>
+    using signed_multiprecision = _bmp::number<_sized_integer_impl::backend<NumDigits+1, _bmp::signed_magnitude>, _bmp::et_off>;
 
     // sg14::unsigned_multiprecision - an unsigned integer of arbitrary size
-    template<unsigned NumBits = numeric_traits<int>::width>
-    using unsigned_multiprecision = _bmp::number<_sized_integer_impl::backend<NumBits, _bmp::unsigned_magnitude>, _bmp::et_off>;
+    template<unsigned NumDigits = numeric_traits<int>::digits>
+    using unsigned_multiprecision = _bmp::number<_sized_integer_impl::backend<NumDigits+1, _bmp::unsigned_magnitude>, _bmp::et_off>;
 
     // sg14::unsigned_multiprecision - an integer of arbitrary size
-    template<unsigned NumBits = numeric_traits<int>::width>
-    using multiprecision = signed_multiprecision<NumBits>;
+    template<unsigned NumDigits = numeric_traits<int>::digits>
+    using multiprecision = signed_multiprecision<NumDigits+1>;
 }
 
 #endif // SG14_MULTIPRECISION_H

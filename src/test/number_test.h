@@ -104,14 +104,14 @@ struct number_test {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::width / sg14::_impl::set_width_t
 
-    static_assert(sg14::numeric_traits<value_type>::width
-                    ==sg14::numeric_traits<sg14::_impl::set_width_t<value_type, sg14::numeric_traits<value_type>::width>>::width,
+    static_assert(sg14::numeric_traits<value_type>::digits
+                    ==sg14::numeric_traits<sg14::_impl::set_digits_t<value_type, sg14::numeric_traits<value_type>::digits>>::digits,
             "sg14::width / sg14::set_width test failed");
 
-    static_assert(sg14::numeric_traits<sg14::_impl::set_width_t<value_type, 3>>::width>=3, "sg14::width / sg14::set_width test failed");
-    static_assert(sg14::numeric_traits<sg14::_impl::set_width_t<value_type, 9>>::width>=9, "sg14::width / sg14::set_width test failed");
-    static_assert(sg14::numeric_traits<sg14::_impl::set_width_t<value_type, 64>>::width>=64,
-            "sg14::width / sg14::set_width test failed");
+    static_assert(sg14::numeric_traits<sg14::_impl::set_digits_t<value_type, 3>>::digits>=3, "sg14::digits / sg14::set_digits test failed");
+    static_assert(sg14::numeric_traits<sg14::_impl::set_digits_t<value_type, 9>>::digits>=9, "sg14::digits / sg14::set_digits test failed");
+    static_assert(sg14::numeric_traits<sg14::_impl::set_digits_t<value_type, 63>>::digits>32,
+            "sg14::digits / sg14::set_digits test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test operator+

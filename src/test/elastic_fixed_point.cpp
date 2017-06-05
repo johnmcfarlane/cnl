@@ -31,7 +31,7 @@ namespace {
     using sg14::_impl::multiply_op;
     using sg14::elastic_integer;
     using sg14::fixed_point;
-    using sg14::_impl::set_width_t;
+    using sg14::_impl::set_digits_t;
 
     using namespace sg14::literals;
 
@@ -66,10 +66,10 @@ namespace {
             intermediate<wide_tag, multiply_op, fixed_point<elastic_integer<27, unsigned int>, -27>, fixed_point<elastic_integer<27, unsigned int>, -27>>::lhs_type{0},
             fixed_point<elastic_integer<27, unsigned int>, -27>{0}), "sg14::elastic_integer test failed");
 
-    static_assert(numeric_traits<set_width_t<elastic_integer<15, uint8_t>, 22>>::width == 22, "sg14::elastic_integer test failed");
+    static_assert(numeric_traits<set_digits_t<elastic_integer<15, uint8_t>, 22>>::digits == 22, "sg14::elastic_integer test failed");
 
     static_assert(identical(
-            set_width_t<elastic_integer<15, uint8_t>, 22>{10000},
+            set_digits_t<elastic_integer<15, uint8_t>, 22>{10000},
             elastic_integer<22, uint8_t>{10000}), "sg14::elastic_integer test failed");
 }
 

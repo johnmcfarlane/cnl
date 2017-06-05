@@ -31,11 +31,11 @@ namespace sg14 {
         template<int Digits, class Narrowest>
         struct traits {
             using _narrowest_numeric_traits = numeric_traits<Narrowest>;
-            static constexpr _width_type width = Digits + std::numeric_limits<Narrowest>::is_signed;
+            static constexpr _digits_type digits = Digits;
 
-            static constexpr _width_type _rep_width = _impl::max(_narrowest_numeric_traits::width, width);
+            static constexpr _digits_type _rep_digits = _impl::max(_narrowest_numeric_traits::digits, digits);
 
-            using rep = typename _narrowest_numeric_traits::template set_width<_rep_width>;
+            using rep = typename _narrowest_numeric_traits::template set_digits<_rep_digits>;
             using number_base = _impl::number_base<elastic_integer<Digits, Narrowest>, rep>;
         };
     }
@@ -43,9 +43,6 @@ namespace sg14 {
     template<int Digits, class Narrowest>
     struct numeric_traits<elastic_integer<Digits, Narrowest>>
     : numeric_traits<typename _elastic_integer_impl::traits<Digits, Narrowest>::number_base> {
-        //using _rep = _elastic_integer_impl::traits<Digits, Narrowest>::rep;
-        //using _rep_numeric_traits = numeric_traits<_elastic_integer_traits::rep>;
-
         using value_type = elastic_integer<Digits, Narrowest>;
 
         using _narrowest_numeric_traits = numeric_traits<Narrowest>;
@@ -53,10 +50,11 @@ namespace sg14 {
         using make_unsigned = elastic_integer<Digits, typename _narrowest_numeric_traits::make_unsigned>;
 
         using _elastic_integer_traits = _elastic_integer_impl::traits<Digits, Narrowest>;
-        static constexpr _width_type width = _elastic_integer_traits::width;
+        static constexpr bool is_signed = _narrowest_numeric_traits::is_signed;
+        static constexpr _digits_type digits = _elastic_integer_traits::digits;
 
-        template<_width_type NumBits>
-        using set_width = elastic_integer<NumBits - std::numeric_limits<Narrowest>::is_signed, Narrowest>;
+        template<_digits_type NumDigits>
+        using set_digits = elastic_integer<NumDigits, Narrowest>;
 
         template<class Input>
         static constexpr elastic_integer<std::numeric_limits<Input>::digits, Narrowest>
@@ -331,9 +329,10 @@ namespace sg14 {
             using rhs_rep = typename rhs::rep;
             using rep_result = typename _impl::op_result<OperationTag, lhs_rep, rhs_rep>;
 
-            static constexpr _width_type narrowest_width = _impl::max(
-                    numeric_traits<LhsNarrowest>::width, numeric_traits<RhsNarrowest>::width);
-            using narrowest = set_width_t<_impl::make_signed_t<rep_result, policy::is_signed>, narrowest_width>;
+            static constexpr _digits_type narrowest_width = _impl::max(
+                    numeric_traits<LhsNarrowest>::digits + numeric_traits<LhsNarrowest>::is_signed,
+                    numeric_traits<RhsNarrowest>::digits + numeric_traits<RhsNarrowest>::is_signed);
+            using narrowest = set_digits_t<_impl::make_signed_t<rep_result, policy::is_signed>, narrowest_width-policy::is_signed>;
             using result_type = elastic_integer<policy::digits, narrowest>;
         };
 
