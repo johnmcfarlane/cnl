@@ -308,6 +308,7 @@ namespace sg14 {
         using value_type = Derived;
 
         static constexpr bool is_specialized = true;
+        static constexpr bool is_composite = true;
 
         static constexpr value_type from_rep(const _rep& r)
         {
