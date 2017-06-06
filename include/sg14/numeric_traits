@@ -15,6 +15,8 @@
 #include "bits/type_traits.h"
 #endif
 
+#include <utility>
+
 /// study group 14 of the C++ working group
 namespace sg14 {
 
@@ -424,6 +426,27 @@ namespace sg14 {
         {
             return numeric_traits<InputType>::scale(input, base, exp);
         }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::for_rep
+
+    // invoke a given generic lambda on given parameters
+    template<class F, class ... Args,
+            _impl::enable_if_t<!_numeric_traits_impl::are_composite<Args ...>::value, int> dummy = 0>
+    constexpr auto for_rep(F f, Args&& ...args)
+    -> decltype(f(std::forward<Args>(args)...))
+    {
+        return f(std::forward<Args>(args)...);
+    }
+
+    template<class F, class ... Args,
+            _impl::enable_if_t<_numeric_traits_impl::are_composite<Args ...>::value, int> dummy = 0>
+    constexpr auto for_rep(F f, Args&& ...args)
+    -> decltype(f(std::forward<Args>(args)...))
+    {
+        return numeric_traits<decltype(f(std::forward<Args>(args)...))>::from_rep(
+                for_rep(f, numeric_traits<Args>::to_rep(std::forward<Args>(args))...));
     }
 }
 
