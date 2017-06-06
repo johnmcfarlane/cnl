@@ -355,7 +355,7 @@ namespace sg14 {
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
             -> decltype(lhs/rhs)
             {
-                return _overflow_impl::return_if(rhs, lhs/rhs, "divide by zero");
+                return _overflow_impl::return_if(static_cast<bool>(rhs), lhs/rhs, "divide by zero");
             }
         };
 
