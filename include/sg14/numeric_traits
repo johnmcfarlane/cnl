@@ -199,6 +199,10 @@ namespace sg14 {
 
             template<_digits_type NumDigits>
             using set_digits = typename set_digits_integer<value_type, NumDigits>::type;
+
+            static constexpr value_type zero() {
+                return 0;
+            }
         };
     }
 

@@ -328,6 +328,10 @@ namespace sg14 {
         {
             return from_rep(sg14::_impl::scale(to_rep(number), base, exp));
         }
+
+        static constexpr value_type zero() {
+            return from_rep(_rep_numeric_traits::zero());
+        }
     };
 }
 
