@@ -294,9 +294,9 @@ namespace sg14 {
         constexpr bool is_multiply_overflow(const Lhs& lhs, const Rhs& rhs)
         {
             using result_nl = std::numeric_limits<decltype(lhs*rhs)>;
-            return lhs && rhs && ((lhs>Lhs{})
-                                  ? ((rhs>Rhs{}) ? (result_nl::max()/rhs) : (result_nl::lowest()/rhs))<lhs
-                                  : ((rhs>Rhs{}) ? (result_nl::lowest()/rhs) : (result_nl::max()/rhs))>lhs);
+            return lhs && rhs && ((lhs>numeric_traits<Lhs>::zero())
+                                  ? ((rhs>numeric_traits<Rhs>::zero()) ? (result_nl::max()/rhs) : (result_nl::lowest()/rhs))<lhs
+                                  : ((rhs>numeric_traits<Rhs>::zero()) ? (result_nl::lowest()/rhs) : (result_nl::max()/rhs))>lhs);
         }
 
         template<>
@@ -329,9 +329,9 @@ namespace sg14 {
 
     template<class OverflowTag, class Lhs, class Rhs>
     constexpr auto multiply(OverflowTag, const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_overflow_impl::operate<OverflowTag, _impl::multiply_op>()(lhs, rhs))
+    -> decltype(for_rep(_overflow_impl::operate<OverflowTag, _impl::multiply_op>(), lhs, rhs))
     {
-        return _overflow_impl::operate<OverflowTag, _impl::multiply_op>()(lhs, rhs);
+        return for_rep(_overflow_impl::operate<OverflowTag, _impl::multiply_op>(), lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -355,7 +355,7 @@ namespace sg14 {
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
             -> decltype(lhs/rhs)
             {
-                return _overflow_impl::return_if(rhs, lhs/rhs, "divide by zero");
+                return _overflow_impl::return_if(static_cast<bool>(rhs), lhs/rhs, "divide by zero");
             }
         };
 

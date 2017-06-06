@@ -56,13 +56,15 @@ namespace {
         static_assert(scale<uint64_t>(1, 2, 4) == 16, "sg14::scale test failed");
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // sg14::_impl::is_integer_or_float
+    namespace test_is_integer_or_float {
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_impl::is_integer_or_float
 
-    using sg14::_impl::is_integer_or_float;
-    static_assert(is_integer_or_float<uint8_t>::value, "sg14::_integer_impl::is_integer_or_float test failed");
-    static_assert(is_integer_or_float<float>::value, "sg14::_integer_impl::is_integer_or_float test failed");
-    static_assert(!is_integer_or_float<void>::value, "sg14::_integer_impl::is_integer_or_float test failed");
-    static_assert(!is_integer_or_float<int*>::value, "sg14::_integer_impl::is_integer_or_float test failed");
-    static_assert(!is_integer_or_float<std::string>::value, "sg14::_integer_impl::is_integer_or_float test failed");
+        using sg14::_impl::is_integer_or_float;
+        static_assert(is_integer_or_float<uint8_t>::value, "sg14::_integer_impl::is_integer_or_float test failed");
+        static_assert(is_integer_or_float<float>::value, "sg14::_integer_impl::is_integer_or_float test failed");
+        static_assert(!is_integer_or_float<void>::value, "sg14::_integer_impl::is_integer_or_float test failed");
+        static_assert(!is_integer_or_float<int*>::value, "sg14::_integer_impl::is_integer_or_float test failed");
+        static_assert(!is_integer_or_float<std::string>::value, "sg14::_integer_impl::is_integer_or_float test failed");
+    }
 }

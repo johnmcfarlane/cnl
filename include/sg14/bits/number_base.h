@@ -308,6 +308,7 @@ namespace sg14 {
         using value_type = Derived;
 
         static constexpr bool is_specialized = true;
+        static constexpr bool is_composite = true;
 
         static constexpr value_type from_rep(const _rep& r)
         {
@@ -327,6 +328,10 @@ namespace sg14 {
         static constexpr value_type scale(const value_type& number, int base, int exp)
         {
             return from_rep(sg14::_impl::scale(to_rep(number), base, exp));
+        }
+
+        static constexpr value_type zero() {
+            return from_rep(_rep_numeric_traits::zero());
         }
     };
 }

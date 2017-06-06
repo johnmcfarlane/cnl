@@ -15,6 +15,8 @@
 #include "bits/type_traits.h"
 #endif
 
+#include <utility>
+
 /// study group 14 of the C++ working group
 namespace sg14 {
 
@@ -93,7 +95,22 @@ namespace sg14 {
 
     namespace _numeric_traits_impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_set_digits_impl::enable_for_range
+        // sg14::_numeric_traits_impl::are_composite
+
+        template<class ... Args>
+        struct are_composite;
+
+        template<>
+        struct are_composite<>: std::false_type { };
+
+        template<class ArgHead, class ... ArgTail>
+        struct are_composite<ArgHead, ArgTail...>: std::integral_constant<bool,
+                                                                          numeric_traits<ArgHead>::is_composite
+                                                                                  || are_composite<ArgTail...>::value> {
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // sg14::_numeric_traits_impl::enable_for_range
 
         template<_digits_type MinNumDigits, class Smaller, class T>
         struct enable_for_range
@@ -194,11 +211,17 @@ namespace sg14 {
         public:
             using value_type = Integer;
 
+            static constexpr bool is_composite = false;
+
             static constexpr bool is_signed = _numeric_limits::is_signed;
             static constexpr _digits_type digits = _numeric_limits::digits;
 
             template<_digits_type NumDigits>
             using set_digits = typename set_digits_integer<value_type, NumDigits>::type;
+
+            static constexpr value_type zero() {
+                return 0;
+            }
         };
     }
 
@@ -271,6 +294,7 @@ namespace sg14 {
 
     template<class T> struct numeric_traits<const T> : numeric_traits<T> {};
     template<class T> struct numeric_traits<volatile T> : numeric_traits<T> {};
+    template<class T> struct numeric_traits<T&>: numeric_traits<T> { };
 
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
@@ -402,6 +426,27 @@ namespace sg14 {
         {
             return numeric_traits<InputType>::scale(input, base, exp);
         }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::for_rep
+
+    // invoke a given generic lambda on given parameters
+    template<class F, class ... Args,
+            _impl::enable_if_t<!_numeric_traits_impl::are_composite<Args ...>::value, int> dummy = 0>
+    constexpr auto for_rep(F f, Args&& ...args)
+    -> decltype(f(std::forward<Args>(args)...))
+    {
+        return f(std::forward<Args>(args)...);
+    }
+
+    template<class F, class ... Args,
+            _impl::enable_if_t<_numeric_traits_impl::are_composite<Args ...>::value, int> dummy = 0>
+    constexpr auto for_rep(F f, Args&& ...args)
+    -> decltype(f(std::forward<Args>(args)...))
+    {
+        return numeric_traits<decltype(f(std::forward<Args>(args)...))>::from_rep(
+                for_rep(f, numeric_traits<Args>::to_rep(std::forward<Args>(args))...));
     }
 }
 

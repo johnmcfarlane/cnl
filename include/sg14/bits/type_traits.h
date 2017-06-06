@@ -10,9 +10,7 @@
 #if !defined(SG14_TYPE_TRAITS_H)
 #define SG14_TYPE_TRAITS_H 1
 
-#if ! defined(SG14_GODBOLT_ORG)
 #include <type_traits>
-#endif
 
 /// study group 14 of the C++ working group
 namespace sg14 {
