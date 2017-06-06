@@ -292,6 +292,7 @@ namespace sg14 {
 
     template<class T> struct numeric_traits<const T> : numeric_traits<T> {};
     template<class T> struct numeric_traits<volatile T> : numeric_traits<T> {};
+    template<class T> struct numeric_traits<T&>: numeric_traits<T> { };
 
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
