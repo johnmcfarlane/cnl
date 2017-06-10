@@ -329,9 +329,9 @@ namespace sg14 {
 
     template<class OverflowTag, class Lhs, class Rhs>
     constexpr auto multiply(OverflowTag, const Lhs& lhs, const Rhs& rhs)
-    -> decltype(for_rep(_overflow_impl::operate<OverflowTag, _impl::multiply_op>(), lhs, rhs))
+    -> decltype(lhs*rhs)
     {
-        return for_rep(_overflow_impl::operate<OverflowTag, _impl::multiply_op>(), lhs, rhs);
+        return for_rep<decltype(lhs*rhs)>(_overflow_impl::operate<OverflowTag, _impl::multiply_op>(), lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
