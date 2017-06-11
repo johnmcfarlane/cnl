@@ -266,4 +266,9 @@ namespace {
     // without class template deduction
     static_assert(identical(elastic_integer<1>(1_c), elastic_integer<1>{1}), "");
 #endif
+
+    namespace test_leading_bits {
+        static_assert(sg14::leading_bits(elastic_integer<7>{3})==5, "leading_bits test failed");
+        static_assert(sg14::leading_bits(elastic_integer<12, std::uint16_t>{10})==8, "leading_bits test failed");
+    }
 }

@@ -99,6 +99,14 @@ namespace {
     namespace test_scale {
         static_assert(identical(safe_elastic_integer<3>{7}*safe_elastic_integer<4>{10}, safe_elastic_integer<7>{70}), "safe_elastic_integer operator*");
     }
+
+    namespace test_leading_bits {
+        using sg14::leading_bits;
+        using sg14::throwing_overflow_tag;
+
+        static_assert(leading_bits(safe_elastic_integer<1, throwing_overflow_tag, char>{0}) == 1, "leading_bits(safe_elastic_integer)");
+        static_assert(leading_bits(safe_elastic_integer<22, throwing_overflow_tag>{77}) == 15, "leading_bits(safe_elastic_integer)");
+    }
 }
 
 // given a rounding policy, invokes number_test_suite for precise_integers of all built-in types

@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <sg14/bits/limits.h>
-#include <sg14/numeric_traits>
+#include <sg14/auxiliary/numeric.h>
 
 #include <sg14/bits/common.h>
 
@@ -131,7 +131,7 @@ struct number_test {
     static_assert(is_equal_to(min-zero, min), "operator- test failed");
 
     static_assert(is_equal_to(max-max, zero), "operator- test failed");
- #endif
+#endif
 
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::numeric_traits
@@ -151,6 +151,12 @@ struct number_test {
 
     static constexpr auto max_from_rep = numeric_traits::from_rep(numeric_traits::to_rep(max));
     static_assert(identical(max_from_rep, max), "numeric_traits::to_rep & from_rep test failed");
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // sg14::numeric_traits
+
+    static_assert(sg14::leading_bits(zero)==numeric_traits::digits, "leading_bits test failed");
+    static_assert(sg14::leading_bits(max)==0, "leading_bits test failed");
 };
 
 // performs tests that should pass for all numeric types (except maybe const_integer);
