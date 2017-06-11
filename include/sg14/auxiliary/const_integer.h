@@ -11,12 +11,11 @@
 #define SG14_CONST_INTEGER_H 1
 
 #if ! defined(SG14_GODBOLT_ORG)
+#include <sg14/auxiliary/numeric.h>
 #include <sg14/bits/common.h>
-#include <sg14/bits/type_traits.h>
-#include <sg14/numeric_traits>
 #endif
 
-#include <climits>
+#include <cstdint>
 
 #if defined(SG14_EXCEPTIONS_ENABLED)
 #include <stdexcept>
@@ -24,116 +23,6 @@
 
 namespace sg14 {
     namespace _const_integer_impl {
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::num_integer_bits - count of bits being 'used'
-
-        template<class Integer>
-        constexpr int num_integer_bits_positive(Integer value, int mask_bits = sizeof(Integer)*CHAR_BIT/2)
-        {
-            return (value>=(Integer{1} << mask_bits))
-                   ? mask_bits+num_integer_bits_positive(value/(Integer{1} << mask_bits), mask_bits)
-                   : (mask_bits>1)
-                     ? num_integer_bits_positive(value, mask_bits/2)
-                     : 1;
-        }
-
-#if defined(_MSC_VER)
-        template<class Integer, class Enable = void>
-        struct _num_integer_bits {
-            static constexpr int f(Integer value) {
-                return value ? num_integer_bits_positive(value) : 1;
-            }
-        };
-
-        template<class Integer>
-        struct _num_integer_bits<Integer, _impl::enable_if_t<std::numeric_limits<Integer>::is_signed>> {
-            static constexpr int f(Integer value) {
-                // Most negative number is not exploited;
-                // thus negating the result or subtracting it from something else
-                // will less likely result in overflow.
-                return (value > 0)
-                    ? num_integer_bits_positive(value)
-                    : (value < 0)
-                    ? num_integer_bits_positive(-value)
-                    : 1;
-            }
-        };
-
-        template<class Integer>
-        constexpr int num_integer_bits(Integer value)
-        {
-            return _num_integer_bits<Integer>::f(value);
-        }
-#else
-        template<class Integer>
-        constexpr int num_integer_bits(Integer value)
-        {
-            // Most negative number is not exploited;
-            // thus negating the result or subtracting it from something else
-            // will less likely result in overflow.
-            return (value>0)
-                   ? num_integer_bits_positive(value)
-                   : (value<0)
-                     ? num_integer_bits_positive(-value)
-                     : 1;
-        }
-#endif
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::num_integer_zeros - count of bits 'not' being used
-
-        template<class Integer>
-        constexpr int num_integer_zeros_positive(Integer value, int mask_bits = sizeof(Integer)*CHAR_BIT/2)
-        {
-            return ((value&((Integer{1} << mask_bits)-1)) == 0)
-                   ? mask_bits+num_integer_zeros_positive(value/(Integer{1} << mask_bits), mask_bits)
-                   : (mask_bits>1)
-                     ? num_integer_zeros_positive(value, mask_bits/2)
-                     : 0;
-        }
-
-#if defined(_MSC_VER)
-        template<class Integer, class Enable = void>
-        struct _num_integer_zeros {
-            static constexpr int f(Integer value) {
-                return value ? num_integer_zeros_positive(value) : 0;
-            }
-        };
-
-        template<class Integer>
-        struct _num_integer_zeros<Integer, _impl::enable_if_t<std::numeric_limits<Integer>::is_signed>> {
-            static constexpr int f(Integer value) {
-                // Most negative number is not exploited;
-                // thus negating the result or subtracting it from something else
-                // will less likely result in overflow.
-                return (value > 0)
-                    ? num_integer_zeros_positive(value)
-                    : (value < 0)
-                    ? num_integer_zeros_positive(-value)
-                    : 0;
-            }
-        };
-
-        template<class Integer>
-        constexpr int num_integer_zeros(Integer value)
-        {
-            return _num_integer_zeros<Integer>::f(value);
-        }
-#else
-        template<class Integer>
-        constexpr int num_integer_zeros(Integer value)
-        {
-            // Most negative number is not exploited;
-            // thus negating the result or subtracting it from something else
-            // will less likely result in overflow.
-            return (value>0)
-                   ? num_integer_zeros_positive(value)
-                   : (value<0)
-                     ? num_integer_zeros_positive(-value)
-                     : 0;
-        }
-#endif
 
         ////////////////////////////////////////////////////////////////////////////////
         // sg14::_impl::digits_to_integral_constant
@@ -206,8 +95,8 @@ namespace sg14 {
     template<
         class Integral,
         Integral Value,
-        int Digits = _const_integer_impl::num_integer_bits(Value),
-        int Exponent = _const_integer_impl::num_integer_zeros(Value)>
+        int Digits = used_bits(Value),
+        int Exponent = trailing_bits(Value)>
     class const_integer {
     public:
         using value_type = Integral;
@@ -218,12 +107,12 @@ namespace sg14 {
 
         static constexpr int digits = Digits;
         static_assert(
-            digits == _const_integer_impl::num_integer_bits(Value),
+            digits == used_bits(Value),
             "defaulted non-type template parameters should not be specified explicitly");
 
         static constexpr int exponent = Exponent;
         static_assert(
-            exponent == _const_integer_impl::num_integer_zeros(Value),
+            exponent == trailing_bits(Value),
             "defaulted non-type template parameters should not be specified explicitly");
     };
 

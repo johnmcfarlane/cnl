@@ -148,9 +148,9 @@ namespace sg14 {
     template<
             class Integral, Integral Value>
     constexpr auto make_elastic_integer(const_integer<Integral, Value>)
-    -> elastic_integer<_const_integer_impl::num_integer_bits(Value)>
+    -> elastic_integer<used_bits(Value)>
     {
-        return elastic_integer<_const_integer_impl::num_integer_bits(Value)>{Value};
+        return elastic_integer<used_bits(Value)>{Value};
     }
 
     template<class Narrowest = int, class Integral, _impl::enable_if_t<!is_const_integer<Integral>::value, int> Dummy = 0>

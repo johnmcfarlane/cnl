@@ -56,10 +56,7 @@ namespace sg14 {
             typename Narrowest = int,
             typename Integral = int,
             Integral Value = 0>
-    constexpr elastic_fixed_point<
-        _const_integer_impl::num_integer_bits(Value),
-        -_const_integer_impl::num_integer_zeros(Value),
-        Narrowest>
+    constexpr elastic_fixed_point<_impl::max(_impl::used_bits_symmetric(Value), 1), -trailing_bits(Value), Narrowest>
     make_elastic_fixed_point(const_integer<Integral, Value> = const_integer<Integral, Value>{})
     {
         return Value;
