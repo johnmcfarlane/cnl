@@ -12,7 +12,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
-      env: COMPILER=g++-7 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
+      env: COMPILER=g++-7 BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON
 
     - os: linux
       addons: *gcc7
