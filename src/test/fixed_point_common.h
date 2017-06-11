@@ -869,6 +869,24 @@ static_assert(static_cast<float>(sqrt(make_fixed<7, 24>(3.141592654)))<1.7724537
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
+// std::leading_bits<fixed_point>
+
+namespace test_used_bits {
+    using sg14::used_bits;
+
+    static_assert(used_bits(fixed_point<uint8, -4>{1}) == 5, "sg14::leading_bits");
+    static_assert(used_bits(fixed_point<uint8, -3>{2}) == 5, "sg14::leading_bits");
+}
+
+namespace test_leading_bits {
+    using sg14::leading_bits;
+
+    static_assert(leading_bits(fixed_point<uint8, -4>{1}) == 3, "sg14::leading_bits");
+    static_assert(leading_bits(fixed_point<uint8, -3>{2}) == 3, "sg14::leading_bits");
+    static_assert(leading_bits(fixed_point<int32, 10>{4096}) == 28, "sg14::leading_bits");
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // https://groups.google.com/a/isocpp.org/forum/?utm_medium=email&utm_source=footer#!msg/sg14/cDZIcB1LNfE/heaucUIAAgAJ
 
 static constexpr make_fixed<15, 16> x{1.5};
