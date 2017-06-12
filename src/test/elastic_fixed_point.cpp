@@ -71,6 +71,14 @@ namespace {
     static_assert(identical(
             set_digits_t<elastic_integer<15, uint8_t>, 22>{10000},
             elastic_integer<22, uint8_t>{10000}), "sg14::elastic_integer test failed");
+
+    static_assert(identical(
+            elastic_fixed_point<2, 2>{1.5} << 1,
+            elastic_fixed_point<2, 2>{3}), "sg14::elastic_fixed_point test failed");
+
+    static_assert(identical(
+            elastic_fixed_point<2, 2>{1.5} >> 1,
+            elastic_fixed_point<2, 2>{0.75}), "sg14::elastic_fixed_point test failed");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

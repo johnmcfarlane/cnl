@@ -216,6 +216,21 @@ namespace sg14 {
         return lhs << rhs.data();
     }
 
+    // operator>>
+    template<int LhsDigits, class LhsNarrowest, class Rhs>
+    constexpr auto operator>>(const elastic_integer<LhsDigits, LhsNarrowest>& lhs, const Rhs& rhs)
+    -> elastic_integer<LhsDigits, LhsNarrowest>
+    {
+        return elastic_integer<LhsDigits, LhsNarrowest>::from_data(lhs.data() >> rhs);
+    }
+
+    template<class Lhs, int RhsDigits, class RhsNarrowest>
+    constexpr auto operator>>(const Lhs& lhs, const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
+    -> decltype(lhs >> 0)
+    {
+        return lhs >> rhs.data();
+    }
+
     ////////////////////////////////////////////////////////////////////////////////
     // comparison operators
 
