@@ -216,9 +216,9 @@ namespace sg14 {
 
     template<class OverflowTag, class Lhs, class Rhs>
     constexpr auto add(OverflowTag, const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_overflow_impl::operate<OverflowTag, _impl::add_op>()(lhs, rhs))
+    -> decltype(lhs+rhs)
     {
-        return _overflow_impl::operate<OverflowTag, _impl::add_op>()(lhs, rhs);
+        return for_rep<decltype(lhs+rhs)>(_overflow_impl::operate<OverflowTag, _impl::add_op>(), lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -270,9 +270,9 @@ namespace sg14 {
 
     template<class OverflowTag, class Lhs, class Rhs>
     constexpr auto subtract(OverflowTag, const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_overflow_impl::operate<OverflowTag, _impl::subtract_op>()(lhs, rhs))
+    -> decltype(lhs-rhs)
     {
-        return _overflow_impl::operate<OverflowTag, _impl::subtract_op>()(lhs, rhs);
+        return for_rep<decltype(lhs-rhs)>(_overflow_impl::operate<OverflowTag, _impl::subtract_op>(), lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
