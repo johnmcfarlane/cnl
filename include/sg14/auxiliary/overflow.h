@@ -339,8 +339,8 @@ namespace sg14 {
 
     // implementation details
     namespace _overflow_impl {
-        template<>
-        struct operate<native_overflow_tag, _impl::divide_op> {
+        template<class OverflowTag>
+        struct operate<OverflowTag, _impl::divide_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
             -> decltype(lhs/rhs)
@@ -348,39 +348,6 @@ namespace sg14 {
                 return lhs/rhs;
             }
         };
-
-        template<>
-        struct operate<throwing_overflow_tag, _impl::divide_op> {
-            template<class Lhs, class Rhs>
-            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
-            -> decltype(lhs/rhs)
-            {
-                return _overflow_impl::return_if(static_cast<bool>(rhs), lhs/rhs, "divide by zero");
-            }
-        };
-
-        template<>
-        struct operate<saturated_overflow_tag, _impl::divide_op> {
-            template<class Lhs, class Rhs>
-            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const
-            -> _impl::op_result<_impl::divide_op, Lhs, Rhs>
-            {
-                using result_type = decltype(lhs/rhs);
-                using numeric_limits = std::numeric_limits<result_type>;
-                return rhs
-                       ? (numeric_limits::is_signed || (lhs<0==rhs<0)) ? lhs/rhs : 0
-                       : (lhs>0)
-                         ? numeric_limits::max()
-                         : numeric_limits::lowest();
-            }
-        };
-    }
-
-    template<class OverflowTag, class Lhs, class Rhs>
-    constexpr auto divide(OverflowTag, const Lhs& lhs, const Rhs& rhs)
-    -> decltype(_overflow_impl::operate<OverflowTag, _impl::divide_op>()(lhs, rhs))
-    {
-        return _overflow_impl::operate<OverflowTag, _impl::divide_op>()(lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
