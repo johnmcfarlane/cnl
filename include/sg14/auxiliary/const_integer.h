@@ -271,21 +271,6 @@ namespace sg14 {
     struct is_const_integer<const_integer<Integral, Value>> : std::true_type {};
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::numeric_traits<sg14::const_integer>
-
-    template<class Integral, Integral Value>
-    struct numeric_traits<const_integer<Integral, Value>>
-            : _impl::numeric_traits_base<const_integer<Integral, Value>> {
-        using value_type = const_integer<Integral, Value>;
-
-        using _integral_numeric_traits = numeric_traits<Integral>;
-        using make_unsigned = const_integer<typename _integral_numeric_traits::make_unsigned, Value>;
-        using make_signed = const_integer<typename _integral_numeric_traits::make_signed, Value>;
-
-        static constexpr _digits_type digits = value_type::digits + std::numeric_limits<Integral>::is_signed;
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
     // sg14::literals - literal wrapper for std::integral_constant
     //
     // http://codereview.stackexchange.com/a/51576/26421

@@ -53,9 +53,8 @@ template<class Number>
 struct number_test {
     using value_type = Number;
     using numeric_limits = std::numeric_limits<value_type>;
-    using numeric_traits = sg14::numeric_traits<value_type>;
-    
-    static constexpr value_type zero = numeric_traits::from_rep(0);
+
+    static constexpr value_type zero = sg14::_impl::from_rep<value_type>(0);
 #if defined(_MSC_VER)
     static constexpr value_type negative_zero{ zero };
 #else
@@ -95,8 +94,10 @@ struct number_test {
     // comparisons between minimum value
     static_assert(is_equal_to(max, max), "comparison test error");
 
+#if defined(__clang__) || ! defined(__GNUG__)
     // comparisons between zero and literal zero
     static_assert(is_equal_to(zero, 0.), "comparison test error");
+#endif
 
     // comparisons between zero and zero-initialized value
     static_assert(is_equal_to(zero, value_type(0.)), "zero-initialized value is not represented using zero");
@@ -104,13 +105,13 @@ struct number_test {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::width / sg14::_impl::set_width_t
 
-    static_assert(sg14::numeric_traits<value_type>::digits
-                    ==sg14::numeric_traits<sg14::_impl::set_digits_t<value_type, sg14::numeric_traits<value_type>::digits>>::digits,
+    static_assert(sg14::digits<value_type>::value
+                    ==sg14::digits<sg14::set_digits_t<value_type, sg14::digits<value_type>::value>>::value,
             "sg14::width / sg14::set_width test failed");
 
-    static_assert(sg14::numeric_traits<sg14::_impl::set_digits_t<value_type, 3>>::digits>=3, "sg14::digits / sg14::set_digits test failed");
-    static_assert(sg14::numeric_traits<sg14::_impl::set_digits_t<value_type, 9>>::digits>=9, "sg14::digits / sg14::set_digits test failed");
-    static_assert(sg14::numeric_traits<sg14::_impl::set_digits_t<value_type, 63>>::digits>32,
+    static_assert(sg14::digits<sg14::set_digits_t<value_type, 3>>::value>=3, "sg14::digits / sg14::set_digits test failed");
+    static_assert(sg14::digits<sg14::set_digits_t<value_type, 9>>::value>=9, "sg14::digits / sg14::set_digits test failed");
+    static_assert(sg14::digits<sg14::set_digits_t<value_type, 63>>::value>32,
             "sg14::digits / sg14::set_digits test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -134,28 +135,27 @@ struct number_test {
 #endif
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::numeric_traits
+    // numeric traits
 
-    static_assert(
-            std::is_same<typename numeric_traits::value_type, value_type>::value,
-            "numeric_traits::value_type test failed");
-    static_assert(
-            numeric_traits::is_specialized,
-            "numeric_traits::is_specialized test failed");
+    // would not pass for boost.multiprecision
+    static_assert(sg14::is_composite<value_type>::value != std::is_fundamental<value_type>::value, "is_composite test failed");
 
-    static constexpr auto lowest_from_rep = numeric_traits::from_rep(numeric_traits::to_rep(lowest));
-    static_assert(identical(lowest_from_rep, lowest), "numeric_traits::to_rep & from_rep test failed");
+    static constexpr auto lowest_from_rep = sg14::_impl::from_rep<value_type>(sg14::_impl::to_rep(lowest));
+    static_assert(identical(lowest_from_rep, lowest), "sg14::_impl::to_rep & from_rep test failed");
 
-    static constexpr auto zero_from_rep = numeric_traits::from_rep(numeric_traits::to_rep(zero));
-    static_assert(identical(zero_from_rep, zero), "numeric_traits::to_rep & from_rep test failed");
+    static constexpr auto zero_from_rep = sg14::_impl::from_rep<value_type>(sg14::_impl::to_rep(zero));
+    static_assert(identical(zero_from_rep, zero), "sg14::_impl::to_rep & from_rep test failed");
 
-    static constexpr auto max_from_rep = numeric_traits::from_rep(numeric_traits::to_rep(max));
-    static_assert(identical(max_from_rep, max), "numeric_traits::to_rep & from_rep test failed");
+    static constexpr auto max_from_rep = sg14::_impl::from_rep<value_type>(sg14::_impl::to_rep(max));
+    static_assert(identical(max_from_rep, max), "sg14::_impl::to_rep & from_rep test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::numeric_traits
+    // bit functions
 
-    static_assert(sg14::leading_bits(zero)==numeric_traits::digits, "leading_bits test failed");
+    static_assert(sg14::used_bits(zero)==0, "used_bits test failed");
+    static_assert(sg14::used_bits(max)==sg14::digits<value_type>::value, "used_bits test failed");
+
+    static_assert(sg14::leading_bits(zero)==sg14::digits<value_type>::value, "leading_bits test failed");
     static_assert(sg14::leading_bits(max)==0, "leading_bits test failed");
 };
 

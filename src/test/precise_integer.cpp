@@ -43,25 +43,72 @@ namespace {
 
         static_assert(is_derived_from_number_base<precise_integer<>>::value, "is_derived_from_number_base<precise_integer<>>");
     }
+
+    namespace test_traits {
+
+        namespace test_make_signed_t {
+            using sg14::make_signed_t;
+
+            static_assert(std::is_same<precise_integer<int>, make_signed_t<precise_integer<int>>>::value,
+                          "sg14::make_signed_t<sg14::precise_integer<>>");
+            static_assert(std::is_same<precise_integer<short>, make_signed_t<precise_integer<unsigned short>>>::value,
+                          "sg14::make_signed_t<sg14::precise_integer<>>");
+        }
+
+        namespace test_make_unsigned_t {
+            using sg14::make_unsigned_t;
+
+            static_assert(
+                    std::is_same<precise_integer<unsigned char>, make_unsigned_t<precise_integer<unsigned char>>>::value,
+                    "sg14::make_unsigned_t<sg14::precise_integer<>>");
+            static_assert(
+                    std::is_same<precise_integer<unsigned long long>, make_unsigned_t<precise_integer<long long>>>::value,
+                    "sg14::make_unsigned_t<sg14::precise_integer<>>");
+        }
+
+        namespace test_to_rep {
+            using sg14::_impl::to_rep;
+
+            static_assert(
+                    identical(123, to_rep(precise_integer<>{123})),
+                    "sg14::to_rep<precise_integer> test failed");
+        }
+
+        namespace test_from_rep {
+            using sg14::_impl::from_rep;
+
+            static_assert(
+                    identical(precise_integer<>{2468}, from_rep<precise_integer<>>(2468)),
+                    "sg14::from_rep<precise_integer> test failed");
+        }
+
+        namespace test_from_value {
+            using sg14::_impl::from_value;
+
+            static_assert(identical(precise_integer<long long>{9876543210LL}, from_value<precise_integer<long>>(9876543210LL)),
+                          "sg14::from_value<precise_integer> test failed");
+        }
+    }
     
     namespace test_operate {
-        using namespace sg14::_impl;
+        using sg14::_impl::equal_tag;
+        using sg14::_impl::greater_than_tag;
+        using sg14::_impl::operate;
+
         static_assert(
                 operate(precise_integer<>{2468}, precise_integer<>{2468}, equal_tag),
                 "sg14::numeric_traits<precise_integer> test failed");
+        static_assert(
+                operate(2468, precise_integer<>{2468}, equal_tag),
+                "sg14::numeric_traits<precise_integer> test failed");
+        static_assert(
+                operate(precise_integer<>{234}, 233, greater_than_tag),
+                "sg14::numeric_traits<precise_integer> test failed");
     }
 
-    namespace test_numeric_traits {
-        using sg14::numeric_traits;
-
-        static_assert(
-                identical(123, numeric_traits<precise_integer<>>::to_rep(precise_integer<>{123})),
-                "sg14::numeric_traits<precise_integer> test failed");
+    namespace test_comparison {
         static_assert(
                 identical(precise_integer<>{2468}, precise_integer<>{2468}),
-                "sg14::numeric_traits<precise_integer> test failed");
-        static_assert(
-                identical(precise_integer<>{2468}, numeric_traits<precise_integer<>>::from_rep(2468)),
                 "sg14::numeric_traits<precise_integer> test failed");
     }
 
@@ -96,11 +143,12 @@ namespace {
 template<class PreciseInteger>
 struct precise_integer_tests {
     // from_rep
-    static_assert(identical(precise_integer<>{123}, sg14::_impl::from_rep<precise_integer<>>(123)), "sg14::_impl::from_rep<precise_integer<>> test failed");
+    static_assert(identical(precise_integer<>{123}, sg14::_impl::from_rep<precise_integer<>>(123)),
+                  "sg14::_impl::from_rep<precise_integer<>> test failed");
 
     // to_rep
     static_assert(identical(123, sg14::_impl::to_rep(123)), "sg14::_impl::to_rep test failed");
-    static_assert(identical(321, to_rep(precise_integer<>{321})), "sg14::_impl::to_rep test failed");
+    static_assert(identical(321, sg14::_impl::to_rep(precise_integer<>{321})), "sg14::_impl::to_rep test failed");
 };
 
 template struct number_test_by_rep_by_policy<precise_integer, sg14::closest_rounding_policy, precise_integer_tests>;

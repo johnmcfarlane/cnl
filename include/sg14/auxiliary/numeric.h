@@ -11,7 +11,7 @@
 #define SG14_NUMERIC_H
 
 #if !defined(SG14_GODBOLT_ORG)
-#include <sg14/numeric_traits>
+#include <sg14/num_traits.h>
 #endif
 
 #include <limits.h>
@@ -137,14 +137,14 @@ namespace sg14 {
     {
         return (value>0)
                ? __builtin_clz(value)-1
-               : numeric_traits<int>::digits-used_bits(value);
+               : digits<int>::value-used_bits(value);
     }
 #endif
 
     template<class Integer>
     constexpr int leading_bits(const Integer& value)
     {
-        return numeric_traits<Integer>::digits-used_bits(value);
+        return digits<Integer>::value-used_bits(value);
     }
 }
 

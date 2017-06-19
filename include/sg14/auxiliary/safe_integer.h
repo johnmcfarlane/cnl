@@ -130,8 +130,9 @@ namespace sg14 {
 
         constexpr safe_integer() = delete;
 
-        constexpr safe_integer(const safe_integer& rhs)
-                :_base(rhs.data())
+        template<class RhsRep, class RhsOverflowTag>
+        constexpr safe_integer(const safe_integer<RhsRep, RhsOverflowTag>& rhs)
+                :safe_integer(rhs.data())
         {
         }
 
@@ -139,6 +140,15 @@ namespace sg14 {
         constexpr safe_integer(const Rhs& rhs)
                 :_base(convert<rep>(overflow_tag{}, rhs))
         {
+        }
+
+        /// constructor taking an integral constant
+        template<class Integral, Integral Value, int Digits, int Exponent>
+        constexpr safe_integer(const_integer<Integral, Value, Digits, Exponent>)
+                : _base(static_cast<rep>(Value))
+        {
+            static_assert(Value <= std::numeric_limits<rep>::max(), "initialization by out-of-range value");
+            static_assert(!std::numeric_limits<Integral>::is_signed || Value >= std::numeric_limits<rep>::lowest(), "initialization by out-of-range value");
         }
 
         template<class T>
@@ -149,62 +159,45 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::numeric_traits<safe_integer<>>
+    // sg14::_impl::set_rep<safe_integer<>>
+
+    namespace _impl {
+        template<class Rep, class OverflowTag>
+        struct get_rep<safe_integer<Rep, OverflowTag>> {
+            using type = Rep;
+        };
+
+        template<class OldRep, class OverflowTag, class NewRep>
+        struct set_rep<safe_integer<OldRep, OverflowTag>, NewRep> {
+            using type = safe_integer<NewRep, OverflowTag>;
+        };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // numeric traits
 
     template<class Rep, class OverflowTag>
-    struct numeric_traits<safe_integer<Rep, OverflowTag>>
-    : numeric_traits<_impl::number_base<safe_integer<Rep, OverflowTag>, Rep>> {
-        using _rep_numeric_traits = numeric_traits<Rep>;
+    struct digits<safe_integer<Rep, OverflowTag>> : digits<Rep> {
+    };
 
-        template<class _Rep>
-        using _safe_integer = safe_integer<_Rep, OverflowTag>;
+    template<class Rep, class OverflowTag, _digits_type MinNumBits>
+    struct set_digits<safe_integer<Rep, OverflowTag>, MinNumBits> {
+        using type = safe_integer<set_digits_t<Rep, MinNumBits>, OverflowTag>;
+    };
 
+    template<class Rep, class OverflowTag, class Value>
+    struct from_value<safe_integer<Rep, OverflowTag>, Value> {
+        using type = safe_integer<Value, OverflowTag>;
+    };
+
+    template<class Rep, class OverflowTag>
+    struct scale<safe_integer<Rep, OverflowTag>> {
         using value_type = safe_integer<Rep, OverflowTag>;
-
-        template<typename Input>
-        static constexpr auto make(const Input& input) 
-        -> _safe_integer<Input> {
-            return input;
-        }
-
-        using make_signed = _safe_integer<typename _rep_numeric_traits::make_signed>;
-        using make_unsigned = _safe_integer<typename _rep_numeric_traits::make_unsigned>;
-
-        static constexpr bool is_signed = numeric_traits<Rep>::is_signed;
-        static constexpr _digits_type digits = _rep_numeric_traits::digits;
-
-        template<_digits_type NumDigits>
-        using set_digits = _safe_integer<typename _rep_numeric_traits::template set_digits<NumDigits>>;
-
-    private:
-        // TODO: dupe of code from specialization in <numeric_traits>
-        using _base = numeric_traits<_impl::number_base<safe_integer<Rep, OverflowTag>, Rep>>;
-        using _rep = typename _base::_rep;
-        using result_type = decltype(make(sg14::_impl::scale(std::declval<_rep>(), 0, 0)));
-
-        static constexpr result_type pown(int base, int exp)
-        {
-            return exp
-                   ? pown(base, exp-1)*static_cast<result_type>(base)
-                   : static_cast<result_type>(1);
-        }
-
-        static constexpr result_type pow2(int exp)
-        {
-            return result_type{1} << exp;
-        }
-
-        static constexpr result_type pow(int base, int exp)
-        {
-            return (base==2) ? pow2(exp) : pown(base, exp);
-        }
-
-    public:
-        static constexpr result_type scale(const value_type& i, int base, int exp)
-        {
-            return (exp<0)
-                    ? to_rep(i)/pow(base, -exp)
-                    : to_rep(i)*pow(base, exp);
+        constexpr auto operator()(const value_type &i, int base, int exp) const
+        -> decltype(_impl::to_rep(i) * _num_traits_impl::pow<value_type>(base, exp)) {
+            return (exp < 0)
+                   ? _impl::to_rep(i) / _num_traits_impl::pow<value_type>(base, -exp)
+                   : _impl::to_rep(i) * _num_traits_impl::pow<value_type>(base, exp);
         }
     };
 

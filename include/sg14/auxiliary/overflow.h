@@ -11,7 +11,7 @@
 #define SG14_OVERFLOW_H
 
 #if !defined(SG14_GODBOLT_ORG)
-#include <sg14/numeric_traits>
+#include <sg14/num_traits.h>
 #include <sg14/bits/common.h>
 #endif
 
@@ -191,7 +191,7 @@ namespace sg14 {
                 using result_type = decltype(lhs+rhs);
                 using numeric_limits = std::numeric_limits<result_type>;
                 return _overflow_impl::return_if(
-                        !((rhs>=numeric_traits<Rhs>::from_rep(0))
+                        !((rhs>=_impl::from_rep<Rhs>(0))
                           ? (lhs>numeric_limits::max()-rhs)
                           : (lhs<numeric_limits::lowest()-rhs)),
                         lhs+rhs,
@@ -245,7 +245,7 @@ namespace sg14 {
                 using result_type = decltype(lhs-rhs);
                 using numeric_limits = std::numeric_limits<result_type>;
                 return _overflow_impl::return_if(
-                        (rhs<numeric_traits<Rhs>::from_rep(0))
+                        (rhs<_impl::from_rep<Rhs>(0))
                         ? (lhs<=numeric_limits::max()+rhs)
                         : (lhs>=numeric_limits::lowest()+rhs),
                         lhs-rhs,
@@ -294,9 +294,9 @@ namespace sg14 {
         constexpr bool is_multiply_overflow(const Lhs& lhs, const Rhs& rhs)
         {
             using result_nl = std::numeric_limits<decltype(lhs*rhs)>;
-            return lhs && rhs && ((lhs>numeric_traits<Lhs>::zero())
-                                  ? ((rhs>numeric_traits<Rhs>::zero()) ? (result_nl::max()/rhs) : (result_nl::lowest()/rhs))<lhs
-                                  : ((rhs>numeric_traits<Rhs>::zero()) ? (result_nl::lowest()/rhs) : (result_nl::max()/rhs))>lhs);
+            return lhs && rhs && ((lhs>Lhs{})
+                                  ? ((rhs>Rhs{}) ? (result_nl::max()/rhs) : (result_nl::lowest()/rhs))<lhs
+                                  : ((rhs>Rhs{}) ? (result_nl::lowest()/rhs) : (result_nl::max()/rhs))>lhs);
         }
 
         template<>

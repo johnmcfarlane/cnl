@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/numeric_traits>
+#include <sg14/num_traits.h>
 
 #include <sg14/bits/common.h>
 
@@ -19,22 +19,23 @@ namespace {
                 sg14::_digits_type>::value, "sg14::_digits_type test failed");
     }
 
-    namespace test_numeric_traits {
-        using sg14::numeric_traits;
+    namespace test_to_rep {
+        using sg14::_impl::to_rep;
 
-        static_assert(identical(numeric_traits<std::int32_t>::template set_digits<32>{0}, std::int64_t{0}), "");
-        static_assert(std::is_same<numeric_traits<int>::value_type, int>::value, "sg14::numeric_traits<> test failed");
-        static_assert(!numeric_traits<float>::is_specialized, "sg14::numeric_traits<> test failed");
-        static_assert(!numeric_traits<std::string>::is_specialized, "sg14::numeric_traits<> test failed");
-        static_assert(identical(numeric_traits<std::uint64_t>::to_rep(UINT64_C(0xFEDCBA9876543210)), UINT64_C(0xFEDCBA9876543210)), "sg14::numeric_traits<> test failed");
-        static_assert(identical(numeric_traits<unsigned>::scale(3, 2, 15), 98304U), "sg14::numeric_traits<> test failed");
+        static_assert(identical(to_rep(UINT64_C(0xFEDCBA9876543210)), UINT64_C(0xFEDCBA9876543210)),
+                      "sg14::numeric_traits<> test failed");
+    }
+
+    namespace test_set_digits {
+        using sg14::set_digits;
+        static_assert(identical(sg14::set_digits<std::int32_t, 32>::type{0}, std::int64_t{0}), "");
     }
 
     namespace test_scale {
-        ////////////////////////////////////////////////////////////////////////////////
-        // sg14::scale
-
         using sg14::_impl::scale;
+
+        static_assert(identical(scale<unsigned>(3, 2, 15), 98304U),
+                      "sg14::numeric_traits<> test failed");
 
         static_assert(identical(scale<uint8_t>(0b11110101, 2, 8), 0b1111010100000000), "sg14::scale test failed");
         static_assert(scale<uint8_t>(0b10110110, 2, 4) == 0b101101100000, "sg14::scale test failed");
@@ -64,7 +65,7 @@ namespace {
         static_assert(is_integer_or_float<uint8_t>::value, "sg14::_integer_impl::is_integer_or_float test failed");
         static_assert(is_integer_or_float<float>::value, "sg14::_integer_impl::is_integer_or_float test failed");
         static_assert(!is_integer_or_float<void>::value, "sg14::_integer_impl::is_integer_or_float test failed");
-        static_assert(!is_integer_or_float<int*>::value, "sg14::_integer_impl::is_integer_or_float test failed");
+        static_assert(!is_integer_or_float<int *>::value, "sg14::_integer_impl::is_integer_or_float test failed");
         static_assert(!is_integer_or_float<std::string>::value, "sg14::_integer_impl::is_integer_or_float test failed");
     }
 }

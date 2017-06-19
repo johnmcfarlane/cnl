@@ -21,7 +21,6 @@
 using sg14::_impl::identical;
 using sg14::_impl::is_integer_or_float;
 using sg14::_integer_impl::is_safe_integer;
-using sg14::numeric_traits;
 using sg14::safe_integer;
 using std::declval;
 using std::is_same;
@@ -121,6 +120,11 @@ static_assert(is_integer_or_float<saturated_integer<int64_t>>::value, "sg14::_in
 
 // equality
 
+static_assert(identical(saturated_integer<int>(1234), sg14::_impl::from_value<saturated_integer<uint8_t>>(1234)),
+              "sg14::from_value<sg14::saturated_integer> test failed");
+static_assert(sg14::_impl::operate(saturated_integer<uint8_t>(-1), 0, sg14::_impl::equal_tag),
+              "sg14::saturated_integer equality test failed");
+
 static_assert(identical(saturated_integer<int16_t>(32767), saturated_integer<int16_t>(5000000000L)), "sg14::saturated_integer equality test failed");
 static_assert(saturated_integer<uint8_t>(-1)==0, "sg14::saturated_integer equality test failed");
 static_assert(saturated_integer<int64_t>(5000000000L)!=saturated_integer<uint32_t>(5000000000L),
@@ -160,16 +164,24 @@ static_assert(saturated_integer<int8_t>(126.f)==126, "sg14::saturated_integer te
 static_assert(saturated_integer<int8_t>(127.)==127, "sg14::saturated_integer test failed");
 static_assert(saturated_integer<int8_t>(1e38f)==127, "sg14::saturated_integer test failed");
 
+static_assert(identical(throwing_integer<int32_t>{throwing_integer<uint16_t>{50005}}, throwing_integer<int32_t>{50005}),
+              "throwing_integer test failed");
+static_assert(identical(static_cast<throwing_integer<int32_t>>(throwing_integer<uint16_t>{50005}),
+                        throwing_integer<int32_t>{50005}), "throwing_integer test failed");
+
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::_impl::numeric_base<saturated_integer<>>
+// sg14::safe_integer<Rep, sg14::saturated_overflow_tag>
 
 namespace {
-    using namespace sg14::_impl;
+    using sg14::_impl::equal_tag;
+    using sg14::_impl::multiply_op;
+    using sg14::_impl::multiply_tag;
+
+    static_assert(sg14::_impl::is_derived_from_number_base<saturated_integer<short>>::value, "");
 
     static_assert(identical(
             to_rep(saturated_integer<short>(1234)),
-            short(1234)), "sg14::to_rep("
-            "<>) test failed");
+            short(1234)), "sg14::to_rep(saturated_integer<>) test failed");
 
     static_assert(identical(
             sg14::_impl::operate(saturated_integer<short>(1234), 2., sg14::_impl::multiply_tag),
@@ -198,7 +210,31 @@ namespace {
                     sg14::safe_integer<signed char, sg14::saturated_overflow_tag>{40},
                     multiply_tag),
             sg14::safe_integer<int, sg14::saturated_overflow_tag>{1200}), "");
+
+    static_assert(
+            identical(operate(3u, throwing_integer<std::uint8_t>{4}, multiply_tag), throwing_integer<unsigned>{12}),
+            "sg14::_impl::operate test failed");
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// constructor
+
+namespace test_constructor {
+    using namespace sg14::literals;
+
+    static_assert(throwing_integer<int>(7_c) > throwing_integer<int>(6_c), "");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// comparison
+
+namespace test_equal {
+    using sg14::_impl::equal_tag;
+    using sg14::_impl::operate;
+
+    static_assert(operate(throwing_integer<short>{0}, 0., equal_tag), "");
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // arithmetic
@@ -231,7 +267,7 @@ static_assert(int16_t(31)/saturated_integer<int8_t>(-2)==-15, "sg14::saturated_i
 static_assert(is_same<decltype(declval<saturated_integer<>>() / declval<double>()), double>::value, "");
 
 ////////////////////////////////////////////////////////////////////////////////
-// traits
+// numeric_limits
 
 // std::numeric_limits<sg14::safe_integer<>>::is_integer
 static_assert(numeric_limits<sg14::safe_integer<int8_t, sg14::saturated_overflow_tag>>::is_integer,
@@ -269,41 +305,110 @@ static_assert(numeric_limits<sg14::safe_integer<int64_t, sg14::saturated_overflo
 static_assert(!numeric_limits<sg14::safe_integer<uint64_t, sg14::saturated_overflow_tag>>::is_signed,
         "std::numeric_limits<sg14::safe_integer<>> test failed");
 
-// sg14::make_signed<sg14::saturated_integer<>>
-static_assert(is_same<make_signed<saturated_integer<int8_t >>::type, saturated_integer<int8_t >>::value,
-        "sg14::make_signed<sg14::saturated_integer<>> test failed");
-static_assert(is_same<make_signed<saturated_integer<uint8_t >>::type, saturated_integer<int8_t >>::value,
-        "sg14::make_signed<sg14::saturated_integer<>> test failed");
-static_assert(is_same<make_signed<saturated_integer<int16_t>>::type, saturated_integer<int16_t>>::value,
-        "sg14::make_signed<sg14::saturated_integer<>> test failed");
-static_assert(is_same<make_signed<saturated_integer<uint16_t>>::type, saturated_integer<int16_t>>::value,
-        "sg14::make_signed<sg14::saturated_integer<>> test failed");
-static_assert(is_same<make_signed<saturated_integer<int32_t>>::type, saturated_integer<int32_t>>::value,
-        "sg14::make_signed<sg14::saturated_integer<>> test failed");
-static_assert(is_same<make_signed<saturated_integer<uint32_t>>::type, saturated_integer<int32_t>>::value,
-        "sg14::make_signed<sg14::saturated_integer<>> test failed");
-static_assert(is_same<make_signed<saturated_integer<int64_t>>::type, saturated_integer<int64_t>>::value,
-        "sg14::make_signed<sg14::saturated_integer<>> test failed");
-static_assert(is_same<make_signed<saturated_integer<uint64_t>>::type, saturated_integer<int64_t>>::value,
-        "sg14::make_signed<sg14::saturated_integer<>> test failed");
+////////////////////////////////////////////////////////////////////////////////
+// traits
 
-// sg14::make_unsigned<sg14::saturated_integer<>>
-static_assert(is_same<numeric_traits<saturated_integer<int8_t >>::make_unsigned, saturated_integer<uint8_t >>::value,
-        "sg14::numeric_traits<sg14::saturated_integer<>>::make_unsigned test failed");
-static_assert(is_same<numeric_traits<saturated_integer<uint8_t >>::make_unsigned, saturated_integer<uint8_t >>::value,
-        "sg14::numeric_traits<sg14::saturated_integer<>>::make_unsigned test failed");
-static_assert(is_same<numeric_traits<saturated_integer<int16_t>>::make_unsigned, saturated_integer<uint16_t>>::value,
-        "sg14::numeric_traits<sg14::saturated_integer<>>::make_unsigned test failed");
-static_assert(is_same<numeric_traits<saturated_integer<uint16_t>>::make_unsigned, saturated_integer<uint16_t>>::value,
-        "sg14::numeric_traits<sg14::saturated_integer<>>::make_unsigned test failed");
-static_assert(is_same<numeric_traits<saturated_integer<int32_t>>::make_unsigned, saturated_integer<uint32_t>>::value,
-        "sg14::numeric_traits<sg14::saturated_integer<>>::make_unsigned test failed");
-static_assert(is_same<numeric_traits<saturated_integer<uint32_t>>::make_unsigned, saturated_integer<uint32_t>>::value,
-        "sg14::numeric_traits<sg14::saturated_integer<>>::make_unsigned test failed");
-static_assert(is_same<numeric_traits<saturated_integer<int64_t>>::make_unsigned, saturated_integer<uint64_t>>::value,
-        "sg14::numeric_traits<sg14::saturated_integer<>>::make_unsigned test failed");
-static_assert(is_same<numeric_traits<saturated_integer<uint64_t>>::make_unsigned, saturated_integer<uint64_t>>::value,
-        "sg14::numeric_traits<sg14::saturated_integer<>>::make_unsigned test failed");
+namespace test_digits {
+    using sg14::digits;
+    using sg14::set_digits_t;
+
+    static_assert(digits<safe_integer<int8_t>>::value == 7, "sg14::digits / sg14::set_digits test failed");
+    static_assert(identical(set_digits_t<safe_integer<std::uint8_t>, 12>{2000}, safe_integer<std::uint16_t>{2000}),
+                  "sg14::digits / sg14::set_digits test failed");
+}
+
+namespace test_make_signed {
+    using sg14::make_signed;
+
+    // sg14::make_unsigned<sg14::saturated_integer<>>
+    static_assert(is_same<make_signed<saturated_integer<int8_t >>::type, saturated_integer<int8_t >>::value,
+                  "sg14::make_signed<sg14::saturated_integer<>> test failed");
+    static_assert(is_same<make_signed<saturated_integer<uint8_t >>::type, saturated_integer<int8_t >>::value,
+                  "sg14::make_signed<sg14::saturated_integer<>> test failed");
+    static_assert(is_same<make_signed<saturated_integer<int16_t>>::type, saturated_integer<int16_t>>::value,
+                  "sg14::make_signed<sg14::saturated_integer<>> test failed");
+    static_assert(is_same<make_signed<saturated_integer<uint16_t>>::type, saturated_integer<int16_t>>::value,
+                  "sg14::make_signed<sg14::saturated_integer<>> test failed");
+    static_assert(is_same<make_signed<saturated_integer<int32_t>>::type, saturated_integer<int32_t>>::value,
+                  "sg14::make_signed<sg14::saturated_integer<>> test failed");
+    static_assert(is_same<make_signed<saturated_integer<uint32_t>>::type, saturated_integer<int32_t>>::value,
+                  "sg14::make_signed<sg14::saturated_integer<>> test failed");
+    static_assert(is_same<make_signed<saturated_integer<int64_t>>::type, saturated_integer<int64_t>>::value,
+                  "sg14::make_signed<sg14::saturated_integer<>> test failed");
+    static_assert(is_same<make_signed<saturated_integer<uint64_t>>::type, saturated_integer<int64_t>>::value,
+                  "sg14::make_signed<sg14::saturated_integer<>> test failed");
+}
+
+namespace test_make_unsigned {
+    using sg14::make_unsigned;
+
+    // sg14::make_unsigned<sg14::saturated_integer<>>
+    static_assert(is_same<make_unsigned<saturated_integer<int8_t >>::type, saturated_integer<uint8_t >>::value,
+                  "sg14::make_unsigned<sg14::saturated_integer<>>::type test failed");
+    static_assert(is_same<make_unsigned<saturated_integer<uint8_t >>::type, saturated_integer<uint8_t >>::value,
+                  "sg14::make_unsigned<sg14::saturated_integer<>>::type test failed");
+    static_assert(is_same<make_unsigned<saturated_integer<int16_t>>::type, saturated_integer<uint16_t>>::value,
+                  "sg14::make_unsigned<sg14::saturated_integer<>>::type test failed");
+    static_assert(is_same<make_unsigned<saturated_integer<uint16_t>>::type, saturated_integer<uint16_t>>::value,
+                  "sg14::make_unsigned<sg14::saturated_integer<>>::type test failed");
+    static_assert(is_same<make_unsigned<saturated_integer<int32_t>>::type, saturated_integer<uint32_t>>::value,
+                  "sg14::make_unsigned<sg14::saturated_integer<>>::type test failed");
+    static_assert(is_same<make_unsigned<saturated_integer<uint32_t>>::type, saturated_integer<uint32_t>>::value,
+                  "sg14::make_unsigned<sg14::saturated_integer<>>::type test failed");
+    static_assert(is_same<make_unsigned<saturated_integer<int64_t>>::type, saturated_integer<uint64_t>>::value,
+                  "sg14::make_unsigned<sg14::saturated_integer<>>::type test failed");
+    static_assert(is_same<make_unsigned<saturated_integer<uint64_t>>::type, saturated_integer<uint64_t>>::value,
+                  "sg14::make_unsigned<sg14::saturated_integer<>>::type test failed");
+}
+
+namespace test_to_rep {
+    using sg14::_impl::to_rep;
+
+    static_assert(identical(
+            to_rep(native_integer<std::uint8_t>{3}) * sg14::_num_traits_impl::pow<native_integer<std::uint8_t>>(2, 3),
+            native_integer<int>{24}), "");
+}
+
+namespace test_from_rep {
+    using sg14::from_rep;
+
+    static_assert(identical(from_rep<native_integer<int>>()(746352), native_integer<int>{746352}), "");
+    static_assert(from_rep<native_integer<short>>()(1), "");
+    static_assert(from_rep<throwing_integer<short>>()(1), "");
+}
+
+namespace test_impl_from_rep {
+    using sg14::_impl::from_rep;
+
+    static_assert(identical(from_rep<native_integer<int>>(746352), native_integer<int>{746352}), "");
+    static_assert(from_rep<native_integer<short>>(1), "");
+    static_assert(from_rep<throwing_integer<short>>(1), "");
+}
+
+namespace test_scale {
+    using sg14::scale;
+
+    static_assert(identical(
+            scale<throwing_integer<std::int32_t>>()(throwing_integer<std::int32_t>{1}, 2, 15),
+            throwing_integer<std::int32_t>{32768}),
+                  "scale<safe_integer<>> test failed");
+    static_assert(identical(
+            scale<throwing_integer<std::int32_t>>()(throwing_integer<std::uint16_t>{1}, 2, 15),
+            throwing_integer<std::int32_t>{32768}),
+                  "scale<safe_integer<>> test failed");
+
+    static_assert(identical(
+            scale<saturated_integer<uint16_t>>()(saturated_integer<uint8_t>{0x1234}, 2, 8),
+            saturated_integer<int>{0xff00}),
+                  "scale<safe_integer<>> test failed");
+}
+
+namespace test_impl_scale {
+    using sg14::_impl::scale;
+
+    static_assert(identical(scale(native_integer<std::uint8_t>{3}, 2, 4), native_integer<int>{48}),
+                  "scale<safe_integer<>> test failed");
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // common safe_integer characteristics

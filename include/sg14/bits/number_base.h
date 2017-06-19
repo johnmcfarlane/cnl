@@ -10,7 +10,7 @@
 #if !defined(SG14_GODBOLT_ORG)
 #include <sg14/auxiliary/const_integer.h>
 #include <sg14/bits/common.h>
-#include <sg14/numeric_traits>
+#include <sg14/num_traits.h>
 #endif
 
 #include <limits>
@@ -20,12 +20,9 @@ namespace sg14 {
     namespace _impl {
         template<class Derived, class Rep>
         class number_base {
-            enum _from_data {
-                _from_data
-            };
-
         public:
             using rep = Rep;
+            using _derived = Derived;
 
             number_base() = default;
 
@@ -123,8 +120,8 @@ namespace sg14 {
                 class Operator, class Lhs, class RhsDerived, class RhsRep,
                 enable_if_t <precedes<RhsDerived, Lhs>::value, std::nullptr_t> = nullptr>
         constexpr auto operate(const Lhs& lhs, const number_base<RhsDerived, RhsRep>& rhs, Operator op)
-        -> decltype(op(numeric_traits<RhsDerived>::make(lhs), static_cast<const RhsDerived&>(rhs))) {
-            return op(numeric_traits<RhsDerived>::make(lhs), static_cast<const RhsDerived&>(rhs));
+        -> decltype(op(_impl::from_value<RhsDerived>(lhs), static_cast<const RhsDerived&>(rhs))) {
+            return op(from_value<RhsDerived>(lhs), static_cast<const RhsDerived&>(rhs));
         }
 
         // number_base<> OP lower
@@ -132,9 +129,9 @@ namespace sg14 {
                 class Operator, class LhsDerived, class LhsRep, class Rhs,
                 enable_if_t <precedes<LhsDerived, Rhs>::value, std::nullptr_t> = nullptr>
         constexpr auto operate(const number_base<LhsDerived, LhsRep>& lhs, const Rhs& rhs, Operator op)
-        -> decltype(op(static_cast<const LhsDerived&>(lhs), numeric_traits<LhsDerived>::make(rhs)))
+        -> decltype(op(static_cast<const LhsDerived &>(lhs), from_value<LhsDerived>(rhs)))
         {
-            return op(static_cast<const LhsDerived&>(lhs), numeric_traits<LhsDerived>::make(rhs));
+            return op(static_cast<const LhsDerived &>(lhs), from_value<LhsDerived>(rhs));
         }
 
         // unary operate
@@ -297,41 +294,61 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::numeric_traits<_impl::number_base<>>
+    // _impl::number_base<> numeric traits
 
-    template<class Derived, class Rep>
-    struct numeric_traits<_impl::number_base<Derived, Rep>> {
-        using _rep = Rep;
-        using _rep_numeric_traits = numeric_traits<_rep>;
+    template<class Number>
+    struct is_composite<Number, _impl::enable_if_t<_impl::is_derived_from_number_base<Number>::value>> : std::true_type {
+    };
 
-        using _number_base = _impl::number_base<Derived, _rep>;
-        using value_type = Derived;
+    namespace _impl {
+        template<class Number>
+        struct get_rep;
 
-        static constexpr bool is_specialized = true;
-        static constexpr bool is_composite = true;
+        template<class Number>
+        using get_rep_t = typename get_rep<Number>::type;
 
-        static constexpr value_type from_rep(const _rep& r)
-        {
-            return _number_base::from_data(r);
+        // given a Number type and an alternative Rep type, make a new Number type
+        // e.g. set_rep_t<fixed_point<int64_t, 42>, uint8_t> --> fixed_point<uint8_t, 42>
+        template<class Number, class NewRep, class Enable = void>
+        struct set_rep;
+
+        template<class Number, class NewRep>
+        using set_rep_t = typename set_rep<Number, NewRep>::type;
+    }
+
+    template<class Number>
+    struct make_signed<Number, _impl::enable_if_t<_impl::is_derived_from_number_base<Number>::value>> {
+        using type = _impl::set_rep_t<Number, make_signed_t<_impl::get_rep_t<Number>>>;
+    };
+
+    template<class Number>
+    struct make_unsigned<Number, _impl::enable_if_t<_impl::is_derived_from_number_base<Number>::value>> {
+        using type = _impl::set_rep_t<Number, make_unsigned_t<_impl::get_rep_t<Number>>>;
+    };
+
+    template<class Number>
+    struct from_rep<Number, _impl::enable_if_t<_impl::is_derived_from_number_base<Number>::value>> {
+        template<class Rep>
+        constexpr auto operator()(const Rep &rep) const -> Number {
+            return Number::from_data(static_cast<typename Number::rep>(rep));
         }
+    };
 
-        static constexpr _rep to_rep(const value_type& number)
-        {
+    template<class Number>
+    struct to_rep<Number, _impl::enable_if_t<_impl::is_derived_from_number_base<Number>::value>> {
+        constexpr auto operator()(const typename Number::_derived& number) const
+        -> decltype(number.data()){
             return number.data();
         }
-        
-        template<typename Input>
-        static constexpr value_type make(const Input& input) {
-            return value_type(input);
-        }
+    };
 
-        static constexpr value_type scale(const value_type& number, int base, int exp)
-        {
-            return from_rep(sg14::_impl::scale(to_rep(number), base, exp));
-        }
-
-        static constexpr value_type zero() {
-            return from_rep(_rep_numeric_traits::zero());
+    template<class Derived, class Rep>
+    struct scale<_impl::number_base<Derived, Rep>> {
+        template<class Input>
+        constexpr Rep operator()(const Input &i, int base, int exp) const {
+            return (exp < 0)
+                   ? _impl::to_rep(i) / _num_traits_impl::pow<Rep>(base, -exp)
+                   : _impl::to_rep(i) * _num_traits_impl::pow<Rep>(base, exp);
         }
     };
 }
@@ -352,7 +369,7 @@ namespace std {
 
         static constexpr _value_type min() noexcept
         {
-            return sg14::numeric_traits<_value_type>::from_rep(_rep_numeric_limits::min());
+            return _value_type::from_data(_rep_numeric_limits::min());
         }
 
         static constexpr _value_type max() noexcept

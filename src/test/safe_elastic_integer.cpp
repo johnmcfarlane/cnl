@@ -46,11 +46,6 @@ namespace {
                 "sg14::safe_elastic_integer parameter default test failed");
     }
 
-    namespace test_numeric_traits {
-        using numeric_traits = sg14::numeric_traits<sg14::safe_integer<sg14::elastic_integer<33, char>, sg14::saturated_overflow_tag>>;
-        static_assert(std::is_same<numeric_traits::value_type, sg14::safe_integer<sg14::elastic_integer<33, char>, sg14::saturated_overflow_tag>>::value, "");
-    }
-
     namespace test_numeric_limits {
         using safe_saturating_integer_2 = sg14::safe_integer<sg14::elastic_integer<2, char>, sg14::saturated_overflow_tag>;
         static_assert(identical(
@@ -93,11 +88,35 @@ namespace {
     namespace test_multiply {
         static_assert(identical(safe_elastic_integer<6>{55}*safe_elastic_integer<6>{4}, safe_elastic_integer<12>{220}), "safe_elastic_integer operator*");
         static_assert(identical(safe_elastic_integer<3>{7}*safe_elastic_integer<4>{10}, safe_elastic_integer<7>{70}), "safe_elastic_integer operator*");
+#if defined(__clang__) || ! defined(__GNUG__)
         static_assert(identical(safe_elastic_integer<3>{3}*.25, .75), "safe_elastic_integer operator*");
+#endif
     }
 
     namespace test_scale {
         static_assert(identical(safe_elastic_integer<3>{7}*safe_elastic_integer<4>{10}, safe_elastic_integer<7>{70}), "safe_elastic_integer operator*");
+    }
+
+    namespace test_is_composite {
+        using sg14::is_composite;
+
+        static_assert(is_composite<safe_elastic_integer<10>>::value, "is_composite<safe_elastic_integer<10>> test failed");
+    }
+
+    namespace test_digits {
+        using sg14::digits;
+        using sg14::set_digits_t;
+
+        static_assert(digits<safe_elastic_integer<3>>::value>=3, "sg14::digits / sg14::set_digits test failed");
+        static_assert(identical(set_digits_t<safe_elastic_integer<1>, 3>{6}, safe_elastic_integer<3>{6}), "sg14::digits / sg14::set_digits test failed");
+    }
+
+    namespace test_used_bits {
+        using sg14::used_bits;
+        using sg14::throwing_overflow_tag;
+
+        static_assert(used_bits(safe_elastic_integer<1, throwing_overflow_tag, char>{0}) == 0, "used_bits(safe_elastic_integer)");
+        static_assert(used_bits(safe_elastic_integer<22, throwing_overflow_tag>{77}) == 7, "used_bits(safe_elastic_integer)");
     }
 
     namespace test_leading_bits {

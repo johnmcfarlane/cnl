@@ -46,19 +46,37 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::numeric_traits::precise_integer
+    // numeric type traits
 
-    template<class Rep, class RoundingPolicy>
-    struct numeric_traits<precise_integer<Rep, RoundingPolicy>> :
-            numeric_traits<_impl::number_base<precise_integer<Rep, RoundingPolicy>, Rep>> {
-        using make_signed = precise_integer<typename numeric_traits<Rep>::make_signed, RoundingPolicy>;
-        using make_unsigned = precise_integer<typename numeric_traits<Rep>::make_unsigned, RoundingPolicy>;
+    template<class Rep, class RoundingTag>
+    struct digits<precise_integer<Rep, RoundingTag>> : digits<Rep> {
+    };
 
-        static constexpr bool is_signed = numeric_traits<Rep>::is_signed;
-        static constexpr _digits_type digits = numeric_traits<Rep>::digits;
+    template<class Rep, class RoundingTag, _digits_type MinNumBits>
+    struct set_digits<precise_integer<Rep, RoundingTag>, MinNumBits> {
+        using type = precise_integer<set_digits_t<Rep, MinNumBits>, RoundingTag>;
+    };
 
-        template<_digits_type NumDigits>
-        using set_digits = precise_integer<typename numeric_traits<Rep>::template set_digits<NumDigits>, RoundingPolicy>;
+    namespace _impl {
+        template<class Rep, class RoundingTag>
+        struct get_rep<precise_integer<Rep, RoundingTag>> {
+            using type = Rep;
+        };
+
+        template<class OldRep, class RoundingTag, class NewRep>
+        struct set_rep<precise_integer<OldRep, RoundingTag>, NewRep> {
+            using type = precise_integer<NewRep, RoundingTag>;
+        };
+    }
+
+    template<class Rep, class RoundingTag, class Value>
+    struct from_value<precise_integer<Rep, RoundingTag>, Value> {
+        using type = precise_integer<Value, RoundingTag>;
+    };
+
+    template<class Rep, class RoundingTag>
+    struct scale<precise_integer<Rep, RoundingTag>>
+    : scale<_impl::number_base<precise_integer<Rep, RoundingTag>, Rep>> {
     };
 
     namespace _precise_integer_impl {
@@ -83,10 +101,10 @@ namespace sg14 {
         constexpr auto operate_common_policy(
                 const precise_integer<LhsRep, RoundingPolicy>& lhs,
                 const precise_integer<RhsRep, RoundingPolicy>& rhs)
-        -> decltype(sg14::numeric_traits<precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingPolicy>>::from_rep(Operator()(lhs.data(), rhs.data())))
+        -> decltype(from_rep<precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingPolicy>>(Operator()(lhs.data(), rhs.data())))
         {
-            using result_numeric_traits = sg14::numeric_traits<precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingPolicy>>;
-            return result_numeric_traits::from_rep(Operator()(lhs.data(), rhs.data()));
+            using result_type = precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingPolicy>;
+            return from_rep<result_type>(Operator()(lhs.data(), rhs.data()));
         }
 
         // for arithmetic operands with different policies
@@ -118,11 +136,11 @@ namespace sg14 {
     constexpr auto operator<<(
             const precise_integer<LhsRep, LhsRoundingPolicy>& lhs,
             const RhsInteger& rhs)
-    -> decltype(numeric_traits<precise_integer<decltype(to_rep(lhs) << rhs), LhsRoundingPolicy>>::from_rep(to_rep(lhs) << rhs))
+    -> decltype(from_rep<precise_integer<decltype(_impl::to_rep(lhs) << rhs), LhsRoundingPolicy>>(_impl::to_rep(lhs) << rhs))
     {
-        return numeric_traits<precise_integer<
-                decltype(to_rep(lhs) << rhs),
-                LhsRoundingPolicy>>::from_rep(to_rep(lhs) << rhs);
+        return from_rep<precise_integer<
+                decltype(_impl::to_rep(lhs) << rhs),
+                LhsRoundingPolicy>>(_impl::to_rep(lhs) << rhs);
     }
 }
 

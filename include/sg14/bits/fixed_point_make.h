@@ -39,7 +39,7 @@ namespace sg14 {
     /// \sa make_ufixed
     template<int IntegerDigits, int FractionalDigits = 0, class Narrowest = signed>
     using make_fixed = fixed_point<
-            _impl::set_digits_t<Narrowest, IntegerDigits+FractionalDigits>,
+            set_digits_t<Narrowest, IntegerDigits+FractionalDigits>,
             -FractionalDigits>;
 
     /// \brief specializes \ref fixed_point with the given number of integer and fractional digits; produces an unsigned type
@@ -50,7 +50,7 @@ namespace sg14 {
     using make_ufixed = make_fixed<
             IntegerDigits,
             FractionalDigits,
-            typename numeric_traits<Narrowest>::make_unsigned>;
+            typename make_unsigned<Narrowest>::type>;
 }
 
 #endif	// SG14_MAKE_FIXED_H

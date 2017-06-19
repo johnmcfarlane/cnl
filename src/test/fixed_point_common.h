@@ -32,20 +32,20 @@ using std::numeric_limits;
 static_assert(sizeof(int)==4, "warning: many of the tests in this file assume a 4-byte integer!z");
 
 using test_signed = test_int;
-using test_unsigned = sg14::numeric_traits<test_signed>::make_unsigned;
+using test_unsigned = sg14::make_unsigned_t<test_signed>;
 
-using int8 = sg14::_impl::set_digits_t<test_signed, 7>;
-using uint8 = sg14::_impl::set_digits_t<test_unsigned, 8>;
-using int16 = sg14::_impl::set_digits_t<test_signed, 15>;
-using uint16 = sg14::_impl::set_digits_t<test_unsigned, 16>;
-using int32 = sg14::_impl::set_digits_t<test_signed, 31>;
-using uint32 = sg14::_impl::set_digits_t<test_unsigned, 32>;
-using int64 = sg14::_impl::set_digits_t<test_signed, 63>;
-using uint64 = sg14::_impl::set_digits_t<test_unsigned, 64>;
+using int8 = sg14::set_digits_t<test_signed, 7>;
+using uint8 = sg14::set_digits_t<test_unsigned, 8>;
+using int16 = sg14::set_digits_t<test_signed, 15>;
+using uint16 = sg14::set_digits_t<test_unsigned, 16>;
+using int32 = sg14::set_digits_t<test_signed, 31>;
+using uint32 = sg14::set_digits_t<test_unsigned, 32>;
+using int64 = sg14::set_digits_t<test_signed, 63>;
+using uint64 = sg14::set_digits_t<test_unsigned, 64>;
 
 #if defined(SG14_INT128_ENABLED)
-using int128 = sg14::_impl::set_digits_t<test_signed, 127>;
-using uint128 = sg14::_impl::set_digits_t<test_unsigned, 128>;
+using int128 = sg14::set_digits_t<test_signed, 127>;
+using uint128 = sg14::set_digits_t<test_unsigned, 128>;
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -64,13 +64,10 @@ template<int IntegerDigits, int FractionalDigits = 0, class Narrowest = test_uns
 using make_ufixed = sg14::make_ufixed<IntegerDigits, FractionalDigits, Narrowest>;
 
 template<class Type, sg14::_digits_type MinNumDigits>
-using set_digits_t = sg14::_impl::set_digits_t<Type, MinNumDigits>;
+using set_digits_t = sg14::set_digits_t<Type, MinNumDigits>;
 
 using sg14::divide;
 using sg14::multiply;
-
-using sg14::_impl::from_rep;
-using sg14::_impl::to_rep;
 
 using sg14::_impl::identical;
 
@@ -190,7 +187,7 @@ static_assert(shift_left<8, uint8>((uint16) 0x1234)==0x0, "sg14::shift_left test
 #endif
 
 #if defined(TEST_SATURATED_OVERFLOW)
-static_assert(shift_left<8, uint16>((uint16)0x1234) == 0xffff, "sg14::shift_left test failed");
+static_assert(identical(shift_left<8, uint16>((uint16)0x1234), uint16{0xffff}), "sg14::shift_left test failed");
 static_assert(shift_left<8, uint16>((uint8)0x1234) == 0xff00, "sg14::shift_left test failed");
 static_assert(shift_left<8, uint8>((uint16)0x1234) == 0xff, "sg14::shift_left test failed");
 #endif
@@ -239,44 +236,71 @@ static_assert(pow2<long double, 10>()==1024, "sg14::_impl::fp::type::pow2 test f
 static_assert(pow2<float, 20>()==1048576, "sg14::_impl::fp::type::pow2 test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-// sg14::_impl::set_digits_t<fixed_point<>, >
+// numeric traits
 
-static_assert(is_same<set_digits_t<fixed_point<uint8, -8>, 8>, fixed_point<uint8, -8>>::value,
-        "sg14::_impl::set_digits_t test failed");
+namespace test_is_composite {
+    using sg14::is_composite;
+
+    static_assert(is_composite<fixed_point<test_int>>::value, "sg14::is_composite<fixed_point<>> test failed");
+    static_assert(sg14::_num_traits_impl::are_composite<fixed_point<test_int>>::value, "sg14::is_composite<fixed_point<>> test failed");
+}
+
+namespace test_to_rep {
+    using sg14::_impl::to_rep;
+
+    static_assert(identical(to_rep(fixed_point<test_int>{97531}), test_int{97531}), "sg14::to_rep");
+    static_assert(identical(to_rep(fixed_point<uint8>{199}), uint8{199}), "sg14::to_rep");
+}
+namespace test_from_rep {
+    using sg14::_impl::from_rep;
+
+    static_assert(identical(from_rep<fixed_point<>>(test_int{0}), fixed_point<>{0}), "from_rep");
+    static_assert(identical(from_rep<fixed_point<int16, -10>>(int16{3072}), fixed_point<int16, -10>{test_int{3}}), "from_rep");
+    static_assert(!from_rep<fixed_point<test_int, -100>>(test_int{0}), "from_rep");
+    static_assert(from_rep<fixed_point<test_int, -100>>(test_int{1}), "from_rep");
+    static_assert(!from_rep<fixed_point<test_int, 1000>>(test_int{0}), "from_rep");
+    static_assert(from_rep<fixed_point<test_int, 1000>>(test_int{1}), "from_rep");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// sg14::set_digits_t<fixed_point<>, >
+
+static_assert(identical(set_digits_t<fixed_point<uint8, -8>, 8>{0}, fixed_point<uint8, -8>{0}),
+        "sg14::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<int8, 8>, 15>, fixed_point<int16, 8>>::value,
-        "sg14::_impl::set_digits_t test failed");
+        "sg14::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<uint16, -16>, 24>, fixed_point<uint32, -16>>::value,
-        "sg14::_impl::set_digits_t test failed");
+        "sg14::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<int16, 16>, 31>, fixed_point<int32, 16>>::value,
-        "sg14::_impl::set_digits_t test failed");
+        "sg14::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<uint32, -45>, 40>, fixed_point<uint64, -45>>::value,
-        "sg14::_impl::set_digits_t test failed");
+        "sg14::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<int32, -8>, 47>, fixed_point<int64, -8>>::value,
-        "sg14::_impl::set_digits_t test failed");
+        "sg14::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<uint64, 8>, 56>, fixed_point<uint64, 8>>::value,
-        "sg14::_impl::set_digits_t test failed");
+        "sg14::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<int64, -16>, 63>, fixed_point<int64, -16>>::value,
-        "sg14::_impl::set_digits_t test failed");
+        "sg14::set_digits_t test failed");
 #if defined(SG14_INT128_ENABLED)
 static_assert(is_same<set_digits_t<fixed_point<uint8, 16>, 72>, fixed_point<uint128, 16>>::value,
-        "sg14::_impl::set_digits_t test failed");
+        "sg14::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<int8, -45>, 79>, fixed_point<int128, -45>>::value,
-        "sg14::_impl::set_digits_t test failed");
+        "sg14::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<uint16, -8>, 88>, fixed_point<uint128, -8>>::value,
-        "sg14::_impl::set_digits_t test failed");
+        "sg14::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<int16, 8>, 95>, fixed_point<int128, 8>>::value,
-        "sg14::_impl::set_digits_t test failed");
+        "sg14::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<uint32, -16>, 104>, fixed_point<uint128, -16>>::value,
-        "sg14::_impl::set_digits_t test failed");
+        "sg14::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<int32, 16>, 111>, fixed_point<int128, 16>>::value,
-        "sg14::_impl::set_digits_t test failed");
+        "sg14::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<uint64, -45>, 120>, fixed_point<uint128, -45>>::value,
-        "sg14::_impl::set_digits_t test failed");
+        "sg14::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<int64, -8>, 127>, fixed_point<int128, -8>>::value,
-        "sg14::_impl::set_digits_t test failed");
+        "sg14::set_digits_t test failed");
 static_assert(
-        is_same<sg14::_impl::set_digits_t<sg14::fixed_point<long unsigned int, -96>, 96u>, sg14::fixed_point<unsigned __int128, -96>>::value,
+        is_same<sg14::set_digits_t<sg14::fixed_point<long unsigned int, -96>, 96u>, sg14::fixed_point<unsigned __int128, -96>>::value,
         "");
 #endif
 
@@ -693,6 +717,7 @@ static_assert(identical(fixed_point<uint8, 10>{10240} * 3u, fixed_point<test_uns
 
 static_assert(identical(multiply(3u, fixed_point<uint8, 10>{10240}), fixed_point<uint64, 10>{30720}),
         "sg14::fixed_point multiplication test failed");
+static_assert(identical(3u * uint8{4}, test_unsigned{12}), "sg14::fixed_point multiplication test failed");
 static_assert(identical(3u * fixed_point<uint8, 10>{10240}, fixed_point<test_unsigned, 10>{30720}),
         "sg14::fixed_point multiplication test failed");
 #endif
@@ -874,8 +899,9 @@ static_assert(static_cast<float>(sqrt(make_fixed<7, 24>(3.141592654)))<1.7724537
 namespace test_used_bits {
     using sg14::used_bits;
 
-    static_assert(used_bits(fixed_point<uint8, -4>{1}) == 5, "sg14::leading_bits");
-    static_assert(used_bits(fixed_point<uint8, -3>{2}) == 5, "sg14::leading_bits");
+    static_assert(used_bits(uint8{10})==4, "sg14::used_bits");
+    static_assert(used_bits(fixed_point<uint8, -4>{1}) == 5, "sg14::used_bits");
+    static_assert(used_bits(fixed_point<uint8, -3>{2}) == 5, "sg14::used_bits");
 }
 
 namespace test_leading_bits {
@@ -915,7 +941,7 @@ struct FixedPointTesterOutsize {
 
     // simply assignment to and from underlying representation
     using numeric_limits = std::numeric_limits<fixed_point>;
-    static constexpr fixed_point min = from_rep<fixed_point>(rep(1));
+    static constexpr fixed_point min = sg14::_impl::from_rep<fixed_point>(rep(1));
 #if !defined(_MSC_VER)
     static_assert(min.data() == rep(1), "all Rep types should be able to store the number 1!");
 
