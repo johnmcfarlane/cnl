@@ -13,7 +13,7 @@ endif (DOXYGEN_FOUND)
 find_program(PANDOC_EXECUTABLE pandoc)
 if (PANDOC_EXECUTABLE)
     set(HTML_DIR ${CMAKE_CURRENT_LIST_DIR}/gh-pages/papers)
-    foreach(PAPER p0381 p0381r1 p0381r0 p0037 p0037r3 p0037r2 p0037r1 p0037r0 p0554)
+    foreach(PAPER p0381 p0381r1 p0381r0 p0037 p0037r3 p0037r2 p0037r1 p0037r0 p0554 p0675)
         set(HTML_FILE ${HTML_DIR}/${PAPER}.html)
         set(COMMONMARK_FILE ${CMAKE_CURRENT_LIST_DIR}/${PAPER}.md)
         add_custom_target(
