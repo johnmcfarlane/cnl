@@ -10,10 +10,8 @@
 #if !defined(SG14_FIXED_POINT_DEF_H)
 #define SG14_FIXED_POINT_DEF_H 1
 
-#if ! defined(SG14_GODBOLT_ORG)
 #include <sg14/auxiliary/const_integer.h>
 #include <sg14/bits/number_base.h>
-#endif
 
 /// study group 14 of the C++ working group
 namespace sg14 {

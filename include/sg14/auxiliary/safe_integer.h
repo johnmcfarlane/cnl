@@ -10,11 +10,9 @@
 #if !defined(SG14_SAFE_INTEGER_H)
 #define SG14_SAFE_INTEGER_H 1
 
-#if ! defined(SG14_GODBOLT_ORG)
 #include <sg14/bits/number_base.h>
 #include <sg14/fixed_point>
 #include "overflow.h"
-#endif
 
 /// study group 14 of the C++ working group
 namespace sg14 {

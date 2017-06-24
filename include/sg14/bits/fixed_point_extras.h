@@ -12,9 +12,7 @@
 #if !defined(SG14_FIXED_POINT_EXTRAS_H)
 #define SG14_FIXED_POINT_EXTRAS_H 1
 
-#if ! defined(SG14_GODBOLT_ORG)
 #include "fixed_point_type.h"
-#endif
 
 #include <cmath>
 #include <istream>

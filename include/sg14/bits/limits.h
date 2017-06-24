@@ -10,9 +10,7 @@
 #if !defined(SG14_LIMITS_H)
 #define SG14_LIMITS_H 1
 
-#if ! defined(SG14_GODBOLT_ORG)
 #include "config.h"
-#endif
 
 #include <climits>
 #include <cstdint>
