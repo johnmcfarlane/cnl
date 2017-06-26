@@ -39,7 +39,7 @@ Optional:
 
 - [Boost](http://www.boost.org/) - facilitates multiprecision support
 - [Doxygen](http://www.doxygen.org/) - generates documentation in the *doc/gh-pages* directory
-- [cmark](https://github.com/jgm/cmark) - generates proposal papers
+- [pandoc](http://pandoc.org/) - generates proposal papers
 
 For a list of configuration options:
 

@@ -9,6 +9,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
 # fp_test target
 
 add_executable(fp_test
+        ${CMAKE_CURRENT_LIST_DIR}/p0675.cpp
         # slowest
         ${CMAKE_CURRENT_LIST_DIR}/elastic_fixed_point.cpp
 
