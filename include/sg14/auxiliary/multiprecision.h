@@ -10,7 +10,7 @@
 #if !defined(SG14_MULTIPRECISION_H)
 #define SG14_MULTIPRECISION_H 1
 
-#include <sg14/numeric_traits>
+#include <sg14/num_traits.h>
 
 #include <boost/multiprecision/cpp_int.hpp>
 
@@ -25,35 +25,45 @@ namespace sg14 {
     // These are the definitions needed to use any custom integer type with
     // sg14::fixed_point
 
-    // numeric_traits<boost::multiprecision::cpp_int_backend<...>>
     template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
-    struct numeric_traits<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked, Allocator>> {
-
-        using make_signed = _bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude, Checked, Allocator>;
-        using make_unsigned = _bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude, Checked, Allocator>;
-
-        static_assert(SignType == _bmp::signed_magnitude || SignType == _bmp::unsigned_magnitude, "following sign test may fail");
-        static constexpr bool is_signed = (SignType == _bmp::signed_magnitude);
-
-        static constexpr _digits_type digits = NumBits-is_signed;
-
-        template<_digits_type NewNumDigits>
-        using set_digits = _bmp::cpp_int_backend<NewNumDigits+is_signed, NewNumDigits+is_signed, SignType, Checked, Allocator>;
+    struct make_signed<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked, Allocator>> {
+        using type = _bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude, Checked, Allocator>;
     };
 
-    // numeric_traits<boost::multiprecision::number<>>
+    template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
+    struct make_unsigned<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked, Allocator>> {
+        using type = _bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude, Checked, Allocator>;
+    };
+
+    template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
+    struct digits<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked, Allocator>>
+    : std::integral_constant<_digits_type, NumBits> {
+    };
+
+    template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator, _digits_type MinNumDigits>
+    struct set_digits<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked, Allocator>, MinNumDigits> {
+        static constexpr unsigned width = MinNumDigits + (SignType == _bmp::signed_magnitude);
+        using type = _bmp::cpp_int_backend<width, width, SignType, Checked, Allocator>;
+    };
+
     template<class Backend, _bmp::expression_template_option ExpressionTemplates>
-    struct numeric_traits<_bmp::number<Backend, ExpressionTemplates>>
-    : sg14::_impl::numeric_traits_base<_bmp::number<Backend, ExpressionTemplates>> {
-        using _backend_traits = numeric_traits<Backend>;
+    struct make_signed<_bmp::number<Backend, ExpressionTemplates>> {
+        using type = _bmp::number<make_signed_t<Backend>, ExpressionTemplates>;
+    };
 
-        using make_signed = _bmp::number<typename _backend_traits::make_signed, ExpressionTemplates>;
-        using make_unsigned = _bmp::number<typename _backend_traits::make_unsigned, ExpressionTemplates>;
+    template<class Backend, _bmp::expression_template_option ExpressionTemplates>
+    struct make_unsigned<_bmp::number<Backend, ExpressionTemplates>> {
+        using type = _bmp::number<make_unsigned_t<Backend>, ExpressionTemplates>;
+    };
 
-        static constexpr _digits_type digits = _backend_traits::digits;
+    template<class Backend, _bmp::expression_template_option ExpressionTemplates>
+    struct digits<_bmp::number<Backend, ExpressionTemplates>>
+    : digits<Backend> {
+    };
 
-        template<_digits_type NumDigits>
-        using set_digits = _bmp::number<_impl::set_digits_t<Backend, NumDigits>, ExpressionTemplates>;
+    template<class Backend, _bmp::expression_template_option ExpressionTemplates, _digits_type MinNumDigits>
+    struct set_digits<_bmp::number<Backend, ExpressionTemplates>, MinNumDigits> {
+        using type = _bmp::number<set_digits_t<Backend, MinNumDigits>, ExpressionTemplates>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -67,15 +77,15 @@ namespace sg14 {
     }
 
     // sg14::signed_multiprecision - a signed integer of arbitrary size
-    template<unsigned NumDigits = numeric_traits<int>::digits>
+    template<unsigned NumDigits = digits<int>::value>
     using signed_multiprecision = _bmp::number<_sized_integer_impl::backend<NumDigits+1, _bmp::signed_magnitude>, _bmp::et_off>;
 
     // sg14::unsigned_multiprecision - an unsigned integer of arbitrary size
-    template<unsigned NumDigits = numeric_traits<int>::digits>
-    using unsigned_multiprecision = _bmp::number<_sized_integer_impl::backend<NumDigits+1, _bmp::unsigned_magnitude>, _bmp::et_off>;
+    template<unsigned NumDigits = digits<unsigned>::value>
+    using unsigned_multiprecision = _bmp::number<_sized_integer_impl::backend<NumDigits, _bmp::unsigned_magnitude>, _bmp::et_off>;
 
     // sg14::unsigned_multiprecision - an integer of arbitrary size
-    template<unsigned NumDigits = numeric_traits<int>::digits>
+    template<unsigned NumDigits = digits<int>::value>
     using multiprecision = signed_multiprecision<NumDigits+1>;
 }
 

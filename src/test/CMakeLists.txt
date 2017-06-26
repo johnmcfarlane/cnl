@@ -32,7 +32,7 @@ add_executable(fp_test
         ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
         ${CMAKE_CURRENT_LIST_DIR}/number_test.cpp
         ${CMAKE_CURRENT_LIST_DIR}/numeric.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/numeric_traits.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/num_traits.cpp
         ${CMAKE_CURRENT_LIST_DIR}/p0037.cpp
         ${CMAKE_CURRENT_LIST_DIR}/p0381.cpp
         ${CMAKE_CURRENT_LIST_DIR}/p0554.cpp

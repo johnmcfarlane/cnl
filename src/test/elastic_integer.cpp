@@ -17,12 +17,21 @@ namespace {
 
     // simple one-off tests
     namespace test_digits {
-        using sg14::numeric_traits;
+        using sg14::digits;
 
-        static_assert(numeric_traits<elastic_integer<7, int>>::digits==7, "elastic_integer test failed");
-        static_assert(identical(numeric_traits<elastic_integer<3>>::make(1),
-                elastic_integer<std::numeric_limits<int>::digits>{1}), "elastic_integer test failed");
+        static_assert(digits<elastic_integer<7, int>>::value == 7, "elastic_integer test failed");
     }
+
+    namespace test_from_value {
+        using sg14::from_value;
+
+        static_assert(identical(sg14::from_value<elastic_integer<3>, int>::type{1},
+                                elastic_integer<std::numeric_limits<int>::digits>{1}), "elastic_integer test failed");
+        static_assert(identical(sg14::_impl::from_value<elastic_integer<3>>(1),
+                elastic_integer<std::numeric_limits<int>::digits>{1}), "elastic_integer test failed");
+        static_assert(identical(sg14::_impl::from_value<elastic_integer<1>>(INT32_C(0)), elastic_integer<31>{0}), "sg14::elastic_integer test failed");
+    }
+
 
     namespace test_operate {
         using sg14::_impl::is_derived_from_number_base;
@@ -166,6 +175,13 @@ namespace {
         using sg14::make_elastic_integer;
         using sg14::_impl::multiply_tag;
 
+        static_assert(identical(
+                elastic_integer<15, int>{0x7fff}*elastic_integer<16, unsigned>{0xffff},
+                elastic_integer<31, int>{0x7FFE8001}), "sg14::elastic_integer test failed");
+        static_assert(identical(
+                elastic_integer<31, int>{0x7fffffff}*elastic_integer<32, int>{0xffffffffu},
+                elastic_integer<63, int>{0x7FFFFFFE80000001LL}), "sg14::elastic_integer test failed");
+
         static_assert(sg14::_impl::precedes<elastic_integer<1>, int32_t>::value, "");
         static_assert(identical(
                 sg14::_impl::operate(elastic_integer<1>{0}, INT32_C(0), multiply_tag),
@@ -186,6 +202,12 @@ namespace {
         static_assert(identical(make_elastic_integer(177_c) * INT64_C(9218), sg14::elastic_integer<71, int>{1631586}),
                       "sg14::elastic_integer test failed");
 #endif
+    }
+
+    namespace test_scale {
+        using sg14::_impl::scale;
+
+        static_assert(identical(scale(elastic_integer<6>{55}, 2, 2), elastic_integer<6>{220}), "scale<elastic_integer> test failed");
     }
 
     // parameterized tests
@@ -213,6 +235,8 @@ namespace {
                 "signage of narrowest and rep should be the same");
         static_assert(!is_signed || numeric_limits::max()==-numeric_limits::lowest(), "type has most negative number");
         static_assert(!is_signed || -numeric_limits::max()==numeric_limits::lowest(), "type has most negative number");
+
+        static_assert(identical(sg14::_impl::make_signed_t<value_type, is_signed>{0}, value_type{0}), "");
 
         ////////////////////////////////////////////////////////////////////////////////
         // constructors
@@ -267,8 +291,31 @@ namespace {
     static_assert(identical(elastic_integer<1>(1_c), elastic_integer<1>{1}), "");
 #endif
 
+    namespace test_is_composite {
+        using sg14::is_composite;
+
+        static_assert(sg14::is_composite<elastic_integer<1>>::value, "sg14::is_composite<sg14::elastic_integer<>> test failed");
+    }
+
+    namespace test_digits {
+        using sg14::digits;
+        using sg14::set_digits_t;
+
+        static_assert(digits<elastic_integer<3>>::value>=3, "sg14::digits / sg14::set_digits test failed");
+        static_assert(identical(set_digits_t<elastic_integer<1>, 3>{6}, elastic_integer<3>{6}), "sg14::digits / sg14::set_digits test failed");
+    }
+
+    namespace test_used_bits {
+        using sg14::used_bits;
+
+        static_assert(used_bits(elastic_integer<7>{3})==2, "used_bits test failed");
+        static_assert(used_bits(elastic_integer<12, std::uint16_t>{10})==4, "used_bits test failed");
+    }
+
     namespace test_leading_bits {
-        static_assert(sg14::leading_bits(elastic_integer<7>{3})==5, "leading_bits test failed");
-        static_assert(sg14::leading_bits(elastic_integer<12, std::uint16_t>{10})==8, "leading_bits test failed");
+        using sg14::leading_bits;
+
+        static_assert(leading_bits(elastic_integer<7>{3})==5, "leading_bits test failed");
+        static_assert(leading_bits(elastic_integer<12, std::uint16_t>{10})==8, "leading_bits test failed");
     }
 }

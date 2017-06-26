@@ -20,6 +20,10 @@ template<
 using precise_safe_integer = safe_integer<precise_integer<Rep, RoundingTag>, OverflowTag>;
 
 static_assert(identical(
+        precise_safe_integer<>{2} * precise_safe_integer<>{3},
+        precise_safe_integer<>{6}), "");
+
+static_assert(identical(
         multiply(saturated_overflow, precise_safe_integer<>{INT_MAX}, precise_safe_integer<>{INT_MAX}),
         precise_safe_integer<>{INT_MAX}), "");
 

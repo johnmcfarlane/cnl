@@ -21,35 +21,37 @@
 
 /// study group 14 of the C++ working group
 namespace sg14 {
+
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::numeric_traits
+    // sg14::_impl::set_rep<fixed_point<>>
+
+    namespace _impl {
+        template<class Rep, int Exponent>
+        struct get_rep<fixed_point<Rep, Exponent>> {
+            using type = Rep;
+        };
+
+        template<class OldRep, int Exponent, class NewRep>
+        struct set_rep<fixed_point<OldRep, Exponent>, NewRep> {
+            using type = fixed_point<NewRep, Exponent>;
+        };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // numeric traits
 
     template<class Rep, int Exponent>
-    struct numeric_traits<fixed_point<Rep, Exponent>>
-        : numeric_traits<_impl::number_base<fixed_point<Rep, Exponent>, Rep>> {
-        using _rep_numeric_traits = numeric_traits<Rep>;
-        using _base = numeric_traits<_impl::number_base<fixed_point<Rep, Exponent>, Rep>>;
-        using value_type = typename _base::value_type;
+        struct digits<fixed_point<Rep, Exponent>> : digits<Rep> {
+    };
 
-        static constexpr value_type from_rep(const Rep& rep)
-        {
-            return value_type::from_data(rep);
-        }
+    template<class Rep, int Exponent, _digits_type MinNumBits>
+    struct set_digits<fixed_point<Rep, Exponent>, MinNumBits> {
+        using type = fixed_point<set_digits_t<Rep, MinNumBits>, Exponent>;
+    };
 
-        template<class Input>
-        static constexpr fixed_point <Input>
-        make(const Input& input)
-        {
-            return input;
-        }
-
-        using make_signed = fixed_point<typename _rep_numeric_traits::make_signed, Exponent>;
-        using make_unsigned = fixed_point<typename _rep_numeric_traits::make_unsigned, Exponent>;
-
-        static constexpr _digits_type digits = _rep_numeric_traits::digits;
-
-        template<_digits_type NumDigits>
-        using set_digits = fixed_point<_impl::set_digits_t<Rep, NumDigits>, Exponent>;
+    template<class Rep, int Exponent, class Value>
+    struct from_value<fixed_point<Rep, Exponent>, Value> {
+        using type = fixed_point<Value>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -69,11 +71,15 @@ namespace sg14 {
         namespace fp {
             namespace extras {
                 template<class Rep>
-                constexpr Rep sqrt_bit(
-                        Rep n,
-                        Rep bit = Rep(1) << ((numeric_traits<Rep>::digits+numeric_traits<Rep>::is_signed)-2))
+                constexpr Rep sqrt_bit(Rep n, Rep bit)
                 {
                     return (bit>n) ? sqrt_bit<Rep>(n, bit >> 2) : bit;
+                }
+
+                template<class Rep>
+                constexpr Rep sqrt_bit(Rep n)
+                {
+                    return sqrt_bit<Rep>(n, Rep(1) << ((digits<Rep>::value + is_signed<Rep>::value) - 2));
                 }
 
                 template<class Rep>
@@ -124,7 +130,7 @@ namespace sg14 {
     constexpr fixed_point <Rep, Exponent>
     sqrt(const fixed_point <Rep, Exponent>& x)
     {
-        using widened_type = fixed_point<_impl::set_digits_t<Rep, numeric_traits<Rep>::digits*2>, Exponent*2>;
+        using widened_type = fixed_point<set_digits_t<Rep, digits<Rep>::value*2>, Exponent*2>;
         return
 #if defined(SG14_EXCEPTIONS_ENABLED)
                 (x<fixed_point<Rep, Exponent>(0))
