@@ -10,9 +10,7 @@
 #if !defined(SG14_FIXED_POINT_COMMON_TYPE_H)
 #define SG14_FIXED_POINT_COMMON_TYPE_H 1
 
-#if ! defined(SG14_GODBOLT_ORG)
 #include "fixed_point_type.h"
-#endif
 
 /// study group 14 of the C++ working group
 namespace sg14 {

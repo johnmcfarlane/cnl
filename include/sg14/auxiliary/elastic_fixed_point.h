@@ -10,10 +10,8 @@
 #if !defined(SG14_ELASTIC_FIXED_POINT_H)
 #define SG14_ELASTIC_FIXED_POINT_H 1
 
-#if ! defined(SG14_GODBOLT_ORG)
 #include "elastic_integer.h"
 #include <sg14/fixed_point>
-#endif
 
 /// study group 14 of the C++ working group
 namespace sg14 {

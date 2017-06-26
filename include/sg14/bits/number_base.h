@@ -7,11 +7,9 @@
 #if !defined(SG14_number_base_H)
 #define SG14_number_base_H 1
 
-#if !defined(SG14_GODBOLT_ORG)
 #include <sg14/auxiliary/const_integer.h>
 #include <sg14/bits/common.h>
 #include <sg14/num_traits.h>
-#endif
 
 #include <limits>
 #include <type_traits>

@@ -1,0 +1,9 @@
+#include <sg14/auxiliary/const_integer.h>
+#include <sg14/auxiliary/elastic_fixed_point.h>
+#include <sg14/auxiliary/elastic_integer.h>
+#include <sg14/auxiliary/numeric.h>
+#include <sg14/auxiliary/overflow.h>
+#include <sg14/auxiliary/precise_integer.h>
+#include <sg14/auxiliary/safe_integer.h>
+#include <sg14/fixed_point>
+#include <sg14/num_traits.h>

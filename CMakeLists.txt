@@ -14,3 +14,6 @@ include("src/benchmark/CMakeLists.txt")
 
 # generate documentation
 include("doc/CMakeLists.txt")
+
+# generate single-header header
+include("src/single_header/CMakeLists.txt")

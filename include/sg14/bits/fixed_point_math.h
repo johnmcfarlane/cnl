@@ -10,9 +10,7 @@
 #ifndef FIXED_POINT_MATH_H_
 #define FIXED_POINT_MATH_H_
 
-#if ! defined(SG14_GODBOLT_ORG)
 #include <sg14/fixed_point>
-#endif
 
 /// study group 14 of the C++ working group
 namespace sg14 {

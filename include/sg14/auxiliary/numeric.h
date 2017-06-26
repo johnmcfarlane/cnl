@@ -10,9 +10,7 @@
 #ifndef SG14_NUMERIC_H
 #define SG14_NUMERIC_H
 
-#if !defined(SG14_GODBOLT_ORG)
 #include <sg14/num_traits.h>
-#endif
 
 #include <limits.h>
 
