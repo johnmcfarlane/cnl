@@ -130,7 +130,7 @@ namespace sg14 {
     ////////////////////////////////////////////////////////////////////////////////
     // sg14::leading_bits
 
-#if !defined(_MSC_VER)
+#if !defined(_MSC_VER) && !defined(SG14_DISABLE_GCC_BUILTINS)
     constexpr int leading_bits(int value)
     {
         return (value>0)

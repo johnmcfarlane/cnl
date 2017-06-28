@@ -19,6 +19,7 @@
 #include <stdexcept>
 #include <type_traits>
 
+       
 namespace sg14 {
     namespace _impl {
         template<class ... T>
@@ -361,12 +362,6 @@ namespace sg14 {
     constexpr int used_bits(Integer value)
     {
         return for_rep<int>(_numeric_impl::used_bits(), value);
-    }
-    constexpr int leading_bits(int value)
-    {
-        return (value>0)
-               ? __builtin_clz(value)-1
-               : digits<int>::value-used_bits(value);
     }
     template<class Integer>
     constexpr int leading_bits(const Integer& value)
@@ -2131,6 +2126,7 @@ namespace sg14 {
         return fixed_point<LhsRep, LhsExponent-RhsValue>::from_data(lhs.data());
     }
 }
+       
 namespace sg14 {
     namespace _impl {
         template<class Rep, int Exponent>
