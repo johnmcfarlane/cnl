@@ -19,55 +19,6 @@
 #include <stdexcept>
 #include <type_traits>
 
-using SG14_INT128 = __int128;
-using SG14_UINT128 = unsigned __int128;
-       
-namespace std {
-    template<>
-    struct numeric_limits<SG14_INT128> : numeric_limits<long long> {
-        static const int digits = 8*sizeof(SG14_INT128)-1;
-        static const int digits10 = 38;
-        struct _s {
-            constexpr _s(uint64_t upper, uint64_t lower) : value(lower + (SG14_INT128{upper} << 64)) {}
-            constexpr operator SG14_INT128() const { return value; }
-            SG14_INT128 value;
-        };
-        static constexpr SG14_INT128 min()
-        {
-            return _s(0x8000000000000000, 0x0000000000000000);
-        }
-        static constexpr SG14_INT128 max()
-        {
-            return _s(0x7fffffffffffffff, 0xffffffffffffffff);
-        }
-        static constexpr SG14_INT128 lowest()
-        {
-            return min();
-        }
-    };
-    template<>
-    struct numeric_limits<SG14_UINT128> : numeric_limits<unsigned long long> {
-        static const int digits = 8*sizeof(SG14_INT128);
-        static const int digits10 = 38;
-        struct _s {
-            constexpr _s(uint64_t upper, uint64_t lower) : value(lower + (SG14_UINT128{upper} << 64)) {}
-            constexpr operator SG14_INT128() const { return value; }
-            SG14_UINT128 value;
-        };
-        static constexpr SG14_INT128 min()
-        {
-            return 0;
-        }
-        static constexpr SG14_INT128 max()
-        {
-            return _s(0xffffffffffffffff, 0xffffffffffffffff);
-        }
-        static constexpr SG14_INT128 lowest()
-        {
-            return min();
-        }
-    };
-}
 namespace sg14 {
     namespace _impl {
         template<class ... T>
@@ -90,8 +41,6 @@ namespace sg14 {
         static_assert(!std::is_const<T>::value, "T is const");
         static_assert(!std::is_volatile<T>::value, "T is volatile");
     };
-    template<class T>
-    constexpr auto is_composite_v = is_composite<T>::value;
     namespace _num_traits_impl {
         template<class ... Args>
         struct are_composite;
@@ -131,10 +80,6 @@ namespace sg14 {
         struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, std::int32_t, std::int64_t>> {
             using type = std::int64_t;
         };
-        template<_digits_type MinNumDigits>
-        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, std::int64_t, SG14_INT128>> {
-            using type = SG14_INT128;
-        };
         template<_digits_type MinNumDigits, class Enable = void>
         struct set_digits_unsigned;
         template<_digits_type MinNumDigits>
@@ -153,10 +98,6 @@ namespace sg14 {
         struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, std::uint32_t, std::uint64_t>> {
             using type = std::uint64_t;
         };
-        template<_digits_type MinNumDigits>
-        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, std::uint64_t, SG14_UINT128>> {
-            using type = SG14_UINT128;
-        };
         template<class Integer, _digits_type MinNumDigits>
         using set_digits_integer = typename std::conditional<
                 std::numeric_limits<Integer>::is_signed,
@@ -166,21 +107,11 @@ namespace sg14 {
     template<class T, class Enable = void>
     struct digits : std::integral_constant<_digits_type, std::numeric_limits<T>::digits> {
     };
-    template<class T>
-    constexpr _digits_type digits_v = digits<T>::value;
     template<class T, _digits_type Digits, class Enable = void>
     struct set_digits;
     template<class T, _digits_type Digits>
     struct set_digits<T, Digits, _impl::enable_if_t<std::is_integral<T>::value>>
             : _num_traits_impl::set_digits_integer<T, Digits> {
-    };
-    template<_digits_type Digits>
-    struct set_digits<SG14_INT128, Digits>
-            : _num_traits_impl::set_digits_integer<signed, Digits> {
-    };
-    template<_digits_type Digits>
-    struct set_digits<SG14_UINT128, Digits>
-            : _num_traits_impl::set_digits_integer<unsigned, Digits> {
     };
     template<class T, _digits_type Digits>
     using set_digits_t = typename set_digits<T, Digits>::type;
@@ -198,22 +129,6 @@ namespace sg14 {
     struct make_unsigned;
     template<class T>
     struct make_unsigned<T, _impl::enable_if_t<std::is_integral<T>::value>> : std::make_unsigned<T> {
-    };
-    template<>
-    struct make_unsigned<SG14_INT128> {
-        using type = SG14_UINT128;
-    };
-    template<>
-    struct make_unsigned<SG14_UINT128> {
-        using type = SG14_UINT128;
-    };
-    template<>
-    struct make_signed<SG14_INT128> {
-        using type = SG14_INT128;
-    };
-    template<>
-    struct make_signed<SG14_UINT128> {
-        using type = SG14_INT128;
     };
     template<class T>
     using make_unsigned_t = typename make_unsigned<T>::type;
@@ -2205,7 +2120,6 @@ namespace sg14 {
         return fixed_point<LhsRep, LhsExponent-RhsValue>::from_data(lhs.data());
     }
 }
-       
 namespace sg14 {
     namespace _impl {
         template<class Rep, int Exponent>
