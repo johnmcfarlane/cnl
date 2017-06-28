@@ -787,6 +787,27 @@ static_assert(identical(divide(fixed_point<uint64, 0>{0xFFFFFFFE00000001LL}, fix
 static_assert(identical(divide(fixed_point<uint32, 0>{0xFFFE0001LL}, fixed_point<uint32, 0>{0xffff}),
         fixed_point<uint32, 0>{0xffff}), "sg14::fixed_point test failed");
 
+namespace test_bitshift {
+    // dynamic
+    static_assert(identical(fixed_point<int, -4>{2}, fixed_point<uint8_t, -4>{1} << 1), "bitshift test failed");
+    static_assert(identical(fixed_point<int, -4>{.5}, fixed_point<uint8_t, -4>{1} >> 1), "bitshift test failed");
+
+    // std::integral_constant
+    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} << std::integral_constant<int, 1>{}), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} << std::integral_constant<int, -1>{}), "bitshift test failed");
+
+    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} >> std::integral_constant<int, 1>{}), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} >> std::integral_constant<int, -1>{}), "bitshift test failed");
+
+    // const_integer
+    using namespace sg14::literals;
+    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} << 1_c), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} << -1_c), "bitshift test failed");
+
+    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} >> 1_c), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} >> -1_c), "bitshift test failed");
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // std::numeric_limits<fixed_point<>>
 
