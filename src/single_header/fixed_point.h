@@ -1205,7 +1205,8 @@ namespace sg14 {
         };
         template<class LhsTraits, class RhsTraits>
         struct policy<_impl::multiply_op, LhsTraits, RhsTraits> {
-            static constexpr int digits = LhsTraits::digits+RhsTraits::digits;
+            static constexpr int contribution(int operand_digits) { return operand_digits == 1 ? 0 : operand_digits; }
+            static constexpr int digits = max(1, contribution(LhsTraits::digits)+contribution(RhsTraits::digits));
             static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed;
         };
         template<class LhsTraits, class RhsTraits>
