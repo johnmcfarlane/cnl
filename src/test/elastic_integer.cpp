@@ -64,7 +64,7 @@ namespace {
         static_assert(operate(elastic_integer<1>{0}, INT32_C(0), sg14::_impl::equal_tag),
                 "sg14::elastic_integer test failed");
         static_assert(identical(
-                operate(elastic_integer<1>{0}, INT32_C(0), multiply_tag), elastic_integer<32, int>{0}),
+                operate(elastic_integer<1>{0}, INT32_C(0), multiply_tag), elastic_integer<31, int>{0}),
                 "sg14::elastic_integer test failed");
 
         static_assert(
@@ -185,10 +185,10 @@ namespace {
         static_assert(sg14::_impl::precedes<elastic_integer<1>, int32_t>::value, "");
         static_assert(identical(
                 sg14::_impl::operate(elastic_integer<1>{0}, INT32_C(0), multiply_tag),
-                sg14::elastic_integer<32, int>{0}),
+                sg14::elastic_integer<31, int>{0}),
                 "sg14::elastic_integer test failed");
         static_assert(identical(sg14::_impl::to_rep(elastic_integer<4>{13}), 13), "sg14::elastic_integer test failed");
-        static_assert(identical(elastic_integer<1>{0} * INT32_C(0), sg14::elastic_integer<32, int>{0}),
+        static_assert(identical(elastic_integer<1>{0} * INT32_C(0), sg14::elastic_integer<31, int>{0}),
                       "sg14::elastic_integer test failed");
         static_assert(identical(make_elastic_integer(177_c), sg14::elastic_integer<8, int>{177}),
                       "sg14::elastic_integer test failed");
@@ -197,7 +197,7 @@ namespace {
         static_assert(identical(3.*make_elastic_integer(3210), 9630.),
                 "sg14::elastic_integer test failed");
 #if defined(SG14_INT128_ENABLED)
-        static_assert(identical(elastic_integer<1>{0} * INT64_C(0), sg14::elastic_integer<64, int>{0}),
+        static_assert(identical(elastic_integer<1>{0} * INT64_C(0), sg14::elastic_integer<63, int>{0}),
                       "sg14::elastic_integer test failed");
         static_assert(identical(make_elastic_integer(177_c) * INT64_C(9218), sg14::elastic_integer<71, int>{1631586}),
                       "sg14::elastic_integer test failed");
