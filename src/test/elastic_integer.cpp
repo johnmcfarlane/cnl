@@ -82,7 +82,6 @@ namespace {
 
     namespace test_ctor {
         static_assert(identical(elastic_integer<8>{1L}, elastic_integer<8>{1}), "elastic_integer test failed");
-        static_assert(identical(-elastic_integer<1, unsigned>{1}, elastic_integer<1, signed>{-1}), "elastic_integer test failed");
 
         static_assert(identical(elastic_integer<4>{10_c}, elastic_integer<4>{10}), "");
         static_assert(identical(elastic_integer<10>{sg14::const_integer<unsigned, 1000>{}}, elastic_integer<10>{1000}), "");
@@ -113,8 +112,13 @@ namespace {
         static_assert(elastic_integer<4, signed>{10} > elastic_integer<4, signed>{-7}, "elastic_integer comparison test failed");
     }
 
-    namespace test_negate {
+    namespace test_unary_subtract {
+        static_assert(identical(-elastic_integer<1, unsigned>{1}, elastic_integer<1, signed>{-1}), "elastic_integer test failed");
         static_assert(identical(-elastic_integer<8, unsigned>{432}, elastic_integer<8, signed>{-432}), "operator- elastic_integer test failed");
+    }
+
+    namespace test_unary_add {
+        static_assert(identical(+elastic_integer<1, unsigned>{1}, elastic_integer<1, signed>{1}), "elastic_integer test failed");
     }
 
     namespace test_subtract {
