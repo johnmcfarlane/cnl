@@ -11,21 +11,21 @@ namespace sg14 {
     // precise elastic integer
     template<
             int IntegerDigits,
-            class RoundingPolicy = precise_integer<>::rounding,
+            class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int>
     using precise_elastic_integer = precise_integer<
             elastic_integer<
                     IntegerDigits,
                     Narrowest>,
-            RoundingPolicy>;
+            RoundingTag>;
 
     template<
-            class RoundingPolicy = precise_integer<>::rounding,
+            class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int,
             class Input = int>
     precise_elastic_integer<
             std::numeric_limits<Input>::digits,
-            RoundingPolicy,
+            RoundingTag,
             Narrowest>
     constexpr make_precise_elastic(Input const& input)
     {

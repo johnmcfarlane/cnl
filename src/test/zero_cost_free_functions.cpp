@@ -15,7 +15,7 @@ using namespace sg14;
 // precise safe integer
 template<
         class Rep = int,
-        class RoundingTag = closest_rounding_policy,
+        class RoundingTag = closest_rounding_tag,
         class OverflowTag = throwing_overflow_tag>
 using precise_safe_integer = safe_integer<precise_integer<Rep, RoundingTag>, OverflowTag>;
 

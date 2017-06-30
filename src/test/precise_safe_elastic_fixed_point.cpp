@@ -15,7 +15,7 @@ namespace sg14 {
             int IntegerDigits,
             int FractionalDigits = 0,
             class OverflowTag = safe_integer<>::overflow_tag,
-            class RoundingPolicy = precise_integer<>::rounding,
+            class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int>
     using psefp = fixed_point<
             elastic_integer<
@@ -25,7 +25,7 @@ namespace sg14 {
                                     Narrowest,
                                     OverflowTag
                             >,
-                            RoundingPolicy
+                            RoundingTag
                     >
             >,
             -FractionalDigits
@@ -33,12 +33,12 @@ namespace sg14 {
 
     template<
             class OverflowTag = safe_integer<>::overflow_tag,
-            class RoundingPolicy = precise_integer<>::rounding,
+            class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int,
             class Input = int>
     psefp<
             std::numeric_limits<Input>::digits, 0,
-            OverflowTag, RoundingPolicy,
+            OverflowTag, RoundingTag,
             Narrowest>
     constexpr make_psefp(Input const& input)
     {
@@ -47,7 +47,7 @@ namespace sg14 {
 
     template<
             class OverflowTag = safe_integer<>::overflow_tag,
-            class RoundingPolicy = precise_integer<>::rounding,
+            class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int,
             class Input = int,
             class Integral,
@@ -56,7 +56,7 @@ namespace sg14 {
             int Exponent>
     psefp<
             Digits, -Exponent,
-            OverflowTag, RoundingPolicy,
+            OverflowTag, RoundingTag,
             Narrowest>
     constexpr make_psefp(const const_integer<Integral, Value, Digits, Exponent>&)
     {

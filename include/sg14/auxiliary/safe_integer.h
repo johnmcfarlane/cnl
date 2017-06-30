@@ -216,9 +216,9 @@ namespace sg14 {
         ////////////////////////////////////////////////////////////////////////////////
         // arithmetc
 
-        // for arithmetic operands with a common overflow policy
+        // for arithmetic operands with a common overflow tag
         template<class OverflowTag, class OperatorTag, class LhsRep, class RhsRep, class = enable_if_t<OperatorTag::is_arithmetic>>
-        constexpr auto operate_common_policy(
+        constexpr auto operate_common_tag(
                 OverflowTag,
                 OperatorTag,
                 const safe_integer<LhsRep, OverflowTag>& lhs,
@@ -228,9 +228,9 @@ namespace sg14 {
             return make_safe_integer<OverflowTag>(_overflow_impl::operate<OverflowTag, OperatorTag>()(lhs.data(), rhs.data()));
         }
 
-        // for comparison operands with a common overflow policy
+        // for comparison operands with a common overflow tag
         template<class OverflowTag, class OperatorTag, class LhsRep, class RhsRep, class = enable_if_t<OperatorTag::is_comparison>>
-        constexpr auto operate_common_policy(
+        constexpr auto operate_common_tag(
                 OverflowTag,
                 OperatorTag,
                 const safe_integer<LhsRep, OverflowTag>& lhs,
@@ -241,14 +241,14 @@ namespace sg14 {
         }
     
         // for arithmetic operands with different policies
-        template<class OperatorTag, class LhsRep, class LhsPolicy, class RhsRep, class RhsPolicy>
+        template<class OperatorTag, class LhsRep, class LhsTag, class RhsRep, class RhsTag>
         constexpr auto operate(
-                const safe_integer<LhsRep, LhsPolicy>& lhs,
-                const safe_integer<RhsRep, RhsPolicy>& rhs,
+                const safe_integer<LhsRep, LhsTag>& lhs,
+                const safe_integer<RhsRep, RhsTag>& rhs,
                 OperatorTag operator_tag)
-        -> decltype(operate_common_policy(common_type_t<LhsPolicy, RhsPolicy>{}, operator_tag, lhs, rhs))
+        -> decltype(operate_common_tag(common_type_t<LhsTag, RhsTag>{}, operator_tag, lhs, rhs))
         {
-            return operate_common_policy(common_type_t<LhsPolicy, RhsPolicy>{}, operator_tag, lhs, rhs);
+            return operate_common_tag(common_type_t<LhsTag, RhsTag>{}, operator_tag, lhs, rhs);
         }
     }
 

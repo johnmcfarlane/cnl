@@ -128,7 +128,7 @@ namespace {
     }
 }
 
-// given a rounding policy, invokes number_test_suite for precise_integers of all built-in types
+// given a rounding tag, invokes number_test_suite for precise_integers of all built-in types
 template<int NumDigits, class OverflowTag>
 struct test_safe_elastic_integer {
     template<class Rep>
