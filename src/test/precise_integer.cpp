@@ -25,17 +25,17 @@ namespace {
     }
 
     namespace default_parameters {
-        using sg14::closest_rounding_policy;
+        using sg14::closest_rounding_tag;
 
         using default_rep = int;
 
         template<typename T>
-        using default_policy = sg14::closest_rounding_policy;
+        using default_tag = sg14::closest_rounding_tag;
 
-        static_assert(is_same<precise_integer<>, precise_integer<default_rep, default_policy<default_rep>>>::value, "sg14::precise_integer parameter default test failed");
+        static_assert(is_same<precise_integer<>, precise_integer<default_rep, default_tag<default_rep>>>::value, "sg14::precise_integer parameter default test failed");
 
         static_assert(is_same<precise_integer<>::rep, default_rep>::value, "sg14::precise_integer parameter default test failed");
-        static_assert(is_same<precise_integer<>::rounding, default_policy<default_rep>>::value, "sg14::precise_integer parameter default test failed");
+        static_assert(is_same<precise_integer<>::rounding, default_tag<default_rep>>::value, "sg14::precise_integer parameter default test failed");
     }
 
     namespace is_number {
@@ -116,10 +116,10 @@ namespace {
         static_assert(identical(static_cast<int>(precise_integer<>{9876}), 9876), "precise_integer conversion test failed");
     }
 
-    namespace test_closest_rounding_policy {
-        using sg14::closest_rounding_policy;
-        static_assert(identical(closest_rounding_policy::convert<int>(0.), 0), "sg14::closest_rounding_policy test failed");
-        static_assert(identical(closest_rounding_policy::convert<int>(-1.), -1), "sg14::closest_rounding_policy test failed");
+    namespace test_closest_rounding_tag {
+        using sg14::closest_rounding_tag;
+        static_assert(identical(closest_rounding_tag::convert<int>(0.), 0), "sg14::closest_rounding_tag test failed");
+        static_assert(identical(closest_rounding_tag::convert<int>(-1.), -1), "sg14::closest_rounding_tag test failed");
     }
 
     namespace closest {
@@ -151,4 +151,4 @@ struct precise_integer_tests {
     static_assert(identical(321, sg14::_impl::to_rep(precise_integer<>{321})), "sg14::_impl::to_rep test failed");
 };
 
-template struct number_test_by_rep_by_policy<precise_integer, sg14::closest_rounding_policy, precise_integer_tests>;
+template struct number_test_by_rep_by_tag<precise_integer, sg14::closest_rounding_tag, precise_integer_tests>;

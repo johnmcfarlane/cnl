@@ -2598,18 +2598,18 @@ namespace sg14 {
     }
 }
 namespace sg14 {
-    struct closest_rounding_policy {
+    struct closest_rounding_tag {
         template<class To, class From>
         static constexpr To convert(const From& from)
         {
             return static_cast<To>(std::intmax_t(from+((from>=0) ? .5 : -.5)));
         }
     };
-    template<class Rep = int, class RoundingPolicy = closest_rounding_policy>
-    class precise_integer : public _impl::number_base<precise_integer<Rep, RoundingPolicy>, Rep> {
-        using super = _impl::number_base<precise_integer<Rep, RoundingPolicy>, Rep>;
+    template<class Rep = int, class RoundingTag = closest_rounding_tag>
+    class precise_integer : public _impl::number_base<precise_integer<Rep, RoundingTag>, Rep> {
+        using super = _impl::number_base<precise_integer<Rep, RoundingTag>, Rep>;
     public:
-        using rounding = RoundingPolicy;
+        using rounding = RoundingTag;
         constexpr precise_integer() = default;
         template<class T, _impl::enable_if_t<std::numeric_limits<T>::is_integer, int> Dummy = 0>
         constexpr precise_integer(const T& v)
@@ -2652,53 +2652,53 @@ namespace sg14 {
         template<class T>
         struct is_precise_integer : std::false_type {
         };
-        template<class Rep, class RoundingPolicy>
-        struct is_precise_integer<precise_integer<Rep, RoundingPolicy>> : std::true_type {
+        template<class Rep, class RoundingTag>
+        struct is_precise_integer<precise_integer<Rep, RoundingTag>> : std::true_type {
         };
     }
     namespace _impl {
-        template<class Operator, class RoundingPolicy, class LhsRep, class RhsRep, class = enable_if_t<Operator::is_arithmetic>>
-        constexpr auto operate_common_policy(
-                const precise_integer<LhsRep, RoundingPolicy>& lhs,
-                const precise_integer<RhsRep, RoundingPolicy>& rhs)
-        -> decltype(from_rep<precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingPolicy>>(Operator()(lhs.data(), rhs.data())))
+        template<class Operator, class RoundingTag, class LhsRep, class RhsRep, class = enable_if_t<Operator::is_arithmetic>>
+        constexpr auto operate_common_tag(
+                const precise_integer<LhsRep, RoundingTag>& lhs,
+                const precise_integer<RhsRep, RoundingTag>& rhs)
+        -> decltype(from_rep<precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>>(Operator()(lhs.data(), rhs.data())))
         {
-            using result_type = precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingPolicy>;
+            using result_type = precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>;
             return from_rep<result_type>(Operator()(lhs.data(), rhs.data()));
         }
-        template<class Operator, class RoundingPolicy, class LhsRep, class RhsRep, enable_if_t<Operator::is_comparison, int> = 0>
-        constexpr auto operate_common_policy(
-                const precise_integer<LhsRep, RoundingPolicy>& lhs,
-                const precise_integer<RhsRep, RoundingPolicy>& rhs)
+        template<class Operator, class RoundingTag, class LhsRep, class RhsRep, enable_if_t<Operator::is_comparison, int> = 0>
+        constexpr auto operate_common_tag(
+                const precise_integer<LhsRep, RoundingTag>& lhs,
+                const precise_integer<RhsRep, RoundingTag>& rhs)
         -> decltype(Operator()(lhs.data(), rhs.data()))
         {
             return Operator()(lhs.data(), rhs.data());
         }
-        template<class Operator, class LhsRep, class LhsRoundingPolicy, class RhsRep, class RhsRoundingPolicy>
+        template<class Operator, class LhsRep, class LhsRoundingTag, class RhsRep, class RhsRoundingTag>
         constexpr auto operate(
-                const precise_integer<LhsRep, LhsRoundingPolicy>& lhs,
-                const precise_integer<RhsRep, RhsRoundingPolicy>& rhs,
+                const precise_integer<LhsRep, LhsRoundingTag>& lhs,
+                const precise_integer<RhsRep, RhsRoundingTag>& rhs,
                 Operator)
-        -> decltype(operate_common_policy<Operator, common_type_t<LhsRoundingPolicy, RhsRoundingPolicy>>(lhs, rhs))
+        -> decltype(operate_common_tag<Operator, common_type_t<LhsRoundingTag, RhsRoundingTag>>(lhs, rhs))
         {
-            return operate_common_policy<Operator, common_type_t<LhsRoundingPolicy, RhsRoundingPolicy>>(lhs, rhs);
+            return operate_common_tag<Operator, common_type_t<LhsRoundingTag, RhsRoundingTag>>(lhs, rhs);
         }
     }
-    template<class LhsRep, class LhsRoundingPolicy, class RhsInteger>
+    template<class LhsRep, class LhsRoundingTag, class RhsInteger>
     constexpr auto operator<<(
-            const precise_integer<LhsRep, LhsRoundingPolicy>& lhs,
+            const precise_integer<LhsRep, LhsRoundingTag>& lhs,
             const RhsInteger& rhs)
-    -> decltype(from_rep<precise_integer<decltype(_impl::to_rep(lhs) << rhs), LhsRoundingPolicy>>(_impl::to_rep(lhs) << rhs))
+    -> decltype(from_rep<precise_integer<decltype(_impl::to_rep(lhs) << rhs), LhsRoundingTag>>(_impl::to_rep(lhs) << rhs))
     {
         return from_rep<precise_integer<
                 decltype(_impl::to_rep(lhs) << rhs),
-                LhsRoundingPolicy>>(_impl::to_rep(lhs) << rhs);
+                LhsRoundingTag>>(_impl::to_rep(lhs) << rhs);
     }
 }
 namespace std {
-    template<class Rep, class RoundingPolicy>
-    struct numeric_limits<sg14::precise_integer<Rep, RoundingPolicy>>
-            : numeric_limits<sg14::_impl::number_base<sg14::precise_integer<Rep, RoundingPolicy>, Rep>> {};
+    template<class Rep, class RoundingTag>
+    struct numeric_limits<sg14::precise_integer<Rep, RoundingTag>>
+            : numeric_limits<sg14::_impl::number_base<sg14::precise_integer<Rep, RoundingTag>, Rep>> {};
 }
 namespace sg14 {
     template<class Rep, class OverflowTag>

@@ -185,11 +185,11 @@ struct number_test_by_rep
 {
 };
 
-// given a rounding policy, invokes number_test_suite for precise_integers of all built-in types
-template<template <class, class> class NumericType, class Policy, template<class> class TypeSpecificTestSuite = std::is_integral>
-struct number_test_by_rep_by_policy {
+// given a rounding tag, invokes number_test_suite for precise_integers of all built-in types
+template<template <class, class> class NumericType, class Tag, template<class> class TypeSpecificTestSuite = std::is_integral>
+struct number_test_by_rep_by_tag {
     template<class Rep>
-    using test_subject = NumericType<Rep, Policy>;
+    using test_subject = NumericType<Rep, Tag>;
 
     constexpr static number_test_by_rep<test_subject, TypeSpecificTestSuite> instance{};
 };

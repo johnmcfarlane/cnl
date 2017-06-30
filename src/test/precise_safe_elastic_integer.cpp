@@ -13,7 +13,7 @@ namespace sg14 {
     template<
             int IntegerDigits,
             class OverflowTag = safe_integer<>::overflow_tag,
-            class RoundingPolicy = precise_integer<>::rounding,
+            class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int>
     using psei = elastic_integer<
             IntegerDigits,
@@ -22,18 +22,18 @@ namespace sg14 {
                             Narrowest,
                             OverflowTag
                     >,
-                    RoundingPolicy
+                    RoundingTag
             >
     >;
 
     template<
             class OverflowTag = safe_integer<>::overflow_tag,
-            class RoundingPolicy = precise_integer<>::rounding,
+            class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int,
             class Input = int>
     psei<
             std::numeric_limits<Input>::digits,
-            OverflowTag, RoundingPolicy,
+            OverflowTag, RoundingTag,
             Narrowest>
     constexpr make_psei(Input const& input)
     {

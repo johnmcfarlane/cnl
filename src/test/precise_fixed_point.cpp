@@ -11,8 +11,8 @@ namespace {
     using sg14::_impl::identical;
     using sg14::precise_integer;
 
-    template<class Rep = int, int Exponent = 0, class RoundingPolicy = sg14::closest_rounding_policy>
-    using precise_fixed_point = sg14::fixed_point<sg14::precise_integer<Rep, RoundingPolicy>, Exponent>;
+    template<class Rep = int, int Exponent = 0, class RoundingTag = sg14::closest_rounding_tag>
+    using precise_fixed_point = sg14::fixed_point<sg14::precise_integer<Rep, RoundingTag>, Exponent>;
 
     namespace test_numeric_limits {
         static_assert(std::numeric_limits<precise_integer<>>::is_specialized, "std::numeric_limits<precise_integer<>> test failed");

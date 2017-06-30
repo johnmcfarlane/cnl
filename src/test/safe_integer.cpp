@@ -197,7 +197,7 @@ namespace {
         sg14::safe_integer<int, sg14::saturated_overflow_tag>{1200}), "");
 
     static_assert(identical(
-            operate_common_policy(
+            operate_common_tag(
                     sg14::saturated_overflow,
                     multiply_tag,
                     sg14::safe_integer<signed char, sg14::saturated_overflow_tag>{30},
@@ -436,8 +436,8 @@ namespace {
     };
 }
 
-template struct number_test_by_rep_by_policy<safe_integer, sg14::native_overflow_tag, test_safe_integer>;
-template struct number_test_by_rep_by_policy<safe_integer, sg14::saturated_overflow_tag, test_safe_integer>;
+template struct number_test_by_rep_by_tag<safe_integer, sg14::native_overflow_tag, test_safe_integer>;
+template struct number_test_by_rep_by_tag<safe_integer, sg14::saturated_overflow_tag, test_safe_integer>;
 #if defined(SG14_EXCEPTIONS_ENABLED)
-template struct number_test_by_rep_by_policy<safe_integer, sg14::throwing_overflow_tag, test_safe_integer>;
+template struct number_test_by_rep_by_tag<safe_integer, sg14::throwing_overflow_tag, test_safe_integer>;
 #endif
