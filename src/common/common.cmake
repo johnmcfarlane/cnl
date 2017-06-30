@@ -1,4 +1,4 @@
-if (POLICY CMP0054)
+﻿if (POLICY CMP0054)
   cmake_policy(SET CMP0054 NEW)
 endif()
 
@@ -8,7 +8,7 @@ include(ExternalProject)
 # build flags
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-  set(MISC_FLAGS "/W4 /WX /wd4309 /errorReport:prompt /nologo")
+  set(MISC_FLAGS "/W4 /WX /errorReport:prompt /nologo")
 
   # no tested
   set(CPP17_ENABLED_FLAGS "/std:c++latest")
