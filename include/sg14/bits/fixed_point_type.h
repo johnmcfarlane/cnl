@@ -105,11 +105,7 @@ namespace sg14 {
 
     public:
         /// default constructor
-#if defined(_MSC_VER)
-        fixed_point() { }
-#else
         constexpr fixed_point() : _base() { }
-#endif
 
         /// constructor taking a fixed-point type
         template<class FromRep, int FromExponent>

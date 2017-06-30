@@ -19,9 +19,7 @@ static constexpr auto int_digits = std::numeric_limits<int>::digits;
 
 static_assert(identical(make_elastic_fixed_point(const_integer<std::int64_t, -1>{}), sg14::elastic_fixed_point<1, 0, int>{-1}),
               "using too many bytes to represent -1");
-#if ! defined(_MSC_VER)
 static_assert(identical(make_elastic_fixed_point(-1_c), sg14::elastic_fixed_point<1, 0, int>{-1}), "using too many bits to represent -1");
-#endif
 
 static_assert(identical(make_elastic_fixed_point(123), elastic_fixed_point<int_digits>{123}), "sg14::make_elastic_fixed_point test failed");
 static_assert(
@@ -51,7 +49,6 @@ static_assert(sizeof(make_elastic_fixed_point(510_c)) == sizeof(int), "using too
 static_assert(sizeof(make_elastic_fixed_point(511_c)) == sizeof(int), "using too many bytes to represent 511");
 static_assert(sizeof(make_elastic_fixed_point(512_c)) == sizeof(int), "using too many bytes to represent 512");
 
-#if ! defined(_MSC_VER) || (_MSC_VER > 1900)
 static_assert(sizeof(make_elastic_fixed_point(-1_c)) == sizeof(int), "using too many bytes to represent -1");
 static_assert(sizeof(make_elastic_fixed_point(-127_c)) == sizeof(int), "using too many bytes to represent -127");
 static_assert(sizeof(make_elastic_fixed_point(-128_c)) == sizeof(int), "using too many bytes to represent -128");
@@ -59,7 +56,6 @@ static_assert(sizeof(make_elastic_fixed_point(-129_c)) == sizeof(int), "using to
 static_assert(sizeof(make_elastic_fixed_point(-254_c)) == sizeof(int), "using too many bytes to represent -254");
 static_assert(sizeof(make_elastic_fixed_point(-255_c)) == sizeof(int), "using too many bytes to represent -255");
 static_assert(sizeof(make_elastic_fixed_point(-256_c)) == sizeof(int), "using too many bytes to represent -256");
-#endif
 
 // ... but a more compact type can be chosen if size is the constraint
 static_assert(sizeof(make_elastic_fixed_point<signed char>(0_c)) == 1, "using too many bytes to represent 0");
@@ -71,7 +67,6 @@ static_assert(sizeof(make_elastic_fixed_point<signed char>(510_c)) == 2, "using 
 static_assert(sizeof(make_elastic_fixed_point<signed char>(511_c)) == 2, "using too many bytes to represent 511");
 static_assert(sizeof(make_elastic_fixed_point<signed char>(512_c)) == 1, "using too many bytes to represent 512");
 
-#if ! defined(_MSC_VER) || (_MSC_VER > 1900)
 static_assert(sizeof(make_elastic_fixed_point<signed char>(-1_c)) == 1, "using too many bytes to represent -1");
 static_assert(sizeof(make_elastic_fixed_point<signed char>(-127_c)) == 1, "using too many bytes to represent -127");
 static_assert(sizeof(make_elastic_fixed_point<signed char>(-128_c)) == 1, "using too many bytes to represent -128");
@@ -79,7 +74,6 @@ static_assert(sizeof(make_elastic_fixed_point<signed char>(-129_c)) == 2, "using
 static_assert(sizeof(make_elastic_fixed_point<signed char>(-254_c)) == 1, "using too many bytes to represent -254");
 static_assert(sizeof(make_elastic_fixed_point<signed char>(-255_c)) == 2, "using too many bytes to represent -255");
 static_assert(sizeof(make_elastic_fixed_point<signed char>(-256_c)) == 1, "using too many bytes to represent -256");
-#endif
 
 // some numbers are so big that you don't have the luxury of choosing
 static constexpr auto unsigned_limit = std::intmax_t{std::numeric_limits<unsigned>::max()} + 1;
@@ -121,9 +115,7 @@ struct make_elastic_test {
     static_assert(Value==0 || Value!=((Value/lsz1)*lsz1), "fractional_digits is too high");
 
     static_assert(std::numeric_limits<type>::is_signed, "signage doesn't match value");
-#if ! defined(_MSC_VER)
 //    static_assert(elastic_value==elastic_fixed_point<63, 0>{Value}, "make_elasticd value doesn't equal its source value");
-#endif
 };
 
 template

@@ -264,9 +264,7 @@ namespace sg14 {
                 const elastic_integer<LhsDigits, LhsNarrowest>& lhs,
                 const elastic_integer<RhsDigits, RhsNarrowest>& rhs,
                 Operator op)
-#if ! defined(_MSC_VER)
         -> decltype(op(cast_to_common_type(lhs, rhs), cast_to_common_type(rhs, lhs)))
-#endif
         {
             return op(cast_to_common_type(lhs, rhs), cast_to_common_type(rhs, lhs));
         }
@@ -371,9 +369,7 @@ namespace sg14 {
                 const elastic_integer<LhsDigits, LhsNarrowest>& lhs,
                 const elastic_integer<RhsDigits, RhsNarrowest>& rhs,
                 Operator op)
-#if ! defined(_MSC_VER)
         -> typename operate_params<Operator, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::result_type
-#endif
         {
             using result_type = typename operate_params<Operator, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::result_type;
             return result_type::from_data(
@@ -386,9 +382,7 @@ namespace sg14 {
     // unary operator-
     template<int RhsDigits, class RhsNarrowest>
     constexpr auto operator-(const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
-#if ! defined(_MSC_VER)
     -> elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>
-#endif
     {
         using result_type = elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>;
         return result_type::from_data(-static_cast<result_type>(rhs).data());
@@ -397,9 +391,7 @@ namespace sg14 {
     // unary operator+
     template<int RhsDigits, class RhsNarrowest>
     constexpr auto operator+(const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
-#if ! defined(_MSC_VER)
     -> elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>
-#endif
     {
         using result_type = elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>;
         return result_type::from_data(static_cast<result_type>(rhs).data());

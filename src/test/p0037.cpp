@@ -126,13 +126,7 @@ TEST(proposal, examples)
             make_ufixed<4, 12>(1),
             make_ufixed<4, 12>(4),
             make_ufixed<4, 12>(9));
-#if defined(_MSC_VER)
-    constexpr auto expected = make_fixed<7, 24>{9.8994948864};
-    static_assert(std::is_same<decltype(m), decltype(expected)>::value, "Incorrect formation in proposal section, Examples");
-    ASSERT_EQ(expected, m);
-#else
     static_assert(identical(m, make_fixed<7, 24>{9.8994948864}), "Incorrect information in proposal section, Examples");
-#endif
 }
 
 TEST(proposal, zero)

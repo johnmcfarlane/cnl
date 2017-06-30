@@ -963,7 +963,6 @@ struct FixedPointTesterOutsize {
     // simply assignment to and from underlying representation
     using numeric_limits = std::numeric_limits<fixed_point>;
     static constexpr fixed_point min = sg14::_impl::from_rep<fixed_point>(rep(1));
-#if !defined(_MSC_VER)
     static_assert(min.data() == rep(1), "all Rep types should be able to store the number 1!");
 
     // unary common_type_t
@@ -1005,7 +1004,6 @@ struct FixedPointTesterOutsize {
                     decltype(min - min),
                     ::fixed_point<decltype(declval<rep>() - declval<rep>()), exponent>>::value,
             "promotion rule for subtraction fixed_point<Rep> should match its Rep");
-#endif
 };
 
 // some tests cannot be performed at run-time because

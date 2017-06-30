@@ -48,7 +48,6 @@ namespace {
                 "sg14::const_integer construction test failed");
 
         // unary minus
-#if ! defined(_MSC_VER) || (_MSC_VER > 1900)
         static_assert(
                 identical(-const_integer<std::uint8_t, 1>{}, const_integer<int, -1>{}),
                 "sg14::const_integer unary minus test failed");
@@ -59,7 +58,6 @@ namespace {
         static_assert(
                 identical(-const_integer<unsigned, 1>{}, const_integer<unsigned, std::numeric_limits<unsigned>::max()>{}),
                 "sg14::const_integer unary minus test failed");
-#endif
 #endif
 
         // binary plus
@@ -96,10 +94,8 @@ namespace {
         static_assert(identical(0x91827364564738_c, const_integer<intmax_t, 0x91827364564738>()),
                       "sg14::literals test failed");
 
-#if ! defined(_MSC_VER) || (_MSC_VER > 1900)
         static_assert(
                 identical(-1_c, const_integer<intmax_t, -1>{}),
                 "sg14::const_integer addition test failed");
-#endif
     }
 }
