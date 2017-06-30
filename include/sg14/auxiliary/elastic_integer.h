@@ -393,6 +393,17 @@ namespace sg14 {
         using result_type = elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>;
         return result_type::from_data(-static_cast<result_type>(rhs).data());
     }
+
+    // unary operator+
+    template<int RhsDigits, class RhsNarrowest>
+    constexpr auto operator+(const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
+#if ! defined(_MSC_VER)
+    -> elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>
+#endif
+    {
+        using result_type = elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>;
+        return result_type::from_data(static_cast<result_type>(rhs).data());
+    }
 }
 
 namespace std {
