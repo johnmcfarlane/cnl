@@ -246,9 +246,7 @@ struct positive_elastic_test
 
     static_assert(is_equal_to(min*make_elastic_fixed_point(0_c), zero), "operator* test failed");
     static_assert(is_equal_to(min*make_elastic_fixed_point(1_c), min), "operator* test failed");
-#if ! defined(_MSC_VER)
     static_assert(is_equal_to(min*make_elastic_fixed_point(2_c), min+min), "operator* test failed");
-#endif
     static_assert(is_equal_to(min*make_elastic_fixed_point(3_c), min+min+min), "operator* test failed");
 
     static_assert(std::numeric_limits<decltype(zero*zero)>::is_signed
@@ -263,9 +261,7 @@ struct positive_elastic_test
     ////////////////////////////////////////////////////////////////////////////////
     // test operator/
 
-#if ! defined(_MSC_VER)
     static_assert(!is_less_than(min, min/make_elastic_fixed_point(2_c)), "operator/ test failed");
-#endif
     static_assert(is_equal_to(min/make_elastic_fixed_point(1_c), min), "operator/ test failed");
     static_assert(is_equal_to((min+min)/make_elastic_fixed_point(2_c), min), "operator/ test failed");
     static_assert(is_equal_to((min+min+min)/make_elastic_fixed_point(3_c), min), "operator/ test failed");
@@ -316,9 +312,7 @@ struct signed_elastic_test :
     // test numeric_limits<elastic_fixed_point>
 
     static_assert(is_less_than(negative_min, min), "numeric_limits test failed");
-#if ! defined(_MSC_VER)
     static_assert(is_equal_to(-max, lowest), "comparison test error");
-#endif
     //static_assert(is_equal_to(elastic_type{min+max+lowest}, elastic_type{1}), "comparison test error");
     static_assert(numeric_limits::is_signed, "numeric_limits test failed");
     static_assert(!numeric_limits::is_integer || elastic_type{-.5} != -.5, "numeric_limits test failed");

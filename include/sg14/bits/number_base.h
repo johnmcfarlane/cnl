@@ -135,9 +135,7 @@ namespace sg14 {
         // unary operate
         template<class Operator, class RhsDerived, class RhsRep>
         constexpr auto operate(const number_base<RhsDerived, RhsRep>& rhs, Operator op)
-#if ! defined(_MSC_VER)
         -> decltype(op(rhs.data()))
-#endif
         {
             return op(rhs.data());
         }
@@ -186,9 +184,7 @@ namespace sg14 {
 
         template<class RhsDerived, class RhsRep>
         constexpr auto operator-(const number_base<RhsDerived, RhsRep>& rhs)
-#if ! defined(_MSC_VER)
         -> decltype(operate(rhs, minus_tag))
-#endif
         {
             return operate(rhs, minus_tag);
         }
