@@ -19,7 +19,6 @@
 #include <stdexcept>
 #include <type_traits>
 
-       
 namespace sg14 {
     namespace _impl {
         template<class ... T>
@@ -772,17 +771,17 @@ namespace sg14 {
                 class Operator, class Lhs, class RhsDerived, class RhsRep,
                 enable_if_t <precedes<Lhs, RhsDerived>::value, std::nullptr_t> = nullptr>
         constexpr auto operate(const Lhs& lhs, const number_base<RhsDerived, RhsRep>& rhs, Operator op)
-        -> decltype(op(lhs, to_rep(static_cast<const RhsDerived&>(rhs))))
+        -> decltype(op(lhs, static_cast<Lhs>(static_cast<const RhsDerived&>(rhs))))
         {
-            return op(lhs, to_rep(static_cast<const RhsDerived&>(rhs)));
+            return op(lhs, static_cast<Lhs>(static_cast<const RhsDerived&>(rhs)));
         }
         template<
                 class Operator, class LhsDerived, class LhsRep, class Rhs,
                 enable_if_t <precedes<Rhs, LhsDerived>::value, std::nullptr_t> = nullptr>
         constexpr auto operate(const number_base<LhsDerived, LhsRep>& lhs, const Rhs& rhs, Operator op)
-        -> decltype(op(to_rep(static_cast<const LhsDerived&>(lhs)), rhs))
+        -> decltype(op(static_cast<Rhs>(static_cast<const LhsDerived&>(lhs)), rhs))
         {
-            return op(to_rep(static_cast<const LhsDerived&>(lhs)), rhs);
+            return op(static_cast<Rhs>(static_cast<const LhsDerived&>(lhs)), rhs);
         }
         template<
                 class Operator, class Lhs, class RhsDerived, class RhsRep,
@@ -1267,6 +1266,13 @@ namespace sg14 {
     {
         using result_type = elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>;
         return result_type::from_data(-static_cast<result_type>(rhs).data());
+    }
+    template<int RhsDigits, class RhsNarrowest>
+    constexpr auto operator+(const elastic_integer<RhsDigits, RhsNarrowest>& rhs)
+    -> elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>
+    {
+        using result_type = elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>;
+        return result_type::from_data(static_cast<result_type>(rhs).data());
     }
 }
 namespace std {
@@ -1831,15 +1837,7 @@ namespace std {
     };
     template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
     struct common_type<sg14::fixed_point<LhsRep, LhsExponent>, sg14::fixed_point<RhsRep, RhsExponent>> {
-        using _result_rep = typename std::common_type<LhsRep, RhsRep>::type;
-        static constexpr int _capacity = std::numeric_limits<_result_rep>::digits;
-        static constexpr int _ideal_max_top = sg14::_impl::max(
-                sg14::fixed_point<LhsRep, LhsExponent>::integer_digits,
-                sg14::fixed_point<RhsRep, RhsExponent>::integer_digits);
-        static constexpr int _ideal_exponent = sg14::_impl::min(LhsExponent, RhsExponent);
-        static constexpr int _exponent = ((_ideal_max_top-_ideal_exponent)<=_capacity) ? _ideal_exponent :
-                                         _ideal_max_top-_capacity;
-        using type = sg14::fixed_point<_result_rep, _exponent>;
+        using type = sg14::fixed_point<sg14::_impl::common_type_t<LhsRep, RhsRep>, sg14::_impl::min(LhsExponent, RhsExponent)>;
     };
 }
 namespace sg14 {
@@ -1888,54 +1886,6 @@ namespace sg14 {
     {
         return _impl::fp::operate<_impl::fp::division_arithmetic_operator_tag>(lhs, rhs, _impl::divide_tag);
     }
-    template<class Rep, int Exponent>
-    constexpr auto operator==(
-            const fixed_point <Rep, Exponent>& lhs,
-            const fixed_point <Rep, Exponent>& rhs)
-    -> decltype(lhs.data()==rhs.data())
-    {
-        return lhs.data()==rhs.data();
-    }
-    template<class Rep, int Exponent>
-    constexpr auto operator!=(
-            const fixed_point <Rep, Exponent>& lhs,
-            const fixed_point <Rep, Exponent>& rhs)
-    -> decltype(lhs.data()!=rhs.data())
-    {
-        return lhs.data()!=rhs.data();
-    }
-    template<class Rep, int Exponent>
-    constexpr auto operator>(
-            const fixed_point <Rep, Exponent>& lhs,
-            const fixed_point <Rep, Exponent>& rhs)
-    -> decltype(lhs.data()>rhs.data())
-    {
-        return lhs.data()>rhs.data();
-    }
-    template<class Rep, int Exponent>
-    constexpr auto operator<(
-            const fixed_point <Rep, Exponent>& lhs,
-            const fixed_point <Rep, Exponent>& rhs)
-    -> decltype(lhs.data()<rhs.data())
-    {
-        return lhs.data()<rhs.data();
-    }
-    template<class Rep, int Exponent>
-    constexpr auto operator>=(
-            const fixed_point <Rep, Exponent>& lhs,
-            const fixed_point <Rep, Exponent>& rhs)
-    -> decltype(lhs.data()>=rhs.data())
-    {
-        return lhs.data()>=rhs.data();
-    }
-    template<class Rep, int Exponent>
-    constexpr auto operator<=(
-            const fixed_point <Rep, Exponent>& lhs,
-            const fixed_point <Rep, Exponent>& rhs)
-    -> decltype(lhs.data()<=rhs.data())
-    {
-        return lhs.data()<=rhs.data();
-    }
     namespace _fixed_point_operators_impl {
         template<class Lhs, class Rhs>
         constexpr bool is_heterogeneous() {
@@ -1951,6 +1901,12 @@ namespace sg14 {
         -> decltype(op(static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs), static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs)))
         {
             return op(static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs), static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs));
+        };
+        template<class Operator, class Rep, int Exponent, class = _impl::enable_if_t<Operator::is_comparison>>
+        constexpr auto operate(const fixed_point<Rep, Exponent>& lhs, const fixed_point<Rep, Exponent>& rhs, Operator op)
+        -> decltype(op(lhs.data(), rhs.data()))
+        {
+            return op(lhs.data(), rhs.data());
         };
     }
     template<
@@ -2127,7 +2083,6 @@ namespace sg14 {
         return fixed_point<LhsRep, LhsExponent-RhsValue>::from_data(lhs.data());
     }
 }
-       
 namespace sg14 {
     namespace _impl {
         template<class Rep, int Exponent>
@@ -2281,7 +2236,7 @@ namespace std {
         }
         static constexpr _value_type round_error() noexcept
         {
-            return static_cast<_value_type>(.5);
+            return _value_type::from_data(_rep{0});
         }
         static constexpr _value_type infinity() noexcept
         {
@@ -2815,7 +2770,7 @@ namespace sg14 {
     }
     namespace _impl {
         template<class OverflowTag, class OperatorTag, class LhsRep, class RhsRep, class = enable_if_t<OperatorTag::is_arithmetic>>
-        constexpr auto operate_common_policy(
+        constexpr auto operate_common_tag(
                 OverflowTag,
                 OperatorTag,
                 const safe_integer<LhsRep, OverflowTag>& lhs,
@@ -2825,7 +2780,7 @@ namespace sg14 {
             return make_safe_integer<OverflowTag>(_overflow_impl::operate<OverflowTag, OperatorTag>()(lhs.data(), rhs.data()));
         }
         template<class OverflowTag, class OperatorTag, class LhsRep, class RhsRep, class = enable_if_t<OperatorTag::is_comparison>>
-        constexpr auto operate_common_policy(
+        constexpr auto operate_common_tag(
                 OverflowTag,
                 OperatorTag,
                 const safe_integer<LhsRep, OverflowTag>& lhs,
@@ -2834,14 +2789,14 @@ namespace sg14 {
         {
             return _overflow_impl::operate<OverflowTag, OperatorTag>()(lhs.data(), rhs.data());
         }
-        template<class OperatorTag, class LhsRep, class LhsPolicy, class RhsRep, class RhsPolicy>
+        template<class OperatorTag, class LhsRep, class LhsTag, class RhsRep, class RhsTag>
         constexpr auto operate(
-                const safe_integer<LhsRep, LhsPolicy>& lhs,
-                const safe_integer<RhsRep, RhsPolicy>& rhs,
+                const safe_integer<LhsRep, LhsTag>& lhs,
+                const safe_integer<RhsRep, RhsTag>& rhs,
                 OperatorTag operator_tag)
-        -> decltype(operate_common_policy(common_type_t<LhsPolicy, RhsPolicy>{}, operator_tag, lhs, rhs))
+        -> decltype(operate_common_tag(common_type_t<LhsTag, RhsTag>{}, operator_tag, lhs, rhs))
         {
-            return operate_common_policy(common_type_t<LhsPolicy, RhsPolicy>{}, operator_tag, lhs, rhs);
+            return operate_common_tag(common_type_t<LhsTag, RhsTag>{}, operator_tag, lhs, rhs);
         }
     }
     template <class LhsRep, class LhsOverflowTag, class RhsRep, class RhsOverflowTag> constexpr auto operator >> (const safe_integer<LhsRep, LhsOverflowTag>& lhs, const safe_integer<RhsRep, RhsOverflowTag>& rhs) -> safe_integer<LhsRep, LhsOverflowTag> { return lhs.data() >> rhs.data(); } template <class Lhs, class RhsRep, class RhsOverflowTag, _impl::enable_if_t<std::is_fundamental<Lhs>::value, int> dummy = 0> constexpr auto operator >> (const Lhs& lhs, const safe_integer<RhsRep, RhsOverflowTag>& rhs) -> Lhs { return lhs >> rhs.data(); } template <class LhsRep, class LhsOverflowTag, class Rhs, _impl::enable_if_t<std::is_fundamental<Rhs>::value, int> dummy = 0> constexpr auto operator >> (const safe_integer<LhsRep, LhsOverflowTag>& lhs, const Rhs& rhs) -> safe_integer<LhsRep, LhsOverflowTag> { return safe_integer<LhsRep, LhsOverflowTag>(lhs.data() >> rhs); };
