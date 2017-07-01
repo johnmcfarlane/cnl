@@ -98,9 +98,9 @@ namespace sg14 {
                 class Operator, class Lhs, class RhsDerived, class RhsRep,
                 enable_if_t <precedes<Lhs, RhsDerived>::value, std::nullptr_t> = nullptr>
         constexpr auto operate(const Lhs& lhs, const number_base<RhsDerived, RhsRep>& rhs, Operator op)
-        -> decltype(op(lhs, to_rep(static_cast<const RhsDerived&>(rhs))))
+        -> decltype(op(lhs, static_cast<Lhs>(static_cast<const RhsDerived&>(rhs))))
         {
-            return op(lhs, to_rep(static_cast<const RhsDerived&>(rhs)));
+            return op(lhs, static_cast<Lhs>(static_cast<const RhsDerived&>(rhs)));
         }
 
         // number_base<> OP higher
@@ -108,9 +108,9 @@ namespace sg14 {
                 class Operator, class LhsDerived, class LhsRep, class Rhs,
                 enable_if_t <precedes<Rhs, LhsDerived>::value, std::nullptr_t> = nullptr>
         constexpr auto operate(const number_base<LhsDerived, LhsRep>& lhs, const Rhs& rhs, Operator op)
-        -> decltype(op(to_rep(static_cast<const LhsDerived&>(lhs)), rhs))
+        -> decltype(op(static_cast<Rhs>(static_cast<const LhsDerived&>(lhs)), rhs))
         {
-            return op(to_rep(static_cast<const LhsDerived&>(lhs)), rhs);
+            return op(static_cast<Rhs>(static_cast<const LhsDerived&>(lhs)), rhs);
         }
 
         // lower OP number_base<>

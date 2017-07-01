@@ -78,7 +78,8 @@ TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_fixed_point)
 {
     auto lhs = fixed_point<int32, -16>(0);
     lhs = static_cast<fixed_point<int32, -16>>(123.456);
-    ASSERT_EQ(lhs, fixed_point<>(123.456));
+    auto expected = fixed_point<int32, -16>(123.456);
+    ASSERT_EQ(expected, lhs);
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_floating_point)
@@ -459,7 +460,7 @@ static_assert(
         is_same<sg14::_impl::common_type_t<fixed_point<int16, -4>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value,
         "sg14::_impl::common_type_t test failed");
 static_assert(
-        is_same<sg14::_impl::common_type_t<fixed_point<int16, 0>, fixed_point<uint64, -60>>, fixed_point<uint64, -49>>::value,
+        is_same<sg14::_impl::common_type_t<fixed_point<int16, 0>, fixed_point<uint64, -60>>, fixed_point<uint64, -60>>::value,
         "sg14::_impl::common_type_t test failed");
 
 // commonality between arithmetic and fixed_point types
@@ -467,11 +468,11 @@ static_assert(is_same<sg14::_impl::common_type_t<float, fixed_point<int8, -4>>, 
         "sg14::_impl::common_type_t test failed");
 static_assert(is_same<sg14::_impl::common_type_t<double, fixed_point<int32, -14>>, double>::value,
         "sg14::_impl::common_type_t test failed");
-static_assert(is_same<sg14::_impl::common_type_t<int8, fixed_point<uint64, -60>>, fixed_point<uint64, -57>>::value,
+static_assert(is_same<sg14::_impl::common_type_t<int8, fixed_point<uint64, -60>>, fixed_point<uint64, -60>>::value,
         "sg14::_impl::common_type_t test failed");
 
 static_assert(
-        is_same<sg14::_impl::common_type_t<fixed_point<uint8, -4>, uint32>, fixed_point<test_unsigned, 0>>::value,
+        is_same<sg14::_impl::common_type_t<fixed_point<uint8, -4>, uint32>, fixed_point<test_unsigned, -4>>::value,
         "sg14::_impl::common_type_t test failed");
 static_assert(is_same<sg14::_impl::common_type_t<fixed_point<int16, -4>, float>, float>::value,
         "sg14::_impl::common_type_t test failed");
@@ -620,11 +621,6 @@ static_assert(fixed_point<uint8, -4>(4.5)>=fixed_point<int16, -8>(-4.5), "sg14::
 static_assert(!(fixed_point<uint8, -4>(4.5)>=fixed_point<int16, -8>(4.6)), "sg14::fixed_point test failed");
 #endif
 
-// TODO: Is this acceptable?
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert(fixed_point<uint8, -1>(.5)==fixed_point<uint8, 0>(0), "sg14::fixed_point test failed");
-#endif
-
 // heterogeneous fixed-point to arithmetic comparison
 static_assert(fixed_point<uint8, -4>(4.5)==4.5, "sg14::fixed_point test failed");
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
@@ -636,6 +632,9 @@ static_assert(!(fixed_point<uint64, -4>(4.5)!=4.5L), "sg14::fixed_point test fai
 
 static_assert(4.5<fixed_point<int16, -7>(5.6), "sg14::fixed_point test failed");
 static_assert(!(fixed_point<int32, -3>(-4.5)<-5.6), "sg14::fixed_point test failed");
+
+static_assert(fixed_point<int16, -13>(3.141) > 3, "sg14::fixed_point test failed");
+static_assert(fixed_point<int32, -15>{-0.2} < 0, "sg14::fixed_point test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // arithmetic
@@ -841,7 +840,7 @@ constexpr bool test_numeric_limits(Min min, Max max, Lowest lowest)
     static_assert(nl::max_exponent10==rnl::max_exponent10, "numeric_limits<fixed_point>::max_exponent10");
     static_assert(nl::traps==rnl::traps, "numeric_limits<fixed_point>::traps");
     static_assert(!nl::tinyness_before, "numeric_limits<fixed_point>::tinyness_before");
-    static_assert(nl::round_error()==static_cast<Rep>(.5), "numeric_limits<fixed_point>::round_error");
+    static_assert(nl::round_error()==static_cast<Rep>(0), "numeric_limits<fixed_point>::round_error");
     static_assert(nl::infinity()==rnl::infinity(), "numeric_limits<fixed_point>::infinity");
     static_assert(nl::quiet_NaN()==Rep(0), "numeric_limits<fixed_point>::quiet_NaN");
     static_assert(nl::signaling_NaN()== Rep(0), "numeric_limits<fixed_point>::signaling_NaN");
