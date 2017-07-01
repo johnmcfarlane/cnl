@@ -16,16 +16,18 @@ Installation instructions are provided on the [project page](https://github.com/
 \subsection Features
 
 Header, [sg14/fixed_point](@ref fixed_point), defines class template, [fixed_point](@ref sg14::fixed_point), with:
-  * a simple, flexible generic design;
-  * operator overloads that interface [fixed_point](@ref sg14::fixed_point) with other numeric types;
-  * a set of function templates, (e.g. [multiply](@ref sg14::multiply)), for fine-grain control.
+
+* a simple, flexible generic design;
+* operator overloads that interface [fixed_point](@ref sg14::fixed_point) with other numeric types;
+* a set of function templates, (e.g. [multiply](@ref sg14::multiply)), for fine-grain control.
 
 Header, [sg14/num_traits](@ref num_traits), contains additions (such as [set_digits](@ref sg14::set_digits)) 
 that support widening of arithmetic types in order to deal with precision loss.
 
 Auxiliary modules:
-  * [sg14/auxiliary/multiprecision.h](@ref multiprecision.h) adapts Boost.Multiprecision for use in fixed-point types;
-  * [sg14/auxiliary/elastic_fixed_point.h](@ref elastic_fixed_point.h) defins [elastic_fixed_point](@ref sg14::elastic_fixed_point), an numeric type that uses fixed-point to avoid overflow.
+
+* [sg14/auxiliary/multiprecision.h](@ref multiprecision.h) adapts Boost.Multiprecision for use in fixed-point types;
+* [sg14/auxiliary/elastic_fixed_point.h](@ref elastic_fixed_point.h) defins [elastic_fixed_point](@ref sg14::elastic_fixed_point), an numeric type that uses fixed-point to avoid overflow.
 
 
 \section Examples
