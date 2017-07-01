@@ -740,7 +740,7 @@ static_assert(identical(fixed_point<test_int, -1>{63}/fixed_point<int8, -1>{-4},
 #if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
 static_assert(identical(fixed_point<int8, 1>{-255}/fixed_point<int8, 1>{-8}, fixed_point<test_int, -7>{31.75}),
         "sg14::fixed_point test failed");
-static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==31, "sg14::fixed_point test failed");
+static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==31.75, "sg14::fixed_point test failed");
 #endif
 
 #if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
