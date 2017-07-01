@@ -248,7 +248,7 @@ namespace std {
 
         static constexpr _value_type round_error() noexcept
         {
-            return static_cast<_value_type>(.5);
+            return _value_type::from_data(_rep{0});
         }
 
         static constexpr _value_type infinity() noexcept

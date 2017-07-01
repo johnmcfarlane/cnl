@@ -74,63 +74,6 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // comparison
-
-    template<class Rep, int Exponent>
-    constexpr auto operator==(
-            const fixed_point <Rep, Exponent>& lhs,
-            const fixed_point <Rep, Exponent>& rhs)
-    -> decltype(lhs.data()==rhs.data())
-    {
-        return lhs.data()==rhs.data();
-    }
-
-    template<class Rep, int Exponent>
-    constexpr auto operator!=(
-            const fixed_point <Rep, Exponent>& lhs,
-            const fixed_point <Rep, Exponent>& rhs)
-    -> decltype(lhs.data()!=rhs.data())
-    {
-        return lhs.data()!=rhs.data();
-    }
-
-    template<class Rep, int Exponent>
-    constexpr auto operator>(
-            const fixed_point <Rep, Exponent>& lhs,
-            const fixed_point <Rep, Exponent>& rhs)
-    -> decltype(lhs.data()>rhs.data())
-    {
-        return lhs.data()>rhs.data();
-    }
-
-    template<class Rep, int Exponent>
-    constexpr auto operator<(
-            const fixed_point <Rep, Exponent>& lhs,
-            const fixed_point <Rep, Exponent>& rhs)
-    -> decltype(lhs.data()<rhs.data())
-    {
-        return lhs.data()<rhs.data();
-    }
-
-    template<class Rep, int Exponent>
-    constexpr auto operator>=(
-            const fixed_point <Rep, Exponent>& lhs,
-            const fixed_point <Rep, Exponent>& rhs)
-    -> decltype(lhs.data()>=rhs.data())
-    {
-        return lhs.data()>=rhs.data();
-    }
-
-    template<class Rep, int Exponent>
-    constexpr auto operator<=(
-            const fixed_point <Rep, Exponent>& lhs,
-            const fixed_point <Rep, Exponent>& rhs)
-    -> decltype(lhs.data()<=rhs.data())
-    {
-        return lhs.data()<=rhs.data();
-    }
-    
-    ////////////////////////////////////////////////////////////////////////////////
     // heterogeneous operator overloads
     //
     // compare two objects of different fixed_point specializations
@@ -151,6 +94,13 @@ namespace sg14 {
         -> decltype(op(static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs), static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs)))
         {
             return op(static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs), static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs));
+        };
+
+        template<class Operator, class Rep, int Exponent, class = _impl::enable_if_t<Operator::is_comparison>>
+        constexpr auto operate(const fixed_point<Rep, Exponent>& lhs, const fixed_point<Rep, Exponent>& rhs, Operator op)
+        -> decltype(op(lhs.data(), rhs.data()))
+        {
+            return op(lhs.data(), rhs.data());
         };
     }
 

@@ -78,18 +78,7 @@ namespace std {
     // std::common_type<fixed_point<>, fixed_point<>>
     template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
     struct common_type<sg14::fixed_point<LhsRep, LhsExponent>, sg14::fixed_point<RhsRep, RhsExponent>> {
-        using _result_rep = typename std::common_type<LhsRep, RhsRep>::type;
-
-        // exponent is the lower of the two operands' unless that could cause overflow in which case it is adjusted downward
-        static constexpr int _capacity = std::numeric_limits<_result_rep>::digits;
-        static constexpr int _ideal_max_top = sg14::_impl::max(
-                sg14::fixed_point<LhsRep, LhsExponent>::integer_digits,
-                sg14::fixed_point<RhsRep, RhsExponent>::integer_digits);
-        static constexpr int _ideal_exponent = sg14::_impl::min(LhsExponent, RhsExponent);
-        static constexpr int _exponent = ((_ideal_max_top-_ideal_exponent)<=_capacity) ? _ideal_exponent :
-                                         _ideal_max_top-_capacity;
-
-        using type = sg14::fixed_point<_result_rep, _exponent>;
+        using type = sg14::fixed_point<sg14::_impl::common_type_t<LhsRep, RhsRep>, sg14::_impl::min(LhsExponent, RhsExponent)>;
     };
 }
 
