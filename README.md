@@ -81,18 +81,18 @@ To profile benchmarks:
 
 1. Build with frame pointers included:
 
-   ```shell
-   $ cmake -DCMAKE_BUILD_TYPE=Release -DPROFILE=ON
-   $ make fp_benchmark
-   $ ./fp_benchmark
-   ```
+    ```shell
+    $ cmake -DCMAKE_BUILD_TYPE=Release -DPROFILE=ON
+    $ make fp_benchmark
+    $ ./fp_benchmark
+    ```
 
 2. then run:
 
-   ```shell
-   $ perf record -g ./fp_benchmark
-   $ perf report -g 'graph,0.5,caller'
-   ```
+    ```shell
+    $ perf record -g ./fp_benchmark
+    $ perf report -g 'graph,0.5,caller'
+    ```
 
 To install:
 
