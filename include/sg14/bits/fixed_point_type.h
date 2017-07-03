@@ -166,7 +166,8 @@ namespace sg14 {
         }
 
         /// returns value represented as bool
-        constexpr operator bool() const
+        template<typename R = Rep>
+        constexpr operator typename std::enable_if<std::is_convertible<Rep, bool>::value, bool>() const
         {
             return static_cast<bool>(_base::data());
         }
