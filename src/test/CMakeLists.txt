@@ -24,12 +24,12 @@ add_executable(fp_test
         ${CMAKE_CURRENT_LIST_DIR}/precise_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/const_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/utils.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/boost.multiprecision.cpp
         ${CMAKE_CURRENT_LIST_DIR}/common.cpp
         ${CMAKE_CURRENT_LIST_DIR}/elastic_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/glm.cpp
         ${CMAKE_CURRENT_LIST_DIR}/index.cpp
         ${CMAKE_CURRENT_LIST_DIR}/make_elastic_fixed_point.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
         ${CMAKE_CURRENT_LIST_DIR}/number_test.cpp
         ${CMAKE_CURRENT_LIST_DIR}/numeric.cpp
         ${CMAKE_CURRENT_LIST_DIR}/num_traits.cpp
@@ -59,10 +59,6 @@ add_executable(fp_test
 ######################################################################
 # find external lib, boost.multiprecision
 
-# older versions of CMake don't know how to find multiprecision...
-#find_package(Boost COMPONENTS multiprecision)
-
-# ...so the entire library is sought
 find_package(Boost)
 
 if(Boost_FOUND)
@@ -154,7 +150,7 @@ set_target_properties(
 # http://stackoverflow.com/a/38650955/671509
 if (${CMAKE_COMPILER_IS_GNUCXX})
     set_source_files_properties(
-            ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
+            ${CMAKE_CURRENT_LIST_DIR}/boost.multiprecision.cpp
             ${CMAKE_CURRENT_LIST_DIR}/index.cpp
             PROPERTIES COMPILE_FLAGS "-fpermissive")
 endif ()

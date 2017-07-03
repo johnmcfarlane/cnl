@@ -132,7 +132,7 @@ TEST(index, advanced_arithmetic_example)
 #if defined(SG14_BOOST_ENABLED)
 ////////////////////////////////////////////////////////////////////////////////
 //! [boost example]
-#include <sg14/auxiliary/multiprecision.h>
+#include <sg14/auxiliary/boost.multiprecision.h>
 
 void boost_example()
 {
