@@ -5,6 +5,7 @@ cmake_minimum_required(VERSION 2.8.11)
 
 add_library(fixed_point INTERFACE)
 target_sources(fixed_point INTERFACE
+        include/sg14/auxiliary/boost.simd.h
         include/sg14/auxiliary/boost.multiprecision.h
         include/sg14/auxiliary/elastic_integer.h
         include/sg14/auxiliary/elastic_fixed_point.h
