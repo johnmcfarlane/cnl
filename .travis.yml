@@ -69,7 +69,7 @@ before_install:
 script:
     - export CXX="${COMPILER}"
     - cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -DSTD="${STD}" -DEXCEPTIONS="${EXCEPTIONS}" -DINT128="${INT128}"
-    - make fp_test fp_benchmark
+    - make
     - ./fp_test
     - ./fp_benchmark --benchmark_format=csv>result.csv
     - ./src/benchmark/report.py result.csv
