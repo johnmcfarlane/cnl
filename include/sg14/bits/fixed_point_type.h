@@ -267,7 +267,7 @@ namespace sg14 {
                     Output, Input>::type;
 
             return (exp>-std::numeric_limits<larger>::digits)
-                   ? static_cast<Output>(_impl::scale<larger>(i, 2, exp))
+                   ? static_cast<Output>(_impl::scale<larger>(static_cast<larger>(i), 2, exp))
                    : Output{0};
         }
 
