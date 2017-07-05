@@ -136,7 +136,7 @@ namespace sg14 {
         }
 
         /// constructor taking a floating-point type
-        template<class S, _impl::enable_if_t<std::is_floating_point<S>::value, int> Dummy = 0>
+        template<class S, _impl::enable_if_t<std::numeric_limits<S>::is_iec559, int> Dummy = 0>
         constexpr fixed_point(S s)
                 :_base(floating_point_to_rep(s))
         {
@@ -150,7 +150,7 @@ namespace sg14 {
         }
 
         /// copy assignment operator taking a floating-point type
-        template<class S, _impl::enable_if_t<std::is_floating_point<S>::value, int> Dummy = 0>
+        template<class S, _impl::enable_if_t<std::numeric_limits<S>::is_iec559, int> Dummy = 0>
         fixed_point& operator=(S s)
         {
             _base::operator=(floating_point_to_rep(s));
@@ -166,7 +166,8 @@ namespace sg14 {
         }
 
         /// returns value represented as bool
-        constexpr operator bool() const
+        template<typename R = Rep>
+        constexpr operator typename std::enable_if<std::is_convertible<Rep, bool>::value, bool>() const
         {
             return static_cast<bool>(_base::data());
         }
@@ -179,7 +180,7 @@ namespace sg14 {
         }
 
         /// returns value represented as floating-point
-        template<class S, _impl::enable_if_t<std::is_floating_point<S>::value, int> Dummy = 0>
+        template<class S, _impl::enable_if_t<std::numeric_limits<S>::is_iec559, int> Dummy = 0>
         explicit constexpr operator S() const
         {
             return rep_to_floating_point<S>(_base::data());
@@ -192,7 +193,7 @@ namespace sg14 {
         }
 
     private:
-        template<class S, _impl::enable_if_t<std::is_floating_point<S>::value, int> Dummy = 0>
+        template<class S, _impl::enable_if_t<std::numeric_limits<S>::is_iec559, int> Dummy = 0>
         static constexpr S one();
 
         template<class S, _impl::enable_if_t<std::numeric_limits<S>::is_integer, int> Dummy = 0>
@@ -267,7 +268,7 @@ namespace sg14 {
                     Output, Input>::type;
 
             return (exp>-std::numeric_limits<larger>::digits)
-                   ? static_cast<Output>(_impl::scale<larger>(i, 2, exp))
+                   ? static_cast<Output>(_impl::scale<larger>(static_cast<larger>(i), 2, exp))
                    : Output{0};
         }
 
@@ -283,22 +284,22 @@ namespace sg14 {
                 template<class S, int Exponent, enable_if_t<Exponent==0, int> Dummy = 0>
                 constexpr S pow2()
                 {
-                    static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
-                    return 1;
+                    static_assert(std::numeric_limits<S>::is_iec559, "S must be floating-point type");
+                    return S{1.};
                 }
 
                 template<class S, int Exponent, 
                         enable_if_t<!(Exponent<=0) && (Exponent<8), int> Dummy = 0>
                 constexpr S pow2()
                 {
-                    static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+                    static_assert(std::numeric_limits<S>::is_iec559, "S must be floating-point type");
                     return pow2<S, Exponent-1>()*S(2);
                 }
 
                 template<class S, int Exponent, enable_if_t<(Exponent>=8), int> Dummy = 0>
                 constexpr S pow2()
                 {
-                    static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+                    static_assert(std::numeric_limits<S>::is_iec559, "S must be floating-point type");
                     return pow2<S, Exponent-8>()*S(256);
                 }
 
@@ -306,14 +307,14 @@ namespace sg14 {
                         enable_if_t<!(Exponent>=0) && (Exponent>-8), int> Dummy = 0>
                 constexpr S pow2()
                 {
-                    static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+                    static_assert(std::numeric_limits<S>::is_iec559, "S must be floating-point type");
                     return pow2<S, Exponent+1>()*S(.5);
                 }
 
                 template<class S, int Exponent, enable_if_t<(Exponent<=-8), int> Dummy = 0>
                 constexpr S pow2()
                 {
-                    static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+                    static_assert(std::numeric_limits<S>::is_iec559, "S must be floating-point type");
                     return pow2<S, Exponent+8>()*S(.003906250);
                 }
             }
@@ -324,7 +325,7 @@ namespace sg14 {
     // sg14::fixed_point<> member definitions
 
     template<class Rep, int Exponent>
-    template<class S, _impl::enable_if_t<std::is_floating_point<S>::value, int> Dummy>
+    template<class S, _impl::enable_if_t<std::numeric_limits<S>::is_iec559, int> Dummy>
     constexpr S fixed_point<Rep, Exponent>::one()
     {
         return _impl::fp::type::pow2<S, -exponent>();
@@ -341,7 +342,7 @@ namespace sg14 {
     template<class S>
     constexpr S fixed_point<Rep, Exponent>::inverse_one()
     {
-        static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+        static_assert(std::numeric_limits<S>::is_iec559, "S must be floating-point type");
         return _impl::fp::type::pow2<S, exponent>();
     }
 
@@ -358,7 +359,7 @@ namespace sg14 {
     template<class S>
     constexpr typename fixed_point<Rep, Exponent>::rep fixed_point<Rep, Exponent>::floating_point_to_rep(S s)
     {
-        static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+        static_assert(std::numeric_limits<S>::is_iec559, "S must be floating-point type");
         return static_cast<rep>(s*one<S>());
     }
 
@@ -366,7 +367,7 @@ namespace sg14 {
     template<class S>
     constexpr S fixed_point<Rep, Exponent>::rep_to_floating_point(rep r)
     {
-        static_assert(std::is_floating_point<S>::value, "S must be floating-point type");
+        static_assert(std::numeric_limits<S>::is_iec559, "S must be floating-point type");
         return S(r)*inverse_one<S>();
     }
 

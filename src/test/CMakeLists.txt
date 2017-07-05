@@ -24,12 +24,13 @@ add_executable(fp_test
         ${CMAKE_CURRENT_LIST_DIR}/precise_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/const_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/utils.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/boost.multiprecision.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/boost.simd.cpp
         ${CMAKE_CURRENT_LIST_DIR}/common.cpp
         ${CMAKE_CURRENT_LIST_DIR}/elastic_integer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/glm.cpp
         ${CMAKE_CURRENT_LIST_DIR}/index.cpp
         ${CMAKE_CURRENT_LIST_DIR}/make_elastic_fixed_point.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
         ${CMAKE_CURRENT_LIST_DIR}/number_test.cpp
         ${CMAKE_CURRENT_LIST_DIR}/numeric.cpp
         ${CMAKE_CURRENT_LIST_DIR}/num_traits.cpp
@@ -59,24 +60,48 @@ add_executable(fp_test
 ######################################################################
 # find external lib, boost.multiprecision
 
-# older versions of CMake don't know how to find multiprecision...
-#find_package(Boost COMPONENTS multiprecision)
-
-# ...so the entire library is sought
 find_package(Boost)
 
 if(Boost_FOUND)
-    if(BOOST_VERSION GREATER 105500 OR EXCEPTIONS)
+    if(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
         # only compile multiprecision.cpp if Boost.Multiprecision is available
         set(BOOST_FOUND_CXX_FLAGS "-DSG14_BOOST_ENABLED")
         target_include_directories(fp_test SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
         target_link_libraries(fp_test ${Boost_LIBRARIES})
-    else(BOOST_VERSION GREATER 105500 OR EXCEPTIONS)
+    else(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
         message("Boost version is too low to use without exception handling")
-    endif(BOOST_VERSION GREATER 105500 OR EXCEPTIONS)
+    endif(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
 else(Boost_FOUND)
     message("Boost not found")
 endif(Boost_FOUND)
+
+######################################################################
+# pull external project, boost.simd
+
+if(Boost_FOUND AND Boost_VERSION GREATER 106099)
+    ExternalProject_Add(
+            boost.simd
+            URL "https://github.com/johnmcfarlane/boost.simd/archive/5d67a72d77411dc610126151a182ebbae1bfbac6.zip"
+            URL_MD5 "97d1aad967965ee79a751d099cd0ee6f"
+            UPDATE_COMMAND ""
+            INSTALL_COMMAND ""
+    )
+
+    ExternalProject_Get_Property(boost.simd source_dir)
+    target_include_directories(
+            fp_test
+            PRIVATE
+            SYSTEM
+            "${source_dir}/include"
+    )
+
+    add_dependencies(
+            fp_test
+            boost.simd
+    )
+
+    set(BOOST_SIMD_FOUND_CXX_FLAGS "-DSG14_BOOST_SIMD_ENABLED")
+endif(Boost_FOUND AND Boost_VERSION GREATER 106099)
 
 ######################################################################
 # pull external project, glm
@@ -147,14 +172,14 @@ add_dependencies(
 
 set_target_properties(
         fp_test
-        PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${BOOST_FOUND_CXX_FLAGS}"
+        PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${BOOST_FOUND_CXX_FLAGS} ${BOOST_SIMD_FOUND_CXX_FLAGS}"
 )
 
 # avoid GCC6 warning
 # http://stackoverflow.com/a/38650955/671509
 if (${CMAKE_COMPILER_IS_GNUCXX})
     set_source_files_properties(
-            ${CMAKE_CURRENT_LIST_DIR}/multiprecision.cpp
+            ${CMAKE_CURRENT_LIST_DIR}/boost.multiprecision.cpp
             ${CMAKE_CURRENT_LIST_DIR}/index.cpp
             PROPERTIES COMPILE_FLAGS "-fpermissive")
 endif ()
