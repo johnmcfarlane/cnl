@@ -15,8 +15,8 @@
 #include <boost/simd/pack.hpp>
 
 namespace sg14 {
-    template<class Rep, std::size_t N, int Exponent>
-    ::std::ostream& operator<<(::std::ostream& out, const fixed_point<boost::simd::pack<Rep, N>, Exponent>& fp)
+    template<class T, std::size_t N, int Exponent>
+    ::std::ostream& operator<<(::std::ostream& out, const fixed_point<boost::simd::pack<T, N>, Exponent>& fp)
     {
         return out << static_cast<boost::simd::pack<long double, N>>(fp);
     }
