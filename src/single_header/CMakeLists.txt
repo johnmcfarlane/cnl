@@ -11,7 +11,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL
     add_custom_target(single_header
             ALL
             cat ${CMAKE_CURRENT_LIST_DIR}/header.h > ${SINGLE_HEADER_OUTPUT}
-            COMMAND ${CMAKE_CXX_COMPILER} ${FLAGS} ${CMAKE_CURRENT_LIST_DIR}/single_header.cpp | grep "^[^#]" | grep --after-context=1000000 single_header_delimiter | tail -n +2 - >> ${SINGLE_HEADER_OUTPUT}
+            COMMAND ${CMAKE_CXX_COMPILER} ${FLAGS} ${CMAKE_CURRENT_LIST_DIR}/single_header.cpp | grep "^[^#]" | grep --after-context=1000000 single_header_delimiter | tail -n +2 >> ${SINGLE_HEADER_OUTPUT}
             COMMAND cat ${CMAKE_CURRENT_LIST_DIR}/footer.h >> ${SINGLE_HEADER_OUTPUT}
             )
 endif ()
