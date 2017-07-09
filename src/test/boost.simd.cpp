@@ -64,6 +64,18 @@ namespace {
         static_assert(std::is_same<actual_type, expected_type>::value, "");
     }
 
+    namespace test_set_make_unsigned {
+        using actual_type = sg14::make_unsigned_t<boost::simd::pack<std::int16_t, 2>>;
+        using expected_type = boost::simd::pack<std::uint16_t, 2>;
+        static_assert(std::is_same<expected_type, actual_type>::value, "");
+    }
+
+    namespace test_set_make_signed {
+        using actual_type = sg14::make_signed_t<boost::simd::pack<unsigned, 8>>;
+        using expected_type = boost::simd::pack<signed, 8>;
+        static_assert(std::is_same<expected_type, actual_type>::value, "");
+    }
+
     TEST(boost_simd, scale) {
         using pack = boost::simd::pack<int, 2>;
         auto input = pack{65535, 0};

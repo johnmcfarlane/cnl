@@ -25,6 +25,16 @@ namespace sg14 {
     struct set_digits<boost::simd::pack<T, N>, Digits> {
         using type = boost::simd::pack<set_digits_t<T, Digits>, N>;
     };
+
+    template<class T, std::size_t N>
+    struct make_signed<boost::simd::pack<T, N>> {
+        using type = boost::simd::pack<make_signed_t<T>, N>;
+    };
+
+    template<class T, std::size_t N>
+    struct make_unsigned<boost::simd::pack<T, N>> {
+        using type = boost::simd::pack<make_unsigned_t<T>, N>;
+    };
 }
 
 namespace std {
