@@ -58,6 +58,12 @@ namespace {
         static_assert(std::numeric_limits<pack < float>>::is_iec559, "");
     }
 
+    namespace test_set_digits {
+        using actual_type = sg14::set_digits_t<boost::simd::pack<signed, 8>, 15>;
+        using expected_type = boost::simd::pack<std::int16_t, 8>;
+        static_assert(std::is_same<actual_type, expected_type>::value, "");
+    }
+
     TEST(boost_simd, scale) {
         using pack = boost::simd::pack<int, 2>;
         auto input = pack{65535, 0};

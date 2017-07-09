@@ -20,6 +20,11 @@ namespace sg14 {
     {
         return out << static_cast<boost::simd::pack<long double, N>>(fp);
     }
+
+    template<class T, std::size_t N, int Digits>
+    struct set_digits<boost::simd::pack<T, N>, Digits> {
+        using type = boost::simd::pack<set_digits_t<T, Digits>, N>;
+    };
 }
 
 namespace std {
