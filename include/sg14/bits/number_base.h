@@ -43,6 +43,13 @@ namespace sg14 {
                 return _rep;
             }
 
+#if (__cplusplus >= 201402L)
+            constexpr rep& data()
+            {
+                return _rep;
+            }
+#endif
+
             static constexpr Derived from_data(const rep& r)
             {
                 return Derived(r);

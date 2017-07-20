@@ -1,5 +1,5 @@
 
-//          Copyright John McFarlane 2015 - 2016.
+//          Copyright John McFarlane 2015 - 2017.
 // Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -56,6 +56,24 @@ namespace {
 
         static_assert(!std::numeric_limits<pack < float>>::is_integer, "");
         static_assert(std::numeric_limits<pack < float>>::is_iec559, "");
+    }
+
+    namespace test_set_digits {
+        using actual_type = sg14::set_digits_t<boost::simd::pack<signed, 8>, 15>;
+        using expected_type = boost::simd::pack<std::int16_t, 8>;
+        static_assert(std::is_same<actual_type, expected_type>::value, "");
+    }
+
+    namespace test_set_make_unsigned {
+        using actual_type = sg14::make_unsigned_t<boost::simd::pack<std::int16_t, 2>>;
+        using expected_type = boost::simd::pack<std::uint16_t, 2>;
+        static_assert(std::is_same<expected_type, actual_type>::value, "");
+    }
+
+    namespace test_set_make_signed {
+        using actual_type = sg14::make_signed_t<boost::simd::pack<unsigned, 8>>;
+        using expected_type = boost::simd::pack<signed, 8>;
+        static_assert(std::is_same<expected_type, actual_type>::value, "");
     }
 
     TEST(boost_simd, scale) {

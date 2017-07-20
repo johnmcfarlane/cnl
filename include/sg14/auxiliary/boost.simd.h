@@ -15,11 +15,26 @@
 #include <boost/simd/pack.hpp>
 
 namespace sg14 {
-    template<class Rep, std::size_t N, int Exponent>
-    ::std::ostream& operator<<(::std::ostream& out, const fixed_point<boost::simd::pack<Rep, N>, Exponent>& fp)
+    template<class T, std::size_t N, int Exponent>
+    ::std::ostream& operator<<(::std::ostream& out, const fixed_point<boost::simd::pack<T, N>, Exponent>& fp)
     {
         return out << static_cast<boost::simd::pack<long double, N>>(fp);
     }
+
+    template<class T, std::size_t N, int Digits>
+    struct set_digits<boost::simd::pack<T, N>, Digits> {
+        using type = boost::simd::pack<set_digits_t<T, Digits>, N>;
+    };
+
+    template<class T, std::size_t N>
+    struct make_signed<boost::simd::pack<T, N>> {
+        using type = boost::simd::pack<make_signed_t<T>, N>;
+    };
+
+    template<class T, std::size_t N>
+    struct make_unsigned<boost::simd::pack<T, N>> {
+        using type = boost::simd::pack<make_unsigned_t<T>, N>;
+    };
 }
 
 namespace std {
