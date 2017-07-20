@@ -1,7 +1,11 @@
-# fixed_point Numerics Library
+# CNL: A Compositional Numeric Library for C++
 
-[![Build Status](https://travis-ci.org/johnmcfarlane/fixed_point.svg?branch=develop)](https://travis-ci.org/johnmcfarlane/fixed_point)
-[![Build status](https://ci.appveyor.com/api/projects/status/p60lpkq9u90h83fi/branch/develop?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/fixed-point/branch/develop)
+## ***UNDER CONSTRUCTION!***
+
+This project is a fork of the [fixed_point](https://github.com/johnmcfarlane/fixed_point) library
+and is not yet ready for use.  Please use
+[fixed_point](https://github.com/johnmcfarlane/fixed_point) 
+instead.
 
 The [fixed_point](https://github.com/johnmcfarlane/fixed_point) library provides 
 a header-only C++11 API for approximating real numbers using binary fixed-point arithmetic.
