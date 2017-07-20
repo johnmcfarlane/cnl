@@ -5,7 +5,7 @@
 
 The [fixed_point](https://github.com/johnmcfarlane/fixed_point) library provides 
 a header-only C++11 API for approximating real numbers using binary fixed-point arithmetic.
-It forms the reference implementation of a standard library proposal presented in paper, [P0037](doc/p0037.md)
+It forms the reference implementation of a standard library proposal presented in paper, [P0037](http://wg21.link/p0037)
 and is developed as part of study groups, [SG14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14) and SG6.
 
 ## Download
@@ -132,8 +132,8 @@ To clean the project files:
 ## Further Reading
 
 - [documentation](http://johnmcfarlane.github.io/fixed_point/)
-- [latest draft](doc/p0037.md) of C++ Standard Library proposal, [P0037](doc/p0037.md)
-- position paper illustrating the compositonal approach, [P0554](doc/p0554.md)
+- Standard Library proposal, [P0037](http://wg21.link/p0037)
+- position paper illustrating the compositonal approach, [P0554](http://wg21.link/p0554)
 - forum of [Study Group 14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14)
 
 ## Contact Information
