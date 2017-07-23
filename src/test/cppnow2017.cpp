@@ -64,7 +64,7 @@ namespace prototypes {
     using bad2 = bad_safe_integer<numeric_limits<int>::digits, true>;
 }
 
-#if defined(SG14_EXCEPTIONS_ENABLED)
+#if defined(CNL_EXCEPTIONS_ENABLED)
 TEST(cppnow2017, safe_integer_example)
 {
     // multiplication of safe_integer<int> cannot exceed numeric limits

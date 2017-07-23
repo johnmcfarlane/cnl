@@ -29,7 +29,7 @@ using test_int = cnl::safe_integer<>;
 // throwing_integer-specific exceptions tests
 
 
-#if defined(TEST_THROWING_OVERFLOW) && defined(SG14_EXCEPTIONS_ENABLED)
+#if defined(TEST_THROWING_OVERFLOW) && defined(CNL_EXCEPTIONS_ENABLED)
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_right)
 {

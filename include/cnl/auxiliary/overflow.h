@@ -13,7 +13,7 @@
 #include <cnl/num_traits.h>
 #include <cnl/bits/common.h>
 
-#if defined(SG14_EXCEPTIONS_ENABLED)
+#if defined(CNL_EXCEPTIONS_ENABLED)
 #include <stdexcept>
 #else
 #include <cstdio>
@@ -45,7 +45,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // throw exception (or crash horribly)
 
-#if defined(SG14_EXCEPTIONS_ENABLED)
+#if defined(CNL_EXCEPTIONS_ENABLED)
         template<class Result>
         constexpr Result return_if(bool condition, const Result& value, const char* )
         {

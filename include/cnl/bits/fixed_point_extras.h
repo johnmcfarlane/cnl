@@ -130,7 +130,7 @@ namespace cnl {
     {
         using widened_type = fixed_point<set_digits_t<Rep, digits<Rep>::value*2>, Exponent*2>;
         return
-#if defined(SG14_EXCEPTIONS_ENABLED)
+#if defined(CNL_EXCEPTIONS_ENABLED)
                 (x<fixed_point<Rep, Exponent>(0))
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
 #endif

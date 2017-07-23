@@ -15,7 +15,7 @@
 
 #include <cstdint>
 
-#if defined(SG14_EXCEPTIONS_ENABLED)
+#if defined(CNL_EXCEPTIONS_ENABLED)
 #include <stdexcept>
 #endif
 
@@ -40,7 +40,7 @@ namespace cnl {
 
         constexpr int parse_dec(char C)
         {
-#if defined(SG14_EXCEPTIONS_ENABLED)
+#if defined(CNL_EXCEPTIONS_ENABLED)
             return (C>='0' && C<='9')
                    ? C-'0'
                    : throw std::out_of_range("only decimal digits are allowed");
@@ -56,7 +56,7 @@ namespace cnl {
                      ? C - 'a'
                      : (C >= 'A' && C <= 'F')
                        ? C - 'A'
-#if defined(SG14_EXCEPTIONS_ENABLED)
+#if defined(CNL_EXCEPTIONS_ENABLED)
                        : throw std::out_of_range("only decimal digits are allowed")
 #else
                 : 0

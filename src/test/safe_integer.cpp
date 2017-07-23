@@ -438,6 +438,6 @@ namespace {
 
 template struct number_test_by_rep_by_tag<safe_integer, cnl::native_overflow_tag, test_safe_integer>;
 template struct number_test_by_rep_by_tag<safe_integer, cnl::saturated_overflow_tag, test_safe_integer>;
-#if defined(SG14_EXCEPTIONS_ENABLED)
+#if defined(CNL_EXCEPTIONS_ENABLED)
 template struct number_test_by_rep_by_tag<safe_integer, cnl::throwing_overflow_tag, test_safe_integer>;
 #endif
