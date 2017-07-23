@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief definitions and specializations that adapt Boost.SIMD for use with @ref sg14::fixed_point
+/// \brief definitions and specializations that adapt Boost.SIMD for use with @ref cnl::fixed_point
 
 #if !defined(SG14_BOOST_SIMD_H)
 #define SG14_BOOST_SIMD_H 1
@@ -14,7 +14,7 @@
 
 #include <boost/simd/pack.hpp>
 
-namespace sg14 {
+namespace cnl {
     template<class T, std::size_t N, int Exponent>
     ::std::ostream& operator<<(::std::ostream& out, const fixed_point<boost::simd::pack<T, N>, Exponent>& fp)
     {

@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief supplemental definitions related to the `sg14::fixed_point` type;
+/// \brief supplemental definitions related to the `cnl::fixed_point` type;
 /// definitions that straddle two homes, e.g. fixed_point and cmath, traits or limits;
 /// included from sg14/fixed_point - do not include directly!
 
@@ -18,10 +18,10 @@
 #include <istream>
 
 /// study group 14 of the C++ working group
-namespace sg14 {
+namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::_impl::set_rep<fixed_point<>>
+    // cnl::_impl::set_rep<fixed_point<>>
 
     namespace _impl {
         template<class Rep, int Exponent>
@@ -53,7 +53,7 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::abs
+    // cnl::abs
 
     template<class Rep, int Exponent>
     constexpr auto abs(const fixed_point<Rep, Exponent>& x) noexcept
@@ -63,7 +63,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::sqrt helper functions
+    // cnl::sqrt helper functions
 
     namespace _impl {
         namespace fp {
@@ -106,7 +106,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::sqrt
+    // cnl::sqrt
 
     /// \brief calculates the square root of a \ref fixed_point value
     /// \headerfile sg14/fixed_point
@@ -139,7 +139,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::trig
+    // cnl::trig
     //
     // Placeholder implementations fall back on <cmath> functions which is slow
     // due to conversion to and from floating-point types; also inconvenient as
@@ -189,7 +189,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::fixed_point streaming - (placeholder implementation)
+    // cnl::fixed_point streaming - (placeholder implementation)
 
     template<class Rep, int Exponent>
     ::std::ostream& operator<<(::std::ostream& out, const fixed_point <Rep, Exponent>& fp)
@@ -209,16 +209,16 @@ namespace sg14 {
 
 namespace std {
     ////////////////////////////////////////////////////////////////////////////////
-    // std::numeric_limits for sg14::fixed_point
+    // std::numeric_limits for cnl::fixed_point
 
     // note: some members are guessed,
     // some are temporary (assuming rounding style, traps etc.)
     // and some are undefined
     template<class Rep, int Exponent>
-    struct numeric_limits<sg14::fixed_point<Rep, Exponent>>
-            : std::numeric_limits<sg14::_impl::number_base<sg14::fixed_point<Rep, Exponent>, Rep>> {
+    struct numeric_limits<cnl::fixed_point<Rep, Exponent>>
+            : std::numeric_limits<cnl::_impl::number_base<cnl::fixed_point<Rep, Exponent>, Rep>> {
         // fixed-point-specific helpers
-        using _value_type = sg14::fixed_point<Rep, Exponent>;
+        using _value_type = cnl::fixed_point<Rep, Exponent>;
         using _rep = typename _value_type::rep;
         using _rep_numeric_limits = numeric_limits<_rep>;
 

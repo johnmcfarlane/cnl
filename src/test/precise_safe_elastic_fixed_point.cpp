@@ -9,7 +9,7 @@
 #include <sg14/auxiliary/precise_integer.h>
 #include <sg14/auxiliary/safe_integer.h>
 
-namespace sg14 {
+namespace cnl {
     // precise safe elastic fixed-point
     template<
             int IntegerDigits,
@@ -65,28 +65,28 @@ namespace sg14 {
 }
 
 namespace {
-    using sg14::make_psefp;
-    using sg14::psefp;
+    using cnl::make_psefp;
+    using cnl::psefp;
     using std::is_same;
-    using sg14::_impl::identical;
+    using cnl::_impl::identical;
 
     namespace default_parameters {
-        using sg14::precise_integer;
-        using sg14::safe_integer;
-        using sg14::elastic_integer;
+        using cnl::precise_integer;
+        using cnl::safe_integer;
+        using cnl::elastic_integer;
 
         static_assert(
                 is_same<psefp<1>::rep::rep::rep::rep, int>::value,
-                "sg14::precise_integer parameter default test failed");
+                "cnl::precise_integer parameter default test failed");
     }
 
     namespace test_make_psefp {
-        using namespace sg14::literals;
+        using namespace cnl::literals;
         static_assert(identical(make_psefp(std::int16_t{7}), psefp<15>{7}), "");
         static_assert(identical(make_psefp(444_c), psefp<9, -2>{444}), "");
     }
 
     namespace test_multiply {
-        static_assert(identical(sg14::psefp<6>{7}*sg14::psefp<13>{321}, sg14::psefp<19>{2247}), "");
+        static_assert(identical(cnl::psefp<6>{7}*cnl::psefp<13>{321}, cnl::psefp<19>{2247}), "");
     }
 }

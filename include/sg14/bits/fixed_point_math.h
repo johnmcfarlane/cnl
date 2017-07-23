@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief some cmath specializations for `sg14::fixed_point` type;
+/// \brief some cmath specializations for `cnl::fixed_point` type;
 
 #ifndef FIXED_POINT_MATH_H_
 #define FIXED_POINT_MATH_H_
@@ -13,7 +13,7 @@
 #include <sg14/fixed_point>
 
 /// study group 14 of the C++ working group
-namespace sg14 {
+namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
     // implementation-specific definitions

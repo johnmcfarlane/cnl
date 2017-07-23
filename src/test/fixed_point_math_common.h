@@ -14,7 +14,7 @@
 
 
 TEST(math, FPTESTFORMAT) {
-    using fp = sg14::fixed_point<int32_t, FPTESTEXP>;
+    using fp = cnl::fixed_point<int32_t, FPTESTEXP>;
 
     //Test integer powers
     for (int i = 0; i < fp::integer_digits; i++) {
@@ -23,7 +23,7 @@ TEST(math, FPTESTFORMAT) {
 
     //Test negative integer powers (which are representable in the format)
 #if (FPTESTEXP < 0)
-    for (int i = std::max(-fp::fractional_digits, -(sg14::_impl::shift_left<fp::integer_digits, int32_t>(1)) + 1); i < std::min(0, fp::integer_digits - 1); i++) {
+    for (int i = std::max(-fp::fractional_digits, -(cnl::_impl::shift_left<fp::integer_digits, int32_t>(1)) + 1); i < std::min(0, fp::integer_digits - 1); i++) {
         fp lhs{ exp2(fp{ i }) };
         EXPECT_EQ(lhs, fp::from_data(1 << (-fp::exponent + i)))
             << "i = " << i << ", fixed point raw: " << lhs.data() << " should be: " << (1 << (-fp::exponent + i))
@@ -38,7 +38,7 @@ TEST(math, FPTESTFORMAT) {
     constexpr std::array<double, 13> fracts{ {
         static_cast<double>(std::numeric_limits<fp>::min()), //As close to zero as possible
         0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,
-            sg14::_impl::min(1., static_cast<double>(std::numeric_limits<fp>::max())) //As close to one as possible
+            cnl::_impl::min(1., static_cast<double>(std::numeric_limits<fp>::max())) //As close to one as possible
     } };
 
     for (int i = -fp::fractional_digits; i < fp::integer_digits; i++) {

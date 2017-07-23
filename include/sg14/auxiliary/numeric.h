@@ -15,10 +15,10 @@
 #include <limits.h>
 
 /// study group 14 of the C++ working group
-namespace sg14 {
+namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::trailing_bits
+    // cnl::trailing_bits
 
     namespace _numeric_impl {
         template<class Integer>
@@ -62,7 +62,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::used_bits
+    // cnl::used_bits
 
     namespace _numeric_impl {
         template<class Integer>
@@ -128,7 +128,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::leading_bits
+    // cnl::leading_bits
 
 #if !defined(_MSC_VER) && !defined(SG14_DISABLE_GCC_BUILTINS)
     constexpr int leading_bits(int value)

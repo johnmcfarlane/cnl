@@ -21,7 +21,7 @@
 #endif
 
 /// study group 14 of the C++ working group
-namespace sg14 {
+namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // mode tags and objects
 
@@ -38,7 +38,7 @@ namespace sg14 {
     } saturated_overflow{};
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::convert
+    // cnl::convert
 
     // implementation details
     namespace _overflow_impl {
@@ -166,7 +166,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::add
+    // cnl::add
 
     // implementation details
     namespace _overflow_impl {
@@ -220,7 +220,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::subtract
+    // cnl::subtract
 
     // implementation details
     namespace _overflow_impl {
@@ -274,7 +274,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::multiply
+    // cnl::multiply
 
     // implementation details
     namespace _overflow_impl {
@@ -333,7 +333,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::divide
+    // cnl::divide
 
     // implementation details
     namespace _overflow_impl {

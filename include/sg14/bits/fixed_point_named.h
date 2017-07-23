@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief essential named definitions related to the `sg14::fixed_point` type
+/// \brief essential named definitions related to the `cnl::fixed_point` type
 
 #if !defined(SG14_FIXED_POINT_NAMED_H)
 #define SG14_FIXED_POINT_NAMED_H 1
@@ -15,7 +15,7 @@
 #include "fixed_point_arithmetic.h"
 
 /// study group 14 of the C++ working group
-namespace sg14 {
+namespace cnl {
 
     /// \brief calculates the negative of a \ref fixed_point value
     /// \headerfile sg14/fixed_point

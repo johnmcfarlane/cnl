@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief essential definitions related to the `sg14::const_integer` type
+/// \brief essential definitions related to the `cnl::const_integer` type
 
 #if !defined(SG14_CONST_INTEGER_H)
 #define SG14_CONST_INTEGER_H 1
@@ -19,11 +19,11 @@
 #include <stdexcept>
 #endif
 
-namespace sg14 {
+namespace cnl {
     namespace _const_integer_impl {
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::digits_to_integral_constant
+        // cnl::_impl::digits_to_integral_constant
         //
         // return intrgral_constant given string of digits
 
@@ -81,7 +81,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::const_integer
+    // cnl::const_integer
 
     /// \brief a compile-time-only integer type like a std::integral_constant with arithmetic support
     ///
@@ -115,7 +115,7 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::const_integer arithmetic operator overloads
+    // cnl::const_integer arithmetic operator overloads
 
     namespace _const_integer_impl {
         template<class Lhs, class Rhs, class Type>
@@ -225,7 +225,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::const_integer comparison operator overloads
+    // cnl::const_integer comparison operator overloads
 
     namespace _const_integer_impl {
         // const_integer OP const_integer
@@ -260,7 +260,7 @@ namespace sg14 {
 #endif
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::const_integer type traits
+    // cnl::const_integer type traits
 
     template<class T>
     struct is_const_integer : std::false_type {};
@@ -269,7 +269,7 @@ namespace sg14 {
     struct is_const_integer<const_integer<Integral, Value>> : std::true_type {};
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::literals - literal wrapper for std::integral_constant
+    // cnl::literals - literal wrapper for std::integral_constant
     //
     // http://codereview.stackexchange.com/a/51576/26421
 
@@ -287,12 +287,12 @@ namespace std {
     // std::common_type<const_integer<>, ...>
     
     template<class Integral, Integral Value, int Digits, int Zeros, class Rhs>
-    struct common_type<sg14::const_integer<Integral, Value, Digits, Zeros>, Rhs>
+    struct common_type<cnl::const_integer<Integral, Value, Digits, Zeros>, Rhs>
         : common_type<Integral, Rhs> {
     };
 
     template<class Lhs, class Integral, Integral Value, int Digits, int Zeros>
-    struct common_type<Lhs, sg14::const_integer<Integral, Value, Digits, Zeros>>
+    struct common_type<Lhs, cnl::const_integer<Integral, Value, Digits, Zeros>>
         : common_type<Lhs, Integral> {
     };
 
@@ -300,7 +300,7 @@ namespace std {
     // std::numeric_limits<const_integer<>>
 
     template<class Integral, Integral Value, int Digits, int Zeros>
-    struct numeric_limits<sg14::const_integer<Integral, Value, Digits, Zeros>>
+    struct numeric_limits<cnl::const_integer<Integral, Value, Digits, Zeros>>
     : numeric_limits<Integral> {
         /// alias to template parameter, \a Digits
         static constexpr int digits = Digits;

@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief definitions of `sg14::make_fixed` and `sg14::make_ufixed`
+/// \brief definitions of `cnl::make_fixed` and `cnl::make_ufixed`
 
 #if !defined(SG14_MAKE_FIXED_H)
 #define SG14_MAKE_FIXED_H 1
@@ -15,7 +15,7 @@
 #include <sg14/bits/type_traits.h>
 
 /// study group 14 of the C++ working group
-namespace sg14 {
+namespace cnl {
 
     /// \brief specializes \ref fixed_point with the given number of integer and fractional digits
     /// \headerfile sg14/fixed_point

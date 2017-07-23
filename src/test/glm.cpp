@@ -25,18 +25,18 @@ namespace {
         auto expected = glm::tvec4<int>{35};
         auto product = lhs*rhs;
 
-        ASSERT_TRUE(sg14::_impl::identical(expected, product));
+        ASSERT_TRUE(cnl::_impl::identical(expected, product));
     }
 
     TEST(glm, fp_char_multiply) {
-        using op_fp = sg14::fixed_point<char, -4>;
+        using op_fp = cnl::fixed_point<char, -4>;
         auto lhs = glm::tvec4<op_fp>{op_fp{7.5}};
         auto rhs = glm::tvec4<op_fp>{op_fp{5.25}};
 
-        using result_fp = sg14::fixed_point<int, -8>;
+        using result_fp = cnl::fixed_point<int, -8>;
         auto expected = glm::tvec4<result_fp>{result_fp{39.375}};
         auto product = lhs*rhs;
 
-        ASSERT_TRUE(sg14::_impl::identical(expected, product));
+        ASSERT_TRUE(cnl::_impl::identical(expected, product));
     }
 }

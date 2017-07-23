@@ -41,7 +41,7 @@ INPUT = \
  ../include/sg14/num_traits.h \
  index.md
 EXCLUDE_SYMBOLS = \
- sg14::_*
+ cnl::_*
 FILE_PATTERNS = *
 RECURSIVE = YES
 EXCLUDE =

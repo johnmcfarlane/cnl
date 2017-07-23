@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief essential definitions related to the `sg14::safe_integer` type
+/// \brief essential definitions related to the `cnl::safe_integer` type
 
 #if !defined(SG14_SAFE_INTEGER_H)
 #define SG14_SAFE_INTEGER_H 1
@@ -15,7 +15,7 @@
 #include "overflow.h"
 
 /// study group 14 of the C++ working group
-namespace sg14 {
+namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // macros
 
@@ -43,7 +43,7 @@ namespace sg14 {
 
     namespace _integer_impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_integer_impl::is_safe_integer - trait to identify sg14::safe_integer<>
+        // cnl::_integer_impl::is_safe_integer - trait to identify cnl::safe_integer<>
 
         template<class T>
         struct is_safe_integer
@@ -56,7 +56,7 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_integer_impl::are_integer_class_operands - basically identifies
+        // cnl::_integer_impl::are_integer_class_operands - basically identifies
         // operands that should go into a function defined here; filters out fixed-point
 
         template<class Lhs, class Rhs>
@@ -67,7 +67,7 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_integer_impl::common_type
+        // cnl::_integer_impl::common_type
 
         template<class, class, class = void>
         struct common_type;
@@ -89,7 +89,7 @@ namespace sg14 {
                 safe_integer<LhsRep, LhsOverflowTag>, RhsInteger,
                 _impl::enable_if_t<
                         !_integer_impl::is_safe_integer<RhsInteger>::value && std::is_integral<RhsInteger>::value>> {
-            using type = typename sg14::safe_integer<typename std::common_type<LhsRep, RhsInteger>::type, LhsOverflowTag>;
+            using type = typename cnl::safe_integer<typename std::common_type<LhsRep, RhsInteger>::type, LhsOverflowTag>;
         };
 
         // given a safe_integer<> and a floating-point type,
@@ -109,7 +109,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::safe_integer<>
+    // cnl::safe_integer<>
 
     // an integer which can be customized to react in different ways to overflow;
     // currently doesn't correctly detect overflow from operators
@@ -157,7 +157,7 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::_impl::set_rep<safe_integer<>>
+    // cnl::_impl::set_rep<safe_integer<>>
 
     namespace _impl {
         template<class Rep, class OverflowTag>
@@ -200,7 +200,7 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_safe_integer
+    // cnl::make_safe_integer
 
     template<class OverflowTag, class Rep>
     constexpr auto make_safe_integer(Rep const& value)
@@ -261,72 +261,72 @@ namespace sg14 {
 }
 
 namespace std {
-    // std::common_type<T, sg14::safe_integer>
+    // std::common_type<T, cnl::safe_integer>
     template<
             class Lhs,
             class RhsRep, class RhsOverflowTag>
     struct common_type<
             Lhs,
-            sg14::safe_integer<RhsRep, RhsOverflowTag>>
-            : sg14::_integer_impl::common_type<
+            cnl::safe_integer<RhsRep, RhsOverflowTag>>
+            : cnl::_integer_impl::common_type<
                     Lhs,
-                    sg14::safe_integer<RhsRep, RhsOverflowTag>> {
+                    cnl::safe_integer<RhsRep, RhsOverflowTag>> {
     };
 
-    // std::common_type<sg14::safe_integer, T>
+    // std::common_type<cnl::safe_integer, T>
     template<
             class LhsRep, class LhsOverflowTag,
             class Rhs>
     struct common_type<
-            sg14::safe_integer<LhsRep, LhsOverflowTag>,
+            cnl::safe_integer<LhsRep, LhsOverflowTag>,
             Rhs>
-            : sg14::_integer_impl::common_type<
-                    sg14::safe_integer<LhsRep, LhsOverflowTag>,
+            : cnl::_integer_impl::common_type<
+                    cnl::safe_integer<LhsRep, LhsOverflowTag>,
                     Rhs> {
     };
 
-    // std::common_type<sg14::safe_integer, sg14::fixed_point>
+    // std::common_type<cnl::safe_integer, cnl::fixed_point>
     template<
             class LhsRep, class LhsOverflowTag,
             class RhsRep, int RhsExponent>
     struct common_type<
-            sg14::safe_integer<LhsRep, LhsOverflowTag>,
-            sg14::fixed_point<RhsRep, RhsExponent>>
+            cnl::safe_integer<LhsRep, LhsOverflowTag>,
+            cnl::fixed_point<RhsRep, RhsExponent>>
             : std::common_type<
-                    sg14::fixed_point<sg14::safe_integer<LhsRep, LhsOverflowTag>, 0>,
-                    sg14::fixed_point<RhsRep, RhsExponent>> {
+                    cnl::fixed_point<cnl::safe_integer<LhsRep, LhsOverflowTag>, 0>,
+                    cnl::fixed_point<RhsRep, RhsExponent>> {
     };
 
-    // std::common_type<sg14::fixed_point, sg14::safe_integer>
+    // std::common_type<cnl::fixed_point, cnl::safe_integer>
     template<
             class LhsRep, int LhsExponent,
             class RhsRep, class RhsOverflowTag>
     struct common_type<
-            sg14::fixed_point<LhsRep, LhsExponent>,
-            sg14::safe_integer<RhsRep, RhsOverflowTag>>
+            cnl::fixed_point<LhsRep, LhsExponent>,
+            cnl::safe_integer<RhsRep, RhsOverflowTag>>
             : std::common_type<
-                    sg14::fixed_point<LhsRep, LhsExponent>,
-                    sg14::fixed_point<sg14::safe_integer<RhsRep, RhsOverflowTag>, 0>> {
+                    cnl::fixed_point<LhsRep, LhsExponent>,
+                    cnl::fixed_point<cnl::safe_integer<RhsRep, RhsOverflowTag>, 0>> {
     };
     
-    // std::common_type<sg14::safe_integer, sg14::safe_integer>
+    // std::common_type<cnl::safe_integer, cnl::safe_integer>
     template<
             class LhsRep, class LhsOverflowTag,
             class RhsRep, class RhsOverflowTag>
     struct common_type<
-            sg14::safe_integer<LhsRep, LhsOverflowTag>,
-            sg14::safe_integer<RhsRep, RhsOverflowTag>>
-            : sg14::_integer_impl::common_type<
-                    sg14::safe_integer<LhsRep, LhsOverflowTag>,
-                    sg14::safe_integer<RhsRep, RhsOverflowTag>> {
+            cnl::safe_integer<LhsRep, LhsOverflowTag>,
+            cnl::safe_integer<RhsRep, RhsOverflowTag>>
+            : cnl::_integer_impl::common_type<
+                    cnl::safe_integer<LhsRep, LhsOverflowTag>,
+                    cnl::safe_integer<RhsRep, RhsOverflowTag>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
     // std::numeric_limits specialization for safe_integer
 
     template<class Rep, class OverflowTag>
-    struct numeric_limits<sg14::safe_integer<Rep, OverflowTag>>
-    : numeric_limits<sg14::_impl::number_base<sg14::safe_integer<Rep, OverflowTag>, Rep>> {};
+    struct numeric_limits<cnl::safe_integer<Rep, OverflowTag>>
+    : numeric_limits<cnl::_impl::number_base<cnl::safe_integer<Rep, OverflowTag>, Rep>> {};
 }
 
 #endif	// SG14_SAFE_INTEGER_H

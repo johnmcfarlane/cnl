@@ -16,7 +16,7 @@
 #include <map>
 #include <memory>
 
-using namespace sg14;
+using namespace cnl;
 using namespace std;
 using _impl::identical;
 
@@ -199,7 +199,7 @@ namespace composite {
     using prototypes::safe_integer;
 
     template<int Digits, typename Narrowest = int>
-    using elastic_integer = sg14::elastic_integer<Digits, Narrowest>;
+    using elastic_integer = cnl::elastic_integer<Digits, Narrowest>;
 
     template<int Digits, typename Narrowest = int>
     using safe_elastic_integer =

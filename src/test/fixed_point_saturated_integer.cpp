@@ -18,7 +18,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Rep type
 
-using test_int = sg14::safe_integer<int, sg14::saturated_overflow_tag>;
+using test_int = cnl::safe_integer<int, cnl::saturated_overflow_tag>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // perform fixed_point tests with this type of fixed_point specialization

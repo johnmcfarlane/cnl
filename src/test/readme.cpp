@@ -13,8 +13,8 @@
 // 2. Essential definitions are in, [*fixed_point*](include/sg14/fixed_point):
 #include <sg14/fixed_point>
 
-// 5. All definitions are in the `sg14` namespace:
-using namespace sg14;
+// 5. All definitions are in the `cnl` namespace:
+using namespace cnl;
 
 TEST(readme, instance)
 {
@@ -28,5 +28,5 @@ TEST(readme, instance)
 
     // 7. Alternatively, use `make_fixed` and `make_ufixed` to instantiate signed and unsigned variables
     //    with exactly the number of integer and fractional digits you require:
-    static_assert(std::is_same<decltype(pi), sg14::make_fixed<3, 28>>::value, "error in README.md example code");
+    static_assert(std::is_same<decltype(pi), cnl::make_fixed<3, 28>>::value, "error in README.md example code");
 }

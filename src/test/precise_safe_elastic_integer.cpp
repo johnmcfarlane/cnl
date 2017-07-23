@@ -8,7 +8,7 @@
 #include <sg14/auxiliary/precise_integer.h>
 #include <sg14/auxiliary/safe_integer.h>
 
-namespace sg14 {
+namespace cnl {
     // precise safe elastic fixed-point
     template<
             int IntegerDigits,
@@ -42,27 +42,27 @@ namespace sg14 {
 }
 
 namespace {
-    using sg14::make_psei;
-    using sg14::psei;
+    using cnl::make_psei;
+    using cnl::psei;
     using std::is_same;
-    using sg14::_impl::identical;
+    using cnl::_impl::identical;
 
     namespace default_parameters {
-        using sg14::precise_integer;
-        using sg14::safe_integer;
-        using sg14::elastic_integer;
+        using cnl::precise_integer;
+        using cnl::safe_integer;
+        using cnl::elastic_integer;
 
         static_assert(
                 is_same<psei<1>::rep::rep::rep, int>::value,
-                "sg14::precise_integer parameter default test failed");
+                "cnl::precise_integer parameter default test failed");
     }
 
     namespace test_multiply {
-        static_assert(identical(sg14::psei<6>{7}*sg14::psei<13>{321}, sg14::psei<19>{2247}), "");
+        static_assert(identical(cnl::psei<6>{7}*cnl::psei<13>{321}, cnl::psei<19>{2247}), "");
     }
 
     namespace test_make_psei {
-        using namespace sg14::literals;
+        using namespace cnl::literals;
         static_assert(identical(make_psei(std::int16_t{7}), psei<15>{7}), "");
         static_assert(identical(make_psei(7_c), psei<3>{7}), "");
     }

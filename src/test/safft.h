@@ -91,11 +91,11 @@ namespace Algorithms {
     }
 
     template<class Rep, int Exponent>
-    unsigned int fft_core(std::vector<std::complex<sg14::fixed_point<Rep, Exponent>>> &vec1,
-                          std::vector<std::complex<sg14::fixed_point<Rep, Exponent>>> &vec2,
-                          std::vector<std::complex<sg14::fixed_point<Rep, Exponent>>> &twiddles,
+    unsigned int fft_core(std::vector<std::complex<cnl::fixed_point<Rep, Exponent>>> &vec1,
+                          std::vector<std::complex<cnl::fixed_point<Rep, Exponent>>> &vec2,
+                          std::vector<std::complex<cnl::fixed_point<Rep, Exponent>>> &twiddles,
                           int direction_flag) {
-        using fixed_point = sg14::fixed_point<Rep, Exponent>;
+        using fixed_point = cnl::fixed_point<Rep, Exponent>;
         using complex = std::complex<fixed_point>;
         unsigned int N = (unsigned int) vec1.size();
         unsigned int S = (unsigned int) (std::log10((double) N) /

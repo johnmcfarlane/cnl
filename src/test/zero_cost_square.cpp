@@ -5,12 +5,12 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief Signed 15:16 Fixed-Point Square Function Using sg14::elastic_fixed_point
+/// \brief Signed 15:16 Fixed-Point Square Function Using cnl::elastic_fixed_point
 
 // Here's how to use the fixed_point library on Godbolt.org.
 // Normally, you'd just add `#include <fixed_point>`.
 #include <sg14/auxiliary/elastic_fixed_point.h>
-using namespace sg14;
+using namespace cnl;
 
 // square a nunber using 15:16 fixed-point arithmetic
 // without using a fixed-point library
@@ -25,7 +25,7 @@ float square_int(float input) {
     return prod / 4294967296.f;
 }
 
-// the same function using sg14::elastic_integer
+// the same function using cnl::elastic_integer
 float square_elastic_integer(float input) {
     auto fixed = elastic_integer<31>{input * 65536.f};
 
@@ -36,7 +36,7 @@ float square_elastic_integer(float input) {
     return static_cast<float>(prod) / 4294967296.f;
 }
 
-// the same function using sg14::fixed_point
+// the same function using cnl::fixed_point
 float square_fixed_point(float input) {
     // fixed_point handles scaling
     auto fixed = fixed_point<int32_t, -16>{input};

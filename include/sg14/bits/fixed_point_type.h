@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief definition of `sg14::fixed_point` type
+/// \brief definition of `cnl::fixed_point` type
 
 #if !defined(SG14_FIXED_POINT_DEF_H)
 #define SG14_FIXED_POINT_DEF_H 1
@@ -14,7 +14,7 @@
 #include <sg14/bits/number_base.h>
 
 /// study group 14 of the C++ working group
-namespace sg14 {
+namespace cnl {
     // forward declaration
     template<class Rep = int, int Exponent = 0>
     class fixed_point;
@@ -25,7 +25,7 @@ namespace sg14 {
     namespace _impl {
         namespace fp {
             ////////////////////////////////////////////////////////////////////////////////
-            // sg14::_impl::float_of_size
+            // cnl::_impl::float_of_size
 
             template<int NumBits, class Enable = void>
             struct float_of_size;
@@ -46,7 +46,7 @@ namespace sg14 {
             };
 
             ////////////////////////////////////////////////////////////////////////////////
-            // sg14::_impl::float_of_same_size
+            // cnl::_impl::float_of_same_size
 
             template<class T>
             using float_of_same_size = typename float_of_size<digits<T>::value + is_signed<T>::value>::type;
@@ -240,7 +240,7 @@ namespace sg14 {
     namespace _impl {
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::is_fixed_point
+        // cnl::_impl::is_fixed_point
 
         template<class T>
         struct is_fixed_point
@@ -253,7 +253,7 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::shift_left
+        // cnl::_impl::shift_left
 
         // performs a shift operation by a fixed number of bits avoiding two pitfalls:
         // 1) shifting by a negative amount causes undefined behavior
@@ -278,7 +278,7 @@ namespace sg14 {
         namespace fp {
             namespace type {
                 ////////////////////////////////////////////////////////////////////////////////
-                // sg14::_impl::fp::type::pow2
+                // cnl::_impl::fp::type::pow2
 
                 // returns given power of 2
                 template<class S, int Exponent, enable_if_t<Exponent==0, int> Dummy = 0>
@@ -322,7 +322,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::fixed_point<> member definitions
+    // cnl::fixed_point<> member definitions
 
     template<class Rep, int Exponent>
     template<class S, _impl::enable_if_t<std::numeric_limits<S>::is_iec559, int> Dummy>

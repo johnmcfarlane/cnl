@@ -7,7 +7,7 @@
 #include <sg14/auxiliary/elastic_integer.h>
 #include <sg14/auxiliary/precise_integer.h>
 
-namespace sg14 {
+namespace cnl {
     // precise elastic integer
     template<
             int IntegerDigits,
@@ -34,22 +34,22 @@ namespace sg14 {
 }
 
 namespace {
-    using sg14::precise_elastic_integer;
+    using cnl::precise_elastic_integer;
     using std::is_same;
-    using sg14::_impl::identical;
+    using cnl::_impl::identical;
 
     namespace default_parameters {
-        using sg14::precise_integer;
-        using sg14::elastic_integer;
+        using cnl::precise_integer;
+        using cnl::elastic_integer;
 
         static_assert(
                 is_same<precise_elastic_integer<1>::rep::rep, int>::value,
-                "sg14::precise_integer parameter default test failed");
+                "cnl::precise_integer parameter default test failed");
     }
 
     namespace test_make_precise_elastic {
         static_assert(identical(precise_elastic_integer<1>{1}, precise_elastic_integer<1>{1}), "");
-        static_assert(identical(sg14::make_precise_elastic(std::int16_t{7}), precise_elastic_integer<15>{7}), "");
+        static_assert(identical(cnl::make_precise_elastic(std::int16_t{7}), precise_elastic_integer<15>{7}), "");
     }
 
     namespace test_multiply {

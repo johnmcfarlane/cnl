@@ -36,7 +36,7 @@ void test_function(void(* function)(), char const* output)
 #include <sg14/fixed_point>
 #include <iostream>
 
-using namespace sg14;
+using namespace cnl;
 using namespace std;
 
 void declaration_example()

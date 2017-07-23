@@ -10,7 +10,7 @@
 #include <sg14/auxiliary/precise_integer.h>
 #include <sg14/auxiliary/safe_integer.h>
 
-using namespace sg14;
+using namespace cnl;
 
 // precise safe integer
 template<

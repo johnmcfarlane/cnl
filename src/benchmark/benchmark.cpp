@@ -13,8 +13,8 @@
 //#define ESCAPE(x) benchmark::DoNotOptimize(x)
 
 using std::numeric_limits;
-using sg14::make_fixed;
-using sg14::make_ufixed;
+using cnl::make_fixed;
+using cnl::make_ufixed;
 
 ////////////////////////////////////////////////////////////////////////////////
 // entry point
@@ -250,5 +250,5 @@ FIXED_POINT_BENCHMARK_REAL(bm_magnitude_squared);
 
 FIXED_POINT_BENCHMARK_REAL(bm_circle_intersect_generic);
 
-// tests involving unoptimized math function, sg14::sqrt
+// tests involving unoptimized math function, cnl::sqrt
 FIXED_POINT_BENCHMARK_REAL(bm_sqrt);

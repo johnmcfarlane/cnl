@@ -14,7 +14,7 @@
 #include <limits>
 #include <type_traits>
 
-namespace sg14 {
+namespace cnl {
     namespace _impl {
         template<class Derived, class Rep>
         class number_base {
@@ -60,11 +60,11 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::is_class_derived_from_number_base
+        // cnl::_impl::is_class_derived_from_number_base
 
-        // true iff T's base class is sg14::_impl::number_base;
+        // true iff T's base class is cnl::_impl::number_base;
         // T must be a class;
-        // used by sg14::_impl::is_derived_from_number_base
+        // used by cnl::_impl::is_derived_from_number_base
         template<class Derived, class Enable = void>
         struct is_class_derived_from_number_base : std::false_type {};
 
@@ -75,7 +75,7 @@ namespace sg14 {
                 : std::true_type {};
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::is_derived_from_number_base
+        // cnl::_impl::is_derived_from_number_base
 
         // true if T is the Derived parameter of a number_base type
         template<class T, class Enable = void>
@@ -86,7 +86,7 @@ namespace sg14 {
         : is_class_derived_from_number_base<Derived> { };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::enable_if_precedes
+        // cnl::_impl::enable_if_precedes
         
         template<class Former, class Latter>
         struct precedes {
@@ -98,7 +98,7 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::operate
+        // cnl::_impl::operate
 
         // higher OP number_base<>
         template<
@@ -148,7 +148,7 @@ namespace sg14 {
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::number_base operators
+        // cnl::_impl::number_base operators
 
         // compound assignment
 
@@ -356,10 +356,10 @@ namespace sg14 {
 
 namespace std {
     ////////////////////////////////////////////////////////////////////////////////
-    // std::numeric_limits for sg14::_impl::numeric_limits
+    // std::numeric_limits for cnl::_impl::numeric_limits
 
     template<class Derived, class Rep>
-    struct numeric_limits<sg14::_impl::number_base<Derived, Rep>>
+    struct numeric_limits<cnl::_impl::number_base<Derived, Rep>>
     : numeric_limits<Rep> {
         // fixed-point-specific helpers
         using _value_type = Derived;

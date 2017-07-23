@@ -135,7 +135,7 @@ namespace sample5 {
 #endif  // C++14
 
 namespace determining {
-    using sg14::digits;
+    using cnl::digits;
 
     static_assert(digits<uint16_t>::value == 16, "the digits of uint16_t is exactly 16 bits");
     static_assert(digits<long long>::value >= 63, "long long has a digits of at least 64 bits");
@@ -144,8 +144,8 @@ namespace determining {
 }
 
 namespace specifiying {
-    using sg14::set_digits_t;
-    using sg14::digits;
+    using cnl::set_digits_t;
+    using cnl::digits;
 
     static_assert(is_same<set_digits_t<signed, 7>, int8_t>::value, "int8_t is a signed 8-bit integer");
     static_assert(is_same<set_digits_t<unsigned, 32>, uint32_t>::value, "uint32_t is an unsigned 32-bit integer");

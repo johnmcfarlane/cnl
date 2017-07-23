@@ -7,7 +7,7 @@
 #include <sg14/fixed_point>
 #include <sg14/auxiliary/elastic_fixed_point.h>
 
-using namespace sg14;
+using namespace cnl;
 
 // contains snippets of code displayed in Doxygen documentation as examples
 namespace {
@@ -40,7 +40,7 @@ static_assert(std::is_same<decltype(n), const elastic_fixed_point<11, -9, char>>
 
 namespace define_a_fast_object_using_elastic_literal {
 //! [define an object using elastic literal]
-using namespace sg14::literals;
+using namespace cnl::literals;
 constexpr auto n = 34_elastic;
 
 static_assert(n==34, "n now has the value, 1536");

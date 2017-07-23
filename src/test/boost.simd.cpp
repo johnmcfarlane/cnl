@@ -16,7 +16,7 @@
 #include <gtest/gtest.h>
 
 namespace {
-    using sg14::fixed_point;
+    using cnl::fixed_point;
     using boost::simd::pack;
 
     template<class T, std::size_t N, int Exponent>
@@ -37,7 +37,7 @@ namespace {
     using initializer = rebind<float, FPP>;
 }
 
-namespace sg14 {
+namespace cnl {
     template<class T, std::size_t N, int Exponent>
     bool operator==(const fpp<T, N, Exponent> &lhs, const fpp<T, N, Exponent> &rhs) noexcept {
         return boost::simd::compare_equal(lhs.data(), rhs.data());
@@ -59,19 +59,19 @@ namespace {
     }
 
     namespace test_set_digits {
-        using actual_type = sg14::set_digits_t<boost::simd::pack<signed, 8>, 15>;
+        using actual_type = cnl::set_digits_t<boost::simd::pack<signed, 8>, 15>;
         using expected_type = boost::simd::pack<std::int16_t, 8>;
         static_assert(std::is_same<actual_type, expected_type>::value, "");
     }
 
     namespace test_set_make_unsigned {
-        using actual_type = sg14::make_unsigned_t<boost::simd::pack<std::int16_t, 2>>;
+        using actual_type = cnl::make_unsigned_t<boost::simd::pack<std::int16_t, 2>>;
         using expected_type = boost::simd::pack<std::uint16_t, 2>;
         static_assert(std::is_same<expected_type, actual_type>::value, "");
     }
 
     namespace test_set_make_signed {
-        using actual_type = sg14::make_signed_t<boost::simd::pack<unsigned, 8>>;
+        using actual_type = cnl::make_signed_t<boost::simd::pack<unsigned, 8>>;
         using expected_type = boost::simd::pack<signed, 8>;
         static_assert(std::is_same<expected_type, actual_type>::value, "");
     }
@@ -79,7 +79,7 @@ namespace {
     TEST(boost_simd, scale) {
         using pack = boost::simd::pack<int, 2>;
         auto input = pack{65535, 0};
-        auto output = sg14::scale<pack>()(input, 2, 5);
+        auto output = cnl::scale<pack>()(input, 2, 5);
         auto expected = pack{65535*32, 0};
         ASSERT_TRUE(boost::simd::compare_equal(expected, output));
     }
@@ -88,7 +88,7 @@ namespace {
         using output_type = boost::simd::pack<std::int64_t, 2>;
         using input_type = boost::simd::pack<std::uint16_t, 2>;
         auto input = input_type{65535, 0};
-        auto output = sg14::_impl::shift_left<5, output_type>(input);
+        auto output = cnl::_impl::shift_left<5, output_type>(input);
         auto expected = output_type{65535*32, 0};
         ASSERT_TRUE(boost::simd::compare_equal(expected, output));
     }
