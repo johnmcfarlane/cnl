@@ -4,11 +4,11 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-// mechanically retrieved, single-header version of fixed_point library
-// https://github.com/johnmcfarlane/fixed_point
+// mechanically retrieved, single-header version of CNL library
+// https://github.com/johnmcfarlane/cnl
 
-#if ! defined(SG14_FIXED_POINT_SINGLE_HEADER)
-#define SG14_FIXED_POINT_SINGLE_HEADER
+#if ! defined(CNL_COMPLETE_H)
+#define CNL_COMPLETE_H
 
 #include <cmath>
 #include <utility>
