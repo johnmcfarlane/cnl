@@ -129,7 +129,7 @@ TEST(index, advanced_arithmetic_example)
 }
 
 
-#if defined(SG14_BOOST_ENABLED)
+#if defined(CNL_BOOST_ENABLED)
 ////////////////////////////////////////////////////////////////////////////////
 //! [boost example]
 #include <cnl/auxiliary/boost.multiprecision.h>

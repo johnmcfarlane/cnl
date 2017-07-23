@@ -8,7 +8,7 @@
 
 #include <gtest/gtest.h>
 
-#if defined(SG14_BOOST_ENABLED)
+#if defined(CNL_BOOST_ENABLED)
 #include <boost/integer.hpp>
 #endif
 
@@ -94,7 +94,7 @@ namespace sample4 {
     // Sample 4 intentionally does not exist. If it did, there would be no need for P0381!
 }
 
-#if defined(SG14_BOOST_ENABLED)
+#if defined(CNL_BOOST_ENABLED)
 namespace sample5 {
     template<class Operand>
     auto multiply(Operand a, Operand b)
@@ -131,7 +131,7 @@ namespace sample5 {
                 static_cast<uint64_t>(multiply(UINT_MAX, UINT_MAX)));
     }
 }
-#endif  // defined(SG14_BOOST_ENABLED)
+#endif  // defined(CNL_BOOST_ENABLED)
 #endif  // C++14
 
 namespace determining {

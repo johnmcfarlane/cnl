@@ -65,7 +65,7 @@ find_package(Boost)
 if(Boost_FOUND)
     if(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
         # only compile multiprecision.cpp if Boost.Multiprecision is available
-        set(BOOST_FOUND_CXX_FLAGS "-DSG14_BOOST_ENABLED")
+        set(BOOST_FOUND_CXX_FLAGS "-DCNL_BOOST_ENABLED")
         target_include_directories(fp_test SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
         target_link_libraries(fp_test ${Boost_LIBRARIES})
     else(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
