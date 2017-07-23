@@ -15,7 +15,7 @@ Installation instructions are provided on the [project page](https://github.com/
 
 \subsection Features
 
-Header, [cnl/fixed_point](@ref fixed_point), defines class template, [fixed_point](@ref cnl::fixed_point), with:
+Header, [cnl/fixed_point.h](@ref fixed_point), defines class template, [fixed_point](@ref cnl::fixed_point), with:
 
 * a simple, flexible generic design;
 * operator overloads that interface [fixed_point](@ref cnl::fixed_point) with other numeric types;

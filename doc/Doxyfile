@@ -24,7 +24,7 @@ INPUT = \
  ../include/cnl/auxiliary/overflow.h \
  ../include/cnl/auxiliary/precise_integer.h \
  ../include/cnl/auxiliary/safe_integer.h \
- ../include/cnl/fixed_point \
+ ../include/cnl/fixed_point.h \
  ../include/cnl/bits/fixed_point_arithmetic.h \
  ../include/cnl/bits/fixed_point_extras.h \
  ../include/cnl/bits/fixed_point_math.h \

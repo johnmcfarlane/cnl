@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/auxiliary/safe_integer.h>
-#include <cnl/fixed_point>
+#include <cnl/fixed_point.h>
 
 #define TEST_SATURATED_OVERFLOW
 #define TEST_LABEL saturated_integer_

@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/auxiliary/safe_integer.h>
-#include <cnl/fixed_point>
+#include <cnl/fixed_point.h>
 
 #define TEST_THROWING_OVERFLOW
 #define TEST_LABEL throwing_integer_

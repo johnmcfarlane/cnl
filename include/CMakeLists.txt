@@ -23,7 +23,7 @@ target_sources(fixed_point INTERFACE
         include/cnl/bits/common.h
         include/cnl/bits/config.h
         include/cnl/cstdint
-        include/cnl/fixed_point
+        include/cnl/fixed_point.h
         include/cnl/limits
         include/cnl/type_traits
 )

@@ -11,7 +11,7 @@
 
 #include <cnl/auxiliary/precise_integer.h>
 #include <cnl/num_traits.h>
-#include <cnl/fixed_point>
+#include <cnl/fixed_point.h>
 
 #include <gtest/gtest.h>
 

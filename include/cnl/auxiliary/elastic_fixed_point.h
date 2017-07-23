@@ -11,7 +11,7 @@
 #define SG14_ELASTIC_FIXED_POINT_H 1
 
 #include "elastic_integer.h"
-#include <cnl/fixed_point>
+#include <cnl/fixed_point.h>
 
 /// compositional numeric library
 namespace cnl {

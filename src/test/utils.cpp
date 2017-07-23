@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/bits/type_traits.h>
-#include <cnl/fixed_point>
+#include <cnl/fixed_point.h>
 
 #include <gtest/gtest.h>
 

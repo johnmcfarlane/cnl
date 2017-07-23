@@ -54,7 +54,7 @@ namespace cnl {
     }
 
     /// \brief literal real number approximation that uses fixed-point arithmetic
-    /// \headerfile cnl/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \tparam Rep the underlying type used to represent the value
     /// \tparam Exponent the value by which to scale the integer value in order to get the real value

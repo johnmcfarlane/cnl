@@ -18,7 +18,7 @@
 namespace cnl {
 
     /// \brief specializes \ref fixed_point with the given number of integer and fractional digits
-    /// \headerfile cnl/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \tparam IntegerDigits specifies minimum value of @ref fixed_point::integer_digits
     /// \tparam FractionalDigits specifies the exact value of @ref fixed_point::fractional_digits
@@ -41,7 +41,7 @@ namespace cnl {
             -FractionalDigits>;
 
     /// \brief specializes \ref fixed_point with the given number of integer and fractional digits; produces an unsigned type
-    /// \headerfile cnl/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \sa make_fixed
     template<int IntegerDigits, int FractionalDigits = 0, class Narrowest = unsigned>

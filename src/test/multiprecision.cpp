@@ -8,7 +8,7 @@
 
 #include <cnl/auxiliary/multiprecision.h>
 
-#include <cnl/fixed_point>
+#include <cnl/fixed_point.h>
 
 #include <gtest/gtest.h>
 

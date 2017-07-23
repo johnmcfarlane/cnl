@@ -13,7 +13,7 @@
 #include <glm/glm.hpp>
 #endif
 
-#include <cnl/fixed_point>
+#include <cnl/fixed_point.h>
 
 #include <gtest/gtest.h>
 

@@ -18,7 +18,7 @@
 namespace cnl {
 
     /// \brief calculates the negative of a \ref fixed_point value
-    /// \headerfile cnl/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \param rhs input value
     ///
@@ -38,7 +38,7 @@ namespace cnl {
     }
 
     /// \brief calculates the sum of two \ref fixed_point values
-    /// \headerfile cnl/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \param lhs, rhs augend and addend
     ///
@@ -57,7 +57,7 @@ namespace cnl {
     }
 
     /// \brief calculates the difference of two \ref fixed_point values
-    /// \headerfile cnl/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \param lhs, rhs minuend and subtrahend
     ///
@@ -76,7 +76,7 @@ namespace cnl {
     }
 
     /// \brief calculates the product of two \ref fixed_point factors
-    /// \headerfile cnl/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \param lhs, rhs the factors
     ///
@@ -95,7 +95,7 @@ namespace cnl {
     }
 
     /// \brief calculates the quotient of two \ref fixed_point values
-    /// \headerfile cnl/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \param lhs, rhs dividend and divisor
     ///

@@ -11,7 +11,7 @@
 #define SG14_SAFE_INTEGER_H 1
 
 #include <cnl/bits/number_base.h>
-#include <cnl/fixed_point>
+#include <cnl/fixed_point.h>
 #include "overflow.h"
 
 /// compositional numeric library

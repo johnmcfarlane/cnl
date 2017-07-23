@@ -10,7 +10,7 @@
 #ifndef FIXED_POINT_MATH_H_
 #define FIXED_POINT_MATH_H_
 
-#include <cnl/fixed_point>
+#include <cnl/fixed_point.h>
 
 /// compositional numeric library
 namespace cnl {
@@ -116,7 +116,7 @@ namespace cnl {
     }
 
     /// Calculates exp2(x), i.e. 2^x
-    /// \headerfile cnl/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// Accurate to 1LSB for up to 32 bit underlying representation.
     ///

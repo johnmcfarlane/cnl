@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/fixed_point>
+#include <cnl/fixed_point.h>
 #include <cnl/auxiliary/elastic_integer.h>
 #include <cnl/auxiliary/precise_integer.h>
 #include <cnl/auxiliary/safe_integer.h>

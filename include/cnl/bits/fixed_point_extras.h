@@ -7,7 +7,7 @@
 /// \file
 /// \brief supplemental definitions related to the `cnl::fixed_point` type;
 /// definitions that straddle two homes, e.g. fixed_point and cmath, traits or limits;
-/// included from cnl/fixed_point - do not include directly!
+/// included from cnl/fixed_point.h - do not include directly!
 
 #if !defined(SG14_FIXED_POINT_EXTRAS_H)
 #define SG14_FIXED_POINT_EXTRAS_H 1
@@ -109,7 +109,7 @@ namespace cnl {
     // cnl::sqrt
 
     /// \brief calculates the square root of a \ref fixed_point value
-    /// \headerfile cnl/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \param x input parameter
     ///
