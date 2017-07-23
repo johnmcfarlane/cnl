@@ -12,7 +12,7 @@
 
 #include <sg14/bits/number_base.h>
 
-/// study group 14 of the C++ working group
+/// compositional numeric library
 namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////

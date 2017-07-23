@@ -12,7 +12,7 @@
 
 #include "fixed_point_arithmetic.h"
 
-/// study group 14 of the C++ working group
+/// compositional numeric library
 namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////

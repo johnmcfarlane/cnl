@@ -13,7 +13,7 @@
 #include <sg14/auxiliary/const_integer.h>
 #include <sg14/bits/number_base.h>
 
-/// study group 14 of the C++ working group
+/// compositional numeric library
 namespace cnl {
     // forward declaration
     template<class Rep = int, int Exponent = 0>

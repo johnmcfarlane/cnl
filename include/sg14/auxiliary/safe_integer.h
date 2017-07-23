@@ -14,7 +14,7 @@
 #include <sg14/fixed_point>
 #include "overflow.h"
 
-/// study group 14 of the C++ working group
+/// compositional numeric library
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // macros

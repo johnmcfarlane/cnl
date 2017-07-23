@@ -14,7 +14,7 @@
 
 #include <sg14/bits/type_traits.h>
 
-/// study group 14 of the C++ working group
+/// compositional numeric library
 namespace cnl {
 
     /// \brief specializes \ref fixed_point with the given number of integer and fractional digits

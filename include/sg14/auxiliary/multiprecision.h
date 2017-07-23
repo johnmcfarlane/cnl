@@ -14,7 +14,7 @@
 
 #include <boost/multiprecision/cpp_int.hpp>
 
-/// study group 14 of the C++ working group
+/// compositional numeric library
 namespace cnl {
     namespace _bmp = boost::multiprecision;
 

@@ -20,7 +20,7 @@
 #include <exception>
 #endif
 
-/// study group 14 of the C++ working group
+/// compositional numeric library
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // mode tags and objects
