@@ -9,9 +9,9 @@
 
 #if (__cplusplus > 201402L)
 
-#include <sg14/auxiliary/precise_integer.h>
-#include <sg14/num_traits.h>
-#include <sg14/fixed_point>
+#include <cnl/auxiliary/precise_integer.h>
+#include <cnl/num_traits.h>
+#include <cnl/fixed_point>
 
 #include <gtest/gtest.h>
 

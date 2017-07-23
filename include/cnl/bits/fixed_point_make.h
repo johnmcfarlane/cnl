@@ -12,13 +12,13 @@
 
 #include "fixed_point_type.h"
 
-#include <sg14/bits/type_traits.h>
+#include <cnl/bits/type_traits.h>
 
 /// compositional numeric library
 namespace cnl {
 
     /// \brief specializes \ref fixed_point with the given number of integer and fractional digits
-    /// \headerfile sg14/fixed_point
+    /// \headerfile cnl/fixed_point
     ///
     /// \tparam IntegerDigits specifies minimum value of @ref fixed_point::integer_digits
     /// \tparam FractionalDigits specifies the exact value of @ref fixed_point::fractional_digits
@@ -41,7 +41,7 @@ namespace cnl {
             -FractionalDigits>;
 
     /// \brief specializes \ref fixed_point with the given number of integer and fractional digits; produces an unsigned type
-    /// \headerfile sg14/fixed_point
+    /// \headerfile cnl/fixed_point
     ///
     /// \sa make_fixed
     template<int IntegerDigits, int FractionalDigits = 0, class Narrowest = unsigned>

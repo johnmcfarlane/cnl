@@ -10,8 +10,8 @@
 #ifndef SG14_OVERFLOW_H
 #define SG14_OVERFLOW_H
 
-#include <sg14/num_traits.h>
-#include <sg14/bits/common.h>
+#include <cnl/num_traits.h>
+#include <cnl/bits/common.h>
 
 #if defined(SG14_EXCEPTIONS_ENABLED)
 #include <stdexcept>

@@ -6,7 +6,7 @@
 
 //No include guards: we mean to include this for each case separately
 
-#include <sg14/bits/fixed_point_math.h>
+#include <cnl/bits/fixed_point_math.h>
 
 #include <algorithm>
 #include <array>

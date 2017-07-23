@@ -10,8 +10,8 @@
 #if !defined(SG14_FIXED_POINT_DEF_H)
 #define SG14_FIXED_POINT_DEF_H 1
 
-#include <sg14/auxiliary/const_integer.h>
-#include <sg14/bits/number_base.h>
+#include <cnl/auxiliary/const_integer.h>
+#include <cnl/bits/number_base.h>
 
 /// compositional numeric library
 namespace cnl {
@@ -54,7 +54,7 @@ namespace cnl {
     }
 
     /// \brief literal real number approximation that uses fixed-point arithmetic
-    /// \headerfile sg14/fixed_point
+    /// \headerfile cnl/fixed_point
     ///
     /// \tparam Rep the underlying type used to represent the value
     /// \tparam Exponent the value by which to scale the integer value in order to get the real value

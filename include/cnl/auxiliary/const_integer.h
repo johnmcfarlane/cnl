@@ -10,8 +10,8 @@
 #if !defined(SG14_CONST_INTEGER_H)
 #define SG14_CONST_INTEGER_H 1
 
-#include <sg14/auxiliary/numeric.h>
-#include <sg14/bits/common.h>
+#include <cnl/auxiliary/numeric.h>
+#include <cnl/bits/common.h>
 
 #include <cstdint>
 

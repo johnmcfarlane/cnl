@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/auxiliary/precise_integer.h>
+#include <cnl/auxiliary/precise_integer.h>
 
 #include "number_test.h"
 

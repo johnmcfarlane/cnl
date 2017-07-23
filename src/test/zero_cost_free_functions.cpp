@@ -7,8 +7,8 @@
 /// \file
 /// \brief Demonstration of selectively applying functions to numbers.
 
-#include <sg14/auxiliary/precise_integer.h>
-#include <sg14/auxiliary/safe_integer.h>
+#include <cnl/auxiliary/precise_integer.h>
+#include <cnl/auxiliary/safe_integer.h>
 
 using namespace cnl;
 

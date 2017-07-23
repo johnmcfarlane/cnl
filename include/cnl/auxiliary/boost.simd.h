@@ -10,7 +10,7 @@
 #if !defined(SG14_BOOST_SIMD_H)
 #define SG14_BOOST_SIMD_H 1
 
-#include <sg14/fixed_point>
+#include <cnl/fixed_point>
 
 #include <boost/simd/pack.hpp>
 

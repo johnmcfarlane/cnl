@@ -5,10 +5,10 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief file containing tests of the `sg14/auxiliary/const_integer.h` definitions
+/// \brief file containing tests of the `cnl/auxiliary/const_integer.h` definitions
 
-#include <sg14/auxiliary/const_integer.h>
-#include <sg14/bits/type_traits.h>
+#include <cnl/auxiliary/const_integer.h>
+#include <cnl/bits/type_traits.h>
 
 namespace {
     using cnl::_impl::identical;

@@ -27,7 +27,7 @@ The API is exposed through headers in the [include](./include/) directory.
 Add this to your system header list and include, e.g.:
 
 ```c++
-#include <sg14/fixed_point>
+#include <cnl/fixed_point>
 ```
 
 ## Tests and Benchmarks

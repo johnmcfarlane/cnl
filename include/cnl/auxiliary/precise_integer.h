@@ -7,8 +7,8 @@
 #if !defined(SG14_PRECISE_INTEGER_H)
 #define SG14_PRECISE_INTEGER_H 1
 
-#include <sg14/bits/number_base.h>
-#include <sg14/bits/limits.h>
+#include <cnl/bits/number_base.h>
+#include <cnl/bits/limits.h>
 
 namespace cnl {
 

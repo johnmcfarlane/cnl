@@ -6,9 +6,9 @@
 
 #if defined(SG14_BOOST_SIMD_ENABLED)
 
-#include <sg14/auxiliary/boost.simd.h>
+#include <cnl/auxiliary/boost.simd.h>
 
-#include <sg14/fixed_point>
+#include <cnl/fixed_point>
 
 #include <boost/simd/function/all.hpp>
 #include <boost/simd/function/compare_equal.hpp>

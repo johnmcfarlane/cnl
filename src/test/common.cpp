@@ -5,11 +5,11 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief file containing tests of the `sg14/bits/common.h` definitions
+/// \brief file containing tests of the `cnl/bits/common.h` definitions
 
-#include <sg14/bits/common.h>
+#include <cnl/bits/common.h>
 
-#include <sg14/bits/type_traits.h>
+#include <cnl/bits/type_traits.h>
 
 #include <gtest/gtest.h>
 

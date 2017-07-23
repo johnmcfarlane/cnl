@@ -4,13 +4,13 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/auxiliary/numeric.h>
-#include <sg14/bits/limits.h>
+#include <cnl/auxiliary/numeric.h>
+#include <cnl/bits/limits.h>
 
 #include <gtest/gtest.h>
 
 #include <cstdint>
-#include <sg14/bits/type_traits.h>
+#include <cnl/bits/type_traits.h>
 
 namespace {
     using namespace cnl;

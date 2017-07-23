@@ -7,9 +7,9 @@
 #if !defined(SG14_number_base_H)
 #define SG14_number_base_H 1
 
-#include <sg14/auxiliary/const_integer.h>
-#include <sg14/bits/common.h>
-#include <sg14/num_traits.h>
+#include <cnl/auxiliary/const_integer.h>
+#include <cnl/bits/common.h>
+#include <cnl/num_traits.h>
 
 #include <limits>
 #include <type_traits>

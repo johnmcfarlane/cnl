@@ -12,7 +12,7 @@
 #include <vector>
 #include <cmath>
 #include <gtest/gtest.h>
-#include <sg14/auxiliary/elastic_fixed_point.h>
+#include <cnl/auxiliary/elastic_fixed_point.h>
 #include "safft.h"
 
 

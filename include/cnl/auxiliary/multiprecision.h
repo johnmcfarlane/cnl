@@ -10,7 +10,7 @@
 #if !defined(SG14_MULTIPRECISION_H)
 #define SG14_MULTIPRECISION_H 1
 
-#include <sg14/num_traits.h>
+#include <cnl/num_traits.h>
 
 #include <boost/multiprecision/cpp_int.hpp>
 

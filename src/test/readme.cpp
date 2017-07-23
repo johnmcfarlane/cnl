@@ -10,8 +10,8 @@
 
 // 1. Add the [*include*](include) directory to your list of system headers.
 
-// 2. Essential definitions are in, [*fixed_point*](include/sg14/fixed_point):
-#include <sg14/fixed_point>
+// 2. Essential definitions are in, [*fixed_point*](include/cnl/fixed_point):
+#include <cnl/fixed_point>
 
 // 5. All definitions are in the `cnl` namespace:
 using namespace cnl;

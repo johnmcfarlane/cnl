@@ -9,7 +9,7 @@
 
 #include <type_traits>
 #include <cmath>
-#include <sg14/fixed_point>
+#include <cnl/fixed_point>
 #include "safft.h"
 
 //#define CALCULATE_TWIDDLES_IN_NATIVE_DATATYPE

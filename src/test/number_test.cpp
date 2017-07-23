@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/num_traits.h>
+#include <cnl/num_traits.h>
 #include "number_test.h"
 
 template struct number_test<char>;

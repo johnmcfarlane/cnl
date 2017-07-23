@@ -10,7 +10,7 @@
 #ifndef SG14_NUMERIC_H
 #define SG14_NUMERIC_H
 
-#include <sg14/num_traits.h>
+#include <cnl/num_traits.h>
 
 #include <limits.h>
 

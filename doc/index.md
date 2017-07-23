@@ -15,19 +15,19 @@ Installation instructions are provided on the [project page](https://github.com/
 
 \subsection Features
 
-Header, [sg14/fixed_point](@ref fixed_point), defines class template, [fixed_point](@ref cnl::fixed_point), with:
+Header, [cnl/fixed_point](@ref fixed_point), defines class template, [fixed_point](@ref cnl::fixed_point), with:
 
 * a simple, flexible generic design;
 * operator overloads that interface [fixed_point](@ref cnl::fixed_point) with other numeric types;
 * a set of function templates, (e.g. [multiply](@ref cnl::multiply)), for fine-grain control.
 
-Header, [sg14/num_traits](@ref num_traits), contains additions (such as [set_digits](@ref cnl::set_digits)) 
+Header, [cnl/num_traits.h](@ref num_traits), contains additions (such as [set_digits](@ref cnl::set_digits)) 
 that support widening of arithmetic types in order to deal with precision loss.
 
 Auxiliary modules:
 
-* [sg14/auxiliary/multiprecision.h](@ref multiprecision.h) adapts Boost.Multiprecision for use in fixed-point types;
-* [sg14/auxiliary/elastic_fixed_point.h](@ref elastic_fixed_point.h) defins [elastic_fixed_point](@ref cnl::elastic_fixed_point), an numeric type that uses fixed-point to avoid overflow.
+* [cnl/auxiliary/multiprecision.h](@ref multiprecision.h) adapts Boost.Multiprecision for use in fixed-point types;
+* [cnl/auxiliary/elastic_fixed_point.h](@ref elastic_fixed_point.h) defins [elastic_fixed_point](@ref cnl::elastic_fixed_point), an numeric type that uses fixed-point to avoid overflow.
 
 
 \section Examples

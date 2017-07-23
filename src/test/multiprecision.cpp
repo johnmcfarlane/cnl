@@ -6,9 +6,9 @@
 
 #if defined(SG14_BOOST_ENABLED)
 
-#include <sg14/auxiliary/multiprecision.h>
+#include <cnl/auxiliary/multiprecision.h>
 
-#include <sg14/fixed_point>
+#include <cnl/fixed_point>
 
 #include <gtest/gtest.h>
 
