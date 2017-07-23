@@ -172,7 +172,7 @@ struct number_test_by_rep
         : number_test_suite<NumericType<char>, TypeSpecificTestSuite>,
 #if defined(CNL_INT128)
         number_test_suite<NumericType<CNL_INT128>, TypeSpecificTestSuite>,
-          number_test_suite<NumericType<SG14_UINT128>, TypeSpecificTestSuite>,
+          number_test_suite<NumericType<CNL_UINT128>, TypeSpecificTestSuite>,
 #endif
           number_test_suite<NumericType<std::int8_t>, TypeSpecificTestSuite>,
           number_test_suite<NumericType<std::uint8_t>, TypeSpecificTestSuite>,

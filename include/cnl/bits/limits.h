@@ -55,14 +55,14 @@ namespace std {
     };
 
     template<>
-    struct numeric_limits<SG14_UINT128> : numeric_limits<unsigned long long> {
+    struct numeric_limits<CNL_UINT128> : numeric_limits<unsigned long long> {
         static const int digits = CHAR_BIT*sizeof(CNL_INT128);
         static const int digits10 = 38;
 
         struct _s {
-            constexpr _s(uint64_t upper, uint64_t lower) : value(lower + (SG14_UINT128{upper} << 64)) {}
+            constexpr _s(uint64_t upper, uint64_t lower) : value(lower + (CNL_UINT128{upper} << 64)) {}
             constexpr operator CNL_INT128() const { return value; }
-            SG14_UINT128 value;
+            CNL_UINT128 value;
         };
 
         static constexpr CNL_INT128 min()

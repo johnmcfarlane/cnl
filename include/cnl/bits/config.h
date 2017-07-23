@@ -20,7 +20,7 @@
 #if defined(__SIZEOF_INT128__)
 #define CNL_INT128_ENABLED
 using CNL_INT128 = __int128;
-using SG14_UINT128 = unsigned __int128;
+using CNL_UINT128 = unsigned __int128;
 #endif
 
 #endif  // defined(CNL_USE_INT128)

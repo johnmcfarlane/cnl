@@ -23,5 +23,5 @@ template struct number_test<std::uint64_t>;
 
 #if defined(CNL_INT128)
 template struct number_test<CNL_INT128>;
-template struct number_test<SG14_UINT128>;
+template struct number_test<CNL_UINT128>;
 #endif
