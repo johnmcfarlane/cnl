@@ -10,12 +10,8 @@
 #if !defined(SG14_NUMERIC_TRAITS)
 #define SG14_NUMERIC_TRAITS 1
 
-#if !defined(SG14_GODBOLT_ORG)
-
 #include "bits/limits.h"
 #include "bits/type_traits.h"
-
-#endif
 
 #include <utility>
 
