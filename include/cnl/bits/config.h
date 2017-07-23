@@ -8,17 +8,17 @@
 #define SG14_CONFIG_H
 
 ////////////////////////////////////////////////////////////////////////////////
-// SG14_INT128_ENABLED macro definition
+// CNL_INT128_ENABLED macro definition
 
-#if defined(SG14_INT128_ENABLED)
-#error SG14_INT128_ENABLED already defined
+#if defined(CNL_INT128_ENABLED)
+#error CNL_INT128_ENABLED already defined
 #endif
 
 #if defined(SG14_USE_INT128)
 
 // GCC/Clang 64-bit builds support 128-bit integer through __int128 type
 #if defined(__SIZEOF_INT128__)
-#define SG14_INT128_ENABLED
+#define CNL_INT128_ENABLED
 using SG14_INT128 = __int128;
 using SG14_UINT128 = unsigned __int128;
 #endif

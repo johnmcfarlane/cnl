@@ -43,7 +43,7 @@ using uint32 = cnl::set_digits_t<test_unsigned, 32>;
 using int64 = cnl::set_digits_t<test_signed, 63>;
 using uint64 = cnl::set_digits_t<test_unsigned, 64>;
 
-#if defined(SG14_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED)
 using int128 = cnl::set_digits_t<test_signed, 127>;
 using uint128 = cnl::set_digits_t<test_unsigned, 128>;
 #endif
@@ -283,7 +283,7 @@ static_assert(is_same<set_digits_t<fixed_point<uint64, 8>, 56>, fixed_point<uint
         "cnl::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<int64, -16>, 63>, fixed_point<int64, -16>>::value,
         "cnl::set_digits_t test failed");
-#if defined(SG14_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED)
 static_assert(is_same<set_digits_t<fixed_point<uint8, 16>, 72>, fixed_point<uint128, 16>>::value,
         "cnl::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<int8, -45>, 79>, fixed_point<int128, -45>>::value,

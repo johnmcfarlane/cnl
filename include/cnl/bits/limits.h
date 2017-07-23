@@ -24,7 +24,7 @@
 #error SG14_NUMERIC_LIMITS_128_PROVIDED already defined
 #endif
 
-#if defined(SG14_INT128_ENABLED) && !defined(SG14_NUMERIC_LIMITS_128_PROVIDED)
+#if defined(CNL_INT128_ENABLED) && !defined(SG14_NUMERIC_LIMITS_128_PROVIDED)
 
 namespace std {
     template<>
@@ -82,6 +82,6 @@ namespace std {
     };
 }
 
-#endif  // SG14_INT128_ENABLED
+#endif  // CNL_INT128_ENABLED
 
 #endif	// SG14_LIMITS_H

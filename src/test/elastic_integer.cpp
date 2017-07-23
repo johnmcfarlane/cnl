@@ -200,7 +200,7 @@ namespace {
                 "cnl::elastic_integer test failed");
         static_assert(identical(3.*make_elastic_integer(3210), 9630.),
                 "cnl::elastic_integer test failed");
-#if defined(SG14_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED)
         static_assert(identical(elastic_integer<1>{0} * INT64_C(0), cnl::elastic_integer<63, int>{0}),
                       "cnl::elastic_integer test failed");
         static_assert(identical(make_elastic_integer(177_c) * INT64_C(9218), cnl::elastic_integer<71, int>{1631586}),
@@ -281,7 +281,7 @@ namespace {
     struct elastic_integer_test<elastic_integer<7, int>, -127, 1, 127>;
     template
     struct elastic_integer_test<elastic_integer<1, int>, -1, 1, 1>;
-#if defined(SG14_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED)
     template
     struct elastic_integer_test<elastic_integer<39, unsigned int>, 0, 1, (INT64_C(1) << 39)-1>;
 #endif
