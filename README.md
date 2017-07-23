@@ -1,5 +1,8 @@
 # CNL: A Compositional Numeric Library for C++
 
+[![Build Status](https://travis-ci.org/johnmcfarlane/cnl.svg?branch=develop)](https://travis-ci.org/johnmcfarlane/cnl)
+[![Build status](https://ci.appveyor.com/api/projects/status/9s7daasmvku9ttvd/branch/develop?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/cnl/branch/develop)
+
 ## ***UNDER CONSTRUCTION!***
 
 This project is a fork of the [fixed_point](https://github.com/johnmcfarlane/fixed_point) library
