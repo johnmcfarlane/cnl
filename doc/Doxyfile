@@ -16,32 +16,32 @@ CALLER_GRAPH = NO
 OUTPUT_DIRECTORY =
 OUTPUT_LANGUAGE = English
 INPUT = \
- ../include/sg14/auxiliary/const_integer.h \
- ../include/sg14/auxiliary/elastic_fixed_point.h \
- ../include/sg14/auxiliary/elastic_integer.h \
- ../include/sg14/auxiliary/multiprecision.h \
- ../include/sg14/auxiliary/numeric.h \
- ../include/sg14/auxiliary/overflow.h \
- ../include/sg14/auxiliary/precise_integer.h \
- ../include/sg14/auxiliary/safe_integer.h \
- ../include/sg14/fixed_point \
- ../include/sg14/bits/fixed_point_arithmetic.h \
- ../include/sg14/bits/fixed_point_extras.h \
- ../include/sg14/bits/fixed_point_math.h \
- ../include/sg14/bits/fixed_point_make.h \
- ../include/sg14/bits/fixed_point_named.h \
- ../include/sg14/bits/fixed_point_operators.h \
- ../include/sg14/bits/fixed_point_common_type.h \
- ../include/sg14/bits/fixed_point_type.h \
- ../include/sg14/bits/type_traits.h \
- ../include/sg14/bits/number_base.h \
- ../include/sg14/bits/config.h \
- ../include/sg14/bits/common.h \
- ../include/sg14/bits/limits.h \
- ../include/sg14/num_traits.h \
+ ../include/cnl/auxiliary/const_integer.h \
+ ../include/cnl/auxiliary/elastic_fixed_point.h \
+ ../include/cnl/auxiliary/elastic_integer.h \
+ ../include/cnl/auxiliary/multiprecision.h \
+ ../include/cnl/auxiliary/numeric.h \
+ ../include/cnl/auxiliary/overflow.h \
+ ../include/cnl/auxiliary/precise_integer.h \
+ ../include/cnl/auxiliary/safe_integer.h \
+ ../include/cnl/fixed_point.h \
+ ../include/cnl/bits/fixed_point_arithmetic.h \
+ ../include/cnl/bits/fixed_point_extras.h \
+ ../include/cnl/bits/fixed_point_math.h \
+ ../include/cnl/bits/fixed_point_make.h \
+ ../include/cnl/bits/fixed_point_named.h \
+ ../include/cnl/bits/fixed_point_operators.h \
+ ../include/cnl/bits/fixed_point_common_type.h \
+ ../include/cnl/bits/fixed_point_type.h \
+ ../include/cnl/bits/type_traits.h \
+ ../include/cnl/bits/number_base.h \
+ ../include/cnl/bits/config.h \
+ ../include/cnl/bits/common.h \
+ ../include/cnl/bits/limits.h \
+ ../include/cnl/num_traits.h \
  index.md
 EXCLUDE_SYMBOLS = \
- sg14::_*
+ cnl::_*
 FILE_PATTERNS = *
 RECURSIVE = YES
 EXCLUDE =

@@ -4,14 +4,14 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/bits/type_traits.h>
-#include <sg14/fixed_point>
+#include <cnl/bits/type_traits.h>
+#include <cnl/fixed_point.h>
 
 #include <gtest/gtest.h>
 
-using sg14::fixed_point;
-using sg14::make_fixed;
-using sg14::make_ufixed;
+using cnl::fixed_point;
+using cnl::make_fixed;
+using cnl::make_ufixed;
 
 TEST(utils_tests, sin)
 {
@@ -34,24 +34,24 @@ TEST(utils_tests, cos)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::abs
+// cnl::abs
 
-static_assert(abs(make_fixed<7, 0>(66))==66, "sg14::abs test failed");
-static_assert(abs(make_fixed<7, 0>(-123))==123, "sg14::abs test failed");
-static_assert(abs(make_fixed<63, 0>(9223372036854775807))==9223372036854775807LL, "sg14::abs test failed");
-static_assert(abs(make_fixed<63, 0>(-9223372036854775807))==9223372036854775807LL, "sg14::abs test failed");
-static_assert(abs(make_fixed<7, 8>(-5))==5, "sg14::abs test failed");
+static_assert(abs(make_fixed<7, 0>(66))==66, "cnl::abs test failed");
+static_assert(abs(make_fixed<7, 0>(-123))==123, "cnl::abs test failed");
+static_assert(abs(make_fixed<63, 0>(9223372036854775807))==9223372036854775807LL, "cnl::abs test failed");
+static_assert(abs(make_fixed<63, 0>(-9223372036854775807))==9223372036854775807LL, "cnl::abs test failed");
+static_assert(abs(make_fixed<7, 8>(-5))==5, "cnl::abs test failed");
 
-static_assert(abs(make_ufixed<8, 0>(66))==66, "sg14::abs test failed");
-static_assert(abs(make_ufixed<8, 0>(123))==123, "sg14::abs test failed");
-static_assert(abs(make_ufixed<8, 8>(5))==5, "sg14::abs test failed");
+static_assert(abs(make_ufixed<8, 0>(66))==66, "cnl::abs test failed");
+static_assert(abs(make_ufixed<8, 0>(123))==123, "cnl::abs test failed");
+static_assert(abs(make_ufixed<8, 8>(5))==5, "cnl::abs test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // std specializations for 128-bit integer facilitate certain 64-bit operations
 
-#if defined(SG14_INT128_ENABLE)
-static_assert((make_ufixed<56, 8>(1003006)*make_ufixed<56, 8>(7))==7021042, "sg14::fixed_point test failed");
+#if defined(CNL_INT128_ENABLE)
+static_assert((make_ufixed<56, 8>(1003006)*make_ufixed<56, 8>(7))==7021042, "cnl::fixed_point test failed");
 static_assert(static_cast<int>((fixed_point<uint64_t, -8>(65535)/fixed_point<uint64_t, -8>(256)))==255,
-        "sg14::fixed_point test failed");
-static_assert(sqrt(make_fixed<63, 0>(9223372036854775807))==3037000499LL, "sg14::sqrt test failed");
+        "cnl::fixed_point test failed");
+static_assert(sqrt(make_fixed<63, 0>(9223372036854775807))==3037000499LL, "cnl::sqrt test failed");
 #endif

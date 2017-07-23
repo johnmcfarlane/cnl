@@ -33,10 +33,10 @@ void test_function(void(* function)(), char const* output)
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [declaration example]
-#include <sg14/fixed_point>
+#include <cnl/fixed_point.h>
 #include <iostream>
 
-using namespace sg14;
+using namespace cnl;
 using namespace std;
 
 void declaration_example()
@@ -129,10 +129,10 @@ TEST(index, advanced_arithmetic_example)
 }
 
 
-#if defined(SG14_BOOST_ENABLED)
+#if defined(CNL_BOOST_ENABLED)
 ////////////////////////////////////////////////////////////////////////////////
 //! [boost example]
-#include <sg14/auxiliary/boost.multiprecision.h>
+#include <cnl/auxiliary/boost.multiprecision.h>
 
 void boost_example()
 {
@@ -171,7 +171,7 @@ TEST(index, boost_example)
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [elastic example]
-#include <sg14/auxiliary/elastic_integer.h>
+#include <cnl/auxiliary/elastic_integer.h>
 
 void elastic_example1()
 {

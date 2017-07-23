@@ -13,8 +13,8 @@
 //#define ESCAPE(x) benchmark::DoNotOptimize(x)
 
 using std::numeric_limits;
-using sg14::make_fixed;
-using sg14::make_ufixed;
+using cnl::make_fixed;
+using cnl::make_ufixed;
 
 ////////////////////////////////////////////////////////////////////////////////
 // entry point
@@ -210,7 +210,7 @@ using s31_32 = make_fixed<31, 32>;
     BENCHMARK_TEMPLATE1(fn, uint64_t);
 
 // types that can store values >= 1
-#if defined(SG14_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED)
 #define FIXED_POINT_BENCHMARK_FIXED(fn) \
     BENCHMARK_TEMPLATE1(fn, u4_4); \
     BENCHMARK_TEMPLATE1(fn, s3_4); \
@@ -250,5 +250,5 @@ FIXED_POINT_BENCHMARK_REAL(bm_magnitude_squared);
 
 FIXED_POINT_BENCHMARK_REAL(bm_circle_intersect_generic);
 
-// tests involving unoptimized math function, sg14::sqrt
+// tests involving unoptimized math function, cnl::sqrt
 FIXED_POINT_BENCHMARK_REAL(bm_sqrt);

@@ -5,20 +5,20 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief definitions of `sg14::make_fixed` and `sg14::make_ufixed`
+/// \brief definitions of `cnl::make_fixed` and `cnl::make_ufixed`
 
-#if !defined(SG14_MAKE_FIXED_H)
-#define SG14_MAKE_FIXED_H 1
+#if !defined(CNL_MAKE_FIXED_H)
+#define CNL_MAKE_FIXED_H 1
 
 #include "fixed_point_type.h"
 
-#include <sg14/bits/type_traits.h>
+#include <cnl/bits/type_traits.h>
 
-/// study group 14 of the C++ working group
-namespace sg14 {
+/// compositional numeric library
+namespace cnl {
 
     /// \brief specializes \ref fixed_point with the given number of integer and fractional digits
-    /// \headerfile sg14/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \tparam IntegerDigits specifies minimum value of @ref fixed_point::integer_digits
     /// \tparam FractionalDigits specifies the exact value of @ref fixed_point::fractional_digits
@@ -41,7 +41,7 @@ namespace sg14 {
             -FractionalDigits>;
 
     /// \brief specializes \ref fixed_point with the given number of integer and fractional digits; produces an unsigned type
-    /// \headerfile sg14/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \sa make_fixed
     template<int IntegerDigits, int FractionalDigits = 0, class Narrowest = unsigned>
@@ -51,4 +51,4 @@ namespace sg14 {
             typename make_unsigned<Narrowest>::type>;
 }
 
-#endif	// SG14_MAKE_FIXED_H
+#endif  // CNL_MAKE_FIXED_H

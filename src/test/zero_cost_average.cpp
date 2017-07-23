@@ -5,12 +5,12 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief Signed 15:16 Fixed-Point Average Function Using sg14::elastic_fixed_point
+/// \brief Signed 15:16 Fixed-Point Average Function Using cnl::elastic_fixed_point
 
-#include <sg14/auxiliary/elastic_fixed_point.h>
+#include <cnl/auxiliary/elastic_fixed_point.h>
 #include <gtest/gtest.h>
 
-using namespace sg14;
+using namespace cnl;
 
 #if (__cplusplus>=201402L)
 #define CONSTEXPR constexpr
@@ -32,7 +32,7 @@ CONSTEXPR float average_integer(float input1, float input2) {
     return avg / 65536.f;
 }
 
-// the same function using sg14::elastic_integer -
+// the same function using cnl::elastic_integer -
 // a numeric type which widens to avoid overflow
 CONSTEXPR float average_elastic_integer(float input1, float input2) {
     // use this user-defined literal - shorthand for std::integral_constant
@@ -50,7 +50,7 @@ CONSTEXPR float average_elastic_integer(float input1, float input2) {
     return static_cast<float>(avg) / 65536.f;
 }
 
-// the same function using sg14::fixed_point
+// the same function using cnl::fixed_point
 CONSTEXPR float average_fixed_point(float input1, float input2) {
     // fixed_point handles scaling
     auto fixed1 = fixed_point<int32_t, -16>{input1};
@@ -82,7 +82,7 @@ CONSTEXPR float average_elastic(float input1, float input2) {
 }
 
 using namespace literals;
-using sg14::_impl::identical;
+using cnl::_impl::identical;
 static_assert(identical(65536_elastic, elastic_fixed_point<17, -16>{65536}), "mistaken comment in average_elastic");
 static_assert(identical(1_elastic/65536_elastic, elastic_fixed_point<-15, 17>{0.0000152587890625}), "mistaken comment in average_elastic");
 

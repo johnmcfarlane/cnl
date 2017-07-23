@@ -6,8 +6,8 @@
 
 #if (__cplusplus>=201402L)
 
-#include <sg14/auxiliary/elastic_integer.h>
-#include <sg14/auxiliary/safe_integer.h>
+#include <cnl/auxiliary/elastic_integer.h>
+#include <cnl/auxiliary/safe_integer.h>
 
 #include <gtest/gtest.h>
 
@@ -16,7 +16,7 @@
 #include <map>
 #include <memory>
 
-using namespace sg14;
+using namespace cnl;
 using namespace std;
 using _impl::identical;
 
@@ -64,7 +64,7 @@ namespace prototypes {
     using bad2 = bad_safe_integer<numeric_limits<int>::digits, true>;
 }
 
-#if defined(SG14_EXCEPTIONS_ENABLED)
+#if defined(CNL_EXCEPTIONS_ENABLED)
 TEST(cppnow2017, safe_integer_example)
 {
     // multiplication of safe_integer<int> cannot exceed numeric limits
@@ -199,7 +199,7 @@ namespace composite {
     using prototypes::safe_integer;
 
     template<int Digits, typename Narrowest = int>
-    using elastic_integer = sg14::elastic_integer<Digits, Narrowest>;
+    using elastic_integer = cnl::elastic_integer<Digits, Narrowest>;
 
     template<int Digits, typename Narrowest = int>
     using safe_elastic_integer =

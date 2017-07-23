@@ -5,17 +5,17 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief essential definitions related to `sg14::fixed_point` arithmetic
+/// \brief essential definitions related to `cnl::fixed_point` arithmetic
 
-#if !defined(SG14_FIXED_POINT_ARITHMETIC_H)
-#define SG14_FIXED_POINT_ARITHMETIC_H 1
+#if !defined(CNL_FIXED_POINT_ARITHMETIC_H)
+#define CNL_FIXED_POINT_ARITHMETIC_H 1
 
 #include "common.h"
 
 #include "fixed_point_type.h"
 
-/// study group 14 of the C++ working group
-namespace sg14 {
+/// compositional numeric library
+namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
     // implementation-specific definitions
@@ -35,10 +35,10 @@ namespace sg14 {
                 ////////////////////////////////////////////////////////////////////////////////
                 // file-local implementation-specific definitions
 
-                using ::sg14::fixed_point;
+                using ::cnl::fixed_point;
 
                 ////////////////////////////////////////////////////////////////////////////////
-                // sg14::_impl::fp::arithmetic::binary_pair
+                // cnl::_impl::fp::arithmetic::binary_pair
 
                 template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
                 struct binary_pair_base {
@@ -69,7 +69,7 @@ namespace sg14 {
                 };
 
                 ////////////////////////////////////////////////////////////////////////////////
-                // sg14::_impl::fp::arithmetic::rep_op_exponent
+                // cnl::_impl::fp::arithmetic::rep_op_exponent
 
                 template<class OperationTag, class ... Operands>
                 struct rep_op_exponent;
@@ -106,7 +106,7 @@ namespace sg14 {
                 };
 
                 ////////////////////////////////////////////////////////////////////////////////
-                // sg14::_impl::fp::arithmetic::result
+                // cnl::_impl::fp::arithmetic::result
 
                 template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
                 struct result;
@@ -189,7 +189,7 @@ namespace sg14 {
                 };
 
                 ////////////////////////////////////////////////////////////////////////////////
-                // sg14::_impl::fp::arithmetic::intermediate
+                // cnl::_impl::fp::arithmetic::intermediate
 
                 template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
                 struct intermediate;
@@ -254,7 +254,7 @@ namespace sg14 {
                 };
 
                 ////////////////////////////////////////////////////////////////////////////////
-                // sg14::_impl::fp::arithmetic::operate_params
+                // cnl::_impl::fp::arithmetic::operate_params
 
                 template<class PolicyTag, class OperationTag, class Lhs, class Rhs>
                 struct operate_params {
@@ -281,7 +281,7 @@ namespace sg14 {
             using division_named_function_tag = arithmetic::lean_tag;
 
             ////////////////////////////////////////////////////////////////////////////////
-            // sg14::_impl::fixed_point::operate
+            // cnl::_impl::fixed_point::operate
 
             template<class PolicyTag, class Operation, class Lhs, class Rhs>
             constexpr auto operate(const Lhs& lhs, const Rhs& rhs, Operation)
@@ -303,4 +303,4 @@ namespace sg14 {
     }
 }
 
-#endif	// SG14_FIXED_POINT_ARITHMETIC_H
+#endif  // CNL_FIXED_POINT_ARITHMETIC_H

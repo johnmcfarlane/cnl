@@ -4,15 +4,15 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/fixed_point>
-#include <sg14/auxiliary/precise_integer.h>
+#include <cnl/fixed_point.h>
+#include <cnl/auxiliary/precise_integer.h>
 
 namespace {
-    using sg14::_impl::identical;
-    using sg14::precise_integer;
+    using cnl::_impl::identical;
+    using cnl::precise_integer;
 
-    template<class Rep = int, int Exponent = 0, class RoundingTag = sg14::closest_rounding_tag>
-    using precise_fixed_point = sg14::fixed_point<sg14::precise_integer<Rep, RoundingTag>, Exponent>;
+    template<class Rep = int, int Exponent = 0, class RoundingTag = cnl::closest_rounding_tag>
+    using precise_fixed_point = cnl::fixed_point<cnl::precise_integer<Rep, RoundingTag>, Exponent>;
 
     namespace test_numeric_limits {
         static_assert(std::numeric_limits<precise_integer<>>::is_specialized, "std::numeric_limits<precise_integer<>> test failed");
@@ -20,7 +20,7 @@ namespace {
     }
 
     namespace test_ctor {
-        using sg14::_impl::from_rep;
+        using cnl::_impl::from_rep;
 
         static_assert(identical(
                 precise_fixed_point<>(-8).data(),

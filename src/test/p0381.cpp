@@ -4,11 +4,11 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/num_traits.h>
+#include <cnl/num_traits.h>
 
 #include <gtest/gtest.h>
 
-#if defined(SG14_BOOST_ENABLED)
+#if defined(CNL_BOOST_ENABLED)
 #include <boost/integer.hpp>
 #endif
 
@@ -94,7 +94,7 @@ namespace sample4 {
     // Sample 4 intentionally does not exist. If it did, there would be no need for P0381!
 }
 
-#if defined(SG14_BOOST_ENABLED)
+#if defined(CNL_BOOST_ENABLED)
 namespace sample5 {
     template<class Operand>
     auto multiply(Operand a, Operand b)
@@ -131,11 +131,11 @@ namespace sample5 {
                 static_cast<uint64_t>(multiply(UINT_MAX, UINT_MAX)));
     }
 }
-#endif  // defined(SG14_BOOST_ENABLED)
+#endif  // defined(CNL_BOOST_ENABLED)
 #endif  // C++14
 
 namespace determining {
-    using sg14::digits;
+    using cnl::digits;
 
     static_assert(digits<uint16_t>::value == 16, "the digits of uint16_t is exactly 16 bits");
     static_assert(digits<long long>::value >= 63, "long long has a digits of at least 64 bits");
@@ -144,8 +144,8 @@ namespace determining {
 }
 
 namespace specifiying {
-    using sg14::set_digits_t;
-    using sg14::digits;
+    using cnl::set_digits_t;
+    using cnl::digits;
 
     static_assert(is_same<set_digits_t<signed, 7>, int8_t>::value, "int8_t is a signed 8-bit integer");
     static_assert(is_same<set_digits_t<unsigned, 32>, uint32_t>::value, "uint32_t is an unsigned 32-bit integer");

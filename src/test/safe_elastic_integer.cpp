@@ -4,12 +4,12 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/auxiliary/elastic_integer.h>
-#include <sg14/auxiliary/safe_integer.h>
+#include <cnl/auxiliary/elastic_integer.h>
+#include <cnl/auxiliary/safe_integer.h>
 
 #include "number_test.h"
 
-namespace sg14 {
+namespace cnl {
     // safe elastic integer
     template<
             int IntegerDigits,
@@ -36,18 +36,18 @@ namespace sg14 {
 }
 
 namespace {
-    using sg14::safe_elastic_integer;
+    using cnl::safe_elastic_integer;
     using std::is_same;
-    using sg14::_impl::identical;
+    using cnl::_impl::identical;
 
     namespace default_parameters {
         static_assert(
                 is_same<safe_elastic_integer<1>::rep::rep, int>::value,
-                "sg14::safe_elastic_integer parameter default test failed");
+                "cnl::safe_elastic_integer parameter default test failed");
     }
 
     namespace test_numeric_limits {
-        using safe_saturating_integer_2 = sg14::safe_integer<sg14::elastic_integer<2, char>, sg14::saturated_overflow_tag>;
+        using safe_saturating_integer_2 = cnl::safe_integer<cnl::elastic_integer<2, char>, cnl::saturated_overflow_tag>;
         static_assert(identical(
                 std::numeric_limits<safe_saturating_integer_2>::lowest(),
                 safe_saturating_integer_2{-3}), "");
@@ -59,13 +59,13 @@ namespace {
 
     namespace test_comparison {
         static_assert(identical(
-                sg14::convert<sg14::elastic_integer<10>>(sg14::throwing_overflow, 0),
-                sg14::elastic_integer<10>{0}), "");
+                cnl::convert<cnl::elastic_integer<10>>(cnl::throwing_overflow, 0),
+                cnl::elastic_integer<10>{0}), "");
         static_assert(safe_elastic_integer<10>(0b1010101010)==safe_elastic_integer<10>(0b1010101010), "");
     }
 
     namespace test_make_safe_elastic {
-        static_assert(identical(sg14::make_safe_elastic(std::int16_t{7}), safe_elastic_integer<15>{7}), "");
+        static_assert(identical(cnl::make_safe_elastic(std::int16_t{7}), safe_elastic_integer<15>{7}), "");
         static_assert(identical(safe_elastic_integer<34>{0}, safe_elastic_integer<34>{0}), "");
     }
 
@@ -98,30 +98,30 @@ namespace {
     }
 
     namespace test_is_composite {
-        using sg14::is_composite;
+        using cnl::is_composite;
 
         static_assert(is_composite<safe_elastic_integer<10>>::value, "is_composite<safe_elastic_integer<10>> test failed");
     }
 
     namespace test_digits {
-        using sg14::digits;
-        using sg14::set_digits_t;
+        using cnl::digits;
+        using cnl::set_digits_t;
 
-        static_assert(digits<safe_elastic_integer<3>>::value>=3, "sg14::digits / sg14::set_digits test failed");
-        static_assert(identical(set_digits_t<safe_elastic_integer<1>, 3>{6}, safe_elastic_integer<3>{6}), "sg14::digits / sg14::set_digits test failed");
+        static_assert(digits<safe_elastic_integer<3>>::value>=3, "cnl::digits / cnl::set_digits test failed");
+        static_assert(identical(set_digits_t<safe_elastic_integer<1>, 3>{6}, safe_elastic_integer<3>{6}), "cnl::digits / cnl::set_digits test failed");
     }
 
     namespace test_used_bits {
-        using sg14::used_bits;
-        using sg14::throwing_overflow_tag;
+        using cnl::used_bits;
+        using cnl::throwing_overflow_tag;
 
         static_assert(used_bits(safe_elastic_integer<1, throwing_overflow_tag, char>{0}) == 0, "used_bits(safe_elastic_integer)");
         static_assert(used_bits(safe_elastic_integer<22, throwing_overflow_tag>{77}) == 7, "used_bits(safe_elastic_integer)");
     }
 
     namespace test_leading_bits {
-        using sg14::leading_bits;
-        using sg14::throwing_overflow_tag;
+        using cnl::leading_bits;
+        using cnl::throwing_overflow_tag;
 
         static_assert(leading_bits(safe_elastic_integer<1, throwing_overflow_tag, char>{0}) == 1, "leading_bits(safe_elastic_integer)");
         static_assert(leading_bits(safe_elastic_integer<22, throwing_overflow_tag>{77}) == 15, "leading_bits(safe_elastic_integer)");
@@ -137,16 +137,16 @@ struct test_safe_elastic_integer {
     constexpr static number_test_by_rep<test_subject> instance{};
 };
 
-template struct test_safe_elastic_integer<1, sg14::throwing_overflow_tag>;
-template struct test_safe_elastic_integer<5, sg14::throwing_overflow_tag>;
-template struct test_safe_elastic_integer<21, sg14::throwing_overflow_tag>;
+template struct test_safe_elastic_integer<1, cnl::throwing_overflow_tag>;
+template struct test_safe_elastic_integer<5, cnl::throwing_overflow_tag>;
+template struct test_safe_elastic_integer<21, cnl::throwing_overflow_tag>;
 
 #if defined(__clang__) || ! defined(__GNUG__) || (__GNUG__ > 6)
-template struct test_safe_elastic_integer<2, sg14::saturated_overflow_tag>;
-template struct test_safe_elastic_integer<8, sg14::saturated_overflow_tag>;
-template struct test_safe_elastic_integer<34, sg14::saturated_overflow_tag>;
+template struct test_safe_elastic_integer<2, cnl::saturated_overflow_tag>;
+template struct test_safe_elastic_integer<8, cnl::saturated_overflow_tag>;
+template struct test_safe_elastic_integer<34, cnl::saturated_overflow_tag>;
 #endif
 
-template struct test_safe_elastic_integer<3, sg14::native_overflow_tag>;
-template struct test_safe_elastic_integer<13, sg14::native_overflow_tag>;
-template struct test_safe_elastic_integer<55, sg14::native_overflow_tag>;
+template struct test_safe_elastic_integer<3, cnl::native_overflow_tag>;
+template struct test_safe_elastic_integer<13, cnl::native_overflow_tag>;
+template struct test_safe_elastic_integer<55, cnl::native_overflow_tag>;

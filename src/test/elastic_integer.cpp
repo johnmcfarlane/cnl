@@ -5,67 +5,67 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief file containing tests of the `sg14::elastic_integer` type
+/// \brief file containing tests of the `cnl::elastic_integer` type
 
-#include <sg14/auxiliary/elastic_integer.h>
+#include <cnl/auxiliary/elastic_integer.h>
 
 namespace {
     using std::is_same;
-    using sg14::elastic_integer;
-    using sg14::_impl::identical;
-    using namespace sg14::literals;
+    using cnl::elastic_integer;
+    using cnl::_impl::identical;
+    using namespace cnl::literals;
 
     // simple one-off tests
     namespace test_digits {
-        using sg14::digits;
+        using cnl::digits;
 
         static_assert(digits<elastic_integer<7, int>>::value == 7, "elastic_integer test failed");
     }
 
     namespace test_from_value {
-        using sg14::from_value;
+        using cnl::from_value;
 
-        static_assert(identical(sg14::from_value<elastic_integer<3>, int>::type{1},
+        static_assert(identical(cnl::from_value<elastic_integer<3>, int>::type{1},
                                 elastic_integer<std::numeric_limits<int>::digits>{1}), "elastic_integer test failed");
-        static_assert(identical(sg14::_impl::from_value<elastic_integer<3>>(1),
+        static_assert(identical(cnl::_impl::from_value<elastic_integer<3>>(1),
                 elastic_integer<std::numeric_limits<int>::digits>{1}), "elastic_integer test failed");
-        static_assert(identical(sg14::_impl::from_value<elastic_integer<1>>(INT32_C(0)), elastic_integer<31>{0}), "sg14::elastic_integer test failed");
+        static_assert(identical(cnl::_impl::from_value<elastic_integer<1>>(INT32_C(0)), elastic_integer<31>{0}), "cnl::elastic_integer test failed");
     }
 
 
     namespace test_operate {
-        using sg14::_impl::is_derived_from_number_base;
-        using sg14::_impl::equal_tag;
-        using sg14::_impl::equal_op;
-        using sg14::_impl::multiply_tag;
-        using sg14::_impl::operate;
-        using sg14::_impl::precedes;
-        using sg14::_impl::to_rep;
+        using cnl::_impl::is_derived_from_number_base;
+        using cnl::_impl::equal_tag;
+        using cnl::_impl::equal_op;
+        using cnl::_impl::multiply_tag;
+        using cnl::_impl::operate;
+        using cnl::_impl::precedes;
+        using cnl::_impl::to_rep;
 
         static_assert(is_derived_from_number_base<elastic_integer<1>>::value,
-                "sg14::_impl::is_derived_from_number_base test failed");
+                "cnl::_impl::is_derived_from_number_base test failed");
         static_assert(precedes<elastic_integer<1>, int32_t>::value, "");
         static_assert(!precedes<int32_t, elastic_integer<1>>::value, "");
         static_assert(
-                operate(elastic_integer<31>{0x7fffffff}, elastic_integer<31>{std::numeric_limits<std::int32_t>::min()}, sg14::_impl::greater_than_tag),
-                "sg14::elastic_integer test failed");
+                operate(elastic_integer<31>{0x7fffffff}, elastic_integer<31>{std::numeric_limits<std::int32_t>::min()}, cnl::_impl::greater_than_tag),
+                "cnl::elastic_integer test failed");
         static_assert(operate(
                 elastic_integer<31>{0x7fffffff},
                 elastic_integer<31>{std::numeric_limits<std::int32_t>::min()},
-                sg14::_impl::greater_than_tag),
-                      "sg14::elastic_integer test failed");
+                cnl::_impl::greater_than_tag),
+                      "cnl::elastic_integer test failed");
         static_assert(identical(
                 typename std::common_type<elastic_integer<31>, elastic_integer<32, unsigned>>::type{},
                 elastic_integer<32>{}),
-                "sg14::elastic_integer test failed");
-        static_assert(sg14::_impl::less_than_tag(elastic_integer<31, unsigned>{-1},
+                "cnl::elastic_integer test failed");
+        static_assert(cnl::_impl::less_than_tag(elastic_integer<31, unsigned>{-1},
                                                  elastic_integer<31>{1}),
-                      "sg14::elastic_integer test failed");
-        static_assert(operate(elastic_integer<1>{0}, INT32_C(0), sg14::_impl::equal_tag),
-                "sg14::elastic_integer test failed");
+                      "cnl::elastic_integer test failed");
+        static_assert(operate(elastic_integer<1>{0}, INT32_C(0), cnl::_impl::equal_tag),
+                "cnl::elastic_integer test failed");
         static_assert(identical(
                 operate(elastic_integer<1>{0}, INT32_C(0), multiply_tag), elastic_integer<31, int>{0}),
-                "sg14::elastic_integer test failed");
+                "cnl::elastic_integer test failed");
 
         static_assert(
                 equal_tag(
@@ -75,40 +75,40 @@ namespace {
         static_assert(operate(elastic_integer<8>{1L}, elastic_integer<8>{1}, equal_tag),
                 "elastic_integer comparison test failed");
         static_assert(operate(elastic_integer<12, std::uint16_t>{1324}, 1324, equal_tag),
-                "sg14::elastic_integer test failed");
+                "cnl::elastic_integer test failed");
         static_assert(operate(~elastic_integer<12, std::uint16_t>{0}, 0xFFF, equal_tag),
-                "sg14::elastic_integer test failed");
+                "cnl::elastic_integer test failed");
     }
 
     namespace test_ctor {
         static_assert(identical(elastic_integer<8>{1L}, elastic_integer<8>{1}), "elastic_integer test failed");
 
         static_assert(identical(elastic_integer<4>{10_c}, elastic_integer<4>{10}), "");
-        static_assert(identical(elastic_integer<10>{sg14::const_integer<unsigned, 1000>{}}, elastic_integer<10>{1000}), "");
+        static_assert(identical(elastic_integer<10>{cnl::const_integer<unsigned, 1000>{}}, elastic_integer<10>{1000}), "");
     }
 
     namespace test_is_elastic_integer {
-        using sg14::_elastic_integer_impl::is_elastic_integer;
-        static_assert(!is_elastic_integer<int>::value, "sg14::_elastic_integer_impl::is_elastic_integer test failed");
+        using cnl::_elastic_integer_impl::is_elastic_integer;
+        static_assert(!is_elastic_integer<int>::value, "cnl::_elastic_integer_impl::is_elastic_integer test failed");
         static_assert(is_elastic_integer<elastic_integer<10, int>>::value,
-                      "sg14::_elastic_integer_impl::is_elastic_integer test failed");
+                      "cnl::_elastic_integer_impl::is_elastic_integer test failed");
     }
 
     namespace test_make_elastic_integer {
-        using sg14::make_elastic_integer;
+        using cnl::make_elastic_integer;
         static_assert(identical(make_elastic_integer(136_c), elastic_integer<8, int>{136}),
-                      "sg14::_elastic_integer_impl::make_elastic_integer test failed");
+                      "cnl::_elastic_integer_impl::make_elastic_integer test failed");
         static_assert(identical(make_elastic_integer(1000000000000_c), elastic_integer<40, int>{1000000000000}),
-                      "sg14::_elastic_integer_impl::make_elastic_integer test failed");
+                      "cnl::_elastic_integer_impl::make_elastic_integer test failed");
     }
 
     namespace test_compare {
-        static_assert(elastic_integer<31>{-1} < elastic_integer<31, unsigned>{1}, "sg14::elastic_integer test failed");
-        static_assert(elastic_integer<31>{-1} < elastic_integer<31>{1}, "sg14::elastic_integer test failed");
-        static_assert(sg14::elastic_integer<10>{0} == 0, "sg14::elastic_integer test failed");
-        static_assert(elastic_integer<31>{-1} < elastic_integer<31, unsigned>{1}, "sg14::elastic_integer test failed");
-        static_assert(!sg14::_impl::encompasses<sg14::elastic_integer<10>, int>::value,
-                      "sg14::elastic_integer test failed");
+        static_assert(elastic_integer<31>{-1} < elastic_integer<31, unsigned>{1}, "cnl::elastic_integer test failed");
+        static_assert(elastic_integer<31>{-1} < elastic_integer<31>{1}, "cnl::elastic_integer test failed");
+        static_assert(cnl::elastic_integer<10>{0} == 0, "cnl::elastic_integer test failed");
+        static_assert(elastic_integer<31>{-1} < elastic_integer<31, unsigned>{1}, "cnl::elastic_integer test failed");
+        static_assert(!cnl::_impl::encompasses<cnl::elastic_integer<10>, int>::value,
+                      "cnl::elastic_integer test failed");
         static_assert(elastic_integer<4, signed>{10} > elastic_integer<4, signed>{-7}, "elastic_integer comparison test failed");
     }
 
@@ -127,89 +127,89 @@ namespace {
                 identical(
                         elastic_integer<5>{0}-elastic_integer<5>{0},
                         elastic_integer<6>{0}),
-                "sg14::elastic_integer test failed");
+                "cnl::elastic_integer test failed");
 
         // unsigned{0}-unsigned{max}
         static_assert(
                 identical(
                         elastic_integer<5, unsigned>{0}-std::numeric_limits<elastic_integer<5, unsigned>>::max(),
                         elastic_integer<5, signed>{-31}),
-                "sg14::elastic_integer test failed");
+                "cnl::elastic_integer test failed");
 
         // -signed{max}-unsigned{max}
         static_assert(
                 identical(
                         -std::numeric_limits<elastic_integer<7>>::max()-std::numeric_limits<elastic_integer<4, unsigned>>::max(),
                         elastic_integer<8>{-142}),
-                "sg14::elastic_integer test failed");
+                "cnl::elastic_integer test failed");
 
         // unsigned{max}+signed{max}
         static_assert(
                 identical(
                         std::numeric_limits<elastic_integer<15, unsigned>>::max()+std::numeric_limits<elastic_integer<19>>::max(),
                         elastic_integer<20>{((1<<15)-1)+((1<<19)-1)}),
-                "sg14::elastic_integer test failed");
+                "cnl::elastic_integer test failed");
 
         // signed{max}+signed{max}
         static_assert(
                 identical(
                         std::numeric_limits<elastic_integer<10>>::max()-std::numeric_limits<elastic_integer<9>>::max(),
                         elastic_integer<11>{512}),
-                "sg14::elastic_integer test failed");
+                "cnl::elastic_integer test failed");
     }
 
     namespace test_divide {
         static_assert(identical(elastic_integer<10>{777}/elastic_integer<4>{10}, elastic_integer<10>{77}),
-                "sg14::elastic_integer test failed");
+                "cnl::elastic_integer test failed");
         static_assert(identical(elastic_integer<5>{32}/3, elastic_integer<5>{10}),
-                "sg14::elastic_integer test failed");
+                "cnl::elastic_integer test failed");
         static_assert(identical(elastic_integer<10>{777}/10_c, elastic_integer<10>{77}),
-                "sg14::elastic_integer test failed");
+                "cnl::elastic_integer test failed");
     }
 
     namespace test_bitwise_not {
-        static_assert(~elastic_integer<12, std::uint16_t>{0}==0xFFF, "sg14::elastic_integer test failed");
-        static_assert(~elastic_integer<12, int>{0x050}==~0x50, "sg14::elastic_integer test failed");
-        static_assert(~elastic_integer<12, unsigned>{0}==0xFFFU, "sg14::elastic_integer test failed");
-        static_assert(~elastic_integer<7, std::int8_t>{0x5a}==~0x5a, "sg14::elastic_integer test failed");
-        static_assert(~elastic_integer<50, std::int64_t>{INT64_C(0x987654321)}==~INT64_C(0x987654321), "sg14::elastic_integer test failed");
+        static_assert(~elastic_integer<12, std::uint16_t>{0}==0xFFF, "cnl::elastic_integer test failed");
+        static_assert(~elastic_integer<12, int>{0x050}==~0x50, "cnl::elastic_integer test failed");
+        static_assert(~elastic_integer<12, unsigned>{0}==0xFFFU, "cnl::elastic_integer test failed");
+        static_assert(~elastic_integer<7, std::int8_t>{0x5a}==~0x5a, "cnl::elastic_integer test failed");
+        static_assert(~elastic_integer<50, std::int64_t>{INT64_C(0x987654321)}==~INT64_C(0x987654321), "cnl::elastic_integer test failed");
     }
 
     namespace test_multiply {
-        using sg14::make_elastic_integer;
-        using sg14::_impl::multiply_tag;
+        using cnl::make_elastic_integer;
+        using cnl::_impl::multiply_tag;
 
         static_assert(identical(
                 elastic_integer<15, int>{0x7fff}*elastic_integer<16, unsigned>{0xffff},
-                elastic_integer<31, int>{0x7FFE8001}), "sg14::elastic_integer test failed");
+                elastic_integer<31, int>{0x7FFE8001}), "cnl::elastic_integer test failed");
         static_assert(identical(
                 elastic_integer<31, int>{0x7fffffff}*elastic_integer<32, int>{0xffffffffu},
-                elastic_integer<63, int>{0x7FFFFFFE80000001LL}), "sg14::elastic_integer test failed");
+                elastic_integer<63, int>{0x7FFFFFFE80000001LL}), "cnl::elastic_integer test failed");
 
-        static_assert(sg14::_impl::precedes<elastic_integer<1>, int32_t>::value, "");
+        static_assert(cnl::_impl::precedes<elastic_integer<1>, int32_t>::value, "");
         static_assert(identical(
-                sg14::_impl::operate(elastic_integer<1>{0}, INT32_C(0), multiply_tag),
-                sg14::elastic_integer<31, int>{0}),
-                "sg14::elastic_integer test failed");
-        static_assert(identical(sg14::_impl::to_rep(elastic_integer<4>{13}), 13), "sg14::elastic_integer test failed");
-        static_assert(identical(elastic_integer<1>{0} * INT32_C(0), sg14::elastic_integer<31, int>{0}),
-                      "sg14::elastic_integer test failed");
-        static_assert(identical(make_elastic_integer(177_c), sg14::elastic_integer<8, int>{177}),
-                      "sg14::elastic_integer test failed");
-        static_assert(!sg14::_impl::precedes<sg14::elastic_integer<1>, double>::value,
-                "sg14::elastic_integer test failed");
+                cnl::_impl::operate(elastic_integer<1>{0}, INT32_C(0), multiply_tag),
+                cnl::elastic_integer<31, int>{0}),
+                "cnl::elastic_integer test failed");
+        static_assert(identical(cnl::_impl::to_rep(elastic_integer<4>{13}), 13), "cnl::elastic_integer test failed");
+        static_assert(identical(elastic_integer<1>{0} * INT32_C(0), cnl::elastic_integer<31, int>{0}),
+                      "cnl::elastic_integer test failed");
+        static_assert(identical(make_elastic_integer(177_c), cnl::elastic_integer<8, int>{177}),
+                      "cnl::elastic_integer test failed");
+        static_assert(!cnl::_impl::precedes<cnl::elastic_integer<1>, double>::value,
+                "cnl::elastic_integer test failed");
         static_assert(identical(3.*make_elastic_integer(3210), 9630.),
-                "sg14::elastic_integer test failed");
-#if defined(SG14_INT128_ENABLED)
-        static_assert(identical(elastic_integer<1>{0} * INT64_C(0), sg14::elastic_integer<63, int>{0}),
-                      "sg14::elastic_integer test failed");
-        static_assert(identical(make_elastic_integer(177_c) * INT64_C(9218), sg14::elastic_integer<71, int>{1631586}),
-                      "sg14::elastic_integer test failed");
+                "cnl::elastic_integer test failed");
+#if defined(CNL_INT128_ENABLED)
+        static_assert(identical(elastic_integer<1>{0} * INT64_C(0), cnl::elastic_integer<63, int>{0}),
+                      "cnl::elastic_integer test failed");
+        static_assert(identical(make_elastic_integer(177_c) * INT64_C(9218), cnl::elastic_integer<71, int>{1631586}),
+                      "cnl::elastic_integer test failed");
 #endif
     }
 
     namespace test_scale {
-        using sg14::_impl::scale;
+        using cnl::_impl::scale;
 
         static_assert(identical(scale(elastic_integer<6>{55}, 2, 2), elastic_integer<6>{220}), "scale<elastic_integer> test failed");
     }
@@ -240,7 +240,7 @@ namespace {
         static_assert(!is_signed || numeric_limits::max()==-numeric_limits::lowest(), "type has most negative number");
         static_assert(!is_signed || -numeric_limits::max()==numeric_limits::lowest(), "type has most negative number");
 
-        static_assert(identical(sg14::_impl::make_signed_t<value_type, is_signed>{0}, value_type{0}), "");
+        static_assert(identical(cnl::_impl::make_signed_t<value_type, is_signed>{0}, value_type{0}), "");
 
         ////////////////////////////////////////////////////////////////////////////////
         // constructors
@@ -281,7 +281,7 @@ namespace {
     struct elastic_integer_test<elastic_integer<7, int>, -127, 1, 127>;
     template
     struct elastic_integer_test<elastic_integer<1, int>, -1, 1, 1>;
-#if defined(SG14_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED)
     template
     struct elastic_integer_test<elastic_integer<39, unsigned int>, 0, 1, (INT64_C(1) << 39)-1>;
 #endif
@@ -296,28 +296,28 @@ namespace {
 #endif
 
     namespace test_is_composite {
-        using sg14::is_composite;
+        using cnl::is_composite;
 
-        static_assert(sg14::is_composite<elastic_integer<1>>::value, "sg14::is_composite<sg14::elastic_integer<>> test failed");
+        static_assert(cnl::is_composite<elastic_integer<1>>::value, "cnl::is_composite<cnl::elastic_integer<>> test failed");
     }
 
     namespace test_digits {
-        using sg14::digits;
-        using sg14::set_digits_t;
+        using cnl::digits;
+        using cnl::set_digits_t;
 
-        static_assert(digits<elastic_integer<3>>::value>=3, "sg14::digits / sg14::set_digits test failed");
-        static_assert(identical(set_digits_t<elastic_integer<1>, 3>{6}, elastic_integer<3>{6}), "sg14::digits / sg14::set_digits test failed");
+        static_assert(digits<elastic_integer<3>>::value>=3, "cnl::digits / cnl::set_digits test failed");
+        static_assert(identical(set_digits_t<elastic_integer<1>, 3>{6}, elastic_integer<3>{6}), "cnl::digits / cnl::set_digits test failed");
     }
 
     namespace test_used_bits {
-        using sg14::used_bits;
+        using cnl::used_bits;
 
         static_assert(used_bits(elastic_integer<7>{3})==2, "used_bits test failed");
         static_assert(used_bits(elastic_integer<12, std::uint16_t>{10})==4, "used_bits test failed");
     }
 
     namespace test_leading_bits {
-        using sg14::leading_bits;
+        using cnl::leading_bits;
 
         static_assert(leading_bits(elastic_integer<7>{3})==5, "leading_bits test failed");
         static_assert(leading_bits(elastic_integer<12, std::uint16_t>{10})==8, "leading_bits test failed");

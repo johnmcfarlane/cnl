@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/num_traits.h>
+#include <cnl/num_traits.h>
 #include "number_test.h"
 
 template struct number_test<char>;
@@ -21,7 +21,7 @@ template struct number_test<std::uint32_t>;
 template struct number_test<std::int64_t>;
 template struct number_test<std::uint64_t>;
 
-#if defined(SG14_INT128)
-template struct number_test<SG14_INT128>;
-template struct number_test<SG14_UINT128>;
+#if defined(CNL_INT128)
+template struct number_test<CNL_INT128>;
+template struct number_test<CNL_UINT128>;
 #endif

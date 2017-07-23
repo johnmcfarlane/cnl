@@ -7,21 +7,21 @@
 /// \file
 /// \brief essential definitions related to the overflow detection and handling
 
-#ifndef SG14_OVERFLOW_H
-#define SG14_OVERFLOW_H
+#if !defined(CNL_OVERFLOW_H)
+#define CNL_OVERFLOW_H
 
-#include <sg14/num_traits.h>
-#include <sg14/bits/common.h>
+#include <cnl/num_traits.h>
+#include <cnl/bits/common.h>
 
-#if defined(SG14_EXCEPTIONS_ENABLED)
+#if defined(CNL_EXCEPTIONS_ENABLED)
 #include <stdexcept>
 #else
 #include <cstdio>
 #include <exception>
 #endif
 
-/// study group 14 of the C++ working group
-namespace sg14 {
+/// compositional numeric library
+namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // mode tags and objects
 
@@ -38,14 +38,14 @@ namespace sg14 {
     } saturated_overflow{};
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::convert
+    // cnl::convert
 
     // implementation details
     namespace _overflow_impl {
         ////////////////////////////////////////////////////////////////////////////////
         // throw exception (or crash horribly)
 
-#if defined(SG14_EXCEPTIONS_ENABLED)
+#if defined(CNL_EXCEPTIONS_ENABLED)
         template<class Result>
         constexpr Result return_if(bool condition, const Result& value, const char* )
         {
@@ -166,7 +166,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::add
+    // cnl::add
 
     // implementation details
     namespace _overflow_impl {
@@ -220,7 +220,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::subtract
+    // cnl::subtract
 
     // implementation details
     namespace _overflow_impl {
@@ -274,7 +274,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::multiply
+    // cnl::multiply
 
     // implementation details
     namespace _overflow_impl {
@@ -333,7 +333,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::divide
+    // cnl::divide
 
     // implementation details
     namespace _overflow_impl {
@@ -393,4 +393,4 @@ namespace sg14 {
     }
 }
 
-#endif //SG14_OVERFLOW_H
+#endif  // CNL_OVERFLOW_H

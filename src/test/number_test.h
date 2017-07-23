@@ -4,10 +4,10 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/bits/limits.h>
-#include <sg14/auxiliary/numeric.h>
+#include <cnl/bits/limits.h>
+#include <cnl/auxiliary/numeric.h>
 
-#include <sg14/bits/common.h>
+#include <cnl/bits/common.h>
 
 #include <type_traits>
 
@@ -45,7 +45,7 @@ static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
 ////////////////////////////////////////////////////////////////////////////////
 // number_test
 
-using sg14::_impl::identical;
+using cnl::_impl::identical;
 
 // performs tests that should pass for all numeric types (except maybe const_integer);
 // invokes specific tests that only pass for subject types 
@@ -54,7 +54,7 @@ struct number_test {
     using value_type = Number;
     using numeric_limits = std::numeric_limits<value_type>;
 
-    static constexpr value_type zero = sg14::_impl::from_rep<value_type>(0);
+    static constexpr value_type zero = cnl::_impl::from_rep<value_type>(0);
 #if defined(_MSC_VER)
     static constexpr value_type negative_zero{ zero };
 #else
@@ -103,16 +103,16 @@ struct number_test {
     static_assert(is_equal_to(zero, value_type(0.)), "zero-initialized value is not represented using zero");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::width / sg14::_impl::set_width_t
+    // cnl::width / cnl::_impl::set_width_t
 
-    static_assert(sg14::digits<value_type>::value
-                    ==sg14::digits<sg14::set_digits_t<value_type, sg14::digits<value_type>::value>>::value,
-            "sg14::width / sg14::set_width test failed");
+    static_assert(cnl::digits<value_type>::value
+                    ==cnl::digits<cnl::set_digits_t<value_type, cnl::digits<value_type>::value>>::value,
+            "cnl::width / cnl::set_width test failed");
 
-    static_assert(sg14::digits<sg14::set_digits_t<value_type, 3>>::value>=3, "sg14::digits / sg14::set_digits test failed");
-    static_assert(sg14::digits<sg14::set_digits_t<value_type, 9>>::value>=9, "sg14::digits / sg14::set_digits test failed");
-    static_assert(sg14::digits<sg14::set_digits_t<value_type, 63>>::value>32,
-            "sg14::digits / sg14::set_digits test failed");
+    static_assert(cnl::digits<cnl::set_digits_t<value_type, 3>>::value>=3, "cnl::digits / cnl::set_digits test failed");
+    static_assert(cnl::digits<cnl::set_digits_t<value_type, 9>>::value>=9, "cnl::digits / cnl::set_digits test failed");
+    static_assert(cnl::digits<cnl::set_digits_t<value_type, 63>>::value>32,
+            "cnl::digits / cnl::set_digits test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test operator+
@@ -138,25 +138,25 @@ struct number_test {
     // numeric traits
 
     // would not pass for boost.multiprecision
-    static_assert(sg14::is_composite<value_type>::value != std::is_fundamental<value_type>::value, "is_composite test failed");
+    static_assert(cnl::is_composite<value_type>::value != std::is_fundamental<value_type>::value, "is_composite test failed");
 
-    static constexpr auto lowest_from_rep = sg14::_impl::from_rep<value_type>(sg14::_impl::to_rep(lowest));
-    static_assert(identical(lowest_from_rep, lowest), "sg14::_impl::to_rep & from_rep test failed");
+    static constexpr auto lowest_from_rep = cnl::_impl::from_rep<value_type>(cnl::_impl::to_rep(lowest));
+    static_assert(identical(lowest_from_rep, lowest), "cnl::_impl::to_rep & from_rep test failed");
 
-    static constexpr auto zero_from_rep = sg14::_impl::from_rep<value_type>(sg14::_impl::to_rep(zero));
-    static_assert(identical(zero_from_rep, zero), "sg14::_impl::to_rep & from_rep test failed");
+    static constexpr auto zero_from_rep = cnl::_impl::from_rep<value_type>(cnl::_impl::to_rep(zero));
+    static_assert(identical(zero_from_rep, zero), "cnl::_impl::to_rep & from_rep test failed");
 
-    static constexpr auto max_from_rep = sg14::_impl::from_rep<value_type>(sg14::_impl::to_rep(max));
-    static_assert(identical(max_from_rep, max), "sg14::_impl::to_rep & from_rep test failed");
+    static constexpr auto max_from_rep = cnl::_impl::from_rep<value_type>(cnl::_impl::to_rep(max));
+    static_assert(identical(max_from_rep, max), "cnl::_impl::to_rep & from_rep test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // bit functions
 
-    static_assert(sg14::used_bits(zero)==0, "used_bits test failed");
-    static_assert(sg14::used_bits(max)==sg14::digits<value_type>::value, "used_bits test failed");
+    static_assert(cnl::used_bits(zero)==0, "used_bits test failed");
+    static_assert(cnl::used_bits(max)==cnl::digits<value_type>::value, "used_bits test failed");
 
-    static_assert(sg14::leading_bits(zero)==sg14::digits<value_type>::value, "leading_bits test failed");
-    static_assert(sg14::leading_bits(max)==0, "leading_bits test failed");
+    static_assert(cnl::leading_bits(zero)==cnl::digits<value_type>::value, "leading_bits test failed");
+    static_assert(cnl::leading_bits(max)==0, "leading_bits test failed");
 };
 
 // performs tests that should pass for all numeric types (except maybe const_integer);
@@ -170,9 +170,9 @@ struct number_test_suite
 template<template<class> class NumericType, template<class> class TypeSpecificTestSuite = std::is_integral>
 struct number_test_by_rep
         : number_test_suite<NumericType<char>, TypeSpecificTestSuite>,
-#if defined(SG14_INT128)
-        number_test_suite<NumericType<SG14_INT128>, TypeSpecificTestSuite>,
-          number_test_suite<NumericType<SG14_UINT128>, TypeSpecificTestSuite>,
+#if defined(CNL_INT128)
+        number_test_suite<NumericType<CNL_INT128>, TypeSpecificTestSuite>,
+          number_test_suite<NumericType<CNL_UINT128>, TypeSpecificTestSuite>,
 #endif
           number_test_suite<NumericType<std::int8_t>, TypeSpecificTestSuite>,
           number_test_suite<NumericType<std::uint8_t>, TypeSpecificTestSuite>,

@@ -6,15 +6,15 @@
 
 // definitions that are directly required by more than one header of the API
 
-#if !defined(SG14_COMMON_H)
-#define SG14_COMMON_H 1
+#if !defined(CNL_COMMON_H)
+#define CNL_COMMON_H 1
 
 #include <utility>
 
-namespace sg14 {
+namespace cnl {
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::max
+        // cnl::_impl::max
 
         template<class T>
         constexpr T max(T a, T b)
@@ -23,7 +23,7 @@ namespace sg14 {
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::min
+        // cnl::_impl::min
 
         template<class T>
         constexpr T min(T a, T b)
@@ -186,11 +186,11 @@ namespace sg14 {
         static constexpr greater_than_or_equal_op greater_than_or_equal_tag {};
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::rep_op_result
+        // cnl::_impl::rep_op_result
 
         template<class Operator, class Lhs, class Rhs>
         using op_result = decltype(Operator()(std::declval<Lhs>(), std::declval<Rhs>()));
     }
 }
 
-#endif  // SG14_COMMON_H
+#endif  // CNL_COMMON_H

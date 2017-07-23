@@ -4,13 +4,13 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(SG14_PRECISE_INTEGER_H)
-#define SG14_PRECISE_INTEGER_H 1
+#if !defined(CNL_PRECISE_INTEGER_H)
+#define CNL_PRECISE_INTEGER_H 1
 
-#include <sg14/bits/number_base.h>
-#include <sg14/bits/limits.h>
+#include <cnl/bits/number_base.h>
+#include <cnl/bits/limits.h>
 
-namespace sg14 {
+namespace cnl {
 
     struct closest_rounding_tag {
         template<class To, class From>
@@ -147,8 +147,8 @@ namespace std {
     // std::numeric_limits specialization for precise_integer
 
     template<class Rep, class RoundingTag>
-    struct numeric_limits<sg14::precise_integer<Rep, RoundingTag>>
-            : numeric_limits<sg14::_impl::number_base<sg14::precise_integer<Rep, RoundingTag>, Rep>> {};
+    struct numeric_limits<cnl::precise_integer<Rep, RoundingTag>>
+            : numeric_limits<cnl::_impl::number_base<cnl::precise_integer<Rep, RoundingTag>, Rep>> {};
 }
 
-#endif
+#endif  // CNL_PRECISE_INTEGER_H

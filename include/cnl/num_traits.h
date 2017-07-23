@@ -7,25 +7,21 @@
 /// \file
 /// \brief definitions supporting generic treatment of numeric types
 
-#if !defined(SG14_NUMERIC_TRAITS)
-#define SG14_NUMERIC_TRAITS 1
-
-#if !defined(SG14_GODBOLT_ORG)
+#if !defined(CNL_NUMERIC_TRAITS)
+#define CNL_NUMERIC_TRAITS 1
 
 #include "bits/limits.h"
 #include "bits/type_traits.h"
 
-#endif
-
 #include <utility>
 
-/// study group 14 of the C++ working group
-namespace sg14 {
+/// compositional numeric library
+namespace cnl {
 
     using _digits_type = int;
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::is_composite (default specialization)
+    // cnl::is_composite (default specialization)
 
     template<class T, class Enable = void>
     struct is_composite : std::false_type {
@@ -41,7 +37,7 @@ namespace sg14 {
 
     namespace _num_traits_impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_num_traits_impl::are_composite
+        // cnl::_num_traits_impl::are_composite
 
         template<class ... Args>
         struct are_composite;
@@ -56,7 +52,7 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_num_traits_impl::enable_for_range
+        // cnl::_num_traits_impl::enable_for_range
 
         template<_digits_type MinNumDigits, class Smaller, class T>
         struct enable_for_range
@@ -73,7 +69,7 @@ namespace sg14 {
         using enable_for_range_t = typename enable_for_range<MinNumDigits, Smaller, T>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_num_traits_impl::set_digits_signed
+        // cnl::_num_traits_impl::set_digits_signed
 
         template<_digits_type MinNumDigits, class Enable = void>
         struct set_digits_signed;
@@ -98,15 +94,15 @@ namespace sg14 {
             using type = std::int64_t;
         };
 
-#if defined(SG14_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED)
         template<_digits_type MinNumDigits>
-        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, std::int64_t, SG14_INT128>> {
-            using type = SG14_INT128;
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, std::int64_t, CNL_INT128>> {
+            using type = CNL_INT128;
         };
 #endif
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_num_traits_impl::set_digits_unsigned
+        // cnl::_num_traits_impl::set_digits_unsigned
 
         template<_digits_type MinNumDigits, class Enable = void>
         struct set_digits_unsigned;
@@ -131,15 +127,15 @@ namespace sg14 {
             using type = std::uint64_t;
         };
 
-#if defined(SG14_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED)
         template<_digits_type MinNumDigits>
-        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, std::uint64_t, SG14_UINT128>> {
-            using type = SG14_UINT128;
+        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, std::uint64_t, CNL_UINT128>> {
+            using type = CNL_UINT128;
         };
 #endif
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_num_traits_impl::set_digits_integer
+        // cnl::_num_traits_impl::set_digits_integer
 
         template<class Integer, _digits_type MinNumDigits>
         using set_digits_integer = typename std::conditional<
@@ -171,14 +167,14 @@ namespace sg14 {
             : _num_traits_impl::set_digits_integer<T, Digits> {
     };
 
-#if defined(SG14_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED)
     template<_digits_type Digits>
-    struct set_digits<SG14_INT128, Digits>
+    struct set_digits<CNL_INT128, Digits>
             : _num_traits_impl::set_digits_integer<signed, Digits> {
     };
 
     template<_digits_type Digits>
-    struct set_digits<SG14_UINT128, Digits>
+    struct set_digits<CNL_UINT128, Digits>
             : _num_traits_impl::set_digits_integer<unsigned, Digits> {
     };
 #endif
@@ -187,14 +183,14 @@ namespace sg14 {
     using set_digits_t = typename set_digits<T, Digits>::type;
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::is_unsigned
+    // cnl::is_unsigned
 
     template<class T>
     struct is_signed : std::integral_constant<bool, std::numeric_limits<T>::is_signed> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_signed
+    // cnl::make_signed
 
     template<class, class = void>
     struct make_signed;
@@ -207,7 +203,7 @@ namespace sg14 {
     using make_signed_t = typename make_signed<T>::type;
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_unsigned
+    // cnl::make_unsigned
 
     template<class, class = void>
     struct make_unsigned;
@@ -216,24 +212,24 @@ namespace sg14 {
     struct make_unsigned<T, _impl::enable_if_t<std::is_integral<T>::value>> : std::make_unsigned<T> {
     };
 
-#if defined(SG14_INT128_ENABLED)
-    // TODO: sg14::is_integral
+#if defined(CNL_INT128_ENABLED)
+    // TODO: cnl::is_integral
     template<>
-    struct make_unsigned<SG14_INT128> {
-        using type = SG14_UINT128;
+    struct make_unsigned<CNL_INT128> {
+        using type = CNL_UINT128;
     };
     template<>
-    struct make_unsigned<SG14_UINT128> {
-        using type = SG14_UINT128;
+    struct make_unsigned<CNL_UINT128> {
+        using type = CNL_UINT128;
     };
 
     template<>
-    struct make_signed<SG14_INT128> {
-        using type = SG14_INT128;
+    struct make_signed<CNL_INT128> {
+        using type = CNL_INT128;
     };
     template<>
-    struct make_signed<SG14_UINT128> {
-        using type = SG14_INT128;
+    struct make_signed<CNL_UINT128> {
+        using type = CNL_INT128;
     };
 #endif
 
@@ -242,24 +238,24 @@ namespace sg14 {
 
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::make_signed - std::make_signed with IsSigned parameter
+        // cnl::_impl::make_signed - std::make_signed with IsSigned parameter
 
         template<class T, bool IsSigned = true>
         struct make_signed;
 
         template<class T>
-        struct make_signed<T, true> : ::sg14::make_signed<T> {
+        struct make_signed<T, true> : ::cnl::make_signed<T> {
         };
 
         template<class T>
-        struct make_signed<T, false> : ::sg14::make_unsigned<T> {
+        struct make_signed<T, false> : ::cnl::make_unsigned<T> {
         };
 
         template<class T, bool IsSigned>
         using make_signed_t = typename make_signed<T, IsSigned>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::common_signedness
+        // cnl::_impl::common_signedness
 
         template<class T1, class T2>
         struct common_signedness {
@@ -273,7 +269,7 @@ namespace sg14 {
         using common_signedness_t = typename common_signedness<T1, T2>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::encompasses
+        // cnl::_impl::encompasses
 
         template<class T, class Enable = void>
         struct unsigned_or_float;
@@ -324,7 +320,7 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::is_integer_or_float - trait to identify 'traditional' arithmetic concept
+        // cnl::_impl::is_integer_or_float - trait to identify 'traditional' arithmetic concept
 
         template<class T>
         struct is_integer_or_float : std::integral_constant<
@@ -334,7 +330,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::_impl::to_rep
+    // cnl::_impl::to_rep
 
     template<class Number, class Enable = void>
     struct to_rep {
@@ -347,13 +343,13 @@ namespace sg14 {
     namespace _impl {
         template<class Number, class Enable = void>
         constexpr auto to_rep(const Number &number)
-        -> decltype(sg14::to_rep<Number>()(number)) {
-            return sg14::to_rep<Number>()(number);
+        -> decltype(cnl::to_rep<Number>()(number)) {
+            return cnl::to_rep<Number>()(number);
         }
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::from_rep
+    // cnl::from_rep
 
     template<class Number, class Enable = void>
     struct from_rep {
@@ -367,13 +363,13 @@ namespace sg14 {
     namespace _impl {
         template<class Number, class Rep>
         constexpr auto from_rep(const Rep &rep)
-        -> decltype(sg14::from_rep<Number>()(rep)) {
-            return sg14::from_rep<Number>()(rep);
+        -> decltype(cnl::from_rep<Number>()(rep)) {
+            return cnl::from_rep<Number>()(rep);
         }
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::for_rep
+    // cnl::for_rep
 
     // invoke a given generic lambda on given parameters
     template<class Result, class F, class ... Args,
@@ -389,7 +385,7 @@ namespace sg14 {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::from_value
+    // cnl::from_value
 
     // if Number has Value for its Rep, what type would Number become?
     template<class Number, class Value, class Enable = void>
@@ -406,13 +402,13 @@ namespace sg14 {
     namespace _impl {
         template<class Number, class Value>
         constexpr auto from_value(const Value &value)
-        -> sg14::from_value_t<Number, Value> {
+        -> cnl::from_value_t<Number, Value> {
             return value;
         }
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::scale
+    // cnl::scale
 
     namespace _num_traits_impl {
         template<class T>
@@ -450,10 +446,10 @@ namespace sg14 {
     namespace _impl {
         template<class T>
         constexpr auto scale(const T &i, int base, int exp)
-        -> decltype(sg14::scale<T>()(i, base, exp)) {
-            return sg14::scale<T>()(i, base, exp);
+        -> decltype(cnl::scale<T>()(i, base, exp)) {
+            return cnl::scale<T>()(i, base, exp);
         }
     }
 }
 
-#endif    // SG14_NUMERIC_TRAITS
+#endif  // CNL_NUMERIC_TRAITS

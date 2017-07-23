@@ -4,8 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/auxiliary/safe_integer.h>
-#include <sg14/fixed_point>
+#include <cnl/auxiliary/safe_integer.h>
+#include <cnl/fixed_point.h>
 
 #define TEST_NATIVE_OVERFLOW
 #define TEST_LABEL native_integer_
@@ -18,7 +18,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Rep type
 
-using test_int = sg14::safe_integer<int, sg14::native_overflow_tag>;
+using test_int = cnl::safe_integer<int, cnl::native_overflow_tag>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // perform fixed_point tests with this type of fixed_point specialization

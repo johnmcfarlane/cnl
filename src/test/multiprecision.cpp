@@ -4,66 +4,66 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if defined(SG14_BOOST_ENABLED)
+#if defined(CNL_BOOST_ENABLED)
 
-#include <sg14/auxiliary/multiprecision.h>
+#include <cnl/auxiliary/multiprecision.h>
 
-#include <sg14/fixed_point>
+#include <cnl/fixed_point.h>
 
 #include <gtest/gtest.h>
 
-using sg14::fixed_point;
-using sg14::multiprecision;
-using sg14::set_digits_t;
-using sg14::signed_multiprecision;
-using sg14::unsigned_multiprecision;
+using cnl::fixed_point;
+using cnl::multiprecision;
+using cnl::set_digits_t;
+using cnl::signed_multiprecision;
+using cnl::unsigned_multiprecision;
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::multiprecision traits
+// cnl::multiprecision traits
 
-// test sg14::is_signed<{un}signed_multiprecision>::value
-static_assert(sg14::is_signed<signed_multiprecision<1 >>::value,
-        "sg14::is_signed<signed_multiprecision<>>::value test failed");
-static_assert(sg14::is_signed<signed_multiprecision<3 >>::value,
-        "sg14::is_signed<signed_multiprecision<>>::value test failed");
-static_assert(!sg14::is_signed<unsigned_multiprecision<5 >>::value,
-        "sg14::is_signed<unsigned_multiprecision<>>::value test failed");
-static_assert(!sg14::is_signed<unsigned_multiprecision<7 >>::value,
-        "sg14::is_signed<unsigned_multiprecision<>>::value test failed");
+// test cnl::is_signed<{un}signed_multiprecision>::value
+static_assert(cnl::is_signed<signed_multiprecision<1 >>::value,
+        "cnl::is_signed<signed_multiprecision<>>::value test failed");
+static_assert(cnl::is_signed<signed_multiprecision<3 >>::value,
+        "cnl::is_signed<signed_multiprecision<>>::value test failed");
+static_assert(!cnl::is_signed<unsigned_multiprecision<5 >>::value,
+        "cnl::is_signed<unsigned_multiprecision<>>::value test failed");
+static_assert(!cnl::is_signed<unsigned_multiprecision<7 >>::value,
+        "cnl::is_signed<unsigned_multiprecision<>>::value test failed");
 
-// test sg14::make_signed<{un}signed_multiprecision>::make_signed
-static_assert(sg14::is_signed<sg14::make_signed_t<signed_multiprecision<9>>>::value,
-        "sg14::make_signed<{un}signed_multiprecision>::make_signed test failed");
-static_assert(sg14::is_signed<sg14::make_signed_t<unsigned_multiprecision<10 >>>::value,
-        "sg14::make_signed<{un}signed_multiprecision>::make_signed test failed");
-static_assert(sg14::is_signed<sg14::make_signed_t<signed_multiprecision<9 >>>::value,
-        "sg14::make_signed<{un}signed_multiprecision>::make_signed test failed");
-static_assert(sg14::is_signed<sg14::make_signed_t<unsigned_multiprecision<10 >>>::value,
-        "sg14::make_signed<{un}signed_multiprecision>::make_signed test failed");
+// test cnl::make_signed<{un}signed_multiprecision>::make_signed
+static_assert(cnl::is_signed<cnl::make_signed_t<signed_multiprecision<9>>>::value,
+        "cnl::make_signed<{un}signed_multiprecision>::make_signed test failed");
+static_assert(cnl::is_signed<cnl::make_signed_t<unsigned_multiprecision<10 >>>::value,
+        "cnl::make_signed<{un}signed_multiprecision>::make_signed test failed");
+static_assert(cnl::is_signed<cnl::make_signed_t<signed_multiprecision<9 >>>::value,
+        "cnl::make_signed<{un}signed_multiprecision>::make_signed test failed");
+static_assert(cnl::is_signed<cnl::make_signed_t<unsigned_multiprecision<10 >>>::value,
+        "cnl::make_signed<{un}signed_multiprecision>::make_signed test failed");
 
-// test sg14::make_unsigned_t<{un}signed_multiprecision>
-static_assert(!sg14::is_signed<sg14::make_unsigned_t<signed_multiprecision<9 >>>::value,
-        "sg14::make_unsigned<{un}signed_multiprecision>::make_unsigned test failed");
-static_assert(!sg14::is_signed<sg14::make_unsigned_t<unsigned_multiprecision<10 >>>::value,
-        "sg14::make_unsigned<{un}signed_multiprecision>::make_unsigned test failed");
-static_assert(!sg14::is_signed<sg14::make_unsigned_t<signed_multiprecision<9 >>>::value,
-        "sg14::make_unsigned<{un}signed_multiprecision>::make_unsigned test failed");
-static_assert(!sg14::is_signed<sg14::make_unsigned_t<unsigned_multiprecision<10 >>>::value,
-        "sg14::make_unsigned<{un}signed_multiprecision>::make_unsigned test failed");
+// test cnl::make_unsigned_t<{un}signed_multiprecision>
+static_assert(!cnl::is_signed<cnl::make_unsigned_t<signed_multiprecision<9 >>>::value,
+        "cnl::make_unsigned<{un}signed_multiprecision>::make_unsigned test failed");
+static_assert(!cnl::is_signed<cnl::make_unsigned_t<unsigned_multiprecision<10 >>>::value,
+        "cnl::make_unsigned<{un}signed_multiprecision>::make_unsigned test failed");
+static_assert(!cnl::is_signed<cnl::make_unsigned_t<signed_multiprecision<9 >>>::value,
+        "cnl::make_unsigned<{un}signed_multiprecision>::make_unsigned test failed");
+static_assert(!cnl::is_signed<cnl::make_unsigned_t<unsigned_multiprecision<10 >>>::value,
+        "cnl::make_unsigned<{un}signed_multiprecision>::make_unsigned test failed");
 
-// test sg14::width<{un}signed_multiprecision>
-static_assert(sg14::digits<signed_multiprecision<11>>::value>=11, "sg14::digits<signed_multiprecision>::value test failed");
-static_assert(sg14::digits<unsigned_multiprecision<12>>::value>=12, "sg14::digits<signed_multiprecision>::value test failed");
+// test cnl::width<{un}signed_multiprecision>
+static_assert(cnl::digits<signed_multiprecision<11>>::value>=11, "cnl::digits<signed_multiprecision>::value test failed");
+static_assert(cnl::digits<unsigned_multiprecision<12>>::value>=12, "cnl::digits<signed_multiprecision>::value test failed");
 
-// test sg14::set_digits_t<{un}signed_multiprecision>
-static_assert(sg14::digits<set_digits_t<signed_multiprecision<13>, 57>>::value>=57, "set_digits_t<signed_multiprecision> test failed");
-static_assert(sg14::digits<set_digits_t<unsigned_multiprecision<14>, 3>>::value>=3, "set_digits_t<signed_multiprecision> test failed");
+// test cnl::set_digits_t<{un}signed_multiprecision>
+static_assert(cnl::digits<set_digits_t<signed_multiprecision<13>, 57>>::value>=57, "set_digits_t<signed_multiprecision> test failed");
+static_assert(cnl::digits<set_digits_t<unsigned_multiprecision<14>, 3>>::value>=3, "set_digits_t<signed_multiprecision> test failed");
 
-static_assert(sg14::digits<set_digits_t<signed_multiprecision<120>, 3>>::value<=sg14::digits<signed_multiprecision<120>>::value, "set_digits_t<signed_multiprecision> test failed");
-static_assert(sg14::digits<unsigned_multiprecision<128>>::value>=sg14::digits<set_digits_t<unsigned_multiprecision<128>, 16>>::value, "set_digits_t<signed_multiprecision> test failed");
+static_assert(cnl::digits<set_digits_t<signed_multiprecision<120>, 3>>::value<=cnl::digits<signed_multiprecision<120>>::value, "set_digits_t<signed_multiprecision> test failed");
+static_assert(cnl::digits<unsigned_multiprecision<128>>::value>=cnl::digits<set_digits_t<unsigned_multiprecision<128>, 16>>::value, "set_digits_t<signed_multiprecision> test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::multiprecision arithmetic
+// cnl::multiprecision arithmetic
 
 TEST(multiprecision, add)
 {
@@ -80,7 +80,7 @@ TEST(multiprecision, add)
 
 TEST(multiprecision, subtract)
 {
-    using int64 = sg14::unsigned_multiprecision<64>;
+    using int64 = cnl::unsigned_multiprecision<64>;
 
     auto minuend = int64{999999999999999999LL};
     auto subtrahend = int64{876543210987654321LL};
@@ -118,7 +118,7 @@ TEST(multiprecision, divide)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::fixed_point<sg14::unsigned_multiprecision<>> arithmetic
+// cnl::fixed_point<cnl::unsigned_multiprecision<>> arithmetic
 
 TEST(fixed_point_multiprecision, add)
 {
@@ -183,4 +183,4 @@ namespace boost {
 }
 #endif
 
-#endif  // SG14_BOOST_ENABLED
+#endif  // CNL_BOOST_ENABLED

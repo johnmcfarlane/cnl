@@ -5,15 +5,15 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief some cmath specializations for `sg14::fixed_point` type;
+/// \brief some cmath specializations for `cnl::fixed_point` type;
 
 #ifndef FIXED_POINT_MATH_H_
 #define FIXED_POINT_MATH_H_
 
-#include <sg14/fixed_point>
+#include <cnl/fixed_point.h>
 
-/// study group 14 of the C++ working group
-namespace sg14 {
+/// compositional numeric library
+namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
     // implementation-specific definitions
@@ -116,7 +116,7 @@ namespace sg14 {
     }
 
     /// Calculates exp2(x), i.e. 2^x
-    /// \headerfile sg14/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// Accurate to 1LSB for up to 32 bit underlying representation.
     ///

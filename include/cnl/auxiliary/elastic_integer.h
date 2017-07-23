@@ -5,15 +5,15 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief essential definitions related to the `sg14::elastic_integer` type
+/// \brief essential definitions related to the `cnl::elastic_integer` type
 
-#if !defined(SG14_ELASTIC_INTEGER_H)
-#define SG14_ELASTIC_INTEGER_H 1
+#if !defined(CNL_ELASTIC_INTEGER_H)
+#define CNL_ELASTIC_INTEGER_H 1
 
-#include <sg14/bits/number_base.h>
+#include <cnl/bits/number_base.h>
 
-/// study group 14 of the C++ working group
-namespace sg14 {
+/// compositional numeric library
+namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
     // forward-declaration
@@ -29,7 +29,7 @@ namespace sg14 {
         struct base_class {
             static constexpr _digits_type digits = Digits;
 
-            static constexpr _digits_type rep_digits = _impl::max(sg14::digits<Narrowest>::value, digits);
+            static constexpr _digits_type rep_digits = _impl::max(cnl::digits<Narrowest>::value, digits);
 
             using rep = typename set_digits<Narrowest, rep_digits>::type;
             using type = _impl::number_base<elastic_integer<Digits, Narrowest>, rep>;
@@ -63,7 +63,7 @@ namespace sg14 {
 
     template<int Digits, class Narrowest, class Value>
     struct from_value<elastic_integer<Digits, Narrowest>, Value> {
-        using type = elastic_integer<sg14::digits<Value>::value, sg14::_impl::make_signed_t<Narrowest, sg14::is_signed<Value>::value>>;
+        using type = elastic_integer<cnl::digits<Value>::value, cnl::_impl::make_signed_t<Narrowest, cnl::is_signed<Value>::value>>;
     };
 
     template<int Digits, class Narrowest>
@@ -129,7 +129,7 @@ namespace sg14 {
         constexpr elastic_integer(const_integer<Integral, Value, Digits, Exponent>)
                 : _base(static_cast<rep>(Value))
         {
-            static_assert(!sg14::is_signed<Integral>::value || sg14::is_signed<rep>::value, "initialization by out-of-range value");
+            static_assert(!cnl::is_signed<Integral>::value || cnl::is_signed<rep>::value, "initialization by out-of-range value");
         }
 
         /// copy assignment operator taking a floating-point type
@@ -149,7 +149,7 @@ namespace sg14 {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // sg14::make_elastic_integer
+    // cnl::make_elastic_integer
 
     template<
             class Integral, Integral Value>
@@ -168,7 +168,7 @@ namespace sg14 {
 
     namespace _elastic_integer_impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_elastic_integer_impl::is_elastic_integer
+        // cnl::_elastic_integer_impl::is_elastic_integer
 
         template<class ElasticInteger>
         struct is_elastic_integer : std::false_type {
@@ -179,7 +179,7 @@ namespace sg14 {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_elastic_integer_impl::are_integer_class_operands - basically identifies
+        // cnl::_elastic_integer_impl::are_integer_class_operands - basically identifies
         // operands that should go into a function defined here; filters out fixed-point
 
         template<class Lhs, class Rhs>
@@ -350,14 +350,14 @@ namespace sg14 {
             using rep_result = typename _impl::op_result<OperationTag, lhs_rep, rhs_rep>;
 
             static constexpr _digits_type narrowest_width = _impl::max(
-                    digits<LhsNarrowest>::value + sg14::is_signed<LhsNarrowest>::value,
-                    digits<RhsNarrowest>::value + sg14::is_signed<RhsNarrowest>::value);
+                    digits<LhsNarrowest>::value + cnl::is_signed<LhsNarrowest>::value,
+                    digits<RhsNarrowest>::value + cnl::is_signed<RhsNarrowest>::value);
             using narrowest = set_digits_t<_impl::make_signed_t<rep_result, policy::is_signed>, narrowest_width-policy::is_signed>;
             using result_type = elastic_integer<policy::digits, narrowest>;
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_impl::operate
+        // cnl::_impl::operate
 
         template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
 #if defined(__GNUG__)
@@ -400,30 +400,30 @@ namespace sg14 {
 
 namespace std {
     template<int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
-    struct common_type<sg14::elastic_integer<LhsDigits, LhsNarrowest>, sg14::elastic_integer<RhsDigits, RhsNarrowest>> {
-        using type = sg14::elastic_integer<
-                sg14::_impl::max(LhsDigits, RhsDigits), 
-                sg14::_impl::common_signedness_t<LhsNarrowest, RhsNarrowest>>;
+    struct common_type<cnl::elastic_integer<LhsDigits, LhsNarrowest>, cnl::elastic_integer<RhsDigits, RhsNarrowest>> {
+        using type = cnl::elastic_integer<
+                cnl::_impl::max(LhsDigits, RhsDigits),
+                cnl::_impl::common_signedness_t<LhsNarrowest, RhsNarrowest>>;
     };
 
     template<int LhsDigits, class LhsNarrowest, class Rhs>
-    struct common_type<sg14::elastic_integer<LhsDigits, LhsNarrowest>, Rhs>
-            : common_type<sg14::elastic_integer<LhsDigits, LhsNarrowest>, sg14::elastic_integer<std::numeric_limits<Rhs>::digits, Rhs>> {
+    struct common_type<cnl::elastic_integer<LhsDigits, LhsNarrowest>, Rhs>
+            : common_type<cnl::elastic_integer<LhsDigits, LhsNarrowest>, cnl::elastic_integer<std::numeric_limits<Rhs>::digits, Rhs>> {
     };
 
     template<class Lhs, int RhsDigits, class RhsNarrowest>
-    struct common_type<Lhs, sg14::elastic_integer<RhsDigits, RhsNarrowest>>
-            : common_type<sg14::elastic_integer<std::numeric_limits<Lhs>::digits, Lhs>, sg14::elastic_integer<RhsDigits, RhsNarrowest>> {
+    struct common_type<Lhs, cnl::elastic_integer<RhsDigits, RhsNarrowest>>
+            : common_type<cnl::elastic_integer<std::numeric_limits<Lhs>::digits, Lhs>, cnl::elastic_integer<RhsDigits, RhsNarrowest>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // std::numeric_limits for sg14::elastic_integer
+    // std::numeric_limits for cnl::elastic_integer
 
     namespace _elastic_integer_impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // sg14::_elastic_integer_impl::lowest
+        // cnl::_elastic_integer_impl::lowest
 
-        // helper for std::numeric_limits<sg14::elastic_integer<>>::lowest()
+        // helper for std::numeric_limits<cnl::elastic_integer<>>::lowest()
         template<class Rep, bool IsSigned>
         struct lowest;
 
@@ -445,11 +445,11 @@ namespace std {
     };
 
     template<int Digits, class Narrowest>
-    struct numeric_limits<sg14::elastic_integer<Digits, Narrowest>>
+    struct numeric_limits<cnl::elastic_integer<Digits, Narrowest>>
             : numeric_limits<Narrowest> {
         // elastic integer-specific helpers
         using _narrowest_numeric_limits = numeric_limits<Narrowest>;
-        using _value_type = sg14::elastic_integer<Digits, Narrowest>;
+        using _value_type = cnl::elastic_integer<Digits, Narrowest>;
         using _rep = typename _value_type::rep;
         using _rep_numeric_limits = numeric_limits<_rep>;
 
@@ -478,4 +478,4 @@ namespace std {
     };
 }
 
-#endif // SG14_ELASTIC_INTEGER_H
+#endif  // CNL_ELASTIC_INTEGER_H

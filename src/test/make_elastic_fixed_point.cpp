@@ -4,32 +4,32 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/auxiliary/elastic_fixed_point.h>
+#include <cnl/auxiliary/elastic_fixed_point.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-// sg14::make_elastic_fixed_point
+// cnl::make_elastic_fixed_point
 
-using sg14::make_elastic_fixed_point;
-using sg14::_impl::identical;
-using namespace sg14::literals;
-using sg14::const_integer;
-using sg14::elastic_fixed_point;
+using cnl::make_elastic_fixed_point;
+using cnl::_impl::identical;
+using namespace cnl::literals;
+using cnl::const_integer;
+using cnl::elastic_fixed_point;
 
 static constexpr auto int_digits = std::numeric_limits<int>::digits;
 
-static_assert(identical(make_elastic_fixed_point(const_integer<std::int64_t, -1>{}), sg14::elastic_fixed_point<1, 0, int>{-1}),
+static_assert(identical(make_elastic_fixed_point(const_integer<std::int64_t, -1>{}), cnl::elastic_fixed_point<1, 0, int>{-1}),
               "using too many bytes to represent -1");
-static_assert(identical(make_elastic_fixed_point(-1_c), sg14::elastic_fixed_point<1, 0, int>{-1}), "using too many bits to represent -1");
+static_assert(identical(make_elastic_fixed_point(-1_c), cnl::elastic_fixed_point<1, 0, int>{-1}), "using too many bits to represent -1");
 
-static_assert(identical(make_elastic_fixed_point(123), elastic_fixed_point<int_digits>{123}), "sg14::make_elastic_fixed_point test failed");
+static_assert(identical(make_elastic_fixed_point(123), elastic_fixed_point<int_digits>{123}), "cnl::make_elastic_fixed_point test failed");
 static_assert(
         identical(make_elastic_fixed_point(0x100000000_c), elastic_fixed_point<33, -32>{0x100000000ULL}),
-        "sg14::make_elastic_fixed_point test failed");
+        "cnl::make_elastic_fixed_point test failed");
 static_assert(
         identical(
                 make_elastic_fixed_point<std::uint8_t>(262143),
                 elastic_fixed_point<std::numeric_limits<decltype(262143)>::digits, 0, std::uint8_t>{262143}),
-        "sg14::make_elastic_fixed_point test failed");
+        "cnl::make_elastic_fixed_point test failed");
 
 static_assert(identical(make_elastic_fixed_point(const_integer<int, 4>{}), elastic_fixed_point<3, -2>{4}), "");
 static_assert(identical(make_elastic_fixed_point(40_c), elastic_fixed_point<6, -3>{40}), "");
@@ -37,7 +37,7 @@ static_assert(identical(make_elastic_fixed_point(0x123400000000_c), elastic_fixe
 static_assert(identical(make_elastic_fixed_point<std::int8_t>(9876543), elastic_fixed_point<31, 0, std::int8_t>{9876543}), "");
 
 ////////////////////////////////////////////////////////////////////////////////
-// tests size of sg14::make_elastic_fixed_point
+// tests size of cnl::make_elastic_fixed_point
 
 // by default, make_elastic_fixed_point generates types that are machine-optimal for speed...
 static_assert(sizeof(make_elastic_fixed_point(0_c)) <= sizeof(int), "using too many bytes to represent 0");
@@ -92,7 +92,7 @@ static_assert(
         "using too many bytes to represent 2^32 + 1");
 
 ////////////////////////////////////////////////////////////////////////////////
-// tests for sg14::make_elastic_fixed_point
+// tests for cnl::make_elastic_fixed_point
 
 template<std::int64_t Value>
 struct make_elastic_test {
@@ -104,7 +104,7 @@ struct make_elastic_test {
     static_assert(Value>=0 || type::integer_digits>=60
                   || (Value/(1LL << (type::integer_digits+1)))==0,
                   "elastic_fixed_point type capacity is too big");
-    static_assert(Value<=0 || (Value >> sg14::_impl::max<int>(0, type::integer_digits-1))!=0, "elastic_fixed_point type capacity is too small");
+    static_assert(Value<=0 || (Value >> cnl::_impl::max<int>(0, type::integer_digits-1))!=0, "elastic_fixed_point type capacity is too small");
     static_assert(Value>=0 || (Value >> (type::integer_digits))!=0, "elastic_fixed_point type capacity is too small");
     static_assert(Value || type::integer_digits==0, "elastic_fixed_point type capacity is too small");
 

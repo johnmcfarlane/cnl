@@ -4,8 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/auxiliary/safe_integer.h>
-#include <sg14/fixed_point>
+#include <cnl/auxiliary/safe_integer.h>
+#include <cnl/fixed_point.h>
 
 #define TEST_THROWING_OVERFLOW
 #define TEST_LABEL throwing_integer_
@@ -18,7 +18,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Rep type
 
-using test_int = sg14::safe_integer<>;
+using test_int = cnl::safe_integer<>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // perform fixed_point tests with this type of fixed_point specialization
@@ -29,7 +29,7 @@ using test_int = sg14::safe_integer<>;
 // throwing_integer-specific exceptions tests
 
 
-#if defined(TEST_THROWING_OVERFLOW) && defined(SG14_EXCEPTIONS_ENABLED)
+#if defined(TEST_THROWING_OVERFLOW) && defined(CNL_EXCEPTIONS_ENABLED)
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_right)
 {

@@ -5,15 +5,15 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief `sg14::fixed_point` operators
+/// \brief `cnl::fixed_point` operators
 
-#if !defined(SG14_FIXED_POINT_OPERATORS_H)
-#define SG14_FIXED_POINT_OPERATORS_H 1
+#if !defined(CNL_FIXED_POINT_OPERATORS_H)
+#define CNL_FIXED_POINT_OPERATORS_H 1
 
 #include "fixed_point_arithmetic.h"
 
-/// study group 14 of the C++ working group
-namespace sg14 {
+/// compositional numeric library
+namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
     // (fixed_point @ fixed_point) arithmetic operators
@@ -89,7 +89,7 @@ namespace sg14 {
     namespace _impl {
         template<
                 class Operator, class Lhs, class Rhs,
-                class = _impl::enable_if_t<Operator::is_comparison && sg14::_fixed_point_operators_impl::is_heterogeneous<Lhs, Rhs>()>>
+                class = _impl::enable_if_t<Operator::is_comparison && cnl::_fixed_point_operators_impl::is_heterogeneous<Lhs, Rhs>()>>
         constexpr auto operate(const Lhs& lhs, const Rhs& rhs, Operator op)
         -> decltype(op(static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs), static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs)))
         {
@@ -313,4 +313,4 @@ namespace sg14 {
     }
 }
 
-#endif	// SG14_FIXED_POINT_OPERATORS_H
+#endif  // CNL_FIXED_POINT_OPERATORS_H

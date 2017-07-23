@@ -4,11 +4,11 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <sg14/auxiliary/elastic_fixed_point.h>
+#include <cnl/auxiliary/elastic_fixed_point.h>
 
 namespace {
-    using sg14::fixed_point;
-    using sg14::_impl::identical;
+    using cnl::fixed_point;
+    using cnl::_impl::identical;
 
     namespace bare_metal {
         // sample 1 - bare-metal fixed-point arithmetic
@@ -29,7 +29,7 @@ namespace {
     }
 
     namespace division {
-        using sg14::elastic_fixed_point;
+        using cnl::elastic_fixed_point;
         constexpr elastic_fixed_point<1, 6> numerator = 0.5, denominator = 1.0;
         constexpr auto quotient = numerator / denominator;
         static_assert(identical(quotient, elastic_fixed_point<7, 7>{.5}), "position_paper test failed");

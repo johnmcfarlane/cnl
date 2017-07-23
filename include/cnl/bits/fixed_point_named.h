@@ -5,20 +5,20 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief essential named definitions related to the `sg14::fixed_point` type
+/// \brief essential named definitions related to the `cnl::fixed_point` type
 
-#if !defined(SG14_FIXED_POINT_NAMED_H)
-#define SG14_FIXED_POINT_NAMED_H 1
+#if !defined(CNL_FIXED_POINT_NAMED_H)
+#define CNL_FIXED_POINT_NAMED_H 1
 
 #include "common.h"
 
 #include "fixed_point_arithmetic.h"
 
-/// study group 14 of the C++ working group
-namespace sg14 {
+/// compositional numeric library
+namespace cnl {
 
     /// \brief calculates the negative of a \ref fixed_point value
-    /// \headerfile sg14/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \param rhs input value
     ///
@@ -38,7 +38,7 @@ namespace sg14 {
     }
 
     /// \brief calculates the sum of two \ref fixed_point values
-    /// \headerfile sg14/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \param lhs, rhs augend and addend
     ///
@@ -57,7 +57,7 @@ namespace sg14 {
     }
 
     /// \brief calculates the difference of two \ref fixed_point values
-    /// \headerfile sg14/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \param lhs, rhs minuend and subtrahend
     ///
@@ -76,7 +76,7 @@ namespace sg14 {
     }
 
     /// \brief calculates the product of two \ref fixed_point factors
-    /// \headerfile sg14/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \param lhs, rhs the factors
     ///
@@ -95,7 +95,7 @@ namespace sg14 {
     }
 
     /// \brief calculates the quotient of two \ref fixed_point values
-    /// \headerfile sg14/fixed_point
+    /// \headerfile cnl/fixed_point.h
     ///
     /// \param lhs, rhs dividend and divisor
     ///
@@ -114,4 +114,4 @@ namespace sg14 {
     }
 }
 
-#endif	// SG14_FIXED_POINT_NAMED_H
+#endif  // CNL_FIXED_POINT_NAMED_H

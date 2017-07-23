@@ -6,8 +6,8 @@
 
 #include <gtest/gtest.h>
 
-#include <sg14/fixed_point>
-#include <sg14/bits/fixed_point_math.h>
+#include <cnl/fixed_point.h>
+#include <cnl/bits/fixed_point_math.h>
 
 //Fails due to cast being out-of-range:
 #include "fixed_point_math_Q0.cpp"

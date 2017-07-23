@@ -9,35 +9,35 @@
 
 #if (__cplusplus > 201402L)
 
-#include <sg14/auxiliary/precise_integer.h>
-#include <sg14/num_traits.h>
-#include <sg14/fixed_point>
+#include <cnl/auxiliary/precise_integer.h>
+#include <cnl/num_traits.h>
+#include <cnl/fixed_point.h>
 
 #include <gtest/gtest.h>
 
 #include <type_traits>
 
-using sg14::_impl::identical;
+using cnl::_impl::identical;
 
 namespace {
-    // example type, smart_integer, is based off of sg14::elastic_integer
+    // example type, smart_integer, is based off of cnl::elastic_integer
     template<class Rep>
-    struct smart_integer : public sg14::_impl::number_base<smart_integer<Rep>, Rep> {
-        constexpr smart_integer(const Rep& rhs) : sg14::_impl::number_base<smart_integer<Rep>, Rep>{rhs} {}
+    struct smart_integer : public cnl::_impl::number_base<smart_integer<Rep>, Rep> {
+        constexpr smart_integer(const Rep& rhs) : cnl::_impl::number_base<smart_integer<Rep>, Rep>{rhs} {}
     };
 }
 
-namespace sg14 {
+namespace cnl {
     namespace _impl {
         template<class LhsRep, class RhsRep>
         constexpr auto operate(smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs, subtract_op) {
-            using result_type = sg14::_impl::make_signed_t<decltype(to_rep(lhs)+to_rep(rhs)), true>;
+            using result_type = cnl::_impl::make_signed_t<decltype(to_rep(lhs)+to_rep(rhs)), true>;
             return smart_integer(static_cast<result_type>(to_rep(lhs))-static_cast<result_type>(to_rep(rhs)));
         };
 
         template<class LhsRep, class RhsRep>
         constexpr auto operate(smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs, multiply_op) {
-            using result_type = sg14::_impl::make_signed_t<decltype(to_rep(lhs)*to_rep(rhs)), is_signed<LhsRep>::value|is_signed<RhsRep>::value>;
+            using result_type = cnl::_impl::make_signed_t<decltype(to_rep(lhs)*to_rep(rhs)), is_signed<LhsRep>::value|is_signed<RhsRep>::value>;
             return smart_integer(static_cast<result_type>(to_rep(lhs))*static_cast<result_type>(to_rep(rhs)));
         };
 
@@ -48,12 +48,12 @@ namespace sg14 {
     }
 }
 namespace {
-    // example type, fixed_point, is taken directy from sg14::fixed_point
-    using sg14::fixed_point;
+    // example type, fixed_point, is taken directy from cnl::fixed_point
+    using cnl::fixed_point;
 
-    // example type, rounded_integer, is based off of sg14::precise_integer
+    // example type, rounded_integer, is based off of cnl::precise_integer
     template<class Rep>
-    using rounded_integer = sg14::precise_integer<Rep>;
+    using rounded_integer = cnl::precise_integer<Rep>;
 
     TEST(P0675, compose_from_fundamental) {
         // use an unsigned 16-bit integer to approximate a real number with 2 integer and 14 fractional digits
@@ -67,7 +67,7 @@ namespace {
 
     TEST(P0675, compose_from_components) {
         auto num = fixed_point<rounded_integer<uint8_t>, -4>{15.9375};
-        ASSERT_TRUE(sg14::_impl::from_rep<decltype(num)>(1) == 1. / 16);
+        ASSERT_TRUE(cnl::_impl::from_rep<decltype(num)>(1) == 1. / 16);
     }
 
     TEST(P0675, smart_multiply) {
@@ -87,30 +87,30 @@ namespace {
 
     namespace desirata {
         // num_digits
-        template<class T> constexpr auto num_digits_v = sg14::digits_v<T>;
+        template<class T> constexpr auto num_digits_v = cnl::digits_v<T>;
         static_assert(num_digits_v<int64_t> == 63);
 
         // set_num_digits
-        template<class T, int B> using set_num_digits_t = sg14::set_digits_t<T, B>;
+        template<class T, int B> using set_num_digits_t = cnl::set_digits_t<T, B>;
         static_assert(std::is_same_v<set_num_digits_t<unsigned, 8>, std::uint8_t>);
 
         // is_composite
-        using sg14::is_composite_v;
+        using cnl::is_composite_v;
         static_assert(!is_composite_v<short>);
         static_assert(is_composite_v<fixed_point<short>>);
 
         // to_rep
-        using sg14::to_rep;
+        using cnl::to_rep;
         static_assert(identical(1L, to_rep<long>()(1L)));
         static_assert(identical(1L, to_rep<smart_integer<long>>()(smart_integer<long>{1L})));
 
         // from_rep
-        using sg14::from_rep;
+        using cnl::from_rep;
         static_assert(identical(7, from_rep<int>()(7)));
         static_assert(identical(fixed_point<int, -1>{49.5}, from_rep<fixed_point<int, -1>>()(99)));
 
         // from_value
-        using sg14::from_value_t;
+        using cnl::from_value_t;
         static_assert(identical(fixed_point<unsigned long, 0>{99}, from_value_t<fixed_point<int16_t, -1>, unsigned long>{99UL}));
     }
 }

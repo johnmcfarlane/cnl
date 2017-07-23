@@ -5,17 +5,17 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief definitions and specializations that adapt Boost.Multiprecision for use with @ref sg14::fixed_point
+/// \brief definitions and specializations that adapt Boost.Multiprecision for use with @ref cnl::fixed_point
 
-#if !defined(SG14_BOOST_MULTIPRECISION_H)
-#define SG14_BOOST_MULTIPRECISION_H 1
+#if !defined(CNL_BOOST_MULTIPRECISION_H)
+#define CNL_BOOST_MULTIPRECISION_H 1
 
-#include <sg14/num_traits.h>
+#include <cnl/num_traits.h>
 
 #include <boost/multiprecision/cpp_int.hpp>
 
-/// study group 14 of the C++ working group
-namespace sg14 {
+/// compositional numeric library
+namespace cnl {
     namespace _bmp = boost::multiprecision;
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -23,7 +23,7 @@ namespace sg14 {
     // type trait specializations of boost::multiprecision types
     //
     // These are the definitions needed to use any custom integer type with
-    // sg14::fixed_point
+    // cnl::fixed_point
 
     template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
     struct make_signed<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked, Allocator>> {
@@ -76,17 +76,17 @@ namespace sg14 {
                 NumBits, NumBits, SignType, _bmp::unchecked, void>;
     }
 
-    // sg14::signed_multiprecision - a signed integer of arbitrary size
+    // cnl::signed_multiprecision - a signed integer of arbitrary size
     template<unsigned NumDigits = digits<int>::value>
     using signed_multiprecision = _bmp::number<_sized_integer_impl::backend<NumDigits+1, _bmp::signed_magnitude>, _bmp::et_off>;
 
-    // sg14::unsigned_multiprecision - an unsigned integer of arbitrary size
+    // cnl::unsigned_multiprecision - an unsigned integer of arbitrary size
     template<unsigned NumDigits = digits<unsigned>::value>
     using unsigned_multiprecision = _bmp::number<_sized_integer_impl::backend<NumDigits, _bmp::unsigned_magnitude>, _bmp::et_off>;
 
-    // sg14::unsigned_multiprecision - an integer of arbitrary size
+    // cnl::unsigned_multiprecision - an integer of arbitrary size
     template<unsigned NumDigits = digits<int>::value>
     using multiprecision = signed_multiprecision<NumDigits+1>;
 }
 
-#endif // SG14_BOOST_MULTIPRECISION_H
+#endif  // CNL_BOOST_MULTIPRECISION_H

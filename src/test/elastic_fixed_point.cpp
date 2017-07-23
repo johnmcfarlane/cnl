@@ -5,69 +5,69 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests of sg14::elastic_fixed_point alias
+/// \brief tests of cnl::elastic_fixed_point alias
 
-#include <sg14/auxiliary/elastic_fixed_point.h>
+#include <cnl/auxiliary/elastic_fixed_point.h>
 #include "number_test.h"
 
 using std::is_same;
 
-using sg14::elastic_fixed_point;
-using namespace sg14::literals;
-using sg14::make_elastic_fixed_point;
+using cnl::elastic_fixed_point;
+using namespace cnl::literals;
+using cnl::make_elastic_fixed_point;
 
 ////////////////////////////////////////////////////////////////////////////////
-// fast tests of sg14::elastic_fixed_point<> at its limits;
+// fast tests of cnl::elastic_fixed_point<> at its limits;
 // if something broke it may show up here first
 
 namespace {
-    using sg14::_impl::fp::arithmetic::intermediate;
-    using sg14::_impl::fp::arithmetic::result;
-    using sg14::_impl::shift_left;
-    using sg14::_impl::fp::arithmetic::wide_tag;
-    using sg14::_impl::divide_op;
-    using sg14::_impl::multiply_op;
-    using sg14::digits;
-    using sg14::elastic_integer;
-    using sg14::is_signed;
-    using sg14::fixed_point;
-    using sg14::set_digits_t;
+    using cnl::_impl::fp::arithmetic::intermediate;
+    using cnl::_impl::fp::arithmetic::result;
+    using cnl::_impl::shift_left;
+    using cnl::_impl::fp::arithmetic::wide_tag;
+    using cnl::_impl::divide_op;
+    using cnl::_impl::multiply_op;
+    using cnl::digits;
+    using cnl::elastic_integer;
+    using cnl::is_signed;
+    using cnl::fixed_point;
+    using cnl::set_digits_t;
 
-    static_assert(shift_left<1, sg14::elastic_integer<31, int>>(0) == 0, "");
-    static_assert(shift_left<1, sg14::elastic_integer<32, unsigned>>(0) == 0u, "");
-    static_assert(shift_left<1, sg14::elastic_integer<63, int>>(0) == 0, "");
-    static_assert(shift_left<1, sg14::elastic_integer<64, unsigned>>(0) == 0u, "");
+    static_assert(shift_left<1, cnl::elastic_integer<31, int>>(0) == 0, "");
+    static_assert(shift_left<1, cnl::elastic_integer<32, unsigned>>(0) == 0u, "");
+    static_assert(shift_left<1, cnl::elastic_integer<63, int>>(0) == 0, "");
+    static_assert(shift_left<1, cnl::elastic_integer<64, unsigned>>(0) == 0u, "");
 
     static_assert(identical(
             result<wide_tag, divide_op, fixed_point<elastic_integer<15, int>, 0>, fixed_point<elastic_integer<15, int>, 0>>::type{0},
-            fixed_point<elastic_integer<30, int>, -15>{0}), "sg14::elastic_integer test failed");
+            fixed_point<elastic_integer<30, int>, -15>{0}), "cnl::elastic_integer test failed");
     static_assert(identical(
             result<wide_tag, divide_op, fixed_point<elastic_integer<16, unsigned>, 0>, fixed_point<elastic_integer<16, unsigned>, 0>>::type{0},
-            fixed_point<elastic_integer<32, unsigned>, -16>{0}), "sg14::elastic_integer test failed");
+            fixed_point<elastic_integer<32, unsigned>, -16>{0}), "cnl::elastic_integer test failed");
     static_assert(identical(
             result<wide_tag, divide_op, fixed_point<elastic_integer<31, int>, 0>, fixed_point<elastic_integer<31, int>, 0>>::type{0},
-            fixed_point<elastic_integer<62, int>, -31>{0}), "sg14::elastic_integer test failed");
+            fixed_point<elastic_integer<62, int>, -31>{0}), "cnl::elastic_integer test failed");
     static_assert(identical(
             result<wide_tag, divide_op, fixed_point<elastic_integer<32, unsigned>, 0>, fixed_point<elastic_integer<32, unsigned>, 0>>::type{0},
-            fixed_point<elastic_integer<64, unsigned>, -32>{0}), "sg14::elastic_integer test failed");
+            fixed_point<elastic_integer<64, unsigned>, -32>{0}), "cnl::elastic_integer test failed");
 
     static_assert(identical(
             intermediate<wide_tag, multiply_op, fixed_point<elastic_integer<27, unsigned int>, -27>, fixed_point<elastic_integer<27, unsigned int>, -27>>::lhs_type{0},
-            fixed_point<elastic_integer<27, unsigned int>, -27>{0}), "sg14::elastic_integer test failed");
+            fixed_point<elastic_integer<27, unsigned int>, -27>{0}), "cnl::elastic_integer test failed");
 
-    static_assert(digits<set_digits_t<elastic_integer<15, uint8_t>, 22>>::value == 22, "sg14::elastic_integer test failed");
+    static_assert(digits<set_digits_t<elastic_integer<15, uint8_t>, 22>>::value == 22, "cnl::elastic_integer test failed");
 
     static_assert(identical(
             set_digits_t<elastic_integer<15, uint8_t>, 22>{10000},
-            elastic_integer<22, uint8_t>{10000}), "sg14::elastic_integer test failed");
+            elastic_integer<22, uint8_t>{10000}), "cnl::elastic_integer test failed");
 
     static_assert(identical(
             elastic_fixed_point<2, 2>{1.5} << 1,
-            elastic_fixed_point<2, 2>{3}), "sg14::elastic_fixed_point test failed");
+            elastic_fixed_point<2, 2>{3}), "cnl::elastic_fixed_point test failed");
 
     static_assert(identical(
             elastic_fixed_point<2, 2>{1.5} >> 1,
-            elastic_fixed_point<2, 2>{0.75}), "sg14::elastic_fixed_point test failed");
+            elastic_fixed_point<2, 2>{0.75}), "cnl::elastic_fixed_point test failed");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -77,10 +77,10 @@ template<class T, bool IsSigned>
 struct test_traits {
     static_assert(std::numeric_limits<T>::is_signed==IsSigned,
                   "std::numeric_limits<T>::is_signed fails for give type, T");
-    static_assert(is_signed<sg14::make_signed_t<T>>::value,
-                  "sg14::make_signed failed std::numeric_limits test; please reboot");
-    static_assert(!is_signed<sg14::make_unsigned_t<T>>::value,
-                  "sg14::make_unsigned failed std::numeric_limits test; please reboot");
+    static_assert(is_signed<cnl::make_signed_t<T>>::value,
+                  "cnl::make_signed failed std::numeric_limits test; please reboot");
+    static_assert(!is_signed<cnl::make_unsigned_t<T>>::value,
+                  "cnl::make_unsigned failed std::numeric_limits test; please reboot");
 };
 
 template
@@ -136,8 +136,8 @@ struct print_num_as_error {
 }; //always overflow
 
 namespace test_elastic_constant_literal {
-    using namespace sg14::literals;
-    using sg14::_impl::identical;
+    using namespace cnl::literals;
+    using cnl::_impl::identical;
     static_assert(identical(0_elastic, elastic_fixed_point<1, 0>{0}), "");
 }
 
@@ -154,8 +154,8 @@ struct positive_elastic_test
     using rep = typename elastic_type::rep;
     using numeric_limits = std::numeric_limits<elastic_type>;
 
-    using signed_type = sg14::make_signed_t<elastic_type>;
-    using unsigned_type = sg14::make_unsigned_t<elastic_type>;
+    using signed_type = cnl::make_signed_t<elastic_type>;
+    using unsigned_type = cnl::make_unsigned_t<elastic_type>;
 
     ////////////////////////////////////////////////////////////////////////////////
     // useful constants
@@ -305,7 +305,7 @@ struct signed_elastic_test :
 
     // not much point testing negative value properties of unsigned type, eh?
     static_assert(std::numeric_limits<elastic_type>::is_signed, "subject of test class is not reported as signed");
-    static_assert(is_same<sg14::make_signed_t<elastic_type>, elastic_type>::value,
+    static_assert(is_same<cnl::make_signed_t<elastic_type>, elastic_type>::value,
                   "subject of test class is not reported as signed");
 
     ////////////////////////////////////////////////////////////////////////////////
