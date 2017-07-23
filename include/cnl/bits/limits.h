@@ -16,15 +16,15 @@
 #include <cstdint>
 #include <limits>
 
-// SG14_NUMERIC_LIMITS_128_PROVIDED defined if
+// CNL_NUMERIC_LIMITS_128_PROVIDED defined if
 // standard library specializes std::numeric_limits for 128-bit integer
 #if !defined(__clang__) && defined(__GNUG__) && (__cplusplus <= 201402L)
-#define SG14_NUMERIC_LIMITS_128_PROVIDED
-#elif defined(SG14_NUMERIC_LIMITS_128_PROVIDED)
-#error SG14_NUMERIC_LIMITS_128_PROVIDED already defined
+#define CNL_NUMERIC_LIMITS_128_PROVIDED
+#elif defined(CNL_NUMERIC_LIMITS_128_PROVIDED)
+#error CNL_NUMERIC_LIMITS_128_PROVIDED already defined
 #endif
 
-#if defined(CNL_INT128_ENABLED) && !defined(SG14_NUMERIC_LIMITS_128_PROVIDED)
+#if defined(CNL_INT128_ENABLED) && !defined(CNL_NUMERIC_LIMITS_128_PROVIDED)
 
 namespace std {
     template<>
