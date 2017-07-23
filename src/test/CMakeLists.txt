@@ -100,7 +100,7 @@ if(Boost_FOUND AND Boost_VERSION GREATER 106099)
             boost.simd
     )
 
-    set(BOOST_SIMD_FOUND_CXX_FLAGS "-DSG14_BOOST_SIMD_ENABLED")
+    set(BOOST_SIMD_FOUND_CXX_FLAGS "-DCNL_BOOST_SIMD_ENABLED")
 endif(Boost_FOUND AND Boost_VERSION GREATER 106099)
 
 ######################################################################
