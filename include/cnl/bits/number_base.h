@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(SG14_number_base_H)
-#define SG14_number_base_H 1
+#if !defined(CNL_NUMBER_BASE_H)
+#define CNL_NUMBER_BASE_H 1
 
 #include <cnl/auxiliary/const_integer.h>
 #include <cnl/bits/common.h>
@@ -415,4 +415,4 @@ namespace std {
     };
 }
 
-#endif  // SG14_NUMBER_BASE_H
+#endif  // CNL_NUMBER_BASE_H

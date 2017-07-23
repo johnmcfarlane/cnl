@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(SG14_PRECISE_INTEGER_H)
-#define SG14_PRECISE_INTEGER_H 1
+#if !defined(CNL_PRECISE_INTEGER_H)
+#define CNL_PRECISE_INTEGER_H 1
 
 #include <cnl/bits/number_base.h>
 #include <cnl/bits/limits.h>
@@ -151,4 +151,4 @@ namespace std {
             : numeric_limits<cnl::_impl::number_base<cnl::precise_integer<Rep, RoundingTag>, Rep>> {};
 }
 
-#endif
+#endif  // CNL_PRECISE_INTEGER_H

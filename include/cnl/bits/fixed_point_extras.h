@@ -9,8 +9,8 @@
 /// definitions that straddle two homes, e.g. fixed_point and cmath, traits or limits;
 /// included from cnl/fixed_point.h - do not include directly!
 
-#if !defined(SG14_FIXED_POINT_EXTRAS_H)
-#define SG14_FIXED_POINT_EXTRAS_H 1
+#if !defined(CNL_FIXED_POINT_EXTRAS_H)
+#define CNL_FIXED_POINT_EXTRAS_H 1
 
 #include "fixed_point_type.h"
 
@@ -273,4 +273,4 @@ namespace std {
     };
 }
 
-#endif	// SG14_FIXED_POINT_EXTRAS_H
+#endif  // CNL_FIXED_POINT_EXTRAS_H

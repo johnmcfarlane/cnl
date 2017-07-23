@@ -7,8 +7,8 @@
 /// \file
 /// \brief `cnl::fixed_point` operators
 
-#if !defined(SG14_FIXED_POINT_OPERATORS_H)
-#define SG14_FIXED_POINT_OPERATORS_H 1
+#if !defined(CNL_FIXED_POINT_OPERATORS_H)
+#define CNL_FIXED_POINT_OPERATORS_H 1
 
 #include "fixed_point_arithmetic.h"
 
@@ -313,4 +313,4 @@ namespace cnl {
     }
 }
 
-#endif	// SG14_FIXED_POINT_OPERATORS_H
+#endif  // CNL_FIXED_POINT_OPERATORS_H

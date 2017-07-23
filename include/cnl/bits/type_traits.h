@@ -7,8 +7,8 @@
 /// \file
 /// \brief trait definitions related to the `cnl::fixed_point` type
 
-#if !defined(SG14_TYPE_TRAITS_H)
-#define SG14_TYPE_TRAITS_H 1
+#if !defined(CNL_TYPE_TRAITS_H)
+#define CNL_TYPE_TRAITS_H 1
 
 #include <type_traits>
 
@@ -41,4 +41,4 @@ namespace cnl {
     }
 }
 
-#endif	// SG14_TYPE_TRAITS_H
+#endif  // CNL_TYPE_TRAITS_H

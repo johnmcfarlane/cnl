@@ -6,8 +6,8 @@
 
 // definitions that are directly required by more than one header of the API
 
-#if !defined(SG14_COMMON_H)
-#define SG14_COMMON_H 1
+#if !defined(CNL_COMMON_H)
+#define CNL_COMMON_H 1
 
 #include <utility>
 
@@ -193,4 +193,4 @@ namespace cnl {
     }
 }
 
-#endif  // SG14_COMMON_H
+#endif  // CNL_COMMON_H

@@ -7,8 +7,8 @@
 /// \file
 /// \brief definitions and specializations that adapt Boost.SIMD for use with @ref cnl::fixed_point
 
-#if !defined(SG14_BOOST_SIMD_H)
-#define SG14_BOOST_SIMD_H 1
+#if !defined(CNL_BOOST_SIMD_H)
+#define CNL_BOOST_SIMD_H 1
 
 #include <cnl/fixed_point.h>
 
@@ -42,4 +42,4 @@ namespace std {
     struct numeric_limits<boost::simd::pack<T, N>> : numeric_limits<T> {};
 }
 
-#endif // SG14_BOOST_SIMD_H
+#endif  // CNL_BOOST_SIMD_H

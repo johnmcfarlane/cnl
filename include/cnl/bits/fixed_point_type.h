@@ -7,8 +7,8 @@
 /// \file
 /// \brief definition of `cnl::fixed_point` type
 
-#if !defined(SG14_FIXED_POINT_DEF_H)
-#define SG14_FIXED_POINT_DEF_H 1
+#if !defined(CNL_FIXED_POINT_DEF_H)
+#define CNL_FIXED_POINT_DEF_H 1
 
 #include <cnl/auxiliary/const_integer.h>
 #include <cnl/bits/number_base.h>
@@ -379,4 +379,4 @@ namespace cnl {
     }
 }
 
-#endif	// SG14_FIXED_POINT_DEF_H
+#endif  // CNL_FIXED_POINT_DEF_H

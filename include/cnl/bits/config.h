@@ -4,8 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef SG14_CONFIG_H
-#define SG14_CONFIG_H
+#if !defined(CNL_CONFIG_H)
+#define CNL_CONFIG_H
 
 ////////////////////////////////////////////////////////////////////////////////
 // CNL_INT128_ENABLED macro definition
@@ -44,4 +44,4 @@ using CNL_UINT128 = unsigned __int128;
 #define CNL_EXCEPTIONS_ENABLED
 #endif
 
-#endif // SG14_CONFIG_H
+#endif  // CNL_CONFIG_H

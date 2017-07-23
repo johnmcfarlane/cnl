@@ -7,8 +7,8 @@
 /// \file
 /// \brief essential definitions related to the `cnl::elastic_integer` type
 
-#if !defined(SG14_ELASTIC_INTEGER_H)
-#define SG14_ELASTIC_INTEGER_H 1
+#if !defined(CNL_ELASTIC_INTEGER_H)
+#define CNL_ELASTIC_INTEGER_H 1
 
 #include <cnl/bits/number_base.h>
 
@@ -478,4 +478,4 @@ namespace std {
     };
 }
 
-#endif // SG14_ELASTIC_INTEGER_H
+#endif  // CNL_ELASTIC_INTEGER_H

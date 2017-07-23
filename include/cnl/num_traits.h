@@ -7,8 +7,8 @@
 /// \file
 /// \brief definitions supporting generic treatment of numeric types
 
-#if !defined(SG14_NUMERIC_TRAITS)
-#define SG14_NUMERIC_TRAITS 1
+#if !defined(CNL_NUMERIC_TRAITS)
+#define CNL_NUMERIC_TRAITS 1
 
 #include "bits/limits.h"
 #include "bits/type_traits.h"
@@ -452,4 +452,4 @@ namespace cnl {
     }
 }
 
-#endif    // SG14_NUMERIC_TRAITS
+#endif  // CNL_NUMERIC_TRAITS

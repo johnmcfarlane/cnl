@@ -7,8 +7,8 @@
 /// \file
 /// \brief essential definitions related to the overflow detection and handling
 
-#ifndef SG14_OVERFLOW_H
-#define SG14_OVERFLOW_H
+#if !defined(CNL_OVERFLOW_H)
+#define CNL_OVERFLOW_H
 
 #include <cnl/num_traits.h>
 #include <cnl/bits/common.h>
@@ -393,4 +393,4 @@ namespace cnl {
     }
 }
 
-#endif //SG14_OVERFLOW_H
+#endif  // CNL_OVERFLOW_H

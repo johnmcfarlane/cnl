@@ -7,8 +7,8 @@
 /// \file
 /// \brief essential definitions related to the `cnl::safe_integer` type
 
-#if !defined(SG14_SAFE_INTEGER_H)
-#define SG14_SAFE_INTEGER_H 1
+#if !defined(CNL_SAFE_INTEGER_H)
+#define CNL_SAFE_INTEGER_H 1
 
 #include <cnl/bits/number_base.h>
 #include <cnl/fixed_point.h>
@@ -329,4 +329,4 @@ namespace std {
     : numeric_limits<cnl::_impl::number_base<cnl::safe_integer<Rep, OverflowTag>, Rep>> {};
 }
 
-#endif	// SG14_SAFE_INTEGER_H
+#endif  // CNL_SAFE_INTEGER_H

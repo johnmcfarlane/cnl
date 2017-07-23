@@ -7,8 +7,8 @@
 /// \file
 /// \brief functions that might belong in the <numeric> header
 
-#ifndef SG14_NUMERIC_H
-#define SG14_NUMERIC_H
+#if !defined(CNL_NUMERIC_H)
+#define CNL_NUMERIC_H
 
 #include <cnl/num_traits.h>
 
@@ -146,4 +146,4 @@ namespace cnl {
     }
 }
 
-#endif  // SG14_NUMERIC_H
+#endif  // CNL_NUMERIC_H

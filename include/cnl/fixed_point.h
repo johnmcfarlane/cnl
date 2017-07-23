@@ -7,8 +7,8 @@
 /// \file
 /// \brief all definitions related to the `cnl::fixed_point` type
 
-#if !defined(SG14_FIXED_POINT_H)
-#define SG14_FIXED_POINT_H 1
+#if !defined(CNL_FIXED_POINT_H)
+#define CNL_FIXED_POINT_H 1
 
 #include "bits/fixed_point_type.h"
 #include "bits/fixed_point_make.h"
@@ -17,4 +17,4 @@
 #include "bits/fixed_point_operators.h"
 #include "bits/fixed_point_extras.h"
 
-#endif	// SG14_FIXED_POINT_H
+#endif  // CNL_FIXED_POINT_H

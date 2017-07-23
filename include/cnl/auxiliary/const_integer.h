@@ -7,8 +7,8 @@
 /// \file
 /// \brief essential definitions related to the `cnl::const_integer` type
 
-#if !defined(SG14_CONST_INTEGER_H)
-#define SG14_CONST_INTEGER_H 1
+#if !defined(CNL_CONST_INTEGER_H)
+#define CNL_CONST_INTEGER_H 1
 
 #include <cnl/auxiliary/numeric.h>
 #include <cnl/bits/common.h>
@@ -307,4 +307,4 @@ namespace std {
     };
 }
 
-#endif // SG14_CONST_INTEGER_H
+#endif  // CNL_CONST_INTEGER_H

@@ -7,8 +7,8 @@
 /// \file
 /// \brief definitions and specializations that adapt Boost.Multiprecision for use with @ref cnl::fixed_point
 
-#if !defined(SG14_BOOST_MULTIPRECISION_H)
-#define SG14_BOOST_MULTIPRECISION_H 1
+#if !defined(CNL_BOOST_MULTIPRECISION_H)
+#define CNL_BOOST_MULTIPRECISION_H 1
 
 #include <cnl/num_traits.h>
 
@@ -89,4 +89,4 @@ namespace cnl {
     using multiprecision = signed_multiprecision<NumDigits+1>;
 }
 
-#endif // SG14_BOOST_MULTIPRECISION_H
+#endif  // CNL_BOOST_MULTIPRECISION_H

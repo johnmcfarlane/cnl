@@ -7,8 +7,8 @@
 /// \file
 /// \brief definitions of `cnl::make_fixed` and `cnl::make_ufixed`
 
-#if !defined(SG14_MAKE_FIXED_H)
-#define SG14_MAKE_FIXED_H 1
+#if !defined(CNL_MAKE_FIXED_H)
+#define CNL_MAKE_FIXED_H 1
 
 #include "fixed_point_type.h"
 
@@ -51,4 +51,4 @@ namespace cnl {
             typename make_unsigned<Narrowest>::type>;
 }
 
-#endif	// SG14_MAKE_FIXED_H
+#endif  // CNL_MAKE_FIXED_H

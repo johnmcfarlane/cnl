@@ -7,8 +7,8 @@
 /// \file
 /// \brief essential definitions related to `cnl::fixed_point` arithmetic
 
-#if !defined(SG14_FIXED_POINT_ARITHMETIC_H)
-#define SG14_FIXED_POINT_ARITHMETIC_H 1
+#if !defined(CNL_FIXED_POINT_ARITHMETIC_H)
+#define CNL_FIXED_POINT_ARITHMETIC_H 1
 
 #include "common.h"
 
@@ -303,4 +303,4 @@ namespace cnl {
     }
 }
 
-#endif	// SG14_FIXED_POINT_ARITHMETIC_H
+#endif  // CNL_FIXED_POINT_ARITHMETIC_H

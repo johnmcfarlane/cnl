@@ -7,8 +7,8 @@
 /// \file
 /// \brief specialization of `std::numeric_limits` for 128-bit integer types
 
-#if !defined(SG14_LIMITS_H)
-#define SG14_LIMITS_H 1
+#if !defined(CNL_LIMITS_H)
+#define CNL_LIMITS_H 1
 
 #include "config.h"
 
@@ -84,4 +84,4 @@ namespace std {
 
 #endif  // CNL_INT128_ENABLED
 
-#endif	// SG14_LIMITS_H
+#endif  // CNL_LIMITS_H

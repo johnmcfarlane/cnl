@@ -7,8 +7,8 @@
 /// \file
 /// \brief essential named definitions related to the `cnl::fixed_point` type
 
-#if !defined(SG14_FIXED_POINT_NAMED_H)
-#define SG14_FIXED_POINT_NAMED_H 1
+#if !defined(CNL_FIXED_POINT_NAMED_H)
+#define CNL_FIXED_POINT_NAMED_H 1
 
 #include "common.h"
 
@@ -114,4 +114,4 @@ namespace cnl {
     }
 }
 
-#endif	// SG14_FIXED_POINT_NAMED_H
+#endif  // CNL_FIXED_POINT_NAMED_H
