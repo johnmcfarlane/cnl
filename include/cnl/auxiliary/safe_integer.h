@@ -19,7 +19,7 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // macros
 
-#define SG14_INTEGER_BIT_SHIFT_DEFINE(OP) \
+#define CNL_INTEGER_BIT_SHIFT_DEFINE(OP) \
     template <class LhsRep, class LhsOverflowTag, class RhsRep, class RhsOverflowTag> \
     constexpr auto operator OP (const safe_integer<LhsRep, LhsOverflowTag>& lhs, const safe_integer<RhsRep, RhsOverflowTag>& rhs) \
     -> safe_integer<LhsRep, LhsOverflowTag> { \
@@ -255,9 +255,9 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // binary bit-wise
 
-    SG14_INTEGER_BIT_SHIFT_DEFINE(>>);
+    CNL_INTEGER_BIT_SHIFT_DEFINE(>>);
 
-    SG14_INTEGER_BIT_SHIFT_DEFINE(<<);
+    CNL_INTEGER_BIT_SHIFT_DEFINE(<<);
 }
 
 namespace std {
