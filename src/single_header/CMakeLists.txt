@@ -6,7 +6,7 @@ endif ()
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     # add a target to generate preprocessor output
     string(REPLACE " " ";" COMMON_CXX_FLAGS_LIST ${COMMON_CXX_FLAGS})
-    set(SINGLE_HEADER_OUTPUT ${CMAKE_CURRENT_LIST_DIR}/fixed_point.h)
+    set(SINGLE_HEADER_OUTPUT cnl_complete.h)
     set(FLAGS "-E" "-I${CMAKE_CURRENT_LIST_DIR}/../../include" "-std=c++11" "-DSG14_DISABLE_GCC_BUILTINS")
     add_custom_target(single_header
             ALL
