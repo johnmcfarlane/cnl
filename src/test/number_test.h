@@ -170,8 +170,8 @@ struct number_test_suite
 template<template<class> class NumericType, template<class> class TypeSpecificTestSuite = std::is_integral>
 struct number_test_by_rep
         : number_test_suite<NumericType<char>, TypeSpecificTestSuite>,
-#if defined(SG14_INT128)
-        number_test_suite<NumericType<SG14_INT128>, TypeSpecificTestSuite>,
+#if defined(CNL_INT128)
+        number_test_suite<NumericType<CNL_INT128>, TypeSpecificTestSuite>,
           number_test_suite<NumericType<SG14_UINT128>, TypeSpecificTestSuite>,
 #endif
           number_test_suite<NumericType<std::int8_t>, TypeSpecificTestSuite>,

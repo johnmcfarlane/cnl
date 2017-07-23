@@ -49,7 +49,7 @@ static_assert(abs(make_ufixed<8, 8>(5))==5, "cnl::abs test failed");
 ////////////////////////////////////////////////////////////////////////////////
 // std specializations for 128-bit integer facilitate certain 64-bit operations
 
-#if defined(SG14_INT128_ENABLE)
+#if defined(CNL_INT128_ENABLE)
 static_assert((make_ufixed<56, 8>(1003006)*make_ufixed<56, 8>(7))==7021042, "cnl::fixed_point test failed");
 static_assert(static_cast<int>((fixed_point<uint64_t, -8>(65535)/fixed_point<uint64_t, -8>(256)))==255,
         "cnl::fixed_point test failed");

@@ -21,7 +21,7 @@ template struct number_test<std::uint32_t>;
 template struct number_test<std::int64_t>;
 template struct number_test<std::uint64_t>;
 
-#if defined(SG14_INT128)
-template struct number_test<SG14_INT128>;
+#if defined(CNL_INT128)
+template struct number_test<CNL_INT128>;
 template struct number_test<SG14_UINT128>;
 #endif

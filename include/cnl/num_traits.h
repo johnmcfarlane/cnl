@@ -100,8 +100,8 @@ namespace cnl {
 
 #if defined(CNL_INT128_ENABLED)
         template<_digits_type MinNumDigits>
-        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, std::int64_t, SG14_INT128>> {
-            using type = SG14_INT128;
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, std::int64_t, CNL_INT128>> {
+            using type = CNL_INT128;
         };
 #endif
 
@@ -173,7 +173,7 @@ namespace cnl {
 
 #if defined(CNL_INT128_ENABLED)
     template<_digits_type Digits>
-    struct set_digits<SG14_INT128, Digits>
+    struct set_digits<CNL_INT128, Digits>
             : _num_traits_impl::set_digits_integer<signed, Digits> {
     };
 
@@ -219,7 +219,7 @@ namespace cnl {
 #if defined(CNL_INT128_ENABLED)
     // TODO: cnl::is_integral
     template<>
-    struct make_unsigned<SG14_INT128> {
+    struct make_unsigned<CNL_INT128> {
         using type = SG14_UINT128;
     };
     template<>
@@ -228,12 +228,12 @@ namespace cnl {
     };
 
     template<>
-    struct make_signed<SG14_INT128> {
-        using type = SG14_INT128;
+    struct make_signed<CNL_INT128> {
+        using type = CNL_INT128;
     };
     template<>
     struct make_signed<SG14_UINT128> {
-        using type = SG14_INT128;
+        using type = CNL_INT128;
     };
 #endif
 

@@ -19,7 +19,7 @@
 // GCC/Clang 64-bit builds support 128-bit integer through __int128 type
 #if defined(__SIZEOF_INT128__)
 #define CNL_INT128_ENABLED
-using SG14_INT128 = __int128;
+using CNL_INT128 = __int128;
 using SG14_UINT128 = unsigned __int128;
 #endif
 
