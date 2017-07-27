@@ -111,7 +111,7 @@ struct test_traits<std::int64_t, true>;
 // useful functions
 
 template<typename T>
-constexpr int bit_count(const T& n)
+constexpr int bit_count(T const& n)
 {
     return n ? 1+bit_count(n & (n-1)) : 0;
 }

@@ -177,7 +177,7 @@ TEST(fixed_point_multiprecision, divide)
 
 #if defined(BOOST_NO_EXCEPTIONS)
 namespace boost {
-    void throw_exception(std::exception const &) {
+    void throw_exception(std::exception const&) {
         std::terminate();
     }
 }

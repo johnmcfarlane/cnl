@@ -109,21 +109,21 @@ namespace cnl {
 
         /// constructor taking a fixed-point type
         template<class FromRep, int FromExponent>
-        constexpr fixed_point(const fixed_point<FromRep, FromExponent>& rhs)
+        constexpr fixed_point(fixed_point<FromRep, FromExponent> const& rhs)
                 : _base(fixed_point_to_rep(rhs))
         {
         }
 
         /// constructor taking an integral_constant type
         template<class Integral, Integral Constant>
-        constexpr fixed_point(const std::integral_constant<Integral, Constant>&)
+        constexpr fixed_point(std::integral_constant<Integral, Constant> const&)
                 : fixed_point(fixed_point<Integral, 0>::from_data(Constant))
         {
         }
 
         /// constructor taking an integer type
         template<class S, _impl::enable_if_t<std::numeric_limits<S>::is_integer, int> Dummy = 0>
-        constexpr fixed_point(const S& s)
+        constexpr fixed_point(S const& s)
             : fixed_point(fixed_point<S, 0>::from_data(s))
         {
         }
@@ -159,7 +159,7 @@ namespace cnl {
 
         /// copy assignement operator taking a fixed-point type
         template<class FromRep, int FromExponent>
-        fixed_point& operator=(const fixed_point<FromRep, FromExponent>& rhs)
+        fixed_point& operator=(fixed_point<FromRep, FromExponent> const& rhs)
         {
             _base::operator=(fixed_point_to_rep(rhs));
             return *this;
@@ -187,7 +187,7 @@ namespace cnl {
         }
 
         /// creates an instance given the underlying representation value
-        static constexpr fixed_point from_data(rep const & r)
+        static constexpr fixed_point from_data(rep const& r)
         {
             return fixed_point(r, 0);
         }
@@ -212,7 +212,7 @@ namespace cnl {
         static constexpr S rep_to_floating_point(rep r);
 
         template<class FromRep, int FromExponent>
-        static constexpr rep fixed_point_to_rep(const fixed_point<FromRep, FromExponent>& rhs);
+        static constexpr rep fixed_point_to_rep(fixed_point<FromRep, FromExponent> const& rhs);
     };
 
     /// value of template parameter, \a Exponent
@@ -373,7 +373,7 @@ namespace cnl {
 
     template<class Rep, int Exponent>
     template<class FromRep, int FromExponent>
-    constexpr typename fixed_point<Rep, Exponent>::rep fixed_point<Rep, Exponent>::fixed_point_to_rep(const fixed_point<FromRep, FromExponent>& rhs)
+    constexpr typename fixed_point<Rep, Exponent>::rep fixed_point<Rep, Exponent>::fixed_point_to_rep(fixed_point<FromRep, FromExponent> const& rhs)
     {
         return _impl::shift_left<FromExponent-exponent, rep>(rhs.data());
     }

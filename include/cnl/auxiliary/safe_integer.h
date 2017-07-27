@@ -21,17 +21,17 @@ namespace cnl {
 
 #define CNL_INTEGER_BIT_SHIFT_DEFINE(OP) \
     template <class LhsRep, class LhsOverflowTag, class RhsRep, class RhsOverflowTag> \
-    constexpr auto operator OP (const safe_integer<LhsRep, LhsOverflowTag>& lhs, const safe_integer<RhsRep, RhsOverflowTag>& rhs) \
+    constexpr auto operator OP (safe_integer<LhsRep, LhsOverflowTag> const& lhs, safe_integer<RhsRep, RhsOverflowTag> const& rhs) \
     -> safe_integer<LhsRep, LhsOverflowTag> { \
         return lhs.data() OP rhs.data(); } \
     \
     template <class Lhs, class RhsRep, class RhsOverflowTag, _impl::enable_if_t<std::is_fundamental<Lhs>::value, int> dummy = 0> \
-    constexpr auto operator OP (const Lhs& lhs, const safe_integer<RhsRep, RhsOverflowTag>& rhs) \
+    constexpr auto operator OP (Lhs const& lhs, safe_integer<RhsRep, RhsOverflowTag> const& rhs) \
     -> Lhs { \
         return lhs OP rhs.data(); } \
     \
     template <class LhsRep, class LhsOverflowTag, class Rhs, _impl::enable_if_t<std::is_fundamental<Rhs>::value, int> dummy = 0> \
-    constexpr auto operator OP (const safe_integer<LhsRep, LhsOverflowTag>& lhs, const Rhs& rhs) \
+    constexpr auto operator OP (safe_integer<LhsRep, LhsOverflowTag> const& lhs, Rhs const& rhs) \
     -> safe_integer<LhsRep, LhsOverflowTag> { \
         return safe_integer<LhsRep, LhsOverflowTag>(lhs.data() OP rhs); }
 
@@ -129,13 +129,13 @@ namespace cnl {
         constexpr safe_integer() = delete;
 
         template<class RhsRep, class RhsOverflowTag>
-        constexpr safe_integer(const safe_integer<RhsRep, RhsOverflowTag>& rhs)
+        constexpr safe_integer(safe_integer<RhsRep, RhsOverflowTag> const& rhs)
                 :safe_integer(rhs.data())
         {
         }
 
         template<class Rhs, _impl::enable_if_t<!_integer_impl::is_safe_integer<Rhs>::value, int> dummy = 0>
-        constexpr safe_integer(const Rhs& rhs)
+        constexpr safe_integer(Rhs const& rhs)
                 :_base(convert<rep>(overflow_tag{}, rhs))
         {
         }
@@ -191,7 +191,7 @@ namespace cnl {
     template<class Rep, class OverflowTag>
     struct scale<safe_integer<Rep, OverflowTag>> {
         using value_type = safe_integer<Rep, OverflowTag>;
-        constexpr auto operator()(const value_type &i, int base, int exp) const
+        constexpr auto operator()(value_type const& i, int base, int exp) const
         -> decltype(_impl::to_rep(i) * _num_traits_impl::pow<value_type>(base, exp)) {
             return (exp < 0)
                    ? _impl::to_rep(i) / _num_traits_impl::pow<value_type>(base, -exp)
@@ -221,8 +221,8 @@ namespace cnl {
         constexpr auto operate_common_tag(
                 OverflowTag,
                 OperatorTag,
-                const safe_integer<LhsRep, OverflowTag>& lhs,
-                const safe_integer<RhsRep, OverflowTag>& rhs)
+                safe_integer<LhsRep, OverflowTag> const& lhs,
+                safe_integer<RhsRep, OverflowTag> const& rhs)
         -> decltype(make_safe_integer<OverflowTag>(_overflow_impl::operate<OverflowTag, OperatorTag>()(lhs.data(), rhs.data())))
         {
             return make_safe_integer<OverflowTag>(_overflow_impl::operate<OverflowTag, OperatorTag>()(lhs.data(), rhs.data()));
@@ -233,8 +233,8 @@ namespace cnl {
         constexpr auto operate_common_tag(
                 OverflowTag,
                 OperatorTag,
-                const safe_integer<LhsRep, OverflowTag>& lhs,
-                const safe_integer<RhsRep, OverflowTag>& rhs)
+                safe_integer<LhsRep, OverflowTag> const& lhs,
+                safe_integer<RhsRep, OverflowTag> const& rhs)
         -> decltype(_overflow_impl::operate<OverflowTag, OperatorTag>()(lhs.data(), rhs.data()))
         {
             return _overflow_impl::operate<OverflowTag, OperatorTag>()(lhs.data(), rhs.data());

@@ -334,7 +334,7 @@ namespace cnl {
 
     template<class Number, class Enable = void>
     struct to_rep {
-        constexpr Number operator()(const Number &number) const {
+        constexpr Number operator()(Number const& number) const {
             // by default, the rep type of a number type is the number type itself
             return number;
         }
@@ -342,7 +342,7 @@ namespace cnl {
 
     namespace _impl {
         template<class Number, class Enable = void>
-        constexpr auto to_rep(const Number &number)
+        constexpr auto to_rep(Number const& number)
         -> decltype(cnl::to_rep<Number>()(number)) {
             return cnl::to_rep<Number>()(number);
         }
@@ -354,7 +354,7 @@ namespace cnl {
     template<class Number, class Enable = void>
     struct from_rep {
         template<class Rep>
-        constexpr Number operator()(const Rep &rep) const {
+        constexpr Number operator()(Rep const& rep) const {
             // by default, a number type's rep type is the number type itself
             return static_cast<Number>(rep);
         }
@@ -362,7 +362,7 @@ namespace cnl {
 
     namespace _impl {
         template<class Number, class Rep>
-        constexpr auto from_rep(const Rep &rep)
+        constexpr auto from_rep(Rep const& rep)
         -> decltype(cnl::from_rep<Number>()(rep)) {
             return cnl::from_rep<Number>()(rep);
         }
@@ -401,7 +401,7 @@ namespace cnl {
 
     namespace _impl {
         template<class Number, class Value>
-        constexpr auto from_value(const Value &value)
+        constexpr auto from_value(Value const& value)
         -> cnl::from_value_t<Number, Value> {
             return value;
         }
@@ -434,7 +434,7 @@ namespace cnl {
 
     template<class T>
     struct scale {
-        constexpr auto operator()(const T &i, int base, int exp) const
+        constexpr auto operator()(T const& i, int base, int exp) const
         -> _num_traits_impl::scale_result_type<T> {
             return _impl::from_rep<_num_traits_impl::scale_result_type<T>>(
                     (exp < 0)
@@ -445,7 +445,7 @@ namespace cnl {
     
     namespace _impl {
         template<class T>
-        constexpr auto scale(const T &i, int base, int exp)
+        constexpr auto scale(T const& i, int base, int exp)
         -> decltype(cnl::scale<T>()(i, base, exp)) {
             return cnl::scale<T>()(i, base, exp);
         }

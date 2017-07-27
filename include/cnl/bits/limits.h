@@ -29,8 +29,8 @@
 namespace std {
     template<>
     struct numeric_limits<CNL_INT128> : numeric_limits<long long> {
-        static const int digits = CHAR_BIT*sizeof(CNL_INT128)-1;
-        static const int digits10 = 38;
+        static int const digits = CHAR_BIT*sizeof(CNL_INT128)-1;
+        static int const digits10 = 38;
 
         struct _s {
             constexpr _s(uint64_t upper, uint64_t lower) : value(lower + (CNL_INT128{upper} << 64)) {}
@@ -56,8 +56,8 @@ namespace std {
 
     template<>
     struct numeric_limits<CNL_UINT128> : numeric_limits<unsigned long long> {
-        static const int digits = CHAR_BIT*sizeof(CNL_INT128);
-        static const int digits10 = 38;
+        static int const digits = CHAR_BIT*sizeof(CNL_INT128);
+        static int const digits10 = 38;
 
         struct _s {
             constexpr _s(uint64_t upper, uint64_t lower) : value(lower + (CNL_UINT128{upper} << 64)) {}
