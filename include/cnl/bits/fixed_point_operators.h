@@ -20,7 +20,7 @@ namespace cnl {
 
     // negate
     template<class RhsRep, int RhsExponent>
-    constexpr auto operator-(const fixed_point<RhsRep, RhsExponent>& rhs)
+    constexpr auto operator-(fixed_point<RhsRep, RhsExponent> const& rhs)
     -> fixed_point<decltype(-rhs.data()), RhsExponent>
     {
         using result_type = fixed_point<decltype(-rhs.data()), RhsExponent>;
@@ -32,8 +32,8 @@ namespace cnl {
             class LhsRep, int LhsExponent,
             class RhsRep, int RhsExponent>
     constexpr auto operator+(
-            const fixed_point<LhsRep, LhsExponent>& lhs,
-            const fixed_point<RhsRep, RhsExponent>& rhs)
+            fixed_point<LhsRep, LhsExponent> const& lhs,
+            fixed_point<RhsRep, RhsExponent> const& rhs)
     -> decltype(_impl::fp::operate<_impl::fp::arithmetic_operator_tag>(lhs, rhs, _impl::add_tag))
     {
         return _impl::fp::operate<_impl::fp::arithmetic_operator_tag>(lhs, rhs, _impl::add_tag);
@@ -44,8 +44,8 @@ namespace cnl {
             class LhsRep, int LhsExponent,
             class RhsRep, int RhsExponent>
     constexpr auto operator-(
-            const fixed_point<LhsRep, LhsExponent>& lhs,
-            const fixed_point<RhsRep, RhsExponent>& rhs)
+            fixed_point<LhsRep, LhsExponent> const& lhs,
+            fixed_point<RhsRep, RhsExponent> const& rhs)
     -> decltype(_impl::fp::operate<_impl::fp::arithmetic_operator_tag>(lhs, rhs, _impl::subtract_tag))
     {
         return _impl::fp::operate<_impl::fp::arithmetic_operator_tag>(lhs, rhs, _impl::subtract_tag);
@@ -56,8 +56,8 @@ namespace cnl {
             class LhsRep, int LhsExponent,
             class RhsRep, int RhsExponent>
     constexpr auto operator*(
-            const fixed_point<LhsRep, LhsExponent>& lhs,
-            const fixed_point<RhsRep, RhsExponent>& rhs)
+            fixed_point<LhsRep, LhsExponent> const& lhs,
+            fixed_point<RhsRep, RhsExponent> const& rhs)
     -> decltype(_impl::fp::operate<_impl::fp::arithmetic_operator_tag>(lhs, rhs, _impl::multiply_tag))
     {
         return _impl::fp::operate<_impl::fp::arithmetic_operator_tag>(lhs, rhs, _impl::multiply_tag);
@@ -66,8 +66,8 @@ namespace cnl {
     // divide
     template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
     constexpr auto operator/(
-            const fixed_point<LhsRep, LhsExponent>& lhs,
-            const fixed_point<RhsRep, RhsExponent>& rhs)
+            fixed_point<LhsRep, LhsExponent> const& lhs,
+            fixed_point<RhsRep, RhsExponent> const& rhs)
     -> decltype(_impl::fp::operate<_impl::fp::division_arithmetic_operator_tag>(lhs, rhs, _impl::divide_tag))
     {
         return _impl::fp::operate<_impl::fp::division_arithmetic_operator_tag>(lhs, rhs, _impl::divide_tag);
@@ -90,14 +90,14 @@ namespace cnl {
         template<
                 class Operator, class Lhs, class Rhs,
                 class = _impl::enable_if_t<Operator::is_comparison && cnl::_fixed_point_operators_impl::is_heterogeneous<Lhs, Rhs>()>>
-        constexpr auto operate(const Lhs& lhs, const Rhs& rhs, Operator op)
+        constexpr auto operate(Lhs const& lhs, Rhs const& rhs, Operator op)
         -> decltype(op(static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs), static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs)))
         {
             return op(static_cast<_impl::common_type_t<Lhs, Rhs>>(lhs), static_cast<_impl::common_type_t<Lhs, Rhs>>(rhs));
         };
 
         template<class Operator, class Rep, int Exponent, class = _impl::enable_if_t<Operator::is_comparison>>
-        constexpr auto operate(const fixed_point<Rep, Exponent>& lhs, const fixed_point<Rep, Exponent>& rhs, Operator op)
+        constexpr auto operate(fixed_point<Rep, Exponent> const& lhs, fixed_point<Rep, Exponent> const& rhs, Operator op)
         -> decltype(op(lhs.data(), rhs.data()))
         {
             return op(lhs.data(), rhs.data());
@@ -112,7 +112,7 @@ namespace cnl {
             class LhsRep, int LhsExponent,
             class RhsInteger,
             typename = _impl::enable_if_t<std::numeric_limits<RhsInteger>::is_integer>>
-    constexpr auto operator+(const fixed_point<LhsRep, LhsExponent>& lhs, const RhsInteger& rhs)
+    constexpr auto operator+(fixed_point<LhsRep, LhsExponent> const& lhs, RhsInteger const& rhs)
     -> decltype(lhs + fixed_point<RhsInteger, 0>{rhs})
     {
         return lhs + fixed_point<RhsInteger, 0>{rhs};
@@ -122,7 +122,7 @@ namespace cnl {
             class LhsRep, int LhsExponent,
             class RhsInteger,
             typename = _impl::enable_if_t<std::numeric_limits<RhsInteger>::is_integer>>
-    constexpr auto operator-(const fixed_point<LhsRep, LhsExponent>& lhs, const RhsInteger& rhs)
+    constexpr auto operator-(fixed_point<LhsRep, LhsExponent> const& lhs, RhsInteger const& rhs)
     -> decltype(lhs - fixed_point<RhsInteger, 0>{rhs})
     {
         return lhs - fixed_point<RhsInteger, 0>{rhs};
@@ -132,7 +132,7 @@ namespace cnl {
             class LhsRep, int LhsExponent,
             class RhsInteger,
             typename = _impl::enable_if_t<std::numeric_limits<RhsInteger>::is_integer>>
-    constexpr auto operator*(const fixed_point<LhsRep, LhsExponent>& lhs, const RhsInteger& rhs)
+    constexpr auto operator*(fixed_point<LhsRep, LhsExponent> const& lhs, RhsInteger const& rhs)
     -> decltype(lhs*fixed_point<RhsInteger>(rhs))
     {
         return lhs*fixed_point<RhsInteger>(rhs);
@@ -142,7 +142,7 @@ namespace cnl {
             class LhsRep, int LhsExponent,
             class RhsInteger,
             typename = _impl::enable_if_t<std::numeric_limits<RhsInteger>::is_integer>>
-    constexpr auto operator/(const fixed_point<LhsRep, LhsExponent>& lhs, const RhsInteger& rhs)
+    constexpr auto operator/(fixed_point<LhsRep, LhsExponent> const& lhs, RhsInteger const& rhs)
     -> decltype(lhs/fixed_point<RhsInteger>{rhs})
     {
         return lhs/fixed_point<RhsInteger>{rhs};
@@ -153,7 +153,7 @@ namespace cnl {
             class LhsInteger,
             class RhsRep, int RhsExponent,
             typename = _impl::enable_if_t<std::numeric_limits<LhsInteger>::is_integer>>
-    constexpr auto operator+(const LhsInteger& lhs, const fixed_point<RhsRep, RhsExponent>& rhs)
+    constexpr auto operator+(LhsInteger const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
     -> decltype(fixed_point<LhsInteger, 0>{lhs} + rhs)
     {
         return fixed_point<LhsInteger, 0>{lhs} + rhs;
@@ -163,7 +163,7 @@ namespace cnl {
             class LhsInteger,
             class RhsRep, int RhsExponent,
             typename = _impl::enable_if_t<std::numeric_limits<LhsInteger>::is_integer>>
-    constexpr auto operator-(const LhsInteger& lhs, const fixed_point<RhsRep, RhsExponent>& rhs)
+    constexpr auto operator-(LhsInteger const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
     -> decltype(fixed_point<LhsInteger>{lhs}-rhs)
     {
         return fixed_point<LhsInteger>{lhs}-rhs;
@@ -173,7 +173,7 @@ namespace cnl {
             class LhsInteger,
             class RhsRep, int RhsExponent,
             typename = _impl::enable_if_t<std::numeric_limits<LhsInteger>::is_integer>>
-    constexpr auto operator*(const LhsInteger& lhs, const fixed_point<RhsRep, RhsExponent>& rhs)
+    constexpr auto operator*(LhsInteger const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
     -> decltype(fixed_point<LhsInteger>{lhs}*rhs)
     {
         return fixed_point<LhsInteger>{lhs}*rhs;
@@ -183,7 +183,7 @@ namespace cnl {
             class LhsInteger,
             class RhsRep, int RhsExponent,
             typename = _impl::enable_if_t<std::numeric_limits<LhsInteger>::is_integer>>
-    constexpr auto operator/(const LhsInteger& lhs, const fixed_point<RhsRep, RhsExponent>& rhs)
+    constexpr auto operator/(LhsInteger const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
     -> decltype(fixed_point<LhsInteger>{lhs}/rhs)
     {
         return fixed_point<LhsInteger>{lhs}/rhs;
@@ -191,14 +191,14 @@ namespace cnl {
 
     // fixed-point, floating-point -> floating-point
     template<class LhsRep, int LhsExponent, class RhsFloat, typename = _impl::enable_if_t<std::is_floating_point<RhsFloat>::value>>
-    constexpr auto operator+(const fixed_point<LhsRep, LhsExponent>& lhs, const RhsFloat& rhs)-> _impl::common_type_t<fixed_point<LhsRep, LhsExponent>, RhsFloat>
+    constexpr auto operator+(fixed_point<LhsRep, LhsExponent> const& lhs, RhsFloat const& rhs)-> _impl::common_type_t<fixed_point<LhsRep, LhsExponent>, RhsFloat>
     {
         using result_type = _impl::common_type_t<fixed_point<LhsRep, LhsExponent>, RhsFloat>;
         return static_cast<result_type>(lhs)+static_cast<result_type>(rhs);
     }
 
     template<class LhsRep, int LhsExponent, class RhsFloat, typename = _impl::enable_if_t <std::is_floating_point<RhsFloat>::value>>
-    constexpr auto operator-(const fixed_point<LhsRep, LhsExponent>& lhs, const RhsFloat& rhs)-> _impl::common_type_t<fixed_point<LhsRep, LhsExponent>, RhsFloat>
+    constexpr auto operator-(fixed_point<LhsRep, LhsExponent> const& lhs, RhsFloat const& rhs)-> _impl::common_type_t<fixed_point<LhsRep, LhsExponent>, RhsFloat>
     {
         using result_type = _impl::common_type_t<fixed_point<LhsRep, LhsExponent>, RhsFloat>;
         return static_cast<result_type>(lhs)-static_cast<result_type>(rhs);
@@ -206,8 +206,8 @@ namespace cnl {
 
     template<class LhsRep, int LhsExponent, class RhsFloat>
     constexpr auto operator*(
-            const fixed_point<LhsRep, LhsExponent>& lhs,
-            const RhsFloat& rhs)
+            fixed_point<LhsRep, LhsExponent> const& lhs,
+            RhsFloat const& rhs)
     -> _impl::common_type_t<
             fixed_point<LhsRep, LhsExponent>,
             _impl::enable_if_t<std::is_floating_point<RhsFloat>::value, RhsFloat>>
@@ -218,8 +218,8 @@ namespace cnl {
 
     template<class LhsRep, int LhsExponent, class RhsFloat>
     constexpr auto operator/(
-            const fixed_point<LhsRep, LhsExponent>& lhs,
-            const RhsFloat& rhs)
+            fixed_point<LhsRep, LhsExponent> const& lhs,
+            RhsFloat const& rhs)
     -> _impl::common_type_t<
             fixed_point<LhsRep, LhsExponent>,
             _impl::enable_if_t<std::is_floating_point<RhsFloat>::value, RhsFloat>>
@@ -230,14 +230,14 @@ namespace cnl {
 
     // floating-point, fixed-point -> floating-point
     template<class LhsFloat, class RhsRep, int RhsExponent, typename = _impl::enable_if_t <std::is_floating_point<LhsFloat>::value>>
-    constexpr auto operator+(const LhsFloat& lhs, const fixed_point<RhsRep, RhsExponent>& rhs)-> _impl::common_type_t<LhsFloat, fixed_point<RhsRep, RhsExponent>>
+    constexpr auto operator+(LhsFloat const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)-> _impl::common_type_t<LhsFloat, fixed_point<RhsRep, RhsExponent>>
     {
         using result_type = _impl::common_type_t<LhsFloat, fixed_point<RhsRep, RhsExponent>>;
         return static_cast<result_type>(lhs)+static_cast<result_type>(rhs);
     }
 
     template<class LhsFloat, class RhsRep, int RhsExponent, typename = _impl::enable_if_t <std::is_floating_point<LhsFloat>::value>>
-    constexpr auto operator-(const LhsFloat& lhs, const fixed_point<RhsRep, RhsExponent>& rhs)-> _impl::common_type_t<LhsFloat, fixed_point<RhsRep, RhsExponent>>
+    constexpr auto operator-(LhsFloat const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)-> _impl::common_type_t<LhsFloat, fixed_point<RhsRep, RhsExponent>>
     {
         using result_type = _impl::common_type_t<LhsFloat, fixed_point<RhsRep, RhsExponent>>;
         return static_cast<result_type>(lhs)-static_cast<result_type>(rhs);
@@ -245,8 +245,8 @@ namespace cnl {
 
     template<class LhsFloat, class RhsRep, int RhsExponent>
     constexpr auto operator*(
-            const LhsFloat& lhs,
-            const fixed_point<RhsRep, RhsExponent>& rhs)
+            LhsFloat const& lhs,
+            fixed_point<RhsRep, RhsExponent> const& rhs)
     -> _impl::common_type_t <_impl::enable_if_t<std::is_floating_point<LhsFloat>::value, LhsFloat>, fixed_point<RhsRep, RhsExponent>>
     {
         using result_type = _impl::common_type_t<fixed_point<RhsRep, RhsExponent>, LhsFloat>;
@@ -255,8 +255,8 @@ namespace cnl {
 
     template<class LhsFloat, class RhsRep, int RhsExponent>
     constexpr auto operator/(
-            const LhsFloat& lhs,
-            const fixed_point<RhsRep, RhsExponent>& rhs)
+            LhsFloat const& lhs,
+            fixed_point<RhsRep, RhsExponent> const& rhs)
     -> _impl::common_type_t <_impl::enable_if_t<std::is_floating_point<LhsFloat>::value, LhsFloat>, fixed_point<RhsRep, RhsExponent>>
     {
         using result_type = _impl::common_type_t<fixed_point<RhsRep, RhsExponent>, LhsFloat>;
@@ -269,14 +269,14 @@ namespace cnl {
 
     // fixed_point, dynamic
     template<class LhsRep, int LhsExponent, class Rhs>
-    constexpr auto operator<<(const fixed_point<LhsRep, LhsExponent>& lhs, const Rhs& rhs)
+    constexpr auto operator<<(fixed_point<LhsRep, LhsExponent> const& lhs, Rhs const& rhs)
     -> decltype(_impl::from_rep<fixed_point<decltype(lhs.data() << rhs), LhsExponent>>(lhs.data() << rhs))
     {
         return _impl::from_rep<fixed_point<decltype(lhs.data() << rhs), LhsExponent>>(lhs.data() << rhs);
     }
 
     template<class LhsRep, int LhsExponent, class Rhs>
-    constexpr auto operator>>(const fixed_point<LhsRep, LhsExponent>& lhs, const Rhs& rhs)
+    constexpr auto operator>>(fixed_point<LhsRep, LhsExponent> const& lhs, Rhs const& rhs)
     -> decltype(_impl::from_rep<fixed_point<decltype(lhs.data() >> rhs), LhsExponent>>(lhs.data() >> rhs))
     {
         return _impl::from_rep<fixed_point<decltype(lhs.data() >> rhs), LhsExponent>>(lhs.data() >> rhs);
@@ -285,14 +285,14 @@ namespace cnl {
     // fixed_point, const_integer
     template<class LhsRep, int LhsExponent, class RhsIntegral, RhsIntegral RhsValue>
     constexpr fixed_point<LhsRep, LhsExponent+RhsValue>
-    operator<<(const fixed_point<LhsRep, LhsExponent>& lhs, const_integer<RhsIntegral, RhsValue>)
+    operator<<(fixed_point<LhsRep, LhsExponent> const& lhs, const_integer<RhsIntegral, RhsValue>)
     {
         return fixed_point<LhsRep, LhsExponent+RhsValue>::from_data(lhs.data());
     }
 
     template<class LhsRep, int LhsExponent, class RhsIntegral, RhsIntegral RhsValue>
     constexpr fixed_point<LhsRep, LhsExponent-RhsValue>
-    operator>>(const fixed_point<LhsRep, LhsExponent>& lhs, const_integer<RhsIntegral, RhsValue>)
+    operator>>(fixed_point<LhsRep, LhsExponent> const& lhs, const_integer<RhsIntegral, RhsValue>)
     {
         return fixed_point<LhsRep, LhsExponent-RhsValue>::from_data(lhs.data());
     }
@@ -300,14 +300,14 @@ namespace cnl {
     // fixed_point, const_integer
     template<class LhsRep, int LhsExponent, class RhsIntegral, RhsIntegral RhsValue>
     constexpr fixed_point<LhsRep, LhsExponent+RhsValue>
-    operator<<(const fixed_point<LhsRep, LhsExponent>& lhs, std::integral_constant<RhsIntegral, RhsValue>)
+    operator<<(fixed_point<LhsRep, LhsExponent> const& lhs, std::integral_constant<RhsIntegral, RhsValue>)
     {
         return fixed_point<LhsRep, LhsExponent+RhsValue>::from_data(lhs.data());
     }
 
     template<class LhsRep, int LhsExponent, class RhsIntegral, RhsIntegral RhsValue>
     constexpr fixed_point<LhsRep, LhsExponent-RhsValue>
-    operator>>(const fixed_point<LhsRep, LhsExponent>& lhs, std::integral_constant<RhsIntegral, RhsValue>)
+    operator>>(fixed_point<LhsRep, LhsExponent> const& lhs, std::integral_constant<RhsIntegral, RhsValue>)
     {
         return fixed_point<LhsRep, LhsExponent-RhsValue>::from_data(lhs.data());
     }

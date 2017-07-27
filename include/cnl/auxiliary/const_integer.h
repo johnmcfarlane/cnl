@@ -161,8 +161,8 @@ namespace cnl {
                 class RhsIntegral, RhsIntegral RhsValue, int RhsDigits, int RhsExponent,
                 class = _impl::enable_if_t<std::is_integral<Lhs>::value>>
         constexpr auto operate(
-                const Lhs& lhs,
-                const const_integer<RhsIntegral, RhsValue, RhsDigits, RhsExponent>&,
+                Lhs const& lhs,
+                const_integer<RhsIntegral, RhsValue, RhsDigits, RhsExponent> const&,
                 Operator op)
         -> decltype(op(lhs, RhsValue)) {
             return op(lhs, RhsValue);
@@ -175,8 +175,8 @@ namespace cnl {
                 class Rhs,
                 class = _impl::enable_if_t<std::is_integral<Rhs>::value, int>>
         constexpr auto operate(
-                const const_integer<LhsIntegral, LhsValue, LhsDigits, LhsExponent>&,
-                const Rhs& rhs,
+                const_integer<LhsIntegral, LhsValue, LhsDigits, LhsExponent> const&,
+                Rhs const& rhs,
                 Operator op)
         -> decltype(op(LhsValue, rhs)) {
             return op(LhsValue, rhs);
@@ -188,8 +188,8 @@ namespace cnl {
                 class LhsIntegral, LhsIntegral LhsValue, int LhsDigits, int LhsExponent,
                 class RhsIntegral, RhsIntegral RhsValue, int RhsDigits, int RhsExponent>
         constexpr auto operate(
-                const const_integer<LhsIntegral, LhsValue, LhsDigits, LhsExponent>&,
-                const const_integer<RhsIntegral, RhsValue, RhsDigits, RhsExponent>&,
+                const_integer<LhsIntegral, LhsValue, LhsDigits, LhsExponent> const&,
+                const_integer<RhsIntegral, RhsValue, RhsDigits, RhsExponent> const&,
                 Operator)
         -> decltype(const_integer<_impl::op_result<Operator, LhsIntegral, RhsIntegral>, Operator()(LhsValue, RhsValue)>{}) {
             return const_integer<_impl::op_result<Operator, LhsIntegral, RhsIntegral>, Operator()(LhsValue, RhsValue)>{};
@@ -197,28 +197,28 @@ namespace cnl {
     }
 
     template<class Lhs, class Rhs, typename _const_integer_impl::enable_if_op<Lhs, Rhs, int>::type dummy = 0>
-    constexpr auto operator+(const Lhs& lhs, const Rhs& rhs)
+    constexpr auto operator+(Lhs const& lhs, Rhs const& rhs)
     -> decltype(_const_integer_impl::operate(lhs, rhs, _impl::add_tag))
     {
         return _const_integer_impl::operate(lhs, rhs, _impl::add_tag);
     }
 
     template<class Lhs, class Rhs, typename _const_integer_impl::enable_if_op<Lhs, Rhs, int>::type dummy = 0>
-    constexpr auto operator-(const Lhs& lhs, const Rhs& rhs)
+    constexpr auto operator-(Lhs const& lhs, Rhs const& rhs)
     -> decltype(_const_integer_impl::operate(lhs, rhs, _impl::subtract_tag))
     {
         return _const_integer_impl::operate(lhs, rhs, _impl::subtract_tag);
     }
 
     template<class Lhs, class Rhs, typename _const_integer_impl::enable_if_op<Lhs, Rhs, int>::type dummy = 0> 
-    constexpr auto operator*(const Lhs& lhs, const Rhs& rhs)
+    constexpr auto operator*(Lhs const& lhs, Rhs const& rhs)
     -> decltype(_const_integer_impl::operate(lhs, rhs, _impl::multiply_tag))
     {
         return _const_integer_impl::operate(lhs, rhs, _impl::multiply_tag);
     }
 
     template<class Lhs, class Rhs, typename _const_integer_impl::enable_if_op<Lhs, Rhs, int>::type dummy = 0>
-    constexpr auto operator/(const Lhs& lhs, const Rhs& rhs)
+    constexpr auto operator/(Lhs const& lhs, Rhs const& rhs)
     -> decltype(_const_integer_impl::operate(lhs, rhs, _impl::divide_tag))
     {
         return _const_integer_impl::operate(lhs, rhs, _impl::divide_tag);
@@ -234,8 +234,8 @@ namespace cnl {
                 class LhsIntegral, LhsIntegral LhsValue, int LhsDigits, int LhsExponent,
                 class RhsIntegral, RhsIntegral RhsValue, int RhsDigits, int RhsExponent>
         constexpr auto compare(
-                const const_integer<LhsIntegral, LhsValue, LhsDigits, LhsExponent>&,
-                const const_integer<RhsIntegral, RhsValue, RhsDigits, RhsExponent>&,
+                const_integer<LhsIntegral, LhsValue, LhsDigits, LhsExponent> const&,
+                const_integer<RhsIntegral, RhsValue, RhsDigits, RhsExponent> const&,
                 Operator op)
         -> decltype(op(LhsValue, RhsValue))
         {
@@ -244,7 +244,7 @@ namespace cnl {
     }
     
     template<class Lhs, class Rhs, typename _const_integer_impl::enable_if_op<Lhs, Rhs, int>::type dummy = 0>
-    constexpr auto operator==(const Lhs& lhs, const Rhs& rhs)
+    constexpr auto operator==(Lhs const& lhs, Rhs const& rhs)
     -> decltype(_const_integer_impl::compare(lhs, rhs, _impl::equal_tag))
     {
         return _const_integer_impl::compare(lhs, rhs, _impl::equal_tag);

@@ -56,7 +56,7 @@ namespace cnl {
     // cnl::abs
 
     template<class Rep, int Exponent>
-    constexpr auto abs(const fixed_point<Rep, Exponent>& x) noexcept
+    constexpr auto abs(fixed_point<Rep, Exponent> const& x) noexcept
     -> decltype(-x)
     {
         return (x >= 0) ? static_cast<decltype(-x)>(x) : -x;
@@ -126,7 +126,7 @@ namespace cnl {
     // ?
     template<class Rep, int Exponent>
     constexpr fixed_point <Rep, Exponent>
-    sqrt(const fixed_point <Rep, Exponent>& x)
+    sqrt(fixed_point<Rep, Exponent> const& x)
     {
         using widened_type = fixed_point<set_digits_t<Rep, digits<Rep>::value*2>, Exponent*2>;
         return
@@ -151,7 +151,7 @@ namespace cnl {
                 template<class Rep, int Exponent, _impl::fp::float_of_same_size<Rep>(* F)(
                         _impl::fp::float_of_same_size<Rep>)>
                 constexpr fixed_point <Rep, Exponent>
-                crib(const fixed_point <Rep, Exponent>& x) noexcept
+                crib(fixed_point<Rep, Exponent> const& x) noexcept
                 {
                     using floating_point = _impl::fp::float_of_same_size<Rep>;
                     return static_cast<fixed_point<Rep, Exponent>>(F(static_cast<floating_point>(x)));
@@ -162,28 +162,28 @@ namespace cnl {
 
     template<class Rep, int Exponent>
     constexpr fixed_point <Rep, Exponent>
-    sin(const fixed_point <Rep, Exponent>& x) noexcept
+    sin(fixed_point<Rep, Exponent> const& x) noexcept
     {
         return _impl::fp::extras::crib<Rep, Exponent, std::sin>(x);
     }
 
     template<class Rep, int Exponent>
     constexpr fixed_point <Rep, Exponent>
-    cos(const fixed_point <Rep, Exponent>& x) noexcept
+    cos(fixed_point<Rep, Exponent> const& x) noexcept
     {
         return _impl::fp::extras::crib<Rep, Exponent, std::cos>(x);
     }
 
     template<class Rep, int Exponent>
     constexpr fixed_point <Rep, Exponent>
-    exp(const fixed_point <Rep, Exponent>& x) noexcept
+    exp(fixed_point<Rep, Exponent> const& x) noexcept
     {
         return _impl::fp::extras::crib<Rep, Exponent, std::exp>(x);
     }
 
     template<class Rep, int Exponent>
     constexpr fixed_point <Rep, Exponent>
-    pow(const fixed_point <Rep, Exponent>& x) noexcept
+    pow(fixed_point<Rep, Exponent> const& x) noexcept
     {
         return _impl::fp::extras::crib<Rep, Exponent, std::pow>(x);
     }
@@ -192,7 +192,7 @@ namespace cnl {
     // cnl::fixed_point streaming - (placeholder implementation)
 
     template<class Rep, int Exponent>
-    ::std::ostream& operator<<(::std::ostream& out, const fixed_point <Rep, Exponent>& fp)
+    ::std::ostream& operator<<(::std::ostream& out, fixed_point<Rep, Exponent> const& fp)
     {
         return out << static_cast<long double>(fp);
     }

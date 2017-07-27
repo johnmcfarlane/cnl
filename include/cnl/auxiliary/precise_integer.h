@@ -14,7 +14,7 @@ namespace cnl {
 
     struct closest_rounding_tag {
         template<class To, class From>
-        static constexpr To convert(const From& from)
+        static constexpr To convert(From const& from)
         {
             return static_cast<To>(std::intmax_t(from+((from>=0) ? .5 : -.5)));
         }
@@ -29,11 +29,11 @@ namespace cnl {
         constexpr precise_integer() = default;
 
         template<class T, _impl::enable_if_t<std::numeric_limits<T>::is_integer, int> Dummy = 0>
-        constexpr precise_integer(const T& v)
+        constexpr precise_integer(T const& v)
                 : super(static_cast<Rep>(v)) { }
 
         template<class T, _impl::enable_if_t<!std::numeric_limits<T>::is_integer, int> Dummy = 0>
-        constexpr precise_integer(const T& v)
+        constexpr precise_integer(T const& v)
                 : super(rounding::template convert<Rep>(v)) { }
 
         template<class T>
@@ -97,8 +97,8 @@ namespace cnl {
         // for operands with a common tag
         template<class Operator, class RoundingTag, class LhsRep, class RhsRep, class = enable_if_t<Operator::is_arithmetic>>
         constexpr auto operate_common_tag(
-                const precise_integer<LhsRep, RoundingTag>& lhs,
-                const precise_integer<RhsRep, RoundingTag>& rhs)
+                precise_integer<LhsRep, RoundingTag> const& lhs,
+                precise_integer<RhsRep, RoundingTag> const& rhs)
         -> decltype(from_rep<precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>>(Operator()(lhs.data(), rhs.data())))
         {
             using result_type = precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>;
@@ -108,8 +108,8 @@ namespace cnl {
         // for arithmetic operands with different policies
         template<class Operator, class RoundingTag, class LhsRep, class RhsRep, enable_if_t<Operator::is_comparison, int> = 0>
         constexpr auto operate_common_tag(
-                const precise_integer<LhsRep, RoundingTag>& lhs,
-                const precise_integer<RhsRep, RoundingTag>& rhs)
+                precise_integer<LhsRep, RoundingTag> const& lhs,
+                precise_integer<RhsRep, RoundingTag> const& rhs)
         -> decltype(Operator()(lhs.data(), rhs.data()))
         {
             return Operator()(lhs.data(), rhs.data());
@@ -118,8 +118,8 @@ namespace cnl {
         // for arithmetic operands with different policies
         template<class Operator, class LhsRep, class LhsRoundingTag, class RhsRep, class RhsRoundingTag>
         constexpr auto operate(
-                const precise_integer<LhsRep, LhsRoundingTag>& lhs,
-                const precise_integer<RhsRep, RhsRoundingTag>& rhs,
+                precise_integer<LhsRep, LhsRoundingTag> const& lhs,
+                precise_integer<RhsRep, RhsRoundingTag> const& rhs,
                 Operator)
         -> decltype(operate_common_tag<Operator, common_type_t<LhsRoundingTag, RhsRoundingTag>>(lhs, rhs))
         {
@@ -132,8 +132,8 @@ namespace cnl {
 
     template<class LhsRep, class LhsRoundingTag, class RhsInteger>
     constexpr auto operator<<(
-            const precise_integer<LhsRep, LhsRoundingTag>& lhs,
-            const RhsInteger& rhs)
+            precise_integer<LhsRep, LhsRoundingTag> const& lhs,
+            RhsInteger const& rhs)
     -> decltype(from_rep<precise_integer<decltype(_impl::to_rep(lhs) << rhs), LhsRoundingTag>>(_impl::to_rep(lhs) << rhs))
     {
         return from_rep<precise_integer<

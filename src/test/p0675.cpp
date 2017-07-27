@@ -23,7 +23,7 @@ namespace {
     // example type, smart_integer, is based off of cnl::elastic_integer
     template<class Rep>
     struct smart_integer : public cnl::_impl::number_base<smart_integer<Rep>, Rep> {
-        constexpr smart_integer(const Rep& rhs) : cnl::_impl::number_base<smart_integer<Rep>, Rep>{rhs} {}
+        constexpr smart_integer(Rep const& rhs) : cnl::_impl::number_base<smart_integer<Rep>, Rep>{rhs} {}
     };
 }
 

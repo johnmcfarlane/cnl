@@ -140,7 +140,7 @@ namespace cnl {
 #endif
 
     template<class Integer>
-    constexpr int leading_bits(const Integer& value)
+    constexpr int leading_bits(Integer const&value)
     {
         return digits<Integer>::value-used_bits(value);
     }

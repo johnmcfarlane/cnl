@@ -16,7 +16,7 @@
 
 namespace cnl {
     template<class T, std::size_t N, int Exponent>
-    ::std::ostream& operator<<(::std::ostream& out, const fixed_point<boost::simd::pack<T, N>, Exponent>& fp)
+    ::std::ostream& operator<<(::std::ostream& out, fixed_point<boost::simd::pack<T, N>, Exponent> const& fp)
     {
         return out << static_cast<boost::simd::pack<long double, N>>(fp);
     }

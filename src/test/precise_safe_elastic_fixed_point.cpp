@@ -58,7 +58,7 @@ namespace cnl {
             Digits, -Exponent,
             OverflowTag, RoundingTag,
             Narrowest>
-    constexpr make_psefp(const const_integer<Integral, Value, Digits, Exponent>&)
+    constexpr make_psefp(const_integer<Integral, Value, Digits, Exponent> const&)
     {
         return Value;
     }

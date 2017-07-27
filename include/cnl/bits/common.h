@@ -48,7 +48,7 @@ namespace cnl {
 
         struct minus_op : arithmetic_op {
             template<class Rhs>
-            constexpr auto operator()(const Rhs& rhs) const -> decltype(-rhs)
+            constexpr auto operator()(Rhs const& rhs) const -> decltype(-rhs)
             {
                 return -rhs;
             }
@@ -56,7 +56,7 @@ namespace cnl {
 
         struct plus_op : arithmetic_op {
             template<class Rhs>
-            constexpr auto operator()(const Rhs& rhs) const -> decltype(+rhs)
+            constexpr auto operator()(Rhs const& rhs) const -> decltype(+rhs)
             {
                 return +rhs;
             }
@@ -64,7 +64,7 @@ namespace cnl {
 
         struct add_op : arithmetic_op {
             template<class Lhs, class Rhs>
-            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs+rhs)
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs+rhs)
             {
                 return lhs+rhs;
             }
@@ -72,7 +72,7 @@ namespace cnl {
 
         struct subtract_op : arithmetic_op {
             template<class Lhs, class Rhs>
-            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs-rhs)
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs-rhs)
             {
                 return lhs-rhs;
             }
@@ -80,7 +80,7 @@ namespace cnl {
 
         struct multiply_op : arithmetic_op {
             template<class Lhs, class Rhs>
-            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs*rhs)
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs*rhs)
             {
                 return lhs*rhs;
             }
@@ -88,7 +88,7 @@ namespace cnl {
 
         struct divide_op : arithmetic_op {
             template<class Lhs, class Rhs>
-            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs/rhs)
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs/rhs)
             {
                 return lhs/rhs;
             }
@@ -96,7 +96,7 @@ namespace cnl {
 
         struct bitwise_or_op : arithmetic_op {
             template<class Lhs, class Rhs>
-            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs|rhs)
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs|rhs)
             {
                 return lhs|rhs;
             }
@@ -104,7 +104,7 @@ namespace cnl {
 
         struct bitwise_and_op : arithmetic_op {
             template<class Lhs, class Rhs>
-            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs&rhs)
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs&rhs)
             {
                 return lhs&rhs;
             }
@@ -112,7 +112,7 @@ namespace cnl {
 
         struct bitwise_xor_op : arithmetic_op {
             template<class Lhs, class Rhs>
-            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs^rhs)
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs^rhs)
             {
                 return lhs^rhs;
             }
@@ -120,7 +120,7 @@ namespace cnl {
 
         struct equal_op : comparison_op {
             template<class Lhs, class Rhs>
-            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs==rhs)
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs==rhs)
             {
                 return lhs==rhs;
             }
@@ -128,7 +128,7 @@ namespace cnl {
 
         struct not_equal_op : comparison_op {
             template<class Lhs, class Rhs>
-            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs!=rhs)
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs!=rhs)
             {
                 return lhs!=rhs;
             }
@@ -136,7 +136,7 @@ namespace cnl {
 
         struct less_than_op : comparison_op {
             template<class Lhs, class Rhs>
-            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs<rhs)
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs<rhs)
             {
                 return lhs<rhs;
             }
@@ -144,7 +144,7 @@ namespace cnl {
 
         struct greater_than_op : comparison_op {
             template<class Lhs, class Rhs>
-            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs>rhs)
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs>rhs)
             {
                 return lhs>rhs;
             }
@@ -152,7 +152,7 @@ namespace cnl {
 
         struct less_than_or_equal_op : comparison_op {
             template<class Lhs, class Rhs>
-            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs<=rhs)
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs<=rhs)
             {
                 return lhs<=rhs;
             }
@@ -160,7 +160,7 @@ namespace cnl {
 
         struct greater_than_or_equal_op : comparison_op {
             template<class Lhs, class Rhs>
-            constexpr auto operator()(const Lhs& lhs, const Rhs& rhs) const -> decltype(lhs>=rhs)
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs>=rhs)
             {
                 return lhs>=rhs;
             }
