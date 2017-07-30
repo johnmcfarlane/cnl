@@ -1,5 +1,3 @@
-project(fixed_point)
-
 
 add_library(fixed_point INTERFACE)
 target_sources(fixed_point INTERFACE
