@@ -1,7 +1,9 @@
 project(cnl)
 
-# CMake 2.8.11 is required by Google Benchmarks
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.2)
+if (POLICY CMP0054)
+    cmake_policy(SET CMP0054 NEW)
+endif()
 
 include("include/CMakeLists.txt")
 

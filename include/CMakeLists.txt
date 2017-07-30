@@ -1,7 +1,5 @@
 project(fixed_point)
 
-# CMake 2.8.11 is required by Google Benchmarks
-cmake_minimum_required(VERSION 2.8.11)
 
 add_library(fixed_point INTERFACE)
 target_sources(fixed_point INTERFACE

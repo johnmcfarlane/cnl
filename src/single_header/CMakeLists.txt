@@ -1,7 +1,3 @@
-cmake_minimum_required(VERSION 3.2)
-if (POLICY CMP0054)
-    cmake_policy(SET CMP0054 NEW)
-endif ()
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     # add a target to generate preprocessor output
