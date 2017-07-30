@@ -1,4 +1,4 @@
-include(ExternalProject)
+﻿include(ExternalProject)
 
 ######################################################################
 # build flags
@@ -64,7 +64,5 @@ else (PROFILE)
 endif (PROFILE)
 
 set(COMMON_CXX_FLAGS "${MISC_FLAGS} ${STD_FLAGS} ${EXCEPTION_FLAGS} ${INT128_FLAGS} ${PROFILE_FLAGS}")
-
-include_directories("${CMAKE_CURRENT_LIST_DIR}/.")
 
 set(BUILD_SHARED_LIBS, ON)
