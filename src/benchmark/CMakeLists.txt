@@ -21,8 +21,12 @@ ExternalProject_Add(
   URL_MD5 "66b2a23076cf70739525be0092fc3ae3"
   CMAKE_ARGS -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX:STRING=<INSTALL_DIR>
 )
+
 ExternalProject_Get_Property(google_benchmark source_dir)
-include_directories(SYSTEM ${source_dir}/include)
+target_include_directories(
+        fp_benchmark SYSTEM
+        PRIVATE ${source_dir}/include
+)
 
 # not sure why this isn't taken care of in google_benchmark/src/CMakeLists.txt
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
