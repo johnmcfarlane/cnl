@@ -17,7 +17,7 @@ build_script:
 - cmd: >-
     cmake -G "%cmake_generator%" .
 
-    MSBuild.exe /maxcpucount /property:Configuration=Release /property:Platform=%msbuild_property% fixed_point.sln
+    MSBuild.exe /maxcpucount /property:Configuration=Release /property:Platform=%msbuild_property% cnl.sln
 test_script:
 - cmd: >-
     Release\fp_test.exe

@@ -1,4 +1,4 @@
-project(fixed_point)
+project(cnl)
 
 # CMake 2.8.11 is required by Google Benchmarks
 cmake_minimum_required(VERSION 2.8.11)
