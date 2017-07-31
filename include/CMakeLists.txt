@@ -1,5 +1,5 @@
-add_library(fixed_point INTERFACE)
-target_sources(fixed_point INTERFACE
+add_library(cnl INTERFACE)
+target_sources(cnl INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/auxiliary/boost.multiprecision.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/auxiliary/boost.simd.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/auxiliary/const_integer.h
