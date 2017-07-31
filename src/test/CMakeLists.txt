@@ -170,6 +170,11 @@ set_target_properties(
         PROPERTIES COMPILE_FLAGS "${BOOST_FOUND_CXX_FLAGS} ${BOOST_SIMD_FOUND_CXX_FLAGS}"
 )
 
+target_include_directories(
+        fp_test SYSTEM
+        PRIVATE "${cnl_SOURCE_DIR}/include"
+)
+
 # avoid GCC6 warning
 # http://stackoverflow.com/a/38650955/671509
 if (${CMAKE_COMPILER_IS_GNUCXX})

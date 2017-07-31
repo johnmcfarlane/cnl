@@ -70,7 +70,7 @@ script:
     - export CXX="${COMPILER}"
     - cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -DSTD="${STD}" -DEXCEPTIONS="${EXCEPTIONS}" -DINT128="${INT128}"
     - make
-    - ./fp_test
-    - ./fp_benchmark --benchmark_format=csv>result.csv
+    - ./src/test/fp_test
+    - ./src/benchmark/fp_benchmark --benchmark_format=csv>result.csv
     - ./src/benchmark/report.py result.csv
-    - ls -l fp_benchmark fp_test
+    - ls -l src/test/fp_test src/benchmark/fp_benchmark

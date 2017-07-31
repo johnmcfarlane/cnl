@@ -7,9 +7,17 @@ add_executable(
         fp_benchmark
         ${CMAKE_CURRENT_LIST_DIR}/benchmark.cpp
 )
+
 set_target_properties(
         fp_benchmark
         PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS}"
+)
+
+target_link_libraries(fp_benchmark cnl)
+
+target_include_directories(
+        fp_benchmark SYSTEM
+        PRIVATE "${cnl_SOURCE_DIR}/include"
 )
 
 ######################################################################
