@@ -17,10 +17,10 @@ build_script:
 - cmd: >-
     cmake -G "%cmake_generator%" .
 
-    MSBuild.exe /maxcpucount /property:Configuration=Release /property:Platform=%msbuild_property% fixed_point.sln
+    MSBuild.exe /maxcpucount /property:Configuration=Release /property:Platform=%msbuild_property% cnl.sln
 test_script:
 - cmd: >-
-    Release\fp_test.exe
+    src\test\Release\fp_test.exe
 
-    Release\fp_benchmark.exe
+    src\benchmark\Release\fp_benchmark.exe
 shallow_clone: true

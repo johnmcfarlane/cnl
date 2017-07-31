@@ -1,8 +1,3 @@
-cmake_minimum_required(VERSION 2.8.4)
-if (POLICY CMP0054)
-  cmake_policy(SET CMP0054 NEW)
-endif()
-
 include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
 
 ######################################################################
@@ -172,7 +167,12 @@ add_dependencies(
 
 set_target_properties(
         fp_test
-        PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${BOOST_FOUND_CXX_FLAGS} ${BOOST_SIMD_FOUND_CXX_FLAGS}"
+        PROPERTIES COMPILE_FLAGS "${BOOST_FOUND_CXX_FLAGS} ${BOOST_SIMD_FOUND_CXX_FLAGS}"
+)
+
+target_include_directories(
+        fp_test SYSTEM
+        PRIVATE "${cnl_SOURCE_DIR}/include"
 )
 
 # avoid GCC6 warning
