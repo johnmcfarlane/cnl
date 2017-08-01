@@ -28,7 +28,7 @@ namespace cnl {
                 : _rep(r) { }
 
             template<class T>
-            number_base& operator=(T const& r) {
+            CNL_COPY_CONSTEXPR number_base& operator=(T const& r) {
                 _rep = r;
                 return static_cast<Derived&>(*this);
             }

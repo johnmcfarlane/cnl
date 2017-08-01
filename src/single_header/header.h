@@ -10,6 +10,10 @@
 #if ! defined(CNL_COMPLETE_H)
 #define CNL_COMPLETE_H
 
+#if (__cplusplus < 201402L)
+#error This build of CNL requires C++14 or above.
+#endif
+
 #include <cmath>
 #include <utility>
 #include <istream>
