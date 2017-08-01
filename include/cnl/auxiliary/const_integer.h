@@ -10,7 +10,7 @@
 #if !defined(CNL_CONST_INTEGER_H)
 #define CNL_CONST_INTEGER_H 1
 
-#include <cnl/auxiliary/numeric.h>
+#include <cnl/numeric.h>
 #include <cnl/bits/common.h>
 
 #include <cstdint>

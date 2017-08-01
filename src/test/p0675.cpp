@@ -9,7 +9,7 @@
 
 #if (__cplusplus > 201402L)
 
-#include <cnl/auxiliary/precise_integer.h>
+#include <cnl/precise_integer.h>
 #include <cnl/num_traits.h>
 #include <cnl/fixed_point.h>
 

@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/bits/limits.h>
-#include <cnl/auxiliary/numeric.h>
+#include <cnl/numeric.h>
 
 #include <cnl/bits/common.h>
 

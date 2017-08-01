@@ -5,9 +5,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/fixed_point.h>
-#include <cnl/auxiliary/elastic_integer.h>
-#include <cnl/auxiliary/precise_integer.h>
-#include <cnl/auxiliary/safe_integer.h>
+#include <cnl/elastic_integer.h>
+#include <cnl/precise_integer.h>
+#include <cnl/safe_integer.h>
 
 namespace cnl {
     // precise safe elastic fixed-point

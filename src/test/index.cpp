@@ -171,7 +171,7 @@ TEST(index, boost_example)
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [elastic example]
-#include <cnl/auxiliary/elastic_integer.h>
+#include <cnl/elastic_integer.h>
 
 void elastic_example1()
 {

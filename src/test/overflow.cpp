@@ -11,7 +11,7 @@
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #endif
 
-#include <cnl/auxiliary/overflow.h>
+#include <cnl/overflow.h>
 
 // TODO: remove ASAP
 #if defined(_MSC_VER)

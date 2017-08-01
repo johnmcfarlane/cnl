@@ -7,7 +7,7 @@
 /// \file
 /// \brief file containing tests of the `cnl::elastic_integer` type
 
-#include <cnl/auxiliary/elastic_integer.h>
+#include <cnl/elastic_integer.h>
 
 namespace {
     using std::is_same;
