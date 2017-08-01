@@ -71,7 +71,6 @@ namespace cnl {
         using _value_type = elastic_integer<Digits, Narrowest>;
 
         constexpr _value_type operator()(_value_type const& i, int base, int exp) const {
-            using _rep = typename _value_type::rep;
             return _value_type{ _impl::scale(i.data(), base, exp) };
         }
     };

@@ -10,7 +10,7 @@
 #pragma warning(disable: 4389)
 #endif
 
-#include <cnl/auxiliary/safe_integer.h>
+#include <cnl/safe_integer.h>
 
 #if defined(_MSC_VER)
 #pragma warning(pop) 

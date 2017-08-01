@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/fixed_point.h>
-#include <cnl/auxiliary/precise_integer.h>
+#include <cnl/precise_integer.h>
 
 namespace {
     using cnl::_impl::identical;

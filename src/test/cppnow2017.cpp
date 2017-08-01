@@ -6,8 +6,8 @@
 
 #if (__cplusplus>=201402L)
 
-#include <cnl/auxiliary/elastic_integer.h>
-#include <cnl/auxiliary/safe_integer.h>
+#include <cnl/elastic_integer.h>
+#include <cnl/safe_integer.h>
 
 #include <gtest/gtest.h>
 

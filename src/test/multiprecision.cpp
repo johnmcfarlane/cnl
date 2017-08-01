@@ -6,7 +6,7 @@
 
 #if defined(CNL_BOOST_ENABLED)
 
-#include <cnl/auxiliary/multiprecision.h>
+#include <cnl/multiprecision.h>
 
 #include <cnl/fixed_point.h>
 

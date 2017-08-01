@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/auxiliary/numeric.h>
+#include <cnl/numeric.h>
 #include <cnl/bits/limits.h>
 
 #include <gtest/gtest.h>
