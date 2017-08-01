@@ -44,4 +44,17 @@ using CNL_UINT128 = unsigned __int128;
 #define CNL_EXCEPTIONS_ENABLED
 #endif
 
+////////////////////////////////////////////////////////////////////////////////
+// CNL_COPY_CONSTEXPR macro definition
+
+#if defined(CNL_COPY_CONSTEXPR)
+#error CNL_COPY_CONSTEXPR already defined
+#endif
+
+#if (__cplusplus >= 201402L)
+#define CNL_COPY_CONSTEXPR constexpr
+#else
+#define CNL_COPY_CONSTEXPR
+#endif
+
 #endif  // CNL_CONFIG_H
