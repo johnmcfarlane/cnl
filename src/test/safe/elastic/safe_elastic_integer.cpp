@@ -7,7 +7,7 @@
 #include <cnl/elastic_integer.h>
 #include <cnl/safe_integer.h>
 
-#include "number_test.h"
+#include "../../number_test.h"
 
 namespace cnl {
     // safe elastic integer

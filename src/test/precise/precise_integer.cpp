@@ -6,7 +6,7 @@
 
 #include <cnl/precise_integer.h>
 
-#include "number_test.h"
+#include "../number_test.h"
 
 #include <gtest/gtest.h>
 

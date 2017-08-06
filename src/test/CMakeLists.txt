@@ -1,56 +1,49 @@
-include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
+include("../common/common.cmake")
 
 ######################################################################
 # fp_test target
 
 add_executable(fp_test
         # slowest
-        ${CMAKE_CURRENT_LIST_DIR}/elastic_fixed_point.cpp
+        fixed_point/elastic/elastic_fixed_point.cpp
 
-        # still pretty slow
-        ${CMAKE_CURRENT_LIST_DIR}/fixed_point_saturated_integer.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/fixed_point_native_integer.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/fixed_point_throwing_integer.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/safe_elastic_integer.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/fixed_point_built_in.cpp
-
-        ${CMAKE_CURRENT_LIST_DIR}/overflow.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/safe_integer.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/precise_integer.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/const_integer.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/utils.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/boost.multiprecision.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/boost.simd.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/common.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/elastic_integer.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/glm.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/index.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/make_elastic_fixed_point.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/number_test.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/numeric.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/num_traits.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/p0037.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/p0381.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/p0554.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/p0675.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/readme.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/snippets.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/fixed_point_math.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/zero_cost_average.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/zero_cost_free_functions.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/zero_cost_square.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/safft.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/cppnow2017.cpp
-
-        # likely to fail if other files with simpler tests fail
-        ${CMAKE_CURRENT_LIST_DIR}/precise_elastic_integer.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/precise_fixed_point.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/precise_safe_elastic_fixed_point.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/precise_safe_elastic_integer.cpp
-
-        # pointless unless the rest compiles
-        ${CMAKE_CURRENT_LIST_DIR}/main.cpp
-)
+        p0381.cpp
+        boost.simd.cpp
+        precise/elastic/precise_elastic_integer.cpp
+        precise/precise_integer.cpp
+        overflow.cpp
+        elastic/elastic_integer.cpp
+        elastic/precise/safe/precise_safe_elastic_integer.cpp
+        snippets.cpp
+        zero_cost_square.cpp
+        p0554.cpp
+        index.cpp
+        number_test.cpp
+        const_integer.cpp
+        zero_cost_free_functions.cpp
+        boost.multiprecision.cpp
+        zero_cost_average.cpp
+        readme.cpp
+        cppnow2017.cpp
+        safft.cpp
+        safe/elastic/safe_elastic_integer.cpp
+        safe/safe_integer.cpp
+        num_traits.cpp
+        numeric.cpp
+        p0675.cpp
+        glm.cpp
+        common.cpp
+        fixed_point/precise_fixed_point.cpp
+        fixed_point/fixed_point_extras.cpp
+        fixed_point/fixed_point_math.cpp
+        fixed_point/elastic/precise/safe/precise_safe_elastic_fixed_point.cpp
+        fixed_point/elastic/make_elastic_fixed_point.cpp
+        fixed_point/safe/fixed_point_native_integer.cpp
+        fixed_point/safe/fixed_point_throwing_integer.cpp
+        fixed_point/safe/fixed_point_saturated_integer.cpp
+        fixed_point/p0037.cpp
+        fixed_point/fixed_point_built_in.cpp
+        main.cpp)
 
 ######################################################################
 # find external lib, boost.multiprecision
@@ -179,8 +172,8 @@ target_include_directories(
 # http://stackoverflow.com/a/38650955/671509
 if (${CMAKE_COMPILER_IS_GNUCXX})
     set_source_files_properties(
-            ${CMAKE_CURRENT_LIST_DIR}/boost.multiprecision.cpp
-            ${CMAKE_CURRENT_LIST_DIR}/index.cpp
+            boost.multiprecision.cpp
+            index.cpp
             PROPERTIES COMPILE_FLAGS "-fpermissive")
 endif ()
 

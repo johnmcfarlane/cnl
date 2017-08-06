@@ -16,7 +16,7 @@
 #pragma warning(pop) 
 #endif
 
-#include "number_test.h"
+#include "../number_test.h"
 
 using cnl::_impl::identical;
 using cnl::_impl::is_integer_or_float;

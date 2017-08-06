@@ -4,8 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/safe_integer.h>
 #include <cnl/fixed_point.h>
+#include <cnl/safe_integer.h>
 
 #define TEST_NATIVE_OVERFLOW
 #define TEST_LABEL native_integer_
@@ -23,4 +23,4 @@ using test_int = cnl::safe_integer<int, cnl::native_overflow_tag>;
 ////////////////////////////////////////////////////////////////////////////////
 // perform fixed_point tests with this type of fixed_point specialization
 
-#include "fixed_point_common.h"
+#include "../fixed_point_common.h"
