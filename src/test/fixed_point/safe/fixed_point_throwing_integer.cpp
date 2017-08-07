@@ -4,8 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/safe_integer.h>
 #include <cnl/fixed_point.h>
+#include <cnl/safe_integer.h>
 
 #define TEST_THROWING_OVERFLOW
 #define TEST_LABEL throwing_integer_
@@ -23,7 +23,7 @@ using test_int = cnl::safe_integer<>;
 ////////////////////////////////////////////////////////////////////////////////
 // perform fixed_point tests with this type of fixed_point specialization
 
-#include "fixed_point_common.h"
+#include "../fixed_point_common.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // throwing_integer-specific exceptions tests

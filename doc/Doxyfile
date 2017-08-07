@@ -16,30 +16,30 @@ CALLER_GRAPH = NO
 OUTPUT_DIRECTORY =
 OUTPUT_LANGUAGE = English
 INPUT = \
- ../include/cnl/auxiliary/const_integer.h \
- ../include/cnl/auxiliary/elastic_fixed_point.h \
- ../include/cnl/auxiliary/elastic_integer.h \
- ../include/cnl/auxiliary/multiprecision.h \
- ../include/cnl/auxiliary/numeric.h \
- ../include/cnl/auxiliary/overflow.h \
- ../include/cnl/auxiliary/precise_integer.h \
- ../include/cnl/auxiliary/safe_integer.h \
- ../include/cnl/fixed_point.h \
- ../include/cnl/bits/fixed_point_arithmetic.h \
- ../include/cnl/bits/fixed_point_extras.h \
- ../include/cnl/bits/fixed_point_math.h \
- ../include/cnl/bits/fixed_point_make.h \
- ../include/cnl/bits/fixed_point_named.h \
- ../include/cnl/bits/fixed_point_operators.h \
- ../include/cnl/bits/fixed_point_common_type.h \
- ../include/cnl/bits/fixed_point_type.h \
- ../include/cnl/bits/type_traits.h \
- ../include/cnl/bits/number_base.h \
- ../include/cnl/bits/config.h \
- ../include/cnl/bits/common.h \
- ../include/cnl/bits/limits.h \
- ../include/cnl/num_traits.h \
- index.md
+    ../include/cnl/fixed_point.h \
+    ../include/cnl/precise_integer.h \
+    ../include/cnl/overflow.h \
+    ../include/cnl/numeric.h \
+    ../include/cnl/num_traits.h \
+    ../include/cnl/bits/fixed_point_make.h \
+    ../include/cnl/bits/fixed_point_operators.h \
+    ../include/cnl/bits/fixed_point_math.h \
+    ../include/cnl/bits/fixed_point_common_type.h \
+    ../include/cnl/bits/fixed_point_type.h \
+    ../include/cnl/bits/type_traits.h \
+    ../include/cnl/bits/number_base.h \
+    ../include/cnl/bits/config.h \
+    ../include/cnl/bits/common.h \
+    ../include/cnl/bits/fixed_point_extras.h \
+    ../include/cnl/bits/fixed_point_arithmetic.h \
+    ../include/cnl/bits/limits.h \
+    ../include/cnl/bits/fixed_point_named.h \
+    ../include/cnl/elastic_integer.h \
+    ../include/cnl/auxiliary/boost.multiprecision.h \
+    ../include/cnl/auxiliary/const_integer.h \
+    ../include/cnl/auxiliary/boost.simd.h \
+    ../include/cnl/safe_integer.h \
+    index.md
 EXCLUDE_SYMBOLS = \
  cnl::_*
 FILE_PATTERNS = *

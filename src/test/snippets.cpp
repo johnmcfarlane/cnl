@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/fixed_point.h>
-#include "elastic_fixed_point.h"
+#include "fixed_point/elastic/elastic_fixed_point.h"
 
 using namespace cnl;
 
