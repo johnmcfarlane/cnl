@@ -23,7 +23,7 @@ namespace cnl {
 
             template<class FixedPoint>
             constexpr FixedPoint rounding_conversion(double d) {
-                using one_longer = make_fixed<FixedPoint::integer_digits, FixedPoint::fractional_digits + 1>;
+                using one_longer = fixed_point<set_digits_t<typename FixedPoint::rep, FixedPoint::digits+1>, FixedPoint::exponent-1>;
                 return FixedPoint::from_data(static_cast<typename FixedPoint::rep>((one_longer{ d }.data() + 1) >> 1));
             }
 

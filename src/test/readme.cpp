@@ -25,8 +25,4 @@ TEST(readme, instance)
     std_cout << "pi=" << std::setprecision(10) << pi;
 
     ASSERT_EQ(std_cout.str(), "pi=3.141592652");
-
-    // 7. Alternatively, use `make_fixed` and `make_ufixed` to instantiate signed and unsigned variables
-    //    with exactly the number of integer and fractional digits you require:
-    static_assert(std::is_same<decltype(pi), cnl::make_fixed<3, 28>>::value, "error in README.md example code");
 }

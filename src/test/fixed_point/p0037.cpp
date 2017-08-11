@@ -11,8 +11,6 @@
 #include <type_traits>
 
 using cnl::fixed_point;
-using cnl::make_fixed;
-using cnl::make_ufixed;
 using cnl::multiply;
 using cnl::set_digits_t;
 using cnl::sqrt;
@@ -21,18 +19,6 @@ using cnl::_impl::identical;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Tests of Examples in P0037
-
-TEST(proposal, make_ufixed)
-{
-    make_ufixed<4, 4> value{15.9375};
-    ASSERT_EQ(value, 15.9375);
-}
-
-TEST(proposal, make_fixed)
-{
-    make_fixed<2, 29> value{3.141592653};
-    ASSERT_EQ(value, 3.1415926516056061);
-}
 
 // Operator Overloads
 
@@ -44,12 +30,12 @@ static_assert(identical(fixed_point<uint8_t, -3>{8} + float{3}, float{11}), "Inc
 TEST(proposal, overflow) {
     switch (sizeof(int)) {
     case 4: {
-        auto sum = make_ufixed<2, 30>(3) + make_ufixed<2, 30>(1);
+        auto sum = fixed_point<uint32_t, -30>(3) + fixed_point<uint32_t, -30>(1);
         ASSERT_TRUE(sum == 0);
         break;
     }
     case 8: {
-        auto sum = make_ufixed<2, 62>(3) + make_ufixed<2, 62>(1);
+        auto sum = fixed_point<uint64_t, -62>(3) + fixed_point<uint64_t, -62>(1);
         ASSERT_TRUE(sum == 0);
         break;
     }
@@ -59,7 +45,7 @@ TEST(proposal, overflow) {
 }
 
 // Underflow
-static_assert(identical(make_fixed<7, 0>(15)/make_fixed<7, 0>(2), fixed_point<int, -7>(7.5f)),
+static_assert(identical(fixed_point<int8_t>(15)/fixed_point<int8_t>(2), fixed_point<int, -7>(7.5f)),
         "Incorrect information in proposal section, Underflow");
 
 // Named Arithmetic Functions
@@ -123,10 +109,10 @@ constexpr auto magnitude(Fp x, Fp y, Fp z)
 TEST(proposal, examples)
 {
     constexpr auto m = magnitude(
-            make_ufixed<4, 12>(1),
-            make_ufixed<4, 12>(4),
-            make_ufixed<4, 12>(9));
-    static_assert(identical(m, make_fixed<7, 24>{9.8994948864}), "Incorrect information in proposal section, Examples");
+            fixed_point<uint16_t, -12>(1),
+            fixed_point<uint16_t, -12>(4),
+            fixed_point<uint16_t, -12>(9));
+    static_assert(identical(m, fixed_point<int, -24>{9.8994948864}), "Incorrect information in proposal section, Examples");
 }
 
 TEST(proposal, zero)

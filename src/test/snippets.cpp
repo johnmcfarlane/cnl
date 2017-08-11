@@ -68,10 +68,4 @@ using new_type = set_digits_t<fixed_point<int8_t>, 24>;
 static_assert(std::is_same<new_type, fixed_point<int32_t>>::value, "failed to resize a signed, 1-byte fixed-point type to a fixed-point type of at least 3 bytes");
 //! [use set_digits 3]
 }
-
-namespace use_make_fixed {
-//! [use make_fixed]
-static_assert(std::is_same<make_fixed<7, 8, signed>, fixed_point<int16_t, -8>>::value, "failed to use make_fixed");
-//! [use make_fixed]
-}
 }

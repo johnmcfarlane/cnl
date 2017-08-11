@@ -4,14 +4,11 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/bits/type_traits.h>
 #include <cnl/fixed_point.h>
 
 #include <gtest/gtest.h>
 
 using cnl::fixed_point;
-using cnl::make_fixed;
-using cnl::make_ufixed;
 
 TEST(utils_tests, sin)
 {
@@ -36,22 +33,22 @@ TEST(utils_tests, cos)
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::abs
 
-static_assert(abs(make_fixed<7, 0>(66))==66, "cnl::abs test failed");
-static_assert(abs(make_fixed<7, 0>(-123))==123, "cnl::abs test failed");
-static_assert(abs(make_fixed<63, 0>(9223372036854775807))==9223372036854775807LL, "cnl::abs test failed");
-static_assert(abs(make_fixed<63, 0>(-9223372036854775807))==9223372036854775807LL, "cnl::abs test failed");
-static_assert(abs(make_fixed<7, 8>(-5))==5, "cnl::abs test failed");
+static_assert(abs(fixed_point<int8_t, 0>(66))==66, "cnl::abs test failed");
+static_assert(abs(fixed_point<int8_t, 0>(-123))==123, "cnl::abs test failed");
+static_assert(abs(fixed_point<int64_t, 0>(9223372036854775807))==9223372036854775807LL, "cnl::abs test failed");
+static_assert(abs(fixed_point<int64_t, 0>(-9223372036854775807))==9223372036854775807LL, "cnl::abs test failed");
+static_assert(abs(fixed_point<int16_t, 0>(-5))==5, "cnl::abs test failed");
 
-static_assert(abs(make_ufixed<8, 0>(66))==66, "cnl::abs test failed");
-static_assert(abs(make_ufixed<8, 0>(123))==123, "cnl::abs test failed");
-static_assert(abs(make_ufixed<8, 8>(5))==5, "cnl::abs test failed");
+static_assert(abs(fixed_point<uint8_t, 0>(66))==66, "cnl::abs test failed");
+static_assert(abs(fixed_point<uint8_t, 0>(123))==123, "cnl::abs test failed");
+static_assert(abs(fixed_point<uint16_t, -8>(5))==5, "cnl::abs test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // std specializations for 128-bit integer facilitate certain 64-bit operations
 
-#if defined(CNL_INT128_ENABLE)
-static_assert((make_ufixed<56, 8>(1003006)*make_ufixed<56, 8>(7))==7021042, "cnl::fixed_point test failed");
+#if defined(CNL_INT128_ENABLED)
+static_assert((fixed_point<uint64_t, -8>(1003006)*fixed_point<uint64_t, -8>(7))==7021042, "cnl::fixed_point test failed");
 static_assert(static_cast<int>((fixed_point<uint64_t, -8>(65535)/fixed_point<uint64_t, -8>(256)))==255,
         "cnl::fixed_point test failed");
-static_assert(sqrt(make_fixed<63, 0>(9223372036854775807))==3037000499LL, "cnl::sqrt test failed");
+static_assert(sqrt(fixed_point<uint64_t, 0>(9223372036854775807))==3037000499LL, "cnl::sqrt test failed");
 #endif

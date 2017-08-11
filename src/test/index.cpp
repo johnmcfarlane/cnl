@@ -44,10 +44,6 @@ void declaration_example()
     // x is represented by an int and scaled down by 1 bit
     auto x = fixed_point<int, -1>{3.5};
 
-    // another way to specify a fixed-point type is with make_fixed or make_ufixed
-    auto y = make_fixed<30, 1>{3.5};  // (s30:1)
-    static_assert(is_same<decltype(x), decltype(y)>::value, "");  // assumes that int is 32-bit
-
     // under the hood, x stores a whole number
     cout << x.data() << endl;  // "7"
 
@@ -134,13 +130,15 @@ TEST(index, advanced_arithmetic_example)
 //! [boost example]
 #include <cnl/auxiliary/boost.multiprecision.h>
 
+using namespace boost::multiprecision;
+
+template<unsigned NumBits>
+using rep = number<cpp_int_backend<NumBits, NumBits, signed_magnitude, unchecked, void>>;
+
 void boost_example()
 {
-    using namespace boost::multiprecision;
-    using rep = number<cpp_int_backend<400, 400, unsigned_magnitude, unchecked, void>>;
-
     // Define an unsigned type with 400 integer digits and 0 fractional digits.
-    using big_number = fixed_point<rep, 0>;
+    using big_number = fixed_point<rep<400>, 0>;
 
     // a googol is 10^100
     auto googol = big_number{1};
@@ -155,7 +153,7 @@ void boost_example()
     auto googolth = 1 / googol;
 
     // produces a s31::400 number.
-    static_assert(is_same<decltype(googolth), make_fixed<31, 400, int128_t>>::value, "");
+    static_assert(is_same<decltype(googolth), fixed_point<rep<432>, -400>>::value, "");
 
     // Prints "1e-100" (although this value is only approximate).
     cout << googolth << endl;

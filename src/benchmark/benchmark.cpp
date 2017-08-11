@@ -13,8 +13,7 @@
 //#define ESCAPE(x) benchmark::DoNotOptimize(x)
 
 using std::numeric_limits;
-using cnl::make_fixed;
-using cnl::make_ufixed;
+using cnl::fixed_point;
 
 ////////////////////////////////////////////////////////////////////////////////
 // entry point
@@ -182,14 +181,14 @@ static void circle_intersect_generic(benchmark::State& state)
 ////////////////////////////////////////////////////////////////////////////////
 // fixed-point types
 
-using u4_4 = make_ufixed<4, 4>;
-using s3_4 = make_fixed<3, 4>;
-using u8_8 = make_ufixed<8, 8>;
-using s7_8 = make_fixed<7, 8>;
-using u16_16 = make_ufixed<16, 16>;
-using s15_16 = make_fixed<15, 16>;
-using u32_32 = make_ufixed<32, 32>;
-using s31_32 = make_fixed<31, 32>;
+using u4_4 = fixed_point<uint8_t, -4>;
+using s3_4 = fixed_point<int8_t, -4>;
+using u8_8 = fixed_point<uint16_t, -8>;
+using s7_8 = fixed_point<int16_t, -8>;
+using u16_16 = fixed_point<uint32_t, -16>;
+using s15_16 = fixed_point<int32_t, -16>;
+using u32_32 = fixed_point<uint64_t, -32>;
+using s31_32 = fixed_point<int64_t, -32>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // multi-type benchmark macros
