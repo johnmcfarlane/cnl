@@ -30,8 +30,8 @@ namespace {
 
     namespace division {
         using cnl::elastic_fixed_point;
-        constexpr elastic_fixed_point<1, 6> numerator = 0.5, denominator = 1.0;
+        constexpr elastic_fixed_point<7, -6> numerator = 0.5, denominator = 1.0;
         constexpr auto quotient = numerator / denominator;
-        static_assert(identical(quotient, elastic_fixed_point<7, 7>{.5}), "position_paper test failed");
+        static_assert(identical(quotient, elastic_fixed_point<14, -7>{.5}), "position_paper test failed");
     }
 }

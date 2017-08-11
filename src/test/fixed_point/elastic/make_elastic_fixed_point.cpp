@@ -23,7 +23,7 @@ static_assert(identical(make_elastic_fixed_point(-1_c), cnl::elastic_fixed_point
 
 static_assert(identical(make_elastic_fixed_point(123), elastic_fixed_point<int_digits>{123}), "cnl::make_elastic_fixed_point test failed");
 static_assert(
-        identical(make_elastic_fixed_point(0x100000000_c), elastic_fixed_point<33, -32>{0x100000000ULL}),
+        identical(make_elastic_fixed_point(0x100000000_c), elastic_fixed_point<1, 32>{0x100000000ULL}),
         "cnl::make_elastic_fixed_point test failed");
 static_assert(
         identical(
@@ -31,9 +31,9 @@ static_assert(
                 elastic_fixed_point<std::numeric_limits<decltype(262143)>::digits, 0, std::uint8_t>{262143}),
         "cnl::make_elastic_fixed_point test failed");
 
-static_assert(identical(make_elastic_fixed_point(const_integer<int, 4>{}), elastic_fixed_point<3, -2>{4}), "");
-static_assert(identical(make_elastic_fixed_point(40_c), elastic_fixed_point<6, -3>{40}), "");
-static_assert(identical(make_elastic_fixed_point(0x123400000000_c), elastic_fixed_point<45, -34>{0x123400000000}), "");
+static_assert(identical(make_elastic_fixed_point(const_integer<int, 4>{}), elastic_fixed_point<1, 2>{4}), "");
+static_assert(identical(make_elastic_fixed_point(40_c), elastic_fixed_point<3, 3>{40}), "");
+static_assert(identical(make_elastic_fixed_point(0x123400000000_c), elastic_fixed_point<11, 34>{0x123400000000}), "");
 static_assert(identical(make_elastic_fixed_point<std::int8_t>(9876543), elastic_fixed_point<31, 0, std::int8_t>{9876543}), "");
 
 ////////////////////////////////////////////////////////////////////////////////

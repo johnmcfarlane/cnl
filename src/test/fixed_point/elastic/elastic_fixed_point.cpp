@@ -379,10 +379,10 @@ struct unsigned_elastic_test :
 template<int IntegerDigits, int FractionalDigits>
 struct elastic_test :
         // perform unsigned-specific value tests against unsigned elastic_fixed_point specialization
-        unsigned_elastic_test<elastic_fixed_point<IntegerDigits, FractionalDigits, unsigned>>,
+        unsigned_elastic_test<elastic_fixed_point<IntegerDigits+FractionalDigits, -FractionalDigits, unsigned>>,
 
         // perform negative value tests against signed elastic_fixed_point specialization
-        signed_elastic_test<elastic_fixed_point<IntegerDigits, FractionalDigits, signed>> {
+        signed_elastic_test<elastic_fixed_point<IntegerDigits+FractionalDigits, -FractionalDigits, signed>> {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
