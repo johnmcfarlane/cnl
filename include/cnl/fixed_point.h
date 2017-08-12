@@ -11,7 +11,6 @@
 #define CNL_FIXED_POINT_H 1
 
 #include "bits/fixed_point_type.h"
-#include "bits/fixed_point_make.h"
 #include "bits/fixed_point_named.h"
 #include "bits/fixed_point_common_type.h"
 #include "bits/fixed_point_operators.h"

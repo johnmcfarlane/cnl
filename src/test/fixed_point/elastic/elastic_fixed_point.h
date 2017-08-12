@@ -27,8 +27,8 @@ namespace cnl {
     ///
     /// \sa elastic_integer
 
-    template<int IntegerDigits, int FractionalDigits = 0, class Narrowest = signed>
-    using elastic_fixed_point = fixed_point<elastic_integer<IntegerDigits+FractionalDigits, Narrowest>, -FractionalDigits>;
+    template<int Digits, int Exponent = 0, class Narrowest = signed>
+    using elastic_fixed_point = fixed_point<elastic_integer<Digits, Narrowest>, Exponent>;
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ namespace cnl {
             typename Narrowest = int,
             typename Integral = int,
             Integral Value = 0>
-    constexpr elastic_fixed_point<_impl::max(_impl::used_bits_symmetric(Value), 1), -trailing_bits(Value), Narrowest>
+    constexpr elastic_fixed_point<_impl::max(_impl::used_bits_symmetric(Value)-trailing_bits(Value), 1), trailing_bits(Value), Narrowest>
     make_elastic_fixed_point(const_integer<Integral, Value> = const_integer<Integral, Value>{})
     {
         return Value;

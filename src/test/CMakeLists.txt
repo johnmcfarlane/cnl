@@ -160,7 +160,7 @@ add_dependencies(
 
 set_target_properties(
         fp_test
-        PROPERTIES COMPILE_FLAGS "${BOOST_FOUND_CXX_FLAGS} ${BOOST_SIMD_FOUND_CXX_FLAGS}"
+        PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${BOOST_FOUND_CXX_FLAGS} ${BOOST_SIMD_FOUND_CXX_FLAGS}"
 )
 
 target_include_directories(

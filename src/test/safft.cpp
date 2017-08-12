@@ -49,7 +49,7 @@ TEST(safft, fft_fixed_point)
     unsigned int impulseLoc =15; //Some index smaller than fftSize
     double twopi = M_PI*2.0;
 
-    using elastic_fixed_point = cnl::elastic_fixed_point<14, 16>;
+    using elastic_fixed_point = cnl::elastic_fixed_point<30, -16>;
     using complex = std::complex<elastic_fixed_point>;
     elastic_fixed_point zero = 0;
     elastic_fixed_point one = 1;
@@ -86,7 +86,7 @@ TEST(safft, fft_elastic_fixed_point)
     unsigned int impulseLoc = 15; //Some index smaller than fftSize
     double twopi = M_PI*2.0;
 
-    using elastic_fixed_point = cnl::elastic_fixed_point<14, 16>;
+    using elastic_fixed_point = cnl::elastic_fixed_point<30, -16>;
     elastic_fixed_point zero = static_cast<elastic_fixed_point>(0);
     elastic_fixed_point one = static_cast<elastic_fixed_point>(1);
     std::complex<elastic_fixed_point > czero = std::complex<elastic_fixed_point> (zero,zero);
