@@ -13,6 +13,7 @@
 #include "common.h"
 
 #include "fixed_point_type.h"
+#include "fixed_point_num_traits.h"
 
 /// compositional numeric library
 namespace cnl {

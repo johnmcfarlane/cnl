@@ -21,38 +21,6 @@
 namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::_impl::set_rep<fixed_point<>>
-
-    namespace _impl {
-        template<class Rep, int Exponent>
-        struct get_rep<fixed_point<Rep, Exponent>> {
-            using type = Rep;
-        };
-
-        template<class OldRep, int Exponent, class NewRep>
-        struct set_rep<fixed_point<OldRep, Exponent>, NewRep> {
-            using type = fixed_point<NewRep, Exponent>;
-        };
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // numeric traits
-
-    template<class Rep, int Exponent>
-        struct digits<fixed_point<Rep, Exponent>> : digits<Rep> {
-    };
-
-    template<class Rep, int Exponent, _digits_type MinNumBits>
-    struct set_digits<fixed_point<Rep, Exponent>, MinNumBits> {
-        using type = fixed_point<set_digits_t<Rep, MinNumBits>, Exponent>;
-    };
-
-    template<class Rep, int Exponent, class Value>
-    struct from_value<fixed_point<Rep, Exponent>, Value> {
-        using type = fixed_point<Value>;
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
     // cnl::abs
 
     template<class Rep, int Exponent>
