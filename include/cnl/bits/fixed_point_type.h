@@ -165,16 +165,9 @@ namespace cnl {
             return *this;
         }
 
-        /// returns value represented as bool
-        template<typename R = Rep>
-        constexpr operator typename std::enable_if<std::is_convertible<Rep, bool>::value, bool>() const
-        {
-            return static_cast<bool>(_base::data());
-        }
-
         /// returns value represented as integral
         template<class S, _impl::enable_if_t<std::numeric_limits<S>::is_integer, int> Dummy = 0>
-        constexpr operator S() const
+        explicit constexpr operator S() const
         {
             return rep_to_integral<S>(_base::data());
         }
