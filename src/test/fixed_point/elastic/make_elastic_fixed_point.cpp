@@ -98,17 +98,17 @@ template<std::int64_t Value>
 struct make_elastic_test {
     static constexpr auto value = const_integer<std::int64_t, Value>{};
     static constexpr auto elastic_value = make_elastic_fixed_point(value);
-    using type = decltype(elastic_value);
+    using type = typename std::remove_const<decltype(elastic_value)>::type;
 
-    static_assert(Value<=0 || (Value/(1LL << type::integer_digits))==0, "elastic_fixed_point type capacity is too big");
-    static_assert(Value>=0 || type::integer_digits>=60
-                  || (Value/(1LL << (type::integer_digits+1)))==0,
+    static_assert(Value<=0 || (Value/(1LL << cnl::_impl::integer_digits<type>::value))==0, "elastic_fixed_point type capacity is too big");
+    static_assert(Value>=0 || cnl::_impl::integer_digits<type>::value>=60
+                  || (Value/(1LL << (cnl::_impl::integer_digits<type>::value+1)))==0,
                   "elastic_fixed_point type capacity is too big");
-    static_assert(Value<=0 || (Value >> cnl::_impl::max<int>(0, type::integer_digits-1))!=0, "elastic_fixed_point type capacity is too small");
-    static_assert(Value>=0 || (Value >> (type::integer_digits))!=0, "elastic_fixed_point type capacity is too small");
-    static_assert(Value || type::integer_digits==0, "elastic_fixed_point type capacity is too small");
+    static_assert(Value<=0 || (Value >> cnl::_impl::max<int>(0, cnl::_impl::integer_digits<type>::value-1))!=0, "elastic_fixed_point type capacity is too small");
+    static_assert(Value>=0 || (Value >> (cnl::_impl::integer_digits<type>::value))!=0, "elastic_fixed_point type capacity is too small");
+    static_assert(Value || cnl::_impl::integer_digits<type>::value==0, "elastic_fixed_point type capacity is too small");
 
-    static constexpr int lsz = 1 << (-type::fractional_digits);
+    static constexpr int lsz = 1 << (-cnl::_impl::fractional_digits<type>::value);
     static_assert(Value==((Value/lsz)*lsz), "fractional_digits is too low");
 
     static constexpr int lsz1 = lsz * 2;

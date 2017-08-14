@@ -81,18 +81,6 @@ namespace cnl {
         /// value of template parameter, \a Exponent
         constexpr static int exponent = Exponent;
 
-        /// number of binary digits this type can represent;
-        /// equivalent to [std::numeric_limits::digits](http://en.cppreference.com/w/cpp/types/numeric_limits/digits)
-        constexpr static int digits = std::numeric_limits<Rep>::digits;
-
-        /// number of binary digits devoted to integer part of value;
-        /// can be negative for specializations with especially small ranges
-        constexpr static int integer_digits = digits+exponent;
-
-        /// number of binary digits devoted to fractional part of value;
-        /// can be negative for specializations with especially large ranges
-        constexpr static int fractional_digits = -exponent;
-
         ////////////////////////////////////////////////////////////////////////////////
         // functions
 
@@ -211,21 +199,6 @@ namespace cnl {
     /// value of template parameter, \a Exponent
     template<class Rep, int Exponent>
     constexpr int fixed_point<Rep, Exponent>::exponent;
-
-    /// number of binary digits this type can represent;
-    /// equivalent to [std::numeric_limits::digits](http://en.cppreference.com/w/cpp/types/numeric_limits/digits)
-    template<class Rep, int Exponent>
-    constexpr int fixed_point<Rep, Exponent>::digits;
-
-    /// number of binary digits devoted to integer part of value;
-    /// can be negative for specializations with especially small ranges
-    template<class Rep, int Exponent>
-    constexpr int fixed_point<Rep, Exponent>::integer_digits;
-
-    /// number of binary digits devoted to fractional part of value;
-    /// can be negative for specializations with especially large ranges
-    template<class Rep, int Exponent>
-    constexpr int fixed_point<Rep, Exponent>::fractional_digits;
 
     ////////////////////////////////////////////////////////////////////////////////
     // general-purpose implementation-specific definitions

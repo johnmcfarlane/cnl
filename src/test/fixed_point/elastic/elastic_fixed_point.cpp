@@ -167,8 +167,8 @@ struct positive_elastic_test
     static constexpr elastic_type max{numeric_limits::max()};
     static constexpr elastic_type lowest{numeric_limits::lowest()};
 
-    static constexpr int integer_digits = elastic_type::integer_digits;
-    static constexpr int fractional_digits = elastic_type::fractional_digits;
+    static constexpr int integer_digits = cnl::_impl::integer_digits<elastic_type>::value;
+    static constexpr int fractional_digits = cnl::_impl::fractional_digits<elastic_type>::value;
     static constexpr int digits = integer_digits+fractional_digits;
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -216,10 +216,10 @@ struct positive_elastic_test
 
     using negate_result = decltype(-zero);
     static_assert(
-            negate_result::integer_digits==elastic_type::integer_digits,
+            cnl::_impl::integer_digits<negate_result>::value==cnl::_impl::integer_digits<elastic_type>::value,
             "negative of positive value has wrong number of integer digits");
     static_assert(
-            negate_result::fractional_digits==elastic_type::fractional_digits,
+            cnl::_impl::fractional_digits<negate_result>::value==cnl::_impl::fractional_digits<elastic_type>::value,
             "negative of positive value has wrong number of fractional digits");
 
     ////////////////////////////////////////////////////////////////////////////////

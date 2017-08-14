@@ -23,7 +23,7 @@ namespace cnl {
 
             template<class FixedPoint>
             constexpr FixedPoint rounding_conversion(double d) {
-                using one_longer = fixed_point<set_digits_t<typename FixedPoint::rep, FixedPoint::digits+1>, FixedPoint::exponent-1>;
+                using one_longer = fixed_point<set_digits_t<typename FixedPoint::rep, digits<FixedPoint>::value+1>, FixedPoint::exponent-1>;
                 return FixedPoint::from_data(static_cast<typename FixedPoint::rep>((one_longer{ d }.data() + 1) >> 1));
             }
 
@@ -31,7 +31,7 @@ namespace cnl {
             using unsigned_rep = typename std::make_unsigned<typename FixedPoint::rep>::type;
 
             template<class Input>
-            using make_largest_ufraction = fixed_point<unsigned_rep<Input>, -std::numeric_limits<unsigned_rep<Input>>::digits>;
+            using make_largest_ufraction = fixed_point<unsigned_rep<Input>, -digits<unsigned_rep<Input>>::value>;
 
             static_assert(std::is_same<make_largest_ufraction<fixed_point<int32_t, -15>>, fixed_point<uint32_t, -32>>::value, "");
 
