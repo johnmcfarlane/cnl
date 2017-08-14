@@ -137,10 +137,10 @@ namespace cnl {
 
                     // 'Wide' doesn't guarantee avoiding overflow. Adding a single bit to add/subtract results would often lead to double the width being used.
                     static constexpr int sufficient_sign_bits = std::is_signed<rep_op_result>::value;
-                    static constexpr int sufficient_integer_digits = _impl::max(Lhs::integer_digits,
-                            Rhs::integer_digits);
-                    static constexpr int sufficient_fractional_digits = _impl::max(Lhs::fractional_digits,
-                            Rhs::fractional_digits);
+                    static constexpr int sufficient_integer_digits = _impl::max(_impl::integer_digits<Lhs>::value,
+                            _impl::integer_digits<Rhs>::value);
+                    static constexpr int sufficient_fractional_digits = _impl::max(_impl::fractional_digits<Lhs>::value,
+                            _impl::fractional_digits<Rhs>::value);
                     static constexpr _digits_type sufficient_digits = sufficient_integer_digits+sufficient_fractional_digits;
                     static constexpr int result_digits = _impl::max(sufficient_digits, digits<rep_op_result>::value);
 
@@ -154,7 +154,7 @@ namespace cnl {
                     using rhs_rep = typename Rhs::rep;
                     using rep_op_result = _impl::op_result<_impl::multiply_op, lhs_rep, rhs_rep>;
 
-                    static constexpr int digits = Lhs::digits+Rhs::digits;
+                    static constexpr int digits = cnl::digits<Lhs>::value+cnl::digits<Rhs>::value;
                     static constexpr bool is_signed =
                             std::numeric_limits<lhs_rep>::is_signed || std::numeric_limits<rhs_rep>::is_signed;
 
@@ -172,8 +172,8 @@ namespace cnl {
                     using rhs_rep = typename Rhs::rep;
                     using rep_op_result = _impl::op_result<_impl::multiply_op, lhs_rep, rhs_rep>;
 
-                    static constexpr int integer_digits = Lhs::integer_digits+Rhs::fractional_digits;
-                    static constexpr int fractional_digits = Lhs::fractional_digits+Rhs::integer_digits;
+                    static constexpr int integer_digits = _impl::integer_digits<Lhs>::value+fractional_digits<Rhs>::value;
+                    static constexpr int fractional_digits = _impl::fractional_digits<Lhs>::value+_impl::integer_digits<Rhs>::value;
                     static constexpr int necessary_digits = integer_digits+fractional_digits;
                     static constexpr bool is_signed =
                             std::numeric_limits<lhs_rep>::is_signed || std::numeric_limits<rhs_rep>::is_signed;
@@ -248,7 +248,7 @@ namespace cnl {
                     using wide_result = result<wide_tag, _impl::divide_op, Lhs, Rhs>;
                     using rep_type = typename wide_result::rep_type;
 
-                    static constexpr int exponent = Lhs::exponent-Rhs::digits;
+                    static constexpr int exponent = Lhs::exponent-digits<Rhs>::value;
 
                     using lhs_type = fixed_point<rep_type, exponent>;
                     using rhs_type = Rhs;

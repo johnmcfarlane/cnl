@@ -17,13 +17,13 @@ TEST(math, FPTESTFORMAT) {
     using fp = cnl::fixed_point<int32_t, FPTESTEXP>;
 
     //Test integer powers
-    for (int i = 0; i < fp::integer_digits; i++) {
+    for (int i = 0; i < cnl::_impl::integer_digits<fp>::value; i++) {
         ASSERT_EQ(exp2(fp{ i }), fp{ 1 << i });
     }
 
     //Test negative integer powers (which are representable in the format)
 #if (FPTESTEXP < 0)
-    for (int i = std::max(-fp::fractional_digits, -(cnl::_impl::shift_left<fp::integer_digits, int32_t>(1)) + 1); i < std::min(0, fp::integer_digits - 1); i++) {
+    for (int i = std::max(-cnl::_impl::fractional_digits<fp>::value, -(cnl::_impl::shift_left<cnl::_impl::integer_digits<fp>::value, int32_t>(1)) + 1); i < std::min(0, cnl::_impl::integer_digits<fp>::value - 1); i++) {
         fp lhs{ exp2(fp{ i }) };
         EXPECT_EQ(lhs, fp::from_data(1 << (-fp::exponent + i)))
             << "i = " << i << ", fixed point raw: " << lhs.data() << " should be: " << (1 << (-fp::exponent + i))
@@ -41,7 +41,7 @@ TEST(math, FPTESTFORMAT) {
             cnl::_impl::min(1., static_cast<double>(std::numeric_limits<fp>::max())) //As close to one as possible
     } };
 
-    for (int i = -fp::fractional_digits; i < fp::integer_digits; i++) {
+    for (int i = -cnl::_impl::fractional_digits<fp>::value; i < cnl::_impl::integer_digits<fp>::value; i++) {
         for (double frac : fracts) {
 
             //Build the double so that it's
@@ -66,14 +66,14 @@ TEST(math, FPTESTFORMAT) {
     }
 
     using numeric_limits = std::numeric_limits<fp>;
-    if (numeric_limits::max() >= int(fp::integer_digits)
-            && numeric_limits::lowest() <= -fp::fractional_digits) {
+    if (numeric_limits::max() >= int(cnl::_impl::integer_digits<fp>::value)
+            && numeric_limits::lowest() <= -cnl::_impl::fractional_digits<fp>::value) {
         //the largest exponent which's result doesn't overflow
-        auto maximum = fp::from_data(fp{ fp::integer_digits }.data() - 1);
+        auto maximum = fp::from_data(fp{ cnl::_impl::integer_digits<fp>::value }.data() - 1);
 
         //The next-to-smallest exponent whose result doesn't overflow
         //(The very smallest was already tested with the integer exponents)
-        auto minimum = fp::from_data(fp{ -fp::fractional_digits }.data() + 1);
+        auto minimum = fp::from_data(fp{ -cnl::_impl::fractional_digits<fp>::value }.data() + 1);
 
         double doublerep{ maximum };
         double doublerepmini{ minimum };
