@@ -90,7 +90,7 @@ namespace cnl {
         // is_positive_overflow
         template<
                 class Destination, class Source,
-                _impl::enable_if_t<!(positive_digits<Destination>::value<positive_digits<Source>::value), int> dummy = 0>
+                _impl::enable_if_t<_impl::greater_than_or_equal_tag(positive_digits<Destination>::value, positive_digits<Source>::value), int> dummy = 0>
         constexpr bool is_positive_overflow(Source const&)
         {
             // If positive capacity of Destination is equal to or exceeds that of Source,
@@ -100,16 +100,16 @@ namespace cnl {
 
         template<
                 class Destination, class Source,
-                _impl::enable_if_t<(positive_digits<Destination>::value<positive_digits<Source>::value), int> dummy = 0>
+                _impl::enable_if_t<_impl::less_than_tag(positive_digits<Destination>::value, positive_digits<Source>::value), int> dummy = 0>
         constexpr bool is_positive_overflow(Source const& source)
         {
-            return source>static_cast<Source>(std::numeric_limits<Destination>::max());
+            return _impl::greater_than_tag(source, static_cast<Source>(std::numeric_limits<Destination>::max()));
         }
 
         // is_negative_overflow
         template<
                 class Destination, class Source,
-                _impl::enable_if_t<!(negative_digits<Destination>::value<negative_digits<Source>::value), int> dummy = 0>
+                _impl::enable_if_t<_impl::greater_than_or_equal_tag(negative_digits<Destination>::value, negative_digits<Source>::value), int> dummy = 0>
         constexpr bool is_negative_overflow(Source const&)
         {
             // If positive capacity of Destination is equal to or exceeds that of Source,
@@ -119,10 +119,10 @@ namespace cnl {
 
         template<
                 class Destination, class Source,
-                _impl::enable_if_t<(negative_digits<Destination>::value<negative_digits<Source>::value), int> dummy = 0>
+                _impl::enable_if_t<_impl::less_than_tag(negative_digits<Destination>::value, negative_digits<Source>::value), int> dummy = 0>
         constexpr bool is_negative_overflow(Source const& source)
         {
-            return source<static_cast<Source>(std::numeric_limits<Destination>::lowest());
+            return static_cast<Source>(std::numeric_limits<Destination>::lowest())>source;
         }
 
         ////////////////////////////////////////////////////////////////////////////////
