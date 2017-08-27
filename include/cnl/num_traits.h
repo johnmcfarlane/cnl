@@ -313,8 +313,8 @@ namespace cnl {
         struct encompasses {
             static constexpr bool _lower = encompasses_lower<Encompasser, Encompassed>::value;
             static constexpr bool _upper =
-                    static_cast<unsigned_or_float_t<Encompasser>>(std::numeric_limits<Encompasser>::max())
-                    >= static_cast<unsigned_or_float_t<Encompassed>>(std::numeric_limits<Encompassed>::max());
+                    static_cast<unsigned_or_float_t<Encompasser> >(std::numeric_limits<Encompasser>::max())
+                    >= static_cast<unsigned_or_float_t<Encompassed> >(std::numeric_limits<Encompassed>::max());
 
             static constexpr bool value = _lower && _upper;
         };
@@ -417,8 +417,8 @@ namespace cnl {
         template<class T>
         constexpr scale_result_type<T> pown(int base, int exp) {
             return exp
-                   ? pown<T>(base, exp - 1) * static_cast<scale_result_type<T>>(base)
-                   : static_cast<scale_result_type<T>>(1);
+                   ? pown<T>(base, exp - 1) * static_cast<scale_result_type<T> >(base)
+                   : static_cast<scale_result_type<T> >(1);
         }
 
         template<class T>
