@@ -5,69 +5,139 @@ language: cpp
 
 matrix:
   include:
+#    # C++17
+#    - os: linux
+#      addons: &gcc7
+#        apt:
+#          sources:
+#            - ubuntu-toolchain-r-test
+#          packages:
+#            - g++-7
+#      env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=OFF
+#
+#    # C++14
+#    - os: osx
+#      compiler: g++
+#      env: MATRIX_EVAL="" BUILD_TYPE=Debug STD=14 EXCEPTIONS=OFF INT128=OFF
+#
+#    - os: linux
+#      addons: *gcc7
+#      env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=OFF
+#
+#    - os: linux
+#      addons: &gcc6
+#        apt:
+#          sources:
+#            - ubuntu-toolchain-r-test
+#          packages:
+#            - g++-6
+#      env: MATRIX_EVAL="CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=OFF
+#
+#    - os: linux
+#      addons: &gcc5
+#        apt:
+#          sources:
+#            - ubuntu-toolchain-r-test
+#          packages:
+#            - g++-5
+#      env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Release STD=14 EXCEPTIONS=OFF INT128=OFF
+#
+#    - os: osx
+#      compiler: clang
+#      env: MATRIX_EVAL="" BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=OFF
+
     - os: linux
-      addons: &gcc7
+      addons: &clang4
         apt:
           sources:
-            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-4.0
           packages:
-            - g++-7
-      env: COMPILER=g++-7 BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON
+            - clang-4.0
+      env: MATRIX_EVAL="CC=clang-4.0 && CXX=clang++-4.0" BUILD_TYPE=Debug STD=14 EXCEPTIONS=OFF INT128=OFF
 
     - os: linux
-      addons: *gcc7
-      env: COMPILER=g++-7 BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF
-
-    - os: linux
-      addons: &gcc5
+      addons: &clang38
         apt:
           sources:
-            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-3.8
           packages:
-            - g++-5
-      env: COMPILER=g++-5 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
+            - clang-3.8
+      env: MATRIX_EVAL="CC=clang-3.8 && CXX=clang++-3.8" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=OFF
 
     - os: linux
-      addons: *gcc5
-      env: COMPILER=g++-5 BUILD_TYPE=Release STD=11 EXCEPTIONS=OFF INT128=OFF
+      addons: &clang37
+        apt:
+          sources:
+            - llvm-toolchain-trusty-3.7
+          packages:
+            - clang-3.7
+      env: MATRIX_EVAL="CC=clang-3.7 && CXX=clang++-3.7" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=OFF
 
     - os: linux
-      addons: *gcc5
-      env: COMPILER=g++-5 BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=ON
+      addons: &clang36
+        apt:
+          sources:
+            - llvm-toolchain-trusty-3.6
+          packages:
+            - clang-3.6
+      env: MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=OFF
 
     - os: linux
-      addons: *gcc5
-      env: COMPILER=g++-5 BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF
+      addons: &clang35
+        apt:
+          sources:
+            - llvm-toolchain-trusty-3.5
+          packages:
+            - clang-3.5
+      env: MATRIX_EVAL="CC=clang-3.5 && CXX=clang++-3.5" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=OFF
 
-    - os: linux
-      compiler: clang
-      env: COMPILER=clang++ BUILD_TYPE=Release STD=11 EXCEPTIONS=OFF INT128=OFF
-
-    - os: linux
-      compiler: clang
-      env: COMPILER=clang++ BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF
+    # C++11
+#    - os: osx
+#      compiler: g++
+#      env: MATRIX_EVAL="" BUILD_TYPE=Release STD=11 EXCEPTIONS=OFF INT128=OFF
+#
+#    - os: linux
+#      addons: *gcc7
+#      env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF
+#
+#    - os: linux
+#      addons: *gcc6
+#      env: MATRIX_EVAL="CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=OFF
+#
+#    - os: linux
+#      addons: *gcc5
+#      env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF
 
     - os: osx
-      compiler: g++
-      env: COMPILER=c++ BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
-
-    - os: osx
-      compiler: g++
-      env: COMPILER=c++ BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=ON
-
-    - os: osx
       compiler: clang
-      env: COMPILER=c++ BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
+      env: MATRIX_EVAL="" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=OFF
 
-    - os: osx
-      compiler: clang
-      env: COMPILER=c++ BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=ON
+    - os: linux
+      addons: *clang4
+      env: MATRIX_EVAL="CC=clang-4.0 && CXX=clang++-4.0" BUILD_TYPE=Release STD=11 EXCEPTIONS=OFF INT128=OFF
+
+    - os: linux
+      addons: *clang38
+      env: MATRIX_EVAL="CC=clang-3.8 && CXX=clang++-3.8" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF
+
+    - os: linux
+      addons: *clang37
+      env: MATRIX_EVAL="CC=clang-3.7 && CXX=clang++-3.7" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF
+
+    - os: linux
+      addons: *clang36
+      env: MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF
+
+#    - os: linux
+#      compiler: clang
+#      env: MATRIX_EVAL="" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=OFF
+
 
 before_install:
+  - eval "${MATRIX_EVAL}"
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source .travis-setup-linux.sh ; fi
 
 script:
-    - export CXX="${COMPILER}"
     - cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -DSTD="${STD}" -DEXCEPTIONS="${EXCEPTIONS}" -DINT128="${INT128}"
     - make
     - ./src/test/fp_test
