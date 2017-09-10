@@ -16,12 +16,18 @@
 #include <cstdint>
 #include <limits>
 
+#if defined(CNL_NUMERIC_LIMITS_128_PROVIDED)
+#error CNL_NUMERIC_LIMITS_128_PROVIDED already defined
+#endif
+
 // CNL_NUMERIC_LIMITS_128_PROVIDED defined if
 // standard library specializes std::numeric_limits for 128-bit integer
-#if !defined(__clang__) && defined(__GNUG__) && (__cplusplus <= 201402L)
-#define CNL_NUMERIC_LIMITS_128_PROVIDED
-#elif defined(CNL_NUMERIC_LIMITS_128_PROVIDED)
-#error CNL_NUMERIC_LIMITS_128_PROVIDED already defined
+#if defined(__clang__)
+#  if (__cplusplus >= 201402L) || (__clang_major__ >= 4) || (__clang_minor__ > 5)
+#    define CNL_NUMERIC_LIMITS_128_PROVIDED
+#  endif
+#elif defined(__GNUG__) && (__cplusplus <= 201402L)
+#  define CNL_NUMERIC_LIMITS_128_PROVIDED
 #endif
 
 #if defined(CNL_INT128_ENABLED) && !defined(CNL_NUMERIC_LIMITS_128_PROVIDED)

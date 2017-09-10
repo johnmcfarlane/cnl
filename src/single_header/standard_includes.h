@@ -2,6 +2,7 @@
 #include <utility>
 #include <istream>
 #include <climits>
+#include <cstddef>
 #include <cstdint>
 #include <limits>
 #include <stdexcept>
