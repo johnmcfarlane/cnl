@@ -206,24 +206,24 @@ namespace {
         static_assert(leading_bits(UINT32_C(1)) == 31, "cnl::leading_bits");
 
         TEST(numeric, leading_bits) {
-            ASSERT_EQ(leading_bits(INT32_C(0)), 31);
-            ASSERT_EQ(leading_bits(INT32_C(127)), 24);
-            ASSERT_EQ(leading_bits(INT32_C(64)), 24);
-            ASSERT_EQ(leading_bits(INT32_C(63)), 25);
-            ASSERT_EQ(leading_bits(INT32_C(4)), 28);
-            ASSERT_EQ(leading_bits(INT32_C(3)), 29);
-            ASSERT_EQ(leading_bits(INT32_C(2)), 29);
-            ASSERT_EQ(leading_bits(INT32_C(1)), 30);
-            ASSERT_EQ(leading_bits(INT32_C(-1)), 31);
-            ASSERT_EQ(leading_bits(INT32_C(-2)), 30);
-            ASSERT_EQ(leading_bits(INT32_C(-3)), 29);
-            ASSERT_EQ(leading_bits(INT32_C(-4)), 29);
-            ASSERT_EQ(leading_bits(INT32_C(-5)), 28);
-            ASSERT_EQ(leading_bits(INT32_C(-129)), 23);
-            ASSERT_EQ(leading_bits(INT32_C(-128)), 24);
-            ASSERT_EQ(leading_bits(INT32_C(-127)), 24);
-            ASSERT_EQ(leading_bits(INT32_C(-65)), 24);
-            ASSERT_EQ(leading_bits(INT32_C(-64)), 25);
+            EXPECT_EQ(leading_bits(INT32_C(0)), 31);
+            EXPECT_EQ(leading_bits(INT32_C(127)), 24);
+            EXPECT_EQ(leading_bits(INT32_C(64)), 24);
+            EXPECT_EQ(leading_bits(INT32_C(63)), 25);
+            EXPECT_EQ(leading_bits(INT32_C(4)), 28);
+            EXPECT_EQ(leading_bits(INT32_C(3)), 29);
+            EXPECT_EQ(leading_bits(INT32_C(2)), 29);
+            EXPECT_EQ(leading_bits(INT32_C(1)), 30);
+            EXPECT_EQ(leading_bits(INT32_C(-1)), 31);
+            EXPECT_EQ(leading_bits(INT32_C(-2)), 30);
+            EXPECT_EQ(leading_bits(INT32_C(-3)), 29);
+            EXPECT_EQ(leading_bits(INT32_C(-4)), 29);
+            EXPECT_EQ(leading_bits(INT32_C(-5)), 28);
+            EXPECT_EQ(leading_bits(INT32_C(-129)), 23);
+            EXPECT_EQ(leading_bits(INT32_C(-128)), 24);
+            EXPECT_EQ(leading_bits(INT32_C(-127)), 24);
+            EXPECT_EQ(leading_bits(INT32_C(-65)), 24);
+            EXPECT_EQ(leading_bits(INT32_C(-64)), 25);
         }
     }
 }
