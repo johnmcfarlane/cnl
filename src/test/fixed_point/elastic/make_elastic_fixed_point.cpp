@@ -12,7 +12,6 @@
 using cnl::make_elastic_fixed_point;
 using cnl::_impl::identical;
 using namespace cnl::literals;
-using cnl::const_integer;
 using cnl::elastic_fixed_point;
 
 static constexpr auto int_digits = std::numeric_limits<int>::digits;

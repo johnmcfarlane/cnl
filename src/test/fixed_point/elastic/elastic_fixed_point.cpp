@@ -136,7 +136,6 @@ struct print_num_as_error {
 }; //always overflow
 
 namespace test_elastic_constant_literal {
-    using namespace cnl::literals;
     using cnl::_impl::identical;
     static_assert(identical(0_elastic, elastic_fixed_point<1, 0>{0}), "");
 }
