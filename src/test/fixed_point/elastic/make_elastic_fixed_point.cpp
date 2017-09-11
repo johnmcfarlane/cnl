@@ -4,7 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include "elastic_fixed_point.h"
+#include <cnl/auxiliary/elastic_fixed_point.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::make_elastic_fixed_point

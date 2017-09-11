@@ -2,6 +2,7 @@ add_library(cnl INTERFACE)
 target_sources(cnl INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/auxiliary/boost.multiprecision.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/auxiliary/boost.simd.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/cnl/auxiliary/elastic_fixed_point.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/elastic_integer.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/fixed_point.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/integral_constant.h

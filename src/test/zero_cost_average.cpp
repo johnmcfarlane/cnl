@@ -7,7 +7,7 @@
 /// \file
 /// \brief Signed 15:16 Fixed-Point Average Function Using cnl::elastic_fixed_point
 
-#include "fixed_point/elastic/elastic_fixed_point.h"
+#include <cnl/auxiliary/elastic_fixed_point.h>
 #include <gtest/gtest.h>
 
 using namespace cnl;
