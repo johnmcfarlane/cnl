@@ -287,7 +287,7 @@ namespace {
 #endif
 
     // user-defined literal initialization
-#if (__cplusplus > 201402L)
+#if defined(__cpp_deduction_guides)
     // with class template deduction
     static_assert(identical(elastic_integer(1_c), elastic_integer<1>{1}), "");
 #else
