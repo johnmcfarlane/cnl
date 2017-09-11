@@ -18,8 +18,8 @@ add_executable(fp_test
         zero_cost_square.cpp
         p0554.cpp
         index.cpp
+        integral_constant.cpp
         number_test.cpp
-        const_integer.cpp
         zero_cost_free_functions.cpp
         boost.multiprecision.cpp
         zero_cost_average.cpp

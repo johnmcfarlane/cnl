@@ -51,14 +51,12 @@ namespace cnl {
             class Narrowest = int,
             class Input = int,
             class Integral,
-            Integral Value,
-            int Digits,
-            int Exponent>
+            Integral Value>
     psefp<
-            Digits, -Exponent,
+            used_bits(Value), -trailing_bits(Value),
             OverflowTag, RoundingTag,
             Narrowest>
-    constexpr make_psefp(const_integer<Integral, Value, Digits, Exponent> const&)
+    constexpr make_psefp(std::integral_constant<Integral, Value> const&)
     {
         return Value;
     }

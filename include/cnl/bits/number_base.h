@@ -7,8 +7,8 @@
 #if !defined(CNL_NUMBER_BASE_H)
 #define CNL_NUMBER_BASE_H 1
 
-#include <cnl/auxiliary/const_integer.h>
 #include <cnl/bits/common.h>
+#include <cnl/integral_constant.h>
 #include <cnl/num_traits.h>
 
 #include <limits>

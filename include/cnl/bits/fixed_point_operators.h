@@ -285,21 +285,6 @@ namespace cnl {
     // fixed_point, const_integer
     template<class LhsRep, int LhsExponent, class RhsIntegral, RhsIntegral RhsValue>
     constexpr fixed_point<LhsRep, LhsExponent+RhsValue>
-    operator<<(fixed_point<LhsRep, LhsExponent> const& lhs, const_integer<RhsIntegral, RhsValue>)
-    {
-        return fixed_point<LhsRep, LhsExponent+RhsValue>::from_data(lhs.data());
-    }
-
-    template<class LhsRep, int LhsExponent, class RhsIntegral, RhsIntegral RhsValue>
-    constexpr fixed_point<LhsRep, LhsExponent-RhsValue>
-    operator>>(fixed_point<LhsRep, LhsExponent> const& lhs, const_integer<RhsIntegral, RhsValue>)
-    {
-        return fixed_point<LhsRep, LhsExponent-RhsValue>::from_data(lhs.data());
-    }
-
-    // fixed_point, const_integer
-    template<class LhsRep, int LhsExponent, class RhsIntegral, RhsIntegral RhsValue>
-    constexpr fixed_point<LhsRep, LhsExponent+RhsValue>
     operator<<(fixed_point<LhsRep, LhsExponent> const& lhs, std::integral_constant<RhsIntegral, RhsValue>)
     {
         return fixed_point<LhsRep, LhsExponent+RhsValue>::from_data(lhs.data());
