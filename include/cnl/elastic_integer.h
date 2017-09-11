@@ -66,6 +66,14 @@ namespace cnl {
         using type = elastic_integer<cnl::digits<Value>::value, cnl::_impl::make_signed_t<Narrowest, cnl::is_signed<Value>::value>>;
     };
 
+    template<int Digits, class Narrowest, class Integer, Integer Value>
+    struct from_value<elastic_integer<Digits, Narrowest>, std::integral_constant<Integer, Value>> {
+        static constexpr auto _to_digits = cnl::used_bits(Value);
+        using _to_narrowest = cnl::_impl::make_signed_t<Narrowest, cnl::is_signed<Integer>::value>;
+
+        using type = elastic_integer<_to_digits, _to_narrowest>;
+    };
+
     template<int Digits, class Narrowest>
     struct scale<elastic_integer<Digits, Narrowest>> {
         using _value_type = elastic_integer<Digits, Narrowest>;
@@ -124,8 +132,8 @@ namespace cnl {
         }
 
         /// constructor taking an integral constant
-        template<class Integral, Integral Value, int Exponent>
-        constexpr elastic_integer(const_integer<Integral, Value, Digits, Exponent>)
+        template<class Integral, Integral Value>
+        constexpr elastic_integer(std::integral_constant<Integral, Value>)
                 : _base(static_cast<rep>(Value))
         {
             static_assert(!cnl::is_signed<Integral>::value || cnl::is_signed<rep>::value, "initialization by out-of-range value");
@@ -148,17 +156,26 @@ namespace cnl {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
+    // cnl::elastic_integer{std::integral_constant} deduction guide
+
+#if defined(__cpp_deduction_guides)
+    template<class Integer, Integer Value>
+    elastic_integer(std::integral_constant<Integer, Value>)
+    -> elastic_integer<used_bits(Value)>;
+#endif
+
+    ////////////////////////////////////////////////////////////////////////////////
     // cnl::make_elastic_integer
 
     template<
             class Integral, Integral Value>
-    constexpr auto make_elastic_integer(const_integer<Integral, Value>)
+    constexpr auto make_elastic_integer(std::integral_constant<Integral, Value>)
     -> elastic_integer<used_bits(Value)>
     {
         return elastic_integer<used_bits(Value)>{Value};
     }
 
-    template<class Narrowest = int, class Integral, _impl::enable_if_t<!is_const_integer<Integral>::value, int> Dummy = 0>
+    template<class Narrowest = int, class Integral, _impl::enable_if_t<!_impl::is_integral_constant<Integral>::value, int> Dummy = 0>
     constexpr auto make_elastic_integer(Integral const& value)
     -> decltype(elastic_integer<std::numeric_limits<Integral>::digits, Narrowest>{value})
     {

@@ -32,12 +32,13 @@ INPUT = \
     ../include/cnl/bits/common.h \
     ../include/cnl/bits/fixed_point_extras.h \
     ../include/cnl/bits/fixed_point_arithmetic.h \
+    ../include/cnl/bits/integral_constant.h \
     ../include/cnl/bits/limits.h \
     ../include/cnl/bits/fixed_point_named.h \
     ../include/cnl/bits/fixed_point_num_traits.h \
     ../include/cnl/elastic_integer.h \
+    ../include/cnl/auxiliary/elastic_fixed_point.h \
     ../include/cnl/auxiliary/boost.multiprecision.h \
-    ../include/cnl/auxiliary/const_integer.h \
     ../include/cnl/auxiliary/boost.simd.h \
     ../include/cnl/safe_integer.h \
     index.md

@@ -7,7 +7,7 @@
 /// \file
 /// \brief tests of C++17-only examples listed in paper, P0675
 
-#if (__cplusplus > 201402L)
+#if defined(__cpp_deduction_guides)
 
 #include <cnl/precise_integer.h>
 #include <cnl/num_traits.h>

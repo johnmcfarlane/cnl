@@ -10,8 +10,8 @@
 #if !defined(CNL_FIXED_POINT_DEF_H)
 #define CNL_FIXED_POINT_DEF_H 1
 
-#include <cnl/auxiliary/const_integer.h>
 #include <cnl/bits/number_base.h>
+#include <cnl/integral_constant.h>
 
 /// compositional numeric library
 namespace cnl {
@@ -104,8 +104,8 @@ namespace cnl {
 
         /// constructor taking an integral_constant type
         template<class Integral, Integral Constant>
-        constexpr fixed_point(std::integral_constant<Integral, Constant> const&)
-                : fixed_point(fixed_point<Integral, 0>::from_data(Constant))
+        constexpr fixed_point(std::integral_constant<Integral, Constant> const& rhs)
+                : fixed_point(fixed_point<Integral, 0>::from_data(rhs))
         {
         }
 
@@ -113,13 +113,6 @@ namespace cnl {
         template<class S, _impl::enable_if_t<std::numeric_limits<S>::is_integer, int> Dummy = 0>
         constexpr fixed_point(S const& s)
             : fixed_point(fixed_point<S, 0>::from_data(s))
-        {
-        }
-
-        /// constructor taking an integral_constant type
-        template<class Integral, Integral Value, int Digits>
-        constexpr fixed_point(const_integer<Integral, Value, Digits, Exponent> ci)
-            : _base(ci << Exponent)
         {
         }
 
@@ -199,6 +192,15 @@ namespace cnl {
     /// value of template parameter, \a Exponent
     template<class Rep, int Exponent>
     constexpr int fixed_point<Rep, Exponent>::exponent;
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::fixed_point{std::integral_constant} deduction guide
+
+#if defined(__cpp_deduction_guides)
+    template<class Integer, Integer Value>
+    fixed_point(std::integral_constant<Integer, Value>)
+    -> fixed_point<int, trailing_bits(Value)>;
+#endif
 
     ////////////////////////////////////////////////////////////////////////////////
     // general-purpose implementation-specific definitions

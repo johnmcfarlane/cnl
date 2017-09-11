@@ -48,14 +48,14 @@ namespace cnl {
     /// \par Example
     ///
     /// To define an int-sized object using \ref make_elastic_fixed_point and \ref const_integer:
-    /// \snippet snippets.cpp define an int-sized object using make_elastic_fixed_point and const_integer
+    /// \snippet snippets.cpp define an int-sized object using make_elastic_fixed_point and integral_constant
 
     template<
             typename Narrowest = int,
             typename Integral = int,
             Integral Value = 0>
     constexpr elastic_fixed_point<_impl::max(_impl::used_bits_symmetric(Value)-trailing_bits(Value), 1), trailing_bits(Value), Narrowest>
-    make_elastic_fixed_point(const_integer<Integral, Value> = const_integer<Integral, Value>{})
+    make_elastic_fixed_point(std::integral_constant<Integral, Value>)
     {
         return Value;
     }
@@ -77,7 +77,7 @@ namespace cnl {
 
     /// \brief generate an \ref cnl::elastic_fixed_point object of given value
     template<class Narrowest = int, class Integral = int>
-    constexpr elastic_fixed_point<std::numeric_limits<Integral>::digits, 0, Narrowest> 
+    constexpr elastic_fixed_point<std::numeric_limits<Integral>::digits, 0, Narrowest>
     make_elastic_fixed_point(Integral value)
     {
         return {value};
@@ -104,8 +104,10 @@ namespace cnl {
     namespace literals {
         template<char... Digits>
         constexpr auto operator "" _elastic()
-        -> decltype(make_elastic_fixed_point<int, std::intmax_t, _const_integer_impl::digits_to_integral<Digits...>::value>()) {
-            return make_elastic_fixed_point<int, std::intmax_t, _const_integer_impl::digits_to_integral<Digits...>::value>();
+        -> decltype(make_elastic_fixed_point<int>(std::integral_constant<
+                std::intmax_t, _const_integer_impl::digits_to_integral<Digits...>::value>{})) {
+            return make_elastic_fixed_point<int>(std::integral_constant<
+                    std::intmax_t, _const_integer_impl::digits_to_integral<Digits...>::value>{});
         }
     }
 }

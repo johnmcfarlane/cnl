@@ -30,7 +30,8 @@ namespace cnl {
             class OverflowTag = safe_integer<>::overflow_tag,
             class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int,
-            class Input = int>
+            class Input = int,
+            class = _impl::enable_if_t<!_impl::is_integral_constant<Input>::value>>
     psei<
             std::numeric_limits<Input>::digits,
             OverflowTag, RoundingTag,
@@ -38,6 +39,21 @@ namespace cnl {
     constexpr make_psei(Input const& input)
     {
         return input;
+    }
+
+    template<
+            class OverflowTag = safe_integer<>::overflow_tag,
+            class RoundingTag = precise_integer<>::rounding,
+            class Narrowest = int,
+            class InputInteger = int,
+            InputInteger InputValue = 0>
+    psei<
+            used_bits(InputValue),
+            OverflowTag, RoundingTag,
+            Narrowest>
+    constexpr make_psei(std::integral_constant<InputInteger, InputValue>)
+    {
+        return InputValue;
     }
 }
 

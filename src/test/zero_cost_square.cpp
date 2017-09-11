@@ -9,7 +9,7 @@
 
 // Here's how to use the fixed_point library on Godbolt.org.
 // Normally, you'd just add `#include <fixed_point>`.
-#include "fixed_point/elastic/elastic_fixed_point.h"
+#include <cnl/auxiliary/elastic_fixed_point.h>
 using namespace cnl;
 
 // square a nunber using 15:16 fixed-point arithmetic

@@ -84,7 +84,10 @@ namespace {
         static_assert(identical(elastic_integer<8>{1L}, elastic_integer<8>{1}), "elastic_integer test failed");
 
         static_assert(identical(elastic_integer<4>{10_c}, elastic_integer<4>{10}), "");
-        static_assert(identical(elastic_integer<10>{cnl::const_integer<unsigned, 1000>{}}, elastic_integer<10>{1000}), "");
+#if defined(__cpp_deduction_guides)
+        static_assert(identical(elastic_integer{std::integral_constant<unsigned, 1000>{}}, elastic_integer<10>{1000}), "");
+#endif
+        static_assert(identical(elastic_integer<10>{std::integral_constant<unsigned, 1000>{}}, elastic_integer<10>{1000}), "");
     }
 
     namespace test_is_elastic_integer {
@@ -287,7 +290,7 @@ namespace {
 #endif
 
     // user-defined literal initialization
-#if (__cplusplus > 201402L)
+#if defined(__cpp_deduction_guides)
     // with class template deduction
     static_assert(identical(elastic_integer(1_c), elastic_integer<1>{1}), "");
 #else

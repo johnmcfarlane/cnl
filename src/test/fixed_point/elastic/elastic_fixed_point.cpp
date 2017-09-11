@@ -7,7 +7,7 @@
 /// \file
 /// \brief tests of cnl::elastic_fixed_point alias
 
-#include "elastic_fixed_point.h"
+#include <cnl/auxiliary/elastic_fixed_point.h>
 #include "../../number_test.h"
 
 using std::is_same;
@@ -136,9 +136,29 @@ struct print_num_as_error {
 }; //always overflow
 
 namespace test_elastic_constant_literal {
-    using namespace cnl::literals;
     using cnl::_impl::identical;
     static_assert(identical(0_elastic, elastic_fixed_point<1, 0>{0}), "");
+
+    static_assert(identical(1_elastic, elastic_fixed_point<1, 0>{1}), "");
+    static_assert(identical(-1_elastic, elastic_fixed_point<1, 0>{-1}), "");
+
+    static_assert(identical(2_elastic, elastic_fixed_point<1, 1>{2}), "");
+    static_assert(identical(-2_elastic, elastic_fixed_point<1, 1>{-2}), "");
+
+    static_assert(identical(3_elastic, elastic_fixed_point<2, 0>{3}), "");
+    static_assert(identical(-3_elastic, elastic_fixed_point<2, 0>{-3}), "");
+
+    static_assert(identical(4_elastic, elastic_fixed_point<1, 2>{4}), "");
+    static_assert(identical(-4_elastic, elastic_fixed_point<1, 2>{-4}), "");
+
+    static_assert(identical(6_elastic, elastic_fixed_point<2, 1>{6}), "");
+    static_assert(identical(-6_elastic, elastic_fixed_point<2, 1>{-6}), "");
+
+    static_assert(identical(0xAA_elastic, elastic_fixed_point<7, 1>{0xaa}), "");
+    static_assert(identical(-0xaa_elastic, elastic_fixed_point<7, 1>{-0xaa}), "");
+
+    static_assert(identical(897341888_elastic, elastic_fixed_point<24, 6>{897341888}), "");
+    static_assert(identical(-897341888_elastic, elastic_fixed_point<24, 6>{-897341888}), "");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

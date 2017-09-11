@@ -141,8 +141,8 @@ namespace cnl {
         }
 
         /// constructor taking an integral constant
-        template<class Integral, Integral Value, int Digits, int Exponent>
-        constexpr safe_integer(const_integer<Integral, Value, Digits, Exponent>)
+        template<class Integral, Integral Value>
+        constexpr safe_integer(std::integral_constant<Integral, Value>)
                 : _base(static_cast<rep>(Value))
         {
             static_assert(Value <= std::numeric_limits<rep>::max(), "initialization by out-of-range value");

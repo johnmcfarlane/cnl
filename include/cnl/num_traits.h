@@ -149,6 +149,7 @@ namespace cnl {
 
     template<class T, class Enable = void>
     struct digits : std::integral_constant<_digits_type, std::numeric_limits<T>::digits> {
+        static_assert(std::numeric_limits<T>::is_specialized, "cnl::digits is not correctly specialized for T");
     };
 
 #if (__cplusplus > 201402L)
