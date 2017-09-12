@@ -25,6 +25,7 @@ INPUT = \
     ../include/cnl/bits/fixed_point_operators.h \
     ../include/cnl/bits/fixed_point_math.h \
     ../include/cnl/bits/fixed_point_common_type.h \
+    ../include/cnl/bits/fixed_point_constants.h \
     ../include/cnl/bits/fixed_point_type.h \
     ../include/cnl/bits/type_traits.h \
     ../include/cnl/bits/number_base.h \
