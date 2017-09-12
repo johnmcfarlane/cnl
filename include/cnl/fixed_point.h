@@ -13,6 +13,7 @@
 #include "bits/fixed_point_type.h"
 #include "bits/fixed_point_named.h"
 #include "bits/fixed_point_common_type.h"
+#include "bits/fixed_point_constants.h"
 #include "bits/fixed_point_operators.h"
 #include "bits/fixed_point_extras.h"
 

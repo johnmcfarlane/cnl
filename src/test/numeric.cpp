@@ -5,18 +5,53 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/numeric.h>
-#include <cnl/bits/limits.h>
 
 #include <gtest/gtest.h>
 
-#include <cstdint>
-#include <cnl/bits/type_traits.h>
+#include <cmath>
 
 namespace {
     using namespace cnl;
     using std::int8_t;
     using std::uint8_t;
     using std::int64_t;
+
+#if defined(__cpp_inline_variables)
+
+    namespace test_math_constants {
+        template<typename T>
+        void test_type() {
+            auto epsilon = std::numeric_limits<T>::epsilon();
+            
+            EXPECT_NEAR(std::exp(T{1}), e<T>, epsilon);
+            EXPECT_EQ(std::log2(e<T>), log2e<T>);
+            EXPECT_NEAR(std::log10(e<T>), log10e<T>, epsilon);
+            EXPECT_NEAR(std::log(T{2}), ln2<T>, epsilon);
+            EXPECT_NEAR(std::log(T{10}), ln10<T>, epsilon);
+            EXPECT_NEAR(std::atan(T{1}) * T{4}, pi<T>, epsilon);
+            EXPECT_EQ(pi<T> / T{2}, pi_2<T>);
+            EXPECT_EQ(pi<T> / T{4}, pi_4<T>);
+            EXPECT_EQ(T{1} / pi<T>, one_pi<T>);
+            EXPECT_EQ(T{2} / pi<T>, two_pi<T>);
+            EXPECT_NEAR(T{2} / std::sqrt(pi<T>), two_sqrtpi<T>, epsilon);
+            EXPECT_NEAR(std::sqrt(T{2}), sqrt2<T>, epsilon);
+            EXPECT_NEAR(T{1} / sqrt2<T>, one_sqrt2<T>, epsilon);
+        }
+
+        TEST(numeric, float_constants) {
+            test_type<float>();
+        }
+
+        TEST(numeric, double_constants) {
+            test_type<double>();
+        }
+
+        TEST(numeric, long_double_constants) {
+            test_type<long double>();
+        }
+    }
+
+#endif  // defined(__cpp_inline_variables)
 
     namespace test_numeric_impl {
         using namespace _numeric_impl;
@@ -171,24 +206,24 @@ namespace {
         static_assert(leading_bits(UINT32_C(1)) == 31, "cnl::leading_bits");
 
         TEST(numeric, leading_bits) {
-            ASSERT_EQ(leading_bits(INT32_C(0)), 31);
-            ASSERT_EQ(leading_bits(INT32_C(127)), 24);
-            ASSERT_EQ(leading_bits(INT32_C(64)), 24);
-            ASSERT_EQ(leading_bits(INT32_C(63)), 25);
-            ASSERT_EQ(leading_bits(INT32_C(4)), 28);
-            ASSERT_EQ(leading_bits(INT32_C(3)), 29);
-            ASSERT_EQ(leading_bits(INT32_C(2)), 29);
-            ASSERT_EQ(leading_bits(INT32_C(1)), 30);
-            ASSERT_EQ(leading_bits(INT32_C(-1)), 31);
-            ASSERT_EQ(leading_bits(INT32_C(-2)), 30);
-            ASSERT_EQ(leading_bits(INT32_C(-3)), 29);
-            ASSERT_EQ(leading_bits(INT32_C(-4)), 29);
-            ASSERT_EQ(leading_bits(INT32_C(-5)), 28);
-            ASSERT_EQ(leading_bits(INT32_C(-129)), 23);
-            ASSERT_EQ(leading_bits(INT32_C(-128)), 24);
-            ASSERT_EQ(leading_bits(INT32_C(-127)), 24);
-            ASSERT_EQ(leading_bits(INT32_C(-65)), 24);
-            ASSERT_EQ(leading_bits(INT32_C(-64)), 25);
+            EXPECT_EQ(leading_bits(INT32_C(0)), 31);
+            EXPECT_EQ(leading_bits(INT32_C(127)), 24);
+            EXPECT_EQ(leading_bits(INT32_C(64)), 24);
+            EXPECT_EQ(leading_bits(INT32_C(63)), 25);
+            EXPECT_EQ(leading_bits(INT32_C(4)), 28);
+            EXPECT_EQ(leading_bits(INT32_C(3)), 29);
+            EXPECT_EQ(leading_bits(INT32_C(2)), 29);
+            EXPECT_EQ(leading_bits(INT32_C(1)), 30);
+            EXPECT_EQ(leading_bits(INT32_C(-1)), 31);
+            EXPECT_EQ(leading_bits(INT32_C(-2)), 30);
+            EXPECT_EQ(leading_bits(INT32_C(-3)), 29);
+            EXPECT_EQ(leading_bits(INT32_C(-4)), 29);
+            EXPECT_EQ(leading_bits(INT32_C(-5)), 28);
+            EXPECT_EQ(leading_bits(INT32_C(-129)), 23);
+            EXPECT_EQ(leading_bits(INT32_C(-128)), 24);
+            EXPECT_EQ(leading_bits(INT32_C(-127)), 24);
+            EXPECT_EQ(leading_bits(INT32_C(-65)), 24);
+            EXPECT_EQ(leading_bits(INT32_C(-64)), 25);
         }
     }
 }
