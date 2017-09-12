@@ -77,7 +77,7 @@ namespace cnl {
 
     /// \brief generate an \ref cnl::elastic_fixed_point object of given value
     template<class Narrowest = int, class Integral = int>
-    constexpr elastic_fixed_point<std::numeric_limits<Integral>::digits, 0, Narrowest>
+    constexpr elastic_fixed_point<numeric_limits<Integral>::digits, 0, Narrowest>
     make_elastic_fixed_point(Integral value)
     {
         return {value};

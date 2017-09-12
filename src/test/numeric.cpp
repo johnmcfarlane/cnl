@@ -30,9 +30,9 @@ namespace {
                     "cnl::_numeric_impl::used_bits_positive test failed");
             static_assert(used_bits_positive(int16_t{32767})==15,
                     "cnl::_numeric_impl::used_bits_positive test failed");
-            static_assert(used_bits_positive(std::numeric_limits<int64_t>::max())==63,
+            static_assert(used_bits_positive(numeric_limits<int64_t>::max())==63,
                     "cnl::_numeric_impl::used_bits_positive test failed");
-            static_assert(used_bits_positive(std::numeric_limits<uint64_t>::max())==64,
+            static_assert(used_bits_positive(numeric_limits<uint64_t>::max())==64,
                     "cnl::_numeric_impl::used_bits_positive test failed");
         }
 
@@ -76,15 +76,15 @@ namespace {
         static_assert(_impl::used_bits_symmetric(int8_t{-8})==4, "cnl::_impl::used_bits_symmetric test failed");
         static_assert(_impl::used_bits_symmetric(int8_t{-9})==4, "cnl::_impl::used_bits_symmetric test failed");
         static_assert(_impl::used_bits_symmetric(int8_t{-128})==1, "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(std::numeric_limits<int64_t>::lowest()+1)==63,
+        static_assert(_impl::used_bits_symmetric(numeric_limits<int64_t>::lowest()+1)==63,
                 "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(std::numeric_limits<int64_t>::min()+1)==63,
+        static_assert(_impl::used_bits_symmetric(numeric_limits<int64_t>::min()+1)==63,
                 "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(std::numeric_limits<int64_t>::max())==63,
+        static_assert(_impl::used_bits_symmetric(numeric_limits<int64_t>::max())==63,
                 "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(std::numeric_limits<uint64_t>::min())==0,
+        static_assert(_impl::used_bits_symmetric(numeric_limits<uint64_t>::min())==0,
                 "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(std::numeric_limits<uint64_t>::max())==64,
+        static_assert(_impl::used_bits_symmetric(numeric_limits<uint64_t>::max())==64,
                 "cnl::_impl::used_bits_symmetric test failed");
     }
 
@@ -102,19 +102,19 @@ namespace {
         static_assert(used_bits(int8_t{-8})==3, "cnl::used_bits test failed");
         static_assert(used_bits(int8_t{-9})==4, "cnl::used_bits test failed");
         static_assert(used_bits(int8_t{-128})==7, "cnl::used_bits test failed");
-        static_assert(used_bits(std::numeric_limits<int64_t>::lowest())==63,
+        static_assert(used_bits(numeric_limits<int64_t>::lowest())==63,
                 "cnl::used_bits test failed");
-        static_assert(used_bits(std::numeric_limits<int64_t>::lowest()+1)==63,
+        static_assert(used_bits(numeric_limits<int64_t>::lowest()+1)==63,
                 "cnl::used_bits test failed");
-        static_assert(used_bits(std::numeric_limits<int64_t>::min()+1)==63,
+        static_assert(used_bits(numeric_limits<int64_t>::min()+1)==63,
                 "cnl::used_bits test failed");
-        static_assert(used_bits(std::numeric_limits<int64_t>::max())==63,
+        static_assert(used_bits(numeric_limits<int64_t>::max())==63,
                 "cnl::used_bits test failed");
         static_assert(used_bits(UINT64_C(0))==0,
                 "cnl::used_bits test failed");
-        static_assert(used_bits(std::numeric_limits<uint64_t>::min())==0,
+        static_assert(used_bits(numeric_limits<uint64_t>::min())==0,
                 "cnl::used_bits test failed");
-        static_assert(used_bits(std::numeric_limits<uint64_t>::max())==64,
+        static_assert(used_bits(numeric_limits<uint64_t>::max())==64,
                 "cnl::used_bits test failed");
     }
 
@@ -131,17 +131,17 @@ namespace {
         static_assert(trailing_bits(int8_t{-8})==3, "cnl::trailing_bits test failed");
         static_assert(trailing_bits(int8_t{-9})==0, "cnl::trailing_bits test failed");
         static_assert(trailing_bits(int8_t{-128})==7, "cnl::trailing_bits test failed");
-        static_assert(trailing_bits(std::numeric_limits<int64_t>::lowest()+1)==0,
+        static_assert(trailing_bits(numeric_limits<int64_t>::lowest()+1)==0,
                 "cnl::trailing_bits test failed");
-        static_assert(trailing_bits(std::numeric_limits<int64_t>::min()+1)==0,
+        static_assert(trailing_bits(numeric_limits<int64_t>::min()+1)==0,
                 "cnl::trailing_bits test failed");
-        static_assert(trailing_bits(std::numeric_limits<int64_t>::max())==0,
+        static_assert(trailing_bits(numeric_limits<int64_t>::max())==0,
                 "cnl::trailing_bits test failed");
-        static_assert(trailing_bits(std::numeric_limits<uint64_t>::min())==0,
+        static_assert(trailing_bits(numeric_limits<uint64_t>::min())==0,
                 "cnl::trailing_bits test failed");
-        static_assert(trailing_bits(std::numeric_limits<uint64_t>::max())==0,
+        static_assert(trailing_bits(numeric_limits<uint64_t>::max())==0,
                 "cnl::trailing_bits test failed");
-        static_assert(trailing_bits(std::numeric_limits<uint64_t>::max())==0,
+        static_assert(trailing_bits(numeric_limits<uint64_t>::max())==0,
                 "cnl::trailing_bits test failed");
     }
 

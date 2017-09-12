@@ -79,12 +79,12 @@ namespace cnl {
 
         // positive_digits
         template<class T>
-        struct positive_digits : public std::integral_constant<int, std::numeric_limits<T>::digits> {
+        struct positive_digits : public std::integral_constant<int, numeric_limits<T>::digits> {
         };
 
         template<class T>
         struct negative_digits
-                : public std::integral_constant<int, std::is_signed<T>::value ? std::numeric_limits<T>::digits : 0> {
+                : public std::integral_constant<int, std::is_signed<T>::value ? numeric_limits<T>::digits : 0> {
         };
 
         // is_positive_overflow
@@ -103,7 +103,7 @@ namespace cnl {
                 _impl::enable_if_t<(positive_digits<Destination>::value<positive_digits<Source>::value), int> dummy = 0>
         constexpr bool is_positive_overflow(Source const& source)
         {
-            return source>static_cast<Source>(std::numeric_limits<Destination>::max());
+            return source>static_cast<Source>(numeric_limits<Destination>::max());
         }
 
         // is_negative_overflow
@@ -122,7 +122,7 @@ namespace cnl {
                 _impl::enable_if_t<(negative_digits<Destination>::value<negative_digits<Source>::value), int> dummy = 0>
         constexpr bool is_negative_overflow(Source const& source)
         {
-            return source<static_cast<Source>(std::numeric_limits<Destination>::lowest());
+            return source<static_cast<Source>(numeric_limits<Destination>::lowest());
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -155,7 +155,7 @@ namespace cnl {
     template<class Result, class Input>
     constexpr Result convert(saturated_overflow_tag, Input const& rhs)
     {
-        using numeric_limits = std::numeric_limits<Result>;
+        using numeric_limits = numeric_limits<Result>;
         return !_impl::encompasses<Result, Input>::value
                ? _overflow_impl::is_positive_overflow<Result>(rhs)
                  ? numeric_limits::max()
@@ -187,7 +187,7 @@ namespace cnl {
             -> decltype(lhs+rhs)
             {
                 using result_type = decltype(lhs+rhs);
-                using numeric_limits = std::numeric_limits<result_type>;
+                using numeric_limits = numeric_limits<result_type>;
                 return _overflow_impl::return_if(
                         !((rhs>=_impl::from_rep<Rhs>(0))
                           ? (lhs>numeric_limits::max()-rhs)
@@ -204,7 +204,7 @@ namespace cnl {
             -> _impl::op_result<_impl::add_op, Lhs, Rhs>
             {
                 using result_type = decltype(lhs+rhs);
-                using numeric_limits = std::numeric_limits<result_type>;
+                using numeric_limits = numeric_limits<result_type>;
                 return (rhs>0)
                        ? (lhs>numeric_limits::max()-rhs) ? numeric_limits::max() : lhs+rhs
                        : (lhs<numeric_limits::lowest()-rhs) ? numeric_limits::lowest() : lhs+rhs;
@@ -241,7 +241,7 @@ namespace cnl {
             -> decltype(lhs-rhs)
             {
                 using result_type = decltype(lhs-rhs);
-                using numeric_limits = std::numeric_limits<result_type>;
+                using numeric_limits = numeric_limits<result_type>;
                 return _overflow_impl::return_if(
                         (rhs<_impl::from_rep<Rhs>(0))
                         ? (lhs<=numeric_limits::max()+rhs)
@@ -258,7 +258,7 @@ namespace cnl {
             -> _impl::op_result<_impl::subtract_op, Lhs, Rhs>
             {
                 using result_type = decltype(lhs-rhs);
-                using numeric_limits = std::numeric_limits<result_type>;
+                using numeric_limits = numeric_limits<result_type>;
                 return (rhs<0)
                        ? (lhs>numeric_limits::max()+rhs) ? numeric_limits::max() : lhs-rhs
                        : (lhs<numeric_limits::lowest()+rhs) ? numeric_limits::lowest() : lhs-rhs;
@@ -291,7 +291,7 @@ namespace cnl {
         template<class Lhs, class Rhs>
         constexpr bool is_multiply_overflow(Lhs const& lhs, Rhs const& rhs)
         {
-            using result_nl = std::numeric_limits<decltype(lhs*rhs)>;
+            using result_nl = numeric_limits<decltype(lhs*rhs)>;
             return lhs && rhs && ((lhs>Lhs{})
                                   ? ((rhs>Rhs{}) ? (result_nl::max()/rhs) : (result_nl::lowest()/rhs))<lhs
                                   : ((rhs>Rhs{}) ? (result_nl::lowest()/rhs) : (result_nl::max()/rhs))>lhs);
@@ -318,8 +318,8 @@ namespace cnl {
                 using result_type = decltype(lhs*rhs);
                 return is_multiply_overflow(lhs, rhs)
                        ? ((lhs>0) ^ (rhs>0))
-                         ? std::numeric_limits<result_type>::lowest()
-                         : std::numeric_limits<result_type>::max()
+                         ? numeric_limits<result_type>::lowest()
+                         : numeric_limits<result_type>::max()
                        : lhs*rhs;
             }
         };

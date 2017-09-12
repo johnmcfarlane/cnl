@@ -32,7 +32,7 @@ namespace cnl {
                 // generates a fixed-point type that is as big as both of them (or as close as possible)
                 template<class LhsRep, int LhsExponent, class RhsInteger>
                 struct common_type_mixed<fixed_point
-                        <LhsRep, LhsExponent>, RhsInteger, _impl::enable_if_t<std::numeric_limits<RhsInteger>::is_integer>> : std::common_type<
+                        <LhsRep, LhsExponent>, RhsInteger, _impl::enable_if_t<numeric_limits<RhsInteger>::is_integer>> : std::common_type<
                         fixed_point<LhsRep, LhsExponent>, fixed_point<RhsInteger, 0>> {
                 };
 

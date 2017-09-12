@@ -184,7 +184,7 @@ namespace std {
     // and some are undefined
     template<class Rep, int Exponent>
     struct numeric_limits<cnl::fixed_point<Rep, Exponent>>
-            : std::numeric_limits<cnl::_impl::number_base<cnl::fixed_point<Rep, Exponent>, Rep>> {
+            : numeric_limits<cnl::_impl::number_base<cnl::fixed_point<Rep, Exponent>, Rep>> {
         // fixed-point-specific helpers
         using _value_type = cnl::fixed_point<Rep, Exponent>;
         using _rep = typename _value_type::rep;

@@ -145,8 +145,8 @@ namespace cnl {
         constexpr safe_integer(std::integral_constant<Integral, Value>)
                 : _base(static_cast<rep>(Value))
         {
-            static_assert(Value <= std::numeric_limits<rep>::max(), "initialization by out-of-range value");
-            static_assert(!std::numeric_limits<Integral>::is_signed || Value >= std::numeric_limits<rep>::lowest(), "initialization by out-of-range value");
+            static_assert(Value <= numeric_limits<rep>::max(), "initialization by out-of-range value");
+            static_assert(!numeric_limits<Integral>::is_signed || Value >= numeric_limits<rep>::lowest(), "initialization by out-of-range value");
         }
 
         template<class T>

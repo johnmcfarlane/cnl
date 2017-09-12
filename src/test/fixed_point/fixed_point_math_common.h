@@ -36,9 +36,9 @@ TEST(math, FPTESTFORMAT) {
     //TODO: it should be possible in a non-routine unit test to test over all
     //2^32 values of a 32-bit integer
     constexpr std::array<double, 13> fracts{ {
-        static_cast<double>(std::numeric_limits<fp>::min()), //As close to zero as possible
+        static_cast<double>(cnl::numeric_limits<fp>::min()), //As close to zero as possible
         0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,
-            cnl::_impl::min(1., static_cast<double>(std::numeric_limits<fp>::max())) //As close to one as possible
+            cnl::_impl::min(1., static_cast<double>(cnl::numeric_limits<fp>::max())) //As close to one as possible
     } };
 
     for (int i = -cnl::_impl::fractional_digits<fp>::value; i < cnl::_impl::integer_digits<fp>::value; i++) {
@@ -65,7 +65,7 @@ TEST(math, FPTESTFORMAT) {
         }
     }
 
-    using numeric_limits = std::numeric_limits<fp>;
+    using numeric_limits = cnl::numeric_limits<fp>;
     if (numeric_limits::max() >= int(cnl::_impl::integer_digits<fp>::value)
             && numeric_limits::lowest() <= -cnl::_impl::fractional_digits<fp>::value) {
         //the largest exponent which's result doesn't overflow

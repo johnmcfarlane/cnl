@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief specialization of `std::numeric_limits` for 128-bit integer types
+/// \brief specialization of `numeric_limits` for 128-bit integer types
 
 #if !defined(CNL_LIMITS_H)
 #define CNL_LIMITS_H 1
@@ -16,25 +16,13 @@
 #include <cstdint>
 #include <limits>
 
-#if defined(CNL_NUMERIC_LIMITS_128_PROVIDED)
-#error CNL_NUMERIC_LIMITS_128_PROVIDED already defined
-#endif
+namespace cnl {
 
-// CNL_NUMERIC_LIMITS_128_PROVIDED defined if
-// standard library specializes std::numeric_limits for 128-bit integer
-#if defined(__clang__)
-#if (__clang_major__ >= 4)
-#define CNL_NUMERIC_LIMITS_128_PROVIDED
-#endif
-#elif defined(__GNUG__)
-#if (__cplusplus <= 201402L)
-#define CNL_NUMERIC_LIMITS_128_PROVIDED
-#endif
-#endif
+    template<class T>
+    struct numeric_limits : std::numeric_limits<T> {};
 
-#if defined(CNL_INT128_ENABLED) && !defined(CNL_NUMERIC_LIMITS_128_PROVIDED)
+#if defined(CNL_INT128_ENABLED)
 
-namespace std {
     template<>
     struct numeric_limits<CNL_INT128> : numeric_limits<long long> {
         static int const digits = CHAR_BIT*sizeof(CNL_INT128)-1;
@@ -88,8 +76,8 @@ namespace std {
             return min();
         }
     };
-}
 
 #endif  // CNL_INT128_ENABLED
+}
 
 #endif  // CNL_LIMITS_H

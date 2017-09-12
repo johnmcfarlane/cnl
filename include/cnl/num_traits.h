@@ -56,13 +56,13 @@ namespace cnl {
 
         template<_digits_type MinNumDigits, class Smaller, class T>
         struct enable_for_range
-                : std::enable_if<MinNumDigits <= std::numeric_limits<T>::digits &&
-                                 std::numeric_limits<Smaller>::digits < MinNumDigits> {
+                : std::enable_if<MinNumDigits <= numeric_limits<T>::digits &&
+                                 numeric_limits<Smaller>::digits < MinNumDigits> {
         };
 
         template<_digits_type MinNumDigits, class Smallest>
         struct enable_for_range<MinNumDigits, void, Smallest>
-                : std::enable_if<MinNumDigits <= std::numeric_limits<Smallest>::digits> {
+                : std::enable_if<MinNumDigits <= numeric_limits<Smallest>::digits> {
         };
 
         template<_digits_type MinNumDigits, class Smaller, class T>
@@ -139,7 +139,7 @@ namespace cnl {
 
         template<class Integer, _digits_type MinNumDigits>
         using set_digits_integer = typename std::conditional<
-                std::numeric_limits<Integer>::is_signed,
+                numeric_limits<Integer>::is_signed,
                 set_digits_signed<MinNumDigits>,
                 set_digits_unsigned<MinNumDigits>>::type;
     }
@@ -148,8 +148,8 @@ namespace cnl {
     // digits
 
     template<class T, class Enable = void>
-    struct digits : std::integral_constant<_digits_type, std::numeric_limits<T>::digits> {
-        static_assert(std::numeric_limits<T>::is_specialized, "cnl::digits is not correctly specialized for T");
+    struct digits : std::integral_constant<_digits_type, numeric_limits<T>::digits> {
+        static_assert(numeric_limits<T>::is_specialized, "cnl::digits is not correctly specialized for T");
     };
 
 #if (__cplusplus > 201402L)
@@ -187,7 +187,7 @@ namespace cnl {
     // cnl::is_unsigned
 
     template<class T>
-    struct is_signed : std::integral_constant<bool, std::numeric_limits<T>::is_signed> {
+    struct is_signed : std::integral_constant<bool, numeric_limits<T>::is_signed> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -260,7 +260,7 @@ namespace cnl {
 
         template<class T1, class T2>
         struct common_signedness {
-            static constexpr bool _are_signed = std::numeric_limits<T1>::is_signed | std::numeric_limits<T2>::is_signed;
+            static constexpr bool _are_signed = numeric_limits<T1>::is_signed | numeric_limits<T2>::is_signed;
 
             using type = typename std::common_type<make_signed_t<T1, _are_signed>,
                     make_signed_t<T2, _are_signed>>::type;
@@ -276,12 +276,12 @@ namespace cnl {
         struct unsigned_or_float;
 
         template<class T>
-        struct unsigned_or_float<T, enable_if_t<std::numeric_limits<T>::is_iec559>> {
+        struct unsigned_or_float<T, enable_if_t<numeric_limits<T>::is_iec559>> {
             using type = T;
         };
 
         template<class T>
-        struct unsigned_or_float<T, enable_if_t<!std::numeric_limits<T>::is_iec559>> : make_unsigned<T> {
+        struct unsigned_or_float<T, enable_if_t<!numeric_limits<T>::is_iec559>> : make_unsigned<T> {
         };
 
         template<class T>
@@ -292,21 +292,21 @@ namespace cnl {
 
         template<class Encompasser, class Encompassed>
         struct encompasses_lower<Encompasser, Encompassed,
-                enable_if_t<std::numeric_limits<Encompasser>::is_signed
-                            && std::numeric_limits<Encompassed>::is_signed>> {
-            static constexpr bool value = std::numeric_limits<Encompasser>::lowest()
-                                          <= std::numeric_limits<Encompassed>::lowest();
+                enable_if_t<numeric_limits<Encompasser>::is_signed
+                            && numeric_limits<Encompassed>::is_signed>> {
+            static constexpr bool value = numeric_limits<Encompasser>::lowest()
+                                          <= numeric_limits<Encompassed>::lowest();
         };
 
         template<class Encompasser, class Encompassed>
         struct encompasses_lower<Encompasser, Encompassed,
-                enable_if_t<!std::numeric_limits<Encompassed>::is_signed>> : std::true_type {
+                enable_if_t<!numeric_limits<Encompassed>::is_signed>> : std::true_type {
         };
 
         template<class Encompasser, class Encompassed>
         struct encompasses_lower<Encompasser, Encompassed,
-                enable_if_t<!std::numeric_limits<Encompasser>::is_signed
-                            && std::numeric_limits<Encompassed>::is_signed>> : std::false_type {
+                enable_if_t<!numeric_limits<Encompasser>::is_signed
+                            && numeric_limits<Encompassed>::is_signed>> : std::false_type {
         };
 
         // true if Encompassed can be cast to Encompasser without chance of overflow
@@ -314,8 +314,8 @@ namespace cnl {
         struct encompasses {
             static constexpr bool _lower = encompasses_lower<Encompasser, Encompassed>::value;
             static constexpr bool _upper =
-                    static_cast<unsigned_or_float_t<Encompasser>>(std::numeric_limits<Encompasser>::max())
-                    >= static_cast<unsigned_or_float_t<Encompassed>>(std::numeric_limits<Encompassed>::max());
+                    static_cast<unsigned_or_float_t<Encompasser>>(numeric_limits<Encompasser>::max())
+                    >= static_cast<unsigned_or_float_t<Encompassed>>(numeric_limits<Encompassed>::max());
 
             static constexpr bool value = _lower && _upper;
         };
@@ -326,7 +326,7 @@ namespace cnl {
         template<class T>
         struct is_integer_or_float : std::integral_constant<
                 bool,
-                std::numeric_limits<T>::is_integer || std::numeric_limits<T>::is_iec559> {
+                numeric_limits<T>::is_integer || numeric_limits<T>::is_iec559> {
         };
     }
 

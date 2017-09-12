@@ -111,7 +111,7 @@ namespace cnl {
     template<
             class LhsRep, int LhsExponent,
             class RhsInteger,
-            typename = _impl::enable_if_t<std::numeric_limits<RhsInteger>::is_integer>>
+            typename = _impl::enable_if_t<numeric_limits<RhsInteger>::is_integer>>
     constexpr auto operator+(fixed_point<LhsRep, LhsExponent> const& lhs, RhsInteger const& rhs)
     -> decltype(lhs + fixed_point<RhsInteger, 0>{rhs})
     {
@@ -121,7 +121,7 @@ namespace cnl {
     template<
             class LhsRep, int LhsExponent,
             class RhsInteger,
-            typename = _impl::enable_if_t<std::numeric_limits<RhsInteger>::is_integer>>
+            typename = _impl::enable_if_t<numeric_limits<RhsInteger>::is_integer>>
     constexpr auto operator-(fixed_point<LhsRep, LhsExponent> const& lhs, RhsInteger const& rhs)
     -> decltype(lhs - fixed_point<RhsInteger, 0>{rhs})
     {
@@ -131,7 +131,7 @@ namespace cnl {
     template<
             class LhsRep, int LhsExponent,
             class RhsInteger,
-            typename = _impl::enable_if_t<std::numeric_limits<RhsInteger>::is_integer>>
+            typename = _impl::enable_if_t<numeric_limits<RhsInteger>::is_integer>>
     constexpr auto operator*(fixed_point<LhsRep, LhsExponent> const& lhs, RhsInteger const& rhs)
     -> decltype(lhs*fixed_point<RhsInteger>(rhs))
     {
@@ -141,7 +141,7 @@ namespace cnl {
     template<
             class LhsRep, int LhsExponent,
             class RhsInteger,
-            typename = _impl::enable_if_t<std::numeric_limits<RhsInteger>::is_integer>>
+            typename = _impl::enable_if_t<numeric_limits<RhsInteger>::is_integer>>
     constexpr auto operator/(fixed_point<LhsRep, LhsExponent> const& lhs, RhsInteger const& rhs)
     -> decltype(lhs/fixed_point<RhsInteger>{rhs})
     {
@@ -152,7 +152,7 @@ namespace cnl {
     template<
             class LhsInteger,
             class RhsRep, int RhsExponent,
-            typename = _impl::enable_if_t<std::numeric_limits<LhsInteger>::is_integer>>
+            typename = _impl::enable_if_t<numeric_limits<LhsInteger>::is_integer>>
     constexpr auto operator+(LhsInteger const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
     -> decltype(fixed_point<LhsInteger, 0>{lhs} + rhs)
     {
@@ -162,7 +162,7 @@ namespace cnl {
     template<
             class LhsInteger,
             class RhsRep, int RhsExponent,
-            typename = _impl::enable_if_t<std::numeric_limits<LhsInteger>::is_integer>>
+            typename = _impl::enable_if_t<numeric_limits<LhsInteger>::is_integer>>
     constexpr auto operator-(LhsInteger const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
     -> decltype(fixed_point<LhsInteger>{lhs}-rhs)
     {
@@ -172,7 +172,7 @@ namespace cnl {
     template<
             class LhsInteger,
             class RhsRep, int RhsExponent,
-            typename = _impl::enable_if_t<std::numeric_limits<LhsInteger>::is_integer>>
+            typename = _impl::enable_if_t<numeric_limits<LhsInteger>::is_integer>>
     constexpr auto operator*(LhsInteger const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
     -> decltype(fixed_point<LhsInteger>{lhs}*rhs)
     {
@@ -182,7 +182,7 @@ namespace cnl {
     template<
             class LhsInteger,
             class RhsRep, int RhsExponent,
-            typename = _impl::enable_if_t<std::numeric_limits<LhsInteger>::is_integer>>
+            typename = _impl::enable_if_t<numeric_limits<LhsInteger>::is_integer>>
     constexpr auto operator/(LhsInteger const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
     -> decltype(fixed_point<LhsInteger>{lhs}/rhs)
     {

@@ -26,7 +26,7 @@ namespace cnl {
             class Narrowest = int,
             class Input = int>
     safe_elastic_integer<
-            std::numeric_limits<Input>::digits,
+            numeric_limits<Input>::digits,
             OverflowTag,
             Narrowest>
     constexpr make_safe_elastic(Input const& input)
@@ -49,12 +49,12 @@ namespace {
     namespace test_numeric_limits {
         using safe_saturating_integer_2 = cnl::safe_integer<cnl::elastic_integer<2, char>, cnl::saturated_overflow_tag>;
         static_assert(identical(
-                std::numeric_limits<safe_saturating_integer_2>::lowest(),
+                cnl::numeric_limits<safe_saturating_integer_2>::lowest(),
                 safe_saturating_integer_2{-3}), "");
         static_assert(identical(
-                std::numeric_limits<safe_saturating_integer_2>::max(),
+                cnl::numeric_limits<safe_saturating_integer_2>::max(),
                 safe_saturating_integer_2{3}), "");
-        static_assert(std::numeric_limits<safe_saturating_integer_2>::lowest() < std::numeric_limits<safe_saturating_integer_2>::max(), "");
+        static_assert(cnl::numeric_limits<safe_saturating_integer_2>::lowest() < cnl::numeric_limits<safe_saturating_integer_2>::max(), "");
     }
 
     namespace test_comparison {

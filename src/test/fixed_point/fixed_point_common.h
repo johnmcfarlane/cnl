@@ -22,7 +22,7 @@
 
 using std::is_same;
 using std::declval;
-using std::numeric_limits;
+using cnl::numeric_limits;
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer definitions
@@ -572,8 +572,8 @@ namespace test_operate {
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::multiply
 
-static_assert(std::numeric_limits<uint8>::max()/5==51, "");
-static_assert(std::numeric_limits<uint8>::max()/3==85, "");
+static_assert(numeric_limits<uint8>::max()/5==51, "");
+static_assert(numeric_limits<uint8>::max()/3==85, "");
 
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(identical(multiply(fixed_point<uint8, -4>{2}, fixed_point<uint8, -4>{7.5}), fixed_point<uint16, -8>{15}),
@@ -802,7 +802,7 @@ namespace test_bitshift {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// std::numeric_limits<fixed_point<>>
+// cnl::numeric_limits<fixed_point<>>
 
 template<class Rep, int Exponent, class Min, class Max, class Lowest>
 constexpr bool test_numeric_limits(Min min, Max max, Lowest lowest)
@@ -810,6 +810,11 @@ constexpr bool test_numeric_limits(Min min, Max max, Lowest lowest)
     using fp = fixed_point<Rep, Exponent>;
     using nl = numeric_limits<fp>;
     using rnl = numeric_limits<Rep>;
+
+    static_assert(std::numeric_limits<Rep>::is_specialized,
+                  "std::numeric_limits<Rep>::is_specialized");
+    static_assert(std::numeric_limits<fp>::is_specialized,
+                  "std::numeric_limits<fixed_point<Rep>>::is_specialized");
 
     static_assert(nl::is_specialized, "numeric_limits<fixed_point>::is_specialized");
     static_assert(nl::is_signed==rnl::is_signed, "numeric_limits<fixed_point>::is_signed");
@@ -846,49 +851,49 @@ constexpr bool test_numeric_limits(Min min, Max max, Lowest lowest)
             && nl::denorm_min()==min;
 }
 
-static_assert(numeric_limits<fixed_point<test_int, -256>>::lowest() < -.1e-67, "std::numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_int, -256>>::min() > 0., "std::numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_int, -256>>::min() < .1e-76, "std::numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_int, -256>>::max() > .1e-67, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, -256>>::lowest() < -.1e-67, "numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, -256>>::min() > 0., "numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, -256>>::min() < .1e-76, "numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, -256>>::max() > .1e-67, "numeric_limits<fixed_point> test failed");
 
-static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::lowest() == 0., "std::numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::min() > 0., "std::numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::min() < .1e-76, "std::numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::max() > .1e-67, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::lowest() == 0., "numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::min() > 0., "numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::min() < .1e-76, "numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::max() > .1e-67, "numeric_limits<fixed_point> test failed");
 
 static_assert(test_numeric_limits<test_signed, -16>(1/65536.,
-        std::numeric_limits<test_signed>::max()/65536.,
-        std::numeric_limits<test_signed>::lowest()/65536.), "");
+        numeric_limits<test_signed>::max()/65536.,
+        numeric_limits<test_signed>::lowest()/65536.), "");
 
 static_assert(test_numeric_limits<test_unsigned, -16>(1/65536.,
-        std::numeric_limits<test_unsigned>::max()/65536.,
-        std::numeric_limits<test_unsigned>::lowest()/65536.), "");
+        numeric_limits<test_unsigned>::max()/65536.,
+        numeric_limits<test_unsigned>::lowest()/65536.), "");
 
 static_assert(test_numeric_limits<test_signed, 0>(1,
-        std::numeric_limits<test_signed>::max(),
-        std::numeric_limits<test_signed>::lowest()), "");
+        numeric_limits<test_signed>::max(),
+        numeric_limits<test_signed>::lowest()), "");
 
 static_assert(test_numeric_limits<test_unsigned, 0U>(1U,
-        std::numeric_limits<test_unsigned>::max(),
-        std::numeric_limits<test_unsigned>::lowest()), "");
+        numeric_limits<test_unsigned>::max(),
+        numeric_limits<test_unsigned>::lowest()), "");
 
 static_assert(test_numeric_limits<test_signed, 16>(65536.,
-        std::numeric_limits<test_signed>::max()*65536.,
-        std::numeric_limits<test_signed>::lowest()*65536.), "");
+        numeric_limits<test_signed>::max()*65536.,
+        numeric_limits<test_signed>::lowest()*65536.), "");
 
 static_assert(test_numeric_limits<test_unsigned, 16>(65536.,
-        std::numeric_limits<test_unsigned>::max()*65536.,
-        std::numeric_limits<test_unsigned>::lowest()*65536.), "");
+        numeric_limits<test_unsigned>::max()*65536.,
+        numeric_limits<test_unsigned>::lowest()*65536.), "");
 
-static_assert(numeric_limits<fixed_point<test_int, 256>>::lowest() < -1.e86, "std::numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_int, 256>>::min() > 1.e77, "std::numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_int, 256>>::min() < 1.e78, "std::numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_int, 256>>::max() > 1.e86, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, 256>>::lowest() < -1.e86, "numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, 256>>::min() > 1.e77, "numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, 256>>::min() < 1.e78, "numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_int, 256>>::max() > 1.e86, "numeric_limits<fixed_point> test failed");
 
-static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::lowest() == 0., "std::numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::min() > 1.e77, "std::numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::min() < 1.e78, "std::numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::max() > 1.e86, "std::numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::lowest() == 0., "numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::min() > 1.e77, "numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::min() < 1.e78, "numeric_limits<fixed_point> test failed");
+static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::max() > 1.e86, "numeric_limits<fixed_point> test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::sqrt
@@ -954,7 +959,7 @@ struct FixedPointTesterOutsize {
             "mismatched exponent");
 
     // simply assignment to and from underlying representation
-    using numeric_limits = std::numeric_limits<fixed_point>;
+    using numeric_limits = cnl::numeric_limits<fixed_point>;
     static constexpr fixed_point min = cnl::_impl::from_rep<fixed_point>(rep(1));
     static_assert(min.data() == rep(1), "all Rep types should be able to store the number 1!");
 
