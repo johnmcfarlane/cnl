@@ -28,11 +28,11 @@ namespace cnl {
 
         constexpr precise_integer() = default;
 
-        template<class T, _impl::enable_if_t<std::numeric_limits<T>::is_integer, int> Dummy = 0>
+        template<class T, _impl::enable_if_t<numeric_limits<T>::is_integer, int> Dummy = 0>
         constexpr precise_integer(T const& v)
                 : super(static_cast<Rep>(v)) { }
 
-        template<class T, _impl::enable_if_t<!std::numeric_limits<T>::is_integer, int> Dummy = 0>
+        template<class T, _impl::enable_if_t<!numeric_limits<T>::is_integer, int> Dummy = 0>
         constexpr precise_integer(T const& v)
                 : super(rounding::template convert<Rep>(v)) { }
 

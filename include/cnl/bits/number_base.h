@@ -19,7 +19,7 @@ namespace cnl {
         template<class Derived, class Rep>
         class number_base {
         public:
-            static_assert(std::numeric_limits<Rep>::is_integer, "number_base must be specialized with integer Rep type template parameter");
+            static_assert(numeric_limits<Rep>::is_integer, "number_base must be specialized with integer Rep type template parameter");
 
             using rep = Rep;
             using _derived = Derived;

@@ -40,7 +40,7 @@ namespace cnl {
         };
 
         template<class Integer>
-        struct trailing_bits<Integer, _impl::enable_if_t<std::numeric_limits<Integer>::is_signed>> {
+        struct trailing_bits<Integer, _impl::enable_if_t<numeric_limits<Integer>::is_signed>> {
             static constexpr int f(Integer value)
             {
                 // Most negative number is not exploited;
@@ -101,12 +101,12 @@ namespace cnl {
     namespace _numeric_impl {
         struct used_bits {
             template<class Integer>
-            constexpr _impl::enable_if_t<!std::numeric_limits<Integer>::is_signed, int> operator()(Integer value) const
+            constexpr _impl::enable_if_t<!numeric_limits<Integer>::is_signed, int> operator()(Integer value) const
             {
                 return value ? used_bits_positive(value) : 0;
             }
 
-            template<class Integer, class = _impl::enable_if_t<std::numeric_limits<Integer>::is_signed, int>>
+            template<class Integer, class = _impl::enable_if_t<numeric_limits<Integer>::is_signed, int>>
             constexpr int operator()(Integer value) const
             {
                 // Most negative number is not exploited;

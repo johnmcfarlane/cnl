@@ -37,7 +37,7 @@ namespace cnl {
             class Narrowest = int,
             class Input = int>
     psefp<
-            std::numeric_limits<Input>::digits, 0,
+            numeric_limits<Input>::digits, 0,
             OverflowTag, RoundingTag,
             Narrowest>
     constexpr make_psefp(Input const& input)

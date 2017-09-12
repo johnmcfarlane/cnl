@@ -51,11 +51,11 @@ namespace cnl {
 
 namespace {
     namespace test_numeric_limits {
-        static_assert(std::numeric_limits<pack<int>>::is_integer, "");
-        static_assert(!std::numeric_limits<pack<int>>::is_iec559, "");
+        static_assert(cnl::numeric_limits<pack<int>>::is_integer, "");
+        static_assert(!cnl::numeric_limits<pack<int>>::is_iec559, "");
 
-        static_assert(!std::numeric_limits<pack < float>>::is_integer, "");
-        static_assert(std::numeric_limits<pack < float>>::is_iec559, "");
+        static_assert(!cnl::numeric_limits<pack < float>>::is_integer, "");
+        static_assert(cnl::numeric_limits<pack < float>>::is_iec559, "");
     }
 
     namespace test_set_digits {

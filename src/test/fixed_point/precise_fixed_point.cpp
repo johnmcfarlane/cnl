@@ -15,8 +15,8 @@ namespace {
     using precise_fixed_point = cnl::fixed_point<cnl::precise_integer<Rep, RoundingTag>, Exponent>;
 
     namespace test_numeric_limits {
-        static_assert(std::numeric_limits<precise_integer<>>::is_specialized, "std::numeric_limits<precise_integer<>> test failed");
-        static_assert(std::numeric_limits<precise_integer<>>::is_integer, "std::numeric_limits<precise_integer<>> test failed");
+        static_assert(cnl::numeric_limits<precise_integer<>>::is_specialized, "cnl::numeric_limits<precise_integer<>> test failed");
+        static_assert(cnl::numeric_limits<precise_integer<>>::is_integer, "cnl::numeric_limits<precise_integer<>> test failed");
     }
 
     namespace test_ctor {

@@ -61,20 +61,20 @@ namespace prototypes {
 
     using bad1 = bad_safe_integer<31, true>;
 
-    using bad2 = bad_safe_integer<numeric_limits<int>::digits, true>;
+    using bad2 = bad_safe_integer<cnl::numeric_limits<int>::digits, true>;
 }
 
 #if defined(CNL_EXCEPTIONS_ENABLED)
 TEST(cppnow2017, safe_integer_example)
 {
     // multiplication of safe_integer<int> cannot exceed numeric limits
-    EXPECT_THROW(safe_integer<int32_t>{numeric_limits<int32_t>::max()}*2, overflow_error);
+    EXPECT_THROW(safe_integer<int32_t>{cnl::numeric_limits<int32_t>::max()}*2, overflow_error);
 
     // difference from safe_integer<unsigned> cannot be negative
     EXPECT_THROW(safe_integer<unsigned>{0}-1, overflow_error);
 
     // conversion to safe_integer<char> cannot exceed numeric limits
-    EXPECT_THROW(safe_integer<short>{numeric_limits<double>::max()}, overflow_error);
+    EXPECT_THROW(safe_integer<short>{cnl::numeric_limits<double>::max()}, overflow_error);
 
     // value of safe_integer<int> cannot be indeterminate
     //auto d = safe_integer<int>{};  // compiler error? exception? zero-initialization?
@@ -97,7 +97,7 @@ namespace elastic_integer_example {
     // run-time overflow is not my concern
     constexpr auto d = elastic_integer<8, signed>{256};
     static_assert(identical(d, elastic_integer<8, signed>{256}), "error in CppNow 2017 slide");
-    static_assert(d>numeric_limits<decltype(d)>::max(), "error in CppNow 2017 slide");
+    static_assert(d>cnl::numeric_limits<decltype(d)>::max(), "error in CppNow 2017 slide");
 }
 
 namespace acme_ndebug {
@@ -210,8 +210,8 @@ namespace composite {
     {
         auto product = a.data()*b.data();
 
-        if (numeric_limits<Rep1>::digits+numeric_limits<Rep2>::digits
-                >numeric_limits<decltype(product)>::digits) {
+        if (cnl::numeric_limits<Rep1>::digits+cnl::numeric_limits<Rep2>::digits
+                >cnl::numeric_limits<decltype(product)>::digits) {
             // do some overflow checking
         }
 

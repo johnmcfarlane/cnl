@@ -24,7 +24,7 @@ namespace cnl {
             class Narrowest = int,
             class Input = int>
     precise_elastic_integer<
-            std::numeric_limits<Input>::digits,
+            numeric_limits<Input>::digits,
             RoundingTag,
             Narrowest>
     constexpr make_precise_elastic(Input const& input)

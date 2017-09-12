@@ -52,7 +52,7 @@ using cnl::_impl::identical;
 template<class Number>
 struct number_test {
     using value_type = Number;
-    using numeric_limits = std::numeric_limits<value_type>;
+    using numeric_limits = cnl::numeric_limits<value_type>;
 
     static constexpr value_type zero = cnl::_impl::from_rep<value_type>(0);
 #if defined(_MSC_VER)
@@ -62,9 +62,9 @@ struct number_test {
 #endif    
 
     ////////////////////////////////////////////////////////////////////////////////
-    // std::numeric_limits
+    // cnl::numeric_limits
 
-    static_assert(numeric_limits::is_specialized, "std::numeric_limits is not specialized for this type");
+    static_assert(numeric_limits::is_specialized, "numeric_limits is not specialized for this type");
 
     static constexpr value_type min{numeric_limits::min()};
     static constexpr value_type max{numeric_limits::max()};

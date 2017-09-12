@@ -58,14 +58,14 @@ namespace cnl {
                 template<class LhsRep, int LhsExponent, class Rhs>
                 struct binary_pair<fixed_point<LhsRep, LhsExponent>, Rhs>
                         : binary_pair_base<LhsRep, LhsExponent, Rhs, 0> {
-                    static_assert(std::numeric_limits<Rhs>::is_integer,
+                    static_assert(numeric_limits<Rhs>::is_integer,
                             "named arithmetic functions take only fixed_point and integral types");
                 };
 
                 template<class Lhs, class RhsRep, int RhsExponent>
                 struct binary_pair<Lhs, fixed_point<RhsRep, RhsExponent>>
                         : binary_pair_base<Lhs, 0, RhsRep, RhsExponent> {
-                    static_assert(std::numeric_limits<Lhs>::is_integer,
+                    static_assert(numeric_limits<Lhs>::is_integer,
                             "named arithmetic functions take only fixed_point and integral types");
                 };
 
@@ -156,7 +156,7 @@ namespace cnl {
 
                     static constexpr int digits = cnl::digits<Lhs>::value+cnl::digits<Rhs>::value;
                     static constexpr bool is_signed =
-                            std::numeric_limits<lhs_rep>::is_signed || std::numeric_limits<rhs_rep>::is_signed;
+                            numeric_limits<lhs_rep>::is_signed || numeric_limits<rhs_rep>::is_signed;
 
                     using prewidened_result_rep = _impl::make_signed_t<rep_op_result, is_signed>;
                     using rep_type = set_digits_t<prewidened_result_rep, digits>;
@@ -176,7 +176,7 @@ namespace cnl {
                     static constexpr int fractional_digits = _impl::fractional_digits<Lhs>::value+_impl::integer_digits<Rhs>::value;
                     static constexpr int necessary_digits = integer_digits+fractional_digits;
                     static constexpr bool is_signed =
-                            std::numeric_limits<lhs_rep>::is_signed || std::numeric_limits<rhs_rep>::is_signed;
+                            numeric_limits<lhs_rep>::is_signed || numeric_limits<rhs_rep>::is_signed;
 
                     static constexpr int promotion_digits = digits<rep_op_result>::value;
                     static constexpr int digits = _impl::max(necessary_digits, promotion_digits);

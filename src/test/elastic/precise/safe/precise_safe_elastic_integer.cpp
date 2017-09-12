@@ -33,7 +33,7 @@ namespace cnl {
             class Input = int,
             class = _impl::enable_if_t<!_impl::is_integral_constant<Input>::value>>
     psei<
-            std::numeric_limits<Input>::digits,
+            numeric_limits<Input>::digits,
             OverflowTag, RoundingTag,
             Narrowest>
     constexpr make_psei(Input const& input)

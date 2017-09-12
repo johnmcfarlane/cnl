@@ -118,7 +118,7 @@ namespace cnl {
         }
 
         /// construct from numeric type
-        template<class Number, _impl::enable_if_t<std::numeric_limits<Number>::is_specialized, int> Dummy = 0>
+        template<class Number, _impl::enable_if_t<numeric_limits<Number>::is_specialized, int> Dummy = 0>
         constexpr elastic_integer(Number n)
                 : _base(static_cast<rep>(n))
         {
@@ -177,9 +177,9 @@ namespace cnl {
 
     template<class Narrowest = int, class Integral, _impl::enable_if_t<!_impl::is_integral_constant<Integral>::value, int> Dummy = 0>
     constexpr auto make_elastic_integer(Integral const& value)
-    -> decltype(elastic_integer<std::numeric_limits<Integral>::digits, Narrowest>{value})
+    -> decltype(elastic_integer<numeric_limits<Integral>::digits, Narrowest>{value})
     {
-        return elastic_integer<std::numeric_limits<Integral>::digits, Narrowest>{value};
+        return elastic_integer<numeric_limits<Integral>::digits, Narrowest>{value};
     }
 
     namespace _elastic_integer_impl {
@@ -220,7 +220,7 @@ namespace cnl {
         return elastic_integer::from_data(
             static_cast<rep>(
                 rhs.data()
-                ^ ((static_cast<rep>(~0)) >> (std::numeric_limits<rep>::digits - RhsDigits))));
+                ^ ((static_cast<rep>(~0)) >> (numeric_limits<rep>::digits - RhsDigits))));
     }
 
     // operator<<
@@ -356,8 +356,8 @@ namespace cnl {
         struct operate_params {
             using lhs = elastic_integer<LhsDigits, LhsNarrowest>;
             using rhs = elastic_integer<RhsDigits, RhsNarrowest>;
-            using lhs_traits = std::numeric_limits<lhs>;
-            using rhs_traits = std::numeric_limits<rhs>;
+            using lhs_traits = numeric_limits<lhs>;
+            using rhs_traits = numeric_limits<rhs>;
 
             using policy = typename _impl::policy<OperationTag, lhs_traits, rhs_traits>;
 
@@ -424,22 +424,22 @@ namespace std {
 
     template<int LhsDigits, class LhsNarrowest, class Rhs>
     struct common_type<cnl::elastic_integer<LhsDigits, LhsNarrowest>, Rhs>
-            : common_type<cnl::elastic_integer<LhsDigits, LhsNarrowest>, cnl::elastic_integer<std::numeric_limits<Rhs>::digits, Rhs>> {
+            : common_type<cnl::elastic_integer<LhsDigits, LhsNarrowest>, cnl::elastic_integer<numeric_limits<Rhs>::digits, Rhs>> {
     };
 
     template<class Lhs, int RhsDigits, class RhsNarrowest>
     struct common_type<Lhs, cnl::elastic_integer<RhsDigits, RhsNarrowest>>
-            : common_type<cnl::elastic_integer<std::numeric_limits<Lhs>::digits, Lhs>, cnl::elastic_integer<RhsDigits, RhsNarrowest>> {
+            : common_type<cnl::elastic_integer<numeric_limits<Lhs>::digits, Lhs>, cnl::elastic_integer<RhsDigits, RhsNarrowest>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // std::numeric_limits for cnl::elastic_integer
+    // cnl::numeric_limits for cnl::elastic_integer
 
     namespace _elastic_integer_impl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_elastic_integer_impl::lowest
 
-        // helper for std::numeric_limits<cnl::elastic_integer<>>::lowest()
+        // cnl::helper for numeric_limits<cnl::elastic_integer<>>::lowest()
         template<class Rep, bool IsSigned>
         struct lowest;
 

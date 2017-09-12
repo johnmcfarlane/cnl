@@ -259,12 +259,12 @@ namespace {
         static_assert(identical(multiply(saturated_overflow, UINT16_C(576), INT32_C(22)),
                 decltype(UINT16_C(576)*INT32_C(22)){12672}), "cnl::multiply test failed");
         static_assert(identical(
-                multiply(saturated_overflow, std::numeric_limits<int32_t>::max(), INT32_C(2)),
-                std::numeric_limits<int32_t>::max()), "cnl::multiply test failed");
+                multiply(saturated_overflow, cnl::numeric_limits<int32_t>::max(), INT32_C(2)),
+                cnl::numeric_limits<int32_t>::max()), "cnl::multiply test failed");
 
         // compare
         static_assert(cnl::_overflow_impl::operate<cnl::saturated_overflow_tag, cnl::_impl::less_than_op>()(-1, 1u), "cnl::_overflow_impl::operate test failed");
-        static_assert(identical(convert<short>(saturated_overflow, std::numeric_limits<double>::max()),
-                std::numeric_limits<short>::max()), "cnl::convert test failed");
+        static_assert(identical(convert<short>(saturated_overflow, cnl::numeric_limits<double>::max()),
+                                cnl::numeric_limits<short>::max()), "cnl::convert test failed");
     }
 }
