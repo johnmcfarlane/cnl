@@ -34,6 +34,7 @@ add_executable(fp_test
         glm.cpp
         common.cpp
         fixed_point/precise_fixed_point.cpp
+        fixed_point/fixed_point_constants.cpp
         fixed_point/fixed_point_extras.cpp
         fixed_point/fixed_point_math.cpp
         fixed_point/elastic/precise/safe/precise_safe_elastic_fixed_point.cpp
