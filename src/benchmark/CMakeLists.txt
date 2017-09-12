@@ -25,8 +25,8 @@ target_include_directories(
 
 ExternalProject_Add(
   gbm
-  URL "https://github.com/google/benchmark/archive/v1.1.0.tar.gz"
-  URL_MD5 "66b2a23076cf70739525be0092fc3ae3"
+  URL "https://github.com/google/benchmark/archive/v1.2.0.tar.gz"
+  URL_MD5 "48d0b090cd7a84af2c4a28c8dc963c74"
   CMAKE_ARGS -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX:STRING=<INSTALL_DIR>
 )
 
