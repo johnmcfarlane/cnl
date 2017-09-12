@@ -92,7 +92,7 @@ namespace {
 
         // set_num_digits
         template<class T, int B> using set_num_digits_t = cnl::set_digits_t<T, B>;
-        static_assert(std::is_same_v<set_num_digits_t<unsigned, 8>, std::uint8_t>);
+        static_assert(std::is_same<set_num_digits_t<unsigned, 8>, std::uint8_t>::value);
 
         // is_composite
         using cnl::is_composite_v;
@@ -115,4 +115,4 @@ namespace {
     }
 }
 
-#endif  // __cplusplus > 201402L
+#endif  // defined(__cpp_deduction_guides)
