@@ -20,8 +20,10 @@ using test_int = int;
 // perform fixed_point tests with this type of fixed_point specialization
 
 #include "fixed_point_common.h"
+#include <cnl/integral_constant.h>
 
 #if defined(__cpp_deduction_guides)
+
 namespace test_literals_initialization {
     using cnl::_impl::identical;
     using cnl::fixed_point;
@@ -33,4 +35,19 @@ namespace test_literals_initialization {
     static_assert(identical(fixed_point<int, 0>{3}, fixed_point(3_c)));
     static_assert(identical(fixed_point<int, 2>{500}, fixed_point(500_c)));
 }
+
+namespace test_literals_constant {
+    using cnl::_impl::identical;
+    using cnl::fixed_point;
+
+    using namespace cnl::literals;
+
+    constexpr auto kibi = fixed_point(1024_c);
+    constexpr auto mebi = kibi * 1024_c;
+    constexpr auto tebi = mebi * mebi;
+    constexpr auto exbi = tebi * mebi;
+    constexpr auto yobi = exbi * mebi;
+    static_assert(yobi == 1208925819614629174706176.L);
+}
+
 #endif
