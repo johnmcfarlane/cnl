@@ -26,16 +26,21 @@ namespace {
             EXPECT_NEAR(std::exp(T{1}), e<T>, epsilon);
             EXPECT_EQ(std::log2(e<T>), log2e<T>);
             EXPECT_NEAR(std::log10(e<T>), log10e<T>, epsilon);
+            EXPECT_NEAR(std::atan(T{1}) * T{4}, pi<T>, epsilon);
+            EXPECT_NEAR(T{1} / pi<T>, invpi<T>, epsilon);
+            EXPECT_NEAR(T{1} / std::sqrt(pi<T>), invsqrtpi<T>, epsilon);
             EXPECT_NEAR(std::log(T{2}), ln2<T>, epsilon);
             EXPECT_NEAR(std::log(T{10}), ln10<T>, epsilon);
-            EXPECT_NEAR(std::atan(T{1}) * T{4}, pi<T>, epsilon);
-            EXPECT_EQ(pi<T> / T{2}, pi_2<T>);
-            EXPECT_EQ(pi<T> / T{4}, pi_4<T>);
-            EXPECT_EQ(T{1} / pi<T>, one_pi<T>);
-            EXPECT_EQ(T{2} / pi<T>, two_pi<T>);
-            EXPECT_NEAR(T{2} / std::sqrt(pi<T>), two_sqrtpi<T>, epsilon);
             EXPECT_NEAR(std::sqrt(T{2}), sqrt2<T>, epsilon);
-            EXPECT_NEAR(T{1} / sqrt2<T>, one_sqrt2<T>, epsilon);
+            EXPECT_NEAR(std::sqrt(T{3}), sqrt3<T>, epsilon);
+            EXPECT_NEAR(T{1} / sqrt2<T>, invsqrt2<T>, epsilon);
+            EXPECT_NEAR(T{1} / sqrt3<T>, invsqrt3<T>, epsilon);
+            EXPECT_NEAR(180 / pi<T>, radian<T>, epsilon * 100);
+            EXPECT_NEAR(0.5772156649015328606065120900824024L, egamma<T>, epsilon);
+            EXPECT_NEAR(1.6180339887498948482045868343656381L, phi<T>, epsilon);
+            EXPECT_NEAR(0.915965594177219015054603514932384110774L, catalan<T>, epsilon);
+            EXPECT_NEAR(1.202056903159594285399738161511449990L, apery<T>, epsilon);
+            EXPECT_NEAR(1.282427129100622636875342568869791727L, glaisher<T>, epsilon);
         }
 
         TEST(numeric, float_constants) {
