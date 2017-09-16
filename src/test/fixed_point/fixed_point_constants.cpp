@@ -20,7 +20,6 @@ namespace {
 
     // 8-bit pi
     static_assert(identical(fixed_point<std::uint8_t, -6>{3.140625}, cnl::pi<fixed_point<std::uint8_t, -6>>), "");
-    static_assert(identical(fixed_point<std::int8_t, -6>{1.5625}, cnl::pi_2<fixed_point<std::int8_t, -6>>), "");
 
     ////////////////////////////////////////////////////////////////////////////////
     // precision tests
@@ -57,6 +56,27 @@ namespace {
         EXPECT_LT(get_error(cnl::log10e<fixed_point<std::uint64_t, -62>>, cnl::log10e<long double>), .0000000000000000004L);
     }
 
+    TEST(fixed_point_constants, pi) {
+        EXPECT_LT(get_error(cnl::pi<fixed_point<std::uint8_t, -6>>, cnl::pi<long double>), .006L);
+        EXPECT_LT(get_error(cnl::pi<fixed_point<std::int16_t, -4>>, cnl::pi<long double>), .015L);
+        EXPECT_LT(get_error(cnl::pi<fixed_point<std::int32_t, -16>>, cnl::pi<long double>), .0000021L);
+        EXPECT_LT(get_error(cnl::pi<fixed_point<std::uint64_t, -62>>, cnl::pi<long double>), .0000000000000000002L);
+    }
+
+    TEST(fixed_point_constants, invpi) {
+        EXPECT_LT(get_error(cnl::invpi<fixed_point<std::uint8_t, -6>>, cnl::invpi<long double>), .02L);
+        EXPECT_LT(get_error(cnl::invpi<fixed_point<std::int16_t, -4>>, cnl::invpi<long double>), .02L);
+        EXPECT_LT(get_error(cnl::invpi<fixed_point<std::int32_t, -16>>, cnl::invpi<long double>), .00005L);
+        EXPECT_LT(get_error(cnl::invpi<fixed_point<std::uint64_t, -62>>, cnl::invpi<long double>), .0000000000000000003L);
+    }
+
+    TEST(fixed_point_constants, invsqrtpi) {
+        EXPECT_LT(get_error(cnl::invsqrtpi<fixed_point<std::uint8_t, -6>>, cnl::invsqrtpi<long double>), .02L);
+        EXPECT_LT(get_error(cnl::invsqrtpi<fixed_point<std::int16_t, -4>>, cnl::invsqrtpi<long double>), .02L);
+        EXPECT_LT(get_error(cnl::invsqrtpi<fixed_point<std::int32_t, -16>>, cnl::invsqrtpi<long double>), .00005L);
+        EXPECT_LT(get_error(cnl::invsqrtpi<fixed_point<std::uint64_t, -62>>, cnl::invsqrtpi<long double>), .0000000000000000003L);
+    }
+
     TEST(fixed_point_constants, ln2) {
         EXPECT_LT(get_error(cnl::ln2<fixed_point<std::uint8_t, -6>>, cnl::ln2<long double>), .01L);
         EXPECT_LT(get_error(cnl::ln2<fixed_point<std::int16_t, -4>>, cnl::ln2<long double>), .015L);
@@ -71,48 +91,6 @@ namespace {
         EXPECT_LT(get_error(cnl::ln10<fixed_point<std::uint64_t, -62>>, cnl::ln10<long double>), .0000000000000000002L);
     }
 
-    TEST(fixed_point_constants, pi) {
-        EXPECT_LT(get_error(cnl::pi<fixed_point<std::uint8_t, -6>>, cnl::pi<long double>), .006L);
-        EXPECT_LT(get_error(cnl::pi<fixed_point<std::int16_t, -4>>, cnl::pi<long double>), .015L);
-        EXPECT_LT(get_error(cnl::pi<fixed_point<std::int32_t, -16>>, cnl::pi<long double>), .0000021L);
-        EXPECT_LT(get_error(cnl::pi<fixed_point<std::uint64_t, -62>>, cnl::pi<long double>), .0000000000000000002L);
-    }
-
-    TEST(fixed_point_constants, pi_2) {
-        EXPECT_LT(get_error(cnl::pi_2<fixed_point<std::uint8_t, -6>>, cnl::pi_2<long double>), .006L);
-        EXPECT_LT(get_error(cnl::pi_2<fixed_point<std::int16_t, -4>>, cnl::pi_2<long double>), .015L);
-        EXPECT_LT(get_error(cnl::pi_2<fixed_point<std::int32_t, -16>>, cnl::pi_2<long double>), .00005L);
-        EXPECT_LT(get_error(cnl::pi_2<fixed_point<std::uint64_t, -62>>, cnl::pi_2<long double>), .0000000000000000002L);
-    }
-
-    TEST(fixed_point_constants, pi_4) {
-        EXPECT_LT(get_error(cnl::pi_4<fixed_point<std::uint8_t, -6>>, cnl::pi_4<long double>), .006L);
-        EXPECT_LT(get_error(cnl::pi_4<fixed_point<std::int16_t, -4>>, cnl::pi_4<long double>), .05L);
-        EXPECT_LT(get_error(cnl::pi_4<fixed_point<std::int32_t, -16>>, cnl::pi_4<long double>), .00002L);
-        EXPECT_LT(get_error(cnl::pi_4<fixed_point<std::uint64_t, -62>>, cnl::pi_4<long double>), .0000000000000000002L);
-    }
-
-    TEST(fixed_point_constants, one_pi) {
-        EXPECT_LT(get_error(cnl::one_pi<fixed_point<std::uint8_t, -6>>, cnl::one_pi<long double>), .02L);
-        EXPECT_LT(get_error(cnl::one_pi<fixed_point<std::int16_t, -4>>, cnl::one_pi<long double>), .02L);
-        EXPECT_LT(get_error(cnl::one_pi<fixed_point<std::int32_t, -16>>, cnl::one_pi<long double>), .00005L);
-        EXPECT_LT(get_error(cnl::one_pi<fixed_point<std::uint64_t, -62>>, cnl::one_pi<long double>), .0000000000000000003L);
-    }
-
-    TEST(fixed_point_constants, two_pi) {
-        EXPECT_LT(get_error(cnl::two_pi<fixed_point<std::uint8_t, -6>>, cnl::two_pi<long double>), .02L);
-        EXPECT_LT(get_error(cnl::two_pi<fixed_point<std::int16_t, -4>>, cnl::two_pi<long double>), .02L);
-        EXPECT_LT(get_error(cnl::two_pi<fixed_point<std::int32_t, -16>>, cnl::two_pi<long double>), .00002L);
-        EXPECT_LT(get_error(cnl::two_pi<fixed_point<std::uint64_t, -62>>, cnl::two_pi<long double>), .0000000000000000003L);
-    }
-
-    TEST(fixed_point_constants, two_sqrtpi) {
-        EXPECT_LT(get_error(cnl::two_sqrtpi<fixed_point<std::uint8_t, -6>>, cnl::two_sqrtpi<long double>), .006L);
-        EXPECT_LT(get_error(cnl::two_sqrtpi<fixed_point<std::int16_t, -4>>, cnl::two_sqrtpi<long double>), .015L);
-        EXPECT_LT(get_error(cnl::two_sqrtpi<fixed_point<std::int32_t, -16>>, cnl::two_sqrtpi<long double>), .000007L);
-        EXPECT_LT(get_error(cnl::two_sqrtpi<fixed_point<std::uint64_t, -62>>, cnl::two_sqrtpi<long double>), .0000000000000000002L);
-    }
-
     TEST(fixed_point_constants, sqrt2) {
         EXPECT_LT(get_error(cnl::sqrt2<fixed_point<std::uint8_t, -6>>, cnl::sqrt2<long double>), .006L);
         EXPECT_LT(get_error(cnl::sqrt2<fixed_point<std::int16_t, -4>>, cnl::sqrt2<long double>), .03L);
@@ -120,11 +98,67 @@ namespace {
         EXPECT_LT(get_error(cnl::sqrt2<fixed_point<std::uint64_t, -62>>, cnl::sqrt2<long double>), .0000000000000000002L);
     }
 
-    TEST(fixed_point_constants, one_sqrt2) {
-        EXPECT_LT(get_error(cnl::one_sqrt2<fixed_point<std::uint8_t, -6>>, cnl::one_sqrt2<long double>), .006L);
-        EXPECT_LT(get_error(cnl::one_sqrt2<fixed_point<std::int16_t, -4>>, cnl::one_sqrt2<long double>), .03L);
-        EXPECT_LT(get_error(cnl::one_sqrt2<fixed_point<std::int32_t, -16>>, cnl::one_sqrt2<long double>), .00003L);
-        EXPECT_LT(get_error(cnl::one_sqrt2<fixed_point<std::uint64_t, -62>>, cnl::one_sqrt2<long double>), .0000000000000000002L);
+    TEST(fixed_point_constants, sqrt3) {
+        EXPECT_LT(get_error(cnl::sqrt3<fixed_point<std::uint8_t, -6>>, cnl::sqrt3<long double>), .02L);
+        EXPECT_LT(get_error(cnl::sqrt3<fixed_point<std::int16_t, -4>>, cnl::sqrt3<long double>), .03L);
+        EXPECT_LT(get_error(cnl::sqrt3<fixed_point<std::int32_t, -16>>, cnl::sqrt3<long double>), .00005L);
+        EXPECT_LT(get_error(cnl::sqrt3<fixed_point<std::uint64_t, -62>>, cnl::sqrt3<long double>), .0000000000000000003L);
+    }
+
+    TEST(fixed_point_constants, invsqrt2) {
+        EXPECT_LT(get_error(cnl::invsqrt2<fixed_point<std::uint8_t, -6>>, cnl::invsqrt2<long double>), .02L);
+        EXPECT_LT(get_error(cnl::invsqrt2<fixed_point<std::int16_t, -4>>, cnl::invsqrt2<long double>), .03L);
+        EXPECT_LT(get_error(cnl::invsqrt2<fixed_point<std::int32_t, -16>>, cnl::invsqrt2<long double>), .00005L);
+        EXPECT_LT(get_error(cnl::invsqrt2<fixed_point<std::uint64_t, -62>>, cnl::invsqrt2<long double>), .0000000000000000003L);
+    }
+
+    TEST(fixed_point_constants, invsqrt3) {
+        EXPECT_LT(get_error(cnl::invsqrt3<fixed_point<std::uint8_t, -6>>, cnl::invsqrt3<long double>), .03L);
+        EXPECT_LT(get_error(cnl::invsqrt3<fixed_point<std::int16_t, -4>>, cnl::invsqrt3<long double>), .03L);
+        EXPECT_LT(get_error(cnl::invsqrt3<fixed_point<std::int32_t, -16>>, cnl::invsqrt3<long double>), .00005L);
+        EXPECT_LT(get_error(cnl::invsqrt3<fixed_point<std::uint64_t, -62>>, cnl::invsqrt3<long double>), .0000000000000000003L);
+    }
+
+    TEST(fixed_point_constants, radian) {
+        EXPECT_LT(get_error(cnl::radian<fixed_point<std::uint8_t, -1>>, cnl::radian<long double>), .02L);
+        EXPECT_LT(get_error(cnl::radian<fixed_point<std::int16_t, -4>>, cnl::radian<long double>), .02L);
+        EXPECT_LT(get_error(cnl::radian<fixed_point<std::int32_t, -16>>, cnl::radian<long double>), .00005L);
+        EXPECT_LT(get_error(cnl::radian<fixed_point<std::uint64_t, -58>>, cnl::radian<long double>), .0000000000000000003L);
+    }
+
+    TEST(fixed_point_constants, egamma) {
+        EXPECT_LT(get_error(cnl::egamma<fixed_point<std::uint8_t, -6>>, cnl::egamma<long double>), .03L);
+        EXPECT_LT(get_error(cnl::egamma<fixed_point<std::int16_t, -4>>, cnl::egamma<long double>), .03L);
+        EXPECT_LT(get_error(cnl::egamma<fixed_point<std::int32_t, -16>>, cnl::egamma<long double>), .00005L);
+        EXPECT_LT(get_error(cnl::egamma<fixed_point<std::uint64_t, -62>>, cnl::egamma<long double>), .0000000000000000003L);
+    }
+
+    TEST(fixed_point_constants, phi) {
+        EXPECT_LT(get_error(cnl::phi<fixed_point<std::uint8_t, -6>>, cnl::phi<long double>), .02L);
+        EXPECT_LT(get_error(cnl::phi<fixed_point<std::int16_t, -4>>, cnl::phi<long double>), .04L);
+        EXPECT_LT(get_error(cnl::phi<fixed_point<std::int32_t, -16>>, cnl::phi<long double>), .00005L);
+        EXPECT_LT(get_error(cnl::phi<fixed_point<std::uint64_t, -62>>, cnl::phi<long double>), .0000000000000000003L);
+    }
+
+    TEST(fixed_point_constants, catalan) {
+        EXPECT_LT(get_error(cnl::catalan<fixed_point<std::uint8_t, -6>>, cnl::catalan<long double>), .02L);
+        EXPECT_LT(get_error(cnl::catalan<fixed_point<std::int16_t, -4>>, cnl::catalan<long double>), .05L);
+        EXPECT_LT(get_error(cnl::catalan<fixed_point<std::int32_t, -16>>, cnl::catalan<long double>), .00005L);
+        EXPECT_LT(get_error(cnl::catalan<fixed_point<std::uint64_t, -62>>, cnl::catalan<long double>), .0000000000000000003L);
+    }
+
+    TEST(fixed_point_constants, apery) {
+        EXPECT_LT(get_error(cnl::apery<fixed_point<std::uint8_t, -6>>, cnl::apery<long double>), .02L);
+        EXPECT_LT(get_error(cnl::apery<fixed_point<std::int16_t, -4>>, cnl::apery<long double>), .02L);
+        EXPECT_LT(get_error(cnl::apery<fixed_point<std::int32_t, -16>>, cnl::apery<long double>), .00005L);
+        EXPECT_LT(get_error(cnl::apery<fixed_point<std::uint64_t, -62>>, cnl::apery<long double>), .0000000000000000003L);
+    }
+
+    TEST(fixed_point_constants, glaisher) {
+        EXPECT_LT(get_error(cnl::glaisher<fixed_point<std::uint8_t, -6>>, cnl::glaisher<long double>), .02L);
+        EXPECT_LT(get_error(cnl::glaisher<fixed_point<std::int16_t, -4>>, cnl::glaisher<long double>), .03L);
+        EXPECT_LT(get_error(cnl::glaisher<fixed_point<std::int32_t, -16>>, cnl::glaisher<long double>), .00005L);
+        EXPECT_LT(get_error(cnl::glaisher<fixed_point<std::uint64_t, -62>>, cnl::glaisher<long double>), .0000000000000000003L);
     }
 
 #endif  // defined(__cpp_inline_variables)
