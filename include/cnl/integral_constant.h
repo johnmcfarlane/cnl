@@ -1,5 +1,5 @@
 ﻿
-//          Copyright John McFarlane 2015 - 2016.
+//          Copyright John McFarlane 2015 - 2017.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -15,68 +15,7 @@
 
 #include <cstdint>
 
-#if defined(CNL_EXCEPTIONS_ENABLED)
-#include <stdexcept>
-#endif
-
 namespace cnl {
-    namespace _const_integer_impl {
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::digits_to_integral_constant
-        //
-        // return intrgral_constant given string of digits
-
-        constexpr std::intmax_t combine(int, std::intmax_t p) {
-            return p;
-        }
-
-        template<class... TT>
-        constexpr std::intmax_t combine(int base, std::intmax_t val, int p0, TT... pp) {
-            return combine(base, val * base + p0, pp...);
-        }
-
-        constexpr int parse_dec(char C) {
-#if defined(CNL_EXCEPTIONS_ENABLED)
-            return (C >= '0' && C <= '9')
-                   ? C - '0'
-                   : throw std::out_of_range("only decimal digits are allowed");
-#else
-            return C-'0';
-#endif
-        }
-
-        constexpr int parse_hex(char C) {
-            return (C >= '0' && C <= '9')
-                   ? C - '0'
-                   : (C >= 'a' && C <= 'f')
-                     ? C - 'a' + 10
-                     : (C >= 'A' && C <= 'F')
-                       ? C - 'A' + 10
-#if defined(CNL_EXCEPTIONS_ENABLED)
-                       : throw std::out_of_range("only hexadecimal digits are allowed")
-#else
-                : 0
-#endif
-                    ;
-        }
-
-        template<char... Digits>
-        struct digits_to_integral {
-            static constexpr std::intmax_t value = combine(10, 0, parse_dec(Digits)...);
-        };
-
-        template<char... Digits>
-        struct digits_to_integral<'0', 'x', Digits...> {
-            static constexpr std::intmax_t value = combine(16, 0, parse_hex(Digits)...);
-        };
-
-        template<char... Digits>
-        struct digits_to_integral<'0', 'X', Digits...> {
-            static constexpr std::intmax_t value = combine(16, 0, parse_hex(Digits)...);
-        };
-    }
-
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::is_integral_constant type traits
@@ -95,10 +34,62 @@ namespace cnl {
     //
     // http://codereview.stackexchange.com/a/51576/26421
 
+    namespace _const_integer_impl {
+
+        template<typename ParseDigit>
+        constexpr std::intmax_t parse(char const* s, int base, ParseDigit parse_digit, std::intmax_t value = 0)
+        {
+            return (*s) ? parse(s+1, base, parse_digit, parse_digit(*s)+value*base) : value;
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // digit parsers
+
+        constexpr int parse_bin_char(char c) {
+            return (c == '0') ? 0 : (c == '1') ? 1 : int{};
+        }
+
+        constexpr int parse_dec_char(char c) {
+            return (c >= '0' && c <= '9') ? c - '0' : int{};
+        }
+
+        constexpr int parse_oct_char(char c) {
+            return (c >= '0' && c <= '7') ? c - '0' : int{};
+        }
+
+        constexpr int parse_hex_char(char c) {
+            return (c >= '0' && c <= '9')
+                   ? c - '0'
+                   : (c >= 'a' && c <= 'z')
+                     ? c + 10 - 'a'
+                     : (c >= 'A' && c <= 'Z')
+                       ? c + 10 - 'A'
+                       : int{};
+        }
+
+        template<int NumChars>
+        constexpr std::intmax_t parse(const char (& s)[NumChars])
+        {
+            return (s[0]!='0')
+                   ? parse(s, 10, parse_dec_char)
+                   : (s[1]=='x' || s[1]=='X')
+                     ? parse(s+2, 16, parse_hex_char)
+                     : (s[1]=='b' || s[1]=='B')
+                       ? parse(s+2, 2, parse_bin_char)
+                       : parse(s+1, 8, parse_oct_char);
+        }
+
+        template<char... Chars>
+        constexpr std::intmax_t parse() {
+            return parse<sizeof...(Chars) + 1>({Chars...,'\0'});
+        }
+    }
+
     namespace literals {
-        template<char... Digits>
+        template<char... Chars>
         constexpr auto operator "" _c()
-        -> std::integral_constant<std::intmax_t, _const_integer_impl::digits_to_integral<Digits...>::value> {
+        -> std::integral_constant<std::intmax_t, _const_integer_impl::parse<Chars...,'\0'>()>
+        {
             return {};
         }
     }

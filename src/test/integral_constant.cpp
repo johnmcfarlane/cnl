@@ -16,17 +16,17 @@ namespace {
     namespace test_const_integer_impl {
 
         namespace test_digits_to_integral {
-            using cnl::_const_integer_impl::digits_to_integral;
+            using cnl::_const_integer_impl::parse;
 
-            static_assert(identical(digits_to_integral<'0'>::value, INTMAX_C(0)),
-                "cnl::_const_integer_impl::digits_to_integral test failed");
-            static_assert(identical(digits_to_integral<'1'>::value, INTMAX_C(1)),
-                "cnl::_const_integer_impl::digits_to_integral test failed");
-            static_assert(identical(digits_to_integral<'9', '0', '8', '1', '7', '2', '6', '3', '5', '4'>::value, INTMAX_C(9081726354)),
-                "cnl::_const_integer_impl::digits_to_integral test failed");
-            static_assert(identical(digits_to_integral<'0', 'x', '9', '0', '8', '1', '7', '2', '6', '3', '5', '4'>::value, INTMAX_C(0x9081726354)),
-                "cnl::_const_integer_impl::digits_to_integral test failed");
-            static_assert(digits_to_integral<'0', 'X', 'a', 'A'>::value == INTMAX_C(0xAa),
+            static_assert(identical(parse("0"), INTMAX_C(0)),
+                "cnl::_const_integer_impl::parse test failed");
+            static_assert(identical(parse("1"), INTMAX_C(1)),
+                "cnl::_const_integer_impl::parse test failed");
+            static_assert(identical(parse("9081726354"), INTMAX_C(9081726354)),
+                "cnl::_const_integer_impl::parse test failed");
+            static_assert(identical(parse("0x9081726354"), INTMAX_C(0x9081726354)),
+                "cnl::_const_integer_impl::parse test failed");
+            static_assert(parse("0XaA") == INTMAX_C(0xAa),
                 "cnl::_const_integer_impl::digits_to_integral test failed");
         }
     }
