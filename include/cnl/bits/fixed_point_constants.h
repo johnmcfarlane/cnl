@@ -99,78 +99,79 @@ namespace cnl {
         }
     }
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> e<fixed_point<Rep, Exponent>> {
-        _impl::constant_with_fallback<long double, Rep, Exponent>(e<long double>, _impl::e<Rep, Exponent>)
-    };
+    namespace math_constants {
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> e<fixed_point<Rep, Exponent>> {
+            _impl::constant_with_fallback<long double, Rep, Exponent>(e<long double>, _impl::e<Rep, Exponent>)
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> log2e<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ log2e<long double> }
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> log2e<fixed_point<Rep, Exponent>> {
+            fixed_point<Rep, Exponent>{ log2e<long double> }
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> log10e<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ log10e<long double> }
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> log10e<fixed_point<Rep, Exponent>> {
+            fixed_point<Rep, Exponent>{ log10e<long double> }
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> pi<fixed_point<Rep, Exponent>>{
-        _impl::constant_with_fallback<long double, Rep, Exponent>(pi<long double>, _impl::pi<Rep, Exponent>)
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> pi<fixed_point<Rep, Exponent>>{
+            _impl::constant_with_fallback<long double, Rep, Exponent>(pi<long double>, _impl::pi<Rep, Exponent>)
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invpi<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ invpi<long double> }
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invpi<fixed_point<Rep, Exponent>> {
+            fixed_point<Rep, Exponent>{ invpi<long double> }
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrtpi<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ invsqrtpi<long double> }
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrtpi<fixed_point<Rep, Exponent>> {
+            fixed_point<Rep, Exponent>{ invsqrtpi<long double> }
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> ln2<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ ln2<long double> }
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> ln2<fixed_point<Rep, Exponent>> {
+            fixed_point<Rep, Exponent>{ ln2<long double> }
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> ln10<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ ln10<long double> }
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> ln10<fixed_point<Rep, Exponent>> {
+            fixed_point<Rep, Exponent>{ ln10<long double> }
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> sqrt2<fixed_point<Rep, Exponent>> {
-        _impl::constant_with_fallback<long double, Rep, Exponent>(sqrt2<long double>, _impl::sqrt2<Rep, Exponent>)
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> sqrt2<fixed_point<Rep, Exponent>> {
+            _impl::constant_with_fallback<long double, Rep, Exponent>(sqrt2<long double>, _impl::sqrt2<Rep, Exponent>)
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> sqrt3<fixed_point<Rep, Exponent>> {
-        _impl::constant_with_fallback<long double, Rep, Exponent>(sqrt3<long double>, _impl::sqrt3<Rep, Exponent>)
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> sqrt3<fixed_point<Rep, Exponent>> {
+            _impl::constant_with_fallback<long double, Rep, Exponent>(sqrt3<long double>, _impl::sqrt3<Rep, Exponent>)
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrt2<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ invsqrt2<long double> }
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrt2<fixed_point<Rep, Exponent>> {
+            fixed_point<Rep, Exponent>{ invsqrt2<long double> }
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrt3<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ invsqrt3<long double> }
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrt3<fixed_point<Rep, Exponent>> {
+            fixed_point<Rep, Exponent>{ invsqrt3<long double> }
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> radian<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ radian<long double> }
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> radian<fixed_point<Rep, Exponent>> {
+            fixed_point<Rep, Exponent>{ radian<long double> }
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> egamma<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ egamma<long double> }
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> egamma<fixed_point<Rep, Exponent>> {
+            fixed_point<Rep, Exponent>{ egamma<long double> }
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> phi<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ phi<long double> }
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> phi<fixed_point<Rep, Exponent>> {
+            fixed_point<Rep, Exponent>{ phi<long double> }
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> catalan<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ catalan<long double> }
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> catalan<fixed_point<Rep, Exponent>> {
+            fixed_point<Rep, Exponent>{ catalan<long double> }
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> apery<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ apery<long double> }
-    };
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> apery<fixed_point<Rep, Exponent>> {
+            fixed_point<Rep, Exponent>{ apery<long double> }
+        };
 
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> glaisher<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ glaisher<long double> }
-    };
-
+        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> glaisher<fixed_point<Rep, Exponent>> {
+            fixed_point<Rep, Exponent>{ glaisher<long double> }
+        };
+    }
 #endif  // defined(__cpp_inline_variables)
 }
 

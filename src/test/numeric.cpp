@@ -19,6 +19,8 @@ namespace {
 #if defined(__cpp_inline_variables)
 
     namespace test_math_constants {
+        using namespace math_constants;
+
         template<typename T>
         void test_type() {
             auto epsilon = std::numeric_limits<T>::epsilon();
