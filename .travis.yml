@@ -5,7 +5,7 @@ language: cpp
 
 matrix:
   include:
-    # Linux/C++11
+    # C++11
     - os: linux
       addons: &gcc7
         apt:
@@ -24,6 +24,10 @@ matrix:
             - g++-6
       env: MATRIX_EVAL="CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=ON
 
+    - os: osx
+      osx_image: xcode8
+      env: MATRIX_EVAL="brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=ON
+
     - os: linux
       addons: &gcc5
         apt:
@@ -32,6 +36,10 @@ matrix:
           packages:
             - g++-5
       env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON
+
+    - os: osx
+      osx_image: xcode8
+      env: MATRIX_EVAL="brew install gcc5 && CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=OFF
 
     - os: linux
       addons: &clang5
@@ -78,7 +86,12 @@ matrix:
             - g++-5
       env: MATRIX_EVAL="CC=clang-3.5 && CXX=clang++-3.5" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON
 
-    # Linux/C++14
+# constexpr issue
+#    - os: osx
+#      compiler: clang
+#      env: MATRIX_EVAL="" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=ON
+
+    # C++14
     - os: linux
       addons: *gcc7
       env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=OFF
@@ -87,9 +100,22 @@ matrix:
       addons: *gcc6
       env: MATRIX_EVAL="CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
 
+    - os: osx
+      osx_image: xcode8
+      env: MATRIX_EVAL="brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
+
     - os: linux
       addons: *gcc5
       env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Debug STD=14 EXCEPTIONS=OFF INT128=ON
+
+# Boost.SIMD fails
+#    - os: osx
+#      osx_image: xcode8
+#      env: MATRIX_EVAL="brew install gcc5 && CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=ON
+
+    - os: osx
+      compiler: g++
+      env: MATRIX_EVAL="" BUILD_TYPE=Debug STD=14 EXCEPTIONS=OFF INT128=OFF
 
     - os: linux
       addons: *clang5
@@ -107,7 +133,11 @@ matrix:
       addons: *clang35
       env: MATRIX_EVAL="CC=clang-3.5 && CXX=clang++-3.5" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
 
-    # Linux/C++17
+    - os: osx
+      compiler: clang
+      env: MATRIX_EVAL="" BUILD_TYPE=Release STD=14 EXCEPTIONS=OFF INT128=ON
+
+    # C++17
     - os: linux
       addons: *gcc7
       env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON
@@ -123,38 +153,6 @@ matrix:
     - os: linux
       addons: *clang5
       env: MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0" BUILD_TYPE=Release STD=17 EXCEPTIONS=OFF INT128=ON
-
-    # OS X/C++11
-    - os: osx
-      osx_image: xcode8
-      env: MATRIX_EVAL="brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=ON
-
-    - os: osx
-      osx_image: xcode8
-      env: MATRIX_EVAL="brew install gcc5 && CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=OFF
-
-# constexpr issue
-#    - os: osx
-#      compiler: clang
-#      env: MATRIX_EVAL="" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=ON
-
-    # OS X/C++14
-    - os: osx
-      compiler: g++
-      env: MATRIX_EVAL="" BUILD_TYPE=Debug STD=14 EXCEPTIONS=OFF INT128=OFF
-
-    - os: osx
-      osx_image: xcode8
-      env: MATRIX_EVAL="brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
-
-# Boost.SIMD fails
-#    - os: osx
-#      osx_image: xcode8
-#      env: MATRIX_EVAL="brew install gcc5 && CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=ON
-
-    - os: osx
-      compiler: clang
-      env: MATRIX_EVAL="" BUILD_TYPE=Release STD=14 EXCEPTIONS=OFF INT128=ON
 
     # OS X/C++17
     - os: osx
