@@ -8,7 +8,7 @@
 #define CNL_PRECISE_INTEGER_H 1
 
 #include <cnl/bits/number_base.h>
-#include <cnl/bits/limits.h>
+#include <cnl/limits.h>
 
 namespace cnl {
 

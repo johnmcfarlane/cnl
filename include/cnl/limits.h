@@ -1,16 +1,16 @@
 
-//          Copyright John McFarlane 2015 - 2016.
+//          Copyright John McFarlane 2015 - 2017.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief specialization of `numeric_limits` for 128-bit integer types
+/// \brief CNL alternative to <limits> with 128-bit support
 
 #if !defined(CNL_LIMITS_H)
 #define CNL_LIMITS_H 1
 
-#include "config.h"
+#include "cnl/bits/config.h"
 
 #include <climits>
 #include <cstdint>
