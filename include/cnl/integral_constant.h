@@ -48,7 +48,7 @@ namespace cnl {
     namespace _const_integer_impl {
 
         template<typename ParseDigit>
-        constexpr std::intmax_t parse(char const* s, int base, ParseDigit parse_digit, std::intmax_t value = 0)
+        constexpr intmax_t parse(char const* s, int base, ParseDigit parse_digit, intmax_t value = 0)
         {
             return (*s) ? parse(s+1, base, parse_digit, parse_digit(*s)+value*base) : value;
         }
@@ -79,7 +79,7 @@ namespace cnl {
         }
 
         template<int NumChars>
-        constexpr std::intmax_t parse(const char (& s)[NumChars])
+        constexpr intmax_t parse(const char (& s)[NumChars])
         {
             return (s[0]!='0')
                    ? parse(s, 10, parse_dec_char)
@@ -91,7 +91,7 @@ namespace cnl {
         }
 
         template<char... Chars>
-        constexpr std::intmax_t parse() {
+        constexpr intmax_t parse() {
             return parse<sizeof...(Chars) + 1>({Chars...,'\0'});
         }
     }
@@ -99,7 +99,7 @@ namespace cnl {
     namespace literals {
         template<char... Chars>
         constexpr auto operator "" _c()
-        -> std::integral_constant<std::intmax_t, _const_integer_impl::parse<Chars...,'\0'>()>
+        -> std::integral_constant<intmax_t, _const_integer_impl::parse<Chars...,'\0'>()>
         {
             return {};
         }
