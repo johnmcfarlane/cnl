@@ -52,7 +52,7 @@ namespace cnl {
 
     template<
             typename Narrowest = int,
-            typename Integral = std::intmax_t,
+            typename Integral = cnl::intmax_t,
             Integral Value = 0>
     constexpr elastic_fixed_point<_impl::max(_impl::used_bits_symmetric(Value)-trailing_bits(Value), 1), trailing_bits(
             Value), Narrowest>
@@ -107,11 +107,11 @@ namespace cnl {
         constexpr auto operator "" _elastic()
         -> decltype(make_elastic_fixed_point<int>(
                 std::integral_constant<
-                        std::intmax_t,
+                        cnl::intmax_t,
                         _const_integer_impl::parse<sizeof...(Chars)+1>({Chars..., '\0'})>{}))
         {
             return make_elastic_fixed_point<int>(
-                    std::integral_constant<std::intmax_t, _const_integer_impl::parse<sizeof...(Chars)+1>(
+                    std::integral_constant<cnl::intmax_t, _const_integer_impl::parse<sizeof...(Chars)+1>(
                             {Chars..., '\0'})>{});
         }
     }

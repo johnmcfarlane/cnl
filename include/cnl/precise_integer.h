@@ -16,7 +16,7 @@ namespace cnl {
         template<class To, class From>
         static constexpr To convert(From const& from)
         {
-            return static_cast<To>(std::intmax_t(from+((from>=0) ? .5 : -.5)));
+            return static_cast<To>(cnl::intmax_t(from+((from>=0) ? .5 : -.5)));
         }
     };
 
