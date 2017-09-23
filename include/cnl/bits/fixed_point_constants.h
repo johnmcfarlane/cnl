@@ -28,8 +28,8 @@ namespace cnl {
 
             auto previous = fp{3};
             for(auto n = 2; n != (max_iterations << 1); n += 4) {
-                auto const addend     = divide(four, ((n+0L) * (n+1L) * (n+2L)));
-                auto const subtrahend = divide(four, ((n+2L) * (n+3L) * (n+4L)));
+                auto const addend     = four / ((n+0L) * (n+1L) * (n+2L));
+                auto const subtrahend = four / ((n+2L) * (n+3L) * (n+4L));
                 auto next = fp{previous + addend - subtrahend};
                 if (next == previous) {
                     return next;
@@ -52,7 +52,7 @@ namespace cnl {
             auto previous = fp{2};
             auto factor = 2;
             for (auto n = 2; n != max_iterations; ++ n, factor *= n) {
-                auto const addend = divide(one, factor);
+                auto const addend = one / factor;
                 auto next = fp{previous + addend};
                 if (next == previous) {
                     return next;

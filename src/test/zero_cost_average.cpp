@@ -11,6 +11,7 @@
 #include <gtest/gtest.h>
 
 using namespace cnl;
+using namespace cnl::literals;
 
 #if (__cplusplus>=201402L)
 #define CONSTEXPR constexpr
@@ -58,7 +59,7 @@ CONSTEXPR float average_fixed_point(float input1, float input2) {
 
     // but it uses int under the hood; user must still widen
     auto sum = fixed_point<int64_t, -16>{fixed1} + fixed2;
-    auto avg = divide(sum, 2);
+    auto avg = sum / 2_c;
 
     return static_cast<float>(avg);
 }

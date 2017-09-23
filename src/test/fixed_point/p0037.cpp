@@ -45,7 +45,7 @@ TEST(proposal, overflow) {
 }
 
 // Underflow
-static_assert(identical(fixed_point<int8_t>(15)/fixed_point<int8_t>(2), fixed_point<int, -7>(7.5f)),
+static_assert(identical(divide(fixed_point<int8_t>(15), fixed_point<int8_t>(2)), fixed_point<int, -7>(7.5f)),
         "Incorrect information in proposal section, Underflow");
 
 // Named Arithmetic Functions
@@ -85,10 +85,10 @@ namespace named_arithmetic5 {
     constexpr auto n = fixed_point<uint32_t, -16>{1};
     constexpr auto d = fixed_point<uint32_t, -16>{2};
 
-    constexpr auto q1 = n/d;
+    constexpr auto q1 = divide(n, d);
     static_assert(identical(q1, fixed_point<uint64_t, -32>{0.5}), "Incorrect information in proposal section, Named Arithmetic Functions");
 
-    constexpr auto q2 = divide(n, d);
+    constexpr auto q2 = n / d;
     static_assert(identical(q2, fixed_point<uint32_t, 0>{0}), "Incorrect information in proposal section, Named Arithmetic Functions");
 }
 

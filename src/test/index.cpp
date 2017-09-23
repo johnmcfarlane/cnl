@@ -132,13 +132,17 @@ TEST(index, advanced_arithmetic_example)
 
 using namespace boost::multiprecision;
 
-template<unsigned NumBits>
-using rep = number<cpp_int_backend<NumBits, NumBits, signed_magnitude, unchecked, void>>;
+template<int NumBits>
+using mp = number<cpp_int_backend<NumBits, NumBits, signed_magnitude, unchecked, void>>;
+
+// With Boost.Multiprecision, fixed_point can be any size.
+template<int NumBits, int Exponent = 0>
+using mp_fixed_point = cnl::fixed_point<mp<NumBits>, Exponent>;
 
 void boost_example()
 {
     // Define an unsigned type with 400 integer digits and 0 fractional digits.
-    using big_number = fixed_point<rep<400>, 0>;
+    using big_number = mp_fixed_point<400>;
 
     // a googol is 10^100
     auto googol = big_number{1};
@@ -149,11 +153,11 @@ void boost_example()
     // "1e+100"
     cout << googol << endl;
 
-    // Dividing a s31:0 number by a u400:0 number
-    auto googolth = 1 / googol;
+    // Dividing a s1.0 number by a u400.0 number
+    auto googolth = divide(mp_fixed_point<1>{1}, googol);
 
     // produces a s31::400 number.
-    static_assert(is_same<decltype(googolth), fixed_point<rep<432>, -400>>::value, "");
+    static_assert(is_same<decltype(googolth), mp_fixed_point<402, -400>>::value, "");
 
     // Prints "1e-100" (although this value is only approximate).
     cout << googolth << endl;

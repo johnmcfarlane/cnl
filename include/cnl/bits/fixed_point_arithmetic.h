@@ -65,7 +65,7 @@ namespace cnl {
                 template<class Lhs, class RhsRep, int RhsExponent>
                 struct binary_pair<Lhs, fixed_point<RhsRep, RhsExponent>>
                         : binary_pair_base<Lhs, 0, RhsRep, RhsExponent> {
-                    static_assert(numeric_limits<Lhs>::is_integer,
+                    static_assert(numeric_limits<Lhs>::is_integer || _impl::is_integral_constant<Lhs>::value,
                             "named arithmetic functions take only fixed_point and integral types");
                 };
 
@@ -277,9 +277,9 @@ namespace cnl {
 
             // strategy aliases - for ease of flip-flopping
             using arithmetic_operator_tag = arithmetic::lean_tag;
-            using division_arithmetic_operator_tag = arithmetic::wide_tag;
+            using division_arithmetic_operator_tag = arithmetic::lean_tag;
             using named_function_tag = arithmetic::wide_tag;
-            using division_named_function_tag = arithmetic::lean_tag;
+            using division_named_function_tag = arithmetic::wide_tag;
 
             ////////////////////////////////////////////////////////////////////////////////
             // cnl::_impl::fixed_point::operate

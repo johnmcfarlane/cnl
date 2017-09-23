@@ -106,12 +106,48 @@ namespace cnl {
     ///
     /// \sa negate, add, subtract, multiply
 
+    namespace _divide_impl {
+        template<class Lhs, class Rhs>
+        struct divide;
+
+        template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+        struct divide<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>> {
+            constexpr auto operator()(fixed_point<LhsRep, LhsExponent> const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
+            -> decltype(_impl::fp::operate<_impl::fp::division_named_function_tag>(lhs, rhs, _impl::divide_tag)) {
+                return _impl::fp::operate<_impl::fp::division_named_function_tag>(lhs, rhs, _impl::divide_tag);
+            }
+        };
+
+        template<class Lhs, class RhsRep, int RhsExponent>
+        struct divide<Lhs, fixed_point<RhsRep, RhsExponent>> {
+            constexpr auto operator()(Lhs const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
+            -> decltype(divide<fixed_point<Lhs>, fixed_point<RhsRep, RhsExponent>>()(lhs, rhs)) {
+                return divide<fixed_point<Lhs>, fixed_point<RhsRep, RhsExponent>>()(lhs, rhs);
+            }
+        };
+
+        template<class LhsRep, int LhsExponent, class Rhs>
+        struct divide<fixed_point<LhsRep, LhsExponent>, Rhs> {
+            constexpr auto operator()(fixed_point<LhsRep, LhsExponent> const& lhs, Rhs const& rhs) const
+            -> decltype(divide<fixed_point<LhsRep, LhsExponent>, fixed_point<Rhs>>()(lhs, rhs)) {
+                return divide<fixed_point<LhsRep, LhsExponent>, fixed_point<Rhs>>()(lhs, rhs);
+            }
+        };
+
+        template<class Lhs, class Rhs>
+        struct divide {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(divide<fixed_point<Lhs>, fixed_point<Rhs>>()(lhs, rhs)) {
+                return divide<fixed_point<Lhs>, fixed_point<Rhs>>()(lhs, rhs);
+            }
+        };
+    }
+
     template<class Lhs, class Rhs>
     constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(_impl::fp::operate<_impl::fp::division_named_function_tag>(lhs, rhs, _impl::divide_tag))
-    {
-        return _impl::fp::operate<_impl::fp::division_named_function_tag>(lhs, rhs, _impl::divide_tag);
-    }
+    -> decltype(_divide_impl::divide<Lhs, Rhs>()(lhs, rhs)) {
+        return _divide_impl::divide<Lhs, Rhs>()(lhs, rhs);
+    };
 }
 
 #endif  // CNL_FIXED_POINT_NAMED_H

@@ -110,6 +110,20 @@ namespace cnl {
                     std::intmax_t, _const_integer_impl::digits_to_integral<Digits...>::value>{});
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::elastic_fixed_point
+
+    template<
+            int NumeratorDigits, int NumeratorExponent, class NumeratorNarrowest,
+            int DenominatorDigits, int DenominatorExponent, class DenominatorNarrowest>
+    constexpr auto operator/(
+            elastic_fixed_point<NumeratorDigits, NumeratorExponent, NumeratorNarrowest> const& numerator,
+            elastic_fixed_point<DenominatorDigits, DenominatorExponent, DenominatorNarrowest> const& denominator)
+    -> decltype(_impl::fp::operate<_impl::fp::arithmetic::wide_tag>(numerator, denominator, _impl::divide_tag)) {
+        return _impl::fp::operate<_impl::fp::arithmetic::wide_tag>(numerator, denominator, _impl::divide_tag);
+    }
 }
 
 #endif  // CNL_ELASTIC_FIXED_POINT_H
