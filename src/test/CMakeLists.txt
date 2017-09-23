@@ -19,6 +19,7 @@ add_executable(fp_test
         p0554.cpp
         index.cpp
         integral_constant.cpp
+        limits.cpp
         number_test.cpp
         zero_cost_free_functions.cpp
         boost.multiprecision.cpp
