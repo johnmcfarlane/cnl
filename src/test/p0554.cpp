@@ -34,4 +34,12 @@ namespace {
         constexpr auto quotient = numerator / denominator;
         static_assert(identical(quotient, elastic_fixed_point<14, -7>{.5}), "position_paper test failed");
     }
+
+    namespace division2 {
+        using cnl::elastic_fixed_point;
+        constexpr elastic_fixed_point<7, -6> numerator = 1.125; // 1:6
+        constexpr elastic_fixed_point<5, -3> denominator = 4.;  // 2:3
+        constexpr auto quotient = numerator / denominator;
+        static_assert(identical(quotient, elastic_fixed_point<12, -8>{0.28125}), "position_paper test failed");
+    }
 }

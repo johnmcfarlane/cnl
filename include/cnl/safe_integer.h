@@ -326,7 +326,9 @@ namespace std {
 
     template<class Rep, class OverflowTag>
     struct numeric_limits<cnl::safe_integer<Rep, OverflowTag>>
-    : numeric_limits<cnl::_impl::number_base<cnl::safe_integer<Rep, OverflowTag>, Rep>> {};
+    : numeric_limits<cnl::_impl::number_base<cnl::safe_integer<Rep, OverflowTag>, Rep>> {
+        static constexpr bool is_integer = true;
+    };
 }
 
 #endif  // CNL_SAFE_INTEGER_H

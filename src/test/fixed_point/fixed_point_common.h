@@ -583,7 +583,7 @@ static_assert(identical(multiply(fixed_point<uint8, -4>{2}, fixed_point<uint8, -
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::divide
 
-static_assert(identical(divide(fixed_point<int16, -14>{1}, test_int{127}), fixed_point<test_int, -14>{1./127}),
+static_assert(identical(divide(fixed_point<int16, -14>{1}, test_int{127}), fixed_point<int64, -45>{1./127}),
         "cnl::divide test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -726,39 +726,37 @@ static_assert(is_same<decltype(fixed_point<int64, -32>(16777215.996093750)*-123.
 
 // division
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert(identical(fixed_point<int8, -1>{63}/fixed_point<int8, -1>{-4}, fixed_point<test_int, -7>{-15.75}),
+static_assert(identical(fixed_point<int8, -1>{63}/fixed_point<int8, -1>{-4}, fixed_point<test_int, 0>{-15.75}),
         "cnl::fixed_point test failed");
-static_assert(identical(fixed_point<test_int, -1>{63}/fixed_point<int8, -1>{-4}, fixed_point<int64, -7>{-15.75}),
+static_assert(identical(fixed_point<test_int, -1>{63}/fixed_point<int8, -1>{-4}, fixed_point<test_int, 0>{-15.75}),
         "cnl::fixed_point test failed");
 #endif
 #if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
-static_assert(identical(fixed_point<int8, 1>{-255}/fixed_point<int8, 1>{-8}, fixed_point<test_int, -7>{31.75}),
+static_assert(identical(fixed_point<int8, 1>{-255}/fixed_point<int8, 1>{-8}, fixed_point<test_int, 0>{31.75}),
         "cnl::fixed_point test failed");
-static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==31.75, "cnl::fixed_point test failed");
+static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==31, "cnl::fixed_point test failed");
 #endif
 
 #if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert(identical(divide(int32(-999), int32(3)), fixed_point<int32>{-333}), "cnl::fixed_point test failed");
+static_assert(identical(divide(int32(-999), int32(3)), fixed_point<int64, -31>{-333}), "cnl::fixed_point test failed");
 #endif
 #if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
 static_assert(
-        identical(fixed_point<int8, -5>{2.5}/fixed_point<int8, -5>{-4.f}, fixed_point<test_int, -7>{-.625}),
+        identical(fixed_point<int8, -5>{2.5}/fixed_point<int8, -5>{-4.f}, fixed_point<test_int, 0>{0}),
         "cnl::fixed_point division test failed");
 
-static_assert(identical(divide(fixed_point<uint32, 10>{10240}, uint32{3u}), fixed_point<uint32,
-        10>{3413.3333333}), "cnl::fixed_point division test failed");
-static_assert(identical(10/fixed_point<uint8, -6>(0.25), fixed_point<int64, -2>{40}),
+static_assert(identical(divide(fixed_point<uint32, 10>{10240}, uint32{3u}), fixed_point<uint64,
+        -22>{3413.3333333}), "cnl::fixed_point division test failed");
+static_assert(identical(test_int{10}/fixed_point<uint8, -6>(0.25), fixed_point<int32, 6>{40}),
         "cnl::fixed_point division test failed");
-#if ! defined(__GNUG__) // Bug 71504?
 static_assert(
-        identical(fixed_point<uint8, 10>{10240}/static_cast<uint16>(3), fixed_point<test_unsigned, -6>{3413.3333333}),
+        identical(fixed_point<uint8, 10>{10240}/static_cast<uint16>(3), fixed_point<test_int, 10>{3413.3333333}),
         "cnl::fixed_point division test failed");
 
-static_assert(identical(test_int{10}/fixed_point<uint8, -2>{0.25}, fixed_point<int64, -6>{40}),
+static_assert(identical(test_int{10}/fixed_point<uint8, -2>{0.25}, fixed_point<test_int, 2>{40}),
         "cnl::fixed_point division test failed");
-static_assert(identical(divide(10, fixed_point<uint8, -2>{0.25}), fixed_point<test_int, 2>{40}),
+static_assert(identical(divide(test_int{10}, fixed_point<uint8, -2>{0.25}), fixed_point<int64, -6>{40}),
         "cnl::fixed_point division test failed");
-#endif
 #endif
 
 static_assert(16777215.996093750/fixed_point<int64, -32>(-123.654f)==-135678.71712347874,
@@ -772,13 +770,15 @@ static_assert(is_same<decltype(fixed_point<int64, -32>(16777215.996093750)/-123.
 
 #if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
 static_assert(
-        identical(fixed_point<uint32, 0>{0xffffffff}/fixed_point<uint32, 0>{0xffffffff}, fixed_point<uint64, -32>{1}),
+        identical(fixed_point<uint32, 0>{0xffffffff}/fixed_point<uint32, 0>{0xffffffff}, fixed_point<uint32, 0>{1}),
         "cnl::fixed_point test failed");
+#if defined(CNL_INT128_ENABLED)
 static_assert(identical(divide(fixed_point<uint64, 0>{0xFFFFFFFE00000001LL}, fixed_point<uint32, 0>{0xffffffff}),
-        fixed_point<uint64, 0>{0xffffffff}), "cnl::fixed_point test failed");
+        fixed_point<uint128, -32>{0xffffffff}), "cnl::fixed_point test failed");
+#endif
 #endif
 static_assert(identical(divide(fixed_point<uint32, 0>{0xFFFE0001LL}, fixed_point<uint32, 0>{0xffff}),
-        fixed_point<uint32, 0>{0xffff}), "cnl::fixed_point test failed");
+        fixed_point<uint64, -32>{0xffff}), "cnl::fixed_point test failed");
 
 namespace test_bitshift {
     // dynamic
@@ -1015,8 +1015,8 @@ struct FixedPointTester : public FixedPointTesterOutsize<Rep, Exponent> {
 #if defined(__clang__) && defined(TEST_NATIVE_OVERFLOW)
     // assorted tests of +, -, * and /
     static_assert(min + min == 2 * min, "basic arithmetic isn't working");
-    static_assert(divide(84 * min, 84) == min, "basic arithmetic isn't working");
-    static_assert((7 * min) - (4 * min) == divide(6 * min, 2), "basic arithmetic isn't working");
+    static_assert(84 * min / 84 == min, "basic arithmetic isn't working");
+    static_assert((7 * min) - (4 * min) == 6 * min / 2, "basic arithmetic isn't working");
 #endif
 };
 
