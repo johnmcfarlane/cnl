@@ -15,6 +15,17 @@
 
 #include <cstdint>
 
+////////////////////////////////////////////////////////////////////////////////
+// CNL_INTMAX_C and CNL_UINTMAX_C
+
+#if defined(CNL_INT128_ENABLED)
+#define CNL_INTMAX_C(N) (::cnl::_const_integer_impl::parse(CNL_STR(N)))
+#define CNL_UINTMAX_C (::cnl::_const_integer_impl::parse(CNL_STR(N)))
+#else
+#define CNL_INTMAX_C INTMAX_C
+#define CNL_UINTMAX_C UINTMAX_C
+#endif
+
 namespace cnl {
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
