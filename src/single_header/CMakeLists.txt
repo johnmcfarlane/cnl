@@ -3,7 +3,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     # add a target to generate preprocessor output
     string(REPLACE " " ";" COMMON_CXX_FLAGS_LIST ${COMMON_CXX_FLAGS})
-    set(FLAGS "-E" "-I${CMAKE_CURRENT_LIST_DIR}/../../include" "-DCNL_DISABLE_GCC_BUILTINS")
+    set(FLAGS "-E" "-I${CMAKE_CURRENT_LIST_DIR}/../../include")
 
     set(SINGLE_HEADER_OUTPUT cnl_complete_11.h)
     add_custom_target(single_header_11

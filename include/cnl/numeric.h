@@ -237,15 +237,6 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::leading_bits
 
-#if !defined(_MSC_VER) && !defined(CNL_DISABLE_GCC_BUILTINS)
-    constexpr int leading_bits(int value)
-    {
-        return (value>0)
-               ? __builtin_clz(value)-1
-               : digits<int>::value-used_bits(value);
-    }
-#endif
-
     template<class Integer>
     constexpr int leading_bits(Integer const&value)
     {
