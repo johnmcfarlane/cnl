@@ -260,6 +260,23 @@ namespace cnl {
     CNL_INTEGER_BIT_SHIFT_DEFINE(<<);
 }
 
+namespace cnl {
+    ////////////////////////////////////////////////////////////////////////////////
+    // std::numeric_limits specialization for safe_integer
+
+    template<class Rep, class OverflowTag>
+    struct numeric_limits<cnl::safe_integer<Rep, OverflowTag>>
+            : numeric_limits<cnl::_impl::number_base<cnl::safe_integer<Rep, OverflowTag>, Rep>> {
+        static constexpr bool is_integer = true;
+    };
+
+    template<class Rep, class OverflowTag>
+    struct numeric_limits<cnl::safe_integer<Rep, OverflowTag> const>
+            : numeric_limits<cnl::_impl::number_base<cnl::safe_integer<Rep, OverflowTag>, Rep>> {
+        static constexpr bool is_integer = true;
+    };
+}
+
 namespace std {
     // std::common_type<T, cnl::safe_integer>
     template<
@@ -326,8 +343,12 @@ namespace std {
 
     template<class Rep, class OverflowTag>
     struct numeric_limits<cnl::safe_integer<Rep, OverflowTag>>
-    : numeric_limits<cnl::_impl::number_base<cnl::safe_integer<Rep, OverflowTag>, Rep>> {
-        static constexpr bool is_integer = true;
+            : cnl::numeric_limits<cnl::safe_integer<Rep, OverflowTag>> {
+    };
+
+    template<class Rep, class OverflowTag>
+    struct numeric_limits<cnl::safe_integer<Rep, OverflowTag> const>
+            : cnl::numeric_limits<cnl::safe_integer<Rep, OverflowTag>> {
     };
 }
 

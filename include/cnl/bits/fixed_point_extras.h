@@ -175,7 +175,7 @@ namespace cnl {
     }
 }
 
-namespace std {
+namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // std::numeric_limits for cnl::fixed_point
 
@@ -238,6 +238,21 @@ namespace std {
         {
             return _value_type::from_data(_rep{1});
         }
+    };
+}
+
+namespace std {
+    ////////////////////////////////////////////////////////////////////////////////
+    // std::numeric_limits specialization for precise_integer
+
+    template<class Rep, int Exponent>
+    struct numeric_limits<cnl::fixed_point<Rep, Exponent>>
+            : cnl::numeric_limits<cnl::fixed_point<Rep, Exponent>> {
+    };
+
+    template<class Rep, int Exponent>
+    struct numeric_limits<cnl::fixed_point<Rep, Exponent> const>
+            : cnl::numeric_limits<cnl::fixed_point<Rep, Exponent>> {
     };
 }
 

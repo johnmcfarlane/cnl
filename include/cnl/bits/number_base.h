@@ -354,9 +354,7 @@ namespace cnl {
                    : _impl::to_rep(i) * _num_traits_impl::pow<Rep>(base, exp);
         }
     };
-}
 
-namespace std {
     ////////////////////////////////////////////////////////////////////////////////
     // std::numeric_limits for cnl::_impl::numeric_limits
 

@@ -154,7 +154,7 @@ namespace cnl {
         template<class Integer>
         constexpr int used_bits_positive(Integer value, int mask_bits = sizeof(Integer)*CHAR_BIT/2)
         {
-            static_assert(std::numeric_limits<Integer>::is_integer,
+            static_assert(cnl::numeric_limits<Integer>::is_integer,
                           "Integer parameter of used_bits_positive() must be a fundamental integer.");
 
             return (value>=(Integer{1} << mask_bits))
@@ -198,7 +198,7 @@ namespace cnl {
             template<class Integer, class = _impl::enable_if_t<numeric_limits<Integer>::is_signed, int>>
             constexpr int operator()(Integer value) const
             {
-                static_assert(std::numeric_limits<Integer>::is_integer,
+                static_assert(cnl::numeric_limits<Integer>::is_integer,
                               "Integer parameter of used_bits()() must be a fundamental integer.");
 
                 // Most negative number is not exploited;
