@@ -138,6 +138,138 @@ namespace {
         static_assert(identical(precise_integer<>{3}*precise_integer<>{7}, precise_integer<>{21}),
                 "precise_integer operator*");
     }
+    
+    namespace numeric_limits {
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::numeric_limits
+        
+        // cnl::numeric_limits<cnl::precise_integer<>>::is_integer
+        static_assert(cnl::numeric_limits<cnl::precise_integer<int8_t, cnl::closest_rounding_tag>>::is_integer,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(cnl::numeric_limits<cnl::precise_integer<uint8_t, cnl::closest_rounding_tag>>::is_integer,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(cnl::numeric_limits<cnl::precise_integer<int16_t, cnl::closest_rounding_tag> const>::is_integer,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(cnl::numeric_limits<cnl::precise_integer<uint16_t, cnl::closest_rounding_tag>>::is_integer,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(cnl::numeric_limits<cnl::precise_integer<int32_t, cnl::closest_rounding_tag>>::is_integer,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(cnl::numeric_limits<cnl::precise_integer<uint32_t, cnl::closest_rounding_tag> const>::is_integer,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(cnl::numeric_limits<cnl::precise_integer<int64_t, cnl::closest_rounding_tag>>::is_integer,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(cnl::numeric_limits<cnl::precise_integer<uint64_t, cnl::closest_rounding_tag>>::is_integer,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+#if defined(CNL_INT128_ENABLED)
+        static_assert(cnl::numeric_limits<CNL_INT128>::is_specialized,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(cnl::numeric_limits<cnl::precise_integer<CNL_INT128, cnl::closest_rounding_tag>>::is_specialized,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(cnl::numeric_limits<cnl::precise_integer<CNL_INT128, cnl::closest_rounding_tag>>::is_integer,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(cnl::numeric_limits<cnl::precise_integer<CNL_UINT128, cnl::closest_rounding_tag> const>::is_integer,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+#endif
+
+        // cnl::numeric_limits<cnl::precise_integer<>>::is_signed
+        static_assert(cnl::numeric_limits<cnl::precise_integer<int8_t, cnl::closest_rounding_tag>>::is_signed,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(!cnl::numeric_limits<cnl::precise_integer<uint8_t, cnl::closest_rounding_tag>>::is_signed,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(cnl::numeric_limits<cnl::precise_integer<int16_t, cnl::closest_rounding_tag> const>::is_signed,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(!cnl::numeric_limits<cnl::precise_integer<uint16_t, cnl::closest_rounding_tag>>::is_signed,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(cnl::numeric_limits<cnl::precise_integer<int32_t, cnl::closest_rounding_tag>>::is_signed,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(!cnl::numeric_limits<cnl::precise_integer<uint32_t, cnl::closest_rounding_tag> const>::is_signed,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(cnl::numeric_limits<cnl::precise_integer<int64_t, cnl::closest_rounding_tag>>::is_signed,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(!cnl::numeric_limits<cnl::precise_integer<uint64_t, cnl::closest_rounding_tag>>::is_signed,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+#if defined(CNL_INT128_ENABLED)
+        static_assert(cnl::numeric_limits<cnl::precise_integer<CNL_INT128, cnl::closest_rounding_tag> const>::is_signed,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(!cnl::numeric_limits<cnl::precise_integer<CNL_UINT128, cnl::closest_rounding_tag>>::is_signed,
+                "cnl::numeric_limits<cnl::precise_integer<>> test failed");
+#endif
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // std::numeric_limits
+
+        // std::numeric_limits<cnl::precise_integer<>>::is_integer
+        static_assert(std::numeric_limits<cnl::precise_integer<int8_t, cnl::closest_rounding_tag>>::is_specialized,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<uint8_t, cnl::closest_rounding_tag> const>::is_specialized,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<int16_t, cnl::closest_rounding_tag>>::is_specialized,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<uint16_t, cnl::closest_rounding_tag>>::is_specialized,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<int32_t, cnl::closest_rounding_tag> const>::is_specialized,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<uint32_t, cnl::closest_rounding_tag>>::is_specialized,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<int64_t, cnl::closest_rounding_tag>>::is_specialized,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<uint64_t, cnl::closest_rounding_tag> const>::is_specialized,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+#if defined(CNL_INT128_ENABLED)
+        static_assert(std::numeric_limits<cnl::precise_integer<CNL_INT128, cnl::closest_rounding_tag>>::is_specialized,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<CNL_UINT128, cnl::closest_rounding_tag>>::is_specialized,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+#endif
+
+        // std::numeric_limits<cnl::precise_integer<>>::is_integer
+        static_assert(std::numeric_limits<cnl::precise_integer<int8_t, cnl::closest_rounding_tag> const>::is_integer,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<uint8_t, cnl::closest_rounding_tag>>::is_integer,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<int16_t, cnl::closest_rounding_tag>>::is_integer,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<uint16_t, cnl::closest_rounding_tag> const>::is_integer,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<int32_t, cnl::closest_rounding_tag>>::is_integer,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<uint32_t, cnl::closest_rounding_tag>>::is_integer,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<int64_t, cnl::closest_rounding_tag> const>::is_integer,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<uint64_t, cnl::closest_rounding_tag>>::is_integer,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+#if defined(CNL_INT128_ENABLED)
+        static_assert(std::numeric_limits<cnl::precise_integer<CNL_INT128, cnl::closest_rounding_tag>>::is_integer,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<CNL_UINT128, cnl::closest_rounding_tag> const>::is_integer,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+#endif
+
+        // std::numeric_limits<cnl::precise_integer<>>::is_signed
+        static_assert(std::numeric_limits<cnl::precise_integer<int8_t, cnl::closest_rounding_tag>>::is_signed,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(!std::numeric_limits<cnl::precise_integer<uint8_t, cnl::closest_rounding_tag>>::is_signed,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<int16_t, cnl::closest_rounding_tag> const>::is_signed,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(!std::numeric_limits<cnl::precise_integer<uint16_t, cnl::closest_rounding_tag>>::is_signed,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<int32_t, cnl::closest_rounding_tag>>::is_signed,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(!std::numeric_limits<cnl::precise_integer<uint32_t, cnl::closest_rounding_tag> const>::is_signed,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(std::numeric_limits<cnl::precise_integer<int64_t, cnl::closest_rounding_tag>>::is_signed,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(!std::numeric_limits<cnl::precise_integer<uint64_t, cnl::closest_rounding_tag>>::is_signed,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+#if defined(CNL_INT128_ENABLED)
+        static_assert(std::numeric_limits<cnl::precise_integer<CNL_INT128, cnl::closest_rounding_tag> const>::is_signed,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+        static_assert(!std::numeric_limits<cnl::precise_integer<CNL_UINT128, cnl::closest_rounding_tag>>::is_signed,
+                "std::numeric_limits<cnl::precise_integer<>> test failed");
+#endif
+    }
 }
 
 template<class PreciseInteger>
