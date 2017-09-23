@@ -34,6 +34,7 @@ namespace test_literals_initialization {
     static_assert(identical(fixed_point<int, 1>{2}, fixed_point(2_c)));
     static_assert(identical(fixed_point<int, 0>{3}, fixed_point(3_c)));
     static_assert(identical(fixed_point<int, 2>{500}, fixed_point(500_c)));
+    static_assert(identical(fixed_point<int32_t, 32>{INT64_C(0x7fffffff00000000)}, fixed_point(0x7fffffff00000000_c)));
 }
 
 namespace test_literals_constant {
