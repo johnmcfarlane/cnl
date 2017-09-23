@@ -10,7 +10,7 @@
 #if !defined(CNL_NUMERIC_TRAITS)
 #define CNL_NUMERIC_TRAITS 1
 
-#include "bits/limits.h"
+#include "limits.h"
 #include "bits/type_traits.h"
 
 #include <utility>

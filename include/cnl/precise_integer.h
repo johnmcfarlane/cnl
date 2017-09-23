@@ -8,7 +8,7 @@
 #define CNL_PRECISE_INTEGER_H 1
 
 #include <cnl/bits/number_base.h>
-#include <cnl/bits/limits.h>
+#include <cnl/limits.h>
 
 namespace cnl {
 
@@ -140,6 +140,21 @@ namespace cnl {
                 decltype(_impl::to_rep(lhs) << rhs),
                 LhsRoundingTag>>(_impl::to_rep(lhs) << rhs);
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::numeric_limits specialization for precise_integer
+
+    template<class Rep, class RoundingTag>
+    struct numeric_limits<cnl::precise_integer<Rep, RoundingTag>>
+            : numeric_limits<cnl::_impl::number_base<cnl::precise_integer<Rep, RoundingTag>, Rep>> {
+        static constexpr bool is_integer = true;
+    };
+
+    template<class Rep, class RoundingTag>
+    struct numeric_limits<cnl::precise_integer<Rep, RoundingTag> const>
+            : numeric_limits<cnl::_impl::number_base<cnl::precise_integer<Rep, RoundingTag>, Rep>> {
+        static constexpr bool is_integer = true;
+    };
 }
 
 namespace std {
@@ -148,7 +163,13 @@ namespace std {
 
     template<class Rep, class RoundingTag>
     struct numeric_limits<cnl::precise_integer<Rep, RoundingTag>>
-            : numeric_limits<cnl::_impl::number_base<cnl::precise_integer<Rep, RoundingTag>, Rep>> {};
+            : cnl::numeric_limits<cnl::precise_integer<Rep, RoundingTag>> {
+    };
+
+    template<class Rep, class RoundingTag>
+    struct numeric_limits<cnl::precise_integer<Rep, RoundingTag> const>
+            : cnl::numeric_limits<cnl::precise_integer<Rep, RoundingTag>> {
+    };
 }
 
 #endif  // CNL_PRECISE_INTEGER_H

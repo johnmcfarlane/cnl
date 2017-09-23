@@ -773,6 +773,8 @@ static_assert(
         identical(fixed_point<uint32, 0>{0xffffffff}/fixed_point<uint32, 0>{0xffffffff}, fixed_point<uint32, 0>{1}),
         "cnl::fixed_point test failed");
 #if defined(CNL_INT128_ENABLED)
+static_assert(cnl::numeric_limits<uint128>::is_specialized, "");
+static_assert(cnl::numeric_limits<uint128>::is_integer, "");
 static_assert(identical(divide(fixed_point<uint64, 0>{0xFFFFFFFE00000001LL}, fixed_point<uint32, 0>{0xffffffff}),
         fixed_point<uint128, -32>{0xffffffff}), "cnl::fixed_point test failed");
 #endif
@@ -811,10 +813,13 @@ constexpr bool test_numeric_limits(Min min, Max max, Lowest lowest)
     using nl = numeric_limits<fp>;
     using rnl = numeric_limits<Rep>;
 
-    static_assert(std::numeric_limits<Rep>::is_specialized,
-                  "std::numeric_limits<Rep>::is_specialized");
-    static_assert(std::numeric_limits<fp>::is_specialized,
-                  "std::numeric_limits<fixed_point<Rep>>::is_specialized");
+    static_assert(cnl::numeric_limits<Rep>::is_specialized,
+                  "cnl::numeric_limits<Rep>::is_specialized");
+    static_assert(cnl::numeric_limits<Rep>::is_integer,
+                  "cnl::numeric_limits<Rep>::is_integer");
+
+    static_assert(cnl::numeric_limits<fp>::is_specialized,
+                  "cnl::numeric_limits<fixed_point<Rep>>::is_specialized");
 
     static_assert(nl::is_specialized, "numeric_limits<fixed_point>::is_specialized");
     static_assert(nl::is_signed==rnl::is_signed, "numeric_limits<fixed_point>::is_signed");

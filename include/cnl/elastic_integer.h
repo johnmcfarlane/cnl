@@ -431,7 +431,9 @@ namespace std {
     struct common_type<Lhs, cnl::elastic_integer<RhsDigits, RhsNarrowest>>
             : common_type<cnl::elastic_integer<numeric_limits<Lhs>::digits, Lhs>, cnl::elastic_integer<RhsDigits, RhsNarrowest>> {
     };
+}
 
+namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::numeric_limits for cnl::elastic_integer
 
@@ -461,11 +463,11 @@ namespace std {
     };
 
     template<int Digits, class Narrowest>
-    struct numeric_limits<cnl::elastic_integer<Digits, Narrowest>>
+    struct numeric_limits<elastic_integer<Digits, Narrowest>>
             : numeric_limits<Narrowest> {
         // elastic integer-specific helpers
         using _narrowest_numeric_limits = numeric_limits<Narrowest>;
-        using _value_type = cnl::elastic_integer<Digits, Narrowest>;
+        using _value_type = elastic_integer<Digits, Narrowest>;
         using _rep = typename _value_type::rep;
         using _rep_numeric_limits = numeric_limits<_rep>;
 
@@ -491,6 +493,11 @@ namespace std {
         {
             return _elastic_integer_impl::lowest<_rep, _narrowest_numeric_limits::is_signed>()(_rep_max());
         }
+    };
+
+    template<int Digits, class Narrowest>
+    struct numeric_limits<elastic_integer<Digits, Narrowest> const>
+            : numeric_limits<elastic_integer<Digits, Narrowest>> {
     };
 }
 

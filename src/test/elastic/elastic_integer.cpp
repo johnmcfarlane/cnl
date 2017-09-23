@@ -25,6 +25,7 @@ namespace {
     namespace test_from_value {
         using cnl::from_value;
 
+        static_assert(std::is_same<elastic_integer<7, int>::rep, int>::value, "");
         static_assert(identical(cnl::from_value<elastic_integer<3>, int>::type{1},
                                 elastic_integer<cnl::numeric_limits<int>::digits>{1}), "elastic_integer test failed");
         static_assert(identical(cnl::_impl::from_value<elastic_integer<3>>(1),
@@ -145,7 +146,9 @@ namespace {
                         -cnl::numeric_limits<elastic_integer<7>>::max()-cnl::numeric_limits<elastic_integer<4, unsigned>>::max(),
                         elastic_integer<8>{-142}),
                 "cnl::elastic_integer test failed");
+    }
 
+    namespace test_add {
         // unsigned{max}+signed{max}
         static_assert(
                 identical(
@@ -217,6 +220,17 @@ namespace {
         static_assert(identical(scale(elastic_integer<6>{55}, 2, 2), elastic_integer<6>{220}), "scale<elastic_integer> test failed");
     }
 
+    namespace test_numeric_limits {
+        static_assert(cnl::numeric_limits<elastic_integer<8, int>>::max()==255, "");
+        static_assert(cnl::numeric_limits<elastic_integer<8, int>>::lowest()==-255, "");
+        static_assert(
+                cnl::numeric_limits<const int>::is_signed,
+                "elastic_integer numeric_limits test failed");
+        static_assert(
+                cnl::numeric_limits<const cnl::elastic_integer<7, int>>::is_signed,
+                "elastic_integer numeric_limits test failed");
+    }
+
     // parameterized tests
     template<typename ElasticInteger, long long Lowest, long long Min, long long Max>
     struct elastic_integer_test {
@@ -273,12 +287,6 @@ namespace {
         static_assert(numeric_limits::min()==min, "numeric_limits<elastic_integer<>>::min test failed");
         static_assert(numeric_limits::max()==max, "numeric_limits<elastic_integer<>>::max test failed");
     };
-
-    static_assert(elastic_integer<7, int>{3}==3, "");
-    static_assert(cnl::numeric_limits<int8_t>::lowest()==-128, "");
-    static_assert(std::is_same<elastic_integer<7, int>::rep, int>::value, "");
-    static_assert(cnl::numeric_limits<elastic_integer<8, int>>::max()==255, "");
-    static_assert(cnl::numeric_limits<elastic_integer<8, int>>::lowest()==-255, "");
 
     template
     struct elastic_integer_test<elastic_integer<7, int>, -127, 1, 127>;

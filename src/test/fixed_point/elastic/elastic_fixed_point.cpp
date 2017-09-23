@@ -77,6 +77,8 @@ template<class T, bool IsSigned>
 struct test_traits {
     static_assert(cnl::numeric_limits<T>::is_signed==IsSigned,
                   "cnl::numeric_limits<T>::is_signed fails for give type, T");
+    static_assert(is_signed<T>::value==IsSigned,
+                  "cnl::make_signed failed cnl::numeric_limits test");
     static_assert(is_signed<cnl::make_signed_t<T>>::value,
                   "cnl::make_signed failed cnl::numeric_limits test");
     static_assert(!is_signed<cnl::make_unsigned_t<T>>::value,

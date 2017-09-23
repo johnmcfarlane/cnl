@@ -6,6 +6,7 @@ target_sources(cnl INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/elastic_integer.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/fixed_point.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/integral_constant.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/cnl/limits.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/num_traits.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/numeric.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/overflow.h
