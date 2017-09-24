@@ -17,7 +17,22 @@
 
 /// compositional numeric library
 namespace cnl {
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::intmax_t and cnl::uintmax_t
 
+#if defined(CNL_INT128_ENABLED)
+    // 128-bit on systems with __int128 type
+    using intmax_t = CNL_INT128;
+    using uintmax_t = CNL_UINT128;
+#else
+    // same as std::intmax_t on systems without __int128 type
+    using intmax_t = std::intmax_t;
+    using uintmax_t = std::uintmax_t;
+#endif
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::math_constants
+    
 #if defined(__cpp_inline_variables)
     // partial implementation of P0631 (http://wg21.link/p0631)
     // values taken from c++ (GCC) 7.2.0 implementation of math.h
@@ -221,15 +236,6 @@ namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::leading_bits
-
-#if !defined(_MSC_VER) && !defined(CNL_DISABLE_GCC_BUILTINS)
-    constexpr int leading_bits(int value)
-    {
-        return (value>0)
-               ? __builtin_clz(value)-1
-               : digits<int>::value-used_bits(value);
-    }
-#endif
 
     template<class Integer>
     constexpr int leading_bits(Integer const&value)

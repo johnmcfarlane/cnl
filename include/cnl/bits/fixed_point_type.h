@@ -199,7 +199,7 @@ namespace cnl {
 #if defined(__cpp_deduction_guides)
     template<class Integer, Integer Value>
     fixed_point(std::integral_constant<Integer, Value>)
-    -> fixed_point<int, trailing_bits(Value)>;
+    -> fixed_point<set_digits_t<int, _impl::max(digits<int>::value, used_bits(Value)-trailing_bits(Value))>, trailing_bits(Value)>;
 #endif
 
     ////////////////////////////////////////////////////////////////////////////////

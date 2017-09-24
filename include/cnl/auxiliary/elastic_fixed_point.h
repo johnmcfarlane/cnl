@@ -52,9 +52,10 @@ namespace cnl {
 
     template<
             typename Narrowest = int,
-            typename Integral = std::intmax_t,
+            typename Integral = cnl::intmax_t,
             Integral Value = 0>
-    constexpr elastic_fixed_point<_impl::max(_impl::used_bits_symmetric(Value)-trailing_bits(Value), 1), trailing_bits(Value), Narrowest>
+    constexpr elastic_fixed_point<_impl::max(_impl::used_bits_symmetric(Value)-trailing_bits(Value), 1), trailing_bits(
+            Value), Narrowest>
     make_elastic_fixed_point(std::integral_constant<Integral, Value>)
     {
         return Value;
@@ -102,12 +103,16 @@ namespace cnl {
     /// \snippet snippets.cpp define an object using elastic literal
 
     namespace literals {
-        template<char... Digits>
+        template<char... Chars>
         constexpr auto operator "" _elastic()
-        -> decltype(make_elastic_fixed_point<int>(std::integral_constant<
-                std::intmax_t, _const_integer_impl::digits_to_integral<Digits...>::value>{})) {
-            return make_elastic_fixed_point<int>(std::integral_constant<
-                    std::intmax_t, _const_integer_impl::digits_to_integral<Digits...>::value>{});
+        -> decltype(make_elastic_fixed_point<int>(
+                std::integral_constant<
+                        cnl::intmax_t,
+                        _const_integer_impl::parse<sizeof...(Chars)+1>({Chars..., '\0'})>{}))
+        {
+            return make_elastic_fixed_point<int>(
+                    std::integral_constant<cnl::intmax_t, _const_integer_impl::parse<sizeof...(Chars)+1>(
+                            {Chars..., '\0'})>{});
         }
     }
 

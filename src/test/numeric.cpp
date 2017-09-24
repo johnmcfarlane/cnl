@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/numeric.h>
+#include <cnl/integral_constant.h>
 
 #include <gtest/gtest.h>
 
@@ -158,13 +158,21 @@ namespace {
                 "cnl::used_bits test failed");
         static_assert(used_bits(numeric_limits<uint64_t>::max())==64,
                 "cnl::used_bits test failed");
+        static_assert(cnl::used_bits(INT64_C(0x7fffffff00000000)) == 63,
+                "cnl::used_bits test failed");
+#if defined(CNL_INT128_ENABLED)
+        static_assert(cnl::used_bits(CNL_INTMAX_C(0x7fffffff000000000000000000000000)) == 127,
+                "cnl::used_bits test failed");
+#endif
     }
 
     namespace test_trailing_bits {
         static_assert(trailing_bits(1)==0, "cnl::trailing_bits test failed");
         static_assert(trailing_bits(2)==1, "cnl::trailing_bits test failed");
         static_assert(trailing_bits(uint8_t{255})==0, "cnl::trailing_bits test failed");
+        static_assert(trailing_bits(uint16_t{256})==8, "cnl::trailing_bits test failed");
         static_assert(trailing_bits(int16_t{32767})==0, "cnl::trailing_bits test failed");
+        static_assert(trailing_bits(int32_t{32768})==15, "cnl::trailing_bits test failed");
         static_assert(trailing_bits(int8_t{-1})==0, "cnl::trailing_bits test failed");
         static_assert(trailing_bits(int8_t{-2})==1, "cnl::trailing_bits test failed");
         static_assert(trailing_bits(int8_t{-3})==0, "cnl::trailing_bits test failed");
@@ -211,6 +219,14 @@ namespace {
         static_assert(leading_bits(UINT32_C(3)) == 30, "cnl::leading_bits");
         static_assert(leading_bits(UINT32_C(2)) == 30, "cnl::leading_bits");
         static_assert(leading_bits(UINT32_C(1)) == 31, "cnl::leading_bits");
+
+        static_assert(leading_bits(cnl::numeric_limits<std::int64_t>::max()) == 0, "cnl::leading_bits");
+
+        static_assert(_impl::identical(cnl::leading_bits(INT64_C(1)), 62), "cnl::leading_bits");
+#if defined(CNL_INT128_ENABLED)
+        static_assert(cnl::leading_bits(CNL_INTMAX_C(0x7fffffff000000000000000000000000)) == 0, "cnl::leading_bits");
+        static_assert(_impl::identical(cnl::leading_bits(CNL_INTMAX_C(0x0)), 127), "cnl::leading_bits");
+#endif
 
         TEST(numeric, leading_bits) {
             EXPECT_EQ(leading_bits(INT32_C(0)), 31);

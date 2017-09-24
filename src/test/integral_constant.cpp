@@ -16,40 +16,71 @@ namespace {
     namespace test_const_integer_impl {
 
         namespace test_digits_to_integral {
-            using cnl::_const_integer_impl::digits_to_integral;
+            using cnl::_const_integer_impl::parse;
 
-            static_assert(identical(digits_to_integral<'0'>::value, INTMAX_C(0)),
-                "cnl::_const_integer_impl::digits_to_integral test failed");
-            static_assert(identical(digits_to_integral<'1'>::value, INTMAX_C(1)),
-                "cnl::_const_integer_impl::digits_to_integral test failed");
-            static_assert(identical(digits_to_integral<'9', '0', '8', '1', '7', '2', '6', '3', '5', '4'>::value, INTMAX_C(9081726354)),
-                "cnl::_const_integer_impl::digits_to_integral test failed");
-            static_assert(identical(digits_to_integral<'0', 'x', '9', '0', '8', '1', '7', '2', '6', '3', '5', '4'>::value, INTMAX_C(0x9081726354)),
-                "cnl::_const_integer_impl::digits_to_integral test failed");
-            static_assert(digits_to_integral<'0', 'X', 'a', 'A'>::value == INTMAX_C(0xAa),
+            static_assert(identical(parse("0"), CNL_INTMAX_C(0)),
+                "cnl::_const_integer_impl::parse test failed");
+            static_assert(identical(parse("1"), CNL_INTMAX_C(1)),
+                "cnl::_const_integer_impl::parse test failed");
+            static_assert(identical(parse("9081726354"), CNL_INTMAX_C(9081726354)),
+                "cnl::_const_integer_impl::parse test failed");
+            static_assert(identical(parse("0x9081726354"), CNL_INTMAX_C(0x9081726354)),
+                "cnl::_const_integer_impl::parse test failed");
+#if defined(CNL_INT128_ENABLED)
+            static_assert(identical(
+                    parse("0x123456789ABCDEF0123456789ABCDEF"),
+                    CNL_INTMAX_C(0x123456789ABCDEF0123456789ABCDEF)),
+                    "cnl::_const_integer_impl::parse test failed");
+#endif
+            static_assert(identical(parse("07777041726354"), CNL_INTMAX_C(07777041726354)),
+                    "cnl::_const_integer_impl::parse test failed");
+            static_assert(identical(
+                    parse("0b011010000110100000011111101000000010110110101"),
+                    CNL_INTMAX_C(0b011010000110100000011111101000000010110110101)),
+                    "cnl::_const_integer_impl::parse test failed");
+            static_assert(parse("0XaA") == CNL_INTMAX_C(0xAa),
                 "cnl::_const_integer_impl::digits_to_integral test failed");
         }
     }
 
     namespace test_literals {
+        using cnl::intmax_t;
         using namespace cnl::literals;
         using std::integral_constant;
 
-        static_assert(identical(0_c, integral_constant<intmax_t, INTMAX_C(0)>()),
+        static_assert(identical(
+                0b011010000110100000011111101000000010110110101_c,
+                integral_constant<intmax_t, 0b011010000110100000011111101000000010110110101>()),
+                "cnl::literals test failed");
+#if defined(CNL_INT128_ENABLED)
+        static_assert(identical(
+                0b1101000011010000001111110100000001011011010101101000011010000001111110100000001011011010101101000011010000001111110100000001011_c,
+                integral_constant<intmax_t, CNL_INTMAX_C(0b1101000011010000001111110100000001011011010101101000011010000001111110100000001011011010101101000011010000001111110100000001011)>()),
+                "cnl::literals test failed");
+#endif
+
+        static_assert(identical(07777041726354_c, integral_constant<intmax_t, 07777041726354>()),
+                "cnl::literals test failed");
+
+        static_assert(identical(0_c, integral_constant<intmax_t, CNL_INTMAX_C(0)>()),
             "cnl::literals test failed");
-        static_assert(identical(1_c, integral_constant<intmax_t, INTMAX_C(1)>()),
+        static_assert(identical(1_c, integral_constant<intmax_t, CNL_INTMAX_C(1)>()),
             "cnl::literals test failed");
-        static_assert(identical(2_c, integral_constant<intmax_t, INTMAX_C(2)>()),
+        static_assert(identical(2_c, integral_constant<intmax_t, CNL_INTMAX_C(2)>()),
             "cnl::literals test failed");
-        static_assert(3_c == integral_constant<std::int8_t, INTMAX_C(3)>(),
+        static_assert(3_c == integral_constant<std::int8_t, CNL_INTMAX_C(3)>(),
             "cnl::literals test failed");
-        static_assert(identical(13971581_c, integral_constant<intmax_t, INTMAX_C(13971581)>()),
+        static_assert(identical(13971581_c, integral_constant<intmax_t, CNL_INTMAX_C(13971581)>()),
             "cnl::literals test failed");
+        static_assert(identical(9081726354_c, integral_constant<intmax_t, CNL_INTMAX_C(9081726354)>()),
+                "cnl::literals test failed");
         static_assert(identical(9223372036854775807_c, integral_constant<intmax_t, INT64_MAX>()),
             "cnl::literals test failed");
 
         static_assert(identical(0x10000_c, integral_constant<intmax_t, 65536>()),
                       "cnl::literals test failed");
+        static_assert(identical(0x9081726354_c, integral_constant<intmax_t, CNL_INTMAX_C(0x9081726354)>()),
+                "cnl::literals test failed");
         static_assert(identical(0x91827364564738_c, integral_constant<intmax_t, 0x91827364564738>()),
                       "cnl::literals test failed");
     }

@@ -11,6 +11,9 @@
 
 #include <utility>
 
+#define CNL_STR_HELPER(x) #x
+#define CNL_STR(x) CNL_STR_HELPER(x)
+
 namespace cnl {
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
