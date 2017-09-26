@@ -15,11 +15,6 @@ set_target_properties(
 
 target_link_libraries(fp_benchmark cnl)
 
-target_include_directories(
-        fp_benchmark SYSTEM
-        PRIVATE "${cnl_SOURCE_DIR}/include"
-)
-
 ######################################################################
 # add external project, google/benchmark
 
