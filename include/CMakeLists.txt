@@ -14,7 +14,8 @@ target_sources(cnl INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/safe_integer.h
 )
 
-include_directories(SYSTEM ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(cnl INTERFACE ${CMAKE_CURRENT_LIST_DIR})
+
 install(
         DIRECTORY include/cnl
         DESTINATION include
