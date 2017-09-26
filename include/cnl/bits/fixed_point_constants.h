@@ -67,27 +67,15 @@ namespace cnl {
             return e<Rep, Exponent>(0);
         };
 
-        template<typename Rep, int Exponent>
-        constexpr auto sqrt2() {
-            return sqrt(fixed_point<Rep, Exponent>{2});
-        };
-
-        template<typename Rep, int Exponent>
-        constexpr auto sqrt3() {
-            return sqrt(fixed_point<Rep, Exponent>{3});
-        };
-
         // Given two alternative ways to generate a constant value:
         // tries to choose the best and returns the result.
         template<typename Float, typename Rep, int Exponent>
         constexpr auto constant_with_fallback(Float constant, fixed_point<Rep, Exponent>(*procedure)()) {
             using fp = fixed_point<Rep, Exponent>;
 
-            auto const whole = static_cast<int>(constant);
             auto const required_integer_digits = used_bits(static_cast<int>(constant));
 
             constexpr auto fixed_fractional_digits = fractional_digits<fp>::value;
-            auto const fixed_digits = fixed_fractional_digits + required_integer_digits;
             // expect: integer_digits<fp>::value >= required_integer_digits
 
             constexpr auto float_digits = std::numeric_limits<Float>::digits;
@@ -133,11 +121,11 @@ namespace cnl {
         };
 
         template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> sqrt2<fixed_point<Rep, Exponent>> {
-            _impl::constant_with_fallback<long double, Rep, Exponent>(sqrt2<long double>, _impl::sqrt2<Rep, Exponent>)
+            fixed_point<Rep, Exponent>{ sqrt2<long double> }
         };
 
         template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> sqrt3<fixed_point<Rep, Exponent>> {
-            _impl::constant_with_fallback<long double, Rep, Exponent>(sqrt3<long double>, _impl::sqrt3<Rep, Exponent>)
+            fixed_point<Rep, Exponent>{ sqrt3<long double> }
         };
 
         template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrt2<fixed_point<Rep, Exponent>> {

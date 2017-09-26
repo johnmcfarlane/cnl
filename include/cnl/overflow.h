@@ -57,14 +57,12 @@ namespace cnl {
         [[noreturn]] constexpr Result terminate(char const* message) noexcept {
             std::fputs(message, stderr);
             std::terminate();
-            return Result{0};
         }
 #else
         template<class Result>
         [[noreturn]] Result terminate(char const* message) noexcept {
             std::fputs(message, stderr);
             std::terminate();
-            return Result{0};
         }
 #endif
 

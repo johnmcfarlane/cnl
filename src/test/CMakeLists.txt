@@ -177,6 +177,14 @@ if (${CMAKE_COMPILER_IS_GNUCXX})
             boost.multiprecision.cpp
             index.cpp
             PROPERTIES COMPILE_FLAGS "-fpermissive")
+
+    set_source_files_properties(
+            fixed_point/safe/fixed_point_saturated_integer.cpp
+            PROPERTIES COMPILE_FLAGS "-Wno-sign-compare")
+
+    set_source_files_properties(
+            fixed_point/fixed_point_math.cpp
+            PROPERTIES COMPILE_FLAGS "-Wno-integer-overflow")
 endif ()
 
 ######################################################################

@@ -515,7 +515,7 @@ namespace {
         static_assert(is_same<cnl::safe_integer<rep, overflow_tag>, safe_integer>::value, "cnl::safe_integer test failed");
 
         static constexpr auto default_initialized = safe_integer{0};
-        static_assert(default_initialized == 0, "cnl::safe_integer test failed");
+        static_assert(!default_initialized, "cnl::safe_integer test failed");
 
         static_assert(+default_initialized == default_initialized, "cnl::safe_integer test failed");
 #if !defined(_MSC_VER)
