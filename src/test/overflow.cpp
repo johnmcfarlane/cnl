@@ -208,9 +208,9 @@ namespace {
         using cnl::native_overflow;
 
         // convert
-        static_assert(identical(convert<std::uint8_t>(native_overflow, 259), std::uint8_t{3}), "cnl::convert test failed");
-        static_assert(identical(convert<std::uint16_t>(native_overflow, -123), std::uint16_t{65413}), "cnl::convert test failed");
-        static_assert(identical(convert<std::int32_t>(native_overflow, std::uint8_t{55}), 55), "cnl::convert test failed");
+        static_assert(identical(convert<cnl::uint8>(native_overflow, 259), cnl::uint8{3}), "cnl::convert test failed");
+        static_assert(identical(convert<cnl::uint16>(native_overflow, -123), cnl::uint16{65413}), "cnl::convert test failed");
+        static_assert(identical(convert<cnl::int32>(native_overflow, cnl::uint8{55}), 55), "cnl::convert test failed");
 
         // add
         static_assert(identical(add(native_overflow, UINT32_C(0xFFFFFFFF), UINT32_C(0x12345678)), UINT32_C(0xFFFFFFFF)+UINT32_C(0x12345678)), "cnl::add test failed");
@@ -240,9 +240,9 @@ namespace {
         using cnl::saturated_overflow;
 
         // convert
-        static_assert(identical(convert<std::uint8_t>(saturated_overflow, 259), std::uint8_t{255}), "cnl::convert test failed");
-        static_assert(identical(convert<std::uint16_t>(saturated_overflow, -123), std::uint16_t{0}), "cnl::convert test failed");
-        static_assert(identical(convert<std::int32_t>(saturated_overflow, std::uint8_t{55}), 55), "cnl::convert test failed");
+        static_assert(identical(convert<cnl::uint8>(saturated_overflow, 259), cnl::uint8{255}), "cnl::convert test failed");
+        static_assert(identical(convert<cnl::uint16>(saturated_overflow, -123), cnl::uint16{0}), "cnl::convert test failed");
+        static_assert(identical(convert<cnl::int32>(saturated_overflow, cnl::uint8{55}), 55), "cnl::convert test failed");
 
         // subtract
         static_assert(identical(subtract(saturated_overflow, INT8_C(0), INT8_C(0)), 0), "cnl::subtract test failed");

@@ -65,7 +65,7 @@ namespace {
     }
 
     namespace test_make_safe_elastic {
-        static_assert(identical(cnl::make_safe_elastic(std::int16_t{7}), safe_elastic_integer<15>{7}), "");
+        static_assert(identical(cnl::make_safe_elastic(cnl::int16{7}), safe_elastic_integer<15>{7}), "");
         static_assert(identical(safe_elastic_integer<34>{0}, safe_elastic_integer<34>{0}), "");
     }
 

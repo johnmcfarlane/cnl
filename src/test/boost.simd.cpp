@@ -60,13 +60,13 @@ namespace {
 
     namespace test_set_digits {
         using actual_type = cnl::set_digits_t<boost::simd::pack<signed, 8>, 15>;
-        using expected_type = boost::simd::pack<std::int16_t, 8>;
+        using expected_type = boost::simd::pack<cnl::int16, 8>;
         static_assert(std::is_same<actual_type, expected_type>::value, "");
     }
 
     namespace test_set_make_unsigned {
-        using actual_type = cnl::make_unsigned_t<boost::simd::pack<std::int16_t, 2>>;
-        using expected_type = boost::simd::pack<std::uint16_t, 2>;
+        using actual_type = cnl::make_unsigned_t<boost::simd::pack<cnl::int16, 2>>;
+        using expected_type = boost::simd::pack<cnl::uint16, 2>;
         static_assert(std::is_same<expected_type, actual_type>::value, "");
     }
 
@@ -85,8 +85,8 @@ namespace {
     }
 
     TEST(boost_simd, shift_left) {
-        using output_type = boost::simd::pack<std::int64_t, 2>;
-        using input_type = boost::simd::pack<std::uint16_t, 2>;
+        using output_type = boost::simd::pack<cnl::int64, 2>;
+        using input_type = boost::simd::pack<cnl::uint16, 2>;
         auto input = input_type{65535, 0};
         auto output = cnl::_impl::shift_left<5, output_type>(input);
         auto expected = output_type{65535*32, 0};
@@ -102,7 +102,7 @@ namespace {
     }
 
     TEST(boost_simd, inequality) {
-        using fpp = fpp<std::uint64_t, 2, -32>;
+        using fpp = fpp<cnl::uint64, 2, -32>;
         using init = initializer<fpp>;
         auto lhs = fpp{init{8237416.17618, 3278928.9012393}};
         auto rhs = fpp{init{8237416.17618, 4278928.9012393}};
@@ -110,10 +110,10 @@ namespace {
     }
 
     TEST(boost_simd, conversion) {
-        using wide_type = pack<std::int64_t, 2>;
-        using narrow_type = pack<std::uint16_t, 2>;
-        auto w = wide_type{pack<std::int64_t, 2>{INT64_C(5000000000), INT64_C(-42000000000000)}};
-        auto n = narrow_type{pack<std::uint16_t, 2>{INT16_C(32000), INT64_C(-7)}};
+        using wide_type = pack<cnl::int64, 2>;
+        using narrow_type = pack<cnl::uint16, 2>;
+        auto w = wide_type{pack<cnl::int64, 2>{INT64_C(5000000000), INT64_C(-42000000000000)}};
+        auto n = narrow_type{pack<cnl::uint16, 2>{INT16_C(32000), INT64_C(-7)}};
 
         w = static_cast<wide_type>(n);    // requires new explicit operator
         n = static_cast<narrow_type>(w);    // requires new explicit conversion operator

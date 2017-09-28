@@ -28,7 +28,7 @@ namespace {
 
     namespace test_set_digits {
         using cnl::set_digits;
-        static_assert(identical(cnl::set_digits<std::int32_t, 32>::type{0}, std::int64_t{0}), "");
+        static_assert(identical(cnl::set_digits<cnl::int32, 32>::type{0}, cnl::int64{0}), "");
     }
 
     namespace test_scale {

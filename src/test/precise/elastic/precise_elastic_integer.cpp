@@ -49,7 +49,7 @@ namespace {
 
     namespace test_make_precise_elastic {
         static_assert(identical(precise_elastic_integer<1>{1}, precise_elastic_integer<1>{1}), "");
-        static_assert(identical(cnl::make_precise_elastic(std::int16_t{7}), precise_elastic_integer<15>{7}), "");
+        static_assert(identical(cnl::make_precise_elastic(cnl::int16{7}), precise_elastic_integer<15>{7}), "");
     }
 
     namespace test_multiply {
