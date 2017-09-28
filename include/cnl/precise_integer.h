@@ -8,6 +8,7 @@
 #define CNL_PRECISE_INTEGER_H 1
 
 #include <cnl/bits/number_base.h>
+#include <cnl/cnlint.h>
 #include <cnl/limits.h>
 
 namespace cnl {
@@ -16,7 +17,7 @@ namespace cnl {
         template<class To, class From>
         static constexpr To convert(From const& from)
         {
-            return static_cast<To>(cnl::intmax_t(from+((from>=0) ? .5 : -.5)));
+            return static_cast<To>(cnl::intmax(from+((from>=0) ? .5 : -.5)));
         }
     };
 

@@ -17,18 +17,6 @@
 
 /// compositional numeric library
 namespace cnl {
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::intmax_t and cnl::uintmax_t
-
-#if defined(CNL_INT128_ENABLED)
-    // 128-bit on systems with __int128 type
-    using intmax_t = CNL_INT128;
-    using uintmax_t = CNL_UINT128;
-#else
-    // same as std::intmax_t on systems without __int128 type
-    using intmax_t = std::intmax_t;
-    using uintmax_t = std::uintmax_t;
-#endif
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::math_constants
