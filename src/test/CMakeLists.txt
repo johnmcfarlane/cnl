@@ -26,6 +26,7 @@ add_executable(fp_test
         zero_cost_average.cpp
         readme.cpp
         cppnow2017.cpp
+        cppcon2017.cpp
         safft.cpp
         safe/elastic/safe_elastic_integer.cpp
         safe/safe_integer.cpp
@@ -176,11 +177,18 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set_source_files_properties(
             fixed_point/safe/fixed_point_saturated_integer.cpp
             safe/safe_integer.cpp
+            cppcon2017.cpp
             PROPERTIES COMPILE_FLAGS "-Wno-sign-compare")
+
+    set_source_files_properties(
+            fixed_point/safe/fixed_point_saturated_integer.cpp
+            cppcon2017.cpp
+            PROPERTIES COMPILE_FLAGS "-Wno-strict-overflow")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set_source_files_properties(
             fixed_point/safe/fixed_point_saturated_integer.cpp
             safe/safe_integer.cpp
+            cppcon2017.cpp
             PROPERTIES COMPILE_FLAGS "-Wno-sign-compare")
 
     set_source_files_properties(

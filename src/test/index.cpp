@@ -132,12 +132,11 @@ TEST(index, advanced_arithmetic_example)
 
 using namespace boost::multiprecision;
 
-template<int NumBits>
-using mp = number<cpp_int_backend<NumBits, NumBits, signed_magnitude, unchecked, void>>;
-
 // With Boost.Multiprecision, fixed_point can be any size.
 template<int NumBits, int Exponent = 0>
-using mp_fixed_point = cnl::fixed_point<mp<NumBits>, Exponent>;
+using mp_fixed_point = cnl::fixed_point<
+        number<cpp_int_backend<NumBits, NumBits>>,
+        Exponent>;
 
 void boost_example()
 {
