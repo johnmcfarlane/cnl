@@ -15,11 +15,39 @@ namespace {
     using cnl::_impl::identical;
     using namespace cnl::literals;
 
+    ////////////////////////////////////////////////////////////////////////////////
     // simple one-off tests
     namespace test_digits {
         using cnl::digits;
 
-        static_assert(digits<elastic_integer<7, int>>::value == 7, "elastic_integer test failed");
+        static_assert(digits<elastic_integer<7, int>>::value==7, "elastic_integer test failed");
+    }
+
+#if defined(__cpp_deduction_guides)
+    namespace test_deduction_guides {
+        static_assert(identical(elastic_integer{128_c}, elastic_integer<8>{128}), "elastic_integer test failed");
+        static_assert(identical(elastic_integer{127_c}, elastic_integer<7>{127}), "elastic_integer test failed");
+        static_assert(identical(elastic_integer{-128_c}, elastic_integer<8>{-128}), "elastic_integer test failed");
+        static_assert(identical(elastic_integer{-127_c}, elastic_integer<7>{-127}), "elastic_integer test failed");
+    }
+#endif
+
+    namespace test_impl_from_value {
+        using cnl::_impl::from_value;
+
+        static_assert(identical(from_value<elastic_integer<0>>(14_c), elastic_integer<4>{14}),
+                "from_value<elastic_integer> test failed");
+        static_assert(identical(from_value<elastic_integer<0>>(-31_c), elastic_integer<5>{-31}),
+                "from_value<elastic_integer> test failed");
+        static_assert(identical(from_value<elastic_integer<0>>(-32_c), elastic_integer<6>{-32}),
+                "from_value<elastic_integer> test failed");
+
+#if defined(CNL_INT128_ENABLED)
+        static_assert(identical(
+                from_value<elastic_integer<0>>(-0x10000000000000000000000000000000_c),
+                elastic_integer<125>{-CNL_INTMAX_C(0x10000000000000000000000000000000)}),
+                "from_value<elastic_integer> test failed");
+#endif
     }
 
     namespace test_from_value {
