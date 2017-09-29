@@ -8,21 +8,24 @@
 /// \brief tests for cnl/limits.h
 
 #include <cnl/limits.h>
+#include <cnl/cnlint.h>
 
 namespace {
     static_assert(cnl::numeric_limits<int8_t>::lowest()==-128, "");
 
 #if defined(CNL_INT128_ENABLED)
     namespace test_cnl_numeric_limits_int128 {
-        using numeric_limits = cnl::numeric_limits<CNL_INT128>;
-        static_assert(numeric_limits::is_integer, "cnl::numeric_limits<CNL_INT128> test failed");
-        static_assert(numeric_limits::is_signed, "cnl::numeric_limits<CNL_INT128> test failed");
+        using numeric_limits = cnl::numeric_limits<cnl::int128>;
+        static_assert(numeric_limits::is_specialized, "cnl::numeric_limits<cnl::int128> test failed");
+        static_assert(numeric_limits::is_integer, "cnl::numeric_limits<cnl::int128> test failed");
+        static_assert(numeric_limits::is_signed, "cnl::numeric_limits<cnl::int128> test failed");
     }
 
     namespace test_cnl_numeric_limits_uint128 {
-        using numeric_limits = cnl::numeric_limits<CNL_UINT128>;
-        static_assert(numeric_limits::is_integer, "cnl::numeric_limits<CNL_UINT128> test failed");
-        static_assert(!numeric_limits::is_signed, "cnl::numeric_limits<CNL_UINT128> test failed");
+        using numeric_limits = cnl::numeric_limits<cnl::uint128>;
+        static_assert(numeric_limits::is_specialized, "cnl::numeric_limits<cnl::uint128> test failed");
+        static_assert(numeric_limits::is_integer, "cnl::numeric_limits<cnl::uint128> test failed");
+        static_assert(!numeric_limits::is_signed, "cnl::numeric_limits<cnl::uint128> test failed");
     }
 #endif
 }

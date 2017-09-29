@@ -80,7 +80,7 @@ namespace {
 
     namespace test_make_psefp {
         using namespace cnl::literals;
-        static_assert(identical(make_psefp(std::int16_t{7}), psefp<15>{7}), "");
+        static_assert(identical(make_psefp(cnl::int16{7}), psefp<15>{7}), "");
         static_assert(identical(make_psefp(444_c), psefp<9, -2>{444}), "");
     }
 

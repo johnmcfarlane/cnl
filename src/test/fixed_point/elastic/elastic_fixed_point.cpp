@@ -86,28 +86,28 @@ struct test_traits {
 };
 
 template
-struct test_traits<std::uint8_t, false>;
+struct test_traits<cnl::uint8, false>;
 
 template
-struct test_traits<std::uint16_t, false>;
+struct test_traits<cnl::uint16, false>;
 
 template
-struct test_traits<std::uint32_t, false>;
+struct test_traits<cnl::uint32, false>;
 
 template
-struct test_traits<std::uint64_t, false>;
+struct test_traits<cnl::uint64, false>;
 
 template
-struct test_traits<std::int8_t, true>;
+struct test_traits<cnl::int8, true>;
 
 template
-struct test_traits<std::int16_t, true>;
+struct test_traits<cnl::int16, true>;
 
 template
-struct test_traits<std::int32_t, true>;
+struct test_traits<cnl::int32, true>;
 
 template
-struct test_traits<std::int64_t, true>;
+struct test_traits<cnl::int64, true>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // useful functions

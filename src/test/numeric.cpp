@@ -12,9 +12,9 @@
 
 namespace {
     using namespace cnl;
-    using std::int8_t;
-    using std::uint8_t;
-    using std::int64_t;
+    using cnl::int8;
+    using cnl::uint8;
+    using cnl::int64;
 
 #if defined(__cpp_inline_variables)
 
@@ -220,7 +220,7 @@ namespace {
         static_assert(leading_bits(UINT32_C(2)) == 30, "cnl::leading_bits");
         static_assert(leading_bits(UINT32_C(1)) == 31, "cnl::leading_bits");
 
-        static_assert(leading_bits(cnl::numeric_limits<std::int64_t>::max()) == 0, "cnl::leading_bits");
+        static_assert(leading_bits(cnl::numeric_limits<int64>::max()) == 0, "cnl::leading_bits");
 
         static_assert(_impl::identical(cnl::leading_bits(INT64_C(1)), 62), "cnl::leading_bits");
 #if defined(CNL_INT128_ENABLED)

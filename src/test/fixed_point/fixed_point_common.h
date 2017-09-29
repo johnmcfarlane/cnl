@@ -152,10 +152,10 @@ static_assert(is_same<std::common_type<float, uint32>::type, float>::value, "inc
 static_assert(is_same<std::common_type<int64, uint32>::type, int64>::value, "incorrect assumption about promotion");
 static_assert(is_same<std::common_type<int32, uint64>::type, uint64>::value, "incorrect assumption about promotion");
 static_assert(is_same<std::common_type<int8, int8>::type, int8>::value, "incorrect assumption about promotion");
-static_assert(is_same<decltype(int8(0)+int8(0)), test_int>::value, "incorrect assumption about promotion");
-static_assert(is_same<decltype(int8(0)+int8(0)), test_int>::value, "incorrect assumption about promotion");
-static_assert(is_same<decltype(uint8(0)+int8(0)), test_int>::value, "incorrect assumption about promotion");
-static_assert(is_same<decltype(uint8(0)+uint8(0)), test_int>::value, "incorrect assumption about promotion");
+static_assert(identical(int8(0)+int8(0), test_int{0}), "incorrect assumption about promotion");
+static_assert(identical(int8(0)+int8(0), test_int{0}), "incorrect assumption about promotion");
+static_assert(identical(uint8(0)+int8(0), test_int{0}), "incorrect assumption about promotion");
+static_assert(identical(uint8(0)+uint8(0), test_int{0}), "incorrect assumption about promotion");
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

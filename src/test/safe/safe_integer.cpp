@@ -95,17 +95,17 @@ static_assert(is_safe_integer<saturated_integer<int64_t>>::value,
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::_impl::encompasses
 
-static_assert(is_same<cnl::_impl::unsigned_or_float_t<std::int8_t>, std::uint8_t>::value, "");
-static_assert(is_same<cnl::_impl::unsigned_or_float_t<std::uint8_t>, std::uint8_t>::value, "");
+static_assert(is_same<cnl::_impl::unsigned_or_float_t<cnl::int8>, cnl::uint8>::value, "");
+static_assert(is_same<cnl::_impl::unsigned_or_float_t<cnl::uint8>, cnl::uint8>::value, "");
 static_assert(is_same<cnl::_impl::unsigned_or_float_t<float>, float>::value, "");
 
 static_assert(cnl::_impl::encompasses<short, short>::value, "cnl::_impl::encompasses test failed");
 static_assert(!cnl::_impl::encompasses<short, int>::value, "cnl::_impl::encompasses test failed");
 static_assert(cnl::_impl::encompasses<int, short>::value, "cnl::_impl::encompasses test failed");
-static_assert(!cnl::_impl::encompasses<std::int8_t, std::uint8_t>::value, "cnl::_impl::encompasses test failed");
-static_assert(!cnl::_impl::encompasses<std::uint8_t, std::int8_t>::value, "cnl::_impl::encompasses test failed");
-static_assert(!cnl::_impl::encompasses<std::uint64_t, std::int64_t>::value, "cnl::_impl::encompasses test failed");
-static_assert(!cnl::_impl::encompasses<std::int64_t, std::uint64_t>::value, "cnl::_impl::encompasses test failed");
+static_assert(!cnl::_impl::encompasses<cnl::int8, cnl::uint8>::value, "cnl::_impl::encompasses test failed");
+static_assert(!cnl::_impl::encompasses<cnl::uint8, cnl::int8>::value, "cnl::_impl::encompasses test failed");
+static_assert(!cnl::_impl::encompasses<cnl::uint64, cnl::int64>::value, "cnl::_impl::encompasses test failed");
+static_assert(!cnl::_impl::encompasses<cnl::int64, cnl::uint64>::value, "cnl::_impl::encompasses test failed");
 static_assert(cnl::_impl::encompasses<long, unsigned short>::value, "cnl::_impl::encompasses test failed");
 static_assert(!cnl::_impl::encompasses<unsigned short, long>::value, "cnl::_impl::encompasses test failed");
 
@@ -211,7 +211,7 @@ namespace {
             cnl::safe_integer<int, cnl::saturated_overflow_tag>{1200}), "");
 
     static_assert(
-            identical(operate(3u, throwing_integer<std::uint8_t>{4}, multiply_tag), throwing_integer<unsigned>{12}),
+            identical(operate(3u, throwing_integer<cnl::uint8>{4}, multiply_tag), throwing_integer<unsigned>{12}),
             "cnl::_impl::operate test failed");
 }
 
@@ -286,15 +286,15 @@ static_assert(cnl::numeric_limits<cnl::safe_integer<int64_t, cnl::saturated_over
 static_assert(cnl::numeric_limits<cnl::safe_integer<uint64_t, cnl::saturated_overflow_tag>>::is_integer,
         "cnl::numeric_limits<cnl::safe_integer<>> test failed");
 #if defined(CNL_INT128_ENABLED)
-static_assert(cnl::numeric_limits<CNL_INT128>::is_specialized,
+static_assert(cnl::numeric_limits<cnl::int128>::is_specialized,
         "cnl::numeric_limits<cnl::safe_integer<>> test failed");
 static_assert(cnl::numeric_limits<cnl::safe_integer<int, cnl::saturated_overflow_tag> const>::is_specialized,
         "cnl::numeric_limits<cnl::safe_integer<>> test failed");
-static_assert(cnl::numeric_limits<cnl::safe_integer<CNL_INT128, cnl::saturated_overflow_tag>>::is_specialized,
+static_assert(cnl::numeric_limits<cnl::safe_integer<cnl::int128, cnl::saturated_overflow_tag>>::is_specialized,
         "cnl::numeric_limits<cnl::safe_integer<>> test failed");
-static_assert(cnl::numeric_limits<cnl::safe_integer<CNL_INT128, cnl::saturated_overflow_tag>>::is_integer,
+static_assert(cnl::numeric_limits<cnl::safe_integer<cnl::int128, cnl::saturated_overflow_tag>>::is_integer,
         "cnl::numeric_limits<cnl::safe_integer<>> test failed");
-static_assert(cnl::numeric_limits<cnl::safe_integer<CNL_UINT128, cnl::saturated_overflow_tag> const>::is_integer,
+static_assert(cnl::numeric_limits<cnl::safe_integer<cnl::uint128, cnl::saturated_overflow_tag> const>::is_integer,
         "cnl::numeric_limits<cnl::safe_integer<>> test failed");
 #endif
 
@@ -316,9 +316,9 @@ static_assert(cnl::numeric_limits<cnl::safe_integer<int64_t, cnl::saturated_over
 static_assert(!cnl::numeric_limits<cnl::safe_integer<uint64_t, cnl::saturated_overflow_tag>>::is_signed,
         "cnl::numeric_limits<cnl::safe_integer<>> test failed");
 #if defined(CNL_INT128_ENABLED)
-static_assert(cnl::numeric_limits<cnl::safe_integer<CNL_INT128, cnl::saturated_overflow_tag> const>::is_signed,
+static_assert(cnl::numeric_limits<cnl::safe_integer<cnl::int128, cnl::saturated_overflow_tag> const>::is_signed,
         "cnl::numeric_limits<cnl::safe_integer<>> test failed");
-static_assert(!cnl::numeric_limits<cnl::safe_integer<CNL_UINT128, cnl::saturated_overflow_tag>>::is_signed,
+static_assert(!cnl::numeric_limits<cnl::safe_integer<cnl::uint128, cnl::saturated_overflow_tag>>::is_signed,
         "cnl::numeric_limits<cnl::safe_integer<>> test failed");
 #endif
 
@@ -343,9 +343,9 @@ static_assert(std::numeric_limits<cnl::safe_integer<int64_t, cnl::saturated_over
 static_assert(std::numeric_limits<cnl::safe_integer<uint64_t, cnl::saturated_overflow_tag> const>::is_specialized,
         "std::numeric_limits<cnl::safe_integer<>> test failed");
 #if defined(CNL_INT128_ENABLED)
-static_assert(std::numeric_limits<cnl::safe_integer<CNL_INT128, cnl::saturated_overflow_tag>>::is_specialized,
+static_assert(std::numeric_limits<cnl::safe_integer<cnl::int128, cnl::saturated_overflow_tag>>::is_specialized,
         "std::numeric_limits<cnl::safe_integer<>> test failed");
-static_assert(std::numeric_limits<cnl::safe_integer<CNL_UINT128, cnl::saturated_overflow_tag>>::is_specialized,
+static_assert(std::numeric_limits<cnl::safe_integer<cnl::uint128, cnl::saturated_overflow_tag>>::is_specialized,
         "std::numeric_limits<cnl::safe_integer<>> test failed");
 #endif
 
@@ -367,9 +367,9 @@ static_assert(std::numeric_limits<cnl::safe_integer<int64_t, cnl::saturated_over
 static_assert(std::numeric_limits<cnl::safe_integer<uint64_t, cnl::saturated_overflow_tag>>::is_integer,
         "std::numeric_limits<cnl::safe_integer<>> test failed");
 #if defined(CNL_INT128_ENABLED)
-static_assert(std::numeric_limits<cnl::safe_integer<CNL_INT128, cnl::saturated_overflow_tag>>::is_integer,
+static_assert(std::numeric_limits<cnl::safe_integer<cnl::int128, cnl::saturated_overflow_tag>>::is_integer,
         "std::numeric_limits<cnl::safe_integer<>> test failed");
-static_assert(std::numeric_limits<cnl::safe_integer<CNL_UINT128, cnl::saturated_overflow_tag> const>::is_integer,
+static_assert(std::numeric_limits<cnl::safe_integer<cnl::uint128, cnl::saturated_overflow_tag> const>::is_integer,
         "std::numeric_limits<cnl::safe_integer<>> test failed");
 #endif
 
@@ -391,9 +391,9 @@ static_assert(std::numeric_limits<cnl::safe_integer<int64_t, cnl::saturated_over
 static_assert(!std::numeric_limits<cnl::safe_integer<uint64_t, cnl::saturated_overflow_tag>>::is_signed,
         "std::numeric_limits<cnl::safe_integer<>> test failed");
 #if defined(CNL_INT128_ENABLED)
-static_assert(std::numeric_limits<cnl::safe_integer<CNL_INT128, cnl::saturated_overflow_tag> const>::is_signed,
+static_assert(std::numeric_limits<cnl::safe_integer<cnl::int128, cnl::saturated_overflow_tag> const>::is_signed,
         "std::numeric_limits<cnl::safe_integer<>> test failed");
-static_assert(!std::numeric_limits<cnl::safe_integer<CNL_UINT128, cnl::saturated_overflow_tag>>::is_signed,
+static_assert(!std::numeric_limits<cnl::safe_integer<cnl::uint128, cnl::saturated_overflow_tag>>::is_signed,
         "std::numeric_limits<cnl::safe_integer<>> test failed");
 #endif
 
@@ -405,7 +405,7 @@ namespace test_digits {
     using cnl::set_digits_t;
 
     static_assert(digits<safe_integer<int8_t>>::value == 7, "cnl::digits / cnl::set_digits test failed");
-    static_assert(identical(set_digits_t<safe_integer<std::uint8_t>, 12>{2000}, safe_integer<std::uint16_t>{2000}),
+    static_assert(identical(set_digits_t<safe_integer<cnl::uint8>, 12>{2000}, safe_integer<cnl::uint16>{2000}),
                   "cnl::digits / cnl::set_digits test failed");
 }
 
@@ -457,7 +457,7 @@ namespace test_to_rep {
     using cnl::_impl::to_rep;
 
     static_assert(identical(
-            to_rep(native_integer<std::uint8_t>{3}) * cnl::_num_traits_impl::pow<native_integer<std::uint8_t>>(2, 3),
+            to_rep(native_integer<cnl::uint8>{3}) * cnl::_num_traits_impl::pow<native_integer<cnl::uint8>>(2, 3),
             native_integer<int>{24}), "");
 }
 
@@ -481,16 +481,16 @@ namespace test_scale {
     using cnl::scale;
 
     static_assert(identical(
-            scale<throwing_integer<std::int32_t>>()(throwing_integer<std::int32_t>{1}, 2, 15),
-            throwing_integer<std::int32_t>{32768}),
+            scale<throwing_integer<cnl::int32>>()(throwing_integer<cnl::int32>{1}, 2, 15),
+            throwing_integer<cnl::int32>{32768}),
                   "scale<safe_integer<>> test failed");
     static_assert(identical(
-            scale<throwing_integer<std::int32_t>>()(throwing_integer<std::uint16_t>{1}, 2, 15),
-            throwing_integer<std::int32_t>{32768}),
+            scale<throwing_integer<cnl::int32>>()(throwing_integer<cnl::uint16>{1}, 2, 15),
+            throwing_integer<cnl::int32>{32768}),
                   "scale<safe_integer<>> test failed");
 
     static_assert(identical(
-            scale<saturated_integer<uint16_t>>()(saturated_integer<uint8_t>{0x1234}, 2, 8),
+            scale<saturated_integer<cnl::uint16>>()(saturated_integer<cnl::uint8>{0x1234}, 2, 8),
             saturated_integer<int>{0xff00}),
                   "scale<safe_integer<>> test failed");
 }
@@ -498,7 +498,7 @@ namespace test_scale {
 namespace test_impl_scale {
     using cnl::_impl::scale;
 
-    static_assert(identical(scale(native_integer<std::uint8_t>{3}, 2, 4), native_integer<int>{48}),
+    static_assert(identical(scale(native_integer<cnl::uint8>{3}, 2, 4), native_integer<int>{48}),
                   "scale<safe_integer<>> test failed");
 }
 

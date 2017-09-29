@@ -16,7 +16,7 @@ using cnl::elastic_fixed_point;
 
 static constexpr auto int_digits = cnl::numeric_limits<int>::digits;
 
-static_assert(identical(make_elastic_fixed_point(std::integral_constant<std::int64_t, -1>{}), cnl::elastic_fixed_point<1, 0, int>{-1}),
+static_assert(identical(make_elastic_fixed_point(std::integral_constant<cnl::int64, -1>{}), cnl::elastic_fixed_point<1, 0, int>{-1}),
               "using too many bytes to represent -1");
 static_assert(identical(make_elastic_fixed_point(-1_c), cnl::elastic_fixed_point<1, 0, int>{-1}), "using too many bits to represent -1");
 
@@ -26,14 +26,14 @@ static_assert(
         "cnl::make_elastic_fixed_point test failed");
 static_assert(
         identical(
-                make_elastic_fixed_point<std::uint8_t>(262143),
-                elastic_fixed_point<cnl::numeric_limits<decltype(262143)>::digits, 0, std::uint8_t>{262143}),
+                make_elastic_fixed_point<cnl::uint8>(262143),
+                elastic_fixed_point<cnl::numeric_limits<decltype(262143)>::digits, 0, cnl::uint8>{262143}),
         "cnl::make_elastic_fixed_point test failed");
 
 static_assert(identical(make_elastic_fixed_point(std::integral_constant<int, 4>{}), elastic_fixed_point<1, 2>{4}), "");
 static_assert(identical(make_elastic_fixed_point(40_c), elastic_fixed_point<3, 3>{40}), "");
 static_assert(identical(make_elastic_fixed_point(0x123400000000_c), elastic_fixed_point<11, 34>{0x123400000000}), "");
-static_assert(identical(make_elastic_fixed_point<std::int8_t>(9876543), elastic_fixed_point<31, 0, std::int8_t>{9876543}), "");
+static_assert(identical(make_elastic_fixed_point<cnl::int8>(9876543), elastic_fixed_point<31, 0, cnl::int8>{9876543}), "");
 
 ////////////////////////////////////////////////////////////////////////////////
 // tests size of cnl::make_elastic_fixed_point
@@ -75,27 +75,27 @@ static_assert(sizeof(make_elastic_fixed_point<signed char>(-255_c)) == 2, "using
 static_assert(sizeof(make_elastic_fixed_point<signed char>(-256_c)) == 1, "using too many bytes to represent -256");
 
 // some numbers are so big that you don't have the luxury of choosing
-static constexpr auto unsigned_limit = cnl::intmax_t{cnl::numeric_limits<unsigned>::max()} + 1;
+static constexpr auto unsigned_limit = cnl::intmax{cnl::numeric_limits<unsigned>::max()} + 1;
 static_assert(
-        sizeof(make_elastic_fixed_point(std::integral_constant<cnl::intmax_t, unsigned_limit>())) == sizeof(int),
+        sizeof(make_elastic_fixed_point(std::integral_constant<cnl::intmax, unsigned_limit>())) == sizeof(int),
         "using too many bytes to represent 2^32");
 static_assert(
-        sizeof(make_elastic_fixed_point<char>(std::integral_constant<cnl::intmax_t, unsigned_limit>{})) == sizeof(char),
+        sizeof(make_elastic_fixed_point<char>(std::integral_constant<cnl::intmax, unsigned_limit>{})) == sizeof(char),
         "using too many bytes to represent 2^32");
 
 static_assert(
-        sizeof(make_elastic_fixed_point<char>(std::integral_constant<cnl::intmax_t, unsigned_limit + 1>{})) > sizeof(int),
+        sizeof(make_elastic_fixed_point<char>(std::integral_constant<cnl::intmax, unsigned_limit + 1>{})) > sizeof(int),
         "using too many bytes to represent 2^32 + 1");
 static_assert(
-        sizeof(make_elastic_fixed_point<char>(std::integral_constant<cnl::intmax_t, unsigned_limit + 1>{})) > sizeof(int),
+        sizeof(make_elastic_fixed_point<char>(std::integral_constant<cnl::intmax, unsigned_limit + 1>{})) > sizeof(int),
         "using too many bytes to represent 2^32 + 1");
 
 ////////////////////////////////////////////////////////////////////////////////
 // tests for cnl::make_elastic_fixed_point
 
-template<std::int64_t Value>
+template<cnl::int64 Value>
 struct make_elastic_test {
-    static constexpr auto value = std::integral_constant<std::int64_t, Value>{};
+    static constexpr auto value = std::integral_constant<cnl::int64, Value>{};
     static constexpr auto elastic_value = make_elastic_fixed_point(value);
     using type = typename std::remove_const<decltype(elastic_value)>::type;
 
@@ -150,12 +150,12 @@ struct make_elastic_test<-10604499373>;
 template
 struct make_elastic_test<137858491849>;
 template
-struct make_elastic_test<cnl::numeric_limits<std::int64_t>::max()/2>;
+struct make_elastic_test<cnl::numeric_limits<cnl::int64>::max()/2>;
 template
-struct make_elastic_test<-cnl::numeric_limits<std::int64_t>::max()/2>;
+struct make_elastic_test<-cnl::numeric_limits<cnl::int64>::max()/2>;
 #if ! defined(_MSC_VER)
 template
-struct make_elastic_test<cnl::numeric_limits<std::int64_t>::max()>;
+struct make_elastic_test<cnl::numeric_limits<cnl::int64>::max()>;
 template
-struct make_elastic_test<-cnl::numeric_limits<std::int64_t>::max()>;
+struct make_elastic_test<-cnl::numeric_limits<cnl::int64>::max()>;
 #endif

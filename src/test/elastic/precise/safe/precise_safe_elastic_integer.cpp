@@ -79,7 +79,7 @@ namespace {
 
     namespace test_make_psei {
         using namespace cnl::literals;
-        static_assert(identical(make_psei(std::int16_t{7}), psei<15>{7}), "");
+        static_assert(identical(make_psei(cnl::int16{7}), psei<15>{7}), "");
         static_assert(identical(make_psei(7_c), psei<3>{7}), "");
     }
 }
