@@ -57,6 +57,7 @@ if(Boost_FOUND)
     if(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
         # only compile multiprecision.cpp if Boost.Multiprecision is available
         set(BOOST_FOUND_CXX_FLAGS "-DCNL_BOOST_ENABLED")
+        target_include_directories(fp_test PRIVATE ${Boost_INCLUDE_DIRS})
     else(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
         message("Boost version is too low to use without exception handling")
     endif(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
@@ -166,20 +167,19 @@ set_target_properties(
 
 target_link_libraries(fp_test cnl)
 
-# avoid GCC6 warning
-# http://stackoverflow.com/a/38650955/671509
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     set_source_files_properties(
             boost.multiprecision.cpp
             index.cpp
             PROPERTIES COMPILE_FLAGS "-fpermissive")
 
     set_source_files_properties(
+            cppcon2017.cpp
             fixed_point/safe/fixed_point_saturated_integer.cpp
-            safe/safe_integer.cpp
-            PROPERTIES COMPILE_FLAGS "-Wno-sign-compare")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+            PROPERTIES COMPILE_FLAGS "-Wno-strict-overflow")
+
     set_source_files_properties(
+            cppcon2017.cpp
             fixed_point/safe/fixed_point_saturated_integer.cpp
             safe/safe_integer.cpp
             PROPERTIES COMPILE_FLAGS "-Wno-sign-compare")
