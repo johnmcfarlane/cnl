@@ -8,7 +8,7 @@
 #define CNL_NUMBER_BASE_H 1
 
 #include <cnl/bits/common.h>
-#include <cnl/integral_constant.h>
+#include <cnl/constant.h>
 #include <cnl/num_traits.h>
 
 #include <limits>

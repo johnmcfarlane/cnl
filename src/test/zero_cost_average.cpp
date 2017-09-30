@@ -36,7 +36,7 @@ CONSTEXPR float average_integer(float input1, float input2) {
 // the same function using cnl::elastic_integer -
 // a numeric type which widens to avoid overflow
 CONSTEXPR float average_elastic_integer(float input1, float input2) {
-    // use this user-defined literal - shorthand for std::integral_constant
+    // use this user-defined literal - shorthand for cnl::constant
     using namespace literals;
 
     // elastic_integer behaves a lot like native ints

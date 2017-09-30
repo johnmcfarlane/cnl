@@ -11,7 +11,8 @@
 #define CNL_FIXED_POINT_DEF_H 1
 
 #include <cnl/bits/number_base.h>
-#include <cnl/integral_constant.h>
+#include <cnl/constant.h>
+#include <cnl/numeric.h>
 
 /// compositional numeric library
 namespace cnl {
@@ -102,10 +103,10 @@ namespace cnl {
         {
         }
 
-        /// constructor taking an integral_constant type
-        template<class Integral, Integral Constant>
-        constexpr fixed_point(std::integral_constant<Integral, Constant> const& rhs)
-                : fixed_point(fixed_point<Integral, 0>::from_data(rhs))
+        /// constructor taking an cnl::constant object
+        template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+        constexpr fixed_point(constant<Value> rhs)
+                : fixed_point(fixed_point<decltype(Value), 0>::from_data(rhs))
         {
         }
 
@@ -194,11 +195,11 @@ namespace cnl {
     constexpr int fixed_point<Rep, Exponent>::exponent;
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::fixed_point{std::integral_constant} deduction guide
+    // cnl::fixed_point::fixed_point deduction guides
 
 #if defined(__cpp_deduction_guides)
-    template<class Integer, Integer Value>
-    fixed_point(std::integral_constant<Integer, Value>)
+    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    fixed_point(::cnl::constant<Value>)
     -> fixed_point<set_digits_t<int, _impl::max(digits<int>::value, used_bits(Value)-trailing_bits(Value))>, trailing_bits(Value)>;
 
     template<class Integer>

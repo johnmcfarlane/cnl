@@ -50,13 +50,12 @@ namespace cnl {
             class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int,
             class Input = int,
-            class Integral,
-            Integral Value>
+            CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     psefp<
             used_bits(Value), -trailing_bits(Value),
             OverflowTag, RoundingTag,
             Narrowest>
-    constexpr make_psefp(std::integral_constant<Integral, Value> const&)
+    constexpr make_psefp(constant<Value> const&)
     {
         return Value;
     }

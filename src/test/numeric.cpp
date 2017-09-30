@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/numeric.h>
-#include <cnl/integral_constant.h>
+#include <cnl/constant.h>
 
 #include <gtest/gtest.h>
 

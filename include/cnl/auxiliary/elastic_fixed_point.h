@@ -12,6 +12,7 @@
 
 #include "cnl/elastic_integer.h"
 #include <cnl/fixed_point.h>
+#include <cnl/limits.h>
 
 /// compositional numeric library
 namespace cnl {
@@ -48,15 +49,16 @@ namespace cnl {
     /// \par Example
     ///
     /// To define an int-sized object using \ref make_elastic_fixed_point and \ref const_integer:
-    /// \snippet snippets.cpp define an int-sized object using make_elastic_fixed_point and integral_constant
+    /// \snippet snippets.cpp define an int-sized object using make_elastic_fixed_point and constant
 
     template<
             typename Narrowest = int,
-            typename Integral = intmax,
-            Integral Value = 0>
-    constexpr elastic_fixed_point<_impl::max(_impl::used_bits_symmetric(Value)-trailing_bits(Value), 1), trailing_bits(
-            Value), Narrowest>
-    make_elastic_fixed_point(std::integral_constant<Integral, Value>)
+            CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0>
+    constexpr elastic_fixed_point<
+            _impl::max(_impl::used_bits_symmetric(Value)-trailing_bits(Value), 1),
+            trailing_bits(Value),
+            Narrowest>
+    make_elastic_fixed_point(constant<Value>)
     {
         return Value;
     }
@@ -106,13 +108,10 @@ namespace cnl {
         template<char... Chars>
         constexpr auto operator "" _elastic()
         -> decltype(make_elastic_fixed_point<int>(
-                std::integral_constant<
-                        intmax,
-                        _cnlint_impl::parse<sizeof...(Chars)+1>({Chars..., '\0'})>{}))
+                constant<_cnlint_impl::parse<sizeof...(Chars)+1>({Chars..., '\0'})>{}))
         {
             return make_elastic_fixed_point<int>(
-                    std::integral_constant<intmax, _cnlint_impl::parse<sizeof...(Chars)+1>(
-                            {Chars..., '\0'})>{});
+                    constant<_cnlint_impl::parse<sizeof...(Chars)+1>({Chars..., '\0'})>{});
         }
     }
 

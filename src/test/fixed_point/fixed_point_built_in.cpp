@@ -20,7 +20,7 @@ using test_int = int;
 // perform fixed_point tests with this type of fixed_point specialization
 
 #include "fixed_point_common.h"
-#include <cnl/integral_constant.h>
+#include <cnl/constant.h>
 
 #if defined(__cpp_deduction_guides)
 

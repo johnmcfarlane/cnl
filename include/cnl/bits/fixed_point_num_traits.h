@@ -47,8 +47,8 @@ namespace cnl {
         using type = fixed_point<Value>;
     };
 
-    template <class Rep, int Exponent, class Integer, Integer Value>
-    struct from_value<fixed_point<Rep, Exponent>, std::integral_constant<Integer, Value>> {
+    template <class Rep, int Exponent, intmax Value>
+    struct from_value<fixed_point<Rep, Exponent>, constant<Value>> {
         using type = fixed_point<int, trailing_bits(Value)>;
     };
 

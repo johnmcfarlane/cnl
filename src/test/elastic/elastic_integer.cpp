@@ -114,9 +114,9 @@ namespace {
 
         static_assert(identical(elastic_integer<4>{10_c}, elastic_integer<4>{10}), "");
 #if defined(__cpp_deduction_guides)
-        static_assert(identical(elastic_integer{std::integral_constant<unsigned, 1000>{}}, elastic_integer<10>{1000}), "");
+        static_assert(identical(elastic_integer{cnl::constant<1000>{}}, elastic_integer<10>{1000}), "");
 #endif
-        static_assert(identical(elastic_integer<10>{std::integral_constant<unsigned, 1000>{}}, elastic_integer<10>{1000}), "");
+        static_assert(identical(elastic_integer<10>{cnl::constant<1000>{}}, elastic_integer<10>{1000}), "");
     }
 
     namespace test_is_elastic_integer {
