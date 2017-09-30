@@ -57,7 +57,7 @@ if(Boost_FOUND)
     if(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
         # only compile multiprecision.cpp if Boost.Multiprecision is available
         set(BOOST_FOUND_CXX_FLAGS "-DCNL_BOOST_ENABLED")
-        target_include_directories(fp_test PRIVATE ${Boost_INCLUDE_DIRS})
+        target_include_directories(fp_test SYSTEM PRIVATE ${Boost_INCLUDE_DIRS})
     else(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
         message("Boost version is too low to use without exception handling")
     endif(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
