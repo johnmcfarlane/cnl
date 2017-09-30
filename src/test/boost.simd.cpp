@@ -120,10 +120,17 @@ namespace {
         //w = n;    // doesn't compile with or without explicit conversion operator
         //n = w;    // doesn't compile with or without explicit conversion operator
 
-        auto narrow_implicit(w);    // happens already
-        auto wide_implicit(n);  // happens already
-        auto narrow_explicit{w};    // happens already
-        auto wide_explicit{n};  // happens already
+        auto narrow_implicit = narrow_type(w);    // happens already
+        EXPECT_TRUE(boost::simd::compare_equal(static_cast<wide_type>(narrow_implicit), w));
+
+        auto wide_implicit = wide_type(n);  // happens already
+        EXPECT_TRUE(boost::simd::compare_equal(static_cast<narrow_type>(wide_implicit), n));
+
+        auto narrow_explicit = narrow_type{w};    // happens already
+        EXPECT_TRUE(boost::simd::compare_equal(static_cast<wide_type>(narrow_explicit), w));
+
+        auto wide_explicit = wide_type{n};  // happens already
+        EXPECT_TRUE(boost::simd::compare_equal(static_cast<narrow_type>(wide_explicit), n));
     }
 
     TEST(boost_simd, multiply) {
