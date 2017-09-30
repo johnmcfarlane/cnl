@@ -1034,6 +1034,12 @@ struct FixedPointRepTester {
     FixedPointTester<Rep, 1> _4;
     FixedPointTester<Rep, 10> _5;
     FixedPointTesterOutsize<Rep, 100> _6;
+
+    // test deduction guides
+#if defined(__cpp_deduction_guides)
+    static_assert(identical(cnl::fixed_point{Rep{0}}, cnl::fixed_point<Rep, 0>{0}));
+    static_assert(identical(cnl::fixed_point(Rep{0}), cnl::fixed_point<Rep, 0>(0)));
+#endif
 };
 
 template struct FixedPointRepTester<int8>;
