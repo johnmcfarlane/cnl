@@ -8,6 +8,7 @@ add_executable(fp_test
         fixed_point/elastic/elastic_fixed_point.cpp
 
         cnlint.cpp
+        constant.cpp
         p0381.cpp
         boost.simd.cpp
         precise/elastic/precise_elastic_integer.cpp

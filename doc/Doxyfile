@@ -16,6 +16,7 @@ CALLER_GRAPH = NO
 OUTPUT_DIRECTORY =
 OUTPUT_LANGUAGE = English
 INPUT = \
+    ../include/cnl/constant.h \
     ../include/cnl/fixed_point.h \
     ../include/cnl/limits.h \
     ../include/cnl/precise_integer.h \

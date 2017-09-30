@@ -55,4 +55,29 @@
 #define CNL_COPY_CONSTEXPR
 #endif
 
+////////////////////////////////////////////////////////////////////////////////
+// CNL_TEMPLATE_AUTO feature test
+
+#if defined(CNL_TEMPLATE_AUTO)
+#error CNL_TEMPLATE_AUTO already defined
+#endif
+
+// many uses of ""_c fail due to:
+// https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82226
+#if defined(__GNUG__) && !defined(__clang__) && __GNUG__ >= 7
+#define CNL_TEMPLATE_AUTO_DISABLED
+#endif
+
+// not because MSVC defines __cpp_template_auto
+// but because if it ever did,
+// the workaround for this would probably have to change:
+// https://godbolt.org/g/wbLMuN
+#if defined(_MSC_VER)
+#define CNL_TEMPLATE_AUTO_DISABLED
+#endif
+
+#if defined(__cpp_template_auto) && !defined(CNL_TEMPLATE_AUTO_DISABLED)
+#define CNL_TEMPLATE_AUTO
+#endif
+
 #endif  // CNL_CONFIG_H

@@ -1,0 +1,120 @@
+
+//          Copyright John McFarlane 2015 - 2017.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file ../LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
+/// \file
+/// \brief essential definitions related to `std::constant` type and its UDL, ""_c
+
+#if !defined(CNL_CONSTANT_H)
+#define CNL_CONSTANT_H 1
+
+#include "cnlint.h"
+#include "bits/config.h"
+
+// CNL_IMPL_CONSTANT_VALUE_TYPE - determines cnl::constant<>::value_type
+#if defined(CNL_TEMPLATE_AUTO)
+// If template<auto> feature is available, cnl::constant's value can be any type.
+#define CNL_IMPL_CONSTANT_VALUE_TYPE auto
+#else
+// Otherwise it is defaulted to the widest quantity type that can be used as a template argument.
+#define CNL_IMPL_CONSTANT_VALUE_TYPE ::cnl::intmax
+#endif
+
+/// compositional numeric library
+namespace cnl {
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::constant - expresses a value as a type
+
+    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct constant {
+        using value_type = decltype(Value);
+        static constexpr value_type value = Value;
+
+#if defined(_MSC_VER)
+        constexpr operator CNL_IMPL_CONSTANT_VALUE_TYPE() const {
+            return value;
+        }
+#else
+        constexpr operator value_type() const {
+            return value;
+        }
+#endif
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::constant operator overloads
+
+#define CNL_IMPL_CONSTANT_UNARY(OPERATOR) \
+    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value> \
+    constexpr auto operator OPERATOR(constant<Value>) noexcept \
+    -> constant<OPERATOR Value> { \
+        return constant<OPERATOR Value>{}; \
+    }
+
+#define CNL_IMPL_CONSTANT_BINARY(OPERATOR) \
+    template<CNL_IMPL_CONSTANT_VALUE_TYPE LhsValue, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue> \
+    constexpr auto operator OPERATOR(constant<LhsValue>, constant<RhsValue>) noexcept \
+    -> constant<(LhsValue OPERATOR RhsValue)> { \
+        return constant<(LhsValue OPERATOR RhsValue)>{};\
+    }
+
+    // arithmetic
+    CNL_IMPL_CONSTANT_UNARY(+);
+    CNL_IMPL_CONSTANT_UNARY(-);
+    CNL_IMPL_CONSTANT_BINARY(+);
+    CNL_IMPL_CONSTANT_BINARY(-);
+    CNL_IMPL_CONSTANT_BINARY(*);
+    CNL_IMPL_CONSTANT_BINARY(/);
+    CNL_IMPL_CONSTANT_BINARY(%);
+    CNL_IMPL_CONSTANT_UNARY(~);
+    CNL_IMPL_CONSTANT_BINARY(&);
+    CNL_IMPL_CONSTANT_BINARY(|);
+    CNL_IMPL_CONSTANT_BINARY(^);
+    CNL_IMPL_CONSTANT_BINARY(<<);
+    CNL_IMPL_CONSTANT_BINARY(>>);
+
+    // logical
+    CNL_IMPL_CONSTANT_UNARY(!);
+    CNL_IMPL_CONSTANT_BINARY(&&);
+    CNL_IMPL_CONSTANT_BINARY(||);
+
+    // comparison
+    CNL_IMPL_CONSTANT_BINARY(==);
+    CNL_IMPL_CONSTANT_BINARY(!=);
+    CNL_IMPL_CONSTANT_BINARY(<);
+    CNL_IMPL_CONSTANT_BINARY(>);
+    CNL_IMPL_CONSTANT_BINARY(<=);
+    CNL_IMPL_CONSTANT_BINARY(>=);
+
+    namespace _impl {
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::is_constant type traits
+
+        template<class T>
+        struct is_constant : std::false_type {
+        };
+
+        template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+        struct is_constant<::cnl::constant<Value>> : std::true_type {
+        };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::literals - literal wrapper for constant
+    //
+    // http://codereview.stackexchange.com/a/51576/26421
+
+    namespace literals {
+        template<char... Chars>
+        constexpr auto operator "" _c()
+        -> constant<_cnlint_impl::parse<Chars...,'\0'>()>
+        {
+            return {};
+        }
+    }
+}
+
+#endif  // CNL_CONSTANT_H
