@@ -55,7 +55,7 @@ namespace cnl {
             typename Narrowest = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0>
     constexpr elastic_fixed_point<
-            _impl::max(_impl::used_bits_symmetric(Value)-trailing_bits(Value), 1),
+            _impl::max(_elastic_integer_impl::digits(Value)-trailing_bits(Value), 1),
             trailing_bits(Value),
             Narrowest>
     make_elastic_fixed_point(constant<Value>)

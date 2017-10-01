@@ -168,28 +168,6 @@ namespace cnl {
         }
     }
 
-    namespace _impl {
-        template<class Integer>
-        constexpr int used_bits_symmetric(Integer value)
-        {
-            // Most negative number is not exploited;
-            // thus negating the result or subtracting it from something else
-            // will less likely result in overflow.
-            return (value>0)
-                   ? _numeric_impl::used_bits_positive<Integer>(value)
-                   : (value<0)
-#if defined(_MSC_VER)
-#pragma warning(push)
-#pragma warning(disable: 4146)
-#endif
-                     ? _numeric_impl::used_bits_positive<Integer>(-value)
-#if defined(_MSC_VER)
-#pragma warning(pop)
-#endif
-                     : 0;
-        }
-    }
-
     namespace _numeric_impl {
         struct used_bits {
             template<class Integer>
