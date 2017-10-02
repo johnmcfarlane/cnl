@@ -20,18 +20,18 @@ static_assert(n==-2.75, "fixed-point type was unable to store the value");
 }
 
 namespace define_a_fast_object_using_make_elastic {
-//! [define an int-sized object using make_elastic_fixed_point and integral_constant]
+//! [define an int-sized object using make_elastic_fixed_point and constant]
 // std::uint8_t specifies the type of const_integer - not elastic
-constexpr auto n = make_elastic_fixed_point(std::integral_constant<std::uint8_t, 0xAA>{});
+constexpr auto n = make_elastic_fixed_point(constant<0xAA>{});
 
 static_assert(n==0xAA, "n now has the value, 1024");
 static_assert(std::is_same<decltype(n), elastic_fixed_point<7, 1, int> const>::value, "by default make_elastic_fixed_point uses the most efficient type it can");
-//! [define an int-sized object using make_elastic_fixed_point and integral_constant]
+//! [define an int-sized object using make_elastic_fixed_point and constant]
 }
 
 namespace define_a_small_object_using_make_elastic {
 //! [define a byte-sized object using \ref make_elastic_fixed_point and \ref _c]
-constexpr auto n = make_elastic_fixed_point<char>(std::integral_constant<short, 1536>{});
+constexpr auto n = make_elastic_fixed_point<char>(constant<1536>{});
 
 static_assert(n==1536, "n now has the value, 1536");
 static_assert(std::is_same<decltype(n), elastic_fixed_point<2, 9, char> const>::value, "by default make_elastic_fixed_point uses the most efficient type it can");

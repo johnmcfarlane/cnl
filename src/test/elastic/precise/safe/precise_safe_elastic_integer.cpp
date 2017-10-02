@@ -31,7 +31,7 @@ namespace cnl {
             class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int,
             class Input = int,
-            class = _impl::enable_if_t<!_impl::is_integral_constant<Input>::value>>
+            class = _impl::enable_if_t<!_impl::is_constant<Input>::value>>
     psei<
             numeric_limits<Input>::digits,
             OverflowTag, RoundingTag,
@@ -45,13 +45,12 @@ namespace cnl {
             class OverflowTag = safe_integer<>::overflow_tag,
             class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int,
-            class InputInteger = int,
-            InputInteger InputValue = 0>
+            CNL_IMPL_CONSTANT_VALUE_TYPE InputValue = 0>
     psei<
             used_bits(InputValue),
             OverflowTag, RoundingTag,
             Narrowest>
-    constexpr make_psei(std::integral_constant<InputInteger, InputValue>)
+    constexpr make_psei(constant<InputValue>)
     {
         return InputValue;
     }

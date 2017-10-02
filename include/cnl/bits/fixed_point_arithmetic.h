@@ -65,7 +65,7 @@ namespace cnl {
                 template<class Lhs, class RhsRep, int RhsExponent>
                 struct binary_pair<Lhs, fixed_point<RhsRep, RhsExponent>>
                         : binary_pair_base<Lhs, 0, RhsRep, RhsExponent> {
-                    static_assert(numeric_limits<Lhs>::is_integer || _impl::is_integral_constant<Lhs>::value,
+                    static_assert(numeric_limits<Lhs>::is_integer || _impl::is_constant<Lhs>::value,
                             "named arithmetic functions take only fixed_point and integral types");
                 };
 
@@ -97,13 +97,11 @@ namespace cnl {
                 };
 
                 template<class Lhs, class Rhs>
-                struct rep_op_exponent<_impl::multiply_op, Lhs, Rhs> : public std::integral_constant<int,
-                        Lhs::exponent+Rhs::exponent> {
+                struct rep_op_exponent<_impl::multiply_op, Lhs, Rhs> : public constant<Lhs::exponent+Rhs::exponent> {
                 };
 
                 template<class Lhs, class Rhs>
-                struct rep_op_exponent<_impl::divide_op, Lhs, Rhs> : public std::integral_constant<int,
-                        Lhs::exponent-Rhs::exponent> {
+                struct rep_op_exponent<_impl::divide_op, Lhs, Rhs> : public constant<Lhs::exponent-Rhs::exponent> {
                 };
 
                 ////////////////////////////////////////////////////////////////////////////////

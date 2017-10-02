@@ -8,6 +8,7 @@ add_executable(fp_test
         fixed_point/elastic/elastic_fixed_point.cpp
 
         cnlint.cpp
+        constant.cpp
         p0381.cpp
         boost.simd.cpp
         precise/elastic/precise_elastic_integer.cpp
@@ -19,7 +20,6 @@ add_executable(fp_test
         zero_cost_square.cpp
         p0554.cpp
         index.cpp
-        integral_constant.cpp
         limits.cpp
         number_test.cpp
         zero_cost_free_functions.cpp
@@ -57,7 +57,7 @@ if(Boost_FOUND)
     if(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
         # only compile multiprecision.cpp if Boost.Multiprecision is available
         set(BOOST_FOUND_CXX_FLAGS "-DCNL_BOOST_ENABLED")
-        target_include_directories(fp_test PRIVATE ${Boost_INCLUDE_DIRS})
+        target_include_directories(fp_test SYSTEM PRIVATE ${Boost_INCLUDE_DIRS})
     else(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
         message("Boost version is too low to use without exception handling")
     endif(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
@@ -69,28 +69,31 @@ endif(Boost_FOUND)
 # pull external project, boost.simd
 
 if(Boost_FOUND AND Boost_VERSION GREATER 106099)
-    ExternalProject_Add(
-            boost.simd
-            URL "https://github.com/johnmcfarlane/boost.simd/archive/5d67a72d77411dc610126151a182ebbae1bfbac6.zip"
-            URL_MD5 "97d1aad967965ee79a751d099cd0ee6f"
-            UPDATE_COMMAND ""
-            INSTALL_COMMAND ""
-    )
+    # Boost.SIMD has problems building with gcc-7.x
+    if(NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
+        ExternalProject_Add(
+                boost.simd
+                URL "https://github.com/numscale/boost.simd/archive/b1e046e3ffa720226e45512c76c505f34cde7be2.zip"
+                URL_MD5 "74fc0bc279a18f931e4d2ec026af8dd4"
+                UPDATE_COMMAND ""
+                INSTALL_COMMAND ""
+        )
 
-    ExternalProject_Get_Property(boost.simd source_dir)
-    target_include_directories(
-            fp_test
-            PRIVATE
-            SYSTEM
-            "${source_dir}/include"
-    )
+        ExternalProject_Get_Property(boost.simd source_dir)
+        target_include_directories(
+                fp_test
+                PRIVATE
+                SYSTEM
+                "${source_dir}/include"
+        )
 
-    add_dependencies(
-            fp_test
-            boost.simd
-    )
+        add_dependencies(
+                fp_test
+                boost.simd
+        )
 
-    set(BOOST_SIMD_FOUND_CXX_FLAGS "-DCNL_BOOST_SIMD_ENABLED")
+        set(BOOST_SIMD_FOUND_CXX_FLAGS "-DCNL_BOOST_SIMD_ENABLED")
+    endif(NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
 endif(Boost_FOUND AND Boost_VERSION GREATER 106099)
 
 ######################################################################

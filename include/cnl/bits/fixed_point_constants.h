@@ -11,6 +11,7 @@
 #define FIXED_POINT_CONSTANTS_H_
 
 #include "fixed_point_type.h"
+#include <cnl/numeric.h>
 
 /// compositional numeric library
 namespace cnl {

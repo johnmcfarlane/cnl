@@ -4,7 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/integral_constant.h>
+#include <cnl/numeric.h>
+#include <cnl/constant.h>
 
 #include <gtest/gtest.h>
 
@@ -102,32 +103,6 @@ namespace {
             static_assert(trailing_bits_positive(1024)==10,
                     "cnl::_numeric_impl::trailing_bits_positive test failed");
         }
-    }
-
-    namespace test_used_bits_symmetric {
-        static_assert(_impl::used_bits_symmetric(0)==0, "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(1)==1, "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(2)==2, "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(uint8_t{255})==8, "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(int16_t{32767})==15, "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(int8_t{-1})==1, "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(int8_t{-2})==2, "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(int8_t{-3})==2, "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(int8_t{-4})==3, "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(int8_t{-5})==3, "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(int8_t{-8})==4, "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(int8_t{-9})==4, "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(int8_t{-128})==1, "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(numeric_limits<int64_t>::lowest()+1)==63,
-                "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(numeric_limits<int64_t>::min()+1)==63,
-                "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(numeric_limits<int64_t>::max())==63,
-                "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(numeric_limits<uint64_t>::min())==0,
-                "cnl::_impl::used_bits_symmetric test failed");
-        static_assert(_impl::used_bits_symmetric(numeric_limits<uint64_t>::max())==64,
-                "cnl::_impl::used_bits_symmetric test failed");
     }
 
     namespace test_used_bits {

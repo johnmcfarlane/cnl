@@ -16,6 +16,7 @@ CALLER_GRAPH = NO
 OUTPUT_DIRECTORY =
 OUTPUT_LANGUAGE = English
 INPUT = \
+    ../include/cnl/constant.h \
     ../include/cnl/fixed_point.h \
     ../include/cnl/limits.h \
     ../include/cnl/precise_integer.h \
@@ -34,7 +35,6 @@ INPUT = \
     ../include/cnl/bits/common.h \
     ../include/cnl/bits/fixed_point_extras.h \
     ../include/cnl/bits/fixed_point_arithmetic.h \
-    ../include/cnl/bits/integral_constant.h \
     ../include/cnl/bits/fixed_point_named.h \
     ../include/cnl/bits/fixed_point_num_traits.h \
     ../include/cnl/elastic_integer.h \

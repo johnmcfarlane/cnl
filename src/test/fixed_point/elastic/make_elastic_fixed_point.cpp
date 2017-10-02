@@ -16,7 +16,7 @@ using cnl::elastic_fixed_point;
 
 static constexpr auto int_digits = cnl::numeric_limits<int>::digits;
 
-static_assert(identical(make_elastic_fixed_point(std::integral_constant<cnl::int64, -1>{}), cnl::elastic_fixed_point<1, 0, int>{-1}),
+static_assert(identical(make_elastic_fixed_point(cnl::constant<-1>{}), cnl::elastic_fixed_point<1, 0, int>{-1}),
               "using too many bytes to represent -1");
 static_assert(identical(make_elastic_fixed_point(-1_c), cnl::elastic_fixed_point<1, 0, int>{-1}), "using too many bits to represent -1");
 
@@ -30,7 +30,7 @@ static_assert(
                 elastic_fixed_point<cnl::numeric_limits<decltype(262143)>::digits, 0, cnl::uint8>{262143}),
         "cnl::make_elastic_fixed_point test failed");
 
-static_assert(identical(make_elastic_fixed_point(std::integral_constant<int, 4>{}), elastic_fixed_point<1, 2>{4}), "");
+static_assert(identical(make_elastic_fixed_point(cnl::constant<4>{}), elastic_fixed_point<1, 2>{4}), "");
 static_assert(identical(make_elastic_fixed_point(40_c), elastic_fixed_point<3, 3>{40}), "");
 static_assert(identical(make_elastic_fixed_point(0x123400000000_c), elastic_fixed_point<11, 34>{0x123400000000}), "");
 static_assert(identical(make_elastic_fixed_point<cnl::int8>(9876543), elastic_fixed_point<31, 0, cnl::int8>{9876543}), "");
@@ -77,17 +77,17 @@ static_assert(sizeof(make_elastic_fixed_point<signed char>(-256_c)) == 1, "using
 // some numbers are so big that you don't have the luxury of choosing
 static constexpr auto unsigned_limit = cnl::intmax{cnl::numeric_limits<unsigned>::max()} + 1;
 static_assert(
-        sizeof(make_elastic_fixed_point(std::integral_constant<cnl::intmax, unsigned_limit>())) == sizeof(int),
+        sizeof(make_elastic_fixed_point(cnl::constant<unsigned_limit>())) == sizeof(int),
         "using too many bytes to represent 2^32");
 static_assert(
-        sizeof(make_elastic_fixed_point<char>(std::integral_constant<cnl::intmax, unsigned_limit>{})) == sizeof(char),
+        sizeof(make_elastic_fixed_point<char>(cnl::constant<unsigned_limit>{})) == sizeof(char),
         "using too many bytes to represent 2^32");
 
 static_assert(
-        sizeof(make_elastic_fixed_point<char>(std::integral_constant<cnl::intmax, unsigned_limit + 1>{})) > sizeof(int),
+        sizeof(make_elastic_fixed_point<char>(cnl::constant<unsigned_limit + 1>{})) > sizeof(int),
         "using too many bytes to represent 2^32 + 1");
 static_assert(
-        sizeof(make_elastic_fixed_point<char>(std::integral_constant<cnl::intmax, unsigned_limit + 1>{})) > sizeof(int),
+        sizeof(make_elastic_fixed_point<char>(cnl::constant<unsigned_limit + 1>{})) > sizeof(int),
         "using too many bytes to represent 2^32 + 1");
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -95,7 +95,7 @@ static_assert(
 
 template<cnl::int64 Value>
 struct make_elastic_test {
-    static constexpr auto value = std::integral_constant<cnl::int64, Value>{};
+    static constexpr auto value = cnl::constant<Value>{};
     static constexpr auto elastic_value = make_elastic_fixed_point(value);
     using type = typename std::remove_const<decltype(elastic_value)>::type;
 

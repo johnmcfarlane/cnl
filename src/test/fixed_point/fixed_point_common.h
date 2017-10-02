@@ -787,12 +787,12 @@ namespace test_bitshift {
     static_assert(identical(fixed_point<int, -4>{2}, fixed_point<uint8_t, -4>{1} << 1), "bitshift test failed");
     static_assert(identical(fixed_point<int, -4>{.5}, fixed_point<uint8_t, -4>{1} >> 1), "bitshift test failed");
 
-    // std::integral_constant
-    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} << std::integral_constant<int, 1>{}), "bitshift test failed");
-    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} << std::integral_constant<int, -1>{}), "bitshift test failed");
+    // cnl::constant
+    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} << cnl::constant<1>{}), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} << cnl::constant<-1>{}), "bitshift test failed");
 
-    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} >> std::integral_constant<int, 1>{}), "bitshift test failed");
-    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} >> std::integral_constant<int, -1>{}), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} >> cnl::constant<1>{}), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} >> cnl::constant<-1>{}), "bitshift test failed");
 
     // const_integer
     using namespace cnl::literals;
@@ -1034,6 +1034,12 @@ struct FixedPointRepTester {
     FixedPointTester<Rep, 1> _4;
     FixedPointTester<Rep, 10> _5;
     FixedPointTesterOutsize<Rep, 100> _6;
+
+    // test deduction guides
+#if defined(__cpp_deduction_guides)
+    static_assert(identical(cnl::fixed_point{Rep{0}}, cnl::fixed_point<Rep, 0>{0}));
+    static_assert(identical(cnl::fixed_point(Rep{0}), cnl::fixed_point<Rep, 0>(0)));
+#endif
 };
 
 template struct FixedPointRepTester<int8>;
