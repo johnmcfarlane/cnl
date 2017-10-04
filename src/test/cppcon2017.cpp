@@ -129,7 +129,7 @@ namespace l {
     static_assert(cnl::_impl::identical(elastic_integer<63>{INT64_C(0x7FFFFFFE00000002)}, _2ee), "");
 }
 
-#include <cnl/auxiliary/elastic_fixed_point.h>
+#include <cnl/bits/elastic_fixed_point.h>
 namespace m {
     constexpr auto fpe = fixed_point<elastic_integer<31>, -31>{0.99609375};
 

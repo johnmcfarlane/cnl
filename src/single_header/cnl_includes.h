@@ -7,4 +7,3 @@
 #include <cnl/overflow.h>
 #include <cnl/precise_integer.h>
 #include <cnl/safe_integer.h>
-#include <cnl/auxiliary/elastic_fixed_point.h>

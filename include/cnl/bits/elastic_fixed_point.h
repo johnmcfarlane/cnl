@@ -1,5 +1,5 @@
 
-//          Copyright John McFarlane 2015 - 2016.
+//          Copyright John McFarlane 2015 - 2017.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -10,7 +10,7 @@
 #if !defined(CNL_ELASTIC_FIXED_POINT_H)
 #define CNL_ELASTIC_FIXED_POINT_H 1
 
-#include "cnl/elastic_integer.h"
+#include <cnl/elastic_integer.h>
 #include <cnl/fixed_point.h>
 #include <cnl/limits.h>
 
@@ -117,7 +117,7 @@ namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::elastic_fixed_point
+    // cnl::elastic_fixed_point division operators
 
     template<
             int NumeratorDigits, int NumeratorExponent, class NumeratorNarrowest,

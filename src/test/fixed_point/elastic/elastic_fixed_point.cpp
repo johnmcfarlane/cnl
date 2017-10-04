@@ -7,7 +7,7 @@
 /// \file
 /// \brief tests of cnl::elastic_fixed_point alias
 
-#include <cnl/auxiliary/elastic_fixed_point.h>
+#include <cnl/bits/elastic_fixed_point.h>
 #include "../../number_test.h"
 
 using std::is_same;
