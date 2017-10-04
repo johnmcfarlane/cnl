@@ -128,6 +128,26 @@ namespace cnl {
     -> decltype(_impl::fp::operate<_impl::fp::arithmetic::wide_tag>(numerator, denominator, _impl::divide_tag)) {
         return _impl::fp::operate<_impl::fp::arithmetic::wide_tag>(numerator, denominator, _impl::divide_tag);
     }
+
+    template<
+            int NumeratorDigits, int NumeratorExponent, class NumeratorNarrowest,
+            int DenominatorDigits, class DenominatorNarrowest>
+    constexpr auto operator/(
+            elastic_fixed_point<NumeratorDigits, NumeratorExponent, NumeratorNarrowest> const& numerator,
+            elastic_integer<DenominatorDigits, DenominatorNarrowest> const& denominator)
+    -> decltype(_impl::fp::operate<_impl::fp::arithmetic::wide_tag>(numerator, denominator, _impl::divide_tag)) {
+        return _impl::fp::operate<_impl::fp::arithmetic::wide_tag>(numerator, denominator, _impl::divide_tag);
+    }
+
+    template<
+            int NumeratorDigits, class NumeratorNarrowest,
+            int DenominatorDigits, int DenominatorExponent, class DenominatorNarrowest>
+    constexpr auto operator/(
+            elastic_integer<NumeratorDigits, NumeratorNarrowest> const& numerator,
+            elastic_fixed_point<DenominatorDigits, DenominatorExponent, DenominatorNarrowest> const& denominator)
+    -> decltype(_impl::fp::operate<_impl::fp::arithmetic::wide_tag>(numerator, denominator, _impl::divide_tag)) {
+        return _impl::fp::operate<_impl::fp::arithmetic::wide_tag>(numerator, denominator, _impl::divide_tag);
+    }
 }
 
 #endif  // CNL_ELASTIC_FIXED_POINT_H
