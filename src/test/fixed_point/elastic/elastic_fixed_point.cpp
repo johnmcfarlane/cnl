@@ -10,6 +10,8 @@
 #include <cnl/bits/elastic_fixed_point.h>
 #include "../../number_test.h"
 
+#include <gtest/gtest.h>
+
 using std::is_same;
 
 using cnl::elastic_fixed_point;
@@ -287,12 +289,29 @@ struct positive_elastic_test
     static_assert(is_equal_to(min/make_elastic_fixed_point(1_c), min), "operator/ test failed");
     static_assert(is_equal_to((min+min)/make_elastic_fixed_point(2_c), min), "operator/ test failed");
     static_assert(is_equal_to((min+min+min)/make_elastic_fixed_point(3_c), min), "operator/ test failed");
-    static_assert(cnl::numeric_limits<decltype(zero/zero)>::is_signed
-                  ==cnl::numeric_limits<elastic_type>::is_signed,
+    static_assert(cnl::numeric_limits<decltype(zero/zero)>::is_signed==cnl::numeric_limits<elastic_type>::is_signed,
                   "signedness is lost during multiply");
     static_assert(cnl::numeric_limits<decltype(signed_type{zero}/unsigned_type{zero})>::is_signed,
                   "signedness is lost during multiply");
+#if ! defined(_MSC_VER)
+    static_assert(identical(elastic_fixed_point<10, -5>{1.5}/elastic_integer<2>{2}, elastic_fixed_point<12, -7>{3./4}),
+                  "operator/ test failed");
+    static_assert(identical(elastic_integer<2>{2}/elastic_fixed_point<10, -5>{1.5}, elastic_fixed_point<12, -5>{4./3}),
+                  "operator/ test failed");
+#endif
 };
+
+TEST(elastic_fixed_point, over_int) {
+    auto q = cnl::elastic_fixed_point<10, -5>{1.5}/elastic_integer<2>{2};
+    auto e = cnl::elastic_fixed_point<12, -7>{3./4};
+    EXPECT_EQ(e, q);
+}
+
+TEST(elastic_fixed_point, int_over) {
+    auto q = elastic_integer<2>{2}/elastic_fixed_point<10, -5>{1.5};
+    auto e = elastic_fixed_point<12, -5>{4./3};
+    EXPECT_EQ(e, q);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // test how elastic_fixed_point handles negative values;
