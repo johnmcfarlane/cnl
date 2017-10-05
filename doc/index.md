@@ -26,8 +26,8 @@ that support widening of arithmetic types in order to deal with precision loss.
 
 Auxiliary modules:
 
-* [cnl/auxiliary/multiprecision.h](@ref multiprecision.h) adapts Boost.Multiprecision for use in fixed-point types;
-* [cnl/auxiliary/elastic_fixed_point.h](@ref elastic_fixed_point.h) defins [elastic_fixed_point](@ref cnl::elastic_fixed_point), an numeric type that uses fixed-point to avoid overflow.
+* [cnl/auxiliary/boost.multiprecision.h](@ref boost.multiprecision.h) adapts Boost.Multiprecision for use in fixed-point types;
+* [cnl/auxiliary/boost.simd.h](@ref boost.simd.h) adapts Boost.SIMD for use in fixed-point types;
 
 
 \section Examples

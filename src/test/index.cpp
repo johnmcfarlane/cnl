@@ -191,18 +191,15 @@ void elastic_example1()
     static_assert(is_same<decltype(a2), elastic_integer<7, int8_t >> ::value, "");
 }
 
-// Such a type can be used to specialize fixed_point.
-template<int IntegerDigits, int FractionalDigits, class Narrowest>
-using elastic_fixed_point = fixed_point<elastic_integer<IntegerDigits+FractionalDigits, Narrowest>, -FractionalDigits>;
-
 void elastic_example2()
 {
+    // A type such as elastic_integer can be used to specialize fixed_point.
     // Now arithmetic operations are more efficient and less error-prone.
-    auto b = elastic_fixed_point<4, 28, unsigned>{15.9375};
+    auto b = elastic_fixed_point<32, -28, unsigned>{15.9375};
     auto bb = b*b;
 
     cout << bb << endl;  // "254.00390625"
-    static_assert(is_same<decltype(bb), elastic_fixed_point<8, 56, unsigned>>::value, "");
+    static_assert(is_same<decltype(bb), elastic_fixed_point<64, -56, unsigned>>::value, "");
 }
 //! [elastic example]
 
