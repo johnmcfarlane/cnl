@@ -26,6 +26,7 @@ add_executable(fp_test
         boost.multiprecision.cpp
         zero_cost_average.cpp
         readme.cpp
+        cppcon2017.cpp
         cppnow2017.cpp
         safft.cpp
         safe/elastic/safe_elastic_integer.cpp
@@ -179,11 +180,9 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL
     set_source_files_properties(
             cppcon2017.cpp
             fixed_point/safe/fixed_point_saturated_integer.cpp
-            PROPERTIES COMPILE_FLAGS "-Wno-strict-overflow")
+            PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-strict-overflow")
 
     set_source_files_properties(
-            cppcon2017.cpp
-            fixed_point/safe/fixed_point_saturated_integer.cpp
             safe/safe_integer.cpp
             PROPERTIES COMPILE_FLAGS "-Wno-sign-compare")
 
