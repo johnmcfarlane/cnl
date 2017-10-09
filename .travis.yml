@@ -4,6 +4,10 @@ sudo: required
 language: cpp
 
 matrix:
+  fast_finish: true
+  allow_failures:
+  - os: osx
+
   include:
     # C++11
     - os: linux
