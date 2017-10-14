@@ -4,10 +4,6 @@ sudo: required
 language: cpp
 
 matrix:
-  fast_finish: true
-  allow_failures:
-  - os: osx
-
   include:
     # C++11
     - os: linux
@@ -21,7 +17,7 @@ matrix:
 
     - os: osx
       osx_image: xcode8
-      env: MATRIX_EVAL="brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF
+      env: MATRIX_EVAL="brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF
 
     - os: linux
       addons: &gcc6
@@ -34,7 +30,7 @@ matrix:
 
     - os: osx
       osx_image: xcode8
-      env: MATRIX_EVAL="brew install gcc5 && CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON
+      env: MATRIX_EVAL="brew update && brew install gcc5 && CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON
 
     - os: linux
       addons: &gcc5
@@ -97,7 +93,7 @@ matrix:
 
     - os: osx
       osx_image: xcode8
-      env: MATRIX_EVAL="brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
+      env: MATRIX_EVAL="brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
 
     - os: linux
       addons: *gcc6
@@ -134,7 +130,7 @@ matrix:
 
     - os: osx
       osx_image: xcode8
-      env: MATRIX_EVAL="brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON
+      env: MATRIX_EVAL="brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON
 
     - os: linux
       addons: *gcc6
