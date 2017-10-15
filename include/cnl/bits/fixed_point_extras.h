@@ -88,7 +88,7 @@ namespace cnl {
     /// divides the values
     /// without performing any additional scaling or conversion.
     ///
-    /// \sa negate, add, subtract, multiply
+    /// \sa multiply
 
     // https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_.28base_2.29
     // ?

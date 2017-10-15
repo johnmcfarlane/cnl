@@ -73,14 +73,6 @@ namespace named_arithmetic3 {
             "Incorrect information in proposal section, Named Arithmetic Functions");
 }
 
-namespace named_arithmetic4 {
-    constexpr auto a1 = fixed_point<int8_t, 32>{0x7f00000000LL};
-    constexpr auto a2 = fixed_point<int8_t, 0>{0x7f};
-    constexpr auto s = add(a1, a2);
-
-    static_assert(identical(s, fixed_point<int64_t, 0>{0x7f0000007fLL}), "Incorrect information in proposal section, Named Arithmetic Functions");
-}
-
 namespace named_arithmetic5 {
     constexpr auto n = fixed_point<uint32_t, -16>{1};
     constexpr auto d = fixed_point<uint32_t, -16>{2};
