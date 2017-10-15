@@ -190,78 +190,61 @@ namespace cnl {
     }
 
     // fixed-point, floating-point -> floating-point
-    template<class LhsRep, int LhsExponent, class RhsFloat, typename = _impl::enable_if_t<std::is_floating_point<RhsFloat>::value>>
-    constexpr auto operator+(fixed_point<LhsRep, LhsExponent> const& lhs, RhsFloat const& rhs)-> _impl::common_type_t<fixed_point<LhsRep, LhsExponent>, RhsFloat>
+    template<class LhsRep, int LhsExponent, class RhsFloat, typename = _impl::enable_if_t<numeric_limits<RhsFloat>::is_iec559>>
+    constexpr auto operator+(fixed_point<LhsRep, LhsExponent> const& lhs, RhsFloat const& rhs)
+    -> decltype(static_cast<RhsFloat>(lhs)+rhs)
     {
-        using result_type = _impl::common_type_t<fixed_point<LhsRep, LhsExponent>, RhsFloat>;
-        return static_cast<result_type>(lhs)+static_cast<result_type>(rhs);
+        return static_cast<RhsFloat>(lhs)+rhs;
     }
 
-    template<class LhsRep, int LhsExponent, class RhsFloat, typename = _impl::enable_if_t <std::is_floating_point<RhsFloat>::value>>
-    constexpr auto operator-(fixed_point<LhsRep, LhsExponent> const& lhs, RhsFloat const& rhs)-> _impl::common_type_t<fixed_point<LhsRep, LhsExponent>, RhsFloat>
+    template<class LhsRep, int LhsExponent, class RhsFloat, typename = _impl::enable_if_t<numeric_limits<RhsFloat>::is_iec559>>
+    constexpr auto operator-(fixed_point<LhsRep, LhsExponent> const& lhs, RhsFloat const& rhs)
+    -> decltype(static_cast<RhsFloat>(lhs)-rhs)
     {
-        using result_type = _impl::common_type_t<fixed_point<LhsRep, LhsExponent>, RhsFloat>;
-        return static_cast<result_type>(lhs)-static_cast<result_type>(rhs);
+        return static_cast<RhsFloat>(lhs)-rhs;
     }
 
-    template<class LhsRep, int LhsExponent, class RhsFloat>
-    constexpr auto operator*(
-            fixed_point<LhsRep, LhsExponent> const& lhs,
-            RhsFloat const& rhs)
-    -> _impl::common_type_t<
-            fixed_point<LhsRep, LhsExponent>,
-            _impl::enable_if_t<std::is_floating_point<RhsFloat>::value, RhsFloat>>
+    template<class LhsRep, int LhsExponent, class RhsFloat, typename = _impl::enable_if_t <numeric_limits<RhsFloat>::is_iec559>>
+    constexpr auto operator*(fixed_point<LhsRep, LhsExponent> const& lhs, RhsFloat const& rhs)
+    -> decltype(static_cast<RhsFloat>(lhs)*rhs)
     {
-        using result_type = _impl::common_type_t<fixed_point<LhsRep, LhsExponent>, RhsFloat>;
-        return static_cast<result_type>(lhs)*rhs;
+        return static_cast<RhsFloat>(lhs)*rhs;
     }
 
-    template<class LhsRep, int LhsExponent, class RhsFloat>
-    constexpr auto operator/(
-            fixed_point<LhsRep, LhsExponent> const& lhs,
-            RhsFloat const& rhs)
-    -> _impl::common_type_t<
-            fixed_point<LhsRep, LhsExponent>,
-            _impl::enable_if_t<std::is_floating_point<RhsFloat>::value, RhsFloat>>
+    template<class LhsRep, int LhsExponent, class RhsFloat, typename = _impl::enable_if_t<numeric_limits<RhsFloat>::is_iec559>>
+    constexpr auto operator/(fixed_point<LhsRep, LhsExponent> const& lhs, RhsFloat const& rhs)
+    -> decltype(static_cast<RhsFloat>(lhs)/rhs)
     {
-        using result_type = _impl::common_type_t<fixed_point<LhsRep, LhsExponent>, RhsFloat>;
-        return static_cast<result_type>(lhs)/rhs;
+        return static_cast<RhsFloat>(lhs)/rhs;
     }
 
     // floating-point, fixed-point -> floating-point
-    template<class LhsFloat, class RhsRep, int RhsExponent, typename = _impl::enable_if_t <std::is_floating_point<LhsFloat>::value>>
-    constexpr auto operator+(LhsFloat const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)-> _impl::common_type_t<LhsFloat, fixed_point<RhsRep, RhsExponent>>
+    template<class LhsFloat, class RhsRep, int RhsExponent, typename = _impl::enable_if_t <numeric_limits<LhsFloat>::is_iec559>>
+    constexpr auto operator+(LhsFloat const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    -> decltype(lhs+static_cast<LhsFloat>(rhs))
     {
-        using result_type = _impl::common_type_t<LhsFloat, fixed_point<RhsRep, RhsExponent>>;
-        return static_cast<result_type>(lhs)+static_cast<result_type>(rhs);
+        return lhs+static_cast<LhsFloat>(rhs);
     }
 
-    template<class LhsFloat, class RhsRep, int RhsExponent, typename = _impl::enable_if_t <std::is_floating_point<LhsFloat>::value>>
-    constexpr auto operator-(LhsFloat const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)-> _impl::common_type_t<LhsFloat, fixed_point<RhsRep, RhsExponent>>
+    template<class LhsFloat, class RhsRep, int RhsExponent, typename = _impl::enable_if_t<numeric_limits<LhsFloat>::is_iec559>>
+    constexpr auto operator-(LhsFloat const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    -> decltype(lhs-static_cast<LhsFloat>(rhs))
     {
-        using result_type = _impl::common_type_t<LhsFloat, fixed_point<RhsRep, RhsExponent>>;
-        return static_cast<result_type>(lhs)-static_cast<result_type>(rhs);
+        return lhs-static_cast<LhsFloat>(rhs);
     }
 
-    template<class LhsFloat, class RhsRep, int RhsExponent>
-    constexpr auto operator*(
-            LhsFloat const& lhs,
-            fixed_point<RhsRep, RhsExponent> const& rhs)
-    -> _impl::common_type_t <_impl::enable_if_t<std::is_floating_point<LhsFloat>::value, LhsFloat>, fixed_point<RhsRep, RhsExponent>>
+    template<class LhsFloat, class RhsRep, int RhsExponent, typename = _impl::enable_if_t<numeric_limits<LhsFloat>::is_iec559>>
+    constexpr auto operator*(LhsFloat const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    -> decltype(lhs*static_cast<LhsFloat>(rhs))
     {
-        using result_type = _impl::common_type_t<fixed_point<RhsRep, RhsExponent>, LhsFloat>;
-        return lhs*static_cast<result_type>(rhs);
+        return lhs*static_cast<LhsFloat>(rhs);
     }
 
-    template<class LhsFloat, class RhsRep, int RhsExponent>
-    constexpr auto operator/(
-            LhsFloat const& lhs,
-            fixed_point<RhsRep, RhsExponent> const& rhs)
-    -> _impl::common_type_t <_impl::enable_if_t<std::is_floating_point<LhsFloat>::value, LhsFloat>, fixed_point<RhsRep, RhsExponent>>
+    template<class LhsFloat, class RhsRep, int RhsExponent, typename = _impl::enable_if_t<numeric_limits<LhsFloat>::is_iec559>>
+    constexpr auto operator/(LhsFloat const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    -> decltype(lhs/static_cast<LhsFloat>(rhs))
     {
-        using result_type = _impl::common_type_t<fixed_point<RhsRep, RhsExponent>, LhsFloat>;
-        return lhs/
-                static_cast<result_type>(rhs);
+        return lhs/static_cast<LhsFloat>(rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
