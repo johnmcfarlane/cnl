@@ -662,8 +662,6 @@ static_assert(is_same<decltype(fixed_point<int64, -32>(16777215.996093750)+765.4
         "cnl::fixed_point addition operator test failed");
 
 #if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
-static_assert(identical(cnl::add(fixed_point<int32, -16>{.5}, 2), fixed_point<int64, -16>{2.5}),
-        "cnl::fixed_point addition operator test failed");
 static_assert(identical(fixed_point<int32, -16>{.5} + 2, fixed_point<test_int, -16>{2.5}),
         "cnl::fixed_point addition operator test failed");
 #endif
