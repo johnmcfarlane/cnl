@@ -47,6 +47,7 @@ add_executable(fp_test
         papers/p0381.cpp
         papers/p0554.cpp
         papers/p0675.cpp
+        papers/p0827.cpp
         main.cpp)
 
 ######################################################################
