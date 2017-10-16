@@ -104,6 +104,14 @@ namespace cnl {
             }
         };
 
+        struct modulo_op : arithmetic_op {
+            template<class Lhs, class Rhs>
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs%rhs)
+            {
+                return lhs%rhs;
+            }
+        };
+
         struct bitwise_or_op : arithmetic_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs|rhs)
@@ -183,6 +191,7 @@ namespace cnl {
         static constexpr subtract_op subtract_tag {};
         static constexpr multiply_op multiply_tag {};
         static constexpr divide_op divide_tag {};
+        static constexpr modulo_op modulo_tag {};
 
         static constexpr bitwise_or_op bitwise_or_tag {};
         static constexpr bitwise_and_op bitwise_and_tag {};

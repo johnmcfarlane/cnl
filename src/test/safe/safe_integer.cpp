@@ -191,8 +191,8 @@ namespace {
     static_assert(identical(
         cnl::make_safe_integer<cnl::saturated_overflow_tag>(cnl::_overflow_impl::operate
                 <cnl::saturated_overflow_tag, multiply_op>()(
-            cnl::safe_integer<signed char, cnl::saturated_overflow_tag>{30}.data(),
-            cnl::safe_integer<signed char, cnl::saturated_overflow_tag>{40}.data())),
+            cnl::_impl::to_rep(cnl::safe_integer<signed char, cnl::saturated_overflow_tag>{30}),
+            cnl::_impl::to_rep(cnl::safe_integer<signed char, cnl::saturated_overflow_tag>{40}))),
         cnl::safe_integer<int, cnl::saturated_overflow_tag>{1200}), "");
 
     static_assert(identical(

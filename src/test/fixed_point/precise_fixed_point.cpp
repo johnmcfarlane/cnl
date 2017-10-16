@@ -20,11 +20,9 @@ namespace {
     }
 
     namespace test_ctor {
-        using cnl::_impl::from_rep;
-
         static_assert(identical(
-                precise_fixed_point<>(-8).data(),
+                cnl::_impl::to_rep(precise_fixed_point<>(-8)),
                 precise_integer<>(-8)), "precise_fixed_point ctor test failed");
-        static_assert(precise_fixed_point<>(0) == from_rep<precise_fixed_point<>>(0), "precise_fixed_point ctor test failed");
+        static_assert(precise_fixed_point<>(0) == cnl::_impl::from_rep<precise_fixed_point<>>(0), "precise_fixed_point ctor test failed");
     }
 }

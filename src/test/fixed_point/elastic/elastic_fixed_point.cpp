@@ -214,7 +214,7 @@ struct positive_elastic_test
     ////////////////////////////////////////////////////////////////////////////////
     // test cnl::numeric_limits<elastic_fixed_point>
 
-    static_assert(min==elastic_type::from_data(rep{1}), "cnl::numeric_limits test failed");
+    static_assert(min==cnl::_impl::from_rep<elastic_type>(rep{1}), "cnl::numeric_limits test failed");
     static_assert(!is_less_than(max, min), "cnl::numeric_limits test failed");
     static_assert(is_less_than(zero, min), "cnl::numeric_limits test failed");
     static_assert(!is_less_than(zero, lowest), "cnl::numeric_limits test failed");
@@ -223,8 +223,10 @@ struct positive_elastic_test
                   "cnl::numeric_limits test failed");
     static_assert(!numeric_limits::is_integer || (elastic_type{.5} != .5), "cnl::numeric_limits test failed");
 
-    static constexpr rep max_integer{max.data()};
-    static_assert(bit_count<typename rep::rep>(max_integer.data())==digits, "cnl::numeric_limits test failed");
+    static constexpr rep max_integer{cnl::_impl::to_rep(max)};
+#if ! defined(_MSC_VER)
+    static_assert(bit_count<typename rep::rep>(cnl::_impl::to_rep(max_integer))==digits, "cnl::numeric_limits test failed");
+#endif
 
     ////////////////////////////////////////////////////////////////////////////////
     // test comparison operators

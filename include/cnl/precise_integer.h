@@ -40,7 +40,7 @@ namespace cnl {
         template<class T>
         constexpr explicit operator T() const
         {
-            return static_cast<T>(super::data());
+            return static_cast<T>(_impl::to_rep(*this));
         }
     };
 
@@ -100,10 +100,10 @@ namespace cnl {
         constexpr auto operate_common_tag(
                 precise_integer<LhsRep, RoundingTag> const& lhs,
                 precise_integer<RhsRep, RoundingTag> const& rhs)
-        -> decltype(from_rep<precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>>(Operator()(lhs.data(), rhs.data())))
+        -> decltype(from_rep<precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>>(Operator()(to_rep(lhs), to_rep(rhs))))
         {
             using result_type = precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>;
-            return from_rep<result_type>(Operator()(lhs.data(), rhs.data()));
+            return from_rep<result_type>(Operator()(to_rep(lhs), to_rep(rhs)));
         }
 
         // for arithmetic operands with different policies
@@ -111,9 +111,9 @@ namespace cnl {
         constexpr auto operate_common_tag(
                 precise_integer<LhsRep, RoundingTag> const& lhs,
                 precise_integer<RhsRep, RoundingTag> const& rhs)
-        -> decltype(Operator()(lhs.data(), rhs.data()))
+        -> decltype(Operator()(to_rep(lhs), to_rep(rhs)))
         {
-            return Operator()(lhs.data(), rhs.data());
+            return Operator()(to_rep(lhs), to_rep(rhs));
         }
 
         // for arithmetic operands with different policies

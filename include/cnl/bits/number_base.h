@@ -40,22 +40,8 @@ namespace cnl {
                 return static_cast<bool>(_rep);
             }
 
-            constexpr rep const& data() const
-            {
-                return _rep;
-            }
-
-#if (__cplusplus >= 201402L)
-            constexpr rep& data()
-            {
-                return _rep;
-            }
-#endif
-
-            static constexpr Derived from_data(rep const& r)
-            {
-                return Derived(r);
-            }
+            friend struct cnl::to_rep<_derived>;
+            friend struct cnl::to_rep<number_base<_derived, rep>>;
 
         private:
             rep _rep;
@@ -144,9 +130,9 @@ namespace cnl {
         // unary operate
         template<class Operator, class RhsDerived, class RhsRep>
         constexpr auto operate(number_base<RhsDerived, RhsRep> const& rhs, Operator op)
-        -> decltype(op(rhs.data()))
+        -> decltype(_impl::from_value<RhsDerived>(op(_impl::to_rep(rhs))))
         {
-            return op(rhs.data());
+            return _impl::from_value<RhsDerived>(op(_impl::to_rep(rhs)));
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -180,6 +166,13 @@ namespace cnl {
         -> decltype(lhs = lhs / rhs)
         {
             return lhs = lhs / rhs;
+        }
+
+        template<class Lhs, class Rhs, class = enable_if_t <is_derived_from_number_base<Lhs>::value>>
+        auto operator%=(Lhs& lhs, Rhs const& rhs)
+        -> decltype(lhs = lhs % rhs)
+        {
+            return lhs = lhs % rhs;
         }
 
         // unary operators
@@ -226,6 +219,13 @@ namespace cnl {
         -> decltype(operate(lhs, rhs, divide_tag))
         {
             return operate(lhs, rhs, divide_tag);
+        }
+
+        template<class Lhs, class Rhs>
+        constexpr auto operator%(Lhs const& lhs, Rhs const& rhs)
+        -> decltype(operate(lhs, rhs, modulo_tag))
+        {
+            return operate(lhs, rhs, modulo_tag);
         }
 
         // binary bitwise logic operators
@@ -329,19 +329,18 @@ namespace cnl {
         using type = _impl::set_rep_t<Number, make_unsigned_t<_impl::get_rep_t<Number>>>;
     };
 
-    template<class Number>
-    struct from_rep<Number, _impl::enable_if_t<_impl::is_derived_from_number_base<Number>::value>> {
-        template<class Rep>
-        constexpr auto operator()(Rep const& rep) const -> Number {
-            return Number::from_data(static_cast<typename Number::rep>(rep));
+    template<class Derived, class Rep>
+    struct to_rep<_impl::number_base<Derived, Rep>> {
+        constexpr auto operator()(_impl::number_base<Derived, Rep> const& number) const -> Rep {
+            return number._rep;
         }
     };
 
     template<class Number>
     struct to_rep<Number, _impl::enable_if_t<_impl::is_derived_from_number_base<Number>::value>> {
-        constexpr auto operator()(typename Number::_derived const& number) const
-        -> decltype(number.data()){
-            return number.data();
+        constexpr auto operator()(Number const& number) const
+        -> typename Number::rep {
+            return number._rep;
         }
     };
 
@@ -370,22 +369,22 @@ namespace cnl {
 
         static constexpr _value_type min() noexcept
         {
-            return _value_type::from_data(_rep_numeric_limits::min());
+            return _impl::from_rep<_value_type>(_rep_numeric_limits::min());
         }
 
         static constexpr _value_type max() noexcept
         {
-            return _value_type::from_data(_rep_numeric_limits::max());
+            return _impl::from_rep<_value_type>(_rep_numeric_limits::max());
         }
 
         static constexpr _value_type lowest() noexcept
         {
-            return _value_type::from_data(_rep_numeric_limits::lowest());
+            return _impl::from_rep<_value_type>(_rep_numeric_limits::lowest());
         }
 
         static constexpr _value_type epsilon() noexcept
         {
-            return _value_type::from_data(_rep_numeric_limits::round_error());
+            return _impl::from_rep<_value_type>(_rep_numeric_limits::round_error());
         }
 
         static constexpr _value_type round_error() noexcept
