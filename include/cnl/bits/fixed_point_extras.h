@@ -102,8 +102,8 @@ namespace cnl {
                 (x<fixed_point<Rep, Exponent>(0))
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
 #endif
-                fixed_point<Rep, Exponent>::from_data(
-                        static_cast<Rep>(_impl::fp::extras::sqrt_solve1(widened_type{x}.data())));
+                _impl::from_rep<fixed_point<Rep, Exponent>>(
+                        static_cast<Rep>(_impl::fp::extras::sqrt_solve1(_impl::to_rep(widened_type{x}))));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -194,49 +194,49 @@ namespace cnl {
 
         static constexpr _value_type min() noexcept
         {
-            return _value_type::from_data(_rep{1});
+            return _impl::from_rep<_value_type>(_rep{1});
         }
 
         static constexpr _value_type max() noexcept
         {
-            return _value_type::from_data(_rep_numeric_limits::max());
+            return _impl::from_rep<_value_type>(_rep_numeric_limits::max());
         }
 
         static constexpr _value_type lowest() noexcept
         {
-            return _value_type::from_data(_rep_numeric_limits::lowest());
+            return _impl::from_rep<_value_type>(_rep_numeric_limits::lowest());
         }
 
         static constexpr bool is_integer = false;
 
         static constexpr _value_type epsilon() noexcept
         {
-            return _value_type::from_data(_rep{1});
+            return _impl::from_rep<_value_type>(_rep{1});
         }
 
         static constexpr _value_type round_error() noexcept
         {
-            return _value_type::from_data(_rep{0});
+            return _impl::from_rep<_value_type>(_rep{0});
         }
 
         static constexpr _value_type infinity() noexcept
         {
-            return _value_type::from_data(_rep{0});
+            return _impl::from_rep<_value_type>(_rep{0});
         }
 
         static constexpr _value_type quiet_NaN() noexcept
         {
-            return _value_type::from_data(_rep{0});
+            return _impl::from_rep<_value_type>(_rep{0});
         }
 
         static constexpr _value_type signaling_NaN() noexcept
         {
-            return _value_type::from_data(_rep{0});
+            return _impl::from_rep<_value_type>(_rep{0});
         }
 
         static constexpr _value_type denorm_min() noexcept
         {
-            return _value_type::from_data(_rep{1});
+            return _impl::from_rep<_value_type>(_rep{1});
         }
     };
 }

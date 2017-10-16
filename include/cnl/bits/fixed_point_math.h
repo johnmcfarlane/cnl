@@ -24,7 +24,7 @@ namespace cnl {
             template<class FixedPoint>
             constexpr FixedPoint rounding_conversion(double d) {
                 using one_longer = fixed_point<set_digits_t<typename FixedPoint::rep, digits<FixedPoint>::value+1>, FixedPoint::exponent-1>;
-                return FixedPoint::from_data(static_cast<typename FixedPoint::rep>((one_longer{ d }.data() + 1) >> 1));
+                return from_rep<FixedPoint>(static_cast<typename FixedPoint::rep>((to_rep(one_longer{ d }) + 1) >> 1));
             }
 
             template<class FixedPoint>
@@ -90,7 +90,7 @@ namespace cnl {
             template<class Rep, int Exponent, _impl::enable_if_t<(Exponent>=0), int> dummy = 0>
             inline constexpr make_largest_ufraction<fixed_point<Rep, Exponent>> exp2m1_0to1(
                     fixed_point<Rep, Exponent>) {
-                return make_largest_ufraction<fixed_point<Rep, Exponent>>::from_data(
+                return _impl::from_rep<make_largest_ufraction<fixed_point<Rep, Exponent>>>(
                         0); //Cannot construct from 0, since that would be a shift by more than width of type!
             }
             //for a positive exponent, some work needs to be done
@@ -109,7 +109,7 @@ namespace cnl {
 
             template<class Rep, int Exponent>
             constexpr inline Rep floor(fixed_point<Rep, Exponent> x) {
-                return Rep { (x.data()) >> -Exponent };
+                return Rep { (_impl::to_rep(x)) >> -Exponent };
             }
 
         }
@@ -133,12 +133,12 @@ namespace cnl {
 
         //Calculate the final result by shifting the fractional part around.
         //Remember to add the 1 which is left out to get 1 bit more resolution
-        return out_type::from_data(
+        return _impl::from_rep<out_type>(
                 floor(x) <= Exponent ?
                     typename im::rep{1}//return immediately if the shift would result in all bits being shifted out
                                      :
                     	//Do the shifts manually. Once the branch with shift operators is merged, could use those
-                    (exp2m1_0to1<Rep, Exponent>(static_cast<out_type>(x - floor(x))).data()//Calculate the exponent of the fractional part
+                    (_impl::to_rep(exp2m1_0to1<Rep, Exponent>(static_cast<out_type>(x - floor(x))))//Calculate the exponent of the fractional part
                     >> (-im::exponent + Exponent - floor(x)))//shift it to the right place
                     + (Rep { 1 } << (floor(x) - Exponent))); //The constant term must be one, to make integer powers correct
     }

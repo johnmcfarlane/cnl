@@ -40,7 +40,7 @@ namespace {
 namespace cnl {
     template<class T, std::size_t N, int Exponent>
     bool operator==(fpp<T, N, Exponent> const& lhs, fpp<T, N, Exponent> const& rhs) noexcept {
-        return boost::simd::compare_equal(lhs.data(), rhs.data());
+        return boost::simd::compare_equal(_impl::to_rep(lhs), _impl::to_rep(rhs));
     }
 
     template<class T, std::size_t N, int Exponent>

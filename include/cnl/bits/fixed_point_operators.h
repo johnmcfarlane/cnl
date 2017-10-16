@@ -21,10 +21,10 @@ namespace cnl {
     // negate
     template<class RhsRep, int RhsExponent>
     constexpr auto operator-(fixed_point<RhsRep, RhsExponent> const& rhs)
-    -> fixed_point<decltype(-rhs.data()), RhsExponent>
+    -> fixed_point<decltype(-_impl::to_rep(rhs)), RhsExponent>
     {
-        using result_type = fixed_point<decltype(-rhs.data()), RhsExponent>;
-        return result_type::from_data(-rhs.data());
+        using result_type = fixed_point<decltype(-_impl::to_rep(rhs)), RhsExponent>;
+        return _impl::from_rep<result_type>(-_impl::to_rep(rhs));
     }
 
     // add
@@ -98,9 +98,9 @@ namespace cnl {
 
         template<class Operator, class Rep, int Exponent, class = _impl::enable_if_t<Operator::is_comparison>>
         constexpr auto operate(fixed_point<Rep, Exponent> const& lhs, fixed_point<Rep, Exponent> const& rhs, Operator op)
-        -> decltype(op(lhs.data(), rhs.data()))
+        -> decltype(op(_impl::to_rep(lhs), _impl::to_rep(rhs)))
         {
-            return op(lhs.data(), rhs.data());
+            return op(_impl::to_rep(lhs), _impl::to_rep(rhs));
         };
     }
 
@@ -270,16 +270,16 @@ namespace cnl {
     // fixed_point, dynamic
     template<class LhsRep, int LhsExponent, class Rhs>
     constexpr auto operator<<(fixed_point<LhsRep, LhsExponent> const& lhs, Rhs const& rhs)
-    -> decltype(_impl::from_rep<fixed_point<decltype(lhs.data() << rhs), LhsExponent>>(lhs.data() << rhs))
+    -> decltype(_impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs) << rhs), LhsExponent>>(_impl::to_rep(lhs) << rhs))
     {
-        return _impl::from_rep<fixed_point<decltype(lhs.data() << rhs), LhsExponent>>(lhs.data() << rhs);
+        return _impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs) << rhs), LhsExponent>>(_impl::to_rep(lhs) << rhs);
     }
 
     template<class LhsRep, int LhsExponent, class Rhs>
     constexpr auto operator>>(fixed_point<LhsRep, LhsExponent> const& lhs, Rhs const& rhs)
-    -> decltype(_impl::from_rep<fixed_point<decltype(lhs.data() >> rhs), LhsExponent>>(lhs.data() >> rhs))
+    -> decltype(_impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs) >> rhs), LhsExponent>>(_impl::to_rep(lhs) >> rhs))
     {
-        return _impl::from_rep<fixed_point<decltype(lhs.data() >> rhs), LhsExponent>>(lhs.data() >> rhs);
+        return _impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs) >> rhs), LhsExponent>>(_impl::to_rep(lhs) >> rhs);
     }
 
     // fixed_point, const_integer
@@ -287,14 +287,14 @@ namespace cnl {
     constexpr fixed_point<LhsRep, LhsExponent+RhsValue>
     operator<<(fixed_point<LhsRep, LhsExponent> const& lhs, constant<RhsValue>)
     {
-        return fixed_point<LhsRep, LhsExponent+RhsValue>::from_data(lhs.data());
+        return _impl::from_rep<fixed_point<LhsRep, LhsExponent+RhsValue>>(_impl::to_rep(lhs));
     }
 
     template<class LhsRep, int LhsExponent, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
     constexpr fixed_point<LhsRep, LhsExponent-RhsValue>
     operator>>(fixed_point<LhsRep, LhsExponent> const& lhs, constant<RhsValue>)
     {
-        return fixed_point<LhsRep, LhsExponent-RhsValue>::from_data(lhs.data());
+        return _impl::from_rep<fixed_point<LhsRep, LhsExponent-RhsValue>>(_impl::to_rep(lhs));
     }
 }
 
