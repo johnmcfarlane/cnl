@@ -292,11 +292,11 @@ namespace cnl {
                 using result_type = typename params::result_type;
                 using result_rep = typename result_type::rep;
 
-                return result_type::from_data(
+                return _impl::from_rep<result_type>(
                         static_cast<result_rep>(
                                 Operation()(
-                                        static_cast<intermediate_lhs>(lhs).data(),
-                                        static_cast<intermediate_rhs>(rhs).data())));
+                                        _impl::to_rep(static_cast<intermediate_lhs>(lhs)),
+                                        _impl::to_rep(static_cast<intermediate_rhs>(rhs)))));
             };
         }
     }

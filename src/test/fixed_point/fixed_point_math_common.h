@@ -25,8 +25,8 @@ TEST(math, FPTESTFORMAT) {
 #if (FPTESTEXP < 0)
     for (int i = std::max(-cnl::_impl::fractional_digits<fp>::value, -(cnl::_impl::shift_left<cnl::_impl::integer_digits<fp>::value, int32_t>(1)) + 1); i < std::min(0, cnl::_impl::integer_digits<fp>::value - 1); i++) {
         fp lhs{ exp2(fp{ i }) };
-        EXPECT_EQ(lhs, fp::from_data(1 << (-fp::exponent + i)))
-            << "i = " << i << ", fixed point raw: " << lhs.data() << " should be: " << (1 << (-fp::exponent + i))
+        EXPECT_EQ(lhs, cnl::_impl::from_rep<fp>(1 << (-fp::exponent + i)))
+            << "i = " << i << ", fixed point raw: " << cnl::_impl::to_rep(lhs) << " should be: " << (1 << (-fp::exponent + i))
             ;
     }
 #endif
@@ -57,8 +57,9 @@ TEST(math, FPTESTFORMAT) {
             //Check for at most 1 LSB error
             fp lhs{ exp2(fp{ fprep }) };
             fp rhs{ exp2(doublerep) }; //Will use the double overload
-            EXPECT_LE(std::abs(lhs.data() - rhs.data()), 1)
-                << "fail at " << i + frac << ", fixed point raw: " << lhs.data() << " double raw " << rhs.data()
+            EXPECT_LE(std::abs(cnl::_impl::to_rep(lhs)-cnl::_impl::to_rep(rhs)), 1)
+                            << "fail at " << i+frac << ", fixed point raw: " << cnl::_impl::to_rep(lhs)
+                            << " double raw " << cnl::_impl::to_rep(rhs)
                 ;
             //bit-accurate:: not without a rounding multiply
             //EXPECT_EQ(exp2(fp{fprep}), fp{exp2(doublerep)});
@@ -69,17 +70,18 @@ TEST(math, FPTESTFORMAT) {
     if (numeric_limits::max() >= int(cnl::_impl::integer_digits<fp>::value)
             && numeric_limits::lowest() <= -cnl::_impl::fractional_digits<fp>::value) {
         //the largest exponent which's result doesn't overflow
-        auto maximum = fp::from_data(fp{ cnl::_impl::integer_digits<fp>::value }.data() - 1);
+        auto maximum = cnl::_impl::from_rep<fp>(cnl::_impl::to_rep(fp{cnl::_impl::integer_digits<fp>::value})-1);
 
         //The next-to-smallest exponent whose result doesn't overflow
         //(The very smallest was already tested with the integer exponents)
-        auto minimum = fp::from_data(fp{ -cnl::_impl::fractional_digits<fp>::value }.data() + 1);
+        auto minimum = cnl::_impl::from_rep<fp>(cnl::_impl::to_rep(fp{-cnl::_impl::fractional_digits<fp>::value})+1);
 
         double doublerep{ maximum };
         double doublerepmini{ minimum };
 
-        EXPECT_LE(std::abs(exp2(maximum).data() - fp{ exp2(doublerep) }.data()), 1)
-        << "fixed point raw: " << exp2(maximum).data() << ", double raw: " << fp{ exp2(doublerep) }.data();
+        EXPECT_LE(std::abs(cnl::_impl::to_rep(exp2(maximum))-cnl::_impl::to_rep(fp{exp2(doublerep)})), 1)
+                        << "fixed point raw: " << cnl::_impl::to_rep(exp2(maximum))
+                        << ", double raw: " << cnl::_impl::to_rep(fp{exp2(doublerep)});
 
         EXPECT_EQ(exp2(minimum), fp{ exp2(doublerepmini) });
     }

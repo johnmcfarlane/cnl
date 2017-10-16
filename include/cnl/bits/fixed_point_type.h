@@ -103,17 +103,17 @@ namespace cnl {
         {
         }
 
-        /// constructor taking an cnl::constant object
+        /// constructor taking a cnl::constant object
         template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-        constexpr fixed_point(constant<Value> rhs)
-                : fixed_point(fixed_point<decltype(Value), 0>::from_data(rhs))
+        constexpr fixed_point(constant<Value>)
+                : fixed_point(_impl::from_rep<fixed_point<decltype(Value), 0>>(Value))
         {
         }
 
         /// constructor taking an integer type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         constexpr fixed_point(S const& s)
-            : fixed_point(fixed_point<S, 0>::from_data(s))
+            : fixed_point(_impl::from_rep<fixed_point<S, 0>>(s))
         {
         }
 
@@ -128,7 +128,7 @@ namespace cnl {
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         CNL_COPY_CONSTEXPR fixed_point& operator=(S s)
         {
-            return operator=(fixed_point<S, 0>::from_data(s));
+            return operator=(_impl::from_rep<fixed_point<S, 0>>(s));
         }
 
         /// copy assignment operator taking a floating-point type
@@ -151,21 +151,19 @@ namespace cnl {
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         explicit constexpr operator S() const
         {
-            return rep_to_integral<S>(_base::data());
+            return rep_to_integral<S>(_impl::to_rep(*this));
         }
 
         /// returns value represented as floating-point
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
         explicit constexpr operator S() const
         {
-            return rep_to_floating_point<S>(_base::data());
+            static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
+            return S(_impl::to_rep(*this))*inverse_one<S>();
         }
 
         /// creates an instance given the underlying representation value
-        static constexpr fixed_point from_data(rep const& r)
-        {
-            return fixed_point(r, 0);
-        }
+        friend struct from_rep<fixed_point<rep, exponent>>;
 
     private:
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
@@ -308,7 +306,7 @@ namespace cnl {
     template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy>
     constexpr S fixed_point<Rep, Exponent>::one()
     {
-        return fixed_point<S, 0>::from_data(1);
+        return _impl::from_rep<fixed_point<S, 0>>(1);
     }
 
     template<class Rep, int Exponent>
@@ -337,19 +335,23 @@ namespace cnl {
     }
 
     template<class Rep, int Exponent>
-    template<class S>
-    constexpr S fixed_point<Rep, Exponent>::rep_to_floating_point(rep r)
-    {
-        static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-        return S(r)*inverse_one<S>();
-    }
-
-    template<class Rep, int Exponent>
     template<class FromRep, int FromExponent>
     constexpr typename fixed_point<Rep, Exponent>::rep fixed_point<Rep, Exponent>::fixed_point_to_rep(fixed_point<FromRep, FromExponent> const& rhs)
     {
-        return _impl::shift_left<FromExponent-exponent, rep>(rhs.data());
+        return _impl::shift_left<FromExponent-exponent, rep>(_impl::to_rep(rhs));
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::from_rep<fixed_point<>> specialization
+
+    template<class Rep, int Exponent>
+    struct from_rep<fixed_point<Rep, Exponent>> {
+        template<class Integer>
+        constexpr auto operator()(Integer const& rep) const
+        -> fixed_point<Integer, Exponent> {
+            return fixed_point<Rep, Exponent>(rep, 0);
+        }
+    };
 }
 
 #endif  // CNL_FIXED_POINT_DEF_H

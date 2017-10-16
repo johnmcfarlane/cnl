@@ -964,7 +964,9 @@ struct FixedPointTesterOutsize {
     // simply assignment to and from underlying representation
     using numeric_limits = cnl::numeric_limits<fixed_point>;
     static constexpr fixed_point min = cnl::_impl::from_rep<fixed_point>(rep(1));
-    static_assert(min.data() == rep(1), "all Rep types should be able to store the number 1!");
+#if ! defined(_MSC_VER)
+    static_assert(cnl::_impl::to_rep(min) == rep(1), "all Rep types should be able to store the number 1!");
+#endif
 
     // unary common_type_t
     static_assert(is_same<

@@ -23,17 +23,17 @@ namespace cnl {
     template <class LhsRep, class LhsOverflowTag, class RhsRep, class RhsOverflowTag> \
     constexpr auto operator OP (safe_integer<LhsRep, LhsOverflowTag> const& lhs, safe_integer<RhsRep, RhsOverflowTag> const& rhs) \
     -> safe_integer<LhsRep, LhsOverflowTag> { \
-        return lhs.data() OP rhs.data(); } \
+        return _impl::to_rep(lhs) OP _impl::to_rep(rhs); } \
     \
     template <class Lhs, class RhsRep, class RhsOverflowTag, _impl::enable_if_t<std::is_fundamental<Lhs>::value, int> dummy = 0> \
     constexpr auto operator OP (Lhs const& lhs, safe_integer<RhsRep, RhsOverflowTag> const& rhs) \
     -> Lhs { \
-        return lhs OP rhs.data(); } \
+        return lhs OP _impl::to_rep(rhs); } \
     \
     template <class LhsRep, class LhsOverflowTag, class Rhs, _impl::enable_if_t<std::is_fundamental<Rhs>::value, int> dummy = 0> \
     constexpr auto operator OP (safe_integer<LhsRep, LhsOverflowTag> const& lhs, Rhs const& rhs) \
     -> safe_integer<LhsRep, LhsOverflowTag> { \
-        return safe_integer<LhsRep, LhsOverflowTag>(lhs.data() OP rhs); }
+        return safe_integer<LhsRep, LhsOverflowTag>(_impl::to_rep(lhs) OP rhs); }
 
     ////////////////////////////////////////////////////////////////////////////////
     // forward-declarations
@@ -130,7 +130,7 @@ namespace cnl {
 
         template<class RhsRep, class RhsOverflowTag>
         constexpr safe_integer(safe_integer<RhsRep, RhsOverflowTag> const& rhs)
-                :safe_integer(rhs.data())
+                :safe_integer(_impl::to_rep(rhs))
         {
         }
 
@@ -152,7 +152,7 @@ namespace cnl {
         template<class T>
         constexpr explicit operator T() const
         {
-            return static_cast<T>(_base::data());
+            return static_cast<T>(_impl::to_rep(*this));
         }
     };
 
@@ -223,9 +223,9 @@ namespace cnl {
                 OperatorTag,
                 safe_integer<LhsRep, OverflowTag> const& lhs,
                 safe_integer<RhsRep, OverflowTag> const& rhs)
-        -> decltype(make_safe_integer<OverflowTag>(_overflow_impl::operate<OverflowTag, OperatorTag>()(lhs.data(), rhs.data())))
+        -> decltype(make_safe_integer<OverflowTag>(_overflow_impl::operate<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs))))
         {
-            return make_safe_integer<OverflowTag>(_overflow_impl::operate<OverflowTag, OperatorTag>()(lhs.data(), rhs.data()));
+            return make_safe_integer<OverflowTag>(_overflow_impl::operate<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs)));
         }
 
         // for comparison operands with a common overflow tag
@@ -235,9 +235,9 @@ namespace cnl {
                 OperatorTag,
                 safe_integer<LhsRep, OverflowTag> const& lhs,
                 safe_integer<RhsRep, OverflowTag> const& rhs)
-        -> decltype(_overflow_impl::operate<OverflowTag, OperatorTag>()(lhs.data(), rhs.data()))
+        -> decltype(_overflow_impl::operate<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs)))
         {
-            return _overflow_impl::operate<OverflowTag, OperatorTag>()(lhs.data(), rhs.data());
+            return _overflow_impl::operate<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs));
         }
     
         // for arithmetic operands with different policies
