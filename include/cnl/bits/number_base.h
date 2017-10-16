@@ -168,6 +168,13 @@ namespace cnl {
             return lhs = lhs / rhs;
         }
 
+        template<class Lhs, class Rhs, class = enable_if_t <is_derived_from_number_base<Lhs>::value>>
+        auto operator%=(Lhs& lhs, Rhs const& rhs)
+        -> decltype(lhs = lhs % rhs)
+        {
+            return lhs = lhs % rhs;
+        }
+
         // unary operators
 
         template<class RhsDerived, class RhsRep>
@@ -212,6 +219,13 @@ namespace cnl {
         -> decltype(operate(lhs, rhs, divide_tag))
         {
             return operate(lhs, rhs, divide_tag);
+        }
+
+        template<class Lhs, class Rhs>
+        constexpr auto operator%(Lhs const& lhs, Rhs const& rhs)
+        -> decltype(operate(lhs, rhs, modulo_tag))
+        {
+            return operate(lhs, rhs, modulo_tag);
         }
 
         // binary bitwise logic operators

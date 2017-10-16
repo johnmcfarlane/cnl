@@ -73,6 +73,17 @@ namespace cnl {
         return _impl::fp::operate<_impl::fp::division_arithmetic_operator_tag>(lhs, rhs, _impl::divide_tag);
     }
 
+    // modulo
+    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+    constexpr auto operator%(
+            fixed_point<LhsRep, LhsExponent> const& lhs,
+            fixed_point<RhsRep, RhsExponent> const& rhs)
+    -> fixed_point<decltype(_impl::to_rep(lhs)%_impl::to_rep(rhs)), LhsExponent>
+    {
+        return _impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs)%_impl::to_rep(rhs)), LhsExponent>>(
+                _impl::to_rep(lhs)%_impl::to_rep(rhs));
+    }
+
     ////////////////////////////////////////////////////////////////////////////////
     // heterogeneous operator overloads
     //
@@ -148,6 +159,16 @@ namespace cnl {
         return lhs/fixed_point<RhsInteger>{rhs};
     }
 
+    template<
+            class LhsRep, int LhsExponent,
+            class RhsInteger,
+            typename = _impl::enable_if_t<numeric_limits<RhsInteger>::is_integer>>
+    constexpr auto operator%(fixed_point<LhsRep, LhsExponent> const& lhs, RhsInteger const& rhs)
+    -> decltype(lhs%fixed_point<RhsInteger>{rhs})
+    {
+        return lhs%fixed_point<RhsInteger>{rhs};
+    }
+
     // integer. fixed-point -> fixed-point
     template<
             class LhsInteger,
@@ -189,6 +210,16 @@ namespace cnl {
         return fixed_point<LhsInteger>{lhs}/rhs;
     }
 
+    template<
+            class LhsInteger,
+            class RhsRep, int RhsExponent,
+            typename = _impl::enable_if_t<numeric_limits<LhsInteger>::is_integer>>
+    constexpr auto operator%(LhsInteger const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    -> decltype(fixed_point<LhsInteger>{lhs}%rhs)
+    {
+        return fixed_point<LhsInteger>{lhs}%rhs;
+    }
+
     // fixed-point, floating-point -> floating-point
     template<class LhsRep, int LhsExponent, class RhsFloat, typename = _impl::enable_if_t<numeric_limits<RhsFloat>::is_iec559>>
     constexpr auto operator+(fixed_point<LhsRep, LhsExponent> const& lhs, RhsFloat const& rhs)
@@ -218,6 +249,13 @@ namespace cnl {
         return static_cast<RhsFloat>(lhs)/rhs;
     }
 
+    template<class LhsRep, int LhsExponent, class RhsFloat, typename = _impl::enable_if_t<numeric_limits<RhsFloat>::is_iec559>>
+    constexpr auto operator%(fixed_point<LhsRep, LhsExponent> const& lhs, RhsFloat const& rhs)
+    -> decltype(static_cast<RhsFloat>(lhs)%rhs)
+    {
+        return static_cast<RhsFloat>(lhs)%rhs;
+    }
+
     // floating-point, fixed-point -> floating-point
     template<class LhsFloat, class RhsRep, int RhsExponent, typename = _impl::enable_if_t <numeric_limits<LhsFloat>::is_iec559>>
     constexpr auto operator+(LhsFloat const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
@@ -245,6 +283,13 @@ namespace cnl {
     -> decltype(lhs/static_cast<LhsFloat>(rhs))
     {
         return lhs/static_cast<LhsFloat>(rhs);
+    }
+
+    template<class LhsFloat, class RhsRep, int RhsExponent, typename = _impl::enable_if_t<numeric_limits<LhsFloat>::is_iec559>>
+    constexpr auto operator%(LhsFloat const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    -> decltype(lhs%static_cast<LhsFloat>(rhs))
+    {
+        return lhs%static_cast<LhsFloat>(rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
