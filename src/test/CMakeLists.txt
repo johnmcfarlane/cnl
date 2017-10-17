@@ -9,7 +9,6 @@ add_executable(fp_test
 
         cnlint.cpp
         constant.cpp
-        p0381.cpp
         boost.simd.cpp
         precise/elastic/precise_elastic_integer.cpp
         precise/precise_integer.cpp
@@ -18,7 +17,6 @@ add_executable(fp_test
         elastic/precise/safe/precise_safe_elastic_integer.cpp
         snippets.cpp
         zero_cost_square.cpp
-        p0554.cpp
         index.cpp
         limits.cpp
         number_test.cpp
@@ -33,7 +31,6 @@ add_executable(fp_test
         safe/safe_integer.cpp
         num_traits.cpp
         numeric.cpp
-        p0675.cpp
         glm.cpp
         common.cpp
         fixed_point/precise_fixed_point.cpp
@@ -47,6 +44,10 @@ add_executable(fp_test
         fixed_point/safe/fixed_point_saturated_integer.cpp
         fixed_point/p0037.cpp
         fixed_point/fixed_point_built_in.cpp
+        papers/p0381.cpp
+        papers/p0554.cpp
+        papers/p0675.cpp
+        papers/p0827.cpp
         main.cpp)
 
 ######################################################################
