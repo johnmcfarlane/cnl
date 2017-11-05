@@ -111,7 +111,7 @@ namespace cnl {
 
     namespace _numeric_impl {
         template<class Integer>
-        constexpr int trailing_bits_positive(Integer value, int mask_bits = sizeof(Integer)*CHAR_BIT/2)
+        constexpr int trailing_bits_positive(Integer const& value, int mask_bits = cnl::digits<Integer>::value/2)
         {
             return ((value & ((Integer{1} << mask_bits)-1))==0)
                    ? mask_bits+trailing_bits_positive(value/(Integer{1} << mask_bits), mask_bits)
@@ -122,7 +122,7 @@ namespace cnl {
 
         template<class Integer, class Enable = void>
         struct trailing_bits {
-            static constexpr int f(Integer value)
+            static constexpr int f(Integer const& value)
             {
                 return value ? trailing_bits_positive(value) : 0;
             }
@@ -130,7 +130,7 @@ namespace cnl {
 
         template<class Integer>
         struct trailing_bits<Integer, _impl::enable_if_t<numeric_limits<Integer>::is_signed>> {
-            static constexpr int f(Integer value)
+            static constexpr int f(Integer const& value)
             {
                 // Most negative number is not exploited;
                 // thus negating the result or subtracting it from something else
@@ -145,7 +145,7 @@ namespace cnl {
     }
 
     template<class Integer>
-    constexpr int trailing_bits(Integer value)
+    constexpr int trailing_bits(Integer const& value)
     {
         return _numeric_impl::trailing_bits<Integer>::f(value);
     }
@@ -155,7 +155,7 @@ namespace cnl {
 
     namespace _numeric_impl {
         template<class Integer>
-        constexpr int used_bits_positive(Integer value, int mask_bits = sizeof(Integer)*CHAR_BIT/2)
+        constexpr int used_bits_positive(Integer const& value, int mask_bits = cnl::digits<Integer>::value/2)
         {
             static_assert(cnl::numeric_limits<Integer>::is_integer,
                           "Integer parameter of used_bits_positive() must be a fundamental integer.");
@@ -171,13 +171,14 @@ namespace cnl {
     namespace _numeric_impl {
         struct used_bits {
             template<class Integer>
-            constexpr _impl::enable_if_t<!numeric_limits<Integer>::is_signed, int> operator()(Integer value) const
+            constexpr _impl::enable_if_t<!numeric_limits<Integer>::is_signed, int>
+            operator()(Integer const& value) const
             {
                 return value ? used_bits_positive(value) : 0;
             }
 
             template<class Integer, class = _impl::enable_if_t<numeric_limits<Integer>::is_signed, int>>
-            constexpr int operator()(Integer value) const
+            constexpr int operator()(Integer const& value) const
             {
                 static_assert(cnl::numeric_limits<Integer>::is_integer,
                               "Integer parameter of used_bits()() must be a fundamental integer.");
@@ -195,7 +196,7 @@ namespace cnl {
     }
 
     template<class Integer>
-    constexpr int used_bits(Integer value)
+    constexpr int used_bits(Integer const& value)
     {
         return for_rep<int>(_numeric_impl::used_bits(), value);
     }
@@ -204,7 +205,7 @@ namespace cnl {
     // cnl::leading_bits
 
     template<class Integer>
-    constexpr int leading_bits(Integer const&value)
+    constexpr int leading_bits(Integer const& value)
     {
         return digits<Integer>::value-used_bits(value);
     }
