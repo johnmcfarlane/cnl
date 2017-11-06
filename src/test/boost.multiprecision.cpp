@@ -173,6 +173,51 @@ TEST(fixed_point_multiprecision, divide)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// cnl::digits<boost::multiprecision::number<>>
+
+static_assert(
+        cnl::digits<unsigned_multiprecision<24>>::value == 24,
+        "cnl::digits<boost::multiprecision::number<>> test failed");
+
+static_assert(
+        cnl::digits<signed_multiprecision<24>>::value == 24,
+        "cnl::digits<boost::multiprecision::number<>> test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// cnl::used_bits<boost::multiprecision::number<>>
+
+TEST(fixed_point_multiprecision, unsigned_multiprecision_used_bits)
+{
+    using q4_20 = fixed_point<unsigned_multiprecision<24>, -20>;
+    q4_20 a = 3.051757812500000e-05;
+    ASSERT_EQ(6, used_bits(a));
+}
+
+TEST(fixed_point_multiprecision, signed_multiprecision_used_bits)
+{
+    using q4_20 = fixed_point<signed_multiprecision<24>, -20>;
+    q4_20 a = 3.051757812500000e-05;
+    ASSERT_EQ(6, used_bits(a));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// cnl::leading_bits<boost::multiprecision::number<>>
+
+TEST(fixed_point_multiprecision, unsigned_multiprecision_leading_bits)
+{
+    using q4_20 = fixed_point<unsigned_multiprecision<24>, -20>;
+    q4_20 a = 3.051757812500000e-05;
+    ASSERT_EQ(18, leading_bits(a));
+}
+
+TEST(fixed_point_multiprecision, signed_multiprecision_leading_bits)
+{
+    using q4_20 = fixed_point<signed_multiprecision<24>, -20>;
+    q4_20 a = 3.051757812500000e-05;
+    ASSERT_EQ(18, leading_bits(a));
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // boost::throw_exception
 
 #if defined(BOOST_NO_EXCEPTIONS)
