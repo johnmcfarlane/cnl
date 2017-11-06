@@ -33,7 +33,9 @@ namespace design_decisions {
         using cnl::from_rep;
         using cnl::to_rep;
 
-        constexpr auto a = from_rep<fixed_point<int, -8>>()(320);   // a==1.25
+        constexpr auto a = from_rep<fixed_point<int, -8>>()(320);
+        static_assert(a == 1.25);
+
         constexpr auto b = to_rep<fixed_point<int, -8>>()(a);
         static_assert(b == 320);    // 1.25*(1<<8)
     }
@@ -69,6 +71,7 @@ namespace design_decisions {
 
         constexpr auto d = fixed_point<uint8_t, -7>{1.25} * fixed_point<uint8_t, -3>{8};
         static_assert(is_same_v<decltype(d), const fixed_point<int, -10>>);
+        static_assert(d == 10);
 
         constexpr auto e = fixed_point<short, -5>{1.5} / fixed_point<short, -3>{2.5};
         static_assert(is_same_v<decltype(e), const fixed_point<int, -2>>);
@@ -86,6 +89,10 @@ namespace design_decisions {
         constexpr auto g = fixed_point<short, -2>{12.5} - fixed_point<uint8_t, 0>{8};
         static_assert(is_same_v<decltype(g), const fixed_point<int, -2>>);
         static_assert(g == 4.5);
+
+        constexpr auto h = fixed_point<int8_t, -2>{12.5} <= fixed_point<short, 0>{8};
+        static_assert(is_same_v<decltype(h), const bool>);
+        static_assert(h == false);
     }
 
     namespace named_arithmetic {
@@ -121,11 +128,15 @@ namespace design_decisions {
             constexpr auto n = fixed_point<uint32_t, -16>{1};
             constexpr auto d = fixed_point<uint32_t, -16>{2};
 
-            constexpr auto q1 = divide(n, d);
-            static_assert(identical(q1, fixed_point<uint64_t, -32>{0.5}));
+            // information appears to be lost by division operator
+            constexpr auto q1 = n / d;
+            static_assert(is_same_v<decltype(q1), const fixed_point<uint32_t, 0>>);
+            static_assert(q1 == 0);
 
-            constexpr auto q2 = n / d;
-            static_assert(identical(q2, fixed_point<uint32_t, 0>{0}));
+            // but divide preserves accurate results where practical
+            constexpr auto q2 = divide(n, d);
+            static_assert(is_same_v<decltype(q2), const fixed_point<uint64_t, -32>>);
+            static_assert(q2 == 0.5);
         }
     }
 }
