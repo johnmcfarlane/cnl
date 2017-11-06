@@ -36,7 +36,8 @@ void test_function(void(* function)(), char const* output)
 #include <cnl/fixed_point.h>
 #include <iostream>
 
-using namespace cnl;
+using cnl::fixed_point;
+using cnl::to_rep;
 using namespace std;
 
 void declaration_example()
@@ -130,21 +131,20 @@ TEST(index, advanced_arithmetic_example)
 //! [boost example]
 #include <cnl/auxiliary/boost.multiprecision.h>
 
-using namespace boost::multiprecision;
-
 // With Boost.Multiprecision, fixed_point can be any size.
-template<int NumBits, int Exponent = 0>
-using mp_fixed_point = cnl::fixed_point<
-        number<cpp_int_backend<NumBits, NumBits>>,
-        Exponent>;
+// cnl::multiprecision aliases to a BMP type that works especially well in CNL.
+using cnl::multiprecision;
+
+// Here's a fixed-point type with any number of binary digits.
+template<int NumDigits, int Exponent = 0>
+using mp_fixed_point = fixed_point<multiprecision<NumDigits>, Exponent>;
 
 void boost_example()
 {
-    // Define an unsigned type with 400 integer digits and 0 fractional digits.
-    using big_number = mp_fixed_point<400>;
+    // Create an integer with 400 binary digits and 0 fractional digits.
+    auto googol = mp_fixed_point<400>{1};
 
-    // a googol is 10^100
-    auto googol = big_number{1};
+    // A googol is 10^100.
     for (auto zeros = 0; zeros!=100; ++zeros) {
         googol *= 10;
     }
@@ -155,8 +155,8 @@ void boost_example()
     // Dividing a s1.0 number by a u400.0 number
     auto googolth = divide(mp_fixed_point<1>{1}, googol);
 
-    // produces a s31::400 number.
-    static_assert(is_same<decltype(googolth), mp_fixed_point<402, -400>>::value, "");
+    // produces a number with one integer digit and 400 fractional digits.
+    static_assert(is_same<decltype(googolth), mp_fixed_point<401, -400>>::value, "");
 
     // Prints "1e-100" (although this value is only approximate).
     cout << googolth << endl;
@@ -174,6 +174,8 @@ TEST(index, boost_example)
 //! [elastic example]
 #include <cnl/elastic_integer.h>
 
+using cnl::elastic_integer;
+
 void elastic_example1()
 {
     // Consider an integer type which keeps count of the bits that it uses.
@@ -190,6 +192,8 @@ void elastic_example1()
     auto a2 = a+a;
     static_assert(is_same<decltype(a2), elastic_integer<7, int8_t >> ::value, "");
 }
+
+using cnl::elastic_fixed_point;
 
 void elastic_example2()
 {

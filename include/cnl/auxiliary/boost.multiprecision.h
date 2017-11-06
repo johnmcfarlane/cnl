@@ -35,9 +35,14 @@ namespace cnl {
         using type = _bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude, Checked, Allocator>;
     };
 
-    template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
-    struct digits<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked, Allocator>>
-    : std::integral_constant<_digits_type, NumBits> {
+    template<unsigned NumBits, _bmp::cpp_int_check_type Checked, class Allocator>
+    struct digits<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude, Checked, Allocator>>
+            : std::integral_constant<_digits_type, NumBits-1> {
+    };
+
+    template<unsigned NumBits, _bmp::cpp_int_check_type Checked, class Allocator>
+    struct digits<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude, Checked, Allocator>>
+            : std::integral_constant<_digits_type, NumBits> {
     };
 
     template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator, _digits_type MinNumDigits>
@@ -86,7 +91,7 @@ namespace cnl {
 
     // cnl::unsigned_multiprecision - an integer of arbitrary size
     template<unsigned NumDigits = digits<int>::value>
-    using multiprecision = signed_multiprecision<NumDigits+1>;
+    using multiprecision = signed_multiprecision<NumDigits>;
 }
 
 #endif  // CNL_BOOST_MULTIPRECISION_H
