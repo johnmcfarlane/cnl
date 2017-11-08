@@ -127,8 +127,8 @@ add_dependencies(
 
 ExternalProject_Add(
         google_test
-        URL "https://github.com/google/googletest/archive/c99458533a9b4c743ed51537e25989ea55944908.zip"
-        URL_MD5 "4552721bde3dcaab1eaa9582afc28c9d"
+        URL "https://github.com/google/googletest/archive/d175c8bf823e709d570772b038757fadf63bc632.zip"
+        URL_MD5 "4dadc67247c87966b5a35b605056d3c8"
         UPDATE_COMMAND ""
         INSTALL_COMMAND ""
         CMAKE_ARGS -Dgtest_force_shared_crt=ON
@@ -139,20 +139,20 @@ target_include_directories(
         fp_test
         PRIVATE
         SYSTEM
-        ${source_dir}/include
+        ${source_dir}/googletest/include
 )
 
 ExternalProject_Get_Property(google_test binary_dir)
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     target_link_libraries(
             fp_test
-            debug ${binary_dir}/Debug/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}
-            optimized ${binary_dir}/Release/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}
+            debug ${binary_dir}/googlemock/gtest/Debug/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}
+            optimized ${binary_dir}/googlemock/gtest/Release/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}
     )
 else ()
     target_link_libraries(
             fp_test
-            general ${binary_dir}/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a
+            general "${binary_dir}/googlemock/gtest/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a"
             general pthread
     )
 endif ()
