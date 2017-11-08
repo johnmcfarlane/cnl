@@ -7,9 +7,10 @@
 #if !defined(CNL_PRECISE_INTEGER_H)
 #define CNL_PRECISE_INTEGER_H 1
 
-#include <cnl/bits/number_base.h>
-#include <cnl/cnlint.h>
-#include <cnl/limits.h>
+#include "cnlint.h"
+#include "limits.h"
+
+#include "bits/number_base.h"
 
 namespace cnl {
 

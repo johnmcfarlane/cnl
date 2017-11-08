@@ -10,7 +10,8 @@
 #ifndef FIXED_POINT_CONSTANTS_H_
 #define FIXED_POINT_CONSTANTS_H_
 
-#include "fixed_point_type.h"
+#include "type.h"
+
 #include <cnl/numeric.h>
 
 /// compositional numeric library
