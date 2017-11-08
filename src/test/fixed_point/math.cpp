@@ -7,7 +7,7 @@
 #include <gtest/gtest.h>
 
 #include <cnl/fixed_point.h>
-#include <cnl/bits/fixed_point_math.h>
+#include <cnl/bits/fixed_point/math.h>
 
 //Fails due to cast being out-of-range:
 #include "fixed_point_math_Q0.h"

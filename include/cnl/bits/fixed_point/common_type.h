@@ -10,7 +10,7 @@
 #if !defined(CNL_FIXED_POINT_COMMON_TYPE_H)
 #define CNL_FIXED_POINT_COMMON_TYPE_H 1
 
-#include "fixed_point_type.h"
+#include "type.h"
 
 /// compositional numeric library
 namespace cnl {

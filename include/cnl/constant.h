@@ -11,6 +11,7 @@
 #define CNL_CONSTANT_H 1
 
 #include "cnlint.h"
+
 #include "bits/config.h"
 
 // CNL_IMPL_CONSTANT_VALUE_TYPE - determines cnl::constant<>::value_type

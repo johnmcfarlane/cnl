@@ -34,9 +34,9 @@ add_executable(fp_test
         glm.cpp
         common.cpp
         fixed_point/precise_fixed_point.cpp
-        fixed_point/fixed_point_constants.cpp
-        fixed_point/fixed_point_extras.cpp
-        fixed_point/fixed_point_math.cpp
+        fixed_point/constants.cpp
+        fixed_point/extras.cpp
+        fixed_point/math.cpp
         fixed_point/elastic/precise/safe/precise_safe_elastic_fixed_point.cpp
         fixed_point/elastic/make_elastic_fixed_point.cpp
         fixed_point/safe/fixed_point_native_integer.cpp
@@ -188,7 +188,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL
             PROPERTIES COMPILE_FLAGS "-Wno-sign-compare")
 
     set_source_files_properties(
-            fixed_point/fixed_point_math.cpp
+            fixed_point/math.cpp
             PROPERTIES COMPILE_FLAGS "-Wno-integer-overflow")
 endif ()
 

@@ -10,8 +10,9 @@
 #if !defined(CNL_OVERFLOW_H)
 #define CNL_OVERFLOW_H
 
-#include <cnl/num_traits.h>
-#include <cnl/bits/common.h>
+#include "num_traits.h"
+
+#include "bits/common.h"
 
 #if defined(CNL_EXCEPTIONS_ENABLED)
 #include <stdexcept>

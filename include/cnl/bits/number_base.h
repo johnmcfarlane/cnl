@@ -7,7 +7,8 @@
 #if !defined(CNL_NUMBER_BASE_H)
 #define CNL_NUMBER_BASE_H 1
 
-#include <cnl/bits/common.h>
+#include "common.h"
+
 #include <cnl/constant.h>
 #include <cnl/num_traits.h>
 

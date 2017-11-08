@@ -10,9 +10,9 @@
 #if !defined(CNL_FIXED_POINT_NAMED_H)
 #define CNL_FIXED_POINT_NAMED_H 1
 
-#include "common.h"
+#include <cnl/bits/common.h>
 
-#include "fixed_point_arithmetic.h"
+#include "arithmetic.h"
 
 /// compositional numeric library
 namespace cnl {

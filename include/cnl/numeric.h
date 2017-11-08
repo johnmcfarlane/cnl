@@ -10,8 +10,9 @@
 #if !defined(CNL_NUMERIC_H)
 #define CNL_NUMERIC_H
 
-#include <cnl/bits/common.h>
-#include <cnl/num_traits.h>
+#include "num_traits.h"
+
+#include "bits/common.h"
 
 #include <limits.h>
 

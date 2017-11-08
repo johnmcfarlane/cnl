@@ -12,7 +12,7 @@
 #if !defined(CNL_FIXED_POINT_EXTRAS_H)
 #define CNL_FIXED_POINT_EXTRAS_H 1
 
-#include "fixed_point_type.h"
+#include "type.h"
 
 #include <cmath>
 #include <istream>

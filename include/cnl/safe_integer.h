@@ -10,9 +10,10 @@
 #if !defined(CNL_SAFE_INTEGER_H)
 #define CNL_SAFE_INTEGER_H 1
 
-#include <cnl/bits/number_base.h>
-#include <cnl/fixed_point.h>
+#include "fixed_point.h"
 #include "overflow.h"
+
+#include "bits/number_base.h"
 
 /// compositional numeric library
 namespace cnl {

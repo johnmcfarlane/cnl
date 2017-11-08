@@ -12,7 +12,7 @@
 
 #include "numeric.h"
 
-#include <cnl/bits/number_base.h>
+#include "bits/number_base.h"
 
 /// compositional numeric library
 namespace cnl {
