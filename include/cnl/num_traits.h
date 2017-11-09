@@ -271,57 +271,6 @@ namespace cnl {
         using common_signedness_t = typename common_signedness<T1, T2>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::encompasses
-
-        template<class T, class Enable = void>
-        struct unsigned_or_float;
-
-        template<class T>
-        struct unsigned_or_float<T, enable_if_t<numeric_limits<T>::is_iec559>> {
-            using type = T;
-        };
-
-        template<class T>
-        struct unsigned_or_float<T, enable_if_t<!numeric_limits<T>::is_iec559>> : make_unsigned<T> {
-        };
-
-        template<class T>
-        using unsigned_or_float_t = typename unsigned_or_float<T>::type;
-
-        template<class Encompasser, class Encompassed, class Enable = void>
-        struct encompasses_lower;
-
-        template<class Encompasser, class Encompassed>
-        struct encompasses_lower<Encompasser, Encompassed,
-                enable_if_t<numeric_limits<Encompasser>::is_signed
-                            && numeric_limits<Encompassed>::is_signed>> {
-            static constexpr bool value = numeric_limits<Encompasser>::lowest()
-                                          <= numeric_limits<Encompassed>::lowest();
-        };
-
-        template<class Encompasser, class Encompassed>
-        struct encompasses_lower<Encompasser, Encompassed,
-                enable_if_t<!numeric_limits<Encompassed>::is_signed>> : std::true_type {
-        };
-
-        template<class Encompasser, class Encompassed>
-        struct encompasses_lower<Encompasser, Encompassed,
-                enable_if_t<!numeric_limits<Encompasser>::is_signed
-                            && numeric_limits<Encompassed>::is_signed>> : std::false_type {
-        };
-
-        // true if Encompassed can be cast to Encompasser without chance of overflow
-        template<class Encompasser, class Encompassed>
-        struct encompasses {
-            static constexpr bool _lower = encompasses_lower<Encompasser, Encompassed>::value;
-            static constexpr bool _upper =
-                    static_cast<unsigned_or_float_t<Encompasser>>(numeric_limits<Encompasser>::max())
-                    >= static_cast<unsigned_or_float_t<Encompassed>>(numeric_limits<Encompassed>::max());
-
-            static constexpr bool value = _lower && _upper;
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::is_integer_or_float - trait to identify 'traditional' arithmetic concept
 
         template<class T>

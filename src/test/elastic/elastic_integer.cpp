@@ -9,6 +9,8 @@
 
 #include <cnl/elastic_integer.h>
 
+#include <cnl/bits/encompasses.h>
+
 namespace {
     using std::is_same;
     using cnl::elastic_integer;

@@ -9,6 +9,7 @@ add_executable(fp_test
 
         cnlint.cpp
         constant.cpp
+        encompasses.cpp
         boost.simd.cpp
         precise/elastic/precise_elastic_integer.cpp
         precise/precise_integer.cpp

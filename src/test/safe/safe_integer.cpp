@@ -93,23 +93,6 @@ static_assert(is_safe_integer<saturated_integer<int64_t>>::value,
         "cnl::_integer_impl::is_safe_integer test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::_impl::encompasses
-
-static_assert(is_same<cnl::_impl::unsigned_or_float_t<cnl::int8>, cnl::uint8>::value, "");
-static_assert(is_same<cnl::_impl::unsigned_or_float_t<cnl::uint8>, cnl::uint8>::value, "");
-static_assert(is_same<cnl::_impl::unsigned_or_float_t<float>, float>::value, "");
-
-static_assert(cnl::_impl::encompasses<short, short>::value, "cnl::_impl::encompasses test failed");
-static_assert(!cnl::_impl::encompasses<short, int>::value, "cnl::_impl::encompasses test failed");
-static_assert(cnl::_impl::encompasses<int, short>::value, "cnl::_impl::encompasses test failed");
-static_assert(!cnl::_impl::encompasses<cnl::int8, cnl::uint8>::value, "cnl::_impl::encompasses test failed");
-static_assert(!cnl::_impl::encompasses<cnl::uint8, cnl::int8>::value, "cnl::_impl::encompasses test failed");
-static_assert(!cnl::_impl::encompasses<cnl::uint64, cnl::int64>::value, "cnl::_impl::encompasses test failed");
-static_assert(!cnl::_impl::encompasses<cnl::int64, cnl::uint64>::value, "cnl::_impl::encompasses test failed");
-static_assert(cnl::_impl::encompasses<long, unsigned short>::value, "cnl::_impl::encompasses test failed");
-static_assert(!cnl::_impl::encompasses<unsigned short, long>::value, "cnl::_impl::encompasses test failed");
-
-////////////////////////////////////////////////////////////////////////////////
 // cnl::_impl::is_integer_or_float
 
 static_assert(is_integer_or_float<saturated_integer<int64_t>>::value, "cnl::_integer_impl::is_safe_integer test failed");
