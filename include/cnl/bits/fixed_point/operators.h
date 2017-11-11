@@ -293,6 +293,172 @@ namespace cnl {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
+    // (fixed_point @= fixed_point) operators
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+    constexpr fixed_point<LhsRep, LhsExponent>&
+    operator+=(fixed_point<LhsRep, LhsExponent>& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs = lhs + rhs;
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+    constexpr fixed_point<LhsRep, LhsExponent>&
+    operator-=(fixed_point<LhsRep, LhsExponent>& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs = lhs - rhs;
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+    constexpr fixed_point<LhsRep, LhsExponent>&
+    operator*=(fixed_point<LhsRep, LhsExponent>& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs = lhs * rhs;
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+    constexpr fixed_point<LhsRep, LhsExponent>&
+    operator/=(fixed_point<LhsRep, LhsExponent>& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs = lhs / rhs;
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+    constexpr fixed_point<LhsRep, LhsExponent>&
+    operator%=(fixed_point<LhsRep, LhsExponent>& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs = lhs % rhs;
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+    constexpr fixed_point<LhsRep, LhsExponent>&
+    operator&=(fixed_point<LhsRep, LhsExponent>& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs = lhs & rhs;
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+    constexpr fixed_point<LhsRep, LhsExponent>&
+    operator|=(fixed_point<LhsRep, LhsExponent>& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs = lhs | rhs;
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+    constexpr fixed_point<LhsRep, LhsExponent>&
+    operator^=(fixed_point<LhsRep, LhsExponent>& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs = lhs ^ rhs;
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+    constexpr fixed_point<LhsRep, LhsExponent>&
+    operator<<=(fixed_point<LhsRep, LhsExponent>& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs = lhs << rhs;
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+    constexpr fixed_point<LhsRep, LhsExponent>&
+    operator>>=(fixed_point<LhsRep, LhsExponent>& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs = lhs >> rhs;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // (non-fixed_point @= fixed_point) operators
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class Lhs, class RhsRep, int RhsExponent,
+            typename = _impl::enable_if_t<!_impl::is_fixed_point<Lhs>::value>>
+    constexpr Lhs& operator+=(Lhs& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs += static_cast<Lhs>(rhs);
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class Lhs, class RhsRep, int RhsExponent,
+            typename = _impl::enable_if_t<!_impl::is_fixed_point<Lhs>::value>>
+    constexpr Lhs& operator-=(Lhs& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs -= static_cast<Lhs>(rhs);
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class Lhs, class RhsRep, int RhsExponent,
+            typename = _impl::enable_if_t<!_impl::is_fixed_point<Lhs>::value>>
+    constexpr Lhs& operator*=(Lhs& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs *= static_cast<Lhs>(rhs);
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class Lhs, class RhsRep, int RhsExponent,
+            typename = _impl::enable_if_t<!_impl::is_fixed_point<Lhs>::value>>
+    constexpr Lhs& operator/=(Lhs& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs /= static_cast<Lhs>(rhs);
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class Lhs, class RhsRep, int RhsExponent,
+            typename = _impl::enable_if_t<!_impl::is_fixed_point<Lhs>::value>>
+    constexpr Lhs& operator%=(Lhs& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs %= static_cast<Lhs>(rhs);
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class Lhs, class RhsRep, int RhsExponent,
+            typename = _impl::enable_if_t<!_impl::is_fixed_point<Lhs>::value>>
+    constexpr Lhs& operator&=(Lhs& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs &= static_cast<Lhs>(rhs);
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class Lhs, class RhsRep, int RhsExponent,
+            typename = _impl::enable_if_t<!_impl::is_fixed_point<Lhs>::value>>
+    constexpr Lhs& operator|=(Lhs& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs |= static_cast<Lhs>(rhs);
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class Lhs, class RhsRep, int RhsExponent,
+            typename = _impl::enable_if_t<!_impl::is_fixed_point<Lhs>::value>>
+    constexpr Lhs& operator^=(Lhs& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs ^= static_cast<Lhs>(rhs);
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class Lhs, class RhsRep, int RhsExponent,
+            typename = _impl::enable_if_t<!_impl::is_fixed_point<Lhs>::value>>
+    constexpr Lhs& operator<<=(Lhs& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs <<= static_cast<Lhs>(rhs);
+    }
+
+    // fixed-point, non-fixed_point -> fixed-point
+    template<class Lhs, class RhsRep, int RhsExponent,
+            typename = _impl::enable_if_t<!_impl::is_fixed_point<Lhs>::value>>
+    constexpr Lhs& operator>>=(Lhs& lhs, fixed_point<RhsRep, RhsExponent> const& rhs)
+    {
+        return lhs >>= static_cast<Lhs>(rhs);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
     // shift operators
 
     // fixed_point, dynamic
