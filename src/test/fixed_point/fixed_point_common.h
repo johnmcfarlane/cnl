@@ -100,6 +100,53 @@ TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_alternative_specialization)
 ////////////////////////////////////////////////////////////////////////////////
 // compound assignment
 
+namespace test_compound_assignment {
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_f_i) {
+        auto lhs = fixed_point<uint32, -16>{7};
+        auto rhs = uint32{12};
+        lhs += rhs;
+        ASSERT_EQ(lhs, 19);
+    }
+
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_i_f) {
+        auto lhs = int32{7};
+        auto rhs = fixed_point<int32, -16>{12};
+        lhs += rhs;
+        ASSERT_EQ(lhs, 19);
+    }
+
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_f_f) {
+        auto rhs = fixed_point<int32, -16>{12.25};
+        auto lhs = fixed_point<int64, -40>{18726.125L};
+        lhs += rhs;
+        ASSERT_EQ(lhs, 18738.375);
+    }
+
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_f_i) {
+        auto lhs = fixed_point<int32, -16>{7};
+        auto rhs = int32{12};
+        lhs -= rhs;
+        ASSERT_EQ(lhs, -5);
+    }
+
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_i_f) {
+        auto lhs = 18726.125L;
+        auto rhs = fixed_point<uint8, -4>{2.5};
+        lhs -= rhs;
+        ASSERT_EQ(lhs, 18723.625L);
+    }
+
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_f_f) {
+        auto lhs = fixed_point<int64, -28>{18726.125L};
+        auto rhs = fixed_point<uint8, -4>{2.5};
+        lhs -= rhs;
+        ASSERT_EQ(lhs, 18723.625L);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// compound assignment
+
 TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), from_compound_assignment)
 {
     auto x = fixed_point<int16, -8>(22.75);

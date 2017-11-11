@@ -33,6 +33,7 @@ INPUT = \
     ../include/cnl/bits/number_base.h \
     ../include/cnl/bits/config.h \
     ../include/cnl/bits/common.h \
+    ../include/cnl/bits/encompasses.h \
     ../include/cnl/bits/fixed_point_extras.h \
     ../include/cnl/bits/fixed_point_arithmetic.h \
     ../include/cnl/bits/fixed_point_named.h \
