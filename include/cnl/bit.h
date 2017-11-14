@@ -216,6 +216,86 @@ namespace cnl {
     {
         return x ? popcount(x & (x-1))+1 : 0;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // additional to P0553
+
+    // countl_rsb - count redundant sign bits to the left
+    template<typename T>
+    constexpr int countl_rsb(T x) noexcept;
+
+#if defined(__GNUG__) && !defined(__clang__)
+
+    template<>
+    constexpr int countl_rsb(int x) noexcept
+    {
+        return __builtin_clrsb(x);
+    }
+
+    template<>
+    constexpr int countl_rsb(long x) noexcept
+    {
+        return __builtin_clrsbl(x);
+    }
+
+    template<>
+    constexpr int countl_rsb(long long x) noexcept
+    {
+        return __builtin_clrsbll(x);
+    }
+
+#endif
+
+    template<typename T>
+    constexpr int countl_rsb(T x) noexcept
+    {
+        static_assert(_bit_impl::is_integral_signed<T>(), "T must be signed integer");
+
+        using unsigned_type = typename make_unsigned<T>::type;
+
+        return ((x<0)
+                ? countl_one(static_cast<unsigned_type>(x))
+                : countl_zero(static_cast<unsigned_type>(x))) - 1;
+    }
+
+    // countl_rb - count redundant bits to the left
+    namespace _bit_impl {
+        template<bool IsSigned>
+        struct countl_rb {
+            template<class Integer>
+            constexpr int operator()(Integer const& value) const
+            {
+                static_assert(_bit_impl::is_integral_unsigned<Integer>(), "T must be unsigned integer");
+
+                return countl_zero(value);
+            }
+        };
+
+        template<>
+        struct countl_rb<true> {
+            template<class Integer>
+            constexpr int operator()(Integer const& value) const
+            {
+                static_assert(_bit_impl::is_integral_signed<Integer>(), "T must be signed integer");
+
+                return countl_rsb(value);
+            }
+        };
+    }
+
+    template<typename T>
+    constexpr int countl_rb(T x) noexcept
+    {
+        return _bit_impl::countl_rb<is_signed<T>::value>()(x);
+    }
+
+    // countr_used - count total used bits to the right
+    template<typename T>
+    constexpr int countr_used(T x) noexcept
+    {
+        return digits<T>::value - countl_rb(x);
+    }
+
 }
 
 #endif //CNL_BIT_H
