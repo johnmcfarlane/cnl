@@ -185,7 +185,7 @@ namespace cnl {
     using set_digits_t = typename set_digits<T, Digits>::type;
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::is_unsigned
+    // cnl::is_signed
 
     template<class T>
     struct is_signed : std::integral_constant<bool, numeric_limits<T>::is_signed> {
