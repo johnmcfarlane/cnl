@@ -4,6 +4,7 @@ include("../common/common.cmake")
 # fp_test target
 
 add_executable(fp_test
+        bit.cpp
         cnlint.cpp
         constant.cpp
         encompasses.cpp
