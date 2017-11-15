@@ -62,9 +62,9 @@ namespace {
 #endif  // defined(__cpp_inline_variables)
 
     namespace test_numeric_impl {
-        using namespace _numeric_impl;
-
         namespace test_used_bits_positive {
+            using _numeric_impl::used_bits_positive;
+
             static_assert(used_bits_positive(1)==1,
                     "cnl::_numeric_impl::used_bits_positive test failed");
             static_assert(used_bits_positive(2)==2,
@@ -77,31 +77,6 @@ namespace {
                     "cnl::_numeric_impl::used_bits_positive test failed");
             static_assert(used_bits_positive(numeric_limits<uint64_t>::max())==64,
                     "cnl::_numeric_impl::used_bits_positive test failed");
-        }
-
-        namespace test_trailing_bits_positive {
-            static_assert(trailing_bits_positive(1)==0,
-                    "cnl::_numeric_impl::trailing_bits_positive test failed");
-            static_assert(trailing_bits_positive(2)==1,
-                    "cnl::_numeric_impl::trailing_bits_positive test failed");
-            static_assert(trailing_bits_positive(3)==0,
-                    "cnl::_numeric_impl::trailing_bits_positive test failed");
-            static_assert(trailing_bits_positive(4)==2,
-                    "cnl::_numeric_impl::trailing_bits_positive test failed");
-            static_assert(trailing_bits_positive(5)==0,
-                    "cnl::_numeric_impl::trailing_bits_positive test failed");
-            static_assert(trailing_bits_positive(7)==0,
-                    "cnl::_numeric_impl::trailing_bits_positive test failed");
-            static_assert(trailing_bits_positive(8)==3,
-                    "cnl::_numeric_impl::trailing_bits_positive test failed");
-            static_assert(trailing_bits_positive(9)==0,
-                    "cnl::_numeric_impl::trailing_bits_positive test failed");
-            static_assert(trailing_bits_positive(96)==5,
-                    "cnl::_numeric_impl::trailing_bits_positive test failed");
-            static_assert(trailing_bits_positive(1023)==0,
-                    "cnl::_numeric_impl::trailing_bits_positive test failed");
-            static_assert(trailing_bits_positive(1024)==10,
-                    "cnl::_numeric_impl::trailing_bits_positive test failed");
         }
     }
 

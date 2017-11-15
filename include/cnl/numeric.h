@@ -10,11 +10,7 @@
 #if !defined(CNL_NUMERIC_H)
 #define CNL_NUMERIC_H
 
-#include "num_traits.h"
-
-#include "bits/common.h"
-
-#include <limits.h>
+#include "bit.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -111,44 +107,29 @@ namespace cnl {
     // cnl::trailing_bits
 
     namespace _numeric_impl {
-        template<class Integer>
-        constexpr int trailing_bits_positive(Integer const& value, int mask_bits = cnl::digits<Integer>::value/2)
-        {
-            return ((value & ((Integer{1} << mask_bits)-1))==0)
-                   ? mask_bits+trailing_bits_positive(value/(Integer{1} << mask_bits), mask_bits)
-                   : (mask_bits>1)
-                     ? trailing_bits_positive(value, mask_bits/2)
-                     : 0;
-        }
-
-        template<class Integer, class Enable = void>
+        template<class Integer, bool IsSigned>
         struct trailing_bits {
-            static constexpr int f(Integer const& value)
+            constexpr int operator()(Integer const& integer) const noexcept
             {
-                return value ? trailing_bits_positive(value) : 0;
+                return countr_zero(integer);
             }
         };
 
         template<class Integer>
-        struct trailing_bits<Integer, _impl::enable_if_t<numeric_limits<Integer>::is_signed>> {
-            static constexpr int f(Integer const& value)
+        struct trailing_bits<Integer, true> {
+            constexpr int operator()(Integer const& integer) const noexcept
             {
-                // Most negative number is not exploited;
-                // thus negating the result or subtracting it from something else
-                // will less likely result in overflow.
-                return (value>0)
-                       ? trailing_bits_positive(value)
-                       : (value<0)
-                         ? trailing_bits_positive(-value)
-                         : 0;
+                using unsigned_type = make_unsigned_t<Integer>;
+                return trailing_bits<unsigned_type, false>()(integer);
             }
         };
     }
 
+    // count of the right redundant trailing bits
     template<class Integer>
     constexpr int trailing_bits(Integer const& value)
     {
-        return _numeric_impl::trailing_bits<Integer>::f(value);
+        return value ? _numeric_impl::trailing_bits<Integer, is_signed<Integer>::value>()(value) : 0;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -170,19 +151,22 @@ namespace cnl {
     }
 
     namespace _numeric_impl {
+        template<bool IsSigned>
         struct used_bits {
             template<class Integer>
-            constexpr _impl::enable_if_t<!numeric_limits<Integer>::is_signed, int>
-            operator()(Integer const& value) const
+            constexpr int operator()(Integer const& value) const
             {
                 return value ? used_bits_positive(value) : 0;
             }
+        };
 
-            template<class Integer, class = _impl::enable_if_t<numeric_limits<Integer>::is_signed, int>>
+        template<>
+        struct used_bits<true> {
+            template<class Integer>
             constexpr int operator()(Integer const& value) const
             {
                 static_assert(cnl::numeric_limits<Integer>::is_integer,
-                              "Integer parameter of used_bits()() must be a fundamental integer.");
+                        "Integer parameter of used_bits()() must be a fundamental integer.");
 
                 // Most negative number is not exploited;
                 // thus negating the result or subtracting it from something else
@@ -199,7 +183,7 @@ namespace cnl {
     template<class Integer>
     constexpr int used_bits(Integer const& value)
     {
-        return for_rep<int>(_numeric_impl::used_bits(), value);
+        return for_rep<int>(_numeric_impl::used_bits<is_signed<Integer>::value>(), value);
     }
 
     ////////////////////////////////////////////////////////////////////////////////

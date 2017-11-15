@@ -29,6 +29,10 @@ namespace {
                 parse("0x123456789ABCDEF0123456789ABCDEF"),
                 CNL_INTMAX_C(0x123456789ABCDEF0123456789ABCDEF)),
                 "cnl::_cnlint_impl::parse test failed");
+        static_assert(identical(
+                (cnl::uint128)parse("0x123456789ABCDEF0123456789ABCDEF"),
+                CNL_UINTMAX_C(0x123456789ABCDEF0123456789ABCDEF)),
+                "cnl::_cnlint_impl::parse test failed");
 #endif
         static_assert(identical(parse("07777041726354"), CNL_INTMAX_C(07777041726354)),
                 "cnl::_cnlint_impl::parse test failed");
