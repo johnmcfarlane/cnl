@@ -290,6 +290,202 @@ namespace {
 #endif
     }
 
+    namespace test_ispow2 {
+        static_assert(identical(cnl::ispow2(cnl::uint8{0x00}), false), "cnl::ispow2<uint8_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint8{0x01}), true), "cnl::ispow2<uint8_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint8{0x7E}), false), "cnl::ispow2<uint8_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint8{0x7F}), false), "cnl::ispow2<uint8_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint8{0x80}), true), "cnl::ispow2<uint8_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint8{0x81}), false), "cnl::ispow2<uint8_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint8{0xFE}), false), "cnl::ispow2<uint8_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint8{0xFF}), false), "cnl::ispow2<uint8_t>");
+
+        static_assert(identical(cnl::ispow2(cnl::uint16{0x0000}), false), "cnl::ispow2<uint16_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint16{0x0001}), true), "cnl::ispow2<uint16_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint16{0x7FFE}), false), "cnl::ispow2<uint16_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint16{0x7FFF}), false), "cnl::ispow2<uint16_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint16{0x8000}), true), "cnl::ispow2<uint16_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint16{0x8001}), false), "cnl::ispow2<uint16_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint16{0xFFFE}), false), "cnl::ispow2<uint16_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint16{0xFFFF}), false), "cnl::ispow2<uint16_t>");
+
+        static_assert(identical(cnl::ispow2(cnl::uint32{0x00000000}), false), "cnl::ispow2<uint32_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint32{0x00000001}), true), "cnl::ispow2<uint32_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint32{0x7FFFFFFE}), false), "cnl::ispow2<uint32_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint32{0x7FFFFFFF}), false), "cnl::ispow2<uint32_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint32{0x80000000}), true), "cnl::ispow2<uint32_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint32{0x80000001}), false), "cnl::ispow2<uint32_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint32{0xFFFFFFFE}), false), "cnl::ispow2<uint32_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint32{0xFFFFFFFF}), false), "cnl::ispow2<uint32_t>");
+
+        static_assert(identical(cnl::ispow2(cnl::uint64{0x0000000000000000}), false), "cnl::ispow2<uint64_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint64{0x0000000000000001}), true), "cnl::ispow2<uint64_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint64{0x7FFFFFFFFFFFFFFE}), false), "cnl::ispow2<uint64_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint64{0x7FFFFFFFFFFFFFFF}), false), "cnl::ispow2<uint64_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint64{0x8000000000000000}), true), "cnl::ispow2<uint64_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint64{0x8000000000000001}), false), "cnl::ispow2<uint64_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint64{0xFFFFFFFFFFFFFFFE}), false), "cnl::ispow2<uint64_t>");
+        static_assert(identical(cnl::ispow2(cnl::uint64{0xFFFFFFFFFFFFFFFF}), false), "cnl::ispow2<uint64_t>");
+
+#if defined(CNL_INT128_ENABLED)
+        static_assert(identical(cnl::ispow2(CNL_UINTMAX_C(0)), false), "cnl::ispow2<uint128_t>");
+        static_assert(identical(cnl::ispow2(CNL_UINTMAX_C(1)), true), "cnl::ispow2<uint128_t>");
+        static_assert(identical(cnl::ispow2(CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE)), false), "cnl::ispow2<uint128_t>");
+        static_assert(identical(cnl::ispow2(CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)), false), "cnl::ispow2<uint128_t>");
+        static_assert(identical(cnl::ispow2(~CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)), true), "cnl::ispow2<uint128_t>");
+        static_assert(identical(cnl::ispow2(~CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE)), false), "cnl::ispow2<uint128_t>");
+        static_assert(identical(cnl::ispow2(~CNL_UINTMAX_C(1)), false), "cnl::ispow2<uint128_t>");
+        static_assert(identical(cnl::ispow2(~CNL_UINTMAX_C(0)), false), "cnl::ispow2<uint128_t>");
+#endif
+    }
+
+    namespace test_ceil2 {
+        static_assert(identical(cnl::ceil2(cnl::uint8{0x00}), cnl::uint8{0x00}), "cnl::ispow2<uint8_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint8{0x01}), cnl::uint8{0x01}), "cnl::ispow2<uint8_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint8{0x02}), cnl::uint8{0x02}), "cnl::ispow2<uint8_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint8{0x03}), cnl::uint8{0x04}), "cnl::ispow2<uint8_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint8{0x04}), cnl::uint8{0x04}), "cnl::ispow2<uint8_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint8{0x7E}), cnl::uint8{0x80}), "cnl::ceil2<uint8_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint8{0x7F}), cnl::uint8{0x80}), "cnl::ceil2<uint8_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint8{0x80}), cnl::uint8{0x80}), "cnl::ceil2<uint8_t>");
+
+        static_assert(identical(cnl::ceil2(cnl::uint16{0x0000}), cnl::uint16{0}), "cnl::ceil2<uint16_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint16{0x0001}), cnl::uint16{1}), "cnl::ceil2<uint16_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint16{0x0002}), cnl::uint16{2}), "cnl::ceil2<uint16_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint16{0x0003}), cnl::uint16{4}), "cnl::ceil2<uint16_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint16{0x0004}), cnl::uint16{4}), "cnl::ceil2<uint16_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint16{0x7FFE}), cnl::uint16{0x8000}), "cnl::ceil2<uint16_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint16{0x7FFF}), cnl::uint16{0x8000}), "cnl::ceil2<uint16_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint16{0x8000}), cnl::uint16{0x8000}), "cnl::ceil2<uint16_t>");
+
+        static_assert(identical(cnl::ceil2(cnl::uint32{0x00000000}), cnl::uint32{0}), "cnl::ceil2<uint32_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint32{0x00000001}), cnl::uint32{1}), "cnl::ceil2<uint32_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint32{0x00000002}), cnl::uint32{2}), "cnl::ceil2<uint32_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint32{0x00000003}), cnl::uint32{4}), "cnl::ceil2<uint32_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint32{0x00000004}), cnl::uint32{4}), "cnl::ceil2<uint32_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint32{0x7FFFFFFE}), cnl::uint32{0x80000000}), "cnl::ceil2<uint32_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint32{0x7FFFFFFF}), cnl::uint32{0x80000000}), "cnl::ceil2<uint32_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint32{0x80000000}), cnl::uint32{0x80000000}), "cnl::ceil2<uint32_t>");
+
+        static_assert(identical(cnl::ceil2(cnl::uint64{0x0000000000000000}), cnl::uint64{0}), "cnl::ceil2<uint64_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint64{0x0000000000000001}), cnl::uint64{1}), "cnl::ceil2<uint64_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint64{0x0000000000000002}), cnl::uint64{2}), "cnl::ceil2<uint64_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint64{0x0000000000000003}), cnl::uint64{4}), "cnl::ceil2<uint64_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint64{0x0000000000000004}), cnl::uint64{4}), "cnl::ceil2<uint64_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint64{0x7FFFFFFFFFFFFFFE}), cnl::uint64{0x8000000000000000}), "cnl::ceil2<uint64_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint64{0x7FFFFFFFFFFFFFFF}), cnl::uint64{0x8000000000000000}), "cnl::ceil2<uint64_t>");
+        static_assert(identical(cnl::ceil2(cnl::uint64{0x8000000000000000}), cnl::uint64{0x8000000000000000}), "cnl::ceil2<uint64_t>");
+
+#if defined(CNL_INT128_ENABLED)
+        static_assert(identical(cnl::ceil2(CNL_UINTMAX_C(0)), CNL_UINTMAX_C(0)), "cnl::ceil2<uint128_t>");
+        static_assert(identical(cnl::ceil2(CNL_UINTMAX_C(1)), CNL_UINTMAX_C(1)), "cnl::ceil2<uint128_t>");
+        static_assert(identical(cnl::ceil2(CNL_UINTMAX_C(0x00000000000000000000000000000002)), CNL_UINTMAX_C(2)), "cnl::ceil2<uint128_t>");
+        static_assert(identical(cnl::ceil2(CNL_UINTMAX_C(0x00000000000000000000000000000003)), CNL_UINTMAX_C(4)), "cnl::ceil2<uint128_t>");
+        static_assert(identical(cnl::ceil2(CNL_UINTMAX_C(0x00000000000000000000000000000004)), CNL_UINTMAX_C(4)), "cnl::ceil2<uint128_t>");
+        static_assert(identical(cnl::ceil2(CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE)), ~CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)), "cnl::ceil2<uint128_t>");
+        static_assert(identical(cnl::ceil2(CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)), ~CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)), "cnl::ceil2<uint128_t>");
+        static_assert(identical(cnl::ceil2(~CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)), ~CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)), "cnl::ceil2<uint128_t>");
+#endif
+    }
+
+    namespace test_floor2 {
+        static_assert(identical(cnl::floor2(cnl::uint8{0x00}), cnl::uint8{0}), "cnl::floor2<uint8_t>");
+        static_assert(identical(cnl::floor2(cnl::uint8{0x01}), cnl::uint8{1}), "cnl::floor2<uint8_t>");
+        static_assert(identical(cnl::floor2(cnl::uint8{0x7E}), cnl::uint8{0x40}), "cnl::floor2<uint8_t>");
+        static_assert(identical(cnl::floor2(cnl::uint8{0x7F}), cnl::uint8{0x40}), "cnl::floor2<uint8_t>");
+        static_assert(identical(cnl::floor2(cnl::uint8{0x80}), cnl::uint8{0x80}), "cnl::floor2<uint8_t>");
+        static_assert(identical(cnl::floor2(cnl::uint8{0x81}), cnl::uint8{0x80}), "cnl::floor2<uint8_t>");
+        static_assert(identical(cnl::floor2(cnl::uint8{0xFE}), cnl::uint8{0x80}), "cnl::floor2<uint8_t>");
+        static_assert(identical(cnl::floor2(cnl::uint8{0xFF}), cnl::uint8{0x80}), "cnl::floor2<uint8_t>");
+
+        static_assert(identical(cnl::floor2(cnl::uint16{0x0000}), cnl::uint16{0}), "cnl::floor2<uint16_t>");
+        static_assert(identical(cnl::floor2(cnl::uint16{0x0001}), cnl::uint16{1}), "cnl::floor2<uint16_t>");
+        static_assert(identical(cnl::floor2(cnl::uint16{0x7FFE}), cnl::uint16{0x4000}), "cnl::floor2<uint16_t>");
+        static_assert(identical(cnl::floor2(cnl::uint16{0x7FFF}), cnl::uint16{0x4000}), "cnl::floor2<uint16_t>");
+        static_assert(identical(cnl::floor2(cnl::uint16{0x8000}), cnl::uint16{0x8000}), "cnl::floor2<uint16_t>");
+        static_assert(identical(cnl::floor2(cnl::uint16{0x8001}), cnl::uint16{0x8000}), "cnl::floor2<uint16_t>");
+        static_assert(identical(cnl::floor2(cnl::uint16{0xFFFE}), cnl::uint16{0x8000}), "cnl::floor2<uint16_t>");
+        static_assert(identical(cnl::floor2(cnl::uint16{0xFFFF}), cnl::uint16{0x8000}), "cnl::floor2<uint16_t>");
+
+        static_assert(identical(cnl::floor2(cnl::uint32{0x00000000}), cnl::uint32{0}), "cnl::floor2<uint32_t>");
+        static_assert(identical(cnl::floor2(cnl::uint32{0x00000001}), cnl::uint32{1}), "cnl::floor2<uint32_t>");
+        static_assert(identical(cnl::floor2(cnl::uint32{0x7FFFFFFE}), cnl::uint32{0x40000000}), "cnl::floor2<uint32_t>");
+        static_assert(identical(cnl::floor2(cnl::uint32{0x7FFFFFFF}), cnl::uint32{0x40000000}), "cnl::floor2<uint32_t>");
+        static_assert(identical(cnl::floor2(cnl::uint32{0x80000000}), cnl::uint32{0x80000000}), "cnl::floor2<uint32_t>");
+        static_assert(identical(cnl::floor2(cnl::uint32{0x80000001}), cnl::uint32{0x80000000}), "cnl::floor2<uint32_t>");
+        static_assert(identical(cnl::floor2(cnl::uint32{0xFFFFFFFE}), cnl::uint32{0x80000000}), "cnl::floor2<uint32_t>");
+        static_assert(identical(cnl::floor2(cnl::uint32{0xFFFFFFFF}), cnl::uint32{0x80000000}), "cnl::floor2<uint32_t>");
+
+        static_assert(identical(cnl::floor2(cnl::uint64{0x0000000000000000}), cnl::uint64{0}), "cnl::floor2<uint64_t>");
+        static_assert(identical(cnl::floor2(cnl::uint64{0x0000000000000001}), cnl::uint64{1}), "cnl::floor2<uint64_t>");
+        static_assert(identical(cnl::floor2(cnl::uint64{0x7FFFFFFFFFFFFFFE}), cnl::uint64{0x4000000000000000}), "cnl::floor2<uint64_t>");
+        static_assert(identical(cnl::floor2(cnl::uint64{0x7FFFFFFFFFFFFFFF}), cnl::uint64{0x4000000000000000}), "cnl::floor2<uint64_t>");
+        static_assert(identical(cnl::floor2(cnl::uint64{0x8000000000000000}), cnl::uint64{0x8000000000000000}), "cnl::floor2<uint64_t>");
+        static_assert(identical(cnl::floor2(cnl::uint64{0x8000000000000001}), cnl::uint64{0x8000000000000000}), "cnl::floor2<uint64_t>");
+        static_assert(identical(cnl::floor2(cnl::uint64{0xFFFFFFFFFFFFFFFE}), cnl::uint64{0x8000000000000000}), "cnl::floor2<uint64_t>");
+        static_assert(identical(cnl::floor2(cnl::uint64{0xFFFFFFFFFFFFFFFF}), cnl::uint64{0x8000000000000000}), "cnl::floor2<uint64_t>");
+
+#if defined(CNL_INT128_ENABLED)
+        static_assert(identical(cnl::floor2(CNL_UINTMAX_C(0)), CNL_UINTMAX_C(0)), "cnl::floor2<uint128_t>");
+        static_assert(identical(cnl::floor2(CNL_UINTMAX_C(1)), CNL_UINTMAX_C(1)), "cnl::floor2<uint128_t>");
+        static_assert(identical(cnl::floor2(CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE)), CNL_UINTMAX_C(0x40000000000000000000000000000000)), "cnl::floor2<uint128_t>");
+        static_assert(identical(cnl::floor2(CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)), CNL_UINTMAX_C(0x40000000000000000000000000000000)), "cnl::floor2<uint128_t>");
+        static_assert(identical(cnl::floor2(~CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)), ~CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)), "cnl::floor2<uint128_t>");
+        static_assert(identical(cnl::floor2(~CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE)), ~CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)), "cnl::floor2<uint128_t>");
+        static_assert(identical(cnl::floor2(~CNL_UINTMAX_C(1)), ~CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)), "cnl::floor2<uint128_t>");
+        static_assert(identical(cnl::floor2(~CNL_UINTMAX_C(0)), ~CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)), "cnl::floor2<uint128_t>");
+#endif
+    }
+
+    namespace test_log2p1 {
+        static_assert(identical(cnl::log2p1(cnl::uint8{0x00}), 0), "cnl::log2p1<uint8_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint8{0x01}), 1), "cnl::log2p1<uint8_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint8{0x7E}), 7), "cnl::log2p1<uint8_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint8{0x7F}), 7), "cnl::log2p1<uint8_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint8{0x80}), 8), "cnl::log2p1<uint8_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint8{0x81}), 8), "cnl::log2p1<uint8_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint8{0xFE}), 8), "cnl::log2p1<uint8_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint8{0xFF}), 8), "cnl::log2p1<uint8_t>");
+
+        static_assert(identical(cnl::log2p1(cnl::uint16{0x0000}), 0), "cnl::log2p1<uint16_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint16{0x0001}), 1), "cnl::log2p1<uint16_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint16{0x7FFE}), 15), "cnl::log2p1<uint16_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint16{0x7FFF}), 15), "cnl::log2p1<uint16_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint16{0x8000}), 16), "cnl::log2p1<uint16_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint16{0x8001}), 16), "cnl::log2p1<uint16_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint16{0xFFFE}), 16), "cnl::log2p1<uint16_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint16{0xFFFF}), 16), "cnl::log2p1<uint16_t>");
+
+        static_assert(identical(cnl::log2p1(cnl::uint32{0x00000000}), 0), "cnl::log2p1<uint32_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint32{0x00000001}), 1), "cnl::log2p1<uint32_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint32{0x7FFFFFFE}), 31), "cnl::log2p1<uint32_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint32{0x7FFFFFFF}), 31), "cnl::log2p1<uint32_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint32{0x80000000}), 32), "cnl::log2p1<uint32_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint32{0x80000001}), 32), "cnl::log2p1<uint32_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint32{0xFFFFFFFE}), 32), "cnl::log2p1<uint32_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint32{0xFFFFFFFF}), 32), "cnl::log2p1<uint32_t>");
+
+        static_assert(identical(cnl::log2p1(cnl::uint64{0x0000000000000000}), 0), "cnl::log2p1<uint64_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint64{0x0000000000000001}), 1), "cnl::log2p1<uint64_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint64{0x7FFFFFFFFFFFFFFE}), 63), "cnl::log2p1<uint64_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint64{0x7FFFFFFFFFFFFFFF}), 63), "cnl::log2p1<uint64_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint64{0x8000000000000000}), 64), "cnl::log2p1<uint64_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint64{0x8000000000000001}), 64), "cnl::log2p1<uint64_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint64{0xFFFFFFFFFFFFFFFE}), 64), "cnl::log2p1<uint64_t>");
+        static_assert(identical(cnl::log2p1(cnl::uint64{0xFFFFFFFFFFFFFFFF}), 64), "cnl::log2p1<uint64_t>");
+
+#if defined(CNL_INT128_ENABLED)
+        static_assert(identical(cnl::log2p1(CNL_UINTMAX_C(0)), 0), "cnl::log2p1<uint128_t>");
+        static_assert(identical(cnl::log2p1(CNL_UINTMAX_C(1)), 1), "cnl::log2p1<uint128_t>");
+        static_assert(identical(cnl::log2p1(CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE)), 127), "cnl::log2p1<uint128_t>");
+        static_assert(identical(cnl::log2p1(CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)), 127), "cnl::log2p1<uint128_t>");
+        static_assert(identical(cnl::log2p1(~CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)), 128), "cnl::log2p1<uint128_t>");
+        static_assert(identical(cnl::log2p1(~CNL_UINTMAX_C(0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE)), 128), "cnl::log2p1<uint128_t>");
+        static_assert(identical(cnl::log2p1(~CNL_UINTMAX_C(1)), 128), "cnl::log2p1<uint128_t>");
+        static_assert(identical(cnl::log2p1(~CNL_UINTMAX_C(0)), 128), "cnl::log2p1<uint128_t>");
+#endif
+    }
+
     namespace test_countl_rsb {
         static_assert(identical(cnl::countl_rsb(cnl::int8{0x00}), 7), "cnl::countl_rsb<int8_t>");
         static_assert(identical(cnl::countl_rsb(cnl::int8{0x01}), 6), "cnl::countl_rsb<int8_t>");
