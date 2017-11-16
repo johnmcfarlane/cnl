@@ -15,6 +15,7 @@
 
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
+    // loosely based on P0553R1
     // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0553r1.html
 
     namespace _bit_impl {
@@ -218,7 +219,47 @@ namespace cnl {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // additional to P0553
+    // loosely based on P0556R1
+    // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0556r1.html
+
+    // ispow2
+    template<class T>
+    constexpr bool ispow2(T x) noexcept
+    {
+        static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
+
+        return x && !(x & (x-1));
+    }
+
+    // ceil2 - lowest power of 2 no less than x
+    template<class T>
+    constexpr T ceil2(T x) noexcept
+    {
+        static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
+
+        return x ? T{1} << (digits<T>::value-countl_zero(T(x-T(1)))) : 0;
+    }
+
+    // floor2 - greatest power of 2 no greater than x
+    template<class T>
+    constexpr T floor2(T x) noexcept
+    {
+        static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
+
+        return x ? T{1} << (digits<T>::value-1-countl_zero(x)) : 0;
+    }
+
+    // log2p1 - one plus log2(x)
+    template<class T>
+    constexpr int log2p1(T x) noexcept
+    {
+        static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
+
+        return digits<T>::value-countl_zero(x);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // additional bit-level functions needed by CNL
 
     // countl_rsb - count redundant sign bits to the left
     template<typename T>
