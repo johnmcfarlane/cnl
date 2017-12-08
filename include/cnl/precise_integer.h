@@ -136,9 +136,9 @@ namespace cnl {
     constexpr auto operator<<(
             precise_integer<LhsRep, LhsRoundingTag> const& lhs,
             RhsInteger const& rhs)
-    -> decltype(from_rep<precise_integer<decltype(_impl::to_rep(lhs) << rhs), LhsRoundingTag>>(_impl::to_rep(lhs) << rhs))
+    -> decltype(_impl::from_rep<precise_integer<decltype(_impl::to_rep(lhs) << rhs), LhsRoundingTag>>(_impl::to_rep(lhs) << rhs))
     {
-        return from_rep<precise_integer<
+        return _impl::from_rep<precise_integer<
                 decltype(_impl::to_rep(lhs) << rhs),
                 LhsRoundingTag>>(_impl::to_rep(lhs) << rhs);
     }

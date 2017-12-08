@@ -447,9 +447,9 @@ namespace test_to_rep {
 namespace test_from_rep {
     using cnl::from_rep;
 
-    static_assert(identical(from_rep<native_integer<int>>()(746352), native_integer<int>{746352}), "");
-    static_assert(from_rep<native_integer<short>>()(1), "");
-    static_assert(from_rep<throwing_integer<short>>()(1), "");
+    static_assert(identical(from_rep<native_integer<int>, int>()(746352), native_integer<int>{746352}), "");
+    static_assert(from_rep<native_integer<short>, short>()(1), "");
+    static_assert(from_rep<throwing_integer<short>, short>()(1), "");
 }
 
 namespace test_impl_from_rep {

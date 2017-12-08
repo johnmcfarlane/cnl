@@ -106,8 +106,8 @@ namespace {
 
         // from_rep
         using cnl::from_rep;
-        static_assert(identical(7, from_rep<int>()(7)));
-        static_assert(identical(fixed_point<int, -1>{49.5}, from_rep<fixed_point<int, -1>>()(99)));
+        static_assert(identical(7, from_rep<int, int>()(7)));
+        static_assert(identical(fixed_point<int, -1>{49.5}, from_rep<fixed_point<int, -1>, int>()(99)));
 
         // from_value
         using cnl::from_value_t;

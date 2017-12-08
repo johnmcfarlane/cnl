@@ -163,7 +163,8 @@ namespace cnl {
         }
 
         /// creates an instance given the underlying representation value
-        friend struct from_rep<fixed_point<rep, exponent>>;
+        template<class, class, class>
+        friend struct from_rep;
 
     private:
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
@@ -344,12 +345,11 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_rep<fixed_point<>> specialization
 
-    template<class Rep, int Exponent>
-    struct from_rep<fixed_point<Rep, Exponent>> {
-        template<class Integer>
+    template<class Rep, int Exponent, class Integer>
+    struct from_rep<fixed_point<Rep, Exponent>, Integer> {
         constexpr auto operator()(Integer const& rep) const
         -> fixed_point<Integer, Exponent> {
-            return fixed_point<Rep, Exponent>(rep, 0);
+            return fixed_point<Integer, Exponent>(rep, 0);
         }
     };
 }

@@ -302,9 +302,8 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_rep
 
-    template<class Number, class Enable = void>
+    template<class Number, class Rep, class Enable = void>
     struct from_rep {
-        template<class Rep>
         constexpr Number operator()(Rep const& rep) const {
             // by default, a number type's rep type is the number type itself
             return static_cast<Number>(rep);
@@ -314,8 +313,8 @@ namespace cnl {
     namespace _impl {
         template<class Number, class Rep>
         constexpr auto from_rep(Rep const& rep)
-        -> decltype(cnl::from_rep<Number>()(rep)) {
-            return cnl::from_rep<Number>()(rep);
+        -> decltype(cnl::from_rep<Number, Rep>()(rep)) {
+            return cnl::from_rep<Number, Rep>()(rep);
         }
     }
 

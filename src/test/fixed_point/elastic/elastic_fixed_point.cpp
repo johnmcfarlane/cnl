@@ -301,6 +301,12 @@ struct positive_elastic_test
     static_assert(identical(elastic_integer<2>{2}/elastic_fixed_point<10, -5>{1.5}, elastic_fixed_point<12, -5>{4./3}),
                   "operator/ test failed");
 #endif
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // test cnl::_impl::from_rep
+
+    static_assert(!cnl::_impl::from_rep<cnl::fixed_point<cnl::elastic_integer<31, unsigned int>, -33>>(0),
+            "cnl::_impl::from_rep<fixed_point<elastic_integer>>(int)");
 };
 
 TEST(elastic_fixed_point, over_int) {
