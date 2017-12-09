@@ -32,6 +32,7 @@ set(cnl_implementation_headers
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/fixed_point/num_traits.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/fixed_point/constants.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/type_traits.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/operators.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/common.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/number_base.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/elastic_fixed_point.h
