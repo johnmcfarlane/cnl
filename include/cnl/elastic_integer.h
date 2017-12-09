@@ -144,7 +144,6 @@ namespace cnl {
         constexpr elastic_integer(constant<Value>)
                 : _base(static_cast<rep>(Value))
         {
-            static_assert(!cnl::is_signed<decltype(Value)>::value || cnl::is_signed<rep>::value, "initialization by out-of-range value");
         }
 
         /// copy assignment operator taking a floating-point type
