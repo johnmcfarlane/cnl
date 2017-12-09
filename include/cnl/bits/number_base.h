@@ -54,6 +54,9 @@ namespace cnl {
         struct is_class_derived_from_number_base : std::false_type {};
 
         template<class Derived>
+        struct is_class_derived_from_number_base<const Derived> : is_class_derived_from_number_base<Derived> {};
+
+        template<class Derived>
         struct is_class_derived_from_number_base<
                 Derived,
                 enable_if_t<std::is_base_of<number_base<Derived, typename Derived::rep>, Derived>::value>>
