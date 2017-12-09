@@ -127,8 +127,8 @@ add_dependencies(
 
 ExternalProject_Add(
         google_test
-        URL "https://github.com/google/googletest/archive/d175c8bf823e709d570772b038757fadf63bc632.zip"
-        URL_MD5 "4dadc67247c87966b5a35b605056d3c8"
+        URL "https://github.com/google/googletest/archive/d6a4478caf10f5cfcfe477e576f4a290d9a49b24.zip"
+        URL_MD5 "28aedb06b73ed59ca59c1c973a197cc9"
         UPDATE_COMMAND ""
         INSTALL_COMMAND ""
         CMAKE_ARGS -Dgtest_force_shared_crt=ON
@@ -146,7 +146,7 @@ ExternalProject_Get_Property(google_test binary_dir)
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     target_link_libraries(
             fp_test
-            debug ${binary_dir}/googlemock/gtest/Debug/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}
+            debug ${binary_dir}/googlemock/gtest/Debug/${CMAKE_FIND_LIBRARY_PREFIXES}gtestd${CMAKE_FIND_LIBRARY_SUFFIXES}
             optimized ${binary_dir}/googlemock/gtest/Release/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}
     )
 else ()
