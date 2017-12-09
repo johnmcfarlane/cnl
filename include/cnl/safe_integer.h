@@ -18,25 +18,6 @@
 /// compositional numeric library
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
-    // macros
-
-#define CNL_INTEGER_BIT_SHIFT_DEFINE(OP) \
-    template <class LhsRep, class LhsOverflowTag, class RhsRep, class RhsOverflowTag> \
-    constexpr auto operator OP (safe_integer<LhsRep, LhsOverflowTag> const& lhs, safe_integer<RhsRep, RhsOverflowTag> const& rhs) \
-    -> safe_integer<LhsRep, LhsOverflowTag> { \
-        return _impl::to_rep(lhs) OP _impl::to_rep(rhs); } \
-    \
-    template <class Lhs, class RhsRep, class RhsOverflowTag, _impl::enable_if_t<std::is_fundamental<Lhs>::value, int> dummy = 0> \
-    constexpr auto operator OP (Lhs const& lhs, safe_integer<RhsRep, RhsOverflowTag> const& rhs) \
-    -> Lhs { \
-        return lhs OP _impl::to_rep(rhs); } \
-    \
-    template <class LhsRep, class LhsOverflowTag, class Rhs, _impl::enable_if_t<std::is_fundamental<Rhs>::value, int> dummy = 0> \
-    constexpr auto operator OP (safe_integer<LhsRep, LhsOverflowTag> const& lhs, Rhs const& rhs) \
-    -> safe_integer<LhsRep, LhsOverflowTag> { \
-        return safe_integer<LhsRep, LhsOverflowTag>(_impl::to_rep(lhs) OP rhs); }
-
-    ////////////////////////////////////////////////////////////////////////////////
     // forward-declarations
 
     template<class Rep, class OverflowTag>
@@ -218,47 +199,57 @@ namespace cnl {
         // arithmetc
 
         // for arithmetic operands with a common overflow tag
-        template<class OverflowTag, class OperatorTag, class LhsRep, class RhsRep, class = enable_if_t<OperatorTag::is_arithmetic>>
-        constexpr auto operate_common_tag(
-                OverflowTag,
-                OperatorTag,
-                safe_integer<LhsRep, OverflowTag> const& lhs,
-                safe_integer<RhsRep, OverflowTag> const& rhs)
-        -> decltype(make_safe_integer<OverflowTag>(_overflow_impl::operate<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs))))
-        {
-            return make_safe_integer<OverflowTag>(_overflow_impl::operate<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs)));
-        }
+        template<class OperatorTag, class LhsRep, class RhsRep, class OverflowTag>
+        struct binary_operator<OperatorTag, safe_integer<LhsRep, OverflowTag>, safe_integer<RhsRep, OverflowTag>> {
+            constexpr auto operator()(
+                    safe_integer<LhsRep, OverflowTag> const& lhs,
+                    safe_integer<RhsRep, OverflowTag> const& rhs) const
+            -> decltype(make_safe_integer<OverflowTag>(_overflow_impl::binary_operator<OverflowTag, OperatorTag>()(cnl::_impl::to_rep(lhs), cnl::_impl::to_rep(rhs))))
+            {
+                return make_safe_integer<OverflowTag>(
+                        _overflow_impl::binary_operator<OverflowTag, OperatorTag>()(cnl::_impl::to_rep(lhs), cnl::_impl::to_rep(rhs)));
+            }
+        };
 
-        // for comparison operands with a common overflow tag
-        template<class OverflowTag, class OperatorTag, class LhsRep, class RhsRep, class = enable_if_t<OperatorTag::is_comparison>>
-        constexpr auto operate_common_tag(
-                OverflowTag,
-                OperatorTag,
-                safe_integer<LhsRep, OverflowTag> const& lhs,
-                safe_integer<RhsRep, OverflowTag> const& rhs)
-        -> decltype(_overflow_impl::operate<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs)))
-        {
-            return _overflow_impl::operate<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs));
-        }
-    
         // for arithmetic operands with different policies
         template<class OperatorTag, class LhsRep, class LhsTag, class RhsRep, class RhsTag>
-        constexpr auto operate(
-                const safe_integer<LhsRep, LhsTag>& lhs,
-                const safe_integer<RhsRep, RhsTag>& rhs,
-                OperatorTag operator_tag)
-        -> decltype(operate_common_tag(common_type_t<LhsTag, RhsTag>{}, operator_tag, lhs, rhs))
-        {
-            return operate_common_tag(common_type_t<LhsTag, RhsTag>{}, operator_tag, lhs, rhs);
-        }
+        struct binary_operator<OperatorTag, safe_integer<LhsRep, LhsTag>, safe_integer<RhsRep, RhsTag>> {
+            constexpr auto operator()(
+                    const safe_integer<LhsRep, LhsTag>& lhs,
+                    const safe_integer<RhsRep, RhsTag>& rhs) const
+            -> decltype(binary_operator<OperatorTag, safe_integer<LhsRep, cnl::_impl::common_type_t<LhsTag, RhsTag>>, safe_integer<LhsRep, cnl::_impl::common_type_t<LhsTag, RhsTag>>>()(lhs, rhs))
+            {
+                using common_tag = cnl::_impl::common_type_t<LhsTag, RhsTag>;
+                return binary_operator<OperatorTag, safe_integer<LhsRep, common_tag>, safe_integer<LhsRep, common_tag>>()(lhs, rhs);
+            }
+        };
+
+        // for comparison operands with a common overflow tag
+        template<class OperatorTag, class LhsRep, class RhsRep, class OverflowTag>
+        struct comparison_operator<OperatorTag,
+                safe_integer<LhsRep, OverflowTag>, safe_integer<RhsRep, OverflowTag>> {
+            constexpr auto operator()(
+                    safe_integer<LhsRep, OverflowTag> const& lhs,
+                    safe_integer<RhsRep, OverflowTag> const& rhs) const
+            -> decltype(_overflow_impl::comparison_operator<OverflowTag, OperatorTag>()(cnl::_impl::to_rep(lhs), cnl::_impl::to_rep(rhs)))
+            {
+                return _overflow_impl::comparison_operator<OverflowTag, OperatorTag>()(cnl::_impl::to_rep(lhs), cnl::_impl::to_rep(rhs));
+            }
+        };
+
+        // for arithmetic operands with different policies
+        template<class OperatorTag, class LhsRep, class LhsTag, class RhsRep, class RhsTag>
+        struct comparison_operator<OperatorTag, safe_integer<LhsRep, LhsTag>, safe_integer<RhsRep, RhsTag>> {
+            constexpr auto operator()(
+                    const safe_integer<LhsRep, LhsTag>& lhs,
+                    const safe_integer<RhsRep, RhsTag>& rhs) const
+            -> decltype(comparison_operator<OperatorTag, safe_integer<LhsRep, cnl::_impl::common_type_t<LhsTag, RhsTag>>, safe_integer<LhsRep, cnl::_impl::common_type_t<LhsTag, RhsTag>>>()(lhs, rhs))
+            {
+                using common_tag = cnl::_impl::common_type_t<LhsTag, RhsTag>;
+                return comparison_operator<OperatorTag, safe_integer<LhsRep, common_tag>, safe_integer<LhsRep, common_tag>>()(lhs, rhs);
+            }
+        };
     }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // binary bit-wise
-
-    CNL_INTEGER_BIT_SHIFT_DEFINE(>>);
-
-    CNL_INTEGER_BIT_SHIFT_DEFINE(<<);
 }
 
 namespace cnl {

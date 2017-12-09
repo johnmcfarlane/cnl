@@ -104,8 +104,8 @@ static_assert(is_integer_or_float<saturated_integer<int64_t>>::value, "cnl::_int
 
 static_assert(identical(saturated_integer<int>(1234), cnl::_impl::from_value<saturated_integer<uint8_t>>(1234)),
               "cnl::from_value<cnl::saturated_integer> test failed");
-static_assert(cnl::_impl::operate(saturated_integer<uint8_t>(-1), 0, cnl::_impl::equal_tag),
-              "cnl::saturated_integer equality test failed");
+static_assert(cnl::_impl::comparison_operator<cnl::_impl::equal_op, saturated_integer<uint8_t>, int>()(
+        saturated_integer<uint8_t>(-1), 0), "cnl::saturated_integer equality test failed");
 
 static_assert(identical(saturated_integer<int16_t>(32767), saturated_integer<int16_t>(5000000000L)), "cnl::saturated_integer equality test failed");
 static_assert(saturated_integer<uint8_t>(-1)==0, "cnl::saturated_integer equality test failed");
@@ -165,37 +165,37 @@ namespace {
             to_rep(saturated_integer<short>(1234)),
             short(1234)), "cnl::to_rep(saturated_integer<>) test failed");
 
-    static_assert(identical(
-            cnl::_impl::operate(saturated_integer<short>(1234), 2., cnl::_impl::multiply_tag),
-            2468.), "cnl::saturated_integer test failed");
-
-    static_assert(operate(saturated_integer<int16_t>(32767), saturated_integer<int16_t>(5000000000L), equal_tag), "");
-
-    static_assert(identical(
-        cnl::make_safe_integer<cnl::saturated_overflow_tag>(cnl::_overflow_impl::operate
-                <cnl::saturated_overflow_tag, multiply_op>()(
-            cnl::_impl::to_rep(cnl::safe_integer<signed char, cnl::saturated_overflow_tag>{30}),
-            cnl::_impl::to_rep(cnl::safe_integer<signed char, cnl::saturated_overflow_tag>{40}))),
-        cnl::safe_integer<int, cnl::saturated_overflow_tag>{1200}), "");
-
-    static_assert(identical(
-            operate_common_tag(
-                    cnl::saturated_overflow,
-                    multiply_tag,
-                    cnl::safe_integer<signed char, cnl::saturated_overflow_tag>{30},
-                    cnl::safe_integer<signed char, cnl::saturated_overflow_tag>{40}),
-            cnl::safe_integer<int, cnl::saturated_overflow_tag>{1200}), "");
-    
-    static_assert(identical(
-            operate(
-                    cnl::safe_integer<signed char, cnl::saturated_overflow_tag>{30},
-                    cnl::safe_integer<signed char, cnl::saturated_overflow_tag>{40},
-                    multiply_tag),
-            cnl::safe_integer<int, cnl::saturated_overflow_tag>{1200}), "");
+    static_assert(identical(cnl::_impl::binary_operator<cnl::_impl::multiply_op, saturated_integer<short>, float>()(
+            saturated_integer<short>(1234), 2.), 2468.f), "cnl::saturated_integer test failed");
 
     static_assert(
-            identical(operate(3u, throwing_integer<cnl::uint8>{4}, multiply_tag), throwing_integer<unsigned>{12}),
-            "cnl::_impl::operate test failed");
+            cnl::_impl::comparison_operator<cnl::_impl::equal_op, saturated_integer<int16_t>, saturated_integer<int16_t>>()(
+                    saturated_integer<int16_t>(32767), saturated_integer<int16_t>(5000000000L)), "");
+
+    static_assert(identical(
+            cnl::make_safe_integer<cnl::saturated_overflow_tag>(
+                    cnl::_overflow_impl::binary_operator<cnl::saturated_overflow_tag, multiply_op>()(
+                            cnl::_impl::to_rep(saturated_integer<signed char>{30}),
+                            cnl::_impl::to_rep(saturated_integer<signed char>{40}))),
+            saturated_integer<int>{1200}), "");
+
+    static_assert(identical(
+            cnl::_impl::binary_operator<multiply_op, saturated_integer<signed char>, saturated_integer<signed char>>()(
+                    saturated_integer<signed char>{30}, saturated_integer<signed char>{40}),
+            saturated_integer<int>{1200}), "");
+
+    static_assert(identical(
+            cnl::_impl::binary_operator<
+                    cnl::_impl::multiply_op, saturated_integer<signed char>, saturated_integer<signed char>>()(30, 40),
+            saturated_integer<int>{1200}), "");
+
+    static_assert(identical(
+            cnl::_impl::binary_operator<
+                    cnl::_impl::multiply_op,
+                    unsigned,
+                    throwing_integer<cnl::uint8>>()(3u, throwing_integer<cnl::uint8>{4}),
+            throwing_integer<unsigned>{12}),
+            "cnl::_impl::binary_operator test failed");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -211,10 +211,9 @@ namespace test_constructor {
 // comparison
 
 namespace test_equal {
-    using cnl::_impl::equal_tag;
-    using cnl::_impl::operate;
-
-    static_assert(operate(throwing_integer<short>{0}, 0., equal_tag), "");
+    static_assert(cnl::_impl::comparison_operator<cnl::_impl::equal_op, throwing_integer<short>, double>()(
+            throwing_integer<short>{0}, 0.), "");
+    static_assert(throwing_integer<short>{0}==0., "");
 }
 
 
@@ -458,6 +457,17 @@ namespace test_impl_from_rep {
     static_assert(identical(from_rep<native_integer<int>>(746352), native_integer<int>{746352}), "");
     static_assert(from_rep<native_integer<short>>(1), "");
     static_assert(from_rep<throwing_integer<short>>(1), "");
+}
+
+namespace test_plus {
+    static_assert(identical(+throwing_integer<short>(1), throwing_integer<int>(1)), "");
+}
+
+namespace test_shift_left {
+    static_assert(
+            identical(saturated_integer<std::uint8_t>(255) << 30u, cnl::numeric_limits<saturated_integer<int>>::max()),
+            "");
+    static_assert(identical(throwing_integer<std::int8_t>(1) << 10, throwing_integer<int>(1024)), "");
 }
 
 namespace test_scale {

@@ -293,6 +293,7 @@ namespace test_to_rep {
     static_assert(identical(to_rep(fixed_point<test_int>{97531}), test_int{97531}), "cnl::to_rep");
     static_assert(identical(to_rep(fixed_point<uint8>{199}), uint8{199}), "cnl::to_rep");
 }
+
 namespace test_from_rep {
     using cnl::_impl::from_rep;
 
@@ -303,6 +304,11 @@ namespace test_from_rep {
     static_assert(from_rep<fixed_point<test_int, -100>>(test_int{1}), "from_rep");
     static_assert(!from_rep<fixed_point<test_int, 1000>>(test_int{0}), "from_rep");
     static_assert(from_rep<fixed_point<test_int, 1000>>(test_int{1}), "from_rep");
+}
+
+namespace test_from_rep {
+    static_assert(identical(cnl::_impl::from_value<fixed_point<int32>>(cnl::constant<369>{}), fixed_point<int>{369}),
+            "cnl::_impl::from_value<fixed_point<>>");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -534,6 +540,14 @@ namespace test_arithmetic {
 
     using cnl::_impl::fp::arithmetic::wide_tag;
     using cnl::_impl::fp::arithmetic::lean_tag;
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::_fixed_point_impl::rep_op_exponent
+
+    static_assert(identical(
+            cnl::_impl::binary_operator<cnl::_impl::subtract_op, fixed_point<int32>, cnl::constant<369>>()(
+                    fixed_point<int32>{999}, cnl::constant<369>{}), fixed_point<test_int, 0>{630}),
+            "cnl::_fixed_point_impl::rep_op_exponent test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::_fixed_point_impl::rep_op_exponent

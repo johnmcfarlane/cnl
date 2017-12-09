@@ -297,6 +297,9 @@ namespace cnl {
         -> decltype(cnl::to_rep<Number>()(number)) {
             return cnl::to_rep<Number>()(number);
         }
+
+        template<class Number>
+        using to_rep_t = decltype(to_rep(std::declval<Number>()));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -342,7 +345,7 @@ namespace cnl {
     struct from_value;
 
     template<class Number, class Value>
-    struct from_value<Number, Value, _impl::enable_if_t<std::is_integral<Number>::value>> {
+    struct from_value<Number, Value> {
         using type = Number;
     };
 

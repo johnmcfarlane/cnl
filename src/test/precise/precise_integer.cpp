@@ -91,18 +91,14 @@ namespace {
     }
     
     namespace test_operate {
-        using cnl::_impl::equal_tag;
-        using cnl::_impl::greater_than_tag;
-        using cnl::_impl::operate;
-
         static_assert(
-                operate(precise_integer<>{2468}, precise_integer<>{2468}, equal_tag),
+                cnl::_impl::comparison_operator<cnl::_impl::equal_op, precise_integer<>, precise_integer<>>()(precise_integer<>{2468}, precise_integer<>{2468}),
                 "cnl::numeric_traits<precise_integer> test failed");
         static_assert(
-                operate(2468, precise_integer<>{2468}, equal_tag),
+                cnl::_impl::comparison_operator<cnl::_impl::equal_op, int, precise_integer<>>()(2468, precise_integer<>{2468}),
                 "cnl::numeric_traits<precise_integer> test failed");
         static_assert(
-                operate(precise_integer<>{234}, 233, greater_than_tag),
+                cnl::_impl::comparison_operator<cnl::_impl::greater_than_op, precise_integer<>, int>()(precise_integer<>{234}, 233),
                 "cnl::numeric_traits<precise_integer> test failed");
     }
 

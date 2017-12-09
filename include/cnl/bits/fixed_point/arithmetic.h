@@ -13,8 +13,6 @@
 #include "type.h"
 #include "num_traits.h"
 
-#include <cnl/bits/common.h>
-
 /// compositional numeric library
 namespace cnl {
 
@@ -102,6 +100,18 @@ namespace cnl {
 
                 template<class Lhs, class Rhs>
                 struct rep_op_exponent<_impl::divide_op, Lhs, Rhs> : public constant<Lhs::exponent-Rhs::exponent> {
+                };
+
+                template<class Lhs, class Rhs>
+                struct rep_op_exponent<_impl::modulo_op, Lhs, Rhs> : public constant<Lhs::exponent> {
+                };
+
+                template<class Lhs, class Rhs>
+                struct rep_op_exponent<_impl::shift_left_op, Lhs, Rhs> : public constant<Lhs::exponent> {
+                };
+
+                template<class Lhs, class Rhs>
+                struct rep_op_exponent<_impl::shift_right_op, Lhs, Rhs> : public constant<Lhs::exponent> {
                 };
 
                 ////////////////////////////////////////////////////////////////////////////////
