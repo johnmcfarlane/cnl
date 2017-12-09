@@ -527,7 +527,7 @@ static_assert(is_same<
 ////////////////////////////////////////////////////////////////////////////////
 // fixed-point arithmetic support types
 
-namespace test_operate {
+namespace test_arithmetic {
     using cnl::_impl::add_op;
     using cnl::_impl::multiply_op;
     using cnl::_impl::divide_op;
