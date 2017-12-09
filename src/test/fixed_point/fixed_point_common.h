@@ -845,23 +845,24 @@ static_assert(identical(divide(fixed_point<uint32, 0>{0xFFFE0001LL}, fixed_point
 
 namespace test_bitshift {
     // dynamic
-    static_assert(identical(fixed_point<int, -4>{2}, fixed_point<uint8_t, -4>{1} << 1), "bitshift test failed");
-    static_assert(identical(fixed_point<int, -4>{.5}, fixed_point<uint8_t, -4>{1} >> 1), "bitshift test failed");
+    static_assert(identical(fixed_point<test_int, -4>{2}, fixed_point<uint8, -4>{1} << 1), "bitshift test failed");
+    static_assert(identical(fixed_point<test_int, -4>{.5}, fixed_point<uint8, -4>{1} >> 1), "bitshift test failed");
+    static_assert(identical(fixed_point<test_int, -4>{2}, fixed_point<uint8, -4>{1} << fixed_point<>{1}), "bitshift test failed");
 
     // cnl::constant
-    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} << cnl::constant<1>{}), "bitshift test failed");
-    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} << cnl::constant<-1>{}), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -3>{2}, fixed_point<uint8, -4>{1} << cnl::constant<1>{}), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -5>{.5}, fixed_point<uint8, -4>{1} << cnl::constant<-1>{}), "bitshift test failed");
 
-    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} >> cnl::constant<1>{}), "bitshift test failed");
-    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} >> cnl::constant<-1>{}), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -5>{.5}, fixed_point<uint8, -4>{1} >> cnl::constant<1>{}), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -3>{2}, fixed_point<uint8, -4>{1} >> cnl::constant<-1>{}), "bitshift test failed");
 
     // const_integer
     using namespace cnl::literals;
-    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} << 1_c), "bitshift test failed");
-    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} << -1_c), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -3>{2}, fixed_point<uint8, -4>{1} << 1_c), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -5>{.5}, fixed_point<uint8, -4>{1} << -1_c), "bitshift test failed");
 
-    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} >> 1_c), "bitshift test failed");
-    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} >> -1_c), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -5>{.5}, fixed_point<uint8, -4>{1} >> 1_c), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -3>{2}, fixed_point<uint8, -4>{1} >> -1_c), "bitshift test failed");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
