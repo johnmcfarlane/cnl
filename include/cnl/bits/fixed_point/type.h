@@ -197,6 +197,7 @@ namespace cnl {
     // cnl::fixed_point::fixed_point deduction guides
 
 #if defined(__cpp_deduction_guides)
+    // same as from_value
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     fixed_point(::cnl::constant<Value>)
     -> fixed_point<set_digits_t<int, _impl::max(digits<int>::value, used_bits(Value)-trailing_bits(Value))>, trailing_bits(Value)>;
