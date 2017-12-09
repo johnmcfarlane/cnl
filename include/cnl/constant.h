@@ -10,9 +10,7 @@
 #if !defined(CNL_CONSTANT_H)
 #define CNL_CONSTANT_H 1
 
-#include "cnlint.h"
-
-#include "bits/config.h"
+#include "limits.h"
 
 // CNL_IMPL_CONSTANT_VALUE_TYPE - determines cnl::constant<>::value_type
 #if defined(CNL_TEMPLATE_AUTO)
@@ -116,6 +114,29 @@ namespace cnl {
             return {};
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::numeric_limits<cnl::constant>
+
+    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct numeric_limits<constant<Value>> : cnl::numeric_limits<typename constant<Value>::value_type> {
+        using _value_type = typename constant<Value>::value_type;
+
+        static constexpr _value_type min()
+        {
+            return {};
+        }
+
+        static constexpr _value_type max()
+        {
+            return {};
+        }
+
+        static constexpr _value_type lowest()
+        {
+            return {};
+        }
+    };
 }
 
 #endif  // CNL_CONSTANT_H
