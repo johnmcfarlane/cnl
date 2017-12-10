@@ -41,7 +41,7 @@ add_executable(fp_test
         fixed_point/safe/fixed_point_throwing_integer.cpp
         fixed_point/safe/fixed_point_saturated_integer.cpp
         fixed_point/fixed_point_built_in.cpp
-        overflow_int/elastic/safe_elastic_integer.cpp
+        overflow_int/elastic/safe_int.cpp
         overflow_int/overflow_int.cpp
         fixed_point/p0037.cpp
         cppcon2017.cpp
