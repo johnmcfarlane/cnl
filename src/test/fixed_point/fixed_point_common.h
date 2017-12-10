@@ -306,7 +306,7 @@ namespace test_from_rep {
     static_assert(from_rep<fixed_point<test_int, 1000>>(test_int{1}), "from_rep");
 }
 
-namespace test_from_rep {
+namespace test_from_value {
     static_assert(identical(cnl::_impl::from_value<fixed_point<int32>>(cnl::constant<369>{}), fixed_point<int>{369}),
             "cnl::_impl::from_value<fixed_point<>>");
 }
