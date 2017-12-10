@@ -117,7 +117,7 @@ namespace test_compound_assignment {
 
     TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_f_f) {
         auto rhs = fixed_point<int32, -16>{12.25};
-        auto lhs = fixed_point<int64, -40>{18726.125L};
+        auto lhs = fixed_point<int64, -20>{18726.125L};
         lhs += rhs;
         ASSERT_EQ(lhs, 18738.375);
     }
@@ -137,7 +137,7 @@ namespace test_compound_assignment {
     }
 
     TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_f_f) {
-        auto lhs = fixed_point<int64, -28>{18726.125L};
+        auto lhs = fixed_point<int64, -6>{18726.125L};
         auto rhs = fixed_point<uint8, -4>{2.5};
         lhs -= rhs;
         ASSERT_EQ(lhs, 18723.625L);
@@ -707,10 +707,10 @@ static_assert(identical(fixed_point<int8, -5>{2.125}+fixed_point<int8, -5>{-3.25
         "cnl::fixed_point addition operator test failed");
 
 #if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
-static_assert(identical(fixed_point<uint8, 10>{10240}+2048, fixed_point<test_int, 0>{12288}), "test failed");
+static_assert(identical(fixed_point<uint8, -4>{1.5}+2048, fixed_point<test_int, -4>{2049.5}), "test failed");
 #endif
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert(identical(2048+fixed_point<uint8, 10>{10240}, fixed_point<test_int, 0>{12288}),
+static_assert(identical(2048+fixed_point<uint8, -4>{2.25}, fixed_point<test_int, -4>{2050.25}),
         "cnl::fixed_point addition operator test failed");
 #endif
 static_assert(is_same<decltype(2048+fixed_point<uint8, 10>(10240)), fixed_point<test_signed, 0>>::value,
@@ -739,7 +739,7 @@ static_assert(fixed_point<int8, -5>(2.125)-fixed_point<int8, -5>(3.25)==-1.125f,
 static_assert(is_same<decltype(fixed_point<int8, -5>(2.125)-fixed_point<int8, -5>(-3.25)), fixed_point<test_int, -5>>::value,
         "cnl::fixed_point subtraction test failed");
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert(fixed_point<uint8, 10>(10240)-2048==8192, "cnl::fixed_point subtraction test failed");
+static_assert(fixed_point<uint8, -3>(0.875)-2048==-2047.125, "cnl::fixed_point subtraction test failed");
 #endif
 static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)-2048), fixed_point<test_signed, 0>>::value,
         "cnl::fixed_point subtraction test failed");
