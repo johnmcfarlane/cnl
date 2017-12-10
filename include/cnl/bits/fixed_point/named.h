@@ -34,9 +34,9 @@ namespace cnl {
 
     template<class Lhs, class Rhs>
     constexpr auto multiply(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(_impl::fp::operate<_impl::fp::named_function_tag>(lhs, rhs, _impl::multiply_tag))
+    -> decltype(_impl::fp::operate(lhs, rhs, _impl::multiply_tag))
     {
-        return _impl::fp::operate<_impl::fp::named_function_tag>(lhs, rhs, _impl::multiply_tag);
+        return _impl::fp::operate(lhs, rhs, _impl::multiply_tag);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -49,8 +49,8 @@ namespace cnl {
         template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
         struct divide<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>> {
             constexpr auto operator()(fixed_point<LhsRep, LhsExponent> const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
-            -> decltype(_impl::fp::operate<_impl::fp::division_named_function_tag>(lhs, rhs, _impl::divide_tag)) {
-                return _impl::fp::operate<_impl::fp::division_named_function_tag>(lhs, rhs, _impl::divide_tag);
+            -> decltype(_impl::fp::operate(lhs, rhs, _impl::divide_tag)) {
+                return _impl::fp::operate(lhs, rhs, _impl::divide_tag);
             }
         };
 

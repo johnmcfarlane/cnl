@@ -538,9 +538,6 @@ namespace test_arithmetic {
     using cnl::_impl::multiply_op;
     using cnl::_impl::divide_op;
 
-    using cnl::_impl::fp::arithmetic::wide_tag;
-    using cnl::_impl::fp::arithmetic::lean_tag;
-
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::_fixed_point_impl::rep_op_exponent
 
@@ -550,50 +547,32 @@ namespace test_arithmetic {
             "cnl::_fixed_point_impl::rep_op_exponent test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::_fixed_point_impl::rep_op_exponent
-
-    using cnl::_impl::fp::arithmetic::rep_op_exponent;
-
-    static_assert(rep_op_exponent<multiply_op, fixed_point<uint8, -4>, fixed_point<uint8, -4>>::value==-8,
-            "cnl::_fixed_point_impl::rep_op_exponent test failed");
-    static_assert(rep_op_exponent<divide_op, fixed_point<int16, -14>, fixed_point<int8, 0>>::value==-14,
-            "cnl::_fixed_point_impl::rep_op_exponent test failed");
-
-    ////////////////////////////////////////////////////////////////////////////////
     // cnl::_fixed_point_impl::result
 
     using cnl::_impl::fp::arithmetic::result;
 
-    // cnl::_impl::fp::arithmetic::result::type
     static_assert(identical(
-            result<lean_tag, add_op, fixed_point<test_int, 0>, fixed_point<uint8, 10>>::type{12288},
-            fixed_point<test_int, 0>{12288}), "cnl::_impl::fp::arithmetic::result test failed");
-
-    static_assert(identical(
-            result<wide_tag, multiply_op, fixed_point<uint8, -4>, fixed_point<uint8, -4>>::type{0},
+            result<multiply_op, fixed_point<uint8, -4>, fixed_point<uint8, -4>>::type{0},
             fixed_point<uint16, -8>{0}), "cnl::_impl::fp::arithmetic::result test failed");
     static_assert(identical(
-            result<wide_tag, multiply_op, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::type{1},
+            result<multiply_op, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::type{1},
             fixed_point<uint64, 0>{1}), "cnl::fixed_point test failed");
 
     static_assert(identical(
-            result<wide_tag, divide_op, fixed_point<int16, -14>, fixed_point<int8, 0>>::type{1.5},
+            result<divide_op, fixed_point<int16, -14>, fixed_point<int8, 0>>::type{1.5},
             fixed_point<test_int, -21>{1.5}), "cnl::_impl::fp::arithmetic::result test failed");
     static_assert(identical(
-            result<wide_tag, divide_op, fixed_point<uint8, -1>, fixed_point<uint8, -3>>::type{15.75},
+            result<divide_op, fixed_point<uint8, -1>, fixed_point<uint8, -3>>::type{15.75},
             fixed_point<test_unsigned, -6>{15.75}), "cnl::fixed_point test failed");
 #if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
     static_assert(identical(
-            result<wide_tag, divide_op, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::type{1},
+            result<divide_op, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::type{1},
             fixed_point<uint64, -32>{1}), "cnl::fixed_point test failed");
 #endif
-    static_assert(identical(
-            result<lean_tag, divide_op, fixed_point<int8, -1>, fixed_point<int8, -1>>::type{-15.75},
-            fixed_point<test_int, 0>{-15.75}), "cnl::fixed_point test failed");
 
     // cnl::_impl::fp::arithmetic::result::rep_op_result
     static_assert(identical(
-            result<wide_tag, multiply_op, fixed_point<uint8, -1>, fixed_point<uint8, -3>>::rep_op_result{65535},
+            result<multiply_op, fixed_point<uint8, -1>, fixed_point<uint8, -3>>::rep_op_result{65535},
             test_int{65535}), "cnl::fixed_point test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -603,32 +582,25 @@ namespace test_arithmetic {
 
     // cnl::_impl::fp::arithmetic::intermediate::rep_type
     static_assert(identical(
-            intermediate<wide_tag, divide_op, fixed_point<uint8, -1>, fixed_point<uint8, -3>>::rep_type{65537},
+            intermediate<divide_op, fixed_point<uint8, -1>, fixed_point<uint8, -3>>::rep_type{65537},
             test_unsigned{65537}), "cnl::fixed_point test failed");
 
     // cnl::_impl::fp::arithmetic::intermediate::lhs_type
     static_assert(identical(
-            intermediate<wide_tag, multiply_op, fixed_point<uint8, -4>, fixed_point<uint8, -4>>::lhs_type{0},
+            intermediate<multiply_op, fixed_point<uint8, -4>, fixed_point<uint8, -4>>::lhs_type{0},
             fixed_point<uint8, -4>{0}), "cnl::_impl::fp::arithmetic::intermediate test failed");
     static_assert(identical(
-            intermediate<wide_tag, multiply_op, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::lhs_type{1},
+            intermediate<multiply_op, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::lhs_type{1},
             fixed_point<uint64, 0>{1}), "cnl::fixed_point test failed");
 
     static_assert(identical(
-            intermediate<wide_tag, divide_op, fixed_point<uint8, -1>, fixed_point<uint8, -3>>::lhs_type{15.75},
+            intermediate<divide_op, fixed_point<uint8, -1>, fixed_point<uint8, -3>>::lhs_type{15.75},
             fixed_point<test_unsigned, -9>{15.75}), "cnl::fixed_point test failed");
 #if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
     static_assert(identical(
-            intermediate<wide_tag, divide_op, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::lhs_type{1},
+            intermediate<divide_op, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::lhs_type{1},
             fixed_point<uint64, -32>{1}), "cnl::fixed_point test failed");
 #endif
-
-    static_assert(identical(
-            intermediate<lean_tag, add_op, fixed_point<test_int, 0>, fixed_point<uint8, 10>>::lhs_type{12288},
-            fixed_point<test_int, 0>{12288}), "cnl::_impl::fp::arithmetic::intermediate test failed");
-    static_assert(identical(
-            intermediate<lean_tag, add_op, fixed_point<test_int, 0>, fixed_point<uint8, 10>>::rhs_type{12288},
-            fixed_point<test_int, 0>{12288}), "cnl::_impl::fp::arithmetic::intermediate test failed");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

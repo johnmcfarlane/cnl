@@ -125,8 +125,8 @@ namespace cnl {
     constexpr auto operator/(
             elastic_fixed_point<NumeratorDigits, NumeratorExponent, NumeratorNarrowest> const& numerator,
             elastic_fixed_point<DenominatorDigits, DenominatorExponent, DenominatorNarrowest> const& denominator)
-    -> decltype(_impl::fp::operate<_impl::fp::arithmetic::wide_tag>(numerator, denominator, _impl::divide_tag)) {
-        return _impl::fp::operate<_impl::fp::arithmetic::wide_tag>(numerator, denominator, _impl::divide_tag);
+    -> decltype(_impl::fp::operate(numerator, denominator, _impl::divide_tag)) {
+        return _impl::fp::operate(numerator, denominator, _impl::divide_tag);
     }
 
     template<
@@ -135,8 +135,8 @@ namespace cnl {
     constexpr auto operator/(
             elastic_fixed_point<NumeratorDigits, NumeratorExponent, NumeratorNarrowest> const& numerator,
             elastic_integer<DenominatorDigits, DenominatorNarrowest> const& denominator)
-    -> decltype(_impl::fp::operate<_impl::fp::arithmetic::wide_tag>(numerator, denominator, _impl::divide_tag)) {
-        return _impl::fp::operate<_impl::fp::arithmetic::wide_tag>(numerator, denominator, _impl::divide_tag);
+    -> decltype(_impl::fp::operate(numerator, denominator, _impl::divide_tag)) {
+        return _impl::fp::operate(numerator, denominator, _impl::divide_tag);
     }
 
     template<
@@ -145,8 +145,8 @@ namespace cnl {
     constexpr auto operator/(
             elastic_integer<NumeratorDigits, NumeratorNarrowest> const& numerator,
             elastic_fixed_point<DenominatorDigits, DenominatorExponent, DenominatorNarrowest> const& denominator)
-    -> decltype(_impl::fp::operate<_impl::fp::arithmetic::wide_tag>(numerator, denominator, _impl::divide_tag)) {
-        return _impl::fp::operate<_impl::fp::arithmetic::wide_tag>(numerator, denominator, _impl::divide_tag);
+    -> decltype(_impl::fp::operate(numerator, denominator, _impl::divide_tag)) {
+        return _impl::fp::operate(numerator, denominator, _impl::divide_tag);
     }
 }
 
