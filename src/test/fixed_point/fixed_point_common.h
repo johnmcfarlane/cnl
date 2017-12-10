@@ -545,62 +545,6 @@ namespace test_arithmetic {
             cnl::_impl::binary_operator<cnl::_impl::subtract_op, fixed_point<int32>, cnl::constant<369>>()(
                     fixed_point<int32>{999}, cnl::constant<369>{}), fixed_point<test_int, 0>{630}),
             "cnl::_fixed_point_impl::rep_op_exponent test failed");
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::_fixed_point_impl::result
-
-    using cnl::_impl::fp::arithmetic::result;
-
-    static_assert(identical(
-            result<multiply_op, fixed_point<uint8, -4>, fixed_point<uint8, -4>>::type{0},
-            fixed_point<uint16, -8>{0}), "cnl::_impl::fp::arithmetic::result test failed");
-    static_assert(identical(
-            result<multiply_op, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::type{1},
-            fixed_point<uint64, 0>{1}), "cnl::fixed_point test failed");
-
-    static_assert(identical(
-            result<divide_op, fixed_point<int16, -14>, fixed_point<int8, 0>>::type{1.5},
-            fixed_point<test_int, -21>{1.5}), "cnl::_impl::fp::arithmetic::result test failed");
-    static_assert(identical(
-            result<divide_op, fixed_point<uint8, -1>, fixed_point<uint8, -3>>::type{15.75},
-            fixed_point<test_unsigned, -6>{15.75}), "cnl::fixed_point test failed");
-#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
-    static_assert(identical(
-            result<divide_op, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::type{1},
-            fixed_point<uint64, -32>{1}), "cnl::fixed_point test failed");
-#endif
-
-    // cnl::_impl::fp::arithmetic::result::rep_op_result
-    static_assert(identical(
-            result<multiply_op, fixed_point<uint8, -1>, fixed_point<uint8, -3>>::rep_op_result{65535},
-            test_int{65535}), "cnl::fixed_point test failed");
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::_impl::fp::arithmetic::intermediate
-
-    using cnl::_impl::fp::arithmetic::intermediate;
-
-    // cnl::_impl::fp::arithmetic::intermediate::rep_type
-    static_assert(identical(
-            intermediate<divide_op, fixed_point<uint8, -1>, fixed_point<uint8, -3>>::rep_type{65537},
-            test_unsigned{65537}), "cnl::fixed_point test failed");
-
-    // cnl::_impl::fp::arithmetic::intermediate::lhs_type
-    static_assert(identical(
-            intermediate<multiply_op, fixed_point<uint8, -4>, fixed_point<uint8, -4>>::lhs_type{0},
-            fixed_point<uint8, -4>{0}), "cnl::_impl::fp::arithmetic::intermediate test failed");
-    static_assert(identical(
-            intermediate<multiply_op, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::lhs_type{1},
-            fixed_point<uint64, 0>{1}), "cnl::fixed_point test failed");
-
-    static_assert(identical(
-            intermediate<divide_op, fixed_point<uint8, -1>, fixed_point<uint8, -3>>::lhs_type{15.75},
-            fixed_point<test_unsigned, -9>{15.75}), "cnl::fixed_point test failed");
-#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
-    static_assert(identical(
-            intermediate<divide_op, fixed_point<uint32, 0>, fixed_point<uint32, 0>>::lhs_type{1},
-            fixed_point<uint64, -32>{1}), "cnl::fixed_point test failed");
-#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////

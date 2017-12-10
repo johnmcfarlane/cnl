@@ -25,7 +25,6 @@ set(cnl_implementation_headers
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/fixed_point/operators.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/fixed_point/math.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/fixed_point/type.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/fixed_point/arithmetic.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/fixed_point/common_type.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/fixed_point/extras.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/fixed_point/named.h

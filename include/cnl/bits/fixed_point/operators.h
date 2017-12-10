@@ -10,8 +10,6 @@
 #if !defined(CNL_FIXED_POINT_OPERATORS_H)
 #define CNL_FIXED_POINT_OPERATORS_H 1
 
-#include "arithmetic.h"
-
 /// compositional numeric library
 namespace cnl {
 

@@ -23,8 +23,6 @@ using cnl::make_elastic_fixed_point;
 // if something broke it may show up here first
 
 namespace {
-    using cnl::_impl::fp::arithmetic::intermediate;
-    using cnl::_impl::fp::arithmetic::result;
     using cnl::_impl::shift_left;
     using cnl::_impl::divide_op;
     using cnl::_impl::multiply_op;
@@ -38,23 +36,6 @@ namespace {
     static_assert(shift_left<1, cnl::elastic_integer<32, unsigned>>(0) == 0u, "");
     static_assert(shift_left<1, cnl::elastic_integer<63, int>>(0) == 0, "");
     static_assert(shift_left<1, cnl::elastic_integer<64, unsigned>>(0) == 0u, "");
-
-    static_assert(identical(
-            result<divide_op, fixed_point<elastic_integer<15, int>, 0>, fixed_point<elastic_integer<15, int>, 0>>::type{0},
-            fixed_point<elastic_integer<30, int>, -15>{0}), "cnl::elastic_integer test failed");
-    static_assert(identical(
-            result<divide_op, fixed_point<elastic_integer<16, unsigned>, 0>, fixed_point<elastic_integer<16, unsigned>, 0>>::type{0},
-            fixed_point<elastic_integer<32, unsigned>, -16>{0}), "cnl::elastic_integer test failed");
-    static_assert(identical(
-            result<divide_op, fixed_point<elastic_integer<31, int>, 0>, fixed_point<elastic_integer<31, int>, 0>>::type{0},
-            fixed_point<elastic_integer<62, int>, -31>{0}), "cnl::elastic_integer test failed");
-    static_assert(identical(
-            result<divide_op, fixed_point<elastic_integer<32, unsigned>, 0>, fixed_point<elastic_integer<32, unsigned>, 0>>::type{0},
-            fixed_point<elastic_integer<64, unsigned>, -32>{0}), "cnl::elastic_integer test failed");
-
-    static_assert(identical(
-            intermediate<multiply_op, fixed_point<elastic_integer<27, unsigned int>, -27>, fixed_point<elastic_integer<27, unsigned int>, -27>>::lhs_type{0},
-            fixed_point<elastic_integer<27, unsigned int>, -27>{0}), "cnl::elastic_integer test failed");
 
     static_assert(digits<set_digits_t<elastic_integer<15, uint8_t>, 22>>::value == 22, "cnl::elastic_integer test failed");
 
