@@ -9,6 +9,7 @@
 
 #if defined(__cpp_deduction_guides)
 
+#include <cnl/bits/operators.h>
 #include <cnl/precise_integer.h>
 #include <cnl/num_traits.h>
 #include <cnl/fixed_point.h>
@@ -19,37 +20,45 @@
 
 using cnl::_impl::identical;
 
-namespace {
+namespace cnl {
     // example type, smart_integer, is based off of cnl::elastic_integer
     template<class Rep>
-    struct smart_integer : public cnl::_impl::number_base<smart_integer<Rep>, Rep> {
-        constexpr smart_integer(Rep const& rhs) : cnl::_impl::number_base<smart_integer<Rep>, Rep>{rhs} {}
+    struct smart_integer : public _impl::number_base<smart_integer<Rep>, Rep> {
+        constexpr smart_integer(Rep const& rhs) : _impl::number_base<smart_integer<Rep>, Rep>{rhs} {}
     };
-}
 
-namespace cnl {
+    template<class Rep>
+    struct numeric_limits<smart_integer<Rep>> : numeric_limits<_impl::number_base<smart_integer<Rep>, Rep>> {};
+
     namespace _impl {
         template<class LhsRep, class RhsRep>
-        constexpr auto operate(smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs, subtract_op) {
-            using result_type = cnl::_impl::make_signed_t<decltype(to_rep(lhs)+to_rep(rhs)), true>;
-            return smart_integer(static_cast<result_type>(to_rep(lhs))-static_cast<result_type>(to_rep(rhs)));
+        struct binary_operator<subtract_op, smart_integer<LhsRep>, smart_integer<RhsRep>> {
+            constexpr auto operator()(smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs) const {
+                using result_type = cnl::_impl::make_signed_t<decltype(to_rep(lhs)+to_rep(rhs)), true>;
+                return smart_integer(static_cast<result_type>(to_rep(lhs))-static_cast<result_type>(to_rep(rhs)));
+            }
         };
 
         template<class LhsRep, class RhsRep>
-        constexpr auto operate(smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs, multiply_op) {
-            using result_type = cnl::_impl::make_signed_t<decltype(to_rep(lhs)*to_rep(rhs)), is_signed<LhsRep>::value|is_signed<RhsRep>::value>;
-            return smart_integer(static_cast<result_type>(to_rep(lhs))*static_cast<result_type>(to_rep(rhs)));
+        struct binary_operator<multiply_op, smart_integer<LhsRep>, smart_integer<RhsRep>> {
+            constexpr auto operator()(smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs) const {
+                using result_type = cnl::_impl::make_signed_t<decltype(to_rep(lhs)*to_rep(rhs)), is_signed<LhsRep>::value|is_signed<RhsRep>::value>;
+                return smart_integer(static_cast<result_type>(to_rep(lhs))*static_cast<result_type>(to_rep(rhs)));
+            }
         };
 
         template<class Rep>
-        constexpr auto operate(smart_integer<Rep> const& lhs, smart_integer<Rep> const& rhs, equal_op) {
-            return to_rep(lhs)==to_rep(rhs);
+        struct comparison_operator<equal_op, smart_integer<Rep>, smart_integer<Rep>> {
+            constexpr auto operator()(smart_integer<Rep> const& lhs, smart_integer<Rep> const& rhs) const {
+                return to_rep(lhs)==to_rep(rhs);
+            }
         };
     }
 }
 namespace {
     // example type, fixed_point, is taken directy from cnl::fixed_point
     using cnl::fixed_point;
+    using cnl::smart_integer;
 
     // example type, rounded_integer, is based off of cnl::precise_integer
     template<class Rep>
@@ -106,8 +115,8 @@ namespace {
 
         // from_rep
         using cnl::from_rep;
-        static_assert(identical(7, from_rep<int>()(7)));
-        static_assert(identical(fixed_point<int, -1>{49.5}, from_rep<fixed_point<int, -1>>()(99)));
+        static_assert(identical(7, from_rep<int, int>()(7)));
+        static_assert(identical(fixed_point<int, -1>{49.5}, from_rep<fixed_point<int, -1>, int>()(99)));
 
         // from_value
         using cnl::from_value_t;

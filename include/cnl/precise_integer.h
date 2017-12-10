@@ -97,36 +97,57 @@ namespace cnl {
 
     namespace _impl {
         // for operands with a common tag
-        template<class Operator, class RoundingTag, class LhsRep, class RhsRep, class = enable_if_t<Operator::is_arithmetic>>
-        constexpr auto operate_common_tag(
-                precise_integer<LhsRep, RoundingTag> const& lhs,
-                precise_integer<RhsRep, RoundingTag> const& rhs)
-        -> decltype(from_rep<precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>>(Operator()(to_rep(lhs), to_rep(rhs))))
-        {
-            using result_type = precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>;
-            return from_rep<result_type>(Operator()(to_rep(lhs), to_rep(rhs)));
-        }
-
-        // for arithmetic operands with different policies
-        template<class Operator, class RoundingTag, class LhsRep, class RhsRep, enable_if_t<Operator::is_comparison, int> = 0>
-        constexpr auto operate_common_tag(
-                precise_integer<LhsRep, RoundingTag> const& lhs,
-                precise_integer<RhsRep, RoundingTag> const& rhs)
-        -> decltype(Operator()(to_rep(lhs), to_rep(rhs)))
-        {
-            return Operator()(to_rep(lhs), to_rep(rhs));
-        }
+        template<class Operator, class LhsRep, class RhsRep, class RoundingTag>
+        struct binary_operator<Operator, precise_integer<LhsRep, RoundingTag>, precise_integer<RhsRep, RoundingTag>> {
+            constexpr auto operator()(
+                    precise_integer<LhsRep, RoundingTag> const& lhs,
+                    precise_integer<RhsRep, RoundingTag> const& rhs) const
+            -> decltype(from_rep<precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>>(Operator()(to_rep(lhs), to_rep(rhs))))
+            {
+                using result_type = precise_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>;
+                return from_rep<result_type>(Operator()(to_rep(lhs), to_rep(rhs)));
+            }
+        };
 
         // for arithmetic operands with different policies
         template<class Operator, class LhsRep, class LhsRoundingTag, class RhsRep, class RhsRoundingTag>
-        constexpr auto operate(
-                precise_integer<LhsRep, LhsRoundingTag> const& lhs,
-                precise_integer<RhsRep, RhsRoundingTag> const& rhs,
-                Operator)
-        -> decltype(operate_common_tag<Operator, common_type_t<LhsRoundingTag, RhsRoundingTag>>(lhs, rhs))
-        {
-            return operate_common_tag<Operator, common_type_t<LhsRoundingTag, RhsRoundingTag>>(lhs, rhs);
-        }
+        struct binary_operator<Operator,
+                precise_integer<LhsRep, LhsRoundingTag>, precise_integer<RhsRep, RhsRoundingTag>> {
+            constexpr auto operator()(
+                    precise_integer<LhsRep, LhsRoundingTag> const& lhs,
+                    precise_integer<RhsRep, RhsRoundingTag> const& rhs) const
+            -> decltype(binary_operator<Operator, precise_integer<LhsRep, common_type_t<LhsRoundingTag, RhsRoundingTag>>, precise_integer<LhsRep, common_type_t<LhsRoundingTag, RhsRoundingTag>>>()(lhs, rhs))
+            {
+                using common_tag = common_type_t<LhsRoundingTag, RhsRoundingTag>;
+                return binary_operator<Operator, precise_integer<LhsRep, common_tag>, precise_integer<LhsRep, common_tag>>()(lhs, rhs);
+            }
+        };
+
+        // for arithmetic operands with different policies
+        template<class Operator, class LhsRep, class RhsRep, class RoundingTag>
+        struct comparison_operator<Operator, precise_integer<LhsRep, RoundingTag>, precise_integer<RhsRep, RoundingTag>> {
+        constexpr auto operator()(
+                precise_integer<LhsRep, RoundingTag> const& lhs,
+                precise_integer<RhsRep, RoundingTag> const& rhs) const
+            -> decltype(Operator()(to_rep(lhs), to_rep(rhs)))
+            {
+                return Operator()(to_rep(lhs), to_rep(rhs));
+            }
+        };
+
+        // for operands with different policies
+        template<class Operator, class LhsRep, class LhsRoundingTag, class RhsRep, class RhsRoundingTag>
+        struct comparison_operator<Operator,
+                precise_integer<LhsRep, LhsRoundingTag>, precise_integer<RhsRep, RhsRoundingTag>> {
+            constexpr auto operator()(
+                    precise_integer<LhsRep, LhsRoundingTag> const& lhs,
+                    precise_integer<RhsRep, RhsRoundingTag> const& rhs) const
+            -> decltype(comparison_operator<Operator, precise_integer<LhsRep, common_type_t<LhsRoundingTag, RhsRoundingTag>>, precise_integer<LhsRep, common_type_t<LhsRoundingTag, RhsRoundingTag>>>()(lhs, rhs))
+            {
+                using common_tag = common_type_t<LhsRoundingTag, RhsRoundingTag>;
+                return comparison_operator<Operator, precise_integer<LhsRep, common_tag>, precise_integer<LhsRep, common_tag>>()(lhs, rhs);
+            }
+        };
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -136,9 +157,9 @@ namespace cnl {
     constexpr auto operator<<(
             precise_integer<LhsRep, LhsRoundingTag> const& lhs,
             RhsInteger const& rhs)
-    -> decltype(from_rep<precise_integer<decltype(_impl::to_rep(lhs) << rhs), LhsRoundingTag>>(_impl::to_rep(lhs) << rhs))
+    -> decltype(_impl::from_rep<precise_integer<decltype(_impl::to_rep(lhs) << rhs), LhsRoundingTag>>(_impl::to_rep(lhs) << rhs))
     {
-        return from_rep<precise_integer<
+        return _impl::from_rep<precise_integer<
                 decltype(_impl::to_rep(lhs) << rhs),
                 LhsRoundingTag>>(_impl::to_rep(lhs) << rhs);
     }

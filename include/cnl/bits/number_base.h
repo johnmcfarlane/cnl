@@ -7,13 +7,9 @@
 #if !defined(CNL_NUMBER_BASE_H)
 #define CNL_NUMBER_BASE_H 1
 
-#include "common.h"
-
+#include <cnl/bits/operators.h>
 #include <cnl/constant.h>
 #include <cnl/num_traits.h>
-
-#include <limits>
-#include <type_traits>
 
 namespace cnl {
     namespace _impl {
@@ -58,6 +54,9 @@ namespace cnl {
         struct is_class_derived_from_number_base : std::false_type {};
 
         template<class Derived>
+        struct is_class_derived_from_number_base<const Derived> : is_class_derived_from_number_base<Derived> {};
+
+        template<class Derived>
         struct is_class_derived_from_number_base<
                 Derived,
                 enable_if_t<std::is_base_of<number_base<Derived, typename Derived::rep>, Derived>::value>>
@@ -75,226 +74,157 @@ namespace cnl {
         : is_class_derived_from_number_base<Derived> { };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::enable_if_precedes
-        
-        template<class Former, class Latter>
-        struct precedes {
-            static constexpr bool value =
-                    (std::is_floating_point<Former>::value && !std::is_floating_point<Latter>::value)
-                            || (is_derived_from_number_base<Former>::value &&
-                                    !(is_derived_from_number_base<Latter>::value
-                                            || std::is_floating_point<Latter>::value));
+        // cnl::_impl::depth
+
+        template<class Wrapper, class Rep = cnl::_impl::to_rep_t<Wrapper>>
+        struct depth;
+
+        template<class Wrapper, class Rep>
+        struct depth {
+            static constexpr auto value = depth<Rep>::value + 1;
+        };
+
+        template<class T>
+        struct depth<T, T> : std::integral_constant<int, 0> {};
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::is_wrappable
+
+        template<class Rep, class Wrapper>
+        struct is_wrappable;
+
+        template<class Rep, int RepN, class Wrapper>
+        struct is_wrappable<Rep[RepN], Wrapper> : std::false_type {};
+
+        template<class Rep, class Wrapper, int WrapperN>
+        struct is_wrappable<Rep, Wrapper[WrapperN]> : std::false_type {};
+
+        template<class Rep, class Wrapper>
+        struct is_wrappable : std::integral_constant<bool, cnl::numeric_limits<Rep>::is_specialized
+                        && !std::is_floating_point<Rep>::value
+                        && !std::is_same<from_value_t<Rep, int>, from_value_t<Wrapper, int>>::value
+                        && (depth<Rep>::value < depth<Wrapper>::value)> {};
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::unary_operator
+
+        template<class Operator, class Operand>
+        struct unary_operator<
+                Operator, Operand,
+                enable_if_t<is_derived_from_number_base<Operand>::value>> {
+            constexpr auto operator()(Operand const& rhs) const
+            -> decltype(from_value<Operand>(Operator()(to_rep(rhs))))
+            {
+                return from_value<Operand>(Operator()(to_rep(rhs)));
+            }
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::operate
+        // cnl::_impl::binary_operator
 
         // higher OP number_base<>
-        template<
-                class Operator, class Lhs, class RhsDerived, class RhsRep,
-                enable_if_t <precedes<Lhs, RhsDerived>::value, std::nullptr_t> = nullptr>
-        constexpr auto operate(Lhs const& lhs, number_base<RhsDerived, RhsRep> const& rhs, Operator op)
-        -> decltype(op(lhs, static_cast<Lhs>(static_cast<RhsDerived const&>(rhs))))
-        {
-            return op(lhs, static_cast<Lhs>(static_cast<RhsDerived const&>(rhs)));
-        }
+        template<class Operator, class Lhs, class Rhs>
+        struct binary_operator<
+                Operator, Lhs, Rhs,
+                enable_if_t<std::is_floating_point<Lhs>::value && is_derived_from_number_base<Rhs>::value>> {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(Operator()(lhs, static_cast<Lhs>(rhs)))
+            {
+                return Operator()(lhs, static_cast<Lhs>(rhs));
+            }
+        };
 
         // number_base<> OP higher
-        template<
-                class Operator, class LhsDerived, class LhsRep, class Rhs,
-                enable_if_t <precedes<Rhs, LhsDerived>::value, std::nullptr_t> = nullptr>
-        constexpr auto operate(number_base<LhsDerived, LhsRep> const& lhs, Rhs const& rhs, Operator op)
-        -> decltype(op(static_cast<Rhs>(static_cast<LhsDerived const&>(lhs)), rhs))
-        {
-            return op(static_cast<Rhs>(static_cast<LhsDerived const&>(lhs)), rhs);
-        }
+        template<class Operator, class Lhs, class Rhs>
+        struct binary_operator<
+                Operator, Lhs, Rhs,
+                enable_if_t<is_derived_from_number_base<Lhs>::value && std::is_floating_point<Rhs>::value>> {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(Operator()(static_cast<Rhs>(lhs), rhs))
+            {
+                return Operator()(static_cast<Rhs>(lhs), rhs);
+            }
+        };
 
         // lower OP number_base<>
-        template<
-                class Operator, class Lhs, class RhsDerived, class RhsRep,
-                enable_if_t <precedes<RhsDerived, Lhs>::value, std::nullptr_t> = nullptr>
-        constexpr auto operate(Lhs const& lhs, number_base<RhsDerived, RhsRep> const& rhs, Operator op)
-        -> decltype(op(_impl::from_value<RhsDerived>(lhs), static_cast<RhsDerived const&>(rhs))) {
-            return op(from_value<RhsDerived>(lhs), static_cast<RhsDerived const&>(rhs));
-        }
+        template<class Operator, class Lhs, class Rhs>
+        struct binary_operator<
+                Operator, Lhs, Rhs,
+                enable_if_t<is_wrappable<Lhs, Rhs>::value && is_derived_from_number_base<Rhs>::value>> {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(Operator()(from_value<Rhs>(lhs), rhs)) {
+                return Operator()(from_value<Rhs>(lhs), rhs);
+            }
+        };
 
         // number_base<> OP lower
-        template<
-                class Operator, class LhsDerived, class LhsRep, class Rhs,
-                enable_if_t <precedes<LhsDerived, Rhs>::value, std::nullptr_t> = nullptr>
-        constexpr auto operate(number_base<LhsDerived, LhsRep> const& lhs, Rhs const& rhs, Operator op)
-        -> decltype(op(static_cast<LhsDerived const&>(lhs), from_value<LhsDerived>(rhs)))
-        {
-            return op(static_cast<LhsDerived const&>(lhs), from_value<LhsDerived>(rhs));
-        }
-
-        // unary operate
-        template<class Operator, class RhsDerived, class RhsRep>
-        constexpr auto operate(number_base<RhsDerived, RhsRep> const& rhs, Operator op)
-        -> decltype(_impl::from_value<RhsDerived>(op(_impl::to_rep(rhs))))
-        {
-            return _impl::from_value<RhsDerived>(op(_impl::to_rep(rhs)));
-        }
+        template<class Operator, class Lhs, class Rhs>
+        struct binary_operator<
+                Operator, Lhs, Rhs,
+                enable_if_t<is_derived_from_number_base<Lhs>::value && is_wrappable<Rhs, Lhs>::value>> {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(Operator()(lhs, from_value<Lhs>(rhs)))
+            {
+                return Operator()(lhs, from_value<Lhs>(rhs));
+            }
+        };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::number_base operators
+        // comparison_operator
 
-        // compound assignment
+        // higher OP number_base<>
+        template<class Operator, class Lhs, class Rhs>
+        struct comparison_operator<
+                Operator, Lhs, Rhs,
+                enable_if_t<std::is_floating_point<Lhs>::value && is_derived_from_number_base<Rhs>::value>> {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(Operator()(lhs, static_cast<Lhs>(rhs)))
+            {
+                return Operator()(lhs, static_cast<Lhs>(rhs));
+            }
+        };
 
-        template<class Lhs, class Rhs, class = enable_if_t <is_derived_from_number_base<Lhs>::value>>
-        auto operator+=(Lhs& lhs, Rhs const& rhs)
-        -> decltype(lhs = lhs + rhs)
-        {
-            return lhs = lhs + rhs;
-        }
+        // number_base<> OP higher
+        template<class Operator, class Lhs, class Rhs>
+        struct comparison_operator<
+                Operator, Lhs, Rhs,
+                enable_if_t<is_derived_from_number_base<Lhs>::value && std::is_floating_point<Rhs>::value>> {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(Operator()(static_cast<Rhs>(lhs), rhs))
+            {
+                return Operator()(static_cast<Rhs>(lhs), rhs);
+            }
+        };
 
-        template<class Lhs, class Rhs, class = enable_if_t <is_derived_from_number_base<Lhs>::value>>
-        auto operator-=(Lhs& lhs, Rhs const& rhs)
-        -> decltype(lhs = lhs - rhs)
-        {
-            return lhs = lhs - rhs;
-        }
+        // lower OP number_base<>
+        template<class Operator, class Lhs, class Rhs>
+        struct comparison_operator<
+                Operator, Lhs, Rhs,
+                enable_if_t<is_wrappable<Lhs, Rhs>::value && is_derived_from_number_base<Rhs>::value>> {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(Operator()(from_value<Rhs>(lhs), rhs)) {
+                return Operator()(from_value<Rhs>(lhs), rhs);
+            }
+        };
 
-        template<class Lhs, class Rhs, class = enable_if_t <is_derived_from_number_base<Lhs>::value>>
-        auto operator*=(Lhs& lhs, Rhs const& rhs)
-        -> decltype(lhs = lhs * rhs)
-        {
-            return lhs = lhs * rhs;
-        }
+        // number_base<> OP lower
+        template<class Operator, class Lhs, class Rhs>
+        struct comparison_operator<
+                Operator, Lhs, Rhs,
+                enable_if_t<is_derived_from_number_base<Lhs>::value && is_wrappable<Rhs, Lhs>::value>> {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(Operator()(lhs, from_value<Lhs>(rhs)))
+            {
+                return Operator()(lhs, from_value<Lhs>(rhs));
+            }
+        };
 
-        template<class Lhs, class Rhs, class = enable_if_t <is_derived_from_number_base<Lhs>::value>>
-        auto operator/=(Lhs& lhs, Rhs const& rhs)
-        -> decltype(lhs = lhs / rhs)
-        {
-            return lhs = lhs / rhs;
-        }
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::wants_generic_ops
 
-        template<class Lhs, class Rhs, class = enable_if_t <is_derived_from_number_base<Lhs>::value>>
-        auto operator%=(Lhs& lhs, Rhs const& rhs)
-        -> decltype(lhs = lhs % rhs)
-        {
-            return lhs = lhs % rhs;
-        }
-
-        // unary operators
-
-        template<class RhsDerived, class RhsRep>
-        constexpr auto operator+(number_base<RhsDerived, RhsRep> const& rhs)
-        -> decltype(operate(rhs, plus_tag))
-        {
-            return operate(rhs, plus_tag);
-        }
-
-        template<class RhsDerived, class RhsRep>
-        constexpr auto operator-(number_base<RhsDerived, RhsRep> const& rhs)
-        -> decltype(operate(rhs, minus_tag))
-        {
-            return operate(rhs, minus_tag);
-        }
-
-        // binary arithmetic operators
-
-        template<class Lhs, class Rhs>
-        constexpr auto operator+(Lhs const& lhs, Rhs const& rhs)
-        -> decltype(operate(lhs, rhs, add_tag))
-        {
-            return operate(lhs, rhs, add_tag);
-        }
-
-        template<class Lhs, class Rhs>
-        constexpr auto operator-(Lhs const& lhs, Rhs const& rhs)
-        -> decltype(operate(lhs, rhs, subtract_tag))
-        {
-            return operate(lhs, rhs, subtract_tag);
-        }
-
-        template<class Lhs, class Rhs>
-        constexpr auto operator*(Lhs const& lhs, Rhs const& rhs)
-        -> decltype(operate(lhs, rhs, multiply_tag))
-        {
-            return operate(lhs, rhs, multiply_tag);
-        }
-
-        template<class Lhs, class Rhs>
-        constexpr auto operator/(Lhs const& lhs, Rhs const& rhs)
-        -> decltype(operate(lhs, rhs, divide_tag))
-        {
-            return operate(lhs, rhs, divide_tag);
-        }
-
-        template<class Lhs, class Rhs>
-        constexpr auto operator%(Lhs const& lhs, Rhs const& rhs)
-        -> decltype(operate(lhs, rhs, modulo_tag))
-        {
-            return operate(lhs, rhs, modulo_tag);
-        }
-
-        // binary bitwise logic operators
-        
-        template<class Lhs, class Rhs>
-        constexpr auto operator|(Lhs const& lhs, Rhs const& rhs)
-        -> decltype(operate(lhs, rhs, bitwise_or_tag))
-        {
-            return operate(lhs, rhs, bitwise_or_tag);
-        }
-        
-        template<class Lhs, class Rhs>
-        constexpr auto operator&(Lhs const& lhs, Rhs const& rhs)
-        -> decltype(operate(lhs, rhs, bitwise_and_tag))
-        {
-            return operate(lhs, rhs, bitwise_and_tag);
-        }
-        
-        template<class Lhs, class Rhs>
-        constexpr auto operator^(Lhs const& lhs, Rhs const& rhs)
-        -> decltype(operate(lhs, rhs, bitwise_xor_tag))
-        {
-            return operate(lhs, rhs, bitwise_xor_tag);
-        }
-
-        // comparison operator
-
-        template<class Lhs, class Rhs>
-        constexpr auto operator==(Lhs const& lhs, Rhs const& rhs)
-        -> decltype(operate(lhs, rhs, equal_tag))
-        {
-            return operate(lhs, rhs, equal_tag);
-        }
-
-        template<class Lhs, class Rhs>
-        constexpr auto operator!=(Lhs const& lhs, Rhs const& rhs)
-        -> decltype(operate(lhs, rhs, not_equal_tag))
-        {
-            return operate(lhs, rhs, not_equal_tag);
-        }
-
-        template<class Lhs, class Rhs>
-        constexpr auto operator<(Lhs const& lhs, Rhs const& rhs)
-        -> decltype(operate(lhs, rhs, less_than_tag))
-        {
-            return operate(lhs, rhs, less_than_tag);
-        }
-
-        template<class Lhs, class Rhs>
-        constexpr auto operator>(Lhs const& lhs, Rhs const& rhs)
-        -> decltype(operate(lhs, rhs, greater_than_tag))
-        {
-            return operate(lhs, rhs, greater_than_tag);
-        }
-
-        template<class Lhs, class Rhs>
-        constexpr auto operator<=(Lhs const& lhs, Rhs const& rhs)
-        -> decltype(operate(lhs, rhs, less_than_or_equal_tag))
-        {
-            return operate(lhs, rhs, less_than_or_equal_tag);
-        }
-
-        template<class Lhs, class Rhs>
-        constexpr auto operator>=(Lhs const& lhs, Rhs const& rhs)
-        -> decltype(operate(lhs, rhs, greater_than_or_equal_tag))
-        {
-            return operate(lhs, rhs, greater_than_or_equal_tag);
-        }
+        template<class Number>
+        struct wants_generic_ops<Number, _impl::enable_if_t<_impl::is_derived_from_number_base<Number>::value>> : std::true_type {
+        };
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -344,6 +274,10 @@ namespace cnl {
             return number._rep;
         }
     };
+
+    template<class Derived, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct from_rep<Derived, constant<Value>, _impl::enable_if_t<_impl::is_derived_from_number_base<Derived>::value>>
+    : from_rep<_impl::number_base<Derived, typename Derived::rep>, ::cnl::intmax> {};
 
     template<class Derived, class Rep>
     struct scale<_impl::number_base<Derived, Rep>> {

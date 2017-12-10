@@ -10,7 +10,8 @@
 #if !defined(CNL_OVERFLOW_H)
 #define CNL_OVERFLOW_H
 
-#include "bits/common.h"
+#include "numeric.h"
+#include "cnl/bits/operators.h"
 #include "bits/encompasses.h"
 
 #if defined(CNL_EXCEPTIONS_ENABLED)
@@ -124,10 +125,13 @@ namespace cnl {
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        // operate
+        // operators
 
         template<class OverflowTag, class Operator, class Enable = void>
-        struct operate;
+        struct binary_operator;
+
+        template<class OverflowTag, class Operator, class Enable = void>
+        struct comparison_operator;
     }
 
     template<class Result, class Input>
@@ -169,7 +173,7 @@ namespace cnl {
     // implementation details
     namespace _overflow_impl {
         template<>
-        struct operate<native_overflow_tag, _impl::add_op> {
+        struct binary_operator<native_overflow_tag, _impl::add_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs+rhs)
@@ -179,7 +183,7 @@ namespace cnl {
         };
 
         template<>
-        struct operate<throwing_overflow_tag, _impl::add_op> {
+        struct binary_operator<throwing_overflow_tag, _impl::add_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs+rhs)
@@ -196,7 +200,7 @@ namespace cnl {
         };
 
         template<>
-        struct operate<saturated_overflow_tag, _impl::add_op> {
+        struct binary_operator<saturated_overflow_tag, _impl::add_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> _impl::op_result<_impl::add_op, Lhs, Rhs>
@@ -214,7 +218,7 @@ namespace cnl {
     constexpr auto add(OverflowTag, Lhs const& lhs, Rhs const& rhs)
     -> decltype(lhs+rhs)
     {
-        return for_rep<decltype(lhs+rhs)>(_overflow_impl::operate<OverflowTag, _impl::add_op>(), lhs, rhs);
+        return for_rep<decltype(lhs+rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::add_op>(), lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -223,7 +227,7 @@ namespace cnl {
     // implementation details
     namespace _overflow_impl {
         template<>
-        struct operate<native_overflow_tag, _impl::subtract_op> {
+        struct binary_operator<native_overflow_tag, _impl::subtract_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs-rhs)
@@ -233,7 +237,7 @@ namespace cnl {
         };
 
         template<>
-        struct operate<throwing_overflow_tag, _impl::subtract_op> {
+        struct binary_operator<throwing_overflow_tag, _impl::subtract_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs-rhs)
@@ -250,7 +254,7 @@ namespace cnl {
         };
 
         template<>
-        struct operate<saturated_overflow_tag, _impl::subtract_op> {
+        struct binary_operator<saturated_overflow_tag, _impl::subtract_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> _impl::op_result<_impl::subtract_op, Lhs, Rhs>
@@ -268,7 +272,7 @@ namespace cnl {
     constexpr auto subtract(OverflowTag, Lhs const& lhs, Rhs const& rhs)
     -> decltype(lhs-rhs)
     {
-        return for_rep<decltype(lhs-rhs)>(_overflow_impl::operate<OverflowTag, _impl::subtract_op>(), lhs, rhs);
+        return for_rep<decltype(lhs-rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::subtract_op>(), lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -277,7 +281,7 @@ namespace cnl {
     // implementation details
     namespace _overflow_impl {
         template<>
-        struct operate<native_overflow_tag, _impl::multiply_op> {
+        struct binary_operator<native_overflow_tag, _impl::multiply_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs*rhs)
@@ -296,7 +300,7 @@ namespace cnl {
         }
 
         template<>
-        struct operate<throwing_overflow_tag, _impl::multiply_op> {
+        struct binary_operator<throwing_overflow_tag, _impl::multiply_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs*rhs)
@@ -308,7 +312,7 @@ namespace cnl {
         };
 
         template<>
-        struct operate<saturated_overflow_tag, _impl::multiply_op> {
+        struct binary_operator<saturated_overflow_tag, _impl::multiply_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> _impl::op_result<_impl::multiply_op, Lhs, Rhs>
@@ -327,7 +331,7 @@ namespace cnl {
     constexpr auto multiply(OverflowTag, Lhs const& lhs, Rhs const& rhs)
     -> decltype(lhs*rhs)
     {
-        return for_rep<decltype(lhs*rhs)>(_overflow_impl::operate<OverflowTag, _impl::multiply_op>(), lhs, rhs);
+        return for_rep<decltype(lhs*rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::multiply_op>(), lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -336,7 +340,7 @@ namespace cnl {
     // implementation details
     namespace _overflow_impl {
         template<class OverflowTag>
-        struct operate<OverflowTag, _impl::divide_op> {
+        struct binary_operator<OverflowTag, _impl::divide_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs/rhs)
@@ -346,14 +350,90 @@ namespace cnl {
         };
     }
 
+    // cnl::divide not actually needed
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::shift_right
+
+    // implementation details
+    namespace _overflow_impl {
+        template<class OverflowTag>
+        struct binary_operator<OverflowTag, _impl::shift_right_op> {
+            template<class Lhs, class Rhs>
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(lhs>>rhs)
+            {
+                return lhs>>rhs;
+            }
+        };
+    }
+
+    // cnl::shift_right not actually needed
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::shift_left
+
+    // implementation details
+    namespace _overflow_impl {
+        template<class Lhs, class Rhs>
+        constexpr bool is_shift_left_overflow(Lhs const& lhs, Rhs const& rhs)
+        {
+            using result_type = decltype(lhs<<rhs);
+            return rhs>0 && unsigned(cnl::leading_bits(static_cast<result_type>(lhs)))<unsigned(rhs);
+        }
+
+        template<>
+        struct binary_operator<native_overflow_tag, _impl::shift_left_op> {
+            template<class Lhs, class Rhs>
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(lhs<<rhs)
+            {
+                return lhs<<rhs;
+            }
+        };
+
+        template<>
+        struct binary_operator<throwing_overflow_tag, _impl::shift_left_op> {
+            template<class Lhs, class Rhs>
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(lhs<<rhs)
+            {
+                return _overflow_impl::return_if(
+                        !is_shift_left_overflow(lhs, rhs),
+                        lhs<<rhs, "overflow in shift left");
+            }
+        };
+
+        template<>
+        struct binary_operator<saturated_overflow_tag, _impl::shift_left_op> {
+            template<class Lhs, class Rhs>
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> _impl::op_result<_impl::shift_left_op, Lhs, Rhs>
+            {
+                using result_type = decltype(lhs<<rhs);
+                return is_shift_left_overflow(lhs, rhs)
+                       ? ((lhs>0) ^ (rhs>0))
+                         ? numeric_limits<result_type>::lowest()
+                         : numeric_limits<result_type>::max()
+                       : lhs<<rhs;
+            }
+        };
+    }
+
+    template<class OverflowTag, class Lhs, class Rhs>
+    constexpr auto shift_left(OverflowTag, Lhs const& lhs, Rhs const& rhs)
+    -> decltype(lhs<<rhs)
+    {
+        return for_rep<decltype(lhs<<rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::shift_left_op>(), lhs, rhs);
+    }
+
     ////////////////////////////////////////////////////////////////////////////////
     // comparison
 
     // implementation details
     namespace _overflow_impl {
         template<class Operator>
-        struct operate<native_overflow_tag, Operator,
-                _impl::enable_if_t<Operator::is_comparison>> {
+        struct comparison_operator<native_overflow_tag, Operator> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         -> decltype(Operator()(lhs, rhs))
@@ -363,8 +443,7 @@ namespace cnl {
         };
 
         template<class Operator>
-        struct operate<throwing_overflow_tag, Operator,
-                _impl::enable_if_t<Operator::is_comparison>> {
+        struct comparison_operator<throwing_overflow_tag, Operator> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> _impl::op_result<Operator, Lhs, Rhs>
@@ -374,8 +453,7 @@ namespace cnl {
         };
 
         template<class Operator>
-        struct operate<saturated_overflow_tag, Operator,
-                _impl::enable_if_t<Operator::is_comparison>> {
+        struct comparison_operator<saturated_overflow_tag, Operator> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> _impl::op_result<Operator, Lhs, Rhs>

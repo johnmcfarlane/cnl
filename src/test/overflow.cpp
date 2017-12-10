@@ -216,14 +216,18 @@ namespace {
         static_assert(identical(add(native_overflow, UINT32_C(0xFFFFFFFF), UINT32_C(0x12345678)), UINT32_C(0xFFFFFFFF)+UINT32_C(0x12345678)), "cnl::add test failed");
 
         // subtract
-        static_assert(identical(cnl::_overflow_impl::operate<cnl::native_overflow_tag, cnl::_impl::subtract_op>()(INT8_C(0), INT8_C(0)), 0), "cnl::subtract test failed");
+        static_assert(identical(
+                cnl::_overflow_impl::binary_operator<cnl::native_overflow_tag, cnl::_impl::subtract_op>()(INT8_C(0),
+                        INT8_C(0)), 0), "cnl::subtract test failed");
         static_assert(identical(subtract(native_overflow, INT8_C(0), INT8_C(0)), 0), "cnl::subtract test failed");
 
         // multiply
         static_assert(identical(multiply(native_overflow, UINT16_C(576), INT32_C(22)), decltype(UINT16_C(576)*INT32_C(22)){12672}), "cnl::multiply test failed");
 
         // compare
-        static_assert(cnl::_overflow_impl::operate<cnl::native_overflow_tag, cnl::_impl::less_than_op>()(-1, 1u) == (-1 < 1u), "cnl::_overflow_impl::operate test failed");
+        static_assert(
+                cnl::_overflow_impl::comparison_operator<cnl::native_overflow_tag, cnl::_impl::less_than_op>()(-1, 1u)
+                        ==(-1<1u), "cnl::_overflow_impl::operate test failed");
     }
 
     namespace test_throwing_overflow {
@@ -263,7 +267,9 @@ namespace {
                 cnl::numeric_limits<int32_t>::max()), "cnl::multiply test failed");
 
         // compare
-        static_assert(cnl::_overflow_impl::operate<cnl::saturated_overflow_tag, cnl::_impl::less_than_op>()(-1, 1u), "cnl::_overflow_impl::operate test failed");
+        static_assert(
+                cnl::_overflow_impl::comparison_operator<cnl::saturated_overflow_tag, cnl::_impl::less_than_op>()(-1,
+                        1u), "cnl::_overflow_impl::operate test failed");
         static_assert(identical(convert<short>(saturated_overflow, cnl::numeric_limits<double>::max()),
                                 cnl::numeric_limits<short>::max()), "cnl::convert test failed");
     }

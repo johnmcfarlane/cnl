@@ -33,7 +33,7 @@ namespace design_decisions {
         using cnl::from_rep;
         using cnl::to_rep;
 
-        constexpr auto a = from_rep<fixed_point<int, -8>>()(320);
+        constexpr auto a = from_rep<fixed_point<int, -8>, int>()(320);
         static_assert(a == 1.25);
 
         constexpr auto b = to_rep<fixed_point<int, -8>>()(a);

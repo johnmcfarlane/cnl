@@ -163,7 +163,8 @@ namespace cnl {
         }
 
         /// creates an instance given the underlying representation value
-        friend struct from_rep<fixed_point<rep, exponent>>;
+        template<class, class, class>
+        friend struct from_rep;
 
     private:
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
@@ -196,6 +197,7 @@ namespace cnl {
     // cnl::fixed_point::fixed_point deduction guides
 
 #if defined(__cpp_deduction_guides)
+    // same as from_value
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     fixed_point(::cnl::constant<Value>)
     -> fixed_point<set_digits_t<int, _impl::max(digits<int>::value, used_bits(Value)-trailing_bits(Value))>, trailing_bits(Value)>;
@@ -344,12 +346,11 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_rep<fixed_point<>> specialization
 
-    template<class Rep, int Exponent>
-    struct from_rep<fixed_point<Rep, Exponent>> {
-        template<class Integer>
+    template<class Rep, int Exponent, class Integer>
+    struct from_rep<fixed_point<Rep, Exponent>, Integer> {
         constexpr auto operator()(Integer const& rep) const
         -> fixed_point<Integer, Exponent> {
-            return fixed_point<Rep, Exponent>(rep, 0);
+            return fixed_point<Integer, Exponent>(rep, 0);
         }
     };
 }

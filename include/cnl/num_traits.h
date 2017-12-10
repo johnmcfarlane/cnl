@@ -297,14 +297,16 @@ namespace cnl {
         -> decltype(cnl::to_rep<Number>()(number)) {
             return cnl::to_rep<Number>()(number);
         }
+
+        template<class Number>
+        using to_rep_t = decltype(to_rep(std::declval<Number>()));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_rep
 
-    template<class Number, class Enable = void>
+    template<class Number, class Rep, class Enable = void>
     struct from_rep {
-        template<class Rep>
         constexpr Number operator()(Rep const& rep) const {
             // by default, a number type's rep type is the number type itself
             return static_cast<Number>(rep);
@@ -314,8 +316,8 @@ namespace cnl {
     namespace _impl {
         template<class Number, class Rep>
         constexpr auto from_rep(Rep const& rep)
-        -> decltype(cnl::from_rep<Number>()(rep)) {
-            return cnl::from_rep<Number>()(rep);
+        -> decltype(cnl::from_rep<Number, Rep>()(rep)) {
+            return cnl::from_rep<Number, Rep>()(rep);
         }
     }
 
@@ -343,7 +345,7 @@ namespace cnl {
     struct from_value;
 
     template<class Number, class Value>
-    struct from_value<Number, Value, _impl::enable_if_t<std::is_integral<Number>::value>> {
+    struct from_value<Number, Value> {
         using type = Number;
     };
 

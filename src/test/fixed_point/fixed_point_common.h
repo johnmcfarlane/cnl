@@ -293,15 +293,22 @@ namespace test_to_rep {
     static_assert(identical(to_rep(fixed_point<test_int>{97531}), test_int{97531}), "cnl::to_rep");
     static_assert(identical(to_rep(fixed_point<uint8>{199}), uint8{199}), "cnl::to_rep");
 }
+
 namespace test_from_rep {
     using cnl::_impl::from_rep;
 
+    static_assert(! cnl::from_rep<cnl::fixed_point<unsigned int, -33>, int>()(0), "from_rep");
     static_assert(identical(from_rep<fixed_point<>>(test_int{0}), fixed_point<>{0}), "from_rep");
     static_assert(identical(from_rep<fixed_point<int16, -10>>(int16{3072}), fixed_point<int16, -10>{test_int{3}}), "from_rep");
     static_assert(!from_rep<fixed_point<test_int, -100>>(test_int{0}), "from_rep");
     static_assert(from_rep<fixed_point<test_int, -100>>(test_int{1}), "from_rep");
     static_assert(!from_rep<fixed_point<test_int, 1000>>(test_int{0}), "from_rep");
     static_assert(from_rep<fixed_point<test_int, 1000>>(test_int{1}), "from_rep");
+}
+
+namespace test_from_rep {
+    static_assert(identical(cnl::_impl::from_value<fixed_point<int32>>(cnl::constant<369>{}), fixed_point<int>{369}),
+            "cnl::_impl::from_value<fixed_point<>>");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -526,13 +533,21 @@ static_assert(is_same<
 ////////////////////////////////////////////////////////////////////////////////
 // fixed-point arithmetic support types
 
-namespace test_operate {
+namespace test_arithmetic {
     using cnl::_impl::add_op;
     using cnl::_impl::multiply_op;
     using cnl::_impl::divide_op;
 
     using cnl::_impl::fp::arithmetic::wide_tag;
     using cnl::_impl::fp::arithmetic::lean_tag;
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::_fixed_point_impl::rep_op_exponent
+
+    static_assert(identical(
+            cnl::_impl::binary_operator<cnl::_impl::subtract_op, fixed_point<int32>, cnl::constant<369>>()(
+                    fixed_point<int32>{999}, cnl::constant<369>{}), fixed_point<test_int, 0>{630}),
+            "cnl::_fixed_point_impl::rep_op_exponent test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::_fixed_point_impl::rep_op_exponent
@@ -830,23 +845,24 @@ static_assert(identical(divide(fixed_point<uint32, 0>{0xFFFE0001LL}, fixed_point
 
 namespace test_bitshift {
     // dynamic
-    static_assert(identical(fixed_point<int, -4>{2}, fixed_point<uint8_t, -4>{1} << 1), "bitshift test failed");
-    static_assert(identical(fixed_point<int, -4>{.5}, fixed_point<uint8_t, -4>{1} >> 1), "bitshift test failed");
+    static_assert(identical(fixed_point<test_int, -4>{2}, fixed_point<uint8, -4>{1} << 1), "bitshift test failed");
+    static_assert(identical(fixed_point<test_int, -4>{.5}, fixed_point<uint8, -4>{1} >> 1), "bitshift test failed");
+    static_assert(identical(fixed_point<test_int, -4>{2}, fixed_point<uint8, -4>{1} << fixed_point<>{1}), "bitshift test failed");
 
     // cnl::constant
-    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} << cnl::constant<1>{}), "bitshift test failed");
-    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} << cnl::constant<-1>{}), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -3>{2}, fixed_point<uint8, -4>{1} << cnl::constant<1>{}), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -5>{.5}, fixed_point<uint8, -4>{1} << cnl::constant<-1>{}), "bitshift test failed");
 
-    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} >> cnl::constant<1>{}), "bitshift test failed");
-    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} >> cnl::constant<-1>{}), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -5>{.5}, fixed_point<uint8, -4>{1} >> cnl::constant<1>{}), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -3>{2}, fixed_point<uint8, -4>{1} >> cnl::constant<-1>{}), "bitshift test failed");
 
     // const_integer
     using namespace cnl::literals;
-    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} << 1_c), "bitshift test failed");
-    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} << -1_c), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -3>{2}, fixed_point<uint8, -4>{1} << 1_c), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -5>{.5}, fixed_point<uint8, -4>{1} << -1_c), "bitshift test failed");
 
-    static_assert(identical(fixed_point<uint8_t, -5>{.5}, fixed_point<uint8_t, -4>{1} >> 1_c), "bitshift test failed");
-    static_assert(identical(fixed_point<uint8_t, -3>{2}, fixed_point<uint8_t, -4>{1} >> -1_c), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -5>{.5}, fixed_point<uint8, -4>{1} >> 1_c), "bitshift test failed");
+    static_assert(identical(fixed_point<uint8, -3>{2}, fixed_point<uint8, -4>{1} >> -1_c), "bitshift test failed");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
