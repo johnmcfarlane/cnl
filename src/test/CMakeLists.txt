@@ -22,7 +22,7 @@ add_executable(fp_test
         papers/p0675.cpp
         papers/p0827.cpp
         cppnow2017.cpp
-        elastic/precise/safe/precise_safe_elastic_integer.cpp
+        elastic/precise/overflow_int/precise_safe_int.cpp
         index.cpp
         limits.cpp
         num_traits.cpp
@@ -30,19 +30,19 @@ add_executable(fp_test
         safft.cpp
         zero_cost_free_functions.cpp
         zero_cost_square.cpp
-        fixed_point/elastic/precise/safe/precise_safe_elastic_fixed_point.cpp
+        fixed_point/elastic/precise/overflow_int/precise_safe_fixed_point.cpp
         snippets.cpp
         zero_cost_average.cpp
         numeric.cpp
         elastic/elastic_integer.cpp
         number_test.cpp
         precise/precise_integer.cpp
-        fixed_point/safe/fixed_point_native_integer.cpp
-        fixed_point/safe/fixed_point_throwing_integer.cpp
-        fixed_point/safe/fixed_point_saturated_integer.cpp
+        fixed_point/overflow_int/fixed_point_native_integer.cpp
+        fixed_point/overflow_int/fixed_point_throwing_integer.cpp
+        fixed_point/overflow_int/fixed_point_saturated_integer.cpp
         fixed_point/fixed_point_built_in.cpp
-        safe/elastic/safe_elastic_integer.cpp
-        safe/safe_integer.cpp
+        overflow_int/elastic/safe_int.cpp
+        overflow_int/overflow_int.cpp
         fixed_point/p0037.cpp
         cppcon2017.cpp
         fixed_point/elastic/make_elastic_fixed_point.cpp
@@ -180,11 +180,11 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL
 
     set_source_files_properties(
             cppcon2017.cpp
-            fixed_point/safe/fixed_point_saturated_integer.cpp
+            fixed_point/overflow_int/fixed_point_saturated_integer.cpp
             PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-strict-overflow")
 
     set_source_files_properties(
-            safe/safe_integer.cpp
+            overflow_int/overflow_int.cpp
             PROPERTIES COMPILE_FLAGS "-Wno-sign-compare")
 
     set_source_files_properties(

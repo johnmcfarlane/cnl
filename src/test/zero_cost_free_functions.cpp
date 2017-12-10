@@ -8,7 +8,7 @@
 /// \brief Demonstration of selectively applying functions to numbers.
 
 #include <cnl/precise_integer.h>
-#include <cnl/safe_integer.h>
+#include <cnl/overflow_int.h>
 
 using namespace cnl;
 
@@ -17,20 +17,20 @@ template<
         class Rep = int,
         class RoundingTag = closest_rounding_tag,
         class OverflowTag = throwing_overflow_tag>
-using precise_safe_integer = safe_integer<precise_integer<Rep, RoundingTag>, OverflowTag>;
+using precise_overflow_int = overflow_int<precise_integer<Rep, RoundingTag>, OverflowTag>;
 
 static_assert(identical(
-        precise_safe_integer<>{2} * precise_safe_integer<>{3},
-        precise_safe_integer<>{6}), "");
+        precise_overflow_int<>{2} * precise_overflow_int<>{3},
+        precise_overflow_int<>{6}), "");
 
 static_assert(identical(
-        multiply(saturated_overflow, precise_safe_integer<>{INT_MAX}, precise_safe_integer<>{INT_MAX}),
-        precise_safe_integer<>{INT_MAX}), "");
+        multiply(saturated_overflow, precise_overflow_int<>{INT_MAX}, precise_overflow_int<>{INT_MAX}),
+        precise_overflow_int<>{INT_MAX}), "");
 
 int bare_saturate(int a, int b) {
     return multiply(saturated_overflow, a, b);
 }
 
-precise_safe_integer<> psi_saturate(precise_safe_integer<> a, precise_safe_integer<> b) {
+precise_overflow_int<> psi_saturate(precise_overflow_int<> a, precise_overflow_int<> b) {
     return multiply(saturated_overflow, a, b);
 }

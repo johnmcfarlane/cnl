@@ -143,16 +143,16 @@ namespace m {
 }
 
 #if (__cplusplus > 201700)
-#include <cnl/safe_integer.h>
-using cnl::safe_integer;
+#include <cnl/overflow_int.h>
+using cnl::overflow_int;
 namespace n {
-    constexpr auto i = safe_integer<uint8_t>{255};
+    constexpr auto i = overflow_int<uint8_t>{255};
 
     constexpr auto j = i + 1;
-    static_assert(cnl::_impl::identical(safe_integer<int>{256}, j));
+    static_assert(cnl::_impl::identical(overflow_int<int>{256}, j));
 
-//    constexpr safe_integer<uint8_t> k = i + 1;
-//    static_assert(cnl::_impl::identical(safe_integer<int>{256}, k));
+//    constexpr overflow_int<uint8_t> k = i + 1;
+//    static_assert(cnl::_impl::identical(overflow_int<int>{256}, k));
 }
 #endif
 

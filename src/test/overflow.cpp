@@ -28,7 +28,7 @@ namespace {
 
     namespace test_impl {
         using namespace cnl::_overflow_impl;
-        
+
         ////////////////////////////////////////////////////////////////////////////////
         // positive_digits
 
@@ -185,23 +185,39 @@ namespace {
         static_assert(!is_negative_overflow<uint16_t, int16_t>(32767),
                 "cnl::_integer_impl::is_negative_overflow test failed");
 
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(2000000000, 2), "safe_elastic_integer operator*");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(21, 2), "safe_elastic_integer operator*");
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(-2000000000, 2), "safe_elastic_integer operator*");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(-21, 2), "safe_elastic_integer operator*");
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(2000000000, -2), "safe_elastic_integer operator*");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(21, -2), "safe_elastic_integer operator*");
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(-2000000000, -2), "safe_elastic_integer operator*");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(-21, -2), "safe_elastic_integer operator*");
+        static_assert(cnl::_overflow_impl::is_multiply_overflow(2000000000, 2),
+                      "cnl::_overflow_impl::is_multiply_overflow");
+        static_assert(!cnl::_overflow_impl::is_multiply_overflow(21, 2),
+                      "cnl::_overflow_impl::is_multiply_overflow");
+        static_assert(cnl::_overflow_impl::is_multiply_overflow(-2000000000, 2),
+                      "cnl::_overflow_impl::is_multiply_overflow");
+        static_assert(!cnl::_overflow_impl::is_multiply_overflow(-21, 2),
+                      "cnl::_overflow_impl::is_multiply_overflow");
+        static_assert(cnl::_overflow_impl::is_multiply_overflow(2000000000, -2),
+                      "cnl::_overflow_impl::is_multiply_overflow");
+        static_assert(!cnl::_overflow_impl::is_multiply_overflow(21, -2),
+                      "cnl::_overflow_impl::is_multiply_overflow");
+        static_assert(cnl::_overflow_impl::is_multiply_overflow(-2000000000, -2),
+                      "cnl::_overflow_impl::is_multiply_overflow");
+        static_assert(!cnl::_overflow_impl::is_multiply_overflow(-21, -2),
+                      "cnl::_overflow_impl::is_multiply_overflow");
 
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(2, 2000000000), "safe_elastic_integer operator*");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(2, 21), "safe_elastic_integer operator*");
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(2, -2000000000), "safe_elastic_integer operator*");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(2, -21), "safe_elastic_integer operator*");
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(-2, 2000000000), "safe_elastic_integer operator*");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(-2, 21), "safe_elastic_integer operator*");
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(-2, -2000000000), "safe_elastic_integer operator*");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(-2, -21), "safe_elastic_integer operator*");
+        static_assert(cnl::_overflow_impl::is_multiply_overflow(2, 2000000000),
+                      "cnl::_overflow_impl::is_multiply_overflow");
+        static_assert(!cnl::_overflow_impl::is_multiply_overflow(2, 21),
+                      "cnl::_overflow_impl::is_multiply_overflow");
+        static_assert(cnl::_overflow_impl::is_multiply_overflow(2, -2000000000),
+                      "cnl::_overflow_impl::is_multiply_overflow");
+        static_assert(!cnl::_overflow_impl::is_multiply_overflow(2, -21),
+                      "cnl::_overflow_impl::is_multiply_overflow");
+        static_assert(cnl::_overflow_impl::is_multiply_overflow(-2, 2000000000),
+                      "cnl::_overflow_impl::is_multiply_overflow");
+        static_assert(!cnl::_overflow_impl::is_multiply_overflow(-2, 21),
+                      "cnl::_overflow_impl::is_multiply_overflow");
+        static_assert(cnl::_overflow_impl::is_multiply_overflow(-2, -2000000000),
+                      "cnl::_overflow_impl::is_multiply_overflow");
+        static_assert(!cnl::_overflow_impl::is_multiply_overflow(-2, -21),
+                      "cnl::_overflow_impl::is_multiply_overflow");
     }
 
     namespace test_native_overflow {

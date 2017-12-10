@@ -5,5 +5,5 @@
 #include <cnl/num_traits.h>
 #include <cnl/numeric.h>
 #include <cnl/overflow.h>
+#include <cnl/overflow_int.h>
 #include <cnl/precise_integer.h>
-#include <cnl/safe_integer.h>

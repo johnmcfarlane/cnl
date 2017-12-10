@@ -21,6 +21,7 @@ INPUT = \
     ../include/cnl/limits.h \
     ../include/cnl/precise_integer.h \
     ../include/cnl/overflow.h \
+    ../include/cnl/overflow_int.h \
     ../include/cnl/numeric.h \
     ../include/cnl/num_traits.h \
     ../include/cnl/bits/fixed_point_make.h \
@@ -42,7 +43,6 @@ INPUT = \
     ../include/cnl/bits/elastic_fixed_point.h \
     ../include/cnl/auxiliary/boost.multiprecision.h \
     ../include/cnl/auxiliary/boost.simd.h \
-    ../include/cnl/safe_integer.h \
     index.md
 EXCLUDE_SYMBOLS = \
  cnl::_*
