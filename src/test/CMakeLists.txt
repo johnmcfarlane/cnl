@@ -30,7 +30,7 @@ add_executable(fp_test
         safft.cpp
         zero_cost_free_functions.cpp
         zero_cost_square.cpp
-        fixed_point/elastic/precise/safe/precise_safe_elastic_fixed_point.cpp
+        fixed_point/elastic/precise/overflow_int/precise_safe_fixed_point.cpp
         snippets.cpp
         zero_cost_average.cpp
         numeric.cpp

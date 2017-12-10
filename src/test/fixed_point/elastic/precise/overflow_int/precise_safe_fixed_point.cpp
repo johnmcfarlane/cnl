@@ -10,14 +10,14 @@
 #include <cnl/overflow_int.h>
 
 namespace cnl {
-    // precise safe elastic fixed-point
+    // precise safe fixed-point
     template<
             int IntegerDigits,
             int FractionalDigits = 0,
             class OverflowTag = overflow_int<>::overflow_tag,
             class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int>
-    using psefp = fixed_point<
+    using psfp = fixed_point<
             elastic_integer<
                     IntegerDigits+FractionalDigits,
                     precise_integer<
@@ -36,11 +36,11 @@ namespace cnl {
             class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int,
             class Input = int>
-    psefp<
+    psfp<
             numeric_limits<Input>::digits, 0,
             OverflowTag, RoundingTag,
             Narrowest>
-    constexpr make_psefp(Input const& input)
+    constexpr make_psfp(Input const& input)
     {
         return input;
     }
@@ -51,19 +51,19 @@ namespace cnl {
             class Narrowest = int,
             class Input = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    psefp<
+    psfp<
             used_bits(Value), -trailing_bits(Value),
             OverflowTag, RoundingTag,
             Narrowest>
-    constexpr make_psefp(constant<Value> const&)
+    constexpr make_psfp(constant<Value> const&)
     {
         return Value;
     }
 }
 
 namespace {
-    using cnl::make_psefp;
-    using cnl::psefp;
+    using cnl::make_psfp;
+    using cnl::psfp;
     using std::is_same;
     using cnl::_impl::identical;
 
@@ -73,17 +73,17 @@ namespace {
         using cnl::elastic_integer;
 
         static_assert(
-                is_same<psefp<1>::rep::rep::rep::rep, int>::value,
+                is_same<psfp<1>::rep::rep::rep::rep, int>::value,
                 "cnl::precise_integer parameter default test failed");
     }
 
-    namespace test_make_psefp {
+    namespace test_make_psfp {
         using namespace cnl::literals;
-        static_assert(identical(make_psefp(cnl::int16{7}), psefp<15>{7}), "");
-        static_assert(identical(make_psefp(444_c), psefp<9, -2>{444}), "");
+        static_assert(identical(make_psfp(cnl::int16{7}), psfp<15>{7}), "");
+        static_assert(identical(make_psfp(444_c), psfp<9, -2>{444}), "");
     }
 
     namespace test_multiply {
-        static_assert(identical(cnl::psefp<6>{7}*cnl::psefp<13>{321}, cnl::psefp<19>{2247}), "");
+        static_assert(identical(cnl::psfp<6>{7}*cnl::psfp<13>{321}, cnl::psfp<19>{2247}), "");
     }
 }
