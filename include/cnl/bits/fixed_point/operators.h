@@ -16,75 +16,6 @@
 namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
-    // (fixed_point @ fixed_point) arithmetic operators
-
-    // negate
-    template<class RhsRep, int RhsExponent>
-    constexpr auto operator-(fixed_point<RhsRep, RhsExponent> const& rhs)
-    -> fixed_point<decltype(-_impl::to_rep(rhs)), RhsExponent>
-    {
-        using result_type = fixed_point<decltype(-_impl::to_rep(rhs)), RhsExponent>;
-        return _impl::from_rep<result_type>(-_impl::to_rep(rhs));
-    }
-
-    // add
-    template<
-            class LhsRep, int LhsExponent,
-            class RhsRep, int RhsExponent>
-    constexpr auto operator+(
-            fixed_point<LhsRep, LhsExponent> const& lhs,
-            fixed_point<RhsRep, RhsExponent> const& rhs)
-    -> decltype(_impl::fp::operate<_impl::fp::arithmetic_operator_tag>(lhs, rhs, _impl::add_tag))
-    {
-        return _impl::fp::operate<_impl::fp::arithmetic_operator_tag>(lhs, rhs, _impl::add_tag);
-    }
-
-    // subtract
-    template<
-            class LhsRep, int LhsExponent,
-            class RhsRep, int RhsExponent>
-    constexpr auto operator-(
-            fixed_point<LhsRep, LhsExponent> const& lhs,
-            fixed_point<RhsRep, RhsExponent> const& rhs)
-    -> decltype(_impl::fp::operate<_impl::fp::arithmetic_operator_tag>(lhs, rhs, _impl::subtract_tag))
-    {
-        return _impl::fp::operate<_impl::fp::arithmetic_operator_tag>(lhs, rhs, _impl::subtract_tag);
-    }
-
-    // multiply
-    template<
-            class LhsRep, int LhsExponent,
-            class RhsRep, int RhsExponent>
-    constexpr auto operator*(
-            fixed_point<LhsRep, LhsExponent> const& lhs,
-            fixed_point<RhsRep, RhsExponent> const& rhs)
-    -> decltype(_impl::fp::operate<_impl::fp::arithmetic_operator_tag>(lhs, rhs, _impl::multiply_tag))
-    {
-        return _impl::fp::operate<_impl::fp::arithmetic_operator_tag>(lhs, rhs, _impl::multiply_tag);
-    }
-
-    // divide
-    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
-    constexpr auto operator/(
-            fixed_point<LhsRep, LhsExponent> const& lhs,
-            fixed_point<RhsRep, RhsExponent> const& rhs)
-    -> decltype(_impl::fp::operate<_impl::fp::division_arithmetic_operator_tag>(lhs, rhs, _impl::divide_tag))
-    {
-        return _impl::fp::operate<_impl::fp::division_arithmetic_operator_tag>(lhs, rhs, _impl::divide_tag);
-    }
-
-    // modulo
-    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
-    constexpr auto operator%(
-            fixed_point<LhsRep, LhsExponent> const& lhs,
-            fixed_point<RhsRep, RhsExponent> const& rhs)
-    -> fixed_point<decltype(_impl::to_rep(lhs)%_impl::to_rep(rhs)), LhsExponent>
-    {
-        return _impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs)%_impl::to_rep(rhs)), LhsExponent>>(
-                _impl::to_rep(lhs)%_impl::to_rep(rhs));
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
     // heterogeneous operator overloads
     //
     // compare two objects of different fixed_point specializations
@@ -98,6 +29,15 @@ namespace cnl {
     }
 
     namespace _impl {
+        template<class Operator, class Rep, int Exponent>
+        struct unary_operator<Operator, fixed_point<Rep, Exponent>> {
+            constexpr auto operator()(fixed_point<Rep, Exponent> const& rhs) const
+            -> decltype(from_rep<fixed_point<decltype(Operator()(to_rep(rhs))), Exponent>>(Operator()(to_rep(rhs))))
+            {
+                return from_rep<fixed_point<decltype(Operator()(to_rep(rhs))), Exponent>>(Operator()(to_rep(rhs)));
+            }
+        };
+
         template<class Operator, class Rep, int Exponent>
         struct comparison_operator<Operator, fixed_point<Rep, Exponent>, fixed_point<Rep, Exponent>> {
             constexpr auto operator()(
@@ -121,14 +61,74 @@ namespace cnl {
             }
         };
 
-        template<class Operator, class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
-        struct binary_operator<Operator, fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>> {
+        ////////////////////////////////////////////////////////////////////////////////
+        // multiply
+
+        template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+        struct binary_operator<multiply_op, fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>> {
             constexpr auto operator()(
                     fixed_point<LhsRep, LhsExponent> const& lhs,
                     fixed_point<RhsRep, RhsExponent> const& rhs) const
-            -> decltype(_impl::fp::operate<_impl::fp::arithmetic::lean_tag>(lhs, rhs, Operator{}))
+            -> decltype(from_rep<fixed_point<decltype(to_rep(lhs)*to_rep(rhs)), LhsExponent+RhsExponent>>(to_rep(lhs)*to_rep(rhs)))
             {
-                return _impl::fp::operate<_impl::fp::arithmetic::lean_tag>(lhs, rhs, Operator{});
+                return from_rep<fixed_point<decltype(to_rep(lhs)*to_rep(rhs)), LhsExponent+RhsExponent>>(to_rep(lhs)*to_rep(rhs));
+            }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // divide
+
+        template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+        struct binary_operator<divide_op, fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>> {
+            constexpr auto operator()(
+                    fixed_point<LhsRep, LhsExponent> const& lhs,
+                    fixed_point<RhsRep, RhsExponent> const& rhs) const
+            -> decltype(from_rep<fixed_point<decltype(to_rep(lhs)/to_rep(rhs)), LhsExponent-RhsExponent>>(to_rep(lhs)/to_rep(rhs)))
+            {
+                return from_rep<fixed_point<decltype(to_rep(lhs)/to_rep(rhs)), LhsExponent-RhsExponent>>(to_rep(lhs)/to_rep(rhs));
+            }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // modulo
+
+        template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+        struct binary_operator<modulo_op, fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>> {
+            constexpr auto operator()(
+                    fixed_point<LhsRep, LhsExponent> const& lhs,
+                    fixed_point<RhsRep, RhsExponent> const& rhs) const
+            -> decltype(from_rep<fixed_point<decltype(to_rep(lhs)%to_rep(rhs)), LhsExponent>>(to_rep(lhs)%to_rep(rhs)))
+            {
+                return from_rep<fixed_point<decltype(to_rep(lhs)%to_rep(rhs)), LhsExponent>>(to_rep(lhs)%to_rep(rhs));
+            }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // add and subtract
+
+        template<class Operator> struct is_add_or_subtract_op : std::false_type {};
+        template<> struct is_add_or_subtract_op<add_op> : std::true_type {};
+        template<> struct is_add_or_subtract_op<subtract_op> : std::true_type {};
+
+        template<class Operator, class LhsRep, class RhsRep, int Exponent>
+        struct binary_operator<Operator, fixed_point<LhsRep, Exponent>, fixed_point<RhsRep, Exponent>,
+                enable_if_t<is_add_or_subtract_op<Operator>::value>> {
+            constexpr auto operator()(
+                    fixed_point<LhsRep, Exponent> const& lhs, fixed_point<RhsRep, Exponent> const& rhs) const
+            -> decltype(from_rep<fixed_point<decltype(Operator()(to_rep(lhs), to_rep(rhs))), Exponent>>(Operator()(to_rep(lhs), to_rep(rhs))))
+            {
+                return from_rep<fixed_point<decltype(Operator()(to_rep(lhs), to_rep(rhs))), Exponent>>(Operator()(to_rep(lhs), to_rep(rhs)));
+            }
+        };
+
+        template<class Operator, class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
+        struct binary_operator<Operator, fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>,
+                enable_if_t<is_add_or_subtract_op<Operator>::value>> {
+            constexpr auto operator()(
+                    fixed_point<LhsRep, LhsExponent> const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
+            -> decltype(binary_operator<Operator, fixed_point<LhsRep, min(LhsExponent, RhsExponent)>, fixed_point<RhsRep, min(LhsExponent, RhsExponent)>>()(lhs, rhs))
+            {
+                return binary_operator<Operator, fixed_point<LhsRep, min(LhsExponent, RhsExponent)>, fixed_point<RhsRep, min(LhsExponent, RhsExponent)>>()(lhs, rhs);
             }
         };
     }

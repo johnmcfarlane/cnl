@@ -133,6 +133,8 @@ namespace {
     namespace arithmetic {
         static_assert(identical(precise_integer<>{3}*precise_integer<>{7}, precise_integer<>{21}),
                 "precise_integer operator*");
+        static_assert(identical(precise_integer<int>{-1}, -precise_integer<char>{1}),
+                      "precise_integer unary operator-");
     }
     
     namespace numeric_limits {

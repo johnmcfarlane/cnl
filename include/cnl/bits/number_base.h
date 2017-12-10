@@ -106,20 +106,6 @@ namespace cnl {
                         && (depth<Rep>::value < depth<Wrapper>::value)> {};
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::unary_operator
-
-        template<class Operator, class Operand>
-        struct unary_operator<
-                Operator, Operand,
-                enable_if_t<is_derived_from_number_base<Operand>::value>> {
-            constexpr auto operator()(Operand const& rhs) const
-            -> decltype(from_value<Operand>(Operator()(to_rep(rhs))))
-            {
-                return from_value<Operand>(Operator()(to_rep(rhs)));
-            }
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::binary_operator
 
         // higher OP number_base<>

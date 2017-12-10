@@ -199,6 +199,16 @@ namespace cnl {
         // arithmetc
 
         // for arithmetic operands with a common overflow tag
+        template<class Operator, class Rep, class OverflowTag>
+        struct unary_operator<Operator, overflow_int<Rep, OverflowTag>> {
+            constexpr auto operator()(overflow_int<Rep, OverflowTag> const& operand) const
+            -> decltype(overflow_int<decltype(Operator()(to_rep(operand))), OverflowTag>(Operator()(to_rep(operand))))
+            {
+                return overflow_int<decltype(Operator()(to_rep(operand))), OverflowTag>(Operator()(to_rep(operand)));
+            }
+        };
+
+        // for arithmetic operands with a common overflow tag
         template<class OperatorTag, class LhsRep, class RhsRep, class OverflowTag>
         struct binary_operator<OperatorTag, overflow_int<LhsRep, OverflowTag>, overflow_int<RhsRep, OverflowTag>> {
             constexpr auto operator()(
