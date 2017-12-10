@@ -7,7 +7,7 @@
 #if (__cplusplus>=201402L)
 
 #include <cnl/elastic_integer.h>
-#include <cnl/safe_integer.h>
+#include <cnl/overflow_int.h>
 
 #include <gtest/gtest.h>
 
@@ -27,10 +27,10 @@ namespace stl {
 
 namespace prototypes {
     template<typename Rep>
-    class safe_integer {
+    class overflow_int {
     public:
         template<typename Input>
-        constexpr safe_integer(Input const& r)
+        constexpr overflow_int(Input const& r)
                 :_rep(r) { }
 
         constexpr Rep const& data() const { return _rep; }
@@ -49,35 +49,35 @@ namespace prototypes {
 
     // good
     template<typename Rep>
-    class good_safe_integer;
+    class good_overflow_int;
 
-    using good1 = good_safe_integer<int>;
+    using good1 = good_overflow_int<int>;
 
-    using good2 = safe_integer<int32_t>;
+    using good2 = overflow_int<int32_t>;
 
     // bad
     template<int Digits, bool IsSigned>
-    class bad_safe_integer;
+    class bad_overflow_int;
 
-    using bad1 = bad_safe_integer<31, true>;
+    using bad1 = bad_overflow_int<31, true>;
 
-    using bad2 = bad_safe_integer<cnl::numeric_limits<int>::digits, true>;
+    using bad2 = bad_overflow_int<cnl::numeric_limits<int>::digits, true>;
 }
 
 #if defined(CNL_EXCEPTIONS_ENABLED)
-TEST(cppnow2017, safe_integer_example)
+TEST(cppnow2017, overflow_int_example)
 {
-    // multiplication of safe_integer<int> cannot exceed numeric limits
-    EXPECT_THROW(safe_integer<int32_t>{cnl::numeric_limits<int32_t>::max()}*2, overflow_error);
+    // multiplication of overflow_int<int> cannot exceed numeric limits
+    EXPECT_THROW(overflow_int<int32_t>{cnl::numeric_limits<int32_t>::max()}*2, overflow_error);
 
-    // difference from safe_integer<unsigned> cannot be negative
-    EXPECT_THROW(safe_integer<unsigned>{0}-1, overflow_error);
+    // difference from overflow_int<unsigned> cannot be negative
+    EXPECT_THROW(overflow_int<unsigned>{0}-1, overflow_error);
 
-    // conversion to safe_integer<char> cannot exceed numeric limits
-    EXPECT_THROW(safe_integer<short>{cnl::numeric_limits<double>::max()}, overflow_error);
+    // conversion to overflow_int<char> cannot exceed numeric limits
+    EXPECT_THROW(overflow_int<short>{cnl::numeric_limits<double>::max()}, overflow_error);
 
-    // value of safe_integer<int> cannot be indeterminate
-    //auto d = safe_integer<int>{};  // compiler error? exception? zero-initialization?
+    // value of overflow_int<int> cannot be indeterminate
+    //auto d = overflow_int<int>{};  // compiler error? exception? zero-initialization?
 }
 #endif
 
@@ -109,7 +109,7 @@ namespace acme_ndebug {
         using integer = Rep;
 #else
         template<typename Rep>
-        using integer = safe_integer<Rep>;
+        using integer = overflow_int<Rep>;
 #endif
     }
 
@@ -130,14 +130,14 @@ namespace acme_debug {
         using integer = Rep;
 #else
         template<typename Rep>
-        using integer = safe_integer<Rep>;
+        using integer = overflow_int<Rep>;
 #endif
     }
 
 #if defined(NDEBUG)
     static_assert(is_same<acme::integer<int>, int>::value, "error in CppNow 2017 slide");
 #else
-    static_assert(is_same<acme::integer<int>, safe_integer<int>>::value, "error in CppNow 2017 slide");
+    static_assert(is_same<acme::integer<int>, overflow_int<int>>::value, "error in CppNow 2017 slide");
 #endif
 
     auto square(acme::integer<short> f)
@@ -148,65 +148,65 @@ namespace acme_debug {
 #if defined(NDEBUG)
     static_assert(is_same<decltype(square(2)), int>::value, "error in CppNow 2017 slide");
 #else
-    static_assert(is_same<decltype(square(2)), safe_integer<int>>::value, "error in CppNow 2017 slide");
+    static_assert(is_same<decltype(square(2)), overflow_int<int>>::value, "error in CppNow 2017 slide");
 #endif
 }
 
 namespace operator_overload1 {
-    using prototypes::safe_integer;
+    using prototypes::overflow_int;
 
     template<typename Rep>
-    auto operator*(safe_integer<Rep> const& a, safe_integer<Rep> const& b)
+    auto operator*(overflow_int<Rep> const& a, overflow_int<Rep> const& b)
     {
         Rep product = a.data()*b.data();
 
         // do some overflow checking
 
-        return safe_integer<Rep>{product};
+        return overflow_int<Rep>{product};
     }
 
     static_assert(
-            is_same<decltype(safe_integer<short>{2}*safe_integer<short>{3}), safe_integer<short>>::value,
+            is_same<decltype(overflow_int<short>{2}*overflow_int<short>{3}), overflow_int<short>>::value,
             "error in CppNow 2017 slide");
 
     // error: no match for ‘operator*’
-    //auto x = safe_integer<short>{6} * safe_integer<int>{7};
+    //auto x = overflow_int<short>{6} * overflow_int<int>{7};
 }
 
 namespace operator_overload2 {
-    using prototypes::safe_integer;
+    using prototypes::overflow_int;
 
     template<typename Rep1, typename Rep2>
-    auto operator*(safe_integer<Rep1> const& a, safe_integer<Rep2> const& b)
+    auto operator*(overflow_int<Rep1> const& a, overflow_int<Rep2> const& b)
     {
         auto product = a.data()*b.data();
 
         // do some overflow checking
 
-        return safe_integer<decltype(product)>{product};
+        return overflow_int<decltype(product)>{product};
     }
 
     static_assert(
-            is_same<decltype(safe_integer<short>{2}*safe_integer<short>{3}), safe_integer<int>>::value,
+            is_same<decltype(overflow_int<short>{2}*overflow_int<short>{3}), overflow_int<int>>::value,
             "error in CppNow 2017 slide");
 
     static_assert(
-            is_same<decltype(safe_integer<short>{6}*safe_integer<int>{7}), safe_integer<int>>::value,
+            is_same<decltype(overflow_int<short>{6}*overflow_int<int>{7}), overflow_int<int>>::value,
             "error in CppNow 2017 slide");
 }
 
 namespace composite {
-    using prototypes::safe_integer;
+    using prototypes::overflow_int;
 
     template<int Digits, typename Narrowest = int>
     using elastic_integer = cnl::elastic_integer<Digits, Narrowest>;
 
     template<int Digits, typename Narrowest = int>
     using safe_elastic_integer =
-    safe_integer<elastic_integer<Digits, Narrowest>>;
+    overflow_int<elastic_integer<Digits, Narrowest>>;
 
     template<typename Rep1, typename Rep2>
-    constexpr auto operator*(safe_integer<Rep1> const& a, safe_integer<Rep2> const& b)
+    constexpr auto operator*(overflow_int<Rep1> const& a, overflow_int<Rep2> const& b)
     {
         auto product = a.data()*b.data();
 
@@ -215,7 +215,7 @@ namespace composite {
             // do some overflow checking
         }
 
-        return safe_integer<decltype(product)>{product};
+        return overflow_int<decltype(product)>{product};
     }
 
     auto a = safe_elastic_integer<4>{14}*safe_elastic_integer<3>{6};

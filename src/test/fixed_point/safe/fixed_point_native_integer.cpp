@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/fixed_point.h>
-#include <cnl/safe_integer.h>
+#include <cnl/overflow_int.h>
 
 #define TEST_NATIVE_OVERFLOW
 #define TEST_LABEL native_integer_
@@ -18,7 +18,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Rep type
 
-using test_int = cnl::safe_integer<int, cnl::native_overflow_tag>;
+using test_int = cnl::overflow_int<int, cnl::native_overflow_tag>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // perform fixed_point tests with this type of fixed_point specialization

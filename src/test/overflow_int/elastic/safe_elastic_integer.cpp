@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/elastic_integer.h>
-#include <cnl/safe_integer.h>
+#include <cnl/overflow_int.h>
 
 #include "../../number_test.h"
 
@@ -15,7 +15,7 @@ namespace cnl {
             int IntegerDigits,
             class OverflowTag = throwing_overflow_tag,
             class Narrowest = int>
-    using safe_elastic_integer = safe_integer<
+    using safe_elastic_integer = overflow_int<
             elastic_integer<
                     IntegerDigits,
                     Narrowest>,
@@ -47,7 +47,7 @@ namespace {
     }
 
     namespace test_numeric_limits {
-        using safe_saturating_integer_2 = cnl::safe_integer<cnl::elastic_integer<2, char>, cnl::saturated_overflow_tag>;
+        using safe_saturating_integer_2 = cnl::overflow_int<cnl::elastic_integer<2, char>, cnl::saturated_overflow_tag>;
         static_assert(identical(
                 cnl::numeric_limits<safe_saturating_integer_2>::lowest(),
                 safe_saturating_integer_2{-3}), "");
