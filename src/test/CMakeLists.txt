@@ -22,7 +22,7 @@ add_executable(fp_test
         papers/p0675.cpp
         papers/p0827.cpp
         cppnow2017.cpp
-        elastic/precise/safe/precise_safe_elastic_integer.cpp
+        elastic/precise/overflow_int/precise_safe_int.cpp
         index.cpp
         limits.cpp
         num_traits.cpp
