@@ -459,6 +459,10 @@ namespace test_impl_from_rep {
     static_assert(from_rep<throwing_integer<short>>(1), "");
 }
 
+namespace test_minus {
+    static_assert(identical(-throwing_integer<short>(1), throwing_integer<int>(-1)), "");
+}
+
 namespace test_plus {
     static_assert(identical(+throwing_integer<short>(1), throwing_integer<int>(1)), "");
 }

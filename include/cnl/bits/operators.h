@@ -376,8 +376,8 @@ namespace cnl {
 #define CNL_DEFINE_UNARY_OPERATOR(OP, NAME) \
     template<class Operand> \
     constexpr auto operator OP (Operand const& operand) \
-    -> cnl::_operators_impl::enable_unary_t<Operand, decltype( \
-            cnl::_impl::unary_operator<cnl::_impl::NAME, Operand>()(operand))> \
+    -> decltype(cnl::_impl::unary_operator<cnl::_operators_impl::enable_unary_t< \
+            Operand, cnl::_impl::NAME>, Operand>()(operand)) \
     { \
         return cnl::_impl::unary_operator<cnl::_impl::NAME, Operand>()(operand); \
     }

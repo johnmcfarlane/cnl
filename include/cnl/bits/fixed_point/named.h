@@ -11,14 +11,59 @@
 #define CNL_FIXED_POINT_NAMED_H 1
 
 #include <cnl/bits/common.h>
-
-#include "arithmetic.h"
+#include "num_traits.h"
 
 /// compositional numeric library
 namespace cnl {
+    namespace _named_impl {
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::fp::arithmetic::fixed_point_type
+
+        template<class Operand>
+        struct fixed_point_type {
+            using type = fixed_point<Operand, 0>;
+        };
+
+        template<class Rep, int Exponent>
+        struct fixed_point_type<fixed_point<Rep, Exponent>> {
+            using type = fixed_point<Rep, Exponent>;
+        };
+    }
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::multiply with fixed_point operand(s)
+
+    namespace _multiply_impl {
+        template<class Lhs, class Rhs>
+        struct params {
+            using lhs_type = typename _named_impl::fixed_point_type<Lhs>::type;
+            using rhs_type = typename _named_impl::fixed_point_type<Rhs>::type;
+            using lhs_rep = typename lhs_type::rep;
+            using rhs_rep = typename rhs_type::rep;
+
+            // Exponent
+            static constexpr int rep_exponent = lhs_type::exponent + rhs_type::exponent;
+
+            // Rep
+            using rep_op_result = _impl::op_result<_impl::multiply_op, lhs_rep, rhs_rep>;
+            static constexpr int sum_digits = digits<lhs_type>::value + digits<rhs_type>::value;
+            static constexpr bool is_signed =
+                    numeric_limits<lhs_rep>::is_signed || numeric_limits<rhs_rep>::is_signed;
+            using prewidened_result_rep = _impl::make_signed_t<rep_op_result, is_signed>;
+            using result_rep = set_digits_t<prewidened_result_rep, sum_digits>;
+
+            // If the 'natural' result of the rep op is wide enough, stick with it.
+            // This ensures that auto-widening rep types (e.g. elastic_integer) don't get widened twice
+            // but types that need a little help (e.g. built-ins) get widened going into the op.
+            using rep_type = typename std::conditional<
+                    digits<prewidened_result_rep>::value >= sum_digits,
+                    lhs_rep, result_rep>::type;
+
+            using result_type = fixed_point<result_rep, rep_exponent>;
+            using intermediate_lhs = fixed_point<rep_type, lhs_type::exponent>;
+            using intermediate_rhs = Rhs;
+        };
+    }
 
     /// \brief calculates the product of two \ref fixed_point factors
     /// \headerfile cnl/fixed_point.h
@@ -34,9 +79,17 @@ namespace cnl {
 
     template<class Lhs, class Rhs>
     constexpr auto multiply(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(_impl::fp::operate<_impl::fp::named_function_tag>(lhs, rhs, _impl::multiply_tag))
+    -> typename _multiply_impl::params<Lhs, Rhs>::result_type
     {
-        return _impl::fp::operate<_impl::fp::named_function_tag>(lhs, rhs, _impl::multiply_tag);
+        using params = _multiply_impl::params<Lhs, Rhs>;
+        using intermediate_lhs = typename params::intermediate_lhs;
+        using intermediate_rhs = typename params::intermediate_rhs;
+        using result_type = typename params::result_type;
+        using result_rep = typename result_type::rep;
+
+        return _impl::from_rep<result_type>(
+                static_cast<result_rep>(_impl::to_rep(static_cast<intermediate_lhs>(lhs))
+                                        * _impl::to_rep(static_cast<intermediate_rhs>(rhs))));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -44,13 +97,52 @@ namespace cnl {
 
     namespace _divide_impl {
         template<class Lhs, class Rhs>
+        struct params {
+            using lhs_type = typename _named_impl::fixed_point_type<Lhs>::type;
+            using rhs_type = typename _named_impl::fixed_point_type<Rhs>::type;
+            using lhs_rep = typename lhs_type::rep;
+            using rhs_rep = typename rhs_type::rep;
+            using rep_op_result = _impl::op_result<_impl::multiply_op, lhs_rep, rhs_rep>;
+
+            static constexpr int integer_digits =
+                    _impl::integer_digits<lhs_type>::value + _impl::fractional_digits<rhs_type>::value;
+            static constexpr int fractional_digits =
+                    _impl::fractional_digits<lhs_type>::value + _impl::integer_digits<rhs_type>::value;
+            static constexpr int necessary_digits = integer_digits + fractional_digits;
+            static constexpr bool is_signed =
+                    numeric_limits<lhs_rep>::is_signed || numeric_limits<rhs_rep>::is_signed;
+
+            static constexpr int promotion_digits = digits<rep_op_result>::value;
+            static constexpr int max_digits = _impl::max(necessary_digits, promotion_digits);
+
+            using prewidened_result_rep = _impl::make_signed_t<rep_op_result, is_signed>;
+            using rep_type = set_digits_t<prewidened_result_rep, max_digits>;
+
+            static constexpr int rep_exponent = -fractional_digits;
+
+            static constexpr int intermediate_exponent_lhs = lhs_type::exponent - digits<rhs_type>::value;
+
+            using result_type = fixed_point<rep_type, rep_exponent>;
+            using intermediate_lhs = fixed_point<rep_type, intermediate_exponent_lhs>;
+            using intermediate_rhs = rhs_type;
+        };
+
+        template<class Lhs, class Rhs>
         struct divide;
 
         template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
         struct divide<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>> {
             constexpr auto operator()(fixed_point<LhsRep, LhsExponent> const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
-            -> decltype(_impl::fp::operate<_impl::fp::division_named_function_tag>(lhs, rhs, _impl::divide_tag)) {
-                return _impl::fp::operate<_impl::fp::division_named_function_tag>(lhs, rhs, _impl::divide_tag);
+            -> typename params<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>>::result_type {
+                using params = params<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>>;
+                using intermediate_lhs = typename params::intermediate_lhs;
+                using intermediate_rhs = typename params::intermediate_rhs;
+                using result_type = typename params::result_type;
+                using result_rep = typename result_type::rep;
+
+                return _impl::from_rep<result_type>(
+                        static_cast<result_rep>(_impl::to_rep(static_cast<intermediate_lhs>(lhs))
+                                                / _impl::to_rep(static_cast<intermediate_rhs>(rhs))));
             }
         };
 

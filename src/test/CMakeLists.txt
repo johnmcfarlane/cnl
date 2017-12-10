@@ -11,43 +11,43 @@ add_executable(fp_test
         boost.simd.cpp
         precise/elastic/precise_elastic_integer.cpp
         overflow.cpp
-        glm.cpp
         common.cpp
-        fixed_point/precise_fixed_point.cpp
-        fixed_point/constants.cpp
-        fixed_point/extras.cpp
-        fixed_point/math.cpp
         papers/p0381.cpp
-        papers/p0554.cpp
         papers/p0675.cpp
         papers/p0827.cpp
         cppnow2017.cpp
-        elastic/precise/overflow_int/precise_safe_int.cpp
-        index.cpp
         limits.cpp
         num_traits.cpp
+        numeric.cpp
+        elastic/elastic_integer.cpp
+        number_test.cpp
+        fixed_point/p0037.cpp
+        glm.cpp
+        fixed_point/precise_fixed_point.cpp
+        fixed_point/constants.cpp
+        fixed_point/extras.cpp
+        papers/p0554.cpp
+        elastic/precise/overflow_int/precise_safe_int.cpp
+        index.cpp
         readme.cpp
-        safft.cpp
         zero_cost_free_functions.cpp
         zero_cost_square.cpp
         fixed_point/elastic/precise/overflow_int/precise_safe_fixed_point.cpp
         snippets.cpp
+        overflow_int/elastic/safe_int.cpp
+        overflow_int/overflow_int.cpp
+        fixed_point/elastic/make_elastic_fixed_point.cpp
+        fixed_point/math.cpp
         zero_cost_average.cpp
-        numeric.cpp
-        elastic/elastic_integer.cpp
-        number_test.cpp
-        precise/precise_integer.cpp
+        cppcon2017.cpp
+        boost.multiprecision.cpp
+        safft.cpp
+        fixed_point/elastic/elastic_fixed_point.cpp
+        fixed_point/fixed_point_built_in.cpp
         fixed_point/overflow_int/fixed_point_native_integer.cpp
         fixed_point/overflow_int/fixed_point_throwing_integer.cpp
         fixed_point/overflow_int/fixed_point_saturated_integer.cpp
-        fixed_point/fixed_point_built_in.cpp
-        overflow_int/elastic/safe_int.cpp
-        overflow_int/overflow_int.cpp
-        fixed_point/p0037.cpp
-        cppcon2017.cpp
-        fixed_point/elastic/make_elastic_fixed_point.cpp
-        fixed_point/elastic/elastic_fixed_point.cpp
-        boost.multiprecision.cpp
+        precise/precise_integer.cpp
         main.cpp)
 
 ######################################################################

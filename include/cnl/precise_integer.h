@@ -93,6 +93,22 @@ namespace cnl {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
+    // unary arithmetic
+
+    namespace _impl {
+        // for operands with a common tag
+        template<class Operator, class Rep, class RoundingTag>
+        struct unary_operator<Operator, precise_integer<Rep, RoundingTag>> {
+            constexpr auto operator()(precise_integer<Rep, RoundingTag> const& operand) const
+            -> decltype(from_rep<precise_integer<decltype(Operator()(to_rep(operand))), RoundingTag>>(Operator()(to_rep(operand))))
+            {
+                using result_type = precise_integer<decltype(Operator()(to_rep(operand))), RoundingTag>;
+                return from_rep<result_type>(Operator()(to_rep(operand)));
+            }
+        };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
     // binary arithmetic
 
     namespace _impl {
