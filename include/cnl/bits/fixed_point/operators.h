@@ -102,15 +102,18 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // add and subtract
+        // arithmetic operators that are degree 0 monomial
 
-        template<class Operator> struct is_add_or_subtract_op : std::false_type {};
-        template<> struct is_add_or_subtract_op<add_op> : std::true_type {};
-        template<> struct is_add_or_subtract_op<subtract_op> : std::true_type {};
+        template<class Operator> struct is_zero_degree : std::true_type {};
+        template<> struct is_zero_degree<multiply_op> : std::false_type {};
+        template<> struct is_zero_degree<divide_op> : std::false_type {};
+        template<> struct is_zero_degree<modulo_op> : std::false_type {};
+        template<> struct is_zero_degree<shift_left_op> : std::false_type {};
+        template<> struct is_zero_degree<shift_right_op> : std::false_type {};
 
         template<class Operator, class LhsRep, class RhsRep, int Exponent>
         struct binary_operator<Operator, fixed_point<LhsRep, Exponent>, fixed_point<RhsRep, Exponent>,
-                enable_if_t<is_add_or_subtract_op<Operator>::value>> {
+                enable_if_t<is_zero_degree<Operator>::value>> {
             constexpr auto operator()(
                     fixed_point<LhsRep, Exponent> const& lhs, fixed_point<RhsRep, Exponent> const& rhs) const
             -> decltype(from_rep<fixed_point<decltype(Operator()(to_rep(lhs), to_rep(rhs))), Exponent>>(Operator()(to_rep(lhs), to_rep(rhs))))
@@ -121,7 +124,7 @@ namespace cnl {
 
         template<class Operator, class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
         struct binary_operator<Operator, fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>,
-                enable_if_t<is_add_or_subtract_op<Operator>::value>> {
+                enable_if_t<is_zero_degree<Operator>::value>> {
             constexpr auto operator()(
                     fixed_point<LhsRep, LhsExponent> const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
             -> decltype(binary_operator<Operator, fixed_point<LhsRep, min(LhsExponent, RhsExponent)>, fixed_point<RhsRep, min(LhsExponent, RhsExponent)>>()(lhs, rhs))
