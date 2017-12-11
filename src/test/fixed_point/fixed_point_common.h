@@ -781,6 +781,27 @@ namespace test_bitshift {
     static_assert(identical(fixed_point<uint8, -3>{2}, fixed_point<uint8, -4>{1} >> -1_c), "bitshift test failed");
 }
 
+namespace test_bitwise_or {
+    static_assert(identical(
+            fixed_point<unsigned, -16>{125.625},
+            fixed_point<unsigned, -12>{125.125} | fixed_point<unsigned, -16>{77.625}),
+                  "operator|(fixed_point<>,fixed_point<>)");
+}
+
+namespace test_bitwise_and {
+    static_assert(identical(
+            fixed_point<unsigned, -16>{77.125},
+            fixed_point<unsigned, -12>{125.125} & fixed_point<unsigned, -16>{77.625}),
+                  "operator&(fixed_point<>,fixed_point<>)");
+}
+
+namespace test_bitwise_xor {
+    static_assert(identical(
+            fixed_point<unsigned, -16>{48.5},
+            fixed_point<unsigned, -12>{125.125} ^ fixed_point<unsigned, -16>{77.625}),
+                  "operator^(fixed_point<>,fixed_point<>)");
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::numeric_limits<fixed_point<>>
 
