@@ -166,6 +166,17 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::elastic_integer{constant} deduction guide
 
+    namespace _elastic_integer_impl {
+        template<bool Signed>
+        struct machine_digits {
+            static constexpr _digits_type value =
+                    cnl::digits<typename std::conditional<Signed, signed, unsigned>::type>::value;
+        };
+
+        template<typename S>
+        using narrowest = set_digits_t<S, machine_digits<is_signed<S>::value>::value>;
+    }
+
 #if defined(__cpp_deduction_guides)
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     elastic_integer(constant<Value>)
@@ -182,11 +193,29 @@ namespace cnl {
         return elastic_integer<_elastic_integer_impl::digits(Value)>{Value};
     }
 
-    template<class Narrowest = int, class Integral, _impl::enable_if_t<!_impl::is_constant<Integral>::value, int> Dummy = 0>
+    namespace _elastic_integer_impl {
+        template<class Narrowest, class Integral>
+        struct make_narrowest {
+            using type = Narrowest;
+        };
+
+        template<class Integral>
+        struct make_narrowest<void, Integral> {
+            using type = narrowest<Integral>;
+        };
+
+        template<class Narrowest, class Integral>
+        using make_narrowest_t = typename make_narrowest<Narrowest, Integral>::type;
+
+        template<class Narrowest, class Integral>
+        using make_type = elastic_integer<cnl::digits<Integral>::value, make_narrowest_t<Narrowest, Integral>>;
+    }
+
+    template<class Narrowest = void, class Integral, _impl::enable_if_t<!_impl::is_constant<Integral>::value, int> Dummy = 0>
     constexpr auto make_elastic_integer(Integral const& value)
-    -> decltype(elastic_integer<numeric_limits<Integral>::digits, Narrowest>{value})
+    -> _elastic_integer_impl::make_type<Narrowest, Integral>
     {
-        return elastic_integer<numeric_limits<Integral>::digits, Narrowest>{value};
+        return _elastic_integer_impl::make_type<Narrowest, Integral>{value};
     }
 
     namespace _elastic_integer_impl {
