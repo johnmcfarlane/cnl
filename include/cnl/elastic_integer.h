@@ -178,6 +178,10 @@ namespace cnl {
     }
 
 #if defined(__cpp_deduction_guides)
+    template<class S>
+    elastic_integer(S const& s)
+    -> elastic_integer<digits_v<S>, _elastic_integer_impl::narrowest<S>>;
+
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     elastic_integer(constant<Value>)
     -> elastic_integer<_elastic_integer_impl::digits(Value)>;

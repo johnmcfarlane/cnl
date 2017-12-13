@@ -262,7 +262,11 @@ namespace {
 
     namespace test_avg_fn {
         constexpr int avg(int a, int b) {
+#if defined(__cpp_deduction_guides)
+            return int((cnl::elastic_integer{a} + cnl::elastic_integer{b}) / 2);
+#else
             return int((cnl::make_elastic_integer(a) + cnl::make_elastic_integer(b)) / 2);
+#endif
         }
 
         static_assert(avg(INT_MAX, INT_MAX) == INT_MAX, "avg using elastic_integer");
