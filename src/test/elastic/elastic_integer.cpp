@@ -260,6 +260,32 @@ namespace {
                 "elastic_integer numeric_limits test failed");
     }
 
+    namespace test_avg_fn {
+        constexpr int avg(int a, int b) {
+            return int((cnl::make_elastic_integer(a) + cnl::make_elastic_integer(b)) / 2);
+        }
+
+        static_assert(avg(INT_MAX, INT_MAX) == INT_MAX, "avg using elastic_integer");
+        static_assert(avg(INT_MAX, 0) == INT_MAX / 2, "avg using elastic_integer");
+        static_assert(avg(INT_MAX, -INT_MAX) == 0, "avg using elastic_integer");
+        static_assert(avg(INT_MAX, INT_MIN) == 0, "avg using elastic_integer");
+
+        static_assert(avg(0, INT_MAX) == INT_MAX / 2, "avg using elastic_integer");
+        static_assert(avg(0, 0) == 0, "avg using elastic_integer");
+        static_assert(avg(0, -INT_MAX) == -INT_MAX / 2, "avg using elastic_integer");
+        static_assert(avg(0, INT_MIN) == INT_MIN / 2, "avg using elastic_integer");
+
+        static_assert(avg(-INT_MAX, INT_MAX) == 0, "avg using elastic_integer");
+        static_assert(avg(-INT_MAX, 0) == -INT_MAX / 2, "avg using elastic_integer");
+        static_assert(avg(-INT_MAX, -INT_MAX) == -INT_MAX, "avg using elastic_integer");
+        static_assert(avg(-INT_MAX, INT_MIN) == -INT_MAX, "avg using elastic_integer");
+
+        static_assert(avg(INT_MIN, INT_MAX) == 0, "avg using elastic_integer");
+        static_assert(avg(INT_MIN, 0) == INT_MIN / 2, "avg using elastic_integer");
+        static_assert(avg(INT_MIN, -INT_MAX) == -INT_MAX, "avg using elastic_integer");
+        static_assert(avg(INT_MIN, INT_MIN) == INT_MIN, "avg using elastic_integer");
+    }
+
     // parameterized tests
     template<typename ElasticInteger, long long Lowest, long long Min, long long Max>
     struct elastic_integer_test {
