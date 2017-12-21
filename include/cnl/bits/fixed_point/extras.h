@@ -84,14 +84,10 @@ namespace cnl {
     /// \return square root of x
     ///
     /// \note This function is a placeholder implementation with poor run-time performance characteristics.
-    /// \note It uses
-    /// divides the values
-    /// without performing any additional scaling or conversion.
     ///
     /// \sa multiply
 
     // https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_.28base_2.29
-    // ?
     template<class Rep, int Exponent>
     constexpr fixed_point <Rep, Exponent>
     sqrt(fixed_point<Rep, Exponent> const& x)
