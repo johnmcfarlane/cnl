@@ -52,6 +52,13 @@ namespace {
             elastic_fixed_point<2, 2>{0.75}), "cnl::elastic_fixed_point test failed");
 }
 
+namespace test_sqrt {
+    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(0))) == 0.0f, "sqrt<elastic_fixed_point>");
+    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(2.0))) > 1.414213f, "sqrt<elastic_fixed_point>");
+    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(2.0))) < 1.414214f, "sqrt<elastic_fixed_point>");
+    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(4.0))) == 2.0f, "sqrt<elastic_fixed_point>");
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // useful constants
 
