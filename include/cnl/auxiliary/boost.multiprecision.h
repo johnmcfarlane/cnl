@@ -79,15 +79,18 @@ namespace cnl {
         template<unsigned NumBits, _bmp::cpp_integer_type SignType>
         using backend = _bmp::cpp_int_backend<
                 NumBits, NumBits, SignType, _bmp::unchecked, void>;
+
+        template<unsigned NumBits, _bmp::cpp_integer_type SignType>
+        using number = _bmp::number<_sized_integer_impl::backend<NumBits, SignType>, _bmp::et_off>;
     }
 
     // cnl::signed_multiprecision - a signed integer of arbitrary size
     template<unsigned NumDigits = digits<int>::value>
-    using signed_multiprecision = _bmp::number<_sized_integer_impl::backend<NumDigits+1, _bmp::signed_magnitude>, _bmp::et_off>;
+    using signed_multiprecision = _sized_integer_impl::number<NumDigits+1, _bmp::signed_magnitude>;
 
     // cnl::unsigned_multiprecision - an unsigned integer of arbitrary size
     template<unsigned NumDigits = digits<unsigned>::value>
-    using unsigned_multiprecision = _bmp::number<_sized_integer_impl::backend<NumDigits, _bmp::unsigned_magnitude>, _bmp::et_off>;
+    using unsigned_multiprecision = _sized_integer_impl::number<NumDigits, _bmp::unsigned_magnitude>;
 
     // cnl::unsigned_multiprecision - an integer of arbitrary size
     template<unsigned NumDigits = digits<int>::value>
