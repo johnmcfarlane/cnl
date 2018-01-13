@@ -55,7 +55,7 @@ static_assert(static_cast<float>(sqrt(fixed_point<cnl::int32, -20>(4.0))) == 2.0
 // std specializations for 128-bit integer facilitate certain 64-bit operations
 
 #if defined(CNL_INT128_ENABLED)
-static_assert((fixed_point<cnl::uint64, -8>(1003006)*fixed_point<cnl::uint64, -8>(7))==7021042, "cnl::fixed_point test failed");
+static_assert((fixed_point<cnl::uint64, -8>(1003006L)*fixed_point<cnl::uint64, -8>(7))==7021042L, "cnl::fixed_point test failed");
 static_assert(static_cast<int>((fixed_point<cnl::uint64, -8>(65535)/fixed_point<cnl::uint64, -8>(256)))==255,
         "cnl::fixed_point test failed");
 static_assert(sqrt(fixed_point<cnl::uint64, 0>(9223372036854775807))==3037000499LL, "cnl::sqrt test failed");

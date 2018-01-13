@@ -124,9 +124,9 @@ static void bm_sqrt(benchmark::State& state)
 template<class T>
 static void bm_magnitude_squared(benchmark::State& state)
 {
-    auto x = T {1};
-    auto y = T {4};
-    auto z = T {9};
+    auto x = T {1LL};
+    auto y = T {4LL};
+    auto z = T {9LL};
     while (state.KeepRunning()) {
         ESCAPE(x);
         ESCAPE(y);
@@ -139,12 +139,12 @@ static void bm_magnitude_squared(benchmark::State& state)
 template<class T>
 static void bm_circle_intersect_generic(benchmark::State& state)
 {
-    auto x1 = T {0};
-    auto y1 = T {10};
-    auto r1 = T {14};
-    auto x2 = T {4};
-    auto y2 = T {13};
-    auto r2 = T {9};
+    auto x1 = T {0LL};
+    auto y1 = T {10LL};
+    auto r1 = T {14LL};
+    auto x2 = T {4LL};
+    auto y2 = T {13LL};
+    auto r2 = T {9LL};
     while (state.KeepRunning()) {
         ESCAPE(x1);
         ESCAPE(y1);
