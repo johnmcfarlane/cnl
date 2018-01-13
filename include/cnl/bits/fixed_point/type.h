@@ -124,13 +124,6 @@ namespace cnl {
         {
         }
 
-        /// copy assignment operator taking an integer type
-        template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
-        CNL_COPY_CONSTEXPR fixed_point& operator=(S s)
-        {
-            return operator=(_impl::from_rep<fixed_point<S, 0>>(s));
-        }
-
         /// copy assignment operator taking a floating-point type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
         CNL_COPY_CONSTEXPR fixed_point& operator=(S s)
