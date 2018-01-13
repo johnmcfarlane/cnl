@@ -185,6 +185,23 @@ namespace cnl {
     using set_digits_t = typename set_digits<T, Digits>::type;
 
     ////////////////////////////////////////////////////////////////////////////////
+    // cnl::is_integral
+
+    template<class T>
+    struct is_integral : std::is_integral<T> {
+    };
+
+#if defined(CNL_INT128_ENABLED)
+    template<>
+    struct is_integral<int128> : std::integral_constant<bool, true> {
+    };
+
+    template<>
+    struct is_integral<uint128> : std::integral_constant<bool, true> {
+    };
+#endif
+
+    ////////////////////////////////////////////////////////////////////////////////
     // cnl::is_signed
 
     template<class T>
