@@ -10,6 +10,7 @@
 
 #include <cnl/fixed_point.h>
 
+#include <boost/version.hpp>
 #include <gtest/gtest.h>
 
 using cnl::fixed_point;
@@ -182,6 +183,32 @@ static_assert(
 static_assert(
         cnl::digits<signed_multiprecision<24>>::value == 24,
         "cnl::digits<boost::multiprecision::number<>> test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// bitwise shift with boost::multiprecision and cnl::constant
+
+// Boost.Multiprecision in 1.58 known to have constexpr support
+#if (BOOST_VERSION>=105800)
+
+TEST(fixed_point_multiprecision, shift_left_constant)
+{
+    auto lhs = cnl::unsigned_multiprecision<15>{1536};
+    auto rhs = cnl::constant<3>{};
+    auto actual = lhs << rhs;
+    auto expected = cnl::unsigned_multiprecision<15>{1536 << 3};
+    ASSERT_EQ(expected, actual);
+}
+
+TEST(fixed_point_multiprecision, shift_right_constant)
+{
+    auto lhs = cnl::unsigned_multiprecision<15>{1536};
+    auto rhs = cnl::constant<3>{};
+    auto actual = lhs >> rhs;
+    auto expected = cnl::unsigned_multiprecision<15>{1536 >> 3};
+    ASSERT_EQ(expected, actual);
+}
+
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::used_bits<boost::multiprecision::number<>>

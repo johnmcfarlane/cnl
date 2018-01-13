@@ -10,6 +10,7 @@
 #if !defined(CNL_BOOST_MULTIPRECISION_H)
 #define CNL_BOOST_MULTIPRECISION_H 1
 
+#include <cnl/constant.h>
 #include <cnl/num_traits.h>
 
 #include <boost/multiprecision/cpp_int.hpp>
@@ -95,6 +96,24 @@ namespace cnl {
     // cnl::unsigned_multiprecision - an integer of arbitrary size
     template<unsigned NumDigits = digits<int>::value>
     using multiprecision = signed_multiprecision<NumDigits>;
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    // _bmp bitwise shift operators
+
+    template<unsigned NumBits, _bmp::cpp_integer_type SignType, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    constexpr auto operator<<(_sized_integer_impl::number<NumBits, SignType> const& lhs, constant<Value>)
+    -> decltype(lhs << Value)
+    {
+        return lhs << Value;
+    }
+
+    template<unsigned NumBits, _bmp::cpp_integer_type SignType, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    constexpr auto operator>>(_sized_integer_impl::number<NumBits, SignType> const& lhs, constant<Value>)
+    -> decltype(lhs >> Value)
+    {
+        return lhs >> Value;
+    }
 }
 
 #endif  // CNL_BOOST_MULTIPRECISION_H
