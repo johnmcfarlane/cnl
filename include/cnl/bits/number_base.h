@@ -23,7 +23,7 @@ namespace cnl {
 
             number_base() = default;
 
-            constexpr number_base(rep const& r)
+            explicit constexpr number_base(rep const& r)
                 : _rep(r) { }
 
             template<class T>
