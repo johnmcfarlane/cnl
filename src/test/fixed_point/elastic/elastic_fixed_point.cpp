@@ -338,6 +338,19 @@ TEST(elastic_fixed_point, int_over) {
     EXPECT_EQ(e, q);
 }
 
+TEST(elastic_fixed_point, issue_88)
+{
+    using fix_t = cnl::elastic_fixed_point<30, -16>;
+    fix_t a = 2.0f;
+    fix_t b = 1.0f;
+    fix_t c = 1.0f;
+    EXPECT_EQ(static_cast<float>(a),2.0f);
+    EXPECT_EQ(static_cast<float>(b),1.0f);
+    EXPECT_EQ(static_cast<float>(c),1.0f);
+    fix_t d = c + a*b;
+    EXPECT_EQ(static_cast<float>(d),3.0f);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // test how elastic_fixed_point handles negative values;
 // should pass for all signed specializations
