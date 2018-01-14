@@ -1,7 +1,7 @@
 #include <cnl/fixed_point.h>
 #include <cnl/constant.h>
 #include <cnl/limits.h>
-#include <cnl/overflow_int.h>
+#include <cnl/overflow_integer.h>
 #include <cnl/precise_integer.h>
 #include <cnl/elastic_integer.h>
 #include <cnl/cnlint.h>

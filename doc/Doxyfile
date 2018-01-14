@@ -43,7 +43,7 @@ INPUT = \
     ../include/cnl/numeric.h \
     ../include/cnl/num_traits.h \
     ../include/cnl/overflow.h \
-    ../include/cnl/overflow_int.h \
+    ../include/cnl/overflow_integer.h \
     ../include/cnl/precise_integer.h \
     index.md
 EXCLUDE_SYMBOLS = \

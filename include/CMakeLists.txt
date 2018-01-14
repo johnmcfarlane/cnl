@@ -13,7 +13,7 @@ set(cnl_public_headers
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/num_traits.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/numeric.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/overflow.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/cnl/overflow_int.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/cnl/overflow_integer.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/precise_integer.h
 )
 
