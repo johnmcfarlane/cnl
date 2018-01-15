@@ -8,7 +8,7 @@
 /// \brief Demonstration of selectively applying functions to numbers.
 
 #include <cnl/precise_integer.h>
-#include <cnl/overflow_int.h>
+#include <cnl/overflow_integer.h>
 
 using namespace cnl;
 
@@ -17,7 +17,7 @@ template<
         class Rep = int,
         class RoundingTag = closest_rounding_tag,
         class OverflowTag = throwing_overflow_tag>
-using precise_overflow_int = overflow_int<precise_integer<Rep, RoundingTag>, OverflowTag>;
+using precise_overflow_int = overflow_integer<precise_integer<Rep, RoundingTag>, OverflowTag>;
 
 static_assert(identical(
         precise_overflow_int<>{2} * precise_overflow_int<>{3},

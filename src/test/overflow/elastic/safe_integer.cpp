@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/elastic_integer.h>
-#include <cnl/overflow_int.h>
+#include <cnl/overflow_integer.h>
 
 #include "../../number_test.h"
 
@@ -15,7 +15,7 @@ namespace cnl {
             int IntegerDigits,
             class OverflowTag = throwing_overflow_tag,
             class Narrowest = int>
-    using safe_int = overflow_int<
+    using safe_integer = overflow_integer<
             elastic_integer<
                     IntegerDigits,
                     Narrowest>,
@@ -25,7 +25,7 @@ namespace cnl {
             class OverflowTag = throwing_overflow_tag,
             class Narrowest = int,
             class Input = int>
-    safe_int<
+    safe_integer<
             numeric_limits<Input>::digits,
             OverflowTag,
             Narrowest>
@@ -41,12 +41,12 @@ namespace {
 
     namespace default_parameters {
         static_assert(
-                is_same<cnl::safe_int<1>::rep::rep, int>::value,
-                "cnl::safe_int parameter default test failed");
+                is_same<cnl::safe_integer<1>::rep::rep, int>::value,
+                "cnl::safe_integer parameter default test failed");
     }
 
     namespace test_numeric_limits {
-        using safe_saturating_integer_2 = cnl::overflow_int<cnl::elastic_integer<2, char>, cnl::saturated_overflow_tag>;
+        using safe_saturating_integer_2 = cnl::overflow_integer<cnl::elastic_integer<2, char>, cnl::saturated_overflow_tag>;
         static_assert(identical(
                 cnl::numeric_limits<safe_saturating_integer_2>::lowest(),
                 safe_saturating_integer_2{-3}), "");
@@ -60,70 +60,70 @@ namespace {
         static_assert(identical(
                 cnl::convert<cnl::elastic_integer<10>>(cnl::throwing_overflow, 0),
                 cnl::elastic_integer<10>{0}), "");
-        static_assert(cnl::safe_int<10>(0b1010101010)==cnl::safe_int<10>(0b1010101010), "");
+        static_assert(cnl::safe_integer<10>(0b1010101010)==cnl::safe_integer<10>(0b1010101010), "");
     }
 
     namespace test_make_safe_int {
-        static_assert(identical(cnl::make_safe_int(cnl::int16{7}), cnl::safe_int<15>{7}), "");
-        static_assert(identical(cnl::safe_int<34>{0}, cnl::safe_int<34>{0}), "");
+        static_assert(identical(cnl::make_safe_int(cnl::int16{7}), cnl::safe_integer<15>{7}), "");
+        static_assert(identical(cnl::safe_integer<34>{0}, cnl::safe_integer<34>{0}), "");
     }
 
     namespace test_add {
         static_assert(
                 identical(
-                        cnl::safe_int<2>{2},
-                        cnl::safe_int<1>{1}+cnl::safe_int<1>{1}),
-                "cnl::safe_int operator+");
+                        cnl::safe_integer<2>{2},
+                        cnl::safe_integer<1>{1}+cnl::safe_integer<1>{1}),
+                "cnl::safe_integer operator+");
     }
 
     namespace test_add {
         static_assert(
                 identical(
-                        cnl::safe_int<2>{2}-cnl::safe_int<2>{1},
-                        cnl::safe_int<3>{1}),
-                "cnl::safe_int operator+");
+                        cnl::safe_integer<2>{2}-cnl::safe_integer<2>{1},
+                        cnl::safe_integer<3>{1}),
+                "cnl::safe_integer operator+");
     }
 
     namespace test_multiply {
-        static_assert(identical(cnl::safe_int<6>{55}*cnl::safe_int<6>{4}, cnl::safe_int<12>{220}), "cnl::safe_int operator*");
-        static_assert(identical(cnl::safe_int<3>{7}*cnl::safe_int<4>{10}, cnl::safe_int<7>{70}), "cnl::safe_int operator*");
+        static_assert(identical(cnl::safe_integer<6>{55}*cnl::safe_integer<6>{4}, cnl::safe_integer<12>{220}), "cnl::safe_integer operator*");
+        static_assert(identical(cnl::safe_integer<3>{7}*cnl::safe_integer<4>{10}, cnl::safe_integer<7>{70}), "cnl::safe_integer operator*");
 #if defined(__clang__) || ! defined(__GNUG__)
-        static_assert(identical(cnl::safe_int<3>{3}*.25, .75), "cnl::safe_int operator*");
+        static_assert(identical(cnl::safe_integer<3>{3}*.25, .75), "cnl::safe_integer operator*");
 #endif
     }
 
     namespace test_scale {
-        static_assert(identical(cnl::safe_int<3>{7}*cnl::safe_int<4>{10}, cnl::safe_int<7>{70}), "cnl::safe_int operator*");
+        static_assert(identical(cnl::safe_integer<3>{7}*cnl::safe_integer<4>{10}, cnl::safe_integer<7>{70}), "cnl::safe_integer operator*");
     }
 
     namespace test_is_composite {
         using cnl::is_composite;
 
-        static_assert(is_composite<cnl::safe_int<10>>::value, "is_composite<cnl::safe_int<10>> test failed");
+        static_assert(is_composite<cnl::safe_integer<10>>::value, "is_composite<cnl::safe_integer<10>> test failed");
     }
 
     namespace test_digits {
         using cnl::digits;
         using cnl::set_digits_t;
 
-        static_assert(digits<cnl::safe_int<3>>::value>=3, "cnl::digits / cnl::set_digits test failed");
-        static_assert(identical(set_digits_t<cnl::safe_int<1>, 3>{6}, cnl::safe_int<3>{6}), "cnl::digits / cnl::set_digits test failed");
+        static_assert(digits<cnl::safe_integer<3>>::value>=3, "cnl::digits / cnl::set_digits test failed");
+        static_assert(identical(set_digits_t<cnl::safe_integer<1>, 3>{6}, cnl::safe_integer<3>{6}), "cnl::digits / cnl::set_digits test failed");
     }
 
     namespace test_used_bits {
         using cnl::used_bits;
         using cnl::throwing_overflow_tag;
 
-        static_assert(used_bits(cnl::safe_int<1, throwing_overflow_tag, char>{0}) == 0, "used_bits(cnl::safe_int)");
-        static_assert(used_bits(cnl::safe_int<22, throwing_overflow_tag>{77}) == 7, "used_bits(cnl::safe_int)");
+        static_assert(used_bits(cnl::safe_integer<1, throwing_overflow_tag, char>{0}) == 0, "used_bits(cnl::safe_integer)");
+        static_assert(used_bits(cnl::safe_integer<22, throwing_overflow_tag>{77}) == 7, "used_bits(cnl::safe_integer)");
     }
 
     namespace test_leading_bits {
         using cnl::leading_bits;
         using cnl::throwing_overflow_tag;
 
-        static_assert(leading_bits(cnl::safe_int<1, throwing_overflow_tag, char>{0}) == 1, "leading_bits(cnl::safe_int)");
-        static_assert(leading_bits(cnl::safe_int<22, throwing_overflow_tag>{77}) == 15, "leading_bits(cnl::safe_int)");
+        static_assert(leading_bits(cnl::safe_integer<1, throwing_overflow_tag, char>{0}) == 1, "leading_bits(cnl::safe_integer)");
+        static_assert(leading_bits(cnl::safe_integer<22, throwing_overflow_tag>{77}) == 15, "leading_bits(cnl::safe_integer)");
     }
 }
 
@@ -131,7 +131,7 @@ namespace {
 template<int NumDigits, class OverflowTag>
 struct test_safe_int {
     template<class Rep>
-    using test_subject = cnl::safe_int<NumDigits, OverflowTag, Rep>;
+    using test_subject = cnl::safe_integer<NumDigits, OverflowTag, Rep>;
 
     constexpr static number_test_by_rep<test_subject> instance{};
 };

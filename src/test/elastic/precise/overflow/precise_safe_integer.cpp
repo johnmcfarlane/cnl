@@ -6,19 +6,19 @@
 
 #include <cnl/elastic_integer.h>
 #include <cnl/precise_integer.h>
-#include <cnl/overflow_int.h>
+#include <cnl/overflow_integer.h>
 
 namespace cnl {
     // precise safe integer
     template<
             int IntegerDigits,
-            class OverflowTag = overflow_int<>::overflow_tag,
+            class OverflowTag = overflow_integer<>::overflow_tag,
             class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int>
     using precise_safe_int = elastic_integer<
             IntegerDigits,
             precise_integer<
-                    overflow_int<
+                    overflow_integer<
                             Narrowest,
                             OverflowTag
                     >,
@@ -27,7 +27,7 @@ namespace cnl {
     >;
 
     template<
-            class OverflowTag = overflow_int<>::overflow_tag,
+            class OverflowTag = overflow_integer<>::overflow_tag,
             class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int,
             class Input = int,
@@ -42,7 +42,7 @@ namespace cnl {
     }
 
     template<
-            class OverflowTag = overflow_int<>::overflow_tag,
+            class OverflowTag = overflow_integer<>::overflow_tag,
             class RoundingTag = precise_integer<>::rounding,
             class Narrowest = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE InputValue = 0>
@@ -64,7 +64,7 @@ namespace {
 
     namespace default_parameters {
         using cnl::precise_integer;
-        using cnl::overflow_int;
+        using cnl::overflow_integer;
         using cnl::elastic_integer;
 
         static_assert(
