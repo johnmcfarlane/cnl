@@ -44,12 +44,12 @@ namespace {
             elastic_integer<22, uint8_t>{10000}), "cnl::elastic_integer test failed");
 
     static_assert(identical(
-            elastic_fixed_point<2, 2>{1.5} << 1,
-            elastic_fixed_point<2, 2>{3}), "cnl::elastic_fixed_point test failed");
+            elastic_fixed_point<2, -2>{1.5} << 1,
+            elastic_fixed_point<2, -2>{3}), "cnl::elastic_fixed_point test failed");
 
     static_assert(identical(
-            elastic_fixed_point<2, 2>{1.5} >> 1,
-            elastic_fixed_point<2, 2>{0.75}), "cnl::elastic_fixed_point test failed");
+            elastic_fixed_point<2, -2>{1.5} >> 1,
+            elastic_fixed_point<2, -2>{0.75}), "cnl::elastic_fixed_point test failed");
 }
 
 namespace test_sqrt {
