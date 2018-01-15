@@ -33,13 +33,13 @@ using test_int = cnl::overflow_integer<>;
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_right)
 {
-    auto shift_left_fn = shift_left<-8, uint16, uint8>;
+    auto shift_left_fn = cnl::_impl::shift<-8, 2, uint16>;
     ASSERT_THROW(shift_left_fn((uint8) 0x1234), std::overflow_error);
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_left)
 {
-    auto shift_left_fn = shift_left<-8, uint16, uint8>;
+    auto shift_left_fn = cnl::_impl::shift<-8, 2, uint16>;
     ASSERT_THROW(shift_left_fn((uint8) 0x1234), std::overflow_error);
 }
 

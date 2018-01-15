@@ -63,6 +63,15 @@ namespace cnl {
         };
     }
 
+    template<int Digits, class Narrowest, class Rep>
+    struct from_rep<elastic_integer<Digits, Narrowest>, Rep> {
+        constexpr auto operator()(elastic_integer<Digits, Narrowest> const& rep) const
+        -> elastic_integer<Digits, cnl::_impl::make_signed_t<Narrowest, cnl::is_signed<Rep>::value>>
+        {
+            return rep;
+        }
+    };
+
     template<int Digits, class Narrowest, class Value>
     struct from_value<elastic_integer<Digits, Narrowest>, Value> {
         using type = elastic_integer<cnl::digits<Value>::value, cnl::_impl::make_signed_t<Narrowest, cnl::is_signed<Value>::value>>;
@@ -83,12 +92,38 @@ namespace cnl {
         using type = elastic_integer<_to_digits, Narrowest>;
     };
 
-    template<int Digits, class Narrowest>
-    struct scale<elastic_integer<Digits, Narrowest>> {
-        using _value_type = elastic_integer<Digits, Narrowest>;
+    // cnl::scale<..., cnl::elastic_integer<>>
+    template<int ShiftDigits, int ScalarDigits, class ScalarNarrowest>
+    struct scale<ShiftDigits, 2, elastic_integer<ScalarDigits, ScalarNarrowest>> {
+        constexpr auto operator()(elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
+        -> elastic_integer<ScalarDigits, ScalarNarrowest>
+        {
+            using result_type = elastic_integer<ScalarDigits, ScalarNarrowest>;
+            using result_rep = typename result_type::rep;
+            return _impl::to_rep(s) * (result_rep{1} << ShiftDigits);
+        }
+    };
 
-        constexpr _value_type operator()(_value_type const& i, int base, int exp) const {
-            return _value_type{ _impl::scale(_impl::to_rep(i), base, exp) };
+    // cnl::shift<..., cnl::elastic_integer<>>
+    template<int ShiftDigits, int ScalarDigits, class ScalarNarrowest>
+    struct shift<ShiftDigits, 2, elastic_integer<ScalarDigits, ScalarNarrowest>, _impl::enable_if_t<0 <= ShiftDigits>> {
+        constexpr auto operator()(elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
+        -> elastic_integer<ShiftDigits+ScalarDigits, ScalarNarrowest>
+        {
+            using result_type = elastic_integer<ShiftDigits+ScalarDigits, ScalarNarrowest>;
+            using result_rep = typename result_type::rep;
+            return _impl::to_rep(s) * (result_rep{1} << ShiftDigits);
+        }
+    };
+
+    template<int ShiftDigits, int ScalarDigits, class ScalarNarrowest>
+    struct shift<ShiftDigits, 2, elastic_integer<ScalarDigits, ScalarNarrowest>, _impl::enable_if_t<ShiftDigits < 0>> {
+        constexpr auto operator()(elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
+        -> elastic_integer<ShiftDigits+ScalarDigits, ScalarNarrowest>
+        {
+            using divisor_type = elastic_integer<1-ShiftDigits, ScalarNarrowest>;
+            using divisor_rep = typename divisor_type::rep;
+            return _impl::to_rep(s) / (divisor_rep{1} << -ShiftDigits);
         }
     };
 

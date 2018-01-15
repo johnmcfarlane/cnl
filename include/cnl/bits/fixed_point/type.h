@@ -99,7 +99,8 @@ namespace cnl {
         /// constructor taking a fixed-point type
         template<class FromRep, int FromExponent>
         constexpr fixed_point(fixed_point<FromRep, FromExponent> const& rhs)
-                : _base(fixed_point_to_rep(rhs))
+                : _base(
+                static_cast<Rep>(_impl::shift<FromExponent-exponent>(_impl::from_value<Rep>(_impl::to_rep(rhs)))))
         {
         }
 
@@ -113,7 +114,7 @@ namespace cnl {
         /// constructor taking an integer type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         constexpr fixed_point(S const& s)
-            : fixed_point(_impl::from_rep<fixed_point<S, 0>>(s))
+                : _base(static_cast<Rep>(_impl::shift<-exponent>(_impl::from_value<Rep>(s))))
         {
         }
 
@@ -144,7 +145,7 @@ namespace cnl {
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         explicit constexpr operator S() const
         {
-            return rep_to_integral<S>(_impl::to_rep(*this));
+            return static_cast<S>(_impl::shift<exponent>(_impl::to_rep(*this)));
         }
 
         /// returns value represented as floating-point
@@ -219,26 +220,6 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::shift_left
-
-        // performs a shift operation by a fixed number of bits avoiding two pitfalls:
-        // 1) shifting by a negative amount causes undefined behavior
-        // 2) converting between integer types of different sizes can lose significant bits during shift right
-
-        // Exponent == 0
-        template<int exp, class Output, class Input>
-        constexpr Output shift_left(Input i)
-        {
-            using larger = typename std::conditional<
-                    digits<Input>::value<=digits<Output>::value,
-                    Output, Input>::type;
-
-            return (exp>-numeric_limits<larger>::digits)
-                   ? static_cast<Output>(_impl::scale<larger>(static_cast<larger>(i), 2, exp))
-                   : Output{0};
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////
         // file-local implementation-specific definitions
 
         namespace fp {
@@ -254,7 +235,7 @@ namespace cnl {
                     return S{1.};
                 }
 
-                template<class S, int Exponent, 
+                template<class S, int Exponent,
                         enable_if_t<!(Exponent<=0) && (Exponent<8), int> Dummy = 0>
                 constexpr S pow2()
                 {
@@ -269,7 +250,7 @@ namespace cnl {
                     return pow2<S, Exponent-8>()*S(256);
                 }
 
-                template<class S, int Exponent, 
+                template<class S, int Exponent,
                         enable_if_t<!(Exponent>=0) && (Exponent>-8), int> Dummy = 0>
                 constexpr S pow2()
                 {
@@ -314,15 +295,6 @@ namespace cnl {
 
     template<class Rep, int Exponent>
     template<class S>
-    constexpr S fixed_point<Rep, Exponent>::rep_to_integral(rep r)
-    {
-        static_assert(numeric_limits<S>::is_integer, "S must be integral type");
-
-        return _impl::shift_left<exponent, S>(r);
-    }
-
-    template<class Rep, int Exponent>
-    template<class S>
     constexpr typename fixed_point<Rep, Exponent>::rep fixed_point<Rep, Exponent>::floating_point_to_rep(S s)
     {
         static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
@@ -333,7 +305,7 @@ namespace cnl {
     template<class FromRep, int FromExponent>
     constexpr typename fixed_point<Rep, Exponent>::rep fixed_point<Rep, Exponent>::fixed_point_to_rep(fixed_point<FromRep, FromExponent> const& rhs)
     {
-        return _impl::shift_left<FromExponent-exponent, rep>(_impl::to_rep(rhs));
+        return _impl::shift<FromExponent-exponent>(_impl::to_rep(rhs));
     }
 
     ////////////////////////////////////////////////////////////////////////////////

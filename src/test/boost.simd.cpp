@@ -79,17 +79,24 @@ namespace {
     TEST(boost_simd, scale) {
         using pack = boost::simd::pack<int, 2>;
         auto input = pack{65535, 0};
-        auto output = cnl::scale<pack>()(input, 2, 5);
-        auto expected = pack{65535*32, 0};
+        auto output = cnl::_impl::scale<5>(input);
+        auto expected = pack{65535<<5, 0};
         ASSERT_TRUE(boost::simd::compare_equal(expected, output));
     }
 
     TEST(boost_simd, shift_left) {
-        using output_type = boost::simd::pack<cnl::int64, 2>;
-        using input_type = boost::simd::pack<cnl::uint16, 2>;
-        auto input = input_type{65535, 0};
-        auto output = cnl::_impl::shift_left<5, output_type>(input);
-        auto expected = output_type{65535*32, 0};
+        using pack = boost::simd::pack<int, 2>;
+        auto input = pack{65535, 0};
+        auto output = cnl::_impl::shift<5>(input);
+        auto expected = pack{65535*32, 0};
+        ASSERT_TRUE(boost::simd::compare_equal(expected, output));
+    }
+
+    TEST(boost_simd, shift_right) {
+        using pack = boost::simd::pack<cnl::int64, 2>;
+        auto input = pack{65535, 0};
+        auto output = cnl::_impl::shift<-5>(input);
+        auto expected = pack{65535>>5, 0};
         ASSERT_TRUE(boost::simd::compare_equal(expected, output));
     }
 

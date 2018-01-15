@@ -10,6 +10,7 @@
 #if !defined(CNL_NUMERIC_TRAITS)
 #define CNL_NUMERIC_TRAITS 1
 
+#include "constant.h"
 #include "limits.h"
 
 #include "bits/type_traits.h"
@@ -323,7 +324,10 @@ namespace cnl {
     // cnl::from_rep
 
     template<class Number, class Rep, class Enable = void>
-    struct from_rep {
+    struct from_rep;
+
+    template<class Number, class Rep>
+    struct from_rep<Number, Rep, _impl::enable_if_t<cnl::is_integral<Number>::value>> {
         constexpr Number operator()(Rep const& rep) const {
             // by default, a number type's rep type is the number type itself
             return static_cast<Number>(rep);
@@ -357,13 +361,33 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_value
 
+    namespace _num_traits_impl {
+        template<int Width, bool IsSigned>
+        struct make_integer;
+
+        template<int Width>
+        struct make_integer<Width, true> {
+            using type = set_digits_t<signed, Width-1>;
+        };
+
+        template<int Width>
+        struct make_integer<Width, false> {
+            using type = set_digits_t<unsigned, Width>;
+        };
+
+        template<int Width, bool IsSigned>
+        using make_integer_t = typename make_integer<Width, IsSigned>::type;
+    }
+
     // if Number has Value for its Rep, what type would Number become?
     template<class Number, class Value, class Enable = void>
-    struct from_value;
+    struct from_value {
+        using type = void;
+    };
 
     template<class Number, class Value>
-    struct from_value<Number, Value> {
-        using type = Number;
+    struct from_value<Number, Value, _impl::enable_if_t<cnl::is_integral<Number>::value>> {
+        using type = _num_traits_impl::make_integer_t<cnl::digits<Value>::value, cnl::is_signed<Value>::value>;
     };
 
     template<class Number, class Value>
@@ -372,52 +396,87 @@ namespace cnl {
     namespace _impl {
         template<class Number, class Value>
         constexpr auto from_value(Value const& value)
-        -> cnl::from_value_t<Number, Value> {
+        -> cnl::from_value_t<Number, Value>
+        {
+            static_assert(
+                    !std::is_same<void, cnl::from_value_t<Number, Value>>::value,
+                    "cnl::from_value is missing a specialization");
+
             return value;
+        }
+    }
+
+    // cnl::from_value<cnl::constant>
+    template<CNL_IMPL_CONSTANT_VALUE_TYPE ConstantValue, class InputValue>
+    struct from_value<constant<ConstantValue>, InputValue> {
+        using type = constant<InputValue{ConstantValue}>;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::shift
+
+    template<int Digits, int Radix, class S, class Enable = void>
+    struct shift;
+
+    namespace _impl {
+        // for most implementations of cnl::shift,
+        // inheriting from this implementation is adequate
+        template<int Digits, int Radix, class S, class Enable = void>
+        struct default_scale;
+
+        template<int Bits, class S>
+        struct default_scale<Bits, 2, S, _impl::enable_if_t<0<=Bits>> {
+            constexpr auto operator()(S const& s) const
+            -> decltype(s*(S{1} << constant<Bits>{}))
+            {
+                return s*(S{1} << constant<Bits>{});
+            }
+        };
+
+        // cnl::default_scale<-ve, cnl::constant<>>
+        template<int Bits, class S>
+        struct default_scale<Bits, 2, S, _impl::enable_if_t<Bits<0>> {
+            constexpr auto operator()(S const& s) const
+            -> decltype(s/(S{1} << constant<-Bits>()))
+            {
+                return s/(S{1} << constant<-Bits>());
+            }
+        };
+    }
+
+    // cnl::shift<..., fundamental-integer>
+    template<int Digits, int Radix, class S>
+    struct shift<Digits, Radix, S, _impl::enable_if_t<cnl::is_integral<S>::value>>
+            : _impl::default_scale<Digits, Radix, S> {
+    };
+
+    namespace _impl {
+        // cnl::_impl::shift - convenience wrapper for cnl::shift
+        template<int Digits, int Radix=2, class S=void>
+        constexpr auto shift(S const& s)
+        -> decltype(cnl::shift<Digits, Radix, S>{}(s))
+        {
+            return cnl::shift<Digits, Radix, S>{}(s);
         }
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::scale
 
-    namespace _num_traits_impl {
-        template<class T>
-        using scale_result_type = decltype(std::declval<T>() * std::declval<T>());
-
-        template<class T>
-        constexpr scale_result_type<T> pown(int base, int exp) {
-            return exp
-                   ? pown<T>(base, exp - 1) * static_cast<scale_result_type<T>>(base)
-                   : static_cast<scale_result_type<T>>(1);
-        }
-
-        template<class T>
-        constexpr scale_result_type<T> pow2(int exp) {
-            return scale_result_type<T>{1} << exp;
-        }
-
-        template<class T>
-        constexpr scale_result_type<T> pow(int base, int exp) {
-            return (base == 2) ? pow2<T>(exp) : pown<T>(base, exp);
-        }
-    }
-
-    template<class T>
+    // returns a scaled value of the same type
+    template<int Digits, int Radix, class S>
     struct scale {
-        constexpr auto operator()(T const& i, int base, int exp) const
-        -> _num_traits_impl::scale_result_type<T> {
-            return _impl::from_rep<_num_traits_impl::scale_result_type<T>>(
-                    (exp < 0)
-                    ? _impl::to_rep<T>(i) / _num_traits_impl::pow<T>(base, -exp)
-                    : _impl::to_rep<T>(i) * _num_traits_impl::pow<T>(base, exp));
+        constexpr S operator()(S const& s) const
+        {
+            return static_cast<S>(shift<Digits, Radix, S>()(s));
         }
     };
-    
+
     namespace _impl {
-        template<class T>
-        constexpr auto scale(T const& i, int base, int exp)
-        -> decltype(cnl::scale<T>()(i, base, exp)) {
-            return cnl::scale<T>()(i, base, exp);
+        template<int Digits, int Radix=2, class S=void>
+        constexpr S scale(S const& s)
+        {
+            return cnl::scale<Digits, Radix, S>()(s);
         }
     }
 }

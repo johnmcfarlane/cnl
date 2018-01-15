@@ -265,13 +265,14 @@ namespace cnl {
     struct from_rep<Derived, constant<Value>, _impl::enable_if_t<_impl::is_derived_from_number_base<Derived>::value>>
     : from_rep<_impl::number_base<Derived, typename Derived::rep>, ::cnl::intmax> {};
 
-    template<class Derived, class Rep>
-    struct scale<_impl::number_base<Derived, Rep>> {
-        template<class Input>
-        constexpr Rep operator()(Input const&i, int base, int exp) const {
-            return (exp < 0)
-                   ? _impl::to_rep(i) / _num_traits_impl::pow<Rep>(base, -exp)
-                   : _impl::to_rep(i) * _num_traits_impl::pow<Rep>(base, exp);
+    template<int Digits, int Radix, class Derived>
+    struct shift<Digits, Radix, _impl::number_base<Derived, typename Derived::rep>> {
+        using _scalar_type = _impl::number_base<Derived, typename Derived::rep>;
+
+        constexpr auto operator()(_scalar_type const &s) const
+        -> decltype(_impl::from_rep<Derived>(_impl::shift<Digits, Radix>(_impl::to_rep(s))))
+        {
+            return _impl::from_rep<Derived>(_impl::shift<Digits, Radix>(_impl::to_rep(s)));
         }
     };
 

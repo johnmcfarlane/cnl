@@ -179,7 +179,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
             PROPERTIES COMPILE_FLAGS "/wd4307")
 
     set_source_files_properties(
-            overflow/overflow_int.cpp
+            overflow/overflow_integer.cpp
             PROPERTIES COMPILE_FLAGS "/wd4307")
 
     set_source_files_properties(
@@ -187,7 +187,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
             PROPERTIES COMPILE_FLAGS "/wd4307")
 
     set_source_files_properties(
-            fixed_point/overflow_int/fixed_point_native_integer.cpp
+            fixed_point/overflow/fixed_point_native_integer.cpp
             PROPERTIES COMPILE_FLAGS "/wd4307")
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     set_source_files_properties(

@@ -100,7 +100,7 @@ namespace cnl {
         struct params {
             using lhs_rep = typename Lhs::rep;
             using rhs_rep = typename Rhs::rep;
-            using rep_op_result = _impl::op_result<_impl::multiply_op, lhs_rep, rhs_rep>;
+            using rep_op_result = _impl::op_result<_impl::divide_op, lhs_rep, rhs_rep>;
 
             static constexpr int integer_digits =
                     _impl::integer_digits<Lhs>::value + _impl::fractional_digits<Rhs>::value;
@@ -121,7 +121,6 @@ namespace cnl {
             static constexpr int intermediate_exponent_lhs = Lhs::exponent - digits<Rhs>::value;
 
             using result_type = fixed_point<rep_type, rep_exponent>;
-            using intermediate_lhs = fixed_point<rep_type, intermediate_exponent_lhs>;
         };
 
         template<class Lhs, class Rhs>
@@ -132,13 +131,11 @@ namespace cnl {
             constexpr auto operator()(fixed_point<LhsRep, LhsExponent> const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
             -> typename params<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>>::result_type {
                 using params = params<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>>;
-                using intermediate_lhs = typename params::intermediate_lhs;
                 using result_type = typename params::result_type;
                 using result_rep = typename result_type::rep;
 
-                return _impl::from_rep<result_type>(
-                        static_cast<result_rep>(_impl::to_rep(static_cast<intermediate_lhs>(lhs))
-                                                / _impl::to_rep(rhs)));
+                return _impl::from_rep<result_type>(static_cast<result_rep>(_impl::scale<digits<RhsRep>::value>(
+                        static_cast<typename params::rep_type>(_impl::to_rep(lhs)))/_impl::to_rep(rhs)));
             }
         };
 

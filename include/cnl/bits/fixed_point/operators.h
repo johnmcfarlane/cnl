@@ -111,6 +111,7 @@ namespace cnl {
         template<> struct is_zero_degree<shift_left_op> : std::false_type {};
         template<> struct is_zero_degree<shift_right_op> : std::false_type {};
 
+        // performs zero-degreen binary operations between fixed_point types with the same exponent
         template<class Operator, class LhsRep, class RhsRep, int Exponent>
         struct binary_operator<Operator, fixed_point<LhsRep, Exponent>, fixed_point<RhsRep, Exponent>,
                 enable_if_t<is_zero_degree<Operator>::value>> {
@@ -122,14 +123,28 @@ namespace cnl {
             }
         };
 
+        // performs zero-degreen binary operations between fixed_point types with the different exponents
         template<class Operator, class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
         struct binary_operator<Operator, fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>,
-                enable_if_t<is_zero_degree<Operator>::value>> {
+                        enable_if_t<is_zero_degree<Operator>::value>> {
+        private:
+            static constexpr int _common_exponent = min(LhsExponent, RhsExponent);
+            static constexpr int _lhs_left_shift = LhsExponent-_common_exponent;
+            static constexpr int _rhs_left_shift = RhsExponent-_common_exponent;
+        public:
             constexpr auto operator()(
                     fixed_point<LhsRep, LhsExponent> const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
-            -> decltype(binary_operator<Operator, fixed_point<LhsRep, min(LhsExponent, RhsExponent)>, fixed_point<RhsRep, min(LhsExponent, RhsExponent)>>()(lhs, rhs))
+            -> decltype(Operator{}(
+                    _impl::from_rep<fixed_point<LhsRep, _common_exponent >> (
+                            _impl::shift<_lhs_left_shift>(_impl::to_rep(lhs))),
+                    _impl::from_rep<fixed_point<RhsRep, _common_exponent >> (
+                            _impl::shift<_rhs_left_shift>(_impl::to_rep(rhs)))))
             {
-                return binary_operator<Operator, fixed_point<LhsRep, min(LhsExponent, RhsExponent)>, fixed_point<RhsRep, min(LhsExponent, RhsExponent)>>()(lhs, rhs);
+                return Operator{}(
+                        _impl::from_rep<fixed_point<LhsRep, _common_exponent>>(
+                                _impl::shift<_lhs_left_shift>(_impl::to_rep(lhs))),
+                        _impl::from_rep<fixed_point<RhsRep, _common_exponent>>(
+                                _impl::shift<_rhs_left_shift>(_impl::to_rep(rhs))));
             }
         };
     }

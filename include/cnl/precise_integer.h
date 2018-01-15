@@ -11,6 +11,7 @@
 #include "limits.h"
 
 #include "bits/number_base.h"
+#include "numeric.h"
 
 namespace cnl {
 
@@ -57,6 +58,15 @@ namespace cnl {
         using type = precise_integer<set_digits_t<Rep, MinNumBits>, RoundingTag>;
     };
 
+    template<class FromRep, class RoundingTag, class Rep>
+    struct from_rep<precise_integer<FromRep, RoundingTag>, Rep> {
+        constexpr auto operator()(precise_integer<FromRep, RoundingTag> const& rep) const
+        -> precise_integer<Rep, RoundingTag>
+        {
+            return rep;
+        }
+    };
+
     namespace _impl {
         template<class Rep, class RoundingTag>
         struct get_rep<precise_integer<Rep, RoundingTag>> {
@@ -74,9 +84,17 @@ namespace cnl {
         using type = precise_integer<Value, RoundingTag>;
     };
 
-    template<class Rep, class RoundingTag>
-    struct scale<precise_integer<Rep, RoundingTag>>
-    : scale<_impl::number_base<precise_integer<Rep, RoundingTag>, Rep>> {
+    template<class Rep, class RoundingTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct from_value<precise_integer<Rep, RoundingTag>, constant<Value>> {
+        using _rep = typename std::conditional<digits<int>::value<used_bits(Value),
+                decltype(Value),
+                int>::type;
+        using type = precise_integer<_rep, RoundingTag>;
+    };
+
+    template<int Digits, int Radix, class Rep, class RoundingTag>
+    struct shift<Digits, Radix, precise_integer<Rep, RoundingTag>>
+            : shift<Digits, Radix, _impl::number_base<precise_integer<Rep, RoundingTag>, Rep>> {
     };
 
     namespace _precise_integer_impl {

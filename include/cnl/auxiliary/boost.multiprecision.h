@@ -52,6 +52,17 @@ namespace cnl {
         using type = _bmp::cpp_int_backend<width, width, SignType, Checked, Allocator>;
     };
 
+    template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Value>
+    struct from_value<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked>, Value> {
+    private:
+        static constexpr auto _digits = digits<Value>::value;
+        static constexpr auto _is_signed = is_signed<Value>::value;
+        static constexpr auto _bits = _digits + _is_signed;
+        static constexpr auto _sign_type = _is_signed ? _bmp::signed_magnitude : _bmp::unsigned_magnitude;
+    public:
+        using type = _bmp::cpp_int_backend<_bits, _bits, _sign_type, Checked, void>;
+    };
+
     template<class Backend, _bmp::expression_template_option ExpressionTemplates>
     struct make_signed<_bmp::number<Backend, ExpressionTemplates>> {
         using type = _bmp::number<make_signed_t<Backend>, ExpressionTemplates>;
@@ -70,6 +81,20 @@ namespace cnl {
     template<class Backend, _bmp::expression_template_option ExpressionTemplates, _digits_type MinNumDigits>
     struct set_digits<_bmp::number<Backend, ExpressionTemplates>, MinNumDigits> {
         using type = _bmp::number<set_digits_t<Backend, MinNumDigits>, ExpressionTemplates>;
+    };
+
+    template<class Backend, _bmp::expression_template_option ExpressionTemplates, class Value>
+    struct from_value<_bmp::number<Backend, ExpressionTemplates>, Value> {
+        using type = _bmp::number<from_value_t<Backend, Value>, ExpressionTemplates>;
+    };
+
+    template<int Bits, class Backend, _bmp::expression_template_option ExpressionTemplates>
+    struct shift<Bits, 2, _bmp::number<Backend, ExpressionTemplates>> {
+        constexpr auto operator()(_bmp::number<Backend, ExpressionTemplates> const& s) const
+        -> decltype((Bits>=0) ? s << Bits : s >> -Bits)
+        {
+            return (Bits>=0) ? s << Bits : s >> -Bits;
+        }
     };
 
     ////////////////////////////////////////////////////////////////////////////////

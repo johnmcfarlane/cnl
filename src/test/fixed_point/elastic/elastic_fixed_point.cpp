@@ -23,21 +23,23 @@ using cnl::make_elastic_fixed_point;
 // if something broke it may show up here first
 
 namespace {
-    using cnl::_impl::shift_left;
-    using cnl::_impl::divide_op;
-    using cnl::_impl::multiply_op;
     using cnl::digits;
     using cnl::elastic_integer;
     using cnl::is_signed;
     using cnl::fixed_point;
     using cnl::set_digits_t;
 
-    static_assert(shift_left<1, cnl::elastic_integer<31, int>>(0) == 0, "");
-    static_assert(shift_left<1, cnl::elastic_integer<32, unsigned>>(0) == 0u, "");
-    static_assert(shift_left<1, cnl::elastic_integer<63, int>>(0) == 0, "");
-    static_assert(shift_left<1, cnl::elastic_integer<64, unsigned>>(0) == 0u, "");
+    static_assert(cnl::elastic_integer<64, unsigned>(0)==0u, "");
 
-    static_assert(digits<set_digits_t<elastic_integer<15, uint8_t>, 22>>::value == 22, "cnl::elastic_integer test failed");
+    static_assert(identical(cnl::elastic_integer<32, int>{246}, cnl::_impl::shift<1>(cnl::elastic_integer<31, int>{123})), "");
+    static_assert(identical(cnl::elastic_integer<33, unsigned>{246}, cnl::_impl::shift<1>(cnl::elastic_integer<32, unsigned>{123})), "");
+#if defined(CNL_INT128_ENABLED)
+    static_assert(identical(cnl::elastic_integer<64, int>{246}, cnl::_impl::shift<1>(cnl::elastic_integer<63, int>{123})), "");
+    static_assert(identical(cnl::elastic_integer<65, unsigned>{246}, cnl::_impl::shift<1>(cnl::elastic_integer<64, unsigned>{123})), "");
+#endif
+
+    static_assert(digits<set_digits_t<elastic_integer<15, uint8_t>, 22>>::value==22,
+            "cnl::elastic_integer test failed");
 
     static_assert(identical(
             set_digits_t<elastic_integer<15, uint8_t>, 22>{10000},
@@ -50,6 +52,34 @@ namespace {
     static_assert(identical(
             elastic_fixed_point<2, -2>{1.5} >> 1,
             elastic_fixed_point<2, -2>{0.75}), "cnl::elastic_fixed_point test failed");
+}
+
+namespace test_ctor {
+    static_assert(identical(uint32_t{0x76543210}, uint32_t(elastic_fixed_point<64, -32, unsigned>{elastic_fixed_point<32, 0, unsigned>{0x76543210LL}})), "cnl::elastic_fixed_point ctor");
+    static_assert(identical(uint32_t{1}, uint32_t(elastic_fixed_point<64, -32, unsigned>{1})), "cnl::elastic_fixed_point ctor");
+
+#if defined(CNL_INT128_ENABLED)
+    static_assert(identical(cnl::fixed_point<cnl::elastic_integer<62, int>, -40>{321}, cnl::fixed_point<cnl::elastic_integer<62, int>, -40>{fixed_point<cnl::elastic_integer<62, int>, -20>{321}}), "cnl::fixed_point ctor");
+    static_assert(identical(cnl::fixed_point<cnl::elastic_integer<62, int>, -40>{2097151.99999904632568359375}, cnl::fixed_point<cnl::elastic_integer<62, int>, -40>{fixed_point<cnl::elastic_integer<62, int>, -20>{2097151.99999904632568359375}}), "cnl::fixed_point ctor");
+#endif
+}
+
+namespace test_addition {
+    static constexpr auto lhs = cnl::elastic_fixed_point<31>{1};
+    static constexpr auto rhs = cnl::elastic_fixed_point<40, -31>{1};
+    static constexpr auto expected = cnl::elastic_fixed_point<63, -31>{2};
+    static constexpr auto sum = lhs + rhs;
+    static_assert(identical(expected, sum), "cnl::elastic_fixed_point addition");
+}
+
+namespace test_division {
+    using cnl::elastic_integer;
+    using cnl::fixed_point;
+
+    static_assert(identical(elastic_fixed_point<62, -31>{.5}, elastic_fixed_point<31, 0>{1}/elastic_fixed_point<31, 0>{2}), "cnl::elastic_fixed_point division");
+#if defined(CNL_INT128_ENABLED)
+    static_assert(identical(elastic_fixed_point<124, -62>{.5}, elastic_fixed_point<62, 0>{1}/elastic_fixed_point<62, 0>{2}), "cnl::elastic_fixed_point division");
+#endif
 }
 
 namespace test_sqrt {
