@@ -10,6 +10,7 @@
 #if !defined(CNL_BOOST_MULTIPRECISION_H)
 #define CNL_BOOST_MULTIPRECISION_H 1
 
+#include <cnl/constant.h>
 #include <cnl/num_traits.h>
 
 #include <boost/multiprecision/cpp_int.hpp>
@@ -51,6 +52,17 @@ namespace cnl {
         using type = _bmp::cpp_int_backend<width, width, SignType, Checked, Allocator>;
     };
 
+    template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Value>
+    struct from_value<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked>, Value> {
+    private:
+        static constexpr auto _digits = digits<Value>::value;
+        static constexpr auto _is_signed = is_signed<Value>::value;
+        static constexpr auto _bits = _digits + _is_signed;
+        static constexpr auto _sign_type = _is_signed ? _bmp::signed_magnitude : _bmp::unsigned_magnitude;
+    public:
+        using type = _bmp::cpp_int_backend<_bits, _bits, _sign_type, Checked, void>;
+    };
+
     template<class Backend, _bmp::expression_template_option ExpressionTemplates>
     struct make_signed<_bmp::number<Backend, ExpressionTemplates>> {
         using type = _bmp::number<make_signed_t<Backend>, ExpressionTemplates>;
@@ -71,6 +83,20 @@ namespace cnl {
         using type = _bmp::number<set_digits_t<Backend, MinNumDigits>, ExpressionTemplates>;
     };
 
+    template<class Backend, _bmp::expression_template_option ExpressionTemplates, class Value>
+    struct from_value<_bmp::number<Backend, ExpressionTemplates>, Value> {
+        using type = _bmp::number<from_value_t<Backend, Value>, ExpressionTemplates>;
+    };
+
+    template<int Bits, class Backend, _bmp::expression_template_option ExpressionTemplates>
+    struct shift<Bits, 2, _bmp::number<Backend, ExpressionTemplates>> {
+        constexpr auto operator()(_bmp::number<Backend, ExpressionTemplates> const& s) const
+        -> decltype((Bits>=0) ? s << Bits : s >> -Bits)
+        {
+            return (Bits>=0) ? s << Bits : s >> -Bits;
+        }
+    };
+
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     // aliases of _bmp types
@@ -79,19 +105,40 @@ namespace cnl {
         template<unsigned NumBits, _bmp::cpp_integer_type SignType>
         using backend = _bmp::cpp_int_backend<
                 NumBits, NumBits, SignType, _bmp::unchecked, void>;
+
+        template<unsigned NumBits, _bmp::cpp_integer_type SignType>
+        using number = _bmp::number<_sized_integer_impl::backend<NumBits, SignType>, _bmp::et_off>;
     }
 
     // cnl::signed_multiprecision - a signed integer of arbitrary size
     template<unsigned NumDigits = digits<int>::value>
-    using signed_multiprecision = _bmp::number<_sized_integer_impl::backend<NumDigits+1, _bmp::signed_magnitude>, _bmp::et_off>;
+    using signed_multiprecision = _sized_integer_impl::number<NumDigits+1, _bmp::signed_magnitude>;
 
     // cnl::unsigned_multiprecision - an unsigned integer of arbitrary size
     template<unsigned NumDigits = digits<unsigned>::value>
-    using unsigned_multiprecision = _bmp::number<_sized_integer_impl::backend<NumDigits, _bmp::unsigned_magnitude>, _bmp::et_off>;
+    using unsigned_multiprecision = _sized_integer_impl::number<NumDigits, _bmp::unsigned_magnitude>;
 
     // cnl::unsigned_multiprecision - an integer of arbitrary size
     template<unsigned NumDigits = digits<int>::value>
     using multiprecision = signed_multiprecision<NumDigits>;
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    // _bmp bitwise shift operators
+
+    template<unsigned NumBits, _bmp::cpp_integer_type SignType, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    constexpr auto operator<<(_sized_integer_impl::number<NumBits, SignType> const& lhs, constant<Value>)
+    -> decltype(lhs << Value)
+    {
+        return lhs << Value;
+    }
+
+    template<unsigned NumBits, _bmp::cpp_integer_type SignType, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    constexpr auto operator>>(_sized_integer_impl::number<NumBits, SignType> const& lhs, constant<Value>)
+    -> decltype(lhs >> Value)
+    {
+        return lhs >> Value;
+    }
 }
 
 #endif  // CNL_BOOST_MULTIPRECISION_H

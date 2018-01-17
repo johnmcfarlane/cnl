@@ -54,7 +54,6 @@ using uint128 = cnl::set_digits_t<test_unsigned, 128>;
 template <typename Rep=test_int, int Exponent=0>
 using fixed_point = cnl::fixed_point<Rep, Exponent>;
 
-using cnl::_impl::shift_left;
 using cnl::_impl::fp::type::pow2;
 
 template<class Type, cnl::_digits_type MinNumDigits>
@@ -101,12 +100,19 @@ TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_alternative_specialization)
 // compound assignment
 
 namespace test_compound_assignment {
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable: 4018)
+#endif
     TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_f_i) {
         auto lhs = fixed_point<uint32, -16>{7};
         auto rhs = uint32{12};
         lhs += rhs;
         ASSERT_EQ(lhs, 19);
     }
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
     TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_i_f) {
         auto lhs = int32{7};
@@ -209,61 +215,46 @@ static_assert(identical(uint8(0)+uint8(0), test_int{0}), "incorrect assumption a
 // cnl::_impl
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::_impl::fp::type::shift_left positive RHS
+// cnl::_impl::shift positive RHS
 
 #if defined(_MSC_VER)
 #pragma warning(push)
 #pragma warning(disable: 4310)
 #endif
 
-static_assert(shift_left<1, int8>(uint8(0))==0, "cnl::shift_left test failed");
-static_assert(shift_left<1, int8>(int8(0))==0, "cnl::shift_left test failed");
+static_assert(cnl::_impl::shift<1>(int8(0))==0, "cnl::_impl::shift test failed");
 
 #if defined(TEST_NATIVE_OVERFLOW)
-static_assert(shift_left<8, uint16>((uint16) 0x1234)==0x3400, "cnl::shift_left test failed");
-static_assert(shift_left<8, uint16>((uint8) 0x1234)==0x3400, "cnl::shift_left test failed");
-static_assert(shift_left<8, uint8>((uint16) 0x1234)==0x0, "cnl::shift_left test failed");
-static_assert(shift_left<8, uint16>((uint16) 0x1234)==0x3400, "cnl::shift_left test failed");
-static_assert(shift_left<8, uint16>((uint8) 0x1234)==0x3400, "cnl::shift_left test failed");
-static_assert(shift_left<8, uint8>((uint16) 0x1234)==0x0, "cnl::shift_left test failed");
+static_assert(cnl::_impl::shift<8>(uint16{0x1234})==0x123400, "cnl::_impl::shift test failed");
+static_assert(cnl::_impl::shift<8>(uint8{0x12})==0x1200, "cnl::_impl::shift test failed");
 #endif
 
 #if defined(TEST_SATURATED_OVERFLOW)
-static_assert(identical(shift_left<8, uint16>((uint16)0x1234), uint16{0xffff}), "cnl::shift_left test failed");
-static_assert(shift_left<8, uint16>((uint8)0x1234) == 0xff00, "cnl::shift_left test failed");
-static_assert(shift_left<8, uint8>((uint16)0x1234) == 0xff, "cnl::shift_left test failed");
+static_assert(identical(cnl::_impl::shift<8, 2, uint16>((uint16)0x1234), uint16{0x1234}<<8), "cnl::_impl::shift test failed");
+static_assert(cnl::_impl::shift<8, 2, uint16>((uint8)0x1234) == 0xff00, "cnl::_impl::shift test failed");
+static_assert(cnl::_impl::shift<8, 2, uint8>(0x34) == test_int{0x3400}, "cnl::_impl::shift test failed");
 #endif
 
-static_assert(shift_left<8, int16>(-123)==-31488, "cnl::shift_left test failed");
-
-#if defined(TEST_SATURATED_OVERFLOW)
-static_assert(shift_left<8, uint16>((uint16)0x1234) == 0xffff, "cnl::shift_left test failed");
-static_assert(shift_left<8, uint16>((uint8)0x1234) == 0xff00, "cnl::shift_left test failed");
-static_assert(shift_left<8, uint8>((uint16)0x1234) == 0xff, "cnl::shift_left test failed");
-#endif
-
-static_assert(shift_left<8, int16>(-123)==-31488, "cnl::shift_left test failed");
+static_assert(cnl::_impl::shift<8, 2, int16>(-123)==-31488, "cnl::_impl::shift test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::_impl::fp::type::shift_left negative RHS
+// cnl::_impl::fp::type::cnl::_impl::shift negative RHS
 
-static_assert(shift_left<-8, uint16>((uint16) 0x1234)==0x12, "cnl::shift_left test failed");
-static_assert(shift_left<-8, uint8>((uint16) 0x1234)==0x12, "cnl::shift_left test failed");
-static_assert(shift_left<-8, int16>(-31488)==-123, "cnl::shift_left test failed");
+static_assert(cnl::_impl::shift<-8, 2, uint16>((uint16) 0x1234)==0x12, "cnl::_impl::shift test failed");
+static_assert(cnl::_impl::shift<-8, 2, int16>(-31488)==-123, "cnl::_impl::shift test failed");
 
 #if !defined(TEST_THROWING_OVERFLOW)
-static_assert(shift_left<-8, uint16>((uint8) 0x1234)==0x0, "cnl::shift_left test failed");
+static_assert(cnl::_impl::shift<-8, 2, uint16>((uint8) 0x1234)==0x0, "cnl::_impl::shift test failed");
 #endif
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
 #endif
-static_assert(shift_left<-8, uint16>((uint16) 0x1234)==0x12, "cnl::shift_left test failed");
-static_assert(shift_left<-8, uint8>((uint16) 0x1234)==0x12, "cnl::shift_left test failed");
-static_assert(shift_left<-8, int16>(-31488)==-123, "cnl::shift_left test failed");
+static_assert(cnl::_impl::shift<-8, 2, uint16>((uint16) 0x1234)==0x12, "cnl::_impl::shift test failed");
+static_assert(cnl::_impl::shift<-8, 2, int16>(-31488)==-123, "cnl::_impl::shift test failed");
 
 #if !defined(TEST_THROWING_OVERFLOW)
-static_assert(shift_left<-8, uint16>((uint8) 0x34)==0x0, "cnl::shift_left test failed");
+static_assert(cnl::_impl::shift<-8, 2, uint16>((uint8) 0x34)==0x0, "cnl::_impl::shift test failed");
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -276,6 +267,23 @@ static_assert(pow2<float, -3>()==.125, "cnl::_impl::fp::type::pow2 test failed")
 static_assert(pow2<double, 7>()==128, "cnl::_impl::fp::type::pow2 test failed");
 static_assert(pow2<long double, 10>()==1024, "cnl::_impl::fp::type::pow2 test failed");
 static_assert(pow2<float, 20>()==1048576, "cnl::_impl::fp::type::pow2 test failed");
+
+////////////////////////////////////////////////////////////////////////////////
+// cnl::fixed_point<>::fixed_point
+
+namespace ctor {
+    static_assert(identical(fixed_point<uint64>{123}, fixed_point<uint64>(123)), "fixed_point<>::fixed_point");
+#if defined(CNL_INT128_ENABLED)
+    static_assert(identical(fixed_point<uint128, -16>(fixed_point<uint64>{123}), fixed_point<uint128, -16>(123)), "fixed_point<>::fixed_point");
+#endif
+
+#if !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_SATURATED_OVERFLOW)
+    // the equivalent test in elastic_fixed_point.cpp does not lose information
+    static_assert(identical(uint32{0x00003210U}, uint32(fixed_point<uint64, -16>{0x76543210U})), "fixed_point<>::fixed_point");
+#endif
+
+    static_assert(identical(cnl::_impl::to_rep(fixed_point<int, 2>{4}), 1), "cnl::_impl::to_rep<fixed_point<int, 2>>()");
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // numeric traits
@@ -309,6 +317,8 @@ namespace test_from_rep {
 namespace test_from_value {
     static_assert(identical(cnl::_impl::from_value<fixed_point<int32>>(cnl::constant<369>{}), fixed_point<int>{369}),
             "cnl::_impl::from_value<fixed_point<>>");
+
+    static_assert(identical(fixed_point<int, 2>{4}, cnl::_impl::from_value<fixed_point<>>(cnl::constant<4>{})), "cnl::_impl::from_value<fixed_point<>, cnl::constant<4>>()");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -447,31 +457,31 @@ static_assert(fixed_point<int16, 16>(-6553.)==0, "cnl::fixed_point test failed")
 #endif
 static_assert((fixed_point<int32, 16>(-4294967296l))==-4294967296.f, "cnl::fixed_point test failed");
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert((fixed_point<int64, 16>(-1125895611875328l))==-1125895611875328l, "cnl::fixed_point test failed");
+static_assert((fixed_point<int64, 16>(-0x800000000000LL))==-0x800000000000LL, "cnl::fixed_point test failed");
 #endif
 
 // exponent = 1
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert(fixed_point<uint8, 1>(510)==510, "cnl::fixed_point test failed");
-static_assert(fixed_point<uint8, 1>(511)==510, "cnl::fixed_point test failed");
+static_assert(fixed_point<uint8, 1>(10)==10, "cnl::fixed_point test failed");
+static_assert(fixed_point<uint8, 1>(11)==10, "cnl::fixed_point test failed");
 static_assert(fixed_point<int8, 1>(123.5)==122, "cnl::fixed_point test failed");
 
-static_assert(fixed_point<int8, 1>(255)==254, "cnl::fixed_point test failed");
-static_assert(fixed_point<int8, 1>(254)==254, "cnl::fixed_point test failed");
+static_assert(fixed_point<int8, 1>(127)==126, "cnl::fixed_point test failed");
+static_assert(fixed_point<int8, 1>(126)==126, "cnl::fixed_point test failed");
 static_assert(fixed_point<int8, 1>(-5)==-4, "cnl::fixed_point test failed");
 #endif
 
 // conversion between fixed_point specializations
 static_assert(fixed_point<uint8, -4>(fixed_point<int16, -8>(1.5))==1.5, "cnl::fixed_point test failed");
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE)
+#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_SATURATED_OVERFLOW)
 static_assert(fixed_point<uint16, -8>(fixed_point<int8, -4>(3.25))==3.25, "cnl::fixed_point test failed");
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
 static_assert(fixed_point<uint8, 4>(fixed_point<int16, -4>(768))==768, "cnl::fixed_point test failed");
 #endif
 #if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
-static_assert(fixed_point<uint64, -48>(fixed_point<uint32, -24>(3.141592654))>3.1415923f,
+static_assert(fixed_point<uint32, -24>(fixed_point<uint64, -48>(3.141592654))>3.1415923f,
         "cnl::fixed_point test failed");
-static_assert(fixed_point<uint64, -48>(fixed_point<uint32, -24>(3.141592654))<3.1415927f,
+static_assert(fixed_point<uint32, -24>(fixed_point<uint64, -48>(3.141592654))<3.1415927f,
         "cnl::fixed_point test failed");
 #endif
 #endif
@@ -561,14 +571,14 @@ static_assert(identical(multiply(fixed_point<uint8, -4>{2}, fixed_point<uint8, -
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::divide
 
-static_assert(identical(divide(fixed_point<int16, -14>{1}, test_int{127}), fixed_point<int64, -45>{1./127}),
+static_assert(identical(divide(fixed_point<test_int, -14>{1}, int16{127}), fixed_point<int64, -29>{1./127}),
         "cnl::divide test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // comparison
 
 // heterogeneous fixed-point to fixed-point comparison
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
+#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS) && !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_SATURATED_OVERFLOW)
 static_assert(fixed_point<uint8, -4>(4.5)==fixed_point<int16, -7>(4.5), "cnl::fixed_point test failed");
 static_assert(!(fixed_point<uint8, -4>(4.5)==fixed_point<int16, -7>(-4.5)), "cnl::fixed_point test failed");
 
@@ -577,18 +587,18 @@ static_assert(!(fixed_point<uint8, -4>(4.5)!=fixed_point<int16, -7>(4.5)), "cnl:
 
 static_assert(fixed_point<uint8, -4>(4.5)<fixed_point<int16, -7>(5.6), "cnl::fixed_point test failed");
 #endif
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
+#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS) && !defined(TEST_THROWING_OVERFLOW)
 static_assert(!(fixed_point<int8, -3>(-4.5)<fixed_point<int16, -7>(-5.6)), "cnl::fixed_point test failed");
 #endif
 
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert(fixed_point<uint8, -4>(4.6)>fixed_point<int16, -8>(4.5), "cnl::fixed_point test failed");
+#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS) && !defined(TEST_THROWING_OVERFLOW)
+static_assert(fixed_point<uint8, -4>(4.6)>fixed_point<int16, -8>(.5), "cnl::fixed_point test failed");
 static_assert(!(fixed_point<uint8, -4>(4.6)<fixed_point<int16, -8>(-4.5)), "cnl::fixed_point test failed");
 
 static_assert(fixed_point<uint8, -4>(4.5)<=fixed_point<int16, -8>(4.5), "cnl::fixed_point test failed");
 static_assert(!(fixed_point<uint8, -4>(4.5)<=fixed_point<int16, -8>(-4.5)), "cnl::fixed_point test failed");
 
-static_assert(fixed_point<uint8, -4>(4.5)>=fixed_point<int16, -8>(4.5), "cnl::fixed_point test failed");
+static_assert(fixed_point<uint8, -4>(4.5)>=fixed_point<int16, -8>(.5), "cnl::fixed_point test failed");
 static_assert(fixed_point<uint8, -4>(4.5)>=fixed_point<int16, -8>(-4.5), "cnl::fixed_point test failed");
 static_assert(!(fixed_point<uint8, -4>(4.5)>=fixed_point<int16, -8>(4.6)), "cnl::fixed_point test failed");
 #endif
@@ -715,7 +725,7 @@ static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==31, "cnl::f
 #endif
 
 #if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert(identical(divide(int32(-999), int32(3)), fixed_point<int64, -31>{-333}), "cnl::fixed_point test failed");
+static_assert(identical(divide(int32(-999), int32(3)), fixed_point<int64, -31>{-333L}), "cnl::fixed_point test failed");
 #endif
 #if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
 static_assert(
@@ -752,12 +762,12 @@ static_assert(
 #if defined(CNL_INT128_ENABLED)
 static_assert(cnl::numeric_limits<uint128>::is_specialized, "");
 static_assert(cnl::numeric_limits<uint128>::is_integer, "");
-static_assert(identical(divide(fixed_point<uint64, 0>{0xFFFFFFFE00000001LL}, fixed_point<uint32, 0>{0xffffffff}),
-        fixed_point<uint128, -32>{0xffffffff}), "cnl::fixed_point test failed");
+static_assert(identical(divide(fixed_point<uint64, 0>{0xFFFFFFFE00000001LL}, fixed_point<uint64, -32>{0xffffffffULL}),
+        fixed_point<uint128, -32>{0xffffffffULL}), "cnl::fixed_point test failed");
 #endif
 #endif
 static_assert(identical(divide(fixed_point<uint32, 0>{0xFFFE0001LL}, fixed_point<uint32, 0>{0xffff}),
-        fixed_point<uint64, -32>{0xffff}), "cnl::fixed_point test failed");
+        fixed_point<uint64, -32>{0xffffLL}), "cnl::fixed_point test failed");
 
 namespace test_bitshift {
     // dynamic
@@ -907,6 +917,8 @@ static_assert(sqrt(fixed_point<int8>(81))==9, "cnl::sqrt test failed");
 
 #if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(sqrt(fixed_point<uint8, -1>(4))==2, "cnl::sqrt test failed");
+static_assert(cnl::_impl::to_rep(fixed_point<int8, -2>(9))==36, "cnl::sqrt test failed");
+static_assert(sqrt(fixed_point<int, -2>(9))==3, "cnl::sqrt test failed");
 static_assert(sqrt(fixed_point<int8, -2>(9))==3, "cnl::sqrt test failed");
 #endif
 

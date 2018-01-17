@@ -18,7 +18,7 @@ static constexpr auto int_digits = cnl::numeric_limits<int>::digits;
 
 static_assert(identical(make_elastic_fixed_point(cnl::constant<-1>{}), cnl::elastic_fixed_point<1, 0, int>{-1}),
               "using too many bytes to represent -1");
-static_assert(identical(make_elastic_fixed_point(-1_c), cnl::elastic_fixed_point<1, 0, int>{-1}), "using too many bits to represent -1");
+static_assert(identical(make_elastic_fixed_point(-1_c), cnl::elastic_fixed_point<1, 0, int>{-1}), "make_elastic_fixed_point");
 
 static_assert(identical(make_elastic_fixed_point(123), elastic_fixed_point<int_digits>{123}), "cnl::make_elastic_fixed_point test failed");
 static_assert(

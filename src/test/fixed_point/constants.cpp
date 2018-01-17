@@ -30,8 +30,8 @@ namespace {
     // where greater of inputs is max and lesser is min, returns 1-max/min
     template<class Rep, int Exponent>
     long double get_error(fixed_point<Rep, Exponent> fp_constant, long double ld_constant) {
-        assert(fp_constant > 0);
-        assert(ld_constant > 0);
+        assert(fp_constant > 0.);
+        assert(ld_constant > 0.);
 
         auto ratio = static_cast<long double>(fp_constant) / ld_constant;
         auto error = ((ratio>1)?ratio:(1.L/ratio))-1.L;

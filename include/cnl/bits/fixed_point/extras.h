@@ -95,14 +95,14 @@ namespace cnl {
     sqrt(fixed_point<Rep, Exponent> const& x)
     {
         using widened_rep = set_digits_t<Rep, digits<Rep>::value*2>;
-        using widened_type = fixed_point<widened_rep, Exponent*2>;
         return
 #if defined(CNL_EXCEPTIONS_ENABLED)
-                (x<fixed_point<Rep, Exponent>(0))
+                (x<_impl::from_rep<fixed_point<Rep, Exponent>>(0))
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
 #endif
-                _impl::from_rep<fixed_point<Rep, Exponent>>(
-                        for_rep<widened_rep>(_impl::fp::extras::sqrt_solve1(), _impl::to_rep(widened_type{x})));
+                _impl::from_rep<fixed_point<Rep, Exponent>>(for_rep<widened_rep>(
+                        _impl::fp::extras::sqrt_solve1(),
+                        _impl::scale<-Exponent>(static_cast<widened_rep>(_impl::to_rep(x)))));
     }
 
     ////////////////////////////////////////////////////////////////////////////////

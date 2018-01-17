@@ -438,9 +438,7 @@ namespace test_make_unsigned {
 namespace test_to_rep {
     using cnl::_impl::to_rep;
 
-    static_assert(identical(
-            to_rep(native_integer<cnl::uint8>{3}) * cnl::_num_traits_impl::pow<native_integer<cnl::uint8>>(2, 3),
-            native_integer<int>{24}), "");
+    static_assert(identical(to_rep(native_integer<cnl::uint8>{3}), cnl::uint8{3}), "");
 }
 
 namespace test_from_rep {
@@ -455,8 +453,8 @@ namespace test_impl_from_rep {
     using cnl::_impl::from_rep;
 
     static_assert(identical(from_rep<native_integer<int>>(746352), native_integer<int>{746352}), "");
-    static_assert(from_rep<native_integer<short>>(1), "");
-    static_assert(from_rep<throwing_integer<short>>(1), "");
+    static_assert(identical(from_rep<native_integer<short>>(1), native_integer<int>{1}), "");
+    static_assert(identical(from_rep<throwing_integer<short>>(1), throwing_integer<int>{1}), "");
 }
 
 namespace test_minus {
@@ -475,27 +473,24 @@ namespace test_shift_left {
 }
 
 namespace test_scale {
-    using cnl::scale;
-
     static_assert(identical(
-            scale<throwing_integer<cnl::int32>>()(throwing_integer<cnl::int32>{1}, 2, 15),
+            cnl::_impl::shift<15>(throwing_integer<cnl::int32>{1}),
             throwing_integer<cnl::int32>{32768}),
                   "scale<overflow_integer<>> test failed");
     static_assert(identical(
-            scale<throwing_integer<cnl::int32>>()(throwing_integer<cnl::uint16>{1}, 2, 15),
+            cnl::_impl::shift<15>(throwing_integer<cnl::int32>{1}),
             throwing_integer<cnl::int32>{32768}),
                   "scale<overflow_integer<>> test failed");
 
     static_assert(identical(
-            scale<saturated_integer<cnl::uint16>>()(saturated_integer<cnl::uint8>{0x1234}, 2, 8),
-            saturated_integer<int>{0xff00}),
-                  "scale<overflow_integer<>> test failed");
-}
-
-namespace test_impl_scale {
-    using cnl::_impl::scale;
-
-    static_assert(identical(scale(native_integer<cnl::uint8>{3}, 2, 4), native_integer<int>{48}),
+            cnl::_impl::from_rep<saturated_integer<cnl::uint16>>(0x1234),
+            saturated_integer<int>{0x1234}),
+            "scale<overflow_integer<>> test failed");
+    static_assert(identical(
+            cnl::_impl::shift<8>(saturated_integer<cnl::uint16>{0x1234}),
+            saturated_integer<int>{0x123400}),
+            "scale<overflow_integer<>> test failed");
+    static_assert(identical(cnl::_impl::shift<4>(native_integer<cnl::uint8>{3}), native_integer<int>{48}),
                   "scale<overflow_integer<>> test failed");
 }
 

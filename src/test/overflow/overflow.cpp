@@ -13,11 +13,6 @@
 
 #include <cnl/overflow.h>
 
-// TODO: remove ASAP
-#if defined(_MSC_VER)
-#pragma warning(disable: 4307)
-#endif
-
 namespace {
     using cnl::_impl::identical;
 

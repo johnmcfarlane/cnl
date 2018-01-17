@@ -125,6 +125,11 @@ namespace {
         static_assert(leading_bits(cnl::safe_integer<1, throwing_overflow_tag, char>{0}) == 1, "leading_bits(cnl::safe_integer)");
         static_assert(leading_bits(cnl::safe_integer<22, throwing_overflow_tag>{77}) == 15, "leading_bits(cnl::safe_integer)");
     }
+
+    namespace test_shift {
+        static_assert(identical(cnl::safe_integer<3>{2}, cnl::_impl::shift<1>(cnl::safe_integer<2>{1})),
+                "cnl::shift<..., cnl::safe_integer<>>");
+    }
 }
 
 // given a rounding tag, invokes number_test_suite for precise_integers of all built-in types

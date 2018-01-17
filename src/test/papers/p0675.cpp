@@ -30,6 +30,11 @@ namespace cnl {
     template<class Rep>
     struct numeric_limits<smart_integer<Rep>> : numeric_limits<_impl::number_base<smart_integer<Rep>, Rep>> {};
 
+    template<class Rep, class Value>
+    struct from_value<smart_integer<Rep>, Value> {
+        using type = smart_integer<Value>;
+    };
+
     namespace _impl {
         template<class LhsRep, class RhsRep>
         struct binary_operator<subtract_op, smart_integer<LhsRep>, smart_integer<RhsRep>> {

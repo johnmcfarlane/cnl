@@ -98,16 +98,14 @@ namespace cnl {
     namespace _divide_impl {
         template<class Lhs, class Rhs>
         struct params {
-            using lhs_type = typename _named_impl::fixed_point_type<Lhs>::type;
-            using rhs_type = typename _named_impl::fixed_point_type<Rhs>::type;
-            using lhs_rep = typename lhs_type::rep;
-            using rhs_rep = typename rhs_type::rep;
-            using rep_op_result = _impl::op_result<_impl::multiply_op, lhs_rep, rhs_rep>;
+            using lhs_rep = typename Lhs::rep;
+            using rhs_rep = typename Rhs::rep;
+            using rep_op_result = _impl::op_result<_impl::divide_op, lhs_rep, rhs_rep>;
 
             static constexpr int integer_digits =
-                    _impl::integer_digits<lhs_type>::value + _impl::fractional_digits<rhs_type>::value;
+                    _impl::integer_digits<Lhs>::value + _impl::fractional_digits<Rhs>::value;
             static constexpr int fractional_digits =
-                    _impl::fractional_digits<lhs_type>::value + _impl::integer_digits<rhs_type>::value;
+                    _impl::fractional_digits<Lhs>::value + _impl::integer_digits<Rhs>::value;
             static constexpr int necessary_digits = integer_digits + fractional_digits;
             static constexpr bool is_signed =
                     numeric_limits<lhs_rep>::is_signed || numeric_limits<rhs_rep>::is_signed;
@@ -120,11 +118,9 @@ namespace cnl {
 
             static constexpr int rep_exponent = -fractional_digits;
 
-            static constexpr int intermediate_exponent_lhs = lhs_type::exponent - digits<rhs_type>::value;
+            static constexpr int intermediate_exponent_lhs = Lhs::exponent - digits<Rhs>::value;
 
             using result_type = fixed_point<rep_type, rep_exponent>;
-            using intermediate_lhs = fixed_point<rep_type, intermediate_exponent_lhs>;
-            using intermediate_rhs = rhs_type;
         };
 
         template<class Lhs, class Rhs>
@@ -135,14 +131,11 @@ namespace cnl {
             constexpr auto operator()(fixed_point<LhsRep, LhsExponent> const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
             -> typename params<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>>::result_type {
                 using params = params<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>>;
-                using intermediate_lhs = typename params::intermediate_lhs;
-                using intermediate_rhs = typename params::intermediate_rhs;
                 using result_type = typename params::result_type;
                 using result_rep = typename result_type::rep;
 
-                return _impl::from_rep<result_type>(
-                        static_cast<result_rep>(_impl::to_rep(static_cast<intermediate_lhs>(lhs))
-                                                / _impl::to_rep(static_cast<intermediate_rhs>(rhs))));
+                return _impl::from_rep<result_type>(static_cast<result_rep>(_impl::scale<digits<RhsRep>::value>(
+                        static_cast<typename params::rep_type>(_impl::to_rep(lhs)))/_impl::to_rep(rhs)));
             }
         };
 

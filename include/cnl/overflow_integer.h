@@ -165,20 +165,29 @@ namespace cnl {
         using type = overflow_integer<set_digits_t<Rep, MinNumBits>, OverflowTag>;
     };
 
+    template<class FromRep, class OverflowTag, class Rep>
+    struct from_rep<overflow_integer<FromRep, OverflowTag>, Rep> {
+        constexpr auto operator()(Rep const& rep) const
+        -> overflow_integer<Rep, OverflowTag>
+        {
+            return rep;
+        }
+    };
+
     template<class Rep, class OverflowTag, class Value>
     struct from_value<overflow_integer<Rep, OverflowTag>, Value> {
         using type = overflow_integer<Value, OverflowTag>;
     };
 
-    template<class Rep, class OverflowTag>
-    struct scale<overflow_integer<Rep, OverflowTag>> {
-        using value_type = overflow_integer<Rep, OverflowTag>;
-        constexpr auto operator()(value_type const& i, int base, int exp) const
-        -> decltype(_impl::to_rep(i) * _num_traits_impl::pow<value_type>(base, exp)) {
-            return (exp < 0)
-                   ? _impl::to_rep(i) / _num_traits_impl::pow<value_type>(base, -exp)
-                   : _impl::to_rep(i) * _num_traits_impl::pow<value_type>(base, exp);
-        }
+    template<class Rep, class OverflowTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct from_value<overflow_integer<Rep, OverflowTag>, constant<Value>> {
+        using _rep = typename std::conditional<digits<int>::value<used_bits(Value), decltype(Value), int>::type;
+        using type = overflow_integer<_rep, OverflowTag>;
+    };
+
+    template<int Digits, int Radix, class Rep, class OverflowTag>
+    struct shift<Digits, Radix, overflow_integer<Rep, OverflowTag>>
+            : shift<Digits, Radix, _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -328,7 +337,7 @@ namespace std {
                     cnl::fixed_point<cnl::overflow_integer<RhsRep, RhsOverflowTag>, 0>> {
     };
     
-    // std::common_type<cnl::overflow, cnl::overflow>
+    // std::common_type<cnl::overflow_integer, cnl::overflow_integer>
     template<
             class LhsRep, class LhsOverflowTag,
             class RhsRep, class RhsOverflowTag>

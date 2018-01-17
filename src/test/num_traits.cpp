@@ -26,35 +26,40 @@ namespace {
                       "cnl::numeric_traits<> test failed");
     }
 
+    namespace test_from_value {
+#if defined(CNL_INT128_ENABLED)
+        static_assert(identical(cnl::from_value_t<cnl::uint128, int>{123}, 123), "cnl::from_value_t<cnl::uint128, int>");
+        static_assert(identical(cnl::_impl::from_value<cnl::uint128>(123), 123), "cnl::_impl::from_value<cnl::uint128>");
+#endif
+        static_assert(identical(cnl::_impl::from_value<cnl::uint8>(123), 123), "cnl::_impl::from_value<cnl::uint8>");
+    }
+
     namespace test_set_digits {
         using cnl::set_digits;
         static_assert(identical(cnl::set_digits<cnl::int32, 32>::type{0}, cnl::int64{0}), "");
     }
 
     namespace test_scale {
-        using cnl::_impl::scale;
+        static_assert(identical(cnl::_impl::shift<15, 2, unsigned>(3), 98304U), "cnl::_impl::shift test failed");
 
-        static_assert(identical(scale<unsigned>(3, 2, 15), 98304U),
-                      "cnl::numeric_traits<> test failed");
+        static_assert(identical(cnl::_impl::shift<8, 2, uint8_t>(0b11110101), 0b1111010100000000), "cnl::_impl::shift test failed");
+        static_assert(identical(cnl::_impl::shift<4, 2, uint8_t>(0b10110110), 0b101101100000), "cnl::_impl::shift test failed");
+        static_assert(identical(cnl::_impl::shift<2, 2, uint8_t>(0b00111010), 0b11101000), "cnl::_impl::shift test failed");
+        static_assert(identical(cnl::_impl::shift<0, 2, uint8_t>(0b11101011), 0b11101011), "cnl::_impl::shift test failed");
+        static_assert(identical(cnl::_impl::shift<-2, 2, uint8_t>(0b01100100), 0b00011001), "cnl::_impl::shift test failed");
+        static_assert(identical(cnl::_impl::shift<-4, 2, uint8_t>(0b00111001), 0b00000011), "cnl::_impl::shift test failed");
+        static_assert(identical(cnl::_impl::shift<-8, 2, uint8_t>(0b10110011), 0), "cnl::_impl::shift test failed");
 
-        static_assert(identical(scale<uint8_t>(0b11110101, 2, 8), 0b1111010100000000), "cnl::scale test failed");
-        static_assert(scale<uint8_t>(0b10110110, 2, 4) == 0b101101100000, "cnl::scale test failed");
-        static_assert(scale<uint8_t>(0b00111010, 2, 2) == 0b11101000, "cnl::scale test failed");
-        static_assert(scale<uint8_t>(0b11101011, 2, 0) == 0b11101011, "cnl::scale test failed");
-        static_assert(scale<uint8_t>(0b01100100, 2, -2) == 0b00011001, "cnl::scale test failed");
-        static_assert(scale<uint8_t>(0b00111001, 2, -4) == 0b00000011, "cnl::scale test failed");
-        static_assert(scale<uint8_t>(0b10110011, 2, -8) == 0, "cnl::scale test failed");
+        static_assert(identical(cnl::_impl::shift<8, 2, int8_t>(-0b1110101), -0b111010100000000), "cnl::_impl::shift test failed");
+        static_assert(identical(cnl::_impl::shift<4, 2, int8_t>(-0b0110110), -0b01101100000), "cnl::_impl::shift test failed");
+        static_assert(identical(cnl::_impl::shift<2, 2, int8_t>(+0b0011010), +0b1101000), "cnl::_impl::shift test failed");
+        static_assert(identical(cnl::_impl::shift<0, 2, int8_t>(-0b1101011), -0b1101011), "cnl::_impl::shift test failed");
+        static_assert(identical(cnl::_impl::shift<-2, 2, int8_t>(+0b1100100), +0b0011001), "cnl::_impl::shift test failed");
+        static_assert(identical(cnl::_impl::shift<-4, 2, int8_t>(+0b0111001), +0b0000011), "cnl::_impl::shift test failed");
+        static_assert(identical(cnl::_impl::shift<-8, 2, int8_t>(-0b0110011), -0b0000000), "cnl::_impl::shift test failed");
 
-        static_assert(scale<int8_t>(-0b1110101, 2, 8) == -0b111010100000000, "cnl::scale test failed");
-        static_assert(scale<int8_t>(-0b0110110, 2, 4) == -0b01101100000, "cnl::scale test failed");
-        static_assert(scale<int8_t>(+0b0011010, 2, 2) == +0b1101000, "cnl::scale test failed");
-        static_assert(scale<int8_t>(-0b1101011, 2, 0) == -0b1101011, "cnl::scale test failed");
-        static_assert(scale<int8_t>(+0b1100100, 2, -2) == +0b0011001, "cnl::scale test failed");
-        static_assert(scale<int8_t>(+0b0111001, 2, -4) == +0b0000011, "cnl::scale test failed");
-        static_assert(scale<int8_t>(-0b0110011, 2, -8) == -0b0000000, "cnl::scale test failed");
-
-        static_assert(scale<int32_t>(1, 2, 30) == 0x40000000, "cnl::scale test failed");
-        static_assert(scale<uint64_t>(1, 2, 4) == 16, "cnl::scale test failed");
+        static_assert(identical(cnl::_impl::shift<30, 2, int32_t>(1), 0x40000000), "cnl::_impl::shift test failed");
+        static_assert(identical(cnl::_impl::shift<4, 2, uint64_t>(1), UINT64_C(16)), "cnl::_impl::shift test failed");
     }
 
     namespace test_is_integer_or_float {
