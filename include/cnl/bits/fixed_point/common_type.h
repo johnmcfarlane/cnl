@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief `cnl::fixed_point` specializations of \c std::common_type
+/// \brief `cnl::fixed_point` specializations of \ref std::common_type
 
 #if !defined(CNL_FIXED_POINT_COMMON_TYPE_H)
 #define CNL_FIXED_POINT_COMMON_TYPE_H 1
@@ -49,35 +49,50 @@ namespace cnl {
     }
 }
 
+/// standard library
 namespace std {
     ////////////////////////////////////////////////////////////////////////////////
     // std::common_type<> specializations related to cnl::cnl::fixed_point<>
 
-    // std::common_type<fixed_point<>>
+    /// \brief unary specialization of \ref std::common_type for \ref cnl::fixed_point
+    /// \tparam cnl::fixed_point<Rep, Exponent> input type
     template<class Rep, int Exponent>
     struct common_type<cnl::fixed_point<Rep, Exponent>> {
+        /// the common type of the input
         using type = cnl::fixed_point<
                 typename std::common_type<Rep>::type,
                 Exponent>;
     };
 
-    // std::common_type<fixed_point<>, not-fixed-point>
+    /// \brief binary specialization of \ref std::common_type for \ref cnl::fixed_point
+    /// \tparam cnl::fixed_point<LhsRep, LhsExponent> first input type
+    /// \tparam Rhs second input type
     template<class LhsRep, int LhsExponent, class Rhs>
     struct common_type<cnl::fixed_point<LhsRep, LhsExponent>, Rhs> {
         static_assert(!cnl::_impl::is_fixed_point<Rhs>::value, "fixed-point Rhs type");
+
+        /// the common type of the two inputs
         using type = typename cnl::_impl::fp::ct::common_type_mixed<cnl::fixed_point<LhsRep, LhsExponent>, Rhs>::type;
     };
 
-    // std::common_type<not-fixed-point, fixed_point<>>
+    /// \brief binary specialization of \ref std::common_type for \ref cnl::fixed_point
+    /// \tparam Lhs first input type
+    /// \tparam cnl::fixed_point<RhsRep, RhsExponent> second input type
     template<class Lhs, class RhsRep, int RhsExponent>
     struct common_type<Lhs, cnl::fixed_point<RhsRep, RhsExponent>> {
         static_assert(!cnl::_impl::is_fixed_point<Lhs>::value, "fixed-point Lhs type");
+
+        /// the common type of the two inputs
         using type = typename cnl::_impl::fp::ct::common_type_mixed<cnl::fixed_point<RhsRep, RhsExponent>, Lhs>::type;
     };
 
-    // std::common_type<fixed_point<>, fixed_point<>>
+    /// \brief binary specialization of \ref std::common_type for \ref cnl::fixed_point
+    /// \tparam cnl::fixed_point<LhsRep, LhsExponent> first input type
+    /// \tparam cnl::fixed_point<RhsRep, RhsExponent> second input type
     template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
     struct common_type<cnl::fixed_point<LhsRep, LhsExponent>, cnl::fixed_point<RhsRep, RhsExponent>> {
+
+        /// the common type of the two inputs
         using type = cnl::fixed_point<cnl::_impl::common_type_t<LhsRep, RhsRep>, cnl::_impl::min(LhsExponent, RhsExponent)>;
     };
 }
