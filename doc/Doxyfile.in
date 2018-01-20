@@ -159,3 +159,5 @@ USE_MATHJAX = NO
 #MATHJAX_RELPATH = http://cdn.mathjax.org/mathjax/latest
 #MATHJAX_EXTENSIONS =
 #MATHJAX_CODEFILE =
+
+TAGFILES += "@doc_TAGFILE@"
