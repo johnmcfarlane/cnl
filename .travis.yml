@@ -4,6 +4,12 @@ sudo: required
 language: cpp
 
 matrix:
+  # Don't rely on OSX jobs succeeding before approving a build:
+  # they are too slow to start and rarely flag an issue.
+  fast_finish: true
+  allow_failures:
+  - os: osx
+
   include:
     # C++11
     - os: linux
