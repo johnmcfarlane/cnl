@@ -98,16 +98,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacecnl_1_1literals"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecnl_1_1literals.html">literals</a></td></tr>
-<tr class="memdesc:namespacecnl_1_1literals"><td class="mdescLeft">&#160;</td><td class="mdescRight">generate an <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> object using a literal <br /></td></tr>
+<tr class="memdesc:namespacecnl_1_1literals"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>user-defined</code> literals <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacecnl_1_1math__constants"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecnl_1_1math__constants.html">math_constants</a></td></tr>
+<tr class="memdesc:namespacecnl_1_1math__constants"><td class="mdescLeft">&#160;</td><td class="mdescRight">contains math constants as variable templates; partial implementation of <a href="http://wg21.link/p0631">P0631</a> <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcnl_1_1constant.html">constant</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">type whose value is also its non-type template parameter  <a href="structcnl_1_1constant.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">literal integer type that encodes its width in bits within its type  <a href="classcnl_1_1elastic__integer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">literal real number approximation that uses fixed-point arithmetic  <a href="classcnl_1_1fixed__point.html#details">More...</a><br /></td></tr>
@@ -119,12 +119,28 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a71602a6d766140a2f0c314bb7e2e9597"><td class="memTemplParams" colspan="2">template&lt;int Digits, int Exponent = 0, class Narrowest  = signed&gt; </td></tr>
-<tr class="memitem:a71602a6d766140a2f0c314bb7e2e9597"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">elastic_fixed_point</a> = <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; <a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>&lt; Digits, Narrowest &gt;, Exponent &gt;</td></tr>
+<tr class="memitem:a71602a6d766140a2f0c314bb7e2e9597"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">elastic_fixed_point</a> = <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; elastic_integer&lt; Digits, Narrowest &gt;, Exponent &gt;</td></tr>
 <tr class="memdesc:a71602a6d766140a2f0c314bb7e2e9597"><td class="mdescLeft">&#160;</td><td class="mdescRight">literal real number approximation that uses fixed-point arithmetic and auto-widens to avoid overflow  <a href="#a71602a6d766140a2f0c314bb7e2e9597">More...</a><br /></td></tr>
 <tr class="separator:a71602a6d766140a2f0c314bb7e2e9597"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef02ef10da456e58c408b8911c74a5da"><td class="memTemplParams" colspan="2">template&lt;unsigned NumDigits = digits&lt;int&gt;::value&gt; </td></tr>
+<tr class="memitem:aef02ef10da456e58c408b8911c74a5da"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aef02ef10da456e58c408b8911c74a5da">multiprecision</a> = <a class="el" href="namespacecnl.html#abc382d49df277242289bb86b36ddf92e">signed_multiprecision</a>&lt; NumDigits &gt;</td></tr>
+<tr class="memdesc:aef02ef10da456e58c408b8911c74a5da"><td class="mdescLeft">&#160;</td><td class="mdescRight">alias to a signed, fixed-size Boost.Multiprecision type suitable for instantiating <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a>  <a href="#aef02ef10da456e58c408b8911c74a5da">More...</a><br /></td></tr>
+<tr class="separator:aef02ef10da456e58c408b8911c74a5da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc382d49df277242289bb86b36ddf92e"><td class="memTemplParams" colspan="2">template&lt;unsigned NumDigits = digits&lt;int&gt;::value&gt; </td></tr>
+<tr class="memitem:abc382d49df277242289bb86b36ddf92e"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#abc382d49df277242289bb86b36ddf92e">signed_multiprecision</a> = _sized_integer_impl::number&lt; NumDigits+1, _bmp::signed_magnitude &gt;</td></tr>
+<tr class="memdesc:abc382d49df277242289bb86b36ddf92e"><td class="mdescLeft">&#160;</td><td class="mdescRight">alias to a signed, fixed-size Boost.Multiprecision type suitable for instantiating <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a>  <a href="#abc382d49df277242289bb86b36ddf92e">More...</a><br /></td></tr>
+<tr class="separator:abc382d49df277242289bb86b36ddf92e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5d22fc7aa27c2acee069a24af5822df"><td class="memTemplParams" colspan="2">template&lt;unsigned NumDigits = digits&lt;unsigned&gt;::value&gt; </td></tr>
+<tr class="memitem:ae5d22fc7aa27c2acee069a24af5822df"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ae5d22fc7aa27c2acee069a24af5822df">unsigned_multiprecision</a> = _sized_integer_impl::number&lt; NumDigits, _bmp::unsigned_magnitude &gt;</td></tr>
+<tr class="memdesc:ae5d22fc7aa27c2acee069a24af5822df"><td class="mdescLeft">&#160;</td><td class="mdescRight">alias to an unsigned, fixed-size Boost.Multiprecision type suitable for instantiating <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a>  <a href="#ae5d22fc7aa27c2acee069a24af5822df">More...</a><br /></td></tr>
+<tr class="separator:ae5d22fc7aa27c2acee069a24af5822df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a5158cb72e70b21a1b46769ff9da0b86e"><td class="memTemplParams" colspan="2">template&lt;class Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:a5158cb72e70b21a1b46769ff9da0b86e"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a5158cb72e70b21a1b46769ff9da0b86e">abs</a> (<a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt; const &amp;x) noexcept-&gt; decltype(-x)</td></tr>
+<tr class="memdesc:a5158cb72e70b21a1b46769ff9da0b86e"><td class="mdescLeft">&#160;</td><td class="mdescRight">absolute value  <a href="#a5158cb72e70b21a1b46769ff9da0b86e">More...</a><br /></td></tr>
+<tr class="separator:a5158cb72e70b21a1b46769ff9da0b86e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a195da71c48144d3f638e75d83a0690a1"><td class="memTemplParams" colspan="2">template&lt;class Lhs , class Rhs &gt; </td></tr>
 <tr class="memitem:a195da71c48144d3f638e75d83a0690a1"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a195da71c48144d3f638e75d83a0690a1">divide</a> (Lhs const &amp;lhs, Rhs const &amp;rhs) -&gt; decltype(_divide_impl::divide&lt; Lhs, Rhs &gt;()(lhs, rhs))</td></tr>
 <tr class="memdesc:a195da71c48144d3f638e75d83a0690a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculates the quotient of two <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> values  <a href="#a195da71c48144d3f638e75d83a0690a1">More...</a><br /></td></tr>
@@ -160,7 +176,7 @@ Functions</h2></td></tr>
 template&lt;int Digits, int Exponent = 0, class Narrowest  = signed&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> = typedef <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt;<a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>&lt;Digits, Narrowest&gt;, Exponent&gt;</td>
+          <td class="memname">using <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> = typedef <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt;elastic_integer&lt;Digits, Narrowest&gt;, Exponent&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -174,11 +190,117 @@ template&lt;int Digits, int Exponent = 0, class Narrowest  = signed&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classcnl_1_1elastic__integer.html" title="literal integer type that encodes its width in bits within its type ">elastic_integer</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>elastic_integer </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aef02ef10da456e58c408b8911c74a5da"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned NumDigits = digits&lt;int&gt;::value&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacecnl.html#aef02ef10da456e58c408b8911c74a5da">cnl::multiprecision</a> = typedef <a class="el" href="namespacecnl.html#abc382d49df277242289bb86b36ddf92e">signed_multiprecision</a>&lt;NumDigits&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>alias to a signed, fixed-size Boost.Multiprecision type suitable for instantiating <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">NumDigits</td><td>number of digits constituting the integer value (excluding sign bit) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacecnl.html#abc382d49df277242289bb86b36ddf92e" title="alias to a signed, fixed-size Boost.Multiprecision type suitable for instantiating cnl::fixed_point ...">cnl::signed_multiprecision</a>, <a class="el" href="namespacecnl.html#ae5d22fc7aa27c2acee069a24af5822df" title="alias to an unsigned, fixed-size Boost.Multiprecision type suitable for instantiating cnl::fixed_poin...">cnl::unsigned_multiprecision</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="abc382d49df277242289bb86b36ddf92e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned NumDigits = digits&lt;int&gt;::value&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacecnl.html#abc382d49df277242289bb86b36ddf92e">cnl::signed_multiprecision</a> = typedef _sized_integer_impl::number&lt;NumDigits+1, _bmp::signed_magnitude&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>alias to a signed, fixed-size Boost.Multiprecision type suitable for instantiating <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">NumDigits</td><td>number of digits constituting the integer value (excluding sign bit) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacecnl.html#ae5d22fc7aa27c2acee069a24af5822df" title="alias to an unsigned, fixed-size Boost.Multiprecision type suitable for instantiating cnl::fixed_poin...">cnl::unsigned_multiprecision</a>, <a class="el" href="namespacecnl.html#aef02ef10da456e58c408b8911c74a5da" title="alias to a signed, fixed-size Boost.Multiprecision type suitable for instantiating cnl::fixed_point ...">cnl::multiprecision</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae5d22fc7aa27c2acee069a24af5822df"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned NumDigits = digits&lt;unsigned&gt;::value&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacecnl.html#ae5d22fc7aa27c2acee069a24af5822df">cnl::unsigned_multiprecision</a> = typedef _sized_integer_impl::number&lt;NumDigits, _bmp::unsigned_magnitude&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>alias to an unsigned, fixed-size Boost.Multiprecision type suitable for instantiating <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">NumDigits</td><td>number of digits constituting the integer value (excluding sign bit) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacecnl.html#abc382d49df277242289bb86b36ddf92e" title="alias to a signed, fixed-size Boost.Multiprecision type suitable for instantiating cnl::fixed_point ...">cnl::signed_multiprecision</a>, <a class="el" href="namespacecnl.html#aef02ef10da456e58c408b8911c74a5da" title="alias to a signed, fixed-size Boost.Multiprecision type suitable for instantiating cnl::fixed_point ...">cnl::multiprecision</a> </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a5158cb72e70b21a1b46769ff9da0b86e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Rep , int Exponent&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto cnl::abs </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td> -&gt; decltype(-x)
+    </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>absolute value </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>input parameter</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>|x|</code></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="elRef" doxygen="/home/john/cnl/cmake-build-debug/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/container/vector.html">std::vector</a> </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a195da71c48144d3f638e75d83a0690a1"></a>
 <div class="memitem">
 <div class="memproto">
@@ -216,7 +338,7 @@ template&lt;class Lhs , class Rhs &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>This function divides the values without performing any additional scaling or conversion.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacecnl.html#a4907e759049bbe5bb38f2978d2b04425" title="calculates the product of two fixed_point factors ">multiply</a> </dd></dl>
 
-<p>Referenced by <a class="el" href="namespacecnl.html#a4907e759049bbe5bb38f2978d2b04425">multiply()</a>.</p>
+<p>Referenced by <a class="el" href="namespacecnl.html#a4907e759049bbe5bb38f2978d2b04425">multiply()</a>, and <a class="el" href="namespacecnl_1_1literals.html#ae4bd82734918d969d4ed9c20f778e55d">cnl::literals::operator&quot;&quot;_elastic()</a>.</p>
 
 </div>
 </div>
@@ -275,7 +397,7 @@ template&lt;typename Narrowest  = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0&gt
 <dl class="section return"><dt>Returns</dt><dd>the given value to be represented using an <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> type</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The return type is guaranteed to be no larger than is necessary to represent the value.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
-<p>To define an int-sized object using <a class="el" href="namespacecnl.html#a4daf81aa20bb7c524a1e3ce9f3e5af42">make_elastic_fixed_point</a> and <a class="el" href="structcnl_1_1constant.html">cnl::constant</a> </p><div class="fragment"><div class="line"><span class="comment">// std::uint8_t specifies the type of const_integer - not elastic</span></div><div class="line">constexpr <span class="keyword">auto</span> n = <a class="code" href="namespacecnl.html#a4daf81aa20bb7c524a1e3ce9f3e5af42">make_elastic_fixed_point</a>(constant&lt;0xAA&gt;{});</div><div class="line"></div><div class="line">static_assert(n==0xAA, <span class="stringliteral">&quot;n now has the value, 1024&quot;</span>);</div><div class="line">static_assert(std::is_same&lt;decltype(n), elastic_fixed_point&lt;7, 1, int&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_fixed_point uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
+<p>To define an int-sized object using <a class="el" href="namespacecnl.html#a4daf81aa20bb7c524a1e3ce9f3e5af42">make_elastic_fixed_point</a> and <a class="el" href="structcnl_1_1constant.html">cnl::constant</a> </p><div class="fragment"><div class="line"><span class="comment">// std::uint8_t specifies the type of const_integer - not elastic</span></div><div class="line">constexpr <span class="keyword">auto</span> n = <a class="code" href="namespacecnl.html#a4daf81aa20bb7c524a1e3ce9f3e5af42">make_elastic_fixed_point</a>(constant&lt;0xAA&gt;{});</div><div class="line"></div><div class="line">static_assert(n==0xAA, <span class="stringliteral">&quot;n now has the value, 1024&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/cnl/cmake-build-debug/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_fixed_point&lt;7, 1, int&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_fixed_point uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af666352d86a9a718f181a92cc626b32b"></a>
@@ -310,7 +432,7 @@ template&lt;class Narrowest  = int, class Integral  = int&gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>The return type is guaranteed to be no larger than is necessary to represent the value.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
-<p>To define a byte-sized object using make_elastic_fixed_point and _c: </p><div class="fragment"><div class="line">constexpr <span class="keyword">auto</span> n = make_elastic_fixed_point&lt;char&gt;(constant&lt;1536&gt;{});</div><div class="line"></div><div class="line">static_assert(n==1536, <span class="stringliteral">&quot;n now has the value, 1536&quot;</span>);</div><div class="line">static_assert(std::is_same&lt;decltype(n), elastic_fixed_point&lt;2, 9, char&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_fixed_point uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
+<p>To define a byte-sized object using make_elastic_fixed_point and _c: </p><div class="fragment"><div class="line">constexpr <span class="keyword">auto</span> n = make_elastic_fixed_point&lt;char&gt;(constant&lt;1536&gt;{});</div><div class="line"></div><div class="line">static_assert(n==1536, <span class="stringliteral">&quot;n now has the value, 1536&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/cnl/cmake-build-debug/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_fixed_point&lt;2, 9, char&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_fixed_point uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a4907e759049bbe5bb38f2978d2b04425"></a>

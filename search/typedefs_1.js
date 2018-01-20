@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['narrowest',['narrowest',['../classcnl_1_1elastic__integer.html#a75feb5b3e6bbd89083407eddaebb8629',1,'cnl::elastic_integer']]]
+  ['multiprecision',['multiprecision',['../namespacecnl.html#aef02ef10da456e58c408b8911c74a5da',1,'cnl']]]
 ];

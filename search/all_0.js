@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['cnl',['cnl',['../namespacecnl.html',1,'']]],
-  ['constant',['constant',['../structcnl_1_1constant.html',1,'cnl']]],
-  ['literals',['literals',['../namespacecnl_1_1literals.html',1,'cnl']]]
+  ['_5fexit',['_Exit',['http://en.cppreference.com/w/cpp/utility/program/_Exit.html',1,'std']]]
 ];

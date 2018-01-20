@@ -86,15 +86,43 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">cnl::literals Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>generate an <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> object using a literal  
+<p><code>user-defined</code> literals  
 <a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ae4bd82734918d969d4ed9c20f778e55d"><td class="memTemplParams" colspan="2">template&lt;char... Chars&gt; </td></tr>
+<tr class="memitem:ae4bd82734918d969d4ed9c20f778e55d"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl_1_1literals.html#ae4bd82734918d969d4ed9c20f778e55d">operator&quot;&quot;_elastic</a> () -&gt; decltype(<a class="el" href="namespacecnl.html#a4daf81aa20bb7c524a1e3ce9f3e5af42">make_elastic_fixed_point</a>&lt; int &gt;(<a class="el" href="structcnl_1_1constant.html">constant</a>&lt; _cnlint_impl::parse&lt; sizeof...(Chars)+1 &gt;(</td></tr>
+<tr class="memdesc:ae4bd82734918d969d4ed9c20f778e55d"><td class="mdescLeft">&#160;</td><td class="mdescRight">generate an <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> object using a literal  <a href="#ae4bd82734918d969d4ed9c20f778e55d">More...</a><br /></td></tr>
+<tr class="separator:ae4bd82734918d969d4ed9c20f778e55d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>generate an <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> object using a literal </p>
+<div class="textblock"><p><code>user-defined</code> literals </p>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="ae4bd82734918d969d4ed9c20f778e55d"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;char... Chars&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto cnl::literals::operator&quot;&quot;_elastic </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt; decltype(<a class="el" href="namespacecnl.html#a4daf81aa20bb7c524a1e3ce9f3e5af42">make_elastic_fixed_point</a>&lt;int&gt;(
+                <a class="el" href="structcnl_1_1constant.html">constant</a>&lt;_cnlint_impl::parse&lt;sizeof...(Chars)+1&gt;(</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>generate an <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> object using a literal </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Digits</td><td>the characters of the literal sequence</td></tr>
@@ -104,7 +132,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <dl class="section return"><dt>Returns</dt><dd>the given value to be represented using an <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> type</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The return type is guaranteed to be no larger than is necessary to represent the maximum value of Integral.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
-<p>To define an int-sized object with value 1536: </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code" href="namespacecnl_1_1literals.html">cnl::literals</a>;</div><div class="line">constexpr <span class="keyword">auto</span> n = 34_elastic;</div><div class="line"></div><div class="line">static_assert(n==34, <span class="stringliteral">&quot;n now has the value, 1536&quot;</span>);</div><div class="line">static_assert(std::is_same&lt;decltype(n), elastic_fixed_point&lt;5, 1&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;type only uses 1 bit of range&quot;</span>);</div></div><!-- fragment --></div></div><!-- contents -->
+<p>To define an int-sized object with value 1536: </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code" href="namespacecnl_1_1literals.html">cnl::literals</a>;</div><div class="line">constexpr <span class="keyword">auto</span> n = 34_elastic;</div><div class="line"></div><div class="line">static_assert(n==34, <span class="stringliteral">&quot;n now has the value, 1536&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/cnl/cmake-build-debug/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_fixed_point&lt;5, 1&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;type only uses 1 bit of range&quot;</span>);</div></div><!-- fragment -->
+<p>References <a class="el" href="namespacecnl.html#a195da71c48144d3f638e75d83a0690a1">cnl::divide()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
