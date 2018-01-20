@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief file containing definitions equivalent to those in <bit>
+/// \brief file containing definitions equivalent to those in \verbatim<bit>\endverbatim
 
 #ifndef CNL_BIT_H
 #define CNL_BIT_H

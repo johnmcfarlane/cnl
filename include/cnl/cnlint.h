@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief file containing definitions equivalent to those in <cstdint>
+/// \brief file containing definitions equivalent to those in \verbatim<cstdint>\endverbatim
 
 #ifndef CNL_CNLINT_H
 #define CNL_CNLINT_H
