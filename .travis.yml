@@ -4,6 +4,12 @@ sudo: required
 language: cpp
 
 matrix:
+  # Don't rely on OSX jobs succeeding before approving a build:
+  # they are too slow to start and rarely flag an issue.
+  fast_finish: true
+  allow_failures:
+  - os: osx
+
   include:
     # C++11
     - os: linux
@@ -15,10 +21,6 @@ matrix:
             - g++-7
       env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON
 
-    - os: osx
-      osx_image: xcode8
-      env: MATRIX_EVAL="brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF
-
     - os: linux
       addons: &gcc6
         apt:
@@ -27,10 +29,6 @@ matrix:
           packages:
             - g++-6
       env: MATRIX_EVAL="CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=ON
-
-    - os: osx
-      osx_image: xcode8
-      env: MATRIX_EVAL="brew update && brew install gcc5 && CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON
 
     - os: linux
       addons: &gcc5
@@ -91,10 +89,6 @@ matrix:
       addons: *gcc7
       env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=OFF
 
-    - os: osx
-      osx_image: xcode8
-      env: MATRIX_EVAL="brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
-
     - os: linux
       addons: *gcc6
       env: MATRIX_EVAL="CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
@@ -115,10 +109,6 @@ matrix:
       addons: *clang39
       env: MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9" BUILD_TYPE=Release STD=14 EXCEPTIONS=OFF INT128=OFF
 
-    - os: osx
-      compiler: clang # clang-3.8
-      env: MATRIX_EVAL="" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
-
     - os: linux
       addons: *clang35
       env: MATRIX_EVAL="CC=clang-3.5 && CXX=clang++-3.5" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
@@ -127,10 +117,6 @@ matrix:
     - os: linux
       addons: *gcc7
       env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON
-
-    - os: osx
-      osx_image: xcode8
-      env: MATRIX_EVAL="brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON
 
     - os: linux
       addons: *gcc6
@@ -143,6 +129,26 @@ matrix:
     - os: linux
       addons: *clang5
       env: MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0" BUILD_TYPE=Release STD=17 EXCEPTIONS=OFF INT128=ON
+
+    - os: osx
+      osx_image: xcode8
+      env: MATRIX_EVAL="brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF
+
+    - os: osx
+      osx_image: xcode8
+      env: MATRIX_EVAL="brew update && brew install gcc5 && CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON
+
+    - os: osx
+      osx_image: xcode8
+      env: MATRIX_EVAL="brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
+
+    - os: osx
+      compiler: clang # clang-3.8
+      env: MATRIX_EVAL="" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON
+
+    - os: osx
+      osx_image: xcode8
+      env: MATRIX_EVAL="brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON
 
 
 before_install:
