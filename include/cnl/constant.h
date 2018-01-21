@@ -27,6 +27,11 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::constant - expresses a value as a type
 
+    /// \brief type whose value is also its non-type template parameter
+    /// \headerfile cnl/constant.h
+    ///
+    /// \tparam Value the value of the object
+
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct constant {
         using value_type = decltype(Value);

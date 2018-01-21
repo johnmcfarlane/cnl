@@ -23,6 +23,15 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::abs
 
+    /// \brief absolute value
+    /// \headerfile cnl/fixed_point.h
+    ///
+    /// \param x input parameter
+    ///
+    /// \return `|x|`
+    ///
+    /// \sa \ref std::vector
+
     template<class Rep, int Exponent>
     constexpr auto abs(fixed_point<Rep, Exponent> const& x) noexcept
     -> decltype(-x)

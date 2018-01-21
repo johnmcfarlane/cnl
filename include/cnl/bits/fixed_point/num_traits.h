@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief \ref fixed_point specializations of num_traits traits and similar
+/// \brief \ref cnl::fixed_point specializations of num_traits traits and similar
 
 #if !defined(CNL_FIXED_POINT_NUM_TRAITS_H)
 #define CNL_FIXED_POINT_NUM_TRAITS_H 1
