@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief CNL alternative to <limits> with 128-bit support
+/// \brief CNL alternative to \verbatim<limits>\endverbatim with 128-bit support
 
 #if !defined(CNL_LIMITS_H)
 #define CNL_LIMITS_H 1

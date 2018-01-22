@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file
+/// \file cnl/num_traits.h
 /// \brief definitions supporting generic treatment of numeric types
 
 #if !defined(CNL_NUMERIC_TRAITS)
@@ -161,6 +161,11 @@ namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
     // set_digits / set_digits_t
+
+    /// \brief convert a type to a similar type with the given number of digits
+    ///
+    /// \tparam T the source type
+    /// \tparam Digits the desired number of digits
 
     template<class T, _digits_type Digits, class Enable = void>
     struct set_digits;

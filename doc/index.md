@@ -6,22 +6,22 @@ User Manual       {#mainpage}
 
 \section Introduction
 
-The [fixed_point](http://johnmcfarlane.github.io/fixed_point/) library provides 
-a header-only C++11 API for approximating real numbers using binary fixed-point arithmetic.
+The [CNL](http://johnmcfarlane.github.io/cnl/) library provides 
+a header-only C++11/14/17 API for extending the usefulness of integers.
 It forms the reference implementation for a standard library proposal presented in paper, [P0037](http://wg21.link/p0037)
 and is developed as part of study groups, [SG14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14) and SG6.
-Installation instructions are provided on the [project page](https://github.com/johnmcfarlane/fixed_point).
+Installation instructions are provided on the [project page](https://github.com/johnmcfarlane/cnl).
 
 
 \subsection Features
 
-Header, [cnl/fixed_point.h](@ref fixed_point), defines class template, [fixed_point](@ref cnl::fixed_point), with:
+Header, [cnl/fixed_point.h](@ref cnl::fixed_point), defines class template, [fixed_point](@ref cnl::fixed_point), with:
 
 * a simple, flexible generic design;
 * operator overloads that interface [fixed_point](@ref cnl::fixed_point) with other numeric types;
 * a set of function templates, (e.g. [multiply](@ref cnl::multiply)), for fine-grain control.
 
-Header, [cnl/num_traits.h](@ref num_traits), contains additions (such as [set_digits](@ref cnl::set_digits)) 
+Header, [cnl/num_traits.h](@ref cnl/num_traits.h), contains additions (such as [set_digits](@ref cnl::set_digits)) 
 that support widening of arithmetic types in order to deal with precision loss.
 
 Auxiliary modules:
@@ -33,7 +33,7 @@ Auxiliary modules:
 \section Examples
 
 The following examples 
-[can be found](https://github.com/johnmcfarlane/fixed_point/blob/master/src/test/index.cpp) 
+[can be found](https://github.com/johnmcfarlane/cnl/blob/master/src/test/index.cpp) 
 in the test suite.
 
 

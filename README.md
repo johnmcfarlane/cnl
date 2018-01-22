@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/johnmcfarlane/cnl.svg?branch=develop)](https://travis-ci.org/johnmcfarlane/cnl)
 [![Build status](https://ci.appveyor.com/api/projects/status/9s7daasmvku9ttvd/branch/develop?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/cnl/branch/develop)
 
-[CNL](https://github.com/johnmcfarlane/fixed_point) is a numerics library written in C++
+[CNL](https://github.com/johnmcfarlane/cnl) is a numerics library written in C++
 which aims to do for `int` what the STL does for arrays.
 Its main roles are to help:
 
@@ -87,7 +87,7 @@ and on *Windows 10 Professional* with *CMake 3.8.0*. Requires:
 To build *vs/Release/fp_test.exe* and *vs/Release/fp_benchmark.exe*:
 
     cmake -G "Visual Studio 15 2017" .
-    MSBuild.exe /m fixed_point.sln /p:Configuration=Release
+    MSBuild.exe /m cnl.sln /p:Configuration=Release
 
 For 64-bit builds, append `Win64` to the `-G` option above:
 
