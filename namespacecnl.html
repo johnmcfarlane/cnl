@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>fixed_point: cnl Namespace Reference</title>
+<title>CNL: cnl Namespace Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,10 +23,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">fixed_point
-   &#160;<span id="projectnumber">rev.2</span>
+   <div id="projectname">CNL
+   &#160;<span id="projectnumber">rev.1</span>
    </div>
-   <div id="projectbrief">Binary Fixed-Point Arithmetic Library in C++</div>
+   <div id="projectbrief">Compositional Numeric Library in C++</div>
   </td>
  </tr>
  </tbody>
@@ -109,8 +109,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcnl_1_1constant.html">constant</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">type whose value is also its non-type template parameter  <a href="structcnl_1_1constant.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An integer type with auto-widening operators.  <a href="classcnl_1_1elastic__integer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">literal real number approximation that uses fixed-point arithmetic  <a href="classcnl_1_1fixed__point.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcnl_1_1overflow__integer.html">overflow_integer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An integer which detects overflow.  <a href="classcnl_1_1overflow__integer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcnl_1_1precise__integer.html">precise_integer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An integer with customized rounding behavior.  <a href="classcnl_1_1precise__integer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcnl_1_1set__digits.html">set_digits</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">convert a type to a similar type with the given number of digits  <a href="structcnl_1_1set__digits.html#details">More...</a><br /></td></tr>
@@ -119,13 +128,18 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a71602a6d766140a2f0c314bb7e2e9597"><td class="memTemplParams" colspan="2">template&lt;int Digits, int Exponent = 0, class Narrowest  = signed&gt; </td></tr>
-<tr class="memitem:a71602a6d766140a2f0c314bb7e2e9597"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">elastic_fixed_point</a> = <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; elastic_integer&lt; Digits, Narrowest &gt;, Exponent &gt;</td></tr>
+<tr class="memitem:a71602a6d766140a2f0c314bb7e2e9597"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">elastic_fixed_point</a> = <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; <a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>&lt; Digits, Narrowest &gt;, Exponent &gt;</td></tr>
 <tr class="memdesc:a71602a6d766140a2f0c314bb7e2e9597"><td class="mdescLeft">&#160;</td><td class="mdescRight">literal real number approximation that uses fixed-point arithmetic and auto-widens to avoid overflow  <a href="#a71602a6d766140a2f0c314bb7e2e9597">More...</a><br /></td></tr>
 <tr class="separator:a71602a6d766140a2f0c314bb7e2e9597"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef02ef10da456e58c408b8911c74a5da"><td class="memTemplParams" colspan="2">template&lt;unsigned NumDigits = digits&lt;int&gt;::value&gt; </td></tr>
 <tr class="memitem:aef02ef10da456e58c408b8911c74a5da"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aef02ef10da456e58c408b8911c74a5da">multiprecision</a> = <a class="el" href="namespacecnl.html#abc382d49df277242289bb86b36ddf92e">signed_multiprecision</a>&lt; NumDigits &gt;</td></tr>
 <tr class="memdesc:aef02ef10da456e58c408b8911c74a5da"><td class="mdescLeft">&#160;</td><td class="mdescRight">alias to a signed, fixed-size Boost.Multiprecision type suitable for instantiating <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a>  <a href="#aef02ef10da456e58c408b8911c74a5da">More...</a><br /></td></tr>
 <tr class="separator:aef02ef10da456e58c408b8911c74a5da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad615c2be24d5d9aa2b652bbe834a159b"><td class="memTemplParams" colspan="2"><a class="anchor" id="ad615c2be24d5d9aa2b652bbe834a159b"></a>
+template&lt;class T , _digits_type Digits&gt; </td></tr>
+<tr class="memitem:ad615c2be24d5d9aa2b652bbe834a159b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ad615c2be24d5d9aa2b652bbe834a159b">set_digits_t</a> = typename <a class="el" href="structcnl_1_1set__digits.html">set_digits</a>&lt; T, Digits &gt;::type</td></tr>
+<tr class="memdesc:ad615c2be24d5d9aa2b652bbe834a159b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias to <a class="el" href="structcnl_1_1set__digits.html">cnl::set_digits</a>. <br /></td></tr>
+<tr class="separator:ad615c2be24d5d9aa2b652bbe834a159b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc382d49df277242289bb86b36ddf92e"><td class="memTemplParams" colspan="2">template&lt;unsigned NumDigits = digits&lt;int&gt;::value&gt; </td></tr>
 <tr class="memitem:abc382d49df277242289bb86b36ddf92e"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#abc382d49df277242289bb86b36ddf92e">signed_multiprecision</a> = _sized_integer_impl::number&lt; NumDigits+1, _bmp::signed_magnitude &gt;</td></tr>
 <tr class="memdesc:abc382d49df277242289bb86b36ddf92e"><td class="mdescLeft">&#160;</td><td class="mdescRight">alias to a signed, fixed-size Boost.Multiprecision type suitable for instantiating <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a>  <a href="#abc382d49df277242289bb86b36ddf92e">More...</a><br /></td></tr>
@@ -165,6 +179,30 @@ Functions</h2></td></tr>
 <tr class="memitem:aaee6971abc5118becd0e9ce01aecefe8"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aaee6971abc5118becd0e9ce01aecefe8">sqrt</a> (<a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt; const &amp;x)</td></tr>
 <tr class="memdesc:aaee6971abc5118becd0e9ce01aecefe8"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculates the square root of a <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> value  <a href="#aaee6971abc5118becd0e9ce01aecefe8">More...</a><br /></td></tr>
 <tr class="separator:aaee6971abc5118becd0e9ce01aecefe8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a9dc52c34bf49998117d535449c8a93"><td class="memTemplParams" colspan="2"><a class="anchor" id="a7a9dc52c34bf49998117d535449c8a93"></a>
+template&lt;class Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:a7a9dc52c34bf49998117d535449c8a93"><td class="memTemplItemLeft" align="right" valign="top">constexpr Rep&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a7a9dc52c34bf49998117d535449c8a93">to_rep</a> (<a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt; const &amp;number)</td></tr>
+<tr class="memdesc:a7a9dc52c34bf49998117d535449c8a93"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> overload of <a class="el" href="namespacecnl.html#af1f7fab87f92b0c58969c2f9695ce85a">to_rep(Number const&amp; number)</a> <br /></td></tr>
+<tr class="separator:a7a9dc52c34bf49998117d535449c8a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaac4f650ce8d8b1977dba5d1283e19a9"><td class="memTemplParams" colspan="2"><a class="anchor" id="aaac4f650ce8d8b1977dba5d1283e19a9"></a>
+template&lt;int Digits, class Narrowest &gt; </td></tr>
+<tr class="memitem:aaac4f650ce8d8b1977dba5d1283e19a9"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aaac4f650ce8d8b1977dba5d1283e19a9">to_rep</a> (<a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>&lt; Digits, Narrowest &gt; const &amp;number) -&gt; typename <a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>&lt; Digits, Narrowest &gt;::rep</td></tr>
+<tr class="memdesc:aaac4f650ce8d8b1977dba5d1283e19a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload of <a class="el" href="namespacecnl.html#af1f7fab87f92b0c58969c2f9695ce85a">to_rep(Number const&amp; number)</a> for <a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>. <br /></td></tr>
+<tr class="separator:aaac4f650ce8d8b1977dba5d1283e19a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67e987f049c5f095c10bfe38274ff87d"><td class="memTemplParams" colspan="2"><a class="anchor" id="a67e987f049c5f095c10bfe38274ff87d"></a>
+template&lt;class Rep , class RoundingTag &gt; </td></tr>
+<tr class="memitem:a67e987f049c5f095c10bfe38274ff87d"><td class="memTemplItemLeft" align="right" valign="top">constexpr Rep&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a67e987f049c5f095c10bfe38274ff87d">to_rep</a> (<a class="el" href="classcnl_1_1precise__integer.html">precise_integer</a>&lt; Rep, RoundingTag &gt; const &amp;number)</td></tr>
+<tr class="memdesc:a67e987f049c5f095c10bfe38274ff87d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload of <a class="el" href="namespacecnl.html#af1f7fab87f92b0c58969c2f9695ce85a">to_rep(Number const&amp; number)</a> for <a class="el" href="classcnl_1_1precise__integer.html">precise_integer</a>. <br /></td></tr>
+<tr class="separator:a67e987f049c5f095c10bfe38274ff87d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a854bf64407c0fa8491475f3311394612"><td class="memTemplParams" colspan="2"><a class="anchor" id="a854bf64407c0fa8491475f3311394612"></a>
+template&lt;class Rep , class OverflowTag &gt; </td></tr>
+<tr class="memitem:a854bf64407c0fa8491475f3311394612"><td class="memTemplItemLeft" align="right" valign="top">constexpr Rep&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a854bf64407c0fa8491475f3311394612">to_rep</a> (<a class="el" href="classcnl_1_1overflow__integer.html">overflow_integer</a>&lt; Rep, OverflowTag &gt; const &amp;number)</td></tr>
+<tr class="memdesc:a854bf64407c0fa8491475f3311394612"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload of <a class="el" href="namespacecnl.html#af1f7fab87f92b0c58969c2f9695ce85a">to_rep(Number const&amp; number)</a> for <a class="el" href="classcnl_1_1overflow__integer.html">overflow_integer</a>. <br /></td></tr>
+<tr class="separator:a854bf64407c0fa8491475f3311394612"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1f7fab87f92b0c58969c2f9695ce85a"><td class="memTemplParams" colspan="2">template&lt;class Number &gt; </td></tr>
+<tr class="memitem:af1f7fab87f92b0c58969c2f9695ce85a"><td class="memTemplItemLeft" align="right" valign="top">constexpr Number&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#af1f7fab87f92b0c58969c2f9695ce85a">to_rep</a> (Number const &amp;number)</td></tr>
+<tr class="memdesc:af1f7fab87f92b0c58969c2f9695ce85a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value encapsulated in <code>number</code>.  <a href="#af1f7fab87f92b0c58969c2f9695ce85a">More...</a><br /></td></tr>
+<tr class="separator:af1f7fab87f92b0c58969c2f9695ce85a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>compositional numeric library </p>
@@ -176,7 +214,7 @@ Functions</h2></td></tr>
 template&lt;int Digits, int Exponent = 0, class Narrowest  = signed&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> = typedef <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt;elastic_integer&lt;Digits, Narrowest&gt;, Exponent&gt;</td>
+          <td class="memname">using <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> = typedef <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt;<a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>&lt;Digits, Narrowest&gt;, Exponent&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -190,7 +228,7 @@ template&lt;int Digits, int Exponent = 0, class Narrowest  = signed&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd>elastic_integer </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classcnl_1_1elastic__integer.html" title="An integer type with auto-widening operators. ">elastic_integer</a> </dd></dl>
 
 </div>
 </div>
@@ -367,6 +405,8 @@ template&lt;class Rep , int Exponent&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the result of the exponential, in the same representation as x </dd></dl>
 
+<p>References <a class="el" href="namespacecnl.html#a7a9dc52c34bf49998117d535449c8a93">to_rep()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a4daf81aa20bb7c524a1e3ce9f3e5af42"></a>
@@ -473,7 +513,7 @@ template&lt;class Lhs , class Rhs &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>This function multiplies the values without performing any additional scaling or conversion.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacecnl.html#a195da71c48144d3f638e75d83a0690a1" title="calculates the quotient of two fixed_point values ">divide</a> </dd></dl>
 
-<p>References <a class="el" href="namespacecnl.html#a195da71c48144d3f638e75d83a0690a1">divide()</a>.</p>
+<p>References <a class="el" href="namespacecnl.html#a195da71c48144d3f638e75d83a0690a1">divide()</a>, and <a class="el" href="namespacecnl.html#a7a9dc52c34bf49998117d535449c8a93">to_rep()</a>.</p>
 
 </div>
 </div>
@@ -503,6 +543,35 @@ template&lt;class Rep , int Exponent&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>square root of x</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function is a placeholder implementation with poor run-time performance characteristics.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacecnl.html#a4907e759049bbe5bb38f2978d2b04425" title="calculates the product of two fixed_point factors ">multiply</a> </dd></dl>
+
+<p>References <a class="el" href="namespacecnl.html#a7a9dc52c34bf49998117d535449c8a93">to_rep()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af1f7fab87f92b0c58969c2f9695ce85a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr Number cnl::to_rep </td>
+          <td>(</td>
+          <td class="paramtype">Number const &amp;&#160;</td>
+          <td class="paramname"><em>number</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the value encapsulated in <code>number</code>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">number</td><td>the 'outer' object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the 'inner' value </dd></dl>
 
 </div>
 </div>

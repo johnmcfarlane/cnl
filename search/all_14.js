@@ -41,6 +41,7 @@ var searchData=
   ['to_5fbytes',['to_bytes',['http://en.cppreference.com/w/cpp/locale/wstring_convert/to_bytes.html',1,'std::wstring_convert']]],
   ['to_5fchar_5ftype',['to_char_type',['http://en.cppreference.com/w/cpp/string/char_traits/to_char_type.html',1,'std::char_traits']]],
   ['to_5fint_5ftype',['to_int_type',['http://en.cppreference.com/w/cpp/string/char_traits/to_int_type.html',1,'std::char_traits']]],
+  ['to_5frep',['to_rep',['../namespacecnl.html#a7a9dc52c34bf49998117d535449c8a93',1,'cnl::to_rep(fixed_point&lt; Rep, Exponent &gt; const &amp;number)'],['../namespacecnl.html#aaac4f650ce8d8b1977dba5d1283e19a9',1,'cnl::to_rep(elastic_integer&lt; Digits, Narrowest &gt; const &amp;number) -&gt; typename elastic_integer&lt; Digits, Narrowest &gt;::rep'],['../namespacecnl.html#af1f7fab87f92b0c58969c2f9695ce85a',1,'cnl::to_rep(Number const &amp;number)'],['../namespacecnl.html#a854bf64407c0fa8491475f3311394612',1,'cnl::to_rep(overflow_integer&lt; Rep, OverflowTag &gt; const &amp;number)'],['../namespacecnl.html#a67e987f049c5f095c10bfe38274ff87d',1,'cnl::to_rep(precise_integer&lt; Rep, RoundingTag &gt; const &amp;number)']]],
   ['to_5fstring',['to_string',['http://en.cppreference.com/w/cpp/utility/bitset/to_string.html',1,'std::bitset::to_string()'],['http://en.cppreference.com/w/cpp/string/basic_string/to_string.html',1,'std::to_string()']]],
   ['to_5ftime_5ft',['to_time_t',['http://en.cppreference.com/w/cpp/chrono/system_clock/to_time_t.html',1,'std::chrono::system_clock']]],
   ['to_5fullong',['to_ullong',['http://en.cppreference.com/w/cpp/utility/bitset/to_ullong.html',1,'std::bitset']]],
@@ -71,7 +72,7 @@ var searchData=
   ['tuple',['tuple',['http://en.cppreference.com/w/cpp/utility/tuple.html',1,'std']]],
   ['tuple_5fcat',['tuple_cat',['http://en.cppreference.com/w/cpp/utility/tuple/tuple_cat.html',1,'std']]],
   ['type',['type',['../structstd_1_1common__type_3_01cnl_1_1fixed__point_3_01Rep_00_01Exponent_01_4_01_4.html#a60c7eb6c6c2c86e89b64a122d2fd6c64',1,'std::common_type&lt; cnl::fixed_point&lt; Rep, Exponent &gt; &gt;::type()'],['../structstd_1_1common__type_3_01cnl_1_1fixed__point_3_01LhsRep_00_01LhsExponent_01_4_00_01Rhs_01_4.html#a0543b955b4ec4111b34f3b70dcc814ab',1,'std::common_type&lt; cnl::fixed_point&lt; LhsRep, LhsExponent &gt;, Rhs &gt;::type()'],['../structstd_1_1common__type_3_01Lhs_00_01cnl_1_1fixed__point_3_01RhsRep_00_01RhsExponent_01_4_01_4.html#abc2d209a52c44fa6fffb39a26bca2d45',1,'std::common_type&lt; Lhs, cnl::fixed_point&lt; RhsRep, RhsExponent &gt; &gt;::type()'],['../structstd_1_1common__type_3_01cnl_1_1fixed__point_3_01LhsRep_00_01LhsExponent_01_4_00_01cnl_1_1f84478165e126e598d4ac87274ec5602f.html#a6fb2fbdffd6b0a108316f28d87af30f1',1,'std::common_type&lt; cnl::fixed_point&lt; LhsRep, LhsExponent &gt;, cnl::fixed_point&lt; RhsRep, RhsExponent &gt; &gt;::type()']]],
-  ['type_5findex',['type_index',['http://en.cppreference.com/w/cpp/types/type_index/type_index.html',1,'std::type_index']]],
   ['type_5findex',['type_index',['http://en.cppreference.com/w/cpp/types/type_index.html',1,'std']]],
+  ['type_5findex',['type_index',['http://en.cppreference.com/w/cpp/types/type_index/type_index.html',1,'std::type_index']]],
   ['type_5finfo',['type_info',['http://en.cppreference.com/w/cpp/types/type_info.html',1,'std']]]
 ];

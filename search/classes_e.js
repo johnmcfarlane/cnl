@@ -11,5 +11,6 @@ var searchData=
   ['out_5fof_5frange',['out_of_range',['http://en.cppreference.com/w/cpp/error/out_of_range.html',1,'std']]],
   ['output_5fiterator_5ftag',['output_iterator_tag',['http://en.cppreference.com/w/cpp/iterator/iterator_tags.html',1,'std']]],
   ['overflow_5ferror',['overflow_error',['http://en.cppreference.com/w/cpp/error/overflow_error.html',1,'std']]],
+  ['overflow_5finteger',['overflow_integer',['../classcnl_1_1overflow__integer.html',1,'cnl']]],
   ['owner_5fless',['owner_less',['http://en.cppreference.com/w/cpp/memory/owner_less.html',1,'std']]]
 ];
