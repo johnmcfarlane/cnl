@@ -85,8 +85,13 @@ namespace {
         namespace test_from_value {
             using cnl::_impl::from_value;
 
-            static_assert(identical(precise_integer<long long>{9876543210LL}, from_value<precise_integer<long>>(9876543210LL)),
-                          "cnl::from_value<precise_integer> test failed");
+            static_assert(identical(
+                    precise_integer<long long>{9876543210LL},
+                    from_value<precise_integer<long>>(9876543210LL)), "cnl::from_value<precise_integer> test failed");
+            static_assert(identical(
+                    precise_integer<long long>{9876543210LL},
+                    from_value<precise_integer<short>>(precise_integer<long long>{9876543210LL})),
+                    "cnl::from_value<precise_integer> test failed");
         }
     }
     

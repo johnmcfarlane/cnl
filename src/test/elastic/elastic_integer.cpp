@@ -37,6 +37,13 @@ namespace {
     namespace test_impl_from_value {
         using cnl::_impl::from_value;
 
+        static_assert(identical(
+                elastic_integer<cnl::digits<int>::value>{14},
+                from_value<elastic_integer<>>(14)), "from_value<elastic_integer> test failed");
+        static_assert(identical(
+                elastic_integer<cnl::digits<int>::value>{22},
+                from_value<elastic_integer<>>(elastic_integer<>{22})), "from_value<elastic_integer> test failed");
+
         static_assert(identical(from_value<elastic_integer<>>(14_c), elastic_integer<4>{14}),
                 "from_value<elastic_integer> test failed");
         static_assert(identical(from_value<elastic_integer<>>(-31_c), elastic_integer<5>{-31}),

@@ -457,6 +457,18 @@ namespace test_impl_from_rep {
     static_assert(identical(from_rep<throwing_integer<short>>(1), throwing_integer<int>{1}), "");
 }
 
+namespace test_from_value {
+    static_assert(identical(
+            native_integer<long long>{746352},
+            cnl::_impl::from_value<native_integer<int>>(746352LL)), "");
+    static_assert(identical(
+            746352LL,
+            cnl::_impl::from_value<int>(746352LL)), "");
+    static_assert(identical(
+            native_integer<long long>{746352},
+            cnl::_impl::from_value<native_integer<int>>(native_integer<long long>{746352})), "");
+}
+
 namespace test_minus {
     static_assert(identical(-throwing_integer<short>(1), throwing_integer<int>(-1)), "");
 }

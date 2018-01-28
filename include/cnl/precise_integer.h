@@ -84,6 +84,16 @@ namespace cnl {
         using type = precise_integer<Value, RoundingTag>;
     };
 
+    template<class Rep, class RoundingTag, class ValueRep, class ValueRoundingTag>
+    struct from_value<precise_integer<Rep, RoundingTag>, precise_integer<ValueRep, ValueRoundingTag>> {
+    private:
+        // the common_type of two overflow tags is the stricter for some sense of strict
+        using _overflow_tag = _impl::common_type_t<RoundingTag, ValueRoundingTag>;
+        using _rep = from_value_t<Rep, ValueRep>;
+    public:
+        using type = precise_integer<_rep, _overflow_tag>;
+    };
+
     template<class Rep, class RoundingTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<precise_integer<Rep, RoundingTag>, constant<Value>> {
         using _rep = typename std::conditional<digits<int>::value<used_bits(Value),

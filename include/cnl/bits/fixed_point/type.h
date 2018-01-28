@@ -62,6 +62,11 @@ namespace cnl {
         using type = fixed_point<Value>;
     };
 
+    template <class Rep, int Exponent, class ValueRep, int ValueExponent>
+    struct from_value<fixed_point<Rep, Exponent>, fixed_point<ValueRep, ValueExponent>> {
+        using type = fixed_point<from_value_t<Rep, ValueRep>, ValueExponent>;
+    };
+
     template<class Rep, int Exponent, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<fixed_point<Rep, Exponent>, constant<Value>> {
         // same as deduction guide
