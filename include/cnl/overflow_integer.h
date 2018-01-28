@@ -96,6 +96,9 @@ namespace cnl {
 
     template<class Rep = int, class OverflowTag = throwing_overflow_tag>
     class overflow_integer : public _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep> {
+        static_assert(!_integer_impl::is_overflow_integer<Rep>::value,
+                "overflow_integer of overflow_integer is not a supported");
+
         using _base = _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep>;
     public:
         ////////////////////////////////////////////////////////////////////////////////

@@ -42,6 +42,9 @@ namespace cnl {
 
     template<class Rep, class RoundingTag>
     class precise_integer : public _impl::number_base<precise_integer<Rep, RoundingTag>, Rep> {
+        static_assert(!_precise_integer_impl::is_precise_integer<Rep>::value,
+                "precise_integer of precise_integer is not a supported");
+
         using super = _impl::number_base<precise_integer<Rep, RoundingTag>, Rep>;
     public:
         using rounding = RoundingTag;

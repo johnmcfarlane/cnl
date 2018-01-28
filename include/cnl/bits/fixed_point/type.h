@@ -102,6 +102,9 @@ namespace cnl {
     template<class Rep, int Exponent>
     class fixed_point
             : public _impl::number_base<fixed_point<Rep, Exponent>, Rep> {
+        static_assert(!_impl::is_fixed_point<Rep>::value,
+                "fixed_point of fixed_point is not a supported");
+
         using _base = _impl::number_base<fixed_point<Rep, Exponent>, Rep>;
     public:
         ////////////////////////////////////////////////////////////////////////////////
