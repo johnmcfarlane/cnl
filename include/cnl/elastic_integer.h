@@ -37,6 +37,20 @@ namespace cnl {
     // numeric traits
 
     namespace _elastic_integer_impl {
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_elastic_integer_impl::is_elastic_integer
+
+        template<class ElasticInteger>
+        struct is_elastic_integer : std::false_type {
+        };
+
+        template<int Digits, class Narrowest>
+        struct is_elastic_integer<elastic_integer<Digits, Narrowest>> : std::true_type {
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_elastic_integer_impl::base_class
+
         template<int Digits, class Narrowest>
         struct base_class {
             static constexpr _digits_type digits = Digits;
@@ -256,17 +270,6 @@ namespace cnl {
     }
 
     namespace _elastic_integer_impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_elastic_integer_impl::is_elastic_integer
-
-        template<class ElasticInteger>
-        struct is_elastic_integer : std::false_type {
-        };
-
-        template<int Digits, class Narrowest>
-        struct is_elastic_integer<elastic_integer<Digits, Narrowest>> : std::true_type {
-        };
-
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_elastic_integer_impl::are_integer_class_operands - basically identifies
         // operands that should go into a function defined here; filters out fixed-point

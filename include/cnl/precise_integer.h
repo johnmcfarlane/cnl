@@ -27,6 +27,19 @@ namespace cnl {
     template<class Rep = int, class RoundingTag = closest_rounding_tag>
     class precise_integer;
 
+    namespace _precise_integer_impl {
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_precise_integer_impl::is_precise_integer
+
+        template<class T>
+        struct is_precise_integer : std::false_type {
+        };
+
+        template<class Rep, class RoundingTag>
+        struct is_precise_integer<precise_integer<Rep, RoundingTag>> : std::true_type {
+        };
+    }
+
     template<class Rep, class RoundingTag>
     class precise_integer : public _impl::number_base<precise_integer<Rep, RoundingTag>, Rep> {
         using super = _impl::number_base<precise_integer<Rep, RoundingTag>, Rep>;
@@ -110,19 +123,6 @@ namespace cnl {
     struct shift<Digits, Radix, precise_integer<Rep, RoundingTag>>
             : shift<Digits, Radix, _impl::number_base<precise_integer<Rep, RoundingTag>, Rep>> {
     };
-
-    namespace _precise_integer_impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // comparison operators
-
-        template<class T>
-        struct is_precise_integer : std::false_type {
-        };
-
-        template<class Rep, class RoundingTag>
-        struct is_precise_integer<precise_integer<Rep, RoundingTag>> : std::true_type {
-        };
-    }
 
     ////////////////////////////////////////////////////////////////////////////////
     // unary arithmetic

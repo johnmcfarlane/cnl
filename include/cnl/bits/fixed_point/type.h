@@ -24,6 +24,19 @@ namespace cnl {
     // implementation-specific definitions
 
     namespace _impl {
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::is_fixed_point
+
+        template<class T>
+        struct is_fixed_point
+                : public std::false_type {
+        };
+
+        template<class Rep, int Exponent>
+        struct is_fixed_point<fixed_point<Rep, Exponent>>
+                : public std::true_type {
+        };
+
         namespace fp {
             ////////////////////////////////////////////////////////////////////////////////
             // cnl::_impl::float_of_size
@@ -226,20 +239,6 @@ namespace cnl {
     // general-purpose implementation-specific definitions
 
     namespace _impl {
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::is_fixed_point
-
-        template<class T>
-        struct is_fixed_point
-                : public std::false_type {
-        };
-
-        template<class Rep, int Exponent>
-        struct is_fixed_point<fixed_point<Rep, Exponent>>
-                : public std::true_type {
-        };
-
         ////////////////////////////////////////////////////////////////////////////////
         // file-local implementation-specific definitions
 
