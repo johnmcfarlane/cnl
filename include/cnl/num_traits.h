@@ -393,7 +393,10 @@ namespace cnl {
 
     template<class Number, class Value>
     struct from_value<Number, Value, _impl::enable_if_t<cnl::is_integral<Number>::value>> {
-        using type = _num_traits_impl::make_integer_t<cnl::digits<Value>::value, cnl::is_signed<Value>::value>;
+        using type = typename std::conditional<
+                cnl::is_integral<Value>::value,
+                Value,
+                _num_traits_impl::make_integer_t<cnl::digits<Value>::value, cnl::is_signed<Value>::value>>::type;
     };
 
     template<class Number, class Value>

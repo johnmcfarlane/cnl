@@ -31,7 +31,16 @@ namespace {
         static_assert(identical(cnl::from_value_t<cnl::uint128, int>{123}, 123), "cnl::from_value_t<cnl::uint128, int>");
         static_assert(identical(cnl::_impl::from_value<cnl::uint128>(123), 123), "cnl::_impl::from_value<cnl::uint128>");
 #endif
+
         static_assert(identical(cnl::_impl::from_value<cnl::uint8>(123), 123), "cnl::_impl::from_value<cnl::uint8>");
+        static_assert(identical(
+                cnl::_impl::from_value<cnl::uint64>(cnl::int8{123}),
+                cnl::int8{123}), "cnl::_impl::from_value<cnl::uint64>(cnl::int8)");
+
+        static_assert(identical(cnl::_impl::from_value<long>(123LL), 123LL), "cnl::_impl::from_value<cnl::uint8>");
+        static_assert(identical(cnl::_impl::from_value<long long>(123LL), 123LL), "cnl::_impl::from_value<cnl::uint8>");
+        static_assert(identical(cnl::_impl::from_value<long>(123L), 123L), "cnl::_impl::from_value<cnl::uint8>");
+        static_assert(identical(cnl::_impl::from_value<long long>(123L), 123L), "cnl::_impl::from_value<cnl::uint8>");
     }
 
     namespace test_set_digits {
