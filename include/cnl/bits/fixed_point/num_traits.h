@@ -42,19 +42,6 @@ namespace cnl {
         using type = fixed_point<set_digits_t<Rep, MinNumBits>, Exponent>;
     };
 
-    template <class Rep, int Exponent, class Value>
-    struct from_value<fixed_point<Rep, Exponent>, Value> {
-        using type = fixed_point<Value>;
-    };
-
-    template<class Rep, int Exponent, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct from_value<fixed_point<Rep, Exponent>, constant<Value>> {
-        // same as deduction guide
-        using type = fixed_point<
-                set_digits_t<int, _impl::max(digits<int>::value, used_bits(Value)-trailing_bits(Value))>,
-                trailing_bits(Value)>;
-    };
-
     ////////////////////////////////////////////////////////////////////////////////
     // fixed_point specializations of fixed_point-specific templates
 
