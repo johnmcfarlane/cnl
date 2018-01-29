@@ -9,29 +9,32 @@ add_executable(fp_test
         constant.cpp
         encompasses.cpp
         boost.simd.cpp
-        precise/elastic/precise_elastic_integer.cpp
-        overflow/overflow.cpp
         common.cpp
         papers/p0381.cpp
         papers/p0675.cpp
         papers/p0827.cpp
-        cppnow2017.cpp
         limits.cpp
         num_traits.cpp
         numeric.cpp
-        elastic/elastic_integer.cpp
         number_test.cpp
         fixed_point/p0037.cpp
+        readme.cpp
+        overflow/overflow.cpp
+        cppnow2017.cpp
         glm.cpp
-        fixed_point/precise_fixed_point.cpp
+        index.cpp
+        zero_cost_square.cpp
+        boost.multiprecision.cpp
+        safft.cpp
+        fixed_point/fixed_point_built_in.cpp
         fixed_point/constants.cpp
+        precise/elastic/precise_elastic_integer.cpp
+        elastic/elastic_integer.cpp
+        fixed_point/precise_fixed_point.cpp
         fixed_point/extras.cpp
         papers/p0554.cpp
         elastic/precise/overflow/precise_safe_integer.cpp
-        index.cpp
-        readme.cpp
         zero_cost_free_functions.cpp
-        zero_cost_square.cpp
         fixed_point/elastic/precise/overflow/precise_safe_fixed_point.cpp
         snippets.cpp
         overflow/elastic/safe_integer.cpp
@@ -40,14 +43,11 @@ add_executable(fp_test
         fixed_point/math.cpp
         zero_cost_average.cpp
         cppcon2017.cpp
-        boost.multiprecision.cpp
-        safft.cpp
+        precise/precise_integer.cpp
         fixed_point/elastic/elastic_fixed_point.cpp
-        fixed_point/fixed_point_built_in.cpp
         fixed_point/overflow/fixed_point_native_integer.cpp
         fixed_point/overflow/fixed_point_throwing_integer.cpp
         fixed_point/overflow/fixed_point_saturated_integer.cpp
-        precise/precise_integer.cpp
         main.cpp)
 
 ######################################################################

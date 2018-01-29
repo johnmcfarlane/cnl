@@ -67,11 +67,9 @@ namespace {
         }
 
         namespace test_to_rep {
-            using cnl::_impl::to_rep;
-
             static_assert(
                     identical(123, to_rep(precise_integer<>{123})),
-                    "cnl::to_rep<precise_integer> test failed");
+                    "to_rep<precise_integer> test failed");
         }
 
         namespace test_from_rep {
@@ -282,8 +280,8 @@ struct precise_integer_tests {
                   "cnl::_impl::from_rep<precise_integer<>> test failed");
 
     // to_rep
-    static_assert(identical(123, cnl::_impl::to_rep(123)), "cnl::_impl::to_rep test failed");
-    static_assert(identical(321, cnl::_impl::to_rep(precise_integer<>{321})), "cnl::_impl::to_rep test failed");
+    static_assert(identical(123, cnl::to_rep(123)), "cnl::to_rep test failed");
+    static_assert(identical(321, cnl::to_rep(precise_integer<>{321})), "cnl::to_rep test failed");
 };
 
 template struct number_test_by_rep_by_tag<precise_integer, cnl::closest_rounding_tag, precise_integer_tests>;

@@ -14,6 +14,12 @@
 namespace cnl {
     namespace _impl {
         template<class Derived, class Rep>
+        class number_base;
+
+        template<class Derived, class Rep>
+        constexpr Rep to_rep(number_base<Derived, Rep> const& number);
+
+        template<class Derived, class Rep>
         class number_base {
         public:
             static_assert(numeric_limits<Rep>::is_integer, "number_base must be specialized with integer Rep type template parameter");
@@ -37,8 +43,12 @@ namespace cnl {
                 return static_cast<bool>(_rep);
             }
 
-            friend struct cnl::to_rep<_derived>;
-            friend struct cnl::to_rep<number_base<_derived, rep>>;
+#if defined(__GNUG__) && !defined(__clang__) && (__GNUG__ <= 5)
+            // GCC5 bug: https://stackoverflow.com/a/29957648/671509
+            friend rep to_rep<>(number_base const&);
+#else
+            friend constexpr rep to_rep<>(number_base const&);
+#endif
 
         private:
             rep _rep;
@@ -76,7 +86,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::depth
 
-        template<class Wrapper, class Rep = cnl::_impl::to_rep_t<Wrapper>>
+        template<class Wrapper, class Rep = decltype(to_rep(std::declval<Wrapper>()))>
         struct depth;
 
         template<class Wrapper, class Rep>
@@ -246,20 +256,12 @@ namespace cnl {
         using type = _impl::set_rep_t<Number, make_unsigned_t<_impl::get_rep_t<Number>>>;
     };
 
-    template<class Derived, class Rep>
-    struct to_rep<_impl::number_base<Derived, Rep>> {
-        constexpr auto operator()(_impl::number_base<Derived, Rep> const& number) const -> Rep {
+    namespace _impl {
+        template<class Derived, class Rep>
+        constexpr Rep to_rep(number_base<Derived, Rep> const& number) {
             return number._rep;
         }
-    };
-
-    template<class Number>
-    struct to_rep<Number, _impl::enable_if_t<_impl::is_derived_from_number_base<Number>::value>> {
-        constexpr auto operator()(Number const& number) const
-        -> typename Number::rep {
-            return number._rep;
-        }
-    };
+    }
 
     template<class Derived, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_rep<Derived, constant<Value>, _impl::enable_if_t<_impl::is_derived_from_number_base<Derived>::value>>
@@ -270,9 +272,9 @@ namespace cnl {
         using _scalar_type = _impl::number_base<Derived, typename Derived::rep>;
 
         constexpr auto operator()(_scalar_type const &s) const
-        -> decltype(_impl::from_rep<Derived>(_impl::shift<Digits, Radix>(_impl::to_rep(s))))
+        -> decltype(_impl::from_rep<Derived>(_impl::shift<Digits, Radix>(to_rep(s))))
         {
-            return _impl::from_rep<Derived>(_impl::shift<Digits, Radix>(_impl::to_rep(s)));
+            return _impl::from_rep<Derived>(_impl::shift<Digits, Radix>(to_rep(s)));
         }
     };
 

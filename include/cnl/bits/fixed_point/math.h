@@ -109,7 +109,7 @@ namespace cnl {
 
             template<class Rep, int Exponent>
             constexpr inline Rep floor(fixed_point<Rep, Exponent> x) {
-                return Rep { (_impl::to_rep(x)) >> -Exponent };
+                return Rep { (to_rep(x)) >> -Exponent };
             }
 
         }
@@ -138,7 +138,7 @@ namespace cnl {
                     typename im::rep{1}//return immediately if the shift would result in all bits being shifted out
                                      :
                     	//Do the shifts manually. Once the branch with shift operators is merged, could use those
-                    (_impl::to_rep(exp2m1_0to1<Rep, Exponent>(static_cast<out_type>(x - floor(x))))//Calculate the exponent of the fractional part
+                    (to_rep(exp2m1_0to1<Rep, Exponent>(static_cast<out_type>(x - floor(x))))//Calculate the exponent of the fractional part
                     >> (-im::exponent + Exponent - floor(x)))//shift it to the right place
                     + (Rep { 1 } << (floor(x) - Exponent))); //The constant term must be one, to make integer powers correct
     }

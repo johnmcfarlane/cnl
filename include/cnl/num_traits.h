@@ -305,22 +305,18 @@ namespace cnl {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::_impl::to_rep
+    // cnl::to_rep
 
-    template<class Number, class Enable = void>
-    struct to_rep {
-        constexpr Number operator()(Number const& number) const {
-            // by default, the rep type of a number type is the number type itself
-            return number;
-        }
-    };
+    /// \brief Returns the value encapsulated in \c number
+    /// \param number the 'outer' object
+    /// \return the 'inner' value
+    template<class Number>
+    constexpr Number to_rep(Number const& number) {
+        return number;
+    }
 
     namespace _impl {
-        template<class Number, class Enable = void>
-        constexpr auto to_rep(Number const& number)
-        -> decltype(cnl::to_rep<Number>()(number)) {
-            return cnl::to_rep<Number>()(number);
-        }
+        using cnl::to_rep;
 
         template<class Number>
         using to_rep_t = decltype(to_rep(std::declval<Number>()));
@@ -361,7 +357,7 @@ namespace cnl {
     template<class Result, class F, class ... Args,
             _impl::enable_if_t<_num_traits_impl::are_composite<Args ...>::value, int> dummy = 0>
     constexpr Result for_rep(F f, Args &&...args) {
-        return for_rep<Result>(f, _impl::to_rep<typename std::decay<Args>::type>(std::forward<Args>(args))...);
+        return for_rep<Result>(f, to_rep(std::forward<Args>(args))...);
     }
 
     ////////////////////////////////////////////////////////////////////////////////

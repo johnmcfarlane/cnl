@@ -294,9 +294,9 @@ namespace cnl {
         constexpr bool is_multiply_overflow(Lhs const& lhs, Rhs const& rhs)
         {
             using result_nl = numeric_limits<decltype(lhs*rhs)>;
-            return lhs && rhs && ((lhs>Lhs{})
-                                  ? ((rhs>Rhs{}) ? (result_nl::max()/rhs) : (result_nl::lowest()/rhs))<lhs
-                                  : ((rhs>Rhs{}) ? (result_nl::lowest()/rhs) : (result_nl::max()/rhs))>lhs);
+            return lhs && rhs && ((lhs>Lhs{0})
+                                  ? ((rhs>Rhs{0}) ? (result_nl::max()/rhs) : (result_nl::lowest()/rhs))<lhs
+                                  : ((rhs>Rhs{0}) ? (result_nl::lowest()/rhs) : (result_nl::max()/rhs))>lhs);
         }
 
         template<>

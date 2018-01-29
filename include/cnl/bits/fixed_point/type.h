@@ -20,6 +20,9 @@ namespace cnl {
     template<class Rep = int, int Exponent = 0>
     class fixed_point;
 
+    template<class Rep, int Exponent>
+    constexpr Rep to_rep(fixed_point<Rep, Exponent> const&);
+
     ////////////////////////////////////////////////////////////////////////////////
     // implementation-specific definitions
 
@@ -104,14 +107,14 @@ namespace cnl {
             : public _impl::number_base<fixed_point<Rep, Exponent>, Rep> {
         static_assert(!_impl::is_fixed_point<Rep>::value,
                 "fixed_point of fixed_point is not a supported");
-
-        using _base = _impl::number_base<fixed_point<Rep, Exponent>, Rep>;
     public:
         ////////////////////////////////////////////////////////////////////////////////
         // types
 
         /// alias to template parameter, \a Rep
         using rep = Rep;
+
+        using _base = _impl::number_base<fixed_point<Rep, Exponent>, Rep>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // constants
@@ -137,7 +140,7 @@ namespace cnl {
         template<class FromRep, int FromExponent>
         constexpr fixed_point(fixed_point<FromRep, FromExponent> const& rhs)
                 : _base(
-                static_cast<Rep>(_impl::shift<FromExponent-exponent>(_impl::from_value<Rep>(_impl::to_rep(rhs)))))
+                static_cast<Rep>(_impl::shift<FromExponent-exponent>(_impl::from_value<Rep>(cnl::to_rep(rhs)))))
         {
         }
 
@@ -182,7 +185,7 @@ namespace cnl {
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         explicit constexpr operator S() const
         {
-            return static_cast<S>(_impl::shift<exponent>(_impl::to_rep(*this)));
+            return static_cast<S>(_impl::shift<exponent>(to_rep(*this)));
         }
 
         /// returns value represented as floating-point
@@ -190,7 +193,7 @@ namespace cnl {
         explicit constexpr operator S() const
         {
             static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-            return S(_impl::to_rep(*this))*inverse_one<S>();
+            return S(to_rep(*this))*inverse_one<S>();
         }
 
         /// creates an instance given the underlying representation value
@@ -328,7 +331,7 @@ namespace cnl {
     template<class FromRep, int FromExponent>
     constexpr typename fixed_point<Rep, Exponent>::rep fixed_point<Rep, Exponent>::fixed_point_to_rep(fixed_point<FromRep, FromExponent> const& rhs)
     {
-        return _impl::shift<FromExponent-exponent>(_impl::to_rep(rhs));
+        return _impl::shift<FromExponent-exponent>(to_rep(rhs));
     }
 
     ////////////////////////////////////////////////////////////////////////////////

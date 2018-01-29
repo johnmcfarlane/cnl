@@ -240,9 +240,9 @@ struct positive_elastic_test
                   "cnl::numeric_limits test failed");
     static_assert(!numeric_limits::is_integer || (elastic_type{.5} != .5), "cnl::numeric_limits test failed");
 
-    static constexpr rep max_integer{cnl::_impl::to_rep(max)};
+    static constexpr rep max_integer{to_rep(max)};
 #if ! defined(_MSC_VER)
-    static_assert(bit_count<typename rep::rep>(cnl::_impl::to_rep(max_integer))==digits, "cnl::numeric_limits test failed");
+    static_assert(bit_count<typename rep::rep>(to_rep(max_integer))==digits, "cnl::numeric_limits test failed");
 #endif
 
     ////////////////////////////////////////////////////////////////////////////////

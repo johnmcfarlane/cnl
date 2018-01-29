@@ -42,6 +42,14 @@ namespace cnl {
         using type = fixed_point<set_digits_t<Rep, MinNumBits>, Exponent>;
     };
 
+    /// \brief \ref fixed_point overload of \ref to_rep(Number const& number)
+    template<class Rep, int Exponent>
+    constexpr Rep to_rep(fixed_point<Rep, Exponent> const& number)
+    {
+        using base_type = typename fixed_point<Rep, Exponent>::_base;
+        return to_rep(static_cast<base_type const&>(number));
+    }
+
     ////////////////////////////////////////////////////////////////////////////////
     // fixed_point specializations of fixed_point-specific templates
 

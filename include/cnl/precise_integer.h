@@ -49,6 +49,8 @@ namespace cnl {
     public:
         using rounding = RoundingTag;
 
+        using _base = _impl::number_base<precise_integer<Rep, RoundingTag>, Rep>;
+
         constexpr precise_integer() = default;
 
         template<class T, _impl::enable_if_t<numeric_limits<T>::is_integer, int> Dummy = 0>
@@ -62,7 +64,7 @@ namespace cnl {
         template<class T>
         constexpr explicit operator T() const
         {
-            return static_cast<T>(_impl::to_rep(*this));
+            return static_cast<T>(to_rep(*this));
         }
     };
 
@@ -86,6 +88,14 @@ namespace cnl {
             return rep;
         }
     };
+
+    /// \brief Overload of \ref to_rep(Number const& number) for \ref precise_integer.
+    template<class Rep, class RoundingTag>
+    constexpr Rep to_rep(precise_integer<Rep, RoundingTag> const& number)
+    {
+        using base_type = typename precise_integer<Rep, RoundingTag>::_base;
+        return to_rep(static_cast<base_type const&>(number));
+    }
 
     namespace _impl {
         template<class Rep, class RoundingTag>
@@ -208,11 +218,11 @@ namespace cnl {
     constexpr auto operator<<(
             precise_integer<LhsRep, LhsRoundingTag> const& lhs,
             RhsInteger const& rhs)
-    -> decltype(_impl::from_rep<precise_integer<decltype(_impl::to_rep(lhs) << rhs), LhsRoundingTag>>(_impl::to_rep(lhs) << rhs))
+    -> decltype(_impl::from_rep<precise_integer<decltype(to_rep(lhs) << rhs), LhsRoundingTag>>(to_rep(lhs) << rhs))
     {
         return _impl::from_rep<precise_integer<
-                decltype(_impl::to_rep(lhs) << rhs),
-                LhsRoundingTag>>(_impl::to_rep(lhs) << rhs);
+                decltype(to_rep(lhs) << rhs),
+                LhsRoundingTag>>(to_rep(lhs) << rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////

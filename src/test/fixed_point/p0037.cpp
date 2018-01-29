@@ -31,26 +31,24 @@ namespace design_decisions {
     namespace access_to_rep_value {
         using cnl::fixed_point;
         using cnl::from_rep;
-        using cnl::to_rep;
 
         constexpr auto a = from_rep<fixed_point<int, -8>, int>()(320);
         static_assert(a == 1.25);
 
-        constexpr auto b = to_rep<fixed_point<int, -8>>()(a);
+        constexpr auto b = to_rep(a);
         static_assert(b == 320);    // 1.25*(1<<8)
     }
 
     namespace deduction {
         using cnl::constant;
         using cnl::fixed_point;
-        using cnl::to_rep;
 
         auto a = fixed_point(0ul);
         static_assert(is_same_v<decltype(a), fixed_point<unsigned long, 0>>);
 
         constexpr auto b = fixed_point(constant<0xFF00000000L>{});
         static_assert(is_same_v<decltype(b), const fixed_point<int, 32>>);
-        static_assert(to_rep<fixed_point<int, 32>>()(b) == 0xFF);
+        static_assert(to_rep(b) == 0xFF);
     }
 
     namespace operators {

@@ -37,7 +37,6 @@ void test_function(void(* function)(), char const* output)
 #include <iostream>
 
 using cnl::fixed_point;
-using cnl::to_rep;
 using namespace std;
 
 void declaration_example()
@@ -46,7 +45,7 @@ void declaration_example()
     auto x = fixed_point<int, -1>{3.5};
 
     // under the hood, x stores a whole number
-    cout << to_rep<fixed_point<int, -1>>()(x) << endl;  // "7"
+    cout << to_rep(x) << endl;  // "7"
 
     // but it multiplies that whole number by 2^-1 to produce a real number
     cout << x << endl;  // "3.5"

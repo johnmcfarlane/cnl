@@ -20,9 +20,7 @@ namespace {
     }
 
     namespace test_to_rep {
-        using cnl::_impl::to_rep;
-
-        static_assert(identical(to_rep(UINT64_C(0xFEDCBA9876543210)), UINT64_C(0xFEDCBA9876543210)),
+        static_assert(identical(cnl::to_rep(UINT64_C(0xFEDCBA9876543210)), UINT64_C(0xFEDCBA9876543210)),
                       "cnl::numeric_traits<> test failed");
     }
 
