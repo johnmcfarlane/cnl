@@ -20,20 +20,21 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // forward-declarations
 
+    /// \brief An integer which detects overflow.
     template<class Rep, class OverflowTag>
     class overflow_integer;
 
     namespace _integer_impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_integer_impl::is_overflow_int - trait to identify cnl::overflow_integer<>
+        // cnl::_integer_impl::is_overflow_integer - trait to identify cnl::overflow_integer<>
 
         template<class T>
-        struct is_overflow_int
+        struct is_overflow_integer
                 : std::false_type {
         };
 
         template<class Rep, class OverflowTag>
-        struct is_overflow_int<overflow_integer<Rep, OverflowTag>>
+        struct is_overflow_integer<overflow_integer<Rep, OverflowTag>>
                 : std::true_type {
         };
 
@@ -43,7 +44,7 @@ namespace cnl {
 
         template<class Lhs, class Rhs>
         struct are_integer_class_operands {
-            static constexpr int integer_class = is_overflow_int<Lhs>::value + is_overflow_int<Rhs>::value;
+            static constexpr int integer_class = is_overflow_integer<Lhs>::value + is_overflow_integer<Rhs>::value;
             static constexpr int integer_or_float = _impl::is_integer_or_float<Lhs>::value + _impl::is_integer_or_float<Rhs>::value;
             static constexpr bool value = (integer_class >= 1) && (integer_or_float == 2);
         };
@@ -70,7 +71,7 @@ namespace cnl {
         struct common_type<
                 overflow_integer<LhsRep, LhsOverflowTag>, RhsInteger,
                 _impl::enable_if_t<
-                        !_integer_impl::is_overflow_int<RhsInteger>::value && std::is_integral<RhsInteger>::value>> {
+                        !_integer_impl::is_overflow_integer<RhsInteger>::value && std::is_integral<RhsInteger>::value>> {
             using type = typename cnl::overflow_integer<typename std::common_type<LhsRep, RhsInteger>::type, LhsOverflowTag>;
         };
 
@@ -93,8 +94,6 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::overflow_integer<>
 
-    // an integer which can be customized to react in different ways to overflow;
-    // currently doesn't correctly detect overflow from operators
     template<class Rep = int, class OverflowTag = throwing_overflow_tag>
     class overflow_integer : public _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep> {
         using _base = _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep>;
@@ -116,7 +115,7 @@ namespace cnl {
         {
         }
 
-        template<class Rhs, _impl::enable_if_t<!_integer_impl::is_overflow_int<Rhs>::value, int> dummy = 0>
+        template<class Rhs, _impl::enable_if_t<!_integer_impl::is_overflow_integer<Rhs>::value, int> dummy = 0>
         constexpr overflow_integer(Rhs const& rhs)
                 :_base(convert<rep>(overflow_tag{}, rhs))
         {

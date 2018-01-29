@@ -20,7 +20,7 @@
 
 using cnl::_impl::identical;
 using cnl::_impl::is_integer_or_float;
-using cnl::_integer_impl::is_overflow_int;
+using cnl::_integer_impl::is_overflow_integer;
 using cnl::overflow_integer;
 using std::declval;
 using std::is_same;
@@ -64,38 +64,38 @@ static_assert(is_same<
         saturated_integer<uint32_t >>::value, "std::common_type test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::_integer_impl::is_overflow_int
+// cnl::_integer_impl::is_overflow_integer
 
-static_assert(!is_overflow_int<uint8_t>::value, "cnl::is_overflow_int test failed");
-static_assert(!is_overflow_int<int8_t>::value, "cnl::is_overflow_int test failed");
-static_assert(!is_overflow_int<uint16_t>::value, "cnl::is_overflow_int test failed");
-static_assert(!is_overflow_int<int16_t>::value, "cnl::is_overflow_int test failed");
-static_assert(!is_overflow_int<uint32_t>::value, "cnl::is_overflow_int test failed");
-static_assert(!is_overflow_int<int32_t>::value, "cnl::is_overflow_int test failed");
-static_assert(!is_overflow_int<uint64_t>::value, "cnl::is_overflow_int test failed");
-static_assert(!is_overflow_int<int64_t>::value, "cnl::is_overflow_int test failed");
+static_assert(!is_overflow_integer<uint8_t>::value, "cnl::is_overflow_integer test failed");
+static_assert(!is_overflow_integer<int8_t>::value, "cnl::is_overflow_integer test failed");
+static_assert(!is_overflow_integer<uint16_t>::value, "cnl::is_overflow_integer test failed");
+static_assert(!is_overflow_integer<int16_t>::value, "cnl::is_overflow_integer test failed");
+static_assert(!is_overflow_integer<uint32_t>::value, "cnl::is_overflow_integer test failed");
+static_assert(!is_overflow_integer<int32_t>::value, "cnl::is_overflow_integer test failed");
+static_assert(!is_overflow_integer<uint64_t>::value, "cnl::is_overflow_integer test failed");
+static_assert(!is_overflow_integer<int64_t>::value, "cnl::is_overflow_integer test failed");
 
-static_assert(is_overflow_int<saturated_integer<uint8_t>>::value,
-        "cnl::is_overflow_int test failed");
-static_assert(is_overflow_int<saturated_integer<int8_t>>::value,
-        "cnl::is_overflow_int test failed");
-static_assert(is_overflow_int<saturated_integer<uint16_t>>::value,
-        "cnl::_integer_impl::is_overflow_int test failed");
-static_assert(is_overflow_int<saturated_integer<int16_t>>::value,
-        "cnl::_integer_impl::is_overflow_int test failed");
-static_assert(is_overflow_int<saturated_integer<uint32_t>>::value,
-        "cnl::_integer_impl::is_overflow_int test failed");
-static_assert(is_overflow_int<saturated_integer<int32_t>>::value,
-        "cnl::_integer_impl::is_overflow_int test failed");
-static_assert(is_overflow_int<saturated_integer<uint64_t>>::value,
-        "cnl::_integer_impl::is_overflow_int test failed");
-static_assert(is_overflow_int<saturated_integer<int64_t>>::value,
-        "cnl::_integer_impl::is_overflow_int test failed");
+static_assert(is_overflow_integer<saturated_integer<uint8_t>>::value,
+        "cnl::is_overflow_integer test failed");
+static_assert(is_overflow_integer<saturated_integer<int8_t>>::value,
+        "cnl::is_overflow_integer test failed");
+static_assert(is_overflow_integer<saturated_integer<uint16_t>>::value,
+        "cnl::_integer_impl::is_overflow_integer test failed");
+static_assert(is_overflow_integer<saturated_integer<int16_t>>::value,
+        "cnl::_integer_impl::is_overflow_integer test failed");
+static_assert(is_overflow_integer<saturated_integer<uint32_t>>::value,
+        "cnl::_integer_impl::is_overflow_integer test failed");
+static_assert(is_overflow_integer<saturated_integer<int32_t>>::value,
+        "cnl::_integer_impl::is_overflow_integer test failed");
+static_assert(is_overflow_integer<saturated_integer<uint64_t>>::value,
+        "cnl::_integer_impl::is_overflow_integer test failed");
+static_assert(is_overflow_integer<saturated_integer<int64_t>>::value,
+        "cnl::_integer_impl::is_overflow_integer test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::_impl::is_integer_or_float
 
-static_assert(is_integer_or_float<saturated_integer<int64_t>>::value, "cnl::_integer_impl::is_overflow_int test failed");
+static_assert(is_integer_or_float<saturated_integer<int64_t>>::value, "cnl::_integer_impl::is_overflow_integer test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::saturated_integer
