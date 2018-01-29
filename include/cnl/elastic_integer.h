@@ -18,9 +18,18 @@
 /// compositional numeric library
 namespace cnl {
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // forward-declaration
-
+    /// \brief An integer type with auto-widening operators
+    ///
+    /// \tparam Digits a count of the number of digits needed to express the number
+    /// \tparam Narrowest the most narrow integer type to use for storage
+    ///
+    /// \note The value is stored in an object of \c Narrowest or
+    /// \ref cnl::set_digits_t<Narrowest, Digits>.
+    /// \note Arithmetic operations result in types with an adjusted Digits parameter accordingly.
+    /// For instance, when two \ref elastic_integer values are multiplied together,
+    /// the resultant type has Digits set to the sum of the operands.
+    ///
+    /// \sa cnl::elastic_fixed_point
     template<int Digits, class Narrowest>
     class elastic_integer;
 
@@ -126,17 +135,6 @@ namespace cnl {
             return _impl::to_rep(s) / (divisor_rep{1} << -ShiftDigits);
         }
     };
-
-    /// \brief literal integer type that encodes its width in bits within its type
-    ///
-    /// \tparam Digits a count of the number of digits needed to express the number
-    /// \tparam Narrowest the most narrow integer type to use for storage
-    ///
-    /// \note Arithmetic operations result in types with an adjusted Digits parameter accordingly.
-    /// For instance, when two \ref elastic_integer values are multiplied together,
-    /// the resultant type has Digits set to the sum of the operands.
-    ///
-    /// \sa elastic_fixed_point
 
     template<int Digits = digits<int>::value, class Narrowest = int>
     class elastic_integer : public _elastic_integer_impl::base_class_t<Digits, Narrowest> {

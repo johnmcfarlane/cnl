@@ -1,7 +1,7 @@
-PROJECT_NAME = "fixed_point"
-PROJECT_BRIEF = "Binary Fixed-Point Arithmetic Library in C++"
+PROJECT_NAME = "CNL"
+PROJECT_BRIEF = "Compositional Numeric Library in C++"
 PROJECT_LOGO =
-PROJECT_NUMBER = rev.2
+PROJECT_NUMBER = rev.1
 
 STRIP_FROM_PATH = ../include
 BUILTIN_STL_SUPPORT = YES

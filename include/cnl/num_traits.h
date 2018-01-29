@@ -187,6 +187,7 @@ namespace cnl {
     };
 #endif
 
+    /// \brief Alias to \ref cnl::set_digits.
     template<class T, _digits_type Digits>
     using set_digits_t = typename set_digits<T, Digits>::type;
 
