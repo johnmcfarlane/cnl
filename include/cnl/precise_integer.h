@@ -23,7 +23,11 @@ namespace cnl {
         }
     };
 
+    /// \brief An integer with customized rounding behavior.
     template<class Rep = int, class RoundingTag = closest_rounding_tag>
+    class precise_integer;
+
+    template<class Rep, class RoundingTag>
     class precise_integer : public _impl::number_base<precise_integer<Rep, RoundingTag>, Rep> {
         using super = _impl::number_base<precise_integer<Rep, RoundingTag>, Rep>;
     public:
