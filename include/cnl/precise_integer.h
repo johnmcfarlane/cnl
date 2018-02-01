@@ -23,11 +23,33 @@ namespace cnl {
         }
     };
 
+    /// \brief An integer with customized rounding behavior.
     template<class Rep = int, class RoundingTag = closest_rounding_tag>
+    class precise_integer;
+
+    namespace _precise_integer_impl {
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_precise_integer_impl::is_precise_integer
+
+        template<class T>
+        struct is_precise_integer : std::false_type {
+        };
+
+        template<class Rep, class RoundingTag>
+        struct is_precise_integer<precise_integer<Rep, RoundingTag>> : std::true_type {
+        };
+    }
+
+    template<class Rep, class RoundingTag>
     class precise_integer : public _impl::number_base<precise_integer<Rep, RoundingTag>, Rep> {
+        static_assert(!_precise_integer_impl::is_precise_integer<Rep>::value,
+                "precise_integer of precise_integer is not a supported");
+
         using super = _impl::number_base<precise_integer<Rep, RoundingTag>, Rep>;
     public:
         using rounding = RoundingTag;
+
+        using _base = _impl::number_base<precise_integer<Rep, RoundingTag>, Rep>;
 
         constexpr precise_integer() = default;
 
@@ -42,7 +64,7 @@ namespace cnl {
         template<class T>
         constexpr explicit operator T() const
         {
-            return static_cast<T>(_impl::to_rep(*this));
+            return static_cast<T>(to_rep(*this));
         }
     };
 
@@ -67,6 +89,14 @@ namespace cnl {
         }
     };
 
+    /// \brief Overload of \ref to_rep(Number const& number) for \ref precise_integer.
+    template<class Rep, class RoundingTag>
+    constexpr Rep to_rep(precise_integer<Rep, RoundingTag> const& number)
+    {
+        using base_type = typename precise_integer<Rep, RoundingTag>::_base;
+        return to_rep(static_cast<base_type const&>(number));
+    }
+
     namespace _impl {
         template<class Rep, class RoundingTag>
         struct get_rep<precise_integer<Rep, RoundingTag>> {
@@ -84,6 +114,16 @@ namespace cnl {
         using type = precise_integer<Value, RoundingTag>;
     };
 
+    template<class Rep, class RoundingTag, class ValueRep, class ValueRoundingTag>
+    struct from_value<precise_integer<Rep, RoundingTag>, precise_integer<ValueRep, ValueRoundingTag>> {
+    private:
+        // the common_type of two overflow tags is the stricter for some sense of strict
+        using _overflow_tag = _impl::common_type_t<RoundingTag, ValueRoundingTag>;
+        using _rep = from_value_t<Rep, ValueRep>;
+    public:
+        using type = precise_integer<_rep, _overflow_tag>;
+    };
+
     template<class Rep, class RoundingTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<precise_integer<Rep, RoundingTag>, constant<Value>> {
         using _rep = typename std::conditional<digits<int>::value<used_bits(Value),
@@ -96,19 +136,6 @@ namespace cnl {
     struct shift<Digits, Radix, precise_integer<Rep, RoundingTag>>
             : shift<Digits, Radix, _impl::number_base<precise_integer<Rep, RoundingTag>, Rep>> {
     };
-
-    namespace _precise_integer_impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // comparison operators
-
-        template<class T>
-        struct is_precise_integer : std::false_type {
-        };
-
-        template<class Rep, class RoundingTag>
-        struct is_precise_integer<precise_integer<Rep, RoundingTag>> : std::true_type {
-        };
-    }
 
     ////////////////////////////////////////////////////////////////////////////////
     // unary arithmetic
@@ -191,11 +218,11 @@ namespace cnl {
     constexpr auto operator<<(
             precise_integer<LhsRep, LhsRoundingTag> const& lhs,
             RhsInteger const& rhs)
-    -> decltype(_impl::from_rep<precise_integer<decltype(_impl::to_rep(lhs) << rhs), LhsRoundingTag>>(_impl::to_rep(lhs) << rhs))
+    -> decltype(_impl::from_rep<precise_integer<decltype(to_rep(lhs) << rhs), LhsRoundingTag>>(to_rep(lhs) << rhs))
     {
         return _impl::from_rep<precise_integer<
-                decltype(_impl::to_rep(lhs) << rhs),
-                LhsRoundingTag>>(_impl::to_rep(lhs) << rhs);
+                decltype(to_rep(lhs) << rhs),
+                LhsRoundingTag>>(to_rep(lhs) << rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////

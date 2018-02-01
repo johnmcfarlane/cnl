@@ -20,7 +20,7 @@
 
 using cnl::_impl::identical;
 using cnl::_impl::is_integer_or_float;
-using cnl::_integer_impl::is_overflow_int;
+using cnl::_integer_impl::is_overflow_integer;
 using cnl::overflow_integer;
 using std::declval;
 using std::is_same;
@@ -64,38 +64,38 @@ static_assert(is_same<
         saturated_integer<uint32_t >>::value, "std::common_type test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::_integer_impl::is_overflow_int
+// cnl::_integer_impl::is_overflow_integer
 
-static_assert(!is_overflow_int<uint8_t>::value, "cnl::is_overflow_int test failed");
-static_assert(!is_overflow_int<int8_t>::value, "cnl::is_overflow_int test failed");
-static_assert(!is_overflow_int<uint16_t>::value, "cnl::is_overflow_int test failed");
-static_assert(!is_overflow_int<int16_t>::value, "cnl::is_overflow_int test failed");
-static_assert(!is_overflow_int<uint32_t>::value, "cnl::is_overflow_int test failed");
-static_assert(!is_overflow_int<int32_t>::value, "cnl::is_overflow_int test failed");
-static_assert(!is_overflow_int<uint64_t>::value, "cnl::is_overflow_int test failed");
-static_assert(!is_overflow_int<int64_t>::value, "cnl::is_overflow_int test failed");
+static_assert(!is_overflow_integer<uint8_t>::value, "cnl::is_overflow_integer test failed");
+static_assert(!is_overflow_integer<int8_t>::value, "cnl::is_overflow_integer test failed");
+static_assert(!is_overflow_integer<uint16_t>::value, "cnl::is_overflow_integer test failed");
+static_assert(!is_overflow_integer<int16_t>::value, "cnl::is_overflow_integer test failed");
+static_assert(!is_overflow_integer<uint32_t>::value, "cnl::is_overflow_integer test failed");
+static_assert(!is_overflow_integer<int32_t>::value, "cnl::is_overflow_integer test failed");
+static_assert(!is_overflow_integer<uint64_t>::value, "cnl::is_overflow_integer test failed");
+static_assert(!is_overflow_integer<int64_t>::value, "cnl::is_overflow_integer test failed");
 
-static_assert(is_overflow_int<saturated_integer<uint8_t>>::value,
-        "cnl::is_overflow_int test failed");
-static_assert(is_overflow_int<saturated_integer<int8_t>>::value,
-        "cnl::is_overflow_int test failed");
-static_assert(is_overflow_int<saturated_integer<uint16_t>>::value,
-        "cnl::_integer_impl::is_overflow_int test failed");
-static_assert(is_overflow_int<saturated_integer<int16_t>>::value,
-        "cnl::_integer_impl::is_overflow_int test failed");
-static_assert(is_overflow_int<saturated_integer<uint32_t>>::value,
-        "cnl::_integer_impl::is_overflow_int test failed");
-static_assert(is_overflow_int<saturated_integer<int32_t>>::value,
-        "cnl::_integer_impl::is_overflow_int test failed");
-static_assert(is_overflow_int<saturated_integer<uint64_t>>::value,
-        "cnl::_integer_impl::is_overflow_int test failed");
-static_assert(is_overflow_int<saturated_integer<int64_t>>::value,
-        "cnl::_integer_impl::is_overflow_int test failed");
+static_assert(is_overflow_integer<saturated_integer<uint8_t>>::value,
+        "cnl::is_overflow_integer test failed");
+static_assert(is_overflow_integer<saturated_integer<int8_t>>::value,
+        "cnl::is_overflow_integer test failed");
+static_assert(is_overflow_integer<saturated_integer<uint16_t>>::value,
+        "cnl::_integer_impl::is_overflow_integer test failed");
+static_assert(is_overflow_integer<saturated_integer<int16_t>>::value,
+        "cnl::_integer_impl::is_overflow_integer test failed");
+static_assert(is_overflow_integer<saturated_integer<uint32_t>>::value,
+        "cnl::_integer_impl::is_overflow_integer test failed");
+static_assert(is_overflow_integer<saturated_integer<int32_t>>::value,
+        "cnl::_integer_impl::is_overflow_integer test failed");
+static_assert(is_overflow_integer<saturated_integer<uint64_t>>::value,
+        "cnl::_integer_impl::is_overflow_integer test failed");
+static_assert(is_overflow_integer<saturated_integer<int64_t>>::value,
+        "cnl::_integer_impl::is_overflow_integer test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::_impl::is_integer_or_float
 
-static_assert(is_integer_or_float<saturated_integer<int64_t>>::value, "cnl::_integer_impl::is_overflow_int test failed");
+static_assert(is_integer_or_float<saturated_integer<int64_t>>::value, "cnl::_integer_impl::is_overflow_integer test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::saturated_integer
@@ -163,7 +163,7 @@ namespace {
 
     static_assert(identical(
             to_rep(saturated_integer<short>(1234)),
-            short(1234)), "cnl::to_rep(saturated_integer<>) test failed");
+            short(1234)), "to_rep(saturated_integer<>) test failed");
 
     static_assert(identical(cnl::_impl::binary_operator<cnl::_impl::multiply_op, saturated_integer<short>, float>()(
             saturated_integer<short>(1234), 2.), 2468.f), "cnl::saturated_integer test failed");
@@ -175,8 +175,8 @@ namespace {
     static_assert(identical(
             cnl::make_overflow_int<cnl::saturated_overflow_tag>(
                     cnl::_overflow_impl::binary_operator<cnl::saturated_overflow_tag, multiply_op>()(
-                            cnl::_impl::to_rep(saturated_integer<signed char>{30}),
-                            cnl::_impl::to_rep(saturated_integer<signed char>{40}))),
+                            to_rep(saturated_integer<signed char>{30}),
+                            to_rep(saturated_integer<signed char>{40}))),
             saturated_integer<int>{1200}), "");
 
     static_assert(identical(
@@ -436,8 +436,7 @@ namespace test_make_unsigned {
 }
 
 namespace test_to_rep {
-    using cnl::_impl::to_rep;
-
+    static_assert(identical(to_rep(cnl::overflow_integer<uint64_t>{54}), uint64_t{54}), "to_rep<overflow_integer<>>()");
     static_assert(identical(to_rep(native_integer<cnl::uint8>{3}), cnl::uint8{3}), "");
 }
 
@@ -455,6 +454,18 @@ namespace test_impl_from_rep {
     static_assert(identical(from_rep<native_integer<int>>(746352), native_integer<int>{746352}), "");
     static_assert(identical(from_rep<native_integer<short>>(1), native_integer<int>{1}), "");
     static_assert(identical(from_rep<throwing_integer<short>>(1), throwing_integer<int>{1}), "");
+}
+
+namespace test_from_value {
+    static_assert(identical(
+            native_integer<long long>{746352},
+            cnl::_impl::from_value<native_integer<int>>(746352LL)), "");
+    static_assert(identical(
+            746352LL,
+            cnl::_impl::from_value<int>(746352LL)), "");
+    static_assert(identical(
+            native_integer<long long>{746352},
+            cnl::_impl::from_value<native_integer<int>>(native_integer<long long>{746352})), "");
 }
 
 namespace test_minus {

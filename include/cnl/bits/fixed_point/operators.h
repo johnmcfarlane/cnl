@@ -41,9 +41,9 @@ namespace cnl {
             constexpr auto operator()(
                     fixed_point<Rep, Exponent> const& lhs,
                     fixed_point<Rep, Exponent> const& rhs) const
-            -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
+            -> decltype(Operator()(to_rep(lhs), to_rep(rhs)))
             {
-                return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
+                return Operator()(to_rep(lhs), to_rep(rhs));
             }
         };
 
@@ -136,15 +136,15 @@ namespace cnl {
                     fixed_point<LhsRep, LhsExponent> const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
             -> decltype(Operator{}(
                     _impl::from_rep<fixed_point<LhsRep, _common_exponent >> (
-                            _impl::shift<_lhs_left_shift>(_impl::to_rep(lhs))),
+                            _impl::shift<_lhs_left_shift>(to_rep(lhs))),
                     _impl::from_rep<fixed_point<RhsRep, _common_exponent >> (
-                            _impl::shift<_rhs_left_shift>(_impl::to_rep(rhs)))))
+                            _impl::shift<_rhs_left_shift>(to_rep(rhs)))))
             {
                 return Operator{}(
                         _impl::from_rep<fixed_point<LhsRep, _common_exponent>>(
-                                _impl::shift<_lhs_left_shift>(_impl::to_rep(lhs))),
+                                _impl::shift<_lhs_left_shift>(to_rep(lhs))),
                         _impl::from_rep<fixed_point<RhsRep, _common_exponent>>(
-                                _impl::shift<_rhs_left_shift>(_impl::to_rep(rhs))));
+                                _impl::shift<_rhs_left_shift>(to_rep(rhs))));
             }
         };
     }
@@ -155,16 +155,16 @@ namespace cnl {
     // fixed_point, dynamic
     template<class LhsRep, int LhsExponent, class Rhs>
     constexpr auto operator<<(fixed_point<LhsRep, LhsExponent> const& lhs, Rhs const& rhs)
-    -> decltype(_impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs) << int(rhs)), LhsExponent>>(_impl::to_rep(lhs) << int(rhs)))
+    -> decltype(_impl::from_rep<fixed_point<decltype(to_rep(lhs) << int(rhs)), LhsExponent>>(to_rep(lhs) << int(rhs)))
     {
-        return _impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs) << int(rhs)), LhsExponent>>(_impl::to_rep(lhs) << int(rhs));
+        return _impl::from_rep<fixed_point<decltype(to_rep(lhs) << int(rhs)), LhsExponent>>(to_rep(lhs) << int(rhs));
     }
 
     template<class LhsRep, int LhsExponent, class Rhs>
     constexpr auto operator>>(fixed_point<LhsRep, LhsExponent> const& lhs, Rhs const& rhs)
-    -> decltype(_impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs) >> int(rhs)), LhsExponent>>(_impl::to_rep(lhs) >> int(rhs)))
+    -> decltype(_impl::from_rep<fixed_point<decltype(to_rep(lhs) >> int(rhs)), LhsExponent>>(to_rep(lhs) >> int(rhs)))
     {
-        return _impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs) >> int(rhs)), LhsExponent>>(_impl::to_rep(lhs) >> int(rhs));
+        return _impl::from_rep<fixed_point<decltype(to_rep(lhs) >> int(rhs)), LhsExponent>>(to_rep(lhs) >> int(rhs));
     }
 
     // fixed_point, const_integer
@@ -172,14 +172,14 @@ namespace cnl {
     constexpr fixed_point<LhsRep, LhsExponent+RhsValue>
     operator<<(fixed_point<LhsRep, LhsExponent> const& lhs, constant<RhsValue>)
     {
-        return _impl::from_rep<fixed_point<LhsRep, LhsExponent+RhsValue>>(_impl::to_rep(lhs));
+        return _impl::from_rep<fixed_point<LhsRep, LhsExponent+RhsValue>>(to_rep(lhs));
     }
 
     template<class LhsRep, int LhsExponent, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
     constexpr fixed_point<LhsRep, LhsExponent-RhsValue>
     operator>>(fixed_point<LhsRep, LhsExponent> const& lhs, constant<RhsValue>)
     {
-        return _impl::from_rep<fixed_point<LhsRep, LhsExponent-RhsValue>>(_impl::to_rep(lhs));
+        return _impl::from_rep<fixed_point<LhsRep, LhsExponent-RhsValue>>(to_rep(lhs));
     }
 }
 

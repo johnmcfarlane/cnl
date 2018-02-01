@@ -20,26 +20,35 @@
 using cnl::_impl::identical;
 
 namespace acme {
+    template<class Rep> struct smart_integer;
+    template<class Rep> constexpr Rep to_rep(smart_integer<Rep> const& number);
+
     // example type, smart_integer, shares characteristics with cnl::elastic_integer
     template<class Rep>
     struct smart_integer {
         explicit constexpr smart_integer(Rep const& rhs) : value(rhs) {}
-        friend cnl::to_rep<smart_integer>;
+        friend constexpr Rep to_rep<>(smart_integer<Rep> const& number);
     private:
         Rep value;
     };
 
+    template<typename Rep>
+    constexpr Rep to_rep(smart_integer<Rep> const& number)
+    {
+        return number.value;
+    }
+
     template<class LhsRep, class RhsRep>
     constexpr auto operator==(smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs)
     {
-        return cnl::_impl::to_rep(lhs)==cnl::_impl::to_rep(rhs);
+        return to_rep(lhs)==to_rep(rhs);
     }
 
     template<class LhsRep, class RhsRep>
     constexpr auto operator-(smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs)
     {
-        auto lhs_rep_signed = std::make_signed_t<LhsRep>(cnl::_impl::to_rep(lhs));
-        auto rhs_rep_signed = std::make_signed_t<RhsRep>(cnl::_impl::to_rep(rhs));
+        auto lhs_rep_signed = std::make_signed_t<LhsRep>(to_rep(lhs));
+        auto rhs_rep_signed = std::make_signed_t<RhsRep>(to_rep(rhs));
         auto difference = lhs_rep_signed - rhs_rep_signed;
         return smart_integer{difference};
     }
@@ -47,8 +56,8 @@ namespace acme {
     template<class LhsRep, class RhsRep>
     constexpr auto operator*(smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs)
     {
-        auto const lhs_rep = cnl::_impl::to_rep(lhs);
-        auto const rhs_rep = cnl::_impl::to_rep(rhs);
+        auto const lhs_rep = to_rep(lhs);
+        auto const rhs_rep = to_rep(rhs);
         if constexpr (std::numeric_limits<LhsRep>::is_signed == std::numeric_limits<RhsRep>::is_signed) {
             auto product_rep = lhs_rep * rhs_rep;
             return smart_integer{product_rep};
@@ -66,13 +75,6 @@ namespace cnl {
     using acme::smart_integer;
     template<class Rep>
     struct numeric_limits<smart_integer<Rep>> : numeric_limits<Rep> {};
-
-    template<class Rep>
-    struct to_rep<smart_integer<Rep>> {
-        constexpr auto operator()(smart_integer<Rep> const& number) const {
-            return number.value;
-        }
-    };
 
     template<class Rep, class Value>
     struct from_value<smart_integer<Rep>, Value> {
@@ -135,8 +137,8 @@ namespace {
 
         // to_rep
         using cnl::to_rep;
-        static_assert(identical(1L, to_rep<long>()(1L)));
-        static_assert(identical(1L, to_rep<smart_integer<long>>()(smart_integer<long>{1L})));
+        static_assert(identical(1L, to_rep(1L)));
+        static_assert(identical(1L, to_rep(smart_integer{1L})));
 
         // from_rep
         using cnl::from_rep;

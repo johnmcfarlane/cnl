@@ -18,9 +18,18 @@
 /// compositional numeric library
 namespace cnl {
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // forward-declaration
-
+    /// \brief An integer type with auto-widening operators
+    ///
+    /// \tparam Digits a count of the number of digits needed to express the number
+    /// \tparam Narrowest the most narrow integer type to use for storage
+    ///
+    /// \note The value is stored in an object of \c Narrowest or
+    /// \ref cnl::set_digits_t<Narrowest, Digits>.
+    /// \note Arithmetic operations result in types with an adjusted Digits parameter accordingly.
+    /// For instance, when two \ref elastic_integer values are multiplied together,
+    /// the resultant type has Digits set to the sum of the operands.
+    ///
+    /// \sa cnl::elastic_fixed_point
     template<int Digits, class Narrowest>
     class elastic_integer;
 
@@ -28,6 +37,20 @@ namespace cnl {
     // numeric traits
 
     namespace _elastic_integer_impl {
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_elastic_integer_impl::is_elastic_integer
+
+        template<class ElasticInteger>
+        struct is_elastic_integer : std::false_type {
+        };
+
+        template<int Digits, class Narrowest>
+        struct is_elastic_integer<elastic_integer<Digits, Narrowest>> : std::true_type {
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_elastic_integer_impl::base_class
+
         template<int Digits, class Narrowest>
         struct base_class {
             static constexpr _digits_type digits = Digits;
@@ -50,6 +73,15 @@ namespace cnl {
     struct set_digits<elastic_integer<Digits, Narrowest>, MinNumBits> {
         using type = elastic_integer<MinNumBits, Narrowest>;
     };
+
+    /// \brief Overload of \ref to_rep(Number const& number) for \ref elastic_integer.
+    template<int Digits, class Narrowest>
+    constexpr auto to_rep(elastic_integer<Digits, Narrowest> const& number)
+    -> typename elastic_integer<Digits, Narrowest>::rep
+    {
+        using base_type = typename elastic_integer<Digits, Narrowest>::_base;
+        return to_rep(static_cast<base_type const&>(number));
+    }
 
     namespace _impl {
         template<int Digits, class Narrowest>
@@ -100,7 +132,7 @@ namespace cnl {
         {
             using result_type = elastic_integer<ScalarDigits, ScalarNarrowest>;
             using result_rep = typename result_type::rep;
-            return _impl::to_rep(s) * (result_rep{1} << ShiftDigits);
+            return to_rep(s) * (result_rep{1} << ShiftDigits);
         }
     };
 
@@ -112,7 +144,7 @@ namespace cnl {
         {
             using result_type = elastic_integer<ShiftDigits+ScalarDigits, ScalarNarrowest>;
             using result_rep = typename result_type::rep;
-            return _impl::to_rep(s) * (result_rep{1} << ShiftDigits);
+            return to_rep(s) * (result_rep{1} << ShiftDigits);
         }
     };
 
@@ -123,26 +155,19 @@ namespace cnl {
         {
             using divisor_type = elastic_integer<1-ShiftDigits, ScalarNarrowest>;
             using divisor_rep = typename divisor_type::rep;
-            return _impl::to_rep(s) / (divisor_rep{1} << -ShiftDigits);
+            return to_rep(s) / (divisor_rep{1} << -ShiftDigits);
         }
     };
-
-    /// \brief literal integer type that encodes its width in bits within its type
-    ///
-    /// \tparam Digits a count of the number of digits needed to express the number
-    /// \tparam Narrowest the most narrow integer type to use for storage
-    ///
-    /// \note Arithmetic operations result in types with an adjusted Digits parameter accordingly.
-    /// For instance, when two \ref elastic_integer values are multiplied together,
-    /// the resultant type has Digits set to the sum of the operands.
-    ///
-    /// \sa elastic_fixed_point
 
     template<int Digits = digits<int>::value, class Narrowest = int>
     class elastic_integer : public _elastic_integer_impl::base_class_t<Digits, Narrowest> {
         static_assert(Digits > 0, "type requires positive number of digits");
-        using _base = _elastic_integer_impl::base_class_t<Digits, Narrowest>;
+
     public:
+        using _base = _elastic_integer_impl::base_class_t<Digits, Narrowest>;
+        static_assert(!_elastic_integer_impl::is_elastic_integer<typename _base::rep>::value,
+                "elastic_integer of elastic_integer is not a supported");
+
         /// alias to template parameter, \a Digits
         static constexpr int digits = Digits;
 
@@ -171,7 +196,7 @@ namespace cnl {
         /// constructor taking an elastic_integer type
         template<int FromWidth, class FromNarrowest>
         explicit constexpr elastic_integer(elastic_integer<FromWidth, FromNarrowest> const& rhs)
-                :_base(static_cast<rep>(_impl::to_rep(rhs)))
+                :_base(static_cast<rep>(to_rep(rhs)))
         {
         }
 
@@ -194,7 +219,7 @@ namespace cnl {
         template<class S>
         explicit constexpr operator S() const
         {
-            return static_cast<S>(_impl::to_rep(*this));
+            return static_cast<S>(to_rep(*this));
         }
     };
 
@@ -259,17 +284,6 @@ namespace cnl {
 
     namespace _elastic_integer_impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_elastic_integer_impl::is_elastic_integer
-
-        template<class ElasticInteger>
-        struct is_elastic_integer : std::false_type {
-        };
-
-        template<int Digits, class Narrowest>
-        struct is_elastic_integer<elastic_integer<Digits, Narrowest>> : std::true_type {
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_elastic_integer_impl::are_integer_class_operands - basically identifies
         // operands that should go into a function defined here; filters out fixed-point
 
@@ -294,7 +308,7 @@ namespace cnl {
         using rep = typename elastic_integer::rep;
         return _impl::from_rep<elastic_integer>(
             static_cast<rep>(
-                _impl::to_rep(rhs)
+                    to_rep(rhs)
                 ^ ((static_cast<rep>(~0)) >> (numeric_limits<rep>::digits - RhsDigits))));
     }
 
@@ -447,33 +461,33 @@ namespace cnl {
 
     template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
     constexpr auto operator<<(elastic_integer<LhsDigits, LhsNarrowest> const& lhs, constant<RhsValue>)
-    -> decltype(_impl::from_rep<elastic_integer<LhsDigits + RhsValue, LhsNarrowest>>(_impl::to_rep(static_cast<elastic_integer<LhsDigits + RhsValue, LhsNarrowest>>(lhs)) << RhsValue)) {
+    -> decltype(_impl::from_rep<elastic_integer<LhsDigits + RhsValue, LhsNarrowest>>(to_rep(static_cast<elastic_integer<LhsDigits + RhsValue, LhsNarrowest>>(lhs)) << RhsValue)) {
         using result_type = elastic_integer<LhsDigits + RhsValue, LhsNarrowest>;
-        return _impl::from_rep<result_type>(_impl::to_rep(static_cast<result_type>(lhs)) << RhsValue);
+        return _impl::from_rep<result_type>(to_rep(static_cast<result_type>(lhs)) << RhsValue);
     }
 
     template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
     constexpr auto operator>>(elastic_integer<LhsDigits, LhsNarrowest> const& lhs, constant<RhsValue>)
-    -> decltype (_impl::from_rep<elastic_integer<LhsDigits - RhsValue, LhsNarrowest>>(_impl::to_rep(lhs) >> RhsValue)) {
-        return _impl::from_rep<elastic_integer<LhsDigits - RhsValue, LhsNarrowest>>(_impl::to_rep(lhs) >> RhsValue);
+    -> decltype (_impl::from_rep<elastic_integer<LhsDigits - RhsValue, LhsNarrowest>>(to_rep(lhs) >> RhsValue)) {
+        return _impl::from_rep<elastic_integer<LhsDigits - RhsValue, LhsNarrowest>>(to_rep(lhs) >> RhsValue);
     }
 
     // unary operator-
     template<int RhsDigits, class RhsNarrowest>
     constexpr auto operator-(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
-    -> decltype(_impl::from_rep<elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>>(-_impl::to_rep(static_cast<elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>>(rhs))))
+    -> decltype(_impl::from_rep<elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>>(-to_rep(static_cast<elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>>(rhs))))
     {
         using result_type = elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>;
-        return _impl::from_rep<result_type>(-_impl::to_rep(static_cast<result_type>(rhs)));
+        return _impl::from_rep<result_type>(-to_rep(static_cast<result_type>(rhs)));
     }
 
     // unary operator+
     template<int RhsDigits, class RhsNarrowest>
     constexpr auto operator+(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
-    -> decltype(_impl::from_rep<elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>>(_impl::to_rep(static_cast<elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>>(rhs))))
+    -> decltype(_impl::from_rep<elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>>(to_rep(static_cast<elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>>(rhs))))
     {
         using result_type = elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>;
-        return _impl::from_rep<result_type>(_impl::to_rep(static_cast<result_type>(rhs)));
+        return _impl::from_rep<result_type>(to_rep(static_cast<result_type>(rhs)));
     }
 }
 

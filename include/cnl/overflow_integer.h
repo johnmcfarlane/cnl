@@ -20,20 +20,21 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // forward-declarations
 
+    /// \brief An integer which detects overflow.
     template<class Rep, class OverflowTag>
     class overflow_integer;
 
     namespace _integer_impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_integer_impl::is_overflow_int - trait to identify cnl::overflow_integer<>
+        // cnl::_integer_impl::is_overflow_integer - trait to identify cnl::overflow_integer<>
 
         template<class T>
-        struct is_overflow_int
+        struct is_overflow_integer
                 : std::false_type {
         };
 
         template<class Rep, class OverflowTag>
-        struct is_overflow_int<overflow_integer<Rep, OverflowTag>>
+        struct is_overflow_integer<overflow_integer<Rep, OverflowTag>>
                 : std::true_type {
         };
 
@@ -43,7 +44,7 @@ namespace cnl {
 
         template<class Lhs, class Rhs>
         struct are_integer_class_operands {
-            static constexpr int integer_class = is_overflow_int<Lhs>::value + is_overflow_int<Rhs>::value;
+            static constexpr int integer_class = is_overflow_integer<Lhs>::value + is_overflow_integer<Rhs>::value;
             static constexpr int integer_or_float = _impl::is_integer_or_float<Lhs>::value + _impl::is_integer_or_float<Rhs>::value;
             static constexpr bool value = (integer_class >= 1) && (integer_or_float == 2);
         };
@@ -70,7 +71,7 @@ namespace cnl {
         struct common_type<
                 overflow_integer<LhsRep, LhsOverflowTag>, RhsInteger,
                 _impl::enable_if_t<
-                        !_integer_impl::is_overflow_int<RhsInteger>::value && std::is_integral<RhsInteger>::value>> {
+                        !_integer_impl::is_overflow_integer<RhsInteger>::value && std::is_integral<RhsInteger>::value>> {
             using type = typename cnl::overflow_integer<typename std::common_type<LhsRep, RhsInteger>::type, LhsOverflowTag>;
         };
 
@@ -93,17 +94,18 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::overflow_integer<>
 
-    // an integer which can be customized to react in different ways to overflow;
-    // currently doesn't correctly detect overflow from operators
     template<class Rep = int, class OverflowTag = throwing_overflow_tag>
     class overflow_integer : public _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep> {
-        using _base = _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep>;
+        static_assert(!_integer_impl::is_overflow_integer<Rep>::value,
+                "overflow_integer of overflow_integer is not a supported");
     public:
         ////////////////////////////////////////////////////////////////////////////////
         // types
 
         using rep = Rep;
         using overflow_tag = OverflowTag;
+
+        using _base = _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // functions
@@ -112,11 +114,11 @@ namespace cnl {
 
         template<class RhsRep, class RhsOverflowTag>
         constexpr overflow_integer(overflow_integer<RhsRep, RhsOverflowTag> const& rhs)
-                :overflow_integer(_impl::to_rep(rhs))
+                :overflow_integer(to_rep(rhs))
         {
         }
 
-        template<class Rhs, _impl::enable_if_t<!_integer_impl::is_overflow_int<Rhs>::value, int> dummy = 0>
+        template<class Rhs, _impl::enable_if_t<!_integer_impl::is_overflow_integer<Rhs>::value, int> dummy = 0>
         constexpr overflow_integer(Rhs const& rhs)
                 :_base(convert<rep>(overflow_tag{}, rhs))
         {
@@ -134,7 +136,7 @@ namespace cnl {
         template<class T>
         constexpr explicit operator T() const
         {
-            return static_cast<T>(_impl::to_rep(*this));
+            return static_cast<T>(to_rep(*this));
         }
     };
 
@@ -165,6 +167,14 @@ namespace cnl {
         using type = overflow_integer<set_digits_t<Rep, MinNumBits>, OverflowTag>;
     };
 
+    /// \brief Overload of \ref to_rep(Number const& number) for \ref overflow_integer.
+    template<class Rep, class OverflowTag>
+    constexpr Rep to_rep(overflow_integer<Rep, OverflowTag> const& number)
+    {
+        using base_type = typename overflow_integer<Rep, OverflowTag>::_base;
+        return to_rep(static_cast<base_type const&>(number));
+    }
+
     template<class FromRep, class OverflowTag, class Rep>
     struct from_rep<overflow_integer<FromRep, OverflowTag>, Rep> {
         constexpr auto operator()(Rep const& rep) const
@@ -177,6 +187,16 @@ namespace cnl {
     template<class Rep, class OverflowTag, class Value>
     struct from_value<overflow_integer<Rep, OverflowTag>, Value> {
         using type = overflow_integer<Value, OverflowTag>;
+    };
+
+    template<class Rep, class OverflowTag, class ValueRep, class ValueOverflowTag>
+    struct from_value<overflow_integer<Rep, OverflowTag>, overflow_integer<ValueRep, ValueOverflowTag>> {
+    private:
+        // the common_type of two overflow tags is the stricter for some sense of strict
+        using _overflow_tag = _impl::common_type_t<OverflowTag, ValueOverflowTag>;
+        using _rep = from_value_t<Rep, ValueRep>;
+    public:
+        using type = overflow_integer<_rep, _overflow_tag>;
     };
 
     template<class Rep, class OverflowTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
@@ -223,10 +243,10 @@ namespace cnl {
             constexpr auto operator()(
                     overflow_integer<LhsRep, OverflowTag> const& lhs,
                     overflow_integer<RhsRep, OverflowTag> const& rhs) const
-            -> decltype(make_overflow_int<OverflowTag>(_overflow_impl::binary_operator<OverflowTag, OperatorTag>()(cnl::_impl::to_rep(lhs), cnl::_impl::to_rep(rhs))))
+            -> decltype(make_overflow_int<OverflowTag>(_overflow_impl::binary_operator<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs))))
             {
                 return make_overflow_int<OverflowTag>(
-                        _overflow_impl::binary_operator<OverflowTag, OperatorTag>()(cnl::_impl::to_rep(lhs), cnl::_impl::to_rep(rhs)));
+                        _overflow_impl::binary_operator<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs)));
             }
         };
 
@@ -250,9 +270,9 @@ namespace cnl {
             constexpr auto operator()(
                     overflow_integer<LhsRep, OverflowTag> const& lhs,
                     overflow_integer<RhsRep, OverflowTag> const& rhs) const
-            -> decltype(_overflow_impl::comparison_operator<OverflowTag, OperatorTag>()(cnl::_impl::to_rep(lhs), cnl::_impl::to_rep(rhs)))
+            -> decltype(_overflow_impl::comparison_operator<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs)))
             {
-                return _overflow_impl::comparison_operator<OverflowTag, OperatorTag>()(cnl::_impl::to_rep(lhs), cnl::_impl::to_rep(rhs));
+                return _overflow_impl::comparison_operator<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs));
             }
         };
 
