@@ -109,7 +109,7 @@ namespace cnl {
                 (x<_impl::from_rep<fixed_point<Rep, Exponent>>(0))
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
 #endif
-                _impl::from_rep<fixed_point<Rep, Exponent>>(for_rep<widened_rep>(
+                _impl::from_rep<fixed_point<Rep, Exponent>>(_impl::for_rep<widened_rep>(
                         _impl::fp::extras::sqrt_solve1(),
                         _impl::scale<-Exponent>(static_cast<widened_rep>(to_rep(x)))));
     }

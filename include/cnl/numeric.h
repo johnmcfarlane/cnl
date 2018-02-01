@@ -348,7 +348,7 @@ namespace cnl {
     template<class Integer>
     constexpr int used_bits(Integer const& value)
     {
-        return for_rep<int>(_numeric_impl::used_bits<is_signed<Integer>::value>(), value);
+        return _impl::for_rep<int>(_numeric_impl::used_bits<is_signed<Integer>::value>(), value);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
