@@ -218,7 +218,7 @@ namespace cnl {
     constexpr auto add(OverflowTag, Lhs const& lhs, Rhs const& rhs)
     -> decltype(lhs+rhs)
     {
-        return for_rep<decltype(lhs+rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::add_op>(), lhs, rhs);
+        return _impl::for_rep<decltype(lhs+rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::add_op>(), lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -272,7 +272,7 @@ namespace cnl {
     constexpr auto subtract(OverflowTag, Lhs const& lhs, Rhs const& rhs)
     -> decltype(lhs-rhs)
     {
-        return for_rep<decltype(lhs-rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::subtract_op>(), lhs, rhs);
+        return _impl::for_rep<decltype(lhs-rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::subtract_op>(), lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -331,7 +331,7 @@ namespace cnl {
     constexpr auto multiply(OverflowTag, Lhs const& lhs, Rhs const& rhs)
     -> decltype(lhs*rhs)
     {
-        return for_rep<decltype(lhs*rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::multiply_op>(), lhs, rhs);
+        return _impl::for_rep<decltype(lhs*rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::multiply_op>(), lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -424,7 +424,7 @@ namespace cnl {
     constexpr auto shift_left(OverflowTag, Lhs const& lhs, Rhs const& rhs)
     -> decltype(lhs<<rhs)
     {
-        return for_rep<decltype(lhs<<rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::shift_left_op>(), lhs, rhs);
+        return _impl::for_rep<decltype(lhs<<rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::shift_left_op>(), lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////

@@ -345,19 +345,21 @@ namespace cnl {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::for_rep
+    // cnl::_impl::for_rep
 
-    // invoke a given generic lambda on given parameters
-    template<class Result, class F, class ... Args,
-            _impl::enable_if_t<!_num_traits_impl::are_composite<Args ...>::value, int> dummy = 0>
-    constexpr Result for_rep(F f, Args &&...args) {
-        return f(std::forward<Args>(args)...);
-    }
+    namespace _impl {
+        // invoke a given generic lambda on given parameters
+        template<class Result, class F, class ... Args,
+                _impl::enable_if_t<!_num_traits_impl::are_composite<Args ...>::value, int> dummy = 0>
+        constexpr Result for_rep(F f, Args &&...args) {
+            return f(std::forward<Args>(args)...);
+        }
 
-    template<class Result, class F, class ... Args,
-            _impl::enable_if_t<_num_traits_impl::are_composite<Args ...>::value, int> dummy = 0>
-    constexpr Result for_rep(F f, Args &&...args) {
-        return for_rep<Result>(f, to_rep(std::forward<Args>(args))...);
+        template<class Result, class F, class ... Args,
+                _impl::enable_if_t<_num_traits_impl::are_composite<Args ...>::value, int> dummy = 0>
+        constexpr Result for_rep(F f, Args &&...args) {
+            return for_rep<Result>(f, to_rep(std::forward<Args>(args))...);
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////
