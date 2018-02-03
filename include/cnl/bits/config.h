@@ -49,7 +49,7 @@
 #error CNL_COPY_CONSTEXPR already defined
 #endif
 
-#if (__cplusplus >= 201402L)
+#if (__cpp_constexpr >= 201304L)
 #define CNL_COPY_CONSTEXPR constexpr
 #else
 #define CNL_COPY_CONSTEXPR
