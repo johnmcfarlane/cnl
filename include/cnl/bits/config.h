@@ -43,16 +43,16 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// CNL_COPY_CONSTEXPR macro definition
+// CNL_RELAXED_CONSTEXPR macro definition
 
-#if defined(CNL_COPY_CONSTEXPR)
-#error CNL_COPY_CONSTEXPR already defined
+#if defined(CNL_RELAXED_CONSTEXPR)
+#error CNL_RELAXED_CONSTEXPR already defined
 #endif
 
-#if (__cplusplus >= 201402L)
-#define CNL_COPY_CONSTEXPR constexpr
+#if (__cpp_constexpr >= 201304L)
+#define CNL_RELAXED_CONSTEXPR constexpr
 #else
-#define CNL_COPY_CONSTEXPR
+#define CNL_RELAXED_CONSTEXPR
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////

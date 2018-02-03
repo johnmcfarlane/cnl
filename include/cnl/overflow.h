@@ -53,19 +53,11 @@ namespace cnl {
             return condition ? value : throw std::overflow_error("");
         }
 #else
-#if (__cplusplus>=201402L)
         template<class Result>
-        [[noreturn]] constexpr Result terminate(char const* message) noexcept {
+        [[noreturn]] CNL_RELAXED_CONSTEXPR Result terminate(char const* message) noexcept {
             std::fputs(message, stderr);
             std::terminate();
         }
-#else
-        template<class Result>
-        [[noreturn]] Result terminate(char const* message) noexcept {
-            std::fputs(message, stderr);
-            std::terminate();
-        }
-#endif
 
         template<class Result>
         constexpr Result return_if(bool condition, Result const& value, char const* message) {

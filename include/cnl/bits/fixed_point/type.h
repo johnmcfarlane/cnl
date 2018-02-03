@@ -167,7 +167,7 @@ namespace cnl {
 
         /// copy assignment operator taking a floating-point type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
-        CNL_COPY_CONSTEXPR fixed_point& operator=(S s)
+        CNL_RELAXED_CONSTEXPR fixed_point& operator=(S s)
         {
             _base::operator=(floating_point_to_rep(s));
             return *this;
@@ -175,7 +175,7 @@ namespace cnl {
 
         /// copy assignement operator taking a fixed-point type
         template<class FromRep, int FromExponent>
-        CNL_COPY_CONSTEXPR fixed_point& operator=(fixed_point<FromRep, FromExponent> const& rhs)
+        CNL_RELAXED_CONSTEXPR fixed_point& operator=(fixed_point<FromRep, FromExponent> const& rhs)
         {
             _base::operator=(fixed_point_to_rep(rhs));
             return *this;

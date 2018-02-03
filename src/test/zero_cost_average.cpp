@@ -13,14 +13,8 @@
 using namespace cnl;
 using namespace cnl::literals;
 
-#if (__cplusplus>=201402L)
-#define CONSTEXPR constexpr
-#else
-#define CONSTEXPR
-#endif
-
 // average two nunbers using 15:16 fixed-point arithmetic using native types
-CONSTEXPR float average_integer(float input1, float input2) {
+CNL_RELAXED_CONSTEXPR float average_integer(float input1, float input2) {
     // user must scale values by the correct amount
     auto fixed1 = static_cast<int32_t>(input1 * 65536.f);
     auto fixed2 = static_cast<int32_t>(input2 * 65536.f);
@@ -34,7 +28,7 @@ CONSTEXPR float average_integer(float input1, float input2) {
 
 // the same function using cnl::elastic_integer -
 // a numeric type which widens to avoid overflow
-CONSTEXPR float average_elastic_integer(float input1, float input2) {
+CNL_RELAXED_CONSTEXPR float average_elastic_integer(float input1, float input2) {
     // elastic_integer behaves a lot like native ints
     auto fixed1 = elastic_integer<31>{input1 * 65536.f};
     auto fixed2 = elastic_integer<31>{input2 * 65536.f};
@@ -47,7 +41,7 @@ CONSTEXPR float average_elastic_integer(float input1, float input2) {
 }
 
 // the same function using cnl::fixed_point
-CONSTEXPR float average_fixed_point(float input1, float input2) {
+CNL_RELAXED_CONSTEXPR float average_fixed_point(float input1, float input2) {
     // fixed_point handles scaling
     auto fixed1 = fixed_point<int32_t, -16>{input1};
     auto fixed2 = fixed_point<int32_t, -16>{input2};
@@ -60,7 +54,7 @@ CONSTEXPR float average_fixed_point(float input1, float input2) {
 }
 
 // finally, the composition of fixed_point and elastic_integer
-CONSTEXPR float average_elastic(float input1, float input2) {
+CNL_RELAXED_CONSTEXPR float average_elastic(float input1, float input2) {
     // define optimally-scaled quantity types with this user-defined literal;
     // e.g. 65536_elastic uses 2 bits of storage
     // and 1_elastic/65536_elastic uses 3 bits of storage!
@@ -81,7 +75,7 @@ using cnl::_impl::identical;
 static_assert(identical(65536_elastic, elastic_fixed_point<1, 16>{65536}), "mistaken comment in average_elastic");
 static_assert(identical(1_elastic/65536_elastic, elastic_fixed_point<2, -17>{0.0000152587890625}), "mistaken comment in average_elastic");
 
-#if (__cplusplus>=201402L)
+#if (__cpp_constexpr >= 201304L)
 static_assert(identical(average_integer(32000.125, 27805.75), 29902.9375f), "average_integer test failed");
 static_assert(identical(average_elastic_integer(32000.125, 27805.75), 29902.9375f), "average_elastic_integer test failed");
 static_assert(identical(average_fixed_point(32000.125, 27805.75), 29902.9375f), "average_fixed_point test failed");
