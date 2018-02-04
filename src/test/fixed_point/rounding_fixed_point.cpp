@@ -12,7 +12,7 @@ namespace {
     using cnl::rounding_integer;
 
     template<class Rep = int, int Exponent = 0, class RoundingTag = cnl::closest_rounding_tag>
-    using precise_fixed_point = cnl::fixed_point<cnl::rounding_integer<Rep, RoundingTag>, Exponent>;
+    using rounding_fixed_point = cnl::fixed_point<cnl::rounding_integer<Rep, RoundingTag>, Exponent>;
 
     namespace test_numeric_limits {
         static_assert(cnl::numeric_limits<rounding_integer<>>::is_specialized, "cnl::numeric_limits<rounding_integer<>> test failed");
@@ -21,8 +21,8 @@ namespace {
 
     namespace test_ctor {
         static_assert(identical(
-                to_rep(precise_fixed_point<>(-8)),
-                rounding_integer<>(-8)), "precise_fixed_point ctor test failed");
-        static_assert(precise_fixed_point<>(0) == cnl::_impl::from_rep<precise_fixed_point<>>(0), "precise_fixed_point ctor test failed");
+                to_rep(rounding_fixed_point<>(-8)),
+                rounding_integer<>(-8)), "rounding_fixed_point ctor test failed");
+        static_assert(rounding_fixed_point<>(0) == cnl::_impl::from_rep<rounding_fixed_point<>>(0), "rounding_fixed_point ctor test failed");
     }
 }

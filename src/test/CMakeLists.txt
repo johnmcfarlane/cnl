@@ -30,7 +30,7 @@ add_executable(fp_test
         fixed_point/constants.cpp
         precise/elastic/rounding_elastic_integer.cpp
         elastic/elastic_integer.cpp
-        fixed_point/precise_fixed_point.cpp
+        fixed_point/rounding_fixed_point.cpp
         fixed_point/extras.cpp
         papers/p0554.cpp
         elastic/precise/overflow/precise_safe_integer.cpp
