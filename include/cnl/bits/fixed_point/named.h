@@ -196,24 +196,27 @@ namespace cnl {
         template<class Lhs, class RhsRep, int RhsExponent>
         struct divide<Lhs, fixed_point<RhsRep, RhsExponent>> {
             constexpr auto operator()(Lhs const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
-            -> decltype(divide<fixed_point<Lhs>, fixed_point<RhsRep, RhsExponent>>()(lhs, rhs)) {
-                return divide<fixed_point<Lhs>, fixed_point<RhsRep, RhsExponent>>()(lhs, rhs);
+            -> decltype(cnl::divide(_impl::make_fixed_point(lhs), rhs))
+            {
+                return cnl::divide(_impl::make_fixed_point(lhs), rhs);
             }
         };
 
         template<class LhsRep, int LhsExponent, class Rhs>
         struct divide<fixed_point<LhsRep, LhsExponent>, Rhs> {
             constexpr auto operator()(fixed_point<LhsRep, LhsExponent> const& lhs, Rhs const& rhs) const
-            -> decltype(divide<fixed_point<LhsRep, LhsExponent>, fixed_point<Rhs>>()(lhs, rhs)) {
-                return divide<fixed_point<LhsRep, LhsExponent>, fixed_point<Rhs>>()(lhs, rhs);
+            -> decltype(cnl::divide(lhs, _impl::make_fixed_point(rhs)))
+            {
+                return cnl::divide(lhs, _impl::make_fixed_point(rhs));
             }
         };
 
         template<class Lhs, class Rhs>
         struct divide {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(divide<fixed_point<Lhs>, fixed_point<Rhs>>()(lhs, rhs)) {
-                return divide<fixed_point<Lhs>, fixed_point<Rhs>>()(lhs, rhs);
+            -> decltype(cnl::divide(_impl::make_fixed_point(lhs), _impl::make_fixed_point(rhs)))
+            {
+                return cnl::divide(_impl::make_fixed_point(lhs), _impl::make_fixed_point(rhs));
             }
         };
     }
