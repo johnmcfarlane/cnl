@@ -15,6 +15,40 @@
 
 /// compositional numeric library
 namespace cnl {
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::make_fixed_point
+
+    namespace _impl {
+        // cnl::make_fixed_point without the deprecation warning
+        template<typename Value>
+        constexpr auto make_fixed_point(Value const& value)
+        -> decltype(_impl::from_value<fixed_point<Value, 0>>(value))
+        {
+            return _impl::from_value<fixed_point<Value, 0>>(value);
+        }
+    }
+
+    /// \brief makes a fixed_point object from a given value
+    ///
+    /// \tparam Value the type of the value that is to be made
+    /// into a \ref fixed_point value
+    ///
+    /// \param value the value from which to make the \ref fixed_point object
+    ///
+    /// \note This function is deprecated after C++14
+    /// in favor of class template deduction.
+    template<typename Value>
+#if defined(__cpp_deduction_guides)
+    [[deprecated("make_fixed_point is superseded by class template deduction; "
+    "please replace `make_fixed_point` with `fixed_point`")]]
+#endif
+    constexpr auto make_fixed_point(Value const& value)
+    -> decltype(_impl::make_fixed_point(value))
+    {
+        return _impl::make_fixed_point(value);
+    }
+
     namespace _named_impl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::fp::arithmetic::fixed_point_type
