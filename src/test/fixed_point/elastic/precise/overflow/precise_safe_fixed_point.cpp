@@ -6,7 +6,7 @@
 
 #include <cnl/fixed_point.h>
 #include <cnl/elastic_integer.h>
-#include <cnl/precise_integer.h>
+#include <cnl/rounding_integer.h>
 #include <cnl/overflow_integer.h>
 
 namespace cnl {
@@ -15,12 +15,12 @@ namespace cnl {
             int IntegerDigits,
             int FractionalDigits = 0,
             class OverflowTag = overflow_integer<>::overflow_tag,
-            class RoundingTag = precise_integer<>::rounding,
+            class RoundingTag = rounding_integer<>::rounding,
             class Narrowest = int>
     using psfp = fixed_point<
             elastic_integer<
                     IntegerDigits+FractionalDigits,
-                    precise_integer<
+                    rounding_integer<
                             overflow_integer<
                                     Narrowest,
                                     OverflowTag
@@ -33,7 +33,7 @@ namespace cnl {
 
     template<
             class OverflowTag = overflow_integer<>::overflow_tag,
-            class RoundingTag = precise_integer<>::rounding,
+            class RoundingTag = rounding_integer<>::rounding,
             class Narrowest = int,
             class Input = int>
     psfp<
@@ -47,7 +47,7 @@ namespace cnl {
 
     template<
             class OverflowTag = overflow_integer<>::overflow_tag,
-            class RoundingTag = precise_integer<>::rounding,
+            class RoundingTag = rounding_integer<>::rounding,
             class Narrowest = int,
             class Input = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE Value>
@@ -68,13 +68,13 @@ namespace {
     using cnl::_impl::identical;
 
     namespace default_parameters {
-        using cnl::precise_integer;
+        using cnl::rounding_integer;
         using cnl::overflow_integer;
         using cnl::elastic_integer;
 
         static_assert(
                 is_same<psfp<1>::rep::rep::rep::rep, int>::value,
-                "cnl::precise_integer parameter default test failed");
+                "cnl::rounding_integer parameter default test failed");
     }
 
     namespace test_make_psfp {

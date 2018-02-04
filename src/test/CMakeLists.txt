@@ -43,7 +43,7 @@ add_executable(fp_test
         fixed_point/math.cpp
         zero_cost_average.cpp
         cppcon2017.cpp
-        precise/precise_integer.cpp
+        precise/rounding_integer.cpp
         fixed_point/elastic/elastic_fixed_point.cpp
         fixed_point/overflow/fixed_point_native_integer.cpp
         fixed_point/overflow/fixed_point_throwing_integer.cpp

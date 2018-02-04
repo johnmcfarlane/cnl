@@ -5,22 +5,22 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/elastic_integer.h>
-#include <cnl/precise_integer.h>
+#include <cnl/rounding_integer.h>
 
 namespace cnl {
     // precise elastic integer
     template<
             int IntegerDigits,
-            class RoundingTag = precise_integer<>::rounding,
+            class RoundingTag = rounding_integer<>::rounding,
             class Narrowest = int>
-    using precise_elastic_integer = precise_integer<
+    using precise_elastic_integer = rounding_integer<
             elastic_integer<
                     IntegerDigits,
                     Narrowest>,
             RoundingTag>;
 
     template<
-            class RoundingTag = precise_integer<>::rounding,
+            class RoundingTag = rounding_integer<>::rounding,
             class Narrowest = int,
             class Input = int>
     precise_elastic_integer<
@@ -39,12 +39,12 @@ namespace {
     using cnl::_impl::identical;
 
     namespace default_parameters {
-        using cnl::precise_integer;
+        using cnl::rounding_integer;
         using cnl::elastic_integer;
 
         static_assert(
                 is_same<precise_elastic_integer<1>::rep::rep, int>::value,
-                "cnl::precise_integer parameter default test failed");
+                "cnl::rounding_integer parameter default test failed");
     }
 
     namespace test_make_precise_elastic {

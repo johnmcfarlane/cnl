@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/elastic_integer.h>
-#include <cnl/precise_integer.h>
+#include <cnl/rounding_integer.h>
 #include <cnl/overflow_integer.h>
 
 namespace cnl {
@@ -13,11 +13,11 @@ namespace cnl {
     template<
             int IntegerDigits,
             class OverflowTag = overflow_integer<>::overflow_tag,
-            class RoundingTag = precise_integer<>::rounding,
+            class RoundingTag = rounding_integer<>::rounding,
             class Narrowest = int>
     using precise_safe_int = elastic_integer<
             IntegerDigits,
-            precise_integer<
+            rounding_integer<
                     overflow_integer<
                             Narrowest,
                             OverflowTag
@@ -28,7 +28,7 @@ namespace cnl {
 
     template<
             class OverflowTag = overflow_integer<>::overflow_tag,
-            class RoundingTag = precise_integer<>::rounding,
+            class RoundingTag = rounding_integer<>::rounding,
             class Narrowest = int,
             class Input = int,
             class = _impl::enable_if_t<!_impl::is_constant<Input>::value>>
@@ -43,7 +43,7 @@ namespace cnl {
 
     template<
             class OverflowTag = overflow_integer<>::overflow_tag,
-            class RoundingTag = precise_integer<>::rounding,
+            class RoundingTag = rounding_integer<>::rounding,
             class Narrowest = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE InputValue = 0>
     precise_safe_int<
@@ -63,13 +63,13 @@ namespace {
     using cnl::_impl::identical;
 
     namespace default_parameters {
-        using cnl::precise_integer;
+        using cnl::rounding_integer;
         using cnl::overflow_integer;
         using cnl::elastic_integer;
 
         static_assert(
                 is_same<precise_safe_int<1>::rep::rep::rep, int>::value,
-                "cnl::precise_integer parameter default test failed");
+                "cnl::rounding_integer parameter default test failed");
     }
 
     namespace test_multiply {

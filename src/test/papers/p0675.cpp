@@ -9,7 +9,7 @@
 
 #if defined(__cpp_deduction_guides)
 
-#include <cnl/precise_integer.h>
+#include <cnl/rounding_integer.h>
 #include <cnl/num_traits.h>
 #include <cnl/fixed_point.h>
 
@@ -87,9 +87,9 @@ namespace {
     using cnl::fixed_point;
     using acme::smart_integer;
 
-    // example type, rounded_integer, is based off of cnl::precise_integer
+    // example type, rounded_integer, is based off of cnl::rounding_integer
     template<class Rep>
-    using rounded_integer = cnl::precise_integer<Rep>;
+    using rounded_integer = cnl::rounding_integer<Rep>;
 
     TEST(P0675, compose_from_fundamental) {
         // use an unsigned 16-bit integer to approximate a real number with 2 integer and 14 fractional digits

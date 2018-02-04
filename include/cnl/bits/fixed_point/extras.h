@@ -251,7 +251,7 @@ namespace cnl {
 
 namespace std {
     ////////////////////////////////////////////////////////////////////////////////
-    // std::numeric_limits specialization for precise_integer
+    // std::numeric_limits specialization for rounding_integer
 
     template<class Rep, int Exponent>
     struct numeric_limits<cnl::fixed_point<Rep, Exponent>>
