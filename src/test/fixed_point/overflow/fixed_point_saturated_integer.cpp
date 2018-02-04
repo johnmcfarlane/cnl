@@ -10,11 +10,6 @@
 #define TEST_SATURATED_OVERFLOW
 #define TEST_LABEL saturated_integer_
 
-#if defined(_MSC_VER)
-#define TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED
-#define TEST_IGNORE_MSVC_INTERNAL_ERRORS
-#endif
-
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Rep type
 

@@ -4,7 +4,8 @@
 # build flags
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-  set(MISC_FLAGS "/W4 /WX /errorReport:prompt /nologo")
+  # https://developercommunity.visualstudio.com/content/problem/55671/c4307-issued-for-unsigned.html
+  set(MISC_FLAGS "/W4 /WX /errorReport:prompt /nologo /wd4307")
 
   # no tested
   set(CPP17_ENABLED_FLAGS "/std:c++latest")

@@ -10,11 +10,6 @@
 #define TEST_THROWING_OVERFLOW
 #define TEST_LABEL throwing_integer_
 
-#if defined(_MSC_VER)
-#define TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING
-#define TEST_IGNORE_MSVC_INTERNAL_ERRORS
-#endif
-
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Rep type
 
@@ -29,7 +24,7 @@ using test_int = cnl::overflow_integer<>;
 // throwing_integer-specific exceptions tests
 
 
-#if defined(TEST_THROWING_OVERFLOW) && defined(CNL_EXCEPTIONS_ENABLED)
+#if defined(CNL_EXCEPTIONS_ENABLED)
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_right)
 {

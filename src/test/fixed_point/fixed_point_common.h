@@ -431,40 +431,27 @@ static_assert((fixed_point<uint32, -7>(232.125f))==232.125f, "cnl::fixed_point t
 static_assert(fixed_point<uint64, -7>(232.125f)==232.125L, "cnl::fixed_point test failed");
 
 #if !defined(TEST_THROWING_OVERFLOW)
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED)
 static_assert(fixed_point<int8, -7>(1)!=1.L, "cnl::fixed_point test failed");
-#endif
 #endif
 
 static_assert(fixed_point<int8, -7>(.5)==.5f, "cnl::fixed_point test failed");
 static_assert(fixed_point<int8, -7>(.125f)==.125L, "cnl::fixed_point test failed");
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(fixed_point<int16, -7>(123.125f)==123.125f, "cnl::fixed_point test failed");
-#endif
 static_assert(fixed_point<int32, -7>(123.125f)==123.125, "cnl::fixed_point test failed");
 static_assert(fixed_point<int64, -7>(123.125l)==123.125f, "cnl::fixed_point test failed");
 
 // exponent == 16
 static_assert(fixed_point<uint8, 16>(test_int{ 65536 }) == 65536.f, "cnl::fixed_point test failed");
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(fixed_point<uint16, 16>(6553.)==0, "cnl::fixed_point test failed");
-#endif
 static_assert((fixed_point<uint32, 16>(4294967296l))==4294967296.f, "cnl::fixed_point test failed");
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert((fixed_point<uint64, 16>(1125895611875328l))==1125895611875328ul, "cnl::fixed_point test failed");
-#endif
 
 static_assert(fixed_point<int8, 16>(-65536)==-65536.f, "cnl::fixed_point test failed");
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(fixed_point<int16, 16>(-6553.)==0, "cnl::fixed_point test failed");
-#endif
 static_assert((fixed_point<int32, 16>(-4294967296l))==-4294967296.f, "cnl::fixed_point test failed");
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert((fixed_point<int64, 16>(-0x800000000000LL))==-0x800000000000LL, "cnl::fixed_point test failed");
-#endif
 
 // exponent = 1
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(fixed_point<uint8, 1>(10)==10, "cnl::fixed_point test failed");
 static_assert(fixed_point<uint8, 1>(11)==10, "cnl::fixed_point test failed");
 static_assert(fixed_point<int8, 1>(123.5)==122, "cnl::fixed_point test failed");
@@ -472,21 +459,16 @@ static_assert(fixed_point<int8, 1>(123.5)==122, "cnl::fixed_point test failed");
 static_assert(fixed_point<int8, 1>(127)==126, "cnl::fixed_point test failed");
 static_assert(fixed_point<int8, 1>(126)==126, "cnl::fixed_point test failed");
 static_assert(fixed_point<int8, 1>(-5)==-4, "cnl::fixed_point test failed");
-#endif
 
 // conversion between fixed_point specializations
 static_assert(fixed_point<uint8, -4>(fixed_point<int16, -8>(1.5))==1.5, "cnl::fixed_point test failed");
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_SATURATED_OVERFLOW)
+#if !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_SATURATED_OVERFLOW)
 static_assert(fixed_point<uint16, -8>(fixed_point<int8, -4>(3.25))==3.25, "cnl::fixed_point test failed");
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
 static_assert(fixed_point<uint8, 4>(fixed_point<int16, -4>(768))==768, "cnl::fixed_point test failed");
-#endif
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
 static_assert(fixed_point<uint32, -24>(fixed_point<uint64, -48>(3.141592654))>3.1415923f,
         "cnl::fixed_point test failed");
 static_assert(fixed_point<uint32, -24>(fixed_point<uint64, -48>(3.141592654))<3.1415927f,
         "cnl::fixed_point test failed");
-#endif
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -566,10 +548,8 @@ namespace test_arithmetic {
 static_assert(numeric_limits<uint8>::max()/5==51, "");
 static_assert(numeric_limits<uint8>::max()/3==85, "");
 
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(identical(multiply(fixed_point<uint8, -4>{2}, fixed_point<uint8, -4>{7.5}), fixed_point<uint16, -8>{15}),
         "cnl::multiply test failed");
-#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::divide
@@ -581,7 +561,7 @@ static_assert(identical(divide(fixed_point<test_int, -14>{1}, int16{127}), fixed
 // comparison
 
 // heterogeneous fixed-point to fixed-point comparison
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS) && !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_SATURATED_OVERFLOW)
+#if !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_SATURATED_OVERFLOW)
 static_assert(fixed_point<uint8, -4>(4.5)==fixed_point<int16, -7>(4.5), "cnl::fixed_point test failed");
 static_assert(!(fixed_point<uint8, -4>(4.5)==fixed_point<int16, -7>(-4.5)), "cnl::fixed_point test failed");
 
@@ -590,11 +570,11 @@ static_assert(!(fixed_point<uint8, -4>(4.5)!=fixed_point<int16, -7>(4.5)), "cnl:
 
 static_assert(fixed_point<uint8, -4>(4.5)<fixed_point<int16, -7>(5.6), "cnl::fixed_point test failed");
 #endif
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS) && !defined(TEST_THROWING_OVERFLOW)
+#if !defined(TEST_THROWING_OVERFLOW)
 static_assert(!(fixed_point<int8, -3>(-4.5)<fixed_point<int16, -7>(-5.6)), "cnl::fixed_point test failed");
 #endif
 
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS) && !defined(TEST_THROWING_OVERFLOW)
+#if !defined(TEST_THROWING_OVERFLOW)
 static_assert(fixed_point<uint8, -4>(4.6)>fixed_point<int16, -8>(.5), "cnl::fixed_point test failed");
 static_assert(!(fixed_point<uint8, -4>(4.6)<fixed_point<int16, -8>(-4.5)), "cnl::fixed_point test failed");
 
@@ -608,9 +588,7 @@ static_assert(!(fixed_point<uint8, -4>(4.5)>=fixed_point<int16, -8>(4.6)), "cnl:
 
 // heterogeneous fixed-point to arithmetic comparison
 static_assert(fixed_point<uint8, -4>(4.5)==4.5, "cnl::fixed_point test failed");
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(!(4==fixed_point<int16, -7>(-4.5)), "cnl::fixed_point test failed");
-#endif
 
 static_assert(4.5f!=fixed_point<int16, -7>(-4.5), "cnl::fixed_point test failed");
 static_assert(!(fixed_point<uint64, -4>(4.5)!=4.5L), "cnl::fixed_point test failed");
@@ -627,7 +605,7 @@ static_assert(fixed_point<int32, -15>{-0.2} < 0, "cnl::fixed_point test failed")
 // addition
 static_assert((fixed_point<int32>(123)+fixed_point<int32>(123))==246, "cnl::fixed_point addition operator test failed");
 static_assert((fixed_point<int32, -16>(123.125)+fixed_point<int32, -16>(123.75))==246.875, "cnl::fixed_point addition operator test failed");
-#if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
+#if defined(TEST_SATURATED_OVERFLOW)
 static_assert(identical((fixed_point<int32>{123}+fixed_point<uint32>{123}), fixed_point<test_unsigned>{246}), "cnl::fixed_point addition operator test failed");
 #endif
 static_assert((fixed_point<int32, -16>(123.125)+fixed_point<int32, -16>(123.75))==246.875, "cnl::fixed_point addition operator test failed");
@@ -635,13 +613,9 @@ static_assert((fixed_point<int32, -16>(123.125)+fixed_point<int32, -16>(123.75))
 static_assert(identical(fixed_point<int8, -5>{2.125}+fixed_point<int8, -5>{-3.25}, fixed_point<test_int, -5>{-1.125f}),
         "cnl::fixed_point addition operator test failed");
 
-#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
 static_assert(identical(fixed_point<uint8, -4>{1.5}+2048, fixed_point<test_int, -4>{2049.5}), "test failed");
-#endif
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(identical(2048+fixed_point<uint8, -4>{2.25}, fixed_point<test_int, -4>{2050.25}),
         "cnl::fixed_point addition operator test failed");
-#endif
 static_assert(is_same<decltype(2048+fixed_point<uint8, 10>(10240)), fixed_point<test_signed, 0>>::value,
         "cnl::fixed_point addition operator test failed");
 
@@ -654,10 +628,8 @@ static_assert(identical(16777981.428100586f, fixed_point<int64, -32>(16777215.99
 static_assert(identical(16777981.42809375, fixed_point<int64, -32>(16777215.996093750)+765.432),
         "cnl::fixed_point addition operator test failed");
 
-#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
 static_assert(identical(fixed_point<int32, -16>{.5} + 2, fixed_point<test_int, -16>{2.5}),
         "cnl::fixed_point addition operator test failed");
-#endif
 
 // subtraction
 static_assert((fixed_point<int32>(999)-fixed_point<int32>(369))==630, "cnl::fixed_point subtraction test failed");
@@ -667,9 +639,7 @@ static_assert((fixed_point<int16, -4>(123.125)-fixed_point<int16, -4>(246.875))=
 static_assert(fixed_point<int8, -5>(2.125)-fixed_point<int8, -5>(3.25)==-1.125f, "cnl::fixed_point subtraction test failed");
 static_assert(is_same<decltype(fixed_point<int8, -5>(2.125)-fixed_point<int8, -5>(-3.25)), fixed_point<test_int, -5>>::value,
         "cnl::fixed_point subtraction test failed");
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(fixed_point<uint8, -3>(0.875)-2048==-2047.125, "cnl::fixed_point subtraction test failed");
-#endif
 static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)-2048), fixed_point<test_signed, 0>>::value,
         "cnl::fixed_point subtraction test failed");
 static_assert(identical(-16776450.564086914f, 765.432f-fixed_point<int64, -32>(16777215.996093750)),
@@ -715,22 +685,15 @@ static_assert(identical(-2074569866.7809765625, fixed_point<int64, -32>(16777215
         "cnl::fixed_point multiplication test failed");
 
 // division
-#if !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
 static_assert(identical(fixed_point<int8, -1>{63}/fixed_point<int8, -1>{-4}, fixed_point<test_int, 0>{-15.75}),
         "cnl::fixed_point test failed");
 static_assert(identical(fixed_point<test_int, -1>{63}/fixed_point<int8, -1>{-4}, fixed_point<test_int, 0>{-15.75}),
         "cnl::fixed_point test failed");
-#endif
-#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
 static_assert(identical(fixed_point<int8, 1>{-255}/fixed_point<int8, 1>{-8}, fixed_point<test_int, 0>{31.75}),
         "cnl::fixed_point test failed");
 static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==31, "cnl::fixed_point test failed");
-#endif
 
-#if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert(identical(divide(int32(-999), int32(3)), fixed_point<int64, -31>{-333L}), "cnl::fixed_point test failed");
-#endif
-#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
+static_assert(identical(divide(int32(-999), int32(3)), fixed_point<int64, -31>{-333LL}), "cnl::fixed_point test failed");
 static_assert(
         identical(fixed_point<int8, -5>{2.5}/fixed_point<int8, -5>{-4.f}, fixed_point<test_int, 0>{0}),
         "cnl::fixed_point division test failed");
@@ -747,7 +710,6 @@ static_assert(identical(test_int{10}/fixed_point<uint8, -2>{0.25}, fixed_point<t
         "cnl::fixed_point division test failed");
 static_assert(identical(divide(test_int{10}, fixed_point<uint8, -2>{0.25}), fixed_point<int64, -6>{40}),
         "cnl::fixed_point division test failed");
-#endif
 
 static_assert(16777215.996093750/fixed_point<int64, -32>(-123.654f)==-135678.71712347874,
         "cnl::fixed_point division test failed");
@@ -758,7 +720,6 @@ static_assert(identical(-135678.71712347874f, fixed_point<int64, -32>(16777215.9
 static_assert(identical(-135678.7163868031, fixed_point<int64, -32>(16777215.996093750)/-123.654),
         "cnl::fixed_point division test failed");
 
-#if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
 static_assert(
         identical(fixed_point<uint32, 0>{0xffffffff}/fixed_point<uint32, 0>{0xffffffff}, fixed_point<uint32, 0>{1}),
         "cnl::fixed_point test failed");
@@ -767,7 +728,6 @@ static_assert(cnl::numeric_limits<uint128>::is_specialized, "");
 static_assert(cnl::numeric_limits<uint128>::is_integer, "");
 static_assert(identical(divide(fixed_point<uint64, 0>{0xFFFFFFFE00000001LL}, fixed_point<uint64, -32>{0xffffffffULL}),
         fixed_point<uint128, -32>{0xffffffffULL}), "cnl::fixed_point test failed");
-#endif
 #endif
 static_assert(identical(divide(fixed_point<uint32, 0>{0xFFFE0001LL}, fixed_point<uint32, 0>{0xffff}),
         fixed_point<uint64, -32>{0xffffLL}), "cnl::fixed_point test failed");
@@ -918,14 +878,14 @@ static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::max() > 1.e86, "n
 static_assert(sqrt(fixed_point<uint8>(225))==15, "cnl::sqrt test failed");
 static_assert(sqrt(fixed_point<int8>(81))==9, "cnl::sqrt test failed");
 
-#if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
+#if defined(TEST_SATURATED_OVERFLOW)
 static_assert(sqrt(fixed_point<uint8, -1>(4))==2, "cnl::sqrt test failed");
 static_assert(to_rep(fixed_point<int8, -2>(9))==36, "cnl::sqrt test failed");
 static_assert(sqrt(fixed_point<int, -2>(9))==3, "cnl::sqrt test failed");
 static_assert(sqrt(fixed_point<int8, -2>(9))==3, "cnl::sqrt test failed");
 #endif
 
-#if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
+#if defined(TEST_SATURATED_OVERFLOW)
 static_assert(sqrt(fixed_point<uint8, -4>(4))==2, "cnl::sqrt test failed");
 static_assert(static_cast<float>(sqrt(fixed_point<int32, -24>(3.141592654)))>1.7724537849426, "cnl::sqrt test failed");
 static_assert(static_cast<float>(sqrt(fixed_point<int32, -24>(3.141592654)))<1.7724537849427, "cnl::sqrt test failed");
@@ -980,9 +940,7 @@ struct FixedPointTesterOutsize {
     // simply assignment to and from underlying representation
     using numeric_limits = cnl::numeric_limits<fixed_point>;
     static constexpr fixed_point min = cnl::_impl::from_rep<fixed_point>(rep(1));
-#if ! defined(_MSC_VER)
     static_assert(to_rep(min) == rep(1), "all Rep types should be able to store the number 1!");
-#endif
 
     // unary common_type_t
     static_assert(is_same<
