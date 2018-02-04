@@ -324,6 +324,32 @@ namespace test_from_value {
             "cnl::_impl::from_value<fixed_point<>, cnl::constant<4>>()");
 }
 
+#if defined(__cpp_deduction_guides)
+namespace test_deduction_guides {
+    static_assert(identical(cnl::_impl::make_fixed_point(short{123}), cnl::fixed_point(short{123})),
+            "cnl::fixed_point class template deduction");
+    static_assert(identical(cnl::_impl::make_fixed_point(UINT64_C(404)), cnl::fixed_point(UINT64_C(404))),
+            "cnl::fixed_point class template deduction");
+
+    static_assert(identical(cnl::_impl::make_fixed_point(cnl::constant<369>{}), cnl::fixed_point(cnl::constant<369>{})),
+            "cnl::fixed_point class template deduction");
+    static_assert(identical(cnl::_impl::make_fixed_point(cnl::constant<4>{}), cnl::fixed_point(cnl::constant<4>{})),
+            "cnl::fixed_point class template deduction");
+}
+#else
+namespace test_make_fixed_point {
+    static_assert(identical(fixed_point<short>{123}, cnl::make_fixed_point(short{123})),
+            "cnl::make_fixed_point");
+    static_assert(identical(fixed_point<std::uint64_t>{404}, cnl::make_fixed_point(UINT64_C(404))),
+            "cnl::make_fixed_point");
+
+    static_assert(identical(fixed_point<int>{369}, cnl::make_fixed_point(cnl::constant<369>{})),
+            "cnl::make_fixed_point");
+    static_assert(identical(fixed_point<int, 2>{4}, cnl::make_fixed_point(cnl::constant<4>{})),
+            "cnl::make_fixed_point");
+}
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::set_digits_t<fixed_point<>, >
@@ -1013,6 +1039,8 @@ struct FixedPointRepTester {
 #if defined(__cpp_deduction_guides)
     static_assert(identical(cnl::fixed_point{Rep{0}}, cnl::fixed_point<Rep, 0>{0}));
     static_assert(identical(cnl::fixed_point(Rep{0}), cnl::fixed_point<Rep, 0>(0)));
+
+    static_assert(identical(cnl::_impl::make_fixed_point(Rep{0}), cnl::fixed_point(Rep{0})));
 #endif
 };
 
