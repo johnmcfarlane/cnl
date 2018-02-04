@@ -259,6 +259,9 @@ namespace {
         static_assert(identical(convert<cnl::uint16>(saturated_overflow, -123), cnl::uint16{0}), "cnl::convert test failed");
         static_assert(identical(convert<cnl::int32>(saturated_overflow, cnl::uint8{55}), 55), "cnl::convert test failed");
 
+        // add
+        static_assert(identical(cnl::numeric_limits<decltype(2 + 2U)>::max(), add(saturated_overflow, 2, cnl::numeric_limits<unsigned>::max())), "cnl::add test failed");
+
         // subtract
         static_assert(identical(subtract(saturated_overflow, INT8_C(0), INT8_C(0)), 0), "cnl::subtract test failed");
 #if defined(_MSC_VER)
