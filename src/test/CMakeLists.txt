@@ -173,22 +173,9 @@ set_target_properties(
 target_link_libraries(fp_test cnl)
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-    # https://developercommunity.visualstudio.com/content/problem/55671/c4307-issued-for-unsigned.html
     set_source_files_properties(
-            overflow/overflow.cpp
-            PROPERTIES COMPILE_FLAGS "/wd4307")
-
-    set_source_files_properties(
-            overflow/overflow_integer.cpp
-            PROPERTIES COMPILE_FLAGS "/wd4307")
-
-    set_source_files_properties(
-            fixed_point/fixed_point_built_in.cpp
-            PROPERTIES COMPILE_FLAGS "/wd4307")
-
-    set_source_files_properties(
-            fixed_point/overflow/fixed_point_native_integer.cpp
-            PROPERTIES COMPILE_FLAGS "/wd4307")
+            fixed_point/overflow/fixed_point_saturated_integer.cpp
+            PROPERTIES COMPILE_FLAGS "/wd4018")
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     set_source_files_properties(
             boost.multiprecision.cpp
