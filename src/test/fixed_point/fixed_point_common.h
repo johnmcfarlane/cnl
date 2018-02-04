@@ -59,7 +59,6 @@ using cnl::_impl::fp::type::pow2;
 template<class Type, cnl::_digits_type MinNumDigits>
 using set_digits_t = cnl::set_digits_t<Type, MinNumDigits>;
 
-using cnl::divide;
 using cnl::multiply;
 
 using cnl::_impl::identical;
@@ -324,6 +323,32 @@ namespace test_from_value {
             "cnl::_impl::from_value<fixed_point<>, cnl::constant<4>>()");
 }
 
+#if defined(__cpp_deduction_guides)
+namespace test_deduction_guides {
+    static_assert(identical(cnl::_impl::make_fixed_point(short{123}), cnl::fixed_point(short{123})),
+            "cnl::fixed_point class template deduction");
+    static_assert(identical(cnl::_impl::make_fixed_point(UINT64_C(404)), cnl::fixed_point(UINT64_C(404))),
+            "cnl::fixed_point class template deduction");
+
+    static_assert(identical(cnl::_impl::make_fixed_point(cnl::constant<369>{}), cnl::fixed_point(cnl::constant<369>{})),
+            "cnl::fixed_point class template deduction");
+    static_assert(identical(cnl::_impl::make_fixed_point(cnl::constant<4>{}), cnl::fixed_point(cnl::constant<4>{})),
+            "cnl::fixed_point class template deduction");
+}
+#else
+namespace test_make_fixed_point {
+    static_assert(identical(fixed_point<short>{123}, cnl::make_fixed_point(short{123})),
+            "cnl::make_fixed_point");
+    static_assert(identical(fixed_point<std::uint64_t>{404}, cnl::make_fixed_point(UINT64_C(404))),
+            "cnl::make_fixed_point");
+
+    static_assert(identical(fixed_point<int>{369}, cnl::make_fixed_point(cnl::constant<369>{})),
+            "cnl::make_fixed_point");
+    static_assert(identical(fixed_point<int, 2>{4}, cnl::make_fixed_point(cnl::constant<4>{})),
+            "cnl::make_fixed_point");
+}
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::set_digits_t<fixed_point<>, >
@@ -551,11 +576,24 @@ static_assert(numeric_limits<uint8>::max()/3==85, "");
 static_assert(identical(multiply(fixed_point<uint8, -4>{2}, fixed_point<uint8, -4>{7.5}), fixed_point<uint16, -8>{15}),
         "cnl::multiply test failed");
 
-////////////////////////////////////////////////////////////////////////////////
-// cnl::divide
-
-static_assert(identical(divide(fixed_point<test_int, -14>{1}, int16{127}), fixed_point<int64, -29>{1./127}),
-        "cnl::divide test failed");
+namespace test_divide {
+    static_assert(identical(cnl::divide(fixed_point<test_int, -14>{1}, int16{127}), fixed_point<int64, -29>{1./127}),
+            "cnl::divide test failed");
+    static_assert(identical(cnl::divide(int32(-999), int32(3)), fixed_point<int64, -31>{-333LL}), "cnl::fixed_point test failed");
+    static_assert(identical(cnl::divide(fixed_point<uint32, 10>{10240}, uint32{3u}), fixed_point<uint64,
+            -22>{3413.3333333}), "cnl::fixed_point division test failed");
+    static_assert(identical(cnl::divide(test_int{10}, fixed_point<uint8, -2>{0.25}), fixed_point<int64, -6>{40}),
+            "cnl::fixed_point division test failed");
+#if defined(CNL_INT128_ENABLED)
+    static_assert(identical(cnl::divide(fixed_point<uint64, 0>{0xFFFFFFFE00000001LL}, fixed_point<uint64, -32>{0xffffffffULL}),
+            fixed_point<uint128, -32>{0xffffffffULL}), "cnl::fixed_point test failed");
+#endif
+    static_assert(identical(cnl::divide(fixed_point<uint32, 0>{0xFFFE0001LL}, fixed_point<uint32, 0>{0xffff}),
+            fixed_point<uint64, -32>{0xffffLL}), "cnl::fixed_point test failed");
+    static_assert(identical(
+            cnl::divide(cnl::fixed_point<int32, -16>{963}, cnl::constant<3>{}),
+            fixed_point<int64, -47>{321LL}), "cnl::fixed_point test failed");
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // comparison
@@ -693,13 +731,10 @@ static_assert(identical(fixed_point<int8, 1>{-255}/fixed_point<int8, 1>{-8}, fix
         "cnl::fixed_point test failed");
 static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==31, "cnl::fixed_point test failed");
 
-static_assert(identical(divide(int32(-999), int32(3)), fixed_point<int64, -31>{-333LL}), "cnl::fixed_point test failed");
 static_assert(
         identical(fixed_point<int8, -5>{2.5}/fixed_point<int8, -5>{-4.f}, fixed_point<test_int, 0>{0}),
         "cnl::fixed_point division test failed");
 
-static_assert(identical(divide(fixed_point<uint32, 10>{10240}, uint32{3u}), fixed_point<uint64,
-        -22>{3413.3333333}), "cnl::fixed_point division test failed");
 static_assert(identical(test_int{10}/fixed_point<uint8, -6>(0.25), fixed_point<int32, 6>{40}),
         "cnl::fixed_point division test failed");
 static_assert(
@@ -707,8 +742,6 @@ static_assert(
         "cnl::fixed_point division test failed");
 
 static_assert(identical(test_int{10}/fixed_point<uint8, -2>{0.25}, fixed_point<test_int, 2>{40}),
-        "cnl::fixed_point division test failed");
-static_assert(identical(divide(test_int{10}, fixed_point<uint8, -2>{0.25}), fixed_point<int64, -6>{40}),
         "cnl::fixed_point division test failed");
 
 static_assert(16777215.996093750/fixed_point<int64, -32>(-123.654f)==-135678.71712347874,
@@ -726,11 +759,7 @@ static_assert(
 #if defined(CNL_INT128_ENABLED)
 static_assert(cnl::numeric_limits<uint128>::is_specialized, "");
 static_assert(cnl::numeric_limits<uint128>::is_integer, "");
-static_assert(identical(divide(fixed_point<uint64, 0>{0xFFFFFFFE00000001LL}, fixed_point<uint64, -32>{0xffffffffULL}),
-        fixed_point<uint128, -32>{0xffffffffULL}), "cnl::fixed_point test failed");
 #endif
-static_assert(identical(divide(fixed_point<uint32, 0>{0xFFFE0001LL}, fixed_point<uint32, 0>{0xffff}),
-        fixed_point<uint64, -32>{0xffffLL}), "cnl::fixed_point test failed");
 
 namespace test_bitshift {
     // dynamic
@@ -1013,6 +1042,8 @@ struct FixedPointRepTester {
 #if defined(__cpp_deduction_guides)
     static_assert(identical(cnl::fixed_point{Rep{0}}, cnl::fixed_point<Rep, 0>{0}));
     static_assert(identical(cnl::fixed_point(Rep{0}), cnl::fixed_point<Rep, 0>(0)));
+
+    static_assert(identical(cnl::_impl::make_fixed_point(Rep{0}), cnl::fixed_point(Rep{0})));
 #endif
 };
 

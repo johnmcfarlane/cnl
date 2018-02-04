@@ -15,6 +15,40 @@
 
 /// compositional numeric library
 namespace cnl {
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::make_fixed_point
+
+    namespace _impl {
+        // cnl::make_fixed_point without the deprecation warning
+        template<typename Value>
+        constexpr auto make_fixed_point(Value const& value)
+        -> decltype(_impl::from_value<fixed_point<Value, 0>>(value))
+        {
+            return _impl::from_value<fixed_point<Value, 0>>(value);
+        }
+    }
+
+    /// \brief makes a fixed_point object from a given value
+    ///
+    /// \tparam Value the type of the value that is to be made
+    /// into a \ref fixed_point value
+    ///
+    /// \param value the value from which to make the \ref fixed_point object
+    ///
+    /// \note This function is deprecated after C++14
+    /// in favor of class template deduction.
+    template<typename Value>
+#if defined(__cpp_deduction_guides)
+    [[deprecated("make_fixed_point is superseded by class template deduction; "
+    "please replace `make_fixed_point` with `fixed_point`")]]
+#endif
+    constexpr auto make_fixed_point(Value const& value)
+    -> decltype(_impl::make_fixed_point(value))
+    {
+        return _impl::make_fixed_point(value);
+    }
+
     namespace _named_impl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::fp::arithmetic::fixed_point_type
@@ -97,6 +131,29 @@ namespace cnl {
 
     namespace _divide_impl {
         template<class Lhs, class Rhs>
+        struct divide;
+    }
+
+    /// \brief calculates the quotient of two \ref fixed_point values
+    /// \headerfile cnl/fixed_point.h
+    ///
+    /// \param lhs, rhs dividend and divisor
+    ///
+    /// \return quotient: lhs / rhs
+    ///
+    /// \note This function divides the values
+    /// without performing any additional scaling or conversion.
+    ///
+    /// \sa multiply
+
+    template<class Lhs, class Rhs>
+    constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
+    -> decltype(_divide_impl::divide<Lhs, Rhs>()(lhs, rhs)) {
+        return _divide_impl::divide<Lhs, Rhs>()(lhs, rhs);
+    };
+
+    namespace _divide_impl {
+        template<class Lhs, class Rhs>
         struct params {
             using lhs_rep = typename Lhs::rep;
             using rhs_rep = typename Rhs::rep;
@@ -123,9 +180,6 @@ namespace cnl {
             using result_type = fixed_point<rep_type, rep_exponent>;
         };
 
-        template<class Lhs, class Rhs>
-        struct divide;
-
         template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
         struct divide<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>> {
             constexpr auto operator()(fixed_point<LhsRep, LhsExponent> const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
@@ -142,45 +196,30 @@ namespace cnl {
         template<class Lhs, class RhsRep, int RhsExponent>
         struct divide<Lhs, fixed_point<RhsRep, RhsExponent>> {
             constexpr auto operator()(Lhs const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
-            -> decltype(divide<fixed_point<Lhs>, fixed_point<RhsRep, RhsExponent>>()(lhs, rhs)) {
-                return divide<fixed_point<Lhs>, fixed_point<RhsRep, RhsExponent>>()(lhs, rhs);
+            -> decltype(cnl::divide(_impl::make_fixed_point(lhs), rhs))
+            {
+                return cnl::divide(_impl::make_fixed_point(lhs), rhs);
             }
         };
 
         template<class LhsRep, int LhsExponent, class Rhs>
         struct divide<fixed_point<LhsRep, LhsExponent>, Rhs> {
             constexpr auto operator()(fixed_point<LhsRep, LhsExponent> const& lhs, Rhs const& rhs) const
-            -> decltype(divide<fixed_point<LhsRep, LhsExponent>, fixed_point<Rhs>>()(lhs, rhs)) {
-                return divide<fixed_point<LhsRep, LhsExponent>, fixed_point<Rhs>>()(lhs, rhs);
+            -> decltype(cnl::divide(lhs, _impl::make_fixed_point(rhs)))
+            {
+                return cnl::divide(lhs, _impl::make_fixed_point(rhs));
             }
         };
 
         template<class Lhs, class Rhs>
         struct divide {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(divide<fixed_point<Lhs>, fixed_point<Rhs>>()(lhs, rhs)) {
-                return divide<fixed_point<Lhs>, fixed_point<Rhs>>()(lhs, rhs);
+            -> decltype(cnl::divide(_impl::make_fixed_point(lhs), _impl::make_fixed_point(rhs)))
+            {
+                return cnl::divide(_impl::make_fixed_point(lhs), _impl::make_fixed_point(rhs));
             }
         };
     }
-
-    /// \brief calculates the quotient of two \ref fixed_point values
-    /// \headerfile cnl/fixed_point.h
-    ///
-    /// \param lhs, rhs dividend and divisor
-    ///
-    /// \return quotient: lhs / rhs
-    ///
-    /// \note This function divides the values
-    /// without performing any additional scaling or conversion.
-    ///
-    /// \sa multiply
-
-    template<class Lhs, class Rhs>
-    constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(_divide_impl::divide<Lhs, Rhs>()(lhs, rhs)) {
-        return _divide_impl::divide<Lhs, Rhs>()(lhs, rhs);
-    };
 }
 
 #endif  // CNL_FIXED_POINT_NAMED_H
