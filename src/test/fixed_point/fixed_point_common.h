@@ -728,7 +728,7 @@ static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==31, "cnl::f
 #endif
 
 #if defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS)
-static_assert(identical(divide(int32(-999), int32(3)), fixed_point<int64, -31>{-333L}), "cnl::fixed_point test failed");
+static_assert(identical(divide(int32(-999), int32(3)), fixed_point<int64, -31>{-333LL}), "cnl::fixed_point test failed");
 #endif
 #if ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_SATURATED) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_NATIVE) && ! defined(TEST_IGNORE_MSVC_INTERNAL_ERRORS_THROWING)
 static_assert(
