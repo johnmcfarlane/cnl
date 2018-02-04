@@ -24,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CNL
-   &#160;<span id="projectnumber">rev.1</span>
+   &#160;<span id="projectnumber">rev.0.0.1</span>
    </div>
    <div id="projectbrief">Compositional Numeric Library in C++</div>
   </td>
@@ -171,6 +171,10 @@ Functions</h2></td></tr>
 <tr class="memitem:af666352d86a9a718f181a92cc626b32b"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">elastic_fixed_point</a>&lt; numeric_limits&lt; Integral &gt;::digits, 0, Narrowest &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#af666352d86a9a718f181a92cc626b32b">make_elastic_fixed_point</a> (Integral value)</td></tr>
 <tr class="memdesc:af666352d86a9a718f181a92cc626b32b"><td class="mdescLeft">&#160;</td><td class="mdescRight">generate an <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> object of given value  <a href="#af666352d86a9a718f181a92cc626b32b">More...</a><br /></td></tr>
 <tr class="separator:af666352d86a9a718f181a92cc626b32b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2570a89912c66eead75af389bbe0348"><td class="memTemplParams" colspan="2">template&lt;typename Value &gt; </td></tr>
+<tr class="memitem:aa2570a89912c66eead75af389bbe0348"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aa2570a89912c66eead75af389bbe0348">make_fixed_point</a> (Value const &amp;value) -&gt; decltype(_impl::make_fixed_point(value))</td></tr>
+<tr class="memdesc:aa2570a89912c66eead75af389bbe0348"><td class="mdescLeft">&#160;</td><td class="mdescRight">makes a <a class="el" href="classcnl_1_1fixed__point.html" title="literal real number approximation that uses fixed-point arithmetic ">fixed_point</a> object from a given value  <a href="#aa2570a89912c66eead75af389bbe0348">More...</a><br /></td></tr>
+<tr class="separator:aa2570a89912c66eead75af389bbe0348"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4907e759049bbe5bb38f2978d2b04425"><td class="memTemplParams" colspan="2">template&lt;class Lhs , class Rhs &gt; </td></tr>
 <tr class="memitem:a4907e759049bbe5bb38f2978d2b04425"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a4907e759049bbe5bb38f2978d2b04425">multiply</a> (Lhs const &amp;lhs, Rhs const &amp;rhs) -&gt; typename _multiply_impl::params&lt; Lhs, Rhs &gt;::result_type</td></tr>
 <tr class="memdesc:a4907e759049bbe5bb38f2978d2b04425"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculates the product of two <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> factors  <a href="#a4907e759049bbe5bb38f2978d2b04425">More...</a><br /></td></tr>
@@ -376,6 +380,8 @@ template&lt;class Lhs , class Rhs &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>This function divides the values without performing any additional scaling or conversion.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacecnl.html#a4907e759049bbe5bb38f2978d2b04425" title="calculates the product of two fixed_point factors ">multiply</a> </dd></dl>
 
+<p>References <a class="el" href="namespacecnl.html#a7a9dc52c34bf49998117d535449c8a93">to_rep()</a>.</p>
+
 <p>Referenced by <a class="el" href="namespacecnl.html#a4907e759049bbe5bb38f2978d2b04425">multiply()</a>, and <a class="el" href="namespacecnl_1_1literals.html#ae4bd82734918d969d4ed9c20f778e55d">cnl::literals::operator&quot;&quot;_elastic()</a>.</p>
 
 </div>
@@ -473,6 +479,40 @@ template&lt;class Narrowest  = int, class Integral  = int&gt; </div>
 <dl class="section note"><dt>Note</dt><dd>The return type is guaranteed to be no larger than is necessary to represent the value.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
 <p>To define a byte-sized object using make_elastic_fixed_point and _c: </p><div class="fragment"><div class="line">constexpr <span class="keyword">auto</span> n = make_elastic_fixed_point&lt;char&gt;(constant&lt;1536&gt;{});</div><div class="line"></div><div class="line">static_assert(n==1536, <span class="stringliteral">&quot;n now has the value, 1536&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/cnl/cmake-build-debug/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_fixed_point&lt;2, 9, char&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_fixed_point uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aa2570a89912c66eead75af389bbe0348"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto cnl::make_fixed_point </td>
+          <td>(</td>
+          <td class="paramtype">Value const &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td> -&gt; decltype(_impl::make_fixed_point(value))
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>makes a <a class="el" href="classcnl_1_1fixed__point.html" title="literal real number approximation that uses fixed-point arithmetic ">fixed_point</a> object from a given value </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Value</td><td>the type of the value that is to be made into a <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> value</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>the value from which to make the <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> object</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This function is deprecated after C++14 in favor of class template deduction. </dd></dl>
+
 </div>
 </div>
 <a class="anchor" id="a4907e759049bbe5bb38f2978d2b04425"></a>

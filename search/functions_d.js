@@ -3,6 +3,7 @@ var searchData=
   ['m',['m',['http://en.cppreference.com/w/cpp/numeric/random/lognormal_distribution/params.html',1,'std::lognormal_distribution::m()'],['http://en.cppreference.com/w/cpp/numeric/random/fisher_f_distribution/params.html',1,'std::fisher_f_distribution::m()']]],
   ['make_5felastic_5ffixed_5fpoint',['make_elastic_fixed_point',['../namespacecnl.html#a4daf81aa20bb7c524a1e3ce9f3e5af42',1,'cnl::make_elastic_fixed_point(constant&lt; Value &gt;)'],['../namespacecnl.html#af666352d86a9a718f181a92cc626b32b',1,'cnl::make_elastic_fixed_point(Integral value)']]],
   ['make_5fexception_5fptr',['make_exception_ptr',['http://en.cppreference.com/w/cpp/error/make_exception_ptr.html',1,'std']]],
+  ['make_5ffixed_5fpoint',['make_fixed_point',['../namespacecnl.html#aa2570a89912c66eead75af389bbe0348',1,'cnl']]],
   ['make_5fheap',['make_heap',['http://en.cppreference.com/w/cpp/algorithm/make_heap.html',1,'std']]],
   ['make_5fmove_5fiterator',['make_move_iterator',['http://en.cppreference.com/w/cpp/iterator/make_move_iterator.html',1,'std']]],
   ['make_5foptional',['make_optional',['http://en.cppreference.com/w/cpp/experimental/optional/make_optional.html',1,'std::experimental']]],
