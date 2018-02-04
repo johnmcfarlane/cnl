@@ -35,7 +35,7 @@ add_executable(fp_test
         papers/p0554.cpp
         elastic/precise/overflow/precise_safe_integer.cpp
         zero_cost_free_functions.cpp
-        fixed_point/elastic/precise/overflow/precise_safe_fixed_point.cpp
+        fixed_point/elastic/precise/overflow/rounding_safe_fixed_point.cpp
         snippets.cpp
         overflow/elastic/safe_integer.cpp
         overflow/overflow_integer.cpp
