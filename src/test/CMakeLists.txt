@@ -28,7 +28,7 @@ add_executable(fp_test
         safft.cpp
         fixed_point/fixed_point_built_in.cpp
         fixed_point/constants.cpp
-        precise/elastic/precise_elastic_integer.cpp
+        precise/elastic/rounding_elastic_integer.cpp
         elastic/elastic_integer.cpp
         fixed_point/precise_fixed_point.cpp
         fixed_point/extras.cpp
