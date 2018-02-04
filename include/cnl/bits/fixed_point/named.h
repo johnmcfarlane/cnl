@@ -97,6 +97,29 @@ namespace cnl {
 
     namespace _divide_impl {
         template<class Lhs, class Rhs>
+        struct divide;
+    }
+
+    /// \brief calculates the quotient of two \ref fixed_point values
+    /// \headerfile cnl/fixed_point.h
+    ///
+    /// \param lhs, rhs dividend and divisor
+    ///
+    /// \return quotient: lhs / rhs
+    ///
+    /// \note This function divides the values
+    /// without performing any additional scaling or conversion.
+    ///
+    /// \sa multiply
+
+    template<class Lhs, class Rhs>
+    constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
+    -> decltype(_divide_impl::divide<Lhs, Rhs>()(lhs, rhs)) {
+        return _divide_impl::divide<Lhs, Rhs>()(lhs, rhs);
+    };
+
+    namespace _divide_impl {
+        template<class Lhs, class Rhs>
         struct params {
             using lhs_rep = typename Lhs::rep;
             using rhs_rep = typename Rhs::rep;
@@ -122,9 +145,6 @@ namespace cnl {
 
             using result_type = fixed_point<rep_type, rep_exponent>;
         };
-
-        template<class Lhs, class Rhs>
-        struct divide;
 
         template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
         struct divide<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>> {
@@ -163,24 +183,6 @@ namespace cnl {
             }
         };
     }
-
-    /// \brief calculates the quotient of two \ref fixed_point values
-    /// \headerfile cnl/fixed_point.h
-    ///
-    /// \param lhs, rhs dividend and divisor
-    ///
-    /// \return quotient: lhs / rhs
-    ///
-    /// \note This function divides the values
-    /// without performing any additional scaling or conversion.
-    ///
-    /// \sa multiply
-
-    template<class Lhs, class Rhs>
-    constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(_divide_impl::divide<Lhs, Rhs>()(lhs, rhs)) {
-        return _divide_impl::divide<Lhs, Rhs>()(lhs, rhs);
-    };
 }
 
 #endif  // CNL_FIXED_POINT_NAMED_H
