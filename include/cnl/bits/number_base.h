@@ -22,10 +22,15 @@ namespace cnl {
         template<class Derived, class Rep>
         class number_base {
         public:
-            static_assert(numeric_limits<Rep>::is_integer, "number_base must be specialized with integer Rep type template parameter");
-
             using rep = Rep;
-            using _derived = Derived;
+
+            explicit constexpr operator bool() const
+            {
+                return static_cast<bool>(_rep);
+            }
+
+        protected:
+            static_assert(numeric_limits<Rep>::is_integer, "number_base must be specialized with integer Rep type template parameter");
 
             number_base() = default;
 
@@ -36,11 +41,6 @@ namespace cnl {
             CNL_RELAXED_CONSTEXPR number_base& operator=(T const& r) {
                 _rep = r;
                 return static_cast<Derived&>(*this);
-            }
-
-            explicit constexpr operator bool() const
-            {
-                return static_cast<bool>(_rep);
             }
 
 #if defined(__GNUG__) && !defined(__clang__) && (__GNUG__ <= 5)

@@ -113,7 +113,7 @@ namespace cnl {
 
     public:
         /// default constructor
-        constexpr fixed_point() : _base() { }
+        constexpr fixed_point() = default;
 
         /// constructor taking a fixed-point type
         template<class FromRep, int FromExponent>
