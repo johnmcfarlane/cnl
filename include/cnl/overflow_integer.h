@@ -39,17 +39,6 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_integer_impl::are_integer_class_operands - basically identifies
-        // operands that should go into a function defined here; filters out fixed-point
-
-        template<class Lhs, class Rhs>
-        struct are_integer_class_operands {
-            static constexpr int integer_class = is_overflow_integer<Lhs>::value + is_overflow_integer<Rhs>::value;
-            static constexpr int integer_or_float = _impl::is_integer_or_float<Lhs>::value + _impl::is_integer_or_float<Rhs>::value;
-            static constexpr bool value = (integer_class >= 1) && (integer_or_float == 2);
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_integer_impl::common_type
 
         template<class, class, class = void>
