@@ -282,20 +282,6 @@ namespace cnl {
         return _elastic_integer_impl::make_type<Narrowest, Integral>{value};
     }
 
-    namespace _elastic_integer_impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_elastic_integer_impl::are_integer_class_operands - basically identifies
-        // operands that should go into a function defined here; filters out fixed-point
-
-        template<class Lhs, class Rhs>
-        struct are_integer_class_operands {
-            static constexpr int integer_class = is_elastic_integer<Lhs>::value+is_elastic_integer<Rhs>::value;
-            static constexpr int integer_or_float =
-                    _impl::is_integer_or_float<Lhs>::value+_impl::is_integer_or_float<Rhs>::value;
-            static constexpr bool value = (integer_class>=1) && (integer_or_float==2);
-        };
-    }
-
     ////////////////////////////////////////////////////////////////////////////////
     // bitwise operators
 
