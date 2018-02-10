@@ -174,12 +174,6 @@ namespace cnl {
 
         /// default constructor
         constexpr elastic_integer() = default;
-        
-        /// common copy constructor
-        constexpr elastic_integer(elastic_integer const& rhs)
-                :_base(rhs)
-        {
-        }
 
         /// construct from numeric type
         template<class Number, _impl::enable_if_t<numeric_limits<Number>::is_specialized, int> Dummy = 0>
