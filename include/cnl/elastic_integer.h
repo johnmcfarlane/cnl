@@ -49,20 +49,15 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_elastic_integer_impl::base_class
+        // cnl::_elastic_integer_impl::base_class_t
 
         template<int Digits, class Narrowest>
-        struct base_class {
-            static constexpr _digits_type digits = Digits;
-
-            static constexpr _digits_type rep_digits = _impl::max(cnl::digits<Narrowest>::value, digits);
-
-            using rep = typename set_digits<Narrowest, rep_digits>::type;
-            using type = _impl::number_base<elastic_integer<Digits, Narrowest>, rep>;
-        };
+        using rep_t = typename set_digits<Narrowest, _impl::max(cnl::digits<Narrowest>::value, Digits)>::type;
 
         template<int Digits, class Narrowest>
-        using base_class_t = typename base_class<Digits, Narrowest>::type;
+        using base_class_t = _impl::number_base<
+                elastic_integer<Digits, Narrowest>,
+                _elastic_integer_impl::rep_t<Digits, Narrowest>>;
     }
 
     template<int Digits, class Narrowest>
