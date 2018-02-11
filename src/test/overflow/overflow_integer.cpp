@@ -104,7 +104,7 @@ static_assert(is_integer_or_float<saturated_integer<int64_t>>::value, "cnl::_int
 
 static_assert(identical(saturated_integer<int>(1234), cnl::_impl::from_value<saturated_integer<uint8_t>>(1234)),
               "cnl::from_value<cnl::saturated_integer> test failed");
-static_assert(cnl::_impl::comparison_operator<cnl::_impl::equal_op, saturated_integer<uint8_t>, int>()(
+static_assert(cnl::_impl::binary_operator<cnl::_impl::equal_op, saturated_integer<uint8_t>, int>()(
         saturated_integer<uint8_t>(-1), 0), "cnl::saturated_integer equality test failed");
 
 static_assert(identical(saturated_integer<int16_t>(32767), saturated_integer<int16_t>(5000000000L)), "cnl::saturated_integer equality test failed");
@@ -167,7 +167,7 @@ namespace {
             saturated_integer<short>(1234), 2.), 2468.f), "cnl::saturated_integer test failed");
 
     static_assert(
-            cnl::_impl::comparison_operator<cnl::_impl::equal_op, saturated_integer<int16_t>, saturated_integer<int16_t>>()(
+            cnl::_impl::binary_operator<cnl::_impl::equal_op, saturated_integer<int16_t>, saturated_integer<int16_t>>()(
                     saturated_integer<int16_t>(32767), saturated_integer<int16_t>(5000000000L)), "");
 
     static_assert(identical(
@@ -209,7 +209,7 @@ namespace test_constructor {
 // comparison
 
 namespace test_equal {
-    static_assert(cnl::_impl::comparison_operator<cnl::_impl::equal_op, throwing_integer<short>, double>()(
+    static_assert(cnl::_impl::binary_operator<cnl::_impl::equal_op, throwing_integer<short>, double>()(
             throwing_integer<short>{0}, 0.), "");
     static_assert(throwing_integer<short>{0}==0., "");
 }

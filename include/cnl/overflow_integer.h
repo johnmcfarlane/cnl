@@ -227,54 +227,46 @@ namespace cnl {
         };
 
         // for arithmetic operands with a common overflow tag
-        template<class OperatorTag, class LhsRep, class RhsRep, class OverflowTag>
-        struct binary_operator<OperatorTag, overflow_integer<LhsRep, OverflowTag>, overflow_integer<RhsRep, OverflowTag>> {
+        template<class Operator, class LhsRep, class RhsRep, class OverflowTag>
+        struct binary_operator<Operator,
+                overflow_integer<LhsRep, OverflowTag>, overflow_integer<RhsRep, OverflowTag>,
+                typename Operator::is_not_comparison> {
             constexpr auto operator()(
                     overflow_integer<LhsRep, OverflowTag> const& lhs,
                     overflow_integer<RhsRep, OverflowTag> const& rhs) const
-            -> decltype(make_overflow_int<OverflowTag>(_overflow_impl::binary_operator<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs))))
+            -> decltype(make_overflow_int<OverflowTag>(_overflow_impl::binary_operator<OverflowTag, Operator>()(to_rep(lhs), to_rep(rhs))))
             {
                 return make_overflow_int<OverflowTag>(
-                        _overflow_impl::binary_operator<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs)));
-            }
-        };
-
-        // for arithmetic operands with different policies
-        template<class OperatorTag, class LhsRep, class LhsTag, class RhsRep, class RhsTag>
-        struct binary_operator<OperatorTag, overflow_integer<LhsRep, LhsTag>, overflow_integer<RhsRep, RhsTag>> {
-            constexpr auto operator()(
-                    const overflow_integer<LhsRep, LhsTag>& lhs,
-                    const overflow_integer<RhsRep, RhsTag>& rhs) const
-            -> decltype(binary_operator<OperatorTag, overflow_integer<LhsRep, cnl::_impl::common_type_t<LhsTag, RhsTag>>, overflow_integer<LhsRep, cnl::_impl::common_type_t<LhsTag, RhsTag>>>()(lhs, rhs))
-            {
-                using common_tag = cnl::_impl::common_type_t<LhsTag, RhsTag>;
-                return binary_operator<OperatorTag, overflow_integer<LhsRep, common_tag>, overflow_integer<LhsRep, common_tag>>()(lhs, rhs);
+                        _overflow_impl::binary_operator<OverflowTag, Operator>()(to_rep(lhs), to_rep(rhs)));
             }
         };
 
         // for comparison operands with a common overflow tag
-        template<class OperatorTag, class LhsRep, class RhsRep, class OverflowTag>
-        struct comparison_operator<OperatorTag,
-                overflow_integer<LhsRep, OverflowTag>, overflow_integer<RhsRep, OverflowTag>> {
+        template<class Operator, class LhsRep, class RhsRep, class OverflowTag>
+        struct binary_operator<Operator,
+                overflow_integer<LhsRep, OverflowTag>, overflow_integer<RhsRep, OverflowTag>,
+                typename Operator::is_comparison> {
             constexpr auto operator()(
                     overflow_integer<LhsRep, OverflowTag> const& lhs,
                     overflow_integer<RhsRep, OverflowTag> const& rhs) const
-            -> decltype(_overflow_impl::comparison_operator<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs)))
+            -> decltype(_overflow_impl::comparison_operator<OverflowTag, Operator>()(to_rep(lhs), to_rep(rhs)))
             {
-                return _overflow_impl::comparison_operator<OverflowTag, OperatorTag>()(to_rep(lhs), to_rep(rhs));
+                return _overflow_impl::comparison_operator<OverflowTag, Operator>()(to_rep(lhs), to_rep(rhs));
             }
         };
 
-        // for arithmetic operands with different policies
-        template<class OperatorTag, class LhsRep, class LhsTag, class RhsRep, class RhsTag>
-        struct comparison_operator<OperatorTag, overflow_integer<LhsRep, LhsTag>, overflow_integer<RhsRep, RhsTag>> {
+        // for arithmetic operands with different overflow tags
+        template<class Operator, class LhsRep, class LhsTag, class RhsRep, class RhsTag>
+        struct binary_operator<Operator,
+                overflow_integer<LhsRep, LhsTag>, overflow_integer<RhsRep, RhsTag>,
+                typename Operator::is_comparison> {
             constexpr auto operator()(
                     const overflow_integer<LhsRep, LhsTag>& lhs,
                     const overflow_integer<RhsRep, RhsTag>& rhs) const
-            -> decltype(comparison_operator<OperatorTag, overflow_integer<LhsRep, cnl::_impl::common_type_t<LhsTag, RhsTag>>, overflow_integer<LhsRep, cnl::_impl::common_type_t<LhsTag, RhsTag>>>()(lhs, rhs))
+            -> decltype(binary_operator<Operator, overflow_integer<LhsRep, cnl::_impl::common_type_t<LhsTag, RhsTag>>, overflow_integer<LhsRep, cnl::_impl::common_type_t<LhsTag, RhsTag>>>()(lhs, rhs))
             {
                 using common_tag = cnl::_impl::common_type_t<LhsTag, RhsTag>;
-                return comparison_operator<OperatorTag, overflow_integer<LhsRep, common_tag>, overflow_integer<LhsRep, common_tag>>()(lhs, rhs);
+                return binary_operator<Operator, overflow_integer<LhsRep, common_tag>, overflow_integer<LhsRep, common_tag>>()(lhs, rhs);
             }
         };
     }
