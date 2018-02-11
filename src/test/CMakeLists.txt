@@ -4,50 +4,58 @@ include("../common/common.cmake")
 # fp_test target
 
 add_executable(fp_test
+        # low-level
         bit.cpp
         cnlint.cpp
-        constant.cpp
         encompasses.cpp
-        boost.simd.cpp
         common.cpp
-        papers/p0381.cpp
-        papers/p0675.cpp
-        papers/p0827.cpp
         limits.cpp
         num_traits.cpp
         numeric.cpp
         number_test.cpp
-        fixed_point/p0037.cpp
         readme.cpp
         overflow/overflow.cpp
-        cppnow2017.cpp
-        glm.cpp
         index.cpp
-        zero_cost_square.cpp
-        boost.multiprecision.cpp
-        safft.cpp
+
+        # components
+        constant.cpp
         fixed_point/fixed_point_built_in.cpp
         fixed_point/constants.cpp
-        rounding/elastic/rounding_elastic_integer.cpp
         elastic/elastic_integer.cpp
-        fixed_point/rounding_fixed_point.cpp
         fixed_point/extras.cpp
-        papers/p0554.cpp
-        elastic/rounding/overflow/rounding_safe_integer.cpp
-        zero_cost_free_functions.cpp
-        fixed_point/elastic/rounding/overflow/rounding_safe_fixed_point.cpp
-        snippets.cpp
-        overflow/elastic/safe_integer.cpp
         overflow/overflow_integer.cpp
-        fixed_point/elastic/make_elastic_fixed_point.cpp
         fixed_point/math.cpp
-        zero_cost_average.cpp
-        cppcon2017.cpp
         rounding/rounding_integer.cpp
-        fixed_point/elastic/elastic_fixed_point.cpp
+
+        # composites
         fixed_point/overflow/fixed_point_native_integer.cpp
         fixed_point/overflow/fixed_point_throwing_integer.cpp
         fixed_point/overflow/fixed_point_saturated_integer.cpp
+        rounding/elastic/rounding_elastic_integer.cpp
+        fixed_point/rounding_fixed_point.cpp
+        elastic/rounding/overflow/rounding_safe_integer.cpp
+        fixed_point/elastic/rounding/overflow/rounding_safe_fixed_point.cpp
+        overflow/elastic/safe_integer.cpp
+        fixed_point/elastic/make_elastic_fixed_point.cpp
+        fixed_point/elastic/elastic_fixed_point.cpp
+
+        # showing off
+        papers/p0381.cpp
+        papers/p0675.cpp
+        papers/p0827.cpp
+        papers/p0554.cpp
+        fixed_point/p0037.cpp
+        zero_cost_square.cpp
+        zero_cost_free_functions.cpp
+        snippets.cpp
+        zero_cost_average.cpp
+        cppnow2017.cpp
+        cppcon2017.cpp
+        boost.simd.cpp
+        boost.multiprecision.cpp
+        glm.cpp
+        safft.cpp
+
         main.cpp)
 
 ######################################################################
