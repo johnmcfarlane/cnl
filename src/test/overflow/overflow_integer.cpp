@@ -155,9 +155,7 @@ static_assert(identical(static_cast<throwing_integer<int32_t>>(throwing_integer<
 // cnl::overflow_integer<Rep, cnl::saturated_overflow_tag>
 
 namespace {
-    using cnl::_impl::equal_tag;
     using cnl::_impl::multiply_op;
-    using cnl::_impl::multiply_tag;
 
     static_assert(cnl::_impl::is_derived_from_number_base<saturated_integer<short>>::value, "");
 

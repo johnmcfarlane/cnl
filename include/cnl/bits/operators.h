@@ -271,40 +271,6 @@ namespace cnl {
             }
         };
 
-        static constexpr plus_op plus_tag{};
-        static constexpr minus_op minus_tag{};
-
-        static constexpr add_op add_tag{};
-        static constexpr subtract_op subtract_tag{};
-        static constexpr multiply_op multiply_tag{};
-        static constexpr divide_op divide_tag{};
-        static constexpr modulo_op modulo_tag{};
-
-        static constexpr bitwise_or_op bitwise_or_tag{};
-        static constexpr bitwise_and_op bitwise_and_tag{};
-        static constexpr bitwise_xor_op bitwise_xor_tag{};
-        static constexpr shift_left_op shift_left_tag{};
-        static constexpr shift_right_op shift_right_tag{};
-
-        static constexpr equal_op equal_tag{};
-        static constexpr not_equal_op not_equal_tag{};
-        static constexpr less_than_op less_than_tag{};
-        static constexpr greater_than_op greater_than_tag{};
-        static constexpr less_than_or_equal_op less_than_or_equal_tag{};
-        static constexpr greater_than_or_equal_op greater_than_or_equal_tag{};
-
-        static constexpr assign_add_op assign_add_tag{};
-        static constexpr assign_subtract_op assign_subtract_tag{};
-        static constexpr assign_multiply_op assign_multiply_tag{};
-        static constexpr assign_divide_op assign_divide_tag{};
-        static constexpr assign_modulo_op assign_modulo_tag{};
-
-        static constexpr assign_bitwise_or_op assign_bitwise_or_tag{};
-        static constexpr assign_bitwise_and_op assign_bitwise_and_tag{};
-        static constexpr assign_bitwise_xor_op assign_bitwise_xor_tag{};
-        static constexpr assign_shift_left_op assign_shift_left_tag{};
-        static constexpr assign_shift_right_op assign_shift_right_tag{};
-
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::rep_op_result
 

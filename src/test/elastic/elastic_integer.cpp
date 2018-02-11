@@ -42,7 +42,7 @@ namespace {
 #endif
 
     namespace test_to_rep {
-        static_assert(cnl::_impl::equal_tag(1, to_rep(elastic_integer<8>{1})), "");
+        static_assert(cnl::_impl::equal_op()(1, to_rep(elastic_integer<8>{1})), "");
     }
 
     namespace test_impl_from_value {
@@ -102,7 +102,7 @@ namespace {
                 typename std::common_type<elastic_integer<31>, elastic_integer<32, unsigned>>::type{},
                 elastic_integer<32>{}),
                 "cnl::elastic_integer test failed");
-        static_assert(cnl::_impl::less_than_tag(elastic_integer<31, unsigned>{-1},
+        static_assert(cnl::_impl::less_than_op()(elastic_integer<31, unsigned>{-1},
                                                  elastic_integer<31>{1}),
                       "cnl::elastic_integer test failed");
         static_assert(cnl::_impl::comparison_operator<cnl::_impl::equal_op, elastic_integer<1>, std::int32_t>()(
