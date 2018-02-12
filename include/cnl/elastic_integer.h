@@ -163,9 +163,6 @@ namespace cnl {
         static_assert(!_elastic_integer_impl::is_elastic_integer<typename _base::rep>::value,
                 "elastic_integer of elastic_integer is not a supported");
 
-        /// alias to template parameter, \a Digits
-        static constexpr int digits = Digits;
-
         /// alias to template parameter, \a Narrowest
         using narrowest = Narrowest;
 

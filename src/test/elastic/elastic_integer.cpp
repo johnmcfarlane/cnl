@@ -315,7 +315,7 @@ namespace {
         ////////////////////////////////////////////////////////////////////////////////
         // members
 
-        static constexpr int digits = value_type::digits;
+        static constexpr int digits = cnl::digits<value_type>::value;
         static constexpr bool is_signed = numeric_limits::is_signed;
         static_assert(is_signed==cnl::numeric_limits<narrowest>::is_signed, "narrowest is different signedness");
 
