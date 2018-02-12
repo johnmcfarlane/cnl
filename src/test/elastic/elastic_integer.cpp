@@ -303,9 +303,12 @@ namespace {
 
     // parameterized tests
     template<typename ElasticInteger, long long Lowest, long long Min, long long Max>
-    struct elastic_integer_test {
-        using value_type = ElasticInteger;
-        using narrowest = typename ElasticInteger::narrowest;
+    struct elastic_integer_test;
+
+    template<int Digits, typename Narrowest, long long Lowest, long long Min, long long Max>
+    struct elastic_integer_test<elastic_integer<Digits, Narrowest>, Lowest, Min, Max> {
+        using value_type = elastic_integer<Digits, Narrowest>;
+        using narrowest = Narrowest;
         using numeric_limits = cnl::numeric_limits<value_type>;
 
         static constexpr value_type lowest{Lowest};
@@ -344,7 +347,6 @@ namespace {
 
         static constexpr auto zero_squared = zero*zero;
         using zero_squared_type = decltype(zero_squared);
-        using zero_squared_narrowest = typename zero_squared_type::narrowest;
         static_assert(
                 cnl::numeric_limits<decltype(zero)>::is_signed==cnl::numeric_limits<decltype(zero*zero)>::is_signed,
                 "elastic_integer arithmetic test failed");
