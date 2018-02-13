@@ -49,20 +49,15 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_elastic_integer_impl::base_class
+        // cnl::_elastic_integer_impl::base_class_t
 
         template<int Digits, class Narrowest>
-        struct base_class {
-            static constexpr _digits_type digits = Digits;
-
-            static constexpr _digits_type rep_digits = _impl::max(cnl::digits<Narrowest>::value, digits);
-
-            using rep = typename set_digits<Narrowest, rep_digits>::type;
-            using type = _impl::number_base<elastic_integer<Digits, Narrowest>, rep>;
-        };
+        using rep_t = typename set_digits<Narrowest, _impl::max(cnl::digits<Narrowest>::value, Digits)>::type;
 
         template<int Digits, class Narrowest>
-        using base_class_t = typename base_class<Digits, Narrowest>::type;
+        using base_class_t = _impl::number_base<
+                elastic_integer<Digits, Narrowest>,
+                _elastic_integer_impl::rep_t<Digits, Narrowest>>;
     }
 
     template<int Digits, class Narrowest>
@@ -168,23 +163,11 @@ namespace cnl {
         static_assert(!_elastic_integer_impl::is_elastic_integer<typename _base::rep>::value,
                 "elastic_integer of elastic_integer is not a supported");
 
-        /// alias to template parameter, \a Digits
-        static constexpr int digits = Digits;
-
-        /// alias to template parameter, \a Narrowest
-        using narrowest = Narrowest;
-
         /// the actual type used to store the value; closely related to Narrowest but may be a different width
         using rep = typename _base::rep;
 
         /// default constructor
         constexpr elastic_integer() = default;
-        
-        /// common copy constructor
-        constexpr elastic_integer(elastic_integer const& rhs)
-                :_base(rhs)
-        {
-        }
 
         /// construct from numeric type
         template<class Number, _impl::enable_if_t<numeric_limits<Number>::is_specialized, int> Dummy = 0>

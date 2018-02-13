@@ -225,7 +225,7 @@ struct positive_elastic_test
     ////////////////////////////////////////////////////////////////////////////////
     // test elastic_integer type
 
-    static_assert(rep::digits>=digits,
+    static_assert(cnl::digits<rep>::value>=digits,
                   "not enough digits in rep type to represent elastic_fixed_point values");
 
     ////////////////////////////////////////////////////////////////////////////////
