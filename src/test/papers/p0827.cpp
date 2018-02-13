@@ -22,7 +22,7 @@ template<typename Expected, typename Actual>
 constexpr auto identical(Expected const& expected, Actual const& actual) {
     static_assert(std::is_same<Expected, Actual>::value);
     return expected == actual;
-};
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // constant definition

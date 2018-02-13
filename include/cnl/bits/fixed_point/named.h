@@ -150,7 +150,7 @@ namespace cnl {
     constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
     -> decltype(_divide_impl::divide<Lhs, Rhs>()(lhs, rhs)) {
         return _divide_impl::divide<Lhs, Rhs>()(lhs, rhs);
-    };
+    }
 
     namespace _divide_impl {
         template<class Lhs, class Rhs>
