@@ -17,6 +17,10 @@
 #include <cmath>
 #include <istream>
 
+#if defined(CNL_EXCEPTIONS_ENABLED)
+#include <stdexcept>
+#endif
+
 /// compositional numeric library
 namespace cnl {
 
