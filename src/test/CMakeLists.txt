@@ -43,6 +43,7 @@ add_executable(fp_test
         papers/p0381.cpp
         papers/p0675.cpp
         papers/p0827.cpp
+        papers/p0828.cpp
         papers/p0554.cpp
         fixed_point/p0037.cpp
         zero_cost_square.cpp
@@ -194,6 +195,11 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STRE
             cppcon2017.cpp
             fixed_point/overflow/fixed_point_saturated_integer.cpp
             PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-strict-overflow")
+
+    set_source_files_properties(
+            papers/p0828.cpp
+            fixed_point/overflow/fixed_point_saturated_integer.cpp
+            PROPERTIES COMPILE_FLAGS "-Wno-sign-compare")
 
     set_source_files_properties(
             overflow/overflow_integer.cpp
