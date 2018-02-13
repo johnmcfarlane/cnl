@@ -411,16 +411,20 @@ namespace {
 
         // by int
         static_assert(identical(elastic_integer<9>{14} << 4, elastic_integer<9>{14 << 4}), "shift_left test failed");
+#if defined(__cpp_binary_literals)
         static_assert(identical(
                 elastic_integer<5+34, unsigned>{0b11001110101011101001LL << 34},
                 elastic_integer<5+34, unsigned>{0b11001110101011101001} << 34), "shift_left test failed");
+#endif
 
         // by cnl::constant
         static_assert(identical(elastic_integer<5>{14} << 4_c, elastic_integer<9>{14 << 4}), "shift_left test failed");
+#if defined(__cpp_binary_literals)
         static_assert(identical(
                 elastic_integer<20+34, unsigned>{0b11001110101011101001LL << 34},
                 elastic_integer<20, unsigned>{0b11001110101011101001} << 34_c),
                 "shift_left test failed");
+#endif
         static_assert(identical(elastic_integer<33>{1LL<<32}, cnl::_impl::shift<32>(elastic_integer<1>{1})), "cnl::_impl::shift<32, elastic_integer<1>>");
     }
 
@@ -429,15 +433,19 @@ namespace {
 
         // by int
         static_assert(identical(elastic_integer<9>{14 << 4} >> 4, elastic_integer<9>{14}), "shift_left test failed");
+#if defined(__cpp_binary_literals)
         static_assert(identical(
                 elastic_integer<5+34, unsigned>{0b11001110101011101001},
                 elastic_integer<5+34, unsigned>{0b11001110101011101001LL << 34} >> 34), "shift_left test failed");
+#endif
 
         // by cnl::constant
         static_assert(identical(elastic_integer<9>{14 << 4} >> 4_c, elastic_integer<5>{14}), "shift_left test failed");
+#if defined(__cpp_binary_literals)
         static_assert(identical(
                 elastic_integer<20, unsigned>{0b11001110101011101001},
                 elastic_integer<20+34, unsigned>{0b11001110101011101001LL << 34} >> 34_c),
                 "shift_left test failed");
+#endif
     }
 }
