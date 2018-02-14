@@ -22,7 +22,7 @@ float square_int(float input) {
     auto prod = int64_t{fixed} * fixed;
 
     // user must remember that the scale also was squared
-    return prod / 4294967296.f;
+    return static_cast<float>(prod) / 4294967296.f;
 }
 
 // the same function using cnl::elastic_integer

@@ -48,7 +48,7 @@ namespace cnl {
                 template<class Rep>
                 constexpr Rep sqrt_bit(Rep n, Rep bit)
                 {
-                    return (bit>n) ? sqrt_bit<Rep>(n, bit >> 2) : bit;
+                    return (bit>n) ? sqrt_bit<Rep>(n, static_cast<Rep>(bit >> 2)) : bit;
                 }
 
                 template<class Rep>
@@ -67,9 +67,12 @@ namespace cnl {
                            ? (n>=result+bit)
                              ? sqrt_solve3<Rep>(
                                             static_cast<Rep>(n-(result+bit)),
-                                            bit >> 2,
+                                            static_cast<Rep>(bit >> 2),
                                             static_cast<Rep>((result >> 1)+bit))
-                             : sqrt_solve3<Rep>(n, bit >> 2, result >> 1)
+                             : sqrt_solve3<Rep>(
+                                            n,
+                                            static_cast<Rep>(bit >> 2),
+                                            static_cast<Rep>(result >> 1))
                            : result;
                 }
 
