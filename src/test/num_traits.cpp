@@ -49,6 +49,7 @@ namespace {
     namespace test_scale {
         static_assert(identical(cnl::_impl::shift<15, 2, unsigned>(3), 98304U), "cnl::_impl::shift test failed");
 
+#if defined(__cpp_binary_literals)
         static_assert(identical(cnl::_impl::shift<8, 2, uint8_t>(0b11110101), 0b1111010100000000), "cnl::_impl::shift test failed");
         static_assert(identical(cnl::_impl::shift<4, 2, uint8_t>(0b10110110), 0b101101100000), "cnl::_impl::shift test failed");
         static_assert(identical(cnl::_impl::shift<2, 2, uint8_t>(0b00111010), 0b11101000), "cnl::_impl::shift test failed");
@@ -64,6 +65,7 @@ namespace {
         static_assert(identical(cnl::_impl::shift<-2, 2, int8_t>(+0b1100100), +0b0011001), "cnl::_impl::shift test failed");
         static_assert(identical(cnl::_impl::shift<-4, 2, int8_t>(+0b0111001), +0b0000011), "cnl::_impl::shift test failed");
         static_assert(identical(cnl::_impl::shift<-8, 2, int8_t>(-0b0110011), -0b0000000), "cnl::_impl::shift test failed");
+#endif
 
         static_assert(identical(cnl::_impl::shift<30, 2, int32_t>(1), 0x40000000), "cnl::_impl::shift test failed");
         static_assert(identical(cnl::_impl::shift<4, 2, uint64_t>(1), UINT64_C(16)), "cnl::_impl::shift test failed");

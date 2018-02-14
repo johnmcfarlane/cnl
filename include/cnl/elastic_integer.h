@@ -296,7 +296,7 @@ namespace cnl {
             return static_cast<_impl::common_type_t<
                     elastic_integer<FromDigits, FromNarrowest>,
                     elastic_integer<OtherDigits, OtherNarrowest>>>(from);
-        };
+        }
 
         template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
         struct binary_operator<Operator,
@@ -509,7 +509,7 @@ namespace cnl {
                 return 0;
             }
         };
-    };
+    }
 
     template<int Digits, class Narrowest>
     struct numeric_limits<elastic_integer<Digits, Narrowest>>

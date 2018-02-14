@@ -353,9 +353,9 @@ namespace cnl {
         return cnl::_impl::unary_operator<cnl::_impl::NAME, Operand>()(operand); \
     }
 
-    CNL_DEFINE_UNARY_OPERATOR(+, plus_op);
+    CNL_DEFINE_UNARY_OPERATOR(+, plus_op)
 
-    CNL_DEFINE_UNARY_OPERATOR(-, minus_op);
+    CNL_DEFINE_UNARY_OPERATOR(-, minus_op)
 
     // binary operators
 #define CNL_DEFINE_BINARY_OPERATOR(OP, NAME) \
@@ -367,37 +367,37 @@ namespace cnl {
         return cnl::_impl::binary_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
     }
 
-    CNL_DEFINE_BINARY_OPERATOR(+, add_op);
+    CNL_DEFINE_BINARY_OPERATOR(+, add_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(-, subtract_op);
+    CNL_DEFINE_BINARY_OPERATOR(-, subtract_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(*, multiply_op);
+    CNL_DEFINE_BINARY_OPERATOR(*, multiply_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(/, divide_op);
+    CNL_DEFINE_BINARY_OPERATOR(/, divide_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(%, modulo_op);
+    CNL_DEFINE_BINARY_OPERATOR(%, modulo_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(|, bitwise_or_op);
+    CNL_DEFINE_BINARY_OPERATOR(|, bitwise_or_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(&, bitwise_and_op);
+    CNL_DEFINE_BINARY_OPERATOR(&, bitwise_and_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(^, bitwise_xor_op);
+    CNL_DEFINE_BINARY_OPERATOR(^, bitwise_xor_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(<<, shift_left_op);
+    CNL_DEFINE_BINARY_OPERATOR(<<, shift_left_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(>>, shift_right_op);
+    CNL_DEFINE_BINARY_OPERATOR(>>, shift_right_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(==, equal_op);
+    CNL_DEFINE_BINARY_OPERATOR(==, equal_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(!=, not_equal_op);
+    CNL_DEFINE_BINARY_OPERATOR(!=, not_equal_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(<, less_than_op);
+    CNL_DEFINE_BINARY_OPERATOR(<, less_than_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(>, greater_than_op);
+    CNL_DEFINE_BINARY_OPERATOR(>, greater_than_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(<=, less_than_or_equal_op);
+    CNL_DEFINE_BINARY_OPERATOR(<=, less_than_or_equal_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(>=, greater_than_or_equal_op);
+    CNL_DEFINE_BINARY_OPERATOR(>=, greater_than_or_equal_op)
 
     // compound assignment operators
 #define CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(OP, NAME) \
@@ -409,25 +409,25 @@ namespace cnl {
         return cnl::_impl::compound_assignment_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
     }
 
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(+=, assign_add_op);
+    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(+=, assign_add_op)
 
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(-=, assign_subtract_op);
+    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(-=, assign_subtract_op)
 
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(*=, assign_multiply_op);
+    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(*=, assign_multiply_op)
 
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(/=, assign_divide_op);
+    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(/=, assign_divide_op)
 
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(%=, assign_modulo_op);
+    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(%=, assign_modulo_op)
 
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(|=, assign_bitwise_or_op);
+    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(|=, assign_bitwise_or_op)
 
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(&=, assign_bitwise_and_op);
+    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(&=, assign_bitwise_and_op)
 
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(^=, assign_bitwise_xor_op);
+    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(^=, assign_bitwise_xor_op)
 
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(<<=, assign_shift_left_op);
+    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(<<=, assign_shift_left_op)
 
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(>>=, assign_shift_right_op);
+    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(>>=, assign_shift_right_op)
 }
 
 #endif //CNL_OPERATORS_H

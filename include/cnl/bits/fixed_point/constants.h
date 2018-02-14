@@ -67,7 +67,7 @@ namespace cnl {
         template<typename Rep, int Exponent>
         constexpr auto e() {
             return e<Rep, Exponent>(0);
-        };
+        }
 
         // Given two alternative ways to generate a constant value:
         // tries to choose the best and returns the result.

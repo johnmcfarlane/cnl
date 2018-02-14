@@ -36,10 +36,12 @@ namespace {
 #endif
         static_assert(identical(parse("07777041726354"), CNL_INTMAX_C(07777041726354)),
                 "cnl::_cnlint_impl::parse test failed");
+#if defined(__cpp_binary_literals)
         static_assert(identical(
                 parse("0b011010000110100000011111101000000010110110101"),
                 CNL_INTMAX_C(0b011010000110100000011111101000000010110110101)),
                 "cnl::_cnlint_impl::parse test failed");
+#endif
         static_assert(parse("0XaA") == CNL_INTMAX_C(0xAa),
                 "cnl::_cnlint_impl::digits_to_integral test failed");
     }

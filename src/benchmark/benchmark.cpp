@@ -18,7 +18,7 @@ using cnl::fixed_point;
 ////////////////////////////////////////////////////////////////////////////////
 // entry point
 
-BENCHMARK_MAIN();
+BENCHMARK_MAIN()
 
 ////////////////////////////////////////////////////////////////////////////////
 // optimization circumvention:
@@ -230,24 +230,24 @@ using s31_32 = fixed_point<int64_t, -32>;
 #endif
 
 #define FIXED_POINT_BENCHMARK_REAL(fn) \
-    FIXED_POINT_BENCHMARK_FLOAT(fn); \
-    FIXED_POINT_BENCHMARK_FIXED(fn);
+    FIXED_POINT_BENCHMARK_FLOAT(fn) \
+    FIXED_POINT_BENCHMARK_FIXED(fn)
 
 #define FIXED_POINT_BENCHMARK_COMPLETE(fn) \
-    FIXED_POINT_BENCHMARK_REAL(fn); \
-    FIXED_POINT_BENCHMARK_INT(fn);
+    FIXED_POINT_BENCHMARK_REAL(fn) \
+    FIXED_POINT_BENCHMARK_INT(fn)
 
 ////////////////////////////////////////////////////////////////////////////////
 // benchmark invocations
 
-FIXED_POINT_BENCHMARK_COMPLETE(add);
-FIXED_POINT_BENCHMARK_COMPLETE(sub);
-FIXED_POINT_BENCHMARK_COMPLETE(mul);
-FIXED_POINT_BENCHMARK_COMPLETE(div);
+FIXED_POINT_BENCHMARK_COMPLETE(add)
+FIXED_POINT_BENCHMARK_COMPLETE(sub)
+FIXED_POINT_BENCHMARK_COMPLETE(mul)
+FIXED_POINT_BENCHMARK_COMPLETE(div)
 
-FIXED_POINT_BENCHMARK_REAL(bm_magnitude_squared);
+FIXED_POINT_BENCHMARK_REAL(bm_magnitude_squared)
 
-FIXED_POINT_BENCHMARK_REAL(bm_circle_intersect_generic);
+FIXED_POINT_BENCHMARK_REAL(bm_circle_intersect_generic)
 
 // tests involving unoptimized math function, cnl::sqrt
-FIXED_POINT_BENCHMARK_REAL(bm_sqrt);
+FIXED_POINT_BENCHMARK_REAL(bm_sqrt)

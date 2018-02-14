@@ -386,9 +386,17 @@ static_assert(is_same<set_digits_t<fixed_point<uint64, -45>, 120>, fixed_point<u
         "cnl::set_digits_t test failed");
 static_assert(is_same<set_digits_t<fixed_point<int64, -8>, 127>, fixed_point<int128, -8>>::value,
         "cnl::set_digits_t test failed");
+#if defined(__GNUC__)
+// GCC complains about __int128 with -pedantic or -pedantic-errors
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+#endif
 static_assert(
         is_same<cnl::set_digits_t<cnl::fixed_point<long unsigned int, -96>, 96u>, cnl::fixed_point<unsigned __int128, -96>>::value,
         "");
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
