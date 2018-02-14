@@ -198,6 +198,15 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     set_source_files_properties(
             cppcon2017.cpp
             PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-strict-overflow")
+
+    set_source_files_properties(
+            boost.simd.cpp
+            cppnow2017.cpp
+            glm.cpp
+            numeric.cpp
+            papers/p0381.cpp
+            zero_cost_average.cpp
+            PROPERTIES COMPILE_FLAGS "-Wno-conversion")
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
     set_source_files_properties(
             fixed_point/overflow/fixed_point_saturated_integer.cpp
@@ -207,6 +216,12 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
     set_source_files_properties(
             fixed_point/math.cpp
             PROPERTIES COMPILE_FLAGS "-Wno-integer-overflow")
+
+    set_source_files_properties(
+            boost.simd.cpp
+            cppnow2017.cpp
+            numeric.cpp
+            PROPERTIES COMPILE_FLAGS "-Wno-conversion")
 endif ()
 
 ######################################################################
