@@ -173,17 +173,17 @@ namespace cnl {
 
     // fixed_point, const_integer
     template<class LhsRep, int LhsExponent, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
-    constexpr fixed_point<LhsRep, LhsExponent+RhsValue>
+    constexpr fixed_point<LhsRep, LhsExponent+static_cast<int>(RhsValue)>
     operator<<(fixed_point<LhsRep, LhsExponent> const& lhs, constant<RhsValue>)
     {
-        return _impl::from_rep<fixed_point<LhsRep, LhsExponent+RhsValue>>(to_rep(lhs));
+        return _impl::from_rep<fixed_point<LhsRep, LhsExponent+static_cast<int>(RhsValue)>>(to_rep(lhs));
     }
 
     template<class LhsRep, int LhsExponent, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
-    constexpr fixed_point<LhsRep, LhsExponent-RhsValue>
+    constexpr fixed_point<LhsRep, LhsExponent-static_cast<int>(RhsValue)>
     operator>>(fixed_point<LhsRep, LhsExponent> const& lhs, constant<RhsValue>)
     {
-        return _impl::from_rep<fixed_point<LhsRep, LhsExponent-RhsValue>>(to_rep(lhs));
+        return _impl::from_rep<fixed_point<LhsRep, LhsExponent-static_cast<int>(RhsValue)>>(to_rep(lhs));
     }
 }
 

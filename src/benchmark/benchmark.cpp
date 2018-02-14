@@ -6,6 +6,8 @@
 
 #include "sample_functions.h"
 
+#include <cnl/cmath.h>
+
 #include <benchmark/benchmark.h>
 
 #define ESCAPE(X) escape_cppcon2015(&X)
@@ -116,7 +118,7 @@ static void bm_sqrt(benchmark::State& state)
     auto input = static_cast<T>(numeric_limits<T>::max()/int8_t{5});
     while (state.KeepRunning()) {
         ESCAPE(input);
-        auto output = sqrt(input);
+        auto output = cnl::sqrt(input);
         ESCAPE(output);
     }
 }

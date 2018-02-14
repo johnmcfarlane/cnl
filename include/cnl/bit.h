@@ -36,7 +36,7 @@ namespace cnl {
         {
             static_assert(is_integral_unsigned<T>(), "T must be unsigned integer");
 
-            return s%width==0 ? x : (x << (s%width)) | (x >> (width-(s%width)));
+            return s%width==0 ? x : static_cast<T>((x << (s%width)) | (x >> (width-(s%width))));
         }
 
         template<typename T>
@@ -44,7 +44,7 @@ namespace cnl {
         {
             static_assert(is_integral_unsigned<T>(), "T must be unsigned integer");
 
-            return s%width==0 ? x : (x >> (s%width)) | (x << (width-(s%width)));;
+            return s%width==0 ? x : static_cast<T>((x >> (s%width)) | (x << (width-(s%width))));
         }
 
         template<typename T>
@@ -52,7 +52,7 @@ namespace cnl {
         {
             static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
-            return (x & 1) ? 0 : countr_zero<T>(x >> 1)+1;
+            return (x & 1) ? 0 : countr_zero<T>(static_cast<T>(x >> 1))+1;
         }
     }
 
@@ -101,7 +101,7 @@ namespace cnl {
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
-        return x ? countl_zero<T>(x >> 1)-1 : cnl::digits<T>::value;
+        return x ? countl_zero<T>(static_cast<T>(x >> 1))-1 : cnl::digits<T>::value;
     }
 
     // countl_one - count 1-bits to the left
@@ -135,7 +135,7 @@ namespace cnl {
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
-        return (x & (T{1} << (cnl::digits<T>::value-1))) ? countl_one<T>(x << 1)+1 : 0;
+        return (x & (T{1} << (cnl::digits<T>::value-1))) ? countl_one<T>(static_cast<T>(x << 1))+1 : 0;
     }
 
     // countr_zero - count 0-bits to the right
@@ -205,7 +205,7 @@ namespace cnl {
     }
 
     template<>
-    constexpr int popcount(long long x) noexcept
+    constexpr int popcount(unsigned long long x) noexcept
     {
         return __builtin_popcountll(x);
     }
@@ -237,7 +237,7 @@ namespace cnl {
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
-        return x ? T{1} << (digits<T>::value-countl_zero(T(x-T(1)))) : 0;
+        return x ? static_cast<T>(T{1} << (digits<T>::value-countl_zero(T(x-T(1))))) : T{0};
     }
 
     // floor2 - greatest power of 2 no greater than x
@@ -246,7 +246,7 @@ namespace cnl {
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
-        return x ? T{1} << (digits<T>::value-1-countl_zero(x)) : 0;
+        return x ? static_cast<T>(T{1} << (digits<T>::value-1-countl_zero(x))) : T{0};
     }
 
     // log2p1 - one plus log2(x)

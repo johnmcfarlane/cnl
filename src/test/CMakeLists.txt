@@ -185,23 +185,31 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     set_source_files_properties(
             fixed_point/overflow/fixed_point_saturated_integer.cpp
             PROPERTIES COMPILE_FLAGS "/wd4018")
-elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
+elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     set_source_files_properties(
             boost.multiprecision.cpp
             index.cpp
             PROPERTIES COMPILE_FLAGS "-fpermissive")
 
     set_source_files_properties(
-            cppcon2017.cpp
-            fixed_point/overflow/fixed_point_saturated_integer.cpp
-            PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-strict-overflow")
-
-    set_source_files_properties(
-            papers/p0828.cpp
             fixed_point/overflow/fixed_point_saturated_integer.cpp
             PROPERTIES COMPILE_FLAGS "-Wno-sign-compare")
 
     set_source_files_properties(
+            cppcon2017.cpp
+            PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-strict-overflow")
+
+    set_source_files_properties(
+            boost.simd.cpp
+            cppnow2017.cpp
+            glm.cpp
+            numeric.cpp
+            papers/p0381.cpp
+            zero_cost_average.cpp
+            PROPERTIES COMPILE_FLAGS "-Wno-conversion")
+elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
+    set_source_files_properties(
+            fixed_point/overflow/fixed_point_saturated_integer.cpp
             overflow/overflow_integer.cpp
             PROPERTIES COMPILE_FLAGS "-Wno-sign-compare")
 
@@ -210,8 +218,10 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STRE
             PROPERTIES COMPILE_FLAGS "-Wno-integer-overflow")
 
     set_source_files_properties(
-            fixed_point/fixed_point_built_in.cpp
-            PROPERTIES COMPILE_FLAGS "-Wno-overflow")
+            boost.simd.cpp
+            cppnow2017.cpp
+            numeric.cpp
+            PROPERTIES COMPILE_FLAGS "-Wno-conversion")
 endif ()
 
 ######################################################################

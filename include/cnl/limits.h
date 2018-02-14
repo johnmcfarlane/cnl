@@ -56,7 +56,7 @@ namespace cnl {
 
         struct _s {
             constexpr _s(uint64 upper, uint64 lower) : value(lower + (uint128{upper} << 64)) {}
-            constexpr operator int128() const { return value; }
+            constexpr operator uint128() const { return value; }
             uint128 value;
         };
 
@@ -65,7 +65,7 @@ namespace cnl {
             return 0;
         }
 
-        static constexpr int128 max()
+        static constexpr uint128 max()
         {
             return _s(0xffffffffffffffff, 0xffffffffffffffff);
         }

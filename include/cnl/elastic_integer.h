@@ -433,15 +433,16 @@ namespace cnl {
 
     template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
     constexpr auto operator<<(elastic_integer<LhsDigits, LhsNarrowest> const& lhs, constant<RhsValue>)
-    -> decltype(_impl::from_rep<elastic_integer<LhsDigits + RhsValue, LhsNarrowest>>(to_rep(static_cast<elastic_integer<LhsDigits + RhsValue, LhsNarrowest>>(lhs)) << RhsValue)) {
-        using result_type = elastic_integer<LhsDigits + RhsValue, LhsNarrowest>;
+    -> decltype(_impl::from_rep<elastic_integer<LhsDigits + static_cast<int>(RhsValue), LhsNarrowest>>(
+            to_rep(static_cast<elastic_integer<LhsDigits + static_cast<int>(RhsValue), LhsNarrowest>>(lhs)) << RhsValue)) {
+        using result_type = elastic_integer<LhsDigits + static_cast<int>(RhsValue), LhsNarrowest>;
         return _impl::from_rep<result_type>(to_rep(static_cast<result_type>(lhs)) << RhsValue);
     }
 
     template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
     constexpr auto operator>>(elastic_integer<LhsDigits, LhsNarrowest> const& lhs, constant<RhsValue>)
-    -> decltype (_impl::from_rep<elastic_integer<LhsDigits - RhsValue, LhsNarrowest>>(to_rep(lhs) >> RhsValue)) {
-        return _impl::from_rep<elastic_integer<LhsDigits - RhsValue, LhsNarrowest>>(to_rep(lhs) >> RhsValue);
+    -> decltype (_impl::from_rep<elastic_integer<LhsDigits - static_cast<int>(RhsValue), LhsNarrowest>>(to_rep(lhs) >> RhsValue)) {
+        return _impl::from_rep<elastic_integer<LhsDigits - static_cast<int>(RhsValue), LhsNarrowest>>(to_rep(lhs) >> RhsValue);
     }
 
     // unary operator-
@@ -498,7 +499,7 @@ namespace cnl {
         struct lowest<Rep, true> {
             constexpr Rep operator()(Rep const& max) const noexcept
             {
-                return -max;
+                return static_cast<Rep>(-max);
             }
         };
 
@@ -522,7 +523,7 @@ namespace cnl {
 
         static constexpr _rep _rep_max() noexcept
         {
-            return _rep_numeric_limits::max() >> (_rep_numeric_limits::digits-digits);
+            return static_cast<_rep>(_rep_numeric_limits::max() >> (_rep_numeric_limits::digits-digits));
         }
 
         // standard members
