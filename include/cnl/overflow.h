@@ -183,7 +183,7 @@ namespace cnl {
                 using result_type = decltype(lhs+rhs);
                 using numeric_limits = numeric_limits<result_type>;
                 return _overflow_impl::return_if(
-                        !((rhs>=_impl::from_rep<Rhs>(0))
+                        !((rhs>=from_rep<Rhs>{}(0))
                           ? (lhs>numeric_limits::max()-rhs)
                           : (lhs<numeric_limits::lowest()-rhs)),
                         lhs+rhs,
@@ -237,7 +237,7 @@ namespace cnl {
                 using result_type = decltype(lhs-rhs);
                 using numeric_limits = numeric_limits<result_type>;
                 return _overflow_impl::return_if(
-                        (rhs<_impl::from_rep<Rhs>(0))
+                        (rhs<from_rep<Rhs>{}(0))
                         ? (lhs<=numeric_limits::max()+rhs)
                         : (lhs>=numeric_limits::lowest()+rhs),
                         lhs-rhs,

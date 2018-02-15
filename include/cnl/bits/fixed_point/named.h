@@ -121,7 +121,7 @@ namespace cnl {
         using result_type = typename params::result_type;
         using result_rep = typename result_type::rep;
 
-        return _impl::from_rep<result_type>(
+        return from_rep<result_type>{}(
                 static_cast<result_rep>(to_rep(static_cast<intermediate_lhs>(lhs))
                                         * to_rep(static_cast<intermediate_rhs>(rhs))));
     }
@@ -188,7 +188,7 @@ namespace cnl {
                 using result_type = typename params::result_type;
                 using result_rep = typename result_type::rep;
 
-                return _impl::from_rep<result_type>(static_cast<result_rep>(_impl::scale<digits<RhsRep>::value>(
+                return from_rep<result_type>{}(static_cast<result_rep>(_impl::scale<digits<RhsRep>::value>(
                         static_cast<typename params::rep_type>(to_rep(lhs)))/to_rep(rhs)));
             }
         };

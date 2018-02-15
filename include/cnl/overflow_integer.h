@@ -164,8 +164,9 @@ namespace cnl {
         return to_rep(static_cast<base_type const&>(number));
     }
 
-    template<class FromRep, class OverflowTag, class Rep>
-    struct from_rep<overflow_integer<FromRep, OverflowTag>, Rep> {
+    template<class FromRep, class OverflowTag>
+    struct from_rep<overflow_integer<FromRep, OverflowTag>> {
+        template<typename Rep>
         constexpr auto operator()(Rep const& rep) const
         -> overflow_integer<Rep, OverflowTag>
         {

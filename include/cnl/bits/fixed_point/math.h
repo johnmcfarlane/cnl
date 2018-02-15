@@ -24,7 +24,7 @@ namespace cnl {
             template<class FixedPoint>
             constexpr FixedPoint rounding_conversion(double d) {
                 using one_longer = fixed_point<set_digits_t<typename FixedPoint::rep, digits<FixedPoint>::value+1>, FixedPoint::exponent-1>;
-                return from_rep<FixedPoint>(static_cast<typename FixedPoint::rep>((to_rep(one_longer{ d }) + 1) >> 1));
+                return from_rep<FixedPoint>{}(static_cast<typename FixedPoint::rep>((to_rep(one_longer{ d }) + 1) >> 1));
             }
 
             template<class FixedPoint>
@@ -90,7 +90,7 @@ namespace cnl {
             template<class Rep, int Exponent, _impl::enable_if_t<(Exponent>=0), int> dummy = 0>
             inline constexpr make_largest_ufraction<fixed_point<Rep, Exponent>> exp2m1_0to1(
                     fixed_point<Rep, Exponent>) {
-                return _impl::from_rep<make_largest_ufraction<fixed_point<Rep, Exponent>>>(
+                return from_rep<make_largest_ufraction<fixed_point<Rep, Exponent>>>{}(
                         0); //Cannot construct from 0, since that would be a shift by more than width of type!
             }
             //for a positive exponent, some work needs to be done
@@ -133,7 +133,7 @@ namespace cnl {
 
         //Calculate the final result by shifting the fractional part around.
         //Remember to add the 1 which is left out to get 1 bit more resolution
-        return _impl::from_rep<out_type>(
+        return from_rep<out_type>{}(
                 floor(x) <= Exponent ?
                     typename im::rep{1}//return immediately if the shift would result in all bits being shifted out
                                      :

@@ -25,7 +25,7 @@ TEST(math, FPTESTFORMAT) {
 #if (FPTESTEXP < 0)
     for (int i = std::max(-cnl::_impl::fractional_digits<fp>::value, -(cnl::_impl::shift<cnl::_impl::integer_digits<fp>::value, 2, int32_t>(1)) + 1); i < std::min(0, cnl::_impl::integer_digits<fp>::value - 1); i++) {
         fp lhs{ exp2(fp{ i }) };
-        EXPECT_EQ(lhs, cnl::_impl::from_rep<fp>(1 << (-fp::exponent + i)))
+        EXPECT_EQ(lhs, cnl::from_rep<fp>{}(1 << (-fp::exponent + i)))
             << "i = " << i << ", fixed point raw: " << to_rep(lhs) << " should be: " << (1 << (-fp::exponent + i))
             ;
     }
@@ -70,11 +70,11 @@ TEST(math, FPTESTFORMAT) {
     if (numeric_limits::max() >= int(cnl::_impl::integer_digits<fp>::value)
             && numeric_limits::lowest() <= -cnl::_impl::fractional_digits<fp>::value) {
         //the largest exponent which's result doesn't overflow
-        auto maximum = cnl::_impl::from_rep<fp>(to_rep(fp{cnl::_impl::integer_digits<fp>::value})-1);
+        auto maximum = cnl::from_rep<fp>{}(to_rep(fp{cnl::_impl::integer_digits<fp>::value})-1);
 
         //The next-to-smallest exponent whose result doesn't overflow
         //(The very smallest was already tested with the integer exponents)
-        auto minimum = cnl::_impl::from_rep<fp>(to_rep(fp{-cnl::_impl::fractional_digits<fp>::value})+1);
+        auto minimum = cnl::from_rep<fp>{}(to_rep(fp{-cnl::_impl::fractional_digits<fp>::value})+1);
 
         double doublerep{ maximum };
         double doublerepmini{ minimum };

@@ -441,17 +441,16 @@ namespace test_to_rep {
 namespace test_from_rep {
     using cnl::from_rep;
 
-    static_assert(identical(from_rep<native_integer<int>, int>()(746352), native_integer<int>{746352}), "");
-    static_assert(from_rep<native_integer<short>, short>()(1), "");
-    static_assert(from_rep<throwing_integer<short>, short>()(1), "");
+    static_assert(identical(from_rep<native_integer<int>>()(746352), native_integer<int>{746352}), "");
+    static_assert(from_rep<native_integer<short>>()(short{1}), "");
+    static_assert(from_rep<throwing_integer<short>>()(short{1}), "");
 }
 
 namespace test_impl_from_rep {
-    using cnl::_impl::from_rep;
 
-    static_assert(identical(from_rep<native_integer<int>>(746352), native_integer<int>{746352}), "");
-    static_assert(identical(from_rep<native_integer<short>>(1), native_integer<int>{1}), "");
-    static_assert(identical(from_rep<throwing_integer<short>>(1), throwing_integer<int>{1}), "");
+    static_assert(identical(cnl::from_rep<native_integer<int>>{}(746352), native_integer<int>{746352}), "");
+    static_assert(identical(cnl::from_rep<native_integer<short>>{}(1), native_integer<int>{1}), "");
+    static_assert(identical(cnl::from_rep<throwing_integer<short>>{}(1), throwing_integer<int>{1}), "");
 }
 
 namespace test_from_value {
@@ -492,7 +491,7 @@ namespace test_scale {
                   "scale<overflow_integer<>> test failed");
 
     static_assert(identical(
-            cnl::_impl::from_rep<saturated_integer<cnl::uint16>>(0x1234),
+            cnl::from_rep<saturated_integer<cnl::uint16>>{}(0x1234),
             saturated_integer<int>{0x1234}),
             "scale<overflow_integer<>> test failed");
     static_assert(identical(
