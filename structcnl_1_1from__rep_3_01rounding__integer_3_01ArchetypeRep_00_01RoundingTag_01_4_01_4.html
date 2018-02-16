@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>CNL: cnl::precise_integer&lt; Rep, RoundingTag &gt; Class Template Reference</title>
+<title>CNL: cnl::from_rep&lt; rounding_integer&lt; ArchetypeRep, RoundingTag &gt; &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,28 +82,43 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="namespacecnl.html">cnl</a></li><li class="navelem"><a class="el" href="classcnl_1_1precise__integer.html">precise_integer</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacecnl.html">cnl</a></li><li class="navelem"><a class="el" href="structcnl_1_1from__rep_3_01rounding__integer_3_01ArchetypeRep_00_01RoundingTag_01_4_01_4.html">from_rep&lt; rounding_integer&lt; ArchetypeRep, RoundingTag &gt; &gt;</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="classcnl_1_1precise__integer-members.html">List of all members</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="structcnl_1_1from__rep_3_01rounding__integer_3_01ArchetypeRep_00_01RoundingTag_01_4_01_4-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">cnl::precise_integer&lt; Rep, RoundingTag &gt; Class Template Reference</div>  </div>
+<div class="title">cnl::from_rep&lt; rounding_integer&lt; ArchetypeRep, RoundingTag &gt; &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>An integer with customized rounding behavior.  
- <a href="classcnl_1_1precise__integer.html#details">More...</a></p>
+<p><a class="el" href="classcnl_1_1rounding__integer.html">rounding_integer</a> specialization of <a class="el" href="structcnl_1_1from__rep.html">from_rep</a>  
+ <a href="structcnl_1_1from__rep_3_01rounding__integer_3_01ArchetypeRep_00_01RoundingTag_01_4_01_4.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="precise__integer_8h_source.html">cnl/precise_integer.h</a>&gt;</code></p>
-
-<p>Inherits cnl::_impl::number_base&lt; precise_integer&lt; Rep, RoundingTag &gt;, Rep &gt;.</p>
+<p><code>#include &lt;<a class="el" href="rounding__integer_8h_source.html">cnl/rounding_integer.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:aa952ffa95e778e73280cd2573813f26a"><td class="memTemplParams" colspan="2"><a class="anchor" id="aa952ffa95e778e73280cd2573813f26a"></a>
+template&lt;typename Rep &gt; </td></tr>
+<tr class="memitem:aa952ffa95e778e73280cd2573813f26a"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structcnl_1_1from__rep_3_01rounding__integer_3_01ArchetypeRep_00_01RoundingTag_01_4_01_4.html#aa952ffa95e778e73280cd2573813f26a">operator()</a> (Rep const &amp;r) const -&gt; <a class="el" href="classcnl_1_1rounding__integer.html">rounding_integer</a>&lt; Rep, RoundingTag &gt;</td></tr>
+<tr class="memdesc:aa952ffa95e778e73280cd2573813f26a"><td class="mdescLeft">&#160;</td><td class="mdescRight">generates an <a class="el" href="classcnl_1_1rounding__integer.html">rounding_integer</a> equivalent to <code>r</code> in type and value <br /></td></tr>
+<tr class="separator:aa952ffa95e778e73280cd2573813f26a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class Rep, class RoundingTag&gt;<br />
-class cnl::precise_integer&lt; Rep, RoundingTag &gt;</h3>
+<div class="textblock"><h3>template&lt;class ArchetypeRep, class RoundingTag&gt;<br />
+struct cnl::from_rep&lt; rounding_integer&lt; ArchetypeRep, RoundingTag &gt; &gt;</h3>
 
-<p>An integer with customized rounding behavior. </p>
+<p><a class="el" href="classcnl_1_1rounding__integer.html">rounding_integer</a> specialization of <a class="el" href="structcnl_1_1from__rep.html">from_rep</a> </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ArchetypeRep</td><td>ignored; replaced by <code>Rep</code> </td></tr>
+    <tr><td class="paramname">RoundingTag</td><td>the <code>RoundingTag</code> of the generated type </td></tr>
+  </table>
+  </dd>
+</dl>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

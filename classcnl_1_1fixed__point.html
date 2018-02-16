@@ -113,10 +113,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac897261b2a1e52ff629f4066dcf8e764"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac897261b2a1e52ff629f4066dcf8e764"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#ac897261b2a1e52ff629f4066dcf8e764">fixed_point</a> ()</td></tr>
-<tr class="memdesc:ac897261b2a1e52ff629f4066dcf8e764"><td class="mdescLeft">&#160;</td><td class="mdescRight">default constructor <br /></td></tr>
-<tr class="separator:ac897261b2a1e52ff629f4066dcf8e764"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc7c155ab559178a5872d7c07029061e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adc7c155ab559178a5872d7c07029061e"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#adc7c155ab559178a5872d7c07029061e">fixed_point</a> ()=default</td></tr>
+<tr class="memdesc:adc7c155ab559178a5872d7c07029061e"><td class="mdescLeft">&#160;</td><td class="mdescRight">default constructor <br /></td></tr>
+<tr class="separator:adc7c155ab559178a5872d7c07029061e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adeb335f5c050847a7dced7e0b62d4f1c"><td class="memTemplParams" colspan="2"><a class="anchor" id="adeb335f5c050847a7dced7e0b62d4f1c"></a>
 template&lt;class FromRep , int FromExponent&gt; </td></tr>
 <tr class="memitem:adeb335f5c050847a7dced7e0b62d4f1c"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#adeb335f5c050847a7dced7e0b62d4f1c">fixed_point</a> (<a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; FromRep, FromExponent &gt; const &amp;rhs)</td></tr>
@@ -167,11 +167,11 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:a5a1ab807a36d990d9cb45fe31e0a0f1a"><td class="memTemplParams" colspan="2"><a class="anchor" id="a5a1ab807a36d990d9cb45fe31e0a0f1a"></a>
-template&lt;class , class , class &gt; </td></tr>
-<tr class="memitem:a5a1ab807a36d990d9cb45fe31e0a0f1a"><td class="memTemplItemLeft" align="right" valign="top">struct&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#a5a1ab807a36d990d9cb45fe31e0a0f1a">from_rep</a></td></tr>
-<tr class="memdesc:a5a1ab807a36d990d9cb45fe31e0a0f1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates an instance given the underlying representation value <br /></td></tr>
-<tr class="separator:a5a1ab807a36d990d9cb45fe31e0a0f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a692afb2eeb6c02fd18fa9986d4bf97f6"><td class="memTemplParams" colspan="2"><a class="anchor" id="a692afb2eeb6c02fd18fa9986d4bf97f6"></a>
+template&lt;class , class &gt; </td></tr>
+<tr class="memitem:a692afb2eeb6c02fd18fa9986d4bf97f6"><td class="memTemplItemLeft" align="right" valign="top">struct&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#a692afb2eeb6c02fd18fa9986d4bf97f6">from_rep</a></td></tr>
+<tr class="memdesc:a692afb2eeb6c02fd18fa9986d4bf97f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates an instance given the underlying representation value <br /></td></tr>
+<tr class="separator:a692afb2eeb6c02fd18fa9986d4bf97f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class Rep, int Exponent&gt;<br />
@@ -186,7 +186,7 @@ class cnl::fixed_point&lt; Rep, Exponent &gt;</h3>
   </dd>
 </dl>
 <dl class="section user"><dt>Examples</dt><dd></dd></dl>
-<p>To define a fixed-point value 1 byte in size with a sign bit, 3 integer bits and 4 fractional bits: </p><div class="fragment"><div class="line">constexpr <span class="keyword">auto</span> n = <a class="code" href="classcnl_1_1fixed__point.html#ac897261b2a1e52ff629f4066dcf8e764">fixed_point</a>&lt;char, -3&gt;{-2.75};</div><div class="line">static_assert(n==-2.75, <span class="stringliteral">&quot;fixed-point type was unable to store the value&quot;</span>);</div></div><!-- fragment --></div></div><!-- contents -->
+<p>To define a fixed-point value 1 byte in size with a sign bit, 3 integer bits and 4 fractional bits: </p><div class="fragment"><div class="line">constexpr <span class="keyword">auto</span> n = <a class="code" href="classcnl_1_1fixed__point.html#adc7c155ab559178a5872d7c07029061e">fixed_point</a>&lt;char, -3&gt;{-2.75};</div><div class="line">static_assert(n==-2.75, <span class="stringliteral">&quot;fixed-point type was unable to store the value&quot;</span>);</div></div><!-- fragment --></div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

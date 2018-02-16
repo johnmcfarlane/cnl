@@ -38,5 +38,6 @@ var searchData=
   ['remove_5fvolatile',['remove_volatile',['http://en.cppreference.com/w/cpp/types/remove_cv.html',1,'std']]],
   ['result_5fof',['result_of',['http://en.cppreference.com/w/cpp/types/result_of.html',1,'std']]],
   ['reverse_5fiterator',['reverse_iterator',['http://en.cppreference.com/w/cpp/iterator/reverse_iterator.html',1,'std']]],
+  ['rounding_5finteger',['rounding_integer',['../classcnl_1_1rounding__integer.html',1,'cnl']]],
   ['runtime_5ferror',['runtime_error',['http://en.cppreference.com/w/cpp/error/runtime_error.html',1,'std']]]
 ];
