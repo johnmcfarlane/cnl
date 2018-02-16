@@ -80,12 +80,17 @@ namespace cnl {
         using type = rounding_integer<set_digits_t<Rep, MinNumBits>, RoundingTag>;
     };
 
-    template<class FromRep, class RoundingTag, class Rep>
-    struct from_rep<rounding_integer<FromRep, RoundingTag>, Rep> {
-        constexpr auto operator()(rounding_integer<FromRep, RoundingTag> const& rep) const
+    /// \brief \ref rounding_integer specialization of \ref from_rep
+    /// \tparam ArchetypeRep ignored; replaced by \c Rep
+    /// \tparam RoundingTag the \c RoundingTag of the generated type
+    template<class ArchetypeRep, class RoundingTag>
+    struct from_rep<rounding_integer<ArchetypeRep, RoundingTag>> {
+        /// \brief generates an \ref rounding_integer equivalent to \c r in type and value
+        template<typename Rep>
+        constexpr auto operator()(Rep const& r) const
         -> rounding_integer<Rep, RoundingTag>
         {
-            return rep;
+            return r;
         }
     };
 
@@ -145,10 +150,11 @@ namespace cnl {
         template<class Operator, class Rep, class RoundingTag>
         struct unary_operator<Operator, rounding_integer<Rep, RoundingTag>> {
             constexpr auto operator()(rounding_integer<Rep, RoundingTag> const& operand) const
-            -> decltype(from_rep<rounding_integer<decltype(Operator()(to_rep(operand))), RoundingTag>>(Operator()(to_rep(operand))))
+            -> decltype(from_rep<rounding_integer<decltype(Operator()(to_rep(operand))), RoundingTag>>{}(
+                    Operator()(to_rep(operand))))
             {
                 using result_type = rounding_integer<decltype(Operator()(to_rep(operand))), RoundingTag>;
-                return from_rep<result_type>(Operator()(to_rep(operand)));
+                return from_rep<result_type>{}(Operator()(to_rep(operand)));
             }
         };
     }
@@ -164,10 +170,11 @@ namespace cnl {
             constexpr auto operator()(
                     rounding_integer<LhsRep, RoundingTag> const& lhs,
                     rounding_integer<RhsRep, RoundingTag> const& rhs) const
-            -> decltype(from_rep<rounding_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>>(Operator()(to_rep(lhs), to_rep(rhs))))
+            -> decltype(from_rep<rounding_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>>{}(
+                    Operator()(to_rep(lhs), to_rep(rhs))))
             {
                 using result_type = rounding_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>;
-                return from_rep<result_type>(Operator()(to_rep(lhs), to_rep(rhs)));
+                return from_rep<result_type>{}(Operator()(to_rep(lhs), to_rep(rhs)));
             }
         };
 
@@ -207,11 +214,11 @@ namespace cnl {
     constexpr auto operator<<(
             rounding_integer<LhsRep, LhsRoundingTag> const& lhs,
             RhsInteger const& rhs)
-    -> decltype(_impl::from_rep<rounding_integer<decltype(to_rep(lhs) << rhs), LhsRoundingTag>>(to_rep(lhs) << rhs))
+    -> decltype(from_rep<rounding_integer<decltype(to_rep(lhs) << rhs), LhsRoundingTag>>{}(to_rep(lhs) << rhs))
     {
-        return _impl::from_rep<rounding_integer<
+        return from_rep<rounding_integer<
                 decltype(to_rep(lhs) << rhs),
-                LhsRoundingTag>>(to_rep(lhs) << rhs);
+                LhsRoundingTag>>{}(to_rep(lhs) << rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////

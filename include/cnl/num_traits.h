@@ -310,6 +310,7 @@ namespace cnl {
     /// \brief Returns the value encapsulated in \c number
     /// \param number the 'outer' object
     /// \return the 'inner' value
+    /// \sa from_rep, from_value
     template<class Number>
     constexpr Number to_rep(Number const& number) {
         return number;
@@ -325,24 +326,30 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_rep
 
-    template<class Number, class Rep, class Enable = void>
+    /// \brief generic function object that returns the number encapsulating a given value
+    ///
+    /// \tparam Number archetype for the encapsulating type
+    ///
+    /// \note Rather than returning Number, invocation may return an alternative
+    /// template instantiation based on input parameter.
+    /// \sa to_rep, from_value
+    template<class Number, class Enable = void>
     struct from_rep;
 
-    template<class Number, class Rep>
-    struct from_rep<Number, Rep, _impl::enable_if_t<cnl::is_integral<Number>::value>> {
+    /// \brief Specialization of \ref from_rep for integer types
+    ///
+    /// \tparam Number fundamental integer type to return
+    ///
+    /// \note This specialization *does* return integers of type, \c Number
+    /// \sa to_rep, from_value
+    template<class Number>
+    struct from_rep<Number, _impl::enable_if_t<cnl::is_integral<Number>::value>> {
+        template<class Rep>
         constexpr Number operator()(Rep const& rep) const {
             // by default, a number type's rep type is the number type itself
             return static_cast<Number>(rep);
         }
     };
-
-    namespace _impl {
-        template<class Number, class Rep>
-        constexpr auto from_rep(Rep const& rep)
-        -> decltype(cnl::from_rep<Number, Rep>()(rep)) {
-            return cnl::from_rep<Number, Rep>()(rep);
-        }
-    }
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::_impl::for_rep

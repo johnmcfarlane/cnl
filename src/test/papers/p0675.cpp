@@ -103,7 +103,7 @@ namespace {
 
     TEST(P0675, compose_from_components) {
         auto num = fixed_point<rounded_integer<uint8_t>, -4>{15.9375};
-        ASSERT_TRUE(cnl::_impl::from_rep<decltype(num)>(1) == 1. / 16);
+        ASSERT_TRUE(cnl::from_rep<decltype(num)>{}(1) == 1. / 16);
     }
 
     TEST(P0675, smart_multiply) {
@@ -142,8 +142,8 @@ namespace {
 
         // from_rep
         using cnl::from_rep;
-        static_assert(identical(7, from_rep<int, int>()(7)));
-        static_assert(identical(fixed_point<int, -1>{49.5}, from_rep<fixed_point<int, -1>, int>()(99)));
+        static_assert(identical(7, from_rep<int>{}(7)));
+        static_assert(identical(fixed_point<int, -1>{49.5}, from_rep<fixed_point<int, -1>>{}(99)));
 
         // from_value
         using cnl::from_value_t;

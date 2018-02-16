@@ -213,18 +213,14 @@ namespace cnl {
         }
     }
 
-    template<class Derived, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct from_rep<Derived, constant<Value>, _impl::enable_if_t<_impl::is_derived_from_number_base<Derived>::value>>
-    : from_rep<_impl::number_base<Derived, typename Derived::rep>, ::cnl::intmax> {};
-
     template<int Digits, int Radix, class Derived>
     struct shift<Digits, Radix, _impl::number_base<Derived, typename Derived::rep>> {
         using _scalar_type = _impl::number_base<Derived, typename Derived::rep>;
 
         constexpr auto operator()(_scalar_type const &s) const
-        -> decltype(_impl::from_rep<Derived>(_impl::shift<Digits, Radix>(to_rep(s))))
+        -> decltype(from_rep<Derived>{}(_impl::shift<Digits, Radix>(to_rep(s))))
         {
-            return _impl::from_rep<Derived>(_impl::shift<Digits, Radix>(to_rep(s)));
+            return from_rep<Derived>{}(_impl::shift<Digits, Radix>(to_rep(s)));
         }
     };
 
@@ -243,22 +239,22 @@ namespace cnl {
 
         static constexpr _value_type min() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep_numeric_limits::min());
+            return from_rep<_value_type>{}(_rep_numeric_limits::min());
         }
 
         static constexpr _value_type max() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep_numeric_limits::max());
+            return from_rep<_value_type>{}(_rep_numeric_limits::max());
         }
 
         static constexpr _value_type lowest() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep_numeric_limits::lowest());
+            return from_rep<_value_type>{}(_rep_numeric_limits::lowest());
         }
 
         static constexpr _value_type epsilon() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep_numeric_limits::round_error());
+            return from_rep<_value_type>{}(_rep_numeric_limits::round_error());
         }
 
         static constexpr _value_type round_error() noexcept
