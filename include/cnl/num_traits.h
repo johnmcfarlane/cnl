@@ -310,6 +310,7 @@ namespace cnl {
     /// \brief Returns the value encapsulated in \c number
     /// \param number the 'outer' object
     /// \return the 'inner' value
+    /// \sa from_rep, from_value
     template<class Number>
     constexpr Number to_rep(Number const& number) {
         return number;
@@ -325,9 +326,22 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_rep
 
+    /// \brief generic function object that returns the number encapsulating a given value
+    ///
+    /// \tparam Number archetype for the encapsulating type
+    ///
+    /// \note Rather than returning Number, invocation may return an alternative
+    /// template instantiation based on input parameter.
+    /// \sa to_rep, from_value
     template<class Number, class Enable = void>
     struct from_rep;
 
+    /// \brief Specialization of \ref from_rep for integer types
+    ///
+    /// \tparam Number fundamental integer type to return
+    ///
+    /// \note This specialization *does* return integers of type, \c Number
+    /// \sa to_rep, from_value
     template<class Number>
     struct from_rep<Number, _impl::enable_if_t<cnl::is_integral<Number>::value>> {
         template<class Rep>

@@ -312,18 +312,6 @@ namespace cnl {
     {
         return _impl::shift<FromExponent-exponent>(to_rep(rhs));
     }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::from_rep<fixed_point<>> specialization
-
-    template<class Rep, int Exponent>
-    struct from_rep<fixed_point<Rep, Exponent>> {
-        template<typename Integer>
-        constexpr auto operator()(Integer const& rep) const
-        -> fixed_point<Integer, Exponent> {
-            return fixed_point<Integer, Exponent>(rep, 0);
-        }
-    };
 }
 
 #endif  // CNL_FIXED_POINT_DEF_H

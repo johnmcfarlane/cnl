@@ -80,13 +80,17 @@ namespace cnl {
         using type = rounding_integer<set_digits_t<Rep, MinNumBits>, RoundingTag>;
     };
 
-    template<class FromRep, class RoundingTag>
-    struct from_rep<rounding_integer<FromRep, RoundingTag>> {
+    /// \brief \ref rounding_integer specialization of \ref from_rep
+    /// \tparam ArchetypeRep ignored; replaced by \c Rep
+    /// \tparam RoundingTag the \c RoundingTag of the generated type
+    template<class ArchetypeRep, class RoundingTag>
+    struct from_rep<rounding_integer<ArchetypeRep, RoundingTag>> {
+        /// \brief generates an \ref rounding_integer equivalent to \c r in type and value
         template<typename Rep>
-        constexpr auto operator()(Rep const& rep) const
+        constexpr auto operator()(Rep const& r) const
         -> rounding_integer<Rep, RoundingTag>
         {
-            return rep;
+            return r;
         }
     };
 

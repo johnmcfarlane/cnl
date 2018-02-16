@@ -90,13 +90,17 @@ namespace cnl {
         };
     }
 
+    /// \brief \ref elastic_integer specialization of \ref from_rep
+    /// \tparam Digits ignored; replaced by number of digits of \c Rep
+    /// \tparam Exponent the \c Exponent parameter of the generated \ref fixed_point type
     template<int Digits, class Narrowest>
     struct from_rep<elastic_integer<Digits, Narrowest>> {
+        /// \brief generates an \ref elastic_integer equivalent to \c r in type and value
         template<typename Rep>
-        constexpr auto operator()(Rep const& rep) const
+        constexpr auto operator()(Rep const& r) const
         -> elastic_integer<Digits, cnl::_impl::make_signed_t<Narrowest, cnl::is_signed<Rep>::value>>
         {
-            return rep;
+            return r;
         }
     };
 

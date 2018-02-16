@@ -42,7 +42,23 @@ namespace cnl {
         using type = fixed_point<set_digits_t<Rep, MinNumBits>, Exponent>;
     };
 
+    /// \brief \ref fixed_point specialization of \ref from_rep
+    /// \headerfile cnl/fixed_point.h
+    ///
+    /// \tparam Exponent the \c Exponent parameter of the generated \ref fixed_point type
+    /// \tparam ArchetypeRep ignored; replaced by \c Rep
+    template<class ArchetypeRep, int Exponent>
+    struct from_rep<fixed_point<ArchetypeRep, Exponent>> {
+        /// \brief generates a \ref fixed_point equivalent to \c r in type and value
+        template<typename Rep>
+        constexpr auto operator()(Rep const& r) const
+        -> fixed_point<Rep, Exponent> {
+            return fixed_point<Rep, Exponent>(r, 0);
+        }
+    };
+
     /// \brief \ref fixed_point overload of \ref to_rep(Number const& number)
+    /// \headerfile cnl/fixed_point.h
     template<class Rep, int Exponent>
     constexpr Rep to_rep(fixed_point<Rep, Exponent> const& number)
     {

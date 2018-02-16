@@ -164,13 +164,17 @@ namespace cnl {
         return to_rep(static_cast<base_type const&>(number));
     }
 
-    template<class FromRep, class OverflowTag>
-    struct from_rep<overflow_integer<FromRep, OverflowTag>> {
+    /// \brief \ref overflow_integer specialization of \ref from_rep
+    /// \tparam ArchetypeRep ignored; replaced by \c Rep
+    /// \tparam OverflowTag the \c OverflowTag of the generated type
+    template<class ArchetypeRep, class OverflowTag>
+    struct from_rep<overflow_integer<ArchetypeRep, OverflowTag>> {
+        /// \brief generates an \ref overflow_integer equivalent to \c r in type and value
         template<typename Rep>
-        constexpr auto operator()(Rep const& rep) const
+        constexpr auto operator()(Rep const& r) const
         -> overflow_integer<Rep, OverflowTag>
         {
-            return rep;
+            return r;
         }
     };
 
