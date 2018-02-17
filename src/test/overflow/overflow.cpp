@@ -260,6 +260,12 @@ namespace {
         static_assert(identical(convert<cnl::int32>(saturated_overflow, cnl::uint8{55}), 55), "cnl::convert test failed");
 
         // add
+        static_assert(identical(
+                cnl::_overflow_impl::binary_operator<cnl::saturated_overflow_tag, cnl::_impl::add_op>()(7, 23U),
+                7+23U), "");
+        static_assert(identical(
+                std::numeric_limits<decltype(UINT32_C(0xFFFFFFFF)+INT32_C(0x12345678))>::max(),
+                add(cnl::saturated_overflow, UINT32_C(0xFFFFFFFF), INT32_C(0x12345678))), "cnl::add test failed");
         static_assert(identical(cnl::numeric_limits<decltype(2 + 2U)>::max(), add(saturated_overflow, 2, cnl::numeric_limits<unsigned>::max())), "cnl::add test failed");
 
         // subtract

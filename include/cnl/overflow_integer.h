@@ -231,7 +231,22 @@ namespace cnl {
             }
         };
 
-        // for arithmetic operands with a common overflow tag
+        // for arithmetic operands with a common overflow tag and common rep type
+        template<class Operator, class Rep, class OverflowTag>
+        struct binary_operator<Operator,
+                overflow_integer<Rep, OverflowTag>, overflow_integer<Rep, OverflowTag>,
+                typename Operator::is_not_comparison> {
+            constexpr auto operator()(
+                    overflow_integer<Rep, OverflowTag> const& lhs,
+                    overflow_integer<Rep, OverflowTag> const& rhs) const
+            -> decltype(make_overflow_int<OverflowTag>(_overflow_impl::binary_operator<OverflowTag, Operator>()(to_rep(lhs), to_rep(rhs))))
+            {
+                return make_overflow_int<OverflowTag>(
+                        _overflow_impl::binary_operator<OverflowTag, Operator>()(to_rep(lhs), to_rep(rhs)));
+            }
+        };
+
+        // for arithmetic operands with a common overflow tag but different rep types
         template<class Operator, class LhsRep, class RhsRep, class OverflowTag>
         struct binary_operator<Operator,
                 overflow_integer<LhsRep, OverflowTag>, overflow_integer<RhsRep, OverflowTag>,
@@ -239,10 +254,11 @@ namespace cnl {
             constexpr auto operator()(
                     overflow_integer<LhsRep, OverflowTag> const& lhs,
                     overflow_integer<RhsRep, OverflowTag> const& rhs) const
-            -> decltype(make_overflow_int<OverflowTag>(_overflow_impl::binary_operator<OverflowTag, Operator>()(to_rep(lhs), to_rep(rhs))))
+            -> overflow_integer<decltype(Operator{}(std::declval<LhsRep>(), std::declval<RhsRep>())), OverflowTag>
             {
-                return make_overflow_int<OverflowTag>(
-                        _overflow_impl::binary_operator<OverflowTag, Operator>()(to_rep(lhs), to_rep(rhs)));
+                using result_rep_type = decltype(Operator{}(std::declval<LhsRep>(), std::declval<RhsRep>()));
+                using result_type = overflow_integer<result_rep_type, OverflowTag>;
+                return _impl::from_value<result_type>(binary_operator<Operator, result_type, result_type>{}(lhs, rhs));
             }
         };
 

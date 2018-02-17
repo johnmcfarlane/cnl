@@ -282,13 +282,13 @@ namespace cnl {
             }
         };
 
-        template<class Lhs, class Rhs>
-        constexpr bool is_multiply_overflow(Lhs const& lhs, Rhs const& rhs)
+        template<class Operand>
+        constexpr bool is_multiply_overflow(Operand const& lhs, Operand const& rhs)
         {
             using result_nl = numeric_limits<decltype(lhs*rhs)>;
-            return lhs && rhs && ((lhs>Lhs{0})
-                                  ? ((rhs>Rhs{0}) ? (result_nl::max()/rhs) : (result_nl::lowest()/rhs))<lhs
-                                  : ((rhs>Rhs{0}) ? (result_nl::lowest()/rhs) : (result_nl::max()/rhs))>lhs);
+            return lhs && rhs && ((lhs>Operand{0})
+                                  ? ((rhs>Operand{0}) ? (result_nl::max()/rhs) : (result_nl::lowest()/rhs))<lhs
+                                  : ((rhs>Operand{0}) ? (result_nl::lowest()/rhs) : (result_nl::max()/rhs))>lhs);
         }
 
         template<>
