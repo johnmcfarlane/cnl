@@ -418,47 +418,6 @@ namespace cnl {
     {
         return _impl::for_rep<decltype(lhs<<rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::shift_left_op>(), lhs, rhs);
     }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // comparison
-
-    // implementation details
-    namespace _overflow_impl {
-        template<class Operator>
-        struct comparison_operator<native_overflow_tag, Operator> {
-            template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(Operator()(lhs, rhs))
-        {
-            return Operator()(lhs, rhs);
-        }
-        };
-
-        template<class Operator>
-        struct comparison_operator<throwing_overflow_tag, Operator> {
-            template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> _impl::op_result<Operator, Lhs, Rhs>
-            {
-                return Operator()(lhs, rhs);
-            }
-        };
-
-        template<class Operator>
-        struct comparison_operator<saturated_overflow_tag, Operator> {
-            template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> _impl::op_result<Operator, Lhs, Rhs>
-            {
-                // assumes all arithmetic-induced implicit convertion goes the same
-                // or at least that `|` is a less "promotion-inducing" operation
-                using converted = decltype(lhs | rhs);
-                return Operator()(
-                        convert<converted>(saturated_overflow, lhs),
-                        convert<converted>(saturated_overflow, rhs));
-            }
-        };
-    }
 }
 
 #endif  // CNL_OVERFLOW_H
