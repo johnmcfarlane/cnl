@@ -282,13 +282,13 @@ namespace cnl {
             }
         };
 
-        template<class Lhs, class Rhs>
-        constexpr bool is_multiply_overflow(Lhs const& lhs, Rhs const& rhs)
+        template<class Operand>
+        constexpr bool is_multiply_overflow(Operand const& lhs, Operand const& rhs)
         {
             using result_nl = numeric_limits<decltype(lhs*rhs)>;
-            return lhs && rhs && ((lhs>Lhs{0})
-                                  ? ((rhs>Rhs{0}) ? (result_nl::max()/rhs) : (result_nl::lowest()/rhs))<lhs
-                                  : ((rhs>Rhs{0}) ? (result_nl::lowest()/rhs) : (result_nl::max()/rhs))>lhs);
+            return lhs && rhs && ((lhs>Operand{0})
+                                  ? ((rhs>Operand{0}) ? (result_nl::max()/rhs) : (result_nl::lowest()/rhs))<lhs
+                                  : ((rhs>Operand{0}) ? (result_nl::lowest()/rhs) : (result_nl::max()/rhs))>lhs);
         }
 
         template<>
@@ -417,47 +417,6 @@ namespace cnl {
     -> decltype(lhs<<rhs)
     {
         return _impl::for_rep<decltype(lhs<<rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::shift_left_op>(), lhs, rhs);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // comparison
-
-    // implementation details
-    namespace _overflow_impl {
-        template<class Operator>
-        struct comparison_operator<native_overflow_tag, Operator> {
-            template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(Operator()(lhs, rhs))
-        {
-            return Operator()(lhs, rhs);
-        }
-        };
-
-        template<class Operator>
-        struct comparison_operator<throwing_overflow_tag, Operator> {
-            template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> _impl::op_result<Operator, Lhs, Rhs>
-            {
-                return Operator()(lhs, rhs);
-            }
-        };
-
-        template<class Operator>
-        struct comparison_operator<saturated_overflow_tag, Operator> {
-            template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> _impl::op_result<Operator, Lhs, Rhs>
-            {
-                // assumes all arithmetic-induced implicit convertion goes the same
-                // or at least that `|` is a less "promotion-inducing" operation
-                using converted = decltype(lhs | rhs);
-                return Operator()(
-                        convert<converted>(saturated_overflow, lhs),
-                        convert<converted>(saturated_overflow, rhs));
-            }
-        };
     }
 }
 

@@ -151,10 +151,7 @@ static_assert(identical(throwing_integer<int32_t>{throwing_integer<uint16_t>{500
 static_assert(identical(static_cast<throwing_integer<int32_t>>(throwing_integer<uint16_t>{50005}),
                         throwing_integer<int32_t>{50005}), "throwing_integer test failed");
 
-////////////////////////////////////////////////////////////////////////////////
-// cnl::overflow_integer<Rep, cnl::saturated_overflow_tag>
-
-namespace {
+namespace saturated_binary_operator {
     using cnl::_impl::multiply_op;
 
     static_assert(cnl::_impl::is_derived_from_number_base<saturated_integer<short>>::value, "");
@@ -194,6 +191,10 @@ namespace {
                     throwing_integer<cnl::uint8>>()(3u, throwing_integer<cnl::uint8>{4}),
             throwing_integer<unsigned>{12}),
             "cnl::_impl::binary_operator test failed");
+
+    static_assert(identical(
+            cnl::_impl::binary_operator<multiply_op, saturated_integer<std::int32_t>, saturated_integer<std::uint32_t>>()(12301230, 3),
+            saturated_integer<decltype(std::declval<std::int32_t>()*std::declval<std::uint32_t>())>{36903690}), "");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -238,7 +239,7 @@ static_assert(identical(
 
 // division
 #if !defined(_MSC_VER)
-static_assert(saturated_integer<uint32_t>(1)/saturated_integer<int16_t>(-10)==0U, "cnl::saturated_integer test failed");
+static_assert(saturated_integer<int32_t>(-100)/saturated_integer<uint16_t>(10)==0U, "cnl::saturated_integer test failed");
 #endif
 static_assert(saturated_integer<int16_t>(77)/saturated_integer<int8_t>(-11)==-7, "cnl::saturated_integer test failed");
 static_assert(int16_t(31)/saturated_integer<int8_t>(-2)==-15, "cnl::saturated_integer test failed");
