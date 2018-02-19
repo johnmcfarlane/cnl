@@ -42,6 +42,6 @@ target_sources(cnl INTERFACE ${cnl_public_headers} ${cnl_implementation_headers}
 target_include_directories(cnl INTERFACE ${CMAKE_CURRENT_LIST_DIR})
 
 install(
-        DIRECTORY include/cnl
+        DIRECTORY cnl
         DESTINATION include
 )
