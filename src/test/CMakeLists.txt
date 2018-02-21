@@ -148,9 +148,9 @@ foreach(source ${test_sources})
 endforeach(source)
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-    set_source_files_properties(
-            cppcon2017.cpp
-            PROPERTIES COMPILE_FLAGS "-Wno-strict-overflow")
+#    set_source_files_properties(
+#            cppcon2017.cpp
+#            PROPERTIES COMPILE_FLAGS "-Wno-strict-overflow")
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
     set_source_files_properties(
             fixed_point/math.cpp
