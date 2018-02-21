@@ -243,7 +243,9 @@ namespace {
         static_assert(identical(subtract(throwing_overflow, INT8_C(0), INT8_C(0)), 0), "cnl::add test failed");
 
         // multiply
+#if ! defined(__APPLE__) || ! defined(__clang__)
         static_assert(identical(multiply(throwing_overflow, UINT16_C(576), INT32_C(22)), decltype(UINT16_C(576)*INT32_C(22)){12672}), "cnl::add test failed");
+#endif
     }
 
     namespace test_saturated {
@@ -275,8 +277,10 @@ namespace {
 #endif
 
         // multiply
+#if ! defined(__APPLE__) || ! defined(__clang__)
         static_assert(identical(multiply(saturated_overflow, UINT16_C(576), INT32_C(22)),
                 decltype(UINT16_C(576)*INT32_C(22)){12672}), "cnl::multiply test failed");
+#endif
         static_assert(identical(
                 multiply(saturated_overflow, cnl::numeric_limits<int32_t>::max(), INT32_C(2)),
                 cnl::numeric_limits<int32_t>::max()), "cnl::multiply test failed");
