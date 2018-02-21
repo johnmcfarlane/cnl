@@ -20,7 +20,7 @@ build_script:
     MSBuild.exe /maxcpucount /property:Configuration=Release /property:Platform=%msbuild_property% cnl.sln
 test_script:
 - cmd: >-
-    src\test\Release\fp_test.exe
+    ctest
 
     src\benchmark\Release\fp_benchmark.exe
 shallow_clone: true

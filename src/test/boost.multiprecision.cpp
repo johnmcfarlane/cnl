@@ -244,15 +244,4 @@ TEST(fixed_point_multiprecision, signed_multiprecision_leading_bits)
     ASSERT_EQ(18, leading_bits(a));
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// boost::throw_exception
-
-#if defined(BOOST_NO_EXCEPTIONS)
-namespace boost {
-    void throw_exception(std::exception const&) {
-        std::terminate();
-    }
-}
-#endif
-
 #endif  // CNL_BOOST_ENABLED

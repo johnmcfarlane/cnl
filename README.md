@@ -64,8 +64,8 @@ To run tests:
 
 ```shell
 $ cmake
-$ make fp_test
-$ src/test/fp_test
+$ make
+$ ctest
 ```
 
 To run benchmarks:

@@ -25,7 +25,13 @@ namespace {
         template<typename T>
         void test_type() {
             auto epsilon = std::numeric_limits<T>::epsilon();
-            
+
+// Google Test's lack of support for long double results in unneccessary floating-point conversions.
+#if defined(__GNUG__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#endif
+
             EXPECT_NEAR(std::exp(T{1}), e<T>, epsilon);
             EXPECT_EQ(std::log2(e<T>), log2e<T>);
             EXPECT_NEAR(std::log10(e<T>), log10e<T>, epsilon);
@@ -44,6 +50,10 @@ namespace {
             EXPECT_NEAR(0.915965594177219015054603514932384110774L, catalan<T>, epsilon);
             EXPECT_NEAR(1.202056903159594285399738161511449990L, apery<T>, epsilon);
             EXPECT_NEAR(1.282427129100622636875342568869791727L, glaisher<T>, epsilon);
+
+#if defined(__GNUG__)
+#pragma GCC diagnostic pop
+#endif
         }
 
         TEST(numeric, float_constants) {
