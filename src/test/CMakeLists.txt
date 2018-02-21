@@ -1,9 +1,10 @@
 include("../common/common.cmake")
 
-######################################################################
-# fp_test target
+enable_testing()
 
-add_executable(fp_test
+# source files containing tests of the correctness of CNL;
+# ideally compiles with every warning that CNL user might choose
+set(test_sources
         # low-level
         bit.cpp
         cnlint.cpp
@@ -15,7 +16,6 @@ add_executable(fp_test
         number_test.cpp
         readme.cpp
         overflow/overflow.cpp
-        index.cpp
 
         # components
         constant.cpp
@@ -38,8 +38,13 @@ add_executable(fp_test
         overflow/elastic/safe_integer.cpp
         fixed_point/elastic/make_elastic_fixed_point.cpp
         fixed_point/elastic/elastic_fixed_point.cpp
+)
 
+# source files containing demos and examples of CNL;
+# do not necessarily need to fail the strictest warnings
+set(sample_sources
         # showing off
+        index.cpp
         papers/p0381.cpp
         papers/p0675.cpp
         papers/p0827.cpp
@@ -52,87 +57,15 @@ add_executable(fp_test
         zero_cost_average.cpp
         cppnow2017.cpp
         cppcon2017.cpp
-        boost.simd.cpp
         boost.multiprecision.cpp
         glm.cpp
         safft.cpp
-
-        main.cpp)
+)
 
 ######################################################################
-# find external lib, boost.multiprecision
+# pull in external dependencies
 
 find_package(Boost)
-
-if(Boost_FOUND)
-    if(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
-        # only compile multiprecision.cpp if Boost.Multiprecision is available
-        set(BOOST_FOUND_CXX_FLAGS "-DCNL_BOOST_ENABLED")
-        target_include_directories(fp_test SYSTEM PRIVATE ${Boost_INCLUDE_DIRS})
-    else(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
-        message("Boost version is too low to use without exception handling")
-    endif(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
-else(Boost_FOUND)
-    message("Boost not found")
-endif(Boost_FOUND)
-
-######################################################################
-# pull external project, boost.simd
-
-if(Boost_FOUND AND Boost_VERSION GREATER 106099)
-    # Boost.SIMD has problems building with gcc-7.x
-    if(NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
-        ExternalProject_Add(
-                boost.simd
-                URL "https://github.com/numscale/boost.simd/archive/b1e046e3ffa720226e45512c76c505f34cde7be2.zip"
-                URL_MD5 "74fc0bc279a18f931e4d2ec026af8dd4"
-                UPDATE_COMMAND ""
-                INSTALL_COMMAND ""
-        )
-
-        ExternalProject_Get_Property(boost.simd source_dir)
-        target_include_directories(
-                fp_test
-                PRIVATE
-                SYSTEM
-                "${source_dir}/include"
-        )
-
-        add_dependencies(
-                fp_test
-                boost.simd
-        )
-
-        set(BOOST_SIMD_FOUND_CXX_FLAGS "-DCNL_BOOST_SIMD_ENABLED")
-    endif(NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
-endif(Boost_FOUND AND Boost_VERSION GREATER 106099)
-
-######################################################################
-# pull external project, glm
-
-ExternalProject_Add(
-    glm
-    URL "https://github.com/johnmcfarlane/glm/archive/878086621522255b14017c26d1df3b9fb0b36009.zip"
-    URL_MD5 "fe3b032c230df63474bc26549526aaec"
-    UPDATE_COMMAND ""
-    INSTALL_COMMAND ""
-)
-
-ExternalProject_Get_Property(glm source_dir)
-target_include_directories(
-    fp_test
-    PRIVATE
-    SYSTEM
-    ${source_dir}
-)
-
-add_dependencies(
-    fp_test
-    glm
-)
-
-######################################################################
-# pull external project, google_test
 
 ExternalProject_Add(
         google_test
@@ -143,80 +76,123 @@ ExternalProject_Add(
         CMAKE_ARGS -Dgtest_force_shared_crt=ON
 )
 
-ExternalProject_Get_Property(google_test source_dir)
-target_include_directories(
-        fp_test
-        PRIVATE
-        SYSTEM
-        ${source_dir}/googletest/include
-)
-
-ExternalProject_Get_Property(google_test binary_dir)
-if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-    target_link_libraries(
-            fp_test
-            debug ${binary_dir}/googlemock/gtest/Debug/${CMAKE_FIND_LIBRARY_PREFIXES}gtestd${CMAKE_FIND_LIBRARY_SUFFIXES}
-            optimized ${binary_dir}/googlemock/gtest/Release/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}
-    )
-else ()
-    target_link_libraries(
-            fp_test
-            general "${binary_dir}/googlemock/gtest/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a"
-            general pthread
-    )
-endif ()
-
-add_dependencies(
-        fp_test
-        google_test
+ExternalProject_Add(
+        glm
+        URL "https://github.com/johnmcfarlane/glm/archive/878086621522255b14017c26d1df3b9fb0b36009.zip"
+        URL_MD5 "fe3b032c230df63474bc26549526aaec"
+        UPDATE_COMMAND ""
+        INSTALL_COMMAND ""
 )
 
 ######################################################################
-# fp_test compiler flags
+# make_test
 
-set_target_properties(
-        fp_test
-        PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${BOOST_FOUND_CXX_FLAGS} ${BOOST_SIMD_FOUND_CXX_FLAGS}"
-)
+# given the path to a source file containing gtest tests,
+# creates and returns a target that runs them
+function(make_test source out_target compile_flags)
+    # turn source file path into target name (e.g. "foo/bar.cpp" -> "test-foo-bar")
+    string(REPLACE "\.cpp" "" stripped "${source}")
+    string(REPLACE "/" "-" target "test-${stripped}")
+    set(${out_target} "${target}" PARENT_SCOPE)
 
-target_link_libraries(fp_test cnl)
+    # create a target and make it a test
+    add_executable("${target}" "${source}" "main.cpp")
+    add_test("${target}" "${target}")
+    set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${compile_flags}")
+    target_link_libraries("${target}" cnl)
 
-if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-    set_source_files_properties(
-            fixed_point/overflow/fixed_point_saturated_integer.cpp
-            PROPERTIES COMPILE_FLAGS "/wd4018")
-elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-    set_source_files_properties(
-            boost.multiprecision.cpp
-            index.cpp
-            PROPERTIES COMPILE_FLAGS "-fpermissive")
+    # gtest
+    ExternalProject_Get_Property(google_test binary_dir)
+    if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+        target_link_libraries(
+                "${target}"
+                debug ${binary_dir}/googlemock/gtest/Debug/${CMAKE_FIND_LIBRARY_PREFIXES}gtestd${CMAKE_FIND_LIBRARY_SUFFIXES}
+                optimized ${binary_dir}/googlemock/gtest/Release/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}
+        )
+    else ()
+        target_link_libraries(
+                "${target}"
+                general "${binary_dir}/googlemock/gtest/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a"
+                general pthread
+        )
+    endif ()
 
+    ExternalProject_Get_Property(google_test source_dir)
+    target_include_directories("${target}" SYSTEM PRIVATE "${source_dir}/googletest/include")
+
+    add_dependencies("${target}" google_test)
+
+    # Boost
+    if(Boost_FOUND)
+        if(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
+            # only compile multiprecision.cpp if Boost.Multiprecision is available
+            target_compile_definitions("${target}" PRIVATE "-DCNL_BOOST_ENABLED")
+            target_include_directories("${target}" SYSTEM PRIVATE "${Boost_INCLUDE_DIRS}")
+        else(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
+            message("Boost version is too low to use without exception handling")
+        endif(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
+    else(Boost_FOUND)
+        message("Boost not found")
+    endif(Boost_FOUND)
+endfunction(make_test)
+
+######################################################################
+# create tests to verify CNL
+
+foreach(source ${test_sources})
+    if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+        make_test("${source}" target "/wd4307")
+    elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
+        make_test("${source}" target "-Wconversion -Wno-sign-conversion")
+    endif ()
+endforeach(source)
+
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     set_source_files_properties(
             cppcon2017.cpp
-            PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-strict-overflow")
-
-    set_source_files_properties(
-            boost.simd.cpp
-            cppnow2017.cpp
-            glm.cpp
-            numeric.cpp
-            papers/p0381.cpp
-            zero_cost_average.cpp
-            PROPERTIES COMPILE_FLAGS "-Wno-conversion")
+            PROPERTIES COMPILE_FLAGS "-Wno-strict-overflow")
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
     set_source_files_properties(
             fixed_point/math.cpp
             PROPERTIES COMPILE_FLAGS "-Wno-integer-overflow")
-
-    set_source_files_properties(
-            boost.simd.cpp
-            cppnow2017.cpp
-            numeric.cpp
-            PROPERTIES COMPILE_FLAGS "-Wno-conversion")
 endif ()
 
 ######################################################################
-# testing
+# create tests to show off CNL
 
-enable_testing()
-add_test(all_tests fp_test)
+foreach(source ${sample_sources})
+    if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
+        make_test("${source}" target "-fpermissive -Wno-sign-compare")
+    else ()
+        make_test("${source}" target "")
+    endif ()
+endforeach(source)
+
+######################################################################
+# create test of glm integration
+
+ExternalProject_Get_Property(glm source_dir)
+target_include_directories(test-glm SYSTEM PRIVATE "${source_dir}")
+add_dependencies(test-glm glm)
+
+######################################################################
+# create test of boost.simd integration
+
+if(Boost_FOUND AND Boost_VERSION GREATER 106099)
+    # Boost.SIMD has problems building with gcc-7.x
+    if(NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
+        make_test(boost.simd.cpp target "-Wno-conversion -DCNL_BOOST_SIMD_ENABLED")
+
+        ExternalProject_Add(
+            boost.simd
+            URL "https://github.com/numscale/boost.simd/archive/b1e046e3ffa720226e45512c76c505f34cde7be2.zip"
+            URL_MD5 "74fc0bc279a18f931e4d2ec026af8dd4"
+            UPDATE_COMMAND ""
+            INSTALL_COMMAND ""
+        )
+        add_dependencies("${target}" boost.simd)
+
+        ExternalProject_Get_Property(boost.simd source_dir)
+        target_include_directories("${target}" PRIVATE SYSTEM "${source_dir}/include")
+    endif(NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
+endif(Boost_FOUND AND Boost_VERSION GREATER 106099)

@@ -20,7 +20,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
   set(PROFILE_ENABLED_FLAGS "/Oy-")
   set(PROFILE_DISABLED_FLAGS "")
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-  set(MISC_FLAGS "-pthread -Wall -Wextra -Wpedantic -Wconversion -Wno-sign-conversion -Werror")
+  set(MISC_FLAGS "-pthread -Wall -Wextra -Wpedantic -Werror")
 
   set(CPP17_ENABLED_FLAGS "-std=c++17")
 
