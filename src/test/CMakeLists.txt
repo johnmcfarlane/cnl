@@ -195,10 +195,6 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
             presentations/cppcon2017.cpp
             presentations/cppdub2018.cpp
             PROPERTIES COMPILE_FLAGS "-Wno-strict-overflow")
-elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
-    set_source_files_properties(
-            fixed_point/math.cpp
-            PROPERTIES COMPILE_FLAGS "-Wno-integer-overflow")
 endif ()
 
 ######################################################################
