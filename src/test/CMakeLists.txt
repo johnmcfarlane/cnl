@@ -154,7 +154,7 @@ endfunction(make_test)
 
 foreach(source ${test_sources})
     if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-        make_test("${source}" target "/wd4307")
+        make_test("${source}" target "")
     elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
         make_test("${source}" target "-Wconversion -Wno-sign-conversion")
     endif ()
