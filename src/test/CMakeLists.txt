@@ -190,19 +190,12 @@ foreach(source ${test_sources})
     make_test("${source}" target "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
 endforeach(source)
 
-if (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-    set_source_files_properties(
-            presentations/cppcon2017.cpp
-            presentations/cppdub2018.cpp
-            PROPERTIES COMPILE_FLAGS "-Wno-strict-overflow")
-endif ()
-
 ######################################################################
 # create tests to show off CNL
 
 foreach(source ${sample_sources})
     if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-        make_test("${source}" target "-fpermissive -Wno-sign-compare" "")
+        make_test("${source}" target "-fpermissive -Wno-sign-compare -Wno-strict-overflow" "")
     else ()
         make_test("${source}" target "" "")
     endif ()
