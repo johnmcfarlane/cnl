@@ -11,14 +11,3 @@ int main(int argc, char** argv)
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
-
-////////////////////////////////////////////////////////////////////////////////
-// boost::throw_exception
-
-#if defined(CNL_BOOST_ENABLED) && defined(BOOST_NO_EXCEPTIONS)
-namespace boost {
-    void throw_exception(std::exception const&) {
-        std::terminate();
-    }
-}
-#endif
