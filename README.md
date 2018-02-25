@@ -42,7 +42,7 @@ Add this to your system header list and include, e.g.:
 #include <cnl/fixed_point.h>
 ```
 
-## Tests and Benchmarks
+## Requirements
 
 ### Linux
 
@@ -58,25 +58,8 @@ Optional:
 
 - [Boost](http://www.boost.org/) - facilitates multiprecision support
 - [Doxygen](http://www.doxygen.org/) - generates documentation in the *doc/gh-pages* directory
-- [pandoc](http://pandoc.org/) - generates proposal papers
 
-To run tests:
-
-```shell
-$ cmake
-$ make
-$ ctest
-```
-
-To run benchmarks:
-
-```shell
-$ cmake -DCMAKE_BUILD_TYPE=Release
-$ make fp_benchmark
-$ src/benchmark/fp_benchmark
-```
-
-#### Windows
+### Windows
 
 Tested on [AppVeyor](https://ci.appveyor.com/project/johnmcfarlane/cnl/branch/develop)
 and on *Windows 10 Professional* with *CMake 3.8.0*. Requires:
@@ -84,16 +67,23 @@ and on *Windows 10 Professional* with *CMake 3.8.0*. Requires:
 - MSBuild 15.0 (VS 2017)
 - [CMake](https://cmake.org/download/) 3.8.0
 
-To build *vs/Release/fp_test.exe* and *vs/Release/fp_benchmark.exe*:
+## Tests and Benchmarks
 
-    cmake -G "Visual Studio 15 2017" .
-    MSBuild.exe /m cnl.sln /p:Configuration=Release
+To run tests:
 
-For 64-bit builds, append `Win64` to the `-G` option above:
+```shell
+$ cmake
+$ cmake --build .
+$ ctest
+```
 
-    cmake -G "Visual Studio 15 2017 Win64" .
+To run benchmarks:
 
-Note that *fp_benchmark* is unlikely to produce valid results due to missing `escape` and `clobber` functions.
+```shell
+$ cmake -DCMAKE_BUILD_TYPE=Release
+$ cmake --build .
+$ src/benchmark/fp_benchmark
+```
 
 ## Further Reading
 
