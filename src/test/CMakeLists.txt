@@ -69,8 +69,8 @@ find_package(Boost)
 
 ExternalProject_Add(
         google_test
-        URL "https://github.com/google/googletest/archive/d6a4478caf10f5cfcfe477e576f4a290d9a49b24.zip"
-        URL_MD5 "28aedb06b73ed59ca59c1c973a197cc9"
+        URL "https://github.com/google/googletest/archive/3a4cf1a02ef4adc28fccb7eef2b573b14cd59009.zip"
+        URL_MD5 "06ac495303fbe94b198026e3c196425e"
         UPDATE_COMMAND ""
         INSTALL_COMMAND ""
         CMAKE_ARGS -Dgtest_force_shared_crt=ON
