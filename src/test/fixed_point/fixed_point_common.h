@@ -99,19 +99,12 @@ TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_alternative_specialization)
 // compound assignment
 
 namespace test_compound_assignment {
-#if defined(_MSC_VER)
-#pragma warning(push)
-#pragma warning(disable: 4018)
-#endif
     TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_f_i) {
         auto lhs = fixed_point<uint32, -16>{7};
         auto rhs = uint32{12};
         lhs += rhs;
         ASSERT_EQ(lhs, 19);
     }
-#if defined(_MSC_VER)
-#pragma warning(pop)
-#endif
 
     TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_i_f) {
         auto lhs = int32{7};

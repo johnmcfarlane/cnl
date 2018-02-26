@@ -126,6 +126,8 @@ TEST(index, advanced_arithmetic_example)
 
 
 #if defined(CNL_BOOST_ENABLED)
+#include "boost.throw_exception.h"
+
 ////////////////////////////////////////////////////////////////////////////////
 //! [boost example]
 #include <cnl/auxiliary/boost.multiprecision.h>

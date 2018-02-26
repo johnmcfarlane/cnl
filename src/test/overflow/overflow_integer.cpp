@@ -5,16 +5,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 // cnl::overflow_integer<> is intended to render warnings such as 4389 (signed/unsigned mismatch) moot
-#if defined(_MSC_VER)
-#pragma warning(push)
-#pragma warning(disable: 4389)
-#endif
 
 #include <cnl/overflow_integer.h>
-
-#if defined(_MSC_VER)
-#pragma warning(pop) 
-#endif
 
 #include "../number_test.h"
 

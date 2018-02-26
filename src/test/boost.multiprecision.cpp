@@ -13,6 +13,8 @@
 #include <boost/version.hpp>
 #include <gtest/gtest.h>
 
+#include "boost.throw_exception.h"
+
 using cnl::fixed_point;
 using cnl::multiprecision;
 using cnl::set_digits_t;
