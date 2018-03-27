@@ -49,7 +49,10 @@ namespace cnl {
         return _impl::make_fixed_point(value);
     }
 
-    namespace _named_impl {
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::multiply with fixed_point operand(s)
+
+    namespace _multiply_impl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::fp::arithmetic::fixed_point_type
 
@@ -62,16 +65,11 @@ namespace cnl {
         struct fixed_point_type<fixed_point<Rep, Exponent>> {
             using type = fixed_point<Rep, Exponent>;
         };
-    }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::multiply with fixed_point operand(s)
-
-    namespace _multiply_impl {
         template<class Lhs, class Rhs>
         struct params {
-            using lhs_type = typename _named_impl::fixed_point_type<Lhs>::type;
-            using rhs_type = typename _named_impl::fixed_point_type<Rhs>::type;
+            using lhs_type = typename fixed_point_type<Lhs>::type;
+            using rhs_type = typename fixed_point_type<Rhs>::type;
             using lhs_rep = typename lhs_type::rep;
             using rhs_rep = typename rhs_type::rep;
 
