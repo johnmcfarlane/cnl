@@ -72,7 +72,7 @@ and on *Windows 10 Professional* with *CMake 3.8.0*. Requires:
 To run tests:
 
 ```shell
-$ cmake
+$ cmake path/to/project
 $ cmake --build .
 $ ctest
 ```
