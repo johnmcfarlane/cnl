@@ -17,7 +17,7 @@
 namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::make_fixed_point
+    // cnl::make_fixed_point<Value>
 
     namespace _impl {
         // cnl::make_fixed_point without the deprecation warning
@@ -36,7 +36,7 @@ namespace cnl {
     ///
     /// \param value the value from which to make the \ref fixed_point object
     ///
-    /// \note This function is deprecated after C++14
+    /// \note This function is deprecated after C++17
     /// in favor of class template deduction.
     template<typename Value>
 #if defined(__cpp_deduction_guides)
