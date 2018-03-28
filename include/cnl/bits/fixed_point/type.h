@@ -23,6 +23,9 @@ namespace cnl {
     template<class Rep, int Exponent>
     constexpr Rep to_rep(fixed_point<Rep, Exponent> const&);
 
+    template<typename Numerator, typename Denominator>
+    struct fractional;
+
     ////////////////////////////////////////////////////////////////////////////////
     // implementation-specific definitions
 
@@ -143,6 +146,10 @@ namespace cnl {
                 :_base(floating_point_to_rep(s))
         {
         }
+
+        /// constructor taking cnl::fractional
+        template<typename Numerator, typename Denominator>
+        constexpr fixed_point(fractional<Numerator, Denominator> const& f);
 
         /// copy assignment operator taking a floating-point type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
