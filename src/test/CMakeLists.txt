@@ -21,6 +21,7 @@ set(test_sources
         constant.cpp
         fixed_point/fixed_point_built_in.cpp
         fixed_point/constants.cpp
+        fractional.cpp
         elastic/elastic_integer.cpp
         fixed_point/extras.cpp
         overflow/overflow_integer.cpp
