@@ -78,8 +78,8 @@ ExternalProject_Add(
 
 ExternalProject_Add(
         glm
-        URL "https://github.com/johnmcfarlane/glm/archive/878086621522255b14017c26d1df3b9fb0b36009.zip"
-        URL_MD5 "fe3b032c230df63474bc26549526aaec"
+        URL "https://github.com/johnmcfarlane/glm/archive/ceb6d4fd3cb24d0ff954a6470ee554e356885d0e.zip"
+        URL_MD5 "7fa4dc69b3c5a991fdf0135dbf26e22c"
         UPDATE_COMMAND ""
         INSTALL_COMMAND ""
 )
