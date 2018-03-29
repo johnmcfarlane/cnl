@@ -270,14 +270,14 @@ namespace test_from_value {
 
 #if defined(__cpp_deduction_guides)
 namespace test_deduction_guides {
-    static_assert(identical(cnl::_impl::make_fixed_point(short{123}), cnl::fixed_point(short{123})),
+    static_assert(identical(cnl::make_fixed_point(short{123}), cnl::fixed_point(short{123})),
             "cnl::fixed_point class template deduction");
-    static_assert(identical(cnl::_impl::make_fixed_point(UINT64_C(404)), cnl::fixed_point(UINT64_C(404))),
+    static_assert(identical(cnl::make_fixed_point(UINT64_C(404)), cnl::fixed_point(UINT64_C(404))),
             "cnl::fixed_point class template deduction");
 
-    static_assert(identical(cnl::_impl::make_fixed_point(cnl::constant<369>{}), cnl::fixed_point(cnl::constant<369>{})),
+    static_assert(identical(cnl::make_fixed_point(cnl::constant<369>{}), cnl::fixed_point(cnl::constant<369>{})),
             "cnl::fixed_point class template deduction");
-    static_assert(identical(cnl::_impl::make_fixed_point(cnl::constant<4>{}), cnl::fixed_point(cnl::constant<4>{})),
+    static_assert(identical(cnl::make_fixed_point(cnl::constant<4>{}), cnl::fixed_point(cnl::constant<4>{})),
             "cnl::fixed_point class template deduction");
 }
 #else
@@ -1001,7 +1001,7 @@ struct FixedPointRepTester {
     static_assert(identical(cnl::fixed_point{Rep{0}}, cnl::fixed_point<Rep, 0>{0}));
     static_assert(identical(cnl::fixed_point(Rep{0}), cnl::fixed_point<Rep, 0>(0)));
 
-    static_assert(identical(cnl::_impl::make_fixed_point(Rep{0}), cnl::fixed_point(Rep{0})));
+    static_assert(identical(cnl::make_fixed_point(Rep{0}), cnl::fixed_point(Rep{0})));
 #endif
 };
 
