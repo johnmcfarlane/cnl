@@ -145,8 +145,6 @@ function(make_test source out_target compile_flags)
         else(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
             message("Boost version is too low to use without exception handling")
         endif(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
-    else(Boost_FOUND)
-        message("Boost not found")
     endif(Boost_FOUND)
 endfunction(make_test)
 
