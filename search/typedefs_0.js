@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['elastic_5ffixed_5fpoint',['elastic_fixed_point',['../namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597',1,'cnl']]]
+  ['denominator_5ftype',['denominator_type',['../structcnl_1_1fractional.html#a787b858d5fe49df12effca35225038f7',1,'cnl::fractional']]]
 ];
