@@ -17,17 +17,7 @@
 namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::make_fixed_point
-
-    namespace _impl {
-        // cnl::make_fixed_point without the deprecation warning
-        template<typename Value>
-        constexpr auto make_fixed_point(Value const& value)
-        -> decltype(_impl::from_value<fixed_point<Value, 0>>(value))
-        {
-            return _impl::from_value<fixed_point<Value, 0>>(value);
-        }
-    }
+    // cnl::make_fixed_point<Value>
 
     /// \brief makes a fixed_point object from a given value
     ///
@@ -36,20 +26,19 @@ namespace cnl {
     ///
     /// \param value the value from which to make the \ref fixed_point object
     ///
-    /// \note This function is deprecated after C++14
+    /// \note This function is deprecated after C++17
     /// in favor of class template deduction.
     template<typename Value>
-#if defined(__cpp_deduction_guides)
-    [[deprecated("make_fixed_point is superseded by class template deduction; "
-    "please replace `make_fixed_point` with `fixed_point`")]]
-#endif
     constexpr auto make_fixed_point(Value const& value)
-    -> decltype(_impl::make_fixed_point(value))
+    -> cnl::from_value_t<fixed_point<Value, 0>, Value>
     {
-        return _impl::make_fixed_point(value);
+        return _impl::from_value<fixed_point<Value, 0>>(value);
     }
 
-    namespace _named_impl {
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::multiply with fixed_point operand(s)
+
+    namespace _multiply_impl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::fp::arithmetic::fixed_point_type
 
@@ -62,16 +51,11 @@ namespace cnl {
         struct fixed_point_type<fixed_point<Rep, Exponent>> {
             using type = fixed_point<Rep, Exponent>;
         };
-    }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::multiply with fixed_point operand(s)
-
-    namespace _multiply_impl {
         template<class Lhs, class Rhs>
         struct params {
-            using lhs_type = typename _named_impl::fixed_point_type<Lhs>::type;
-            using rhs_type = typename _named_impl::fixed_point_type<Rhs>::type;
+            using lhs_type = typename fixed_point_type<Lhs>::type;
+            using rhs_type = typename fixed_point_type<Rhs>::type;
             using lhs_rep = typename lhs_type::rep;
             using rhs_rep = typename rhs_type::rep;
 
@@ -196,27 +180,27 @@ namespace cnl {
         template<class Lhs, class RhsRep, int RhsExponent>
         struct divide<Lhs, fixed_point<RhsRep, RhsExponent>> {
             constexpr auto operator()(Lhs const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
-            -> decltype(cnl::divide(_impl::make_fixed_point(lhs), rhs))
+            -> decltype(cnl::divide(make_fixed_point(lhs), rhs))
             {
-                return cnl::divide(_impl::make_fixed_point(lhs), rhs);
+                return cnl::divide(make_fixed_point(lhs), rhs);
             }
         };
 
         template<class LhsRep, int LhsExponent, class Rhs>
         struct divide<fixed_point<LhsRep, LhsExponent>, Rhs> {
             constexpr auto operator()(fixed_point<LhsRep, LhsExponent> const& lhs, Rhs const& rhs) const
-            -> decltype(cnl::divide(lhs, _impl::make_fixed_point(rhs)))
+            -> decltype(cnl::divide(lhs, make_fixed_point(rhs)))
             {
-                return cnl::divide(lhs, _impl::make_fixed_point(rhs));
+                return cnl::divide(lhs, make_fixed_point(rhs));
             }
         };
 
         template<class Lhs, class Rhs>
         struct divide {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(cnl::divide(_impl::make_fixed_point(lhs), _impl::make_fixed_point(rhs)))
+            -> decltype(cnl::divide(make_fixed_point(lhs), make_fixed_point(rhs)))
             {
-                return cnl::divide(_impl::make_fixed_point(lhs), _impl::make_fixed_point(rhs));
+                return cnl::divide(make_fixed_point(lhs), make_fixed_point(rhs));
             }
         };
     }

@@ -9,6 +9,7 @@ set(cnl_public_headers
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/constant.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/elastic_integer.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/fixed_point.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/cnl/fractional.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/limits.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/num_traits.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/numeric.h

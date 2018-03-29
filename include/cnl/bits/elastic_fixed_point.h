@@ -22,8 +22,8 @@ namespace cnl {
 
     /// \brief literal real number approximation that uses fixed-point arithmetic and auto-widens to avoid overflow
     ///
-    /// \tparam IntegerDigits the number of integer digits that can be stored
-    /// \tparam FractionalDigits the number of fractional digits that can be stored
+    /// \tparam Digits the total number of integer and fractional digits stored
+    /// \tparam Exponent the exponent by which the number is scale
     /// \tparam Narrowest the most narrow integer type to use to represent values
     ///
     /// \sa elastic_integer

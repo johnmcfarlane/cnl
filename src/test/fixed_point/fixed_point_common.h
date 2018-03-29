@@ -1,5 +1,5 @@
 
-//          Copyright John McFarlane 2015 - 2016.
+//          Copyright John McFarlane 2015 - 2018.
 // Distributed under the Boost Software License, Version 1.0.
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -11,57 +11,9 @@
 
 #include <gtest/gtest.h>
 
-////////////////////////////////////////////////////////////////////////////////
-// test name generation
+#include "common_defs.h"
 
-#define TOKENPASTE(x, y) x ## y
-#define TOKENPASTE2(x, y) TOKENPASTE(x, y)
-
-////////////////////////////////////////////////////////////////////////////////
-// imports from std
-
-using std::is_same;
-using std::declval;
-using cnl::numeric_limits;
-
-////////////////////////////////////////////////////////////////////////////////
-// integer definitions
-//
-// depends upon test_signed and test_unsigned defined in including source file
-
-static_assert(sizeof(int)==4, "warning: many of the tests in this file assume a 4-byte integer!z");
-
-using test_signed = test_int;
-using test_unsigned = cnl::make_unsigned_t<test_signed>;
-
-using int8 = cnl::set_digits_t<test_signed, 7>;
-using uint8 = cnl::set_digits_t<test_unsigned, 8>;
-using int16 = cnl::set_digits_t<test_signed, 15>;
-using uint16 = cnl::set_digits_t<test_unsigned, 16>;
-using int32 = cnl::set_digits_t<test_signed, 31>;
-using uint32 = cnl::set_digits_t<test_unsigned, 32>;
-using int64 = cnl::set_digits_t<test_signed, 63>;
-using uint64 = cnl::set_digits_t<test_unsigned, 64>;
-
-#if defined(CNL_INT128_ENABLED)
-using int128 = cnl::set_digits_t<test_signed, 127>;
-using uint128 = cnl::set_digits_t<test_unsigned, 128>;
-#endif
-
-////////////////////////////////////////////////////////////////////////////////
-// imports from cnl
-
-template <typename Rep=test_int, int Exponent=0>
-using fixed_point = cnl::fixed_point<Rep, Exponent>;
-
-using cnl::_impl::fp::type::pow2;
-
-template<class Type, cnl::_digits_type MinNumDigits>
-using set_digits_t = cnl::set_digits_t<Type, MinNumDigits>;
-
-using cnl::multiply;
-
-using cnl::_impl::identical;
+#include "fractional_ctor.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // copy assignment
@@ -252,13 +204,17 @@ static_assert(cnl::_impl::shift<-8, 2, uint16>((uint8) 0x34)==0x0, "cnl::_impl::
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::_impl::fp::type::pow2
 
-static_assert(pow2<float, 0>()==1, "cnl::_impl::fp::type::pow2 test failed");
-static_assert(pow2<double, -1>()==.5, "cnl::_impl::fp::type::pow2 test failed");
-static_assert(pow2<long double, 1>()==2, "cnl::_impl::fp::type::pow2 test failed");
-static_assert(pow2<float, -3>()==.125, "cnl::_impl::fp::type::pow2 test failed");
-static_assert(pow2<double, 7>()==128, "cnl::_impl::fp::type::pow2 test failed");
-static_assert(pow2<long double, 10>()==1024, "cnl::_impl::fp::type::pow2 test failed");
-static_assert(pow2<float, 20>()==1048576, "cnl::_impl::fp::type::pow2 test failed");
+namespace test_pow2 {
+    using cnl::_impl::fp::type::pow2;
+
+    static_assert(pow2<float, 0>()==1, "cnl::_impl::fp::type::pow2 test failed");
+    static_assert(pow2<double, -1>()==.5, "cnl::_impl::fp::type::pow2 test failed");
+    static_assert(pow2<long double, 1>()==2, "cnl::_impl::fp::type::pow2 test failed");
+    static_assert(pow2<float, -3>()==.125, "cnl::_impl::fp::type::pow2 test failed");
+    static_assert(pow2<double, 7>()==128, "cnl::_impl::fp::type::pow2 test failed");
+    static_assert(pow2<long double, 10>()==1024, "cnl::_impl::fp::type::pow2 test failed");
+    static_assert(pow2<float, 20>()==1048576, "cnl::_impl::fp::type::pow2 test failed");
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::fixed_point<>::fixed_point
@@ -316,14 +272,14 @@ namespace test_from_value {
 
 #if defined(__cpp_deduction_guides)
 namespace test_deduction_guides {
-    static_assert(identical(cnl::_impl::make_fixed_point(short{123}), cnl::fixed_point(short{123})),
+    static_assert(identical(cnl::make_fixed_point(short{123}), cnl::fixed_point(short{123})),
             "cnl::fixed_point class template deduction");
-    static_assert(identical(cnl::_impl::make_fixed_point(UINT64_C(404)), cnl::fixed_point(UINT64_C(404))),
+    static_assert(identical(cnl::make_fixed_point(UINT64_C(404)), cnl::fixed_point(UINT64_C(404))),
             "cnl::fixed_point class template deduction");
 
-    static_assert(identical(cnl::_impl::make_fixed_point(cnl::constant<369>{}), cnl::fixed_point(cnl::constant<369>{})),
+    static_assert(identical(cnl::make_fixed_point(cnl::constant<369>{}), cnl::fixed_point(cnl::constant<369>{})),
             "cnl::fixed_point class template deduction");
-    static_assert(identical(cnl::_impl::make_fixed_point(cnl::constant<4>{}), cnl::fixed_point(cnl::constant<4>{})),
+    static_assert(identical(cnl::make_fixed_point(cnl::constant<4>{}), cnl::fixed_point(cnl::constant<4>{})),
             "cnl::fixed_point class template deduction");
 }
 #else
@@ -344,51 +300,56 @@ namespace test_make_fixed_point {
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::set_digits_t<fixed_point<>, >
 
-static_assert(identical(set_digits_t<fixed_point<uint8, -8>, 8>{0}, fixed_point<uint8, -8>{0}),
-        "cnl::set_digits_t test failed");
-static_assert(is_same<set_digits_t<fixed_point<int8, 8>, 15>, fixed_point<int16, 8>>::value,
-        "cnl::set_digits_t test failed");
-static_assert(is_same<set_digits_t<fixed_point<uint16, -16>, 24>, fixed_point<uint32, -16>>::value,
-        "cnl::set_digits_t test failed");
-static_assert(is_same<set_digits_t<fixed_point<int16, 16>, 31>, fixed_point<int32, 16>>::value,
-        "cnl::set_digits_t test failed");
-static_assert(is_same<set_digits_t<fixed_point<uint32, -45>, 40>, fixed_point<uint64, -45>>::value,
-        "cnl::set_digits_t test failed");
-static_assert(is_same<set_digits_t<fixed_point<int32, -8>, 47>, fixed_point<int64, -8>>::value,
-        "cnl::set_digits_t test failed");
-static_assert(is_same<set_digits_t<fixed_point<uint64, 8>, 56>, fixed_point<uint64, 8>>::value,
-        "cnl::set_digits_t test failed");
-static_assert(is_same<set_digits_t<fixed_point<int64, -16>, 63>, fixed_point<int64, -16>>::value,
-        "cnl::set_digits_t test failed");
+namespace test_set_digits_t {
+    template<class Type, cnl::_digits_type MinNumDigits>
+    using set_digits_t = cnl::set_digits_t<Type, MinNumDigits>;
+
+    static_assert(identical(set_digits_t<fixed_point<uint8, -8>, 8>{0}, fixed_point < uint8, -8 > {0}),
+                  "cnl::set_digits_t test failed");
+    static_assert(is_same<set_digits_t<fixed_point<int8, 8>, 15>, fixed_point<int16, 8>>::value,
+                  "cnl::set_digits_t test failed");
+    static_assert(is_same<set_digits_t<fixed_point<uint16, -16>, 24>, fixed_point<uint32, -16>>::value,
+                  "cnl::set_digits_t test failed");
+    static_assert(is_same<set_digits_t<fixed_point<int16, 16>, 31>, fixed_point<int32, 16>>::value,
+                  "cnl::set_digits_t test failed");
+    static_assert(is_same<set_digits_t<fixed_point<uint32, -45>, 40>, fixed_point<uint64, -45>>::value,
+                  "cnl::set_digits_t test failed");
+    static_assert(is_same<set_digits_t<fixed_point<int32, -8>, 47>, fixed_point<int64, -8>>::value,
+                  "cnl::set_digits_t test failed");
+    static_assert(is_same<set_digits_t<fixed_point<uint64, 8>, 56>, fixed_point<uint64, 8>>::value,
+                  "cnl::set_digits_t test failed");
+    static_assert(is_same<set_digits_t<fixed_point<int64, -16>, 63>, fixed_point<int64, -16>>::value,
+                  "cnl::set_digits_t test failed");
 #if defined(CNL_INT128_ENABLED)
-static_assert(is_same<set_digits_t<fixed_point<uint8, 16>, 72>, fixed_point<uint128, 16>>::value,
-        "cnl::set_digits_t test failed");
-static_assert(is_same<set_digits_t<fixed_point<int8, -45>, 79>, fixed_point<int128, -45>>::value,
-        "cnl::set_digits_t test failed");
-static_assert(is_same<set_digits_t<fixed_point<uint16, -8>, 88>, fixed_point<uint128, -8>>::value,
-        "cnl::set_digits_t test failed");
-static_assert(is_same<set_digits_t<fixed_point<int16, 8>, 95>, fixed_point<int128, 8>>::value,
-        "cnl::set_digits_t test failed");
-static_assert(is_same<set_digits_t<fixed_point<uint32, -16>, 104>, fixed_point<uint128, -16>>::value,
-        "cnl::set_digits_t test failed");
-static_assert(is_same<set_digits_t<fixed_point<int32, 16>, 111>, fixed_point<int128, 16>>::value,
-        "cnl::set_digits_t test failed");
-static_assert(is_same<set_digits_t<fixed_point<uint64, -45>, 120>, fixed_point<uint128, -45>>::value,
-        "cnl::set_digits_t test failed");
-static_assert(is_same<set_digits_t<fixed_point<int64, -8>, 127>, fixed_point<int128, -8>>::value,
-        "cnl::set_digits_t test failed");
+    static_assert(is_same<set_digits_t<fixed_point<uint8, 16>, 72>, fixed_point<uint128, 16>>::value,
+                  "cnl::set_digits_t test failed");
+    static_assert(is_same<set_digits_t<fixed_point<int8, -45>, 79>, fixed_point<int128, -45>>::value,
+                  "cnl::set_digits_t test failed");
+    static_assert(is_same<set_digits_t<fixed_point<uint16, -8>, 88>, fixed_point<uint128, -8>>::value,
+                  "cnl::set_digits_t test failed");
+    static_assert(is_same<set_digits_t<fixed_point<int16, 8>, 95>, fixed_point<int128, 8>>::value,
+                  "cnl::set_digits_t test failed");
+    static_assert(is_same<set_digits_t<fixed_point<uint32, -16>, 104>, fixed_point<uint128, -16>>::value,
+                  "cnl::set_digits_t test failed");
+    static_assert(is_same<set_digits_t<fixed_point<int32, 16>, 111>, fixed_point<int128, 16>>::value,
+                  "cnl::set_digits_t test failed");
+    static_assert(is_same<set_digits_t<fixed_point<uint64, -45>, 120>, fixed_point<uint128, -45>>::value,
+                  "cnl::set_digits_t test failed");
+    static_assert(is_same<set_digits_t<fixed_point<int64, -8>, 127>, fixed_point<int128, -8>>::value,
+                  "cnl::set_digits_t test failed");
 #if defined(__GNUC__)
 // GCC complains about __int128 with -pedantic or -pedantic-errors
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
 #endif
-static_assert(
-        is_same<cnl::set_digits_t<cnl::fixed_point<long unsigned int, -96>, 96u>, cnl::fixed_point<unsigned __int128, -96>>::value,
-        "");
+    static_assert(
+            is_same<cnl::set_digits_t<cnl::fixed_point<long unsigned int, -96>, 96u>, cnl::fixed_point<unsigned __int128, -96>>::value,
+            "");
 #if defined(__GNUC__)
 #pragma GCC diagnostic pop
 #endif
 #endif
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -569,8 +530,8 @@ namespace test_arithmetic {
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::multiply
 
-static_assert(numeric_limits<uint8>::max()/5==51, "");
-static_assert(numeric_limits<uint8>::max()/3==85, "");
+static_assert(cnl::numeric_limits<uint8>::max()/5==51, "");
+static_assert(cnl::numeric_limits<uint8>::max()/3==85, "");
 
 static_assert(identical(multiply(fixed_point<uint8, -4>{2}, fixed_point<uint8, -4>{7.5}), fixed_point<uint16, -8>{15}),
         "cnl::multiply test failed");
@@ -810,8 +771,8 @@ template<class Rep, int Exponent, class Min, class Max, class Lowest>
 constexpr bool test_numeric_limits(Min min, Max max, Lowest lowest)
 {
     using fp = fixed_point<Rep, Exponent>;
-    using nl = numeric_limits<fp>;
-    using rnl = numeric_limits<Rep>;
+    using nl = cnl::numeric_limits<fp>;
+    using rnl = cnl::numeric_limits<Rep>;
 
     static_assert(cnl::numeric_limits<Rep>::is_specialized,
                   "cnl::numeric_limits<Rep>::is_specialized");
@@ -856,49 +817,49 @@ constexpr bool test_numeric_limits(Min min, Max max, Lowest lowest)
             && nl::denorm_min()==min;
 }
 
-static_assert(numeric_limits<fixed_point<test_int, -256>>::lowest() < -.1e-67, "numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_int, -256>>::min() > 0., "numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_int, -256>>::min() < .1e-76, "numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_int, -256>>::max() > .1e-67, "numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_int, -256>>::lowest() < -.1e-67, "cnl::numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_int, -256>>::min() > 0., "cnl::numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_int, -256>>::min() < .1e-76, "cnl::numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_int, -256>>::max() > .1e-67, "cnl::numeric_limits<fixed_point> test failed");
 
-static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::lowest() == 0., "numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::min() > 0., "numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::min() < .1e-76, "numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_unsigned, -256>>::max() > .1e-67, "numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_unsigned, -256>>::lowest() == 0., "cnl::numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_unsigned, -256>>::min() > 0., "cnl::numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_unsigned, -256>>::min() < .1e-76, "cnl::numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_unsigned, -256>>::max() > .1e-67, "cnl::numeric_limits<fixed_point> test failed");
 
 static_assert(test_numeric_limits<test_signed, -16>(1/65536.,
-        numeric_limits<test_signed>::max()/65536.,
-        numeric_limits<test_signed>::lowest()/65536.), "");
+        cnl::numeric_limits<test_signed>::max()/65536.,
+        cnl::numeric_limits<test_signed>::lowest()/65536.), "");
 
 static_assert(test_numeric_limits<test_unsigned, -16>(1/65536.,
-        numeric_limits<test_unsigned>::max()/65536.,
-        numeric_limits<test_unsigned>::lowest()/65536.), "");
+        cnl::numeric_limits<test_unsigned>::max()/65536.,
+        cnl::numeric_limits<test_unsigned>::lowest()/65536.), "");
 
 static_assert(test_numeric_limits<test_signed, 0>(1,
-        numeric_limits<test_signed>::max(),
-        numeric_limits<test_signed>::lowest()), "");
+        cnl::numeric_limits<test_signed>::max(),
+        cnl::numeric_limits<test_signed>::lowest()), "");
 
 static_assert(test_numeric_limits<test_unsigned, 0U>(1U,
-        numeric_limits<test_unsigned>::max(),
-        numeric_limits<test_unsigned>::lowest()), "");
+        cnl::numeric_limits<test_unsigned>::max(),
+        cnl::numeric_limits<test_unsigned>::lowest()), "");
 
 static_assert(test_numeric_limits<test_signed, 16>(65536.,
-        numeric_limits<test_signed>::max()*65536.,
-        numeric_limits<test_signed>::lowest()*65536.), "");
+        cnl::numeric_limits<test_signed>::max()*65536.,
+        cnl::numeric_limits<test_signed>::lowest()*65536.), "");
 
 static_assert(test_numeric_limits<test_unsigned, 16>(65536.,
-        numeric_limits<test_unsigned>::max()*65536.,
-        numeric_limits<test_unsigned>::lowest()*65536.), "");
+        cnl::numeric_limits<test_unsigned>::max()*65536.,
+        cnl::numeric_limits<test_unsigned>::lowest()*65536.), "");
 
-static_assert(numeric_limits<fixed_point<test_int, 256>>::lowest() < -1.e86, "numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_int, 256>>::min() > 1.e77, "numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_int, 256>>::min() < 1.e78, "numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_int, 256>>::max() > 1.e86, "numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_int, 256>>::lowest() < -1.e86, "cnl::numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_int, 256>>::min() > 1.e77, "cnl::numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_int, 256>>::min() < 1.e78, "cnl::numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_int, 256>>::max() > 1.e86, "cnl::numeric_limits<fixed_point> test failed");
 
-static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::lowest() == 0., "numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::min() > 1.e77, "numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::min() < 1.e78, "numeric_limits<fixed_point> test failed");
-static_assert(numeric_limits<fixed_point<test_unsigned, 256>>::max() > 1.e86, "numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_unsigned, 256>>::lowest() == 0., "cnl::numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_unsigned, 256>>::min() > 1.e77, "cnl::numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_unsigned, 256>>::min() < 1.e78, "cnl::numeric_limits<fixed_point> test failed");
+static_assert(cnl::numeric_limits<fixed_point<test_unsigned, 256>>::max() > 1.e86, "cnl::numeric_limits<fixed_point> test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::sqrt
@@ -1042,7 +1003,7 @@ struct FixedPointRepTester {
     static_assert(identical(cnl::fixed_point{Rep{0}}, cnl::fixed_point<Rep, 0>{0}));
     static_assert(identical(cnl::fixed_point(Rep{0}), cnl::fixed_point<Rep, 0>(0)));
 
-    static_assert(identical(cnl::_impl::make_fixed_point(Rep{0}), cnl::fixed_point(Rep{0})));
+    static_assert(identical(cnl::make_fixed_point(Rep{0}), cnl::fixed_point(Rep{0})));
 #endif
 };
 
