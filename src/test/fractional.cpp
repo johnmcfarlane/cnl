@@ -24,6 +24,8 @@ namespace {
         static_assert(identical(
                 3.14285714285714285714f,
                 static_cast<float>(cnl::fractional{22, 7})), "cnl::fractional deduction guide");
+
+        static_assert(identical(cnl::fractional<int, int>{4321, 1}, cnl::fractional{4321}));
     }
 #endif
 
@@ -55,6 +57,10 @@ namespace {
         static_assert(identical(
                 cnl::make_fractional(3LL, 6),
                 cnl::make_fractional(1LL, 3)/cnl::make_fractional(2, 3)), "operator*(cnl::fractional, cnl::fractional)");
+
+        static_assert(identical(
+                cnl::make_fractional(1)/cnl::make_fractional(3),
+                cnl::make_fractional(1, 3)), "operator/(cnl::fractional, cnl::fractional)");
     }
 
     namespace test_operator_equal {

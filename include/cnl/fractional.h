@@ -24,13 +24,19 @@ namespace cnl {
     /// \tparam Numerator the type of numerator
     /// \tparam Exponent the type of denominator
 
-    template<typename Numerator, typename Denominator>
+    template<typename Numerator, typename Denominator = int>
     struct fractional {
         /// alias to `Numerator`
         using numerator_type = Numerator;
 
         /// alias to `Denominator`
         using denominator_type = Denominator;
+
+        explicit constexpr fractional(Numerator const& n, Denominator const& d)
+                : numerator{n}, denominator{d} {}
+
+        explicit constexpr fractional(Numerator const& n)
+                : numerator{n}, denominator{1} {}
 
         /// returns the quotient, \ref numerator `/` \ref denominator
         template<typename Scalar, _impl::enable_if_t<std::is_floating_point<Scalar>::value, int> = 0>
@@ -43,14 +49,18 @@ namespace cnl {
         numerator_type numerator;
 
         /// the denominator (bottom number) of the fraction
-        denominator_type denominator;
+        denominator_type denominator = 1;
     };
 
 #if defined(__cpp_deduction_guides)
-    // cnl::fractional deduction guide
+    // cnl::fractional deduction guides
     template<typename Numerator, typename Denominator>
     fractional(Numerator const& n, Denominator const& d)
     -> fractional<Numerator, Denominator>;
+
+    template<typename Numerator>
+    fractional(Numerator const& n)
+    -> fractional<Numerator, int>;
 #endif
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -61,6 +71,13 @@ namespace cnl {
     constexpr fractional<Numerator, Denominator> make_fractional(Numerator const& n, Denominator const& d)
     {
         return fractional<Numerator, Denominator>{n, d};
+    }
+
+    /// creates a fractional value with types deduced from the numerator
+    template<typename Numerator>
+    constexpr fractional<Numerator, Numerator> make_fractional(Numerator const& n)
+    {
+        return fractional<Numerator, Numerator>{n, 1};
     }
 
     ////////////////////////////////////////////////////////////////////////////////
