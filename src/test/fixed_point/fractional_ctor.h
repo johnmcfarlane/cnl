@@ -55,6 +55,21 @@ namespace {
                 identical(cnl::fixed_point<uint8, -4>{0.1875}, cq),
                 "cnl::fixed_point::fixed_point(fractional) w.out CTAD");
     }
+
+    namespace test_fractional_third {
+        using cnl::fixed_point;
+        using cnl::fractional;
+
+        constexpr auto third = cnl::make_fractional(test_int{1}, test_int{3});
+
+#if defined(__cpp_deduction_guides)
+        constexpr auto deduced = fixed_point{third};
+        static_assert(identical(fixed_point<int64, -31>{0.333333333022892475128173828125L}, deduced));
+#endif
+
+        constexpr auto specific = fixed_point<uint8, -8>{third};
+        static_assert(identical(fixed_point<uint8, -8>{0.33203125}, specific), "");
+    }
 }
 
 #endif //CNL_FRACTIONAL_CTOR_H
