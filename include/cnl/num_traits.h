@@ -436,10 +436,10 @@ namespace cnl {
         // for most implementations of cnl::shift,
         // inheriting from this implementation is adequate
         template<int Digits, int Radix, class S, class Enable = void>
-        struct default_scale;
+        struct default_shift;
 
         template<int Bits, class S>
-        struct default_scale<Bits, 2, S, _impl::enable_if_t<0<=Bits>> {
+        struct default_shift<Bits, 2, S, _impl::enable_if_t<0<=Bits>> {
             constexpr auto operator()(S const& s) const
             -> decltype(s*(S{1} << constant<Bits>{}))
             {
@@ -447,9 +447,9 @@ namespace cnl {
             }
         };
 
-        // cnl::default_scale<-ve, cnl::constant<>>
+        // cnl::default_shift<-ve, cnl::constant<>>
         template<int Bits, class S>
-        struct default_scale<Bits, 2, S, _impl::enable_if_t<Bits<0>> {
+        struct default_shift<Bits, 2, S, _impl::enable_if_t<Bits<0>> {
             constexpr auto operator()(S const& s) const
             -> decltype(s/(S{1} << constant<-Bits>()))
             {
@@ -461,7 +461,7 @@ namespace cnl {
     // cnl::shift<..., fundamental-integer>
     template<int Digits, int Radix, class S>
     struct shift<Digits, Radix, S, _impl::enable_if_t<cnl::is_integral<S>::value>>
-            : _impl::default_scale<Digits, Radix, S> {
+            : _impl::default_shift<Digits, Radix, S> {
     };
 
     namespace _impl {
