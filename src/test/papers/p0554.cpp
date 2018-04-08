@@ -32,14 +32,18 @@ namespace {
         using cnl::elastic_fixed_point;
         constexpr elastic_fixed_point<7, -6> numerator = 0.5, denominator = 1.0;
         constexpr auto quotient = numerator / denominator;
-        static_assert(identical(quotient, elastic_fixed_point<14, -7>{.5}), "position_paper test failed");
+        static_assert(identical(quotient, elastic_fixed_point<7, 0>{0}), "position_paper test failed");
     }
 
+#if defined(__cpp_deduction_guides)
     namespace division2 {
         using cnl::elastic_fixed_point;
+        using cnl::fixed_point;
+        using cnl::fractional;
         constexpr elastic_fixed_point<7, -6> numerator = 1.125; // 1:6
         constexpr elastic_fixed_point<5, -3> denominator = 4.;  // 2:3
-        constexpr auto quotient = numerator / denominator;
+        constexpr auto quotient = fixed_point{fractional{numerator, denominator}};
         static_assert(identical(quotient, elastic_fixed_point<12, -8>{0.28125}), "position_paper test failed");
     }
+#endif
 }

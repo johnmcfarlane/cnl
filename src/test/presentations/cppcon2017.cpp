@@ -148,7 +148,7 @@ namespace m {
     static_assert(cnl::_impl::identical(fixed_point<elastic_integer<62>, -62>{0.9922027587890625}, sq), "");
 
 #if defined(CNL_INT128_ENABLED)
-    constexpr auto q = sq / sq;
+    constexpr auto q = make_fixed_point(make_fractional(sq, sq));
     static_assert(cnl::_impl::identical(fixed_point<elastic_integer<124>, -62>{1}, q), "");
 #endif
 }

@@ -117,40 +117,6 @@ namespace cnl {
                     constant<_cnlint_impl::parse<sizeof...(Chars)+1>({Chars..., '\0'})>{});
         }
     }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::elastic_fixed_point division operators
-
-    template<
-            int NumeratorDigits, int NumeratorExponent, class NumeratorNarrowest,
-            int DenominatorDigits, int DenominatorExponent, class DenominatorNarrowest>
-    constexpr auto operator/(
-            elastic_fixed_point<NumeratorDigits, NumeratorExponent, NumeratorNarrowest> const& numerator,
-            elastic_fixed_point<DenominatorDigits, DenominatorExponent, DenominatorNarrowest> const& denominator)
-    -> decltype(divide(numerator, denominator)) {
-        return divide(numerator, denominator);
-    }
-
-    template<
-            int NumeratorDigits, int NumeratorExponent, class NumeratorNarrowest,
-            int DenominatorDigits, class DenominatorNarrowest>
-    constexpr auto operator/(
-            elastic_fixed_point<NumeratorDigits, NumeratorExponent, NumeratorNarrowest> const& numerator,
-            elastic_integer<DenominatorDigits, DenominatorNarrowest> const& denominator)
-    -> decltype(divide(numerator, denominator)) {
-        return divide(numerator, denominator);
-    }
-
-    template<
-            int NumeratorDigits, class NumeratorNarrowest,
-            int DenominatorDigits, int DenominatorExponent, class DenominatorNarrowest>
-    constexpr auto operator/(
-            elastic_integer<NumeratorDigits, NumeratorNarrowest> const& numerator,
-            elastic_fixed_point<DenominatorDigits, DenominatorExponent, DenominatorNarrowest> const& denominator)
-    -> decltype(divide(numerator, denominator)) {
-        return divide(numerator, denominator);
-    }
 }
 
 #endif  // CNL_ELASTIC_FIXED_POINT_H

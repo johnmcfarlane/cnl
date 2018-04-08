@@ -76,9 +76,15 @@ namespace test_division {
     using cnl::elastic_integer;
     using cnl::fixed_point;
 
-    static_assert(identical(elastic_fixed_point<62, -31>{.5}, elastic_fixed_point<31, 0>{1}/elastic_fixed_point<31, 0>{2}), "cnl::elastic_fixed_point division");
+    static_assert(identical(
+            elastic_fixed_point<62, - 31>{.5},
+            make_fixed_point(cnl::make_fractional(elastic_fixed_point<31, 0>{1}, elastic_fixed_point<31, 0>{2}))),
+            "cnl::elastic_fixed_point division");
 #if defined(CNL_INT128_ENABLED)
-    static_assert(identical(elastic_fixed_point<124, -62>{.5}, elastic_fixed_point<62, 0>{1}/elastic_fixed_point<62, 0>{2}), "cnl::elastic_fixed_point division");
+    static_assert(identical(
+            elastic_fixed_point<124, -62>{.5},
+            make_fixed_point(cnl::make_fractional(elastic_fixed_point<62, 0>{1}, elastic_fixed_point<62, 0>{2}))),
+            "cnl::elastic_fixed_point division");
 #endif
 }
 
@@ -315,9 +321,17 @@ struct positive_elastic_test
     static_assert(cnl::numeric_limits<decltype(signed_type{zero}/unsigned_type{zero})>::is_signed,
                   "signedness is lost during multiply");
 #if ! defined(_MSC_VER)
-    static_assert(identical(elastic_fixed_point<10, -5>{1.5}/elastic_integer<2>{2}, elastic_fixed_point<12, -7>{3./4}),
+    static_assert(identical(
+            cnl::elastic_fixed_point<12, -7>{3./4},
+            cnl::make_fixed_point(cnl::make_fractional(
+                    cnl::elastic_fixed_point<10, -5>{1.5},
+                    cnl::elastic_integer<2>{2}))),
                   "operator/ test failed");
-    static_assert(identical(elastic_integer<2>{2}/elastic_fixed_point<10, -5>{1.5}, elastic_fixed_point<12, -5>{4./3}),
+    static_assert(identical(
+            cnl::elastic_fixed_point<12, -5>{4./3},
+            cnl::make_fixed_point(cnl::make_fractional(
+                    cnl::elastic_integer<2>{2},
+                    cnl::elastic_fixed_point<10, -5>{1.5}))),
                   "operator/ test failed");
 #endif
 
@@ -335,7 +349,8 @@ TEST(elastic_fixed_point, over_int) {
 }
 
 TEST(elastic_fixed_point, int_over) {
-    auto q = elastic_integer<2>{2}/elastic_fixed_point<10, -5>{1.5};
+    auto f = cnl::make_fractional(elastic_integer<2>{2}, elastic_fixed_point<10, -5>{1.5});
+    auto q = cnl::make_fixed_point(f);
     auto e = elastic_fixed_point<12, -5>{4./3};
     EXPECT_EQ(e, q);
 }
