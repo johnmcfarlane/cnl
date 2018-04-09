@@ -53,7 +53,7 @@ namespace cnl {
     };
 
     template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Value>
-    struct from_value<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked>, Value> {
+    struct from_value<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked, void>, Value> {
     private:
         static constexpr auto _digits = digits<Value>::value;
         static constexpr auto _is_signed = is_signed<Value>::value;
