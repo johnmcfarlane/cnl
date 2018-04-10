@@ -51,6 +51,7 @@ set(sample_sources
         papers/p0827.cpp
         papers/p0828.cpp
         papers/p0554.cpp
+        presentations/cppdub2018.cpp
         fixed_point/p0037.cpp
         zero_cost_square.cpp
         zero_cost_free_functions.cpp
@@ -162,6 +163,7 @@ endforeach(source)
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     set_source_files_properties(
             cppcon2017.cpp
+            presentations/cppdub2018.cpp
             PROPERTIES COMPILE_FLAGS "-Wno-strict-overflow")
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
     set_source_files_properties(
