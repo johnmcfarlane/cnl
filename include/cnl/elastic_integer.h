@@ -29,7 +29,7 @@ namespace cnl {
     /// For instance, when two \ref elastic_integer values are multiplied together,
     /// the resultant type has Digits set to the sum of the operands.
     ///
-    /// \sa cnl::elastic_fixed_point
+    /// \sa cnl::elastic_number
     template<int Digits, class Narrowest>
     class elastic_integer;
 

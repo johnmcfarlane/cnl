@@ -37,8 +37,8 @@ set(test_sources
         elastic/rounding/overflow/rounding_safe_integer.cpp
         fixed_point/elastic/rounding/overflow/rounding_safe_fixed_point.cpp
         overflow/elastic/safe_integer.cpp
-        fixed_point/elastic/make_elastic_fixed_point.cpp
-        fixed_point/elastic/elastic_fixed_point.cpp
+        fixed_point/elastic/make_elastic_number.cpp
+        fixed_point/elastic/elastic_number.cpp
 )
 
 # source files containing demos and examples of CNL;

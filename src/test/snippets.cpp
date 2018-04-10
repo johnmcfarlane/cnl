@@ -4,7 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/fixed_point.h>
+#include <cnl/elastic_number.h>
 
 using namespace cnl;
 
@@ -19,22 +19,22 @@ static_assert(n==-2.75, "fixed-point type was unable to store the value");
 }
 
 namespace define_a_fast_object_using_make_elastic {
-//! [define an int-sized object using make_elastic_fixed_point and constant]
+//! [define an int-sized object using make_elastic_number and constant]
 // std::uint8_t specifies the type of const_integer - not elastic
-constexpr auto n = make_elastic_fixed_point(constant<0xAA>{});
+constexpr auto n = make_elastic_number(constant<0xAA>{});
 
 static_assert(n==0xAA, "n now has the value, 1024");
-static_assert(std::is_same<decltype(n), elastic_fixed_point<7, 1, int> const>::value, "by default make_elastic_fixed_point uses the most efficient type it can");
-//! [define an int-sized object using make_elastic_fixed_point and constant]
+static_assert(std::is_same<decltype(n), elastic_number<7, 1, int> const>::value, "by default make_elastic_number uses the most efficient type it can");
+//! [define an int-sized object using make_elastic_number and constant]
 }
 
 namespace define_a_small_object_using_make_elastic {
-//! [define a byte-sized object using \ref make_elastic_fixed_point and \ref _c]
-constexpr auto n = make_elastic_fixed_point<char>(constant<1536>{});
+//! [define a byte-sized object using \ref make_elastic_number and \ref _c]
+constexpr auto n = make_elastic_number<char>(constant<1536>{});
 
 static_assert(n==1536, "n now has the value, 1536");
-static_assert(std::is_same<decltype(n), elastic_fixed_point<2, 9, char> const>::value, "by default make_elastic_fixed_point uses the most efficient type it can");
-//! [define a byte-sized object using \ref make_elastic_fixed_point and \ref _c]
+static_assert(std::is_same<decltype(n), elastic_number<2, 9, char> const>::value, "by default make_elastic_number uses the most efficient type it can");
+//! [define a byte-sized object using \ref make_elastic_number and \ref _c]
 }
 
 namespace define_a_fast_object_using_elastic_literal {
@@ -43,7 +43,7 @@ using namespace cnl::literals;
 constexpr auto n = 34_elastic;
 
 static_assert(n==34, "n now has the value, 1536");
-static_assert(std::is_same<decltype(n), elastic_fixed_point<5, 1> const>::value, "type only uses 1 bit of range");
+static_assert(std::is_same<decltype(n), elastic_number<5, 1> const>::value, "type only uses 1 bit of range");
 //! [define an object using elastic literal]
 }
 

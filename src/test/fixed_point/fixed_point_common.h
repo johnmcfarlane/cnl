@@ -226,7 +226,7 @@ namespace ctor {
 #endif
 
 #if !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_SATURATED_OVERFLOW)
-    // the equivalent test in elastic_fixed_point.cpp does not lose information
+    // the equivalent test in elastic_number.cpp does not lose information
     static_assert(identical(uint32{0x00003210U}, uint32(fixed_point<uint64, -16>{0x76543210U})), "fixed_point<>::fixed_point");
 #endif
 

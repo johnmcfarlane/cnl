@@ -48,10 +48,10 @@ TEST(safft, fft_fixed_point)
     unsigned int impulseLoc =15; //Some index smaller than fftSize
     double twopi = M_PI*2.0;
 
-    using elastic_fixed_point = cnl::elastic_fixed_point<30, -16>;
-    using complex = std::complex<elastic_fixed_point>;
-    elastic_fixed_point zero = 0;
-    elastic_fixed_point one = 1;
+    using elastic_number = cnl::elastic_number<30, -16>;
+    using complex = std::complex<elastic_number>;
+    elastic_number zero = 0;
+    elastic_number one = 1;
     complex czero = complex (zero,zero);
     complex cone = complex (one,zero);
 
@@ -59,7 +59,7 @@ TEST(safft, fft_fixed_point)
     fix_vec1[impulseLoc] = cone;
     std::vector <complex> fix_vec2(fftSize, czero);
 
-    Algorithms::SaFFT<elastic_fixed_point> fix_engine(fftSize);
+    Algorithms::SaFFT<elastic_number> fix_engine(fftSize);
 
     unsigned int fix_ret = fix_engine.fft(fix_vec1, fix_vec2);
     auto fix_ptr = (fix_ret == 0) ? &fix_vec1[0] : &fix_vec2[0];
@@ -79,23 +79,23 @@ TEST(safft, fft_fixed_point)
     }
 }
 
-TEST(safft, fft_elastic_fixed_point)
+TEST(safft, fft_elastic_number)
 {
     unsigned int fftSize = 1<<14;
     unsigned int impulseLoc = 15; //Some index smaller than fftSize
     double twopi = M_PI*2.0;
 
-    using elastic_fixed_point = cnl::elastic_fixed_point<30, -16>;
-    elastic_fixed_point zero = static_cast<elastic_fixed_point>(0);
-    elastic_fixed_point one = static_cast<elastic_fixed_point>(1);
-    std::complex<elastic_fixed_point > czero = std::complex<elastic_fixed_point> (zero,zero);
-    std::complex<elastic_fixed_point > cone = std::complex<elastic_fixed_point> (one,zero);
+    using elastic_number = cnl::elastic_number<30, -16>;
+    elastic_number zero = static_cast<elastic_number>(0);
+    elastic_number one = static_cast<elastic_number>(1);
+    std::complex<elastic_number > czero = std::complex<elastic_number> (zero,zero);
+    std::complex<elastic_number > cone = std::complex<elastic_number> (one,zero);
 
-    std::vector <std::complex<elastic_fixed_point > > vec1(fftSize, czero);
+    std::vector <std::complex<elastic_number > > vec1(fftSize, czero);
     vec1[impulseLoc] = cone;
-    std::vector <std::complex<elastic_fixed_point > > vec2(fftSize, czero);
+    std::vector <std::complex<elastic_number > > vec2(fftSize, czero);
 
-    Algorithms::SaFFT<elastic_fixed_point> fix_engine(fftSize);
+    Algorithms::SaFFT<elastic_number> fix_engine(fftSize);
 
     unsigned int ret = fix_engine.fft(vec1, vec2);
     auto ptr = (ret == 0) ? &vec1[0] : &vec2[0];

@@ -8,6 +8,7 @@ set(cnl_public_headers
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/cnlint.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/constant.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/elastic_integer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/cnl/elastic_number.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/fixed_point.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/fractional.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/limits.h
@@ -35,7 +36,6 @@ set(cnl_implementation_headers
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/operators.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/common.h
         ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/number_base.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/cnl/bits/elastic_fixed_point.h
 )
 
 target_sources(cnl INTERFACE ${cnl_public_headers} ${cnl_implementation_headers})

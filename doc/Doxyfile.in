@@ -21,7 +21,6 @@ INPUT = \
     ../include/cnl/bit.h \
     ../include/cnl/bits/common.h \
     ../include/cnl/bits/config.h \
-    ../include/cnl/bits/elastic_fixed_point.h \
     ../include/cnl/bits/encompasses.h \
     ../include/cnl/bits/fixed_point/common_type.h \
     ../include/cnl/bits/fixed_point/constants.h \
@@ -38,6 +37,7 @@ INPUT = \
     ../include/cnl/cnlint.h \
     ../include/cnl/constant.h \
     ../include/cnl/elastic_integer.h \
+    ../include/cnl/elastic_number.h \
     ../include/cnl/fixed_point.h \
     ../include/cnl/fractional.h \
     ../include/cnl/integral_constant.h \
