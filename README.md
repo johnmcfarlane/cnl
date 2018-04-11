@@ -39,7 +39,11 @@ The API is exposed through headers in the [include](./include/) directory.
 Add this to your system header list and include, e.g.:
 
 ```c++
+// to use a specific type:
 #include <cnl/fixed_point.h>
+
+// or to include all CNL types:
+#include <cnl.h>
 ```
 
 ## Requirements
