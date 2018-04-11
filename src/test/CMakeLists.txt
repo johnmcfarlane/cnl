@@ -193,7 +193,11 @@ add_dependencies(test-glm glm)
 if(Boost_FOUND AND Boost_VERSION GREATER 106099)
     # Boost.SIMD has problems building with gcc-7.x
     if(NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
-        make_test(boost.simd.cpp target "-Wno-conversion -DCNL_BOOST_SIMD_ENABLED")
+        if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
+            make_test(boost.simd.cpp target "-Wno-conversion")
+        else ()
+            make_test(boost.simd.cpp target "")
+        endif ()
 
         ExternalProject_Add(
             boost.simd
@@ -201,6 +205,7 @@ if(Boost_FOUND AND Boost_VERSION GREATER 106099)
             URL_MD5 "74fc0bc279a18f931e4d2ec026af8dd4"
             UPDATE_COMMAND ""
             INSTALL_COMMAND ""
+            CMAKE_ARGS "-DBoost_INCLUDE_DIR=${Boost_INCLUDE_DIR}"
         )
         add_dependencies("${target}" boost.simd)
 
