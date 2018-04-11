@@ -33,7 +33,7 @@ void test_function(void(* function)(), char const* output)
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [declaration example]
-#include <cnl/fixed_point.h>
+#include <cnl.h>
 #include <iostream>
 
 using cnl::fixed_point;
@@ -173,8 +173,6 @@ TEST(index, boost_example)
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [elastic example]
-#include <cnl/elastic_integer.h>
-
 using cnl::elastic_integer;
 
 void elastic_example1()
@@ -194,7 +192,6 @@ void elastic_example1()
     static_assert(is_same<decltype(a2), elastic_integer<7, int8_t >> ::value, "");
 }
 
-#include <cnl/elastic_number.h>
 using cnl::elastic_number;
 
 void elastic_example2()
