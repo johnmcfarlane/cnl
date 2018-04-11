@@ -113,10 +113,15 @@ function(add_gtest_dependency target)
 endfunction(add_gtest_dependency)
 
 ######################################################################
-# test main
+# test main - per-test main function initializes gtest
 
 add_library(test_main main.cpp)
 add_gtest_dependency(test_main)
+
+######################################################################
+# tests - the full suite of tests
+
+add_custom_target(tests)
 
 ######################################################################
 # make_test
@@ -147,6 +152,8 @@ function(make_test source out_target compile_flags)
             message("Boost version is too low to use without exception handling")
         endif(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
     endif(Boost_FOUND)
+
+    add_dependencies(tests "${target}")
 endfunction(make_test)
 
 ######################################################################

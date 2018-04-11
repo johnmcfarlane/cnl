@@ -27,25 +27,6 @@ and it serves as a reference implementation for sections of the
 Please read proposals, [P0037](http://wg21.link/p0037) 
 and [P0554](http://wg21.link/p0554) for more details.
 
-## Download
-
-The library is [hosted](https://github.com/johnmcfarlane/cnl) on GitHub:
-
-```shell
-$ git clone https://github.com/johnmcfarlane/cnl.git
-```
-
-The API is exposed through headers in the [include](./include/) directory.
-Add this to your system header list and include, e.g.:
-
-```c++
-// to use a specific type:
-#include <cnl/fixed_point.h>
-
-// or to include all CNL types:
-#include <cnl.h>
-```
-
 ## Requirements
 
 ### Linux
@@ -71,22 +52,71 @@ and on *Windows 10 Professional* with *CMake 3.8.0*. Requires:
 - MSBuild 15.0 (VS 2017)
 - [CMake](https://cmake.org/download/) 3.8.0
 
-## Tests and Benchmarks
+## Instructions
 
-To run tests:
+### Download
+
+The library is [hosted](https://github.com/johnmcfarlane/cnl) on GitHub:
 
 ```shell
-$ cmake path/to/project
-$ cmake --build .
-$ ctest
+cd /some/directory
+git clone https://github.com/johnmcfarlane/cnl.git
 ```
 
-To run benchmarks:
+### Build
 
-```shell
-$ cmake -DCMAKE_BUILD_TYPE=Release
-$ cmake --build .
-$ src/benchmark/fp_benchmark
+CNL is a header-only library so there is no need to build it.
+However, it comes with a number of tests and benchmarks.
+
+#### Running Tests
+
+1. Generate the build system:
+
+   `cmake /some/directory/cnl`
+
+2. Build tests (in parallel using *N* cores):
+
+   `cmake --build . --target tests -- -j N`
+
+3. Run tests:
+
+   `ctest`
+
+#### Running Benchmarks
+
+1. Generate the build system (optimized):
+
+   `cmake -DCMAKE_BUILD_TYPE=Release /some/directory/cnl`
+
+2. Build benchmarks:
+
+   `cmake --build . --target fp_benchmark`
+
+3. Run benchmarks:
+
+   `src/benchmark/fp_benchmark`
+
+#### Additional build system generation options:
+
+1. To describe CNL build options:
+
+   `cmake -LH /some/directory/cnl`
+
+2. Then to apply an option, e.g. to disabled exceptions:
+
+   `cmake -DEXCEPTIONS=OFF /some/directory/cnl`
+
+### Integration
+
+The API is exposed through headers in the [include](./include/) directory.
+Add this to your system header list and include, e.g.:
+
+```c++
+// to use a specific type:
+#include <cnl/fixed_point.h>
+
+// or to include all CNL types:
+#include <cnl.h>
 ```
 
 ## Further Reading

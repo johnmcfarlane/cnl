@@ -66,3 +66,9 @@ target_include_directories(cnl INTERFACE include)
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/cnl
         DESTINATION include)
+
+configure_file("${PROJECT_SOURCE_DIR}/cmake/CnlConfig.cmake.in"
+        ${CMAKE_CURRENT_BINARY_DIR}/cmake/CnlConfig.cmake @ONLY)
+
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/cmake/CnlConfig.cmake"
+        DESTINATION lib/cmake/cnl)
