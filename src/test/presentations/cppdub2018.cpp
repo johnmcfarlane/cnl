@@ -183,6 +183,8 @@ namespace n {
 #endif
 
 #if defined(__cpp_deduction_guides)
+#include <cnl/elastic_number.h>
+
 using namespace cnl::literals;
 namespace o {
     constexpr auto x = fixed_point{42ul}; // fixed_point<unsigned long, 0>{42}

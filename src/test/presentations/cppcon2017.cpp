@@ -140,7 +140,6 @@ namespace l {
     static_assert(cnl::_impl::identical(elastic_integer<63>{INT64_C(0x7FFFFFFE00000002)}, _2ee), "");
 }
 
-#include <cnl/bits/elastic_fixed_point.h>
 namespace m {
     constexpr auto fpe = fixed_point<elastic_integer<31>, -31>{0.99609375};
 
@@ -148,7 +147,7 @@ namespace m {
     static_assert(cnl::_impl::identical(fixed_point<elastic_integer<62>, -62>{0.9922027587890625}, sq), "");
 
 #if defined(CNL_INT128_ENABLED)
-    constexpr auto q = sq / sq;
+    constexpr auto q = make_fixed_point(make_fractional(sq, sq));
     static_assert(cnl::_impl::identical(fixed_point<elastic_integer<124>, -62>{1}, q), "");
 #endif
 }
@@ -168,6 +167,8 @@ namespace n {
 #endif
 
 #if defined(__cpp_deduction_guides)
+#include <cnl/elastic_number.h>
+
 using namespace cnl::literals;
 namespace o {
     constexpr auto x = fixed_point{42ul}; // fixed_point<unsigned long, 0>{42}

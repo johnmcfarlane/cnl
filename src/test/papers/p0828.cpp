@@ -137,13 +137,13 @@ namespace {
 
         namespace section_4_1_2b {
             template<int Digits, int Exponent>
-            using elastic_fixed_point = fixed_point<elastic_integer<Digits>, Exponent>;
+            using elastic_number = fixed_point<elastic_integer<Digits>, Exponent>;
 
-            constexpr auto kibi = elastic_fixed_point<31, -16>(1024); // stores value 2^26
+            constexpr auto kibi = elastic_number<31, -16>(1024); // stores value 2^26
             static_assert(identical(1<<26, to_rep(to_rep(kibi))), "");
 
-            constexpr auto mebi = kibi * kibi;   // elastic_fixed_point<62, -32> stores value: 2^52
-            static_assert(identical(elastic_fixed_point<62, -32>{1<<20}, mebi), "");
+            constexpr auto mebi = kibi * kibi;   // elastic_number<62, -32> stores value: 2^52
+            static_assert(identical(elastic_number<62, -32>{1<<20}, mebi), "");
             static_assert(identical(INT64_C(1)<<52, to_rep(to_rep(mebi))), "");
 
         }
@@ -169,15 +169,15 @@ namespace {
         using cnl::fixed_point;
 
         template<int Digits, int Exponent, class Narrowest>
-        using elastic_fixed_point = fixed_point<elastic_integer<Digits, Narrowest>, Exponent>;
+        using elastic_number = fixed_point<elastic_integer<Digits, Narrowest>, Exponent>;
 
         // a 15-bit number with 10 integer digits and 5 fractional digits
-        constexpr auto n = elastic_fixed_point<15, -5, int>{31.96875};
+        constexpr auto n = elastic_number<15, -5, int>{31.96875};
 
         // a 30-bit number with 20 integer digits and 10 fractional digits;
         constexpr auto nn = n*n;
 
-        static_assert(identical(elastic_fixed_point<30, -10, int>{1022.0009765625}, nn), "");
+        static_assert(identical(elastic_number<30, -10, int>{1022.0009765625}, nn), "");
     }
 }
 

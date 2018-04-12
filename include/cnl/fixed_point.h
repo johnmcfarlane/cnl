@@ -17,6 +17,5 @@
 #include "bits/fixed_point/constants.h"
 #include "bits/fixed_point/operators.h"
 #include "bits/fixed_point/extras.h"
-#include "bits/elastic_fixed_point.h"
 
 #endif  // CNL_FIXED_POINT_H

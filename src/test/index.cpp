@@ -194,17 +194,18 @@ void elastic_example1()
     static_assert(is_same<decltype(a2), elastic_integer<7, int8_t >> ::value, "");
 }
 
-using cnl::elastic_fixed_point;
+#include <cnl/elastic_number.h>
+using cnl::elastic_number;
 
 void elastic_example2()
 {
     // A type such as elastic_integer can be used to specialize fixed_point.
     // Now arithmetic operations are more efficient and less error-prone.
-    auto b = elastic_fixed_point<32, -28, unsigned>{15.9375};
+    auto b = elastic_number<32, -28, unsigned>{15.9375};
     auto bb = b*b;
 
     cout << bb << endl;  // "254.00390625"
-    static_assert(is_same<decltype(bb), elastic_fixed_point<64, -56, unsigned>>::value, "");
+    static_assert(is_same<decltype(bb), elastic_number<64, -56, unsigned>>::value, "");
 }
 //! [elastic example]
 

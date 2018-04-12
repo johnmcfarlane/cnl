@@ -65,7 +65,7 @@ Named functions - such as [multiply](@ref cnl::multiply) - provide fine-tuned co
 \subsection elastic Extensible
 
 Because one size does not fit all, [fixed_point](@ref cnl::fixed_point) is designed to make it easy to tailor new arithmetic types. 
-The [elastic_fixed_point](@ref cnl::elastic_fixed_point) type illustrates this.
-As each calculation requires more digits, so the results of [elastic_fixed_point](@ref cnl::elastic_fixed_point) operations allocate more storage.
+The [elastic_number](@ref cnl::elastic_number) type illustrates this.
+As each calculation requires more digits, so the results of [elastic_number](@ref cnl::elastic_number) operations allocate more storage.
 
 \snippet index.cpp elastic example

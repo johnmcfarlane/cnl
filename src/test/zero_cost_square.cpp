@@ -5,11 +5,11 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief Signed 15:16 Fixed-Point Square Function Using cnl::elastic_fixed_point
+/// \brief Signed 15:16 Fixed-Point Square Function Using cnl::elastic_number
 
-// Here's how to use the fixed_point library on Godbolt.org.
-// Normally, you'd just add `#include <fixed_point>`.
-#include <cnl/fixed_point.h>
+// Here's how to use the CNL library on Godbolt.org.
+// Normally, you'd just add `#include <cnl/elastic_number.h>` etc..
+#include <cnl/elastic_number.h>
 using namespace cnl;
 
 // square a nunber using 15:16 fixed-point arithmetic
@@ -50,7 +50,7 @@ float square_fixed_point(float input) {
 // finally, the composition of fixed_point and elastic_integer
 float square_elastic(float input) {
     // alias to fixed_point<elastic_integer<31, int>, -16>
-    auto fixed = elastic_fixed_point<15, 16>{input};
+    auto fixed = elastic_number<15, 16>{input};
 
     // concise, safe and zero-cost!
     auto prod = fixed * fixed;
