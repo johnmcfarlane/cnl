@@ -126,10 +126,10 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a71602a6d766140a2f0c314bb7e2e9597"><td class="memTemplParams" colspan="2">template&lt;int Digits, int Exponent = 0, class Narrowest  = signed&gt; </td></tr>
-<tr class="memitem:a71602a6d766140a2f0c314bb7e2e9597"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">elastic_fixed_point</a> = <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; <a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>&lt; Digits, Narrowest &gt;, Exponent &gt;</td></tr>
-<tr class="memdesc:a71602a6d766140a2f0c314bb7e2e9597"><td class="mdescLeft">&#160;</td><td class="mdescRight">literal real number approximation that uses fixed-point arithmetic and auto-widens to avoid overflow  <a href="#a71602a6d766140a2f0c314bb7e2e9597">More...</a><br /></td></tr>
-<tr class="separator:a71602a6d766140a2f0c314bb7e2e9597"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ada42347e63f610172d7dc4b8e32765"><td class="memTemplParams" colspan="2">template&lt;int Digits, int Exponent = 0, class Narrowest  = signed&gt; </td></tr>
+<tr class="memitem:a0ada42347e63f610172d7dc4b8e32765"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">elastic_number</a> = <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; <a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>&lt; Digits, Narrowest &gt;, Exponent &gt;</td></tr>
+<tr class="memdesc:a0ada42347e63f610172d7dc4b8e32765"><td class="mdescLeft">&#160;</td><td class="mdescRight">literal real number approximation that uses fixed-point arithmetic and auto-widens to avoid overflow  <a href="#a0ada42347e63f610172d7dc4b8e32765">More...</a><br /></td></tr>
+<tr class="separator:a0ada42347e63f610172d7dc4b8e32765"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef02ef10da456e58c408b8911c74a5da"><td class="memTemplParams" colspan="2">template&lt;unsigned NumDigits = digits&lt;int&gt;::value&gt; </td></tr>
 <tr class="memitem:aef02ef10da456e58c408b8911c74a5da"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aef02ef10da456e58c408b8911c74a5da">multiprecision</a> = <a class="el" href="namespacecnl.html#abc382d49df277242289bb86b36ddf92e">signed_multiprecision</a>&lt; NumDigits &gt;</td></tr>
 <tr class="memdesc:aef02ef10da456e58c408b8911c74a5da"><td class="mdescLeft">&#160;</td><td class="mdescRight">alias to a signed, fixed-size Boost.Multiprecision type suitable for instantiating <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a>  <a href="#aef02ef10da456e58c408b8911c74a5da">More...</a><br /></td></tr>
@@ -162,27 +162,32 @@ Functions</h2></td></tr>
 <tr class="memitem:a1416c25d358623664334bf7fdbe0dcf2"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a1416c25d358623664334bf7fdbe0dcf2">exp2</a> (<a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt; x)</td></tr>
 <tr class="memdesc:a1416c25d358623664334bf7fdbe0dcf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates exp2(x), i.e. 2^xAccurate to 1LSB for up to 32 bit underlying representation.  <a href="#a1416c25d358623664334bf7fdbe0dcf2">More...</a><br /></td></tr>
 <tr class="separator:a1416c25d358623664334bf7fdbe0dcf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4daf81aa20bb7c524a1e3ce9f3e5af42"><td class="memTemplParams" colspan="2">template&lt;typename Narrowest  = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0&gt; </td></tr>
-<tr class="memitem:a4daf81aa20bb7c524a1e3ce9f3e5af42"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">elastic_fixed_point</a>&lt; _impl::max(_elastic_integer_impl::digits(Value) -trailing_bits(Value), 1), trailing_bits(Value), Narrowest &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a4daf81aa20bb7c524a1e3ce9f3e5af42">make_elastic_fixed_point</a> (<a class="el" href="structcnl_1_1constant.html">constant</a>&lt; Value &gt;)</td></tr>
-<tr class="memdesc:a4daf81aa20bb7c524a1e3ce9f3e5af42"><td class="mdescLeft">&#160;</td><td class="mdescRight">generate an <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> object of given value  <a href="#a4daf81aa20bb7c524a1e3ce9f3e5af42">More...</a><br /></td></tr>
-<tr class="separator:a4daf81aa20bb7c524a1e3ce9f3e5af42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af666352d86a9a718f181a92cc626b32b"><td class="memTemplParams" colspan="2">template&lt;class Narrowest  = int, class Integral  = int&gt; </td></tr>
-<tr class="memitem:af666352d86a9a718f181a92cc626b32b"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">elastic_fixed_point</a>&lt; numeric_limits&lt; Integral &gt;::digits, 0, Narrowest &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#af666352d86a9a718f181a92cc626b32b">make_elastic_fixed_point</a> (Integral value)</td></tr>
-<tr class="memdesc:af666352d86a9a718f181a92cc626b32b"><td class="mdescLeft">&#160;</td><td class="mdescRight">generate an <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> object of given value  <a href="#af666352d86a9a718f181a92cc626b32b">More...</a><br /></td></tr>
-<tr class="separator:af666352d86a9a718f181a92cc626b32b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4908ae024cdd2e437863aa8c2e2624e3"><td class="memTemplParams" colspan="2">template&lt;typename Value &gt; </td></tr>
-<tr class="memitem:a4908ae024cdd2e437863aa8c2e2624e3"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a4908ae024cdd2e437863aa8c2e2624e3">make_fixed_point</a> (Value const &amp;value) -&gt; cnl::from_value_t&lt; <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Value, 0 &gt;, Value &gt;</td></tr>
-<tr class="memdesc:a4908ae024cdd2e437863aa8c2e2624e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">makes a <a class="el" href="classcnl_1_1fixed__point.html" title="literal real number approximation that uses fixed-point arithmetic ">fixed_point</a> object from a given value  <a href="#a4908ae024cdd2e437863aa8c2e2624e3">More...</a><br /></td></tr>
-<tr class="separator:a4908ae024cdd2e437863aa8c2e2624e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3e8880616f5cd51b726a8674e5b3974"><td class="memTemplParams" colspan="2">template&lt;typename Narrowest  = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0&gt; </td></tr>
+<tr class="memitem:aa3e8880616f5cd51b726a8674e5b3974"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">elastic_number</a>&lt; _impl::max(_elastic_integer_impl::digits(Value) -trailing_bits(Value), 1), trailing_bits(Value), Narrowest &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aa3e8880616f5cd51b726a8674e5b3974">make_elastic_number</a> (<a class="el" href="structcnl_1_1constant.html">constant</a>&lt; Value &gt;)</td></tr>
+<tr class="memdesc:aa3e8880616f5cd51b726a8674e5b3974"><td class="mdescLeft">&#160;</td><td class="mdescRight">generate an <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">cnl::elastic_number</a> object of given value  <a href="#aa3e8880616f5cd51b726a8674e5b3974">More...</a><br /></td></tr>
+<tr class="separator:aa3e8880616f5cd51b726a8674e5b3974"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7596ebff5e30e6d31fd55bad63d17695"><td class="memTemplParams" colspan="2">template&lt;class Narrowest  = int, class Integral  = int&gt; </td></tr>
+<tr class="memitem:a7596ebff5e30e6d31fd55bad63d17695"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">elastic_number</a>&lt; numeric_limits&lt; Integral &gt;::digits, 0, Narrowest &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a7596ebff5e30e6d31fd55bad63d17695">make_elastic_number</a> (Integral value)</td></tr>
+<tr class="memdesc:a7596ebff5e30e6d31fd55bad63d17695"><td class="mdescLeft">&#160;</td><td class="mdescRight">generate an <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">cnl::elastic_number</a> object of given value  <a href="#a7596ebff5e30e6d31fd55bad63d17695">More...</a><br /></td></tr>
+<tr class="separator:a7596ebff5e30e6d31fd55bad63d17695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4110c010171bdacaa3a4cab431a1651"><td class="memTemplParams" colspan="2">template&lt;typename Numerator , typename Denominator &gt; </td></tr>
 <tr class="memitem:ac4110c010171bdacaa3a4cab431a1651"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ac4110c010171bdacaa3a4cab431a1651">make_fixed_point</a> (<a class="el" href="structcnl_1_1fractional.html">fractional</a>&lt; Numerator, Denominator &gt; const &amp;value) -&gt; decltype(<a class="el" href="namespacecnl.html#a195da71c48144d3f638e75d83a0690a1">divide</a>(value.numerator, value.denominator))</td></tr>
 <tr class="memdesc:ac4110c010171bdacaa3a4cab431a1651"><td class="mdescLeft">&#160;</td><td class="mdescRight">makes a <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> object from a given <a class="el" href="structcnl_1_1fractional.html">fractional</a>  <a href="#ac4110c010171bdacaa3a4cab431a1651">More...</a><br /></td></tr>
 <tr class="separator:ac4110c010171bdacaa3a4cab431a1651"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4908ae024cdd2e437863aa8c2e2624e3"><td class="memTemplParams" colspan="2">template&lt;typename Value &gt; </td></tr>
+<tr class="memitem:a4908ae024cdd2e437863aa8c2e2624e3"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a4908ae024cdd2e437863aa8c2e2624e3">make_fixed_point</a> (Value const &amp;value) -&gt; cnl::from_value_t&lt; <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Value, 0 &gt;, Value &gt;</td></tr>
+<tr class="memdesc:a4908ae024cdd2e437863aa8c2e2624e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">makes a <a class="el" href="classcnl_1_1fixed__point.html" title="literal real number approximation that uses fixed-point arithmetic ">fixed_point</a> object from a given value  <a href="#a4908ae024cdd2e437863aa8c2e2624e3">More...</a><br /></td></tr>
+<tr class="separator:a4908ae024cdd2e437863aa8c2e2624e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a1c24935abec2aeb4abd9d7bb067d6b"><td class="memTemplParams" colspan="2"><a id="a8a1c24935abec2aeb4abd9d7bb067d6b"></a>
 template&lt;typename Numerator , typename Denominator &gt; </td></tr>
 <tr class="memitem:a8a1c24935abec2aeb4abd9d7bb067d6b"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structcnl_1_1fractional.html">fractional</a>&lt; Numerator, Denominator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a8a1c24935abec2aeb4abd9d7bb067d6b">make_fractional</a> (Numerator const &amp;n, Denominator const &amp;d)</td></tr>
 <tr class="memdesc:a8a1c24935abec2aeb4abd9d7bb067d6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a fractional value with types deduced from the numerator and denominator <br /></td></tr>
 <tr class="separator:a8a1c24935abec2aeb4abd9d7bb067d6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8379623599d1e0773f421665d661302"><td class="memTemplParams" colspan="2"><a id="ab8379623599d1e0773f421665d661302"></a>
+template&lt;typename Numerator &gt; </td></tr>
+<tr class="memitem:ab8379623599d1e0773f421665d661302"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structcnl_1_1fractional.html">fractional</a>&lt; Numerator, Numerator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ab8379623599d1e0773f421665d661302">make_fractional</a> (Numerator const &amp;n)</td></tr>
+<tr class="memdesc:ab8379623599d1e0773f421665d661302"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a fractional value with types deduced from the numerator <br /></td></tr>
+<tr class="separator:ab8379623599d1e0773f421665d661302"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4907e759049bbe5bb38f2978d2b04425"><td class="memTemplParams" colspan="2">template&lt;class Lhs , class Rhs &gt; </td></tr>
 <tr class="memitem:a4907e759049bbe5bb38f2978d2b04425"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a4907e759049bbe5bb38f2978d2b04425">multiply</a> (Lhs const &amp;lhs, Rhs const &amp;rhs) -&gt; typename _multiply_impl::params&lt; Lhs, Rhs &gt;::result_type</td></tr>
 <tr class="memdesc:a4907e759049bbe5bb38f2978d2b04425"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculates the product of two <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> factors  <a href="#a4907e759049bbe5bb38f2978d2b04425">More...</a><br /></td></tr>
@@ -219,8 +224,8 @@ template&lt;class Rep , class OverflowTag &gt; </td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>compositional numeric library </p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
-<a id="a71602a6d766140a2f0c314bb7e2e9597"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71602a6d766140a2f0c314bb7e2e9597">&#9670;&nbsp;</a></span>elastic_fixed_point</h2>
+<a id="a0ada42347e63f610172d7dc4b8e32765"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ada42347e63f610172d7dc4b8e32765">&#9670;&nbsp;</a></span>elastic_number</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -228,7 +233,7 @@ template&lt;class Rep , class OverflowTag &gt; </td></tr>
 template&lt;int Digits, int Exponent = 0, class Narrowest  = signed&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> = typedef <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt;<a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>&lt;Digits, Narrowest&gt;, Exponent&gt;</td>
+          <td class="memname">using <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">cnl::elastic_number</a> = typedef <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt;<a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>&lt;Digits, Narrowest&gt;, Exponent&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -357,7 +362,7 @@ template&lt;class Rep , int Exponent&gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>|x|</code></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="elRef" doxygen="/home/john/tmp/cnl/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/container/vector.html">std::vector</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="elRef" doxygen="/home/john/cnl/cmake-build-debug/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/container/vector.html">std::vector</a> </dd></dl>
 
 </div>
 </div>
@@ -402,7 +407,7 @@ template&lt;class Lhs , class Rhs &gt; </div>
 
 <p class="reference">References <a class="el" href="namespacecnl.html#ac4110c010171bdacaa3a4cab431a1651">make_fixed_point()</a>, and <a class="el" href="namespacecnl.html#a7a9dc52c34bf49998117d535449c8a93">to_rep()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="classcnl_1_1fixed__point.html#af4cd78f2536bb76ccdc67421ff0e5d83">cnl::fixed_point&lt; Rep, Exponent &gt;::fixed_point()</a>, <a class="el" href="namespacecnl.html#ac4110c010171bdacaa3a4cab431a1651">make_fixed_point()</a>, <a class="el" href="namespacecnl.html#a4907e759049bbe5bb38f2978d2b04425">multiply()</a>, and <a class="el" href="namespacecnl_1_1literals.html#a4f65a0240fc1fe6f9230eadd8d994a5f">cnl::literals::operator&quot;&quot; _elastic()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classcnl_1_1fixed__point.html#af4cd78f2536bb76ccdc67421ff0e5d83">cnl::fixed_point&lt; Rep, Exponent &gt;::fixed_point()</a>, <a class="el" href="namespacecnl.html#ac4110c010171bdacaa3a4cab431a1651">make_fixed_point()</a>, and <a class="el" href="namespacecnl.html#a4907e759049bbe5bb38f2978d2b04425">multiply()</a>.</p>
 
 </div>
 </div>
@@ -437,8 +442,8 @@ template&lt;class Rep , int Exponent&gt; </div>
 
 </div>
 </div>
-<a id="a4daf81aa20bb7c524a1e3ce9f3e5af42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4daf81aa20bb7c524a1e3ce9f3e5af42">&#9670;&nbsp;</a></span>make_elastic_fixed_point() <span class="overload">[1/2]</span></h2>
+<a id="aa3e8880616f5cd51b726a8674e5b3974"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3e8880616f5cd51b726a8674e5b3974">&#9670;&nbsp;</a></span>make_elastic_number() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -446,7 +451,7 @@ template&lt;class Rep , int Exponent&gt; </div>
 template&lt;typename Narrowest  = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">elastic_fixed_point</a>&lt; _impl::max(_elastic_integer_impl::digits(Value)-trailing_bits(Value), 1), trailing_bits(Value), Narrowest&gt; cnl::make_elastic_fixed_point </td>
+          <td class="memname">constexpr <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">elastic_number</a>&lt; _impl::max(_elastic_integer_impl::digits(Value)-trailing_bits(Value), 1), trailing_bits(Value), Narrowest&gt; cnl::make_elastic_number </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structcnl_1_1constant.html">constant</a>&lt; Value &gt;&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -455,23 +460,23 @@ template&lt;typename Narrowest  = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0&gt
       </table>
 </div><div class="memdoc">
 
-<p>generate an <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> object of given value </p>
+<p>generate an <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">cnl::elastic_number</a> object of given value </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Narrowest</td><td>the narrowest type to use as storage in the resultant <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> object </td></tr>
+    <tr><td class="paramname">Narrowest</td><td>the narrowest type to use as storage in the resultant <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">cnl::elastic_number</a> object </td></tr>
     <tr><td class="paramname">Integral</td><td>the type of Value </td></tr>
     <tr><td class="paramname">Value</td><td>the integer number to be represented</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the given value to be represented using an <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> type</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the given value to be represented using an <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">cnl::elastic_number</a> type</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The return type is guaranteed to be no larger than is necessary to represent the value.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
-<p>To define an int-sized object using <a class="el" href="namespacecnl.html#a4daf81aa20bb7c524a1e3ce9f3e5af42">make_elastic_fixed_point</a> and <a class="el" href="structcnl_1_1constant.html">cnl::constant</a> </p><div class="fragment"><div class="line"><span class="comment">// std::uint8_t specifies the type of const_integer - not elastic</span></div><div class="line">constexpr <span class="keyword">auto</span> n = <a class="code" href="namespacecnl.html#a4daf81aa20bb7c524a1e3ce9f3e5af42">make_elastic_fixed_point</a>(constant&lt;0xAA&gt;{});</div><div class="line"></div><div class="line">static_assert(n==0xAA, <span class="stringliteral">&quot;n now has the value, 1024&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/tmp/cnl/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_fixed_point&lt;7, 1, int&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_fixed_point uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
+<p>To define an int-sized object using <a class="el" href="namespacecnl.html#aa3e8880616f5cd51b726a8674e5b3974">make_elastic_number</a> and <a class="el" href="structcnl_1_1constant.html">cnl::constant</a> </p><div class="fragment"><div class="line"><span class="comment">// std::uint8_t specifies the type of const_integer - not elastic</span></div><div class="line">constexpr <span class="keyword">auto</span> n = <a class="code" href="namespacecnl.html#aa3e8880616f5cd51b726a8674e5b3974">make_elastic_number</a>(constant&lt;0xAA&gt;{});</div><div class="line"></div><div class="line">static_assert(n==0xAA, <span class="stringliteral">&quot;n now has the value, 1024&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/cnl/cmake-build-debug/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_number&lt;7, 1, int&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_number uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
 </div>
 </div>
-<a id="af666352d86a9a718f181a92cc626b32b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af666352d86a9a718f181a92cc626b32b">&#9670;&nbsp;</a></span>make_elastic_fixed_point() <span class="overload">[2/2]</span></h2>
+<a id="a7596ebff5e30e6d31fd55bad63d17695"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7596ebff5e30e6d31fd55bad63d17695">&#9670;&nbsp;</a></span>make_elastic_number() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -479,7 +484,7 @@ template&lt;typename Narrowest  = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0&gt
 template&lt;class Narrowest  = int, class Integral  = int&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">elastic_fixed_point</a>&lt;numeric_limits&lt;Integral&gt;::digits, 0, Narrowest&gt; cnl::make_elastic_fixed_point </td>
+          <td class="memname">constexpr <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">elastic_number</a>&lt;numeric_limits&lt;Integral&gt;::digits, 0, Narrowest&gt; cnl::make_elastic_number </td>
           <td>(</td>
           <td class="paramtype">Integral&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -488,63 +493,27 @@ template&lt;class Narrowest  = int, class Integral  = int&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>generate an <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> object of given value </p>
+<p>generate an <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">cnl::elastic_number</a> object of given value </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Narrowest</td><td>the most narrow storage type of the resultant <a class="el" href="namespacecnl.html#a71602a6d766140a2f0c314bb7e2e9597">cnl::elastic_fixed_point</a> object </td></tr>
+    <tr><td class="paramname">Narrowest</td><td>the most narrow storage type of the resultant <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">cnl::elastic_number</a> object </td></tr>
     <tr><td class="paramname">Integral</td><td>the type of value</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">value</td><td>the value with which to initialize the elastic_fixed_point object</td></tr>
+    <tr><td class="paramname">value</td><td>the value with which to initialize the elastic_number object</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>The return type is guaranteed to be no larger than is necessary to represent the value.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
-<p>To define a byte-sized object using make_elastic_fixed_point and _c: </p><div class="fragment"><div class="line">constexpr <span class="keyword">auto</span> n = make_elastic_fixed_point&lt;char&gt;(constant&lt;1536&gt;{});</div><div class="line"></div><div class="line">static_assert(n==1536, <span class="stringliteral">&quot;n now has the value, 1536&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/tmp/cnl/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_fixed_point&lt;2, 9, char&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_fixed_point uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
-</div>
-</div>
-<a id="a4908ae024cdd2e437863aa8c2e2624e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4908ae024cdd2e437863aa8c2e2624e3">&#9670;&nbsp;</a></span>make_fixed_point() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Value &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto cnl::make_fixed_point </td>
-          <td>(</td>
-          <td class="paramtype">Value const &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td> -&gt; cnl::from_value_t&lt;<a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt;Value, 0&gt;, Value&gt;
-    </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>makes a <a class="el" href="classcnl_1_1fixed__point.html" title="literal real number approximation that uses fixed-point arithmetic ">fixed_point</a> object from a given value </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Value</td><td>the type of the value that is to be made into a <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> value</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">value</td><td>the value from which to make the <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> object</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>This function is deprecated after C++17 in favor of class template deduction. </dd></dl>
-
+<p>To define a byte-sized object using make_elastic_number and _c: </p><div class="fragment"><div class="line">constexpr <span class="keyword">auto</span> n = make_elastic_number&lt;char&gt;(constant&lt;1536&gt;{});</div><div class="line"></div><div class="line">static_assert(n==1536, <span class="stringliteral">&quot;n now has the value, 1536&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/cnl/cmake-build-debug/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_number&lt;2, 9, char&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_number uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
 </div>
 </div>
 <a id="ac4110c010171bdacaa3a4cab431a1651"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4110c010171bdacaa3a4cab431a1651">&#9670;&nbsp;</a></span>make_fixed_point() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4110c010171bdacaa3a4cab431a1651">&#9670;&nbsp;</a></span>make_fixed_point() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -581,6 +550,42 @@ template&lt;typename Numerator , typename Denominator &gt; </div>
 <p class="reference">References <a class="el" href="namespacecnl.html#a195da71c48144d3f638e75d83a0690a1">divide()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="namespacecnl.html#a195da71c48144d3f638e75d83a0690a1">divide()</a>.</p>
+
+</div>
+</div>
+<a id="a4908ae024cdd2e437863aa8c2e2624e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4908ae024cdd2e437863aa8c2e2624e3">&#9670;&nbsp;</a></span>make_fixed_point() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto cnl::make_fixed_point </td>
+          <td>(</td>
+          <td class="paramtype">Value const &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td> -&gt; cnl::from_value_t&lt;<a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt;Value, 0&gt;, Value&gt;
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>makes a <a class="el" href="classcnl_1_1fixed__point.html" title="literal real number approximation that uses fixed-point arithmetic ">fixed_point</a> object from a given value </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Value</td><td>the type of the value that is to be made into a <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> value</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>the value from which to make the <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> object</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This function is deprecated after C++17 in favor of class template deduction. </dd></dl>
 
 </div>
 </div>

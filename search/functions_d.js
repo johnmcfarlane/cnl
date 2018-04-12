@@ -1,10 +1,10 @@
 var searchData=
 [
   ['m',['m',['http://en.cppreference.com/w/cpp/numeric/random/lognormal_distribution/params.html',1,'std::lognormal_distribution::m()'],['http://en.cppreference.com/w/cpp/numeric/random/fisher_f_distribution/params.html',1,'std::fisher_f_distribution::m()']]],
-  ['make_5felastic_5ffixed_5fpoint',['make_elastic_fixed_point',['../namespacecnl.html#a4daf81aa20bb7c524a1e3ce9f3e5af42',1,'cnl::make_elastic_fixed_point(constant&lt; Value &gt;)'],['../namespacecnl.html#af666352d86a9a718f181a92cc626b32b',1,'cnl::make_elastic_fixed_point(Integral value)']]],
+  ['make_5felastic_5fnumber',['make_elastic_number',['../namespacecnl.html#aa3e8880616f5cd51b726a8674e5b3974',1,'cnl::make_elastic_number(constant&lt; Value &gt;)'],['../namespacecnl.html#a7596ebff5e30e6d31fd55bad63d17695',1,'cnl::make_elastic_number(Integral value)']]],
   ['make_5fexception_5fptr',['make_exception_ptr',['http://en.cppreference.com/w/cpp/error/make_exception_ptr.html',1,'std']]],
   ['make_5ffixed_5fpoint',['make_fixed_point',['../namespacecnl.html#ac4110c010171bdacaa3a4cab431a1651',1,'cnl::make_fixed_point(fractional&lt; Numerator, Denominator &gt; const &amp;value) -&gt; decltype(divide(value.numerator, value.denominator))'],['../namespacecnl.html#a4908ae024cdd2e437863aa8c2e2624e3',1,'cnl::make_fixed_point(Value const &amp;value) -&gt; cnl::from_value_t&lt; fixed_point&lt; Value, 0 &gt;, Value &gt;']]],
-  ['make_5ffractional',['make_fractional',['../namespacecnl.html#a8a1c24935abec2aeb4abd9d7bb067d6b',1,'cnl']]],
+  ['make_5ffractional',['make_fractional',['../namespacecnl.html#a8a1c24935abec2aeb4abd9d7bb067d6b',1,'cnl::make_fractional(Numerator const &amp;n, Denominator const &amp;d)'],['../namespacecnl.html#ab8379623599d1e0773f421665d661302',1,'cnl::make_fractional(Numerator const &amp;n)']]],
   ['make_5fheap',['make_heap',['http://en.cppreference.com/w/cpp/algorithm/make_heap.html',1,'std']]],
   ['make_5fmove_5fiterator',['make_move_iterator',['http://en.cppreference.com/w/cpp/iterator/make_move_iterator.html',1,'std']]],
   ['make_5foptional',['make_optional',['http://en.cppreference.com/w/cpp/experimental/optional/make_optional.html',1,'std::experimental']]],
