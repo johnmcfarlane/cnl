@@ -1,6 +1,7 @@
 # CNL: A Compositional Numeric Library for C++
 
 [![Build Status](https://travis-ci.org/johnmcfarlane/cnl.svg?branch=develop)](https://travis-ci.org/johnmcfarlane/cnl)
+[![CircleCI](https://circleci.com/gh/johnmcfarlane/cnl/tree/develop.svg?style=svg)](https://circleci.com/gh/johnmcfarlane/cnl/tree/develop)
 [![Build status](https://ci.appveyor.com/api/projects/status/9s7daasmvku9ttvd/branch/develop?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/cnl/branch/develop)
 
 [CNL](https://github.com/johnmcfarlane/cnl) is a numerics library written in C++
