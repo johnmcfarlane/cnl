@@ -22,47 +22,14 @@ add_subdirectory("doc" EXCLUDE_FROM_ALL)
 # the CNL library
 add_library(Cnl INTERFACE)
 
-set(cnl_public_headers
-        ${PROJECT_SOURCE_DIR}/include/cnl/integral_constant.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/auxiliary/boost.multiprecision.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/auxiliary/boost.simd.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/bit.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/cnlint.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/constant.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/elastic_integer.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/elastic_number.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/fixed_point.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/fractional.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/limits.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/num_traits.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/numeric.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/overflow.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/overflow_integer.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/rounding_integer.h
-        )
+target_include_directories(
+        Cnl INTERFACE
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>)
 
-set(cnl_implementation_headers
-        ${PROJECT_SOURCE_DIR}/include/cnl/auxiliary/boost.multiprecision.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/auxiliary/boost.simd.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/bits/config.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/bits/encompasses.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/bits/fixed_point/operators.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/bits/fixed_point/math.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/bits/fixed_point/type.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/bits/fixed_point/common_type.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/bits/fixed_point/extras.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/bits/fixed_point/named.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/bits/fixed_point/num_traits.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/bits/fixed_point/constants.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/bits/type_traits.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/bits/operators.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/bits/common.h
-        ${PROJECT_SOURCE_DIR}/include/cnl/bits/number_base.h
-        )
-
-target_sources(Cnl INTERFACE ${cnl_public_headers} ${cnl_implementation_headers})
-
-target_include_directories(Cnl INTERFACE include)
-
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/Cnl
-        DESTINATION include)
+install(TARGETS Cnl EXPORT CnlTargets)
+install(DIRECTORY include/ DESTINATION include)
+install(EXPORT CnlTargets
+        FILE CnlConfig.cmake
+        NAMESPACE Cnl::
+        DESTINATION lib/cmake/cnl)
