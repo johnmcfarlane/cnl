@@ -24,5 +24,5 @@ test_script:
 - cmd: >-
     ctest
 
-    src\benchmark\Release\fp_benchmark.exe
+    src\benchmark\Release\Benchmark.exe
 shallow_clone: true

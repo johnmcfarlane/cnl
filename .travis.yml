@@ -159,6 +159,6 @@ script:
     - cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -DSTD="${STD}" -DEXCEPTIONS="${EXCEPTIONS}" -DINT128="${INT128}"
     - make -j 4
     - ctest
-    - ./src/benchmark/fp_benchmark --benchmark_format=csv>result.csv
+    - ./src/benchmark/Benchmark --benchmark_format=csv>result.csv
     - ./src/benchmark/report.py result.csv
-    - ls -l src/test src/benchmark/fp_benchmark
+    - ls -l src/test src/benchmark/Benchmark

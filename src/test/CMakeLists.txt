@@ -70,7 +70,7 @@ set(sample_sources
 find_package(Boost)
 
 ExternalProject_Add(
-        google_test
+        GoogleTest
         URL "https://github.com/google/googletest/archive/3a4cf1a02ef4adc28fccb7eef2b573b14cd59009.zip"
         URL_MD5 "06ac495303fbe94b198026e3c196425e"
         UPDATE_COMMAND ""
@@ -79,7 +79,7 @@ ExternalProject_Add(
 )
 
 ExternalProject_Add(
-        glm
+        Glm
         URL "https://github.com/johnmcfarlane/glm/archive/ceb6d4fd3cb24d0ff954a6470ee554e356885d0e.zip"
         URL_MD5 "7fa4dc69b3c5a991fdf0135dbf26e22c"
         UPDATE_COMMAND ""
@@ -91,7 +91,7 @@ ExternalProject_Add(
 
 function(add_gtest_dependency target)
     # gtest
-    ExternalProject_Get_Property(google_test binary_dir)
+    ExternalProject_Get_Property(GoogleTest binary_dir)
     if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
         target_link_libraries(
                 "${target}"
@@ -106,17 +106,17 @@ function(add_gtest_dependency target)
         )
     endif ()
 
-    ExternalProject_Get_Property(google_test source_dir)
+    ExternalProject_Get_Property(GoogleTest source_dir)
     target_include_directories("${target}" SYSTEM PRIVATE "${source_dir}/googletest/include")
 
-    add_dependencies("${target}" google_test)
+    add_dependencies("${target}" GoogleTest)
 endfunction(add_gtest_dependency)
 
 ######################################################################
 # test main
 
-add_library(test_main main.cpp)
-add_gtest_dependency(test_main)
+add_library(TestMain main.cpp)
+add_gtest_dependency(TestMain)
 
 ######################################################################
 # make_test
@@ -126,14 +126,14 @@ add_gtest_dependency(test_main)
 function(make_test source out_target compile_flags)
     # turn source file path into target name (e.g. "foo/bar.cpp" -> "test-foo-bar")
     string(REPLACE "\.cpp" "" stripped "${source}")
-    string(REPLACE "/" "-" target "test-${stripped}")
+    string(REPLACE "/" "-" target "Test-${stripped}")
     set(${out_target} "${target}" PARENT_SCOPE)
 
     # create a target and make it a test
     add_executable("${target}" "${source}")
     add_test("${target}" "${target}")
     set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${compile_flags}")
-    target_link_libraries("${target}" cnl test_main)
+    target_link_libraries("${target}" Cnl TestMain)
 
     add_gtest_dependency("${target}")
 
@@ -183,14 +183,14 @@ foreach(source ${sample_sources})
 endforeach(source)
 
 ######################################################################
-# create test of glm integration
+# create test of GLM integration
 
-ExternalProject_Get_Property(glm source_dir)
-target_include_directories(test-glm SYSTEM PRIVATE "${source_dir}")
-add_dependencies(test-glm glm)
+ExternalProject_Get_Property(Glm source_dir)
+target_include_directories(Test-glm SYSTEM PRIVATE "${source_dir}")
+add_dependencies(Test-glm Glm)
 
 ######################################################################
-# create test of boost.simd integration
+# create test of Boost.SIMD integration
 
 if(Boost_FOUND AND Boost_VERSION GREATER 106099)
     # Boost.SIMD has problems building with gcc-7.x
@@ -202,36 +202,36 @@ if(Boost_FOUND AND Boost_VERSION GREATER 106099)
         endif ()
 
         ExternalProject_Add(
-            boost.simd
+            BoostSimd
             URL "https://github.com/numscale/boost.simd/archive/b1e046e3ffa720226e45512c76c505f34cde7be2.zip"
             URL_MD5 "74fc0bc279a18f931e4d2ec026af8dd4"
             UPDATE_COMMAND ""
             INSTALL_COMMAND ""
             CMAKE_ARGS "-DBoost_INCLUDE_DIR=${Boost_INCLUDE_DIR}"
         )
-        add_dependencies("${target}" boost.simd)
+        add_dependencies("${target}" BoostSimd)
 
-        ExternalProject_Get_Property(boost.simd source_dir)
+        ExternalProject_Get_Property(BoostSimd source_dir)
         target_include_directories("${target}" PRIVATE SYSTEM "${source_dir}/include")
     endif(NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
 endif(Boost_FOUND AND Boost_VERSION GREATER 106099)
 
 ######################################################################
-# create test of boost.simd integration
+# create test of Vc integration
 
 if(${STD} STREQUAL "17" AND ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7.0.0")
     make_test(vc.cpp target "")
 
     ExternalProject_Add(
-            vc
+            Vc
             URL "https://github.com/johnmcfarlane/Vc/archive/37ea0c6a0455ee91d62dc04d082bd4bac9fac5b3.zip"
             URL_MD5 "bab6f17c63e128b3c28ac9aa9324dd09"
             UPDATE_COMMAND ""
             INSTALL_COMMAND ""
             CMAKE_ARGS "-DBUILD_TESTING=OFF"
     )
-    add_dependencies("${target}" vc)
+    add_dependencies("${target}" Vc)
 
-    ExternalProject_Get_Property(vc source_dir)
+    ExternalProject_Get_Property(Vc source_dir)
     target_include_directories("${target}" PRIVATE SYSTEM "${source_dir}")
 endif()

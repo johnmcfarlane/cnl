@@ -26,14 +26,14 @@ def run_benchmarks(args):
     run_from_build(args, ["cmake", args.repo, "-DCMAKE_BUILD_TYPE=Release"])
 
     # build
-    run_from_build(args, ["make", "fp_benchmark", "-j", str(args.jobs or 1)])
+    run_from_build(args, ["make", "Benchmark", "-j", str(args.jobs or 1)])
 
     # benchmark
     benchmark_args = [
         "--benchmark_format=csv",
         "--benchmark_filter="+args.filter
     ]
-    buffer = run_from_build(args, ["./fp_benchmark"] + benchmark_args)
+    buffer = run_from_build(args, ["./Benchmark"] + benchmark_args)
 
     # clean
     run_from_build(args, ["make", "clean"])

@@ -10,4 +10,4 @@ cmake -DCMAKE_BUILD_TYPE=Release -DINT128=$2 -DSTD=$3 /root/project
 cmake --build . -- -j 8
 
 ctest
-src/benchmark/fp_benchmark
+src/benchmark/Benchmark

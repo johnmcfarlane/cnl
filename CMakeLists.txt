@@ -20,7 +20,7 @@ add_subdirectory("src/single_header")
 add_subdirectory("doc")
 
 # the CNL library
-add_library(cnl INTERFACE)
+add_library(Cnl INTERFACE)
 
 set(cnl_public_headers
         ${PROJECT_SOURCE_DIR}/include/cnl/integral_constant.h
@@ -60,9 +60,9 @@ set(cnl_implementation_headers
         ${PROJECT_SOURCE_DIR}/include/cnl/bits/number_base.h
         )
 
-target_sources(cnl INTERFACE ${cnl_public_headers} ${cnl_implementation_headers})
+target_sources(Cnl INTERFACE ${cnl_public_headers} ${cnl_implementation_headers})
 
-target_include_directories(cnl INTERFACE include)
+target_include_directories(Cnl INTERFACE include)
 
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/cnl
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/Cnl
         DESTINATION include)

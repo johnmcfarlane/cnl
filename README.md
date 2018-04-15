@@ -87,7 +87,7 @@ To run benchmarks:
 ```shell
 $ cmake -DCMAKE_BUILD_TYPE=Release
 $ cmake --build .
-$ src/benchmark/fp_benchmark
+$ src/benchmark/Benchmark
 ```
 
 ## Further Reading
