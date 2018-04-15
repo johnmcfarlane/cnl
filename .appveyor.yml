@@ -1,4 +1,4 @@
-﻿version: 0.1.{build}
+version: 0.1.{build}
 image: Visual Studio 2017
 
 environment:
@@ -12,17 +12,27 @@ environment:
       configuration: Release
       cmake_generator: "Visual Studio 15 2017 Win64"
       msbuild_property: x64
+    - platform: x86
+      configuration: Debug
+      cmake_generator: "Visual Studio 15 2017"
+      msbuild_property: win32
+    - platform: x64
+      configuration: Debug
+      cmake_generator: "Visual Studio 15 2017 Win64"
+      msbuild_property: x64
 
 build_script:
 - cmd: >-
     set BOOST_ROOT=C:\Libraries\boost_1_66_0
 
-    cmake -G "%cmake_generator%" .
+    cmake -DCMAKE_BUILD_TYPE=%configuration% -G "%cmake_generator%" .
 
-    MSBuild.exe /maxcpucount /property:Configuration=Release /property:Platform=%msbuild_property% cnl.sln
+    cmake --build . --target src/test/Tests -- /property:Configuration=%configuration% /property:Platform=%msbuild_property%
+
+    cmake --build . --target src/benchmark/Benchmark -- /property:Configuration=%configuration% /property:Platform=%msbuild_property%
 test_script:
 - cmd: >-
     ctest
 
-    src\benchmark\Release\Benchmark.exe
+    src\benchmark\%configuration%\Benchmark.exe
 shallow_clone: true
