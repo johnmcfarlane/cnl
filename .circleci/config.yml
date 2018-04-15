@@ -1,0 +1,36 @@
+version: 2
+jobs:
+  "c++17":
+    docker:
+      - image: gcc:latest
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: . /root/project/.circleci/test.sh gcc ON 17
+
+  "c++14":
+    docker:
+      - image: gcc:latest
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: . /root/project/.circleci/test.sh gcc ON 14
+
+  "c++11":
+    docker:
+      - image: gcc:latest
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: . /root/project/.circleci/test.sh gcc ON 11
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - "c++17"
+      - "c++14"
+      - "c++11"
