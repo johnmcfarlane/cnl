@@ -119,6 +119,8 @@ Add this to your system header list and include, e.g.:
 #include <cnl.h>
 ```
 
+See example program, [Tau](./example/tau/README.md), for more details.
+
 ## Further Reading
 
 - [documentation](http://johnmcfarlane.github.io/cnl/)
