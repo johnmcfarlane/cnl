@@ -40,7 +40,7 @@ get_doxygen_tagfile(
         "https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/")
 
 configure_file(Doxyfile.in Doxyfile @ONLY)
-add_custom_target(doc ALL
+add_custom_target(Doc ALL
         ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
         WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
         COMMENT "Generating API documentation with Doxygen" VERBATIM)
