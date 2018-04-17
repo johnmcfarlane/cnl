@@ -20,12 +20,12 @@ CNL aims to assist the development of:
 * resource-constrained applications on embedded and mobile devices and
 * math-intensive operations on specialized hardware such as GPUs and FPGAs.
 
-The library's APIs are developed in colaboration with standardization 
+The library's APIs are developed in colaboration with standardization
 bodies such as [The C++ Standards Committee](http://www.open-std.org/jtc1/sc22/wg21/)
-and members of [The Kronos Group Inc.](https://www.khronos.org/)
-and it serves as a reference implementation for sections of the 
+and members of [The Khronos Group Inc.](https://www.khronos.org/)
+and it serves as a reference implementation for sections of the
 [C++ Numbers Technical Specification](http://wg21.link/p0101).
-Please read proposals, [P0037](http://wg21.link/p0037) 
+Please read proposals, [P0037](http://wg21.link/p0037)
 and [P0554](http://wg21.link/p0554) for more details.
 
 ## Requirements
