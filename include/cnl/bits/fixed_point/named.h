@@ -139,27 +139,16 @@ namespace cnl {
     namespace _divide_impl {
         template<class Lhs, class Rhs>
         struct params {
-            using lhs_rep = typename Lhs::rep;
-            using rhs_rep = typename Rhs::rep;
-            using rep_op_result = _impl::op_result<_impl::divide_op, lhs_rep, rhs_rep>;
+            using rep_op_result = _impl::op_result<_impl::divide_op, typename Lhs::rep, typename Rhs::rep>;
 
             static constexpr int integer_digits =
                     _impl::integer_digits<Lhs>::value + _impl::fractional_digits<Rhs>::value;
             static constexpr int fractional_digits =
                     _impl::fractional_digits<Lhs>::value + _impl::integer_digits<Rhs>::value;
             static constexpr int necessary_digits = integer_digits + fractional_digits;
-            static constexpr bool is_signed =
-                    numeric_limits<lhs_rep>::is_signed || numeric_limits<rhs_rep>::is_signed;
 
-            static constexpr int promotion_digits = digits<rep_op_result>::value;
-            static constexpr int max_digits = _impl::max(necessary_digits, promotion_digits);
-
-            using prewidened_result_rep = _impl::make_signed_t<rep_op_result, is_signed>;
-            using rep_type = set_digits_t<prewidened_result_rep, max_digits>;
-
+            using rep_type = set_digits_t<rep_op_result, necessary_digits>;
             static constexpr int rep_exponent = -fractional_digits;
-
-            static constexpr int intermediate_exponent_lhs = Lhs::exponent - digits<Rhs>::value;
 
             using result_type = fixed_point<rep_type, rep_exponent>;
         };
