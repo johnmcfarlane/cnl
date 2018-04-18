@@ -241,7 +241,7 @@ template<typename T>
 template<typename FromT>
 void virtual_float<T>::normalize(FromT)
 {
-};
+}
 
 template<>
 template<>
@@ -250,7 +250,7 @@ inline void virtual_float<q4_20>::normalize(q8_40 mantissa)
     int norm = cnl::leading_bits(mantissa) - 6;
     m_mantissa = (norm >= 0) ? mantissa << norm : mantissa >> (-norm);
     m_exponent -= norm;
-};
+}
 
 template<>
 template<>
@@ -259,7 +259,7 @@ inline void virtual_float<q8_40>::normalize(q8_40 mantissa)
     int norm = cnl::leading_bits(mantissa) - 6;
     m_mantissa = (norm >= 0) ? mantissa << norm : mantissa >> (-norm);
     m_exponent -= norm;
-};
+}
 
 template<typename T>
 virtual_float<T>& virtual_float<T>::operator+=(virtual_float<T> const& rhs)
