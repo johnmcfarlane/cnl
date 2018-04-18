@@ -30,7 +30,7 @@ template<class T1, class T2>
 inline T1 multiplies<T1, T2>::operator()(const T2& a, const T2& b) const
 {
     return static_cast<T1>(a * b);
-};
+}
 
 template<class T>
 class plus
@@ -43,7 +43,7 @@ template<class T> inline
 T plus<T>::operator()(const T& a, const T& b) const
 {
     return static_cast<T>(a + b);
-};
+}
 
 template<class T>
 class minus
@@ -56,7 +56,7 @@ template<class T> inline
 T minus<T>::operator()(const T& a, const T& b) const
 {
     return static_cast<T>(a - b);
-};
+}
 
 template<class T>
 class negate
@@ -69,7 +69,7 @@ template<class T> inline
 T negate<T>::operator()(const T& a) const
 {
     return -a;
-};
+}
 
 template <class T1, class T2>
 class divides
@@ -82,25 +82,25 @@ template <class T1, class T2>
 inline T1 divides<T1, T2>::operator()(const T1& a, const T2& b) const
 {
     return static_cast<T1>(a / b);
-};
+}
 
 template <>
 inline q4_20 divides<q4_20,q4_20>::operator()(const q4_20& a, const q4_20& b) const
 {
     return static_cast<q4_20>(cnl::make_fixed_point(cnl::make_fractional(a, b)));
-};
+}
 
 template <>
 inline q8_40 divides<q8_40,q8_40>::operator()(const q8_40& a, const q8_40& b) const
 {
     return static_cast<q8_40>(cnl::make_fixed_point(cnl::make_fractional(a, b)));
-};
+}
 
 template <>
 inline q8_40 divides<q8_40,q4_20>::operator()(const q8_40& a, const q4_20& b) const
 {
     return static_cast<q8_40>(cnl::make_fixed_point(cnl::make_fractional(a, b)));
-};
+}
 
 template<typename T>
 T sqrt(const T a)
