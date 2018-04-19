@@ -12,7 +12,9 @@
 static constexpr double trig_accuracy = 1e-15;
 static constexpr double trig_interpolation_accuracy = 1e-7;
 static constexpr double trig_accuracy_q4_20 = 1e-6;
+#if defined(CNL_INT128_ENABLED)
 static constexpr double trig_interpolation_accuracy_q4_20 = 2e-6;
+#endif
 
 TEST(trig, cos_idx_double) {
     cnl::dsp::trig<double>& myTrig = cnl::dsp::trig<double>::instance();
@@ -104,6 +106,7 @@ TEST(trig, sin_idx_q4_20) {
     }
 }
 
+#if defined(CNL_INT128_ENABLED)
 TEST(trig, cos_angle_q4_20) {
     cnl::dsp::trig<q4_20>& myTrig = cnl::dsp::trig<q4_20>::instance();
     std::size_t tests = 1 << 18;
@@ -132,3 +135,4 @@ TEST(trig, sin_angle_q4_20) {
                     trig_interpolation_accuracy_q4_20);
     }
 }
+#endif

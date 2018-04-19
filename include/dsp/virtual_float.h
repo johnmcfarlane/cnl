@@ -523,6 +523,7 @@ inline virtual_float<q4_20> sqrt(virtual_float<q4_20> const& rhs)
     return ret;
 }
 
+#if defined(CNL_INT128_ENABLED)
 template<>
 inline virtual_float<q8_40> sqrt(virtual_float<q8_40> const& rhs)
 {
@@ -542,6 +543,7 @@ inline virtual_float<q8_40> sqrt(virtual_float<q8_40> const& rhs)
     ret.normalize();
     return ret;
 }
+#endif
 
 } // namespace dsp
 } // namespace cnl
