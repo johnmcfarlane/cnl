@@ -90,6 +90,7 @@ inline q4_20 divides<q4_20,q4_20>::operator()(const q4_20& a, const q4_20& b) co
     return static_cast<q4_20>(cnl::make_fixed_point(cnl::make_fractional(a, b)));
 }
 
+#if defined(CNL_INT128_ENABLED)
 template <>
 inline q8_40 divides<q8_40,q8_40>::operator()(const q8_40& a, const q8_40& b) const
 {
@@ -101,6 +102,7 @@ inline q8_40 divides<q8_40,q4_20>::operator()(const q8_40& a, const q4_20& b) co
 {
     return static_cast<q8_40>(cnl::make_fixed_point(cnl::make_fractional(a, b)));
 }
+#endif
 
 template<typename T>
 T sqrt(const T a)

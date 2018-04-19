@@ -301,12 +301,14 @@ TEST(virtual_float, square_root)
         cnl::dsp::virtual_float<q4_20> b = sqrt(a);
         EXPECT_NEAR(static_cast<float>(b), std::sqrt(1.349885940551758f), 0.00001);
     }
+#if defined(CNL_INT128_ENABLED)
     {
         cnl::dsp::virtual_float<q8_40> a{1.349885940551758f};
         EXPECT_FLOAT_EQ(static_cast<float>(a), 1.349885940551758f);
         cnl::dsp::virtual_float<q8_40> b = sqrt(a);
         EXPECT_NEAR(static_cast<float>(b), std::sqrt(1.349885940551758f), 0.00001);
     }
+#endif
 }
 
 TEST(virtual_float, from_virtual_float)
@@ -352,6 +354,7 @@ TEST(virtual_float, cumulative_sum_q4_20)
     }
 }
 
+#if defined(CNL_INT128_ENABLED)
 TEST(virtual_float, cumulative_sum_q8_40)
 {
     std::mt19937 mt(91);
@@ -369,3 +372,4 @@ TEST(virtual_float, cumulative_sum_q8_40)
         EXPECT_NEAR(static_cast<float>(float_sum), static_cast<float>(vf_sum), 1e-7f);
     }
 }
+#endif

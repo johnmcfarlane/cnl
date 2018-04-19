@@ -327,6 +327,7 @@ complex<R> dot(complex_vector<T> const& lhs, complex_vector<T> const& rhs,
     return sum;
 }
 
+#if defined(CNL_INT128_ENABLED)
 template<>
 inline complex<virtual_float<q4_20> > dot(complex_vector<q4_20> const& lhs,
                                               complex_vector<q4_20> const& rhs,
@@ -365,6 +366,7 @@ inline complex<virtual_float<q4_20> > dot(complex_vector<q4_20> const& lhs,
     complex<virtual_float<q4_20> > ret = sum;
     return ret;
 }
+#endif
 
 
 template<typename T, typename R>
@@ -395,6 +397,7 @@ R correlate_with_exp(complex_vector<T> const& vector,
     return sum;
 }
 
+#if defined(CNL_INT128_ENABLED)
 template<>
 inline virtual_float<q4_20> correlate_with_exp(complex_vector<q4_20> const& vector,
                                                unsigned int step,
@@ -423,6 +426,7 @@ inline virtual_float<q4_20> correlate_with_exp(complex_vector<q4_20> const& vect
     virtual_float<q4_20> res = sum;
     return res;
 }
+#endif
 
 
 template<typename T, typename R>
@@ -440,6 +444,7 @@ R energy(complex_vector<T> const& vector,
     return sum;
 }
 
+#if defined(CNL_INT128_ENABLED)
 template<>
 inline virtual_float<q4_20> energy(complex_vector<q4_20> const& vector,
                                        size_t begin, size_t end)
@@ -455,6 +460,7 @@ inline virtual_float<q4_20> energy(complex_vector<q4_20> const& vector,
     virtual_float<q4_20> res = sum;
     return res;
 }
+#endif
 
 } // namespace dsp
 } // namespace cnl

@@ -283,6 +283,7 @@ TEST(fft, forward_random_q4_20)
     }
 }
 
+#if defined(CNL_INT128_ENABLED)
 TEST(fft, forward_random_q8_40)
 {
     unsigned int fftSize = 2048;
@@ -361,3 +362,4 @@ TEST(fft, forward_random_q8_40)
                     static_cast<double>(vec_fix_real[i].imag()) * scale_real, FFT_Q8_40_ACCURACY);
     }
 }
+#endif

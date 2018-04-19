@@ -263,11 +263,13 @@ inline int fft(complex_vector<q4_20>& vector)
     return bf_core(vector, false);
 }
 
+#if defined(CNL_INT128_ENABLED)
 template<>
 inline int fft(complex_vector<q8_40>& vector)
 {
     return bf_core(vector, false);
 }
+#endif
 
 template<class T>
 int ifft(complex_vector<T>& vector)
@@ -282,11 +284,13 @@ inline int ifft(complex_vector<q4_20>& vector)
     return bf_core(vector, true);
 }
 
+#if defined(CNL_INT128_ENABLED)
 template<>
 inline int ifft(complex_vector<q8_40>& vector)
 {
     return bf_core(vector, true);
 }
+#endif
 
 template<class T>
 int real_fft(std::vector<T> const& in, complex_vector<T>& out)
@@ -318,6 +322,7 @@ inline int real_fft(std::vector<q4_20> const& in, complex_vector<q4_20>& out)
     return exponent;
 }
 
+#if defined(CNL_INT128_ENABLED)
 template<>
 inline int real_fft(std::vector<q8_40> const& in, complex_vector<q8_40>& out)
 {
@@ -332,6 +337,7 @@ inline int real_fft(std::vector<q8_40> const& in, complex_vector<q8_40>& out)
     real_fft_postprocess(out);
     return exponent;
 }
+#endif
 
 } // namespace fft
 } // namespace dsp
