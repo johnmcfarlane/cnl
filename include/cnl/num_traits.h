@@ -23,6 +23,25 @@ namespace cnl {
     using _digits_type = int;
 
     ////////////////////////////////////////////////////////////////////////////////
+    // error: [un]signed_integer_cannot_have<Digits>
+
+    // These types are declared for error reporting purposes only. They arise in
+    // error message when an attempt it made to use set_digits or set_digits_t
+    // to produce an integer that is wider than the widest fundamental integer
+    // types, cnl::intmax and cnl::uintmax.
+
+    template<int NumDigits>
+    struct signed_integer_cannot_have {
+        template<int MaxNumDigits>
+        struct digits_because_maximum_is;
+    };
+    template<int NumDigits>
+    struct unsigned_integer_cannot_have {
+        template<int MaxNumDigits>
+        struct digits_because_maximum_is;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
     // cnl::is_composite (default specialization)
 
     template<class T, class Enable = void>
@@ -56,19 +75,21 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_num_traits_impl::enable_for_range
 
-        template<_digits_type MinNumDigits, class Smaller, class T>
-        struct enable_for_range
-                : std::enable_if<MinNumDigits <= numeric_limits<T>::digits &&
-                                 numeric_limits<Smaller>::digits < MinNumDigits> {
-        };
+        template<typename T>
+        constexpr bool narrower_than(_digits_type digits)
+        {
+            return std::is_same<T, void>::value ? true : numeric_limits<T>::digits<digits;
+        }
 
-        template<_digits_type MinNumDigits, class Smallest>
-        struct enable_for_range<MinNumDigits, void, Smallest>
-                : std::enable_if<MinNumDigits <= numeric_limits<Smallest>::digits> {
-        };
+        template<typename T>
+        constexpr bool no_narrower_than(_digits_type digits)
+        {
+            return std::is_same<T, void>::value ? true : numeric_limits<T>::digits>=digits;
+        }
 
         template<_digits_type MinNumDigits, class Smaller, class T>
-        using enable_for_range_t = typename enable_for_range<MinNumDigits, Smaller, T>::type;
+        using enable_for_range_t = typename std::enable_if<
+                no_narrower_than<T>(MinNumDigits) && narrower_than<Smaller>(MinNumDigits)>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_num_traits_impl::set_digits_signed
@@ -103,6 +124,11 @@ namespace cnl {
         };
 #endif
 
+        template<_digits_type MinNumDigits>
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, uintmax, void>>
+                : signed_integer_cannot_have<MinNumDigits>::template digits_because_maximum_is<numeric_limits<uintmax>::digits> {
+        };
+
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_num_traits_impl::set_digits_unsigned
 
@@ -135,6 +161,11 @@ namespace cnl {
             using type = uint128;
         };
 #endif
+
+        template<_digits_type MinNumDigits>
+        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, uintmax, void>>
+                : unsigned_integer_cannot_have<MinNumDigits>::template digits_because_maximum_is<numeric_limits<uintmax>::digits> {
+        };
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_num_traits_impl::set_digits_integer
