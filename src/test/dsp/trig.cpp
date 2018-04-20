@@ -12,9 +12,7 @@
 static constexpr double trig_accuracy = 1e-15;
 static constexpr double trig_interpolation_accuracy = 1e-7;
 static constexpr double trig_accuracy_q4_20 = 1e-6;
-#if defined(CNL_INT128_ENABLED)
 static constexpr double trig_interpolation_accuracy_q4_20 = 2e-6;
-#endif
 
 TEST(trig, cos_idx_double) {
     cnl::dsp::trig<double>& myTrig = cnl::dsp::trig<double>::instance();
@@ -47,29 +45,31 @@ TEST(trig, cos_idx_double) {
     }
 }
 
-TEST(trig, cos_angle_double) {
+TEST(trig, cos_turn_double) {
     cnl::dsp::trig<double>& myTrig = cnl::dsp::trig<double>::instance();
     std::size_t tests = 1 << 18;
     double const twoPi {cnl::dsp::math::c_2_pi};
 
     for (std::size_t i = 0; i <= tests; ++i)
     {
-        double angle = (double)i / (double)tests;
-        EXPECT_NEAR(std::cos(twoPi * angle), myTrig.cos_turn(angle),
+        double turn = (double)i / (double)tests;
+        double radians = turn * twoPi;
+        EXPECT_NEAR(std::cos(radians), myTrig.cos_turn(turn),
                     trig_interpolation_accuracy);
     }
 }
 
 
-TEST(trig, sin_angle_double) {
+TEST(trig, sin_turn_double) {
     cnl::dsp::trig<double>& myTrig = cnl::dsp::trig<double>::instance();
     std::size_t tests = 1 << 18;
     double const twoPi {cnl::dsp::math::c_2_pi};
 
     for (std::size_t i = 0; i <= tests; ++i)
     {
-        double angle = (double)i / (double)tests;
-        EXPECT_NEAR(std::sin(twoPi * angle), myTrig.sin_turn(angle),
+        double turn = (double)i / (double)tests;
+        double radians = turn * twoPi;
+        EXPECT_NEAR(std::sin(radians), myTrig.sin_turn(turn),
                     trig_interpolation_accuracy);
     }
 }
@@ -106,33 +106,33 @@ TEST(trig, sin_idx_q4_20) {
     }
 }
 
-#if defined(CNL_INT128_ENABLED)
-TEST(trig, cos_angle_q4_20) {
+TEST(trig, cos_turn_q4_20) {
     cnl::dsp::trig<q4_20>& myTrig = cnl::dsp::trig<q4_20>::instance();
     std::size_t tests = 1 << 18;
     double const twoPi {cnl::dsp::math::c_2_pi};
 
     for (std::size_t i = 0; i <= tests; ++i)
     {
-        double angle = (double)i / (double)tests;
-        EXPECT_NEAR(std::cos(twoPi * angle),
-                    static_cast<double>(myTrig.cos_turn(static_cast<q4_20>(angle))),
+        double turn = (double)i / (double)tests;
+        double radians = turn * twoPi;
+        EXPECT_NEAR(std::cos(radians),
+                    static_cast<double>(myTrig.cos_turn(static_cast<q4_20>(turn))),
                     trig_interpolation_accuracy_q4_20);
     }
 }
 
 
-TEST(trig, sin_angle_q4_20) {
+TEST(trig, sin_turn_q4_20) {
     cnl::dsp::trig<q4_20>& myTrig = cnl::dsp::trig<q4_20>::instance();
     std::size_t tests = 1 << 18;
     double const twoPi {cnl::dsp::math::c_2_pi};
 
     for (std::size_t i = 0; i <= tests; ++i)
     {
-        double angle = (double)i / (double)tests;
-        EXPECT_NEAR(std::sin(twoPi * angle),
-                    static_cast<double>(myTrig.sin_turn(static_cast<q4_20>(angle))),
+        double turn = (double)i / (double)tests;
+        double radians = turn * twoPi;
+        EXPECT_NEAR(std::sin(radians),
+                    static_cast<double>(myTrig.sin_turn(static_cast<q4_20>(turn))),
                     trig_interpolation_accuracy_q4_20);
     }
 }
-#endif
