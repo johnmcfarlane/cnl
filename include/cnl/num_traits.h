@@ -125,8 +125,8 @@ namespace cnl {
 #endif
 
         template<_digits_type MinNumDigits>
-        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, uintmax, void>>
-                : signed_integer_cannot_have<MinNumDigits>::template digits_because_maximum_is<numeric_limits<uintmax>::digits> {
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, intmax, void>>
+                : signed_integer_cannot_have<MinNumDigits>::template digits_because_maximum_is<numeric_limits<intmax>::digits> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
