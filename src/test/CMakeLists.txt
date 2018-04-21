@@ -25,7 +25,6 @@ set(test_sources
         elastic/elastic_integer.cpp
         fixed_point/extras.cpp
         overflow/overflow_integer.cpp
-        fixed_point/math.cpp
         rounding/rounding_integer.cpp
 
         # composites
@@ -54,6 +53,7 @@ set(sample_sources
         presentations/cppcon2017.cpp
         presentations/cppdub2018.cpp
         presentations/cppnow2017.cpp
+        fixed_point/math.cpp
         fixed_point/p0037.cpp
         zero_cost_square.cpp
         zero_cost_free_functions.cpp
