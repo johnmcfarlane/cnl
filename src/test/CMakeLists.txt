@@ -25,7 +25,6 @@ set(test_sources
         elastic/elastic_integer.cpp
         fixed_point/extras.cpp
         overflow/overflow_integer.cpp
-        fixed_point/math.cpp
         rounding/rounding_integer.cpp
 
         # composites
@@ -54,6 +53,7 @@ set(sample_sources
         presentations/cppcon2017.cpp
         presentations/cppdub2018.cpp
         presentations/cppnow2017.cpp
+        fixed_point/math.cpp
         fixed_point/p0037.cpp
         zero_cost_square.cpp
         zero_cost_free_functions.cpp
@@ -162,8 +162,11 @@ endfunction(make_test)
 foreach(source ${test_sources})
     if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
         make_test("${source}" target "")
-    elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-        make_test("${source}" target "-Wconversion -Wno-sign-conversion")
+    elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "3.8.0")
+        make_test("${source}" target "-Wconversion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap=undefined")
+    else ()
+        make_test("${source}" target "-Wconversion -Wno-sign-conversion -fsanitize=undefined")
+        target_link_libraries("${target}" "-fsanitize=undefined")
     endif ()
 endforeach(source)
 
