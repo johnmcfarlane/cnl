@@ -74,9 +74,15 @@ However, it comes with a number of tests and benchmarks.
 
    `cmake /some/directory/cnl`
 
-2. Build tests (in parallel using *N* cores):
+2. Build tests:
 
-   `cmake --build . --target tests -- -j N`
+   * For Linux (in parallel using *N* cores):
+
+     `cmake --build . --target tests -- -j N`
+
+   * For Windows:
+
+     `cmake --build . --target src/test/Tests`
 
 3. Run tests:
 
