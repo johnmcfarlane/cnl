@@ -78,6 +78,10 @@ namespace test_division {
 
     static_assert(identical(
             elastic_number<62, - 31>{.5},
+            cnl::divide(cnl::elastic_number<31, 0>{1}, cnl::elastic_number<31, 0>{2})),
+            "cnl::divide(cnl::elastic_number, cnl::elastic_number)");
+    static_assert(identical(
+            elastic_number<62, - 31>{.5},
             make_fixed_point(cnl::make_fractional(elastic_number<31, 0>{1}, elastic_number<31, 0>{2}))),
             "cnl::elastic_number division");
 #if defined(CNL_INT128_ENABLED)
@@ -85,6 +89,45 @@ namespace test_division {
             elastic_number<124, -62>{.5},
             make_fixed_point(cnl::make_fractional(elastic_number<62, 0>{1}, elastic_number<62, 0>{2}))),
             "cnl::elastic_number division");
+#endif
+}
+
+namespace test_fractional_deduced {
+    using namespace cnl::literals;
+
+    constexpr auto third = cnl::make_fractional(1_elastic, 3_elastic);
+
+    constexpr auto named = cnl::divide(third.numerator, third.denominator);
+    static_assert(identical(cnl::elastic_number<3, -2>{0.25}, named), "");
+
+#if defined(__cpp_deduction_guides)
+    constexpr auto deduced = fixed_point{third};
+    static_assert(identical(named, deduced));
+#endif
+}
+
+namespace test_fractional_specific_byte {
+    using namespace cnl::literals;
+
+    constexpr auto third = cnl::make_fractional(1_elastic, 3_elastic);
+
+    constexpr auto specific = elastic_number<7, -6>{third};
+    static_assert(identical(cnl::elastic_number<7, -6>{0.328125}, specific), "");
+}
+
+namespace test_fractional_specific_long {
+    using namespace cnl::literals;
+
+    constexpr auto third = cnl::make_fractional(1_elastic, 3_elastic);
+
+    constexpr auto specific = cnl::elastic_number<63, -60>{third};
+#if defined(_MSC_VER)
+    // MSVC's long double is less precise than 63 digits
+    static_assert(std::is_same<cnl::elastic_number<63, -60>, cnl::elastic_number<63, -60>>::value, "");
+    static_assert(specific > .333333333333333, "");
+    static_assert(specific < .333333333333334, "");
+#else
+    static_assert(identical(cnl::elastic_number<63, -60>{1.L/3}, specific), "");
 #endif
 }
 

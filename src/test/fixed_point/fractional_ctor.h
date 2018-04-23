@@ -49,26 +49,68 @@ namespace {
                 "cnl::fixed_point::fixed_point(fractional) w. CTAD");
 #endif
 
-        // custom-width quotient
-        constexpr auto cq = cnl::fixed_point<uint8, -4>{f};
+        // custom-width quotient (must be wide enough to perform widened division)
+        constexpr auto cq = cnl::fixed_point<uint16, -4>{f};
         static_assert(
-                identical(cnl::fixed_point<uint8, -4>{0.1875}, cq),
+                identical(cnl::fixed_point<uint16, -4>{0.1875}, cq),
                 "cnl::fixed_point::fixed_point(fractional) w.out CTAD");
     }
 
-    namespace test_fractional_third {
-        using cnl::fixed_point;
-        using cnl::fractional;
-
+    namespace test_fractional_deduced {
         constexpr auto third = cnl::make_fractional(test_int{1}, test_int{3});
 
+        constexpr auto named = cnl::divide(third.numerator, third.denominator);
+        static_assert(identical(fixed_point<int64, -31>{0.333333333022892475128173828125L}, named), "");
+
 #if defined(__cpp_deduction_guides)
-        constexpr auto deduced = fixed_point{third};
-        static_assert(identical(fixed_point<int64, -31>{0.333333333022892475128173828125L}, deduced));
+        constexpr auto deduced = cnl::fixed_point{third};
+        static_assert(identical(named, deduced));
+#endif
+    }
+
+    namespace test_fractional_specific_int {
+        constexpr auto third = cnl::make_fractional(test_int{1}, test_int{3});
+
+        constexpr auto named = cnl::divide(third.numerator, third.denominator);
+        static_assert(identical(cnl::fixed_point<int64, -31>{0.333333333022892475128173828125L}, named), "");
+
+#if defined(__cpp_deduction_guides)
+        constexpr auto deduced = cnl::fixed_point{third};
+        static_assert(identical(named, deduced));
 #endif
 
-        constexpr auto specific = fixed_point<uint8, -8>{third};
-        static_assert(identical(fixed_point<uint8, -8>{0.33203125}, specific), "");
+        constexpr auto specific = cnl::fixed_point<int64, -31>{third};
+        static_assert(identical(cnl::fixed_point<int64, -31>{0.333333333022892475128173828125L}, specific), "");
+    }
+
+    namespace test_fractional_specific_8bit {
+        constexpr auto third = cnl::make_fractional(int8{1}, int8{3});
+
+        constexpr auto named = cnl::divide(third.numerator, third.denominator);
+        static_assert(identical(cnl::fixed_point<test_int, -7>{0.328125}, named), "");
+
+#if defined(__cpp_deduction_guides)
+        constexpr auto deduced = cnl::fixed_point{third};
+        static_assert(identical(named, deduced));
+#endif
+
+        constexpr auto specific = cnl::fixed_point<test_int, -7>{third};
+        static_assert(identical(cnl::fixed_point<test_int, -7>{0.328125}, specific), "");
+    }
+
+    namespace test_fractional_specific_16bit {
+        constexpr auto third = cnl::make_fractional(int16{1}, int16{3});
+
+        constexpr auto named = cnl::divide(third.numerator, third.denominator);
+        static_assert(identical(cnl::fixed_point<test_int, -15>{0.33331298828125}, named), "");
+
+#if defined(__cpp_deduction_guides)
+        constexpr auto deduced = cnl::fixed_point{third};
+        static_assert(identical(named, deduced));
+#endif
+
+        constexpr auto specific = cnl::fixed_point<uint8, -7>{third};
+        static_assert(identical(cnl::fixed_point<uint8, -7>{0.328125}, specific), "");
     }
 }
 
