@@ -469,22 +469,24 @@ namespace cnl {
         template<int Digits, int Radix, class S, class Enable = void>
         struct default_shift;
 
-        template<int Bits, class S>
-        struct default_shift<Bits, 2, S, _impl::enable_if_t<0<=Bits>> {
+        template<int Digits, class S>
+        struct default_shift<Digits, 2, S, _impl::enable_if_t<0<=Digits>> {
             constexpr auto operator()(S const& s) const
-            -> decltype(s*(S{1} << constant<Bits>{}))
+            -> decltype(s*(S{1} << constant<Digits>{}))
             {
-                return s*(S{1} << constant<Bits>{});
+                static_assert((S{1} << constant<Digits>{})>=S{1}, "left shift results in overflow");
+                return s*(S{1} << constant<Digits>{});
             }
         };
 
         // cnl::default_shift<-ve, cnl::constant<>>
-        template<int Bits, class S>
-        struct default_shift<Bits, 2, S, _impl::enable_if_t<Bits<0>> {
+        template<int Digits, class S>
+        struct default_shift<Digits, 2, S, _impl::enable_if_t<Digits<0>> {
             constexpr auto operator()(S const& s) const
-            -> decltype(s/(S{1} << constant<-Bits>()))
+            -> decltype(s/(S{1} << constant<-Digits>()))
             {
-                return s/(S{1} << constant<-Bits>());
+                static_assert((S{1} << constant<-Digits>{})>=S{1}, "left shift results in overflow");
+                return s/(S{1} << constant<-Digits>());
             }
         };
     }
