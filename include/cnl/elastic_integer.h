@@ -109,18 +109,9 @@ namespace cnl {
         using type = elastic_integer<cnl::digits<Value>::value, cnl::_impl::make_signed_t<Narrowest, cnl::is_signed<Value>::value>>;
     };
 
-    namespace _elastic_integer_impl {
-        // cnl::_elastic_integer_impl::digits - given a value with which to initialize elastic_integer,
-        // returns how many digits the type needs
-        template<class Integer>
-        constexpr int digits(Integer value) {
-            return used_bits((value<0)?-value:value);
-        }
-    }
-
     template<int Digits, class Narrowest, intmax Value>
     struct from_value<elastic_integer<Digits, Narrowest>, constant<Value>> {
-        static constexpr auto _to_digits = _elastic_integer_impl::digits(Value);
+        static constexpr auto _to_digits = digits<constant<Value>>::value;
         using type = elastic_integer<_to_digits, Narrowest>;
     };
 
@@ -232,7 +223,7 @@ namespace cnl {
 
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     elastic_integer(constant<Value>)
-    -> elastic_integer<_elastic_integer_impl::digits(Value)>;
+    -> elastic_integer<digits<constant<Value>>::value>;
 #endif
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -240,9 +231,9 @@ namespace cnl {
 
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     constexpr auto make_elastic_integer(constant<Value>)
-    -> elastic_integer<_elastic_integer_impl::digits(Value)>
+    -> elastic_integer<digits<constant<Value>>::value>
     {
-        return elastic_integer<_elastic_integer_impl::digits(Value)>{Value};
+        return elastic_integer<digits<constant<Value>>::value>{Value};
     }
 
     namespace _elastic_integer_impl {

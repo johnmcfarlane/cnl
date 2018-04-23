@@ -359,6 +359,13 @@ namespace cnl {
     {
         return digits<Integer>::value-used_bits(value);
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::digits<cnl::constant<>>
+
+    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct digits<constant<Value>> : std::integral_constant<_digits_type, used_bits((Value<0)?-Value:Value)> {
+    };
 }
 
 #endif  // CNL_NUMERIC_H
