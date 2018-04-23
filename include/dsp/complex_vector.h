@@ -32,7 +32,7 @@ class complex_vector
 public:
     /// Constructor
     explicit complex_vector(std::size_t size = 0,
-                            complex<T> init = complex<T>(0, 0)) :
+                            complex<T> init = complex<T>{}) :
         m_real(), m_imag()
     {
         m_real.resize(size, init.real());
@@ -311,63 +311,16 @@ complex<R> dot(complex_vector<T> const& lhs, complex_vector<T> const& rhs,
 {
     size_t last = std::min(end, rhs.size());
     last = std::min(last, lhs.size());
-    complex<R> sum(0, 0);
+    complex<R> sum(0.,0.);
     for (std::size_t index = begin; index < last; ++index)
     {
-        cnl::dsp::complex<T> valueLhs = lhs[index];
-        cnl::dsp::complex<T> valueRhs = rhs[index];
-        // dot product is BY DEFINITION, a*conj(b);
-        // When (!conjugate) is true, the ? is lhs*conj(rhs), thus the (+) sign.
+        // When (!conjugate) is true, the ? is lhs*conj(rhs)
         // when conjugation is on it means a*conj(conj(b)) = a * b;
-        cnl::dsp::complex<T> product = (!conjugate) ? valueLhs* conj(valueRhs)
-                                           : valueLhs * valueRhs;
-        sum += cnl::dsp::complex<R>(product.real(),
-                                    product.imag());
+        sum += (!conjugate) ? lhs[index] * conj(rhs[index])
+                            : lhs[index] * rhs[index];
     }
     return sum;
 }
-
-#if defined(CNL_INT128_ENABLED)
-template<>
-inline complex<virtual_float<q4_20> > dot(complex_vector<q4_20> const& lhs,
-                                              complex_vector<q4_20> const& rhs,
-                                              bool conjugate,
-                                              size_t begin, size_t end)
-{
-    size_t last = std::min(end, rhs.size());
-    last = std::min(last, lhs.size());
-    complex<virtual_float<q8_40> > sum(0, 0);
-    for (std::size_t index = begin; index < last; ++index)
-    {
-        cnl::dsp::complex<q4_20> valueLhs = lhs[index];
-        cnl::dsp::complex<q4_20> valueRhs = rhs[index];
-        q8_40 productRe;
-        q8_40 productIm;
-        // dot product is BY DEFINITION, a*conj(b);
-        // When (!conjugate) is true, the ? is lhs*conj(rhs), thus the (+) sign.
-        // when conjugation is on it means a*conj(conj(b)) = a * b;
-        if (!conjugate)
-        {
-            productRe = valueLhs.real() * valueRhs.real() +
-                        valueLhs.imag() * valueRhs.imag();
-            productIm = valueLhs.imag() * valueRhs.real() -
-                        valueLhs.real() * valueRhs.imag();
-
-        }
-        else
-        {
-            productRe = valueLhs.real() * valueRhs.real() -
-                        valueLhs.imag() * valueRhs.imag();
-            productIm = valueLhs.imag() * valueRhs.real() +
-                        valueLhs.real() * valueRhs.imag();
-        }
-        sum += cnl::dsp::complex<q8_40>(productRe, productIm);
-    }
-    complex<virtual_float<q4_20> > ret = sum;
-    return ret;
-}
-#endif
-
 
 template<typename T, typename R>
 R correlate_with_exp(complex_vector<T> const& vector,
@@ -380,87 +333,32 @@ R correlate_with_exp(complex_vector<T> const& vector,
     size_t last = std::min(end, vector.size());
     cnl::dsp::trig<T>& exp = cnl::dsp::trig<T>::instance();
     std::size_t stride = static_cast<std::size_t>(step * exp.getTwoPiIndex() / fftsize);
-    R sum(0);
+    R sum(0.);
     for (std::size_t index = begin; index < last; ++index)
     {
-        cnl::dsp::complex<T> valueLhs = vector[index];
-        cnl::dsp::complex<T> valueRhs = exp[index * stride];
         // Correlation is BY DEFINITION, a*conj(b);
-        // When (!conjugate) is true, the ? is lhs*conj(exp), thus the (+) sign.
+        // When (!conjugate) is true, the ? is lhs*conj(exp)
         // when conjugation is on it means a*conj(conj(b)) = a * b;
-        T product = (!conjugate) ? valueLhs.real() * valueRhs.real() +
-                    valueLhs.imag() * valueRhs.imag()
-                    : valueLhs.real() * valueRhs.real() -
-                    valueLhs.imag() * valueRhs.imag();
-        sum += product;
+        sum += (!conjugate) ? vector[index] * conj(exp[index * stride])
+                            : vector[index] * exp[index * stride];
     }
     return sum;
 }
-
-#if defined(CNL_INT128_ENABLED)
-template<>
-inline virtual_float<q4_20> correlate_with_exp(complex_vector<q4_20> const& vector,
-                                               unsigned int step,
-                                               unsigned int fftsize,
-                                               bool conjugate,
-                                               size_t begin,
-                                               size_t end)
-{
-    size_t last = std::min(end, vector.size());
-    cnl::dsp::trig<q4_20>& exp = cnl::dsp::trig<q4_20>::instance();
-    std::size_t stride = static_cast<std::size_t>(step * exp.get_twopi_index() / fftsize);
-    virtual_float<q8_40> sum(0);
-    for (std::size_t index = begin; index < last; ++index)
-    {
-        cnl::dsp::complex<q4_20> valueLhs = vector[index];
-        cnl::dsp::complex<q4_20> valueRhs = exp[index * stride];
-        // Correlation is BY DEFINITION, a*conj(b);
-        // When (!conjugate) is true, the ? is lhs*conj(exp), thus the (+) sign.
-        // when conjugation is on it means a*conj(conj(b)) = a * b;
-        q8_40 product = (!conjugate) ? valueLhs.real() * valueRhs.real() +
-                             valueLhs.imag() * valueRhs.imag()
-                             : valueLhs.real() * valueRhs.real() -
-                             valueLhs.imag() * valueRhs.imag();
-        sum += virtual_float<q8_40>(product);
-    }
-    virtual_float<q4_20> res = sum;
-    return res;
-}
-#endif
-
 
 template<typename T, typename R>
 R energy(complex_vector<T> const& vector,
          size_t begin, size_t end)
 {
     size_t last = std::min(end, vector.size());
-    R sum(0);
+    R sum(0.);
     for (std::size_t index = begin; index < last; ++index)
     {
-        cnl::dsp::complex<T> valueRhs = vector[index];
-        sum += static_cast<R>(valueRhs.real() * valueRhs.real() +
-                              valueRhs.imag() * valueRhs.imag());
+        sum += static_cast<R>(vector[index].real() * vector[index].real() +
+                              vector[index].imag() * vector[index].imag());
     }
     return sum;
 }
 
-#if defined(CNL_INT128_ENABLED)
-template<>
-inline virtual_float<q4_20> energy(complex_vector<q4_20> const& vector,
-                                       size_t begin, size_t end)
-{
-    size_t last = std::min(end, vector.size());
-    virtual_float<q8_40> sum(0);
-    for (std::size_t index = begin; index < last; ++index)
-    {
-        cnl::dsp::complex<q4_20> valueRhs = vector[index];
-        sum += static_cast<virtual_float<q8_40> >(valueRhs.real() * valueRhs.real() +
-                                                      valueRhs.imag() * valueRhs.imag());
-    }
-    virtual_float<q4_20> res = sum;
-    return res;
-}
-#endif
 
 } // namespace dsp
 } // namespace cnl

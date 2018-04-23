@@ -341,7 +341,7 @@ TEST(virtual_float, cumulative_sum_q4_20)
     std::mt19937 mt(91);
     std::uniform_real_distribution<float> fdist(-0.5, 0.5);
     double float_sum(0);
-    cnl::dsp::virtual_float<q4_20> vf_sum(0);
+    cnl::dsp::virtual_float<q4_20> vf_sum(0.0);
     for (unsigned int loop = 0; loop < 1000; loop++)
     {
         q4_20 efxp_num = static_cast<q4_20>(fdist(mt));
@@ -354,13 +354,12 @@ TEST(virtual_float, cumulative_sum_q4_20)
     }
 }
 
-#if defined(CNL_INT128_ENABLED)
 TEST(virtual_float, cumulative_sum_q8_40)
 {
     std::mt19937 mt(91);
     std::uniform_real_distribution<float> fdist(-0.5, 0.5);
     double float_sum(0);
-    cnl::dsp::virtual_float<q8_40> vf_sum(0);
+    cnl::dsp::virtual_float<q8_40> vf_sum(0.0);
     for (unsigned int loop = 0; loop < 1000000; loop++)
     {
         q8_40 efxp_num = static_cast<q8_40>(fdist(mt));
@@ -372,4 +371,3 @@ TEST(virtual_float, cumulative_sum_q8_40)
         EXPECT_NEAR(static_cast<float>(float_sum), static_cast<float>(vf_sum), 1e-7f);
     }
 }
-#endif

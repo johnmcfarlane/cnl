@@ -21,7 +21,7 @@ class complex
 {
 public:
     /// Constructor taking a real and imaginary parts
-    explicit complex(T real = T(0), T imag = T(0)) :
+    explicit complex(T real = T{}, T imag = T{}) :
         m_real(real),
         m_imag(imag)
     {

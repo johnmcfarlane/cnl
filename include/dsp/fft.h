@@ -112,7 +112,7 @@ static T find_max(complex_vector<T>& in)
     auto N = static_cast<unsigned int>(in.size());
     std::vector<T> const& inreal = in.real();
     std::vector<T> const& inimag = in.imag();
-    T max = 0;
+    T max{0.};
 
     for (unsigned int i = 0; i < N; ++i)
     {
@@ -167,7 +167,7 @@ static int bf_core(complex_vector<T>& inout,
         int norm = cnl::dsp::math::leading_bits(max) - adj;
         normalize(inout, norm);
         exponent -= norm;
-        max = 0;
+        max = 0.;
 
         for (unsigned int j = 0; j < L_s; ++j)
         {

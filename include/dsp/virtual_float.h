@@ -23,7 +23,7 @@ class virtual_float
 {
 public:
     ///  Constructor
-    explicit virtual_float(T value = T(0));
+    explicit virtual_float(T value = T{});
     template<typename FromT>
     virtual_float(FromT const& value);
     /// From another base type of virtual_float

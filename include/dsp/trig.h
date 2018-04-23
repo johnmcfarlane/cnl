@@ -95,8 +95,8 @@ template<class T>
 trig<T>::trig()
 {
     m_cosQuarter.resize(QUARTER_INDEX + 1);
-    m_cosQuarter[0] = T{1};
-    m_cosQuarter[QUARTER_INDEX] = T{0};
+    m_cosQuarter[0] = T{1.0};
+    m_cosQuarter[QUARTER_INDEX] = T{0.0};
     for (std::size_t i = 1; i < QUARTER_INDEX; ++i)
     {
         double angle = cnl::dsp::math::c_pi_2 * double(i) / double(QUARTER_INDEX);
