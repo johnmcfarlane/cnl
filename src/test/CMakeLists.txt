@@ -96,11 +96,14 @@ function(add_gtest_dependency target)
         target_link_libraries(
                 "${target}"
                 debug ${binary_dir}/googlemock/gtest/Debug/${CMAKE_FIND_LIBRARY_PREFIXES}gtestd${CMAKE_FIND_LIBRARY_SUFFIXES}
+                debug ${binary_dir}/googlemock/gtest/Debug/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_maind${CMAKE_FIND_LIBRARY_SUFFIXES}
                 optimized ${binary_dir}/googlemock/gtest/Release/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}
+                optimized ${binary_dir}/googlemock/gtest/Release/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main${CMAKE_FIND_LIBRARY_SUFFIXES}
         )
     else ()
         target_link_libraries(
                 "${target}"
+                general "${binary_dir}/googlemock/gtest/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main.a"
                 general "${binary_dir}/googlemock/gtest/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a"
                 general pthread
         )
@@ -111,12 +114,6 @@ function(add_gtest_dependency target)
 
     add_dependencies("${target}" GoogleTest)
 endfunction(add_gtest_dependency)
-
-######################################################################
-# test main - per-test main function initializes gtest
-
-add_library(TestMain main.cpp)
-add_gtest_dependency(TestMain)
 
 ######################################################################
 # Tests - the full suite of tests
@@ -138,7 +135,7 @@ function(make_test source out_target compile_flags)
     add_executable("${target}" "${source}")
     add_test("${target}" "${target}")
     set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${compile_flags}")
-    target_link_libraries("${target}" Cnl TestMain)
+    target_link_libraries("${target}" Cnl)
 
     add_gtest_dependency("${target}")
 
