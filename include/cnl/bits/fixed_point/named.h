@@ -114,95 +114,102 @@ namespace cnl {
     // cnl::divide with fixed_point operand(s)
 
     namespace _divide_impl {
-        template<class Lhs, class Rhs>
-        struct divide;
+        template<typename Number>
+        struct fixed_point_rep {
+            using type = Number;
+        };
+
+        template<typename Rep, int Exponent>
+        struct fixed_point_rep<fixed_point<Rep, Exponent>> : fixed_point_rep<Rep> {
+        };
+
+        template<typename Number>
+        constexpr Number not_fixed_point(Number const& number)
+        {
+            return number;
+        }
+
+        template<typename Rep, int Exponent>
+        constexpr Rep not_fixed_point(fixed_point<Rep, Exponent> const& f)
+        {
+            return to_rep(f);
+        }
+
+        template<typename Number>
+        struct exponent : constant<0> {};
+
+        template<typename Rep, int Exponent>
+        struct exponent<fixed_point<Rep, Exponent>> : constant<Exponent> {};
+
+        template<class Quotient, class Dividend, class Divisor>
+        struct exponent_shift : std::integral_constant<
+                int,
+                _divide_impl::exponent<Dividend>::value
+                    -_divide_impl::exponent<Divisor>::value
+                    -_divide_impl::exponent<Quotient>::value> {
+        };
+
+        struct default_quotient_tag {};
+
+        template<class Quotient, class Dividend, class Divisor>
+        struct result;
+
+        template<class Rep, int Exponent, class Dividend, class Divisor>
+        struct result<fixed_point<Rep, Exponent>, Dividend, Divisor> {
+            using type = fixed_point<Rep, Exponent>;
+        };
+
+        template<class Dividend, class Divisor>
+        struct result<default_quotient_tag, Dividend, Divisor> {
+            using natural_result = _impl::op_result<_impl::divide_op, Dividend, Divisor>;
+
+            static constexpr int integer_digits =
+                    _impl::integer_digits<Dividend>::value + _impl::fractional_digits<Divisor>::value;
+            static constexpr int fractional_digits =
+                    _impl::fractional_digits<Dividend>::value + _impl::integer_digits<Divisor>::value;
+
+            static constexpr auto necessary_digits = integer_digits + fractional_digits;
+            static constexpr auto natural_digits = digits<natural_result>::value;
+            static constexpr auto result_digits = _impl::max(necessary_digits, natural_digits);
+
+            using rep_type = set_digits_t<natural_result, result_digits>;
+            static constexpr int rep_exponent = -fractional_digits;
+
+            using type = fixed_point<typename fixed_point_rep<rep_type>::type, rep_exponent>;
+        };
     }
 
     /// \brief calculates the quotient of two \ref fixed_point values
     /// \headerfile cnl/fixed_point.h
     ///
-    /// \param lhs, rhs dividend and divisor
+    /// \tparam Quotient the desired \ref fixed_point type of quotient;
+    /// by default, a value which minimizes the chances of overflow or precision loss
+    /// \tparam Dividend the dividend (top number) of the division
+    /// \tparam Divisor the divisor (bottom number) of the division
+    /// \param dividend, divisor dividend and divisor
     ///
-    /// \return quotient: lhs / rhs
+    /// \return quotient: dividend / divisor
     ///
-    /// \note This function divides the values
-    /// without performing any additional scaling or conversion.
+    /// \note When specifying the \ref Quotient, ensure that there is enough capacity
+    /// to perform a *widened division* operation and store the quotient.
+    /// \note A *widened division* is one where the quotient has as many integer digits as the
+    /// dividend's integer digits plus the divisor's fractional digits and as many fractional
+    /// digits as the dividend's fractional digits plus the divisor's integer digits.
     ///
     /// \sa multiply
 
-    template<class Lhs, class Rhs>
-    constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(_divide_impl::divide<Lhs, Rhs>()(lhs, rhs)) {
-        return _divide_impl::divide<Lhs, Rhs>()(lhs, rhs);
-    }
-
-    namespace _divide_impl {
-        template<class Lhs, class Rhs>
-        struct params {
-            using lhs_rep = typename Lhs::rep;
-            using rhs_rep = typename Rhs::rep;
-            using rep_op_result = _impl::op_result<_impl::divide_op, lhs_rep, rhs_rep>;
-
-            static constexpr int integer_digits =
-                    _impl::integer_digits<Lhs>::value + _impl::fractional_digits<Rhs>::value;
-            static constexpr int fractional_digits =
-                    _impl::fractional_digits<Lhs>::value + _impl::integer_digits<Rhs>::value;
-            static constexpr int necessary_digits = integer_digits + fractional_digits;
-            static constexpr bool is_signed =
-                    numeric_limits<lhs_rep>::is_signed || numeric_limits<rhs_rep>::is_signed;
-
-            static constexpr int promotion_digits = digits<rep_op_result>::value;
-            static constexpr int max_digits = _impl::max(necessary_digits, promotion_digits);
-
-            using prewidened_result_rep = _impl::make_signed_t<rep_op_result, is_signed>;
-            using rep_type = set_digits_t<prewidened_result_rep, max_digits>;
-
-            static constexpr int rep_exponent = -fractional_digits;
-
-            static constexpr int intermediate_exponent_lhs = Lhs::exponent - digits<Rhs>::value;
-
-            using result_type = fixed_point<rep_type, rep_exponent>;
-        };
-
-        template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
-        struct divide<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>> {
-            constexpr auto operator()(fixed_point<LhsRep, LhsExponent> const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
-            -> typename params<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>>::result_type {
-                using params = params<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>>;
-                using result_type = typename params::result_type;
-                using result_rep = typename result_type::rep;
-
-                return from_rep<result_type>{}(static_cast<result_rep>(_impl::scale<digits<RhsRep>::value>(
-                        static_cast<typename params::rep_type>(to_rep(lhs)))/to_rep(rhs)));
-            }
-        };
-
-        template<class Lhs, class RhsRep, int RhsExponent>
-        struct divide<Lhs, fixed_point<RhsRep, RhsExponent>> {
-            constexpr auto operator()(Lhs const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
-            -> decltype(cnl::divide(make_fixed_point(lhs), rhs))
-            {
-                return cnl::divide(make_fixed_point(lhs), rhs);
-            }
-        };
-
-        template<class LhsRep, int LhsExponent, class Rhs>
-        struct divide<fixed_point<LhsRep, LhsExponent>, Rhs> {
-            constexpr auto operator()(fixed_point<LhsRep, LhsExponent> const& lhs, Rhs const& rhs) const
-            -> decltype(cnl::divide(lhs, make_fixed_point(rhs)))
-            {
-                return cnl::divide(lhs, make_fixed_point(rhs));
-            }
-        };
-
-        template<class Lhs, class Rhs>
-        struct divide {
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(cnl::divide(make_fixed_point(lhs), make_fixed_point(rhs)))
-            {
-                return cnl::divide(make_fixed_point(lhs), make_fixed_point(rhs));
-            }
-        };
+    template<
+            class Quotient = _divide_impl::default_quotient_tag,
+            class Dividend,
+            class Divisor>
+    constexpr auto divide(Dividend const& dividend, Divisor const& divisor)
+    -> typename _divide_impl::result<Quotient, Dividend, Divisor>::type {
+        using quotient = typename _divide_impl::result<Quotient, Dividend, Divisor>::type;
+        using quotient_rep = typename quotient::rep;
+        return from_rep<quotient>()(
+                static_cast<quotient_rep>(_impl::scale<_divide_impl::exponent_shift<quotient, Dividend, Divisor>::value>(
+                        static_cast<quotient_rep>(_divide_impl::not_fixed_point(dividend)))
+                        /_divide_impl::not_fixed_point(divisor)));
     }
 }
 

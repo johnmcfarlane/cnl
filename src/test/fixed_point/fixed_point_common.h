@@ -552,7 +552,7 @@ namespace test_divide {
             fixed_point<uint64, -32>{0xffffLL}), "cnl::fixed_point test failed");
     static_assert(identical(
             cnl::divide(cnl::fixed_point<int32, -16>{963}, cnl::constant<3>{}),
-            fixed_point<int64, -47>{321LL}), "cnl::fixed_point test failed");
+            fixed_point<int64, -18>{321LL}), "cnl::fixed_point test failed");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
