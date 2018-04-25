@@ -19,7 +19,7 @@ class circular_buffer
 public:
     /// Ctor
     explicit circular_buffer(std::size_t size = 1) :
-        m_buffer(size, T(0)),
+        m_buffer(size, T{}),
         m_last(0)
     {
     };
@@ -48,14 +48,14 @@ template<class T>
 void circular_buffer<T>::resize(std::size_t size)
 {
     m_buffer.resize(size);
-    std::fill(m_buffer.begin(), m_buffer.end(), T(0));
+    std::fill(m_buffer.begin(), m_buffer.end(), T{});
     m_last = 0;
 }
 
 template<class T>
 void circular_buffer<T>::clear()
 {
-    std::fill(m_buffer.begin(), m_buffer.end(), T(0));
+    std::fill(m_buffer.begin(), m_buffer.end(), T{});
 }
 
 template<class T>
