@@ -58,7 +58,6 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - clang-4.0
-            - g++-5
       env: MATRIX_EVAL="CC=clang-4.0 && CXX=clang++-4.0" BUILD_TYPE=Release STD=11 EXCEPTIONS=OFF INT128=ON
 
     - os: linux
@@ -80,7 +79,6 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - clang-3.5
-            - libc++-dev
             - g++-5
       env: MATRIX_EVAL="CC=clang-3.5 && CXX=clang++-3.5" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON
 
