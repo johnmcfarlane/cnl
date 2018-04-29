@@ -4,6 +4,9 @@
 sudo add-apt-repository -y ppa:kalakris/cmake
 sudo apt-get update -qq
 
+# remove GCC-4.x
+sudo apt remove gcc
+
 # Install
 sudo apt-get install -qq cmake
 cmake --version
