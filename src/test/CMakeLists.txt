@@ -61,7 +61,6 @@ set(sample_sources
         zero_cost_average.cpp
         boost.multiprecision.cpp
         glm.cpp
-        safft.cpp
 )
 
 ######################################################################
