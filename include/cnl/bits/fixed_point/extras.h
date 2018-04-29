@@ -16,6 +16,7 @@
 
 #include <cmath>
 #include <istream>
+#include <stdexcept>
 
 /// compositional numeric library
 namespace cnl {
