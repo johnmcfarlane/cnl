@@ -138,6 +138,8 @@ See example program, [Tau](./example/tau/README.md), for more details.
 
 All feedback greatly appreciated.
 
-- [GitHub](https://github.com/johnmcfarlane)
+- [CNL Issues](https://github.com/johnmcfarlane/cnl/issues)
 - [SG14 forum](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14)
 - [cnl@john.mcfarlane.name](mailto:cnl@john.mcfarlane.name)
+
+Developed with [<img src="doc/logo_CLion.svg" alt="CLion: A Cross-Platform IDE for C and C++ by JetBrains" width="63" height="14" />](https://www.jetbrains.com/clion/).
