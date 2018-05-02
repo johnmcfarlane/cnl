@@ -250,3 +250,5 @@ if(${STD} STREQUAL "17" AND ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU AND CMAKE_CXX_
     ExternalProject_Get_Property(Vc source_dir)
     target_include_directories("${target}" PRIVATE SYSTEM "${source_dir}")
 endif()
+
+add_subdirectory(dsp)
