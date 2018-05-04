@@ -68,7 +68,7 @@ namespace {
 #endif
     }
 
-    namespace test_digits {
+    namespace test_digits_2 {
         static_assert(cnl::digits<cnl::int8>::value==7, "");
         static_assert(cnl::digits<cnl::uint8>::value==8, "");
         static_assert(cnl::digits<cnl::int16>::value==15, "");
@@ -80,6 +80,21 @@ namespace {
 #if defined(CNL_INT128_ENABLED)
         static_assert(cnl::digits<cnl::int128>::value==127, "");
         static_assert(cnl::digits<cnl::uint128>::value==128, "");
+#endif
+    }
+
+    namespace test_digits_10 {
+        static_assert(cnl::digits<cnl::int8, 10>::value==2, "");
+        static_assert(cnl::digits<cnl::uint8, 10>::value==2, "");
+        static_assert(cnl::digits<cnl::int16, 10>::value==4, "");
+        static_assert(cnl::digits<cnl::uint16, 10>::value==4, "");
+        static_assert(cnl::digits<cnl::int32, 10>::value==9, "");
+        static_assert(cnl::digits<cnl::uint32, 10>::value==9, "");
+        static_assert(cnl::digits<cnl::int64, 10>::value==18, "");
+        static_assert(cnl::digits<cnl::uint64, 10>::value==19, "");
+#if defined(CNL_INT128_ENABLED)
+        static_assert(cnl::digits<cnl::int128, 10>::value==38, "");
+        static_assert(cnl::digits<cnl::uint128, 10>::value==38, "");
 #endif
     }
 

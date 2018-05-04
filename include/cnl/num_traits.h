@@ -180,8 +180,16 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // digits
 
-    template<class T, class Enable = void>
-    struct digits : std::integral_constant<_digits_type, numeric_limits<T>::digits> {
+    template<typename T, int Radix = 2, class Enable = void>
+    struct digits;
+
+    template<typename T>
+    struct digits<T, 2> : std::integral_constant<_digits_type, numeric_limits<T>::digits> {
+        static_assert(numeric_limits<T>::is_specialized, "cnl::digits is not correctly specialized for T");
+    };
+
+    template<typename T>
+    struct digits<T, 10> : std::integral_constant<_digits_type, numeric_limits<T>::digits10> {
         static_assert(numeric_limits<T>::is_specialized, "cnl::digits is not correctly specialized for T");
     };
 
