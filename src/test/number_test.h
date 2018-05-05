@@ -152,8 +152,8 @@ struct number_test {
     ////////////////////////////////////////////////////////////////////////////////
     // bit functions
 
-    static_assert(cnl::used_bits(zero)==0, "used_bits test failed");
-    static_assert(cnl::used_bits(max)==cnl::digits<value_type>::value, "used_bits test failed");
+    static_assert(cnl::used_digits(zero)==0, "used_digits test failed");
+    static_assert(cnl::used_digits(max)==cnl::digits<value_type>::value, "used_digits test failed");
 
     static_assert(cnl::leading_bits(zero)==cnl::digits<value_type>::value, "leading_bits test failed");
     static_assert(cnl::leading_bits(max)==0, "leading_bits test failed");

@@ -75,7 +75,7 @@ namespace cnl {
         constexpr auto constant_with_fallback(Float constant, fixed_point<Rep, Exponent>(*procedure)()) {
             using fp = fixed_point<Rep, Exponent>;
 
-            auto const required_integer_digits = used_bits(static_cast<int>(constant));
+            auto const required_integer_digits = used_digits(static_cast<int>(constant));
 
             constexpr auto fixed_fractional_digits = fractional_digits<fp>::value;
             // expect: integer_digits<fp>::value >= required_integer_digits

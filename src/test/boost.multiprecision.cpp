@@ -213,20 +213,20 @@ TEST(fixed_point_multiprecision, shift_right_constant)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::used_bits<boost::multiprecision::number<>>
+// cnl::used_digits<boost::multiprecision::number<>>
 
-TEST(fixed_point_multiprecision, unsigned_multiprecision_used_bits)
+TEST(fixed_point_multiprecision, unsigned_multiprecision_used_digits)
 {
     using q4_20 = fixed_point<unsigned_multiprecision<24>, -20>;
     q4_20 a = 3.051757812500000e-05;
-    ASSERT_EQ(6, used_bits(a));
+    ASSERT_EQ(6, cnl::used_digits(a));
 }
 
-TEST(fixed_point_multiprecision, signed_multiprecision_used_bits)
+TEST(fixed_point_multiprecision, signed_multiprecision_used_digits)
 {
     using q4_20 = fixed_point<signed_multiprecision<24>, -20>;
     q4_20 a = 3.051757812500000e-05;
-    ASSERT_EQ(6, used_bits(a));
+    ASSERT_EQ(6, cnl::used_digits(a));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

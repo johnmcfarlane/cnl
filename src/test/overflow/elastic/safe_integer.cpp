@@ -112,12 +112,11 @@ namespace {
         static_assert(identical(set_digits_t<cnl::safe_integer<1>, 3>{6}, cnl::safe_integer<3>{6}), "cnl::digits / cnl::set_digits test failed");
     }
 
-    namespace test_used_bits {
-        using cnl::used_bits;
+    namespace test_used_digits {
         using cnl::throwing_overflow_tag;
 
-        static_assert(used_bits(cnl::safe_integer<1, throwing_overflow_tag, char>{0}) == 0, "used_bits(cnl::safe_integer)");
-        static_assert(used_bits(cnl::safe_integer<22, throwing_overflow_tag>{77}) == 7, "used_bits(cnl::safe_integer)");
+        static_assert(cnl::used_digits(cnl::safe_integer<1, throwing_overflow_tag, char>{0}) == 0, "");
+        static_assert(cnl::used_digits(cnl::safe_integer<22, throwing_overflow_tag>{77}) == 7, "");
     }
 
     namespace test_leading_bits {

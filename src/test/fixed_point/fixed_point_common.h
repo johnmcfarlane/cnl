@@ -883,12 +883,10 @@ static_assert(static_cast<float>(sqrt(fixed_point<int32, -24>(3.141592654)))<1.7
 ////////////////////////////////////////////////////////////////////////////////
 // std::leading_bits<fixed_point>
 
-namespace test_used_bits {
-    using cnl::used_bits;
-
-    static_assert(used_bits(uint8{10})==4, "cnl::used_bits");
-    static_assert(used_bits(fixed_point<uint8, -4>{1}) == 5, "cnl::used_bits");
-    static_assert(used_bits(fixed_point<uint8, -3>{2}) == 5, "cnl::used_bits");
+namespace test_used_digits {
+    static_assert(cnl::used_digits(uint8{10})==4, "cnl::used_digits");
+    static_assert(cnl::used_digits(fixed_point<uint8, -4>{1}) == 5, "cnl::used_digits");
+    static_assert(cnl::used_digits(fixed_point<uint8, -3>{2}) == 5, "cnl::used_digits");
 }
 
 namespace test_leading_bits {

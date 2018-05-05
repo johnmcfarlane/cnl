@@ -52,7 +52,7 @@ namespace cnl {
 /// standard library
 namespace std {
     ////////////////////////////////////////////////////////////////////////////////
-    // std::common_type<> specializations related to cnl::cnl::fixed_point<>
+    // std::common_type<> specializations related to cnl::fixed_point<>
 
     /// \brief unary specialization of \ref std::common_type for \ref cnl::fixed_point
     /// \tparam cnl::fixed_point<Rep, Exponent> input type
