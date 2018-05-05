@@ -98,7 +98,7 @@ namespace {
 #endif
     }
 
-    namespace test_scale {
+    namespace test_shift {
         static_assert(identical(cnl::_impl::shift<15, 2, unsigned>(3), 98304U), "cnl::_impl::shift test failed");
 
 #if defined(__cpp_binary_literals)
@@ -121,6 +121,10 @@ namespace {
 
         static_assert(identical(cnl::_impl::shift<30, 2, int32_t>(1), 0x40000000), "cnl::_impl::shift test failed");
         static_assert(identical(cnl::_impl::shift<4, 2, uint64_t>(1), UINT64_C(16)), "cnl::_impl::shift test failed");
+
+        static_assert(identical(cnl::_impl::shift<5, 3, int32_t>(1), 243), "cnl::_impl::shift test failed");
+        static_assert(identical(cnl::_impl::shift<9, 4, uint64_t>(7), UINT64_C(1835008)),
+                "cnl::_impl::shift test failed");
     }
 
     namespace test_is_integer_or_float {

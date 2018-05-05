@@ -10,6 +10,7 @@
 #if !defined(CNL_FIXED_POINT_DEF_H)
 #define CNL_FIXED_POINT_DEF_H 1
 
+#include <cnl/bits/power.h>
 #include <cnl/bits/number_base.h>
 #include <cnl/constant.h>
 #include <cnl/numeric.h>
@@ -142,7 +143,7 @@ namespace cnl {
         /// constructor taking an integer type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         constexpr fixed_point(S const& s)
-                : _base(static_cast<Rep>(_impl::shift<-exponent>(_impl::from_value<Rep>(s))))
+                : _base(static_cast<Rep>(_impl::shift<-exponent, Radix>(_impl::from_value<Rep>(s))))
         {
         }
 
@@ -234,66 +235,13 @@ namespace cnl {
 #endif
 
     ////////////////////////////////////////////////////////////////////////////////
-    // general-purpose implementation-specific definitions
-
-    namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // file-local implementation-specific definitions
-
-        namespace fp {
-            namespace type {
-                ////////////////////////////////////////////////////////////////////////////////
-                // cnl::_impl::fp::type::pow2
-
-                // returns given power of 2
-                template<class S, int Exponent, enable_if_t<Exponent==0, int> Dummy = 0>
-                constexpr S pow2()
-                {
-                    static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-                    return S{1.};
-                }
-
-                template<class S, int Exponent,
-                        enable_if_t<!(Exponent<=0) && (Exponent<8), int> Dummy = 0>
-                constexpr S pow2()
-                {
-                    static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-                    return pow2<S, Exponent-1>()*S(2);
-                }
-
-                template<class S, int Exponent, enable_if_t<(Exponent>=8), int> Dummy = 0>
-                constexpr S pow2()
-                {
-                    static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-                    return pow2<S, Exponent-8>()*S(256);
-                }
-
-                template<class S, int Exponent,
-                        enable_if_t<!(Exponent>=0) && (Exponent>-8), int> Dummy = 0>
-                constexpr S pow2()
-                {
-                    static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-                    return pow2<S, Exponent+1>()*S(.5);
-                }
-
-                template<class S, int Exponent, enable_if_t<(Exponent<=-8), int> Dummy = 0>
-                constexpr S pow2()
-                {
-                    static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-                    return pow2<S, Exponent+8>()*S(.003906250);
-                }
-            }
-        }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
     // cnl::fixed_point<> member definitions
 
     template<typename Rep, int Exponent, int Radix>
     template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy>
     constexpr S fixed_point<Rep, Exponent, Radix>::one()
     {
-        return _impl::fp::type::pow2<S, -exponent>();
+        return _impl::power<S, -exponent, Radix>();
     }
 
     template<typename Rep, int Exponent, int Radix>
@@ -308,7 +256,7 @@ namespace cnl {
     constexpr S fixed_point<Rep, Exponent, Radix>::inverse_one()
     {
         static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-        return _impl::fp::type::pow2<S, exponent>();
+        return _impl::power<S, exponent, Radix>();
     }
 
     template<typename Rep, int Exponent, int Radix>

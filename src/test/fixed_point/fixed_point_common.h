@@ -167,6 +167,8 @@ static_assert(identical(uint8(0)+uint8(0), test_int{0}), "incorrect assumption a
 #endif
 
 static_assert(cnl::_impl::shift<1>(int8(0))==0, "cnl::_impl::shift test failed");
+static_assert(cnl::_impl::shift<1, 10>(int8(0))==0, "cnl::_impl::shift test failed");
+static_assert(cnl::_impl::shift<1, 10>(int8(1))==10, "cnl::_impl::shift test failed");
 
 #if defined(TEST_NATIVE_OVERFLOW)
 static_assert(cnl::_impl::shift<8>(uint16{0x1234})==0x123400, "cnl::_impl::shift test failed");
@@ -202,18 +204,32 @@ static_assert(cnl::_impl::shift<-8, 2, uint16>((uint8) 0x34)==0x0, "cnl::_impl::
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::_impl::fp::type::pow2
+// cnl::_impl::power
 
-namespace test_pow2 {
-    using cnl::_impl::fp::type::pow2;
+namespace test_power {
+    static_assert(identical(cnl::_impl::power<float, 0, 2>(), 1.f), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<double, -1, 2>(), .5), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<long double, 1, 2>(), 2.L), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<float, -3, 2>(), .125f), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<double, 7, 2>(), 128.), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<long double, 10, 2>(), 1024.L), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<float, 20, 2>(), 1048576.f), "cnl::_impl::power test failed");
 
-    static_assert(pow2<float, 0>()==1, "cnl::_impl::fp::type::pow2 test failed");
-    static_assert(pow2<double, -1>()==.5, "cnl::_impl::fp::type::pow2 test failed");
-    static_assert(pow2<long double, 1>()==2, "cnl::_impl::fp::type::pow2 test failed");
-    static_assert(pow2<float, -3>()==.125, "cnl::_impl::fp::type::pow2 test failed");
-    static_assert(pow2<double, 7>()==128, "cnl::_impl::fp::type::pow2 test failed");
-    static_assert(pow2<long double, 10>()==1024, "cnl::_impl::fp::type::pow2 test failed");
-    static_assert(pow2<float, 20>()==1048576, "cnl::_impl::fp::type::pow2 test failed");
+    static_assert(identical(cnl::_impl::power<float, 0, 3>(), 1.f), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<double, -1, 3>(), 1./3), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<long double, 1, 3>(), 3.L), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<float, -3, 3>(), 1.f/27), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<double, 7, 3>(), 2187.), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<long double, 10, 3>(), 59049.L), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<float, 20, 3>(), 3486784401.f), "cnl::_impl::power test failed");
+
+    static_assert(identical(cnl::_impl::power<float, 0, 4>(), 1.f), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<double, -1, 4>(), .25), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<long double, 1, 4>(), 4.L), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<float, -3, 4>(), .015625f), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<double, 7, 4>(), 16384.), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<long double, 10, 4>(), 1048576.L), "cnl::_impl::power test failed");
+    static_assert(identical(cnl::_impl::power<float, 20, 4>(), 1099511627776.f), "cnl::_impl::power test failed");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
