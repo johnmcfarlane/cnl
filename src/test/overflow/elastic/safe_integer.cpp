@@ -115,8 +115,8 @@ namespace {
     namespace test_used_digits {
         using cnl::throwing_overflow_tag;
 
-        static_assert(cnl::used_digits(cnl::safe_integer<1, throwing_overflow_tag, char>{0}) == 0, "");
-        static_assert(cnl::used_digits(cnl::safe_integer<22, throwing_overflow_tag>{77}) == 7, "");
+        static_assert(cnl::used_digits(cnl::safe_integer<1, throwing_overflow_tag, char>{0})==0, "");
+        static_assert(cnl::used_digits(cnl::safe_integer<22, throwing_overflow_tag>{77})==7, "");
     }
 
     namespace test_leading_bits {

@@ -47,9 +47,9 @@ namespace cnl {
             using type = fixed_point<Operand, 0>;
         };
 
-        template<class Rep, int Exponent>
-        struct fixed_point_type<fixed_point<Rep, Exponent>> {
-            using type = fixed_point<Rep, Exponent>;
+        template<typename Rep, int Exponent, int Radix>
+        struct fixed_point_type<fixed_point<Rep, Exponent, Radix>> {
+            using type = fixed_point<Rep, Exponent, Radix>;
         };
 
         template<class Lhs, class Rhs>
@@ -119,8 +119,8 @@ namespace cnl {
             using type = Number;
         };
 
-        template<typename Rep, int Exponent>
-        struct fixed_point_rep<fixed_point<Rep, Exponent>> : fixed_point_rep<Rep> {
+        template<typename Rep, int Exponent, int Radix>
+        struct fixed_point_rep<fixed_point<Rep, Exponent, Radix>> : fixed_point_rep<Rep> {
         };
 
         template<typename Number>
@@ -129,8 +129,8 @@ namespace cnl {
             return number;
         }
 
-        template<typename Rep, int Exponent>
-        constexpr Rep not_fixed_point(fixed_point<Rep, Exponent> const& f)
+        template<typename Rep, int Exponent, int Radix>
+        constexpr Rep not_fixed_point(fixed_point<Rep, Exponent, Radix> const& f)
         {
             return to_rep(f);
         }
@@ -138,8 +138,9 @@ namespace cnl {
         template<typename Number>
         struct exponent : constant<0> {};
 
-        template<typename Rep, int Exponent>
-        struct exponent<fixed_point<Rep, Exponent>> : constant<Exponent> {};
+        template<typename Rep, int Exponent, int Radix>
+        struct exponent<fixed_point<Rep, Exponent, Radix>> : constant<Exponent> {
+        };
 
         template<class Quotient, class Dividend, class Divisor>
         struct exponent_shift : std::integral_constant<
@@ -154,9 +155,9 @@ namespace cnl {
         template<class Quotient, class Dividend, class Divisor>
         struct result;
 
-        template<class Rep, int Exponent, class Dividend, class Divisor>
-        struct result<fixed_point<Rep, Exponent>, Dividend, Divisor> {
-            using type = fixed_point<Rep, Exponent>;
+        template<typename Rep, int Exponent, int Radix, typename Dividend, typename Divisor>
+        struct result<fixed_point<Rep, Exponent, Radix>, Dividend, Divisor> {
+            using type = fixed_point<Rep, Exponent, Radix>;
         };
 
         template<class Dividend, class Divisor>

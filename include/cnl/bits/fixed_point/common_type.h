@@ -55,9 +55,9 @@ namespace std {
     // std::common_type<> specializations related to cnl::fixed_point<>
 
     /// \brief unary specialization of \ref std::common_type for \ref cnl::fixed_point
-    /// \tparam cnl::fixed_point<Rep, Exponent> input type
-    template<class Rep, int Exponent>
-    struct common_type<cnl::fixed_point<Rep, Exponent>> {
+    /// \tparam cnl::fixed_point<Rep, Exponent, Radix> input type
+    template<typename Rep, int Exponent, int Radix>
+    struct common_type<cnl::fixed_point<Rep, Exponent, Radix>> {
         /// the common type of the input
         using type = cnl::fixed_point<
                 typename std::common_type<Rep>::type,

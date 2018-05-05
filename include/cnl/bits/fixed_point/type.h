@@ -17,11 +17,11 @@
 /// compositional numeric library
 namespace cnl {
     // forward declaration
-    template<class Rep = int, int Exponent = 0>
+    template<typename Rep = int, int Exponent = 0, int Radix = 2>
     class fixed_point;
 
-    template<class Rep, int Exponent>
-    constexpr Rep to_rep(fixed_point<Rep, Exponent> const&);
+    template<typename Rep, int Exponent, int Radix>
+    constexpr Rep to_rep(fixed_point<Rep, Exponent, Radix> const&);
 
     template<typename Numerator, typename Denominator>
     struct fractional;
@@ -38,8 +38,8 @@ namespace cnl {
                 : public std::false_type {
         };
 
-        template<class Rep, int Exponent>
-        struct is_fixed_point<fixed_point<Rep, Exponent>>
+        template<typename Rep, int Exponent, int Radix>
+        struct is_fixed_point<fixed_point<Rep, Exponent, Radix>>
                 : public std::true_type {
         };
 
@@ -77,16 +77,22 @@ namespace cnl {
     /// \headerfile cnl/fixed_point.h
     ///
     /// \tparam Rep the underlying type used to represent the value
-    /// \tparam Exponent the value by which to scale the integer value in order to get the real value
+    /// \tparam Exponent the exponent used to scale the integer value
+    /// \tparam Radix the base used to scale the integer value
+    ///
+    /// Uses an integer to approximate a real number.
+    /// Scales the integer by `pow(Radix, Exponent)` to produce the scaled number.
     ///
     /// \par Examples
     ///
     /// To define a fixed-point value 1 byte in size with a sign bit, 3 integer bits and 4 fractional bits:
     /// \snippet snippets.cpp define a fixed_point value
 
-    template<class Rep, int Exponent>
+    template<typename Rep, int Exponent, int Radix>
     class fixed_point
-            : public _impl::number_base<fixed_point<Rep, Exponent>, Rep> {
+            : public _impl::number_base<fixed_point<Rep, Exponent, Radix>, Rep> {
+        static_assert(Radix>=2, "Radix must be two or greater");
+
         static_assert(!_impl::is_fixed_point<Rep>::value,
                 "fixed_point of fixed_point is not a supported");
     public:
@@ -96,7 +102,7 @@ namespace cnl {
         /// alias to template parameter, \a Rep
         using rep = Rep;
 
-        using _base = _impl::number_base<fixed_point<Rep, Exponent>, Rep>;
+        using _base = _impl::number_base<fixed_point<Rep, Exponent, Radix>, Rep>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // constants
@@ -210,8 +216,8 @@ namespace cnl {
     };
 
     /// value of template parameter, \a Exponent
-    template<class Rep, int Exponent>
-    constexpr int fixed_point<Rep, Exponent>::exponent;
+    template<typename Rep, int Exponent, int Radix>
+    constexpr int fixed_point<Rep, Exponent, Radix>::exponent;
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::fixed_point::fixed_point deduction guides
@@ -283,39 +289,41 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::fixed_point<> member definitions
 
-    template<class Rep, int Exponent>
+    template<typename Rep, int Exponent, int Radix>
     template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy>
-    constexpr S fixed_point<Rep, Exponent>::one()
+    constexpr S fixed_point<Rep, Exponent, Radix>::one()
     {
         return _impl::fp::type::pow2<S, -exponent>();
     }
 
-    template<class Rep, int Exponent>
+    template<typename Rep, int Exponent, int Radix>
     template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy>
-    constexpr S fixed_point<Rep, Exponent>::one()
+    constexpr S fixed_point<Rep, Exponent, Radix>::one()
     {
         return from_rep<fixed_point<S, 0>>{}(1);
     }
 
-    template<class Rep, int Exponent>
+    template<typename Rep, int Exponent, int Radix>
     template<class S>
-    constexpr S fixed_point<Rep, Exponent>::inverse_one()
+    constexpr S fixed_point<Rep, Exponent, Radix>::inverse_one()
     {
         static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
         return _impl::fp::type::pow2<S, exponent>();
     }
 
-    template<class Rep, int Exponent>
+    template<typename Rep, int Exponent, int Radix>
     template<class S>
-    constexpr typename fixed_point<Rep, Exponent>::rep fixed_point<Rep, Exponent>::floating_point_to_rep(S s)
+    constexpr typename fixed_point<Rep, Exponent, Radix>::rep
+    fixed_point<Rep, Exponent, Radix>::floating_point_to_rep(S s)
     {
         static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
         return static_cast<rep>(s*one<S>());
     }
 
-    template<class Rep, int Exponent>
+    template<typename Rep, int Exponent, int Radix>
     template<class FromRep, int FromExponent>
-    constexpr typename fixed_point<Rep, Exponent>::rep fixed_point<Rep, Exponent>::fixed_point_to_rep(fixed_point<FromRep, FromExponent> const& rhs)
+    constexpr typename fixed_point<Rep, Exponent, Radix>::rep
+    fixed_point<Rep, Exponent, Radix>::fixed_point_to_rep(fixed_point<FromRep, FromExponent> const& rhs)
     {
         return _impl::shift<FromExponent-exponent>(to_rep(rhs));
     }
