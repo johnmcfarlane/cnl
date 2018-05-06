@@ -13,6 +13,7 @@
 #include "constant.h"
 #include "limits.h"
 
+#include "cnl/bits/power.h"
 #include "bits/type_traits.h"
 
 #include <utility>
@@ -180,8 +181,16 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // digits
 
-    template<class T, class Enable = void>
-    struct digits : std::integral_constant<_digits_type, numeric_limits<T>::digits> {
+    template<typename T, int Radix = 2, class Enable = void>
+    struct digits;
+
+    template<typename T>
+    struct digits<T, 2> : std::integral_constant<_digits_type, numeric_limits<T>::digits> {
+        static_assert(numeric_limits<T>::is_specialized, "cnl::digits is not correctly specialized for T");
+    };
+
+    template<typename T>
+    struct digits<T, 10> : std::integral_constant<_digits_type, numeric_limits<T>::digits10> {
         static_assert(numeric_limits<T>::is_specialized, "cnl::digits is not correctly specialized for T");
     };
 
@@ -464,27 +473,26 @@ namespace cnl {
     struct shift;
 
     namespace _impl {
-        // for most implementations of cnl::shift,
-        // inheriting from this implementation is adequate
-        template<int Digits, int Radix, class S, class Enable = void>
+        // fundamental integer-friendly cnl::shift algorithm
+        template<int Digits, int Radix, typename S, class Enable = void>
         struct default_shift;
 
-        template<int Bits, class S>
-        struct default_shift<Bits, 2, S, _impl::enable_if_t<0<=Bits>> {
+        template<int Digits, int Radix, typename S>
+        struct default_shift<Digits, Radix, S, _impl::enable_if_t<0<=Digits>> {
             constexpr auto operator()(S const& s) const
-            -> decltype(s*(S{1} << constant<Bits>{}))
+            -> decltype(s*power<S, Digits, Radix>())
             {
-                return s*(S{1} << constant<Bits>{});
+                return s*power<S, Digits, Radix>();
             }
         };
 
         // cnl::default_shift<-ve, cnl::constant<>>
-        template<int Bits, class S>
-        struct default_shift<Bits, 2, S, _impl::enable_if_t<Bits<0>> {
+        template<int Digits, int Radix, typename S>
+        struct default_shift<Digits, Radix, S, _impl::enable_if_t<Digits<0>> {
             constexpr auto operator()(S const& s) const
-            -> decltype(s/(S{1} << constant<-Bits>()))
+            -> decltype(s/power<S, -Digits, Radix>())
             {
-                return s/(S{1} << constant<-Bits>());
+                return s/power<S, -Digits, Radix>();
             }
         };
     }

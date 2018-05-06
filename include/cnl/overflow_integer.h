@@ -195,7 +195,7 @@ namespace cnl {
 
     template<class Rep, class OverflowTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<overflow_integer<Rep, OverflowTag>, constant<Value>> {
-        using _rep = typename std::conditional<digits<int>::value<used_bits(Value), decltype(Value), int>::type;
+        using _rep = typename std::conditional<digits<int>::value<used_digits(Value), decltype(Value), int>::type;
         using type = overflow_integer<_rep, OverflowTag>;
     };
 

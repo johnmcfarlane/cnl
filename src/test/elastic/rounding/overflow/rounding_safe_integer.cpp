@@ -47,7 +47,7 @@ namespace cnl {
             class Narrowest = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE InputValue = 0>
     rounding_safe_int<
-            used_bits(InputValue),
+            used_digits(InputValue),
             OverflowTag, RoundingTag,
             Narrowest>
     constexpr make_rounding_safe_int(constant<InputValue>)

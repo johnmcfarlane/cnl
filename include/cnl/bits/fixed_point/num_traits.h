@@ -18,8 +18,8 @@ namespace cnl {
 
     namespace _impl {
         // cnl::_impl::get_rep<fixed_point<>>
-        template <class Rep, int Exponent>
-        struct get_rep<fixed_point<Rep, Exponent>> {
+        template<typename Rep, int Exponent, int Radix>
+        struct get_rep<fixed_point<Rep, Exponent, Radix>> {
             using type = Rep;
         };
 
@@ -33,13 +33,13 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // fixed_point specializations of <num_traits.h> templates
 
-    template <class Rep, int Exponent>
-    struct digits<fixed_point<Rep, Exponent>> : digits<Rep> {
+    template<typename Rep, int Exponent, int Radix>
+    struct digits<fixed_point<Rep, Exponent, Radix>> : digits<Rep> {
     };
 
-    template <class Rep, int Exponent, _digits_type MinNumBits>
-    struct set_digits<fixed_point<Rep, Exponent>, MinNumBits> {
-        using type = fixed_point<set_digits_t<Rep, MinNumBits>, Exponent>;
+    template<typename Rep, int Exponent, int Radix, _digits_type MinNumBits>
+    struct set_digits<fixed_point<Rep, Exponent, Radix>, MinNumBits> {
+        using type = fixed_point<set_digits_t<Rep, MinNumBits>, Exponent, Radix>;
     };
 
     /// \brief \ref fixed_point specialization of \ref from_rep
@@ -47,43 +47,44 @@ namespace cnl {
     ///
     /// \tparam Exponent the \c Exponent parameter of the generated \ref fixed_point type
     /// \tparam ArchetypeRep ignored; replaced by \c Rep
-    template<class ArchetypeRep, int Exponent>
-    struct from_rep<fixed_point<ArchetypeRep, Exponent>> {
+    template<typename ArchetypeRep, int Exponent, int Radix>
+    struct from_rep<fixed_point<ArchetypeRep, Exponent, Radix>> {
         /// \brief generates a \ref fixed_point equivalent to \c r in type and value
         template<typename Rep>
         constexpr auto operator()(Rep const& r) const
-        -> fixed_point<Rep, Exponent> {
-            return fixed_point<Rep, Exponent>(r, 0);
+        -> fixed_point<Rep, Exponent, Radix>
+        {
+            return fixed_point<Rep, Exponent, Radix>(r, 0);
         }
     };
 
     /// \brief \ref fixed_point overload of \ref to_rep(Number const& number)
     /// \headerfile cnl/fixed_point.h
-    template<class Rep, int Exponent>
-    constexpr Rep to_rep(fixed_point<Rep, Exponent> const& number)
+    template<typename Rep, int Exponent, int Radix>
+    constexpr Rep to_rep(fixed_point<Rep, Exponent, Radix> const& number)
     {
-        using base_type = typename fixed_point<Rep, Exponent>::_base;
+        using base_type = typename fixed_point<Rep, Exponent, Radix>::_base;
         return to_rep(static_cast<base_type const&>(number));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_value<cnl::fixed_point<>>
 
-    template <class Rep, int Exponent, class Value>
-    struct from_value<fixed_point<Rep, Exponent>, Value> {
+    template<typename Rep, int Exponent, int Radix, typename Value>
+    struct from_value<fixed_point<Rep, Exponent, Radix>, Value> {
         using type = fixed_point<Value>;
     };
 
-    template <class Rep, int Exponent, class ValueRep, int ValueExponent>
-    struct from_value<fixed_point<Rep, Exponent>, fixed_point<ValueRep, ValueExponent>> {
+    template<typename Rep, int Exponent, int Radix, typename ValueRep, int ValueExponent>
+    struct from_value<fixed_point<Rep, Exponent, Radix>, fixed_point<ValueRep, ValueExponent>> {
         using type = fixed_point<from_value_t<Rep, ValueRep>, ValueExponent>;
     };
 
-    template<class Rep, int Exponent, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct from_value<fixed_point<Rep, Exponent>, constant<Value>> {
+    template<typename Rep, int Exponent, int Radix, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct from_value<fixed_point<Rep, Exponent, Radix>, constant<Value>> {
         // same as deduction guide
         using type = fixed_point<
-        set_digits_t<int, _impl::max(digits<int>::value, used_bits(Value)-trailing_bits(Value))>,
+        set_digits_t<int, _impl::max(digits<int>::value, used_digits(Value)-trailing_bits(Value))>,
         trailing_bits(Value)>;
     };
 
@@ -97,8 +98,8 @@ namespace cnl {
         struct fractional_digits : std::integral_constant<_digits_type, 0> {
         };
 
-        template <class Rep, int Exponent>
-        struct fractional_digits<fixed_point<Rep, Exponent>> : std::integral_constant<_digits_type, -Exponent> {
+        template<typename Rep, int Exponent, int Radix>
+        struct fractional_digits<fixed_point<Rep, Exponent, Radix>> : std::integral_constant<_digits_type, -Exponent> {
         };
 
         // cnl::_impl::integer_digits

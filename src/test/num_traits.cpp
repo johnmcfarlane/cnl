@@ -68,7 +68,37 @@ namespace {
 #endif
     }
 
-    namespace test_scale {
+    namespace test_digits_2 {
+        static_assert(cnl::digits<cnl::int8>::value==7, "");
+        static_assert(cnl::digits<cnl::uint8>::value==8, "");
+        static_assert(cnl::digits<cnl::int16>::value==15, "");
+        static_assert(cnl::digits<cnl::uint16>::value==16, "");
+        static_assert(cnl::digits<cnl::int32>::value==31, "");
+        static_assert(cnl::digits<cnl::uint32>::value==32, "");
+        static_assert(cnl::digits<cnl::int64>::value==63, "");
+        static_assert(cnl::digits<cnl::uint64>::value==64, "");
+#if defined(CNL_INT128_ENABLED)
+        static_assert(cnl::digits<cnl::int128>::value==127, "");
+        static_assert(cnl::digits<cnl::uint128>::value==128, "");
+#endif
+    }
+
+    namespace test_digits_10 {
+        static_assert(cnl::digits<cnl::int8, 10>::value==2, "");
+        static_assert(cnl::digits<cnl::uint8, 10>::value==2, "");
+        static_assert(cnl::digits<cnl::int16, 10>::value==4, "");
+        static_assert(cnl::digits<cnl::uint16, 10>::value==4, "");
+        static_assert(cnl::digits<cnl::int32, 10>::value==9, "");
+        static_assert(cnl::digits<cnl::uint32, 10>::value==9, "");
+        static_assert(cnl::digits<cnl::int64, 10>::value==18, "");
+        static_assert(cnl::digits<cnl::uint64, 10>::value==19, "");
+#if defined(CNL_INT128_ENABLED)
+        static_assert(cnl::digits<cnl::int128, 10>::value==38, "");
+        static_assert(cnl::digits<cnl::uint128, 10>::value==38, "");
+#endif
+    }
+
+    namespace test_shift {
         static_assert(identical(cnl::_impl::shift<15, 2, unsigned>(3), 98304U), "cnl::_impl::shift test failed");
 
 #if defined(__cpp_binary_literals)
@@ -91,6 +121,10 @@ namespace {
 
         static_assert(identical(cnl::_impl::shift<30, 2, int32_t>(1), 0x40000000), "cnl::_impl::shift test failed");
         static_assert(identical(cnl::_impl::shift<4, 2, uint64_t>(1), UINT64_C(16)), "cnl::_impl::shift test failed");
+
+        static_assert(identical(cnl::_impl::shift<5, 3, int32_t>(1), 243), "cnl::_impl::shift test failed");
+        static_assert(identical(cnl::_impl::shift<9, 4, uint64_t>(7), UINT64_C(1835008)),
+                "cnl::_impl::shift test failed");
     }
 
     namespace test_is_integer_or_float {

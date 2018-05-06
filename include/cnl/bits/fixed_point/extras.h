@@ -33,8 +33,8 @@ namespace cnl {
     ///
     /// \sa \ref std::vector
 
-    template<class Rep, int Exponent>
-    constexpr auto abs(fixed_point<Rep, Exponent> const& x) noexcept
+    template<typename Rep, int Exponent, int Radix>
+    constexpr auto abs(fixed_point<Rep, Exponent, Radix> const& x) noexcept
     -> decltype(-x)
     {
         return (x >= 0) ? static_cast<decltype(-x)>(x) : -x;
@@ -103,17 +103,17 @@ namespace cnl {
     /// \sa multiply
 
     // https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_.28base_2.29
-    template<class Rep, int Exponent>
-    constexpr fixed_point <Rep, Exponent>
-    sqrt(fixed_point<Rep, Exponent> const& x)
+    template<typename Rep, int Exponent, int Radix>
+    constexpr fixed_point <Rep, Exponent, Radix>
+    sqrt(fixed_point<Rep, Exponent, Radix> const& x)
     {
         using widened_rep = set_digits_t<Rep, digits<Rep>::value*2>;
         return
 #if defined(CNL_EXCEPTIONS_ENABLED)
-                (x<from_rep<fixed_point<Rep, Exponent>>{}(0))
+                (x<from_rep<fixed_point<Rep, Exponent, Radix>>{}(0))
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
 #endif
-                from_rep<fixed_point<Rep, Exponent>>{}(_impl::for_rep<widened_rep>(
+                from_rep<fixed_point<Rep, Exponent, Radix>>{}(_impl::for_rep<widened_rep>(
                         _impl::fp::extras::sqrt_solve1(),
                         _impl::scale<-Exponent>(static_cast<widened_rep>(to_rep(x)))));
     }
@@ -128,57 +128,57 @@ namespace cnl {
     namespace _impl {
         namespace fp {
             namespace extras {
-                template<class Rep, int Exponent, _impl::fp::float_of_same_size<Rep>(* F)(
+                template<typename Rep, int Exponent, int Radix, _impl::fp::float_of_same_size<Rep>(* F)(
                         _impl::fp::float_of_same_size<Rep>)>
-                constexpr fixed_point <Rep, Exponent>
-                crib(fixed_point<Rep, Exponent> const& x) noexcept
+                constexpr fixed_point <Rep, Exponent, Radix>
+                crib(fixed_point<Rep, Exponent, Radix> const& x) noexcept
                 {
                     using floating_point = _impl::fp::float_of_same_size<Rep>;
-                    return static_cast<fixed_point<Rep, Exponent>>(F(static_cast<floating_point>(x)));
+                    return static_cast<fixed_point<Rep, Exponent, Radix>>(F(static_cast<floating_point>(x)));
                 }
             }
         }
     }
 
-    template<class Rep, int Exponent>
-    constexpr fixed_point <Rep, Exponent>
-    sin(fixed_point<Rep, Exponent> const& x) noexcept
+    template<typename Rep, int Exponent, int Radix>
+    constexpr fixed_point <Rep, Exponent, Radix>
+    sin(fixed_point<Rep, Exponent, Radix> const& x) noexcept
     {
-        return _impl::fp::extras::crib<Rep, Exponent, std::sin>(x);
+        return _impl::fp::extras::crib<Rep, Exponent, Radix, std::sin>(x);
     }
 
-    template<class Rep, int Exponent>
-    constexpr fixed_point <Rep, Exponent>
-    cos(fixed_point<Rep, Exponent> const& x) noexcept
+    template<typename Rep, int Exponent, int Radix>
+    constexpr fixed_point <Rep, Exponent, Radix>
+    cos(fixed_point<Rep, Exponent, Radix> const& x) noexcept
     {
-        return _impl::fp::extras::crib<Rep, Exponent, std::cos>(x);
+        return _impl::fp::extras::crib<Rep, Exponent, Radix, std::cos>(x);
     }
 
-    template<class Rep, int Exponent>
-    constexpr fixed_point <Rep, Exponent>
-    exp(fixed_point<Rep, Exponent> const& x) noexcept
+    template<typename Rep, int Exponent, int Radix>
+    constexpr fixed_point <Rep, Exponent, Radix>
+    exp(fixed_point<Rep, Exponent, Radix> const& x) noexcept
     {
-        return _impl::fp::extras::crib<Rep, Exponent, std::exp>(x);
+        return _impl::fp::extras::crib<Rep, Exponent, Radix, std::exp>(x);
     }
 
-    template<class Rep, int Exponent>
-    constexpr fixed_point <Rep, Exponent>
-    pow(fixed_point<Rep, Exponent> const& x) noexcept
+    template<typename Rep, int Exponent, int Radix>
+    constexpr fixed_point <Rep, Exponent, Radix>
+    pow(fixed_point<Rep, Exponent, Radix> const& x) noexcept
     {
-        return _impl::fp::extras::crib<Rep, Exponent, std::pow>(x);
+        return _impl::fp::extras::crib<Rep, Exponent, Radix, std::pow>(x);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::fixed_point streaming - (placeholder implementation)
 
-    template<class Rep, int Exponent>
-    ::std::ostream& operator<<(::std::ostream& out, fixed_point<Rep, Exponent> const& fp)
+    template<typename Rep, int Exponent, int Radix>
+    ::std::ostream& operator<<(::std::ostream& out, fixed_point<Rep, Exponent, Radix> const& fp)
     {
         return out << static_cast<long double>(fp);
     }
 
-    template<class Rep, int Exponent>
-    ::std::istream& operator>>(::std::istream& in, fixed_point <Rep, Exponent>& fp)
+    template<typename Rep, int Exponent, int Radix>
+    ::std::istream& operator>>(::std::istream& in, fixed_point <Rep, Exponent, Radix>& fp)
     {
         long double ld;
         in >> ld;
@@ -194,11 +194,11 @@ namespace cnl {
     // note: some members are guessed,
     // some are temporary (assuming rounding style, traps etc.)
     // and some are undefined
-    template<class Rep, int Exponent>
-    struct numeric_limits<cnl::fixed_point<Rep, Exponent>>
-            : numeric_limits<cnl::_impl::number_base<cnl::fixed_point<Rep, Exponent>, Rep>> {
+    template<typename Rep, int Exponent, int Radix>
+    struct numeric_limits<cnl::fixed_point<Rep, Exponent, Radix>>
+            : numeric_limits<cnl::_impl::number_base<cnl::fixed_point<Rep, Exponent, Radix>, Rep>> {
         // fixed-point-specific helpers
-        using _value_type = cnl::fixed_point<Rep, Exponent>;
+        using _value_type = cnl::fixed_point<Rep, Exponent, Radix>;
         using _rep = typename _value_type::rep;
         using _rep_numeric_limits = numeric_limits<_rep>;
 
@@ -257,14 +257,14 @@ namespace std {
     ////////////////////////////////////////////////////////////////////////////////
     // std::numeric_limits specialization for rounding_integer
 
-    template<class Rep, int Exponent>
-    struct numeric_limits<cnl::fixed_point<Rep, Exponent>>
-            : cnl::numeric_limits<cnl::fixed_point<Rep, Exponent>> {
+    template<typename Rep, int Exponent, int Radix>
+    struct numeric_limits<cnl::fixed_point<Rep, Exponent, Radix>>
+            : cnl::numeric_limits<cnl::fixed_point<Rep, Exponent, Radix>> {
     };
 
-    template<class Rep, int Exponent>
-    struct numeric_limits<cnl::fixed_point<Rep, Exponent> const>
-            : cnl::numeric_limits<cnl::fixed_point<Rep, Exponent>> {
+    template<typename Rep, int Exponent, int Radix>
+    struct numeric_limits<cnl::fixed_point<Rep, Exponent, Radix> const>
+            : cnl::numeric_limits<cnl::fixed_point<Rep, Exponent, Radix>> {
     };
 }
 

@@ -52,7 +52,7 @@ namespace cnl {
             class Input = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     rsfp<
-            used_bits(Value), -trailing_bits(Value),
+            used_digits(Value), -trailing_bits(Value),
             OverflowTag, RoundingTag,
             Narrowest>
     constexpr make_rsfp(constant<Value> const&)

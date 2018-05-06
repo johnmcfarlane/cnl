@@ -35,9 +35,9 @@ namespace cnl {
         return divide(value.numerator, value.denominator);
     }
 
-    template<typename Rep, int Exponent>
+    template<typename Rep, int Exponent, int Radix>
     template<typename Numerator, typename Denominator>
-    constexpr fixed_point<Rep, Exponent>::fixed_point(fractional<Numerator, Denominator> const& f)
+    constexpr fixed_point<Rep, Exponent, Radix>::fixed_point(fractional<Numerator, Denominator> const& f)
             : fixed_point(divide<fixed_point>(f.numerator, f.denominator))
     {
     }

@@ -392,11 +392,9 @@ namespace {
         static_assert(identical(set_digits_t<elastic_integer<1>, 3>{6}, elastic_integer<3>{6}), "cnl::digits / cnl::set_digits test failed");
     }
 
-    namespace test_used_bits {
-        using cnl::used_bits;
-
-        static_assert(used_bits(elastic_integer<7>{3})==2, "used_bits test failed");
-        static_assert(used_bits(elastic_integer<12, cnl::uint16>{10})==4, "used_bits test failed");
+    namespace test_used_digits {
+        static_assert(cnl::used_digits(elastic_integer<7>{3})==2, "used_digits test failed");
+        static_assert(cnl::used_digits(elastic_integer<12, cnl::uint16>{10})==4, "used_digits test failed");
     }
 
     namespace test_leading_bits {

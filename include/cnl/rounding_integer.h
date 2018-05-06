@@ -131,7 +131,7 @@ namespace cnl {
 
     template<class Rep, class RoundingTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<rounding_integer<Rep, RoundingTag>, constant<Value>> {
-        using _rep = typename std::conditional<digits<int>::value<used_bits(Value),
+        using _rep = typename std::conditional<digits<int>::value<used_digits(Value),
                 decltype(Value),
                 int>::type;
         using type = rounding_integer<_rep, RoundingTag>;
