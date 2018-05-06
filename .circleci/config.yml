@@ -1,4 +1,10 @@
 version: 2
+
+general:
+  branches:
+    ignore:
+      - gh-pages
+
 jobs:
   "c++17":
     docker:

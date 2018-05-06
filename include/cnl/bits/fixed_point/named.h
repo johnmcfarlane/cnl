@@ -191,7 +191,7 @@ namespace cnl {
     ///
     /// \return quotient: dividend / divisor
     ///
-    /// \note When specifying the \ref Quotient, ensure that there is enough capacity
+    /// \note When specifying the `Quotient`, ensure that there is enough capacity
     /// to perform a *widened division* operation and store the quotient.
     /// \note A *widened division* is one where the quotient has as many integer digits as the
     /// dividend's integer digits plus the divisor's fractional digits and as many fractional

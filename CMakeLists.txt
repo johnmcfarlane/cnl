@@ -13,11 +13,11 @@ add_subdirectory("src/test" EXCLUDE_FROM_ALL)
 # performs a selection of benchmark tests using googletest
 add_subdirectory("src/benchmark" EXCLUDE_FROM_ALL)
 
-# generate single-header header
-add_subdirectory("src/single_header" EXCLUDE_FROM_ALL)
-
 # generate documentation
 add_subdirectory("doc" EXCLUDE_FROM_ALL)
+
+# generate single-header header
+add_subdirectory("src/single_header" EXCLUDE_FROM_ALL)
 
 # the CNL library
 add_library(Cnl INTERFACE)

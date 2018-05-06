@@ -16,6 +16,9 @@ function(make_single_header target output header footer flags)
                             | tail -n +2 >> ${output_path}
             COMMAND cat ${CMAKE_CURRENT_LIST_DIR}/${footer} >> ${output_path}
     )
+    if (TARGET Doc)
+        add_dependencies(Doc ${target})
+    endif (TARGET Doc)
 endfunction()
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)

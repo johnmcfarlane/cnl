@@ -13,7 +13,7 @@ namespace {
 
 namespace define_a_fixed_point_value {
 //! [define a fixed_point value]
-constexpr auto n = fixed_point<char, -3>{-2.75};
+constexpr auto n = fixed_point<std::int8_t, -3>{-2.75};
 static_assert(n==-2.75, "fixed-point type was unable to store the value");
 //! [define a fixed_point value]
 }

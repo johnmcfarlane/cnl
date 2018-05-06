@@ -77,16 +77,19 @@ namespace cnl {
     /// \brief literal real number approximation that uses fixed-point arithmetic
     /// \headerfile cnl/fixed_point.h
     ///
-    /// \tparam Rep the underlying type used to represent the value
-    /// \tparam Exponent the exponent used to scale the integer value
-    /// \tparam Radix the base used to scale the integer value
+    /// \tparam Rep the underlying type used to represent the value; defaults to `int`
+    /// \tparam Exponent the exponent used to scale the integer value; defaults to `0`
+    /// \tparam Radix the base used to scale the integer value; defaults to `2`
     ///
     /// Uses an integer to approximate a real number.
     /// Scales the integer by `pow(Radix, Exponent)` to produce the scaled number.
+    /// By default, represents an `int` with no fractional digits using binary arithmetic.
+    ///
+    /// \note Currently, only binary support and partial decimal support is provided.
     ///
     /// \par Examples
     ///
-    /// To define a fixed-point value 1 byte in size with a sign bit, 3 integer bits and 4 fractional bits:
+    /// To define a fixed-point value 1 byte in size with a sign bit, 4 integer bits and 3 fractional bits:
     /// \snippet snippets.cpp define a fixed_point value
 
     template<typename Rep, int Exponent, int Radix>
