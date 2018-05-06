@@ -86,7 +86,7 @@ namespace cnl {
     ///
     /// \par Examples
     ///
-    /// To define a fixed-point value 1 byte in size with a sign bit, 3 integer bits and 4 fractional bits:
+    /// To define a fixed-point value 1 byte in size with a sign bit, 4 integer bits and 3 fractional bits:
     /// \snippet snippets.cpp define a fixed_point value
 
     template<typename Rep, int Exponent, int Radix>
