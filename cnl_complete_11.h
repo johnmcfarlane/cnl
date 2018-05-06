@@ -48,11 +48,11 @@ namespace cnl {
     using uint32 = std::uint32_t;
     using int64 = std::int64_t;
     using uint64 = std::uint64_t;
-    using int128 = __int128;
+ using int128 = __int128;
     using uint128 = unsigned __int128;
     using intmax = int128;
     using uintmax = uint128;
-    namespace _cnlint_impl {
+ namespace _cnlint_impl {
         template<typename ParseDigit>
         constexpr intmax parse(char const* s, int base, ParseDigit parse_digit, intmax value = 0)
         {
@@ -93,7 +93,6 @@ namespace cnl {
         }
     }
 }
-       
 namespace cnl {
     template<class T>
     struct numeric_limits : std::numeric_limits<T> {};
@@ -208,6 +207,83 @@ namespace cnl {
 }
 namespace cnl {
     namespace _impl {
+        template<
+                typename S, int Exponent, int Radix,
+                bool PositiveExponent = (0<Exponent),
+                bool OddExponent = ((Exponent & 1)!=0),
+                bool FloatingPointS = numeric_limits<S>::is_iec559>
+        struct _power;
+        template<typename S>
+        struct _power<S, 0, 2, false, false, false> {
+            constexpr int operator()() const
+            {
+                return 1;
+            }
+        };
+        template<typename S, int Radix>
+        struct _power<S, 0, Radix, false, false, false> {
+            constexpr S operator()() const
+            {
+                return 1;
+            }
+        };
+        template<typename S, int Exponent, bool OddExponent>
+        struct _power<S, Exponent, 2, true, OddExponent, false> {
+            constexpr auto operator()() const
+            -> decltype(S{1} << constant<Exponent>{})
+            {
+                return S{1} << constant<Exponent>{};
+            }
+        };
+        template<typename S, int Exponent, int Radix, bool OddExponent>
+        struct _power<S, Exponent, Radix, true, OddExponent, false> {
+            constexpr auto operator()() const
+            -> decltype(_power<S, (Exponent-1), Radix>{}()*Radix)
+            {
+                return _power<S, (Exponent-1), Radix>{}()*Radix;
+            }
+        };
+        template<typename S, int Exponent, int Radix, bool PositiveExponent, bool OddExponent>
+        struct _power<S, Exponent, Radix, PositiveExponent, OddExponent, true> {
+            constexpr S operator()() const
+            {
+                return Exponent
+                       ? S(1.)/_power<S, -Exponent, Radix>{}()
+                       : S{1.};
+            }
+        };
+        template<typename S, int Exponent, int Radix>
+        struct _power<S, Exponent, Radix, true, false, true> {
+            constexpr static S square(S const& r)
+            {
+                return r*r;
+            }
+            constexpr S operator()() const
+            {
+                return square(_power<S, Exponent/2, Radix>{}());
+            }
+        };
+        template<typename S, int Exponent, int Radix>
+        struct _power<S, Exponent, Radix, true, true, true> {
+            constexpr static S square(S const& r)
+            {
+                return r*r;
+            }
+            constexpr S operator()() const
+            {
+                return S(Radix)*_power<S, (Exponent-1), Radix>{}();
+            }
+        };
+        template<typename S, int Exponent, int Radix>
+        constexpr auto power()
+        -> decltype(_power<S, Exponent, Radix>{}())
+        {
+            return _power<S, Exponent, Radix>{}();
+        }
+    }
+}
+namespace cnl {
+    namespace _impl {
         template<class ... T>
         using common_type_t = typename std::common_type<T ...>::type;
         template<bool C, class ... T>
@@ -222,6 +298,16 @@ namespace cnl {
 }
 namespace cnl {
     using _digits_type = int;
+    template<int NumDigits>
+    struct signed_integer_cannot_have {
+        template<int MaxNumDigits>
+        struct digits_because_maximum_is;
+    };
+    template<int NumDigits>
+    struct unsigned_integer_cannot_have {
+        template<int MaxNumDigits>
+        struct digits_because_maximum_is;
+    };
     template<class T, class Enable = void>
     struct is_composite : std::false_type {
         static_assert(!std::is_reference<T>::value, "T is a reference");
@@ -238,17 +324,19 @@ namespace cnl {
         struct are_composite<ArgHead, ArgTail...>
                 : std::integral_constant<bool, is_composite<typename std::decay<ArgHead>::type>::value || are_composite<ArgTail...>::value> {
         };
+        template<typename T>
+        constexpr bool narrower_than(_digits_type digits)
+        {
+            return std::is_same<T, void>::value ? true : numeric_limits<T>::digits<digits;
+        }
+        template<typename T>
+        constexpr bool no_narrower_than(_digits_type digits)
+        {
+            return std::is_same<T, void>::value ? true : numeric_limits<T>::digits>=digits;
+        }
         template<_digits_type MinNumDigits, class Smaller, class T>
-        struct enable_for_range
-                : std::enable_if<MinNumDigits <= numeric_limits<T>::digits &&
-                                 numeric_limits<Smaller>::digits < MinNumDigits> {
-        };
-        template<_digits_type MinNumDigits, class Smallest>
-        struct enable_for_range<MinNumDigits, void, Smallest>
-                : std::enable_if<MinNumDigits <= numeric_limits<Smallest>::digits> {
-        };
-        template<_digits_type MinNumDigits, class Smaller, class T>
-        using enable_for_range_t = typename enable_for_range<MinNumDigits, Smaller, T>::type;
+        using enable_for_range_t = typename std::enable_if<
+                no_narrower_than<T>(MinNumDigits) && narrower_than<Smaller>(MinNumDigits)>::type;
         template<_digits_type MinNumDigits, class Enable = void>
         struct set_digits_signed;
         template<_digits_type MinNumDigits>
@@ -270,6 +358,10 @@ namespace cnl {
         template<_digits_type MinNumDigits>
         struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, int64, int128>> {
             using type = int128;
+        };
+        template<_digits_type MinNumDigits>
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, intmax, void>>
+                : signed_integer_cannot_have<MinNumDigits>::template digits_because_maximum_is<numeric_limits<intmax>::digits> {
         };
         template<_digits_type MinNumDigits, class Enable = void>
         struct set_digits_unsigned;
@@ -293,14 +385,24 @@ namespace cnl {
         struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, uint64, uint128>> {
             using type = uint128;
         };
+        template<_digits_type MinNumDigits>
+        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, uintmax, void>>
+                : unsigned_integer_cannot_have<MinNumDigits>::template digits_because_maximum_is<numeric_limits<uintmax>::digits> {
+        };
         template<class Integer, _digits_type MinNumDigits>
         using set_digits_integer = typename std::conditional<
                 numeric_limits<Integer>::is_signed,
                 set_digits_signed<MinNumDigits>,
                 set_digits_unsigned<MinNumDigits>>::type;
     }
-    template<class T, class Enable = void>
-    struct digits : std::integral_constant<_digits_type, numeric_limits<T>::digits> {
+    template<typename T, int Radix = 2, class Enable = void>
+    struct digits;
+    template<typename T>
+    struct digits<T, 2> : std::integral_constant<_digits_type, numeric_limits<T>::digits> {
+        static_assert(numeric_limits<T>::is_specialized, "cnl::digits is not correctly specialized for T");
+    };
+    template<typename T>
+    struct digits<T, 10> : std::integral_constant<_digits_type, numeric_limits<T>::digits10> {
         static_assert(numeric_limits<T>::is_specialized, "cnl::digits is not correctly specialized for T");
     };
     template<class T, _digits_type Digits, class Enable = void>
@@ -461,22 +563,22 @@ namespace cnl {
     template<int Digits, int Radix, class S, class Enable = void>
     struct shift;
     namespace _impl {
-        template<int Digits, int Radix, class S, class Enable = void>
+        template<int Digits, int Radix, typename S, class Enable = void>
         struct default_shift;
-        template<int Bits, class S>
-        struct default_shift<Bits, 2, S, _impl::enable_if_t<0<=Bits>> {
+        template<int Digits, int Radix, typename S>
+        struct default_shift<Digits, Radix, S, _impl::enable_if_t<0<=Digits>> {
             constexpr auto operator()(S const& s) const
-            -> decltype(s*(S{1} << constant<Bits>{}))
+            -> decltype(s*power<S, Digits, Radix>())
             {
-                return s*(S{1} << constant<Bits>{});
+                return s*power<S, Digits, Radix>();
             }
         };
-        template<int Bits, class S>
-        struct default_shift<Bits, 2, S, _impl::enable_if_t<Bits<0>> {
+        template<int Digits, int Radix, typename S>
+        struct default_shift<Digits, Radix, S, _impl::enable_if_t<Digits<0>> {
             constexpr auto operator()(S const& s) const
-            -> decltype(s/(S{1} << constant<-Bits>()))
+            -> decltype(s/power<S, -Digits, Radix>())
             {
-                return s/(S{1} << constant<-Bits>());
+                return s/power<S, -Digits, Radix>();
             }
         };
     }
@@ -596,21 +698,6 @@ namespace cnl {
     }
     template<typename T>
     constexpr int countr_zero(T x) noexcept;
-    template<>
-    constexpr int countr_zero(unsigned int x) noexcept
-    {
-        return __builtin_ctz(x);
-    }
-    template<>
-    constexpr int countr_zero(unsigned long x) noexcept
-    {
-        return x ? __builtin_ctzl(x) : cnl::digits<unsigned long>::value;
-    }
-    template<>
-    constexpr int countr_zero(unsigned long long x) noexcept
-    {
-        return x ? __builtin_ctzll(x) : cnl::digits<unsigned long long>::value;
-    }
     template<typename T>
     constexpr int countr_zero(T x) noexcept
     {
@@ -676,21 +763,6 @@ namespace cnl {
     }
     template<typename T>
     constexpr int countl_rsb(T x) noexcept;
-    template<>
-    constexpr int countl_rsb(int x) noexcept
-    {
-        return __builtin_clrsb(x);
-    }
-    template<>
-    constexpr int countl_rsb(long x) noexcept
-    {
-        return __builtin_clrsbl(x);
-    }
-    template<>
-    constexpr int countl_rsb(long long x) noexcept
-    {
-        return __builtin_clrsbll(x);
-    }
     template<typename T>
     constexpr int countl_rsb(T x) noexcept
     {
@@ -731,7 +803,6 @@ namespace cnl {
         return digits<T>::value - countl_rb(x);
     }
 }
-       
 namespace cnl {
     template<typename T>
     constexpr T sqrt(T arg) {
@@ -762,52 +833,49 @@ namespace cnl {
         return value ? _numeric_impl::trailing_bits<Integer, is_signed<Integer>::value>()(value) : 0;
     }
     namespace _numeric_impl {
-        template<class Integer>
-        constexpr int used_bits_positive(Integer const& value, int mask_bits = cnl::digits<Integer>::value/2)
+        template<int Radix, typename Integer>
+        constexpr int used_digits_positive(Integer const& value)
         {
             static_assert(cnl::numeric_limits<Integer>::is_integer,
-                          "Integer parameter of used_bits_positive() must be a fundamental integer.");
-            return (value>=(Integer{1} << mask_bits))
-                   ? mask_bits+used_bits_positive(value/(Integer{1} << mask_bits), mask_bits)
-                   : (mask_bits>1)
-                     ? used_bits_positive(value, mask_bits/2)
-                     : 1;
+                    "Integer parameter of used_digits_positive() must be a fundamental integer.");
+            return (value>0) ? 1+used_digits_positive<Radix>(value/Radix) : 0;
         }
-    }
-    namespace _numeric_impl {
-        template<bool IsSigned>
-        struct used_bits {
+        template<int Radix, bool IsSigned>
+        struct used_digits {
             template<class Integer>
             constexpr int operator()(Integer const& value) const
             {
-                return value ? used_bits_positive(value) : 0;
+                return value ? used_digits_positive<Radix>(value) : 0;
             }
         };
-        template<>
-        struct used_bits<true> {
+        template<int Radix>
+        struct used_digits<Radix, true> {
             template<class Integer>
             constexpr int operator()(Integer const& value) const
             {
                 static_assert(cnl::numeric_limits<Integer>::is_integer,
-                        "Integer parameter of used_bits()() must be a fundamental integer.");
+                        "Integer parameter of used_digits()() must be a fundamental integer.");
                 return (value>0)
-                       ? used_bits_positive(value)
+                       ? used_digits_positive<Radix>(value)
                        : (value==0)
                          ? 0
-                         : used_bits()(Integer(-1)-value);
+                         : used_digits()(Integer(-1)-value);
             }
         };
     }
-    template<class Integer>
-    constexpr int used_bits(Integer const& value)
+    template<int Radix = 2, typename Integer=void>
+    constexpr int used_digits(Integer const& value)
     {
-        return _impl::for_rep<int>(_numeric_impl::used_bits<is_signed<Integer>::value>(), value);
+        return _impl::for_rep<int>(_numeric_impl::used_digits<Radix, is_signed<Integer>::value>(), value);
     }
     template<class Integer>
     constexpr int leading_bits(Integer const& value)
     {
-        return digits<Integer>::value-used_bits(value);
+        return digits<Integer>::value-used_digits(value);
     }
+    template< ::cnl::intmax Value>
+    struct digits<constant<Value>> : std::integral_constant<_digits_type, used_digits<>((Value<0) ? -Value : Value)> {
+    };
 }
 namespace cnl {
     namespace _impl {
@@ -1112,7 +1180,7 @@ namespace cnl {
             explicit constexpr number_base(rep const& r)
                 : _rep(r) { }
             template<class T>
-            number_base& operator=(T const& r) {
+                                  number_base& operator=(T const& r) {
                 _rep = r;
                 return static_cast<Derived&>(*this);
             }
@@ -1330,15 +1398,9 @@ namespace cnl {
     struct from_value<elastic_integer<Digits, Narrowest>, Value> {
         using type = elastic_integer<cnl::digits<Value>::value, cnl::_impl::make_signed_t<Narrowest, cnl::is_signed<Value>::value>>;
     };
-    namespace _elastic_integer_impl {
-        template<class Integer>
-        constexpr int digits(Integer value) {
-            return used_bits((value<0)?-value:value);
-        }
-    }
     template<int Digits, class Narrowest, intmax Value>
     struct from_value<elastic_integer<Digits, Narrowest>, constant<Value>> {
-        static constexpr auto _to_digits = _elastic_integer_impl::digits(Value);
+        static constexpr auto _to_digits = digits<constant<Value>>::value;
         using type = elastic_integer<_to_digits, Narrowest>;
     };
     template<int ShiftDigits, int ScalarDigits, class ScalarNarrowest>
@@ -1418,9 +1480,9 @@ namespace cnl {
     }
     template< ::cnl::intmax Value>
     constexpr auto make_elastic_integer(constant<Value>)
-    -> elastic_integer<_elastic_integer_impl::digits(Value)>
+    -> elastic_integer<digits<constant<Value>>::value>
     {
-        return elastic_integer<_elastic_integer_impl::digits(Value)>{Value};
+        return elastic_integer<digits<constant<Value>>::value>{Value};
     }
     namespace _elastic_integer_impl {
         template<class Narrowest, class Integral>
@@ -1664,10 +1726,10 @@ namespace cnl {
     };
 }
 namespace cnl {
-    template<class Rep = int, int Exponent = 0>
+    template<typename Rep = int, int Exponent = 0, int Radix = 2>
     class fixed_point;
-    template<class Rep, int Exponent>
-    constexpr Rep to_rep(fixed_point<Rep, Exponent> const&);
+    template<typename Rep, int Exponent, int Radix>
+    constexpr Rep to_rep(fixed_point<Rep, Exponent, Radix> const&);
     template<typename Numerator, typename Denominator>
     struct fractional;
     namespace _impl {
@@ -1675,8 +1737,8 @@ namespace cnl {
         struct is_fixed_point
                 : public std::false_type {
         };
-        template<class Rep, int Exponent>
-        struct is_fixed_point<fixed_point<Rep, Exponent>>
+        template<typename Rep, int Exponent, int Radix>
+        struct is_fixed_point<fixed_point<Rep, Exponent, Radix>>
                 : public std::true_type {
         };
         namespace fp {
@@ -1698,14 +1760,15 @@ namespace cnl {
             using float_of_same_size = typename float_of_size<digits<T>::value + is_signed<T>::value>::type;
         }
     }
-    template<class Rep, int Exponent>
+    template<typename Rep, int Exponent, int Radix>
     class fixed_point
-            : public _impl::number_base<fixed_point<Rep, Exponent>, Rep> {
+            : public _impl::number_base<fixed_point<Rep, Exponent, Radix>, Rep> {
+        static_assert(Radix>=2, "Radix must be two or greater");
         static_assert(!_impl::is_fixed_point<Rep>::value,
                 "fixed_point of fixed_point is not a supported");
     public:
         using rep = Rep;
-        using _base = _impl::number_base<fixed_point<Rep, Exponent>, Rep>;
+        using _base = _impl::number_base<fixed_point<Rep, Exponent, Radix>, Rep>;
         constexpr static int exponent = Exponent;
     private:
         constexpr fixed_point(rep r, int)
@@ -1727,7 +1790,7 @@ namespace cnl {
         }
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         constexpr fixed_point(S const& s)
-                : _base(static_cast<Rep>(_impl::shift<-exponent>(_impl::from_value<Rep>(s))))
+                : _base(static_cast<Rep>(_impl::shift<-exponent, Radix>(_impl::from_value<Rep>(s))))
         {
         }
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
@@ -1738,13 +1801,13 @@ namespace cnl {
         template<typename Numerator, typename Denominator>
         constexpr fixed_point(fractional<Numerator, Denominator> const& f);
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
-        fixed_point& operator=(S s)
+                              fixed_point& operator=(S s)
         {
             _base::operator=(floating_point_to_rep(s));
             return *this;
         }
         template<class FromRep, int FromExponent>
-        fixed_point& operator=(fixed_point<FromRep, FromExponent> const& rhs)
+                              fixed_point& operator=(fixed_point<FromRep, FromExponent> const& rhs)
         {
             _base::operator=(fixed_point_to_rep(rhs));
             return *this;
@@ -1778,83 +1841,47 @@ namespace cnl {
         template<class FromRep, int FromExponent>
         static constexpr rep fixed_point_to_rep(fixed_point<FromRep, FromExponent> const& rhs);
     };
-    template<class Rep, int Exponent>
-    constexpr int fixed_point<Rep, Exponent>::exponent;
-    namespace _impl {
-        namespace fp {
-            namespace type {
-                template<class S, int Exponent, enable_if_t<Exponent==0, int> Dummy = 0>
-                constexpr S pow2()
-                {
-                    static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-                    return S{1.};
-                }
-                template<class S, int Exponent,
-                        enable_if_t<!(Exponent<=0) && (Exponent<8), int> Dummy = 0>
-                constexpr S pow2()
-                {
-                    static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-                    return pow2<S, Exponent-1>()*S(2);
-                }
-                template<class S, int Exponent, enable_if_t<(Exponent>=8), int> Dummy = 0>
-                constexpr S pow2()
-                {
-                    static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-                    return pow2<S, Exponent-8>()*S(256);
-                }
-                template<class S, int Exponent,
-                        enable_if_t<!(Exponent>=0) && (Exponent>-8), int> Dummy = 0>
-                constexpr S pow2()
-                {
-                    static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-                    return pow2<S, Exponent+1>()*S(.5);
-                }
-                template<class S, int Exponent, enable_if_t<(Exponent<=-8), int> Dummy = 0>
-                constexpr S pow2()
-                {
-                    static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-                    return pow2<S, Exponent+8>()*S(.003906250);
-                }
-            }
-        }
-    }
-    template<class Rep, int Exponent>
+    template<typename Rep, int Exponent, int Radix>
+    constexpr int fixed_point<Rep, Exponent, Radix>::exponent;
+    template<typename Rep, int Exponent, int Radix>
     template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy>
-    constexpr S fixed_point<Rep, Exponent>::one()
+    constexpr S fixed_point<Rep, Exponent, Radix>::one()
     {
-        return _impl::fp::type::pow2<S, -exponent>();
+        return _impl::power<S, -exponent, Radix>();
     }
-    template<class Rep, int Exponent>
+    template<typename Rep, int Exponent, int Radix>
     template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy>
-    constexpr S fixed_point<Rep, Exponent>::one()
+    constexpr S fixed_point<Rep, Exponent, Radix>::one()
     {
         return from_rep<fixed_point<S, 0>>{}(1);
     }
-    template<class Rep, int Exponent>
+    template<typename Rep, int Exponent, int Radix>
     template<class S>
-    constexpr S fixed_point<Rep, Exponent>::inverse_one()
+    constexpr S fixed_point<Rep, Exponent, Radix>::inverse_one()
     {
         static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-        return _impl::fp::type::pow2<S, exponent>();
+        return _impl::power<S, exponent, Radix>();
     }
-    template<class Rep, int Exponent>
+    template<typename Rep, int Exponent, int Radix>
     template<class S>
-    constexpr typename fixed_point<Rep, Exponent>::rep fixed_point<Rep, Exponent>::floating_point_to_rep(S s)
+    constexpr typename fixed_point<Rep, Exponent, Radix>::rep
+    fixed_point<Rep, Exponent, Radix>::floating_point_to_rep(S s)
     {
         static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
         return static_cast<rep>(s*one<S>());
     }
-    template<class Rep, int Exponent>
+    template<typename Rep, int Exponent, int Radix>
     template<class FromRep, int FromExponent>
-    constexpr typename fixed_point<Rep, Exponent>::rep fixed_point<Rep, Exponent>::fixed_point_to_rep(fixed_point<FromRep, FromExponent> const& rhs)
+    constexpr typename fixed_point<Rep, Exponent, Radix>::rep
+    fixed_point<Rep, Exponent, Radix>::fixed_point_to_rep(fixed_point<FromRep, FromExponent> const& rhs)
     {
         return _impl::shift<FromExponent-exponent>(to_rep(rhs));
     }
 }
 namespace cnl {
     namespace _impl {
-        template <class Rep, int Exponent>
-        struct get_rep<fixed_point<Rep, Exponent>> {
+        template<typename Rep, int Exponent, int Radix>
+        struct get_rep<fixed_point<Rep, Exponent, Radix>> {
             using type = Rep;
         };
         template <class OldRep, int Exponent, class NewRep>
@@ -1862,47 +1889,48 @@ namespace cnl {
             using type = fixed_point<NewRep, Exponent>;
         };
     }
-    template <class Rep, int Exponent>
-    struct digits<fixed_point<Rep, Exponent>> : digits<Rep> {
+    template<typename Rep, int Exponent, int Radix>
+    struct digits<fixed_point<Rep, Exponent, Radix>> : digits<Rep> {
     };
-    template <class Rep, int Exponent, _digits_type MinNumBits>
-    struct set_digits<fixed_point<Rep, Exponent>, MinNumBits> {
-        using type = fixed_point<set_digits_t<Rep, MinNumBits>, Exponent>;
+    template<typename Rep, int Exponent, int Radix, _digits_type MinNumBits>
+    struct set_digits<fixed_point<Rep, Exponent, Radix>, MinNumBits> {
+        using type = fixed_point<set_digits_t<Rep, MinNumBits>, Exponent, Radix>;
     };
-    template<class ArchetypeRep, int Exponent>
-    struct from_rep<fixed_point<ArchetypeRep, Exponent>> {
+    template<typename ArchetypeRep, int Exponent, int Radix>
+    struct from_rep<fixed_point<ArchetypeRep, Exponent, Radix>> {
         template<typename Rep>
         constexpr auto operator()(Rep const& r) const
-        -> fixed_point<Rep, Exponent> {
-            return fixed_point<Rep, Exponent>(r, 0);
+        -> fixed_point<Rep, Exponent, Radix>
+        {
+            return fixed_point<Rep, Exponent, Radix>(r, 0);
         }
     };
-    template<class Rep, int Exponent>
-    constexpr Rep to_rep(fixed_point<Rep, Exponent> const& number)
+    template<typename Rep, int Exponent, int Radix>
+    constexpr Rep to_rep(fixed_point<Rep, Exponent, Radix> const& number)
     {
-        using base_type = typename fixed_point<Rep, Exponent>::_base;
+        using base_type = typename fixed_point<Rep, Exponent, Radix>::_base;
         return to_rep(static_cast<base_type const&>(number));
     }
-    template <class Rep, int Exponent, class Value>
-    struct from_value<fixed_point<Rep, Exponent>, Value> {
+    template<typename Rep, int Exponent, int Radix, typename Value>
+    struct from_value<fixed_point<Rep, Exponent, Radix>, Value> {
         using type = fixed_point<Value>;
     };
-    template <class Rep, int Exponent, class ValueRep, int ValueExponent>
-    struct from_value<fixed_point<Rep, Exponent>, fixed_point<ValueRep, ValueExponent>> {
+    template<typename Rep, int Exponent, int Radix, typename ValueRep, int ValueExponent>
+    struct from_value<fixed_point<Rep, Exponent, Radix>, fixed_point<ValueRep, ValueExponent>> {
         using type = fixed_point<from_value_t<Rep, ValueRep>, ValueExponent>;
     };
-    template<class Rep, int Exponent, ::cnl::intmax Value>
-    struct from_value<fixed_point<Rep, Exponent>, constant<Value>> {
+    template<typename Rep, int Exponent, int Radix, ::cnl::intmax Value>
+    struct from_value<fixed_point<Rep, Exponent, Radix>, constant<Value>> {
         using type = fixed_point<
-        set_digits_t<int, _impl::max(digits<int>::value, used_bits(Value)-trailing_bits(Value))>,
+        set_digits_t<int, _impl::max(digits<int>::value, used_digits(Value)-trailing_bits(Value))>,
         trailing_bits(Value)>;
     };
     namespace _impl {
         template <class T>
         struct fractional_digits : std::integral_constant<_digits_type, 0> {
         };
-        template <class Rep, int Exponent>
-        struct fractional_digits<fixed_point<Rep, Exponent>> : std::integral_constant<_digits_type, -Exponent> {
+        template<typename Rep, int Exponent, int Radix>
+        struct fractional_digits<fixed_point<Rep, Exponent, Radix>> : std::integral_constant<_digits_type, -Exponent> {
         };
         template <class T>
         struct integer_digits : std::integral_constant<_digits_type, digits<T>::value - fractional_digits<T>::value> {
@@ -1921,9 +1949,9 @@ namespace cnl {
         struct fixed_point_type {
             using type = fixed_point<Operand, 0>;
         };
-        template<class Rep, int Exponent>
-        struct fixed_point_type<fixed_point<Rep, Exponent>> {
-            using type = fixed_point<Rep, Exponent>;
+        template<typename Rep, int Exponent, int Radix>
+        struct fixed_point_type<fixed_point<Rep, Exponent, Radix>> {
+            using type = fixed_point<Rep, Exponent, Radix>;
         };
         template<class Lhs, class Rhs>
         struct params {
@@ -1960,70 +1988,69 @@ namespace cnl {
                                         * to_rep(static_cast<intermediate_rhs>(rhs))));
     }
     namespace _divide_impl {
-        template<class Lhs, class Rhs>
-        struct divide;
-    }
-    template<class Lhs, class Rhs>
-    constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(_divide_impl::divide<Lhs, Rhs>()(lhs, rhs)) {
-        return _divide_impl::divide<Lhs, Rhs>()(lhs, rhs);
-    }
-    namespace _divide_impl {
-        template<class Lhs, class Rhs>
-        struct params {
-            using lhs_rep = typename Lhs::rep;
-            using rhs_rep = typename Rhs::rep;
-            using rep_op_result = _impl::op_result<_impl::divide_op, lhs_rep, rhs_rep>;
+        template<typename Number>
+        struct fixed_point_rep {
+            using type = Number;
+        };
+        template<typename Rep, int Exponent, int Radix>
+        struct fixed_point_rep<fixed_point<Rep, Exponent, Radix>> : fixed_point_rep<Rep> {
+        };
+        template<typename Number>
+        constexpr Number not_fixed_point(Number const& number)
+        {
+            return number;
+        }
+        template<typename Rep, int Exponent, int Radix>
+        constexpr Rep not_fixed_point(fixed_point<Rep, Exponent, Radix> const& f)
+        {
+            return to_rep(f);
+        }
+        template<typename Number>
+        struct exponent : constant<0> {};
+        template<typename Rep, int Exponent, int Radix>
+        struct exponent<fixed_point<Rep, Exponent, Radix>> : constant<Exponent> {
+        };
+        template<class Quotient, class Dividend, class Divisor>
+        struct exponent_shift : std::integral_constant<
+                int,
+                _divide_impl::exponent<Dividend>::value
+                    -_divide_impl::exponent<Divisor>::value
+                    -_divide_impl::exponent<Quotient>::value> {
+        };
+        struct default_quotient_tag {};
+        template<class Quotient, class Dividend, class Divisor>
+        struct result;
+        template<typename Rep, int Exponent, int Radix, typename Dividend, typename Divisor>
+        struct result<fixed_point<Rep, Exponent, Radix>, Dividend, Divisor> {
+            using type = fixed_point<Rep, Exponent, Radix>;
+        };
+        template<class Dividend, class Divisor>
+        struct result<default_quotient_tag, Dividend, Divisor> {
+            using natural_result = _impl::op_result<_impl::divide_op, Dividend, Divisor>;
             static constexpr int integer_digits =
-                    _impl::integer_digits<Lhs>::value + _impl::fractional_digits<Rhs>::value;
+                    _impl::integer_digits<Dividend>::value + _impl::fractional_digits<Divisor>::value;
             static constexpr int fractional_digits =
-                    _impl::fractional_digits<Lhs>::value + _impl::integer_digits<Rhs>::value;
-            static constexpr int necessary_digits = integer_digits + fractional_digits;
-            static constexpr bool is_signed =
-                    numeric_limits<lhs_rep>::is_signed || numeric_limits<rhs_rep>::is_signed;
-            static constexpr int promotion_digits = digits<rep_op_result>::value;
-            static constexpr int max_digits = _impl::max(necessary_digits, promotion_digits);
-            using prewidened_result_rep = _impl::make_signed_t<rep_op_result, is_signed>;
-            using rep_type = set_digits_t<prewidened_result_rep, max_digits>;
+                    _impl::fractional_digits<Dividend>::value + _impl::integer_digits<Divisor>::value;
+            static constexpr auto necessary_digits = integer_digits + fractional_digits;
+            static constexpr auto natural_digits = digits<natural_result>::value;
+            static constexpr auto result_digits = _impl::max(necessary_digits, natural_digits);
+            using rep_type = set_digits_t<natural_result, result_digits>;
             static constexpr int rep_exponent = -fractional_digits;
-            static constexpr int intermediate_exponent_lhs = Lhs::exponent - digits<Rhs>::value;
-            using result_type = fixed_point<rep_type, rep_exponent>;
+            using type = fixed_point<typename fixed_point_rep<rep_type>::type, rep_exponent>;
         };
-        template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
-        struct divide<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>> {
-            constexpr auto operator()(fixed_point<LhsRep, LhsExponent> const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
-            -> typename params<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>>::result_type {
-                using params = params<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>>;
-                using result_type = typename params::result_type;
-                using result_rep = typename result_type::rep;
-                return from_rep<result_type>{}(static_cast<result_rep>(_impl::scale<digits<RhsRep>::value>(
-                        static_cast<typename params::rep_type>(to_rep(lhs)))/to_rep(rhs)));
-            }
-        };
-        template<class Lhs, class RhsRep, int RhsExponent>
-        struct divide<Lhs, fixed_point<RhsRep, RhsExponent>> {
-            constexpr auto operator()(Lhs const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
-            -> decltype(cnl::divide(make_fixed_point(lhs), rhs))
-            {
-                return cnl::divide(make_fixed_point(lhs), rhs);
-            }
-        };
-        template<class LhsRep, int LhsExponent, class Rhs>
-        struct divide<fixed_point<LhsRep, LhsExponent>, Rhs> {
-            constexpr auto operator()(fixed_point<LhsRep, LhsExponent> const& lhs, Rhs const& rhs) const
-            -> decltype(cnl::divide(lhs, make_fixed_point(rhs)))
-            {
-                return cnl::divide(lhs, make_fixed_point(rhs));
-            }
-        };
-        template<class Lhs, class Rhs>
-        struct divide {
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(cnl::divide(make_fixed_point(lhs), make_fixed_point(rhs)))
-            {
-                return cnl::divide(make_fixed_point(lhs), make_fixed_point(rhs));
-            }
-        };
+    }
+    template<
+            class Quotient = _divide_impl::default_quotient_tag,
+            class Dividend,
+            class Divisor>
+    constexpr auto divide(Dividend const& dividend, Divisor const& divisor)
+    -> typename _divide_impl::result<Quotient, Dividend, Divisor>::type {
+        using quotient = typename _divide_impl::result<Quotient, Dividend, Divisor>::type;
+        using quotient_rep = typename quotient::rep;
+        return from_rep<quotient>()(
+                static_cast<quotient_rep>(_impl::scale<_divide_impl::exponent_shift<quotient, Dividend, Divisor>::value>(
+                        static_cast<quotient_rep>(_divide_impl::not_fixed_point(dividend)))
+                        /_divide_impl::not_fixed_point(divisor)));
     }
 }
 namespace cnl {
@@ -2121,10 +2148,10 @@ namespace cnl {
     {
         return divide(value.numerator, value.denominator);
     }
-    template<typename Rep, int Exponent>
+    template<typename Rep, int Exponent, int Radix>
     template<typename Numerator, typename Denominator>
-    constexpr fixed_point<Rep, Exponent>::fixed_point(fractional<Numerator, Denominator> const& f)
-    : fixed_point(divide(f.numerator, f.denominator))
+    constexpr fixed_point<Rep, Exponent, Radix>::fixed_point(fractional<Numerator, Denominator> const& f)
+            : fixed_point(divide<fixed_point>(f.numerator, f.denominator))
     {
     }
 }
@@ -2150,8 +2177,8 @@ namespace cnl {
     }
 }
 namespace std {
-    template<class Rep, int Exponent>
-    struct common_type<cnl::fixed_point<Rep, Exponent>> {
+    template<typename Rep, int Exponent, int Radix>
+    struct common_type<cnl::fixed_point<Rep, Exponent, Radix>> {
         using type = cnl::fixed_point<
                 typename std::common_type<Rep>::type,
                 Exponent>;
@@ -2182,67 +2209,67 @@ namespace cnl {
         }
     }
     namespace _impl {
-        template<class Operator, class Rep, int Exponent>
-        struct unary_operator<Operator, fixed_point<Rep, Exponent>> {
-            constexpr auto operator()(fixed_point<Rep, Exponent> const& rhs) const
-            -> decltype(from_rep<fixed_point<decltype(Operator()(to_rep(rhs))), Exponent>>{}(Operator()(to_rep(rhs))))
+        template<typename Operator, typename Rep, int Exponent, int Radix>
+        struct unary_operator<Operator, fixed_point<Rep, Exponent, Radix>> {
+            constexpr auto operator()(fixed_point<Rep, Exponent, Radix> const& rhs) const
+            -> decltype(from_rep<fixed_point<decltype(Operator()(to_rep(rhs))), Exponent, Radix>>{}(Operator()(to_rep(rhs))))
             {
-                return from_rep<fixed_point<decltype(Operator()(to_rep(rhs))), Exponent>>{}(Operator()(to_rep(rhs)));
+                return from_rep<fixed_point<decltype(Operator()(to_rep(rhs))), Exponent, Radix>>{}(Operator()(to_rep(rhs)));
             }
         };
-        template<class Operator, class Rep, int Exponent>
-        struct binary_operator<Operator, fixed_point<Rep, Exponent>, fixed_point<Rep, Exponent>,
+        template<typename Operator, typename Rep, int Exponent, int Radix>
+        struct binary_operator<Operator, fixed_point<Rep, Exponent, Radix>, fixed_point<Rep, Exponent, Radix>,
                 typename Operator::is_comparison> {
             constexpr auto operator()(
-                    fixed_point<Rep, Exponent> const& lhs,
-                    fixed_point<Rep, Exponent> const& rhs) const
+                    fixed_point<Rep, Exponent, Radix> const& lhs,
+                    fixed_point<Rep, Exponent, Radix> const& rhs) const
             -> decltype(Operator()(to_rep(lhs), to_rep(rhs)))
             {
                 return Operator()(to_rep(lhs), to_rep(rhs));
             }
         };
-        template<class Operator, class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
-        struct binary_operator<Operator, fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>,
+        template<typename Operator, typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
+        struct binary_operator<Operator, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>,
                 typename Operator::is_comparison> {
             constexpr auto operator()(
-                    fixed_point<LhsRep, LhsExponent> const& lhs,
-                    fixed_point<RhsRep, RhsExponent> const& rhs) const
-            -> decltype(Operator()(static_cast<_impl::common_type_t<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>>>(lhs), static_cast<_impl::common_type_t<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>>>(rhs)))
+                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
+                    fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
+            -> decltype(Operator()(static_cast<_impl::common_type_t<fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>>>(lhs), static_cast<_impl::common_type_t<fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>>>(rhs)))
             {
-                using common_type = _impl::common_type_t<fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>>;
+                using common_type = _impl::common_type_t<fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>>;
                 return Operator()(static_cast<common_type>(lhs), static_cast<common_type>(rhs));
             }
         };
-        template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
-        struct binary_operator<multiply_op, fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>> {
+        template<typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
+        struct binary_operator<multiply_op, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>> {
             constexpr auto operator()(
-                    fixed_point<LhsRep, LhsExponent> const& lhs,
-                    fixed_point<RhsRep, RhsExponent> const& rhs) const
-            -> decltype(from_rep<fixed_point<decltype(to_rep(lhs)*to_rep(rhs)), LhsExponent+RhsExponent>>{}(to_rep(lhs)*to_rep(rhs)))
+                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
+                    fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
+            -> decltype(from_rep<fixed_point<decltype(to_rep(lhs)*to_rep(rhs)), LhsExponent+RhsExponent, Radix>>{}(to_rep(lhs)*to_rep(rhs)))
             {
-                return from_rep<fixed_point<decltype(to_rep(lhs)*to_rep(rhs)), LhsExponent+RhsExponent>>{}(to_rep(lhs)*to_rep(rhs));
+                return from_rep<fixed_point<decltype(to_rep(lhs)*to_rep(rhs)), LhsExponent+RhsExponent, Radix>>{}(to_rep(lhs)*to_rep(rhs));
             }
         };
-        template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
-        struct binary_operator<divide_op, fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>> {
+        template<typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
+        struct binary_operator<divide_op, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>> {
             constexpr auto operator()(
-                    fixed_point<LhsRep, LhsExponent> const& lhs,
-                    fixed_point<RhsRep, RhsExponent> const& rhs) const
-            -> decltype(from_rep<fixed_point<decltype(to_rep(lhs)/to_rep(rhs)), LhsExponent-RhsExponent>>{}(to_rep(lhs)
+                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
+                    fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
+            -> decltype(from_rep<fixed_point<decltype(to_rep(lhs)/to_rep(rhs)), LhsExponent-RhsExponent, Radix>>{}(to_rep(lhs)
                     /to_rep(rhs)))
             {
-                return from_rep<fixed_point<decltype(to_rep(lhs)/to_rep(rhs)), LhsExponent-RhsExponent>>{}(to_rep(lhs)
+                return from_rep<fixed_point<decltype(to_rep(lhs)/to_rep(rhs)), LhsExponent-RhsExponent, Radix>>{}(to_rep(lhs)
                         /to_rep(rhs));
             }
         };
-        template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
-        struct binary_operator<modulo_op, fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>> {
+        template<typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
+        struct binary_operator<modulo_op, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>> {
             constexpr auto operator()(
-                    fixed_point<LhsRep, LhsExponent> const& lhs,
-                    fixed_point<RhsRep, RhsExponent> const& rhs) const
-            -> decltype(from_rep<fixed_point<decltype(to_rep(lhs)%to_rep(rhs)), LhsExponent>>{}(to_rep(lhs)%to_rep(rhs)))
+                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
+                    fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
+            -> decltype(from_rep<fixed_point<decltype(to_rep(lhs)%to_rep(rhs)), LhsExponent, Radix>>{}(to_rep(lhs)%to_rep(rhs)))
             {
-                return from_rep<fixed_point<decltype(to_rep(lhs)%to_rep(rhs)), LhsExponent>>{}(to_rep(lhs)%to_rep(rhs));
+                return from_rep<fixed_point<decltype(to_rep(lhs)%to_rep(rhs)), LhsExponent, Radix>>{}(to_rep(lhs)%to_rep(rhs));
             }
         };
         template<class Operator> struct is_zero_degree : std::true_type {};
@@ -2251,20 +2278,20 @@ namespace cnl {
         template<> struct is_zero_degree<modulo_op> : std::false_type {};
         template<> struct is_zero_degree<shift_left_op> : std::false_type {};
         template<> struct is_zero_degree<shift_right_op> : std::false_type {};
-        template<class Operator, class LhsRep, class RhsRep, int Exponent>
-        struct binary_operator<Operator, fixed_point<LhsRep, Exponent>, fixed_point<RhsRep, Exponent>,
+        template<class Operator, class LhsRep, class RhsRep, int Exponent, int Radix>
+        struct binary_operator<Operator, fixed_point<LhsRep, Exponent, Radix>, fixed_point<RhsRep, Exponent, Radix>,
                 enable_if_t<is_zero_degree<Operator>::value, typename Operator::is_not_comparison>> {
             constexpr auto operator()(
-                    fixed_point<LhsRep, Exponent> const& lhs, fixed_point<RhsRep, Exponent> const& rhs) const
-            -> decltype(from_rep<fixed_point<decltype(Operator()(to_rep(lhs), to_rep(rhs))), Exponent>>{}(
+                    fixed_point<LhsRep, Exponent, Radix> const& lhs, fixed_point<RhsRep, Exponent, Radix> const& rhs) const
+            -> decltype(from_rep<fixed_point<decltype(Operator()(to_rep(lhs), to_rep(rhs))), Exponent, Radix>>{}(
                     Operator()(to_rep(lhs), to_rep(rhs))))
             {
-                return from_rep<fixed_point<decltype(Operator()(to_rep(lhs), to_rep(rhs))), Exponent>>{}(
+                return from_rep<fixed_point<decltype(Operator()(to_rep(lhs), to_rep(rhs))), Exponent, Radix>>{}(
                         Operator()(to_rep(lhs), to_rep(rhs)));
             }
         };
-        template<class Operator, class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
-        struct binary_operator<Operator, fixed_point<LhsRep, LhsExponent>, fixed_point<RhsRep, RhsExponent>,
+        template<typename Operator, typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
+        struct binary_operator<Operator, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>,
                         enable_if_t<is_zero_degree<Operator>::value, typename Operator::is_not_comparison>> {
         private:
             static constexpr int _common_exponent = min(LhsExponent, RhsExponent);
@@ -2272,50 +2299,49 @@ namespace cnl {
             static constexpr int _rhs_left_shift = RhsExponent-_common_exponent;
         public:
             constexpr auto operator()(
-                    fixed_point<LhsRep, LhsExponent> const& lhs, fixed_point<RhsRep, RhsExponent> const& rhs) const
+                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs, fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
             -> decltype(Operator{}(
-                    from_rep<fixed_point<LhsRep, _common_exponent>>{}(
+                    from_rep<fixed_point<LhsRep, _common_exponent, Radix>>{}(
                             _impl::shift<_lhs_left_shift>(to_rep(lhs))),
-                    from_rep<fixed_point<RhsRep, _common_exponent>>{}(
+                    from_rep<fixed_point<RhsRep, _common_exponent, Radix>>{}(
                             _impl::shift<_rhs_left_shift>(to_rep(rhs)))))
             {
                 return Operator{}(
-                        from_rep<fixed_point<LhsRep, _common_exponent>>{}(
+                        from_rep<fixed_point<LhsRep, _common_exponent, Radix>>{}(
                                 _impl::shift<_lhs_left_shift>(to_rep(lhs))),
-                        from_rep<fixed_point<RhsRep, _common_exponent>>{}(
+                        from_rep<fixed_point<RhsRep, _common_exponent, Radix>>{}(
                                 _impl::shift<_rhs_left_shift>(to_rep(rhs))));
             }
         };
     }
-    template<class LhsRep, int LhsExponent, class Rhs>
-    constexpr auto operator<<(fixed_point<LhsRep, LhsExponent> const& lhs, Rhs const& rhs)
-    -> decltype(from_rep<fixed_point<decltype(to_rep(lhs) << int(rhs)), LhsExponent>>{}(to_rep(lhs) << int(rhs)))
+    template<typename LhsRep, int LhsExponent, int LhsRadix, typename Rhs>
+    constexpr auto operator<<(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, Rhs const& rhs)
+    -> decltype(from_rep<fixed_point<decltype(to_rep(lhs) << int(rhs)), LhsExponent, LhsRadix>>{}(to_rep(lhs) << int(rhs)))
     {
-        return from_rep<fixed_point<decltype(to_rep(lhs) << int(rhs)), LhsExponent>>{}(to_rep(lhs) << int(rhs));
+        return from_rep<fixed_point<decltype(to_rep(lhs) << int(rhs)), LhsExponent, LhsRadix>>{}(to_rep(lhs) << int(rhs));
     }
-    template<class LhsRep, int LhsExponent, class Rhs>
-    constexpr auto operator>>(fixed_point<LhsRep, LhsExponent> const& lhs, Rhs const& rhs)
-    -> decltype(from_rep<fixed_point<decltype(to_rep(lhs) >> int(rhs)), LhsExponent>>{}(to_rep(lhs) >> int(rhs)))
+    template<typename LhsRep, int LhsExponent, int LhsRadix, typename Rhs>
+    constexpr auto operator>>(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, Rhs const& rhs)
+    -> decltype(from_rep<fixed_point<decltype(to_rep(lhs) >> int(rhs)), LhsExponent, LhsRadix>>{}(to_rep(lhs) >> int(rhs)))
     {
-        return from_rep<fixed_point<decltype(to_rep(lhs) >> int(rhs)), LhsExponent>>{}(to_rep(lhs) >> int(rhs));
+        return from_rep<fixed_point<decltype(to_rep(lhs) >> int(rhs)), LhsExponent, LhsRadix>>{}(to_rep(lhs) >> int(rhs));
     }
-    template<class LhsRep, int LhsExponent, ::cnl::intmax RhsValue>
-    constexpr fixed_point<LhsRep, LhsExponent+static_cast<int>(RhsValue)>
-    operator<<(fixed_point<LhsRep, LhsExponent> const& lhs, constant<RhsValue>)
+    template<typename LhsRep, int LhsExponent, int LhsRadix, ::cnl::intmax RhsValue>
+    constexpr fixed_point<LhsRep, LhsExponent+static_cast<int>(RhsValue), LhsRadix>
+    operator<<(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, constant<RhsValue>)
     {
-        return from_rep<fixed_point<LhsRep, LhsExponent+static_cast<int>(RhsValue)>>{}(to_rep(lhs));
+        return from_rep<fixed_point<LhsRep, LhsExponent+static_cast<int>(RhsValue), LhsRadix>>{}(to_rep(lhs));
     }
-    template<class LhsRep, int LhsExponent, ::cnl::intmax RhsValue>
-    constexpr fixed_point<LhsRep, LhsExponent-static_cast<int>(RhsValue)>
-    operator>>(fixed_point<LhsRep, LhsExponent> const& lhs, constant<RhsValue>)
+    template<typename LhsRep, int LhsExponent, int LhsRadix, ::cnl::intmax RhsValue>
+    constexpr fixed_point<LhsRep, LhsExponent-static_cast<int>(RhsValue), LhsRadix>
+    operator>>(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, constant<RhsValue>)
     {
-        return from_rep<fixed_point<LhsRep, LhsExponent-static_cast<int>(RhsValue)>>{}(to_rep(lhs));
+        return from_rep<fixed_point<LhsRep, LhsExponent-static_cast<int>(RhsValue), LhsRadix>>{}(to_rep(lhs));
     }
 }
-       
 namespace cnl {
-    template<class Rep, int Exponent>
-    constexpr auto abs(fixed_point<Rep, Exponent> const& x) noexcept
+    template<typename Rep, int Exponent, int Radix>
+    constexpr auto abs(fixed_point<Rep, Exponent, Radix> const& x) noexcept
     -> decltype(-x)
     {
         return (x >= 0) ? static_cast<decltype(-x)>(x) : -x;
@@ -2361,63 +2387,63 @@ namespace cnl {
             }
         }
     }
-    template<class Rep, int Exponent>
-    constexpr fixed_point <Rep, Exponent>
-    sqrt(fixed_point<Rep, Exponent> const& x)
+    template<typename Rep, int Exponent, int Radix>
+    constexpr fixed_point <Rep, Exponent, Radix>
+    sqrt(fixed_point<Rep, Exponent, Radix> const& x)
     {
         using widened_rep = set_digits_t<Rep, digits<Rep>::value*2>;
         return
-                (x<from_rep<fixed_point<Rep, Exponent>>{}(0))
+                (x<from_rep<fixed_point<Rep, Exponent, Radix>>{}(0))
                 ? throw std::invalid_argument("cannot represent square root of negative value") :
-                from_rep<fixed_point<Rep, Exponent>>{}(_impl::for_rep<widened_rep>(
+                from_rep<fixed_point<Rep, Exponent, Radix>>{}(_impl::for_rep<widened_rep>(
                         _impl::fp::extras::sqrt_solve1(),
                         _impl::scale<-Exponent>(static_cast<widened_rep>(to_rep(x)))));
     }
     namespace _impl {
         namespace fp {
             namespace extras {
-                template<class Rep, int Exponent, _impl::fp::float_of_same_size<Rep>(* F)(
+                template<typename Rep, int Exponent, int Radix, _impl::fp::float_of_same_size<Rep>(* F)(
                         _impl::fp::float_of_same_size<Rep>)>
-                constexpr fixed_point <Rep, Exponent>
-                crib(fixed_point<Rep, Exponent> const& x) noexcept
+                constexpr fixed_point <Rep, Exponent, Radix>
+                crib(fixed_point<Rep, Exponent, Radix> const& x) noexcept
                 {
                     using floating_point = _impl::fp::float_of_same_size<Rep>;
-                    return static_cast<fixed_point<Rep, Exponent>>(F(static_cast<floating_point>(x)));
+                    return static_cast<fixed_point<Rep, Exponent, Radix>>(F(static_cast<floating_point>(x)));
                 }
             }
         }
     }
-    template<class Rep, int Exponent>
-    constexpr fixed_point <Rep, Exponent>
-    sin(fixed_point<Rep, Exponent> const& x) noexcept
+    template<typename Rep, int Exponent, int Radix>
+    constexpr fixed_point <Rep, Exponent, Radix>
+    sin(fixed_point<Rep, Exponent, Radix> const& x) noexcept
     {
-        return _impl::fp::extras::crib<Rep, Exponent, std::sin>(x);
+        return _impl::fp::extras::crib<Rep, Exponent, Radix, std::sin>(x);
     }
-    template<class Rep, int Exponent>
-    constexpr fixed_point <Rep, Exponent>
-    cos(fixed_point<Rep, Exponent> const& x) noexcept
+    template<typename Rep, int Exponent, int Radix>
+    constexpr fixed_point <Rep, Exponent, Radix>
+    cos(fixed_point<Rep, Exponent, Radix> const& x) noexcept
     {
-        return _impl::fp::extras::crib<Rep, Exponent, std::cos>(x);
+        return _impl::fp::extras::crib<Rep, Exponent, Radix, std::cos>(x);
     }
-    template<class Rep, int Exponent>
-    constexpr fixed_point <Rep, Exponent>
-    exp(fixed_point<Rep, Exponent> const& x) noexcept
+    template<typename Rep, int Exponent, int Radix>
+    constexpr fixed_point <Rep, Exponent, Radix>
+    exp(fixed_point<Rep, Exponent, Radix> const& x) noexcept
     {
-        return _impl::fp::extras::crib<Rep, Exponent, std::exp>(x);
+        return _impl::fp::extras::crib<Rep, Exponent, Radix, std::exp>(x);
     }
-    template<class Rep, int Exponent>
-    constexpr fixed_point <Rep, Exponent>
-    pow(fixed_point<Rep, Exponent> const& x) noexcept
+    template<typename Rep, int Exponent, int Radix>
+    constexpr fixed_point <Rep, Exponent, Radix>
+    pow(fixed_point<Rep, Exponent, Radix> const& x) noexcept
     {
-        return _impl::fp::extras::crib<Rep, Exponent, std::pow>(x);
+        return _impl::fp::extras::crib<Rep, Exponent, Radix, std::pow>(x);
     }
-    template<class Rep, int Exponent>
-    ::std::ostream& operator<<(::std::ostream& out, fixed_point<Rep, Exponent> const& fp)
+    template<typename Rep, int Exponent, int Radix>
+    ::std::ostream& operator<<(::std::ostream& out, fixed_point<Rep, Exponent, Radix> const& fp)
     {
         return out << static_cast<long double>(fp);
     }
-    template<class Rep, int Exponent>
-    ::std::istream& operator>>(::std::istream& in, fixed_point <Rep, Exponent>& fp)
+    template<typename Rep, int Exponent, int Radix>
+    ::std::istream& operator>>(::std::istream& in, fixed_point <Rep, Exponent, Radix>& fp)
     {
         long double ld;
         in >> ld;
@@ -2426,10 +2452,10 @@ namespace cnl {
     }
 }
 namespace cnl {
-    template<class Rep, int Exponent>
-    struct numeric_limits<cnl::fixed_point<Rep, Exponent>>
-            : numeric_limits<cnl::_impl::number_base<cnl::fixed_point<Rep, Exponent>, Rep>> {
-        using _value_type = cnl::fixed_point<Rep, Exponent>;
+    template<typename Rep, int Exponent, int Radix>
+    struct numeric_limits<cnl::fixed_point<Rep, Exponent, Radix>>
+            : numeric_limits<cnl::_impl::number_base<cnl::fixed_point<Rep, Exponent, Radix>, Rep>> {
+        using _value_type = cnl::fixed_point<Rep, Exponent, Radix>;
         using _rep = typename _value_type::rep;
         using _rep_numeric_limits = numeric_limits<_rep>;
         static constexpr _value_type min() noexcept
@@ -2472,13 +2498,13 @@ namespace cnl {
     };
 }
 namespace std {
-    template<class Rep, int Exponent>
-    struct numeric_limits<cnl::fixed_point<Rep, Exponent>>
-            : cnl::numeric_limits<cnl::fixed_point<Rep, Exponent>> {
+    template<typename Rep, int Exponent, int Radix>
+    struct numeric_limits<cnl::fixed_point<Rep, Exponent, Radix>>
+            : cnl::numeric_limits<cnl::fixed_point<Rep, Exponent, Radix>> {
     };
-    template<class Rep, int Exponent>
-    struct numeric_limits<cnl::fixed_point<Rep, Exponent> const>
-            : cnl::numeric_limits<cnl::fixed_point<Rep, Exponent>> {
+    template<typename Rep, int Exponent, int Radix>
+    struct numeric_limits<cnl::fixed_point<Rep, Exponent, Radix> const>
+            : cnl::numeric_limits<cnl::fixed_point<Rep, Exponent, Radix>> {
     };
 }
 namespace cnl {
@@ -2488,7 +2514,7 @@ namespace cnl {
             typename Narrowest = int,
             ::cnl::intmax Value = 0>
     constexpr elastic_number<
-            _impl::max(_elastic_integer_impl::digits(Value)-trailing_bits(Value), 1),
+            _impl::max(digits<constant<Value>>::value-trailing_bits(Value), 1),
             trailing_bits(Value),
             Narrowest>
     make_elastic_number(constant<Value>)
@@ -2955,7 +2981,7 @@ namespace cnl {
     };
     template<class Rep, class OverflowTag, ::cnl::intmax Value>
     struct from_value<overflow_integer<Rep, OverflowTag>, constant<Value>> {
-        using _rep = typename std::conditional<digits<int>::value<used_bits(Value), decltype(Value), int>::type;
+        using _rep = typename std::conditional<digits<int>::value<used_digits(Value), decltype(Value), int>::type;
         using type = overflow_integer<_rep, OverflowTag>;
     };
     template<int Digits, int Radix, class Rep, class OverflowTag>
@@ -3195,7 +3221,7 @@ namespace cnl {
     };
     template<class Rep, class RoundingTag, ::cnl::intmax Value>
     struct from_value<rounding_integer<Rep, RoundingTag>, constant<Value>> {
-        using _rep = typename std::conditional<digits<int>::value<used_bits(Value),
+        using _rep = typename std::conditional<digits<int>::value<used_digits(Value),
                 decltype(Value),
                 int>::type;
         using type = rounding_integer<_rep, RoundingTag>;

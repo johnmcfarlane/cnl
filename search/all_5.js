@@ -56,7 +56,7 @@ var searchData=
   ['exp2',['exp2',['http://en.cppreference.com/w/cpp/numeric/math/exp2.html',1,'std::exp2()'],['../namespacecnl.html#a1416c25d358623664334bf7fdbe0dcf2',1,'cnl::exp2()']]],
   ['expired',['expired',['http://en.cppreference.com/w/cpp/memory/weak_ptr/expired.html',1,'std::weak_ptr']]],
   ['expm1',['expm1',['http://en.cppreference.com/w/cpp/numeric/math/expm1.html',1,'std']]],
-  ['exponent',['exponent',['../classcnl_1_1fixed__point.html#a48619addfec125393ff82d34ff17678c',1,'cnl::fixed_point']]],
+  ['exponent',['exponent',['../classcnl_1_1fixed__point.html#ab3fd4a397f451a7412e0f113f9205e96',1,'cnl::fixed_point']]],
   ['exponential_5fdistribution',['exponential_distribution',['http://en.cppreference.com/w/cpp/numeric/random/exponential_distribution.html',1,'std::exponential_distribution'],['http://en.cppreference.com/w/cpp/numeric/random/exponential_distribution/exponential_distribution.html',1,'std::exponential_distribution::exponential_distribution()']]],
   ['extent',['extent',['http://en.cppreference.com/w/cpp/types/extent.html',1,'std']]],
   ['extern_5ftype',['extern_type',['http://en.cppreference.com/w/cpp/locale/codecvt.html',1,'std::codecvt::extern_type'],['http://en.cppreference.com/w/cpp/locale/codecvt.html',1,'std::codecvt_byname::extern_type'],['http://en.cppreference.com/w/cpp/locale/codecvt.html',1,'std::codecvt_utf16::extern_type'],['http://en.cppreference.com/w/cpp/locale/codecvt.html',1,'std::codecvt_utf8::extern_type'],['http://en.cppreference.com/w/cpp/locale/codecvt.html',1,'std::codecvt_utf8_utf16::extern_type']]],

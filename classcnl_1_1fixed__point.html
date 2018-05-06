@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CNL: cnl::fixed_point&lt; Rep, Exponent &gt; Class Template Reference</title>
+<title>CNL: cnl::fixed_point&lt; Rep, Exponent, Radix &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -71,7 +71,7 @@ $(function() {
 <a href="#friends">Friends</a> &#124;
 <a href="classcnl_1_1fixed__point-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">cnl::fixed_point&lt; Rep, Exponent &gt; Class Template Reference</div>  </div>
+<div class="title">cnl::fixed_point&lt; Rep, Exponent, Radix &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -80,73 +80,73 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="fixed__point_8h_source.html">cnl/fixed_point.h</a>&gt;</code></p>
 
-<p>Inherits cnl::_impl::number_base&lt; fixed_point&lt; Rep, Exponent &gt;, Rep &gt;.</p>
+<p>Inherits cnl::_impl::number_base&lt; fixed_point&lt; Rep, Exponent, Radix &gt;, Rep &gt;.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aca2262d4d2301a2354fbdd73e0005e1c"><td class="memItemLeft" align="right" valign="top"><a id="aca2262d4d2301a2354fbdd73e0005e1c"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#aca2262d4d2301a2354fbdd73e0005e1c">rep</a> = Rep</td></tr>
-<tr class="memdesc:aca2262d4d2301a2354fbdd73e0005e1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">alias to template parameter, <em>Rep</em> <br /></td></tr>
-<tr class="separator:aca2262d4d2301a2354fbdd73e0005e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93e69cbc7b10ac6b2f975bf95d285115"><td class="memItemLeft" align="right" valign="top"><a id="a93e69cbc7b10ac6b2f975bf95d285115"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#a93e69cbc7b10ac6b2f975bf95d285115">rep</a> = Rep</td></tr>
+<tr class="memdesc:a93e69cbc7b10ac6b2f975bf95d285115"><td class="mdescLeft">&#160;</td><td class="mdescRight">alias to template parameter, <em>Rep</em> <br /></td></tr>
+<tr class="separator:a93e69cbc7b10ac6b2f975bf95d285115"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:adc7c155ab559178a5872d7c07029061e"><td class="memItemLeft" align="right" valign="top"><a id="adc7c155ab559178a5872d7c07029061e"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#adc7c155ab559178a5872d7c07029061e">fixed_point</a> ()=default</td></tr>
-<tr class="memdesc:adc7c155ab559178a5872d7c07029061e"><td class="mdescLeft">&#160;</td><td class="mdescRight">default constructor <br /></td></tr>
-<tr class="separator:adc7c155ab559178a5872d7c07029061e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adeb335f5c050847a7dced7e0b62d4f1c"><td class="memTemplParams" colspan="2"><a id="adeb335f5c050847a7dced7e0b62d4f1c"></a>
+<tr class="memitem:a0af87f724a76b8d27288e357a085e7a1"><td class="memItemLeft" align="right" valign="top"><a id="a0af87f724a76b8d27288e357a085e7a1"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#a0af87f724a76b8d27288e357a085e7a1">fixed_point</a> ()=default</td></tr>
+<tr class="memdesc:a0af87f724a76b8d27288e357a085e7a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">default constructor <br /></td></tr>
+<tr class="separator:a0af87f724a76b8d27288e357a085e7a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa191c0f3112bb00f45a34c107b65f740"><td class="memTemplParams" colspan="2"><a id="aa191c0f3112bb00f45a34c107b65f740"></a>
 template&lt;class FromRep , int FromExponent&gt; </td></tr>
-<tr class="memitem:adeb335f5c050847a7dced7e0b62d4f1c"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#adeb335f5c050847a7dced7e0b62d4f1c">fixed_point</a> (<a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; FromRep, FromExponent &gt; const &amp;rhs)</td></tr>
-<tr class="memdesc:adeb335f5c050847a7dced7e0b62d4f1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor taking a fixed-point type <br /></td></tr>
-<tr class="separator:adeb335f5c050847a7dced7e0b62d4f1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab744e8dec5568d7d69ac4d025e715cd2"><td class="memTemplParams" colspan="2"><a id="ab744e8dec5568d7d69ac4d025e715cd2"></a>
+<tr class="memitem:aa191c0f3112bb00f45a34c107b65f740"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#aa191c0f3112bb00f45a34c107b65f740">fixed_point</a> (<a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; FromRep, FromExponent &gt; const &amp;rhs)</td></tr>
+<tr class="memdesc:aa191c0f3112bb00f45a34c107b65f740"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor taking a fixed-point type <br /></td></tr>
+<tr class="separator:aa191c0f3112bb00f45a34c107b65f740"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ece52ba021d31c92a0e4eb1d15fe51d"><td class="memTemplParams" colspan="2"><a id="a5ece52ba021d31c92a0e4eb1d15fe51d"></a>
 template&lt;CNL_IMPL_CONSTANT_VALUE_TYPE Value&gt; </td></tr>
-<tr class="memitem:ab744e8dec5568d7d69ac4d025e715cd2"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#ab744e8dec5568d7d69ac4d025e715cd2">fixed_point</a> (<a class="el" href="structcnl_1_1constant.html">constant</a>&lt; Value &gt;)</td></tr>
-<tr class="memdesc:ab744e8dec5568d7d69ac4d025e715cd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor taking a <a class="el" href="structcnl_1_1constant.html" title="type whose value is also its non-type template parameter ">cnl::constant</a> object <br /></td></tr>
-<tr class="separator:ab744e8dec5568d7d69ac4d025e715cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d4b7b08c40a6ebcbd1b45e7b803b75b"><td class="memTemplParams" colspan="2"><a id="a0d4b7b08c40a6ebcbd1b45e7b803b75b"></a>
+<tr class="memitem:a5ece52ba021d31c92a0e4eb1d15fe51d"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#a5ece52ba021d31c92a0e4eb1d15fe51d">fixed_point</a> (<a class="el" href="structcnl_1_1constant.html">constant</a>&lt; Value &gt;)</td></tr>
+<tr class="memdesc:a5ece52ba021d31c92a0e4eb1d15fe51d"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor taking a <a class="el" href="structcnl_1_1constant.html" title="type whose value is also its non-type template parameter ">cnl::constant</a> object <br /></td></tr>
+<tr class="separator:a5ece52ba021d31c92a0e4eb1d15fe51d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17cd2dc5a9ee173cb32e6243e0f33607"><td class="memTemplParams" colspan="2"><a id="a17cd2dc5a9ee173cb32e6243e0f33607"></a>
 template&lt;class S , _impl::enable_if_t&lt; numeric_limits&lt; S &gt;::is_integer, int &gt; Dummy = 0&gt; </td></tr>
-<tr class="memitem:a0d4b7b08c40a6ebcbd1b45e7b803b75b"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#a0d4b7b08c40a6ebcbd1b45e7b803b75b">fixed_point</a> (S const &amp;s)</td></tr>
-<tr class="memdesc:a0d4b7b08c40a6ebcbd1b45e7b803b75b"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor taking an integer type <br /></td></tr>
-<tr class="separator:a0d4b7b08c40a6ebcbd1b45e7b803b75b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bb3b98fcfa1caf8c57dbe093dc688ec"><td class="memTemplParams" colspan="2"><a id="a9bb3b98fcfa1caf8c57dbe093dc688ec"></a>
+<tr class="memitem:a17cd2dc5a9ee173cb32e6243e0f33607"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#a17cd2dc5a9ee173cb32e6243e0f33607">fixed_point</a> (S const &amp;s)</td></tr>
+<tr class="memdesc:a17cd2dc5a9ee173cb32e6243e0f33607"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor taking an integer type <br /></td></tr>
+<tr class="separator:a17cd2dc5a9ee173cb32e6243e0f33607"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf1a5cbbaa1f63ebfb13d89931ce1486"><td class="memTemplParams" colspan="2"><a id="acf1a5cbbaa1f63ebfb13d89931ce1486"></a>
 template&lt;class S , _impl::enable_if_t&lt; numeric_limits&lt; S &gt;::is_iec559, int &gt; Dummy = 0&gt; </td></tr>
-<tr class="memitem:a9bb3b98fcfa1caf8c57dbe093dc688ec"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#a9bb3b98fcfa1caf8c57dbe093dc688ec">fixed_point</a> (S s)</td></tr>
-<tr class="memdesc:a9bb3b98fcfa1caf8c57dbe093dc688ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor taking a floating-point type <br /></td></tr>
-<tr class="separator:a9bb3b98fcfa1caf8c57dbe093dc688ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4cd78f2536bb76ccdc67421ff0e5d83"><td class="memTemplParams" colspan="2"><a id="af4cd78f2536bb76ccdc67421ff0e5d83"></a>
+<tr class="memitem:acf1a5cbbaa1f63ebfb13d89931ce1486"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#acf1a5cbbaa1f63ebfb13d89931ce1486">fixed_point</a> (S s)</td></tr>
+<tr class="memdesc:acf1a5cbbaa1f63ebfb13d89931ce1486"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor taking a floating-point type <br /></td></tr>
+<tr class="separator:acf1a5cbbaa1f63ebfb13d89931ce1486"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a347614ef57f48d45d847bb2fd2e00d48"><td class="memTemplParams" colspan="2"><a id="a347614ef57f48d45d847bb2fd2e00d48"></a>
 template&lt;typename Numerator , typename Denominator &gt; </td></tr>
-<tr class="memitem:af4cd78f2536bb76ccdc67421ff0e5d83"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#af4cd78f2536bb76ccdc67421ff0e5d83">fixed_point</a> (<a class="el" href="structcnl_1_1fractional.html">fractional</a>&lt; Numerator, Denominator &gt; const &amp;f)</td></tr>
-<tr class="memdesc:af4cd78f2536bb76ccdc67421ff0e5d83"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor taking <a class="el" href="structcnl_1_1fractional.html" title="numeric type represented as the fraction, numerator / denominator ">cnl::fractional</a> <br /></td></tr>
-<tr class="separator:af4cd78f2536bb76ccdc67421ff0e5d83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbf76438574bc5b88a4f3fec3c395499"><td class="memTemplParams" colspan="2"><a id="afbf76438574bc5b88a4f3fec3c395499"></a>
+<tr class="memitem:a347614ef57f48d45d847bb2fd2e00d48"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#a347614ef57f48d45d847bb2fd2e00d48">fixed_point</a> (<a class="el" href="structcnl_1_1fractional.html">fractional</a>&lt; Numerator, Denominator &gt; const &amp;f)</td></tr>
+<tr class="memdesc:a347614ef57f48d45d847bb2fd2e00d48"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor taking <a class="el" href="structcnl_1_1fractional.html" title="numeric type represented as the fraction, numerator / denominator ">cnl::fractional</a> <br /></td></tr>
+<tr class="separator:a347614ef57f48d45d847bb2fd2e00d48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae514c9342be8f81070f780b4d71b33f"><td class="memTemplParams" colspan="2"><a id="aae514c9342be8f81070f780b4d71b33f"></a>
 template&lt;class S , _impl::enable_if_t&lt; numeric_limits&lt; S &gt;::is_integer, int &gt; Dummy = 0&gt; </td></tr>
-<tr class="memitem:afbf76438574bc5b88a4f3fec3c395499"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#afbf76438574bc5b88a4f3fec3c395499">operator S</a> () const</td></tr>
-<tr class="memdesc:afbf76438574bc5b88a4f3fec3c395499"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns value represented as integral <br /></td></tr>
-<tr class="separator:afbf76438574bc5b88a4f3fec3c395499"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbf76438574bc5b88a4f3fec3c395499"><td class="memTemplParams" colspan="2"><a id="afbf76438574bc5b88a4f3fec3c395499"></a>
+<tr class="memitem:aae514c9342be8f81070f780b4d71b33f"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#aae514c9342be8f81070f780b4d71b33f">operator S</a> () const</td></tr>
+<tr class="memdesc:aae514c9342be8f81070f780b4d71b33f"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns value represented as integral <br /></td></tr>
+<tr class="separator:aae514c9342be8f81070f780b4d71b33f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae514c9342be8f81070f780b4d71b33f"><td class="memTemplParams" colspan="2"><a id="aae514c9342be8f81070f780b4d71b33f"></a>
 template&lt;class S , _impl::enable_if_t&lt; numeric_limits&lt; S &gt;::is_iec559, int &gt; Dummy = 0&gt; </td></tr>
-<tr class="memitem:afbf76438574bc5b88a4f3fec3c395499"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#afbf76438574bc5b88a4f3fec3c395499">operator S</a> () const</td></tr>
-<tr class="memdesc:afbf76438574bc5b88a4f3fec3c395499"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns value represented as floating-point <br /></td></tr>
-<tr class="separator:afbf76438574bc5b88a4f3fec3c395499"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e7d31c55a502c47e80792a7c5141ba7"><td class="memTemplParams" colspan="2"><a id="a6e7d31c55a502c47e80792a7c5141ba7"></a>
+<tr class="memitem:aae514c9342be8f81070f780b4d71b33f"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#aae514c9342be8f81070f780b4d71b33f">operator S</a> () const</td></tr>
+<tr class="memdesc:aae514c9342be8f81070f780b4d71b33f"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns value represented as floating-point <br /></td></tr>
+<tr class="separator:aae514c9342be8f81070f780b4d71b33f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6001cc77dce7ca07945bde9834838ae1"><td class="memTemplParams" colspan="2"><a id="a6001cc77dce7ca07945bde9834838ae1"></a>
 template&lt;class S , _impl::enable_if_t&lt; numeric_limits&lt; S &gt;::is_iec559, int &gt; Dummy = 0&gt; </td></tr>
-<tr class="memitem:a6e7d31c55a502c47e80792a7c5141ba7"><td class="memTemplItemLeft" align="right" valign="top">CNL_RELAXED_CONSTEXPR <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#a6e7d31c55a502c47e80792a7c5141ba7">operator=</a> (S s)</td></tr>
-<tr class="memdesc:a6e7d31c55a502c47e80792a7c5141ba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy assignment operator taking a floating-point type <br /></td></tr>
-<tr class="separator:a6e7d31c55a502c47e80792a7c5141ba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9377d5a8f4de5b84edc78759e99e7b5e"><td class="memTemplParams" colspan="2"><a id="a9377d5a8f4de5b84edc78759e99e7b5e"></a>
+<tr class="memitem:a6001cc77dce7ca07945bde9834838ae1"><td class="memTemplItemLeft" align="right" valign="top">CNL_RELAXED_CONSTEXPR <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#a6001cc77dce7ca07945bde9834838ae1">operator=</a> (S s)</td></tr>
+<tr class="memdesc:a6001cc77dce7ca07945bde9834838ae1"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy assignment operator taking a floating-point type <br /></td></tr>
+<tr class="separator:a6001cc77dce7ca07945bde9834838ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb174c4b457336e9e092d41c374a3dc4"><td class="memTemplParams" colspan="2"><a id="afb174c4b457336e9e092d41c374a3dc4"></a>
 template&lt;class FromRep , int FromExponent&gt; </td></tr>
-<tr class="memitem:a9377d5a8f4de5b84edc78759e99e7b5e"><td class="memTemplItemLeft" align="right" valign="top">CNL_RELAXED_CONSTEXPR <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#a9377d5a8f4de5b84edc78759e99e7b5e">operator=</a> (<a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; FromRep, FromExponent &gt; const &amp;rhs)</td></tr>
-<tr class="memdesc:a9377d5a8f4de5b84edc78759e99e7b5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy assignement operator taking a fixed-point type <br /></td></tr>
-<tr class="separator:a9377d5a8f4de5b84edc78759e99e7b5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb174c4b457336e9e092d41c374a3dc4"><td class="memTemplItemLeft" align="right" valign="top">CNL_RELAXED_CONSTEXPR <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#afb174c4b457336e9e092d41c374a3dc4">operator=</a> (<a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; FromRep, FromExponent &gt; const &amp;rhs)</td></tr>
+<tr class="memdesc:afb174c4b457336e9e092d41c374a3dc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy assignement operator taking a fixed-point type <br /></td></tr>
+<tr class="separator:afb174c4b457336e9e092d41c374a3dc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a48619addfec125393ff82d34ff17678c"><td class="memItemLeft" align="right" valign="top"><a id="a48619addfec125393ff82d34ff17678c"></a>
-static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#a48619addfec125393ff82d34ff17678c">exponent</a> = Exponent</td></tr>
-<tr class="memdesc:a48619addfec125393ff82d34ff17678c"><td class="mdescLeft">&#160;</td><td class="mdescRight">value of template parameter, <em>Exponent</em> <br /></td></tr>
-<tr class="separator:a48619addfec125393ff82d34ff17678c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3fd4a397f451a7412e0f113f9205e96"><td class="memItemLeft" align="right" valign="top"><a id="ab3fd4a397f451a7412e0f113f9205e96"></a>
+static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcnl_1_1fixed__point.html#ab3fd4a397f451a7412e0f113f9205e96">exponent</a> = Exponent</td></tr>
+<tr class="memdesc:ab3fd4a397f451a7412e0f113f9205e96"><td class="mdescLeft">&#160;</td><td class="mdescRight">value of template parameter, <em>Exponent</em> <br /></td></tr>
+<tr class="separator:ab3fd4a397f451a7412e0f113f9205e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -157,19 +157,22 @@ template&lt;class , class &gt; </td></tr>
 <tr class="separator:a692afb2eeb6c02fd18fa9986d4bf97f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class Rep, int Exponent&gt;<br />
-class cnl::fixed_point&lt; Rep, Exponent &gt;</h3>
+<div class="textblock"><h3>template&lt;typename Rep, int Exponent, int Radix&gt;<br />
+class cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</h3>
 
 <p>literal real number approximation that uses fixed-point arithmetic </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">Rep</td><td>the underlying type used to represent the value </td></tr>
-    <tr><td class="paramname">Exponent</td><td>the value by which to scale the integer value in order to get the real value</td></tr>
+    <tr><td class="paramname">Rep</td><td>the underlying type used to represent the value; defaults to <code>int</code> </td></tr>
+    <tr><td class="paramname">Exponent</td><td>the exponent used to scale the integer value; defaults to <code>0</code> </td></tr>
+    <tr><td class="paramname">Radix</td><td>the base used to scale the integer value; defaults to <code>2</code></td></tr>
   </table>
   </dd>
 </dl>
+<p>Uses an integer to approximate a real number. Scales the integer by <code>pow(Radix, Exponent)</code> to produce the scaled number. By default, represents an <code>int</code> with no fractional digits using binary arithmetic.</p>
+<dl class="section note"><dt>Note</dt><dd>Currently, only binary support and partial decimal support is provided.</dd></dl>
 <dl class="section user"><dt>Examples</dt><dd></dd></dl>
-<p>To define a fixed-point value 1 byte in size with a sign bit, 3 integer bits and 4 fractional bits: </p><div class="fragment"><div class="line">constexpr <span class="keyword">auto</span> n = <a class="code" href="classcnl_1_1fixed__point.html#adc7c155ab559178a5872d7c07029061e">fixed_point</a>&lt;char, -3&gt;{-2.75};</div><div class="line">static_assert(n==-2.75, <span class="stringliteral">&quot;fixed-point type was unable to store the value&quot;</span>);</div></div><!-- fragment --></div></div><!-- contents -->
+<p>To define a fixed-point value 1 byte in size with a sign bit, 4 integer bits and 3 fractional bits: </p><div class="fragment"><div class="line">constexpr <span class="keyword">auto</span> n = <a class="code" href="classcnl_1_1fixed__point.html#a0af87f724a76b8d27288e357a085e7a1">fixed_point</a>&lt;<a class="codeRef" doxygen="/home/john/tmp/radix/cnl/cmake-build-release-clang-6-c17/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/integer.html">std::int8_t</a>, -3&gt;{-2.75};</div><div class="line">static_assert(n==-2.75, <span class="stringliteral">&quot;fixed-point type was unable to store the value&quot;</span>);</div></div><!-- fragment --></div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
