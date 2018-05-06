@@ -20,6 +20,7 @@ set(test_sources
         # components
         constant.cpp
         fixed_point/fixed_point_built_in.cpp
+        fixed_point/decimal.cpp
         fixed_point/constants.cpp
         fractional.cpp
         elastic/elastic_integer.cpp
