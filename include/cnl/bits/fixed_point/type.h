@@ -177,6 +177,10 @@ namespace cnl {
             return *this;
         }
 
+        /// copy assignement operator taking cnl::fractional
+        template<typename Numerator, typename Denominator>
+        CNL_RELAXED_CONSTEXPR fixed_point& operator=(fractional<Numerator, Denominator> const& f);
+
         /// returns value represented as integral
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         explicit constexpr operator S() const

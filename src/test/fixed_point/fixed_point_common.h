@@ -40,6 +40,13 @@ TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_integer)
     ASSERT_EQ(lhs, 543);
 }
 
+TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_fractional)
+{
+    auto lhs = cnl::fixed_point<test_int, -15>{0};
+    lhs = cnl::make_fractional(int16{1}, int16{3});
+    ASSERT_EQ(lhs, 0.33331298828125);
+}
+
 TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_alternative_specialization)
 {
     auto lhs = fixed_point<uint32, -16>(0);
