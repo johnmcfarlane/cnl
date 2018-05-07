@@ -52,6 +52,7 @@ set(sample_sources
         papers/p0827.cpp
         papers/p0828.cpp
         papers/p0554.cpp
+        papers/p1050.cpp
         presentations/cppcon2017.cpp
         presentations/cppdub2018.cpp
         presentations/cppnow2017.cpp
