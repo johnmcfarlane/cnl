@@ -46,6 +46,7 @@ set(test_sources
 set(sample_sources
         # showing off
         index.cpp
+        papers/p0037.cpp
         papers/p0381.cpp
         papers/p0675.cpp
         papers/p0827.cpp
@@ -55,7 +56,6 @@ set(sample_sources
         presentations/cppdub2018.cpp
         presentations/cppnow2017.cpp
         fixed_point/math.cpp
-        fixed_point/p0037.cpp
         zero_cost_square.cpp
         zero_cost_free_functions.cpp
         snippets.cpp
