@@ -42,6 +42,14 @@ namespace cnl {
     {
     }
 
+    template<typename Rep, int Exponent, int Radix>
+    template<typename Numerator, typename Denominator>
+    CNL_RELAXED_CONSTEXPR fixed_point<Rep, Exponent, Radix>&
+    fixed_point<Rep, Exponent, Radix>::operator=(fractional<Numerator, Denominator> const& f)
+    {
+        return operator=(divide<fixed_point>(f.numerator, f.denominator));
+    }
+
 #if defined(__cpp_deduction_guides)
     template<typename Numerator, typename Denominator>
     fixed_point(fractional<Numerator, Denominator>)

@@ -93,49 +93,18 @@ namespace design_decisions {
         static_assert(h == false);
     }
 
-    namespace named_arithmetic {
+    namespace division {
         using cnl::fixed_point;
-        using cnl::multiply;
+        using cnl::fractional;
+        using std::int64_t;
 
-        namespace named_arithmetic1 {
-            constexpr auto f = fixed_point<uint8_t, -4>{15.9375};
-            constexpr auto p = multiply(f, f);
+        constexpr auto i = fixed_point{fractional{1, 3}};
+        static_assert(i == 0.333333333022892475128173828125L);
+        static_assert(is_same_v<decltype(i), const fixed_point<int64_t, -31>>);
 
-            static_assert(identical(p, fixed_point<uint16_t, -8>{254.00390625}));
-        }
-
-        TEST(proposal, named_arithmetic2)
-        {
-            using cnl::fixed_point;
-            auto f = fixed_point<unsigned, -28>{15.9375};
-            auto p = f * f;
-
-            static_assert(is_same_v<decltype(p), fixed_point<unsigned, -56>>);
-            ASSERT_EQ(p, 0.);
-        }
-
-        namespace named_arithmetic3 {
-            constexpr auto f = fixed_point<unsigned, -28>{15.9375};
-            constexpr auto p = multiply(f, f);
-
-            static_assert(identical(p, fixed_point<uint64_t, -56>{254.00390625}),
-                    "Incorrect information in proposal section, Named Arithmetic Functions");
-        }
-
-        namespace named_arithmetic4 {
-            constexpr auto n = fixed_point<uint32_t, -16>{1};
-            constexpr auto d = fixed_point<uint32_t, -16>{2};
-
-            // information appears to be lost by division operator
-            constexpr auto q1 = n / d;
-            static_assert(is_same_v<decltype(q1), const fixed_point<uint32_t, 0>>);
-            static_assert(q1 == 0);
-
-            // but divide preserves accurate results where practical
-            constexpr auto q2 = divide(n, d);
-            static_assert(is_same_v<decltype(q2), const fixed_point<uint64_t, -32>>);
-            static_assert(q2 == 0.5);
-        }
+        constexpr auto j = fixed_point<int, -16>{fractional{1, 3}};
+        static_assert(j == 0.3333282470703125);
+        static_assert(is_same_v<decltype(j), const fixed_point<int, -16>>);
     }
 }
 
@@ -155,7 +124,7 @@ namespace example {
                 fixed_point<uint16_t, -12>(1),
                 fixed_point<uint16_t, -12>(4),
                 fixed_point<uint16_t, -12>(9));
-        static_assert(identical(m, fixed_point<int, -24>{9.8994948864}), "Incorrect information in proposal section, Examples");
+        static_assert(identical(m, fixed_point<int, -24>{9.8994948863983154}), "Incorrect information in proposal section, Examples");
     }
 }
 
