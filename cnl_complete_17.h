@@ -1898,6 +1898,8 @@ namespace cnl {
             _base::operator=(fixed_point_to_rep(rhs));
             return *this;
         }
+        template<typename Numerator, typename Denominator>
+        constexpr fixed_point& operator=(fractional<Numerator, Denominator> const& f);
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         explicit constexpr operator S() const
         {
@@ -2005,7 +2007,7 @@ namespace cnl {
     }
     template<typename Rep, int Exponent, int Radix, typename Value>
     struct from_value<fixed_point<Rep, Exponent, Radix>, Value> {
-        using type = fixed_point<Value>;
+        using type = fixed_point<Value, 0, Radix>;
     };
     template<typename Rep, int Exponent, int Radix, typename ValueRep, int ValueExponent>
     struct from_value<fixed_point<Rep, Exponent, Radix>, fixed_point<ValueRep, ValueExponent>> {
@@ -2251,6 +2253,13 @@ namespace cnl {
     constexpr fixed_point<Rep, Exponent, Radix>::fixed_point(fractional<Numerator, Denominator> const& f)
             : fixed_point(divide<fixed_point>(f.numerator, f.denominator))
     {
+    }
+    template<typename Rep, int Exponent, int Radix>
+    template<typename Numerator, typename Denominator>
+    constexpr fixed_point<Rep, Exponent, Radix>&
+    fixed_point<Rep, Exponent, Radix>::operator=(fractional<Numerator, Denominator> const& f)
+    {
+        return operator=(divide<fixed_point>(f.numerator, f.denominator));
     }
     template<typename Numerator, typename Denominator>
     fixed_point(fractional<Numerator, Denominator>)
