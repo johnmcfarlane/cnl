@@ -114,6 +114,9 @@ namespace cnl {
         /// value of template parameter, \a Exponent
         constexpr static int exponent = Exponent;
 
+        /// value of template parameter, \a Radix
+        constexpr static int radix = Radix;
+
         ////////////////////////////////////////////////////////////////////////////////
         // functions
 
@@ -130,9 +133,10 @@ namespace cnl {
 
         /// constructor taking a fixed-point type
         template<class FromRep, int FromExponent>
-        constexpr fixed_point(fixed_point<FromRep, FromExponent> const& rhs)
+        constexpr fixed_point(fixed_point<FromRep, FromExponent, Radix> const& rhs)
                 : _base(
-                static_cast<Rep>(_impl::shift<FromExponent-exponent>(_impl::from_value<Rep>(cnl::to_rep(rhs)))))
+                static_cast<Rep>(_impl::shift<FromExponent-exponent, Radix>(
+                        _impl::from_value<Rep>(cnl::to_rep(rhs)))))
         {
         }
 
@@ -171,7 +175,7 @@ namespace cnl {
 
         /// copy assignement operator taking a fixed-point type
         template<class FromRep, int FromExponent>
-        CNL_RELAXED_CONSTEXPR fixed_point& operator=(fixed_point<FromRep, FromExponent> const& rhs)
+        CNL_RELAXED_CONSTEXPR fixed_point& operator=(fixed_point<FromRep, FromExponent, Radix> const& rhs)
         {
             _base::operator=(fixed_point_to_rep(rhs));
             return *this;
@@ -220,7 +224,7 @@ namespace cnl {
         static constexpr S rep_to_floating_point(rep r);
 
         template<class FromRep, int FromExponent>
-        static constexpr rep fixed_point_to_rep(fixed_point<FromRep, FromExponent> const& rhs);
+        static constexpr rep fixed_point_to_rep(fixed_point<FromRep, FromExponent, Radix> const& rhs);
     };
 
     /// value of template parameter, \a Exponent
@@ -278,7 +282,7 @@ namespace cnl {
     template<typename Rep, int Exponent, int Radix>
     template<class FromRep, int FromExponent>
     constexpr typename fixed_point<Rep, Exponent, Radix>::rep
-    fixed_point<Rep, Exponent, Radix>::fixed_point_to_rep(fixed_point<FromRep, FromExponent> const& rhs)
+    fixed_point<Rep, Exponent, Radix>::fixed_point_to_rep(fixed_point<FromRep, FromExponent, Radix> const& rhs)
     {
         return _impl::shift<FromExponent-exponent>(to_rep(rhs));
     }

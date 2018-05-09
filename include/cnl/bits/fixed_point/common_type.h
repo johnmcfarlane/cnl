@@ -30,17 +30,19 @@ namespace cnl {
 
                 // given a fixed-point and an integer type,
                 // generates a fixed-point type that is as big as both of them (or as close as possible)
-                template<class LhsRep, int LhsExponent, class RhsInteger>
-                struct common_type_mixed<fixed_point
-                        <LhsRep, LhsExponent>, RhsInteger, _impl::enable_if_t<numeric_limits<RhsInteger>::is_integer>> : std::common_type<
-                        fixed_point<LhsRep, LhsExponent>, fixed_point<RhsInteger, 0>> {
+                template<class LhsRep, int LhsExponent, int LhsRadix, class RhsInteger>
+                struct common_type_mixed<
+                        fixed_point<LhsRep, LhsExponent, LhsRadix>,
+                        RhsInteger,
+                        _impl::enable_if_t<numeric_limits<RhsInteger>::is_integer>>
+                : std::common_type<fixed_point<LhsRep, LhsExponent, LhsRadix>, fixed_point<RhsInteger, 0, LhsRadix>> {
                 };
 
                 // given a fixed-point and a floating-point type,
                 // generates a floating-point type that is as big as both of them (or as close as possible)
-                template<class LhsRep, int LhsExponent, class Float>
+                template<class LhsRep, int LhsExponent, int LhsRadix, class Float>
                 struct common_type_mixed<
-                        fixed_point<LhsRep, LhsExponent>, Float,
+                        fixed_point<LhsRep, LhsExponent, LhsRadix>, Float,
                         _impl::enable_if_t<std::is_floating_point<Float>::value>>
                     : std::common_type<_impl::fp::float_of_same_size<LhsRep>, Float> {
                 };
@@ -67,33 +69,38 @@ namespace std {
     /// \brief binary specialization of \ref std::common_type for \ref cnl::fixed_point
     /// \tparam cnl::fixed_point<LhsRep, LhsExponent> first input type
     /// \tparam Rhs second input type
-    template<class LhsRep, int LhsExponent, class Rhs>
-    struct common_type<cnl::fixed_point<LhsRep, LhsExponent>, Rhs> {
+    template<class LhsRep, int LhsExponent, int LhsRadix, class Rhs>
+    struct common_type<cnl::fixed_point<LhsRep, LhsExponent, LhsRadix>, Rhs> {
         static_assert(!cnl::_impl::is_fixed_point<Rhs>::value, "fixed-point Rhs type");
 
         /// the common type of the two inputs
-        using type = typename cnl::_impl::fp::ct::common_type_mixed<cnl::fixed_point<LhsRep, LhsExponent>, Rhs>::type;
+        using type = typename cnl::_impl::fp::ct::common_type_mixed<
+                cnl::fixed_point<LhsRep, LhsExponent, LhsRadix>,
+                Rhs>::type;
     };
 
     /// \brief binary specialization of \ref std::common_type for \ref cnl::fixed_point
     /// \tparam Lhs first input type
-    /// \tparam cnl::fixed_point<RhsRep, RhsExponent> second input type
-    template<class Lhs, class RhsRep, int RhsExponent>
-    struct common_type<Lhs, cnl::fixed_point<RhsRep, RhsExponent>> {
+    /// \tparam cnl::fixed_point<RhsRep, RhsExponent, int Radix> second input type
+    template<class Lhs, class RhsRep, int RhsExponent, int RhsRadix>
+    struct common_type<Lhs, cnl::fixed_point<RhsRep, RhsExponent, RhsRadix>> {
         static_assert(!cnl::_impl::is_fixed_point<Lhs>::value, "fixed-point Lhs type");
 
         /// the common type of the two inputs
-        using type = typename cnl::_impl::fp::ct::common_type_mixed<cnl::fixed_point<RhsRep, RhsExponent>, Lhs>::type;
+        using type = typename cnl::_impl::fp::ct::common_type_mixed<cnl::fixed_point<RhsRep, RhsExponent, RhsRadix>, Lhs>::type;
     };
 
     /// \brief binary specialization of \ref std::common_type for \ref cnl::fixed_point
     /// \tparam cnl::fixed_point<LhsRep, LhsExponent> first input type
-    /// \tparam cnl::fixed_point<RhsRep, RhsExponent> second input type
-    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
-    struct common_type<cnl::fixed_point<LhsRep, LhsExponent>, cnl::fixed_point<RhsRep, RhsExponent>> {
+    /// \tparam cnl::fixed_point<RhsRep, RhsExponent, int Radix> second input type
+    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent, int Radix>
+    struct common_type<cnl::fixed_point<LhsRep, LhsExponent, Radix>, cnl::fixed_point<RhsRep, RhsExponent, Radix>> {
 
         /// the common type of the two inputs
-        using type = cnl::fixed_point<cnl::_impl::common_type_t<LhsRep, RhsRep>, cnl::_impl::min(LhsExponent, RhsExponent)>;
+        using type = cnl::fixed_point<
+                cnl::_impl::common_type_t<LhsRep, RhsRep>,
+                cnl::_impl::min(LhsExponent, RhsExponent),
+                Radix>;
     };
 }
 
