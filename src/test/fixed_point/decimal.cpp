@@ -37,6 +37,16 @@ namespace test_ctor_float {
     static_assert(identical(51, cnl::to_rep(decimal_fixed_point<int, -1>{5.1})), "");
 }
 
+namespace test_ctor_decimal_fixed_point {
+    static_assert(identical(
+            decimal_fixed_point<int, -2>{123},
+            decimal_fixed_point<int, -2>{decimal_fixed_point<int, 0>{123}}), "");
+}
+
+namespace test_equal {
+    static_assert(decimal_fixed_point<int, -2>{123}==123, "");
+}
+
 namespace test_add {
     static_assert(identical(
             decimal_fixed_point<int, -5>{1.5}+decimal_fixed_point<int, -5>{5.1},
