@@ -72,7 +72,7 @@ namespace cnl {
 
     template<typename Rep, int Exponent, int Radix, typename Value>
     struct from_value<fixed_point<Rep, Exponent, Radix>, Value> {
-        using type = fixed_point<Value>;
+        using type = fixed_point<Value, 0, Radix>;
     };
 
     template<typename Rep, int Exponent, int Radix, typename ValueRep, int ValueExponent>

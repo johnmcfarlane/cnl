@@ -38,7 +38,7 @@ namespace test_add {
 namespace test_multiply {
     static_assert(identical(
             decimal_fixed_point<int, -1>{7.2}*decimal_fixed_point<int, -3>{321.123},
-            decimal_fixed_point<int, -4>{2312.08559999999988576746545732021331787109375}), "");
+            decimal_fixed_point<int, -4>{2312.0856}), "");
 }
 
 namespace test_divide {
