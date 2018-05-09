@@ -1770,6 +1770,7 @@ namespace cnl {
         using rep = Rep;
         using _base = _impl::number_base<fixed_point<Rep, Exponent, Radix>, Rep>;
         constexpr static int exponent = Exponent;
+        constexpr static int radix = Radix;
     private:
         constexpr fixed_point(rep r, int)
                 :_base(r)
@@ -1778,9 +1779,10 @@ namespace cnl {
     public:
         constexpr fixed_point() = default;
         template<class FromRep, int FromExponent>
-        constexpr fixed_point(fixed_point<FromRep, FromExponent> const& rhs)
+        constexpr fixed_point(fixed_point<FromRep, FromExponent, Radix> const& rhs)
                 : _base(
-                static_cast<Rep>(_impl::shift<FromExponent-exponent>(_impl::from_value<Rep>(cnl::to_rep(rhs)))))
+                static_cast<Rep>(_impl::shift<FromExponent-exponent, Radix>(
+                        _impl::from_value<Rep>(cnl::to_rep(rhs)))))
         {
         }
         template< ::cnl::intmax Value>
@@ -1807,7 +1809,7 @@ namespace cnl {
             return *this;
         }
         template<class FromRep, int FromExponent>
-                              fixed_point& operator=(fixed_point<FromRep, FromExponent> const& rhs)
+                              fixed_point& operator=(fixed_point<FromRep, FromExponent, Radix> const& rhs)
         {
             _base::operator=(fixed_point_to_rep(rhs));
             return *this;
@@ -1841,7 +1843,7 @@ namespace cnl {
         template<class S>
         static constexpr S rep_to_floating_point(rep r);
         template<class FromRep, int FromExponent>
-        static constexpr rep fixed_point_to_rep(fixed_point<FromRep, FromExponent> const& rhs);
+        static constexpr rep fixed_point_to_rep(fixed_point<FromRep, FromExponent, Radix> const& rhs);
     };
     template<typename Rep, int Exponent, int Radix>
     constexpr int fixed_point<Rep, Exponent, Radix>::exponent;
@@ -1875,7 +1877,7 @@ namespace cnl {
     template<typename Rep, int Exponent, int Radix>
     template<class FromRep, int FromExponent>
     constexpr typename fixed_point<Rep, Exponent, Radix>::rep
-    fixed_point<Rep, Exponent, Radix>::fixed_point_to_rep(fixed_point<FromRep, FromExponent> const& rhs)
+    fixed_point<Rep, Exponent, Radix>::fixed_point_to_rep(fixed_point<FromRep, FromExponent, Radix> const& rhs)
     {
         return _impl::shift<FromExponent-exponent>(to_rep(rhs));
     }
@@ -2170,14 +2172,16 @@ namespace cnl {
             namespace ct {
                 template<class Lhs, class Rhs, class _Enable = void>
                 struct common_type_mixed;
-                template<class LhsRep, int LhsExponent, class RhsInteger>
-                struct common_type_mixed<fixed_point
-                        <LhsRep, LhsExponent>, RhsInteger, _impl::enable_if_t<numeric_limits<RhsInteger>::is_integer>> : std::common_type<
-                        fixed_point<LhsRep, LhsExponent>, fixed_point<RhsInteger, 0>> {
-                };
-                template<class LhsRep, int LhsExponent, class Float>
+                template<class LhsRep, int LhsExponent, int LhsRadix, class RhsInteger>
                 struct common_type_mixed<
-                        fixed_point<LhsRep, LhsExponent>, Float,
+                        fixed_point<LhsRep, LhsExponent, LhsRadix>,
+                        RhsInteger,
+                        _impl::enable_if_t<numeric_limits<RhsInteger>::is_integer>>
+                : std::common_type<fixed_point<LhsRep, LhsExponent, LhsRadix>, fixed_point<RhsInteger, 0, LhsRadix>> {
+                };
+                template<class LhsRep, int LhsExponent, int LhsRadix, class Float>
+                struct common_type_mixed<
+                        fixed_point<LhsRep, LhsExponent, LhsRadix>, Float,
                         _impl::enable_if_t<std::is_floating_point<Float>::value>>
                     : std::common_type<_impl::fp::float_of_same_size<LhsRep>, Float> {
                 };
@@ -2192,19 +2196,24 @@ namespace std {
                 typename std::common_type<Rep>::type,
                 Exponent>;
     };
-    template<class LhsRep, int LhsExponent, class Rhs>
-    struct common_type<cnl::fixed_point<LhsRep, LhsExponent>, Rhs> {
+    template<class LhsRep, int LhsExponent, int LhsRadix, class Rhs>
+    struct common_type<cnl::fixed_point<LhsRep, LhsExponent, LhsRadix>, Rhs> {
         static_assert(!cnl::_impl::is_fixed_point<Rhs>::value, "fixed-point Rhs type");
-        using type = typename cnl::_impl::fp::ct::common_type_mixed<cnl::fixed_point<LhsRep, LhsExponent>, Rhs>::type;
+        using type = typename cnl::_impl::fp::ct::common_type_mixed<
+                cnl::fixed_point<LhsRep, LhsExponent, LhsRadix>,
+                Rhs>::type;
     };
-    template<class Lhs, class RhsRep, int RhsExponent>
-    struct common_type<Lhs, cnl::fixed_point<RhsRep, RhsExponent>> {
+    template<class Lhs, class RhsRep, int RhsExponent, int RhsRadix>
+    struct common_type<Lhs, cnl::fixed_point<RhsRep, RhsExponent, RhsRadix>> {
         static_assert(!cnl::_impl::is_fixed_point<Lhs>::value, "fixed-point Lhs type");
-        using type = typename cnl::_impl::fp::ct::common_type_mixed<cnl::fixed_point<RhsRep, RhsExponent>, Lhs>::type;
+        using type = typename cnl::_impl::fp::ct::common_type_mixed<cnl::fixed_point<RhsRep, RhsExponent, RhsRadix>, Lhs>::type;
     };
-    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent>
-    struct common_type<cnl::fixed_point<LhsRep, LhsExponent>, cnl::fixed_point<RhsRep, RhsExponent>> {
-        using type = cnl::fixed_point<cnl::_impl::common_type_t<LhsRep, RhsRep>, cnl::_impl::min(LhsExponent, RhsExponent)>;
+    template<class LhsRep, int LhsExponent, class RhsRep, int RhsExponent, int Radix>
+    struct common_type<cnl::fixed_point<LhsRep, LhsExponent, Radix>, cnl::fixed_point<RhsRep, RhsExponent, Radix>> {
+        using type = cnl::fixed_point<
+                cnl::_impl::common_type_t<LhsRep, RhsRep>,
+                cnl::_impl::min(LhsExponent, RhsExponent),
+                Radix>;
     };
 }
 namespace cnl {
