@@ -171,7 +171,7 @@ template<template<class> class NumericType, template<class> class TypeSpecificTe
 struct number_test_by_rep
         : number_test_suite<NumericType<char>, TypeSpecificTestSuite>,
 #if defined(CNL_INT128)
-        number_test_suite<NumericType<CNL_INT128>, TypeSpecificTestSuite>,
+          number_test_suite<NumericType<CNL_INT128>, TypeSpecificTestSuite>,
           number_test_suite<NumericType<CNL_UINT128>, TypeSpecificTestSuite>,
 #endif
           number_test_suite<NumericType<cnl::int8>, TypeSpecificTestSuite>,
