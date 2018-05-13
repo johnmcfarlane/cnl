@@ -7,13 +7,13 @@
 #include <cnl/fixed_point.h>
 #include <cnl/overflow_integer.h>
 
-#define TEST_THROWING_OVERFLOW
-#define TEST_LABEL throwing_integer_
+#define TEST_TRAPPING_OVERFLOW
+#define TEST_LABEL trapping_integer_
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Rep type
 
-using test_int = cnl::overflow_integer<int, cnl::throwing_overflow_tag>;
+using test_int = cnl::overflow_integer<int, cnl::trapping_overflow_tag>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // perform fixed_point tests with this type of fixed_point specialization
@@ -21,26 +21,22 @@ using test_int = cnl::overflow_integer<int, cnl::throwing_overflow_tag>;
 #include "../fixed_point_common.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-// throwing_integer-specific exceptions tests
+// trapping_integer-specific exceptions tests
 
-
-#if defined(CNL_EXCEPTIONS_ENABLED)
-
-TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), narrow)
+TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_right)
 {
-    ASSERT_THROW((uint8) 0x1234, std::overflow_error);
+    auto shift_left_fn = cnl::_impl::shift<-8, 2, uint16>;
+    ASSERT_DEATH(shift_left_fn((uint8) 0x1234), "positive overflow in conversion");
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_left)
 {
-    constexpr auto shift = cnl::shift<31, 2, test_int>{};
-    ASSERT_THROW(shift(1), std::overflow_error);
+    auto shift_left_fn = cnl::_impl::shift<8, 2, uint16>;
+    ASSERT_DEATH(shift_left_fn((uint8) 0x1234), "positive overflow in conversion");
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), assignment)
 {
     using fp_type = fixed_point<int8, -7>;
-    ASSERT_THROW(fp_type(1), std::overflow_error);
+    ASSERT_DEATH(fp_type(1), "positive overflow in conversion");
 }
-
-#endif
