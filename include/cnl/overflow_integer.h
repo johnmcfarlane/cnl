@@ -83,7 +83,7 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::overflow_integer<>
 
-    template<class Rep = int, class OverflowTag = throwing_overflow_tag>
+    template<class Rep = int, class OverflowTag = trapping_overflow_tag>
     class overflow_integer : public _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep> {
         static_assert(!_integer_impl::is_overflow_integer<Rep>::value,
                 "overflow_integer of overflow_integer is not a supported");
@@ -199,8 +199,20 @@ namespace cnl {
         using type = overflow_integer<_rep, OverflowTag>;
     };
 
+    template<int Digits, class Rep, class OverflowTag>
+    struct shift<Digits, 2, overflow_integer<Rep, OverflowTag>,
+            _impl::enable_if_t<(Digits>=0)>> {
+        using _value_type = overflow_integer<Rep, OverflowTag>;
+        constexpr auto operator()(_value_type const& s) const
+        -> decltype(from_rep<_value_type>{}(shift_left(OverflowTag{}, to_rep(s), constant<Digits>{})))
+        {
+            return from_rep<_value_type>{}(shift_left(OverflowTag{}, to_rep(s), constant<Digits>{}));
+        }
+    };
+
     template<int Digits, int Radix, class Rep, class OverflowTag>
-    struct shift<Digits, Radix, overflow_integer<Rep, OverflowTag>>
+    struct shift<Digits, Radix, overflow_integer<Rep, OverflowTag>,
+            _impl::enable_if_t<(Digits<0||Radix!=2)>>
             : shift<Digits, Radix, _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep>> {
     };
 

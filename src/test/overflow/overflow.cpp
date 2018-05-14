@@ -288,5 +288,19 @@ namespace {
         // compare
         static_assert(identical(convert<short>(saturated_overflow, cnl::numeric_limits<double>::max()),
                                 cnl::numeric_limits<short>::max()), "cnl::convert test failed");
+
+        // shift_left
+        static_assert(identical(
+                cnl::numeric_limits<cnl::int16>::max()<<1,
+                cnl::shift_left(saturated_overflow, cnl::numeric_limits<cnl::int16>::max(), 1)),
+                "cnl::shift_left test failed");
+        static_assert(identical(
+                cnl::numeric_limits<cnl::int32>::max(),
+                cnl::shift_left(saturated_overflow, cnl::numeric_limits<cnl::int32>::max(), 1)),
+                "cnl::shift_left test failed");
+        static_assert(identical(
+                -2,
+                cnl::shift_left(saturated_overflow, -1, 1)),
+                "cnl::shift_left test failed");
     }
 }

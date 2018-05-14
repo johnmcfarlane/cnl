@@ -130,6 +130,9 @@ namespace {
     namespace test_shift {
         static_assert(identical(cnl::safe_integer<3>{2}, cnl::_impl::shift<1>(cnl::safe_integer<2>{1})),
                 "cnl::shift<..., cnl::safe_integer<>>");
+
+        static_assert(identical(cnl::safe_integer<3>{2}, cnl::_impl::shift<1>(cnl::safe_integer<2>{1})),
+                "cnl::shift<..., cnl::safe_integer<>>");
     }
 }
 

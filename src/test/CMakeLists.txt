@@ -30,6 +30,7 @@ set(test_sources
 
         # composites
         fixed_point/overflow/fixed_point_native_integer.cpp
+        fixed_point/overflow/fixed_point_trapping_integer.cpp
         fixed_point/overflow/fixed_point_throwing_integer.cpp
         fixed_point/overflow/fixed_point_saturated_integer.cpp
         rounding/elastic/rounding_elastic_integer.cpp

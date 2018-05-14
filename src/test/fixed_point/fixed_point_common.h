@@ -196,9 +196,7 @@ static_assert(cnl::_impl::shift<8, 2, int16>(-123)==-31488, "cnl::_impl::shift t
 static_assert(cnl::_impl::shift<-8, 2, uint16>((uint16) 0x1234)==0x12, "cnl::_impl::shift test failed");
 static_assert(cnl::_impl::shift<-8, 2, int16>(-31488)==-123, "cnl::_impl::shift test failed");
 
-#if !defined(TEST_THROWING_OVERFLOW)
-static_assert(cnl::_impl::shift<-8, 2, uint16>((uint8) 0x1234)==0x0, "cnl::_impl::shift test failed");
-#endif
+static_assert(identical(test_int{0x123400}, cnl::_impl::shift<8, 2>(uint16{0x1234})), "cnl::_impl::shift test failed");
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
@@ -206,7 +204,7 @@ static_assert(cnl::_impl::shift<-8, 2, uint16>((uint8) 0x1234)==0x0, "cnl::_impl
 static_assert(cnl::_impl::shift<-8, 2, uint16>((uint16) 0x1234)==0x12, "cnl::_impl::shift test failed");
 static_assert(cnl::_impl::shift<-8, 2, int16>(-31488)==-123, "cnl::_impl::shift test failed");
 
-#if !defined(TEST_THROWING_OVERFLOW)
+#if !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_TRAPPING_OVERFLOW)
 static_assert(cnl::_impl::shift<-8, 2, uint16>((uint8) 0x34)==0x0, "cnl::_impl::shift test failed");
 #endif
 
@@ -248,7 +246,7 @@ namespace ctor {
     static_assert(identical(fixed_point<uint128, -16>(fixed_point<uint64>{123}), fixed_point<uint128, -16>(123)), "fixed_point<>::fixed_point");
 #endif
 
-#if !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_SATURATED_OVERFLOW)
+#if !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_TRAPPING_OVERFLOW) && !defined(TEST_SATURATED_OVERFLOW)
     // the equivalent test in elastic_number.cpp does not lose information
     static_assert(identical(uint32{0x00003210U}, uint32(fixed_point<uint64, -16>{0x76543210U})), "fixed_point<>::fixed_point");
 #endif
@@ -438,7 +436,7 @@ static_assert(fixed_point<uint16, -8>(232.125f)==232.125L, "cnl::fixed_point tes
 static_assert((fixed_point<uint32, -7>(232.125f))==232.125f, "cnl::fixed_point test failed");
 static_assert(fixed_point<uint64, -7>(232.125f)==232.125L, "cnl::fixed_point test failed");
 
-#if !defined(TEST_THROWING_OVERFLOW)
+#if !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_TRAPPING_OVERFLOW)
 static_assert(fixed_point<int8, -7>(1)!=1.L, "cnl::fixed_point test failed");
 #endif
 

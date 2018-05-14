@@ -33,7 +33,7 @@ using saturated_integer = overflow_integer<Rep, cnl::saturated_overflow_tag>;
 // cnl::overflow_integer template parameters default
 
 static_assert(
-        is_same<cnl::overflow_integer<>, cnl::overflow_integer<int, cnl::throwing_overflow_tag>>::value,
+        is_same<cnl::overflow_integer<>, cnl::overflow_integer<int, cnl::trapping_overflow_tag>>::value,
         "wrong default template parameters for cnl::overflow_integer");
 
 ////////////////////////////////////////////////////////////////////////////////

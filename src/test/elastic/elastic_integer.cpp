@@ -404,6 +404,16 @@ namespace {
         static_assert(leading_bits(elastic_integer<12, cnl::uint16>{10})==8, "leading_bits test failed");
     }
 
+    namespace test_power {
+        static_assert(identical(cnl::elastic_integer<11>{1024}, cnl::_impl::power<cnl::elastic_integer<1>, 10, 2>()),
+        "cnl::_impl::power test failed");
+    }
+
+    namespace test_shift {
+        static_assert(identical(cnl::elastic_integer<11>{1024}, cnl::_impl::shift<10>(cnl::elastic_integer<1>(1))), "");
+        static_assert(identical(cnl::elastic_integer<3>{6}, cnl::_impl::shift<1>(cnl::elastic_integer<2>{3})), "");
+    }
+
     namespace test_shift_left {
         using namespace cnl::literals;
 
