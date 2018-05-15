@@ -7,13 +7,13 @@
 /// \file cnl/num_traits.h
 /// \brief definitions supporting generic treatment of numeric types
 
-#if !defined(CNL_NUMERIC_TRAITS)
-#define CNL_NUMERIC_TRAITS 1
+#if !defined(CNL_NUM_TRAITS)
+#define CNL_NUM_TRAITS 1
 
 #include "constant.h"
 #include "limits.h"
 
-#include "cnl/bits/power.h"
+#include "bits/power.h"
 #include "bits/type_traits.h"
 
 #include <utility>
@@ -534,4 +534,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_NUMERIC_TRAITS
+#endif  // CNL_NUM_TRAITS
