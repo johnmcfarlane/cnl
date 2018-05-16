@@ -15,7 +15,7 @@
 
 namespace cnl {
 
-    struct closest_rounding_tag {
+    struct nearest_rounding_tag {
         template<class To, class From>
         static constexpr To convert(From const& from)
         {
@@ -24,7 +24,7 @@ namespace cnl {
     };
 
     /// \brief An integer with customized rounding behavior.
-    template<class Rep = int, class RoundingTag = closest_rounding_tag>
+    template<class Rep = int, class RoundingTag = nearest_rounding_tag>
     class rounding_integer;
 
     namespace _rounding_integer_impl {

@@ -11,7 +11,7 @@ namespace {
     using cnl::_impl::identical;
     using cnl::rounding_integer;
 
-    template<class Rep = int, int Exponent = 0, class RoundingTag = cnl::closest_rounding_tag>
+    template<class Rep = int, int Exponent = 0, class RoundingTag = cnl::nearest_rounding_tag>
     using rounding_fixed_point = cnl::fixed_point<cnl::rounding_integer<Rep, RoundingTag>, Exponent>;
 
     namespace test_numeric_limits {
