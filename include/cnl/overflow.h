@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief essential definitions related to the overflow detection and handling
+/// \brief essential definitions related to overflow detection and handling
 
 #if !defined(CNL_OVERFLOW_H)
 #define CNL_OVERFLOW_H
