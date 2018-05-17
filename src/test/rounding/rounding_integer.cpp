@@ -113,12 +113,6 @@ namespace {
         static_assert(identical(static_cast<int>(rounding_integer<>{9876}), 9876), "rounding_integer conversion test failed");
     }
 
-    namespace test_nearest_rounding_tag {
-        using cnl::nearest_rounding_tag;
-        static_assert(identical(nearest_rounding_tag::convert<int>(0.), 0), "cnl::nearest_rounding_tag test failed");
-        static_assert(identical(nearest_rounding_tag::convert<int>(-1.), -1), "cnl::nearest_rounding_tag test failed");
-    }
-
     namespace test_float_conversion {
         using rounding_integer = cnl::rounding_integer<>;
 

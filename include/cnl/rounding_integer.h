@@ -11,17 +11,11 @@
 #include "limits.h"
 
 #include "bits/number_base.h"
+#include "bits/rounding.h"
 #include "numeric.h"
 
 namespace cnl {
-
-    struct nearest_rounding_tag {
-        template<class To, class From>
-        static constexpr To convert(From const& from)
-        {
-            return static_cast<To>(intmax(from+((from>=0) ? .5 : -.5)));
-        }
-    };
+    using _impl::nearest_rounding_tag;
 
     /// \brief An integer with customized rounding behavior.
     template<class Rep = int, class RoundingTag = nearest_rounding_tag>
@@ -59,7 +53,7 @@ namespace cnl {
 
         template<class T, _impl::enable_if_t<!numeric_limits<T>::is_integer, int> Dummy = 0>
         constexpr rounding_integer(T const& v)
-                : super(rounding::template convert<Rep>(v)) { }
+                : super(_impl::convert<rounding, Rep, T>{}(v)) { }
 
         template<class T>
         constexpr explicit operator T() const

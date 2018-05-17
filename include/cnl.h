@@ -23,6 +23,7 @@
 #include "cnl/num_traits.h"
 #include "cnl/overflow.h"
 #include "cnl/overflow_integer.h"
+#include "cnl/rounding.h"
 #include "cnl/rounding_integer.h"
 
 #endif //CNL_H
