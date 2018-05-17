@@ -16,7 +16,7 @@ using namespace cnl;
 template<
         class Rep = int,
         class RoundingTag = nearest_rounding_tag,
-        class OverflowTag = throwing_overflow_tag>
+        class OverflowTag = trapping_overflow_tag>
 using rounding_overflow_int = overflow_integer<rounding_integer<Rep, RoundingTag>, OverflowTag>;
 
 static_assert(identical(
