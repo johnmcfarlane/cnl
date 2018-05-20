@@ -42,7 +42,7 @@ namespace {
 
         // nicely-widened quotient
         constexpr auto nq = cnl::make_fixed_point(f);
-        static_assert(identical(cnl::divide(n, d), nq), "cnl::make_fixed_point(cnl::fractional)");
+        static_assert(identical(cnl::quotient(n, d), nq), "cnl::make_fixed_point(cnl::fractional)");
 #if defined(__cpp_deduction_guides)
         static_assert(
                 identical(nq, cnl::fixed_point{f}),
@@ -59,7 +59,7 @@ namespace {
     namespace test_fractional_deduced {
         constexpr auto third = cnl::make_fractional(test_int{1}, test_int{3});
 
-        constexpr auto named = cnl::divide(third.numerator, third.denominator);
+        constexpr auto named = cnl::quotient(third.numerator, third.denominator);
         static_assert(identical(fixed_point<int64, -31>{0.333333333022892475128173828125L}, named), "");
 
 #if defined(__cpp_deduction_guides)
@@ -71,7 +71,7 @@ namespace {
     namespace test_fractional_specific_int {
         constexpr auto third = cnl::make_fractional(test_int{1}, test_int{3});
 
-        constexpr auto named = cnl::divide(third.numerator, third.denominator);
+        constexpr auto named = cnl::quotient(third.numerator, third.denominator);
         static_assert(identical(cnl::fixed_point<int64, -31>{0.333333333022892475128173828125L}, named), "");
 
 #if defined(__cpp_deduction_guides)
@@ -86,7 +86,7 @@ namespace {
     namespace test_fractional_specific_8bit {
         constexpr auto third = cnl::make_fractional(int8{1}, int8{3});
 
-        constexpr auto named = cnl::divide(third.numerator, third.denominator);
+        constexpr auto named = cnl::quotient(third.numerator, third.denominator);
         static_assert(identical(cnl::fixed_point<test_int, -7>{0.328125}, named), "");
 
 #if defined(__cpp_deduction_guides)
@@ -101,7 +101,7 @@ namespace {
     namespace test_fractional_specific_16bit {
         constexpr auto third = cnl::make_fractional(int16{1}, int16{3});
 
-        constexpr auto named = cnl::divide(third.numerator, third.denominator);
+        constexpr auto named = cnl::quotient(third.numerator, third.denominator);
         static_assert(identical(cnl::fixed_point<test_int, -15>{0.33331298828125}, named), "");
 
 #if defined(__cpp_deduction_guides)

@@ -18,15 +18,15 @@ namespace cnl {
             class RoundingTag = rounding_integer<>::rounding,
             class Narrowest = int>
     using rsfp = fixed_point<
-            overflow_integer<
-                    elastic_integer<
-                            IntegerDigits + FractionalDigits,
-                            rounding_integer<
-                                    Narrowest,
-                                    RoundingTag
-                            >
+            rounding_integer<
+                    overflow_integer<
+                            elastic_integer<
+                                    IntegerDigits+FractionalDigits,
+                                    Narrowest
+                            >,
+                            OverflowTag
                     >,
-                    OverflowTag
+                    RoundingTag
             >,
             -FractionalDigits
     >;

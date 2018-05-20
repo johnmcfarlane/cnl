@@ -34,7 +34,7 @@ namespace cnl {
         struct _power<S, 0, Radix, false, false, false> {
             constexpr S operator()() const
             {
-                return 1;
+                return S{1};
             }
         };
 

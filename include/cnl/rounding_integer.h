@@ -7,24 +7,18 @@
 #if !defined(CNL_ROUNDING_INTEGER_H)
 #define CNL_ROUNDING_INTEGER_H 1
 
-#include "cnlint.h"
-#include "limits.h"
-
-#include "bits/number_base.h"
 #include "numeric.h"
 
-namespace cnl {
+#include "bits/number_base.h"
+#include "bits/rounding.h"
 
-    struct closest_rounding_tag {
-        template<class To, class From>
-        static constexpr To convert(From const& from)
-        {
-            return static_cast<To>(intmax(from+((from>=0) ? .5 : -.5)));
-        }
-    };
+
+/// compositional numeric library
+namespace cnl {
+    using _impl::nearest_rounding_tag;
 
     /// \brief An integer with customized rounding behavior.
-    template<class Rep = int, class RoundingTag = closest_rounding_tag>
+    template<class Rep = int, class RoundingTag = _impl::nearest_rounding_tag>
     class rounding_integer;
 
     namespace _rounding_integer_impl {
@@ -59,7 +53,7 @@ namespace cnl {
 
         template<class T, _impl::enable_if_t<!numeric_limits<T>::is_integer, int> Dummy = 0>
         constexpr rounding_integer(T const& v)
-                : super(rounding::template convert<Rep>(v)) { }
+                : super(_impl::convert<rounding, Rep, T>{}(v)) { }
 
         template<class T>
         constexpr explicit operator T() const
@@ -122,11 +116,11 @@ namespace cnl {
     template<class Rep, class RoundingTag, class ValueRep, class ValueRoundingTag>
     struct from_value<rounding_integer<Rep, RoundingTag>, rounding_integer<ValueRep, ValueRoundingTag>> {
     private:
-        // the common_type of two overflow tags is the stricter for some sense of strict
-        using _overflow_tag = _impl::common_type_t<RoundingTag, ValueRoundingTag>;
+        // the common_type of two rounding tags is the stricter for some sense of strict
+        using _rounding = _impl::common_type_t<RoundingTag, ValueRoundingTag>;
         using _rep = from_value_t<Rep, ValueRep>;
     public:
-        using type = rounding_integer<_rep, _overflow_tag>;
+        using type = rounding_integer<_rep, _rounding>;
     };
 
     template<class Rep, class RoundingTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
@@ -139,8 +133,18 @@ namespace cnl {
 
     template<int Digits, int Radix, class Rep, class RoundingTag>
     struct shift<Digits, Radix, rounding_integer<Rep, RoundingTag>>
-            : shift<Digits, Radix, _impl::number_base<rounding_integer<Rep, RoundingTag>, Rep>> {
+            : _impl::default_shift<Digits, Radix, rounding_integer<Rep, RoundingTag>> {
     };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::make_rounding_integer
+
+    template<class RoundingTag, class Rep>
+    constexpr auto make_rounding_integer(Rep const& value)
+    -> rounding_integer<Rep, RoundingTag>
+    {
+        return value;
+    }
 
     ////////////////////////////////////////////////////////////////////////////////
     // unary arithmetic
@@ -165,16 +169,17 @@ namespace cnl {
     namespace _impl {
         // for operands with a common tag
         template<class Operator, class LhsRep, class RhsRep, class RoundingTag>
-        struct binary_operator<Operator, rounding_integer<LhsRep, RoundingTag>, rounding_integer<RhsRep, RoundingTag>,
+        struct binary_operator<Operator,
+                rounding_integer<LhsRep, RoundingTag>, rounding_integer<RhsRep, RoundingTag>,
                 typename Operator::is_not_comparison> {
             constexpr auto operator()(
                     rounding_integer<LhsRep, RoundingTag> const& lhs,
                     rounding_integer<RhsRep, RoundingTag> const& rhs) const
-            -> decltype(from_rep<rounding_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>>{}(
-                    Operator()(to_rep(lhs), to_rep(rhs))))
+            -> decltype(make_rounding_integer<RoundingTag>(_rounding_impl::binary_operator<RoundingTag, Operator>()(
+                    to_rep(lhs), to_rep(rhs))))
             {
-                using result_type = rounding_integer<op_result<Operator, LhsRep, RhsRep>, RoundingTag>;
-                return from_rep<result_type>{}(Operator()(to_rep(lhs), to_rep(rhs)));
+                return make_rounding_integer<RoundingTag>(
+                        _rounding_impl::binary_operator<RoundingTag, Operator>()(to_rep(lhs), to_rep(rhs)));
             }
         };
 
@@ -205,20 +210,6 @@ namespace cnl {
                 return binary_operator<Operator, rounding_integer<LhsRep, common_tag>, rounding_integer<LhsRep, common_tag>>()(lhs, rhs);
             }
         };
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // binary bitwise
-
-    template<class LhsRep, class LhsRoundingTag, class RhsInteger>
-    constexpr auto operator<<(
-            rounding_integer<LhsRep, LhsRoundingTag> const& lhs,
-            RhsInteger const& rhs)
-    -> decltype(from_rep<rounding_integer<decltype(to_rep(lhs) << rhs), LhsRoundingTag>>{}(to_rep(lhs) << rhs))
-    {
-        return from_rep<rounding_integer<
-                decltype(to_rep(lhs) << rhs),
-                LhsRoundingTag>>{}(to_rep(lhs) << rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////

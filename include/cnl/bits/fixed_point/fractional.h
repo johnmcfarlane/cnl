@@ -30,15 +30,15 @@ namespace cnl {
     /// in favor of class template deduction.
     template<typename Numerator, typename Denominator>
     constexpr auto make_fixed_point(fractional<Numerator, Denominator> const& value)
-    -> decltype(divide(value.numerator, value.denominator))
+    -> decltype(quotient(value.numerator, value.denominator))
     {
-        return divide(value.numerator, value.denominator);
+        return quotient(value.numerator, value.denominator);
     }
 
     template<typename Rep, int Exponent, int Radix>
     template<typename Numerator, typename Denominator>
     constexpr fixed_point<Rep, Exponent, Radix>::fixed_point(fractional<Numerator, Denominator> const& f)
-            : fixed_point(divide<fixed_point>(f.numerator, f.denominator))
+            : fixed_point(quotient<fixed_point>(f.numerator, f.denominator))
     {
     }
 
@@ -47,15 +47,15 @@ namespace cnl {
     CNL_RELAXED_CONSTEXPR fixed_point<Rep, Exponent, Radix>&
     fixed_point<Rep, Exponent, Radix>::operator=(fractional<Numerator, Denominator> const& f)
     {
-        return operator=(divide<fixed_point>(f.numerator, f.denominator));
+        return operator=(quotient<fixed_point>(f.numerator, f.denominator));
     }
 
 #if defined(__cpp_deduction_guides)
     template<typename Numerator, typename Denominator>
     fixed_point(fractional<Numerator, Denominator>)
     -> fixed_point<
-            typename decltype(cnl::divide(std::declval<Numerator>(), std::declval<Denominator>()))::rep,
-            decltype(cnl::divide(std::declval<Numerator>(), std::declval<Denominator>()))::exponent>;
+            typename decltype(quotient(std::declval<Numerator>(), std::declval<Denominator>()))::rep,
+            decltype(quotient(std::declval<Numerator>(), std::declval<Denominator>()))::exponent>;
 #endif
 }
 

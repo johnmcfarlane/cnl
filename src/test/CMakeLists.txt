@@ -16,6 +16,7 @@ set(test_sources
         number_test.cpp
         readme.cpp
         overflow/overflow.cpp
+        rounding/rounding.cpp
 
         # components
         constant.cpp
@@ -34,7 +35,7 @@ set(test_sources
         fixed_point/overflow/fixed_point_throwing_integer.cpp
         fixed_point/overflow/fixed_point_saturated_integer.cpp
         rounding/elastic/rounding_elastic_integer.cpp
-        fixed_point/rounding_fixed_point.cpp
+        fixed_point/rounding/rounding_fixed_point.cpp
         elastic/rounding/overflow/rounding_safe_integer.cpp
         fixed_point/elastic/rounding/overflow/rounding_safe_fixed_point.cpp
         overflow/elastic/safe_integer.cpp

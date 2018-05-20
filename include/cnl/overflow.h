@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief essential definitions related to the overflow detection and handling
+/// \brief essential definitions related to overflow detection and handling
 
 #if !defined(CNL_OVERFLOW_H)
 #define CNL_OVERFLOW_H
@@ -167,52 +167,69 @@ namespace cnl {
         };
     }
 
-    template<class Result, class Input>
-    constexpr Result convert(native_overflow_tag, Input const& rhs)
-    {
-        return static_cast<Result>(rhs);
-    }
+    namespace _impl {
+        template<class OverflowTag, class Result, class Input>
+        struct convert;
 
-    template<class Result, class Input, class OverflowTag>
-    constexpr Result convert(_overflow_impl::passive_overflow_tag<OverflowTag>, Input const& rhs)
-    {
-        return _impl::encompasses<Result, Input>::value
-               ? static_cast<Result>(rhs)
-               : _overflow_impl::return_if(
-                        OverflowTag{},
-                        !_overflow_impl::is_positive_overflow<Result>(rhs),
-                        _overflow_impl::return_if(
+        template<class Result, class Input>
+        struct convert<native_overflow_tag, Result, Input> {
+            constexpr Result operator()(Input const& rhs) const
+            {
+                return static_cast<Result>(rhs);
+            }
+        };
+
+        template<class OverflowTag, class Result, class Input>
+        struct convert<_overflow_impl::passive_overflow_tag<OverflowTag>, Result, Input> {
+            constexpr Result operator()(Input const& rhs) const
+            {
+                return _impl::encompasses<Result, Input>::value
+                       ? static_cast<Result>(rhs)
+                       : _overflow_impl::return_if(
                                 OverflowTag{},
-                                !_overflow_impl::is_negative_overflow<Result>(rhs),
-                                static_cast<Result>(rhs),
-                                "negative overflow in conversion"),
-                        "positive overflow in conversion");
+                                !_overflow_impl::is_positive_overflow<Result>(rhs),
+                                _overflow_impl::return_if(
+                                        OverflowTag{},
+                                        !_overflow_impl::is_negative_overflow<Result>(rhs),
+                                        static_cast<Result>(rhs),
+                                        "negative overflow in conversion"),
+                                "positive overflow in conversion");
+            }
+        };
+
+        template<class Result, class Input>
+        struct convert<trapping_overflow_tag, Result, Input> {
+            constexpr Result operator()(Input const& rhs) const
+            {
+                return convert<_overflow_impl::passive_overflow_tag<trapping_overflow_tag>, Result, Input>{}(rhs);
+            }
+        };
+
+        template<class Result, class Input>
+        struct convert<throwing_overflow_tag, Result, Input> {
+            constexpr Result operator()(Input const& rhs) const
+            {
+                return convert<_overflow_impl::passive_overflow_tag<throwing_overflow_tag>, Result, Input>{}(rhs);
+            }
+        };
+
+        template<class Result, class Input>
+        struct convert<saturated_overflow_tag, Result, Input> {
+            constexpr Result operator()(Input const& rhs) const
+            {
+                using numeric_limits = numeric_limits<Result>;
+                return !_impl::encompasses<Result, Input>::value
+                       ? _overflow_impl::is_positive_overflow<Result>(rhs)
+                         ? numeric_limits::max()
+                         : _overflow_impl::is_negative_overflow<Result>(rhs)
+                           ? numeric_limits::lowest()
+                           : static_cast<Result>(rhs)
+                       : static_cast<Result>(rhs);
+            }
+        };
     }
 
-    template<class Result, class Input>
-    constexpr Result convert(trapping_overflow_tag, Input const& rhs)
-    {
-        return convert<Result, Input>(_overflow_impl::passive_overflow_tag<trapping_overflow_tag>{}, rhs);
-    }
-
-    template<class Result, class Input>
-    constexpr Result convert(throwing_overflow_tag, Input const& rhs)
-    {
-        return convert<Result, Input>(_overflow_impl::passive_overflow_tag<throwing_overflow_tag>{}, rhs);
-    }
-
-    template<class Result, class Input>
-    constexpr Result convert(saturated_overflow_tag, Input const& rhs)
-    {
-        using numeric_limits = numeric_limits<Result>;
-        return !_impl::encompasses<Result, Input>::value
-               ? _overflow_impl::is_positive_overflow<Result>(rhs)
-                 ? numeric_limits::max()
-                 : _overflow_impl::is_negative_overflow<Result>(rhs)
-                   ? numeric_limits::lowest()
-                   : static_cast<Result>(rhs)
-               : static_cast<Result>(rhs);
-    }
+    using _impl::convert;
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::add

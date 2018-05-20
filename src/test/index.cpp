@@ -154,7 +154,7 @@ void boost_example()
     cout << googol << endl;
 
     // Dividing a s1.0 number by a u400.0 number
-    auto googolth = divide(mp_fixed_point<1>{1}, googol);
+    auto googolth = quotient(mp_fixed_point<1>{1}, googol);
 
     // produces a number with one integer digit and 400 fractional digits.
     static_assert(is_same<decltype(googolth), mp_fixed_point<401, -400>>::value, "");
