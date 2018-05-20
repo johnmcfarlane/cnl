@@ -131,7 +131,13 @@ namespace {
         static_assert(identical(rounding_integer<int>{-1}, -rounding_integer<char>{1}),
                       "rounding_integer unary operator-");
     }
-    
+
+    namespace divide {
+        static_assert(identical(cnl::rounding_integer<>{-1}, cnl::rounding_integer<>{-2}/3), "");
+        static_assert(identical(cnl::rounding_integer<>{0}, cnl::rounding_integer<>{1}/-3), "");
+        static_assert(identical(cnl::rounding_integer<>{1}, cnl::rounding_integer<>{5}/9), "");
+    }
+
     namespace numeric_limits {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::numeric_limits
@@ -262,6 +268,32 @@ namespace {
         static_assert(!std::numeric_limits<cnl::rounding_integer<cnl::uint128, cnl::nearest_rounding_tag>>::is_signed,
                 "std::numeric_limits<cnl::rounding_integer<>> test failed");
 #endif
+    }
+
+    namespace test_shift_left {
+        static_assert(identical(
+                cnl::rounding_integer<>{8},
+                cnl::rounding_integer<>{1} << cnl::rounding_integer<>{3}), "");
+
+        static_assert(identical(
+                cnl::rounding_integer<>{8},
+                cnl::rounding_integer<>{1} << cnl::constant<3>{}), "");
+    }
+
+    namespace test_power {
+        static_assert(identical(
+                cnl::rounding_integer<>{2},
+                cnl::_impl::_power<cnl::rounding_integer<>, 1, 2>{}()), "");
+    }
+
+    namespace test_shift {
+        static_assert(identical(
+                cnl::rounding_integer<>{2},
+                cnl::shift<-1, 2, cnl::rounding_integer<>>{}(cnl::rounding_integer<>{3})),
+                "cnl::shift<-1, 2, rounding_integer>");
+        static_assert(identical(
+                cnl::rounding_integer<>{2},
+                cnl::_impl::shift<-1>(cnl::rounding_integer<>{3})), "cnl::_impl::shift<-1>(rounding_integer)");
     }
 }
 

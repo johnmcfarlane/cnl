@@ -17,7 +17,7 @@ template<
         class Rep = int,
         class RoundingTag = nearest_rounding_tag,
         class OverflowTag = trapping_overflow_tag>
-using rounding_overflow_int = overflow_integer<rounding_integer<Rep, RoundingTag>, OverflowTag>;
+using rounding_overflow_int = rounding_integer<overflow_integer<Rep, OverflowTag>, RoundingTag>;
 
 static_assert(identical(
         rounding_overflow_int<>{2} * rounding_overflow_int<>{3},
