@@ -6,6 +6,11 @@ if (NOT DOXYGEN_FOUND)
     return()
 endif (NOT DOXYGEN_FOUND)
 
+# Generate list of files that are passed to Doxyfile as the INPUT parameter.
+file(GLOB_RECURSE doc_INPUTFILES "${CMAKE_HOME_DIRECTORY}/include/*")
+list(APPEND doc_INPUTFILES "${CMAKE_CURRENT_LIST_DIR}/index.md")
+string (REPLACE ";" " " doc_INPUTFILES "${doc_INPUTFILES}")
+
 # Try to download a tag file for the standard library from a given source.
 # If successful, populate doc_TAGFILE accordingly (as used in Doxyfile.in).
 macro(GET_DOXYGEN_TAGFILE FILENAME DOWNLOAD_LOC TAGFILE_LOC)
