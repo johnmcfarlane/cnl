@@ -78,8 +78,8 @@ namespace test_division {
 
     static_assert(identical(
             elastic_number<62, - 31>{.5},
-            cnl::divide(cnl::elastic_number<31, 0>{1}, cnl::elastic_number<31, 0>{2})),
-            "cnl::divide(cnl::elastic_number, cnl::elastic_number)");
+            cnl::quotient(cnl::elastic_number<31, 0>{1}, cnl::elastic_number<31, 0>{2})),
+            "cnl::quotient(cnl::elastic_number, cnl::elastic_number)");
     static_assert(identical(
             elastic_number<62, - 31>{.5},
             make_fixed_point(cnl::make_fractional(elastic_number<31, 0>{1}, elastic_number<31, 0>{2}))),
@@ -97,7 +97,7 @@ namespace test_fractional_deduced {
 
     constexpr auto third = cnl::make_fractional(1_elastic, 3_elastic);
 
-    constexpr auto named = cnl::divide(third.numerator, third.denominator);
+    constexpr auto named = cnl::quotient(third.numerator, third.denominator);
     static_assert(identical(cnl::elastic_number<3, -2>{0.25}, named), "");
 
 #if defined(__cpp_deduction_guides)

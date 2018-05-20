@@ -15,16 +15,16 @@ namespace {
     using _impl::identical;
     using namespace std;
 
-    constexpr auto a = divide(1, 3);
+    constexpr auto a = quotient(1, 3);
     static_assert(identical(fixed_point<int64, -31>{0.333333333022892475128173828125L}, a));
 
-    constexpr auto b = divide(elastic_integer<1>{1}, elastic_integer<2>{3});
+    constexpr auto b = quotient(elastic_integer<1>{1}, elastic_integer<2>{3});
     static_assert(identical(fixed_point<elastic_integer<3>, -2>{0.25}, b));
 
-    constexpr auto c = divide<fixed_point<int, -16>>(1, 3);
+    constexpr auto c = quotient<fixed_point<int, -16>>(1, 3);
     static_assert(identical(fixed_point<int, -16>{0.3333282470703125}, c));
 
-    constexpr auto d = divide<fixed_point<int, -16>>(elastic_integer<1>{1}, elastic_integer<2>{3});
+    constexpr auto d = quotient<fixed_point<int, -16>>(elastic_integer<1>{1}, elastic_integer<2>{3});
     static_assert(identical(fixed_point<int, -16>{0.3333282470703125}, d));
 
     constexpr auto a2 = fixed_point{fractional{1, 3}};

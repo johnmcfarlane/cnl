@@ -92,8 +92,6 @@ namespace cnl {
     ///
     /// \note This function multiplies the values
     /// without performing any additional scaling or conversion.
-    ///
-    /// \sa divide
 
     template<class Lhs, class Rhs>
     constexpr auto multiply(Lhs const& lhs, Rhs const& rhs)
@@ -111,9 +109,9 @@ namespace cnl {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::divide with fixed_point operand(s)
+    // cnl::quotient
 
-    namespace _divide_impl {
+    namespace _impl {
         template<typename Number>
         struct fixed_point_rep {
             using type = Number;
@@ -145,9 +143,9 @@ namespace cnl {
         template<class Quotient, class Dividend, class Divisor>
         struct exponent_shift : std::integral_constant<
                 int,
-                _divide_impl::exponent<Dividend>::value
-                    -_divide_impl::exponent<Divisor>::value
-                    -_divide_impl::exponent<Quotient>::value> {
+                _impl::exponent<Dividend>::value
+                    -_impl::exponent<Divisor>::value
+                    -_impl::exponent<Quotient>::value> {
         };
 
         struct default_quotient_tag {};
@@ -165,11 +163,11 @@ namespace cnl {
             using natural_result = _impl::op_result<_impl::divide_op, Dividend, Divisor>;
 
             static constexpr int integer_digits =
-                    _impl::integer_digits<Dividend>::value + _impl::fractional_digits<Divisor>::value;
+                    _impl::integer_digits<Dividend>::value+_impl::fractional_digits<Divisor>::value;
             static constexpr int fractional_digits =
-                    _impl::fractional_digits<Dividend>::value + _impl::integer_digits<Divisor>::value;
+                    _impl::fractional_digits<Dividend>::value+_impl::integer_digits<Divisor>::value;
 
-            static constexpr auto necessary_digits = integer_digits + fractional_digits;
+            static constexpr auto necessary_digits = integer_digits+fractional_digits;
             static constexpr auto natural_digits = digits<natural_result>::value;
             static constexpr auto result_digits = _impl::max(necessary_digits, natural_digits);
 
@@ -196,21 +194,19 @@ namespace cnl {
     /// \note A *widened division* is one where the quotient has as many integer digits as the
     /// dividend's integer digits plus the divisor's fractional digits and as many fractional
     /// digits as the dividend's fractional digits plus the divisor's integer digits.
-    ///
-    /// \sa multiply
 
     template<
-            class Quotient = _divide_impl::default_quotient_tag,
+            class Quotient = _impl::default_quotient_tag,
             class Dividend,
             class Divisor>
-    constexpr auto divide(Dividend const& dividend, Divisor const& divisor)
-    -> typename _divide_impl::result<Quotient, Dividend, Divisor>::type {
-        using quotient = typename _divide_impl::result<Quotient, Dividend, Divisor>::type;
-        using quotient_rep = typename quotient::rep;
-        return from_rep<quotient>()(
-                static_cast<quotient_rep>(_impl::scale<_divide_impl::exponent_shift<quotient, Dividend, Divisor>::value>(
-                        static_cast<quotient_rep>(_divide_impl::not_fixed_point(dividend)))
-                        /_divide_impl::not_fixed_point(divisor)));
+    constexpr auto quotient(Dividend const& dividend, Divisor const& divisor)
+    -> typename _impl::result<Quotient, Dividend, Divisor>::type {
+        using result_type = typename _impl::result<Quotient, Dividend, Divisor>::type;
+        using result_rep = typename result_type::rep;
+        return from_rep<result_type>()(
+                static_cast<result_rep>(_impl::scale<_impl::exponent_shift<result_type, Dividend, Divisor>::value>(
+                        static_cast<result_rep>(_impl::not_fixed_point(dividend)))
+                        /_impl::not_fixed_point(divisor)));
     }
 }
 

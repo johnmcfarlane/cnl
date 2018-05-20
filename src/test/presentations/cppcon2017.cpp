@@ -107,7 +107,7 @@ namespace h {
 namespace i {
     constexpr auto n = fixed_point<int, -8>{1.5};
     constexpr auto d = fixed_point<int, -8>{2.25};
-    constexpr auto q = cnl::divide(n, d);
+    constexpr auto q = cnl::quotient(n, d);
 
     static_assert(std::is_same<decltype(q), const fixed_point<long, -31>>::value);
     static_assert(q == 0.66666666651144623756408691);
