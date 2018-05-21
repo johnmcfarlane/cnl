@@ -136,6 +136,11 @@ namespace {
         static_assert(identical(cnl::safe_integer<3>{2}, cnl::_impl::shift<1>(cnl::safe_integer<2>{1})),
                 "cnl::shift<..., cnl::safe_integer<>>");
     }
+
+    TEST(static_integer, conversion_overflow) {
+        using si = cnl::safe_integer<5>;
+        ASSERT_DEATH(si{32}, "positive overflow in conversion");
+    }
 }
 
 // given a rounding tag, invokes number_test_suite for integers of all built-in types
