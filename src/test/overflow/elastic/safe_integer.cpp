@@ -9,11 +9,13 @@
 
 #include "../../number_test.h"
 
+#include <gtest/gtest.h>
+
 namespace cnl {
     // safe elastic integer
     template<
             int IntegerDigits,
-            class OverflowTag = throwing_overflow_tag,
+            class OverflowTag = trapping_overflow_tag,
             class Narrowest = int>
     using safe_integer = overflow_integer<
             elastic_integer<
@@ -22,7 +24,7 @@ namespace cnl {
             OverflowTag>;
 
     template<
-            class OverflowTag = throwing_overflow_tag,
+            class OverflowTag = trapping_overflow_tag,
             class Narrowest = int,
             class Input = int>
     safe_integer<
@@ -133,6 +135,11 @@ namespace {
 
         static_assert(identical(cnl::safe_integer<3>{2}, cnl::_impl::shift<1>(cnl::safe_integer<2>{1})),
                 "cnl::shift<..., cnl::safe_integer<>>");
+    }
+
+    TEST(static_integer, conversion_overflow) {
+        using si = cnl::safe_integer<5>;
+        ASSERT_DEATH(si{32}, "positive overflow in conversion");
     }
 }
 
