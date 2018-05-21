@@ -41,6 +41,7 @@ set(test_sources
         overflow/elastic/safe_integer.cpp
         fixed_point/elastic/make_elastic_number.cpp
         fixed_point/elastic/elastic_number.cpp
+        static_integer.cpp
 )
 
 # source files containing demos and examples of CNL;
