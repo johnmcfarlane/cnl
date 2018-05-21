@@ -9,11 +9,13 @@
 
 #include "../../number_test.h"
 
+#include <gtest/gtest.h>
+
 namespace cnl {
     // safe elastic integer
     template<
             int IntegerDigits,
-            class OverflowTag = throwing_overflow_tag,
+            class OverflowTag = trapping_overflow_tag,
             class Narrowest = int>
     using safe_integer = overflow_integer<
             elastic_integer<
@@ -22,7 +24,7 @@ namespace cnl {
             OverflowTag>;
 
     template<
-            class OverflowTag = throwing_overflow_tag,
+            class OverflowTag = trapping_overflow_tag,
             class Narrowest = int,
             class Input = int>
     safe_integer<
