@@ -37,11 +37,11 @@ set(test_sources
         rounding/elastic/rounding_elastic_integer.cpp
         fixed_point/rounding/rounding_fixed_point.cpp
         elastic/rounding/overflow/rounding_safe_integer.cpp
-        fixed_point/elastic/rounding/overflow/rounding_safe_fixed_point.cpp
         overflow/elastic/safe_integer.cpp
         fixed_point/elastic/make_elastic_number.cpp
         fixed_point/elastic/elastic_number.cpp
         static_integer.cpp
+        static_number.cpp
 )
 
 # source files containing demos and examples of CNL;

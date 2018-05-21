@@ -20,6 +20,8 @@ namespace cnl {
     /// \tparam OverflowTag behavior exhibited on out-of-range conditions
     /// \tparam RoundingTag behavior exhibited on precision loss
     /// \tparam Narrowest narrowest integer with which to represent the value
+    ///
+    /// \sa cnl::static_number
     template<
             int Digits = digits<signed>::value,
             class OverflowTag = trapping_overflow_tag,

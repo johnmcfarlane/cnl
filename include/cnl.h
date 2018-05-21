@@ -26,5 +26,6 @@
 #include "cnl/rounding.h"
 #include "cnl/rounding_integer.h"
 #include "cnl/static_integer.h"
+#include "cnl/static_number.h"
 
 #endif //CNL_H
