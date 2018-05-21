@@ -143,6 +143,14 @@ template&lt;class T , _digits_type Digits&gt; </td></tr>
 <tr class="memitem:abc382d49df277242289bb86b36ddf92e"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#abc382d49df277242289bb86b36ddf92e">signed_multiprecision</a> = _sized_integer_impl::number&lt; NumDigits+1, _bmp::signed_magnitude &gt;</td></tr>
 <tr class="memdesc:abc382d49df277242289bb86b36ddf92e"><td class="mdescLeft">&#160;</td><td class="mdescRight">alias to a signed, fixed-size Boost.Multiprecision type suitable for instantiating <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a>  <a href="#abc382d49df277242289bb86b36ddf92e">More...</a><br /></td></tr>
 <tr class="separator:abc382d49df277242289bb86b36ddf92e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b4ec46c3d2d99927267c18f6d711d13"><td class="memTemplParams" colspan="2">template&lt;int Digits = digits&lt;signed&gt;::value, class OverflowTag  = trapping_overflow_tag, class RoundingTag  = nearest_rounding_tag, class Narrowest  = signed&gt; </td></tr>
+<tr class="memitem:a7b4ec46c3d2d99927267c18f6d711d13"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a7b4ec46c3d2d99927267c18f6d711d13">static_integer</a> = <a class="el" href="classcnl_1_1rounding__integer.html">_impl::static_integer</a>&lt; Digits, OverflowTag, RoundingTag, Narrowest &gt;</td></tr>
+<tr class="memdesc:a7b4ec46c3d2d99927267c18f6d711d13"><td class="mdescLeft">&#160;</td><td class="mdescRight">a general-purpose integer type  <a href="#a7b4ec46c3d2d99927267c18f6d711d13">More...</a><br /></td></tr>
+<tr class="separator:a7b4ec46c3d2d99927267c18f6d711d13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03fc11b857077f422069a19154dc970a"><td class="memTemplParams" colspan="2">template&lt;int Digits, int Exponent = 0, class OverflowTag  = trapping_overflow_tag, class RoundingTag  = nearest_rounding_tag, class Narrowest  = signed&gt; </td></tr>
+<tr class="memitem:a03fc11b857077f422069a19154dc970a"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a03fc11b857077f422069a19154dc970a">static_number</a> = <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; <a class="el" href="classcnl_1_1rounding__integer.html">_impl::static_integer</a>&lt; Digits, OverflowTag, RoundingTag, Narrowest &gt;, Exponent &gt;</td></tr>
+<tr class="memdesc:a03fc11b857077f422069a19154dc970a"><td class="mdescLeft">&#160;</td><td class="mdescRight">a general-purpose fixed-point real number type  <a href="#a03fc11b857077f422069a19154dc970a">More...</a><br /></td></tr>
+<tr class="separator:a03fc11b857077f422069a19154dc970a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5d22fc7aa27c2acee069a24af5822df"><td class="memTemplParams" colspan="2">template&lt;unsigned NumDigits = digits&lt;unsigned&gt;::value&gt; </td></tr>
 <tr class="memitem:ae5d22fc7aa27c2acee069a24af5822df"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ae5d22fc7aa27c2acee069a24af5822df">unsigned_multiprecision</a> = _sized_integer_impl::number&lt; NumDigits, _bmp::unsigned_magnitude &gt;</td></tr>
 <tr class="memdesc:ae5d22fc7aa27c2acee069a24af5822df"><td class="mdescLeft">&#160;</td><td class="mdescRight">alias to an unsigned, fixed-size Boost.Multiprecision type suitable for instantiating <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a>  <a href="#ae5d22fc7aa27c2acee069a24af5822df">More...</a><br /></td></tr>
@@ -154,10 +162,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a178f512bd447d4ef26bac9aca28a8df4"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a178f512bd447d4ef26bac9aca28a8df4">abs</a> (<a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent, Radix &gt; const &amp;x) noexcept -&gt; decltype(-x)</td></tr>
 <tr class="memdesc:a178f512bd447d4ef26bac9aca28a8df4"><td class="mdescLeft">&#160;</td><td class="mdescRight">absolute value  <a href="#a178f512bd447d4ef26bac9aca28a8df4">More...</a><br /></td></tr>
 <tr class="separator:a178f512bd447d4ef26bac9aca28a8df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72e4dafa37aee86c79381e43ab778a5a"><td class="memTemplParams" colspan="2">template&lt;class Quotient  = _divide_impl::default_quotient_tag, class Dividend , class Divisor &gt; </td></tr>
-<tr class="memitem:a72e4dafa37aee86c79381e43ab778a5a"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a72e4dafa37aee86c79381e43ab778a5a">divide</a> (Dividend const &amp;dividend, Divisor const &amp;divisor) -&gt; typename _divide_impl::result&lt; Quotient, Dividend, Divisor &gt;::type</td></tr>
-<tr class="memdesc:a72e4dafa37aee86c79381e43ab778a5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculates the quotient of two <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> values  <a href="#a72e4dafa37aee86c79381e43ab778a5a">More...</a><br /></td></tr>
-<tr class="separator:a72e4dafa37aee86c79381e43ab778a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1416c25d358623664334bf7fdbe0dcf2"><td class="memTemplParams" colspan="2">template&lt;class Rep , int Exponent&gt; </td></tr>
 <tr class="memitem:a1416c25d358623664334bf7fdbe0dcf2"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a1416c25d358623664334bf7fdbe0dcf2">exp2</a> (<a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt; x)</td></tr>
 <tr class="memdesc:a1416c25d358623664334bf7fdbe0dcf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates exp2(x), i.e. 2^xAccurate to 1LSB for up to 32 bit underlying representation.  <a href="#a1416c25d358623664334bf7fdbe0dcf2">More...</a><br /></td></tr>
@@ -170,14 +174,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a7596ebff5e30e6d31fd55bad63d17695"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">elastic_number</a>&lt; numeric_limits&lt; Integral &gt;::digits, 0, Narrowest &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a7596ebff5e30e6d31fd55bad63d17695">make_elastic_number</a> (Integral value)</td></tr>
 <tr class="memdesc:a7596ebff5e30e6d31fd55bad63d17695"><td class="mdescLeft">&#160;</td><td class="mdescRight">generate an <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">cnl::elastic_number</a> object of given value  <a href="#a7596ebff5e30e6d31fd55bad63d17695">More...</a><br /></td></tr>
 <tr class="separator:a7596ebff5e30e6d31fd55bad63d17695"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4110c010171bdacaa3a4cab431a1651"><td class="memTemplParams" colspan="2">template&lt;typename Numerator , typename Denominator &gt; </td></tr>
-<tr class="memitem:ac4110c010171bdacaa3a4cab431a1651"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ac4110c010171bdacaa3a4cab431a1651">make_fixed_point</a> (<a class="el" href="structcnl_1_1fractional.html">fractional</a>&lt; Numerator, Denominator &gt; const &amp;value) -&gt; decltype(<a class="el" href="namespacecnl.html#a72e4dafa37aee86c79381e43ab778a5a">divide</a>(value.numerator, value.denominator))</td></tr>
-<tr class="memdesc:ac4110c010171bdacaa3a4cab431a1651"><td class="mdescLeft">&#160;</td><td class="mdescRight">makes a <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> object from a given <a class="el" href="structcnl_1_1fractional.html">fractional</a>  <a href="#ac4110c010171bdacaa3a4cab431a1651">More...</a><br /></td></tr>
-<tr class="separator:ac4110c010171bdacaa3a4cab431a1651"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4908ae024cdd2e437863aa8c2e2624e3"><td class="memTemplParams" colspan="2">template&lt;typename Value &gt; </td></tr>
 <tr class="memitem:a4908ae024cdd2e437863aa8c2e2624e3"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a4908ae024cdd2e437863aa8c2e2624e3">make_fixed_point</a> (Value const &amp;value) -&gt; cnl::from_value_t&lt; <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Value, 0 &gt;, Value &gt;</td></tr>
 <tr class="memdesc:a4908ae024cdd2e437863aa8c2e2624e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">makes a <a class="el" href="classcnl_1_1fixed__point.html" title="literal real number approximation that uses fixed-point arithmetic ">fixed_point</a> object from a given value  <a href="#a4908ae024cdd2e437863aa8c2e2624e3">More...</a><br /></td></tr>
 <tr class="separator:a4908ae024cdd2e437863aa8c2e2624e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a870d097696e1046d1704448b27454509"><td class="memTemplParams" colspan="2">template&lt;typename Numerator , typename Denominator &gt; </td></tr>
+<tr class="memitem:a870d097696e1046d1704448b27454509"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a870d097696e1046d1704448b27454509">make_fixed_point</a> (<a class="el" href="structcnl_1_1fractional.html">fractional</a>&lt; Numerator, Denominator &gt; const &amp;value) -&gt; decltype(<a class="el" href="namespacecnl.html#ab698104a23f314fadf45f43229d2c8e5">quotient</a>(value.numerator, value.denominator))</td></tr>
+<tr class="memdesc:a870d097696e1046d1704448b27454509"><td class="mdescLeft">&#160;</td><td class="mdescRight">makes a <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> object from a given <a class="el" href="structcnl_1_1fractional.html">fractional</a>  <a href="#a870d097696e1046d1704448b27454509">More...</a><br /></td></tr>
+<tr class="separator:a870d097696e1046d1704448b27454509"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a1c24935abec2aeb4abd9d7bb067d6b"><td class="memTemplParams" colspan="2"><a id="a8a1c24935abec2aeb4abd9d7bb067d6b"></a>
 template&lt;typename Numerator , typename Denominator &gt; </td></tr>
 <tr class="memitem:a8a1c24935abec2aeb4abd9d7bb067d6b"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structcnl_1_1fractional.html">fractional</a>&lt; Numerator, Denominator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a8a1c24935abec2aeb4abd9d7bb067d6b">make_fractional</a> (Numerator const &amp;n, Denominator const &amp;d)</td></tr>
@@ -188,10 +192,24 @@ template&lt;typename Numerator &gt; </td></tr>
 <tr class="memitem:ab8379623599d1e0773f421665d661302"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structcnl_1_1fractional.html">fractional</a>&lt; Numerator, Numerator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ab8379623599d1e0773f421665d661302">make_fractional</a> (Numerator const &amp;n)</td></tr>
 <tr class="memdesc:ab8379623599d1e0773f421665d661302"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a fractional value with types deduced from the numerator <br /></td></tr>
 <tr class="separator:ab8379623599d1e0773f421665d661302"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a6f6aeae947ae9643c52682b39cdf23"><td class="memTemplParams" colspan="2"><a id="a2a6f6aeae947ae9643c52682b39cdf23"></a>
+template&lt;class OverflowTag  = trapping_overflow_tag, class RoundingTag  = nearest_rounding_tag, class Narrowest  = signed, class Input  = int&gt; </td></tr>
+<tr class="memitem:a2a6f6aeae947ae9643c52682b39cdf23"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacecnl.html#a03fc11b857077f422069a19154dc970a">static_number</a>&lt; numeric_limits&lt; Input &gt;::digits, 0, OverflowTag, RoundingTag, Narrowest &gt; constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a2a6f6aeae947ae9643c52682b39cdf23">make_static_number</a> (Input const &amp;input)</td></tr>
+<tr class="memdesc:a2a6f6aeae947ae9643c52682b39cdf23"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructs a static_number from a given variable <br /></td></tr>
+<tr class="separator:a2a6f6aeae947ae9643c52682b39cdf23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03c6bca5148044c34579b8b52fb32be9"><td class="memTemplParams" colspan="2"><a id="a03c6bca5148044c34579b8b52fb32be9"></a>
+template&lt;class OverflowTag  = overflow_integer&lt;&gt;::overflow_tag, class RoundingTag  = rounding_integer&lt;&gt;::rounding, class Narrowest  = int, class Input  = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value&gt; </td></tr>
+<tr class="memitem:a03c6bca5148044c34579b8b52fb32be9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacecnl.html#a03fc11b857077f422069a19154dc970a">static_number</a>&lt; used_digits(Value) -trailing_bits(Value), trailing_bits(Value), OverflowTag, RoundingTag, Narrowest &gt; constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a03c6bca5148044c34579b8b52fb32be9">make_static_number</a> (<a class="el" href="structcnl_1_1constant.html">constant</a>&lt; Value &gt; const &amp;)</td></tr>
+<tr class="memdesc:a03c6bca5148044c34579b8b52fb32be9"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructs a static_number from a given constant value <br /></td></tr>
+<tr class="separator:a03c6bca5148044c34579b8b52fb32be9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4907e759049bbe5bb38f2978d2b04425"><td class="memTemplParams" colspan="2">template&lt;class Lhs , class Rhs &gt; </td></tr>
 <tr class="memitem:a4907e759049bbe5bb38f2978d2b04425"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a4907e759049bbe5bb38f2978d2b04425">multiply</a> (Lhs const &amp;lhs, Rhs const &amp;rhs) -&gt; typename _multiply_impl::params&lt; Lhs, Rhs &gt;::result_type</td></tr>
 <tr class="memdesc:a4907e759049bbe5bb38f2978d2b04425"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculates the product of two <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> factors  <a href="#a4907e759049bbe5bb38f2978d2b04425">More...</a><br /></td></tr>
 <tr class="separator:a4907e759049bbe5bb38f2978d2b04425"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab698104a23f314fadf45f43229d2c8e5"><td class="memTemplParams" colspan="2">template&lt;class Quotient  = _impl::default_quotient_tag, class Dividend , class Divisor &gt; </td></tr>
+<tr class="memitem:ab698104a23f314fadf45f43229d2c8e5"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ab698104a23f314fadf45f43229d2c8e5">quotient</a> (Dividend const &amp;dividend, Divisor const &amp;divisor) -&gt; typename _impl::result&lt; Quotient, Dividend, Divisor &gt;::type</td></tr>
+<tr class="memdesc:ab698104a23f314fadf45f43229d2c8e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculates the quotient of two <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> values  <a href="#ab698104a23f314fadf45f43229d2c8e5">More...</a><br /></td></tr>
+<tr class="separator:ab698104a23f314fadf45f43229d2c8e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a565f93d0de0e30f40b994fdb571d1fa1"><td class="memTemplParams" colspan="2">template&lt;typename Rep , int Exponent, int Radix&gt; </td></tr>
 <tr class="memitem:a565f93d0de0e30f40b994fdb571d1fa1"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent, Radix &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a565f93d0de0e30f40b994fdb571d1fa1">sqrt</a> (<a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent, Radix &gt; const &amp;x)</td></tr>
 <tr class="memdesc:a565f93d0de0e30f40b994fdb571d1fa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculates the square root of a <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> value  <a href="#a565f93d0de0e30f40b994fdb571d1fa1">More...</a><br /></td></tr>
@@ -301,6 +319,63 @@ template&lt;unsigned NumDigits = digits&lt;int&gt;::value&gt; </div>
 
 </div>
 </div>
+<a id="a7b4ec46c3d2d99927267c18f6d711d13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b4ec46c3d2d99927267c18f6d711d13">&#9670;&nbsp;</a></span>static_integer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int Digits = digits&lt;signed&gt;::value, class OverflowTag  = trapping_overflow_tag, class RoundingTag  = nearest_rounding_tag, class Narrowest  = signed&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacecnl.html#a7b4ec46c3d2d99927267c18f6d711d13">cnl::static_integer</a> = typedef <a class="el" href="classcnl_1_1rounding__integer.html">_impl::static_integer</a>&lt;Digits, OverflowTag, RoundingTag, Narrowest&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>a general-purpose integer type </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Digits</td><td>number of binary digits </td></tr>
+    <tr><td class="paramname">OverflowTag</td><td>behavior exhibited on out-of-range conditions </td></tr>
+    <tr><td class="paramname">RoundingTag</td><td>behavior exhibited on precision loss </td></tr>
+    <tr><td class="paramname">Narrowest</td><td>narrowest integer with which to represent the value</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacecnl.html#a03fc11b857077f422069a19154dc970a" title="a general-purpose fixed-point real number type ">cnl::static_number</a> </dd></dl>
+
+</div>
+</div>
+<a id="a03fc11b857077f422069a19154dc970a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03fc11b857077f422069a19154dc970a">&#9670;&nbsp;</a></span>static_number</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int Digits, int Exponent = 0, class OverflowTag  = trapping_overflow_tag, class RoundingTag  = nearest_rounding_tag, class Narrowest  = signed&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacecnl.html#a03fc11b857077f422069a19154dc970a">cnl::static_number</a> = typedef <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; <a class="el" href="classcnl_1_1rounding__integer.html">_impl::static_integer</a>&lt;Digits, OverflowTag, RoundingTag, Narrowest&gt;, Exponent&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>a general-purpose fixed-point real number type </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Digits</td><td>number of binary digits </td></tr>
+    <tr><td class="paramname">Exponent</td><td>the exponent used to scale the integer value </td></tr>
+    <tr><td class="paramname">OverflowTag</td><td>behavior exhibited on out-of-range conditions </td></tr>
+    <tr><td class="paramname">RoundingTag</td><td>behavior exhibited on precision loss </td></tr>
+    <tr><td class="paramname">Narrowest</td><td>narrowest integer with which to represent the value</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacecnl.html#a7b4ec46c3d2d99927267c18f6d711d13" title="a general-purpose integer type ">cnl::static_integer</a> </dd></dl>
+
+</div>
+</div>
 <a id="ae5d22fc7aa27c2acee069a24af5822df"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae5d22fc7aa27c2acee069a24af5822df">&#9670;&nbsp;</a></span>unsigned_multiprecision</h2>
 
@@ -362,60 +437,7 @@ template&lt;typename Rep , int Exponent, int Radix&gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>|x|</code></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="elRef" doxygen="/home/john/tmp/radix/cnl/cmake-build-debug/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/container/vector.html">std::vector</a> </dd></dl>
-
-</div>
-</div>
-<a id="a72e4dafa37aee86c79381e43ab778a5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72e4dafa37aee86c79381e43ab778a5a">&#9670;&nbsp;</a></span>divide()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Quotient  = _divide_impl::default_quotient_tag, class Dividend , class Divisor &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto cnl::divide </td>
-          <td>(</td>
-          <td class="paramtype">Dividend const &amp;&#160;</td>
-          <td class="paramname"><em>dividend</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Divisor const &amp;&#160;</td>
-          <td class="paramname"><em>divisor</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> -&gt; typename _divide_impl::result&lt;Quotient, Dividend, Divisor&gt;::type </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>calculates the quotient of two <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> values </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Quotient</td><td>the desired <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> type of quotient; by default, a value which minimizes the chances of overflow or precision loss </td></tr>
-    <tr><td class="paramname">Dividend</td><td>the dividend (top number) of the division </td></tr>
-    <tr><td class="paramname">Divisor</td><td>the divisor (bottom number) of the division </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dividend,divisor</td><td>dividend and divisor</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>quotient: dividend / divisor</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>When specifying the <code>Quotient</code>, ensure that there is enough capacity to perform a <em>widened division</em> operation and store the quotient. </dd>
-<dd>
-A <em>widened division</em> is one where the quotient has as many integer digits as the dividend's integer digits plus the divisor's fractional digits and as many fractional digits as the dividend's fractional digits plus the divisor's integer digits.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacecnl.html#a4907e759049bbe5bb38f2978d2b04425" title="calculates the product of two fixed_point factors ">multiply</a> </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="classcnl_1_1fixed__point.html#a347614ef57f48d45d847bb2fd2e00d48">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;::fixed_point()</a>, and <a class="el" href="namespacecnl.html#ac4110c010171bdacaa3a4cab431a1651">make_fixed_point()</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="elRef" doxygen="/home/john/tmp/precise/cnl/cmake-build-debug-c17/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/container/vector.html">std::vector</a> </dd></dl>
 
 </div>
 </div>
@@ -480,7 +502,7 @@ template&lt;typename Narrowest  = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0&gt
 <dl class="section return"><dt>Returns</dt><dd>the given value to be represented using an <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">cnl::elastic_number</a> type</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The return type is guaranteed to be no larger than is necessary to represent the value.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
-<p>To define an int-sized object using <a class="el" href="namespacecnl.html#aea7f4218763d355da78eeb755e3426d7">make_elastic_number</a> and <a class="el" href="structcnl_1_1constant.html">cnl::constant</a> </p><div class="fragment"><div class="line"><span class="comment">// std::uint8_t specifies the type of const_integer - not elastic</span></div><div class="line">constexpr <span class="keyword">auto</span> n = <a class="code" href="namespacecnl.html#aea7f4218763d355da78eeb755e3426d7">make_elastic_number</a>(constant&lt;0xAA&gt;{});</div><div class="line"></div><div class="line">static_assert(n==0xAA, <span class="stringliteral">&quot;n now has the value, 1024&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/tmp/radix/cnl/cmake-build-debug/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_number&lt;7, 1, int&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_number uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
+<p>To define an int-sized object using <a class="el" href="namespacecnl.html#aea7f4218763d355da78eeb755e3426d7">make_elastic_number</a> and <a class="el" href="structcnl_1_1constant.html">cnl::constant</a> </p><div class="fragment"><div class="line"><span class="comment">// std::uint8_t specifies the type of const_integer - not elastic</span></div><div class="line">constexpr <span class="keyword">auto</span> n = <a class="code" href="namespacecnl.html#aea7f4218763d355da78eeb755e3426d7">make_elastic_number</a>(constant&lt;0xAA&gt;{});</div><div class="line"></div><div class="line">static_assert(n==0xAA, <span class="stringliteral">&quot;n now has the value, 1024&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/tmp/precise/cnl/cmake-build-debug-c17/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_number&lt;7, 1, int&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_number uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
 </div>
 </div>
 <a id="a7596ebff5e30e6d31fd55bad63d17695"></a>
@@ -517,50 +539,11 @@ template&lt;class Narrowest  = int, class Integral  = int&gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>The return type is guaranteed to be no larger than is necessary to represent the value.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
-<p>To define a byte-sized object using make_elastic_number and _c: </p><div class="fragment"><div class="line">constexpr <span class="keyword">auto</span> n = make_elastic_number&lt;char&gt;(constant&lt;1536&gt;{});</div><div class="line"></div><div class="line">static_assert(n==1536, <span class="stringliteral">&quot;n now has the value, 1536&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/tmp/radix/cnl/cmake-build-debug/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_number&lt;2, 9, char&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_number uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
-</div>
-</div>
-<a id="ac4110c010171bdacaa3a4cab431a1651"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4110c010171bdacaa3a4cab431a1651">&#9670;&nbsp;</a></span>make_fixed_point() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Numerator , typename Denominator &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto cnl::make_fixed_point </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structcnl_1_1fractional.html">fractional</a>&lt; Numerator, Denominator &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td> -&gt; decltype(<a class="el" href="namespacecnl.html#a72e4dafa37aee86c79381e43ab778a5a">divide</a>(value.numerator, value.denominator))
-    </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>makes a <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> object from a given <a class="el" href="structcnl_1_1fractional.html">fractional</a> </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Numerator</td><td>the type of the numerator of the fractional </td></tr>
-    <tr><td class="paramname">Denominator</td><td>the type of the denominator of the fractional</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">value</td><td>the fractionalfrom which to make the <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> object</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>This function is deprecated after C++17 in favor of class template deduction. </dd></dl>
-
-<p class="reference">References <a class="el" href="namespacecnl.html#a72e4dafa37aee86c79381e43ab778a5a">divide()</a>.</p>
-
+<p>To define a byte-sized object using make_elastic_number and _c: </p><div class="fragment"><div class="line">constexpr <span class="keyword">auto</span> n = make_elastic_number&lt;char&gt;(constant&lt;1536&gt;{});</div><div class="line"></div><div class="line">static_assert(n==1536, <span class="stringliteral">&quot;n now has the value, 1536&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/tmp/precise/cnl/cmake-build-debug-c17/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_number&lt;2, 9, char&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_number uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
 </div>
 </div>
 <a id="a4908ae024cdd2e437863aa8c2e2624e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4908ae024cdd2e437863aa8c2e2624e3">&#9670;&nbsp;</a></span>make_fixed_point() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4908ae024cdd2e437863aa8c2e2624e3">&#9670;&nbsp;</a></span>make_fixed_point() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -592,6 +575,45 @@ template&lt;typename Value &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is deprecated after C++17 in favor of class template deduction. </dd></dl>
+
+</div>
+</div>
+<a id="a870d097696e1046d1704448b27454509"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a870d097696e1046d1704448b27454509">&#9670;&nbsp;</a></span>make_fixed_point() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Numerator , typename Denominator &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto cnl::make_fixed_point </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structcnl_1_1fractional.html">fractional</a>&lt; Numerator, Denominator &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td> -&gt; decltype(<a class="el" href="namespacecnl.html#ab698104a23f314fadf45f43229d2c8e5">quotient</a>(value.numerator, value.denominator))
+    </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>makes a <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> object from a given <a class="el" href="structcnl_1_1fractional.html">fractional</a> </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Numerator</td><td>the type of the numerator of the fractional </td></tr>
+    <tr><td class="paramname">Denominator</td><td>the type of the denominator of the fractional</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>the fractionalfrom which to make the <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> object</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This function is deprecated after C++17 in favor of class template deduction. </dd></dl>
+
+<p class="reference">References <a class="el" href="namespacecnl.html#ab698104a23f314fadf45f43229d2c8e5">quotient()</a>.</p>
 
 </div>
 </div>
@@ -632,10 +654,61 @@ template&lt;class Lhs , class Rhs &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>product: lhs * rhs</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This function multiplies the values without performing any additional scaling or conversion.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacecnl.html#a72e4dafa37aee86c79381e43ab778a5a" title="calculates the quotient of two fixed_point values ">divide</a> </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function multiplies the values without performing any additional scaling or conversion. </dd></dl>
 
 <p class="reference">References <a class="el" href="namespacecnl.html#a84b8d9a3144720bacfaf2c6b3db5c60a">to_rep()</a>.</p>
+
+</div>
+</div>
+<a id="ab698104a23f314fadf45f43229d2c8e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab698104a23f314fadf45f43229d2c8e5">&#9670;&nbsp;</a></span>quotient()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Quotient  = _impl::default_quotient_tag, class Dividend , class Divisor &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto cnl::quotient </td>
+          <td>(</td>
+          <td class="paramtype">Dividend const &amp;&#160;</td>
+          <td class="paramname"><em>dividend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Divisor const &amp;&#160;</td>
+          <td class="paramname"><em>divisor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; typename _impl::result&lt;Quotient, Dividend, Divisor&gt;::type </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>calculates the quotient of two <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> values </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Quotient</td><td>the desired <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> type of quotient; by default, a value which minimizes the chances of overflow or precision loss </td></tr>
+    <tr><td class="paramname">Dividend</td><td>the dividend (top number) of the division </td></tr>
+    <tr><td class="paramname">Divisor</td><td>the divisor (bottom number) of the division </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dividend,divisor</td><td>dividend and divisor</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>quotient: dividend / divisor</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>When specifying the <code>Quotient</code>, ensure that there is enough capacity to perform a <em>widened division</em> operation and store the quotient. </dd>
+<dd>
+A <em>widened division</em> is one where the quotient has as many integer digits as the dividend's integer digits plus the divisor's fractional digits and as many fractional digits as the dividend's fractional digits plus the divisor's integer digits. </dd></dl>
+
+<p class="reference">Referenced by <a class="el" href="classcnl_1_1fixed__point.html#a347614ef57f48d45d847bb2fd2e00d48">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;::fixed_point()</a>, and <a class="el" href="namespacecnl.html#a870d097696e1046d1704448b27454509">make_fixed_point()</a>.</p>
 
 </div>
 </div>
