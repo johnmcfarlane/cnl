@@ -21,165 +21,170 @@ namespace {
     using cnl::subtract;
     using cnl::multiply;
 
-    namespace test_impl {
-        using namespace cnl::_overflow_impl;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // positive_digits
+    namespace test_positive_digits {
+        using cnl::_overflow_impl::positive_digits;
 
         static_assert(positive_digits<int8_t>::value==7,
-                "positive_digits test failed");
+                "cnl::_overflow_impl::positive_digits test failed");
         static_assert(positive_digits<uint8_t>::value==8,
-                "positive_digits test failed");
+                "cnl::_overflow_impl::positive_digits test failed");
         static_assert(positive_digits<int16_t>::value==15,
-                "positive_digits test failed");
+                "cnl::_overflow_impl::positive_digits test failed");
         static_assert(positive_digits<uint16_t>::value==16,
-                "positive_digits test failed");
+                "cnl::_overflow_impl::positive_digits test failed");
         static_assert(positive_digits<int32_t>::value==31,
-                "positive_digits test failed");
+                "cnl::_overflow_impl::positive_digits test failed");
         static_assert(positive_digits<uint32_t>::value==32,
-                "positive_digits test failed");
+                "cnl::_overflow_impl::positive_digits test failed");
         static_assert(positive_digits<int64_t>::value==63,
-                "positive_digits test failed");
+                "cnl::_overflow_impl::positive_digits test failed");
         static_assert(positive_digits<uint64_t>::value==64,
-                "positive_digits test failed");
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // negative_digits
+                "cnl::_overflow_impl::positive_digits test failed");
+    }
+    
+    namespace test_negative_digits {
+        using cnl::_overflow_impl::negative_digits;
 
         static_assert(negative_digits<int8_t>::value==7,
-                "negative_digits test failed");
+                "cnl::_overflow_impl::negative_digits test failed");
         static_assert(negative_digits<uint8_t>::value==0,
-                "negative_digits test failed");
+                "cnl::_overflow_impl::negative_digits test failed");
         static_assert(negative_digits<int16_t>::value==15,
-                "negative_digits test failed");
+                "cnl::_overflow_impl::negative_digits test failed");
         static_assert(negative_digits<uint16_t>::value==0,
-                "negative_digits test failed");
+                "cnl::_overflow_impl::negative_digits test failed");
         static_assert(negative_digits<int32_t>::value==31,
-                "negative_digits test failed");
+                "cnl::_overflow_impl::negative_digits test failed");
         static_assert(negative_digits<uint32_t>::value==0,
-                "negative_digits test failed");
+                "cnl::_overflow_impl::negative_digits test failed");
         static_assert(negative_digits<int64_t>::value==63,
-                "negative_digits test failed");
+                "cnl::_overflow_impl::negative_digits test failed");
         static_assert(negative_digits<uint64_t>::value==0,
-                "negative_digits test failed");
+                "cnl::_overflow_impl::negative_digits test failed");
+    }
+    
+    namespace test_convert {
+        template<typename Destination, typename Source>
+        using convert_test = cnl::_impl::convert_test<Destination, Source>;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // is_positive_overflow
+        // cnl::_impl::convert_test<>::positive
 
-        static_assert(!is_positive_overflow<uint8_t, int8_t>(-1),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<uint8_t, int8_t>(127),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<uint8_t, uint16_t>(0),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<uint8_t, uint16_t>(255),
-                "is_positive_overflow test failed");
-        static_assert(is_positive_overflow<uint8_t, uint16_t>(256),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<uint8_t, int16_t>(-1),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<uint8_t, int16_t>(0),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<uint8_t, int16_t>(255),
-                "is_positive_overflow test failed");
-        static_assert(is_positive_overflow<uint8_t, int16_t>(256),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<uint8_t, int16_t>(-1),
-                "is_positive_overflow test failed");
+        static_assert(!convert_test<uint8_t, int8_t>::positive(-1),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<uint8_t, int8_t>::positive(127),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<uint8_t, uint16_t>::positive(0),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<uint8_t, uint16_t>::positive(255),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(convert_test<int8_t, uint16_t>::positive(256),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<uint8_t, int16_t>::positive(-1),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<uint8_t, int16_t>::positive(0),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<uint8_t, int16_t>::positive(255),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(convert_test<int8_t, int16_t>::positive(256),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<uint8_t, int16_t>::positive(-1),
+                "cnl::_impl::convert_test<>::positive test failed");
 
-        static_assert(!is_positive_overflow<int8_t, uint8_t>(0),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<int8_t, uint8_t>(127),
-                "is_positive_overflow test failed");
-        static_assert(is_positive_overflow<int8_t, uint8_t>(128),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<int8_t, uint16_t>(0),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<int8_t, uint16_t>(127),
-                "is_positive_overflow test failed");
-        static_assert(is_positive_overflow<int8_t, uint16_t>(128),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<int8_t, int16_t>(-1),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<int8_t, int16_t>(0),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<int8_t, int16_t>(127),
-                "is_positive_overflow test failed");
-        static_assert(is_positive_overflow<int8_t, int16_t>(128),
-                "is_positive_overflow test failed");
+        static_assert(!convert_test<int8_t, uint8_t>::positive(0),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<int8_t, uint8_t>::positive(127),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(convert_test<int8_t, uint8_t>::positive(128),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<int8_t, uint16_t>::positive(0),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<int8_t, uint16_t>::positive(127),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(convert_test<int8_t, uint16_t>::positive(128),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<int8_t, int16_t>::positive(-1),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<int8_t, int16_t>::positive(0),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<int8_t, int16_t>::positive(127),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(convert_test<int8_t, int16_t>::positive(128),
+                "cnl::_impl::convert_test<>::positive test failed");
 
-        static_assert(!is_positive_overflow<uint16_t, uint8_t>(0),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<uint16_t, uint8_t>(255),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<uint16_t, int8_t>(-128),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<uint16_t, int8_t>(127),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<uint16_t, int16_t>(-32768),
-                "is_positive_overflow test failed");
-        static_assert(!is_positive_overflow<uint16_t, int16_t>(32767),
-                "is_positive_overflow test failed");
+        static_assert(!convert_test<uint16_t, uint8_t>::positive(0),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<uint16_t, uint8_t>::positive(255),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<uint16_t, int8_t>::positive(-128),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<uint16_t, int8_t>::positive(127),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<uint16_t, int16_t>::positive(-32768),
+                "cnl::_impl::convert_test<>::positive test failed");
+        static_assert(!convert_test<uint16_t, int16_t>::positive(32767),
+                "cnl::_impl::convert_test<>::positive test failed");
 
         ////////////////////////////////////////////////////////////////////////////////
-        // is_negative_overflow
+        // cnl::_impl::convert_test<>::negative
 
-        static_assert(is_negative_overflow<uint8_t, int8_t>(-1),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<uint8_t, int8_t>(127),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<uint8_t, uint16_t>(0),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<uint8_t, uint16_t>(255),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<uint8_t, uint16_t>(256),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(is_negative_overflow<uint8_t, int16_t>(-1),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<uint8_t, int16_t>(0),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<uint8_t, int16_t>(255),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<uint8_t, int16_t>(256),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(is_negative_overflow<uint8_t, int16_t>(-1),
-                "cnl::_integer_impl::is_negative_overflow test failed");
+        static_assert(convert_test<uint8_t, int8_t>::negative(-1),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<uint8_t, int8_t>::negative(127),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<uint8_t, uint16_t>::negative(0),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<uint8_t, uint16_t>::negative(255),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<uint8_t, uint16_t>::negative(256),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(convert_test<uint8_t, int16_t>::negative(-1),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<uint8_t, int16_t>::negative(0),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<uint8_t, int16_t>::negative(255),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<uint8_t, int16_t>::negative(256),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(convert_test<uint8_t, int16_t>::negative(-1),
+                "cnl::_impl::convert_test<>::negative test failed");
 
-        static_assert(!is_negative_overflow<int8_t, uint8_t>(0),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<int8_t, uint8_t>(127),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<int8_t, uint8_t>(128),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<int8_t, uint16_t>(0),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<int8_t, uint16_t>(127),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<int8_t, uint16_t>(128),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(is_negative_overflow<int8_t, int16_t>(-129),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<int8_t, int16_t>(-128),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<int8_t, int16_t>(0),
-                "cnl::_integer_impl::is_negative_overflow test failed");
+        static_assert(!convert_test<int8_t, uint8_t>::negative(0),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<int8_t, uint8_t>::negative(127),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<int8_t, uint8_t>::negative(128),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<int8_t, uint16_t>::negative(0),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<int8_t, uint16_t>::negative(127),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<int8_t, uint16_t>::negative(128),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(convert_test<int8_t, int16_t>::negative(-129),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<int8_t, int16_t>::negative(-128),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<int8_t, int16_t>::negative(0),
+                "cnl::_impl::convert_test<>::negative test failed");
 
-        static_assert(!is_negative_overflow<uint16_t, uint8_t>(0),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<uint16_t, uint8_t>(255),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(is_negative_overflow<uint16_t, int8_t>(-1),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<uint16_t, int8_t>(0),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<uint16_t, int8_t>(127),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(is_negative_overflow<uint16_t, int16_t>(-32768),
-                "cnl::_integer_impl::is_negative_overflow test failed");
-        static_assert(!is_negative_overflow<uint16_t, int16_t>(32767),
-                "cnl::_integer_impl::is_negative_overflow test failed");
+        static_assert(!convert_test<uint16_t, uint8_t>::negative(0),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<uint16_t, uint8_t>::negative(255),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(convert_test<uint16_t, int8_t>::negative(-1),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<uint16_t, int8_t>::negative(0),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<uint16_t, int8_t>::negative(127),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(convert_test<uint16_t, int16_t>::negative(-32768),
+                "cnl::_impl::convert_test<>::negative test failed");
+        static_assert(!convert_test<uint16_t, int16_t>::negative(32767),
+                "cnl::_impl::convert_test<>::negative test failed");
+    }
 
+    namespace test_multiply {
         static_assert(cnl::_overflow_impl::is_multiply_overflow(2000000000, 2),
                       "cnl::_overflow_impl::is_multiply_overflow");
         static_assert(!cnl::_overflow_impl::is_multiply_overflow(21, 2),

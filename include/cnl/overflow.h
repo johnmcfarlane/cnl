@@ -48,22 +48,21 @@ namespace cnl {
         };
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::convert
-
     // implementation details
     namespace _overflow_impl {
         ////////////////////////////////////////////////////////////////////////////////
         // crash horribly
 
         template<class Result>
-        [[noreturn]] CNL_RELAXED_CONSTEXPR Result terminate(char const* message) noexcept {
+        [[noreturn]] CNL_RELAXED_CONSTEXPR Result terminate(char const* message) noexcept
+        {
             std::fprintf(stderr, "%s\n", message);
             std::terminate();
         }
 
         template<class Result>
-        constexpr Result return_if(trapping_overflow_tag, bool condition, Result const& value, char const* message) {
+        constexpr Result return_if(trapping_overflow_tag, bool condition, Result const& value, char const* message)
+        {
             return condition ? value : terminate<Result>(message);
         }
 
@@ -71,68 +70,19 @@ namespace cnl {
         // throw exception (or crash horribly)
 
 #if defined(CNL_EXCEPTIONS_ENABLED)
+
         template<class Result>
         constexpr Result return_if(throwing_overflow_tag, bool condition, Result const& value, char const* message)
         {
             return condition ? value : throw std::overflow_error(message);
         }
+
 #else
         template<class Result>
         constexpr Result return_if(throwing_overflow_tag, bool condition, Result const& value, char const* message) {
             return return_if(trapping_overflow, condition, value, message);
         }
 #endif
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // overflow detection
-
-        // positive_digits
-        template<class T>
-        struct positive_digits : public std::integral_constant<int, numeric_limits<T>::digits> {
-        };
-
-        template<class T>
-        struct negative_digits
-                : public std::integral_constant<int, std::is_signed<T>::value ? numeric_limits<T>::digits : 0> {
-        };
-
-        // is_positive_overflow
-        template<
-                class Destination, class Source,
-                _impl::enable_if_t<!(positive_digits<Destination>::value<positive_digits<Source>::value), int> dummy = 0>
-        constexpr bool is_positive_overflow(Source const&)
-        {
-            // If positive capacity of Destination is equal to or exceeds that of Source,
-            // positive overflow cannot occur.
-            return false;
-        }
-
-        template<
-                class Destination, class Source,
-                _impl::enable_if_t<(positive_digits<Destination>::value<positive_digits<Source>::value), int> dummy = 0>
-        constexpr bool is_positive_overflow(Source const& source)
-        {
-            return source>static_cast<Source>(numeric_limits<Destination>::max());
-        }
-
-        // is_negative_overflow
-        template<
-                class Destination, class Source,
-                _impl::enable_if_t<!(negative_digits<Destination>::value<negative_digits<Source>::value), int> dummy = 0>
-        constexpr bool is_negative_overflow(Source const&)
-        {
-            // If positive capacity of Destination is equal to or exceeds that of Source,
-            // positive overflow cannot occur.
-            return false;
-        }
-
-        template<
-                class Destination, class Source,
-                _impl::enable_if_t<(negative_digits<Destination>::value<negative_digits<Source>::value), int> dummy = 0>
-        constexpr bool is_negative_overflow(Source const& source)
-        {
-            return source<static_cast<Source>(numeric_limits<Destination>::lowest());
-        }
 
         ////////////////////////////////////////////////////////////////////////////////
         // operators
@@ -165,9 +115,41 @@ namespace cnl {
         struct comparison_operator<throwing_overflow_tag, Operator, Enable>
                 : binary_operator<_overflow_impl::passive_overflow_tag<throwing_overflow_tag>, Operator> {
         };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // overflow detection
+
+        template<class T>
+        struct positive_digits : public std::integral_constant<int, numeric_limits<T>::digits> {
+        };
+
+        template<class T>
+        struct negative_digits
+                : public std::integral_constant<int, cnl::is_signed<T>::value ? digits<T>::value : 0> {
+        };
     }
 
     namespace _impl {
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::convert
+
+        template<typename Destination, typename Source>
+        struct convert_test {
+            static constexpr bool positive(Source const& rhs)
+            {
+                return _overflow_impl::positive_digits<Destination>::value
+                        <_overflow_impl::positive_digits<Source>::value
+                        && rhs>static_cast<Source>(numeric_limits<Destination>::max());
+            }
+
+            static constexpr bool negative(Source const& rhs)
+            {
+                return _overflow_impl::negative_digits<Destination>::value
+                        <_overflow_impl::negative_digits<Source>::value
+                        && rhs<static_cast<Source>(numeric_limits<Destination>::lowest());
+            }
+        };
+
         template<class OverflowTag, class Result, class Input>
         struct convert;
 
@@ -183,17 +165,16 @@ namespace cnl {
         struct convert<_overflow_impl::passive_overflow_tag<OverflowTag>, Result, Input> {
             constexpr Result operator()(Input const& rhs) const
             {
-                return _impl::encompasses<Result, Input>::value
-                       ? static_cast<Result>(rhs)
-                       : _overflow_impl::return_if(
+                using test = convert_test<Result, Input>;
+                return _overflow_impl::return_if(
+                        OverflowTag{},
+                        !test::positive(rhs),
+                        _overflow_impl::return_if(
                                 OverflowTag{},
-                                !_overflow_impl::is_positive_overflow<Result>(rhs),
-                                _overflow_impl::return_if(
-                                        OverflowTag{},
-                                        !_overflow_impl::is_negative_overflow<Result>(rhs),
-                                        static_cast<Result>(rhs),
-                                        "negative overflow in conversion"),
-                                "positive overflow in conversion");
+                                !test::negative(rhs),
+                                static_cast<Result>(rhs),
+                                "negative overflow in conversion"),
+                        "positive overflow in conversion");
             }
         };
 
@@ -217,14 +198,13 @@ namespace cnl {
         struct convert<saturated_overflow_tag, Result, Input> {
             constexpr Result operator()(Input const& rhs) const
             {
+                using test = convert_test<Result, Input>;
                 using numeric_limits = numeric_limits<Result>;
-                return !_impl::encompasses<Result, Input>::value
-                       ? _overflow_impl::is_positive_overflow<Result>(rhs)
-                         ? numeric_limits::max()
-                         : _overflow_impl::is_negative_overflow<Result>(rhs)
-                           ? numeric_limits::lowest()
-                           : static_cast<Result>(rhs)
-                       : static_cast<Result>(rhs);
+                return test::positive(rhs)
+                       ? numeric_limits::max()
+                       : test::negative(rhs)
+                         ? numeric_limits::lowest()
+                         : static_cast<Result>(rhs);
             }
         };
     }
