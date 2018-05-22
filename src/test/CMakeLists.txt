@@ -8,7 +8,6 @@ set(test_sources
         # low-level
         bit.cpp
         cnlint.cpp
-        encompasses.cpp
         common.cpp
         limits.cpp
         num_traits.cpp

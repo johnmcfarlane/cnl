@@ -12,7 +12,6 @@
 
 #include "numeric.h"
 #include "cnl/bits/operators.h"
-#include "bits/encompasses.h"
 
 #if defined(CNL_EXCEPTIONS_ENABLED)
 #include <stdexcept>
