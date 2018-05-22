@@ -325,6 +325,28 @@ namespace cnl {
 
     // implementation details
     namespace _overflow_impl {
+        template<typename Lhs, typename Rhs>
+        struct multiply_test {
+            using result = decltype(std::declval<Lhs>()*std::declval<Rhs>());
+            using result_nl = numeric_limits<result>;
+
+            static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
+            {
+                return (positive_digits<Lhs>::value+positive_digits<Rhs>::value>positive_digits<result>::value)
+                        && ((lhs>Lhs{0})
+                            ? (rhs>Rhs{0}) && (result_nl::max()/rhs)<lhs
+                            : (rhs<Rhs{0}) && (result_nl::max()/rhs)>lhs);
+            }
+
+            static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
+            {
+                return (positive_digits<Lhs>::value+positive_digits<Rhs>::value>positive_digits<result>::value)
+                        && ((lhs<Lhs{0})
+                            ? (rhs>Rhs{0}) && (result_nl::lowest()/rhs)>lhs
+                            : (rhs<Rhs{0}) && (result_nl::lowest()/rhs)<lhs);
+            }
+        };
+
         template<>
         struct binary_operator<native_overflow_tag, _impl::multiply_op> {
             template<class Lhs, class Rhs>
@@ -335,25 +357,22 @@ namespace cnl {
             }
         };
 
-        template<class Operand>
-        constexpr bool is_multiply_overflow(Operand const& lhs, Operand const& rhs)
-        {
-            using result_nl = numeric_limits<decltype(lhs*rhs)>;
-            return lhs && rhs && ((lhs>Operand{0})
-                                  ? ((rhs>Operand{0}) ? (result_nl::max()/rhs) : (result_nl::lowest()/rhs))<lhs
-                                  : ((rhs>Operand{0}) ? (result_nl::lowest()/rhs) : (result_nl::max()/rhs))>lhs);
-        }
-
         template<class OverflowTag>
         struct binary_operator<_overflow_impl::passive_overflow_tag<OverflowTag>, _impl::multiply_op> {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs*rhs)
             {
-                return _overflow_impl::return_if(
+                using test = multiply_test<Lhs, Rhs>;
+                return return_if(
                         OverflowTag{},
-                        !is_multiply_overflow(lhs, rhs),
-                        lhs*rhs, "overflow in multiplication");
+                        !test::positive(lhs, rhs),
+                        return_if(
+                                OverflowTag{},
+                                !test::negative(lhs, rhs),
+                                lhs*rhs,
+                                "negative overflow in multiplication"),
+                        "positive overflow in multiplication");
             }
         };
 
@@ -363,12 +382,13 @@ namespace cnl {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> _impl::op_result<_impl::multiply_op, Lhs, Rhs>
             {
-                using result_type = decltype(lhs*rhs);
-                return is_multiply_overflow(lhs, rhs)
-                       ? ((lhs>0) ^ (rhs>0))
+                using test = multiply_test<Lhs, Rhs>;
+                using result_type = typename test::result;
+                return test::positive(lhs, rhs)
+                       ? numeric_limits<result_type>::max()
+                       : test::negative(lhs, rhs)
                          ? numeric_limits<result_type>::lowest()
-                         : numeric_limits<result_type>::max()
-                       : lhs*rhs;
+                         : lhs*rhs;
             }
         };
     }
@@ -377,7 +397,7 @@ namespace cnl {
     constexpr auto multiply(OverflowTag, Lhs const& lhs, Rhs const& rhs)
     -> decltype(lhs*rhs)
     {
-        return _impl::for_rep<decltype(lhs*rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::multiply_op>(), lhs, rhs);
+        return _overflow_impl::binary_operator<OverflowTag, _impl::multiply_op>{}(lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////

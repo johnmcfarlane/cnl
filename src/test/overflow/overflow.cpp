@@ -185,39 +185,82 @@ namespace {
     }
 
     namespace test_multiply {
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(2000000000, 2),
-                      "cnl::_overflow_impl::is_multiply_overflow");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(21, 2),
-                      "cnl::_overflow_impl::is_multiply_overflow");
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(-2000000000, 2),
-                      "cnl::_overflow_impl::is_multiply_overflow");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(-21, 2),
-                      "cnl::_overflow_impl::is_multiply_overflow");
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(2000000000, -2),
-                      "cnl::_overflow_impl::is_multiply_overflow");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(21, -2),
-                      "cnl::_overflow_impl::is_multiply_overflow");
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(-2000000000, -2),
-                      "cnl::_overflow_impl::is_multiply_overflow");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(-21, -2),
-                      "cnl::_overflow_impl::is_multiply_overflow");
+        template<typename Lhs, typename Rhs>
+        using multiply_test = cnl::_overflow_impl::multiply_test<Lhs, Rhs>;
 
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(2, 2000000000),
-                      "cnl::_overflow_impl::is_multiply_overflow");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(2, 21),
-                      "cnl::_overflow_impl::is_multiply_overflow");
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(2, -2000000000),
-                      "cnl::_overflow_impl::is_multiply_overflow");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(2, -21),
-                      "cnl::_overflow_impl::is_multiply_overflow");
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(-2, 2000000000),
-                      "cnl::_overflow_impl::is_multiply_overflow");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(-2, 21),
-                      "cnl::_overflow_impl::is_multiply_overflow");
-        static_assert(cnl::_overflow_impl::is_multiply_overflow(-2, -2000000000),
-                      "cnl::_overflow_impl::is_multiply_overflow");
-        static_assert(!cnl::_overflow_impl::is_multiply_overflow(-2, -21),
-                      "cnl::_overflow_impl::is_multiply_overflow");
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_overflow_impl::multiply_test<>::positive
+
+        static_assert(multiply_test<int, int>::positive(2000000000, 2),
+                "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(21, 2),
+                "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-2000000000, 2),
+                "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-21, 2),
+                "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(2000000000, -2),
+                "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(21, -2),
+                "multiply_test<int, int>::positive");
+        static_assert(multiply_test<int, int>::positive(-2000000000, -2),
+                "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-21, -2),
+                "multiply_test<int, int>::positive");
+
+        static_assert(multiply_test<int, int>::positive(2, 2000000000),
+                "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(2, 21),
+                "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(2, -2000000000),
+                "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(2, -21),
+                "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-2, 2000000000),
+                "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-2, 21),
+                "multiply_test<int, int>::positive");
+        static_assert(multiply_test<int, int>::positive(-2, -2000000000),
+                "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-2, -21),
+                "multiply_test<int, int>::positive");
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_overflow_impl::multiply_test<>::negative
+
+        static_assert(!multiply_test<int, int>::negative(2000000000, 2),
+                "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(21, 2),
+                "multiply_test<int, int>::negative");
+        static_assert(multiply_test<int, int>::negative(-2000000000, 2),
+                "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-21, 2),
+                "multiply_test<int, int>::negative");
+        static_assert(multiply_test<int, int>::negative(2000000000, -2),
+                "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(21, -2),
+                "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-2000000000, -2),
+                "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-21, -2),
+                "multiply_test<int, int>::negative");
+
+        static_assert(!multiply_test<int, int>::negative(2, 2000000000),
+                "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(2, 21),
+                "multiply_test<int, int>::negative");
+        static_assert(multiply_test<int, int>::negative(2, -2000000000),
+                "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(2, -21),
+                "multiply_test<int, int>::negative");
+        static_assert(multiply_test<int, int>::negative(-2, 2000000000),
+                "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-2, 21),
+                "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-2, -2000000000),
+                "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-2, -21),
+                "multiply_test<int, int>::negative");
     }
 
     namespace test_native_overflow {
