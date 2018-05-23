@@ -186,7 +186,7 @@ namespace {
 
     namespace test_add {
         template<typename Lhs, typename Rhs>
-        using add_test = cnl::_overflow_impl::add_test<Lhs, Rhs>;
+        using add_test = cnl::_overflow_impl::overflow_test<cnl::_impl::add_op, Lhs, Rhs>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_overflow_impl::add_test<>::positive
@@ -215,7 +215,7 @@ namespace {
 
     namespace test_subtract {
         template<typename Lhs, typename Rhs>
-        using subtract_test = cnl::_overflow_impl::subtract_test<Lhs, Rhs>;
+        using subtract_test = cnl::_overflow_impl::overflow_test<cnl::_impl::subtract_op, Lhs, Rhs>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_overflow_impl::subtract_test<>::positive
@@ -247,7 +247,7 @@ namespace {
 
     namespace test_multiply {
         template<typename Lhs, typename Rhs>
-        using multiply_test = cnl::_overflow_impl::multiply_test<Lhs, Rhs>;
+        using multiply_test = cnl::_overflow_impl::overflow_test<cnl::_impl::multiply_op, Lhs, Rhs>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_overflow_impl::multiply_test<>::positive
