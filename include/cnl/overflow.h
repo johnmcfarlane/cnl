@@ -215,6 +215,30 @@ namespace cnl {
 
     // implementation details
     namespace _overflow_impl {
+        template<typename Lhs, typename Rhs>
+        struct add_test {
+            using result = decltype(std::declval<Lhs>()+std::declval<Rhs>());
+            using result_nl = numeric_limits<result>;
+
+            static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
+            {
+                return (_impl::max(positive_digits<Lhs>::value, positive_digits<Rhs>::value)+1
+                        >positive_digits<result>::value)
+                        && lhs>Lhs{0}
+                        && rhs>Rhs{0}
+                        && lhs>result_nl::max()-rhs;
+            }
+
+            static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
+            {
+                return (_impl::max(positive_digits<Lhs>::value, positive_digits<Rhs>::value)+1
+                        >positive_digits<result>::value)
+                        && lhs<Lhs{0}
+                        && rhs<Rhs{0}
+                        && lhs<result_nl::lowest()-rhs;
+            }
+        };
+
         template<>
         struct binary_operator<native_overflow_tag, _impl::add_op> {
             template<class Lhs, class Rhs>
@@ -231,15 +255,16 @@ namespace cnl {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs+rhs)
             {
-                using result_type = decltype(lhs+rhs);
-                using numeric_limits = numeric_limits<result_type>;
-                return _overflow_impl::return_if(
+                using test = add_test<Lhs, Rhs>;
+                return return_if(
                         OverflowTag{},
-                        !((rhs>=from_rep<Rhs>{}(0))
-                          ? (lhs>numeric_limits::max()-rhs)
-                          : (lhs<numeric_limits::lowest()-rhs)),
-                        lhs+rhs,
-                        "overflow in addition");
+                        !test::positive(lhs, rhs),
+                        return_if(
+                                OverflowTag{},
+                                !test::negative(lhs, rhs),
+                                lhs+rhs,
+                                "negative overflow in addition"),
+                        "positive overflow in addition");
             }
         };
 
@@ -249,11 +274,13 @@ namespace cnl {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> _impl::op_result<_impl::add_op, Lhs, Rhs>
             {
-                using result_type = decltype(lhs+rhs);
-                using numeric_limits = numeric_limits<result_type>;
-                return (rhs>0)
-                       ? (lhs>numeric_limits::max()-rhs) ? numeric_limits::max() : lhs+rhs
-                       : (lhs<numeric_limits::lowest()-rhs) ? numeric_limits::lowest() : lhs+rhs;
+                using test = add_test<Lhs, Rhs>;
+                using result_type = typename test::result;
+                return test::positive(lhs, rhs)
+                       ? numeric_limits<result_type>::max()
+                       : test::negative(lhs, rhs)
+                         ? numeric_limits<result_type>::lowest()
+                         : lhs+rhs;
             }
         };
     }
@@ -262,7 +289,7 @@ namespace cnl {
     constexpr auto add(OverflowTag, Lhs const& lhs, Rhs const& rhs)
     -> decltype(lhs+rhs)
     {
-        return _impl::for_rep<decltype(lhs+rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::add_op>(), lhs, rhs);
+        return _overflow_impl::binary_operator<OverflowTag, _impl::add_op>{}(lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -270,6 +297,29 @@ namespace cnl {
 
     // implementation details
     namespace _overflow_impl {
+        template<typename Lhs, typename Rhs>
+        struct subtract_test {
+            using result = decltype(std::declval<Lhs>()-std::declval<Rhs>());
+            using result_nl = numeric_limits<result>;
+
+            static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
+            {
+                return (_impl::max(positive_digits<Lhs>::value, positive_digits<Rhs>::value)+1
+                        >positive_digits<result>::value)
+                        && lhs>Lhs{0}
+                        && rhs<Rhs{0}
+                        && lhs>result_nl::max()+rhs;
+            }
+
+            static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
+            {
+                return (_impl::max(positive_digits<Lhs>::value, positive_digits<Rhs>::value)+1
+                        >positive_digits<result>::value)
+                        && (rhs>=0)
+                        && lhs<result_nl::lowest()+rhs;
+            }
+        };
+
         template<>
         struct binary_operator<native_overflow_tag, _impl::subtract_op> {
             template<class Lhs, class Rhs>
@@ -286,14 +336,15 @@ namespace cnl {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs-rhs)
             {
-                using result_type = decltype(lhs-rhs);
-                using numeric_limits = numeric_limits<result_type>;
-                return _overflow_impl::return_if(
+                using test = subtract_test<Lhs, Rhs>;
+                return return_if(
                         OverflowTag{},
-                        (rhs<from_rep<Rhs>{}(0))
-                        ? (lhs<=numeric_limits::max()+rhs)
-                        : (lhs>=numeric_limits::lowest()+rhs),
-                        lhs-rhs,
+                        !test::positive(lhs, rhs),
+                        return_if(
+                                OverflowTag{},
+                                !test::negative(lhs, rhs),
+                                lhs-rhs,
+                                "negative overflow in subtraction"),
                         "positive overflow in subtraction");
             }
         };
@@ -304,11 +355,13 @@ namespace cnl {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> _impl::op_result<_impl::subtract_op, Lhs, Rhs>
             {
-                using result_type = decltype(lhs-rhs);
-                using numeric_limits = numeric_limits<result_type>;
-                return (rhs<0)
-                       ? (lhs>numeric_limits::max()+rhs) ? numeric_limits::max() : lhs-rhs
-                       : (lhs<numeric_limits::lowest()+rhs) ? numeric_limits::lowest() : lhs-rhs;
+                using test = subtract_test<Lhs, Rhs>;
+                using result_type = typename test::result;
+                return test::positive(lhs, rhs)
+                       ? numeric_limits<result_type>::max()
+                       : test::negative(lhs, rhs)
+                         ? numeric_limits<result_type>::lowest()
+                         : lhs-rhs;
             }
         };
     }
@@ -317,7 +370,7 @@ namespace cnl {
     constexpr auto subtract(OverflowTag, Lhs const& lhs, Rhs const& rhs)
     -> decltype(lhs-rhs)
     {
-        return _impl::for_rep<decltype(lhs-rhs)>(_overflow_impl::binary_operator<OverflowTag, _impl::subtract_op>(), lhs, rhs);
+        return _overflow_impl::binary_operator<OverflowTag, _impl::subtract_op>{}(lhs, rhs);
     }
 
     ////////////////////////////////////////////////////////////////////////////////

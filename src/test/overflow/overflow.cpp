@@ -184,6 +184,67 @@ namespace {
                 "cnl::_impl::convert_test<>::negative test failed");
     }
 
+    namespace test_add {
+        template<typename Lhs, typename Rhs>
+        using add_test = cnl::_overflow_impl::add_test<Lhs, Rhs>;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_overflow_impl::add_test<>::positive
+
+        static_assert(add_test<int, int>::positive(2000000000, 2000000000),
+                "add_test<int, int>::positive");
+        static_assert(!add_test<int, int>::positive(-2000000000, 2000000000),
+                "add_test<int, int>::positive");
+        static_assert(!add_test<int, int>::positive(2000000000, -2000000000),
+                "add_test<int, int>::positive");
+        static_assert(!add_test<int, int>::positive(-2000000000, -2000000000),
+                "add_test<int, int>::positive");
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_overflow_impl::add_test<>::negative
+
+        static_assert(!add_test<int, int>::negative(2000000000, 2000000000),
+                "add_test<int, int>::negative");
+        static_assert(!add_test<int, int>::negative(-2000000000, 2000000000),
+                "add_test<int, int>::negative");
+        static_assert(!add_test<int, int>::negative(2000000000, -2000000000),
+                "add_test<int, int>::negative");
+        static_assert(add_test<int, int>::negative(-2000000000, -2000000000),
+                "add_test<int, int>::negative");
+    }
+
+    namespace test_subtract {
+        template<typename Lhs, typename Rhs>
+        using subtract_test = cnl::_overflow_impl::subtract_test<Lhs, Rhs>;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_overflow_impl::subtract_test<>::positive
+
+        static_assert(!subtract_test<int, int>::positive(2000000000, 2000000000),
+                "subtract_test<int, int>::positive");
+        static_assert(!subtract_test<int, int>::positive(-2000000000, 2000000000),
+                "subtract_test<int, int>::positive");
+        static_assert(subtract_test<int, int>::positive(2000000000, -2000000000),
+                "subtract_test<int, int>::positive");
+        static_assert(!subtract_test<int, int>::positive(-2000000000, -2000000000),
+                "subtract_test<int, int>::positive");
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_overflow_impl::subtract_test<>::negative
+
+        static_assert(!subtract_test<int, int>::negative(2000000000, 2000000000),
+                "subtract_test<int, int>::negative");
+        static_assert(subtract_test<int, int>::negative(-2000000000, 2000000000),
+                "subtract_test<int, int>::negative");
+        static_assert(!subtract_test<int, int>::negative(2000000000, -2000000000),
+                "subtract_test<int, int>::negative");
+        static_assert(!subtract_test<int, int>::negative(-2000000000, -2000000000),
+                "subtract_test<int, int>::negative");
+
+        static_assert(subtract_test<unsigned, unsigned>::negative(0, 1),
+                "subtract_test<int, int>::negative");
+    }
+
     namespace test_multiply {
         template<typename Lhs, typename Rhs>
         using multiply_test = cnl::_overflow_impl::multiply_test<Lhs, Rhs>;
