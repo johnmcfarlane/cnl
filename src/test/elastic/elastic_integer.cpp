@@ -9,8 +9,6 @@
 
 #include <cnl/elastic_integer.h>
 
-#include <cnl/bits/encompasses.h>
-
 namespace {
     using std::is_same;
     using cnl::elastic_integer;
@@ -153,8 +151,6 @@ namespace {
         static_assert(elastic_integer<31>{-1} < elastic_integer<31>{1}, "cnl::elastic_integer test failed");
         static_assert(cnl::elastic_integer<10>{0} == 0, "cnl::elastic_integer test failed");
         static_assert(elastic_integer<31>{-1} < elastic_integer<31, unsigned>{1}, "cnl::elastic_integer test failed");
-        static_assert(!cnl::_impl::encompasses<cnl::elastic_integer<10>, int>::value,
-                      "cnl::elastic_integer test failed");
         static_assert(elastic_integer<4, signed>{10} > elastic_integer<4, signed>{-7}, "elastic_integer comparison test failed");
     }
 

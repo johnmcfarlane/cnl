@@ -11,6 +11,7 @@
 #include <cnl/overflow_integer.h>
 
 using namespace cnl;
+using cnl::_impl::identical;
 
 // rounding safe integer
 template<
@@ -23,9 +24,7 @@ static_assert(identical(
         rounding_overflow_int<>{2} * rounding_overflow_int<>{3},
         rounding_overflow_int<>{6}), "");
 
-static_assert(identical(
-        multiply(saturated_overflow, rounding_overflow_int<>{INT_MAX}, rounding_overflow_int<>{INT_MAX}),
-        rounding_overflow_int<>{INT_MAX}), "");
+static_assert(identical(cnl::multiply(cnl::saturated_overflow, INT_MAX, INT_MAX), INT_MAX), "");
 
 int bare_saturate(int a, int b) {
     return multiply(saturated_overflow, a, b);
