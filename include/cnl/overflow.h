@@ -11,6 +11,7 @@
 #define CNL_OVERFLOW_H
 
 #include "numeric.h"
+#include "cnl/bits/convert.h"
 #include "cnl/bits/operators.h"
 
 #if defined(CNL_EXCEPTIONS_ENABLED)
@@ -151,9 +152,6 @@ namespace cnl {
                         && rhs<static_cast<Source>(numeric_limits<Destination>::lowest());
             }
         };
-
-        template<class OverflowTag, class Result, class Input>
-        struct convert;
 
         template<class Result, class Input>
         struct convert<native_overflow_tag, Result, Input> {

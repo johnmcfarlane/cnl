@@ -11,6 +11,7 @@
 #define CNL_BITS_ROUNDING_H
 
 #include "operators.h"
+#include "convert.h"
 #include <cnl/num_traits.h>
 
 /// compositional numeric library
@@ -36,9 +37,6 @@ namespace cnl {
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::convert
-
-        template<class RoundingTag, class Result, class Input>
-        struct convert;
 
         template<class Result, class Input>
         struct convert<nearest_rounding_tag, Result, Input> {
