@@ -35,7 +35,7 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_rounding_impl::convert
+        // cnl::_impl::convert
 
         template<class RoundingTag, class Result, class Input>
         struct convert;
