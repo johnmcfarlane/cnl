@@ -10,9 +10,8 @@
 #if !defined(CNL_BITS_ROUNDING_H)
 #define CNL_BITS_ROUNDING_H
 
+#include "native_tag.h"
 #include "operators.h"
-#include "convert.h"
-#include <cnl/num_traits.h>
 
 /// compositional numeric library
 namespace cnl {
@@ -30,6 +29,10 @@ namespace cnl {
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
         // mode tags and objects
+
+        // do what the rep type would do
+        struct native_rounding_tag : public native_tag {
+        };
 
         // a reasonable default
         struct nearest_rounding_tag {

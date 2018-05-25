@@ -29,6 +29,9 @@ namespace {
         static_assert(
                 std::is_same<cnl::rounding_integer<>::rounding, cnl::static_integer<1>::rounding>::value,
                 "cnl::static_integer parameter default test failed");
+        static_assert(
+                !std::is_same<cnl::_impl::native_rounding_tag, cnl::native_overflow_tag>::value,
+                "cnl::static_integer parameter default test failed");
 
         static_assert(
                 std::is_same<int, cnl::static_integer<>::rep::rep::rep>::value,

@@ -13,7 +13,10 @@
 #include "fixed_point.h"
 #include "overflow.h"
 
+#include "bits/native_tag.h"
 #include "bits/number_base.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
@@ -251,10 +254,11 @@ namespace cnl {
             constexpr auto operator()(
                     overflow_integer<Rep, OverflowTag> const& lhs,
                     overflow_integer<Rep, OverflowTag> const& rhs) const
-            -> decltype(make_overflow_int<OverflowTag>(_overflow_impl::binary_operator<OverflowTag, Operator>()(to_rep(lhs), to_rep(rhs))))
+            -> decltype(make_overflow_int<OverflowTag>(
+                    _impl::tagged_binary_operator<OverflowTag, Operator>()(to_rep(lhs), to_rep(rhs))))
             {
                 return make_overflow_int<OverflowTag>(
-                        _overflow_impl::binary_operator<OverflowTag, Operator>()(to_rep(lhs), to_rep(rhs)));
+                        _impl::tagged_binary_operator<OverflowTag, Operator>()(to_rep(lhs), to_rep(rhs)));
             }
         };
 

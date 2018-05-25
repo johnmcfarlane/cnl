@@ -22,45 +22,45 @@ namespace {
     using cnl::multiply;
 
     namespace test_positive_digits {
-        using cnl::_overflow_impl::positive_digits;
+        using cnl::_impl::positive_digits;
 
         static_assert(positive_digits<int8_t>::value==7,
-                "cnl::_overflow_impl::positive_digits test failed");
+                      "cnl::_impl::positive_digits test failed");
         static_assert(positive_digits<uint8_t>::value==8,
-                "cnl::_overflow_impl::positive_digits test failed");
+                      "cnl::_impl::positive_digits test failed");
         static_assert(positive_digits<int16_t>::value==15,
-                "cnl::_overflow_impl::positive_digits test failed");
+                      "cnl::_impl::positive_digits test failed");
         static_assert(positive_digits<uint16_t>::value==16,
-                "cnl::_overflow_impl::positive_digits test failed");
+                      "cnl::_impl::positive_digits test failed");
         static_assert(positive_digits<int32_t>::value==31,
-                "cnl::_overflow_impl::positive_digits test failed");
+                      "cnl::_impl::positive_digits test failed");
         static_assert(positive_digits<uint32_t>::value==32,
-                "cnl::_overflow_impl::positive_digits test failed");
+                      "cnl::_impl::positive_digits test failed");
         static_assert(positive_digits<int64_t>::value==63,
-                "cnl::_overflow_impl::positive_digits test failed");
+                      "cnl::_impl::positive_digits test failed");
         static_assert(positive_digits<uint64_t>::value==64,
-                "cnl::_overflow_impl::positive_digits test failed");
+                      "cnl::_impl::positive_digits test failed");
     }
     
     namespace test_negative_digits {
-        using cnl::_overflow_impl::negative_digits;
+        using cnl::_impl::negative_digits;
 
         static_assert(negative_digits<int8_t>::value==7,
-                "cnl::_overflow_impl::negative_digits test failed");
+                      "cnl::_impl::negative_digits test failed");
         static_assert(negative_digits<uint8_t>::value==0,
-                "cnl::_overflow_impl::negative_digits test failed");
+                      "cnl::_impl::negative_digits test failed");
         static_assert(negative_digits<int16_t>::value==15,
-                "cnl::_overflow_impl::negative_digits test failed");
+                      "cnl::_impl::negative_digits test failed");
         static_assert(negative_digits<uint16_t>::value==0,
-                "cnl::_overflow_impl::negative_digits test failed");
+                      "cnl::_impl::negative_digits test failed");
         static_assert(negative_digits<int32_t>::value==31,
-                "cnl::_overflow_impl::negative_digits test failed");
+                      "cnl::_impl::negative_digits test failed");
         static_assert(negative_digits<uint32_t>::value==0,
-                "cnl::_overflow_impl::negative_digits test failed");
+                      "cnl::_impl::negative_digits test failed");
         static_assert(negative_digits<int64_t>::value==63,
-                "cnl::_overflow_impl::negative_digits test failed");
+                      "cnl::_impl::negative_digits test failed");
         static_assert(negative_digits<uint64_t>::value==0,
-                "cnl::_overflow_impl::negative_digits test failed");
+                      "cnl::_impl::negative_digits test failed");
     }
     
     namespace test_convert {
@@ -186,10 +186,10 @@ namespace {
 
     namespace test_add {
         template<typename Lhs, typename Rhs>
-        using add_test = cnl::_overflow_impl::overflow_test<cnl::_impl::add_op, Lhs, Rhs>;
+        using add_test = cnl::_impl::overflow_test<cnl::_impl::add_op, Lhs, Rhs>;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_overflow_impl::add_test<>::positive
+        // cnl::_impl::overflow_test<cnl::_impl::add_op>::positive
 
         static_assert(add_test<int, int>::positive(2000000000, 2000000000),
                 "add_test<int, int>::positive");
@@ -201,7 +201,7 @@ namespace {
                 "add_test<int, int>::positive");
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_overflow_impl::add_test<>::negative
+        // cnl::_impl::overflow_test<cnl::_impl::add_op>::negative
 
         static_assert(!add_test<int, int>::negative(2000000000, 2000000000),
                 "add_test<int, int>::negative");
@@ -215,10 +215,10 @@ namespace {
 
     namespace test_subtract {
         template<typename Lhs, typename Rhs>
-        using subtract_test = cnl::_overflow_impl::overflow_test<cnl::_impl::subtract_op, Lhs, Rhs>;
+        using subtract_test = cnl::_impl::overflow_test<cnl::_impl::subtract_op, Lhs, Rhs>;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_overflow_impl::subtract_test<>::positive
+        // cnl::_impl::overflow_test<cnl::_impl::subtract_op>::positive
 
         static_assert(!subtract_test<int, int>::positive(2000000000, 2000000000),
                 "subtract_test<int, int>::positive");
@@ -230,7 +230,7 @@ namespace {
                 "subtract_test<int, int>::positive");
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_overflow_impl::subtract_test<>::negative
+        // cnl::_impl::overflow_test<cnl::_impl::subtract_op>::negative
 
         static_assert(!subtract_test<int, int>::negative(2000000000, 2000000000),
                 "subtract_test<int, int>::negative");
@@ -247,10 +247,10 @@ namespace {
 
     namespace test_multiply {
         template<typename Lhs, typename Rhs>
-        using multiply_test = cnl::_overflow_impl::overflow_test<cnl::_impl::multiply_op, Lhs, Rhs>;
+        using multiply_test = cnl::_impl::overflow_test<cnl::_impl::multiply_op, Lhs, Rhs>;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_overflow_impl::multiply_test<>::positive
+        // cnl::_impl::overflow_test<cnl::_impl::multiply_op>::positive
 
         static_assert(multiply_test<int, int>::positive(2000000000, 2),
                 "multiply_test<int, int>::positive");
@@ -287,7 +287,7 @@ namespace {
                 "multiply_test<int, int>::positive");
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_overflow_impl::multiply_test<>::negative
+        // cnl::_impl::overflow_test<cnl::_impl::multiply_op>::negative
 
         static_assert(!multiply_test<int, int>::negative(2000000000, 2),
                 "multiply_test<int, int>::negative");
@@ -340,8 +340,8 @@ namespace {
 
         // subtract
         static_assert(identical(
-                cnl::_overflow_impl::binary_operator<cnl::native_overflow_tag, cnl::_impl::subtract_op>()(INT8_C(0),
-                        INT8_C(0)), 0), "cnl::subtract test failed");
+                cnl::_impl::tagged_binary_operator<cnl::native_overflow_tag, cnl::_impl::subtract_op>()(INT8_C(0), INT8_C(0)),
+                0), "cnl::subtract test failed");
         static_assert(identical(subtract(native_overflow, INT8_C(0), INT8_C(0)), 0), "cnl::subtract test failed");
 
         // multiply
@@ -373,7 +373,7 @@ namespace {
 
         // add
         static_assert(identical(
-                cnl::_overflow_impl::binary_operator<cnl::saturated_overflow_tag, cnl::_impl::add_op>()(7, 23U),
+                cnl::_impl::tagged_binary_operator<cnl::saturated_overflow_tag, cnl::_impl::add_op>()(7, 23U),
                 7+23U), "");
         static_assert(identical(
                 std::numeric_limits<decltype(UINT32_C(0xFFFFFFFF)+INT32_C(0x12345678))>::max(),

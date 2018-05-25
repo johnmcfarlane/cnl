@@ -15,6 +15,7 @@
 /// compositional numeric library
 namespace cnl {
     using _impl::nearest_rounding_tag;
+    using native_rounding_tag = _impl::native_tag;
 
     using _impl::convert;
     using _rounding_impl::divide;
