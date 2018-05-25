@@ -15,27 +15,27 @@
 namespace cnl {
     namespace _impl {
         template<
-                int IntegerDigits,
-                class OverflowTag,
-                class RoundingTag,
-                class Narrowest>
+                int Digits = digits<int>::value,
+                class RoundingTag = nearest_rounding_tag,
+                class OverflowTag = trapping_overflow_tag,
+                class Narrowest = int>
         using static_integer = rounding_integer<
                 overflow_integer<
                         elastic_integer<
-                                IntegerDigits,
+                                Digits,
                                 Narrowest>,
                         OverflowTag>,
                 RoundingTag>;
 
         template<
-                class OverflowTag = overflow_integer<>::overflow_tag,
-                class RoundingTag = rounding_integer<>::rounding,
+                class RoundingTag = nearest_rounding_tag,
+                class OverflowTag = trapping_overflow_tag,
                 class Narrowest = int,
                 class Input = int,
                 class = _impl::enable_if_t<!_impl::is_constant<Input>::value>>
         static_integer<
                 numeric_limits<Input>::digits,
-                OverflowTag, RoundingTag,
+                RoundingTag, OverflowTag,
                 Narrowest>
         constexpr make_static_integer(Input const& input)
         {
@@ -43,13 +43,13 @@ namespace cnl {
         }
 
         template<
-                class OverflowTag = overflow_integer<>::overflow_tag,
-                class RoundingTag = rounding_integer<>::rounding,
+                class RoundingTag = nearest_rounding_tag,
+                class OverflowTag = trapping_overflow_tag,
                 class Narrowest = int,
                 CNL_IMPL_CONSTANT_VALUE_TYPE InputValue = 0>
         static_integer<
                 used_digits(InputValue),
-                OverflowTag, RoundingTag,
+                RoundingTag, OverflowTag,
                 Narrowest>
         constexpr make_static_integer(constant<InputValue>)
         {

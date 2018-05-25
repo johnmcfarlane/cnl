@@ -101,6 +101,6 @@ namespace {
     }
 
     static_assert(identical(
-            cnl::static_integer<5, cnl::saturated_overflow_tag>{31},
-            cnl::static_integer<5, cnl::saturated_overflow_tag>{32}), "");
+            cnl::static_integer<5, cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>{31},
+            cnl::static_integer<5, cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>{32}), "");
 }

@@ -23,11 +23,11 @@ namespace cnl {
     ///
     /// \sa cnl::static_number
     template<
-            int Digits = digits<signed>::value,
-            class OverflowTag = trapping_overflow_tag,
+            int Digits = digits<int>::value,
             class RoundingTag = nearest_rounding_tag,
-            class Narrowest = signed>
-    using static_integer = _impl::static_integer<Digits, OverflowTag, RoundingTag, Narrowest>;
+            class OverflowTag = trapping_overflow_tag,
+            class Narrowest = int>
+    using static_integer = _impl::static_integer<Digits, RoundingTag, OverflowTag, Narrowest>;
 
     /// \brief constructs a static_integer from a given value
     using _impl::make_static_integer;

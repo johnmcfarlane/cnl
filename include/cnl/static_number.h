@@ -30,7 +30,7 @@ namespace cnl {
             class RoundingTag = nearest_rounding_tag,
             class Narrowest = signed>
     using static_number = fixed_point<
-            _impl::static_integer<Digits, OverflowTag, RoundingTag, Narrowest>,
+            _impl::static_integer<Digits, RoundingTag, OverflowTag, Narrowest>,
             Exponent>;
 
     /// \brief constructs a static_number from a given variable
