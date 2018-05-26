@@ -15,6 +15,7 @@
 
 /// compositional numeric library
 namespace cnl {
+    using _impl::native_rounding_tag;
     using _impl::nearest_rounding_tag;
 
     /// \brief An integer with customized rounding behavior.
@@ -175,11 +176,11 @@ namespace cnl {
             constexpr auto operator()(
                     rounding_integer<LhsRep, RoundingTag> const& lhs,
                     rounding_integer<RhsRep, RoundingTag> const& rhs) const
-            -> decltype(make_rounding_integer<RoundingTag>(_rounding_impl::binary_operator<RoundingTag, Operator>()(
+            -> decltype(make_rounding_integer<RoundingTag>(tagged_binary_operator<RoundingTag, Operator>()(
                     to_rep(lhs), to_rep(rhs))))
             {
                 return make_rounding_integer<RoundingTag>(
-                        _rounding_impl::binary_operator<RoundingTag, Operator>()(to_rep(lhs), to_rep(rhs)));
+                        tagged_binary_operator<RoundingTag, Operator>()(to_rep(lhs), to_rep(rhs)));
             }
         };
 

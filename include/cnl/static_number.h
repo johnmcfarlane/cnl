@@ -26,22 +26,22 @@ namespace cnl {
     template<
             int Digits,
             int Exponent = 0,
-            class OverflowTag = trapping_overflow_tag,
             class RoundingTag = nearest_rounding_tag,
+            class OverflowTag = trapping_overflow_tag,
             class Narrowest = signed>
     using static_number = fixed_point<
-            _impl::static_integer<Digits, OverflowTag, RoundingTag, Narrowest>,
+            _impl::static_integer<Digits, RoundingTag, OverflowTag, Narrowest>,
             Exponent>;
 
     /// \brief constructs a static_number from a given variable
     template<
-            class OverflowTag = trapping_overflow_tag,
             class RoundingTag = nearest_rounding_tag,
+            class OverflowTag = trapping_overflow_tag,
             class Narrowest = signed,
             class Input = int>
     static_number<
             numeric_limits<Input>::digits, 0,
-            OverflowTag, RoundingTag,
+            RoundingTag, OverflowTag,
             Narrowest>
     constexpr make_static_number(Input const& input)
     {
@@ -50,14 +50,14 @@ namespace cnl {
 
     /// \brief constructs a static_number from a given constant value
     template<
-            class OverflowTag = overflow_integer<>::overflow_tag,
             class RoundingTag = rounding_integer<>::rounding,
+            class OverflowTag = overflow_integer<>::overflow_tag,
             class Narrowest = int,
             class Input = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     static_number<
             used_digits(Value)-trailing_bits(Value), trailing_bits(Value),
-            OverflowTag, RoundingTag,
+            RoundingTag, OverflowTag,
             Narrowest>
     constexpr make_static_number(constant<Value> const&)
     {

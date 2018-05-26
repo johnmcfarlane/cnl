@@ -5,7 +5,6 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/rounding.h>
-#include <cnl/bits/type_traits.h>
 
 namespace {
     using cnl::_impl::identical;
@@ -17,19 +16,37 @@ namespace {
                     identical(cnl::convert<cnl::nearest_rounding_tag, cnl::uint8, double>{}(200.5), cnl::uint8{201}),
                     "cnl::convert test failed");
             static_assert(identical(cnl::convert<cnl::nearest_rounding_tag, cnl::int16, long double>{}(-1000.5L),
-                    cnl::int16{-1001}),
-                    "cnl::convert test failed");
+                                    cnl::int16{-1001}),
+                          "cnl::convert test failed");
             static_assert(identical(cnl::convert<cnl::nearest_rounding_tag, cnl::int32, float>{}(55.2f), 55),
-                    "cnl::convert test failed");
+                          "cnl::convert test failed");
 
             static_assert(identical(-1, cnl::convert<cnl::nearest_rounding_tag, int, double>{}(-0.50)),
-                    "cnl::convert test failed");
+                          "cnl::convert test failed");
             static_assert(identical(-0, cnl::convert<cnl::nearest_rounding_tag, int, double>{}(-0.49)),
-                    "cnl::convert test failed");
+                          "cnl::convert test failed");
             static_assert(identical(+0, cnl::convert<cnl::nearest_rounding_tag, int, double>{}(0.49)),
-                    "cnl::convert test failed");
+                          "cnl::convert test failed");
             static_assert(identical(+1, cnl::convert<cnl::nearest_rounding_tag, int, double>{}(0.50)),
+                          "cnl::convert test failed");
+
+            static_assert(
+                    identical(cnl::convert<cnl::native_rounding_tag, cnl::uint8, double>{}(200.5), cnl::uint8{200}),
                     "cnl::convert test failed");
+            static_assert(identical(cnl::convert<cnl::native_rounding_tag, cnl::int16, long double>{}(-1000.5L),
+                                    cnl::int16{-1000}),
+                          "cnl::convert test failed");
+            static_assert(identical(cnl::convert<cnl::native_rounding_tag, cnl::int32, float>{}(55.2f), 55),
+                          "cnl::convert test failed");
+
+            static_assert(identical(-0, cnl::convert<cnl::native_rounding_tag, int, double>{}(-0.50)),
+                          "cnl::convert test failed");
+            static_assert(identical(-0, cnl::convert<cnl::native_rounding_tag, int, double>{}(-0.49)),
+                          "cnl::convert test failed");
+            static_assert(identical(+0, cnl::convert<cnl::native_rounding_tag, int, double>{}(0.49)),
+                          "cnl::convert test failed");
+            static_assert(identical(+0, cnl::convert<cnl::native_rounding_tag, int, double>{}(0.50)),
+                          "cnl::convert test failed");
         }
 
         namespace divide {
