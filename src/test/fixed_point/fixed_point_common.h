@@ -627,9 +627,6 @@ static_assert(fixed_point<int32, -15>{-0.2} < 0, "cnl::fixed_point test failed")
 // addition
 static_assert((fixed_point<int32>(123)+fixed_point<int32>(123))==246, "cnl::fixed_point addition operator test failed");
 static_assert((fixed_point<int32, -16>(123.125)+fixed_point<int32, -16>(123.75))==246.875, "cnl::fixed_point addition operator test failed");
-#if defined(TEST_SATURATED_OVERFLOW)
-static_assert(identical((fixed_point<int32>{123}+fixed_point<uint32>{123}), fixed_point<test_unsigned>{246}), "cnl::fixed_point addition operator test failed");
-#endif
 static_assert((fixed_point<int32, -16>(123.125)+fixed_point<int32, -16>(123.75))==246.875, "cnl::fixed_point addition operator test failed");
 
 static_assert(identical(fixed_point<int8, -5>{2.125}+fixed_point<int8, -5>{-3.25}, fixed_point<test_int, -5>{-1.125f}),
