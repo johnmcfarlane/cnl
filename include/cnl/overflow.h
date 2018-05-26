@@ -25,7 +25,8 @@ namespace cnl {
     // mode tags and objects
 
     // match the behavior of fundamental arithmetic types
-    using native_overflow_tag = _impl::native_tag;
+    struct native_overflow_tag : _impl::native_tag {
+    };
 
     static constexpr native_overflow_tag native_overflow{};
 
@@ -143,6 +144,11 @@ namespace cnl {
                         <_impl::negative_digits<Source>::value
                         && rhs<static_cast<Source>(numeric_limits<Destination>::lowest());
             }
+        };
+
+        template<class Result, class Input>
+        struct convert<native_overflow_tag, Result, Input>
+                : convert<_impl::native_tag, Result, Input> {
         };
 
         template<class OverflowTag, class Result, class Input>
@@ -297,6 +303,11 @@ namespace cnl {
             {
                 return lhs<0 && rhs>0 && unsigned(cnl::leading_bits(static_cast<result>(lhs)))<unsigned(rhs);
             }
+        };
+
+        template<class Result, class Input>
+        struct tagged_binary_operator<native_overflow_tag, Result, Input>
+                : tagged_binary_operator<_impl::native_tag, Result, Input> {
         };
 
         template<class OverflowTag, class Operator>
