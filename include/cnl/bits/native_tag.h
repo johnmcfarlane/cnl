@@ -36,9 +36,6 @@ namespace cnl {
         };
 
         template<class Result, class Input>
-        struct convert<native_tag, Result, Input>;
-
-        template<class Result, class Input>
         struct convert<native_tag, Result, Input> {
             constexpr Result operator()(Input const& rhs) const
             {
