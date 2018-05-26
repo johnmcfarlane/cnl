@@ -24,7 +24,7 @@ namespace cnl {
     /// \sa cnl::static_number
     template<
             int Digits = digits<int>::value,
-            class RoundingTag = nearest_rounding_tag,
+            class RoundingTag = native_rounding_tag,
             class OverflowTag = trapping_overflow_tag,
             class Narrowest = int>
     using static_integer = _impl::static_integer<Digits, RoundingTag, OverflowTag, Narrowest>;
