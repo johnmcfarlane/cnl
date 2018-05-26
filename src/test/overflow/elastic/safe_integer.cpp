@@ -96,6 +96,10 @@ namespace {
 #endif
     }
 
+    namespace test_divide {
+        static_assert(identical(cnl::safe_integer<2>{3 / 4}, cnl::safe_integer<2>{3} / cnl::safe_integer<3>{4}), "");
+    }
+
     namespace test_scale {
         static_assert(identical(cnl::safe_integer<3>{7}*cnl::safe_integer<4>{10}, cnl::safe_integer<7>{70}), "cnl::safe_integer operator*");
     }
