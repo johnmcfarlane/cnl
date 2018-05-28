@@ -8,6 +8,7 @@
 /// \brief file containing tests of the `cnl::elastic_integer` type
 
 #include <cnl/elastic_integer.h>
+#include <cnl/bits/rounding.h>
 
 namespace {
     using std::is_same;
@@ -254,6 +255,13 @@ namespace {
         static_assert(identical(cnl::elastic_integer<73>{1024}, cnl::_impl::shift<10>(cnl::elastic_integer<63>{1})), "shift<elastic_integer> test failed");
 #endif
         static_assert(identical(elastic_integer<8>{220}, cnl::shift<2, 2, elastic_integer<6>>{}(55)), "shift<elastic_integer> test failed");
+    }
+
+    namespace test_shift_right {
+        static_assert(identical(
+                elastic_integer<1>{1},
+                cnl::_impl::shift_right<cnl::_impl::nearest_rounding_tag, cnl::elastic_integer<2>, cnl::constant<1>>{}(
+                        elastic_integer<2>{2}, {})), "shift_right<elastic_integer>");
     }
 
     namespace test_numeric_limits {
