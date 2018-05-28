@@ -126,6 +126,15 @@ add_custom_target(Tests)
 ######################################################################
 # make_test
 
+set(SANITIZE ON CACHE BOOL "compile tests with run-time UB checking")
+if (SANITIZE)
+    set(SANITIZE_FLAGS "${SANITIZE_ENABLED_FLAGS}")
+    set(SANITIZE_LINKER_FLAGS "${SANITIZE_ENABLED_LINKER_FLAGS}")
+else (SANITIZE)
+    set(SANITIZE_FLAGS "${SANITIZE_DISABLED_FLAGS}")
+    set(SANITIZE_LINKER_FLAGS "${SANITIZE_DISABLED_LINKER_FLAGS}")
+endif (SANITIZE)
+
 # given the path to a source file containing gtest tests,
 # creates and returns a target that runs them
 function(make_test source out_target compile_flags)
@@ -137,8 +146,8 @@ function(make_test source out_target compile_flags)
     # create a target and make it a test
     add_executable("${target}" "${source}")
     add_test("${target}" "${target}")
-    set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${compile_flags}")
-    target_link_libraries("${target}" Cnl)
+    set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${SANITIZE_FLAGS} ${compile_flags}")
+    target_link_libraries("${target}" Cnl ${SANITIZE_LINKER_FLAGS})
 
     add_gtest_dependency("${target}")
 
@@ -162,18 +171,6 @@ endfunction(make_test)
 foreach(source ${test_sources})
     if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
         make_test("${source}" target "")
-    elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
-        if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "3.8.0")
-            make_test("${source}" target "-Wconversion -Wno-sign-conversion -fsanitize=undefined")
-            target_link_libraries("${target}" "-fsanitize=undefined")
-        else ()
-            make_test("${source}" target "-Wconversion -Wno-sign-conversion -fsanitize=undefined -fsanitize-trap=undefined")
-        endif ()
-# UB sanitizer currently broken for Travis / GCC:
-# https://stackoverflow.com/questions/50024731/ld-unrecognized-option-push-state-no-as-needed#comment87078191_50024731
-#    elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-#        make_test("${source}" target "-Wconversion -Wno-sign-conversion -fsanitize=undefined")
-#        target_link_libraries("${target}" "-fsanitize=undefined")
     else ()
         make_test("${source}" target "-Wconversion -Wno-sign-conversion")
     endif ()

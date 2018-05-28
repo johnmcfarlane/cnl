@@ -19,6 +19,11 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
 
   set(PROFILE_ENABLED_FLAGS "/Oy-")
   set(PROFILE_DISABLED_FLAGS "")
+
+  set(SANITIZE_ENABLED_FLAGS "/RTC")
+  set(SANITIZE_DISABLED_FLAGS "")
+  set(SANITIZE_ENABLED_LINKER_FLAGS "")
+  set(SANITIZE_DISABLED_LINKER_FLAGS "")
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
   set(MISC_FLAGS "-pthread -Wall -Wextra -Wpedantic -Werror")
 
@@ -32,6 +37,21 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STRE
 
   set(PROFILE_ENABLED_FLAGS "-fno-omit-frame-pointer")
   set(PROFILE_DISABLED_FLAGS "")
+
+  if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "3.8.0")
+      set(SANITIZE_ENABLED_FLAGS "-fsanitize=undefined")
+      set(SANITIZE_ENABLED_LINKER_FLAGS "-fsanitize=undefined")
+    else ()
+      set(SANITIZE_ENABLED_FLAGS "-fsanitize=undefined -fsanitize-trap=undefined")
+      set(SANITIZE_ENABLED_LINKER_FLAGS "")
+    endif ()
+  else ()
+    set(SANITIZE_ENABLED_FLAGS "-fsanitize=undefined")
+    set(SANITIZE_ENABLED_LINKER_FLAGS "-fsanitize=undefined")
+  endif ()
+  set(SANITIZE_DISABLED_FLAGS "")
+  set(SANITIZE_DISABLED_LINKER_FLAGS "")
 else ()
   message(FATAL_ERROR "unrecognized compiler: ${CMAKE_CXX_COMPILER_ID}")
 endif ()
