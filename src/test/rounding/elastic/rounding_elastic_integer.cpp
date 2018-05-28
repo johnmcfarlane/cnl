@@ -57,7 +57,56 @@ namespace {
         //static_assert(identical(rounding_elastic_integer<3>{3}*.25, rounding_elastic_integer<3>{.75}), "rounding_elastic_integer operator*");
     }
 
+    namespace test_from_rep {
+        static_assert(identical(
+                rounding_elastic_integer<16>{0},
+                cnl::from_rep<rounding_elastic_integer<24>>{}(cnl::elastic_integer<16>(0))),
+                        "from_rep<rounding_elastic_integer>");
+    }
+
     namespace test_scale {
         static_assert(identical(rounding_elastic_integer<3>{7}*rounding_elastic_integer<4>{10}, rounding_elastic_integer<7>{70}), "rounding_elastic_integer operator*");
+    }
+
+    namespace test_integer_shift
+    {
+        static_assert(identical(
+                rounding_elastic_integer<24>{256},
+                cnl::shift<8, 2, rounding_elastic_integer<16>>{}(rounding_elastic_integer<16>{1})),
+                        "shift<rounding_elastic_integer>");
+
+        static_assert(identical(
+                rounding_elastic_integer<16>{1},
+                cnl::shift<-8, 2, rounding_elastic_integer<24>>{}(rounding_elastic_integer<24>{383})),
+                      "shift<rounding_elastic_integer>");
+        static_assert(identical(
+                rounding_elastic_integer<16>{2},
+                cnl::shift<-8, 2, rounding_elastic_integer<24>>{}(rounding_elastic_integer<24>{384})),
+                      "shift<rounding_elastic_integer>");
+
+        static_assert(identical(
+                rounding_elastic_integer<16, cnl::nearest_rounding_tag>{2},
+                cnl::_impl::shift<-8, 2, rounding_elastic_integer<24, cnl::nearest_rounding_tag>>(
+                        rounding_elastic_integer<24, cnl::nearest_rounding_tag>{511})),
+                      "shift<rounding_elastic_integer>");
+    }
+
+    namespace test_integer_impl_shift
+    {
+        static_assert(identical(
+                rounding_elastic_integer<24>{256},
+                cnl::_impl::shift<8, 2>(rounding_elastic_integer<16>{1})), "shift<rounding_elastic_integer>");
+
+        static_assert(identical(
+                rounding_elastic_integer<16>{1},
+                cnl::_impl::shift<-8, 2>(rounding_elastic_integer<24>{383})), "shift<rounding_elastic_integer>");
+        static_assert(identical(
+                rounding_elastic_integer<16>{2},
+                cnl::_impl::shift<-8, 2>(rounding_elastic_integer<24>{384})), "shift<rounding_elastic_integer>");
+
+        static_assert(identical(
+                rounding_elastic_integer<16, cnl::nearest_rounding_tag>{2},
+                cnl::_impl::shift<-8, 2>(rounding_elastic_integer<24, cnl::nearest_rounding_tag>{511})),
+                      "shift<rounding_elastic_integer>");
     }
 }
