@@ -517,7 +517,7 @@ namespace cnl {
     // cnl::scale
 
     // returns a scaled value of the same type
-    template<int Digits, int Radix, class S>
+    template<int Digits, int Radix, class S, class Enable=void>
     struct scale {
         constexpr S operator()(S const& s) const
         {
