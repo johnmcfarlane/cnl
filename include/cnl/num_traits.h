@@ -505,7 +505,7 @@ namespace cnl {
 
     namespace _impl {
         // cnl::_impl::shift - convenience wrapper for cnl::shift
-        template<int Digits, int Radix=2, class S=void>
+        template<int Digits, int Radix=2, class S>
         constexpr auto shift(S const& s)
         -> decltype(cnl::shift<Digits, Radix, S>{}(s))
         {
@@ -517,7 +517,7 @@ namespace cnl {
     // cnl::scale
 
     // returns a scaled value of the same type
-    template<int Digits, int Radix, class S>
+    template<int Digits, int Radix, class S, class Enable=void>
     struct scale {
         constexpr S operator()(S const& s) const
         {
