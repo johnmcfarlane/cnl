@@ -505,7 +505,7 @@ namespace cnl {
 
     namespace _impl {
         // cnl::_impl::shift - convenience wrapper for cnl::shift
-        template<int Digits, int Radix=2, class S=void>
+        template<int Digits, int Radix=2, class S>
         constexpr auto shift(S const& s)
         -> decltype(cnl::shift<Digits, Radix, S>{}(s))
         {
