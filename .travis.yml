@@ -19,6 +19,7 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
+            - clang-5.0
             - g++-8
       env: MATRIX_EVAL="CC=gcc-8 && CXX=g++-8" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=ON
 
@@ -83,7 +84,6 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - clang-3.9
-            - g++-5
       env: MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=ON
 
     - os: linux
@@ -92,7 +92,6 @@ matrix:
           update: true
           sources:
             - llvm-toolchain-trusty-3.5
-            - ubuntu-toolchain-r-test
           packages:
             - clang-3.5
             - g++-5
