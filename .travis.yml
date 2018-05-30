@@ -3,6 +3,10 @@ sudo: required
 
 language: cpp
 
+addons:
+  apt:
+    update: true
+
 matrix:
   # Don't rely on OSX jobs succeeding before approving a build:
   # they are too slow to start and rarely flag an issue.
@@ -17,10 +21,10 @@ matrix:
         apt:
           update: true
           sources:
-            - llvm-toolchain-trusty-5.0
+            - llvm-toolchain-trusty-6.0
             - ubuntu-toolchain-r-test
           packages:
-            - clang-5.0
+            - clang-6.0
             - g++-8
       env: MATRIX_EVAL="CC=gcc-8 && CXX=g++-8" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=ON
 
