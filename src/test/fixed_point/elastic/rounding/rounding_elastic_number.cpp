@@ -37,6 +37,14 @@ namespace {
         static_assert(identical(expected, sum), "larger rounding_elastic_number addition");
     }
 
+    namespace test_shift {
+        static constexpr auto a = rounding_elastic_number<16, -8>{1};
+        static_assert(identical(rounding_elastic_number<16, -8>{2}, a << 1), "rounding_elastic_number shift");
+        static_assert(identical(rounding_elastic_number<16, -8>{.5}, a >> 1), "rounding_elastic_number shift");
+        static_assert(identical(rounding_elastic_number<16, -8>{1}, a << 0), "rounding_elastic_number shift");
+        static_assert(identical(rounding_elastic_number<16, -8>{1}, a >> 0), "rounding_elastic_number shift");
+    }
+
     namespace test_division {
 
         static_assert(identical(
