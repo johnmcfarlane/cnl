@@ -36,7 +36,7 @@ namespace cnl {
         {
             static_assert(is_integral_unsigned<T>(), "T must be unsigned integer");
 
-            return s%width==0 ? x : static_cast<T>((x << (s%width)) | (x >> (width-(s%width))));
+            return static_cast<T>((x << (s%width)) | (x >> (width-(s%width))));
         }
 
         template<typename T>
@@ -44,7 +44,7 @@ namespace cnl {
         {
             static_assert(is_integral_unsigned<T>(), "T must be unsigned integer");
 
-            return s%width==0 ? x : static_cast<T>((x >> (s%width)) | (x << (width-(s%width))));
+            return static_cast<T>((x >> (s%width)) | (x << (width-(s%width))));
         }
 
         template<typename T>
