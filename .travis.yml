@@ -35,7 +35,6 @@ matrix:
     - os: linux
       addons: &gcc6
         apt:
-          update: true
           sources:
             - ubuntu-toolchain-r-test
           packages:
