@@ -17,6 +17,7 @@ matrix:
         apt:
           update: true
           sources:
+            - llvm-toolchain-trusty-5.0
             - ubuntu-toolchain-r-test
           packages:
             - clang-5.0
@@ -31,7 +32,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
-      env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=ON
+      env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF
 
     - os: linux
       addons: &gcc6
