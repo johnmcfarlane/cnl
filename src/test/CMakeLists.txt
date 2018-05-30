@@ -137,7 +137,7 @@ endif (SANITIZE)
 
 # given the path to a source file containing gtest tests,
 # creates and returns a target that runs them
-function(make_test source out_target compile_flags)
+function(make_test source out_target compile_flags linker_flags)
     # turn source file path into target name (e.g. "foo/bar.cpp" -> "test-foo-bar")
     string(REPLACE "\.cpp" "" stripped "${source}")
     string(REPLACE "/" "-" target "Test-${stripped}")
@@ -146,8 +146,8 @@ function(make_test source out_target compile_flags)
     # create a target and make it a test
     add_executable("${target}" "${source}")
     add_test("${target}" "${target}")
-    set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${SANITIZE_FLAGS} ${compile_flags}")
-    target_link_libraries("${target}" Cnl ${SANITIZE_LINKER_FLAGS})
+    set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${compile_flags}")
+    target_link_libraries("${target}" Cnl ${linker_flags})
 
     add_gtest_dependency("${target}")
 
@@ -170,9 +170,9 @@ endfunction(make_test)
 
 foreach(source ${test_sources})
     if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-        make_test("${source}" target "")
+        make_test("${source}" target "${SANITIZE_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
     else ()
-        make_test("${source}" target "-Wconversion -Wno-sign-conversion")
+        make_test("${source}" target "${SANITIZE_FLAGS} -Wconversion -Wno-sign-conversion" "${SANITIZE_LINKER_FLAGS}")
     endif ()
 endforeach(source)
 
@@ -192,9 +192,9 @@ endif ()
 
 foreach(source ${sample_sources})
     if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-        make_test("${source}" target "-fpermissive -Wno-sign-compare")
+        make_test("${source}" target "-fpermissive -Wno-sign-compare" "")
     else ()
-        make_test("${source}" target "")
+        make_test("${source}" target "" "")
     endif ()
 endforeach(source)
 
@@ -212,9 +212,9 @@ if(Boost_FOUND AND Boost_VERSION GREATER 106099)
     # Boost.SIMD has problems building with gcc-7.x
     if(NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
         if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-            make_test(boost.simd.cpp target "-Wno-conversion")
+            make_test(boost.simd.cpp target "-Wno-conversion" "")
         else ()
-            make_test(boost.simd.cpp target "")
+            make_test(boost.simd.cpp target "" "")
         endif ()
 
         ExternalProject_Add(
@@ -236,7 +236,7 @@ endif(Boost_FOUND AND Boost_VERSION GREATER 106099)
 # create test of Vc integration
 
 if(${STD} STREQUAL "17" AND ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7.0.0")
-    make_test(vc.cpp target "")
+    make_test(vc.cpp target "" "")
 
     ExternalProject_Add(
             Vc
