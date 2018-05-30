@@ -280,6 +280,20 @@ namespace {
                 cnl::rounding_integer<>{1} << cnl::constant<3>{}), "");
     }
 
+    namespace test_shift_right {
+        static_assert(identical(
+                cnl::rounding_integer<>{2},
+                cnl::rounding_integer<>{12} >> cnl::rounding_integer<>{3}), "");
+
+        static_assert(identical(
+                cnl::rounding_integer<>{1},
+                cnl::rounding_integer<>{11} >> cnl::rounding_integer<>{3}), "");
+
+        static_assert(identical(
+                cnl::rounding_integer<>{11},
+                cnl::rounding_integer<>{11} >> cnl::rounding_integer<>{0}), "");
+    }
+
     namespace test_power {
         static_assert(identical(
                 cnl::rounding_integer<>{2},
