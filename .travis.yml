@@ -14,8 +14,8 @@ matrix:
     # C++11
     - os: linux
       addons: &gcc8
-        update: true
         apt:
+          update: true
           sources:
             - ubuntu-toolchain-r-test
           packages:
@@ -24,8 +24,8 @@ matrix:
 
     - os: linux
       addons: &gcc7
-        update: true
         apt:
+          update: true
           sources:
             - ubuntu-toolchain-r-test
           packages:
@@ -34,8 +34,8 @@ matrix:
 
     - os: linux
       addons: &gcc6
-        update: true
         apt:
+          update: true
           sources:
             - ubuntu-toolchain-r-test
           packages:
@@ -44,8 +44,8 @@ matrix:
 
     - os: linux
       addons: &gcc5
-        update: true
         apt:
+          update: true
           sources:
             - ubuntu-toolchain-r-test
           packages:
@@ -54,8 +54,8 @@ matrix:
 
     - os: linux
       addons: &clang5
-        update: true
         apt:
+          update: true
           sources:
             - llvm-toolchain-trusty-5.0
             - ubuntu-toolchain-r-test
@@ -66,8 +66,8 @@ matrix:
 
     - os: linux
       addons: &clang4
-        update: true
         apt:
+          update: true
           sources:
             - llvm-toolchain-trusty-4.0
             - ubuntu-toolchain-r-test
@@ -77,8 +77,8 @@ matrix:
 
     - os: linux
       addons: &clang39
-        update: true
         apt:
+          update: true
           sources:
             - llvm-toolchain-trusty-3.9
             - ubuntu-toolchain-r-test
@@ -89,8 +89,8 @@ matrix:
 
     - os: linux
       addons: &clang35
-        update: true
         apt:
+          update: true
           sources:
             - llvm-toolchain-trusty-3.5
             - ubuntu-toolchain-r-test
