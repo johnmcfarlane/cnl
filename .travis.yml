@@ -31,7 +31,6 @@ matrix:
     - os: linux
       addons: &gcc7
         apt:
-          update: true
           sources:
             - ubuntu-toolchain-r-test
           packages:
@@ -50,7 +49,6 @@ matrix:
     - os: linux
       addons: &gcc5
         apt:
-          update: true
           sources:
             - ubuntu-toolchain-r-test
           packages:
@@ -60,7 +58,6 @@ matrix:
     - os: linux
       addons: &clang5
         apt:
-          update: true
           sources:
             - llvm-toolchain-trusty-5.0
             - ubuntu-toolchain-r-test
@@ -72,7 +69,6 @@ matrix:
     - os: linux
       addons: &clang4
         apt:
-          update: true
           sources:
             - llvm-toolchain-trusty-4.0
             - ubuntu-toolchain-r-test
@@ -83,20 +79,20 @@ matrix:
     - os: linux
       addons: &clang39
         apt:
-          update: true
           sources:
             - llvm-toolchain-trusty-3.9
             - ubuntu-toolchain-r-test
           packages:
             - clang-3.9
+            - g++-5
       env: MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF
 
     - os: linux
       addons: &clang35
         apt:
-          update: true
           sources:
             - llvm-toolchain-trusty-3.5
+            - ubuntu-toolchain-r-test
           packages:
             - clang-3.5
             - g++-5
