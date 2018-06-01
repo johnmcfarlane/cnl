@@ -116,12 +116,7 @@ namespace cnl {
 
     template<class Rep, class RoundingTag, class ValueRep, class ValueRoundingTag>
     struct from_value<rounding_integer<Rep, RoundingTag>, rounding_integer<ValueRep, ValueRoundingTag>> {
-    private:
-        // the common_type of two rounding tags is the stricter for some sense of strict
-        using _rounding = _impl::common_type_t<RoundingTag, ValueRoundingTag>;
-        using _rep = from_value_t<Rep, ValueRep>;
-    public:
-        using type = rounding_integer<_rep, _rounding>;
+        using type = rounding_integer<ValueRep, RoundingTag>;
     };
 
     template<class Rep, class RoundingTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
