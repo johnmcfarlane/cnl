@@ -292,6 +292,9 @@ namespace {
         static_assert(identical(
                 cnl::rounding_integer<>{11},
                 cnl::rounding_integer<>{11} >> cnl::rounding_integer<>{0}), "");
+
+        static_assert(identical(cnl::rounding_integer<>{1}, cnl::rounding_integer<>{1} >> 1), "");
+        static_assert(identical(cnl::rounding_integer<>{0}, cnl::rounding_integer<>{1} >> 2), "");
     }
 
     namespace test_power {
