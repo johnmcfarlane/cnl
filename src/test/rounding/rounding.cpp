@@ -69,9 +69,18 @@ namespace {
         }
 
         namespace shift_right {
+            static_assert(identical(1, cnl::shift_right<cnl::nearest_rounding_tag, int, int>{}(1, 1)),
+                    "cnl::shift_right test failed");
+            static_assert(identical(0, cnl::shift_right<cnl::nearest_rounding_tag, int, int>{}(1, 2)),
+                    "cnl::shift_right test failed");
+
             static_assert(identical(1, cnl::shift_right<cnl::nearest_rounding_tag, int, int>{}(191, 7)),
                     "cnl::shift_right test failed");
             static_assert(identical(2, cnl::shift_right<cnl::nearest_rounding_tag, int, int>{}(192, 7)),
+                    "cnl::shift_right test failed");
+            static_assert(identical(2, cnl::shift_right<cnl::nearest_rounding_tag, int, int>{}(319, 7)),
+                    "cnl::shift_right test failed");
+            static_assert(identical(3, cnl::shift_right<cnl::nearest_rounding_tag, int, int>{}(320, 7)),
                     "cnl::shift_right test failed");
         }
     }

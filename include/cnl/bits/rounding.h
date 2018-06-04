@@ -78,9 +78,7 @@ namespace cnl {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs >> rhs)
             {
-                return rhs
-                ? static_cast<decltype(lhs >> rhs)>((lhs+(Lhs{1} << (rhs-1))) >> rhs)
-                : lhs >> rhs;
+                return (lhs+((Lhs{1}<<rhs)>>1)) >> rhs;
             }
         };
 
