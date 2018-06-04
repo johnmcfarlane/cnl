@@ -22,7 +22,7 @@ namespace {
         // pi stored as s5.10 (truncated rounding)
         constexpr auto n = cnl::from_rep<cnl::fixed_point<int16, -10>>()(int16{3216});
 #if defined(__cpp_inline_variables)
-        static_assert(identical(cnl::math_constants::pi<cnl::fixed_point<int16, -10>>, n));
+        static_assert(identical(cnl::pi<cnl::fixed_point<int16, -10>>, n));
 #endif
         static_assert(identical(int16{3216}, to_rep(n)), "cnl::to_rep(cnl::fixed_point)");
         static_assert(identical(3.140625, static_cast<double>(n)), "cnl::fixed_point::operator double()");
