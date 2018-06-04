@@ -89,97 +89,95 @@ namespace cnl {
         }
     }
 
-    namespace math_constants {
-        /// specialization of \ref cnl::math_constants::e for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> e<fixed_point<Rep, Exponent>> {
-            _impl::constant_with_fallback<long double, Rep, Exponent>(e<long double>, _impl::e<Rep, Exponent>)
-        };
+    /// specialization of \ref cnl::e for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> e<fixed_point<Rep, Exponent>> {
+        _impl::constant_with_fallback<long double, Rep, Exponent>(e<long double>, _impl::e<Rep, Exponent>)
+    };
 
-        /// specialization of \ref cnl::math_constants::log2e for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> log2e<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ log2e<long double> }
-        };
+    /// specialization of \ref cnl::log2e for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> log2e<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ log2e<long double> }
+    };
 
-        /// specialization of \ref cnl::math_constants::log10e for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> log10e<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ log10e<long double> }
-        };
+    /// specialization of \ref cnl::log10e for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> log10e<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ log10e<long double> }
+    };
 
-        /// specialization of \ref cnl::math_constants::pi for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> pi<fixed_point<Rep, Exponent>>{
-            _impl::constant_with_fallback<long double, Rep, Exponent>(pi<long double>, _impl::pi<Rep, Exponent>)
-        };
+    /// specialization of \ref cnl::pi for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> pi<fixed_point<Rep, Exponent>>{
+        _impl::constant_with_fallback<long double, Rep, Exponent>(pi<long double>, _impl::pi<Rep, Exponent>)
+    };
 
-        /// specialization of \ref cnl::math_constants::invpi for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invpi<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ invpi<long double> }
-        };
+    /// specialization of \ref cnl::invpi for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invpi<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ invpi<long double> }
+    };
 
-        /// specialization of \ref cnl::math_constants::invsqrtpi for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrtpi<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ invsqrtpi<long double> }
-        };
+    /// specialization of \ref cnl::invsqrtpi for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrtpi<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ invsqrtpi<long double> }
+    };
 
-        /// specialization of \ref cnl::math_constants::ln2 for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> ln2<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ ln2<long double> }
-        };
+    /// specialization of \ref cnl::ln2 for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> ln2<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ ln2<long double> }
+    };
 
-        /// specialization of \ref cnl::math_constants::ln10 for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> ln10<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ ln10<long double> }
-        };
+    /// specialization of \ref cnl::ln10 for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> ln10<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ ln10<long double> }
+    };
 
-        /// specialization of \ref cnl::math_constants::sqrt2 for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> sqrt2<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ sqrt2<long double> }
-        };
+    /// specialization of \ref cnl::sqrt2 for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> sqrt2<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ sqrt2<long double> }
+    };
 
-        /// specialization of \ref cnl::math_constants::sqrt3 for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> sqrt3<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ sqrt3<long double> }
-        };
+    /// specialization of \ref cnl::sqrt3 for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> sqrt3<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ sqrt3<long double> }
+    };
 
-        /// specialization of \ref cnl::math_constants::invsqrt2 for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrt2<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ invsqrt2<long double> }
-        };
+    /// specialization of \ref cnl::invsqrt2 for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrt2<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ invsqrt2<long double> }
+    };
 
-        /// specialization of \ref cnl::math_constants::invsqrt3 for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrt3<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ invsqrt3<long double> }
-        };
+    /// specialization of \ref cnl::invsqrt3 for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrt3<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ invsqrt3<long double> }
+    };
 
-        /// specialization of \ref cnl::math_constants::radian for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> radian<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ radian<long double> }
-        };
+    /// specialization of \ref cnl::radian for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> radian<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ radian<long double> }
+    };
 
-        /// specialization of \ref cnl::math_constants::egamma for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> egamma<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ egamma<long double> }
-        };
+    /// specialization of \ref cnl::egamma for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> egamma<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ egamma<long double> }
+    };
 
-        /// specialization of \ref cnl::math_constants::phi for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> phi<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ phi<long double> }
-        };
+    /// specialization of \ref cnl::phi for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> phi<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ phi<long double> }
+    };
 
-        /// specialization of \ref cnl::math_constants::catalan for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> catalan<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ catalan<long double> }
-        };
+    /// specialization of \ref cnl::catalan for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> catalan<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ catalan<long double> }
+    };
 
-        /// specialization of \ref cnl::math_constants::apery for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> apery<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ apery<long double> }
-        };
+    /// specialization of \ref cnl::apery for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> apery<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ apery<long double> }
+    };
 
-        /// specialization of \ref cnl::math_constants::glaisher for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> glaisher<fixed_point<Rep, Exponent>> {
-            fixed_point<Rep, Exponent>{ glaisher<long double> }
-        };
-    }
+    /// specialization of \ref cnl::glaisher for \ref cnl::fixed_point
+    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> glaisher<fixed_point<Rep, Exponent>> {
+        fixed_point<Rep, Exponent>{ glaisher<long double> }
+    };
 #endif  // defined(__cpp_inline_variables)
 }
 
