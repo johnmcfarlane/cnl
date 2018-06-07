@@ -453,11 +453,11 @@ namespace cnl {
     // unary operator+
     template<int RhsDigits, class RhsNarrowest>
     constexpr auto operator+(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
-    -> decltype(from_rep<elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>>{}(
-            to_rep(static_cast<elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>>(rhs))))
+    -> decltype(from_rep<elastic_integer<RhsDigits, RhsNarrowest>>{}(
+            +to_rep(static_cast<elastic_integer<RhsDigits, RhsNarrowest>>(rhs))))
     {
-        using result_type = elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>;
-        return from_rep<result_type>{}(to_rep(static_cast<result_type>(rhs)));
+        return from_rep<elastic_integer<RhsDigits, RhsNarrowest>>{}(
+                +to_rep(static_cast<elastic_integer<RhsDigits, RhsNarrowest>>(rhs)));
     }
 }
 
