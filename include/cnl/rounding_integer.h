@@ -46,7 +46,7 @@ namespace cnl {
 
         using _base = _impl::number_base<rounding_integer<Rep, RoundingTag>, Rep>;
 
-        constexpr rounding_integer() = default;
+        rounding_integer() = default;
 
         template<class T, _impl::enable_if_t<numeric_limits<T>::is_integer, int> Dummy = 0>
         constexpr rounding_integer(T const& v)

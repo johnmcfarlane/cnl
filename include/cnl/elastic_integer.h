@@ -163,7 +163,7 @@ namespace cnl {
         using rep = typename _base::rep;
 
         /// default constructor
-        constexpr elastic_integer() = default;
+        elastic_integer() = default;
 
         /// construct from numeric type
         template<class Number, _impl::enable_if_t<numeric_limits<Number>::is_specialized, int> Dummy = 0>

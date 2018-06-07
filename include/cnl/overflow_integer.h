@@ -102,7 +102,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // functions
 
-        constexpr overflow_integer() = delete;
+        overflow_integer() = delete;
 
         template<class RhsRep, class RhsOverflowTag>
         constexpr overflow_integer(overflow_integer<RhsRep, RhsOverflowTag> const& rhs)
