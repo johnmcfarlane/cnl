@@ -1,6 +1,6 @@
 project(Tau)
 
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.0)
 
 add_executable(Tau main.cpp)
 target_compile_options(Tau PRIVATE "-std=c++17")

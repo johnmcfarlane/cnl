@@ -132,7 +132,7 @@ add_custom_target(Tests)
 function(make_test source out_target compile_flags linker_flags)
 
     # turn source file path into target name (e.g. "foo/bar.cpp" -> "test-foo-bar")
-    string(REPLACE "\.cpp" "" stripped "${source}")
+    string(REPLACE ".cpp" "" stripped "${source}")
     string(REPLACE "/" "-" target "Test-${stripped}")
     set(${out_target} "${target}" PARENT_SCOPE)
 
@@ -249,7 +249,8 @@ endif(Boost_FOUND AND Boost_VERSION GREATER 106099)
 ######################################################################
 # create test of Vc integration
 
-if(${STD} STREQUAL "17" AND ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7.0.0")
+if(${STD} STREQUAL "17" AND ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7.0.0"
+        AND CMAKE_VERSION VERSION_GREATER "3.2")
     make_test(vc.cpp target "" "")
 
     ExternalProject_Add(
