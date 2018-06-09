@@ -87,9 +87,6 @@ namespace cnl {
         // cnl::_impl::depth
 
         template<class Wrapper, class Rep = decltype(to_rep(std::declval<Wrapper>()))>
-        struct depth;
-
-        template<class Wrapper, class Rep>
         struct depth {
             static constexpr auto value = depth<Rep>::value + 1;
         };
