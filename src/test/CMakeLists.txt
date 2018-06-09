@@ -249,7 +249,8 @@ endif(Boost_FOUND AND Boost_VERSION GREATER 106099)
 ######################################################################
 # create test of Vc integration
 
-if(${STD} STREQUAL "17" AND ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7.0.0")
+if(${STD} STREQUAL "17" AND ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7.0.0"
+        AND CMAKE_VERSION VERSION_GREATER "3.2")
     make_test(vc.cpp target "" "")
 
     ExternalProject_Add(
