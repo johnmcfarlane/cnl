@@ -38,6 +38,12 @@ namespace cnl {
             static_assert(std::is_same<A, B>::value, "different types");
             return a==b;
         }
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::remove_cvref_t
+
+        template<typename T>
+        using remove_cvref_t = typename std::remove_cv<typename std::remove_reference<T>::type>::type;
     }
 }
 
