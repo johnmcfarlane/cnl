@@ -32,12 +32,12 @@ and [P0554](http://wg21.link/p0554) for more details.
 
 ### Linux
 
-Tested on [Travis](https://travis-ci.org/johnmcfarlane/cnl) (Ubuntu 14.04).
+Tested on [Travis](https://travis-ci.org/johnmcfarlane/cnl) and [CircleCI](https://circleci.com/gh/johnmcfarlane/cnl).
 
 Requires:
 
 - GCC 5.1 / Clang 3.5
-- [CMake](https://cmake.org/download/) ([3.2.2](https://docs.travis-ci.com/user/languages/cpp/#CMake))
+- [CMake](https://cmake.org/download/) ([3.0.2](https://docs.travis-ci.com/user/languages/cpp/#CMake))
 
 Optional:
 
