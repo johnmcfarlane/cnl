@@ -132,7 +132,7 @@ add_custom_target(Tests)
 function(make_test source out_target compile_flags linker_flags)
 
     # turn source file path into target name (e.g. "foo/bar.cpp" -> "test-foo-bar")
-    string(REPLACE "\.cpp" "" stripped "${source}")
+    string(REPLACE ".cpp" "" stripped "${source}")
     string(REPLACE "/" "-" target "Test-${stripped}")
     set(${out_target} "${target}" PARENT_SCOPE)
 
