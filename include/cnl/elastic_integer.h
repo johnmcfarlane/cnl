@@ -436,6 +436,19 @@ namespace cnl {
                                 to_rep(static_cast<result_type>(rhs)))));
             }
         };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // pre/post operators
+
+        template<class Operator, int Digits, typename Narrowest>
+        struct pre_operator<Operator, elastic_integer<Digits, Narrowest>>
+                : pre_operator<Operator, typename elastic_integer<Digits, Narrowest>::_base> {
+        };
+
+        template<class Operator, int Digits, typename Narrowest>
+        struct post_operator<Operator, elastic_integer<Digits, Narrowest>>
+                : post_operator<Operator, typename elastic_integer<Digits, Narrowest>::_base> {
+        };
     }
 
     template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>

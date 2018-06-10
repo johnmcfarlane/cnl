@@ -484,4 +484,44 @@ namespace {
         auto equal = identical(i, cnl::to_rep(cnl::elastic_integer<10>{i}));
         ASSERT_TRUE(equal);
     }
+
+    TEST(elastic_integer, pre_increment) {
+        auto i = 123;
+        auto a = cnl::elastic_integer<10>{i};
+        auto& b = ++a;
+        ASSERT_EQ(a, i+1);
+        ASSERT_EQ(b, i+1);
+        ASSERT_EQ(&a, &b);
+        static_assert(std::is_same<cnl::elastic_integer<10>&, decltype(b)>::value, "");
+    }
+
+    TEST(elastic_integer, pre_decrement) {
+        auto i = 123;
+        auto a = cnl::elastic_integer<10>{i};
+        auto& b = --a;
+        ASSERT_EQ(a, i-1);
+        ASSERT_EQ(b, i-1);
+        ASSERT_EQ(&a, &b);
+        static_assert(std::is_same<cnl::elastic_integer<10>&, decltype(b)>::value, "");
+    }
+
+    TEST(elastic_integer, post_increment) {
+        auto i = 123;
+        auto a = cnl::elastic_integer<10>{i};
+        auto b = a++;
+        ASSERT_EQ(a, i+1);
+        ASSERT_EQ(b, i);
+        ASSERT_NE(&a, &b);
+        static_assert(std::is_same<cnl::elastic_integer<10>, decltype(b)>::value, "");
+    }
+
+    TEST(elastic_integer, post_decrement) {
+        auto i = 123;
+        auto a = cnl::elastic_integer<10>{i};
+        auto b = a--;
+        ASSERT_EQ(a, i-1);
+        ASSERT_EQ(b, i);
+        ASSERT_NE(&a, &b);
+        static_assert(std::is_same<cnl::elastic_integer<10>, decltype(b)>::value, "");
+    }
 }

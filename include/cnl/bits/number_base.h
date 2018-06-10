@@ -171,6 +171,33 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::pre_operator
+
+        // number_base<> OP lower
+        template<class Operator, class Derived, typename Rep>
+        struct pre_operator<Operator, number_base<Derived, Rep>> {
+            CNL_RELAXED_CONSTEXPR Derived& operator()(Derived& rhs) const
+            {
+                Operator()(to_rep(rhs));
+                return rhs;
+            }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::post_operator
+
+        // number_base<> OP lower
+        template<class Operator, class Derived, typename Rep>
+        struct post_operator<Operator, number_base<Derived, Rep>> {
+            CNL_RELAXED_CONSTEXPR Derived operator()(Derived& lhs) const
+            {
+                auto copy = lhs;
+                Operator()(to_rep(lhs));
+                return copy;
+            }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::wants_generic_ops
 
         template<class Number>
