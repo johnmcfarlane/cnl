@@ -44,6 +44,17 @@ namespace cnl {
 
         template<typename T>
         using remove_cvref_t = typename std::remove_cv<typename std::remove_reference<T>::type>::type;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::type_identity (wg21.link/p0887r1)
+
+        template<typename T>
+        struct type_identity {
+            using type = T;
+        };
+
+        template<typename T>
+        using type_identity_t = typename type_identity<T>::type;
     }
 }
 
