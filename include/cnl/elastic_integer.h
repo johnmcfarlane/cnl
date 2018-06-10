@@ -71,11 +71,22 @@ namespace cnl {
 
     /// \brief Overload of \ref to_rep(Number const& number) for \ref elastic_integer.
     template<int Digits, class Narrowest>
-    constexpr auto to_rep(elastic_integer<Digits, Narrowest> const& number)
-    -> typename elastic_integer<Digits, Narrowest>::rep
+    constexpr auto to_rep(elastic_integer<Digits, Narrowest>& number)
+    -> typename elastic_integer<Digits, Narrowest>::rep&
     {
-        using base_type = typename elastic_integer<Digits, Narrowest>::_base;
-        return to_rep(static_cast<base_type const&>(number));
+        return to_rep(static_cast<typename elastic_integer<Digits, Narrowest>::_base&>(number));
+    }
+    template<int Digits, class Narrowest>
+    constexpr auto to_rep(elastic_integer<Digits, Narrowest> const& number)
+    -> typename elastic_integer<Digits, Narrowest>::rep const&
+    {
+        return to_rep(static_cast<typename elastic_integer<Digits, Narrowest>::_base const&>(number));
+    }
+    template<int Digits, class Narrowest>
+    constexpr auto to_rep(elastic_integer<Digits, Narrowest>&& number)
+    -> typename elastic_integer<Digits, Narrowest>::rep&&
+    {
+        return to_rep(static_cast<typename elastic_integer<Digits, Narrowest>::_base&&>(number));
     }
 
     namespace _impl {

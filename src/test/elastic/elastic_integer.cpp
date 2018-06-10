@@ -10,6 +10,8 @@
 #include <cnl/elastic_integer.h>
 #include <cnl/bits/rounding.h>
 
+#include <gtest/gtest.h>
+
 namespace {
     using std::is_same;
     using cnl::elastic_integer;
@@ -20,7 +22,7 @@ namespace {
     // simple one-off tests
     namespace test_depth {
         static_assert(cnl::_impl::depth<int>::value == 0, "");
-        static_assert(std::is_same<decltype(to_rep(std::declval<elastic_integer<2>>())), int>::value, "");
+        static_assert(std::is_same<decltype(to_rep(std::declval<elastic_integer<2>>())), int&&>::value, "");
         static_assert(cnl::_impl::depth<elastic_integer<0>, int>::value == 1, "");
         static_assert(cnl::_impl::depth<elastic_integer<1>>::value == 1, "");
     }
@@ -459,5 +461,27 @@ namespace {
                 elastic_integer<20+34, unsigned>{0b11001110101011101001LL << 34} >> 34_c),
                 "shift_left test failed");
 #endif
+    }
+
+    TEST(elastic_integer, to_rep_ref) {
+        auto i = 123;
+        auto e = cnl::elastic_integer<10>{i};
+        int& expected = i;
+        auto equal = identical(expected, cnl::to_rep(e));
+        ASSERT_TRUE(equal);
+    }
+
+    TEST(elastic_integer, to_rep_const_ref) {
+        auto i = 123;
+        auto const e = cnl::elastic_integer<10>{i};
+        int const& expected = i;
+        auto equal = identical(expected, cnl::to_rep(e));
+        ASSERT_TRUE(equal);
+    }
+
+    TEST(elastic_integer, to_rep_rvalue_ref) {
+        auto i = 123;
+        auto equal = identical(i, cnl::to_rep(cnl::elastic_integer<10>{i}));
+        ASSERT_TRUE(equal);
     }
 }
