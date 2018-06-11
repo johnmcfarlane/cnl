@@ -116,6 +116,49 @@ TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), from_compound_assignment)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// increment/decrement operators
+
+TEST(TOKENPASTE2(TEST_LABEL, pre), increment)
+{
+    auto b = fixed_point<int16, -8>(22.75);
+    auto &a = ++b;
+    static_assert(std::is_same<fixed_point<int16, -8>&, decltype(a)>::value, "");
+    ASSERT_EQ(&b, &a);
+    ASSERT_EQ(23.75, a);
+    ASSERT_EQ(23.75, b);
+}
+
+TEST(TOKENPASTE2(TEST_LABEL, pre), decrement)
+{
+    auto b = fixed_point<int16, -8>(22.75);
+    auto &a = --b;
+    static_assert(std::is_same<fixed_point<int16, -8>&, decltype(a)>::value, "");
+    ASSERT_EQ(&b, &a);
+    ASSERT_EQ(21.75, a);
+    ASSERT_EQ(21.75, b);
+}
+
+TEST(TOKENPASTE2(TEST_LABEL, post), increment)
+{
+    auto b = fixed_point<int16, -8>(22.75);
+    auto a = b++;
+    static_assert(std::is_same<fixed_point<int16, -8>, decltype(a)>::value, "");
+    ASSERT_NE(&b, &a);
+    ASSERT_EQ(22.75, a);
+    ASSERT_EQ(23.75, b);
+}
+
+TEST(TOKENPASTE2(TEST_LABEL, post), decrement)
+{
+    auto b = fixed_point<int16, -8>(22.75);
+    auto a = b--;
+    static_assert(std::is_same<fixed_point<int16, -8>, decltype(a)>::value, "");
+    ASSERT_NE(&b, &a);
+    ASSERT_EQ(22.75, a);
+    ASSERT_EQ(21.75, b);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // sqrt exception throwing
 
 #if defined(CNL_EXCEPTIONS_ENABLED)

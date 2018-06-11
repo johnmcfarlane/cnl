@@ -17,7 +17,11 @@ namespace cnl {
         class number_base;
 
         template<class Derived, class Rep>
-        constexpr Rep to_rep(number_base<Derived, Rep> const& number);
+        constexpr Rep& to_rep(number_base<Derived, Rep>& number);
+        template<class Derived, class Rep>
+        constexpr Rep const& to_rep(number_base<Derived, Rep> const& number);
+        template<class Derived, class Rep>
+        constexpr Rep&& to_rep(number_base<Derived, Rep>&& number);
 
         template<class Derived, class Rep>
         class number_base {
@@ -45,9 +49,13 @@ namespace cnl {
 
 #if defined(__GNUG__) && !defined(__clang__) && (__GNUG__ <= 5)
             // GCC5 bug: https://stackoverflow.com/a/29957648/671509
-            friend rep to_rep<>(number_base const&);
+            friend rep& to_rep<>(number_base&);
+            friend rep const& to_rep<>(number_base const&);
+            friend rep&& to_rep<>(number_base&&);
 #else
-            friend constexpr rep to_rep<>(number_base const&);
+            friend constexpr rep& to_rep<>(number_base&);
+            friend constexpr rep const& to_rep<>(number_base const&);
+            friend constexpr rep&& to_rep<>(number_base&&);
 #endif
 
         private:
@@ -86,10 +94,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::depth
 
-        template<class Wrapper, class Rep = decltype(to_rep(std::declval<Wrapper>()))>
-        struct depth;
-
-        template<class Wrapper, class Rep>
+        template<class Wrapper, class Rep = _impl::remove_cvref_t<_impl::to_rep_t<Wrapper>>>
         struct depth {
             static constexpr auto value = depth<Rep>::value + 1;
         };
@@ -166,6 +171,33 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::pre_operator
+
+        // number_base<> OP lower
+        template<class Operator, class Derived, typename Rep>
+        struct pre_operator<Operator, number_base<Derived, Rep>> {
+            CNL_RELAXED_CONSTEXPR Derived& operator()(Derived& rhs) const
+            {
+                Operator()(to_rep(rhs));
+                return rhs;
+            }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::post_operator
+
+        // number_base<> OP lower
+        template<class Operator, class Derived, typename Rep>
+        struct post_operator<Operator, number_base<Derived, Rep>> {
+            CNL_RELAXED_CONSTEXPR Derived operator()(Derived& lhs) const
+            {
+                auto copy = lhs;
+                Operator()(to_rep(lhs));
+                return copy;
+            }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::wants_generic_ops
 
         template<class Number>
@@ -208,8 +240,16 @@ namespace cnl {
 
     namespace _impl {
         template<class Derived, class Rep>
-        constexpr Rep to_rep(number_base<Derived, Rep> const& number) {
+        constexpr Rep& to_rep(number_base<Derived, Rep>& number) {
             return number._rep;
+        }
+        template<class Derived, class Rep>
+        constexpr Rep const& to_rep(number_base<Derived, Rep> const& number) {
+            return number._rep;
+        }
+        template<class Derived, class Rep>
+        constexpr Rep&& to_rep(number_base<Derived, Rep>&& number) {
+            return std::forward<Rep>(number._rep);
         }
     }
 

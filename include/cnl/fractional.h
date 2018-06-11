@@ -52,17 +52,6 @@ namespace cnl {
         denominator_type denominator = 1;
     };
 
-#if defined(__cpp_deduction_guides)
-    // cnl::fractional deduction guides
-    template<typename Numerator, typename Denominator>
-    fractional(Numerator const& n, Denominator const& d)
-    -> fractional<Numerator, Denominator>;
-
-    template<typename Numerator>
-    fractional(Numerator const& n)
-    -> fractional<Numerator, int>;
-#endif
-
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::make_fractional
 

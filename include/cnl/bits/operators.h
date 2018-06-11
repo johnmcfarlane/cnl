@@ -179,6 +179,38 @@ namespace cnl {
             }
         };
 
+        struct pre_increment_op {
+            template<class Rhs>
+            constexpr auto operator()(Rhs& rhs) const -> decltype(++rhs)
+            {
+                return ++rhs;
+            }
+        };
+
+        struct pre_decrement_op {
+            template<class Rhs>
+            constexpr auto operator()(Rhs& rhs) const -> decltype(--rhs)
+            {
+                return --rhs;
+            }
+        };
+
+        struct post_increment_op {
+            template<class Lhs>
+            constexpr auto operator()(Lhs& lhs) const -> decltype(lhs++)
+            {
+                return lhs++;
+            }
+        };
+
+        struct post_decrement_op {
+            template<class Lhs>
+            constexpr auto operator()(Lhs& lhs) const -> decltype(lhs--)
+            {
+                return lhs--;
+            }
+        };
+
         struct assign_add_op {
             using binary = add_op;
 
@@ -296,6 +328,12 @@ namespace cnl {
         template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
         struct binary_operator;
 
+        template<class Operator, class RhsOperand, class Enable = void>
+        struct pre_operator;
+
+        template<class Operator, class LhsOperand, class Enable = void>
+        struct post_operator;
+
         template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
         struct compound_assignment_operator {
             constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
@@ -398,6 +436,32 @@ namespace cnl {
     CNL_DEFINE_BINARY_OPERATOR(<=, less_than_or_equal_op)
 
     CNL_DEFINE_BINARY_OPERATOR(>=, greater_than_or_equal_op)
+
+    // pre increment/decrement
+#define CNL_DEFINE_PRE_OPERATOR(OP, NAME) \
+    template<class RhsOperand> \
+    constexpr auto operator OP (RhsOperand& rhs) \
+    -> decltype(cnl::_impl::pre_operator<cnl::_impl::NAME, RhsOperand>()(rhs)) \
+    { \
+        return cnl::_impl::pre_operator<cnl::_impl::NAME, RhsOperand>()(rhs); \
+    }
+
+    CNL_DEFINE_PRE_OPERATOR(++, pre_increment_op)
+
+    CNL_DEFINE_PRE_OPERATOR(--, pre_decrement_op)
+
+    // post increment/decrement
+#define CNL_DEFINE_POST_OPERATOR(OP, NAME) \
+    template<class LhsOperand> \
+    constexpr auto operator OP (LhsOperand& lhs, int) \
+    -> decltype(cnl::_impl::post_operator<cnl::_impl::NAME, LhsOperand>()(lhs)) \
+    { \
+        return cnl::_impl::post_operator<cnl::_impl::NAME, LhsOperand>()(lhs); \
+    }
+
+    CNL_DEFINE_POST_OPERATOR(++, post_increment_op)
+
+    CNL_DEFINE_POST_OPERATOR(--, post_decrement_op)
 
     // compound assignment operators
 #define CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(OP, NAME) \

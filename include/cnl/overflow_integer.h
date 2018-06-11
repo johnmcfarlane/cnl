@@ -102,7 +102,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // functions
 
-        constexpr overflow_integer() = delete;
+        overflow_integer() = delete;
 
         template<class RhsRep, class RhsOverflowTag>
         constexpr overflow_integer(overflow_integer<RhsRep, RhsOverflowTag> const& rhs)
@@ -161,7 +161,7 @@ namespace cnl {
 
     /// \brief Overload of \ref to_rep(Number const& number) for \ref overflow_integer.
     template<class Rep, class OverflowTag>
-    constexpr Rep to_rep(overflow_integer<Rep, OverflowTag> const& number)
+    constexpr Rep const& to_rep(overflow_integer<Rep, OverflowTag> const& number)
     {
         using base_type = typename overflow_integer<Rep, OverflowTag>::_base;
         return to_rep(static_cast<base_type const&>(number));
