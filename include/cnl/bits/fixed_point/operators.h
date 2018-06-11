@@ -155,6 +155,49 @@ namespace cnl {
                                 _impl::shift<_rhs_left_shift>(to_rep(rhs))));
             }
         };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // pre-increment/decrement arithmetic operators
+
+        template<class Operator>
+        struct pre_to_assign;
+
+        template<>
+        struct pre_to_assign<pre_increment_op> : type_identity<assign_add_op> {};
+
+        template<>
+        struct pre_to_assign<pre_decrement_op> : type_identity<assign_subtract_op> {};
+
+        template<typename Operator, typename Rep, int Exponent, int Radix>
+        struct pre_operator<Operator, fixed_point<Rep, Exponent, Radix>> {
+            constexpr auto operator()(fixed_point<Rep, Exponent, Radix>& rhs) const
+            -> decltype(typename pre_to_assign<Operator>::type{}(rhs, 1))
+            {
+                return typename pre_to_assign<Operator>::type{}(rhs, 1);
+            }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // post-increment/decrement arithmetic operators
+
+        template<class Operator>
+        struct post_to_assign;
+
+        template<>
+        struct post_to_assign<post_increment_op> : type_identity<assign_add_op> {};
+
+        template<>
+        struct post_to_assign<post_decrement_op> : type_identity<assign_subtract_op> {};
+
+        template<typename Operator, typename Rep, int Exponent, int Radix>
+        struct post_operator<Operator, fixed_point<Rep, Exponent, Radix>> {
+            CNL_RELAXED_CONSTEXPR fixed_point<Rep, Exponent, Radix> operator()(fixed_point<Rep, Exponent, Radix>& rhs) const
+            {
+                auto copy = rhs;
+                typename post_to_assign<Operator>::type{}(rhs, 1);
+                return copy;
+            }
+        };
     }
 
     ////////////////////////////////////////////////////////////////////////////////
