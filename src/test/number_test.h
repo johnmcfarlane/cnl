@@ -94,10 +94,8 @@ struct number_test {
     // comparisons between minimum value
     static_assert(is_equal_to(max, max), "comparison test error");
 
-#if defined(__clang__) || ! defined(__GNUG__)
     // comparisons between zero and literal zero
-    static_assert(is_equal_to(zero, 0.), "comparison test error");
-#endif
+    static_assert(is_equal_to(static_cast<double>(zero), 0.), "comparison test error");
 
     // comparisons between zero and zero-initialized value
     static_assert(is_equal_to(zero, value_type(0.)), "zero-initialized value is not represented using zero");
@@ -118,7 +116,6 @@ struct number_test {
     // test operator+
 
     // TODO: arithmetic failing for GCC 7
-#if defined(__clang__) || ! defined(__GNUG__) || (__GNUG__ <= 6)
     static_assert(zero+zero==zero, "operator+ test failed");
     static_assert(zero+zero+zero==zero, "operator+ test failed");
 
@@ -132,7 +129,6 @@ struct number_test {
     static_assert(is_equal_to(min-zero, min), "operator- test failed");
 
     static_assert(is_equal_to(max-max, zero), "operator- test failed");
-#endif
 
     ////////////////////////////////////////////////////////////////////////////////
     // numeric traits

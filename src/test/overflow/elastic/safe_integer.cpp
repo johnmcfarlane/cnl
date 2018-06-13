@@ -91,9 +91,7 @@ namespace {
     namespace test_multiply {
         static_assert(identical(cnl::safe_integer<6>{55}*cnl::safe_integer<6>{4}, cnl::safe_integer<12>{220}), "cnl::safe_integer operator*");
         static_assert(identical(cnl::safe_integer<3>{7}*cnl::safe_integer<4>{10}, cnl::safe_integer<7>{70}), "cnl::safe_integer operator*");
-#if defined(__clang__) || ! defined(__GNUG__)
         static_assert(identical(cnl::safe_integer<3>{3}*.25, .75), "cnl::safe_integer operator*");
-#endif
     }
 
     namespace test_divide {
@@ -160,11 +158,9 @@ template struct test_safe_int<1, cnl::throwing_overflow_tag>;
 template struct test_safe_int<5, cnl::throwing_overflow_tag>;
 template struct test_safe_int<21, cnl::throwing_overflow_tag>;
 
-#if defined(__clang__) || ! defined(__GNUG__) || (__GNUG__ > 6)
 template struct test_safe_int<2, cnl::saturated_overflow_tag>;
 template struct test_safe_int<8, cnl::saturated_overflow_tag>;
 template struct test_safe_int<34, cnl::saturated_overflow_tag>;
-#endif
 
 template struct test_safe_int<3, cnl::native_overflow_tag>;
 template struct test_safe_int<13, cnl::native_overflow_tag>;
