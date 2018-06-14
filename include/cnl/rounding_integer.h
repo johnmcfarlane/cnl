@@ -205,6 +205,20 @@ namespace cnl {
             }
         };
 
+        template<class LhsRep, class RhsRep, class RoundingTag>
+        struct binary_operator<shift_right_op,
+                rounding_integer<LhsRep, RoundingTag>, rounding_integer<RhsRep, RoundingTag>> {
+            constexpr auto operator()(
+                    rounding_integer<LhsRep, RoundingTag> const& lhs,
+                    rounding_integer<RhsRep, RoundingTag> const& rhs) const
+            -> decltype(from_rep<rounding_integer<decltype(to_rep(lhs)>>to_rep(rhs)), RoundingTag>>{}(
+                    to_rep(lhs)>>to_rep(rhs)))
+            {
+                return from_rep<rounding_integer<decltype(to_rep(lhs)>>to_rep(rhs)), RoundingTag>>{}(
+                        to_rep(lhs)>>to_rep(rhs));
+            }
+        };
+
         // comparison for operands with a common tag
         template<class Operator, class LhsRep, class RhsRep, class RoundingTag>
         struct binary_operator<Operator, rounding_integer<LhsRep, RoundingTag>, rounding_integer<RhsRep, RoundingTag>,
