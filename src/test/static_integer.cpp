@@ -129,7 +129,7 @@ namespace {
         static_assert(identical(cnl::make_static_integer(7_c), cnl::static_integer<3>{7}), "");
     }
 
-    namespace test_right_shift_native {
+    namespace test_shift_right_native {
         static_assert(identical(
                 cnl::static_integer<3, cnl::native_rounding_tag>{1},
                 cnl::static_integer<3, cnl::native_rounding_tag>{7} >> cnl::constant<2>{}),
@@ -143,7 +143,7 @@ namespace {
                         "");
     }
 
-    namespace test_right_shift_nearest {
+    namespace test_shift_right_nearest {
         static_assert(identical(
                 cnl::static_integer<3, cnl::nearest_rounding_tag>{2},
                 cnl::static_integer<3, cnl::nearest_rounding_tag>{7} >> cnl::constant<2>{}),
