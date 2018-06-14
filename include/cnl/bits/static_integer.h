@@ -16,7 +16,7 @@ namespace cnl {
     namespace _impl {
         template<
                 int Digits = digits<int>::value,
-                class RoundingTag = native_rounding_tag,
+                class RoundingTag = nearest_rounding_tag,
                 class OverflowTag = trapping_overflow_tag,
                 class Narrowest = int>
         using static_integer = rounding_integer<
@@ -28,7 +28,7 @@ namespace cnl {
                 RoundingTag>;
 
         template<
-                class RoundingTag = native_rounding_tag,
+                class RoundingTag = nearest_rounding_tag,
                 class OverflowTag = trapping_overflow_tag,
                 class Narrowest = int,
                 class Input = int,
@@ -43,7 +43,7 @@ namespace cnl {
         }
 
         template<
-                class RoundingTag = native_rounding_tag,
+                class RoundingTag = nearest_rounding_tag,
                 class OverflowTag = trapping_overflow_tag,
                 class Narrowest = int,
                 CNL_IMPL_CONSTANT_VALUE_TYPE InputValue = 0>
