@@ -66,24 +66,20 @@ TEST(math, FPTESTFORMAT) {
         }
     }
 
-    using numeric_limits = cnl::numeric_limits<fp>;
-    if (numeric_limits::max() >= int(cnl::_impl::integer_digits<fp>::value)
-            && numeric_limits::lowest() <= -cnl::_impl::fractional_digits<fp>::value) {
-        //the largest exponent which's result doesn't overflow
-        auto maximum = cnl::from_rep<fp>{}(to_rep(fp{cnl::_impl::integer_digits<fp>::value})-1);
+    //the largest exponent which's result doesn't overflow
+    auto maximum = cnl::from_rep<fp>{}(to_rep(fp{cnl::_impl::integer_digits<fp>::value})-1);
 
-        //The next-to-smallest exponent whose result doesn't overflow
-        //(The very smallest was already tested with the integer exponents)
-        auto minimum = cnl::from_rep<fp>{}(to_rep(fp{-cnl::_impl::fractional_digits<fp>::value})+1);
+    //The next-to-smallest exponent whose result doesn't overflow
+    //(The very smallest was already tested with the integer exponents)
+    auto minimum = cnl::from_rep<fp>{}(to_rep(fp{-cnl::_impl::fractional_digits<fp>::value})+1);
 
-        double doublerep{ maximum };
-        double doublerepmini{ minimum };
+    double doublerep{ maximum };
+    double doublerepmini{ minimum };
 
-        EXPECT_LE(std::abs(to_rep(exp2(maximum))-to_rep(fp{exp2(doublerep)})), 1)
-                        << "fixed point raw: " << to_rep(exp2(maximum))
-                        << ", double raw: " << to_rep(fp{exp2(doublerep)});
+    EXPECT_LE(std::abs(to_rep(exp2(maximum))-to_rep(fp{exp2(doublerep)})), 1)
+                    << "fixed point raw: " << to_rep(exp2(maximum))
+                    << ", double raw: " << to_rep(fp{exp2(doublerep)});
 
-        EXPECT_EQ(exp2(minimum), fp{ exp2(doublerepmini) });
-    }
+    EXPECT_EQ(exp2(minimum), fp{ exp2(doublerepmini) });
 }
 
