@@ -305,9 +305,9 @@ namespace cnl {
             }
         };
 
-        template<class Result, class Input>
-        struct tagged_binary_operator<native_overflow_tag, Result, Input>
-                : tagged_binary_operator<_impl::native_tag, Result, Input> {
+        template<class Operator>
+        struct tagged_binary_operator<native_overflow_tag, Operator>
+                : tagged_binary_operator<_impl::native_tag, Operator> {
         };
 
         template<class OverflowTag, class Operator>

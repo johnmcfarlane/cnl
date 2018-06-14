@@ -283,17 +283,17 @@ namespace {
     namespace test_shift_right {
         static_assert(identical(
                 cnl::rounding_integer<>{2},
-                cnl::rounding_integer<>{12} >> cnl::rounding_integer<>{3}), "");
+                cnl::rounding_integer<>{16} >> cnl::rounding_integer<>{3}), "");
 
         static_assert(identical(
                 cnl::rounding_integer<>{1},
-                cnl::rounding_integer<>{11} >> cnl::rounding_integer<>{3}), "");
+                cnl::rounding_integer<>{15} >> cnl::rounding_integer<>{3}), "");
 
         static_assert(identical(
                 cnl::rounding_integer<>{11},
                 cnl::rounding_integer<>{11} >> cnl::rounding_integer<>{0}), "");
 
-        static_assert(identical(cnl::rounding_integer<>{1}, cnl::rounding_integer<>{1} >> 1), "");
+        static_assert(identical(cnl::rounding_integer<>{0}, cnl::rounding_integer<>{1} >> 1), "");
         static_assert(identical(cnl::rounding_integer<>{0}, cnl::rounding_integer<>{1} >> 2), "");
     }
 
