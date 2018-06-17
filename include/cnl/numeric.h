@@ -101,168 +101,168 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // long double specializations
 
-    /// specialization of \ref cnl::math_constants::e for `long double`
+    /// specialization of \ref cnl::e for `long double`
     template<> inline constexpr long double e<long double>{2.718281828459045235360287471352662498L};
 
-    /// specialization of \ref cnl::math_constants::log2e for `long double`
+    /// specialization of \ref cnl::log2e for `long double`
     template<> inline constexpr long double log2e<long double>{1.442695040888963407359924681001892137L};
 
-    /// specialization of \ref cnl::math_constants::log10e for `long double`
+    /// specialization of \ref cnl::log10e for `long double`
     template<> inline constexpr long double log10e<long double>{0.434294481903251827651128918916605082L};
 
-    /// specialization of \ref cnl::math_constants::pi for `long double`
+    /// specialization of \ref cnl::pi for `long double`
     template<> inline constexpr long double pi<long double>{3.141592653589793238462643383279502884L};
 
-    /// specialization of \ref cnl::math_constants::invpi for `long double`
+    /// specialization of \ref cnl::invpi for `long double`
     template<> inline constexpr long double invpi<long double>{0.318309886183790671537767526745028724L};
 
-    /// specialization of \ref cnl::math_constants::invsqrtpi for `long double`
+    /// specialization of \ref cnl::invsqrtpi for `long double`
     template<> inline constexpr long double invsqrtpi<long double>{
             0.564189583547756286948079451560772585844050629329L};
 
-    /// specialization of \ref cnl::math_constants::ln2 for `long double`
+    /// specialization of \ref cnl::ln2 for `long double`
     template<> inline constexpr long double ln2<long double>{0.693147180559945309417232121458176568L};
 
-    /// specialization of \ref cnl::math_constants::ln10 for `long double`
+    /// specialization of \ref cnl::ln10 for `long double`
     template<> inline constexpr long double ln10<long double>{2.302585092994045684017991454684364208L};
 
-    /// specialization of \ref cnl::math_constants::sqrt2 for `long double`
+    /// specialization of \ref cnl::sqrt2 for `long double`
     template<> inline constexpr long double sqrt2<long double>{1.414213562373095048801688724209698079L};
 
-    /// specialization of \ref cnl::math_constants::sqrt3 for `long double`
+    /// specialization of \ref cnl::sqrt3 for `long double`
     template<> inline constexpr long double sqrt3<long double>{
             1.73205080756887729352744634150587236694280525381038062805580L};
 
-    /// specialization of \ref cnl::math_constants::invsqrt3 for `long double`
+    /// specialization of \ref cnl::invsqrt3 for `long double`
     template<> inline constexpr long double invsqrt3<long double>{
             0.57735026918962576450914878050195745564760175127013L};
 
-    /// specialization of \ref cnl::math_constants::radian for `long double`
+    /// specialization of \ref cnl::radian for `long double`
     template<> inline constexpr long double radian<long double>{
             57.295779513082320876798154814105170332405472466564L};
 
-    /// specialization of \ref cnl::math_constants::egamma for `long double`
+    /// specialization of \ref cnl::egamma for `long double`
     template<> inline constexpr long double egamma<long double>{0.5772156649015328606065120900824024L};
 
-    /// specialization of \ref cnl::math_constants::phi for `long double`
+    /// specialization of \ref cnl::phi for `long double`
     template<> inline constexpr long double phi<long double>{1.6180339887498948482045868343656381L};
 
-    /// specialization of \ref cnl::math_constants::catalan for `long double`
+    /// specialization of \ref cnl::catalan for `long double`
     template<> inline constexpr long double catalan<long double>{0.915965594177219015054603514932384110774L};
 
-    /// specialization of \ref cnl::math_constants::apery for `long double`
+    /// specialization of \ref cnl::apery for `long double`
     template<> inline constexpr long double apery<long double>{1.202056903159594285399738161511449990L};
 
-    /// specialization of \ref cnl::math_constants::glaisher for `long double`
+    /// specialization of \ref cnl::glaisher for `long double`
     template<> inline constexpr long double glaisher<long double>{1.282427129100622636875342568869791727L};
 
     ////////////////////////////////////////////////////////////////////////////////
     // double specializations
 
-    /// specialization of \ref cnl::math_constants::e for `double`
+    /// specialization of \ref cnl::e for `double`
     template<> inline constexpr double e<double>{2.7182818284590452354};
 
-    /// specialization of \ref cnl::math_constants::log2e for `double`
+    /// specialization of \ref cnl::log2e for `double`
     template<> inline constexpr double log2e<double>{1.4426950408889634074};
 
-    /// specialization of \ref cnl::math_constants::log10e for `double`
+    /// specialization of \ref cnl::log10e for `double`
     template<> inline constexpr double log10e<double>{0.43429448190325182765};
 
-    /// specialization of \ref cnl::math_constants::pi for `double`
+    /// specialization of \ref cnl::pi for `double`
     template<> inline constexpr double pi<double>{3.14159265358979323846};
 
-    /// specialization of \ref cnl::math_constants::invpi for `double`
+    /// specialization of \ref cnl::invpi for `double`
     template<> inline constexpr double invpi<double>{0.31830988618379067154};
 
-    /// specialization of \ref cnl::math_constants::invsqrtpi for `double`
+    /// specialization of \ref cnl::invsqrtpi for `double`
     template<> inline constexpr double invsqrtpi<double>{0.564189583547756286948079451560772585844050629329};
 
-    /// specialization of \ref cnl::math_constants::ln2 for `double`
+    /// specialization of \ref cnl::ln2 for `double`
     template<> inline constexpr double ln2<double>{0.69314718055994530942};
 
-    /// specialization of \ref cnl::math_constants::ln10 for `double`
+    /// specialization of \ref cnl::ln10 for `double`
     template<> inline constexpr double ln10<double>{2.30258509299404568402};
 
-    /// specialization of \ref cnl::math_constants::sqrt2 for `double`
+    /// specialization of \ref cnl::sqrt2 for `double`
     template<> inline constexpr double sqrt2<double>{1.41421356237309504880};
 
-    /// specialization of \ref cnl::math_constants::sqrt3 for `double`
+    /// specialization of \ref cnl::sqrt3 for `double`
     template<> inline constexpr double sqrt3<double>{
             1.73205080756887729352744634150587236694280525381038062805580};
 
-    /// specialization of \ref cnl::math_constants::invsqrt3 for `double`
+    /// specialization of \ref cnl::invsqrt3 for `double`
     template<> inline constexpr double invsqrt3<double>{0.57735026918962576450914878050195745564760175127013};
 
-    /// specialization of \ref cnl::math_constants::radian for `double`
+    /// specialization of \ref cnl::radian for `double`
     template<> inline constexpr double radian<double>{57.295779513082320876798154814105170332405472466564};
 
-    /// specialization of \ref cnl::math_constants::egamma for `double`
+    /// specialization of \ref cnl::egamma for `double`
     template<> inline constexpr double egamma<double>{0.5772156649015328606065120900824024};
 
-    /// specialization of \ref cnl::math_constants::phi for `double`
+    /// specialization of \ref cnl::phi for `double`
     template<> inline constexpr double phi<double>{1.6180339887498948482045868343656381};
 
-    /// specialization of \ref cnl::math_constants::catalan for `double`
+    /// specialization of \ref cnl::catalan for `double`
     template<> inline constexpr double catalan<double>{0.915965594177219015054603514932384110774};
 
-    /// specialization of \ref cnl::math_constants::apery for `double`
+    /// specialization of \ref cnl::apery for `double`
     template<> inline constexpr double apery<double>{1.202056903159594285399738161511449990};
 
-    /// specialization of \ref cnl::math_constants::glaisher for `double`
+    /// specialization of \ref cnl::glaisher for `double`
     template<> inline constexpr double glaisher<double>{1.282427129100622636875342568869791727};
 
     ////////////////////////////////////////////////////////////////////////////////
     // float specializations
 
-    /// specialization of \ref cnl::math_constants::e for `float`
+    /// specialization of \ref cnl::e for `float`
     template<> inline constexpr float e<float>{2.7182818284590452354f};
 
-    /// specialization of \ref cnl::math_constants::log2e for `float`
+    /// specialization of \ref cnl::log2e for `float`
     template<> inline constexpr float log2e<float>{1.4426950408889634074f};
 
-    /// specialization of \ref cnl::math_constants::log10e for `float`
+    /// specialization of \ref cnl::log10e for `float`
     template<> inline constexpr float log10e<float>{0.43429448190325182765f};
 
-    /// specialization of \ref cnl::math_constants::pi for `float`
+    /// specialization of \ref cnl::pi for `float`
     template<> inline constexpr float pi<float>{3.14159265358979323846f};
 
-    /// specialization of \ref cnl::math_constants::invpi for `float`
+    /// specialization of \ref cnl::invpi for `float`
     template<> inline constexpr float invpi<float>{0.31830988618379067154f};
 
-    /// specialization of \ref cnl::math_constants::invsqrtpi for `float`
+    /// specialization of \ref cnl::invsqrtpi for `float`
     template<> inline constexpr float invsqrtpi<float>{0.564189583547756286948079451560772585844050629329f};
 
-    /// specialization of \ref cnl::math_constants::ln2 for `float`
+    /// specialization of \ref cnl::ln2 for `float`
     template<> inline constexpr float ln2<float>{0.69314718055994530942f};
 
-    /// specialization of \ref cnl::math_constants::ln10 for `float`
+    /// specialization of \ref cnl::ln10 for `float`
     template<> inline constexpr float ln10<float>{2.30258509299404568402f};
 
-    /// specialization of \ref cnl::math_constants::sqrt2 for `float`
+    /// specialization of \ref cnl::sqrt2 for `float`
     template<> inline constexpr float sqrt2<float>{1.41421356237309504880f};
 
-    /// specialization of \ref cnl::math_constants::sqrt3 for `float`
+    /// specialization of \ref cnl::sqrt3 for `float`
     template<> inline constexpr float sqrt3<float>{1.73205080756887729352744634150587236694280525381038062805580f};
 
-    /// specialization of \ref cnl::math_constants::invsqrt3 for `float`
+    /// specialization of \ref cnl::invsqrt3 for `float`
     template<> inline constexpr float invsqrt3<float>{0.57735026918962576450914878050195745564760175127013f};
 
-    /// specialization of \ref cnl::math_constants::radian for `float`
+    /// specialization of \ref cnl::radian for `float`
     template<> inline constexpr float radian<float>{57.295779513082320876798154814105170332405472466564f};
 
-    /// specialization of \ref cnl::math_constants::egamma for `float`
+    /// specialization of \ref cnl::egamma for `float`
     template<> inline constexpr float egamma<float>{0.5772156649015328606065120900824024f};
 
-    /// specialization of \ref cnl::math_constants::phi for `float`
+    /// specialization of \ref cnl::phi for `float`
     template<> inline constexpr float phi<float>{1.6180339887498948482045868343656381f};
 
-    /// specialization of \ref cnl::math_constants::catalan for `float`
+    /// specialization of \ref cnl::catalan for `float`
     template<> inline constexpr float catalan<float>{0.915965594177219015054603514932384110774f};
 
-    /// specialization of \ref cnl::math_constants::apery for `float`
+    /// specialization of \ref cnl::apery for `float`
     template<> inline constexpr float apery<float>{1.202056903159594285399738161511449990f};
 
-    /// specialization of \ref cnl::math_constants::glaisher for `float`
+    /// specialization of \ref cnl::glaisher for `float`
     template<> inline constexpr float glaisher<float>{1.282427129100622636875342568869791727f};
 #endif  // defined(__cpp_inline_variables)
 
