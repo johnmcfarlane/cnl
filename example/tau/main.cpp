@@ -1,4 +1,4 @@
-#include <cnl.h>
+#include <cnl/all.h>
 #include <iostream>
 
 int main() {

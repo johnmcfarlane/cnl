@@ -122,7 +122,7 @@ Add this to your system header list and include, e.g.:
 #include <cnl/fixed_point.h>
 
 // or to include all CNL types:
-#include <cnl.h>
+#include <cnl/all.h>
 ```
 
 See example program, [Tau](./example/tau/README.md), for more details.

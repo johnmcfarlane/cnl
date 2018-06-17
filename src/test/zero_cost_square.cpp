@@ -8,8 +8,8 @@
 /// \brief Signed 15:16 Fixed-Point Square Function Using cnl::elastic_number
 
 // Here's how to use the CNL library on Godbolt.org.
-// Normally, you'd just add `#include <cnl.h>`.
-#include <cnl.h>
+// Normally, you'd just add `#include <cnl/all.h>`.
+#include <cnl/all.h>
 using namespace cnl;
 
 // square a nunber using 15:16 fixed-point arithmetic
