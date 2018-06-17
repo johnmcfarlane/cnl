@@ -33,7 +33,7 @@ void test_function(void(* function)(), char const* output)
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [declaration example]
-#include <cnl.h>
+#include <cnl/all.h>
 #include <iostream>
 
 using cnl::fixed_point;
