@@ -163,8 +163,6 @@ namespace cnl {
 
     template<int Digits = digits<int>::value, class Narrowest = int>
     class elastic_integer : public _elastic_integer_impl::base_class_t<Digits, Narrowest> {
-        static_assert(Digits > 0, "type requires positive number of digits");
-
     public:
         using _base = _elastic_integer_impl::base_class_t<Digits, Narrowest>;
         static_assert(!_elastic_integer_impl::is_elastic_integer<typename _base::rep>::value,

@@ -98,6 +98,10 @@ namespace {
                 elastic_integer<cnl::digits<int>::value>{22},
                 from_value<elastic_integer<>>(elastic_integer<>{22})), "from_value<elastic_integer> test failed");
 
+        static_assert(identical(from_value<elastic_integer<>>(0_c), elastic_integer<0>{0}),
+                "from_value<elastic_integer> test failed");
+        static_assert(identical(from_value<elastic_integer<>>(1_c), elastic_integer<1>{1}),
+                "from_value<elastic_integer> test failed");
         static_assert(identical(from_value<elastic_integer<>>(14_c), elastic_integer<4>{14}),
                 "from_value<elastic_integer> test failed");
         static_assert(identical(from_value<elastic_integer<>>(-31_c), elastic_integer<5>{-31}),
