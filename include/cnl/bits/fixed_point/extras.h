@@ -13,10 +13,10 @@
 #define CNL_FIXED_POINT_EXTRAS_H 1
 
 #include "type.h"
+#include <cnl/bits/terminate.h>
 
 #include <cmath>
 #include <istream>
-#include <stdexcept>
 
 /// compositional numeric library
 namespace cnl {
@@ -107,15 +107,13 @@ namespace cnl {
     constexpr fixed_point <Rep, Exponent, Radix>
     sqrt(fixed_point<Rep, Exponent, Radix> const& x)
     {
+        using type = fixed_point<Rep, Exponent, Radix>;
         using widened_rep = set_digits_t<Rep, digits<Rep>::value*2>;
-        return
-#if defined(CNL_EXCEPTIONS_ENABLED)
-                (x<from_rep<fixed_point<Rep, Exponent, Radix>>{}(0))
-                ? throw std::invalid_argument("cannot represent square root of negative value") :
-#endif
-                from_rep<fixed_point<Rep, Exponent, Radix>>{}(_impl::for_rep<widened_rep>(
+        return to_rep(x)<constant<0>{}
+               ? _impl::terminate<type>("negative value passed to cnl::sqrt")
+               : type{from_rep<type>{}(_impl::for_rep<widened_rep>(
                         _impl::fp::extras::sqrt_solve1(),
-                        _impl::scale<-Exponent>(static_cast<widened_rep>(to_rep(x)))));
+                        _impl::scale<-Exponent>(static_cast<widened_rep>(to_rep(x)))))};
     }
 
     ////////////////////////////////////////////////////////////////////////////////
