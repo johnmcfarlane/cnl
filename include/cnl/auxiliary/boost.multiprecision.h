@@ -88,12 +88,12 @@ namespace cnl {
         using type = _bmp::number<from_value_t<Backend, Value>, ExpressionTemplates>;
     };
 
-    template<int Bits, class Backend, _bmp::expression_template_option ExpressionTemplates>
-    struct shift<Bits, 2, _bmp::number<Backend, ExpressionTemplates>> {
+    template<int Digits, class Backend, _bmp::expression_template_option ExpressionTemplates>
+    struct shift<Digits, 2, _bmp::number<Backend, ExpressionTemplates>> {
         constexpr auto operator()(_bmp::number<Backend, ExpressionTemplates> const& s) const
-        -> decltype((Bits>=0) ? s << Bits : s >> -Bits)
+        -> decltype((Digits>=0) ? s << Digits : s >> -Digits)
         {
-            return (Bits>=0) ? s << Bits : s >> -Bits;
+            return (Digits>=0) ? s << Digits : s >> -Digits;
         }
     };
 

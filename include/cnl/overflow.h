@@ -10,14 +10,14 @@
 #if !defined(CNL_OVERFLOW_H)
 #define CNL_OVERFLOW_H
 
+#include "cnl/bits/terminate.h"
+
 #include "numeric.h"
 #include "bits/native_tag.h"
 
 #if defined(CNL_EXCEPTIONS_ENABLED)
 #include <stdexcept>
 #endif
-#include <cstdio>
-#include <exception>
 
 /// compositional numeric library
 namespace cnl {
@@ -49,14 +49,7 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // crash horribly
-
-        template<class Result>
-        [[noreturn]] CNL_RELAXED_CONSTEXPR Result terminate(char const* message) noexcept
-        {
-            std::fprintf(stderr, "%s\n", message);
-            std::terminate();
-        }
+        // test condition and return value if true else terminate
 
         template<class Result>
         constexpr Result return_if(trapping_overflow_tag, bool condition, Result const& value, char const* message)
@@ -65,16 +58,14 @@ namespace cnl {
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        // throw exception (or crash horribly)
+        // test condition and return value if true else throw
 
 #if defined(CNL_EXCEPTIONS_ENABLED)
-
         template<class Result>
         constexpr Result return_if(throwing_overflow_tag, bool condition, Result const& value, char const* message)
         {
             return condition ? value : throw std::overflow_error(message);
         }
-
 #else
         template<class Result>
         constexpr Result return_if(throwing_overflow_tag, bool condition, Result const& value, char const* message) {

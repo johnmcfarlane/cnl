@@ -165,7 +165,7 @@ TEST(TOKENPASTE2(TEST_LABEL, post), decrement)
 
 TEST(TOKENPASTE2(TEST_LABEL, sqrt_exception), from_alternative_specialization)
 {
-    ASSERT_THROW(sqrt(fixed_point<>(-1)), std::invalid_argument);
+    ASSERT_DEATH(sqrt(fixed_point<>(-1)), "negative value passed to cnl::sqrt\n");
 }
 
 #endif
