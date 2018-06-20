@@ -31,12 +31,12 @@ namespace cnl {
                 class RoundingTag = nearest_rounding_tag,
                 class OverflowTag = trapping_overflow_tag,
                 class Narrowest = int,
-                class Input = int,
-                class = _impl::enable_if_t<!_impl::is_constant<Input>::value>>
-        static_integer<
-                numeric_limits<Input>::digits,
-                RoundingTag, OverflowTag,
-                Narrowest>
+                class Input = int>
+        _impl::enable_if_t<!_impl::is_constant<Input>::value,
+                static_integer<
+                        numeric_limits<Input>::digits,
+                        RoundingTag, OverflowTag,
+                        Narrowest>>
         constexpr make_static_integer(Input const& input)
         {
             return input;

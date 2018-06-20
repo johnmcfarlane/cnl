@@ -205,11 +205,11 @@ namespace cnl {
         friend struct from_rep;
 
     private:
-        template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
-        static constexpr S one();
+        template<class S>
+        static constexpr _impl::enable_if_t<numeric_limits<S>::is_iec559, S> one();
 
-        template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
-        static constexpr S one();
+        template<class S>
+        static constexpr _impl::enable_if_t<numeric_limits<S>::is_integer, S> one();
 
         template<class S>
         static constexpr S inverse_one();
@@ -249,15 +249,17 @@ namespace cnl {
     // cnl::fixed_point<> member definitions
 
     template<typename Rep, int Exponent, int Radix>
-    template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy>
-    constexpr S fixed_point<Rep, Exponent, Radix>::one()
+    template<class S>
+    constexpr auto fixed_point<Rep, Exponent, Radix>::one()
+    -> _impl::enable_if_t<numeric_limits<S>::is_iec559, S>
     {
         return _impl::power<S, -exponent, Radix>();
     }
 
     template<typename Rep, int Exponent, int Radix>
-    template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy>
-    constexpr S fixed_point<Rep, Exponent, Radix>::one()
+    template<class S>
+    constexpr auto fixed_point<Rep, Exponent, Radix>::one()
+    -> _impl::enable_if_t<numeric_limits<S>::is_integer, S>
     {
         return from_rep<fixed_point<S, 0>>{}(1);
     }
