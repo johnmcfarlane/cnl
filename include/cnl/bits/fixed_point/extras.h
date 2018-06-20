@@ -44,48 +44,37 @@ namespace cnl {
     // cnl::sqrt helper functions
 
     namespace _impl {
-        namespace fp {
-            namespace extras {
-                template<class Rep>
-                constexpr Rep sqrt_bit(Rep n, Rep bit)
-                {
-                    return (bit>n) ? sqrt_bit<Rep>(n, static_cast<Rep>(bit >> 2)) : bit;
-                }
-
-                template<class Rep>
-                constexpr Rep sqrt_bit(Rep n)
-                {
-                    return sqrt_bit<Rep>(n, Rep(1) << (Rep((digits<Rep>::value + is_signed<Rep>::value) - 2)));
-                }
-
-                template<class Rep>
-                constexpr Rep sqrt_solve3(
-                        Rep n,
-                        Rep bit,
-                        Rep result)
-                {
-                    return (bit!=Rep{0})
-                           ? (n>=result+bit)
-                             ? sqrt_solve3<Rep>(
-                                            static_cast<Rep>(n-(result+bit)),
-                                            static_cast<Rep>(bit >> 2),
-                                            static_cast<Rep>((result >> 1)+bit))
-                             : sqrt_solve3<Rep>(
-                                            n,
-                                            static_cast<Rep>(bit >> 2),
-                                            static_cast<Rep>(result >> 1))
-                           : result;
-                }
-
-                struct sqrt_solve1 {
-                    template<class Rep>
-                    constexpr Rep operator()(Rep n) const
-                    {
-                        return sqrt_solve3<Rep>(n, sqrt_bit<Rep>(n), Rep{0});
-                    }
-                };
-            }
+        template<class Rep>
+        constexpr Rep sqrt_solve3(
+                Rep n,
+                Rep bit,
+                Rep result)
+        {
+            return (bit!=Rep{0})
+                   ? (n>=result+bit)
+                     ? sqrt_solve3<Rep>(
+                                    static_cast<Rep>(n-(result+bit)),
+                                    static_cast<Rep>(bit >> 2),
+                                    static_cast<Rep>((result >> 1)+bit))
+                     : sqrt_solve3<Rep>(
+                                    n,
+                                    static_cast<Rep>(bit >> 2),
+                                    static_cast<Rep>(result >> 1))
+                   : result;
         }
+
+        template<int Exponent>
+        struct sqrt_solve1 {
+            template<class Rep>
+            constexpr Rep operator()(Rep n) const
+            {
+                using widened_rep = _impl::set_width_t<Rep, _impl::width<Rep>::value*2>;
+                return static_cast<Rep>(sqrt_solve3<widened_rep>(
+                        _impl::scale<-Exponent>(static_cast<widened_rep>(n)),
+                        widened_rep((widened_rep{1}<<((countr_used(n)+1-Exponent)&~1))>>2),
+                        widened_rep{0}));
+            }
+        };
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -108,12 +97,9 @@ namespace cnl {
     sqrt(fixed_point<Rep, Exponent, Radix> const& x)
     {
         using type = fixed_point<Rep, Exponent, Radix>;
-        using widened_rep = set_digits_t<Rep, digits<Rep>::value*2>;
-        return to_rep(x)<constant<0>{}
+        return to_rep(x)<0
                ? _impl::terminate<type>("negative value passed to cnl::sqrt")
-               : type{from_rep<type>{}(_impl::for_rep<widened_rep>(
-                        _impl::fp::extras::sqrt_solve1(),
-                        _impl::scale<-Exponent>(static_cast<widened_rep>(to_rep(x)))))};
+               : type{from_rep<type>{}(_impl::for_rep<Rep>(_impl::sqrt_solve1<Exponent>(), x))};
     }
 
     ////////////////////////////////////////////////////////////////////////////////

@@ -105,7 +105,7 @@ struct number_test {
 
     static_assert(cnl::digits<value_type>::value
                     ==cnl::digits<cnl::set_digits_t<value_type, cnl::digits<value_type>::value>>::value,
-            "cnl::width / cnl::set_width test failed");
+            "cnl::digits / cnl::set_digits test failed");
 
     static_assert(cnl::digits<cnl::set_digits_t<value_type, 3>>::value>=3, "cnl::digits / cnl::set_digits test failed");
     static_assert(cnl::digits<cnl::set_digits_t<value_type, 9>>::value>=9, "cnl::digits / cnl::set_digits test failed");

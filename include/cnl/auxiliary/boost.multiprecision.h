@@ -99,7 +99,7 @@ namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
-    // aliases of _bmp types
+    // aliases of boost::multiprecision types
 
     namespace _sized_integer_impl {
         template<unsigned NumBits, _bmp::cpp_integer_type SignType>
@@ -136,7 +136,7 @@ namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
-    // _bmp bitwise shift operators
+    // boost::multiprecision bitwise shift operators
 
     template<unsigned NumBits, _bmp::cpp_integer_type SignType, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     constexpr auto operator<<(_sized_integer_impl::number<NumBits, SignType> const& lhs, constant<Value>)
