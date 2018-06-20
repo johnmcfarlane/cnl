@@ -55,7 +55,7 @@ namespace cnl {
                 template<class Rep>
                 constexpr Rep sqrt_bit(Rep n)
                 {
-                    return sqrt_bit<Rep>(n, Rep(1) << (Rep((digits<Rep>::value + is_signed<Rep>::value) - 2)));
+                    return sqrt_bit<Rep>(n, Rep(1) << ((_impl::width<Rep>::value) - 2));
                 }
 
                 template<class Rep>

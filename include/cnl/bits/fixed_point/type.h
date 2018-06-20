@@ -70,7 +70,7 @@ namespace cnl {
             // cnl::_impl::float_of_same_size
 
             template<class T>
-            using float_of_same_size = typename float_of_size<digits<T>::value + is_signed<T>::value>::type;
+            using float_of_same_size = typename float_of_size<_impl::width<T>::value>::type;
         }
     }
 

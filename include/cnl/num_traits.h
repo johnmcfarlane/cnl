@@ -532,6 +532,22 @@ namespace cnl {
             return cnl::scale<Digits, Radix, S>()(s);
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::_impl::width / set_width
+
+    namespace _impl {
+        template<typename T>
+        struct width : std::integral_constant<_digits_type, digits<T>::value+is_signed<T>::value> {
+        };
+
+        template<typename T, _digits_type Bits>
+        struct set_width : set_digits<T, Bits - is_signed<T>::value> {
+        };
+
+        template<typename T, _digits_type Bits>
+        using set_width_t = typename set_width<T, Bits>::type;
+    }
 }
 
 #endif  // CNL_NUM_TRAITS
