@@ -108,7 +108,7 @@ namespace cnl {
     sqrt(fixed_point<Rep, Exponent, Radix> const& x)
     {
         using type = fixed_point<Rep, Exponent, Radix>;
-        using widened_rep = set_digits_t<Rep, digits<Rep>::value*2>;
+        using widened_rep = _impl::set_width_t<Rep, _impl::width<Rep>::value*2>;
         return to_rep(x)<0
                ? _impl::terminate<type>("negative value passed to cnl::sqrt")
                : type{from_rep<type>{}(_impl::for_rep<widened_rep>(

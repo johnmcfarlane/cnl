@@ -246,4 +246,12 @@ TEST(fixed_point_multiprecision, signed_multiprecision_leading_bits)
     ASSERT_EQ(18, leading_bits(a));
 }
 
+TEST(fixed_point_multiprecision, sqrt)
+{
+    typedef cnl::fixed_point<boost::multiprecision::int128_t, 0> length_t;
+    length_t x = length_t{ 25 };
+    auto y = cnl::sqrt(x);
+    ASSERT_EQ(y, 5);
+}
+
 #endif  // CNL_BOOST_ENABLED
