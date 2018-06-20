@@ -87,17 +87,17 @@ namespace cnl {
             //Computes 2^x - 1 for a number x between 0 and 1, strictly less than 1
             //If the exponent is not negative, there is no fractional part,
             //so this is always zero
-            template<class Rep, int Exponent, _impl::enable_if_t<(Exponent>=0), int> dummy = 0>
-            inline constexpr make_largest_ufraction<fixed_point<Rep, Exponent>> exp2m1_0to1(
-                    fixed_point<Rep, Exponent>) {
-                return from_rep<make_largest_ufraction<fixed_point<Rep, Exponent>>>{}(
-                        0); //Cannot construct from 0, since that would be a shift by more than width of type!
+            template<class Rep, int Exponent>
+            inline constexpr auto exp2m1_0to1(fixed_point<Rep, Exponent>)
+            -> _impl::enable_if_t<(Exponent>=0), make_largest_ufraction<fixed_point<Rep, Exponent>>> {
+                // Cannot construct from 0, since that would be a shift by more than width of type!
+                return from_rep<make_largest_ufraction<fixed_point<Rep, Exponent>>>{}(0);
             }
-            //for a positive exponent, some work needs to be done
-            template<class Rep, int Exponent, _impl::enable_if_t<(Exponent<0), int> dummy = 0>
-            constexpr inline make_largest_ufraction<fixed_point<Rep, Exponent>> exp2m1_0to1(
-                    fixed_point<Rep, Exponent> x) {
 
+            //for a positive exponent, some work needs to be done
+            template<class Rep, int Exponent>
+            constexpr inline auto exp2m1_0to1(fixed_point<Rep, Exponent> x)
+            -> _impl::enable_if_t<(Exponent<0), make_largest_ufraction<fixed_point<Rep, Exponent>>> {
                 //Build the type with the same number of bits, all fractional,
                 //and unsigned. That should be enough to exactly hold enough bits
                 //to guarantee bit-accurate results
