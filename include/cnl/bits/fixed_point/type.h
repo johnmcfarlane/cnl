@@ -18,7 +18,7 @@
 /// compositional numeric library
 namespace cnl {
     // forward declaration
-    template<typename Rep = int, int Exponent = 0, int Radix = 2>
+    template<typename Rep = int, int Exponent = 0, int Radix = cnl::numeric_limits<Rep>::radix>
     class fixed_point;
 
     template<typename Rep, int Exponent, int Radix>
@@ -79,7 +79,7 @@ namespace cnl {
     ///
     /// \tparam Rep the underlying type used to represent the value; defaults to `int`
     /// \tparam Exponent the exponent used to scale the integer value; defaults to `0`
-    /// \tparam Radix the base used to scale the integer value; defaults to `2`
+    /// \tparam Radix the base used to scale the integer value; defaults to radix of `Rep`
     ///
     /// Uses an integer to approximate a real number.
     /// Scales the integer by `pow(Radix, Exponent)` to produce the scaled number.
