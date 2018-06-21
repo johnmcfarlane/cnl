@@ -181,16 +181,8 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // digits
 
-    template<typename T, int Radix = 2, class Enable = void>
-    struct digits;
-
     template<typename T>
-    struct digits<T, 2> : std::integral_constant<_digits_type, numeric_limits<T>::digits> {
-        static_assert(numeric_limits<T>::is_specialized, "cnl::digits is not correctly specialized for T");
-    };
-
-    template<typename T>
-    struct digits<T, 10> : std::integral_constant<_digits_type, numeric_limits<T>::digits10> {
+    struct digits : std::integral_constant<_digits_type, numeric_limits<T>::digits> {
         static_assert(numeric_limits<T>::is_specialized, "cnl::digits is not correctly specialized for T");
     };
 
@@ -526,10 +518,10 @@ namespace cnl {
     };
 
     namespace _impl {
-        template<int Digits, int Radix=2, class S=void>
+        template<int Digits, class S=void>
         constexpr S scale(S const& s)
         {
-            return cnl::scale<Digits, Radix, S>()(s);
+            return cnl::scale<Digits, numeric_limits<S>::radix, S>()(s);
         }
     }
 

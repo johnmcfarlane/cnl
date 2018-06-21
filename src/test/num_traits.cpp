@@ -83,21 +83,6 @@ namespace {
 #endif
     }
 
-    namespace test_digits_10 {
-        static_assert(cnl::digits<cnl::int8, 10>::value==2, "");
-        static_assert(cnl::digits<cnl::uint8, 10>::value==2, "");
-        static_assert(cnl::digits<cnl::int16, 10>::value==4, "");
-        static_assert(cnl::digits<cnl::uint16, 10>::value==4, "");
-        static_assert(cnl::digits<cnl::int32, 10>::value==9, "");
-        static_assert(cnl::digits<cnl::uint32, 10>::value==9, "");
-        static_assert(cnl::digits<cnl::int64, 10>::value==18, "");
-        static_assert(cnl::digits<cnl::uint64, 10>::value==19, "");
-#if defined(CNL_INT128_ENABLED)
-        static_assert(cnl::digits<cnl::int128, 10>::value==38, "");
-        static_assert(cnl::digits<cnl::uint128, 10>::value==38, "");
-#endif
-    }
-
     namespace test_shift {
         static_assert(identical(cnl::_impl::shift<15, 2, unsigned>(3), 98304U), "cnl::_impl::shift test failed");
 

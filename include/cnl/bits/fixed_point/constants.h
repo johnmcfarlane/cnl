@@ -26,7 +26,7 @@ namespace cnl {
         template<typename Rep, int Exponent>
         constexpr auto pi(int const max_iterations) {
             using fp = fixed_point<Rep, Exponent>;
-            constexpr auto four = fixed_point<Rep, 3 - digits<Rep>::value>{4.};
+            constexpr auto four = fixed_point<Rep, 3 - digits_v<Rep>>{4.};
 
             auto previous = fp{3.};
             for(auto n = 2; n != (max_iterations << 1); n += 4) {
@@ -49,7 +49,7 @@ namespace cnl {
         template<typename Rep, int Exponent>
         constexpr auto e(int const max_iterations) {
             using fp = fixed_point<Rep, Exponent>;
-            constexpr auto one = fixed_point<Rep, 1 - digits<Rep>::value>{1.};
+            constexpr auto one = fixed_point<Rep, 1 - digits_v<Rep>>{1.};
 
             auto previous = fp{2.};
             auto factor = 2;

@@ -144,15 +144,15 @@ namespace cnl {
                     fixed_point<LhsRep, LhsExponent, Radix> const& lhs, fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
             -> decltype(Operator{}(
                     from_rep<fixed_point<LhsRep, _common_exponent, Radix>>{}(
-                            _impl::shift<_lhs_left_shift>(to_rep(lhs))),
+                            _impl::shift<_lhs_left_shift, Radix>(to_rep(lhs))),
                     from_rep<fixed_point<RhsRep, _common_exponent, Radix>>{}(
-                            _impl::shift<_rhs_left_shift>(to_rep(rhs)))))
+                            _impl::shift<_rhs_left_shift, Radix>(to_rep(rhs)))))
             {
                 return Operator{}(
                         from_rep<fixed_point<LhsRep, _common_exponent, Radix>>{}(
-                                _impl::shift<_lhs_left_shift>(to_rep(lhs))),
+                                _impl::shift<_lhs_left_shift, Radix>(to_rep(lhs))),
                         from_rep<fixed_point<RhsRep, _common_exponent, Radix>>{}(
-                                _impl::shift<_rhs_left_shift>(to_rep(rhs))));
+                                _impl::shift<_rhs_left_shift, Radix>(to_rep(rhs))));
             }
         };
 

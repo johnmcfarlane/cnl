@@ -420,8 +420,8 @@ namespace {
     }
 
     namespace test_shift {
-        static_assert(identical(cnl::elastic_integer<11>{1024}, cnl::_impl::shift<10>(cnl::elastic_integer<1>(1))), "");
-        static_assert(identical(cnl::elastic_integer<3>{6}, cnl::_impl::shift<1>(cnl::elastic_integer<2>{3})), "");
+        static_assert(identical(cnl::elastic_integer<11>{1024}, cnl::_impl::shift<10, 2>(cnl::elastic_integer<1>(1))), "");
+        static_assert(identical(cnl::elastic_integer<3>{6}, cnl::_impl::shift<1, 2>(cnl::elastic_integer<2>{3})), "");
     }
 
     namespace test_shift_left {
