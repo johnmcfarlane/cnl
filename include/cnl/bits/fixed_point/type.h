@@ -238,7 +238,7 @@ namespace cnl {
     // same as cnl::make_fixed_point
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     fixed_point(::cnl::constant<Value>)
-    -> fixed_point<set_digits_t<int, _impl::max(digits<int>::value, used_digits(Value)-trailing_bits(Value))>, trailing_bits(Value)>;
+    -> fixed_point<set_digits_t<int, _impl::max(digits_v<int>, used_digits(Value)-trailing_bits(Value))>, trailing_bits(Value)>;
 
     template<class Integer>
     fixed_point(Integer)

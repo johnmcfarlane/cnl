@@ -232,7 +232,7 @@ namespace cnl {
 
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     elastic_integer(constant<Value>)
-    -> elastic_integer<digits<constant<Value>>::value>;
+    -> elastic_integer<digits_v<constant<Value>>>;
 #endif
 
     ////////////////////////////////////////////////////////////////////////////////
