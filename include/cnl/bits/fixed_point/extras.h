@@ -109,6 +109,10 @@ namespace cnl {
             _impl::enable_if_t<Exponent<0, int> dummy = 0>
     constexpr auto floor(fixed_point<Rep, Exponent, Radix> const& x)
     -> decltype(from_rep<fixed_point<Rep, 0, Radix>>{}(to_rep(x)>>constant<-Exponent>{})) {
+        static_assert(
+                Radix==2,
+                "cnl::floor(fixed_point<Rep, Exponent, Radix>) not implemented for Exponent<0 && Radix!=2");
+
         return from_rep<fixed_point<Rep, 0, Radix>>{}(to_rep(x)>>constant<-Exponent>{});
     }
 
