@@ -9,6 +9,7 @@
 #include <gtest/gtest.h>
 
 using cnl::fixed_point;
+using cnl::_impl::identical;
 
 TEST(utils_tests, sin)
 {
@@ -50,6 +51,19 @@ static_assert(static_cast<float>(sqrt(fixed_point<cnl::int32, -20>(0))) == 0.0f,
 static_assert(static_cast<float>(sqrt(fixed_point<cnl::int32, -20>(2.0))) > 1.414213f, "cnl::sqrt<fixed_point>");
 static_assert(static_cast<float>(sqrt(fixed_point<cnl::int32, -20>(2.0))) < 1.414214f, "cnl::sqrt<fixed_point>");
 static_assert(static_cast<float>(sqrt(fixed_point<cnl::int32, -20>(4.0))) == 2.0f, "cnl::sqrt<fixed_point>");
+
+////////////////////////////////////////////////////////////////////////////////
+// cnl::floor
+
+static_assert(identical(
+        cnl::fixed_point<cnl::int32, 0>(100),
+        floor(cnl::fixed_point<cnl::int32, -20>(100.125))), "cnl::floor(fixed_point)");
+static_assert(identical(
+        cnl::fixed_point<cnl::int32, 0>(-101),
+        floor(cnl::fixed_point<cnl::int32, -20>(-100.125))), "cnl::floor(fixed_point)");
+static_assert(identical(
+        cnl::fixed_point<cnl::int32, 1>(-100),
+        floor(cnl::fixed_point<cnl::int32, 1>(-100))), "cnl::floor(fixed_point)");
 
 ////////////////////////////////////////////////////////////////////////////////
 // std specializations for 128-bit integer facilitate certain 64-bit operations
