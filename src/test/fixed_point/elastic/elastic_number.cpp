@@ -9,6 +9,7 @@
 
 #include <cnl/elastic_number.h>
 #include "../../number_test.h"
+#include <cnl/bits/fixed_point/math.h>
 
 #include <gtest/gtest.h>
 
@@ -136,6 +137,18 @@ namespace test_sqrt {
     static_assert(static_cast<float>(sqrt(elastic_number<31, -20>(2.0))) > 1.414213f, "sqrt<elastic_number>");
     static_assert(static_cast<float>(sqrt(elastic_number<31, -20>(2.0))) < 1.414214f, "sqrt<elastic_number>");
     static_assert(static_cast<float>(sqrt(elastic_number<31, -20>(4.0))) == 2.0f, "sqrt<elastic_number>");
+}
+
+namespace test_floor {
+    static_assert(identical(
+            elastic_number<5, 0>{13},
+            cnl::floor(elastic_number<10, -5>{13.625})), "floor(elastic_number)");
+    static_assert(identical(
+            elastic_number<5, 0>{-14},
+            cnl::floor(elastic_number<10, -5>{-13.625})), "floor(elastic_number)");
+    static_assert(identical(
+            elastic_number<5, 5>{192},
+            cnl::floor(elastic_number<5, 5>{192})), "floor(elastic_number)");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

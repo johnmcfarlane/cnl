@@ -103,7 +103,23 @@ namespace cnl {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::trig
+    // cnl::floor
+
+    template<class Rep, int Exponent, int Radix,
+            _impl::enable_if_t<Exponent<0, int> dummy = 0>
+    constexpr auto floor(fixed_point<Rep, Exponent, Radix> const& x)
+    -> decltype(from_rep<fixed_point<Rep, 0, Radix>>{}(to_rep(x)>>constant<-Exponent>{})) {
+        return from_rep<fixed_point<Rep, 0, Radix>>{}(to_rep(x)>>constant<-Exponent>{});
+    }
+
+    template<class Rep, int Exponent, int Radix>
+    constexpr auto floor(fixed_point<Rep, Exponent, Radix> const& x)
+    -> _impl::enable_if_t<Exponent>=0, fixed_point<Rep, Exponent, Radix>> {
+        return x;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // fixed_point trig functions
     //
     // Placeholder implementations fall back on <cmath> functions which is slow
     // due to conversion to and from floating-point types; also inconvenient as

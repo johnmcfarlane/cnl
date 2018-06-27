@@ -18,13 +18,13 @@ TEST(math, FPTESTFORMAT) {
 
     //Test integer powers
     for (int i = 0; i < cnl::_impl::integer_digits<fp>::value; i++) {
-        ASSERT_EQ(exp2(fp{ i }), fp{ 1 << i });
+        ASSERT_EQ(exp2(fp{ static_cast<double>(i) }), fp{ static_cast<double>(1 << i) });
     }
 
     //Test negative integer powers (which are representable in the format)
 #if (FPTESTEXP < 0)
     for (int i = std::max(-cnl::_impl::fractional_digits<fp>::value, -(cnl::_impl::shift<cnl::_impl::integer_digits<fp>::value, 2, int32_t>(1)) + 1); i < std::min(0, cnl::_impl::integer_digits<fp>::value - 1); i++) {
-        fp lhs{ exp2(fp{ i }) };
+        fp lhs{ exp2(fp{ static_cast<double>(i) }) };
         EXPECT_EQ(lhs, cnl::from_rep<fp>{}(1 << (-fp::exponent + i)))
             << "i = " << i << ", fixed point raw: " << to_rep(lhs) << " should be: " << (1 << (-fp::exponent + i))
             ;
@@ -67,11 +67,11 @@ TEST(math, FPTESTFORMAT) {
     }
 
     //the largest exponent which's result doesn't overflow
-    auto maximum = cnl::from_rep<fp>{}(to_rep(fp{cnl::_impl::integer_digits<fp>::value})-1);
+    auto maximum = cnl::from_rep<fp>{}(to_rep(fp{static_cast<double>(cnl::_impl::integer_digits<fp>::value)})-1);
 
     //The next-to-smallest exponent whose result doesn't overflow
     //(The very smallest was already tested with the integer exponents)
-    auto minimum = cnl::from_rep<fp>{}(to_rep(fp{-cnl::_impl::fractional_digits<fp>::value})+1);
+    auto minimum = cnl::from_rep<fp>{}(to_rep(fp{static_cast<double>(-cnl::_impl::fractional_digits<fp>::value)})+1);
 
     double doublerep{ maximum };
     double doublerepmini{ minimum };
