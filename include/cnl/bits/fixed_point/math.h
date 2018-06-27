@@ -107,11 +107,6 @@ namespace cnl {
                 return evaluate_polynomial(im{fixed_point<typename im::rep, Exponent>{x}});
             }
 
-            template<class Rep, int Exponent>
-            constexpr inline Rep floor(fixed_point<Rep, Exponent> x) {
-                return Rep { (to_rep(x)) >> -Exponent };
-            }
-
             template<class Rep, int Exponent, int Radix>
             constexpr enable_if_t<-digits<Rep>::value<Exponent, fixed_point<Rep, Exponent, Radix>>
             fractional(fixed_point<Rep, Exponent, Radix> const& x, Rep const& floored) {
