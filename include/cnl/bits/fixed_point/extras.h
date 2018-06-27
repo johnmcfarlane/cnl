@@ -103,7 +103,7 @@ namespace cnl {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::trig
+    // fixed_point trig functions
     //
     // Placeholder implementations fall back on <cmath> functions which is slow
     // due to conversion to and from floating-point types; also inconvenient as
