@@ -104,7 +104,7 @@ namespace cnl {
                 using im = make_largest_ufraction<fixed_point<Rep, Exponent>>;
                 //The intermediate value type
 
-                return evaluate_polynomial(im{x}); //Important: convert the type once, to keep every multiply from costing a cast
+                return evaluate_polynomial(im{fixed_point<typename im::rep, Exponent>{x}});
             }
 
             template<class Rep, int Exponent>
@@ -112,6 +112,28 @@ namespace cnl {
                 return Rep { (to_rep(x)) >> -Exponent };
             }
 
+            template<class Rep, int Exponent, int Radix>
+            constexpr enable_if_t<-digits<Rep>::value<Exponent, fixed_point<Rep, Exponent, Radix>>
+            fractional(fixed_point<Rep, Exponent, Radix> const& x, Rep const& floored) {
+                return x - floored;
+            }
+
+            template<class Rep, int Exponent, int Radix>
+            constexpr enable_if_t<-digits<Rep>::value>=Exponent, fixed_point<Rep, Exponent, Radix>>
+            fractional(fixed_point<Rep, Exponent, Radix> const& x, Rep const&) {
+                return x;
+            }
+
+            template<class Intermediate, typename Rep, int Exponent>
+            constexpr typename Intermediate::rep
+                    exp2(fixed_point<Rep, Exponent> const& x, Rep const& floored) {
+                return floored <= Exponent
+                    ? typename Intermediate::rep{1}//return immediately if the shift would result in all bits being shifted out
+                    //Do the shifts manually. Once the branch with shift operators is merged, could use those
+                    : (to_rep(exp2m1_0to1<Rep, Exponent>(fractional(x, floored)))//Calculate the exponent of the fractional part
+                    >> (-Intermediate::exponent + Exponent - floored))//shift it to the right place
+                    + (Rep { 1 } << (floored - Exponent)); //The constant term must be one, to make integer powers correct
+            }
         }
     }
 
@@ -125,22 +147,13 @@ namespace cnl {
     /// \return the result of the exponential, in the same representation as x
     template<class Rep, int Exponent>
     constexpr fixed_point<Rep, Exponent> exp2(fixed_point<Rep, Exponent> x) {
-        using namespace _impl::fp;
-
         using out_type = fixed_point<Rep, Exponent>;
         // The input type
-        using im = make_largest_ufraction<out_type>;
+        using im = _impl::fp::make_largest_ufraction<out_type>;
 
         //Calculate the final result by shifting the fractional part around.
         //Remember to add the 1 which is left out to get 1 bit more resolution
-        return from_rep<out_type>{}(
-                _impl::fp::floor(x) <= Exponent ?
-                    typename im::rep{1}//return immediately if the shift would result in all bits being shifted out
-                                     :
-                    	//Do the shifts manually. Once the branch with shift operators is merged, could use those
-                    (to_rep(exp2m1_0to1<Rep, Exponent>(static_cast<out_type>(x - _impl::fp::floor(x))))//Calculate the exponent of the fractional part
-                    >> (-im::exponent + Exponent - _impl::fp::floor(x)))//shift it to the right place
-                    + (Rep { 1 } << (_impl::fp::floor(x) - Exponent))); //The constant term must be one, to make integer powers correct
+        return from_rep<out_type>{}(_impl::fp::exp2<im>(x, static_cast<Rep>(floor(x))));
     }
 
 }
