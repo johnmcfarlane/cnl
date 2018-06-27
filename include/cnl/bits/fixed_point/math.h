@@ -134,13 +134,13 @@ namespace cnl {
         //Calculate the final result by shifting the fractional part around.
         //Remember to add the 1 which is left out to get 1 bit more resolution
         return from_rep<out_type>{}(
-                floor(x) <= Exponent ?
+                _impl::fp::floor(x) <= Exponent ?
                     typename im::rep{1}//return immediately if the shift would result in all bits being shifted out
                                      :
                     	//Do the shifts manually. Once the branch with shift operators is merged, could use those
-                    (to_rep(exp2m1_0to1<Rep, Exponent>(static_cast<out_type>(x - floor(x))))//Calculate the exponent of the fractional part
-                    >> (-im::exponent + Exponent - floor(x)))//shift it to the right place
-                    + (Rep { 1 } << (floor(x) - Exponent))); //The constant term must be one, to make integer powers correct
+                    (to_rep(exp2m1_0to1<Rep, Exponent>(static_cast<out_type>(x - _impl::fp::floor(x))))//Calculate the exponent of the fractional part
+                    >> (-im::exponent + Exponent - _impl::fp::floor(x)))//shift it to the right place
+                    + (Rep { 1 } << (_impl::fp::floor(x) - Exponent))); //The constant term must be one, to make integer powers correct
     }
 
 }
