@@ -95,4 +95,10 @@ namespace {
                         rounding_elastic_number<62, 0>{2}))), "cnl::rounding_elastic_number division");
 #endif
     }
+
+    namespace test_static_cast {
+        static constexpr auto c = static_cast<rounding_elastic_number<24, -20>>(rounding_elastic_number<48, -40>{0.21875});
+        static_assert(identical(rounding_elastic_number<24, -20>{0.21875}, c), "rounding_elastic_number assignment");
+    }
+    
 }
