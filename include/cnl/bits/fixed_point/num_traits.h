@@ -84,7 +84,7 @@ namespace cnl {
     struct from_value<fixed_point<Rep, Exponent, Radix>, constant<Value>> {
         // same as deduction guide
         using type = fixed_point<
-                set_digits_t<int, _impl::max(digits<int>::value, used_digits(Value)-trailing_bits(Value))>,
+                set_digits_t<int, _impl::max(digits<int>::value, _impl::used_digits(Value)-trailing_bits(Value))>,
                 trailing_bits(Value)>;
     };
 

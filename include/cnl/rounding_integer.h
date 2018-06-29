@@ -7,11 +7,9 @@
 #if !defined(CNL_ROUNDING_INTEGER_H)
 #define CNL_ROUNDING_INTEGER_H 1
 
-#include "numeric.h"
-
 #include "bits/number_base.h"
 #include "bits/rounding.h"
-
+#include "bits/used_digits.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -121,7 +119,7 @@ namespace cnl {
 
     template<class Rep, class RoundingTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<rounding_integer<Rep, RoundingTag>, constant<Value>> {
-        using _rep = typename std::conditional<digits<int>::value<used_digits(Value),
+        using _rep = typename std::conditional<digits<int>::value<_impl::used_digits(Value),
                 decltype(Value),
                 int>::type;
         using type = rounding_integer<_rep, RoundingTag>;

@@ -71,106 +71,106 @@ namespace {
 
     namespace test_numeric_impl {
         namespace test_used_digits_positive {
-            static_assert(_numeric_impl::used_digits_positive(1, 2)==1,
-                    "cnl::_numeric_impl::used_digits_positive test failed");
-            static_assert(_numeric_impl::used_digits_positive(2, 2)==2,
-                    "cnl::_numeric_impl::used_digits_positive test failed");
-            static_assert(_numeric_impl::used_digits_positive(uint8_t{255}, 2)==8,
-                    "cnl::_numeric_impl::used_digits_positive test failed");
-            static_assert(_numeric_impl::used_digits_positive(int16_t{32767}, 2)==15,
-                    "cnl::_numeric_impl::used_digits_positive test failed");
-            static_assert(_numeric_impl::used_digits_positive(numeric_limits<int64_t>::max(), 2)==63,
-                    "cnl::_numeric_impl::used_digits_positive test failed");
-            static_assert(_numeric_impl::used_digits_positive(numeric_limits<uint64_t>::max(), 2)==64,
-                    "cnl::_numeric_impl::used_digits_positive test failed");
+            static_assert(_impl::used_digits_positive(1, 2)==1,
+                    "cnl::_impl::used_digits_positive test failed");
+            static_assert(_impl::used_digits_positive(2, 2)==2,
+                    "cnl::_impl::used_digits_positive test failed");
+            static_assert(_impl::used_digits_positive(uint8_t{255}, 2)==8,
+                    "cnl::_impl::used_digits_positive test failed");
+            static_assert(_impl::used_digits_positive(int16_t{32767}, 2)==15,
+                    "cnl::_impl::used_digits_positive test failed");
+            static_assert(_impl::used_digits_positive(numeric_limits<int64_t>::max(), 2)==63,
+                    "cnl::_impl::used_digits_positive test failed");
+            static_assert(_impl::used_digits_positive(numeric_limits<uint64_t>::max(), 2)==64,
+                    "cnl::_impl::used_digits_positive test failed");
         }
     }
 
     namespace test_used_digits_2 {
-        static_assert(cnl::used_digits(0)==0, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(1)==1, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(2)==2, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(uint8_t{255})==8, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(int16_t{32767})==15, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(int8_t{-1})==0, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(int8_t{-2})==1, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(int8_t{-3})==2, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(int8_t{-4})==2, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(int8_t{-5})==3, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(int8_t{-8})==3, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(int8_t{-9})==4, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(int8_t{-128})==7, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(numeric_limits<int64_t>::lowest())==63,
-                "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(numeric_limits<int64_t>::lowest()+1)==63,
-                "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(numeric_limits<int64_t>::min()+1)==63,
-                "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(numeric_limits<int64_t>::max())==63,
-                "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(UINT64_C(0))==0,
-                "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(numeric_limits<uint64_t>::min())==0,
-                "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(numeric_limits<uint64_t>::max())==64,
-                "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(INT64_C(0x7fffffff00000000))==63,
-                "cnl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(0)==0, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(1)==1, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(2)==2, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(uint8_t{255})==8, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(int16_t{32767})==15, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(int8_t{-1})==0, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(int8_t{-2})==1, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(int8_t{-3})==2, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(int8_t{-4})==2, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(int8_t{-5})==3, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(int8_t{-8})==3, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(int8_t{-9})==4, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(int8_t{-128})==7, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(numeric_limits<int64_t>::lowest())==63,
+                "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(numeric_limits<int64_t>::lowest()+1)==63,
+                "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(numeric_limits<int64_t>::min()+1)==63,
+                "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(numeric_limits<int64_t>::max())==63,
+                "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(UINT64_C(0))==0,
+                "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(numeric_limits<uint64_t>::min())==0,
+                "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(numeric_limits<uint64_t>::max())==64,
+                "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(INT64_C(0x7fffffff00000000))==63,
+                "cnl::_impl::used_digits test failed");
 #if defined(CNL_INT128_ENABLED)
-        static_assert(cnl::used_digits(CNL_INTMAX_C(0x7fffffff000000000000000000000000))==127,
-                "cnl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(CNL_INTMAX_C(0x7fffffff000000000000000000000000))==127,
+                "cnl::_impl::used_digits test failed");
 #endif
     }
 
     namespace test_used_digits_10 {
-        static_assert(cnl::used_digits(0, 10)==0, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(1, 10)==1, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(9, 10)==1, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(10, 10)==2, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(99, 10)==2, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(100, 10)==3, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(int8_t{-1}, 10)==0, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(int8_t{-2}, 10)==1, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(int8_t{-10}, 10)==1, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(int8_t{-11}, 10)==2, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(int8_t{-100}, 10)==2, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(int8_t{-101}, 10)==3, "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(numeric_limits<int64_t>::lowest(), 10)==19,
-                "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(numeric_limits<int64_t>::lowest()+1, 10)==19,
-                "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(numeric_limits<int64_t>::min()+1, 10)==19,
-                "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(numeric_limits<int64_t>::max(), 10)==19,
-                "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(UINT64_C(0), 10)==0,
-                "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(numeric_limits<uint64_t>::min(), 10)==0,
-                "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(numeric_limits<uint64_t>::max(), 10)==20,
-                "cnl::used_digits test failed");
-        static_assert(cnl::used_digits(INT64_C(0x7fffffff00000000), 10)==19,
-                "cnl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(0, 10)==0, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(1, 10)==1, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(9, 10)==1, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(10, 10)==2, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(99, 10)==2, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(100, 10)==3, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(int8_t{-1}, 10)==0, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(int8_t{-2}, 10)==1, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(int8_t{-10}, 10)==1, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(int8_t{-11}, 10)==2, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(int8_t{-100}, 10)==2, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(int8_t{-101}, 10)==3, "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(numeric_limits<int64_t>::lowest(), 10)==19,
+                "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(numeric_limits<int64_t>::lowest()+1, 10)==19,
+                "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(numeric_limits<int64_t>::min()+1, 10)==19,
+                "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(numeric_limits<int64_t>::max(), 10)==19,
+                "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(UINT64_C(0), 10)==0,
+                "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(numeric_limits<uint64_t>::min(), 10)==0,
+                "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(numeric_limits<uint64_t>::max(), 10)==20,
+                "cnl::_impl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(INT64_C(0x7fffffff00000000), 10)==19,
+                "cnl::_impl::used_digits test failed");
 #if defined(CNL_INT128_ENABLED)
-        static_assert(cnl::used_digits(CNL_INTMAX_C(0x7fffffff000000000000000000000000), 10)==39,
-                "cnl::used_digits test failed");
+        static_assert(cnl::_impl::used_digits(CNL_INTMAX_C(0x7fffffff000000000000000000000000), 10)==39,
+                "cnl::_impl::used_digits test failed");
 #endif
     }
 
     namespace test_used_digits_n {
         template<int Radix>
         struct test_used_digits {
-            static_assert(cnl::used_digits(-Radix*Radix-1, Radix)==3, "cnl::used_digits<10> test failed");
-            static_assert(cnl::used_digits(-Radix*Radix, Radix)==2, "cnl::used_digits<10> test failed");
-            static_assert(cnl::used_digits(-Radix-1, Radix)==2, "cnl::used_digits<10> test failed");
-            static_assert(cnl::used_digits(-Radix, Radix)==1, "cnl::used_digits<10> test failed");
-            static_assert(cnl::used_digits(-1, Radix)==0, "cnl::used_digits<10> test failed");
-            static_assert(cnl::used_digits(0, Radix)==0, "cnl::used_digits<10> test failed");
-            static_assert(cnl::used_digits(1, Radix)==1, "cnl::used_digits<10> test failed");
-            static_assert(cnl::used_digits(Radix-1, Radix)==1, "cnl::used_digits<10> test failed");
-            static_assert(cnl::used_digits(Radix, Radix)==2, "cnl::used_digits<10> test failed");
-            static_assert(cnl::used_digits(Radix*Radix-1, Radix)==2, "cnl::used_digits<10> test failed");
-            static_assert(cnl::used_digits(Radix*Radix, Radix)==3, "cnl::used_digits<10> test failed");
+            static_assert(cnl::_impl::used_digits(-Radix*Radix-1, Radix)==3, "cnl::_impl::used_digits<10> test failed");
+            static_assert(cnl::_impl::used_digits(-Radix*Radix, Radix)==2, "cnl::_impl::used_digits<10> test failed");
+            static_assert(cnl::_impl::used_digits(-Radix-1, Radix)==2, "cnl::_impl::used_digits<10> test failed");
+            static_assert(cnl::_impl::used_digits(-Radix, Radix)==1, "cnl::_impl::used_digits<10> test failed");
+            static_assert(cnl::_impl::used_digits(-1, Radix)==0, "cnl::_impl::used_digits<10> test failed");
+            static_assert(cnl::_impl::used_digits(0, Radix)==0, "cnl::_impl::used_digits<10> test failed");
+            static_assert(cnl::_impl::used_digits(1, Radix)==1, "cnl::_impl::used_digits<10> test failed");
+            static_assert(cnl::_impl::used_digits(Radix-1, Radix)==1, "cnl::_impl::used_digits<10> test failed");
+            static_assert(cnl::_impl::used_digits(Radix, Radix)==2, "cnl::_impl::used_digits<10> test failed");
+            static_assert(cnl::_impl::used_digits(Radix*Radix-1, Radix)==2, "cnl::_impl::used_digits<10> test failed");
+            static_assert(cnl::_impl::used_digits(Radix*Radix, Radix)==3, "cnl::_impl::used_digits<10> test failed");
         };
 
         template

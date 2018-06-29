@@ -8,6 +8,7 @@
 /// \brief file containing tests of the `cnl::elastic_integer` type
 
 #include <cnl/elastic_integer.h>
+#include <cnl/numeric.h>
 #include <cnl/bits/rounding.h>
 
 #include <gtest/gtest.h>

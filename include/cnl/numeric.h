@@ -12,6 +12,8 @@
 
 #include "bit.h"
 
+#include "bits/used_digits.h"
+
 /// compositional numeric library
 namespace cnl {
 
@@ -298,49 +300,10 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::used_digits
 
-    namespace _numeric_impl {
-        template<typename Integer>
-        constexpr int used_digits_positive(Integer const& value, int radix)
-        {
-            static_assert(cnl::numeric_limits<Integer>::is_integer,
-                    "Integer parameter of used_digits_positive() must be a fundamental integer.");
-
-            return (value>0) ? 1+used_digits_positive(value/radix, radix) : 0;
-        }
-
-        template<bool IsSigned>
-        struct used_digits {
-            template<class Integer>
-            constexpr int operator()(Integer const& value, int radix) const
-            {
-                return value ? used_digits_positive(value, radix) : 0;
-            }
-        };
-
-        template<>
-        struct used_digits<true> {
-            template<class Integer>
-            constexpr int operator()(Integer const& value, int radix) const
-            {
-                static_assert(cnl::numeric_limits<Integer>::is_integer,
-                        "Integer parameter of used_digits()() must be a fundamental integer.");
-
-                // Most negative number is not exploited;
-                // thus negating the result or subtracting it from something else
-                // will less likely result in overflow.
-                return (value>0)
-                       ? used_digits_positive(value, radix)
-                       : (value==0)
-                         ? 0
-                         : used_digits()(Integer(-1)-value, radix);
-            }
-        };
-    }
-
     template<typename Integer>
     constexpr int used_digits(Integer const& value, int radix = numeric_limits<Integer>::radix)
     {
-        return _impl::for_rep<int>(_numeric_impl::used_digits<is_signed<Integer>::value>(), value, radix);
+        return _impl::for_rep<int>(_impl::used_digits_signed<is_signed<Integer>::value>(), value, radix);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -349,15 +312,8 @@ namespace cnl {
     template<class Integer>
     constexpr int leading_bits(Integer const& value)
     {
-        return digits<Integer>::value-used_digits(value);
+        return digits<Integer>::value-cnl::used_digits(value);
     }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::digits<cnl::constant<>>
-
-    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct digits<constant<Value>> : std::integral_constant<_digits_type, used_digits((Value<0) ? -Value : Value)> {
-    };
 }
 
 #endif  // CNL_NUMERIC_H

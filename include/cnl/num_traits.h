@@ -15,6 +15,7 @@
 
 #include "bits/power.h"
 #include "bits/type_traits.h"
+#include "bits/used_digits.h"
 
 #include <utility>
 
@@ -190,6 +191,15 @@ namespace cnl {
     template<class T>
     constexpr _digits_type digits_v = digits<T>::value;
 #endif
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::digits<cnl::constant<>>
+
+    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct digits<constant<Value>> : std::integral_constant<
+            _digits_type,
+            _impl::used_digits((Value<0) ? -Value : Value)> {
+    };
 
     ////////////////////////////////////////////////////////////////////////////////
     // set_digits / set_digits_t

@@ -11,7 +11,6 @@
 #define CNL_ELASTIC_INTEGER_H 1
 
 #include "constant.h"
-#include "numeric.h"
 
 #include "bits/number_base.h"
 
