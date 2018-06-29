@@ -5,7 +5,7 @@ enable_testing()
 # source files containing tests of the correctness of CNL;
 # ideally compiles with every warning that CNL user might choose
 set(test_sources
-        # low-level
+        # free functions
         bit.cpp
         cnlint.cpp
         common.cpp
@@ -27,6 +27,9 @@ set(test_sources
         fixed_point/extras.cpp
         overflow/overflow_integer.cpp
         rounding/rounding_integer.cpp
+
+        # components in free functions
+        elastic/rounding/elastic_integer_rounding.cpp
 
         # composites
         fixed_point/overflow/fixed_point_native_integer.cpp
