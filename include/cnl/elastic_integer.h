@@ -122,7 +122,7 @@ namespace cnl {
     template<int Digits, class Narrowest, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<elastic_integer<Digits, Narrowest>, constant<Value>> {
         static constexpr auto _to_digits = digits<constant<Value>>::value;
-        using type = elastic_integer<_to_digits, Narrowest>;
+        using type = elastic_integer<_to_digits, int>;
     };
 
     // cnl::scale<..., cnl::elastic_integer<>>
