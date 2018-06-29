@@ -414,24 +414,6 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_value
 
-    namespace _num_traits_impl {
-        template<int Width, bool IsSigned>
-        struct make_integer;
-
-        template<int Width>
-        struct make_integer<Width, true> {
-            using type = set_digits_t<signed, Width-1>;
-        };
-
-        template<int Width>
-        struct make_integer<Width, false> {
-            using type = set_digits_t<unsigned, Width>;
-        };
-
-        template<int Width, bool IsSigned>
-        using make_integer_t = typename make_integer<Width, IsSigned>::type;
-    }
-
     // if Number has Value for its Rep, what type would Number become?
     template<class Number, class Value, class Enable = void>
     struct from_value {
@@ -443,7 +425,7 @@ namespace cnl {
         using type = typename std::conditional<
                 cnl::is_integral<Value>::value,
                 Value,
-                _num_traits_impl::make_integer_t<cnl::digits<Value>::value, cnl::is_signed<Value>::value>>::type;
+                set_digits_t<_impl::make_signed_t<int, cnl::is_signed<Value>::value>, cnl::digits<Value>::value>>::type;
     };
 
     template<class Number, class Value>
