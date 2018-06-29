@@ -414,41 +414,44 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_value
 
-    // if Number has Value for its Rep, what type would Number become?
-    template<class Number, class Value, class Enable = void>
+    template<typename Number, typename Value, class Enable = void>
     struct from_value {
-        using type = void;
+        void operator()(Value const &) const {
+        }
     };
 
     template<class Number, class Value>
-    struct from_value<Number, Value, _impl::enable_if_t<cnl::is_integral<Number>::value>> {
-        using type = typename std::conditional<
-                cnl::is_integral<Value>::value,
-                Value,
-                set_digits_t<_impl::make_signed_t<int, cnl::is_signed<Value>::value>, cnl::digits<Value>::value>>::type;
+    struct from_value<Number, Value,
+            _impl::enable_if_t<cnl::is_integral<Number>::value && cnl::is_integral<Value>::value>> {
+        constexpr Value operator()(Value const &value) const {
+            return value;
+        }
     };
 
-    template<class Number, class Value>
-    using from_value_t = typename from_value<Number, Value>::type;
+    template<class Number, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct from_value<Number, constant<Value>,
+            _impl::enable_if_t<is_integral<Number>::value>> {
+    private:
+        using _result_type = set_digits_t<
+                make_signed_t<Number>,
+                _impl::max(digits<int>::value, _impl::used_digits(Value))>;
+    public:
+        constexpr _result_type operator()(constant<Value> const &value) const {
+            return _result_type(value);
+        }
+    };
 
     namespace _impl {
-        template<class Number, class Value>
+        template<typename Number, typename Value>
         constexpr auto from_value(Value const& value)
-        -> cnl::from_value_t<Number, Value>
+        -> decltype(cnl::from_value<Number, Value>{}(value))
         {
-            static_assert(
-                    !std::is_same<void, cnl::from_value_t<Number, Value>>::value,
-                    "cnl::from_value is missing a specialization");
-
-            return value;
+            return cnl::from_value<Number, Value>{}(value);
         }
     }
 
-    // cnl::from_value<cnl::constant>
-    template<CNL_IMPL_CONSTANT_VALUE_TYPE ConstantValue, class InputValue>
-    struct from_value<constant<ConstantValue>, InputValue> {
-        using type = constant<InputValue{ConstantValue}>;
-    };
+    template<typename Number, typename Value>
+    using from_value_t = decltype(_impl::from_value<Number>(std::declval<Value>()));
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::shift

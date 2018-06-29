@@ -16,25 +16,6 @@
 
 /// compositional numeric library
 namespace cnl {
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::make_fixed_point<cnl::fractional<>>
-
-    /// \brief makes a \ref fixed_point object from a given \ref fractional
-    ///
-    /// \tparam Numerator the type of the numerator of the fractional
-    /// \tparam Denominator the type of the denominator of the fractional
-    ///
-    /// \param value the fractionalfrom which to make the \ref fixed_point object
-    ///
-    /// \note This function is deprecated after C++17
-    /// in favor of class template deduction.
-    template<typename Numerator, typename Denominator>
-    constexpr auto make_fixed_point(fractional<Numerator, Denominator> const& value)
-    -> decltype(quotient(value.numerator, value.denominator))
-    {
-        return quotient(value.numerator, value.denominator);
-    }
-
     template<typename Rep, int Exponent, int Radix>
     template<typename Numerator, typename Denominator>
     constexpr fixed_point<Rep, Exponent, Radix>::fixed_point(fractional<Numerator, Denominator> const& f)

@@ -183,7 +183,10 @@ namespace cnl {
 
     template<class Rep, class OverflowTag, class Value>
     struct from_value<overflow_integer<Rep, OverflowTag>, Value> {
-        using type = overflow_integer<Value, OverflowTag>;
+        constexpr auto operator()(Value const &value) const
+        -> overflow_integer<Value, OverflowTag> {
+            return value;
+        }
     };
 
     template<class Rep, class OverflowTag, class ValueRep, class ValueOverflowTag>
@@ -193,13 +196,20 @@ namespace cnl {
         using _overflow_tag = _impl::common_type_t<OverflowTag, ValueOverflowTag>;
         using _rep = from_value_t<Rep, ValueRep>;
     public:
-        using type = overflow_integer<_rep, _overflow_tag>;
+        constexpr auto operator()(overflow_integer<ValueRep, ValueOverflowTag> const &value) const
+        -> overflow_integer<_rep, _overflow_tag> {
+            return value;
+        }
     };
 
     template<class Rep, class OverflowTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<overflow_integer<Rep, OverflowTag>, constant<Value>> {
         using _rep = typename std::conditional<digits<int>::value<_impl::used_digits(Value), decltype(Value), int>::type;
-        using type = overflow_integer<_rep, OverflowTag>;
+
+        constexpr auto operator()(constant<Value> const &value) const
+        -> overflow_integer<_rep, OverflowTag> {
+            return value;
+        }
     };
 
     template<int Digits, class Rep, class OverflowTag>

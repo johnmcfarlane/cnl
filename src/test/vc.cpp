@@ -13,12 +13,18 @@ namespace std {
 namespace cnl {
     template<typename T, class Abi, class Value>
     struct from_value<Vc::simd<T, Abi>, Value> {
-        using type = Vc::simd<Value, Abi>;
+        constexpr auto operator()(Value const &value) const
+        -> Vc::simd<Value, Abi> {
+            return value;
+        }
     };
 
     template<typename ToT, class FromT, class Abi>
     struct from_value<Vc::simd<ToT, Abi>, Vc::simd<FromT, Abi>> {
-        using type = Vc::simd<ToT, Abi>;
+        constexpr auto operator()(Vc::simd<FromT, Abi> const& value) const
+        -> Vc::simd<ToT, Abi> {
+            return value;
+        }
     };
 
     template<int Digits, typename T, class Abi>

@@ -72,20 +72,37 @@ namespace cnl {
 
     template<typename Rep, int Exponent, int Radix, typename Value>
     struct from_value<fixed_point<Rep, Exponent, Radix>, Value> {
-        using type = fixed_point<Value, 0, Radix>;
+        constexpr auto operator()(Value const &value) const
+        -> fixed_point<Value, 0, Radix> {
+            return value;
+        }
     };
 
     template<typename Rep, int Exponent, int Radix, typename ValueRep, int ValueExponent>
     struct from_value<fixed_point<Rep, Exponent, Radix>, fixed_point<ValueRep, ValueExponent>> {
-        using type = fixed_point<from_value_t<Rep, ValueRep>, ValueExponent>;
+        constexpr auto operator()(fixed_point<ValueRep, ValueExponent> const& value) const
+        -> fixed_point<from_value_t<Rep, ValueRep>, ValueExponent> {
+            return value;
+        }
+    };
+
+    template<typename Rep, int Exponent, int Radix, typename Numerator, typename Denominator>
+    struct from_value<fixed_point<Rep, Exponent, Radix>, fractional<Numerator, Denominator>> {
+        constexpr auto operator()(fractional<Numerator, Denominator> const& value) const
+        -> decltype(quotient(value.numerator, value.denominator)) {
+            return quotient(value.numerator, value.denominator);
+        }
     };
 
     template<typename Rep, int Exponent, int Radix, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<fixed_point<Rep, Exponent, Radix>, constant<Value>> {
         // same as deduction guide
-        using type = fixed_point<
+        constexpr auto operator()(constant<Value> const& value) const
+        -> fixed_point<
                 set_digits_t<int, _impl::max(digits<int>::value, _impl::used_digits(Value)-trailing_bits(Value))>,
-                trailing_bits(Value)>;
+                trailing_bits(Value)> {
+            return value;
+        }
     };
 
     ////////////////////////////////////////////////////////////////////////////////
