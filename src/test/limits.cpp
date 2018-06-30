@@ -11,6 +11,17 @@
 #include <cnl/cnlint.h>
 
 namespace {
+    // Sanity tests: if any of these fail, please proceed with caution!
+    // The author would be very interested to learn more.
+    
+    static_assert(CHAR_BIT == 8, "untested platform");
+    static_assert(std::is_same<signed char, std::int8_t>::value, "untested platform");
+    static_assert(std::is_same<unsigned char, std::uint8_t>::value, "untested platform");
+    static_assert(std::is_same<short, std::int16_t>::value, "untested platform");
+    static_assert(std::is_same<unsigned short, std::uint16_t>::value, "untested platform");
+    static_assert(std::is_same<int, std::int32_t>::value, "untested platform");
+    static_assert(std::is_same<unsigned int, std::uint32_t>::value, "untested platform");
+    static_assert(sizeof(long long) == 8, "untested platform");
     static_assert(cnl::numeric_limits<int8_t>::lowest()==-128, "");
 
 #if defined(CNL_INT128_ENABLED)
