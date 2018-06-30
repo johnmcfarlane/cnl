@@ -108,31 +108,22 @@ namespace cnl {
     }
 
     template<class Rep, class RoundingTag, class Value>
-    struct from_value<rounding_integer<Rep, RoundingTag>, Value> {
-        constexpr auto operator()(Value const &value) const
-        -> rounding_integer<Value, RoundingTag> {
-            return value;
-        }
+    struct from_value<rounding_integer<Rep, RoundingTag>, Value> : _impl::from_value_simple<
+            Value, rounding_integer<Value, RoundingTag>> {
     };
 
     template<class Rep, class RoundingTag, class ValueRep, class ValueRoundingTag>
-    struct from_value<rounding_integer<Rep, RoundingTag>, rounding_integer<ValueRep, ValueRoundingTag>> {
-        constexpr auto operator()(rounding_integer<ValueRep, ValueRoundingTag> const &value) const
-        -> rounding_integer<ValueRep, RoundingTag> {
-            return value;
-        }
+    struct from_value<rounding_integer<Rep, RoundingTag>, rounding_integer<ValueRep, ValueRoundingTag>>
+            : _impl::from_value_simple<
+            rounding_integer<ValueRep, ValueRoundingTag>, rounding_integer<ValueRep, RoundingTag>> {
     };
 
     template<class Rep, class RoundingTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct from_value<rounding_integer<Rep, RoundingTag>, constant<Value>> {
-        using _rep = typename std::conditional<digits<int>::value<_impl::used_digits(Value),
-                decltype(Value),
-                int>::type;
-
-        constexpr auto operator()(constant<Value> const &value) const
-        -> rounding_integer<_rep, RoundingTag> {
-            return value;
-        }
+    struct from_value<rounding_integer<Rep, RoundingTag>, constant<Value>> : _impl::from_value_simple<
+            constant<Value>, rounding_integer<typename std::conditional<
+                    digits<int>::value<_impl::used_digits(Value),
+                    decltype(Value),
+                    int>::type, RoundingTag>> {
     };
 
     template<int Digits, class Rep, class RoundingTag>

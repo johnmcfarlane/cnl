@@ -12,19 +12,12 @@ namespace std {
 
 namespace cnl {
     template<typename T, class Abi, class Value>
-    struct from_value<Vc::simd<T, Abi>, Value> {
-        constexpr auto operator()(Value const &value) const
-        -> Vc::simd<Value, Abi> {
-            return value;
-        }
+    struct from_value<Vc::simd<T, Abi>, Value> : _impl::from_value_simple<Value, Vc::simd<Value, Abi>> {
     };
 
     template<typename ToT, class FromT, class Abi>
-    struct from_value<Vc::simd<ToT, Abi>, Vc::simd<FromT, Abi>> {
-        constexpr auto operator()(Vc::simd<FromT, Abi> const& value) const
-        -> Vc::simd<ToT, Abi> {
-            return value;
-        }
+    struct from_value<Vc::simd<ToT, Abi>, Vc::simd<FromT, Abi>> : _impl::from_value_simple<
+            Vc::simd<FromT, Abi>, Vc::simd<ToT, Abi>> {
     };
 
     template<int Digits, typename T, class Abi>

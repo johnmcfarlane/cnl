@@ -414,23 +414,28 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_value
 
+    namespace _impl {
+        template<typename Value, typename Result>
+        struct from_value_simple {
+            constexpr Result operator()(Value const& value) const {
+                return value;
+            }
+        };
+    }
+
     template<typename Number, typename Value, class Enable = void>
-    struct from_value {
-        void operator()(Value const &) const {
-        }
+    struct from_value : _impl::from_value_simple<Value, void> {
+        void operator()(Value const &) const;
     };
 
     template<class Number, class Value>
-    struct from_value<Number, Value,
-            _impl::enable_if_t<cnl::is_integral<Number>::value && cnl::is_integral<Value>::value>> {
-        constexpr Value operator()(Value const &value) const {
-            return value;
-        }
+    struct from_value<
+            Number, Value, _impl::enable_if_t<cnl::is_integral<Number>::value && cnl::is_integral<Value>::value>>
+            : _impl::from_value_simple<Value, Value> {
     };
 
     template<class Number, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct from_value<Number, constant<Value>,
-            _impl::enable_if_t<is_integral<Number>::value>> {
+    struct from_value<Number, constant<Value>, _impl::enable_if_t<is_integral<Number>::value>> {
     private:
         using _result_type = set_digits_t<
                 make_signed_t<Number>,
