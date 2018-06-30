@@ -10,8 +10,6 @@
 #if !defined(CNL_INTEGRAL_CONSTANT_H)
 #define CNL_INTEGRAL_CONSTANT_H 1
 
-#include "numeric.h
-
 #include "bits/common.h"
 
 #include <cstdint>

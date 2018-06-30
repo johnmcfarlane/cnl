@@ -56,7 +56,7 @@ namespace cnl {
             class Input = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     static_number<
-            used_digits(Value)-trailing_bits(Value), trailing_bits(Value),
+            _impl::used_digits(Value)-trailing_bits(Value), trailing_bits(Value),
             RoundingTag, OverflowTag,
             Narrowest>
     constexpr make_static_number(constant<Value> const&)

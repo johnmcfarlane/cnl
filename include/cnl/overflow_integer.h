@@ -182,24 +182,23 @@ namespace cnl {
     };
 
     template<class Rep, class OverflowTag, class Value>
-    struct from_value<overflow_integer<Rep, OverflowTag>, Value> {
-        using type = overflow_integer<Value, OverflowTag>;
+    struct from_value<overflow_integer<Rep, OverflowTag>, Value>
+            : _impl::from_value_simple<Value, overflow_integer<Value, OverflowTag>> {
     };
 
     template<class Rep, class OverflowTag, class ValueRep, class ValueOverflowTag>
-    struct from_value<overflow_integer<Rep, OverflowTag>, overflow_integer<ValueRep, ValueOverflowTag>> {
-    private:
-        // the common_type of two overflow tags is the stricter for some sense of strict
-        using _overflow_tag = _impl::common_type_t<OverflowTag, ValueOverflowTag>;
-        using _rep = from_value_t<Rep, ValueRep>;
-    public:
-        using type = overflow_integer<_rep, _overflow_tag>;
+    struct from_value<overflow_integer<Rep, OverflowTag>, overflow_integer<ValueRep, ValueOverflowTag>>
+            : _impl::from_value_simple<
+                    overflow_integer<ValueRep, ValueOverflowTag>,
+                    overflow_integer<
+                            from_value_t<Rep, ValueRep>,
+                            _impl::common_type_t<OverflowTag, ValueOverflowTag>>> {
     };
 
     template<class Rep, class OverflowTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct from_value<overflow_integer<Rep, OverflowTag>, constant<Value>> {
-        using _rep = typename std::conditional<digits<int>::value<used_digits(Value), decltype(Value), int>::type;
-        using type = overflow_integer<_rep, OverflowTag>;
+    struct from_value<overflow_integer<Rep, OverflowTag>, constant<Value>>
+            : _impl::from_value_simple<constant<Value>, overflow_integer<typename std::conditional<
+                    digits<int>::value<_impl::used_digits(Value), decltype(Value), int>::type, OverflowTag>>{
     };
 
     template<int Digits, class Rep, class OverflowTag>

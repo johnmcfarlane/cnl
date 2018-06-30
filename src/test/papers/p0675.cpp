@@ -75,11 +75,6 @@ namespace cnl {
     using acme::smart_integer;
     template<class Rep>
     struct numeric_limits<smart_integer<Rep>> : numeric_limits<Rep> {};
-
-    template<class Rep, class Value>
-    struct from_value<smart_integer<Rep>, Value> {
-        using type = smart_integer<Value>;
-    };
 }
 
 namespace {

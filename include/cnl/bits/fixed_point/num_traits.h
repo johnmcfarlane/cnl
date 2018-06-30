@@ -71,21 +71,29 @@ namespace cnl {
     // cnl::from_value<cnl::fixed_point<>>
 
     template<typename Rep, int Exponent, int Radix, typename Value>
-    struct from_value<fixed_point<Rep, Exponent, Radix>, Value> {
-        using type = fixed_point<Value, 0, Radix>;
+    struct from_value<fixed_point<Rep, Exponent, Radix>, Value>
+            : _impl::from_value_simple<Value, fixed_point<Value, 0, Radix>> {
     };
 
     template<typename Rep, int Exponent, int Radix, typename ValueRep, int ValueExponent>
-    struct from_value<fixed_point<Rep, Exponent, Radix>, fixed_point<ValueRep, ValueExponent>> {
-        using type = fixed_point<from_value_t<Rep, ValueRep>, ValueExponent>;
+    struct from_value<fixed_point<Rep, Exponent, Radix>, fixed_point<ValueRep, ValueExponent>> : _impl::from_value_simple<
+            fixed_point<ValueRep, ValueExponent>, fixed_point<from_value_t<Rep, ValueRep>, ValueExponent>> {
+    };
+
+    template<typename Rep, int Exponent, int Radix, typename Numerator, typename Denominator>
+    struct from_value<fixed_point<Rep, Exponent, Radix>, fractional<Numerator, Denominator>> {
+        constexpr auto operator()(fractional<Numerator, Denominator> const& value) const
+        -> decltype(quotient(value.numerator, value.denominator)) {
+            return quotient(value.numerator, value.denominator);
+        }
     };
 
     template<typename Rep, int Exponent, int Radix, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct from_value<fixed_point<Rep, Exponent, Radix>, constant<Value>> {
+    struct from_value<fixed_point<Rep, Exponent, Radix>, constant<Value>> : _impl::from_value_simple<constant<Value>,
+            fixed_point<
+                    set_digits_t<int, _impl::max(digits<int>::value, _impl::used_digits(Value)-trailing_bits(Value))>,
+                    trailing_bits(Value)>> {
         // same as deduction guide
-        using type = fixed_point<
-                set_digits_t<int, _impl::max(digits<int>::value, used_digits(Value)-trailing_bits(Value))>,
-                trailing_bits(Value)>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////

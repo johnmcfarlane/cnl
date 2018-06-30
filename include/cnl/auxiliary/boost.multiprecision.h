@@ -60,7 +60,10 @@ namespace cnl {
         static constexpr auto _bits = _digits + _is_signed;
         static constexpr auto _sign_type = _is_signed ? _bmp::signed_magnitude : _bmp::unsigned_magnitude;
     public:
-        using type = _bmp::cpp_int_backend<_bits, _bits, _sign_type, Checked, void>;
+        constexpr auto operator()(Value const& value) const
+        -> _bmp::cpp_int_backend<_bits, _bits, _sign_type, Checked, void> {
+            return value;
+        }
     };
 
     template<class Backend, _bmp::expression_template_option ExpressionTemplates>
@@ -85,7 +88,22 @@ namespace cnl {
 
     template<class Backend, _bmp::expression_template_option ExpressionTemplates, class Value>
     struct from_value<_bmp::number<Backend, ExpressionTemplates>, Value> {
-        using type = _bmp::number<from_value_t<Backend, Value>, ExpressionTemplates>;
+        constexpr auto operator()(Value const& value) const
+        -> _bmp::number<from_value_t<Backend, Value>, ExpressionTemplates> {
+            return value;
+        }
+    };
+
+    template<
+            class LhsBackend, _bmp::expression_template_option LhsExpressionTemplates,
+            class RhsBackend, _bmp::expression_template_option RhsExpressionTemplates>
+    struct from_value<
+            _bmp::number<LhsBackend, LhsExpressionTemplates>,
+            _bmp::number<RhsBackend, RhsExpressionTemplates>> {
+        constexpr auto operator()(_bmp::number<RhsBackend, RhsExpressionTemplates> const& value) const
+        -> _bmp::number<RhsBackend, LhsExpressionTemplates> {
+            return value;
+        }
     };
 
     template<int Digits, class Backend, _bmp::expression_template_option ExpressionTemplates>

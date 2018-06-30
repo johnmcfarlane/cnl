@@ -8,6 +8,7 @@
 /// \brief file containing tests of the `cnl::elastic_integer` type
 
 #include <cnl/elastic_integer.h>
+#include <cnl/numeric.h>
 #include <cnl/bits/rounding.h>
 
 #include <gtest/gtest.h>
@@ -121,11 +122,21 @@ namespace {
         using cnl::from_value;
 
         static_assert(std::is_same<elastic_integer<7, int>::rep, int>::value, "");
-        static_assert(identical(cnl::from_value<elastic_integer<3>, int>::type{1},
-                                elastic_integer<cnl::numeric_limits<int>::digits>{1}), "elastic_integer test failed");
+        static_assert(identical(
+                elastic_integer<cnl::numeric_limits<int>::digits>{1},
+                cnl::_impl::from_value<elastic_integer<3>>(1)), "elastic_integer test failed");
         static_assert(identical(cnl::_impl::from_value<elastic_integer<3>>(1),
                 elastic_integer<cnl::numeric_limits<int>::digits>{1}), "elastic_integer test failed");
         static_assert(identical(cnl::_impl::from_value<elastic_integer<1>>(INT32_C(0)), elastic_integer<31>{0}), "cnl::elastic_integer test failed");
+
+        static_assert(identical(
+                cnl::elastic_integer<3, signed>{6},
+                cnl::_impl::from_value<cnl::elastic_integer<2, unsigned>>(cnl::constant<6>{})),
+                "from_value<elastic_integer, constant>");
+        static_assert(identical(
+                cnl::elastic_integer<3, signed>{6},
+                cnl::_impl::from_value<cnl::elastic_integer<2, signed>>(cnl::constant<6>{})),
+                "from_value<elastic_integer, constant>");
     }
 
     namespace test_ctor {

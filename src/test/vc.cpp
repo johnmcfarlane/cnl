@@ -12,13 +12,12 @@ namespace std {
 
 namespace cnl {
     template<typename T, class Abi, class Value>
-    struct from_value<Vc::simd<T, Abi>, Value> {
-        using type = Vc::simd<Value, Abi>;
+    struct from_value<Vc::simd<T, Abi>, Value> : _impl::from_value_simple<Value, Vc::simd<Value, Abi>> {
     };
 
     template<typename ToT, class FromT, class Abi>
-    struct from_value<Vc::simd<ToT, Abi>, Vc::simd<FromT, Abi>> {
-        using type = Vc::simd<ToT, Abi>;
+    struct from_value<Vc::simd<ToT, Abi>, Vc::simd<FromT, Abi>> : _impl::from_value_simple<
+            Vc::simd<FromT, Abi>, Vc::simd<ToT, Abi>> {
     };
 
     template<int Digits, typename T, class Abi>

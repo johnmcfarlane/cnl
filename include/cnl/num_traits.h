@@ -15,6 +15,7 @@
 
 #include "bits/power.h"
 #include "bits/type_traits.h"
+#include "bits/used_digits.h"
 
 #include <utility>
 
@@ -190,6 +191,15 @@ namespace cnl {
     template<class T>
     constexpr _digits_type digits_v = digits<T>::value;
 #endif
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::digits<cnl::constant<>>
+
+    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct digits<constant<Value>> : std::integral_constant<
+            _digits_type,
+            _impl::used_digits((Value<0) ? -Value : Value)> {
+    };
 
     ////////////////////////////////////////////////////////////////////////////////
     // set_digits / set_digits_t
@@ -404,59 +414,49 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_value
 
-    namespace _num_traits_impl {
-        template<int Width, bool IsSigned>
-        struct make_integer;
-
-        template<int Width>
-        struct make_integer<Width, true> {
-            using type = set_digits_t<signed, Width-1>;
+    namespace _impl {
+        template<typename Value, typename Result>
+        struct from_value_simple {
+            constexpr Result operator()(Value const& value) const {
+                return value;
+            }
         };
-
-        template<int Width>
-        struct make_integer<Width, false> {
-            using type = set_digits_t<unsigned, Width>;
-        };
-
-        template<int Width, bool IsSigned>
-        using make_integer_t = typename make_integer<Width, IsSigned>::type;
     }
 
-    // if Number has Value for its Rep, what type would Number become?
-    template<class Number, class Value, class Enable = void>
-    struct from_value {
-        using type = void;
+    template<typename Number, typename Value, class Enable = void>
+    struct from_value : _impl::from_value_simple<Value, void> {
+        void operator()(Value const &) const;
     };
 
     template<class Number, class Value>
-    struct from_value<Number, Value, _impl::enable_if_t<cnl::is_integral<Number>::value>> {
-        using type = typename std::conditional<
-                cnl::is_integral<Value>::value,
-                Value,
-                _num_traits_impl::make_integer_t<cnl::digits<Value>::value, cnl::is_signed<Value>::value>>::type;
+    struct from_value<
+            Number, Value, _impl::enable_if_t<cnl::is_integral<Number>::value && cnl::is_integral<Value>::value>>
+            : _impl::from_value_simple<Value, Value> {
     };
 
-    template<class Number, class Value>
-    using from_value_t = typename from_value<Number, Value>::type;
+    template<class Number, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct from_value<Number, constant<Value>, _impl::enable_if_t<is_integral<Number>::value>> {
+    private:
+        using _result_type = set_digits_t<
+                make_signed_t<Number>,
+                _impl::max(digits<int>::value, _impl::used_digits(Value))>;
+    public:
+        constexpr _result_type operator()(constant<Value> const &value) const {
+            return _result_type(value);
+        }
+    };
 
     namespace _impl {
-        template<class Number, class Value>
+        template<typename Number, typename Value>
         constexpr auto from_value(Value const& value)
-        -> cnl::from_value_t<Number, Value>
+        -> decltype(cnl::from_value<Number, Value>{}(value))
         {
-            static_assert(
-                    !std::is_same<void, cnl::from_value_t<Number, Value>>::value,
-                    "cnl::from_value is missing a specialization");
-
-            return value;
+            return cnl::from_value<Number, Value>{}(value);
         }
     }
 
-    // cnl::from_value<cnl::constant>
-    template<CNL_IMPL_CONSTANT_VALUE_TYPE ConstantValue, class InputValue>
-    struct from_value<constant<ConstantValue>, InputValue> {
-        using type = constant<InputValue{ConstantValue}>;
-    };
+    template<typename Number, typename Value>
+    using from_value_t = decltype(_impl::from_value<Number>(std::declval<Value>()));
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::shift
