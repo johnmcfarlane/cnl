@@ -286,6 +286,28 @@ namespace {
         static_assert(!multiply_test<int, int>::positive(-2, -21),
                 "multiply_test<int, int>::positive");
 
+        // boundary
+        static_assert(multiply_test<int, int>::positive(-46341, -46341),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-46341, -46340),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-46341, 46340),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-46341, 46341),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-46340, -46340),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-46340, 46340),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-46340, 46341),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(46340, 46340),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(46340, 46341),
+                      "multiply_test<int, int>::positive");
+        static_assert(multiply_test<int, int>::positive(46341, 46341),
+                      "multiply_test<int, int>::positive");
+
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::overflow_test<cnl::_impl::multiply_op>::negative
 
@@ -322,6 +344,28 @@ namespace {
                 "multiply_test<int, int>::negative");
         static_assert(!multiply_test<int, int>::negative(-2, -21),
                 "multiply_test<int, int>::negative");
+
+        // boundary
+        static_assert(!multiply_test<int, int>::negative(-46341, -46341),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-46341, -46340),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-46341, 46340),
+                      "multiply_test<int, int>::negative");
+        static_assert(multiply_test<int, int>::negative(-46341, 46341),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-46340, -46340),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-46340, 46340),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-46340, 46341),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(46340, 46340),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(46340, 46341),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(46341, 46341),
+                      "multiply_test<int, int>::negative");
     }
 
     namespace test_native_overflow {
