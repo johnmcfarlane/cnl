@@ -143,6 +143,74 @@ namespace {
         using si = cnl::safe_integer<5>;
         ASSERT_DEATH(si{32}, "positive overflow");
     }
+
+    TEST(safe_integer, most_negative_number) {
+        static_assert(cnl::safe_integer<1>{1}, "in-range boundary test");
+        static_assert(cnl::safe_integer<1>{-1}, "in-range boundary test");
+        ASSERT_DEATH(cnl::safe_integer<1>{-2}, "negative overflow");
+    }
+
+    TEST(safe_integer, pre_increment) {
+        auto a = cnl::safe_integer<3>{6};
+        auto& b = ++ a;
+        static_assert(
+                std::is_same<decltype(b), cnl::safe_integer<3>&>::value,
+                "safe_integer pre-increment return value");
+        ASSERT_EQ(&b, &a) << "safe_integer pre-increment return address";
+        ASSERT_EQ(7, b) << "safe_integer pre-increment";
+    }
+
+    TEST(safe_integer, pre_decrement) {
+        auto a = cnl::safe_integer<3>{-6};
+        auto& b = -- a;
+        static_assert(
+                std::is_same<decltype(b), cnl::safe_integer<3>&>::value,
+                "safe_integer pre-increment return value");
+        ASSERT_EQ(&b, &a) << "safe_integer pre-increment return address";
+        ASSERT_EQ(-7, b) << "safe_integer pre-increment";
+    }
+
+    TEST(safe_integer, post_increment) {
+        auto a = cnl::safe_integer<3>{6};
+        auto const& b = a ++;
+        static_assert(
+                std::is_same<decltype(b), cnl::safe_integer<3> const&>::value,
+                "safe_integer pre-increment return value");
+        ASSERT_NE(&b, &a) << "safe_integer pre-increment return address";
+        ASSERT_EQ(7, a) << "safe_integer pre-increment";
+        ASSERT_EQ(6, b) << "safe_integer pre-increment";
+    }
+
+    TEST(safe_integer, post_decrement) {
+        auto a = cnl::safe_integer<3>{-6};
+        auto const& b = a --;
+        static_assert(
+                std::is_same<decltype(b), cnl::safe_integer<3> const&>::value,
+                "safe_integer pre-increment return value");
+        ASSERT_NE(&b, &a) << "safe_integer pre-increment return address";
+        ASSERT_EQ(-7, a) << "safe_integer pre-increment";
+        ASSERT_EQ(-6, b) << "safe_integer pre-increment";
+    }
+
+    TEST(safe_integer, pre_increment_overflow) {
+        auto a = cnl::safe_integer<3>{7};
+        ASSERT_DEATH(++ a, "positive overflow");
+    }
+
+    TEST(safe_integer, pre_decrement_overflow) {
+        auto a = cnl::safe_integer<3>{-7};
+        ASSERT_DEATH(-- a, "negative overflow");
+    }
+
+    TEST(safe_integer, post_increment_overflow) {
+        auto a = cnl::safe_integer<3>{7};
+        ASSERT_DEATH(a ++, "positive overflow");
+    }
+
+    TEST(safe_integer, post_decrement_overflow) {
+        auto a = cnl::safe_integer<3>{-7};
+        ASSERT_DEATH(a --, "negative overflow");
+    }
 }
 
 // given a rounding tag, invokes number_test_suite for integers of all built-in types
