@@ -184,6 +184,45 @@ namespace {
                 "cnl::_impl::convert_test<>::negative test failed");
     }
 
+    namespace test_minus {
+        template<typename Rhs>
+        using minus_test = cnl::_impl::overflow_test<cnl::_impl::minus_op, Rhs>;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::overflow_test<cnl::_impl::minus_op>::positive
+
+        static_assert(!minus_test<int>::positive(INT_MAX),
+                      "minus_test<int>::positive");
+        static_assert(!minus_test<int>::positive(-INT_MAX),
+                      "minus_test<int>::positive");
+        static_assert(minus_test<int>::positive(INT_MIN),
+                      "minus_test<int>::positive");
+
+        static_assert(!minus_test<unsigned>::positive(0),
+                      "minus_test<unsigned>::positive");
+        static_assert(!minus_test<unsigned>::positive(1),
+                      "minus_test<unsigned>::positive");
+        static_assert(!minus_test<unsigned>::positive(UINT_MAX),
+                      "minus_test<unsigned>::positive");
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::overflow_test<cnl::_impl::minus_op>::negative
+
+        static_assert(!minus_test<int>::negative(INT_MAX),
+                      "minus_test<int>::negative");
+        static_assert(!minus_test<int>::negative(-INT_MAX),
+                      "minus_test<int>::negative");
+        static_assert(!minus_test<int>::negative(INT_MIN),
+                      "minus_test<int>::negative");
+
+        static_assert(!minus_test<unsigned>::negative(0),
+                      "minus_test<unsigned>::negative");
+        static_assert(minus_test<unsigned>::negative(1),
+                      "minus_test<unsigned>::negative");
+        static_assert(minus_test<unsigned>::negative(UINT_MAX),
+                      "minus_test<unsigned>::negative");
+    }
+
     namespace test_add {
         template<typename Lhs, typename Rhs>
         using add_test = cnl::_impl::overflow_test<cnl::_impl::add_op, Lhs, Rhs>;
@@ -286,6 +325,28 @@ namespace {
         static_assert(!multiply_test<int, int>::positive(-2, -21),
                 "multiply_test<int, int>::positive");
 
+        // boundary
+        static_assert(multiply_test<int, int>::positive(-46341, -46341),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-46341, -46340),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-46341, 46340),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-46341, 46341),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-46340, -46340),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-46340, 46340),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(-46340, 46341),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(46340, 46340),
+                      "multiply_test<int, int>::positive");
+        static_assert(!multiply_test<int, int>::positive(46340, 46341),
+                      "multiply_test<int, int>::positive");
+        static_assert(multiply_test<int, int>::positive(46341, 46341),
+                      "multiply_test<int, int>::positive");
+
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::overflow_test<cnl::_impl::multiply_op>::negative
 
@@ -322,6 +383,46 @@ namespace {
                 "multiply_test<int, int>::negative");
         static_assert(!multiply_test<int, int>::negative(-2, -21),
                 "multiply_test<int, int>::negative");
+
+        // boundary
+        static_assert(!multiply_test<int, int>::negative(-46341, -46341),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-46341, -46340),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-46341, 46340),
+                      "multiply_test<int, int>::negative");
+        static_assert(multiply_test<int, int>::negative(-46341, 46341),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-46340, -46340),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-46340, 46340),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(-46340, 46341),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(46340, 46340),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(46340, 46341),
+                      "multiply_test<int, int>::negative");
+        static_assert(!multiply_test<int, int>::negative(46341, 46341),
+                      "multiply_test<int, int>::negative");
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // most negative number
+
+        static_assert(multiply_test<int, int>::positive(INT_MIN, -1), "multiply most negative number");
+        static_assert(!multiply_test<int, int>::negative(INT_MIN, -1), "multiply most negative number");
+    }
+
+    namespace test_divide {
+        template<typename Lhs, typename Rhs>
+        using divide_test = cnl::_impl::overflow_test<cnl::_impl::divide_op, Lhs, Rhs>;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // most negative number
+
+        static_assert(cnl::_impl::has_most_negative_number<int>::value, "");
+        static_assert(divide_test<int, int>::positive(INT_MIN, -1), "divide most negative number");
+        static_assert(!divide_test<int, int>::negative(INT_MIN, -1), "divide most negative number");
     }
 
     namespace test_native_overflow {

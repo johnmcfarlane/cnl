@@ -314,8 +314,8 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::rep_op_result
 
-        template<class Operator, class Lhs, class Rhs>
-        using op_result = decltype(Operator()(std::declval<Lhs>(), std::declval<Rhs>()));
+        template<class Operator, class ... Operands>
+        using op_result = decltype(Operator()(std::declval<Operands>() ...));
 
         ////////////////////////////////////////////////////////////////////////////////
         // generic operators
