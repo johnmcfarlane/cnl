@@ -76,30 +76,30 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // passive operators
 
-        template<class Operator, class Enable>
-        struct tagged_binary_operator<trapping_overflow_tag, Operator, Enable>
+        template<class Operator>
+        struct tagged_binary_operator<trapping_overflow_tag, Operator>
                 : tagged_binary_operator<_impl::passive_overflow_tag<trapping_overflow_tag>, Operator> {
         };
 
-        template<class Operator, class Enable>
-        struct tagged_binary_operator<throwing_overflow_tag, Operator, Enable>
+        template<class Operator>
+        struct tagged_binary_operator<throwing_overflow_tag, Operator>
                 : tagged_binary_operator<_impl::passive_overflow_tag<throwing_overflow_tag>, Operator> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
         // comparison operators
 
-        template<class OverflowTag, class Operator, class Enable = void>
+        template<class OverflowTag, class Operator>
         struct comparison_operator : public CNL_ERROR___cannot_use<OverflowTag>::as_a_tag {
         };
 
-        template<class Operator, class Enable>
-        struct comparison_operator<trapping_overflow_tag, Operator, Enable>
+        template<class Operator>
+        struct comparison_operator<trapping_overflow_tag, Operator>
                 : tagged_binary_operator<_impl::passive_overflow_tag<trapping_overflow_tag>, Operator> {
         };
 
-        template<class Operator, class Enable>
-        struct comparison_operator<throwing_overflow_tag, Operator, Enable>
+        template<class Operator>
+        struct comparison_operator<throwing_overflow_tag, Operator>
                 : tagged_binary_operator<_impl::passive_overflow_tag<throwing_overflow_tag>, Operator> {
         };
 

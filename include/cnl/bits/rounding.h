@@ -45,9 +45,9 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::tagged_binary_operator<nearest_rounding_tag>
 
-        template<class Result, class Input>
-        struct tagged_binary_operator<native_rounding_tag, Result, Input>
-                : tagged_binary_operator<native_tag, Result, Input> {
+        template<class Operator>
+        struct tagged_binary_operator<native_rounding_tag, Operator>
+                : tagged_binary_operator<native_tag, Operator> {
         };
 
         template<class Operator>

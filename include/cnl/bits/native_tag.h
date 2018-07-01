@@ -46,7 +46,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::tagged_binary_operator
 
-        template<class Tag, class Operator, class Enable = void>
+        template<class Tag, class Operator>
         struct tagged_binary_operator : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
         };
 
