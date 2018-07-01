@@ -4,7 +4,9 @@
       <option name="FUNCTION_BRACE_PLACEMENT" value="5" />
       <option name="FUNCTION_PARAMETERS_ALIGN_MULTILINE" value="false" />
       <option name="FUNCTION_CALL_ARGUMENTS_ALIGN_MULTILINE" value="false" />
+      <option name="CLASS_CONSTRUCTOR_INIT_LIST_ALIGN_MULTILINE" value="false" />
       <option name="CLASS_CONSTRUCTOR_INIT_LIST_NEW_LINE_BEFORE_COLON" value="1" />
+      <option name="SUPERCLASS_LIST_ALIGN_MULTILINE" value="false" />
       <option name="SPACE_WITHIN_EMPTY_BRACES" value="true" />
       <option name="SPACE_AFTER_INIT_LIST_COLON" value="false" />
       <option name="SPACE_BEFORE_PROTOCOLS_BRACKETS" value="false" />
@@ -35,7 +37,11 @@
       <option name="WHILE_ON_NEW_LINE" value="true" />
       <option name="CATCH_ON_NEW_LINE" value="true" />
       <option name="INDENT_CASE_FROM_SWITCH" value="false" />
+      <option name="ALIGN_MULTILINE_FOR" value="false" />
       <option name="ALIGN_MULTILINE_BINARY_OPERATION" value="false" />
+      <option name="ALIGN_MULTILINE_ASSIGNMENT" value="false" />
+      <option name="ALIGN_MULTILINE_TERNARY_OPERATION" value="false" />
+      <option name="ALIGN_MULTILINE_ARRAY_INITIALIZER_EXPRESSION" value="false" />
       <option name="SPACE_AROUND_EQUALITY_OPERATORS" value="false" />
       <option name="SPACE_AROUND_RELATIONAL_OPERATORS" value="false" />
       <option name="SPACE_AROUND_ADDITIVE_OPERATORS" value="false" />
