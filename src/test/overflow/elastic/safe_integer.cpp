@@ -141,7 +141,7 @@ namespace {
 
     TEST(static_integer, conversion_overflow) {
         using si = cnl::safe_integer<5>;
-        ASSERT_DEATH(si{32}, "positive overflow in conversion");
+        ASSERT_DEATH(si{32}, "positive overflow");
     }
 }
 

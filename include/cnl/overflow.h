@@ -154,8 +154,8 @@ namespace cnl {
                                 OverflowTag{},
                                 !test::negative(rhs),
                                 static_cast<Result>(rhs),
-                                "negative overflow in conversion"),
-                        "positive overflow in conversion");
+                                "negative overflow"),
+                        "positive overflow");
             }
         };
 

@@ -39,6 +39,6 @@ namespace {
     TEST(static_number, most_negative_number) {
         static_assert(cnl::static_number<1>{1}, "in-range boundary test");
         static_assert(cnl::static_number<1>{-1}, "in-range boundary test");
-        ASSERT_DEATH(cnl::static_number<1>{-2}, "negative overflow in conversion");
+        ASSERT_DEATH(cnl::static_number<1>{-2}, "negative overflow");
     }
 }

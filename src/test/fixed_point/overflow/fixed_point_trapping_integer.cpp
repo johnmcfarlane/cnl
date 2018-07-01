@@ -26,17 +26,17 @@ using test_int = cnl::overflow_integer<int, cnl::trapping_overflow_tag>;
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_right)
 {
     auto shift_left_fn = cnl::_impl::shift<-8, 2, uint16>;
-    ASSERT_DEATH(shift_left_fn((uint8) 0x1234), "positive overflow in conversion");
+    ASSERT_DEATH(shift_left_fn((uint8) 0x1234), "positive overflow");
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_left)
 {
     auto shift_left_fn = cnl::_impl::shift<8, 2, uint16>;
-    ASSERT_DEATH(shift_left_fn((uint8) 0x1234), "positive overflow in conversion");
+    ASSERT_DEATH(shift_left_fn((uint8) 0x1234), "positive overflow");
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), assignment)
 {
     using fp_type = fixed_point<int8, -7>;
-    ASSERT_DEATH(fp_type(1), "positive overflow in conversion");
+    ASSERT_DEATH(fp_type(1), "positive overflow");
 }
