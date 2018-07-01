@@ -255,6 +255,19 @@ namespace cnl {
                 return binary_operator<Operator, rounding_integer<LhsRep, common_tag>, rounding_integer<LhsRep, common_tag>>()(lhs, rhs);
             }
         };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // pre/post operators
+
+        template<class Operator, typename Rep, class RoundingTag>
+        struct pre_operator<Operator, rounding_integer<Rep, RoundingTag>>
+                : pre_operator<Operator, typename rounding_integer<Rep, RoundingTag>::_base> {
+        };
+
+        template<class Operator, typename Rep, class RoundingTag>
+        struct post_operator<Operator, rounding_integer<Rep, RoundingTag>>
+                : post_operator<Operator, typename rounding_integer<Rep, RoundingTag>::_base> {
+        };
     }
 
     ////////////////////////////////////////////////////////////////////////////////
