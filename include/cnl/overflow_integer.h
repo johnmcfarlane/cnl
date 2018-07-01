@@ -307,6 +307,29 @@ namespace cnl {
                         overflow_integer<common_rep, common_tag>>()(lhs, rhs);
             }
         };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // pre/post operators
+
+        template<class Operator, typename Rep, class OverflowTag>
+        struct pre_operator<Operator, overflow_integer<Rep, OverflowTag>> {
+            constexpr auto operator()(overflow_integer<Rep, OverflowTag>& rhs) const
+            -> decltype(typename pre_to_assign<Operator>::type{}(rhs, 1))
+            {
+                return typename pre_to_assign<Operator>::type{}(rhs, 1);
+            }
+        };
+
+        template<class Operator, typename Rep, class OverflowTag>
+        struct post_operator<Operator, overflow_integer<Rep, OverflowTag>> {
+            CNL_RELAXED_CONSTEXPR auto operator()(overflow_integer<Rep, OverflowTag>& rhs) const
+            -> overflow_integer<Rep, OverflowTag>
+            {
+                auto copy = rhs;
+                typename post_to_assign<Operator>::type{}(rhs, 1);
+                return copy;
+            }
+        };
     }
 }
 

@@ -10,6 +10,8 @@
 
 #include "../number_test.h"
 
+#include <gtest/gtest.h>
+
 using cnl::_impl::identical;
 using cnl::_impl::is_integer_or_float;
 using cnl::_integer_impl::is_overflow_integer;
@@ -486,6 +488,70 @@ namespace test_scale {
                   "scale<overflow_integer<>> test failed");
 }
 
+namespace {
+    TEST(overflow_integer, pre_increment) {
+        auto a = cnl::overflow_integer<>{INT_MAX-1};
+        auto& b = ++ a;
+        static_assert(
+                std::is_same<decltype(b), cnl::overflow_integer<>&>::value,
+                "static_integer pre-increment return value");
+        ASSERT_EQ(&b, &a) << "static_integer pre-increment return address";
+        ASSERT_EQ(INT_MAX, b) << "static_integer pre-increment";
+    }
+
+    TEST(overflow_integer, pre_decrement) {
+        auto a = overflow_integer<>{INT_MIN+1};
+        auto& b = -- a;
+        static_assert(
+                std::is_same<decltype(b), cnl::overflow_integer<>&>::value,
+                "static_integer pre-increment return value");
+        ASSERT_EQ(&b, &a) << "static_integer pre-increment return address";
+        ASSERT_EQ(INT_MIN, b) << "static_integer pre-increment";
+    }
+
+    TEST(overflow_integer, post_increment) {
+        auto a = cnl::overflow_integer<>{INT_MAX-1};
+        auto const& b = a ++;
+        static_assert(
+                std::is_same<decltype(b), cnl::overflow_integer<> const&>::value,
+                "static_integer pre-increment return value");
+        ASSERT_NE(&b, &a) << "static_integer pre-increment return address";
+        ASSERT_EQ(INT_MAX, a) << "static_integer pre-increment";
+        ASSERT_EQ(INT_MAX-1, b) << "static_integer pre-increment";
+    }
+
+    TEST(overflow_integer, post_decrement) {
+        auto a = overflow_integer<>{INT_MIN+1};
+        auto const& b = a --;
+        static_assert(
+                std::is_same<decltype(b), cnl::overflow_integer<> const&>::value,
+                "static_integer pre-increment return value");
+        ASSERT_NE(&b, &a) << "static_integer pre-increment return address";
+        ASSERT_EQ(INT_MIN, a) << "static_integer pre-increment";
+        ASSERT_EQ(INT_MIN+1, b) << "static_integer pre-increment";
+    }
+
+    TEST(overflow_integer, pre_increment_overflow) {
+        auto a = cnl::overflow_integer<>{INT_MAX};
+        ASSERT_DEATH(++ a, "positive overflow");
+    }
+
+    TEST(overflow_integer, pre_decrement_overflow) {
+        auto a = cnl::overflow_integer<>{INT_MIN};
+        ASSERT_DEATH(-- a, "negative overflow");
+    }
+
+    TEST(overflow_integer, post_increment_overflow) {
+        auto a = cnl::overflow_integer<>{INT_MAX};
+        ASSERT_DEATH(a ++, "positive overflow");
+    }
+
+    TEST(overflow_integer, post_decrement_overflow) {
+        auto a = cnl::overflow_integer<>{INT_MIN};
+        ASSERT_DEATH(a --, "negative overflow");
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // common overflow_integer characteristics
 
@@ -493,7 +559,7 @@ namespace {
     template<class OverflowInt>
     struct test_overflow_int {
         using overflow_integer = OverflowInt;
-        
+
         using rep = typename overflow_integer::rep;
         using overflow_tag = typename overflow_integer::overflow_tag;
         static_assert(is_same<cnl::overflow_integer<rep, overflow_tag>, overflow_integer>::value, "cnl::overflow_integer test failed");
