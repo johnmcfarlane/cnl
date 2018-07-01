@@ -89,10 +89,22 @@ namespace cnl {
 
     /// \brief Overload of \ref to_rep(Number const& number) for \ref rounding_integer.
     template<class Rep, class RoundingTag>
-    constexpr Rep to_rep(rounding_integer<Rep, RoundingTag> const& number)
+    constexpr Rep& to_rep(rounding_integer<Rep, RoundingTag>& number)
+    {
+        using base_type = typename rounding_integer<Rep, RoundingTag>::_base;
+        return to_rep(static_cast<base_type&>(number));
+    }
+    template<class Rep, class RoundingTag>
+    constexpr Rep const& to_rep(rounding_integer<Rep, RoundingTag> const& number)
     {
         using base_type = typename rounding_integer<Rep, RoundingTag>::_base;
         return to_rep(static_cast<base_type const&>(number));
+    }
+    template<class Rep, class RoundingTag>
+    constexpr Rep&& to_rep(rounding_integer<Rep, RoundingTag>&& number)
+    {
+        using base_type = typename rounding_integer<Rep, RoundingTag>::_base;
+        return to_rep(static_cast<base_type&&>(number));
     }
 
     namespace _impl {
