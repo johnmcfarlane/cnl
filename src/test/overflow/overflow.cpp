@@ -366,6 +366,12 @@ namespace {
                       "multiply_test<int, int>::negative");
         static_assert(!multiply_test<int, int>::negative(46341, 46341),
                       "multiply_test<int, int>::negative");
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // most negative number
+
+        static_assert(multiply_test<int, int>::positive(INT_MIN, -1), "multiply most negative number");
+        static_assert(!multiply_test<int, int>::negative(INT_MIN, -1), "multiply most negative number");
     }
 
     namespace test_native_overflow {
