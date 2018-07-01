@@ -197,102 +197,127 @@ namespace cnl {
 
     namespace _impl {
         // overflow tests
-        template<class Operator, typename Lhs, typename Rhs>
-        struct overflow_test {
-            using result = _impl::op_result<Operator, Lhs, Rhs>;
+        template<class Operator, typename ... Operands>
+        class operator_overflow_traits {
+            using result = _impl::op_result<Operator, Operands...>;
+            using numeric_limits = cnl::numeric_limits<result>;
+        public:
+            static constexpr int positive_digits = cnl::_impl::positive_digits<result>::value;
+            static constexpr int negative_digits = cnl::_impl::negative_digits<result>::value;
+            
+            static constexpr result lowest()
+            {
+                return numeric_limits::lowest();
+            }
+            static constexpr result max()
+            {
+                return numeric_limits::max();
+            }
 
-            static constexpr bool positive(Lhs const&, Rhs const&)
+            template<typename Operand>
+            static constexpr int leading_bits(Operand const& operand)
+            {
+                return cnl::leading_bits(static_cast<result>(operand));
+            }
+        };
+
+        // overflow tests
+        template<class Operator, typename ... Operands>
+        struct overflow_test_base {
+            // by default, an operation is safe
+            static constexpr bool positive(Operands const &...)
             {
                 return false;
             }
 
-            static constexpr bool negative(Lhs const&, Rhs const&)
+            static constexpr bool negative(Operands const &...)
             {
                 return false;
             }
         };
 
+        template<class Operator, typename ... Operands>
+        struct overflow_test : overflow_test_base<Operator, Operands...> {
+        };
+
         template<typename Lhs, typename Rhs>
-        struct overflow_test<_impl::add_op, Lhs, Rhs> {
-            using result = _impl::op_result<_impl::add_op, Lhs, Rhs>;
-            using result_nl = numeric_limits<result>;
+        struct overflow_test<_impl::add_op, Lhs, Rhs> : overflow_test_base<_impl::add_op, Lhs, Rhs> {
+            using traits = operator_overflow_traits<_impl::add_op, Lhs, Rhs>;
 
             static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
             {
                 return (_impl::max(positive_digits<Lhs>::value, positive_digits<Rhs>::value)+1
-                        >positive_digits<result>::value)
+                        >traits::positive_digits)
                         && lhs>Lhs{0}
                         && rhs>Rhs{0}
-                        && lhs>result_nl::max()-rhs;
+                        && lhs>traits::max()-rhs;
             }
 
             static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
             {
                 return (_impl::max(positive_digits<Lhs>::value, positive_digits<Rhs>::value)+1
-                        >positive_digits<result>::value)
+                        >traits::positive_digits)
                         && lhs<Lhs{0}
                         && rhs<Rhs{0}
-                        && lhs<result_nl::lowest()-rhs;
+                        && lhs<traits::lowest()-rhs;
             }
         };
 
         template<typename Lhs, typename Rhs>
-        struct overflow_test<_impl::subtract_op, Lhs, Rhs> {
-            using result = _impl::op_result<_impl::subtract_op, Lhs, Rhs>;
-            using result_nl = numeric_limits<result>;
+        struct overflow_test<_impl::subtract_op, Lhs, Rhs> : overflow_test_base<_impl::subtract_op, Lhs, Rhs> {
+            using traits = operator_overflow_traits<_impl::subtract_op, Lhs, Rhs>;
 
             static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
             {
                 return (_impl::max(positive_digits<Lhs>::value, positive_digits<Rhs>::value)+1
-                        >positive_digits<result>::value)
+                        >traits::positive_digits)
                         && lhs>Lhs{0}
                         && rhs<Rhs{0}
-                        && lhs>result_nl::max()+rhs;
+                        && lhs>traits::max()+rhs;
             }
 
             static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
             {
                 return (_impl::max(positive_digits<Lhs>::value, positive_digits<Rhs>::value)+1
-                        >positive_digits<result>::value)
+                        >traits::positive_digits)
                         && (rhs>=0)
-                        && lhs<result_nl::lowest()+rhs;
+                        && lhs<traits::lowest()+rhs;
             }
         };
 
         template<typename Lhs, typename Rhs>
-        struct overflow_test<_impl::multiply_op, Lhs, Rhs> {
-            using result = _impl::op_result<_impl::multiply_op, Lhs, Rhs>;
-            using result_nl = numeric_limits<result>;
+        struct overflow_test<_impl::multiply_op, Lhs, Rhs> : overflow_test_base<_impl::multiply_op, Lhs, Rhs> {
+            using traits = operator_overflow_traits<_impl::multiply_op, Lhs, Rhs>;
 
             static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
             {
-                return (positive_digits<Lhs>::value+positive_digits<Rhs>::value>positive_digits<result>::value)
+                return (positive_digits<Lhs>::value+positive_digits<Rhs>::value>traits::positive_digits)
                         && ((lhs>Lhs{0})
-                            ? (rhs>Rhs{0}) && (result_nl::max()/rhs)<lhs
-                            : (rhs<Rhs{0}) && (result_nl::max()/rhs)>lhs);
+                            ? (rhs>Rhs{0}) && (traits::max()/rhs)<lhs
+                            : (rhs<Rhs{0}) && (traits::max()/rhs)>lhs);
             }
 
             static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
             {
-                return (positive_digits<Lhs>::value+positive_digits<Rhs>::value>positive_digits<result>::value)
+                return (positive_digits<Lhs>::value+positive_digits<Rhs>::value>traits::positive_digits)
                         && ((lhs<Lhs{0})
-                            ? (rhs>Rhs{0}) && (result_nl::lowest()/rhs)>lhs
-                            : (rhs<Rhs{0}) && (result_nl::lowest()/rhs)<lhs);
+                            ? (rhs>Rhs{0}) && (traits::lowest()/rhs)>lhs
+                            : (rhs<Rhs{0}) && (traits::lowest()/rhs)<lhs);
             }
         };
 
         template<typename Lhs, typename Rhs>
-        struct overflow_test<_impl::shift_left_op, Lhs, Rhs> {
-            using result = _impl::op_result<_impl::shift_left_op, Lhs, Rhs>;
+        struct overflow_test<_impl::shift_left_op, Lhs, Rhs> : overflow_test_base<_impl::shift_left_op, Lhs, Rhs> {
+            using traits = operator_overflow_traits<_impl::shift_left_op, Lhs, Rhs>;
 
             static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
             {
-                return lhs>0 && rhs>0 && unsigned(cnl::leading_bits(static_cast<result>(lhs)))<unsigned(rhs);
+                return lhs>0 && rhs>0 && traits::leading_bits(lhs)<int(rhs);
             }
 
             static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
             {
-                return lhs<0 && rhs>0 && unsigned(cnl::leading_bits(static_cast<result>(lhs)))<unsigned(rhs);
+                return lhs<0 && rhs>0 && traits::leading_bits(lhs)<int(rhs);
             }
         };
 
@@ -327,11 +352,11 @@ namespace cnl {
             -> _impl::op_result<Operator, Lhs, Rhs>
             {
                 using overflow_test = overflow_test<Operator, Lhs, Rhs>;
-                using result_type = typename overflow_test::result;
+                using operator_overflow_traits = operator_overflow_traits<Operator, Lhs, Rhs>;
                 return overflow_test::positive(lhs, rhs)
-                       ? numeric_limits<result_type>::max()
+                       ? operator_overflow_traits::max()
                        : overflow_test::negative(lhs, rhs)
-                         ? numeric_limits<result_type>::lowest()
+                         ? operator_overflow_traits::lowest()
                          : tagged_binary_operator<native_tag, Operator>{}(lhs, rhs);
             }
         };
