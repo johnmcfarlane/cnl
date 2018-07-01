@@ -196,7 +196,18 @@ namespace cnl {
     // arithmetic overflow
 
     namespace _impl {
-        // overflow tests
+        // implementation assumes one of three things:
+        // 1. type is unsigned
+        // 2. type is symetrical around zero (e.g. elastic_integer)
+        // 3. type has most negative number
+        template<typename Operand, bool IsSigned=is_signed<Operand>::value>
+        struct has_most_negative_number : std::false_type {};
+
+        template<typename Operand>
+        struct has_most_negative_number<Operand, true> : std::integral_constant<bool,
+                -(numeric_limits<Operand>::lowest() + 1) == numeric_limits<Operand>::max()> {
+        };
+
         template<class Operator, typename ... Operands>
         class operator_overflow_traits {
             using result = _impl::op_result<Operator, Operands...>;
