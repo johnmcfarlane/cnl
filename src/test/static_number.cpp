@@ -6,6 +6,8 @@
 
 #include <cnl/static_number.h>
 
+#include <gtest/gtest.h>
+
 namespace {
     using cnl::_impl::identical;
 
@@ -32,5 +34,11 @@ namespace {
         constexpr auto a = cnl::static_number<8, -4>{.4375};
         constexpr auto b = cnl::static_number<5, -1>{a};
         static_assert(identical(cnl::static_number<5, -1>{.5}, b), "");
+    }
+
+    TEST(static_number, most_negative_number) {
+        static_assert(cnl::static_number<1>{1}, "in-range boundary test");
+        static_assert(cnl::static_number<1>{-1}, "in-range boundary test");
+        ASSERT_DEATH(cnl::static_number<1>{-2}, "negative overflow in conversion");
     }
 }
