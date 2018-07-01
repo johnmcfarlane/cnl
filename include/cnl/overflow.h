@@ -137,13 +137,14 @@ namespace cnl {
             }
         };
 
-        template<class Result, class Input>
-        struct convert<native_overflow_tag, Result, Input>
-                : convert<_impl::native_tag, Result, Input> {
+        template<typename Result>
+        struct convert<native_overflow_tag, Result>
+                : convert<_impl::native_tag, Result> {
         };
 
-        template<class OverflowTag, class Result, class Input>
-        struct convert<_impl::passive_overflow_tag<OverflowTag>, Result, Input> {
+        template<class OverflowTag, typename Result>
+        struct convert<_impl::passive_overflow_tag<OverflowTag>, Result> {
+            template<typename Input>
             constexpr Result operator()(Input const& rhs) const
             {
                 using test = convert_test<Result, Input>;
@@ -159,24 +160,27 @@ namespace cnl {
             }
         };
 
-        template<class Result, class Input>
-        struct convert<trapping_overflow_tag, Result, Input> {
+        template<typename Result>
+        struct convert<trapping_overflow_tag, Result> {
+            template<typename Input>
             constexpr Result operator()(Input const& rhs) const
             {
-                return convert<_impl::passive_overflow_tag<trapping_overflow_tag>, Result, Input>{}(rhs);
+                return convert<_impl::passive_overflow_tag<trapping_overflow_tag>, Result>{}(rhs);
             }
         };
 
-        template<class Result, class Input>
-        struct convert<throwing_overflow_tag, Result, Input> {
+        template<typename Result>
+        struct convert<throwing_overflow_tag, Result> {
+            template<typename Input>
             constexpr Result operator()(Input const& rhs) const
             {
-                return convert<_impl::passive_overflow_tag<throwing_overflow_tag>, Result, Input>{}(rhs);
+                return convert<_impl::passive_overflow_tag<throwing_overflow_tag>, Result>{}(rhs);
             }
         };
 
-        template<class Result, class Input>
-        struct convert<saturated_overflow_tag, Result, Input> {
+        template<typename Result>
+        struct convert<saturated_overflow_tag, Result> {
+            template<typename Input>
             constexpr Result operator()(Input const& rhs) const
             {
                 using test = convert_test<Result, Input>;

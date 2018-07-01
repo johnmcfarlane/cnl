@@ -31,12 +31,13 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::convert
 
-        template<class Tag, class Result, class Input>
+        template<class Tag, typename Result>
         struct convert : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
         };
 
-        template<class Result, class Input>
-        struct convert<native_tag, Result, Input> {
+        template<typename Result>
+        struct convert<native_tag, Result> {
+            template<typename Input>
             constexpr Result operator()(Input const& rhs) const
             {
                 return static_cast<Result>(rhs);
