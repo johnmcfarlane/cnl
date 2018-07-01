@@ -251,6 +251,30 @@ namespace cnl {
         struct overflow_test : overflow_test_base<Operator, Operands...> {
         };
 
+        template<typename Rhs>
+        struct overflow_test<_impl::minus_op, Rhs> : overflow_test_base<_impl::minus_op, Rhs> {
+            using traits = operator_overflow_traits<_impl::minus_op, Rhs>;
+
+            static constexpr bool positive(Rhs const &rhs) {
+                return has_most_negative_number<Rhs>::value
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable: 4146)
+#endif
+                       // Causes a warning about unsigned unary minus despite the fact that it should not be being
+                       // evaluated when Rhs is unsigned due to an is_signed test in has_most_negative_number.
+                       ? (-traits::max()) > rhs
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
+                       : 0;
+            }
+
+            static constexpr bool negative(Rhs const &rhs) {
+                return !is_signed<Rhs>::value && rhs;
+            }
+        };
+
         template<typename Lhs, typename Rhs>
         struct overflow_test<_impl::add_op, Lhs, Rhs> : overflow_test_base<_impl::add_op, Lhs, Rhs> {
             using traits = operator_overflow_traits<_impl::add_op, Lhs, Rhs>;

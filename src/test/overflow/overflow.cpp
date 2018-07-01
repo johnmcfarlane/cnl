@@ -184,6 +184,45 @@ namespace {
                 "cnl::_impl::convert_test<>::negative test failed");
     }
 
+    namespace test_minus {
+        template<typename Rhs>
+        using minus_test = cnl::_impl::overflow_test<cnl::_impl::minus_op, Rhs>;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::overflow_test<cnl::_impl::minus_op>::positive
+
+        static_assert(!minus_test<int>::positive(INT_MAX),
+                      "minus_test<int>::positive");
+        static_assert(!minus_test<int>::positive(-INT_MAX),
+                      "minus_test<int>::positive");
+        static_assert(minus_test<int>::positive(INT_MIN),
+                      "minus_test<int>::positive");
+
+        static_assert(!minus_test<unsigned>::positive(0),
+                      "minus_test<unsigned>::positive");
+        static_assert(!minus_test<unsigned>::positive(1),
+                      "minus_test<unsigned>::positive");
+        static_assert(!minus_test<unsigned>::positive(UINT_MAX),
+                      "minus_test<unsigned>::positive");
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::overflow_test<cnl::_impl::minus_op>::negative
+
+        static_assert(!minus_test<int>::negative(INT_MAX),
+                      "minus_test<int>::negative");
+        static_assert(!minus_test<int>::negative(-INT_MAX),
+                      "minus_test<int>::negative");
+        static_assert(!minus_test<int>::negative(INT_MIN),
+                      "minus_test<int>::negative");
+
+        static_assert(!minus_test<unsigned>::negative(0),
+                      "minus_test<unsigned>::negative");
+        static_assert(minus_test<unsigned>::negative(1),
+                      "minus_test<unsigned>::negative");
+        static_assert(minus_test<unsigned>::negative(UINT_MAX),
+                      "minus_test<unsigned>::negative");
+    }
+
     namespace test_add {
         template<typename Lhs, typename Rhs>
         using add_test = cnl::_impl::overflow_test<cnl::_impl::add_op, Lhs, Rhs>;
