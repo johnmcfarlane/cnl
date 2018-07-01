@@ -194,12 +194,10 @@ namespace cnl {
                 return from_rep<result_type>{}(Operator()(to_rep(operand)));
             }
         };
-    }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // binary arithmetic
+        ////////////////////////////////////////////////////////////////////////////////
+        // binary arithmetic
 
-    namespace _impl {
         // for operands with a common tag
         template<class Operator, class LhsRep, class RhsRep, class RoundingTag>
         struct binary_operator<Operator,
