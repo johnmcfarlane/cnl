@@ -139,7 +139,7 @@ namespace {
                 "cnl::shift<..., cnl::safe_integer<>>");
     }
 
-    TEST(static_integer, conversion_overflow) {
+    TEST(safe_integer, conversion_overflow) {
         using si = cnl::safe_integer<5>;
         ASSERT_DEATH(si{32}, "positive overflow");
     }
