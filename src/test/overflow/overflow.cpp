@@ -413,6 +413,18 @@ namespace {
         static_assert(!multiply_test<int, int>::negative(INT_MIN, -1), "multiply most negative number");
     }
 
+    namespace test_divide {
+        template<typename Lhs, typename Rhs>
+        using divide_test = cnl::_impl::overflow_test<cnl::_impl::divide_op, Lhs, Rhs>;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // most negative number
+
+        static_assert(cnl::_impl::has_most_negative_number<int>::value, "");
+        static_assert(divide_test<int, int>::positive(INT_MIN, -1), "divide most negative number");
+        static_assert(!divide_test<int, int>::negative(INT_MIN, -1), "divide most negative number");
+    }
+
     namespace test_native_overflow {
         using cnl::native_overflow;
 

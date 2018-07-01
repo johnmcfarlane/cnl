@@ -342,6 +342,18 @@ namespace cnl {
         };
 
         template<typename Lhs, typename Rhs>
+        struct overflow_test<_impl::divide_op, Lhs, Rhs>
+                : overflow_test_base<_impl::divide_op, Lhs, Rhs> {
+            using traits = operator_overflow_traits<_impl::divide_op, Lhs, Rhs>;
+
+            static constexpr bool positive(Lhs const &lhs, Rhs const &rhs) {
+                return (has_most_negative_number<Lhs>::value && has_most_negative_number<Rhs>::value)
+                       ? rhs == -1 && lhs == traits::lowest()
+                       : false;
+            }
+        };
+
+        template<typename Lhs, typename Rhs>
         struct overflow_test<_impl::shift_left_op, Lhs, Rhs> : overflow_test_base<_impl::shift_left_op, Lhs, Rhs> {
             using traits = operator_overflow_traits<_impl::shift_left_op, Lhs, Rhs>;
 
