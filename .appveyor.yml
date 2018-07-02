@@ -8,20 +8,23 @@ environment:
       configuration: Release
       cmake_generator: "Visual Studio 15 2017"
       msbuild_property: win32
+      exceptions: ON
     - platform: x64
       configuration: Release
       cmake_generator: "Visual Studio 15 2017 Win64"
       msbuild_property: x64
+      exceptions: OFF
     - platform: x64
       configuration: Debug
       cmake_generator: "Visual Studio 15 2017 Win64"
       msbuild_property: x64
+      exceptions: ON
 
 build_script:
 - cmd: >-
     set BOOST_ROOT=C:\Libraries\boost_1_66_0
 
-    cmake -DCMAKE_BUILD_TYPE=%configuration% -G "%cmake_generator%" .
+    cmake -DCMAKE_BUILD_TYPE=%configuration% -DEXCEPTIONS=%exceptions% -G "%cmake_generator%" .
 
     cmake --build . --target src/test/Tests -- /property:Configuration=%configuration% /property:Platform=%msbuild_property%
 
