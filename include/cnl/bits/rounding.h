@@ -30,12 +30,13 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::convert
 
-        template<class Result, class Input>
-        struct convert<native_rounding_tag, Result, Input> : convert<native_tag, Result, Input> {
+        template<typename Result>
+        struct convert<native_rounding_tag, Result> : convert<native_tag, Result> {
         };
 
-        template<class Result, class Input>
-        struct convert<nearest_rounding_tag, Result, Input> {
+        template<typename Result>
+        struct convert<nearest_rounding_tag, Result> {
+            template<typename Input>
             constexpr Result operator()(Input const& from) const
             {
                 return static_cast<Result>(from+((from>=0) ? .5 : -.5));
@@ -45,9 +46,9 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::tagged_binary_operator<nearest_rounding_tag>
 
-        template<class Result, class Input>
-        struct tagged_binary_operator<native_rounding_tag, Result, Input>
-                : tagged_binary_operator<native_tag, Result, Input> {
+        template<class Operator>
+        struct tagged_binary_operator<native_rounding_tag, Operator>
+                : tagged_binary_operator<native_tag, Operator> {
         };
 
         template<class Operator>

@@ -112,7 +112,7 @@ namespace cnl {
 
         template<class Rhs, _impl::enable_if_t<!_integer_impl::is_overflow_integer<Rhs>::value, int> dummy = 0>
         constexpr overflow_integer(Rhs const& rhs)
-                :_base(convert<overflow_tag, rep, Rhs>{}(rhs))
+                :_base(convert<overflow_tag, rep>{}(rhs))
         {
         }
 
@@ -161,10 +161,22 @@ namespace cnl {
 
     /// \brief Overload of \ref to_rep(Number const& number) for \ref overflow_integer.
     template<class Rep, class OverflowTag>
+    constexpr Rep& to_rep(overflow_integer<Rep, OverflowTag>& number)
+    {
+        using base_type = typename overflow_integer<Rep, OverflowTag>::_base;
+        return to_rep(static_cast<base_type&>(number));
+    }
+    template<class Rep, class OverflowTag>
     constexpr Rep const& to_rep(overflow_integer<Rep, OverflowTag> const& number)
     {
         using base_type = typename overflow_integer<Rep, OverflowTag>::_base;
         return to_rep(static_cast<base_type const&>(number));
+    }
+    template<class Rep, class OverflowTag>
+    constexpr Rep&& to_rep(overflow_integer<Rep, OverflowTag>&& number)
+    {
+        using base_type = typename overflow_integer<Rep, OverflowTag>::_base;
+        return to_rep(static_cast<base_type&&>(number));
     }
 
     /// \brief \ref overflow_integer specialization of \ref from_rep
@@ -293,6 +305,29 @@ namespace cnl {
                         Operator,
                         overflow_integer<common_rep, common_tag>,
                         overflow_integer<common_rep, common_tag>>()(lhs, rhs);
+            }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // pre/post operators
+
+        template<class Operator, typename Rep, class OverflowTag>
+        struct pre_operator<Operator, overflow_integer<Rep, OverflowTag>> {
+            constexpr auto operator()(overflow_integer<Rep, OverflowTag>& rhs) const
+            -> decltype(typename pre_to_assign<Operator>::type{}(rhs, 1))
+            {
+                return typename pre_to_assign<Operator>::type{}(rhs, 1);
+            }
+        };
+
+        template<class Operator, typename Rep, class OverflowTag>
+        struct post_operator<Operator, overflow_integer<Rep, OverflowTag>> {
+            CNL_RELAXED_CONSTEXPR auto operator()(overflow_integer<Rep, OverflowTag>& rhs) const
+            -> overflow_integer<Rep, OverflowTag>
+            {
+                auto copy = rhs;
+                typename post_to_assign<Operator>::type{}(rhs, 1);
+                return copy;
             }
         };
     }

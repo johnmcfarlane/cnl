@@ -201,10 +201,78 @@ namespace {
 
     TEST(static_integer, conversion_overflow_trapping) {
         using si = cnl::static_integer<5>;
-        ASSERT_DEATH(si{32}, "positive overflow in conversion");
+        ASSERT_DEATH(si{32}, "positive overflow");
     }
 
     static_assert(identical(
             cnl::static_integer<5, cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>{31},
             cnl::static_integer<5, cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>{32}), "");
+
+    TEST(static_integer, most_negative_number) {
+        static_assert(cnl::static_integer<1>{1}, "in-range boundary test");
+        static_assert(cnl::static_integer<1>{-1}, "in-range boundary test");
+        ASSERT_DEATH(cnl::static_integer<1>{-2}, "negative overflow");
+    }
+
+    TEST(static_integer, pre_increment) {
+        auto a = cnl::static_integer<3>{6};
+        auto& b = ++ a;
+        static_assert(
+                std::is_same<decltype(b), cnl::static_integer<3>&>::value,
+                "static_integer pre-increment return value");
+        ASSERT_EQ(&b, &a) << "static_integer pre-increment return address";
+        ASSERT_EQ(7, b) << "static_integer pre-increment";
+    }
+
+    TEST(static_integer, pre_decrement) {
+        auto a = cnl::static_integer<3>{-6};
+        auto& b = -- a;
+        static_assert(
+                std::is_same<decltype(b), cnl::static_integer<3>&>::value,
+                "static_integer pre-increment return value");
+        ASSERT_EQ(&b, &a) << "static_integer pre-increment return address";
+        ASSERT_EQ(-7, b) << "static_integer pre-increment";
+    }
+
+    TEST(static_integer, post_increment) {
+        auto a = cnl::static_integer<3>{6};
+        auto const& b = a ++;
+        static_assert(
+                std::is_same<decltype(b), cnl::static_integer<3> const&>::value,
+                "static_integer pre-increment return value");
+        ASSERT_NE(&b, &a) << "static_integer pre-increment return address";
+        ASSERT_EQ(7, a) << "static_integer pre-increment";
+        ASSERT_EQ(6, b) << "static_integer pre-increment";
+    }
+
+    TEST(static_integer, post_decrement) {
+        auto a = cnl::static_integer<3>{-6};
+        auto const& b = a --;
+        static_assert(
+                std::is_same<decltype(b), cnl::static_integer<3> const&>::value,
+                "static_integer pre-increment return value");
+        ASSERT_NE(&b, &a) << "static_integer pre-increment return address";
+        ASSERT_EQ(-7, a) << "static_integer pre-increment";
+        ASSERT_EQ(-6, b) << "static_integer pre-increment";
+    }
+
+    TEST(static_integer, pre_increment_overflow) {
+        auto a = cnl::static_integer<3>{7};
+        ASSERT_DEATH(++ a, "positive overflow");
+    }
+
+    TEST(static_integer, pre_decrement_overflow) {
+        auto a = cnl::static_integer<3>{-7};
+        ASSERT_DEATH(-- a, "negative overflow");
+    }
+
+    TEST(static_integer, post_increment_overflow) {
+        auto a = cnl::static_integer<3>{7};
+        ASSERT_DEATH(a ++, "positive overflow");
+    }
+
+    TEST(static_integer, post_decrement_overflow) {
+        auto a = cnl::static_integer<3>{-7};
+        ASSERT_DEATH(a --, "negative overflow");
+    }
 }

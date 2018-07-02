@@ -11,13 +11,12 @@
 #define CNL_OVERFLOW_H
 
 #include "cnl/bits/terminate.h"
+#include "cnl/bits/throw_exception.h"
 
 #include "numeric.h"
 #include "bits/native_tag.h"
 
-#if defined(CNL_EXCEPTIONS_ENABLED)
 #include <stdexcept>
-#endif
 
 /// compositional numeric library
 namespace cnl {
@@ -43,64 +42,50 @@ namespace cnl {
     } saturated_overflow{};
 
     namespace _impl {
-        // wrapper for an overflow tag which doesn't change the value of the operation
-        template<class WrappedOverflowTag>
-        struct passive_overflow_tag {
-        };
-
         ////////////////////////////////////////////////////////////////////////////////
-        // test condition and return value if true else terminate
+        // things to return when things go south (or north)
 
         template<class Result>
-        constexpr Result return_if(trapping_overflow_tag, bool condition, Result const& value, char const* message)
+        constexpr Result positive_overflow_result(trapping_overflow_tag)
         {
-            return condition ? value : terminate<Result>(message);
+            return terminate<Result>("positive overflow");
         }
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // test condition and return value if true else throw
-
-#if defined(CNL_EXCEPTIONS_ENABLED)
         template<class Result>
-        constexpr Result return_if(throwing_overflow_tag, bool condition, Result const& value, char const* message)
+        constexpr Result positive_overflow_result(throwing_overflow_tag)
         {
-            return condition ? value : throw std::overflow_error(message);
+            return throw_exception<Result, std::overflow_error>("positive overflow");
         }
-#else
+
         template<class Result>
-        constexpr Result return_if(throwing_overflow_tag, bool condition, Result const& value, char const* message) {
-            return return_if(trapping_overflow, condition, value, message);
+        constexpr Result positive_overflow_result(saturated_overflow_tag)
+        {
+            return numeric_limits<Result>::max();
         }
-#endif
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // passive operators
+        template<class Result>
+        constexpr Result negative_overflow_result(trapping_overflow_tag)
+        {
+            return terminate<Result>("negative overflow");
+        }
 
-        template<class Operator, class Enable>
-        struct tagged_binary_operator<trapping_overflow_tag, Operator, Enable>
-                : tagged_binary_operator<_impl::passive_overflow_tag<trapping_overflow_tag>, Operator> {
-        };
+        template<class Result>
+        constexpr Result negative_overflow_result(throwing_overflow_tag)
+        {
+            return throw_exception<Result, std::overflow_error>("negative overflow");
+        }
 
-        template<class Operator, class Enable>
-        struct tagged_binary_operator<throwing_overflow_tag, Operator, Enable>
-                : tagged_binary_operator<_impl::passive_overflow_tag<throwing_overflow_tag>, Operator> {
-        };
+        template<class Result>
+        constexpr Result negative_overflow_result(saturated_overflow_tag)
+        {
+            return numeric_limits<Result>::lowest();
+        }
 
         ////////////////////////////////////////////////////////////////////////////////
         // comparison operators
 
-        template<class OverflowTag, class Operator, class Enable = void>
+        template<class OverflowTag, class Operator>
         struct comparison_operator : public CNL_ERROR___cannot_use<OverflowTag>::as_a_tag {
-        };
-
-        template<class Operator, class Enable>
-        struct comparison_operator<trapping_overflow_tag, Operator, Enable>
-                : tagged_binary_operator<_impl::passive_overflow_tag<trapping_overflow_tag>, Operator> {
-        };
-
-        template<class Operator, class Enable>
-        struct comparison_operator<throwing_overflow_tag, Operator, Enable>
-                : tagged_binary_operator<_impl::passive_overflow_tag<throwing_overflow_tag>, Operator> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -137,56 +122,35 @@ namespace cnl {
             }
         };
 
-        template<class Result, class Input>
-        struct convert<native_overflow_tag, Result, Input>
-                : convert<_impl::native_tag, Result, Input> {
-        };
-
-        template<class OverflowTag, class Result, class Input>
-        struct convert<_impl::passive_overflow_tag<OverflowTag>, Result, Input> {
+        template<class OverflowTag, typename Result>
+        struct overflow_convert {
+            template<typename Input>
             constexpr Result operator()(Input const& rhs) const
             {
                 using test = convert_test<Result, Input>;
-                return _impl::return_if(
-                        OverflowTag{},
-                        !test::positive(rhs),
-                        _impl::return_if(
-                                OverflowTag{},
-                                !test::negative(rhs),
-                                static_cast<Result>(rhs),
-                                "negative overflow in conversion"),
-                        "positive overflow in conversion");
-            }
-        };
-
-        template<class Result, class Input>
-        struct convert<trapping_overflow_tag, Result, Input> {
-            constexpr Result operator()(Input const& rhs) const
-            {
-                return convert<_impl::passive_overflow_tag<trapping_overflow_tag>, Result, Input>{}(rhs);
-            }
-        };
-
-        template<class Result, class Input>
-        struct convert<throwing_overflow_tag, Result, Input> {
-            constexpr Result operator()(Input const& rhs) const
-            {
-                return convert<_impl::passive_overflow_tag<throwing_overflow_tag>, Result, Input>{}(rhs);
-            }
-        };
-
-        template<class Result, class Input>
-        struct convert<saturated_overflow_tag, Result, Input> {
-            constexpr Result operator()(Input const& rhs) const
-            {
-                using test = convert_test<Result, Input>;
-                using numeric_limits = numeric_limits<Result>;
                 return test::positive(rhs)
-                       ? numeric_limits::max()
-                       : test::negative(rhs)
-                         ? numeric_limits::lowest()
-                         : static_cast<Result>(rhs);
+                        ? positive_overflow_result<Result>(OverflowTag{})
+                        : test::negative(rhs)
+                                ? negative_overflow_result<Result>(OverflowTag{})
+                                : static_cast<Result>(rhs);
             }
+        };
+
+        template<typename Result>
+        struct convert<native_overflow_tag, Result>
+                : convert<_impl::native_tag, Result> {
+        };
+
+        template<typename Result>
+        struct convert<trapping_overflow_tag, Result> : overflow_convert<trapping_overflow_tag, Result> {
+        };
+
+        template<typename Result>
+        struct convert<throwing_overflow_tag, Result> : overflow_convert<throwing_overflow_tag, Result> {
+        };
+
+        template<typename Result>
+        struct convert<saturated_overflow_tag, Result> : overflow_convert<saturated_overflow_tag, Result> {
         };
     }
 
@@ -368,44 +332,40 @@ namespace cnl {
             }
         };
 
+        template<class OverflowTag, class Operator>
+        struct tagged_binary_overflow_operator {
+            template<class Lhs, class Rhs>
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> _impl::op_result<Operator, Lhs, Rhs>
+            {
+                using overflow_test = overflow_test<Operator, Lhs, Rhs>;
+                using result_type = _impl::op_result<Operator, Lhs, Rhs>;
+                return overflow_test::positive(lhs, rhs)
+                        ? positive_overflow_result<result_type>(OverflowTag{})
+                        : overflow_test::negative(lhs, rhs)
+                                ? negative_overflow_result<result_type>(OverflowTag{})
+                                : tagged_binary_operator<native_tag, Operator>{}(lhs, rhs);
+            }
+        };
+
         template<class Operator>
         struct tagged_binary_operator<native_overflow_tag, Operator>
                 : tagged_binary_operator<_impl::native_tag, Operator> {
         };
 
-        template<class OverflowTag, class Operator>
-        struct tagged_binary_operator<_impl::passive_overflow_tag<OverflowTag>, Operator> {
-            template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> _impl::op_result<Operator, Lhs, Rhs>
-            {
-                using overflow_test = overflow_test<Operator, Lhs, Rhs>;
-                return return_if(
-                        OverflowTag{},
-                        !overflow_test::positive(lhs, rhs),
-                        return_if(
-                                OverflowTag{},
-                                !overflow_test::negative(lhs, rhs),
-                                tagged_binary_operator<native_tag, Operator>{}(lhs, rhs),
-                                "negative overflow"),
-                        "positive overflow");
-            }
+        template<class Operator>
+        struct tagged_binary_operator<trapping_overflow_tag, Operator>
+                : tagged_binary_overflow_operator<trapping_overflow_tag, Operator> {
         };
 
         template<class Operator>
-        struct tagged_binary_operator<saturated_overflow_tag, Operator> {
-            template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> _impl::op_result<Operator, Lhs, Rhs>
-            {
-                using overflow_test = overflow_test<Operator, Lhs, Rhs>;
-                using operator_overflow_traits = operator_overflow_traits<Operator, Lhs, Rhs>;
-                return overflow_test::positive(lhs, rhs)
-                       ? operator_overflow_traits::max()
-                       : overflow_test::negative(lhs, rhs)
-                         ? operator_overflow_traits::lowest()
-                         : tagged_binary_operator<native_tag, Operator>{}(lhs, rhs);
-            }
+        struct tagged_binary_operator<throwing_overflow_tag, Operator>
+                : tagged_binary_overflow_operator<throwing_overflow_tag, Operator> {
+        };
+
+        template<class Operator>
+        struct tagged_binary_operator<saturated_overflow_tag, Operator>
+                : tagged_binary_overflow_operator<saturated_overflow_tag, Operator> {
         };
     }
 

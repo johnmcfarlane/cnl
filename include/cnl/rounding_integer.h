@@ -52,7 +52,7 @@ namespace cnl {
 
         template<class T, _impl::enable_if_t<!numeric_limits<T>::is_integer, int> Dummy = 0>
         constexpr rounding_integer(T const& v)
-                : super(_impl::convert<rounding, Rep, T>{}(v)) { }
+                : super(_impl::convert<rounding, Rep>{}(v)) { }
 
         template<class T>
         constexpr explicit operator T() const
@@ -89,10 +89,22 @@ namespace cnl {
 
     /// \brief Overload of \ref to_rep(Number const& number) for \ref rounding_integer.
     template<class Rep, class RoundingTag>
-    constexpr Rep to_rep(rounding_integer<Rep, RoundingTag> const& number)
+    constexpr Rep& to_rep(rounding_integer<Rep, RoundingTag>& number)
+    {
+        using base_type = typename rounding_integer<Rep, RoundingTag>::_base;
+        return to_rep(static_cast<base_type&>(number));
+    }
+    template<class Rep, class RoundingTag>
+    constexpr Rep const& to_rep(rounding_integer<Rep, RoundingTag> const& number)
     {
         using base_type = typename rounding_integer<Rep, RoundingTag>::_base;
         return to_rep(static_cast<base_type const&>(number));
+    }
+    template<class Rep, class RoundingTag>
+    constexpr Rep&& to_rep(rounding_integer<Rep, RoundingTag>&& number)
+    {
+        using base_type = typename rounding_integer<Rep, RoundingTag>::_base;
+        return to_rep(static_cast<base_type&&>(number));
     }
 
     namespace _impl {
@@ -182,12 +194,10 @@ namespace cnl {
                 return from_rep<result_type>{}(Operator()(to_rep(operand)));
             }
         };
-    }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // binary arithmetic
+        ////////////////////////////////////////////////////////////////////////////////
+        // binary arithmetic
 
-    namespace _impl {
         // for operands with a common tag
         template<class Operator, class LhsRep, class RhsRep, class RoundingTag>
         struct binary_operator<Operator,
@@ -244,6 +254,19 @@ namespace cnl {
                 using common_tag = common_type_t<LhsRoundingTag, RhsRoundingTag>;
                 return binary_operator<Operator, rounding_integer<LhsRep, common_tag>, rounding_integer<LhsRep, common_tag>>()(lhs, rhs);
             }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // pre/post operators
+
+        template<class Operator, typename Rep, class RoundingTag>
+        struct pre_operator<Operator, rounding_integer<Rep, RoundingTag>>
+                : pre_operator<Operator, typename rounding_integer<Rep, RoundingTag>::_base> {
+        };
+
+        template<class Operator, typename Rep, class RoundingTag>
+        struct post_operator<Operator, rounding_integer<Rep, RoundingTag>>
+                : post_operator<Operator, typename rounding_integer<Rep, RoundingTag>::_base> {
         };
     }
 

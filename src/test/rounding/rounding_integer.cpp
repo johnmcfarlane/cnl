@@ -312,6 +312,48 @@ namespace {
                 cnl::rounding_integer<>{2},
                 cnl::_impl::shift<-1>(cnl::rounding_integer<>{3})), "cnl::_impl::shift<-1>(rounding_integer)");
     }
+
+    TEST(rounding_integer, pre_increment) {
+        auto a = cnl::rounding_integer<>{INT_MAX-1};
+        auto& b = ++ a;
+        static_assert(
+                std::is_same<decltype(b), cnl::rounding_integer<>&>::value,
+                "static_integer pre-increment return value");
+        ASSERT_EQ(&b, &a) << "static_integer pre-increment return address";
+        ASSERT_EQ(INT_MAX, b) << "static_integer pre-increment";
+    }
+
+    TEST(rounding_integer, pre_decrement) {
+        auto a = rounding_integer<>{INT_MIN+1};
+        auto& b = -- a;
+        static_assert(
+                std::is_same<decltype(b), cnl::rounding_integer<>&>::value,
+                "static_integer pre-increment return value");
+        ASSERT_EQ(&b, &a) << "static_integer pre-increment return address";
+        ASSERT_EQ(INT_MIN, b) << "static_integer pre-increment";
+    }
+
+    TEST(rounding_integer, post_increment) {
+        auto a = cnl::rounding_integer<>{INT_MAX-1};
+        auto const& b = a ++;
+        static_assert(
+                std::is_same<decltype(b), cnl::rounding_integer<> const&>::value,
+                "static_integer pre-increment return value");
+        ASSERT_NE(&b, &a) << "static_integer pre-increment return address";
+        ASSERT_EQ(INT_MAX, a) << "static_integer pre-increment";
+        ASSERT_EQ(INT_MAX-1, b) << "static_integer pre-increment";
+    }
+
+    TEST(rounding_integer, post_decrement) {
+        auto a = rounding_integer<>{INT_MIN+1};
+        auto const& b = a --;
+        static_assert(
+                std::is_same<decltype(b), cnl::rounding_integer<> const&>::value,
+                "static_integer pre-increment return value");
+        ASSERT_NE(&b, &a) << "static_integer pre-increment return address";
+        ASSERT_EQ(INT_MIN, a) << "static_integer pre-increment";
+        ASSERT_EQ(INT_MIN+1, b) << "static_integer pre-increment";
+    }
 }
 
 template<class RoundingInteger>
