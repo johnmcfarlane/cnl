@@ -163,15 +163,6 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // pre-increment/decrement arithmetic operators
 
-        template<class Operator>
-        struct pre_to_assign;
-
-        template<>
-        struct pre_to_assign<pre_increment_op> : type_identity<assign_add_op> {};
-
-        template<>
-        struct pre_to_assign<pre_decrement_op> : type_identity<assign_subtract_op> {};
-
         template<typename Operator, typename Rep, int Exponent, int Radix>
         struct pre_operator<Operator, fixed_point<Rep, Exponent, Radix>> {
             constexpr auto operator()(fixed_point<Rep, Exponent, Radix>& rhs) const
@@ -183,15 +174,6 @@ namespace cnl {
 
         ////////////////////////////////////////////////////////////////////////////////
         // post-increment/decrement arithmetic operators
-
-        template<class Operator>
-        struct post_to_assign;
-
-        template<>
-        struct post_to_assign<post_increment_op> : type_identity<assign_add_op> {};
-
-        template<>
-        struct post_to_assign<post_decrement_op> : type_identity<assign_subtract_op> {};
 
         template<typename Operator, typename Rep, int Exponent, int Radix>
         struct post_operator<Operator, fixed_point<Rep, Exponent, Radix>> {
