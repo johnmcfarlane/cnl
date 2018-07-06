@@ -62,7 +62,7 @@ namespace test_compound_assignment {
         auto lhs = fixed_point<uint32, -16>{7};
         auto rhs = uint32{12};
         lhs += rhs;
-        ASSERT_EQ(lhs, 19);
+        ASSERT_EQ(lhs, 19U);
     }
 
     TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_i_f) {
