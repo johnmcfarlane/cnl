@@ -511,7 +511,7 @@ static_assert(fixed_point<int8, 1>(-5)==-4, "cnl::fixed_point test failed");
 
 // conversion between fixed_point specializations
 static_assert(fixed_point<uint8, -4>(fixed_point<int16, -8>(1.5))==1.5, "cnl::fixed_point test failed");
-#if !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_SATURATED_OVERFLOW)
+#if !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_TRAPPING_OVERFLOW)
 static_assert(fixed_point<uint16, -8>(fixed_point<int8, -4>(3.25))==3.25, "cnl::fixed_point test failed");
 static_assert(fixed_point<uint8, 4>(fixed_point<int16, -4>(768))==768, "cnl::fixed_point test failed");
 static_assert(fixed_point<uint32, -24>(fixed_point<uint64, -48>(3.141592654))>3.1415923f,
