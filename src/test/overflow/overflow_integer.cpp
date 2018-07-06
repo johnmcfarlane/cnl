@@ -39,25 +39,6 @@ static_assert(
         "wrong default template parameters for cnl::overflow_integer");
 
 ////////////////////////////////////////////////////////////////////////////////
-// std::common_type with cnl::overflow_integer parameter
-
-static_assert(is_same<
-        typename std::common_type<int32_t, saturated_integer<int16_t>>::type,
-        saturated_integer<int32_t>>::value, "cnl::_integer_impl::common_type test failure");
-
-static_assert(is_same<
-        std::common_type<saturated_integer<int8_t>, saturated_integer<int8_t>>::type,
-        saturated_integer<int8_t>>::value, "cnl::_integer_impl::common_type test failure");
-
-static_assert(is_same<
-        std::common_type<saturated_integer<uint32_t>, float>::type,
-        float>::value, "incorrect assumption about promotion");
-
-static_assert(is_same<
-        std::common_type<saturated_integer<uint32_t>, saturated_integer<int16_t>>::type,
-        saturated_integer<uint32_t >>::value, "std::common_type test failed");
-
-////////////////////////////////////////////////////////////////////////////////
 // cnl::_integer_impl::is_overflow_integer
 
 static_assert(!is_overflow_integer<uint8_t>::value, "cnl::is_overflow_integer test failed");

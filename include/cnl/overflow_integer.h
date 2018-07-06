@@ -10,11 +10,11 @@
 #if !defined(CNL_OVERFLOW_INT_H)
 #define CNL_OVERFLOW_INT_H 1
 
-#include "fixed_point.h"
 #include "overflow.h"
 
 #include "bits/native_tag.h"
 #include "bits/number_base.h"
+#include "bits/operators.h"
 
 #include <type_traits>
 
@@ -39,47 +39,6 @@ namespace cnl {
         template<class Rep, class OverflowTag>
         struct is_overflow_integer<overflow_integer<Rep, OverflowTag>>
                 : std::true_type {
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_integer_impl::common_type
-
-        template<class, class, class = void>
-        struct common_type;
-
-        // given two overflow_integer<>, produces the type that is best suited to both of them
-        template<class LhsRep, class RhsRep, class OverflowTag>
-        struct common_type<
-                overflow_integer<LhsRep, OverflowTag>,
-                overflow_integer<RhsRep, OverflowTag>> {
-            using type = overflow_integer<
-                    typename std::common_type<LhsRep, RhsRep>::type,
-                    OverflowTag>;
-        };
-
-        // given a overflow_integer<> and a built-in integer type,
-        // generates a overflow_integer<> type that is as big as both of them (or as close as possible)
-        template<class LhsRep, class LhsOverflowTag, class RhsInteger>
-        struct common_type<
-                overflow_integer<LhsRep, LhsOverflowTag>, RhsInteger,
-                _impl::enable_if_t<
-                        !_integer_impl::is_overflow_integer<RhsInteger>::value && std::is_integral<RhsInteger>::value>> {
-            using type = typename cnl::overflow_integer<typename std::common_type<LhsRep, RhsInteger>::type, LhsOverflowTag>;
-        };
-
-        // given a overflow_integer<> and a floating-point type,
-        // generates a floating-point type that is as big as both of them (or as close as possible)
-        template<class LhsRep, class LhsOverflowTag, class Float>
-        struct common_type<
-                overflow_integer<LhsRep, LhsOverflowTag>, Float,
-                _impl::enable_if_t<std::is_floating_point<Float>::value>> {
-            using type = typename std::common_type<LhsRep, Float>::type;
-        };
-
-        // when first type is not overflow_integer<> and second type is, reverse the order
-        template<class Lhs, class RhsRep, class RhsOverflowTag>
-        struct common_type<Lhs, overflow_integer<RhsRep, RhsOverflowTag>>
-                : common_type<overflow_integer<RhsRep, RhsOverflowTag>, Lhs> {
         };
     }
 
@@ -351,66 +310,6 @@ namespace cnl {
 }
 
 namespace std {
-    // std::common_type<T, cnl::overflow_integer>
-    template<
-            class Lhs,
-            class RhsRep, class RhsOverflowTag>
-    struct common_type<
-            Lhs,
-            cnl::overflow_integer<RhsRep, RhsOverflowTag>>
-            : cnl::_integer_impl::common_type<
-                    Lhs,
-                    cnl::overflow_integer<RhsRep, RhsOverflowTag>> {
-    };
-
-    // std::common_type<cnl::overflow_integer, T>
-    template<
-            class LhsRep, class LhsOverflowTag,
-            class Rhs>
-    struct common_type<
-            cnl::overflow_integer<LhsRep, LhsOverflowTag>,
-            Rhs>
-            : cnl::_integer_impl::common_type<
-                    cnl::overflow_integer<LhsRep, LhsOverflowTag>,
-                    Rhs> {
-    };
-
-    // std::common_type<cnl::overflow_integer, cnl::fixed_point>
-    template<
-            class LhsRep, class LhsOverflowTag,
-            class RhsRep, int RhsExponent>
-    struct common_type<
-            cnl::overflow_integer<LhsRep, LhsOverflowTag>,
-            cnl::fixed_point<RhsRep, RhsExponent>>
-            : std::common_type<
-                    cnl::fixed_point<cnl::overflow_integer<LhsRep, LhsOverflowTag>, 0>,
-                    cnl::fixed_point<RhsRep, RhsExponent>> {
-    };
-
-    // std::common_type<cnl::fixed_point, cnl::overflow_integer>
-    template<
-            class LhsRep, int LhsExponent,
-            class RhsRep, class RhsOverflowTag>
-    struct common_type<
-            cnl::fixed_point<LhsRep, LhsExponent>,
-            cnl::overflow_integer<RhsRep, RhsOverflowTag>>
-            : std::common_type<
-                    cnl::fixed_point<LhsRep, LhsExponent>,
-                    cnl::fixed_point<cnl::overflow_integer<RhsRep, RhsOverflowTag>, 0>> {
-    };
-
-    // std::common_type<cnl::overflow_integer, cnl::overflow_integer>
-    template<
-            class LhsRep, class LhsOverflowTag,
-            class RhsRep, class RhsOverflowTag>
-    struct common_type<
-            cnl::overflow_integer<LhsRep, LhsOverflowTag>,
-            cnl::overflow_integer<RhsRep, RhsOverflowTag>>
-            : cnl::_integer_impl::common_type<
-                    cnl::overflow_integer<LhsRep, LhsOverflowTag>,
-                    cnl::overflow_integer<RhsRep, RhsOverflowTag>> {
-    };
-
     ////////////////////////////////////////////////////////////////////////////////
     // std::numeric_limits specialization for overflow_integer
 
