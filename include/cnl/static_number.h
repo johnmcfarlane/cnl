@@ -10,6 +10,8 @@
 /// \file
 /// \brief file containing definitions related to \ref static_number
 
+#include "fixed_point.h"
+
 #include "bits/static_integer.h"
 
 /// compositional numeric library

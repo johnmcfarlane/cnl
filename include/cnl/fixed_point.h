@@ -13,7 +13,6 @@
 #include "bits/fixed_point/type.h"
 #include "bits/fixed_point/named.h"
 #include "bits/fixed_point/fractional.h"
-#include "bits/fixed_point/common_type.h"
 #include "bits/fixed_point/constants.h"
 #include "bits/fixed_point/operators.h"
 #include "bits/fixed_point/extras.h"

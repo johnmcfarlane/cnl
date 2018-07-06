@@ -121,21 +121,22 @@ namespace cnl {
 
     template<class Rep, class RoundingTag, class Value>
     struct from_value<rounding_integer<Rep, RoundingTag>, Value> : _impl::from_value_simple<
-            Value, rounding_integer<Value, RoundingTag>> {
+            rounding_integer<Value, RoundingTag>, Value> {
     };
 
     template<class Rep, class RoundingTag, class ValueRep, class ValueRoundingTag>
     struct from_value<rounding_integer<Rep, RoundingTag>, rounding_integer<ValueRep, ValueRoundingTag>>
             : _impl::from_value_simple<
-            rounding_integer<ValueRep, ValueRoundingTag>, rounding_integer<ValueRep, RoundingTag>> {
+            rounding_integer<ValueRep, RoundingTag>, rounding_integer<ValueRep, ValueRoundingTag>> {
     };
 
     template<class Rep, class RoundingTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<rounding_integer<Rep, RoundingTag>, constant<Value>> : _impl::from_value_simple<
-            constant<Value>, rounding_integer<typename std::conditional<
+            rounding_integer<typename std::conditional<
                     digits<int>::value<_impl::used_digits(Value),
-                    decltype(Value),
-                    int>::type, RoundingTag>> {
+                            decltype(Value),
+                            int>::type, RoundingTag>,
+                    constant<Value>> {
     };
 
     template<int Digits, class Rep, class RoundingTag>

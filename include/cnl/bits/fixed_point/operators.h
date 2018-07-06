@@ -10,6 +10,10 @@
 #if !defined(CNL_FIXED_POINT_OPERATORS_H)
 #define CNL_FIXED_POINT_OPERATORS_H 1
 
+#include "type.h"
+
+#include <numeric>
+
 /// compositional numeric library
 namespace cnl {
 
@@ -36,30 +40,57 @@ namespace cnl {
             }
         };
 
-        // comparison between operands with same type
-        template<typename Operator, typename Rep, int Exponent, int Radix>
-        struct binary_operator<Operator, fixed_point<Rep, Exponent, Radix>, fixed_point<Rep, Exponent, Radix>,
+        // comparison between operands with different rep
+        template<typename Operator, typename LhsRep, typename RhsRep, int Exponent, int Radix>
+        struct binary_operator<Operator,
+                fixed_point<LhsRep, Exponent, Radix>,
+                fixed_point<RhsRep, Exponent, Radix>,
                 typename Operator::is_comparison> {
             constexpr auto operator()(
-                    fixed_point<Rep, Exponent, Radix> const& lhs,
-                    fixed_point<Rep, Exponent, Radix> const& rhs) const
-            -> decltype(Operator()(to_rep(lhs), to_rep(rhs)))
+                    fixed_point<LhsRep, Exponent, Radix> const& lhs,
+                    fixed_point<RhsRep, Exponent, Radix> const& rhs) const
+            -> decltype(Operator{}(to_rep(lhs), to_rep(rhs)))
             {
-                return Operator()(to_rep(lhs), to_rep(rhs));
+                return Operator{}(to_rep(lhs), to_rep(rhs));
             }
         };
 
-        // comparison between operands with different type
+        // comparison between operands with different rep and exponent
         template<typename Operator, typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
-        struct binary_operator<Operator, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>,
-                typename Operator::is_comparison> {
+        struct binary_operator<Operator,
+                fixed_point<LhsRep, LhsExponent, Radix>,
+                fixed_point<RhsRep, RhsExponent, Radix>,
+                enable_if_t<LhsExponent<RhsExponent, typename Operator::is_comparison>> {
+            static constexpr int shiftage = RhsExponent - LhsExponent;
+            using lhs_type = fixed_point<LhsRep, LhsExponent, Radix>;
+            using rhs_type = fixed_point<decltype(std::declval<RhsRep>()<<constant<shiftage>{}), LhsExponent, Radix>;
+            using operator_type = binary_operator<Operator, lhs_type, rhs_type>;
+
             constexpr auto operator()(
                     fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
                     fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
-            -> decltype(Operator()(static_cast<_impl::common_type_t<fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>>>(lhs), static_cast<_impl::common_type_t<fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>>>(rhs)))
+            -> decltype(operator_type{}(lhs, rhs))
             {
-                using common_type = _impl::common_type_t<fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>>;
-                return Operator()(static_cast<common_type>(lhs), static_cast<common_type>(rhs));
+                return operator_type{}(lhs, rhs);
+            }
+        };
+
+        template<typename Operator, typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
+        struct binary_operator<Operator,
+                fixed_point<LhsRep, LhsExponent, Radix>,
+                fixed_point<RhsRep, RhsExponent, Radix>,
+                enable_if_t<RhsExponent<LhsExponent, typename Operator::is_comparison>> {
+            static constexpr int shiftage = LhsExponent - RhsExponent;
+            using lhs_type = fixed_point<decltype(std::declval<LhsRep>()<<constant<shiftage>{}), RhsExponent, Radix>;
+            using rhs_type = fixed_point<RhsRep, RhsExponent, Radix>;
+            using operator_type = binary_operator<Operator, lhs_type, rhs_type>;
+
+            constexpr auto operator()(
+                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
+                    fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
+            -> decltype(operator_type{}(lhs, rhs))
+            {
+                return operator_type{}(lhs, rhs);
             }
         };
 
@@ -159,15 +190,6 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // pre-increment/decrement arithmetic operators
 
-        template<class Operator>
-        struct pre_to_assign;
-
-        template<>
-        struct pre_to_assign<pre_increment_op> : type_identity<assign_add_op> {};
-
-        template<>
-        struct pre_to_assign<pre_decrement_op> : type_identity<assign_subtract_op> {};
-
         template<typename Operator, typename Rep, int Exponent, int Radix>
         struct pre_operator<Operator, fixed_point<Rep, Exponent, Radix>> {
             constexpr auto operator()(fixed_point<Rep, Exponent, Radix>& rhs) const
@@ -179,15 +201,6 @@ namespace cnl {
 
         ////////////////////////////////////////////////////////////////////////////////
         // post-increment/decrement arithmetic operators
-
-        template<class Operator>
-        struct post_to_assign;
-
-        template<>
-        struct post_to_assign<post_increment_op> : type_identity<assign_add_op> {};
-
-        template<>
-        struct post_to_assign<post_decrement_op> : type_identity<assign_subtract_op> {};
 
         template<typename Operator, typename Rep, int Exponent, int Radix>
         struct post_operator<Operator, fixed_point<Rep, Exponent, Radix>> {

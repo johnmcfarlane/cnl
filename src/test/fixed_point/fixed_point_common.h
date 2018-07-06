@@ -62,7 +62,7 @@ namespace test_compound_assignment {
         auto lhs = fixed_point<uint32, -16>{7};
         auto rhs = uint32{12};
         lhs += rhs;
-        ASSERT_EQ(lhs, 19);
+        ASSERT_EQ(lhs, 19U);
     }
 
     TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_i_f) {
@@ -192,13 +192,7 @@ static_assert(static_cast<int>(-2.9)==-2, "incorrect assumption about default ro
 static_assert(static_cast<int>(-3.0)==-3, "incorrect assumption about default rounding");
 static_assert(static_cast<int>(-3.9)==-3, "incorrect assumption about default rounding");
 
-// mixed-mode operations DO lose precision because exponent is more important than significand
-static_assert(is_same<std::common_type<float, uint32>::type, float>::value, "incorrect assumption about promotion");
-
 // promotion doesn't always tend towards int
-static_assert(is_same<std::common_type<int64, uint32>::type, int64>::value, "incorrect assumption about promotion");
-static_assert(is_same<std::common_type<int32, uint64>::type, uint64>::value, "incorrect assumption about promotion");
-static_assert(is_same<std::common_type<int8, int8>::type, int8>::value, "incorrect assumption about promotion");
 static_assert(identical(int8(0)+int8(0), test_int{0}), "incorrect assumption about promotion");
 static_assert(identical(int8(0)+int8(0), test_int{0}), "incorrect assumption about promotion");
 static_assert(identical(uint8(0)+int8(0), test_int{0}), "incorrect assumption about promotion");
@@ -511,7 +505,7 @@ static_assert(fixed_point<int8, 1>(-5)==-4, "cnl::fixed_point test failed");
 
 // conversion between fixed_point specializations
 static_assert(fixed_point<uint8, -4>(fixed_point<int16, -8>(1.5))==1.5, "cnl::fixed_point test failed");
-#if !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_SATURATED_OVERFLOW)
+#if !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_SATURATED_OVERFLOW) && !defined(TEST_TRAPPING_OVERFLOW)
 static_assert(fixed_point<uint16, -8>(fixed_point<int8, -4>(3.25))==3.25, "cnl::fixed_point test failed");
 static_assert(fixed_point<uint8, 4>(fixed_point<int16, -4>(768))==768, "cnl::fixed_point test failed");
 static_assert(fixed_point<uint32, -24>(fixed_point<uint64, -48>(3.141592654))>3.1415923f,
@@ -526,53 +520,6 @@ static_assert(fixed_point<uint32, -24>(fixed_point<uint64, -48>(3.141592654))<3.
 static_assert(fixed_point<>(-1), "cnl::fixed_point test failed");
 static_assert(fixed_point<>(1024), "cnl::fixed_point test failed");
 static_assert(!fixed_point<>(0), "cnl::fixed_point test failed");
-
-////////////////////////////////////////////////////////////////////////////////
-// cnl::_impl::common_type_t
-
-// commonality never occurs when inputs are the same fixed_point type
-static_assert(
-        is_same<cnl::_impl::common_type_t<fixed_point<int8, -3>, fixed_point<int8, -3>>, fixed_point<int8, -3>>::value,
-        "cnl::_impl::common_type_t test failed");
-static_assert(
-        is_same<cnl::_impl::common_type_t<fixed_point<int32, -14>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value,
-        "cnl::_impl::common_type_t test failed");
-static_assert(
-        is_same<cnl::_impl::common_type_t<fixed_point<int64, -48>, fixed_point<int64, -48>>, fixed_point<int64, -48>>::value,
-        "cnl::_impl::common_type_t test failed");
-
-// commonality between homogeneous fixed_point types
-static_assert(
-        is_same<cnl::_impl::common_type_t<fixed_point<uint8, -4>, fixed_point<int8, -4>>, fixed_point<test_int, -4>>::value,
-        "cnl::_impl::common_type_t test failed");
-static_assert(
-        is_same<cnl::_impl::common_type_t<fixed_point<uint64, -50>, fixed_point<int8, 0>>, fixed_point<uint64, -50>>::value,
-        "cnl::_impl::common_type_t test failed");
-static_assert(
-        is_same<cnl::_impl::common_type_t<fixed_point<int16, -4>, fixed_point<int32, -14>>, fixed_point<int32, -14>>::value,
-        "cnl::_impl::common_type_t test failed");
-static_assert(
-        is_same<cnl::_impl::common_type_t<fixed_point<int16, 0>, fixed_point<uint64, -60>>, fixed_point<uint64, -60>>::value,
-        "cnl::_impl::common_type_t test failed");
-
-// commonality between arithmetic and fixed_point types
-static_assert(is_same<cnl::_impl::common_type_t<float, fixed_point<int8, -4>>, float>::value,
-        "cnl::_impl::common_type_t test failed");
-static_assert(is_same<cnl::_impl::common_type_t<double, fixed_point<int32, -14>>, double>::value,
-        "cnl::_impl::common_type_t test failed");
-static_assert(is_same<cnl::_impl::common_type_t<int8, fixed_point<uint64, -60>>, fixed_point<uint64, -60>>::value,
-        "cnl::_impl::common_type_t test failed");
-
-static_assert(
-        is_same<cnl::_impl::common_type_t<fixed_point<uint8, -4>, uint32>, fixed_point<test_unsigned, -4>>::value,
-        "cnl::_impl::common_type_t test failed");
-static_assert(is_same<cnl::_impl::common_type_t<fixed_point<int16, -4>, float>, float>::value,
-        "cnl::_impl::common_type_t test failed");
-static_assert(is_same<cnl::_impl::common_type_t<fixed_point<int16, 0>, double>, double>::value,
-        "cnl::_impl::common_type_t test failed");
-static_assert(is_same<
-        cnl::_impl::common_type_t<fixed_point<uint8, 10>, test_int>,
-        fixed_point<test_int, 0>>::value, "cnl::_impl::common_type_t test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // fixed-point arithmetic support types

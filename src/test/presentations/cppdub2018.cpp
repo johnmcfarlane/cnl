@@ -74,17 +74,7 @@ namespace e {
 namespace f {
     //static_assert(numeric_limits<int>::max()+1, "error");
 
-// disable warning which highlights the problem being illustrated here
-#if defined(__GNUG__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsign-compare"
-#endif
-
     static_assert(unsigned{1}<signed{-1}, "evaluates to true");
-
-#if defined(__GNUG__)
-#pragma GCC diagnostic pop
-#endif
 }
 
 #if (__cplusplus > 201700)

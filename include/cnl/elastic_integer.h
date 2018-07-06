@@ -116,15 +116,17 @@ namespace cnl {
 
     template<int Digits, class Narrowest, class Value>
     struct from_value<elastic_integer<Digits, Narrowest>, Value>
-            : _impl::from_value_simple<Value, elastic_integer<
-                    cnl::digits<Value>::value,
-                    cnl::_impl::make_signed_t<Narrowest, cnl::is_signed<Value>::value>>> {
+            : _impl::from_value_simple<
+                    elastic_integer<
+                            cnl::digits<Value>::value,
+                            cnl::_impl::make_signed_t<Narrowest, cnl::is_signed<Value>::value>>,
+                    Value> {
     };
 
     template<int Digits, class Narrowest, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<elastic_integer<Digits, Narrowest>, constant<Value>> : _impl::from_value_simple<
-            constant<Value>,
-            elastic_integer<digits<constant<Value>>::value, int>> {
+            elastic_integer<digits<constant<Value>>::value, int>,
+            constant<Value>> {
     };
 
     // cnl::scale<..., cnl::elastic_integer<>>

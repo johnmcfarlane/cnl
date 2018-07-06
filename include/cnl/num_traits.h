@@ -415,7 +415,7 @@ namespace cnl {
     // cnl::from_value
 
     namespace _impl {
-        template<typename Value, typename Result>
+        template<typename Result, typename Value>
         struct from_value_simple {
             constexpr Result operator()(Value const& value) const {
                 return value;
@@ -424,7 +424,7 @@ namespace cnl {
     }
 
     template<typename Number, typename Value, class Enable = void>
-    struct from_value : _impl::from_value_simple<Value, void> {
+    struct from_value : _impl::from_value_simple<void, Value> {
         void operator()(Value const &) const;
     };
 

@@ -72,12 +72,13 @@ namespace cnl {
 
     template<typename Rep, int Exponent, int Radix, typename Value>
     struct from_value<fixed_point<Rep, Exponent, Radix>, Value>
-            : _impl::from_value_simple<Value, fixed_point<Value, 0, Radix>> {
+            : _impl::from_value_simple<fixed_point<Value, 0, Radix>, Value> {
     };
 
     template<typename Rep, int Exponent, int Radix, typename ValueRep, int ValueExponent>
     struct from_value<fixed_point<Rep, Exponent, Radix>, fixed_point<ValueRep, ValueExponent>> : _impl::from_value_simple<
-            fixed_point<ValueRep, ValueExponent>, fixed_point<from_value_t<Rep, ValueRep>, ValueExponent>> {
+            fixed_point<from_value_t<Rep, ValueRep>, ValueExponent>,
+            fixed_point<ValueRep, ValueExponent>> {
     };
 
     template<typename Rep, int Exponent, int Radix, typename Numerator, typename Denominator>
@@ -89,10 +90,11 @@ namespace cnl {
     };
 
     template<typename Rep, int Exponent, int Radix, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct from_value<fixed_point<Rep, Exponent, Radix>, constant<Value>> : _impl::from_value_simple<constant<Value>,
+    struct from_value<fixed_point<Rep, Exponent, Radix>, constant<Value>> : _impl::from_value_simple<
             fixed_point<
                     set_digits_t<int, _impl::max(digits<int>::value, _impl::used_digits(Value)-trailing_bits(Value))>,
-                    trailing_bits(Value)>> {
+                    trailing_bits(Value)>,
+            constant<Value>> {
         // same as deduction guide
     };
 

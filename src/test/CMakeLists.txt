@@ -200,7 +200,7 @@ foreach(source ${sample_sources})
     if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
         make_test("${source}" target "-fpermissive -Wno-sign-compare -Wno-strict-overflow" "")
     else ()
-        make_test("${source}" target "" "")
+        make_test("${source}" target "/wd4018" "")
     endif ()
 endforeach(source)
 

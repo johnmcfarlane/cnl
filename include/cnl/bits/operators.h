@@ -318,6 +318,27 @@ namespace cnl {
         using op_result = decltype(Operator()(std::declval<Operands>() ...));
 
         ////////////////////////////////////////////////////////////////////////////////
+        // type transformations from increment/decrement to compount add/subtract
+
+        template<class Operator>
+        struct pre_to_assign;
+
+        template<>
+        struct pre_to_assign<pre_increment_op> : type_identity<assign_add_op> {};
+
+        template<>
+        struct pre_to_assign<pre_decrement_op> : type_identity<assign_subtract_op> {};
+
+        template<class Operator>
+        struct post_to_assign;
+
+        template<>
+        struct post_to_assign<post_increment_op> : type_identity<assign_add_op> {};
+
+        template<>
+        struct post_to_assign<post_decrement_op> : type_identity<assign_subtract_op> {};
+
+        ////////////////////////////////////////////////////////////////////////////////
         // generic operators
 
         // can be specialized for any types without need for excessive boilerplate;
