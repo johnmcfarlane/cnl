@@ -293,20 +293,18 @@ namespace cnl {
         struct binary_operator<Operator,
                 overflow_integer<LhsRep, LhsTag>, overflow_integer<RhsRep, RhsTag>,
                 typename Operator::is_comparison> {
+            using common_tag = cnl::_impl::common_type_t<LhsTag, RhsTag>;
+            using operator_type = binary_operator<
+                    Operator,
+                    overflow_integer<LhsRep, common_tag>,
+                    overflow_integer<RhsRep, common_tag>>;
+
             constexpr auto operator()(
                     const overflow_integer<LhsRep, LhsTag>& lhs,
                     const overflow_integer<RhsRep, RhsTag>& rhs) const
-            -> decltype(binary_operator<
-                    Operator,
-                    overflow_integer<cnl::_impl::common_type_t<LhsRep, RhsRep>, cnl::_impl::common_type_t<LhsTag, RhsTag>>,
-                    overflow_integer<cnl::_impl::common_type_t<LhsRep, RhsRep>, cnl::_impl::common_type_t<LhsTag, RhsTag>>>()(lhs, rhs))
+            -> decltype(operator_type{}(lhs, rhs))
             {
-                using common_rep = cnl::_impl::common_type_t<LhsRep, RhsRep>;
-                using common_tag = cnl::_impl::common_type_t<LhsTag, RhsTag>;
-                return binary_operator<
-                        Operator,
-                        overflow_integer<common_rep, common_tag>,
-                        overflow_integer<common_rep, common_tag>>()(lhs, rhs);
+                return operator_type{}(lhs, rhs);
             }
         };
 
