@@ -10,6 +10,10 @@
 #if !defined(CNL_FIXED_POINT_OPERATORS_H)
 #define CNL_FIXED_POINT_OPERATORS_H 1
 
+#include "type.h"
+
+#include <numeric>
+
 /// compositional numeric library
 namespace cnl {
 
