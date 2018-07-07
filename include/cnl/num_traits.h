@@ -335,15 +335,6 @@ namespace cnl {
 
         template<class T1, class T2>
         using common_signedness_t = typename common_signedness<T1, T2>::type;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::is_integer_or_float - trait to identify 'traditional' arithmetic concept
-
-        template<class T>
-        struct is_integer_or_float : std::integral_constant<
-                bool,
-                numeric_limits<T>::is_integer || numeric_limits<T>::is_iec559> {
-        };
     }
 
     ////////////////////////////////////////////////////////////////////////////////

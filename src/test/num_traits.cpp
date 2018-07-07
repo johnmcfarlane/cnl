@@ -149,16 +149,4 @@ namespace {
         static_assert(identical(cnl::_impl::shift<9, 4, uint64_t>(7), UINT64_C(1835008)),
                 "cnl::_impl::shift test failed");
     }
-
-    namespace test_is_integer_or_float {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::is_integer_or_float
-
-        using cnl::_impl::is_integer_or_float;
-        static_assert(is_integer_or_float<uint8_t>::value, "cnl::_integer_impl::is_integer_or_float test failed");
-        static_assert(is_integer_or_float<float>::value, "cnl::_integer_impl::is_integer_or_float test failed");
-        static_assert(!is_integer_or_float<void>::value, "cnl::_integer_impl::is_integer_or_float test failed");
-        static_assert(!is_integer_or_float<int *>::value, "cnl::_integer_impl::is_integer_or_float test failed");
-        static_assert(!is_integer_or_float<std::string>::value, "cnl::_integer_impl::is_integer_or_float test failed");
-    }
 }

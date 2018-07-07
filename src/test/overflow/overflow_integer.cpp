@@ -13,7 +13,6 @@
 #include <gtest/gtest.h>
 
 using cnl::_impl::identical;
-using cnl::_impl::is_integer_or_float;
 using cnl::_integer_impl::is_overflow_integer;
 using cnl::overflow_integer;
 using std::declval;
@@ -66,11 +65,6 @@ static_assert(is_overflow_integer<saturated_integer<uint64_t>>::value,
         "cnl::_integer_impl::is_overflow_integer test failed");
 static_assert(is_overflow_integer<saturated_integer<int64_t>>::value,
         "cnl::_integer_impl::is_overflow_integer test failed");
-
-////////////////////////////////////////////////////////////////////////////////
-// cnl::_impl::is_integer_or_float
-
-static_assert(is_integer_or_float<saturated_integer<int64_t>>::value, "cnl::_integer_impl::is_overflow_integer test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::saturated_integer
