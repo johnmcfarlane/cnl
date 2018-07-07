@@ -13,21 +13,18 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::used_digits
 
-        template<typename Integer>
-        constexpr int used_digits_positive(Integer const& value, int radix)
-        {
-            static_assert(cnl::numeric_limits<Integer>::is_integer,
-                    "Integer parameter of used_digits_positive() must be a fundamental integer.");
-
-            return (value>0) ? 1+used_digits_positive(value/radix, radix) : 0;
-        }
-
         template<bool IsSigned>
-        struct used_digits_signed {
+        struct used_digits_signed;
+
+        template<>
+        struct used_digits_signed<false> {
             template<class Integer>
             constexpr int operator()(Integer const& value, int radix) const
             {
-                return value ? used_digits_positive(value, radix) : 0;
+                static_assert(cnl::numeric_limits<Integer>::is_integer,
+                        "Integer parameter of used_digits_positive() must be a fundamental integer.");
+
+                return (value>0) ? 1+used_digits_signed<false>{}(value/radix, radix) : 0;
             }
         };
 
@@ -42,11 +39,9 @@ namespace cnl {
                 // Most negative number is not exploited;
                 // thus negating the result or subtracting it from something else
                 // will less likely result in overflow.
-                return (value>0)
-                       ? used_digits_positive(value, radix)
-                       : (value==0)
-                         ? 0
-                         : used_digits_signed()(Integer(-1)-value, radix);
+                return (value<0)
+                       ? used_digits_signed<false>{}(Integer(-1)-value, radix)
+                       : used_digits_signed<false>{}(value, radix);
             }
         };
 

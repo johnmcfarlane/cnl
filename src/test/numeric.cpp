@@ -69,21 +69,19 @@ namespace {
 
 #endif  // defined(__cpp_inline_variables)
 
-    namespace test_numeric_impl {
-        namespace test_used_digits_positive {
-            static_assert(_impl::used_digits_positive(1, 2)==1,
-                    "cnl::_impl::used_digits_positive test failed");
-            static_assert(_impl::used_digits_positive(2, 2)==2,
-                    "cnl::_impl::used_digits_positive test failed");
-            static_assert(_impl::used_digits_positive(uint8_t{255}, 2)==8,
-                    "cnl::_impl::used_digits_positive test failed");
-            static_assert(_impl::used_digits_positive(int16_t{32767}, 2)==15,
-                    "cnl::_impl::used_digits_positive test failed");
-            static_assert(_impl::used_digits_positive(numeric_limits<int64_t>::max(), 2)==63,
-                    "cnl::_impl::used_digits_positive test failed");
-            static_assert(_impl::used_digits_positive(numeric_limits<uint64_t>::max(), 2)==64,
-                    "cnl::_impl::used_digits_positive test failed");
-        }
+    namespace test_used_digits_signed {
+        static_assert(_impl::used_digits_signed<false>{}(1, 2)==1,
+                "cnl::_impl::used_digits_signed<false> test failed");
+        static_assert(_impl::used_digits_signed<false>{}(2, 2)==2,
+                "cnl::_impl::used_digits_signed<false> test failed");
+        static_assert(_impl::used_digits_signed<false>{}(uint8_t{255}, 2)==8,
+                "cnl::_impl::used_digits_signed<false> test failed");
+        static_assert(_impl::used_digits_signed<false>{}(int16_t{32767}, 2)==15,
+                "cnl::_impl::used_digits_signed<false> test failed");
+        static_assert(_impl::used_digits_signed<false>{}(numeric_limits<int64_t>::max(), 2)==63,
+                "cnl::_impl::used_digits_signed<false> test failed");
+        static_assert(_impl::used_digits_signed<false>{}(numeric_limits<uint64_t>::max(), 2)==64,
+                "cnl::_impl::used_digits_signed<false> test failed");
     }
 
     namespace test_used_digits_2 {
