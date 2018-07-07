@@ -316,16 +316,16 @@ namespace test_from_rep {
     static_assert(cnl::from_rep<fixed_point<test_int, 1000>>{}(test_int{1}), "from_rep");
 }
 
-namespace test_from_value {
-    static_assert(identical(fixed_point<short>{123}, cnl::_impl::from_value<fixed_point<long long>>(short{123})),
-            "cnl::_impl::from_value<fixed_point<>>");
-    static_assert(identical(fixed_point<std::uint64_t>{404}, cnl::_impl::from_value<fixed_point<>>(UINT64_C(404))),
-            "cnl::_impl::from_value<fixed_point<>, cnl::constant<4>>()");
+namespace test_impl_make_number {
+    static_assert(identical(fixed_point<short>{123}, cnl::_impl::make_number<fixed_point<long long>>(short{123})),
+            "cnl::_impl::make_number<fixed_point<>>");
+    static_assert(identical(fixed_point<std::uint64_t>{404}, cnl::_impl::make_number<fixed_point<>>(UINT64_C(404))),
+            "cnl::_impl::make_number<fixed_point<>, cnl::constant<4>>()");
 
-    static_assert(identical(cnl::_impl::from_value<fixed_point<int32>>(cnl::constant<369>{}), fixed_point<int>{369}),
-            "cnl::_impl::from_value<fixed_point<>>");
-    static_assert(identical(fixed_point<int, 2>{4}, cnl::_impl::from_value<fixed_point<>>(cnl::constant<4>{})),
-            "cnl::_impl::from_value<fixed_point<>, cnl::constant<4>>()");
+    static_assert(identical(cnl::_impl::make_number<fixed_point<int32>>(cnl::constant<369>{}), fixed_point<int>{369}),
+            "cnl::_impl::make_number<fixed_point<>>");
+    static_assert(identical(fixed_point<int, 2>{4}, cnl::_impl::make_number<fixed_point<>>(cnl::constant<4>{})),
+            "cnl::_impl::make_number<fixed_point<>, cnl::constant<4>>()");
 }
 
 #if defined(__cpp_deduction_guides)

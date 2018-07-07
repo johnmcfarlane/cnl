@@ -153,8 +153,8 @@ namespace cnl {
                 Operator, Lhs, Rhs,
                 enable_if_t<is_wrappable<Lhs, Rhs>::value && is_derived_from_number_base<Rhs>::value>> {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(from_value<Rhs>(lhs), rhs)) {
-                return Operator()(from_value<Rhs>(lhs), rhs);
+            -> decltype(Operator()(make_number<Rhs>(lhs), rhs)) {
+                return Operator()(make_number<Rhs>(lhs), rhs);
             }
         };
 
@@ -164,9 +164,9 @@ namespace cnl {
                 Operator, Lhs, Rhs,
                 enable_if_t<is_derived_from_number_base<Lhs>::value && is_wrappable<Rhs, Lhs>::value>> {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(lhs, from_value<Lhs>(rhs)))
+            -> decltype(Operator()(lhs, make_number<Lhs>(rhs)))
             {
-                return Operator()(lhs, from_value<Lhs>(rhs));
+                return Operator()(lhs, make_number<Lhs>(rhs));
             }
         };
 

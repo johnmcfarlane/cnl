@@ -32,7 +32,7 @@ namespace cnl {
     constexpr auto make_fixed_point(Value const& value)
     -> cnl::from_value_t<fixed_point<Value, 0>, Value>
     {
-        return _impl::from_value<fixed_point<Value, 0>>(value);
+        return _impl::make_number<fixed_point<Value, 0>>(value);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
