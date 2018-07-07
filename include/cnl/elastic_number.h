@@ -94,6 +94,19 @@ namespace cnl {
         return {value};
     }
 
+    template<typename Narrowest = void, typename Rep = int, int Exponent = 0, int Radix = 2>
+    constexpr elastic_number<
+            numeric_limits<Rep>::digits,
+            Exponent,
+            typename std::conditional<
+                    std::is_same<void, Narrowest>::value,
+                    typename std::conditional<is_signed<Rep>::value, signed, unsigned>::type,
+                    Narrowest>::type>
+    make_elastic_number(fixed_point<Rep, Exponent, Radix> const& value)
+    {
+        return {value};
+    }
+
     /// \c user-defined literals
     namespace literals {
         ////////////////////////////////////////////////////////////////////////////////
