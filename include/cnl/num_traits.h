@@ -58,9 +58,9 @@ namespace cnl {
     constexpr auto is_composite_v = is_composite<T>::value;
 #endif
 
-    namespace _num_traits_impl {
+    namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_num_traits_impl::are_composite
+        // cnl::_impl::are_composite
 
         template<class ... Args>
         struct are_composite;
@@ -75,7 +75,7 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_num_traits_impl::enable_for_range
+        // cnl::_impl::enable_for_range
 
         template<typename T>
         constexpr bool narrower_than(_digits_type digits)
@@ -94,7 +94,7 @@ namespace cnl {
                 no_narrower_than<T>(MinNumDigits) && narrower_than<Smaller>(MinNumDigits)>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_num_traits_impl::set_digits_signed
+        // cnl::_impl::set_digits_signed
 
         template<_digits_type MinNumDigits, class Enable = void>
         struct set_digits_signed;
@@ -132,7 +132,7 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_num_traits_impl::set_digits_unsigned
+        // cnl::_impl::set_digits_unsigned
 
         template<_digits_type MinNumDigits, class Enable = void>
         struct set_digits_unsigned;
@@ -170,7 +170,7 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_num_traits_impl::set_digits_integer
+        // cnl::_impl::set_digits_integer
 
         template<class Integer, _digits_type MinNumDigits>
         using set_digits_integer = typename std::conditional<
@@ -214,18 +214,18 @@ namespace cnl {
 
     template<class T, _digits_type Digits>
     struct set_digits<T, Digits, _impl::enable_if_t<std::is_integral<T>::value>>
-            : _num_traits_impl::set_digits_integer<T, Digits> {
+            : _impl::set_digits_integer<T, Digits> {
     };
 
 #if defined(CNL_INT128_ENABLED)
     template<_digits_type Digits>
     struct set_digits<int128, Digits>
-            : _num_traits_impl::set_digits_integer<signed, Digits> {
+            : _impl::set_digits_integer<signed, Digits> {
     };
 
     template<_digits_type Digits>
     struct set_digits<uint128, Digits>
-            : _num_traits_impl::set_digits_integer<unsigned, Digits> {
+            : _impl::set_digits_integer<unsigned, Digits> {
     };
 #endif
 
@@ -357,13 +357,13 @@ namespace cnl {
     namespace _impl {
         // invoke a given generic lambda on given parameters
         template<class Result, class F, class ... Args,
-                _impl::enable_if_t<!_num_traits_impl::are_composite<Args ...>::value, int> dummy = 0>
+                _impl::enable_if_t<!_impl::are_composite<Args ...>::value, int> dummy = 0>
         constexpr Result for_rep(F f, Args &&...args) {
             return f(std::forward<Args>(args)...);
         }
 
         template<class Result, class F, class ... Args,
-                _impl::enable_if_t<_num_traits_impl::are_composite<Args ...>::value, int> dummy = 0>
+                _impl::enable_if_t<_impl::are_composite<Args ...>::value, int> dummy = 0>
         constexpr Result for_rep(F f, Args &&...args) {
             return for_rep<Result>(f, to_rep(std::forward<Args>(args))...);
         }

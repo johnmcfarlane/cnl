@@ -298,7 +298,7 @@ namespace test_is_composite {
     using cnl::is_composite;
 
     static_assert(is_composite<fixed_point<test_int>>::value, "cnl::is_composite<fixed_point<>> test failed");
-    static_assert(cnl::_num_traits_impl::are_composite<fixed_point<test_int>>::value, "cnl::is_composite<fixed_point<>> test failed");
+    static_assert(cnl::_impl::are_composite<fixed_point<test_int>>::value, "cnl::is_composite<fixed_point<>> test failed");
 }
 
 namespace test_to_rep {
