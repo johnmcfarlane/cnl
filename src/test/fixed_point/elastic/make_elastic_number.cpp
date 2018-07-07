@@ -38,6 +38,20 @@ static_assert(identical(make_elastic_number(40_c), elastic_number<3, 3>{40}), ""
 static_assert(identical(make_elastic_number(0x123400000000_c), elastic_number<11, 34>{0x123400000000}), "");
 static_assert(identical(make_elastic_number<cnl::int8>(9876543), elastic_number<31, 0, cnl::int8>{9876543}), "");
 
+namespace test_from_fixed_point {
+    static_assert(
+            identical(
+                    cnl::elastic_number<16, -8, unsigned>{255.99609375},
+                    cnl::make_elastic_number(cnl::fixed_point<std::uint16_t, -8>{255.99609375})),
+            "");
+
+    static_assert(
+            identical(
+                    cnl::elastic_number<cnl::digits<long>::value, 3, signed>{88},
+                    cnl::make_elastic_number(cnl::fixed_point<long, 3>{88})),
+            "");
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // tests size of cnl::make_elastic_number
 
