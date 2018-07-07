@@ -71,6 +71,21 @@ namespace cnl {
             template<class CoeffType>
             constexpr CoeffType poly_coeffs<CoeffType>::a7;
 
+            template<typename A, typename B>
+            constexpr auto safe_multiply(A const& a, B const& b)
+            -> enable_if_t<digits<decltype(a*b)>::value <= digits<A>::value+digits<B>::value,
+                    decltype(set_digits_t<A, digits<A>::value+digits<B>::value>{a}
+                            *set_digits_t<B, digits<A>::value+digits<B>::value>{b})> {
+                return set_digits_t<A, digits<A>::value+digits<B>::value>{a}
+                        *set_digits_t<B, digits<A>::value+digits<B>::value>{b};
+            }
+
+            template<typename A, typename B>
+            constexpr auto safe_multiply(A const& a, B const& b)
+            -> enable_if_t<digits<A>::value+digits<B>::value <= digits<decltype(a*b)>::value, decltype(a*b)> {
+                return a*b;
+            }
+
             template<class Rep, int Exponent>
             constexpr inline fixed_point<Rep, Exponent> evaluate_polynomial(
                     fixed_point<Rep, Exponent> xf) {
@@ -80,8 +95,21 @@ namespace cnl {
                 //the fractional part. Note that the constant 1 of the polynomial is added later,
                 //this gives us one more bit of precision here for free
                 using coeffs = poly_coeffs<fp>;
-                return fp{multiply(xf, (coeffs::a1+fp{multiply(xf, (coeffs::a2+fp{multiply(xf, (coeffs::a3+fp{multiply(xf, (coeffs::a4
-                        +fp{multiply(xf, (coeffs::a5+fp{multiply(xf, (coeffs::a6+fp{multiply(fp{coeffs::a7}, fp{xf})}))}))}))}))}))}))};
+                return fp{
+                    safe_multiply(xf, (coeffs::a1+fp{
+                        safe_multiply(xf, (coeffs::a2+fp{
+                            safe_multiply(xf, (coeffs::a3+fp{
+                                safe_multiply(xf, (coeffs::a4+fp{
+                                    safe_multiply(xf, (coeffs::a5+fp{
+                                        safe_multiply(xf, (coeffs::a6+fp{
+                                            safe_multiply(coeffs::a7, xf)
+                                        }))
+                                    }))
+                                }))
+                            }))
+                        }))
+                    }))
+                };
             }
 
             //Computes 2^x - 1 for a number x between 0 and 1, strictly less than 1
