@@ -22,6 +22,9 @@ static_assert(identical(make_elastic_number(-1_c), cnl::elastic_number<1, 0, int
 
 static_assert(identical(make_elastic_number(123), elastic_number<int_digits>{123}), "cnl::make_elastic_number test failed");
 static_assert(
+        identical(elastic_number<32, 0, unsigned>{123U}, make_elastic_number(123U)),
+        "cnl::make_elastic_number test failed");
+static_assert(
         identical(make_elastic_number(0x100000000_c), elastic_number<1, 32>{0x100000000ULL}),
         "cnl::make_elastic_number test failed");
 static_assert(
