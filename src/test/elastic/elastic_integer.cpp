@@ -351,7 +351,7 @@ namespace {
         static_assert(!is_signed || numeric_limits::max()==-numeric_limits::lowest(), "type has most negative number");
         static_assert(!is_signed || -numeric_limits::max()==numeric_limits::lowest(), "type has most negative number");
 
-        static_assert(identical(cnl::_impl::make_signed_t<value_type, is_signed>{0}, value_type{0}), "");
+        static_assert(identical(cnl::_impl::set_signedness_t<value_type, is_signed>{0}, value_type{0}), "");
 
         ////////////////////////////////////////////////////////////////////////////////
         // constructors

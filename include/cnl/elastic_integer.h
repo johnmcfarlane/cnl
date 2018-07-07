@@ -98,6 +98,37 @@ namespace cnl {
         struct set_rep<elastic_integer<Digits, OldNarrowest>, NewNarrowest> {
             using type = elastic_integer<Digits, NewNarrowest>;
         };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::set_signedness - std::make_signed with IsSigned parameter
+
+        template<class T, bool IsSigned = true>
+        struct set_signedness;
+
+        template<class T>
+        struct set_signedness<T, true> : ::cnl::make_signed<T> {
+        };
+
+        template<class T>
+        struct set_signedness<T, false> : ::cnl::make_unsigned<T> {
+        };
+
+        template<class T, bool IsSigned>
+        using set_signedness_t = typename set_signedness<T, IsSigned>::type;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::common_signedness
+
+        template<class T1, class T2>
+        struct common_signedness {
+            static constexpr bool _are_signed = numeric_limits<T1>::is_signed | numeric_limits<T2>::is_signed;
+
+            using type = typename std::common_type<set_signedness_t<T1, _are_signed>,
+                    set_signedness_t<T2, _are_signed>>::type;
+        };
+
+        template<class T1, class T2>
+        using common_signedness_t = typename common_signedness<T1, T2>::type;
     }
 
     /// \brief \ref elastic_integer specialization of \ref from_rep
@@ -108,7 +139,7 @@ namespace cnl {
         /// \brief generates an \ref elastic_integer equivalent to \c r in type and value
         template<typename Rep>
         constexpr auto operator()(Rep const& r) const
-        -> elastic_integer<Digits, cnl::_impl::make_signed_t<Narrowest, cnl::is_signed<Rep>::value>>
+        -> elastic_integer<Digits, cnl::_impl::set_signedness_t<Narrowest, cnl::is_signed<Rep>::value>>
         {
             return r;
         }
@@ -119,7 +150,7 @@ namespace cnl {
             : _impl::from_value_simple<
                     elastic_integer<
                             cnl::digits<Value>::value,
-                            cnl::_impl::make_signed_t<Narrowest, cnl::is_signed<Value>::value>>,
+                            cnl::_impl::set_signedness_t<Narrowest, cnl::is_signed<Value>::value>>,
                     Value> {
     };
 
@@ -414,7 +445,9 @@ namespace cnl {
             static constexpr _digits_type narrowest_width = _impl::max(
                     digits<LhsNarrowest>::value + cnl::is_signed<LhsNarrowest>::value,
                     digits<RhsNarrowest>::value + cnl::is_signed<RhsNarrowest>::value);
-            using narrowest = set_digits_t<_impl::make_signed_t<rep_result, policy::is_signed>, narrowest_width-policy::is_signed>;
+            using narrowest = set_digits_t<
+                    _impl::set_signedness_t<rep_result, policy::is_signed>,
+                    narrowest_width-policy::is_signed>;
             using result_type = elastic_integer<policy::digits, narrowest>;
         };
 

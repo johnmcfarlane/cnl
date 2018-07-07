@@ -304,39 +304,6 @@ namespace cnl {
     template<class T>
     using make_unsigned_t = typename make_unsigned<T>::type;
 
-    namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::make_signed - std::make_signed with IsSigned parameter
-
-        template<class T, bool IsSigned = true>
-        struct make_signed;
-
-        template<class T>
-        struct make_signed<T, true> : ::cnl::make_signed<T> {
-        };
-
-        template<class T>
-        struct make_signed<T, false> : ::cnl::make_unsigned<T> {
-        };
-
-        template<class T, bool IsSigned>
-        using make_signed_t = typename make_signed<T, IsSigned>::type;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::common_signedness
-
-        template<class T1, class T2>
-        struct common_signedness {
-            static constexpr bool _are_signed = numeric_limits<T1>::is_signed | numeric_limits<T2>::is_signed;
-
-            using type = typename std::common_type<make_signed_t<T1, _are_signed>,
-                    make_signed_t<T2, _are_signed>>::type;
-        };
-
-        template<class T1, class T2>
-        using common_signedness_t = typename common_signedness<T1, T2>::type;
-    }
-
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::to_rep
 
