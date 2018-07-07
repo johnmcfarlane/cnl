@@ -89,32 +89,32 @@ namespace {
         static_assert(cnl::_impl::equal_op()(1, to_rep(elastic_integer<8>{1})), "");
     }
 
-    namespace test_impl_from_value {
-        using cnl::_impl::from_value;
-
+    namespace test_impl_make_number {
         static_assert(identical(
                 elastic_integer<cnl::digits<int>::value>{14},
-                from_value<elastic_integer<>>(14)), "from_value<elastic_integer> test failed");
-        static_assert(identical(
+                cnl::_impl::make_number<elastic_integer<>>(14)), "cnl::_impl::make_number<elastic_integer> test failed");
+        static_assert(
+                identical(
                 elastic_integer<cnl::digits<int>::value>{22},
-                from_value<elastic_integer<>>(elastic_integer<>{22})), "from_value<elastic_integer> test failed");
+                        cnl::_impl::make_number<elastic_integer<>>(elastic_integer<>{22})),
+                "cnl::_impl::make_number<elastic_integer> test failed");
 
-        static_assert(identical(from_value<elastic_integer<>>(0_c), elastic_integer<0>{0}),
-                "from_value<elastic_integer> test failed");
-        static_assert(identical(from_value<elastic_integer<>>(1_c), elastic_integer<1>{1}),
-                "from_value<elastic_integer> test failed");
-        static_assert(identical(from_value<elastic_integer<>>(14_c), elastic_integer<4>{14}),
-                "from_value<elastic_integer> test failed");
-        static_assert(identical(from_value<elastic_integer<>>(-31_c), elastic_integer<5>{-31}),
-                "from_value<elastic_integer> test failed");
-        static_assert(identical(from_value<elastic_integer<>>(-32_c), elastic_integer<6>{-32}),
-                "from_value<elastic_integer> test failed");
+        static_assert(identical(cnl::_impl::make_number<elastic_integer<>>(0_c), elastic_integer<0>{0}),
+                "cnl::_impl::make_number<elastic_integer> test failed");
+        static_assert(identical(cnl::_impl::make_number<elastic_integer<>>(1_c), elastic_integer<1>{1}),
+                "cnl::_impl::make_number<elastic_integer> test failed");
+        static_assert(identical(cnl::_impl::make_number<elastic_integer<>>(14_c), elastic_integer<4>{14}),
+                "cnl::_impl::make_number<elastic_integer> test failed");
+        static_assert(identical(cnl::_impl::make_number<elastic_integer<>>(-31_c), elastic_integer<5>{-31}),
+                "cnl::_impl::make_number<elastic_integer> test failed");
+        static_assert(identical(cnl::_impl::make_number<elastic_integer<>>(-32_c), elastic_integer<6>{-32}),
+                "cnl::_impl::make_number<elastic_integer> test failed");
 
 #if defined(CNL_INT128_ENABLED)
         static_assert(identical(
-                from_value<elastic_integer<0>>(-0x10000000000000000000000000000000_c),
+                cnl::_impl::make_number<elastic_integer<0>>(-0x10000000000000000000000000000000_c),
                 elastic_integer<125>{-CNL_INTMAX_C(0x10000000000000000000000000000000)}),
-                "from_value<elastic_integer> test failed");
+                "cnl::_impl::make_number<elastic_integer> test failed");
 #endif
     }
 
@@ -124,18 +124,18 @@ namespace {
         static_assert(std::is_same<elastic_integer<7, int>::rep, int>::value, "");
         static_assert(identical(
                 elastic_integer<cnl::numeric_limits<int>::digits>{1},
-                cnl::_impl::from_value<elastic_integer<3>>(1)), "elastic_integer test failed");
-        static_assert(identical(cnl::_impl::from_value<elastic_integer<3>>(1),
+                cnl::_impl::make_number<elastic_integer<3>>(1)), "elastic_integer test failed");
+        static_assert(identical(cnl::_impl::make_number<elastic_integer<3>>(1),
                 elastic_integer<cnl::numeric_limits<int>::digits>{1}), "elastic_integer test failed");
-        static_assert(identical(cnl::_impl::from_value<elastic_integer<1>>(INT32_C(0)), elastic_integer<31>{0}), "cnl::elastic_integer test failed");
+        static_assert(identical(cnl::_impl::make_number<elastic_integer<1>>(INT32_C(0)), elastic_integer<31>{0}), "cnl::elastic_integer test failed");
 
         static_assert(identical(
                 cnl::elastic_integer<3, signed>{6},
-                cnl::_impl::from_value<cnl::elastic_integer<2, unsigned>>(cnl::constant<6>{})),
+                cnl::_impl::make_number<cnl::elastic_integer<2, unsigned>>(cnl::constant<6>{})),
                 "from_value<elastic_integer, constant>");
         static_assert(identical(
                 cnl::elastic_integer<3, signed>{6},
-                cnl::_impl::from_value<cnl::elastic_integer<2, signed>>(cnl::constant<6>{})),
+                cnl::_impl::make_number<cnl::elastic_integer<2, signed>>(cnl::constant<6>{})),
                 "from_value<elastic_integer, constant>");
     }
 
