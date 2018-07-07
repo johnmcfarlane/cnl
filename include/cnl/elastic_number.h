@@ -89,7 +89,7 @@ namespace cnl {
                     std::is_same<void, Narrowest>::value,
                     typename std::conditional<is_signed<Integral>::value, signed, unsigned>::type,
                     Narrowest>::type>
-    make_elastic_number(Integral value)
+    make_elastic_number(Integral const& value)
     {
         return {value};
     }
