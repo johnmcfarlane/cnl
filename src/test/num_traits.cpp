@@ -16,7 +16,7 @@ namespace {
     namespace test_digits_type {
         static_assert(std::is_same<
                 typename std::remove_cv<decltype(cnl::numeric_limits<void>::digits)>::type,
-                cnl::_digits_type>::value, "cnl::_digits_type test failed");
+                int>::value, "int test failed");
     }
 
     namespace test_to_rep {

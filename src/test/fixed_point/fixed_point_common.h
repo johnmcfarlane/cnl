@@ -359,7 +359,7 @@ namespace test_make_fixed_point {
 // cnl::set_digits_t<fixed_point<>, >
 
 namespace test_set_digits_t {
-    template<class Type, cnl::_digits_type MinNumDigits>
+    template<class Type, int MinNumDigits>
     using set_digits_t = cnl::set_digits_t<Type, MinNumDigits>;
 
     static_assert(identical(set_digits_t<fixed_point<uint8, -8>, 8>{0}, fixed_point < uint8, -8 > {0}),

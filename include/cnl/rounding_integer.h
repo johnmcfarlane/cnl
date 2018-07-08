@@ -68,7 +68,7 @@ namespace cnl {
     struct digits<rounding_integer<Rep, RoundingTag>> : digits<Rep> {
     };
 
-    template<class Rep, class RoundingTag, _digits_type MinNumBits>
+    template<class Rep, class RoundingTag, int MinNumBits>
     struct set_digits<rounding_integer<Rep, RoundingTag>, MinNumBits> {
         using type = rounding_integer<set_digits_t<Rep, MinNumBits>, RoundingTag>;
     };
