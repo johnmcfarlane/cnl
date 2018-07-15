@@ -74,7 +74,7 @@ namespace cnl {
     template<typename T>
     constexpr int countl_zero(T x) noexcept;
 
-#if defined(__GNUG__) || defined(__clang__)
+#if defined(CNL_GCC_INTRINSICS_ENABLED)
 
     template<>
     constexpr int countl_zero(unsigned int x) noexcept
@@ -108,7 +108,7 @@ namespace cnl {
     template<typename T>
     constexpr int countl_one(T x) noexcept;
 
-#if defined(__GNUG__) || defined(__clang__)
+#if defined(CNL_GCC_INTRINSICS_ENABLED)
 
     template<>
     constexpr int countl_one(unsigned int x) noexcept
@@ -142,7 +142,7 @@ namespace cnl {
     template<typename T>
     constexpr int countr_zero(T x) noexcept;
 
-#if defined(__GNUG__) && !defined(__clang__)
+#if defined(CNL_GCC_INTRINSICS_ENABLED) && !defined(__clang__)
 
     template<>
     constexpr int countr_zero(unsigned int x) noexcept
@@ -190,7 +190,7 @@ namespace cnl {
     template<typename T>
     constexpr int popcount(T x) noexcept;
 
-#if defined(__GNUG__) || defined(__clang__)
+#if defined(CNL_GCC_INTRINSICS_ENABLED)
 
     template<>
     constexpr int popcount(unsigned int x) noexcept
@@ -265,7 +265,7 @@ namespace cnl {
     template<typename T>
     constexpr int countl_rsb(T x) noexcept;
 
-#if defined(__GNUG__) && !defined(__clang__)
+#if defined(CNL_GCC_INTRINSICS_ENABLED) && !defined(__clang__)
 
     template<>
     constexpr int countl_rsb(int x) noexcept

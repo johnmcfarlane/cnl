@@ -80,4 +80,19 @@
 #define CNL_TEMPLATE_AUTO
 #endif
 
+////////////////////////////////////////////////////////////////////////////////
+// CNL_GCC_INTRINSICS_ENABLED macro definition
+
+#if defined(CNL_GCC_INTRINSICS_ENABLED)
+#error CNL_GCC_INTRINSICS_ENABLED already defined
+#endif
+
+#if defined(CNL_USE_GCC_INTRINSICS)
+#if CNL_USE_GCC_INTRINSICS
+#define CNL_GCC_INTRINSICS_ENABLED
+#endif
+#elif defined(__clang__) || defined(__GNUG__)
+#define CNL_GCC_INTRINSICS_ENABLED
+#endif
+
 #endif  // CNL_CONFIG_H
