@@ -10,6 +10,10 @@
 #if ! defined(CNL_COMPLETE_H)
 #define CNL_COMPLETE_H
 
+#if (__cplusplus == 199711L) && defined(_MSC_VER)
+#error Required Visual C++ compiler flags: /std:c++11 /Zc:__cplusplus /EHsc
+#endif
+
 #if (__cplusplus < 201103L)
 #error This build of CNL requires C++11 or above.
 #endif
