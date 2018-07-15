@@ -34,15 +34,22 @@ namespace cnl {
 
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct constant {
+#if defined(CNL_TEMPLATE_AUTO)
         using value_type = decltype(Value);
+#else
+        using value_type = CNL_IMPL_CONSTANT_VALUE_TYPE;
+#endif
+
         static constexpr value_type value = Value;
 
 #if defined(_MSC_VER)
-        constexpr operator CNL_IMPL_CONSTANT_VALUE_TYPE() const {
+        constexpr operator auto() const -> value_type
+        {
             return value;
         }
 #else
-        constexpr operator value_type() const {
+        constexpr operator value_type() const
+        {
             return value;
         }
 #endif
