@@ -17,9 +17,11 @@
 #if defined(CNL_USE_INT128)
 
 // GCC/Clang 64-bit builds support 128-bit integer through __int128 type
-#if defined(__SIZEOF_INT128__)
-#define CNL_INT128_ENABLED
+#if !defined(__SIZEOF_INT128__)
+#error CNL_USE_INT128 is defined but __int128 is not supported
 #endif
+
+#define CNL_INT128_ENABLED
 
 #endif  // defined(CNL_USE_INT128)
 
