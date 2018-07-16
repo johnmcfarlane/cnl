@@ -401,7 +401,7 @@ namespace test_set_digits_t {
 #pragma GCC diagnostic ignored "-Wpedantic"
 #endif
     static_assert(
-            is_same<cnl::set_digits_t<cnl::fixed_point<long unsigned int, -96>, 96u>, cnl::fixed_point<unsigned __int128, -96>>::value,
+            is_same<cnl::set_digits_t<cnl::fixed_point<long unsigned int, -96>, 96u>, cnl::fixed_point<cnl::uint128, -96>>::value,
             "");
 #if defined(__GNUC__)
 #pragma GCC diagnostic pop

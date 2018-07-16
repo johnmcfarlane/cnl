@@ -17,9 +17,11 @@
 #if defined(CNL_USE_INT128)
 
 // GCC/Clang 64-bit builds support 128-bit integer through __int128 type
-#if defined(__SIZEOF_INT128__)
-#define CNL_INT128_ENABLED
+#if !defined(__SIZEOF_INT128__)
+#error CNL_USE_INT128 is defined but __int128 is not supported
 #endif
+
+#define CNL_INT128_ENABLED
 
 #endif  // defined(CNL_USE_INT128)
 
@@ -78,6 +80,21 @@
 
 #if defined(__cpp_template_auto) && !defined(CNL_TEMPLATE_AUTO_DISABLED)
 #define CNL_TEMPLATE_AUTO
+#endif
+
+////////////////////////////////////////////////////////////////////////////////
+// CNL_GCC_INTRINSICS_ENABLED macro definition
+
+#if defined(CNL_GCC_INTRINSICS_ENABLED)
+#error CNL_GCC_INTRINSICS_ENABLED already defined
+#endif
+
+#if defined(CNL_USE_GCC_INTRINSICS)
+#if CNL_USE_GCC_INTRINSICS
+#define CNL_GCC_INTRINSICS_ENABLED
+#endif
+#elif defined(__clang__) || defined(__GNUG__)
+#define CNL_GCC_INTRINSICS_ENABLED
 #endif
 
 #endif  // CNL_CONFIG_H
