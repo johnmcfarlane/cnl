@@ -17,3 +17,6 @@
 *.vcxproj
 *.vcxproj.filters
 .vs/
+
+# docs
+doc/Doxyfile
