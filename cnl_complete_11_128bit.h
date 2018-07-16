@@ -11,11 +11,11 @@
 #define CNL_COMPLETE_H
 
 #if (__cplusplus == 199711L) && defined(_MSC_VER)
-#error Required Visual C++ compiler flags: /std:c++17 /Zc:__cplusplus /EHsc
+#error Required Visual C++ compiler flags: /std:c++11 /Zc:__cplusplus /EHsc
 #endif
 
-#if (__cplusplus < 201703L)
-#error This build of CNL requires C++17 or above.
+#if (__cplusplus < 201103L)
+#error This build of CNL requires C++11 or above.
 #endif
 
 #include <algorithm>
@@ -55,9 +55,11 @@ namespace cnl {
     using uint32 = std::uint32_t;
     using int64 = std::int64_t;
     using uint64 = std::uint64_t;
-    using intmax = std::intmax_t;
-    using uintmax = std::uintmax_t;
-    namespace _cnlint_impl {
+ using int128 = __int128;
+    using uint128 = unsigned __int128;
+    using intmax = int128;
+    using uintmax = uint128;
+ namespace _cnlint_impl {
         template<typename ParseDigit>
         constexpr intmax parse(char const* s, int base, ParseDigit parse_digit, intmax value = 0)
         {
@@ -101,44 +103,88 @@ namespace cnl {
 namespace cnl {
     template<class T>
     struct numeric_limits : std::numeric_limits<T> {};
+    template<>
+    struct numeric_limits<int128> : numeric_limits<long long> {
+        static int const digits = 8*sizeof(int128)-1;
+        static int const digits10 = 38;
+        struct _s {
+            constexpr _s(uint64 upper, uint64 lower) : value(lower + (int128{upper} << 64)) {}
+            constexpr operator int128() const { return value; }
+            int128 value;
+        };
+        static constexpr int128 min()
+        {
+            return _s(0x8000000000000000, 0x0000000000000000);
+        }
+        static constexpr int128 max()
+        {
+            return _s(0x7fffffffffffffff, 0xffffffffffffffff);
+        }
+        static constexpr int128 lowest()
+        {
+            return min();
+        }
+    };
+    template<>
+    struct numeric_limits<uint128> : numeric_limits<unsigned long long> {
+        static int const digits = 8*sizeof(int128);
+        static int const digits10 = 38;
+        struct _s {
+            constexpr _s(uint64 upper, uint64 lower) : value(lower + (uint128{upper} << 64)) {}
+            constexpr operator uint128() const { return value; }
+            uint128 value;
+        };
+        static constexpr int128 min()
+        {
+            return 0;
+        }
+        static constexpr uint128 max()
+        {
+            return _s(0xffffffffffffffff, 0xffffffffffffffff);
+        }
+        static constexpr int128 lowest()
+        {
+            return min();
+        }
+    };
 }
 namespace cnl {
-    template<auto Value>
+    template< ::cnl::intmax Value>
     struct constant {
-        using value_type = decltype(Value);
+        using value_type = ::cnl::intmax;
         static constexpr value_type value = Value;
         constexpr operator value_type() const
         {
             return value;
         }
     };
-    template<auto Value> constexpr auto operator +(constant<Value>) noexcept -> constant<+ Value> { return constant<+ Value>{}; }
-    template<auto Value> constexpr auto operator -(constant<Value>) noexcept -> constant<- Value> { return constant<- Value>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator +(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue + RhsValue)> { return constant<(LhsValue + RhsValue)>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator -(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue - RhsValue)> { return constant<(LhsValue - RhsValue)>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator *(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue * RhsValue)> { return constant<(LhsValue * RhsValue)>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator /(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue / RhsValue)> { return constant<(LhsValue / RhsValue)>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator %(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue % RhsValue)> { return constant<(LhsValue % RhsValue)>{}; }
-    template<auto Value> constexpr auto operator ~(constant<Value>) noexcept -> constant<~ Value> { return constant<~ Value>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator &(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue & RhsValue)> { return constant<(LhsValue & RhsValue)>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator |(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue | RhsValue)> { return constant<(LhsValue | RhsValue)>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator ^(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue ^ RhsValue)> { return constant<(LhsValue ^ RhsValue)>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator <<(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue << RhsValue)> { return constant<(LhsValue << RhsValue)>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator >>(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue >> RhsValue)> { return constant<(LhsValue >> RhsValue)>{}; }
-    template<auto Value> constexpr auto operator !(constant<Value>) noexcept -> constant<! Value> { return constant<! Value>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator &&(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue && RhsValue)> { return constant<(LhsValue && RhsValue)>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator ||(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue || RhsValue)> { return constant<(LhsValue || RhsValue)>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator ==(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue == RhsValue)> { return constant<(LhsValue == RhsValue)>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator !=(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue != RhsValue)> { return constant<(LhsValue != RhsValue)>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator <(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue < RhsValue)> { return constant<(LhsValue < RhsValue)>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator >(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue > RhsValue)> { return constant<(LhsValue > RhsValue)>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator <=(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue <= RhsValue)> { return constant<(LhsValue <= RhsValue)>{}; }
-    template<auto LhsValue, auto RhsValue> constexpr auto operator >=(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue >= RhsValue)> { return constant<(LhsValue >= RhsValue)>{}; }
+    template< ::cnl::intmax Value> constexpr auto operator +(constant<Value>) noexcept -> constant<+ Value> { return constant<+ Value>{}; }
+    template< ::cnl::intmax Value> constexpr auto operator -(constant<Value>) noexcept -> constant<- Value> { return constant<- Value>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator +(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue + RhsValue)> { return constant<(LhsValue + RhsValue)>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator -(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue - RhsValue)> { return constant<(LhsValue - RhsValue)>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator *(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue * RhsValue)> { return constant<(LhsValue * RhsValue)>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator /(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue / RhsValue)> { return constant<(LhsValue / RhsValue)>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator %(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue % RhsValue)> { return constant<(LhsValue % RhsValue)>{}; }
+    template< ::cnl::intmax Value> constexpr auto operator ~(constant<Value>) noexcept -> constant<~ Value> { return constant<~ Value>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator &(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue & RhsValue)> { return constant<(LhsValue & RhsValue)>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator |(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue | RhsValue)> { return constant<(LhsValue | RhsValue)>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator ^(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue ^ RhsValue)> { return constant<(LhsValue ^ RhsValue)>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator <<(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue << RhsValue)> { return constant<(LhsValue << RhsValue)>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator >>(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue >> RhsValue)> { return constant<(LhsValue >> RhsValue)>{}; }
+    template< ::cnl::intmax Value> constexpr auto operator !(constant<Value>) noexcept -> constant<! Value> { return constant<! Value>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator &&(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue && RhsValue)> { return constant<(LhsValue && RhsValue)>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator ||(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue || RhsValue)> { return constant<(LhsValue || RhsValue)>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator ==(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue == RhsValue)> { return constant<(LhsValue == RhsValue)>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator !=(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue != RhsValue)> { return constant<(LhsValue != RhsValue)>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator <(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue < RhsValue)> { return constant<(LhsValue < RhsValue)>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator >(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue > RhsValue)> { return constant<(LhsValue > RhsValue)>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator <=(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue <= RhsValue)> { return constant<(LhsValue <= RhsValue)>{}; }
+    template< ::cnl::intmax LhsValue, ::cnl::intmax RhsValue> constexpr auto operator >=(constant<LhsValue>, constant<RhsValue>) noexcept -> constant<(LhsValue >= RhsValue)> { return constant<(LhsValue >= RhsValue)>{}; }
     namespace _impl {
         template<class T>
         struct is_constant : std::false_type {
         };
-        template<auto Value>
+        template< ::cnl::intmax Value>
         struct is_constant<::cnl::constant<Value>> : std::true_type {
         };
     }
@@ -150,7 +196,7 @@ namespace cnl {
             return {};
         }
     }
-    template<auto Value>
+    template< ::cnl::intmax Value>
     struct numeric_limits<constant<Value>> : cnl::numeric_limits<typename constant<Value>::value_type> {
         using _value_type = typename constant<Value>::value_type;
         static constexpr _value_type min()
@@ -329,8 +375,6 @@ namespace cnl {
         static_assert(!std::is_const<T>::value, "T is const");
         static_assert(!std::is_volatile<T>::value, "T is volatile");
     };
-    template<class T>
-    constexpr auto is_composite_v = is_composite<T>::value;
     namespace _num_traits_impl {
         template<class ... Args>
         struct are_composite;
@@ -373,6 +417,10 @@ namespace cnl {
             using type = int64;
         };
         template<_digits_type MinNumDigits>
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, int64, int128>> {
+            using type = int128;
+        };
+        template<_digits_type MinNumDigits>
         struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, intmax, void>>
                 : signed_integer_cannot_have<MinNumDigits>::template digits_because_maximum_is<numeric_limits<intmax>::digits> {
         };
@@ -395,6 +443,10 @@ namespace cnl {
             using type = uint64;
         };
         template<_digits_type MinNumDigits>
+        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, uint64, uint128>> {
+            using type = uint128;
+        };
+        template<_digits_type MinNumDigits>
         struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, uintmax, void>>
                 : unsigned_integer_cannot_have<MinNumDigits>::template digits_because_maximum_is<numeric_limits<uintmax>::digits> {
         };
@@ -408,9 +460,7 @@ namespace cnl {
     struct digits : std::integral_constant<_digits_type, numeric_limits<T>::digits> {
         static_assert(numeric_limits<T>::is_specialized, "cnl::digits is not correctly specialized for T");
     };
-    template<class T>
-    constexpr _digits_type digits_v = digits<T>::value;
-    template<auto Value>
+    template< ::cnl::intmax Value>
     struct digits<constant<Value>> : std::integral_constant<
             _digits_type,
             _impl::used_digits((Value<0) ? -Value : Value)> {
@@ -421,10 +471,24 @@ namespace cnl {
     struct set_digits<T, Digits, _impl::enable_if_t<std::is_integral<T>::value>>
             : _num_traits_impl::set_digits_integer<T, Digits> {
     };
+    template<_digits_type Digits>
+    struct set_digits<int128, Digits>
+            : _num_traits_impl::set_digits_integer<signed, Digits> {
+    };
+    template<_digits_type Digits>
+    struct set_digits<uint128, Digits>
+            : _num_traits_impl::set_digits_integer<unsigned, Digits> {
+    };
     template<class T, _digits_type Digits>
     using set_digits_t = typename set_digits<T, Digits>::type;
     template<class T>
     struct is_integral : std::is_integral<T> {
+    };
+    template<>
+    struct is_integral<int128> : std::integral_constant<bool, true> {
+    };
+    template<>
+    struct is_integral<uint128> : std::integral_constant<bool, true> {
     };
     template<class T>
     struct is_signed : std::integral_constant<bool, numeric_limits<T>::is_signed> {
@@ -440,6 +504,22 @@ namespace cnl {
     struct make_unsigned;
     template<class T>
     struct make_unsigned<T, _impl::enable_if_t<std::is_integral<T>::value>> : std::make_unsigned<T> {
+    };
+    template<>
+    struct make_unsigned<int128> {
+        using type = uint128;
+    };
+    template<>
+    struct make_unsigned<uint128> {
+        using type = uint128;
+    };
+    template<>
+    struct make_signed<int128> {
+        using type = int128;
+    };
+    template<>
+    struct make_signed<uint128> {
+        using type = int128;
     };
     template<class T>
     using make_unsigned_t = typename make_unsigned<T>::type;
@@ -515,7 +595,7 @@ namespace cnl {
             Number, Value, _impl::enable_if_t<cnl::is_integral<Number>::value && cnl::is_integral<Value>::value>>
             : _impl::from_value_simple<Value, Value> {
     };
-    template<class Number, auto Value>
+    template<class Number, ::cnl::intmax Value>
     struct from_value<Number, constant<Value>, _impl::enable_if_t<is_integral<Number>::value>> {
     private:
         using _result_type = set_digits_t<
@@ -638,6 +718,21 @@ namespace cnl {
     }
     template<typename T>
     constexpr int countl_zero(T x) noexcept;
+    template<>
+    constexpr int countl_zero(unsigned int x) noexcept
+    {
+        return x ? __builtin_clz(x) : cnl::digits<unsigned int>::value;
+    }
+    template<>
+    constexpr int countl_zero(unsigned long x) noexcept
+    {
+        return x ? __builtin_clzl(x) : cnl::digits<unsigned long>::value;
+    }
+    template<>
+    constexpr int countl_zero(unsigned long long x) noexcept
+    {
+        return x ? __builtin_clzll(x) : cnl::digits<unsigned long long>::value;
+    }
     template<typename T>
     constexpr int countl_zero(T x) noexcept
     {
@@ -646,6 +741,21 @@ namespace cnl {
     }
     template<typename T>
     constexpr int countl_one(T x) noexcept;
+    template<>
+    constexpr int countl_one(unsigned int x) noexcept
+    {
+        return ~x ? __builtin_clz(~x) : cnl::digits<unsigned int>::value;
+    }
+    template<>
+    constexpr int countl_one(unsigned long x) noexcept
+    {
+        return ~x ? __builtin_clzl(~x) : cnl::digits<unsigned long>::value;
+    }
+    template<>
+    constexpr int countl_one(unsigned long long x) noexcept
+    {
+        return ~x ? __builtin_clzll(~x) : cnl::digits<unsigned long long>::value;
+    }
     template<typename T>
     constexpr int countl_one(T x) noexcept
     {
@@ -673,6 +783,21 @@ namespace cnl {
     }
     template<typename T>
     constexpr int popcount(T x) noexcept;
+    template<>
+    constexpr int popcount(unsigned int x) noexcept
+    {
+        return __builtin_popcount(x);
+    }
+    template<>
+    constexpr int popcount(unsigned long x) noexcept
+    {
+        return __builtin_popcountl(x);
+    }
+    template<>
+    constexpr int popcount(unsigned long long x) noexcept
+    {
+        return __builtin_popcountll(x);
+    }
     template<typename T>
     constexpr int popcount(T x) noexcept
     {
@@ -1105,7 +1230,7 @@ namespace cnl {
             explicit constexpr number_base(rep const& r)
                 : _rep(r) { }
             template<class T>
-            constexpr number_base& operator=(T const& r) {
+                                  number_base& operator=(T const& r) {
                 _rep = r;
                 return static_cast<Derived&>(*this);
             }
@@ -1187,7 +1312,7 @@ namespace cnl {
         };
         template<class Operator, class Derived, typename Rep>
         struct pre_operator<Operator, number_base<Derived, Rep>> {
-            constexpr Derived& operator()(Derived& rhs) const
+                                  Derived& operator()(Derived& rhs) const
             {
                 Operator()(to_rep(rhs));
                 return rhs;
@@ -1195,7 +1320,7 @@ namespace cnl {
         };
         template<class Operator, class Derived, typename Rep>
         struct post_operator<Operator, number_base<Derived, Rep>> {
-            constexpr Derived operator()(Derived& lhs) const
+                                  Derived operator()(Derived& lhs) const
             {
                 auto copy = lhs;
                 Operator()(to_rep(lhs));
@@ -1363,7 +1488,7 @@ namespace cnl {
                             cnl::_impl::make_signed_t<Narrowest, cnl::is_signed<Value>::value>>,
                     Value> {
     };
-    template<int Digits, class Narrowest, auto Value>
+    template<int Digits, class Narrowest, ::cnl::intmax Value>
     struct from_value<elastic_integer<Digits, Narrowest>, constant<Value>> : _impl::from_value_simple<
             elastic_integer<digits<constant<Value>>::value, int>,
             constant<Value>> {
@@ -1416,7 +1541,7 @@ namespace cnl {
                 :_base(static_cast<rep>(to_rep(rhs)))
         {
         }
-        template<auto Value>
+        template< ::cnl::intmax Value>
         constexpr elastic_integer(constant<Value>)
                 : _base(static_cast<rep>(Value))
         {
@@ -1442,13 +1567,7 @@ namespace cnl {
         template<typename S>
         using narrowest = set_digits_t<S, machine_digits<is_signed<S>::value>::value>;
     }
-    template<class S>
-    elastic_integer(S const& s)
-    -> elastic_integer<digits_v<S>, _elastic_integer_impl::narrowest<S>>;
-    template<auto Value>
-    elastic_integer(constant<Value>)
-    -> elastic_integer<digits_v<constant<Value>>>;
-    template<auto Value>
+    template< ::cnl::intmax Value>
     constexpr auto make_elastic_integer(constant<Value>)
     -> elastic_integer<digits<constant<Value>>::value>
     {
@@ -1610,14 +1729,14 @@ namespace cnl {
                 : post_operator<Operator, typename elastic_integer<Digits, Narrowest>::_base> {
         };
     }
-    template<int LhsDigits, class LhsNarrowest, auto RhsValue>
+    template<int LhsDigits, class LhsNarrowest, ::cnl::intmax RhsValue>
     constexpr auto operator<<(elastic_integer<LhsDigits, LhsNarrowest> const& lhs, constant<RhsValue>)
     -> decltype(from_rep<elastic_integer<LhsDigits + static_cast<int>(RhsValue), LhsNarrowest>>{}(
             to_rep(static_cast<elastic_integer<LhsDigits + static_cast<int>(RhsValue), LhsNarrowest>>(lhs)) << RhsValue)) {
         using result_type = elastic_integer<LhsDigits + static_cast<int>(RhsValue), LhsNarrowest>;
         return from_rep<result_type>{}(to_rep(static_cast<result_type>(lhs)) << RhsValue);
     }
-    template<int LhsDigits, class LhsNarrowest, auto RhsValue>
+    template<int LhsDigits, class LhsNarrowest, ::cnl::intmax RhsValue>
     constexpr auto operator>>(elastic_integer<LhsDigits, LhsNarrowest> const& lhs, constant<RhsValue>)
     -> decltype (from_rep<elastic_integer<LhsDigits - static_cast<int>(RhsValue), LhsNarrowest>>{}(to_rep(lhs) >> RhsValue)) {
         return from_rep<elastic_integer<LhsDigits - static_cast<int>(RhsValue), LhsNarrowest>>{}(to_rep(lhs) >> RhsValue);
@@ -1704,80 +1823,6 @@ namespace cnl {
     };
 }
 namespace cnl {
-    template<typename T> inline constexpr T e{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T log2e{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T log10e{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T pi{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T invpi{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T invsqrtpi{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T ln2{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T ln10{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T sqrt2{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T sqrt3{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T invsqrt2{sqrt2<T>/2};
-    template<typename T> inline constexpr T invsqrt3{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T radian{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T egamma{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T phi{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T catalan{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T apery{_impl::deleted_fn<T>()};
-    template<typename T> inline constexpr T glaisher{_impl::deleted_fn<T>()};
-    template<> inline constexpr long double e<long double>{2.718281828459045235360287471352662498L};
-    template<> inline constexpr long double log2e<long double>{1.442695040888963407359924681001892137L};
-    template<> inline constexpr long double log10e<long double>{0.434294481903251827651128918916605082L};
-    template<> inline constexpr long double pi<long double>{3.141592653589793238462643383279502884L};
-    template<> inline constexpr long double invpi<long double>{0.318309886183790671537767526745028724L};
-    template<> inline constexpr long double invsqrtpi<long double>{
-            0.564189583547756286948079451560772585844050629329L};
-    template<> inline constexpr long double ln2<long double>{0.693147180559945309417232121458176568L};
-    template<> inline constexpr long double ln10<long double>{2.302585092994045684017991454684364208L};
-    template<> inline constexpr long double sqrt2<long double>{1.414213562373095048801688724209698079L};
-    template<> inline constexpr long double sqrt3<long double>{
-            1.73205080756887729352744634150587236694280525381038062805580L};
-    template<> inline constexpr long double invsqrt3<long double>{
-            0.57735026918962576450914878050195745564760175127013L};
-    template<> inline constexpr long double radian<long double>{
-            57.295779513082320876798154814105170332405472466564L};
-    template<> inline constexpr long double egamma<long double>{0.5772156649015328606065120900824024L};
-    template<> inline constexpr long double phi<long double>{1.6180339887498948482045868343656381L};
-    template<> inline constexpr long double catalan<long double>{0.915965594177219015054603514932384110774L};
-    template<> inline constexpr long double apery<long double>{1.202056903159594285399738161511449990L};
-    template<> inline constexpr long double glaisher<long double>{1.282427129100622636875342568869791727L};
-    template<> inline constexpr double e<double>{2.7182818284590452354};
-    template<> inline constexpr double log2e<double>{1.4426950408889634074};
-    template<> inline constexpr double log10e<double>{0.43429448190325182765};
-    template<> inline constexpr double pi<double>{3.14159265358979323846};
-    template<> inline constexpr double invpi<double>{0.31830988618379067154};
-    template<> inline constexpr double invsqrtpi<double>{0.564189583547756286948079451560772585844050629329};
-    template<> inline constexpr double ln2<double>{0.69314718055994530942};
-    template<> inline constexpr double ln10<double>{2.30258509299404568402};
-    template<> inline constexpr double sqrt2<double>{1.41421356237309504880};
-    template<> inline constexpr double sqrt3<double>{
-            1.73205080756887729352744634150587236694280525381038062805580};
-    template<> inline constexpr double invsqrt3<double>{0.57735026918962576450914878050195745564760175127013};
-    template<> inline constexpr double radian<double>{57.295779513082320876798154814105170332405472466564};
-    template<> inline constexpr double egamma<double>{0.5772156649015328606065120900824024};
-    template<> inline constexpr double phi<double>{1.6180339887498948482045868343656381};
-    template<> inline constexpr double catalan<double>{0.915965594177219015054603514932384110774};
-    template<> inline constexpr double apery<double>{1.202056903159594285399738161511449990};
-    template<> inline constexpr double glaisher<double>{1.282427129100622636875342568869791727};
-    template<> inline constexpr float e<float>{2.7182818284590452354f};
-    template<> inline constexpr float log2e<float>{1.4426950408889634074f};
-    template<> inline constexpr float log10e<float>{0.43429448190325182765f};
-    template<> inline constexpr float pi<float>{3.14159265358979323846f};
-    template<> inline constexpr float invpi<float>{0.31830988618379067154f};
-    template<> inline constexpr float invsqrtpi<float>{0.564189583547756286948079451560772585844050629329f};
-    template<> inline constexpr float ln2<float>{0.69314718055994530942f};
-    template<> inline constexpr float ln10<float>{2.30258509299404568402f};
-    template<> inline constexpr float sqrt2<float>{1.41421356237309504880f};
-    template<> inline constexpr float sqrt3<float>{1.73205080756887729352744634150587236694280525381038062805580f};
-    template<> inline constexpr float invsqrt3<float>{0.57735026918962576450914878050195745564760175127013f};
-    template<> inline constexpr float radian<float>{57.295779513082320876798154814105170332405472466564f};
-    template<> inline constexpr float egamma<float>{0.5772156649015328606065120900824024f};
-    template<> inline constexpr float phi<float>{1.6180339887498948482045868343656381f};
-    template<> inline constexpr float catalan<float>{0.915965594177219015054603514932384110774f};
-    template<> inline constexpr float apery<float>{1.202056903159594285399738161511449990f};
-    template<> inline constexpr float glaisher<float>{1.282427129100622636875342568869791727f};
     namespace _numeric_impl {
         template<class Integer, bool IsSigned>
         struct trailing_bits {
@@ -1871,7 +1916,7 @@ namespace cnl {
                         _impl::from_value<Rep>(cnl::to_rep(rhs)))))
         {
         }
-        template<auto Value>
+        template< ::cnl::intmax Value>
         constexpr fixed_point(constant<Value>)
                 : fixed_point(from_rep<fixed_point<decltype(Value), 0>>{}(Value))
         {
@@ -1889,19 +1934,19 @@ namespace cnl {
         template<typename Numerator, typename Denominator>
         constexpr fixed_point(fractional<Numerator, Denominator> const& f);
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
-        constexpr fixed_point& operator=(S s)
+                              fixed_point& operator=(S s)
         {
             _base::operator=(floating_point_to_rep(s));
             return *this;
         }
         template<class FromRep, int FromExponent>
-        constexpr fixed_point& operator=(fixed_point<FromRep, FromExponent, Radix> const& rhs)
+                              fixed_point& operator=(fixed_point<FromRep, FromExponent, Radix> const& rhs)
         {
             _base::operator=(fixed_point_to_rep(rhs));
             return *this;
         }
         template<typename Numerator, typename Denominator>
-        constexpr fixed_point& operator=(fractional<Numerator, Denominator> const& f);
+                              fixed_point& operator=(fractional<Numerator, Denominator> const& f);
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         explicit constexpr operator S() const
         {
@@ -1933,14 +1978,6 @@ namespace cnl {
     };
     template<typename Rep, int Exponent, int Radix>
     constexpr int fixed_point<Rep, Exponent, Radix>::exponent;
-    template<auto Value>
-    fixed_point(::cnl::constant<Value>)
-    -> fixed_point<
-            set_digits_t<int, _impl::max(digits_v<int>, _impl::used_digits(Value)-trailing_bits(Value))>,
-            trailing_bits(Value)>;
-    template<class Integer>
-    fixed_point(Integer)
-    -> fixed_point<Integer, 0>;
     template<typename Rep, int Exponent, int Radix>
     template<class S>
     constexpr auto fixed_point<Rep, Exponent, Radix>::one()
@@ -2027,7 +2064,7 @@ namespace cnl {
             return quotient(value.numerator, value.denominator);
         }
     };
-    template<typename Rep, int Exponent, int Radix, auto Value>
+    template<typename Rep, int Exponent, int Radix, ::cnl::intmax Value>
     struct from_value<fixed_point<Rep, Exponent, Radix>, constant<Value>> : _impl::from_value_simple<
             fixed_point<
                     set_digits_t<int, _impl::max(digits<int>::value, _impl::used_digits(Value)-trailing_bits(Value))>,
@@ -2259,125 +2296,13 @@ namespace cnl {
     }
     template<typename Rep, int Exponent, int Radix>
     template<typename Numerator, typename Denominator>
-    constexpr fixed_point<Rep, Exponent, Radix>&
+                          fixed_point<Rep, Exponent, Radix>&
     fixed_point<Rep, Exponent, Radix>::operator=(fractional<Numerator, Denominator> const& f)
     {
         return operator=(quotient<fixed_point>(f.numerator, f.denominator));
     }
-    template<typename Numerator, typename Denominator>
-    fixed_point(fractional<Numerator, Denominator>)
-    -> fixed_point<
-            typename decltype(quotient(std::declval<Numerator>(), std::declval<Denominator>()))::rep,
-            decltype(quotient(std::declval<Numerator>(), std::declval<Denominator>()))::exponent>;
 }
 namespace cnl {
-    namespace _impl {
-        template<typename Rep, int Exponent>
-        constexpr auto pi(int const max_iterations) {
-            using fp = fixed_point<Rep, Exponent>;
-            constexpr auto four = fixed_point<Rep, 3 - digits_v<Rep>>{4.};
-            auto previous = fp{3.};
-            for(auto n = 2; n != (max_iterations << 1); n += 4) {
-                auto const addend = four / ((n+0L) * (n+1L) * (n+2L));
-                auto const subtrahend = four / ((n+2L) * (n+3L) * (n+4L));
-                auto next = fp{previous + addend - subtrahend};
-                if (next == previous) {
-                    return next;
-                }
-                previous = next;
-            }
-            return previous;
-        }
-        template<typename Rep, int Exponent>
-        constexpr auto pi() {
-            return pi<Rep, Exponent>(0);
-        }
-        template<typename Rep, int Exponent>
-        constexpr auto e(int const max_iterations) {
-            using fp = fixed_point<Rep, Exponent>;
-            constexpr auto one = fixed_point<Rep, 1 - digits_v<Rep>>{1.};
-            auto previous = fp{2.};
-            auto factor = 2;
-            for (auto n = 2; n != max_iterations; ++ n, factor *= n) {
-                auto const addend = one / factor;
-                auto next = fp{previous + addend};
-                if (next == previous) {
-                    return next;
-                }
-                previous = next;
-            }
-            return previous;
-        }
-        template<typename Rep, int Exponent>
-        constexpr auto e() {
-            return e<Rep, Exponent>(0);
-        }
-        template<typename Float, typename Rep, int Exponent>
-        constexpr auto constant_with_fallback(Float constant, fixed_point<Rep, Exponent>(*procedure)()) {
-            using fp = fixed_point<Rep, Exponent>;
-            auto const required_integer_digits = used_digits(static_cast<int>(constant));
-            constexpr auto fixed_fractional_digits = fractional_digits<fp>::value;
-            constexpr auto float_digits = std::numeric_limits<Float>::digits;
-            auto const float_fractional_digits = float_digits - required_integer_digits;
-            return (float_fractional_digits >= fixed_fractional_digits)
-                ? fp{constant}
-                   : procedure();
-        }
-    }
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> e<fixed_point<Rep, Exponent>> {
-        _impl::constant_with_fallback<long double, Rep, Exponent>(e<long double>, _impl::e<Rep, Exponent>)
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> log2e<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ log2e<long double> }
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> log10e<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ log10e<long double> }
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> pi<fixed_point<Rep, Exponent>>{
-        _impl::constant_with_fallback<long double, Rep, Exponent>(pi<long double>, _impl::pi<Rep, Exponent>)
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invpi<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ invpi<long double> }
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrtpi<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ invsqrtpi<long double> }
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> ln2<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ ln2<long double> }
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> ln10<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ ln10<long double> }
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> sqrt2<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ sqrt2<long double> }
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> sqrt3<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ sqrt3<long double> }
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrt2<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ invsqrt2<long double> }
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> invsqrt3<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ invsqrt3<long double> }
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> radian<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ radian<long double> }
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> egamma<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ egamma<long double> }
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> phi<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ phi<long double> }
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> catalan<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ catalan<long double> }
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> apery<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ apery<long double> }
-    };
-    template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> glaisher<fixed_point<Rep, Exponent>> {
-        fixed_point<Rep, Exponent>{ glaisher<long double> }
-    };
 }
 namespace cnl {
     namespace _fixed_point_operators_impl {
@@ -2526,7 +2451,7 @@ namespace cnl {
         };
         template<typename Operator, typename Rep, int Exponent, int Radix>
         struct post_operator<Operator, fixed_point<Rep, Exponent, Radix>> {
-            constexpr fixed_point<Rep, Exponent, Radix> operator()(fixed_point<Rep, Exponent, Radix>& rhs) const
+                                  fixed_point<Rep, Exponent, Radix> operator()(fixed_point<Rep, Exponent, Radix>& rhs) const
             {
                 auto copy = rhs;
                 typename post_to_assign<Operator>::type{}(rhs, 1);
@@ -2546,13 +2471,13 @@ namespace cnl {
     {
         return from_rep<fixed_point<decltype(to_rep(lhs) >> int(rhs)), LhsExponent, LhsRadix>>{}(to_rep(lhs) >> int(rhs));
     }
-    template<typename LhsRep, int LhsExponent, int LhsRadix, auto RhsValue>
+    template<typename LhsRep, int LhsExponent, int LhsRadix, ::cnl::intmax RhsValue>
     constexpr fixed_point<LhsRep, LhsExponent+static_cast<int>(RhsValue), LhsRadix>
     operator<<(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, constant<RhsValue>)
     {
         return from_rep<fixed_point<LhsRep, LhsExponent+static_cast<int>(RhsValue), LhsRadix>>{}(to_rep(lhs));
     }
-    template<typename LhsRep, int LhsExponent, int LhsRadix, auto RhsValue>
+    template<typename LhsRep, int LhsExponent, int LhsRadix, ::cnl::intmax RhsValue>
     constexpr fixed_point<LhsRep, LhsExponent-static_cast<int>(RhsValue), LhsRadix>
     operator>>(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, constant<RhsValue>)
     {
@@ -2562,7 +2487,7 @@ namespace cnl {
 namespace cnl {
     namespace _impl {
         template<class Result>
-        [[noreturn]] constexpr Result terminate(char const* message) noexcept
+        [[noreturn]] Result terminate(char const* message) noexcept
         {
             std::fprintf(stderr, "%s\n", message);
             std::terminate();
@@ -2744,7 +2669,7 @@ namespace cnl {
     using elastic_number = fixed_point<elastic_integer<Digits, Narrowest>, Exponent>;
     template<
             typename Narrowest = int,
-            auto Value = 0>
+            ::cnl::intmax Value = 0>
     constexpr elastic_number<
             _impl::max(digits<constant<Value>>::value-trailing_bits(Value), 1),
             trailing_bits(Value),
@@ -3133,7 +3058,7 @@ namespace cnl {
                 :_base(convert<overflow_tag, rep>{}(rhs))
         {
         }
-        template<auto Value>
+        template< ::cnl::intmax Value>
         constexpr overflow_integer(constant<Value>)
                 : _base(static_cast<rep>(Value))
         {
@@ -3202,7 +3127,7 @@ namespace cnl {
                             _impl::common_type_t<OverflowTag, ValueOverflowTag>>,
                     overflow_integer<ValueRep, ValueOverflowTag>> {
     };
-    template<class Rep, class OverflowTag, auto Value>
+    template<class Rep, class OverflowTag, ::cnl::intmax Value>
     struct from_value<overflow_integer<Rep, OverflowTag>, constant<Value>>
             : _impl::from_value_simple<overflow_integer<
                     typename std::conditional<
@@ -3291,7 +3216,7 @@ namespace cnl {
         };
         template<class Operator, typename Rep, class OverflowTag>
         struct post_operator<Operator, overflow_integer<Rep, OverflowTag>> {
-            constexpr auto operator()(overflow_integer<Rep, OverflowTag>& rhs) const
+                                  auto operator()(overflow_integer<Rep, OverflowTag>& rhs) const
             -> overflow_integer<Rep, OverflowTag>
             {
                 auto copy = rhs;
@@ -3490,7 +3415,7 @@ namespace cnl {
             : _impl::from_value_simple<
             rounding_integer<ValueRep, RoundingTag>, rounding_integer<ValueRep, ValueRoundingTag>> {
     };
-    template<class Rep, class RoundingTag, auto Value>
+    template<class Rep, class RoundingTag, ::cnl::intmax Value>
     struct from_value<rounding_integer<Rep, RoundingTag>, constant<Value>> : _impl::from_value_simple<
             rounding_integer<typename std::conditional<
                     digits<int>::value<_impl::used_digits(Value),
@@ -3656,7 +3581,7 @@ namespace cnl {
                 class RoundingTag = nearest_rounding_tag,
                 class OverflowTag = trapping_overflow_tag,
                 class Narrowest = int,
-                auto InputValue = 0>
+                ::cnl::intmax InputValue = 0>
         static_integer<
                 used_digits(InputValue),
                 RoundingTag, OverflowTag,
@@ -3704,7 +3629,7 @@ namespace cnl {
             class OverflowTag = overflow_integer<>::overflow_tag,
             class Narrowest = int,
             class Input = int,
-            auto Value>
+            ::cnl::intmax Value>
     static_number<
             _impl::used_digits(Value)-trailing_bits(Value), trailing_bits(Value),
             RoundingTag, OverflowTag,

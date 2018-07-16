@@ -55,9 +55,11 @@ namespace cnl {
     using uint32 = std::uint32_t;
     using int64 = std::int64_t;
     using uint64 = std::uint64_t;
-    using intmax = std::intmax_t;
-    using uintmax = std::uintmax_t;
-    namespace _cnlint_impl {
+ using int128 = __int128;
+    using uint128 = unsigned __int128;
+    using intmax = int128;
+    using uintmax = uint128;
+ namespace _cnlint_impl {
         template<typename ParseDigit>
         constexpr intmax parse(char const* s, int base, ParseDigit parse_digit, intmax value = 0)
         {
@@ -101,6 +103,50 @@ namespace cnl {
 namespace cnl {
     template<class T>
     struct numeric_limits : std::numeric_limits<T> {};
+    template<>
+    struct numeric_limits<int128> : numeric_limits<long long> {
+        static int const digits = 8*sizeof(int128)-1;
+        static int const digits10 = 38;
+        struct _s {
+            constexpr _s(uint64 upper, uint64 lower) : value(lower + (int128{upper} << 64)) {}
+            constexpr operator int128() const { return value; }
+            int128 value;
+        };
+        static constexpr int128 min()
+        {
+            return _s(0x8000000000000000, 0x0000000000000000);
+        }
+        static constexpr int128 max()
+        {
+            return _s(0x7fffffffffffffff, 0xffffffffffffffff);
+        }
+        static constexpr int128 lowest()
+        {
+            return min();
+        }
+    };
+    template<>
+    struct numeric_limits<uint128> : numeric_limits<unsigned long long> {
+        static int const digits = 8*sizeof(int128);
+        static int const digits10 = 38;
+        struct _s {
+            constexpr _s(uint64 upper, uint64 lower) : value(lower + (uint128{upper} << 64)) {}
+            constexpr operator uint128() const { return value; }
+            uint128 value;
+        };
+        static constexpr int128 min()
+        {
+            return 0;
+        }
+        static constexpr uint128 max()
+        {
+            return _s(0xffffffffffffffff, 0xffffffffffffffff);
+        }
+        static constexpr int128 lowest()
+        {
+            return min();
+        }
+    };
 }
 namespace cnl {
     template<auto Value>
@@ -373,6 +419,10 @@ namespace cnl {
             using type = int64;
         };
         template<_digits_type MinNumDigits>
+        struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, int64, int128>> {
+            using type = int128;
+        };
+        template<_digits_type MinNumDigits>
         struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, intmax, void>>
                 : signed_integer_cannot_have<MinNumDigits>::template digits_because_maximum_is<numeric_limits<intmax>::digits> {
         };
@@ -393,6 +443,10 @@ namespace cnl {
         template<_digits_type MinNumDigits>
         struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, uint32, uint64>> {
             using type = uint64;
+        };
+        template<_digits_type MinNumDigits>
+        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, uint64, uint128>> {
+            using type = uint128;
         };
         template<_digits_type MinNumDigits>
         struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, uintmax, void>>
@@ -421,10 +475,24 @@ namespace cnl {
     struct set_digits<T, Digits, _impl::enable_if_t<std::is_integral<T>::value>>
             : _num_traits_impl::set_digits_integer<T, Digits> {
     };
+    template<_digits_type Digits>
+    struct set_digits<int128, Digits>
+            : _num_traits_impl::set_digits_integer<signed, Digits> {
+    };
+    template<_digits_type Digits>
+    struct set_digits<uint128, Digits>
+            : _num_traits_impl::set_digits_integer<unsigned, Digits> {
+    };
     template<class T, _digits_type Digits>
     using set_digits_t = typename set_digits<T, Digits>::type;
     template<class T>
     struct is_integral : std::is_integral<T> {
+    };
+    template<>
+    struct is_integral<int128> : std::integral_constant<bool, true> {
+    };
+    template<>
+    struct is_integral<uint128> : std::integral_constant<bool, true> {
     };
     template<class T>
     struct is_signed : std::integral_constant<bool, numeric_limits<T>::is_signed> {
@@ -440,6 +508,22 @@ namespace cnl {
     struct make_unsigned;
     template<class T>
     struct make_unsigned<T, _impl::enable_if_t<std::is_integral<T>::value>> : std::make_unsigned<T> {
+    };
+    template<>
+    struct make_unsigned<int128> {
+        using type = uint128;
+    };
+    template<>
+    struct make_unsigned<uint128> {
+        using type = uint128;
+    };
+    template<>
+    struct make_signed<int128> {
+        using type = int128;
+    };
+    template<>
+    struct make_signed<uint128> {
+        using type = int128;
     };
     template<class T>
     using make_unsigned_t = typename make_unsigned<T>::type;
@@ -638,6 +722,21 @@ namespace cnl {
     }
     template<typename T>
     constexpr int countl_zero(T x) noexcept;
+    template<>
+    constexpr int countl_zero(unsigned int x) noexcept
+    {
+        return x ? __builtin_clz(x) : cnl::digits<unsigned int>::value;
+    }
+    template<>
+    constexpr int countl_zero(unsigned long x) noexcept
+    {
+        return x ? __builtin_clzl(x) : cnl::digits<unsigned long>::value;
+    }
+    template<>
+    constexpr int countl_zero(unsigned long long x) noexcept
+    {
+        return x ? __builtin_clzll(x) : cnl::digits<unsigned long long>::value;
+    }
     template<typename T>
     constexpr int countl_zero(T x) noexcept
     {
@@ -646,6 +745,21 @@ namespace cnl {
     }
     template<typename T>
     constexpr int countl_one(T x) noexcept;
+    template<>
+    constexpr int countl_one(unsigned int x) noexcept
+    {
+        return ~x ? __builtin_clz(~x) : cnl::digits<unsigned int>::value;
+    }
+    template<>
+    constexpr int countl_one(unsigned long x) noexcept
+    {
+        return ~x ? __builtin_clzl(~x) : cnl::digits<unsigned long>::value;
+    }
+    template<>
+    constexpr int countl_one(unsigned long long x) noexcept
+    {
+        return ~x ? __builtin_clzll(~x) : cnl::digits<unsigned long long>::value;
+    }
     template<typename T>
     constexpr int countl_one(T x) noexcept
     {
@@ -673,6 +787,21 @@ namespace cnl {
     }
     template<typename T>
     constexpr int popcount(T x) noexcept;
+    template<>
+    constexpr int popcount(unsigned int x) noexcept
+    {
+        return __builtin_popcount(x);
+    }
+    template<>
+    constexpr int popcount(unsigned long x) noexcept
+    {
+        return __builtin_popcountl(x);
+    }
+    template<>
+    constexpr int popcount(unsigned long long x) noexcept
+    {
+        return __builtin_popcountll(x);
+    }
     template<typename T>
     constexpr int popcount(T x) noexcept
     {

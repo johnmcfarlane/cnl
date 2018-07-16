@@ -57,5 +57,6 @@ var searchData=
   ['uppercase',['uppercase',['http://en.cppreference.com/w/cpp/io/manip/uppercase.html',1,'std']]],
   ['use_5fcount',['use_count',['http://en.cppreference.com/w/cpp/memory/weak_ptr/use_count.html',1,'std::weak_ptr']]],
   ['use_5ffacet',['use_facet',['http://en.cppreference.com/w/cpp/locale/use_facet.html',1,'std']]],
+  ['used_5fdigits_28_28value_3c_200_29_20_3f_20_2dvalue_20_3avalue_29_3e',['used_digits((Value&lt; 0) ? -Value :Value)&gt;',['http://en.cppreference.com/w/cpp/types/integral_constant.html',1,'std']]],
   ['uses_5fallocator',['uses_allocator',['http://en.cppreference.com/w/cpp/memory/uses_allocator.html',1,'std']]]
 ];

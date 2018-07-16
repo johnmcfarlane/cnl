@@ -31,5 +31,6 @@ var searchData=
   ['unordered_5fmultimap',['unordered_multimap',['http://en.cppreference.com/w/cpp/container/unordered_multimap.html',1,'std']]],
   ['unordered_5fmultiset',['unordered_multiset',['http://en.cppreference.com/w/cpp/container/unordered_multiset.html',1,'std']]],
   ['unordered_5fset',['unordered_set',['http://en.cppreference.com/w/cpp/container/unordered_set.html',1,'std']]],
+  ['used_5fdigits_28_28value_3c_200_29_20_3f_20_2dvalue_20_3avalue_29_3e',['used_digits((Value&lt; 0) ? -Value :Value)&gt;',['http://en.cppreference.com/w/cpp/types/integral_constant.html',1,'std']]],
   ['uses_5fallocator',['uses_allocator',['http://en.cppreference.com/w/cpp/memory/uses_allocator.html',1,'std']]]
 ];

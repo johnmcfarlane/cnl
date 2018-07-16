@@ -64,7 +64,8 @@ $(function() {
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">cnl Namespace Reference</div>  </div>
 </div><!--header-->
@@ -77,9 +78,6 @@ $(function() {
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacecnl_1_1literals"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecnl_1_1literals.html">literals</a></td></tr>
 <tr class="memdesc:namespacecnl_1_1literals"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>user-defined</code> literals <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacecnl_1_1math__constants"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecnl_1_1math__constants.html">math_constants</a></td></tr>
-<tr class="memdesc:namespacecnl_1_1math__constants"><td class="mdescLeft">&#160;</td><td class="mdescRight">contains math constants as variable templates; partial implementation of <a href="http://wg21.link/p0631">P0631</a> <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -143,14 +141,14 @@ template&lt;class T , _digits_type Digits&gt; </td></tr>
 <tr class="memitem:abc382d49df277242289bb86b36ddf92e"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#abc382d49df277242289bb86b36ddf92e">signed_multiprecision</a> = _sized_integer_impl::number&lt; NumDigits+1, _bmp::signed_magnitude &gt;</td></tr>
 <tr class="memdesc:abc382d49df277242289bb86b36ddf92e"><td class="mdescLeft">&#160;</td><td class="mdescRight">alias to a signed, fixed-size Boost.Multiprecision type suitable for instantiating <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a>  <a href="#abc382d49df277242289bb86b36ddf92e">More...</a><br /></td></tr>
 <tr class="separator:abc382d49df277242289bb86b36ddf92e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b4ec46c3d2d99927267c18f6d711d13"><td class="memTemplParams" colspan="2">template&lt;int Digits = digits&lt;signed&gt;::value, class OverflowTag  = trapping_overflow_tag, class RoundingTag  = nearest_rounding_tag, class Narrowest  = signed&gt; </td></tr>
-<tr class="memitem:a7b4ec46c3d2d99927267c18f6d711d13"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a7b4ec46c3d2d99927267c18f6d711d13">static_integer</a> = <a class="el" href="classcnl_1_1rounding__integer.html">_impl::static_integer</a>&lt; Digits, OverflowTag, RoundingTag, Narrowest &gt;</td></tr>
-<tr class="memdesc:a7b4ec46c3d2d99927267c18f6d711d13"><td class="mdescLeft">&#160;</td><td class="mdescRight">a general-purpose integer type  <a href="#a7b4ec46c3d2d99927267c18f6d711d13">More...</a><br /></td></tr>
-<tr class="separator:a7b4ec46c3d2d99927267c18f6d711d13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03fc11b857077f422069a19154dc970a"><td class="memTemplParams" colspan="2">template&lt;int Digits, int Exponent = 0, class OverflowTag  = trapping_overflow_tag, class RoundingTag  = nearest_rounding_tag, class Narrowest  = signed&gt; </td></tr>
-<tr class="memitem:a03fc11b857077f422069a19154dc970a"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a03fc11b857077f422069a19154dc970a">static_number</a> = <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; <a class="el" href="classcnl_1_1rounding__integer.html">_impl::static_integer</a>&lt; Digits, OverflowTag, RoundingTag, Narrowest &gt;, Exponent &gt;</td></tr>
-<tr class="memdesc:a03fc11b857077f422069a19154dc970a"><td class="mdescLeft">&#160;</td><td class="mdescRight">a general-purpose fixed-point real number type  <a href="#a03fc11b857077f422069a19154dc970a">More...</a><br /></td></tr>
-<tr class="separator:a03fc11b857077f422069a19154dc970a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab84979e9c09ff27d096f3addae74c20d"><td class="memTemplParams" colspan="2">template&lt;int Digits = digits&lt;int&gt;::value, class RoundingTag  = nearest_rounding_tag, class OverflowTag  = trapping_overflow_tag, class Narrowest  = int&gt; </td></tr>
+<tr class="memitem:ab84979e9c09ff27d096f3addae74c20d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ab84979e9c09ff27d096f3addae74c20d">static_integer</a> = <a class="el" href="classcnl_1_1rounding__integer.html">_impl::static_integer</a>&lt; Digits, RoundingTag, OverflowTag, Narrowest &gt;</td></tr>
+<tr class="memdesc:ab84979e9c09ff27d096f3addae74c20d"><td class="mdescLeft">&#160;</td><td class="mdescRight">a general-purpose integer type  <a href="#ab84979e9c09ff27d096f3addae74c20d">More...</a><br /></td></tr>
+<tr class="separator:ab84979e9c09ff27d096f3addae74c20d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc23e3f06fc9c425afff65dfcd81fa63"><td class="memTemplParams" colspan="2">template&lt;int Digits, int Exponent = 0, class RoundingTag  = nearest_rounding_tag, class OverflowTag  = trapping_overflow_tag, class Narrowest  = signed&gt; </td></tr>
+<tr class="memitem:acc23e3f06fc9c425afff65dfcd81fa63"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#acc23e3f06fc9c425afff65dfcd81fa63">static_number</a> = <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; <a class="el" href="classcnl_1_1rounding__integer.html">_impl::static_integer</a>&lt; Digits, RoundingTag, OverflowTag, Narrowest &gt;, Exponent &gt;</td></tr>
+<tr class="memdesc:acc23e3f06fc9c425afff65dfcd81fa63"><td class="mdescLeft">&#160;</td><td class="mdescRight">a general-purpose fixed-point real number type  <a href="#acc23e3f06fc9c425afff65dfcd81fa63">More...</a><br /></td></tr>
+<tr class="separator:acc23e3f06fc9c425afff65dfcd81fa63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5d22fc7aa27c2acee069a24af5822df"><td class="memTemplParams" colspan="2">template&lt;unsigned NumDigits = digits&lt;unsigned&gt;::value&gt; </td></tr>
 <tr class="memitem:ae5d22fc7aa27c2acee069a24af5822df"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ae5d22fc7aa27c2acee069a24af5822df">unsigned_multiprecision</a> = _sized_integer_impl::number&lt; NumDigits, _bmp::unsigned_magnitude &gt;</td></tr>
 <tr class="memdesc:ae5d22fc7aa27c2acee069a24af5822df"><td class="mdescLeft">&#160;</td><td class="mdescRight">alias to an unsigned, fixed-size Boost.Multiprecision type suitable for instantiating <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a>  <a href="#ae5d22fc7aa27c2acee069a24af5822df">More...</a><br /></td></tr>
@@ -178,10 +176,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a4908ae024cdd2e437863aa8c2e2624e3"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a4908ae024cdd2e437863aa8c2e2624e3">make_fixed_point</a> (Value const &amp;value) -&gt; cnl::from_value_t&lt; <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Value, 0 &gt;, Value &gt;</td></tr>
 <tr class="memdesc:a4908ae024cdd2e437863aa8c2e2624e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">makes a <a class="el" href="classcnl_1_1fixed__point.html" title="literal real number approximation that uses fixed-point arithmetic ">fixed_point</a> object from a given value  <a href="#a4908ae024cdd2e437863aa8c2e2624e3">More...</a><br /></td></tr>
 <tr class="separator:a4908ae024cdd2e437863aa8c2e2624e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a870d097696e1046d1704448b27454509"><td class="memTemplParams" colspan="2">template&lt;typename Numerator , typename Denominator &gt; </td></tr>
-<tr class="memitem:a870d097696e1046d1704448b27454509"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a870d097696e1046d1704448b27454509">make_fixed_point</a> (<a class="el" href="structcnl_1_1fractional.html">fractional</a>&lt; Numerator, Denominator &gt; const &amp;value) -&gt; decltype(<a class="el" href="namespacecnl.html#ab698104a23f314fadf45f43229d2c8e5">quotient</a>(value.numerator, value.denominator))</td></tr>
-<tr class="memdesc:a870d097696e1046d1704448b27454509"><td class="mdescLeft">&#160;</td><td class="mdescRight">makes a <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> object from a given <a class="el" href="structcnl_1_1fractional.html">fractional</a>  <a href="#a870d097696e1046d1704448b27454509">More...</a><br /></td></tr>
-<tr class="separator:a870d097696e1046d1704448b27454509"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a1c24935abec2aeb4abd9d7bb067d6b"><td class="memTemplParams" colspan="2"><a id="a8a1c24935abec2aeb4abd9d7bb067d6b"></a>
 template&lt;typename Numerator , typename Denominator &gt; </td></tr>
 <tr class="memitem:a8a1c24935abec2aeb4abd9d7bb067d6b"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structcnl_1_1fractional.html">fractional</a>&lt; Numerator, Denominator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a8a1c24935abec2aeb4abd9d7bb067d6b">make_fractional</a> (Numerator const &amp;n, Denominator const &amp;d)</td></tr>
@@ -192,16 +186,16 @@ template&lt;typename Numerator &gt; </td></tr>
 <tr class="memitem:ab8379623599d1e0773f421665d661302"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="structcnl_1_1fractional.html">fractional</a>&lt; Numerator, Numerator &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ab8379623599d1e0773f421665d661302">make_fractional</a> (Numerator const &amp;n)</td></tr>
 <tr class="memdesc:ab8379623599d1e0773f421665d661302"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a fractional value with types deduced from the numerator <br /></td></tr>
 <tr class="separator:ab8379623599d1e0773f421665d661302"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a6f6aeae947ae9643c52682b39cdf23"><td class="memTemplParams" colspan="2"><a id="a2a6f6aeae947ae9643c52682b39cdf23"></a>
-template&lt;class OverflowTag  = trapping_overflow_tag, class RoundingTag  = nearest_rounding_tag, class Narrowest  = signed, class Input  = int&gt; </td></tr>
-<tr class="memitem:a2a6f6aeae947ae9643c52682b39cdf23"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacecnl.html#a03fc11b857077f422069a19154dc970a">static_number</a>&lt; numeric_limits&lt; Input &gt;::digits, 0, OverflowTag, RoundingTag, Narrowest &gt; constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a2a6f6aeae947ae9643c52682b39cdf23">make_static_number</a> (Input const &amp;input)</td></tr>
-<tr class="memdesc:a2a6f6aeae947ae9643c52682b39cdf23"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructs a static_number from a given variable <br /></td></tr>
-<tr class="separator:a2a6f6aeae947ae9643c52682b39cdf23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03c6bca5148044c34579b8b52fb32be9"><td class="memTemplParams" colspan="2"><a id="a03c6bca5148044c34579b8b52fb32be9"></a>
-template&lt;class OverflowTag  = overflow_integer&lt;&gt;::overflow_tag, class RoundingTag  = rounding_integer&lt;&gt;::rounding, class Narrowest  = int, class Input  = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value&gt; </td></tr>
-<tr class="memitem:a03c6bca5148044c34579b8b52fb32be9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacecnl.html#a03fc11b857077f422069a19154dc970a">static_number</a>&lt; used_digits(Value) -trailing_bits(Value), trailing_bits(Value), OverflowTag, RoundingTag, Narrowest &gt; constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a03c6bca5148044c34579b8b52fb32be9">make_static_number</a> (<a class="el" href="structcnl_1_1constant.html">constant</a>&lt; Value &gt; const &amp;)</td></tr>
-<tr class="memdesc:a03c6bca5148044c34579b8b52fb32be9"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructs a static_number from a given constant value <br /></td></tr>
-<tr class="separator:a03c6bca5148044c34579b8b52fb32be9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b54e89a86bd19d88e75bf6939d3d1ff"><td class="memTemplParams" colspan="2"><a id="a8b54e89a86bd19d88e75bf6939d3d1ff"></a>
+template&lt;class RoundingTag  = nearest_rounding_tag, class OverflowTag  = trapping_overflow_tag, class Narrowest  = signed, class Input  = int&gt; </td></tr>
+<tr class="memitem:a8b54e89a86bd19d88e75bf6939d3d1ff"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacecnl.html#acc23e3f06fc9c425afff65dfcd81fa63">static_number</a>&lt; numeric_limits&lt; Input &gt;::digits, 0, RoundingTag, OverflowTag, Narrowest &gt; constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a8b54e89a86bd19d88e75bf6939d3d1ff">make_static_number</a> (Input const &amp;input)</td></tr>
+<tr class="memdesc:a8b54e89a86bd19d88e75bf6939d3d1ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructs a static_number from a given variable <br /></td></tr>
+<tr class="separator:a8b54e89a86bd19d88e75bf6939d3d1ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46cc3fa452a8a9ef4443dfd46f03260f"><td class="memTemplParams" colspan="2"><a id="a46cc3fa452a8a9ef4443dfd46f03260f"></a>
+template&lt;class RoundingTag  = rounding_integer&lt;&gt;::rounding, class OverflowTag  = overflow_integer&lt;&gt;::overflow_tag, class Narrowest  = int, class Input  = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value&gt; </td></tr>
+<tr class="memitem:a46cc3fa452a8a9ef4443dfd46f03260f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacecnl.html#acc23e3f06fc9c425afff65dfcd81fa63">static_number</a>&lt; _impl::used_digits(Value) -trailing_bits(Value), trailing_bits(Value), RoundingTag, OverflowTag, Narrowest &gt; constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a46cc3fa452a8a9ef4443dfd46f03260f">make_static_number</a> (<a class="el" href="structcnl_1_1constant.html">constant</a>&lt; Value &gt; const &amp;)</td></tr>
+<tr class="memdesc:a46cc3fa452a8a9ef4443dfd46f03260f"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructs a static_number from a given constant value <br /></td></tr>
+<tr class="separator:a46cc3fa452a8a9ef4443dfd46f03260f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4907e759049bbe5bb38f2978d2b04425"><td class="memTemplParams" colspan="2">template&lt;class Lhs , class Rhs &gt; </td></tr>
 <tr class="memitem:a4907e759049bbe5bb38f2978d2b04425"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a4907e759049bbe5bb38f2978d2b04425">multiply</a> (Lhs const &amp;lhs, Rhs const &amp;rhs) -&gt; typename _multiply_impl::params&lt; Lhs, Rhs &gt;::result_type</td></tr>
 <tr class="memdesc:a4907e759049bbe5bb38f2978d2b04425"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculates the product of two <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> factors  <a href="#a4907e759049bbe5bb38f2978d2b04425">More...</a><br /></td></tr>
@@ -219,25 +213,462 @@ template&lt;typename Rep , int Exponent, int Radix&gt; </td></tr>
 <tr class="memitem:a84b8d9a3144720bacfaf2c6b3db5c60a"><td class="memTemplItemLeft" align="right" valign="top">constexpr Rep&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a84b8d9a3144720bacfaf2c6b3db5c60a">to_rep</a> (<a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent, Radix &gt; const &amp;number)</td></tr>
 <tr class="memdesc:a84b8d9a3144720bacfaf2c6b3db5c60a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> overload of <a class="el" href="namespacecnl.html#af1f7fab87f92b0c58969c2f9695ce85a">to_rep(Number const&amp; number)</a> <br /></td></tr>
 <tr class="separator:a84b8d9a3144720bacfaf2c6b3db5c60a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaac4f650ce8d8b1977dba5d1283e19a9"><td class="memTemplParams" colspan="2"><a id="aaac4f650ce8d8b1977dba5d1283e19a9"></a>
+<tr class="memitem:aae6d6a6168cda9493dd04685a2d8d25e"><td class="memTemplParams" colspan="2"><a id="aae6d6a6168cda9493dd04685a2d8d25e"></a>
 template&lt;int Digits, class Narrowest &gt; </td></tr>
-<tr class="memitem:aaac4f650ce8d8b1977dba5d1283e19a9"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aaac4f650ce8d8b1977dba5d1283e19a9">to_rep</a> (<a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>&lt; Digits, Narrowest &gt; const &amp;number) -&gt; typename <a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>&lt; Digits, Narrowest &gt;::rep</td></tr>
-<tr class="memdesc:aaac4f650ce8d8b1977dba5d1283e19a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload of <a class="el" href="namespacecnl.html#af1f7fab87f92b0c58969c2f9695ce85a">to_rep(Number const&amp; number)</a> for <a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>. <br /></td></tr>
-<tr class="separator:aaac4f650ce8d8b1977dba5d1283e19a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a353444ed1e790e5ca0c2413e8cbcd1c3"><td class="memTemplParams" colspan="2"><a id="a353444ed1e790e5ca0c2413e8cbcd1c3"></a>
+<tr class="memitem:aae6d6a6168cda9493dd04685a2d8d25e"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aae6d6a6168cda9493dd04685a2d8d25e">to_rep</a> (<a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>&lt; Digits, Narrowest &gt; &amp;number) -&gt; typename <a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>&lt; Digits, Narrowest &gt;::rep &amp;</td></tr>
+<tr class="memdesc:aae6d6a6168cda9493dd04685a2d8d25e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload of <a class="el" href="namespacecnl.html#af1f7fab87f92b0c58969c2f9695ce85a">to_rep(Number const&amp; number)</a> for <a class="el" href="classcnl_1_1elastic__integer.html">elastic_integer</a>. <br /></td></tr>
+<tr class="separator:aae6d6a6168cda9493dd04685a2d8d25e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9940524e1a7bd106360778c8d991a0a"><td class="memTemplParams" colspan="2"><a id="aa9940524e1a7bd106360778c8d991a0a"></a>
 template&lt;class Rep , class RoundingTag &gt; </td></tr>
-<tr class="memitem:a353444ed1e790e5ca0c2413e8cbcd1c3"><td class="memTemplItemLeft" align="right" valign="top">constexpr Rep&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a353444ed1e790e5ca0c2413e8cbcd1c3">to_rep</a> (<a class="el" href="classcnl_1_1rounding__integer.html">rounding_integer</a>&lt; Rep, RoundingTag &gt; const &amp;number)</td></tr>
-<tr class="memdesc:a353444ed1e790e5ca0c2413e8cbcd1c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload of <a class="el" href="namespacecnl.html#af1f7fab87f92b0c58969c2f9695ce85a">to_rep(Number const&amp; number)</a> for <a class="el" href="classcnl_1_1rounding__integer.html">rounding_integer</a>. <br /></td></tr>
-<tr class="separator:a353444ed1e790e5ca0c2413e8cbcd1c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a854bf64407c0fa8491475f3311394612"><td class="memTemplParams" colspan="2"><a id="a854bf64407c0fa8491475f3311394612"></a>
+<tr class="memitem:aa9940524e1a7bd106360778c8d991a0a"><td class="memTemplItemLeft" align="right" valign="top">constexpr Rep &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aa9940524e1a7bd106360778c8d991a0a">to_rep</a> (<a class="el" href="classcnl_1_1rounding__integer.html">rounding_integer</a>&lt; Rep, RoundingTag &gt; &amp;number)</td></tr>
+<tr class="memdesc:aa9940524e1a7bd106360778c8d991a0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload of <a class="el" href="namespacecnl.html#af1f7fab87f92b0c58969c2f9695ce85a">to_rep(Number const&amp; number)</a> for <a class="el" href="classcnl_1_1rounding__integer.html">rounding_integer</a>. <br /></td></tr>
+<tr class="separator:aa9940524e1a7bd106360778c8d991a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add4bbee913217483579ed975f5347e12"><td class="memTemplParams" colspan="2"><a id="add4bbee913217483579ed975f5347e12"></a>
 template&lt;class Rep , class OverflowTag &gt; </td></tr>
-<tr class="memitem:a854bf64407c0fa8491475f3311394612"><td class="memTemplItemLeft" align="right" valign="top">constexpr Rep&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a854bf64407c0fa8491475f3311394612">to_rep</a> (<a class="el" href="classcnl_1_1overflow__integer.html">overflow_integer</a>&lt; Rep, OverflowTag &gt; const &amp;number)</td></tr>
-<tr class="memdesc:a854bf64407c0fa8491475f3311394612"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload of <a class="el" href="namespacecnl.html#af1f7fab87f92b0c58969c2f9695ce85a">to_rep(Number const&amp; number)</a> for <a class="el" href="classcnl_1_1overflow__integer.html">overflow_integer</a>. <br /></td></tr>
-<tr class="separator:a854bf64407c0fa8491475f3311394612"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add4bbee913217483579ed975f5347e12"><td class="memTemplItemLeft" align="right" valign="top">constexpr Rep &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#add4bbee913217483579ed975f5347e12">to_rep</a> (<a class="el" href="classcnl_1_1overflow__integer.html">overflow_integer</a>&lt; Rep, OverflowTag &gt; &amp;number)</td></tr>
+<tr class="memdesc:add4bbee913217483579ed975f5347e12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload of <a class="el" href="namespacecnl.html#af1f7fab87f92b0c58969c2f9695ce85a">to_rep(Number const&amp; number)</a> for <a class="el" href="classcnl_1_1overflow__integer.html">overflow_integer</a>. <br /></td></tr>
+<tr class="separator:add4bbee913217483579ed975f5347e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1f7fab87f92b0c58969c2f9695ce85a"><td class="memTemplParams" colspan="2">template&lt;class Number &gt; </td></tr>
 <tr class="memitem:af1f7fab87f92b0c58969c2f9695ce85a"><td class="memTemplItemLeft" align="right" valign="top">constexpr Number&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#af1f7fab87f92b0c58969c2f9695ce85a">to_rep</a> (Number const &amp;number)</td></tr>
 <tr class="memdesc:af1f7fab87f92b0c58969c2f9695ce85a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value encapsulated in <code>number</code>.  <a href="#af1f7fab87f92b0c58969c2f9695ce85a">More...</a><br /></td></tr>
 <tr class="separator:af1f7fab87f92b0c58969c2f9695ce85a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ad45b9c408e3cd748e38a07b3906bd900"><td class="memTemplParams" colspan="2"><a id="ad45b9c408e3cd748e38a07b3906bd900"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ad45b9c408e3cd748e38a07b3906bd900"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ad45b9c408e3cd748e38a07b3906bd900">apery</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:ad45b9c408e3cd748e38a07b3906bd900"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of <a href="https://en.wikipedia.org/wiki/Ap%C3%A9ry%27s_constant">Apéry's constant</a>; primary variable template <br /></td></tr>
+<tr class="separator:ad45b9c408e3cd748e38a07b3906bd900"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3c51ef4817893af6b681e7aab307dec"><td class="memTemplParams" colspan="2"><a id="ac3c51ef4817893af6b681e7aab307dec"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:ac3c51ef4817893af6b681e7aab307dec"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ac3c51ef4817893af6b681e7aab307dec">apery&lt; double &gt;</a> {1.202056903159594285399738161511449990}</td></tr>
+<tr class="memdesc:ac3c51ef4817893af6b681e7aab307dec"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#ad45b9c408e3cd748e38a07b3906bd900">cnl::apery</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:ac3c51ef4817893af6b681e7aab307dec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56670c9f9a797304604314daf5a95d97"><td class="memTemplParams" colspan="2"><a id="a56670c9f9a797304604314daf5a95d97"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:a56670c9f9a797304604314daf5a95d97"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a56670c9f9a797304604314daf5a95d97">apery&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:a56670c9f9a797304604314daf5a95d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#ad45b9c408e3cd748e38a07b3906bd900">cnl::apery</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:a56670c9f9a797304604314daf5a95d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac29aeb9f308bc9580c210dae4d7a95dd"><td class="memTemplParams" colspan="2"><a id="ac29aeb9f308bc9580c210dae4d7a95dd"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:ac29aeb9f308bc9580c210dae4d7a95dd"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ac29aeb9f308bc9580c210dae4d7a95dd">apery&lt; float &gt;</a> {1.202056903159594285399738161511449990f}</td></tr>
+<tr class="memdesc:ac29aeb9f308bc9580c210dae4d7a95dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#ad45b9c408e3cd748e38a07b3906bd900">cnl::apery</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:ac29aeb9f308bc9580c210dae4d7a95dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0a49e3a01895fdc60b146766b2388bb"><td class="memTemplParams" colspan="2"><a id="ad0a49e3a01895fdc60b146766b2388bb"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:ad0a49e3a01895fdc60b146766b2388bb"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ad0a49e3a01895fdc60b146766b2388bb">apery&lt; long double &gt;</a> {1.202056903159594285399738161511449990L}</td></tr>
+<tr class="memdesc:ad0a49e3a01895fdc60b146766b2388bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#ad45b9c408e3cd748e38a07b3906bd900">cnl::apery</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:ad0a49e3a01895fdc60b146766b2388bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cf398f944f446a708519a6c41343ffb"><td class="memTemplParams" colspan="2"><a id="a7cf398f944f446a708519a6c41343ffb"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a7cf398f944f446a708519a6c41343ffb"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a7cf398f944f446a708519a6c41343ffb">catalan</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:a7cf398f944f446a708519a6c41343ffb"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of <a href="https://en.wikipedia.org/wiki/Catalan%27s_constant">Catalan's constant</a>; primary variable template <br /></td></tr>
+<tr class="separator:a7cf398f944f446a708519a6c41343ffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d0d97f496659815acac5f4d4841c131"><td class="memTemplParams" colspan="2"><a id="a1d0d97f496659815acac5f4d4841c131"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a1d0d97f496659815acac5f4d4841c131"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a1d0d97f496659815acac5f4d4841c131">catalan&lt; double &gt;</a> {0.915965594177219015054603514932384110774}</td></tr>
+<tr class="memdesc:a1d0d97f496659815acac5f4d4841c131"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a7cf398f944f446a708519a6c41343ffb">cnl::catalan</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:a1d0d97f496659815acac5f4d4841c131"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03e513b120ec2410e0a0564eb0e93f40"><td class="memTemplParams" colspan="2"><a id="a03e513b120ec2410e0a0564eb0e93f40"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:a03e513b120ec2410e0a0564eb0e93f40"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a03e513b120ec2410e0a0564eb0e93f40">catalan&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:a03e513b120ec2410e0a0564eb0e93f40"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a7cf398f944f446a708519a6c41343ffb">cnl::catalan</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:a03e513b120ec2410e0a0564eb0e93f40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7018178b48d053d3f966c52227695c72"><td class="memTemplParams" colspan="2"><a id="a7018178b48d053d3f966c52227695c72"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a7018178b48d053d3f966c52227695c72"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a7018178b48d053d3f966c52227695c72">catalan&lt; float &gt;</a> {0.915965594177219015054603514932384110774f}</td></tr>
+<tr class="memdesc:a7018178b48d053d3f966c52227695c72"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a7cf398f944f446a708519a6c41343ffb">cnl::catalan</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:a7018178b48d053d3f966c52227695c72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9208875a70c0bca9659d0d2f071f24b"><td class="memTemplParams" colspan="2"><a id="ac9208875a70c0bca9659d0d2f071f24b"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:ac9208875a70c0bca9659d0d2f071f24b"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ac9208875a70c0bca9659d0d2f071f24b">catalan&lt; long double &gt;</a> {0.915965594177219015054603514932384110774L}</td></tr>
+<tr class="memdesc:ac9208875a70c0bca9659d0d2f071f24b"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a7cf398f944f446a708519a6c41343ffb">cnl::catalan</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:ac9208875a70c0bca9659d0d2f071f24b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6280bf3d4c62b43ca06aa4ef5e11a471"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a6280bf3d4c62b43ca06aa4ef5e11a471"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a6280bf3d4c62b43ca06aa4ef5e11a471">e</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:a6280bf3d4c62b43ca06aa4ef5e11a471"><td class="mdescLeft">&#160;</td><td class="mdescRight">partial implementation of <a href="http://wg21.link/p0631">P0631</a>  <a href="#a6280bf3d4c62b43ca06aa4ef5e11a471">More...</a><br /></td></tr>
+<tr class="separator:a6280bf3d4c62b43ca06aa4ef5e11a471"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83848ddea28416acf44d75710b2bfa6a"><td class="memTemplParams" colspan="2"><a id="a83848ddea28416acf44d75710b2bfa6a"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a83848ddea28416acf44d75710b2bfa6a"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a83848ddea28416acf44d75710b2bfa6a">e&lt; double &gt;</a> {2.7182818284590452354}</td></tr>
+<tr class="memdesc:a83848ddea28416acf44d75710b2bfa6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a6280bf3d4c62b43ca06aa4ef5e11a471">cnl::e</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:a83848ddea28416acf44d75710b2bfa6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0173c640d3440679f55c070d58d071b3"><td class="memTemplParams" colspan="2"><a id="a0173c640d3440679f55c070d58d071b3"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:a0173c640d3440679f55c070d58d071b3"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a0173c640d3440679f55c070d58d071b3">e&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:a0173c640d3440679f55c070d58d071b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a6280bf3d4c62b43ca06aa4ef5e11a471">cnl::e</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:a0173c640d3440679f55c070d58d071b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2977b0b110af43d685fbdd7108fc1f7a"><td class="memTemplParams" colspan="2"><a id="a2977b0b110af43d685fbdd7108fc1f7a"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a2977b0b110af43d685fbdd7108fc1f7a"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a2977b0b110af43d685fbdd7108fc1f7a">e&lt; float &gt;</a> {2.7182818284590452354f}</td></tr>
+<tr class="memdesc:a2977b0b110af43d685fbdd7108fc1f7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a6280bf3d4c62b43ca06aa4ef5e11a471">cnl::e</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:a2977b0b110af43d685fbdd7108fc1f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dd385f8dc2fb1ba553f0643ca26aa3b"><td class="memTemplParams" colspan="2"><a id="a4dd385f8dc2fb1ba553f0643ca26aa3b"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a4dd385f8dc2fb1ba553f0643ca26aa3b"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a4dd385f8dc2fb1ba553f0643ca26aa3b">e&lt; long double &gt;</a> {2.718281828459045235360287471352662498L}</td></tr>
+<tr class="memdesc:a4dd385f8dc2fb1ba553f0643ca26aa3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a6280bf3d4c62b43ca06aa4ef5e11a471">cnl::e</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:a4dd385f8dc2fb1ba553f0643ca26aa3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeddc681ef38a27143b1f6fad839c860e"><td class="memTemplParams" colspan="2"><a id="aeddc681ef38a27143b1f6fad839c860e"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aeddc681ef38a27143b1f6fad839c860e"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aeddc681ef38a27143b1f6fad839c860e">egamma</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:aeddc681ef38a27143b1f6fad839c860e"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of the <a href="https://en.wikipedia.org/wiki/Euler%E2%80%93Mascheroni_constant">Euler–Mascheroni constant</a>; primary variable template <br /></td></tr>
+<tr class="separator:aeddc681ef38a27143b1f6fad839c860e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ca8b2e9ea22428389c7085f6619f36f"><td class="memTemplParams" colspan="2"><a id="a0ca8b2e9ea22428389c7085f6619f36f"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a0ca8b2e9ea22428389c7085f6619f36f"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a0ca8b2e9ea22428389c7085f6619f36f">egamma&lt; double &gt;</a> {0.5772156649015328606065120900824024}</td></tr>
+<tr class="memdesc:a0ca8b2e9ea22428389c7085f6619f36f"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#aeddc681ef38a27143b1f6fad839c860e">cnl::egamma</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:a0ca8b2e9ea22428389c7085f6619f36f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcc683e145df693e8b6bff28387756f7"><td class="memTemplParams" colspan="2"><a id="afcc683e145df693e8b6bff28387756f7"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:afcc683e145df693e8b6bff28387756f7"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#afcc683e145df693e8b6bff28387756f7">egamma&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:afcc683e145df693e8b6bff28387756f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#aeddc681ef38a27143b1f6fad839c860e">cnl::egamma</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:afcc683e145df693e8b6bff28387756f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1eb6ab3076bda97f15f02a9973c6d82"><td class="memTemplParams" colspan="2"><a id="ae1eb6ab3076bda97f15f02a9973c6d82"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:ae1eb6ab3076bda97f15f02a9973c6d82"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ae1eb6ab3076bda97f15f02a9973c6d82">egamma&lt; float &gt;</a> {0.5772156649015328606065120900824024f}</td></tr>
+<tr class="memdesc:ae1eb6ab3076bda97f15f02a9973c6d82"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#aeddc681ef38a27143b1f6fad839c860e">cnl::egamma</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:ae1eb6ab3076bda97f15f02a9973c6d82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5ce4d186ee4206649726962644cb9f9"><td class="memTemplParams" colspan="2"><a id="ae5ce4d186ee4206649726962644cb9f9"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:ae5ce4d186ee4206649726962644cb9f9"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ae5ce4d186ee4206649726962644cb9f9">egamma&lt; long double &gt;</a> {0.5772156649015328606065120900824024L}</td></tr>
+<tr class="memdesc:ae5ce4d186ee4206649726962644cb9f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#aeddc681ef38a27143b1f6fad839c860e">cnl::egamma</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:ae5ce4d186ee4206649726962644cb9f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43de63134e01c1dc2e1b77fd31fd3265"><td class="memTemplParams" colspan="2"><a id="a43de63134e01c1dc2e1b77fd31fd3265"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a43de63134e01c1dc2e1b77fd31fd3265"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a43de63134e01c1dc2e1b77fd31fd3265">glaisher</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:a43de63134e01c1dc2e1b77fd31fd3265"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of the <a href="https://en.wikipedia.org/wiki/Glaisher%E2%80%93Kinkelin_constant">Glaisher–Kinkelin constant</a>; primary variable template <br /></td></tr>
+<tr class="separator:a43de63134e01c1dc2e1b77fd31fd3265"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe9a655ba07e8bb4be2e4bd0f4e92bce"><td class="memTemplParams" colspan="2"><a id="afe9a655ba07e8bb4be2e4bd0f4e92bce"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:afe9a655ba07e8bb4be2e4bd0f4e92bce"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#afe9a655ba07e8bb4be2e4bd0f4e92bce">glaisher&lt; double &gt;</a> {1.282427129100622636875342568869791727}</td></tr>
+<tr class="memdesc:afe9a655ba07e8bb4be2e4bd0f4e92bce"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a43de63134e01c1dc2e1b77fd31fd3265">cnl::glaisher</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:afe9a655ba07e8bb4be2e4bd0f4e92bce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1eb37e73c7ef596527f3c2dcff827d5"><td class="memTemplParams" colspan="2"><a id="ae1eb37e73c7ef596527f3c2dcff827d5"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:ae1eb37e73c7ef596527f3c2dcff827d5"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ae1eb37e73c7ef596527f3c2dcff827d5">glaisher&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:ae1eb37e73c7ef596527f3c2dcff827d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a43de63134e01c1dc2e1b77fd31fd3265">cnl::glaisher</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:ae1eb37e73c7ef596527f3c2dcff827d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47eae2ac5c1ee210d959bb26ab3eab9c"><td class="memTemplParams" colspan="2"><a id="a47eae2ac5c1ee210d959bb26ab3eab9c"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a47eae2ac5c1ee210d959bb26ab3eab9c"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a47eae2ac5c1ee210d959bb26ab3eab9c">glaisher&lt; float &gt;</a> {1.282427129100622636875342568869791727f}</td></tr>
+<tr class="memdesc:a47eae2ac5c1ee210d959bb26ab3eab9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a43de63134e01c1dc2e1b77fd31fd3265">cnl::glaisher</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:a47eae2ac5c1ee210d959bb26ab3eab9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84ec563e9e3b105cb911e1e65deb6e5d"><td class="memTemplParams" colspan="2"><a id="a84ec563e9e3b105cb911e1e65deb6e5d"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a84ec563e9e3b105cb911e1e65deb6e5d"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a84ec563e9e3b105cb911e1e65deb6e5d">glaisher&lt; long double &gt;</a> {1.282427129100622636875342568869791727L}</td></tr>
+<tr class="memdesc:a84ec563e9e3b105cb911e1e65deb6e5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a43de63134e01c1dc2e1b77fd31fd3265">cnl::glaisher</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:a84ec563e9e3b105cb911e1e65deb6e5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16a9919566c17af9cbb90e7a1e2f6710"><td class="memTemplParams" colspan="2"><a id="a16a9919566c17af9cbb90e7a1e2f6710"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a16a9919566c17af9cbb90e7a1e2f6710"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a16a9919566c17af9cbb90e7a1e2f6710">invpi</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:a16a9919566c17af9cbb90e7a1e2f6710"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of <code>1/pi</code>; primary variable template <br /></td></tr>
+<tr class="separator:a16a9919566c17af9cbb90e7a1e2f6710"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71bf36282580eff25708120e6a1dd08c"><td class="memTemplParams" colspan="2"><a id="a71bf36282580eff25708120e6a1dd08c"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a71bf36282580eff25708120e6a1dd08c"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a71bf36282580eff25708120e6a1dd08c">invpi&lt; double &gt;</a> {0.31830988618379067154}</td></tr>
+<tr class="memdesc:a71bf36282580eff25708120e6a1dd08c"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a16a9919566c17af9cbb90e7a1e2f6710">cnl::invpi</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:a71bf36282580eff25708120e6a1dd08c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a802f1a8a8f255da82b1fd6dadbdd8e4f"><td class="memTemplParams" colspan="2"><a id="a802f1a8a8f255da82b1fd6dadbdd8e4f"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:a802f1a8a8f255da82b1fd6dadbdd8e4f"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a802f1a8a8f255da82b1fd6dadbdd8e4f">invpi&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:a802f1a8a8f255da82b1fd6dadbdd8e4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a16a9919566c17af9cbb90e7a1e2f6710">cnl::invpi</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:a802f1a8a8f255da82b1fd6dadbdd8e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a468c7e1af8028e412e24bb04c2bf1909"><td class="memTemplParams" colspan="2"><a id="a468c7e1af8028e412e24bb04c2bf1909"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a468c7e1af8028e412e24bb04c2bf1909"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a468c7e1af8028e412e24bb04c2bf1909">invpi&lt; float &gt;</a> {0.31830988618379067154f}</td></tr>
+<tr class="memdesc:a468c7e1af8028e412e24bb04c2bf1909"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a16a9919566c17af9cbb90e7a1e2f6710">cnl::invpi</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:a468c7e1af8028e412e24bb04c2bf1909"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaee254f041ef596c50d66a308e424de0"><td class="memTemplParams" colspan="2"><a id="aaee254f041ef596c50d66a308e424de0"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:aaee254f041ef596c50d66a308e424de0"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aaee254f041ef596c50d66a308e424de0">invpi&lt; long double &gt;</a> {0.318309886183790671537767526745028724L}</td></tr>
+<tr class="memdesc:aaee254f041ef596c50d66a308e424de0"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a16a9919566c17af9cbb90e7a1e2f6710">cnl::invpi</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:aaee254f041ef596c50d66a308e424de0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5c4240340edb094d343e0795c089bb4"><td class="memTemplParams" colspan="2"><a id="ab5c4240340edb094d343e0795c089bb4"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ab5c4240340edb094d343e0795c089bb4"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ab5c4240340edb094d343e0795c089bb4">invsqrt2</a> {<a class="el" href="namespacecnl.html#a0a0428df2a6f6b19f9eadc6f7fcc1d81">sqrt2</a>&lt;T&gt;/2}</td></tr>
+<tr class="memdesc:ab5c4240340edb094d343e0795c089bb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of the inverse of the square root of 2, <code>1/sqrt(2)</code>; primary variable template <br /></td></tr>
+<tr class="separator:ab5c4240340edb094d343e0795c089bb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28d1e5a7f2629b898875d211cd52f58a"><td class="memTemplParams" colspan="2"><a id="a28d1e5a7f2629b898875d211cd52f58a"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:a28d1e5a7f2629b898875d211cd52f58a"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a28d1e5a7f2629b898875d211cd52f58a">invsqrt2&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:a28d1e5a7f2629b898875d211cd52f58a"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#ab5c4240340edb094d343e0795c089bb4">cnl::invsqrt2</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:a28d1e5a7f2629b898875d211cd52f58a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3ebb74095391e16ac07e28662d18aaf"><td class="memTemplParams" colspan="2"><a id="ac3ebb74095391e16ac07e28662d18aaf"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ac3ebb74095391e16ac07e28662d18aaf"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ac3ebb74095391e16ac07e28662d18aaf">invsqrt3</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:ac3ebb74095391e16ac07e28662d18aaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of the inverse of the square root of 3, <code>1/sqrt(3)</code>; primary variable template <br /></td></tr>
+<tr class="separator:ac3ebb74095391e16ac07e28662d18aaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bb2663a96d3306b418e13adea6443cb"><td class="memTemplParams" colspan="2"><a id="a5bb2663a96d3306b418e13adea6443cb"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a5bb2663a96d3306b418e13adea6443cb"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a5bb2663a96d3306b418e13adea6443cb">invsqrt3&lt; double &gt;</a> {0.57735026918962576450914878050195745564760175127013}</td></tr>
+<tr class="memdesc:a5bb2663a96d3306b418e13adea6443cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#ac3ebb74095391e16ac07e28662d18aaf">cnl::invsqrt3</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:a5bb2663a96d3306b418e13adea6443cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa00c6535a748964df4a5cb8b80d06198"><td class="memTemplParams" colspan="2"><a id="aa00c6535a748964df4a5cb8b80d06198"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:aa00c6535a748964df4a5cb8b80d06198"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aa00c6535a748964df4a5cb8b80d06198">invsqrt3&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:aa00c6535a748964df4a5cb8b80d06198"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#ac3ebb74095391e16ac07e28662d18aaf">cnl::invsqrt3</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:aa00c6535a748964df4a5cb8b80d06198"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d2341abd15af7879e74ffa4280c1447"><td class="memTemplParams" colspan="2"><a id="a6d2341abd15af7879e74ffa4280c1447"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a6d2341abd15af7879e74ffa4280c1447"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a6d2341abd15af7879e74ffa4280c1447">invsqrt3&lt; float &gt;</a> {0.57735026918962576450914878050195745564760175127013f}</td></tr>
+<tr class="memdesc:a6d2341abd15af7879e74ffa4280c1447"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#ac3ebb74095391e16ac07e28662d18aaf">cnl::invsqrt3</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:a6d2341abd15af7879e74ffa4280c1447"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a391ff12790b3e1fe922140bb1b8138bb"><td class="memTemplParams" colspan="2"><a id="a391ff12790b3e1fe922140bb1b8138bb"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a391ff12790b3e1fe922140bb1b8138bb"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a391ff12790b3e1fe922140bb1b8138bb">invsqrt3&lt; long double &gt;</a></td></tr>
+<tr class="memdesc:a391ff12790b3e1fe922140bb1b8138bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#ac3ebb74095391e16ac07e28662d18aaf">cnl::invsqrt3</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:a391ff12790b3e1fe922140bb1b8138bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a963392ff1a205c316e66becbe53c8586"><td class="memTemplParams" colspan="2"><a id="a963392ff1a205c316e66becbe53c8586"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a963392ff1a205c316e66becbe53c8586"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a963392ff1a205c316e66becbe53c8586">invsqrtpi</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:a963392ff1a205c316e66becbe53c8586"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of <code>1/sqrt(pi)</code>; primary variable template <br /></td></tr>
+<tr class="separator:a963392ff1a205c316e66becbe53c8586"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c14181eeca8ff03933e7f138971ccb3"><td class="memTemplParams" colspan="2"><a id="a8c14181eeca8ff03933e7f138971ccb3"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a8c14181eeca8ff03933e7f138971ccb3"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a8c14181eeca8ff03933e7f138971ccb3">invsqrtpi&lt; double &gt;</a> {0.564189583547756286948079451560772585844050629329}</td></tr>
+<tr class="memdesc:a8c14181eeca8ff03933e7f138971ccb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a963392ff1a205c316e66becbe53c8586">cnl::invsqrtpi</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:a8c14181eeca8ff03933e7f138971ccb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abab94f122253ae45a04da6889c742b93"><td class="memTemplParams" colspan="2"><a id="abab94f122253ae45a04da6889c742b93"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:abab94f122253ae45a04da6889c742b93"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#abab94f122253ae45a04da6889c742b93">invsqrtpi&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:abab94f122253ae45a04da6889c742b93"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a963392ff1a205c316e66becbe53c8586">cnl::invsqrtpi</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:abab94f122253ae45a04da6889c742b93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28351eaeaad159265216c4d3d109fe11"><td class="memTemplParams" colspan="2"><a id="a28351eaeaad159265216c4d3d109fe11"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a28351eaeaad159265216c4d3d109fe11"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a28351eaeaad159265216c4d3d109fe11">invsqrtpi&lt; float &gt;</a> {0.564189583547756286948079451560772585844050629329f}</td></tr>
+<tr class="memdesc:a28351eaeaad159265216c4d3d109fe11"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a963392ff1a205c316e66becbe53c8586">cnl::invsqrtpi</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:a28351eaeaad159265216c4d3d109fe11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c3bd6c522fc301c396d1794e6eb677d"><td class="memTemplParams" colspan="2"><a id="a1c3bd6c522fc301c396d1794e6eb677d"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a1c3bd6c522fc301c396d1794e6eb677d"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a1c3bd6c522fc301c396d1794e6eb677d">invsqrtpi&lt; long double &gt;</a></td></tr>
+<tr class="memdesc:a1c3bd6c522fc301c396d1794e6eb677d"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a963392ff1a205c316e66becbe53c8586">cnl::invsqrtpi</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:a1c3bd6c522fc301c396d1794e6eb677d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b31522a097e3a0e928986a98353a537"><td class="memTemplParams" colspan="2"><a id="a6b31522a097e3a0e928986a98353a537"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a6b31522a097e3a0e928986a98353a537"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a6b31522a097e3a0e928986a98353a537">ln10</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:a6b31522a097e3a0e928986a98353a537"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of the <a href="https://en.wikipedia.org/wiki/Natural_logarithm">natural logarithm</a> of 10, <code>ln(10)</code>; primary variable template <br /></td></tr>
+<tr class="separator:a6b31522a097e3a0e928986a98353a537"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92d1cd0468b61bbeba5eabb12b1d9bd6"><td class="memTemplParams" colspan="2"><a id="a92d1cd0468b61bbeba5eabb12b1d9bd6"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a92d1cd0468b61bbeba5eabb12b1d9bd6"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a92d1cd0468b61bbeba5eabb12b1d9bd6">ln10&lt; double &gt;</a> {2.30258509299404568402}</td></tr>
+<tr class="memdesc:a92d1cd0468b61bbeba5eabb12b1d9bd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a6b31522a097e3a0e928986a98353a537">cnl::ln10</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:a92d1cd0468b61bbeba5eabb12b1d9bd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ffcd815b1cb77ed11e37eec4738e093"><td class="memTemplParams" colspan="2"><a id="a2ffcd815b1cb77ed11e37eec4738e093"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:a2ffcd815b1cb77ed11e37eec4738e093"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a2ffcd815b1cb77ed11e37eec4738e093">ln10&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:a2ffcd815b1cb77ed11e37eec4738e093"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a6b31522a097e3a0e928986a98353a537">cnl::ln10</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:a2ffcd815b1cb77ed11e37eec4738e093"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a719b75eb408c56f087e5eb7c799c0115"><td class="memTemplParams" colspan="2"><a id="a719b75eb408c56f087e5eb7c799c0115"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a719b75eb408c56f087e5eb7c799c0115"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a719b75eb408c56f087e5eb7c799c0115">ln10&lt; float &gt;</a> {2.30258509299404568402f}</td></tr>
+<tr class="memdesc:a719b75eb408c56f087e5eb7c799c0115"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a6b31522a097e3a0e928986a98353a537">cnl::ln10</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:a719b75eb408c56f087e5eb7c799c0115"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d7ef2dca92ce0b29c0428594c7af947"><td class="memTemplParams" colspan="2"><a id="a4d7ef2dca92ce0b29c0428594c7af947"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a4d7ef2dca92ce0b29c0428594c7af947"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a4d7ef2dca92ce0b29c0428594c7af947">ln10&lt; long double &gt;</a> {2.302585092994045684017991454684364208L}</td></tr>
+<tr class="memdesc:a4d7ef2dca92ce0b29c0428594c7af947"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a6b31522a097e3a0e928986a98353a537">cnl::ln10</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:a4d7ef2dca92ce0b29c0428594c7af947"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2b1e0ae2f5e8954f7293b337360ae68"><td class="memTemplParams" colspan="2"><a id="ae2b1e0ae2f5e8954f7293b337360ae68"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ae2b1e0ae2f5e8954f7293b337360ae68"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ae2b1e0ae2f5e8954f7293b337360ae68">ln2</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:ae2b1e0ae2f5e8954f7293b337360ae68"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of the <a href="https://en.wikipedia.org/wiki/Natural_logarithm">natural logarithm</a> of 2, <code>ln(2)</code>; primary variable template <br /></td></tr>
+<tr class="separator:ae2b1e0ae2f5e8954f7293b337360ae68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dcce97751405a2f09d8cf2295e8fd28"><td class="memTemplParams" colspan="2"><a id="a5dcce97751405a2f09d8cf2295e8fd28"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a5dcce97751405a2f09d8cf2295e8fd28"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a5dcce97751405a2f09d8cf2295e8fd28">ln2&lt; double &gt;</a> {0.69314718055994530942}</td></tr>
+<tr class="memdesc:a5dcce97751405a2f09d8cf2295e8fd28"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#ae2b1e0ae2f5e8954f7293b337360ae68">cnl::ln2</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:a5dcce97751405a2f09d8cf2295e8fd28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad98b978a7bd5b4d35099d48a231b9e25"><td class="memTemplParams" colspan="2"><a id="ad98b978a7bd5b4d35099d48a231b9e25"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:ad98b978a7bd5b4d35099d48a231b9e25"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ad98b978a7bd5b4d35099d48a231b9e25">ln2&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:ad98b978a7bd5b4d35099d48a231b9e25"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#ae2b1e0ae2f5e8954f7293b337360ae68">cnl::ln2</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:ad98b978a7bd5b4d35099d48a231b9e25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a649fa23638b3a7c7f66d361c331b4b83"><td class="memTemplParams" colspan="2"><a id="a649fa23638b3a7c7f66d361c331b4b83"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a649fa23638b3a7c7f66d361c331b4b83"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a649fa23638b3a7c7f66d361c331b4b83">ln2&lt; float &gt;</a> {0.69314718055994530942f}</td></tr>
+<tr class="memdesc:a649fa23638b3a7c7f66d361c331b4b83"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#ae2b1e0ae2f5e8954f7293b337360ae68">cnl::ln2</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:a649fa23638b3a7c7f66d361c331b4b83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25f6d60cd40112b1d209252a012de528"><td class="memTemplParams" colspan="2"><a id="a25f6d60cd40112b1d209252a012de528"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a25f6d60cd40112b1d209252a012de528"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a25f6d60cd40112b1d209252a012de528">ln2&lt; long double &gt;</a> {0.693147180559945309417232121458176568L}</td></tr>
+<tr class="memdesc:a25f6d60cd40112b1d209252a012de528"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#ae2b1e0ae2f5e8954f7293b337360ae68">cnl::ln2</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:a25f6d60cd40112b1d209252a012de528"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefb5a188166f2d77d9311861e2c260c8"><td class="memTemplParams" colspan="2"><a id="aefb5a188166f2d77d9311861e2c260c8"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aefb5a188166f2d77d9311861e2c260c8"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aefb5a188166f2d77d9311861e2c260c8">log10e</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:aefb5a188166f2d77d9311861e2c260c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of the <a href="https://en.wikipedia.org/wiki/Binary_logarithm">decimal logarithm</a> of e, <code>log10(e)</code>; primary variable template <br /></td></tr>
+<tr class="separator:aefb5a188166f2d77d9311861e2c260c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4144f1883199b9f4c6e7b4b208697777"><td class="memTemplParams" colspan="2"><a id="a4144f1883199b9f4c6e7b4b208697777"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a4144f1883199b9f4c6e7b4b208697777"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a4144f1883199b9f4c6e7b4b208697777">log10e&lt; double &gt;</a> {0.43429448190325182765}</td></tr>
+<tr class="memdesc:a4144f1883199b9f4c6e7b4b208697777"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#aefb5a188166f2d77d9311861e2c260c8">cnl::log10e</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:a4144f1883199b9f4c6e7b4b208697777"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac031545c8855264d9452d82df1b548ae"><td class="memTemplParams" colspan="2"><a id="ac031545c8855264d9452d82df1b548ae"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:ac031545c8855264d9452d82df1b548ae"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ac031545c8855264d9452d82df1b548ae">log10e&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:ac031545c8855264d9452d82df1b548ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#aefb5a188166f2d77d9311861e2c260c8">cnl::log10e</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:ac031545c8855264d9452d82df1b548ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab30f6bf0548fe2d022e417de5a0eba07"><td class="memTemplParams" colspan="2"><a id="ab30f6bf0548fe2d022e417de5a0eba07"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:ab30f6bf0548fe2d022e417de5a0eba07"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ab30f6bf0548fe2d022e417de5a0eba07">log10e&lt; float &gt;</a> {0.43429448190325182765f}</td></tr>
+<tr class="memdesc:ab30f6bf0548fe2d022e417de5a0eba07"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#aefb5a188166f2d77d9311861e2c260c8">cnl::log10e</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:ab30f6bf0548fe2d022e417de5a0eba07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70829d7553fbe00512203f39749e20aa"><td class="memTemplParams" colspan="2"><a id="a70829d7553fbe00512203f39749e20aa"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a70829d7553fbe00512203f39749e20aa"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a70829d7553fbe00512203f39749e20aa">log10e&lt; long double &gt;</a> {0.434294481903251827651128918916605082L}</td></tr>
+<tr class="memdesc:a70829d7553fbe00512203f39749e20aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#aefb5a188166f2d77d9311861e2c260c8">cnl::log10e</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:a70829d7553fbe00512203f39749e20aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e3437d733b0da233c59acb40c054aba"><td class="memTemplParams" colspan="2"><a id="a0e3437d733b0da233c59acb40c054aba"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a0e3437d733b0da233c59acb40c054aba"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a0e3437d733b0da233c59acb40c054aba">log2e</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:a0e3437d733b0da233c59acb40c054aba"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of the <a href="https://en.wikipedia.org/wiki/Binary_logarithm">binary logarithm</a> of e, <code>log2(e)</code>; primary variable template <br /></td></tr>
+<tr class="separator:a0e3437d733b0da233c59acb40c054aba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf82bb4e6a335e70f6014274b64f13e9"><td class="memTemplParams" colspan="2"><a id="abf82bb4e6a335e70f6014274b64f13e9"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:abf82bb4e6a335e70f6014274b64f13e9"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#abf82bb4e6a335e70f6014274b64f13e9">log2e&lt; double &gt;</a> {1.4426950408889634074}</td></tr>
+<tr class="memdesc:abf82bb4e6a335e70f6014274b64f13e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a0e3437d733b0da233c59acb40c054aba">cnl::log2e</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:abf82bb4e6a335e70f6014274b64f13e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1ff9c80c757a168419fdd90cd073611"><td class="memTemplParams" colspan="2"><a id="ac1ff9c80c757a168419fdd90cd073611"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:ac1ff9c80c757a168419fdd90cd073611"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ac1ff9c80c757a168419fdd90cd073611">log2e&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:ac1ff9c80c757a168419fdd90cd073611"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a0e3437d733b0da233c59acb40c054aba">cnl::log2e</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:ac1ff9c80c757a168419fdd90cd073611"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c9c8761691ea2333e6233dc09b836ba"><td class="memTemplParams" colspan="2"><a id="a7c9c8761691ea2333e6233dc09b836ba"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a7c9c8761691ea2333e6233dc09b836ba"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a7c9c8761691ea2333e6233dc09b836ba">log2e&lt; float &gt;</a> {1.4426950408889634074f}</td></tr>
+<tr class="memdesc:a7c9c8761691ea2333e6233dc09b836ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a0e3437d733b0da233c59acb40c054aba">cnl::log2e</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:a7c9c8761691ea2333e6233dc09b836ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a849a1fdaf20e3b333be2cf16db1eb46c"><td class="memTemplParams" colspan="2"><a id="a849a1fdaf20e3b333be2cf16db1eb46c"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a849a1fdaf20e3b333be2cf16db1eb46c"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a849a1fdaf20e3b333be2cf16db1eb46c">log2e&lt; long double &gt;</a> {1.442695040888963407359924681001892137L}</td></tr>
+<tr class="memdesc:a849a1fdaf20e3b333be2cf16db1eb46c"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a0e3437d733b0da233c59acb40c054aba">cnl::log2e</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:a849a1fdaf20e3b333be2cf16db1eb46c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d8ba826deec9595124d67782a65a8bd"><td class="memTemplParams" colspan="2"><a id="a4d8ba826deec9595124d67782a65a8bd"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a4d8ba826deec9595124d67782a65a8bd"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a4d8ba826deec9595124d67782a65a8bd">phi</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:a4d8ba826deec9595124d67782a65a8bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of the <a href="https://en.wikipedia.org/wiki/Golden_ratio">golden ratio</a>; primary variable template <br /></td></tr>
+<tr class="separator:a4d8ba826deec9595124d67782a65a8bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a059bcbf16a285d690c89ccd9591f6397"><td class="memTemplParams" colspan="2"><a id="a059bcbf16a285d690c89ccd9591f6397"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a059bcbf16a285d690c89ccd9591f6397"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a059bcbf16a285d690c89ccd9591f6397">phi&lt; double &gt;</a> {1.6180339887498948482045868343656381}</td></tr>
+<tr class="memdesc:a059bcbf16a285d690c89ccd9591f6397"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a4d8ba826deec9595124d67782a65a8bd">cnl::phi</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:a059bcbf16a285d690c89ccd9591f6397"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3ec505968a2410a02d590245b8c596d"><td class="memTemplParams" colspan="2"><a id="ae3ec505968a2410a02d590245b8c596d"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:ae3ec505968a2410a02d590245b8c596d"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ae3ec505968a2410a02d590245b8c596d">phi&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:ae3ec505968a2410a02d590245b8c596d"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a4d8ba826deec9595124d67782a65a8bd">cnl::phi</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:ae3ec505968a2410a02d590245b8c596d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa569181b135d24252e5d482b393fa63c"><td class="memTemplParams" colspan="2"><a id="aa569181b135d24252e5d482b393fa63c"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:aa569181b135d24252e5d482b393fa63c"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aa569181b135d24252e5d482b393fa63c">phi&lt; float &gt;</a> {1.6180339887498948482045868343656381f}</td></tr>
+<tr class="memdesc:aa569181b135d24252e5d482b393fa63c"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a4d8ba826deec9595124d67782a65a8bd">cnl::phi</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:aa569181b135d24252e5d482b393fa63c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6156905b4cd8de537e600e9f53757a8e"><td class="memTemplParams" colspan="2"><a id="a6156905b4cd8de537e600e9f53757a8e"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a6156905b4cd8de537e600e9f53757a8e"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a6156905b4cd8de537e600e9f53757a8e">phi&lt; long double &gt;</a> {1.6180339887498948482045868343656381L}</td></tr>
+<tr class="memdesc:a6156905b4cd8de537e600e9f53757a8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a4d8ba826deec9595124d67782a65a8bd">cnl::phi</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:a6156905b4cd8de537e600e9f53757a8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acafcb8ebc674fcd2a3be5fa5d3141b99"><td class="memTemplParams" colspan="2"><a id="acafcb8ebc674fcd2a3be5fa5d3141b99"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:acafcb8ebc674fcd2a3be5fa5d3141b99"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#acafcb8ebc674fcd2a3be5fa5d3141b99">pi</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:acafcb8ebc674fcd2a3be5fa5d3141b99"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of <a href="https://en.wikipedia.org/wiki/Pi">pi</a>; primary variable template <br /></td></tr>
+<tr class="separator:acafcb8ebc674fcd2a3be5fa5d3141b99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35fb63e6f8a5accdc92b02bc58ce81eb"><td class="memTemplParams" colspan="2"><a id="a35fb63e6f8a5accdc92b02bc58ce81eb"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a35fb63e6f8a5accdc92b02bc58ce81eb"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a35fb63e6f8a5accdc92b02bc58ce81eb">pi&lt; double &gt;</a> {3.14159265358979323846}</td></tr>
+<tr class="memdesc:a35fb63e6f8a5accdc92b02bc58ce81eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#acafcb8ebc674fcd2a3be5fa5d3141b99">cnl::pi</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:a35fb63e6f8a5accdc92b02bc58ce81eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae39feb231fea78978e01009333ccd3cb"><td class="memTemplParams" colspan="2"><a id="ae39feb231fea78978e01009333ccd3cb"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:ae39feb231fea78978e01009333ccd3cb"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ae39feb231fea78978e01009333ccd3cb">pi&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:ae39feb231fea78978e01009333ccd3cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#acafcb8ebc674fcd2a3be5fa5d3141b99">cnl::pi</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:ae39feb231fea78978e01009333ccd3cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fb1a45db44d8f3ab786b83b7f8436e1"><td class="memTemplParams" colspan="2"><a id="a7fb1a45db44d8f3ab786b83b7f8436e1"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a7fb1a45db44d8f3ab786b83b7f8436e1"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a7fb1a45db44d8f3ab786b83b7f8436e1">pi&lt; float &gt;</a> {3.14159265358979323846f}</td></tr>
+<tr class="memdesc:a7fb1a45db44d8f3ab786b83b7f8436e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#acafcb8ebc674fcd2a3be5fa5d3141b99">cnl::pi</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:a7fb1a45db44d8f3ab786b83b7f8436e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99c5d44ff0fa6ff7a5e7f7a229780273"><td class="memTemplParams" colspan="2"><a id="a99c5d44ff0fa6ff7a5e7f7a229780273"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a99c5d44ff0fa6ff7a5e7f7a229780273"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a99c5d44ff0fa6ff7a5e7f7a229780273">pi&lt; long double &gt;</a> {3.141592653589793238462643383279502884L}</td></tr>
+<tr class="memdesc:a99c5d44ff0fa6ff7a5e7f7a229780273"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#acafcb8ebc674fcd2a3be5fa5d3141b99">cnl::pi</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:a99c5d44ff0fa6ff7a5e7f7a229780273"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e9c6c846f4ab8a9fa5f90639d65ec06"><td class="memTemplParams" colspan="2"><a id="a7e9c6c846f4ab8a9fa5f90639d65ec06"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a7e9c6c846f4ab8a9fa5f90639d65ec06"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a7e9c6c846f4ab8a9fa5f90639d65ec06">radian</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:a7e9c6c846f4ab8a9fa5f90639d65ec06"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of a radian in degrees, <code>180/pi</code>; primary variable template <br /></td></tr>
+<tr class="separator:a7e9c6c846f4ab8a9fa5f90639d65ec06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8301ce19ff84c5f1828210aa6981abd2"><td class="memTemplParams" colspan="2"><a id="a8301ce19ff84c5f1828210aa6981abd2"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a8301ce19ff84c5f1828210aa6981abd2"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a8301ce19ff84c5f1828210aa6981abd2">radian&lt; double &gt;</a> {57.295779513082320876798154814105170332405472466564}</td></tr>
+<tr class="memdesc:a8301ce19ff84c5f1828210aa6981abd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a7e9c6c846f4ab8a9fa5f90639d65ec06">cnl::radian</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:a8301ce19ff84c5f1828210aa6981abd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a077936627ec2512e3d093b0bd8c29384"><td class="memTemplParams" colspan="2"><a id="a077936627ec2512e3d093b0bd8c29384"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:a077936627ec2512e3d093b0bd8c29384"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a077936627ec2512e3d093b0bd8c29384">radian&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:a077936627ec2512e3d093b0bd8c29384"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a7e9c6c846f4ab8a9fa5f90639d65ec06">cnl::radian</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:a077936627ec2512e3d093b0bd8c29384"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5253bf43bebd5a4801d1fe9d13abd9c"><td class="memTemplParams" colspan="2"><a id="ae5253bf43bebd5a4801d1fe9d13abd9c"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:ae5253bf43bebd5a4801d1fe9d13abd9c"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ae5253bf43bebd5a4801d1fe9d13abd9c">radian&lt; float &gt;</a> {57.295779513082320876798154814105170332405472466564f}</td></tr>
+<tr class="memdesc:ae5253bf43bebd5a4801d1fe9d13abd9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a7e9c6c846f4ab8a9fa5f90639d65ec06">cnl::radian</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:ae5253bf43bebd5a4801d1fe9d13abd9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4f57a8dff86d18725df4c4eab3513f0"><td class="memTemplParams" colspan="2"><a id="ad4f57a8dff86d18725df4c4eab3513f0"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:ad4f57a8dff86d18725df4c4eab3513f0"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ad4f57a8dff86d18725df4c4eab3513f0">radian&lt; long double &gt;</a></td></tr>
+<tr class="memdesc:ad4f57a8dff86d18725df4c4eab3513f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a7e9c6c846f4ab8a9fa5f90639d65ec06">cnl::radian</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:ad4f57a8dff86d18725df4c4eab3513f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a0428df2a6f6b19f9eadc6f7fcc1d81"><td class="memTemplParams" colspan="2"><a id="a0a0428df2a6f6b19f9eadc6f7fcc1d81"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a0a0428df2a6f6b19f9eadc6f7fcc1d81"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a0a0428df2a6f6b19f9eadc6f7fcc1d81">sqrt2</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:a0a0428df2a6f6b19f9eadc6f7fcc1d81"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of the square root of 2, <code>sqrt(2)</code>; primary variable template <br /></td></tr>
+<tr class="separator:a0a0428df2a6f6b19f9eadc6f7fcc1d81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeeeac533e8efd7cc541b0c069c8d76ca"><td class="memTemplParams" colspan="2"><a id="aeeeac533e8efd7cc541b0c069c8d76ca"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:aeeeac533e8efd7cc541b0c069c8d76ca"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#aeeeac533e8efd7cc541b0c069c8d76ca">sqrt2&lt; double &gt;</a> {1.41421356237309504880}</td></tr>
+<tr class="memdesc:aeeeac533e8efd7cc541b0c069c8d76ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a0a0428df2a6f6b19f9eadc6f7fcc1d81">cnl::sqrt2</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:aeeeac533e8efd7cc541b0c069c8d76ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a473b1550069612fcf7d1fb3771969cad"><td class="memTemplParams" colspan="2"><a id="a473b1550069612fcf7d1fb3771969cad"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:a473b1550069612fcf7d1fb3771969cad"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a473b1550069612fcf7d1fb3771969cad">sqrt2&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:a473b1550069612fcf7d1fb3771969cad"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a0a0428df2a6f6b19f9eadc6f7fcc1d81">cnl::sqrt2</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:a473b1550069612fcf7d1fb3771969cad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65caefee26fe842fa0b272b683f2f98c"><td class="memTemplParams" colspan="2"><a id="a65caefee26fe842fa0b272b683f2f98c"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a65caefee26fe842fa0b272b683f2f98c"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a65caefee26fe842fa0b272b683f2f98c">sqrt2&lt; float &gt;</a> {1.41421356237309504880f}</td></tr>
+<tr class="memdesc:a65caefee26fe842fa0b272b683f2f98c"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a0a0428df2a6f6b19f9eadc6f7fcc1d81">cnl::sqrt2</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:a65caefee26fe842fa0b272b683f2f98c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d72da5bf7fe975bd3faee7bad2a2ec3"><td class="memTemplParams" colspan="2"><a id="a5d72da5bf7fe975bd3faee7bad2a2ec3"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a5d72da5bf7fe975bd3faee7bad2a2ec3"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a5d72da5bf7fe975bd3faee7bad2a2ec3">sqrt2&lt; long double &gt;</a> {1.414213562373095048801688724209698079L}</td></tr>
+<tr class="memdesc:a5d72da5bf7fe975bd3faee7bad2a2ec3"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a0a0428df2a6f6b19f9eadc6f7fcc1d81">cnl::sqrt2</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:a5d72da5bf7fe975bd3faee7bad2a2ec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27fc017b3b765622cc9a0ca939dda5ed"><td class="memTemplParams" colspan="2"><a id="a27fc017b3b765622cc9a0ca939dda5ed"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a27fc017b3b765622cc9a0ca939dda5ed"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a27fc017b3b765622cc9a0ca939dda5ed">sqrt3</a> {_impl::deleted_fn&lt;T&gt;()}</td></tr>
+<tr class="memdesc:a27fc017b3b765622cc9a0ca939dda5ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">approximation of the square root of 3, <code>sqrt(3)</code>; primary variable template <br /></td></tr>
+<tr class="separator:a27fc017b3b765622cc9a0ca939dda5ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9229a209124a89c6c0f721fdbf34fa24"><td class="memTemplParams" colspan="2"><a id="a9229a209124a89c6c0f721fdbf34fa24"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a9229a209124a89c6c0f721fdbf34fa24"><td class="memTemplItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a9229a209124a89c6c0f721fdbf34fa24">sqrt3&lt; double &gt;</a></td></tr>
+<tr class="memdesc:a9229a209124a89c6c0f721fdbf34fa24"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a27fc017b3b765622cc9a0ca939dda5ed">cnl::sqrt3</a> for <code>double</code> <br /></td></tr>
+<tr class="separator:a9229a209124a89c6c0f721fdbf34fa24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4069139dc6191cfb32589512f1e495e"><td class="memTemplParams" colspan="2"><a id="ae4069139dc6191cfb32589512f1e495e"></a>
+template&lt;typename Rep , int Exponent&gt; </td></tr>
+<tr class="memitem:ae4069139dc6191cfb32589512f1e495e"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; Rep, Exponent &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#ae4069139dc6191cfb32589512f1e495e">sqrt3&lt; fixed_point&lt; Rep, Exponent &gt; &gt;</a></td></tr>
+<tr class="memdesc:ae4069139dc6191cfb32589512f1e495e"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a27fc017b3b765622cc9a0ca939dda5ed">cnl::sqrt3</a> for <a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point</a> <br /></td></tr>
+<tr class="separator:ae4069139dc6191cfb32589512f1e495e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b052f00ea07c9a5ddc0bca6d8d4fe7b"><td class="memTemplParams" colspan="2"><a id="a7b052f00ea07c9a5ddc0bca6d8d4fe7b"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a7b052f00ea07c9a5ddc0bca6d8d4fe7b"><td class="memTemplItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a7b052f00ea07c9a5ddc0bca6d8d4fe7b">sqrt3&lt; float &gt;</a> {1.73205080756887729352744634150587236694280525381038062805580f}</td></tr>
+<tr class="memdesc:a7b052f00ea07c9a5ddc0bca6d8d4fe7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a27fc017b3b765622cc9a0ca939dda5ed">cnl::sqrt3</a> for <code>float</code> <br /></td></tr>
+<tr class="separator:a7b052f00ea07c9a5ddc0bca6d8d4fe7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06e9e49c188e05d19b98a4bd2477f432"><td class="memTemplParams" colspan="2"><a id="a06e9e49c188e05d19b98a4bd2477f432"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a06e9e49c188e05d19b98a4bd2477f432"><td class="memTemplItemLeft" align="right" valign="top">constexpr long double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacecnl.html#a06e9e49c188e05d19b98a4bd2477f432">sqrt3&lt; long double &gt;</a></td></tr>
+<tr class="memdesc:a06e9e49c188e05d19b98a4bd2477f432"><td class="mdescLeft">&#160;</td><td class="mdescRight">specialization of <a class="el" href="namespacecnl.html#a27fc017b3b765622cc9a0ca939dda5ed">cnl::sqrt3</a> for <code>long double</code> <br /></td></tr>
+<tr class="separator:a06e9e49c188e05d19b98a4bd2477f432"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>compositional numeric library </p>
@@ -319,16 +750,16 @@ template&lt;unsigned NumDigits = digits&lt;int&gt;::value&gt; </div>
 
 </div>
 </div>
-<a id="a7b4ec46c3d2d99927267c18f6d711d13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b4ec46c3d2d99927267c18f6d711d13">&#9670;&nbsp;</a></span>static_integer</h2>
+<a id="ab84979e9c09ff27d096f3addae74c20d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab84979e9c09ff27d096f3addae74c20d">&#9670;&nbsp;</a></span>static_integer</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;int Digits = digits&lt;signed&gt;::value, class OverflowTag  = trapping_overflow_tag, class RoundingTag  = nearest_rounding_tag, class Narrowest  = signed&gt; </div>
+template&lt;int Digits = digits&lt;int&gt;::value, class RoundingTag  = nearest_rounding_tag, class OverflowTag  = trapping_overflow_tag, class Narrowest  = int&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacecnl.html#a7b4ec46c3d2d99927267c18f6d711d13">cnl::static_integer</a> = typedef <a class="el" href="classcnl_1_1rounding__integer.html">_impl::static_integer</a>&lt;Digits, OverflowTag, RoundingTag, Narrowest&gt;</td>
+          <td class="memname">using <a class="el" href="namespacecnl.html#ab84979e9c09ff27d096f3addae74c20d">cnl::static_integer</a> = typedef <a class="el" href="classcnl_1_1rounding__integer.html">_impl::static_integer</a>&lt;Digits, RoundingTag, OverflowTag, Narrowest&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -343,20 +774,20 @@ template&lt;int Digits = digits&lt;signed&gt;::value, class OverflowTag  = trapp
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacecnl.html#a03fc11b857077f422069a19154dc970a" title="a general-purpose fixed-point real number type ">cnl::static_number</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacecnl.html#acc23e3f06fc9c425afff65dfcd81fa63" title="a general-purpose fixed-point real number type ">cnl::static_number</a> </dd></dl>
 
 </div>
 </div>
-<a id="a03fc11b857077f422069a19154dc970a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a03fc11b857077f422069a19154dc970a">&#9670;&nbsp;</a></span>static_number</h2>
+<a id="acc23e3f06fc9c425afff65dfcd81fa63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc23e3f06fc9c425afff65dfcd81fa63">&#9670;&nbsp;</a></span>static_number</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;int Digits, int Exponent = 0, class OverflowTag  = trapping_overflow_tag, class RoundingTag  = nearest_rounding_tag, class Narrowest  = signed&gt; </div>
+template&lt;int Digits, int Exponent = 0, class RoundingTag  = nearest_rounding_tag, class OverflowTag  = trapping_overflow_tag, class Narrowest  = signed&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacecnl.html#a03fc11b857077f422069a19154dc970a">cnl::static_number</a> = typedef <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; <a class="el" href="classcnl_1_1rounding__integer.html">_impl::static_integer</a>&lt;Digits, OverflowTag, RoundingTag, Narrowest&gt;, Exponent&gt;</td>
+          <td class="memname">using <a class="el" href="namespacecnl.html#acc23e3f06fc9c425afff65dfcd81fa63">cnl::static_number</a> = typedef <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a>&lt; <a class="el" href="classcnl_1_1rounding__integer.html">_impl::static_integer</a>&lt;Digits, RoundingTag, OverflowTag, Narrowest&gt;, Exponent&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -372,7 +803,7 @@ template&lt;int Digits, int Exponent = 0, class OverflowTag  = trapping_overflow
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacecnl.html#a7b4ec46c3d2d99927267c18f6d711d13" title="a general-purpose integer type ">cnl::static_integer</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacecnl.html#ab84979e9c09ff27d096f3addae74c20d" title="a general-purpose integer type ">cnl::static_integer</a> </dd></dl>
 
 </div>
 </div>
@@ -437,7 +868,7 @@ template&lt;typename Rep , int Exponent, int Radix&gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>|x|</code></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="elRef" doxygen="/home/john/tmp/precise/cnl/cmake-build-debug-c17/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/container/vector.html">std::vector</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="elRef" doxygen="/home/john/ws/most_negative/cnl/cmake-build-debug-clang6-c17/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/container/vector.html">std::vector</a> </dd></dl>
 
 </div>
 </div>
@@ -467,8 +898,6 @@ template&lt;class Rep , int Exponent&gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the result of the exponential, in the same representation as x </dd></dl>
-
-<p class="reference">References <a class="el" href="namespacecnl.html#a84b8d9a3144720bacfaf2c6b3db5c60a">to_rep()</a>.</p>
 
 </div>
 </div>
@@ -502,7 +931,7 @@ template&lt;typename Narrowest  = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0&gt
 <dl class="section return"><dt>Returns</dt><dd>the given value to be represented using an <a class="el" href="namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765">cnl::elastic_number</a> type</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The return type is guaranteed to be no larger than is necessary to represent the value.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
-<p>To define an int-sized object using <a class="el" href="namespacecnl.html#aea7f4218763d355da78eeb755e3426d7">make_elastic_number</a> and <a class="el" href="structcnl_1_1constant.html">cnl::constant</a> </p><div class="fragment"><div class="line"><span class="comment">// std::uint8_t specifies the type of const_integer - not elastic</span></div><div class="line">constexpr <span class="keyword">auto</span> n = <a class="code" href="namespacecnl.html#aea7f4218763d355da78eeb755e3426d7">make_elastic_number</a>(constant&lt;0xAA&gt;{});</div><div class="line"></div><div class="line">static_assert(n==0xAA, <span class="stringliteral">&quot;n now has the value, 1024&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/tmp/precise/cnl/cmake-build-debug-c17/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_number&lt;7, 1, int&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_number uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
+<p>To define an int-sized object using <a class="el" href="namespacecnl.html#aea7f4218763d355da78eeb755e3426d7">make_elastic_number</a> and <a class="el" href="structcnl_1_1constant.html">cnl::constant</a> </p><div class="fragment"><div class="line"><span class="comment">// std::uint8_t specifies the type of const_integer - not elastic</span></div><div class="line">constexpr <span class="keyword">auto</span> n = <a class="code" href="namespacecnl.html#aea7f4218763d355da78eeb755e3426d7">make_elastic_number</a>(constant&lt;0xAA&gt;{});</div><div class="line"></div><div class="line">static_assert(n==0xAA, <span class="stringliteral">&quot;n now has the value, 1024&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/ws/most_negative/cnl/cmake-build-debug-clang6-c17/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_number&lt;7, 1, int&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_number uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
 </div>
 </div>
 <a id="a7596ebff5e30e6d31fd55bad63d17695"></a>
@@ -539,11 +968,11 @@ template&lt;class Narrowest  = int, class Integral  = int&gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>The return type is guaranteed to be no larger than is necessary to represent the value.</dd></dl>
 <dl class="section user"><dt>Example</dt><dd></dd></dl>
-<p>To define a byte-sized object using make_elastic_number and _c: </p><div class="fragment"><div class="line">constexpr <span class="keyword">auto</span> n = make_elastic_number&lt;char&gt;(constant&lt;1536&gt;{});</div><div class="line"></div><div class="line">static_assert(n==1536, <span class="stringliteral">&quot;n now has the value, 1536&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/tmp/precise/cnl/cmake-build-debug-c17/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_number&lt;2, 9, char&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_number uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
+<p>To define a byte-sized object using make_elastic_number and _c: </p><div class="fragment"><div class="line">constexpr <span class="keyword">auto</span> n = make_elastic_number&lt;char&gt;(constant&lt;1536&gt;{});</div><div class="line"></div><div class="line">static_assert(n==1536, <span class="stringliteral">&quot;n now has the value, 1536&quot;</span>);</div><div class="line">static_assert(<a class="codeRef" doxygen="/home/john/ws/most_negative/cnl/cmake-build-debug-clang6-c17/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/is_same.html">std::is_same</a>&lt;decltype(n), elastic_number&lt;2, 9, char&gt; <span class="keyword">const</span>&gt;::value, <span class="stringliteral">&quot;by default make_elastic_number uses the most efficient type it can&quot;</span>);</div></div><!-- fragment -->
 </div>
 </div>
 <a id="a4908ae024cdd2e437863aa8c2e2624e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4908ae024cdd2e437863aa8c2e2624e3">&#9670;&nbsp;</a></span>make_fixed_point() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4908ae024cdd2e437863aa8c2e2624e3">&#9670;&nbsp;</a></span>make_fixed_point()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -575,45 +1004,6 @@ template&lt;typename Value &gt; </div>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is deprecated after C++17 in favor of class template deduction. </dd></dl>
-
-</div>
-</div>
-<a id="a870d097696e1046d1704448b27454509"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a870d097696e1046d1704448b27454509">&#9670;&nbsp;</a></span>make_fixed_point() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Numerator , typename Denominator &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto cnl::make_fixed_point </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structcnl_1_1fractional.html">fractional</a>&lt; Numerator, Denominator &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td> -&gt; decltype(<a class="el" href="namespacecnl.html#ab698104a23f314fadf45f43229d2c8e5">quotient</a>(value.numerator, value.denominator))
-    </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>makes a <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> object from a given <a class="el" href="structcnl_1_1fractional.html">fractional</a> </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Numerator</td><td>the type of the numerator of the fractional </td></tr>
-    <tr><td class="paramname">Denominator</td><td>the type of the denominator of the fractional</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">value</td><td>the fractionalfrom which to make the <a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a> object</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>This function is deprecated after C++17 in favor of class template deduction. </dd></dl>
-
-<p class="reference">References <a class="el" href="namespacecnl.html#ab698104a23f314fadf45f43229d2c8e5">quotient()</a>.</p>
 
 </div>
 </div>
@@ -708,7 +1098,7 @@ template&lt;class Quotient  = _impl::default_quotient_tag, class Dividend , clas
 <dd>
 A <em>widened division</em> is one where the quotient has as many integer digits as the dividend's integer digits plus the divisor's fractional digits and as many fractional digits as the dividend's fractional digits plus the divisor's integer digits. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="classcnl_1_1fixed__point.html#a347614ef57f48d45d847bb2fd2e00d48">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;::fixed_point()</a>, and <a class="el" href="namespacecnl.html#a870d097696e1046d1704448b27454509">make_fixed_point()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="classcnl_1_1fixed__point.html#a347614ef57f48d45d847bb2fd2e00d48">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;::fixed_point()</a>, and <a class="el" href="namespacecnl.html#a84b8d9a3144720bacfaf2c6b3db5c60a">to_rep()</a>.</p>
 
 </div>
 </div>
@@ -773,7 +1163,25 @@ template&lt;class Number &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>the 'inner' value </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structcnl_1_1from__rep.html" title="generic function object that returns the number encapsulating a given value ">from_rep</a>, from_value </dd></dl>
 
-<p class="reference">References <a class="el" href="namespacecnl.html#a84b8d9a3144720bacfaf2c6b3db5c60a">to_rep()</a>.</p>
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a6280bf3d4c62b43ca06aa4ef5e11a471"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6280bf3d4c62b43ca06aa4ef5e11a471">&#9670;&nbsp;</a></span>e</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr T cnl::e {_impl::deleted_fn&lt;T&gt;()}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>partial implementation of <a href="http://wg21.link/p0631">P0631</a> </p>
+<p>approximation of <a href="https://en.wikipedia.org/wiki/E_(mathematical_constant)">e</a>; primary variable template </p>
 
 </div>
 </div>
