@@ -151,6 +151,23 @@ namespace test_floor {
             cnl::floor(elastic_number<5, 5>{192})), "floor(elastic_number)");
 }
 
+namespace test_abs {
+    static_assert(identical(
+            elastic_number<24, -20>{0.5},
+            cnl::abs(elastic_number<24, -20>{0.5})), "abs(elastic_number)");
+    static_assert(identical(
+            elastic_number<31, -30>{0.5},
+            cnl::abs(elastic_number<31, -30>{0.5})), "abs(elastic_number)");
+#if defined(CNL_INT128_ENABLED)
+    static_assert(identical(
+            elastic_number<63, -30>{0.5},
+            cnl::abs(elastic_number<63, -30>{0.5})), "abs(elastic_number)");
+    static_assert(identical(
+            elastic_number<63, -31>{0.5},
+            cnl::abs(elastic_number<63, -31>{0.5})), "abs(elastic_number)");
+#endif
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // useful constants
 

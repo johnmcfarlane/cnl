@@ -39,6 +39,9 @@ static_assert(abs(fixed_point<cnl::int8, 0>(-123))==123, "cnl::abs test failed")
 static_assert(abs(fixed_point<cnl::int64, 0>(9223372036854775807))==9223372036854775807LL, "cnl::abs test failed");
 static_assert(abs(fixed_point<cnl::int64, 0>(-9223372036854775807))==9223372036854775807LL, "cnl::abs test failed");
 static_assert(abs(fixed_point<cnl::int16, 0>(-5))==5, "cnl::abs test failed");
+static_assert(abs(fixed_point<cnl::int64, -29>(-5LL))==5LL, "cnl::abs test failed");
+static_assert(abs(fixed_point<cnl::int64, -30>(-5LL))==5LL, "cnl::abs test failed");
+static_assert(abs(fixed_point<cnl::int64, -31>(-5LL))==5LL, "cnl::abs test failed");
 
 static_assert(abs(fixed_point<cnl::uint8, 0>(66))==66, "cnl::abs test failed");
 static_assert(abs(fixed_point<cnl::uint8, 0>(123))==123, "cnl::abs test failed");
