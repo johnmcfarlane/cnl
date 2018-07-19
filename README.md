@@ -78,7 +78,7 @@ However, it comes with a number of tests and benchmarks.
 
    * For Linux (in parallel using *N* cores):
 
-     `cmake --build . --target tests -- -j N`
+     `cmake --build . --target Tests -- -j N`
 
    * For Windows:
 
