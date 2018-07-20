@@ -13,6 +13,7 @@
 #include "constant.h"
 #include "limits.h"
 
+#include "bits/num_traits/digits.h"
 #include "bits/num_traits/set_digits.h"
 #include "bits/power.h"
 #include "bits/type_traits.h"
@@ -55,28 +56,6 @@ namespace cnl {
                 : std::integral_constant<bool, is_composite<typename std::decay<ArgHead>::type>::value || are_composite<ArgTail...>::value> {
         };
     }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // digits
-
-    template<typename T>
-    struct digits : std::integral_constant<int, numeric_limits<T>::digits> {
-        static_assert(numeric_limits<T>::is_specialized, "cnl::digits is not correctly specialized for T");
-    };
-
-#if (__cplusplus > 201402L)
-    template<class T>
-    constexpr int digits_v = digits<T>::value;
-#endif
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::digits<cnl::constant<>>
-
-    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct digits<constant<Value>> : std::integral_constant<
-            int,
-            _impl::used_digits((Value<0) ? -Value : Value)> {
-    };
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::is_integral
