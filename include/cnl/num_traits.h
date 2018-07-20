@@ -15,6 +15,7 @@
 
 #include "bits/num_traits/digits.h"
 #include "bits/num_traits/from_value.h"
+#include "bits/num_traits/scale.h"
 #include "bits/num_traits/set_digits.h"
 #include "bits/num_traits/shift.h"
 #include "bits/power.h"
@@ -135,26 +136,6 @@ namespace cnl {
                 _impl::enable_if_t<_impl::are_composite<Args ...>::value, int> dummy = 0>
         constexpr Result for_rep(F f, Args &&...args) {
             return for_rep<Result>(f, to_rep(std::forward<Args>(args))...);
-        }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::scale
-
-    // returns a scaled value of the same type
-    template<int Digits, int Radix, class S, class Enable=void>
-    struct scale {
-        constexpr S operator()(S const& s) const
-        {
-            return static_cast<S>(shift<Digits, Radix, S>()(s));
-        }
-    };
-
-    namespace _impl {
-        template<int Digits, class S=void>
-        constexpr S scale(S const& s)
-        {
-            return cnl::scale<Digits, numeric_limits<S>::radix, S>()(s);
         }
     }
 
