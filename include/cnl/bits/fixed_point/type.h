@@ -142,8 +142,8 @@ namespace cnl {
 
         /// constructor taking a cnl::constant object
         template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-        constexpr fixed_point(constant<Value>)
-                : fixed_point(from_rep<fixed_point<decltype(Value), 0>>{}(Value))
+        constexpr fixed_point(constant<Value> rhs)
+                : fixed_point(from_rep<fixed_point<typename decltype(rhs)::value_type, 0>>{}(Value))
         {
         }
 
