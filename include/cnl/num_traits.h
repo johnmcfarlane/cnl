@@ -21,6 +21,7 @@
 #include "bits/power.h"
 #include "bits/type_traits.h"
 #include "bits/type_traits/is_integral.h"
+#include "bits/type_traits/is_signed.h"
 #include "bits/type_traits/make_signed.h"
 #include "bits/type_traits/make_unsigned.h"
 #include "bits/used_digits.h"
@@ -65,13 +66,6 @@ namespace cnl {
     // cnl::is_integral
 
     using _impl::is_integral;
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::is_signed
-
-    template<class T>
-    struct is_signed : std::integral_constant<bool, numeric_limits<T>::is_signed> {
-    };
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::to_rep
