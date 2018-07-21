@@ -443,8 +443,8 @@ namespace cnl {
             using rep_result = typename _impl::op_result<OperationTag, lhs_rep, rhs_rep>;
 
             static constexpr int narrowest_width = _impl::max(
-                    digits<LhsNarrowest>::value + cnl::is_signed<LhsNarrowest>::value,
-                    digits<RhsNarrowest>::value + cnl::is_signed<RhsNarrowest>::value);
+                    width<LhsNarrowest>::value,
+                    width<RhsNarrowest>::value);
             using narrowest = set_digits_t<
                     _impl::set_signedness_t<rep_result, policy::is_signed>,
                     narrowest_width-policy::is_signed>;
