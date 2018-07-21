@@ -7,6 +7,7 @@
 #if !defined(CNL_ROUNDING_INTEGER_H)
 #define CNL_ROUNDING_INTEGER_H 1
 
+#include "bits/num_traits/scale.h"
 #include "bits/number_base.h"
 #include "bits/rounding.h"
 #include "bits/used_digits.h"

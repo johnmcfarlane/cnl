@@ -12,6 +12,8 @@
 
 #include "native_tag.h"
 #include "operators.h"
+#include "num_traits/for_rep.h"
+#include "num_traits/from_value.h"
 
 /// compositional numeric library
 namespace cnl {
