@@ -37,7 +37,7 @@ namespace cnl {
     struct digits<fixed_point<Rep, Exponent, Radix>> : digits<Rep> {
     };
 
-    template<typename Rep, int Exponent, int Radix, _digits_type MinNumBits>
+    template<typename Rep, int Exponent, int Radix, int MinNumBits>
     struct set_digits<fixed_point<Rep, Exponent, Radix>, MinNumBits> {
         using type = fixed_point<set_digits_t<Rep, MinNumBits>, Exponent, Radix>;
     };
@@ -105,16 +105,16 @@ namespace cnl {
 
         // cnl::_impl::fractional_digits
         template <class T>
-        struct fractional_digits : std::integral_constant<_digits_type, 0> {
+        struct fractional_digits : std::integral_constant<int, 0> {
         };
 
         template<typename Rep, int Exponent, int Radix>
-        struct fractional_digits<fixed_point<Rep, Exponent, Radix>> : std::integral_constant<_digits_type, -Exponent> {
+        struct fractional_digits<fixed_point<Rep, Exponent, Radix>> : std::integral_constant<int, -Exponent> {
         };
 
         // cnl::_impl::integer_digits
         template <class T>
-        struct integer_digits : std::integral_constant<_digits_type, digits<T>::value - fractional_digits<T>::value> {
+        struct integer_digits : std::integral_constant<int, digits<T>::value - fractional_digits<T>::value> {
         };
     }
 }

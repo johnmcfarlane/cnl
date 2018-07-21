@@ -60,10 +60,10 @@ namespace cnl {
     }
 
     template<int Digits, class Narrowest>
-    struct digits<elastic_integer<Digits, Narrowest>> : std::integral_constant<_digits_type, Digits> {
+    struct digits<elastic_integer<Digits, Narrowest>> : std::integral_constant<int, Digits> {
     };
 
-    template<int Digits, class Narrowest, _digits_type MinNumBits>
+    template<int Digits, class Narrowest, int MinNumBits>
     struct set_digits<elastic_integer<Digits, Narrowest>, MinNumBits> {
         using type = elastic_integer<MinNumBits, Narrowest>;
     };
@@ -220,7 +220,7 @@ namespace cnl {
     namespace _elastic_integer_impl {
         template<bool Signed>
         struct machine_digits {
-            static constexpr _digits_type value =
+            static constexpr int value =
                     cnl::digits<typename std::conditional<Signed, signed, unsigned>::type>::value;
         };
 
@@ -411,7 +411,7 @@ namespace cnl {
             using rhs_rep = typename rhs::rep;
             using rep_result = typename _impl::op_result<OperationTag, lhs_rep, rhs_rep>;
 
-            static constexpr _digits_type narrowest_width = _impl::max(
+            static constexpr int narrowest_width = _impl::max(
                     digits<LhsNarrowest>::value + cnl::is_signed<LhsNarrowest>::value,
                     digits<RhsNarrowest>::value + cnl::is_signed<RhsNarrowest>::value);
             using narrowest = set_digits_t<_impl::make_signed_t<rep_result, policy::is_signed>, narrowest_width-policy::is_signed>;
