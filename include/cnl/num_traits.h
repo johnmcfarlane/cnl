@@ -15,6 +15,7 @@
 
 #include "bits/num_traits/digits.h"
 #include "bits/num_traits/for_rep.h"
+#include "bits/num_traits/from_rep.h"
 #include "bits/num_traits/from_value.h"
 #include "bits/num_traits/is_composite.h"
 #include "bits/num_traits/scale.h"
@@ -38,34 +39,6 @@ namespace cnl {
     // cnl::is_integral
 
     using _impl::is_integral;
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::from_rep
-
-    /// \brief generic function object that returns the number encapsulating a given value
-    ///
-    /// \tparam Number archetype for the encapsulating type
-    ///
-    /// \note Rather than returning Number, invocation may return an alternative
-    /// template instantiation based on input parameter.
-    /// \sa to_rep, from_value
-    template<class Number, class Enable = void>
-    struct from_rep;
-
-    /// \brief Specialization of \ref from_rep for integer types
-    ///
-    /// \tparam Number fundamental integer type to return
-    ///
-    /// \note This specialization *does* return integers of type, \c Number
-    /// \sa to_rep, from_value
-    template<class Number>
-    struct from_rep<Number, _impl::enable_if_t<cnl::is_integral<Number>::value>> {
-        template<class Rep>
-        constexpr Number operator()(Rep const& rep) const {
-            // by default, a number type's rep type is the number type itself
-            return static_cast<Number>(rep);
-        }
-    };
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::_impl::width / set_width
