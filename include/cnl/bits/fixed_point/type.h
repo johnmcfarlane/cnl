@@ -11,6 +11,7 @@
 #define CNL_FIXED_POINT_DEF_H 1
 
 #include <cnl/bits/power.h>
+#include <cnl/bits/num_traits/width.h>
 #include <cnl/bits/number_base.h>
 #include <cnl/constant.h>
 #include <cnl/numeric.h>
