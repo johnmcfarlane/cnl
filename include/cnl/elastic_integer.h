@@ -12,6 +12,7 @@
 
 #include "constant.h"
 
+#include "bits/num_traits/width.h"
 #include "bits/number_base.h"
 
 /// compositional numeric library
