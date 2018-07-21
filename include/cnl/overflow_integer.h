@@ -113,7 +113,7 @@ namespace cnl {
     struct digits<overflow_integer<Rep, OverflowTag>> : digits<Rep> {
     };
 
-    template<class Rep, class OverflowTag, _digits_type MinNumBits>
+    template<class Rep, class OverflowTag, int MinNumBits>
     struct set_digits<overflow_integer<Rep, OverflowTag>, MinNumBits> {
         using type = overflow_integer<set_digits_t<Rep, MinNumBits>, OverflowTag>;
     };

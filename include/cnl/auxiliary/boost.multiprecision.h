@@ -38,15 +38,15 @@ namespace cnl {
 
     template<unsigned NumBits, _bmp::cpp_int_check_type Checked, class Allocator>
     struct digits<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude, Checked, Allocator>>
-            : std::integral_constant<_digits_type, NumBits-1> {
+            : std::integral_constant<int, NumBits-1> {
     };
 
     template<unsigned NumBits, _bmp::cpp_int_check_type Checked, class Allocator>
     struct digits<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude, Checked, Allocator>>
-            : std::integral_constant<_digits_type, NumBits> {
+            : std::integral_constant<int, NumBits> {
     };
 
-    template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator, _digits_type MinNumDigits>
+    template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator, int MinNumDigits>
     struct set_digits<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked, Allocator>, MinNumDigits> {
         static constexpr unsigned width = MinNumDigits + (SignType == _bmp::signed_magnitude);
         using type = _bmp::cpp_int_backend<width, width, SignType, Checked, Allocator>;
@@ -81,7 +81,7 @@ namespace cnl {
     : digits<Backend> {
     };
 
-    template<class Backend, _bmp::expression_template_option ExpressionTemplates, _digits_type MinNumDigits>
+    template<class Backend, _bmp::expression_template_option ExpressionTemplates, int MinNumDigits>
     struct set_digits<_bmp::number<Backend, ExpressionTemplates>, MinNumDigits> {
         using type = _bmp::number<set_digits_t<Backend, MinNumDigits>, ExpressionTemplates>;
     };
