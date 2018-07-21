@@ -14,6 +14,7 @@
 #include "limits.h"
 
 #include "bits/num_traits/digits.h"
+#include "bits/num_traits/for_rep.h"
 #include "bits/num_traits/from_value.h"
 #include "bits/num_traits/is_composite.h"
 #include "bits/num_traits/scale.h"
@@ -64,24 +65,6 @@ namespace cnl {
             return static_cast<Number>(rep);
         }
     };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::_impl::for_rep
-
-    namespace _impl {
-        // invoke a given generic lambda on given parameters
-        template<class Result, class F, class ... Args,
-                _impl::enable_if_t<!_impl::are_composite<Args ...>::value, int> dummy = 0>
-        constexpr Result for_rep(F f, Args &&...args) {
-            return f(std::forward<Args>(args)...);
-        }
-
-        template<class Result, class F, class ... Args,
-                _impl::enable_if_t<_impl::are_composite<Args ...>::value, int> dummy = 0>
-        constexpr Result for_rep(F f, Args &&...args) {
-            return for_rep<Result>(f, to_rep(std::forward<Args>(args))...);
-        }
-    }
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::_impl::width / set_width
