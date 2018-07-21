@@ -15,6 +15,7 @@
 
 #include "bits/power.h"
 #include "bits/type_traits.h"
+#include "bits/type_traits/is_integral.h"
 #include "bits/used_digits.h"
 
 #include <utility>
@@ -213,7 +214,7 @@ namespace cnl {
     struct set_digits;
 
     template<class T, _digits_type Digits>
-    struct set_digits<T, Digits, _impl::enable_if_t<std::is_integral<T>::value>>
+    struct set_digits<T, Digits, _impl::enable_if_t<_impl::is_integral<T>::value>>
             : _impl::set_digits_integer<T, Digits> {
     };
 
@@ -236,19 +237,7 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::is_integral
 
-    template<class T>
-    struct is_integral : std::is_integral<T> {
-    };
-
-#if defined(CNL_INT128_ENABLED)
-    template<>
-    struct is_integral<int128> : std::integral_constant<bool, true> {
-    };
-
-    template<>
-    struct is_integral<uint128> : std::integral_constant<bool, true> {
-    };
-#endif
+    using _impl::is_integral;
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::is_signed
