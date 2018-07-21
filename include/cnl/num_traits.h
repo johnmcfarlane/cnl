@@ -18,6 +18,7 @@
 #include "bits/num_traits/scale.h"
 #include "bits/num_traits/set_digits.h"
 #include "bits/num_traits/shift.h"
+#include "bits/num_traits/to_rep.h"
 #include "bits/power.h"
 #include "bits/type_traits.h"
 #include "bits/type_traits/is_integral.h"
@@ -67,25 +68,6 @@ namespace cnl {
     // cnl::is_integral
 
     using _impl::is_integral;
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::to_rep
-
-    /// \brief Returns the value encapsulated in \c number
-    /// \param number the 'outer' object
-    /// \return the 'inner' value
-    /// \sa from_rep, from_value
-    template<class Number>
-    constexpr Number to_rep(Number const& number) {
-        return number;
-    }
-
-    namespace _impl {
-        using cnl::to_rep;
-
-        template<class Number>
-        using to_rep_t = decltype(to_rep(std::declval<Number>()));
-    }
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_rep
