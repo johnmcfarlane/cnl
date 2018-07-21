@@ -18,6 +18,8 @@
 #include "bits/power.h"
 #include "bits/type_traits.h"
 #include "bits/type_traits/is_integral.h"
+#include "bits/type_traits/make_signed.h"
+#include "bits/type_traits/make_unsigned.h"
 #include "bits/used_digits.h"
 
 #include <utility>
@@ -67,53 +69,6 @@ namespace cnl {
     template<class T>
     struct is_signed : std::integral_constant<bool, numeric_limits<T>::is_signed> {
     };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::make_signed
-
-    template<class, class = void>
-    struct make_signed;
-
-    template<class T>
-    struct make_signed<T, _impl::enable_if_t<std::is_integral<T>::value>> : std::make_signed<T> {
-    };
-
-    template<class T>
-    using make_signed_t = typename make_signed<T>::type;
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::make_unsigned
-
-    template<class, class = void>
-    struct make_unsigned;
-
-    template<class T>
-    struct make_unsigned<T, _impl::enable_if_t<std::is_integral<T>::value>> : std::make_unsigned<T> {
-    };
-
-#if defined(CNL_INT128_ENABLED)
-    // TODO: cnl::is_integral
-    template<>
-    struct make_unsigned<int128> {
-        using type = uint128;
-    };
-    template<>
-    struct make_unsigned<uint128> {
-        using type = uint128;
-    };
-
-    template<>
-    struct make_signed<int128> {
-        using type = int128;
-    };
-    template<>
-    struct make_signed<uint128> {
-        using type = int128;
-    };
-#endif
-
-    template<class T>
-    using make_unsigned_t = typename make_unsigned<T>::type;
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::to_rep
