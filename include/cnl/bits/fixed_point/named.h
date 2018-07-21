@@ -11,6 +11,7 @@
 #define CNL_FIXED_POINT_NAMED_H 1
 
 #include <cnl/bits/common.h>
+#include <cnl/bits/num_traits/scale.h>
 #include "num_traits.h"
 
 /// compositional numeric library

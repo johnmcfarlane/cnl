@@ -8,6 +8,7 @@
 #define CNL_BITS_NUM_TRAITS_SHIFT
 
 #include <cnl/bits/power.h>
+#include <cnl/bits/type_traits.h>
 #include <cnl/bits/type_traits/is_integral.h>
 
 namespace cnl {
