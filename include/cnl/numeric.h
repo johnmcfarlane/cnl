@@ -12,6 +12,7 @@
 
 #include "bit.h"
 
+#include "bits/num_traits/for_rep.h"
 #include "bits/used_digits.h"
 
 /// compositional numeric library

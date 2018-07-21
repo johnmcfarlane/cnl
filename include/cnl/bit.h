@@ -11,7 +11,9 @@
 #define CNL_BIT_H
 
 #include "cnlint.h"
-#include "num_traits.h"
+#include "bits/num_traits/digits.h"
+#include "bits/type_traits/is_signed.h"
+#include "bits/type_traits/make_unsigned.h"
 
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////

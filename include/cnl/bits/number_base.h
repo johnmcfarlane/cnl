@@ -7,9 +7,15 @@
 #if !defined(CNL_NUMBER_BASE_H)
 #define CNL_NUMBER_BASE_H 1
 
+#include <cnl/bits/num_traits/from_rep.h>
+#include <cnl/bits/num_traits/from_value.h>
+#include <cnl/bits/num_traits/is_composite.h>
+#include <cnl/bits/num_traits/shift.h>
+#include <cnl/bits/num_traits/to_rep.h>
 #include <cnl/bits/operators.h>
+#include <cnl/bits/type_traits/make_signed.h>
+#include <cnl/bits/type_traits/make_unsigned.h>
 #include <cnl/constant.h>
-#include <cnl/num_traits.h>
 
 namespace cnl {
     namespace _impl {
@@ -153,8 +159,8 @@ namespace cnl {
                 Operator, Lhs, Rhs,
                 enable_if_t<is_wrappable<Lhs, Rhs>::value && is_derived_from_number_base<Rhs>::value>> {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(from_value<Rhs>(lhs), rhs)) {
-                return Operator()(from_value<Rhs>(lhs), rhs);
+            -> decltype(Operator()(make_number<Rhs>(lhs), rhs)) {
+                return Operator()(make_number<Rhs>(lhs), rhs);
             }
         };
 
@@ -164,9 +170,9 @@ namespace cnl {
                 Operator, Lhs, Rhs,
                 enable_if_t<is_derived_from_number_base<Lhs>::value && is_wrappable<Rhs, Lhs>::value>> {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(lhs, from_value<Lhs>(rhs)))
+            -> decltype(Operator()(lhs, make_number<Lhs>(rhs)))
             {
-                return Operator()(lhs, from_value<Lhs>(rhs));
+                return Operator()(lhs, make_number<Lhs>(rhs));
             }
         };
 

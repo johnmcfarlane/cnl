@@ -93,7 +93,7 @@ TEST(index, basic_arithmetic_example)
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [advanced arithmetic example]
-#include <iomanip>
+using cnl::elastic_number;
 
 void advanced_arithmetic_example()
 {
@@ -103,18 +103,18 @@ void advanced_arithmetic_example()
     // 15.9375 * 15.9375 = 254.00390625 ... overflow!
     cout << fixed_point<uint8_t, -4>{x*x} << endl;  // "14" instead!
 
-    // fixed-point multiplication operator widens result
+    // fixed-point multiplication operator obeys usual promotion and implicit conversion rules
     auto xx = x*x;
 
     // x*x is promoted to fixed_point<int, -8>
     static_assert(is_same<decltype(xx), fixed_point<int, -8>>::value, "");
     cout << setprecision(12) << xx << endl;  // "254.00390625" - correct
 
-    // you can avoid the pitfalls of integer promotion using the multiply function
-    auto named_xx = multiply(x, x);
+    // you can avoid the pitfalls of integer promotion for good by using the elastic_number type
+    auto named_xx = make_elastic_number(x) * make_elastic_number(x);
 
-    // multiply result is same as underlying representation's operation
-    static_assert(is_same<decltype(named_xx), fixed_point<uint16_t, -8>>::value, "");
+    // this type tracks both the number of digits and the exponent to ensure lossless multiplication
+    static_assert(is_same<decltype(named_xx), elastic_number<16, -8, unsigned>>::value, "");
     cout << named_xx << endl;  // "254.00390625" - also correct but prone to overflow
 }
 //! [advanced arithmetic example]

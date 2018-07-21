@@ -27,48 +27,56 @@ namespace {
     namespace test_from_value {
 #if defined(CNL_INT128_ENABLED)
         static_assert(identical(cnl::from_value_t<cnl::uint128, int>{123}, 123), "cnl::from_value_t<cnl::uint128, int>");
-        static_assert(identical(cnl::_impl::from_value<cnl::uint128>(123), 123), "cnl::_impl::from_value<cnl::uint128>");
+        static_assert(
+                identical(
+                        cnl::_impl::make_number<cnl::uint128>(123),
+                        123),
+                "cnl::_impl::make_number<cnl::uint128>");
 #endif
 
-        static_assert(identical(cnl::_impl::from_value<cnl::uint8>(123), 123), "cnl::_impl::from_value<cnl::uint8>");
+        static_assert(identical(cnl::_impl::make_number<cnl::uint8>(123), 123), "cnl::_impl::make_number<cnl::uint8>");
         static_assert(identical(
-                cnl::_impl::from_value<cnl::uint64>(cnl::int8{123}),
-                cnl::int8{123}), "cnl::_impl::from_value<cnl::uint64>(cnl::int8)");
+                cnl::_impl::make_number<cnl::uint64>(cnl::int8{123}),
+                cnl::int8{123}), "cnl::_impl::make_number<cnl::uint64>(cnl::int8)");
 
-        static_assert(identical(cnl::_impl::from_value<long>(123LL), 123LL), "cnl::_impl::from_value<cnl::uint8>");
-        static_assert(identical(cnl::_impl::from_value<long long>(123LL), 123LL), "cnl::_impl::from_value<cnl::uint8>");
-        static_assert(identical(cnl::_impl::from_value<long>(123L), 123L), "cnl::_impl::from_value<cnl::uint8>");
-        static_assert(identical(cnl::_impl::from_value<long long>(123L), 123L), "cnl::_impl::from_value<cnl::uint8>");
+        static_assert(identical(cnl::_impl::make_number<long>(123LL), 123LL), "cnl::_impl::make_number<cnl::uint8>");
+        static_assert(
+                identical(
+                        cnl::_impl::make_number<long long>(123LL),
+                        123LL),
+                "cnl::_impl::make_number<cnl::uint8>");
+        static_assert(identical(cnl::_impl::make_number<long>(123L), 123L), "cnl::_impl::make_number<cnl::uint8>");
+        static_assert(identical(cnl::_impl::make_number<long long>(123L), 123L), "cnl::_impl::make_number<cnl::uint8>");
 
-        static_assert(identical(std::int16_t{123}, cnl::_impl::from_value<std::int16_t>(std::int16_t{123})),
-                "cnl::_impl::from_value<std::int16_t, std::int16_t>");
-        static_assert(identical(std::int32_t{123}, cnl::_impl::from_value<std::int16_t>(std::int32_t{123})),
-                "cnl::_impl::from_value<std::int16_t, std::int32_t>");
-        static_assert(identical(std::int64_t{123}, cnl::_impl::from_value<std::int16_t>(std::int64_t{123})),
-                "cnl::_impl::from_value<std::int16_t, std::int64_t>");
-        static_assert(identical(std::int16_t{123}, cnl::_impl::from_value<std::int32_t>(std::int16_t{123})),
-                "cnl::_impl::from_value<std::int32_t, std::int16_t>");
-        static_assert(identical(std::int32_t{123}, cnl::_impl::from_value<std::int32_t>(std::int32_t{123})),
-                "cnl::_impl::from_value<std::int32_t, std::int32_t>");
-        static_assert(identical(std::int64_t{123}, cnl::_impl::from_value<std::int32_t>(std::int64_t{123})),
-                "cnl::_impl::from_value<std::int32_t, std::int64_t>");
-        static_assert(identical(std::int16_t{123}, cnl::_impl::from_value<std::int64_t>(std::int16_t{123})),
-                "cnl::_impl::from_value<std::int64_t, std::int16_t>");
-        static_assert(identical(std::int32_t{123}, cnl::_impl::from_value<std::int64_t>(std::int32_t{123})),
-                "cnl::_impl::from_value<std::int64_t, std::int32_t>");
-        static_assert(identical(std::int64_t{123}, cnl::_impl::from_value<std::int64_t>(std::int64_t{123})),
-                "cnl::_impl::from_value<std::int64_t, std::int64_t>");
+        static_assert(identical(std::int16_t{123}, cnl::_impl::make_number<std::int16_t>(std::int16_t{123})),
+                "cnl::_impl::make_number<std::int16_t, std::int16_t>");
+        static_assert(identical(std::int32_t{123}, cnl::_impl::make_number<std::int16_t>(std::int32_t{123})),
+                "cnl::_impl::make_number<std::int16_t, std::int32_t>");
+        static_assert(identical(std::int64_t{123}, cnl::_impl::make_number<std::int16_t>(std::int64_t{123})),
+                "cnl::_impl::make_number<std::int16_t, std::int64_t>");
+        static_assert(identical(std::int16_t{123}, cnl::_impl::make_number<std::int32_t>(std::int16_t{123})),
+                "cnl::_impl::make_number<std::int32_t, std::int16_t>");
+        static_assert(identical(std::int32_t{123}, cnl::_impl::make_number<std::int32_t>(std::int32_t{123})),
+                "cnl::_impl::make_number<std::int32_t, std::int32_t>");
+        static_assert(identical(std::int64_t{123}, cnl::_impl::make_number<std::int32_t>(std::int64_t{123})),
+                "cnl::_impl::make_number<std::int32_t, std::int64_t>");
+        static_assert(identical(std::int16_t{123}, cnl::_impl::make_number<std::int64_t>(std::int16_t{123})),
+                "cnl::_impl::make_number<std::int64_t, std::int16_t>");
+        static_assert(identical(std::int32_t{123}, cnl::_impl::make_number<std::int64_t>(std::int32_t{123})),
+                "cnl::_impl::make_number<std::int64_t, std::int32_t>");
+        static_assert(identical(std::int64_t{123}, cnl::_impl::make_number<std::int64_t>(std::int64_t{123})),
+                "cnl::_impl::make_number<std::int64_t, std::int64_t>");
 
         // assumes that int === int32_t
-        static_assert(identical(123, cnl::_impl::from_value<std::int16_t>(cnl::constant<123>{})),
-                "cnl::_impl::from_value<std::int16_t, cnl::constant<std::int64_t>>");
-        static_assert(identical(123, cnl::_impl::from_value<std::int64_t>(cnl::constant<123>{})),
-                "cnl::_impl::from_value<std::int64_t, cnl::constant<std::int64_t>>");
+        static_assert(identical(123, cnl::_impl::make_number<std::int16_t>(cnl::constant<123>{})),
+                "cnl::_impl::make_number<std::int16_t, cnl::constant<std::int64_t>>");
+        static_assert(identical(123, cnl::_impl::make_number<std::int64_t>(cnl::constant<123>{})),
+                "cnl::_impl::make_number<std::int64_t, cnl::constant<std::int64_t>>");
         static_assert(
                 identical(
                         INT64_C(0x123456789abcdef),
-                        cnl::_impl::from_value<std::int16_t>(cnl::constant<0x123456789abcdef>{})),
-                "cnl::_impl::from_value<std::int16_t, cnl::constant<std::int64_t>>");
+                        cnl::_impl::make_number<std::int16_t>(cnl::constant<0x123456789abcdef>{})),
+                "cnl::_impl::make_number<std::int16_t, cnl::constant<std::int64_t>>");
     }
 
     namespace test_set_digits {
@@ -140,17 +148,5 @@ namespace {
         static_assert(identical(cnl::_impl::shift<5, 3, int32_t>(1), 243), "cnl::_impl::shift test failed");
         static_assert(identical(cnl::_impl::shift<9, 4, uint64_t>(7), UINT64_C(1835008)),
                 "cnl::_impl::shift test failed");
-    }
-
-    namespace test_is_integer_or_float {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::is_integer_or_float
-
-        using cnl::_impl::is_integer_or_float;
-        static_assert(is_integer_or_float<uint8_t>::value, "cnl::_integer_impl::is_integer_or_float test failed");
-        static_assert(is_integer_or_float<float>::value, "cnl::_integer_impl::is_integer_or_float test failed");
-        static_assert(!is_integer_or_float<void>::value, "cnl::_integer_impl::is_integer_or_float test failed");
-        static_assert(!is_integer_or_float<int *>::value, "cnl::_integer_impl::is_integer_or_float test failed");
-        static_assert(!is_integer_or_float<std::string>::value, "cnl::_integer_impl::is_integer_or_float test failed");
     }
 }

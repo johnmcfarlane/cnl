@@ -180,7 +180,7 @@ endif ()
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     set(TEST_CXX_FLAGS "")
 else ()
-    set(TEST_CXX_FLAGS "-Wconversion -Wno-sign-conversion")
+    set(TEST_CXX_FLAGS "-Wconversion -Wno-sign-conversion -ftemplate-backtrace-limit=0")
 endif ()
 
 set(SANITIZE OFF CACHE BOOL "compile with UB sanitizer enabled")

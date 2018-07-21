@@ -298,7 +298,7 @@ namespace test_is_composite {
     using cnl::is_composite;
 
     static_assert(is_composite<fixed_point<test_int>>::value, "cnl::is_composite<fixed_point<>> test failed");
-    static_assert(cnl::_num_traits_impl::are_composite<fixed_point<test_int>>::value, "cnl::is_composite<fixed_point<>> test failed");
+    static_assert(cnl::_impl::are_composite<fixed_point<test_int>>::value, "cnl::is_composite<fixed_point<>> test failed");
 }
 
 namespace test_to_rep {
@@ -316,16 +316,16 @@ namespace test_from_rep {
     static_assert(cnl::from_rep<fixed_point<test_int, 1000>>{}(test_int{1}), "from_rep");
 }
 
-namespace test_from_value {
-    static_assert(identical(fixed_point<short>{123}, cnl::_impl::from_value<fixed_point<long long>>(short{123})),
-            "cnl::_impl::from_value<fixed_point<>>");
-    static_assert(identical(fixed_point<std::uint64_t>{404}, cnl::_impl::from_value<fixed_point<>>(UINT64_C(404))),
-            "cnl::_impl::from_value<fixed_point<>, cnl::constant<4>>()");
+namespace test_impl_make_number {
+    static_assert(identical(fixed_point<short>{123}, cnl::_impl::make_number<fixed_point<long long>>(short{123})),
+            "cnl::_impl::make_number<fixed_point<>>");
+    static_assert(identical(fixed_point<std::uint64_t>{404}, cnl::_impl::make_number<fixed_point<>>(UINT64_C(404))),
+            "cnl::_impl::make_number<fixed_point<>, cnl::constant<4>>()");
 
-    static_assert(identical(cnl::_impl::from_value<fixed_point<int32>>(cnl::constant<369>{}), fixed_point<int>{369}),
-            "cnl::_impl::from_value<fixed_point<>>");
-    static_assert(identical(fixed_point<int, 2>{4}, cnl::_impl::from_value<fixed_point<>>(cnl::constant<4>{})),
-            "cnl::_impl::from_value<fixed_point<>, cnl::constant<4>>()");
+    static_assert(identical(cnl::_impl::make_number<fixed_point<int32>>(cnl::constant<369>{}), fixed_point<int>{369}),
+            "cnl::_impl::make_number<fixed_point<>>");
+    static_assert(identical(fixed_point<int, 2>{4}, cnl::_impl::make_number<fixed_point<>>(cnl::constant<4>{})),
+            "cnl::_impl::make_number<fixed_point<>, cnl::constant<4>>()");
 }
 
 #if defined(__cpp_deduction_guides)
@@ -539,13 +539,10 @@ namespace test_arithmetic {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::multiply
+// multiplication
 
 static_assert(cnl::numeric_limits<uint8>::max()/5==51, "");
 static_assert(cnl::numeric_limits<uint8>::max()/3==85, "");
-
-static_assert(identical(multiply(fixed_point<uint8, -4>{2}, fixed_point<uint8, -4>{7.5}), fixed_point<uint16, -8>{15}),
-        "cnl::multiply test failed");
 
 namespace test_divide {
     static_assert(
@@ -655,30 +652,20 @@ static_assert(identical(-16776450.564086914f, 765.432f-fixed_point<int64, -32>(1
         "cnl::fixed_point subtraction test failed");
 
 // multiplication
-static_assert(identical(multiply(fixed_point<uint8>{0x55}, fixed_point<uint8>{2}), fixed_point<uint16, 0>{0xaa}),
-        "cnl::fixed_point test failed");
 static_assert(identical(fixed_point<uint8>{0x55} * fixed_point<uint8>{2}, fixed_point<test_int, 0>{0xaa}),
         "cnl::fixed_point test failed");
 
-static_assert(identical(multiply(fixed_point<int32, -16>{123.75}, fixed_point<int32, -16>{44.5}), fixed_point<int64, -32>{5506.875}),
-        "cnl::fixed_point test failed");
 static_assert(identical(fixed_point<int64, -16>{123.75} * fixed_point<int32, -16>(44.5), fixed_point<int64, -32>{5506.875}),
         "cnl::fixed_point test failed");
 
-static_assert(identical(multiply(fixed_point<int8, -5>{2.125}, fixed_point<int8, -5>{-3.25}), fixed_point<int16, -10>{-6.90625}),
-        "cnl::fixed_point multiplication test failed");
 static_assert(
         identical(fixed_point<int8, -5>{2.125} * fixed_point<int8, -5>{-3.25}, fixed_point<test_int, -10>{-6.90625}),
         "cnl::fixed_point multiplication test failed");
 
 #if defined(__clang__)
-static_assert(identical(multiply(fixed_point<uint8, 10>{10240}, 3u), fixed_point<uint64, 10>{30720}),
-        "cnl::fixed_point multiplication test failed");
 static_assert(identical(fixed_point<uint8, 10>{10240} * 3u, fixed_point<test_unsigned, 10>{30720}),
         "cnl::fixed_point multiplication test failed");
 
-static_assert(identical(multiply(3u, fixed_point<uint8, 10>{10240}), fixed_point<uint64, 10>{30720}),
-        "cnl::fixed_point multiplication test failed");
 static_assert(identical(3u * uint8{4}, test_unsigned{12}), "cnl::fixed_point multiplication test failed");
 static_assert(identical(3u * fixed_point<uint8, 10>{10240}, fixed_point<test_unsigned, 10>{30720}),
         "cnl::fixed_point multiplication test failed");

@@ -78,16 +78,18 @@ namespace {
                     "cnl::from_rep<rounding_integer> test failed");
         }
 
-        namespace test_from_value {
-            using cnl::_impl::from_value;
-
-            static_assert(identical(
+        namespace test_impl_make_number {
+            static_assert(
+                    identical(
                     rounding_integer<long long>{9876543210LL},
-                    from_value<rounding_integer<long>>(9876543210LL)), "cnl::from_value<rounding_integer> test failed");
-            static_assert(identical(
-                    rounding_integer<long long>{9876543210LL},
-                    from_value<rounding_integer<short>>(rounding_integer<long long>{9876543210LL})),
-                    "cnl::from_value<rounding_integer> test failed");
+                            cnl::_impl::make_number<rounding_integer<long>>(9876543210LL)),
+                    "cnl::_impl::make_number<rounding_integer> test failed");
+            static_assert(
+                    identical(
+                            rounding_integer<long long>{9876543210LL},
+                            cnl::_impl::make_number<rounding_integer<short>>(
+                                    rounding_integer<long long>{9876543210LL})),
+                    "cnl::_impl::make_number<rounding_integer> test failed");
         }
     }
     

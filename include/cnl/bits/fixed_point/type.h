@@ -11,6 +11,7 @@
 #define CNL_FIXED_POINT_DEF_H 1
 
 #include <cnl/bits/power.h>
+#include <cnl/bits/num_traits/width.h>
 #include <cnl/bits/number_base.h>
 #include <cnl/constant.h>
 #include <cnl/numeric.h>
@@ -136,7 +137,7 @@ namespace cnl {
         constexpr fixed_point(fixed_point<FromRep, FromExponent, Radix> const& rhs)
                 : _base(
                 static_cast<Rep>(_impl::shift<FromExponent-exponent, Radix>(
-                        _impl::from_value<Rep>(cnl::to_rep(rhs)))))
+                        _impl::make_number<Rep>(cnl::to_rep(rhs)))))
         {
         }
 
@@ -150,7 +151,7 @@ namespace cnl {
         /// constructor taking an integer type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         constexpr fixed_point(S const& s)
-                : _base(static_cast<Rep>(_impl::shift<-exponent, Radix>(_impl::from_value<Rep>(s))))
+                : _base(static_cast<Rep>(_impl::shift<-exponent, Radix>(_impl::make_number<Rep>(s))))
         {
         }
 

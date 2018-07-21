@@ -81,9 +81,28 @@ namespace cnl {
     /// \snippet snippets.cpp define a byte-sized object using \ref make_elastic_number and \ref _c
     ///
     /// \brief generate an \ref cnl::elastic_number object of given value
-    template<class Narrowest = int, class Integral = int>
-    constexpr elastic_number<numeric_limits<Integral>::digits, 0, Narrowest>
-    make_elastic_number(Integral value)
+    template<typename Narrowest = void, typename Integral = int>
+    constexpr elastic_number<
+            numeric_limits<Integral>::digits,
+            0,
+            typename std::conditional<
+                    std::is_same<void, Narrowest>::value,
+                    typename std::conditional<is_signed<Integral>::value, signed, unsigned>::type,
+                    Narrowest>::type>
+    make_elastic_number(Integral const& value)
+    {
+        return {value};
+    }
+
+    template<typename Narrowest = void, typename Rep = int, int Exponent = 0, int Radix = 2>
+    constexpr elastic_number<
+            numeric_limits<Rep>::digits,
+            Exponent,
+            typename std::conditional<
+                    std::is_same<void, Narrowest>::value,
+                    typename std::conditional<is_signed<Rep>::value, signed, unsigned>::type,
+                    Narrowest>::type>
+    make_elastic_number(fixed_point<Rep, Exponent, Radix> const& value)
     {
         return {value};
     }
