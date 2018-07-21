@@ -15,6 +15,7 @@
 
 #include "bits/num_traits/digits.h"
 #include "bits/num_traits/from_value.h"
+#include "bits/num_traits/is_composite.h"
 #include "bits/num_traits/scale.h"
 #include "bits/num_traits/set_digits.h"
 #include "bits/num_traits/shift.h"
@@ -31,38 +32,6 @@
 
 /// compositional numeric library
 namespace cnl {
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::is_composite (default specialization)
-
-    template<class T, class Enable = void>
-    struct is_composite : std::false_type {
-        static_assert(!std::is_reference<T>::value, "T is a reference");
-        static_assert(!std::is_const<T>::value, "T is const");
-        static_assert(!std::is_volatile<T>::value, "T is volatile");
-    };
-
-#if (__cplusplus > 201402L)
-    template<class T>
-    constexpr auto is_composite_v = is_composite<T>::value;
-#endif
-
-    namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::are_composite
-
-        template<class ... Args>
-        struct are_composite;
-
-        template<>
-        struct are_composite<> : std::false_type {
-        };
-
-        template<class ArgHead, class ... ArgTail>
-        struct are_composite<ArgHead, ArgTail...>
-                : std::integral_constant<bool, is_composite<typename std::decay<ArgHead>::type>::value || are_composite<ArgTail...>::value> {
-        };
-    }
-
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::is_integral
 
