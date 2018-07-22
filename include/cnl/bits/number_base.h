@@ -17,6 +17,8 @@
 #include <cnl/bits/type_traits/make_unsigned.h>
 #include <cnl/constant.h>
 
+#include <utility>
+
 namespace cnl {
     namespace _impl {
         template<class Derived, class Rep>

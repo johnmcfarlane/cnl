@@ -10,6 +10,8 @@
 #include <cnl/limits.h>
 #include <cnl/cnlint.h>
 
+#include <type_traits>
+
 namespace {
     // Sanity tests: if any of these fail, please proceed with caution!
     // The author would be very interested to learn more.

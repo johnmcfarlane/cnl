@@ -7,6 +7,8 @@
 #ifndef CNL_BITS_USED_DIGITS_H
 #define CNL_BITS_USED_DIGITS_H
 
+#include <type_traits>
+
 namespace cnl {
     namespace _impl {
 

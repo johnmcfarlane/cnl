@@ -9,8 +9,6 @@
 #if !defined(CNL_COMMON_H)
 #define CNL_COMMON_H 1
 
-#include <utility>
-
 #define CNL_STR_HELPER(x) #x
 #define CNL_STR(x) CNL_STR_HELPER(x)
 
