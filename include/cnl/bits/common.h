@@ -31,13 +31,6 @@ namespace cnl {
         {
             return (a<b) ? a : b;
         }
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::deleted_fn
-
-        // a great function to call if you need a compiler error
-        template<typename T>
-        constexpr T deleted_fn() = delete;
     }
 }
 
