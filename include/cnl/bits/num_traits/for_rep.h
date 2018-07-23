@@ -25,6 +25,7 @@ namespace cnl {
         template<class Result, class F, class ... Args,
                 _impl::enable_if_t<_impl::are_composite<Args ...>::value, int> dummy = 0>
         constexpr Result for_rep(F f, Args &&...args) {
+            using cnl::to_rep;
             return for_rep<Result>(f, to_rep(std::forward<Args>(args))...);
         }
     }
