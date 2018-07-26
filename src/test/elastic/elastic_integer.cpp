@@ -426,8 +426,8 @@ namespace {
     }
 
     namespace test_power {
-        static_assert(identical(cnl::elastic_integer<11>{1024}, cnl::_impl::power<cnl::elastic_integer<1>, 10, 2>()),
-        "cnl::_impl::power test failed");
+        static_assert(identical(cnl::elastic_integer<11>{1024}, cnl::power<cnl::elastic_integer<1>, 10, 2>()),
+        "cnl::power test failed");
     }
 
     namespace test_shift {

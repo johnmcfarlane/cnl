@@ -101,12 +101,20 @@ namespace cnl {
             }
         };
 
-        template<typename S, int Exponent, int Radix>
-        constexpr auto power()
-        -> decltype(default_power<S, Exponent, Radix>{}())
-        {
-            return default_power<S, Exponent, Radix>{}();
-        }
+        template<typename S, int Exponent, int Radix, class Enable = void>
+        struct power {
+            constexpr auto operator()() const
+            -> decltype(default_power<S, Exponent, Radix>{}()) {
+                return default_power<S, Exponent, Radix>{}();
+            }
+        };
+    }
+
+    template<typename S, int Exponent, int Radix>
+    constexpr auto power()
+    -> decltype(_impl::power<S, Exponent, Radix>{}())
+    {
+        return _impl::power<S, Exponent, Radix>{}();
     }
 }
 

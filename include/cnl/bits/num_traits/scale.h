@@ -23,9 +23,9 @@ namespace cnl {
         template<int Digits, int Radix, typename S>
         struct default_scale<Digits, Radix, S, _impl::enable_if_t<0<=Digits>> {
             constexpr auto operator()(S const& s) const
-            -> decltype(s*power<S, Digits, Radix>())
+            -> decltype(s*cnl::power<S, Digits, Radix>())
             {
-                return s*power<S, Digits, Radix>();
+                return s*cnl::power<S, Digits, Radix>();
             }
         };
 
@@ -33,9 +33,9 @@ namespace cnl {
         template<int Digits, int Radix, typename S>
         struct default_scale<Digits, Radix, S, _impl::enable_if_t<Digits<0>> {
             constexpr auto operator()(S const& s) const
-            -> decltype(s/power<S, -Digits, Radix>())
+            -> decltype(s/cnl::power<S, -Digits, Radix>())
             {
-                return s/power<S, -Digits, Radix>();
+                return s/cnl::power<S, -Digits, Radix>();
             }
         };
     }
