@@ -12,7 +12,7 @@
 
 #include "constant.h"
 
-#include "bits/num_traits/scale.h"
+#include "cnl/bits/num_traits/fixed_width_scale.h"
 #include "bits/num_traits/width.h"
 #include "bits/number_base.h"
 
@@ -162,9 +162,9 @@ namespace cnl {
             constant<Value>> {
     };
 
-    // cnl::scale<..., cnl::elastic_integer<>>
+    // cnl::fixed_width_scale<..., cnl::elastic_integer<>>
     template<int ShiftDigits, int ScalarDigits, class ScalarNarrowest>
-    struct scale<ShiftDigits, 2, elastic_integer<ScalarDigits, ScalarNarrowest>> {
+    struct fixed_width_scale<ShiftDigits, 2, elastic_integer<ScalarDigits, ScalarNarrowest>> {
         constexpr auto operator()(elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
         -> elastic_integer<ScalarDigits, ScalarNarrowest>
         {

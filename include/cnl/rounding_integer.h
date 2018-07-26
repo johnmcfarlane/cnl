@@ -7,7 +7,7 @@
 #if !defined(CNL_ROUNDING_INTEGER_H)
 #define CNL_ROUNDING_INTEGER_H 1
 
-#include "bits/num_traits/scale.h"
+#include "cnl/bits/num_traits/fixed_width_scale.h"
 #include "bits/number_base.h"
 #include "bits/rounding.h"
 #include "bits/used_digits.h"
@@ -163,11 +163,11 @@ namespace cnl {
     };
 
     template<int Digits, class Rep, class RoundingTag>
-    struct scale<Digits, 2, rounding_integer<Rep, RoundingTag>, _impl::enable_if_t<0<=Digits>> {
+    struct fixed_width_scale<Digits, 2, rounding_integer<Rep, RoundingTag>, _impl::enable_if_t<0<=Digits>> {
         constexpr auto operator()(rounding_integer<Rep, RoundingTag> const& s) const
-        -> decltype(from_rep<rounding_integer<Rep, RoundingTag>>{}(scale<Digits, 2, Rep>{}(to_rep(s))))
+        -> decltype(from_rep<rounding_integer<Rep, RoundingTag>>{}(fixed_width_scale<Digits, 2, Rep>{}(to_rep(s))))
         {
-            return from_rep<rounding_integer<Rep, RoundingTag>>{}(scale<Digits, 2, Rep>{}(to_rep(s)));
+            return from_rep<rounding_integer<Rep, RoundingTag>>{}(fixed_width_scale<Digits, 2, Rep>{}(to_rep(s)));
         }
     };
 

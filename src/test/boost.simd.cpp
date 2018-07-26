@@ -77,7 +77,7 @@ namespace {
     TEST(boost_simd, scale) {
         using pack = boost::simd::pack<int, 2>;
         auto input = pack{65535, 0};
-        auto output = cnl::_impl::scale<5>(input);
+        auto output = cnl::_impl::fixed_width_scale<5>(input);
         auto expected = pack{65535<<5, 0};
         ASSERT_TRUE(boost::simd::compare_equal(expected, output));
     }

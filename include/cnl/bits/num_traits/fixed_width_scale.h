@@ -4,15 +4,15 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_BITS_NUM_TRAITS_SCALE
-#define CNL_BITS_NUM_TRAITS_SCALE
+#ifndef CNL_BITS_NUM_TRAITS_FIXED_WIDTH_SCALE
+#define CNL_BITS_NUM_TRAITS_FIXED_WIDTH_SCALE
 
 #include "shift.h"
 
 namespace cnl {
     // returns a scaled value of the same type
     template<int Digits, int Radix, class S, class Enable=void>
-    struct scale {
+    struct fixed_width_scale {
         constexpr S operator()(S const& s) const
         {
             return static_cast<S>(shift<Digits, Radix, S>()(s));
@@ -21,11 +21,11 @@ namespace cnl {
 
     namespace _impl {
         template<int Digits, class S=void>
-        constexpr S scale(S const& s)
+        constexpr S fixed_width_scale(S const& s)
         {
-            return cnl::scale<Digits, numeric_limits<S>::radix, S>()(s);
+            return cnl::fixed_width_scale<Digits, numeric_limits<S>::radix, S>()(s);
         }
     }
 }
 
-#endif  // CNL_BITS_NUM_TRAITS_SCALE
+#endif  // CNL_BITS_NUM_TRAITS_FIXED_WIDTH_SCALE

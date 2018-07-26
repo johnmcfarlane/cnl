@@ -15,13 +15,13 @@ using namespace cnl;
 // square a nunber using 15:16 fixed-point arithmetic
 // without using a fixed-point library
 float square_int(float input) {
-    // user must scale values by the correct amount
+    // user must fixed_width_scale values by the correct amount
     auto fixed = static_cast<int32_t>(input * 65536.f);
 
     // user must remember to widen the result to avoid overflow
     auto prod = int64_t{fixed} * fixed;
 
-    // user must remember that the scale also was squared
+    // user must remember that the fixed_width_scale also was squared
     return static_cast<float>(prod) / 4294967296.f;
 }
 
