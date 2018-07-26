@@ -302,7 +302,7 @@ namespace {
     namespace test_power {
         static_assert(identical(
                 cnl::rounding_integer<>{2},
-                cnl::_impl::_power<cnl::rounding_integer<>, 1, 2>{}()), "");
+                cnl::_impl::default_power<cnl::rounding_integer<>, 1, 2>{}()), "");
     }
 
     namespace test_shift {
