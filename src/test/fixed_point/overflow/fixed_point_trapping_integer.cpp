@@ -23,16 +23,16 @@ using test_int = cnl::overflow_integer<int, cnl::trapping_overflow_tag>;
 ////////////////////////////////////////////////////////////////////////////////
 // trapping_integer-specific exceptions tests
 
-TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_right)
+TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), scale_down)
 {
-    auto shift_left_fn = cnl::_impl::shift<-8, 2, uint16>;
-    ASSERT_DEATH(shift_left_fn((uint8) 0x1234), "positive overflow");
+    auto scale_down_fn = cnl::_impl::scale<-8, 2, uint16>;
+    ASSERT_DEATH(scale_down_fn((uint8) 0x1234), "positive overflow");
 }
 
-TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_left)
+TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), scale_up)
 {
-    auto shift_left_fn = cnl::_impl::shift<8, 2, uint16>;
-    ASSERT_DEATH(shift_left_fn((uint8) 0x1234), "positive overflow");
+    auto scale_up_fn = cnl::_impl::scale<8, 2, uint16>;
+    ASSERT_DEATH(scale_up_fn((uint8) 0x1234), "positive overflow");
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), assignment)

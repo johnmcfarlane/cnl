@@ -20,7 +20,7 @@
 #include "bits/num_traits/is_composite.h"
 #include "cnl/bits/num_traits/fixed_width_scale.h"
 #include "bits/num_traits/set_digits.h"
-#include "bits/num_traits/shift.h"
+#include "bits/num_traits/scale.h"
 #include "bits/num_traits/to_rep.h"
 #include "bits/power.h"
 #include "bits/type_traits.h"

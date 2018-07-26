@@ -203,46 +203,46 @@ static_assert(identical(uint8(0)+uint8(0), test_int{0}), "incorrect assumption a
 // cnl::_impl
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::_impl::shift positive RHS
+// cnl::_impl::scale positive RHS
 
 #if defined(_MSC_VER)
 #pragma warning(push)
 #pragma warning(disable: 4310)
 #endif
 
-static_assert(cnl::_impl::shift<1>(int8(0))==0, "cnl::_impl::shift test failed");
-static_assert(cnl::_impl::shift<1, 10>(int8(0))==0, "cnl::_impl::shift test failed");
-static_assert(cnl::_impl::shift<1, 10>(int8(1))==10, "cnl::_impl::shift test failed");
+static_assert(cnl::_impl::scale<1>(int8(0))==0, "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<1, 10>(int8(0))==0, "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<1, 10>(int8(1))==10, "cnl::_impl::scale test failed");
 
 #if defined(TEST_NATIVE_OVERFLOW)
-static_assert(cnl::_impl::shift<8>(uint16{0x1234})==0x123400, "cnl::_impl::shift test failed");
-static_assert(cnl::_impl::shift<8>(uint8{0x12})==0x1200, "cnl::_impl::shift test failed");
+static_assert(cnl::_impl::scale<8>(uint16{0x1234})==0x123400, "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<8>(uint8{0x12})==0x1200, "cnl::_impl::scale test failed");
 #endif
 
 #if defined(TEST_SATURATED_OVERFLOW)
-static_assert(identical(cnl::_impl::shift<8, 2, uint16>((uint16)0x1234), uint16{0x1234}<<8), "cnl::_impl::shift test failed");
-static_assert(cnl::_impl::shift<8, 2, uint16>((uint8)0x1234) == 0xff00, "cnl::_impl::shift test failed");
-static_assert(cnl::_impl::shift<8, 2, uint8>(0x34) == test_int{0x3400}, "cnl::_impl::shift test failed");
+static_assert(identical(cnl::_impl::scale<8, 2, uint16>((uint16)0x1234), uint16{0x1234}<<8), "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<8, 2, uint16>((uint8)0x1234) == 0xff00, "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<8, 2, uint8>(0x34) == test_int{0x3400}, "cnl::_impl::scale test failed");
 #endif
 
-static_assert(cnl::_impl::shift<8, 2, int16>(-123)==-31488, "cnl::_impl::shift test failed");
+static_assert(cnl::_impl::scale<8, 2, int16>(-123)==-31488, "cnl::_impl::scale test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::_impl::fp::type::cnl::_impl::shift negative RHS
+// cnl::_impl::fp::type::cnl::_impl::scale negative RHS
 
-static_assert(cnl::_impl::shift<-8, 2, uint16>((uint16) 0x1234)==0x12, "cnl::_impl::shift test failed");
-static_assert(cnl::_impl::shift<-8, 2, int16>(-31488)==-123, "cnl::_impl::shift test failed");
+static_assert(cnl::_impl::scale<-8, 2, uint16>((uint16) 0x1234)==0x12, "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<-8, 2, int16>(-31488)==-123, "cnl::_impl::scale test failed");
 
-static_assert(identical(test_int{0x123400}, cnl::_impl::shift<8, 2>(uint16{0x1234})), "cnl::_impl::shift test failed");
+static_assert(identical(test_int{0x123400}, cnl::_impl::scale<8, 2>(uint16{0x1234})), "cnl::_impl::scale test failed");
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
 #endif
-static_assert(cnl::_impl::shift<-8, 2, uint16>((uint16) 0x1234)==0x12, "cnl::_impl::shift test failed");
-static_assert(cnl::_impl::shift<-8, 2, int16>(-31488)==-123, "cnl::_impl::shift test failed");
+static_assert(cnl::_impl::scale<-8, 2, uint16>((uint16) 0x1234)==0x12, "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<-8, 2, int16>(-31488)==-123, "cnl::_impl::scale test failed");
 
 #if !defined(TEST_THROWING_OVERFLOW) && !defined(TEST_TRAPPING_OVERFLOW)
-static_assert(cnl::_impl::shift<-8, 2, uint16>((uint8) 0x34)==0x0, "cnl::_impl::shift test failed");
+static_assert(cnl::_impl::scale<-8, 2, uint16>((uint8) 0x34)==0x0, "cnl::_impl::scale test failed");
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////

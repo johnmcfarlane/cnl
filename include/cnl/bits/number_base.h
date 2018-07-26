@@ -10,7 +10,7 @@
 #include <cnl/bits/num_traits/from_rep.h>
 #include <cnl/bits/num_traits/from_value.h>
 #include <cnl/bits/num_traits/is_composite.h>
-#include <cnl/bits/num_traits/shift.h>
+#include <cnl/bits/num_traits/scale.h>
 #include <cnl/bits/num_traits/to_rep.h>
 #include <cnl/bits/operators.h>
 #include <cnl/bits/type_traits/make_signed.h>
@@ -260,13 +260,13 @@ namespace cnl {
     }
 
     template<int Digits, int Radix, class Derived>
-    struct shift<Digits, Radix, _impl::number_base<Derived, typename Derived::rep>> {
+    struct scale<Digits, Radix, _impl::number_base<Derived, typename Derived::rep>> {
         using _scalar_type = _impl::number_base<Derived, typename Derived::rep>;
 
         constexpr auto operator()(_scalar_type const &s) const
-        -> decltype(from_rep<Derived>{}(_impl::shift<Digits, Radix>(to_rep(s))))
+        -> decltype(from_rep<Derived>{}(_impl::scale<Digits, Radix>(to_rep(s))))
         {
-            return from_rep<Derived>{}(_impl::shift<Digits, Radix>(to_rep(s)));
+            return from_rep<Derived>{}(_impl::scale<Digits, Radix>(to_rep(s)));
         }
     };
 

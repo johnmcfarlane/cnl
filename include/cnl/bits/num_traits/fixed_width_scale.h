@@ -7,7 +7,7 @@
 #ifndef CNL_BITS_NUM_TRAITS_FIXED_WIDTH_SCALE
 #define CNL_BITS_NUM_TRAITS_FIXED_WIDTH_SCALE
 
-#include "shift.h"
+#include "scale.h"
 
 namespace cnl {
     // returns a scaled value of the same type
@@ -15,7 +15,7 @@ namespace cnl {
     struct fixed_width_scale {
         constexpr S operator()(S const& s) const
         {
-            return static_cast<S>(shift<Digits, Radix, S>()(s));
+            return static_cast<S>(scale<Digits, Radix, S>()(s));
         }
     };
 

@@ -21,7 +21,7 @@ namespace cnl {
     };
 
     template<int Digits, typename T, class Abi>
-    struct shift<Digits, 2, Vc::simd<T, Abi>> : cnl::_impl::default_shift<Digits, 2, Vc::simd<T, Abi>> {
+    struct scale<Digits, 2, Vc::simd<T, Abi>> : cnl::_impl::default_scale<Digits, 2, Vc::simd<T, Abi>> {
     };
 }
 
@@ -62,7 +62,7 @@ namespace {
     }
 
     TEST(vc, named_shift) {
-        auto a = cnl::shift<1, 2, Vc::simd<int>>()(Vc::simd<int>(123));
+        auto a = cnl::scale<1, 2, Vc::simd<int>>()(Vc::simd<int>(123));
         EXPECT_TRUE(simd_identical(Vc::simd<int>{246}, a));
     }
 

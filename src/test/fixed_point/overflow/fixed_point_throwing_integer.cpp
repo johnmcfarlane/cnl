@@ -33,8 +33,8 @@ TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), narrow)
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), shift_left)
 {
-    constexpr auto shift = cnl::shift<31, 2, test_int>{};
-    ASSERT_THROW(shift(1), std::overflow_error);
+    constexpr auto scale = cnl::scale<31, 2, test_int>{};
+    ASSERT_THROW(scale(1), std::overflow_error);
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), assignment)
