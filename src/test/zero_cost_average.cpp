@@ -15,7 +15,7 @@ using namespace cnl::literals;
 
 // average two nunbers using 15:16 fixed-point arithmetic using native types
 CNL_RELAXED_CONSTEXPR float average_integer(float input1, float input2) {
-    // user must scale values by the correct amount
+    // user must fixed_width_scale values by the correct amount
     auto fixed1 = static_cast<int32_t>(input1 * 65536.f);
     auto fixed2 = static_cast<int32_t>(input2 * 65536.f);
 

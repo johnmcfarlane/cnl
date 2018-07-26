@@ -178,25 +178,25 @@ namespace {
     namespace test_shift_native {
         static_assert(identical(
                 cnl::static_integer<3, cnl::native_rounding_tag>{1},
-                cnl::_impl::shift<-2, 2>(cnl::static_integer<3, cnl::native_rounding_tag>{7})), "");
+                cnl::_impl::scale<-2, 2>(cnl::static_integer<3, cnl::native_rounding_tag>{7})), "");
     }
 
     namespace test_shift_nearest {
         static_assert(identical(
                 cnl::static_integer<3, cnl::nearest_rounding_tag>{2},
-                cnl::_impl::shift<-2, 2>(cnl::static_integer<3, cnl::nearest_rounding_tag>{7})), "");
+                cnl::_impl::scale<-2, 2>(cnl::static_integer<3, cnl::nearest_rounding_tag>{7})), "");
     }
 
     namespace test_scale_native {
         static_assert(identical(
                 cnl::static_integer<3, cnl::native_rounding_tag>{1},
-                cnl::_impl::scale<-2>(cnl::static_integer<3, cnl::native_rounding_tag>{7})), "");
+                cnl::_impl::fixed_width_scale<-2>(cnl::static_integer<3, cnl::native_rounding_tag>{7})), "");
     }
 
     namespace test_scale_nearest {
         static_assert(identical(
                 cnl::static_integer<3, cnl::nearest_rounding_tag>{2},
-                cnl::_impl::scale<-2>(cnl::static_integer<3, cnl::nearest_rounding_tag>{7})), "");
+                cnl::_impl::fixed_width_scale<-2>(cnl::static_integer<3, cnl::nearest_rounding_tag>{7})), "");
     }
 
     TEST(static_integer, conversion_overflow_trapping) {

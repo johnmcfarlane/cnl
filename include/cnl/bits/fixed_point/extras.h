@@ -13,7 +13,7 @@
 #define CNL_FIXED_POINT_EXTRAS_H 1
 
 #include "type.h"
-#include <cnl/bits/num_traits/scale.h>
+#include <cnl/bits/num_traits/fixed_width_scale.h>
 #include <cnl/bits/terminate.h>
 
 #include <cmath>
@@ -71,7 +71,7 @@ namespace cnl {
             {
                 using widened_rep = _impl::set_width_t<Rep, _impl::width<Rep>::value*2>;
                 return static_cast<Rep>(sqrt_solve3<widened_rep>(
-                        _impl::scale<-Exponent>(static_cast<widened_rep>(n)),
+                        _impl::fixed_width_scale<-Exponent>(static_cast<widened_rep>(n)),
                         widened_rep((widened_rep{1}<<((countr_used(n)+1-Exponent)&~1))>>2),
                         widened_rep{0}));
             }

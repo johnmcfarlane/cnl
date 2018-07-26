@@ -32,11 +32,11 @@ namespace {
 
     static_assert(cnl::elastic_integer<64, unsigned>(0)==0u, "");
 
-    static_assert(identical(cnl::elastic_integer<32, int>{246}, cnl::_impl::shift<1>(cnl::elastic_integer<31, int>{123})), "");
-    static_assert(identical(cnl::elastic_integer<33, unsigned>{246}, cnl::_impl::shift<1>(cnl::elastic_integer<32, unsigned>{123})), "");
+    static_assert(identical(cnl::elastic_integer<32, int>{246}, cnl::_impl::scale<1>(cnl::elastic_integer<31, int>{123})), "");
+    static_assert(identical(cnl::elastic_integer<33, unsigned>{246}, cnl::_impl::scale<1>(cnl::elastic_integer<32, unsigned>{123})), "");
 #if defined(CNL_INT128_ENABLED)
-    static_assert(identical(cnl::elastic_integer<64, int>{246}, cnl::_impl::shift<1>(cnl::elastic_integer<63, int>{123})), "");
-    static_assert(identical(cnl::elastic_integer<65, unsigned>{246}, cnl::_impl::shift<1>(cnl::elastic_integer<64, unsigned>{123})), "");
+    static_assert(identical(cnl::elastic_integer<64, int>{246}, cnl::_impl::scale<1>(cnl::elastic_integer<63, int>{123})), "");
+    static_assert(identical(cnl::elastic_integer<65, unsigned>{246}, cnl::_impl::scale<1>(cnl::elastic_integer<64, unsigned>{123})), "");
 #endif
 
     static_assert(digits<set_digits_t<elastic_integer<15, uint8_t>, 22>>::value==22,

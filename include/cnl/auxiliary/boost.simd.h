@@ -27,7 +27,7 @@ namespace cnl {
     };
 
     template<int Digits, int Radix, class T, std::size_t N>
-    struct shift<Digits, Radix, boost::simd::pack<T, N>> : _impl::default_shift<Digits, Radix, boost::simd::pack<T, N>> {
+    struct scale<Digits, Radix, boost::simd::pack<T, N>> : _impl::default_scale<Digits, Radix, boost::simd::pack<T, N>> {
     };
 
     template<class T, std::size_t N>

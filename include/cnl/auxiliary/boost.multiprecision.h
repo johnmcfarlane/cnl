@@ -107,7 +107,7 @@ namespace cnl {
     };
 
     template<int Digits, class Backend, _bmp::expression_template_option ExpressionTemplates>
-    struct shift<Digits, 2, _bmp::number<Backend, ExpressionTemplates>> {
+    struct scale<Digits, 2, _bmp::number<Backend, ExpressionTemplates>> {
         constexpr auto operator()(_bmp::number<Backend, ExpressionTemplates> const& s) const
         -> decltype((Digits>=0) ? s << Digits : s >> -Digits)
         {

@@ -269,9 +269,9 @@ namespace {
 
     namespace test_scale {
 #if defined(CNL_INT128_ENABLED)
-        static_assert(identical(cnl::elastic_integer<73>{1024}, cnl::_impl::shift<10>(cnl::elastic_integer<63>{1})), "shift<elastic_integer> test failed");
+        static_assert(identical(cnl::elastic_integer<73>{1024}, cnl::_impl::scale<10>(cnl::elastic_integer<63>{1})), "scale<elastic_integer> test failed");
 #endif
-        static_assert(identical(elastic_integer<8>{220}, cnl::shift<2, 2, elastic_integer<6>>{}(55)), "shift<elastic_integer> test failed");
+        static_assert(identical(elastic_integer<8>{220}, cnl::scale<2, 2, elastic_integer<6>>{}(55)), "scale<elastic_integer> test failed");
     }
 
     namespace test_shift_right {
@@ -431,8 +431,8 @@ namespace {
     }
 
     namespace test_shift {
-        static_assert(identical(cnl::elastic_integer<11>{1024}, cnl::_impl::shift<10, 2>(cnl::elastic_integer<1>(1))), "");
-        static_assert(identical(cnl::elastic_integer<3>{6}, cnl::_impl::shift<1, 2>(cnl::elastic_integer<2>{3})), "");
+        static_assert(identical(cnl::elastic_integer<11>{1024}, cnl::_impl::scale<10, 2>(cnl::elastic_integer<1>(1))), "");
+        static_assert(identical(cnl::elastic_integer<3>{6}, cnl::_impl::scale<1, 2>(cnl::elastic_integer<2>{3})), "");
     }
 
     namespace test_shift_left {
@@ -454,7 +454,7 @@ namespace {
                 elastic_integer<20, unsigned>{0b11001110101011101001} << 34_c),
                 "shift_left test failed");
 #endif
-        static_assert(identical(elastic_integer<33>{1LL<<32}, cnl::_impl::shift<32>(elastic_integer<1>{1})), "cnl::_impl::shift<32, elastic_integer<1>>");
+        static_assert(identical(elastic_integer<33>{1LL<<32}, cnl::_impl::scale<32>(elastic_integer<1>{1})), "cnl::_impl::scale<32, elastic_integer<1>>");
     }
 
     namespace test_shift_right {

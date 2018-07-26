@@ -136,7 +136,7 @@ namespace cnl {
         template<class FromRep, int FromExponent>
         constexpr fixed_point(fixed_point<FromRep, FromExponent, Radix> const& rhs)
                 : _base(
-                static_cast<Rep>(_impl::shift<FromExponent-exponent, Radix>(
+                static_cast<Rep>(_impl::scale<FromExponent-exponent, Radix>(
                         _impl::make_number<Rep>(cnl::to_rep(rhs)))))
         {
         }
@@ -151,7 +151,7 @@ namespace cnl {
         /// constructor taking an integer type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         constexpr fixed_point(S const& s)
-                : _base(static_cast<Rep>(_impl::shift<-exponent, Radix>(_impl::make_number<Rep>(s))))
+                : _base(static_cast<Rep>(_impl::scale<-exponent, Radix>(_impl::make_number<Rep>(s))))
         {
         }
 
@@ -190,7 +190,7 @@ namespace cnl {
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         explicit constexpr operator S() const
         {
-            return static_cast<S>(_impl::shift<exponent>(to_rep(*this)));
+            return static_cast<S>(_impl::scale<exponent>(to_rep(*this)));
         }
 
         /// returns value represented as floating-point
@@ -289,7 +289,7 @@ namespace cnl {
     constexpr typename fixed_point<Rep, Exponent, Radix>::rep
     fixed_point<Rep, Exponent, Radix>::fixed_point_to_rep(fixed_point<FromRep, FromExponent, Radix> const& rhs)
     {
-        return _impl::shift<FromExponent-exponent>(to_rep(rhs));
+        return _impl::scale<FromExponent-exponent>(to_rep(rhs));
     }
 }
 

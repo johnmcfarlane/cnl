@@ -12,7 +12,7 @@
 
 #include "constant.h"
 
-#include "bits/num_traits/scale.h"
+#include "cnl/bits/num_traits/fixed_width_scale.h"
 #include "bits/num_traits/width.h"
 #include "bits/number_base.h"
 
@@ -162,38 +162,38 @@ namespace cnl {
             constant<Value>> {
     };
 
-    // cnl::scale<..., cnl::elastic_integer<>>
-    template<int ShiftDigits, int ScalarDigits, class ScalarNarrowest>
-    struct scale<ShiftDigits, 2, elastic_integer<ScalarDigits, ScalarNarrowest>> {
+    // cnl::fixed_width_scale<..., cnl::elastic_integer<>>
+    template<int ScalePower, int ScalarDigits, class ScalarNarrowest>
+    struct fixed_width_scale<ScalePower, 2, elastic_integer<ScalarDigits, ScalarNarrowest>> {
         constexpr auto operator()(elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
         -> elastic_integer<ScalarDigits, ScalarNarrowest>
         {
             using result_type = elastic_integer<ScalarDigits, ScalarNarrowest>;
             using result_rep = typename result_type::rep;
-            return to_rep(s) * (result_rep{1} << ShiftDigits);
+            return to_rep(s) * (result_rep{1} << ScalePower);
         }
     };
 
-    // cnl::shift<..., cnl::elastic_integer<>>
-    template<int ShiftDigits, int ScalarDigits, class ScalarNarrowest>
-    struct shift<ShiftDigits, 2, elastic_integer<ScalarDigits, ScalarNarrowest>, _impl::enable_if_t<0 <= ShiftDigits>> {
+    // cnl::scale<..., cnl::elastic_integer<>>
+    template<int ScalePower, int ScalarDigits, class ScalarNarrowest>
+    struct scale<ScalePower, 2, elastic_integer<ScalarDigits, ScalarNarrowest>, _impl::enable_if_t<0 <= ScalePower>> {
         constexpr auto operator()(elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
-        -> elastic_integer<ShiftDigits+ScalarDigits, ScalarNarrowest>
+        -> elastic_integer<ScalePower+ScalarDigits, ScalarNarrowest>
         {
-            using result_type = elastic_integer<ShiftDigits+ScalarDigits, ScalarNarrowest>;
+            using result_type = elastic_integer<ScalePower+ScalarDigits, ScalarNarrowest>;
             using result_rep = typename result_type::rep;
-            return to_rep(s) * (result_rep{1} << ShiftDigits);
+            return to_rep(s) * (result_rep{1} << ScalePower);
         }
     };
 
-    template<int ShiftDigits, int ScalarDigits, class ScalarNarrowest>
-    struct shift<ShiftDigits, 2, elastic_integer<ScalarDigits, ScalarNarrowest>, _impl::enable_if_t<ShiftDigits < 0>> {
+    template<int ScalePower, int ScalarDigits, class ScalarNarrowest>
+    struct scale<ScalePower, 2, elastic_integer<ScalarDigits, ScalarNarrowest>, _impl::enable_if_t<ScalePower < 0>> {
         constexpr auto operator()(elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
-        -> elastic_integer<ShiftDigits+ScalarDigits, ScalarNarrowest>
+        -> elastic_integer<ScalePower+ScalarDigits, ScalarNarrowest>
         {
-            using divisor_type = elastic_integer<1-ShiftDigits, ScalarNarrowest>;
+            using divisor_type = elastic_integer<1-ScalePower, ScalarNarrowest>;
             using divisor_rep = typename divisor_type::rep;
-            return to_rep(s) / (divisor_rep{1} << -ShiftDigits);
+            return to_rep(s) / (divisor_rep{1} << -ScalePower);
         }
     };
 

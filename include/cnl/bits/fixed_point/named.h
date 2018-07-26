@@ -11,7 +11,7 @@
 #define CNL_FIXED_POINT_NAMED_H 1
 
 #include <cnl/bits/common.h>
-#include <cnl/bits/num_traits/scale.h>
+#include <cnl/bits/num_traits/fixed_width_scale.h>
 #include "num_traits.h"
 
 /// compositional numeric library
@@ -132,7 +132,7 @@ namespace cnl {
         using result_type = typename _impl::result<Quotient, Dividend, Divisor>::type;
         using result_rep = typename result_type::rep;
         return from_rep<result_type>()(
-                static_cast<result_rep>(_impl::scale<_impl::exponent_shift<result_type, Dividend, Divisor>::value>(
+                static_cast<result_rep>(_impl::fixed_width_scale<_impl::exponent_shift<result_type, Dividend, Divisor>::value>(
                         static_cast<result_rep>(_impl::not_fixed_point(dividend)))
                         /_impl::not_fixed_point(divisor)));
     }

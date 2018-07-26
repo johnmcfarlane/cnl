@@ -308,11 +308,11 @@ namespace {
     namespace test_shift {
         static_assert(identical(
                 cnl::rounding_integer<>{2},
-                cnl::shift<-1, 2, cnl::rounding_integer<>>{}(cnl::rounding_integer<>{3})),
-                "cnl::shift<-1, 2, rounding_integer>");
+                cnl::scale<-1, 2, cnl::rounding_integer<>>{}(cnl::rounding_integer<>{3})),
+                "cnl::scale<-1, 2, rounding_integer>");
         static_assert(identical(
                 cnl::rounding_integer<>{2},
-                cnl::_impl::shift<-1>(cnl::rounding_integer<>{3})), "cnl::_impl::shift<-1>(rounding_integer)");
+                cnl::_impl::scale<-1>(cnl::rounding_integer<>{3})), "cnl::_impl::scale<-1>(rounding_integer)");
     }
 
     TEST(rounding_integer, pre_increment) {

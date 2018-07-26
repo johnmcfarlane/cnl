@@ -175,7 +175,7 @@ namespace cnl {
     };
 
     template<int Digits, class Rep, class OverflowTag>
-    struct shift<Digits, 2, overflow_integer<Rep, OverflowTag>,
+    struct scale<Digits, 2, overflow_integer<Rep, OverflowTag>,
             _impl::enable_if_t<(Digits>=0)>> {
         using _value_type = overflow_integer<Rep, OverflowTag>;
         constexpr auto operator()(_value_type const& s) const
@@ -186,9 +186,9 @@ namespace cnl {
     };
 
     template<int Digits, int Radix, class Rep, class OverflowTag>
-    struct shift<Digits, Radix, overflow_integer<Rep, OverflowTag>,
+    struct scale<Digits, Radix, overflow_integer<Rep, OverflowTag>,
             _impl::enable_if_t<(Digits<0||Radix!=2)>>
-            : shift<Digits, Radix, _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep>> {
+            : scale<Digits, Radix, _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////

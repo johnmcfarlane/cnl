@@ -443,24 +443,24 @@ namespace test_shift_left {
 
 namespace test_scale {
     static_assert(identical(
-            cnl::_impl::shift<15, 2>(throwing_integer<cnl::int32>{1}),
+            cnl::_impl::scale<15, 2>(throwing_integer<cnl::int32>{1}),
             throwing_integer<cnl::int32>{32768}),
-                  "scale<overflow_integer<>> test failed");
+                  "fixed_width_scale<overflow_integer<>> test failed");
     static_assert(identical(
-            cnl::_impl::shift<15, 2>(throwing_integer<cnl::int32>{1}),
+            cnl::_impl::scale<15, 2>(throwing_integer<cnl::int32>{1}),
             throwing_integer<cnl::int32>{32768}),
-                  "scale<overflow_integer<>> test failed");
+                  "fixed_width_scale<overflow_integer<>> test failed");
 
     static_assert(identical(
             cnl::from_rep<saturated_integer<cnl::uint16>>{}(0x1234),
             saturated_integer<int>{0x1234}),
-            "scale<overflow_integer<>> test failed");
+            "fixed_width_scale<overflow_integer<>> test failed");
     static_assert(identical(
-            cnl::_impl::shift<8, 2>(saturated_integer<cnl::uint16>{0x1234}),
+            cnl::_impl::scale<8, 2>(saturated_integer<cnl::uint16>{0x1234}),
             saturated_integer<int>{0x123400}),
-            "scale<overflow_integer<>> test failed");
-    static_assert(identical(cnl::_impl::shift<4, 2>(native_integer<cnl::uint8>{3}), native_integer<int>{48}),
-                  "scale<overflow_integer<>> test failed");
+            "fixed_width_scale<overflow_integer<>> test failed");
+    static_assert(identical(cnl::_impl::scale<4, 2>(native_integer<cnl::uint8>{3}), native_integer<int>{48}),
+                  "fixed_width_scale<overflow_integer<>> test failed");
 }
 
 namespace {
