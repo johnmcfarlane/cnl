@@ -256,7 +256,7 @@ namespace cnl {
     constexpr auto fixed_point<Rep, Exponent, Radix>::one()
     -> _impl::enable_if_t<numeric_limits<S>::is_iec559, S>
     {
-        return _impl::power<S, -exponent, Radix>();
+        return power<S, -exponent, Radix>();
     }
 
     template<typename Rep, int Exponent, int Radix>
@@ -272,7 +272,7 @@ namespace cnl {
     constexpr S fixed_point<Rep, Exponent, Radix>::inverse_one()
     {
         static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-        return _impl::power<S, exponent, Radix>();
+        return power<S, exponent, Radix>();
     }
 
     template<typename Rep, int Exponent, int Radix>
