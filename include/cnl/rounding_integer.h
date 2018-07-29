@@ -142,14 +142,8 @@ namespace cnl {
 
     template<int Digits, class Rep, class RoundingTag>
     struct scale<Digits, 2, rounding_integer<Rep, RoundingTag>,
-            _impl::enable_if_t<Digits<0>> {
-        constexpr auto operator()(rounding_integer<Rep, RoundingTag> const& s) const
-        -> decltype(from_rep<rounding_integer<Rep, RoundingTag>>{}(
-                _impl::shift_right<RoundingTag, Rep, constant<-Digits>>{}(to_rep(s), {})))
-        {
-            return from_rep<rounding_integer<Rep, RoundingTag>>{}(
-                    _impl::shift_right<RoundingTag, Rep, constant<-Digits>>{}(to_rep(s), {}));
-        }
+            _impl::enable_if_t<Digits<0>>
+            : _impl::default_scale<Digits, 2, rounding_integer<Rep, RoundingTag>> {
     };
 
     template<int Digits, class Rep, class RoundingTag>

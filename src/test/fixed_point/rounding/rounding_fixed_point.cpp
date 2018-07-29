@@ -52,7 +52,7 @@ namespace {
         using dest_type = rounding_fixed_point<int, 0, cnl::nearest_rounding_tag>;
 
         static_assert(identical(dest_type{-1}, dest_type{source_type{-.75}}), "");
-        static_assert(identical(dest_type{0}, dest_type{source_type{-.5}}), "");
+        static_assert(identical(dest_type{-1}, dest_type{source_type{-.5}}), "");
         static_assert(identical(dest_type{0}, dest_type{source_type{.25}}), "");
         static_assert(identical(dest_type{1}, dest_type{source_type{.5}}), "");
     }
@@ -61,7 +61,7 @@ namespace {
         using source_type = rounding_fixed_point<int, -2>;
         using dest_type = rounding_fixed_point<int, 0, cnl::native_rounding_tag>;
 
-        static_assert(identical(dest_type{-1}, dest_type{source_type{-.25}}), "");
+        static_assert(identical(dest_type{0}, dest_type{source_type{-.25}}), "");
         static_assert(identical(dest_type{0}, dest_type{source_type{0}}), "");
         static_assert(identical(dest_type{0}, dest_type{source_type{.75}}), "");
         static_assert(identical(dest_type{1}, dest_type{source_type{1.}}), "");
