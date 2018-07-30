@@ -36,6 +36,8 @@ set(test_sources
         fixed_point/overflow/fixed_point_trapping_integer.cpp
         fixed_point/overflow/fixed_point_throwing_integer.cpp
         fixed_point/overflow/fixed_point_saturated_integer.cpp
+        fixed_point/rounding/fixed_point_rounding.cpp
+        fixed_point/rounding/overflow/fixed_point_rounding_overflow.cpp
         rounding/elastic/rounding_elastic_integer.cpp
         fixed_point/rounding/rounding_fixed_point.cpp
         elastic/rounding/overflow/rounding_safe_integer.cpp
@@ -144,6 +146,7 @@ function(make_test source out_target compile_flags linker_flags)
     add_test("${target}" "${target}")
     set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${compile_flags}")
     target_link_libraries("${target}" "Cnl" "${linker_flags}")
+    target_include_directories("${target}" PRIVATE "${CMAKE_CURRENT_LIST_DIR}")
 
     add_gtest_dependency("${target}")
 

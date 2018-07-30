@@ -463,6 +463,11 @@ namespace test_scale {
                   "fixed_width_scale<overflow_integer<>> test failed");
 }
 
+namespace test_used_digits {
+    static_assert(cnl::used_digits(cnl::overflow_integer<unsigned int, cnl::native_overflow_tag>{0})==0,
+            "used_digits test failed");
+}
+
 namespace {
     TEST(overflow_integer, pre_increment) {
         auto a = cnl::overflow_integer<>{INT_MAX-1};
