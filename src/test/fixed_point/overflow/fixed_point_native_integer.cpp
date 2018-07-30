@@ -7,7 +7,7 @@
 #include <cnl/fixed_point.h>
 #include <cnl/overflow_integer.h>
 
-#define TEST_NATIVE_OVERFLOW
+#define TEST_NATIVE_INTEGER
 #define TEST_LABEL native_integer_
 
 ////////////////////////////////////////////////////////////////////////////////

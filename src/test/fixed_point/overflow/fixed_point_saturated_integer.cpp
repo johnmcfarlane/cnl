@@ -7,7 +7,7 @@
 #include <cnl/fixed_point.h>
 #include <cnl/overflow_integer.h>
 
-#define TEST_SATURATED_OVERFLOW
+#define TEST_SATURATED_OVERFLOW_INTEGER
 #define TEST_LABEL saturated_integer_
 
 ////////////////////////////////////////////////////////////////////////////////

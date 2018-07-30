@@ -10,7 +10,7 @@
 
 #include <cinttypes>
 
-#define TEST_NATIVE_OVERFLOW
+#define TEST_NATIVE_INTEGER
 #define TEST_LABEL static_integer_
 
 ////////////////////////////////////////////////////////////////////////////////

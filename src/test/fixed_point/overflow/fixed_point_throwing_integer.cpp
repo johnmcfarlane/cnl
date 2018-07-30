@@ -7,7 +7,7 @@
 #include <cnl/fixed_point.h>
 #include <cnl/overflow_integer.h>
 
-#define TEST_THROWING_OVERFLOW
+#define TEST_THROWING_OVERFLOW_INTEGER
 #define TEST_LABEL throwing_integer_
 
 ////////////////////////////////////////////////////////////////////////////////
