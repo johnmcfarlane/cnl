@@ -313,6 +313,9 @@ namespace {
         static_assert(identical(
                 cnl::rounding_integer<>{2},
                 cnl::_impl::scale<-1>(cnl::rounding_integer<>{3})), "cnl::_impl::scale<-1>(rounding_integer)");
+        static_assert(identical(
+                cnl::rounding_integer<int, cnl::native_rounding_tag>{0},
+                cnl::_impl::scale<-1>(cnl::rounding_integer<int, cnl::native_rounding_tag>{-1})), "cnl::_impl::scale<-1>(rounding_integer)");
     }
 
     TEST(rounding_integer, pre_increment) {
