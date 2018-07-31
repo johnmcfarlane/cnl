@@ -265,7 +265,7 @@ namespace cnl {
     struct scale<Digits, Radix, _impl::number_base<Derived, typename Derived::rep>> {
         using _scalar_type = _impl::number_base<Derived, typename Derived::rep>;
 
-        constexpr auto operator()(_scalar_type const &s) const
+        constexpr auto operator()(Derived const &s) const
         -> decltype(from_rep<Derived>{}(_impl::scale<Digits, Radix>(to_rep(s))))
         {
             return from_rep<Derived>{}(_impl::scale<Digits, Radix>(to_rep(s)));
