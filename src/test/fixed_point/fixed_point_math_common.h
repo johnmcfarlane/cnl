@@ -26,7 +26,7 @@ TEST(math, FPTESTFORMAT) {
     for (int i = std::max(-cnl::_impl::fractional_digits<fp>::value, -(cnl::_impl::scale<cnl::_impl::integer_digits<fp>::value, 2, int32_t>(1)) + 1); i < std::min(0, cnl::_impl::integer_digits<fp>::value - 1); i++) {
         fp lhs{ exp2(fp{ static_cast<double>(i) }) };
         EXPECT_EQ(lhs, cnl::from_rep<fp>{}(1 << (-fp::exponent + i)))
-            << "i = " << i << ", fixed point raw: " << to_rep(lhs) << " should be: " << (1 << (-fp::exponent + i))
+            << "i = " << i << ", fixed point raw: " << cnl::_impl::to_rep(lhs) << " should be: " << (1 << (-fp::exponent + i))
             ;
     }
 #endif
@@ -57,9 +57,9 @@ TEST(math, FPTESTFORMAT) {
             //Check for at most 1 LSB error
             fp lhs{ exp2(fp{ fprep }) };
             fp rhs{ exp2(doublerep) }; //Will use the double overload
-            EXPECT_LE(std::abs(to_rep(lhs)-to_rep(rhs)), 1)
-                            << "fail at " << i+frac << ", fixed point raw: " << to_rep(lhs)
-                            << " double raw " << to_rep(rhs)
+            EXPECT_LE(std::abs(cnl::_impl::to_rep(lhs)-cnl::_impl::to_rep(rhs)), 1)
+                            << "fail at " << i+frac << ", fixed point raw: " << cnl::_impl::to_rep(lhs)
+                            << " double raw " << cnl::_impl::to_rep(rhs)
                 ;
             //bit-accurate:: not without a rounding multiply
             //EXPECT_EQ(exp2(fp{fprep}), fp{exp2(doublerep)});
@@ -67,18 +67,18 @@ TEST(math, FPTESTFORMAT) {
     }
 
     //the largest exponent which's result doesn't overflow
-    auto maximum = cnl::from_rep<fp>{}(to_rep(fp{static_cast<double>(cnl::_impl::integer_digits<fp>::value)})-1);
+    auto maximum = cnl::from_rep<fp>{}(cnl::_impl::to_rep(fp{static_cast<double>(cnl::_impl::integer_digits<fp>::value)})-1);
 
     //The next-to-smallest exponent whose result doesn't overflow
     //(The very smallest was already tested with the integer exponents)
-    auto minimum = cnl::from_rep<fp>{}(to_rep(fp{static_cast<double>(-cnl::_impl::fractional_digits<fp>::value)})+1);
+    auto minimum = cnl::from_rep<fp>{}(cnl::_impl::to_rep(fp{static_cast<double>(-cnl::_impl::fractional_digits<fp>::value)})+1);
 
     double doublerep{ maximum };
     double doublerepmini{ minimum };
 
-    EXPECT_LE(std::abs(to_rep(exp2(maximum))-to_rep(fp{exp2(doublerep)})), 1)
-                    << "fixed point raw: " << to_rep(exp2(maximum))
-                    << ", double raw: " << to_rep(fp{exp2(doublerep)});
+    EXPECT_LE(std::abs(cnl::_impl::to_rep(exp2(maximum))-cnl::_impl::to_rep(fp{exp2(doublerep)})), 1)
+                    << "fixed point raw: " << cnl::_impl::to_rep(exp2(maximum))
+                    << ", double raw: " << cnl::_impl::to_rep(fp{exp2(doublerep)});
 
     EXPECT_EQ(exp2(minimum), fp{ exp2(doublerepmini) });
 }

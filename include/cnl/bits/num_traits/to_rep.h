@@ -7,20 +7,50 @@
 #ifndef CNL_BITS_NUM_TRAITS_TO_REP
 #define CNL_BITS_NUM_TRAITS_TO_REP
 
+#include <cnl/bits/type_traits.h>
+#include <cnl/bits/type_traits/is_integral.h>
+#include <cnl/constant.h>
+
 #include <type_traits>
+#include <utility>
 
 namespace cnl {
+    namespace _impl {
+        template<typename Number>
+        struct default_to_rep {
+            constexpr Number& operator()(Number& number) const {
+                return number;
+            };
+            constexpr Number const& operator()(Number const& number) const {
+                return number;
+            };
+            constexpr Number&& operator()(Number&& number) const {
+                return std::forward<Number>(number);
+            };
+        };
+    }
+
     /// \brief Returns the value encapsulated in \c number
     /// \param number the 'outer' object
     /// \return the 'inner' value
     /// \sa from_rep, from_value
-    template<class Number>
-    constexpr Number to_rep(Number const& number) {
-        return number;
-    }
+    template<typename Number, class Enable = void>
+    struct to_rep;
+
+    template<typename Number>
+    struct to_rep<Number, _impl::enable_if_t<
+            _impl::is_integral<Number>::value
+            ||std::is_floating_point<Number>::value
+            ||_impl::is_constant<Number>::value>>
+            : _impl::default_to_rep<Number> {
+    };
 
     namespace _impl {
-        using cnl::to_rep;
+        template<class Number>
+        constexpr auto to_rep(Number&& number)
+        -> decltype(cnl::to_rep<remove_cvref_t<Number>>{}(std::forward<Number>(number))) {
+            return cnl::to_rep<remove_cvref_t<Number>>{}(std::forward<Number>(number));
+        }
 
         template<class Number>
         using to_rep_t = decltype(to_rep(std::declval<Number>()));

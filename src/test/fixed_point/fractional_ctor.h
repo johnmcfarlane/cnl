@@ -24,12 +24,12 @@ namespace {
 #if defined(__cpp_inline_variables)
         static_assert(identical(cnl::pi<cnl::fixed_point<int16, -10>>, n));
 #endif
-        static_assert(identical(int16{3216}, to_rep(n)), "cnl::to_rep(cnl::fixed_point)");
+        static_assert(identical(int16{3216}, cnl::_impl::to_rep(n)), "cnl::_impl::to_rep(cnl::fixed_point)");
         static_assert(identical(3.140625, static_cast<double>(n)), "cnl::fixed_point::operator double()");
 
         // 15.875 as s4.3
         constexpr auto d = cnl::fixed_point<int8, -3>{15.875};
-        static_assert(identical(int8{127}, to_rep(d)), "cnl::fixed_point::fixed_point");
+        static_assert(identical(int8{127}, cnl::_impl::to_rep(d)), "cnl::fixed_point::fixed_point");
 
         // n / d
         constexpr auto f = make_fractional(n, d);

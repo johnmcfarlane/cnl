@@ -11,6 +11,10 @@ namespace std {
 }
 
 namespace cnl {
+    template<typename T, class Abi>
+    struct to_rep<Vc::simd<T, Abi>> : _impl::default_to_rep<Vc::simd<T, Abi>> {
+    };
+
     template<typename T, class Abi, class Value>
     struct from_value<Vc::simd<T, Abi>, Value> : _impl::from_value_simple<Vc::simd<Value, Abi>, Value> {
     };

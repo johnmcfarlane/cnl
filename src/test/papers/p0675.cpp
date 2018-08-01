@@ -131,7 +131,7 @@ namespace {
         static_assert(is_composite_v<fixed_point<short>>);
 
         // to_rep
-        using cnl::to_rep;
+        using cnl::_impl::to_rep;
         static_assert(identical(1L, to_rep(1L)));
         static_assert(identical(1L, to_rep(smart_integer{1L})));
 
