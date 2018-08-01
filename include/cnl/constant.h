@@ -12,6 +12,8 @@
 
 #include "limits.h"
 
+#include <type_traits>
+
 // CNL_IMPL_CONSTANT_VALUE_TYPE - determines cnl::constant<>::value_type
 #if defined(CNL_TEMPLATE_AUTO)
 // If template<auto> feature is available, cnl::constant's value can be any type.

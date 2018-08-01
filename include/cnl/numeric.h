@@ -22,6 +22,15 @@ namespace cnl {
     // cnl::math_constants
     
 #if defined(__cpp_inline_variables)
+    namespace _impl {
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::deleted_fn
+
+        // a great function to call if you need a compiler error
+        template<typename T>
+        constexpr T deleted_fn() = delete;
+    }
+
     /// partial implementation of [P0631](http://wg21.link/p0631)
 
     // values taken from c++ (GCC) 7.2.0 implementation of math.h; disclaimer: may be a bit or two off

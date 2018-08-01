@@ -20,8 +20,6 @@ namespace cnl {
     }
 
     namespace _impl {
-        using cnl::to_rep;
-
         template<class Number>
         using to_rep_t = decltype(to_rep(std::declval<Number>()));
     }
