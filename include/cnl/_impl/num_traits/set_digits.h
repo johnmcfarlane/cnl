@@ -7,8 +7,8 @@
 /// \file cnl/bits/num_traits/set_digits.h
 /// \brief definitions supporting \ref cnl::set_digits
 
-#ifndef CNL_BITS_NUM_TRAITS_SET_DIGITS
-#define CNL_BITS_NUM_TRAITS_SET_DIGITS
+#ifndef CNL_IMPL_NUM_TRAITS_SET_DIGITS
+#define CNL_IMPL_NUM_TRAITS_SET_DIGITS
 
 #include "../type_traits.h"
 #include "../type_traits/is_integral.h"
@@ -169,4 +169,4 @@ namespace cnl {
     using set_digits_t = typename set_digits<T, Digits>::type;
 }
 
-#endif  // CNL_BITS_NUM_TRAITS_SET_DIGITS
+#endif  // CNL_IMPL_NUM_TRAITS_SET_DIGITS

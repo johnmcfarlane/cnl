@@ -7,8 +7,8 @@
 /// \file
 /// \brief essential definitions related to the integer rounding
 
-#if !defined(CNL_BITS_ROUNDING_H)
-#define CNL_BITS_ROUNDING_H
+#if !defined(CNL_IMPL_ROUNDING_H)
+#define CNL_IMPL_ROUNDING_H
 
 #include "native_tag.h"
 #include "operators.h"
@@ -126,4 +126,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_BITS_ROUNDING_H
+#endif  // CNL_IMPL_ROUNDING_H

@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_BITS_USED_DIGITS_H
-#define CNL_BITS_USED_DIGITS_H
+#ifndef CNL_IMPL_USED_DIGITS_H
+#define CNL_IMPL_USED_DIGITS_H
 
 #include <type_traits>
 
@@ -59,4 +59,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_BITS_USED_DIGITS_H
+#endif  // CNL_IMPL_USED_DIGITS_H

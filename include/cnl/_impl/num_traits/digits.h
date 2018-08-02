@@ -7,8 +7,8 @@
 /// \file cnl/bits/num_traits/digits.h
 /// \brief definitions supporting \ref cnl::set_digits
 
-#ifndef CNL_BITS_NUM_TRAITS_DIGITS
-#define CNL_BITS_NUM_TRAITS_DIGITS
+#ifndef CNL_IMPL_NUM_TRAITS_DIGITS
+#define CNL_IMPL_NUM_TRAITS_DIGITS
 
 #include "../../constant.h"
 #include "../../limits.h"
@@ -35,4 +35,4 @@ namespace cnl {
 #endif
 }
 
-#endif  // CNL_BITS_NUM_TRAITS_DIGITS
+#endif  // CNL_IMPL_NUM_TRAITS_DIGITS

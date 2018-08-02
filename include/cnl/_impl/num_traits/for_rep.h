@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_BITS_NUM_TRAITS_FOR_REP
-#define CNL_BITS_NUM_TRAITS_FOR_REP
+#ifndef CNL_IMPL_NUM_TRAITS_FOR_REP
+#define CNL_IMPL_NUM_TRAITS_FOR_REP
 
 #include "is_composite.h"
 #include "to_rep.h"
@@ -30,4 +30,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_BITS_NUM_TRAITS_FOR_REP
+#endif  // CNL_IMPL_NUM_TRAITS_FOR_REP

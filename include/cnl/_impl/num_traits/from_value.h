@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_BITS_NUM_TRAITS_FROM_VALUE
-#define CNL_BITS_NUM_TRAITS_FROM_VALUE
+#ifndef CNL_IMPL_NUM_TRAITS_FROM_VALUE
+#define CNL_IMPL_NUM_TRAITS_FROM_VALUE
 
 #include "../../constant.h"
 
@@ -62,4 +62,4 @@ namespace cnl {
     using from_value_t = decltype(_impl::make_number<Number>(std::declval<Value>()));
 }
 
-#endif  // CNL_BITS_NUM_TRAITS_FROM_VALUE
+#endif  // CNL_IMPL_NUM_TRAITS_FROM_VALUE

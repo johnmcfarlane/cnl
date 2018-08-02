@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_BITS_NATIVE_TAG_H
-#define CNL_BITS_NATIVE_TAG_H
+#ifndef CNL_IMPL_NATIVE_TAG_H
+#define CNL_IMPL_NATIVE_TAG_H
 
 #include "type_traits/make_unsigned.h"
 
@@ -67,4 +67,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_BITS_NATIVE_TAG_H
+#endif  // CNL_IMPL_NATIVE_TAG_H

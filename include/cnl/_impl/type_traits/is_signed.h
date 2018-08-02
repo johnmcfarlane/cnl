@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_BITS_TYPE_TRAITS_IS_SIGNED
-#define CNL_BITS_TYPE_TRAITS_IS_SIGNED
+#ifndef CNL_IMPL_TYPE_TRAITS_IS_SIGNED
+#define CNL_IMPL_TYPE_TRAITS_IS_SIGNED
 
 #include "../../limits.h"
 
@@ -17,4 +17,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_BITS_TYPE_TRAITS_IS_SIGNED
+#endif  // CNL_IMPL_TYPE_TRAITS_IS_SIGNED
