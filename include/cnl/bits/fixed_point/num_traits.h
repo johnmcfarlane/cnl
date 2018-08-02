@@ -58,15 +58,6 @@ namespace cnl {
         }
     };
 
-    /// \brief \ref fixed_point overload of \ref to_rep(Number const& number)
-    /// \headerfile cnl/fixed_point.h
-    template<typename Rep, int Exponent, int Radix>
-    constexpr Rep to_rep(fixed_point<Rep, Exponent, Radix> const& number)
-    {
-        using base_type = typename fixed_point<Rep, Exponent, Radix>::_base;
-        return to_rep(static_cast<base_type const&>(number));
-    }
-
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_value<cnl::fixed_point<>>
 

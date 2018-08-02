@@ -24,7 +24,7 @@ namespace cnl {
             template<class FixedPoint>
             constexpr FixedPoint rounding_conversion(double d) {
                 using one_longer = fixed_point<set_digits_t<typename FixedPoint::rep, digits<FixedPoint>::value+1>, FixedPoint::exponent-1>;
-                return from_rep<FixedPoint>{}(static_cast<typename FixedPoint::rep>((to_rep(one_longer{ d }) + 1) >> 1));
+                return from_rep<FixedPoint>{}(static_cast<typename FixedPoint::rep>((_impl::to_rep(one_longer{ d }) + 1) >> 1));
             }
 
             template<class FixedPoint>
@@ -153,7 +153,7 @@ namespace cnl {
                 return floored <= Exponent
                     ? typename Intermediate::rep{1}//return immediately if the shift would result in all bits being shifted out
                     //Do the shifts manually. Once the branch with shift operators is merged, could use those
-                    : (to_rep(exp2m1_0to1<Rep, Exponent>(fractional(x, floored)))//Calculate the exponent of the fractional part
+                    : (_impl::to_rep(exp2m1_0to1<Rep, Exponent>(fractional(x, floored)))//Calculate the exponent of the fractional part
                     >> (-Intermediate::exponent + Exponent - floored))//shift it to the right place
                     + (Rep { 1 } << (floored - Exponent)); //The constant term must be one, to make integer powers correct
             }

@@ -65,7 +65,7 @@ namespace cnl {
 
         template<class RhsRep, class RhsOverflowTag>
         constexpr overflow_integer(overflow_integer<RhsRep, RhsOverflowTag> const& rhs)
-                :overflow_integer(to_rep(rhs))
+                :overflow_integer(_impl::to_rep(rhs))
         {
         }
 
@@ -87,7 +87,7 @@ namespace cnl {
         template<class T>
         constexpr explicit operator T() const
         {
-            return static_cast<T>(to_rep(*this));
+            return static_cast<T>(_impl::to_rep(*this));
         }
     };
 
@@ -117,26 +117,6 @@ namespace cnl {
     struct set_digits<overflow_integer<Rep, OverflowTag>, MinNumBits> {
         using type = overflow_integer<set_digits_t<Rep, MinNumBits>, OverflowTag>;
     };
-
-    /// \brief Overload of \ref to_rep(Number const& number) for \ref overflow_integer.
-    template<class Rep, class OverflowTag>
-    constexpr Rep& to_rep(overflow_integer<Rep, OverflowTag>& number)
-    {
-        using base_type = typename overflow_integer<Rep, OverflowTag>::_base;
-        return to_rep(static_cast<base_type&>(number));
-    }
-    template<class Rep, class OverflowTag>
-    constexpr Rep const& to_rep(overflow_integer<Rep, OverflowTag> const& number)
-    {
-        using base_type = typename overflow_integer<Rep, OverflowTag>::_base;
-        return to_rep(static_cast<base_type const&>(number));
-    }
-    template<class Rep, class OverflowTag>
-    constexpr Rep&& to_rep(overflow_integer<Rep, OverflowTag>&& number)
-    {
-        using base_type = typename overflow_integer<Rep, OverflowTag>::_base;
-        return to_rep(static_cast<base_type&&>(number));
-    }
 
     /// \brief \ref overflow_integer specialization of \ref from_rep
     /// \tparam ArchetypeRep ignored; replaced by \c Rep
@@ -179,9 +159,9 @@ namespace cnl {
             _impl::enable_if_t<(Digits>=0)>> {
         using _value_type = overflow_integer<Rep, OverflowTag>;
         constexpr auto operator()(_value_type const& s) const
-        -> decltype(from_rep<_value_type>{}(shift_left(OverflowTag{}, to_rep(s), constant<Digits>{})))
+        -> decltype(from_rep<_value_type>{}(shift_left(OverflowTag{}, _impl::to_rep(s), constant<Digits>{})))
         {
-            return from_rep<_value_type>{}(shift_left(OverflowTag{}, to_rep(s), constant<Digits>{}));
+            return from_rep<_value_type>{}(shift_left(OverflowTag{}, _impl::to_rep(s), constant<Digits>{}));
         }
     };
 
@@ -212,9 +192,9 @@ namespace cnl {
         template<class Operator, class Rep, class OverflowTag>
         struct unary_operator<Operator, overflow_integer<Rep, OverflowTag>> {
             constexpr auto operator()(overflow_integer<Rep, OverflowTag> const& operand) const
-            -> decltype(overflow_integer<decltype(Operator()(to_rep(operand))), OverflowTag>(Operator()(to_rep(operand))))
+            -> decltype(overflow_integer<decltype(Operator()(_impl::to_rep(operand))), OverflowTag>(Operator()(_impl::to_rep(operand))))
             {
-                return overflow_integer<decltype(Operator()(to_rep(operand))), OverflowTag>(Operator()(to_rep(operand)));
+                return overflow_integer<decltype(Operator()(_impl::to_rep(operand))), OverflowTag>(Operator()(_impl::to_rep(operand)));
             }
         };
 
@@ -229,7 +209,7 @@ namespace cnl {
             -> overflow_integer<op_result<Operator, LhsRep, RhsRep>, OverflowTag>
             {
                 return from_rep<overflow_integer<op_result<Operator, LhsRep, RhsRep>, OverflowTag>>{}(
-                        _impl::tagged_binary_operator<OverflowTag, Operator>{}(to_rep(lhs), to_rep(rhs)));
+                        _impl::tagged_binary_operator<OverflowTag, Operator>{}(_impl::to_rep(lhs), _impl::to_rep(rhs)));
             }
         };
 
@@ -241,9 +221,9 @@ namespace cnl {
             constexpr auto operator()(
                     overflow_integer<LhsRep, OverflowTag> const& lhs,
                     overflow_integer<RhsRep, OverflowTag> const& rhs) const
-            -> decltype(Operator()(to_rep(lhs), to_rep(rhs)))
+            -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
             {
-                return Operator()(to_rep(lhs), to_rep(rhs));
+                return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
             }
         };
 

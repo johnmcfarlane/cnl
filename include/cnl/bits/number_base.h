@@ -17,17 +17,12 @@
 #include <cnl/bits/type_traits/make_unsigned.h>
 #include <cnl/constant.h>
 
+#include <utility>
+
 namespace cnl {
     namespace _impl {
         template<class Derived, class Rep>
         class number_base;
-
-        template<class Derived, class Rep>
-        constexpr Rep& to_rep(number_base<Derived, Rep>& number);
-        template<class Derived, class Rep>
-        constexpr Rep const& to_rep(number_base<Derived, Rep> const& number);
-        template<class Derived, class Rep>
-        constexpr Rep&& to_rep(number_base<Derived, Rep>&& number);
 
         template<class Derived, class Rep>
         class number_base {
@@ -53,17 +48,7 @@ namespace cnl {
                 return static_cast<Derived&>(*this);
             }
 
-#if defined(__GNUG__) && !defined(__clang__) && (__GNUG__ <= 5)
-            // GCC5 bug: https://stackoverflow.com/a/29957648/671509
-            friend rep& to_rep<>(number_base&);
-            friend rep const& to_rep<>(number_base const&);
-            friend rep&& to_rep<>(number_base&&);
-#else
-            friend constexpr rep& to_rep<>(number_base&);
-            friend constexpr rep const& to_rep<>(number_base const&);
-            friend constexpr rep&& to_rep<>(number_base&&);
-#endif
-
+            friend cnl::to_rep<number_base>;
         private:
             rep _rep;
         };
@@ -184,7 +169,7 @@ namespace cnl {
         struct pre_operator<Operator, number_base<Derived, Rep>> {
             CNL_RELAXED_CONSTEXPR Derived& operator()(Derived& rhs) const
             {
-                Operator()(to_rep(rhs));
+                Operator()(_impl::to_rep(rhs));
                 return rhs;
             }
         };
@@ -198,7 +183,7 @@ namespace cnl {
             CNL_RELAXED_CONSTEXPR Derived operator()(Derived& lhs) const
             {
                 auto copy = lhs;
-                Operator()(to_rep(lhs));
+                Operator()(_impl::to_rep(lhs));
                 return copy;
             }
         };
@@ -244,29 +229,32 @@ namespace cnl {
         using type = _impl::set_rep_t<Number, make_unsigned_t<_impl::get_rep_t<Number>>>;
     };
 
-    namespace _impl {
-        template<class Derived, class Rep>
-        constexpr Rep& to_rep(number_base<Derived, Rep>& number) {
+    template<class Derived, class Rep>
+    struct to_rep<_impl::number_base<Derived, Rep>> {
+        constexpr Rep& operator()(Derived& number) const {
             return number._rep;
         }
-        template<class Derived, class Rep>
-        constexpr Rep const& to_rep(number_base<Derived, Rep> const& number) {
+        constexpr Rep const& operator()(Derived const& number) const {
             return number._rep;
         }
-        template<class Derived, class Rep>
-        constexpr Rep&& to_rep(number_base<Derived, Rep>&& number) {
+        constexpr Rep&& operator()(Derived&& number) const {
             return std::forward<Rep>(number._rep);
         }
-    }
+    };
+
+    template<class Derived>
+    struct to_rep<Derived, _impl::enable_if_t<_impl::is_derived_from_number_base<Derived>::value>>
+            : to_rep<_impl::number_base<Derived, typename Derived::rep>> {
+    };
 
     template<int Digits, int Radix, class Derived>
     struct scale<Digits, Radix, _impl::number_base<Derived, typename Derived::rep>> {
         using _scalar_type = _impl::number_base<Derived, typename Derived::rep>;
 
-        constexpr auto operator()(_scalar_type const &s) const
-        -> decltype(from_rep<Derived>{}(_impl::scale<Digits, Radix>(to_rep(s))))
+        constexpr auto operator()(Derived const &s) const
+        -> decltype(from_rep<Derived>{}(_impl::scale<Digits, Radix>(_impl::to_rep(s))))
         {
-            return from_rep<Derived>{}(_impl::scale<Digits, Radix>(to_rep(s)));
+            return from_rep<Derived>{}(_impl::scale<Digits, Radix>(_impl::to_rep(s)));
         }
     };
 

@@ -58,7 +58,7 @@ namespace cnl {
         template<typename Rep, int Exponent, int Radix>
         constexpr Rep not_fixed_point(fixed_point<Rep, Exponent, Radix> const& f)
         {
-            return to_rep(f);
+            return _impl::to_rep(f);
         }
 
         template<typename Number>

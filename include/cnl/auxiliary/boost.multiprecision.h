@@ -86,6 +86,11 @@ namespace cnl {
         using type = _bmp::number<set_digits_t<Backend, MinNumDigits>, ExpressionTemplates>;
     };
 
+    template<class Backend, _bmp::expression_template_option ExpressionTemplates>
+    struct to_rep<_bmp::number<Backend, ExpressionTemplates>>
+            : _impl::default_to_rep<_bmp::number<Backend, ExpressionTemplates>> {
+    };
+
     template<class Backend, _bmp::expression_template_option ExpressionTemplates, class Value>
     struct from_value<_bmp::number<Backend, ExpressionTemplates>, Value> {
         constexpr auto operator()(Value const& value) const

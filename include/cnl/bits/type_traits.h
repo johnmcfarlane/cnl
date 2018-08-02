@@ -40,6 +40,17 @@ namespace cnl {
         }
 
         ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::assert_same - instead of being false_type like std::is_same,
+        // actually emits error which generally helps report the type of Actual
+
+        template<typename Expected, typename Actual>
+        struct assert_same;
+
+        template<typename T>
+        struct assert_same<T, T> : std::true_type {
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::remove_cvref_t
 
         template<typename T>

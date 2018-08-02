@@ -22,9 +22,6 @@ namespace cnl {
     template<typename Rep = int, int Exponent = 0, int Radix = cnl::numeric_limits<Rep>::radix>
     class fixed_point;
 
-    template<typename Rep, int Exponent, int Radix>
-    constexpr Rep to_rep(fixed_point<Rep, Exponent, Radix> const&);
-
     template<typename Numerator, typename Denominator>
     struct fractional;
 
@@ -137,7 +134,7 @@ namespace cnl {
         constexpr fixed_point(fixed_point<FromRep, FromExponent, Radix> const& rhs)
                 : _base(
                 static_cast<Rep>(_impl::scale<FromExponent-exponent, Radix>(
-                        _impl::make_number<Rep>(cnl::to_rep(rhs)))))
+                        _impl::make_number<Rep>(cnl::_impl::to_rep(rhs)))))
         {
         }
 
@@ -190,7 +187,7 @@ namespace cnl {
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         explicit constexpr operator S() const
         {
-            return static_cast<S>(_impl::scale<exponent>(to_rep(*this)));
+            return static_cast<S>(_impl::scale<exponent>(_impl::to_rep(*this)));
         }
 
         /// returns value represented as floating-point
@@ -198,7 +195,7 @@ namespace cnl {
         explicit constexpr operator S() const
         {
             static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-            return S(to_rep(*this))*inverse_one<S>();
+            return S(_impl::to_rep(*this))*inverse_one<S>();
         }
 
         /// creates an instance given the underlying representation value
@@ -289,7 +286,7 @@ namespace cnl {
     constexpr typename fixed_point<Rep, Exponent, Radix>::rep
     fixed_point<Rep, Exponent, Radix>::fixed_point_to_rep(fixed_point<FromRep, FromExponent, Radix> const& rhs)
     {
-        return _impl::scale<FromExponent-exponent>(to_rep(rhs));
+        return _impl::scale<FromExponent-exponent>(_impl::to_rep(rhs));
     }
 }
 

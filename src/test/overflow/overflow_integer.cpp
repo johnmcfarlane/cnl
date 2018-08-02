@@ -124,7 +124,7 @@ namespace saturated_binary_operator {
     static_assert(cnl::_impl::is_derived_from_number_base<saturated_integer<short>>::value, "");
 
     static_assert(identical(
-            to_rep(saturated_integer<short>(1234)),
+            cnl::_impl::to_rep(saturated_integer<short>(1234)),
             short(1234)), "to_rep(saturated_integer<>) test failed");
 
     static_assert(identical(cnl::_impl::binary_operator<cnl::_impl::multiply_op, saturated_integer<short>, float>()(
@@ -137,8 +137,8 @@ namespace saturated_binary_operator {
     static_assert(identical(
             cnl::make_overflow_int<cnl::saturated_overflow_tag>(
                     cnl::_impl::tagged_binary_operator<cnl::saturated_overflow_tag, multiply_op>()(
-                            to_rep(saturated_integer<signed char>{30}),
-                            to_rep(saturated_integer<signed char>{40}))),
+                            cnl::_impl::to_rep(saturated_integer<signed char>{30}),
+                            cnl::_impl::to_rep(saturated_integer<signed char>{40}))),
             saturated_integer<int>{1200}), "");
 
     static_assert(identical(
@@ -395,8 +395,9 @@ namespace test_make_unsigned {
 }
 
 namespace test_to_rep {
-    static_assert(identical(to_rep(cnl::overflow_integer<uint64_t>{54}), uint64_t{54}), "to_rep<overflow_integer<>>()");
-    static_assert(identical(to_rep(native_integer<cnl::uint8>{3}), cnl::uint8{3}), "");
+    static_assert(identical(cnl::_impl::to_rep(cnl::overflow_integer<uint64_t>{54}), uint64_t{54}),
+            "cnl::_impl::to_rep<overflow_integer<>>()");
+    static_assert(identical(cnl::_impl::to_rep(native_integer<cnl::uint8>{3}), cnl::uint8{3}), "");
 }
 
 namespace test_from_rep {

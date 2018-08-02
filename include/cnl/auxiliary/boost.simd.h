@@ -26,6 +26,10 @@ namespace cnl {
         using type = boost::simd::pack<set_digits_t<T, Digits>, N>;
     };
 
+    template<class T, std::size_t N>
+    struct to_rep<boost::simd::pack<T, N>> : _impl::default_to_rep<boost::simd::pack<T, N>> {
+    };
+
     template<int Digits, int Radix, class T, std::size_t N>
     struct scale<Digits, Radix, boost::simd::pack<T, N>> : _impl::default_scale<Digits, Radix, boost::simd::pack<T, N>> {
     };

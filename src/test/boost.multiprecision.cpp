@@ -15,6 +15,8 @@
 
 #include "boost.throw_exception.h"
 
+using cnl::_impl::assert_same;
+using cnl::_impl::identical;
 using cnl::fixed_point;
 using cnl::multiprecision;
 using cnl::set_digits_t;
@@ -64,6 +66,29 @@ static_assert(cnl::digits<set_digits_t<unsigned_multiprecision<14>, 3>>::value>=
 
 static_assert(cnl::digits<set_digits_t<signed_multiprecision<120>, 3>>::value<=cnl::digits<signed_multiprecision<120>>::value, "set_digits_t<signed_multiprecision> test failed");
 static_assert(cnl::digits<unsigned_multiprecision<128>>::value>=cnl::digits<set_digits_t<unsigned_multiprecision<128>, 16>>::value, "set_digits_t<signed_multiprecision> test failed");
+
+namespace test_to_rep {
+    static_assert(
+            assert_same<
+                    decltype(std::declval<unsigned_multiprecision<12>>()),
+                    decltype(cnl::to_rep<fixed_point<unsigned_multiprecision<12>>>{}(
+                            std::declval<unsigned_multiprecision<12>>()))>::value,
+            "cnl::_impl::depth<fixed_point<boost::multiprecision>>");
+}
+
+namespace test_impl_to_rep {
+    static_assert(
+            assert_same<
+                    unsigned_multiprecision<987654321>&&,
+                    cnl::_impl::to_rep_t<fixed_point<unsigned_multiprecision<987654321>>>>::value,
+            "cnl::_impl::depth<fixed_point<boost::multiprecision>>");
+}
+
+namespace test_depth {
+    static_assert(
+            cnl::_impl::depth<fixed_point<unsigned_multiprecision<987654321>>>::value==1,
+            "cnl::_impl::depth<fixed_point<boost::multiprecision>>");
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::multiprecision arithmetic

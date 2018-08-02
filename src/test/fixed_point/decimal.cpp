@@ -13,7 +13,7 @@ using cnl::_impl::identical;
 
 namespace test_ctor_int {
     static_assert(identical(decimal_fixed_point<int, 1>{10}, cnl::from_rep<decimal_fixed_point<int, 1>>{}(1)), "");
-    static_assert(identical(1, cnl::to_rep(decimal_fixed_point<int, 1>{10})), "");
+    static_assert(identical(1, cnl::_impl::to_rep(decimal_fixed_point<int, 1>{10})), "");
 }
 
 namespace test_from_value {
@@ -28,13 +28,13 @@ namespace test_from_rep {
 
 namespace test_ctor_float {
     static_assert(identical(decimal_fixed_point<int, 1>{10.}, cnl::from_rep<decimal_fixed_point<int, 1>>{}(1)), "");
-    static_assert(identical(1, cnl::to_rep(decimal_fixed_point<int, 1>{10.})), "");
+    static_assert(identical(1, cnl::_impl::to_rep(decimal_fixed_point<int, 1>{10.})), "");
 
     static_assert(identical(decimal_fixed_point<int, -1>{1.5}, cnl::from_rep<decimal_fixed_point<int, -1>>{}(15)), "");
-    static_assert(identical(15, cnl::to_rep(decimal_fixed_point<int, -1>{1.5})), "");
+    static_assert(identical(15, cnl::_impl::to_rep(decimal_fixed_point<int, -1>{1.5})), "");
 
     static_assert(identical(decimal_fixed_point<int, -1>{5.1}, cnl::from_rep<decimal_fixed_point<int, -1>>{}(51)), "");
-    static_assert(identical(51, cnl::to_rep(decimal_fixed_point<int, -1>{5.1})), "");
+    static_assert(identical(51, cnl::_impl::to_rep(decimal_fixed_point<int, -1>{5.1})), "");
 }
 
 namespace test_ctor_decimal_fixed_point {

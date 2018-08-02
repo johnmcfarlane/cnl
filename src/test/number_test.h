@@ -136,14 +136,14 @@ struct number_test {
     // would not pass for boost.multiprecision
     static_assert(cnl::is_composite<value_type>::value != std::is_fundamental<value_type>::value, "is_composite test failed");
 
-    static constexpr auto lowest_from_rep = cnl::from_rep<value_type>{}(cnl::to_rep(lowest));
-    static_assert(identical(lowest_from_rep, lowest), "cnl::to_rep & from_rep test failed");
+    static constexpr auto lowest_from_rep = cnl::from_rep<value_type>{}(cnl::_impl::to_rep(lowest));
+    static_assert(identical(lowest_from_rep, lowest), "cnl::_impl::to_rep & from_rep test failed");
 
-    static constexpr auto zero_from_rep = cnl::from_rep<value_type>{}(cnl::to_rep(zero));
-    static_assert(identical(zero_from_rep, zero), "cnl::to_rep & from_rep test failed");
+    static constexpr auto zero_from_rep = cnl::from_rep<value_type>{}(cnl::_impl::to_rep(zero));
+    static_assert(identical(zero_from_rep, zero), "cnl::_impl::to_rep & from_rep test failed");
 
-    static constexpr auto max_from_rep = cnl::from_rep<value_type>{}(cnl::to_rep(max));
-    static_assert(identical(max_from_rep, max), "cnl::to_rep & from_rep test failed");
+    static constexpr auto max_from_rep = cnl::from_rep<value_type>{}(cnl::_impl::to_rep(max));
+    static_assert(identical(max_from_rep, max), "cnl::_impl::to_rep & from_rep test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // bit functions

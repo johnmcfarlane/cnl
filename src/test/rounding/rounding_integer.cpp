@@ -68,8 +68,8 @@ namespace {
 
         namespace test_to_rep {
             static_assert(
-                    identical(123, to_rep(rounding_integer<>{123})),
-                    "to_rep<rounding_integer> test failed");
+                    identical(123, cnl::_impl::to_rep(rounding_integer<>{123})),
+                    "cnl::_impl::to_rep<rounding_integer> test failed");
         }
 
         namespace test_from_rep {
@@ -368,8 +368,8 @@ struct rounding_integer_tests {
                   "cnl::from_rep<rounding_integer<>> test failed");
 
     // to_rep
-    static_assert(identical(123, cnl::to_rep(123)), "cnl::to_rep test failed");
-    static_assert(identical(321, cnl::to_rep(rounding_integer<>{321})), "cnl::to_rep test failed");
+    static_assert(identical(123, cnl::_impl::to_rep(123)), "cnl::_impl::to_rep test failed");
+    static_assert(identical(321, cnl::_impl::to_rep(rounding_integer<>{321})), "cnl::_impl::to_rep test failed");
 };
 
 template struct number_test_by_rep_by_tag<rounding_integer, cnl::nearest_rounding_tag, rounding_integer_tests>;

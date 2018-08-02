@@ -98,7 +98,7 @@ namespace cnl {
     sqrt(fixed_point<Rep, Exponent, Radix> const& x)
     {
         using type = fixed_point<Rep, Exponent, Radix>;
-        return to_rep(x)<0
+        return _impl::to_rep(x)<0
                ? _impl::terminate<type>("negative value passed to cnl::sqrt")
                : type{from_rep<type>{}(_impl::for_rep<Rep>(_impl::sqrt_solve1<Exponent>(), x))};
     }
@@ -109,12 +109,12 @@ namespace cnl {
     template<class Rep, int Exponent, int Radix,
             _impl::enable_if_t<Exponent<0, int> dummy = 0>
     constexpr auto floor(fixed_point<Rep, Exponent, Radix> const& x)
-    -> decltype(from_rep<fixed_point<Rep, 0, Radix>>{}(to_rep(x)>>constant<-Exponent>{})) {
+    -> decltype(from_rep<fixed_point<Rep, 0, Radix>>{}(_impl::to_rep(x)>>constant<-Exponent>{})) {
         static_assert(
                 Radix==2,
                 "cnl::floor(fixed_point<Rep, Exponent, Radix>) not implemented for Exponent<0 && Radix!=2");
 
-        return from_rep<fixed_point<Rep, 0, Radix>>{}(to_rep(x)>>constant<-Exponent>{});
+        return from_rep<fixed_point<Rep, 0, Radix>>{}(_impl::to_rep(x)>>constant<-Exponent>{});
     }
 
     template<class Rep, int Exponent, int Radix>

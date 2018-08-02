@@ -286,7 +286,7 @@ namespace ctor {
     static_assert(identical(uint32{0x00003210U}, uint32(fixed_point<uint64, -16>{0x76543210U})), "fixed_point<>::fixed_point");
 #endif
 
-    static_assert(identical(to_rep(fixed_point<int, 2>{4}), 1), "to_rep<fixed_point<int, 2>>()");
+    static_assert(identical(cnl::_impl::to_rep(fixed_point<int, 2>{4}), 1), "cnl::_impl::to_rep<fixed_point<int, 2>>()");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -300,8 +300,8 @@ namespace test_is_composite {
 }
 
 namespace test_to_rep {
-    static_assert(identical(to_rep(fixed_point<test_int>{97531}), test_int{97531}), "to_rep");
-    static_assert(identical(to_rep(fixed_point<uint8>{199}), uint8{199}), "to_rep");
+    static_assert(identical(cnl::_impl::to_rep(fixed_point<test_int>{97531}), test_int{97531}), "cnl::_impl::to_rep");
+    static_assert(identical(cnl::_impl::to_rep(fixed_point<uint8>{199}), uint8{199}), "cnl::_impl::to_rep");
 }
 
 namespace test_from_rep {
@@ -856,7 +856,6 @@ static_assert(sqrt(fixed_point<uint8>(225))==15, "cnl::sqrt test failed");
 static_assert(sqrt(fixed_point<int8>(81))==9, "cnl::sqrt test failed");
 
 static_assert(sqrt(fixed_point<uint8, -1>(4))==2, "cnl::sqrt test failed");
-static_assert(to_rep(fixed_point<int8, -2>(9))==36, "cnl::sqrt test failed");
 static_assert(sqrt(fixed_point<int, -2>(9))==3, "cnl::sqrt test failed");
 static_assert(sqrt(fixed_point<int8, -2>(9))==3, "cnl::sqrt test failed");
 
@@ -910,7 +909,9 @@ struct FixedPointTesterOutsize {
     // simply assignment to and from underlying representation
     using numeric_limits = cnl::numeric_limits<fixed_point>;
     static constexpr fixed_point min = cnl::from_rep<fixed_point>{}(rep(1));
-    static_assert(to_rep(min) == rep(1), "all Rep types should be able to store the number 1!");
+#if !defined(_MSC_VER)
+    static_assert(cnl::_impl::to_rep(min) == rep(1), "all Rep types should be able to store the number 1!");
+#endif
 
     // unary common_type_t
     static_assert(is_same<
