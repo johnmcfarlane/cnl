@@ -10,6 +10,8 @@
 #if !defined(CNL_OVERFLOW_H)
 #define CNL_OVERFLOW_H
 
+#include "_impl/overflow/native.h"
+
 #include "_impl/terminate.h"
 #include "_impl/throw_exception.h"
 
@@ -22,12 +24,6 @@
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // mode tags and objects
-
-    // match the behavior of fundamental arithmetic types
-    struct native_overflow_tag : _impl::native_tag {
-    };
-
-    static constexpr native_overflow_tag native_overflow{};
 
     // terminate program with diagnostic when overflow is detected
     static constexpr struct trapping_overflow_tag {
@@ -134,11 +130,6 @@ namespace cnl {
                                 ? negative_overflow_result<Result>(OverflowTag{})
                                 : static_cast<Result>(rhs);
             }
-        };
-
-        template<typename Result>
-        struct convert<native_overflow_tag, Result>
-                : convert<_impl::native_tag, Result> {
         };
 
         template<typename Result>
@@ -346,11 +337,6 @@ namespace cnl {
                                 ? negative_overflow_result<result_type>(OverflowTag{})
                                 : tagged_binary_operator<native_tag, Operator>{}(lhs, rhs);
             }
-        };
-
-        template<class Operator>
-        struct tagged_binary_operator<native_overflow_tag, Operator>
-                : tagged_binary_operator<_impl::native_tag, Operator> {
         };
 
         template<class Operator>
