@@ -12,8 +12,8 @@
 
 #include "bit.h"
 
-#include "bits/num_traits/for_rep.h"
-#include "bits/used_digits.h"
+#include "_impl/num_traits/for_rep.h"
+#include "_impl/used_digits.h"
 
 /// compositional numeric library
 namespace cnl {

@@ -10,7 +10,7 @@
 #if !defined(CNL_FRACTIONAL_H)
 #define CNL_FRACTIONAL_H 1
 
-#include "bits/type_traits.h"
+#include "_impl/type_traits.h"
 
 #if defined(__cpp_lib_experimental_gcd_lcm)
 #include <experimental/numeric>

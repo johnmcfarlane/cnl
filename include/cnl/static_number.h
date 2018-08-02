@@ -12,7 +12,7 @@
 
 #include "fixed_point.h"
 
-#include "bits/static_integer.h"
+#include "_impl/static_integer.h"
 
 /// compositional numeric library
 namespace cnl {

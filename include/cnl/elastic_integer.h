@@ -12,9 +12,9 @@
 
 #include "constant.h"
 
-#include "bits/num_traits/fixed_width_scale.h"
-#include "bits/num_traits/width.h"
-#include "bits/number_base.h"
+#include "_impl/num_traits/fixed_width_scale.h"
+#include "_impl/num_traits/width.h"
+#include "_impl/number_base.h"
 
 /// compositional numeric library
 namespace cnl {

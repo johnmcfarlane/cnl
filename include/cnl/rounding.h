@@ -10,7 +10,7 @@
 #if !defined(CNL_ROUNDING_H)
 #define CNL_ROUNDING_H
 
-#include "bits/rounding.h"
+#include "_impl/rounding.h"
 
 /// compositional numeric library
 namespace cnl {

@@ -10,11 +10,11 @@
 #if !defined(CNL_OVERFLOW_H)
 #define CNL_OVERFLOW_H
 
-#include "bits/terminate.h"
-#include "bits/throw_exception.h"
+#include "_impl/terminate.h"
+#include "_impl/throw_exception.h"
 
 #include "numeric.h"
-#include "bits/native_tag.h"
+#include "_impl/native_tag.h"
 
 #include <stdexcept>
 

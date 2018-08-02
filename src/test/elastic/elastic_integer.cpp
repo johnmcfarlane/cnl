@@ -9,8 +9,8 @@
 
 #include <cnl/elastic_integer.h>
 #include <cnl/numeric.h>
-#include <cnl/bits/rounding.h>
-#include <cnl/bits/common.h>
+#include <cnl/_impl/rounding.h>
+#include <cnl/_impl/common.h>
 
 #include <gtest/gtest.h>
 

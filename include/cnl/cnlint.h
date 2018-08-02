@@ -10,8 +10,8 @@
 #ifndef CNL_CNLINT_H
 #define CNL_CNLINT_H
 
-#include "bits/common.h"
-#include "bits/config.h"
+#include "_impl/common.h"
+#include "_impl/config.h"
 
 #include <cstdint>
 

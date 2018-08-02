@@ -7,10 +7,10 @@
 #if !defined(CNL_ROUNDING_INTEGER_H)
 #define CNL_ROUNDING_INTEGER_H 1
 
-#include "bits/num_traits/fixed_width_scale.h"
-#include "bits/number_base.h"
-#include "bits/rounding.h"
-#include "bits/used_digits.h"
+#include "_impl/num_traits/fixed_width_scale.h"
+#include "_impl/number_base.h"
+#include "_impl/rounding.h"
+#include "_impl/used_digits.h"
 
 /// compositional numeric library
 namespace cnl {

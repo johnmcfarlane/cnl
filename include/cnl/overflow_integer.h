@@ -12,9 +12,9 @@
 
 #include "overflow.h"
 
-#include "bits/native_tag.h"
-#include "bits/number_base.h"
-#include "bits/operators.h"
+#include "_impl/native_tag.h"
+#include "_impl/number_base.h"
+#include "_impl/operators.h"
 
 #include <type_traits>
 
