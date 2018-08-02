@@ -10,11 +10,11 @@
 #if !defined(CNL_FIXED_POINT_DEF_H)
 #define CNL_FIXED_POINT_DEF_H 1
 
-#include <cnl/bits/power.h>
-#include <cnl/bits/num_traits/width.h>
-#include <cnl/bits/number_base.h>
-#include <cnl/constant.h>
-#include <cnl/numeric.h>
+#include "../power.h"
+#include "../num_traits/width.h"
+#include "../number_base.h"
+#include "../../constant.h"
+#include "../../numeric.h"
 
 /// compositional numeric library
 namespace cnl {

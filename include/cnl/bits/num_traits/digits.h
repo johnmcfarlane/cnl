@@ -10,10 +10,10 @@
 #ifndef CNL_BITS_NUM_TRAITS_DIGITS
 #define CNL_BITS_NUM_TRAITS_DIGITS
 
-#include <cnl/constant.h>
-#include <cnl/limits.h>
+#include "../../constant.h"
+#include "../../limits.h"
 
-#include <cnl/bits/used_digits.h>
+#include "../used_digits.h"
 
 #include <type_traits>
 

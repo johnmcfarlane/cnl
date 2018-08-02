@@ -7,7 +7,7 @@
 #ifndef CNL_BITS_NATIVE_TAG_H
 #define CNL_BITS_NATIVE_TAG_H
 
-#include <cnl/bits/type_traits/make_unsigned.h>
+#include "type_traits/make_unsigned.h"
 
 #include "operators.h"
 

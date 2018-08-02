@@ -9,7 +9,7 @@
 
 #include "is_composite.h"
 #include "to_rep.h"
-#include <cnl/bits/type_traits.h>
+#include "../type_traits.h"
 
 #include <utility>
 

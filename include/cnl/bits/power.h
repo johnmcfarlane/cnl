@@ -7,7 +7,7 @@
 #if !defined(CNL_POWER_H)
 #define CNL_POWER_H 1
 
-#include <cnl/constant.h>
+#include "../constant.h"
 
 #include <type_traits>
 

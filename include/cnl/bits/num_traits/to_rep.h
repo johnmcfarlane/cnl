@@ -7,9 +7,9 @@
 #ifndef CNL_BITS_NUM_TRAITS_TO_REP
 #define CNL_BITS_NUM_TRAITS_TO_REP
 
-#include <cnl/bits/type_traits.h>
-#include <cnl/bits/type_traits/is_integral.h>
-#include <cnl/constant.h>
+#include "../type_traits.h"
+#include "../type_traits/is_integral.h"
+#include "../../constant.h"
 
 #include <type_traits>
 #include <utility>

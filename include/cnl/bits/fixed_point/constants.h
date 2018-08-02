@@ -12,7 +12,7 @@
 
 #include "type.h"
 
-#include <cnl/bits/used_digits.h>
+#include "../used_digits.h"
 
 /// compositional numeric library
 namespace cnl {

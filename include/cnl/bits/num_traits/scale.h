@@ -7,9 +7,9 @@
 #ifndef CNL_BITS_NUM_TRAITS_SCALE
 #define CNL_BITS_NUM_TRAITS_SCALE
 
-#include <cnl/bits/power.h>
-#include <cnl/bits/type_traits.h>
-#include <cnl/bits/type_traits/is_integral.h>
+#include "../power.h"
+#include "../type_traits.h"
+#include "../type_traits/is_integral.h"
 
 namespace cnl {
     template<int Digits, int Radix, class S, class Enable = void>

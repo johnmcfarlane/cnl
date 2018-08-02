@@ -10,8 +10,8 @@
 #if !defined(CNL_OPERATORS_H)
 #define CNL_OPERATORS_H
 
-#include <cnl/limits.h>
-#include <cnl/bits/type_traits.h>
+#include "../limits.h"
+#include "type_traits.h"
 
 /// compositional numeric library
 namespace cnl {

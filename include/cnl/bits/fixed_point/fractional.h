@@ -12,7 +12,7 @@
 
 #include "named.h"
 
-#include <cnl/fractional.h>
+#include "../../fractional.h"
 
 /// compositional numeric library
 namespace cnl {

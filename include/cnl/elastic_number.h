@@ -10,9 +10,9 @@
 #if !defined(CNL_ELASTIC_FIXED_POINT_H)
 #define CNL_ELASTIC_FIXED_POINT_H 1
 
-#include <cnl/elastic_integer.h>
-#include <cnl/fixed_point.h>
-#include <cnl/limits.h>
+#include "elastic_integer.h"
+#include "fixed_point.h"
+#include "limits.h"
 
 /// compositional numeric library
 namespace cnl {

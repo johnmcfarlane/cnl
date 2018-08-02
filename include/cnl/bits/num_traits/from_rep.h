@@ -7,8 +7,8 @@
 #ifndef CNL_BITS_NUM_TRAITS_FROM_REP
 #define CNL_BITS_NUM_TRAITS_FROM_REP
 
-#include <cnl/bits/type_traits/is_integral.h>
-#include <cnl/bits/type_traits.h>
+#include "../type_traits/is_integral.h"
+#include "../type_traits.h"
 
 namespace cnl {
     /// \brief generic function object that returns the number encapsulating a given value

@@ -12,7 +12,7 @@
 
 #include "constant.h"
 
-#include "cnl/bits/num_traits/fixed_width_scale.h"
+#include "bits/num_traits/fixed_width_scale.h"
 #include "bits/num_traits/width.h"
 #include "bits/number_base.h"
 
