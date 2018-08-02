@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_BITS_NUM_TRAITS_FROM_REP
-#define CNL_BITS_NUM_TRAITS_FROM_REP
+#ifndef CNL_IMPL_NUM_TRAITS_FROM_REP
+#define CNL_IMPL_NUM_TRAITS_FROM_REP
 
 #include "../type_traits/is_integral.h"
 #include "../type_traits.h"
@@ -37,4 +37,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_BITS_NUM_TRAITS_FROM_REP
+#endif  // CNL_IMPL_NUM_TRAITS_FROM_REP

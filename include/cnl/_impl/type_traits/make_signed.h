@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_BITS_TYPE_TRAITS_MAKE_SIGNED
-#define CNL_BITS_TYPE_TRAITS_MAKE_SIGNED
+#ifndef CNL_IMPL_TYPE_TRAITS_MAKE_SIGNED
+#define CNL_IMPL_TYPE_TRAITS_MAKE_SIGNED
 
 #include "../type_traits.h"
 
@@ -32,4 +32,4 @@ namespace cnl {
     using make_signed_t = typename make_signed<T>::type;
 }
 
-#endif  // CNL_BITS_TYPE_TRAITS_MAKE_SIGNED
+#endif  // CNL_IMPL_TYPE_TRAITS_MAKE_SIGNED

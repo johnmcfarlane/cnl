@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_BITS_STATIC_INTEGER_H
-#define CNL_BITS_STATIC_INTEGER_H
+#ifndef CNL_IMPL_STATIC_INTEGER_H
+#define CNL_IMPL_STATIC_INTEGER_H
 
 #include "../elastic_integer.h"
 #include "../overflow_integer.h"
@@ -58,4 +58,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_BITS_STATIC_INTEGER_H
+#endif  // CNL_IMPL_STATIC_INTEGER_H

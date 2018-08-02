@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_BITS_NUM_TRAITS_SCALE
-#define CNL_BITS_NUM_TRAITS_SCALE
+#ifndef CNL_IMPL_NUM_TRAITS_SCALE
+#define CNL_IMPL_NUM_TRAITS_SCALE
 
 #include "../power.h"
 #include "../type_traits.h"
@@ -57,4 +57,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_BITS_NUM_TRAITS_SCALE
+#endif  // CNL_IMPL_NUM_TRAITS_SCALE
