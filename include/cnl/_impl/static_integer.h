@@ -7,9 +7,9 @@
 #ifndef CNL_BITS_STATIC_INTEGER_H
 #define CNL_BITS_STATIC_INTEGER_H
 
-#include <cnl/elastic_integer.h>
-#include <cnl/overflow_integer.h>
-#include <cnl/rounding_integer.h>
+#include "../elastic_integer.h"
+#include "../overflow_integer.h"
+#include "../rounding_integer.h"
 
 /// compositional numeric library
 namespace cnl {

@@ -6,7 +6,7 @@
 
 #include <cnl/num_traits.h>
 
-#include <cnl/bits/common.h>
+#include <cnl/_impl/common.h>
 
 #include <string>
 

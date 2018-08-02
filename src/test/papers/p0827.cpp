@@ -7,7 +7,7 @@
 /// \file
 /// \brief tests of features from library proposal, P0827
 
-#include <cnl/bits/config.h>
+#include <cnl/_impl/config.h>
 
 #if __cpp_return_type_deduction>=201304 && __cpp_static_assert>=201411 && __cpp_template_auto>=201606 \
     && defined(CNL_EXCEPTIONS_ENABLED)

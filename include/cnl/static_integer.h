@@ -10,7 +10,7 @@
 /// \file
 /// \brief file containing definitions related to \ref static_integer
 
-#include "bits/static_integer.h"
+#include "_impl/static_integer.h"
 
 /// compositional numeric library
 namespace cnl {

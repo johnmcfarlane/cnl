@@ -7,14 +7,14 @@
 #ifndef CNL_BITS_NUM_TRAITS_FROM_VALUE
 #define CNL_BITS_NUM_TRAITS_FROM_VALUE
 
-#include <cnl/constant.h>
+#include "../../constant.h"
 
-#include <cnl/bits/num_traits/digits.h>
-#include <cnl/bits/num_traits/set_digits.h>
-#include <cnl/bits/type_traits.h>
-#include <cnl/bits/type_traits/is_integral.h>
-#include <cnl/bits/type_traits/make_signed.h>
-#include <cnl/bits/used_digits.h>
+#include "digits.h"
+#include "set_digits.h"
+#include "../type_traits.h"
+#include "../type_traits/is_integral.h"
+#include "../type_traits/make_signed.h"
+#include "../used_digits.h"
 
 namespace cnl {
     namespace _impl {

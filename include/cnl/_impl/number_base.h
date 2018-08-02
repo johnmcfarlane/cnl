@@ -7,15 +7,15 @@
 #if !defined(CNL_NUMBER_BASE_H)
 #define CNL_NUMBER_BASE_H 1
 
-#include <cnl/bits/num_traits/from_rep.h>
-#include <cnl/bits/num_traits/from_value.h>
-#include <cnl/bits/num_traits/is_composite.h>
-#include <cnl/bits/num_traits/scale.h>
-#include <cnl/bits/num_traits/to_rep.h>
-#include <cnl/bits/operators.h>
-#include <cnl/bits/type_traits/make_signed.h>
-#include <cnl/bits/type_traits/make_unsigned.h>
-#include <cnl/constant.h>
+#include "num_traits/from_rep.h"
+#include "num_traits/from_value.h"
+#include "num_traits/is_composite.h"
+#include "num_traits/scale.h"
+#include "num_traits/to_rep.h"
+#include "operators.h"
+#include "type_traits/make_signed.h"
+#include "type_traits/make_unsigned.h"
+#include "../constant.h"
 
 #include <utility>
 

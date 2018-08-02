@@ -7,7 +7,7 @@
 /// \file
 /// \brief file containing tests of the `cnl/constant.h` definitions
 
-#include <cnl/bits/type_traits.h>
+#include <cnl/_impl/type_traits.h>
 #include <cnl/constant.h>
 
 namespace {

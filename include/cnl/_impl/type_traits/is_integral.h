@@ -7,9 +7,9 @@
 #ifndef CNL_BITS_TYPE_TRAITS_IS_INTEGRAL
 #define CNL_BITS_TYPE_TRAITS_IS_INTEGRAL
 
-#include <cnl/cnlint.h>
+#include "../../cnlint.h"
 
-#include <cnl/bits/config.h>
+#include "../config.h"
 
 #include <type_traits>
 

@@ -10,8 +10,8 @@
 #if !defined(CNL_BOOST_MULTIPRECISION_H)
 #define CNL_BOOST_MULTIPRECISION_H 1
 
-#include <cnl/constant.h>
-#include <cnl/num_traits.h>
+#include "../constant.h"
+#include "../num_traits.h"
 
 #include <boost/multiprecision/cpp_int.hpp>
 

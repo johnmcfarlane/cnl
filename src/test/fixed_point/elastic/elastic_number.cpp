@@ -9,7 +9,7 @@
 
 #include <cnl/elastic_number.h>
 #include "../../number_test.h"
-#include <cnl/bits/fixed_point/math.h>
+#include <cnl/_impl/fixed_point/math.h>
 
 #include <gtest/gtest.h>
 

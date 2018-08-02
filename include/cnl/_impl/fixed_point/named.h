@@ -10,8 +10,8 @@
 #if !defined(CNL_FIXED_POINT_NAMED_H)
 #define CNL_FIXED_POINT_NAMED_H 1
 
-#include <cnl/bits/common.h>
-#include <cnl/bits/num_traits/fixed_width_scale.h>
+#include "../common.h"
+#include "../num_traits/fixed_width_scale.h"
 #include "num_traits.h"
 
 /// compositional numeric library

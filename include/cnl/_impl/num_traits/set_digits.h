@@ -10,8 +10,8 @@
 #ifndef CNL_BITS_NUM_TRAITS_SET_DIGITS
 #define CNL_BITS_NUM_TRAITS_SET_DIGITS
 
-#include <cnl/bits/type_traits.h>
-#include <cnl/bits/type_traits/is_integral.h>
+#include "../type_traits.h"
+#include "../type_traits/is_integral.h"
 
 namespace cnl {
 

@@ -10,7 +10,7 @@
 #ifndef FIXED_POINT_MATH_H_
 #define FIXED_POINT_MATH_H_
 
-#include <cnl/fixed_point.h>
+#include "type.h"
 
 /// compositional numeric library
 namespace cnl {

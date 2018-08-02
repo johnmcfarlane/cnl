@@ -7,7 +7,7 @@
 #ifndef CNL_BITS_TYPE_TRAITS_IS_SIGNED
 #define CNL_BITS_TYPE_TRAITS_IS_SIGNED
 
-#include <cnl/limits.h>
+#include "../../limits.h"
 
 #include <type_traits>
 

@@ -7,7 +7,7 @@
 #ifndef CNL_BITS_TYPE_TRAITS_WIDTH
 #define CNL_BITS_TYPE_TRAITS_WIDTH
 
-#include <cnl/bits/type_traits/is_signed.h>
+#include "../type_traits/is_signed.h"
 #include "digits.h"
 #include "set_digits.h"
 #include <type_traits>

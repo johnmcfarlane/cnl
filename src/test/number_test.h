@@ -7,7 +7,7 @@
 #include <cnl/limits.h>
 #include <cnl/numeric.h>
 
-#include <cnl/bits/common.h>
+#include <cnl/_impl/common.h>
 
 #include <type_traits>
 
