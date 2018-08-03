@@ -15,6 +15,7 @@
 #include "_impl/overflow/saturated.h"
 #include "_impl/overflow/throwing.h"
 #include "_impl/overflow/trapping.h"
+#include "_impl/overflow/undefined.h"
 
 /// compositional numeric library
 namespace cnl {

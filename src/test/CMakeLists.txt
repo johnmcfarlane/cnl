@@ -37,6 +37,7 @@ set(test_sources
         fixed_point/overflow/fixed_point_throwing_integer.cpp
         fixed_point/overflow/fixed_point_saturated_integer.cpp
         fixed_point/rounding/fixed_point_rounding.cpp
+        fixed_point/overflow/undefined_overflow.cpp
         fixed_point/rounding/overflow/fixed_point_rounding_overflow.cpp
         rounding/elastic/rounding_elastic_integer.cpp
         fixed_point/rounding/rounding_fixed_point.cpp
