@@ -477,6 +477,13 @@ static_assert(fixed_point<uint64, -7>(232.125f)==232.125L, "cnl::fixed_point tes
 static_assert(fixed_point<int8, -7>(1)!=1.L, "cnl::fixed_point test failed");
 #endif
 
+#if !defined(TEST_THROWING_OVERFLOW_INTEGER) \
+        && !defined(TEST_TRAPPING_OVERFLOW_INTEGER) \
+        && !defined(TEST_UNDEFINED_OVERFLOW_INTEGER) \
+        && !defined(TEST_SATURATED_OVERFLOW_INTEGER)
+static_assert(fixed_point<int8, -7>(1)==-1.L, "cnl::fixed_point test failed");
+#endif
+
 static_assert(fixed_point<int8, -7>(.5)==.5f, "cnl::fixed_point test failed");
 static_assert(fixed_point<int8, -7>(.125f)==.125L, "cnl::fixed_point test failed");
 static_assert(fixed_point<int16, -7>(123.125f)==123.125f, "cnl::fixed_point test failed");
