@@ -97,4 +97,23 @@
 #define CNL_GCC_INTRINSICS_ENABLED
 #endif
 
+////////////////////////////////////////////////////////////////////////////////
+// CNL_UNREACHABLE_UB_ENABLED macro definition
+
+// When enabled, cnl::_impl::unreachable exhibits undefined behavior,
+// i.e. the compiler has carte blanche to optimize based on the assumption
+// that no call to cnl::_impl::unreachable will ever be made at run time.
+
+#if defined(CNL_UNREACHABLE_UB_ENABLED)
+#error CNL_UNREACHABLE_UB_ENABLED already defined
+#endif
+
+#if defined(CNL_USE_UNREACHABLE_UB)
+#if CNL_USE_UNREACHABLE_UB
+#define CNL_UNREACHABLE_UB_ENABLED
+#endif
+#elif defined(NDEBUG)
+#define CNL_UNREACHABLE_UB_ENABLED
+#endif
+
 #endif  // CNL_CONFIG_H
