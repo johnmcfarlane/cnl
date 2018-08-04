@@ -87,7 +87,7 @@ namespace {
     using rounded_integer = cnl::rounding_integer<Rep>;
 
     TEST(P0675, compose_from_fundamental) {
-        // use an unsigned 16-bit integer to approximate a real number with 2 integer and 14 fractional digits
+        // use an unsigned 16-bit integer to approximate a real number with 2 integer and 14 fraction digits
         auto pi = fixed_point<uint16_t, -14>{3.141};
         ASSERT_TRUE(pi > 3.1 && pi < 3.2);
 

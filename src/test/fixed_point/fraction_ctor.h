@@ -9,8 +9,8 @@
 // The tests may fail on types which are not compact,
 // i.e. where (sizeof(test_int)*CHAR_BIT > cnl::width(test_int)::value).
 
-#ifndef CNL_FRACTIONAL_CTOR_H
-#define CNL_FRACTIONAL_CTOR_H
+#ifndef CNL_TEST_FIXED_POINT_FRACTION_CTOR_H
+#define CNL_TEST_FIXED_POINT_FRACTION_CTOR_H
 
 #include <cnl/fixed_point.h>
 
@@ -32,32 +32,32 @@ namespace {
         static_assert(identical(int8{127}, cnl::_impl::to_rep(d)), "cnl::fixed_point::fixed_point");
 
         // n / d
-        constexpr auto f = make_fractional(n, d);
+        constexpr auto f = make_fraction(n, d);
 #if defined(__cpp_deduction_guides)
-        static_assert(identical(cnl::fractional{n, d}, f), "cnl::fractional CTAD");
+        static_assert(identical(cnl::fraction{n, d}, f), "cnl::fraction CTAD");
 #endif
         static_assert(identical(
-                cnl::fractional<cnl::fixed_point<int16, -10>, cnl::fixed_point<int8, -3>>{n, d}, f),
-                "cnl::make_fractional");
+                cnl::fraction<cnl::fixed_point<int16, -10>, cnl::fixed_point<int8, -3>>{n, d}, f),
+                "cnl::make_fraction");
 
         // nicely-widened quotient
         constexpr auto nq = cnl::make_fixed_point(f);
-        static_assert(identical(cnl::quotient(n, d), nq), "cnl::make_fixed_point(cnl::fractional)");
+        static_assert(identical(cnl::quotient(n, d), nq), "cnl::make_fixed_point(cnl::fraction)");
 #if defined(__cpp_deduction_guides)
         static_assert(
                 identical(nq, cnl::fixed_point{f}),
-                "cnl::fixed_point::fixed_point(fractional) w. CTAD");
+                "cnl::fixed_point::fixed_point(fraction) w. CTAD");
 #endif
 
         // custom-width quotient (must be wide enough to perform widened division)
         constexpr auto cq = cnl::fixed_point<uint16, -4>{f};
         static_assert(
                 identical(cnl::fixed_point<uint16, -4>{0.1875}, cq),
-                "cnl::fixed_point::fixed_point(fractional) w.out CTAD");
+                "cnl::fixed_point::fixed_point(fraction) w.out CTAD");
     }
 
-    namespace test_fractional_deduced {
-        constexpr auto third = cnl::make_fractional(test_int{1}, test_int{3});
+    namespace test_fraction_deduced {
+        constexpr auto third = cnl::make_fraction(test_int{1}, test_int{3});
 
         constexpr auto named = cnl::quotient(third.numerator, third.denominator);
         static_assert(identical(fixed_point<int64, -31>{0.333333333022892475128173828125L}, named), "");
@@ -68,8 +68,8 @@ namespace {
 #endif
     }
 
-    namespace test_fractional_specific_int {
-        constexpr auto third = cnl::make_fractional(test_int{1}, test_int{3});
+    namespace test_fraction_specific_int {
+        constexpr auto third = cnl::make_fraction(test_int{1}, test_int{3});
 
         constexpr auto named = cnl::quotient(third.numerator, third.denominator);
         static_assert(identical(cnl::fixed_point<int64, -31>{0.333333333022892475128173828125L}, named), "");
@@ -83,8 +83,8 @@ namespace {
         static_assert(identical(cnl::fixed_point<int64, -31>{0.333333333022892475128173828125L}, specific), "");
     }
 
-    namespace test_fractional_specific_8bit {
-        constexpr auto third = cnl::make_fractional(int8{1}, int8{3});
+    namespace test_fraction_specific_8bit {
+        constexpr auto third = cnl::make_fraction(int8{1}, int8{3});
 
         constexpr auto named = cnl::quotient(third.numerator, third.denominator);
         static_assert(identical(cnl::fixed_point<test_int, -7>{0.328125}, named), "");
@@ -98,8 +98,8 @@ namespace {
         static_assert(identical(cnl::fixed_point<test_int, -7>{0.328125}, specific), "");
     }
 
-    namespace test_fractional_specific_16bit {
-        constexpr auto third = cnl::make_fractional(int16{1}, int16{3});
+    namespace test_fraction_specific_16bit {
+        constexpr auto third = cnl::make_fraction(int16{1}, int16{3});
 
         constexpr auto named = cnl::quotient(third.numerator, third.denominator);
         static_assert(identical(cnl::fixed_point<test_int, -15>{0.33331298828125}, named), "");
@@ -114,4 +114,4 @@ namespace {
     }
 }
 
-#endif //CNL_FRACTIONAL_CTOR_H
+#endif //CNL_TEST_FIXED_POINT_FRACTION_CTOR_H

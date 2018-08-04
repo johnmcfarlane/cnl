@@ -22,7 +22,7 @@ set(test_sources
         fixed_point/fixed_point_built_in.cpp
         fixed_point/decimal.cpp
         fixed_point/constants.cpp
-        fractional.cpp
+        fraction.cpp
         elastic/elastic_integer.cpp
         fixed_point/extras.cpp
         overflow/overflow_integer.cpp

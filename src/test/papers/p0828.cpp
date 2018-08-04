@@ -171,10 +171,10 @@ namespace {
         template<int Digits, int Exponent, class Narrowest>
         using elastic_number = fixed_point<elastic_integer<Digits, Narrowest>, Exponent>;
 
-        // a 15-bit number with 10 integer digits and 5 fractional digits
+        // a 15-bit number with 10 integer digits and 5 fraction digits
         constexpr auto n = elastic_number<15, -5, int>{31.96875};
 
-        // a 30-bit number with 20 integer digits and 10 fractional digits;
+        // a 30-bit number with 20 integer digits and 10 fraction digits;
         constexpr auto nn = n*n;
 
         static_assert(identical(elastic_number<30, -10, int>{1022.0009765625}, nn), "");
