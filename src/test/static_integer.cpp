@@ -17,7 +17,7 @@ namespace {
                 "cnl::static_integer parameter default test failed");
 
         static_assert(
-                std::is_same<cnl::trapping_overflow_tag, cnl::static_integer<1>::rep::overflow_tag>::value,
+                std::is_same<cnl::undefined_overflow_tag, cnl::static_integer<1>::rep::overflow_tag>::value,
                 "cnl::static_integer parameter default test failed");
         static_assert(
                 std::is_same<cnl::overflow_integer<>::overflow_tag, cnl::static_integer<1>::rep::overflow_tag>::value,
@@ -199,20 +199,24 @@ namespace {
                 cnl::_impl::fixed_width_scale<-2>(cnl::static_integer<3, cnl::nearest_rounding_tag>{7})), "");
     }
 
+#if !defined(CNL_UNREACHABLE_UB_ENABLED)
     TEST(static_integer, conversion_overflow_trapping) {
         using si = cnl::static_integer<5>;
         ASSERT_DEATH(si{32}, "positive overflow");
     }
+#endif
 
     static_assert(identical(
             cnl::static_integer<5, cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>{31},
             cnl::static_integer<5, cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>{32}), "");
 
+#if !defined(CNL_UNREACHABLE_UB_ENABLED)
     TEST(static_integer, most_negative_number) {
         static_assert(cnl::static_integer<1>{1}, "in-range boundary test");
         static_assert(cnl::static_integer<1>{-1}, "in-range boundary test");
         ASSERT_DEATH(cnl::static_integer<1>{-2}, "negative overflow");
     }
+#endif
 
     TEST(static_integer, pre_increment) {
         auto a = cnl::static_integer<3>{6};
@@ -256,6 +260,7 @@ namespace {
         ASSERT_EQ(-6, b) << "static_integer pre-increment";
     }
 
+#if !defined(CNL_UNREACHABLE_UB_ENABLED)
     TEST(static_integer, pre_increment_overflow) {
         auto a = cnl::static_integer<3>{7};
         ASSERT_DEATH(++ a, "positive overflow");
@@ -275,4 +280,5 @@ namespace {
         auto a = cnl::static_integer<3>{-7};
         ASSERT_DEATH(a --, "negative overflow");
     }
+#endif
 }

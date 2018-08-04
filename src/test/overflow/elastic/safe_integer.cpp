@@ -15,7 +15,7 @@ namespace cnl {
     // safe elastic integer
     template<
             int IntegerDigits,
-            class OverflowTag = trapping_overflow_tag,
+            class OverflowTag = undefined_overflow_tag,
             class Narrowest = int>
     using safe_integer = overflow_integer<
             elastic_integer<
@@ -24,7 +24,7 @@ namespace cnl {
             OverflowTag>;
 
     template<
-            class OverflowTag = trapping_overflow_tag,
+            class OverflowTag = undefined_overflow_tag,
             class Narrowest = int,
             class Input = int>
     safe_integer<
@@ -139,6 +139,7 @@ namespace {
                 "cnl::scale<..., cnl::safe_integer<>>");
     }
 
+#if !defined(CNL_UNREACHABLE_UB_ENABLED)
     TEST(safe_integer, conversion_overflow) {
         using si = cnl::safe_integer<5>;
         ASSERT_DEATH(si{32}, "positive overflow");
@@ -149,6 +150,7 @@ namespace {
         static_assert(cnl::safe_integer<1>{-1}, "in-range boundary test");
         ASSERT_DEATH(cnl::safe_integer<1>{-2}, "negative overflow");
     }
+#endif
 
     TEST(safe_integer, pre_increment) {
         auto a = cnl::safe_integer<3>{6};
@@ -192,6 +194,7 @@ namespace {
         ASSERT_EQ(-6, b) << "safe_integer pre-increment";
     }
 
+#if !defined(CNL_UNREACHABLE_UB_ENABLED)
     TEST(safe_integer, pre_increment_overflow) {
         auto a = cnl::safe_integer<3>{7};
         ASSERT_DEATH(++ a, "positive overflow");
@@ -211,6 +214,7 @@ namespace {
         auto a = cnl::safe_integer<3>{-7};
         ASSERT_DEATH(a --, "negative overflow");
     }
+#endif
 }
 
 // given a rounding tag, invokes number_test_suite for integers of all built-in types

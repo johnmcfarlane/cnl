@@ -9,7 +9,7 @@ function(make_single_header target output header version macro_flag)
             cat ${CMAKE_CURRENT_LIST_DIR}/${header} > ${output_path}
             COMMAND cat ${CMAKE_CURRENT_LIST_DIR}/standard_includes.h >> ${output_path}
             COMMAND ${CMAKE_CXX_COMPILER}
-                        "-std=${version}" "${macro_flag}" "-E" "-I${CMAKE_CURRENT_LIST_DIR}/../../include"
+                        "-std=${version}" "${macro_flag}" "-DNDEBUG" "-E" "-I${CMAKE_CURRENT_LIST_DIR}/../../include"
                         ${CMAKE_CURRENT_LIST_DIR}/single_header.cpp
                             | grep "^[^#]"
                             | grep --after-context=1000000 single_header_delimiter
