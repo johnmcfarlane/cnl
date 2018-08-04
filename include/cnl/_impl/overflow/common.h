@@ -205,18 +205,52 @@ namespace cnl {
             }
         };
 
+        template<typename Lhs, typename Rhs, bool IsSigned>
+        struct shift_left_overflow_test;
+
         template<typename Lhs, typename Rhs>
-        struct overflow_test<shift_left_op, Lhs, Rhs> : overflow_test_base<shift_left_op, Lhs, Rhs> {
+        struct shift_left_overflow_test<Lhs, Rhs, false>
+                : overflow_test_base<Lhs, Rhs> {
+            using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
+
+            static constexpr bool negative(Lhs const&, Rhs const&)
+            {
+                return false;
+            }
+        };
+
+        template<typename Lhs, typename Rhs>
+        struct shift_left_overflow_test<Lhs, Rhs, true>
+                : overflow_test_base<Lhs, Rhs> {
+            using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
+
+            static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
+            {
+                return lhs<0
+                        ? rhs>0
+                                ? rhs<traits::positive_digits
+                                        ? (lhs >> (traits::positive_digits-rhs))!=-1
+                                        : true
+                                : false
+                        : false;
+            }
+        };
+
+        // shift-left test that is common to signed and unsigned, i.e. positive overflow
+        template<typename Lhs, typename Rhs>
+        struct overflow_test<shift_left_op, Lhs, Rhs>
+                : shift_left_overflow_test<Lhs, Rhs, is_signed<Lhs>::value> {
             using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
 
             static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
             {
-                return lhs>0 && rhs>0 && traits::leading_bits(lhs)<int(rhs);
-            }
-
-            static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
-            {
-                return lhs<0 && rhs>0 && traits::leading_bits(lhs)<int(rhs);
+                return lhs>0
+                        ? rhs>0
+                                ? rhs<traits::positive_digits
+                                        ? (lhs >> (traits::positive_digits-rhs))!=0
+                                        : true
+                                : false
+                        : false;
             }
         };
 
