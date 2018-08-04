@@ -36,11 +36,13 @@ namespace {
         static_assert(identical(cnl::static_number<5, -1>{.5}, b), "");
     }
 
+#if !defined(CNL_UNREACHABLE_UB_ENABLED)
     TEST(static_number, most_negative_number) {
         static_assert(cnl::static_number<1>{1}, "in-range boundary test");
         static_assert(cnl::static_number<1>{-1}, "in-range boundary test");
         ASSERT_DEATH(cnl::static_number<1>{-2}, "negative overflow");
     }
+#endif
 
     TEST(static_number, pre_increment) {
         auto a = cnl::static_number<4, -2>{2.75};
@@ -84,6 +86,7 @@ namespace {
         ASSERT_EQ(-2.75, b) << "static_number pre-increment";
     }
 
+#if !defined(CNL_UNREACHABLE_UB_ENABLED)
     TEST(static_number, pre_increment_overflow) {
         auto a = cnl::static_number<4, -2>{3.0};
         ASSERT_DEATH(++ a, "positive overflow");
@@ -103,4 +106,5 @@ namespace {
         auto a = cnl::static_number<4, -2>{-3.0};
         ASSERT_DEATH(a --, "negative overflow");
     }
+#endif
 }

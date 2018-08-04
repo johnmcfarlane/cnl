@@ -29,7 +29,7 @@ namespace cnl {
             int Digits,
             int Exponent = 0,
             class RoundingTag = nearest_rounding_tag,
-            class OverflowTag = trapping_overflow_tag,
+            class OverflowTag = undefined_overflow_tag,
             class Narrowest = signed>
     using static_number = fixed_point<
             _impl::static_integer<Digits, RoundingTag, OverflowTag, Narrowest>,
@@ -38,7 +38,7 @@ namespace cnl {
     /// \brief constructs a static_number from a given variable
     template<
             class RoundingTag = nearest_rounding_tag,
-            class OverflowTag = trapping_overflow_tag,
+            class OverflowTag = undefined_overflow_tag,
             class Narrowest = signed,
             class Input = int>
     static_number<

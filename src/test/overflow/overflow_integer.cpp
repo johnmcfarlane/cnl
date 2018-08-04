@@ -34,7 +34,7 @@ using saturated_integer = overflow_integer<Rep, cnl::saturated_overflow_tag>;
 // cnl::overflow_integer template parameters default
 
 static_assert(
-        is_same<cnl::overflow_integer<>, cnl::overflow_integer<int, cnl::trapping_overflow_tag>>::value,
+        is_same<cnl::overflow_integer<>, cnl::overflow_integer<int, cnl::undefined_overflow_tag>>::value,
         "wrong default template parameters for cnl::overflow_integer");
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -512,6 +512,7 @@ namespace {
         ASSERT_EQ(INT_MIN+1, b) << "static_integer pre-increment";
     }
 
+#if !defined(CNL_UNREACHABLE_UB_ENABLED)
     TEST(overflow_integer, pre_increment_overflow) {
         auto a = cnl::overflow_integer<>{INT_MAX};
         ASSERT_DEATH(++ a, "positive overflow");
@@ -531,6 +532,7 @@ namespace {
         auto a = cnl::overflow_integer<>{INT_MIN};
         ASSERT_DEATH(a --, "negative overflow");
     }
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////

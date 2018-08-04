@@ -45,7 +45,7 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::overflow_integer<>
 
-    template<class Rep = int, class OverflowTag = trapping_overflow_tag>
+    template<class Rep = int, class OverflowTag = undefined_overflow_tag>
     class overflow_integer : public _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep> {
         static_assert(!_integer_impl::is_overflow_integer<Rep>::value,
                 "overflow_integer of overflow_integer is not a supported");
