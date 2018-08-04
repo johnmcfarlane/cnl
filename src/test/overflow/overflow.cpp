@@ -13,6 +13,8 @@
 
 #include <cnl/overflow.h>
 
+#include <gtest/gtest.h>
+
 namespace {
     using cnl::_impl::identical;
 
@@ -516,5 +518,20 @@ namespace {
                 -2,
                 cnl::shift_left(saturated_overflow, -1, 1)),
                 "cnl::shift_left test failed");
+    }
+
+    namespace test_negative_shift_left {
+        static_assert(
+                identical(
+                        2*-1073741824,
+                        cnl::shift_left(cnl::trapping_overflow, -1073741824, 1)),
+                "cnl::shift_left with negative input");
+
+        TEST(overflow, trap)
+        {
+            ASSERT_DEATH(
+                    cnl::shift_left(cnl::trapping_overflow, -1073741825, 1),
+                    "negative overflow");
+        }
     }
 }
