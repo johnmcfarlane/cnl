@@ -17,9 +17,6 @@ namespace {
     using cnl::_impl::identical;
 
     using cnl::convert;
-    using cnl::add;
-    using cnl::subtract;
-    using cnl::multiply;
 
     namespace test_positive_digits {
         using cnl::_impl::positive_digits;
