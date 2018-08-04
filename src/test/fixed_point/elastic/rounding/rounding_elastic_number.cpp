@@ -71,26 +71,26 @@ namespace {
 
         static_assert(identical(
                 rounding_elastic_number<16, -8>{.5},
-                make_fixed_point(cnl::make_fractional(
+                make_fixed_point(cnl::make_fraction(
                         rounding_elastic_number<8, 0>{1},
                         rounding_elastic_number<8, 0>{2}))), "cnl::rounding_elastic_number division");
 
         static_assert(identical(
                 rounding_elastic_number<62, -31>{.5},
-                make_fixed_point(cnl::make_fractional(
+                make_fixed_point(cnl::make_fraction(
                         rounding_elastic_number<31, 0>{1},
                         rounding_elastic_number<31, 0>{2}))), "cnl::rounding_elastic_number division");
 
 #if defined(CNL_INT128_ENABLED)
         static_assert(identical(
                 rounding_elastic_number<96, -48>{.5},
-                make_fixed_point(cnl::make_fractional(
+                make_fixed_point(cnl::make_fraction(
                         rounding_elastic_number<48, 0>{1},
                         rounding_elastic_number<48, 0>{2}))), "cnl::rounding_elastic_number division");
 
         static_assert(identical(
                 rounding_elastic_number<124, -62>{.5},
-                make_fixed_point(cnl::make_fractional(
+                make_fixed_point(cnl::make_fraction(
                         rounding_elastic_number<62, 0>{1},
                         rounding_elastic_number<62, 0>{2}))), "cnl::rounding_elastic_number division");
 #endif

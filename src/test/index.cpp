@@ -66,7 +66,7 @@ TEST(index, declaration_example)
 //! [basic arithmetic example]
 void basic_arithmetic_example()
 {
-    // define a constant signed value with 3 integer and 28 fractional bits (s3:28)
+    // define a constant signed value with 3 integer and 28 fraction bits (s3:28)
     auto pi = fixed_point<int32_t, -28>{3.1415926535};
 
     // expressions involving integers return fixed_point results
@@ -142,7 +142,7 @@ using mp_fixed_point = fixed_point<multiprecision<NumDigits>, Exponent>;
 
 void boost_example()
 {
-    // Create an integer with 400 binary digits and 0 fractional digits.
+    // Create an integer with 400 binary digits and 0 fraction digits.
     auto googol = mp_fixed_point<400>{1};
 
     // A googol is 10^100.
@@ -156,7 +156,7 @@ void boost_example()
     // Dividing a s1.0 number by a u400.0 number
     auto googolth = quotient(mp_fixed_point<1>{1}, googol);
 
-    // produces a number with one integer digit and 400 fractional digits.
+    // produces a number with one integer digit and 400 fraction digits.
     static_assert(is_same<decltype(googolth), mp_fixed_point<401, -400>>::value, "");
 
     // Prints "1e-100" (although this value is only approximate).

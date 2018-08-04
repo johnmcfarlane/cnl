@@ -73,8 +73,8 @@ namespace cnl {
     };
 
     template<typename Rep, int Exponent, int Radix, typename Numerator, typename Denominator>
-    struct from_value<fixed_point<Rep, Exponent, Radix>, fractional<Numerator, Denominator>> {
-        constexpr auto operator()(fractional<Numerator, Denominator> const& value) const
+    struct from_value<fixed_point<Rep, Exponent, Radix>, fraction<Numerator, Denominator>> {
+        constexpr auto operator()(fraction<Numerator, Denominator> const& value) const
         -> decltype(quotient(value.numerator, value.denominator)) {
             return quotient(value.numerator, value.denominator);
         }

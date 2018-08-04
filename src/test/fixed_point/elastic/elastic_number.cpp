@@ -83,20 +83,20 @@ namespace test_division {
             "cnl::quotient(cnl::elastic_number, cnl::elastic_number)");
     static_assert(identical(
             elastic_number<62, - 31>{.5},
-            make_fixed_point(cnl::make_fractional(elastic_number<31, 0>{1}, elastic_number<31, 0>{2}))),
+            make_fixed_point(cnl::make_fraction(elastic_number<31, 0>{1}, elastic_number<31, 0>{2}))),
             "cnl::elastic_number division");
 #if defined(CNL_INT128_ENABLED)
     static_assert(identical(
             elastic_number<124, -62>{.5},
-            make_fixed_point(cnl::make_fractional(elastic_number<62, 0>{1}, elastic_number<62, 0>{2}))),
+            make_fixed_point(cnl::make_fraction(elastic_number<62, 0>{1}, elastic_number<62, 0>{2}))),
             "cnl::elastic_number division");
 #endif
 }
 
-namespace test_fractional_deduced {
+namespace test_fraction_deduced {
     using namespace cnl::literals;
 
-    constexpr auto third = cnl::make_fractional(1_elastic, 3_elastic);
+    constexpr auto third = cnl::make_fraction(1_elastic, 3_elastic);
 
     constexpr auto named = cnl::quotient(third.numerator, third.denominator);
     static_assert(identical(cnl::elastic_number<3, -2>{0.25}, named), "");
@@ -107,19 +107,19 @@ namespace test_fractional_deduced {
 #endif
 }
 
-namespace test_fractional_specific_byte {
+namespace test_fraction_specific_byte {
     using namespace cnl::literals;
 
-    constexpr auto third = cnl::make_fractional(1_elastic, 3_elastic);
+    constexpr auto third = cnl::make_fraction(1_elastic, 3_elastic);
 
     constexpr auto specific = elastic_number<7, -6>{third};
     static_assert(identical(cnl::elastic_number<7, -6>{0.328125}, specific), "");
 }
 
-namespace test_fractional_specific_long {
+namespace test_fraction_specific_long {
     using namespace cnl::literals;
 
-    constexpr auto third = cnl::make_fractional(1_elastic, 3_elastic);
+    constexpr auto third = cnl::make_fraction(1_elastic, 3_elastic);
 
     constexpr auto specific = cnl::elastic_number<63, -60>{third};
 #if defined(_MSC_VER)
@@ -344,7 +344,7 @@ struct positive_elastic_test
             "negative of positive value has wrong number of integer digits");
     static_assert(
             cnl::_impl::fractional_digits<negate_result>::value==cnl::_impl::fractional_digits<elastic_type>::value,
-            "negative of positive value has wrong number of fractional digits");
+            "negative of positive value has wrong number of fraction digits");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test operator+
@@ -396,13 +396,13 @@ struct positive_elastic_test
 #if ! defined(_MSC_VER)
     static_assert(identical(
             cnl::elastic_number<12, -7>{3./4},
-            cnl::make_fixed_point(cnl::make_fractional(
+            cnl::make_fixed_point(cnl::make_fraction(
                     cnl::elastic_number<10, -5>{1.5},
                     cnl::elastic_integer<2>{2}))),
                   "operator/ test failed");
     static_assert(identical(
             cnl::elastic_number<12, -5>{4./3},
-            cnl::make_fixed_point(cnl::make_fractional(
+            cnl::make_fixed_point(cnl::make_fraction(
                     cnl::elastic_integer<2>{2},
                     cnl::elastic_number<10, -5>{1.5}))),
                   "operator/ test failed");
@@ -422,7 +422,7 @@ TEST(elastic_number, over_int) {
 }
 
 TEST(elastic_number, int_over) {
-    auto f = cnl::make_fractional(elastic_integer<2>{2}, elastic_number<10, -5>{1.5});
+    auto f = cnl::make_fraction(elastic_integer<2>{2}, elastic_number<10, -5>{1.5});
     auto q = cnl::make_fixed_point(f);
     auto e = elastic_number<12, -5>{4./3};
     EXPECT_EQ(e, q);

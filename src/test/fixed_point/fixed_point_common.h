@@ -13,7 +13,7 @@
 
 #include "common_defs.h"
 
-#include "fractional_ctor.h"
+#include "fraction_ctor.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // copy assignment
@@ -43,7 +43,7 @@ TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_integer)
 TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_fractional)
 {
     auto lhs = cnl::fixed_point<test_int, -15>{0};
-    lhs = cnl::make_fractional(int16{1}, int16{3});
+    lhs = cnl::make_fraction(int16{1}, int16{3});
     ASSERT_EQ(lhs, 0.33331298828125);
 }
 

@@ -111,16 +111,16 @@ namespace j {
 }
 
 namespace j2 {
-    using cnl::fractional;
-    using cnl::make_fractional;
+    using cnl::fraction;
+    using cnl::make_fraction;
 
     constexpr auto n = fixed_point<int16_t, -8>{1.5};
     constexpr auto d = fixed_point<int16_t, -8>{2.25};
 #if defined(__cpp_deduction_guides)
-    constexpr auto f = fractional{n, d};
+    constexpr auto f = fraction{n, d};
     constexpr auto q = fixed_point{f};
 #else
-    constexpr auto f = cnl::make_fractional(n, d);
+    constexpr auto f = cnl::make_fraction(n, d);
     constexpr auto q = cnl::make_fixed_point(f);
 #endif
     static_assert(identical(fixed_point<int32_t, -15>{.66666667}, q), "");
@@ -153,7 +153,7 @@ namespace m {
     static_assert(cnl::_impl::identical(fixed_point<elastic_integer<62>, -62>{0.9922027587890625}, sq), "");
 
 #if defined(CNL_INT128_ENABLED)
-    constexpr auto q = make_fixed_point(make_fractional(sq, sq));
+    constexpr auto q = make_fixed_point(make_fraction(sq, sq));
     static_assert(cnl::_impl::identical(fixed_point<elastic_integer<124>, -62>{1}, q), "");
 #endif
 }

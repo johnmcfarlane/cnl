@@ -23,7 +23,7 @@ namespace cnl {
     class fixed_point;
 
     template<typename Numerator, typename Denominator>
-    struct fractional;
+    struct fraction;
 
     ////////////////////////////////////////////////////////////////////////////////
     // implementation-specific definitions
@@ -159,9 +159,9 @@ namespace cnl {
         {
         }
 
-        /// constructor taking cnl::fractional
+        /// constructor taking cnl::fraction
         template<typename Numerator, typename Denominator>
-        constexpr fixed_point(fractional<Numerator, Denominator> const& f);
+        constexpr fixed_point(fraction<Numerator, Denominator> const& f);
 
         /// copy assignment operator taking a floating-point type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
@@ -179,9 +179,9 @@ namespace cnl {
             return *this;
         }
 
-        /// copy assignement operator taking cnl::fractional
+        /// copy assignement operator taking cnl::fraction
         template<typename Numerator, typename Denominator>
-        CNL_RELAXED_CONSTEXPR fixed_point& operator=(fractional<Numerator, Denominator> const& f);
+        CNL_RELAXED_CONSTEXPR fixed_point& operator=(fraction<Numerator, Denominator> const& f);
 
         /// returns value represented as integral
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>

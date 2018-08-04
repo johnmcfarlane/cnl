@@ -6,7 +6,7 @@
 
 #include <cnl/elastic_integer.h>
 #include <cnl/fixed_point.h>
-#include <cnl/fractional.h>
+#include <cnl/fraction.h>
 
 #if (__cplusplus >= 201700)
 
@@ -27,16 +27,16 @@ namespace {
     constexpr auto d = quotient<fixed_point<int, -16>>(elastic_integer<1>{1}, elastic_integer<2>{3});
     static_assert(identical(fixed_point<int, -16>{0.3333282470703125}, d));
 
-    constexpr auto a2 = fixed_point{fractional{1, 3}};
+    constexpr auto a2 = fixed_point{fraction{1, 3}};
     static_assert(identical(fixed_point<int64, -31>{0.333333333022892475128173828125L}, a2));
 
-    constexpr auto b2 = fixed_point{fractional{elastic_integer<1>{1}, elastic_integer<2>{3}}};
+    constexpr auto b2 = fixed_point{fraction{elastic_integer<1>{1}, elastic_integer<2>{3}}};
     static_assert(identical(fixed_point<elastic_integer<3>, -2>{0.25}, b2));
 
-    constexpr auto c2 = fixed_point<int, -16>{fractional{1, 3}};
+    constexpr auto c2 = fixed_point<int, -16>{fraction{1, 3}};
     static_assert(identical(fixed_point<int, -16>{0.3333282470703125}, c2));
 
-    constexpr auto d2 = fixed_point<int, -16>{fractional{elastic_integer<1>{1}, elastic_integer<2>{3}}};
+    constexpr auto d2 = fixed_point<int, -16>{fraction{elastic_integer<1>{1}, elastic_integer<2>{3}}};
     static_assert(identical(fixed_point<int, -16>{0.3333282470703125}, d2));
 }
 

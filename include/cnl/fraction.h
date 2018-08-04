@@ -5,10 +5,10 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief definition of `cnl::fractional` type
+/// \brief definition of `cnl::fraction` type
 
-#if !defined(CNL_FRACTIONAL_H)
-#define CNL_FRACTIONAL_H 1
+#if !defined(CNL_FRACTION_H)
+#define CNL_FRACTION_H 1
 
 #include "_impl/type_traits.h"
 
@@ -25,17 +25,17 @@ namespace cnl {
     /// \tparam Exponent the type of denominator
 
     template<typename Numerator, typename Denominator = int>
-    struct fractional {
+    struct fraction {
         /// alias to `Numerator`
         using numerator_type = Numerator;
 
         /// alias to `Denominator`
         using denominator_type = Denominator;
 
-        explicit constexpr fractional(Numerator const& n, Denominator const& d)
+        explicit constexpr fraction(Numerator const& n, Denominator const& d)
                 : numerator{n}, denominator{d} {}
 
-        explicit constexpr fractional(Numerator const& n)
+        explicit constexpr fraction(Numerator const& n)
                 : numerator{n}, denominator{1} {}
 
         /// returns the quotient, \ref numerator `/` \ref denominator
@@ -53,20 +53,20 @@ namespace cnl {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::make_fractional
+    // cnl::make_fraction
 
-    /// creates a fractional value with types deduced from the numerator and denominator
+    /// creates a fraction with types deduced from the numerator and denominator
     template<typename Numerator, typename Denominator>
-    constexpr fractional<Numerator, Denominator> make_fractional(Numerator const& n, Denominator const& d)
+    constexpr fraction<Numerator, Denominator> make_fraction(Numerator const& n, Denominator const& d)
     {
-        return fractional<Numerator, Denominator>{n, d};
+        return fraction<Numerator, Denominator>{n, d};
     }
 
-    /// creates a fractional value with types deduced from the numerator
+    /// creates a fraction with types deduced from the numerator
     template<typename Numerator>
-    constexpr fractional<Numerator, Numerator> make_fractional(Numerator const& n)
+    constexpr fraction<Numerator, Numerator> make_fraction(Numerator const& n)
     {
-        return fractional<Numerator, Numerator>{n, 1};
+        return fraction<Numerator, Numerator>{n, 1};
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -74,7 +74,7 @@ namespace cnl {
 
 #if defined(__cpp_lib_experimental_gcd_lcm)
     template<typename Numerator, typename Denominator>
-    constexpr auto gcd(fractional<Numerator, Denominator> const& f) {
+    constexpr auto gcd(fraction<Numerator, Denominator> const& f) {
         return std::experimental::gcd(f.numerator, f.denominator);
     }
 
@@ -82,59 +82,59 @@ namespace cnl {
     // cnl::reduce
 
     template<typename Numerator, typename Denominator>
-    constexpr auto reduce(fractional<Numerator, Denominator> const& f) {
-        return make_fractional(f.numerator / gcd(f), f.denominator / gcd(f));
+    constexpr auto reduce(fraction<Numerator, Denominator> const& f) {
+        return make_fraction(f.numerator / gcd(f), f.denominator / gcd(f));
     }
 #endif
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::fractional operators
+    // cnl::fraction operators
 
-    // cnl::fractional arithmetic
+    // cnl::fraction arithmetic
     template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
     constexpr auto operator+(
-            fractional<LhsNumerator, LhsDenominator> const& lhs,
-            fractional<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(make_fractional(
+            fraction<LhsNumerator, LhsDenominator> const& lhs,
+            fraction<RhsNumerator, RhsDenominator> const& rhs)
+    -> decltype(make_fraction(
             lhs.numerator*rhs.denominator+rhs.numerator*lhs.denominator, lhs.denominator*rhs.denominator))
     {
-        return make_fractional(
+        return make_fraction(
                 lhs.numerator*rhs.denominator+rhs.numerator*lhs.denominator, lhs.denominator*rhs.denominator);
     }
 
     template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
     constexpr auto operator-(
-            fractional<LhsNumerator, LhsDenominator> const& lhs,
-            fractional<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(make_fractional(
+            fraction<LhsNumerator, LhsDenominator> const& lhs,
+            fraction<RhsNumerator, RhsDenominator> const& rhs)
+    -> decltype(make_fraction(
             lhs.numerator*rhs.denominator-rhs.numerator*lhs.denominator, lhs.denominator*rhs.denominator))
     {
-        return make_fractional(
+        return make_fraction(
                 lhs.numerator*rhs.denominator-rhs.numerator*lhs.denominator, lhs.denominator*rhs.denominator);
     }
 
     template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
     constexpr auto operator*(
-            fractional<LhsNumerator, LhsDenominator> const& lhs,
-            fractional<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(make_fractional(lhs.numerator*rhs.numerator, lhs.denominator*rhs.denominator))
+            fraction<LhsNumerator, LhsDenominator> const& lhs,
+            fraction<RhsNumerator, RhsDenominator> const& rhs)
+    -> decltype(make_fraction(lhs.numerator*rhs.numerator, lhs.denominator*rhs.denominator))
     {
-        return make_fractional(lhs.numerator*rhs.numerator, lhs.denominator*rhs.denominator);
+        return make_fraction(lhs.numerator*rhs.numerator, lhs.denominator*rhs.denominator);
     }
 
     template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
     constexpr auto operator/(
-            fractional<LhsNumerator, LhsDenominator> const& lhs,
-            fractional<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(make_fractional(lhs.numerator*rhs.denominator, lhs.denominator*rhs.numerator))
+            fraction<LhsNumerator, LhsDenominator> const& lhs,
+            fraction<RhsNumerator, RhsDenominator> const& rhs)
+    -> decltype(make_fraction(lhs.numerator*rhs.denominator, lhs.denominator*rhs.numerator))
     {
-        return make_fractional(lhs.numerator*rhs.denominator, lhs.denominator*rhs.numerator);
+        return make_fraction(lhs.numerator*rhs.denominator, lhs.denominator*rhs.numerator);
     }
 
-    // cnl::fractional comparison
-    namespace _fractional_impl {
+    // cnl::fraction comparison
+    namespace _impl {
         template<typename Numerator, typename Denominator>
-        constexpr auto one(fractional<Numerator, Denominator> const& f)
+        constexpr auto one(fraction<Numerator, Denominator> const& f)
         -> decltype(f.numerator==f.denominator)
         {
             return f.numerator==f.denominator;
@@ -143,21 +143,21 @@ namespace cnl {
 
     template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
     constexpr auto operator==(
-            fractional<LhsNumerator, LhsDenominator> const& lhs,
-            fractional<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(_fractional_impl::one(lhs/rhs))
+            fraction<LhsNumerator, LhsDenominator> const& lhs,
+            fraction<RhsNumerator, RhsDenominator> const& rhs)
+    -> decltype(_impl::one(lhs/rhs))
     {
-        return _fractional_impl::one(lhs/rhs);
+        return _impl::one(lhs/rhs);
     }
 
     template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
     constexpr auto operator!=(
-            fractional<LhsNumerator, LhsDenominator> const& lhs,
-            fractional<RhsNumerator, RhsDenominator> const& rhs)
+            fraction<LhsNumerator, LhsDenominator> const& lhs,
+            fraction<RhsNumerator, RhsDenominator> const& rhs)
     -> decltype(!(lhs==rhs))
     {
         return !(lhs==rhs);
     }
 }
 
-#endif  // CNL_FRACTIONAL_H
+#endif  // CNL_FRACTION_H

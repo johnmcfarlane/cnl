@@ -95,14 +95,14 @@ namespace design_decisions {
 
     namespace division {
         using cnl::fixed_point;
-        using cnl::fractional;
+        using cnl::fraction;
         using std::int64_t;
 
-        constexpr auto i = fixed_point{fractional{1, 3}};
+        constexpr auto i = fixed_point{fraction{1, 3}};
         static_assert(i == 0.333333333022892475128173828125L);
         static_assert(is_same_v<decltype(i), const fixed_point<int64_t, -31>>);
 
-        constexpr auto j = fixed_point<int, -16>{fractional{1, 3}};
+        constexpr auto j = fixed_point<int, -16>{fraction{1, 3}};
         static_assert(j == 0.3333282470703125);
         static_assert(is_same_v<decltype(j), const fixed_point<int, -16>>);
     }

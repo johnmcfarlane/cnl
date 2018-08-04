@@ -17,7 +17,7 @@
 #include "elastic_number.h"
 #include "elastic_integer.h"
 #include "fixed_point.h"
-#include "fractional.h"
+#include "fraction.h"
 #include "limits.h"
 #include "numeric.h"
 #include "num_traits.h"

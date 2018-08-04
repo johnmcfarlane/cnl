@@ -92,7 +92,7 @@ namespace cnl {
                 using fp = fixed_point<Rep, Exponent>;
 
                 //Use a polynomial min-max approximation to generate the exponential of
-                //the fractional part. Note that the constant 1 of the polynomial is added later,
+                //the fraction part. Note that the constant 1 of the polynomial is added later,
                 //this gives us one more bit of precision here for free
                 using coeffs = poly_coeffs<fp>;
                 return fp{
@@ -113,7 +113,7 @@ namespace cnl {
             }
 
             //Computes 2^x - 1 for a number x between 0 and 1, strictly less than 1
-            //If the exponent is not negative, there is no fractional part,
+            //If the exponent is not negative, there is no fraction part,
             //so this is always zero
             template<class Rep, int Exponent>
             inline constexpr auto exp2m1_0to1(fixed_point<Rep, Exponent>)
@@ -126,7 +126,7 @@ namespace cnl {
             template<class Rep, int Exponent>
             constexpr inline auto exp2m1_0to1(fixed_point<Rep, Exponent> x)
             -> _impl::enable_if_t<(Exponent<0), make_largest_ufraction<fixed_point<Rep, Exponent>>> {
-                //Build the type with the same number of bits, all fractional,
+                //Build the type with the same number of bits, all fraction,
                 //and unsigned. That should be enough to exactly hold enough bits
                 //to guarantee bit-accurate results
                 using im = make_largest_ufraction<fixed_point<Rep, Exponent>>;
@@ -153,7 +153,7 @@ namespace cnl {
                 return floored <= Exponent
                     ? typename Intermediate::rep{1}//return immediately if the shift would result in all bits being shifted out
                     //Do the shifts manually. Once the branch with shift operators is merged, could use those
-                    : (_impl::to_rep(exp2m1_0to1<Rep, Exponent>(fractional(x, floored)))//Calculate the exponent of the fractional part
+                    : (_impl::to_rep(exp2m1_0to1<Rep, Exponent>(fractional(x, floored)))//Calculate the exponent of the fraction part
                     >> (-Intermediate::exponent + Exponent - floored))//shift it to the right place
                     + (Rep { 1 } << (floored - Exponent)); //The constant term must be one, to make integer powers correct
             }
@@ -174,7 +174,7 @@ namespace cnl {
         // The input type
         using im = _impl::fp::make_largest_ufraction<out_type>;
 
-        //Calculate the final result by shifting the fractional part around.
+        //Calculate the final result by shifting the fraction part around.
         //Remember to add the 1 which is left out to get 1 bit more resolution
         return from_rep<out_type>{}(_impl::fp::exp2<im>(x, static_cast<Rep>(floor(x))));
     }
