@@ -10,6 +10,8 @@
 #if !defined(CNL_FIXED_POINT_NUM_TRAITS_H)
 #define CNL_FIXED_POINT_NUM_TRAITS_H 1
 
+#include "type.h"
+
 /// compositional numeric library
 namespace cnl {
 
