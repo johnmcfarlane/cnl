@@ -230,6 +230,15 @@ namespace {
                 "cnl::elastic_integer test failed");
     }
 
+    namespace test_modulo {
+        static_assert(identical(elastic_integer<10>{7}, elastic_integer<10>{777}%elastic_integer<4>{10}),
+                "cnl::elastic_integer test failed");
+        static_assert(identical(elastic_integer<5>{2}, elastic_integer<5>{32}%3),
+                "cnl::elastic_integer test failed");
+        static_assert(identical(elastic_integer<10>{7}, elastic_integer<10>{777}%10_c),
+                "cnl::elastic_integer test failed");
+    }
+
     namespace test_bitwise_not {
         static_assert(~elastic_integer<12, cnl::uint16>{0}==0xFFF, "cnl::elastic_integer test failed");
         static_assert(~elastic_integer<12, int>{0x050}==~0x50, "cnl::elastic_integer test failed");
