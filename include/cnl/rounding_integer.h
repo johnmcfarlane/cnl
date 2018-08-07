@@ -21,9 +21,9 @@ namespace cnl {
     template<class Rep = int, class RoundingTag = _impl::nearest_rounding_tag>
     class rounding_integer;
 
-    namespace _rounding_integer_impl {
+    namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_rounding_integer_impl::is_rounding_integer
+        // cnl::_impl::is_rounding_integer
 
         template<class T>
         struct is_rounding_integer : std::false_type {
@@ -36,7 +36,7 @@ namespace cnl {
 
     template<class Rep, class RoundingTag>
     class rounding_integer : public _impl::number_base<rounding_integer<Rep, RoundingTag>, Rep> {
-        static_assert(!_rounding_integer_impl::is_rounding_integer<Rep>::value,
+        static_assert(!_impl::is_rounding_integer<Rep>::value,
                 "rounding_integer of rounding_integer is not a supported");
 
         using super = _impl::number_base<rounding_integer<Rep, RoundingTag>, Rep>;
