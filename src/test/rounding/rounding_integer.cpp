@@ -13,6 +13,7 @@
 namespace {
     using cnl::rounding_integer;
     using std::is_same;
+    using cnl::_impl::assert_same;
     using cnl::_impl::identical;
 
     namespace number_base_traits {
@@ -36,6 +37,28 @@ namespace {
 
         static_assert(is_same<rounding_integer<>::rep, default_rep>::value, "cnl::rounding_integer parameter default test failed");
         static_assert(is_same<rounding_integer<>::rounding, default_tag<default_rep>>::value, "cnl::rounding_integer parameter default test failed");
+    }
+
+    namespace test_rounding_t {
+        static_assert(
+                assert_same<
+                        cnl::_impl::native_rounding_tag,
+                        cnl::_impl::rounding_t<int>
+                >::value,
+                "cnl::_impl::rounding_t<int> test failed");
+        static_assert(
+                assert_same<
+                        cnl::_impl::native_rounding_tag,
+                        cnl::_impl::rounding_t<cnl::uint16>
+                >::value,
+                "cnl::_impl::rounding_t<int> test failed");
+
+        static_assert(
+                assert_same<
+                        cnl::_impl::nearest_rounding_tag,
+                        cnl::_impl::rounding_t<cnl::rounding_integer<>>
+                >::value,
+                "cnl::_impl::rounding_t<cnl::rounding_integer<>> test failed");
     }
 
     namespace is_number {

@@ -9,6 +9,7 @@
 #include <gtest/gtest.h>
 
 namespace {
+    using cnl::_impl::assert_same;
     using cnl::_impl::identical;
 
     namespace default_parameters {
@@ -36,6 +37,15 @@ namespace {
         static_assert(
                 std::is_same<cnl::elastic_integer<>::rep, cnl::static_integer<>::rep::rep::rep>::value,
                 "cnl::static_integer parameter default test failed");
+    }
+
+    namespace test_rounding_t {
+        static_assert(
+                assert_same<
+                        cnl::_impl::nearest_rounding_tag,
+                        cnl::_impl::rounding_t<cnl::static_integer<>>
+                >::value,
+                "cnl::_impl::rounding_t<cnl::static_integer<>> test failed");
     }
 
     namespace test_conversion_native {
