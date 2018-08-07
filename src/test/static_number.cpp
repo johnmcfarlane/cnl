@@ -27,6 +27,17 @@ namespace {
                 "cnl::_impl::rounding_t<cnl::static_number<>> test failed");
     }
 
+    namespace test_set_rounding_t {
+        static_assert(
+                assert_same<
+                        cnl::static_number<1, 0, cnl::native_rounding_tag>,
+                        cnl::_impl::set_rounding_t<
+                                cnl::static_number<1>,
+                                cnl::native_rounding_tag>
+                >::value,
+                "cnl::_impl::set_rounding_t<cnl::static_number<>> test failed");
+    }
+
     namespace test_make_static_number {
         using namespace cnl::literals;
         static_assert(identical(cnl::make_static_number(cnl::int16{7}), cnl::static_number<15>{7}), "");

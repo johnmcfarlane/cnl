@@ -63,6 +63,55 @@ namespace cnl {
 
         template<typename Number>
         using rounding_t = typename rounding<Number>::type;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::set_rounding
+
+        template<typename Number, class RoundingTag, class Enable = void>
+        struct set_rounding;
+
+        template<typename Number, class RoundingTag>
+        struct set_rounding<Number const&, RoundingTag>
+                : set_rounding<Number, RoundingTag> {
+        };
+
+        template<typename Number, class RoundingTag>
+        struct set_rounding<Number&, RoundingTag>
+                : set_rounding<Number, RoundingTag> {
+        };
+
+        template<typename Number, class RoundingTag>
+        struct set_rounding<Number&&, RoundingTag>
+                : set_rounding<Number, RoundingTag> {
+        };
+
+        template<typename Number>
+        struct set_rounding<
+                Number,
+                native_rounding_tag,
+                enable_if_t<cnl::_impl::is_integral<Number>::value>> {
+            using type = Number;
+        };
+
+        template<typename Number, class RoundingTag>
+        struct set_rounding<
+                Number,
+                RoundingTag,
+                enable_if_t<
+                        is_composite<Number>::value
+                                && !is_rounding_integer<Number>::value>>
+                : type_identity<from_rep_t<
+                        Number,
+                        typename set_rounding<to_rep_t<Number>, RoundingTag>::type>> {
+        };
+
+        template<typename InputRep, class InputRoundingTag, class OutputRoundingTag>
+        struct set_rounding<rounding_integer<InputRep, InputRoundingTag>, OutputRoundingTag>
+                : type_identity<rounding_integer<InputRep, OutputRoundingTag>> {
+        };
+
+        template<typename Number, class RoundingTag>
+        using set_rounding_t = typename set_rounding<Number, RoundingTag>::type;
     }
 
     template<class Rep, class RoundingTag>

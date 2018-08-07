@@ -61,6 +61,26 @@ namespace {
                 "cnl::_impl::rounding_t<cnl::rounding_integer<>> test failed");
     }
 
+    namespace test_set_rounding_t {
+        static_assert(
+                assert_same<
+                        cnl::rounding_integer<int, cnl::_impl::nearest_rounding_tag>,
+                        cnl::_impl::set_rounding_t<
+                                cnl::rounding_integer<int, cnl::_impl::native_rounding_tag>,
+                                cnl::_impl::nearest_rounding_tag>
+                >::value,
+                "cnl::_impl::rounding_t<cnl::rounding_integer<>> test failed");
+
+        static_assert(
+                assert_same<
+                        cnl::rounding_integer<int, cnl::_impl::nearest_rounding_tag>,
+                        cnl::_impl::set_rounding_t<
+                                cnl::rounding_integer<int, cnl::_impl::native_rounding_tag>,
+                                cnl::_impl::nearest_rounding_tag>
+                >::value,
+                "cnl::_impl::rounding_t<cnl::rounding_integer<>> test failed");
+    }
+
     namespace is_number {
         using cnl::_impl::is_derived_from_number_base;
 
