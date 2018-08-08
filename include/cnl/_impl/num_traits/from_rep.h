@@ -35,6 +35,11 @@ namespace cnl {
             return static_cast<Number>(rep);
         }
     };
+
+    namespace _impl {
+        template<class Number, class Rep>
+        using from_rep_t = decltype(cnl::from_rep<Number>{}(std::declval<Rep>()));
+    }
 }
 
 #endif  // CNL_IMPL_NUM_TRAITS_FROM_REP

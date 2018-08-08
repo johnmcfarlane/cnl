@@ -10,11 +10,32 @@
 
 namespace {
     using cnl::_impl::identical;
+    using cnl::_impl::assert_same;
 
     namespace default_parameters {
         static_assert(
                 std::is_same<cnl::static_number<1>::rep::rep::rep::rep, int>::value,
                 "cnl::rounding_integer parameter default test failed");
+    }
+
+    namespace test_rounding_t {
+        static_assert(
+                assert_same<
+                        cnl::_impl::nearest_rounding_tag,
+                        cnl::_impl::rounding_t<cnl::static_number<1>>
+                >::value,
+                "cnl::_impl::rounding_t<cnl::static_number<>> test failed");
+    }
+
+    namespace test_set_rounding_t {
+        static_assert(
+                assert_same<
+                        cnl::static_number<1, 0, cnl::native_rounding_tag>,
+                        cnl::_impl::set_rounding_t<
+                                cnl::static_number<1>,
+                                cnl::native_rounding_tag>
+                >::value,
+                "cnl::_impl::set_rounding_t<cnl::static_number<>> test failed");
     }
 
     namespace test_make_static_number {
