@@ -46,7 +46,7 @@ namespace {
             auto const buffer_begin = buffer.data();
             auto const buffer_end = buffer.data() + buffer.size();
 
-            auto buffer_last = cnl::_impl::to_chars_natural(buffer_begin, buffer_end, value);
+            auto buffer_last = cnl::_impl::to_chars_natural(buffer_begin + 20, buffer_end + 20, value);
             if (BufferSize<expected_length) {
                 ASSERT_EQ(nullptr, buffer_last);
                 return;
