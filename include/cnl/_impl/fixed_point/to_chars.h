@@ -22,6 +22,22 @@ namespace cnl {
     };
 
     namespace _impl {
+        template<typename Scalar>
+        struct max_decimal_digits;
+
+        template<typename Rep, int Exponent>
+        struct max_decimal_digits<fixed_point<Rep, Exponent, 2>> {
+            using _scalar = cnl::fixed_point<Rep, Exponent>;
+            static constexpr auto _fractional_digits = cnl::_impl::fractional_digits<_scalar>::value;
+
+            static constexpr auto _sign_chars = static_cast<int>(cnl::is_signed<_scalar>::value);
+            static constexpr auto _integer_chars = ((cnl::_impl::integer_digits<_scalar>::value + 2) / 3);
+            static constexpr auto _radix_chars = static_cast<int>(_fractional_digits > 0);
+            static constexpr auto _fractional_chars = max(0, _fractional_digits);
+
+            static constexpr auto value = _sign_chars + _integer_chars + _radix_chars + _fractional_chars;
+        };
+
         template<typename FixedPoint, class Enable = void>
         struct trunc_fn;
 
