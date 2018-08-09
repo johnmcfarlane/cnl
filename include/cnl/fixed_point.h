@@ -16,5 +16,6 @@
 #include "_impl/fixed_point/constants.h"
 #include "_impl/fixed_point/operators.h"
 #include "_impl/fixed_point/extras.h"
+#include "_impl/fixed_point/to_chars.h"
 
 #endif  // CNL_FIXED_POINT_H
