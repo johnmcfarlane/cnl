@@ -379,6 +379,12 @@ namespace cnl {
         };
 
         template<class LhsTraits, class RhsTraits>
+        struct policy<_impl::modulo_op, LhsTraits, RhsTraits> {
+            static constexpr int digits = LhsTraits::digits;
+            static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed;
+        };
+
+        template<class LhsTraits, class RhsTraits>
         struct policy<_impl::bitwise_or_op, LhsTraits, RhsTraits> {
             static constexpr int digits = _impl::max(LhsTraits::digits, RhsTraits::digits);
             static constexpr bool is_signed = LhsTraits::is_signed || RhsTraits::is_signed; 

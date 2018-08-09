@@ -18,6 +18,8 @@ namespace cnl {
     constexpr T sqrt(T arg) {
         return std::sqrt(arg);
     }
+
+    using std::abs;
 }
 
 #endif //CNL_CMATH_H
