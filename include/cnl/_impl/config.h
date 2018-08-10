@@ -8,6 +8,22 @@
 #define CNL_CONFIG_H
 
 ////////////////////////////////////////////////////////////////////////////////
+// CNL_DEBUG and CNL_RELEASE macro definitions
+
+// Customization point: define either CNL_DEBUG or CNL_RELEASE
+// to affect how contract violations are handled
+// in builds that don't support contract [[attributes]].
+#if defined(CNL_DEBUG) && defined(CNL_RELEASE)
+#error Mutually exclusive macros, CNL_DEBUG are both defined CNL_RELEASE.
+#elif !defined(CNL_DEBUG) && !defined(CNL_RELEASE)
+#if defined(NDEBUG)
+#define CNL_RELEASE
+#else
+#define CNL_DEBUG
+#endif
+#endif
+
+////////////////////////////////////////////////////////////////////////////////
 // CNL_INT128_ENABLED macro definition
 
 #if defined(CNL_INT128_ENABLED)
@@ -112,7 +128,7 @@
 #if CNL_USE_UNREACHABLE_UB
 #define CNL_UNREACHABLE_UB_ENABLED
 #endif
-#elif defined(NDEBUG)
+#elif defined(CNL_RELEASE)
 #define CNL_UNREACHABLE_UB_ENABLED
 #endif
 
