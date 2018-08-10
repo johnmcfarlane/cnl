@@ -189,7 +189,7 @@ else ()
     set(TEST_CXX_FLAGS "-Wconversion -Wno-sign-conversion -ftemplate-backtrace-limit=0")
 endif ()
 
-set(SANITIZE OFF CACHE BOOL "compile with UB sanitizer enabled")
+set(SANITIZE ON CACHE BOOL "compile with UB sanitizer enabled")
 if (SANITIZE)
     set(SANITIZE_CXX_FLAGS "${SANITIZE_ENABLED_CXX_FLAGS}")
     set(SANITIZE_LINKER_FLAGS "${SANITIZE_ENABLED_LINKER_FLAGS}")
