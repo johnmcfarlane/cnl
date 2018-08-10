@@ -9,8 +9,28 @@
 #if !defined(CNL_COMMON_H)
 #define CNL_COMMON_H 1
 
+#include "config.h"
+
 #define CNL_STR_HELPER(x) #x
 #define CNL_STR(x) CNL_STR_HELPER(x)
+
+// CNL_LIKELY - hints that a condition is likely to be true
+#if defined(__clang__) || defined(__GNUC__)
+#define CNL_LIKELY(CONDITION) __builtin_expect(!!(CONDITION), 1)
+#define CNL_UNLIKELY(CONDITION) __builtin_expect(!!(CONDITION), 0)
+#else
+#define CNL_LIKELY(CONDITION) (!!(CONDITION))
+#define CNL_UNLIKELY(CONDITION) (!!(CONDITION))
+#endif
+
+// CNL_ASSUME - hints that a condition *must* be true
+#ifdef _MSC_VER
+#define CNL_ASSUME(cond) __assume(cond)
+#elif defined(__GNUC__)
+#define CNL_ASSUME(cond) ((cond) ? static_cast<void>(0) : __builtin_unreachable())
+#else
+#define CNL_ASSUME(cond) static_cast<void>((cond) ? 0 : 0)
+#endif
 
 namespace cnl {
     namespace _impl {
