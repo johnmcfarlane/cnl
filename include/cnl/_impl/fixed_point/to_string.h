@@ -7,10 +7,10 @@
 #ifndef CNL_IMPL_FIXED_POINT_TO_STRING_H
 #define CNL_IMPL_FIXED_POINT_TO_STRING_H
 
+#include "../assert.h"
 #include "type.h"
 #include "to_chars.h"
 
-#include <cassert>
 #include <string>
 
 /// compositional numeric library
@@ -24,9 +24,9 @@ namespace cnl {
         char chars[num_chars+1];
 
         auto result = cnl::to_chars(chars, chars+num_chars, value);
-        assert(result.ptr>std::begin(chars));
-        assert(result.ptr<std::end(chars));
-        assert(result.ec==std::errc{});
+        CNL_ASSERT(result.ptr>std::begin(chars));
+        CNL_ASSERT(result.ptr<std::end(chars));
+        CNL_ASSERT(result.ec==std::errc{});
 
         *result.ptr = '\0';
         return std::begin(chars);
