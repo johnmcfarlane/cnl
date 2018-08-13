@@ -7,7 +7,7 @@
 #ifndef CNL_IMPL_TYPE_TRAITS_MAKE_UNSIGNED
 #define CNL_IMPL_TYPE_TRAITS_MAKE_UNSIGNED
 
-#include "../type_traits.h"
+#include "../type_traits/enable_if.h"
 
 namespace cnl {
     template<class, class = void>

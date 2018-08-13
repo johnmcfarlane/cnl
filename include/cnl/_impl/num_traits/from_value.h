@@ -11,7 +11,7 @@
 
 #include "digits.h"
 #include "set_digits.h"
-#include "../type_traits.h"
+#include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 #include "../type_traits/make_signed.h"
 #include "../used_digits.h"
