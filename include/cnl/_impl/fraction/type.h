@@ -38,6 +38,10 @@ namespace cnl {
         explicit constexpr fraction(Numerator const& n)
                 : numerator{n}, denominator{1} {}
 
+        template<typename RhsNumerator, typename RhsDenominator>
+        constexpr fraction(fraction<RhsNumerator, RhsDenominator> const& f)
+                : numerator(f.numerator), denominator(f.denominator) { }
+
         /// returns the quotient, \ref numerator `/` \ref denominator
         template<typename Scalar, _impl::enable_if_t<std::is_floating_point<Scalar>::value, int> = 0>
         explicit constexpr operator Scalar() const
