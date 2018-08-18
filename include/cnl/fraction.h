@@ -10,7 +10,7 @@
 #if !defined(CNL_FRACTION_H)
 #define CNL_FRACTION_H 1
 
-#include "_impl/type_traits/enable_if.h"
+#include "_impl/fraction/type.h"
 
 #if defined(__cpp_lib_experimental_gcd_lcm)
 #include <experimental/numeric>
@@ -18,40 +18,6 @@
 
 /// compositional numeric library
 namespace cnl {
-
-    /// \brief numeric type represented as the fraction, \ref numerator `/` \ref denominator
-    ///
-    /// \tparam Numerator the type of numerator
-    /// \tparam Exponent the type of denominator
-
-    template<typename Numerator, typename Denominator = int>
-    struct fraction {
-        /// alias to `Numerator`
-        using numerator_type = Numerator;
-
-        /// alias to `Denominator`
-        using denominator_type = Denominator;
-
-        explicit constexpr fraction(Numerator const& n, Denominator const& d)
-                : numerator{n}, denominator{d} {}
-
-        explicit constexpr fraction(Numerator const& n)
-                : numerator{n}, denominator{1} {}
-
-        /// returns the quotient, \ref numerator `/` \ref denominator
-        template<typename Scalar, _impl::enable_if_t<std::is_floating_point<Scalar>::value, int> = 0>
-        explicit constexpr operator Scalar() const
-        {
-            return static_cast<Scalar>(numerator)/static_cast<Scalar>(denominator);
-        }
-
-        /// the numerator (top number) of the fraction
-        numerator_type numerator;
-
-        /// the denominator (bottom number) of the fraction
-        denominator_type denominator = 1;
-    };
-
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::make_fraction
 

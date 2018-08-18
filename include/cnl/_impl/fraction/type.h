@@ -1,0 +1,51 @@
+
+//          Copyright John McFarlane 2015 - 2018.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file ../LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
+#if !defined(CNL_IMPL_FRACTION_TYPE_H)
+#define CNL_IMPL_FRACTION_TYPE_H 1
+
+#include "../type_traits/enable_if.h"
+
+#include <type_traits>
+
+/// compositional numeric library
+namespace cnl {
+
+    /// \brief numeric type represented as the fraction, \ref numerator `/` \ref denominator
+    ///
+    /// \tparam Numerator the type of numerator
+    /// \tparam Exponent the type of denominator
+
+    template<typename Numerator, typename Denominator = int>
+    struct fraction {
+        /// alias to `Numerator`
+        using numerator_type = Numerator;
+
+        /// alias to `Denominator`
+        using denominator_type = Denominator;
+
+        explicit constexpr fraction(Numerator const& n, Denominator const& d)
+                : numerator{n}, denominator{d} {}
+
+        explicit constexpr fraction(Numerator const& n)
+                : numerator{n}, denominator{1} {}
+
+        /// returns the quotient, \ref numerator `/` \ref denominator
+        template<typename Scalar, _impl::enable_if_t<std::is_floating_point<Scalar>::value, int> = 0>
+        explicit constexpr operator Scalar() const
+        {
+            return static_cast<Scalar>(numerator)/static_cast<Scalar>(denominator);
+        }
+
+        /// the numerator (top number) of the fraction
+        numerator_type numerator;
+
+        /// the denominator (bottom number) of the fraction
+        denominator_type denominator = 1;
+    };
+}
+
+#endif  // CNL_IMPL_FRACTION_TYPE_H
