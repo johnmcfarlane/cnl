@@ -12,9 +12,9 @@
 #include <cnl/cnlint.h>
 #include <cnl/_impl/type_traits.h>
 
-using cnl::_impl::identical;
 
 namespace {
+    using cnl::_impl::identical;
     using cnl::_impl::assert_same;
 
     namespace test_parameters {
