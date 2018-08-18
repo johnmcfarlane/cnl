@@ -19,7 +19,7 @@ namespace cnl {
     /// \tparam Numerator the type of numerator
     /// \tparam Exponent the type of denominator
 
-    template<typename Numerator, typename Denominator = int>
+    template<typename Numerator = int, typename Denominator = Numerator>
     struct fraction {
         /// alias to `Numerator`
         using numerator_type = Numerator;

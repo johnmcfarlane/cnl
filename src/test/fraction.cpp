@@ -13,6 +13,21 @@
 using cnl::_impl::identical;
 
 namespace {
+    using cnl::_impl::assert_same;
+
+    namespace test_parameters {
+        static_assert(
+                assert_same<
+                        cnl::fraction<int, int>,
+                        cnl::fraction<>>::value,
+                "cnl::fraction first parameter should default to int");
+        static_assert(
+                assert_same<
+                        cnl::fraction<short, short>,
+                        cnl::fraction<short>>::value,
+                "cnl::fraction second parameter should default to first");
+    }
+
     namespace test_make_fraction {
         static_assert(identical(
                 3.14285714285714285714f,
