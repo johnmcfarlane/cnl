@@ -60,8 +60,11 @@ namespace {
 #if defined(__cpp_deduction_guides)
     namespace test_deduction_guide {
         static_assert(identical(
-                3.14285714285714285714f,
-                static_cast<float>(cnl::fraction{22, 7})), "cnl::fraction deduction guide");
+                cnl::fraction<short>(123),
+                cnl::fraction(short{123})), "cnl::fraction argument deduction");
+        static_assert(identical(
+                cnl::fraction<float>(3.14285714285714285714f),
+                cnl::fraction(3.14285714285714285714f)), "cnl::fraction argument deduction");
 
         static_assert(identical(cnl::fraction<int, int>{4321, 1}, cnl::fraction{4321}));
     }
