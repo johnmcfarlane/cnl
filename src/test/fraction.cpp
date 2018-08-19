@@ -17,6 +17,14 @@ namespace {
     using cnl::_impl::identical;
     using cnl::_impl::assert_same;
 
+    template<typename Numerator, typename Denominator>
+    constexpr bool identical(
+            cnl::fraction<Numerator, Denominator> const& a,
+            cnl::fraction<Numerator, Denominator> const& b)
+    {
+        return identical(a.numerator, b.numerator) && identical(a.denominator, b.denominator);
+    }
+
     namespace test_parameters {
         static_assert(
                 assert_same<
@@ -69,6 +77,12 @@ namespace {
         static_assert(identical(cnl::fraction<int, int>{4321, 1}, cnl::fraction{4321}));
     }
 #endif
+
+    namespace test_conversion_op {
+        static_assert(identical(
+                3.14285714285714285714f,
+                static_cast<float>(cnl::fraction<int>{22, 7})), "cnl::fraction conversion operator");
+    }
 
     namespace test_add {
         static_assert(identical(
