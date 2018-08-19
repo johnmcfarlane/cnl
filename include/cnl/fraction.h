@@ -13,20 +13,14 @@
 #include "_impl/fraction/gcd.h"
 #include "_impl/fraction/make_fraction.h"
 #include "_impl/fraction/operators.h"
+#include "_impl/fraction/reduce.h"
 #include "_impl/fraction/type.h"
 
 /// compositional numeric library
 namespace cnl {
     using _impl::make_fraction;
-
 #if defined(__cpp_lib_experimental_gcd_lcm)
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::reduce
-
-    template<typename Numerator, typename Denominator>
-    constexpr auto reduce(fraction<Numerator, Denominator> const& f) {
-        return make_fraction(f.numerator / _impl::gcd(f), f.denominator / _impl::gcd(f));
-    }
+    using _impl::reduce;
 #endif
 }
 
