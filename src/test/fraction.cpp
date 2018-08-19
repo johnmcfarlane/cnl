@@ -94,12 +94,16 @@ namespace {
     }
 
     namespace test_subtract {
-        static_assert(identical(
-                cnl::make_fraction(-3LL, 9),
-                cnl::make_fraction(1LL, 3)-cnl::make_fraction(2, 3)), "operator+(cnl::fraction, cnl::fraction)");
-        static_assert(identical(
-                cnl::make_fraction(-1, 12),
-                cnl::make_fraction(1, short{4})-cnl::make_fraction(1, short{3})), "operator+(cnl::fraction, cnl::fraction)");
+        static_assert(
+                identical(
+                        cnl::make_fraction(-3LL, 9),
+                        cnl::make_fraction(1LL, 3)-cnl::make_fraction(2, 3)),
+                "operator-(cnl::fraction, cnl::fraction)");
+        static_assert(
+                identical(
+                        cnl::make_fraction(-1, 12),
+                        cnl::make_fraction(1, short{4})-cnl::make_fraction(1, short{3})),
+                "operator-(cnl::fraction, cnl::fraction)");
     }
 
     namespace test_multiply {
