@@ -8,6 +8,7 @@
 #define CNL_IMPL_FRACTION_TYPE_H 1
 
 #include "../type_traits/enable_if.h"
+#include "../type_traits/is_integral.h"
 
 #include <type_traits>
 
@@ -21,6 +22,10 @@ namespace cnl {
 
     template<typename Numerator = int, typename Denominator = Numerator>
     struct fraction {
+        static_assert(
+                _impl::is_integral<Numerator>::value==_impl::is_integral<Denominator>::value,
+                "ill-formed if only one template parameter is floating-point");
+
         /// alias to `Numerator`
         using numerator_type = Numerator;
 
