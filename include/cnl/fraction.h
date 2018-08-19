@@ -10,6 +10,7 @@
 #if !defined(CNL_FRACTION_H)
 #define CNL_FRACTION_H 1
 
+#include "_impl/fraction/make_fraction.h"
 #include "_impl/fraction/type.h"
 
 #if defined(__cpp_lib_experimental_gcd_lcm)
@@ -18,22 +19,7 @@
 
 /// compositional numeric library
 namespace cnl {
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::make_fraction
-
-    /// creates a fraction with types deduced from the numerator and denominator
-    template<typename Numerator, typename Denominator>
-    constexpr fraction<Numerator, Denominator> make_fraction(Numerator const& n, Denominator const& d)
-    {
-        return fraction<Numerator, Denominator>{n, d};
-    }
-
-    /// creates a fraction with types deduced from the numerator
-    template<typename Numerator>
-    constexpr fraction<Numerator, Numerator> make_fraction(Numerator const& n)
-    {
-        return fraction<Numerator, Numerator>{n, 1};
-    }
+    using _impl::make_fraction;
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::gcd
