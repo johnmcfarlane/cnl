@@ -5,6 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/fixed_point.h>
+#include <cnl/fraction.h>
 
 #include <cstddef>
 #include <iostream>

@@ -13,6 +13,7 @@
 #define CNL_TEST_FIXED_POINT_FRACTION_CTOR_H
 
 #include <cnl/fixed_point.h>
+#include <cnl/fraction.h>
 
 namespace {
     using cnl::_impl::identical;
