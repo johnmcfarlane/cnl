@@ -19,7 +19,7 @@
 /// compositional numeric library
 namespace cnl {
     using _impl::make_fraction;
-#if defined(__cpp_lib_experimental_gcd_lcm)
+#if defined(__cpp_lib_gcd)
     using _impl::reduce;
 #endif
 }

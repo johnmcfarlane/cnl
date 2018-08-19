@@ -116,11 +116,20 @@ namespace {
                       "operator==(cnl::fraction, cnl::fraction)");
     }
 
-#if defined(__cpp_lib_experimental_gcd_lcm)
+#if defined(__cpp_lib_gcd)
     namespace test_reduce {
         static_assert(identical(
                 cnl::make_fraction(long{128}, long{45}),
-                cnl::reduce(cnl::make_fraction(short{1024}, long{360}))), "operator*(cnl::fraction, cnl::fraction)");
+                cnl::reduce(cnl::make_fraction(short{1024}, long{360}))), "reduce(cnl::fraction)");
+        static_assert(identical(
+                cnl::fraction<>(-2, -1),
+                cnl::reduce(cnl::fraction<>(-6, -3))), "reduce(cnl::fraction)");
+        static_assert(identical(
+                cnl::fraction<>(-2, 1),
+                cnl::reduce(cnl::fraction<>(-6, 3))), "reduce(cnl::fraction)");
+        static_assert(identical(
+                cnl::fraction<>(2, -1),
+                cnl::reduce(cnl::fraction<>(6, -3))), "reduce(cnl::fraction)");
     }
 #endif
 }

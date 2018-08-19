@@ -9,17 +9,16 @@
 
 #include "type.h"
 
-#if defined(__cpp_lib_experimental_gcd_lcm)
-#include <experimental/numeric>
-#endif
+#include <numeric>
 
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-#if defined(__cpp_lib_experimental_gcd_lcm)
+#if defined(__cpp_lib_gcd)
         template<typename Numerator, typename Denominator>
         constexpr auto gcd(fraction<Numerator, Denominator> const& f) {
-            return std::experimental::gcd(f.numerator, f.denominator);
+            using std::gcd;
+            return gcd(f.numerator, f.denominator);
         }
 #endif
     }
