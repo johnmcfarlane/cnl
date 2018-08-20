@@ -180,7 +180,7 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
     endif ()
 else ()
     set(SANITIZE_ENABLED_CXX_FLAGS "-fsanitize=undefined -fsanitize-undefined-trap-on-error -fsanitize=address")
-    set(SANITIZE_ENABLED_LINKER_FLAGS "-fsanitize=address")
+    set(SANITIZE_ENABLED_LINKER_FLAGS "-fsanitize=address -static-libasan")
 endif ()
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
