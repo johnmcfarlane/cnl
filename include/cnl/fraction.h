@@ -10,6 +10,7 @@
 #if !defined(CNL_FRACTION_H)
 #define CNL_FRACTION_H 1
 
+#include "_impl/fraction/abs.h"
 #include "_impl/fraction/canonical.h"
 #include "_impl/fraction/gcd.h"
 #include "_impl/fraction/hash.h"
@@ -20,6 +21,7 @@
 
 /// compositional numeric library
 namespace cnl {
+    using _impl::abs;
     using _impl::make_fraction;
 #if defined(__cpp_lib_gcd)
     using _impl::reduce;

@@ -171,6 +171,21 @@ namespace {
                 "operator<(cnl::fraction, cnl::fraction)");
     }
 
+    namespace test_abs {
+        static_assert(identical(
+                cnl::make_fraction(1024, 360L),
+                cnl::abs(cnl::make_fraction(short{1024}, long{360}))), "reduce(cnl::fraction)");
+        static_assert(identical(
+                cnl::fraction<>(6, 3),
+                cnl::abs(cnl::fraction<>(-6, -3))), "reduce(cnl::fraction)");
+        static_assert(identical(
+                cnl::fraction<>(6, 3),
+                cnl::abs(cnl::fraction<>(-6, 3))), "reduce(cnl::fraction)");
+        static_assert(identical(
+                cnl::fraction<>(6, 3),
+                cnl::abs(cnl::fraction<>(6, -3))), "reduce(cnl::fraction)");
+    }
+
 #if defined(__cpp_lib_gcd)
     namespace test_reduce {
         static_assert(identical(
