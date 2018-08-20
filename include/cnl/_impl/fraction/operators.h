@@ -13,6 +13,20 @@
 /// compositional numeric library
 namespace cnl {
     // cnl::fraction arithmetic
+    template<typename RhsNumerator, typename RhsDenominator>
+    constexpr auto operator+(fraction<RhsNumerator, RhsDenominator> const& rhs)
+    -> decltype(_impl::make_fraction(+rhs.numerator, +rhs.denominator))
+    {
+        return _impl::make_fraction(+rhs.numerator, +rhs.denominator);
+    }
+
+    template<typename RhsNumerator, typename RhsDenominator>
+    constexpr auto operator-(fraction<RhsNumerator, RhsDenominator> const& rhs)
+    -> decltype(_impl::make_fraction(-rhs.numerator, -rhs.denominator))
+    {
+        return _impl::make_fraction(-rhs.numerator, -rhs.denominator);
+    }
+
     template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
     constexpr auto operator+(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
