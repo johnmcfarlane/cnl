@@ -12,6 +12,7 @@
 #include <cnl/cnlint.h>
 #include <cnl/_impl/type_traits.h>
 
+#include <gtest/gtest.h>
 
 namespace {
     using cnl::_impl::identical;
@@ -201,6 +202,18 @@ namespace {
         static_assert(identical(
                 cnl::fraction<>(-2, 1),
                 cnl::canonical(cnl::fraction<>(6, -3))), "canonical(cnl::fraction)");
+    }
+#endif
+
+#if defined(__cpp_lib_gcd)
+    TEST(fraction, hash)
+    {
+        ASSERT_NE(
+                (std::hash<cnl::fraction<>>{}(cnl::fraction<>{1, 2})),
+                (std::hash<cnl::fraction<>>{}(cnl::fraction<>{2, 1})));
+        ASSERT_EQ(
+                (std::hash<cnl::fraction<>>{}(cnl::fraction<>{1, 2})),
+                (std::hash<cnl::fraction<>>{}(cnl::fraction<>{12, 24})));
     }
 #endif
 }

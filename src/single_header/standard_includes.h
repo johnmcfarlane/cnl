@@ -6,6 +6,7 @@
 #include <cmath>
 #include <cstdint>
 #include <istream>
+#include <functional>
 #include <limits>
 #include <numeric>
 #include <stdexcept>
