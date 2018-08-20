@@ -17,12 +17,14 @@
 #include "_impl/fraction/make_fraction.h"
 #include "_impl/fraction/operators.h"
 #include "_impl/fraction/reduce.h"
+#include "_impl/fraction/to_string.h"
 #include "_impl/fraction/type.h"
 
 /// compositional numeric library
 namespace cnl {
     using _impl::abs;
     using _impl::make_fraction;
+    using _impl::to_string;
 #if defined(__cpp_lib_gcd)
     using _impl::reduce;
     using _impl::canonical;
