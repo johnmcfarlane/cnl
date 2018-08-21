@@ -7,6 +7,7 @@ enable_testing()
 set(test_sources
         # free functions
         bit.cpp
+        cmath.cpp
         cnlint.cpp
         common.cpp
         limits.cpp

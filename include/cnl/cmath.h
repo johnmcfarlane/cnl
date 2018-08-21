@@ -10,16 +10,18 @@
 #ifndef CNL_CMATH_H
 #define CNL_CMATH_H
 
+#include "_impl/cmath/abs.h"
+
 #include <cmath>
 
 /// compositional numeric library
 namespace cnl {
+    using _impl::abs;
+
     template<typename T>
     constexpr T sqrt(T arg) {
         return std::sqrt(arg);
     }
-
-    using std::abs;
 }
 
 #endif //CNL_CMATH_H
