@@ -134,6 +134,42 @@ namespace {
                       "operator==(cnl::fraction, cnl::fraction)");
     }
 
+    namespace test_compare {
+        static_assert(identical(
+                true,
+                cnl::make_fraction(8892, 19)<cnl::make_fraction(8893, 19)),
+                "operator<(cnl::fraction, cnl::fraction)");
+        static_assert(identical(
+                false,
+                cnl::make_fraction(8892, 19)>cnl::make_fraction(8893, 19)),
+                "operator<(cnl::fraction, cnl::fraction)");
+        static_assert(identical(
+                true,
+                cnl::make_fraction(8892, 19)<=cnl::make_fraction(8893, 19)),
+                "operator<(cnl::fraction, cnl::fraction)");
+        static_assert(identical(
+                false,
+                cnl::make_fraction(8892, 19)>=cnl::make_fraction(8893, 19)),
+                "operator<(cnl::fraction, cnl::fraction)");
+
+        static_assert(identical(
+                false,
+                cnl::make_fraction(8893, 19)<cnl::make_fraction(8893, 19)),
+                "operator<(cnl::fraction, cnl::fraction)");
+        static_assert(identical(
+                false,
+                cnl::make_fraction(8893, 19)>cnl::make_fraction(8893, 19)),
+                "operator<(cnl::fraction, cnl::fraction)");
+        static_assert(identical(
+                true,
+                cnl::make_fraction(8893, 19)<=cnl::make_fraction(8893, 19)),
+                "operator<(cnl::fraction, cnl::fraction)");
+        static_assert(identical(
+                true,
+                cnl::make_fraction(8893, 19)>=cnl::make_fraction(8893, 19)),
+                "operator<(cnl::fraction, cnl::fraction)");
+    }
+
 #if defined(__cpp_lib_gcd)
     namespace test_reduce {
         static_assert(identical(

@@ -80,6 +80,42 @@ namespace cnl {
     {
         return !(lhs==rhs);
     }
+
+    template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
+    constexpr auto operator<(
+            fraction<LhsNumerator, LhsDenominator> const& lhs,
+            fraction<RhsNumerator, RhsDenominator> const& rhs)
+    -> decltype(lhs.numerator*rhs.denominator<rhs.numerator*lhs.denominator)
+    {
+        return lhs.numerator*rhs.denominator<rhs.numerator*lhs.denominator;
+    }
+
+    template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
+    constexpr auto operator>(
+            fraction<LhsNumerator, LhsDenominator> const& lhs,
+            fraction<RhsNumerator, RhsDenominator> const& rhs)
+    -> decltype(lhs.numerator*rhs.denominator>rhs.numerator*lhs.denominator)
+    {
+        return lhs.numerator*rhs.denominator>rhs.numerator*lhs.denominator;
+    }
+
+    template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
+    constexpr auto operator<=(
+            fraction<LhsNumerator, LhsDenominator> const& lhs,
+            fraction<RhsNumerator, RhsDenominator> const& rhs)
+    -> decltype(lhs.numerator*rhs.denominator<=rhs.numerator*lhs.denominator)
+    {
+        return lhs.numerator*rhs.denominator<=rhs.numerator*lhs.denominator;
+    }
+
+    template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
+    constexpr auto operator>=(
+            fraction<LhsNumerator, LhsDenominator> const& lhs,
+            fraction<RhsNumerator, RhsDenominator> const& rhs)
+    -> decltype(lhs.numerator*rhs.denominator>=rhs.numerator*lhs.denominator)
+    {
+        return lhs.numerator*rhs.denominator>=rhs.numerator*lhs.denominator;
+    }
 }
 
 #endif  // CNL_IMPL_FRACTION_OPERATORS_H
