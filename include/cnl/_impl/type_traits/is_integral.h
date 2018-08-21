@@ -28,6 +28,11 @@ namespace cnl {
         struct is_integral<uint128> : std::integral_constant<bool, true> {
         };
 #endif
+
+#if (__cplusplus > 201402L)
+        template<class T>
+        constexpr int is_integral_v = is_integral<T>::value;
+#endif
     }
 }
 

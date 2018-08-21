@@ -13,6 +13,7 @@
 #define CNL_FIXED_POINT_EXTRAS_H 1
 
 #include "type.h"
+#include "../cmath/abs.h"
 #include "../num_traits/fixed_width_scale.h"
 #include "../terminate.h"
 

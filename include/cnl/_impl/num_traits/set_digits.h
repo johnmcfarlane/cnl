@@ -10,7 +10,7 @@
 #ifndef CNL_IMPL_NUM_TRAITS_SET_DIGITS
 #define CNL_IMPL_NUM_TRAITS_SET_DIGITS
 
-#include "../type_traits.h"
+#include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 
 namespace cnl {

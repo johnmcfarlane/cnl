@@ -8,8 +8,8 @@
 /// \brief tests of cnl::elastic_number alias
 
 #include <cnl/elastic_number.h>
+#include <cnl/fraction.h>
 #include "../../number_test.h"
-#include <cnl/_impl/fixed_point/math.h>
 
 #include <gtest/gtest.h>
 

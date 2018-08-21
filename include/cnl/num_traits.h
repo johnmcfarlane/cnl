@@ -38,6 +38,9 @@ namespace cnl {
     // cnl::is_integral
 
     using _impl::is_integral;
+#if (__cplusplus > 201402L)
+    using _impl::is_integral_v;
+#endif
 }
 
 #endif  // CNL_NUM_TRAITS

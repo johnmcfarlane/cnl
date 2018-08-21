@@ -8,7 +8,7 @@
 #define CNL_IMPL_NUM_TRAITS_SCALE
 
 #include "../power.h"
-#include "../type_traits.h"
+#include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 
 namespace cnl {
