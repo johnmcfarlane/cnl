@@ -54,31 +54,22 @@ namespace cnl {
     }
 
     // cnl::fraction comparison
-    namespace _impl {
-        template<typename Numerator, typename Denominator>
-        constexpr auto one(fraction<Numerator, Denominator> const& f)
-        -> decltype(f.numerator==f.denominator)
-        {
-            return f.numerator==f.denominator;
-        }
-    }
-
     template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
     constexpr auto operator==(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(_impl::one(lhs/rhs))
+    -> decltype(lhs.numerator*rhs.denominator==rhs.numerator*lhs.denominator)
     {
-        return _impl::one(lhs/rhs);
+        return lhs.numerator*rhs.denominator==rhs.numerator*lhs.denominator;
     }
 
     template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
     constexpr auto operator!=(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(!(lhs==rhs))
+    -> decltype(lhs.numerator*rhs.denominator!=rhs.numerator*lhs.denominator)
     {
-        return !(lhs==rhs);
+        return lhs.numerator*rhs.denominator!=rhs.numerator*lhs.denominator;
     }
 
     template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
