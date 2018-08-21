@@ -146,4 +146,21 @@ namespace {
                 cnl::reduce(cnl::fraction<>(6, -3))), "reduce(cnl::fraction)");
     }
 #endif
+
+#if defined(__cpp_lib_gcd)
+    namespace test_canonical {
+        static_assert(identical(
+                cnl::fraction<>(long{128}, long{45}),
+                cnl::canonical(cnl::fraction<>(short{1024}, long{360}))), "canonical(cnl::fraction)");
+        static_assert(identical(
+                cnl::fraction<>(2, 1),
+                cnl::canonical(cnl::fraction<>(-6, -3))), "canonical(cnl::fraction)");
+        static_assert(identical(
+                cnl::fraction<>(-2, 1),
+                cnl::canonical(cnl::fraction<>(-6, 3))), "canonical(cnl::fraction)");
+        static_assert(identical(
+                cnl::fraction<>(-2, 1),
+                cnl::canonical(cnl::fraction<>(6, -3))), "canonical(cnl::fraction)");
+    }
+#endif
 }
