@@ -132,17 +132,34 @@ namespace cnl {
     // many <cmath> functions are not constexpr.
 
     namespace _impl {
-        namespace fp {
-            namespace extras {
-                template<typename Rep, int Exponent, int Radix, _impl::fp::float_of_same_size<Rep>(* F)(
-                        _impl::fp::float_of_same_size<Rep>)>
-                constexpr fixed_point <Rep, Exponent, Radix>
-                crib(fixed_point<Rep, Exponent, Radix> const& x) noexcept
-                {
-                    using floating_point = _impl::fp::float_of_same_size<Rep>;
-                    return static_cast<fixed_point<Rep, Exponent, Radix>>(F(static_cast<floating_point>(x)));
-                }
-            }
+        template<int NumBits, class Enable = void>
+        struct float_of_size;
+
+        template<int NumBits>
+        struct float_of_size<NumBits, enable_if_t<NumBits <= sizeof(float)*CHAR_BIT>> {
+            using type = float;
+        };
+
+        template<int NumBits>
+        struct float_of_size<NumBits, enable_if_t<sizeof(float)*CHAR_BIT < NumBits && NumBits <= sizeof(double)*CHAR_BIT>> {
+            using type = double;
+        };
+
+        template<int NumBits>
+        struct float_of_size<NumBits, enable_if_t<sizeof(double)*CHAR_BIT < NumBits && NumBits <= sizeof(long double)*CHAR_BIT>> {
+            using type = long double;
+        };
+
+        template<class T>
+        using float_of_same_size = typename float_of_size<_impl::width<T>::value>::type;
+
+        template<typename Rep, int Exponent, int Radix, _impl::float_of_same_size<Rep>(* F)(
+                _impl::float_of_same_size<Rep>)>
+        constexpr fixed_point <Rep, Exponent, Radix>
+        crib(fixed_point<Rep, Exponent, Radix> const& x) noexcept
+        {
+            using floating_point = _impl::float_of_same_size<Rep>;
+            return static_cast<fixed_point<Rep, Exponent, Radix>>(F(static_cast<floating_point>(x)));
         }
     }
 
@@ -150,28 +167,28 @@ namespace cnl {
     constexpr fixed_point <Rep, Exponent, Radix>
     sin(fixed_point<Rep, Exponent, Radix> const& x) noexcept
     {
-        return _impl::fp::extras::crib<Rep, Exponent, Radix, std::sin>(x);
+        return _impl::crib<Rep, Exponent, Radix, std::sin>(x);
     }
 
     template<typename Rep, int Exponent, int Radix>
     constexpr fixed_point <Rep, Exponent, Radix>
     cos(fixed_point<Rep, Exponent, Radix> const& x) noexcept
     {
-        return _impl::fp::extras::crib<Rep, Exponent, Radix, std::cos>(x);
+        return _impl::crib<Rep, Exponent, Radix, std::cos>(x);
     }
 
     template<typename Rep, int Exponent, int Radix>
     constexpr fixed_point <Rep, Exponent, Radix>
     exp(fixed_point<Rep, Exponent, Radix> const& x) noexcept
     {
-        return _impl::fp::extras::crib<Rep, Exponent, Radix, std::exp>(x);
+        return _impl::crib<Rep, Exponent, Radix, std::exp>(x);
     }
 
     template<typename Rep, int Exponent, int Radix>
     constexpr fixed_point <Rep, Exponent, Radix>
     pow(fixed_point<Rep, Exponent, Radix> const& x) noexcept
     {
-        return _impl::fp::extras::crib<Rep, Exponent, Radix, std::pow>(x);
+        return _impl::crib<Rep, Exponent, Radix, std::pow>(x);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
