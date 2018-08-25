@@ -5,6 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/elastic_number.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 namespace {
     using cnl::fixed_point;

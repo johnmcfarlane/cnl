@@ -12,6 +12,9 @@
 
 #include "../constant.h"
 #include "../num_traits.h"
+#include "../_impl/type_traits/is_signed.h"
+#include "../_impl/type_traits/make_signed.h"
+#include "../_impl/type_traits/make_unsigned.h"
 
 #include <boost/multiprecision/cpp_int.hpp>
 

@@ -7,6 +7,7 @@
 #include <cnl/num_traits.h>
 
 #include <cnl/_impl/common.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 #include <string>
 

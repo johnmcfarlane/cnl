@@ -8,7 +8,7 @@
 /// \brief tests for <cnl/bit.h>
 
 #include <cnl/bit.h>
-#include <cnl/_impl/type_traits.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 using cnl::_impl::identical;
 

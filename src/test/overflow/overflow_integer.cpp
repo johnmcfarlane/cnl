@@ -7,6 +7,7 @@
 // cnl::overflow_integer<> is intended to render warnings such as 4389 (signed/unsigned mismatch) moot
 
 #include <cnl/overflow_integer.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 #include "../number_test.h"
 

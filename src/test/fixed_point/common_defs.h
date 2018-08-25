@@ -7,6 +7,9 @@
 // included from fixed_point_common.h;
 // contains definitions that aid testing and which depend upon definition of test_int
 
+#include <cnl/_impl/type_traits/assert_same.h>
+#include <cnl/_impl/type_traits/identical.h>
+
 ////////////////////////////////////////////////////////////////////////////////
 // test name generation
 

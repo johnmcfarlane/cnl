@@ -5,6 +5,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/rounding_integer.h>
+#include <cnl/_impl/type_traits/identical.h>
+#include <cnl/_impl/type_traits/assert_same.h>
 
 #include "../number_test.h"
 

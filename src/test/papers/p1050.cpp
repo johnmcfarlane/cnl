@@ -7,6 +7,7 @@
 #include <cnl/elastic_integer.h>
 #include <cnl/fixed_point.h>
 #include <cnl/fraction.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 #if (__cplusplus >= 201700)
 

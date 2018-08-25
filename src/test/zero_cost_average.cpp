@@ -8,6 +8,8 @@
 /// \brief Signed 15:16 Fixed-Point Average Function Using cnl::elastic_number
 
 #include <cnl/elastic_number.h>
+#include <cnl/_impl/type_traits/identical.h>
+
 #include <gtest/gtest.h>
 
 using namespace cnl;

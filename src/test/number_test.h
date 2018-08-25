@@ -8,6 +8,7 @@
 #include <cnl/numeric.h>
 
 #include <cnl/_impl/common.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 #include <type_traits>
 

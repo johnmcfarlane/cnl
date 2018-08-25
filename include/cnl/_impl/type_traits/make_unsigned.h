@@ -4,10 +4,11 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_IMPL_TYPE_TRAITS_MAKE_UNSIGNED
-#define CNL_IMPL_TYPE_TRAITS_MAKE_UNSIGNED
+#if !defined(CNL_IMPL_TYPE_TRAITS_MAKE_UNSIGNED_H)
+#define CNL_IMPL_TYPE_TRAITS_MAKE_UNSIGNED_H
 
-#include "../type_traits/enable_if.h"
+#include "enable_if.h"
+#include <type_traits>
 
 namespace cnl {
     template<class, class = void>
@@ -32,4 +33,4 @@ namespace cnl {
     using make_unsigned_t = typename make_unsigned<T>::type;
 }
 
-#endif  // CNL_IMPL_TYPE_TRAITS_MAKE_UNSIGNED
+#endif  // CNL_IMPL_TYPE_TRAITS_MAKE_UNSIGNED_H

@@ -8,7 +8,7 @@
 /// \brief file containing tests of the `cnl/bits/common.h` definitions
 
 #include <cnl/cnlint.h>
-#include <cnl/_impl/type_traits.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 namespace {
     using cnl::_impl::identical;

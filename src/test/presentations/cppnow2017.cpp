@@ -8,6 +8,7 @@
 
 #include <cnl/elastic_integer.h>
 #include <cnl/overflow_integer.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>
 

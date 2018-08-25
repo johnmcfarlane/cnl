@@ -11,7 +11,10 @@
 #define CNL_OPERATORS_H
 
 #include "../limits.h"
-#include "type_traits.h"
+#include "type_traits/enable_if.h"
+#include "type_traits/type_identity.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
