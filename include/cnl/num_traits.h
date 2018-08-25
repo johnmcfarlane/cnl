@@ -10,9 +10,6 @@
 #if !defined(CNL_NUM_TRAITS)
 #define CNL_NUM_TRAITS 1
 
-#include "constant.h"
-#include "limits.h"
-
 #include "_impl/num_traits/digits.h"
 #include "_impl/num_traits/for_rep.h"
 #include "_impl/num_traits/from_rep.h"
@@ -22,15 +19,6 @@
 #include "_impl/num_traits/set_digits.h"
 #include "_impl/num_traits/scale.h"
 #include "_impl/num_traits/to_rep.h"
-#include "_impl/power.h"
-#include "_impl/type_traits.h"
-#include "_impl/type_traits/is_integral.h"
-#include "_impl/type_traits/is_signed.h"
-#include "_impl/type_traits/make_signed.h"
-#include "_impl/type_traits/make_unsigned.h"
-#include "_impl/used_digits.h"
-
-#include <utility>
 
 /// compositional numeric library
 namespace cnl {

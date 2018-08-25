@@ -8,8 +8,7 @@
 /// \brief file containing tests of the `cnl/bits/common.h` definitions
 
 #include <cnl/_impl/common.h>
-
-#include <cnl/_impl/type_traits.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>
 

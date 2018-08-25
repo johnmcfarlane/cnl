@@ -6,6 +6,7 @@
 
 #include <cnl/fixed_point.h>
 #include <cnl/fraction.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 #include <cstddef>
 #include <iostream>

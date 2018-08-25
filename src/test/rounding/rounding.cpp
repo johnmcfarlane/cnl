@@ -5,6 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/rounding.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 namespace {
     using cnl::_impl::identical;

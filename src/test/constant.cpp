@@ -7,8 +7,8 @@
 /// \file
 /// \brief file containing tests of the `cnl/constant.h` definitions
 
-#include <cnl/_impl/type_traits.h>
 #include <cnl/constant.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 namespace {
     using cnl::_impl::identical;

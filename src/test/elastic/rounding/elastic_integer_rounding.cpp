@@ -6,6 +6,7 @@
 
 #include <cnl/elastic_integer.h>
 #include <cnl/rounding.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 namespace {
     using cnl::_impl::identical;

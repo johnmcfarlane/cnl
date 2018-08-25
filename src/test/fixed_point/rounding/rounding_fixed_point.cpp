@@ -6,6 +6,7 @@
 
 #include <cnl/fixed_point.h>
 #include <cnl/rounding_integer.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 namespace {
     using cnl::_impl::identical;

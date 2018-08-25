@@ -15,6 +15,8 @@
 #include "_impl/native_tag.h"
 #include "_impl/number_base.h"
 #include "_impl/operators.h"
+#include "_impl/type_traits/common_type.h"
+#include "_impl/type_traits/identical.h"
 
 #include <type_traits>
 

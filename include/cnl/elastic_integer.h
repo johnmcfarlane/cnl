@@ -15,6 +15,7 @@
 #include "_impl/num_traits/fixed_width_scale.h"
 #include "_impl/num_traits/width.h"
 #include "_impl/number_base.h"
+#include "_impl/type_traits/common_type.h"
 
 /// compositional numeric library
 namespace cnl {

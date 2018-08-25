@@ -10,7 +10,8 @@
 #include <cnl/fraction.h>
 
 #include <cnl/cnlint.h>
-#include <cnl/_impl/type_traits.h>
+#include <cnl/_impl/type_traits/assert_same.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>
 

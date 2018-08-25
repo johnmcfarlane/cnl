@@ -11,6 +11,8 @@
 #include <cnl/numeric.h>
 #include <cnl/_impl/rounding.h>
 #include <cnl/_impl/common.h>
+#include <cnl/_impl/type_traits/assert_same.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>
 
