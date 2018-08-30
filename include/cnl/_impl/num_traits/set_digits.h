@@ -38,21 +38,23 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::enable_for_range
 
-        template<typename T>
-        constexpr bool narrower_than(int digits)
-        {
-            return std::is_same<T, void>::value ? true : numeric_limits<T>::digits<digits;
-        }
+        template<typename T, int digits>
+        struct narrower_than
+                : std::integral_constant<
+                        bool,
+                        std::is_same<T, void>::value ? true : numeric_limits<T>::digits<digits> {
+        };
 
-        template<typename T>
-        constexpr bool no_narrower_than(int digits)
-        {
-            return std::is_same<T, void>::value ? true : numeric_limits<T>::digits>=digits;
-        }
+        template<typename T, int digits>
+        struct no_narrower_than
+                : std::integral_constant<
+                        bool,
+                        std::is_same<T, void>::value ? true : numeric_limits<T>::digits>=digits> {
+        };
 
         template<int MinNumDigits, class Smaller, class T>
         using enable_for_range_t = typename std::enable_if<
-                no_narrower_than<T>(MinNumDigits) && narrower_than<Smaller>(MinNumDigits)>::type;
+                no_narrower_than<T, MinNumDigits>::value && narrower_than<Smaller, MinNumDigits>::value>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::set_digits_signed
