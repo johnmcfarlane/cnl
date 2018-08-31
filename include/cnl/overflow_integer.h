@@ -94,21 +94,6 @@ namespace cnl {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::_impl::set_rep<overflow_integer<>>
-
-    namespace _impl {
-        template<class Rep, class OverflowTag>
-        struct get_rep<overflow_integer<Rep, OverflowTag>> {
-            using type = Rep;
-        };
-
-        template<class OldRep, class OverflowTag, class NewRep>
-        struct set_rep<overflow_integer<OldRep, OverflowTag>, NewRep> {
-            using type = overflow_integer<NewRep, OverflowTag>;
-        };
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
     // numeric traits
 
     template<class Rep, class OverflowTag>

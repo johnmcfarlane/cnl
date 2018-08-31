@@ -171,18 +171,6 @@ namespace cnl {
         }
     };
 
-    namespace _impl {
-        template<class Rep, class RoundingTag>
-        struct get_rep<rounding_integer<Rep, RoundingTag>> {
-            using type = Rep;
-        };
-
-        template<class OldRep, class RoundingTag, class NewRep>
-        struct set_rep<rounding_integer<OldRep, RoundingTag>, NewRep> {
-            using type = rounding_integer<NewRep, RoundingTag>;
-        };
-    }
-
     template<class Rep, class RoundingTag, class Value>
     struct from_value<rounding_integer<Rep, RoundingTag>, Value> : _impl::from_value_simple<
             rounding_integer<Value, RoundingTag>, Value> {
