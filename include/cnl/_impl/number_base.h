@@ -223,16 +223,6 @@ namespace cnl {
         using set_rep_t = typename set_rep<Number, NewRep>::type;
     }
 
-    template<class Number>
-    struct make_signed<Number, _impl::enable_if_t<_impl::is_derived_from_number_base<Number>::value>> {
-        using type = _impl::set_rep_t<Number, make_signed_t<_impl::get_rep_t<Number>>>;
-    };
-
-    template<class Number>
-    struct make_unsigned<Number, _impl::enable_if_t<_impl::is_derived_from_number_base<Number>::value>> {
-        using type = _impl::set_rep_t<Number, make_unsigned_t<_impl::get_rep_t<Number>>>;
-    };
-
     template<class Derived, class Rep>
     struct to_rep<_impl::number_base<Derived, Rep>> {
         constexpr Rep& operator()(Derived& number) const {

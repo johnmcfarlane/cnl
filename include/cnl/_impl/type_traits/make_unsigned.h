@@ -8,6 +8,10 @@
 #define CNL_IMPL_TYPE_TRAITS_MAKE_UNSIGNED_H
 
 #include "enable_if.h"
+#include "../num_traits/is_composite.h"
+#include "../num_traits/to_rep.h"
+#include "../num_traits/from_rep.h"
+#include "../type_traits/type_identity.h"
 #include <type_traits>
 
 namespace cnl {
@@ -31,6 +35,11 @@ namespace cnl {
 
     template<class T>
     using make_unsigned_t = typename make_unsigned<T>::type;
+
+    template<typename T>
+    struct make_unsigned<T, _impl::enable_if_t<is_composite<T>::value>>
+            : _impl::type_identity<_impl::from_rep_t<T, make_unsigned_t<_impl::to_rep_t<T>>>> {
+    };
 }
 
 #endif  // CNL_IMPL_TYPE_TRAITS_MAKE_UNSIGNED_H
