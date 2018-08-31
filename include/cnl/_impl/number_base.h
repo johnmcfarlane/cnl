@@ -85,13 +85,17 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::depth
 
-        template<class Wrapper, class Rep = _impl::remove_cvref_t<_impl::to_rep_t<Wrapper>>>
-        struct depth {
-            static constexpr auto value = depth<Rep>::value + 1;
+        template<class Wrapper, bool IsComposite = is_composite<Wrapper>::value>
+        struct depth;
+
+        template<class Wrapper>
+        struct depth<Wrapper, true> {
+            using _rep = typename std::remove_reference<_impl::to_rep_t<Wrapper>>::type;
+            static constexpr auto value = depth<_rep>::value + 1;
         };
 
         template<class T>
-        struct depth<T, T> : std::integral_constant<int, 0> {};
+        struct depth<T, false> : std::integral_constant<int, 0> {};
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::is_wrappable

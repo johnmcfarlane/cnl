@@ -27,7 +27,7 @@ namespace {
     namespace test_depth {
         static_assert(cnl::_impl::depth<int>::value == 0, "");
         static_assert(assert_same<int&&, decltype(to_rep(elastic_integer<2>{}))>::value, "");
-        static_assert(cnl::_impl::depth<elastic_integer<0>, int>::value == 1, "");
+        static_assert(cnl::_impl::depth<elastic_integer<0>>::value == 1, "");
         static_assert(cnl::_impl::depth<elastic_integer<1>>::value == 1, "");
     }
 
