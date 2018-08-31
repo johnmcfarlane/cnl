@@ -90,7 +90,7 @@ namespace cnl {
 
         template<class Wrapper>
         struct depth<Wrapper, true> {
-            using _rep = typename std::remove_reference<_impl::to_rep_t<Wrapper>>::type;
+            using _rep = _impl::to_rep_t<Wrapper>;
             static constexpr auto value = depth<_rep>::value + 1;
         };
 
