@@ -38,6 +38,16 @@ namespace cnl {
     }
 
     template<unsigned NumBits>
+    struct is_signed<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>>
+            : std::true_type {
+    };
+
+    template<unsigned NumBits>
+    struct is_signed<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>>
+            : std::false_type {
+    };
+
+    template<unsigned NumBits>
     struct make_signed<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> {
         using type = _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>;
     };
