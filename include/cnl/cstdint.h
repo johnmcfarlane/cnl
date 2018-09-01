@@ -7,8 +7,8 @@
 /// \file
 /// \brief file containing definitions equivalent to those in \verbatim<cstdint>\endverbatim
 
-#ifndef CNL_CNLINT_H
-#define CNL_CNLINT_H
+#ifndef CNL_CSTDINT_H
+#define CNL_CSTDINT_H
 
 #include "_impl/common.h"
 #include "_impl/config.h"
@@ -108,4 +108,4 @@ namespace cnl {
     }
 }
 
-#endif //CNL_CNLINT_H
+#endif //CNL_CSTDINT_H

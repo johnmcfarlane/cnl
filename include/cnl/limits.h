@@ -10,7 +10,7 @@
 #if !defined(CNL_LIMITS_H)
 #define CNL_LIMITS_H 1
 
-#include "cnlint.h"
+#include "cstdint.h"
 
 #include <climits>
 #include <limits>

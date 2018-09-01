@@ -10,7 +10,7 @@
 #ifndef CNL_BIT_H
 #define CNL_BIT_H
 
-#include "cnlint.h"
+#include "cstdint.h"
 #include "_impl/num_traits/digits.h"
 #include "_impl/type_traits/is_signed.h"
 #include "_impl/type_traits/make_unsigned.h"

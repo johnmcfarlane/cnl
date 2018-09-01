@@ -12,7 +12,7 @@
 
 #include "bit.h"
 #include "cmath.h"
-#include "cnlint.h"
+#include "cstdint.h"
 #include "constant.h"
 #include "elastic_number.h"
 #include "elastic_integer.h"
