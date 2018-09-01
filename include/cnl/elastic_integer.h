@@ -16,6 +16,8 @@
 #include "_impl/num_traits/width.h"
 #include "_impl/number_base.h"
 #include "_impl/type_traits/common_type.h"
+#include "_impl/type_traits/make_signed.h"
+#include "_impl/type_traits/make_unsigned.h"
 
 /// compositional numeric library
 namespace cnl {

@@ -11,7 +11,7 @@
 #include <cinttypes>
 
 #define TEST_NATIVE_INTEGER
-#define TEST_LABEL static_integer_
+#define TEST_LABEL rounding_integer_
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Rep type

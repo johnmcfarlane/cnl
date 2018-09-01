@@ -54,7 +54,7 @@ namespace cnl {
         }
 
         template<class Number>
-        using to_rep_t = decltype(to_rep(std::declval<Number>()));
+        using to_rep_t = typename std::remove_reference<decltype(to_rep(std::declval<Number>()))>::type;
     }
 }
 
