@@ -24,99 +24,127 @@ namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
-    // type trait specializations of boost::multiprecision types
-    //
-    // These are the definitions needed to use any custom integer type with
-    // cnl::fixed_point
+    // type trait specializations of boost::multiprecision::number
 
-    template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
-    struct make_signed<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked, Allocator>> {
-        using type = _bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude, Checked, Allocator>;
+    namespace _impl {
+        template<typename T>
+        struct is_boost_multiprecision : std::false_type {
+        };
+
+        template<typename Backend>
+        struct is_boost_multiprecision<_bmp::number<Backend>>
+                : std::true_type {
+        };
+    }
+
+    template<unsigned NumBits>
+    struct make_signed<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> {
+        using type = _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>;
     };
 
-    template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator>
-    struct make_unsigned<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked, Allocator>> {
-        using type = _bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude, Checked, Allocator>;
+    template<unsigned NumBits>
+    struct make_signed<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> {
+        using type = _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>;
     };
 
-    template<unsigned NumBits, _bmp::cpp_int_check_type Checked, class Allocator>
-    struct digits<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude, Checked, Allocator>>
+    template<unsigned NumBits>
+    struct make_unsigned<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> {
+        using type = _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>;
+    };
+
+    template<unsigned NumBits>
+    struct make_unsigned<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> {
+        using type = _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>;
+    };
+
+    template<unsigned NumBits>
+    struct digits<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>>
             : std::integral_constant<int, NumBits-1> {
     };
 
-    template<unsigned NumBits, _bmp::cpp_int_check_type Checked, class Allocator>
-    struct digits<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude, Checked, Allocator>>
+    template<unsigned NumBits>
+    struct digits<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>>
             : std::integral_constant<int, NumBits> {
     };
 
-    template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Allocator, int MinNumDigits>
-    struct set_digits<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked, Allocator>, MinNumDigits> {
-        static constexpr unsigned width = MinNumDigits + (SignType == _bmp::signed_magnitude);
-        using type = _bmp::cpp_int_backend<width, width, SignType, Checked, Allocator>;
+    template<unsigned NumBits, int MinNumDigits>
+    struct set_digits<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>, MinNumDigits> {
+        using type = _bmp::number<_bmp::cpp_int_backend<MinNumDigits, MinNumDigits, _bmp::unsigned_magnitude>>;
     };
 
-    template<unsigned NumBits, _bmp::cpp_integer_type SignType, _bmp::cpp_int_check_type Checked, class Value>
-    struct from_value<_bmp::cpp_int_backend<NumBits, NumBits, SignType, Checked, void>, Value> {
+    template<unsigned NumBits, int MinNumDigits>
+    struct set_digits<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>, MinNumDigits> {
+        using type = _bmp::number<_bmp::cpp_int_backend<MinNumDigits+1, MinNumDigits+1, _bmp::signed_magnitude>>;
+    };
+
+    template<unsigned NumBits>
+    struct to_rep<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> {
+        using _number_type = _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>;
+        constexpr _number_type& operator()(_number_type& number) const {
+            return number;
+        };
+        constexpr _number_type const& operator()(_number_type const& number) const {
+            return number;
+        };
+        constexpr _number_type operator()(_number_type&& number) const {
+            return number;
+        };
+    };
+
+    template<unsigned NumBits>
+    struct to_rep<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> {
+        using _number_type = _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>;
+        constexpr _number_type& operator()(_number_type& number) const {
+            return number;
+        };
+        constexpr _number_type const& operator()(_number_type const& number) const {
+            return number;
+        };
+        constexpr _number_type operator()(_number_type&& number) const {
+            return number;
+        };
+    };
+
+    template<unsigned NumBits, class Value>
+    struct from_value<
+            _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>,
+            Value,
+            _impl::enable_if_t<!_impl::is_boost_multiprecision<Value>::value>> {
     private:
-        static constexpr auto _digits = digits<Value>::value;
-        static constexpr auto _is_signed = is_signed<Value>::value;
-        static constexpr auto _bits = _digits + _is_signed;
-        static constexpr auto _sign_type = _is_signed ? _bmp::signed_magnitude : _bmp::unsigned_magnitude;
+        static constexpr auto _bits = digits<Value>::value+1;
     public:
         constexpr auto operator()(Value const& value) const
-        -> _bmp::cpp_int_backend<_bits, _bits, _sign_type, Checked, void> {
+        -> _bmp::number<_bmp::cpp_int_backend<_bits, _bits, _bmp::signed_magnitude>>
+        {
             return value;
         }
     };
 
-    template<class Backend, _bmp::expression_template_option ExpressionTemplates>
-    struct make_signed<_bmp::number<Backend, ExpressionTemplates>> {
-        using type = _bmp::number<make_signed_t<Backend>, ExpressionTemplates>;
-    };
-
-    template<class Backend, _bmp::expression_template_option ExpressionTemplates>
-    struct make_unsigned<_bmp::number<Backend, ExpressionTemplates>> {
-        using type = _bmp::number<make_unsigned_t<Backend>, ExpressionTemplates>;
-    };
-
-    template<class Backend, _bmp::expression_template_option ExpressionTemplates>
-    struct digits<_bmp::number<Backend, ExpressionTemplates>>
-    : digits<Backend> {
-    };
-
-    template<class Backend, _bmp::expression_template_option ExpressionTemplates, int MinNumDigits>
-    struct set_digits<_bmp::number<Backend, ExpressionTemplates>, MinNumDigits> {
-        using type = _bmp::number<set_digits_t<Backend, MinNumDigits>, ExpressionTemplates>;
-    };
-
-    template<class Backend, _bmp::expression_template_option ExpressionTemplates>
-    struct to_rep<_bmp::number<Backend, ExpressionTemplates>>
-            : _impl::default_to_rep<_bmp::number<Backend, ExpressionTemplates>> {
-    };
-
-    template<class Backend, _bmp::expression_template_option ExpressionTemplates, class Value>
-    struct from_value<_bmp::number<Backend, ExpressionTemplates>, Value> {
+    template<unsigned NumBits, class Value>
+    struct from_value<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>,
+            Value,
+            _impl::enable_if_t<!_impl::is_boost_multiprecision<Value>::value>> {
+    private:
+        static constexpr auto _bits = digits<Value>::value;
+    public:
         constexpr auto operator()(Value const& value) const
-        -> _bmp::number<from_value_t<Backend, Value>, ExpressionTemplates> {
+        -> _bmp::number<_bmp::cpp_int_backend<_bits, _bits, _bmp::unsigned_magnitude>>
+        {
             return value;
         }
     };
 
-    template<
-            class LhsBackend, _bmp::expression_template_option LhsExpressionTemplates,
-            class RhsBackend, _bmp::expression_template_option RhsExpressionTemplates>
-    struct from_value<
-            _bmp::number<LhsBackend, LhsExpressionTemplates>,
-            _bmp::number<RhsBackend, RhsExpressionTemplates>> {
-        constexpr auto operator()(_bmp::number<RhsBackend, RhsExpressionTemplates> const& value) const
-        -> _bmp::number<RhsBackend, LhsExpressionTemplates> {
+    template<class LhsBackend, class RhsBackend>
+    struct from_value<_bmp::number<LhsBackend>, _bmp::number<RhsBackend>> {
+        constexpr auto operator()(_bmp::number<RhsBackend> const& value) const
+        -> _bmp::number<RhsBackend> {
             return value;
         }
     };
 
-    template<int Digits, class Backend, _bmp::expression_template_option ExpressionTemplates>
-    struct scale<Digits, 2, _bmp::number<Backend, ExpressionTemplates>> {
-        constexpr auto operator()(_bmp::number<Backend, ExpressionTemplates> const& s) const
+    template<int Digits, class Backend>
+    struct scale<Digits, 2, _bmp::number<Backend>> {
+        constexpr auto operator()(_bmp::number<Backend> const& s) const
         -> decltype((Digits>=0) ? s << Digits : s >> -Digits)
         {
             return (Digits>=0) ? s << Digits : s >> -Digits;
@@ -129,8 +157,7 @@ namespace cnl {
 
     namespace _sized_integer_impl {
         template<unsigned NumBits, _bmp::cpp_integer_type SignType>
-        using backend = _bmp::cpp_int_backend<
-                NumBits, NumBits, SignType, _bmp::unchecked, void>;
+        using backend = _bmp::cpp_int_backend<NumBits, NumBits, SignType>;
 
         template<unsigned NumBits, _bmp::cpp_integer_type SignType>
         using number = _bmp::number<_sized_integer_impl::backend<NumBits, SignType>, _bmp::et_off>;
@@ -164,15 +191,29 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // boost::multiprecision bitwise shift operators
 
-    template<unsigned NumBits, _bmp::cpp_integer_type SignType, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    constexpr auto operator<<(_sized_integer_impl::number<NumBits, SignType> const& lhs, constant<Value>)
+    template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    constexpr auto operator<<(_sized_integer_impl::number<NumBits, _bmp::signed_magnitude> const& lhs, constant<Value>)
     -> decltype(lhs << Value)
     {
         return lhs << Value;
     }
 
-    template<unsigned NumBits, _bmp::cpp_integer_type SignType, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    constexpr auto operator>>(_sized_integer_impl::number<NumBits, SignType> const& lhs, constant<Value>)
+    template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    constexpr auto operator<<(_sized_integer_impl::number<NumBits, _bmp::unsigned_magnitude> const& lhs, constant<Value>)
+    -> decltype(lhs << Value)
+    {
+        return lhs << Value;
+    }
+
+    template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    constexpr auto operator>>(_sized_integer_impl::number<NumBits, _bmp::unsigned_magnitude> const& lhs, constant<Value>)
+    -> decltype(lhs >> Value)
+    {
+        return lhs >> Value;
+    }
+
+    template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    constexpr auto operator>>(_sized_integer_impl::number<NumBits, _bmp::signed_magnitude> const& lhs, constant<Value>)
     -> decltype(lhs >> Value)
     {
         return lhs >> Value;

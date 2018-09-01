@@ -28,6 +28,12 @@ using cnl::unsigned_multiprecision;
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::multiprecision traits
 
+namespace test_is_boost_multiprecision {
+    static_assert(
+            cnl::_impl::is_boost_multiprecision<cnl::unsigned_multiprecision<987654321>>::value,
+            "cnl::is_boost_multiprecision<>");
+}
+
 // test cnl::is_signed<{un}signed_multiprecision>::value
 static_assert(cnl::is_signed<signed_multiprecision<1 >>::value,
         "cnl::is_signed<signed_multiprecision<>>::value test failed");
@@ -78,12 +84,51 @@ namespace test_to_rep {
             "cnl::_impl::depth<fixed_point<boost::multiprecision>>");
 }
 
+TEST(multiprecision, to_rep)
+{
+    auto const expected = unsigned_multiprecision<5432>{123};
+    auto const actual = cnl::to_rep<unsigned_multiprecision<5432>>{}(123);
+    ASSERT_EQ(expected, actual);
+    ASSERT_TRUE(identical(expected, actual));
+}
+
 namespace test_impl_to_rep {
     static_assert(
             assert_same<
                     unsigned_multiprecision<987654321>,
                     cnl::_impl::to_rep_t<fixed_point<unsigned_multiprecision<987654321>>>>::value,
             "cnl::_impl::depth<fixed_point<boost::multiprecision>>");
+    static_assert(
+            assert_same<
+                    unsigned_multiprecision<987654321>,
+                    cnl::_impl::to_rep_t<unsigned_multiprecision<987654321>>>::value,
+            "cnl::_impl::depth<boost::multiprecision>");
+}
+
+TEST(multiprecision, from_value)
+{
+    auto const expected = unsigned_multiprecision<43212>{53};
+    auto const actual = cnl::from_value<
+            signed_multiprecision<47>,
+            unsigned_multiprecision<43212>>{}(unsigned_multiprecision<786>{53});
+    ASSERT_EQ(expected, actual);
+    ASSERT_TRUE(identical(expected, actual));
+}
+
+TEST(multiprecision, scale_positive)
+{
+    auto const expected = signed_multiprecision<321>{768*(1 << 5)};
+    auto const actual = cnl::_impl::scale<5, 2>(signed_multiprecision<321>{768});
+    ASSERT_EQ(expected, actual);
+    ASSERT_TRUE(identical(expected, actual));
+}
+
+TEST(multiprecision, scale_negative)
+{
+    auto const expected = unsigned_multiprecision<321>{768/(1 << 5)};
+    auto const actual = cnl::_impl::scale<-5, 2>(unsigned_multiprecision<321>{768});
+    ASSERT_EQ(expected, actual);
+    ASSERT_TRUE(identical(expected, actual));
 }
 
 namespace test_depth {
