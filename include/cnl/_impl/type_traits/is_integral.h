@@ -7,7 +7,7 @@
 #ifndef CNL_IMPL_TYPE_TRAITS_IS_INTEGRAL
 #define CNL_IMPL_TYPE_TRAITS_IS_INTEGRAL
 
-#include "../../cnlint.h"
+#include "../../cstdint.h"
 
 #include "../config.h"
 

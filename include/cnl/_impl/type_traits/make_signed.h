@@ -8,6 +8,11 @@
 #define CNL_IMPL_TYPE_TRAITS_MAKE_SIGNED
 
 #include "../type_traits/enable_if.h"
+#include "../num_traits/is_composite.h"
+#include "../num_traits/to_rep.h"
+#include "../num_traits/from_rep.h"
+#include "../type_traits/type_identity.h"
+#include <type_traits>
 
 namespace cnl {
     template<class, class = void>
@@ -30,6 +35,11 @@ namespace cnl {
 
     template<class T>
     using make_signed_t = typename make_signed<T>::type;
+
+    template<typename T>
+    struct make_signed<T, _impl::enable_if_t<is_composite<T>::value>>
+            : _impl::type_identity<_impl::from_rep_t<T, make_signed_t<_impl::to_rep_t<T>>>> {
+    };
 }
 
 #endif  // CNL_IMPL_TYPE_TRAITS_MAKE_SIGNED

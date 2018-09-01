@@ -74,20 +74,10 @@ namespace cnl {
     };
 
     namespace _impl {
-        template<int Digits, class Narrowest>
-        struct get_rep<elastic_integer<Digits, Narrowest>> {
-            using type = Narrowest;
-        };
-
-        template<int Digits, class OldNarrowest, class NewNarrowest>
-        struct set_rep<elastic_integer<Digits, OldNarrowest>, NewNarrowest> {
-            using type = elastic_integer<Digits, NewNarrowest>;
-        };
-
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::set_signedness - std::make_signed with IsSigned parameter
 
-        template<class T, bool IsSigned = true>
+        template<class T, bool IsSigned>
         struct set_signedness;
 
         template<class T>

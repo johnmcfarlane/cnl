@@ -14,24 +14,6 @@
 
 /// compositional numeric library
 namespace cnl {
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // fixed_point specializations of number_base-specific templates
-
-    namespace _impl {
-        // cnl::_impl::get_rep<fixed_point<>>
-        template<typename Rep, int Exponent, int Radix>
-        struct get_rep<fixed_point<Rep, Exponent, Radix>> {
-            using type = Rep;
-        };
-
-        // cnl::_impl::set_rep<fixed_point<>>
-        template <class OldRep, int Exponent, class NewRep>
-        struct set_rep<fixed_point<OldRep, Exponent>, NewRep> {
-            using type = fixed_point<NewRep, Exponent>;
-        };
-    }
-
     ////////////////////////////////////////////////////////////////////////////////
     // fixed_point specializations of <num_traits.h> templates
 

@@ -8,7 +8,7 @@ set(test_sources
         # free functions
         bit.cpp
         cmath.cpp
-        cnlint.cpp
+        cstdint.cpp
         common.cpp
         limits.cpp
         num_traits.cpp

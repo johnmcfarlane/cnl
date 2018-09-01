@@ -207,32 +207,6 @@ namespace cnl {
     struct is_composite<Number, _impl::enable_if_t<_impl::is_derived_from_number_base<Number>::value>> : std::true_type {
     };
 
-    namespace _impl {
-        template<class Number>
-        struct get_rep;
-
-        template<class Number>
-        using get_rep_t = typename get_rep<Number>::type;
-
-        // given a Number type and an alternative Rep type, make a new Number type
-        // e.g. set_rep_t<fixed_point<int64_t, 42>, uint8_t> --> fixed_point<uint8_t, 42>
-        template<class Number, class NewRep, class Enable = void>
-        struct set_rep;
-
-        template<class Number, class NewRep>
-        using set_rep_t = typename set_rep<Number, NewRep>::type;
-    }
-
-    template<class Number>
-    struct make_signed<Number, _impl::enable_if_t<_impl::is_derived_from_number_base<Number>::value>> {
-        using type = _impl::set_rep_t<Number, make_signed_t<_impl::get_rep_t<Number>>>;
-    };
-
-    template<class Number>
-    struct make_unsigned<Number, _impl::enable_if_t<_impl::is_derived_from_number_base<Number>::value>> {
-        using type = _impl::set_rep_t<Number, make_unsigned_t<_impl::get_rep_t<Number>>>;
-    };
-
     template<class Derived, class Rep>
     struct to_rep<_impl::number_base<Derived, Rep>> {
         constexpr Rep& operator()(Derived& number) const {

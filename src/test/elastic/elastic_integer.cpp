@@ -142,6 +142,30 @@ namespace {
                 "from_value<elastic_integer, constant>");
     }
 
+    namespace test_make_unsigned {
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<39, unsigned int>,
+                        typename cnl::make_unsigned<
+                                cnl::elastic_integer<39, unsigned int>>::type>::value, "");
+    }
+
+    namespace test_set_signedness {
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<39, unsigned int>,
+                        typename cnl::_impl::set_signedness<
+                                cnl::elastic_integer<39, unsigned int>, false>::type>::value, "");
+    }
+
+    namespace test_set_signedness_t {
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<39, unsigned int>,
+                        cnl::_impl::set_signedness_t<
+                                cnl::elastic_integer<39, unsigned int>, false>>::value, "");
+    }
+
     namespace test_ctor {
         static_assert(identical(elastic_integer<8>{1L}, elastic_integer<8>{1}), "elastic_integer test failed");
 
