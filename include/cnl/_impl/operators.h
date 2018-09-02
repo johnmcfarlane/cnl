@@ -402,122 +402,122 @@ namespace cnl {
 
         template<class LhsOperand, class RhsOperand, class T>
         using enable_binary_t = _impl::enable_if_t<enable_binary<LhsOperand, RhsOperand>::value, T>;
-    }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // operator overloads
+        ////////////////////////////////////////////////////////////////////////////////
+        // operator overloads
 
-    // unary operators
+        // unary operators
 #define CNL_DEFINE_UNARY_OPERATOR(OP, NAME) \
-    template<class Operand> \
-    constexpr auto operator OP (Operand const& operand) \
-    -> decltype(cnl::_impl::unary_operator<cnl::_impl::enable_unary_t< \
-            Operand, cnl::_impl::NAME>, Operand>()(operand)) \
-    { \
-        return cnl::_impl::unary_operator<cnl::_impl::NAME, Operand>()(operand); \
-    }
+        template<class Operand> \
+        constexpr auto operator OP (Operand const& operand) \
+        -> decltype(cnl::_impl::unary_operator<cnl::_impl::enable_unary_t< \
+                Operand, cnl::_impl::NAME>, Operand>()(operand)) \
+        { \
+            return cnl::_impl::unary_operator<cnl::_impl::NAME, Operand>()(operand); \
+        }
 
-    CNL_DEFINE_UNARY_OPERATOR(+, plus_op)
+        CNL_DEFINE_UNARY_OPERATOR(+, plus_op)
 
-    CNL_DEFINE_UNARY_OPERATOR(-, minus_op)
+        CNL_DEFINE_UNARY_OPERATOR(-, minus_op)
 
-    // binary operators
+        // binary operators
 #define CNL_DEFINE_BINARY_OPERATOR(OP, NAME) \
-    template<class LhsOperand, class RhsOperand> \
-    constexpr auto operator OP (LhsOperand const& lhs, RhsOperand const& rhs) \
-    -> decltype(cnl::_impl::binary_operator<cnl::_impl::enable_binary_t< \
-            LhsOperand, RhsOperand, cnl::_impl::NAME>, LhsOperand, RhsOperand>()(lhs, rhs)) \
-    { \
-        return cnl::_impl::binary_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
-    }
+        template<class LhsOperand, class RhsOperand> \
+        constexpr auto operator OP (LhsOperand const& lhs, RhsOperand const& rhs) \
+        -> decltype(cnl::_impl::binary_operator<cnl::_impl::enable_binary_t< \
+                LhsOperand, RhsOperand, cnl::_impl::NAME>, LhsOperand, RhsOperand>()(lhs, rhs)) \
+        { \
+            return cnl::_impl::binary_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
+        }
 
-    CNL_DEFINE_BINARY_OPERATOR(+, add_op)
+        CNL_DEFINE_BINARY_OPERATOR(+, add_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(-, subtract_op)
+        CNL_DEFINE_BINARY_OPERATOR(-, subtract_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(*, multiply_op)
+        CNL_DEFINE_BINARY_OPERATOR(*, multiply_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(/, divide_op)
+        CNL_DEFINE_BINARY_OPERATOR(/, divide_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(%, modulo_op)
+        CNL_DEFINE_BINARY_OPERATOR(%, modulo_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(|, bitwise_or_op)
+        CNL_DEFINE_BINARY_OPERATOR(|, bitwise_or_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(&, bitwise_and_op)
+        CNL_DEFINE_BINARY_OPERATOR(&, bitwise_and_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(^, bitwise_xor_op)
+        CNL_DEFINE_BINARY_OPERATOR(^, bitwise_xor_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(<<, shift_left_op)
+        CNL_DEFINE_BINARY_OPERATOR(<<, shift_left_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(>>, shift_right_op)
+        CNL_DEFINE_BINARY_OPERATOR(>>, shift_right_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(==, equal_op)
+        CNL_DEFINE_BINARY_OPERATOR(==, equal_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(!=, not_equal_op)
+        CNL_DEFINE_BINARY_OPERATOR(!=, not_equal_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(<, less_than_op)
+        CNL_DEFINE_BINARY_OPERATOR(<, less_than_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(>, greater_than_op)
+        CNL_DEFINE_BINARY_OPERATOR(>, greater_than_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(<=, less_than_or_equal_op)
+        CNL_DEFINE_BINARY_OPERATOR(<=, less_than_or_equal_op)
 
-    CNL_DEFINE_BINARY_OPERATOR(>=, greater_than_or_equal_op)
+        CNL_DEFINE_BINARY_OPERATOR(>=, greater_than_or_equal_op)
 
-    // pre increment/decrement
+        // pre increment/decrement
 #define CNL_DEFINE_PRE_OPERATOR(OP, NAME) \
-    template<class RhsOperand> \
-    constexpr auto operator OP (RhsOperand& rhs) \
-    -> decltype(cnl::_impl::pre_operator<cnl::_impl::NAME, RhsOperand>()(rhs)) \
-    { \
-        return cnl::_impl::pre_operator<cnl::_impl::NAME, RhsOperand>()(rhs); \
-    }
+        template<class RhsOperand> \
+        constexpr auto operator OP (RhsOperand& rhs) \
+        -> decltype(cnl::_impl::pre_operator<cnl::_impl::NAME, RhsOperand>()(rhs)) \
+        { \
+            return cnl::_impl::pre_operator<cnl::_impl::NAME, RhsOperand>()(rhs); \
+        }
 
-    CNL_DEFINE_PRE_OPERATOR(++, pre_increment_op)
+        CNL_DEFINE_PRE_OPERATOR(++, pre_increment_op)
 
-    CNL_DEFINE_PRE_OPERATOR(--, pre_decrement_op)
+        CNL_DEFINE_PRE_OPERATOR(--, pre_decrement_op)
 
-    // post increment/decrement
+        // post increment/decrement
 #define CNL_DEFINE_POST_OPERATOR(OP, NAME) \
-    template<class LhsOperand> \
-    constexpr auto operator OP (LhsOperand& lhs, int) \
-    -> decltype(cnl::_impl::post_operator<cnl::_impl::NAME, LhsOperand>()(lhs)) \
-    { \
-        return cnl::_impl::post_operator<cnl::_impl::NAME, LhsOperand>()(lhs); \
-    }
+        template<class LhsOperand> \
+        constexpr auto operator OP (LhsOperand& lhs, int) \
+        -> decltype(cnl::_impl::post_operator<cnl::_impl::NAME, LhsOperand>()(lhs)) \
+        { \
+            return cnl::_impl::post_operator<cnl::_impl::NAME, LhsOperand>()(lhs); \
+        }
 
-    CNL_DEFINE_POST_OPERATOR(++, post_increment_op)
+        CNL_DEFINE_POST_OPERATOR(++, post_increment_op)
 
-    CNL_DEFINE_POST_OPERATOR(--, post_decrement_op)
+        CNL_DEFINE_POST_OPERATOR(--, post_decrement_op)
 
-    // compound assignment operators
+        // compound assignment operators
 #define CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(OP, NAME) \
-    template<class LhsOperand, class RhsOperand> \
-    constexpr auto operator OP (LhsOperand& lhs, RhsOperand const& rhs) \
-    -> cnl::_impl::enable_binary_t<LhsOperand, RhsOperand, decltype( \
-            cnl::_impl::compound_assignment_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
-    { \
-        return cnl::_impl::compound_assignment_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
+        template<class LhsOperand, class RhsOperand> \
+        constexpr auto operator OP (LhsOperand& lhs, RhsOperand const& rhs) \
+        -> cnl::_impl::enable_binary_t<LhsOperand, RhsOperand, decltype( \
+                cnl::_impl::compound_assignment_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
+        { \
+            return cnl::_impl::compound_assignment_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
+        }
+
+        CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(+=, assign_add_op)
+
+        CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(-=, assign_subtract_op)
+
+        CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(*=, assign_multiply_op)
+
+        CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(/=, assign_divide_op)
+
+        CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(%=, assign_modulo_op)
+
+        CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(|=, assign_bitwise_or_op)
+
+        CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(&=, assign_bitwise_and_op)
+
+        CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(^=, assign_bitwise_xor_op)
+
+        CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(<<=, assign_shift_left_op)
+
+        CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(>>=, assign_shift_right_op)
     }
-
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(+=, assign_add_op)
-
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(-=, assign_subtract_op)
-
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(*=, assign_multiply_op)
-
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(/=, assign_divide_op)
-
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(%=, assign_modulo_op)
-
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(|=, assign_bitwise_or_op)
-
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(&=, assign_bitwise_and_op)
-
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(^=, assign_bitwise_xor_op)
-
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(<<=, assign_shift_left_op)
-
-    CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(>>=, assign_shift_right_op)
 }
 
 #endif //CNL_OPERATORS_H
