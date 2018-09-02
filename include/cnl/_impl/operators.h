@@ -327,19 +327,23 @@ namespace cnl {
         struct pre_to_assign;
 
         template<>
-        struct pre_to_assign<pre_increment_op> : type_identity<assign_add_op> {};
+        struct pre_to_assign<pre_increment_op> : type_identity<assign_add_op> {
+        };
 
         template<>
-        struct pre_to_assign<pre_decrement_op> : type_identity<assign_subtract_op> {};
+        struct pre_to_assign<pre_decrement_op> : type_identity<assign_subtract_op> {
+        };
 
         template<class Operator>
         struct post_to_assign;
 
         template<>
-        struct post_to_assign<post_increment_op> : type_identity<assign_add_op> {};
+        struct post_to_assign<post_increment_op> : type_identity<assign_add_op> {
+        };
 
         template<>
-        struct post_to_assign<post_decrement_op> : type_identity<assign_subtract_op> {};
+        struct post_to_assign<post_decrement_op> : type_identity<assign_subtract_op> {
+        };
 
         ////////////////////////////////////////////////////////////////////////////////
         // generic operators
