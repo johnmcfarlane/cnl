@@ -323,14 +323,14 @@ namespace cnl {
     // cnl::numeric_limits specialization for rounding_integer
 
     template<class Rep, class RoundingTag>
-    struct numeric_limits<cnl::rounding_integer<Rep, RoundingTag>>
-            : numeric_limits<cnl::_impl::number_base<cnl::rounding_integer<Rep, RoundingTag>, Rep>> {
+    struct numeric_limits<rounding_integer<Rep, RoundingTag>>
+            : numeric_limits<_impl::number_base<rounding_integer<Rep, RoundingTag>, Rep>> {
         static constexpr bool is_integer = true;
     };
 
     template<class Rep, class RoundingTag>
-    struct numeric_limits<cnl::rounding_integer<Rep, RoundingTag> const>
-            : numeric_limits<cnl::_impl::number_base<cnl::rounding_integer<Rep, RoundingTag>, Rep>> {
+    struct numeric_limits<rounding_integer<Rep, RoundingTag> const>
+            : numeric_limits<_impl::number_base<rounding_integer<Rep, RoundingTag>, Rep>> {
         static constexpr bool is_integer = true;
     };
 }

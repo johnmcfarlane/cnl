@@ -264,14 +264,14 @@ namespace cnl {
     // std::numeric_limits specialization for overflow_integer
 
     template<class Rep, class OverflowTag>
-    struct numeric_limits<cnl::overflow_integer<Rep, OverflowTag>>
-            : numeric_limits<cnl::_impl::number_base<cnl::overflow_integer<Rep, OverflowTag>, Rep>> {
+    struct numeric_limits<overflow_integer<Rep, OverflowTag>>
+            : numeric_limits<_impl::number_base<overflow_integer<Rep, OverflowTag>, Rep>> {
         static constexpr bool is_integer = true;
     };
 
     template<class Rep, class OverflowTag>
-    struct numeric_limits<cnl::overflow_integer<Rep, OverflowTag> const>
-            : numeric_limits<cnl::_impl::number_base<cnl::overflow_integer<Rep, OverflowTag>, Rep>> {
+    struct numeric_limits<overflow_integer<Rep, OverflowTag> const>
+            : numeric_limits<_impl::number_base<overflow_integer<Rep, OverflowTag>, Rep>> {
         static constexpr bool is_integer = true;
     };
 }
