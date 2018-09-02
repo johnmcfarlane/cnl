@@ -261,7 +261,7 @@ namespace cnl {
 
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
-    // std::numeric_limits specialization for overflow_integer
+    // cnl::numeric_limits specialization for overflow_integer
 
     template<class Rep, class OverflowTag>
     struct numeric_limits<overflow_integer<Rep, OverflowTag>>
