@@ -121,8 +121,6 @@ namespace cnl {
                 "rounding_integer of rounding_integer is not a supported");
         static_assert(std::is_same<native_rounding_tag, _impl::rounding_t<Rep>>::value,
                 "rounding_integer requires a Rep type that rounds natively");
-
-        using super = _impl::number_base<rounding_integer<Rep, RoundingTag>, Rep>;
     public:
         using rounding = RoundingTag;
 
@@ -132,11 +130,11 @@ namespace cnl {
 
         template<class T, _impl::enable_if_t<numeric_limits<T>::is_integer, int> Dummy = 0>
         constexpr rounding_integer(T const& v)
-                : super(static_cast<Rep>(v)) { }
+                : _base(static_cast<Rep>(v)) { }
 
         template<class T, _impl::enable_if_t<!numeric_limits<T>::is_integer, int> Dummy = 0>
         constexpr rounding_integer(T const& v)
-                : super(_impl::convert<rounding, Rep>{}(v)) { }
+                : _base(_impl::convert<rounding, Rep>{}(v)) { }
 
         template<class T>
         constexpr explicit operator T() const
