@@ -68,14 +68,14 @@ namespace cnl {
 
         static_assert(!_impl::is_fixed_point<Rep>::value,
                 "fixed_point of fixed_point is not a supported");
+
+        using _base = _impl::number_base<fixed_point<Rep, Exponent, Radix>, Rep>;
     public:
         ////////////////////////////////////////////////////////////////////////////////
         // types
 
         /// alias to template parameter, \a Rep
         using rep = Rep;
-
-        using _base = _impl::number_base<fixed_point<Rep, Exponent, Radix>, Rep>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // constants
