@@ -366,17 +366,15 @@ namespace cnl {
                         binary_operator<typename Operator::binary, LhsOperand, RhsOperand>()(lhs, rhs));
             }
         };
-    }
 
-    namespace _operators_impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_operators_impl::enable_unary_t
+        // cnl::_impl::enable_unary_t
 
         template<class Operand, class T>
         using enable_unary_t = ::cnl::_impl::enable_if_t<_impl::wants_generic_ops<Operand>::value, T>;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_operators_impl::enable_unary_t
+        // cnl::_impl::enable_unary_t
 
         template<class LhsOperand, class RhsOperand>
         struct enable_binary;
@@ -409,7 +407,7 @@ namespace cnl {
 #define CNL_DEFINE_UNARY_OPERATOR(OP, NAME) \
     template<class Operand> \
     constexpr auto operator OP (Operand const& operand) \
-    -> decltype(cnl::_impl::unary_operator<cnl::_operators_impl::enable_unary_t< \
+    -> decltype(cnl::_impl::unary_operator<cnl::_impl::enable_unary_t< \
             Operand, cnl::_impl::NAME>, Operand>()(operand)) \
     { \
         return cnl::_impl::unary_operator<cnl::_impl::NAME, Operand>()(operand); \
@@ -423,7 +421,7 @@ namespace cnl {
 #define CNL_DEFINE_BINARY_OPERATOR(OP, NAME) \
     template<class LhsOperand, class RhsOperand> \
     constexpr auto operator OP (LhsOperand const& lhs, RhsOperand const& rhs) \
-    -> decltype(cnl::_impl::binary_operator<cnl::_operators_impl::enable_binary_t< \
+    -> decltype(cnl::_impl::binary_operator<cnl::_impl::enable_binary_t< \
             LhsOperand, RhsOperand, cnl::_impl::NAME>, LhsOperand, RhsOperand>()(lhs, rhs)) \
     { \
         return cnl::_impl::binary_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
@@ -491,7 +489,7 @@ namespace cnl {
 #define CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(OP, NAME) \
     template<class LhsOperand, class RhsOperand> \
     constexpr auto operator OP (LhsOperand& lhs, RhsOperand const& rhs) \
-    -> cnl::_operators_impl::enable_binary_t<LhsOperand, RhsOperand, decltype( \
+    -> cnl::_impl::enable_binary_t<LhsOperand, RhsOperand, decltype( \
             cnl::_impl::compound_assignment_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
     { \
         return cnl::_impl::compound_assignment_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
