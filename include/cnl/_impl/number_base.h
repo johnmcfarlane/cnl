@@ -16,6 +16,7 @@
 #include "type_traits/make_signed.h"
 #include "type_traits/make_unsigned.h"
 #include "../constant.h"
+#include "../limits.h"
 
 #include <utility>
 

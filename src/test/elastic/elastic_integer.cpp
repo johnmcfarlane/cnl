@@ -41,7 +41,7 @@ namespace {
         using cnl::_impl::is_derived_from_number_base;
         using cnl::_impl::equal_op;
 
-        static_assert(cnl::_operators_impl::enable_binary<double, cnl::elastic_integer<31, int>>::value,
+        static_assert(cnl::_impl::enable_binary<double, cnl::elastic_integer<31, int>>::value,
                 "failed to meet conditions for applying operator*(double, cnl::elastic_integer)");
         static_assert(is_derived_from_number_base<elastic_integer<1>>::value,
                 "cnl::_impl::is_derived_from_number_base test failed");

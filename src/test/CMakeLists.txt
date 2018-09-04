@@ -20,6 +20,15 @@ set(test_sources
 
         # components
         constant.cpp
+        integer/make_integer.cpp
+        integer/numeric_limits.cpp
+        integer/type.cpp
+        integer/scale.cpp
+        integer/digits.cpp
+        integer/from_value.cpp
+        integer/set_digits.cpp
+        integer/from_rep.cpp
+        integer/operators.cpp
         fixed_point/fixed_point_built_in.cpp
         fixed_point/decimal.cpp
         fixed_point/constants.cpp
@@ -33,6 +42,7 @@ set(test_sources
         elastic/rounding/elastic_integer_rounding.cpp
 
         # composites
+        fixed_point/integer/fixed_point_integer.cpp
         fixed_point/overflow/fixed_point_native_integer.cpp
         fixed_point/overflow/fixed_point_trapping_integer.cpp
         fixed_point/overflow/fixed_point_throwing_integer.cpp
