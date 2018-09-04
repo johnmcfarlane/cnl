@@ -42,6 +42,7 @@ set(test_sources
         elastic/rounding/elastic_integer_rounding.cpp
 
         # composites
+        fixed_point/integer/fixed_point_integer.cpp
         fixed_point/overflow/fixed_point_native_integer.cpp
         fixed_point/overflow/fixed_point_trapping_integer.cpp
         fixed_point/overflow/fixed_point_throwing_integer.cpp
