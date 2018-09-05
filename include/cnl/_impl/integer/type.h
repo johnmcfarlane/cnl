@@ -18,6 +18,8 @@ namespace cnl {
         class integer : public number_base<integer<Rep>, Rep> {
             using _base = number_base<integer<Rep>, Rep>;
         public:
+            integer() = default;
+
             template<typename T>
             constexpr integer(T const& value)
                     : _base(static_cast<Rep>(value)) { }
