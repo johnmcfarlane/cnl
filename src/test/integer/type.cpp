@@ -37,4 +37,12 @@ namespace {
                         cnl::make_unsigned<cnl::_impl::integer<signed short>>::type>::value,
                 "cnl::make_unsigned<cnl::_impl::integer>");
     }
+
+    namespace test_default_ctor {
+        static_assert(
+                identical(
+                        cnl::_impl::integer<int>{0},
+                        cnl::_impl::integer<int>{}),
+                "default ctor of cnl::integer");
+    }
 }
