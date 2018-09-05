@@ -54,6 +54,14 @@ namespace cnl {
             }
         };
 
+        struct bitwise_not_op {
+            template<class Rhs>
+            constexpr auto operator()(Rhs const& rhs) const -> decltype(~rhs)
+            {
+                return ~rhs;
+            }
+        };
+
         struct add_op : binary_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs+rhs)
@@ -419,6 +427,8 @@ namespace cnl {
         CNL_DEFINE_UNARY_OPERATOR(+, plus_op)
 
         CNL_DEFINE_UNARY_OPERATOR(-, minus_op)
+
+        CNL_DEFINE_UNARY_OPERATOR(~, bitwise_not_op)
 
         // binary operators
 #define CNL_DEFINE_BINARY_OPERATOR(OP, NAME) \
