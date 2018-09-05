@@ -19,6 +19,7 @@
 #include "_impl/type_traits/is_signed.h"
 #include "_impl/type_traits/make_signed.h"
 #include "_impl/type_traits/make_unsigned.h"
+#include "_impl/type_traits/set_signedness.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -75,23 +76,6 @@ namespace cnl {
     };
 
     namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::set_signedness - std::make_signed with IsSigned parameter
-
-        template<class T, bool IsSigned>
-        struct set_signedness;
-
-        template<class T>
-        struct set_signedness<T, true> : ::cnl::make_signed<T> {
-        };
-
-        template<class T>
-        struct set_signedness<T, false> : ::cnl::make_unsigned<T> {
-        };
-
-        template<class T, bool IsSigned>
-        using set_signedness_t = typename set_signedness<T, IsSigned>::type;
-
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::common_signedness
 
