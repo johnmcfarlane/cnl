@@ -20,15 +20,15 @@ set(test_sources
 
         # components
         constant.cpp
+        integer/digits.cpp
+        integer/from_rep.cpp
+        integer/from_value.cpp
         integer/make_integer.cpp
         integer/numeric_limits.cpp
-        integer/type.cpp
-        integer/scale.cpp
-        integer/digits.cpp
-        integer/from_value.cpp
-        integer/set_digits.cpp
-        integer/from_rep.cpp
         integer/operators.cpp
+        integer/scale.cpp
+        integer/set_digits.cpp
+        integer/type.cpp
         fixed_point/fixed_point_built_in.cpp
         fixed_point/decimal.cpp
         fixed_point/constants.cpp

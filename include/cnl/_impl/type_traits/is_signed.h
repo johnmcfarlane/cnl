@@ -11,6 +11,7 @@
 #include "../num_traits/is_composite.h"
 #include "../num_traits/to_rep.h"
 #include "enable_if.h"
+#include "../../constant.h"
 
 #include <type_traits>
 
@@ -83,6 +84,10 @@ namespace cnl {
     };
     template<>
     struct is_signed<long double> : std::true_type {
+    };
+
+    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct is_signed<constant<Value>> : is_signed<decltype(Value)> {
     };
 
     template<typename T>

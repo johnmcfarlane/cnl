@@ -12,12 +12,15 @@
 
 #include "constant.h"
 
+#include "_impl/limits/lowest.h"
 #include "_impl/num_traits/fixed_width_scale.h"
 #include "_impl/num_traits/width.h"
 #include "_impl/number_base.h"
 #include "_impl/type_traits/common_type.h"
+#include "_impl/type_traits/is_signed.h"
 #include "_impl/type_traits/make_signed.h"
 #include "_impl/type_traits/make_unsigned.h"
+#include "_impl/type_traits/set_signedness.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -74,23 +77,6 @@ namespace cnl {
     };
 
     namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::set_signedness - std::make_signed with IsSigned parameter
-
-        template<class T, bool IsSigned>
-        struct set_signedness;
-
-        template<class T>
-        struct set_signedness<T, true> : ::cnl::make_signed<T> {
-        };
-
-        template<class T>
-        struct set_signedness<T, false> : ::cnl::make_unsigned<T> {
-        };
-
-        template<class T, bool IsSigned>
-        using set_signedness_t = typename set_signedness<T, IsSigned>::type;
-
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::common_signedness
 
@@ -523,31 +509,6 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::numeric_limits for cnl::elastic_integer
 
-    namespace _elastic_integer_impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_elastic_integer_impl::lowest
-
-        // cnl::helper for numeric_limits<cnl::elastic_integer<>>::lowest()
-        template<class Rep, bool IsSigned>
-        struct lowest;
-
-        template<class Rep>
-        struct lowest<Rep, true> {
-            constexpr Rep operator()(Rep const& max) const noexcept
-            {
-                return static_cast<Rep>(-max);
-            }
-        };
-
-        template<class Rep>
-        struct lowest<Rep, false> {
-            constexpr Rep operator()(Rep const&) const noexcept
-            {
-                return 0;
-            }
-        };
-    }
-
     template<int Digits, class Narrowest>
     struct numeric_limits<elastic_integer<Digits, Narrowest>>
             : numeric_limits<Narrowest> {
@@ -577,7 +538,7 @@ namespace cnl {
 
         static constexpr _value_type lowest() noexcept
         {
-            return _elastic_integer_impl::lowest<_rep, _narrowest_numeric_limits::is_signed>()(_rep_max());
+            return _impl::lowest<_rep, _narrowest_numeric_limits::is_signed>()(_rep_max());
         }
     };
 

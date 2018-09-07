@@ -10,6 +10,7 @@
 #include <cnl/_impl/integer/type.h>
 
 #include <cnl/_impl/integer/from_rep.h>
+#include <cnl/_impl/integer/operators.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
@@ -35,5 +36,13 @@ namespace {
                         cnl::_impl::integer<unsigned short>,
                         cnl::make_unsigned<cnl::_impl::integer<signed short>>::type>::value,
                 "cnl::make_unsigned<cnl::_impl::integer>");
+    }
+
+    namespace test_default_ctor {
+        static_assert(
+                identical(
+                        cnl::_impl::integer<int>{0},
+                        cnl::_impl::integer<int>{}),
+                "default ctor of cnl::integer");
     }
 }

@@ -14,7 +14,7 @@
 
 namespace boost {
 #if defined(BOOST_NO_EXCEPTIONS)
-    [[noreturn]] inline void throw_exception(std::exception const&) {
+    inline void throw_exception(std::exception const&) {
         std::terminate();
     }
 #endif
