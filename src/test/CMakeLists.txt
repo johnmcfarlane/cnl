@@ -17,6 +17,7 @@ set(test_sources
         readme.cpp
         overflow/overflow.cpp
         rounding/rounding.cpp
+        _impl/num_traits/max_digits.cpp
 
         # components
         constant.cpp
