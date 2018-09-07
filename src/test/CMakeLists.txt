@@ -38,6 +38,15 @@ set(test_sources
         fixed_point/extras.cpp
         overflow/overflow_integer.cpp
         rounding/rounding_integer.cpp
+        _impl/wide_integer/digits.cpp
+        _impl/wide_integer/from_rep.cpp
+        _impl/wide_integer/from_value.cpp
+        _impl/wide_integer/make_wide_integer.cpp
+        _impl/wide_integer/numeric_limits.cpp
+        _impl/wide_integer/operators.cpp
+        _impl/wide_integer/scale.cpp
+        _impl/wide_integer/set_digits.cpp
+        _impl/wide_integer/type.cpp
 
         # components in free functions
         elastic/rounding/elastic_integer_rounding.cpp
