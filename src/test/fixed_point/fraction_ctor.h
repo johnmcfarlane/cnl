@@ -58,6 +58,7 @@ namespace {
                 "cnl::fixed_point::fixed_point(fraction) w.out CTAD");
     }
 
+#if !defined(TEST_WIDE_INTEGER)
     namespace test_fraction_deduced {
         constexpr auto third = cnl::make_fraction(test_int{1}, test_int{3});
 
@@ -114,6 +115,7 @@ namespace {
         constexpr auto specific = cnl::fixed_point<uint8, -7>{third};
         static_assert(identical(cnl::fixed_point<uint8, -7>{0.328125}, specific), "");
     }
+#endif  // !defined(TEST_WIDE_INTEGER)
 }
 
 #endif //CNL_TEST_FIXED_POINT_FRACTION_CTOR_H
