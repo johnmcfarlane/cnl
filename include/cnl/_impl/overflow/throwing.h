@@ -35,11 +35,13 @@ namespace cnl {
                 return throw_exception<Result, std::overflow_error>("negative overflow");
             }
         };
+    }
 
-        template<typename Result>
-        struct convert<throwing_overflow_tag, Result> : overflow_convert<throwing_overflow_tag, Result> {
-        };
+    template<typename Result>
+    struct convert<throwing_overflow_tag, Result> : _impl::overflow_convert<throwing_overflow_tag, Result> {
+    };
 
+    namespace _impl {
         template<class Operator>
         struct tagged_binary_operator<throwing_overflow_tag, Operator>
                 : tagged_binary_overflow_operator<throwing_overflow_tag, Operator> {

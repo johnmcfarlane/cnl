@@ -27,23 +27,25 @@ namespace cnl {
 
         // match the behavior of fundamental arithmetic types
         struct native_tag {};
+    }
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::convert
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::convert
 
-        template<class Tag, typename Result>
-        struct convert : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
-        };
+    template<class Tag, typename Result>
+    struct convert : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
+    };
 
-        template<typename Result>
-        struct convert<native_tag, Result> {
-            template<typename Input>
-            constexpr Result operator()(Input const& rhs) const
-            {
-                return static_cast<Result>(rhs);
-            }
-        };
+    template<typename Result>
+    struct convert<_impl::native_tag, Result> {
+        template<typename Input>
+        constexpr Result operator()(Input const& rhs) const
+        {
+            return static_cast<Result>(rhs);
+        }
+    };
 
+    namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::tagged_binary_operator
 

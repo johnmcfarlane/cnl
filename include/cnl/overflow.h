@@ -19,8 +19,6 @@
 
 /// compositional numeric library
 namespace cnl {
-    using _impl::convert;
-
     ////////////////////////////////////////////////////////////////////////////////
     // free overflow functions
 
