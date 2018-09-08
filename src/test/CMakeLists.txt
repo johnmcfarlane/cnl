@@ -17,6 +17,7 @@ set(test_sources
         readme.cpp
         overflow/overflow.cpp
         rounding/rounding.cpp
+        _impl/num_traits/max_digits.cpp
 
         # components
         constant.cpp
@@ -37,6 +38,15 @@ set(test_sources
         fixed_point/extras.cpp
         overflow/overflow_integer.cpp
         rounding/rounding_integer.cpp
+        _impl/wide_integer/digits.cpp
+        _impl/wide_integer/from_rep.cpp
+        _impl/wide_integer/from_value.cpp
+        _impl/wide_integer/make_wide_integer.cpp
+        _impl/wide_integer/numeric_limits.cpp
+        _impl/wide_integer/operators.cpp
+        _impl/wide_integer/scale.cpp
+        _impl/wide_integer/set_digits.cpp
+        _impl/wide_integer/type.cpp
 
         # components in free functions
         elastic/rounding/elastic_integer_rounding.cpp
@@ -48,6 +58,7 @@ set(test_sources
         fixed_point/overflow/fixed_point_throwing_integer.cpp
         fixed_point/overflow/fixed_point_saturated_integer.cpp
         fixed_point/rounding/fixed_point_rounding.cpp
+        fixed_point/wide_integer/fixed_point_wide_integer.cpp
         fixed_point/overflow/undefined_overflow.cpp
         fixed_point/rounding/overflow/fixed_point_rounding_overflow.cpp
         rounding/elastic/rounding_elastic_integer.cpp
