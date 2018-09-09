@@ -20,9 +20,9 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::convert<native_overflow_tag>
 
-    template<typename Result>
-    struct convert<native_overflow_tag, Result>
-            : convert<_impl::native_tag, Result> {
+    template<typename Result, typename Input>
+    struct convert<native_overflow_tag, Result, Input>
+            : convert<_impl::native_tag, Result, Input> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////

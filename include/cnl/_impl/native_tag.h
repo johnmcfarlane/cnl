@@ -32,13 +32,12 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::convert
 
-    template<class Tag, typename Result>
+    template<class Tag, typename Result, typename Input>
     struct convert : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
     };
 
-    template<typename Result>
-    struct convert<_impl::native_tag, Result> {
-        template<typename Input>
+    template<typename Result, typename Input>
+    struct convert<_impl::native_tag, Result, Input> {
         constexpr Result operator()(Input const& rhs) const
         {
             return static_cast<Result>(rhs);
@@ -46,6 +45,13 @@ namespace cnl {
     };
 
     namespace _impl {
+        template<class Tag, typename Result, typename Input>
+        constexpr auto convert(Input const& from)
+        -> decltype(cnl::convert<Tag, Result, Input>{}(from))
+        {
+            return cnl::convert<Tag, Result, Input>{}(from);
+        }
+
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::tagged_binary_operator
 

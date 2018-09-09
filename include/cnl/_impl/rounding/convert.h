@@ -15,13 +15,13 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Result>
-    struct convert<_impl::native_rounding_tag, Result> : convert<_impl::native_tag, Result> {
+    template<typename Result, typename Input>
+    struct convert<_impl::native_rounding_tag, Result, Input>
+            : convert<_impl::native_tag, Result, Input> {
     };
 
-    template<typename Result>
-    struct convert<_impl::nearest_rounding_tag, Result> {
-        template<typename Input>
+    template<typename Result, typename Input>
+    struct convert<_impl::nearest_rounding_tag, Result, Input> {
         constexpr Result operator()(Input const& from) const
         {
             return static_cast<Result>(from+((from>=0) ? .5 : -.5));

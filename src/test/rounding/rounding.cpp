@@ -14,39 +14,39 @@ namespace {
 
         namespace convert {
             static_assert(
-                    identical(cnl::convert<cnl::nearest_rounding_tag, cnl::uint8>{}(200.5), cnl::uint8{201}),
+                    identical(cnl::_impl::convert<cnl::nearest_rounding_tag, cnl::uint8>(200.5), cnl::uint8{201}),
                     "cnl::convert test failed");
-            static_assert(identical(cnl::convert<cnl::nearest_rounding_tag, cnl::int16>{}(-1000.5L),
+            static_assert(identical(cnl::_impl::convert<cnl::nearest_rounding_tag, cnl::int16>(-1000.5L),
                                     cnl::int16{-1001}),
                           "cnl::convert test failed");
-            static_assert(identical(cnl::convert<cnl::nearest_rounding_tag, cnl::int32>{}(55.2f), 55),
+            static_assert(identical(cnl::_impl::convert<cnl::nearest_rounding_tag, cnl::int32>(55.2f), 55),
                           "cnl::convert test failed");
 
-            static_assert(identical(-1, cnl::convert<cnl::nearest_rounding_tag, int>{}(-0.50)),
+            static_assert(identical(-1, cnl::_impl::convert<cnl::nearest_rounding_tag, int>(-0.50)),
                           "cnl::convert test failed");
-            static_assert(identical(-0, cnl::convert<cnl::nearest_rounding_tag, int>{}(-0.49)),
+            static_assert(identical(-0, cnl::_impl::convert<cnl::nearest_rounding_tag, int>(-0.49)),
                           "cnl::convert test failed");
-            static_assert(identical(+0, cnl::convert<cnl::nearest_rounding_tag, int>{}(0.49)),
+            static_assert(identical(+0, cnl::_impl::convert<cnl::nearest_rounding_tag, int>(0.49)),
                           "cnl::convert test failed");
-            static_assert(identical(+1, cnl::convert<cnl::nearest_rounding_tag, int>{}(0.50)),
+            static_assert(identical(+1, cnl::_impl::convert<cnl::nearest_rounding_tag, int>(0.50)),
                           "cnl::convert test failed");
 
             static_assert(
-                    identical(cnl::convert<cnl::native_rounding_tag, cnl::uint8>{}(200.5), cnl::uint8{200}),
+                    identical(cnl::_impl::convert<cnl::native_rounding_tag, cnl::uint8>(200.5), cnl::uint8{200}),
                     "cnl::convert test failed");
-            static_assert(identical(cnl::convert<cnl::native_rounding_tag, cnl::int16>{}(-1000.5L),
+            static_assert(identical(cnl::_impl::convert<cnl::native_rounding_tag, cnl::int16>(-1000.5L),
                                     cnl::int16{-1000}),
                           "cnl::convert test failed");
-            static_assert(identical(cnl::convert<cnl::native_rounding_tag, cnl::int32>{}(55.2f), 55),
+            static_assert(identical(cnl::_impl::convert<cnl::native_rounding_tag, cnl::int32>(55.2f), 55),
                           "cnl::convert test failed");
 
-            static_assert(identical(-0, cnl::convert<cnl::native_rounding_tag, int>{}(-0.50)),
+            static_assert(identical(-0, cnl::_impl::convert<cnl::native_rounding_tag, int>(-0.50)),
                           "cnl::convert test failed");
-            static_assert(identical(-0, cnl::convert<cnl::native_rounding_tag, int>{}(-0.49)),
+            static_assert(identical(-0, cnl::_impl::convert<cnl::native_rounding_tag, int>(-0.49)),
                           "cnl::convert test failed");
-            static_assert(identical(+0, cnl::convert<cnl::native_rounding_tag, int>{}(0.49)),
+            static_assert(identical(+0, cnl::_impl::convert<cnl::native_rounding_tag, int>(0.49)),
                           "cnl::convert test failed");
-            static_assert(identical(+0, cnl::convert<cnl::native_rounding_tag, int>{}(0.50)),
+            static_assert(identical(+0, cnl::_impl::convert<cnl::native_rounding_tag, int>(0.50)),
                           "cnl::convert test failed");
         }
 

@@ -34,8 +34,9 @@ namespace cnl {
         };
     }
 
-    template<typename Result>
-    struct convert<undefined_overflow_tag, Result> : _impl::overflow_convert<undefined_overflow_tag, Result> {
+    template<typename Result, typename Input>
+    struct convert<undefined_overflow_tag, Result, Input>
+            : _impl::overflow_convert<undefined_overflow_tag, Result, Input> {
     };
 
     namespace _impl {

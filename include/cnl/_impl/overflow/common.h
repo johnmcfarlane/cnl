@@ -266,9 +266,8 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // overflow_convert
 
-        template<class OverflowTag, typename Result>
+        template<class OverflowTag, typename Result, typename Input>
         struct overflow_convert {
-            template<typename Input>
             constexpr Result operator()(Input const& rhs) const
             {
                 using test = convert_test<Result, Input>;

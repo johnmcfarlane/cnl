@@ -73,7 +73,7 @@ namespace cnl {
 
         template<class Rhs, _impl::enable_if_t<!_integer_impl::is_overflow_integer<Rhs>::value, int> dummy = 0>
         constexpr overflow_integer(Rhs const& rhs)
-                :_base(convert<overflow_tag, rep>{}(rhs))
+                :_base(_impl::convert<overflow_tag, rep>(rhs))
         {
         }
 
