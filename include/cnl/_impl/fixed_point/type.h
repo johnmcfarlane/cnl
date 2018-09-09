@@ -92,7 +92,7 @@ namespace cnl {
         /// constructor taking a cnl::constant object
         template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
         constexpr fixed_point(constant<Value> rhs)
-                : fixed_point(from_rep<fixed_point<typename decltype(rhs)::value_type, 0>>{}(Value))
+                : fixed_point(_impl::from_rep<fixed_point<typename decltype(rhs)::value_type, 0>>(Value))
         {
         }
 
@@ -150,7 +150,7 @@ namespace cnl {
         }
 
         /// creates an instance given the underlying representation value
-        template<class, class>
+        template<typename, typename, typename>
         friend struct from_rep;
 
     private:
@@ -212,7 +212,7 @@ namespace cnl {
     constexpr auto fixed_point<Rep, Exponent, Radix>::one()
     -> _impl::enable_if_t<numeric_limits<S>::is_integer, S>
     {
-        return from_rep<fixed_point<S, 0>>{}(1);
+        return _impl::from_rep<fixed_point<S, 0>>(1);
     }
 
     template<typename Rep, int Exponent, int Radix>

@@ -15,9 +15,8 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<int Digits, class Narrowest>
-    struct from_rep<_impl::wide_integer<Digits, Narrowest>> {
-        template<typename Rep>
+    template<int Digits, typename Narrowest, typename Rep>
+    struct from_rep<_impl::wide_integer<Digits, Narrowest>, Rep> {
         constexpr auto operator()(Rep const& rep) const
         -> _impl::wide_integer<
                 Digits,

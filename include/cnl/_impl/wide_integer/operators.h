@@ -21,9 +21,9 @@ namespace cnl {
         template<typename Operator, int Digits, typename Narrowest>
         struct unary_operator<Operator, wide_integer<Digits, Narrowest>> {
             constexpr auto operator()(wide_integer<Digits, Narrowest> const& rhs) const
-            -> decltype(from_rep<wide_integer<Digits, decltype(Operator()(to_rep(rhs)))>>{}(Operator()(to_rep(rhs))))
+            -> decltype(from_rep<wide_integer<Digits, decltype(Operator()(to_rep(rhs)))>>(Operator()(to_rep(rhs))))
             {
-                return from_rep<wide_integer<Digits, decltype(Operator()(to_rep(rhs)))>>{}(Operator()(to_rep(rhs)));
+                return from_rep<wide_integer<Digits, decltype(Operator()(to_rep(rhs)))>>(Operator()(to_rep(rhs)));
             }
         };
 

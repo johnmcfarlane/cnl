@@ -31,10 +31,9 @@ namespace cnl {
     ///
     /// \tparam Exponent the \c Exponent parameter of the generated \ref fixed_point type
     /// \tparam ArchetypeRep ignored; replaced by \c Rep
-    template<typename ArchetypeRep, int Exponent, int Radix>
-    struct from_rep<fixed_point<ArchetypeRep, Exponent, Radix>> {
+    template<typename ArchetypeRep, int Exponent, int Radix, typename Rep>
+    struct from_rep<fixed_point<ArchetypeRep, Exponent, Radix>, Rep> {
         /// \brief generates a \ref fixed_point equivalent to \c r in type and value
-        template<typename Rep>
         constexpr auto operator()(Rep const& r) const
         -> fixed_point<Rep, Exponent, Radix>
         {

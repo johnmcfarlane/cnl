@@ -26,7 +26,7 @@ namespace {
         static_assert(identical(
                 to_rep(rounding_fixed_point<>(-8)),
                 rounding_integer<>(-8)), "rounding_fixed_point ctor test failed");
-        static_assert(rounding_fixed_point<>(0)==cnl::from_rep<rounding_fixed_point<>>{}(0),
+        static_assert(rounding_fixed_point<>(0)==cnl::_impl::from_rep<rounding_fixed_point<>>(0),
                 "rounding_fixed_point ctor test failed");
         static_assert(identical(
                 to_rep(rounding_fixed_point<std::uint16_t, -8>(15.125)),

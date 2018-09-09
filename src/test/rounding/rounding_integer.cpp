@@ -119,7 +119,7 @@ namespace {
 
         namespace test_from_rep {
             static_assert(
-                    identical(rounding_integer<>{2468}, cnl::from_rep<rounding_integer<>>{}(2468)),
+                    identical(rounding_integer<>{2468}, cnl::from_rep<rounding_integer<>, int>{}(2468)),
                     "cnl::from_rep<rounding_integer> test failed");
         }
 
@@ -409,7 +409,7 @@ namespace {
 template<class RoundingInteger>
 struct rounding_integer_tests {
     // from_rep
-    static_assert(identical(rounding_integer<>{123}, cnl::from_rep<rounding_integer<>>{}(123)),
+    static_assert(identical(rounding_integer<>{123}, cnl::_impl::from_rep<rounding_integer<>>(123)),
                   "cnl::from_rep<rounding_integer<>> test failed");
 
     // to_rep

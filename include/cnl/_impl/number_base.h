@@ -231,9 +231,9 @@ namespace cnl {
         using _scalar_type = _impl::number_base<Derived, typename Derived::rep>;
 
         constexpr auto operator()(Derived const &s) const
-        -> decltype(from_rep<Derived>{}(_impl::scale<Digits, Radix>(_impl::to_rep(s))))
+        -> decltype(_impl::from_rep<Derived>(_impl::scale<Digits, Radix>(_impl::to_rep(s))))
         {
-            return from_rep<Derived>{}(_impl::scale<Digits, Radix>(_impl::to_rep(s)));
+            return _impl::from_rep<Derived>(_impl::scale<Digits, Radix>(_impl::to_rep(s)));
         }
     };
 
@@ -252,22 +252,22 @@ namespace cnl {
 
         static constexpr _value_type min() noexcept
         {
-            return from_rep<_value_type>{}(_rep_numeric_limits::min());
+            return _impl::from_rep<_value_type>(_rep_numeric_limits::min());
         }
 
         static constexpr _value_type max() noexcept
         {
-            return from_rep<_value_type>{}(_rep_numeric_limits::max());
+            return _impl::from_rep<_value_type>(_rep_numeric_limits::max());
         }
 
         static constexpr _value_type lowest() noexcept
         {
-            return from_rep<_value_type>{}(_rep_numeric_limits::lowest());
+            return _impl::from_rep<_value_type>(_rep_numeric_limits::lowest());
         }
 
         static constexpr _value_type epsilon() noexcept
         {
-            return from_rep<_value_type>{}(_rep_numeric_limits::round_error());
+            return _impl::from_rep<_value_type>(_rep_numeric_limits::round_error());
         }
 
         static constexpr _value_type round_error() noexcept

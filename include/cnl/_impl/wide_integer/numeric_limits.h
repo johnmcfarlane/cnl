@@ -37,12 +37,12 @@ namespace cnl {
 
         static constexpr _value_type min() noexcept
         {
-            return from_rep<_value_type>{}(1);
+            return _impl::from_rep<_value_type>(1);
         }
 
         static constexpr _value_type max() noexcept
         {
-            return from_rep<_value_type>{}(_rep_max());
+            return _impl::from_rep<_value_type>(_rep_max());
         }
 
         static constexpr _value_type lowest() noexcept
