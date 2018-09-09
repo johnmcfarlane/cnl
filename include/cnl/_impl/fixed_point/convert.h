@@ -59,6 +59,20 @@ namespace cnl {
     };
 
     template<
+            typename ResultRep, int ResultExponent, int ResultRadix,
+            typename Input>
+    struct convert<
+            _impl::nearest_rounding_tag,
+            fixed_point<ResultRep, ResultExponent, ResultRadix>,
+            Input,
+            _impl::enable_if_t<cnl::numeric_limits<Input>::is_integer>>
+            : convert<
+                    _impl::nearest_rounding_tag,
+                    fixed_point<ResultRep, ResultExponent, ResultRadix>,
+                    fixed_point<Input>> {
+    };
+
+    template<
             typename Result,
             typename InputRep, int InputExponent, int InputRadix>
     struct convert<
