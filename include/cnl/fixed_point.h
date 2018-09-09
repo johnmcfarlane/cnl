@@ -10,6 +10,7 @@
 #if !defined(CNL_FIXED_POINT_H)
 #define CNL_FIXED_POINT_H 1
 
+#include "_impl/fixed_point/declaration.h"
 #include "_impl/fixed_point/type.h"
 #include "_impl/fixed_point/named.h"
 #include "_impl/fixed_point/fraction.h"

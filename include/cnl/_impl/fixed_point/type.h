@@ -15,13 +15,10 @@
 #include "../number_base.h"
 #include "../../constant.h"
 #include "../../numeric.h"
+#include "declaration.h"
 
 /// compositional numeric library
 namespace cnl {
-    // forward declaration
-    template<typename Rep = int, int Exponent = 0, int Radix = cnl::numeric_limits<Rep>::radix>
-    class fixed_point;
-
     template<typename Numerator, typename Denominator>
     struct fraction;
 
