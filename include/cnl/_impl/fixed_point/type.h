@@ -16,29 +16,12 @@
 #include "../../constant.h"
 #include "../../numeric.h"
 #include "declaration.h"
+#include "is_fixed_point.h"
 
 /// compositional numeric library
 namespace cnl {
     template<typename Numerator, typename Denominator>
     struct fraction;
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // implementation-specific definitions
-
-    namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::is_fixed_point
-
-        template<class T>
-        struct is_fixed_point
-                : public std::false_type {
-        };
-
-        template<typename Rep, int Exponent, int Radix>
-        struct is_fixed_point<fixed_point<Rep, Exponent, Radix>>
-                : public std::true_type {
-        };
-    }
 
     /// \brief literal real number approximation that uses fixed-point arithmetic
     /// \headerfile cnl/fixed_point.h
