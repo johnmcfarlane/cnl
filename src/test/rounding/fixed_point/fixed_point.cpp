@@ -68,4 +68,32 @@ namespace {
                         cnl::_impl::convert<cnl::nearest_rounding_tag, cnl::fixed_point<int, 2>>(6)),
                 "cnl::convert<cnl::nearest_rounding_tag, cnl::fixed_point, int>");
     }
+
+    namespace test_native_int {
+        static_assert(
+                identical(
+                        2,
+                        cnl::_impl::convert<cnl::native_rounding_tag, int>(
+                                cnl::fixed_point<int, -2>{2.5})),
+                "cnl::convert<cnl::native_rounding_tag, int, cnl::fixed_point>");
+        static_assert(
+                identical(
+                        2,
+                        cnl::_impl::convert<cnl::native_rounding_tag, int>(
+                                cnl::fixed_point<int, -2>{2.4375})),
+                "cnl::convert<cnl::native_rounding_tag, int, cnl::fixed_point>");
+    }
+
+    namespace test_native_from_int {
+        static_assert(
+                identical(
+                        cnl::fixed_point<int, 2>{4},
+                        cnl::_impl::convert<cnl::native_rounding_tag, cnl::fixed_point<int, 2>>(5)),
+                "cnl::convert<cnl::native_rounding_tag, cnl::fixed_point, int>");
+        static_assert(
+                identical(
+                        cnl::fixed_point<int, 2>{4},
+                        cnl::_impl::convert<cnl::native_rounding_tag, cnl::fixed_point<int, 2>>(6)),
+                "cnl::convert<cnl::native_rounding_tag, cnl::fixed_point, int>");
+    }
 }
