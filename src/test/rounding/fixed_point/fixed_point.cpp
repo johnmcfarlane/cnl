@@ -40,4 +40,19 @@ namespace {
                 identical(expected, actual),
                 "cnl::convert<cnl::nearest_rounding_tag>"); //Fails gives 0.75 as result.
     }
+
+    namespace test_nearest_int {
+        static_assert(
+                identical(
+                        3,
+                        cnl::_impl::convert<cnl::nearest_rounding_tag, int>(
+                                cnl::fixed_point<int, -2>{2.5})),
+                "cnl::convert<cnl::nearest_rounding_tag, int, cnl::fixed_point>");
+        static_assert(
+                identical(
+                        2,
+                        cnl::_impl::convert<cnl::nearest_rounding_tag, int>(
+                                cnl::fixed_point<int, -2>{2.4375})),
+                "cnl::convert<cnl::nearest_rounding_tag, int, cnl::fixed_point>");
+    }
 }

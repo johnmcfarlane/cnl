@@ -57,6 +57,21 @@ namespace cnl {
             return static_cast<_result>(from+((from>=0) ? half() : -half()));
         }
     };
+
+    template<
+            typename Result,
+            typename InputRep, int InputExponent, int InputRadix>
+    struct convert<
+            _impl::nearest_rounding_tag,
+            Result,
+            fixed_point<InputRep, InputExponent, InputRadix>,
+            _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer>> {
+        using _input = fixed_point<InputRep, InputExponent, InputRadix>;
+        constexpr Result operator()(_input const& from) const
+        {
+            return _impl::to_rep(_impl::convert<_impl::nearest_rounding_tag, fixed_point<Result>>(from));
+        }
+    };
 }
 
 #endif  // CNL_IMPL_FIXED_POINT_CONVERT_H
