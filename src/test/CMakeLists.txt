@@ -50,6 +50,8 @@ set(test_sources
 
         # components in free functions
         elastic/rounding/elastic_integer_rounding.cpp
+        rounding/fixed_point/elastic_integer/elastic_number.cpp
+        rounding/fixed_point/fixed_point.cpp
 
         # composites
         fixed_point/integer/fixed_point_integer.cpp

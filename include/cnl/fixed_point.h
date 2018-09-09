@@ -17,6 +17,7 @@
 #include "_impl/fixed_point/named.h"
 #include "_impl/fixed_point/fraction.h"
 #include "_impl/fixed_point/constants.h"
+#include "_impl/fixed_point/convert.h"
 #include "_impl/fixed_point/operators.h"
 #include "_impl/fixed_point/extras.h"
 #include "_impl/fixed_point/to_chars.h"
