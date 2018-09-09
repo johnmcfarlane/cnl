@@ -32,7 +32,7 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::convert
 
-    template<class Tag, typename Result, typename Input>
+    template<class Tag, typename Result, typename Input, typename Enable = void>
     struct convert : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
     };
 

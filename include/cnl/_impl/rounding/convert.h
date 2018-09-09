@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_ROUNDING_CONVERT_H)
 #define CNL_IMPL_ROUNDING_CONVERT_H
 
+#include "../../limits.h"
 #include "../native_tag.h"
 #include "../type_traits/enable_if.h"
 #include "rounding_tag.h"
@@ -21,7 +22,10 @@ namespace cnl {
     };
 
     template<typename Result, typename Input>
-    struct convert<_impl::nearest_rounding_tag, Result, Input> {
+    struct convert<
+            _impl::nearest_rounding_tag, Result, Input,
+            _impl::enable_if_t<
+                    cnl::numeric_limits<Result>::is_integer && std::is_floating_point<Input>::value>> {
         constexpr Result operator()(Input const& from) const
         {
             return static_cast<Result>(from+((from>=0) ? .5 : -.5));
