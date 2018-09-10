@@ -19,6 +19,7 @@
 #include "_impl/num_traits/scale.h"
 #include "_impl/num_traits/to_rep.h"
 #include "_impl/num_traits/unwrap.h"
+#include "_impl/num_traits/wrap.h"
 
 /// compositional numeric library
 namespace cnl {
