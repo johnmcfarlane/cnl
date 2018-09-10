@@ -60,7 +60,7 @@ namespace {
     namespace test_from_rep {
         static_assert(identical(
                 rounding_elastic_integer<16>{0},
-                cnl::from_rep<rounding_elastic_integer<24>>{}(cnl::elastic_integer<16>(0))),
+                cnl::_impl::from_rep<rounding_elastic_integer<24>>(cnl::elastic_integer<16>(0))),
                         "from_rep<rounding_elastic_integer>");
     }
 

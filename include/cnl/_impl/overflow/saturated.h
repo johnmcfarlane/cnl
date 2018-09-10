@@ -32,11 +32,14 @@ namespace cnl {
                 return numeric_limits<Result>::lowest();
             }
         };
+    }
 
-        template<typename Result>
-        struct convert<saturated_overflow_tag, Result> : overflow_convert<saturated_overflow_tag, Result> {
-        };
+    template<typename Result, typename Input>
+    struct convert<saturated_overflow_tag, Result, Input>
+            : _impl::overflow_convert<saturated_overflow_tag, Result, Input> {
+    };
 
+    namespace _impl {
         template<class Operator>
         struct tagged_binary_operator<saturated_overflow_tag, Operator>
                 : tagged_binary_overflow_operator<saturated_overflow_tag, Operator> {

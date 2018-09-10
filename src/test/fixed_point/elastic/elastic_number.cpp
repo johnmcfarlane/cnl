@@ -311,7 +311,7 @@ struct positive_elastic_test
     // test cnl::numeric_limits<elastic_number>
 
 #if !defined(_MSC_VER)
-    static_assert(min==cnl::from_rep<elastic_type>{}(rep{1}), "cnl::numeric_limits test failed");
+    static_assert(min==cnl::_impl::from_rep<elastic_type>(rep{1}), "cnl::numeric_limits test failed");
 #endif
     static_assert(!is_less_than(max, min), "cnl::numeric_limits test failed");
     static_assert(is_less_than(zero, min), "cnl::numeric_limits test failed");
@@ -411,7 +411,7 @@ struct positive_elastic_test
     ////////////////////////////////////////////////////////////////////////////////
     // test cnl::from_rep
 
-    static_assert(!cnl::from_rep<cnl::fixed_point<cnl::elastic_integer<31, unsigned int>, -33>>{}(0),
+    static_assert(!cnl::_impl::from_rep<cnl::fixed_point<cnl::elastic_integer<31, unsigned int>, -33>>(0),
             "cnl::from_rep<fixed_point<elastic_integer>>(int)");
 };
 

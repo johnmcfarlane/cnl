@@ -18,7 +18,7 @@ namespace cnl {
     /// \note Rather than returning Number, invocation may return an alternative
     /// template instantiation based on input parameter.
     /// \sa to_rep, from_value
-    template<class Number, class Enable = void>
+    template<typename Number, typename Rep, class Enable = void>
     struct from_rep;
 
     /// \brief Specialization of \ref from_rep for integer types
@@ -27,9 +27,8 @@ namespace cnl {
     ///
     /// \note This specialization *does* return integers of type, \c Number
     /// \sa to_rep, from_value
-    template<class Number>
-    struct from_rep<Number, _impl::enable_if_t<cnl::_impl::is_integral<Number>::value>> {
-        template<class Rep>
+    template<typename Number, typename Rep>
+    struct from_rep<Number, Rep, _impl::enable_if_t<cnl::_impl::is_integral<Number>::value>> {
         constexpr Number operator()(Rep const& rep) const {
             // by default, a number type's rep type is the number type itself
             return static_cast<Number>(rep);
@@ -38,7 +37,14 @@ namespace cnl {
 
     namespace _impl {
         template<class Number, class Rep>
-        using from_rep_t = decltype(cnl::from_rep<Number>{}(std::declval<Rep>()));
+        constexpr auto from_rep(Rep const& rep)
+        -> decltype(cnl::from_rep<Number, Rep>{}(rep))
+        {
+            return cnl::from_rep<Number, Rep>{}(rep);
+        }
+
+        template<class Number, class Rep>
+        using from_rep_t = decltype(from_rep<Number>(std::declval<Rep>()));
     }
 }
 

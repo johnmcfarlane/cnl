@@ -11,6 +11,8 @@
 #define CNL_IMPL_ROUNDING_H
 
 #include "native_tag.h"
+#include "rounding/convert.h"
+#include "rounding/rounding_tag.h"
 #include "operators.h"
 #include "num_traits/for_rep.h"
 #include "num_traits/from_value.h"
@@ -18,33 +20,6 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // mode tags and objects
-
-        // do what the rep type would do
-        struct native_rounding_tag : public native_tag {
-        };
-
-        // a reasonable default
-        struct nearest_rounding_tag {
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::convert
-
-        template<typename Result>
-        struct convert<native_rounding_tag, Result> : convert<native_tag, Result> {
-        };
-
-        template<typename Result>
-        struct convert<nearest_rounding_tag, Result> {
-            template<typename Input>
-            constexpr Result operator()(Input const& from) const
-            {
-                return static_cast<Result>(from+((from>=0) ? .5 : -.5));
-            }
-        };
-
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::tagged_binary_operator<nearest_rounding_tag>
 

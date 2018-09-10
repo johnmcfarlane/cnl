@@ -73,7 +73,7 @@ namespace cnl {
 
         template<class Rhs, _impl::enable_if_t<!_integer_impl::is_overflow_integer<Rhs>::value, int> dummy = 0>
         constexpr overflow_integer(Rhs const& rhs)
-                :_base(convert<overflow_tag, rep>{}(rhs))
+                :_base(_impl::convert<overflow_tag, rep>(rhs))
         {
         }
 
@@ -108,10 +108,9 @@ namespace cnl {
     /// \brief \ref overflow_integer specialization of \ref from_rep
     /// \tparam ArchetypeRep ignored; replaced by \c Rep
     /// \tparam OverflowTag the \c OverflowTag of the generated type
-    template<class ArchetypeRep, class OverflowTag>
-    struct from_rep<overflow_integer<ArchetypeRep, OverflowTag>> {
+    template<typename ArchetypeRep, class OverflowTag, typename Rep>
+    struct from_rep<overflow_integer<ArchetypeRep, OverflowTag>, Rep> {
         /// \brief generates an \ref overflow_integer equivalent to \c r in type and value
-        template<typename Rep>
         constexpr auto operator()(Rep const& r) const
         -> overflow_integer<Rep, OverflowTag>
         {
@@ -146,9 +145,9 @@ namespace cnl {
             _impl::enable_if_t<(Digits>=0)>> {
         using _value_type = overflow_integer<Rep, OverflowTag>;
         constexpr auto operator()(_value_type const& s) const
-        -> decltype(from_rep<_value_type>{}(shift_left(OverflowTag{}, _impl::to_rep(s), constant<Digits>{})))
+        -> decltype(_impl::from_rep<_value_type>(shift_left(OverflowTag{}, _impl::to_rep(s), constant<Digits>{})))
         {
-            return from_rep<_value_type>{}(shift_left(OverflowTag{}, _impl::to_rep(s), constant<Digits>{}));
+            return _impl::from_rep<_value_type>(shift_left(OverflowTag{}, _impl::to_rep(s), constant<Digits>{}));
         }
     };
 
@@ -195,7 +194,7 @@ namespace cnl {
                     overflow_integer<RhsRep, OverflowTag> const& rhs) const
             -> overflow_integer<op_result<Operator, LhsRep, RhsRep>, OverflowTag>
             {
-                return from_rep<overflow_integer<op_result<Operator, LhsRep, RhsRep>, OverflowTag>>{}(
+                return from_rep<overflow_integer<op_result<Operator, LhsRep, RhsRep>, OverflowTag>>(
                         _impl::tagged_binary_operator<OverflowTag, Operator>{}(_impl::to_rep(lhs), _impl::to_rep(rhs)));
             }
         };

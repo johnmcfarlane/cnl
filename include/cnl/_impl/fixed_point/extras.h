@@ -101,7 +101,7 @@ namespace cnl {
         using type = fixed_point<Rep, Exponent, Radix>;
         return _impl::to_rep(x)<0
                ? _impl::terminate<type>("negative value passed to cnl::sqrt")
-               : type{from_rep<type>{}(_impl::for_rep<Rep>(_impl::sqrt_solve1<Exponent>(), x))};
+               : type{_impl::from_rep<type>(_impl::for_rep<Rep>(_impl::sqrt_solve1<Exponent>(), x))};
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -110,12 +110,12 @@ namespace cnl {
     template<class Rep, int Exponent, int Radix,
             _impl::enable_if_t<Exponent<0, int> dummy = 0>
     constexpr auto floor(fixed_point<Rep, Exponent, Radix> const& x)
-    -> decltype(from_rep<fixed_point<Rep, 0, Radix>>{}(_impl::to_rep(x)>>constant<-Exponent>{})) {
+    -> decltype(_impl::from_rep<fixed_point<Rep, 0, Radix>>(_impl::to_rep(x)>>constant<-Exponent>{})) {
         static_assert(
                 Radix==2,
                 "cnl::floor(fixed_point<Rep, Exponent, Radix>) not implemented for Exponent<0 && Radix!=2");
 
-        return from_rep<fixed_point<Rep, 0, Radix>>{}(_impl::to_rep(x)>>constant<-Exponent>{});
+        return _impl::from_rep<fixed_point<Rep, 0, Radix>>(_impl::to_rep(x)>>constant<-Exponent>{});
     }
 
     template<class Rep, int Exponent, int Radix>
@@ -229,49 +229,49 @@ namespace cnl {
 
         static constexpr _value_type min() noexcept
         {
-            return from_rep<_value_type>{}(_rep{1});
+            return _impl::from_rep<_value_type>(_rep{1});
         }
 
         static constexpr _value_type max() noexcept
         {
-            return from_rep<_value_type>{}(_rep_numeric_limits::max());
+            return _impl::from_rep<_value_type>(_rep_numeric_limits::max());
         }
 
         static constexpr _value_type lowest() noexcept
         {
-            return from_rep<_value_type>{}(_rep_numeric_limits::lowest());
+            return _impl::from_rep<_value_type>(_rep_numeric_limits::lowest());
         }
 
         static constexpr bool is_integer = false;
 
         static constexpr _value_type epsilon() noexcept
         {
-            return from_rep<_value_type>{}(_rep{1});
+            return _impl::from_rep<_value_type>(_rep{1});
         }
 
         static constexpr _value_type round_error() noexcept
         {
-            return from_rep<_value_type>{}(_rep{0});
+            return _impl::from_rep<_value_type>(_rep{0});
         }
 
         static constexpr _value_type infinity() noexcept
         {
-            return from_rep<_value_type>{}(_rep{0});
+            return _impl::from_rep<_value_type>(_rep{0});
         }
 
         static constexpr _value_type quiet_NaN() noexcept
         {
-            return from_rep<_value_type>{}(_rep{0});
+            return _impl::from_rep<_value_type>(_rep{0});
         }
 
         static constexpr _value_type signaling_NaN() noexcept
         {
-            return from_rep<_value_type>{}(_rep{0});
+            return _impl::from_rep<_value_type>(_rep{0});
         }
 
         static constexpr _value_type denorm_min() noexcept
         {
-            return from_rep<_value_type>{}(_rep{1});
+            return _impl::from_rep<_value_type>(_rep{1});
         }
     };
 }

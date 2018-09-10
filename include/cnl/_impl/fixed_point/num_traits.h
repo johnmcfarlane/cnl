@@ -26,22 +26,6 @@ namespace cnl {
         using type = fixed_point<set_digits_t<Rep, MinNumBits>, Exponent, Radix>;
     };
 
-    /// \brief \ref fixed_point specialization of \ref from_rep
-    /// \headerfile cnl/fixed_point.h
-    ///
-    /// \tparam Exponent the \c Exponent parameter of the generated \ref fixed_point type
-    /// \tparam ArchetypeRep ignored; replaced by \c Rep
-    template<typename ArchetypeRep, int Exponent, int Radix>
-    struct from_rep<fixed_point<ArchetypeRep, Exponent, Radix>> {
-        /// \brief generates a \ref fixed_point equivalent to \c r in type and value
-        template<typename Rep>
-        constexpr auto operator()(Rep const& r) const
-        -> fixed_point<Rep, Exponent, Radix>
-        {
-            return fixed_point<Rep, Exponent, Radix>(r, 0);
-        }
-    };
-
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_value<cnl::fixed_point<>>
 

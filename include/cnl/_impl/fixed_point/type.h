@@ -15,33 +15,13 @@
 #include "../number_base.h"
 #include "../../constant.h"
 #include "../../numeric.h"
+#include "declaration.h"
+#include "is_fixed_point.h"
 
 /// compositional numeric library
 namespace cnl {
-    // forward declaration
-    template<typename Rep = int, int Exponent = 0, int Radix = cnl::numeric_limits<Rep>::radix>
-    class fixed_point;
-
     template<typename Numerator, typename Denominator>
     struct fraction;
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // implementation-specific definitions
-
-    namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::is_fixed_point
-
-        template<class T>
-        struct is_fixed_point
-                : public std::false_type {
-        };
-
-        template<typename Rep, int Exponent, int Radix>
-        struct is_fixed_point<fixed_point<Rep, Exponent, Radix>>
-                : public std::true_type {
-        };
-    }
 
     /// \brief literal real number approximation that uses fixed-point arithmetic
     /// \headerfile cnl/fixed_point.h
@@ -112,7 +92,7 @@ namespace cnl {
         /// constructor taking a cnl::constant object
         template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
         constexpr fixed_point(constant<Value> rhs)
-                : fixed_point(from_rep<fixed_point<typename decltype(rhs)::value_type, 0>>{}(Value))
+                : fixed_point(_impl::from_rep<fixed_point<typename decltype(rhs)::value_type, 0>>(Value))
         {
         }
 
@@ -170,7 +150,7 @@ namespace cnl {
         }
 
         /// creates an instance given the underlying representation value
-        template<class, class>
+        template<typename, typename, typename>
         friend struct from_rep;
 
     private:
@@ -232,7 +212,7 @@ namespace cnl {
     constexpr auto fixed_point<Rep, Exponent, Radix>::one()
     -> _impl::enable_if_t<numeric_limits<S>::is_integer, S>
     {
-        return from_rep<fixed_point<S, 0>>{}(1);
+        return _impl::from_rep<fixed_point<S, 0>>(1);
     }
 
     template<typename Rep, int Exponent, int Radix>

@@ -20,9 +20,9 @@ namespace cnl {
         template<typename Operator, typename Rep>
         struct unary_operator<Operator, integer<Rep>> {
             constexpr auto operator()(integer<Rep> const& rhs) const
-            -> decltype(from_rep<integer<decltype(Operator()(_impl::to_rep(rhs)))>>{}(Operator()(_impl::to_rep(rhs))))
+            -> decltype(from_rep<integer<decltype(Operator()(_impl::to_rep(rhs)))>>(Operator()(_impl::to_rep(rhs))))
             {
-                return from_rep<integer<decltype(Operator()(_impl::to_rep(rhs)))>>{}(Operator()(_impl::to_rep(rhs)));
+                return from_rep<integer<decltype(Operator()(_impl::to_rep(rhs)))>>(Operator()(_impl::to_rep(rhs)));
             }
         };
 

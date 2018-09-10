@@ -10,10 +10,14 @@
 #if !defined(CNL_FIXED_POINT_H)
 #define CNL_FIXED_POINT_H 1
 
+#include "_impl/fixed_point/declaration.h"
+#include "_impl/fixed_point/from_rep.h"
+#include "_impl/fixed_point/is_fixed_point.h"
 #include "_impl/fixed_point/type.h"
 #include "_impl/fixed_point/named.h"
 #include "_impl/fixed_point/fraction.h"
 #include "_impl/fixed_point/constants.h"
+#include "_impl/fixed_point/convert.h"
 #include "_impl/fixed_point/operators.h"
 #include "_impl/fixed_point/extras.h"
 #include "_impl/fixed_point/to_chars.h"

@@ -311,13 +311,15 @@ namespace test_to_rep {
 }
 
 namespace test_from_rep {
-    static_assert(! cnl::from_rep<cnl::fixed_point<unsigned int, -33>>{}(0), "from_rep");
-    static_assert(identical(cnl::from_rep<fixed_point<>>{}(test_int{0}), fixed_point<>{0}), "from_rep");
-    static_assert(identical(cnl::from_rep<fixed_point<int16, -10>>{}(int16{3072}), fixed_point<int16, -10>{test_int{3}}), "from_rep");
-    static_assert(!cnl::from_rep<fixed_point<test_int, -100>>{}(test_int{0}), "from_rep");
-    static_assert(cnl::from_rep<fixed_point<test_int, -100>>{}(test_int{1}), "from_rep");
-    static_assert(!cnl::from_rep<fixed_point<test_int, 1000>>{}(test_int{0}), "from_rep");
-    static_assert(cnl::from_rep<fixed_point<test_int, 1000>>{}(test_int{1}), "from_rep");
+    static_assert(!cnl::_impl::from_rep<cnl::fixed_point<unsigned int, -33>>(0), "from_rep");
+    static_assert(identical(cnl::_impl::from_rep<fixed_point<>>(test_int{0}), fixed_point<>{0}), "from_rep");
+    static_assert(
+            identical(cnl::_impl::from_rep<fixed_point<int16, -10>>(int16{3072}), fixed_point<int16, -10>{test_int{3}}),
+            "from_rep");
+    static_assert(!cnl::_impl::from_rep<fixed_point<test_int, -100>>(test_int{0}), "from_rep");
+    static_assert(cnl::_impl::from_rep<fixed_point<test_int, -100>>(test_int{1}), "from_rep");
+    static_assert(!cnl::_impl::from_rep<fixed_point<test_int, 1000>>(test_int{0}), "from_rep");
+    static_assert(cnl::_impl::from_rep<fixed_point<test_int, 1000>>(test_int{1}), "from_rep");
 }
 
 namespace test_impl_make_number {
@@ -957,7 +959,7 @@ struct FixedPointTesterOutsize {
 
     // simply assignment to and from underlying representation
     using numeric_limits = cnl::numeric_limits<fixed_point>;
-    static constexpr fixed_point min = cnl::from_rep<fixed_point>{}(rep(1));
+    static constexpr fixed_point min = cnl::_impl::from_rep<fixed_point>(rep(1));
 #if !defined(_MSC_VER)
     static_assert(cnl::_impl::to_rep(min) == rep(1), "all Rep types should be able to store the number 1!");
 #endif
