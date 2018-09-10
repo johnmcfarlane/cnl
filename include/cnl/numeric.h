@@ -12,7 +12,7 @@
 
 #include "bit.h"
 
-#include "_impl/num_traits/for_rep.h"
+#include "_impl/num_traits/unwrap.h"
 #include "_impl/used_digits.h"
 
 /// compositional numeric library
@@ -313,7 +313,7 @@ namespace cnl {
     template<typename Integer>
     constexpr int used_digits(Integer const& value, int radix = numeric_limits<Integer>::radix)
     {
-        return _impl::for_rep<int>(_impl::used_digits_signed<is_signed<Integer>::value>(), value, radix);
+        return _impl::used_digits_signed<is_signed<Integer>::value>{}(unwrap(value), radix);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
