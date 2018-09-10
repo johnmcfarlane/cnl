@@ -33,7 +33,7 @@ namespace {
 
     namespace test_nearest_round_up_float {
         static constexpr auto expected = cnl::fixed_point<int, -2>{-0.25};
-        static constexpr auto actual = cnl::convert<cnl::nearest_rounding_tag, cnl::fixed_point<int, -2>>(
+        static constexpr auto actual = cnl::_impl::convert<cnl::nearest_rounding_tag, cnl::fixed_point<int, -2>>(
                 -0.3125f);
 
         static_assert(
