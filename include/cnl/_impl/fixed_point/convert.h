@@ -58,6 +58,31 @@ namespace cnl {
         }
     };
 
+    // conversion from float to fixed_point
+    template<
+            typename ResultRep, int ResultExponent, int ResultRadix,
+            typename Input>
+    struct convert<
+            _impl::nearest_rounding_tag,
+            fixed_point<ResultRep, ResultExponent, ResultRadix>,
+            Input,
+            _impl::enable_if_t<std::is_floating_point<Input>::value>> {
+    private:
+        using _result = fixed_point<ResultRep, ResultExponent, ResultRadix>;
+
+        static constexpr Input half()
+        {
+            return power<Input, ResultExponent-1, ResultRadix>();
+        }
+
+    public:
+        constexpr _result operator()(Input const& from) const
+        {
+            // TODO: unsigned specialization
+            return static_cast<_result>(from+((from>=0) ? half() : -half()));
+        }
+    };
+
     template<
             typename ResultRep, int ResultExponent, int ResultRadix,
             typename Input>

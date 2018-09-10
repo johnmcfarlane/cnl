@@ -31,6 +31,16 @@ namespace {
                 "cnl::convert<cnl::nearest_rounding_tag, cnl::fixed_point, cnl::fixed_point>");
     }
 
+    namespace test_nearest_round_up_float {
+        static constexpr auto expected = cnl::fixed_point<int, -2>{-0.25};
+        static constexpr auto actual = cnl::_impl::convert<cnl::nearest_rounding_tag, cnl::fixed_point<int, -2>>(
+                -0.3125f);
+
+        static_assert(
+                identical(expected, actual),
+                "cnl::convert<cnl::nearest_rounding_tag, cnl::fixed_point, cnl::fixed_point>");
+    }
+
     namespace test_truncate_round_up {
         static constexpr auto expected = cnl::fixed_point<int, 0>{1};
         static constexpr auto actual = cnl::_impl::convert<cnl::nearest_rounding_tag, cnl::fixed_point<int, 0>>(
