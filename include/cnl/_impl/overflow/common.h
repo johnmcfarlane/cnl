@@ -31,20 +31,34 @@ namespace cnl {
                 : public std::integral_constant<int, cnl::is_signed<T>::value ? digits<T>::value : 0> {
         };
 
+        template<typename Destination, typename Source, typename Enable = void>
+        struct convert_test;
+
         template<typename Destination, typename Source>
-        struct convert_test {
+        struct convert_test<Destination, Source, enable_if_t<!std::is_floating_point<Source>::value>> {
+            static constexpr bool positive(Source const &rhs) {
+                return positive_digits<Destination>::value<positive_digits<Source>::value
+                                                           && rhs>
+                static_cast<Source>(numeric_limits<Destination>::max());
+            }
+
+            static constexpr bool negative(Source const &rhs) {
+                return negative_digits<Destination>::value<negative_digits<Source>::value
+                                                           && rhs <
+                                                              static_cast<Source>(numeric_limits<Destination>::lowest());
+            }
+        };
+
+        template<typename Destination, typename Source>
+        struct convert_test<Destination, Source, enable_if_t<std::is_floating_point<Source>::value>> {
             static constexpr bool positive(Source const& rhs)
             {
-                return positive_digits<Destination>::value
-                        <positive_digits<Source>::value
-                                && rhs>static_cast<Source>(numeric_limits<Destination>::max());
+                return rhs > static_cast<Source>(numeric_limits<Destination>::max());
             }
 
             static constexpr bool negative(Source const& rhs)
             {
-                return negative_digits<Destination>::value
-                        <negative_digits<Source>::value
-                                && rhs<static_cast<Source>(numeric_limits<Destination>::lowest());
+                return rhs < static_cast<Source>(numeric_limits<Destination>::lowest());
             }
         };
 
