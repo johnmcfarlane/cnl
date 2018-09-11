@@ -14,8 +14,8 @@
 #include "rounding/convert.h"
 #include "rounding/rounding_tag.h"
 #include "operators.h"
-#include "num_traits/for_rep.h"
 #include "num_traits/from_value.h"
+#include "num_traits/unwrap.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -82,8 +82,7 @@ namespace cnl {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs/rhs)
             {
-                return for_rep<decltype(lhs/rhs)>(
-                        tagged_binary_operator<RoundingTag, divide_op>(), lhs, rhs);
+                return tagged_binary_operator<RoundingTag, divide_op>{}(cnl::unwrap(lhs), cnl::unwrap(rhs));
             }
         };
 

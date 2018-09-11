@@ -70,6 +70,7 @@ set(test_sources
         fixed_point/elastic/make_elastic_number.cpp
         fixed_point/elastic/elastic_number.cpp
         fixed_point/elastic/rounding/rounding_elastic_number.cpp
+        fixed_point/elastic/overflow/saturated.cpp
         static_integer.cpp
         static_number.cpp
 )

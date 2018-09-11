@@ -47,8 +47,8 @@ namespace cnl {
     constexpr auto shift_left(OverflowTag, Lhs const& lhs, Rhs const& rhs)
     -> decltype(lhs<<rhs)
     {
-        return _impl::for_rep<decltype(lhs << rhs)>(
-                _impl::tagged_binary_operator<OverflowTag, _impl::shift_left_op>(), lhs, rhs);
+        return _impl::tagged_binary_operator<OverflowTag, _impl::shift_left_op>{}(
+                unwrap(lhs), unwrap(rhs));
     }
 }
 
