@@ -17,7 +17,6 @@
 #include "../type_traits/is_signed.h"
 #include "is_composite.h"
 
-#include <cfloat>
 #include <type_traits>
 
 namespace cnl {
@@ -88,16 +87,6 @@ namespace cnl {
     struct digits<uint128> : _impl::fundamental_digits<uint128> {
     };
 #endif
-
-    template<>
-    struct digits<float> : std::integral_constant<int, FLT_MANT_DIG> {
-    };
-    template<>
-    struct digits<double> : std::integral_constant<int, DBL_MANT_DIG> {
-    };
-    template<>
-    struct digits<long double> : std::integral_constant<int, LDBL_MANT_DIG> {
-    };
 
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct digits<constant<Value>> : std::integral_constant<
