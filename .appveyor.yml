@@ -10,17 +10,11 @@ environment:
       exceptions: ON
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     - platform: x64
-      configuration: Release
+      configuration: Debug
       cmake_generator: "Visual Studio 15 2017 Win64"
       msbuild_property: x64
       exceptions: OFF
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 Preview
-    - platform: x64
-      configuration: Debug
-      cmake_generator: "Visual Studio 15 2017 Win64"
-      msbuild_property: x64
-      exceptions: ON
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
 build_script:
 - cmd: >-
