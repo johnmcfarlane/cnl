@@ -31,6 +31,39 @@ namespace cnl {
             return static_cast<Result>(from+((from>=0) ? .5 : -.5));
         }
     };
+
+    template<typename Result, typename Input>
+    struct convert<
+           _impl::nearest_rounding_tag, Result, Input,
+           _impl::enable_if_t<
+                   std::is_floating_point<Result>::value && std::is_floating_point<Input>::value >> {
+        constexpr Result operator()(Input const& from) const
+        {
+            return static_cast<Result>(from);
+        }
+    };
+
+    template<typename Result, typename Input>
+    struct convert<
+           _impl::nearest_rounding_tag, Result, Input,
+           _impl::enable_if_t<
+                   cnl::numeric_limits<Result>::is_integer && cnl::numeric_limits<Input>::is_integer >> {
+        constexpr Result operator()(Input const& from) const
+        {
+            return static_cast<Result>(from);
+        }
+    };
+
+    template<typename Result, typename Input>
+    struct convert<
+           _impl::nearest_rounding_tag, Result, Input,
+           _impl::enable_if_t<
+                   std::is_floating_point<Result>::value && cnl::numeric_limits<Input>::is_integer >> {
+        constexpr Result operator()(Input const& from) const
+        {
+            return static_cast<Result>(from);
+        }
+    };
 }
 
 #endif  // CNL_IMPL_ROUNDING_CONVERT_H
