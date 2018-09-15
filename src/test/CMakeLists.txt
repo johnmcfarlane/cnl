@@ -18,6 +18,9 @@ set(test_sources
         overflow/overflow.cpp
         rounding/rounding.cpp
         _impl/num_traits/max_digits.cpp
+        _impl/num_traits/adopt.cpp
+        _impl/num_traits/adopt_digits.cpp
+        _impl/num_traits/adopt_signedness.cpp
         _impl/rounding/convert.cpp
 
         # components
