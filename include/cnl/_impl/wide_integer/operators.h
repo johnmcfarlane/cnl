@@ -54,6 +54,27 @@ namespace cnl {
                 return Operator()(to_rep(lhs), to_rep(rhs));
             }
         };
+
+        template<class Operator, int Digits, typename Narrowest>
+        struct pre_operator<Operator, wide_integer<Digits, Narrowest>> {
+            CNL_RELAXED_CONSTEXPR auto operator()(wide_integer<Digits, Narrowest>& rhs) const
+            -> wide_integer<Digits, Narrowest>&
+            {
+                Operator()(_impl::to_rep(rhs));
+                return rhs;
+            }
+        };
+
+        template<class Operator, int Digits, typename Narrowest>
+        struct post_operator<Operator, wide_integer<Digits, Narrowest>> {
+            CNL_RELAXED_CONSTEXPR auto operator()(wide_integer<Digits, Narrowest>& lhs) const
+            -> wide_integer<Digits, Narrowest>
+            {
+                auto copy = lhs;
+                Operator()(_impl::to_rep(lhs));
+                return copy;
+            }
+        };
     }
 }
 
