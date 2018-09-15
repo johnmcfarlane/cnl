@@ -58,6 +58,7 @@ set(test_sources
         rounding/fixed_point/fixed_point.cpp
 
         # composites
+        elastic/wide/wide_elastic_integer.cpp
         fixed_point/integer/fixed_point_integer.cpp
         fixed_point/overflow/fixed_point_native_integer.cpp
         fixed_point/overflow/fixed_point_trapping_integer.cpp
