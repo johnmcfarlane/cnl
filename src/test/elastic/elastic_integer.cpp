@@ -98,7 +98,7 @@ namespace {
                 cnl::_impl::make_number<elastic_integer<>>(14)), "cnl::_impl::make_number<elastic_integer> test failed");
         static_assert(
                 identical(
-                elastic_integer<cnl::digits<int>::value>{22},
+                        elastic_integer<cnl::digits<int>::value>{22},
                         cnl::_impl::make_number<elastic_integer<>>(elastic_integer<>{22})),
                 "cnl::_impl::make_number<elastic_integer> test failed");
 
