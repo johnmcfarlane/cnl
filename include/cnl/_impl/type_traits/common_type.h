@@ -7,7 +7,6 @@
 #if !defined(CNL_IMPL_TYPE_TRAITS_COMMON_TYPE_H)
 #define CNL_IMPL_TYPE_TRAITS_COMMON_TYPE_H
 
-#include "make_unsigned.h"
 #include <type_traits>
 
 /// compositional numeric library

@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_MAKE_WIDE_INTEGER_H)
 #define CNL_IMPL_WIDE_INTEGER_MAKE_WIDE_INTEGER_H
 
+#include "../num_traits/adopt_signedness.h"
 #include "type.h"
 
 /// compositional numeric library
@@ -16,7 +17,7 @@ namespace cnl {
         constexpr auto make_wide_integer(Rep const& rep)
         -> wide_integer<
                 digits<Rep>::value,
-                typename std::conditional<cnl::is_signed<Rep>::value, signed, unsigned>::type> {
+                adopt_signedness_t<int, Rep>> {
             return rep;
         }
     }

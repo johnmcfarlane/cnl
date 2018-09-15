@@ -13,13 +13,13 @@
 #include "constant.h"
 
 #include "_impl/limits/lowest.h"
+#include "_impl/num_traits/adopt_signedness.h"
 #include "_impl/num_traits/fixed_width_scale.h"
 #include "_impl/num_traits/width.h"
 #include "_impl/number_base.h"
 #include "_impl/type_traits/common_type.h"
 #include "_impl/type_traits/is_signed.h"
 #include "_impl/type_traits/make_signed.h"
-#include "_impl/type_traits/make_unsigned.h"
 #include "_impl/type_traits/set_signedness.h"
 
 /// compositional numeric library
@@ -99,7 +99,7 @@ namespace cnl {
     struct from_rep<elastic_integer<Digits, Narrowest>, Rep> {
         /// \brief generates an \ref elastic_integer equivalent to \c r in type and value
         constexpr auto operator()(Rep const& r) const
-        -> elastic_integer<Digits, cnl::_impl::set_signedness_t<Narrowest, cnl::is_signed<Rep>::value>>
+        -> elastic_integer<Digits, cnl::_impl::adopt_signedness_t<Narrowest, Rep>>
         {
             return r;
         }
@@ -110,7 +110,7 @@ namespace cnl {
             : _impl::from_value_simple<
                     elastic_integer<
                             cnl::digits<Value>::value,
-                            cnl::_impl::set_signedness_t<Narrowest, cnl::is_signed<Value>::value>>,
+                            _impl::adopt_signedness_t<Narrowest, Value>>,
                     Value> {
     };
 

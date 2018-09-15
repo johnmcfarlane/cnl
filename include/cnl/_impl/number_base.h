@@ -13,8 +13,6 @@
 #include "num_traits/scale.h"
 #include "num_traits/to_rep.h"
 #include "operators.h"
-#include "type_traits/make_signed.h"
-#include "type_traits/make_unsigned.h"
 #include "../constant.h"
 #include "../limits.h"
 
