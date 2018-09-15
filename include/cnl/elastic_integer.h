@@ -13,6 +13,7 @@
 #include "constant.h"
 
 #include "_impl/limits/lowest.h"
+#include "_impl/num_traits/adopt.h"
 #include "_impl/num_traits/adopt_signedness.h"
 #include "_impl/num_traits/fixed_width_scale.h"
 #include "_impl/num_traits/width.h"
@@ -110,8 +111,15 @@ namespace cnl {
             : _impl::from_value_simple<
                     elastic_integer<
                             cnl::digits<Value>::value,
-                            _impl::adopt_signedness_t<Narrowest, Value>>,
+                            _impl::set_width_t<Value, _impl::width<Narrowest>::value>>,
                     Value> {
+    };
+
+    template<int Digits, typename Narrowest, int ValueDigits, typename ValueNarrowest>
+    struct from_value<elastic_integer<Digits, Narrowest>, elastic_integer<ValueDigits, ValueNarrowest>>
+            : _impl::from_value_simple<
+                    elastic_integer<_impl::max(Digits, ValueDigits), Narrowest>,
+                    elastic_integer<ValueDigits, Narrowest>> {
     };
 
     template<int Digits, class Narrowest, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
