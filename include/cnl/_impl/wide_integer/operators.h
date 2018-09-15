@@ -27,17 +27,6 @@ namespace cnl {
             }
         };
 
-//        template<class Operator, int Digits, typename Narrowest>
-//        struct binary_operator<
-//                Operator,
-//                wide_integer<Digits, Narrowest>, wide_integer<Digits, Narrowest>,
-//                typename Operator::is_not_comparison> {
-//            constexpr auto operator()(_lhs const& lhs, _rhs const& rhs) const -> wide_integer<Digits, Narrowest>
-//            {
-//                return Operator{}(to_rep(lhs), to_rep(rhs));
-//            }
-//        };
-
         template<class Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
         struct binary_operator<
                 Operator,
@@ -49,7 +38,6 @@ namespace cnl {
             constexpr auto operator()(_lhs const& lhs, _rhs const& rhs) const -> _result
             {
                 return Operator{}(to_rep(lhs), to_rep(rhs));
-                //return binary_operator<Operator, _result, _result>{}(lhs, rhs);
             }
         };
 
