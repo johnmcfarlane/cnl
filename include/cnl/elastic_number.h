@@ -14,6 +14,8 @@
 #include "fixed_point.h"
 #include "limits.h"
 
+#include <type_traits>
+
 /// compositional numeric library
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
@@ -87,7 +89,7 @@ namespace cnl {
             0,
             typename std::conditional<
                     std::is_same<void, Narrowest>::value,
-                    typename std::conditional<is_signed<Integral>::value, signed, unsigned>::type,
+                    _impl::adopt_signedness_t<int, Integral>,
                     Narrowest>::type>
     make_elastic_number(Integral const& value)
     {
@@ -100,7 +102,7 @@ namespace cnl {
             Exponent,
             typename std::conditional<
                     std::is_same<void, Narrowest>::value,
-                    typename std::conditional<is_signed<Rep>::value, signed, unsigned>::type,
+                    _impl::adopt_signedness_t<int, Rep>,
                     Narrowest>::type>
     make_elastic_number(fixed_point<Rep, Exponent, Radix> const& value)
     {

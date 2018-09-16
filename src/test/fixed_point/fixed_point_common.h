@@ -1032,7 +1032,7 @@ struct FixedPointRepTester {
     FixedPointTesterOutsize<Rep, 100> _6;
 
     // test deduction guides
-#if defined(__cpp_deduction_guides)
+#if defined(__cpp_deduction_guides) && (!defined(TEST_WIDE_INTEGER) || defined(CNL_INT128_ENABLED))
     static_assert(identical(cnl::fixed_point{Rep{0}}, cnl::fixed_point<Rep, 0>{0}));
     static_assert(identical(cnl::fixed_point(Rep{0}), cnl::fixed_point<Rep, 0>(0)));
 

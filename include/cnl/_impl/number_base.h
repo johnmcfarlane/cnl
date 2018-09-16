@@ -13,8 +13,6 @@
 #include "num_traits/scale.h"
 #include "num_traits/to_rep.h"
 #include "operators.h"
-#include "type_traits/make_signed.h"
-#include "type_traits/make_unsigned.h"
 #include "../constant.h"
 #include "../limits.h"
 
@@ -111,7 +109,8 @@ namespace cnl {
         struct is_wrappable<Rep, Wrapper[WrapperN]> : std::false_type {};
 
         template<class Rep, class Wrapper>
-        struct is_wrappable : std::integral_constant<bool, cnl::numeric_limits<Rep>::is_specialized
+        struct is_wrappable
+                : std::integral_constant<bool, cnl::numeric_limits<Rep>::is_specialized
                         && !std::is_floating_point<Rep>::value
                         && !std::is_same<from_value_t<Rep, int>, from_value_t<Wrapper, int>>::value
                         && (depth<Rep>::value < depth<Wrapper>::value)> {};

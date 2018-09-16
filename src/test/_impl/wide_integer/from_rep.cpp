@@ -24,9 +24,4 @@ namespace {
                     cnl::_impl::wide_integer<31, unsigned int>,
                     cnl::_impl::from_rep_t<cnl::_impl::wide_integer<>, std::uint32_t>>::value,
             "cnl::from_rep_t<cnl::_impl::wide_integer>");
-//    static_assert(
-//            assert_same<
-//                    cnl::_impl::wide_integer<9>,
-//                    cnl::_impl::from_rep_t<cnl::_impl::wide_integer<>, cnl::constant<400>>>::value,
-//            "cnl::from_rep_t<cnl::_impl::wide_integer>");
 }

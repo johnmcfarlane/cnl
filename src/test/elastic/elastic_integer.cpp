@@ -98,7 +98,7 @@ namespace {
                 cnl::_impl::make_number<elastic_integer<>>(14)), "cnl::_impl::make_number<elastic_integer> test failed");
         static_assert(
                 identical(
-                elastic_integer<cnl::digits<int>::value>{22},
+                        elastic_integer<cnl::digits<int>::value>{22},
                         cnl::_impl::make_number<elastic_integer<>>(elastic_integer<>{22})),
                 "cnl::_impl::make_number<elastic_integer> test failed");
 
@@ -140,6 +140,11 @@ namespace {
                 cnl::elastic_integer<3, signed>{6},
                 cnl::_impl::make_number<cnl::elastic_integer<2, signed>>(cnl::constant<6>{})),
                 "from_value<elastic_integer, constant>");
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<63>,
+                        cnl::from_value_t<cnl::elastic_integer<1>, cnl::int64>>::value,
+                "from_value<elastic_integer, int64>");
     }
 
     namespace test_make_unsigned {

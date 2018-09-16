@@ -56,10 +56,10 @@ namespace {
 }
 
 namespace test_ctor {
+#if defined(CNL_INT128_ENABLED)
     static_assert(identical(uint32_t{0x76543210}, uint32_t(elastic_number<64, -32, unsigned>{elastic_number<32, 0, unsigned>{0x76543210LL}})), "cnl::elastic_number ctor");
     static_assert(identical(uint32_t{1}, uint32_t(elastic_number<64, -32, unsigned>{1})), "cnl::elastic_number ctor");
 
-#if defined(CNL_INT128_ENABLED)
     static_assert(identical(cnl::fixed_point<cnl::elastic_integer<62, int>, -40>{321}, cnl::fixed_point<cnl::elastic_integer<62, int>, -40>{fixed_point<cnl::elastic_integer<62, int>, -20>{321}}), "cnl::fixed_point ctor");
     static_assert(identical(cnl::fixed_point<cnl::elastic_integer<62, int>, -40>{2097151.99999904632568359375}, cnl::fixed_point<cnl::elastic_integer<62, int>, -40>{fixed_point<cnl::elastic_integer<62, int>, -20>{2097151.99999904632568359375}}), "cnl::fixed_point ctor");
 #endif

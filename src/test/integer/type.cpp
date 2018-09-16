@@ -13,6 +13,7 @@
 #include <cnl/_impl/integer/operators.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/_impl/type_traits/make_unsigned.h>
 
 using cnl::_impl::assert_same;
 using cnl::_impl::identical;

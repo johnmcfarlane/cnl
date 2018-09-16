@@ -8,10 +8,9 @@
 #define CNL_IMPL_WIDE_INTEGER_FROM_REP_H
 
 #include "type.h"
+#include "../num_traits/adopt_signedness.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/from_rep.h"
-#include "../type_traits/is_signed.h"
-#include "../type_traits/set_signedness.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -20,7 +19,7 @@ namespace cnl {
         constexpr auto operator()(Rep const& rep) const
         -> _impl::wide_integer<
                 Digits,
-                cnl::_impl::set_signedness_t<Narrowest, cnl::is_signed<Rep>::value>>
+                _impl::adopt_signedness_t<Narrowest, Rep>>
         {
             return rep;
         }

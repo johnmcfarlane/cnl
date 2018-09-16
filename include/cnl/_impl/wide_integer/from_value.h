@@ -8,8 +8,8 @@
 #define CNL_IMPL_WIDE_INTEGER_FROM_VALUE_H
 
 #include "type.h"
+#include "../num_traits/adopt_signedness.h"
 #include "../num_traits/from_value.h"
-#include "../type_traits/set_signedness.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -18,7 +18,7 @@ namespace cnl {
             : _impl::from_value_simple<
                     _impl::wide_integer<
                             cnl::digits<Value>::value,
-                            cnl::_impl::set_signedness_t<Narrowest, cnl::is_signed<Value>::value>>,
+                            _impl::adopt_signedness_t<Narrowest, Value>>,
                     Value> {
     };
 }

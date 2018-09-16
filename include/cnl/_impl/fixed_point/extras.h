@@ -40,7 +40,7 @@ namespace cnl {
     constexpr auto abs(fixed_point<Rep, Exponent, Radix> const& x) noexcept
     -> decltype(-x)
     {
-        return (x>=Rep{0}) ? static_cast<decltype(-x)>(x) : -x;
+        return (x>=fixed_point<Rep, Exponent, Radix>{}) ? static_cast<decltype(-x)>(x) : -x;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
