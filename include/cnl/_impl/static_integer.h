@@ -10,6 +10,8 @@
 #include "../elastic_integer.h"
 #include "../overflow_integer.h"
 #include "../rounding_integer.h"
+#include "../wide_integer.h"
+#include "num_traits/digits.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -23,7 +25,9 @@ namespace cnl {
                 overflow_integer<
                         elastic_integer<
                                 Digits,
-                                Narrowest>,
+                                wide_integer<
+                                        digits<Narrowest>::value,
+                                        Narrowest>>,
                         OverflowTag>,
                 RoundingTag>;
 
