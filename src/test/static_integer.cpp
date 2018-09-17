@@ -34,10 +34,14 @@ namespace {
                 "cnl::static_integer parameter default test failed");
 
         static_assert(
-                std::is_same<int, cnl::static_integer<>::rep::rep::rep>::value,
+                assert_same<
+                        cnl::wide_integer<>,
+                        cnl::static_integer<>::rep::rep::rep>::value,
                 "cnl::static_integer parameter default test failed");
         static_assert(
-                std::is_same<cnl::elastic_integer<>::rep, cnl::static_integer<>::rep::rep::rep>::value,
+                assert_same<
+                        cnl::elastic_integer<31, cnl::wide_integer<>>::rep,
+                        cnl::static_integer<>::rep::rep::rep>::value,
                 "cnl::static_integer parameter default test failed");
     }
 

@@ -19,7 +19,9 @@ namespace {
 
     namespace default_parameters {
         static_assert(
-                std::is_same<cnl::static_number<1>::rep::rep::rep::rep, int>::value,
+                assert_same<
+                        cnl::wide_integer<>,
+                        cnl::static_number<1>::rep::rep::rep::rep>::value,
                 "cnl::rounding_integer parameter default test failed");
     }
 
