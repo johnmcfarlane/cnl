@@ -8,11 +8,11 @@
 #define CNL_IMPL_WIDE_INTEGER_TYPE_H
 
 #include "../integer/type.h"
-#include "../num_traits/digits.h"
 #include "../num_traits/max_digits.h"
 #include "../num_traits/set_digits.h"
 #include "../number_base.h"
 #include "../type_traits/enable_if.h"
+#include "forward_declaration.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -30,11 +30,8 @@ namespace cnl {
         using wide_integer_rep_t = typename wide_integer_rep<Digits, Narrowest>::type;
 
         // wide_integer
-        template<int Digits = digits<int>::value, typename Narrowest = int, class Enable = void>
-        class wide_integer;
-
         template<int Digits, typename Narrowest>
-        class wide_integer<Digits, Narrowest, enable_if_t<max_digits<Narrowest>::value>=Digits>>
+        class wide_integer
                 : public number_base<
                         wide_integer<Digits, Narrowest>,
                         wide_integer_rep_t<Digits, Narrowest>> {
