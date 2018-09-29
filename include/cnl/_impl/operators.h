@@ -30,14 +30,6 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // operation tags
 
-        struct binary_op {
-            using is_not_comparison = void;
-        };
-
-        struct comparison_op {
-            using is_comparison = void;
-        };
-
         struct minus_op {
             template<class Rhs>
             constexpr auto operator()(Rhs const& rhs) const -> decltype(-rhs)
@@ -62,7 +54,7 @@ namespace cnl {
             }
         };
 
-        struct add_op : binary_op {
+        struct add_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs+rhs)
             {
@@ -70,7 +62,7 @@ namespace cnl {
             }
         };
 
-        struct subtract_op : binary_op {
+        struct subtract_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs-rhs)
             {
@@ -78,7 +70,7 @@ namespace cnl {
             }
         };
 
-        struct multiply_op : binary_op {
+        struct multiply_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs*rhs)
             {
@@ -86,7 +78,7 @@ namespace cnl {
             }
         };
 
-        struct divide_op : binary_op {
+        struct divide_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs/rhs)
             {
@@ -94,7 +86,7 @@ namespace cnl {
             }
         };
 
-        struct modulo_op : binary_op {
+        struct modulo_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs%rhs)
             {
@@ -102,7 +94,7 @@ namespace cnl {
             }
         };
 
-        struct bitwise_or_op : binary_op {
+        struct bitwise_or_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs | rhs)
             {
@@ -110,7 +102,7 @@ namespace cnl {
             }
         };
 
-        struct bitwise_and_op : binary_op {
+        struct bitwise_and_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs & rhs)
             {
@@ -118,7 +110,7 @@ namespace cnl {
             }
         };
 
-        struct bitwise_xor_op : binary_op {
+        struct bitwise_xor_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs ^ rhs)
             {
@@ -126,7 +118,7 @@ namespace cnl {
             }
         };
 
-        struct shift_left_op : binary_op {
+        struct shift_left_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs << rhs)
             {
@@ -134,7 +126,7 @@ namespace cnl {
             }
         };
 
-        struct shift_right_op : binary_op {
+        struct shift_right_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs >> rhs)
             {
@@ -142,7 +134,7 @@ namespace cnl {
             }
         };
 
-        struct equal_op : comparison_op {
+        struct equal_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs==rhs)
             {
@@ -150,7 +142,7 @@ namespace cnl {
             }
         };
 
-        struct not_equal_op : comparison_op {
+        struct not_equal_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs!=rhs)
             {
@@ -158,7 +150,7 @@ namespace cnl {
             }
         };
 
-        struct less_than_op : comparison_op {
+        struct less_than_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs<rhs)
             {
@@ -166,7 +158,7 @@ namespace cnl {
             }
         };
 
-        struct greater_than_op : comparison_op {
+        struct greater_than_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs>rhs)
             {
@@ -174,7 +166,7 @@ namespace cnl {
             }
         };
 
-        struct less_than_or_equal_op : comparison_op {
+        struct less_than_or_equal_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs<=rhs)
             {
@@ -182,7 +174,7 @@ namespace cnl {
             }
         };
 
-        struct greater_than_or_equal_op : comparison_op {
+        struct greater_than_or_equal_op {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs>=rhs)
             {
