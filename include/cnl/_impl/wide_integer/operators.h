@@ -31,7 +31,7 @@ namespace cnl {
         struct binary_operator<
                 Operator,
                 wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>,
-                typename Operator::is_not_comparison> {
+                enable_if_t<!is_comparison_operator<Operator>::value>> {
             using _lhs = wide_integer<LhsDigits, LhsNarrowest>;
             using _rhs = wide_integer<RhsDigits, RhsNarrowest>;
             using _result = typename std::common_type<_lhs, _rhs>::type;
@@ -45,7 +45,7 @@ namespace cnl {
         struct binary_operator<
                 Operator,
                 wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>,
-                typename Operator::is_comparison> {
+                enable_if_t<is_comparison_operator<Operator>::value>> {
             constexpr auto operator()(
                     wide_integer<LhsDigits, LhsNarrowest> const& lhs,
                     wide_integer<RhsDigits, RhsNarrowest> const& rhs) const

@@ -45,7 +45,7 @@ namespace cnl {
         struct binary_operator<Operator,
                 fixed_point<LhsRep, Exponent, Radix>,
                 fixed_point<RhsRep, Exponent, Radix>,
-                typename Operator::is_comparison> {
+                enable_if_t<is_comparison_operator<Operator>::value>> {
             constexpr auto operator()(
                     fixed_point<LhsRep, Exponent, Radix> const& lhs,
                     fixed_point<RhsRep, Exponent, Radix> const& rhs) const
@@ -60,7 +60,7 @@ namespace cnl {
         struct binary_operator<Operator,
                 fixed_point<LhsRep, LhsExponent, Radix>,
                 fixed_point<RhsRep, RhsExponent, Radix>,
-                enable_if_t<LhsExponent<RhsExponent, typename Operator::is_comparison>> {
+                enable_if_t<LhsExponent<RhsExponent, enable_if_t<is_comparison_operator<Operator>::value>>> {
             static constexpr int shiftage = RhsExponent - LhsExponent;
             using lhs_type = fixed_point<LhsRep, LhsExponent, Radix>;
             using rhs_type = fixed_point<decltype(std::declval<RhsRep>()<<constant<shiftage>{}), LhsExponent, Radix>;
@@ -79,7 +79,7 @@ namespace cnl {
         struct binary_operator<Operator,
                 fixed_point<LhsRep, LhsExponent, Radix>,
                 fixed_point<RhsRep, RhsExponent, Radix>,
-                enable_if_t<RhsExponent<LhsExponent, typename Operator::is_comparison>> {
+                enable_if_t<RhsExponent<LhsExponent, enable_if_t<is_comparison_operator<Operator>::value>>> {
             static constexpr int shiftage = LhsExponent - RhsExponent;
             using lhs_type = fixed_point<decltype(std::declval<LhsRep>()<<constant<shiftage>{}), RhsExponent, Radix>;
             using rhs_type = fixed_point<RhsRep, RhsExponent, Radix>;
@@ -167,7 +167,7 @@ namespace cnl {
         // performs zero-degree binary operations between fixed_point types with the same exponent
         template<class Operator, class LhsRep, class RhsRep, int Exponent, int Radix>
         struct binary_operator<Operator, fixed_point<LhsRep, Exponent, Radix>, fixed_point<RhsRep, Exponent, Radix>,
-                enable_if_t<is_zero_degree<Operator>::value, typename Operator::is_not_comparison>> {
+                enable_if_t<is_zero_degree<Operator>::value, enable_if_t<!is_comparison_operator<Operator>::value>>> {
             constexpr auto operator()(
                     fixed_point<LhsRep, Exponent, Radix> const& lhs, fixed_point<RhsRep, Exponent, Radix> const& rhs) const
             -> decltype(from_rep<fixed_point<
@@ -185,7 +185,7 @@ namespace cnl {
         // performs zero-degreen binary operations between fixed_point types with the different exponents
         template<typename Operator, typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
         struct binary_operator<Operator, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>,
-                        enable_if_t<is_zero_degree<Operator>::value, typename Operator::is_not_comparison>> {
+                        enable_if_t<is_zero_degree<Operator>::value, enable_if_t<!is_comparison_operator<Operator>::value>>> {
         private:
             static constexpr int _common_exponent = min(LhsExponent, RhsExponent);
             static constexpr int _lhs_left_shift = LhsExponent-_common_exponent;

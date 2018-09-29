@@ -308,7 +308,7 @@ namespace cnl {
         template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
         struct binary_operator<Operator,
                 elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>,
-                typename Operator::is_comparison> {
+                enable_if_t<is_comparison_operator<Operator>::value>> {
             constexpr auto operator()(
                     elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
                     elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
@@ -320,7 +320,7 @@ namespace cnl {
 
         template<class Operator, int Digits, class Narrowest>
         struct binary_operator<Operator, elastic_integer<Digits, Narrowest>, elastic_integer<Digits, Narrowest>,
-                typename Operator::is_comparison> {
+                enable_if_t<is_comparison_operator<Operator>::value>> {
             constexpr auto operator()(
                     elastic_integer<Digits, Narrowest> const& lhs,
                     elastic_integer<Digits, Narrowest> const& rhs) const
@@ -431,7 +431,7 @@ namespace cnl {
         template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
         struct binary_operator<Operator,
                 elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>,
-                typename Operator::is_not_comparison> {
+                enable_if_t<!is_comparison_operator<Operator>::value>> {
             constexpr auto operator()(
                     elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
                     elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const

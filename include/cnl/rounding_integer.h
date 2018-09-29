@@ -250,7 +250,7 @@ namespace cnl {
         template<class Operator, class LhsRep, class RhsRep, class RoundingTag>
         struct binary_operator<Operator,
                 rounding_integer<LhsRep, RoundingTag>, rounding_integer<RhsRep, RoundingTag>,
-                typename Operator::is_not_comparison> {
+                enable_if_t<!is_comparison_operator<Operator>::value>> {
             constexpr auto operator()(
                     rounding_integer<LhsRep, RoundingTag> const& lhs,
                     rounding_integer<RhsRep, RoundingTag> const& rhs) const
@@ -279,7 +279,7 @@ namespace cnl {
         // comparison for operands with a common tag
         template<class Operator, class LhsRep, class RhsRep, class RoundingTag>
         struct binary_operator<Operator, rounding_integer<LhsRep, RoundingTag>, rounding_integer<RhsRep, RoundingTag>,
-                typename Operator::is_comparison> {
+                enable_if_t<is_comparison_operator<Operator>::value>> {
         constexpr auto operator()(
                 rounding_integer<LhsRep, RoundingTag> const& lhs,
                 rounding_integer<RhsRep, RoundingTag> const& rhs) const
@@ -293,7 +293,7 @@ namespace cnl {
         template<class Operator, class LhsRep, class LhsRoundingTag, class RhsRep, class RhsRoundingTag>
         struct binary_operator<Operator,
                 rounding_integer<LhsRep, LhsRoundingTag>, rounding_integer<RhsRep, RhsRoundingTag>,
-                typename Operator::is_comparison> {
+                enable_if_t<is_comparison_operator<Operator>::value>> {
             constexpr auto operator()(
                     rounding_integer<LhsRep, LhsRoundingTag> const& lhs,
                     rounding_integer<RhsRep, RhsRoundingTag> const& rhs) const
