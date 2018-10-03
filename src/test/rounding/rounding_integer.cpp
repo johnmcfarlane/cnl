@@ -140,13 +140,13 @@ namespace {
     
     namespace test_operate {
         static_assert(
-                cnl::_impl::binary_operator<cnl::_impl::equal_op, rounding_integer<>, rounding_integer<>>()(rounding_integer<>{2468}, rounding_integer<>{2468}),
+                cnl::_impl::comparison_operator<cnl::_impl::equal_op, rounding_integer<>, rounding_integer<>>()(rounding_integer<>{2468}, rounding_integer<>{2468}),
                 "cnl::numeric_traits<rounding_integer> test failed");
         static_assert(
-                cnl::_impl::binary_operator<cnl::_impl::equal_op, int, rounding_integer<>>()(2468, rounding_integer<>{2468}),
+                cnl::_impl::comparison_operator<cnl::_impl::equal_op, int, rounding_integer<>>()(2468, rounding_integer<>{2468}),
                 "cnl::numeric_traits<rounding_integer> test failed");
         static_assert(
-                cnl::_impl::binary_operator<cnl::_impl::greater_than_op, rounding_integer<>, int>()(rounding_integer<>{234}, 233),
+                cnl::_impl::comparison_operator<cnl::_impl::greater_than_op, rounding_integer<>, int>()(rounding_integer<>{234}, 233),
                 "cnl::numeric_traits<rounding_integer> test failed");
     }
 

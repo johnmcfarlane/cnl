@@ -187,8 +187,7 @@ namespace cnl {
         // for arithmetic operands with a common overflow tag
         template<class Operator, class LhsRep, class RhsRep, class OverflowTag>
         struct binary_operator<Operator,
-                overflow_integer<LhsRep, OverflowTag>, overflow_integer<RhsRep, OverflowTag>,
-                typename Operator::is_not_comparison> {
+                overflow_integer<LhsRep, OverflowTag>, overflow_integer<RhsRep, OverflowTag>> {
             constexpr auto operator()(
                     overflow_integer<LhsRep, OverflowTag> const& lhs,
                     overflow_integer<RhsRep, OverflowTag> const& rhs) const
@@ -201,9 +200,8 @@ namespace cnl {
 
         // for comparison operands with a common overflow tag
         template<class Operator, class LhsRep, class RhsRep, class OverflowTag>
-        struct binary_operator<Operator,
-                overflow_integer<LhsRep, OverflowTag>, overflow_integer<RhsRep, OverflowTag>,
-                typename Operator::is_comparison> {
+        struct comparison_operator<Operator,
+                overflow_integer<LhsRep, OverflowTag>, overflow_integer<RhsRep, OverflowTag>> {
             constexpr auto operator()(
                     overflow_integer<LhsRep, OverflowTag> const& lhs,
                     overflow_integer<RhsRep, OverflowTag> const& rhs) const
@@ -215,11 +213,10 @@ namespace cnl {
 
         // for arithmetic operands with different overflow tags or rep types
         template<class Operator, class LhsRep, class LhsTag, class RhsRep, class RhsTag>
-        struct binary_operator<Operator,
-                overflow_integer<LhsRep, LhsTag>, overflow_integer<RhsRep, RhsTag>,
-                typename Operator::is_comparison> {
+        struct comparison_operator<Operator,
+                overflow_integer<LhsRep, LhsTag>, overflow_integer<RhsRep, RhsTag>> {
             using common_tag = cnl::_impl::common_type_t<LhsTag, RhsTag>;
-            using operator_type = binary_operator<
+            using operator_type = comparison_operator<
                     Operator,
                     overflow_integer<LhsRep, common_tag>,
                     overflow_integer<RhsRep, common_tag>>;

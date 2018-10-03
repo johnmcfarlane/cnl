@@ -27,7 +27,7 @@ namespace cnl {
         };
 
         template<class Operator, typename LhsRep, typename RhsRep>
-        struct binary_operator<Operator, integer<LhsRep>, integer<RhsRep>, typename Operator::is_not_comparison> {
+        struct binary_operator<Operator, integer<LhsRep>, integer<RhsRep>> {
             constexpr auto operator()(integer<LhsRep> const& lhs, integer<RhsRep> const& rhs) const
             -> decltype(make_integer(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
             {
@@ -36,7 +36,7 @@ namespace cnl {
         };
 
         template<class Operator, typename LhsRep, typename RhsRep>
-        struct binary_operator<Operator, integer<LhsRep>, integer<RhsRep>, typename Operator::is_comparison> {
+        struct comparison_operator<Operator, integer<LhsRep>, integer<RhsRep>> {
             constexpr auto operator()(integer<LhsRep> const& lhs, integer<RhsRep> const& rhs) const
             -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
             {

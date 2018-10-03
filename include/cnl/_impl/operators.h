@@ -364,6 +364,9 @@ namespace cnl {
         template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
         struct binary_operator;
 
+        template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
+        struct comparison_operator;
+
         template<class Operator, class RhsOperand, class Enable = void>
         struct pre_operator;
 
@@ -460,17 +463,27 @@ namespace cnl {
 
         CNL_DEFINE_BINARY_OPERATOR(>>, shift_right_op)
 
-        CNL_DEFINE_BINARY_OPERATOR(==, equal_op)
+        // comparison operators
+#define CNL_DEFINE_COMPARISON_OPERATOR(OP, NAME) \
+        template<class LhsOperand, class RhsOperand> \
+        constexpr auto operator OP (LhsOperand const& lhs, RhsOperand const& rhs) \
+        -> decltype(cnl::_impl::comparison_operator<cnl::_impl::enable_binary_t< \
+                LhsOperand, RhsOperand, cnl::_impl::NAME>, LhsOperand, RhsOperand>()(lhs, rhs)) \
+        { \
+            return cnl::_impl::comparison_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
+        }
 
-        CNL_DEFINE_BINARY_OPERATOR(!=, not_equal_op)
+        CNL_DEFINE_COMPARISON_OPERATOR(==, equal_op)
 
-        CNL_DEFINE_BINARY_OPERATOR(<, less_than_op)
+        CNL_DEFINE_COMPARISON_OPERATOR(!=, not_equal_op)
 
-        CNL_DEFINE_BINARY_OPERATOR(>, greater_than_op)
+        CNL_DEFINE_COMPARISON_OPERATOR(<, less_than_op)
 
-        CNL_DEFINE_BINARY_OPERATOR(<=, less_than_or_equal_op)
+        CNL_DEFINE_COMPARISON_OPERATOR(>, greater_than_op)
 
-        CNL_DEFINE_BINARY_OPERATOR(>=, greater_than_or_equal_op)
+        CNL_DEFINE_COMPARISON_OPERATOR(<=, less_than_or_equal_op)
+
+        CNL_DEFINE_COMPARISON_OPERATOR(>=, greater_than_or_equal_op)
 
         // pre increment/decrement
 #define CNL_DEFINE_PRE_OPERATOR(OP, NAME) \

@@ -20,7 +20,7 @@ namespace {
         static_assert(
                 identical(
                         true,
-                        cnl::_impl::binary_operator<
+                        cnl::_impl::comparison_operator<
                                 cnl::_impl::equal_op,
                                 cnl::_impl::integer<short>,
                                 cnl::_impl::integer<long>>{}(
