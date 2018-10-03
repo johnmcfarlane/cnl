@@ -386,7 +386,7 @@ namespace cnl {
         using enable_unary_t = ::cnl::_impl::enable_if_t<_impl::wants_generic_ops<Operand>::value, T>;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::enable_unary_t
+        // cnl::_impl::enable_binary_t
 
         template<class LhsOperand, class RhsOperand>
         struct enable_binary;
