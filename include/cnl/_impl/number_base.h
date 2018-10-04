@@ -166,6 +166,56 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::comparison_operator
+
+        // higher OP number_base<>
+        template<class Operator, class Lhs, class Rhs>
+        struct comparison_operator<
+                Operator, Lhs, Rhs,
+                enable_if_t<std::is_floating_point<Lhs>::value && is_derived_from_number_base<Rhs>::value>> {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(Operator()(lhs, static_cast<Lhs>(rhs)))
+            {
+                return Operator()(lhs, static_cast<Lhs>(rhs));
+            }
+        };
+
+        // number_base<> OP higher
+        template<class Operator, class Lhs, class Rhs>
+        struct comparison_operator<
+                Operator, Lhs, Rhs,
+                enable_if_t<is_derived_from_number_base<Lhs>::value && std::is_floating_point<Rhs>::value>> {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(Operator()(static_cast<Rhs>(lhs), rhs))
+            {
+                return Operator()(static_cast<Rhs>(lhs), rhs);
+            }
+        };
+
+        // lower OP number_base<>
+        template<class Operator, class Lhs, class Rhs>
+        struct comparison_operator<
+                Operator, Lhs, Rhs,
+                enable_if_t<is_wrappable<Lhs, Rhs>::value && is_derived_from_number_base<Rhs>::value>> {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(Operator()(make_number<Rhs>(lhs), rhs)) {
+                return Operator()(make_number<Rhs>(lhs), rhs);
+            }
+        };
+
+        // number_base<> OP lower
+        template<class Operator, class Lhs, class Rhs>
+        struct comparison_operator<
+                Operator, Lhs, Rhs,
+                enable_if_t<is_derived_from_number_base<Lhs>::value && is_wrappable<Rhs, Lhs>::value>> {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(Operator()(lhs, make_number<Lhs>(rhs)))
+            {
+                return Operator()(lhs, make_number<Lhs>(rhs));
+            }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::pre_operator
 
         // number_base<> OP lower

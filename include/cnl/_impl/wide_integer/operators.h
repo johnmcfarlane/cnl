@@ -30,8 +30,7 @@ namespace cnl {
         template<class Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
         struct binary_operator<
                 Operator,
-                wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>,
-                typename Operator::is_not_comparison> {
+                wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>> {
             using _lhs = wide_integer<LhsDigits, LhsNarrowest>;
             using _rhs = wide_integer<RhsDigits, RhsNarrowest>;
             using _result = typename std::common_type<_lhs, _rhs>::type;
@@ -42,10 +41,9 @@ namespace cnl {
         };
 
         template<class Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
-        struct binary_operator<
+        struct comparison_operator<
                 Operator,
-                wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>,
-                typename Operator::is_comparison> {
+                wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>> {
             constexpr auto operator()(
                     wide_integer<LhsDigits, LhsNarrowest> const& lhs,
                     wide_integer<RhsDigits, RhsNarrowest> const& rhs) const
