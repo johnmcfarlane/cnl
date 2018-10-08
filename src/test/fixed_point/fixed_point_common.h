@@ -163,7 +163,7 @@ TEST(TOKENPASTE2(TEST_LABEL, post), decrement)
 ////////////////////////////////////////////////////////////////////////////////
 // sqrt exception throwing
 
-#if defined(CNL_EXCEPTIONS_ENABLED)
+#if defined(CNL_EXCEPTIONS_ENABLED) && !defined(CNL_UNREACHABLE_UB_ENABLED)
 
 TEST(TOKENPASTE2(TEST_LABEL, sqrt_exception), from_alternative_specialization)
 {
