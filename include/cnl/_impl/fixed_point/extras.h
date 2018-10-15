@@ -14,13 +14,16 @@
 
 #include "type.h"
 #include "../cmath/abs.h"
+#include "../config.h"
 #include "../num_traits/fixed_width_scale.h"
 #include "../num_traits/unwrap.h"
 #include "../unreachable.h"
 
 #include <cmath>
+#if defined(CNL_IOSTREAM_ENABLED)
 #include <istream>
 #include <ostream>
+#endif
 
 /// compositional numeric library
 namespace cnl {
