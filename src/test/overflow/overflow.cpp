@@ -526,11 +526,13 @@ namespace {
                         cnl::shift_left(cnl::trapping_overflow, -1073741824, 1)),
                 "cnl::shift_left with negative input");
 
+#if !defined(CNL_UNREACHABLE_UB_ENABLED)
         TEST(overflow, trap)
         {
             ASSERT_DEATH(
                     cnl::shift_left(cnl::trapping_overflow, -1073741825, 1),
                     "negative overflow");
         }
+#endif
     }
 }

@@ -23,6 +23,7 @@ using test_int = cnl::overflow_integer<int, cnl::trapping_overflow_tag>;
 ////////////////////////////////////////////////////////////////////////////////
 // trapping_integer-specific exceptions tests
 
+#if !defined(CNL_UNREACHABLE_UB_ENABLED)
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), scale_down)
 {
     auto scale_down_fn = cnl::_impl::scale<-8, 2, uint16>;
@@ -40,3 +41,4 @@ TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), assignment)
     using fp_type = fixed_point<int8, -7>;
     ASSERT_DEATH(fp_type(1), "positive overflow");
 }
+#endif
