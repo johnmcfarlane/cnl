@@ -20,6 +20,7 @@
 
 #include <cmath>
 #include <istream>
+#include <ostream>
 
 /// compositional numeric library
 namespace cnl {
