@@ -39,6 +39,7 @@ namespace cnl {
     using uint64 = std::uint64_t;
 
 #if defined(CNL_INT128_ENABLED)
+    // to disable 128-bit integer support, #define CNL_USE_INT128=0
     using int128 = __int128;
     using uint128 = unsigned __int128;
 
