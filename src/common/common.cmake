@@ -20,15 +20,15 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
   set(PROFILE_ENABLED_FLAGS "/Oy-")
   set(PROFILE_DISABLED_FLAGS "")
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-  set(MISC_FLAGS "-pthread -Wall -Wextra -Wpedantic -Werror")
+  set(MISC_FLAGS "-pthread -Wall -Wextra -Werror")
 
   set(CPP17_ENABLED_FLAGS "-std=c++17")
 
   set(EXCEPTION_ENABLED_FLAGS "-fexceptions -frtti")
   set(EXCEPTION_DISABLED_FLAGS "-DBOOST_NO_EXCEPTIONS -DBOOST_NO_RTTI -fno-exceptions -fno-rtti")
 
-  set(INT128_ENABLED_FLAGS "-DCNL_USE_INT128")
-  set(INT128_DISABLED_FLAGS "")
+  set(INT128_ENABLED_FLAGS "-DCNL_USE_INT128=1")
+  set(INT128_DISABLED_FLAGS "-DCNL_USE_INT128=0 -Wpedantic")
 
   set(PROFILE_ENABLED_FLAGS "-fno-omit-frame-pointer")
   set(PROFILE_DISABLED_FLAGS "")
