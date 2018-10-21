@@ -39,19 +39,11 @@ namespace cnl {
     using uint64 = std::uint64_t;
 
 #if defined(CNL_INT128_ENABLED)
-#if defined(__GNUC__)
-// GCC complains about __int128 with -pedantic or -pedantic-errors
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpedantic"
-#endif
     using int128 = __int128;
     using uint128 = unsigned __int128;
 
     using intmax = int128;
     using uintmax = uint128;
-#if defined(__GNUC__)
-#pragma GCC diagnostic pop
-#endif
 #else
     using intmax = std::intmax_t;
     using uintmax = std::uintmax_t;
