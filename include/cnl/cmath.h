@@ -11,12 +11,14 @@
 #define CNL_CMATH_H
 
 #include "_impl/cmath/abs.h"
+#include "_impl/cmath/remainder.h"
 
 #include <cmath>
 
 /// compositional numeric library
 namespace cnl {
     using _impl::abs;
+    using _impl::remainder;
 
     template<typename T>
     constexpr T sqrt(T arg) {
