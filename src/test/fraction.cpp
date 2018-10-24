@@ -174,7 +174,7 @@ namespace {
 
     namespace test_abs {
         static_assert(identical(
-                cnl::make_fraction(1024, 360L),
+                cnl::make_fraction(short{1024}, long{360}),
                 cnl::abs(cnl::make_fraction(short{1024}, long{360}))), "reduce(cnl::fraction)");
         static_assert(identical(
                 cnl::fraction<>(6, 3),
