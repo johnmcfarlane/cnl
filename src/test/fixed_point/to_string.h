@@ -30,6 +30,38 @@ namespace {
                     std::string{"0.00390625"},
                     cnl::to_string(cnl::fixed_point<int, -16>(0.00390625)));
         }
+
+        TEST(to_string, fixed_point_wide_lowest)
+        {
+            // -9223372036854775808÷4294967296
+            ASSERT_EQ(
+                    std::string{"-2147483648"},
+                    cnl::to_string(cnl::numeric_limits<cnl::fixed_point<cnl::int64, -32>>::lowest()));
+        }
+
+        TEST(to_string, fixed_point_wide_negative_max)
+        {
+            // -9223372036854775807÷4294967296
+            ASSERT_EQ(
+                    std::string{"-2147483647.99999999976716935634613037109375"},
+                    cnl::to_string(-cnl::numeric_limits<cnl::fixed_point<cnl::int64, -32>>::max()));
+        }
+
+        TEST(to_string, fixed_point_wide_min)
+        {
+            // 1÷4294967296
+            ASSERT_EQ(
+                    std::string{"0.00000000023283064365386962890625"},
+                    cnl::to_string(cnl::numeric_limits<cnl::fixed_point<cnl::int64, -32>>::min()));
+        }
+
+        TEST(to_string, fixed_point_wide_max)
+        {
+            // 9223372036854775807÷4294967296
+            ASSERT_EQ(
+                    std::string{"2147483647.99999999976716935634613037109375"},
+                    cnl::to_string(cnl::numeric_limits<cnl::fixed_point<cnl::int64, -32>>::max()));
+        }
     }
 }
 
