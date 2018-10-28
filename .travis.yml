@@ -16,8 +16,8 @@ matrix:
       env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF
 
     - os: osx
-      osx_image: xcode8
-      env: MATRIX_EVAL="brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF SANITIZE=OFF
+      osx_image: xcode9
+      env: MATRIX_EVAL="rm '/usr/local/include/c++' && brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF SANITIZE=OFF
 
     - os: linux
       addons: &gcc6
@@ -90,8 +90,8 @@ matrix:
       env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF
 
     - os: osx
-      osx_image: xcode8
-      env: MATRIX_EVAL="brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF
+      osx_image: xcode9
+      env: MATRIX_EVAL="rm '/usr/local/include/c++' && brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF
 
     - os: linux
       addons: *gcc6
@@ -127,8 +127,8 @@ matrix:
       env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF
 
     - os: osx
-      osx_image: xcode8
-      env: MATRIX_EVAL="brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF
+      osx_image: xcode9
+      env: MATRIX_EVAL="rm '/usr/local/include/c++' && brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF
 
     - os: linux
       addons: *gcc6
