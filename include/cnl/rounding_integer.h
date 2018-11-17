@@ -10,6 +10,7 @@
 #include "_impl/num_traits/fixed_width_scale.h"
 #include "_impl/number_base.h"
 #include "_impl/rounding.h"
+#include "_impl/num_traits/adopt_signedness.h"
 #include "_impl/type_traits/common_type.h"
 #include "_impl/used_digits.h"
 
@@ -198,8 +199,8 @@ namespace cnl {
     struct scale<Digits, Radix, rounding_integer<Rep, RoundingTag>,
             _impl::enable_if_t<0<=Digits>> {
         constexpr auto operator()(rounding_integer<Rep, RoundingTag> const& s) const
-        -> decltype(_impl::from_rep<rounding_integer<Rep, RoundingTag>>(
-                scale<Digits, Radix, Rep>{}(_impl::to_rep(s))))
+        -> _impl::adopt_signedness_t<decltype(_impl::from_rep<rounding_integer<Rep, RoundingTag>>(
+                scale<Digits, Radix, Rep>{}(_impl::to_rep(s)))), Rep>
         {
             return _impl::from_rep<rounding_integer<Rep, RoundingTag>>(
                     scale<Digits, Radix, Rep>{}(_impl::to_rep(s)));

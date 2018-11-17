@@ -219,14 +219,14 @@ static_assert(cnl::_impl::scale<1, 10>(int8(0))==0, "cnl::_impl::scale test fail
 static_assert(cnl::_impl::scale<1, 10>(int8(1))==10, "cnl::_impl::scale test failed");
 
 #if defined(TEST_NATIVE_INTEGER)
-static_assert(cnl::_impl::scale<8>(uint16{0x1234})==0x123400, "cnl::_impl::scale test failed");
-static_assert(cnl::_impl::scale<8>(uint8{0x12})==0x1200, "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<8>(uint16{0x1234})==0x123400U, "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<8>(uint8{0x12})==0x1200U, "cnl::_impl::scale test failed");
 #endif
 
 #if defined(TEST_SATURATED_OVERFLOW_INTEGER)
-static_assert(identical(cnl::_impl::scale<8, 2, uint16>((uint16)0x1234), uint16{0x1234}<<8), "cnl::_impl::scale test failed");
-static_assert(cnl::_impl::scale<8, 2, uint16>((uint8)0x1234) == 0xff00, "cnl::_impl::scale test failed");
-static_assert(cnl::_impl::scale<8, 2, uint8>(0x34) == test_int{0x3400}, "cnl::_impl::scale test failed");
+static_assert(identical(test_unsigned{0x1234<<8}, cnl::_impl::scale<8, 2, uint16>((uint16)0x1234)), "cnl::_impl::scale test failed");
+static_assert(identical(test_unsigned{0xff00}, cnl::_impl::scale<8, 2, uint16>((uint8)0x1234)), "cnl::_impl::scale test failed");
+static_assert(identical(test_unsigned{0x3400}, cnl::_impl::scale<8, 2, uint8>(0x34)), "cnl::_impl::scale test failed");
 #endif
 
 static_assert(cnl::_impl::scale<8, 2, int16>(-123)==-31488, "cnl::_impl::scale test failed");
@@ -234,20 +234,20 @@ static_assert(cnl::_impl::scale<8, 2, int16>(-123)==-31488, "cnl::_impl::scale t
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::_impl::fp::type::cnl::_impl::scale negative RHS
 
-static_assert(cnl::_impl::scale<-8, 2, uint16>((uint16) 0x1234)==0x12, "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<-8, 2, uint16>((uint16) 0x1234)==0x12U, "cnl::_impl::scale test failed");
 static_assert(cnl::_impl::scale<-8, 2, int16>(-31488)==-123, "cnl::_impl::scale test failed");
 
 #if !defined(TEST_WIDE_INTEGER)
-static_assert(identical(test_int{0x123400}, cnl::_impl::scale<8, 2>(uint16{0x1234})), "cnl::_impl::scale test failed");
+static_assert(identical(test_unsigned{0x123400}, cnl::_impl::scale<8, 2>(uint16{0x1234})), "cnl::_impl::scale test failed");
 #endif
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
 #endif
-static_assert(cnl::_impl::scale<-8, 2, uint16>((uint16) 0x1234)==0x12, "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<-8, 2, uint16>((uint16) 0x1234)==0x12U, "cnl::_impl::scale test failed");
 static_assert(cnl::_impl::scale<-8, 2, int16>(-31488)==-123, "cnl::_impl::scale test failed");
 
-static_assert(cnl::_impl::scale<-8, 2, uint16>((uint8) 0x34)==0x0, "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<-8, 2, uint16>((uint8) 0x34)==0x0U, "cnl::_impl::scale test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::power
@@ -640,10 +640,20 @@ static_assert(identical(fixed_point<int8, -5>{2.125}+fixed_point<int8, -5>{-3.25
         "cnl::fixed_point addition operator test failed");
 #endif
 
-static_assert(identical(fixed_point<uint8, -4>{1.5}+2048, fixed_point<test_int, -4>{2049.5}), "test failed");
-static_assert(identical(2048+fixed_point<uint8, -4>{2.25}, fixed_point<test_int, -4>{2050.25}),
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<test_unsigned>()+std::declval<test_int>()), -4>{2049.5},
+                fixed_point<uint8, -4>{1.5}+2048),
+        "test failed");
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<test_unsigned>()+std::declval<test_int>()), -4>{2050.25},
+                fixed_point<>{2048}+fixed_point<uint8, -4>{2.25}),
         "cnl::fixed_point addition operator test failed");
-static_assert(is_same<decltype(2048+fixed_point<uint8, 10>(10240)), fixed_point<test_signed, 0>>::value,
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<test_unsigned>()+std::declval<test_int>()), 0>{12288},
+                2048+fixed_point<uint8, 10>(10240)),
         "cnl::fixed_point addition operator test failed");
 
 static_assert(identical(16777981.428100586f, 765.432f+fixed_point<int64, -32>(16777215.996093750)),
@@ -668,8 +678,20 @@ static_assert(fixed_point<int8, -5>(2.125)-fixed_point<int8, -5>(3.25)==-1.125f,
 static_assert(is_same<decltype(fixed_point<int8, -5>(2.125)-fixed_point<int8, -5>(-3.25)), fixed_point<test_int, -5>>::value,
         "cnl::fixed_point subtraction test failed");
 #endif
-static_assert(fixed_point<uint8, -3>(0.875)-2048==-2047.125, "cnl::fixed_point subtraction test failed");
-static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)-2048), fixed_point<test_signed, 0>>::value,
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<unsigned>()-std::declval<test_unsigned>()), -3>{2048U-0.875},
+                2048U-fixed_point<uint8, -3>(0.875)),
+        "cnl::fixed_point subtraction test failed");
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<test_signed>()-std::declval<test_int>()), -3>{0.875-2048},
+                fixed_point<int8, -3>(0.875)-2048),
+        "cnl::fixed_point subtraction test failed");
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<test_unsigned>()-std::declval<test_int>()), 0>{10240-2048},
+                fixed_point<uint8, 10>(10240)-2048),
         "cnl::fixed_point subtraction test failed");
 static_assert(identical(-16776450.564086914f, 765.432f-fixed_point<int64, -32>(16777215.996093750)),
         "cnl::fixed_point subtraction test failed");

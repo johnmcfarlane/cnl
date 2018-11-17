@@ -459,9 +459,9 @@ namespace test_scale {
             "fixed_width_scale<overflow_integer<>> test failed");
     static_assert(identical(
             cnl::_impl::scale<8, 2>(saturated_integer<cnl::uint16>{0x1234}),
-            saturated_integer<int>{0x123400}),
+            saturated_integer<unsigned>{0x123400}),
             "fixed_width_scale<overflow_integer<>> test failed");
-    static_assert(identical(cnl::_impl::scale<4, 2>(native_integer<cnl::uint8>{3}), native_integer<int>{48}),
+    static_assert(identical(cnl::_impl::scale<4, 2>(native_integer<cnl::uint8>{3}), native_integer<unsigned>{48}),
                   "fixed_width_scale<overflow_integer<>> test failed");
 }
 

@@ -15,6 +15,7 @@
 #include "_impl/native_tag.h"
 #include "_impl/number_base.h"
 #include "_impl/operators.h"
+#include "_impl/num_traits/adopt_signedness.h"
 #include "_impl/type_traits/common_type.h"
 #include "_impl/type_traits/identical.h"
 
@@ -145,7 +146,9 @@ namespace cnl {
             _impl::enable_if_t<(Digits>=0)>> {
         using _value_type = overflow_integer<Rep, OverflowTag>;
         constexpr auto operator()(_value_type const& s) const
-        -> decltype(_impl::from_rep<_value_type>(shift_left(OverflowTag{}, _impl::to_rep(s), constant<Digits>{})))
+        -> _impl::adopt_signedness_t<
+                decltype(_impl::from_rep<_value_type>(shift_left(OverflowTag{}, _impl::to_rep(s), constant<Digits>{}))),
+                Rep>
         {
             return _impl::from_rep<_value_type>(shift_left(OverflowTag{}, _impl::to_rep(s), constant<Digits>{}));
         }

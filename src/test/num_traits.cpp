@@ -126,13 +126,13 @@ namespace {
         static_assert(identical(cnl::_impl::scale<15, 2, unsigned>(3), 98304U), "cnl::_impl::scale test failed");
 
 #if defined(__cpp_binary_literals)
-        static_assert(identical(cnl::_impl::scale<8, 2, uint8_t>(0b11110101), 0b1111010100000000), "cnl::_impl::scale test failed");
-        static_assert(identical(cnl::_impl::scale<4, 2, uint8_t>(0b10110110), 0b101101100000), "cnl::_impl::scale test failed");
-        static_assert(identical(cnl::_impl::scale<2, 2, uint8_t>(0b00111010), 0b11101000), "cnl::_impl::scale test failed");
-        static_assert(identical(cnl::_impl::scale<0, 2, uint8_t>(0b11101011), 0b11101011), "cnl::_impl::scale test failed");
-        static_assert(identical(cnl::_impl::scale<-2, 2, uint8_t>(0b01100100), 0b00011001), "cnl::_impl::scale test failed");
-        static_assert(identical(cnl::_impl::scale<-4, 2, uint8_t>(0b00111001), 0b00000011), "cnl::_impl::scale test failed");
-        static_assert(identical(cnl::_impl::scale<-8, 2, uint8_t>(0b10110011), 0), "cnl::_impl::scale test failed");
+        static_assert(identical(cnl::_impl::scale<8, 2, uint8_t>(0b11110101), 0b1111010100000000u), "cnl::_impl::scale test failed");
+        static_assert(identical(cnl::_impl::scale<4, 2, uint8_t>(0b10110110), 0b101101100000u), "cnl::_impl::scale test failed");
+        static_assert(identical(cnl::_impl::scale<2, 2, uint8_t>(0b00111010), 0b11101000u), "cnl::_impl::scale test failed");
+        static_assert(identical(cnl::_impl::scale<0, 2, uint8_t>(0b11101011), 0b11101011u), "cnl::_impl::scale test failed");
+        static_assert(identical(cnl::_impl::scale<-2, 2, uint8_t>(0b01100100), 0b00011001u), "cnl::_impl::scale test failed");
+        static_assert(identical(cnl::_impl::scale<-4, 2, uint8_t>(0b00111001), 0b00000011u), "cnl::_impl::scale test failed");
+        static_assert(identical(cnl::_impl::scale<-8, 2, uint8_t>(0b10110011), 0u), "cnl::_impl::scale test failed");
 
         static_assert(identical(cnl::_impl::scale<8, 2, int8_t>(-0b1110101), -0b111010100000000), "cnl::_impl::scale test failed");
         static_assert(identical(cnl::_impl::scale<4, 2, int8_t>(-0b0110110), -0b01101100000), "cnl::_impl::scale test failed");
