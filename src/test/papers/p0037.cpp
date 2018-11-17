@@ -85,7 +85,7 @@ namespace design_decisions {
         static_assert(is_same_v<decltype(f2), const fixed_point<int, -5>>);
         static_assert(f2 == fixed_point<short, -5>{1.5});
 
-        constexpr auto g = fixed_point<short, -2>{12.5} - fixed_point<uint8_t, 0>{8};
+        constexpr auto g = fixed_point<int8_t, -2>{12.5} - fixed_point<short, 0>{8};
         static_assert(is_same_v<decltype(g), const fixed_point<int, -2>>);
         static_assert(g == 4.5);
 
