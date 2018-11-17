@@ -7,7 +7,6 @@
 #ifndef CNL_IMPL_TYPE_TRAITS_SET_SIGNEDNESS
 #define CNL_IMPL_TYPE_TRAITS_SET_SIGNEDNESS
 
-#include "is_signed.h"
 #include "make_signed.h"
 #include "make_unsigned.h"
 
