@@ -181,7 +181,7 @@ namespace cnl {
             }
         };
 
-        // performs zero-degreen binary operations between fixed_point types with the different exponents
+        // performs zero-degree binary operations between fixed_point types with the different exponents
         template<typename Operator, typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
         struct binary_operator<Operator, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>,
                         enable_if_t<is_zero_degree<Operator>::value>> {
