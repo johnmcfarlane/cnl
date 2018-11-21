@@ -109,13 +109,38 @@ set(sample_sources
 
 find_package(Boost)
 
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+    set(gtest_byproducts
+            "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtestd${CMAKE_FIND_LIBRARY_SUFFIXES}"
+            "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_maind${CMAKE_FIND_LIBRARY_SUFFIXES}"
+            "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}"
+            "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main${CMAKE_FIND_LIBRARY_SUFFIXES}"
+    )
+    set(gtest_libs
+            debug "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtestd${CMAKE_FIND_LIBRARY_SUFFIXES}"
+            debug "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_maind${CMAKE_FIND_LIBRARY_SUFFIXES}"
+            optimized "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}"
+            optimized "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main${CMAKE_FIND_LIBRARY_SUFFIXES}"
+    )
+else ()
+    set(gtest_byproducts
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main.a
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a
+    )
+    set(gtest_libs
+            general ${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main.a
+            general ${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a
+            pthread
+    )
+endif ()
+
 ExternalProject_Add(
         GoogleTest
         URL "https://github.com/google/googletest/archive/3a4cf1a02ef4adc28fccb7eef2b573b14cd59009.zip"
         URL_MD5 "06ac495303fbe94b198026e3c196425e"
         UPDATE_COMMAND ""
-        INSTALL_COMMAND ""
-        CMAKE_ARGS -Dgtest_force_shared_crt=ON
+        CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}
+        BUILD_BYPRODUCTS ${gtest_byproducts}
 )
 
 ExternalProject_Add(
@@ -131,23 +156,7 @@ ExternalProject_Add(
 
 function(add_gtest_dependency target)
     # gtest
-    ExternalProject_Get_Property(GoogleTest binary_dir)
-    if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-        target_link_libraries(
-                "${target}"
-                debug ${binary_dir}/googlemock/gtest/Debug/${CMAKE_FIND_LIBRARY_PREFIXES}gtestd${CMAKE_FIND_LIBRARY_SUFFIXES}
-                debug ${binary_dir}/googlemock/gtest/Debug/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_maind${CMAKE_FIND_LIBRARY_SUFFIXES}
-                optimized ${binary_dir}/googlemock/gtest/Release/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}
-                optimized ${binary_dir}/googlemock/gtest/Release/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main${CMAKE_FIND_LIBRARY_SUFFIXES}
-        )
-    else ()
-        target_link_libraries(
-                "${target}"
-                general "${binary_dir}/googlemock/gtest/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main.a"
-                general "${binary_dir}/googlemock/gtest/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a"
-                general pthread
-        )
-    endif ()
+    target_link_libraries("${target}" ${gtest_libs})
 
     ExternalProject_Get_Property(GoogleTest source_dir)
     target_include_directories("${target}" SYSTEM PRIVATE "${source_dir}/googletest/include")
