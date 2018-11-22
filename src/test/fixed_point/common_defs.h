@@ -41,7 +41,7 @@ using uint32 = cnl::set_digits_t<test_unsigned, 32>;
 using int64 = cnl::set_digits_t<test_signed, 63>;
 using uint64 = cnl::set_digits_t<test_unsigned, 64>;
 
-#if defined(CNL_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED) || defined(TEST_WIDE_INTEGER)
 using int128 = cnl::set_digits_t<test_signed, 127>;
 using uint128 = cnl::set_digits_t<test_unsigned, 128>;
 #endif

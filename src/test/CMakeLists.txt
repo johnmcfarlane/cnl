@@ -51,6 +51,7 @@ set(test_sources
         _impl/multiword_integer/operators.cpp
         _impl/multiword_integer/optimal_multiword_integer.cpp
         _impl/multiword_integer/type.cpp
+        _impl/wide_integer/common_type.cpp
         _impl/wide_integer/digits.cpp
         _impl/wide_integer/from_rep.cpp
         _impl/wide_integer/from_value.cpp
@@ -75,6 +76,8 @@ set(test_sources
         fixed_point/overflow/fixed_point_saturated_integer.cpp
         fixed_point/rounding/fixed_point_rounding.cpp
         fixed_point/wide_integer/fixed_point_wide_integer.cpp
+        fixed_point/wide_integer/fixed_point_wide_integer_32.cpp
+        fixed_point/wide_integer/fixed_point_wide_integer_8.cpp
         fixed_point/overflow/undefined_overflow.cpp
         fixed_point/rounding/overflow/fixed_point_rounding_overflow.cpp
         rounding/elastic/rounding_elastic_integer.cpp
