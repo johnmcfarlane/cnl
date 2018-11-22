@@ -194,14 +194,6 @@ static_assert(static_cast<int>(-2.9)==-2, "incorrect assumption about default ro
 static_assert(static_cast<int>(-3.0)==-3, "incorrect assumption about default rounding");
 static_assert(static_cast<int>(-3.9)==-3, "incorrect assumption about default rounding");
 
-#if !defined(TEST_WIDE_INTEGER)
-// promotion doesn't always tend towards int
-static_assert(identical(int8(0)+int8(0), test_int{0}), "incorrect assumption about promotion");
-static_assert(identical(int8(0)+int8(0), test_int{0}), "incorrect assumption about promotion");
-static_assert(identical(uint8(0)+int8(0), test_int{0}), "incorrect assumption about promotion");
-static_assert(identical(uint8(0)+uint8(0), test_int{0}), "incorrect assumption about promotion");
-#endif
-
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::_impl
