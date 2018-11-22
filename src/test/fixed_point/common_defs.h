@@ -52,4 +52,5 @@ using uint128 = cnl::set_digits_t<test_unsigned, 128>;
 template <typename Rep=test_int, int Exponent=0>
 using fixed_point = cnl::fixed_point<Rep, Exponent>;
 
+using cnl::_impl::assert_same;
 using cnl::_impl::identical;
