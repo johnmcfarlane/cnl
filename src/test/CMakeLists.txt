@@ -259,7 +259,7 @@ add_dependencies(Test-glm Glm)
 ######################################################################
 # create test of Boost.SIMD integration
 
-if(Boost_FOUND AND Boost_VERSION GREATER 106099)
+if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND EXCEPTIONS)
     # Boost.SIMD has problems building with gcc-7.x
     if(NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
         if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
@@ -281,7 +281,7 @@ if(Boost_FOUND AND Boost_VERSION GREATER 106099)
         ExternalProject_Get_Property(BoostSimd source_dir)
         target_include_directories("${target}" PRIVATE SYSTEM "${source_dir}/include")
     endif(NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
-endif(Boost_FOUND AND Boost_VERSION GREATER 106099)
+endif(Boost_FOUND AND Boost_VERSION GREATER 106099 AND EXCEPTIONS)
 
 ######################################################################
 # create test of Vc integration
