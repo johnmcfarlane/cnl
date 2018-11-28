@@ -40,6 +40,10 @@ namespace cnl {
     };
 
     template<class T, std::size_t N>
+    struct is_signed<boost::simd::pack<T, N>> : is_signed<T> {
+    };
+
+    template<class T, std::size_t N>
     struct make_unsigned<boost::simd::pack<T, N>> {
         using type = boost::simd::pack<make_unsigned_t<T>, N>;
     };

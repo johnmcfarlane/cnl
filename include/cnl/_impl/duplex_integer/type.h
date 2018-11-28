@@ -1,0 +1,89 @@
+
+//          Copyright John McFarlane 2018.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file ../LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
+#if !defined(CNL_IMPL_DUPLEX_INTEGER_TYPE_H)
+#define CNL_IMPL_DUPLEX_INTEGER_TYPE_H 1
+
+#include "../num_traits/width.h"
+#include "../operators.h"
+#include "../type_traits/set_signedness.h"
+#include "../unreachable.h"
+#include "digits.h"
+#include "forward_declaration.h"
+#include "is_signed.h"
+
+#include <cmath>
+#include <iterator>
+
+/// compositional numeric library
+namespace cnl {
+    namespace _impl {
+        // Class duplex_integer is bigendian because this is consistent with std::pair.
+        // It makes < faster but possibly makes == slower.
+
+        template<typename Upper, typename Lower>
+        class duplex_integer {
+            static_assert(!is_signed<Lower>::value, "Lower component must be unsigned.");
+
+            using upper_type = Upper;
+            using lower_type = Lower;
+
+            static constexpr int lower_width = width<lower_type>::value;
+        public:
+            duplex_integer() = default;
+
+            constexpr duplex_integer(upper_type const& u, lower_type const& l);
+
+            template<typename Integer, _impl::enable_if_t<(numeric_limits<Integer>::is_integer), int> Dummy = 0>
+            constexpr duplex_integer(Integer const& i);
+
+            constexpr auto upper() const -> upper_type const&
+            {
+                return _upper;
+            }
+
+            CNL_RELAXED_CONSTEXPR auto upper() -> upper_type&
+            {
+                return _upper;
+            }
+
+            constexpr auto lower() const -> lower_type const&
+            {
+                return _lower;
+            }
+
+            CNL_RELAXED_CONSTEXPR auto lower() -> lower_type&
+            {
+                return _lower;
+            }
+
+            explicit constexpr operator bool() const { return _lower || _upper; }
+
+            template<typename Integer>
+            explicit constexpr operator Integer() const
+            {
+                return upper_value<Integer>() | static_cast<Integer>(_lower);
+            }
+
+        private:
+            template<typename Result>
+            constexpr Result upper_value() const
+            {
+                return (digits<Result>::value<=lower_width)  // if upper is completely left-flushed
+                       ? _upper
+                         ? unreachable<Result>("overflow in narrowing conversion")
+                         : Result{}
+                       : static_cast<Result>(sensible_left_shift(_upper, lower_width));
+            }
+
+            // value == _upper<<lower_width + _lower
+            upper_type _upper;
+            lower_type _lower;
+        };
+    }
+}
+
+#endif  // CNL_IMPL_DUPLEX_INTEGER_TYPE_H

@@ -63,10 +63,10 @@ namespace cnl {
         };
 
         template<class Operator, typename ... Operands>
-        class operator_overflow_traits {
+        struct operator_overflow_traits {
             using result = op_result<Operator, Operands...>;
             using numeric_limits = cnl::numeric_limits<result>;
-        public:
+
             static constexpr int positive_digits = _impl::positive_digits<result>::value;
             static constexpr int negative_digits = _impl::negative_digits<result>::value;
 
@@ -151,7 +151,7 @@ namespace cnl {
                         >traits::positive_digits)
                         && lhs>Lhs{0}
                         && rhs>Rhs{0}
-                        && lhs>traits::max()-rhs;
+                        && typename traits::result(lhs)>traits::max()-rhs;
             }
 
             static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
@@ -160,7 +160,7 @@ namespace cnl {
                         >traits::positive_digits)
                         && lhs<Lhs{0}
                         && rhs<Rhs{0}
-                        && lhs<traits::lowest()-rhs;
+                        && typename traits::result(lhs)<traits::lowest()-rhs;
             }
         };
 

@@ -8,26 +8,44 @@
 #define CNL_IMPL_WIDE_INTEGER_TYPE_H
 
 #include "../integer/type.h"
-#include "../num_traits/digits.h"
+#include "../multiword_integer/numeric_limits.h"
+#include "../multiword_integer/optimal_multiword_integer.h"
+#include "../multiword_integer/type.h"
 #include "../num_traits/max_digits.h"
 #include "../num_traits/set_digits.h"
 #include "../number_base.h"
 #include "../type_traits/enable_if.h"
+#include "forward_declaration.h"
 
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<int Digits = digits<int>::value, typename Narrowest = int, class Enable = void>
-        class wide_integer;
+        // wide_integer_rep
+        template<int Digits, typename Narrowest, typename Enable = void>
+        struct wide_integer_rep;
 
         template<int Digits, typename Narrowest>
-        class wide_integer<Digits, Narrowest, enable_if_t<max_digits<Narrowest>::value>=Digits>>
+        struct wide_integer_rep<Digits, Narrowest, enable_if_t<(max_digits<Narrowest>::value>=Digits)>>
+                : set_digits<Narrowest, max(Digits, digits<Narrowest>::value)> {
+        };
+
+        template<int Digits, typename Narrowest>
+        struct wide_integer_rep<Digits, Narrowest, enable_if_t<(max_digits<Narrowest>::value<Digits)>>
+                : optimal_multiword_integer<Digits, Narrowest> {
+        };
+
+        template<int Digits, typename Narrowest>
+        using wide_integer_rep_t = typename wide_integer_rep<Digits, Narrowest>::type;
+
+        // wide_integer
+        template<int Digits, typename Narrowest>
+        class wide_integer
                 : public number_base<
                         wide_integer<Digits, Narrowest>,
-                        set_digits_t<Narrowest, max(Digits, digits<Narrowest>::value)>> {
+                        wide_integer_rep_t<Digits, Narrowest>> {
             using _base = number_base<
                     wide_integer<Digits, Narrowest>,
-                    set_digits_t<Narrowest, max(Digits, digits<Narrowest>::value)>>;
+                    wide_integer_rep_t<Digits, Narrowest>>;
         public:
             using rep = typename _base::rep;
 

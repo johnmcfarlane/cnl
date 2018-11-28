@@ -9,6 +9,8 @@
 // The tests may fail on types which are not compact,
 // i.e. where (sizeof(test_int)*CHAR_BIT > cnl::width(test_int)::value).
 
+#include <cnl/fraction.h>
+
 #include <gtest/gtest.h>
 
 #include "common_defs.h"
@@ -49,12 +51,14 @@ TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_fractional)
     ASSERT_EQ(lhs, 0.33331298828125);
 }
 
+#if !defined(TEST_WIDE_INTEGER_8)
 TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_alternative_specialization)
 {
     auto lhs = fixed_point<uint32, -16>(0);
     lhs = fixed_point<uint8>(87.65);
     ASSERT_EQ(static_cast<fixed_point<uint8>>(lhs), fixed_point<uint8>(87.65));
 }
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // compound assignment
@@ -194,14 +198,6 @@ static_assert(static_cast<int>(-2.9)==-2, "incorrect assumption about default ro
 static_assert(static_cast<int>(-3.0)==-3, "incorrect assumption about default rounding");
 static_assert(static_cast<int>(-3.9)==-3, "incorrect assumption about default rounding");
 
-#if !defined(TEST_WIDE_INTEGER)
-// promotion doesn't always tend towards int
-static_assert(identical(int8(0)+int8(0), test_int{0}), "incorrect assumption about promotion");
-static_assert(identical(int8(0)+int8(0), test_int{0}), "incorrect assumption about promotion");
-static_assert(identical(uint8(0)+int8(0), test_int{0}), "incorrect assumption about promotion");
-static_assert(identical(uint8(0)+uint8(0), test_int{0}), "incorrect assumption about promotion");
-#endif
-
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::_impl
@@ -234,20 +230,33 @@ static_assert(cnl::_impl::scale<8, 2, int16>(-123)==-31488, "cnl::_impl::scale t
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::_impl::fp::type::cnl::_impl::scale negative RHS
 
-static_assert(cnl::_impl::scale<-8, 2, uint16>((uint16) 0x1234)==0x12, "cnl::_impl::scale test failed");
+static_assert(
+        identical(
+                decltype(std::declval<uint16>()/std::declval<uint16>()){0x12},
+                cnl::_impl::scale<-8, 2, uint16>(0x1234)),
+        "cnl::_impl::scale test failed");
+static_assert(
+        identical(
+                decltype(std::declval<uint16>()/std::declval<uint16>()){0x12},
+                cnl::_impl::scale<-8, 2, uint16>((uint16) 0x1234)),
+        "cnl::_impl::scale test failed");
+static_assert(
+        identical(
+                decltype(std::declval<uint16>()/std::declval<uint16>()){0},
+                cnl::_impl::scale<-8, 2, uint16>((uint8) 0x34)),
+        "cnl::_impl::scale test failed");
 static_assert(cnl::_impl::scale<-8, 2, int16>(-31488)==-123, "cnl::_impl::scale test failed");
 
-#if !defined(TEST_WIDE_INTEGER)
-static_assert(identical(test_int{0x123400}, cnl::_impl::scale<8, 2>(uint16{0x1234})), "cnl::_impl::scale test failed");
-#endif
+static_assert(
+        identical(
+                decltype(std::declval<uint16>()*std::declval<uint16>()){0x123400},
+                cnl::_impl::scale<8, 2>(uint16{0x1234})),
+        "cnl::_impl::scale test failed");
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
 #endif
-static_assert(cnl::_impl::scale<-8, 2, uint16>((uint16) 0x1234)==0x12, "cnl::_impl::scale test failed");
 static_assert(cnl::_impl::scale<-8, 2, int16>(-31488)==-123, "cnl::_impl::scale test failed");
-
-static_assert(cnl::_impl::scale<-8, 2, uint16>((uint8) 0x34)==0x0, "cnl::_impl::scale test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::power
@@ -365,58 +374,100 @@ namespace test_make_fixed_point {
 // cnl::set_digits_t<fixed_point<>, >
 
 namespace test_set_digits_t {
-    template<class Type, int MinNumDigits>
-    using set_digits_t = cnl::set_digits_t<Type, MinNumDigits>;
+    using cnl::set_digits_t;
 
     static_assert(identical(set_digits_t<fixed_point<uint8, -8>, 8>{0}, fixed_point < uint8, -8 > {0}),
                   "cnl::set_digits_t test failed");
     static_assert(is_same<set_digits_t<fixed_point<int8, 8>, 15>, fixed_point<int16, 8>>::value,
                   "cnl::set_digits_t test failed");
-#if !defined(TEST_WIDE_INTEGER)
-    static_assert(is_same<set_digits_t<fixed_point<uint16, -16>, 24>, fixed_point<uint32, -16>>::value,
-                  "cnl::set_digits_t test failed");
-#endif
-    static_assert(is_same<set_digits_t<fixed_point<int16, 16>, 31>, fixed_point<int32, 16>>::value,
-                  "cnl::set_digits_t test failed");
-#if !defined(TEST_WIDE_INTEGER)
-    static_assert(is_same<set_digits_t<fixed_point<uint32, -45>, 40>, fixed_point<uint64, -45>>::value,
-                  "cnl::set_digits_t test failed");
-    static_assert(is_same<set_digits_t<fixed_point<int32, -8>, 47>, fixed_point<int64, -8>>::value,
-                  "cnl::set_digits_t test failed");
-    static_assert(is_same<set_digits_t<fixed_point<uint64, 8>, 56>, fixed_point<uint64, 8>>::value,
-                  "cnl::set_digits_t test failed");
-    static_assert(is_same<set_digits_t<fixed_point<int64, -16>, 63>, fixed_point<int64, -16>>::value,
-                  "cnl::set_digits_t test failed");
+    static_assert(
+            assert_same<
+                    fixed_point<set_digits_t<uint16, 24>, -16>,
+                    set_digits_t<fixed_point<uint16, -16>, 24>>::value,
+            "cnl::set_digits_t test failed");
+    static_assert(
+            assert_same<
+                    fixed_point<set_digits_t<int16, 31>, 16>,
+                    set_digits_t<fixed_point<int16, 16>, 31>>::value,
+            "cnl::set_digits_t test failed");
+    static_assert(
+            assert_same<
+                    fixed_point<set_digits_t<uint32, 40>, -45>,
+                    set_digits_t<fixed_point<uint32, -45>, 40>>::value,
+            "cnl::set_digits_t test failed");
+    static_assert(
+            assert_same<
+                    fixed_point<set_digits_t<int32, 47>, -8>,
+                    set_digits_t<fixed_point<int32, -8>, 47>>::value,
+            "cnl::set_digits_t test failed");
+    static_assert(
+            assert_same<
+                    fixed_point<set_digits_t<uint64, 56>, 8>,
+                    set_digits_t<fixed_point<uint64, 8>, 56>>::value,
+            "cnl::set_digits_t test failed");
+    static_assert(
+            assert_same<
+                    fixed_point<set_digits_t<int64, 63>, -16>,
+                    set_digits_t<fixed_point<int64, -16>, 63>>::value,
+            "cnl::set_digits_t test failed");
+#if defined(CNL_INT128_ENABLED) || defined(TEST_WIDE_INTEGER)
+    static_assert(
+            assert_same<
+                    fixed_point<set_digits_t<uint8, 72>, 16>,
+                    set_digits_t<fixed_point<uint8, 16>, 72>>::value,
+            "cnl::set_digits_t test failed");
+    static_assert(
+            assert_same<
+                    fixed_point<set_digits_t<int8, 79>, -45>,
+                    set_digits_t<fixed_point<int8, -45>, 79>>::value,
+            "cnl::set_digits_t test failed");
+    static_assert(
+            assert_same<
+                    fixed_point<set_digits_t<uint16, 88>, -8>,
+                    set_digits_t<fixed_point<uint16, -8>, 88>>::value,
+            "cnl::set_digits_t test failed");
+    static_assert(
+            assert_same<
+                    fixed_point<set_digits_t<int16, 95>, 8>,
+                    set_digits_t<fixed_point<int16, 8>, 95>>::value,
+            "cnl::set_digits_t test failed");
+    static_assert(
+            assert_same<
+                    fixed_point<set_digits_t<uint32, 104>, -16>,
+                    set_digits_t<fixed_point<uint32, -16>, 104>>::value,
+            "cnl::set_digits_t test failed");
+    static_assert(
+            assert_same<
+                    fixed_point<set_digits_t<int32, 111>, 16>,
+                    set_digits_t<fixed_point<int32, 16>, 111>>::value,
+            "cnl::set_digits_t test failed");
+    static_assert(
+            assert_same<
+                    fixed_point<set_digits_t<uint64, 120>, -45>,
+                    set_digits_t<fixed_point<uint64, -45>, 120>>::value,
+            "cnl::set_digits_t test failed");
+    static_assert(
+            assert_same<
+                    fixed_point<set_digits_t<int64, 127>, -8>,
+                    set_digits_t<fixed_point<int64, -8>, 127>>::value,
+            "cnl::set_digits_t test failed");
+#endif  // defined(CNL_INT128_ENABLED) || defined(TEST_WIDE_INTEGER)
+
 #if defined(CNL_INT128_ENABLED)
-    static_assert(is_same<set_digits_t<fixed_point<uint8, 16>, 72>, fixed_point<uint128, 16>>::value,
-                  "cnl::set_digits_t test failed");
-    static_assert(is_same<set_digits_t<fixed_point<int8, -45>, 79>, fixed_point<int128, -45>>::value,
-                  "cnl::set_digits_t test failed");
-    static_assert(is_same<set_digits_t<fixed_point<uint16, -8>, 88>, fixed_point<uint128, -8>>::value,
-                  "cnl::set_digits_t test failed");
-    static_assert(is_same<set_digits_t<fixed_point<int16, 8>, 95>, fixed_point<int128, 8>>::value,
-                  "cnl::set_digits_t test failed");
-    static_assert(is_same<set_digits_t<fixed_point<uint32, -16>, 104>, fixed_point<uint128, -16>>::value,
-                  "cnl::set_digits_t test failed");
-    static_assert(is_same<set_digits_t<fixed_point<int32, 16>, 111>, fixed_point<int128, 16>>::value,
-                  "cnl::set_digits_t test failed");
-    static_assert(is_same<set_digits_t<fixed_point<uint64, -45>, 120>, fixed_point<uint128, -45>>::value,
-                  "cnl::set_digits_t test failed");
-    static_assert(is_same<set_digits_t<fixed_point<int64, -8>, 127>, fixed_point<int128, -8>>::value,
-                  "cnl::set_digits_t test failed");
 #if defined(__GNUC__)
 // GCC complains about __int128 with -pedantic or -pedantic-errors
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
 #endif
     static_assert(
-            is_same<cnl::set_digits_t<cnl::fixed_point<long unsigned int, -96>, 96u>, cnl::fixed_point<cnl::uint128, -96>>::value,
+            assert_same<
+                    cnl::fixed_point<set_digits_t<long unsigned int, 96u>, -96>,
+                    cnl::set_digits_t<cnl::fixed_point<long unsigned int, -96>, 96u>>::value,
             "");
 #if defined(__GNUC__)
 #pragma GCC diagnostic pop
 #endif
-#endif
-#endif
+#endif  // defined(CNL_INT128_ENABLED)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -486,7 +537,8 @@ static_assert(fixed_point<uint64, -7>(232.125f)==232.125L, "cnl::fixed_point tes
 #if !defined(TEST_THROWING_OVERFLOW_INTEGER) \
         && !defined(TEST_TRAPPING_OVERFLOW_INTEGER) \
         && !defined(TEST_UNDEFINED_OVERFLOW_INTEGER) \
-        && !defined(TEST_WIDE_INTEGER)
+        && !defined(TEST_WIDE_INTEGER_INT) \
+        && !defined(TEST_WIDE_INTEGER_32)
 static_assert(fixed_point<int8, -7>(1)!=1.L, "cnl::fixed_point test failed");
 #endif
 
@@ -494,7 +546,8 @@ static_assert(fixed_point<int8, -7>(1)!=1.L, "cnl::fixed_point test failed");
         && !defined(TEST_TRAPPING_OVERFLOW_INTEGER) \
         && !defined(TEST_UNDEFINED_OVERFLOW_INTEGER) \
         && !defined(TEST_SATURATED_OVERFLOW_INTEGER) \
-        && !defined(TEST_WIDE_INTEGER)
+        && !defined(TEST_WIDE_INTEGER_INT) \
+        && !defined(TEST_WIDE_INTEGER_32)
 static_assert(fixed_point<int8, -7>(1)==-1.L, "cnl::fixed_point test failed");
 #endif
 
@@ -506,9 +559,13 @@ static_assert(fixed_point<int64, -7>(123.125l)==123.125f, "cnl::fixed_point test
 
 // exponent == 16
 static_assert(fixed_point<uint8, 16>(test_int{ 65536 }) == 65536.f, "cnl::fixed_point test failed");
+#if defined(TEST_WIDE_INTEGER_INT) || defined(TEST_WIDE_INTEGER_32)
+static_assert(fixed_point<uint16, 16>(6553.)==0u, "cnl::fixed_point test failed");
+#else
 static_assert(fixed_point<uint16, 16>(6553.)==0, "cnl::fixed_point test failed");
+#endif
 static_assert((fixed_point<uint32, 16>(4294967296l))==4294967296.f, "cnl::fixed_point test failed");
-#if !defined(TEST_WIDE_INTEGER) || defined(CNL_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED)
 static_assert((fixed_point<uint64, 16>(1125895611875328l))==1125895611875328ul, "cnl::fixed_point test failed");
 #endif
 
@@ -518,8 +575,13 @@ static_assert((fixed_point<int32, 16>(-4294967296l))==-4294967296.f, "cnl::fixed
 static_assert((fixed_point<int64, 16>(-0x800000000000LL))==-0x800000000000LL, "cnl::fixed_point test failed");
 
 // exponent = 1
+#if defined(TEST_WIDE_INTEGER_INT) || defined(TEST_WIDE_INTEGER_32)
+static_assert(fixed_point<uint8, 1>(10)==10u, "cnl::fixed_point test failed");
+static_assert(fixed_point<uint8, 1>(11)==10u, "cnl::fixed_point test failed");
+#else
 static_assert(fixed_point<uint8, 1>(10)==10, "cnl::fixed_point test failed");
 static_assert(fixed_point<uint8, 1>(11)==10, "cnl::fixed_point test failed");
+#endif
 static_assert(fixed_point<int8, 1>(123.5)==122, "cnl::fixed_point test failed");
 
 static_assert(fixed_point<int8, 1>(127)==126, "cnl::fixed_point test failed");
@@ -528,14 +590,18 @@ static_assert(fixed_point<int8, 1>(-5)==-4, "cnl::fixed_point test failed");
 
 // conversion between fixed_point specializations
 static_assert(fixed_point<uint8, -4>(fixed_point<int16, -8>(1.5))==1.5, "cnl::fixed_point test failed");
+#if !defined(TEST_WIDE_INTEGER_8)
 static_assert(fixed_point<uint16, -8>(fixed_point<int8, -4>(3.25))==3.25, "cnl::fixed_point test failed");
-static_assert(fixed_point<uint8, 4>(fixed_point<int16, -4>(768))==768, "cnl::fixed_point test failed");
-#if !defined(TEST_WIDE_INTEGER) || defined(CNL_INT128_ENABLED)
+#endif
+static_assert(
+        identical(
+                fixed_point<uint8, 4>{768},
+                fixed_point<uint8, 4>(fixed_point<int16, -4>(768))),
+        "cnl::fixed_point test failed");
 static_assert(fixed_point<uint32, -24>(fixed_point<uint64, -48>(3.141592654))>3.1415923f,
         "cnl::fixed_point test failed");
 static_assert(fixed_point<uint32, -24>(fixed_point<uint64, -48>(3.141592654))<3.1415927f,
         "cnl::fixed_point test failed");
-#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // boolean
@@ -568,15 +634,19 @@ static_assert(cnl::numeric_limits<uint8>::max()/5==51, "");
 static_assert(cnl::numeric_limits<uint8>::max()/3==85, "");
 
 namespace test_divide {
-#if !defined(TEST_WIDE_INTEGER)
     static_assert(
-            identical(cnl::quotient(fixed_point<test_int, -14>{1}, int16{127}), fixed_point<int64, -29>{1./127}),
+            identical(
+                    fixed_point<quot_digits_t<test_int, int16>, -29>{1./127},
+                    cnl::quotient(fixed_point<test_int, -14>{1}, int16{127})),
             "cnl::quotient test failed");
-    static_assert(identical(cnl::quotient(int32(-999), int32(3)), fixed_point<int64, -31>{-333LL}),
+    static_assert(identical(cnl::quotient(int32(-999), int32(3)), fixed_point<quot_digits_t<>, -31>{-333LL}),
             "cnl::fixed_point test failed");
     static_assert(identical(cnl::quotient(fixed_point<uint32, 10>{10240}, uint32{3u}), fixed_point<uint64,
             -22>{3413.3333333}), "cnl::fixed_point division test failed");
-    static_assert(identical(cnl::quotient(test_int{10}, fixed_point<uint8, -2>{0.25}), fixed_point<int64, -6>{40}),
+    static_assert(
+            identical(
+                    fixed_point<quot_digits_t<test_int, uint8>, -6>{40},
+                    cnl::quotient(test_int{10}, fixed_point<uint8, -2>{0.25})),
             "cnl::fixed_point division test failed");
 #if defined(CNL_INT128_ENABLED)
     static_assert(identical(
@@ -586,14 +656,15 @@ namespace test_divide {
     static_assert(identical(cnl::quotient(fixed_point<uint32, 0>{0xFFFE0001LL}, fixed_point<uint32, 0>{0xffff}),
             fixed_point<uint64, -32>{0xffffLL}), "cnl::fixed_point test failed");
     static_assert(identical(
-            cnl::quotient(cnl::fixed_point<int32, -16>{963}, cnl::constant<3>{}),
-            fixed_point<int64, -18>{321LL}), "cnl::fixed_point test failed");
-#endif  // TEST_WIDE_INTEGER
+            fixed_point<cnl::set_digits_t<int32, cnl::digits<int32>::value+2>, -18>{321LL},
+            cnl::quotient(cnl::fixed_point<int32, -16>{963}, cnl::constant<3>{})), "cnl::fixed_point test failed");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // comparison
 
+// These tests pass but produce a signed/unsigned comparison warning as a side effect.
+#if !defined(TEST_WIDE_INTEGER)
 // heterogeneous fixed-point to fixed-point comparison
 static_assert(fixed_point<uint8, -4>(4.5)==fixed_point<int16, -7>(4.5), "cnl::fixed_point test failed");
 static_assert(!(fixed_point<uint8, -4>(4.5)==fixed_point<int16, -7>(-4.5)), "cnl::fixed_point test failed");
@@ -613,6 +684,7 @@ static_assert(!(fixed_point<uint8, -4>(4.5)<=fixed_point<int16, -8>(-4.5)), "cnl
 static_assert(fixed_point<uint8, -4>(4.5)>=fixed_point<int16, -8>(.5), "cnl::fixed_point test failed");
 static_assert(fixed_point<uint8, -4>(4.5)>=fixed_point<int16, -8>(-4.5), "cnl::fixed_point test failed");
 static_assert(!(fixed_point<uint8, -4>(4.5)>=fixed_point<int16, -8>(4.6)), "cnl::fixed_point test failed");
+#endif
 
 // heterogeneous fixed-point to arithmetic comparison
 static_assert(fixed_point<uint8, -4>(4.5)==4.5, "cnl::fixed_point test failed");
@@ -627,6 +699,8 @@ static_assert(!(fixed_point<int32, -3>(-4.5)<-5.6), "cnl::fixed_point test faile
 static_assert(fixed_point<int16, -13>(3.141) > 3, "cnl::fixed_point test failed");
 static_assert(fixed_point<int32, -15>{-0.2} < 0, "cnl::fixed_point test failed");
 
+static_assert(fixed_point<uint8, 4>(768)==uint8{768/16}*uint8{16}, "cnl::fixed_point test failed");
+
 ////////////////////////////////////////////////////////////////////////////////
 // arithmetic
 
@@ -635,17 +709,30 @@ static_assert((fixed_point<int32>(123)+fixed_point<int32>(123))==246, "cnl::fixe
 static_assert((fixed_point<int32, -16>(123.125)+fixed_point<int32, -16>(123.75))==246.875, "cnl::fixed_point addition operator test failed");
 static_assert((fixed_point<int32, -16>(123.125)+fixed_point<int32, -16>(123.75))==246.875, "cnl::fixed_point addition operator test failed");
 
-#if !defined(TEST_WIDE_INTEGER)
-static_assert(identical(fixed_point<int8, -5>{2.125}+fixed_point<int8, -5>{-3.25}, fixed_point<test_int, -5>{-1.125f}),
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<int8>()+std::declval<int8>()), -5>{-1.125f},
+                fixed_point<int8, -5>{2.125}+fixed_point<int8, -5>{-3.25}),
+        "cnl::fixed_point addition operator test failed");
+
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<uint8>()+std::declval<test_int>()), -4>{2049.5},
+                fixed_point<uint8, -4>{1.5}+2048),
+        "test failed");
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<test_signed>()+std::declval<uint8>()), -4>{2050.25},
+                fixed_point<>{2048}+fixed_point<uint8, -4>{2.25}),
+        "cnl::fixed_point addition operator test failed");
+#if !defined(TEST_WIDE_INTEGER_8)
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<test_int>()+std::declval<uint8>()*std::declval<test_int>()), 0>{
+                        12288},
+                2048+fixed_point<uint8, 10>(10240)),
         "cnl::fixed_point addition operator test failed");
 #endif
-
-static_assert(identical(fixed_point<uint8, -4>{1.5}+2048, fixed_point<test_int, -4>{2049.5}), "test failed");
-static_assert(identical(2048+fixed_point<uint8, -4>{2.25}, fixed_point<test_int, -4>{2050.25}),
-        "cnl::fixed_point addition operator test failed");
-static_assert(is_same<decltype(2048+fixed_point<uint8, 10>(10240)), fixed_point<test_signed, 0>>::value,
-        "cnl::fixed_point addition operator test failed");
-
 static_assert(identical(16777981.428100586f, 765.432f+fixed_point<int64, -32>(16777215.996093750)),
         "cnl::fixed_point addition operator test failed");
 static_assert(identical(16777981.42809375, 765.432+fixed_point<int64, -32>(16777215.996093750)),
@@ -664,31 +751,50 @@ static_assert((fixed_point<int32, -16>(246.875)-fixed_point<int32, -16>(123.75))
 static_assert((fixed_point<int16, -4>(123.125)-fixed_point<int16, -4>(246.875))==-123.75, "cnl::fixed_point test failed");
 
 static_assert(fixed_point<int8, -5>(2.125)-fixed_point<int8, -5>(3.25)==-1.125f, "cnl::fixed_point subtraction test failed");
-#if !defined(TEST_WIDE_INTEGER)
-static_assert(is_same<decltype(fixed_point<int8, -5>(2.125)-fixed_point<int8, -5>(-3.25)), fixed_point<test_int, -5>>::value,
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<int8>()-std::declval<int8>()), -5>(2.125-3.25),
+                fixed_point<int8, -5>(2.125)-fixed_point<int8, -5>(3.25)),
+        "cnl::fixed_point subtraction test failed");
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<unsigned>()-std::declval<test_signed>()), -3>{2048U-0.875},
+                2048U-fixed_point<uint8, -3>(0.875)),
+        "cnl::fixed_point subtraction test failed");
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<test_signed>()-std::declval<test_int>()), -3>{0.875-2048},
+                fixed_point<int8, -3>(0.875)-2048),
+        "cnl::fixed_point subtraction test failed");
+#if !defined(TEST_WIDE_INTEGER_8)
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<uint8>()-std::declval<int>()), 0>{10240-2048},
+                fixed_point<uint8, 10>(10240)-2048),
         "cnl::fixed_point subtraction test failed");
 #endif
-static_assert(fixed_point<uint8, -3>(0.875)-2048==-2047.125, "cnl::fixed_point subtraction test failed");
-static_assert(is_same<decltype(fixed_point<uint8, 10>(10240)-2048), fixed_point<test_signed, 0>>::value,
-        "cnl::fixed_point subtraction test failed");
 static_assert(identical(-16776450.564086914f, 765.432f-fixed_point<int64, -32>(16777215.996093750)),
         "cnl::fixed_point subtraction test failed");
 
 // multiplication
-#if !defined(TEST_WIDE_INTEGER)
-static_assert(identical(fixed_point<uint8>{0x55} * fixed_point<uint8>{2}, fixed_point<test_int, 0>{0xaa}),
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<uint8>()*std::declval<uint8>()), 0>{0xaa},
+                fixed_point<uint8>{0x55}*fixed_point<uint8>{2}),
         "cnl::fixed_point test failed");
-#endif
 
 static_assert(identical(fixed_point<int64, -16>{123.75} * fixed_point<int32, -16>(44.5), fixed_point<int64, -32>{5506.875}),
         "cnl::fixed_point test failed");
 
-#if !defined(TEST_WIDE_INTEGER)
+#if !defined(TEST_WIDE_INTEGER_8)
 static_assert(
-        identical(fixed_point<int8, -5>{2.125} * fixed_point<int8, -5>{-3.25}, fixed_point<test_int, -10>{-6.90625}),
+        identical(
+                fixed_point<decltype(std::declval<int8>()*std::declval<int8>()), -10>{-6.90625},
+                fixed_point<int8, -5>{2.125}*fixed_point<int8, -5>{-3.25}),
         "cnl::fixed_point multiplication test failed");
+#endif
 
-#if defined(__clang__)
+#if !defined(TEST_WIDE_INTEGER)
 static_assert(identical(fixed_point<uint8, 10>{10240} * 3u, fixed_point<test_unsigned, 10>{30720}),
         "cnl::fixed_point multiplication test failed");
 
@@ -696,7 +802,6 @@ static_assert(identical(3u * uint8{4}, test_unsigned{12}), "cnl::fixed_point mul
 static_assert(identical(3u * fixed_point<uint8, 10>{10240}, fixed_point<test_unsigned, 10>{30720}),
         "cnl::fixed_point multiplication test failed");
 #endif
-#endif  // !defined(TEST_WIDE_INTEGER)
 
 static_assert(identical(-2074569855.5169766f, -123.654f*fixed_point<int64, -32>(16777215.996093750)),
         "cnl::fixed_point multiplication test failed");
@@ -708,33 +813,41 @@ static_assert(identical(-2074569866.7809765625, fixed_point<int64, -32>(16777215
         "cnl::fixed_point multiplication test failed");
 
 // division
-#if !defined(TEST_WIDE_INTEGER)
-static_assert(identical(fixed_point<int8, -1>{63}/fixed_point<int8, -1>{-4}, fixed_point<test_int, 0>{-15.75}),
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<int8>()/std::declval<int8>()), 0>{-15.75},
+                fixed_point<int8, -1>{63}/fixed_point<int8, -1>{-4}),
         "cnl::fixed_point test failed");
-#endif
 static_assert(identical(fixed_point<test_int, -1>{63}/fixed_point<int8, -1>{-4}, fixed_point<test_int, 0>{-15.75}),
         "cnl::fixed_point test failed");
-#if !defined(TEST_WIDE_INTEGER)
-static_assert(identical(fixed_point<int8, 1>{-255}/fixed_point<int8, 1>{-8}, fixed_point<test_int, 0>{31.75}),
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<int8>()/std::declval<int8>()), 0>{31.75},
+                fixed_point<int8, 1>{-255}/fixed_point<int8, 1>{-8}),
         "cnl::fixed_point test failed");
-#endif
 static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==31, "cnl::fixed_point test failed");
 
-#if !defined(TEST_WIDE_INTEGER)
 static_assert(
-        identical(fixed_point<int8, -5>{2.5}/fixed_point<int8, -5>{-4.f}, fixed_point<test_int, 0>{0}),
+        identical(
+                fixed_point<decltype(std::declval<int8>()/std::declval<int8>()), 0>{0},
+                fixed_point<int8, -5>{2.5}/fixed_point<int8, -5>{-4.f}),
         "cnl::fixed_point division test failed");
-#endif
 
-static_assert(identical(test_int{10}/fixed_point<uint8, -6>(0.25), fixed_point<int32, 6>{40}),
-        "cnl::fixed_point division test failed");
-#if !defined(TEST_WIDE_INTEGER)
 static_assert(
-        identical(fixed_point<uint8, 10>{10240}/static_cast<uint16>(3), fixed_point<test_int, 10>{3413.3333333}),
+        identical(
+                fixed_point<decltype(std::declval<test_int>()/std::declval<uint8>()), 6>{40},
+                test_int{10}/fixed_point<uint8, -6>(0.25)),
         "cnl::fixed_point division test failed");
-#endif
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<uint8>()/std::declval<uint16>()), 10>{3413.3333333},
+                fixed_point<uint8, 10>{10240}/static_cast<uint16>(3)),
+        "cnl::fixed_point division test failed");
 
-static_assert(identical(test_int{10}/fixed_point<uint8, -2>{0.25}, fixed_point<test_int, 2>{40}),
+static_assert(
+        identical(
+                fixed_point<decltype(std::declval<test_int>()/std::declval<uint8>()), 2>{40},
+                test_int{10}/fixed_point<uint8, -2>{0.25}),
         "cnl::fixed_point division test failed");
 
 static_assert(16777215.996093750/fixed_point<int64, -32>(-123.654f)==-135678.71712347874,
@@ -756,9 +869,18 @@ static_assert(cnl::numeric_limits<uint128>::is_integer, "");
 
 namespace test_bitshift {
     // dynamic
-    static_assert(identical(fixed_point<test_int, -4>{2}, fixed_point<uint8, -4>{1} << 1), "bitshift test failed");
-    static_assert(identical(fixed_point<test_int, -4>{.5}, fixed_point<uint8, -4>{1} >> 1), "bitshift test failed");
-    static_assert(identical(fixed_point<test_int, -4>{2}, fixed_point<uint8, -4>{1} << fixed_point<>{1}), "bitshift test failed");
+    static_assert(
+            identical(
+                    fixed_point<decltype(std::declval<uint8>() << std::declval<test_int>()), -4>{2},
+                    fixed_point<uint8, -4>{1} << 1), "bitshift test failed");
+    static_assert(
+            identical(
+                    fixed_point<decltype(std::declval<uint8>() >> std::declval<test_int>()), -4>{.5},
+                    fixed_point<uint8, -4>{1} >> 1), "bitshift test failed");
+    static_assert(
+            identical(
+                    fixed_point<decltype(std::declval<uint8>() << std::declval<test_int>()), -4>{2},
+                    fixed_point<uint8, -4>{1} << fixed_point<>{1}), "bitshift test failed");
 
     // cnl::constant
     static_assert(identical(fixed_point<uint8, -3>{2}, fixed_point<uint8, -4>{1} << cnl::constant<1>{}), "bitshift test failed");
@@ -864,11 +986,9 @@ static_assert(test_numeric_limits<test_signed, -16>(1/65536.,
         cnl::numeric_limits<test_signed>::max()/65536.,
         cnl::numeric_limits<test_signed>::lowest()/65536.), "");
 
-#if !defined(TEST_WIDE_INTEGER)
 static_assert(test_numeric_limits<test_unsigned, -16>(1/65536.,
         cnl::numeric_limits<test_unsigned>::max()/65536.,
         cnl::numeric_limits<test_unsigned>::lowest()/65536.), "");
-#endif
 
 static_assert(test_numeric_limits<test_signed, 0>(1,
         cnl::numeric_limits<test_signed>::max(),
@@ -882,11 +1002,9 @@ static_assert(test_numeric_limits<test_signed, 16>(65536.,
         cnl::numeric_limits<test_signed>::max()*65536.,
         cnl::numeric_limits<test_signed>::lowest()*65536.), "");
 
-#if !defined(TEST_WIDE_INTEGER)
 static_assert(test_numeric_limits<test_unsigned, 16>(65536.,
         cnl::numeric_limits<test_unsigned>::max()*65536.,
         cnl::numeric_limits<test_unsigned>::lowest()*65536.), "");
-#endif
 
 static_assert(cnl::numeric_limits<fixed_point<test_int, 256>>::lowest() < -1.e86, "cnl::numeric_limits<fixed_point> test failed");
 static_assert(cnl::numeric_limits<fixed_point<test_int, 256>>::min() > 1.e77, "cnl::numeric_limits<fixed_point> test failed");
@@ -901,7 +1019,7 @@ static_assert(cnl::numeric_limits<fixed_point<test_unsigned, 256>>::max() > 1.e8
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::sqrt
 
-#if !defined(TEST_WIDE_INTEGER)
+#if !defined(TEST_WIDE_INTEGER_INT) && !defined(TEST_WIDE_INTEGER_32)
 static_assert(sqrt(fixed_point<uint8>(225))==15, "cnl::sqrt test failed");
 static_assert(sqrt(fixed_point<int8>(81))==9, "cnl::sqrt test failed");
 
@@ -1032,7 +1150,7 @@ struct FixedPointRepTester {
     FixedPointTesterOutsize<Rep, 100> _6;
 
     // test deduction guides
-#if defined(__cpp_deduction_guides) && (!defined(TEST_WIDE_INTEGER) || defined(CNL_INT128_ENABLED))
+#if defined(__cpp_deduction_guides)
     static_assert(identical(cnl::fixed_point{Rep{0}}, cnl::fixed_point<Rep, 0>{0}));
     static_assert(identical(cnl::fixed_point(Rep{0}), cnl::fixed_point<Rep, 0>(0)));
 

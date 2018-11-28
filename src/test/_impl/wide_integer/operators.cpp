@@ -34,6 +34,11 @@ namespace {
                         true,
                         cnl::_impl::wide_integer<64, unsigned>{3}==cnl::_impl::wide_integer<16, unsigned>{3}),
                 "cnl::_impl::wide_integer equality");
+        static_assert(
+                identical(
+                        true,
+                        cnl::_impl::wide_integer<64, unsigned>{3}==cnl::_impl::wide_integer<16, unsigned>{3}),
+                "cnl::_impl::wide_integer equality");
     }
 
     namespace test_minus {
@@ -62,11 +67,45 @@ namespace {
                 "cnl::_impl::wide_integer add");
     }
 
-    namespace test_right_shift {
+    namespace test_divide {
+        static_assert(
+                identical(
+                        cnl::_impl::wide_integer<16, unsigned>{0x12},
+                        cnl::_impl::binary_operator<
+                                cnl::_impl::divide_op,
+                                cnl::_impl::wide_integer<16, unsigned>,
+                                cnl::_impl::wide_integer<16, unsigned>>{}(0x1234, 0x100)),
+                "");
+        static_assert(
+                identical(
+                        cnl::_impl::wide_integer<16, signed>{0x12},
+                        cnl::_impl::binary_operator<
+                                cnl::_impl::divide_op,
+                                cnl::_impl::wide_integer<16, unsigned>,
+                                cnl::_impl::wide_integer<16, signed>>{}(0x1234, 0x100)),
+                "");
+    }
+
+    namespace test_shift_left {
         static_assert(
                 identical(
                         cnl::_impl::wide_integer<63>{0xAA<<1},
                         cnl::_impl::wide_integer<63>{0xAA}<<1),
-                "cnl::_impl::wide_integer right shift");
+                "cnl::_impl::wide_integer<63> << int");
+        static_assert(
+                identical(
+                        cnl::_impl::wide_integer<255>{0x400000000LL},
+                        cnl::_impl::wide_integer<255>{1} << cnl::_impl::wide_integer<6>{34}),
+                "cnl::_impl::wide_integer<255> << cnl::_impl::wide_integer<6>");
+        static_assert(
+                identical(
+                        cnl::_impl::wide_integer<255>{0x400000000LL},
+                        cnl::_impl::wide_integer<255>{1} << cnl::constant<34>{}),
+                "cnl::_impl::wide_integer<255> << cnl::constant");
+        static_assert(
+                identical(
+                        cnl::_impl::wide_integer<16, cnl::uint8>{123 << 4},
+                        cnl::_impl::wide_integer<16, cnl::uint8>{123} << 4),
+                "cnl::_impl::wide_integer<16, uint8> << cnl::constant");
     }
 }

@@ -12,13 +12,13 @@
 
 // TODO: Every `#if !defined(TEST_WIDE_INTEGER)` is a TODO
 #define TEST_WIDE_INTEGER
-#define TEST_WIDE_INTEGER_INT
-#define TEST_LABEL wide_integer_
+#define TEST_WIDE_INTEGER_8
+#define TEST_LABEL wide_integer_8_
 
 ////////////////////////////////////////////////////////////////////////////////
 // wide_integer type used as fixed_point Rep type
 
-using test_int = cnl::wide_integer<cnl::digits<int>::value, int>;
+using test_int = cnl::wide_integer<cnl::digits<int>::value, cnl::int8>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // perform fixed_point tests with this type of fixed_point specialization

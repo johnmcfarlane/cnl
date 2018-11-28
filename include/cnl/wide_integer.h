@@ -10,7 +10,9 @@
 /// \file
 /// \brief file containing definitions related to \ref wide_integer
 
+#include "_impl/wide_integer/common_type.h"
 #include "_impl/wide_integer/digits.h"
+#include "_impl/wide_integer/forward_declaration.h"
 #include "_impl/wide_integer/from_rep.h"
 #include "_impl/wide_integer/from_value.h"
 #include "_impl/wide_integer/make_wide_integer.h"
