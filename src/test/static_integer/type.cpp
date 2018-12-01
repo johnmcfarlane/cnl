@@ -120,25 +120,25 @@ namespace {
         static_assert(identical(cnl::make_static_integer(7_c), cnl::static_integer<3>{7}), "");
     }
 
-    namespace test_shift_native {
+    namespace test_scale_native {
         static_assert(identical(
                 cnl::static_integer<3, cnl::native_rounding_tag>{1},
                 cnl::_impl::scale<-2, 2>(cnl::static_integer<3, cnl::native_rounding_tag>{7})), "");
     }
 
-    namespace test_shift_nearest {
+    namespace test_scale_nearest {
         static_assert(identical(
                 cnl::static_integer<3, cnl::nearest_rounding_tag>{2},
                 cnl::_impl::scale<-2, 2>(cnl::static_integer<3, cnl::nearest_rounding_tag>{7})), "");
     }
 
-    namespace test_scale_native {
+    namespace test_fixed_width_scale_native {
         static_assert(identical(
                 cnl::static_integer<3, cnl::native_rounding_tag>{1},
                 cnl::_impl::fixed_width_scale<-2>(cnl::static_integer<3, cnl::native_rounding_tag>{7})), "");
     }
 
-    namespace test_scale_nearest {
+    namespace test_fixed_width_scale_nearest {
         static_assert(identical(
                 cnl::static_integer<3, cnl::nearest_rounding_tag>{2},
                 cnl::_impl::fixed_width_scale<-2>(cnl::static_integer<3, cnl::nearest_rounding_tag>{7})), "");
