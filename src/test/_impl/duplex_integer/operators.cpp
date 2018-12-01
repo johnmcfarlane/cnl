@@ -17,6 +17,29 @@
 using cnl::_impl::identical;
 
 namespace {
+    namespace test_minus {
+#if (__cpp_constexpr >= 201304L) && !defined(_MSC_VER)
+        static_assert(identical(
+                cnl::_impl::duplex_integer<
+                        cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>,
+                        cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{-1},
+                -cnl::_impl::duplex_integer<
+                        cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>,
+                        cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{1}), "");
+#endif
+
+        TEST(duplex_integer, minus)
+        {
+            auto expected = cnl::_impl::duplex_integer<
+                    cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>,
+                    cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{-1};
+            auto actual = -cnl::_impl::duplex_integer<
+                    cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>,
+                    cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{1};
+            ASSERT_EQ(expected, actual);
+        }
+    }
+
     namespace test_add {
         static_assert(
                 identical(
