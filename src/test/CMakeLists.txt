@@ -88,7 +88,8 @@ set(test_sources
         fixed_point/elastic/elastic_number.cpp
         fixed_point/elastic/rounding/rounding_elastic_number.cpp
         fixed_point/elastic/overflow/saturated.cpp
-        static_integer.cpp
+        static_integer/operators.cpp
+        static_integer/type.cpp
         static_number/operators.cpp
         static_number/rounding.cpp
         static_number/to_chars.cpp
