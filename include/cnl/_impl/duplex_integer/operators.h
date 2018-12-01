@@ -122,7 +122,7 @@ namespace cnl {
         template<typename Upper, typename Lower>
         struct unary_operator<bitwise_not_op, duplex_integer<Upper, Lower>> {
             constexpr auto operator()(duplex_integer<Upper, Lower> const& rhs) const
-            -> decltype(duplex_integer<Upper, Lower>(~rhs.upper(), ~rhs.lower()))
+            -> duplex_integer<Upper, Lower>
             {
                 return duplex_integer<Upper, Lower>(~rhs.upper(), ~rhs.lower());
             }
@@ -136,7 +136,7 @@ namespace cnl {
         template<typename Upper, typename Lower>
         struct unary_operator<plus_op, duplex_integer<Upper, Lower>> {
             constexpr auto operator()(duplex_integer<Upper, Lower> const& rhs) const
-            -> decltype(duplex_integer<Upper, Lower>(+rhs.upper(), +rhs.lower()))
+            -> duplex_integer<Upper, Lower>
             {
                 return duplex_integer<Upper, Lower>(+rhs.upper(), +rhs.lower());
             }
