@@ -1,22 +1,5 @@
 # python
 *.pyc
 
-# VS
-*.cache
-*.exe
-*.ilk
-*.ipch
-*.log
-*.obj
-*.pdb
-*.sln
-*.suo
-*.tlog
-*.VC.db
-*.VC.VC.opendb
-*.vcxproj
-*.vcxproj.filters
-.vs/
-
 # docs
 doc/Doxyfile
