@@ -9,6 +9,7 @@
 
 #include "ctors.h"
 #include "digits.h"
+#include "is_duplex_integer.h"
 #include "make_signed.h"
 #include "make_unsigned.h"
 #include "numeric_limits.h"
@@ -19,6 +20,7 @@
 #include "../common.h"
 #include "../num_traits/to_rep.h"
 #include "../operators.h"
+#include "../type_traits/common_type.h"
 #include "../type_traits/set_signedness.h"
 #include "../wide_integer/type.h"
 #include "../wide_integer/operators.h"
@@ -385,6 +387,16 @@ namespace cnl {
             constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const -> bool
             {
                 return !comparison_operator<less_than_op, _duplex_integer, _duplex_integer>{}(lhs, rhs);
+            }
+        };
+
+        template<class Operator, typename Lhs, typename Rhs>
+        struct comparison_operator<Operator, Lhs, Rhs,
+                enable_if_t<is_duplex_integer<Lhs>::value!=is_duplex_integer<Rhs>::value>> {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> bool
+            {
+                using common_type = common_type_t<Lhs, Rhs>;
+                return comparison_operator<Operator, common_type, common_type>{}(lhs, rhs);
             }
         };
 

@@ -218,6 +218,9 @@ namespace {
                 cnl::_impl::duplex_integer<short, unsigned short>{123}!=
                         cnl::_impl::duplex_integer<short, unsigned short>{-124},
                 "");
+
+        static_assert(cnl::_impl::duplex_integer<short, unsigned short>{123}!=cnl::int8{-124}, "");
+        static_assert(cnl::int64{-12356}<cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>{12356}, "");
     }
 
     namespace test_less {
