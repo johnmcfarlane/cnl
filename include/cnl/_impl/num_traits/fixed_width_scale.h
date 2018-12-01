@@ -7,6 +7,7 @@
 #ifndef CNL_IMPL_NUM_TRAITS_FIXED_WIDTH_SCALE
 #define CNL_IMPL_NUM_TRAITS_FIXED_WIDTH_SCALE
 
+#include "digits.h"
 #include "scale.h"
 
 namespace cnl {
@@ -15,6 +16,10 @@ namespace cnl {
     struct fixed_width_scale {
         constexpr S operator()(S const& s) const
         {
+            static_assert(
+                    Radix!=2||digits<S>::value>-Digits,
+                    "this operation will flush the given value");
+
             return static_cast<S>(scale<Digits, Radix, S>()(s));
         }
     };
