@@ -105,9 +105,27 @@ namespace {
                 "");
         static_assert(
                 identical(
-                        cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>, cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{7*13},
-                        cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>, cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{7}
-                                *cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>, cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{13}),
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{7*13},
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{7}
+                        *cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{13}),
+                "");
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{7*13},
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{7}
+                        *cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{13}),
                 "");
 #if defined(CNL_INT128_ENABLED)
         static_assert(

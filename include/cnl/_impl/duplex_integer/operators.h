@@ -36,7 +36,7 @@ namespace cnl {
         template<typename Word>
         struct long_multiply {
             template<typename Lhs, typename Rhs>
-            using result_type = set_digits_t<Word, digits<Lhs>::value+digits<Rhs>::value>;
+            using result_type = set_width_t<Word, width<Lhs>::value+width<Rhs>::value>;
 
             template<typename Lhs, typename Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> result_type<Lhs, Rhs>
@@ -174,10 +174,11 @@ namespace cnl {
                     Lower const& rhs_lower)
             -> _duplex_integer
             {
+                using common_result_type = decltype(long_multiply<Upper>{}(lhs_upper, rhs_upper));
                 return (long_multiply<Upper>{}(lhs_upper, rhs_upper) << digits<Upper>::value)
                         +((long_multiply<Upper>{}(lhs_upper, rhs_lower)+long_multiply<Upper>{}(lhs_lower, rhs_upper))
                                 << digits<Lower>::value)
-                        +long_multiply<Lower>{}(lhs_lower, rhs_lower);
+                        +static_cast<common_result_type>(long_multiply<Lower>{}(lhs_lower, rhs_lower));
             }
         };
 
