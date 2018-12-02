@@ -43,19 +43,14 @@ namespace cnl {
             }
         };
 
-        template<class Operator, typename LhsWord, int LhsNumWords, typename RhsWord, int RhsNumWords>
-        struct binary_operator<
-                Operator,
-                multiword_integer<LhsWord, LhsNumWords>,
-                multiword_integer<RhsWord, RhsNumWords>> {
+        template<class Operator, typename Word, int NumWords>
+        struct binary_operator<Operator, multiword_integer<Word, NumWords>, multiword_integer<Word, NumWords>> {
             constexpr auto operator()(
-                    multiword_integer<LhsWord, LhsNumWords> const& lhs,
-                    multiword_integer<RhsWord, RhsNumWords> const& rhs) const
-            -> decltype(cnl::_impl::from_rep<multiword_integer<LhsWord, LhsNumWords>>(
-                    Operator{}(to_rep(lhs), to_rep(rhs))))
+                    multiword_integer<Word, NumWords> const& lhs,
+                    multiword_integer<Word, NumWords> const& rhs) const
+            -> decltype(cnl::_impl::from_rep<multiword_integer<Word, NumWords>>(Operator{}(to_rep(lhs), to_rep(rhs))))
             {
-                return cnl::_impl::from_rep<multiword_integer<LhsWord, LhsNumWords>>(
-                        Operator{}(to_rep(lhs), to_rep(rhs)));
+                return cnl::_impl::from_rep<multiword_integer<Word, NumWords>>(Operator{}(to_rep(lhs), to_rep(rhs)));
             }
         };
 
