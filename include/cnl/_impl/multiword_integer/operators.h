@@ -34,6 +34,15 @@ namespace cnl {
                     to_rep(lhs) >> set_signedness_t<int, is_signed<Rhs>::value>(rhs));
         }
 
+        template<class Operator, typename RhsWord, int RhsNumWords>
+        struct unary_operator<Operator, multiword_integer<RhsWord, RhsNumWords>> {
+            constexpr auto operator()(multiword_integer<RhsWord, RhsNumWords> const& rhs) const
+            -> decltype(cnl::_impl::from_rep<multiword_integer<RhsWord, RhsNumWords>>(Operator{}(to_rep(rhs))))
+            {
+                return cnl::_impl::from_rep<multiword_integer<RhsWord, RhsNumWords>>(Operator{}(to_rep(rhs)));
+            }
+        };
+
         template<class Operator, typename LhsWord, int LhsNumWords, typename RhsWord, int RhsNumWords>
         struct binary_operator<
                 Operator,
