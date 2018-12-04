@@ -76,7 +76,7 @@ namespace cnl {
                        ? _upper
                          ? unreachable<Result>("overflow in narrowing conversion")
                          : Result{}
-                       : static_cast<Result>(sensible_left_shift(_upper, lower_width));
+                       : Result(sensible_left_shift(static_cast<Result>(_upper), lower_width));
             }
 
             // value == _upper<<lower_width + _lower
