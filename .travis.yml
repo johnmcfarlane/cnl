@@ -7,6 +7,15 @@ matrix:
   include:
     # C++11
     - os: linux
+      addons: &gcc8
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+      env: MATRIX_EVAL="CC=gcc-8 && CXX=g++-8" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=ON SANITIZE=ON GENERATOR=Ninja
+
+    - os: linux
       addons: &gcc7
         apt:
           sources:
@@ -40,6 +49,17 @@ matrix:
           packages:
             - g++-5
       env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
+
+    - os: linux
+      addons: &clang6
+        apt:
+          sources:
+            - llvm-toolchain-trusty-6.0
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang-6.0
+            - g++-5
+      env: MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR="Ninja"
 
     - os: linux
       addons: &clang5
@@ -86,6 +106,10 @@ matrix:
 
     # C++14
     - os: linux
+      addons: *gcc8
+      env: MATRIX_EVAL="CC=gcc-8 && CXX=g++-8" BUILD_TYPE=Release STD=14 EXCEPTIONS=OFF INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
+
+    - os: linux
       addons: *gcc7
       env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
 
@@ -100,6 +124,10 @@ matrix:
     - os: linux
       addons: *gcc5
       env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Debug STD=14 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
+
+    - os: linux
+      addons: *clang6
+      env: MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR=Ninja
 
     - os: linux
       addons: *clang5
@@ -123,6 +151,10 @@ matrix:
 
     # C++17
     - os: linux
+      addons: *gcc8
+      env: MATRIX_EVAL="CC=gcc-8 && CXX=g++-8" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF GENERATOR="Ninja"
+
+    - os: linux
       addons: *gcc7
       env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
@@ -137,6 +169,10 @@ matrix:
     - os: linux
       addons: *gcc5
       env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Debug STD=17 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
+
+    - os: linux
+      addons: *clang6
+      env: MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR=Ninja
 
     - os: linux
       addons: *clang5
