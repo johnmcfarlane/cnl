@@ -130,9 +130,27 @@ namespace {
 #if defined(CNL_INT128_ENABLED)
         static_assert(
                 identical(
-                        cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>, cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{7*13},
-                        cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>, cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{7}
-                                *cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>, cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{13}),
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>,
+                                cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{786192872LL*928178263LL},
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>,
+                                cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{786192872}
+                        *cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>,
+                                cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{928178263}),
+                "");
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>,
+                                cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{786192872*928178263LL},
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>,
+                                cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{786192872}
+                        *cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>,
+                                cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{928178263LL}),
                 "");
 #endif
     }
