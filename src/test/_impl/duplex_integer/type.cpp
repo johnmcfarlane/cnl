@@ -18,6 +18,15 @@
 using cnl::_impl::identical;
 
 namespace {
+    namespace test_ctor {
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{0x1234567890abcdef},
+                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{
+                                cnl::_impl::multiword_integer<cnl::int32, 3>{0x1234567890abcdef}}),
+                "");
+    }
+
     namespace test_upper {
 #if (__cpp_constexpr >= 201304L)
         static_assert(

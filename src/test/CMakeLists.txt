@@ -46,6 +46,7 @@ set(test_sources
         _impl/duplex_integer/numeric_limits.cpp
         _impl/duplex_integer/operators.cpp
         _impl/duplex_integer/type.cpp
+        _impl/multiword_integer/digits.cpp
         _impl/multiword_integer/from_rep.cpp
         _impl/multiword_integer/from_value.cpp
         _impl/multiword_integer/operators.cpp
