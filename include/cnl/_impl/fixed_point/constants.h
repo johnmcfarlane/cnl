@@ -49,7 +49,7 @@ namespace cnl {
         template<typename Rep, int Exponent>
         constexpr auto e(int const max_iterations) {
             using fp = fixed_point<Rep, Exponent>;
-            constexpr auto one = fixed_point<Rep, 1 - digits_v<Rep>>{1.};
+            constexpr auto one = fixed_point<Rep, 2 - digits_v<Rep>>{1.};
 
             auto previous = fp{2.};
             auto factor = 2;
