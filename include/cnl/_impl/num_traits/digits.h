@@ -94,7 +94,7 @@ namespace cnl {
             _impl::used_digits((Value<0) ? -Value : Value)> {
     };
 
-#if (__cplusplus > 201402L)
+#if (__cpp_variable_templates >= 201304)
     template<class T>
     constexpr int digits_v = digits<T>::value;
 #endif
