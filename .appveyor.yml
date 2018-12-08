@@ -43,7 +43,7 @@ build_script:
     cmake --build . --target src/benchmark/Benchmark -- /property:Configuration=%configuration% /property:Platform=%msbuild_property%
 test_script:
 - cmd: >-
-    ctest
+    ctest --output-on-failure -j 32
 
     src\benchmark\%configuration%\Benchmark.exe
 shallow_clone: true
