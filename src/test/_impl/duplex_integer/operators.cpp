@@ -59,6 +59,18 @@ namespace {
                         cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>, cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{123}
                                 +cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>, cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{654}),
                 "");
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{786192872LL*928178263LL},
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{786192872LL*928178263LL}
+                                +cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{0}),
+                "");
 #if defined(CNL_INT128_ENABLED)
         static_assert(
                 identical(
@@ -106,26 +118,26 @@ namespace {
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<
-                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
-                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{7*13},
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{786192872LL*928178263LL},
                         cnl::_impl::duplex_integer<
-                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
-                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{7}
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{786192872}
                         *cnl::_impl::duplex_integer<
-                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
-                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{13}),
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{928178263}),
                 "");
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<
-                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
-                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{7*13},
+                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{786192872LL*928178263LL},
                         cnl::_impl::duplex_integer<
-                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
-                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{7}
+                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{786192872LL}
                         *cnl::_impl::duplex_integer<
-                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
-                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{13}),
+                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{928178263LL}),
                 "");
 #if defined(CNL_INT128_ENABLED)
         static_assert(
@@ -400,6 +412,26 @@ namespace {
     }
 
     namespace test_shift_right_op {
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<int, unsigned int>,
+                                unsigned int>{0x1234},
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<int, unsigned int>,
+                                unsigned int>{0x1234567890ABCDEFLL}
+                                >> 48),
+                "");
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<int, unsigned int>,
+                                unsigned int>{0},
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<int, unsigned int>,
+                                unsigned int>{0x1234567890ABCDEFLL}
+                                >> 64),
+                "");
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>{0x8394uLL >> 0},

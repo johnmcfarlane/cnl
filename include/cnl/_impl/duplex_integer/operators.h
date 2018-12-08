@@ -325,12 +325,24 @@ namespace cnl {
             constexpr auto with_int(_duplex_integer const& lhs, int rhs) const
             -> _duplex_integer
             {
-                return _duplex_integer(
-                        static_cast<Upper>(sensible_right_shift(lhs.upper(), rhs)),
-                        static_cast<Lower>(sensible_right_shift(lhs.lower(), rhs)
-                                | static_cast<Lower>(rhs
-                                                     ? extra_sensible_right_shift(lhs.upper(), width<Lower>::value-rhs)
-                                                     : Upper{} >> 0)));
+                return _duplex_integer(calculate_upper(lhs, rhs), calculate_lower(lhs, rhs));
+            }
+
+            constexpr auto calculate_upper(_duplex_integer const& lhs, int rhs) const
+            -> Upper
+            {
+                return static_cast<Upper>(sensible_right_shift(lhs.upper(), rhs));
+            }
+
+            constexpr auto calculate_lower(_duplex_integer const& lhs, int rhs) const
+            -> Lower
+            {
+                return static_cast<Lower>(
+                        sensible_right_shift(lhs.lower(), rhs)
+                                | static_cast<Lower>(
+                                        rhs
+                                        ? extra_sensible_right_shift(lhs.upper(), rhs-width<Lower>::value)
+                                        : Upper{} >> 0));
             }
         };
 
