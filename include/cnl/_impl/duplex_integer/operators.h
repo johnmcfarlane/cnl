@@ -59,6 +59,24 @@ namespace cnl {
                 return multiply_components(lhs.upper(), lhs.lower(), rhs.upper(), rhs.lower());
             }
 
+            template<typename Lhs, typename RhsUpper, typename RhsLower>
+            constexpr auto operator()(
+                    Lhs const& lhs,
+                    duplex_integer<RhsUpper, RhsLower> const& rhs) const
+            -> result_type
+            {
+                return multiply_components(0, lhs, rhs.upper(), rhs.lower());
+            }
+
+            template<typename LhsUpper, typename LhsLower, typename Rhs>
+            constexpr auto operator()(
+                    duplex_integer<LhsUpper, LhsLower> const& lhs,
+                    Rhs const& rhs) const
+            -> result_type
+            {
+                return multiply_components(lhs.upper(), lhs.lower(), 0, rhs);
+            }
+
             template<typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
             static constexpr auto multiply_components(
                     LhsUpper const& lhs_upper, LhsLower const& lhs_lower,
