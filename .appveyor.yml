@@ -3,31 +3,47 @@ version: 0.1.{build}
 environment:
   fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
   matrix:
-    - platform: x86
-      configuration: Release
-      cmake_generator: "Visual Studio 15 2017"
-      msbuild_property: win32
-      exceptions: ON
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     - platform: x64
       configuration: Debug
       cmake_generator: "Visual Studio 15 2017 Win64"
       msbuild_property: x64
       exceptions: OFF
+      std: 17
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    - platform: x86
+      configuration: Release
+      cmake_generator: "Visual Studio 15 2017"
+      msbuild_property: win32
+      exceptions: ON
+      std: 11
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 Preview
+    - platform: x64
+      configuration: MinSizeRel
+      cmake_generator: "Visual Studio 15 2017 Win64"
+      msbuild_property: x64
+      exceptions: OFF
+      std: 11
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 Preview
+    - platform: x86
+      configuration: RelWithDebInfo
+      cmake_generator: "Visual Studio 15 2017"
+      msbuild_property: win32
+      exceptions: ON
+      std: 14
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
 build_script:
 - cmd: >-
     set BOOST_ROOT=C:\Libraries\boost_1_66_0
 
-    cmake -DCMAKE_BUILD_TYPE=%configuration% -DEXCEPTIONS=%exceptions% -G "%cmake_generator%" .
+    cmake -DCMAKE_BUILD_TYPE=%configuration% -DEXCEPTIONS=%exceptions% -DSTD=%std% -G "%cmake_generator%" .
 
     cmake --build . --target src/test/Tests -- /property:Configuration=%configuration% /property:Platform=%msbuild_property%
 
     cmake --build . --target src/benchmark/Benchmark -- /property:Configuration=%configuration% /property:Platform=%msbuild_property%
 test_script:
 - cmd: >-
-    ctest
+    ctest --output-on-failure -j 32
 
     src\benchmark\%configuration%\Benchmark.exe
 shallow_clone: true

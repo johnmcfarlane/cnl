@@ -14,7 +14,7 @@
 #include <cnl/fixed_point.h>
 
 // 5. All definitions are in the `cnl` namespace:
-using namespace cnl;
+using cnl::fixed_point;
 
 TEST(readme, instance)
 {

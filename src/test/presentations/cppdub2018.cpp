@@ -180,7 +180,7 @@ namespace n {
 }
 #endif
 
-#if defined(__cpp_deduction_guides)
+#if defined(__cpp_deduction_guides) && !defined(_MSC_VER)
 #include <cnl/elastic_number.h>
 
 using namespace cnl::literals;
