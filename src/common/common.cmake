@@ -8,7 +8,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
   set(MISC_FLAGS "/W4 /WX /errorReport:prompt /nologo /wd4307")
 
   # no tested
-  set(CPP17_ENABLED_FLAGS "/std:c++latest")
+  set(CPP17_ENABLED_FLAGS "/std:c++17")
 
   set(EXCEPTION_ENABLED_FLAGS "/GR /EHsc")
   set(EXCEPTION_DISABLED_FLAGS "/GR- -DBOOST_NO_EXCEPTIONS -DBOOST_NO_RTTI")
