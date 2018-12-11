@@ -90,6 +90,7 @@ set(test_sources
         fixed_point/elastic/overflow/saturated.cpp
         static_integer.cpp
         static_number.cpp
+        static_number/to_chars.cpp
 )
 
 # source files containing demos and examples of CNL;
