@@ -489,5 +489,10 @@ namespace {
                         cnl::_impl::duplex_integer<signed, unsigned>{246}
                                 >> cnl::_impl::duplex_integer<signed, unsigned>{1}),
                 "");
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<int, unsigned int>{0x007FFFFF, 0xFFFFFFFF},
+                        cnl::_impl::duplex_integer<int, unsigned int>{0x7FFFFFFF, 0xFFFFFFFF} >> 8),
+                "");
     }
 }

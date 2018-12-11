@@ -356,11 +356,10 @@ namespace cnl {
             -> Lower
             {
                 return static_cast<Lower>(
-                        sensible_right_shift(lhs.lower(), rhs)
-                                | static_cast<Lower>(
-                                        rhs
-                                        ? extra_sensible_right_shift(lhs.upper(), rhs-width<Lower>::value)
-                                        : Upper{} >> 0));
+                        sensible_right_shift(lhs.lower(), rhs) | (
+                                rhs
+                                ? extra_sensible_right_shift(static_cast<Lower>(lhs.upper()), rhs-width<Lower>::value)
+                                : Lower{} >> 0));
             }
         };
 

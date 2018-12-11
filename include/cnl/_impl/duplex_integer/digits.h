@@ -26,19 +26,20 @@ namespace cnl {
         }
 
         template<typename Lhs>
-        constexpr auto extra_sensible_right_shift(Lhs const& lhs, int rhs)
-        -> decltype(lhs << -rhs)
-        {
-            return (rhs<0) ? lhs << -rhs : sensible_right_shift(lhs, rhs);
-        }
-
-        template<typename Lhs>
         constexpr auto sensible_left_shift(Lhs const& lhs, int rhs)
         -> decltype(lhs << rhs)
         {
-            return (rhs>=digits<decltype(lhs << rhs)>::value)
+            using result_type = decltype(lhs << rhs);
+            return (rhs>=digits<result_type>::value)
                    ? Lhs{} << 0
-                   : lhs << rhs;// TODO: check for partial overflow
+                   : ((is_signed<Lhs>::value && rhs>0) ? lhs & (numeric_limits<Lhs>::max() >> rhs) : lhs) << rhs;
+        }
+
+        template<typename Lhs>
+        constexpr auto extra_sensible_right_shift(Lhs const& lhs, int rhs)
+        -> decltype(lhs << -rhs)
+        {
+            return (rhs<0) ? sensible_left_shift(lhs, -rhs) : sensible_right_shift(lhs, rhs);
         }
     }
 
