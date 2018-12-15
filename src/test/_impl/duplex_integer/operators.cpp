@@ -455,6 +455,20 @@ namespace {
                 "");
         static_assert(
                 identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<int, unsigned int>,
+                                        cnl::_impl::duplex_integer<unsigned int, unsigned int>>,
+                                unsigned int>{{0x01234567890ABCDELL, 0xFFEDCBA987654321ULL}, 0x08765432U},
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<int, unsigned int>,
+                                        cnl::_impl::duplex_integer<unsigned int, unsigned int>>,
+                                unsigned int>{{0x1234567890ABCDEFLL, 0xFEDCBA9876543210ULL}, 0x87654321U}
+                                >> 4),
+                "");
+        static_assert(
+                identical(
                         cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>{0x7394uLL >> 0},
                         cnl::_impl::binary_operator<
                                 cnl::_impl::shift_right_op,

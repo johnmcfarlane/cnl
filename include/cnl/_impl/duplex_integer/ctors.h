@@ -41,7 +41,7 @@ namespace cnl {
         constexpr auto calculate_upper(Integer const& input)
         -> enable_if_t<digits<Lower>::value<digits<Integer>::value, Upper>
         {
-            return static_cast<Upper>(sensible_right_shift(input, digits<Lower>::value));
+            return sensible_right_shift<Upper>(input, digits<Lower>::value);
         }
 
         // cnl::_impl::duplex_integer::duplex_integer

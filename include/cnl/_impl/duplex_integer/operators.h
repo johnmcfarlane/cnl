@@ -323,9 +323,9 @@ namespace cnl {
             -> _duplex_integer
             {
                 return _duplex_integer(
-                        static_cast<Upper>(sensible_left_shift(lhs.upper(), rhs))
-                                | static_cast<Upper>(extra_sensible_right_shift(lhs.lower(), width<Lower>::value-rhs)),
-                        static_cast<Lower>(sensible_left_shift(lhs.lower(), rhs)));
+                        sensible_left_shift<Upper>(lhs.upper(), rhs)
+                                | extra_sensible_right_shift<Upper>(lhs.lower(), width<Lower>::value-rhs),
+                        sensible_left_shift<Lower>(lhs.lower(), rhs));
             }
         };
 
@@ -349,17 +349,15 @@ namespace cnl {
             constexpr auto calculate_upper(_duplex_integer const& lhs, int rhs) const
             -> Upper
             {
-                return static_cast<Upper>(sensible_right_shift(lhs.upper(), rhs));
+                return sensible_right_shift<Upper>(lhs.upper(), rhs);
             }
 
             constexpr auto calculate_lower(_duplex_integer const& lhs, int rhs) const
             -> Lower
             {
                 return static_cast<Lower>(
-                        sensible_right_shift(lhs.lower(), rhs) | (
-                                rhs
-                                ? extra_sensible_right_shift(static_cast<Lower>(lhs.upper()), rhs-width<Lower>::value)
-                                : Lower{} >> 0));
+                        sensible_right_shift<Lower>(lhs.lower(), rhs)
+                                | extra_sensible_right_shift<Lower>(lhs.upper(), rhs-width<Lower>::value));
             }
         };
 

@@ -8,6 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_DIGITS_H
 
 #include "forward_declaration.h"
+#include "../assert.h"
 #include "../num_traits/digits.h"
 
 #include <type_traits>
@@ -18,28 +19,58 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // 'sensible' shift operations - for when the compiler is being obtuse
 
-        template<typename Lhs>
+        template<typename Result, typename Lhs>
         constexpr auto sensible_right_shift(Lhs const& lhs, int rhs)
-        -> decltype(lhs >> rhs)
+        -> enable_if_t<digits<Result>::value <= digits<decltype(lhs>>rhs)>::value, Result>
         {
-            return (rhs>=digits<Lhs>::value) ? Lhs{} >> 0 : lhs >> rhs;
+#if (__cpp_constexpr >= 201304L)
+            CNL_ASSERT(rhs>=0);
+#endif
+            using promoted_type = decltype(lhs >> rhs);
+            return (rhs>=digits<promoted_type>::value)
+                   ? Result{}
+                   : static_cast<Result>((lhs >> rhs) & ~promoted_type{});
         }
 
-        template<typename Lhs>
+        template<typename Result, typename Lhs>
+        constexpr auto sensible_right_shift(Lhs const& lhs, int rhs)
+        -> enable_if_t<(digits<Result>::value > digits<decltype(lhs>>rhs)>::value), Result>
+        {
+#if (__cpp_constexpr >= 201304L)
+            CNL_ASSERT(rhs>=0);
+#endif
+            using promoted_type = decltype(lhs >> rhs);
+            return (rhs>=digits<promoted_type>::value)
+                   ? Result{}
+                   : static_cast<Result>(lhs >> rhs);
+        }
+
+        template<typename Result, typename Lhs>
         constexpr auto sensible_left_shift(Lhs const& lhs, int rhs)
-        -> decltype(lhs << rhs)
+        -> enable_if_t<digits<Result>::value <= digits<decltype(lhs<<rhs)>::value, Result>
         {
-            using result_type = decltype(lhs << rhs);
-            return (rhs>=digits<result_type>::value)
-                   ? Lhs{} << 0
-                   : ((is_signed<Lhs>::value && rhs>0) ? lhs & (numeric_limits<Lhs>::max() >> rhs) : lhs) << rhs;
+#if (__cpp_constexpr >= 201304L)
+            CNL_ASSERT(rhs>=0);
+#endif
+            using promoted_type = decltype(lhs << rhs);
+            return (rhs>=digits<promoted_type>::value)
+                   ? Result{}
+                   : static_cast<Result>((lhs & sensible_right_shift<Lhs>(~Result{}, rhs)) << rhs);
         }
 
-        template<typename Lhs>
-        constexpr auto extra_sensible_right_shift(Lhs const& lhs, int rhs)
-        -> decltype(lhs << -rhs)
+        template<typename Result, typename Lhs>
+        constexpr auto sensible_left_shift(Lhs const& lhs, int rhs)
+        -> enable_if_t<(digits<Result>::value > digits<decltype(lhs<<rhs)>::value), Result>
         {
-            return (rhs<0) ? sensible_left_shift(lhs, -rhs) : sensible_right_shift(lhs, rhs);
+            return sensible_left_shift<Result>(static_cast<Result>(lhs), rhs);
+        }
+
+        template<typename Result, typename Lhs>
+        constexpr auto extra_sensible_right_shift(Lhs const& lhs, int rhs) -> Result
+        {
+            return (rhs<0)
+                    ? sensible_left_shift<Result>(lhs, -rhs)
+                    : sensible_right_shift<Result>(lhs, rhs);
         }
     }
 
