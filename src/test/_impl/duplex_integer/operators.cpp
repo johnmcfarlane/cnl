@@ -455,11 +455,11 @@ namespace {
                 "");
         static_assert(
                 identical(
-                        cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>{0x8394uLL >> 0},
+                        cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>{0x7394uLL >> 0},
                         cnl::_impl::binary_operator<
                                 cnl::_impl::shift_right_op,
                                 cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>,
-                                cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>>{}(0x8394uLL, 0)),
+                                cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>>{}(0x7394uLL, 0)),
                 "");
     }
 
