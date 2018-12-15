@@ -117,7 +117,7 @@ namespace cnl {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
             static constexpr auto lower_digits = digits<Lower>::value;
-            using wide_lower = set_digits_t<Upper, lower_digits+1>;
+            using wide_lower = set_digits_t<Lower, lower_digits+1>;
 
             constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
             -> _duplex_integer
