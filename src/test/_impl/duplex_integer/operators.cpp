@@ -17,6 +17,27 @@
 using cnl::_impl::identical;
 
 namespace {
+    namespace test_not {
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>{
+                            UINT64_C(0xFFFFFFFFFFFFFFFF), UINT64_C(0xFFFFFFFFFFFFFFFF)},
+                        ~cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>{
+                                UINT64_C(0x0000000000000000), UINT64_C(0x0000000000000000)}),
+                "");
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>,
+                                cnl::uint64>{{UINT64_C(0xFFFFFFFFFFFFFFFF), UINT64_C(0xFFFFFFFFFFFFFFFF)},
+                                             UINT64_C(0xFFFFFFFFFFFFFFFF)},
+                        ~cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>,
+                                cnl::uint64>{{UINT64_C(0x0000000000000000), UINT64_C(0x0000000000000000)},
+                                             UINT64_C(0x0000000000000000)}),
+                "");
+    }
+
     namespace test_minus {
 #if (__cpp_constexpr >= 201304L) && !defined(_MSC_VER)
         static_assert(identical(

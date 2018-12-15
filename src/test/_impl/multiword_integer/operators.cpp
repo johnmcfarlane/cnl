@@ -15,6 +15,23 @@
 using cnl::_impl::identical;
 
 namespace {
+    namespace test_not {
+        static_assert(
+                identical(
+                        cnl::_impl::multiword_integer<cnl::uint64, 3>{
+                                cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>, cnl::uint64>{
+                                        {UINT64_C(0xFFFFFFFFFFFFFFFF), UINT64_C(0xFFFFFFFFFFFFFFFF)},
+                                        UINT64_C(0xFFFFFFFFFFFFFFFF)}},
+                        ~cnl::_impl::multiword_integer<cnl::uint64, 3>{
+                                cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>, cnl::uint64>{
+                                        {UINT64_C(0x0000000000000000), UINT64_C(0x0000000000000000)},
+                                        UINT64_C(0x0000000000000000)}}
+                ),
+                "");
+    }
+
     namespace test_numeric_limits {
         static_assert(
                 cnl::numeric_limits<cnl::_impl::multiword_integer<int>>::is_specialized,

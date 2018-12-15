@@ -48,7 +48,7 @@ namespace cnl {
 
         struct bitwise_not_op {
             template<class Rhs>
-            constexpr auto operator()(Rhs const& rhs) const -> decltype(~rhs)
+            constexpr auto operator()(Rhs const& rhs) const -> decltype(~std::declval<Rhs>())
             {
                 return ~rhs;
             }
