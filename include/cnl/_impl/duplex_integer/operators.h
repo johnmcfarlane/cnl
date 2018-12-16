@@ -41,7 +41,8 @@ namespace cnl {
             template<typename Lhs, typename Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> result_type<Lhs, Rhs>
             {
-                return result_type<Lhs, Rhs>{lhs}*result_type<Lhs, Rhs>{rhs};
+                using result_type = result_type<Lhs, Rhs>;
+                return static_cast<result_type>(lhs)*static_cast<result_type>(rhs);
             }
         };
 

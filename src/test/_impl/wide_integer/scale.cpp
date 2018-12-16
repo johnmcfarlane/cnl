@@ -71,6 +71,11 @@ namespace {
                         cnl::scale<-1, 2, cnl::_impl::wide_integer<255>>{}(0xAA)),
                 "cnl::scale<cnl::_impl::wide_integer>");
 #endif
+        static_assert(
+                identical(
+                        cnl::_impl::wide_integer<200>{38725387}<<100,
+                        cnl::scale<100, 2, cnl::_impl::wide_integer<200>>{}(38725387)),
+                "cnl::scale<cnl::_impl::wide_integer>");
 #endif
     }
 
