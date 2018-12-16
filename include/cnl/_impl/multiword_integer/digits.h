@@ -17,7 +17,7 @@ namespace cnl {
     struct digits<
             _impl::multiword_integer<Word, NumWords>,
             _impl::enable_if_t<!is_signed<Word>::value>>
-            : std::integral_constant<int, digits<Word>::value> {
+            : std::integral_constant<int, digits<Word>::value*NumWords> {
     };
 
     template<typename Word, int NumWords>

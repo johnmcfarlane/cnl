@@ -36,12 +36,13 @@ namespace cnl {
         template<typename Word>
         struct long_multiply {
             template<typename Lhs, typename Rhs>
-            using result_type = set_digits_t<Word, digits<Lhs>::value+digits<Rhs>::value>;
+            using result_type = set_width_t<Word, width<Lhs>::value+width<Rhs>::value>;
 
             template<typename Lhs, typename Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> result_type<Lhs, Rhs>
             {
-                return result_type<Lhs, Rhs>{lhs}*result_type<Lhs, Rhs>{rhs};
+                using result_type = result_type<Lhs, Rhs>;
+                return static_cast<result_type>(lhs)*static_cast<result_type>(rhs);
             }
         };
 
@@ -57,6 +58,24 @@ namespace cnl {
             -> result_type
             {
                 return multiply_components(lhs.upper(), lhs.lower(), rhs.upper(), rhs.lower());
+            }
+
+            template<typename Lhs, typename RhsUpper, typename RhsLower>
+            constexpr auto operator()(
+                    Lhs const& lhs,
+                    duplex_integer<RhsUpper, RhsLower> const& rhs) const
+            -> result_type
+            {
+                return multiply_components(0, lhs, rhs.upper(), rhs.lower());
+            }
+
+            template<typename LhsUpper, typename LhsLower, typename Rhs>
+            constexpr auto operator()(
+                    duplex_integer<LhsUpper, LhsLower> const& lhs,
+                    Rhs const& rhs) const
+            -> result_type
+            {
+                return multiply_components(lhs.upper(), lhs.lower(), 0, rhs);
             }
 
             template<typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
@@ -99,7 +118,7 @@ namespace cnl {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
             static constexpr auto lower_digits = digits<Lower>::value;
-            using wide_lower = set_digits_t<Upper, lower_digits+1>;
+            using wide_lower = set_digits_t<Lower, lower_digits+1>;
 
             constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
             -> _duplex_integer
@@ -122,21 +141,25 @@ namespace cnl {
         template<typename Upper, typename Lower>
         struct unary_operator<bitwise_not_op, duplex_integer<Upper, Lower>> {
             constexpr auto operator()(duplex_integer<Upper, Lower> const& rhs) const
-            -> decltype(duplex_integer<Upper, Lower>(~rhs.upper(), ~rhs.lower()))
+            -> duplex_integer<Upper, Lower>
             {
                 return duplex_integer<Upper, Lower>(~rhs.upper(), ~rhs.lower());
             }
         };
 
         template<typename Upper, typename Lower>
-        struct unary_operator<minus_op, duplex_integer<Upper, Lower>>
-                : unary_operator<bitwise_not_op, duplex_integer<Upper, Lower>> {
+        struct unary_operator<minus_op, duplex_integer<Upper, Lower>> {
+            constexpr auto operator()(duplex_integer<Upper, Lower> rhs) const
+            -> duplex_integer<Upper, Lower>
+            {
+                return unary_operator<bitwise_not_op, duplex_integer<Upper, Lower>>{}(--rhs);
+            }
         };
 
         template<typename Upper, typename Lower>
         struct unary_operator<plus_op, duplex_integer<Upper, Lower>> {
             constexpr auto operator()(duplex_integer<Upper, Lower> const& rhs) const
-            -> decltype(duplex_integer<Upper, Lower>(+rhs.upper(), +rhs.lower()))
+            -> duplex_integer<Upper, Lower>
             {
                 return duplex_integer<Upper, Lower>(+rhs.upper(), +rhs.lower());
             }
@@ -170,10 +193,11 @@ namespace cnl {
                     Lower const& rhs_lower)
             -> _duplex_integer
             {
+                using common_result_type = decltype(long_multiply<Upper>{}(lhs_upper, rhs_upper));
                 return (long_multiply<Upper>{}(lhs_upper, rhs_upper) << digits<Upper>::value)
                         +((long_multiply<Upper>{}(lhs_upper, rhs_lower)+long_multiply<Upper>{}(lhs_lower, rhs_upper))
                                 << digits<Lower>::value)
-                        +long_multiply<Lower>{}(lhs_lower, rhs_lower);
+                        +static_cast<common_result_type>(long_multiply<Lower>{}(lhs_lower, rhs_lower));
             }
         };
 
@@ -300,9 +324,9 @@ namespace cnl {
             -> _duplex_integer
             {
                 return _duplex_integer(
-                        static_cast<Upper>(sensible_left_shift(lhs.upper(), rhs))
-                                | static_cast<Upper>(extra_sensible_right_shift(lhs.lower(), width<Lower>::value-rhs)),
-                        static_cast<Lower>(sensible_left_shift(lhs.lower(), rhs)));
+                        sensible_left_shift<Upper>(lhs.upper(), rhs)
+                                | extra_sensible_right_shift<Upper>(lhs.lower(), width<Lower>::value-rhs),
+                        sensible_left_shift<Lower>(lhs.lower(), rhs));
             }
         };
 
@@ -320,12 +344,21 @@ namespace cnl {
             constexpr auto with_int(_duplex_integer const& lhs, int rhs) const
             -> _duplex_integer
             {
-                return _duplex_integer(
-                        static_cast<Upper>(sensible_right_shift(lhs.upper(), rhs)),
-                        static_cast<Lower>(sensible_right_shift(lhs.lower(), rhs)
-                                | static_cast<Lower>(rhs
-                                                     ? extra_sensible_right_shift(lhs.upper(), width<Lower>::value-rhs)
-                                                     : Upper{} >> 0)));
+                return _duplex_integer(calculate_upper(lhs, rhs), calculate_lower(lhs, rhs));
+            }
+
+            constexpr auto calculate_upper(_duplex_integer const& lhs, int rhs) const
+            -> Upper
+            {
+                return sensible_right_shift<Upper>(lhs.upper(), rhs);
+            }
+
+            constexpr auto calculate_lower(_duplex_integer const& lhs, int rhs) const
+            -> Lower
+            {
+                return static_cast<Lower>(
+                        sensible_right_shift<Lower>(lhs.lower(), rhs)
+                                | extra_sensible_right_shift<Lower>(lhs.upper(), rhs-width<Lower>::value));
             }
         };
 

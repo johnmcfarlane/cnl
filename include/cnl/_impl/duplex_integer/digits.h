@@ -8,7 +8,9 @@
 #define CNL_IMPL_DUPLEX_INTEGER_DIGITS_H
 
 #include "forward_declaration.h"
+#include "../assert.h"
 #include "../num_traits/digits.h"
+#include "../type_traits/make_unsigned.h"
 
 #include <type_traits>
 
@@ -18,27 +20,60 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // 'sensible' shift operations - for when the compiler is being obtuse
 
-        template<typename Lhs>
+        template<typename Result, typename Lhs>
         constexpr auto sensible_right_shift(Lhs const& lhs, int rhs)
-        -> decltype(lhs >> rhs)
+        -> enable_if_t<digits<Result>::value <= digits<decltype(lhs>>rhs)>::value, Result>
         {
-            return (rhs>=digits<Lhs>::value) ? Lhs{} >> 0 : lhs >> rhs;
+#if (__cpp_constexpr >= 201304L)
+            CNL_ASSERT(rhs>=0);
+#endif
+            using promoted_type = decltype(lhs >> rhs);
+            return (rhs>=digits<promoted_type>::value)
+                   ? Result{}
+                   : static_cast<Result>((lhs >> rhs) & static_cast<promoted_type>(~Result{}));
         }
 
-        template<typename Lhs>
-        constexpr auto extra_sensible_right_shift(Lhs const& lhs, int rhs)
-        -> decltype(lhs << -rhs)
+        template<typename Result, typename Lhs>
+        constexpr auto sensible_right_shift(Lhs const& lhs, int rhs)
+        -> enable_if_t<(digits<Result>::value > digits<decltype(lhs>>rhs)>::value), Result>
         {
-            return (rhs<0) ? lhs << -rhs : sensible_right_shift(lhs, rhs);
+#if (__cpp_constexpr >= 201304L)
+            CNL_ASSERT(rhs>=0);
+#endif
+            using promoted_type = decltype(lhs >> rhs);
+            return (rhs>=digits<promoted_type>::value)
+                   ? Result{}
+                   : static_cast<Result>(lhs >> rhs);
         }
 
-        template<typename Lhs>
+        template<typename Result, typename Lhs>
         constexpr auto sensible_left_shift(Lhs const& lhs, int rhs)
-        -> decltype(lhs << rhs)
+        -> enable_if_t<digits<Result>::value <= digits<decltype(lhs<<rhs)>::value, Result>
         {
-            return (rhs>=digits<decltype(lhs << rhs)>::value)
-                   ? Lhs{} << 0
-                   : lhs << rhs;// TODO: check for partial overflow
+#if (__cpp_constexpr >= 201304L)
+            CNL_ASSERT(rhs>=0);
+#endif
+            using promoted_type = decltype(lhs << rhs);
+            using unsigned_type = make_unsigned_t<decltype(lhs & lhs)>;
+            return (rhs>=digits<promoted_type>::value)
+                   ? Result{}
+                   : static_cast<Result>(
+                           static_cast<unsigned_type>(lhs & sensible_right_shift<Lhs>(~Result{}, rhs)) << rhs);
+        }
+
+        template<typename Result, typename Lhs>
+        constexpr auto sensible_left_shift(Lhs const& lhs, int rhs)
+        -> enable_if_t<(digits<Result>::value > digits<decltype(lhs<<rhs)>::value), Result>
+        {
+            return sensible_left_shift<Result>(static_cast<Result>(lhs), rhs);
+        }
+
+        template<typename Result, typename Lhs>
+        constexpr auto extra_sensible_right_shift(Lhs const& lhs, int rhs) -> Result
+        {
+            return (rhs<0)
+                    ? sensible_left_shift<Result>(lhs, -rhs)
+                    : sensible_right_shift<Result>(lhs, rhs);
         }
     }
 

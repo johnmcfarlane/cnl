@@ -46,6 +46,7 @@ set(test_sources
         _impl/duplex_integer/numeric_limits.cpp
         _impl/duplex_integer/operators.cpp
         _impl/duplex_integer/type.cpp
+        _impl/multiword_integer/digits.cpp
         _impl/multiword_integer/from_rep.cpp
         _impl/multiword_integer/from_value.cpp
         _impl/multiword_integer/operators.cpp
@@ -88,8 +89,12 @@ set(test_sources
         fixed_point/elastic/elastic_number.cpp
         fixed_point/elastic/rounding/rounding_elastic_number.cpp
         fixed_point/elastic/overflow/saturated.cpp
-        static_integer.cpp
-        static_number.cpp
+        static_integer/operators.cpp
+        static_integer/type.cpp
+        static_number/operators.cpp
+        static_number/rounding.cpp
+        static_number/to_chars.cpp
+        static_number/type.cpp
 )
 
 # source files containing demos and examples of CNL;

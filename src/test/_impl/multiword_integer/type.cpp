@@ -8,6 +8,7 @@
 /// \brief tests for <cnl/_impl/multiword_integer/type.h>
 
 #include <cnl/_impl/multiword_integer/type.h>
+#include <cnl/_impl/duplex_integer/operators.h>
 
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
@@ -28,6 +29,15 @@ namespace {
                                 cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
                                 cnl::uint32>,
                         cnl::_impl::multiword_integer_rep<cnl::int32, 3>::type>::value,
+                "");
+    }
+
+    namespace test_ctor {
+        static_assert(
+                identical(
+                        cnl::_impl::multiword_integer<cnl::int64, 2>{786192872LL*928178263LL},
+                        cnl::_impl::multiword_integer<cnl::int64, 2>{
+                            cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{786192872LL*928178263LL}}),
                 "");
     }
 

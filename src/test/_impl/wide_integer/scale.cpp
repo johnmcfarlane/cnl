@@ -8,6 +8,9 @@
 /// \brief tests for <cnl/_impl/wide_integer/scale.h>
 
 #include <cnl/_impl/wide_integer/scale.h>
+#include <cnl/_impl/wide_integer/digits.h>
+#include <cnl/_impl/wide_integer/operators.h>
+#include <cnl/_impl/num_traits/fixed_width_scale.h>
 
 #include <cnl/_impl/type_traits/identical.h>
 
@@ -54,14 +57,13 @@ namespace {
                         cnl::_impl::wide_integer<16, unsigned>{0x12},
                         cnl::_impl::scale<-8, 2, cnl::_impl::wide_integer<16, unsigned>>(0x1234)),
                 "cnl::_impl::scale test failed");
-    }
 
-    namespace test_scale {
         static_assert(
                 identical(
                         cnl::_impl::wide_integer<63>{0x55},
                         cnl::scale<-1, 2, cnl::_impl::wide_integer<63>>{}(0xAA)),
                 "cnl::scale<cnl::_impl::wide_integer>");
+#if !defined(_MSC_VER)
 #if (__cpp_constexpr >= 201304L)
         static_assert(
                 identical(
@@ -69,5 +71,19 @@ namespace {
                         cnl::scale<-1, 2, cnl::_impl::wide_integer<255>>{}(0xAA)),
                 "cnl::scale<cnl::_impl::wide_integer>");
 #endif
+        static_assert(
+                identical(
+                        cnl::_impl::wide_integer<200>{38725387}<<100,
+                        cnl::scale<100, 2, cnl::_impl::wide_integer<200>>{}(38725387)),
+                "cnl::scale<cnl::_impl::wide_integer>");
+#endif
+    }
+
+    namespace test_fixed_width_scale {
+        static_assert(
+                identical(
+                        cnl::_impl::wide_integer<40>{38725387LL<<10},
+                        cnl::fixed_width_scale<10, 2, cnl::_impl::wide_integer<40>>{}(38725387)),
+                "cnl::scale<cnl::_impl::wide_integer>");
     }
 }
