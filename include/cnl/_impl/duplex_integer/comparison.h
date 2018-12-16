@@ -14,66 +14,19 @@
 #include "../operators.h"
 #include "../type_traits/common_type.h"
 
+#include <tuple>
+
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<typename Upper, typename Lower>
-        struct comparison_operator<equal_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
-            using _duplex_integer = duplex_integer<Upper, Lower>;
-
-            constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const -> bool
+        template<typename Operator, typename Upper, typename Lower>
+        struct comparison_operator<Operator, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
+            constexpr auto operator()(
+                    duplex_integer<Upper, Lower> const& lhs,
+                    duplex_integer<Upper, Lower> const& rhs) const -> bool
             {
-                return lhs.lower()==rhs.lower() && lhs.upper()==rhs.upper();
-            }
-        };
-
-        template<typename Upper, typename Lower>
-        struct comparison_operator<not_equal_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
-            using _duplex_integer = duplex_integer<Upper, Lower>;
-
-            constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const -> bool
-            {
-                return lhs.lower()!=rhs.lower() || lhs.upper()!=rhs.upper();
-            }
-        };
-
-        template<typename Upper, typename Lower>
-        struct comparison_operator<less_than_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
-            using _duplex_integer = duplex_integer<Upper, Lower>;
-
-            constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const -> bool
-            {
-                return lhs.upper()<rhs.upper() || (lhs.upper()==rhs.upper() && lhs.lower()<rhs.lower());
-            }
-        };
-
-        template<typename Upper, typename Lower>
-        struct comparison_operator<less_than_or_equal_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
-            using _duplex_integer = duplex_integer<Upper, Lower>;
-
-            constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const -> bool
-            {
-                return !comparison_operator<greater_than_op, _duplex_integer, _duplex_integer>{}(lhs, rhs);
-            }
-        };
-
-        template<typename Upper, typename Lower>
-        struct comparison_operator<greater_than_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
-            using _duplex_integer = duplex_integer<Upper, Lower>;
-
-            constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const -> bool
-            {
-                return lhs.upper()>rhs.upper() || (lhs.upper()==rhs.upper() && lhs.lower()>rhs.lower());
-            }
-        };
-
-        template<typename Upper, typename Lower>
-        struct comparison_operator<greater_than_or_equal_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
-            using _duplex_integer = duplex_integer<Upper, Lower>;
-
-            constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const -> bool
-            {
-                return !comparison_operator<less_than_op, _duplex_integer, _duplex_integer>{}(lhs, rhs);
+                using tuple = std::tuple<Upper const&, Lower const&>;
+                return Operator{}(tuple(lhs.upper(), lhs.lower()), tuple(rhs.upper(), rhs.lower()));
             }
         };
 
