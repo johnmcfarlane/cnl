@@ -349,6 +349,12 @@ namespace {
                 cnl::_impl::duplex_integer<short, unsigned short>{123}>=
                         cnl::_impl::duplex_integer<short, unsigned short>{-124},
                 "");
+        static_assert(
+                cnl::_impl::duplex_integer<
+                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32> >{123}
+                >=cnl::_impl::duplex_integer<cnl::int16, cnl::uint16>{-124},
+                "");
     }
 
     namespace test_bitwise_and_op {

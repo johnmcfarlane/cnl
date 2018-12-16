@@ -170,6 +170,19 @@ namespace cnl {
             }
         };
 
+        template<typename Operator, typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
+        struct comparison_operator<Operator, duplex_integer<LhsUpper, LhsLower>, duplex_integer<RhsUpper, RhsLower>> {
+            constexpr auto operator()(
+                    duplex_integer<LhsUpper, LhsLower> const& lhs,
+                    duplex_integer<RhsUpper, RhsLower> const& rhs) const -> bool
+            {
+                using common_type = duplex_integer<
+                        common_type_t<LhsUpper, RhsUpper>,
+                        common_type_t<LhsLower, RhsLower>>;
+                return comparison_operator<Operator, common_type, common_type>{}(lhs, rhs);
+            }
+        };
+
         // pre_operator
         template<typename Upper, typename Lower>
         struct pre_operator<pre_increment_op, duplex_integer<Upper, Lower>> {
