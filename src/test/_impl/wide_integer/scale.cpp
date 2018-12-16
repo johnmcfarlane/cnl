@@ -63,12 +63,14 @@ namespace {
                         cnl::_impl::wide_integer<63>{0x55},
                         cnl::scale<-1, 2, cnl::_impl::wide_integer<63>>{}(0xAA)),
                 "cnl::scale<cnl::_impl::wide_integer>");
+#if !defined(_MSC_VER)
 #if (__cpp_constexpr >= 201304L)
         static_assert(
                 identical(
                         cnl::_impl::wide_integer<255>{0x55},
                         cnl::scale<-1, 2, cnl::_impl::wide_integer<255>>{}(0xAA)),
                 "cnl::scale<cnl::_impl::wide_integer>");
+#endif
 #endif
     }
 
