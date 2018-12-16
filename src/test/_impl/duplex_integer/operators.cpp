@@ -469,6 +469,34 @@ namespace {
                 "");
         static_assert(
                 identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<int, unsigned int>,
+                                        cnl::_impl::duplex_integer<unsigned int, unsigned int>>,
+                                unsigned int>{{0x0000000012345678LL, 0x90ABCDEFFEDCBA98ULL}, 0x76543210U},
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<int, unsigned int>,
+                                        cnl::_impl::duplex_integer<unsigned int, unsigned int>>,
+                                unsigned int>{{0x1234567890ABCDEFLL, 0xFEDCBA9876543210ULL}, 0x87654321U}
+                                >> 32),
+                "");
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<int, unsigned int>,
+                                        cnl::_impl::duplex_integer<unsigned int, unsigned int>>,
+                                unsigned int>{{0x0000000000000000LL, 0x1234567890ABCDEFLL}, 0xFEDCBA98U},
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<int, unsigned int>,
+                                        cnl::_impl::duplex_integer<unsigned int, unsigned int>>,
+                                unsigned int>{{0x1234567890ABCDEFLL, 0xFEDCBA9876543210ULL}, 0x87654321U}
+                                >> 64),
+                "");
+        static_assert(
+                identical(
                         cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>{0x7394uLL >> 0},
                         cnl::_impl::binary_operator<
                                 cnl::_impl::shift_right_op,

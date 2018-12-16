@@ -10,6 +10,7 @@
 #include "forward_declaration.h"
 #include "../assert.h"
 #include "../num_traits/digits.h"
+#include "../type_traits/make_unsigned.h"
 
 #include <type_traits>
 
@@ -29,7 +30,7 @@ namespace cnl {
             using promoted_type = decltype(lhs >> rhs);
             return (rhs>=digits<promoted_type>::value)
                    ? Result{}
-                   : static_cast<Result>((lhs >> rhs) & ~promoted_type{});
+                   : static_cast<Result>((lhs >> rhs) & static_cast<promoted_type>(~Result{}));
         }
 
         template<typename Result, typename Lhs>
@@ -53,9 +54,11 @@ namespace cnl {
             CNL_ASSERT(rhs>=0);
 #endif
             using promoted_type = decltype(lhs << rhs);
+            using unsigned_type = make_unsigned_t<decltype(lhs & lhs)>;
             return (rhs>=digits<promoted_type>::value)
                    ? Result{}
-                   : static_cast<Result>((lhs & sensible_right_shift<Lhs>(~Result{}, rhs)) << rhs);
+                   : static_cast<Result>(
+                           static_cast<unsigned_type>(lhs & sensible_right_shift<Lhs>(~Result{}, rhs)) << rhs);
         }
 
         template<typename Result, typename Lhs>
