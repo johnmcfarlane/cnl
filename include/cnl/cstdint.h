@@ -82,8 +82,7 @@ namespace cnl {
                        : int{};
         }
 
-        template<int NumChars>
-        constexpr intmax parse(const char (& s)[NumChars])
+        constexpr intmax parse_positive(char const* s)
         {
             return (s[0]!='0')
                    ? parse(s, 10, parse_dec_char)
@@ -92,6 +91,16 @@ namespace cnl {
                      : (s[1]=='b' || s[1]=='B')
                        ? parse(s+2, 2, parse_bin_char)
                        : parse(s+1, 8, parse_oct_char);
+        }
+
+        template<int NumChars>
+        constexpr intmax parse(const char (& s)[NumChars])
+        {
+            return (s[0]=='-')
+                   ? -parse_positive(s+1)
+                   : s[0]=='+'
+                     ? parse_positive(s+1)
+                     : parse_positive(s);
         }
 
         template<char... Chars>
