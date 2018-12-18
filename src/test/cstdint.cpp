@@ -13,6 +13,17 @@
 namespace {
     using cnl::_impl::identical;
 
+    namespace test_cnl_intmax_c {
+        static_assert(identical(cnl::intmax{1}, CNL_INTMAX_C(1)), "");
+#if defined(__cpp_binary_literals)
+        static_assert(identical(cnl::intmax{-5}, CNL_INTMAX_C(-0b101)), "");
+#endif
+        static_assert(identical(cnl::intmax{32}, CNL_INTMAX_C(+0x20)), "");
+        static_assert(identical(cnl::intmax{-83}, CNL_INTMAX_C(-0123)), "");
+        static_assert(identical(cnl::intmax{1233456789012345678LL}, CNL_INTMAX_C(1233456789012345678)), "");
+        static_assert(identical(cnl::intmax{-1233456789012345678LL}, CNL_INTMAX_C(-1233456789012345678)), "");
+    }
+
     namespace test_parse {
         using cnl::_cnlint_impl::parse;
 
