@@ -272,6 +272,12 @@ namespace {
                         static_cast<cnl::int128>(
                                 cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{INT64_C(-2029872569029388)})),
                 "");
+        static_assert(
+                identical(
+                        CNL_INTMAX_C(0x0123456789ABCDEF),
+                        static_cast<cnl::int128>(
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{INT64_C(0x0123456789ABCDEF)})),
+                "");
 #endif
     }
 

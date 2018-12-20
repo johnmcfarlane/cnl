@@ -25,7 +25,7 @@ namespace cnl {
         constexpr auto calculate_lower(Integer const& input)
         -> enable_if_t<digits<Lower>::value<digits<Integer>::value, Lower>
         {
-            return Lower(input & Integer{numeric_limits<Lower>::max()});
+            return static_cast<Lower>(input & static_cast<Integer>(numeric_limits<Lower>::max()));
         }
 
         // cnl::_impl::calculate upper
