@@ -265,6 +265,7 @@ namespace {
                         cnl::_impl::duplex_integer<int, unsigned>{0x1234}
                                 /cnl::_impl::duplex_integer<int, unsigned>{0x100}),
                 "");
+        static_assert(identical(0x12, 0x1234/cnl::_impl::duplex_integer<int, unsigned>{0x100}), "");
 #endif
 
         TEST(duplex_integer, divide)
@@ -272,6 +273,13 @@ namespace {
             auto expected = cnl::_impl::duplex_integer<int, unsigned>{0x12};
             auto actual = cnl::_impl::duplex_integer<int, unsigned>{0x1234}
                     /cnl::_impl::duplex_integer<int, unsigned>{0x100};
+            ASSERT_EQ(expected, actual);
+        }
+
+        TEST(duplex_integer, int_divide_by_duplex)
+        {
+            auto expected = 0x12;
+            auto actual = 0x1234/cnl::_impl::duplex_integer<int, unsigned>{0x100};
             ASSERT_EQ(expected, actual);
         }
     }

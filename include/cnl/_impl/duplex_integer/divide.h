@@ -13,10 +13,31 @@
 #include "type.h"
 #include "../operators.h"
 #include "../type_traits/set_signedness.h"
+#include "../wide_integer/type.h"
 
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
+        // cnl::_impl::heterogeneous_duplex_divide_operator
+        template<typename Lhs, typename Rhs, typename Enable = void>
+        struct heterogeneous_duplex_divide_operator;
+
+        template<typename Lhs, typename Rhs>
+        struct heterogeneous_duplex_divide_operator<
+                Lhs, Rhs,
+                enable_if_t<(is_duplex_integer<Lhs>::value||is_duplex_integer<Rhs>::value)
+                        &&(digits<Lhs>::value!=digits<Rhs>::value)>> {
+            using common_type = wide_integer_rep_t<
+                    max(digits<Lhs>::value, digits<Rhs>::value),
+                    set_signedness_t<int, is_signed<Lhs>::value|is_signed<Rhs>::value>>;
+
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> Lhs
+            {
+                return static_cast<Lhs>(static_cast<common_type>(lhs) / static_cast<common_type>(rhs));
+            }
+        };
+
+        // cnl::_impl::binary_operator<divide_op, duplex_integer<>, duplex_integer<>
         template<typename Upper, typename Lower>
         struct binary_operator<divide_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
             using _duplex_integer = duplex_integer<Upper, Lower>;
@@ -108,6 +129,22 @@ namespace cnl {
 
                 return quot;
             };
+        };
+
+        template<typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
+        struct binary_operator<divide_op, duplex_integer<LhsUpper, LhsLower>, duplex_integer<RhsUpper, RhsLower>>
+                : heterogeneous_duplex_divide_operator<
+                        duplex_integer<LhsUpper, LhsLower>, duplex_integer<RhsUpper, RhsLower>> {
+        };
+
+        template<typename Lhs, typename RhsUpper, typename RhsLower>
+        struct binary_operator<divide_op, Lhs, duplex_integer<RhsUpper, RhsLower>>
+                : heterogeneous_duplex_divide_operator<Lhs, duplex_integer<RhsUpper, RhsLower>> {
+        };
+
+        template<typename LhsUpper, typename LhsLower, typename Rhs>
+        struct binary_operator<divide_op, duplex_integer<LhsUpper, LhsLower>, Rhs>
+                : heterogeneous_duplex_divide_operator<duplex_integer<LhsUpper, LhsLower>, Rhs> {
         };
     }
 }
