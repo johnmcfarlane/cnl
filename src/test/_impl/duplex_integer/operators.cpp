@@ -542,5 +542,12 @@ namespace {
                         cnl::_impl::duplex_integer<int, unsigned int>{0x007FFFFF, 0xFFFFFFFF},
                         cnl::_impl::duplex_integer<int, unsigned int>{0x7FFFFFFF, 0xFFFFFFFF} >> 8),
                 "");
+
+        static_assert(
+                identical(
+                        cnl::uint16(-1>>16),
+                        cnl::_impl::sensible_right_shift<cnl::uint16>(
+                                cnl::_impl::duplex_integer<cnl::int16, cnl::uint16>{-1, 65535}, 16)),
+                "");
     }
 }
