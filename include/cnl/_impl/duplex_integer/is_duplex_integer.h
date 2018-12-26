@@ -9,6 +9,8 @@
 
 #include "forward_declaration.h"
 
+#include <type_traits>
+
 /// compositional numeric library
 namespace cnl {
     namespace _impl {

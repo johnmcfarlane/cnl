@@ -8,9 +8,9 @@
 #define CNL_IMPL_DUPLEX_INTEGER_DIGITS_H
 
 #include "forward_declaration.h"
+#include "make_unsigned.h"
 #include "../assert.h"
 #include "../num_traits/digits.h"
-#include "../type_traits/make_unsigned.h"
 
 #include <type_traits>
 
