@@ -1,0 +1,115 @@
+
+//          Copyright John McFarlane 2018.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file ../LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
+#if !defined(CNL_IMPL_DUPLEX_INTEGER_DIVIDE_H)
+#define CNL_IMPL_DUPLEX_INTEGER_DIVIDE_H 1
+
+#include "ctors.h"
+#include "make_unsigned.h"
+#include "numeric_limits.h"
+#include "type.h"
+#include "../operators.h"
+#include "../type_traits/set_signedness.h"
+
+/// compositional numeric library
+namespace cnl {
+    namespace _impl {
+        template<typename Upper, typename Lower>
+        struct binary_operator<divide_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
+            using _duplex_integer = duplex_integer<Upper, Lower>;
+            using _unsigned_duplex_integer = make_unsigned_t<_duplex_integer>;
+
+            constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
+            -> _duplex_integer
+            {
+                return (lhs<_duplex_integer{0})
+                       ? (rhs<_duplex_integer{0})
+                         ? non_negative_division(-lhs, -rhs)
+                         : -non_negative_division(-lhs, rhs)
+                       : (rhs<_duplex_integer{0})
+                         ? -non_negative_division(lhs, -rhs)
+                         : non_negative_division(lhs, rhs);
+            }
+
+            // lifted from: https://github.com/torvalds/linux/blob/master/lib/div64.c#L142
+            static CNL_RELAXED_CONSTEXPR auto non_negative_division(
+                    _unsigned_duplex_integer const& dividend,
+                    _unsigned_duplex_integer const& divisor)
+            -> _unsigned_duplex_integer
+            {
+                auto const high = divisor.upper();
+                if (!high) {
+                    return div_by_lower(dividend, divisor.lower());
+                }
+
+                int n = fls(high);
+                auto quot = div_by_lower(dividend >> n, (divisor >> n).lower());
+
+                if (quot) {
+                    --quot;
+                }
+                if ((dividend-quot*divisor)>=divisor) {
+                    ++quot;
+                }
+
+                return quot;
+            }
+
+            static CNL_RELAXED_CONSTEXPR auto fls(Upper n) -> int
+            {
+                auto half_digits = numeric_limits<_unsigned_duplex_integer>::digits/2;
+
+                if (!n) {
+                    return 0;
+                }
+                for (int r = half_digits;; n <<= 1, r--) {
+                    if (n & Upper(1ULL << (half_digits-1))) {
+                        return r;
+                    }
+                }
+            };
+
+            // from Linux div64_32
+            static CNL_RELAXED_CONSTEXPR auto
+            div_by_lower(_unsigned_duplex_integer const& dividend, Lower const& divisor)
+            -> _unsigned_duplex_integer
+            {
+                _unsigned_duplex_integer rem = dividend;
+                _unsigned_duplex_integer b = divisor;
+                _unsigned_duplex_integer d = 1;
+
+                using unsigned_upper = set_signedness_t<Upper, false>;
+                auto high = rem.upper();
+
+                _unsigned_duplex_integer quot = 0;
+                if (static_cast<unsigned_upper>(high)>=divisor) {
+                    high /= divisor;
+                    quot = _unsigned_duplex_integer{high, 0};
+                    rem -= _unsigned_duplex_integer(high*divisor, 0);
+                }
+
+                while (b<rem) {
+                    b <<= 1;
+                    d <<= 1;
+                }
+
+                do {
+                    if (rem>=b) {
+                        rem -= b;
+                        quot += d;
+                    }
+                    b >>= 1;
+                    d >>= 1;
+                }
+                while (d);
+
+                return quot;
+            };
+        };
+    }
+}
+
+#endif  // CNL_IMPL_DUPLEX_INTEGER_DIVIDE_H
