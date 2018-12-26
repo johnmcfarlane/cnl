@@ -19,14 +19,8 @@
 namespace cnl {
     namespace _impl {
         // cnl::_impl::heterogeneous_duplex_divide_operator
-        template<typename Lhs, typename Rhs, typename Enable = void>
-        struct heterogeneous_duplex_divide_operator;
-
         template<typename Lhs, typename Rhs>
-        struct heterogeneous_duplex_divide_operator<
-                Lhs, Rhs,
-                enable_if_t<(is_duplex_integer<Lhs>::value||is_duplex_integer<Rhs>::value)
-                        &&(digits<Lhs>::value!=digits<Rhs>::value)>> {
+        struct heterogeneous_duplex_divide_operator {
             using common_type = wide_integer_rep_t<
                     max(digits<Lhs>::value, digits<Rhs>::value),
                     set_signedness_t<int, is_signed<Lhs>::value|is_signed<Rhs>::value>>;
