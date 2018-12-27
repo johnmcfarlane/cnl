@@ -218,6 +218,16 @@ namespace {
                                 cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
                                 cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{928178263LL}),
                 "");
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{786192872LL*928178263LL},
+                        786192872LL
+                                *cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{928178263LL}),
+                "");
     }
 
     namespace test_long_multiply {
