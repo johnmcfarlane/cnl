@@ -134,6 +134,18 @@ namespace cnl {
                 : heterogeneous_duplex_multiply_operator<
                         duplex_integer<LhsUpper, LhsLower>, duplex_integer<RhsUpper, RhsLower>> {
         };
+
+        template<typename LhsUpper, typename LhsLower, typename Rhs>
+        struct binary_operator<multiply_op, duplex_integer<LhsUpper, LhsLower>, Rhs>
+                : heterogeneous_duplex_multiply_operator<
+                        duplex_integer<LhsUpper, LhsLower>, Rhs> {
+        };
+
+        template<typename Lhs, typename RhsUpper, typename RhsLower>
+        struct binary_operator<multiply_op, Lhs, duplex_integer<RhsUpper, RhsLower>>
+                : heterogeneous_duplex_multiply_operator<
+                        Lhs, duplex_integer<RhsUpper, RhsLower>> {
+        };
     }
 }
 
