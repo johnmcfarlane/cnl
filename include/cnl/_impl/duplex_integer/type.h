@@ -9,6 +9,7 @@
 
 #include "../num_traits/width.h"
 #include "../operators.h"
+#include "../power.h"
 #include "../type_traits/set_signedness.h"
 #include "../unreachable.h"
 #include "digits.h"
@@ -62,6 +63,9 @@ namespace cnl {
             template<typename Integer, _impl::enable_if_t<(numeric_limits<Integer>::is_integer), int> Dummy = 0>
             constexpr duplex_integer(Integer const& i);
 
+            template<typename Number, _impl::enable_if_t<(numeric_limits<Number>::is_iec559), int> Dummy = 0>
+            constexpr duplex_integer(Number const& i);
+
             constexpr auto upper() const -> upper_type const&
             {
                 return _upper;
@@ -84,10 +88,17 @@ namespace cnl {
 
             explicit constexpr operator bool() const { return _lower || _upper; }
 
-            template<typename Integer>
+            template<typename Integer, _impl::enable_if_t<numeric_limits<Integer>::is_integer, int> = 0>
             explicit constexpr operator Integer() const
             {
                 return upper_value<Integer, Upper, Lower>(_upper) | static_cast<Integer>(_lower);
+            }
+
+            template<typename Number, _impl::enable_if_t<numeric_limits<Number>::is_iec559, int> = 0>
+            explicit constexpr operator Number() const
+            {
+                return static_cast<Number>(_upper)*cnl::power<Number, lower_width, 2>()
+                        +static_cast<Number>(_lower);
             }
 
         private:

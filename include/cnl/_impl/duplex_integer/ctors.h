@@ -8,6 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_CTORS_H 1
 
 #include "type.h"
+#include "../power.h"
 #include "../type_traits/enable_if.h"
 
 /// compositional numeric library
@@ -57,6 +58,14 @@ namespace cnl {
         constexpr duplex_integer<Upper, Lower>::duplex_integer(Integer const& i)
                 : _upper(calculate_upper<Upper, Lower>(i)),
                   _lower(calculate_lower<Lower>(i))
+        {
+        }
+
+        template<typename Upper, typename Lower>
+        template<typename Number, _impl::enable_if_t<(numeric_limits<Number>::is_iec559), int> Dummy>
+        constexpr duplex_integer<Upper, Lower>::duplex_integer(Number const& n)
+                : _upper(Upper(n / cnl::power<Number, lower_width, 2>())),
+                  _lower(Lower(std::fmod(n, cnl::power<Number, lower_width, 2>())))
         {
         }
     }
