@@ -14,10 +14,30 @@
 #include "wants_generic_ops.h"
 #include "../num_traits/width.h"
 #include "../operators.h"
+#include "../type_traits/conditional3.h"
 
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
+        template<typename Lhs, typename Rhs>
+        struct heterogeneous_duplex_multiply_operator {
+            using common_type = conditional3_t<
+                    width<Lhs>::value-width<Rhs>::value,
+                    Lhs,
+                    conditional3_t<
+                            (is_signed<Lhs>::value-is_signed<Rhs>::value),
+                            Lhs,
+                            void,
+                            Rhs>,
+                    Rhs>;
+
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(std::declval<common_type>()*std::declval<common_type>())
+            {
+                return static_cast<common_type>(lhs)*static_cast<common_type>(rhs);
+            }
+        };
+
         // long_multiply - T should be same width as operands
         template<typename T>
         struct long_multiply;
@@ -83,6 +103,7 @@ namespace cnl {
             }
         };
 
+        // cnl::_impl::binary_operator<multiply_op, duplex_integer<>, duplex_integer<>>
         template<typename Upper, typename Lower>
         struct binary_operator<multiply_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
             using _duplex_integer = duplex_integer<Upper, Lower>;
@@ -106,6 +127,12 @@ namespace cnl {
                                 << digits<Lower>::value)
                         +static_cast<common_result_type>(long_multiply<Lower>{}(lhs_lower, rhs_lower));
             }
+        };
+
+        template<typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
+        struct binary_operator<multiply_op, duplex_integer<LhsUpper, LhsLower>, duplex_integer<RhsUpper, RhsLower>>
+                : heterogeneous_duplex_multiply_operator<
+                        duplex_integer<LhsUpper, LhsLower>, duplex_integer<RhsUpper, RhsLower>> {
         };
     }
 }

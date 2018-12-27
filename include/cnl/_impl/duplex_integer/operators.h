@@ -11,6 +11,7 @@
 #include "ctors.h"
 #include "digits.h"
 #include "divide.h"
+#include "make_signed.h"
 #include "multiply.h"
 #include "numeric_limits.h"
 #include "set_digits.h"
@@ -44,7 +45,7 @@ namespace cnl {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
             static constexpr auto lower_digits = digits<Lower>::value;
-            using wide_lower = set_digits_t<Lower, lower_digits+1>;
+            using wide_lower = set_digits_t<set_signedness_t<Lower, true>, lower_digits+1>;
 
             constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
             -> _duplex_integer
@@ -167,6 +168,19 @@ namespace cnl {
                 return static_cast<Lower>(
                         sensible_right_shift<Lower>(lhs.lower(), rhs)
                                 | extra_sensible_right_shift<Lower>(lhs.upper(), rhs-width<Lower>::value));
+            }
+        };
+
+        template<typename Operator, typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
+        struct comparison_operator<Operator, duplex_integer<LhsUpper, LhsLower>, duplex_integer<RhsUpper, RhsLower>> {
+            constexpr auto operator()(
+                    duplex_integer<LhsUpper, LhsLower> const& lhs,
+                    duplex_integer<RhsUpper, RhsLower> const& rhs) const -> bool
+            {
+                using common_type = duplex_integer<
+                        common_type_t<LhsUpper, RhsUpper>,
+                        common_type_t<LhsLower, RhsLower>>;
+                return comparison_operator<Operator, common_type, common_type>{}(lhs, rhs);
             }
         };
 

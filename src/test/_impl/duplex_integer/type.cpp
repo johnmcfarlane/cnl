@@ -10,6 +10,7 @@
 #include <cnl/_impl/duplex_integer/ctors.h>
 #include <cnl/_impl/duplex_integer/operators.h>
 #include <cnl/_impl/duplex_integer/type.h>
+#include <cnl/cstdint.h>
 
 #include <cnl/_impl/type_traits/identical.h>
 
@@ -262,6 +263,26 @@ namespace {
                         cnl::uint64{0xFEDCBA9876543210},
                         static_cast<cnl::uint64>(
                                 cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>{UINT64_C(0xFEDCBA9876543210)})),
+                "");
+
+#if defined(CNL_INT128_ENABLED)
+        static_assert(
+                identical(
+                        CNL_INTMAX_C(-2029872569029388),
+                        static_cast<cnl::int128>(
+                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{INT64_C(-2029872569029388)})),
+                "");
+        static_assert(
+                identical(
+                        CNL_INTMAX_C(0x0123456789ABCDEF),
+                        static_cast<cnl::int128>(
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{INT64_C(0x0123456789ABCDEF)})),
+                "");
+#endif
+        static_assert(
+                identical(
+                        cnl::uint16(-1>>16),
+                        static_cast<cnl::uint16>(cnl::_impl::duplex_integer<cnl::int16, cnl::uint16>{-1, 65535})),
                 "");
     }
 

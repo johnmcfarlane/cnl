@@ -121,6 +121,18 @@ namespace {
                         cnl::_impl::duplex_integer<int, unsigned>{0x1234}
                                 -cnl::_impl::duplex_integer<int, unsigned>{0x7625}),
                 "");
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                cnl::uint32>{2315645440ULL},
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                cnl::uint32>{5000000000ULL}
+                                -cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                        cnl::uint32>{2684354560ULL}),
+                "");
     }
 
     namespace test_multiply {
@@ -186,6 +198,16 @@ namespace {
                                 cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{928178263LL}),
                 "");
 #endif
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{786192872LL*928178263LL},
+                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{786192872LL}
+                        *cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{928178263LL}),
+                "");
     }
 
     namespace test_long_multiply {
@@ -265,6 +287,21 @@ namespace {
                         cnl::_impl::duplex_integer<int, unsigned>{0x1234}
                                 /cnl::_impl::duplex_integer<int, unsigned>{0x100}),
                 "");
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32> >{1000000000ULL},
+                        cnl::_impl::binary_operator<
+                                cnl::_impl::divide_op,
+                                cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32> >,
+                                cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32> >>{}(5000000000ULL, 5)),
+                "");
+        static_assert(identical(0x12, 0x1234/cnl::_impl::duplex_integer<int, unsigned>{0x100}), "");
 #endif
 
         TEST(duplex_integer, divide)
@@ -272,6 +309,13 @@ namespace {
             auto expected = cnl::_impl::duplex_integer<int, unsigned>{0x12};
             auto actual = cnl::_impl::duplex_integer<int, unsigned>{0x1234}
                     /cnl::_impl::duplex_integer<int, unsigned>{0x100};
+            ASSERT_EQ(expected, actual);
+        }
+
+        TEST(duplex_integer, int_divide_by_duplex)
+        {
+            auto expected = 0x12;
+            auto actual = 0x1234/cnl::_impl::duplex_integer<int, unsigned>{0x100};
             ASSERT_EQ(expected, actual);
         }
     }
@@ -348,6 +392,12 @@ namespace {
         static_assert(
                 cnl::_impl::duplex_integer<short, unsigned short>{123}>=
                         cnl::_impl::duplex_integer<short, unsigned short>{-124},
+                "");
+        static_assert(
+                cnl::_impl::duplex_integer<
+                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32> >{123}
+                >=cnl::_impl::duplex_integer<cnl::int16, cnl::uint16>{-124},
                 "");
     }
 
@@ -535,6 +585,13 @@ namespace {
                 identical(
                         cnl::_impl::duplex_integer<int, unsigned int>{0x007FFFFF, 0xFFFFFFFF},
                         cnl::_impl::duplex_integer<int, unsigned int>{0x7FFFFFFF, 0xFFFFFFFF} >> 8),
+                "");
+
+        static_assert(
+                identical(
+                        cnl::uint16(-1>>16),
+                        cnl::_impl::sensible_right_shift<cnl::uint16>(
+                                cnl::_impl::duplex_integer<cnl::int16, cnl::uint16>{-1, 65535}, 16)),
                 "");
     }
 }

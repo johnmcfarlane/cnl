@@ -21,6 +21,28 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
+        template<typename Integer>
+        constexpr auto is_flushed(Integer const& value) -> enable_if_t<is_signed<Integer>::value, bool>
+        {
+            return value==0 || value==-1;
+        }
+
+        template<typename Integer>
+        constexpr auto is_flushed(Integer const& value) -> enable_if_t<!is_signed<Integer>::value, bool>
+        {
+            return value==0;
+        }
+
+        template<typename Result, typename Upper, typename Lower>
+        constexpr auto upper_value(Upper const& upper) -> Result
+        {
+            return (digits<Result>::value<=digits<Lower>::value)
+                   ? !is_flushed(upper)
+                     ? unreachable<Result>("overflow in narrowing conversion")
+                     : Result{}
+                   : Result(sensible_left_shift<Result>(upper, digits<Lower>::value));
+        }
+
         // Class duplex_integer is bigendian because this is consistent with std::pair.
         // It makes < faster but possibly makes == slower.
 
@@ -65,20 +87,10 @@ namespace cnl {
             template<typename Integer>
             explicit constexpr operator Integer() const
             {
-                return upper_value<Integer>() | static_cast<Integer>(_lower);
+                return upper_value<Integer, Upper, Lower>(_upper) | static_cast<Integer>(_lower);
             }
 
         private:
-            template<typename Result>
-            constexpr Result upper_value() const
-            {
-                return (digits<Result>::value<=lower_width)  // if upper is completely left-flushed
-                       ? _upper
-                         ? unreachable<Result>("overflow in narrowing conversion")
-                         : Result{}
-                       : Result(sensible_left_shift<Result>(_upper, lower_width));
-            }
-
             // value == _upper<<lower_width + _lower
             upper_type _upper;
             lower_type _lower;
