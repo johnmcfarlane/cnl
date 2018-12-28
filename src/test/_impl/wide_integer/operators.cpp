@@ -47,7 +47,9 @@ namespace {
                         cnl::_impl::wide_integer<>{-3},
                         -cnl::_impl::wide_integer<>{3}),
                 "cnl::_impl::wide_integer minus");
-#if (__cpp_constexpr >= 201304L) && !defined(_MSC_VER)
+
+#if !defined(_MSC_VER)
+        // requires elevated value of -fconstexpr-steps
         static_assert(identical(
                 cnl::_impl::wide_integer<500, int>{-17292375928362489LL},
                 -cnl::_impl::wide_integer<500, int>{17292375928362489LL}), "");

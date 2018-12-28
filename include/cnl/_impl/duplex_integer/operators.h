@@ -76,10 +76,11 @@ namespace cnl {
 
         template<typename Upper, typename Lower>
         struct unary_operator<minus_op, duplex_integer<Upper, Lower>> {
-            constexpr auto operator()(duplex_integer<Upper, Lower> rhs) const
+            constexpr auto operator()(duplex_integer<Upper, Lower> const& rhs) const
             -> duplex_integer<Upper, Lower>
             {
-                return unary_operator<bitwise_not_op, duplex_integer<Upper, Lower>>{}(--rhs);
+                return unary_operator<bitwise_not_op, duplex_integer<Upper, Lower>>{}(
+                        rhs-duplex_integer<Upper, Lower>{1});
             }
         };
 
