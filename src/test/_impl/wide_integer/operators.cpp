@@ -49,8 +49,8 @@ namespace {
                 "cnl::_impl::wide_integer minus");
 #if (__cpp_constexpr >= 201304L) && !defined(_MSC_VER)
         static_assert(identical(
-                cnl::_impl::wide_integer<1000, int>{-17292375928362489LL},
-                -cnl::_impl::wide_integer<1000, int>{17292375928362489LL}), "");
+                cnl::_impl::wide_integer<500, int>{-17292375928362489LL},
+                -cnl::_impl::wide_integer<500, int>{17292375928362489LL}), "");
 #endif
 
         TEST(duplex_integer, minus)
