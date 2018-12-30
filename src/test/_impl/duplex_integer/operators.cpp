@@ -39,7 +39,17 @@ namespace {
     }
 
     namespace test_minus {
-#if (__cpp_constexpr >= 201304L) && !defined(_MSC_VER)
+        static_assert(identical(
+                cnl::_impl::duplex_integer<
+                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{-1},
+                -cnl::_impl::duplex_integer<
+                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{1}), "");
+        static_assert(identical(
+                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{-1729348762983LL},
+                -cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{1729348762983LL}), "");
+#if defined(CNL_INT128_ENABLED)
         static_assert(identical(
                 cnl::_impl::duplex_integer<
                         cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>,
@@ -47,7 +57,6 @@ namespace {
                 -cnl::_impl::duplex_integer<
                         cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>,
                         cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{1}), "");
-#endif
 
         TEST(duplex_integer, minus)
         {
@@ -59,6 +68,7 @@ namespace {
                     cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{1};
             ASSERT_EQ(expected, actual);
         }
+#endif
     }
 
     namespace test_add {
