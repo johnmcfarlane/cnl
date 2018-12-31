@@ -26,6 +26,13 @@ namespace {
                         cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{
                                 cnl::_impl::multiword_integer<cnl::int32, 3>{0x1234567890abcdef}}),
                 "");
+
+        TEST(duplex_integer, float_ctor)
+        {
+            constexpr auto expected = cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{cnl::uint64(1.23456e15)};
+            auto const actual = cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{1.23456e15};
+            ASSERT_EQ(expected, actual);
+        }
     }
 
     namespace test_upper {
