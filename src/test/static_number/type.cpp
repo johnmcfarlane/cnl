@@ -20,6 +20,13 @@ namespace {
                 "cnl::rounding_integer parameter default test failed");
     }
 
+    namespace test_ctor {
+        static_assert(
+                identical(
+                        cnl::static_number<20, -10>{1./3},
+                        cnl::static_number<20, -10>{cnl::fraction<int>(1, 3)}), "");
+    }
+
     namespace test_make_static_number {
         using namespace cnl::literals;
         static_assert(identical(cnl::make_static_number(cnl::int16{7}), cnl::static_number<15>{7}), "");

@@ -386,6 +386,14 @@ namespace {
         }
     }
 
+    namespace test_bitwise_and {
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<unsigned, unsigned>{0xa005},
+                        cnl::_impl::duplex_integer<unsigned, unsigned>{0xaa55}
+                                &cnl::_impl::duplex_integer<unsigned, unsigned>{0xa5a5}), "");
+    }
+
     namespace test_equal {
         static_assert(
                 cnl::_impl::duplex_integer<int, unsigned>{0}==cnl::_impl::duplex_integer<int, unsigned>{},
