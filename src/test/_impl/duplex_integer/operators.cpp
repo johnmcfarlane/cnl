@@ -469,13 +469,6 @@ namespace {
                 "");
         static_assert(
                 identical(
-                        cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>{0},
-                        cnl::_impl::binary_operator<
-                                cnl::_impl::shift_right_op,
-                                cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>,
-                                int>{}(0, 9)), "");
-        static_assert(
-                identical(
                         cnl::_impl::duplex_integer<signed, cnl::_impl::duplex_integer<unsigned, unsigned>>{0},
                         cnl::_impl::binary_operator<
                                 cnl::_impl::shift_left_op,
@@ -503,6 +496,38 @@ namespace {
     }
 
     namespace test_shift_right_op {
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>{0},
+                        cnl::_impl::binary_operator<
+                                cnl::_impl::shift_right_op,
+                                cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>,
+                                int>{}(0, 9)), "");
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>{0x7394uLL >> 0},
+                        cnl::_impl::binary_operator<
+                                cnl::_impl::shift_right_op,
+                                cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>,
+                                cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>>{}(0x7394uLL, 0)),
+                "");
+    }
+
+    namespace test_shift_left {
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{246},
+                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{123} << 1),
+                "");
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{246},
+                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{123}
+                                << cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{1}),
+                "");
+    }
+
+    namespace test_shift_right {
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<
@@ -565,31 +590,6 @@ namespace {
                                 unsigned int>{{0x1234567890ABCDEFLL, 0xFEDCBA9876543210ULL}, 0x87654321U}
                                 >> 64),
                 "");
-        static_assert(
-                identical(
-                        cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>{0x7394uLL >> 0},
-                        cnl::_impl::binary_operator<
-                                cnl::_impl::shift_right_op,
-                                cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>,
-                                cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>>{}(0x7394uLL, 0)),
-                "");
-    }
-
-    namespace test_shift_left {
-        static_assert(
-                identical(
-                        cnl::_impl::duplex_integer<signed, unsigned>{246},
-                        cnl::_impl::duplex_integer<signed, unsigned>{123} << 1),
-                "");
-        static_assert(
-                identical(
-                        cnl::_impl::duplex_integer<signed, unsigned>{246},
-                        cnl::_impl::duplex_integer<signed, unsigned>{123}
-                                << cnl::_impl::duplex_integer<signed, unsigned>{1}),
-                "");
-    }
-
-    namespace test_shift_right {
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<signed, unsigned>{123},
