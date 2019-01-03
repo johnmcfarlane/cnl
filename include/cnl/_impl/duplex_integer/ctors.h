@@ -61,6 +61,8 @@ namespace cnl {
         {
         }
 
+        // Note: floating-point constructor is not a constant expression because it relies on std::fmod
+        // and std::fmod is not declared constexpr. (See wg21.link/p0533 for efforts to remedy this.)
         template<typename Upper, typename Lower>
         template<typename Number, _impl::enable_if_t<(numeric_limits<Number>::is_iec559), int> Dummy>
         constexpr duplex_integer<Upper, Lower>::duplex_integer(Number const& n)

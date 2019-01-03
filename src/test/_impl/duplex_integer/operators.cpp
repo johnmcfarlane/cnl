@@ -351,14 +351,14 @@ namespace {
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(wide_integer, divide128)
+        TEST(duplex_integer, divide128)
         {
             using type = cnl::_impl::duplex_integer<
                     cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
                     cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>;
             constexpr auto exponent = 64;
 
-            auto expected = type(std::pow(2.L, exponent)/3);
+            auto expected = type({{0, 0}, {0x55555555, 0x55555555}});
 
             auto const numerator = type{1} << exponent;
             auto const denominator = type{3};
@@ -367,7 +367,7 @@ namespace {
             ASSERT_EQ((expected), (actual));
         }
 
-        TEST(wide_integer, divide160)
+        TEST(duplex_integer, divide160)
         {
             using type = cnl::_impl::duplex_integer<
                     cnl::_impl::duplex_integer<
