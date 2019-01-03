@@ -10,6 +10,8 @@
 
 #include <cinttypes>
 
+#include <gtest/gtest.h>
+
 // TODO: Every `#if !defined(TEST_WIDE_INTEGER)` is a TODO
 #define TEST_WIDE_INTEGER
 #define TEST_WIDE_INTEGER_INT
@@ -24,3 +26,19 @@ using test_int = cnl::wide_integer<cnl::digits<int>::value, int>;
 // perform fixed_point tests with this type of fixed_point specialization
 
 #include "../fixed_point_common.h"
+
+TEST(fixed_point_wide_integer, quotient200)
+{
+    using fixed_point = cnl::fixed_point<cnl::wide_integer<200, unsigned>, -196>;
+    auto expected = fixed_point{5.L/7};
+    auto actual = cnl::quotient<fixed_point>(5, 7);
+    ASSERT_EQ(double(expected), double(actual));
+}
+
+TEST(fixed_point_wide_integer, quotient)
+{
+    using fixed_point = cnl::fixed_point<cnl::wide_integer<129, unsigned>, -96>;
+    auto expected = fixed_point{1.L/3};
+    auto actual = cnl::quotient<fixed_point>(1, 3);
+    ASSERT_EQ(double(expected), double(actual));
+}

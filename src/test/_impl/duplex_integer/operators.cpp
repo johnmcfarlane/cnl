@@ -143,6 +143,18 @@ namespace {
                                         cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
                                         cnl::uint32>{2684354560ULL}),
                 "");
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{{0, 0}, {0x40000000, 0}},
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{{0, 1}, {0, 0}}
+                                -cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{
+                                                {0, 0}, {0xC0000000, 0}}), "");
     }
 
     namespace test_multiply {
@@ -337,6 +349,40 @@ namespace {
             auto expected = 0x12;
             auto actual = 0x1234/cnl::_impl::duplex_integer<int, unsigned>{0x100};
             ASSERT_EQ(expected, actual);
+        }
+
+        TEST(wide_integer, divide128)
+        {
+            using type = cnl::_impl::duplex_integer<
+                    cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                    cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>;
+            constexpr auto exponent = 64;
+
+            auto expected = type(std::pow(2.L, exponent)/3);
+
+            auto const numerator = type{1} << exponent;
+            auto const denominator = type{3};
+            auto actual = numerator/denominator;
+
+            ASSERT_EQ((expected), (actual));
+        }
+
+        TEST(wide_integer, divide160)
+        {
+            using type = cnl::_impl::duplex_integer<
+                    cnl::_impl::duplex_integer<
+                            cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                            cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>,
+                    cnl::uint32>;
+            constexpr auto exponent = 96;
+
+            auto expected = type({{0, 0}, {0x55555555, 0x55555555}}, 0x55555555);
+
+            auto const numerator = type{1} << exponent;
+            auto const denominator = type{3};
+            auto actual = numerator/denominator;
+
+            ASSERT_EQ((expected), (actual));
         }
     }
 
@@ -606,12 +652,37 @@ namespace {
                         cnl::_impl::duplex_integer<int, unsigned int>{0x007FFFFF, 0xFFFFFFFF},
                         cnl::_impl::duplex_integer<int, unsigned int>{0x7FFFFFFF, 0xFFFFFFFF} >> 8),
                 "");
-
         static_assert(
                 identical(
-                        cnl::uint16(-1>>16),
+                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{-1},
+                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{-1, 0x40000000} >> 32), "");
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                cnl::uint32>{{-1, 0xFFFFFFFF}, 0x40000000},
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                cnl::uint32>{{-1, 0x40000000}, 0} >> 32), "");
+    }
+
+    namespace test_sensible_right_shift {
+        static_assert(
+                identical(
+                        cnl::int32(-1),
+                        cnl::_impl::sensible_right_shift<cnl::int32>(INT32_C(-1), 32)),
+                "");
+        static_assert(
+                identical(
+                        cnl::uint16(-1 >> 16),
                         cnl::_impl::sensible_right_shift<cnl::uint16>(
                                 cnl::_impl::duplex_integer<cnl::int16, cnl::uint16>{-1, 65535}, 16)),
                 "");
+        static_assert(identical(short{-1}, cnl::_impl::sensible_right_shift<short>(-1, 0)), "");
+        static_assert(identical(
+                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{-1},
+                cnl::_impl::sensible_right_shift<cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>>(
+                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{-1, 0x40000000},
+                        32)), "");
     }
 }
