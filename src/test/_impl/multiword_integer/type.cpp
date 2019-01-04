@@ -13,6 +13,8 @@
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
+#include <gtest/gtest.h>
+
 using cnl::_impl::assert_same;
 using cnl::_impl::identical;
 
@@ -39,6 +41,13 @@ namespace {
                         cnl::_impl::multiword_integer<cnl::int64, 2>{
                             cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{786192872LL*928178263LL}}),
                 "");
+
+        TEST(multiword_integer, ctor)
+        {
+            auto expected = cnl::_impl::multiword_integer<int, 10>{3};
+            auto actual = cnl::_impl::multiword_integer<int, 10>{3.141L};
+            ASSERT_EQ(expected, actual);
+        }
     }
 
     namespace test_bool {

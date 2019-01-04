@@ -28,9 +28,9 @@ namespace cnl {
             CNL_ASSERT(rhs>=0);
 #endif
             using promoted_type = decltype(lhs >> rhs);
-            return (rhs>=digits<promoted_type>::value)
-                   ? Result{}
-                   : static_cast<Result>((lhs >> rhs) & static_cast<promoted_type>(~Result{}));
+            return static_cast<Result>((rhs>=digits<promoted_type>::value)
+                   ? lhs >> (digits<Lhs>::value-1) >> 1
+                   : (lhs >> rhs) & static_cast<promoted_type>(~Result{}));
         }
 
         template<typename Result, typename Lhs>
