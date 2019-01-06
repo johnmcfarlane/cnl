@@ -22,4 +22,11 @@ namespace {
                         cnl::numeric_limits<cnl::_impl::multiword_integer<cnl::uint8, 2>>::max()),
                 "cnl::numeric_limits<cnl::_impl::multiword_integer<cnl::uint8, 2>>::max()");
     }
+
+    namespace test_mnn {
+        static_assert(
+                cnl::numeric_limits<cnl::_impl::multiword_integer<int, 2>>::lowest()
+                        <-cnl::numeric_limits<cnl::_impl::multiword_integer<int, 2>>::max(),
+                "");
+    }
 }

@@ -19,35 +19,24 @@
 namespace cnl {
     template<typename Word, int NumWords>
     struct numeric_limits<_impl::multiword_integer<Word, NumWords>>
-            : numeric_limits<Word> {
-        static constexpr bool is_integer = true;
-        // wide_integer-specific helpers
-        using _word_numeric_limits = numeric_limits<Word>;
+            : numeric_limits<typename _impl::multiword_integer<Word, NumWords>::rep> {
         using _value_type = _impl::multiword_integer<Word, NumWords>;
         using _rep = typename _value_type::rep;
         using _rep_numeric_limits = numeric_limits<_rep>;
 
-        static constexpr _rep _rep_max() noexcept
-        {
-            return static_cast<_rep>(_rep_numeric_limits::max() >> (_rep_numeric_limits::digits-digits));
-        }
-
-        // standard members
-        static constexpr int digits = _word_numeric_limits::digits*NumWords;
-
         static constexpr _value_type min() noexcept
         {
-            return _impl::from_rep<_value_type>(1);
+            return _impl::from_rep<_value_type>(_rep_numeric_limits::min());
         }
 
         static constexpr _value_type max() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep_max());
+            return _impl::from_rep<_value_type>(_rep_numeric_limits::max());
         }
 
         static constexpr _value_type lowest() noexcept
         {
-            return _impl::lowest<_rep, _word_numeric_limits::is_signed>()(_rep_max());
+            return _impl::from_rep<_value_type>(_rep_numeric_limits::lowest());
         }
     };
 }
