@@ -9,6 +9,8 @@
 
 #include "../../limits.h"
 #include "../limits/lowest.h"
+#include "../duplex_integer/numeric_limits.h"
+#include "../duplex_integer/shift.h"
 #include "forward_declaration.h"
 #include "from_rep.h"
 #include "type.h"
