@@ -242,6 +242,31 @@ namespace {
         {
             test<4>("-7.0", cnl::fixed_point<int, -28>(-7.00390625));
         }
+
+        TEST(to_chars, fixed_point_decimal_positive)
+        {
+            test<6>("17.917", cnl::fixed_point<int, -3, 10>(17.917));
+        }
+
+        TEST(to_chars, fixed_point_decimal_negative)
+        {
+            test<5>("-5.25", cnl::fixed_point<int, -2, 10>(-5.25));
+        }
+
+        TEST(to_chars, fixed_point_decimal_no_fractional)
+        {
+            test<7>("-517523", cnl::fixed_point<int, 0, 10>(-517523));
+        }
+
+        TEST(to_chars, fixed_point_octal_positive)
+        {
+            test<9>("634124.25", cnl::fixed_point<int, -1, 8>(634124.25));
+        }
+
+        TEST(to_chars, fixed_point_octal_negative)
+        {
+            test<7>("-33.125", cnl::fixed_point<int, -1, 8>(-33.125));
+        }
     }
 }
 
