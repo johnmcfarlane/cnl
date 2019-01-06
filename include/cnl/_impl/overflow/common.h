@@ -95,7 +95,7 @@ namespace cnl {
 
         template<typename Operand>
         struct has_most_negative_number<Operand, true> : std::integral_constant<bool,
-                (-1-numeric_limits<Operand>::lowest())==numeric_limits<Operand>::max()> {
+                numeric_limits<Operand>::lowest()<-numeric_limits<Operand>::max()> {
         };
 
         // overflow tests
