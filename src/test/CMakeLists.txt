@@ -81,6 +81,7 @@ set(test_sources
         fixed_point/rounding/rounding_fixed_point.cpp
         elastic/rounding/overflow/rounding_safe_integer.cpp
         overflow/elastic/safe_integer.cpp
+        overflow/wide/wide_overflow_integer.cpp
         fixed_point/elastic/make_elastic_number.cpp
         fixed_point/elastic/elastic_number.cpp
         fixed_point/elastic/rounding/rounding_elastic_number.cpp
