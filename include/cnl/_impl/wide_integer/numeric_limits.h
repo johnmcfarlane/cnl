@@ -8,6 +8,7 @@
 #define CNL_IMPL_WIDE_INTEGER_NUMERIC_LIMITS_H
 
 #include "../../limits.h"
+#include "../multiword_integer/numeric_limits.h"
 #include "../limits/lowest.h"
 #include "from_rep.h"
 #include "type.h"
@@ -27,11 +28,6 @@ namespace cnl {
         using _rep = typename _value_type::rep;
         using _rep_numeric_limits = numeric_limits<_rep>;
 
-        static constexpr _rep _rep_max() noexcept
-        {
-            return static_cast<_rep>(_rep_numeric_limits::max() >> (_rep_numeric_limits::digits-digits));
-        }
-
         // standard members
         static constexpr int digits = Digits;
 
@@ -42,12 +38,12 @@ namespace cnl {
 
         static constexpr _value_type max() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep_max());
+            return static_cast<_rep>(_rep_numeric_limits::max() >> (_rep_numeric_limits::digits-digits));
         }
 
         static constexpr _value_type lowest() noexcept
         {
-            return _impl::lowest<_rep, _narrowest_numeric_limits::is_signed>()(_rep_max());
+            return static_cast<_rep>(_rep_numeric_limits::lowest() >> (_rep_numeric_limits::digits-digits));
         }
     };
 

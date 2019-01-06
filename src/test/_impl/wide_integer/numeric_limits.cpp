@@ -24,4 +24,18 @@ namespace {
                     cnl::_impl::wide_integer<8, unsigned>{255},
                     cnl::numeric_limits<cnl::_impl::wide_integer<8, unsigned>>::max()),
             "cnl::numeric_limits<cnl::_impl::wide_integer>::max");
+    static_assert(
+            identical(
+                    cnl::_impl::wide_integer<10>{1023},
+                    cnl::numeric_limits<cnl::_impl::wide_integer<10>>::max()),
+            "");
+    static_assert(
+            identical(
+                    cnl::_impl::wide_integer<6>{-64},
+                    cnl::numeric_limits<cnl::_impl::wide_integer<6>>::lowest()),
+            "");
+    static_assert(
+            cnl::numeric_limits<cnl::_impl::wide_integer<100>>::lowest()
+                    <-cnl::numeric_limits<cnl::_impl::wide_integer<100>>::max(),
+            "");
 }

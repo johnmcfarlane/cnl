@@ -42,4 +42,11 @@ namespace {
                         cnl::numeric_limits<cnl::_impl::duplex_integer<long long, unsigned>>::digits),
                 "cnl::numeric_limits<cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>>::digits");
     }
+
+    namespace test_mnn {
+        static_assert(
+                cnl::numeric_limits<cnl::_impl::duplex_integer<int, unsigned>>::lowest()
+                        <-cnl::numeric_limits<cnl::_impl::duplex_integer<int, unsigned>>::max(),
+                "");
+    }
 }
