@@ -39,32 +39,11 @@ namespace cnl {
             static constexpr auto value = _sign_chars + _integer_chars + _radix_chars + _fractional_chars;
         };
 
-        template<typename FixedPoint, class Enable = void>
-        struct trunc_fn;
-
         template<typename Rep, int Exponent, int Radix>
-        struct trunc_fn<fixed_point<Rep, Exponent, Radix>, enable_if_t<(Exponent<0)>> {
-            constexpr auto operator()(fixed_point<Rep, Exponent, Radix> const& input) const
-            -> decltype(to_rep(input) >> -Exponent)
-            {
-                return to_rep(input) >> -Exponent;
-            }
-        };
-
-        template<typename Rep, int Exponent, int Radix>
-        struct trunc_fn<fixed_point<Rep, Exponent, Radix>, enable_if_t<!(Exponent<0)>> {
-            constexpr auto operator()(fixed_point<Rep, Exponent, Radix> const& input) const
-            -> decltype(to_rep(input) << Exponent)
-            {
-                return to_rep(input) << Exponent;
-            }
-        };
-
-        template<typename Scalar>
-        constexpr auto trunc(Scalar const& scalar)
-        -> decltype(trunc_fn<Scalar>{}(scalar))
+        constexpr auto trunc(fixed_point<Rep, Radix, Exponent> const& scalar)
+        -> decltype(scale<Radix, Exponent>(to_rep(scalar)))
         {
-            return trunc_fn<Scalar>{}(scalar);
+            return scale<Radix, Exponent>(to_rep(scalar));
         }
 
         template<typename Scalar>
@@ -123,10 +102,10 @@ namespace cnl {
                 value = from_rep<fixed_point<Rep, Exponent, Radix>>(
                         cnl::fixed_width_scale<1, 10, Rep>{}(to_rep(value)));
                 auto const unit = trunc(value);
-                *first = itoc(value);
+                *first = itoc(unit);
                 ++first;
 
-                value ^= unit;
+                value -= unit;
                 if (!value) {
                     break;
                 }
@@ -148,7 +127,7 @@ namespace cnl {
                 return to_chars_result{last, std::errc::value_too_large};
             }
 
-            auto const fractional = value ^natural;
+            auto const fractional = value - natural;
             if (!fractional) {
                 return to_chars_result{natural_last, std::errc{}};
             }
