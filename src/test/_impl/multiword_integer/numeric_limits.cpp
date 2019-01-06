@@ -8,6 +8,7 @@
 /// \brief tests for <cnl/_impl/multiword_integer/numeric_limits.h>
 
 #include <cnl/_impl/multiword_integer/numeric_limits.h>
+#include <cnl/_impl/multiword_integer/operators.h>
 
 #include <cnl/_impl/type_traits/identical.h>
 
