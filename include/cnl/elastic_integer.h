@@ -141,14 +141,15 @@ namespace cnl {
     };
 
     // cnl::scale<..., cnl::elastic_integer<>>
-    template<int ShiftDigits, int ScalarDigits, class ScalarNarrowest>
-    struct scale<ShiftDigits, 2, elastic_integer<ScalarDigits, ScalarNarrowest>, _impl::enable_if_t<0 <= ShiftDigits>> {
+    template<int ShiftDigits, int ScaleRadix, int ScalarDigits, class ScalarNarrowest>
+    struct scale<ShiftDigits, ScaleRadix, elastic_integer<ScalarDigits, ScalarNarrowest>, _impl::enable_if_t<0 <= ShiftDigits>> {
         constexpr auto operator()(elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
         -> elastic_integer<ShiftDigits+ScalarDigits, ScalarNarrowest>
         {
             using result_type = elastic_integer<ShiftDigits+ScalarDigits, ScalarNarrowest>;
             using result_rep = typename result_type::rep;
-            return _impl::to_rep(s) * (result_rep{1} << ShiftDigits);
+            return _impl::from_rep<result_type>(
+                    scale<ShiftDigits, ScaleRadix, result_rep>{}(_impl::to_rep(s)));
         }
     };
 
