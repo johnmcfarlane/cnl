@@ -10,6 +10,7 @@
 #include "../../rounding_integer.h"
 #include "num_traits.h"
 #include "type.h"
+#include "../num_traits/fixed_width_scale.h"
 
 #include <iterator>
 #include <system_error>
@@ -119,7 +120,8 @@ namespace cnl {
             first++;
 
             do {
-                value *= 10;
+                value = from_rep<fixed_point<Rep, Exponent, Radix>>(
+                        cnl::fixed_width_scale<1, 10, Rep>{}(to_rep(value)));
                 auto const unit = trunc(value);
                 *first = itoc(value);
                 ++first;
