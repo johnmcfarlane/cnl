@@ -45,14 +45,8 @@ set(test_sources
         _impl/duplex_integer/digits.cpp
         _impl/duplex_integer/numeric_limits.cpp
         _impl/duplex_integer/operators.cpp
+        _impl/duplex_integer/instantiate_duplex_integer.cpp
         _impl/duplex_integer/type.cpp
-        _impl/multiword_integer/digits.cpp
-        _impl/multiword_integer/from_rep.cpp
-        _impl/multiword_integer/from_value.cpp
-        _impl/multiword_integer/numeric_limits.cpp
-        _impl/multiword_integer/operators.cpp
-        _impl/multiword_integer/optimal_multiword_integer.cpp
-        _impl/multiword_integer/type.cpp
         _impl/wide_integer/common_type.cpp
         _impl/wide_integer/digits.cpp
         _impl/wide_integer/from_rep.cpp

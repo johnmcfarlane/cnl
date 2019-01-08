@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_SET_DIGITS_H)
 #define CNL_IMPL_DUPLEX_INTEGER_SET_DIGITS_H
 
-#include "../multiword_integer/optimal_multiword_integer.h"
+#include "instantiate_duplex_integer.h"
 #include "../num_traits/set_digits.h"
 #include "forward_declaration.h"
 #include "to_rep.h"
@@ -16,7 +16,7 @@
 namespace cnl {
     template<typename Upper, typename Lower, int Digits>
     struct set_digits<_impl::duplex_integer<Upper, Lower>, Digits>
-            : _impl::optimal_multiword_integer<Digits, _impl::to_rep_t<Upper>> {
+            : _impl::instantiate_duplex_integer<Digits, _impl::to_rep_t<Upper>> {
     };
 }
 

@@ -13,8 +13,7 @@
 #include "make_wide_integer.h"
 #include "numeric_limits.h"
 #include "type.h"
-#include "../multiword_integer/from_value.h"
-#include "../multiword_integer/operators.h"
+#include "../duplex_integer/operators.h"
 #include "../operators.h"
 
 /// compositional numeric library

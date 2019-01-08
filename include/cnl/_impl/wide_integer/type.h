@@ -7,10 +7,9 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_TYPE_H)
 #define CNL_IMPL_WIDE_INTEGER_TYPE_H
 
+#include "../duplex_integer/instantiate_duplex_integer.h"
+#include "../duplex_integer/numeric_limits.h"
 #include "../integer/type.h"
-#include "../multiword_integer/numeric_limits.h"
-#include "../multiword_integer/optimal_multiword_integer.h"
-#include "../multiword_integer/type.h"
 #include "../num_traits/max_digits.h"
 #include "../num_traits/set_digits.h"
 #include "../number_base.h"
@@ -31,7 +30,7 @@ namespace cnl {
 
         template<int Digits, typename Narrowest>
         struct wide_integer_rep<Digits, Narrowest, enable_if_t<(max_digits<Narrowest>::value<Digits)>>
-                : optimal_multiword_integer<Digits, Narrowest> {
+                : instantiate_duplex_integer<Digits, Narrowest> {
         };
 
         template<int Digits, typename Narrowest>
