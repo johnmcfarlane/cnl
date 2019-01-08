@@ -47,7 +47,7 @@ TEST(fixed_point_wide_integer, ctor_fraction)
 {
     using wide_integer = cnl::wide_integer<200>;
     using fixed_point = cnl::fixed_point<wide_integer, -100>;
-    using duplex_integer = wide_integer::rep::rep;
+    using duplex_integer = wide_integer::rep;
     auto expected = cnl::_impl::from_rep<fixed_point>(wide_integer{duplex_integer{
 #if defined(CNL_INT128_ENABLED)
             0, {0x555555555ULL, 0x5555555555555555ULL}

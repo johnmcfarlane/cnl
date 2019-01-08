@@ -8,7 +8,7 @@
 #define CNL_IMPL_WIDE_INTEGER_NUMERIC_LIMITS_H
 
 #include "../../limits.h"
-#include "../multiword_integer/numeric_limits.h"
+#include "../duplex_integer/numeric_limits.h"
 #include "../limits/lowest.h"
 #include "from_rep.h"
 #include "type.h"
