@@ -8,6 +8,7 @@
 /// \brief tests for <cnl/_impl/multiword_integer/numeric_limits.h>
 
 #include <cnl/_impl/multiword_integer/numeric_limits.h>
+#include <cnl/_impl/multiword_integer/operators.h>
 
 #include <cnl/_impl/type_traits/identical.h>
 
@@ -20,5 +21,12 @@ namespace {
                         cnl::_impl::multiword_integer<cnl::uint8, 2>{0xffff},
                         cnl::numeric_limits<cnl::_impl::multiword_integer<cnl::uint8, 2>>::max()),
                 "cnl::numeric_limits<cnl::_impl::multiword_integer<cnl::uint8, 2>>::max()");
+    }
+
+    namespace test_mnn {
+        static_assert(
+                cnl::numeric_limits<cnl::_impl::multiword_integer<int, 2>>::lowest()
+                        <-cnl::numeric_limits<cnl::_impl::multiword_integer<int, 2>>::max(),
+                "");
     }
 }

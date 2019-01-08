@@ -49,6 +49,7 @@ set(test_sources
         _impl/multiword_integer/digits.cpp
         _impl/multiword_integer/from_rep.cpp
         _impl/multiword_integer/from_value.cpp
+        _impl/multiword_integer/numeric_limits.cpp
         _impl/multiword_integer/operators.cpp
         _impl/multiword_integer/optimal_multiword_integer.cpp
         _impl/multiword_integer/type.cpp
