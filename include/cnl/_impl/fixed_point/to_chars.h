@@ -192,7 +192,7 @@ namespace cnl {
             return to_chars_result{first+1, std::errc{}};
         }
 
-        using native_rounding_type = typename _impl::set_rounding<decltype(value), _impl::native_rounding_tag>::type;
+        using native_rounding_type = typename set_rounding<decltype(value), _impl::native_rounding_tag>::type;
         auto const native_rounding_value = static_cast<native_rounding_type>(value);
 
         return _impl::to_chars_non_zero<native_rounding_type>{}(

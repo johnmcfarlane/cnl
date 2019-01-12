@@ -45,42 +45,42 @@ namespace {
         static_assert(
                 assert_same<
                         cnl::_impl::native_rounding_tag,
-                        cnl::_impl::rounding_t<int>
+                        cnl::rounding_t<int>
                 >::value,
-                "cnl::_impl::rounding_t<int> test failed");
+                "cnl::rounding_t<int> test failed");
         static_assert(
                 assert_same<
                         cnl::_impl::native_rounding_tag,
-                        cnl::_impl::rounding_t<cnl::uint16>
+                        cnl::rounding_t<cnl::uint16>
                 >::value,
-                "cnl::_impl::rounding_t<int> test failed");
+                "cnl::rounding_t<int> test failed");
 
         static_assert(
                 assert_same<
                         cnl::_impl::nearest_rounding_tag,
-                        cnl::_impl::rounding_t<cnl::rounding_integer<>>
+                        cnl::rounding_t<cnl::rounding_integer<>>
                 >::value,
-                "cnl::_impl::rounding_t<cnl::rounding_integer<>> test failed");
+                "cnl::rounding_t<cnl::rounding_integer<>> test failed");
     }
 
     namespace test_set_rounding_t {
         static_assert(
                 assert_same<
                         cnl::rounding_integer<int, cnl::_impl::nearest_rounding_tag>,
-                        cnl::_impl::set_rounding_t<
+                        cnl::set_rounding_t<
                                 cnl::rounding_integer<int, cnl::_impl::native_rounding_tag>,
                                 cnl::_impl::nearest_rounding_tag>
                 >::value,
-                "cnl::_impl::rounding_t<cnl::rounding_integer<>> test failed");
+                "cnl::rounding_t<cnl::rounding_integer<>> test failed");
 
         static_assert(
                 assert_same<
                         cnl::rounding_integer<int, cnl::_impl::nearest_rounding_tag>,
-                        cnl::_impl::set_rounding_t<
+                        cnl::set_rounding_t<
                                 cnl::rounding_integer<int, cnl::_impl::native_rounding_tag>,
                                 cnl::_impl::nearest_rounding_tag>
                 >::value,
-                "cnl::_impl::rounding_t<cnl::rounding_integer<>> test failed");
+                "cnl::rounding_t<cnl::rounding_integer<>> test failed");
     }
 
     namespace is_number {

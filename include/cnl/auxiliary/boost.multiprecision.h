@@ -12,6 +12,7 @@
 
 #include "../constant.h"
 #include "../num_traits.h"
+#include "../rounding_integer.h"
 #include "../_impl/type_traits/is_signed.h"
 #include "../_impl/type_traits/make_signed.h"
 #include "../_impl/type_traits/make_unsigned.h"
@@ -159,6 +160,11 @@ namespace cnl {
         {
             return (Digits>=0) ? s << Digits : s >> -Digits;
         }
+    };
+
+    template<class Backend>
+    struct rounding<_bmp::number<Backend>>
+            : _impl::type_identity<native_rounding_tag> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////

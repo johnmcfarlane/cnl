@@ -8,6 +8,10 @@
 #define CNL_ROUNDING_INTEGER_H 1
 
 #include "_impl/num_traits/fixed_width_scale.h"
+#include "_impl/num_traits/is_composite.h"
+#include "_impl/num_traits/rounding.h"
+#include "_impl/num_traits/set_rounding.h"
+#include "_impl/num_traits/to_rep.h"
 #include "_impl/number_base.h"
 #include "_impl/rounding.h"
 #include "_impl/type_traits/common_type.h"
@@ -15,9 +19,6 @@
 
 /// compositional numeric library
 namespace cnl {
-    using _impl::native_rounding_tag;
-    using _impl::nearest_rounding_tag;
-
     /// \brief An integer with customized rounding behavior.
     template<class Rep = int, class RoundingTag = _impl::nearest_rounding_tag>
     class rounding_integer;
@@ -33,93 +34,50 @@ namespace cnl {
         template<class Rep, class RoundingTag>
         struct is_rounding_integer<rounding_integer<Rep, RoundingTag>> : std::true_type {
         };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::rounding
-
-        template<typename Number, class Enable = void>
-        struct rounding;
-
-        template<typename Number>
-        struct rounding<Number&&> : rounding<Number> {};
-
-        template<typename Number>
-        struct rounding<Number, enable_if_t<cnl::_impl::is_integral<Number>::value>>
-                : type_identity<native_rounding_tag> {
-        };
-
-        template<typename Number>
-        struct rounding<
-                Number,
-                enable_if_t<
-                        is_composite<Number>::value
-                        &&!is_rounding_integer<Number>::value>>
-                : rounding<to_rep_t<Number>> {
-        };
-
-        template<typename Rep, class RoundingTag>
-        struct rounding<rounding_integer<Rep, RoundingTag>>
-            : type_identity<RoundingTag> {
-        };
-
-        template<typename Number>
-        using rounding_t = typename rounding<Number>::type;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::set_rounding
-
-        template<typename Number, class RoundingTag, class Enable = void>
-        struct set_rounding;
-
-        template<typename Number, class RoundingTag>
-        struct set_rounding<Number const&, RoundingTag>
-                : set_rounding<Number, RoundingTag> {
-        };
-
-        template<typename Number, class RoundingTag>
-        struct set_rounding<Number&, RoundingTag>
-                : set_rounding<Number, RoundingTag> {
-        };
-
-        template<typename Number, class RoundingTag>
-        struct set_rounding<Number&&, RoundingTag>
-                : set_rounding<Number, RoundingTag> {
-        };
-
-        template<typename Number>
-        struct set_rounding<
-                Number,
-                native_rounding_tag,
-                enable_if_t<cnl::_impl::is_integral<Number>::value>> {
-            using type = Number;
-        };
-
-        template<typename Number, class RoundingTag>
-        struct set_rounding<
-                Number,
-                RoundingTag,
-                enable_if_t<
-                        is_composite<Number>::value
-                                && !is_rounding_integer<Number>::value>>
-                : type_identity<from_rep_t<
-                        Number,
-                        typename set_rounding<to_rep_t<Number>, RoundingTag>::type>> {
-        };
-
-        template<typename InputRep, class InputRoundingTag, class OutputRoundingTag>
-        struct set_rounding<rounding_integer<InputRep, InputRoundingTag>, OutputRoundingTag>
-                : type_identity<rounding_integer<InputRep, OutputRoundingTag>> {
-        };
-
-        template<typename Number, class RoundingTag>
-        using set_rounding_t = typename set_rounding<Number, RoundingTag>::type;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::_impl::rounding
+
+    template<typename Number>
+    struct rounding<
+            Number,
+            _impl::enable_if_t<
+                    is_composite<Number>::value
+                            &&!_impl::is_rounding_integer<Number>::value>>
+            : rounding<_impl::to_rep_t<Number>> {
+    };
+
+    template<typename Rep, class RoundingTag>
+    struct rounding<rounding_integer<Rep, RoundingTag>>
+        : _impl::type_identity<RoundingTag> {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::_impl::set_rounding
+
+    template<typename Number, class RoundingTag>
+    struct set_rounding<
+            Number,
+            RoundingTag,
+            _impl::enable_if_t<
+                    is_composite<Number>::value
+                            && !_impl::is_rounding_integer<Number>::value>>
+            : _impl::type_identity<_impl::from_rep_t<
+                    Number,
+                    typename set_rounding<_impl::to_rep_t<Number>, RoundingTag>::type>> {
+    };
+
+    template<typename InputRep, class InputRoundingTag, class OutputRoundingTag>
+    struct set_rounding<rounding_integer<InputRep, InputRoundingTag>, OutputRoundingTag>
+            : _impl::type_identity<rounding_integer<InputRep, OutputRoundingTag>> {
+    };
 
     template<class Rep, class RoundingTag>
     class rounding_integer : public _impl::number_base<rounding_integer<Rep, RoundingTag>, Rep> {
         static_assert(!_impl::is_rounding_integer<Rep>::value,
                 "rounding_integer of rounding_integer is not a supported");
-        static_assert(std::is_same<native_rounding_tag, _impl::rounding_t<Rep>>::value,
+        static_assert(std::is_same<native_rounding_tag, rounding_t<Rep>>::value,
                 "rounding_integer requires a Rep type that rounds natively");
     public:
         using rounding = RoundingTag;

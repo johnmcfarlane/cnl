@@ -9,6 +9,7 @@
 
 #include "../duplex_integer/instantiate_duplex_integer.h"
 #include "../duplex_integer/numeric_limits.h"
+#include "../duplex_integer/rounding.h"
 #include "../integer/type.h"
 #include "../num_traits/max_digits.h"
 #include "../num_traits/set_digits.h"
