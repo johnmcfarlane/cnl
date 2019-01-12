@@ -13,6 +13,7 @@
 #include "digits.h"
 #include "divide.h"
 #include "make_signed.h"
+#include "modulo.h"
 #include "multiply.h"
 #include "numeric_limits.h"
 #include "set_digits.h"

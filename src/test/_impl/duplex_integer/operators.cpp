@@ -386,6 +386,81 @@ namespace {
         }
     }
 
+    namespace test_modulo {
+#if (__cpp_constexpr >= 201304L)
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<int, unsigned>{0x34},
+                        cnl::_impl::duplex_integer<int, unsigned>{0x1234}
+                                %cnl::_impl::duplex_integer<int, unsigned>{0x100}),
+                "");
+        static_assert(
+                identical(
+                        cnl::_impl::duplex_integer<
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32> >{0},
+                        cnl::_impl::binary_operator<
+                                cnl::_impl::modulo_op,
+                                cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32> >,
+                                cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32> >>{}(5000000000ULL, 5)),
+                "");
+        static_assert(identical(0x12, 0x1234%cnl::_impl::duplex_integer<int, unsigned>{0x100}), "");
+#endif
+
+        TEST(duplex_integer, modulo)
+        {
+            auto expected = cnl::_impl::duplex_integer<int, unsigned>{0x34};
+            auto actual = cnl::_impl::duplex_integer<int, unsigned>{0x1234}
+                    %cnl::_impl::duplex_integer<int, unsigned>{0x100};
+            ASSERT_EQ(expected, actual);
+        }
+
+        TEST(duplex_integer, int_modulo_by_duplex)
+        {
+            auto expected = 0x12;
+            auto actual = 0x1234%cnl::_impl::duplex_integer<int, unsigned>{0x100};
+            ASSERT_EQ(expected, actual);
+        }
+
+        TEST(duplex_integer, modulo128)
+        {
+            using type = cnl::_impl::duplex_integer<
+                    cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                    cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>;
+            constexpr auto exponent = 64;
+
+            auto expected = type({{0, 0}, {0, 1}});
+
+            auto const numerator = type{1} << exponent;
+            auto const denominator = type{3};
+            auto actual = numerator%denominator;
+
+            ASSERT_EQ((expected), (actual));
+        }
+
+        TEST(duplex_integer, modulo160)
+        {
+            using type = cnl::_impl::duplex_integer<
+                    cnl::_impl::duplex_integer<
+                            cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
+                            cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>,
+                    cnl::uint32>;
+            constexpr auto exponent = 96;
+
+            auto expected = type({{0, 0}, {0, 0}}, 1);
+
+            auto const numerator = type{1} << exponent;
+            auto const denominator = type{3};
+            auto actual = numerator%denominator;
+
+            ASSERT_EQ((expected), (actual));
+        }
+    }
+
     namespace test_bitwise_and {
         static_assert(
                 identical(
