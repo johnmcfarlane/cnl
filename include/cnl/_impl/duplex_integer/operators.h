@@ -1,4 +1,3 @@
-#include "shift.h"
 
 //          Copyright John McFarlane 2018.
 // Distributed under the Boost Software License, Version 1.0.
@@ -17,6 +16,7 @@
 #include "multiply.h"
 #include "numeric_limits.h"
 #include "set_digits.h"
+#include "shift.h"
 #include "type.h"
 #include "../common.h"
 #include "../num_traits/width.h"
