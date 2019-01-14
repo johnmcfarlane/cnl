@@ -10,6 +10,7 @@
 #include "../../rounding_integer.h"
 #include "num_traits.h"
 #include "type.h"
+#include "../assert.h"
 #include "../num_traits/fixed_width_scale.h"
 
 #include <iterator>
@@ -99,7 +100,11 @@ namespace cnl {
             first++;
 
             do {
-                value = from_rep<fixed_point<Rep, Exponent, Radix>>(
+                // to_chars only supports fixed_point types that can represent all decimal units.
+                using fixed_point = fixed_point<Rep, Exponent, Radix>;
+                CNL_ASSERT(value<=numeric_limits<fixed_point>::max()/Rep{10});
+
+                value = from_rep<fixed_point>(
                         cnl::fixed_width_scale<1, 10, Rep>{}(to_rep(value)));
                 auto const unit = trunc(value);
                 *first = itoc(unit);
