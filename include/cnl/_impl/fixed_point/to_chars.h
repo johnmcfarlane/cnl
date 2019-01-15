@@ -41,10 +41,10 @@ namespace cnl {
         };
 
         template<typename Rep, int Exponent, int Radix>
-        constexpr auto trunc(fixed_point<Rep, Radix, Exponent> const& scalar)
-        -> decltype(scale<Radix, Exponent>(to_rep(scalar)))
+        constexpr auto trunc(fixed_point<Rep, Exponent, Radix> const& scalar)
+        -> decltype(scale<Exponent, Radix>(to_rep(scalar)))
         {
-            return scale<Radix, Exponent>(to_rep(scalar));
+            return scale<Exponent, Radix>(to_rep(scalar));
         }
 
         template<typename Scalar>
