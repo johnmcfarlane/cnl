@@ -87,7 +87,7 @@ void basic_arithmetic_example()
 
 TEST(index, basic_arithmetic_example)
 {
-    test_function(basic_arithmetic_example, "6.28319\n360\n");
+    test_function(basic_arithmetic_example, "6.283185303211212158203125\n360\n");
 }
 
 
@@ -101,14 +101,15 @@ void advanced_arithmetic_example()
     auto x = fixed_point<uint8_t, -4>{15.9375};
 
     // 15.9375 * 15.9375 = 254.00390625 ... overflow!
-    cout << fixed_point<uint8_t, -4>{x*x} << endl;  // "14" instead!
+    auto xx1 = fixed_point<uint8_t, -4>{x*x};
+    cout << xx1 << endl;  // "14" instead!
 
     // fixed-point multiplication operator obeys usual promotion and implicit conversion rules
     auto xx = x*x;
 
     // x*x is promoted to fixed_point<int, -8>
     static_assert(is_same<decltype(xx), fixed_point<int, -8>>::value, "");
-    cout << setprecision(12) << xx << endl;  // "254.00390625" - correct
+    cout << xx << endl;  // "254.00390625" - correct
 
     // you can avoid the pitfalls of integer promotion for good by using the elastic_number type
     auto named_xx = make_elastic_number(x) * make_elastic_number(x);
@@ -166,7 +167,12 @@ void boost_example()
 
 TEST(index, boost_example)
 {
-    test_function(boost_example, "1e+100\n1e-100\n");
+    test_function(boost_example, "1000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                                 "0000000000000000\n0.00000000000000000000000000000000000000000000000000000000000000000"
+                                 "0000000000000000000000000000000000099999999999999999999770774623585337708826862887672"
+                                 "4831177561317388688460742223401456454683384940352996717699238685486962227178573245938"
+                                 "1164968077139637589293145550457554693525163515374773301313531059788797333232314526850"
+                                 "92147632256423245538160582575967991474270857299444514865172095596790313720703125\n");
 }
 #endif
 
@@ -198,11 +204,11 @@ void elastic_example2()
 {
     // A type such as elastic_integer can be used to specialize fixed_point.
     // Now arithmetic operations are more efficient and less error-prone.
-    auto b = elastic_number<32, -28, unsigned>{15.9375};
+    auto b = elastic_number<31, -27, unsigned>{15.9375};
     auto bb = b*b;
 
     cout << bb << endl;  // "254.00390625"
-    static_assert(is_same<decltype(bb), elastic_number<64, -56, unsigned>>::value, "");
+    static_assert(is_same<decltype(bb), elastic_number<62, -54, unsigned>>::value, "");
 }
 //! [elastic example]
 
