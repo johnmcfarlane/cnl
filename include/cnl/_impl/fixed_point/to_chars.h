@@ -301,6 +301,7 @@ namespace cnl {
         };
     }
 
+    // partial implementation of std::to_chars overloaded on cnl::fixed_point
     template<typename Rep, int Exponent, int Radix>
     to_chars_result to_chars(
             char* const first,
@@ -323,6 +324,26 @@ namespace cnl {
 
         return _impl::to_chars_non_zero<native_rounding_type>{}(
                 first, last, native_rounding_value);
+    }
+
+    // overload of cnl::to_chars returning fixed-size array of chars
+    // large enough to store any possible result for given input type
+    template<typename Rep, int Exponent, int Radix>
+    std::array<
+            char,
+            _impl::max_decimal_digits<cnl::fixed_point<Rep, Exponent, Radix>>::value+1>
+    to_chars(cnl::fixed_point<Rep, Exponent, Radix> const& value)
+    {
+        constexpr auto max_num_chars = _impl::max_decimal_digits<cnl::fixed_point<Rep, Exponent, Radix>>::value;
+        std::array<char, max_num_chars+1> chars;
+
+        auto result = cnl::to_chars(chars.data(), chars.data()+max_num_chars, value);
+        CNL_ASSERT(result.ptr>chars.data());
+        CNL_ASSERT(result.ptr<=chars.data()+max_num_chars);
+        CNL_ASSERT(result.ec==std::errc{});
+
+        *result.ptr = '\0';
+        return chars;
     }
 }
 
