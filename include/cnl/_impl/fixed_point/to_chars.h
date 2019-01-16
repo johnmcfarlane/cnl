@@ -15,6 +15,7 @@
 
 #include <iterator>
 #include <system_error>
+#include <utility>
 
 /// compositional numeric library
 namespace cnl {
@@ -40,12 +41,46 @@ namespace cnl {
             static constexpr auto value = _sign_chars + _integer_chars + _radix_chars + _fractional_chars;
         };
 
+        // cnl::_impl::split - return given non-negative value as separate integral and fractional components
+        template<typename Rep, int Exponent, int Radix, bool Flushed = (Radix==2 && Exponent<=-digits<Rep>::value)>
+        struct split;
+
         template<typename Rep, int Exponent, int Radix>
-        constexpr auto trunc(fixed_point<Rep, Exponent, Radix> const& scalar)
-        -> decltype(scale<Exponent, Radix>(to_rep(scalar)))
-        {
-            return scale<Exponent, Radix>(to_rep(scalar));
-        }
+        struct split<Rep, Exponent, Radix, false> {
+        private:
+            using value_type = fixed_point<Rep, Exponent, Radix>;
+
+            constexpr auto integral(value_type const& scalar) const
+            -> decltype(scale<Exponent, Radix>(to_rep(scalar)))
+            {
+                return scale<Exponent, Radix>(to_rep(scalar));
+            }
+
+            template<typename Integral>
+            static auto from_integral_and_value(Integral const& integral, value_type const& value)
+            -> decltype(std::make_pair(integral, value-integral))
+            {
+                return std::make_pair(integral, value-integral);
+            }
+
+        public:
+            constexpr auto operator()(value_type const& value) const
+            -> decltype(from_integral_and_value(integral(value), value))
+            {
+                return from_integral_and_value(integral(value), value);
+            }
+        };
+
+        template<typename Rep, int Exponent, int Radix>
+        struct split<Rep, Exponent, Radix, true> {
+            using value_type = fixed_point<Rep, Exponent, Radix>;
+
+            constexpr auto operator()(value_type const& value) const
+            -> decltype(std::make_pair(Rep{}, value))
+            {
+                return std::make_pair(Rep{}, value);
+            }
+        };
 
         template<typename Scalar>
         char itoc(Scalar value) noexcept
@@ -106,11 +141,12 @@ namespace cnl {
 
                 value = from_rep<fixed_point>(
                         cnl::fixed_width_scale<1, 10, Rep>{}(to_rep(value)));
-                auto const unit = trunc(value);
-                *first = itoc(unit);
+
+                auto const split = _impl::split<Rep, Exponent, Radix>{}(value);
+                *first = itoc(split.first);
                 ++first;
 
-                value -= unit;
+                value = split.second;
                 if (!value) {
                     break;
                 }
@@ -126,18 +162,17 @@ namespace cnl {
                 char* const last,
                 fixed_point<Rep, Exponent, Radix> const& value) noexcept
         {
-            auto const natural = trunc(value);
-            auto const natural_last = to_chars_natural(first, last, natural);
+            auto const split = _impl::split<Rep, Exponent, Radix>{}(value);
+            auto const natural_last = to_chars_natural(first, last, split.first);
             if (!natural_last) {
                 return to_chars_result{last, std::errc::value_too_large};
             }
 
-            auto const fractional = value - natural;
-            if (!fractional) {
+            if (!split.second) {
                 return to_chars_result{natural_last, std::errc{}};
             }
 
-            return to_chars_fractional(natural_last, last, fractional);
+            return to_chars_fractional(natural_last, last, split.second);
         }
 
         template<typename FixedPoint, bool is_signed = is_signed<FixedPoint>::value>
