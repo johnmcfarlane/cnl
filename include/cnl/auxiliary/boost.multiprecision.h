@@ -153,13 +153,9 @@ namespace cnl {
         }
     };
 
-    template<int Digits, class Backend>
-    struct scale<Digits, 2, _bmp::number<Backend>> {
-        constexpr auto operator()(_bmp::number<Backend> const& s) const
-        -> decltype((Digits>=0) ? s << Digits : s >> -Digits)
-        {
-            return (Digits>=0) ? s << Digits : s >> -Digits;
-        }
+    template<int Digits, int Radix, class Backend>
+    struct scale<Digits, Radix, _bmp::number<Backend>>
+            : _impl::default_scale<Digits, Radix, _bmp::number<Backend>> {
     };
 
     template<class Backend>
