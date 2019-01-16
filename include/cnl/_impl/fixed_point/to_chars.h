@@ -13,8 +13,10 @@
 #include "../assert.h"
 #include "../num_traits/fixed_width_scale.h"
 
+#include <array>
 #include <iterator>
 #include <system_error>
+#include <type_traits>
 #include <utility>
 
 /// compositional numeric library
@@ -95,7 +97,7 @@ namespace cnl {
         }
 
         template<class Value>
-        char* to_chars_natural(char* const ptr, char const* const last, Value const& value)
+        char* to_chars_natural(char* const ptr, char* const last, Value const& value)
         {
             static_assert(
                     fractional_digits<Value>::value==0,
@@ -120,20 +122,14 @@ namespace cnl {
             return next_ptr+1;
         }
 
+        // case where value has enough integer digits to hold range, [0..10)
         template<typename Rep, int Exponent, int Radix>
-        to_chars_result to_chars_fractional(
+        auto to_chars_fractional_specialized(
                 char* first,
                 char const* const last,
                 fixed_point<Rep, Exponent, Radix> value) noexcept
+        -> enable_if_t<integer_digits<fixed_point<Rep, Exponent, Radix>>::value>=4, char*>
         {
-            auto const destination_length = std::distance(static_cast<char const*>(first), last);
-            if (destination_length<2) {
-                return to_chars_result{first, std::errc{}};
-            }
-
-            *first = '.';
-            first++;
-
             do {
                 // to_chars only supports fixed_point types that can represent all decimal units.
                 using fixed_point = fixed_point<Rep, Exponent, Radix>;
@@ -153,7 +149,97 @@ namespace cnl {
             }
             while (first!=last);
 
-            return to_chars_result{first, std::errc{}};
+            return first;
+        }
+
+        // case where value doesn't have enough integer digits to hold range, [0..10)
+        template<typename Rep, int Exponent, int Radix>
+        auto to_chars_fractional_specialized(
+                char* const first,
+                char* last,
+                fixed_point<Rep, Exponent, Radix> const& value) noexcept
+        -> enable_if_t<integer_digits<fixed_point<Rep, Exponent, Radix>>::value<4, char*>
+        {
+            // zero-out all of the characters in the output string
+            std::fill<char*>(first, last, '0');
+            auto const digits = std::distance(first, last);
+
+            // store fractional bit, 0.5, as a sequence of decimal digits
+            std::array<char, (Exponent*-302LL)/100> bit{ };
+            CNL_ASSERT(std::ptrdiff_t(bit.size())>=digits);
+
+            // Initially, the sequence is { 5, 0, 0, 0, ... }.
+            bit[0] = 5;
+
+            for (auto mask = fixed_point<Rep, Exponent, Radix>{ .5 };;) {
+                // At this point, bit is bytewise decimal representation of bitwise mask.
+
+                // If this bit is present,
+                if (value & mask) {
+                    // add it to the output string.
+                    auto carry = 0;
+                    for (auto pos = digits-1; pos>=0; --pos) {
+                        *(first+pos) = char(*(first+pos)+bit[pos]+carry);
+                        if (*(first+pos)>'9') {
+                            *(first+pos) = char(*(first+pos)-10);
+                            carry = 1;
+                        }
+                        else {
+                            carry = 0;
+                        }
+                    }
+                    CNL_ASSERT(carry==0);
+                }
+
+                mask >>= 1;
+                if (!mask) {
+                    break;
+                }
+
+                for (auto digit = std::end(bit)-1; digit>std::begin(bit); --digit) {
+                    auto const before = digit[-1];
+                    digit[-1] = char(before >> 1);
+
+                    if (before & 1) {
+                        digit[0] = char(digit[0]+5);
+                        CNL_ASSERT(digit[0]<10);
+                    }
+                }
+            }
+
+            return last;
+        }
+
+        template<typename Rep, int Exponent, int Radix>
+        auto to_chars_fractional(
+                char* first,
+                char* last,
+                fixed_point<Rep, Exponent, Radix> const& value) noexcept
+        -> to_chars_result
+        {
+            auto const destination_length = std::distance(first, last);
+            if (destination_length<2) {
+                return to_chars_result{first, std::errc{}};
+            }
+
+            *first = '.';
+            first++;
+
+            last = to_chars_fractional_specialized(first, last, value);
+
+            // clean up trailing zeros to the right
+            for (;;) {
+                auto const prev = last[-1];
+                if (prev!='0') {
+                    if (prev=='.') {
+                        --last;
+                    }
+                    break;
+                }
+                --last;
+            }
+
+            return to_chars_result{last, std::errc{}};
         }
 
         template<typename Rep, int Exponent, int Radix>
