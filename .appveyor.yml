@@ -38,9 +38,9 @@ build_script:
 
     cmake -DCMAKE_BUILD_TYPE=%configuration% -DEXCEPTIONS=%exceptions% -DSTD=%std% -G "%cmake_generator%" .
 
-    cmake --build . --target src/test/Tests -- /property:Configuration=%configuration% /property:Platform=%msbuild_property%
+    cmake --build . --target src/test/Tests -- /property:Configuration=%configuration% /property:Platform=%msbuild_property% /maxcpucount
 
-    cmake --build . --target src/benchmark/Benchmark -- /property:Configuration=%configuration% /property:Platform=%msbuild_property%
+    cmake --build . --target src/benchmark/Benchmark -- /property:Configuration=%configuration% /property:Platform=%msbuild_property% /maxcpucount
 test_script:
 - cmd: >-
     ctest --output-on-failure -j 32
