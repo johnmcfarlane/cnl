@@ -168,6 +168,10 @@ namespace cnl {
         struct overflow_test<subtract_op, Lhs, Rhs> : overflow_test_base<subtract_op, Lhs, Rhs> {
             using traits = operator_overflow_traits<subtract_op, Lhs, Rhs>;
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstrict-overflow"
+#endif
             static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
             {
                 return (max(positive_digits<Lhs>::value, positive_digits<Rhs>::value)+1
@@ -184,6 +188,9 @@ namespace cnl {
                         && (rhs>=0)
                         && lhs<traits::lowest()+rhs;
             }
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
         };
 
         template<typename Lhs, typename Rhs>
