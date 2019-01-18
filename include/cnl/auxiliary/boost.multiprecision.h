@@ -12,6 +12,7 @@
 
 #include "../constant.h"
 #include "../num_traits.h"
+#include "../rounding_integer.h"
 #include "../_impl/type_traits/is_signed.h"
 #include "../_impl/type_traits/make_signed.h"
 #include "../_impl/type_traits/make_unsigned.h"
@@ -152,13 +153,14 @@ namespace cnl {
         }
     };
 
-    template<int Digits, class Backend>
-    struct scale<Digits, 2, _bmp::number<Backend>> {
-        constexpr auto operator()(_bmp::number<Backend> const& s) const
-        -> decltype((Digits>=0) ? s << Digits : s >> -Digits)
-        {
-            return (Digits>=0) ? s << Digits : s >> -Digits;
-        }
+    template<int Digits, int Radix, class Backend>
+    struct scale<Digits, Radix, _bmp::number<Backend>>
+            : _impl::default_scale<Digits, Radix, _bmp::number<Backend>> {
+    };
+
+    template<class Backend>
+    struct rounding<_bmp::number<Backend>>
+            : _impl::type_identity<native_rounding_tag> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////

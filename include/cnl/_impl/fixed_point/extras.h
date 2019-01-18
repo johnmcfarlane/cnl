@@ -12,6 +12,7 @@
 #if !defined(CNL_FIXED_POINT_EXTRAS_H)
 #define CNL_FIXED_POINT_EXTRAS_H 1
 
+#include "to_chars.h"
 #include "type.h"
 #include "../cmath/abs.h"
 #include "../config.h"
@@ -202,7 +203,7 @@ namespace cnl {
     template<typename Rep, int Exponent, int Radix>
     ::std::ostream& operator<<(::std::ostream& out, fixed_point<Rep, Exponent, Radix> const& fp)
     {
-        return out << static_cast<long double>(fp);
+        return out << to_chars(fp).data();
     }
 
     template<typename Rep, int Exponent, int Radix>

@@ -129,14 +129,15 @@ namespace cnl {
     };
 
     // cnl::fixed_width_scale<..., cnl::elastic_integer<>>
-    template<int ScalePower, int ScalarDigits, class ScalarNarrowest>
-    struct fixed_width_scale<ScalePower, 2, elastic_integer<ScalarDigits, ScalarNarrowest>> {
+    template<int ScalePower, int ScaleRadix, int ScalarDigits, class ScalarNarrowest>
+    struct fixed_width_scale<
+            ScalePower, ScaleRadix, elastic_integer<ScalarDigits, ScalarNarrowest>> {
         constexpr auto operator()(elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
         -> elastic_integer<ScalarDigits, ScalarNarrowest>
         {
             using result_type = elastic_integer<ScalarDigits, ScalarNarrowest>;
             using result_rep = typename result_type::rep;
-            return _impl::to_rep(s) * (result_rep{1} << ScalePower);
+            return fixed_width_scale<ScalePower, ScaleRadix, result_rep>{}(_impl::to_rep(s));
         }
     };
 

@@ -49,9 +49,9 @@ namespace {
         static_assert(
                 assert_same<
                         cnl::_impl::nearest_rounding_tag,
-                        cnl::_impl::rounding_t<cnl::static_integer<>>
+                        cnl::rounding_t<cnl::static_integer<>>
                 >::value,
-                "cnl::_impl::rounding_t<cnl::static_integer<>> test failed");
+                "cnl::rounding_t<cnl::static_integer<>> test failed");
     }
 
     namespace test_conversion_native {

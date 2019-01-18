@@ -200,7 +200,7 @@ namespace {
 
         TEST(to_chars, fixed_point_small)
         {
-            test<7>("0.00390", cnl::fixed_point<int, -16>(0.00390625));
+            test<7>("0.0039", cnl::fixed_point<int, -16>(0.00390625));
         }
 
         TEST(to_chars, fixed_point_small_single_digit)
@@ -215,7 +215,7 @@ namespace {
 
         TEST(to_chars, fixed_point_small_tripple_digit)
         {
-            test<3>("0.0", cnl::fixed_point<int, -16>(0.00390625));
+            test<3>("0", cnl::fixed_point<int, -16>(0.00390625));
         }
 
         TEST(to_chars, fixed_point_small_negative_single_digit)
@@ -235,12 +235,12 @@ namespace {
 
         TEST(to_chars, fixed_point_small_negative_quadruple_digit)
         {
-            test<4>("-0.0", cnl::fixed_point<int, -16>(-0.00390625));
+            test<4>("-0", cnl::fixed_point<int, -16>(-0.00390625));
         }
 
         TEST(to_chars, fixed_point_very_few_integer_digits)
         {
-            test<4>("-7.0", cnl::fixed_point<int, -28>(-7.00390625));
+            test<4>("-7", cnl::fixed_point<int, -28>(-7.00390625));
         }
 
         TEST(to_chars, fixed_point_decimal_positive)

@@ -10,10 +10,14 @@
 #include "../../rounding_integer.h"
 #include "num_traits.h"
 #include "type.h"
+#include "../assert.h"
 #include "../num_traits/fixed_width_scale.h"
 
+#include <array>
 #include <iterator>
 #include <system_error>
+#include <type_traits>
+#include <utility>
 
 /// compositional numeric library
 namespace cnl {
@@ -39,12 +43,46 @@ namespace cnl {
             static constexpr auto value = _sign_chars + _integer_chars + _radix_chars + _fractional_chars;
         };
 
+        // cnl::_impl::split - return given non-negative value as separate integral and fractional components
+        template<typename Rep, int Exponent, int Radix, bool Flushed = (Radix==2 && Exponent<=-digits<Rep>::value)>
+        struct split;
+
         template<typename Rep, int Exponent, int Radix>
-        constexpr auto trunc(fixed_point<Rep, Radix, Exponent> const& scalar)
-        -> decltype(scale<Radix, Exponent>(to_rep(scalar)))
-        {
-            return scale<Radix, Exponent>(to_rep(scalar));
-        }
+        struct split<Rep, Exponent, Radix, false> {
+        private:
+            using value_type = fixed_point<Rep, Exponent, Radix>;
+
+            constexpr auto integral(value_type const& scalar) const
+            -> decltype(scale<Exponent, Radix>(to_rep(scalar)))
+            {
+                return scale<Exponent, Radix>(to_rep(scalar));
+            }
+
+            template<typename Integral>
+            static auto from_integral_and_value(Integral const& integral, value_type const& value)
+            -> decltype(std::make_pair(integral, value-integral))
+            {
+                return std::make_pair(integral, value-integral);
+            }
+
+        public:
+            constexpr auto operator()(value_type const& value) const
+            -> decltype(from_integral_and_value(integral(value), value))
+            {
+                return from_integral_and_value(integral(value), value);
+            }
+        };
+
+        template<typename Rep, int Exponent, int Radix>
+        struct split<Rep, Exponent, Radix, true> {
+            using value_type = fixed_point<Rep, Exponent, Radix>;
+
+            constexpr auto operator()(value_type const& value) const
+            -> decltype(std::make_pair(Rep{}, value))
+            {
+                return std::make_pair(Rep{}, value);
+            }
+        };
 
         template<typename Scalar>
         char itoc(Scalar value) noexcept
@@ -59,7 +97,7 @@ namespace cnl {
         }
 
         template<class Value>
-        char* to_chars_natural(char* const ptr, char const* const last, Value const& value)
+        char* to_chars_natural(char* const ptr, char* const last, Value const& value)
         {
             static_assert(
                     fractional_digits<Value>::value==0,
@@ -84,13 +122,102 @@ namespace cnl {
             return next_ptr+1;
         }
 
+        // case where value has enough integer digits to hold range, [0..10)
         template<typename Rep, int Exponent, int Radix>
-        to_chars_result to_chars_fractional(
+        auto to_chars_fractional_specialized(
                 char* first,
                 char const* const last,
                 fixed_point<Rep, Exponent, Radix> value) noexcept
+        -> enable_if_t<integer_digits<fixed_point<Rep, Exponent, Radix>>::value>=4, char*>
         {
-            auto const destination_length = std::distance(static_cast<char const*>(first), last);
+            do {
+                // to_chars only supports fixed_point types that can represent all decimal units.
+                using fixed_point = fixed_point<Rep, Exponent, Radix>;
+                CNL_ASSERT(value<=numeric_limits<fixed_point>::max()/Rep{10});
+
+                value = from_rep<fixed_point>(
+                        cnl::fixed_width_scale<1, 10, Rep>{}(to_rep(value)));
+
+                auto const split = _impl::split<Rep, Exponent, Radix>{}(value);
+                *first = itoc(split.first);
+                ++first;
+
+                value = split.second;
+                if (!value) {
+                    break;
+                }
+            }
+            while (first!=last);
+
+            return first;
+        }
+
+        // case where value doesn't have enough integer digits to hold range, [0..10)
+        template<typename Rep, int Exponent, int Radix>
+        auto to_chars_fractional_specialized(
+                char* const first,
+                char* last,
+                fixed_point<Rep, Exponent, Radix> const& value) noexcept
+        -> enable_if_t<integer_digits<fixed_point<Rep, Exponent, Radix>>::value<4, char*>
+        {
+            // zero-out all of the characters in the output string
+            std::fill<char*>(first, last, '0');
+            auto const digits = std::distance(first, last);
+
+            // store fractional bit, 0.5, as a sequence of decimal digits
+            std::array<char, (Exponent*-302LL)/100> bit{ };
+            CNL_ASSERT(std::ptrdiff_t(bit.size())>=digits);
+
+            // Initially, the sequence is { 5, 0, 0, 0, ... }.
+            bit[0] = 5;
+
+            for (auto mask = fixed_point<Rep, Exponent, Radix>{ .5 };;) {
+                // At this point, bit is bytewise decimal representation of bitwise mask.
+
+                // If this bit is present,
+                if (value & mask) {
+                    // add it to the output string.
+                    auto carry = 0;
+                    for (auto pos = digits-1; pos>=0; --pos) {
+                        *(first+pos) = char(*(first+pos)+bit[pos]+carry);
+                        if (*(first+pos)>'9') {
+                            *(first+pos) = char(*(first+pos)-10);
+                            carry = 1;
+                        }
+                        else {
+                            carry = 0;
+                        }
+                    }
+                    CNL_ASSERT(carry==0);
+                }
+
+                mask >>= 1;
+                if (!mask) {
+                    break;
+                }
+
+                for (auto digit = std::end(bit)-1; digit>std::begin(bit); --digit) {
+                    auto const before = digit[-1];
+                    digit[-1] = char(before >> 1);
+
+                    if (before & 1) {
+                        digit[0] = char(digit[0]+5);
+                        CNL_ASSERT(digit[0]<10);
+                    }
+                }
+            }
+
+            return last;
+        }
+
+        template<typename Rep, int Exponent, int Radix>
+        auto to_chars_fractional(
+                char* first,
+                char* last,
+                fixed_point<Rep, Exponent, Radix> const& value) noexcept
+        -> to_chars_result
+        {
+            auto const destination_length = std::distance(first, last);
             if (destination_length<2) {
                 return to_chars_result{first, std::errc{}};
             }
@@ -98,21 +225,21 @@ namespace cnl {
             *first = '.';
             first++;
 
-            do {
-                value = from_rep<fixed_point<Rep, Exponent, Radix>>(
-                        cnl::fixed_width_scale<1, 10, Rep>{}(to_rep(value)));
-                auto const unit = trunc(value);
-                *first = itoc(unit);
-                ++first;
+            last = to_chars_fractional_specialized(first, last, value);
 
-                value -= unit;
-                if (!value) {
+            // clean up trailing zeros to the right
+            for (;;) {
+                auto const prev = last[-1];
+                if (prev!='0') {
+                    if (prev=='.') {
+                        --last;
+                    }
                     break;
                 }
+                --last;
             }
-            while (first!=last);
 
-            return to_chars_result{first, std::errc{}};
+            return to_chars_result{last, std::errc{}};
         }
 
         template<typename Rep, int Exponent, int Radix>
@@ -121,18 +248,17 @@ namespace cnl {
                 char* const last,
                 fixed_point<Rep, Exponent, Radix> const& value) noexcept
         {
-            auto const natural = trunc(value);
-            auto const natural_last = to_chars_natural(first, last, natural);
+            auto const split = _impl::split<Rep, Exponent, Radix>{}(value);
+            auto const natural_last = to_chars_natural(first, last, split.first);
             if (!natural_last) {
                 return to_chars_result{last, std::errc::value_too_large};
             }
 
-            auto const fractional = value - natural;
-            if (!fractional) {
+            if (!split.second) {
                 return to_chars_result{natural_last, std::errc{}};
             }
 
-            return to_chars_fractional(natural_last, last, fractional);
+            return to_chars_fractional(natural_last, last, split.second);
         }
 
         template<typename FixedPoint, bool is_signed = is_signed<FixedPoint>::value>
@@ -175,6 +301,7 @@ namespace cnl {
         };
     }
 
+    // partial implementation of std::to_chars overloaded on cnl::fixed_point
     template<typename Rep, int Exponent, int Radix>
     to_chars_result to_chars(
             char* const first,
@@ -192,11 +319,31 @@ namespace cnl {
             return to_chars_result{first+1, std::errc{}};
         }
 
-        using native_rounding_type = typename _impl::set_rounding<decltype(value), _impl::native_rounding_tag>::type;
+        using native_rounding_type = set_rounding_t<decltype(value), _impl::native_rounding_tag>;
         auto const native_rounding_value = static_cast<native_rounding_type>(value);
 
         return _impl::to_chars_non_zero<native_rounding_type>{}(
                 first, last, native_rounding_value);
+    }
+
+    // overload of cnl::to_chars returning fixed-size array of chars
+    // large enough to store any possible result for given input type
+    template<typename Rep, int Exponent, int Radix>
+    std::array<
+            char,
+            _impl::max_decimal_digits<cnl::fixed_point<Rep, Exponent, Radix>>::value+1>
+    to_chars(cnl::fixed_point<Rep, Exponent, Radix> const& value)
+    {
+        constexpr auto max_num_chars = _impl::max_decimal_digits<cnl::fixed_point<Rep, Exponent, Radix>>::value;
+        std::array<char, max_num_chars+1> chars;
+
+        auto result = cnl::to_chars(chars.data(), chars.data()+max_num_chars, value);
+        CNL_ASSERT(result.ptr>chars.data());
+        CNL_ASSERT(result.ptr<=chars.data()+max_num_chars);
+        CNL_ASSERT(result.ec==std::errc{});
+
+        *result.ptr = '\0';
+        return chars;
     }
 }
 

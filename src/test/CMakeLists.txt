@@ -14,7 +14,6 @@ set(test_sources
         num_traits.cpp
         numeric.cpp
         number_test.cpp
-        readme.cpp
         overflow/overflow.cpp
         rounding/rounding.cpp
         _impl/num_traits/max_digits.cpp
@@ -204,13 +203,13 @@ function(make_test source out_target compile_flags linker_flags)
 
     # Boost
     if(Boost_FOUND)
-        if(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
+        if(Boost_VERSION GREATER 105500)
             # only compile multiprecision.cpp if Boost.Multiprecision is available
             target_compile_definitions("${target}" PRIVATE "-DCNL_BOOST_ENABLED")
             target_include_directories("${target}" SYSTEM PRIVATE "${Boost_INCLUDE_DIRS}")
-        else(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
-            message("Boost version is too low to use without exception handling")
-        endif(Boost_VERSION GREATER 105500 OR EXCEPTIONS)
+        else(Boost_VERSION GREATER 105500)
+            message("Boost version is too low to use with cnl::fixed_point")
+        endif(Boost_VERSION GREATER 105500)
     endif(Boost_FOUND)
 
     add_dependencies(Tests "${target}")
