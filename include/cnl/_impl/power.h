@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_POWER_H)
-#define CNL_POWER_H 1
+#if !defined(CNL_IMPL_POWER_H)
+#define CNL_IMPL_POWER_H 1
 
 #include "../constant.h"
 
@@ -120,4 +120,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_FIXED_POINT_DEF_H
+#endif  // CNL_IMPL_POWER_H
