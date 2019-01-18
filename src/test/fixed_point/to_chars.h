@@ -19,43 +19,43 @@
 namespace {
     using cnl::_impl::identical;
 
-    namespace test_max_decimal_digits {
+    namespace test_max_to_chars_chars {
         static_assert(
                 identical(
                         cnl::constant<0>{},
-                        cnl::constant<cnl::_impl::max_decimal_digits<fixed_point<uint8, 2>>::_sign_chars>{}),
-                "cnl::_impl::max_decimal_digits");  // 1020
+                        cnl::constant<cnl::_impl::max_to_chars_chars<fixed_point<uint8, 2>>::_sign_chars>{}),
+                "cnl::_impl::max_to_chars_chars");  // 1020
         static_assert(
                 identical(
                         cnl::constant<4>{},
-                        cnl::constant<cnl::_impl::max_decimal_digits<fixed_point<uint8, 2>>::_integer_chars>{}),
-                "cnl::_impl::max_decimal_digits");  // 1020
+                        cnl::constant<cnl::_impl::max_to_chars_chars<fixed_point<uint8, 2>>::_integer_chars>{}),
+                "cnl::_impl::max_to_chars_chars");  // 1020
         static_assert(
                 identical(
                         cnl::constant<0>{},
-                        cnl::constant<cnl::_impl::max_decimal_digits<fixed_point<uint8, 2>>::_radix_chars>{}),
-                "cnl::_impl::max_decimal_digits");  // 1020
+                        cnl::constant<cnl::_impl::max_to_chars_chars<fixed_point<uint8, 2>>::_radix_chars>{}),
+                "cnl::_impl::max_to_chars_chars");  // 1020
         static_assert(
                 identical(
                         cnl::constant<0>{},
-                        cnl::constant<cnl::_impl::max_decimal_digits<fixed_point<uint8, 2>>::_fractional_chars>{}),
-                "cnl::_impl::max_decimal_digits");  // 1020
+                        cnl::constant<cnl::_impl::max_to_chars_chars<fixed_point<uint8, 2>>::_fractional_chars>{}),
+                "cnl::_impl::max_to_chars_chars");  // 1020
 
         static_assert(
-                4==cnl::_impl::max_decimal_digits<fixed_point<uint8, 2>>::value,
-                "cnl::_impl::max_decimal_digits");  // 1020
+                4==cnl::_impl::max_to_chars_chars<fixed_point<uint8, 2>>::value,
+                "cnl::_impl::max_to_chars_chars");  // 1020
         static_assert(
-                7==cnl::_impl::max_decimal_digits<fixed_point<int8, -3>>::value,
-                "cnl::_impl::max_decimal_digits");  // -15.875
+                7==cnl::_impl::max_to_chars_chars<fixed_point<int8, -3>>::value,
+                "cnl::_impl::max_to_chars_chars");  // -15.875
         static_assert(
-                6==cnl::_impl::max_decimal_digits<fixed_point<uint16, 0>>::value,
-                "cnl::_impl::max_decimal_digits"); // 65536
+                6==cnl::_impl::max_to_chars_chars<fixed_point<uint16, 0>>::value,
+                "cnl::_impl::max_to_chars_chars"); // 65536
         static_assert(
-                41==cnl::_impl::max_decimal_digits<cnl::fixed_point<cnl::elastic_integer<41>, -38>>::value,
-                "cnl::_impl::max_decimal_digits");
+                41==cnl::_impl::max_to_chars_chars<cnl::fixed_point<cnl::elastic_integer<41>, -38>>::value,
+                "cnl::_impl::max_to_chars_chars");
         static_assert(
-                45==cnl::_impl::max_decimal_digits<fixed_point<int64, -32>>::value,
-                "cnl::_impl::max_decimal_digits"); // −2147483647.99999999976716935634613037109375
+                45==cnl::_impl::max_to_chars_chars<fixed_point<int64, -32>>::value,
+                "cnl::_impl::max_to_chars_chars"); // −2147483647.99999999976716935634613037109375
     }
 
     void test_chars(
