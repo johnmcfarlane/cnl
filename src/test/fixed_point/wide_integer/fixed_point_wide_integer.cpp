@@ -27,6 +27,13 @@ using test_int = cnl::wide_integer<cnl::digits<int>::value, int>;
 
 #include "../fixed_point_common.h"
 
+TEST(fixed_point_wide_integer, to_string)
+{
+    auto const expected = "0.714285714285714285714285713708718880752631365184564249393162072010454721748828887939453125";
+    auto const actual = cnl::to_string(cnl::fixed_point<cnl::wide_integer<100, unsigned>, -90>{5.}/7);
+    ASSERT_EQ(expected, actual);
+}
+
 TEST(fixed_point_wide_integer, quotient200)
 {
     using fixed_point = cnl::fixed_point<cnl::wide_integer<200, unsigned>, -196>;
