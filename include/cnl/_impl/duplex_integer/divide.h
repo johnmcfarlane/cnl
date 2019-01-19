@@ -81,7 +81,7 @@ namespace cnl {
                     return 0;
                 }
                 for (int r = half_digits;; n <<= 1, r--) {
-                    if (n & Upper(1ULL << (half_digits-1))) {
+                    if (n & Upper(1ULL) << (half_digits-1)) {
                         return r;
                     }
                 }
