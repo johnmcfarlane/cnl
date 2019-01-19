@@ -24,14 +24,6 @@ namespace cnl {
                 bool FloatingPointS = numeric_limits<S>::is_iec559>
         struct default_power;
 
-        template<typename S>
-        struct default_power<S, 0, 2, false, false, false> {
-            constexpr int operator()() const
-            {
-                return 1;
-            }
-        };
-
         template<typename S, int Radix>
         struct default_power<S, 0, Radix, false, false, false> {
             constexpr S operator()() const
