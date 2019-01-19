@@ -55,7 +55,7 @@ namespace {
                 -cnl::_impl::wide_integer<500, int>{17292375928362489LL}), "");
 #endif
 
-        TEST(duplex_integer, minus)
+        TEST(wide_integer, minus)
         {
             auto expected = cnl::_impl::wide_integer<1000, int>{-17292375928362489LL};
             auto actual = -cnl::_impl::wide_integer<1000, int>{17292375928362489LL};
