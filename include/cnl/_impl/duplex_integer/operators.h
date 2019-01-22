@@ -17,12 +17,15 @@
 #include "numeric_limits.h"
 #include "set_digits.h"
 #include "shift.h"
+#include "to_chars.h"
 #include "type.h"
 #include "../common.h"
 #include "../num_traits/width.h"
 #include "../operators.h"
 #include "../wide_integer/type.h"
 #include "../wide_integer/operators.h"
+
+#include <ostream>
 
 /// compositional numeric library
 namespace cnl {
@@ -156,6 +159,15 @@ namespace cnl {
                        : duplex_integer<Upper, Lower>{rhs.upper(), --rhs.lower()};
             }
         };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::duplex_integer streaming
+
+        template<typename Upper, typename Lower>
+        ::std::ostream& operator<<(::std::ostream& out, duplex_integer<Upper, Lower> const& value)
+        {
+            return out << cnl::to_chars(value).data();
+        }
     }
 }
 
