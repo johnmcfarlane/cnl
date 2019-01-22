@@ -90,6 +90,15 @@ namespace cnl {
                 return copy;
             }
         };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::wide_integer streaming
+
+        template<int Digits, typename Narrowest>
+        ::std::ostream& operator<<(::std::ostream& out, wide_integer<Digits, Narrowest> const& value)
+        {
+            return out << to_rep(value);
+        }
     }
 }
 
