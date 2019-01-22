@@ -75,7 +75,7 @@ namespace cnl {
 
             static CNL_RELAXED_CONSTEXPR auto fls(Upper n) -> int
             {
-                auto half_digits = numeric_limits<_unsigned_duplex_integer>::digits/2;
+                auto half_digits = numeric_limits<_duplex_integer>::digits/2;
 
                 if (!n) {
                     return 0;
