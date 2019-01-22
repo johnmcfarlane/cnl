@@ -120,6 +120,12 @@ set(sample_sources
 
 find_package(Boost)
 
+if(Boost_FOUND)
+    if(NOT Boost_VERSION GREATER 105500)
+        message("Boost version is too low to use with cnl::fixed_point")
+    endif(NOT Boost_VERSION GREATER 105500)
+endif(Boost_FOUND)
+
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     set(gtest_byproducts
             "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtestd${CMAKE_FIND_LIBRARY_SUFFIXES}"
@@ -207,8 +213,6 @@ function(make_test source out_target compile_flags linker_flags)
             # only compile multiprecision.cpp if Boost.Multiprecision is available
             target_compile_definitions("${target}" PRIVATE "-DCNL_BOOST_ENABLED")
             target_include_directories("${target}" SYSTEM PRIVATE "${Boost_INCLUDE_DIRS}")
-        else(Boost_VERSION GREATER 105500)
-            message("Boost version is too low to use with cnl::fixed_point")
         endif(Boost_VERSION GREATER 105500)
     endif(Boost_FOUND)
 
