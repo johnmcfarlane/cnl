@@ -480,6 +480,22 @@ namespace {
 
             ASSERT_EQ((expected), (actual));
         }
+
+#if defined(CNL_INT128_ENABLED)
+        TEST(duplex_integer, modulo255)
+        {
+            using type = cnl::_impl::duplex_integer<
+                    cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>,
+                    cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>;
+            auto expected = type{{0, 0}, {0, 7}};
+
+            auto const numerator = type{{0, 0}, {76, UINT64_C(5242979323791729901)}};
+            auto const denominator = type{10};
+            auto actual = numerator%denominator;
+
+            ASSERT_EQ((expected), (actual));
+        }
+#endif
     }
 
     namespace test_bitwise_and {
