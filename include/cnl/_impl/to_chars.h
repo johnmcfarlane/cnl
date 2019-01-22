@@ -45,18 +45,15 @@ namespace cnl {
         {
             auto const quotient = value/10;
 
-            auto const next_ptr = [&]() {
-                if (quotient) {
-                    return to_chars_natural(ptr, last, quotient);
-                }
-                return ptr;
-            }();
+            auto const next_ptr = quotient
+                    ? to_chars_natural(ptr, last, quotient)
+                    : ptr;
 
             if (next_ptr==last || next_ptr==nullptr) {
                 return nullptr;
             }
 
-            auto const remainder = value%10;
+            auto const remainder = value-(quotient*10);
             *next_ptr = itoc(remainder);
 
             return next_ptr+1;
