@@ -80,8 +80,9 @@ namespace cnl {
                 if (!n) {
                     return 0;
                 }
+                auto const msd = Upper{1} << (half_digits-1);
                 for (int r = half_digits;; n <<= 1, r--) {
-                    if (n & Upper(1ULL) << (half_digits-1)) {
+                    if (n & msd) {
                         return r;
                     }
                 }
