@@ -75,13 +75,14 @@ namespace cnl {
 
             static CNL_RELAXED_CONSTEXPR auto fls(Upper n) -> int
             {
-                auto half_digits = numeric_limits<_unsigned_duplex_integer>::digits/2;
+                auto half_digits = numeric_limits<_duplex_integer>::digits/2;
 
                 if (!n) {
                     return 0;
                 }
+                auto const msd = Upper{1} << (half_digits-1);
                 for (int r = half_digits;; n <<= 1, r--) {
-                    if (n & Upper(1ULL << (half_digits-1))) {
+                    if (n & msd) {
                         return r;
                     }
                 }

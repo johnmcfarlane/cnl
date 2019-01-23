@@ -12,26 +12,18 @@
 #include "type.h"
 #include "../assert.h"
 #include "../num_traits/fixed_width_scale.h"
+#include "../to_chars.h"
 
 #include <array>
 #include <iterator>
-#include <system_error>
 #include <type_traits>
 #include <utility>
 
 /// compositional numeric library
 namespace cnl {
-    struct to_chars_result {
-        char* ptr;
-        std::errc ec;
-    };
-
     namespace _impl {
-        template<typename Scalar>
-        struct max_decimal_digits;
-
         template<typename Rep, int Exponent>
-        struct max_decimal_digits<fixed_point<Rep, Exponent, 2>> {
+        struct max_to_chars_chars<fixed_point<Rep, Exponent>> {
             using _scalar = cnl::fixed_point<Rep, Exponent>;
             static constexpr auto _fractional_digits = cnl::_impl::fractional_digits<_scalar>::value;
 
@@ -83,44 +75,6 @@ namespace cnl {
                 return std::make_pair(Rep{}, value);
             }
         };
-
-        template<typename Scalar>
-        char itoc(Scalar value) noexcept
-        {
-            static_assert(
-                    std::is_same<
-                            typename rounding<Scalar>::type,
-                            native_rounding_tag>::value,
-                    "wrong rounding type");
-            auto c = '0'+static_cast<int>(value);
-            return static_cast<char>(c);
-        }
-
-        template<class Value>
-        char* to_chars_natural(char* const ptr, char* const last, Value const& value)
-        {
-            static_assert(
-                    fractional_digits<Value>::value==0,
-                    "this function won't work with fractional numbers");
-
-            auto const quotient = value/10;
-
-            auto const next_ptr = [&]() {
-                if (quotient) {
-                    return to_chars_natural(ptr, last, quotient);
-                }
-                return ptr;
-            }();
-
-            if (next_ptr==last || next_ptr==nullptr) {
-                return nullptr;
-            }
-
-            auto const remainder = value%10;
-            *next_ptr = itoc(remainder);
-
-            return next_ptr+1;
-        }
 
         // case where value has enough integer digits to hold range, [0..10)
         template<typename Rep, int Exponent, int Radix>
@@ -260,45 +214,6 @@ namespace cnl {
 
             return to_chars_fractional(natural_last, last, split.second);
         }
-
-        template<typename FixedPoint, bool is_signed = is_signed<FixedPoint>::value>
-        struct to_chars_non_zero;
-
-        template<typename NativeRoundingRep, int Exponent, int Radix>
-        struct to_chars_non_zero<fixed_point<NativeRoundingRep, Exponent, Radix>, false> {
-            to_chars_result operator()(
-                    char* const first,
-                    char* const last,
-                    fixed_point<NativeRoundingRep, Exponent, Radix> const& value) const
-            {
-                // +ve
-                return to_chars_positive(first, last, value);
-            }
-        };
-
-        template<typename NativeRoundingRep, int Exponent, int Radix>
-        struct to_chars_non_zero<fixed_point<NativeRoundingRep, Exponent, Radix>, true> {
-            to_chars_result operator()(
-                    char* const first,
-                    char* const last,
-                    fixed_point<NativeRoundingRep, Exponent, Radix> const& value) const
-            {
-                if (value>0.) {
-                    // +ve
-                    return to_chars_positive(first, last, value);
-                }
-                else {
-                    auto const destination_length = std::distance(first, last);
-                    if (destination_length<2) {
-                        return to_chars_result{last, std::errc::value_too_large};
-                    }
-
-                    // -ve
-                    *first = '-';
-                    return to_chars_positive(first+1, last, -value);
-                }
-            }
-        };
     }
 
     // partial implementation of std::to_chars overloaded on cnl::fixed_point
@@ -320,30 +235,10 @@ namespace cnl {
         }
 
         using native_rounding_type = set_rounding_t<decltype(value), _impl::native_rounding_tag>;
-        auto const native_rounding_value = static_cast<native_rounding_type>(value);
+        auto const& native_rounding_value = static_cast<native_rounding_type>(value);
 
         return _impl::to_chars_non_zero<native_rounding_type>{}(
                 first, last, native_rounding_value);
-    }
-
-    // overload of cnl::to_chars returning fixed-size array of chars
-    // large enough to store any possible result for given input type
-    template<typename Rep, int Exponent, int Radix>
-    std::array<
-            char,
-            _impl::max_decimal_digits<cnl::fixed_point<Rep, Exponent, Radix>>::value+1>
-    to_chars(cnl::fixed_point<Rep, Exponent, Radix> const& value)
-    {
-        constexpr auto max_num_chars = _impl::max_decimal_digits<cnl::fixed_point<Rep, Exponent, Radix>>::value;
-        std::array<char, max_num_chars+1> chars;
-
-        auto result = cnl::to_chars(chars.data(), chars.data()+max_num_chars, value);
-        CNL_ASSERT(result.ptr>chars.data());
-        CNL_ASSERT(result.ptr<=chars.data()+max_num_chars);
-        CNL_ASSERT(result.ec==std::errc{});
-
-        *result.ptr = '\0';
-        return chars;
     }
 }
 

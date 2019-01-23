@@ -758,7 +758,7 @@ static_assert(
         "cnl::fixed_point subtraction test failed");
 static_assert(
         identical(
-                fixed_point<decltype(std::declval<unsigned>()-std::declval<test_signed>()), -3>{2048U-0.875},
+                fixed_point<decltype(std::declval<unsigned>()-std::declval<uint8>()), -3>{2048U-0.875},
                 2048U-fixed_point<uint8, -3>(0.875)),
         "cnl::fixed_point subtraction test failed");
 static_assert(

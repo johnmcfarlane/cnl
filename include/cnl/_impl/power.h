@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_POWER_H)
-#define CNL_POWER_H 1
+#if !defined(CNL_IMPL_POWER_H)
+#define CNL_IMPL_POWER_H 1
 
 #include "../constant.h"
 
@@ -23,14 +23,6 @@ namespace cnl {
                 bool OddExponent = ((Exponent & 1)!=0),
                 bool FloatingPointS = numeric_limits<S>::is_iec559>
         struct default_power;
-
-        template<typename S>
-        struct default_power<S, 0, 2, false, false, false> {
-            constexpr int operator()() const
-            {
-                return 1;
-            }
-        };
 
         template<typename S, int Radix>
         struct default_power<S, 0, Radix, false, false, false> {
@@ -120,4 +112,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_FIXED_POINT_DEF_H
+#endif  // CNL_IMPL_POWER_H

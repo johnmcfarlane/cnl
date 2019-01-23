@@ -11,6 +11,7 @@
 
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/cmath.h>
 
 #include <gtest/gtest.h>
 
@@ -55,7 +56,7 @@ namespace {
                 -cnl::_impl::wide_integer<500, int>{17292375928362489LL}), "");
 #endif
 
-        TEST(duplex_integer, minus)
+        TEST(wide_integer, minus)
         {
             auto expected = cnl::_impl::wide_integer<1000, int>{-17292375928362489LL};
             auto actual = -cnl::_impl::wide_integer<1000, int>{17292375928362489LL};
@@ -98,6 +99,27 @@ namespace {
                                 cnl::_impl::wide_integer<16, unsigned>,
                                 cnl::_impl::wide_integer<16, signed>>{}(0x1234, 0x100)),
                 "");
+
+        TEST(wide_integer, divide)
+        {
+            using type = cnl::_impl::wide_integer<200>;
+            using rep = typename type::rep;
+            auto expected = type{rep{
+#if defined(CNL_INT128_ENABLED)
+                    {INT64_C(5), UINT64_C(0x5555555555555555)},
+                    {UINT64_C(0x5555555555555555), UINT64_C(0x5555555555555555)}
+#else
+                    {{UINT32_C(5), UINT32_C(0x55555555)}, {UINT32_C(0x55555555), UINT32_C(0x55555555)}},
+                    {{UINT32_C(0x55555555), UINT32_C(0x55555555)}, UINT32_C(0x55555555)}
+#endif
+            }};
+
+            auto nume = type{1} << 196;
+            auto denom = type{3};
+            auto actual = nume/denom;
+
+            ASSERT_EQ(expected, actual);
+        }
     }
 
     namespace test_shift_left {
