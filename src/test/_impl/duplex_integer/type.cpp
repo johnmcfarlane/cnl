@@ -291,6 +291,14 @@ namespace {
                         cnl::uint16(-1>>16),
                         static_cast<cnl::uint16>(cnl::_impl::duplex_integer<cnl::int16, cnl::uint16>{-1, 65535})),
                 "");
+        static_assert(
+                identical(
+                        INT32_C(-1),
+                        static_cast<cnl::int32>(
+                                cnl::_impl::duplex_integer<
+                                        cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{-1})),
+                "");
     }
 
     namespace test_to_rep {
