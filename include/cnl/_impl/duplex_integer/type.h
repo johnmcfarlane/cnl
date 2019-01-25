@@ -23,15 +23,9 @@
 namespace cnl {
     namespace _impl {
         template<typename Integer>
-        constexpr auto is_flushed(Integer const& value) -> enable_if_t<is_signed<Integer>::value, bool>
+        constexpr bool is_flushed(Integer const& value)
         {
-            return value==0 || value==-1;
-        }
-
-        template<typename Integer>
-        constexpr auto is_flushed(Integer const& value) -> enable_if_t<!is_signed<Integer>::value, bool>
-        {
-            return value==0;
+            return value==0 || value==static_cast<Integer>(~Integer{});
         }
 
         template<typename Result, typename Upper, typename Lower>
