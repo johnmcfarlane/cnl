@@ -50,6 +50,7 @@ set(test_sources
         _impl/wide_integer/digits.cpp
         _impl/wide_integer/from_rep.cpp
         _impl/wide_integer/from_value.cpp
+        _impl/wide_integer/literals.cpp
         _impl/wide_integer/make_wide_integer.cpp
         _impl/wide_integer/numeric_limits.cpp
         _impl/wide_integer/operators.cpp
