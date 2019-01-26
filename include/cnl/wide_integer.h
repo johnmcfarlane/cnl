@@ -15,6 +15,7 @@
 #include "_impl/wide_integer/forward_declaration.h"
 #include "_impl/wide_integer/from_rep.h"
 #include "_impl/wide_integer/from_value.h"
+#include "_impl/wide_integer/literals.h"
 #include "_impl/wide_integer/make_wide_integer.h"
 #include "_impl/wide_integer/numeric_limits.h"
 #include "_impl/wide_integer/operators.h"
@@ -25,6 +26,10 @@
 /// compositional numeric library
 namespace cnl {
     using _impl::wide_integer;
+
+    namespace literals {
+        using _impl::operator "" _wide;
+    }
 }
 
 #endif  // CNL_WIDE_INTEGER_H
