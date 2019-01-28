@@ -52,16 +52,10 @@ TEST(fixed_point_wide_integer, quotient)
 
 TEST(fixed_point_wide_integer, ctor_fraction)
 {
-    using wide_integer = cnl::wide_integer<200>;
-    using fixed_point = cnl::fixed_point<wide_integer, -100>;
-    using duplex_integer = wide_integer::rep;
-    auto expected = cnl::_impl::from_rep<fixed_point>(wide_integer{duplex_integer{
-#if defined(CNL_INT128_ENABLED)
-            0, {0x555555555ULL, 0x5555555555555555ULL}
-#else
-            {{0, 0}, {0, 5}}, {{0x55555555, 0x55555555}, 0x55555555}
-#endif
-    }});
+    using namespace cnl::literals;
+    using fixed_point = cnl::fixed_point<cnl::wide_integer<200>, -100>;
+
+    auto expected = cnl::_impl::from_rep<fixed_point>(cnl::wide_integer<200>{0x5555555555555555555555555_wide});
     auto actual = fixed_point{cnl::fraction<int>(1, 3)};
     ASSERT_EQ(expected, actual);
 }

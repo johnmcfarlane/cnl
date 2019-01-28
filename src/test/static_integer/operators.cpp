@@ -18,7 +18,7 @@ namespace {
     }
 
     namespace test_division_native {
-        TEST(a, b) {
+        TEST(static_integer, division_native) {
             auto ex = cnl::static_integer<2, cnl::native_rounding_tag>{3/4};
             auto n = cnl::static_integer<2, cnl::native_rounding_tag>{3};
             auto d = cnl::static_integer<3, cnl::native_rounding_tag>{4};

@@ -22,6 +22,10 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
   set(MISC_FLAGS "-pthread -Wall -Wextra -Werror -ftemplate-backtrace-limit=0")
 
+  if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
+    set(MISC_FLAGS "${MISC_FLAGS} -fconstexpr-backtrace-limit=0 -fconstexpr-steps=100000000")
+  endif()
+
   set(CPP17_ENABLED_FLAGS "-std=c++17")
 
   set(EXCEPTION_ENABLED_FLAGS "-fexceptions -frtti")

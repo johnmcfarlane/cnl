@@ -9,6 +9,8 @@
 
 #include <cnl/_impl/wide_integer/operators.h>
 
+#include <cnl/_impl/wide_integer/literals.h>
+
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cmath.h>
@@ -100,26 +102,19 @@ namespace {
                                 cnl::_impl::wide_integer<16, signed>>{}(0x1234, 0x100)),
                 "");
 
+#if !defined(_MSC_VER) && (defined(__clang__) || !defined(__GNUG__) || __GNUG__ < 7)
         TEST(wide_integer, divide)
         {
-            using type = cnl::_impl::wide_integer<200>;
-            using rep = typename type::rep;
-            auto expected = type{rep{
-#if defined(CNL_INT128_ENABLED)
-                    {INT64_C(5), UINT64_C(0x5555555555555555)},
-                    {UINT64_C(0x5555555555555555), UINT64_C(0x5555555555555555)}
-#else
-                    {{UINT32_C(5), UINT32_C(0x55555555)}, {UINT32_C(0x55555555), UINT32_C(0x55555555)}},
-                    {{UINT32_C(0x55555555), UINT32_C(0x55555555)}, UINT32_C(0x55555555)}
-#endif
-            }};
+            using namespace cnl::_impl;
+            auto expected = 0x5555555555555555555555555555555555555555555555555_wide;
 
-            auto nume = type{1} << 196;
-            auto denom = type{3};
+            auto nume = wide_integer<200>{1} << 196;
+            auto denom = wide_integer<200>{3};
             auto actual = nume/denom;
 
             ASSERT_EQ(expected, actual);
         }
+#endif
     }
 
     namespace test_shift_left {
