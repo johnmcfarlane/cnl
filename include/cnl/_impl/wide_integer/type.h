@@ -7,9 +7,7 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_TYPE_H)
 #define CNL_IMPL_WIDE_INTEGER_TYPE_H
 
-#include "../duplex_integer/instantiate_duplex_integer.h"
-#include "../duplex_integer/numeric_limits.h"
-#include "../duplex_integer/rounding.h"
+#include "../duplex_integer.h"
 #include "../integer/type.h"
 #include "../number_base.h"
 #include "forward_declaration.h"
