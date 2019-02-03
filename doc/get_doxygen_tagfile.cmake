@@ -44,4 +44,4 @@ get_doxygen_tagfile(
         "https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen"
         "https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/")
 
-configure_file("${CMAKE_CURRENT_LIST_DIR}/Doxyfile.in" "${CMAKE_CURRENT_LIST_DIR}/Doxyfile" @ONLY)
+configure_file("${CMAKE_CURRENT_LIST_DIR}/Doxyfile.in" "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" @ONLY)
