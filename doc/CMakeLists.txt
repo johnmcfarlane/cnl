@@ -17,5 +17,5 @@ add_custom_target(Doc ALL
         COMMENT "Generating API documentation with Doxygen" VERBATIM)
 
 add_custom_target(TagFiles
-        COMMAND ${CMAKE_COMMAND} -P /home/john/ws/most_negative/cnl/doc/get_doxygen_tagfile.cmake)
+        COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_LIST_DIR}/get_doxygen_tagfile.cmake")
 add_dependencies(Doc TagFiles)
