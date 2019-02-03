@@ -9,7 +9,7 @@
 
 #include "type.h"
 #include "../operators.h"
-#include "../wide_integer/type.h"
+#include "../wide_integer/rep.h"
 
 /// compositional numeric library
 namespace cnl {
