@@ -13,7 +13,7 @@
 #include "type.h"
 #include "../operators.h"
 #include "../type_traits/set_signedness.h"
-#include "../wide_integer/type.h"
+#include "../wide_integer/rep.h"
 
 /// compositional numeric library
 namespace cnl {

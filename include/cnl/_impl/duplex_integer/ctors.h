@@ -8,6 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_CTORS_H 1
 
 #include "type.h"
+#include "operators.h"
 #include "../power.h"
 #include "../type_traits/enable_if.h"
 
