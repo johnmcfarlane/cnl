@@ -1,4 +1,4 @@
-dist: trusty
+dist: xenial
 sudo: required
 
 language: cpp
@@ -57,7 +57,6 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - clang-6.0
-            - g++-5
       env: MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR="Ninja"
 
     - os: linux
@@ -67,7 +66,6 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - clang-5.0
-            - g++-5
       env: MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR="Unix Makefiles"
 
     - os: linux
