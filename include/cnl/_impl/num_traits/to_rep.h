@@ -49,8 +49,8 @@ namespace cnl {
     namespace _impl {
         template<class Number>
         constexpr auto to_rep(Number&& number)
-        -> decltype(cnl::to_rep<remove_cvref_t<Number>>{}(std::forward<Number>(number))) {
-            return cnl::to_rep<remove_cvref_t<Number>>{}(std::forward<Number>(number));
+        -> decltype(cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number))) {
+            return cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number));
         }
 
         template<class Number>

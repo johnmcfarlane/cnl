@@ -8,7 +8,7 @@
 #define CNL_STATIC_INTEGER_H
 
 /// \file
-/// \brief file containing definitions related to \ref static_integer
+/// \brief file containing definitions related to \ref cnl::static_integer
 
 #include "_impl/static_integer.h"
 

@@ -7,7 +7,7 @@ sudo apt-get update -q
 sudo apt remove gcc
 
 # Install
-sudo apt-get install -q cmake ninja-build
+sudo apt-get install -q cmake ninja-build doxygen
 cmake --version
 
 # Ubuntu 14.04 defaults to Boost v54 which doesn't work without RTTI

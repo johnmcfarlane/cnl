@@ -22,14 +22,6 @@ namespace cnl {
     //
     // compare two objects of different fixed_point specializations
 
-    namespace _fixed_point_operators_impl {
-        template<class Lhs, class Rhs>
-        constexpr bool is_heterogeneous() {
-            return (!std::is_same<Lhs, Rhs>::value) &&
-                   (_impl::is_fixed_point<Lhs>::value || _impl::is_fixed_point<Rhs>::value);
-        }
-    }
-
     namespace _impl {
         template<typename Operator, typename Rep, int Exponent, int Radix>
         struct unary_operator<Operator, fixed_point<Rep, Exponent, Radix>> {
@@ -59,10 +51,10 @@ namespace cnl {
         struct comparison_operator<Operator,
                 fixed_point<LhsRep, LhsExponent, Radix>,
                 fixed_point<RhsRep, RhsExponent, Radix>,
-                enable_if_t<LhsExponent<RhsExponent>> {
+                enable_if_t<(LhsExponent<RhsExponent)>> {
             static constexpr int shiftage = RhsExponent - LhsExponent;
             using lhs_type = fixed_point<LhsRep, LhsExponent, Radix>;
-            using rhs_type = fixed_point<decltype(std::declval<RhsRep>()<<constant<shiftage>{}), LhsExponent, Radix>;
+            using rhs_type = fixed_point<decltype(std::declval<RhsRep>()<<constant<shiftage>()), LhsExponent, Radix>;
             using operator_type = comparison_operator<Operator, lhs_type, rhs_type>;
 
             constexpr auto operator()(
@@ -78,9 +70,9 @@ namespace cnl {
         struct comparison_operator<Operator,
                 fixed_point<LhsRep, LhsExponent, Radix>,
                 fixed_point<RhsRep, RhsExponent, Radix>,
-                enable_if_t<RhsExponent<LhsExponent>> {
+                enable_if_t<(RhsExponent<LhsExponent)>> {
             static constexpr int shiftage = LhsExponent - RhsExponent;
-            using lhs_type = fixed_point<decltype(std::declval<LhsRep>()<<constant<shiftage>{}), RhsExponent, Radix>;
+            using lhs_type = fixed_point<decltype(std::declval<LhsRep>()<<constant<shiftage>()), RhsExponent, Radix>;
             using rhs_type = fixed_point<RhsRep, RhsExponent, Radix>;
             using operator_type = comparison_operator<Operator, lhs_type, rhs_type>;
 

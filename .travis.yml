@@ -1,4 +1,4 @@
-dist: trusty
+dist: xenial
 sudo: required
 
 language: cpp
@@ -54,22 +54,18 @@ matrix:
       addons: &clang6
         apt:
           sources:
-            - llvm-toolchain-trusty-6.0
             - ubuntu-toolchain-r-test
           packages:
             - clang-6.0
-            - g++-5
       env: MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR="Ninja"
 
     - os: linux
       addons: &clang5
         apt:
           sources:
-            - llvm-toolchain-trusty-5.0
             - ubuntu-toolchain-r-test
           packages:
             - clang-5.0
-            - g++-5
       env: MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR="Unix Makefiles"
 
     - os: linux
@@ -185,7 +181,7 @@ before_install:
 
 script:
     - cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -DSTD="${STD}" -DEXCEPTIONS="${EXCEPTIONS}" -DINT128="${INT128}" -DSANITIZE="${SANITIZE}" -G "${GENERATOR}"
-    - cmake --build . -- -j 8 Tests Benchmark
+    - cmake --build . -- -j 8 Tests Benchmark Doc
     - ctest --output-on-failure -j 8
     - ./src/benchmark/Benchmark --benchmark_format=csv>result.csv
     - ./src/benchmark/report.py result.csv

@@ -1,6 +1,6 @@
 
 # Generate list of files that are passed to Doxyfile as the INPUT parameter.
-file(GLOB_RECURSE doc_INPUTFILES "${CMAKE_HOME_DIRECTORY}/include/*")
+file(GLOB_RECURSE doc_INPUTFILES "${CMAKE_CURRENT_LIST_DIR}/../include/*")
 list(APPEND doc_INPUTFILES "${CMAKE_CURRENT_LIST_DIR}/index.md")
 string (REPLACE ";" " " doc_INPUTFILES "${doc_INPUTFILES}")
 
@@ -12,7 +12,7 @@ macro(GET_DOXYGEN_TAGFILE FILENAME DOWNLOAD_LOC TAGFILE_LOC)
 
         # if a std library reference isn't present already
         if (EXISTS ${DESTINATION})
-            set(doc_TAGFILE "${cnl_BINARY_DIR}/doc/${FILENAME}=${TAGFILE_LOC}")
+            set(doc_TAGFILE "${CMAKE_CURRENT_BINARY_DIR}/${FILENAME}=${TAGFILE_LOC}")
         else ()
             # try to download it
             set(DOWNLOAD_URL "${DOWNLOAD_LOC}/${FILENAME}")
@@ -23,7 +23,7 @@ macro(GET_DOXYGEN_TAGFILE FILENAME DOWNLOAD_LOC TAGFILE_LOC)
 
             list(GET doc_TAGFILE_STATUS 0 doc_TAGFILE_STATUS_CODE)
             if (doc_TAGFILE_STATUS EQUAL 0)
-                set(doc_TAGFILE "${cnl_BINARY_DIR}/doc/${FILENAME}=${TAGFILE_LOC}")
+                set(doc_TAGFILE "${CMAKE_CURRENT_BINARY_DIR}/${FILENAME}=${TAGFILE_LOC}")
             else ()
                 list(GET doc_TAGFILE_STATUS 1 doc_TAGFILE_STATUS_MESSAGE)
                 message("Failed to download Doxfile for standard library from \"${DOWNLOAD_URL}\": ${doc_TAGFILE_STATUS_MESSAGE}")
@@ -44,4 +44,4 @@ get_doxygen_tagfile(
         "https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen"
         "https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/")
 
-configure_file("${CMAKE_CURRENT_LIST_DIR}/Doxyfile.in" "${CMAKE_CURRENT_LIST_DIR}/Doxyfile" @ONLY)
+configure_file("${CMAKE_CURRENT_LIST_DIR}/Doxyfile.in" "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" @ONLY)

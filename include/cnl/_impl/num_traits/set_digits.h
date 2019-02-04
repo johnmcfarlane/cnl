@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file cnl/bits/num_traits/set_digits.h
+/// \file cnl/num_traits.h
 /// \brief definitions supporting \ref cnl::set_digits
 
 #ifndef CNL_IMPL_NUM_TRAITS_SET_DIGITS

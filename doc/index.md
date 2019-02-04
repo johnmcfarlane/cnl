@@ -19,7 +19,7 @@ Header, [cnl/fixed_point.h](@ref cnl::fixed_point), defines class template, [fix
 
 * a simple, flexible generic design;
 * operator overloads that interface [fixed_point](@ref cnl::fixed_point) with other numeric types;
-* a set of function templates, (e.g. [multiply](@ref cnl::multiply)), for fine-grain control.
+* a set of function templates for fine-grain control.
 
 Header, [cnl/num_traits.h](@ref cnl/num_traits.h), contains additions (such as [set_digits](@ref cnl::set_digits)) 
 that support widening of arithmetic types in order to deal with precision loss.
@@ -57,7 +57,7 @@ Operators are designed to behave in an way which is both predictable and efficie
 
 But one size does not fit all.
 Different applications of the same operation might call for different trade-offs between storage, precision, safety and speed.
-Named functions - such as [multiply](@ref cnl::multiply) - provide fine-tuned control over arithmetic results.
+Named functions provide fine-tuned control over arithmetic results.
 
 \snippet index.cpp advanced arithmetic example
 
