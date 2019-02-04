@@ -114,14 +114,14 @@ namespace cnl {
     // cnl::floor
 
     template<class Rep, int Exponent, int Radix,
-            _impl::enable_if_t<Exponent<0, int> dummy = 0>
+            _impl::enable_if_t<(Exponent<0), int> dummy = 0>
     constexpr auto floor(fixed_point<Rep, Exponent, Radix> const& x)
-    -> decltype(_impl::from_rep<fixed_point<Rep, 0, Radix>>(_impl::to_rep(x)>>constant<-Exponent>{})) {
+    -> decltype(_impl::from_rep<fixed_point<Rep, 0, Radix>>(_impl::to_rep(x)>>constant<-Exponent>())) {
         static_assert(
                 Radix==2,
                 "cnl::floor(fixed_point<Rep, Exponent, Radix>) not implemented for Exponent<0 && Radix!=2");
 
-        return _impl::from_rep<fixed_point<Rep, 0, Radix>>(_impl::to_rep(x)>>constant<-Exponent>{});
+        return _impl::from_rep<fixed_point<Rep, 0, Radix>>(_impl::to_rep(x)>>constant<-Exponent>());
     }
 
     template<class Rep, int Exponent, int Radix>

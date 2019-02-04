@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file cnl/bits/num_traits/digits.h
-/// \brief definitions supporting \ref cnl::set_digits
+/// \file cnl/num_traits.h
+/// \brief definitions supporting \ref cnl::digits
 
 #ifndef CNL_IMPL_NUM_TRAITS_DIGITS
 #define CNL_IMPL_NUM_TRAITS_DIGITS
@@ -20,6 +20,14 @@
 #include <type_traits>
 
 namespace cnl {
+    /// \brief provide number of binary digits of the given type
+    ///
+    /// \tparam T the source type
+    /// \tparam Digits the desired number of digits
+    ///
+    /// \note does not include a sign bit
+    ///
+    /// \sa cnl::set_digits
     template<typename T, class Enable = void>
     struct digits;
 

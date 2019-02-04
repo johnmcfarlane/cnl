@@ -8,7 +8,7 @@
 #define CNL_WIDE_INTEGER_H 1
 
 /// \file
-/// \brief file containing definitions related to \ref wide_integer
+/// \brief file containing definitions related to \ref cnl::wide_integer
 
 #include "_impl/wide_integer/common_type.h"
 #include "_impl/wide_integer/digits.h"
@@ -25,7 +25,16 @@
 
 /// compositional numeric library
 namespace cnl {
-    using _impl::wide_integer;
+    /// \brief an integer type of any number of bits
+    ///
+    /// \tparam Digits number of binary digits
+    /// \tparam Narrowest narrowest integer with which to represent the value
+    ///
+    /// \note This type is experimental and has not been optimized for run-time or compile-time performance.
+    ///
+    /// \sa cnl::static_integer
+    template<int Digits = digits<int>::value, typename Narrowest = int>
+    using wide_integer = _impl::wide_integer<Digits, Narrowest>;
 
     namespace literals {
         using _impl::operator "" _wide;

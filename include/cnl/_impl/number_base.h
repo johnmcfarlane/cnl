@@ -47,7 +47,7 @@ namespace cnl {
                 return static_cast<Derived&>(*this);
             }
 
-            friend cnl::to_rep<number_base>;
+            friend struct cnl::to_rep<number_base>;
         private:
             rep _rep;
         };

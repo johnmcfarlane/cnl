@@ -8,7 +8,7 @@
 #define CNL_STATIC_NUBER_H 1
 
 /// \file
-/// \brief file containing definitions related to \ref static_number
+/// \brief file containing definitions related to \ref cnl::static_number
 
 #include "fixed_point.h"
 
