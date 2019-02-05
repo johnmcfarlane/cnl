@@ -26,7 +26,7 @@ matrix:
 
     - os: osx
       osx_image: xcode9
-      env: MATRIX_EVAL="brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: MATRIX_EVAL="brew update && brew install cloc gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
       addons: &gcc6
@@ -39,7 +39,7 @@ matrix:
 
     - os: osx
       osx_image: xcode8
-      env: MATRIX_EVAL="brew update && brew install gcc5 && CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: MATRIX_EVAL="brew update && brew install cloc gcc5 && CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
       addons: &gcc5
@@ -111,7 +111,7 @@ matrix:
 
     - os: osx
       osx_image: xcode9
-      env: MATRIX_EVAL="brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: MATRIX_EVAL="brew update && brew install cloc gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
       addons: *gcc6
@@ -139,7 +139,7 @@ matrix:
 
     - os: osx
       compiler: clang # clang-3.8
-      env: MATRIX_EVAL="" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: MATRIX_EVAL="brew update && brew install cloc" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
       addons: *clang35
@@ -156,7 +156,7 @@ matrix:
 
     - os: osx
       osx_image: xcode9
-      env: MATRIX_EVAL="brew update && brew install gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: MATRIX_EVAL="brew update && brew install cloc gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
       addons: *gcc6
@@ -180,6 +180,8 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source .travis-setup-linux.sh ; fi
 
 script:
+    - cloc include
+    - cloc src
     - cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -DSTD="${STD}" -DEXCEPTIONS="${EXCEPTIONS}" -DINT128="${INT128}" -DSANITIZE="${SANITIZE}" -G "${GENERATOR}"
     - cmake --build . -- -j 8 Tests Benchmark Doc
     - ctest --output-on-failure -j 8
