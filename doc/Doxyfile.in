@@ -5,7 +5,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING = UTF-8
 PROJECT_NAME = "CNL"
-PROJECT_BRIEF = "Compositional Numeric Library in C++"
+PROJECT_BRIEF = "Compositional Numeric Library"
 PROJECT_LOGO =
 PROJECT_NUMBER = rev.0.0.1
 
