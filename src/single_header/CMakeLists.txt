@@ -2,7 +2,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
 
 function(make_single_header target output header version int128_flag gcc_intrinsics_flag)
     string(REPLACE " " ";" COMMON_CXX_FLAGS_LIST ${COMMON_CXX_FLAGS})
-        set(output_path "${PROJECT_SOURCE_DIR}/doc/gh-pages/${output}")
+    set(output_path "${PROJECT_SOURCE_DIR}/doc/gh-pages/${output}")
     set(standard_includes_dir "${CMAKE_CURRENT_BINARY_DIR}")
     set(standard_includes_path "${standard_includes_dir}/standard_includes.h")
     add_custom_target(
