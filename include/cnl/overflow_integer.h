@@ -253,9 +253,7 @@ namespace cnl {
             }
         };
     }
-}
 
-namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::numeric_limits specialization for overflow_integer
 
