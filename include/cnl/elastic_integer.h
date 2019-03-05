@@ -181,7 +181,7 @@ namespace cnl {
         elastic_integer() = default;
 
         /// construct from numeric type
-        template<class Number, _impl::enable_if_t<numeric_limits<Number>::is_specialized, int> Dummy = 0>
+        template<class Number, _impl::enable_if_t<numeric_limits<Number>::is_specialized, int> = 0>
         constexpr elastic_integer(Number n)
                 : _base(static_cast<rep>(n))
         {
@@ -202,7 +202,7 @@ namespace cnl {
         }
 
         /// copy assignment operator taking a floating-point type
-        template<class S, _impl::enable_if_t<std::is_floating_point<S>::value, int> Dummy = 0>
+        template<class S, _impl::enable_if_t<std::is_floating_point<S>::value, int> = 0>
         elastic_integer& operator=(S s)
         {
             _base::operator=(floating_point_to_rep(s));
@@ -269,7 +269,7 @@ namespace cnl {
         using make_type = elastic_integer<cnl::digits<Integral>::value, make_narrowest_t<Narrowest, Integral>>;
     }
 
-    template<class Narrowest = void, class Integral, _impl::enable_if_t<!_impl::is_constant<Integral>::value, int> Dummy = 0>
+    template<class Narrowest = void, class Integral, _impl::enable_if_t<!_impl::is_constant<Integral>::value, int> = 0>
     constexpr auto make_elastic_integer(Integral const& value)
     -> _elastic_integer_impl::make_type<Narrowest, Integral>
     {
@@ -297,7 +297,7 @@ namespace cnl {
         // comparison operators
 
         template<int FromDigits, class FromNarrowest, int OtherDigits, class OtherNarrowest,
-                _impl::enable_if_t<FromDigits!=OtherDigits || !std::is_same<FromNarrowest, OtherNarrowest>::value, std::nullptr_t> Dummy = nullptr>
+                _impl::enable_if_t<FromDigits!=OtherDigits || !std::is_same<FromNarrowest, OtherNarrowest>::value, std::nullptr_t> = nullptr>
         constexpr auto cast_to_common_type(
                 elastic_integer<FromDigits, FromNarrowest> const& from,
                 elastic_integer<OtherDigits, OtherNarrowest> const&)
