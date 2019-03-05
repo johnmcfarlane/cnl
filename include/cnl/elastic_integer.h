@@ -23,6 +23,8 @@
 #include "_impl/type_traits/make_signed.h"
 #include "_impl/type_traits/set_signedness.h"
 
+#include <ostream>
+
 /// compositional numeric library
 namespace cnl {
 
@@ -557,6 +559,14 @@ namespace cnl {
     struct numeric_limits<elastic_integer<Digits, Narrowest> const>
             : numeric_limits<elastic_integer<Digits, Narrowest>> {
     };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // operator<<(std::ostream& o, cnl::elastic_integer const& i)
+
+    template<int Digits, class Narrowest>
+    std::ostream &operator<<(std::ostream &o, elastic_integer<Digits, Narrowest> const &i) {
+        return o << _impl::to_rep(i);
+    }
 }
 
 #endif  // CNL_ELASTIC_INTEGER_H
