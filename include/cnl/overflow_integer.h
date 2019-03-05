@@ -18,6 +18,7 @@
 #include "_impl/type_traits/common_type.h"
 #include "_impl/type_traits/identical.h"
 
+#include <ostream>
 #include <type_traits>
 
 /// compositional numeric library
@@ -268,6 +269,14 @@ namespace cnl {
             : numeric_limits<_impl::number_base<overflow_integer<Rep, OverflowTag>, Rep>> {
         static constexpr bool is_integer = true;
     };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // operator<<(std::ostream& o, cnl::overflow_integer const& i)
+
+    template<class Rep, class OverflowTag>
+    std::ostream &operator<<(std::ostream &o, overflow_integer<Rep, OverflowTag> const &i) {
+        return o << _impl::to_rep(i);
+    }
 }
 
 namespace std {
