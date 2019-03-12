@@ -1,7 +1,6 @@
 
 # Generate list of files that are passed to Doxyfile as the INPUT parameter.
 file(GLOB_RECURSE doc_INPUTFILES "${CMAKE_CURRENT_LIST_DIR}/../include/*")
-list(APPEND doc_INPUTFILES "${CMAKE_CURRENT_LIST_DIR}/index.md")
 string (REPLACE ";" " " doc_INPUTFILES "${doc_INPUTFILES}")
 
 # Try to download a tag file for the standard library from a given source.
