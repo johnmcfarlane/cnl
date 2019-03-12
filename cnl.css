@@ -1,0 +1,30 @@
+/* The standard CSS for doxygen 1.8.13 */
+
+a.code, a.code:visited, a.line, a.line:visited {
+	font-family: monospace;
+}
+
+a.codeRef, a.codeRef:visited, a.lineRef, a.lineRef:visited {
+	font-family: monospace;
+}
+
+a.el {
+	font-family: monospace;
+}
+
+a.elRef {
+	font-family: monospace;
+}
+
+.memitem {
+	font-family: monospace;
+}
+
+.memItemLeft, .memItemRight,
+.memTemplItemLeft, .memTemplItemRight, .memTemplParams {
+	font-family: monospace;
+}
+
+.paramname {
+	font-family: monospace;
+}

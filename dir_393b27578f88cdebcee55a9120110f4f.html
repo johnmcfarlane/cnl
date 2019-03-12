@@ -9,10 +9,18 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="cnl.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -22,9 +30,9 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CNL
-   &#160;<span id="projectnumber">rev.0.0.1</span>
+   &#160;<span id="projectnumber">rev.0.1.0</span>
    </div>
-   <div id="projectbrief">Compositional Numeric Library in C++</div>
+   <div id="projectbrief">Compositional Numeric Library</div>
   </td>
  </tr>
  </tbody>
@@ -44,6 +52,21 @@ $(function() {
 });
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('dir_393b27578f88cdebcee55a9120110f4f.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +81,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_393b27578f88cdebcee55a9120110f4f.html">cnl</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">cnl Directory Reference</div>  </div>
@@ -75,7 +93,7 @@ Directories</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:all_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>all.h</b> <a href="all_8h_source.html">[code]</a></td></tr>
-<tr class="memdesc:all_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">include-all header for the CNL numeric library <br /></td></tr>
+<tr class="memdesc:all_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">include-all header for the CNL numeric library; contains front page of user manual <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:bit_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>bit.h</b> <a href="bit_8h_source.html">[code]</a></td></tr>
 <tr class="memdesc:bit_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">file containing definitions equivalent to those in <br /></td></tr>
@@ -83,11 +101,11 @@ Files</h2></td></tr>
 <tr class="memitem:cmath_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>cmath.h</b> <a href="cmath_8h_source.html">[code]</a></td></tr>
 <tr class="memdesc:cmath_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">file containing definitions that might go in <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:cnlint_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>cnlint.h</b> <a href="cnlint_8h_source.html">[code]</a></td></tr>
-<tr class="memdesc:cnlint_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">file containing definitions equivalent to those in <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:constant_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>constant.h</b> <a href="constant_8h_source.html">[code]</a></td></tr>
 <tr class="memdesc:constant_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">essential definitions related to <code>std::constant</code> type and its UDL, ""_c <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:cstdint_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>cstdint.h</b> <a href="cstdint_8h_source.html">[code]</a></td></tr>
+<tr class="memdesc:cstdint_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">file containing definitions equivalent to those in <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:elastic__integer_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>elastic_integer.h</b> <a href="elastic__integer_8h_source.html">[code]</a></td></tr>
 <tr class="memdesc:elastic__integer_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">essential definitions related to the <code><a class="el" href="classcnl_1_1elastic__integer.html" title="An integer type with auto-widening operators. ">cnl::elastic_integer</a></code> type <br /></td></tr>
@@ -98,17 +116,14 @@ Files</h2></td></tr>
 <tr class="memitem:fixed__point_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>fixed_point.h</b> <a href="fixed__point_8h_source.html">[code]</a></td></tr>
 <tr class="memdesc:fixed__point_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">all definitions related to the <code><a class="el" href="classcnl_1_1fixed__point.html" title="literal real number approximation that uses fixed-point arithmetic ">cnl::fixed_point</a></code> type <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:fractional_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>fractional.h</b> <a href="fractional_8h_source.html">[code]</a></td></tr>
-<tr class="memdesc:fractional_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">definition of <code><a class="el" href="structcnl_1_1fractional.html" title="numeric type represented as the fraction, numerator / denominator ">cnl::fractional</a></code> type <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:integral__constant_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>integral_constant.h</b> <a href="integral__constant_8h_source.html">[code]</a></td></tr>
-<tr class="memdesc:integral__constant_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">essential definitions related to use of <code><a class="elRef" doxygen="/home/john/ws/most_negative/cnl/cmake-build-debug-clang6-c17/doc/cppreference-doxygen-web.tag.xml:http://en.cppreference.com/w/" href="http://en.cppreference.com/w/cpp/types/integral_constant.html">std::integral_constant</a></code> type <br /></td></tr>
+<tr class="memitem:fraction_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>fraction.h</b> <a href="fraction_8h_source.html">[code]</a></td></tr>
+<tr class="memdesc:fraction_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">definition of <code><a class="el" href="structcnl_1_1fraction.html" title="numeric type represented as the fraction, numerator / denominator ">cnl::fraction</a></code> type <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:limits_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>limits.h</b> <a href="limits_8h_source.html">[code]</a></td></tr>
 <tr class="memdesc:limits_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">CNL alternative to. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:num__traits_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>num_traits.h</b> <a href="num__traits_8h_source.html">[code]</a></td></tr>
-<tr class="memdesc:num__traits_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">definitions supporting generic treatment of numeric types <br /></td></tr>
+<tr class="memdesc:num__traits_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">definitions supporting <a class="el" href="structcnl_1_1digits.html">cnl::digits</a> <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:numeric_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>numeric.h</b> <a href="numeric_8h_source.html">[code]</a></td></tr>
 <tr class="memdesc:numeric_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">functions that might belong in the <br /></td></tr>
@@ -123,18 +138,25 @@ Files</h2></td></tr>
 <tr class="memdesc:rounding_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">essential definitions related to the integer rounding <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:static__integer_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>static_integer.h</b> <a href="static__integer_8h_source.html">[code]</a></td></tr>
-<tr class="memdesc:static__integer_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">file containing definitions related to static_integer <br /></td></tr>
+<tr class="memdesc:static__integer_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">file containing definitions related to <a class="el" href="namespacecnl.html#ab84979e9c09ff27d096f3addae74c20d">cnl::static_integer</a> <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:static__number_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>static_number.h</b> <a href="static__number_8h_source.html">[code]</a></td></tr>
-<tr class="memdesc:static__number_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">file containing definitions related to static_number <br /></td></tr>
+<tr class="memdesc:static__number_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">file containing definitions related to <a class="el" href="namespacecnl.html#acc23e3f06fc9c425afff65dfcd81fa63">cnl::static_number</a> <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:wide__integer_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><b>wide_integer.h</b> <a href="wide__integer_8h_source.html">[code]</a></td></tr>
+<tr class="memdesc:wide__integer_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">file containing definitions related to <a class="el" href="namespacecnl.html#ab8ec7125b3f3b43f22d077c0abea1ce9">cnl::wide_integer</a> <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.13
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_393b27578f88cdebcee55a9120110f4f.html">cnl</a></li>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
+  </ul>
+</div>
 </body>
 </html>

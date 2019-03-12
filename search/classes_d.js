@@ -13,9 +13,12 @@ var searchData=
   ['num_5fget',['num_get',['http://en.cppreference.com/w/cpp/locale/num_get.html',1,'std']]],
   ['num_5fput',['num_put',['http://en.cppreference.com/w/cpp/locale/num_put.html',1,'std']]],
   ['numeric_5flimits',['numeric_limits',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
+  ['numeric_5flimits_3c_20_5fimpl_3a_3anumber_5fbase_3c_20_5fimpl_3a_3ainteger_3c_20rep_20_3e_2c_20rep_20_3e_20_3e',['numeric_limits&lt; _impl::number_base&lt; _impl::integer&lt; Rep &gt;, Rep &gt; &gt;',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
+  ['numeric_5flimits_3c_20_5fimpl_3a_3anumber_5fbase_3c_20overflow_5finteger_3c_20rep_2c_20overflowtag_20_3e_2c_20rep_20_3e_20_3e',['numeric_limits&lt; _impl::number_base&lt; overflow_integer&lt; Rep, OverflowTag &gt;, Rep &gt; &gt;',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
+  ['numeric_5flimits_3c_20_5fimpl_3a_3anumber_5fbase_3c_20rounding_5finteger_3c_20rep_2c_20roundingtag_20_3e_2c_20rep_20_3e_20_3e',['numeric_limits&lt; _impl::number_base&lt; rounding_integer&lt; Rep, RoundingTag &gt;, Rep &gt; &gt;',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
+  ['numeric_5flimits_3c_20_5fimpl_3a_3awide_5finteger_3c_20digits_2c_20narrowest_20_3e_20_3e',['numeric_limits&lt; _impl::wide_integer&lt; Digits, Narrowest &gt; &gt;',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
+  ['numeric_5flimits_3c_20_5fimpl_3a_3awide_5finteger_3c_20digits_2c_20narrowest_20_3e_3a_3arep_20_3e',['numeric_limits&lt; _impl::wide_integer&lt; Digits, Narrowest &gt;::rep &gt;',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
   ['numeric_5flimits_3c_20cnl_3a_3a_5fimpl_3a_3anumber_5fbase_3c_20cnl_3a_3afixed_5fpoint_3c_20rep_2c_20exponent_2c_20radix_20_3e_2c_20rep_20_3e_20_3e',['numeric_limits&lt; cnl::_impl::number_base&lt; cnl::fixed_point&lt; Rep, Exponent, Radix &gt;, Rep &gt; &gt;',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
-  ['numeric_5flimits_3c_20cnl_3a_3a_5fimpl_3a_3anumber_5fbase_3c_20cnl_3a_3aoverflow_5finteger_3c_20rep_2c_20overflowtag_20_3e_2c_20rep_20_3e_20_3e',['numeric_limits&lt; cnl::_impl::number_base&lt; cnl::overflow_integer&lt; Rep, OverflowTag &gt;, Rep &gt; &gt;',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
-  ['numeric_5flimits_3c_20cnl_3a_3a_5fimpl_3a_3anumber_5fbase_3c_20cnl_3a_3arounding_5finteger_3c_20rep_2c_20roundingtag_20_3e_2c_20rep_20_3e_20_3e',['numeric_limits&lt; cnl::_impl::number_base&lt; cnl::rounding_integer&lt; Rep, RoundingTag &gt;, Rep &gt; &gt;',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
   ['numeric_5flimits_3c_20cnl_3a_3afixed_5fpoint_3c_20rep_2c_20exponent_2c_20radix_20_3e_20_3e',['numeric_limits&lt; cnl::fixed_point&lt; Rep, Exponent, Radix &gt; &gt;',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
   ['numeric_5flimits_3c_20cnl_3a_3aoverflow_5finteger_3c_20rep_2c_20overflowtag_20_3e_20_3e',['numeric_limits&lt; cnl::overflow_integer&lt; Rep, OverflowTag &gt; &gt;',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
   ['numeric_5flimits_3c_20cnl_3a_3arounding_5finteger_3c_20rep_2c_20roundingtag_20_3e_20_3e',['numeric_limits&lt; cnl::rounding_integer&lt; Rep, RoundingTag &gt; &gt;',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
@@ -25,6 +28,7 @@ var searchData=
   ['numeric_5flimits_3c_20rep_20_3e',['numeric_limits&lt; Rep &gt;',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
   ['numeric_5flimits_3c_20t_20_3e',['numeric_limits&lt; T &gt;',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
   ['numeric_5flimits_3c_20unsigned_20long_20long_20_3e',['numeric_limits&lt; unsigned long long &gt;',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
+  ['numeric_5flimits_3c_20upper_20_3e',['numeric_limits&lt; Upper &gt;',['http://en.cppreference.com/w/cpp/types/numeric_limits.html',1,'std']]],
   ['numpunct',['numpunct',['http://en.cppreference.com/w/cpp/locale/numpunct.html',1,'std']]],
   ['numpunct_5fbyname',['numpunct_byname',['http://en.cppreference.com/w/cpp/locale/numpunct_byname.html',1,'std']]]
 ];

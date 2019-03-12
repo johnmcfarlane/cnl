@@ -1,0 +1,28 @@
+var hierarchy =
+[
+    [ "cnl::constant< Value >", "structcnl_1_1constant.html", null ],
+    [ "cnl::digits< T, Enable >", "structcnl_1_1digits.html", null ],
+    [ "cnl::elastic_integer< Digits, Narrowest >", "classcnl_1_1elastic__integer.html", null ],
+    [ "cnl::fixed_point< Rep, Exponent, Radix >", "classcnl_1_1fixed__point.html", null ],
+    [ "cnl::fraction< Numerator, Denominator >", "structcnl_1_1fraction.html", null ],
+    [ "cnl::from_rep< Number, Rep, Enable >", "structcnl_1_1from__rep.html", null ],
+    [ "cnl::from_rep< elastic_integer< Digits, Narrowest >, Rep >", "structcnl_1_1from__rep_3_01elastic__integer_3_01Digits_00_01Narrowest_01_4_00_01Rep_01_4.html", null ],
+    [ "cnl::from_rep< fixed_point< ArchetypeRep, Exponent, Radix >, Rep >", "structcnl_1_1from__rep_3_01fixed__point_3_01ArchetypeRep_00_01Exponent_00_01Radix_01_4_00_01Rep_01_4.html", null ],
+    [ "cnl::from_rep< overflow_integer< ArchetypeRep, OverflowTag >, Rep >", "structcnl_1_1from__rep_3_01overflow__integer_3_01ArchetypeRep_00_01OverflowTag_01_4_00_01Rep_01_4.html", null ],
+    [ "cnl::from_rep< rounding_integer< ArchetypeRep, RoundingTag >, Rep >", "structcnl_1_1from__rep_3_01rounding__integer_3_01ArchetypeRep_00_01RoundingTag_01_4_00_01Rep_01_4.html", null ],
+    [ "cnl::overflow_integer< Rep, OverflowTag >", "classcnl_1_1overflow__integer.html", null ],
+    [ "cnl::rounding_integer< Rep, RoundingTag >", "classcnl_1_1rounding__integer.html", null ],
+    [ "cnl::set_digits< T, Digits, _Enable >", "structcnl_1_1set__digits.html", null ],
+    [ "cnl::to_rep< Number, Enable >", "structcnl_1_1to__rep.html", null ],
+    [ "cnl::constant< 0 >", "structcnl_1_1constant.html", null ],
+    [ "cnl::constant< Exponent >", "structcnl_1_1constant.html", null ],
+    [ "cnl::digits< intmax >", "structcnl_1_1digits.html", null ],
+    [ "cnl::digits< Rep >", "structcnl_1_1digits.html", null ],
+    [ "cnl::digits< T >", "structcnl_1_1digits.html", null ],
+    [ "cnl::digits< uintmax >", "structcnl_1_1digits.html", null ],
+    [ "cnl::set_digits< adopt_signedness_t< Mimic, Source >, digits< Source >::value >", "structcnl_1_1set__digits.html", null ],
+    [ "cnl::set_digits< Mimic, digits< Source >::value >", "structcnl_1_1set__digits.html", null ],
+    [ "cnl::set_digits< Narrowest, max(Digits, digits< Narrowest >::value)>", "structcnl_1_1set__digits.html", null ],
+    [ "cnl::set_digits< T, Bits - is_signed< T >::value >", "structcnl_1_1set__digits.html", null ],
+    [ "cnl::to_rep< _impl::number_base< Derived, Derived::rep > >", "structcnl_1_1to__rep.html", null ]
+];

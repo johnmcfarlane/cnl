@@ -1,10 +1,9 @@
 var searchData=
 [
   ['m',['m',['http://en.cppreference.com/w/cpp/numeric/random/lognormal_distribution/params.html',1,'std::lognormal_distribution::m()'],['http://en.cppreference.com/w/cpp/numeric/random/fisher_f_distribution/params.html',1,'std::fisher_f_distribution::m()']]],
-  ['make_5felastic_5fnumber',['make_elastic_number',['../namespacecnl.html#aea7f4218763d355da78eeb755e3426d7',1,'cnl::make_elastic_number(constant&lt; Value &gt;)'],['../namespacecnl.html#a7596ebff5e30e6d31fd55bad63d17695',1,'cnl::make_elastic_number(Integral value)']]],
+  ['make_5felastic_5fnumber',['make_elastic_number',['../namespacecnl.html#aea7f4218763d355da78eeb755e3426d7',1,'cnl::make_elastic_number(constant&lt; Value &gt;)'],['../namespacecnl.html#ac420f6b0d52d51269e2671c01c773916',1,'cnl::make_elastic_number(Integral const &amp;value)']]],
   ['make_5fexception_5fptr',['make_exception_ptr',['http://en.cppreference.com/w/cpp/error/make_exception_ptr.html',1,'std']]],
   ['make_5ffixed_5fpoint',['make_fixed_point',['../namespacecnl.html#a4908ae024cdd2e437863aa8c2e2624e3',1,'cnl']]],
-  ['make_5ffractional',['make_fractional',['../namespacecnl.html#a8a1c24935abec2aeb4abd9d7bb067d6b',1,'cnl::make_fractional(Numerator const &amp;n, Denominator const &amp;d)'],['../namespacecnl.html#ab8379623599d1e0773f421665d661302',1,'cnl::make_fractional(Numerator const &amp;n)']]],
   ['make_5fheap',['make_heap',['http://en.cppreference.com/w/cpp/algorithm/make_heap.html',1,'std']]],
   ['make_5fmove_5fiterator',['make_move_iterator',['http://en.cppreference.com/w/cpp/iterator/make_move_iterator.html',1,'std']]],
   ['make_5foptional',['make_optional',['http://en.cppreference.com/w/cpp/experimental/optional/make_optional.html',1,'std::experimental']]],
@@ -66,7 +65,6 @@ var searchData=
   ['mt19937',['mt19937',['http://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine/mersenne_twister_engine.html',1,'std::mt19937']]],
   ['mt19937_5f64',['mt19937_64',['http://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine/mersenne_twister_engine.html',1,'std::mt19937_64']]],
   ['multimap',['multimap',['http://en.cppreference.com/w/cpp/container/multimap/multimap.html',1,'std::multimap']]],
-  ['multiply',['multiply',['../namespacecnl.html#a4907e759049bbe5bb38f2978d2b04425',1,'cnl']]],
   ['multiset',['multiset',['http://en.cppreference.com/w/cpp/container/multiset/multiset.html',1,'std::multiset']]],
   ['mutex',['mutex',['http://en.cppreference.com/w/cpp/thread/unique_lock/mutex.html',1,'std::unique_lock::mutex()'],['http://en.cppreference.com/w/cpp/thread/shared_lock/mutex.html',1,'std::shared_lock::mutex()'],['http://en.cppreference.com/w/cpp/thread/mutex/mutex.html',1,'std::mutex::mutex()']]]
 ];

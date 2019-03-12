@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['denominator_5ftype',['denominator_type',['../structcnl_1_1fractional.html#a787b858d5fe49df12effca35225038f7',1,'cnl::fractional']]]
+  ['denominator_5ftype',['denominator_type',['../structcnl_1_1fraction.html#abbe48c1be229ad5107541218dea08145',1,'cnl::fraction']]]
 ];

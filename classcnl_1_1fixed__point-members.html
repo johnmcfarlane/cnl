@@ -9,10 +9,18 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="cnl.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -22,9 +30,9 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">CNL
-   &#160;<span id="projectnumber">rev.0.0.1</span>
+   &#160;<span id="projectnumber">rev.0.1.0</span>
    </div>
-   <div id="projectbrief">Compositional Numeric Library in C++</div>
+   <div id="projectbrief">Compositional Numeric Library</div>
   </td>
  </tr>
  </tbody>
@@ -44,6 +52,21 @@ $(function() {
 });
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('classcnl_1_1fixed__point.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,11 +81,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespacecnl.html">cnl</a></li><li class="navelem"><a class="el" href="classcnl_1_1fixed__point.html">fixed_point</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">cnl::fixed_point&lt; Rep, Exponent, Radix &gt; Member List</div>  </div>
@@ -74,24 +92,27 @@ $(function() {
   <tr class="even"><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#ab3fd4a397f451a7412e0f113f9205e96">exponent</a></td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#a6bbf94e13da2ddfa094d9cc6ea6e6331">fixed_point</a>()=default</td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#a50aa0b63c455a1f917d8634abd85e53b">fixed_point</a>(fixed_point&lt; FromRep, FromExponent, Radix &gt; const &amp;rhs)</td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#a5ece52ba021d31c92a0e4eb1d15fe51d">fixed_point</a>(constant&lt; Value &gt;)</td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#a2afc1965a92c04a6ab8c7dbf5e47960f">fixed_point</a>(constant&lt; Value &gt; rhs)</td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#a17cd2dc5a9ee173cb32e6243e0f33607">fixed_point</a>(S const &amp;s)</td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#acf1a5cbbaa1f63ebfb13d89931ce1486">fixed_point</a>(S s)</td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#a347614ef57f48d45d847bb2fd2e00d48">fixed_point</a>(fractional&lt; Numerator, Denominator &gt; const &amp;f)</td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#a692afb2eeb6c02fd18fa9986d4bf97f6">from_rep</a></td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"><span class="mlabel">friend</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#a722e53881e2b12eff08bc264f1aeb5c4">fixed_point</a>(fraction&lt; Numerator, Denominator &gt; const &amp;f)</td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#a5a1ab807a36d990d9cb45fe31e0a0f1a">from_rep</a></td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"><span class="mlabel">friend</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#aae514c9342be8f81070f780b4d71b33f">operator S</a>() const</td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
   <tr><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#aae514c9342be8f81070f780b4d71b33f">operator S</a>() const</td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#a6001cc77dce7ca07945bde9834838ae1">operator=</a>(S s)</td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#a11d8210fc00f9f7c1c3d6a06d7d42d69">operator=</a>(fixed_point&lt; FromRep, FromExponent, Radix &gt; const &amp;rhs)</td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#a41bc19af0d8a559b91497678f13bd619">operator=</a>(fractional&lt; Numerator, Denominator &gt; const &amp;f)</td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#ae6a7b999228c10a43f69c54c2c50165f">operator=</a>(fraction&lt; Numerator, Denominator &gt; const &amp;f)</td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#ae232a1d2e7822173b02c8392cc0ef396">radix</a></td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html#a93e69cbc7b10ac6b2f975bf95d285115">rep</a> typedef</td><td class="entry"><a class="el" href="classcnl_1_1fixed__point.html">cnl::fixed_point&lt; Rep, Exponent, Radix &gt;</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.13
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
+  </ul>
+</div>
 </body>
 </html>
