@@ -1,4 +1,4 @@
-# CNL: A Compositional Numeric Library for C++
+# Compositional Numeric Library
 
 [![Build Status](https://travis-ci.org/johnmcfarlane/cnl.svg?branch=develop)](https://travis-ci.org/johnmcfarlane/cnl)
 [![Build status](https://ci.appveyor.com/api/projects/status/9s7daasmvku9ttvd/branch/develop?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/cnl/branch/develop)
@@ -20,13 +20,7 @@ CNL aims to assist the development of:
 * resource-constrained applications on embedded and mobile devices and
 * math-intensive operations on specialized hardware such as GPUs and FPGAs.
 
-The library's APIs are developed in colaboration with standardization
-bodies such as [The C++ Standards Committee](http://www.open-std.org/jtc1/sc22/wg21/)
-and members of [The Khronos Group Inc.](https://www.khronos.org/)
-and it serves as a reference implementation for sections of the
-[C++ Numbers Technical Specification](http://wg21.link/p0101).
-Please read proposals, [P0037](http://wg21.link/p0037)
-and [P0554](http://wg21.link/p0554) for more details.
+Documentation can be found [here](http://johnmcfarlane.github.io/cnl/).
 
 ## Requirements
 
@@ -125,14 +119,26 @@ Add this to your system header list and include, e.g.:
 #include <cnl/all.h>
 ```
 
-See example program, [Tau](./example/tau/README.md), for more details.
+## Example Projects
+
+Examples of projects using CNL:
+
+* [CDSP](https://github.com/hbe72/cdsp) - Compositional DSP Library for 
+  C++;
+* [cnl_example](https://github.com/johnmcfarlane/cnl_example) - minimal
+  CMake-based project which uses CNL as a dependency.
 
 ## Further Reading
 
-- [documentation](http://johnmcfarlane.github.io/cnl/)
-- Standard Library fixed-point proposal, [P0037](http://wg21.link/p0037)
-- position paper illustrating the compositonal approach, [P0554](http://wg21.link/p0554)
-- forum of [Study Group 14](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14)
+- CNL [documentation](http://johnmcfarlane.github.io/cnl/)
+- CppCon 2017 [presentation](https://youtu.be/GEfmV3Xcuok)
+- Embedded Artistry [article](https://embeddedartistry.com/blog/2017/8/25/c11-fixed-point-arithemetic-library)
+- ISO C++ papers:
+  - [P0037](http://wg21.link/p0037) - Fixed-Point Real Numbers
+  - [P0554](http://wg21.link/p0554) - Composition of Arithmetic Types
+  - [P0827](http://wg21.link/p0827) - General-Purpose Constant Value Type
+  - [P0828](http://wg21.link/p0828) - Elastic Integers
+  - [P1050](http://wg21.link/p1050) - Fractional Numeric Type
 
 ## Contact Information
 
