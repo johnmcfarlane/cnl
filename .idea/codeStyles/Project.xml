@@ -28,7 +28,6 @@
       <option name="ALIGN_MULTILINE_TERNARY_OPERATION" value="false" />
       <option name="ALIGN_MULTILINE_ARRAY_INITIALIZER_EXPRESSION" value="false" />
       <option name="SPACE_AROUND_EQUALITY_OPERATORS" value="false" />
-      <option name="SPACE_AROUND_RELATIONAL_OPERATORS" value="false" />
       <option name="SPACE_AROUND_ADDITIVE_OPERATORS" value="false" />
       <option name="SPACE_AROUND_MULTIPLICATIVE_OPERATORS" value="false" />
       <option name="BINARY_OPERATION_SIGN_ON_NEXT_LINE" value="true" />
