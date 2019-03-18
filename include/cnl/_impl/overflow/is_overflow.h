@@ -85,7 +85,7 @@ namespace cnl {
 
         // implementation assumes one of three things:
         // 1. type is unsigned
-        // 2. type is symetrical around zero (e.g. elastic_integer)
+        // 2. type is symmetrical around zero (e.g. elastic_integer)
         // 3. type has most negative number
         template<typename Operand, bool IsSigned=is_signed<Operand>::value>
         struct has_most_negative_number : std::false_type {};
