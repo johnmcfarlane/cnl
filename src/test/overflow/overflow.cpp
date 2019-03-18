@@ -503,6 +503,9 @@ namespace {
         static_assert(identical(
                 cnl::_impl::convert<cnl::saturated_overflow_tag, short>(cnl::numeric_limits<double>::max()),
                 cnl::numeric_limits<short>::max()), "cnl::convert test failed");
+        static_assert(identical(
+                cnl::_impl::convert<cnl::saturated_overflow_tag, short>(cnl::numeric_limits<double>::lowest()),
+                cnl::numeric_limits<short>::lowest()), "cnl::convert test failed");
 
         // shift_left
         static_assert(identical(
