@@ -28,36 +28,67 @@ namespace cnl {
                 : public std::integral_constant<int, cnl::is_signed<T>::value ? digits<T>::value : 0> {
         };
 
-        template<typename Destination, typename Source, typename Enable = void>
-        struct convert_test;
+        template<bool DestinationIsFloat, bool SourceIsFloat>
+        struct convert_overflow_positive_test;
 
-        template<typename Destination, typename Source>
-        struct convert_test<Destination, Source, enable_if_t<!std::is_floating_point<Source>::value>> {
-            static constexpr bool positive(Source const& from)
-            {
+        template<>
+        struct convert_overflow_positive_test<false, false> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const &rhs) const {
                 return positive_digits<Destination>::value<positive_digits<Source>::value
-                        && from > static_cast<Source>(numeric_limits<Destination>::max());
+                        && rhs>
+                static_cast<Source>(numeric_limits<Destination>::max());
             }
+        };
 
-            static constexpr bool negative(Source const& from)
+        template<>
+        struct convert_overflow_positive_test<false, true> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const &rhs) const
             {
-                return negative_digits<Destination>::value<negative_digits<Source>::value
-                        && from < static_cast<Source>(numeric_limits<Destination>::lowest());
+                return rhs > static_cast<Source>(numeric_limits<Destination>::max());
             }
         };
 
         template<typename Destination, typename Source>
-        struct convert_test<Destination, Source, enable_if_t<std::is_floating_point<Source>::value>> {
-            static constexpr bool positive(Source const& from)
-            {
-                return from > static_cast<Source>(numeric_limits<Destination>::max());
-            }
+        constexpr bool is_convert_overflow_positive(Source const& source)
+        {
+            using test = convert_overflow_positive_test<
+                    std::is_floating_point<Destination>::value,
+                    std::is_floating_point<Source>::value>;
+            return test{}.template operator()<Destination>(source);
+        }
 
-            static constexpr bool negative(Source const& from)
-            {
-                return from < static_cast<Source>(numeric_limits<Destination>::lowest());
+        template<bool DestinationIsFloat, bool SourceIsFloat>
+        struct convert_overflow_negative_test;
+
+        template<>
+        struct convert_overflow_negative_test<false, false> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const &rhs) const {
+                return negative_digits<Destination>::value<negative_digits<Source>::value
+                        && rhs <
+                                static_cast<Source>(numeric_limits<Destination>::lowest());
             }
         };
+
+        template<>
+        struct convert_overflow_negative_test<false, true> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const &rhs) const
+            {
+                return rhs < static_cast<Source>(numeric_limits<Destination>::lowest());
+            }
+        };
+
+        template<typename Destination, typename Source>
+        constexpr bool is_convert_overflow_negative(Source const& source)
+        {
+            using test = convert_overflow_negative_test<
+                    std::is_floating_point<Destination>::value,
+                    std::is_floating_point<Source>::value>;
+            return test{}.template operator()<Destination>(source);
+        }
 
         template<class Operator, typename ... Operands>
         struct operator_overflow_traits {
