@@ -50,6 +50,24 @@ namespace cnl {
             }
         };
 
+        template<>
+        struct convert_overflow_positive_test<true, false> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const& rhs) const
+            {
+                return static_cast<Destination>(rhs) > numeric_limits<Destination>::max();
+            }
+        };
+
+        template<>
+        struct convert_overflow_positive_test<true, true> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const&) const
+            {
+                return false;
+            }
+        };
+
         template<typename Destination, typename Source>
         constexpr bool is_convert_overflow_positive(Source const& source)
         {
@@ -78,6 +96,24 @@ namespace cnl {
             constexpr bool operator()(Source const &rhs) const
             {
                 return rhs < static_cast<Source>(numeric_limits<Destination>::lowest());
+            }
+        };
+
+        template<>
+        struct convert_overflow_negative_test<true, false> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const& rhs) const
+            {
+                return static_cast<Destination>(rhs) < numeric_limits<Destination>::lowest();
+            }
+        };
+
+        template<>
+        struct convert_overflow_negative_test<true, true> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const&) const
+            {
+                return false;
             }
         };
 
