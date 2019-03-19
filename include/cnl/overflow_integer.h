@@ -90,7 +90,7 @@ namespace cnl {
         template<class T>
         constexpr explicit operator T() const
         {
-            return static_cast<T>(_impl::to_rep(*this));
+            return _impl::convert<overflow_tag, T>(_impl::to_rep(*this));
         }
     };
 

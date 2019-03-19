@@ -514,6 +514,21 @@ namespace {
     }
 
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
+
+    TEST(overflow_integer, conversion_positive_overflow)
+    {
+        constexpr auto short_max = cnl::numeric_limits<short>::max();
+        auto a = cnl::overflow_integer<>{static_cast<int>(short_max)+1};
+        ASSERT_DEATH(a.operator short(), "positive overflow");
+    }
+
+    TEST(overflow_integer, conversion_negaive_overflow)
+    {
+        constexpr auto short_min = cnl::numeric_limits<short>::min();
+        auto a = cnl::overflow_integer<>{static_cast<int>(short_min)-1};
+        ASSERT_DEATH(a.operator short(), "negative overflow");
+    }
+
     TEST(overflow_integer, pre_increment_overflow) {
         auto a = cnl::overflow_integer<>{INT_MAX};
         ASSERT_DEATH(++ a, "positive overflow");
