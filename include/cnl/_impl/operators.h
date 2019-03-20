@@ -30,6 +30,14 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // operation tags
 
+        struct convert_op {
+            template<class Destination, class Source>
+            constexpr auto operator()(Source const& source) const -> decltype(static_cast<Destination>(source))
+            {
+                return static_cast<Destination>(source);
+            }
+        };
+
         struct minus_op {
             template<class Rhs>
             constexpr auto operator()(Rhs const& rhs) const -> decltype(-rhs)
