@@ -29,9 +29,9 @@ namespace cnl {
         struct overflow_convert {
             constexpr Destination operator()(Source const& from) const
             {
-                return is_convert_overflow_positive<Destination>(from)
+                return is_overflow_positive<convert_op, Destination>(from)
                         ? positive_overflow_result<Destination, OverflowTag>{}()
-                        : is_convert_overflow_negative<Destination>(from)
+                        : is_overflow_negative<convert_op, Destination>(from)
                                 ? negative_overflow_result<Destination, OverflowTag>{}()
                                 : static_cast<Destination>(from);
             }

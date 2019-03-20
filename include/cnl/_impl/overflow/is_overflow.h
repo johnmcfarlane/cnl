@@ -28,11 +28,11 @@ namespace cnl {
                 : public std::integral_constant<int, cnl::is_signed<T>::value ? digits<T>::value : 0> {
         };
 
-        template<bool DestinationIsFloat, bool SourceIsFloat>
-        struct convert_overflow_positive_test;
+        template<typename Operator, bool DestinationIsFloat, bool SourceIsFloat>
+        struct overflow_test_positive;
 
         template<>
-        struct convert_overflow_positive_test<false, false> {
+        struct overflow_test_positive<convert_op, false, false> {
             template<typename Destination, typename Source>
             constexpr bool operator()(Source const &rhs) const {
                 return positive_digits<Destination>::value<positive_digits<Source>::value
@@ -42,7 +42,7 @@ namespace cnl {
         };
 
         template<>
-        struct convert_overflow_positive_test<false, true> {
+        struct overflow_test_positive<convert_op, false, true> {
             template<typename Destination, typename Source>
             constexpr bool operator()(Source const &rhs) const
             {
@@ -51,7 +51,7 @@ namespace cnl {
         };
 
         template<>
-        struct convert_overflow_positive_test<true, false> {
+        struct overflow_test_positive<convert_op, true, false> {
             template<typename Destination, typename Source>
             constexpr bool operator()(Source const& rhs) const
             {
@@ -60,7 +60,7 @@ namespace cnl {
         };
 
         template<>
-        struct convert_overflow_positive_test<true, true> {
+        struct overflow_test_positive<convert_op, true, true> {
             template<typename Destination, typename Source>
             constexpr bool operator()(Source const&) const
             {
@@ -68,20 +68,21 @@ namespace cnl {
             }
         };
 
-        template<typename Destination, typename Source>
-        constexpr bool is_convert_overflow_positive(Source const& source)
+        template<typename Operator, typename Destination, typename Source>
+        constexpr bool is_overflow_positive(Source const& source)
         {
-            using test = convert_overflow_positive_test<
+            using test = overflow_test_positive<
+                    Operator,
                     std::is_floating_point<Destination>::value,
                     std::is_floating_point<Source>::value>;
             return test{}.template operator()<Destination>(source);
         }
 
-        template<bool DestinationIsFloat, bool SourceIsFloat>
-        struct convert_overflow_negative_test;
+        template<typename Operator, bool DestinationIsFloat, bool SourceIsFloat>
+        struct overflow_test_negative;
 
         template<>
-        struct convert_overflow_negative_test<false, false> {
+        struct overflow_test_negative<convert_op, false, false> {
             template<typename Destination, typename Source>
             constexpr bool operator()(Source const &rhs) const {
                 return negative_digits<Destination>::value<negative_digits<Source>::value
@@ -91,7 +92,7 @@ namespace cnl {
         };
 
         template<>
-        struct convert_overflow_negative_test<false, true> {
+        struct overflow_test_negative<convert_op, false, true> {
             template<typename Destination, typename Source>
             constexpr bool operator()(Source const &rhs) const
             {
@@ -100,7 +101,7 @@ namespace cnl {
         };
 
         template<>
-        struct convert_overflow_negative_test<true, false> {
+        struct overflow_test_negative<convert_op, true, false> {
             template<typename Destination, typename Source>
             constexpr bool operator()(Source const& rhs) const
             {
@@ -109,7 +110,7 @@ namespace cnl {
         };
 
         template<>
-        struct convert_overflow_negative_test<true, true> {
+        struct overflow_test_negative<convert_op, true, true> {
             template<typename Destination, typename Source>
             constexpr bool operator()(Source const&) const
             {
@@ -117,10 +118,11 @@ namespace cnl {
             }
         };
 
-        template<typename Destination, typename Source>
-        constexpr bool is_convert_overflow_negative(Source const& source)
+        template<typename Operator, typename Destination, typename Source>
+        constexpr bool is_overflow_negative(Source const& source)
         {
-            using test = convert_overflow_negative_test<
+            using test = overflow_test_negative<
+                    Operator,
                     std::is_floating_point<Destination>::value,
                     std::is_floating_point<Source>::value>;
             return test{}.template operator()<Destination>(source);
