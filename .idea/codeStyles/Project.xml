@@ -1,5 +1,8 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
+    <MarkdownNavigatorCodeStyleSettings>
+      <option name="RIGHT_MARGIN" value="72" />
+    </MarkdownNavigatorCodeStyleSettings>
     <Objective-C>
       <option name="FUNCTION_BRACE_PLACEMENT" value="5" />
       <option name="FUNCTION_PARAMETERS_ALIGN_MULTILINE" value="false" />
