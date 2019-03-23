@@ -323,7 +323,7 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::rep_op_result
+        // cnl::_impl::op_result
 
         template<class Operator, class ... Operands>
         using op_result = decltype(Operator()(std::declval<Operands>() ...));
