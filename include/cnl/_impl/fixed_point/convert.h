@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_FIXED_POINT_CONVERT_H)
 #define CNL_IMPL_FIXED_POINT_CONVERT_H
 
+#include "../power.h"
 #include "../rounding/convert.h"
 #include "../rounding/rounding_tag.h"
 #include "../type_traits/enable_if.h"
