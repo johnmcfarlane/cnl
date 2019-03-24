@@ -314,205 +314,215 @@ namespace {
                 "cnl::_impl::is_overflow<cnl::_impl::minus_op, cnl::_impl::polarity::negative>{}");
     }
 
-    namespace test_add {
-        template<typename Lhs, typename Rhs>
-        using add_test = cnl::_impl::overflow_test<cnl::_impl::add_op, Lhs, Rhs>;
+    namespace test_add_positive {
+        using test_add_positive = cnl::_impl::is_overflow<cnl::_impl::add_op, cnl::_impl::polarity::positive>;
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::overflow_test<cnl::_impl::add_op>::positive
-
-        static_assert(add_test<int, int>::positive(2000000000, 2000000000),
-                "add_test<int, int>::positive");
-        static_assert(!add_test<int, int>::positive(-2000000000, 2000000000),
-                "add_test<int, int>::positive");
-        static_assert(!add_test<int, int>::positive(2000000000, -2000000000),
-                "add_test<int, int>::positive");
-        static_assert(!add_test<int, int>::positive(-2000000000, -2000000000),
-                "add_test<int, int>::positive");
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::overflow_test<cnl::_impl::add_op>::negative
-
-        static_assert(!add_test<int, int>::negative(2000000000, 2000000000),
-                "add_test<int, int>::negative");
-        static_assert(!add_test<int, int>::negative(-2000000000, 2000000000),
-                "add_test<int, int>::negative");
-        static_assert(!add_test<int, int>::negative(2000000000, -2000000000),
-                "add_test<int, int>::negative");
-        static_assert(add_test<int, int>::negative(-2000000000, -2000000000),
-                "add_test<int, int>::negative");
+        static_assert(test_add_positive{}(2000000000, 2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::add_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_add_positive{}(-2000000000, 2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::add_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_add_positive{}(2000000000, -2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::add_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_add_positive{}(-2000000000, -2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::add_op, cnl::_impl::polarity::positive>");
     }
 
-    namespace test_subtract {
-        template<typename Lhs, typename Rhs>
-        using subtract_test = cnl::_impl::overflow_test<cnl::_impl::subtract_op, Lhs, Rhs>;
+    namespace test_add_negative {
+        using test_add_negative = cnl::_impl::is_overflow<cnl::_impl::add_op, cnl::_impl::polarity::negative>;
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::overflow_test<cnl::_impl::subtract_op>::positive
-
-        static_assert(!subtract_test<int, int>::positive(2000000000, 2000000000),
-                "subtract_test<int, int>::positive");
-        static_assert(!subtract_test<int, int>::positive(-2000000000, 2000000000),
-                "subtract_test<int, int>::positive");
-        static_assert(subtract_test<int, int>::positive(2000000000, -2000000000),
-                "subtract_test<int, int>::positive");
-        static_assert(!subtract_test<int, int>::positive(-2000000000, -2000000000),
-                "subtract_test<int, int>::positive");
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::overflow_test<cnl::_impl::subtract_op>::negative
-
-        static_assert(!subtract_test<int, int>::negative(2000000000, 2000000000),
-                "subtract_test<int, int>::negative");
-        static_assert(subtract_test<int, int>::negative(-2000000000, 2000000000),
-                "subtract_test<int, int>::negative");
-        static_assert(!subtract_test<int, int>::negative(2000000000, -2000000000),
-                "subtract_test<int, int>::negative");
-        static_assert(!subtract_test<int, int>::negative(-2000000000, -2000000000),
-                "subtract_test<int, int>::negative");
-
-        static_assert(subtract_test<unsigned, unsigned>::negative(0, 1),
-                "subtract_test<int, int>::negative");
+        static_assert(!test_add_negative{}(2000000000, 2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::add_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_add_negative{}(-2000000000, 2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::add_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_add_negative{}(2000000000, -2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::add_op, cnl::_impl::polarity::negative>");
+        static_assert(test_add_negative{}(-2000000000, -2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::add_op, cnl::_impl::polarity::negative>");
     }
 
-    namespace test_multiply {
-        template<typename Lhs, typename Rhs>
-        using multiply_test = cnl::_impl::overflow_test<cnl::_impl::multiply_op, Lhs, Rhs>;
+    namespace test_subtract_positive {
+        using test_subtract_positive = cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>;
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::overflow_test<cnl::_impl::multiply_op>::positive
+        static_assert(!test_subtract_positive{}(2000000000, 2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_subtract_positive{}(-2000000000, 2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
+        static_assert(test_subtract_positive{}(2000000000, -2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_subtract_positive{}(-2000000000, -2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
+    }
 
-        static_assert(multiply_test<int, int>::positive(2000000000, 2),
-                "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(21, 2),
-                "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(-2000000000, 2),
-                "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(-21, 2),
-                "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(2000000000, -2),
-                "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(21, -2),
-                "multiply_test<int, int>::positive");
-        static_assert(multiply_test<int, int>::positive(-2000000000, -2),
-                "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(-21, -2),
-                "multiply_test<int, int>::positive");
+    namespace test_subtract_negative {
+        using test_subtract_negative = cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::negative>;
 
-        static_assert(multiply_test<int, int>::positive(2, 2000000000),
-                "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(2, 21),
-                "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(2, -2000000000),
-                "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(2, -21),
-                "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(-2, 2000000000),
-                "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(-2, 21),
-                "multiply_test<int, int>::positive");
-        static_assert(multiply_test<int, int>::positive(-2, -2000000000),
-                "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(-2, -21),
-                "multiply_test<int, int>::positive");
+        static_assert(!test_subtract_negative{}(2000000000, 2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::negative>");
+        static_assert(test_subtract_negative{}(-2000000000, 2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_subtract_negative{}(2000000000, -2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_subtract_negative{}(-2000000000, -2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::negative>");
+
+        static_assert(test_subtract_negative{}(0u, 1u),
+                "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::negative>");
+    }
+
+    namespace test_multiply_positive {
+        using test_multiply_positive = cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>;
+
+        static_assert(test_multiply_positive{}(2000000000, 2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(21, 2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(-2000000000, 2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(-21, 2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(2000000000, -2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(21, -2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(test_multiply_positive{}(-2000000000, -2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(-21, -2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+
+        static_assert(test_multiply_positive{}(2, 2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(2, 21),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(2, -2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(2, -21),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(-2, 2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(-2, 21),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(test_multiply_positive{}(-2, -2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(-2, -21),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
 
         // boundary
-        static_assert(multiply_test<int, int>::positive(-46341, -46341),
-                      "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(-46341, -46340),
-                      "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(-46341, 46340),
-                      "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(-46341, 46341),
-                      "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(-46340, -46340),
-                      "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(-46340, 46340),
-                      "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(-46340, 46341),
-                      "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(46340, 46340),
-                      "multiply_test<int, int>::positive");
-        static_assert(!multiply_test<int, int>::positive(46340, 46341),
-                      "multiply_test<int, int>::positive");
-        static_assert(multiply_test<int, int>::positive(46341, 46341),
-                      "multiply_test<int, int>::positive");
+        static_assert(test_multiply_positive{}(-46341, -46341),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(-46341, -46340),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(-46341, 46340),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(-46341, 46341),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(-46340, -46340),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(-46340, 46340),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(-46340, 46341),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(46340, 46340),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_multiply_positive{}(46340, 46341),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+        static_assert(test_multiply_positive{}(46341, 46341),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::positive>");
+    }
+
+    namespace test_multiply_negative {
+        using test_multiply_negative = cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::overflow_test<cnl::_impl::multiply_op>::negative
 
-        static_assert(!multiply_test<int, int>::negative(2000000000, 2),
-                "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(21, 2),
-                "multiply_test<int, int>::negative");
-        static_assert(multiply_test<int, int>::negative(-2000000000, 2),
-                "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(-21, 2),
-                "multiply_test<int, int>::negative");
-        static_assert(multiply_test<int, int>::negative(2000000000, -2),
-                "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(21, -2),
-                "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(-2000000000, -2),
-                "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(-21, -2),
-                "multiply_test<int, int>::negative");
+        static_assert(!test_multiply_negative{}(2000000000, 2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(21, 2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(test_multiply_negative{}(-2000000000, 2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(-21, 2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(test_multiply_negative{}(2000000000, -2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(21, -2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(-2000000000, -2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(-21, -2),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
 
-        static_assert(!multiply_test<int, int>::negative(2, 2000000000),
-                "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(2, 21),
-                "multiply_test<int, int>::negative");
-        static_assert(multiply_test<int, int>::negative(2, -2000000000),
-                "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(2, -21),
-                "multiply_test<int, int>::negative");
-        static_assert(multiply_test<int, int>::negative(-2, 2000000000),
-                "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(-2, 21),
-                "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(-2, -2000000000),
-                "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(-2, -21),
-                "multiply_test<int, int>::negative");
+        static_assert(!test_multiply_negative{}(2, 2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(2, 21),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(test_multiply_negative{}(2, -2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(2, -21),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(test_multiply_negative{}(-2, 2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(-2, 21),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(-2, -2000000000),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(-2, -21),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
 
         // boundary
-        static_assert(!multiply_test<int, int>::negative(-46341, -46341),
-                      "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(-46341, -46340),
-                      "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(-46341, 46340),
-                      "multiply_test<int, int>::negative");
-        static_assert(multiply_test<int, int>::negative(-46341, 46341),
-                      "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(-46340, -46340),
-                      "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(-46340, 46340),
-                      "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(-46340, 46341),
-                      "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(46340, 46340),
-                      "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(46340, 46341),
-                      "multiply_test<int, int>::negative");
-        static_assert(!multiply_test<int, int>::negative(46341, 46341),
-                      "multiply_test<int, int>::negative");
+        static_assert(!test_multiply_negative{}(-46341, -46341),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(-46341, -46340),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(-46341, 46340),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(test_multiply_negative{}(-46341, 46341),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(-46340, -46340),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(-46340, 46340),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(-46340, 46341),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(46340, 46340),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(46340, 46341),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+        static_assert(!test_multiply_negative{}(46341, 46341),
+                "cnl::_impl::is_overflow<cnl::_impl::multiply_op, cnl::_impl::polarity::negative>");
+    }
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // most negative number
+    namespace test_multiply_mnn {
+        template<cnl::_impl::polarity Polarity>
+        using multiply_test = cnl::_impl::is_overflow<cnl::_impl::multiply_op, Polarity>;
 
-        static_assert(multiply_test<int, int>::positive(INT_MIN, -1), "multiply most negative number");
-        static_assert(!multiply_test<int, int>::negative(INT_MIN, -1), "multiply most negative number");
+        static_assert(multiply_test<cnl::_impl::polarity::positive>{}(INT_MIN, -1),
+                "cnl::_impl::is_overflow<cnl::_impl::divide_op, polarity::positive>");
+        static_assert(!multiply_test<cnl::_impl::polarity::negative>{}(INT_MIN, -1),
+                "cnl::_impl::is_overflow<cnl::_impl::divide_op, polarity::negative>");
     }
 
     namespace test_divide {
-        template<typename Lhs, typename Rhs>
-        using divide_test = cnl::_impl::overflow_test<cnl::_impl::divide_op, Lhs, Rhs>;
+        template<cnl::_impl::polarity Polarity>
+        using divide_test = cnl::_impl::is_overflow<cnl::_impl::divide_op, Polarity>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // most negative number
 
         static_assert(cnl::_impl::has_most_negative_number<int>::value, "");
-        static_assert(divide_test<int, int>::positive(INT_MIN, -1), "divide most negative number");
-        static_assert(!divide_test<int, int>::negative(INT_MIN, -1), "divide most negative number");
+        static_assert(
+                divide_test<cnl::_impl::polarity::positive>{}(INT_MIN, -1),
+                "cnl::_impl::is_overflow<cnl::_impl::divide_op, cnl::_impl::polarity::positive>");
+        static_assert(
+                !divide_test<cnl::_impl::polarity::negative>{}(INT_MIN, -1),
+                "cnl::_impl::is_overflow<cnl::_impl::divide_op, cnl::_impl::polarity::negative>");
+    }
+
+    namespace test_shift_left_positive {
+        using shift_left_test = cnl::_impl::is_overflow<cnl::_impl::shift_left_op, cnl::_impl::polarity::positive>;
+
+        static_assert(
+                shift_left_test{}(std::uint8_t{255}, 30u),
+                "cnl::_impl::is_overflow<cnl::_impl::shift_left_op, cnl::_impl::polarity::positive>");
     }
 }

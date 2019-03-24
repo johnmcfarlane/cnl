@@ -61,10 +61,9 @@ namespace cnl {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> op_result<Operator, Lhs, Rhs>
             {
-                using overflow_test = overflow_test<Operator, Lhs, Rhs>;
-                return overflow_test::positive(lhs, rhs)
+                return is_overflow<Operator, polarity::positive>{}(lhs, rhs)
                         ? overflow_operator<Operator, OverflowTag, polarity::positive>{}(lhs, rhs)
-                        : overflow_test::negative(lhs, rhs)
+                        : is_overflow<Operator, polarity::negative>{}(lhs, rhs)
                                 ? overflow_operator<Operator, OverflowTag, polarity::negative>{}(lhs, rhs)
                                 : tagged_binary_operator<native_tag, Operator>{}(lhs, rhs);
             }

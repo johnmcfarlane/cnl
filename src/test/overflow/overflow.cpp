@@ -109,6 +109,11 @@ namespace {
                 -2,
                 cnl::shift_left(saturated_overflow, -1, 1)),
                 "cnl::shift_left test failed");
+        static_assert(identical(
+                cnl::numeric_limits<int>::max(),
+                cnl::_impl::tagged_binary_operator<
+                        cnl::saturated_overflow_tag, cnl::_impl::shift_left_op>{}(std::uint8_t{255}, 30u)),
+                "");
     }
 
     namespace test_negative_shift_left {

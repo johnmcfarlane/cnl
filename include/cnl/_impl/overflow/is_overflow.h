@@ -137,7 +137,13 @@ namespace cnl {
         // cnl::_impl::is_overflow
 
         template<typename Operator, polarity Polarity>
-        struct is_overflow;
+        struct is_overflow {
+            template<typename ... Operands>
+            constexpr bool operator()(Operands const& ...) const
+            {
+                return false;
+            }
+        };
 
         template<polarity Polarity>
         struct is_overflow<convert_op, Polarity> {
@@ -149,15 +155,6 @@ namespace cnl {
                         std::is_floating_point<Destination>::value,
                         std::is_floating_point<Source>::value>;
                 return is_overflow_convert{}.template operator()<Destination>(from);
-            }
-        };
-
-        template<typename Operator, polarity Polarity>
-        struct is_overflow {
-            template<typename Rhs>
-            constexpr bool operator()(Rhs const&) const
-            {
-                return false;
             }
         };
 
@@ -213,31 +210,15 @@ namespace cnl {
             }
         };
 
-        // overflow tests
-        template<class Operator, typename ... Operands>
-        struct overflow_test_base {
-            // by default, an operation is safe
-            static constexpr bool positive(Operands const &...)
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::is_overflow
+
+        template<>
+        struct is_overflow<add_op, polarity::positive> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
-                return false;
-            }
-
-            static constexpr bool negative(Operands const &...)
-            {
-                return false;
-            }
-        };
-
-        template<class Operator, typename ... Operands>
-        struct overflow_test : overflow_test_base<Operator, Operands...> {
-        };
-
-        template<typename Lhs, typename Rhs>
-        struct overflow_test<add_op, Lhs, Rhs> : overflow_test_base<add_op, Lhs, Rhs> {
-            using traits = operator_overflow_traits<add_op, Lhs, Rhs>;
-
-            static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
-            {
+                using traits = operator_overflow_traits<add_op, Lhs, Rhs>;
                 return (max(overflow_digits<Lhs, polarity::positive>::value,
                         overflow_digits<Rhs, polarity::positive>::value)+1
                         >traits::positive_digits)
@@ -245,9 +226,14 @@ namespace cnl {
                         && rhs>Rhs{0}
                         && typename traits::result(lhs)>traits::max()-rhs;
             }
+        };
 
-            static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
+        template<>
+        struct is_overflow<add_op, polarity::negative> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
+                using traits = operator_overflow_traits<add_op, Lhs, Rhs>;
                 return (max(overflow_digits<Lhs, polarity::positive>::value,
                         overflow_digits<Rhs, polarity::positive>::value)+1
                         >traits::positive_digits)
@@ -257,16 +243,16 @@ namespace cnl {
             }
         };
 
-        template<typename Lhs, typename Rhs>
-        struct overflow_test<subtract_op, Lhs, Rhs> : overflow_test_base<subtract_op, Lhs, Rhs> {
-            using traits = operator_overflow_traits<subtract_op, Lhs, Rhs>;
-
 #if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-overflow"
 #endif
-            static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
+        template<>
+        struct is_overflow<subtract_op, polarity::positive> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
+                using traits = operator_overflow_traits<subtract_op, Lhs, Rhs>;
                 return (max(overflow_digits<Lhs, polarity::positive>::value,
                         overflow_digits<Rhs, polarity::positive>::value)+1
                         >traits::positive_digits)
@@ -274,83 +260,72 @@ namespace cnl {
                         && rhs<Rhs{0}
                         && lhs>traits::max()+rhs;
             }
+        };
 
-            static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
+        template<>
+        struct is_overflow<subtract_op, polarity::negative> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
+                using traits = operator_overflow_traits<subtract_op, Lhs, Rhs>;
                 return (max(overflow_digits<Lhs, polarity::positive>::value,
                         overflow_digits<Rhs, polarity::positive>::value)+1
                         >traits::positive_digits)
                         && (rhs>=0)
                         && lhs<traits::lowest()+rhs;
             }
+        };
 #if defined(__GNUC__)
 #pragma GCC diagnostic pop
 #endif
-        };
 
-        template<typename Lhs, typename Rhs>
-        struct overflow_test<multiply_op, Lhs, Rhs> : overflow_test_base<multiply_op, Lhs, Rhs> {
-            using traits = operator_overflow_traits<multiply_op, Lhs, Rhs>;
-
-#if defined(__clang__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsign-compare"
-#endif
-            static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
+        template<>
+        struct is_overflow<multiply_op, polarity::positive> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
+                using traits = operator_overflow_traits<multiply_op, Lhs, Rhs>;
                 return (overflow_digits<Lhs, polarity::positive>::value+overflow_digits<Rhs, polarity::positive>::value
                         > traits::positive_digits)
                         && ((lhs>Lhs{0})
                                 ? (rhs>Rhs{0}) && (traits::max()/rhs)<lhs
                                 : (rhs<Rhs{0}) && (traits::max()/rhs)>lhs);
             }
+        };
 
-            static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
+        template<>
+        struct is_overflow<multiply_op, polarity::negative> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
+                using traits = operator_overflow_traits<multiply_op, Lhs, Rhs>;
                 return (overflow_digits<Lhs, polarity::positive>::value+overflow_digits<Rhs, polarity::positive>::value
                         > traits::positive_digits)
                         && ((lhs<Lhs{0})
                                 ? (rhs>Rhs{0}) && (traits::lowest()/rhs)>lhs
                                 : (rhs<Rhs{0}) && (traits::lowest()/rhs)<lhs);
             }
-#if defined(__clang__)
-#pragma GCC diagnostic pop
-#endif
         };
 
-        template<typename Lhs, typename Rhs>
-        struct overflow_test<divide_op, Lhs, Rhs>
-                : overflow_test_base<divide_op, Lhs, Rhs> {
-            using traits = operator_overflow_traits<divide_op, Lhs, Rhs>;
-
-            static constexpr bool positive(Lhs const &lhs, Rhs const &rhs) {
+        template<>
+        struct is_overflow<divide_op, polarity::positive> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
+            {
+                using traits = operator_overflow_traits<divide_op, Lhs, Rhs>;
                 return (has_most_negative_number<Lhs>::value && has_most_negative_number<Rhs>::value)
                         ? rhs == -1 && lhs == traits::lowest()
                         : false;
             }
         };
 
-        template<typename Lhs, typename Rhs, bool IsSigned>
-        struct shift_left_overflow_test;
-
-        template<typename Lhs, typename Rhs>
-        struct shift_left_overflow_test<Lhs, Rhs, false>
-                : overflow_test_base<Lhs, Rhs> {
-            using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
-
-            static constexpr bool negative(Lhs const&, Rhs const&)
+        template<>
+        struct is_overflow<shift_left_op, polarity::negative> {
+            template<typename Lhs, typename Rhs>
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> enable_if_t<is_signed<Lhs>::value, bool>
             {
-                return false;
-            }
-        };
-
-        template<typename Lhs, typename Rhs>
-        struct shift_left_overflow_test<Lhs, Rhs, true>
-                : overflow_test_base<Lhs, Rhs> {
-            using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
-
-            static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
-            {
+                using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
                 return lhs<0
                         ? rhs>0
                                 ? rhs<traits::positive_digits
@@ -359,16 +334,21 @@ namespace cnl {
                                 : false
                         : false;
             }
+
+            template<typename Lhs, typename Rhs>
+            constexpr auto operator()(Lhs const&, Rhs const&) const
+            -> enable_if_t<!is_signed<Lhs>::value, bool>
+            {
+                return false;
+            }
         };
 
-        // shift-left test that is common to signed and unsigned, i.e. positive overflow
-        template<typename Lhs, typename Rhs>
-        struct overflow_test<shift_left_op, Lhs, Rhs>
-                : shift_left_overflow_test<Lhs, Rhs, is_signed<Lhs>::value> {
-            using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
-
-            static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
+        template<>
+        struct is_overflow<shift_left_op, polarity::positive> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
+                using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
                 return lhs>0
                         ? rhs>0
                                 ? rhs<traits::positive_digits
