@@ -8,6 +8,7 @@
 #define CNL_IMPL_OVERFLOW_COMMON_H
 
 #include "is_overflow.h"
+#include "polarity.h"
 #include "../native_tag.h"
 
 /// compositional numeric library
@@ -29,9 +30,9 @@ namespace cnl {
         struct overflow_convert {
             constexpr Destination operator()(Source const& from) const
             {
-                return is_overflow_positive<convert_op, Destination>(from)
+                return is_overflow<convert_op, polarity::positive>{}.template operator()<Destination>(from)
                         ? positive_overflow_result<Destination, OverflowTag>{}()
-                        : is_overflow_negative<convert_op, Destination>(from)
+                        : is_overflow<convert_op, polarity::negative>{}.template operator()<Destination>(from)
                                 ? negative_overflow_result<Destination, OverflowTag>{}()
                                 : static_cast<Destination>(from);
             }

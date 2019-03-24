@@ -10,266 +10,272 @@
 namespace {
     using cnl::_impl::identical;
 
-    namespace test_positive_digits {
-        using cnl::_impl::positive_digits;
+    namespace test_overflow_digits_positive {
+        using cnl::_impl::overflow_digits;
+        using cnl::_impl::polarity;
 
-        static_assert(positive_digits<int8_t>::value==7,
-                      "cnl::_impl::positive_digits test failed");
-        static_assert(positive_digits<uint8_t>::value==8,
-                      "cnl::_impl::positive_digits test failed");
-        static_assert(positive_digits<int16_t>::value==15,
-                      "cnl::_impl::positive_digits test failed");
-        static_assert(positive_digits<uint16_t>::value==16,
-                      "cnl::_impl::positive_digits test failed");
-        static_assert(positive_digits<int32_t>::value==31,
-                      "cnl::_impl::positive_digits test failed");
-        static_assert(positive_digits<uint32_t>::value==32,
-                      "cnl::_impl::positive_digits test failed");
-        static_assert(positive_digits<int64_t>::value==63,
-                      "cnl::_impl::positive_digits test failed");
-        static_assert(positive_digits<uint64_t>::value==64,
-                      "cnl::_impl::positive_digits test failed");
+        static_assert(overflow_digits<int8_t, polarity::positive>::value==7,
+                "cnl::_impl::overflow_digits test failed");
+        static_assert(overflow_digits<uint8_t, polarity::positive>::value==8,
+                "cnl::_impl::overflow_digits test failed");
+        static_assert(overflow_digits<int16_t, polarity::positive>::value==15,
+                "cnl::_impl::overflow_digits test failed");
+        static_assert(overflow_digits<uint16_t, polarity::positive>::value==16,
+                "cnl::_impl::overflow_digits test failed");
+        static_assert(overflow_digits<int32_t, polarity::positive>::value==31,
+                "cnl::_impl::overflow_digits test failed");
+        static_assert(overflow_digits<uint32_t, polarity::positive>::value==32,
+                "cnl::_impl::overflow_digits test failed");
+        static_assert(overflow_digits<int64_t, polarity::positive>::value==63,
+                "cnl::_impl::overflow_digits test failed");
+        static_assert(overflow_digits<uint64_t, polarity::positive>::value==64,
+                "cnl::_impl::overflow_digits test failed");
     }
-    
-    namespace test_negative_digits {
-        using cnl::_impl::negative_digits;
 
-        static_assert(negative_digits<int8_t>::value==7,
-                      "cnl::_impl::negative_digits test failed");
-        static_assert(negative_digits<uint8_t>::value==0,
-                      "cnl::_impl::negative_digits test failed");
-        static_assert(negative_digits<int16_t>::value==15,
-                      "cnl::_impl::negative_digits test failed");
-        static_assert(negative_digits<uint16_t>::value==0,
-                      "cnl::_impl::negative_digits test failed");
-        static_assert(negative_digits<int32_t>::value==31,
-                      "cnl::_impl::negative_digits test failed");
-        static_assert(negative_digits<uint32_t>::value==0,
-                      "cnl::_impl::negative_digits test failed");
-        static_assert(negative_digits<int64_t>::value==63,
-                      "cnl::_impl::negative_digits test failed");
-        static_assert(negative_digits<uint64_t>::value==0,
-                      "cnl::_impl::negative_digits test failed");
+    namespace test_negative_digits {
+        using cnl::_impl::overflow_digits;
+        using cnl::_impl::polarity;
+
+        static_assert(overflow_digits<int8_t, polarity::negative>::value==7,
+                "cnl::_impl::overflow_digits test failed");
+        static_assert(overflow_digits<uint8_t, polarity::negative>::value==0,
+                "cnl::_impl::overflow_digits test failed");
+        static_assert(overflow_digits<int16_t, polarity::negative>::value==15,
+                "cnl::_impl::overflow_digits test failed");
+        static_assert(overflow_digits<uint16_t, polarity::negative>::value==0,
+                "cnl::_impl::overflow_digits test failed");
+        static_assert(overflow_digits<int32_t, polarity::negative>::value==31,
+                "cnl::_impl::overflow_digits test failed");
+        static_assert(overflow_digits<uint32_t, polarity::negative>::value==0,
+                "cnl::_impl::overflow_digits test failed");
+        static_assert(overflow_digits<int64_t, polarity::negative>::value==63,
+                "cnl::_impl::overflow_digits test failed");
+        static_assert(overflow_digits<uint64_t, polarity::negative>::value==0,
+                "cnl::_impl::overflow_digits test failed");
     }
 
     namespace test_is_convert_overflow_positive_integer {
         using cnl::_impl::convert_op;
-        using cnl::_impl::is_overflow_positive;
+        using cnl::_impl::is_overflow;
+        using cnl::_impl::polarity;
 
-        static_assert(!is_overflow_positive<convert_op, uint8_t, int8_t>(-1),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint8_t, int8_t>(127),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint8_t, uint16_t>(0),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint8_t, uint16_t>(255),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(is_overflow_positive<convert_op, int8_t, uint16_t>(256),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint8_t, int16_t>(-1),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint8_t, int16_t>(0),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint8_t, int16_t>(255),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(is_overflow_positive<convert_op, int8_t, int16_t>(256),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint8_t, int16_t>(-1),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint8_t>(int8_t{-1}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint8_t>(int8_t{127}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint8_t>(uint16_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint8_t>(uint16_t{255}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(uint16_t{256}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint8_t>(int16_t{-1}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint8_t>(int16_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint8_t>(int16_t{255}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(int16_t{256}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint8_t>(int16_t{-1}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
 
-        static_assert(!is_overflow_positive<convert_op, int8_t, uint8_t>(0),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, int8_t, uint8_t>(127),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(is_overflow_positive<convert_op, int8_t, uint8_t>(128),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, int8_t, uint16_t>(0),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, int8_t, uint16_t>(127),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(is_overflow_positive<convert_op, int8_t, uint16_t>(128),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, int8_t, int16_t>(-1),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, int8_t, int16_t>(0),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, int8_t, int16_t>(127),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(is_overflow_positive<convert_op, int8_t, int16_t>(128),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(uint8_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(uint8_t{127}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(uint8_t{128}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(uint16_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(uint16_t{127}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(uint16_t{128}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(int16_t{-1}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(int16_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(int16_t{127}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(int16_t{128}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
 
-        static_assert(!is_overflow_positive<convert_op, uint16_t, uint8_t>(0),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint16_t, uint8_t>(255),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint16_t, int8_t>(-128),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint16_t, int8_t>(127),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint16_t, int16_t>(-32768),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint16_t, int16_t>(32767),
-                      "cnl::_impl::is_overflow_positive<convert_op, > test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint16_t>(uint8_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint16_t>(uint8_t{255}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint16_t>(int8_t{-128}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint16_t>(int8_t{127}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint16_t>(int16_t{-32768}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint16_t>(int16_t{32767}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
     }
 
     namespace test_is_convert_overflow_negative_integer {
         using cnl::_impl::convert_op;
-        using cnl::_impl::is_overflow_negative;
+        using cnl::_impl::is_overflow;
+        using cnl::_impl::polarity;
 
-        static_assert(is_overflow_negative<convert_op, uint8_t, int8_t>(-1),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint8_t, int8_t>(127),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint8_t, uint16_t>(0),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint8_t, uint16_t>(255),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint8_t, uint16_t>(256),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(is_overflow_negative<convert_op, uint8_t, int16_t>(-1),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint8_t, int16_t>(0),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint8_t, int16_t>(255),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint8_t, int16_t>(256),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(is_overflow_negative<convert_op, uint8_t, int16_t>(-1),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
+        static_assert(is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(int8_t{-1}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(int8_t{127}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(uint16_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(uint16_t{255}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(uint16_t{256}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(int16_t{-1}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(int16_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(int16_t{255}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(int16_t{256}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(int16_t{-1}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
 
-        static_assert(!is_overflow_negative<convert_op, int8_t, uint8_t>(0),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, int8_t, uint8_t>(127),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, int8_t, uint8_t>(128),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, int8_t, uint16_t>(0),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, int8_t, uint16_t>(127),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, int8_t, uint16_t>(128),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(is_overflow_negative<convert_op, int8_t, int16_t>(-129),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, int8_t, int16_t>(-128),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, int8_t, int16_t>(0),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<int8_t>(uint8_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<int8_t>(uint8_t{127}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<int8_t>(uint8_t{128}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<int8_t>(uint16_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<int8_t>(uint16_t{127}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<int8_t>(uint16_t{128}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(is_overflow<convert_op, polarity::negative>{}.template operator()<int8_t>(int16_t{-129}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<int8_t>(int16_t{-128}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<int8_t>(int16_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
 
-        static_assert(!is_overflow_negative<convert_op, uint16_t, uint8_t>(0),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint16_t, uint8_t>(255),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(is_overflow_negative<convert_op, uint16_t, int8_t>(-1),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint16_t, int8_t>(0),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint16_t, int8_t>(127),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(is_overflow_negative<convert_op, uint16_t, int16_t>(-32768),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint16_t, int16_t>(32767),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint16_t>(uint8_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint16_t>(uint8_t{255}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(is_overflow<convert_op, polarity::negative>{}.template operator()<uint16_t>(int8_t{-1}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint16_t>(int8_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint16_t>(int8_t{127}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(is_overflow<convert_op, polarity::negative>{}.template operator()<uint16_t>(int16_t{-32768}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint16_t>(int16_t{32767}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
     }
 
     namespace test_is_convert_overflow_positive_float {
         using cnl::_impl::convert_op;
-        using cnl::_impl::is_overflow_positive;
+        using cnl::_impl::is_overflow;
+        using cnl::_impl::polarity;
 
-        static_assert(!is_overflow_positive<convert_op, uint8_t, float>(0),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint8_t, float>(255),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(is_overflow_positive<convert_op, int8_t, float>(256),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint8_t, double>(-1),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint8_t, double>(0),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint8_t, double>(255),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(is_overflow_positive<convert_op, int8_t, double>(256),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, uint8_t, double>(-1),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint8_t>(float{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint8_t>(float{255}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(float{256}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint8_t>(double{-1}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint8_t>(double{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint8_t>(double{255}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(double{256}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<uint8_t>(double{-1}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
 
-        static_assert(!is_overflow_positive<convert_op, int8_t, float>(0),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, int8_t, float>(127),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(is_overflow_positive<convert_op, int8_t, float>(128),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, int8_t, double>(-1),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, int8_t, double>(0),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, int8_t, double>(127),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(is_overflow_positive<convert_op, int8_t, double>(128),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(float{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(float{127}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(float{128}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(double{-1}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(double{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(double{127}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(is_overflow<convert_op, polarity::positive>{}.template operator()<int8_t>(double{128}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
 
-        static_assert(!is_overflow_positive<convert_op, float, uint8_t>(0),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, float, uint8_t>(255),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, float, int8_t>(-128),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, float, int8_t>(127),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, float, double>(-32768),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
-        static_assert(!is_overflow_positive<convert_op, float, double>(32767),
-                "cnl::_impl::is_overflow_positive<convert_op, > test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<float>(uint8_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<float>(uint8_t{255}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<float>(int8_t{-128}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<float>(int8_t{127}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<float>(double{-32768}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
+        static_assert(!is_overflow<convert_op, polarity::positive>{}.template operator()<float>(double{32767}),
+                "cnl::_impl::is_overflow<convert_op, polarity::positive> test failed");
     }
 
     namespace test_is_convert_overflow_negative_float {
         using cnl::_impl::convert_op;
-        using cnl::_impl::is_overflow_negative;
+        using cnl::_impl::is_overflow;
+        using cnl::_impl::polarity;
 
-        static_assert(!is_overflow_negative<convert_op, uint8_t, float>(0),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint8_t, float>(255),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint8_t, float>(256),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(is_overflow_negative<convert_op, uint8_t, float>(-1),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint8_t, float>(0),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint8_t, float>(255),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, uint8_t, float>(256),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(is_overflow_negative<convert_op, uint8_t, float>(-1),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(float{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(float{255}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(float{256}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(float{-1}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(float{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(float{255}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(float{256}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(is_overflow<convert_op, polarity::negative>{}.template operator()<uint8_t>(float{-1}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
 
-        static_assert(!is_overflow_negative<convert_op, int8_t, float>(0),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, int8_t, float>(127),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, int8_t, float>(128),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(is_overflow_negative<convert_op, int8_t, float>(-129),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, int8_t, float>(-128),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, int8_t, float>(0),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<int8_t>(float{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<int8_t>(float{127}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<int8_t>(float{128}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(is_overflow<convert_op, polarity::negative>{}.template operator()<int8_t>(float{-129}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<int8_t>(float{-128}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<int8_t>(float{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
 
-        static_assert(!is_overflow_negative<convert_op, float, uint8_t>(0),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, float, uint8_t>(255),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, float, int8_t>(-1),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, float, int8_t>(0),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, float, int8_t>(127),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, float, float>(-32768),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
-        static_assert(!is_overflow_negative<convert_op, float, float>(32767),
-                "cnl::_impl::is_overflow_negative<convert_op, > test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<float>(uint8_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<float>(uint8_t{255}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<float>(int8_t{-1}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<float>(int8_t{0}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<float>(int8_t{127}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<float>(float{-32768}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
+        static_assert(!is_overflow<convert_op, polarity::negative>{}.template operator()<float>(float{32767}),
+                "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
     }
 
     namespace test_minus {
