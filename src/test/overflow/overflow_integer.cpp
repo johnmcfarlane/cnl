@@ -6,6 +6,10 @@
 
 // cnl::overflow_integer<> is intended to render warnings such as 4389 (signed/unsigned mismatch) moot
 
+#if defined(_MSC_VER)
+#pragma warning(disable: 4146)
+#endif
+
 #include <cnl/overflow_integer.h>
 #include <cnl/_impl/type_traits/identical.h>
 
@@ -527,6 +531,18 @@ namespace {
         constexpr auto short_min = cnl::numeric_limits<short>::min();
         auto a = cnl::overflow_integer<>{static_cast<int>(short_min)-1};
         ASSERT_DEATH(a.operator short(), "negative overflow");
+    }
+
+    TEST(overflow_integer, minus_overflow_signed)
+    {
+        auto int_min = cnl::numeric_limits<cnl::overflow_integer<int>>::min();
+        ASSERT_DEATH(int_min = -int_min, "positive overflow");
+    }
+
+    TEST(overflow_integer, minus_overflow_unsigned)
+    {
+        auto one = cnl::overflow_integer<unsigned>{1};
+        ASSERT_DEATH(one = -one, "negative overflow");
     }
 
     TEST(overflow_integer, pre_increment_overflow) {

@@ -39,6 +39,17 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::tagged_unary_operator
+
+        template<class Tag, class Operator>
+        struct tagged_unary_operator : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
+        };
+
+        template<class Operator>
+        struct tagged_unary_operator<native_tag, Operator> : Operator {
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::tagged_binary_operator
 
         template<class Tag, class Operator>

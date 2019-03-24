@@ -34,6 +34,11 @@ namespace cnl {
         };
 
         template<class Operator>
+        struct tagged_unary_operator<native_overflow_tag, Operator>
+                : tagged_unary_overflow_operator<native_overflow_tag, Operator> {
+        };
+
+        template<class Operator>
         struct tagged_binary_operator<native_overflow_tag, Operator>
                 : tagged_binary_operator<_impl::native_tag, Operator> {
         };

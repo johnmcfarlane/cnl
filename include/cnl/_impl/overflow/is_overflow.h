@@ -168,9 +168,18 @@ namespace cnl {
         template<>
         struct is_overflow<minus_op, polarity::positive> {
             template<typename Rhs>
-            constexpr bool operator()(Rhs const& from) const
+            constexpr bool operator()(Rhs const& rhs) const
             {
-                return has_most_negative_number<Rhs>::value && from < -numeric_limits<Rhs>::max();
+                return has_most_negative_number<Rhs>::value && rhs < -numeric_limits<Rhs>::max();
+            }
+        };
+
+        template<>
+        struct is_overflow<minus_op, polarity::negative> {
+            template<typename Rhs>
+            constexpr bool operator()(Rhs const& rhs) const
+            {
+                return !is_signed<Rhs>::value && rhs;
             }
         };
 #if defined(_MSC_VER)
@@ -221,30 +230,6 @@ namespace cnl {
 
         template<class Operator, typename ... Operands>
         struct overflow_test : overflow_test_base<Operator, Operands...> {
-        };
-
-        template<typename Rhs>
-        struct overflow_test<minus_op, Rhs> : overflow_test_base<minus_op, Rhs> {
-            using traits = operator_overflow_traits<minus_op, Rhs>;
-
-            static constexpr bool positive(Rhs const &rhs) {
-                return has_most_negative_number<Rhs>::value
-#if defined(_MSC_VER)
-                #pragma warning(push)
-#pragma warning(disable: 4146)
-#endif
-                        // Causes a warning about unsigned unary minus despite the fact that it should not be being
-                        // evaluated when Rhs is unsigned due to an is_signed test in has_most_negative_number.
-                        ? (-traits::max()) > rhs
-#if defined(_MSC_VER)
-#pragma warning(pop)
-#endif
-                        : 0;
-            }
-
-            static constexpr bool negative(Rhs const &rhs) {
-                return !is_signed<Rhs>::value && rhs;
-            }
         };
 
         template<typename Lhs, typename Rhs>

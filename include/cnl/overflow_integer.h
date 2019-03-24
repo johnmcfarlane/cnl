@@ -181,7 +181,8 @@ namespace cnl {
             constexpr auto operator()(overflow_integer<Rep, OverflowTag> const& operand) const
             -> decltype(overflow_integer<decltype(Operator()(_impl::to_rep(operand))), OverflowTag>(Operator()(_impl::to_rep(operand))))
             {
-                return overflow_integer<decltype(Operator()(_impl::to_rep(operand))), OverflowTag>(Operator()(_impl::to_rep(operand)));
+                return from_rep<overflow_integer<op_result<Operator, Rep>, OverflowTag>>(
+                        _impl::tagged_unary_operator<OverflowTag, Operator>{}(_impl::to_rep(operand)));
             }
         };
 

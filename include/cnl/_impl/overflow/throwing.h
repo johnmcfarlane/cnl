@@ -65,6 +65,11 @@ namespace cnl {
         };
 
         template<class Operator>
+        struct tagged_unary_operator<throwing_overflow_tag, Operator>
+                : tagged_unary_overflow_operator<throwing_overflow_tag, Operator> {
+        };
+
+        template<class Operator>
         struct tagged_binary_operator<throwing_overflow_tag, Operator>
                 : tagged_binary_overflow_operator<throwing_overflow_tag, Operator> {
         };

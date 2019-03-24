@@ -42,6 +42,20 @@ namespace cnl {
         };
 
         template<class OverflowTag, class Operator>
+        struct tagged_unary_overflow_operator {
+            template<typename Operand>
+            constexpr auto operator()(Operand const& operand) const
+            -> op_result<Operator, Operand>
+            {
+                return is_overflow<Operator, polarity::positive>{}(operand)
+                        ? overflow_operator<Operator, OverflowTag, polarity::positive>{}(operand)
+                        : is_overflow<Operator, polarity::negative>{}(operand)
+                                ? overflow_operator<Operator, OverflowTag, polarity::negative>{}(operand)
+                                : Operator{}(operand);
+            }
+        };
+
+        template<class OverflowTag, class Operator>
         struct tagged_binary_overflow_operator {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const

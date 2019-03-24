@@ -278,43 +278,40 @@ namespace {
                 "cnl::_impl::is_overflow<convert_op, polarity::negative>{}.template operator()<> test failed");
     }
 
-    namespace test_minus {
-        template<typename Rhs>
-        using minus_test = cnl::_impl::overflow_test<cnl::_impl::minus_op, Rhs>;
+    namespace test_minus_positive {
+        using test_minus_positive = cnl::_impl::is_overflow<cnl::_impl::minus_op, cnl::_impl::polarity::positive>;
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::overflow_test<cnl::_impl::minus_op>::positive
+        static_assert(!test_minus_positive{}(INT_MAX),
+                "cnl::_impl::is_overflow<cnl::_impl::minus_op, cnl::_impl::polarity::positive>{}");
+        static_assert(!test_minus_positive{}(-INT_MAX),
+                "cnl::_impl::is_overflow<cnl::_impl::minus_op, cnl::_impl::polarity::positive>{}");
+        static_assert(test_minus_positive{}(INT_MIN),
+                "cnl::_impl::is_overflow<cnl::_impl::minus_op, cnl::_impl::polarity::positive>{}");
 
-        static_assert(!minus_test<int>::positive(INT_MAX),
-                      "minus_test<int>::positive");
-        static_assert(!minus_test<int>::positive(-INT_MAX),
-                      "minus_test<int>::positive");
-        static_assert(minus_test<int>::positive(INT_MIN),
-                      "minus_test<int>::positive");
+        static_assert(!test_minus_positive{}(0U),
+                "cnl::_impl::is_overflow<cnl::_impl::minus_op, cnl::_impl::polarity::positive>{}");
+        static_assert(!test_minus_positive{}(1U),
+                "cnl::_impl::is_overflow<cnl::_impl::minus_op, cnl::_impl::polarity::positive>{}");
+        static_assert(!test_minus_positive{}(UINT_MAX),
+                "cnl::_impl::is_overflow<cnl::_impl::minus_op, cnl::_impl::polarity::positive>{}");
+    }
 
-        static_assert(!minus_test<unsigned>::positive(0),
-                      "minus_test<unsigned>::positive");
-        static_assert(!minus_test<unsigned>::positive(1),
-                      "minus_test<unsigned>::positive");
-        static_assert(!minus_test<unsigned>::positive(UINT_MAX),
-                      "minus_test<unsigned>::positive");
+    namespace test_minus_negative {
+        using test_minus_negative = cnl::_impl::is_overflow<cnl::_impl::minus_op, cnl::_impl::polarity::negative>;
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::overflow_test<cnl::_impl::minus_op>::negative
+        static_assert(!test_minus_negative{}(INT_MAX),
+                "cnl::_impl::is_overflow<cnl::_impl::minus_op, cnl::_impl::polarity::negative>{}");
+        static_assert(!test_minus_negative{}(-INT_MAX),
+                "cnl::_impl::is_overflow<cnl::_impl::minus_op, cnl::_impl::polarity::negative>{}");
+        static_assert(!test_minus_negative{}(INT_MIN),
+                "cnl::_impl::is_overflow<cnl::_impl::minus_op, cnl::_impl::polarity::negative>{}");
 
-        static_assert(!minus_test<int>::negative(INT_MAX),
-                      "minus_test<int>::negative");
-        static_assert(!minus_test<int>::negative(-INT_MAX),
-                      "minus_test<int>::negative");
-        static_assert(!minus_test<int>::negative(INT_MIN),
-                      "minus_test<int>::negative");
-
-        static_assert(!minus_test<unsigned>::negative(0),
-                      "minus_test<unsigned>::negative");
-        static_assert(minus_test<unsigned>::negative(1),
-                      "minus_test<unsigned>::negative");
-        static_assert(minus_test<unsigned>::negative(UINT_MAX),
-                      "minus_test<unsigned>::negative");
+        static_assert(!test_minus_negative{}(0U),
+                "cnl::_impl::is_overflow<cnl::_impl::minus_op, cnl::_impl::polarity::negative>{}");
+        static_assert(test_minus_negative{}(1U),
+                "cnl::_impl::is_overflow<cnl::_impl::minus_op, cnl::_impl::polarity::negative>{}");
+        static_assert(test_minus_negative{}(UINT_MAX),
+                "cnl::_impl::is_overflow<cnl::_impl::minus_op, cnl::_impl::polarity::negative>{}");
     }
 
     namespace test_add {
