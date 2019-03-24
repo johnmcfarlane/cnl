@@ -8,6 +8,7 @@
 #define CNL_IMPL_OVERFLOW_COMMON_H
 
 #include "is_overflow.h"
+#include "overflow_operator.h"
 #include "polarity.h"
 #include "../native_tag.h"
 
@@ -31,9 +32,11 @@ namespace cnl {
             constexpr Destination operator()(Source const& from) const
             {
                 return is_overflow<convert_op, polarity::positive>{}.template operator()<Destination>(from)
-                        ? positive_overflow_result<Destination, OverflowTag>{}()
+                        ? overflow_operator<convert_op, OverflowTag, polarity::positive>{}.template operator()<
+                                Destination>(from)
                         : is_overflow<convert_op, polarity::negative>{}.template operator()<Destination>(from)
-                                ? negative_overflow_result<Destination, OverflowTag>{}()
+                                ? overflow_operator<convert_op, OverflowTag, polarity::negative>{}.template operator()<
+                                        Destination>(from)
                                 : static_cast<Destination>(from);
             }
         };
@@ -46,11 +49,10 @@ namespace cnl {
             -> op_result<Operator, Lhs, Rhs>
             {
                 using overflow_test = overflow_test<Operator, Lhs, Rhs>;
-                using result_type = op_result<Operator, Lhs, Rhs>;
                 return overflow_test::positive(lhs, rhs)
-                        ? positive_overflow_result<result_type, OverflowTag>{}()
+                        ? overflow_operator<Operator, OverflowTag, polarity::positive>{}(lhs, rhs)
                         : overflow_test::negative(lhs, rhs)
-                                ? negative_overflow_result<result_type, OverflowTag>{}()
+                                ? overflow_operator<Operator, OverflowTag, polarity::negative>{}(lhs, rhs)
                                 : tagged_binary_operator<native_tag, Operator>{}(lhs, rhs);
             }
         };

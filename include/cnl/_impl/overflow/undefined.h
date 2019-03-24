@@ -8,6 +8,7 @@
 #define CNL_IMPL_OVERFLOW_UNDEFINED_H
 
 #include "common.h"
+#include "overflow_operator.h"
 #include "../unreachable.h"
 
 /// compositional numeric library
@@ -17,19 +18,33 @@ namespace cnl {
     } undefined_overflow{};
 
     namespace _impl {
-        template<typename Result>
-        struct positive_overflow_result<Result, undefined_overflow_tag> {
-            constexpr Result operator()() const
+        template<typename Operator>
+        struct overflow_operator<Operator, undefined_overflow_tag, polarity::positive> {
+            template<typename Destination, typename Source>
+            constexpr Destination operator()(Source const&) const
             {
-                return unreachable<Result>("positive overflow");
+                return unreachable<Destination>("positive overflow");
+            }
+
+            template<class ... Operands>
+            constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            {
+                return unreachable<op_result<Operator, Operands...>>("positive overflow");
             }
         };
 
-        template<typename Result>
-        struct negative_overflow_result<Result, undefined_overflow_tag> {
-            constexpr Result operator()() const
+        template<typename Operator>
+        struct overflow_operator<Operator, undefined_overflow_tag, polarity::negative> {
+            template<typename Destination, typename Source>
+            constexpr Destination operator()(Source const&) const
             {
-                return unreachable<Result>("negative overflow");
+                return unreachable<Destination>("negative overflow");
+            }
+
+            template<class ... Operands>
+            constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            {
+                return unreachable<op_result<Operator, Operands...>>("negative overflow");
             }
         };
     }

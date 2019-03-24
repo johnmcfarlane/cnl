@@ -8,6 +8,7 @@
 #define CNL_IMPL_OVERFLOW_SATURATED_H
 
 #include "common.h"
+#include "overflow_operator.h"
 #include "../terminate.h"
 
 /// compositional numeric library
@@ -17,19 +18,33 @@ namespace cnl {
     } saturated_overflow{};
 
     namespace _impl {
-        template<typename Result>
-        struct positive_overflow_result<Result, saturated_overflow_tag> {
-            constexpr Result operator()() const
+        template<typename Operator>
+        struct overflow_operator<Operator, saturated_overflow_tag, polarity::positive> {
+            template<typename Destination, typename Source>
+            constexpr Destination operator()(Source const&) const
             {
-                return numeric_limits<Result>::max();
+                return numeric_limits<Destination>::max();
+            }
+
+            template<class ... Operands>
+            constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            {
+                return numeric_limits<op_result<Operator, Operands...>>::max();
             }
         };
 
-        template<typename Result>
-        struct negative_overflow_result<Result, saturated_overflow_tag> {
-            constexpr Result operator()() const
+        template<typename Operator>
+        struct overflow_operator<Operator, saturated_overflow_tag, polarity::negative> {
+            template<typename Destination, typename Source>
+            constexpr Destination operator()(Source const&) const
             {
-                return numeric_limits<Result>::lowest();
+                return numeric_limits<Destination>::lowest();
+            }
+
+            template<class ... Operands>
+            constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            {
+                return numeric_limits<op_result<Operator, Operands...>>::lowest();
             }
         };
     }
