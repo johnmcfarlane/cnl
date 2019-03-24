@@ -47,14 +47,12 @@ namespace cnl {
                 return unreachable<op_result<Operator, Operands...>>("negative overflow");
             }
         };
-    }
 
-    template<typename Result, typename Input>
-    struct convert<undefined_overflow_tag, Result, Input>
-            : _impl::overflow_convert<undefined_overflow_tag, Result, Input> {
-    };
+        template<typename Destination, typename Source>
+        struct tagged_convert_operator<undefined_overflow_tag, Destination, Source>
+                : tagged_convert_overflow_operator<undefined_overflow_tag, Destination, Source> {
+        };
 
-    namespace _impl {
         template<class Operator>
         struct tagged_binary_operator<undefined_overflow_tag, Operator>
                 : tagged_binary_overflow_operator<undefined_overflow_tag, Operator> {

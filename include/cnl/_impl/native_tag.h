@@ -24,33 +24,19 @@ struct CNL_ERROR___cannot_use {
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-
         // match the behavior of fundamental arithmetic types
         struct native_tag {};
-    }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::convert
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::tagged_convert_operator
 
-    template<class Tag, typename Result, typename Input, typename Enable = void>
-    struct convert : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
-    };
+        template<class Tag, typename Destination, typename Source, typename Enabled=void>
+        struct tagged_convert_operator : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
+        };
 
-    template<typename Result, typename Input>
-    struct convert<_impl::native_tag, Result, Input> {
-        constexpr Result operator()(Input const& rhs) const
-        {
-            return static_cast<Result>(rhs);
-        }
-    };
-
-    namespace _impl {
-        template<class Tag, typename Result, typename Input>
-        constexpr auto convert(Input const& from)
-        -> decltype(cnl::convert<Tag, Result, Input>{}(from))
-        {
-            return cnl::convert<Tag, Result, Input>{}(from);
-        }
+        template<typename Destination, typename Source>
+        struct tagged_convert_operator<native_tag, Destination, Source> : convert_op {
+        };
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::tagged_binary_operator
@@ -72,6 +58,16 @@ namespace cnl {
                 return static_cast<result_type>(static_cast<cnl::make_unsigned_t<result_type>>(lhs)<<rhs);
             }
         };
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::convert
+
+        template<class Tag, typename Result, typename Input>
+        constexpr auto convert(Input const& from)
+        -> decltype(cnl::_impl::tagged_convert_operator<Tag, Result, Input>{}(from))
+        {
+            return cnl::_impl::tagged_convert_operator<Tag, Result, Input>{}(from);
+        }
     }
 }
 

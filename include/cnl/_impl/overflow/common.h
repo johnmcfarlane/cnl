@@ -28,7 +28,7 @@ namespace cnl {
         // overflow_convert
 
         template<class OverflowTag, typename Destination, typename Source>
-        struct overflow_convert {
+        struct tagged_convert_overflow_operator {
             constexpr Destination operator()(Source const& from) const
             {
                 return is_overflow<convert_op, polarity::positive>{}.template operator()<Destination>(from)
@@ -40,7 +40,6 @@ namespace cnl {
                                 : static_cast<Destination>(from);
             }
         };
-
 
         template<class OverflowTag, class Operator>
         struct tagged_binary_overflow_operator {
