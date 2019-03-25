@@ -3,11 +3,22 @@
 ######################################################################
 # build flags
 
-if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+string(COMPARE EQUAL "${CMAKE_CXX_COMPILER_ID}" "AppleClang" IS_APPLECLANG)
+string(COMPARE EQUAL "${CMAKE_CXX_COMPILER_ID}" "Clang" IS_CLANG)
+string(COMPARE EQUAL "${CMAKE_CXX_COMPILER_ID}" "GNU" IS_GCC_FAMILY)
+string(COMPARE EQUAL "${CMAKE_CXX_COMPILER_ID}" "MSVC" IS_MSVC)
+
+if (IS_CLANG OR IS_APPLECLANG)
+    set(IS_CLANG_FAMILY 1)
+else ()
+    set(IS_CLANG_FAMILY 0)
+endif ()
+
+if (IS_MSVC)
   # https://developercommunity.visualstudio.com/content/problem/55671/c4307-issued-for-unsigned.html
   set(MISC_FLAGS "/W4 /WX /errorReport:prompt /nologo /wd4307")
 
-  # no tested
+  # not tested
   set(CPP17_ENABLED_FLAGS "/std:c++17")
 
   set(EXCEPTION_ENABLED_FLAGS "/GR /EHsc")
@@ -19,12 +30,16 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
 
   set(PROFILE_ENABLED_FLAGS "/Oy-")
   set(PROFILE_DISABLED_FLAGS "")
-elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
-  set(MISC_FLAGS "-pthread -Wall -Wextra -Werror -ftemplate-backtrace-limit=0")
+elseif (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
+  set(MISC_FLAGS "-Wall -Wextra -Werror -ftemplate-backtrace-limit=0")
 
-  if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
-    set(MISC_FLAGS "${MISC_FLAGS} -fconstexpr-backtrace-limit=0 -fconstexpr-steps=100000000")
-  endif()
+  if (NOT IS_APPLECLANG)
+      string(APPEND MISC_FLAGS " -pthread")
+  endif ()
+
+  if (IS_CLANG)
+      string(APPEND MISC_FLAGS " -fconstexpr-backtrace-limit=0 -fconstexpr-steps=100000000")
+  endif ()
 
   set(CPP17_ENABLED_FLAGS "-std=c++17")
 
