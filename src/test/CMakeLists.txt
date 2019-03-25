@@ -278,7 +278,7 @@ add_dependencies(Test-glm Glm)
 
 if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND EXCEPTIONS)
     # Boost.SIMD has problems building with gcc-7.x
-    if(IS_GCC_FAMILY OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
+    if(NOT IS_GCC_FAMILY OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
         if (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
             make_test(boost.simd.cpp target "-Wno-conversion" "")
         else ()
@@ -297,7 +297,7 @@ if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND EXCEPTIONS)
 
         ExternalProject_Get_Property(BoostSimd source_dir)
         target_include_directories("${target}" PRIVATE SYSTEM "${source_dir}/include")
-    endif(IS_GCC_FAMILY OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
+    endif(NOT IS_GCC_FAMILY OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
 endif(Boost_FOUND AND Boost_VERSION GREATER 106099 AND EXCEPTIONS)
 
 ######################################################################
