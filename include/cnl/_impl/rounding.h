@@ -11,8 +11,8 @@
 #define CNL_IMPL_ROUNDING_H
 
 #include "native_tag.h"
-#include "rounding/convert.h"
 #include "rounding/rounding_tag.h"
+#include "rounding/tagged_convert_operator.h"
 #include "operators.h"
 #include "num_traits/from_value.h"
 #include "num_traits/unwrap.h"

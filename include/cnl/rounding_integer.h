@@ -86,11 +86,7 @@ namespace cnl {
 
         rounding_integer() = default;
 
-        template<class T, _impl::enable_if_t<numeric_limits<T>::is_integer, int> Dummy = 0>
-        constexpr rounding_integer(T const& v)
-                : _base(static_cast<Rep>(v)) { }
-
-        template<class T, _impl::enable_if_t<!numeric_limits<T>::is_integer, int> Dummy = 0>
+        template<class T>
         constexpr rounding_integer(T const& v)
                 : _base(_impl::convert<rounding, Rep>(v)) { }
 

@@ -8,6 +8,7 @@
 #define CNL_IMPL_OVERFLOW_TRAPPING_H
 
 #include "common.h"
+#include "overflow_operator.h"
 #include "../terminate.h"
 
 /// compositional numeric library
@@ -17,29 +18,46 @@ namespace cnl {
     } trapping_overflow{};
 
     namespace _impl {
-        template<typename Result>
-        struct positive_overflow_result<Result, trapping_overflow_tag> {
-            constexpr Result operator()() const
+        template<typename Operator>
+        struct overflow_operator<Operator, trapping_overflow_tag, polarity::positive> {
+            template<typename Destination, typename Source>
+            constexpr Destination operator()(Source const&) const
             {
-                return terminate<Result>("positive overflow");
+                return terminate<Destination>("positive overflow");
+            }
+
+            template<class ... Operands>
+            constexpr op_result<Operator, Operands...> operator()(Operands const&...) const
+            {
+                return terminate<op_result<Operator, Operands...>>("positive overflow");
             }
         };
 
-        template<typename Result>
-        struct negative_overflow_result<Result, trapping_overflow_tag> {
-            constexpr Result operator()() const
+        template<typename Operator>
+        struct overflow_operator<Operator, trapping_overflow_tag, polarity::negative> {
+            template<typename Destination, typename Source>
+            constexpr Destination operator()(Source const&) const
             {
-                return terminate<Result>("negative overflow");
+                return terminate<Destination>("negative overflow");
+            }
+
+            template<class ... Operands>
+            constexpr op_result<Operator, Operands...> operator()(Operands const&...) const
+            {
+                return terminate<op_result<Operator, Operands...>>("negative overflow");
             }
         };
-    }
 
-    template<typename Result, typename Input>
-    struct convert<trapping_overflow_tag, Result, Input>
-            : _impl::overflow_convert<trapping_overflow_tag, Result, Input> {
-    };
+        template<typename Destination, typename Source>
+        struct tagged_convert_operator<trapping_overflow_tag, Destination, Source>
+                : tagged_convert_overflow_operator<trapping_overflow_tag, Destination, Source> {
+        };
 
-    namespace _impl {
+        template<class Operator>
+        struct tagged_unary_operator<trapping_overflow_tag, Operator>
+                : tagged_unary_overflow_operator<trapping_overflow_tag, Operator> {
+        };
+
         template<class Operator>
         struct tagged_binary_operator<trapping_overflow_tag, Operator>
                 : tagged_binary_overflow_operator<trapping_overflow_tag, Operator> {

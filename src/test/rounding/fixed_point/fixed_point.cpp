@@ -83,8 +83,8 @@ namespace {
         static_assert(
                 identical(
                         2,
-                        cnl::_impl::convert<cnl::native_rounding_tag, int>(
-                                cnl::fixed_point<int, -2>{2.5})),
+                        cnl::_impl::tagged_convert_operator<cnl::native_rounding_tag, int, cnl::fixed_point<int, -2>>{}(
+                                2.5)),
                 "cnl::convert<cnl::native_rounding_tag, int, cnl::fixed_point>");
         static_assert(
                 identical(

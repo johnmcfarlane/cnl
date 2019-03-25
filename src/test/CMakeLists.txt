@@ -20,7 +20,8 @@ set(test_sources
         _impl/num_traits/adopt.cpp
         _impl/num_traits/adopt_digits.cpp
         _impl/num_traits/adopt_signedness.cpp
-        _impl/rounding/convert.cpp
+        _impl/overflow/is_overflow.cpp
+        _impl/rounding/tagged_convert_operator.cpp
 
         # components
         constant.cpp
