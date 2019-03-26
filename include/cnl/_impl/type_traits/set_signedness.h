@@ -8,7 +8,7 @@
 #define CNL_IMPL_TYPE_TRAITS_SET_SIGNEDNESS
 
 #include "add_signedness.h"
-#include "make_unsigned.h"
+#include "remove_signedness.h"
 
 namespace cnl {
     namespace _impl {
@@ -23,7 +23,7 @@ namespace cnl {
         };
 
         template<class T>
-        struct set_signedness<T, false> : make_unsigned<T> {
+        struct set_signedness<T, false> : remove_signedness<T> {
         };
 
         template<class T, bool IsSigned>

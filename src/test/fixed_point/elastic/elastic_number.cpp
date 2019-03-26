@@ -179,8 +179,8 @@ struct test_traits {
                   "cnl::add_signedness failed cnl::numeric_limits test");
     static_assert(is_signed<cnl::add_signedness_t<T>>::value,
                   "cnl::add_signedness failed cnl::numeric_limits test");
-    static_assert(!is_signed<cnl::make_unsigned_t<T>>::value,
-                  "cnl::make_unsigned failed cnl::numeric_limits test");
+    static_assert(!is_signed<cnl::remove_signedness_t<T>>::value,
+                  "cnl::remove_signedness failed cnl::numeric_limits test");
 };
 
 template
@@ -275,7 +275,7 @@ struct positive_elastic_test
     using numeric_limits = cnl::numeric_limits<elastic_type>;
 
     using signed_type = cnl::add_signedness_t<elastic_type>;
-    using unsigned_type = cnl::make_unsigned_t<elastic_type>;
+    using unsigned_type = cnl::remove_signedness_t<elastic_type>;
 
     ////////////////////////////////////////////////////////////////////////////////
     // useful constants

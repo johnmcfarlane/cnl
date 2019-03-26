@@ -93,7 +93,7 @@ namespace cnl {
 
         template<typename Narrowest>
         struct optimal_duplex<Narrowest, signed> {
-            using unsiged_narrowest = make_unsigned_t<Narrowest>;
+            using unsiged_narrowest = remove_signedness_t<Narrowest>;
             using unsigned_multiword_integer = optimal_duplex<unsiged_narrowest, unsigned>;
 
             using type = add_signedness_t<typename unsigned_multiword_integer::type>;

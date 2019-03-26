@@ -294,7 +294,7 @@ namespace cnl {
         struct trailing_bits<Integer, true> {
             constexpr int operator()(Integer const& integer) const noexcept
             {
-                using unsigned_type = make_unsigned_t<Integer>;
+                using unsigned_type = remove_signedness_t<Integer>;
                 return countr_zero(static_cast<unsigned_type>(integer));
             }
         };

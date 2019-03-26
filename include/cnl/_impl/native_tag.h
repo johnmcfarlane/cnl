@@ -7,7 +7,7 @@
 #ifndef CNL_IMPL_NATIVE_TAG_H
 #define CNL_IMPL_NATIVE_TAG_H
 
-#include "type_traits/make_unsigned.h"
+#include "type_traits/remove_signedness.h"
 
 #include "operators.h"
 
@@ -66,7 +66,7 @@ namespace cnl {
             -> decltype(lhs<<rhs)
             {
                 using result_type = decltype(lhs<<rhs);
-                return static_cast<result_type>(static_cast<cnl::make_unsigned_t<result_type>>(lhs)<<rhs);
+                return static_cast<result_type>(static_cast<cnl::remove_signedness_t<result_type>>(lhs) << rhs);
             }
         };
     }

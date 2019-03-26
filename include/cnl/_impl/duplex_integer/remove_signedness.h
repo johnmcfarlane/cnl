@@ -4,19 +4,19 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_DUPLEX_INTEGER_MAKE_UNSIGNED_H)
-#define CNL_IMPL_DUPLEX_INTEGER_MAKE_UNSIGNED_H
+#if !defined(CNL_IMPL_DUPLEX_INTEGER_REMOVE_SIGNEDNESS_H)
+#define CNL_IMPL_DUPLEX_INTEGER_REMOVE_SIGNEDNESS_H
 
 #include "forward_declaration.h"
-#include "../type_traits/make_unsigned.h"
+#include "../type_traits/remove_signedness.h"
 #include "../type_traits/type_identity.h"
 
 /// compositional numeric library
 namespace cnl {
     template<typename Upper, typename Lower>
-    struct make_unsigned<_impl::duplex_integer<Upper, Lower>>
-            : _impl::type_identity<_impl::duplex_integer<make_unsigned_t<Upper>, Lower>> {
+    struct remove_signedness<_impl::duplex_integer<Upper, Lower>>
+            : _impl::type_identity<_impl::duplex_integer<remove_signedness_t<Upper>, Lower>> {
     };
 }
 
-#endif  // CNL_IMPL_DUPLEX_INTEGER_MAKE_UNSIGNED_H
+#endif  // CNL_IMPL_DUPLEX_INTEGER_REMOVE_SIGNEDNESS_H

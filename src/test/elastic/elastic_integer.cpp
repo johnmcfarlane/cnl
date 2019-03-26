@@ -149,11 +149,11 @@ namespace {
                 "from_value<elastic_integer, int64>");
     }
 
-    namespace test_make_unsigned {
+    namespace test_remove_signedness {
         static_assert(
                 assert_same<
                         cnl::elastic_integer<39, unsigned int>,
-                        typename cnl::make_unsigned<
+                        typename cnl::remove_signedness<
                                 cnl::elastic_integer<39, unsigned int>>::type>::value, "");
     }
 

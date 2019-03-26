@@ -101,15 +101,15 @@ namespace {
                     "cnl::add_signedness_t<cnl::rounding_integer<>>");
         }
 
-        namespace test_make_unsigned_t {
-            using cnl::make_unsigned_t;
+        namespace test_remove_signedness_t {
+            using cnl::remove_signedness_t;
 
             static_assert(
-                    std::is_same<rounding_integer<unsigned char>, make_unsigned_t<rounding_integer<unsigned char>>>::value,
-                    "cnl::make_unsigned_t<cnl::rounding_integer<>>");
+                    std::is_same<rounding_integer<unsigned char>, remove_signedness_t<rounding_integer<unsigned char>>>::value,
+                    "cnl::remove_signedness_t<cnl::rounding_integer<>>");
             static_assert(
-                    std::is_same<rounding_integer<unsigned long long>, make_unsigned_t<rounding_integer<long long>>>::value,
-                    "cnl::make_unsigned_t<cnl::rounding_integer<>>");
+                    std::is_same<rounding_integer<unsigned long long>, remove_signedness_t<rounding_integer<long long>>>::value,
+                    "cnl::remove_signedness_t<cnl::rounding_integer<>>");
         }
 
         namespace test_to_rep {

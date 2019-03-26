@@ -13,7 +13,7 @@
 #include <cnl/_impl/integer/operators.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
-#include <cnl/_impl/type_traits/make_unsigned.h>
+#include <cnl/_impl/type_traits/remove_signedness.h>
 
 using cnl::_impl::assert_same;
 using cnl::_impl::identical;
@@ -31,12 +31,12 @@ namespace {
                 "is_composite<integer>");
     }
 
-    namespace test_make_unsigned {
+    namespace test_remove_signedness {
         static_assert(
                 assert_same<
                         cnl::_impl::integer<unsigned short>,
-                        cnl::make_unsigned<cnl::_impl::integer<signed short>>::type>::value,
-                "cnl::make_unsigned<cnl::_impl::integer>");
+                        cnl::remove_signedness<cnl::_impl::integer<signed short>>::type>::value,
+                "cnl::remove_signedness<cnl::_impl::integer>");
     }
 
     namespace test_default_ctor {

@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_DIGITS_H
 
 #include "forward_declaration.h"
-#include "make_unsigned.h"
+#include "remove_signedness.h"
 #include "../assert.h"
 #include "../num_traits/digits.h"
 
@@ -54,7 +54,7 @@ namespace cnl {
             CNL_ASSERT(rhs>=0);
 #endif
             using promoted_type = decltype(lhs << rhs);
-            using unsigned_type = make_unsigned_t<decltype(lhs & lhs)>;
+            using unsigned_type = remove_signedness_t<decltype(lhs & lhs)>;
             return (rhs>=digits<promoted_type>::value)
                    ? Result{}
                    : static_cast<Result>(
