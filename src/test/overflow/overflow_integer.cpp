@@ -76,7 +76,7 @@ static_assert(is_overflow_integer<saturated_integer<int64_t>>::value,
 
 // equality
 
-static_assert(identical(saturated_integer<int>(1234), cnl::_impl::make_number<saturated_integer<uint8_t>>(1234)),
+static_assert(identical(saturated_integer<int>(1234), cnl::_impl::from_number<saturated_integer<uint8_t>>(1234)),
               "cnl::from_value<cnl::saturated_integer> test failed");
 static_assert(cnl::_impl::comparison_operator<cnl::_impl::equal_op, saturated_integer<uint8_t>, int>()(
         saturated_integer<uint8_t>(-1), 0), "cnl::saturated_integer equality test failed");
@@ -423,13 +423,13 @@ namespace test_impl_from_rep {
 namespace test_from_value {
     static_assert(identical(
             native_integer<long long>{746352},
-            cnl::_impl::make_number<native_integer<int>>(746352LL)), "");
+            cnl::_impl::from_number<native_integer<int>>(746352LL)), "");
     static_assert(identical(
             746352LL,
-            cnl::_impl::make_number<int>(746352LL)), "");
+            cnl::_impl::from_number<int>(746352LL)), "");
     static_assert(identical(
             native_integer<long long>{746352},
-            cnl::_impl::make_number<native_integer<int>>(native_integer<long long>{746352})), "");
+            cnl::_impl::from_number<native_integer<int>>(native_integer<long long>{746352})), "");
 }
 
 namespace test_minus {

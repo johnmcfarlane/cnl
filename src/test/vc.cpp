@@ -45,13 +45,13 @@ namespace {
 
     TEST(vc, from_value_of_i) {
         auto i = 123;
-        auto a = cnl::_impl:: make_number<Vc::simd<std::uint16_t>>(i);
+        auto a = cnl::_impl::from_number<Vc::simd<std::uint16_t>>(i);
         EXPECT_TRUE(simd_identical(Vc::simd<int>{123}, a));
     }
 
     TEST(vc, from_value_of_simd_of_i) {
         auto s = Vc::simd<int>{123};
-        auto a = cnl::_impl::make_number<Vc::simd<int>>(s);
+        auto a = cnl::_impl::from_number<Vc::simd<int>>(s);
         EXPECT_TRUE(simd_identical(Vc::simd<int>{123}, a));
     }
 
