@@ -332,15 +332,15 @@ namespace test_from_rep {
 }
 
 namespace test_impl_make_number {
-    static_assert(identical(fixed_point<short>{123}, cnl::_impl::make_number<fixed_point<long long>>(short{123})),
-            "cnl::_impl::make_number<fixed_point<>>");
-    static_assert(identical(fixed_point<std::uint64_t>{404}, cnl::_impl::make_number<fixed_point<>>(UINT64_C(404))),
-            "cnl::_impl::make_number<fixed_point<>, cnl::constant<4>>()");
+    static_assert(identical(fixed_point<short>{123}, cnl::_impl::from_number<fixed_point<long long>>(short{123})),
+            "cnl::_impl::from_number<fixed_point<>>");
+    static_assert(identical(fixed_point<std::uint64_t>{404}, cnl::_impl::from_number<fixed_point<>>(UINT64_C(404))),
+            "cnl::_impl::from_number<fixed_point<>, cnl::constant<4>>()");
 
-    static_assert(identical(cnl::_impl::make_number<fixed_point<int32>>(cnl::constant<369>{}), fixed_point<int>{369}),
-            "cnl::_impl::make_number<fixed_point<>>");
-    static_assert(identical(fixed_point<int, 2>{4}, cnl::_impl::make_number<fixed_point<>>(cnl::constant<4>{})),
-            "cnl::_impl::make_number<fixed_point<>, cnl::constant<4>>()");
+    static_assert(identical(cnl::_impl::from_number<fixed_point<int32>>(cnl::constant<369>{}), fixed_point<int>{369}),
+            "cnl::_impl::from_number<fixed_point<>>");
+    static_assert(identical(fixed_point<int, 2>{4}, cnl::_impl::from_number<fixed_point<>>(cnl::constant<4>{})),
+            "cnl::_impl::from_number<fixed_point<>, cnl::constant<4>>()");
 }
 
 #if defined(__cpp_deduction_guides)

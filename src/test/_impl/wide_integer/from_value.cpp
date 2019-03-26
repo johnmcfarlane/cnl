@@ -23,6 +23,6 @@ namespace {
     static_assert(
             identical(
                     cnl::_impl::wide_integer<64, unsigned>{654},
-                    cnl::_impl::make_number<cnl::_impl::wide_integer<>>(UINT64_C(654))),
-            "cnl::make_number<cnl::_impl::wide_integer>");
+                    cnl::_impl::from_number<cnl::_impl::wide_integer<>>(UINT64_C(654))),
+            "cnl::from_number<cnl::_impl::wide_integer>");
 }
