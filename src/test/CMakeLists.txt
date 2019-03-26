@@ -128,7 +128,7 @@ if(Boost_FOUND)
     endif(NOT Boost_VERSION GREATER 105500)
 endif(Boost_FOUND)
 
-if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+if (IS_MSVC)
     set(gtest_byproducts
             "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtestd${CMAKE_FIND_LIBRARY_SUFFIXES}"
             "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_maind${CMAKE_FIND_LIBRARY_SUFFIXES}"
@@ -224,9 +224,9 @@ endfunction(make_test)
 ######################################################################
 # create tests to verify CNL
 
-if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+if (IS_MSVC)
     set(SANITIZE_ENABLED_CXX_FLAGS "")
-elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
+elseif (IS_CLANG)
     if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "3.8.0")
         set(SANITIZE_ENABLED_CXX_FLAGS "-fsanitize=undefined -fsanitize=address")
         set(SANITIZE_ENABLED_LINKER_FLAGS "-fsanitize=undefined --rtlib=compiler-rt -lasan")
@@ -239,7 +239,7 @@ else ()
     set(SANITIZE_ENABLED_LINKER_FLAGS "-fsanitize=address -static-libasan")
 endif ()
 
-if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+if (IS_MSVC)
     set(TEST_CXX_FLAGS "")
 else ()
     set(TEST_CXX_FLAGS "-Wconversion -Wno-sign-conversion -ftemplate-backtrace-limit=0")
@@ -259,7 +259,7 @@ endforeach(source)
 # create tests to show off CNL
 
 foreach(source ${sample_sources})
-    if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
+    if (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
         make_test("${source}" target "-fpermissive -Wno-sign-compare -Wno-strict-overflow" "")
     else ()
         make_test("${source}" target "/wd4018" "")
@@ -278,8 +278,8 @@ add_dependencies(Test-glm Glm)
 
 if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND EXCEPTIONS)
     # Boost.SIMD has problems building with gcc-7.x
-    if(NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
-        if (${CMAKE_CXX_COMPILER_ID} STREQUAL Clang OR ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
+    if(NOT IS_GCC_FAMILY OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
+        if (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
             make_test(boost.simd.cpp target "-Wno-conversion" "")
         else ()
             make_test(boost.simd.cpp target "" "")
@@ -297,13 +297,13 @@ if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND EXCEPTIONS)
 
         ExternalProject_Get_Property(BoostSimd source_dir)
         target_include_directories("${target}" PRIVATE SYSTEM "${source_dir}/include")
-    endif(NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
+    endif(NOT IS_GCC_FAMILY OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
 endif(Boost_FOUND AND Boost_VERSION GREATER 106099 AND EXCEPTIONS)
 
 ######################################################################
 # create test of Vc integration
 
-if(${STD} STREQUAL "17" AND ${CMAKE_CXX_COMPILER_ID} STREQUAL GNU AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7.0.0"
+if(${STD} STREQUAL "17" AND IS_GCC_FAMILY AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7.0.0"
         AND CMAKE_VERSION VERSION_GREATER "3.2")
     make_test(vc.cpp target "" "")
 
