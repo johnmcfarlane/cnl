@@ -7,19 +7,19 @@
 #ifndef CNL_IMPL_TYPE_TRAITS_SET_SIGNEDNESS
 #define CNL_IMPL_TYPE_TRAITS_SET_SIGNEDNESS
 
-#include "make_signed.h"
+#include "add_signedness.h"
 #include "make_unsigned.h"
 
 namespace cnl {
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::set_signedness - std::make_signed with IsSigned parameter
+        // cnl::_impl::set_signedness - std::add_signedness with IsSigned parameter
 
         template<class T, bool IsSigned>
         struct set_signedness;
 
         template<class T>
-        struct set_signedness<T, true> : make_signed<T> {
+        struct set_signedness<T, true> : add_signedness<T> {
         };
 
         template<class T>

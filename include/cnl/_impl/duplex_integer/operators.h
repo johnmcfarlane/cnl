@@ -11,7 +11,7 @@
 #include "ctors.h"
 #include "digits.h"
 #include "divide.h"
-#include "make_signed.h"
+#include "add_signedness.h"
 #include "modulo.h"
 #include "multiply.h"
 #include "numeric_limits.h"

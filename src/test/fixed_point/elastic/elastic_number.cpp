@@ -176,9 +176,9 @@ struct test_traits {
     static_assert(cnl::numeric_limits<T>::is_signed==IsSigned,
                   "cnl::numeric_limits<T>::is_signed fails for give type, T");
     static_assert(is_signed<T>::value==IsSigned,
-                  "cnl::make_signed failed cnl::numeric_limits test");
-    static_assert(is_signed<cnl::make_signed_t<T>>::value,
-                  "cnl::make_signed failed cnl::numeric_limits test");
+                  "cnl::add_signedness failed cnl::numeric_limits test");
+    static_assert(is_signed<cnl::add_signedness_t<T>>::value,
+                  "cnl::add_signedness failed cnl::numeric_limits test");
     static_assert(!is_signed<cnl::make_unsigned_t<T>>::value,
                   "cnl::make_unsigned failed cnl::numeric_limits test");
 };
@@ -274,7 +274,7 @@ struct positive_elastic_test
     using rep = typename elastic_type::rep;
     using numeric_limits = cnl::numeric_limits<elastic_type>;
 
-    using signed_type = cnl::make_signed_t<elastic_type>;
+    using signed_type = cnl::add_signedness_t<elastic_type>;
     using unsigned_type = cnl::make_unsigned_t<elastic_type>;
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -474,7 +474,7 @@ struct signed_elastic_test :
 
     // not much point testing negative value properties of unsigned type, eh?
     static_assert(cnl::numeric_limits<elastic_type>::is_signed, "subject of test class is not reported as signed");
-    static_assert(is_same<cnl::make_signed_t<elastic_type>, elastic_type>::value,
+    static_assert(is_same<cnl::add_signedness_t<elastic_type>, elastic_type>::value,
                   "subject of test class is not reported as signed");
 
     ////////////////////////////////////////////////////////////////////////////////

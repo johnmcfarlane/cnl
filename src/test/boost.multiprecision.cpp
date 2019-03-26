@@ -44,15 +44,15 @@ static_assert(!cnl::is_signed<unsigned_multiprecision<5 >>::value,
 static_assert(!cnl::is_signed<unsigned_multiprecision<7 >>::value,
         "cnl::is_signed<unsigned_multiprecision<>>::value test failed");
 
-// test cnl::make_signed<{un}signed_multiprecision>::make_signed
-static_assert(cnl::is_signed<cnl::make_signed_t<signed_multiprecision<9>>>::value,
-        "cnl::make_signed<{un}signed_multiprecision>::make_signed test failed");
-static_assert(cnl::is_signed<cnl::make_signed_t<unsigned_multiprecision<10 >>>::value,
-        "cnl::make_signed<{un}signed_multiprecision>::make_signed test failed");
-static_assert(cnl::is_signed<cnl::make_signed_t<signed_multiprecision<9 >>>::value,
-        "cnl::make_signed<{un}signed_multiprecision>::make_signed test failed");
-static_assert(cnl::is_signed<cnl::make_signed_t<unsigned_multiprecision<10 >>>::value,
-        "cnl::make_signed<{un}signed_multiprecision>::make_signed test failed");
+// test cnl::add_signedness<{un}signed_multiprecision>::add_signedness
+static_assert(cnl::is_signed<cnl::add_signedness_t<signed_multiprecision<9>>>::value,
+        "cnl::add_signedness<{un}signed_multiprecision>::add_signedness test failed");
+static_assert(cnl::is_signed<cnl::add_signedness_t<unsigned_multiprecision<10 >>>::value,
+        "cnl::add_signedness<{un}signed_multiprecision>::add_signedness test failed");
+static_assert(cnl::is_signed<cnl::add_signedness_t<signed_multiprecision<9 >>>::value,
+        "cnl::add_signedness<{un}signed_multiprecision>::add_signedness test failed");
+static_assert(cnl::is_signed<cnl::add_signedness_t<unsigned_multiprecision<10 >>>::value,
+        "cnl::add_signedness<{un}signed_multiprecision>::add_signedness test failed");
 
 // test cnl::make_unsigned_t<{un}signed_multiprecision>
 static_assert(!cnl::is_signed<cnl::make_unsigned_t<signed_multiprecision<9 >>>::value,

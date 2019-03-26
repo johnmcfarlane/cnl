@@ -13,7 +13,7 @@
 #include "set_digits.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
-#include "../type_traits/make_signed.h"
+#include "../type_traits/add_signedness.h"
 #include "../used_digits.h"
 
 namespace cnl {
@@ -41,7 +41,7 @@ namespace cnl {
     struct from_value<Number, constant<Value>, _impl::enable_if_t<_impl::is_integral<Number>::value>> {
     private:
         using _result_type = set_digits_t<
-                make_signed_t<Number>,
+                add_signedness_t<Number>,
                 _impl::max(digits<int>::value, _impl::used_digits(Value))>;
     public:
         constexpr _result_type operator()(constant<Value> const &value) const {
