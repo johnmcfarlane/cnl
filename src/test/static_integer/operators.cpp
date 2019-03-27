@@ -5,6 +5,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/static_integer.h>
+
+#include <cnl/_impl/config.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
@@ -58,6 +60,42 @@ namespace {
     namespace test_multiply {
         static_assert(identical(cnl::static_integer<6>{7}*cnl::static_integer<13>{321},
                 cnl::static_integer<19>{2247}), "");
+    }
+
+    namespace test_divide {
+        using namespace cnl::literals;
+
+#if defined(__clang__) && (__cpp_constexpr >= 201304L) && defined(CNL_INT128_ENABLED)
+        static_assert(
+                identical(
+                        cnl::static_integer<226>(
+                                3333333333333333333333333333333333333333333333333333333333333333333_wide),
+                        cnl::make_static_integer(
+                                10000000000000000000000000000000000000000000000000000000000000000000_wide)/3),
+                "");
+
+        static_assert(
+                identical(
+                        cnl::static_integer<260>(
+                                33333333333333333333333333333333333333333333333333333333333333333333333333333_wide),
+                        cnl::make_static_integer(
+                                100000000000000000000000000000000000000000000000000000000000000000000000000000_wide)/3),
+                "");
+#endif
+    }
+
+    namespace test_shift_left {
+        using namespace cnl::literals;
+
+#if  defined(__GNUG__) && !defined(__clang__) && __GNUG__ <= 5
+        TEST(static_integer, divide)
+        {
+            auto expected = cnl::make_static_integer(
+                    231584178474632390847141970017375815706539969331281128078915168015826259279872_wide);
+            auto actual = cnl::static_integer<260>{1}<<257;
+            ASSERT_EQ(expected, actual);
+        }
+#endif
     }
 
     namespace test_shift_right_native {
