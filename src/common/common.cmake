@@ -38,7 +38,7 @@ elseif (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
   endif ()
 
   if (IS_CLANG)
-      string(APPEND MISC_FLAGS " -fconstexpr-backtrace-limit=0 -fconstexpr-steps=100000000")
+      string(APPEND MISC_FLAGS " -fconstexpr-backtrace-limit=0 -fconstexpr-steps=1000000000")
   endif ()
 
   set(CPP17_ENABLED_FLAGS "-std=c++17")
