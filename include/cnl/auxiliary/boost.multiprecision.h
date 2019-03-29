@@ -112,7 +112,7 @@ namespace cnl {
             return number;
         };
         constexpr _number_type operator()(_number_type&& number) const {
-            return number;
+            return std::move(number);
         };
     };
 

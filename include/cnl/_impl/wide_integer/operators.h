@@ -15,6 +15,7 @@
 #include "type.h"
 #include "../duplex_integer/operators.h"
 #include "../operators.h"
+#include "../ostream.h"
 
 /// compositional numeric library
 namespace cnl {

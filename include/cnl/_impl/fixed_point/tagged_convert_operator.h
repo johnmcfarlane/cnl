@@ -42,7 +42,7 @@ namespace cnl {
                 _impl::nearest_rounding_tag,
                 fixed_point<ResultRep, ResultExponent, Radix>,
                 fixed_point<InputRep, InputExponent, Radix>,
-                _impl::enable_if_t<(ResultExponent > InputExponent)>> {
+                _impl::enable_if_t<!(ResultExponent<=InputExponent)>> {
         private:
             using _result = fixed_point<ResultRep, ResultExponent, Radix>;
             using _input = fixed_point<InputRep, InputExponent, Radix>;
