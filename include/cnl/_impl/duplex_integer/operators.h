@@ -99,6 +99,11 @@ namespace cnl {
         };
 
         // binary_operator
+        template<class Operator, typename Upper, typename Lower, typename Rhs>
+        struct binary_operator<Operator, duplex_integer<Upper, Lower>, Rhs>
+                : binary_operator<Operator, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
+        };
+
         template<typename Upper, typename Lower>
         struct binary_operator<add_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>>
                 : first_degree_binary_operator<add_op, Upper, Lower> {
