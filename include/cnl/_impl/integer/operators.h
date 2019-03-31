@@ -12,7 +12,7 @@
 #include "make_integer.h"
 #include "numeric_limits.h"
 #include "type.h"
-#include "../operators.h"
+#include "../generic_operators.h"
 
 /// compositional numeric library
 namespace cnl {

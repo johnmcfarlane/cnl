@@ -7,12 +7,12 @@
 #if !defined(CNL_NUMBER_BASE_H)
 #define CNL_NUMBER_BASE_H 1
 
+#include "generic_operators.h"
 #include "num_traits/from_rep.h"
 #include "num_traits/from_value.h"
 #include "num_traits/is_composite.h"
 #include "num_traits/scale.h"
 #include "num_traits/to_rep.h"
-#include "operators.h"
 #include "../constant.h"
 #include "../limits.h"
 
