@@ -14,7 +14,7 @@
 #include "numeric_limits.h"
 #include "type.h"
 #include "../duplex_integer/operators.h"
-#include "../operators.h"
+#include "../generic_operators.h"
 #include "../ostream.h"
 
 /// compositional numeric library

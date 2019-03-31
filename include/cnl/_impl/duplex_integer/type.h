@@ -8,7 +8,6 @@
 #define CNL_IMPL_DUPLEX_INTEGER_TYPE_H 1
 
 #include "../num_traits/width.h"
-#include "../operators.h"
 #include "../power.h"
 #include "../type_traits/set_signedness.h"
 #include "../unreachable.h"

@@ -13,6 +13,7 @@
 #include "type.h"
 #include "wants_generic_ops.h"
 #include "../num_traits/width.h"
+#include "../generic_operators.h"
 #include "../operators.h"
 #include "../type_traits/conditional3.h"
 

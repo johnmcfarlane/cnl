@@ -21,6 +21,7 @@
 #include "type.h"
 #include "../common.h"
 #include "../num_traits/width.h"
+#include "../generic_operators.h"
 #include "../operators.h"
 #include "../wide_integer/type.h"
 #include "../wide_integer/operators.h"
