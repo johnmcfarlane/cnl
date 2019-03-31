@@ -4,7 +4,7 @@
      <DisplayString>{_r+0}</DisplayString>
    </Type>
 
-   <!--<Type Name="cnl::fixed_point&lt;*&gt;">
+   <!--<Type Name="cnl::scaled_integer&lt;*&gt;">
      <DisplayString>{_r}</DisplayString>
      <Expand>
        <Item Name="_r">_r</Item>
@@ -15,7 +15,7 @@
      </Expand>
    </Type>-->
    
-   <Type Name="cnl::fixed_point&lt;*&gt;">
+   <Type Name="cnl::scaled_integer&lt;*&gt;">
      <DisplayString Condition="exponent==0 &amp;&amp; _r*0-1&lt;0"  >{(long double)_r} u{integer_digits}:{fractional_digits}</DisplayString>
      <DisplayString Condition="exponent==0 &amp;&amp; _r*0-1&gt;0"  >{(long double)_r} s{integer_digits}:{fractional_digits}</DisplayString>
      <DisplayString Condition="exponent&lt;0 &amp;&amp; _r*0-1&lt;0">{(long double)_r/(1&lt;&lt;-exponent)} u{integer_digits}:{fractional_digits}</DisplayString>

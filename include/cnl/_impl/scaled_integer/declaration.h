@@ -12,7 +12,7 @@
 /// compositional numeric library
 namespace cnl {
     template<typename Rep = int, int Exponent = 0, int Radix = cnl::numeric_limits<Rep>::radix>
-    class fixed_point;
+    class scaled_integer;
 }
 
 #endif  // CNL_IMPL_SCALED_INTEGER_DECLARATION_H

@@ -11,14 +11,14 @@
 #define TEST_LABEL trapping_integer_
 
 ////////////////////////////////////////////////////////////////////////////////
-// integer types used as fixed_point Rep type
+// integer types used as scaled_integer Rep type
 
 using test_int = cnl::overflow_integer<int, cnl::trapping_overflow_tag>;
 
 ////////////////////////////////////////////////////////////////////////////////
-// perform fixed_point tests with this type of fixed_point specialization
+// perform scaled_integer tests with this type of scaled_integer specialization
 
-#include "scaled_integer/scaled_integer_common.h"
+#include "../scaled_integer_common.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // trapping_integer-specific exceptions tests
@@ -38,7 +38,7 @@ TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), scale_up)
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), assignment)
 {
-    using fp_type = fixed_point<int8, -7>;
+    using fp_type = scaled_integer<int8, -7>;
     ASSERT_DEATH(fp_type(1), "positive overflow");
 }
 #endif

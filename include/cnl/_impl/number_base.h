@@ -292,7 +292,7 @@ namespace cnl {
     template<class Derived, class Rep>
     struct numeric_limits<cnl::_impl::number_base<Derived, Rep>>
     : numeric_limits<Rep> {
-        // fixed-point-specific helpers
+        // number_base-specific helpers
         using _value_type = Derived;
         using _rep = typename _value_type::rep;
         using _rep_numeric_limits = numeric_limits<_rep>;

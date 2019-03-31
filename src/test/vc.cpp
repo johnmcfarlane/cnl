@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 
-// necessary plumbing to integrate Vc::simd with cnl::fixed_point
+// necessary plumbing to integrate Vc::simd with cnl::scaled_integer
 namespace std {
     template<typename T, class Abi>
     struct numeric_limits<Vc::simd<T, Abi>> : numeric_limits<T> {
@@ -80,11 +80,11 @@ namespace {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::fixed_point<Vc::simd> tests
+    // cnl::scaled_integer<Vc::simd> tests
 
     // fixed-point SIMD type
     template<typename T = int, int Exponent = 0, class Abi = typename Vc::simd<T>::abi_type>
-    using fp_simd = cnl::fixed_point<Vc::simd<T, Abi>, Exponent>;
+    using fp_simd = cnl::scaled_integer<Vc::simd<T, Abi>, Exponent>;
 
     TEST(fp_vc, equal) {
         auto a = fp_simd<std::uint16_t>(static_cast<std::uint16_t>(123));

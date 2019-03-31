@@ -9,7 +9,7 @@
 #include <cnl/_impl/rounding/tagged_convert_operator.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
-#include <cnl/elastic_number.h>
+#include <cnl/elastic_scaled_integer.h>
 #include <cnl/scaled_integer.h>
 
 
@@ -53,30 +53,30 @@ namespace  test_convert_nearest_rounding_native_datatypes
             "cnl::convert<nearest_rounding_tag, double, int>");
 }
 
-namespace test_convert_nearest_rounding_elastic_number
+namespace test_convert_nearest_rounding_elastic_scaled_integer
 {
-    static constexpr auto a = cnl::elastic_number<8, -4>{0.3125};
+    static constexpr auto a = cnl::elastic_scaled_integer<8, -4>{0.3125};
     static constexpr auto b =
-            cnl::convert<cnl::nearest_rounding_tag, cnl::elastic_number<4, -1>, cnl::elastic_number<8, -4>>(a);
-    static_assert(identical(cnl::elastic_number<4, -1>{0.5}, b),
-            "cnl::convert<nearest_rounding_tag, elastic_number, elastic_number>");
+            cnl::convert<cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<4, -1>, cnl::elastic_scaled_integer<8, -4>>(a);
+    static_assert(identical(cnl::elastic_scaled_integer<4, -1>{0.5}, b),
+            "cnl::convert<nearest_rounding_tag, elastic_scaled_integer, elastic_scaled_integer>");
 
     static constexpr auto c =
-            cnl::convert<cnl::nearest_rounding_tag, cnl::elastic_number<4, -2>, cnl::elastic_number<8, -4>>(a);
-    static_assert(identical(cnl::elastic_number<4, -2>{0.25}, c),
-            "cnl::convert<nearest_rounding_tag, elastic_number, elastic_number>");
+            cnl::convert<cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<4, -2>, cnl::elastic_scaled_integer<8, -4>>(a);
+    static_assert(identical(cnl::elastic_scaled_integer<4, -2>{0.25}, c),
+            "cnl::convert<nearest_rounding_tag, elastic_scaled_integer, elastic_scaled_integer>");
 }
 
-namespace test_convert_nearest_rounding_fixed_point
+namespace test_convert_nearest_rounding_scaled_integer
 {
-    static constexpr auto a = cnl::fixed_point<int, -4>{0.3125};
+    static constexpr auto a = cnl::scaled_integer<int, -4>{0.3125};
     static constexpr auto b =
-            cnl::convert<cnl::nearest_rounding_tag, cnl::fixed_point<int, -1>, cnl::fixed_point<int, -4>>(a);
-    static_assert(identical(cnl::fixed_point<int, -1>{0.5}, b),
-            "cnl::convert<nearest_rounding_tag, fixed_point, fixed_point>");
+            cnl::convert<cnl::nearest_rounding_tag, cnl::scaled_integer<int, -1>, cnl::scaled_integer<int, -4>>(a);
+    static_assert(identical(cnl::scaled_integer<int, -1>{0.5}, b),
+            "cnl::convert<nearest_rounding_tag, scaled_integer, scaled_integer>");
 
     static constexpr auto c =
-            cnl::convert<cnl::nearest_rounding_tag, cnl::fixed_point<int, -2>, cnl::fixed_point<int, -4>>(a);
-    static_assert(identical(cnl::fixed_point<int, -2>{0.25}, c),
-            "cnl::convert<nearest_rounding_tag, fixed_point, fixed_point>");
+            cnl::convert<cnl::nearest_rounding_tag, cnl::scaled_integer<int, -2>, cnl::scaled_integer<int, -4>>(a);
+    static_assert(identical(cnl::scaled_integer<int, -2>{0.25}, c),
+            "cnl::convert<nearest_rounding_tag, scaled_integer, scaled_integer>");
 }

@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief essential definitions related to the `cnl::elastic_number` type
+/// \brief essential definitions related to the `cnl::elastic_scaled_integer` type
 
 #if !defined(CNL_ELASTIC_NUMBER_H)
 #define CNL_ELASTIC_NUMBER_H 1
@@ -32,29 +32,34 @@ namespace cnl {
     /// \sa elastic_integer
 
     template<int Digits, int Exponent = 0, class Narrowest = signed>
-    using elastic_number = fixed_point<elastic_integer<Digits, Narrowest>, Exponent>;
+    using elastic_scaled_integer = scaled_integer<elastic_integer<Digits, Narrowest>, Exponent>;
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::make_elastic_number
+    // cnl::make_elastic_scaled_integer
 
-    /// \brief generate an \ref cnl::elastic_number object of given value
+    /// \brief generate an \ref cnl::elastic_scaled_integer object of given value
     ///
     /// \tparam Narrowest the narrowest type to use as storage
-    /// in the resultant \ref cnl::elastic_number object
+    /// in the resultant \ref cnl::elastic_scaled_integer object
     /// \tparam Integral the type of Value
     /// \tparam Value the integer number to be represented
     ///
-    /// \return the given value to be represented using an \ref cnl::elastic_number type
+    /// \return the given value to be represented using an \ref cnl::elastic_scaled_integer type
     ///
     /// \note The return type is guaranteed to be no larger than is necessary to represent the value.
+    ///
+    /// \par Example
+    ///
+    /// To define an int-sized object using \ref make_elastic_scaled_integer and \ref cnl::constant
+    /// \snippet snippets.cpp define an int-sized object using make_elastic_scaled_integer and constant
 
     template<
             typename Narrowest = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0>
     CNL_NODISCARD constexpr auto
-    make_elastic_number(constant<Value>)
-    -> elastic_number<
+    make_elastic_scaled_integer(constant<Value>)
+    -> elastic_scaled_integer<
             _impl::max(digits<constant<Value>>::value-trailing_bits(Value), 1),
             trailing_bits(Value),
             Narrowest>
@@ -64,20 +69,26 @@ namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::make_elastic_number
+    // cnl::make_elastic_scaled_integer
 
-    /// \brief generate an \ref cnl::elastic_number object of given value
     ///
-    /// \tparam Narrowest the most narrow storage type of the resultant \ref cnl::elastic_number object
+    /// \tparam Narrowest the most narrow storage type of the resultant \ref cnl::elastic_scaled_integer object
     /// \tparam Integral the type of value
     ///
-    /// \param value the value with which to initialize the elastic_number object
+    /// \param value the value with which to initialize the elastic_scaled_integer object
     ///
     /// \note The return type is guaranteed to be no larger than is necessary to represent the value.
+    ///
+    /// \par Example
+    ///
+    /// To define a byte-sized object using make_elastic_scaled_integer and _c:
+    /// \snippet snippets.cpp define a byte-sized object using \ref make_elastic_scaled_integer and \ref _c
+    ///
+    /// \brief generate an \ref cnl::elastic_scaled_integer object of given value
     template<typename Narrowest = void, typename Integral = int>
     CNL_NODISCARD constexpr auto
-    make_elastic_number(Integral const& value)
-    -> elastic_number<
+    make_elastic_scaled_integer(Integral const& value)
+    -> elastic_scaled_integer<
             numeric_limits<Integral>::digits,
             0,
             typename std::conditional<
@@ -90,8 +101,8 @@ namespace cnl {
 
     template<typename Narrowest = void, typename Rep = int, int Exponent = 0, int Radix = 2>
     CNL_NODISCARD constexpr auto
-    make_elastic_number(fixed_point<Rep, Exponent, Radix> const& value)
-    -> elastic_number<
+    make_elastic_scaled_integer(scaled_integer<Rep, Exponent, Radix> const& value)
+    -> elastic_scaled_integer<
             numeric_limits<Rep>::digits,
             Exponent,
             typename std::conditional<
@@ -108,11 +119,11 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::literals::operator "" _elastic
 
-        /// \brief generate an \ref cnl::elastic_number object using a literal
+        /// \brief generate an \ref cnl::elastic_scaled_integer object using a literal
         ///
         /// \tparam Digits the characters of the literal sequence
         ///
-        /// \return the given value to be represented using an \ref cnl::elastic_number type
+        /// \return the given value to be represented using an \ref cnl::elastic_scaled_integer type
         ///
         /// \note The return type is guaranteed to be no larger
         /// than is necessary to represent the maximum value of Integral.
@@ -124,10 +135,10 @@ namespace cnl {
 
         template<char... Chars>
         CNL_NODISCARD constexpr auto operator "" _elastic()
-        -> decltype(make_elastic_number<int>(
+        -> decltype(make_elastic_scaled_integer<int>(
                 constant<_cnlint_impl::parse<sizeof...(Chars)+1>({Chars..., '\0'})>{}))
         {
-            return make_elastic_number<int>(
+            return make_elastic_scaled_integer<int>(
                     constant<_cnlint_impl::parse<sizeof...(Chars)+1>({Chars..., '\0'})>{});
         }
     }

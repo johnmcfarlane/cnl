@@ -11,14 +11,14 @@
 #define TEST_LABEL throwing_integer_
 
 ////////////////////////////////////////////////////////////////////////////////
-// integer types used as fixed_point Rep type
+// integer types used as scaled_integer Rep type
 
 using test_int = cnl::overflow_integer<int, cnl::throwing_overflow_tag>;
 
 ////////////////////////////////////////////////////////////////////////////////
-// perform fixed_point tests with this type of fixed_point specialization
+// perform scaled_integer tests with this type of scaled_integer specialization
 
-#include "scaled_integer/scaled_integer_common.h"
+#include "../scaled_integer_common.h"
 
 #include <gtest/gtest.h>
 
@@ -41,7 +41,7 @@ TEST(throwing_integer_overflow_exception, shift_left)
 
 TEST(throwing_integer_overflow_exception, assignment)
 {
-    using fp_type = fixed_point<int8, -7>;
+    using fp_type = scaled_integer<int8, -7>;
     ASSERT_THROW((void)fp_type(1), std::overflow_error);
 }
 

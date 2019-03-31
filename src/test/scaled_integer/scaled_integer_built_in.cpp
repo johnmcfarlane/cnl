@@ -12,12 +12,12 @@
 #define TEST_LABEL built_in_
 
 ////////////////////////////////////////////////////////////////////////////////
-// integer types used as fixed_point Rep type
+// integer types used as scaled_integer Rep type
 
 using test_int = int;
 
 ////////////////////////////////////////////////////////////////////////////////
-// perform fixed_point tests with this type of fixed_point specialization
+// perform scaled_integer tests with this type of scaled_integer specialization
 
 #include "scaled_integer_common.h"
 #include <cnl/constant.h>
@@ -26,24 +26,24 @@ using test_int = int;
 
 namespace test_literals_initialization {
     using cnl::_impl::identical;
-    using cnl::fixed_point;
+    using cnl::scaled_integer;
 
     using namespace cnl::literals;
 
-    static_assert(identical(fixed_point<int, 0>{1}, fixed_point(1_c)));
-    static_assert(identical(fixed_point<int, 1>{2}, fixed_point(2_c)));
-    static_assert(identical(fixed_point<int, 0>{3}, fixed_point(3_c)));
-    static_assert(identical(fixed_point<int, 2>{500}, fixed_point(500_c)));
-    static_assert(identical(fixed_point<int32_t, 32>{INT64_C(0x7fffffff00000000)}, fixed_point(0x7fffffff00000000_c)));
+    static_assert(identical(scaled_integer<int, 0>{1}, scaled_integer(1_c)));
+    static_assert(identical(scaled_integer<int, 1>{2}, scaled_integer(2_c)));
+    static_assert(identical(scaled_integer<int, 0>{3}, scaled_integer(3_c)));
+    static_assert(identical(scaled_integer<int, 2>{500}, scaled_integer(500_c)));
+    static_assert(identical(scaled_integer<int32_t, 32>{INT64_C(0x7fffffff00000000)}, scaled_integer(0x7fffffff00000000_c)));
 }
 
 namespace test_literals_constant {
     using cnl::_impl::identical;
-    using cnl::fixed_point;
+    using cnl::scaled_integer;
 
     using namespace cnl::literals;
 
-    constexpr auto kibi = fixed_point(1024_c);
+    constexpr auto kibi = scaled_integer(1024_c);
     constexpr auto mebi = kibi * 1024_c;
     constexpr auto tebi = mebi * mebi;
     constexpr auto exbi = tebi * mebi;

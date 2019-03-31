@@ -62,7 +62,7 @@ set(test_sources
 
         # components in free functions
         elastic/rounding/elastic_integer_rounding.cpp
-        rounding/scaled_integer/elastic_integer/elastic_number.cpp
+        rounding/scaled_integer/elastic_integer/elastic_scaled_integer.cpp
         rounding/scaled_integer/scaled_integer.cpp
 
         # composites
@@ -87,9 +87,9 @@ set(test_sources
         elastic/rounding/overflow/rounding_safe_integer.cpp
         overflow/elastic/safe_integer.cpp
         overflow/wide/wide_overflow_integer.cpp
-        scaled_integer/elastic/make_elastic_number.cpp
-        scaled_integer/elastic/elastic_number.cpp
-        scaled_integer/rounding/elastic/rounding_elastic_number.cpp
+        scaled_integer/elastic/make_elastic_scaled_integer.cpp
+        scaled_integer/elastic/elastic_scaled_integer.cpp
+        scaled_integer/rounding/elastic/rounding_elastic_scaled_integer.cpp
         scaled_integer/overflow/elastic/integer.cpp
         static_integer/operators.cpp
         static_integer/type.cpp
@@ -132,7 +132,7 @@ find_package(Boost)
 
 if(Boost_FOUND)
     if(NOT Boost_VERSION GREATER 105500)
-        message("Boost version is too low to use with cnl::fixed_point")
+        message("Boost version is too low to use with cnl::scaled_integer")
     endif(NOT Boost_VERSION GREATER 105500)
 endif(Boost_FOUND)
 

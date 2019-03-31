@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief definitions and specializations that adapt Boost.SIMD for use with @ref cnl::fixed_point
+/// \brief definitions and specializations that adapt Boost.SIMD for use with @ref cnl::scaled_integer
 
 #if !defined(CNL_BOOST_SIMD_H)
 #define CNL_BOOST_SIMD_H 1
@@ -16,7 +16,7 @@
 
 namespace cnl {
     template<class T, std::size_t N, int Exponent>
-    ::std::ostream& operator<<(::std::ostream& out, fixed_point<boost::simd::pack<T, N>, Exponent> const& fp)
+    ::std::ostream& operator<<(::std::ostream& out, scaled_integer<boost::simd::pack<T, N>, Exponent> const& fp)
     {
         return out << static_cast<boost::simd::pack<long double, N>>(fp);
     }

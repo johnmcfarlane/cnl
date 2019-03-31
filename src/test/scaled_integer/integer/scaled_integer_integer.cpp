@@ -13,11 +13,11 @@
 #define TEST_LABEL integer_
 
 ////////////////////////////////////////////////////////////////////////////////
-// integer type used as fixed_point Rep type
+// integer type used as scaled_integer Rep type
 
 using test_int = cnl::_impl::integer<int>;
 
 ////////////////////////////////////////////////////////////////////////////////
-// perform fixed_point tests with this type of fixed_point specialization
+// perform scaled_integer tests with this type of scaled_integer specialization
 
-#include "scaled_integer/scaled_integer_common.h"
+#include "../scaled_integer_common.h"

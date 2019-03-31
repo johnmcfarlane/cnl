@@ -6,7 +6,7 @@ template<
         int IntegerDigits,
         int FractionalDigits,
         class Narrowest>
-using saturated_elastic_fixed_point = cnl::fixed_point<
+using saturated_elastic_scaled_integer = cnl::scaled_integer<
         cnl::elastic_integer<
                 IntegerDigits+FractionalDigits,
                 cnl::rounding_integer<
@@ -16,8 +16,8 @@ using saturated_elastic_fixed_point = cnl::fixed_point<
                         cnl::native_rounding_tag>>,
         -FractionalDigits>;
 
-using temp_wide_t = saturated_elastic_fixed_point<23, 8, int32_t>;
-using temp_t = saturated_elastic_fixed_point<7, 8, int16_t>;
+using temp_wide_t = saturated_elastic_scaled_integer<23, 8, int32_t>;
+using temp_t = saturated_elastic_scaled_integer<7, 8, int16_t>;
 
 TEST(_426, half)
 {

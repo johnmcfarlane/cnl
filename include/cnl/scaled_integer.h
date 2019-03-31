@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief all definitions related to the `cnl::fixed_point` type
+/// \brief all definitions related to the `cnl::scaled_integer` type
 
 #if !defined(CNL_SCALED_INTEGER_H)
 #define CNL_SCALED_INTEGER_H 1

@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief Signed 15:16 Fixed-Point Square Function Using cnl::elastic_number
+/// \brief Signed 15:16 Fixed-Point Square Function Using cnl::elastic_scaled_integer
 
 // Here's how to use the CNL library on Godbolt.org.
 // Normally, you'd just add `#include <cnl/all.h>`.
@@ -36,21 +36,21 @@ float square_elastic_integer(float input) {
     return static_cast<float>(prod) / 4294967296.f;
 }
 
-// the same function using cnl::fixed_point
-float square_fixed_point(float input) {
-    // fixed_point handles scaling
-    auto fixed = fixed_point<int32_t, -16>{input};
+// the same function using cnl::scaled_integer
+float square_scaled_integer(float input) {
+    // scaled_integer handles scaling
+    auto fixed = scaled_integer<int32_t, -16>{input};
 
     // but it uses int under the hood; user must still widen
-    auto prod = fixed_point<int64_t, -16>{fixed} * fixed;
+    auto prod = scaled_integer<int64_t, -16>{fixed} * fixed;
 
     return static_cast<float>(prod);
 }
 
-// finally, the composition of fixed_point and elastic_integer
+// finally, the composition of scaled_integer and elastic_integer
 float square_elastic(float input) {
-    // alias to fixed_point<elastic_integer<31, int>, -16>
-    auto fixed = elastic_number<15, 16>{input};
+    // alias to scaled_integer<elastic_integer<31, int>, -16>
+    auto fixed = elastic_scaled_integer<15, 16>{input};
 
     // concise, safe and zero-cost!
     auto prod = fixed * fixed;

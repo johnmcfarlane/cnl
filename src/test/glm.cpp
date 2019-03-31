@@ -30,11 +30,11 @@ namespace {
     }
 
     TEST(glm, fp_char_multiply) {
-        using op_fp = cnl::fixed_point<char, -4>;
+        using op_fp = cnl::scaled_integer<char, -4>;
         auto lhs = glm::tvec4<op_fp>{op_fp{7.5}};
         auto rhs = glm::tvec4<op_fp>{op_fp{5.25}};
 
-        using result_fp = cnl::fixed_point<int, -8>;
+        using result_fp = cnl::scaled_integer<int, -8>;
         auto expected = glm::tvec4<result_fp>{result_fp{39.375}};
         auto product = lhs*rhs;
 

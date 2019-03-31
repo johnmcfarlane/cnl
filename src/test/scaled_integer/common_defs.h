@@ -4,7 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-// included from fixed_point_common.h;
+// included from scaled_integer_common.h;
 // contains definitions that aid testing and which depend upon definition of test_int
 
 #include <cnl/_impl/type_traits/assert_same.h>
@@ -50,7 +50,7 @@ using uint128 = cnl::set_digits_t<test_unsigned, 128>;
 // imports from cnl
 
 template <typename Rep=test_int, int Exponent=0>
-using fixed_point = cnl::fixed_point<Rep, Exponent>;
+using scaled_integer = cnl::scaled_integer<Rep, Exponent>;
 
 using cnl::_impl::assert_same;
 using cnl::_impl::identical;

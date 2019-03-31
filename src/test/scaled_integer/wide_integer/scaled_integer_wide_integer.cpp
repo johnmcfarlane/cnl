@@ -18,46 +18,46 @@
 #define TEST_LABEL wide_integer_
 
 ////////////////////////////////////////////////////////////////////////////////
-// wide_integer type used as fixed_point Rep type
+// wide_integer type used as scaled_integer Rep type
 
 using test_int = cnl::wide_integer<cnl::digits<int>::value, int>;
 
 ////////////////////////////////////////////////////////////////////////////////
-// perform fixed_point tests with this type of fixed_point specialization
-#include "scaled_integer/scaled_integer_common.h"
+// perform scaled_integer tests with this type of scaled_integer specialization
+#include "../scaled_integer_common.h"
 
-TEST(fixed_point_wide_integer, to_string)
+TEST(scaled_integer_wide_integer, to_string)
 {
     auto const expected = "0.714285714285714285714285713708718880752631365184564249393162072010454721748828887939453125";
-    auto const actual = cnl::to_string(cnl::fixed_point<cnl::wide_integer<100, unsigned>, -90>{5.}/7);
+    auto const actual = cnl::to_string(cnl::scaled_integer<cnl::wide_integer<100, unsigned>, -90>{5.}/7);
     ASSERT_EQ(expected, actual);
 }
 
 #if !defined(__arm__)
-TEST(fixed_point_wide_integer, quotient)
+TEST(scaled_integer_wide_integer, quotient)
 {
-    using fixed_point = cnl::fixed_point<cnl::wide_integer<129, unsigned>, -96>;
-    auto expected = fixed_point{1.L/3};
-    auto actual = cnl::quotient<fixed_point>(1, 3);
+    using scaled_integer = cnl::scaled_integer<cnl::wide_integer<129, unsigned>, -96>;
+    auto expected = scaled_integer{1.L/3};
+    auto actual = cnl::quotient<scaled_integer>(1, 3);
     ASSERT_EQ(double(expected), double(actual));
 }
 
 #if !defined(__GNUC__) || defined(__clang__)
-TEST(fixed_point_wide_integer, quotient200)
+TEST(scaled_integer_wide_integer, quotient200)
 {
-    using fixed_point = cnl::fixed_point<cnl::wide_integer<200, unsigned>, -196>;
-    auto expected = fixed_point{5.L/7};
-    auto actual = cnl::quotient<fixed_point>(5, 7);
+    using scaled_integer = cnl::scaled_integer<cnl::wide_integer<200, unsigned>, -196>;
+    auto expected = scaled_integer{5.L/7};
+    auto actual = cnl::quotient<scaled_integer>(5, 7);
     ASSERT_EQ(double(expected), double(actual));
 }
 
-TEST(fixed_point_wide_integer, ctor_fraction)
+TEST(scaled_integer_wide_integer, ctor_fraction)
 {
     using namespace cnl::literals;
-    using fixed_point = cnl::fixed_point<cnl::wide_integer<200>, -100>;
+    using scaled_integer = cnl::scaled_integer<cnl::wide_integer<200>, -100>;
 
-    auto expected = cnl::_impl::from_rep<fixed_point>(cnl::wide_integer<200>{0x5555555555555555555555555_wide});
-    auto actual = fixed_point{cnl::fraction<int>(1, 3)};
+    auto expected = cnl::_impl::from_rep<scaled_integer>(cnl::wide_integer<200>{0x5555555555555555555555555_wide});
+    auto actual = scaled_integer{cnl::fraction<int>(1, 3)};
     ASSERT_EQ(expected, actual);
 }
 #endif

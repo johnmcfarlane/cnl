@@ -16,11 +16,11 @@
 #define TEST_LABEL wide_integer_8_
 
 ////////////////////////////////////////////////////////////////////////////////
-// wide_integer type used as fixed_point Rep type
+// wide_integer type used as scaled_integer Rep type
 
 using test_int = cnl::wide_integer<cnl::digits<int>::value, cnl::int8>;
 
 ////////////////////////////////////////////////////////////////////////////////
-// perform fixed_point tests with this type of fixed_point specialization
+// perform scaled_integer tests with this type of scaled_integer specialization
 
-#include "scaled_integer/scaled_integer_common.h"
+#include "../scaled_integer_common.h"

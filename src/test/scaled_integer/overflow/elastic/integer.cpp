@@ -21,7 +21,7 @@ namespace {
             int IntegerDigits,
             int FractionalDigits,
             class Narrowest>
-    using saturated_elastic_fixed_point = cnl::fixed_point<
+    using saturated_elastic_scaled_integer = cnl::scaled_integer<
             cnl::overflow_integer<
                     cnl::elastic_integer<
                             IntegerDigits+FractionalDigits,
@@ -30,7 +30,7 @@ namespace {
             -FractionalDigits>;
 
     namespace test_unwrap {
-        using type = saturated_elastic_fixed_point<7, 8, std::int16_t>;
+        using type = saturated_elastic_scaled_integer<7, 8, std::int16_t>;
 #if !defined(_MSC_VER)
         static_assert(std::is_trivial<type>::value, "type is not trivial");
 #endif

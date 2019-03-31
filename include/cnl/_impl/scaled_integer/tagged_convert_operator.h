@@ -18,35 +18,35 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        // conversion between two fixed_point types where rounding *isn't* an issue
+        // conversion between two scaled_integer types where rounding *isn't* an issue
         template<
                 typename ResultRep, int ResultExponent,
                 typename InputRep, int InputExponent,
                 int Radix>
         struct tagged_convert_operator<
                 nearest_rounding_tag,
-                fixed_point<ResultRep, ResultExponent, Radix>,
-                fixed_point<InputRep, InputExponent, Radix>,
+                scaled_integer<ResultRep, ResultExponent, Radix>,
+                scaled_integer<InputRep, InputExponent, Radix>,
                 _impl::enable_if_t<(ResultExponent <= InputExponent)>>
                 : tagged_convert_operator<
                         native_rounding_tag,
-                        fixed_point<ResultRep, ResultExponent, Radix>,
-                        fixed_point<InputRep, InputExponent, Radix>> {
+                        scaled_integer<ResultRep, ResultExponent, Radix>,
+                        scaled_integer<InputRep, InputExponent, Radix>> {
         };
 
-        // conversion between two fixed_point types where rounding *is* an issue
+        // conversion between two scaled_integer types where rounding *is* an issue
         template<
                 typename ResultRep, int ResultExponent,
                 typename InputRep, int InputExponent,
                 int Radix>
         struct tagged_convert_operator<
                 nearest_rounding_tag,
-                fixed_point<ResultRep, ResultExponent, Radix>,
-                fixed_point<InputRep, InputExponent, Radix>,
+                scaled_integer<ResultRep, ResultExponent, Radix>,
+                scaled_integer<InputRep, InputExponent, Radix>,
                 _impl::enable_if_t<!(ResultExponent<=InputExponent)>> {
         private:
-            using _result = fixed_point<ResultRep, ResultExponent, Radix>;
-            using _input = fixed_point<InputRep, InputExponent, Radix>;
+            using _result = scaled_integer<ResultRep, ResultExponent, Radix>;
+            using _input = scaled_integer<InputRep, InputExponent, Radix>;
 
             CNL_NODISCARD static constexpr _input half()
             {
@@ -61,17 +61,17 @@ namespace cnl {
             }
         };
 
-        // conversion from float to fixed_point
+        // conversion from float to scaled_integer
         template<
                 typename ResultRep, int ResultExponent, int ResultRadix,
                 typename Input>
         struct tagged_convert_operator<
                 nearest_rounding_tag,
-                fixed_point<ResultRep, ResultExponent, ResultRadix>,
+                scaled_integer<ResultRep, ResultExponent, ResultRadix>,
                 Input,
                 _impl::enable_if_t<std::is_floating_point<Input>::value>> {
         private:
-            using _result = fixed_point<ResultRep, ResultExponent, ResultRadix>;
+            using _result = scaled_integer<ResultRep, ResultExponent, ResultRadix>;
 
             CNL_NODISCARD static constexpr Input half()
             {
@@ -91,13 +91,13 @@ namespace cnl {
                 typename Input>
         struct tagged_convert_operator<
                 nearest_rounding_tag,
-                fixed_point<ResultRep, ResultExponent, ResultRadix>,
+                scaled_integer<ResultRep, ResultExponent, ResultRadix>,
                 Input,
                 _impl::enable_if_t<cnl::numeric_limits<Input>::is_integer>>
                 : tagged_convert_operator<
                         nearest_rounding_tag,
-                        fixed_point<ResultRep, ResultExponent, ResultRadix>,
-                        fixed_point<Input>> {
+                        scaled_integer<ResultRep, ResultExponent, ResultRadix>,
+                        scaled_integer<Input>> {
         };
 
         template<
@@ -106,14 +106,14 @@ namespace cnl {
         struct tagged_convert_operator<
                 nearest_rounding_tag,
                 Result,
-                fixed_point<InputRep, InputExponent, InputRadix>,
+                scaled_integer<InputRep, InputExponent, InputRadix>,
                 _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer>> {
-            using _input = fixed_point<InputRep, InputExponent, InputRadix>;
+            using _input = scaled_integer<InputRep, InputExponent, InputRadix>;
 
             CNL_NODISCARD constexpr Result operator()(_input const& from) const
             {
                 return _impl::to_rep(
-                        _impl::tagged_convert_operator<nearest_rounding_tag, fixed_point<Result>, _input>{}(
+                        _impl::tagged_convert_operator<nearest_rounding_tag, scaled_integer<Result>, _input>{}(
                                 from));
             }
         };

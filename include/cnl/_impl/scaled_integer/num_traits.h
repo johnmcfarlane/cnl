@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief \ref cnl::fixed_point specializations of num_traits traits and similar
+/// \brief \ref cnl::scaled_integer specializations of num_traits traits and similar
 
 #if !defined(CNL_IMPL_SCALED_INTEGER_NUM_TRAITS_H)
 #define CNL_IMPL_SCALED_INTEGER_NUM_TRAITS_H 1
@@ -15,33 +15,33 @@
 /// compositional numeric library
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
-    // fixed_point specializations of <num_traits.h> templates
+    // scaled_integer specializations of <num_traits.h> templates
 
     template<typename Rep, int Exponent, int Radix>
-    struct digits<fixed_point<Rep, Exponent, Radix>> : digits<Rep> {
+    struct digits<scaled_integer<Rep, Exponent, Radix>> : digits<Rep> {
     };
 
     template<typename Rep, int Exponent, int Radix, int MinNumBits>
-    struct set_digits<fixed_point<Rep, Exponent, Radix>, MinNumBits> {
-        using type = fixed_point<set_digits_t<Rep, MinNumBits>, Exponent, Radix>;
+    struct set_digits<scaled_integer<Rep, Exponent, Radix>, MinNumBits> {
+        using type = scaled_integer<set_digits_t<Rep, MinNumBits>, Exponent, Radix>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::from_value<cnl::fixed_point<>>
+    // cnl::from_value<cnl::scaled_integer<>>
 
     template<typename Rep, int Exponent, int Radix, typename Value>
-    struct from_value<fixed_point<Rep, Exponent, Radix>, Value>
-            : _impl::from_value_simple<fixed_point<Value, 0, Radix>, Value> {
+    struct from_value<scaled_integer<Rep, Exponent, Radix>, Value>
+            : _impl::from_value_simple<scaled_integer<Value, 0, Radix>, Value> {
     };
 
     template<typename Rep, int Exponent, int Radix, typename ValueRep, int ValueExponent>
-    struct from_value<fixed_point<Rep, Exponent, Radix>, fixed_point<ValueRep, ValueExponent>> : _impl::from_value_simple<
-            fixed_point<from_value_t<Rep, ValueRep>, ValueExponent>,
-            fixed_point<ValueRep, ValueExponent>> {
+    struct from_value<scaled_integer<Rep, Exponent, Radix>, scaled_integer<ValueRep, ValueExponent>> : _impl::from_value_simple<
+            scaled_integer<from_value_t<Rep, ValueRep>, ValueExponent>,
+            scaled_integer<ValueRep, ValueExponent>> {
     };
 
     template<typename Rep, int Exponent, int Radix, typename Numerator, typename Denominator>
-    struct from_value<fixed_point<Rep, Exponent, Radix>, fraction<Numerator, Denominator>> {
+    struct from_value<scaled_integer<Rep, Exponent, Radix>, fraction<Numerator, Denominator>> {
         CNL_NODISCARD constexpr auto operator()(fraction<Numerator, Denominator> const& value) const
         -> decltype(quotient(value.numerator, value.denominator)) {
             return quotient(value.numerator, value.denominator);
@@ -49,8 +49,8 @@ namespace cnl {
     };
 
     template<typename Rep, int Exponent, int Radix, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct from_value<fixed_point<Rep, Exponent, Radix>, constant<Value>> : _impl::from_value_simple<
-            fixed_point<
+    struct from_value<scaled_integer<Rep, Exponent, Radix>, constant<Value>> : _impl::from_value_simple<
+            scaled_integer<
                     set_digits_t<int, _impl::max(digits<int>::value, _impl::used_digits(Value)-trailing_bits(Value))>,
                     trailing_bits(Value)>,
             constant<Value>> {
@@ -58,7 +58,7 @@ namespace cnl {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // fixed_point specializations of fixed_point-specific templates
+    // scaled_integer specializations of scaled_integer-specific templates
 
     namespace _impl {
 
@@ -68,7 +68,7 @@ namespace cnl {
         };
 
         template<typename Rep, int Exponent, int Radix>
-        struct fractional_digits<fixed_point<Rep, Exponent, Radix>> : std::integral_constant<int, -Exponent> {
+        struct fractional_digits<scaled_integer<Rep, Exponent, Radix>> : std::integral_constant<int, -Exponent> {
         };
 
         // cnl::_impl::integer_digits

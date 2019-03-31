@@ -15,12 +15,12 @@
 namespace cnl {
     namespace _impl {
         template<class T>
-        struct is_fixed_point
+        struct is_scaled_integer
                 : public std::false_type {
         };
 
         template<typename Rep, int Exponent, int Radix>
-        struct is_fixed_point<fixed_point<Rep, Exponent, Radix>>
+        struct is_scaled_integer<scaled_integer<Rep, Exponent, Radix>>
                 : public std::true_type {
         };
     }

@@ -14,18 +14,18 @@
 
 namespace {
     template<int Digits, int Exponent>
-    using fixed_point_rounding_elastic_integer =
-        cnl::fixed_point<cnl::rounding_integer<cnl::elastic_integer<Digits>>, Exponent>;
+    using scaled_integer_rounding_elastic_integer =
+        cnl::scaled_integer<cnl::rounding_integer<cnl::elastic_integer<Digits>>, Exponent>;
 
-    TEST(fixed_point_rounding_elastic_integer, to_chars) {
+    TEST(scaled_integer_rounding_elastic_integer, to_chars) {
         auto expected = std::string{"25.25"};
-        auto actual = std::string{cnl::to_chars(fixed_point_rounding_elastic_integer<24, -20>{25.25}).data()};
+        auto actual = std::string{cnl::to_chars(scaled_integer_rounding_elastic_integer<24, -20>{25.25}).data()};
         ASSERT_EQ(expected, actual);
     }
 
-    TEST(fixed_point_rounding_elastic_integer, ostream) {
+    TEST(scaled_integer_rounding_elastic_integer, ostream) {
         testing::internal::CaptureStdout();
-        std::cout << fixed_point_rounding_elastic_integer<24, -20>{ 25.25 };
+        std::cout << scaled_integer_rounding_elastic_integer<24, -20>{ 25.25 };
         ASSERT_EQ("25.25", testing::internal::GetCapturedStdout());
     }
 }

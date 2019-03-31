@@ -79,8 +79,8 @@ namespace cnl {
 }
 
 namespace {
-    // example type, fixed_point, is taken directy from cnl::fixed_point
-    using cnl::fixed_point;
+    // example type, scaled_integer, is taken directy from cnl::scaled_integer
+    using cnl::scaled_integer;
     using acme::smart_integer;
 
     // example type, rounded_integer, is based off of cnl::rounding_integer
@@ -89,7 +89,7 @@ namespace {
 
     TEST(P0675, compose_from_fundamental) {
         // use an unsigned 16-bit integer to approximate a real number with 2 integer and 14 fraction digits
-        auto pi = fixed_point<uint16_t, -14>{3.141};
+        auto pi = scaled_integer<uint16_t, -14>{3.141};
         ASSERT_TRUE(pi > 3.1 && pi < 3.2);
 
         // use int to store value gained using accurate rounding mode
@@ -98,7 +98,7 @@ namespace {
     }
 
     TEST(P0675, compose_from_components) {
-        auto num = fixed_point<rounded_integer<uint8_t>, -4>{15.9375};
+        auto num = scaled_integer<rounded_integer<uint8_t>, -4>{15.9375};
         ASSERT_TRUE((cnl::from_rep<decltype(num), int>{}(1) == 1. / 16));
     }
 
@@ -129,7 +129,7 @@ namespace {
         // is_composite
         using cnl::is_composite_v;
         static_assert(!is_composite_v<short>);
-        static_assert(is_composite_v<fixed_point<short>>);
+        static_assert(is_composite_v<scaled_integer<short>>);
 
         // to_rep
         using cnl::_impl::to_rep;
@@ -139,11 +139,11 @@ namespace {
         // from_rep
         using cnl::from_rep;
         static_assert(identical(7, from_rep<int, int>{}(7)));
-        static_assert(identical(fixed_point<int, -1>{49.5}, from_rep<fixed_point<int, -1>, int>{}(99)));
+        static_assert(identical(scaled_integer<int, -1>{49.5}, from_rep<scaled_integer<int, -1>, int>{}(99)));
 
         // from_value
         using cnl::from_value_t;
-        static_assert(identical(fixed_point<unsigned long, 0>{99}, from_value_t<fixed_point<int16_t, -1>, unsigned long>{99UL}));
+        static_assert(identical(scaled_integer<unsigned long, 0>{99}, from_value_t<scaled_integer<int16_t, -1>, unsigned long>{99UL}));
     }
 }
 

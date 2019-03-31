@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief fixed_point specializations of math constants from <cnl/numeric.h>
+/// \brief scaled_integer specializations of math constants from <cnl/numeric.h>
 
 #ifndef CNL_IMPL_SCALED_INTEGER_CONSTANTS_H
 #define CNL_IMPL_SCALED_INTEGER_CONSTANTS_H
@@ -21,13 +21,13 @@ namespace cnl {
 #if defined(__cpp_inline_variables)
 
     ////////////////////////////////////////////////////////////////////////////////
-    // fixed_point specializations of math constants from numeric.h
+    // scaled_integer specializations of math constants from numeric.h
 
     namespace _impl {
         template<typename Rep, int Exponent>
         CNL_NODISCARD constexpr auto pi(int const max_iterations) {
-            using fp = fixed_point<Rep, Exponent>;
-            constexpr auto four = fixed_point<Rep, 3 - digits_v<Rep>>{4.};
+            using fp = scaled_integer<Rep, Exponent>;
+            constexpr auto four = scaled_integer<Rep, 3 - digits_v<Rep>>{4.};
 
             auto previous = fp{3.};
             for(auto n = 2; n != (max_iterations << 1); n += 4) {
@@ -49,8 +49,8 @@ namespace cnl {
 
         template<typename Rep, int Exponent>
         CNL_NODISCARD constexpr auto e(int const max_iterations) {
-            using fp = fixed_point<Rep, Exponent>;
-            constexpr auto one = fixed_point<Rep, 2 - digits_v<Rep>>{1.};
+            using fp = scaled_integer<Rep, Exponent>;
+            constexpr auto one = scaled_integer<Rep, 2 - digits_v<Rep>>{1.};
 
             auto previous = fp{2.};
             auto factor = 2;
@@ -73,8 +73,8 @@ namespace cnl {
         // Given two alternative ways to generate a constant value:
         // tries to choose the best and returns the result.
         template<typename Float, typename Rep, int Exponent>
-        CNL_NODISCARD constexpr auto constant_with_fallback(Float constant, fixed_point<Rep, Exponent>(*procedure)()) {
-            using fp = fixed_point<Rep, Exponent>;
+        CNL_NODISCARD constexpr auto constant_with_fallback(Float constant, scaled_integer<Rep, Exponent>(*procedure)()) {
+            using fp = scaled_integer<Rep, Exponent>;
 
             auto const required_integer_digits = used_digits(static_cast<int>(constant));
 
@@ -91,69 +91,69 @@ namespace cnl {
     }
 
     namespace math {
-        /// specialization of \ref cnl::e for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> e_v<fixed_point<Rep, Exponent>> {
+        /// specialization of \ref cnl::e for \ref cnl::scaled_integer
+        template<typename Rep, int Exponent> inline constexpr scaled_integer<Rep, Exponent> e_v<scaled_integer<Rep, Exponent>> {
                 _impl::constant_with_fallback<long double, Rep, Exponent>(e_v<long double>, _impl::e<Rep, Exponent>)
         };
 
-        /// specialization of \ref cnl::log2e for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> log2e_v<fixed_point<Rep, Exponent>> {
-                fixed_point<Rep, Exponent>{log2e_v<long double>}
+        /// specialization of \ref cnl::log2e for \ref cnl::scaled_integer
+        template<typename Rep, int Exponent> inline constexpr scaled_integer<Rep, Exponent> log2e_v<scaled_integer<Rep, Exponent>> {
+                scaled_integer<Rep, Exponent>{log2e_v<long double>}
         };
 
-        /// specialization of \ref cnl::log10e for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> log10e_v<fixed_point<Rep, Exponent>> {
-                fixed_point<Rep, Exponent>{log10e_v<long double>}
+        /// specialization of \ref cnl::log10e for \ref cnl::scaled_integer
+        template<typename Rep, int Exponent> inline constexpr scaled_integer<Rep, Exponent> log10e_v<scaled_integer<Rep, Exponent>> {
+                scaled_integer<Rep, Exponent>{log10e_v<long double>}
         };
 
-        /// specialization of \ref cnl::pi for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> pi_v<fixed_point<Rep, Exponent>>{
+        /// specialization of \ref cnl::pi for \ref cnl::scaled_integer
+        template<typename Rep, int Exponent> inline constexpr scaled_integer<Rep, Exponent> pi_v<scaled_integer<Rep, Exponent>>{
                 _impl::constant_with_fallback<long double, Rep, Exponent>(pi_v<long double>, _impl::pi<Rep, Exponent>)
         };
 
-        /// specialization of \ref cnl::invpi for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> inv_pi_v<fixed_point<Rep, Exponent>> {
-                fixed_point<Rep, Exponent>{inv_pi_v<long double>}
+        /// specialization of \ref cnl::invpi for \ref cnl::scaled_integer
+        template<typename Rep, int Exponent> inline constexpr scaled_integer<Rep, Exponent> inv_pi_v<scaled_integer<Rep, Exponent>> {
+                scaled_integer<Rep, Exponent>{inv_pi_v<long double>}
         };
 
-        /// specialization of \ref cnl::inv_sqrtpi for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> inv_sqrtpi_v<fixed_point<Rep, Exponent>> {
-                fixed_point<Rep, Exponent>{inv_sqrtpi_v<long double>}
+        /// specialization of \ref cnl::inv_sqrtpi for \ref cnl::scaled_integer
+        template<typename Rep, int Exponent> inline constexpr scaled_integer<Rep, Exponent> inv_sqrtpi_v<scaled_integer<Rep, Exponent>> {
+                scaled_integer<Rep, Exponent>{inv_sqrtpi_v<long double>}
         };
 
-        /// specialization of \ref cnl::ln2 for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> ln2_v<fixed_point<Rep, Exponent>> {
-                fixed_point<Rep, Exponent>{ln2_v<long double>}
+        /// specialization of \ref cnl::ln2 for \ref cnl::scaled_integer
+        template<typename Rep, int Exponent> inline constexpr scaled_integer<Rep, Exponent> ln2_v<scaled_integer<Rep, Exponent>> {
+                scaled_integer<Rep, Exponent>{ln2_v<long double>}
         };
 
-        /// specialization of \ref cnl::ln10 for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> ln10_v<fixed_point<Rep, Exponent>> {
-                fixed_point<Rep, Exponent>{ln10_v<long double>}
+        /// specialization of \ref cnl::ln10 for \ref cnl::scaled_integer
+        template<typename Rep, int Exponent> inline constexpr scaled_integer<Rep, Exponent> ln10_v<scaled_integer<Rep, Exponent>> {
+                scaled_integer<Rep, Exponent>{ln10_v<long double>}
         };
 
-        /// specialization of \ref cnl::sqrt2 for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> sqrt2_v<fixed_point<Rep, Exponent>> {
-                fixed_point<Rep, Exponent>{sqrt2_v<long double>}
+        /// specialization of \ref cnl::sqrt2 for \ref cnl::scaled_integer
+        template<typename Rep, int Exponent> inline constexpr scaled_integer<Rep, Exponent> sqrt2_v<scaled_integer<Rep, Exponent>> {
+                scaled_integer<Rep, Exponent>{sqrt2_v<long double>}
         };
 
-        /// specialization of \ref cnl::sqrt3 for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> sqrt3_v<fixed_point<Rep, Exponent>> {
-                fixed_point<Rep, Exponent>{sqrt3_v<long double>}
+        /// specialization of \ref cnl::sqrt3 for \ref cnl::scaled_integer
+        template<typename Rep, int Exponent> inline constexpr scaled_integer<Rep, Exponent> sqrt3_v<scaled_integer<Rep, Exponent>> {
+                scaled_integer<Rep, Exponent>{sqrt3_v<long double>}
         };
 
-        /// specialization of \ref cnl::invsqrt3 for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> inv_sqrt3_v<fixed_point<Rep, Exponent>> {
-                fixed_point<Rep, Exponent>{inv_sqrt3_v<long double>}
+        /// specialization of \ref cnl::invsqrt3 for \ref cnl::scaled_integer
+        template<typename Rep, int Exponent> inline constexpr scaled_integer<Rep, Exponent> inv_sqrt3_v<scaled_integer<Rep, Exponent>> {
+                scaled_integer<Rep, Exponent>{inv_sqrt3_v<long double>}
         };
 
-        /// specialization of \ref cnl::egamma for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> egamma_v<fixed_point<Rep, Exponent>> {
-                fixed_point<Rep, Exponent>{egamma_v<long double>}
+        /// specialization of \ref cnl::egamma for \ref cnl::scaled_integer
+        template<typename Rep, int Exponent> inline constexpr scaled_integer<Rep, Exponent> egamma_v<scaled_integer<Rep, Exponent>> {
+                scaled_integer<Rep, Exponent>{egamma_v<long double>}
         };
 
-        /// specialization of \ref cnl::phi for \ref cnl::fixed_point
-        template<typename Rep, int Exponent> inline constexpr fixed_point<Rep, Exponent> phi_v<fixed_point<Rep, Exponent>> {
-                fixed_point<Rep, Exponent>{phi_v<long double>}
+        /// specialization of \ref cnl::phi for \ref cnl::scaled_integer
+        template<typename Rep, int Exponent> inline constexpr scaled_integer<Rep, Exponent> phi_v<scaled_integer<Rep, Exponent>> {
+                scaled_integer<Rep, Exponent>{phi_v<long double>}
         };
     }
 #endif  // defined(__cpp_inline_variables)

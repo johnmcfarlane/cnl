@@ -11,11 +11,11 @@
 #define TEST_LABEL saturated_integer_
 
 ////////////////////////////////////////////////////////////////////////////////
-// integer types used as fixed_point Rep type
+// integer types used as scaled_integer Rep type
 
 using test_int = cnl::overflow_integer<int, cnl::saturated_overflow_tag>;
 
 ////////////////////////////////////////////////////////////////////////////////
-// perform fixed_point tests with this type of fixed_point specialization
+// perform scaled_integer tests with this type of scaled_integer specialization
 
-#include "scaled_integer/scaled_integer_common.h"
+#include "../scaled_integer_common.h"
