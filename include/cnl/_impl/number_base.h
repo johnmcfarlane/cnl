@@ -10,6 +10,7 @@
 #include "number_base/declaration.h"
 #include "number_base/definition.h"
 #include "number_base/is_derived_from_number_base.h"
+#include "number_base/to_string.h"
 #include "generic_operators.h"
 #include "num_traits/from_rep.h"
 #include "num_traits/from_value.h"
