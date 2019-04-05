@@ -132,23 +132,17 @@ endif(Boost_FOUND)
 if (IS_MSVC)
     set(gtest_byproducts
             "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtestd${CMAKE_FIND_LIBRARY_SUFFIXES}"
-            "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_maind${CMAKE_FIND_LIBRARY_SUFFIXES}"
             "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}"
-            "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main${CMAKE_FIND_LIBRARY_SUFFIXES}"
     )
     set(gtest_libs
             debug "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtestd${CMAKE_FIND_LIBRARY_SUFFIXES}"
-            debug "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_maind${CMAKE_FIND_LIBRARY_SUFFIXES}"
             optimized "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}"
-            optimized "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main${CMAKE_FIND_LIBRARY_SUFFIXES}"
     )
 else ()
     set(gtest_byproducts
-            ${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main.a
             ${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a
     )
     set(gtest_libs
-            general ${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main.a
             general ${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a
             pthread
     )
@@ -185,6 +179,14 @@ function(add_gtest_dependency target)
 endfunction(add_gtest_dependency)
 
 ######################################################################
+# test main - per-test main function initializes gtest
+
+add_library(TestMain main.cpp)
+set_target_properties(TestMain PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS}")
+target_link_libraries(TestMain Cnl)
+add_gtest_dependency(TestMain)
+
+######################################################################
 # Tests - the full suite of tests
 
 add_custom_target(Tests)
@@ -205,7 +207,7 @@ function(make_test source out_target compile_flags linker_flags)
     add_executable("${target}" "${source}")
     add_test("${target}" "${target}")
     set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${compile_flags}")
-    target_link_libraries("${target}" "Cnl" "${linker_flags}")
+    target_link_libraries("${target}" Cnl TestMain "${linker_flags}")
     target_include_directories("${target}" PRIVATE "${CMAKE_CURRENT_LIST_DIR}")
 
     add_gtest_dependency("${target}")
