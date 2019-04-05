@@ -9,6 +9,7 @@
 
 #include "assert.h"
 #include "num_traits/rounding.h"
+#include "type_traits/is_signed.h"
 
 #include <array>
 #include <system_error>
