@@ -17,13 +17,13 @@
 namespace cnl {
     namespace _impl {
 #if defined(CNL_INT128_ENABLED)
-        std::ostream& operator<<(std::ostream& out, int128 const n)
+        inline std::ostream& operator<<(std::ostream& out, int128 const n)
         {
             std::array<char, 41> line;
             return out << cnl::_impl::to_chars_natural(std::begin(line), std::end(line), n);
         }
 
-        std::ostream& operator<<(std::ostream& out, uint128 const n)
+        inline std::ostream& operator<<(std::ostream& out, uint128 const n)
         {
             std::array<char, 40> line;
             return out << cnl::_impl::to_chars_natural(std::begin(line), std::end(line), n);
