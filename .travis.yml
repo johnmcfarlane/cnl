@@ -13,7 +13,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-8
-      env: MATRIX_EVAL="CC=gcc-8 && CXX=g++-8" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=ON SANITIZE=ON GENERATOR=Ninja
+      env: C_COMPILER=gcc-8 CXX_COMPILER=g++-8 BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=ON SANITIZE=ON GENERATOR=Ninja
 
     - os: linux
       addons: &gcc7
@@ -22,11 +22,11 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
-      env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: C_COMPILER=gcc-7 CXX_COMPILER=g++-7 BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
     - os: osx
       osx_image: xcode9
-      env: MATRIX_EVAL="brew update && brew install cloc gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: PACKAGE=gcc6 C_COMPILER=gcc-6 CXX_COMPILER=g++-6 BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
       addons: &gcc6
@@ -35,11 +35,11 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-6
-      env: MATRIX_EVAL="CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: C_COMPILER=gcc-6 CXX_COMPILER=g++-6 BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
     - os: osx
       osx_image: xcode8
-      env: MATRIX_EVAL="brew update && brew install cloc gcc5 && CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: PACKAGE=gcc5 C_COMPILER=gcc-5 CXX_COMPILER=g++-5 BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
       addons: &gcc5
@@ -48,7 +48,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-5
-      env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: C_COMPILER=gcc-5 CXX_COMPILER=g++-5 BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
       addons: &clang6
@@ -57,7 +57,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - clang-6.0
-      env: MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR="Ninja"
+      env: C_COMPILER=clang-6.0 CXX_COMPILER=clang++-6.0 BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR="Ninja"
 
     - os: linux
       addons: &clang5
@@ -66,7 +66,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - clang-5.0
-      env: MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR="Unix Makefiles"
+      env: C_COMPILER=clang-5.0 CXX_COMPILER=clang++-5.0 BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR="Unix Makefiles"
 
     - os: linux
       addons: &clang4
@@ -76,7 +76,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - clang-4.0
-      env: MATRIX_EVAL="CC=clang-4.0 && CXX=clang++-4.0" BUILD_TYPE=Release STD=11 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: C_COMPILER=clang-4.0 CXX_COMPILER=clang++-4.0 BUILD_TYPE=Release STD=11 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
     - os: linux
       addons: &clang39
@@ -87,7 +87,7 @@ matrix:
           packages:
             - clang-3.9
             - g++-5
-      env: MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9" BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: C_COMPILER=clang-3.9 CXX_COMPILER=clang++-3.9 BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
     - os: linux
       addons: &clang35
@@ -98,91 +98,92 @@ matrix:
           packages:
             - clang-3.5
             - g++-5
-      env: MATRIX_EVAL="CC=clang-3.5 && CXX=clang++-3.5" BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR="Unix Makefiles"
+      env: C_COMPILER=clang-3.5 CXX_COMPILER=clang++-3.5 BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR="Unix Makefiles"
 
     # C++14
     - os: linux
       addons: *gcc8
-      env: MATRIX_EVAL="CC=gcc-8 && CXX=g++-8" BUILD_TYPE=Release STD=14 EXCEPTIONS=OFF INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: C_COMPILER=gcc-8 CXX_COMPILER=g++-8 BUILD_TYPE=Release STD=14 EXCEPTIONS=OFF INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
       addons: *gcc7
-      env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: C_COMPILER=gcc-7 CXX_COMPILER=g++-7 BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: osx
       osx_image: xcode9
-      env: MATRIX_EVAL="brew update && brew install cloc gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: PACKAGE=gcc6 C_COMPILER=gcc-6 CXX_COMPILER=g++-6 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
       addons: *gcc6
-      env: MATRIX_EVAL="CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: C_COMPILER=gcc-6 CXX_COMPILER=g++-6 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
     - os: linux
       addons: *gcc5
-      env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Debug STD=14 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: C_COMPILER=gcc-5 CXX_COMPILER=g++-5 BUILD_TYPE=Debug STD=14 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
     - os: linux
       addons: *clang6
-      env: MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR=Ninja
+      env: C_COMPILER=clang-6.0 CXX_COMPILER=clang++-6.0 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR=Ninja
 
     - os: linux
       addons: *clang5
-      env: MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR=Ninja
+      env: C_COMPILER=clang-5.0 CXX_COMPILER=clang++-5.0 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR=Ninja
 
     - os: linux
       addons: *clang4
-      env: MATRIX_EVAL="CC=clang-4.0 && CXX=clang++-4.0" BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: C_COMPILER=clang-4.0 CXX_COMPILER=clang++-4.0 BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
       addons: *clang39
-      env: MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9" BUILD_TYPE=Release STD=14 EXCEPTIONS=OFF INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: C_COMPILER=clang-3.9 CXX_COMPILER=clang++-3.9 BUILD_TYPE=Release STD=14 EXCEPTIONS=OFF INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: osx
       compiler: clang # clang-3.8
-      env: MATRIX_EVAL="brew update && brew install cloc" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: C_COMPILER=clang CXX_COMPILER=clang++ BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
       addons: *clang35
-      env: MATRIX_EVAL="CC=clang-3.5 && CXX=clang++-3.5" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR="Unix Makefiles"
+      env: C_COMPILER=clang-3.5 CXX_COMPILER=clang++-3.5 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR="Unix Makefiles"
 
     # C++17
     - os: linux
       addons: *gcc8
-      env: MATRIX_EVAL="CC=gcc-8 && CXX=g++-8" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF GENERATOR="Ninja"
+      env: C_COMPILER=gcc-8 CXX_COMPILER=g++-8 BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF GENERATOR="Ninja"
 
     - os: linux
       addons: *gcc7
-      env: MATRIX_EVAL="CC=gcc-7 && CXX=g++-7" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: C_COMPILER=gcc-7 CXX_COMPILER=g++-7 BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
     - os: osx
       osx_image: xcode9
-      env: MATRIX_EVAL="brew update && brew install cloc gcc6 && CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: PACKAGE=gcc6 C_COMPILER=gcc-6 CXX_COMPILER=g++-6 BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
       addons: *gcc6
-      env: MATRIX_EVAL="CC=gcc-6 && CXX=g++-6" BUILD_TYPE=Debug STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: C_COMPILER=gcc-6 CXX_COMPILER=g++-6 BUILD_TYPE=Debug STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
     - os: linux
       addons: *gcc5
-      env: MATRIX_EVAL="CC=gcc-5 && CXX=g++-5" BUILD_TYPE=Debug STD=17 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: C_COMPILER=gcc-5 CXX_COMPILER=g++-5 BUILD_TYPE=Debug STD=17 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
     - os: linux
       addons: *clang6
-      env: MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0" BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR=Ninja
+      env: C_COMPILER=clang-6.0 CXX_COMPILER=clang++-6.0 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR=Ninja
 
     - os: linux
       addons: *clang5
-      env: MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0" BUILD_TYPE=Release STD=17 EXCEPTIONS=OFF INT128=ON SANITIZE=ON GENERATOR=Ninja
+      env: C_COMPILER=clang-5.0 CXX_COMPILER=clang++-5.0 BUILD_TYPE=Release STD=17 EXCEPTIONS=OFF INT128=ON SANITIZE=ON GENERATOR=Ninja
 
 
 before_install:
-  - eval "${MATRIX_EVAL}"
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source .travis-setup-linux.sh ; fi
+  - CC=${C_COMPILER}
+  - CXX=${CXX_COMPILER}
+  - source .travis-setup-${TRAVIS_OS_NAME}.sh
 
 script:
     - cloc include
     - cloc src
-    - cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -DSTD="${STD}" -DEXCEPTIONS="${EXCEPTIONS}" -DINT128="${INT128}" -DSANITIZE="${SANITIZE}" -G "${GENERATOR}"
+    - cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -DSTD=${STD} -DEXCEPTIONS=${EXCEPTIONS} -DINT128=${INT128} -DSANITIZE=${SANITIZE} -G "${GENERATOR}"
     - cmake --build . -- -j 8 Tests Benchmark Doc
     - ctest --output-on-failure -j 8
     - ./src/benchmark/Benchmark --benchmark_format=csv>result.csv
