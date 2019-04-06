@@ -288,8 +288,8 @@ if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND EXCEPTIONS)
 
         ExternalProject_Add(
             BoostSimd
-            URL "https://github.com/numscale/boost.simd/archive/b1e046e3ffa720226e45512c76c505f34cde7be2.zip"
-            URL_MD5 "74fc0bc279a18f931e4d2ec026af8dd4"
+            URL "https://github.com/johnmcfarlane/boost.simd/archive/cnl.zip"
+            URL_MD5 "29e0e22801fb8cfb7742005c89183bba"
             UPDATE_COMMAND ""
             INSTALL_COMMAND ""
             CMAKE_ARGS "-DBoost_INCLUDE_DIR=${Boost_INCLUDE_DIR}"
