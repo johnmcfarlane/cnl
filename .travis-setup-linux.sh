@@ -7,10 +7,5 @@ sudo apt-get update -q
 sudo apt remove gcc
 
 # Install
-sudo apt-get install -q cmake ninja-build doxygen cloc
+sudo apt-get install -q cmake ninja-build doxygen cloc libboost-dev
 cmake --version
-
-# Ubuntu 14.04 defaults to Boost v54 which doesn't work without RTTI
-if [[ "$EXCEPTIONS" == "ON" ]]; then
-    sudo apt-get install -q libboost-dev
-fi
