@@ -77,6 +77,7 @@ set(test_sources
         fixed_point/wide_integer/fixed_point_wide_integer_8.cpp
         fixed_point/overflow/undefined_overflow.cpp
         fixed_point/rounding/overflow/fixed_point_rounding_overflow.cpp
+        fixed_point/rounding/elastic/integer.cpp
         rounding/elastic/rounding_elastic_integer.cpp
         fixed_point/rounding/rounding_fixed_point.cpp
         elastic/rounding/overflow/rounding_safe_integer.cpp
