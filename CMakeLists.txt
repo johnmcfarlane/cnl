@@ -8,16 +8,16 @@ endif()
 # runs a suite of compile-time tests using `static_assert`
 # and run-time tests using gtest
 include(CTest)
-add_subdirectory("src/test" EXCLUDE_FROM_ALL)
+add_subdirectory("src/test")
 
 # performs a selection of benchmark tests using googletest
-add_subdirectory("src/benchmark" EXCLUDE_FROM_ALL)
+add_subdirectory("src/benchmark")
 
 # generate documentation
-add_subdirectory("doc" EXCLUDE_FROM_ALL)
+add_subdirectory("doc")
 
 # generate single-header header
-add_subdirectory("src/single_header" EXCLUDE_FROM_ALL)
+add_subdirectory("src/single_header")
 
 # the CNL library
 add_library(Cnl INTERFACE)
