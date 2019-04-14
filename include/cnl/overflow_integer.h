@@ -108,6 +108,16 @@ namespace cnl {
         using type = overflow_integer<set_digits_t<Rep, MinNumBits>, OverflowTag>;
     };
 
+    template<int Digits, int Radix, typename Rep, class OverflowTag>
+    struct scale<Digits, Radix, overflow_integer<Rep, OverflowTag>> {
+        using _value_type = overflow_integer<Rep, OverflowTag>;
+        constexpr auto operator()(_value_type const& s) const
+        -> decltype(_impl::from_rep<_value_type>(_impl::scale<Digits, Radix>(_impl::to_rep(s))))
+        {
+            return _impl::default_scale<Digits, Radix, _value_type>{}(s);
+        }
+    };
+
     /// \brief \ref overflow_integer specialization of \ref from_rep
     /// \tparam ArchetypeRep ignored; replaced by \c Rep
     /// \tparam OverflowTag the \c OverflowTag of the generated type
@@ -141,23 +151,6 @@ namespace cnl {
                     typename std::conditional<
                             digits<int>::value<_impl::used_digits(Value), decltype(Value), int>::type, OverflowTag>,
                     constant<Value>>{
-    };
-
-    template<int Digits, class Rep, class OverflowTag>
-    struct scale<Digits, 2, overflow_integer<Rep, OverflowTag>,
-            _impl::enable_if_t<(Digits>=0)>> {
-        using _value_type = overflow_integer<Rep, OverflowTag>;
-        constexpr auto operator()(_value_type const& s) const
-        -> decltype(_impl::from_rep<_value_type>(shift_left<OverflowTag>(_impl::to_rep(s), constant<Digits>{})))
-        {
-            return _impl::from_rep<_value_type>(shift_left<OverflowTag>( _impl::to_rep(s), constant<Digits>{}));
-        }
-    };
-
-    template<int Digits, int Radix, class Rep, class OverflowTag>
-    struct scale<Digits, Radix, overflow_integer<Rep, OverflowTag>,
-            _impl::enable_if_t<(Digits<0||Radix!=2)>>
-            : scale<Digits, Radix, _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
