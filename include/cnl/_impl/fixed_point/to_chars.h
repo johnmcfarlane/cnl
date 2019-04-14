@@ -52,9 +52,9 @@ namespace cnl {
 
             template<typename Integral>
             static auto from_integral_and_value(Integral const& integral, value_type const& value)
-            -> decltype(std::make_pair(integral, value-integral))
+            -> decltype(std::make_pair(integral, value_type{value-integral}))
             {
-                return std::make_pair(integral, value-integral);
+                return std::make_pair(integral, value_type{value-integral});
             }
 
         public:
