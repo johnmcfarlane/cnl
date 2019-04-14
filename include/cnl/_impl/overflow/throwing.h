@@ -17,8 +17,8 @@
 namespace cnl {
     // terminate program with diagnostic when overflow is detected
     // throw an exception when overflow is don overflowetected
-    static constexpr struct throwing_overflow_tag {
-    } throwing_overflow{};
+    struct throwing_overflow_tag {
+    };
 
     namespace _impl {
         template<typename Operator>

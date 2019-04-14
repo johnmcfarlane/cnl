@@ -14,8 +14,8 @@
 /// compositional numeric library
 namespace cnl {
     // terminate program with diagnostic when overflow is detected
-    static constexpr struct trapping_overflow_tag {
-    } trapping_overflow{};
+    struct trapping_overflow_tag {
+    };
 
     namespace _impl {
         template<typename Operator>

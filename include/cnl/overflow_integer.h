@@ -148,9 +148,9 @@ namespace cnl {
             _impl::enable_if_t<(Digits>=0)>> {
         using _value_type = overflow_integer<Rep, OverflowTag>;
         constexpr auto operator()(_value_type const& s) const
-        -> decltype(_impl::from_rep<_value_type>(shift_left(OverflowTag{}, _impl::to_rep(s), constant<Digits>{})))
+        -> decltype(_impl::from_rep<_value_type>(shift_left<OverflowTag>(_impl::to_rep(s), constant<Digits>{})))
         {
-            return _impl::from_rep<_value_type>(shift_left(OverflowTag{}, _impl::to_rep(s), constant<Digits>{}));
+            return _impl::from_rep<_value_type>(shift_left<OverflowTag>( _impl::to_rep(s), constant<Digits>{}));
         }
     };
 
