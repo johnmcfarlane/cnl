@@ -18,6 +18,20 @@ namespace cnl {
     {
         return cnl::_impl::tagged_convert_operator<Tag, Result, Input>{}(from);
     }
+
+    template<class Tag, typename Dividend, typename Divisor>
+    constexpr auto divide(Dividend const& dividend, Divisor const& divisor)
+    -> decltype(cnl::_impl::tagged_binary_operator<Tag, _impl::divide_op>{}.template operator()<Dividend, Divisor>(dividend, divisor))
+    {
+        return cnl::_impl::tagged_binary_operator<Tag, _impl::divide_op>{}.template operator()<Dividend, Divisor>(dividend, divisor);
+    }
+
+    template<class Tag, typename Lhs, typename Rhs>
+    constexpr auto shift_right(Lhs const& lhs, Rhs const& rhs)
+    -> decltype(cnl::_impl::tagged_binary_operator<Tag, _impl::shift_right_op>{}.template operator()<Lhs, Rhs>(lhs, rhs))
+    {
+        return cnl::_impl::tagged_binary_operator<Tag, _impl::shift_right_op>{}.template operator()<Lhs, Rhs>(lhs, rhs);
+    }
 }
 
 #endif  // CNL_IMPL_TAGGED_H

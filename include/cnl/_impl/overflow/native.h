@@ -14,16 +14,13 @@
 
 /// compositional numeric library
 namespace cnl {
-    // match the behavior of fundamental arithmetic types
-    struct native_overflow_tag : _impl::native_tag {
-    };
-
-    static constexpr native_overflow_tag native_overflow{};
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // arithmetic overflow
-
     namespace _impl {
+        // match the behavior of fundamental arithmetic types
+        struct native_overflow_tag : _impl::native_tag {
+        };
+
+        static constexpr _impl::native_overflow_tag native_overflow{};
+
         template<typename Operator, polarity Polarity>
         struct overflow_operator<Operator, native_overflow_tag, Polarity> : Operator {
         };

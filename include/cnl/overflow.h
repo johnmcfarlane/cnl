@@ -20,6 +20,9 @@
 
 /// compositional numeric library
 namespace cnl {
+    using _impl::native_overflow_tag;
+    using _impl::native_overflow;
+
     ////////////////////////////////////////////////////////////////////////////////
     // free overflow functions
 

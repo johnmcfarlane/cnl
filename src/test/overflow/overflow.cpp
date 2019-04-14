@@ -13,7 +13,6 @@ namespace {
     using cnl::_impl::identical;
 
     namespace test_native_overflow {
-        using cnl::native_overflow;
 
         // convert
         static_assert(identical(cnl::convert<cnl::native_overflow_tag, cnl::uint8>(259), cnl::uint8{3}),
@@ -24,16 +23,16 @@ namespace {
                 "cnl::convert test failed");
 
         // add
-        static_assert(identical(add(native_overflow, UINT32_C(0xFFFFFFFF), UINT32_C(0x12345678)), UINT32_C(0xFFFFFFFF)+UINT32_C(0x12345678)), "cnl::add test failed");
+        static_assert(identical(cnl::add(cnl::native_overflow, UINT32_C(0xFFFFFFFF), UINT32_C(0x12345678)), UINT32_C(0xFFFFFFFF)+UINT32_C(0x12345678)), "cnl::add test failed");
 
         // subtract
         static_assert(identical(
                 cnl::_impl::tagged_binary_operator<cnl::native_overflow_tag, cnl::_impl::subtract_op>()(INT8_C(0), INT8_C(0)),
                 0), "cnl::subtract test failed");
-        static_assert(identical(subtract(native_overflow, INT8_C(0), INT8_C(0)), 0), "cnl::subtract test failed");
+        static_assert(identical(cnl::subtract(cnl::native_overflow, INT8_C(0), INT8_C(0)), 0), "cnl::subtract test failed");
 
         // multiply
-        static_assert(identical(multiply(native_overflow, UINT16_C(576), INT32_C(22)), decltype(UINT16_C(576)*INT32_C(22)){12672}), "cnl::multiply test failed");
+        static_assert(identical(cnl::multiply(cnl::native_overflow, UINT16_C(576), INT32_C(22)), decltype(UINT16_C(576)*INT32_C(22)){12672}), "cnl::multiply test failed");
     }
 
     namespace test_throwing_overflow {
