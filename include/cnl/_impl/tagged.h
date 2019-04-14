@@ -19,25 +19,25 @@ namespace cnl {
         return cnl::_impl::tagged_convert_operator<Tag, Result, Input>{}(from);
     }
 
-    template<class OverflowTag, class Lhs, class Rhs>
-    constexpr auto add(OverflowTag, Lhs const& lhs, Rhs const& rhs)
+    template<class Tag, typename Lhs, typename Rhs>
+    constexpr auto add(Tag, Lhs const& lhs, Rhs const& rhs)
     -> decltype(lhs+rhs)
     {
-        return _impl::tagged_binary_operator<OverflowTag, _impl::add_op>{}(lhs, rhs);
+        return _impl::tagged_binary_operator<Tag, _impl::add_op>{}(lhs, rhs);
     }
 
-    template<class OverflowTag, class Lhs, class Rhs>
-    constexpr auto subtract(OverflowTag, Lhs const& lhs, Rhs const& rhs)
+    template<class Tag, typename Lhs, typename Rhs>
+    constexpr auto subtract(Tag, Lhs const& lhs, Rhs const& rhs)
     -> decltype(lhs-rhs)
     {
-        return _impl::tagged_binary_operator<OverflowTag, _impl::subtract_op>{}(lhs, rhs);
+        return _impl::tagged_binary_operator<Tag, _impl::subtract_op>{}(lhs, rhs);
     }
 
-    template<class OverflowTag, class Lhs, class Rhs>
-    constexpr auto multiply(OverflowTag, Lhs const& lhs, Rhs const& rhs)
+    template<class Tag, typename Lhs, typename Rhs>
+    constexpr auto multiply(Tag, Lhs const& lhs, Rhs const& rhs)
     -> decltype(lhs*rhs)
     {
-        return _impl::tagged_binary_operator<OverflowTag, _impl::multiply_op>{}(lhs, rhs);
+        return _impl::tagged_binary_operator<Tag, _impl::multiply_op>{}(lhs, rhs);
     }
 
     template<class Tag, typename Dividend, typename Divisor>
@@ -47,11 +47,11 @@ namespace cnl {
         return cnl::_impl::tagged_binary_operator<Tag, _impl::divide_op>{}.template operator()<Dividend, Divisor>(dividend, divisor);
     }
 
-    template<class OverflowTag, class Lhs, class Rhs>
-    constexpr auto shift_left(OverflowTag, Lhs const& lhs, Rhs const& rhs)
+    template<class Tag, typename Lhs, typename Rhs>
+    constexpr auto shift_left(Tag, Lhs const& lhs, Rhs const& rhs)
     -> decltype(lhs<<rhs)
     {
-        return _impl::tagged_binary_operator<OverflowTag, _impl::shift_left_op>{}(
+        return _impl::tagged_binary_operator<Tag, _impl::shift_left_op>{}(
                 unwrap(lhs), unwrap(rhs));
     }
 
