@@ -54,7 +54,7 @@ set(test_sources
         _impl/wide_integer/literals.cpp
         _impl/wide_integer/make_wide_integer.cpp
         _impl/wide_integer/numeric_limits.cpp
-        _impl/wide_integer/ploperators.cpp
+        _impl/wide_integer/operators.cpp
         _impl/wide_integer/scale.cpp
         _impl/wide_integer/set_digits.cpp
         _impl/wide_integer/type.cpp
