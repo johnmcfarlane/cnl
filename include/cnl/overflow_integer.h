@@ -16,6 +16,7 @@
 #include "_impl/number_base.h"
 #include "_impl/generic_operators.h"
 #include "_impl/ostream.h"
+#include "_impl/tagged.h"
 #include "_impl/type_traits/common_type.h"
 #include "_impl/type_traits/identical.h"
 
@@ -75,7 +76,7 @@ namespace cnl {
 
         template<class Rhs, _impl::enable_if_t<!_integer_impl::is_overflow_integer<Rhs>::value, int> dummy = 0>
         constexpr overflow_integer(Rhs const& rhs)
-                :_base(_impl::convert<overflow_tag, rep>(rhs))
+                :_base(convert<overflow_tag, rep>(rhs))
         {
         }
 
@@ -91,7 +92,7 @@ namespace cnl {
         template<class T>
         constexpr explicit operator T() const
         {
-            return _impl::convert<overflow_tag, T>(_impl::to_rep(*this));
+            return convert<overflow_tag, T>(_impl::to_rep(*this));
         }
     };
 

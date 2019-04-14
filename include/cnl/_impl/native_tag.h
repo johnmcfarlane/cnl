@@ -69,16 +69,6 @@ namespace cnl {
                 return static_cast<result_type>(static_cast<cnl::make_unsigned_t<result_type>>(lhs)<<rhs);
             }
         };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::convert
-
-        template<class Tag, typename Result, typename Input>
-        constexpr auto convert(Input const& from)
-        -> decltype(cnl::_impl::tagged_convert_operator<Tag, Result, Input>{}(from))
-        {
-            return cnl::_impl::tagged_convert_operator<Tag, Result, Input>{}(from);
-        }
     }
 }
 

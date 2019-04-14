@@ -14,6 +14,7 @@
 #include "_impl/num_traits/to_rep.h"
 #include "_impl/number_base.h"
 #include "_impl/rounding.h"
+#include "_impl/tagged.h"
 #include "_impl/type_traits/common_type.h"
 #include "_impl/used_digits.h"
 
@@ -88,7 +89,7 @@ namespace cnl {
 
         template<class T>
         constexpr rounding_integer(T const& v)
-                : _base(_impl::convert<rounding, Rep>(v)) { }
+                : _base(convert<rounding, Rep>(v)) { }
 
         template<class T>
         constexpr explicit operator T() const

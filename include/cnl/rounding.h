@@ -11,6 +11,7 @@
 #define CNL_ROUNDING_H
 
 #include "_impl/rounding.h"
+#include "_impl/tagged.h"
 
 /// compositional numeric library
 namespace cnl {

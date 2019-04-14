@@ -16,11 +16,11 @@ namespace {
         using cnl::native_overflow;
 
         // convert
-        static_assert(identical(cnl::_impl::convert<cnl::native_overflow_tag, cnl::uint8>(259), cnl::uint8{3}),
+        static_assert(identical(cnl::convert<cnl::native_overflow_tag, cnl::uint8>(259), cnl::uint8{3}),
                 "cnl::convert test failed");
-        static_assert(identical(cnl::_impl::convert<cnl::native_overflow_tag, cnl::uint16>(-123), cnl::uint16{65413}),
+        static_assert(identical(cnl::convert<cnl::native_overflow_tag, cnl::uint16>(-123), cnl::uint16{65413}),
                 "cnl::convert test failed");
-        static_assert(identical(cnl::_impl::convert<cnl::native_overflow_tag, cnl::int32>(55), 55),
+        static_assert(identical(cnl::convert<cnl::native_overflow_tag, cnl::int32>(55), 55),
                 "cnl::convert test failed");
 
         // add
@@ -52,11 +52,11 @@ namespace {
         using cnl::saturated_overflow;
 
         // convert
-        static_assert(identical(cnl::_impl::convert<cnl::saturated_overflow_tag, cnl::uint8>(259), cnl::uint8{255}),
+        static_assert(identical(cnl::convert<cnl::saturated_overflow_tag, cnl::uint8>(259), cnl::uint8{255}),
                 "cnl::convert test failed");
-        static_assert(identical(cnl::_impl::convert<cnl::saturated_overflow_tag, cnl::uint16>(-123), cnl::uint16{0}),
+        static_assert(identical(cnl::convert<cnl::saturated_overflow_tag, cnl::uint16>(-123), cnl::uint16{0}),
                 "cnl::convert test failed");
-        static_assert(identical(cnl::_impl::convert<cnl::saturated_overflow_tag, cnl::int32>(55), 55),
+        static_assert(identical(cnl::convert<cnl::saturated_overflow_tag, cnl::int32>(55), 55),
                 "cnl::convert test failed");
 
         // add
@@ -90,10 +90,10 @@ namespace {
 
         // compare
         static_assert(identical(
-                cnl::_impl::convert<cnl::saturated_overflow_tag, short>(cnl::numeric_limits<double>::max()),
+                cnl::convert<cnl::saturated_overflow_tag, short>(cnl::numeric_limits<double>::max()),
                 cnl::numeric_limits<short>::max()), "cnl::convert test failed");
         static_assert(identical(
-                cnl::_impl::convert<cnl::saturated_overflow_tag, short>(cnl::numeric_limits<double>::lowest()),
+                cnl::convert<cnl::saturated_overflow_tag, short>(cnl::numeric_limits<double>::lowest()),
                 cnl::numeric_limits<short>::lowest()), "cnl::convert test failed");
 
         // shift_left
