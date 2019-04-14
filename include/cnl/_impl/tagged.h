@@ -21,21 +21,21 @@ namespace cnl {
 
     template<class Tag, typename Lhs, typename Rhs>
     constexpr auto add(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(lhs+rhs)
+    -> decltype(_impl::tagged_binary_operator<Tag, _impl::add_op>{}(lhs, rhs))
     {
         return _impl::tagged_binary_operator<Tag, _impl::add_op>{}(lhs, rhs);
     }
 
     template<class Tag, typename Lhs, typename Rhs>
     constexpr auto subtract(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(lhs-rhs)
+    -> decltype(_impl::tagged_binary_operator<Tag, _impl::subtract_op>{}(lhs, rhs))
     {
         return _impl::tagged_binary_operator<Tag, _impl::subtract_op>{}(lhs, rhs);
     }
 
     template<class Tag, typename Lhs, typename Rhs>
     constexpr auto multiply(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(lhs*rhs)
+    -> decltype(_impl::tagged_binary_operator<Tag, _impl::multiply_op>{}(lhs, rhs))
     {
         return _impl::tagged_binary_operator<Tag, _impl::multiply_op>{}(lhs, rhs);
     }
@@ -49,10 +49,9 @@ namespace cnl {
 
     template<class Tag, typename Lhs, typename Rhs>
     constexpr auto shift_left(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(lhs<<rhs)
+    -> decltype(_impl::tagged_binary_operator<Tag, _impl::shift_left_op>{}(lhs, rhs))
     {
-        return _impl::tagged_binary_operator<Tag, _impl::shift_left_op>{}(
-                unwrap(lhs), unwrap(rhs));
+        return _impl::tagged_binary_operator<Tag, _impl::shift_left_op>{}(lhs, rhs);
     }
 
     template<class Tag, typename Lhs, typename Rhs>
