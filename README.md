@@ -148,4 +148,4 @@ All feedback greatly appreciated.
 - [SG14 forum](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14)
 - [cnl@john.mcfarlane.name](mailto:cnl@john.mcfarlane.name)
 
-Developed with [<img src="doc/logo_CLion.svg" alt="CLion: A Cross-Platform IDE for C and C++ by JetBrains" width="63" height="14" />](https://www.jetbrains.com/clion/).
+Developed with [<img src="doc/logo_CLion.svg" alt="CLion: A Cross-Platform IDE for C and C++ by JetBrains" width="80" />](https://www.jetbrains.com/?from=Crag).
