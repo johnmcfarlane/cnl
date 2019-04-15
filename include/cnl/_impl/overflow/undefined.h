@@ -14,8 +14,8 @@
 /// compositional numeric library
 namespace cnl {
     // terminate program with diagnostic when overflow is detected
-    static constexpr struct undefined_overflow_tag {
-    } undefined_overflow{};
+    struct undefined_overflow_tag {
+    };
 
     namespace _impl {
         template<typename Operator>

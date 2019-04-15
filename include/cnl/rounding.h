@@ -11,14 +11,12 @@
 #define CNL_ROUNDING_H
 
 #include "_impl/rounding.h"
+#include "_impl/tagged.h"
 
 /// compositional numeric library
 namespace cnl {
     using _impl::nearest_rounding_tag;
     using _impl::native_rounding_tag;
-
-    using _impl::divide;
-    using _impl::shift_right;
 }
 
 #endif  // CNL_ROUNDING_H

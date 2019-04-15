@@ -16,40 +16,11 @@
 #include "_impl/overflow/throwing.h"
 #include "_impl/overflow/trapping.h"
 #include "_impl/overflow/undefined.h"
+#include "_impl/tagged.h"
 
 /// compositional numeric library
 namespace cnl {
-    ////////////////////////////////////////////////////////////////////////////////
-    // free overflow functions
-
-    template<class OverflowTag, class Lhs, class Rhs>
-    constexpr auto add(OverflowTag, Lhs const& lhs, Rhs const& rhs)
-    -> decltype(lhs+rhs)
-    {
-        return _impl::tagged_binary_operator<OverflowTag, _impl::add_op>{}(lhs, rhs);
-    }
-
-    template<class OverflowTag, class Lhs, class Rhs>
-    constexpr auto subtract(OverflowTag, Lhs const& lhs, Rhs const& rhs)
-    -> decltype(lhs-rhs)
-    {
-        return _impl::tagged_binary_operator<OverflowTag, _impl::subtract_op>{}(lhs, rhs);
-    }
-
-    template<class OverflowTag, class Lhs, class Rhs>
-    constexpr auto multiply(OverflowTag, Lhs const& lhs, Rhs const& rhs)
-    -> decltype(lhs*rhs)
-    {
-        return _impl::tagged_binary_operator<OverflowTag, _impl::multiply_op>{}(lhs, rhs);
-    }
-
-    template<class OverflowTag, class Lhs, class Rhs>
-    constexpr auto shift_left(OverflowTag, Lhs const& lhs, Rhs const& rhs)
-    -> decltype(lhs<<rhs)
-    {
-        return _impl::tagged_binary_operator<OverflowTag, _impl::shift_left_op>{}(
-                unwrap(lhs), unwrap(rhs));
-    }
+    using _impl::native_overflow_tag;
 }
 
 #endif  // CNL_OVERFLOW_H

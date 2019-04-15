@@ -13,7 +13,7 @@ using cnl::_impl::identical;
 namespace {
     namespace test_nearest_round_down {
         static constexpr auto expected = cnl::elastic_number<4, -1>{0.5};
-        static constexpr auto actual = cnl::_impl::convert<cnl::nearest_rounding_tag, cnl::elastic_number<4, -1>>(
+        static constexpr auto actual = cnl::convert<cnl::nearest_rounding_tag, cnl::elastic_number<4, -1>>(
                 cnl::elastic_number<8, -4>{0.3125});
 
         static_assert(
@@ -23,7 +23,7 @@ namespace {
 
     namespace test_nearest_round_up {
         static constexpr auto expected = cnl::elastic_number<4, -2>{0.25};
-        static constexpr auto actual = cnl::_impl::convert<cnl::nearest_rounding_tag, cnl::elastic_number<4, -2>>(
+        static constexpr auto actual = cnl::convert<cnl::nearest_rounding_tag, cnl::elastic_number<4, -2>>(
                 cnl::elastic_number<8, -4>{0.3125});
 
         static_assert(

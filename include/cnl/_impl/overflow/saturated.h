@@ -14,8 +14,8 @@
 /// compositional numeric library
 namespace cnl {
     // confine range of results
-    static constexpr struct saturated_overflow_tag {
-    } saturated_overflow{};
+    struct saturated_overflow_tag {
+    };
 
     namespace _impl {
         template<typename Operator>
