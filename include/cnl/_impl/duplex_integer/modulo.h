@@ -32,7 +32,7 @@ namespace cnl {
         template<typename Upper, typename Lower>
         struct binary_operator<modulo_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
             using _duplex_integer = duplex_integer<Upper, Lower>;
-            using _unsigned_duplex_integer = make_unsigned_t<_duplex_integer>;
+            using _unsigned_duplex_integer = remove_signedness_t<_duplex_integer>;
 
             constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
             -> _duplex_integer

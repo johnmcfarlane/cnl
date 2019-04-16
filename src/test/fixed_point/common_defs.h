@@ -30,7 +30,7 @@ using std::declval;
 static_assert(sizeof(int)==4, "warning: many of the tests in this file assume a 4-byte integer!z");
 
 using test_signed = test_int;
-using test_unsigned = cnl::make_unsigned_t<test_signed>;
+using test_unsigned = cnl::remove_signedness_t<test_signed>;
 
 using int8 = cnl::set_digits_t<test_signed, 7>;
 using uint8 = cnl::set_digits_t<test_unsigned, 8>;

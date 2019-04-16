@@ -14,8 +14,8 @@
 #include "../num_traits.h"
 #include "../rounding_integer.h"
 #include "../_impl/type_traits/is_signed.h"
-#include "../_impl/type_traits/make_signed.h"
-#include "../_impl/type_traits/make_unsigned.h"
+#include "../_impl/type_traits/add_signedness.h"
+#include "../_impl/type_traits/remove_signedness.h"
 
 #include <boost/multiprecision/cpp_int.hpp>
 
@@ -49,22 +49,22 @@ namespace cnl {
     };
 
     template<unsigned NumBits>
-    struct make_signed<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> {
+    struct add_signedness<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> {
         using type = _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>;
     };
 
     template<unsigned NumBits>
-    struct make_signed<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> {
+    struct add_signedness<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> {
         using type = _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>;
     };
 
     template<unsigned NumBits>
-    struct make_unsigned<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> {
+    struct remove_signedness<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> {
         using type = _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>;
     };
 
     template<unsigned NumBits>
-    struct make_unsigned<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> {
+    struct remove_signedness<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> {
         using type = _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>;
     };
 

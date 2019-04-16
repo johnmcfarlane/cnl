@@ -91,24 +91,25 @@ namespace {
 
     namespace test_traits {
 
-        namespace test_make_signed_t {
-            using cnl::make_signed_t;
+        namespace test_add_signedness_t {
+            using cnl::add_signedness_t;
 
-            static_assert(std::is_same<rounding_integer<int>, make_signed_t<rounding_integer<int>>>::value,
-                          "cnl::make_signed_t<cnl::rounding_integer<>>");
-            static_assert(std::is_same<rounding_integer<short>, make_signed_t<rounding_integer<unsigned short>>>::value,
-                          "cnl::make_signed_t<cnl::rounding_integer<>>");
+            static_assert(std::is_same<rounding_integer<int>, add_signedness_t<rounding_integer<int>>>::value,
+                    "cnl::add_signedness_t<cnl::rounding_integer<>>");
+            static_assert(
+                    std::is_same<rounding_integer<short>, add_signedness_t<rounding_integer<unsigned short>>>::value,
+                    "cnl::add_signedness_t<cnl::rounding_integer<>>");
         }
 
-        namespace test_make_unsigned_t {
-            using cnl::make_unsigned_t;
+        namespace test_remove_signedness_t {
+            using cnl::remove_signedness_t;
 
             static_assert(
-                    std::is_same<rounding_integer<unsigned char>, make_unsigned_t<rounding_integer<unsigned char>>>::value,
-                    "cnl::make_unsigned_t<cnl::rounding_integer<>>");
+                    std::is_same<rounding_integer<unsigned char>, remove_signedness_t<rounding_integer<unsigned char>>>::value,
+                    "cnl::remove_signedness_t<cnl::rounding_integer<>>");
             static_assert(
-                    std::is_same<rounding_integer<unsigned long long>, make_unsigned_t<rounding_integer<long long>>>::value,
-                    "cnl::make_unsigned_t<cnl::rounding_integer<>>");
+                    std::is_same<rounding_integer<unsigned long long>, remove_signedness_t<rounding_integer<long long>>>::value,
+                    "cnl::remove_signedness_t<cnl::rounding_integer<>>");
         }
 
         namespace test_to_rep {

@@ -62,14 +62,14 @@ namespace {
         static_assert(std::is_same<actual_type, expected_type>::value, "");
     }
 
-    namespace test_set_make_unsigned {
-        using actual_type = cnl::make_unsigned_t<boost::simd::pack<cnl::int16, 2>>;
+    namespace test_remove_signedness {
+        using actual_type = cnl::remove_signedness_t<boost::simd::pack<cnl::int16, 2>>;
         using expected_type = boost::simd::pack<cnl::uint16, 2>;
         static_assert(std::is_same<expected_type, actual_type>::value, "");
     }
 
-    namespace test_set_make_signed {
-        using actual_type = cnl::make_signed_t<boost::simd::pack<unsigned, 8>>;
+    namespace test_add_signedness {
+        using actual_type = cnl::add_signedness_t<boost::simd::pack<unsigned, 8>>;
         using expected_type = boost::simd::pack<signed, 8>;
         static_assert(std::is_same<expected_type, actual_type>::value, "");
     }

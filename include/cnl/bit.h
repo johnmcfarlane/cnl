@@ -13,7 +13,7 @@
 #include "cstdint.h"
 #include "_impl/num_traits/digits.h"
 #include "_impl/type_traits/is_signed.h"
-#include "_impl/type_traits/make_unsigned.h"
+#include "_impl/type_traits/remove_signedness.h"
 
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
@@ -294,7 +294,7 @@ namespace cnl {
     {
         static_assert(_bit_impl::is_integral_signed<T>(), "T must be signed integer");
 
-        using unsigned_type = typename make_unsigned<T>::type;
+        using unsigned_type = typename remove_signedness<T>::type;
 
         return ((x<0)
                 ? countl_one(static_cast<unsigned_type>(x))

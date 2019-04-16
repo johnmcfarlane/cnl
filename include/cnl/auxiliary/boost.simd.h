@@ -39,8 +39,8 @@ namespace cnl {
     };
 
     template<class T, std::size_t N>
-    struct make_signed<boost::simd::pack<T, N>> {
-        using type = boost::simd::pack<make_signed_t<T>, N>;
+    struct add_signedness<boost::simd::pack<T, N>> {
+        using type = boost::simd::pack<add_signedness_t<T>, N>;
     };
 
     template<class T, std::size_t N>
@@ -48,8 +48,8 @@ namespace cnl {
     };
 
     template<class T, std::size_t N>
-    struct make_unsigned<boost::simd::pack<T, N>> {
-        using type = boost::simd::pack<make_unsigned_t<T>, N>;
+    struct remove_signedness<boost::simd::pack<T, N>> {
+        using type = boost::simd::pack<remove_signedness_t<T>, N>;
     };
 }
 

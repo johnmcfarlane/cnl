@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_DIVIDE_H 1
 
 #include "ctors.h"
-#include "make_unsigned.h"
+#include "remove_signedness.h"
 #include "numeric_limits.h"
 #include "type.h"
 #include "../generic_operators.h"
@@ -36,7 +36,7 @@ namespace cnl {
         template<typename Upper, typename Lower>
         struct binary_operator<divide_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
             using _duplex_integer = duplex_integer<Upper, Lower>;
-            using _unsigned_duplex_integer = make_unsigned_t<_duplex_integer>;
+            using _unsigned_duplex_integer = remove_signedness_t<_duplex_integer>;
 
             constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
             -> _duplex_integer

@@ -13,7 +13,7 @@
 #include "../num_traits/set_digits.h"
 #include "../type_traits/is_signed.h"
 #include "../type_traits/enable_if.h"
-#include "../type_traits/make_signed.h"
+#include "../type_traits/add_signedness.h"
 #include "../type_traits/set_signedness.h"
 #include "forward_declaration.h"
 
@@ -93,10 +93,10 @@ namespace cnl {
 
         template<typename Narrowest>
         struct optimal_duplex<Narrowest, signed> {
-            using unsiged_narrowest = make_unsigned_t<Narrowest>;
+            using unsiged_narrowest = remove_signedness_t<Narrowest>;
             using unsigned_multiword_integer = optimal_duplex<unsiged_narrowest, unsigned>;
 
-            using type = make_signed_t<typename unsigned_multiword_integer::type>;
+            using type = add_signedness_t<typename unsigned_multiword_integer::type>;
         };
 
         ////////////////////////////////////////////////////////////////////////////////

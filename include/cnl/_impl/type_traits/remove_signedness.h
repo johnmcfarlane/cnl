@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_TYPE_TRAITS_MAKE_UNSIGNED_H)
-#define CNL_IMPL_TYPE_TRAITS_MAKE_UNSIGNED_H
+#if !defined(CNL_IMPL_TYPE_TRAITS_REMOVE_SIGNEDNESS_H)
+#define CNL_IMPL_TYPE_TRAITS_REMOVE_SIGNEDNESS_H
 
 #include "enable_if.h"
 #include "../num_traits/is_composite.h"
@@ -16,30 +16,30 @@
 
 namespace cnl {
     template<class, class = void>
-    struct make_unsigned;
+    struct remove_signedness;
 
     template<class T>
-    struct make_unsigned<T, _impl::enable_if_t<std::is_integral<T>::value>> : std::make_unsigned<T> {
+    struct remove_signedness<T, _impl::enable_if_t<std::is_integral<T>::value>> : std::make_unsigned<T> {
     };
 
 #if defined(CNL_INT128_ENABLED)
     template<>
-    struct make_unsigned<int128> {
+    struct remove_signedness<int128> {
         using type = uint128;
     };
     template<>
-    struct make_unsigned<uint128> {
+    struct remove_signedness<uint128> {
         using type = uint128;
     };
 #endif
 
     template<class T>
-    using make_unsigned_t = typename make_unsigned<T>::type;
+    using remove_signedness_t = typename remove_signedness<T>::type;
 
     template<typename T>
-    struct make_unsigned<T, _impl::enable_if_t<is_composite<T>::value>>
-            : _impl::type_identity<_impl::from_rep_t<T, make_unsigned_t<_impl::to_rep_t<T>>>> {
+    struct remove_signedness<T, _impl::enable_if_t<is_composite<T>::value>>
+            : _impl::type_identity<_impl::from_rep_t<T, remove_signedness_t<_impl::to_rep_t<T>>>> {
     };
 }
 
-#endif  // CNL_IMPL_TYPE_TRAITS_MAKE_UNSIGNED_H
+#endif  // CNL_IMPL_TYPE_TRAITS_REMOVE_SIGNEDNESS_H

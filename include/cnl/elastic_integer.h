@@ -20,7 +20,7 @@
 #include "_impl/number_base.h"
 #include "_impl/type_traits/common_type.h"
 #include "_impl/type_traits/is_signed.h"
-#include "_impl/type_traits/make_signed.h"
+#include "_impl/type_traits/add_signedness.h"
 #include "_impl/type_traits/set_signedness.h"
 
 #include <ostream>
@@ -481,10 +481,10 @@ namespace cnl {
     // unary operator-
     template<int RhsDigits, class RhsNarrowest>
     constexpr auto operator-(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
-    -> decltype(_impl::from_rep<elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>>(
-            -_impl::to_rep(static_cast<elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>>(rhs))))
+    -> decltype(_impl::from_rep<elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>>(
+            -_impl::to_rep(static_cast<elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>>(rhs))))
     {
-        using result_type = elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>;
+        using result_type = elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>;
         return _impl::from_rep<result_type>(-_impl::to_rep(static_cast<result_type>(rhs)));
     }
 
