@@ -14,7 +14,11 @@
 #include "../type_traits/type_identity.h"
 
 namespace cnl {
-    /// \brief given number type, returns its rounding mode
+    /// \brief given a numeric type, defines member `type` as its rounding mode
+    /// \headerfile cnl/num_traits.h
+    /// \note User-specializations of this type are permitted.
+    /// \sa cnl::set_rounding, cnl::rounding_t,
+    /// cnl::native_rounding_tag, cnl::nearest_rounding_tag
     template<typename Number, class Enable = void>
     struct rounding;
 
@@ -26,7 +30,10 @@ namespace cnl {
             : _impl::type_identity<native_rounding_tag> {
     };
 
-    // cnl::rounding_t
+    /// \brief helper alias of \ref cnl::rounding
+    /// \headerfile cnl/num_traits.h
+    /// \sa cnl::rounding, cnl::set_rounding_t,
+    /// cnl::native_rounding_tag, cnl::nearest_rounding_tag
     template<typename Number>
     using rounding_t = typename rounding<Number>::type;
 }

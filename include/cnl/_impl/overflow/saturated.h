@@ -13,7 +13,15 @@
 
 /// compositional numeric library
 namespace cnl {
-    // confine range of results
+    /// \brief tag to match the overflow behavior of fundamental arithmetic types
+    ///
+    /// Arithmetic operations using this tag return the closest representable value when the result exceeds the range of
+    /// the result type.
+    ///
+    /// \headerfile cnl/overflow.h
+    /// \sa cnl::overflow_integer,
+    /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
+    /// cnl::native_overflow_tag, cnl::throwing_overflow_tag, cnl::trapping_overflow_tag, cnl::undefined_overflow_tag
     struct saturated_overflow_tag {
     };
 

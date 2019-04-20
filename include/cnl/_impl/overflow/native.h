@@ -14,7 +14,14 @@
 
 /// compositional numeric library
 namespace cnl {
-
+    /// \brief tag to match the overflow behavior of fundamental arithmetic types
+    ///
+    /// Arithmetic operations using this tag should behave the same as equivalent operators.
+    ///
+    /// \headerfile cnl/overflow.h
+    /// \sa cnl::overflow_integer,
+    /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
+    /// cnl::saturated_overflow_tag, cnl::throwing_overflow_tag, cnl::trapping_overflow_tag, cnl::undefined_overflow_tag
     struct native_overflow_tag : _impl::native_tag {
     };
 

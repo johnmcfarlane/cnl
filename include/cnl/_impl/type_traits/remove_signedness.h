@@ -15,7 +15,12 @@
 #include <type_traits>
 
 namespace cnl {
-    template<class, class = void>
+    /// \brief given a numeric type, defines member `type` as the equivalent unsigned type
+    /// \tparam T type to transform into an unsigned type
+    /// \headerfile cnl/num_traits.h
+    /// \note User-specializations of this type are permitted.
+    /// \sa cnl::add_signedness, cnl::remove_signedness_t, std::make_unsigned
+    template<class T, class = void>
     struct remove_signedness;
 
     template<class T>
@@ -33,6 +38,9 @@ namespace cnl {
     };
 #endif
 
+    /// \brief helper alias of \ref cnl::remove_signedness
+    /// \headerfile cnl/num_traits.h
+    /// \sa cnl::add_signedness_t, cnl::remove_signedness, std::make_unsigned_t
     template<class T>
     using remove_signedness_t = typename remove_signedness<T>::type;
 
