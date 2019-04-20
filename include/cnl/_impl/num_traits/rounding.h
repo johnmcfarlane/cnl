@@ -4,9 +4,6 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file cnl/num_traits.h
-/// \brief definitions supporting \ref cnl::rounding
-
 #ifndef CNL_IMPL_NUM_TRAITS_ROUNDING
 #define CNL_IMPL_NUM_TRAITS_ROUNDING
 

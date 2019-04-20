@@ -4,9 +4,6 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file
-/// \brief free functions performing customizable operations on arithmetic types
-
 #ifndef CNL_IMPL_TAGGED_H
 #define CNL_IMPL_TAGGED_H
 

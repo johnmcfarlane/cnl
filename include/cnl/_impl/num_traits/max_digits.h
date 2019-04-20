@@ -4,9 +4,6 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file cnl/num_traits.h
-/// \brief definitions supporting \ref cnl::max_digits
-
 #ifndef CNL_IMPL_NUM_TRAITS_MAX_DIGITS
 #define CNL_IMPL_NUM_TRAITS_MAX_DIGITS
 
