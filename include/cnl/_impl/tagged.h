@@ -37,11 +37,11 @@ namespace cnl {
         return _impl::tagged_binary_operator<Tag, _impl::multiply_op>{}(lhs, rhs);
     }
 
-    template<class Tag, typename Dividend, typename Divisor>
-    constexpr auto divide(Dividend const& dividend, Divisor const& divisor)
-    -> decltype(cnl::_impl::tagged_binary_operator<Tag, _impl::divide_op>{}.template operator()<Dividend, Divisor>(dividend, divisor))
+    template<class Tag, typename Lhs, typename Rhs>
+    constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
+    -> decltype(cnl::_impl::tagged_binary_operator<Tag, _impl::divide_op>{}.template operator()<Lhs, Rhs>(lhs, rhs))
     {
-        return cnl::_impl::tagged_binary_operator<Tag, _impl::divide_op>{}.template operator()<Dividend, Divisor>(dividend, divisor);
+        return cnl::_impl::tagged_binary_operator<Tag, _impl::divide_op>{}.template operator()<Lhs, Rhs>(lhs, rhs);
     }
 
     template<class Tag, typename Lhs, typename Rhs>
