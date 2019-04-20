@@ -14,3 +14,9 @@ add_custom_target(Doc ALL
 add_custom_target(TagFiles
         COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_LIST_DIR}/get_doxygen_tagfile.cmake")
 add_dependencies(Doc TagFiles)
+
+add_custom_target(CleanGhPages
+        COMMAND ${CMAKE_COMMAND} -E remove -f "${CMAKE_CURRENT_LIST_DIR}/gh-pages/search/*"
+        COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_LIST_DIR}/gh-pages/search"
+        COMMAND ${CMAKE_COMMAND} -E remove -f "${CMAKE_CURRENT_LIST_DIR}/gh-pages/*")
+add_dependencies(TagFiles CleanGhPages)

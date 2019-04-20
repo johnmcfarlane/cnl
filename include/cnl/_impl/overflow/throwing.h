@@ -15,8 +15,15 @@
 
 /// compositional numeric library
 namespace cnl {
-    // terminate program with diagnostic when overflow is detected
-    // throw an exception when overflow is don overflowetected
+    /// \brief tag to specify throw-on-overflow behavior in arithemtic operations
+    ///
+    /// Arithmetic operations using this tag throw \ref std::overflow_error when the result exceeds the range of the
+    /// result type.
+    ///
+    /// \headerfile cnl/overflow.h
+    /// \sa cnl::overflow_integer,
+    /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
+    /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::trapping_overflow_tag, cnl::undefined_overflow_tag
     struct throwing_overflow_tag {
     };
 

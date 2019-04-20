@@ -21,10 +21,6 @@ a.elRef {
 }
 
 .memItemLeft, .memItemRight,
-.memTemplItemLeft, .memTemplItemRight, .memTemplParams {
-	font-family: monospace;
-}
-
-.paramname {
+.memTemplItemLeft, .memTemplItemRight, .memTemplParams, .memproto, .memtemplate, .memname, .paramtype, .paramname {
 	font-family: monospace;
 }

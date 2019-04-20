@@ -41,11 +41,12 @@ namespace cnl {
             class OverflowTag = undefined_overflow_tag,
             class Narrowest = signed,
             class Input = int>
-    static_number<
+
+    constexpr auto make_static_number(Input const& input)
+    -> static_number<
             numeric_limits<Input>::digits, 0,
             RoundingTag, OverflowTag,
             Narrowest>
-    constexpr make_static_number(Input const& input)
     {
         return input;
     }
@@ -57,11 +58,11 @@ namespace cnl {
             class Narrowest = int,
             class Input = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    static_number<
+    constexpr auto make_static_number(constant<Value> const&)
+    -> static_number<
             _impl::used_digits(Value)-trailing_bits(Value), trailing_bits(Value),
             RoundingTag, OverflowTag,
             Narrowest>
-    constexpr make_static_number(constant<Value> const&)
     {
         return constant<Value>{};
     }

@@ -15,7 +15,12 @@
 #include <type_traits>
 
 namespace cnl {
-    template<class, class = void>
+    /// \brief given a numeric type, defines member `type` as the equivalent signed type
+    /// \tparam T type to transform into a signed type
+    /// \headerfile cnl/num_traits.h
+    /// \note User-specializations of this type are permitted.
+    /// \sa cnl::remove_signedness, cnl::add_signedness_t, std::make_signed
+    template<class T, class = void>
     struct add_signedness;
 
     template<class T>
@@ -33,6 +38,9 @@ namespace cnl {
     };
 #endif
 
+    /// \brief helper alias of \ref cnl::add_signedness
+    /// \headerfile cnl/num_traits.h
+    /// \sa cnl::remove_signedness_t, cnl::add_signedness, std::make_signed_t
     template<class T>
     using add_signedness_t = typename add_signedness<T>::type;
 

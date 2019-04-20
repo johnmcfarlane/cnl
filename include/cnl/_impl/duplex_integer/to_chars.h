@@ -49,7 +49,7 @@ namespace cnl {
                 return to_chars_result{first+1, std::errc{}};
             }
 
-            using native_rounding_type = set_rounding_t<decltype(value), _impl::native_rounding_tag>;
+            using native_rounding_type = set_rounding_t<decltype(value), native_rounding_tag>;
             auto const& native_rounding_value = static_cast<native_rounding_type>(value);
 
             return _impl::to_chars_non_zero<native_rounding_type>{}(

@@ -320,7 +320,7 @@ namespace {
     namespace test_shift_right {
         static_assert(identical(
                 elastic_integer<1>{1},
-                cnl::_impl::shift_right<cnl::_impl::nearest_rounding_tag, cnl::elastic_integer<2>, cnl::constant<1>>{}(
+                cnl::_impl::shift_right<cnl::nearest_rounding_tag, cnl::elastic_integer<2>, cnl::constant<1>>{}(
                         elastic_integer<2>{2}, {})), "shift_right<elastic_integer>");
     }
 
