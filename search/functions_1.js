@@ -8,6 +8,7 @@ var searchData=
   ['accumulate',['accumulate',['http://en.cppreference.com/w/cpp/algorithm/accumulate.html',1,'std']]],
   ['acos',['acos',['http://en.cppreference.com/w/cpp/numeric/math/acos.html',1,'std']]],
   ['acosh',['acosh',['http://en.cppreference.com/w/cpp/numeric/math/acosh.html',1,'std']]],
+  ['add',['add',['../namespacecnl.html#a82e0057d8e162402d7f7ce082590a2b7',1,'cnl']]],
   ['address',['address',['http://en.cppreference.com/w/cpp/memory/allocator/address.html',1,'std::allocator']]],
   ['addressof',['addressof',['http://en.cppreference.com/w/cpp/memory/addressof.html',1,'std']]],
   ['adjacent_5fdifference',['adjacent_difference',['http://en.cppreference.com/w/cpp/algorithm/adjacent_difference.html',1,'std']]],

@@ -34,6 +34,7 @@ var searchData=
   ['discrete_5fdistribution',['discrete_distribution',['http://en.cppreference.com/w/cpp/numeric/random/discrete_distribution.html',1,'std::discrete_distribution'],['http://en.cppreference.com/w/cpp/numeric/random/discrete_distribution/discrete_distribution.html',1,'std::discrete_distribution::discrete_distribution()']]],
   ['distance',['distance',['http://en.cppreference.com/w/cpp/iterator/distance.html',1,'std']]],
   ['div',['div',['http://en.cppreference.com/w/cpp/numeric/math/div.html',1,'std']]],
+  ['divide',['divide',['../namespacecnl.html#aa54d45959ff90c1fade664ba71effd18',1,'cnl']]],
   ['divides',['divides',['http://en.cppreference.com/w/cpp/utility/functional/divides.html',1,'std']]],
   ['do_5falways_5fnoconv',['do_always_noconv',['http://en.cppreference.com/w/cpp/locale/codecvt/always_noconv.html',1,'std::codecvt::do_always_noconv()'],['http://en.cppreference.com/w/cpp/locale/codecvt/always_noconv.html',1,'std::codecvt_byname::do_always_noconv()'],['http://en.cppreference.com/w/cpp/locale/codecvt/always_noconv.html',1,'std::codecvt_utf8::do_always_noconv()'],['http://en.cppreference.com/w/cpp/locale/codecvt/always_noconv.html',1,'std::codecvt_utf8_utf16::do_always_noconv()'],['http://en.cppreference.com/w/cpp/locale/codecvt/always_noconv.html',1,'std::codecvt_utf16::do_always_noconv()']]],
   ['do_5fclose',['do_close',['http://en.cppreference.com/w/cpp/locale/messages/close.html',1,'std::messages_byname::do_close()'],['http://en.cppreference.com/w/cpp/locale/messages/close.html',1,'std::messages::do_close()']]],

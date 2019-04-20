@@ -5,6 +5,8 @@ var searchData=
   ['add_5flvalue_5freference',['add_lvalue_reference',['http://en.cppreference.com/w/cpp/types/add_reference.html',1,'std']]],
   ['add_5fpointer',['add_pointer',['http://en.cppreference.com/w/cpp/types/add_pointer.html',1,'std']]],
   ['add_5frvalue_5freference',['add_rvalue_reference',['http://en.cppreference.com/w/cpp/types/add_reference.html',1,'std']]],
+  ['add_5fsignedness',['add_signedness',['../structcnl_1_1add__signedness.html',1,'cnl']]],
+  ['add_5fsignedness_3c_20t_20_3e',['add_signedness&lt; T &gt;',['../structcnl_1_1add__signedness.html',1,'cnl']]],
   ['add_5fvolatile',['add_volatile',['http://en.cppreference.com/w/cpp/types/add_cv.html',1,'std']]],
   ['adopt_5flock_5ft',['adopt_lock_t',['http://en.cppreference.com/w/cpp/thread/lock_tag_t.html',1,'std']]],
   ['aligned_5fstorage',['aligned_storage',['http://en.cppreference.com/w/cpp/types/aligned_storage.html',1,'std']]],

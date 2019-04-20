@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['denominator_5ftype',['denominator_type',['../structcnl_1_1fraction.html#abbe48c1be229ad5107541218dea08145',1,'cnl::fraction']]]
+  ['add_5fsignedness_5ft',['add_signedness_t',['../namespacecnl.html#a021fb82cbfb06dc8fc490872a32349ef',1,'cnl']]]
 ];

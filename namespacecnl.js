@@ -1,5 +1,6 @@
 var namespacecnl =
 [
+    [ "add_signedness", "structcnl_1_1add__signedness.html", null ],
     [ "constant", "structcnl_1_1constant.html", null ],
     [ "digits", "structcnl_1_1digits.html", null ],
     [ "elastic_integer", "classcnl_1_1elastic__integer.html", "classcnl_1_1elastic__integer" ],
@@ -10,8 +11,18 @@ var namespacecnl =
     [ "from_rep< fixed_point< ArchetypeRep, Exponent, Radix >, Rep >", "structcnl_1_1from__rep_3_01fixed__point_3_01ArchetypeRep_00_01Exponent_00_01Radix_01_4_00_01Rep_01_4.html", "structcnl_1_1from__rep_3_01fixed__point_3_01ArchetypeRep_00_01Exponent_00_01Radix_01_4_00_01Rep_01_4" ],
     [ "from_rep< overflow_integer< ArchetypeRep, OverflowTag >, Rep >", "structcnl_1_1from__rep_3_01overflow__integer_3_01ArchetypeRep_00_01OverflowTag_01_4_00_01Rep_01_4.html", "structcnl_1_1from__rep_3_01overflow__integer_3_01ArchetypeRep_00_01OverflowTag_01_4_00_01Rep_01_4" ],
     [ "from_rep< rounding_integer< ArchetypeRep, RoundingTag >, Rep >", "structcnl_1_1from__rep_3_01rounding__integer_3_01ArchetypeRep_00_01RoundingTag_01_4_00_01Rep_01_4.html", "structcnl_1_1from__rep_3_01rounding__integer_3_01ArchetypeRep_00_01RoundingTag_01_4_00_01Rep_01_4" ],
+    [ "native_overflow_tag", "structcnl_1_1native__overflow__tag.html", null ],
+    [ "native_rounding_tag", "structcnl_1_1native__rounding__tag.html", null ],
+    [ "nearest_rounding_tag", "structcnl_1_1nearest__rounding__tag.html", null ],
     [ "overflow_integer", "classcnl_1_1overflow__integer.html", "classcnl_1_1overflow__integer" ],
+    [ "remove_signedness", "structcnl_1_1remove__signedness.html", null ],
+    [ "rounding", "structcnl_1_1rounding.html", null ],
     [ "rounding_integer", "classcnl_1_1rounding__integer.html", null ],
+    [ "saturated_overflow_tag", "structcnl_1_1saturated__overflow__tag.html", null ],
     [ "set_digits", "structcnl_1_1set__digits.html", null ],
-    [ "to_rep", "structcnl_1_1to__rep.html", null ]
+    [ "set_rounding", "structcnl_1_1set__rounding.html", null ],
+    [ "throwing_overflow_tag", "structcnl_1_1throwing__overflow__tag.html", null ],
+    [ "to_rep", "structcnl_1_1to__rep.html", null ],
+    [ "trapping_overflow_tag", "structcnl_1_1trapping__overflow__tag.html", null ],
+    [ "undefined_overflow_tag", "structcnl_1_1undefined__overflow__tag.html", null ]
 ];

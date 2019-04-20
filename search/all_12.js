@@ -64,6 +64,9 @@ var searchData=
   ['remove_5fif',['remove_if',['http://en.cppreference.com/w/cpp/container/forward_list/remove.html',1,'std::forward_list::remove_if()'],['http://en.cppreference.com/w/cpp/container/list/remove.html',1,'std::list::remove_if()'],['http://en.cppreference.com/w/cpp/algorithm/remove.html',1,'std::remove_if()']]],
   ['remove_5fpointer',['remove_pointer',['http://en.cppreference.com/w/cpp/types/remove_pointer.html',1,'std']]],
   ['remove_5freference',['remove_reference',['http://en.cppreference.com/w/cpp/types/remove_reference.html',1,'std']]],
+  ['remove_5fsignedness',['remove_signedness',['../structcnl_1_1remove__signedness.html',1,'cnl']]],
+  ['remove_5fsignedness_3c_20t_20_3e',['remove_signedness&lt; T &gt;',['../structcnl_1_1remove__signedness.html',1,'cnl']]],
+  ['remove_5fsignedness_5ft',['remove_signedness_t',['../namespacecnl.html#a97255399ba282f661fdfd52df6710e4c',1,'cnl']]],
   ['remove_5fvolatile',['remove_volatile',['http://en.cppreference.com/w/cpp/types/remove_cv.html',1,'std']]],
   ['remquo',['remquo',['http://en.cppreference.com/w/cpp/numeric/math/remquo.html',1,'std']]],
   ['rename',['rename',['http://en.cppreference.com/w/cpp/io/c/rename.html',1,'std']]],
@@ -93,6 +96,10 @@ var searchData=
   ['rotate_5fcopy',['rotate_copy',['http://en.cppreference.com/w/cpp/algorithm/rotate_copy.html',1,'std']]],
   ['round',['round',['http://en.cppreference.com/w/cpp/numeric/math/round.html',1,'std']]],
   ['round_5ferror',['round_error',['http://en.cppreference.com/w/cpp/types/numeric_limits/round_error.html',1,'std::numeric_limits']]],
+  ['rounding',['rounding',['../structcnl_1_1rounding.html',1,'cnl']]],
+  ['rounding_3c_20_5fimpl_3a_3ato_5frep_5ft_3c_20number_20_3e_20_3e',['rounding&lt; _impl::to_rep_t&lt; Number &gt; &gt;',['../structcnl_1_1rounding.html',1,'cnl']]],
+  ['rounding_3c_20number_20_3e',['rounding&lt; Number &gt;',['../structcnl_1_1rounding.html',1,'cnl']]],
   ['rounding_5finteger',['rounding_integer',['../classcnl_1_1rounding__integer.html',1,'cnl']]],
+  ['rounding_5ft',['rounding_t',['../namespacecnl.html#a18e61e64007c0b8f03795a909a3ece45',1,'cnl']]],
   ['runtime_5ferror',['runtime_error',['http://en.cppreference.com/w/cpp/error/runtime_error.html',1,'std::runtime_error'],['http://en.cppreference.com/w/cpp/error/runtime_error.html',1,'std::runtime_error::runtime_error()']]]
 ];

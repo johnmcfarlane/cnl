@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['saturated_5foverflow_5ftag',['saturated_overflow_tag',['../structcnl_1_1saturated__overflow__tag.html',1,'cnl']]],
   ['scoped_5fallocator_5fadaptor',['scoped_allocator_adaptor',['http://en.cppreference.com/w/cpp/memory/scoped_allocator_adaptor.html',1,'std']]],
   ['seconds',['seconds',['http://en.cppreference.com/w/cpp/chrono/duration.html',1,'std::chrono']]],
   ['seed_5fseq',['seed_seq',['http://en.cppreference.com/w/cpp/numeric/random/seed_seq.html',1,'std']]],
@@ -10,6 +11,9 @@ var searchData=
   ['set_5fdigits_3c_20mimic_2c_20digits_3c_20source_20_3e_3a_3avalue_20_3e',['set_digits&lt; Mimic, digits&lt; Source &gt;::value &gt;',['../structcnl_1_1set__digits.html',1,'cnl']]],
   ['set_5fdigits_3c_20narrowest_2c_20max_28digits_2c_20digits_3c_20narrowest_20_3e_3a_3avalue_29_3e',['set_digits&lt; Narrowest, max(Digits, digits&lt; Narrowest &gt;::value)&gt;',['../structcnl_1_1set__digits.html',1,'cnl']]],
   ['set_5fdigits_3c_20t_2c_20bits_20_2d_20is_5fsigned_3c_20t_20_3e_3a_3avalue_20_3e',['set_digits&lt; T, Bits - is_signed&lt; T &gt;::value &gt;',['../structcnl_1_1set__digits.html',1,'cnl']]],
+  ['set_5frounding',['set_rounding',['../structcnl_1_1set__rounding.html',1,'cnl']]],
+  ['set_5frounding_3c_20_5fimpl_3a_3aremove_5fcvref_5ft_3c_20number_20_3e_2c_20roundingtag_20_3e',['set_rounding&lt; _impl::remove_cvref_t&lt; Number &gt;, RoundingTag &gt;',['../structcnl_1_1set__rounding.html',1,'cnl']]],
+  ['set_5frounding_3c_20number_2c_20roundingtag_20_3e',['set_rounding&lt; Number, RoundingTag &gt;',['../structcnl_1_1set__rounding.html',1,'cnl']]],
   ['shared_5ffuture',['shared_future',['http://en.cppreference.com/w/cpp/thread/shared_future.html',1,'std']]],
   ['shared_5flock',['shared_lock',['http://en.cppreference.com/w/cpp/thread/shared_lock.html',1,'std']]],
   ['shared_5fptr',['shared_ptr',['http://en.cppreference.com/w/cpp/memory/shared_ptr.html',1,'std']]],

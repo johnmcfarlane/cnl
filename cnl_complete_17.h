@@ -1,22 +1,3 @@
-
-//          Copyright John McFarlane 2018.
-// Distributed under the Boost Software License, Version 1.0.
-//    (See accompanying file ../LICENSE_1_0.txt or copy at
-//          http://www.boost.org/LICENSE_1_0.txt)
-
-// mechanically retrieved, single-header version of CNL library
-// https://github.com/johnmcfarlane/cnl
-
-#if ! defined(CNL_COMPLETE_H)
-#define CNL_COMPLETE_H
-
-#if (__cplusplus == 199711L) && defined(_MSC_VER)
-#error Required Visual C++ compiler flags: /std:c++17 /Zc:__cplusplus /EHsc
-#endif
-
-#if (__cplusplus < 201703L)
-#error This build of CNL requires C++17 or above.
-#endif
 #include <array>
 #include <climits>
 #include <cmath>
@@ -441,16 +422,16 @@ namespace cnl {
     }
 }
 namespace cnl {
-    template<class, class = void>
-    struct make_unsigned;
+    template<class T, class = void>
+    struct remove_signedness;
     template<class T>
-    struct make_unsigned<T, _impl::enable_if_t<std::is_integral<T>::value>> : std::make_unsigned<T> {
+    struct remove_signedness<T, _impl::enable_if_t<std::is_integral<T>::value>> : std::make_unsigned<T> {
     };
     template<class T>
-    using make_unsigned_t = typename make_unsigned<T>::type;
+    using remove_signedness_t = typename remove_signedness<T>::type;
     template<typename T>
-    struct make_unsigned<T, _impl::enable_if_t<is_composite<T>::value>>
-            : _impl::type_identity<_impl::from_rep_t<T, make_unsigned_t<_impl::to_rep_t<T>>>> {
+    struct remove_signedness<T, _impl::enable_if_t<is_composite<T>::value>>
+            : _impl::type_identity<_impl::from_rep_t<T, remove_signedness_t<_impl::to_rep_t<T>>>> {
     };
 }
 namespace cnl {
@@ -566,7 +547,7 @@ namespace cnl {
     constexpr int countl_rsb(T x) noexcept
     {
         static_assert(_bit_impl::is_integral_signed<T>(), "T must be signed integer");
-        using unsigned_type = typename make_unsigned<T>::type;
+        using unsigned_type = typename remove_signedness<T>::type;
         return ((x<0)
                 ? countl_one(static_cast<unsigned_type>(x))
                 : countl_zero(static_cast<unsigned_type>(x))) - 1;
@@ -744,16 +725,16 @@ namespace cnl {
     }
 }
 namespace cnl {
-    template<class, class = void>
-    struct make_signed;
+    template<class T, class = void>
+    struct add_signedness;
     template<class T>
-    struct make_signed<T, _impl::enable_if_t<std::is_integral<T>::value>> : std::make_signed<T> {
+    struct add_signedness<T, _impl::enable_if_t<std::is_integral<T>::value>> : std::make_signed<T> {
     };
     template<class T>
-    using make_signed_t = typename make_signed<T>::type;
+    using add_signedness_t = typename add_signedness<T>::type;
     template<typename T>
-    struct make_signed<T, _impl::enable_if_t<is_composite<T>::value>>
-            : _impl::type_identity<_impl::from_rep_t<T, make_signed_t<_impl::to_rep_t<T>>>> {
+    struct add_signedness<T, _impl::enable_if_t<is_composite<T>::value>>
+            : _impl::type_identity<_impl::from_rep_t<T, add_signedness_t<_impl::to_rep_t<T>>>> {
     };
 }
 namespace cnl {
@@ -761,10 +742,10 @@ namespace cnl {
         template<class T, bool IsSigned>
         struct set_signedness;
         template<class T>
-        struct set_signedness<T, true> : make_signed<T> {
+        struct set_signedness<T, true> : add_signedness<T> {
         };
         template<class T>
-        struct set_signedness<T, false> : make_unsigned<T> {
+        struct set_signedness<T, false> : remove_signedness<T> {
         };
         template<class T, bool IsSigned>
         using set_signedness_t = typename set_signedness<T, IsSigned>::type;
@@ -938,48 +919,12 @@ namespace cnl {
 }
 namespace cnl {
     namespace _impl {
-        template<typename Result, typename Value>
-        struct from_value_simple {
-            constexpr Result operator()(Value const& value) const {
-                return value;
+        struct convert_op {
+            template<class Destination, class Source>
+            constexpr auto operator()(Source const& source) const -> decltype(static_cast<Destination>(source))
+            {
+                return static_cast<Destination>(source);
             }
-        };
-    }
-    template<typename Number, typename Value, class Enable = void>
-    struct from_value : _impl::from_value_simple<void, Value> {
-        void operator()(Value const &) const;
-    };
-    template<class Number, class Value>
-    struct from_value<
-            Number, Value, _impl::enable_if_t<_impl::is_integral<Number>::value && _impl::is_integral<Value>::value>>
-            : _impl::from_value_simple<Value, Value> {
-    };
-    template<class Number, auto Value>
-    struct from_value<Number, constant<Value>, _impl::enable_if_t<_impl::is_integral<Number>::value>> {
-    private:
-        using _result_type = set_digits_t<
-                make_signed_t<Number>,
-                _impl::max(digits<int>::value, _impl::used_digits(Value))>;
-    public:
-        constexpr _result_type operator()(constant<Value> const &value) const {
-            return _result_type(value);
-        }
-    };
-    namespace _impl {
-        template<typename Number, typename Value>
-        constexpr auto make_number(Value const& value)
-        -> decltype(cnl::from_value<Number, Value>{}(value))
-        {
-            return cnl::from_value<Number, Value>{}(value);
-        }
-    }
-    template<typename Number, typename Value>
-    using from_value_t = decltype(_impl::make_number<Number>(std::declval<Value>()));
-}
-namespace cnl {
-    namespace _impl {
-        template<class T, class Enable = void>
-        struct wants_generic_ops : std::false_type {
         };
         struct minus_op {
             template<class Rhs>
@@ -1240,6 +1185,13 @@ namespace cnl {
         template<>
         struct post_to_assign<post_decrement_op> : type_identity<assign_subtract_op> {
         };
+    }
+}
+namespace cnl {
+    namespace _impl {
+        template<class T, class Enable = void>
+        struct wants_generic_ops : std::false_type {
+        };
         template<class Operator, class Operand, class Enable = void>
         struct unary_operator;
         template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
@@ -1312,6 +1264,46 @@ namespace cnl {
         template<class LhsOperand, class RhsOperand> constexpr auto operator <<= (LhsOperand& lhs, RhsOperand const& rhs) -> cnl::_impl::enable_binary_t<LhsOperand, RhsOperand, decltype( cnl::_impl::compound_assignment_operator<cnl::_impl::assign_shift_left_op, LhsOperand, RhsOperand>()(lhs, rhs))> { return cnl::_impl::compound_assignment_operator<cnl::_impl::assign_shift_left_op, LhsOperand, RhsOperand>()(lhs, rhs); }
         template<class LhsOperand, class RhsOperand> constexpr auto operator >>= (LhsOperand& lhs, RhsOperand const& rhs) -> cnl::_impl::enable_binary_t<LhsOperand, RhsOperand, decltype( cnl::_impl::compound_assignment_operator<cnl::_impl::assign_shift_right_op, LhsOperand, RhsOperand>()(lhs, rhs))> { return cnl::_impl::compound_assignment_operator<cnl::_impl::assign_shift_right_op, LhsOperand, RhsOperand>()(lhs, rhs); }
     }
+}
+namespace cnl {
+    namespace _impl {
+        template<typename Result, typename Value>
+        struct from_value_simple {
+            constexpr Result operator()(Value const& value) const {
+                return value;
+            }
+        };
+    }
+    template<typename Number, typename Value, class Enable = void>
+    struct from_value : _impl::from_value_simple<void, Value> {
+        void operator()(Value const &) const;
+    };
+    template<class Number, class Value>
+    struct from_value<
+            Number, Value, _impl::enable_if_t<_impl::is_integral<Number>::value && _impl::is_integral<Value>::value>>
+            : _impl::from_value_simple<Value, Value> {
+    };
+    template<class Number, auto Value>
+    struct from_value<Number, constant<Value>, _impl::enable_if_t<_impl::is_integral<Number>::value>> {
+    private:
+        using _result_type = set_digits_t<
+                add_signedness_t<Number>,
+                _impl::max(digits<int>::value, _impl::used_digits(Value))>;
+    public:
+        constexpr _result_type operator()(constant<Value> const &value) const {
+            return _result_type(value);
+        }
+    };
+    namespace _impl {
+        template<typename Number, typename Value>
+        constexpr auto from_number(Value const& value)
+        -> decltype(cnl::from_value<Number, Value>{}(value))
+        {
+            return cnl::from_value<Number, Value>{}(value);
+        }
+    }
+    template<typename Number, typename Value>
+    using from_value_t = decltype(_impl::from_number<Number>(std::declval<Value>()));
 }
 namespace cnl {
     namespace _impl {
@@ -1399,8 +1391,9 @@ namespace cnl {
                 Operator, Lhs, Rhs,
                 enable_if_t<is_wrappable<Lhs, Rhs>::value && is_derived_from_number_base<Rhs>::value>> {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(make_number<Rhs>(lhs), rhs)) {
-                return Operator()(make_number<Rhs>(lhs), rhs);
+            -> decltype(Operator()(from_number<Rhs>(lhs), rhs))
+            {
+                return Operator()(from_number<Rhs>(lhs), rhs);
             }
         };
         template<class Operator, class Lhs, class Rhs>
@@ -1408,9 +1401,9 @@ namespace cnl {
                 Operator, Lhs, Rhs,
                 enable_if_t<is_derived_from_number_base<Lhs>::value && is_wrappable<Rhs, Lhs>::value>> {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(lhs, make_number<Lhs>(rhs)))
+            -> decltype(Operator()(lhs, from_number<Lhs>(rhs)))
             {
-                return Operator()(lhs, make_number<Lhs>(rhs));
+                return Operator()(lhs, from_number<Lhs>(rhs));
             }
         };
         template<class Operator, class Lhs, class Rhs>
@@ -1438,8 +1431,9 @@ namespace cnl {
                 Operator, Lhs, Rhs,
                 enable_if_t<is_wrappable<Lhs, Rhs>::value && is_derived_from_number_base<Rhs>::value>> {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(make_number<Rhs>(lhs), rhs)) {
-                return Operator()(make_number<Rhs>(lhs), rhs);
+            -> decltype(Operator()(from_number<Rhs>(lhs), rhs))
+            {
+                return Operator()(from_number<Rhs>(lhs), rhs);
             }
         };
         template<class Operator, class Lhs, class Rhs>
@@ -1447,9 +1441,9 @@ namespace cnl {
                 Operator, Lhs, Rhs,
                 enable_if_t<is_derived_from_number_base<Lhs>::value && is_wrappable<Rhs, Lhs>::value>> {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(lhs, make_number<Lhs>(rhs)))
+            -> decltype(Operator()(lhs, from_number<Lhs>(rhs)))
             {
-                return Operator()(lhs, make_number<Lhs>(rhs));
+                return Operator()(lhs, from_number<Lhs>(rhs));
             }
         };
         template<class Operator, class Derived, typename Rep>
@@ -1878,10 +1872,10 @@ namespace cnl {
     }
     template<int RhsDigits, class RhsNarrowest>
     constexpr auto operator-(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
-    -> decltype(_impl::from_rep<elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>>(
-            -_impl::to_rep(static_cast<elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>>(rhs))))
+    -> decltype(_impl::from_rep<elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>>(
+            -_impl::to_rep(static_cast<elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>>(rhs))))
     {
-        using result_type = elastic_integer<RhsDigits, typename make_signed<RhsNarrowest>::type>;
+        using result_type = elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>;
         return _impl::from_rep<result_type>(-_impl::to_rep(static_cast<result_type>(rhs)));
     }
     template<int RhsDigits, class RhsNarrowest>
@@ -2066,7 +2060,7 @@ namespace cnl {
         struct trailing_bits<Integer, true> {
             constexpr int operator()(Integer const& integer) const noexcept
             {
-                using unsigned_type = make_unsigned_t<Integer>;
+                using unsigned_type = remove_signedness_t<Integer>;
                 return countr_zero(static_cast<unsigned_type>(integer));
             }
         };
@@ -2124,7 +2118,7 @@ namespace cnl {
         constexpr fixed_point(fixed_point<FromRep, FromExponent, Radix> const& rhs)
                 : _base(
                 static_cast<Rep>(_impl::scale<FromExponent-exponent, Radix>(
-                        _impl::make_number<Rep>(cnl::_impl::to_rep(rhs)))))
+                        _impl::from_number<Rep>(cnl::_impl::to_rep(rhs)))))
         {
         }
         template<auto Value>
@@ -2134,7 +2128,7 @@ namespace cnl {
         }
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         constexpr fixed_point(S const& s)
-                : _base(static_cast<Rep>(_impl::scale<-exponent, Radix>(_impl::make_number<Rep>(s))))
+                : _base(static_cast<Rep>(_impl::scale<-exponent, Radix>(_impl::from_number<Rep>(s))))
         {
         }
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
@@ -2292,7 +2286,7 @@ namespace cnl {
     constexpr auto make_fixed_point(Value const& value)
     -> cnl::from_value_t<fixed_point<Value, 0>, Value>
     {
-        return _impl::make_number<fixed_point<Value, 0>>(value);
+        return _impl::from_number<fixed_point<Value, 0>>(value);
     }
     namespace _impl {
         template<typename Number>
@@ -2513,6 +2507,10 @@ namespace cnl {
         fixed_point<Rep, Exponent>{ glaisher<long double> }
     };
 }
+namespace cnl {
+    struct nearest_rounding_tag {
+    };
+}
 template<typename Type>
 struct CNL_ERROR___cannot_use {
     struct as_a_tag;
@@ -2520,24 +2518,18 @@ struct CNL_ERROR___cannot_use {
 namespace cnl {
     namespace _impl {
         struct native_tag {};
-    }
-    template<class Tag, typename Result, typename Input, typename Enable = void>
-    struct convert : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
-    };
-    template<typename Result, typename Input>
-    struct convert<_impl::native_tag, Result, Input> {
-        constexpr Result operator()(Input const& rhs) const
-        {
-            return static_cast<Result>(rhs);
-        }
-    };
-    namespace _impl {
-        template<class Tag, typename Result, typename Input>
-        constexpr auto convert(Input const& from)
-        -> decltype(cnl::convert<Tag, Result, Input>{}(from))
-        {
-            return cnl::convert<Tag, Result, Input>{}(from);
-        }
+        template<class Tag, typename Destination, typename Source, typename Enabled=void>
+        struct tagged_convert_operator : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
+        };
+        template<typename Destination, typename Source>
+        struct tagged_convert_operator<native_tag, Destination, Source> : convert_op {
+        };
+        template<class Tag, class Operator>
+        struct tagged_unary_operator : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
+        };
+        template<class Operator>
+        struct tagged_unary_operator<native_tag, Operator> : Operator {
+        };
         template<class Tag, class Operator>
         struct tagged_binary_operator : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
         };
@@ -2550,355 +2542,16 @@ namespace cnl {
             -> decltype(lhs<<rhs)
             {
                 using result_type = decltype(lhs<<rhs);
-                return static_cast<result_type>(static_cast<cnl::make_unsigned_t<result_type>>(lhs)<<rhs);
+                return static_cast<result_type>(static_cast<cnl::remove_signedness_t<result_type>>(lhs) << rhs);
             }
         };
     }
 }
 namespace cnl {
-    namespace _impl {
-        struct native_rounding_tag : public native_tag {
-        };
-        struct nearest_rounding_tag {
-        };
-    }
-}
-namespace cnl {
-    template<typename Result, typename Input>
-    struct convert<_impl::native_rounding_tag, Result, Input>
-            : convert<_impl::native_tag, Result, Input> {
-    };
-    template<typename Result, typename Input>
-    struct convert<
-            _impl::nearest_rounding_tag, Result, Input,
-            _impl::enable_if_t<
-                    cnl::numeric_limits<Result>::is_integer && std::is_floating_point<Input>::value>> {
-        constexpr Result operator()(Input const& from) const
-        {
-            return static_cast<Result>(from+((from>=0) ? .5 : -.5));
-        }
-    };
-    template<typename Result, typename Input>
-    struct convert<
-           _impl::nearest_rounding_tag, Result, Input,
-           _impl::enable_if_t<
-                   std::is_floating_point<Result>::value && std::is_floating_point<Input>::value >> {
-        constexpr Result operator()(Input const& from) const
-        {
-            return static_cast<Result>(from);
-        }
-    };
-    template<typename Result, typename Input>
-    struct convert<
-           _impl::nearest_rounding_tag, Result, Input,
-           _impl::enable_if_t<
-                   cnl::numeric_limits<Result>::is_integer && cnl::numeric_limits<Input>::is_integer >> {
-        constexpr Result operator()(Input const& from) const
-        {
-            return static_cast<Result>(from);
-        }
-    };
-    template<typename Result, typename Input>
-    struct convert<
-           _impl::nearest_rounding_tag, Result, Input,
-           _impl::enable_if_t<
-                   std::is_floating_point<Result>::value && cnl::numeric_limits<Input>::is_integer >> {
-        constexpr Result operator()(Input const& from) const
-        {
-            return static_cast<Result>(from);
-        }
+    struct native_rounding_tag : public _impl::native_tag {
     };
 }
 namespace cnl {
-    template<
-            typename ResultRep, int ResultExponent,
-            typename InputRep, int InputExponent,
-            int Radix>
-    struct convert<
-            _impl::nearest_rounding_tag,
-            fixed_point<ResultRep, ResultExponent, Radix>,
-            fixed_point<InputRep, InputExponent, Radix>,
-            _impl::enable_if_t<ResultExponent<=InputExponent>>
-            : convert<
-                    _impl::native_rounding_tag,
-                    fixed_point<ResultRep, ResultExponent, Radix>,
-                    fixed_point<InputRep, InputExponent, Radix>> {
-    };
-    template<
-            typename ResultRep, int ResultExponent,
-            typename InputRep, int InputExponent,
-            int Radix>
-    struct convert<
-            _impl::nearest_rounding_tag,
-            fixed_point<ResultRep, ResultExponent, Radix>,
-            fixed_point<InputRep, InputExponent, Radix>,
-            _impl::enable_if_t<(ResultExponent>InputExponent)>> {
-    private:
-        using _result = fixed_point<ResultRep, ResultExponent, Radix>;
-        using _input = fixed_point<InputRep, InputExponent, Radix>;
-        static constexpr _input half()
-        {
-            return static_cast<_input>(_impl::from_rep<_result>(1))/2;
-        }
-    public:
-        constexpr _result operator()(_input const& from) const
-        {
-            return static_cast<_result>(from+((from>=0) ? half() : -half()));
-        }
-    };
-    template<
-            typename ResultRep, int ResultExponent, int ResultRadix,
-            typename Input>
-    struct convert<
-            _impl::nearest_rounding_tag,
-            fixed_point<ResultRep, ResultExponent, ResultRadix>,
-            Input,
-            _impl::enable_if_t<std::is_floating_point<Input>::value>> {
-    private:
-        using _result = fixed_point<ResultRep, ResultExponent, ResultRadix>;
-        static constexpr Input half()
-        {
-            return power<Input, ResultExponent-1, ResultRadix>();
-        }
-    public:
-        constexpr _result operator()(Input const& from) const
-        {
-            return static_cast<_result>(from+((from>=0) ? half() : -half()));
-        }
-    };
-    template<
-            typename ResultRep, int ResultExponent, int ResultRadix,
-            typename Input>
-    struct convert<
-            _impl::nearest_rounding_tag,
-            fixed_point<ResultRep, ResultExponent, ResultRadix>,
-            Input,
-            _impl::enable_if_t<cnl::numeric_limits<Input>::is_integer>>
-            : convert<
-                    _impl::nearest_rounding_tag,
-                    fixed_point<ResultRep, ResultExponent, ResultRadix>,
-                    fixed_point<Input>> {
-    };
-    template<
-            typename Result,
-            typename InputRep, int InputExponent, int InputRadix>
-    struct convert<
-            _impl::nearest_rounding_tag,
-            Result,
-            fixed_point<InputRep, InputExponent, InputRadix>,
-            _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer>> {
-        using _input = fixed_point<InputRep, InputExponent, InputRadix>;
-        constexpr Result operator()(_input const& from) const
-        {
-            return _impl::to_rep(_impl::convert<_impl::nearest_rounding_tag, fixed_point<Result>>(from));
-        }
-    };
-}
-namespace cnl {
-    namespace _impl {
-        template<typename Operator, typename Rep, int Exponent, int Radix>
-        struct unary_operator<Operator, fixed_point<Rep, Exponent, Radix>> {
-            constexpr auto operator()(fixed_point<Rep, Exponent, Radix> const& rhs) const
-            -> decltype(from_rep<fixed_point<decltype(Operator()(_impl::to_rep(rhs))), Exponent, Radix>>(Operator()(_impl::to_rep(rhs))))
-            {
-                return from_rep<fixed_point<decltype(Operator()(_impl::to_rep(rhs))), Exponent, Radix>>(Operator()(_impl::to_rep(rhs)));
-            }
-        };
-        template<typename Operator, typename LhsRep, typename RhsRep, int Exponent, int Radix>
-        struct comparison_operator<Operator,
-                fixed_point<LhsRep, Exponent, Radix>,
-                fixed_point<RhsRep, Exponent, Radix>> {
-            constexpr auto operator()(
-                    fixed_point<LhsRep, Exponent, Radix> const& lhs,
-                    fixed_point<RhsRep, Exponent, Radix> const& rhs) const
-            -> decltype(Operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs)))
-            {
-                return Operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs));
-            }
-        };
-        template<typename Operator, typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
-        struct comparison_operator<Operator,
-                fixed_point<LhsRep, LhsExponent, Radix>,
-                fixed_point<RhsRep, RhsExponent, Radix>,
-                enable_if_t<(LhsExponent<RhsExponent)>> {
-            static constexpr int shiftage = RhsExponent - LhsExponent;
-            using lhs_type = fixed_point<LhsRep, LhsExponent, Radix>;
-            using rhs_type = fixed_point<decltype(std::declval<RhsRep>()<<constant<shiftage>()), LhsExponent, Radix>;
-            using operator_type = comparison_operator<Operator, lhs_type, rhs_type>;
-            constexpr auto operator()(
-                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
-                    fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
-            -> decltype(operator_type{}(lhs, rhs))
-            {
-                return operator_type{}(lhs, rhs);
-            }
-        };
-        template<typename Operator, typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
-        struct comparison_operator<Operator,
-                fixed_point<LhsRep, LhsExponent, Radix>,
-                fixed_point<RhsRep, RhsExponent, Radix>,
-                enable_if_t<(RhsExponent<LhsExponent)>> {
-            static constexpr int shiftage = LhsExponent - RhsExponent;
-            using lhs_type = fixed_point<decltype(std::declval<LhsRep>()<<constant<shiftage>()), RhsExponent, Radix>;
-            using rhs_type = fixed_point<RhsRep, RhsExponent, Radix>;
-            using operator_type = comparison_operator<Operator, lhs_type, rhs_type>;
-            constexpr auto operator()(
-                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
-                    fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
-            -> decltype(operator_type{}(lhs, rhs))
-            {
-                return operator_type{}(lhs, rhs);
-            }
-        };
-        template<typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
-        struct binary_operator<multiply_op, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>> {
-            constexpr auto operator()(
-                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
-                    fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
-            -> decltype(from_rep<fixed_point<
-                    decltype(_impl::to_rep(lhs)*_impl::to_rep(rhs)),
-                    LhsExponent+RhsExponent,
-                    Radix>>(_impl::to_rep(lhs)*_impl::to_rep(rhs)))
-            {
-                return from_rep<fixed_point<
-                        decltype(_impl::to_rep(lhs)*_impl::to_rep(rhs)),
-                        LhsExponent+RhsExponent,
-                        Radix>>(_impl::to_rep(lhs)*_impl::to_rep(rhs));
-            }
-        };
-        template<typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
-        struct binary_operator<divide_op, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>> {
-            constexpr auto operator()(
-                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
-                    fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
-            -> decltype(from_rep<fixed_point<
-                    decltype(_impl::to_rep(lhs)/_impl::to_rep(rhs)),
-                    LhsExponent-RhsExponent,
-                    Radix>>(_impl::to_rep(lhs)/_impl::to_rep(rhs)))
-            {
-                return from_rep<fixed_point<
-                        decltype(_impl::to_rep(lhs)/_impl::to_rep(rhs)),
-                        LhsExponent-RhsExponent,
-                        Radix>>(_impl::to_rep(lhs)/_impl::to_rep(rhs));
-            }
-        };
-        template<typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
-        struct binary_operator<modulo_op, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>> {
-            constexpr auto operator()(
-                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
-                    fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
-            -> decltype(from_rep<fixed_point<
-                    decltype(_impl::to_rep(lhs)%_impl::to_rep(rhs)),
-                    LhsExponent,
-                    Radix>>(_impl::to_rep(lhs)%_impl::to_rep(rhs)))
-            {
-                return from_rep<fixed_point<
-                        decltype(_impl::to_rep(lhs)%_impl::to_rep(rhs)),
-                        LhsExponent,
-                        Radix>>(_impl::to_rep(lhs)%_impl::to_rep(rhs));
-            }
-        };
-        template<class Operator> struct is_zero_degree : std::true_type {};
-        template<> struct is_zero_degree<multiply_op> : std::false_type {};
-        template<> struct is_zero_degree<divide_op> : std::false_type {};
-        template<> struct is_zero_degree<modulo_op> : std::false_type {};
-        template<> struct is_zero_degree<shift_left_op> : std::false_type {};
-        template<> struct is_zero_degree<shift_right_op> : std::false_type {};
-        template<class Operator, class LhsRep, class RhsRep, int Exponent, int Radix>
-        struct binary_operator<Operator, fixed_point<LhsRep, Exponent, Radix>, fixed_point<RhsRep, Exponent, Radix>,
-                enable_if_t<is_zero_degree<Operator>::value>> {
-            constexpr auto operator()(
-                    fixed_point<LhsRep, Exponent, Radix> const& lhs, fixed_point<RhsRep, Exponent, Radix> const& rhs) const
-            -> decltype(from_rep<fixed_point<
-                    decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))),
-                    Exponent,
-                    Radix>>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
-            {
-                return from_rep<fixed_point<
-                        decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))),
-                        Exponent,
-                        Radix>>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)));
-            }
-        };
-        template<typename Operator, typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
-        struct binary_operator<Operator, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>,
-                        enable_if_t<is_zero_degree<Operator>::value>> {
-        private:
-            static constexpr int _common_exponent = min(LhsExponent, RhsExponent);
-            static constexpr int _lhs_left_shift = LhsExponent-_common_exponent;
-            static constexpr int _rhs_left_shift = RhsExponent-_common_exponent;
-        public:
-            constexpr auto operator()(
-                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs, fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
-            -> decltype(Operator{}(
-                    from_rep<fixed_point<LhsRep, _common_exponent, Radix>>(
-                            _impl::scale<_lhs_left_shift, Radix>(_impl::to_rep(lhs))),
-                    from_rep<fixed_point<RhsRep, _common_exponent, Radix>>(
-                            _impl::scale<_rhs_left_shift, Radix>(_impl::to_rep(rhs)))))
-            {
-                return Operator{}(
-                        from_rep<fixed_point<LhsRep, _common_exponent, Radix>>(
-                                _impl::scale<_lhs_left_shift, Radix>(_impl::to_rep(lhs))),
-                        from_rep<fixed_point<RhsRep, _common_exponent, Radix>>(
-                                _impl::scale<_rhs_left_shift, Radix>(_impl::to_rep(rhs))));
-            }
-        };
-        template<typename Operator, typename Rep, int Exponent, int Radix>
-        struct pre_operator<Operator, fixed_point<Rep, Exponent, Radix>> {
-            constexpr auto operator()(fixed_point<Rep, Exponent, Radix>& rhs) const
-            -> decltype(typename pre_to_assign<Operator>::type{}(rhs, 1))
-            {
-                return typename pre_to_assign<Operator>::type{}(rhs, 1);
-            }
-        };
-        template<typename Operator, typename Rep, int Exponent, int Radix>
-        struct post_operator<Operator, fixed_point<Rep, Exponent, Radix>> {
-            constexpr fixed_point<Rep, Exponent, Radix> operator()(fixed_point<Rep, Exponent, Radix>& rhs) const
-            {
-                auto copy = rhs;
-                typename post_to_assign<Operator>::type{}(rhs, 1);
-                return copy;
-            }
-        };
-    }
-    template<typename LhsRep, int LhsExponent, int LhsRadix, typename Rhs>
-    constexpr auto operator<<(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, Rhs const& rhs)
-    -> decltype(_impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs) << int(rhs)), LhsExponent, LhsRadix>>(
-            _impl::to_rep(lhs) << int(rhs)))
-    {
-        return _impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs) << int(rhs)), LhsExponent, LhsRadix>>(
-                _impl::to_rep(lhs) << int(rhs));
-    }
-    template<typename LhsRep, int LhsExponent, int LhsRadix, typename Rhs>
-    constexpr auto operator>>(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, Rhs const& rhs)
-    -> decltype(_impl::from_rep<fixed_point<
-            decltype(_impl::to_rep(lhs) >> int(rhs)),
-            LhsExponent,
-            LhsRadix>>(_impl::to_rep(lhs) >> int(rhs)))
-    {
-        return _impl::from_rep<fixed_point<
-                decltype(_impl::to_rep(lhs) >> int(rhs)),
-                LhsExponent,
-                LhsRadix>>(_impl::to_rep(lhs) >> int(rhs));
-    }
-    template<typename LhsRep, int LhsExponent, int LhsRadix, auto RhsValue>
-    constexpr fixed_point<LhsRep, LhsExponent+static_cast<int>(RhsValue), LhsRadix>
-    operator<<(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, constant<RhsValue>)
-    {
-        return _impl::from_rep<fixed_point<LhsRep, LhsExponent+static_cast<int>(RhsValue), LhsRadix>>(
-                _impl::to_rep(lhs));
-    }
-    template<typename LhsRep, int LhsExponent, int LhsRadix, auto RhsValue>
-    constexpr fixed_point<LhsRep, LhsExponent-static_cast<int>(RhsValue), LhsRadix>
-    operator>>(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, constant<RhsValue>)
-    {
-        return _impl::from_rep<fixed_point<LhsRep, LhsExponent-static_cast<int>(RhsValue), LhsRadix>>(
-                _impl::to_rep(lhs));
-    }
-}
-namespace cnl {
-    using _impl::native_rounding_tag;
-    using _impl::nearest_rounding_tag;
     template<typename Number, class Enable = void>
     struct rounding;
     template<typename Number>
@@ -2931,6 +2584,38 @@ namespace cnl {
     };
     template<typename Number, class RoundingTag>
     using set_rounding_t = typename set_rounding<Number, RoundingTag>::type;
+}
+namespace cnl {
+    namespace _impl {
+        template<class N>
+        struct is_arithmetic_or_integer
+                : std::integral_constant<bool, std::is_floating_point<N>::value || numeric_limits<N>::is_integer> {
+        };
+        template<class N1, class N2>
+        struct are_arithmetic_or_integer
+                : std::integral_constant<bool,
+                        is_arithmetic_or_integer<N1>::value && is_arithmetic_or_integer<N2>::value> {
+        };
+        template<typename Destination, typename Source>
+        struct tagged_convert_operator<
+                native_rounding_tag, Destination, Source> {
+            constexpr Destination operator()(Source const& from) const
+            {
+                return static_cast<Destination>(from);
+            }
+        };
+        template<typename Destination, typename Source>
+        struct tagged_convert_operator<
+                nearest_rounding_tag, Destination, Source,
+                enable_if_t<are_arithmetic_or_integer<Destination, Source>::value>> {
+            constexpr Destination operator()(Source const& from) const
+            {
+                return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
+                        ? static_cast<Destination>(from+((from >= 0) ? .5 : -.5))
+                        : static_cast<Destination>(from);
+            }
+        };
+    }
 }
 namespace cnl {
     namespace _impl {
@@ -2990,7 +2675,51 @@ namespace cnl {
     }
 }
 namespace cnl {
-    template<class Rep = int, class RoundingTag = _impl::nearest_rounding_tag>
+    template<class Tag, typename Result, typename Input>
+    constexpr auto convert(Input const& from)
+    -> decltype(cnl::_impl::tagged_convert_operator<Tag, Result, Input>{}(from))
+    {
+        return cnl::_impl::tagged_convert_operator<Tag, Result, Input>{}(from);
+    }
+    template<class Tag, typename Lhs, typename Rhs>
+    constexpr auto add(Lhs const& lhs, Rhs const& rhs)
+    -> decltype(_impl::tagged_binary_operator<Tag, _impl::add_op>{}(lhs, rhs))
+    {
+        return _impl::tagged_binary_operator<Tag, _impl::add_op>{}(lhs, rhs);
+    }
+    template<class Tag, typename Lhs, typename Rhs>
+    constexpr auto subtract(Lhs const& lhs, Rhs const& rhs)
+    -> decltype(_impl::tagged_binary_operator<Tag, _impl::subtract_op>{}(lhs, rhs))
+    {
+        return _impl::tagged_binary_operator<Tag, _impl::subtract_op>{}(lhs, rhs);
+    }
+    template<class Tag, typename Lhs, typename Rhs>
+    constexpr auto multiply(Lhs const& lhs, Rhs const& rhs)
+    -> decltype(_impl::tagged_binary_operator<Tag, _impl::multiply_op>{}(lhs, rhs))
+    {
+        return _impl::tagged_binary_operator<Tag, _impl::multiply_op>{}(lhs, rhs);
+    }
+    template<class Tag, typename Lhs, typename Rhs>
+    constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
+    -> decltype(cnl::_impl::tagged_binary_operator<Tag, _impl::divide_op>{}.template operator()<Lhs, Rhs>(lhs, rhs))
+    {
+        return cnl::_impl::tagged_binary_operator<Tag, _impl::divide_op>{}.template operator()<Lhs, Rhs>(lhs, rhs);
+    }
+    template<class Tag, typename Lhs, typename Rhs>
+    constexpr auto shift_left(Lhs const& lhs, Rhs const& rhs)
+    -> decltype(_impl::tagged_binary_operator<Tag, _impl::shift_left_op>{}(lhs, rhs))
+    {
+        return _impl::tagged_binary_operator<Tag, _impl::shift_left_op>{}(lhs, rhs);
+    }
+    template<class Tag, typename Lhs, typename Rhs>
+    constexpr auto shift_right(Lhs const& lhs, Rhs const& rhs)
+    -> decltype(cnl::_impl::tagged_binary_operator<Tag, _impl::shift_right_op>{}.template operator()<Lhs, Rhs>(lhs, rhs))
+    {
+        return cnl::_impl::tagged_binary_operator<Tag, _impl::shift_right_op>{}.template operator()<Lhs, Rhs>(lhs, rhs);
+    }
+}
+namespace cnl {
+    template<class Rep = int, class RoundingTag = nearest_rounding_tag>
     class rounding_integer;
     namespace _impl {
         template<class T>
@@ -3037,12 +2766,9 @@ namespace cnl {
         using rounding = RoundingTag;
         using _base = _impl::number_base<rounding_integer<Rep, RoundingTag>, Rep>;
         rounding_integer() = default;
-        template<class T, _impl::enable_if_t<numeric_limits<T>::is_integer, int> Dummy = 0>
+        template<class T>
         constexpr rounding_integer(T const& v)
-                : _base(static_cast<Rep>(v)) { }
-        template<class T, _impl::enable_if_t<!numeric_limits<T>::is_integer, int> Dummy = 0>
-        constexpr rounding_integer(T const& v)
-                : _base(_impl::convert<rounding, Rep>(v)) { }
+                : _base(convert<rounding, Rep>(v)) { }
         template<class T>
         constexpr explicit operator T() const
         {
@@ -3314,9 +3040,9 @@ namespace cnl {
             }
             template<typename Integral>
             static auto from_integral_and_value(Integral const& integral, value_type const& value)
-            -> decltype(std::make_pair(integral, value-integral))
+            -> decltype(std::make_pair(integral, value_type{value-integral}))
             {
-                return std::make_pair(integral, value-integral);
+                return std::make_pair(integral, value_type{value-integral});
             }
         public:
             constexpr auto operator()(value_type const& value) const
@@ -3455,7 +3181,7 @@ namespace cnl {
             *first = '0';
             return to_chars_result{first+1, std::errc{}};
         }
-        using native_rounding_type = set_rounding_t<decltype(value), _impl::native_rounding_tag>;
+        using native_rounding_type = set_rounding_t<decltype(value), native_rounding_tag>;
         auto const& native_rounding_value = static_cast<native_rounding_type>(value);
         return _impl::to_chars_non_zero<native_rounding_type>{}(
                 first, last, native_rounding_value);
@@ -3510,8 +3236,9 @@ namespace cnl {
         };
     }
     template<typename Rep, int Exponent, int Radix>
-    constexpr fixed_point <Rep, Exponent, Radix>
+    constexpr auto
     sqrt(fixed_point<Rep, Exponent, Radix> const& x)
+    -> fixed_point <Rep, Exponent, Radix>
     {
         using type = fixed_point<Rep, Exponent, Radix>;
         return _impl::to_rep(x)<0
@@ -3653,6 +3380,311 @@ namespace std {
     };
 }
 namespace cnl {
+    namespace _impl {
+        template<typename Operator, typename Rep, int Exponent, int Radix>
+        struct unary_operator<Operator, fixed_point<Rep, Exponent, Radix>> {
+            constexpr auto operator()(fixed_point<Rep, Exponent, Radix> const& rhs) const
+            -> decltype(from_rep<fixed_point<decltype(Operator()(_impl::to_rep(rhs))), Exponent, Radix>>(Operator()(_impl::to_rep(rhs))))
+            {
+                return from_rep<fixed_point<decltype(Operator()(_impl::to_rep(rhs))), Exponent, Radix>>(Operator()(_impl::to_rep(rhs)));
+            }
+        };
+        template<typename Operator, typename LhsRep, typename RhsRep, int Exponent, int Radix>
+        struct comparison_operator<Operator,
+                fixed_point<LhsRep, Exponent, Radix>,
+                fixed_point<RhsRep, Exponent, Radix>> {
+            constexpr auto operator()(
+                    fixed_point<LhsRep, Exponent, Radix> const& lhs,
+                    fixed_point<RhsRep, Exponent, Radix> const& rhs) const
+            -> decltype(Operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs)))
+            {
+                return Operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs));
+            }
+        };
+        template<typename Operator, typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
+        struct comparison_operator<Operator,
+                fixed_point<LhsRep, LhsExponent, Radix>,
+                fixed_point<RhsRep, RhsExponent, Radix>,
+                enable_if_t<(LhsExponent<RhsExponent)>> {
+            static constexpr int shiftage = RhsExponent - LhsExponent;
+            using lhs_type = fixed_point<LhsRep, LhsExponent, Radix>;
+            using rhs_type = fixed_point<decltype(std::declval<RhsRep>()<<constant<shiftage>()), LhsExponent, Radix>;
+            using operator_type = comparison_operator<Operator, lhs_type, rhs_type>;
+            constexpr auto operator()(
+                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
+                    fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
+            -> decltype(operator_type{}(lhs, rhs))
+            {
+                return operator_type{}(lhs, rhs);
+            }
+        };
+        template<typename Operator, typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
+        struct comparison_operator<Operator,
+                fixed_point<LhsRep, LhsExponent, Radix>,
+                fixed_point<RhsRep, RhsExponent, Radix>,
+                enable_if_t<(RhsExponent<LhsExponent)>> {
+            static constexpr int shiftage = LhsExponent - RhsExponent;
+            using lhs_type = fixed_point<decltype(std::declval<LhsRep>()<<constant<shiftage>()), RhsExponent, Radix>;
+            using rhs_type = fixed_point<RhsRep, RhsExponent, Radix>;
+            using operator_type = comparison_operator<Operator, lhs_type, rhs_type>;
+            constexpr auto operator()(
+                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
+                    fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
+            -> decltype(operator_type{}(lhs, rhs))
+            {
+                return operator_type{}(lhs, rhs);
+            }
+        };
+        template<typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
+        struct binary_operator<multiply_op, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>> {
+            constexpr auto operator()(
+                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
+                    fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
+            -> decltype(from_rep<fixed_point<
+                    decltype(_impl::to_rep(lhs)*_impl::to_rep(rhs)),
+                    LhsExponent+RhsExponent,
+                    Radix>>(_impl::to_rep(lhs)*_impl::to_rep(rhs)))
+            {
+                return from_rep<fixed_point<
+                        decltype(_impl::to_rep(lhs)*_impl::to_rep(rhs)),
+                        LhsExponent+RhsExponent,
+                        Radix>>(_impl::to_rep(lhs)*_impl::to_rep(rhs));
+            }
+        };
+        template<typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
+        struct binary_operator<divide_op, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>> {
+            constexpr auto operator()(
+                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
+                    fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
+            -> decltype(from_rep<fixed_point<
+                    decltype(_impl::to_rep(lhs)/_impl::to_rep(rhs)),
+                    LhsExponent-RhsExponent,
+                    Radix>>(_impl::to_rep(lhs)/_impl::to_rep(rhs)))
+            {
+                return from_rep<fixed_point<
+                        decltype(_impl::to_rep(lhs)/_impl::to_rep(rhs)),
+                        LhsExponent-RhsExponent,
+                        Radix>>(_impl::to_rep(lhs)/_impl::to_rep(rhs));
+            }
+        };
+        template<typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
+        struct binary_operator<modulo_op, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>> {
+            constexpr auto operator()(
+                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs,
+                    fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
+            -> decltype(from_rep<fixed_point<
+                    decltype(_impl::to_rep(lhs)%_impl::to_rep(rhs)),
+                    LhsExponent,
+                    Radix>>(_impl::to_rep(lhs)%_impl::to_rep(rhs)))
+            {
+                return from_rep<fixed_point<
+                        decltype(_impl::to_rep(lhs)%_impl::to_rep(rhs)),
+                        LhsExponent,
+                        Radix>>(_impl::to_rep(lhs)%_impl::to_rep(rhs));
+            }
+        };
+        template<class Operator> struct is_zero_degree : std::true_type {};
+        template<> struct is_zero_degree<multiply_op> : std::false_type {};
+        template<> struct is_zero_degree<divide_op> : std::false_type {};
+        template<> struct is_zero_degree<modulo_op> : std::false_type {};
+        template<> struct is_zero_degree<shift_left_op> : std::false_type {};
+        template<> struct is_zero_degree<shift_right_op> : std::false_type {};
+        template<class Operator, class LhsRep, class RhsRep, int Exponent, int Radix>
+        struct binary_operator<Operator, fixed_point<LhsRep, Exponent, Radix>, fixed_point<RhsRep, Exponent, Radix>,
+                enable_if_t<is_zero_degree<Operator>::value>> {
+            constexpr auto operator()(
+                    fixed_point<LhsRep, Exponent, Radix> const& lhs, fixed_point<RhsRep, Exponent, Radix> const& rhs) const
+            -> decltype(from_rep<fixed_point<
+                    decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))),
+                    Exponent,
+                    Radix>>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
+            {
+                return from_rep<fixed_point<
+                        decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))),
+                        Exponent,
+                        Radix>>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)));
+            }
+        };
+        template<typename Operator, typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
+        struct binary_operator<Operator, fixed_point<LhsRep, LhsExponent, Radix>, fixed_point<RhsRep, RhsExponent, Radix>,
+                        enable_if_t<is_zero_degree<Operator>::value>> {
+        private:
+            static constexpr int _common_exponent = min(LhsExponent, RhsExponent);
+            static constexpr int _lhs_left_shift = LhsExponent-_common_exponent;
+            static constexpr int _rhs_left_shift = RhsExponent-_common_exponent;
+        public:
+            constexpr auto operator()(
+                    fixed_point<LhsRep, LhsExponent, Radix> const& lhs, fixed_point<RhsRep, RhsExponent, Radix> const& rhs) const
+            -> decltype(Operator{}(
+                    from_rep<fixed_point<LhsRep, _common_exponent, Radix>>(
+                            _impl::scale<_lhs_left_shift, Radix>(_impl::to_rep(lhs))),
+                    from_rep<fixed_point<RhsRep, _common_exponent, Radix>>(
+                            _impl::scale<_rhs_left_shift, Radix>(_impl::to_rep(rhs)))))
+            {
+                return Operator{}(
+                        from_rep<fixed_point<LhsRep, _common_exponent, Radix>>(
+                                _impl::scale<_lhs_left_shift, Radix>(_impl::to_rep(lhs))),
+                        from_rep<fixed_point<RhsRep, _common_exponent, Radix>>(
+                                _impl::scale<_rhs_left_shift, Radix>(_impl::to_rep(rhs))));
+            }
+        };
+        template<typename Operator, typename Rep, int Exponent, int Radix>
+        struct pre_operator<Operator, fixed_point<Rep, Exponent, Radix>> {
+            constexpr auto operator()(fixed_point<Rep, Exponent, Radix>& rhs) const
+            -> decltype(typename pre_to_assign<Operator>::type{}(rhs, 1))
+            {
+                return typename pre_to_assign<Operator>::type{}(rhs, 1);
+            }
+        };
+        template<typename Operator, typename Rep, int Exponent, int Radix>
+        struct post_operator<Operator, fixed_point<Rep, Exponent, Radix>> {
+            constexpr fixed_point<Rep, Exponent, Radix> operator()(fixed_point<Rep, Exponent, Radix>& rhs) const
+            {
+                auto copy = rhs;
+                typename post_to_assign<Operator>::type{}(rhs, 1);
+                return copy;
+            }
+        };
+    }
+    template<typename LhsRep, int LhsExponent, int LhsRadix, typename Rhs>
+    constexpr auto operator<<(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, Rhs const& rhs)
+    -> decltype(_impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs) << int(rhs)), LhsExponent, LhsRadix>>(
+            _impl::to_rep(lhs) << int(rhs)))
+    {
+        return _impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs) << int(rhs)), LhsExponent, LhsRadix>>(
+                _impl::to_rep(lhs) << int(rhs));
+    }
+    template<typename LhsRep, int LhsExponent, int LhsRadix, typename Rhs>
+    constexpr auto operator>>(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, Rhs const& rhs)
+    -> decltype(_impl::from_rep<fixed_point<
+            decltype(_impl::to_rep(lhs) >> int(rhs)),
+            LhsExponent,
+            LhsRadix>>(_impl::to_rep(lhs) >> int(rhs)))
+    {
+        return _impl::from_rep<fixed_point<
+                decltype(_impl::to_rep(lhs) >> int(rhs)),
+                LhsExponent,
+                LhsRadix>>(_impl::to_rep(lhs) >> int(rhs));
+    }
+    template<typename LhsRep, int LhsExponent, int LhsRadix, auto RhsValue>
+    constexpr fixed_point<LhsRep, LhsExponent+static_cast<int>(RhsValue), LhsRadix>
+    operator<<(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, constant<RhsValue>)
+    {
+        return _impl::from_rep<fixed_point<LhsRep, LhsExponent+static_cast<int>(RhsValue), LhsRadix>>(
+                _impl::to_rep(lhs));
+    }
+    template<typename LhsRep, int LhsExponent, int LhsRadix, auto RhsValue>
+    constexpr fixed_point<LhsRep, LhsExponent-static_cast<int>(RhsValue), LhsRadix>
+    operator>>(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, constant<RhsValue>)
+    {
+        return _impl::from_rep<fixed_point<LhsRep, LhsExponent-static_cast<int>(RhsValue), LhsRadix>>(
+                _impl::to_rep(lhs));
+    }
+}
+namespace cnl {
+    namespace _impl {
+        enum class polarity {
+            negative = -1,
+            positive = 1
+        };
+    }
+}
+namespace cnl {
+    namespace _impl {
+        template<typename Operator, typename OverflowTag, polarity Polarity>
+        struct overflow_operator;
+    }
+}
+namespace cnl {
+    namespace _impl {
+        template<
+                typename ResultRep, int ResultExponent,
+                typename InputRep, int InputExponent,
+                int Radix>
+        struct tagged_convert_operator<
+                nearest_rounding_tag,
+                fixed_point<ResultRep, ResultExponent, Radix>,
+                fixed_point<InputRep, InputExponent, Radix>,
+                _impl::enable_if_t<(ResultExponent <= InputExponent)>>
+                : tagged_convert_operator<
+                        native_rounding_tag,
+                        fixed_point<ResultRep, ResultExponent, Radix>,
+                        fixed_point<InputRep, InputExponent, Radix>> {
+        };
+        template<
+                typename ResultRep, int ResultExponent,
+                typename InputRep, int InputExponent,
+                int Radix>
+        struct tagged_convert_operator<
+                nearest_rounding_tag,
+                fixed_point<ResultRep, ResultExponent, Radix>,
+                fixed_point<InputRep, InputExponent, Radix>,
+                _impl::enable_if_t<!(ResultExponent<=InputExponent)>> {
+        private:
+            using _result = fixed_point<ResultRep, ResultExponent, Radix>;
+            using _input = fixed_point<InputRep, InputExponent, Radix>;
+            static constexpr _input half()
+            {
+                return static_cast<_input>(_impl::from_rep<_result>(1))/2;
+            }
+        public:
+            constexpr _result operator()(_input const& from) const
+            {
+                return static_cast<_result>(from+((from >= 0) ? half() : -half()));
+            }
+        };
+        template<
+                typename ResultRep, int ResultExponent, int ResultRadix,
+                typename Input>
+        struct tagged_convert_operator<
+                nearest_rounding_tag,
+                fixed_point<ResultRep, ResultExponent, ResultRadix>,
+                Input,
+                _impl::enable_if_t<std::is_floating_point<Input>::value>> {
+        private:
+            using _result = fixed_point<ResultRep, ResultExponent, ResultRadix>;
+            static constexpr Input half()
+            {
+                return cnl::power<Input, ResultExponent-1, ResultRadix>();
+            }
+        public:
+            constexpr _result operator()(Input const& from) const
+            {
+                return static_cast<_result>(from+((from >= 0) ? half() : -half()));
+            }
+        };
+        template<
+                typename ResultRep, int ResultExponent, int ResultRadix,
+                typename Input>
+        struct tagged_convert_operator<
+                nearest_rounding_tag,
+                fixed_point<ResultRep, ResultExponent, ResultRadix>,
+                Input,
+                _impl::enable_if_t<cnl::numeric_limits<Input>::is_integer>>
+                : tagged_convert_operator<
+                        nearest_rounding_tag,
+                        fixed_point<ResultRep, ResultExponent, ResultRadix>,
+                        fixed_point<Input>> {
+        };
+        template<
+                typename Result,
+                typename InputRep, int InputExponent, int InputRadix>
+        struct tagged_convert_operator<
+                nearest_rounding_tag,
+                Result,
+                fixed_point<InputRep, InputExponent, InputRadix>,
+                _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer>> {
+            using _input = fixed_point<InputRep, InputExponent, InputRadix>;
+            constexpr Result operator()(_input const& from) const
+            {
+                return _impl::to_rep(
+                        _impl::tagged_convert_operator<nearest_rounding_tag, fixed_point<Result>, _input>{}(
+                                from));
+            }
+        };
+    }
+}
+namespace cnl {
     using std::to_string;
     template<typename Rep, int Exponent>
     std::string to_string(cnl::fixed_point<Rep, Exponent> const& value)
@@ -3667,35 +3699,38 @@ namespace cnl {
     template<
             typename Narrowest = int,
             auto Value = 0>
-    constexpr elastic_number<
+    constexpr auto
+    make_elastic_number(constant<Value>)
+    -> elastic_number<
             _impl::max(digits<constant<Value>>::value-trailing_bits(Value), 1),
             trailing_bits(Value),
             Narrowest>
-    make_elastic_number(constant<Value>)
     {
         return Value;
     }
     template<typename Narrowest = void, typename Integral = int>
-    constexpr elastic_number<
+    constexpr auto
+    make_elastic_number(Integral const& value)
+    -> elastic_number<
             numeric_limits<Integral>::digits,
             0,
             typename std::conditional<
                     std::is_same<void, Narrowest>::value,
                     _impl::adopt_signedness_t<int, Integral>,
                     Narrowest>::type>
-    make_elastic_number(Integral const& value)
     {
         return {value};
     }
     template<typename Narrowest = void, typename Rep = int, int Exponent = 0, int Radix = 2>
-    constexpr elastic_number<
+    constexpr auto
+    make_elastic_number(fixed_point<Rep, Exponent, Radix> const& value)
+    -> elastic_number<
             numeric_limits<Rep>::digits,
             Exponent,
             typename std::conditional<
                     std::is_same<void, Narrowest>::value,
                     _impl::adopt_signedness_t<int, Rep>,
                     Narrowest>::type>
-    make_elastic_number(fixed_point<Rep, Exponent, Radix> const& value)
     {
         return {value};
     }
@@ -3951,45 +3986,134 @@ namespace cnl {
 }
 namespace cnl {
     namespace _impl {
+        template<class T, polarity>
+        struct overflow_digits;
         template<class T>
-        struct positive_digits : public std::integral_constant<int, numeric_limits<T>::digits> {
+        struct overflow_digits<T, polarity::positive>
+                : public std::integral_constant<int, numeric_limits<T>::digits> {
         };
         template<class T>
-        struct negative_digits
+        struct overflow_digits<T, polarity::negative>
                 : public std::integral_constant<int, cnl::is_signed<T>::value ? digits<T>::value : 0> {
         };
-        template<typename Destination, typename Source, typename Enable = void>
-        struct convert_test;
-        template<typename Destination, typename Source>
-        struct convert_test<Destination, Source, enable_if_t<!std::is_floating_point<Source>::value>> {
-            static constexpr bool positive(Source const &rhs) {
-                return positive_digits<Destination>::value<positive_digits<Source>::value
-                                                           && rhs>
+        template<typename Operand, bool IsSigned = is_signed<Operand>::value>
+        struct has_most_negative_number : std::false_type {
+        };
+        template<typename Operand>
+        struct has_most_negative_number<Operand, true> : std::integral_constant<bool,
+                numeric_limits<Operand>::lowest() < -numeric_limits<Operand>::max()> {
+        };
+        template<polarity Polarity, bool DestinationIsFloat, bool SourceIsFloat>
+        struct is_overflow_convert;
+        template<>
+        struct is_overflow_convert<polarity::positive, false, false> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const &rhs) const {
+                return overflow_digits<Destination, polarity::positive>::value<
+                        overflow_digits<Source, polarity::positive>::value
+                                && rhs>
                 static_cast<Source>(numeric_limits<Destination>::max());
             }
-            static constexpr bool negative(Source const &rhs) {
-                return negative_digits<Destination>::value<negative_digits<Source>::value
-                                                           && rhs <
-                                                              static_cast<Source>(numeric_limits<Destination>::lowest());
-            }
         };
-        template<typename Destination, typename Source>
-        struct convert_test<Destination, Source, enable_if_t<std::is_floating_point<Source>::value>> {
-            static constexpr bool positive(Source const& rhs)
+        template<>
+        struct is_overflow_convert<polarity::positive, false, true> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const &rhs) const
             {
                 return rhs > static_cast<Source>(numeric_limits<Destination>::max());
             }
-            static constexpr bool negative(Source const& rhs)
+        };
+        template<>
+        struct is_overflow_convert<polarity::positive, true, false> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const& rhs) const
+            {
+                return static_cast<Destination>(rhs) > numeric_limits<Destination>::max();
+            }
+        };
+        template<>
+        struct is_overflow_convert<polarity::positive, true, true> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const&) const
+            {
+                return false;
+            }
+        };
+        template<>
+        struct is_overflow_convert<polarity::negative, false, false> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const &rhs) const {
+                return overflow_digits<Destination, polarity::negative>::value<
+                        overflow_digits<Source, polarity::negative>::value
+                                && rhs < static_cast<Source>(numeric_limits<Destination>::lowest());
+            }
+        };
+        template<>
+        struct is_overflow_convert<polarity::negative, false, true> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const &rhs) const
             {
                 return rhs < static_cast<Source>(numeric_limits<Destination>::lowest());
+            }
+        };
+        template<>
+        struct is_overflow_convert<polarity::negative, true, false> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const& rhs) const
+            {
+                return static_cast<Destination>(rhs) < numeric_limits<Destination>::lowest();
+            }
+        };
+        template<>
+        struct is_overflow_convert<polarity::negative, true, true> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const&) const
+            {
+                return false;
+            }
+        };
+        template<typename Operator, polarity Polarity>
+        struct is_overflow {
+            template<typename ... Operands>
+            constexpr bool operator()(Operands const& ...) const
+            {
+                return false;
+            }
+        };
+        template<polarity Polarity>
+        struct is_overflow<convert_op, Polarity> {
+            template<typename Destination, typename Source>
+            constexpr bool operator()(Source const& from) const
+            {
+                using is_overflow_convert = cnl::_impl::is_overflow_convert<
+                        Polarity,
+                        std::is_floating_point<Destination>::value,
+                        std::is_floating_point<Source>::value>;
+                return is_overflow_convert{}.template operator()<Destination>(from);
+            }
+        };
+        template<>
+        struct is_overflow<minus_op, polarity::positive> {
+            template<typename Rhs>
+            constexpr bool operator()(Rhs const& rhs) const
+            {
+                return has_most_negative_number<Rhs>::value && rhs < -numeric_limits<Rhs>::max();
+            }
+        };
+        template<>
+        struct is_overflow<minus_op, polarity::negative> {
+            template<typename Rhs>
+            constexpr bool operator()(Rhs const& rhs) const
+            {
+                return !is_signed<Rhs>::value && rhs;
             }
         };
         template<class Operator, typename ... Operands>
         struct operator_overflow_traits {
             using result = op_result<Operator, Operands...>;
             using numeric_limits = cnl::numeric_limits<result>;
-            static constexpr int positive_digits = _impl::positive_digits<result>::value;
-            static constexpr int negative_digits = _impl::negative_digits<result>::value;
+            static constexpr int positive_digits = _impl::overflow_digits<result, polarity::positive>::value;
+            static constexpr int negative_digits = _impl::overflow_digits<result, polarity::negative>::value;
             static constexpr result lowest()
             {
                 return numeric_limits::lowest();
@@ -4004,122 +4128,105 @@ namespace cnl {
                 return cnl::leading_bits(static_cast<result>(operand));
             }
         };
-        template<typename Operand, bool IsSigned=is_signed<Operand>::value>
-        struct has_most_negative_number : std::false_type {};
-        template<typename Operand>
-        struct has_most_negative_number<Operand, true> : std::integral_constant<bool,
-                numeric_limits<Operand>::lowest()<-numeric_limits<Operand>::max()> {
-        };
-        template<class Operator, typename ... Operands>
-        struct overflow_test_base {
-            static constexpr bool positive(Operands const &...)
+        template<>
+        struct is_overflow<add_op, polarity::positive> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
-                return false;
-            }
-            static constexpr bool negative(Operands const &...)
-            {
-                return false;
-            }
-        };
-        template<class Operator, typename ... Operands>
-        struct overflow_test : overflow_test_base<Operator, Operands...> {
-        };
-        template<typename Rhs>
-        struct overflow_test<minus_op, Rhs> : overflow_test_base<minus_op, Rhs> {
-            using traits = operator_overflow_traits<minus_op, Rhs>;
-            static constexpr bool positive(Rhs const &rhs) {
-                return has_most_negative_number<Rhs>::value
-                        ? (-traits::max()) > rhs
-                        : 0;
-            }
-            static constexpr bool negative(Rhs const &rhs) {
-                return !is_signed<Rhs>::value && rhs;
-            }
-        };
-        template<typename Lhs, typename Rhs>
-        struct overflow_test<add_op, Lhs, Rhs> : overflow_test_base<add_op, Lhs, Rhs> {
-            using traits = operator_overflow_traits<add_op, Lhs, Rhs>;
-            static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
-            {
-                return (max(positive_digits<Lhs>::value, positive_digits<Rhs>::value)+1
+                using traits = operator_overflow_traits<add_op, Lhs, Rhs>;
+                return (max(overflow_digits<Lhs, polarity::positive>::value,
+                        overflow_digits<Rhs, polarity::positive>::value)+1
                         >traits::positive_digits)
                         && lhs>Lhs{0}
                         && rhs>Rhs{0}
                         && typename traits::result(lhs)>traits::max()-rhs;
             }
-            static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
+        };
+        template<>
+        struct is_overflow<add_op, polarity::negative> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
-                return (max(positive_digits<Lhs>::value, positive_digits<Rhs>::value)+1
+                using traits = operator_overflow_traits<add_op, Lhs, Rhs>;
+                return (max(overflow_digits<Lhs, polarity::positive>::value,
+                        overflow_digits<Rhs, polarity::positive>::value)+1
                         >traits::positive_digits)
                         && lhs<Lhs{0}
                         && rhs<Rhs{0}
                         && typename traits::result(lhs)<traits::lowest()-rhs;
             }
         };
-        template<typename Lhs, typename Rhs>
-        struct overflow_test<subtract_op, Lhs, Rhs> : overflow_test_base<subtract_op, Lhs, Rhs> {
-            using traits = operator_overflow_traits<subtract_op, Lhs, Rhs>;
- static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
+ template<>
+        struct is_overflow<subtract_op, polarity::positive> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
-                return (max(positive_digits<Lhs>::value, positive_digits<Rhs>::value)+1
+                using traits = operator_overflow_traits<subtract_op, Lhs, Rhs>;
+                return (max(overflow_digits<Lhs, polarity::positive>::value,
+                        overflow_digits<Rhs, polarity::positive>::value)+1
                         >traits::positive_digits)
                         && lhs>Lhs{0}
                         && rhs<Rhs{0}
                         && lhs>traits::max()+rhs;
             }
-            static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
+        };
+        template<>
+        struct is_overflow<subtract_op, polarity::negative> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
-                return (max(positive_digits<Lhs>::value, positive_digits<Rhs>::value)+1
+                using traits = operator_overflow_traits<subtract_op, Lhs, Rhs>;
+                return (max(overflow_digits<Lhs, polarity::positive>::value,
+                        overflow_digits<Rhs, polarity::positive>::value)+1
                         >traits::positive_digits)
                         && (rhs>=0)
                         && lhs<traits::lowest()+rhs;
             }
- };
-        template<typename Lhs, typename Rhs>
-        struct overflow_test<multiply_op, Lhs, Rhs> : overflow_test_base<multiply_op, Lhs, Rhs> {
-            using traits = operator_overflow_traits<multiply_op, Lhs, Rhs>;
-            static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
+        };
+ template<>
+        struct is_overflow<multiply_op, polarity::positive> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
-                return (positive_digits<Lhs>::value+positive_digits<Rhs>::value>traits::positive_digits)
+                using traits = operator_overflow_traits<multiply_op, Lhs, Rhs>;
+                return (overflow_digits<Lhs, polarity::positive>::value+overflow_digits<Rhs, polarity::positive>::value
+                        > traits::positive_digits)
                         && ((lhs>Lhs{0})
                                 ? (rhs>Rhs{0}) && (traits::max()/rhs)<lhs
                                 : (rhs<Rhs{0}) && (traits::max()/rhs)>lhs);
             }
-            static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
+        };
+        template<>
+        struct is_overflow<multiply_op, polarity::negative> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
-                return (positive_digits<Lhs>::value+positive_digits<Rhs>::value>traits::positive_digits)
+                using traits = operator_overflow_traits<multiply_op, Lhs, Rhs>;
+                return (overflow_digits<Lhs, polarity::positive>::value+overflow_digits<Rhs, polarity::positive>::value
+                        > traits::positive_digits)
                         && ((lhs<Lhs{0})
                                 ? (rhs>Rhs{0}) && (traits::lowest()/rhs)>lhs
                                 : (rhs<Rhs{0}) && (traits::lowest()/rhs)<lhs);
             }
         };
-        template<typename Lhs, typename Rhs>
-        struct overflow_test<divide_op, Lhs, Rhs>
-                : overflow_test_base<divide_op, Lhs, Rhs> {
-            using traits = operator_overflow_traits<divide_op, Lhs, Rhs>;
-            static constexpr bool positive(Lhs const &lhs, Rhs const &rhs) {
+        template<>
+        struct is_overflow<divide_op, polarity::positive> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
+            {
+                using traits = operator_overflow_traits<divide_op, Lhs, Rhs>;
                 return (has_most_negative_number<Lhs>::value && has_most_negative_number<Rhs>::value)
                         ? rhs == -1 && lhs == traits::lowest()
                         : false;
             }
         };
-        template<typename Lhs, typename Rhs, bool IsSigned>
-        struct shift_left_overflow_test;
-        template<typename Lhs, typename Rhs>
-        struct shift_left_overflow_test<Lhs, Rhs, false>
-                : overflow_test_base<Lhs, Rhs> {
-            using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
-            static constexpr bool negative(Lhs const&, Rhs const&)
+        template<>
+        struct is_overflow<shift_left_op, polarity::negative> {
+            template<typename Lhs, typename Rhs>
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> enable_if_t<is_signed<Lhs>::value, bool>
             {
-                return false;
-            }
-        };
-        template<typename Lhs, typename Rhs>
-        struct shift_left_overflow_test<Lhs, Rhs, true>
-                : overflow_test_base<Lhs, Rhs> {
-            using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
-            static constexpr bool negative(Lhs const& lhs, Rhs const& rhs)
-            {
+                using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
                 return lhs<0
                         ? rhs>0
                                 ? rhs<traits::positive_digits
@@ -4128,13 +4235,19 @@ namespace cnl {
                                 : false
                         : false;
             }
-        };
-        template<typename Lhs, typename Rhs>
-        struct overflow_test<shift_left_op, Lhs, Rhs>
-                : shift_left_overflow_test<Lhs, Rhs, is_signed<Lhs>::value> {
-            using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
-            static constexpr bool positive(Lhs const& lhs, Rhs const& rhs)
+            template<typename Lhs, typename Rhs>
+            constexpr auto operator()(Lhs const&, Rhs const&) const
+            -> enable_if_t<!is_signed<Lhs>::value, bool>
             {
+                return false;
+            }
+        };
+        template<>
+        struct is_overflow<shift_left_op, polarity::positive> {
+            template<typename Lhs, typename Rhs>
+            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
+            {
+                using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
                 return lhs>0
                         ? rhs>0
                                 ? rhs<traits::positive_digits
@@ -4144,20 +4257,38 @@ namespace cnl {
                         : false;
             }
         };
+    }
+}
+namespace cnl {
+    namespace _impl {
         template<typename Result, class OverflowTag>
         struct positive_overflow_result;
         template<typename Result, class OverflowTag>
         struct negative_overflow_result;
-        template<class OverflowTag, typename Result, typename Input>
-        struct overflow_convert {
-            constexpr Result operator()(Input const& rhs) const
+        template<class OverflowTag, typename Destination, typename Source>
+        struct tagged_convert_overflow_operator {
+            constexpr Destination operator()(Source const& from) const
             {
-                using test = convert_test<Result, Input>;
-                return test::positive(rhs)
-                        ? positive_overflow_result<Result, OverflowTag>{}()
-                        : test::negative(rhs)
-                                ? negative_overflow_result<Result, OverflowTag>{}()
-                                : static_cast<Result>(rhs);
+                return is_overflow<convert_op, polarity::positive>{}.template operator()<Destination>(from)
+                        ? overflow_operator<convert_op, OverflowTag, polarity::positive>{}.template operator()<
+                                Destination>(from)
+                        : is_overflow<convert_op, polarity::negative>{}.template operator()<Destination>(from)
+                                ? overflow_operator<convert_op, OverflowTag, polarity::negative>{}.template operator()<
+                                        Destination>(from)
+                                : static_cast<Destination>(from);
+            }
+        };
+        template<class OverflowTag, class Operator>
+        struct tagged_unary_overflow_operator {
+            template<typename Operand>
+            constexpr auto operator()(Operand const& operand) const
+            -> op_result<Operator, Operand>
+            {
+                return is_overflow<Operator, polarity::positive>{}(operand)
+                        ? overflow_operator<Operator, OverflowTag, polarity::positive>{}(operand)
+                        : is_overflow<Operator, polarity::negative>{}(operand)
+                                ? overflow_operator<Operator, OverflowTag, polarity::negative>{}(operand)
+                                : Operator{}(operand);
             }
         };
         template<class OverflowTag, class Operator>
@@ -4166,12 +4297,10 @@ namespace cnl {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> op_result<Operator, Lhs, Rhs>
             {
-                using overflow_test = overflow_test<Operator, Lhs, Rhs>;
-                using result_type = op_result<Operator, Lhs, Rhs>;
-                return overflow_test::positive(lhs, rhs)
-                        ? positive_overflow_result<result_type, OverflowTag>{}()
-                        : overflow_test::negative(lhs, rhs)
-                                ? negative_overflow_result<result_type, OverflowTag>{}()
+                return is_overflow<Operator, polarity::positive>{}(lhs, rhs)
+                        ? overflow_operator<Operator, OverflowTag, polarity::positive>{}(lhs, rhs)
+                        : is_overflow<Operator, polarity::negative>{}(lhs, rhs)
+                                ? overflow_operator<Operator, OverflowTag, polarity::negative>{}(lhs, rhs)
                                 : tagged_binary_operator<native_tag, Operator>{}(lhs, rhs);
             }
         };
@@ -4180,12 +4309,18 @@ namespace cnl {
 namespace cnl {
     struct native_overflow_tag : _impl::native_tag {
     };
-    static constexpr native_overflow_tag native_overflow{};
-    template<typename Result, typename Input>
-    struct convert<native_overflow_tag, Result, Input>
-            : convert<_impl::native_tag, Result, Input> {
-    };
     namespace _impl {
+        template<typename Operator, polarity Polarity>
+        struct overflow_operator<Operator, native_overflow_tag, Polarity> : Operator {
+        };
+        template<typename Destination, typename Source>
+        struct tagged_convert_operator<native_overflow_tag, Destination, Source>
+                : tagged_convert_overflow_operator<native_overflow_tag, Destination, Source> {
+        };
+        template<class Operator>
+        struct tagged_unary_operator<native_overflow_tag, Operator>
+                : tagged_unary_overflow_operator<native_overflow_tag, Operator> {
+        };
         template<class Operator>
         struct tagged_binary_operator<native_overflow_tag, Operator>
                 : tagged_binary_operator<_impl::native_tag, Operator> {
@@ -4193,29 +4328,43 @@ namespace cnl {
     }
 }
 namespace cnl {
-    static constexpr struct saturated_overflow_tag {
-    } saturated_overflow{};
-    namespace _impl {
-        template<typename Result>
-        struct positive_overflow_result<Result, saturated_overflow_tag> {
-            constexpr Result operator()() const
-            {
-                return numeric_limits<Result>::max();
-            }
-        };
-        template<typename Result>
-        struct negative_overflow_result<Result, saturated_overflow_tag> {
-            constexpr Result operator()() const
-            {
-                return numeric_limits<Result>::lowest();
-            }
-        };
-    }
-    template<typename Result, typename Input>
-    struct convert<saturated_overflow_tag, Result, Input>
-            : _impl::overflow_convert<saturated_overflow_tag, Result, Input> {
+    struct saturated_overflow_tag {
     };
     namespace _impl {
+        template<typename Operator>
+        struct overflow_operator<Operator, saturated_overflow_tag, polarity::positive> {
+            template<typename Destination, typename Source>
+            constexpr Destination operator()(Source const&) const
+            {
+                return numeric_limits<Destination>::max();
+            }
+            template<class ... Operands>
+            constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            {
+                return numeric_limits<op_result<Operator, Operands...>>::max();
+            }
+        };
+        template<typename Operator>
+        struct overflow_operator<Operator, saturated_overflow_tag, polarity::negative> {
+            template<typename Destination, typename Source>
+            constexpr Destination operator()(Source const&) const
+            {
+                return numeric_limits<Destination>::lowest();
+            }
+            template<class ... Operands>
+            constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            {
+                return numeric_limits<op_result<Operator, Operands...>>::lowest();
+            }
+        };
+        template<typename Destination, typename Source>
+        struct tagged_convert_operator<saturated_overflow_tag, Destination, Source>
+                : tagged_convert_overflow_operator<saturated_overflow_tag, Destination, Source> {
+        };
+        template<class Operator>
+        struct tagged_unary_operator<saturated_overflow_tag, Operator>
+                : tagged_unary_overflow_operator<saturated_overflow_tag, Operator> {
+        };
         template<class Operator>
         struct tagged_binary_operator<saturated_overflow_tag, Operator>
                 : tagged_binary_overflow_operator<saturated_overflow_tag, Operator> {
@@ -4232,14 +4381,33 @@ namespace cnl {
     }
 }
 namespace cnl {
-    static constexpr struct throwing_overflow_tag {
-    } throwing_overflow{};
+    struct throwing_overflow_tag {
+    };
     namespace _impl {
-        template<typename Result>
-        struct positive_overflow_result<Result, throwing_overflow_tag> {
-            constexpr Result operator()() const
+        template<typename Operator>
+        struct overflow_operator<Operator, throwing_overflow_tag, polarity::positive> {
+            template<typename Destination, typename Source>
+            constexpr Destination operator()(Source const&) const
             {
-                return throw_exception<Result, std::overflow_error>("positive overflow");
+                return throw_exception<Destination, std::overflow_error>("positive overflow");
+            }
+            template<class ... Operands>
+            constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            {
+                return throw_exception<op_result<Operator, Operands...>, std::overflow_error>("positive overflow");
+            }
+        };
+        template<typename Operator>
+        struct overflow_operator<Operator, throwing_overflow_tag, polarity::negative> {
+            template<typename Destination, typename Source>
+            constexpr Destination operator()(Source const&) const
+            {
+                return throw_exception<Destination, std::overflow_error>("negative overflow");
+            }
+            template<class ... Operands>
+            constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            {
+                return throw_exception<op_result<Operator, Operands...>, std::overflow_error>("negative overflow");
             }
         };
         template<typename Result>
@@ -4249,12 +4417,14 @@ namespace cnl {
                 return throw_exception<Result, std::overflow_error>("negative overflow");
             }
         };
-    }
-    template<typename Result, typename Input>
-    struct convert<throwing_overflow_tag, Result, Input>
-            : _impl::overflow_convert<throwing_overflow_tag, Result, Input> {
-    };
-    namespace _impl {
+        template<typename Destination, typename Source>
+        struct tagged_convert_operator<throwing_overflow_tag, Destination, Source>
+                : tagged_convert_overflow_operator<throwing_overflow_tag, Destination, Source> {
+        };
+        template<class Operator>
+        struct tagged_unary_operator<throwing_overflow_tag, Operator>
+                : tagged_unary_overflow_operator<throwing_overflow_tag, Operator> {
+        };
         template<class Operator>
         struct tagged_binary_operator<throwing_overflow_tag, Operator>
                 : tagged_binary_overflow_operator<throwing_overflow_tag, Operator> {
@@ -4262,29 +4432,43 @@ namespace cnl {
     }
 }
 namespace cnl {
-    static constexpr struct trapping_overflow_tag {
-    } trapping_overflow{};
-    namespace _impl {
-        template<typename Result>
-        struct positive_overflow_result<Result, trapping_overflow_tag> {
-            constexpr Result operator()() const
-            {
-                return terminate<Result>("positive overflow");
-            }
-        };
-        template<typename Result>
-        struct negative_overflow_result<Result, trapping_overflow_tag> {
-            constexpr Result operator()() const
-            {
-                return terminate<Result>("negative overflow");
-            }
-        };
-    }
-    template<typename Result, typename Input>
-    struct convert<trapping_overflow_tag, Result, Input>
-            : _impl::overflow_convert<trapping_overflow_tag, Result, Input> {
+    struct trapping_overflow_tag {
     };
     namespace _impl {
+        template<typename Operator>
+        struct overflow_operator<Operator, trapping_overflow_tag, polarity::positive> {
+            template<typename Destination, typename Source>
+            constexpr Destination operator()(Source const&) const
+            {
+                return terminate<Destination>("positive overflow");
+            }
+            template<class ... Operands>
+            constexpr op_result<Operator, Operands...> operator()(Operands const&...) const
+            {
+                return terminate<op_result<Operator, Operands...>>("positive overflow");
+            }
+        };
+        template<typename Operator>
+        struct overflow_operator<Operator, trapping_overflow_tag, polarity::negative> {
+            template<typename Destination, typename Source>
+            constexpr Destination operator()(Source const&) const
+            {
+                return terminate<Destination>("negative overflow");
+            }
+            template<class ... Operands>
+            constexpr op_result<Operator, Operands...> operator()(Operands const&...) const
+            {
+                return terminate<op_result<Operator, Operands...>>("negative overflow");
+            }
+        };
+        template<typename Destination, typename Source>
+        struct tagged_convert_operator<trapping_overflow_tag, Destination, Source>
+                : tagged_convert_overflow_operator<trapping_overflow_tag, Destination, Source> {
+        };
+        template<class Operator>
+        struct tagged_unary_operator<trapping_overflow_tag, Operator>
+                : tagged_unary_overflow_operator<trapping_overflow_tag, Operator> {
+        };
         template<class Operator>
         struct tagged_binary_operator<trapping_overflow_tag, Operator>
                 : tagged_binary_overflow_operator<trapping_overflow_tag, Operator> {
@@ -4292,29 +4476,43 @@ namespace cnl {
     }
 }
 namespace cnl {
-    static constexpr struct undefined_overflow_tag {
-    } undefined_overflow{};
-    namespace _impl {
-        template<typename Result>
-        struct positive_overflow_result<Result, undefined_overflow_tag> {
-            constexpr Result operator()() const
-            {
-                return unreachable<Result>("positive overflow");
-            }
-        };
-        template<typename Result>
-        struct negative_overflow_result<Result, undefined_overflow_tag> {
-            constexpr Result operator()() const
-            {
-                return unreachable<Result>("negative overflow");
-            }
-        };
-    }
-    template<typename Result, typename Input>
-    struct convert<undefined_overflow_tag, Result, Input>
-            : _impl::overflow_convert<undefined_overflow_tag, Result, Input> {
+    struct undefined_overflow_tag {
     };
     namespace _impl {
+        template<typename Operator>
+        struct overflow_operator<Operator, undefined_overflow_tag, polarity::positive> {
+            template<typename Destination, typename Source>
+            constexpr Destination operator()(Source const&) const
+            {
+                return unreachable<Destination>("positive overflow");
+            }
+            template<class ... Operands>
+            constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            {
+                return unreachable<op_result<Operator, Operands...>>("positive overflow");
+            }
+        };
+        template<typename Operator>
+        struct overflow_operator<Operator, undefined_overflow_tag, polarity::negative> {
+            template<typename Destination, typename Source>
+            constexpr Destination operator()(Source const&) const
+            {
+                return unreachable<Destination>("negative overflow");
+            }
+            template<class ... Operands>
+            constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            {
+                return unreachable<op_result<Operator, Operands...>>("negative overflow");
+            }
+        };
+        template<typename Destination, typename Source>
+        struct tagged_convert_operator<undefined_overflow_tag, Destination, Source>
+                : tagged_convert_overflow_operator<undefined_overflow_tag, Destination, Source> {
+        };
+        template<class Operator>
+        struct tagged_unary_operator<undefined_overflow_tag, Operator>
+                : tagged_unary_overflow_operator<undefined_overflow_tag, Operator> {
+        };
         template<class Operator>
         struct tagged_binary_operator<undefined_overflow_tag, Operator>
                 : tagged_binary_overflow_operator<undefined_overflow_tag, Operator> {
@@ -4322,30 +4520,7 @@ namespace cnl {
     }
 }
 namespace cnl {
-    template<class OverflowTag, class Lhs, class Rhs>
-    constexpr auto add(OverflowTag, Lhs const& lhs, Rhs const& rhs)
-    -> decltype(lhs+rhs)
-    {
-        return _impl::tagged_binary_operator<OverflowTag, _impl::add_op>{}(lhs, rhs);
-    }
-    template<class OverflowTag, class Lhs, class Rhs>
-    constexpr auto subtract(OverflowTag, Lhs const& lhs, Rhs const& rhs)
-    -> decltype(lhs-rhs)
-    {
-        return _impl::tagged_binary_operator<OverflowTag, _impl::subtract_op>{}(lhs, rhs);
-    }
-    template<class OverflowTag, class Lhs, class Rhs>
-    constexpr auto multiply(OverflowTag, Lhs const& lhs, Rhs const& rhs)
-    -> decltype(lhs*rhs)
-    {
-        return _impl::tagged_binary_operator<OverflowTag, _impl::multiply_op>{}(lhs, rhs);
-    }
-    template<class OverflowTag, class Lhs, class Rhs>
-    constexpr auto shift_left(OverflowTag, Lhs const& lhs, Rhs const& rhs)
-    -> decltype(lhs<<rhs)
-    {
-        return _impl::tagged_binary_operator<OverflowTag, _impl::shift_left_op>{}(
-                unwrap(lhs), unwrap(rhs));
+    namespace _impl {
     }
 }
 namespace cnl {
@@ -4387,7 +4562,7 @@ namespace cnl {
         }
         template<class Rhs, _impl::enable_if_t<!_integer_impl::is_overflow_integer<Rhs>::value, int> dummy = 0>
         constexpr overflow_integer(Rhs const& rhs)
-                :_base(_impl::convert<overflow_tag, rep>(rhs))
+                :_base(convert<overflow_tag, rep>(rhs))
         {
         }
         template<auto Value>
@@ -4400,7 +4575,7 @@ namespace cnl {
         template<class T>
         constexpr explicit operator T() const
         {
-            return static_cast<T>(_impl::to_rep(*this));
+            return convert<overflow_tag, T>(_impl::to_rep(*this));
         }
     };
     template<class Rep, class OverflowTag>
@@ -4409,6 +4584,15 @@ namespace cnl {
     template<class Rep, class OverflowTag, int MinNumBits>
     struct set_digits<overflow_integer<Rep, OverflowTag>, MinNumBits> {
         using type = overflow_integer<set_digits_t<Rep, MinNumBits>, OverflowTag>;
+    };
+    template<int Digits, int Radix, typename Rep, class OverflowTag>
+    struct scale<Digits, Radix, overflow_integer<Rep, OverflowTag>> {
+        using _value_type = overflow_integer<Rep, OverflowTag>;
+        constexpr auto operator()(_value_type const& s) const
+        -> decltype(_impl::from_rep<_value_type>(_impl::scale<Digits, Radix>(_impl::to_rep(s))))
+        {
+            return _impl::default_scale<Digits, Radix, _value_type>{}(s);
+        }
     };
     template<typename ArchetypeRep, class OverflowTag, typename Rep>
     struct from_rep<overflow_integer<ArchetypeRep, OverflowTag>, Rep> {
@@ -4437,21 +4621,6 @@ namespace cnl {
                             digits<int>::value<_impl::used_digits(Value), decltype(Value), int>::type, OverflowTag>,
                     constant<Value>>{
     };
-    template<int Digits, class Rep, class OverflowTag>
-    struct scale<Digits, 2, overflow_integer<Rep, OverflowTag>,
-            _impl::enable_if_t<(Digits>=0)>> {
-        using _value_type = overflow_integer<Rep, OverflowTag>;
-        constexpr auto operator()(_value_type const& s) const
-        -> decltype(_impl::from_rep<_value_type>(shift_left(OverflowTag{}, _impl::to_rep(s), constant<Digits>{})))
-        {
-            return _impl::from_rep<_value_type>(shift_left(OverflowTag{}, _impl::to_rep(s), constant<Digits>{}));
-        }
-    };
-    template<int Digits, int Radix, class Rep, class OverflowTag>
-    struct scale<Digits, Radix, overflow_integer<Rep, OverflowTag>,
-            _impl::enable_if_t<(Digits<0||Radix!=2)>>
-            : scale<Digits, Radix, _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep>> {
-    };
     template<class OverflowTag, class Rep>
     constexpr auto make_overflow_int(Rep const& value)
     -> overflow_integer<Rep, OverflowTag>
@@ -4464,7 +4633,8 @@ namespace cnl {
             constexpr auto operator()(overflow_integer<Rep, OverflowTag> const& operand) const
             -> decltype(overflow_integer<decltype(Operator()(_impl::to_rep(operand))), OverflowTag>(Operator()(_impl::to_rep(operand))))
             {
-                return overflow_integer<decltype(Operator()(_impl::to_rep(operand))), OverflowTag>(Operator()(_impl::to_rep(operand)));
+                return from_rep<overflow_integer<op_result<Operator, Rep>, OverflowTag>>(
+                        _impl::tagged_unary_operator<OverflowTag, Operator>{}(_impl::to_rep(operand)));
             }
         };
         template<class Operator, class LhsRep, class RhsRep, class OverflowTag>
@@ -4551,12 +4721,6 @@ namespace std {
     };
 }
 namespace cnl {
-    using _impl::nearest_rounding_tag;
-    using _impl::native_rounding_tag;
-    using _impl::divide;
-    using _impl::shift_right;
-}
-namespace cnl {
     namespace _impl {
         template<int Digits = digits<int>::value, typename Narrowest = int>
         class wide_integer;
@@ -4639,9 +4803,9 @@ namespace cnl {
         };
         template<typename Narrowest>
         struct optimal_duplex<Narrowest, signed> {
-            using unsiged_narrowest = make_unsigned_t<Narrowest>;
+            using unsiged_narrowest = remove_signedness_t<Narrowest>;
             using unsigned_multiword_integer = optimal_duplex<unsiged_narrowest, unsigned>;
-            using type = make_signed_t<typename unsigned_multiword_integer::type>;
+            using type = add_signedness_t<typename unsigned_multiword_integer::type>;
         };
         template<int Digits, typename Narrowest>
         struct instantiate_duplex_integer {
@@ -4658,8 +4822,8 @@ namespace cnl {
 }
 namespace cnl {
     template<typename Upper, typename Lower>
-    struct make_unsigned<_impl::duplex_integer<Upper, Lower>>
-            : _impl::type_identity<_impl::duplex_integer<make_unsigned_t<Upper>, Lower>> {
+    struct remove_signedness<_impl::duplex_integer<Upper, Lower>>
+            : _impl::type_identity<_impl::duplex_integer<remove_signedness_t<Upper>, Lower>> {
     };
 }
 namespace cnl {
@@ -4690,7 +4854,7 @@ namespace cnl {
         {
             ((rhs>=0) ? static_cast<void>(0) : __builtin_unreachable());
             using promoted_type = decltype(lhs << rhs);
-            using unsigned_type = make_unsigned_t<decltype(lhs & lhs)>;
+            using unsigned_type = remove_signedness_t<decltype(lhs & lhs)>;
             return (rhs>=digits<promoted_type>::value)
                    ? Result{}
                    : static_cast<Result>(
@@ -4853,7 +5017,7 @@ namespace cnl {
         template<typename Upper, typename Lower>
         struct binary_operator<divide_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
             using _duplex_integer = duplex_integer<Upper, Lower>;
-            using _unsigned_duplex_integer = make_unsigned_t<_duplex_integer>;
+            using _unsigned_duplex_integer = remove_signedness_t<_duplex_integer>;
             constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
             -> _duplex_integer
             {
@@ -4945,8 +5109,8 @@ namespace cnl {
 }
 namespace cnl {
     template<typename Upper, typename Lower>
-    struct make_signed<_impl::duplex_integer<Upper, Lower>>
-            : _impl::type_identity<_impl::duplex_integer<make_signed_t<Upper>, Lower>> {
+    struct add_signedness<_impl::duplex_integer < Upper, Lower>>
+    : _impl::type_identity<_impl::duplex_integer<add_signedness_t < Upper>, Lower>> {
     };
 }
 namespace cnl {
@@ -4964,7 +5128,7 @@ namespace cnl {
         template<typename Upper, typename Lower>
         struct binary_operator<modulo_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
             using _duplex_integer = duplex_integer<Upper, Lower>;
-            using _unsigned_duplex_integer = make_unsigned_t<_duplex_integer>;
+            using _unsigned_duplex_integer = remove_signedness_t<_duplex_integer>;
             constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
             -> _duplex_integer
             {
@@ -5221,7 +5385,7 @@ namespace cnl {
                 *first = '0';
                 return to_chars_result{first+1, std::errc{}};
             }
-            using native_rounding_type = set_rounding_t<decltype(value), _impl::native_rounding_tag>;
+            using native_rounding_type = set_rounding_t<decltype(value), native_rounding_tag>;
             auto const& native_rounding_value = static_cast<native_rounding_type>(value);
             return _impl::to_chars_non_zero<native_rounding_type>{}(
                     first, last, native_rounding_value);
@@ -5421,6 +5585,10 @@ namespace cnl {
             {
                 return duplex_integer<Upper, Lower>(+rhs.upper(), +rhs.lower());
             }
+        };
+        template<class Operator, typename Upper, typename Lower, typename Rhs>
+        struct binary_operator<Operator, duplex_integer<Upper, Lower>, Rhs>
+                : binary_operator<Operator, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
         };
         template<typename Upper, typename Lower>
         struct binary_operator<add_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>>
@@ -5828,11 +5996,11 @@ namespace cnl {
             class OverflowTag = undefined_overflow_tag,
             class Narrowest = signed,
             class Input = int>
-    static_number<
+    constexpr auto make_static_number(Input const& input)
+    -> static_number<
             numeric_limits<Input>::digits, 0,
             RoundingTag, OverflowTag,
             Narrowest>
-    constexpr make_static_number(Input const& input)
     {
         return input;
     }
@@ -5842,11 +6010,11 @@ namespace cnl {
             class Narrowest = int,
             class Input = int,
             auto Value>
-    static_number<
+    constexpr auto make_static_number(constant<Value> const&)
+    -> static_number<
             _impl::used_digits(Value)-trailing_bits(Value), trailing_bits(Value),
             RoundingTag, OverflowTag,
             Narrowest>
-    constexpr make_static_number(constant<Value> const&)
     {
         return constant<Value>{};
     }

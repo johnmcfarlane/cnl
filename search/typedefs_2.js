@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['multiprecision',['multiprecision',['../namespacecnl.html#aef02ef10da456e58c408b8911c74a5da',1,'cnl']]]
+  ['elastic_5fnumber',['elastic_number',['../namespacecnl.html#a0ada42347e63f610172d7dc4b8e32765',1,'cnl']]]
 ];

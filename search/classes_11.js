@@ -35,9 +35,14 @@ var searchData=
   ['remove_5fextent',['remove_extent',['http://en.cppreference.com/w/cpp/types/remove_extent.html',1,'std']]],
   ['remove_5fpointer',['remove_pointer',['http://en.cppreference.com/w/cpp/types/remove_pointer.html',1,'std']]],
   ['remove_5freference',['remove_reference',['http://en.cppreference.com/w/cpp/types/remove_reference.html',1,'std']]],
+  ['remove_5fsignedness',['remove_signedness',['../structcnl_1_1remove__signedness.html',1,'cnl']]],
+  ['remove_5fsignedness_3c_20t_20_3e',['remove_signedness&lt; T &gt;',['../structcnl_1_1remove__signedness.html',1,'cnl']]],
   ['remove_5fvolatile',['remove_volatile',['http://en.cppreference.com/w/cpp/types/remove_cv.html',1,'std']]],
   ['result_5fof',['result_of',['http://en.cppreference.com/w/cpp/types/result_of.html',1,'std']]],
   ['reverse_5fiterator',['reverse_iterator',['http://en.cppreference.com/w/cpp/iterator/reverse_iterator.html',1,'std']]],
+  ['rounding',['rounding',['../structcnl_1_1rounding.html',1,'cnl']]],
+  ['rounding_3c_20_5fimpl_3a_3ato_5frep_5ft_3c_20number_20_3e_20_3e',['rounding&lt; _impl::to_rep_t&lt; Number &gt; &gt;',['../structcnl_1_1rounding.html',1,'cnl']]],
+  ['rounding_3c_20number_20_3e',['rounding&lt; Number &gt;',['../structcnl_1_1rounding.html',1,'cnl']]],
   ['rounding_5finteger',['rounding_integer',['../classcnl_1_1rounding__integer.html',1,'cnl']]],
   ['runtime_5ferror',['runtime_error',['http://en.cppreference.com/w/cpp/error/runtime_error.html',1,'std']]]
 ];

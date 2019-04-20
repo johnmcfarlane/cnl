@@ -1,7 +1,7 @@
 var searchData=
 [
   ['m',['m',['http://en.cppreference.com/w/cpp/numeric/random/lognormal_distribution/params.html',1,'std::lognormal_distribution::m()'],['http://en.cppreference.com/w/cpp/numeric/random/fisher_f_distribution/params.html',1,'std::fisher_f_distribution::m()']]],
-  ['make_5felastic_5fnumber',['make_elastic_number',['../namespacecnl.html#aea7f4218763d355da78eeb755e3426d7',1,'cnl::make_elastic_number(constant&lt; Value &gt;)'],['../namespacecnl.html#ac420f6b0d52d51269e2671c01c773916',1,'cnl::make_elastic_number(Integral const &amp;value)']]],
+  ['make_5felastic_5fnumber',['make_elastic_number',['../namespacecnl.html#ac8c81a182aa5142d73348a68a8c67f5a',1,'cnl::make_elastic_number(constant&lt; Value &gt;) -&gt; elastic_number&lt; _impl::max(digits&lt; constant&lt; Value &gt;&gt;::value-trailing_bits(Value), 1), trailing_bits(Value), Narrowest &gt;'],['../namespacecnl.html#a69b154d2e3bb56923f4b8e4e914a410f',1,'cnl::make_elastic_number(Integral const &amp;value) -&gt; elastic_number&lt; numeric_limits&lt; Integral &gt;::digits, 0, typename std::conditional&lt; std::is_same&lt; void, Narrowest &gt;::value, _impl::adopt_signedness_t&lt; int, Integral &gt;, Narrowest &gt;::type &gt;']]],
   ['make_5fexception_5fptr',['make_exception_ptr',['http://en.cppreference.com/w/cpp/error/make_exception_ptr.html',1,'std']]],
   ['make_5ffixed_5fpoint',['make_fixed_point',['../namespacecnl.html#a4908ae024cdd2e437863aa8c2e2624e3',1,'cnl']]],
   ['make_5fheap',['make_heap',['http://en.cppreference.com/w/cpp/algorithm/make_heap.html',1,'std']]],
@@ -12,7 +12,7 @@ var searchData=
   ['make_5fshared',['make_shared',['http://en.cppreference.com/w/cpp/memory/shared_ptr/make_shared.html',1,'std']]],
   ['make_5fsigned',['make_signed',['http://en.cppreference.com/w/cpp/types/make_signed.html',1,'std']]],
   ['make_5fsigned_3c_20t_20_3e',['make_signed&lt; T &gt;',['http://en.cppreference.com/w/cpp/types/make_signed.html',1,'std']]],
-  ['make_5fstatic_5fnumber',['make_static_number',['../namespacecnl.html#a8b54e89a86bd19d88e75bf6939d3d1ff',1,'cnl::make_static_number(Input const &amp;input)'],['../namespacecnl.html#a46cc3fa452a8a9ef4443dfd46f03260f',1,'cnl::make_static_number(constant&lt; Value &gt; const &amp;)']]],
+  ['make_5fstatic_5fnumber',['make_static_number',['../namespacecnl.html#abd04f5f48a47a6ffed4bc413e469aed0',1,'cnl::make_static_number(Input const &amp;input) -&gt; static_number&lt; numeric_limits&lt; Input &gt;::digits, 0, RoundingTag, OverflowTag, Narrowest &gt;'],['../namespacecnl.html#a3e3f340224232db80ac66f1cb0ea2219',1,'cnl::make_static_number(constant&lt; Value &gt; const &amp;) -&gt; static_number&lt; _impl::used_digits(Value) -trailing_bits(Value), trailing_bits(Value), RoundingTag, OverflowTag, Narrowest &gt;']]],
   ['make_5ftuple',['make_tuple',['http://en.cppreference.com/w/cpp/utility/tuple/make_tuple.html',1,'std']]],
   ['make_5funsigned',['make_unsigned',['http://en.cppreference.com/w/cpp/types/make_unsigned.html',1,'std']]],
   ['make_5funsigned_3c_20t_20_3e',['make_unsigned&lt; T &gt;',['http://en.cppreference.com/w/cpp/types/make_unsigned.html',1,'std']]],
@@ -81,6 +81,7 @@ var searchData=
   ['mt19937_5f64',['mt19937_64',['http://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine.html',1,'std::mt19937_64'],['http://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine/mersenne_twister_engine.html',1,'std::mt19937_64::mt19937_64()']]],
   ['multimap',['multimap',['http://en.cppreference.com/w/cpp/container/multimap.html',1,'std::multimap&lt; K, T &gt;'],['http://en.cppreference.com/w/cpp/container/multimap/multimap.html',1,'std::multimap::multimap()']]],
   ['multiplies',['multiplies',['http://en.cppreference.com/w/cpp/utility/functional/multiplies.html',1,'std']]],
+  ['multiply',['multiply',['../namespacecnl.html#abf4b21ff0353a9195c9c68789dfc0cf1',1,'cnl']]],
   ['multiprecision',['multiprecision',['../namespacecnl.html#aef02ef10da456e58c408b8911c74a5da',1,'cnl']]],
   ['multiset',['multiset',['http://en.cppreference.com/w/cpp/container/multiset.html',1,'std::multiset&lt; K &gt;'],['http://en.cppreference.com/w/cpp/container/multiset/multiset.html',1,'std::multiset::multiset()']]],
   ['mutex',['mutex',['http://en.cppreference.com/w/cpp/thread/mutex.html',1,'std::mutex'],['http://en.cppreference.com/w/cpp/thread/unique_lock/mutex.html',1,'std::unique_lock::mutex()'],['http://en.cppreference.com/w/cpp/thread/shared_lock/mutex.html',1,'std::shared_lock::mutex()'],['http://en.cppreference.com/w/cpp/thread/mutex/mutex.html',1,'std::mutex::mutex()']]]

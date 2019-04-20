@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wide_5finteger',['wide_integer',['../namespacecnl.html#ab8ec7125b3f3b43f22d077c0abea1ce9',1,'cnl']]]
+  ['unsigned_5fmultiprecision',['unsigned_multiprecision',['../namespacecnl.html#ae5d22fc7aa27c2acee069a24af5822df',1,'cnl']]]
 ];

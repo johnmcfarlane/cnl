@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['set_5fdigits_5ft',['set_digits_t',['../namespacecnl.html#ad615c2be24d5d9aa2b652bbe834a159b',1,'cnl']]],
-  ['signed_5fmultiprecision',['signed_multiprecision',['../namespacecnl.html#abc382d49df277242289bb86b36ddf92e',1,'cnl']]],
-  ['static_5finteger',['static_integer',['../namespacecnl.html#ab84979e9c09ff27d096f3addae74c20d',1,'cnl']]],
-  ['static_5fnumber',['static_number',['../namespacecnl.html#acc23e3f06fc9c425afff65dfcd81fa63',1,'cnl']]]
+  ['remove_5fsignedness_5ft',['remove_signedness_t',['../namespacecnl.html#a97255399ba282f661fdfd52df6710e4c',1,'cnl']]],
+  ['rep',['rep',['../classcnl_1_1fixed__point.html#a93e69cbc7b10ac6b2f975bf95d285115',1,'cnl::fixed_point::rep()'],['../classcnl_1_1elastic__integer.html#a17667c1cfc00f2952648bf3bc4a85a88',1,'cnl::elastic_integer::rep()']]],
+  ['rounding_5ft',['rounding_t',['../namespacecnl.html#a18e61e64007c0b8f03795a909a3ece45',1,'cnl']]]
 ];
