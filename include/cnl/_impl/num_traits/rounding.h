@@ -10,19 +10,14 @@
 #ifndef CNL_IMPL_NUM_TRAITS_ROUNDING
 #define CNL_IMPL_NUM_TRAITS_ROUNDING
 
-#include "../rounding/rounding_tag.h"
+#include "../rounding/nearest_rounding_tag.h"
+#include "../rounding/native_rounding_tag.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 #include "../type_traits/type_identity.h"
 
 namespace cnl {
-    // cnl::native_rounding_tag
-    using _impl::native_rounding_tag;
-
-    // cnl::nearest_rounding_tag
-    using _impl::nearest_rounding_tag;
-
-    // cnl::rounding
+    /// \brief given number type, returns its rounding mode
     template<typename Number, class Enable = void>
     struct rounding;
 

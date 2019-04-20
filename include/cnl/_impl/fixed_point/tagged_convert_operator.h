@@ -9,7 +9,8 @@
 
 #include "../power.h"
 #include "../overflow/overflow_operator.h"
-#include "../rounding/rounding_tag.h"
+#include "../rounding/nearest_rounding_tag.h"
+#include "../rounding/native_rounding_tag.h"
 #include "../type_traits/enable_if.h"
 #include "declaration.h"
 #include "from_rep.h"
@@ -23,12 +24,12 @@ namespace cnl {
                 typename InputRep, int InputExponent,
                 int Radix>
         struct tagged_convert_operator<
-                _impl::nearest_rounding_tag,
+                nearest_rounding_tag,
                 fixed_point<ResultRep, ResultExponent, Radix>,
                 fixed_point<InputRep, InputExponent, Radix>,
                 _impl::enable_if_t<(ResultExponent <= InputExponent)>>
                 : tagged_convert_operator<
-                        _impl::native_rounding_tag,
+                        native_rounding_tag,
                         fixed_point<ResultRep, ResultExponent, Radix>,
                         fixed_point<InputRep, InputExponent, Radix>> {
         };
@@ -39,7 +40,7 @@ namespace cnl {
                 typename InputRep, int InputExponent,
                 int Radix>
         struct tagged_convert_operator<
-                _impl::nearest_rounding_tag,
+                nearest_rounding_tag,
                 fixed_point<ResultRep, ResultExponent, Radix>,
                 fixed_point<InputRep, InputExponent, Radix>,
                 _impl::enable_if_t<!(ResultExponent<=InputExponent)>> {
@@ -65,7 +66,7 @@ namespace cnl {
                 typename ResultRep, int ResultExponent, int ResultRadix,
                 typename Input>
         struct tagged_convert_operator<
-                _impl::nearest_rounding_tag,
+                nearest_rounding_tag,
                 fixed_point<ResultRep, ResultExponent, ResultRadix>,
                 Input,
                 _impl::enable_if_t<std::is_floating_point<Input>::value>> {
@@ -89,12 +90,12 @@ namespace cnl {
                 typename ResultRep, int ResultExponent, int ResultRadix,
                 typename Input>
         struct tagged_convert_operator<
-                _impl::nearest_rounding_tag,
+                nearest_rounding_tag,
                 fixed_point<ResultRep, ResultExponent, ResultRadix>,
                 Input,
                 _impl::enable_if_t<cnl::numeric_limits<Input>::is_integer>>
                 : tagged_convert_operator<
-                        _impl::nearest_rounding_tag,
+                        nearest_rounding_tag,
                         fixed_point<ResultRep, ResultExponent, ResultRadix>,
                         fixed_point<Input>> {
         };
@@ -103,7 +104,7 @@ namespace cnl {
                 typename Result,
                 typename InputRep, int InputExponent, int InputRadix>
         struct tagged_convert_operator<
-                _impl::nearest_rounding_tag,
+                nearest_rounding_tag,
                 Result,
                 fixed_point<InputRep, InputExponent, InputRadix>,
                 _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer>> {
@@ -112,7 +113,7 @@ namespace cnl {
             constexpr Result operator()(_input const& from) const
             {
                 return _impl::to_rep(
-                        _impl::tagged_convert_operator<_impl::nearest_rounding_tag, fixed_point<Result>, _input>{}(
+                        _impl::tagged_convert_operator<nearest_rounding_tag, fixed_point<Result>, _input>{}(
                                 from));
             }
         };

@@ -21,7 +21,7 @@
 /// compositional numeric library
 namespace cnl {
     /// \brief An integer with customized rounding behavior.
-    template<class Rep = int, class RoundingTag = _impl::nearest_rounding_tag>
+    template<class Rep = int, class RoundingTag = nearest_rounding_tag>
     class rounding_integer;
 
     namespace _impl {

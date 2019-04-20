@@ -7,10 +7,11 @@
 #if !defined(CNL_IMPL_ROUNDING_TAGGED_CONVERT_OPERATOR_H)
 #define CNL_IMPL_ROUNDING_TAGGED_CONVERT_OPERATOR_H
 
-#include "../../limits.h"
+#include "native_rounding_tag.h"
+#include "nearest_rounding_tag.h"
 #include "../native_tag.h"
 #include "../type_traits/enable_if.h"
-#include "rounding_tag.h"
+#include "../../limits.h"
 
 #include <type_traits>
 
@@ -30,7 +31,7 @@ namespace cnl {
 
         template<typename Destination, typename Source>
         struct tagged_convert_operator<
-                _impl::native_rounding_tag, Destination, Source> {
+                native_rounding_tag, Destination, Source> {
             constexpr Destination operator()(Source const& from) const
             {
                 return static_cast<Destination>(from);
@@ -39,7 +40,7 @@ namespace cnl {
 
         template<typename Destination, typename Source>
         struct tagged_convert_operator<
-                _impl::nearest_rounding_tag, Destination, Source,
+                nearest_rounding_tag, Destination, Source,
                 enable_if_t<are_arithmetic_or_integer<Destination, Source>::value>> {
             constexpr Destination operator()(Source const& from) const
             {
