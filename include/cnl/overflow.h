@@ -18,9 +18,4 @@
 #include "_impl/overflow/undefined.h"
 #include "_impl/tagged.h"
 
-/// compositional numeric library
-namespace cnl {
-    using _impl::native_overflow_tag;
-}
-
 #endif  // CNL_OVERFLOW_H
