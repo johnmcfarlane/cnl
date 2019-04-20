@@ -56,11 +56,12 @@ namespace cnl {
     template<
             typename Narrowest = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0>
-    constexpr elastic_number<
+    constexpr auto
+    make_elastic_number(constant<Value>)
+    -> elastic_number<
             _impl::max(digits<constant<Value>>::value-trailing_bits(Value), 1),
             trailing_bits(Value),
             Narrowest>
-    make_elastic_number(constant<Value>)
     {
         return Value;
     }
@@ -84,27 +85,29 @@ namespace cnl {
     ///
     /// \brief generate an \ref cnl::elastic_number object of given value
     template<typename Narrowest = void, typename Integral = int>
-    constexpr elastic_number<
+    constexpr auto
+    make_elastic_number(Integral const& value)
+    -> elastic_number<
             numeric_limits<Integral>::digits,
             0,
             typename std::conditional<
                     std::is_same<void, Narrowest>::value,
                     _impl::adopt_signedness_t<int, Integral>,
                     Narrowest>::type>
-    make_elastic_number(Integral const& value)
     {
         return {value};
     }
 
     template<typename Narrowest = void, typename Rep = int, int Exponent = 0, int Radix = 2>
-    constexpr elastic_number<
+    constexpr auto
+    make_elastic_number(fixed_point<Rep, Exponent, Radix> const& value)
+    -> elastic_number<
             numeric_limits<Rep>::digits,
             Exponent,
             typename std::conditional<
                     std::is_same<void, Narrowest>::value,
                     _impl::adopt_signedness_t<int, Rep>,
                     Narrowest>::type>
-    make_elastic_number(fixed_point<Rep, Exponent, Radix> const& value)
     {
         return {value};
     }

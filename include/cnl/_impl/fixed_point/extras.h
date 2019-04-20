@@ -101,8 +101,9 @@ namespace cnl {
 
     // https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_.28base_2.29
     template<typename Rep, int Exponent, int Radix>
-    constexpr fixed_point <Rep, Exponent, Radix>
+    constexpr auto
     sqrt(fixed_point<Rep, Exponent, Radix> const& x)
+    -> fixed_point <Rep, Exponent, Radix>
     {
         using type = fixed_point<Rep, Exponent, Radix>;
         return _impl::to_rep(x)<0
