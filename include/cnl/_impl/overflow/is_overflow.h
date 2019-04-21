@@ -7,9 +7,9 @@
 #ifndef CNL_IMPL_OVERFLOW_IS_OVERFLOW_H
 #define CNL_IMPL_OVERFLOW_IS_OVERFLOW_H
 
-#include "polarity.h"
 #include "../num_traits/digits.h"
 #include "../operators.h"
+#include "../polarity.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_signed.h"
 #include "../../limits.h"

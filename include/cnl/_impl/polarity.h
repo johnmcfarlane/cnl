@@ -12,6 +12,7 @@ namespace cnl {
     namespace _impl {
         enum class polarity {
             negative = -1,
+            neutral = 0,
             positive = 1
         };
     }

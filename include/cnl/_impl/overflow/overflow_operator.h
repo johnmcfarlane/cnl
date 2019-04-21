@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_OVERFLOW_OPERATOR_H)
 #define CNL_IMPL_OVERFLOW_OPERATOR_H
 
-#include "polarity.h"
+#include "../polarity.h"
 
 /// compositional numeric library
 namespace cnl {
