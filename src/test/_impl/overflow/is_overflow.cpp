@@ -351,6 +351,11 @@ namespace {
                 "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
         static_assert(!test_subtract_positive{}(-2000000000, -2000000000),
                 "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
+
+        static_assert(test_subtract_positive{}(0, cnl::numeric_limits<int>::min()),
+                "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_subtract_positive{}(-1, cnl::numeric_limits<int>::min()),
+                "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
     }
 
     namespace test_subtract_negative {
@@ -364,6 +369,11 @@ namespace {
                 "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::negative>");
         static_assert(!test_subtract_negative{}(-2000000000, -2000000000),
                 "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::negative>");
+
+        static_assert(!test_subtract_negative{}(0, cnl::numeric_limits<int>::min()),
+                "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
+        static_assert(!test_subtract_negative{}(-1, cnl::numeric_limits<int>::min()),
+                "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
 
         static_assert(test_subtract_negative{}(0u, 1u),
                 "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::negative>");
