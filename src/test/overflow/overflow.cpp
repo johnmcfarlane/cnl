@@ -37,7 +37,8 @@ namespace {
 
     namespace test_throwing_overflow {
         // subtract
-        static_assert(identical(cnl::subtract<cnl::throwing_overflow_tag>(INT8_C(0), INT8_C(0)), 0), "cnl::add test failed");
+        static_assert(identical(cnl::subtract<cnl::throwing_overflow_tag>(INT8_C(0), INT8_C(0)), 0),
+                "cnl::subtract test failed");
 
         // multiply
 #if ! defined(__APPLE__) || ! defined(__clang__)
