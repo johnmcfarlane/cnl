@@ -25,7 +25,7 @@ namespace cnl {
     using _impl::enable_if_t;
 
     using _impl::is_integral;
-#if (__cplusplus > 201402L)
+#if (__cpp_variable_templates >= 201304)
     using _impl::is_integral_v;
 #endif
 
