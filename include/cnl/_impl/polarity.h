@@ -15,6 +15,26 @@ namespace cnl {
             neutral = 0,
             positive = 1
         };
+
+        constexpr polarity operator-(polarity const& p)
+        {
+            return static_cast<polarity>(-static_cast<int>(p));
+        }
+
+        constexpr polarity operator*(polarity const& lhs, polarity const& rhs)
+        {
+            return static_cast<polarity>(static_cast<int>(lhs)*static_cast<int>(rhs));
+        }
+
+        template<typename T>
+        constexpr polarity measure_polarity(T const& value)
+        {
+            return (value>T{})
+                    ?polarity::positive
+                    :(value<T{})
+                            ?polarity::negative
+                            :polarity::neutral;
+        }
     }
 }
 
