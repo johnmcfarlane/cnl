@@ -8,29 +8,30 @@
 #define CNL_IMPL_TYPE_TRAITS_CONDITIONAL3_H
 
 #include "type_identity.h"
+#include "../polarity.h"
 
 namespace cnl {
     namespace _impl {
         template<
-                int Sign,
+                int Value,
                 typename Positive, typename Zero, typename Negative,
-                bool IsNegative = (Sign<0), bool IsPositive = (Sign>0)>
+                polarity Polarity = measure_polarity(Value)>
         struct conditional3;
 
-        template<int Sign, typename Positive, typename Zero, typename Negative>
-        struct conditional3<Sign, Positive, Zero, Negative, false, false> : type_identity<Zero> {
+        template<int Value, typename Positive, typename Zero, typename Negative>
+        struct conditional3<Value, Positive, Zero, Negative, polarity::neutral> : type_identity<Zero> {
         };
 
-        template<int Sign, typename Positive, typename Zero, typename Negative>
-        struct conditional3<Sign, Positive, Zero, Negative, true, false> : type_identity<Negative> {
+        template<int Value, typename Positive, typename Zero, typename Negative>
+        struct conditional3<Value, Positive, Zero, Negative, polarity::negative> : type_identity<Negative> {
         };
 
-        template<int Sign, typename Positive, typename Zero, typename Negative>
-        struct conditional3<Sign, Positive, Zero, Negative, false, true> : type_identity<Positive> {
+        template<int Value, typename Positive, typename Zero, typename Negative>
+        struct conditional3<Value, Positive, Zero, Negative, polarity::positive> : type_identity<Positive> {
         };
 
-        template<int Sign, typename Positive, typename Zero, typename Negative>
-        using conditional3_t = typename conditional3<Sign, Positive, Zero, Negative>::type;
+        template<int Value, typename Positive, typename Zero, typename Negative>
+        using conditional3_t = typename conditional3<Value, Positive, Zero, Negative>::type;
     }
 }
 
