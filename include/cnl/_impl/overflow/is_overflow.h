@@ -256,7 +256,6 @@ namespace cnl {
                 return (max(overflow_digits<Lhs, polarity::positive>::value,
                         overflow_digits<Rhs, polarity::positive>::value)+1
                         >traits::positive_digits)
-                        && lhs>Lhs{0}
                         && rhs<Rhs{0}
                         && lhs>traits::max()+rhs;
             }
