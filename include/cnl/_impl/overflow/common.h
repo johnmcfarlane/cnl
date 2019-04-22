@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_OVERFLOW_COMMON_H)
 #define CNL_IMPL_OVERFLOW_COMMON_H
 
+#include "builtin_overflow.h"
 #include "is_overflow.h"
 #include "overflow_operator.h"
 #include "../native_tag.h"
@@ -57,9 +58,18 @@ namespace cnl {
 
         template<class OverflowTag, class Operator>
         struct tagged_binary_overflow_operator {
+#if defined(CNL_BUILTIN_OVERFLOW_ENABLED)
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> op_result<Operator, Lhs, Rhs>
+            -> enable_if_t<builtin_overflow_supported<Operator, Lhs, Rhs>(), op_result<Operator, Lhs, Rhs>>
+            {
+                return builtin_tagged_binary_overflow_operator<OverflowTag, Operator>(lhs, rhs);
+            }
+#endif
+
+            template<class Lhs, class Rhs>
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> enable_if_t<!builtin_overflow_supported<Operator, Lhs, Rhs>(), op_result<Operator, Lhs, Rhs>>
             {
                 return is_overflow<Operator, polarity::positive>{}(lhs, rhs)
                         ? overflow_operator<Operator, OverflowTag, polarity::positive>{}(lhs, rhs)

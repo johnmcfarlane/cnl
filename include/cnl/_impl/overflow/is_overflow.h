@@ -134,6 +134,34 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::operator_overflow_traits
+
+        template<class Operator, typename ... Operands>
+        struct operator_overflow_traits {
+            using result = op_result<Operator, Operands...>;
+            using numeric_limits = cnl::numeric_limits<result>;
+
+            static constexpr int positive_digits = _impl::overflow_digits<result, polarity::positive>::value;
+            static constexpr int negative_digits = _impl::overflow_digits<result, polarity::negative>::value;
+
+            static constexpr result lowest()
+            {
+                return numeric_limits::lowest();
+            }
+
+            static constexpr result max()
+            {
+                return numeric_limits::max();
+            }
+
+            template<typename Operand>
+            static constexpr int leading_bits(Operand const& operand)
+            {
+                return cnl::leading_bits(static_cast<result>(operand));
+            }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::is_overflow
 
         template<typename Operator, polarity Polarity>
@@ -182,36 +210,6 @@ namespace cnl {
 #if defined(_MSC_VER)
 #pragma warning(pop)
 #endif
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::operator_overflow_traits
-
-        template<class Operator, typename ... Operands>
-        struct operator_overflow_traits {
-            using result = op_result<Operator, Operands...>;
-            using numeric_limits = cnl::numeric_limits<result>;
-
-            static constexpr int positive_digits = _impl::overflow_digits<result, polarity::positive>::value;
-            static constexpr int negative_digits = _impl::overflow_digits<result, polarity::negative>::value;
-
-            static constexpr result lowest()
-            {
-                return numeric_limits::lowest();
-            }
-            static constexpr result max()
-            {
-                return numeric_limits::max();
-            }
-
-            template<typename Operand>
-            static constexpr int leading_bits(Operand const& operand)
-            {
-                return cnl::leading_bits(static_cast<result>(operand));
-            }
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::is_overflow
 
         template<>
         struct is_overflow<add_op, polarity::positive> {
@@ -312,7 +310,7 @@ namespace cnl {
             constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<divide_op, Lhs, Rhs>;
-                return (has_most_negative_number<Lhs>::value && has_most_negative_number<Rhs>::value)
+                return (has_most_negative_number<Lhs>::value)
                         ? rhs == -1 && lhs == traits::lowest()
                         : false;
             }
