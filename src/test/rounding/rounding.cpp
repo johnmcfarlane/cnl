@@ -70,18 +70,18 @@ namespace {
         }
 
         namespace shift_right {
-            static_assert(identical(1, cnl::shift_right<cnl::nearest_rounding_tag>(1, 1)),
+            static_assert(identical(1>>1, cnl::shift_right<cnl::nearest_rounding_tag>(1, 1)),
                     "cnl::shift_right test failed");
-            static_assert(identical(0, cnl::shift_right<cnl::nearest_rounding_tag>(1, 2)),
+            static_assert(identical(1>>2, cnl::shift_right<cnl::nearest_rounding_tag>(1, 2)),
                     "cnl::shift_right test failed");
 
-            static_assert(identical(1, cnl::shift_right<cnl::nearest_rounding_tag>(191, 7)),
+            static_assert(identical(191>>7, cnl::shift_right<cnl::nearest_rounding_tag>(191, 7)),
                     "cnl::shift_right test failed");
-            static_assert(identical(2, cnl::shift_right<cnl::nearest_rounding_tag>(192, 7)),
+            static_assert(identical(192>>7, cnl::shift_right<cnl::nearest_rounding_tag>(192, 7)),
                     "cnl::shift_right test failed");
-            static_assert(identical(2, cnl::shift_right<cnl::nearest_rounding_tag>(319, 7)),
+            static_assert(identical(319>>7, cnl::shift_right<cnl::nearest_rounding_tag>(319, 7)),
                     "cnl::shift_right test failed");
-            static_assert(identical(3, cnl::shift_right<cnl::nearest_rounding_tag>(320, 7)),
+            static_assert(identical(320>>7, cnl::shift_right<cnl::nearest_rounding_tag>(320, 7)),
                     "cnl::shift_right test failed");
         }
     }

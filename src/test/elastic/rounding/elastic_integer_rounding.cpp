@@ -14,7 +14,7 @@ namespace {
     namespace test_shift_right_nearest {
         static_assert(
                 identical(
-                        cnl::elastic_integer<53>{14},
+                        cnl::elastic_integer<53>{7000>>9},
                         cnl::shift_right<cnl::nearest_rounding_tag, cnl::elastic_integer<62>, cnl::constant<9>>(
                                 7000,
                                 cnl::constant<9>{})),
@@ -23,7 +23,7 @@ namespace {
 #if defined(CNL_INT128_ENABLED)
         static_assert(
                 identical(
-                        cnl::elastic_integer<117>{14},
+                        cnl::elastic_integer<117>{7000>>9},
                         cnl::shift_right<cnl::nearest_rounding_tag, cnl::elastic_integer<126>, cnl::constant<9>>(
                                 7000,
                                 cnl::constant<9>{})),
