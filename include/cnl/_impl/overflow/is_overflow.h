@@ -310,7 +310,7 @@ namespace cnl {
             constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<divide_op, Lhs, Rhs>;
-                return (has_most_negative_number<Lhs>::value && has_most_negative_number<Rhs>::value)
+                return (has_most_negative_number<Lhs>::value)
                         ? rhs == -1 && lhs == traits::lowest()
                         : false;
             }
