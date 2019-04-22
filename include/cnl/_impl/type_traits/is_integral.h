@@ -29,7 +29,7 @@ namespace cnl {
         };
 #endif
 
-#if (__cplusplus > 201402L)
+#if (__cpp_variable_templates >= 201304)
         template<class T>
         constexpr int is_integral_v = is_integral<T>::value;
 #endif

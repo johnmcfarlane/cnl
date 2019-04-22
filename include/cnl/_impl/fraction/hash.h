@@ -8,6 +8,7 @@
 #define CNL_IMPL_FRACTION_HASH_H 1
 
 #include "../../bit.h"
+#include "../type_traits/is_integral.h"
 #include "../num_traits/width.h"
 #include "canonical.h"
 #include "type.h"
@@ -23,7 +24,7 @@ namespace std {
         // There is no equivalent to GCD for floating-point fractions.
         // The solution may be to canonicalize the exponents somehow.
         static_assert(
-                cnl::_impl::is_integral_v<Numerator>&&cnl::_impl::is_integral_v<Numerator>,
+                cnl::_impl::is_integral<Numerator>::value&&cnl::_impl::is_integral<Denominator>::value,
                 "std::hash<cnl::fractional<T>> - T must be an integer");
 
         constexpr size_t operator()(cnl::fraction<Numerator, Denominator> const& value) const
