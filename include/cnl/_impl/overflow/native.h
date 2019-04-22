@@ -9,8 +9,8 @@
 
 #include "common.h"
 #include "overflow_operator.h"
-#include "polarity.h"
 #include "../native_tag.h"
+#include "../polarity.h"
 
 /// compositional numeric library
 namespace cnl {
