@@ -49,33 +49,6 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::tagged_binary_operator<nearest_rounding_tag, shift_right_op>
-
-        template<>
-        struct tagged_binary_operator<nearest_rounding_tag, shift_right_op> {
-            template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(lhs >> rhs)
-            {
-                return (lhs + ((static_cast<from_value_t<Lhs, constant<1>>>(constant<1>{}) << rhs) >> constant<1>{}))
-                        >> rhs;
-            }
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::tagged_binary_operator<nearest_rounding_tag, shift_left_op>
-
-        template<>
-        struct tagged_binary_operator<nearest_rounding_tag, shift_left_op> {
-            template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(lhs << rhs)
-            {
-                return lhs << rhs;
-            }
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::divide<nearest_rounding_tag, ...>
 
         template<class RoundingTag, class Lhs, class Rhs>
