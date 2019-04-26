@@ -43,7 +43,9 @@ namespace {
         EXPECT_LT(get_error(cnl::e<fixed_point<cnl::uint8, -6>>, cnl::e<long double>), .006L);
         EXPECT_LT(get_error(cnl::e<fixed_point<cnl::int16, -4>>, cnl::e<long double>), .015L);
         EXPECT_LT(get_error(cnl::e<fixed_point<cnl::int32, -16>>, cnl::e<long double>), .000002L);
+#if !defined(__arm__)
         EXPECT_LT(get_error(cnl::e<fixed_point<cnl::uint64, -62>>, cnl::e<long double>), .000000001L);
+#endif
     }
 
     TEST(fixed_point_constants, log2e) {
@@ -64,7 +66,9 @@ namespace {
         EXPECT_LT(get_error(cnl::pi<fixed_point<cnl::uint8, -6>>, cnl::pi<long double>), .006L);
         EXPECT_LT(get_error(cnl::pi<fixed_point<cnl::int16, -4>>, cnl::pi<long double>), .015L);
         EXPECT_LT(get_error(cnl::pi<fixed_point<cnl::int32, -16>>, cnl::pi<long double>), .0000021L);
+#if !defined(__arm__)
         EXPECT_LT(get_error(cnl::pi<fixed_point<cnl::uint64, -62>>, cnl::pi<long double>), .000000001L);
+#endif
     }
 
     TEST(fixed_point_constants, invpi) {

@@ -122,7 +122,7 @@ namespace test_fraction_specific_long {
     constexpr auto third = cnl::make_fraction(1_elastic, 3_elastic);
 
     constexpr auto specific = cnl::elastic_number<63, -60>{third};
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) || defined(__arm__)
     // MSVC's long double is less precise than 63 digits
     static_assert(std::is_same<cnl::elastic_number<63, -60>, cnl::elastic_number<63, -60>>::value, "");
     static_assert(specific > .333333333333333, "");

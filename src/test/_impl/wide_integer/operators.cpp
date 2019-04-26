@@ -58,12 +58,14 @@ namespace {
                 -cnl::_impl::wide_integer<500, int>{17292375928362489LL}), "");
 #endif
 
+#if !defined(__arm__)
         TEST(wide_integer, minus)
         {
             auto expected = cnl::_impl::wide_integer<1000, int>{-17292375928362489LL};
             auto actual = -cnl::_impl::wide_integer<1000, int>{17292375928362489LL};
             ASSERT_EQ(expected, actual);
         }
+#endif
     }
 
     namespace test_add {
