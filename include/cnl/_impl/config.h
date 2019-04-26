@@ -40,15 +40,10 @@
 #define CNL_CAN_USE_INT128 0
 #endif
 
-#if defined(CNL_USE_INT128)
+#if CNL_USE_INT128
 #if !CNL_CAN_USE_INT128
 #error CNL_USE_INT128 is defined but 128-bit integers is not enabled for this compiler
 #endif
-#else
-#define CNL_USE_INT128 CNL_CAN_USE_INT128
-#endif
-
-#if CNL_USE_INT128
 #define CNL_INT128_ENABLED
 #endif
 
