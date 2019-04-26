@@ -107,7 +107,7 @@ namespace i {
     constexpr auto d = fixed_point<int, -8>{2.25};
     constexpr auto q = cnl::quotient(n, d);
 
-    static_assert(std::is_same<decltype(q), const fixed_point<long, -31>>::value);
+    static_assert(std::is_same<decltype(q), const fixed_point<cnl::int64, -31>>::value);
     static_assert(q == 0.66666666651144623756408691);
 }
 #endif
@@ -195,7 +195,7 @@ namespace o {
     static_assert(cnl::_impl::identical(fixed_point<int, 40>{0b10000000000000000000000000000000000000000l}, a));
 
     constexpr auto b = fixed_point{0b11111111111111111111111111111111111111111_c};
-    static_assert(cnl::_impl::identical(fixed_point<long, 0>{0b11111111111111111111111111111111111111111l}, b));
+    static_assert(cnl::_impl::identical(fixed_point<cnl::int64, 0>{0b11111111111111111111111111111111111111111l}, b));
 
     constexpr auto c = elastic_integer{2018_c};
     static_assert(cnl::_impl::identical(elastic_integer<11>{2018}, c));

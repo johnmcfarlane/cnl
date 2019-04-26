@@ -119,7 +119,7 @@ namespace cnl {
             auto const digits = std::distance(first, last);
 
             // store fractional bit, 0.5, as a sequence of decimal digits
-            std::array<char, (Exponent*-302LL)/100> bit{ };
+            std::array<char, static_cast<std::size_t>((Exponent*-302LL)/100)> bit{ };
             CNL_ASSERT(std::ptrdiff_t(bit.size())>=digits);
 
             // Initially, the sequence is { 5, 0, 0, 0, ... }.
