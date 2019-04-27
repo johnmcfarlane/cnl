@@ -17,13 +17,6 @@ environment:
       exceptions: ON
       std: 11
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 Preview
-    - platform: x64
-      configuration: MinSizeRel
-      cmake_generator: "Visual Studio 15 2017 Win64"
-      msbuild_property: x64
-      exceptions: OFF
-      std: 11
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 Preview
     - platform: x86
       configuration: RelWithDebInfo
       cmake_generator: "Visual Studio 15 2017"
