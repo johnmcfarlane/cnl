@@ -76,7 +76,7 @@ namespace cnl {
         struct to_chars_non_zero<Number, true> {
             to_chars_result operator()(char* const first, char* const last, Number const& value) const
             {
-                if (value>0.) {
+                if (value>Number{}) {
                     // +ve
                     return to_chars_positive(first, last, value);
                 }
