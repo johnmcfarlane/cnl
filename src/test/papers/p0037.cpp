@@ -4,7 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if __cpp_inline_variables>=201606
+#if defined(__cpp_inline_variables) && __cpp_inline_variables>=201606
 
 #include <cnl/fixed_point.h>
 #include <cnl/_impl/type_traits/identical.h>

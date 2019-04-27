@@ -49,7 +49,7 @@ namespace {
     namespace test_literal {
         using namespace cnl::literals;
 
-#if (__cpp_binary_literals >= 201304L)
+#if defined(__cpp_binary_literals) && (__cpp_binary_literals >= 201304L)
         static_assert(
                 identical(
                         cnl::_impl::wide_integer<27>{0b101100101010100110101010100},
