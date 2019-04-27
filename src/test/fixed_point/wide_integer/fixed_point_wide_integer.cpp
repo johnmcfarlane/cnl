@@ -34,6 +34,7 @@ TEST(fixed_point_wide_integer, to_string)
     ASSERT_EQ(expected, actual);
 }
 
+#if !defined(__arm__)
 TEST(fixed_point_wide_integer, quotient200)
 {
     using fixed_point = cnl::fixed_point<cnl::wide_integer<200, unsigned>, -196>;
@@ -59,3 +60,4 @@ TEST(fixed_point_wide_integer, ctor_fraction)
     auto actual = fixed_point{cnl::fraction<int>(1, 3)};
     ASSERT_EQ(expected, actual);
 }
+#endif

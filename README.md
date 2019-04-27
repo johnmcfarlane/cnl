@@ -26,7 +26,9 @@ Documentation can be found [here](http://johnmcfarlane.github.io/cnl/).
 
 ### Linux
 
-Tested on [Travis](https://travis-ci.org/johnmcfarlane/cnl) and [CircleCI](https://circleci.com/gh/johnmcfarlane/cnl).
+Compiled on x86-64 and armv7.
+Tested on x86-86 using  [Travis](https://travis-ci.org/johnmcfarlane/cnl) and
+[CircleCI](https://circleci.com/gh/johnmcfarlane/cnl).
 
 Requires:
 
