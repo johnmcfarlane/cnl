@@ -31,7 +31,7 @@ if (IS_MSVC)
   set(PROFILE_ENABLED_FLAGS "/Oy-")
   set(PROFILE_DISABLED_FLAGS "")
 elseif (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
-  set(MISC_FLAGS "-Wall -Wextra -Werror -ftemplate-backtrace-limit=0")
+  set(MISC_FLAGS "-Wall -Wextra -Werror -Wundef -ftemplate-backtrace-limit=0")
 
   if (NOT IS_APPLECLANG)
       string(APPEND MISC_FLAGS " -pthread")
