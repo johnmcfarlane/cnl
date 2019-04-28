@@ -195,6 +195,16 @@ add_gtest_dependency(TestMain)
 add_custom_target(Tests)
 
 ######################################################################
+# test plain - the main.cpp project with *no* tests of compiler flags
+
+add_executable(TestPlain main.cpp)
+set_target_properties(TestPlain PROPERTIES COMPILE_FLAGS "${STD_FLAGS}")
+target_link_libraries(TestPlain Cnl)
+add_test(TestPlain TestPlain)
+add_gtest_dependency(TestPlain)
+add_dependencies(Tests TestPlain)
+
+######################################################################
 # make_test
 
 # given the path to a source file containing gtest tests,

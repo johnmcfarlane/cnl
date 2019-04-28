@@ -12,13 +12,13 @@
 #include <iostream>
 #include <unordered_map>
 
-#if (__cplusplus > 201700)
+#if (__cplusplus >= 201703L)
 #include <experimental/filesystem>
 #endif
 
 using cnl::fixed_point;
 
-#if (__cplusplus > 201700)
+#if (__cplusplus >= 201703L)
 template<>
 struct std::hash<std::experimental::filesystem::path> {
     size_t operator()(std::experimental::filesystem::path const& p) const
@@ -85,7 +85,7 @@ namespace f {
     static_assert(unsigned{1}<signed{-1}, "evaluates to true");
 }
 
-#if (__cplusplus > 201700)
+#if (__cplusplus >= 201703L)
 namespace g {
     auto n = fixed_point<int, -8>{1.5};
     auto nn = n * n;    // fixed_point<int, -16>;
@@ -166,7 +166,7 @@ namespace m {
 #endif
 }
 
-#if (__cplusplus > 201700)
+#if (__cplusplus >= 201703L)
 #include <cnl/overflow_integer.h>
 using cnl::overflow_integer;
 namespace n {

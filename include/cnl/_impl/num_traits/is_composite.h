@@ -16,7 +16,7 @@ namespace cnl {
         static_assert(!std::is_volatile<T>::value, "T is volatile");
     };
 
-#if (__cpp_variable_templates >= 201304)
+#if defined(__cpp_variable_templates) && (__cpp_variable_templates >= 201304)
     template<class T>
     constexpr auto is_composite_v = is_composite<T>::value;
 #endif

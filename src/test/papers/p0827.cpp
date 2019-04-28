@@ -9,8 +9,7 @@
 
 #include <cnl/_impl/config.h>
 
-#if __cpp_return_type_deduction>=201304 && __cpp_static_assert>=201411 && __cpp_template_auto>=201606 \
-    && defined(CNL_EXCEPTIONS_ENABLED)
+#if (__cplusplus >= 201703L) && defined(CNL_EXCEPTIONS_ENABLED)
 
 #include <cstdint>
 #include <stdexcept>

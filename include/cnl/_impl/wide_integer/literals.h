@@ -74,7 +74,7 @@ namespace cnl {
             }
         };
 
-#if (__cpp_binary_literals >= 201304L)
+#if defined(__cpp_binary_literals) && (__cpp_binary_literals >= 201304L)
         // binary
         constexpr int parse_bin_char(char c)
         {

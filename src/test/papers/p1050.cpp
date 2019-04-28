@@ -9,7 +9,7 @@
 #include <cnl/fraction.h>
 #include <cnl/_impl/type_traits/identical.h>
 
-#if (__cplusplus >= 201700)
+#if (__cplusplus >= 201703L)
 
 namespace {
     using namespace cnl;
