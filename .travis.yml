@@ -24,10 +24,6 @@ matrix:
             - g++-7
       env: C_COMPILER=gcc-7 CXX_COMPILER=g++-7 BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
-    - os: osx
-      osx_image: xcode9
-      env: PACKAGE=gcc6 C_COMPILER=gcc-6 CXX_COMPILER=g++-6 BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
-
     - os: linux
       addons: &gcc6
         apt:
@@ -109,14 +105,6 @@ matrix:
       addons: *gcc7
       env: C_COMPILER=gcc-7 CXX_COMPILER=g++-7 BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
 
-    - os: osx
-      osx_image: xcode9
-      env: PACKAGE=gcc6 C_COMPILER=gcc-6 CXX_COMPILER=g++-6 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
-
-    - os: linux
-      addons: *gcc6
-      env: C_COMPILER=gcc-6 CXX_COMPILER=g++-6 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
-
     - os: linux
       addons: *gcc5
       env: C_COMPILER=gcc-5 CXX_COMPILER=g++-5 BUILD_TYPE=Debug STD=14 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
@@ -165,10 +153,6 @@ matrix:
     - os: linux
       addons: *gcc5
       env: C_COMPILER=gcc-5 CXX_COMPILER=g++-5 BUILD_TYPE=Debug STD=17 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
-
-    - os: linux
-      addons: *clang6
-      env: C_COMPILER=clang-6.0 CXX_COMPILER=clang++-6.0 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR=Ninja
 
     - os: linux
       addons: *clang5
