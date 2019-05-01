@@ -7,6 +7,15 @@ matrix:
   include:
     # C++11
     - os: linux
+      addons: &gcc9
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-9
+      env: C_COMPILER=gcc-9 CXX_COMPILER=g++-9 BUILD_TYPE=Release STD=11 EXCEPTIONS=OFF INT128=OFF SANITIZE=ON GENERATOR="Unix Makefiles"
+
+    - os: linux
       addons: &gcc8
         apt:
           sources:
@@ -134,6 +143,10 @@ matrix:
       env: C_COMPILER=clang-3.5 CXX_COMPILER=clang++-3.5 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR="Unix Makefiles"
 
     # C++17
+    - os: linux
+      addons: *gcc9
+      env: C_COMPILER=gcc-9 CXX_COMPILER=g++-9 BUILD_TYPE=Debug STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Ninja"
+
     - os: linux
       addons: *gcc8
       env: C_COMPILER=gcc-8 CXX_COMPILER=g++-8 BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF GENERATOR="Ninja"
