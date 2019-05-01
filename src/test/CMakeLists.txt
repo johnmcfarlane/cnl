@@ -153,8 +153,8 @@ endif ()
 
 ExternalProject_Add(
         GoogleTest
-        URL "https://github.com/google/googletest/archive/3a4cf1a02ef4adc28fccb7eef2b573b14cd59009.zip"
-        URL_MD5 "06ac495303fbe94b198026e3c196425e"
+        URL "https://github.com/google/googletest/archive/2fe3bd994b3189899d93f1d5a881e725e046fdc2.zip"
+        URL_MD5 "8d9ba616aa2697a284bdd9e06f4d8dfe"
         UPDATE_COMMAND ""
         CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}
         BUILD_BYPRODUCTS ${gtest_byproducts}
