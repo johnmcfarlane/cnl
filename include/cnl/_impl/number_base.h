@@ -116,6 +116,20 @@ namespace cnl {
                         && (depth<Rep>::value < depth<Wrapper>::value)> {};
 
         ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::number_base_from_value
+
+        template<class Derived, typename Value>
+        struct number_base_from_value {
+            static_assert(!is_derived_from_number_base<Value>::value, "");
+
+            constexpr auto operator()(Value const& value) const
+            -> decltype(cnl::_impl::from_rep<Derived>(cnl::from_value<typename Derived::rep, Value>{}(value)))
+            {
+                return cnl::_impl::from_rep<Derived>(cnl::from_value<typename Derived::rep, Value>{}(value));
+            }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::binary_operator
 
         // higher OP number_base<>
