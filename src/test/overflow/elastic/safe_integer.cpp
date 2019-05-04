@@ -72,6 +72,14 @@ namespace {
         static_assert(identical(cnl::safe_integer<34>{0}, cnl::safe_integer<34>{0}), "");
     }
 
+    namespace test_from_value {
+        static_assert(
+                identical(
+                        cnl::safe_integer<3>{5},
+                        cnl::from_value<cnl::safe_integer<1>, cnl::constant<5>>{}(cnl::constant<5>{})),
+                "");
+    }
+
     namespace test_add {
         static_assert(
                 identical(
