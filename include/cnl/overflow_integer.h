@@ -133,7 +133,7 @@ namespace cnl {
 
     template<class Rep, class OverflowTag, class Value>
     struct from_value<overflow_integer<Rep, OverflowTag>, Value>
-            : _impl::from_value_simple<overflow_integer<Value, OverflowTag>, Value> {
+            : _impl::number_base_from_value<overflow_integer<Rep, OverflowTag>, Value> {
     };
 
     template<class Rep, class OverflowTag, class ValueRep, class ValueOverflowTag>
@@ -143,14 +143,6 @@ namespace cnl {
                             from_value_t<Rep, ValueRep>,
                             _impl::common_type_t<OverflowTag, ValueOverflowTag>>,
                     overflow_integer<ValueRep, ValueOverflowTag>> {
-    };
-
-    template<class Rep, class OverflowTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct from_value<overflow_integer<Rep, OverflowTag>, constant<Value>>
-            : _impl::from_value_simple<overflow_integer<
-                    typename std::conditional<
-                            digits<int>::value<_impl::used_digits(Value), decltype(Value), int>::type, OverflowTag>,
-                    constant<Value>>{
     };
 
     ////////////////////////////////////////////////////////////////////////////////
