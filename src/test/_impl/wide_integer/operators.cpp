@@ -104,7 +104,7 @@ namespace {
                                 cnl::_impl::wide_integer<16, signed>>{}(0x1234, 0x100)),
                 "");
 
-#if !defined(_MSC_VER) && (defined(__clang__) || !defined(__GNUG__) || __GNUG__ < 7)
+#if defined(__clang__) || defined(CNL_INT128_ENABLED)
         TEST(wide_integer, divide)
         {
             using namespace cnl::_impl;
