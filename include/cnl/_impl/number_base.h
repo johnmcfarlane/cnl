@@ -97,19 +97,19 @@ namespace cnl {
         struct depth<T, false> : std::integral_constant<int, 0> {};
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::is_wrappable
+        // cnl::_impl::can_wrap
 
-        template<class Rep, class Wrapper>
-        struct is_wrappable;
+        template<typename Wrapper, typename Rep>
+        struct can_wrap;
 
-        template<class Rep, int RepN, class Wrapper>
-        struct is_wrappable<Rep[RepN], Wrapper> : std::false_type {};
+        template<typename Wrapper, typename Rep, int RepN>
+        struct can_wrap<Wrapper, Rep[RepN]> : std::false_type {};
 
-        template<class Rep, class Wrapper, int WrapperN>
-        struct is_wrappable<Rep, Wrapper[WrapperN]> : std::false_type {};
+        template<typename Wrapper, int WrapperN, typename Rep>
+        struct can_wrap<Wrapper[WrapperN], Rep> : std::false_type {};
 
-        template<class Rep, class Wrapper>
-        struct is_wrappable
+        template<typename Wrapper, typename Rep>
+        struct can_wrap
                 : std::integral_constant<bool, cnl::numeric_limits<Rep>::is_specialized
                         && !std::is_floating_point<Rep>::value
                         && !std::is_same<from_value_t<Rep, int>, from_value_t<Wrapper, int>>::value
@@ -146,7 +146,7 @@ namespace cnl {
         template<class Operator, class Lhs, class Rhs>
         struct binary_operator<
                 Operator, Lhs, Rhs,
-                enable_if_t<is_wrappable<Lhs, Rhs>::value && is_derived_from_number_base<Rhs>::value>> {
+                enable_if_t<can_wrap<Rhs, Lhs>::value && is_derived_from_number_base<Rhs>::value>> {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(Operator()(from_value<Rhs>(lhs), rhs))
             {
@@ -158,7 +158,7 @@ namespace cnl {
         template<class Operator, class Lhs, class Rhs>
         struct binary_operator<
                 Operator, Lhs, Rhs,
-                enable_if_t<is_derived_from_number_base<Lhs>::value && is_wrappable<Rhs, Lhs>::value>> {
+                enable_if_t<is_derived_from_number_base<Lhs>::value && can_wrap<Lhs, Rhs>::value>> {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(Operator()(lhs, from_value<Lhs>(rhs)))
             {
@@ -197,7 +197,7 @@ namespace cnl {
         template<class Operator, class Lhs, class Rhs>
         struct comparison_operator<
                 Operator, Lhs, Rhs,
-                enable_if_t<is_wrappable<Lhs, Rhs>::value && is_derived_from_number_base<Rhs>::value>> {
+                enable_if_t<can_wrap<Rhs, Lhs>::value && is_derived_from_number_base<Rhs>::value>> {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(Operator()(from_value<Rhs>(lhs), rhs))
             {
@@ -209,7 +209,7 @@ namespace cnl {
         template<class Operator, class Lhs, class Rhs>
         struct comparison_operator<
                 Operator, Lhs, Rhs,
-                enable_if_t<is_derived_from_number_base<Lhs>::value && is_wrappable<Rhs, Lhs>::value>> {
+                enable_if_t<is_derived_from_number_base<Lhs>::value && can_wrap<Lhs, Rhs>::value>> {
             constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(Operator()(lhs, from_value<Lhs>(rhs)))
             {
