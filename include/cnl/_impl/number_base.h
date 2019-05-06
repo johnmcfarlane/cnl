@@ -122,6 +122,7 @@ namespace cnl {
 
         template<typename T1, typename T2>
         struct is_same_wrapper : std::integral_constant<bool,
+                std::is_same<from_rep_t<T1, int>, from_rep_t<T2, int>>::value ||
                 std::is_same<from_value_t<T1, int>, from_value_t<T2, int>>::value> {
         };
 
