@@ -97,22 +97,37 @@ namespace cnl {
         struct depth<T, false> : std::integral_constant<int, 0> {};
 
         ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::can_be_wrapped
+
+        template<typename Rep>
+        struct can_be_wrapped : std::integral_constant<bool,
+                cnl::numeric_limits<Rep>::is_specialized && !std::is_floating_point<Rep>::value> {
+        };
+
+        template<typename Rep, int RepN>
+        struct can_be_wrapped<Rep[RepN]> : std::false_type {};
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::is_same_wrapper
+
+        template<typename T1, typename T2>
+        struct is_same_wrapper : std::integral_constant<bool,
+                std::is_same<from_value_t<T1, int>, from_value_t<T2, int>>::value> {
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::can_wrap
 
         template<typename Wrapper, typename Rep>
         struct can_wrap;
-
-        template<typename Wrapper, typename Rep, int RepN>
-        struct can_wrap<Wrapper, Rep[RepN]> : std::false_type {};
 
         template<typename Wrapper, int WrapperN, typename Rep>
         struct can_wrap<Wrapper[WrapperN], Rep> : std::false_type {};
 
         template<typename Wrapper, typename Rep>
         struct can_wrap
-                : std::integral_constant<bool, cnl::numeric_limits<Rep>::is_specialized
-                        && !std::is_floating_point<Rep>::value
-                        && !std::is_same<from_value_t<Rep, int>, from_value_t<Wrapper, int>>::value
+                : std::integral_constant<bool, can_be_wrapped<Rep>::value
+                        && !is_same_wrapper<Wrapper, Rep>::value
                         && (depth<Rep>::value < depth<Wrapper>::value)> {};
 
         ////////////////////////////////////////////////////////////////////////////////
