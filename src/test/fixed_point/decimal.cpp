@@ -20,7 +20,7 @@ namespace test_ctor_int {
 namespace test_from_value {
     static_assert(identical(
             decimal_fixed_point<int, 0>{123},
-            cnl::_impl::from_number<decimal_fixed_point<int, 1>>(123)), "");
+            cnl::_impl::from_value<decimal_fixed_point<int, 1>>(123)), "");
 }
 
 namespace test_from_rep {

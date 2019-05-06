@@ -63,7 +63,7 @@ namespace {
                         123456789_wide),
                 "");
 
-#if !defined(_MSC_VER) && (defined(__clang__) || !defined(__GNUG__) || __GNUG__ < 7)
+#if defined(__clang__) || defined(CNL_INT128_ENABLED)
         // requires that constexpr-steps is set very high
         static_assert(
                 identical(

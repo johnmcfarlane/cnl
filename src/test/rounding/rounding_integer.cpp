@@ -128,14 +128,14 @@ namespace {
             static_assert(
                     identical(
                     rounding_integer<long long>{9876543210LL},
-                            cnl::_impl::from_number<rounding_integer<long>>(9876543210LL)),
-                    "cnl::_impl::from_number<rounding_integer> test failed");
+                            cnl::_impl::from_value<rounding_integer<long>>(9876543210LL)),
+                    "cnl::_impl::from_value<rounding_integer> test failed");
             static_assert(
                     identical(
                             rounding_integer<long long>{9876543210LL},
-                            cnl::_impl::from_number<rounding_integer<short>>(
+                            cnl::_impl::from_value<rounding_integer<short>>(
                                     rounding_integer<long long>{9876543210LL})),
-                    "cnl::_impl::from_number<rounding_integer> test failed");
+                    "cnl::_impl::from_value<rounding_integer> test failed");
         }
     }
     
