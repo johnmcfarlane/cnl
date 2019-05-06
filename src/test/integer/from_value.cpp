@@ -23,6 +23,6 @@ namespace {
     static_assert(
             identical(
                     cnl::_impl::integer<unsigned long long>{654},
-                    cnl::_impl::from_number<cnl::_impl::integer<>>(654ULL)),
-            "cnl::from_number<cnl::_impl::integer>");
+                    cnl::_impl::from_value<cnl::_impl::integer<>>(654ULL)),
+            "cnl::from_value<cnl::_impl::integer>");
 }

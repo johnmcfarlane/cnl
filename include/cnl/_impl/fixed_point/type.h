@@ -85,7 +85,7 @@ namespace cnl {
         constexpr fixed_point(fixed_point<FromRep, FromExponent, Radix> const& rhs)
                 : _base(
                 static_cast<Rep>(_impl::scale<FromExponent-exponent, Radix>(
-                        _impl::from_number<Rep>(cnl::_impl::to_rep(rhs)))))
+                        _impl::from_value<Rep>(cnl::_impl::to_rep(rhs)))))
         {
         }
 
@@ -99,7 +99,7 @@ namespace cnl {
         /// constructor taking an integer type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
         constexpr fixed_point(S const& s)
-                : _base(static_cast<Rep>(_impl::scale<-exponent, Radix>(_impl::from_number<Rep>(s))))
+                : _base(static_cast<Rep>(_impl::scale<-exponent, Radix>(_impl::from_value<Rep>(s))))
         {
         }
 

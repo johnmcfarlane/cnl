@@ -51,7 +51,7 @@ namespace cnl {
 
     namespace _impl {
         template<typename Number, typename Value>
-        constexpr auto from_number(Value const& value)
+        constexpr auto from_value(Value const& value)
         -> decltype(cnl::from_value<Number, Value>{}(value))
         {
             return cnl::from_value<Number, Value>{}(value);
@@ -59,7 +59,7 @@ namespace cnl {
     }
 
     template<typename Number, typename Value>
-    using from_value_t = decltype(_impl::from_number<Number>(std::declval<Value>()));
+    using from_value_t = decltype(_impl::from_value<Number>(std::declval<Value>()));
 }
 
 #endif  // CNL_IMPL_NUM_TRAITS_FROM_VALUE
