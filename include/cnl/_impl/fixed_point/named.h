@@ -31,9 +31,9 @@ namespace cnl {
     /// in favor of class template deduction.
     template<typename Value>
     constexpr auto make_fixed_point(Value const& value)
-    -> cnl::from_value_t<fixed_point<Value, 0>, Value>
+    -> decltype(_impl::from_value<fixed_point<>, Value>(value))
     {
-        return _impl::from_value<fixed_point<Value, 0>>(value);
+        return _impl::from_value<fixed_point<>, Value>(value);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
