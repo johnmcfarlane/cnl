@@ -13,6 +13,7 @@
 #include "elastic_integer.h"
 #include "fixed_point.h"
 #include "limits.h"
+#include "_impl/num_traits/adopt_signedness.h"
 
 #include <type_traits>
 
