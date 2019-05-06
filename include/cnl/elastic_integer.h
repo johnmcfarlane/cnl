@@ -40,7 +40,7 @@ namespace cnl {
     /// the resultant type has Digits set to the sum of the operands.
     ///
     /// \sa cnl::elastic_number
-    template<int Digits, class Narrowest>
+    template<int Digits = digits<int>::value, class Narrowest = int>
     class elastic_integer;
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -169,7 +169,7 @@ namespace cnl {
         }
     };
 
-    template<int Digits = digits<int>::value, class Narrowest = int>
+    template<int Digits, class Narrowest>
     class elastic_integer : public _elastic_integer_impl::base_class_t<Digits, Narrowest> {
     public:
         using _base = _elastic_integer_impl::base_class_t<Digits, Narrowest>;
