@@ -331,7 +331,7 @@ namespace test_from_rep {
     static_assert(cnl::_impl::from_rep<fixed_point<test_int, 1000>>(test_int{1}), "from_rep");
 }
 
-namespace test_impl_make_number {
+namespace test_from_value {
     static_assert(identical(fixed_point<short>{123}, cnl::_impl::from_value<fixed_point<long long>>(short{123})),
             "cnl::_impl::from_value<fixed_point<>>");
     static_assert(identical(fixed_point<std::uint64_t>{404}, cnl::_impl::from_value<fixed_point<>>(UINT64_C(404))),

@@ -92,14 +92,11 @@ namespace {
         static_assert(identical(cnl::safe_integer<6>{55}*cnl::safe_integer<6>{4}, cnl::safe_integer<12>{220}), "cnl::safe_integer operator*");
         static_assert(identical(cnl::safe_integer<3>{7}*cnl::safe_integer<4>{10}, cnl::safe_integer<7>{70}), "cnl::safe_integer operator*");
         static_assert(identical(cnl::safe_integer<3>{3}*.25, .75), "cnl::safe_integer operator*");
+        static_assert(identical(cnl::safe_integer<3>{7}*cnl::safe_integer<4>{10}, cnl::safe_integer<7>{70}), "cnl::safe_integer operator*");
     }
 
     namespace test_divide {
         static_assert(identical(cnl::safe_integer<2>{3 / 4}, cnl::safe_integer<2>{3} / cnl::safe_integer<3>{4}), "");
-    }
-
-    namespace test_scale {
-        static_assert(identical(cnl::safe_integer<3>{7}*cnl::safe_integer<4>{10}, cnl::safe_integer<7>{70}), "cnl::safe_integer operator*");
     }
 
     namespace test_is_composite {
@@ -131,7 +128,7 @@ namespace {
         static_assert(leading_bits(cnl::safe_integer<22, throwing_overflow_tag>{77}) == 15, "leading_bits(cnl::safe_integer)");
     }
 
-    namespace test_shift {
+    namespace test_scale {
         static_assert(identical(cnl::safe_integer<3>{2}, cnl::_impl::scale<1>(cnl::safe_integer<2>{1})),
                 "cnl::scale<..., cnl::safe_integer<>>");
 
