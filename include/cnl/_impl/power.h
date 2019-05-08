@@ -37,10 +37,6 @@ namespace cnl {
             constexpr auto operator()() const
             -> decltype(S{1} << constant<Exponent>{})
             {
-                // This check is intended to catch situations where a number is generated
-                // which cannot possibly fit in the given type, S.
-                // This may be caused by a conversion to or from a fixed_point type
-                // which cannot possible store a non-zero value.
                 using result_numeric_limits = numeric_limits<decltype(S{1} << constant<Exponent>{})>;
                 static_assert(!std::is_integral<S>::value
                         || !std::is_signed<S>::value
