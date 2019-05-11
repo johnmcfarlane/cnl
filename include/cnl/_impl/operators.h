@@ -319,7 +319,7 @@ namespace cnl {
         using op_result = decltype(Operator()(std::declval<Operands>() ...));
 
         ////////////////////////////////////////////////////////////////////////////////
-        // type transformations from increment/decrement to compount add/subtract
+        // type transformations from increment/decrement to compound add/subtract
 
         template<class Operator>
         struct pre_to_assign;

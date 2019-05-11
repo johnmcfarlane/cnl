@@ -86,12 +86,6 @@
 #error CNL_TEMPLATE_AUTO already defined
 #endif
 
-// many uses of ""_c fail due to:
-// https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82226
-#if defined(__GNUG__) && !defined(__clang__) && __GNUG__ >= 7
-#define CNL_TEMPLATE_AUTO_DISABLED
-#endif
-
 // not because MSVC defines __cpp_template_auto
 // but because if it ever did,
 // the workaround for this would probably have to change:
@@ -100,7 +94,7 @@
 #define CNL_TEMPLATE_AUTO_DISABLED
 #endif
 
-#if defined(__cpp_template_auto) && !defined(CNL_TEMPLATE_AUTO_DISABLED)
+#if defined(__cpp_nontype_template_parameter_auto) && !defined(CNL_TEMPLATE_AUTO_DISABLED)
 #define CNL_TEMPLATE_AUTO
 #endif
 

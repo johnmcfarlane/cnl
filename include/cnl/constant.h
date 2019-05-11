@@ -10,6 +10,7 @@
 #if !defined(CNL_CONSTANT_H)
 #define CNL_CONSTANT_H 1
 
+#include "cstdint.h"
 #include "limits.h"
 
 #include <type_traits>

@@ -331,7 +331,12 @@ namespace test_from_rep {
     static_assert(cnl::_impl::from_rep<fixed_point<test_int, 1000>>(test_int{1}), "from_rep");
 }
 
-namespace test_impl_make_number {
+namespace test_from_value {
+    static_assert(
+            identical(
+                    fixed_point<>{3},
+                    cnl::from_value<fixed_point<test_int, -1>, test_int>{}(3)),
+            "");
     static_assert(identical(fixed_point<short>{123}, cnl::_impl::from_value<fixed_point<long long>>(short{123})),
             "cnl::_impl::from_value<fixed_point<>>");
     static_assert(identical(fixed_point<std::uint64_t>{404}, cnl::_impl::from_value<fixed_point<>>(UINT64_C(404))),
@@ -352,6 +357,13 @@ namespace test_deduction_guides {
 
     static_assert(identical(cnl::make_fixed_point(cnl::constant<369>{}), cnl::fixed_point(cnl::constant<369>{})),
             "cnl::fixed_point class template deduction");
+
+#if defined(__cpp_deduction_guides)
+    static_assert(
+            identical(
+                    fixed_point<int8>(0),
+                    cnl::make_fixed_point(int8{0})));
+#endif
     static_assert(identical(cnl::make_fixed_point(cnl::constant<4>{}), cnl::fixed_point(cnl::constant<4>{})),
             "cnl::fixed_point class template deduction");
 }
