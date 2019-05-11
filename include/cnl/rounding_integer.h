@@ -190,11 +190,9 @@ namespace cnl {
         template<class Operator, class Rep, class RoundingTag>
         struct unary_operator<Operator, rounding_integer<Rep, RoundingTag>> {
             constexpr auto operator()(rounding_integer<Rep, RoundingTag> const& operand) const
-            -> decltype(from_rep<rounding_integer<decltype(Operator()(_impl::to_rep(operand))), RoundingTag>>(
-                    Operator()(_impl::to_rep(operand))))
+            -> decltype(from_rep<rounding_integer<int, RoundingTag>>(Operator()(_impl::to_rep(operand))))
             {
-                using result_type = rounding_integer<decltype(Operator()(_impl::to_rep(operand))), RoundingTag>;
-                return from_rep<result_type>(Operator()(_impl::to_rep(operand)));
+                return from_rep<rounding_integer<int, RoundingTag>>(Operator()(_impl::to_rep(operand)));
             }
         };
 
@@ -208,10 +206,10 @@ namespace cnl {
             constexpr auto operator()(
                     rounding_integer<LhsRep, RoundingTag> const& lhs,
                     rounding_integer<RhsRep, RoundingTag> const& rhs) const
-            -> decltype(make_rounding_integer<RoundingTag>(tagged_binary_operator<RoundingTag, Operator>()(
-                    _impl::to_rep(lhs), _impl::to_rep(rhs))))
+            -> decltype(from_rep<rounding_integer<int, RoundingTag>>(
+                    tagged_binary_operator<RoundingTag, Operator>()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
             {
-                return make_rounding_integer<RoundingTag>(
+                return from_rep<rounding_integer<int, RoundingTag>>(
                         tagged_binary_operator<RoundingTag, Operator>()(_impl::to_rep(lhs), _impl::to_rep(rhs)));
             }
         };
@@ -222,11 +220,9 @@ namespace cnl {
             constexpr auto operator()(
                     rounding_integer<LhsRep, RoundingTag> const& lhs,
                     rounding_integer<RhsRep, RoundingTag> const& rhs) const
-            -> decltype(from_rep<rounding_integer<decltype(_impl::to_rep(lhs)>>_impl::to_rep(rhs)), RoundingTag>>(
-                    _impl::to_rep(lhs)>>_impl::to_rep(rhs)))
+            -> decltype(from_rep<rounding_integer<int, RoundingTag>>(_impl::to_rep(lhs) >> _impl::to_rep(rhs)))
             {
-                return from_rep<rounding_integer<decltype(_impl::to_rep(lhs)>>_impl::to_rep(rhs)), RoundingTag>>(
-                        _impl::to_rep(lhs)>>_impl::to_rep(rhs));
+                return from_rep<rounding_integer<int, RoundingTag>>(_impl::to_rep(lhs) >> _impl::to_rep(rhs));
             }
         };
 
