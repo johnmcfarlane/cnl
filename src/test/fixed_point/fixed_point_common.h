@@ -935,7 +935,7 @@ namespace test_bitwise_xor {
 // cnl::numeric_limits<fixed_point<>>
 
 template<class Rep, int Exponent, class Min, class Max, class Lowest>
-constexpr bool test_numeric_limits(Min min, Max max, Lowest lowest)
+CNL_NODISCARD constexpr bool test_numeric_limits(Min min, Max max, Lowest lowest)
 {
     using fp = fixed_point<Rep, Exponent>;
     using nl = cnl::numeric_limits<fp>;

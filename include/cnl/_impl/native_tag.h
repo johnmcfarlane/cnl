@@ -63,7 +63,7 @@ namespace cnl {
         template<>
         struct tagged_binary_operator<native_tag, shift_left_op> {
             template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs<<rhs)
             {
                 using result_type = decltype(lhs<<rhs);

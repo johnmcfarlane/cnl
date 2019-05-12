@@ -136,14 +136,14 @@ namespace cnl {
 
         /// returns value represented as integral
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
-        explicit constexpr operator S() const
+        CNL_NODISCARD explicit constexpr operator S() const
         {
             return static_cast<S>(_impl::scale<exponent>(_impl::to_rep(*this)));
         }
 
         /// returns value represented as floating-point
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
-        explicit constexpr operator S() const
+        CNL_NODISCARD explicit constexpr operator S() const
         {
             static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
             return S(_impl::to_rep(*this))*inverse_one<S>();
@@ -155,25 +155,25 @@ namespace cnl {
 
     private:
         template<class S>
-        static constexpr _impl::enable_if_t<numeric_limits<S>::is_iec559, S> one();
+        CNL_NODISCARD static constexpr _impl::enable_if_t<numeric_limits<S>::is_iec559, S> one();
 
         template<class S>
-        static constexpr _impl::enable_if_t<numeric_limits<S>::is_integer, S> one();
+        CNL_NODISCARD static constexpr _impl::enable_if_t<numeric_limits<S>::is_integer, S> one();
 
         template<class S>
-        static constexpr S inverse_one();
+        CNL_NODISCARD static constexpr S inverse_one();
 
         template<class S>
-        static constexpr S rep_to_integral(rep r);
+        CNL_NODISCARD static constexpr S rep_to_integral(rep r);
 
         template<class S>
-        static constexpr rep floating_point_to_rep(S s);
+        CNL_NODISCARD static constexpr rep floating_point_to_rep(S s);
 
         template<class S>
-        static constexpr S rep_to_floating_point(rep r);
+        CNL_NODISCARD static constexpr S rep_to_floating_point(rep r);
 
         template<class FromRep, int FromExponent>
-        static constexpr rep fixed_point_to_rep(fixed_point<FromRep, FromExponent, Radix> const& rhs);
+        CNL_NODISCARD static constexpr rep fixed_point_to_rep(fixed_point<FromRep, FromExponent, Radix> const& rhs);
     };
 
     /// value of template parameter, \a Exponent
@@ -201,7 +201,7 @@ namespace cnl {
 
     template<typename Rep, int Exponent, int Radix>
     template<class S>
-    constexpr auto fixed_point<Rep, Exponent, Radix>::one()
+    CNL_NODISCARD constexpr auto fixed_point<Rep, Exponent, Radix>::one()
     -> _impl::enable_if_t<numeric_limits<S>::is_iec559, S>
     {
         return power<S, -exponent, Radix>();
@@ -209,7 +209,7 @@ namespace cnl {
 
     template<typename Rep, int Exponent, int Radix>
     template<class S>
-    constexpr auto fixed_point<Rep, Exponent, Radix>::one()
+    CNL_NODISCARD constexpr auto fixed_point<Rep, Exponent, Radix>::one()
     -> _impl::enable_if_t<numeric_limits<S>::is_integer, S>
     {
         return _impl::from_rep<fixed_point<S, 0>>(1);
@@ -217,7 +217,7 @@ namespace cnl {
 
     template<typename Rep, int Exponent, int Radix>
     template<class S>
-    constexpr S fixed_point<Rep, Exponent, Radix>::inverse_one()
+    CNL_NODISCARD constexpr S fixed_point<Rep, Exponent, Radix>::inverse_one()
     {
         static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
         return power<S, exponent, Radix>();
@@ -225,7 +225,7 @@ namespace cnl {
 
     template<typename Rep, int Exponent, int Radix>
     template<class S>
-    constexpr typename fixed_point<Rep, Exponent, Radix>::rep
+    CNL_NODISCARD constexpr typename fixed_point<Rep, Exponent, Radix>::rep
     fixed_point<Rep, Exponent, Radix>::floating_point_to_rep(S s)
     {
         static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
@@ -234,7 +234,7 @@ namespace cnl {
 
     template<typename Rep, int Exponent, int Radix>
     template<class FromRep, int FromExponent>
-    constexpr typename fixed_point<Rep, Exponent, Radix>::rep
+    CNL_NODISCARD constexpr typename fixed_point<Rep, Exponent, Radix>::rep
     fixed_point<Rep, Exponent, Radix>::fixed_point_to_rep(fixed_point<FromRep, FromExponent, Radix> const& rhs)
     {
         return _impl::scale<FromExponent-exponent>(_impl::to_rep(rhs));

@@ -24,7 +24,7 @@ namespace cnl {
             class RoundingTag = rounding_integer<>::rounding,
             class Narrowest = int,
             class Input = int>
-    rounding_elastic_integer<
+    CNL_NODISCARD rounding_elastic_integer<
             numeric_limits<Input>::digits,
             RoundingTag,
             Narrowest>

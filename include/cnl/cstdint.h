@@ -52,7 +52,7 @@ namespace cnl {
 
     namespace _cnlint_impl {
         template<typename ParseDigit>
-        constexpr intmax parse(char const* s, int base, ParseDigit parse_digit, intmax value = 0)
+        CNL_NODISCARD constexpr intmax parse(char const* s, int base, ParseDigit parse_digit, intmax value = 0)
         {
             return (*s) ? parse(s+1, base, parse_digit, parse_digit(*s)+value*base) : value;
         }
@@ -60,19 +60,19 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // digit parsers
 
-        constexpr int parse_bin_char(char c) {
+        CNL_NODISCARD constexpr int parse_bin_char(char c) {
             return (c == '0') ? 0 : (c == '1') ? 1 : int{};
         }
 
-        constexpr int parse_dec_char(char c) {
+        CNL_NODISCARD constexpr int parse_dec_char(char c) {
             return (c >= '0' && c <= '9') ? c - '0' : int{};
         }
 
-        constexpr int parse_oct_char(char c) {
+        CNL_NODISCARD constexpr int parse_oct_char(char c) {
             return (c >= '0' && c <= '7') ? c - '0' : int{};
         }
 
-        constexpr int parse_hex_char(char c) {
+        CNL_NODISCARD constexpr int parse_hex_char(char c) {
             return (c >= '0' && c <= '9')
                    ? c - '0'
                    : (c >= 'a' && c <= 'z')
@@ -82,7 +82,7 @@ namespace cnl {
                        : int{};
         }
 
-        constexpr intmax parse_positive(char const* s)
+        CNL_NODISCARD constexpr intmax parse_positive(char const* s)
         {
             return (s[0]!='0')
                    ? parse(s, 10, parse_dec_char)
@@ -94,7 +94,7 @@ namespace cnl {
         }
 
         template<int NumChars>
-        constexpr intmax parse(const char (& s)[NumChars])
+        CNL_NODISCARD constexpr intmax parse(const char (& s)[NumChars])
         {
             return (s[0]=='-')
                    ? -parse_positive(s+1)
@@ -104,7 +104,7 @@ namespace cnl {
         }
 
         template<char... Chars>
-        constexpr intmax parse() {
+        CNL_NODISCARD constexpr intmax parse() {
             return parse<sizeof...(Chars) + 1>({Chars...,'\0'});
         }
     }

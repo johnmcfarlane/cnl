@@ -57,7 +57,7 @@ namespace cnl {
     template<
             typename Narrowest = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0>
-    constexpr auto
+    CNL_NODISCARD constexpr auto
     make_elastic_number(constant<Value>)
     -> elastic_number<
             _impl::max(digits<constant<Value>>::value-trailing_bits(Value), 1),
@@ -86,7 +86,7 @@ namespace cnl {
     ///
     /// \brief generate an \ref cnl::elastic_number object of given value
     template<typename Narrowest = void, typename Integral = int>
-    constexpr auto
+    CNL_NODISCARD constexpr auto
     make_elastic_number(Integral const& value)
     -> elastic_number<
             numeric_limits<Integral>::digits,
@@ -100,7 +100,7 @@ namespace cnl {
     }
 
     template<typename Narrowest = void, typename Rep = int, int Exponent = 0, int Radix = 2>
-    constexpr auto
+    CNL_NODISCARD constexpr auto
     make_elastic_number(fixed_point<Rep, Exponent, Radix> const& value)
     -> elastic_number<
             numeric_limits<Rep>::digits,
@@ -134,7 +134,7 @@ namespace cnl {
         /// \snippet snippets.cpp define an object using elastic literal
 
         template<char... Chars>
-        constexpr auto operator "" _elastic()
+        CNL_NODISCARD constexpr auto operator "" _elastic()
         -> decltype(make_elastic_number<int>(
                 constant<_cnlint_impl::parse<sizeof...(Chars)+1>({Chars..., '\0'})>{}))
         {

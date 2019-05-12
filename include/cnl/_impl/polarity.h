@@ -7,6 +7,8 @@
 #if !defined(CNL_IMPL_OVERFLOW_POLARITY_H)
 #define CNL_IMPL_OVERFLOW_POLARITY_H
 
+#include "config.h"
+
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
@@ -16,18 +18,18 @@ namespace cnl {
             positive = 1
         };
 
-        constexpr polarity operator-(polarity const& p)
+        CNL_NODISCARD constexpr polarity operator-(polarity const& p)
         {
             return static_cast<polarity>(-static_cast<int>(p));
         }
 
-        constexpr polarity operator*(polarity const& lhs, polarity const& rhs)
+        CNL_NODISCARD constexpr polarity operator*(polarity const& lhs, polarity const& rhs)
         {
             return static_cast<polarity>(static_cast<int>(lhs)*static_cast<int>(rhs));
         }
 
         template<typename T>
-        constexpr polarity measure_polarity(T const& value)
+        CNL_NODISCARD constexpr polarity measure_polarity(T const& value)
         {
             return (value>T{})
                     ?polarity::positive

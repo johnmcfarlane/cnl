@@ -91,13 +91,13 @@ namespace cnl {
     template<unsigned NumBits>
     struct to_rep<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> {
         using _number_type = _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>;
-        constexpr _number_type& operator()(_number_type& number) const {
+        CNL_NODISCARD constexpr _number_type& operator()(_number_type& number) const {
             return number;
         };
-        constexpr _number_type const& operator()(_number_type const& number) const {
+        CNL_NODISCARD constexpr _number_type const& operator()(_number_type const& number) const {
             return number;
         };
-        constexpr _number_type operator()(_number_type&& number) const {
+        CNL_NODISCARD constexpr _number_type operator()(_number_type&& number) const {
             return number;
         };
     };
@@ -105,13 +105,13 @@ namespace cnl {
     template<unsigned NumBits>
     struct to_rep<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> {
         using _number_type = _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>;
-        constexpr _number_type& operator()(_number_type& number) const {
+        CNL_NODISCARD constexpr _number_type& operator()(_number_type& number) const {
             return number;
         };
-        constexpr _number_type const& operator()(_number_type const& number) const {
+        CNL_NODISCARD constexpr _number_type const& operator()(_number_type const& number) const {
             return number;
         };
-        constexpr _number_type operator()(_number_type&& number) const {
+        CNL_NODISCARD constexpr _number_type operator()(_number_type&& number) const {
             return std::move(number);
         };
     };
@@ -124,7 +124,7 @@ namespace cnl {
     private:
         static constexpr auto _bits = digits<Value>::value+1;
     public:
-        constexpr auto operator()(Value const& value) const
+        CNL_NODISCARD constexpr auto operator()(Value const& value) const
         -> _bmp::number<_bmp::cpp_int_backend<_bits, _bits, _bmp::signed_magnitude>>
         {
             return value;
@@ -138,7 +138,7 @@ namespace cnl {
     private:
         static constexpr auto _bits = digits<Value>::value;
     public:
-        constexpr auto operator()(Value const& value) const
+        CNL_NODISCARD constexpr auto operator()(Value const& value) const
         -> _bmp::number<_bmp::cpp_int_backend<_bits, _bits, _bmp::unsigned_magnitude>>
         {
             return value;
@@ -147,7 +147,7 @@ namespace cnl {
 
     template<class LhsBackend, class RhsBackend>
     struct from_value<_bmp::number<LhsBackend>, _bmp::number<RhsBackend>> {
-        constexpr auto operator()(_bmp::number<RhsBackend> const& value) const
+        CNL_NODISCARD constexpr auto operator()(_bmp::number<RhsBackend> const& value) const
         -> _bmp::number<RhsBackend> {
             return value;
         }
@@ -204,28 +204,28 @@ namespace cnl {
     // boost::multiprecision bitwise shift operators
 
     template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    constexpr auto operator<<(_sized_integer_impl::number<NumBits, _bmp::signed_magnitude> const& lhs, constant<Value>)
+    CNL_NODISCARD constexpr auto operator<<(_sized_integer_impl::number<NumBits, _bmp::signed_magnitude> const& lhs, constant<Value>)
     -> decltype(lhs << Value)
     {
         return lhs << Value;
     }
 
     template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    constexpr auto operator<<(_sized_integer_impl::number<NumBits, _bmp::unsigned_magnitude> const& lhs, constant<Value>)
+    CNL_NODISCARD constexpr auto operator<<(_sized_integer_impl::number<NumBits, _bmp::unsigned_magnitude> const& lhs, constant<Value>)
     -> decltype(lhs << Value)
     {
         return lhs << Value;
     }
 
     template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    constexpr auto operator>>(_sized_integer_impl::number<NumBits, _bmp::unsigned_magnitude> const& lhs, constant<Value>)
+    CNL_NODISCARD constexpr auto operator>>(_sized_integer_impl::number<NumBits, _bmp::unsigned_magnitude> const& lhs, constant<Value>)
     -> decltype(lhs >> Value)
     {
         return lhs >> Value;
     }
 
     template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    constexpr auto operator>>(_sized_integer_impl::number<NumBits, _bmp::signed_magnitude> const& lhs, constant<Value>)
+    CNL_NODISCARD constexpr auto operator>>(_sized_integer_impl::number<NumBits, _bmp::signed_magnitude> const& lhs, constant<Value>)
     -> decltype(lhs >> Value)
     {
         return lhs >> Value;

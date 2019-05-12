@@ -22,13 +22,13 @@
 namespace cnl {
     namespace _impl {
         template<typename Integer>
-        constexpr bool is_flushed(Integer const& value)
+        CNL_NODISCARD constexpr bool is_flushed(Integer const& value)
         {
             return value==0 || value==static_cast<Integer>(~Integer{});
         }
 
         template<typename Result, typename Upper, typename Lower>
-        constexpr auto upper_value(Upper const& upper) -> Result
+        CNL_NODISCARD constexpr auto upper_value(Upper const& upper) -> Result
         {
             return (digits<Result>::value<=digits<Lower>::value)
                    ? !is_flushed(upper)
@@ -59,7 +59,7 @@ namespace cnl {
             template<typename Number, _impl::enable_if_t<(numeric_limits<Number>::is_iec559), int> Dummy = 0>
             constexpr duplex_integer(Number const& i);
 
-            constexpr auto upper() const -> upper_type const&
+            CNL_NODISCARD constexpr auto upper() const -> upper_type const&
             {
                 return _upper;
             }
@@ -69,7 +69,7 @@ namespace cnl {
                 return _upper;
             }
 
-            constexpr auto lower() const -> lower_type const&
+            CNL_NODISCARD constexpr auto lower() const -> lower_type const&
             {
                 return _lower;
             }
@@ -79,16 +79,16 @@ namespace cnl {
                 return _lower;
             }
 
-            explicit constexpr operator bool() const { return _lower || _upper; }
+            CNL_NODISCARD explicit constexpr operator bool() const { return _lower || _upper; }
 
             template<typename Integer, _impl::enable_if_t<numeric_limits<Integer>::is_integer, int> = 0>
-            explicit constexpr operator Integer() const
+            CNL_NODISCARD explicit constexpr operator Integer() const
             {
                 return upper_value<Integer, Upper, Lower>(_upper) | static_cast<Integer>(_lower);
             }
 
             template<typename Number, _impl::enable_if_t<numeric_limits<Number>::is_iec559, int> = 0>
-            explicit constexpr operator Number() const
+            CNL_NODISCARD explicit constexpr operator Number() const
             {
                 return static_cast<Number>(_upper)*cnl::power<Number, lower_width, 2>()
                         +static_cast<Number>(_lower);

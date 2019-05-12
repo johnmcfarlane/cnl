@@ -27,20 +27,20 @@ namespace std {
                 cnl::_impl::is_integral<Numerator>::value&&cnl::_impl::is_integral<Denominator>::value,
                 "std::hash<cnl::fractional<T>> - T must be an integer");
 
-        constexpr size_t operator()(cnl::fraction<Numerator, Denominator> const& value) const
+        CNL_NODISCARD constexpr size_t operator()(cnl::fraction<Numerator, Denominator> const& value) const
         {
             return from_canonical(cnl::_impl::canonical(value));
         }
 
     private:
-        static constexpr size_t from_canonical(cnl::fraction<Numerator, Denominator> const& value)
+        CNL_NODISCARD static constexpr size_t from_canonical(cnl::fraction<Numerator, Denominator> const& value)
         {
             return from_canonical_hashes(
                     hash<Numerator>{}(value.numerator),
                     hash<Denominator>{}(value.denominator));
         }
 
-        static constexpr size_t from_canonical_hashes(size_t const n, size_t const d)
+        CNL_NODISCARD static constexpr size_t from_canonical_hashes(size_t const n, size_t const d)
         {
             return n ^ cnl::rotl(d, cnl::_impl::width<size_t>::value / 2);
         }

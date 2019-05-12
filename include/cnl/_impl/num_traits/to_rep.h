@@ -19,13 +19,13 @@ namespace cnl {
     namespace _impl {
         template<typename Number>
         struct default_to_rep {
-            constexpr Number& operator()(Number& number) const {
+            CNL_NODISCARD constexpr Number& operator()(Number& number) const {
                 return number;
             };
-            constexpr Number const& operator()(Number const& number) const {
+            CNL_NODISCARD constexpr Number const& operator()(Number const& number) const {
                 return number;
             };
-            constexpr Number&& operator()(Number&& number) const {
+            CNL_NODISCARD constexpr Number&& operator()(Number&& number) const {
                 return std::forward<Number>(number);
             };
         };
@@ -48,7 +48,7 @@ namespace cnl {
 
     namespace _impl {
         template<class Number>
-        constexpr auto to_rep(Number&& number)
+        CNL_NODISCARD constexpr auto to_rep(Number&& number)
         -> decltype(cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number))) {
             return cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number));
         }

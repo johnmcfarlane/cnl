@@ -32,7 +32,7 @@ namespace cnl {
         template<typename Destination, typename Source>
         struct tagged_convert_operator<
                 native_rounding_tag, Destination, Source> {
-            constexpr Destination operator()(Source const& from) const
+            CNL_NODISCARD constexpr Destination operator()(Source const& from) const
             {
                 return static_cast<Destination>(from);
             }
@@ -42,7 +42,7 @@ namespace cnl {
         struct tagged_convert_operator<
                 nearest_rounding_tag, Destination, Source,
                 enable_if_t<are_arithmetic_or_integer<Destination, Source>::value>> {
-            constexpr Destination operator()(Source const& from) const
+            CNL_NODISCARD constexpr Destination operator()(Source const& from) const
             {
                 return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
                         ? static_cast<Destination>(from+((from >= 0) ? .5 : -.5))

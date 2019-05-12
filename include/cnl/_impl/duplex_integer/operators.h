@@ -36,7 +36,7 @@ namespace cnl {
         struct default_binary_operator {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
-            constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
             -> _duplex_integer
             {
                 return _duplex_integer(
@@ -53,7 +53,7 @@ namespace cnl {
             static constexpr auto lower_digits = digits<Lower>::value;
             using wide_lower = set_digits_t<set_signedness_t<Lower, true>, lower_digits+1>;
 
-            constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
             -> _duplex_integer
             {
                 return from_sums(
@@ -61,7 +61,7 @@ namespace cnl {
                         wide_lower(Operator{}(wide_lower{lhs.lower()}, wide_lower{rhs.lower()})));
             }
 
-            static constexpr auto from_sums(Upper const& upper_sum, wide_lower const& lower_sum)
+            CNL_NODISCARD static constexpr auto from_sums(Upper const& upper_sum, wide_lower const& lower_sum)
             -> _duplex_integer
             {
                 return _duplex_integer{
@@ -73,7 +73,7 @@ namespace cnl {
         // unary_operator
         template<typename Upper, typename Lower>
         struct unary_operator<bitwise_not_op, duplex_integer<Upper, Lower>> {
-            constexpr auto operator()(duplex_integer<Upper, Lower> const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(duplex_integer<Upper, Lower> const& rhs) const
             -> duplex_integer<Upper, Lower>
             {
                 return duplex_integer<Upper, Lower>(~rhs.upper(), ~rhs.lower());
@@ -82,7 +82,7 @@ namespace cnl {
 
         template<typename Upper, typename Lower>
         struct unary_operator<minus_op, duplex_integer<Upper, Lower>> {
-            constexpr auto operator()(duplex_integer<Upper, Lower> const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(duplex_integer<Upper, Lower> const& rhs) const
             -> duplex_integer<Upper, Lower>
             {
                 return unary_operator<bitwise_not_op, duplex_integer<Upper, Lower>>{}(
@@ -92,7 +92,7 @@ namespace cnl {
 
         template<typename Upper, typename Lower>
         struct unary_operator<plus_op, duplex_integer<Upper, Lower>> {
-            constexpr auto operator()(duplex_integer<Upper, Lower> const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(duplex_integer<Upper, Lower> const& rhs) const
             -> duplex_integer<Upper, Lower>
             {
                 return duplex_integer<Upper, Lower>(+rhs.upper(), +rhs.lower());
@@ -132,7 +132,7 @@ namespace cnl {
 
         template<typename Operator, typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
         struct comparison_operator<Operator, duplex_integer<LhsUpper, LhsLower>, duplex_integer<RhsUpper, RhsLower>> {
-            constexpr auto operator()(
+            CNL_NODISCARD constexpr auto operator()(
                     duplex_integer<LhsUpper, LhsLower> const& lhs,
                     duplex_integer<RhsUpper, RhsLower> const& rhs) const -> bool
             {
@@ -146,7 +146,7 @@ namespace cnl {
         // pre_operator
         template<typename Upper, typename Lower>
         struct pre_operator<pre_increment_op, duplex_integer<Upper, Lower>> {
-            constexpr auto operator()(duplex_integer<Upper, Lower>& rhs) const
+            CNL_NODISCARD constexpr auto operator()(duplex_integer<Upper, Lower>& rhs) const
             -> duplex_integer<Upper, Lower>
             {
                 return CNL_UNLIKELY(rhs.lower()==numeric_limits<Lower>::max())
@@ -157,7 +157,7 @@ namespace cnl {
 
         template<typename Upper, typename Lower>
         struct pre_operator<pre_decrement_op, duplex_integer<Upper, Lower>> {
-            constexpr auto operator()(duplex_integer<Upper, Lower>& rhs) const
+            CNL_NODISCARD constexpr auto operator()(duplex_integer<Upper, Lower>& rhs) const
             -> duplex_integer<Upper, Lower>
             {
                 return CNL_UNLIKELY(rhs.lower()==numeric_limits<Lower>::lowest())

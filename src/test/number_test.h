@@ -17,7 +17,7 @@
 
 // Lhs == Rhs
 template<class Lhs, class Rhs>
-constexpr bool is_equal_to(Lhs const& lhs, Rhs const& rhs)
+CNL_NODISCARD constexpr bool is_equal_to(Lhs const& lhs, Rhs const& rhs)
 {
     return ((lhs==rhs)==true)
             && ((lhs!=rhs)==false)
@@ -31,7 +31,7 @@ static_assert(is_equal_to<int>(0, 0), "less_than_test test failed");
 
 // lesser < greater
 template<class Lesser, class Greater>
-constexpr bool is_less_than(Lesser const& lesser, Greater const& greater)
+CNL_NODISCARD constexpr bool is_less_than(Lesser const& lesser, Greater const& greater)
 {
     return ((lesser==greater)==false)
             && ((lesser!=greater)==true)

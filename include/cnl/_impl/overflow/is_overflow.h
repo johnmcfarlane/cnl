@@ -61,7 +61,7 @@ namespace cnl {
         template<>
         struct is_overflow_convert<polarity::positive, false, false> {
             template<typename Destination, typename Source>
-            constexpr bool operator()(Source const &rhs) const {
+            CNL_NODISCARD constexpr bool operator()(Source const &rhs) const {
                 return overflow_digits<Destination, polarity::positive>::value<
                         overflow_digits<Source, polarity::positive>::value
                                 && rhs>
@@ -72,7 +72,7 @@ namespace cnl {
         template<>
         struct is_overflow_convert<polarity::positive, false, true> {
             template<typename Destination, typename Source>
-            constexpr bool operator()(Source const &rhs) const
+            CNL_NODISCARD constexpr bool operator()(Source const &rhs) const
             {
                 return rhs > static_cast<Source>(numeric_limits<Destination>::max());
             }
@@ -81,7 +81,7 @@ namespace cnl {
         template<>
         struct is_overflow_convert<polarity::positive, true, false> {
             template<typename Destination, typename Source>
-            constexpr bool operator()(Source const& rhs) const
+            CNL_NODISCARD constexpr bool operator()(Source const& rhs) const
             {
                 return static_cast<Destination>(rhs) > numeric_limits<Destination>::max();
             }
@@ -90,7 +90,7 @@ namespace cnl {
         template<>
         struct is_overflow_convert<polarity::positive, true, true> {
             template<typename Destination, typename Source>
-            constexpr bool operator()(Source const&) const
+            CNL_NODISCARD constexpr bool operator()(Source const&) const
             {
                 return false;
             }
@@ -99,7 +99,7 @@ namespace cnl {
         template<>
         struct is_overflow_convert<polarity::negative, false, false> {
             template<typename Destination, typename Source>
-            constexpr bool operator()(Source const &rhs) const {
+            CNL_NODISCARD constexpr bool operator()(Source const &rhs) const {
                 return overflow_digits<Destination, polarity::negative>::value<
                         overflow_digits<Source, polarity::negative>::value
                                 && rhs < static_cast<Source>(numeric_limits<Destination>::lowest());
@@ -109,7 +109,7 @@ namespace cnl {
         template<>
         struct is_overflow_convert<polarity::negative, false, true> {
             template<typename Destination, typename Source>
-            constexpr bool operator()(Source const &rhs) const
+            CNL_NODISCARD constexpr bool operator()(Source const &rhs) const
             {
                 return rhs < static_cast<Source>(numeric_limits<Destination>::lowest());
             }
@@ -118,7 +118,7 @@ namespace cnl {
         template<>
         struct is_overflow_convert<polarity::negative, true, false> {
             template<typename Destination, typename Source>
-            constexpr bool operator()(Source const& rhs) const
+            CNL_NODISCARD constexpr bool operator()(Source const& rhs) const
             {
                 return static_cast<Destination>(rhs) < numeric_limits<Destination>::lowest();
             }
@@ -127,7 +127,7 @@ namespace cnl {
         template<>
         struct is_overflow_convert<polarity::negative, true, true> {
             template<typename Destination, typename Source>
-            constexpr bool operator()(Source const&) const
+            CNL_NODISCARD constexpr bool operator()(Source const&) const
             {
                 return false;
             }
@@ -144,18 +144,18 @@ namespace cnl {
             static constexpr int positive_digits = _impl::overflow_digits<result, polarity::positive>::value;
             static constexpr int negative_digits = _impl::overflow_digits<result, polarity::negative>::value;
 
-            static constexpr result lowest()
+            CNL_NODISCARD static constexpr result lowest()
             {
                 return numeric_limits::lowest();
             }
 
-            static constexpr result max()
+            CNL_NODISCARD static constexpr result max()
             {
                 return numeric_limits::max();
             }
 
             template<typename Operand>
-            static constexpr int leading_bits(Operand const& operand)
+            CNL_NODISCARD static constexpr int leading_bits(Operand const& operand)
             {
                 return cnl::leading_bits(static_cast<result>(operand));
             }
@@ -173,7 +173,7 @@ namespace cnl {
         template<typename Operator, polarity Polarity>
         struct is_overflow {
             template<typename ... Operands>
-            constexpr bool operator()(Operands const& ...) const
+            CNL_NODISCARD constexpr bool operator()(Operands const& ...) const
             {
                 return false;
             }
@@ -182,7 +182,7 @@ namespace cnl {
         template<polarity Polarity>
         struct is_overflow<convert_op, Polarity> {
             template<typename Destination, typename Source>
-            constexpr bool operator()(Source const& from) const
+            CNL_NODISCARD constexpr bool operator()(Source const& from) const
             {
                 using is_overflow_convert = cnl::_impl::is_overflow_convert<
                         Polarity,
@@ -199,7 +199,7 @@ namespace cnl {
         template<>
         struct is_overflow<minus_op, polarity::positive> {
             template<typename Rhs>
-            constexpr bool operator()(Rhs const& rhs) const
+            CNL_NODISCARD constexpr bool operator()(Rhs const& rhs) const
             {
                 return has_most_negative_number<Rhs>::value && rhs < -numeric_limits<Rhs>::max();
             }
@@ -208,7 +208,7 @@ namespace cnl {
         template<>
         struct is_overflow<minus_op, polarity::negative> {
             template<typename Rhs>
-            constexpr bool operator()(Rhs const& rhs) const
+            CNL_NODISCARD constexpr bool operator()(Rhs const& rhs) const
             {
                 return !is_signed<Rhs>::value && rhs;
             }
@@ -220,7 +220,7 @@ namespace cnl {
         template<>
         struct is_overflow<add_op, polarity::positive> {
             template<typename Lhs, typename Rhs>
-            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<add_op, Lhs, Rhs>;
                 return (max(overflow_digits<Lhs, polarity::positive>::value,
@@ -235,7 +235,7 @@ namespace cnl {
         template<>
         struct is_overflow<add_op, polarity::negative> {
             template<typename Lhs, typename Rhs>
-            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<add_op, Lhs, Rhs>;
                 return (max(overflow_digits<Lhs, polarity::positive>::value,
@@ -254,7 +254,7 @@ namespace cnl {
         template<>
         struct is_overflow<subtract_op, polarity::positive> {
             template<typename Lhs, typename Rhs>
-            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<subtract_op, Lhs, Rhs>;
                 return (max(overflow_digits<Lhs, polarity::positive>::value,
@@ -268,7 +268,7 @@ namespace cnl {
         template<>
         struct is_overflow<subtract_op, polarity::negative> {
             template<typename Lhs, typename Rhs>
-            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<subtract_op, Lhs, Rhs>;
                 return (max(overflow_digits<Lhs, polarity::positive>::value,
@@ -285,7 +285,7 @@ namespace cnl {
         template<>
         struct is_overflow<multiply_op, polarity::positive> {
             template<typename Lhs, typename Rhs>
-            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<multiply_op, Lhs, Rhs>;
                 return (overflow_digits<Lhs, polarity::positive>::value+overflow_digits<Rhs, polarity::positive>::value
@@ -299,7 +299,7 @@ namespace cnl {
         template<>
         struct is_overflow<multiply_op, polarity::negative> {
             template<typename Lhs, typename Rhs>
-            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<multiply_op, Lhs, Rhs>;
                 return (overflow_digits<Lhs, polarity::positive>::value+overflow_digits<Rhs, polarity::positive>::value
@@ -313,7 +313,7 @@ namespace cnl {
         template<>
         struct is_overflow<divide_op, polarity::positive> {
             template<typename Lhs, typename Rhs>
-            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<divide_op, Lhs, Rhs>;
                 return (has_most_negative_number<Lhs>::value)
@@ -325,7 +325,7 @@ namespace cnl {
         template<>
         struct is_overflow<shift_left_op, polarity::negative> {
             template<typename Lhs, typename Rhs>
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> enable_if_t<is_signed<Lhs>::value, bool>
             {
                 using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
@@ -339,7 +339,7 @@ namespace cnl {
             }
 
             template<typename Lhs, typename Rhs>
-            constexpr auto operator()(Lhs const&, Rhs const&) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const&, Rhs const&) const
             -> enable_if_t<!is_signed<Lhs>::value, bool>
             {
                 return false;
@@ -349,7 +349,7 @@ namespace cnl {
         template<>
         struct is_overflow<shift_left_op, polarity::positive> {
             template<typename Lhs, typename Rhs>
-            constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr bool operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
                 return lhs>0

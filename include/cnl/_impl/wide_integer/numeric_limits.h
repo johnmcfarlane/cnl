@@ -31,17 +31,17 @@ namespace cnl {
         // standard members
         static constexpr int digits = Digits;
 
-        static constexpr _value_type min() noexcept
+        CNL_NODISCARD static constexpr _value_type min() noexcept
         {
             return _impl::from_rep<_value_type>(1);
         }
 
-        static constexpr _value_type max() noexcept
+        CNL_NODISCARD static constexpr _value_type max() noexcept
         {
             return static_cast<_rep>(_rep_numeric_limits::max() >> (_rep_numeric_limits::digits-digits));
         }
 
-        static constexpr _value_type lowest() noexcept
+        CNL_NODISCARD static constexpr _value_type lowest() noexcept
         {
             return static_cast<_rep>(_rep_numeric_limits::lowest() >> (_rep_numeric_limits::digits-digits));
         }

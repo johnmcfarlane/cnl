@@ -27,7 +27,7 @@ namespace cnl {
         template<>
         struct overflow_polarity<convert_op> {
             template<typename Destination, typename Source>
-            constexpr polarity operator()(Source const& from) const
+            CNL_NODISCARD constexpr polarity operator()(Source const& from) const
             {
                 return measure_polarity(from);
             }
@@ -36,7 +36,7 @@ namespace cnl {
         template<>
         struct overflow_polarity<minus_op> {
             template<typename Rhs>
-            constexpr polarity operator()(Rhs const& rhs) const
+            CNL_NODISCARD constexpr polarity operator()(Rhs const& rhs) const
             {
                 return -measure_polarity(rhs);
             }
@@ -45,7 +45,7 @@ namespace cnl {
         template<>
         struct overflow_polarity<add_op> {
             template<typename Lhs, typename Rhs>
-            constexpr polarity operator()(Lhs const&, Rhs const& rhs) const
+            CNL_NODISCARD constexpr polarity operator()(Lhs const&, Rhs const& rhs) const
             {
                 return measure_polarity(rhs);
             }
@@ -59,7 +59,7 @@ namespace cnl {
         template<>
         struct overflow_polarity<subtract_op> {
             template<typename Lhs, typename Rhs>
-            constexpr polarity operator()(Lhs const&, Rhs const& rhs) const
+            CNL_NODISCARD constexpr polarity operator()(Lhs const&, Rhs const& rhs) const
             {
                 return -measure_polarity(rhs);
             }
@@ -68,7 +68,7 @@ namespace cnl {
         template<>
         struct overflow_polarity<multiply_op> {
             template<typename Lhs, typename Rhs>
-            constexpr polarity operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr polarity operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 return measure_polarity(lhs)*measure_polarity(rhs);
             }
@@ -84,7 +84,7 @@ namespace cnl {
         };
 
         template<class Operator, typename Lhs, typename Rhs, typename Result>
-        constexpr builtin_overflow_result builtin_overflow(Operator, Lhs const&, Rhs const&, Result&)
+        CNL_NODISCARD constexpr builtin_overflow_result builtin_overflow(Operator, Lhs const&, Rhs const&, Result&)
         {
             return builtin_overflow_result::inconclusive;
         }
@@ -92,7 +92,7 @@ namespace cnl {
 #if defined(CNL_BUILTIN_OVERFLOW_ENABLED)
 
         template<typename Lhs, typename Rhs, typename Result>
-        constexpr auto builtin_overflow(add_op, Lhs const& lhs, Rhs const& rhs, Result& result)
+        CNL_NODISCARD constexpr auto builtin_overflow(add_op, Lhs const& lhs, Rhs const& rhs, Result& result)
         -> enable_if_t<
                 is_integral<Lhs>::value && is_integral<Rhs>::value && is_integral<Result>::value,
                 builtin_overflow_result>
@@ -103,7 +103,7 @@ namespace cnl {
         }
 
         template<typename Lhs, typename Rhs, typename Result>
-        constexpr auto builtin_overflow(subtract_op, Lhs const& lhs, Rhs const& rhs, Result& result)
+        CNL_NODISCARD constexpr auto builtin_overflow(subtract_op, Lhs const& lhs, Rhs const& rhs, Result& result)
         -> enable_if_t<
                 is_integral<Lhs>::value && is_integral<Rhs>::value && is_integral<Result>::value,
                 builtin_overflow_result>
@@ -114,7 +114,7 @@ namespace cnl {
         }
 
         template<typename Lhs, typename Rhs, typename Result>
-        constexpr auto builtin_overflow(multiply_op, Lhs const& lhs, Rhs const& rhs, Result& result)
+        CNL_NODISCARD constexpr auto builtin_overflow(multiply_op, Lhs const& lhs, Rhs const& rhs, Result& result)
         -> enable_if_t<
                 is_integral<Lhs>::value && is_integral<Rhs>::value && is_integral<Result>::value,
                 builtin_overflow_result>
@@ -128,7 +128,7 @@ namespace cnl {
         // cnl::_impl::builtin_tagged_binary_overflow_operator
 
         template<class OverflowTag, class Operator, class Lhs, class Rhs>
-        constexpr auto builtin_tagged_binary_overflow_operator(Lhs const& lhs, Rhs const& rhs)
+        CNL_NODISCARD constexpr auto builtin_tagged_binary_overflow_operator(Lhs const& lhs, Rhs const& rhs)
         -> op_result<Operator, Lhs, Rhs>
         {
             using Result = op_result<Operator, Lhs, Rhs>;
@@ -156,7 +156,7 @@ namespace cnl {
         // cnl::_impl::builtin_overflow_supported
 
         template<class Operator, typename Lhs, typename Rhs>
-        constexpr bool builtin_overflow_supported()
+        CNL_NODISCARD constexpr bool builtin_overflow_supported()
         {
             using Result = op_result<Operator, Lhs, Rhs>;
             Result result{};
@@ -165,7 +165,7 @@ namespace cnl {
 #else
 
         template<class Operator, typename Lhs, typename Rhs>
-        constexpr bool builtin_overflow_supported()
+        CNL_NODISCARD constexpr bool builtin_overflow_supported()
         {
             return false;
         }

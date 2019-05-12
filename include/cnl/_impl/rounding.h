@@ -39,7 +39,7 @@ namespace cnl {
         template<>
         struct tagged_binary_operator<nearest_rounding_tag, divide_op> {
             template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs/rhs)
             {
                 return (((lhs<0) ^ (rhs<0))
@@ -53,7 +53,7 @@ namespace cnl {
 
         template<class RoundingTag, class Lhs, class Rhs>
         struct divide {
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs/rhs)
             {
                 return tagged_binary_operator<RoundingTag, divide_op>{}(cnl::unwrap(lhs), cnl::unwrap(rhs));
@@ -65,7 +65,7 @@ namespace cnl {
 
         template<class RoundingTag, class Lhs, class Rhs>
         struct shift_right {
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs >> rhs)
             {
                 return tagged_binary_operator<RoundingTag, shift_right_op>{}(lhs, rhs);

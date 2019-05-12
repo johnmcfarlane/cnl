@@ -20,7 +20,7 @@ namespace cnl {
     namespace _impl {
         template<typename Result, typename Value>
         struct from_value_simple {
-            constexpr Result operator()(Value const& value) const {
+            CNL_NODISCARD constexpr Result operator()(Value const& value) const {
                 return value;
             }
         };
@@ -44,14 +44,14 @@ namespace cnl {
                 add_signedness_t<Number>,
                 _impl::max(digits<int>::value, _impl::used_digits(Value))>;
     public:
-        constexpr _result_type operator()(constant<Value> const &value) const {
+        CNL_NODISCARD constexpr _result_type operator()(constant<Value> const &value) const {
             return _result_type(value);
         }
     };
 
     namespace _impl {
         template<typename Number, typename Value>
-        constexpr auto from_value(Value const& value)
+        CNL_NODISCARD constexpr auto from_value(Value const& value)
         -> decltype(cnl::from_value<Number, Value>{}(value))
         {
             return cnl::from_value<Number, Value>{}(value);

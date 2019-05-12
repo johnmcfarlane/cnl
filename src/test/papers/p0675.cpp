@@ -22,7 +22,7 @@ using cnl::_impl::identical;
 
 namespace acme {
     template<class Rep> struct smart_integer;
-    template<class Rep> constexpr Rep to_rep(smart_integer<Rep> const& number);
+    template<class Rep> CNL_NODISCARD constexpr Rep to_rep(smart_integer<Rep> const& number);
 
     // example type, smart_integer, shares characteristics with cnl::elastic_integer
     template<class Rep>
@@ -34,19 +34,19 @@ namespace acme {
     };
 
     template<typename Rep>
-    constexpr Rep to_rep(smart_integer<Rep> const& number)
+    CNL_NODISCARD constexpr Rep to_rep(smart_integer<Rep> const& number)
     {
         return number.value;
     }
 
     template<class LhsRep, class RhsRep>
-    constexpr auto operator==(smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs)
+    CNL_NODISCARD constexpr auto operator==(smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs)
     {
         return to_rep(lhs)==to_rep(rhs);
     }
 
     template<class LhsRep, class RhsRep>
-    constexpr auto operator-(smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs)
+    CNL_NODISCARD constexpr auto operator-(smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs)
     {
         auto lhs_rep_signed = std::make_signed_t<LhsRep>(to_rep(lhs));
         auto rhs_rep_signed = std::make_signed_t<RhsRep>(to_rep(rhs));
@@ -55,7 +55,7 @@ namespace acme {
     }
 
     template<class LhsRep, class RhsRep>
-    constexpr auto operator*(smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs)
+    CNL_NODISCARD constexpr auto operator*(smart_integer<LhsRep> const& lhs, smart_integer<RhsRep> const& rhs)
     {
         auto const lhs_rep = to_rep(lhs);
         auto const rhs_rep = to_rep(rhs);

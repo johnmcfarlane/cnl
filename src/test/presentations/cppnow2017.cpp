@@ -37,7 +37,7 @@ namespace prototypes {
         constexpr overflow_integer(Input const& r)
                 :_rep(r) { }
 
-        constexpr Rep const& data() const { return _rep; }
+        CNL_NODISCARD constexpr Rep const& data() const { return _rep; }
 
     private:
         Rep _rep;
@@ -210,7 +210,7 @@ namespace composite {
     overflow_integer<elastic_integer<Digits, Narrowest>>;
 
     template<typename Rep1, typename Rep2>
-    constexpr auto operator*(overflow_integer<Rep1> const& a, overflow_integer<Rep2> const& b)
+    CNL_NODISCARD constexpr auto operator*(overflow_integer<Rep1> const& a, overflow_integer<Rep2> const& b)
     {
         auto product = a.data()*b.data();
 

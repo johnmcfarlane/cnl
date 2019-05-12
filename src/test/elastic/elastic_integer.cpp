@@ -336,7 +336,7 @@ namespace {
     }
 
     namespace test_avg_fn {
-        constexpr int avg(int a, int b) {
+        CNL_NODISCARD constexpr int avg(int a, int b) {
 #if defined(__cpp_deduction_guides)
             return int((cnl::elastic_integer{a} + cnl::elastic_integer{b}) / 2);
 #else

@@ -16,7 +16,7 @@ namespace cnl {
 
         template<class Rep>
         struct lowest<Rep, true> {
-            constexpr Rep operator()(Rep const& max) const noexcept
+            CNL_NODISCARD constexpr Rep operator()(Rep const& max) const noexcept
             {
                 return static_cast<Rep>(-max);
             }
@@ -24,7 +24,7 @@ namespace cnl {
 
         template<class Rep>
         struct lowest<Rep, false> {
-            constexpr Rep operator()(Rep const&) const noexcept
+            CNL_NODISCARD constexpr Rep operator()(Rep const&) const noexcept
             {
                 return 0;
             }

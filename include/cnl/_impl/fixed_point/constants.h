@@ -24,7 +24,7 @@ namespace cnl {
 
     namespace _impl {
         template<typename Rep, int Exponent>
-        constexpr auto pi(int const max_iterations) {
+        CNL_NODISCARD constexpr auto pi(int const max_iterations) {
             using fp = fixed_point<Rep, Exponent>;
             constexpr auto four = fixed_point<Rep, 3 - digits_v<Rep>>{4.};
 
@@ -42,12 +42,12 @@ namespace cnl {
         }
 
         template<typename Rep, int Exponent>
-        constexpr auto pi() {
+        CNL_NODISCARD constexpr auto pi() {
             return pi<Rep, Exponent>(0);
         }
 
         template<typename Rep, int Exponent>
-        constexpr auto e(int const max_iterations) {
+        CNL_NODISCARD constexpr auto e(int const max_iterations) {
             using fp = fixed_point<Rep, Exponent>;
             constexpr auto one = fixed_point<Rep, 2 - digits_v<Rep>>{1.};
 
@@ -65,14 +65,14 @@ namespace cnl {
         }
 
         template<typename Rep, int Exponent>
-        constexpr auto e() {
+        CNL_NODISCARD constexpr auto e() {
             return e<Rep, Exponent>(0);
         }
 
         // Given two alternative ways to generate a constant value:
         // tries to choose the best and returns the result.
         template<typename Float, typename Rep, int Exponent>
-        constexpr auto constant_with_fallback(Float constant, fixed_point<Rep, Exponent>(*procedure)()) {
+        CNL_NODISCARD constexpr auto constant_with_fallback(Float constant, fixed_point<Rep, Exponent>(*procedure)()) {
             using fp = fixed_point<Rep, Exponent>;
 
             auto const required_integer_digits = used_digits(static_cast<int>(constant));

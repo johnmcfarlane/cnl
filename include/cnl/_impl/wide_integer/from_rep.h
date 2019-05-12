@@ -16,7 +16,7 @@
 namespace cnl {
     template<int Digits, typename Narrowest, typename Rep>
     struct from_rep<_impl::wide_integer<Digits, Narrowest>, Rep> {
-        constexpr auto operator()(Rep const& rep) const
+        CNL_NODISCARD constexpr auto operator()(Rep const& rep) const
         -> _impl::wide_integer<
                 Digits,
                 _impl::adopt_signedness_t<Narrowest, Rep>>

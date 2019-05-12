@@ -197,9 +197,7 @@
 #endif
 
 #if (__cplusplus >= 201703L) && !defined(_MSC_VER)
-#if defined(__has_cpp_attribute) && (__has_cpp_attribute(nodiscard) >= 201603L)
 #define CNL_NODISCARD [[nodiscard]]
-#endif
 #endif
 
 #if ! defined(CNL_NODISCARD)

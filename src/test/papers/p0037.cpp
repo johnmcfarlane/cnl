@@ -113,7 +113,7 @@ namespace example {
     using cnl::fixed_point;
 
     template<class Fp>
-    constexpr auto magnitude(Fp x, Fp y, Fp z)
+    CNL_NODISCARD constexpr auto magnitude(Fp x, Fp y, Fp z)
     -> decltype(sqrt(x*x+y*y+z*z))
     {
         return sqrt(x*x+y*y+z*z);

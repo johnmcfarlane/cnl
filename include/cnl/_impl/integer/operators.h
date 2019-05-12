@@ -19,7 +19,7 @@ namespace cnl {
     namespace _impl {
         template<typename Operator, typename Rep>
         struct unary_operator<Operator, integer<Rep>> {
-            constexpr auto operator()(integer<Rep> const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(integer<Rep> const& rhs) const
             -> decltype(from_rep<integer<decltype(Operator()(_impl::to_rep(rhs)))>>(Operator()(_impl::to_rep(rhs))))
             {
                 return from_rep<integer<decltype(Operator()(_impl::to_rep(rhs)))>>(Operator()(_impl::to_rep(rhs)));
@@ -28,7 +28,7 @@ namespace cnl {
 
         template<class Operator, typename LhsRep, typename RhsRep>
         struct binary_operator<Operator, integer<LhsRep>, integer<RhsRep>> {
-            constexpr auto operator()(integer<LhsRep> const& lhs, integer<RhsRep> const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(integer<LhsRep> const& lhs, integer<RhsRep> const& rhs) const
             -> decltype(make_integer(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
             {
                 return make_integer(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)));
@@ -37,7 +37,7 @@ namespace cnl {
 
         template<class Operator, typename LhsRep, typename RhsRep>
         struct comparison_operator<Operator, integer<LhsRep>, integer<RhsRep>> {
-            constexpr auto operator()(integer<LhsRep> const& lhs, integer<RhsRep> const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(integer<LhsRep> const& lhs, integer<RhsRep> const& rhs) const
             -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
             {
                 return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));

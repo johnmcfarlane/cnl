@@ -20,7 +20,7 @@ namespace {
     using cnl::_impl::assert_same;
 
     template<typename Numerator, typename Denominator>
-    constexpr bool identical(
+    CNL_NODISCARD constexpr bool identical(
             cnl::fraction<Numerator, Denominator> const& a,
             cnl::fraction<Numerator, Denominator> const& b)
     {

@@ -26,7 +26,7 @@ namespace cnl {
 
         template<typename S, int Radix>
         struct default_power<S, 0, Radix, false, false, false> {
-            constexpr S operator()() const
+            CNL_NODISCARD constexpr S operator()() const
             {
                 return S{1};
             }
@@ -34,7 +34,7 @@ namespace cnl {
 
         template<typename S, int Exponent, bool OddExponent>
         struct default_power<S, Exponent, 2, true, OddExponent, false> {
-            constexpr auto operator()() const
+            CNL_NODISCARD constexpr auto operator()() const
             -> decltype(S{1} << constant<Exponent>{})
             {
                 using result_numeric_limits = numeric_limits<decltype(S{1} << constant<Exponent>{})>;
@@ -48,7 +48,7 @@ namespace cnl {
 
         template<typename S, int Exponent, int Radix, bool OddExponent>
         struct default_power<S, Exponent, Radix, true, OddExponent, false> {
-            constexpr auto operator()() const
+            CNL_NODISCARD constexpr auto operator()() const
             -> decltype(default_power<S, (Exponent-1), Radix>{}()*Radix)
             {
                 return default_power<S, (Exponent-1), Radix>{}()*Radix;
@@ -57,7 +57,7 @@ namespace cnl {
 
         template<typename S, int Exponent, int Radix, bool PositiveExponent, bool OddExponent>
         struct default_power<S, Exponent, Radix, PositiveExponent, OddExponent, true> {
-            constexpr S operator()() const
+            CNL_NODISCARD constexpr S operator()() const
             {
                 return Exponent
                        ? S(1.)/default_power<S, -Exponent, Radix>{}()
@@ -67,12 +67,12 @@ namespace cnl {
 
         template<typename S, int Exponent, int Radix>
         struct default_power<S, Exponent, Radix, true, false, true> {
-            constexpr static S square(S const& r)
+            CNL_NODISCARD constexpr static S square(S const& r)
             {
                 return r*r;
             }
 
-            constexpr S operator()() const
+            CNL_NODISCARD constexpr S operator()() const
             {
                 return square(default_power<S, Exponent/2, Radix>{}());
             }
@@ -80,12 +80,12 @@ namespace cnl {
 
         template<typename S, int Exponent, int Radix>
         struct default_power<S, Exponent, Radix, true, true, true> {
-            constexpr static S square(S const& r)
+            CNL_NODISCARD constexpr static S square(S const& r)
             {
                 return r*r;
             }
 
-            constexpr S operator()() const
+            CNL_NODISCARD constexpr S operator()() const
             {
                 return S(Radix)*default_power<S, (Exponent-1), Radix>{}();
             }
@@ -93,7 +93,7 @@ namespace cnl {
 
         template<typename S, int Exponent, int Radix, class Enable = void>
         struct power {
-            constexpr auto operator()() const
+            CNL_NODISCARD constexpr auto operator()() const
             -> decltype(default_power<S, Exponent, Radix>{}()) {
                 return default_power<S, Exponent, Radix>{}();
             }
@@ -101,7 +101,7 @@ namespace cnl {
     }
 
     template<typename S, int Exponent, int Radix>
-    constexpr auto power()
+    CNL_NODISCARD constexpr auto power()
     -> decltype(_impl::power<S, Exponent, Radix>{}())
     {
         return _impl::power<S, Exponent, Radix>{}();

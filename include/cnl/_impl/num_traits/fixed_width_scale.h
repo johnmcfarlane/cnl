@@ -14,7 +14,7 @@ namespace cnl {
     // returns a scaled value of the same type
     template<int Digits, int Radix, class S, class Enable=void>
     struct fixed_width_scale {
-        constexpr S operator()(S const& s) const
+        CNL_NODISCARD constexpr S operator()(S const& s) const
         {
             static_assert(
                     Radix!=2||digits<S>::value>-Digits,
@@ -26,7 +26,7 @@ namespace cnl {
 
     namespace _impl {
         template<int Digits, class S=void>
-        constexpr S fixed_width_scale(S const& s)
+        CNL_NODISCARD constexpr S fixed_width_scale(S const& s)
         {
             return cnl::fixed_width_scale<Digits, numeric_limits<S>::radix, S>()(s);
         }
