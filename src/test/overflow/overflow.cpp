@@ -127,7 +127,7 @@ namespace {
         TEST(overflow, trap)
         {
             ASSERT_DEATH(
-                    cnl::shift_left<cnl::trapping_overflow_tag>(-1073741825, 1),
+                    (void)cnl::shift_left<cnl::trapping_overflow_tag>(-1073741825, 1),
                     "negative overflow");
         }
 #endif

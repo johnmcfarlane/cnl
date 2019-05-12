@@ -36,13 +36,13 @@ TEST(throwing_integer_overflow_exception, narrow)
 TEST(throwing_integer_overflow_exception, shift_left)
 {
     auto scale = cnl::scale<30, 2, test_int>{};
-    ASSERT_THROW(scale(2), std::overflow_error);
+    ASSERT_THROW((void)scale(2), std::overflow_error);
 }
 
 TEST(throwing_integer_overflow_exception, assignment)
 {
     using fp_type = fixed_point<int8, -7>;
-    ASSERT_THROW(fp_type(1), std::overflow_error);
+    ASSERT_THROW((void)fp_type(1), std::overflow_error);
 }
 
 #endif
