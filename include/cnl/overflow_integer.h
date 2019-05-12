@@ -267,6 +267,17 @@ namespace cnl {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
+    // cnl::operator<<(cnl::overflow_integer, ...)
+
+    template<class LhsRep, class LhsOverflowTag, typename Rhs>
+    constexpr auto operator<<(overflow_integer<LhsRep, LhsOverflowTag> const& lhs, Rhs const& rhs)
+            -> overflow_integer<_impl::op_result<_impl::shift_left_op, LhsRep, Rhs>, LhsOverflowTag>
+    {
+        return _impl::from_rep<overflow_integer<_impl::op_result<_impl::shift_left_op, LhsRep, Rhs>, LhsOverflowTag>>(
+        _impl::tagged_binary_operator<LhsOverflowTag, _impl::shift_left_op>{}(_impl::to_rep(lhs), _impl::to_rep(rhs)));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
     // operator<<(std::ostream& o, cnl::overflow_integer const& i)
 
     template<class Rep, class OverflowTag>

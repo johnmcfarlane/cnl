@@ -97,8 +97,10 @@ namespace {
     }
 
     namespace test_static_cast {
+#if defined(CNL_INT128_ENABLED)
         static constexpr auto c = static_cast<rounding_elastic_number<24, -20>>(
                 rounding_elastic_number<48, -40>{0.21875});
         static_assert(identical(rounding_elastic_number<24, -20>{0.21875}, c), "rounding_elastic_number assignment");
+#endif
     }
 }

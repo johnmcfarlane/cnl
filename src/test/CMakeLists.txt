@@ -80,6 +80,7 @@ set(test_sources
         fixed_point/rounding/elastic/integer.cpp
         fixed_point/elastic/rounding/overflow/426.cpp
         rounding/elastic/rounding_elastic_integer.cpp
+        rounding/overflow/elastic/integer.cpp
         fixed_point/rounding/rounding_fixed_point.cpp
         elastic/rounding/overflow/rounding_safe_integer.cpp
         overflow/elastic/safe_integer.cpp
@@ -91,6 +92,7 @@ set(test_sources
         static_integer/operators.cpp
         static_integer/type.cpp
         static_number/426.cpp
+        static_number/429.cpp
         static_number/operators.cpp
         static_number/rounding.cpp
         static_number/to_chars.cpp

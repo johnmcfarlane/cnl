@@ -198,6 +198,24 @@ namespace cnl {
             }
         };
 
+#if defined(CNL_OVERLOAD_RESOLUTION_HACK)
+        template<typename LhsRep, int LhsExponent, int LhsRadix, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
+        struct excluded_from_specialization<fixed_point<LhsRep, LhsExponent, LhsRadix>, constant<RhsValue>>
+                : std::true_type {
+        };
+
+        template<class Operator, typename LhsRep, int LhsExponent, int LhsRadix, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
+        struct shift_operator<Operator, fixed_point<LhsRep, LhsExponent, LhsRadix>, constant<RhsValue>> {
+            constexpr auto operator()(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, constant<RhsValue> rhs) const
+            -> decltype(_impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs) >> int(rhs)), LhsExponent, LhsRadix>>(
+                    _impl::to_rep(lhs) >> int(rhs)))
+            {
+                return _impl::from_rep<fixed_point<decltype(_impl::to_rep(lhs) >> int(rhs)), LhsExponent, LhsRadix>>(
+                    _impl::to_rep(lhs) >> int(rhs));
+            }
+        };
+#endif
+
         ////////////////////////////////////////////////////////////////////////////////
         // pre-increment/decrement arithmetic operators
 
@@ -237,6 +255,7 @@ namespace cnl {
                 _impl::to_rep(lhs) << int(rhs));
     }
 
+#if ! defined(CNL_OVERLOAD_RESOLUTION_HACK)
     template<typename LhsRep, int LhsExponent, int LhsRadix, typename Rhs>
     constexpr auto operator>>(fixed_point<LhsRep, LhsExponent, LhsRadix> const& lhs, Rhs const& rhs)
     -> decltype(_impl::from_rep<fixed_point<
@@ -249,6 +268,7 @@ namespace cnl {
                 LhsExponent,
                 LhsRadix>>(_impl::to_rep(lhs) >> int(rhs));
     }
+#endif
 
     // fixed_point, const_integer
     template<typename LhsRep, int LhsExponent, int LhsRadix, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
