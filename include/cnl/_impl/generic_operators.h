@@ -39,6 +39,9 @@ namespace cnl {
         struct binary_operator;
 
         template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
+        struct shift_operator;
+
+        template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
         struct comparison_operator;
 
         template<class Operator, class RhsOperand, class Enable = void>
@@ -53,6 +56,15 @@ namespace cnl {
             {
                 return lhs = static_cast<LhsOperand>(
                         binary_operator<typename Operator::binary, LhsOperand, RhsOperand>()(lhs, rhs));
+            }
+        };
+
+        template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
+        struct compound_assignment_shift_operator {
+            constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
+            {
+                return lhs = static_cast<LhsOperand>(
+                        shift_operator<typename Operator::binary, LhsOperand, RhsOperand>()(lhs, rhs));
             }
         };
 
@@ -133,9 +145,19 @@ namespace cnl {
 
         CNL_DEFINE_BINARY_OPERATOR(^, bitwise_xor_op)
 
-        CNL_DEFINE_BINARY_OPERATOR(<<, shift_left_op)
+        // binary operators
+#define CNL_DEFINE_SHIFT_OPERATOR(OP, NAME) \
+        template<class LhsOperand, class RhsOperand> \
+        constexpr auto operator OP (LhsOperand const& lhs, RhsOperand const& rhs) \
+        -> decltype(cnl::_impl::shift_operator<cnl::_impl::enable_binary_t< \
+                LhsOperand, RhsOperand, cnl::_impl::NAME>, LhsOperand, RhsOperand>()(lhs, rhs)) \
+        { \
+            return cnl::_impl::shift_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
+        }
 
-        CNL_DEFINE_BINARY_OPERATOR(>>, shift_right_op)
+        CNL_DEFINE_SHIFT_OPERATOR(<<, shift_left_op)
+
+        CNL_DEFINE_SHIFT_OPERATOR(>>, shift_right_op)
 
         // comparison operators
 #define CNL_DEFINE_COMPARISON_OPERATOR(OP, NAME) \
@@ -211,9 +233,20 @@ namespace cnl {
 
         CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(^=, assign_bitwise_xor_op)
 
-        CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(<<=, assign_shift_left_op)
+        // compound assignment shift operators
+#define CNL_DEFINE_COMPOUND_ASSIGNMENT_SHIFT_OPERATOR(OP, NAME) \
+        template<class LhsOperand, class RhsOperand> \
+        constexpr auto operator OP (LhsOperand& lhs, RhsOperand const& rhs) \
+        -> cnl::_impl::enable_binary_t<LhsOperand, RhsOperand, decltype( \
+                cnl::_impl::compound_assignment_shift_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
+        { \
+            return cnl::_impl::compound_assignment_shift_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()( \
+                    lhs, rhs); \
+        }
 
-        CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(>>=, assign_shift_right_op)
+        CNL_DEFINE_COMPOUND_ASSIGNMENT_SHIFT_OPERATOR(<<=, assign_shift_left_op)
+
+        CNL_DEFINE_COMPOUND_ASSIGNMENT_SHIFT_OPERATOR(>>=, assign_shift_right_op)
     }
 }
 

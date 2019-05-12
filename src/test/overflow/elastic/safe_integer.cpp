@@ -132,8 +132,16 @@ namespace {
         static_assert(identical(cnl::safe_integer<3>{2}, cnl::_impl::scale<1>(cnl::safe_integer<2>{1})),
                 "cnl::scale<..., cnl::safe_integer<>>");
 
-        static_assert(identical(cnl::safe_integer<3>{2}, cnl::_impl::scale<1>(cnl::safe_integer<2>{1})),
+        static_assert(identical(cnl::safe_integer<2>{2}, cnl::_impl::scale<1>(cnl::safe_integer<1>{1})),
                 "cnl::scale<..., cnl::safe_integer<>>");
+    }
+
+    namespace test_shift {
+        static_assert(
+                identical(
+                        cnl::safe_integer<2>{2},
+                        cnl::safe_integer<1>{1} << cnl::constant<1>{}),
+                "");
     }
 
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)

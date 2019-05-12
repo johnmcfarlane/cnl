@@ -187,6 +187,41 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::shift_operator
+
+#if defined(CNL_OVERLOAD_RESOLUTION_HACK)
+        template<typename Lhs, typename Rhs>
+        struct excluded_from_specialization : std::false_type {
+        };
+#endif
+
+        template<class Operator, class Lhs, class Rhs>
+        struct shift_operator<
+                Operator, Lhs, Rhs,
+                enable_if_t<is_derived_from_number_base<Lhs>::value&&!is_same_wrapper<Lhs, Rhs>::value
+#if defined(CNL_OVERLOAD_RESOLUTION_HACK)
+                &&!excluded_from_specialization<Lhs, Rhs>::value
+#endif
+        >> {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(from_rep<Lhs>(Operator()(to_rep(lhs), rhs)))
+            {
+                return from_rep<Lhs>(Operator()(to_rep(lhs), rhs));
+            }
+        };
+
+        template<class Operator, class Lhs, class Rhs>
+        struct shift_operator<
+                Operator, Lhs, Rhs,
+                enable_if_t<is_derived_from_number_base<Lhs>::value&&is_same_wrapper<Lhs, Rhs>::value>> {
+            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            -> decltype(from_rep<Lhs>(Operator()(to_rep(lhs), to_rep(rhs))))
+            {
+                return from_rep<Lhs>(Operator()(to_rep(lhs), to_rep(rhs)));
+            }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::comparison_operator
 
         // higher OP number_base<>

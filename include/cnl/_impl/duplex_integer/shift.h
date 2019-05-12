@@ -15,7 +15,7 @@
 namespace cnl {
     namespace _impl {
         template<typename Upper, typename Lower, typename Rhs>
-        struct binary_operator<shift_left_op, duplex_integer<Upper, Lower>, Rhs> {
+        struct shift_operator<shift_left_op, duplex_integer<Upper, Lower>, Rhs> {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
             constexpr auto operator()(_duplex_integer const& lhs, Rhs const& rhs) const
@@ -36,7 +36,7 @@ namespace cnl {
         };
 
         template<typename Upper, typename Lower, typename Rhs>
-        struct binary_operator<shift_right_op, duplex_integer<Upper, Lower>, Rhs> {
+        struct shift_operator<shift_right_op, duplex_integer<Upper, Lower>, Rhs> {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
             constexpr auto operator()(_duplex_integer const& lhs, Rhs const& rhs) const

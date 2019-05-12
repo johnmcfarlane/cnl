@@ -214,17 +214,8 @@ namespace cnl {
             }
         };
 
-        template<class LhsRep, class RhsRep, class RoundingTag>
-        struct binary_operator<shift_right_op,
-                rounding_integer<LhsRep, RoundingTag>, rounding_integer<RhsRep, RoundingTag>> {
-            constexpr auto operator()(
-                    rounding_integer<LhsRep, RoundingTag> const& lhs,
-                    rounding_integer<RhsRep, RoundingTag> const& rhs) const
-            -> decltype(from_rep<rounding_integer<int, RoundingTag>>(_impl::to_rep(lhs) >> _impl::to_rep(rhs)))
-            {
-                return from_rep<rounding_integer<int, RoundingTag>>(_impl::to_rep(lhs) >> _impl::to_rep(rhs));
-            }
-        };
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::comparison_operator<..., cnl::rounding_integer<...>>
 
         // comparison for operands with a common tag
         template<class Operator, class LhsRep, class RhsRep, class RoundingTag>

@@ -497,6 +497,10 @@ namespace {
                 elastic_integer<20, unsigned>{0b11001110101011101001} << 34_c),
                 "shift_left test failed");
 #endif
+        static_assert(identical(
+                elastic_integer<20+34, unsigned>{0xCD123LL << 34},
+                elastic_integer<20, unsigned>{0xCD123} << cnl::constant<34>{}),
+                "shift_left test failed");
         static_assert(identical(elastic_integer<33>{1LL<<32}, cnl::_impl::scale<32>(elastic_integer<1>{1})), "cnl::_impl::scale<32, elastic_integer<1>>");
     }
 
