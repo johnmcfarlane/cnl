@@ -22,6 +22,7 @@ function(make_single_header target output header version int128_flag gcc_intrins
     )
     if (TARGET Doc)
         add_dependencies(Doc ${target})
+        add_dependencies(${target} CleanGhPages)
     endif (TARGET Doc)
 endfunction()
 
