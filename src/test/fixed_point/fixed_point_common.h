@@ -171,7 +171,7 @@ TEST(TOKENPASTE2(TEST_LABEL, post), decrement)
 
 TEST(TOKENPASTE2(TEST_LABEL, sqrt_exception), from_alternative_specialization)
 {
-    ASSERT_DEATH(sqrt(fixed_point<>(-1)), "negative value passed to cnl::sqrt\n");
+    ASSERT_DEATH((void)sqrt(fixed_point<>(-1)), "negative value passed to cnl::sqrt\n");
 }
 
 #endif
@@ -935,7 +935,7 @@ namespace test_bitwise_xor {
 // cnl::numeric_limits<fixed_point<>>
 
 template<class Rep, int Exponent, class Min, class Max, class Lowest>
-constexpr bool test_numeric_limits(Min min, Max max, Lowest lowest)
+CNL_NODISCARD constexpr bool test_numeric_limits(Min min, Max max, Lowest lowest)
 {
     using fp = fixed_point<Rep, Exponent>;
     using nl = cnl::numeric_limits<fp>;

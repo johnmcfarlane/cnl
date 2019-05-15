@@ -14,7 +14,7 @@
 namespace cnl {
     template<typename Upper, typename Lower>
     struct to_rep<_impl::duplex_integer<Upper, Lower>> {
-        constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& number) const
+        CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& number) const
         -> _impl::to_rep_t<Upper>
         {
             return _impl::to_rep(Upper(number));

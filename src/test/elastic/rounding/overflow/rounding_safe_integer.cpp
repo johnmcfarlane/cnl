@@ -32,7 +32,7 @@ namespace cnl {
             class Narrowest = int,
             class Input = int,
             class = _impl::enable_if_t<!_impl::is_constant<Input>::value>>
-    rounding_safe_int<
+    CNL_NODISCARD rounding_safe_int<
             numeric_limits<Input>::digits,
             OverflowTag, RoundingTag,
             Narrowest>
@@ -46,7 +46,7 @@ namespace cnl {
             class RoundingTag = rounding_integer<>::rounding,
             class Narrowest = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE InputValue = 0>
-    rounding_safe_int<
+    CNL_NODISCARD rounding_safe_int<
             _impl::used_digits(InputValue),
             OverflowTag, RoundingTag,
             Narrowest>

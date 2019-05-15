@@ -13,7 +13,7 @@
 namespace cnl {
     namespace _impl {
         template<typename Rep>
-        constexpr auto make_integer(Rep const& rep)
+        CNL_NODISCARD constexpr auto make_integer(Rep const& rep)
         -> integer<Rep> {
             return rep;
         }

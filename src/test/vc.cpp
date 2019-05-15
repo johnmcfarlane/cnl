@@ -34,7 +34,7 @@ namespace {
     // test helper
 
     template<class Expected, class Actual>
-    constexpr bool simd_identical(Expected const &e, Actual const &a) {
+    CNL_NODISCARD constexpr bool simd_identical(Expected const &e, Actual const &a) {
         static_assert(std::is_same<Expected, Actual>::value, "expected and actual types are not the same");
         auto equality_result = e == a;
         return Vc::all_of(equality_result);

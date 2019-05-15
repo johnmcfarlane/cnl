@@ -15,14 +15,14 @@ namespace cnl {
     namespace _impl {
 #if defined(__cpp_lib_gcd)
         template<typename Numerator, typename Denominator>
-        constexpr auto canonical_from_reduce(fraction<Numerator, Denominator> const& f)
+        CNL_NODISCARD constexpr auto canonical_from_reduce(fraction<Numerator, Denominator> const& f)
         -> decltype(-f)
         {
             return (f.denominator<Denominator(0.)) ? -f : f;
         }
 
         template<typename Numerator, typename Denominator>
-        constexpr auto canonical(fraction<Numerator, Denominator> const& f)
+        CNL_NODISCARD constexpr auto canonical(fraction<Numerator, Denominator> const& f)
         {
             return canonical_from_reduce(reduce(f));
         }

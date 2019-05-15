@@ -36,7 +36,7 @@ namespace cnl {
                 class OverflowTag = undefined_overflow_tag,
                 class Narrowest = int,
                 class Input = int>
-        _impl::enable_if_t<!_impl::is_constant<Input>::value,
+        CNL_NODISCARD _impl::enable_if_t<!_impl::is_constant<Input>::value,
                 static_integer<
                         numeric_limits<Input>::digits,
                         RoundingTag, OverflowTag,
@@ -51,7 +51,7 @@ namespace cnl {
                 class OverflowTag = undefined_overflow_tag,
                 class Narrowest = int,
                 CNL_IMPL_CONSTANT_VALUE_TYPE InputValue = 0>
-        static_integer<
+        CNL_NODISCARD static_integer<
                 used_digits(InputValue),
                 RoundingTag, OverflowTag,
                 Narrowest>

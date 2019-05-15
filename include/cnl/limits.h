@@ -29,21 +29,21 @@ namespace cnl {
 
         struct _s {
             constexpr _s(uint64 upper, uint64 lower) : value(lower + (int128{upper} << 64)) {}
-            constexpr operator int128() const { return value; }
+            CNL_NODISCARD constexpr operator int128() const { return value; }
             int128 value;
         };
 
-        static constexpr int128 min()
+        CNL_NODISCARD static constexpr int128 min()
         {
             return _s(0x8000000000000000, 0x0000000000000000);
         }
 
-        static constexpr int128 max()
+        CNL_NODISCARD static constexpr int128 max()
         {
             return _s(0x7fffffffffffffff, 0xffffffffffffffff);
         }
 
-        static constexpr int128 lowest()
+        CNL_NODISCARD static constexpr int128 lowest()
         {
             return min();
         }
@@ -56,21 +56,21 @@ namespace cnl {
 
         struct _s {
             constexpr _s(uint64 upper, uint64 lower) : value(lower + (uint128{upper} << 64)) {}
-            constexpr operator uint128() const { return value; }
+            CNL_NODISCARD constexpr operator uint128() const { return value; }
             uint128 value;
         };
 
-        static constexpr int128 min()
+        CNL_NODISCARD static constexpr int128 min()
         {
             return 0;
         }
 
-        static constexpr uint128 max()
+        CNL_NODISCARD static constexpr uint128 max()
         {
             return _s(0xffffffffffffffff, 0xffffffffffffffff);
         }
 
-        static constexpr int128 lowest()
+        CNL_NODISCARD static constexpr int128 lowest()
         {
             return min();
         }

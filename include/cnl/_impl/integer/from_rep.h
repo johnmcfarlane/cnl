@@ -14,7 +14,7 @@
 namespace cnl {
     template<typename IntegerRep, typename Rep>
     struct from_rep<_impl::integer<IntegerRep>, Rep> {
-        constexpr auto operator()(Rep const& rep) const
+        CNL_NODISCARD constexpr auto operator()(Rep const& rep) const
         -> _impl::integer<Rep>
         {
             return rep;

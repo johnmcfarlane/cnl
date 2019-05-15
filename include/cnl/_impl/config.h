@@ -190,5 +190,20 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
+// CNL_NODISCARD
+
+#if defined(CNL_NODISCARD)
+#error CNL_NODISCARD already defined
+#endif
+
+#if (__cplusplus >= 201703L) && !defined(_MSC_VER)
+#define CNL_NODISCARD [[nodiscard]]
+#endif
+
+#if ! defined(CNL_NODISCARD)
+#define CNL_NODISCARD
+#endif
+
+////////////////////////////////////////////////////////////////////////////////
 
 #endif  // CNL_CONFIG_H

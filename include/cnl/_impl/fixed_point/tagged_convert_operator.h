@@ -48,13 +48,13 @@ namespace cnl {
             using _result = fixed_point<ResultRep, ResultExponent, Radix>;
             using _input = fixed_point<InputRep, InputExponent, Radix>;
 
-            static constexpr _input half()
+            CNL_NODISCARD static constexpr _input half()
             {
                 return static_cast<_input>(_impl::from_rep<_result>(1))/2;
             }
 
         public:
-            constexpr _result operator()(_input const& from) const
+            CNL_NODISCARD constexpr _result operator()(_input const& from) const
             {
                 // TODO: unsigned specialization
                 return static_cast<_result>(from+((from >= 0) ? half() : -half()));
@@ -73,13 +73,13 @@ namespace cnl {
         private:
             using _result = fixed_point<ResultRep, ResultExponent, ResultRadix>;
 
-            static constexpr Input half()
+            CNL_NODISCARD static constexpr Input half()
             {
                 return cnl::power<Input, ResultExponent-1, ResultRadix>();
             }
 
         public:
-            constexpr _result operator()(Input const& from) const
+            CNL_NODISCARD constexpr _result operator()(Input const& from) const
             {
                 // TODO: unsigned specialization
                 return static_cast<_result>(from+((from >= 0) ? half() : -half()));
@@ -110,7 +110,7 @@ namespace cnl {
                 _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer>> {
             using _input = fixed_point<InputRep, InputExponent, InputRadix>;
 
-            constexpr Result operator()(_input const& from) const
+            CNL_NODISCARD constexpr Result operator()(_input const& from) const
             {
                 return _impl::to_rep(
                         _impl::tagged_convert_operator<nearest_rounding_tag, fixed_point<Result>, _input>{}(

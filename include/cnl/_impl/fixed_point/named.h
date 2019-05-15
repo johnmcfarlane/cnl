@@ -30,7 +30,7 @@ namespace cnl {
     /// \note This function is deprecated after C++17
     /// in favor of class template deduction.
     template<typename Value>
-    constexpr auto make_fixed_point(Value const& value)
+    CNL_NODISCARD constexpr auto make_fixed_point(Value const& value)
     -> cnl::from_value_t<fixed_point<Value, 0>, Value>
     {
         return _impl::from_value<fixed_point<Value, 0>>(value);
@@ -50,13 +50,13 @@ namespace cnl {
         };
 
         template<typename Number>
-        constexpr Number not_fixed_point(Number const& number)
+        CNL_NODISCARD constexpr Number not_fixed_point(Number const& number)
         {
             return number;
         }
 
         template<typename Rep, int Exponent, int Radix>
-        constexpr Rep not_fixed_point(fixed_point<Rep, Exponent, Radix> const& f)
+        CNL_NODISCARD constexpr Rep not_fixed_point(fixed_point<Rep, Exponent, Radix> const& f)
         {
             return _impl::to_rep(f);
         }
@@ -127,7 +127,7 @@ namespace cnl {
             class Quotient = _impl::default_quotient_tag,
             class Dividend,
             class Divisor>
-    constexpr auto quotient(Dividend const& dividend, Divisor const& divisor)
+    CNL_NODISCARD constexpr auto quotient(Dividend const& dividend, Divisor const& divisor)
     -> typename _impl::result<Quotient, Dividend, Divisor>::type {
         using result_type = typename _impl::result<Quotient, Dividend, Divisor>::type;
         using result_rep = typename result_type::rep;

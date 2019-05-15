@@ -18,14 +18,14 @@ namespace cnl {
         struct shift_operator<shift_left_op, duplex_integer<Upper, Lower>, Rhs> {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
-            constexpr auto operator()(_duplex_integer const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(_duplex_integer const& lhs, Rhs const& rhs) const
             -> _duplex_integer
             {
                 return with_int(lhs, static_cast<int>(rhs));
             }
 
         private:
-            constexpr auto with_int(_duplex_integer const& lhs, int const& rhs) const
+            CNL_NODISCARD constexpr auto with_int(_duplex_integer const& lhs, int const& rhs) const
             -> _duplex_integer
             {
                 return _duplex_integer(
@@ -39,26 +39,26 @@ namespace cnl {
         struct shift_operator<shift_right_op, duplex_integer<Upper, Lower>, Rhs> {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
-            constexpr auto operator()(_duplex_integer const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(_duplex_integer const& lhs, Rhs const& rhs) const
             -> _duplex_integer
             {
                 return with_int(lhs, static_cast<int>(rhs));
             }
 
         private:
-            constexpr auto with_int(_duplex_integer const& lhs, int rhs) const
+            CNL_NODISCARD constexpr auto with_int(_duplex_integer const& lhs, int rhs) const
             -> _duplex_integer
             {
                 return _duplex_integer(calculate_upper(lhs, rhs), calculate_lower(lhs, rhs));
             }
 
-            constexpr auto calculate_upper(_duplex_integer const& lhs, int rhs) const
+            CNL_NODISCARD constexpr auto calculate_upper(_duplex_integer const& lhs, int rhs) const
             -> Upper
             {
                 return sensible_right_shift<Upper>(lhs.upper(), rhs);
             }
 
-            constexpr auto calculate_lower(_duplex_integer const& lhs, int rhs) const
+            CNL_NODISCARD constexpr auto calculate_lower(_duplex_integer const& lhs, int rhs) const
             -> Lower
             {
                 return static_cast<Lower>(

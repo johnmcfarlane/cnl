@@ -92,7 +92,7 @@ namespace cnl {
                 : _base(convert<rounding, Rep>(v)) { }
 
         template<class T>
-        constexpr explicit operator T() const
+        CNL_NODISCARD constexpr explicit operator T() const
         {
             return static_cast<T>(_impl::to_rep(*this));
         }
@@ -116,7 +116,7 @@ namespace cnl {
     template<typename ArchetypeRep, class RoundingTag, typename Rep>
     struct from_rep<rounding_integer<ArchetypeRep, RoundingTag>, Rep> {
         /// \brief generates an \ref rounding_integer equivalent to \c r in type and value
-        constexpr auto operator()(Rep const& r) const
+        CNL_NODISCARD constexpr auto operator()(Rep const& r) const
         -> rounding_integer<Rep, RoundingTag>
         {
             return r;
@@ -152,7 +152,7 @@ namespace cnl {
     template<int Digits, int Radix, class Rep, class RoundingTag>
     struct scale<Digits, Radix, rounding_integer<Rep, RoundingTag>,
             _impl::enable_if_t<0<=Digits>> {
-        constexpr auto operator()(rounding_integer<Rep, RoundingTag> const& s) const
+        CNL_NODISCARD constexpr auto operator()(rounding_integer<Rep, RoundingTag> const& s) const
         -> decltype(_impl::from_rep<rounding_integer<Rep, RoundingTag>>(
                 scale<Digits, Radix, Rep>{}(_impl::to_rep(s))))
         {
@@ -163,7 +163,7 @@ namespace cnl {
 
     template<int Digits, class Rep, class RoundingTag>
     struct fixed_width_scale<Digits, 2, rounding_integer<Rep, RoundingTag>, _impl::enable_if_t<0<=Digits>> {
-        constexpr auto operator()(rounding_integer<Rep, RoundingTag> const& s) const
+        CNL_NODISCARD constexpr auto operator()(rounding_integer<Rep, RoundingTag> const& s) const
         -> decltype(_impl::from_rep<rounding_integer<Rep, RoundingTag>>(
                 fixed_width_scale<Digits, 2, Rep>{}(_impl::to_rep(s))))
         {
@@ -176,7 +176,7 @@ namespace cnl {
     // cnl::make_rounding_integer
 
     template<class RoundingTag, class Rep>
-    constexpr auto make_rounding_integer(Rep const& value)
+    CNL_NODISCARD constexpr auto make_rounding_integer(Rep const& value)
     -> rounding_integer<Rep, RoundingTag>
     {
         return value;
@@ -189,7 +189,7 @@ namespace cnl {
         // for operands with a common tag
         template<class Operator, class Rep, class RoundingTag>
         struct unary_operator<Operator, rounding_integer<Rep, RoundingTag>> {
-            constexpr auto operator()(rounding_integer<Rep, RoundingTag> const& operand) const
+            CNL_NODISCARD constexpr auto operator()(rounding_integer<Rep, RoundingTag> const& operand) const
             -> decltype(from_rep<rounding_integer<int, RoundingTag>>(Operator()(_impl::to_rep(operand))))
             {
                 return from_rep<rounding_integer<int, RoundingTag>>(Operator()(_impl::to_rep(operand)));
@@ -203,7 +203,7 @@ namespace cnl {
         template<class Operator, class LhsRep, class RhsRep, class RoundingTag>
         struct binary_operator<Operator,
                 rounding_integer<LhsRep, RoundingTag>, rounding_integer<RhsRep, RoundingTag>> {
-            constexpr auto operator()(
+            CNL_NODISCARD constexpr auto operator()(
                     rounding_integer<LhsRep, RoundingTag> const& lhs,
                     rounding_integer<RhsRep, RoundingTag> const& rhs) const
             -> decltype(from_rep<rounding_integer<int, RoundingTag>>(
@@ -220,7 +220,7 @@ namespace cnl {
         // comparison for operands with a common tag
         template<class Operator, class LhsRep, class RhsRep, class RoundingTag>
         struct comparison_operator<Operator, rounding_integer<LhsRep, RoundingTag>, rounding_integer<RhsRep, RoundingTag>> {
-        constexpr auto operator()(
+        CNL_NODISCARD constexpr auto operator()(
                 rounding_integer<LhsRep, RoundingTag> const& lhs,
                 rounding_integer<RhsRep, RoundingTag> const& rhs) const
             -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
@@ -233,7 +233,7 @@ namespace cnl {
         template<class Operator, class LhsRep, class LhsRoundingTag, class RhsRep, class RhsRoundingTag>
         struct comparison_operator<Operator,
                 rounding_integer<LhsRep, LhsRoundingTag>, rounding_integer<RhsRep, RhsRoundingTag>> {
-            constexpr auto operator()(
+            CNL_NODISCARD constexpr auto operator()(
                     rounding_integer<LhsRep, LhsRoundingTag> const& lhs,
                     rounding_integer<RhsRep, RhsRoundingTag> const& rhs) const
             -> decltype(comparison_operator<Operator, rounding_integer<LhsRep, common_type_t<LhsRoundingTag, RhsRoundingTag>>, rounding_integer<LhsRep, common_type_t<LhsRoundingTag, RhsRoundingTag>>>()(lhs, rhs))

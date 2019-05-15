@@ -14,14 +14,14 @@ namespace cnl {
     namespace _impl {
         /// creates a fraction with types deduced from the numerator and denominator
         template<typename Numerator, typename Denominator>
-        constexpr fraction<Numerator, Denominator> make_fraction(Numerator const& n, Denominator const& d)
+        CNL_NODISCARD constexpr fraction<Numerator, Denominator> make_fraction(Numerator const& n, Denominator const& d)
         {
             return fraction<Numerator, Denominator>{n, d};
         }
 
         /// creates a fraction with types deduced from the numerator
         template<typename Numerator>
-        constexpr fraction<Numerator, Numerator> make_fraction(Numerator const& n)
+        CNL_NODISCARD constexpr fraction<Numerator, Numerator> make_fraction(Numerator const& n)
         {
             return fraction<Numerator, Numerator>{n, 1};
         }

@@ -37,7 +37,7 @@ namespace prototypes {
         constexpr overflow_integer(Input const& r)
                 :_rep(r) { }
 
-        constexpr Rep const& data() const { return _rep; }
+        CNL_NODISCARD constexpr Rep const& data() const { return _rep; }
 
     private:
         Rep _rep;
@@ -72,13 +72,13 @@ namespace prototypes {
 TEST(cppnow2017, overflow_int_example)
 {
     // multiplication of overflow_integer<int> cannot exceed numeric limits
-    EXPECT_THROW(overflow_integer<int32_t>{cnl::numeric_limits<int32_t>::max()}*2, overflow_error);
+    EXPECT_THROW((void)(overflow_integer<int32_t>{cnl::numeric_limits<int32_t>::max()}*2), overflow_error);
 
     // difference from overflow_integer<unsigned> cannot be negative
-    EXPECT_THROW(overflow_integer<unsigned>{0}-1, overflow_error);
+    EXPECT_THROW((void)(overflow_integer<unsigned>{0}-1), overflow_error);
 
     // conversion to overflow_integer<char> cannot exceed numeric limits
-    EXPECT_THROW(overflow_integer<short>{cnl::numeric_limits<double>::max()}, overflow_error);
+    EXPECT_THROW((void)(overflow_integer<short>{cnl::numeric_limits<double>::max()}), overflow_error);
 
     // value of overflow_integer<int> cannot be indeterminate
     //auto d = overflow_integer<int>{};  // compiler error? exception? zero-initialization?
@@ -210,7 +210,7 @@ namespace composite {
     overflow_integer<elastic_integer<Digits, Narrowest>>;
 
     template<typename Rep1, typename Rep2>
-    constexpr auto operator*(overflow_integer<Rep1> const& a, overflow_integer<Rep2> const& b)
+    CNL_NODISCARD constexpr auto operator*(overflow_integer<Rep1> const& a, overflow_integer<Rep2> const& b)
     {
         auto product = a.data()*b.data();
 

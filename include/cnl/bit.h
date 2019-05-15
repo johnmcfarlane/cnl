@@ -22,19 +22,19 @@ namespace cnl {
 
     namespace _bit_impl {
         template<typename T>
-        constexpr bool is_integral_unsigned()
+        CNL_NODISCARD constexpr bool is_integral_unsigned()
         {
             return numeric_limits<T>::is_integer && !is_signed<T>::value;
         }
 
         template<typename T>
-        constexpr bool is_integral_signed()
+        CNL_NODISCARD constexpr bool is_integral_signed()
         {
             return numeric_limits<T>::is_integer && is_signed<T>::value;
         }
 
         template<typename T>
-        constexpr T rotl(T x, unsigned int s, unsigned int width) noexcept
+        CNL_NODISCARD constexpr T rotl(T x, unsigned int s, unsigned int width) noexcept
         {
             static_assert(is_integral_unsigned<T>(), "T must be unsigned integer");
 
@@ -42,7 +42,7 @@ namespace cnl {
         }
 
         template<typename T>
-        constexpr T rotr(T x, unsigned int s, unsigned int width) noexcept
+        CNL_NODISCARD constexpr T rotr(T x, unsigned int s, unsigned int width) noexcept
         {
             static_assert(is_integral_unsigned<T>(), "T must be unsigned integer");
 
@@ -50,7 +50,7 @@ namespace cnl {
         }
 
         template<typename T>
-        constexpr int countr_zero(T x) noexcept
+        CNL_NODISCARD constexpr int countr_zero(T x) noexcept
         {
             static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
@@ -60,38 +60,38 @@ namespace cnl {
 
     // rotl - rotate bits to the left
     template<typename T>
-    constexpr T rotl(T x, unsigned int s) noexcept
+    CNL_NODISCARD constexpr T rotl(T x, unsigned int s) noexcept
     {
         return _bit_impl::rotl(x, s, cnl::digits<T>::value);
     }
 
     // rotr - rotate bits to the right
     template<typename T>
-    constexpr T rotr(T x, unsigned int s) noexcept
+    CNL_NODISCARD constexpr T rotr(T x, unsigned int s) noexcept
     {
         return _bit_impl::rotr(x, s, cnl::digits<T>::value);
     }
 
     // countl_zero - count 0-bits to the left
     template<typename T>
-    constexpr int countl_zero(T x) noexcept;
+    CNL_NODISCARD constexpr int countl_zero(T x) noexcept;
 
 #if defined(CNL_GCC_INTRINSICS_ENABLED)
 
     template<>
-    constexpr int countl_zero(unsigned int x) noexcept
+    CNL_NODISCARD constexpr int countl_zero(unsigned int x) noexcept
     {
         return x ? __builtin_clz(x) : cnl::digits<unsigned int>::value;
     }
 
     template<>
-    constexpr int countl_zero(unsigned long x) noexcept
+    CNL_NODISCARD constexpr int countl_zero(unsigned long x) noexcept
     {
         return x ? __builtin_clzl(x) : cnl::digits<unsigned long>::value;
     }
 
     template<>
-    constexpr int countl_zero(unsigned long long x) noexcept
+    CNL_NODISCARD constexpr int countl_zero(unsigned long long x) noexcept
     {
         return x ? __builtin_clzll(x) : cnl::digits<unsigned long long>::value;
     }
@@ -99,7 +99,7 @@ namespace cnl {
 #endif
 
     template<typename T>
-    constexpr int countl_zero(T x) noexcept
+    CNL_NODISCARD constexpr int countl_zero(T x) noexcept
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
@@ -108,24 +108,24 @@ namespace cnl {
 
     // countl_one - count 1-bits to the left
     template<typename T>
-    constexpr int countl_one(T x) noexcept;
+    CNL_NODISCARD constexpr int countl_one(T x) noexcept;
 
 #if defined(CNL_GCC_INTRINSICS_ENABLED)
 
     template<>
-    constexpr int countl_one(unsigned int x) noexcept
+    CNL_NODISCARD constexpr int countl_one(unsigned int x) noexcept
     {
         return ~x ? __builtin_clz(~x) : cnl::digits<unsigned int>::value;
     }
 
     template<>
-    constexpr int countl_one(unsigned long x) noexcept
+    CNL_NODISCARD constexpr int countl_one(unsigned long x) noexcept
     {
         return ~x ? __builtin_clzl(~x) : cnl::digits<unsigned long>::value;
     }
 
     template<>
-    constexpr int countl_one(unsigned long long x) noexcept
+    CNL_NODISCARD constexpr int countl_one(unsigned long long x) noexcept
     {
         return ~x ? __builtin_clzll(~x) : cnl::digits<unsigned long long>::value;
     }
@@ -133,7 +133,7 @@ namespace cnl {
 #endif
 
     template<typename T>
-    constexpr int countl_one(T x) noexcept
+    CNL_NODISCARD constexpr int countl_one(T x) noexcept
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
@@ -142,24 +142,24 @@ namespace cnl {
 
     // countr_zero - count 0-bits to the right
     template<typename T>
-    constexpr int countr_zero(T x) noexcept;
+    CNL_NODISCARD constexpr int countr_zero(T x) noexcept;
 
 #if defined(CNL_GCC_INTRINSICS_ENABLED) && !defined(__clang__)
 
     template<>
-    constexpr int countr_zero(unsigned int x) noexcept
+    CNL_NODISCARD constexpr int countr_zero(unsigned int x) noexcept
     {
         return __builtin_ctz(x);
     }
 
     template<>
-    constexpr int countr_zero(unsigned long x) noexcept
+    CNL_NODISCARD constexpr int countr_zero(unsigned long x) noexcept
     {
         return x ? __builtin_ctzl(x) : cnl::digits<unsigned long>::value;
     }
 
     template<>
-    constexpr int countr_zero(unsigned long long x) noexcept
+    CNL_NODISCARD constexpr int countr_zero(unsigned long long x) noexcept
     {
         return x ? __builtin_ctzll(x) : cnl::digits<unsigned long long>::value;
     }
@@ -167,47 +167,47 @@ namespace cnl {
 #endif
 
     template<typename T>
-    constexpr int countr_zero(T x) noexcept
+    CNL_NODISCARD constexpr int countr_zero(T x) noexcept
     {
         return x ? _bit_impl::countr_zero(x) : cnl::digits<T>::value;
     }
 
     // countr_one - count 1-bits to the right
     template<typename T>
-    constexpr int countr_one(T x) noexcept;
+    CNL_NODISCARD constexpr int countr_one(T x) noexcept;
 
     template<>
-    constexpr int countr_one(unsigned int x) noexcept
+    CNL_NODISCARD constexpr int countr_one(unsigned int x) noexcept
     {
         return countr_zero(~x);
     }
 
     template<typename T>
-    constexpr int countr_one(T x) noexcept
+    CNL_NODISCARD constexpr int countr_one(T x) noexcept
     {
         return (x & T{1}) ? countr_one(x >> 1)+1 : 0;
     }
 
     // popcount - count total number of 1-bits
     template<typename T>
-    constexpr int popcount(T x) noexcept;
+    CNL_NODISCARD constexpr int popcount(T x) noexcept;
 
 #if defined(CNL_GCC_INTRINSICS_ENABLED)
 
     template<>
-    constexpr int popcount(unsigned int x) noexcept
+    CNL_NODISCARD constexpr int popcount(unsigned int x) noexcept
     {
         return __builtin_popcount(x);
     }
 
     template<>
-    constexpr int popcount(unsigned long x) noexcept
+    CNL_NODISCARD constexpr int popcount(unsigned long x) noexcept
     {
         return __builtin_popcountl(x);
     }
 
     template<>
-    constexpr int popcount(unsigned long long x) noexcept
+    CNL_NODISCARD constexpr int popcount(unsigned long long x) noexcept
     {
         return __builtin_popcountll(x);
     }
@@ -215,7 +215,7 @@ namespace cnl {
 #endif
 
     template<typename T>
-    constexpr int popcount(T x) noexcept
+    CNL_NODISCARD constexpr int popcount(T x) noexcept
     {
         return x ? popcount(x & (x-1))+1 : 0;
     }
@@ -226,7 +226,7 @@ namespace cnl {
 
     // ispow2
     template<class T>
-    constexpr bool ispow2(T x) noexcept
+    CNL_NODISCARD constexpr bool ispow2(T x) noexcept
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
@@ -235,7 +235,7 @@ namespace cnl {
 
     // ceil2 - lowest power of 2 no less than x
     template<class T>
-    constexpr T ceil2(T x) noexcept
+    CNL_NODISCARD constexpr T ceil2(T x) noexcept
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
@@ -244,7 +244,7 @@ namespace cnl {
 
     // floor2 - greatest power of 2 no greater than x
     template<class T>
-    constexpr T floor2(T x) noexcept
+    CNL_NODISCARD constexpr T floor2(T x) noexcept
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
@@ -253,7 +253,7 @@ namespace cnl {
 
     // log2p1 - one plus log2(x)
     template<class T>
-    constexpr int log2p1(T x) noexcept
+    CNL_NODISCARD constexpr int log2p1(T x) noexcept
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
@@ -265,24 +265,24 @@ namespace cnl {
 
     // countl_rsb - count redundant sign bits to the left
     template<typename T>
-    constexpr int countl_rsb(T x) noexcept;
+    CNL_NODISCARD constexpr int countl_rsb(T x) noexcept;
 
 #if defined(CNL_GCC_INTRINSICS_ENABLED) && !defined(__clang__)
 
     template<>
-    constexpr int countl_rsb(int x) noexcept
+    CNL_NODISCARD constexpr int countl_rsb(int x) noexcept
     {
         return __builtin_clrsb(x);
     }
 
     template<>
-    constexpr int countl_rsb(long x) noexcept
+    CNL_NODISCARD constexpr int countl_rsb(long x) noexcept
     {
         return __builtin_clrsbl(x);
     }
 
     template<>
-    constexpr int countl_rsb(long long x) noexcept
+    CNL_NODISCARD constexpr int countl_rsb(long long x) noexcept
     {
         return __builtin_clrsbll(x);
     }
@@ -290,7 +290,7 @@ namespace cnl {
 #endif
 
     template<typename T>
-    constexpr int countl_rsb(T x) noexcept
+    CNL_NODISCARD constexpr int countl_rsb(T x) noexcept
     {
         static_assert(_bit_impl::is_integral_signed<T>(), "T must be signed integer");
 
@@ -306,7 +306,7 @@ namespace cnl {
         template<bool IsSigned>
         struct countl_rb {
             template<class Integer>
-            constexpr int operator()(Integer const& value) const
+            CNL_NODISCARD constexpr int operator()(Integer const& value) const
             {
                 static_assert(_bit_impl::is_integral_unsigned<Integer>(), "T must be unsigned integer");
 
@@ -317,7 +317,7 @@ namespace cnl {
         template<>
         struct countl_rb<true> {
             template<class Integer>
-            constexpr int operator()(Integer const& value) const
+            CNL_NODISCARD constexpr int operator()(Integer const& value) const
             {
                 static_assert(_bit_impl::is_integral_signed<Integer>(), "T must be signed integer");
 
@@ -327,14 +327,14 @@ namespace cnl {
     }
 
     template<typename T>
-    constexpr int countl_rb(T x) noexcept
+    CNL_NODISCARD constexpr int countl_rb(T x) noexcept
     {
         return _bit_impl::countl_rb<is_signed<T>::value>()(x);
     }
 
     // countr_used - count total used bits to the right
     template<typename T>
-    constexpr int countr_used(T x) noexcept
+    CNL_NODISCARD constexpr int countr_used(T x) noexcept
     {
         return digits<T>::value - countl_rb(x);
     }

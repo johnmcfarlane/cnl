@@ -35,7 +35,7 @@ namespace cnl {
                     : _base(static_cast<rep>(value)) { }
 
             template<class S>
-            explicit constexpr operator S() const
+            CNL_NODISCARD explicit constexpr operator S() const
             {
                 return static_cast<S>(_impl::to_rep(*this));
             }

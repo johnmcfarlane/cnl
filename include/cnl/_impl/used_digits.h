@@ -21,7 +21,7 @@ namespace cnl {
         template<>
         struct used_digits_signed<false> {
             template<class Integer>
-            constexpr int operator()(Integer const& value, int radix) const
+            CNL_NODISCARD constexpr int operator()(Integer const& value, int radix) const
             {
                 static_assert(cnl::numeric_limits<Integer>::is_integer,
                         "Integer parameter of used_digits_positive() must be a fundamental integer.");
@@ -33,7 +33,7 @@ namespace cnl {
         template<>
         struct used_digits_signed<true> {
             template<class Integer>
-            constexpr int operator()(Integer const& value, int radix) const
+            CNL_NODISCARD constexpr int operator()(Integer const& value, int radix) const
             {
                 static_assert(cnl::numeric_limits<Integer>::is_integer,
                         "Integer parameter of used_digits_signed()() must be a fundamental integer.");
@@ -48,7 +48,7 @@ namespace cnl {
         };
 
         template<typename Integer>
-        constexpr int used_digits(Integer const& value, int radix = numeric_limits<Integer>::radix)
+        CNL_NODISCARD constexpr int used_digits(Integer const& value, int radix = numeric_limits<Integer>::radix)
         {
             static_assert(std::is_integral<Integer>::value
                     || std::is_same<Integer, intmax>::value

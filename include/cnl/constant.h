@@ -46,12 +46,12 @@ namespace cnl {
         static constexpr value_type value = Value;
 
 #if defined(_MSC_VER)
-        constexpr operator auto() const -> value_type
+        CNL_NODISCARD constexpr operator auto() const -> value_type
         {
             return value;
         }
 #else
-        constexpr operator value_type() const
+        CNL_NODISCARD constexpr operator value_type() const
         {
             return value;
         }
@@ -63,14 +63,14 @@ namespace cnl {
 
 #define CNL_IMPL_CONSTANT_UNARY(OPERATOR) \
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value> \
-    constexpr auto operator OPERATOR(constant<Value>) noexcept \
+    CNL_NODISCARD constexpr auto operator OPERATOR(constant<Value>) noexcept \
     -> constant<OPERATOR Value> { \
         return constant<OPERATOR Value>{}; \
     }
 
 #define CNL_IMPL_CONSTANT_BINARY(OPERATOR) \
     template<CNL_IMPL_CONSTANT_VALUE_TYPE LhsValue, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue> \
-    constexpr auto operator OPERATOR(constant<LhsValue>, constant<RhsValue>) noexcept \
+    CNL_NODISCARD constexpr auto operator OPERATOR(constant<LhsValue>, constant<RhsValue>) noexcept \
     -> constant<(LhsValue OPERATOR RhsValue)> { \
         return constant<(LhsValue OPERATOR RhsValue)>{};\
     }
@@ -123,7 +123,7 @@ namespace cnl {
 
     namespace literals {
         template<char... Chars>
-        constexpr auto operator "" _c()
+        CNL_NODISCARD constexpr auto operator "" _c()
         -> constant<_cnlint_impl::parse<Chars...,'\0'>()>
         {
             return {};
@@ -137,17 +137,17 @@ namespace cnl {
     struct numeric_limits<constant<Value>> : cnl::numeric_limits<typename constant<Value>::value_type> {
         using _value_type = typename constant<Value>::value_type;
 
-        static constexpr _value_type min()
+        CNL_NODISCARD static constexpr _value_type min()
         {
             return {};
         }
 
-        static constexpr _value_type max()
+        CNL_NODISCARD static constexpr _value_type max()
         {
             return {};
         }
 
-        static constexpr _value_type lowest()
+        CNL_NODISCARD static constexpr _value_type lowest()
         {
             return {};
         }

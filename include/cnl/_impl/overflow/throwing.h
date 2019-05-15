@@ -31,13 +31,13 @@ namespace cnl {
         template<typename Operator>
         struct overflow_operator<Operator, throwing_overflow_tag, polarity::positive> {
             template<typename Destination, typename Source>
-            constexpr Destination operator()(Source const&) const
+            CNL_NODISCARD constexpr Destination operator()(Source const&) const
             {
                 return throw_exception<Destination, std::overflow_error>("positive overflow");
             }
 
             template<class ... Operands>
-            constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
             {
                 return throw_exception<op_result<Operator, Operands...>, std::overflow_error>("positive overflow");
             }
@@ -46,13 +46,13 @@ namespace cnl {
         template<typename Operator>
         struct overflow_operator<Operator, throwing_overflow_tag, polarity::negative> {
             template<typename Destination, typename Source>
-            constexpr Destination operator()(Source const&) const
+            CNL_NODISCARD constexpr Destination operator()(Source const&) const
             {
                 return throw_exception<Destination, std::overflow_error>("negative overflow");
             }
 
             template<class ... Operands>
-            constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
             {
                 return throw_exception<op_result<Operator, Operands...>, std::overflow_error>("negative overflow");
             }
@@ -60,7 +60,7 @@ namespace cnl {
 
         template<typename Result>
         struct negative_overflow_result<Result, throwing_overflow_tag> {
-            constexpr Result operator()() const
+            CNL_NODISCARD constexpr Result operator()() const
             {
                 return throw_exception<Result, std::overflow_error>("negative overflow");
             }

@@ -22,7 +22,7 @@ namespace cnl {
     namespace _impl {
 
         template<int LhsDigits, class LhsNarrowest, class Rhs>
-        constexpr auto operator<<(wide_integer<LhsDigits, LhsNarrowest> const& lhs, Rhs const& rhs)
+        CNL_NODISCARD constexpr auto operator<<(wide_integer<LhsDigits, LhsNarrowest> const& lhs, Rhs const& rhs)
         -> wide_integer<LhsDigits, LhsNarrowest>
         {
             return wide_integer<LhsDigits, LhsNarrowest>(
@@ -30,7 +30,7 @@ namespace cnl {
         }
 
         template<int LhsDigits, class LhsNarrowest, class Rhs>
-        constexpr auto operator>>(wide_integer<LhsDigits, LhsNarrowest> const& lhs, Rhs const& rhs)
+        CNL_NODISCARD constexpr auto operator>>(wide_integer<LhsDigits, LhsNarrowest> const& lhs, Rhs const& rhs)
         -> wide_integer<LhsDigits, LhsNarrowest>
         {
             return wide_integer<LhsDigits, LhsNarrowest>(
@@ -39,7 +39,7 @@ namespace cnl {
 
         template<typename Operator, int Digits, typename Narrowest>
         struct unary_operator<Operator, wide_integer<Digits, Narrowest>> {
-            constexpr auto operator()(wide_integer<Digits, Narrowest> const& rhs) const -> wide_integer<Digits, Narrowest>
+            CNL_NODISCARD constexpr auto operator()(wide_integer<Digits, Narrowest> const& rhs) const -> wide_integer<Digits, Narrowest>
             {
                 return Operator()(to_rep(rhs));
             }
@@ -52,7 +52,7 @@ namespace cnl {
             using _lhs = wide_integer<LhsDigits, LhsNarrowest>;
             using _rhs = wide_integer<RhsDigits, RhsNarrowest>;
             using _result = typename std::common_type<_lhs, _rhs>::type;
-            constexpr auto operator()(_lhs const& lhs, _rhs const& rhs) const -> _result
+            CNL_NODISCARD constexpr auto operator()(_lhs const& lhs, _rhs const& rhs) const -> _result
             {
                 return Operator{}(to_rep(lhs), to_rep(rhs));
             }
@@ -62,7 +62,7 @@ namespace cnl {
         struct comparison_operator<
                 Operator,
                 wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>> {
-            constexpr auto operator()(
+            CNL_NODISCARD constexpr auto operator()(
                     wide_integer<LhsDigits, LhsNarrowest> const& lhs,
                     wide_integer<RhsDigits, RhsNarrowest> const& rhs) const
             -> decltype(Operator()(to_rep(lhs), to_rep(rhs)))

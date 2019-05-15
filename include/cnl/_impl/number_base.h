@@ -28,7 +28,7 @@ namespace cnl {
         public:
             using rep = Rep;
 
-            explicit constexpr operator bool() const
+            CNL_NODISCARD explicit constexpr operator bool() const
             {
                 return static_cast<bool>(_rep);
             }
@@ -143,7 +143,7 @@ namespace cnl {
         struct binary_operator<
                 Operator, Lhs, Rhs,
                 enable_if_t<std::is_floating_point<Lhs>::value && is_derived_from_number_base<Rhs>::value>> {
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(Operator()(lhs, static_cast<Lhs>(rhs)))
             {
                 return Operator()(lhs, static_cast<Lhs>(rhs));
@@ -155,7 +155,7 @@ namespace cnl {
         struct binary_operator<
                 Operator, Lhs, Rhs,
                 enable_if_t<is_derived_from_number_base<Lhs>::value && std::is_floating_point<Rhs>::value>> {
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(Operator()(static_cast<Rhs>(lhs), rhs))
             {
                 return Operator()(static_cast<Rhs>(lhs), rhs);
@@ -167,7 +167,7 @@ namespace cnl {
         struct binary_operator<
                 Operator, Lhs, Rhs,
                 enable_if_t<can_wrap<Rhs, Lhs>::value>> {
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(Operator()(from_value<Rhs>(lhs), rhs))
             {
                 return Operator()(from_value<Rhs>(lhs), rhs);
@@ -179,7 +179,7 @@ namespace cnl {
         struct binary_operator<
                 Operator, Lhs, Rhs,
                 enable_if_t<can_wrap<Lhs, Rhs>::value>> {
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(Operator()(lhs, from_value<Lhs>(rhs)))
             {
                 return Operator()(lhs, from_value<Lhs>(rhs));
@@ -203,7 +203,7 @@ namespace cnl {
                 &&!excluded_from_specialization<Lhs, Rhs>::value
 #endif
         >> {
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(from_rep<Lhs>(Operator()(to_rep(lhs), rhs)))
             {
                 return from_rep<Lhs>(Operator()(to_rep(lhs), rhs));
@@ -214,7 +214,7 @@ namespace cnl {
         struct shift_operator<
                 Operator, Lhs, Rhs,
                 enable_if_t<is_derived_from_number_base<Lhs>::value&&is_same_wrapper<Lhs, Rhs>::value>> {
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(from_rep<Lhs>(Operator()(to_rep(lhs), to_rep(rhs))))
             {
                 return from_rep<Lhs>(Operator()(to_rep(lhs), to_rep(rhs)));
@@ -229,7 +229,7 @@ namespace cnl {
         struct comparison_operator<
                 Operator, Lhs, Rhs,
                 enable_if_t<std::is_floating_point<Lhs>::value && is_derived_from_number_base<Rhs>::value>> {
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(Operator()(lhs, static_cast<Lhs>(rhs)))
             {
                 return Operator()(lhs, static_cast<Lhs>(rhs));
@@ -241,7 +241,7 @@ namespace cnl {
         struct comparison_operator<
                 Operator, Lhs, Rhs,
                 enable_if_t<is_derived_from_number_base<Lhs>::value && std::is_floating_point<Rhs>::value>> {
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(Operator()(static_cast<Rhs>(lhs), rhs))
             {
                 return Operator()(static_cast<Rhs>(lhs), rhs);
@@ -253,7 +253,7 @@ namespace cnl {
         struct comparison_operator<
                 Operator, Lhs, Rhs,
                 enable_if_t<can_wrap<Rhs, Lhs>::value>> {
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(Operator()(from_value<Rhs>(lhs), rhs))
             {
                 return Operator()(from_value<Rhs>(lhs), rhs);
@@ -265,7 +265,7 @@ namespace cnl {
         struct comparison_operator<
                 Operator, Lhs, Rhs,
                 enable_if_t<can_wrap<Lhs, Rhs>::value>> {
-            constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(Operator()(lhs, from_value<Lhs>(rhs)))
             {
                 return Operator()(lhs, from_value<Lhs>(rhs));
@@ -316,13 +316,13 @@ namespace cnl {
 
     template<class Derived, class Rep>
     struct to_rep<_impl::number_base<Derived, Rep>> {
-        constexpr Rep& operator()(Derived& number) const {
+        CNL_NODISCARD constexpr Rep& operator()(Derived& number) const {
             return number._rep;
         }
-        constexpr Rep const& operator()(Derived const& number) const {
+        CNL_NODISCARD constexpr Rep const& operator()(Derived const& number) const {
             return number._rep;
         }
-        constexpr Rep&& operator()(Derived&& number) const {
+        CNL_NODISCARD constexpr Rep&& operator()(Derived&& number) const {
             return std::forward<Rep>(number._rep);
         }
     };
@@ -336,7 +336,7 @@ namespace cnl {
     struct scale<Digits, Radix, _impl::number_base<Derived, typename Derived::rep>> {
         using _scalar_type = _impl::number_base<Derived, typename Derived::rep>;
 
-        constexpr auto operator()(Derived const &s) const
+        CNL_NODISCARD constexpr auto operator()(Derived const &s) const
         -> decltype(_impl::from_rep<Derived>(_impl::scale<Digits, Radix>(_impl::to_rep(s))))
         {
             return _impl::from_rep<Derived>(_impl::scale<Digits, Radix>(_impl::to_rep(s)));
@@ -356,47 +356,47 @@ namespace cnl {
 
         // standard members
 
-        static constexpr _value_type min() noexcept
+        CNL_NODISCARD static constexpr _value_type min() noexcept
         {
             return _impl::from_rep<_value_type>(_rep_numeric_limits::min());
         }
 
-        static constexpr _value_type max() noexcept
+        CNL_NODISCARD static constexpr _value_type max() noexcept
         {
             return _impl::from_rep<_value_type>(_rep_numeric_limits::max());
         }
 
-        static constexpr _value_type lowest() noexcept
+        CNL_NODISCARD static constexpr _value_type lowest() noexcept
         {
             return _impl::from_rep<_value_type>(_rep_numeric_limits::lowest());
         }
 
-        static constexpr _value_type epsilon() noexcept
+        CNL_NODISCARD static constexpr _value_type epsilon() noexcept
         {
             return _impl::from_rep<_value_type>(_rep_numeric_limits::round_error());
         }
 
-        static constexpr _value_type round_error() noexcept
+        CNL_NODISCARD static constexpr _value_type round_error() noexcept
         {
             return static_cast<_value_type>(_rep_numeric_limits::round_error());
         }
 
-        static constexpr _value_type infinity() noexcept
+        CNL_NODISCARD static constexpr _value_type infinity() noexcept
         {
             return static_cast<_value_type>(_rep_numeric_limits::infinity());
         }
 
-        static constexpr _value_type quiet_NaN() noexcept
+        CNL_NODISCARD static constexpr _value_type quiet_NaN() noexcept
         {
             return static_cast<_value_type>(_rep_numeric_limits::quiet_NaN());
         }
 
-        static constexpr _value_type signaling_NaN() noexcept
+        CNL_NODISCARD static constexpr _value_type signaling_NaN() noexcept
         {
             return static_cast<_value_type>(_rep_numeric_limits::signaling_NaN());
         }
 
-        static constexpr _value_type denorm_min() noexcept
+        CNL_NODISCARD static constexpr _value_type denorm_min() noexcept
         {
             return static_cast<_value_type>(_rep_numeric_limits::denorm_min());
         }

@@ -32,13 +32,13 @@ namespace cnl {
         template<typename Operator>
         struct overflow_operator<Operator, undefined_overflow_tag, polarity::positive> {
             template<typename Destination, typename Source>
-            constexpr Destination operator()(Source const&) const
+            CNL_NODISCARD constexpr Destination operator()(Source const&) const
             {
                 return unreachable<Destination>("positive overflow");
             }
 
             template<class ... Operands>
-            constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
             {
                 return unreachable<op_result<Operator, Operands...>>("positive overflow");
             }
@@ -47,13 +47,13 @@ namespace cnl {
         template<typename Operator>
         struct overflow_operator<Operator, undefined_overflow_tag, polarity::negative> {
             template<typename Destination, typename Source>
-            constexpr Destination operator()(Source const&) const
+            CNL_NODISCARD constexpr Destination operator()(Source const&) const
             {
                 return unreachable<Destination>("negative overflow");
             }
 
             template<class ... Operands>
-            constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
             {
                 return unreachable<op_result<Operator, Operands...>>("negative overflow");
             }

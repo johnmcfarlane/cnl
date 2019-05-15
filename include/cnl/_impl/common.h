@@ -38,7 +38,7 @@ namespace cnl {
         // cnl::_impl::max
 
         template<class T>
-        constexpr T max(T a, T b)
+        CNL_NODISCARD constexpr T max(T a, T b)
         {
             return (a<b) ? b : a;
         }
@@ -47,7 +47,7 @@ namespace cnl {
         // cnl::_impl::min
 
         template<class T>
-        constexpr T min(T a, T b)
+        CNL_NODISCARD constexpr T min(T a, T b)
         {
             return (a<b) ? a : b;
         }

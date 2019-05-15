@@ -22,7 +22,7 @@ namespace cnl {
         namespace fp {
 
             template<class FixedPoint>
-            constexpr FixedPoint rounding_conversion(double d) {
+            CNL_NODISCARD constexpr FixedPoint rounding_conversion(double d) {
                 using one_longer = fixed_point<set_digits_t<typename FixedPoint::rep, digits<FixedPoint>::value+1>, FixedPoint::exponent-1>;
                 return from_rep<FixedPoint>(static_cast<typename FixedPoint::rep>((_impl::to_rep(one_longer{ d }) + 1) >> 1));
             }
@@ -37,7 +37,7 @@ namespace cnl {
 
             //TODO: template magic to get the coefficients automatically
             //from the number of bits of precision
-            //Define the coefficients as constexpr,
+            //Define the coefficients as CNL_NODISCARD constexpr,
             //to make sure they're converted to fp
             //at compile time
             template<class CoeffType>
@@ -72,7 +72,7 @@ namespace cnl {
             constexpr CoeffType poly_coeffs<CoeffType>::a7;
 
             template<typename A, typename B>
-            constexpr auto safe_multiply(A const& a, B const& b)
+            CNL_NODISCARD constexpr auto safe_multiply(A const& a, B const& b)
             -> enable_if_t<digits<decltype(a*b)>::value <= digits<A>::value+digits<B>::value,
                     decltype(set_digits_t<A, digits<A>::value+digits<B>::value>{a}
                             *set_digits_t<B, digits<A>::value+digits<B>::value>{b})> {
@@ -81,13 +81,13 @@ namespace cnl {
             }
 
             template<typename A, typename B>
-            constexpr auto safe_multiply(A const& a, B const& b)
+            CNL_NODISCARD constexpr auto safe_multiply(A const& a, B const& b)
             -> enable_if_t<digits<A>::value+digits<B>::value <= digits<decltype(a*b)>::value, decltype(a*b)> {
                 return a*b;
             }
 
             template<class Rep, int Exponent>
-            constexpr inline fixed_point<Rep, Exponent> evaluate_polynomial(
+            CNL_NODISCARD constexpr inline fixed_point<Rep, Exponent> evaluate_polynomial(
                     fixed_point<Rep, Exponent> xf) {
                 using fp = fixed_point<Rep, Exponent>;
 
@@ -116,7 +116,7 @@ namespace cnl {
             //If the exponent is not negative, there is no fraction part,
             //so this is always zero
             template<class Rep, int Exponent>
-            inline constexpr auto exp2m1_0to1(fixed_point<Rep, Exponent>)
+            CNL_NODISCARD inline constexpr auto exp2m1_0to1(fixed_point<Rep, Exponent>)
             -> _impl::enable_if_t<(Exponent>=0), make_largest_ufraction<fixed_point<Rep, Exponent>>> {
                 // Cannot construct from 0, since that would be a shift by more than width of type!
                 return from_rep<make_largest_ufraction<fixed_point<Rep, Exponent>>>(0);
@@ -124,7 +124,7 @@ namespace cnl {
 
             //for a positive exponent, some work needs to be done
             template<class Rep, int Exponent>
-            constexpr inline auto exp2m1_0to1(fixed_point<Rep, Exponent> x)
+            CNL_NODISCARD constexpr inline auto exp2m1_0to1(fixed_point<Rep, Exponent> x)
             -> _impl::enable_if_t<(Exponent<0), make_largest_ufraction<fixed_point<Rep, Exponent>>> {
                 //Build the type with the same number of bits, all fraction,
                 //and unsigned. That should be enough to exactly hold enough bits
@@ -136,19 +136,19 @@ namespace cnl {
             }
 
             template<class Rep, int Exponent, int Radix>
-            constexpr enable_if_t<-digits<Rep>::value<Exponent, fixed_point<Rep, Exponent, Radix>>
+            CNL_NODISCARD constexpr enable_if_t<-digits<Rep>::value<Exponent, fixed_point<Rep, Exponent, Radix>>
             fractional(fixed_point<Rep, Exponent, Radix> const& x, Rep const& floored) {
                 return x - floored;
             }
 
             template<class Rep, int Exponent, int Radix>
-            constexpr enable_if_t<-digits<Rep>::value>=Exponent, fixed_point<Rep, Exponent, Radix>>
+            CNL_NODISCARD constexpr enable_if_t<-digits<Rep>::value>=Exponent, fixed_point<Rep, Exponent, Radix>>
             fractional(fixed_point<Rep, Exponent, Radix> const& x, Rep const&) {
                 return x;
             }
 
             template<class Intermediate, typename Rep, int Exponent>
-            constexpr typename Intermediate::rep
+            CNL_NODISCARD constexpr typename Intermediate::rep
                     exp2(fixed_point<Rep, Exponent> const& x, Rep const& floored) {
                 return floored <= Exponent
                     ? typename Intermediate::rep{1}//return immediately if the shift would result in all bits being shifted out
@@ -169,7 +169,7 @@ namespace cnl {
     ///
     /// \return the result of the exponential, in the same representation as x
     template<class Rep, int Exponent>
-    constexpr fixed_point<Rep, Exponent> exp2(fixed_point<Rep, Exponent> x) {
+    CNL_NODISCARD constexpr fixed_point<Rep, Exponent> exp2(fixed_point<Rep, Exponent> x) {
         using out_type = fixed_point<Rep, Exponent>;
         // The input type
         using im = _impl::fp::make_largest_ufraction<out_type>;

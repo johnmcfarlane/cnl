@@ -44,7 +44,7 @@ namespace cnl {
         private:
             using value_type = fixed_point<Rep, Exponent, Radix>;
 
-            constexpr auto integral(value_type const& scalar) const
+            CNL_NODISCARD constexpr auto integral(value_type const& scalar) const
             -> decltype(scale<Exponent, Radix>(to_rep(scalar)))
             {
                 return scale<Exponent, Radix>(to_rep(scalar));
@@ -58,7 +58,7 @@ namespace cnl {
             }
 
         public:
-            constexpr auto operator()(value_type const& value) const
+            CNL_NODISCARD constexpr auto operator()(value_type const& value) const
             -> decltype(from_integral_and_value(integral(value), value))
             {
                 return from_integral_and_value(integral(value), value);
@@ -69,7 +69,7 @@ namespace cnl {
         struct split<Rep, Exponent, Radix, true> {
             using value_type = fixed_point<Rep, Exponent, Radix>;
 
-            constexpr auto operator()(value_type const& value) const
+            CNL_NODISCARD constexpr auto operator()(value_type const& value) const
             -> decltype(std::make_pair(Rep{}, value))
             {
                 return std::make_pair(Rep{}, value);

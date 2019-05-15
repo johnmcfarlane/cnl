@@ -27,7 +27,7 @@ namespace cnl {
             class OverflowTag = undefined_overflow_tag,
             class Narrowest = int,
             class Input = int>
-    safe_integer<
+    CNL_NODISCARD safe_integer<
             numeric_limits<Input>::digits,
             OverflowTag,
             Narrowest>
