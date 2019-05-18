@@ -2,19 +2,19 @@
 
 #include <gtest/gtest.h>
 
-template <
+template<
         int IntegerDigits,
         int FractionalDigits,
         class Narrowest>
 using saturated_elastic_fixed_point = cnl::fixed_point<
-cnl::elastic_integer<
-        IntegerDigits + FractionalDigits,
-        cnl::rounding_integer<
-                cnl::overflow_integer<
-                Narrowest,
-        cnl::saturated_overflow_tag>,
-cnl::native_rounding_tag>>,
--FractionalDigits>;
+        cnl::elastic_integer<
+                IntegerDigits+FractionalDigits,
+                cnl::rounding_integer<
+                        cnl::overflow_integer<
+                                Narrowest,
+                                cnl::saturated_overflow_tag>,
+                        cnl::native_rounding_tag>>,
+        -FractionalDigits>;
 
 using temp_wide_t = saturated_elastic_fixed_point<23, 8, int32_t>;
 using temp_t = saturated_elastic_fixed_point<7, 8, int16_t>;
