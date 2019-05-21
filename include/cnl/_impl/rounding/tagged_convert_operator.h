@@ -45,7 +45,7 @@ namespace cnl {
             CNL_NODISCARD constexpr Destination operator()(Source const& from) const
             {
                 return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
-                        ? static_cast<Destination>(from+((from >= 0) ? .5 : -.5))
+                        ? static_cast<Destination>(from+((from >= Source{}) ? .5 : -.5))
                         : static_cast<Destination>(from);
             }
         };
