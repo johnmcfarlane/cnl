@@ -22,19 +22,16 @@ namespace {
     using rounding_elastic_number = cnl::fixed_point<rounding_elastic_integer<Digits, RoundingTag, Narrowest>, Exponent>;
 
     namespace test_addition {
-        static constexpr auto lhs = rounding_elastic_number<16>{1};
-        static constexpr auto rhs = rounding_elastic_number<16, -8>{1};
-        static constexpr auto expected = rounding_elastic_number<25, -8>{2};
-        static constexpr auto sum = lhs + rhs;
-        static_assert(identical(expected, sum), "rounding_elastic_number addition");
-    }
-
-    namespace test_addition_larger {
-        static constexpr auto lhs = rounding_elastic_number<32>{1};
-        static constexpr auto rhs = rounding_elastic_number<32, -30>{1};
-        static constexpr auto expected = rounding_elastic_number<63, -30>{2LL};
-        static constexpr auto sum = lhs + rhs;
-        static_assert(identical(expected, sum), "larger rounding_elastic_number addition");
+        static_assert(
+                identical(
+                        rounding_elastic_number<25, -8>{2},
+                        rounding_elastic_number<16>{1}+rounding_elastic_number<16, -8>{1}),
+                "rounding_elastic_number addition");
+        static_assert(
+                identical(
+                        rounding_elastic_number<63, -30>{2LL},
+                        rounding_elastic_number<32>{1}+rounding_elastic_number<32, -30>{1}),
+                "larger rounding_elastic_number addition");
     }
 
     namespace test_shift {
