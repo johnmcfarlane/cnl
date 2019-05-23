@@ -25,6 +25,10 @@ namespace {
                 identical(
                         cnl::static_number<20, -10>{1./3},
                         cnl::static_number<20, -10>{cnl::fraction<int>(1, 3)}), "");
+        static_assert(
+                identical(
+                        cnl::static_number<5, 0, cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>{31},
+                        cnl::static_number<5, 0, cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>{31.5}), "");
     }
 
     namespace test_make_static_number {

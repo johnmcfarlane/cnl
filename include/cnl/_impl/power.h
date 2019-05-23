@@ -7,6 +7,8 @@
 #if !defined(CNL_IMPL_POWER_H)
 #define CNL_IMPL_POWER_H 1
 
+#include "num_traits/digits.h"
+#include "num_traits/from_value.h"
 #include "../constant.h"
 
 #include <type_traits>
@@ -35,14 +37,17 @@ namespace cnl {
         template<typename S, int Exponent, bool OddExponent>
         struct default_power<S, Exponent, 2, true, OddExponent, false> {
             CNL_NODISCARD constexpr auto operator()() const
-            -> decltype(S{1} << constant<Exponent>{})
+            -> decltype(decltype(std::declval<S>() >> constant<digits<S>::value-1>{}){1} << constant<Exponent>{})
             {
-                using result_numeric_limits = numeric_limits<decltype(S{1} << constant<Exponent>{})>;
+                using result_numeric_limits = numeric_limits<decltype(decltype(
+                        std::declval<S>() >> constant<digits<S>::value-1>{}){1} << constant<Exponent>{})>;
                 static_assert(!std::is_integral<S>::value
                         || !std::is_signed<S>::value
                         || Exponent<result_numeric_limits::digits, "attempted operation will result in overflow");
 
-                return S{1} << constant<Exponent>{};
+                // TODO: This expression is so ugly that it might justify
+                // a separate specialization of power for elastic_integer
+                return decltype(std::declval<S>() >> constant<digits<S>::value-1>{}){1} << constant<Exponent>{};
             }
         };
 

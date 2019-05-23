@@ -21,17 +21,34 @@ namespace {
     template<int Digits, int Exponent = 0, class RoundingTag = cnl::nearest_rounding_tag, class Narrowest = signed>
     using rounding_elastic_number = cnl::fixed_point<rounding_elastic_integer<Digits, RoundingTag, Narrowest>, Exponent>;
 
+    namespace test_ctor {
+        static_assert(
+                identical(
+                        rounding_elastic_number<24, -20>{1.5},
+                        rounding_elastic_number<24, -20>{rounding_elastic_number<49, -40>{1.5}}),
+                "");
+#if defined(CNL_INT128_ENABLED)
+        static_assert(
+                identical(
+                        rounding_elastic_number<48, -40>{1.5},
+                        rounding_elastic_number<48, -40>{rounding_elastic_number<97, -80>{1.5}}),
+                "");
+#endif
+    }
+
     namespace test_addition {
         static_assert(
                 identical(
                         rounding_elastic_number<25, -8>{2},
                         rounding_elastic_number<16>{1}+rounding_elastic_number<16, -8>{1}),
                 "rounding_elastic_number addition");
+#if defined(CNL_INT128_ENABLED)
         static_assert(
                 identical(
                         rounding_elastic_number<63, -30>{2LL},
                         rounding_elastic_number<32>{1}+rounding_elastic_number<32, -30>{1}),
                 "larger rounding_elastic_number addition");
+#endif
     }
 
     namespace test_shift {
