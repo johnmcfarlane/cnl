@@ -15,6 +15,7 @@
 #include "_impl/limits/lowest.h"
 #include "_impl/num_traits/adopt.h"
 #include "_impl/num_traits/adopt_signedness.h"
+#include "_impl/num_traits/digits.h"
 #include "_impl/num_traits/fixed_width_scale.h"
 #include "_impl/num_traits/width.h"
 #include "_impl/number_base.h"
