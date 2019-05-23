@@ -18,6 +18,7 @@
 #include "../config.h"
 #include "../num_traits/fixed_width_scale.h"
 #include "../num_traits/unwrap.h"
+#include "../num_traits/width.h"
 #include "../unreachable.h"
 
 #include <cmath>

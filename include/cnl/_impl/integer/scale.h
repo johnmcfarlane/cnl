@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_INTEGER_SCALE_H)
 #define CNL_IMPL_INTEGER_SCALE_H
 
+#include "digits.h"
 #include "operators.h"
 #include "type.h"
 #include "../num_traits/scale.h"
