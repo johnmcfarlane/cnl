@@ -13,8 +13,7 @@
 #include "constant.h"
 
 #include "_impl/limits/lowest.h"
-#include "_impl/num_traits/adopt.h"
-#include "_impl/num_traits/adopt_signedness.h"
+#include "_impl/num_traits/adopt_width.h"
 #include "_impl/num_traits/digits.h"
 #include "_impl/num_traits/fixed_width_scale.h"
 #include "_impl/num_traits/set_width.h"
@@ -104,7 +103,7 @@ namespace cnl {
     struct from_rep<elastic_integer<Digits, Narrowest>, Rep> {
         /// \brief generates an \ref elastic_integer equivalent to \c r in type and value
         CNL_NODISCARD constexpr auto operator()(Rep const& r) const
-        -> elastic_integer<Digits, cnl::_impl::adopt_signedness_t<Narrowest, Rep>>
+        -> elastic_integer<Digits, _impl::adopt_width_t<Rep, Narrowest>>
         {
             return r;
         }
