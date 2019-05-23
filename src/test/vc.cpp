@@ -24,6 +24,10 @@ namespace cnl {
             Vc::simd<ToT, Abi>, Vc::simd<FromT, Abi>> {
     };
 
+    template<typename T, class Abi>
+    struct digits<Vc::simd<T, Abi>> : digits<T> {
+    };
+
     template<int Digits, typename T, class Abi>
     struct scale<Digits, 2, Vc::simd<T, Abi>> : cnl::_impl::default_scale<Digits, 2, Vc::simd<T, Abi>> {
     };
