@@ -8,6 +8,7 @@
 #define CNL_ROUNDING_INTEGER_H 1
 
 #include "_impl/num_traits/fixed_width_scale.h"
+#include "_impl/num_traits/from_value_recursive.h"
 #include "_impl/num_traits/is_composite.h"
 #include "_impl/num_traits/rounding.h"
 #include "_impl/num_traits/set_rounding.h"
@@ -60,15 +61,12 @@ namespace cnl {
     // cnl::_impl::set_rounding
 
     template<typename Number, class RoundingTag>
-    struct set_rounding<
-            Number,
-            RoundingTag,
-            _impl::enable_if_t<
-                    is_composite<Number>::value
-                            && !_impl::is_rounding_integer<Number>::value>>
-            : _impl::type_identity<_impl::from_rep_t<
-                    Number,
-                    typename set_rounding<_impl::to_rep_t<Number>, RoundingTag>::type>> {
+    struct set_rounding<Number, RoundingTag, _impl::enable_if_t<
+            is_composite<Number>::value && !_impl::is_rounding_integer<Number>::value>>
+            : _impl::type_identity<
+                    _impl::from_rep_t<
+                            Number,
+                            set_rounding_t<_impl::to_rep_t<Number>, RoundingTag>>> {
     };
 
     template<typename InputRep, class InputRoundingTag, class OutputRoundingTag>
@@ -126,23 +124,14 @@ namespace cnl {
     };
 
     template<class Rep, class RoundingTag, class Value>
-    struct from_value<rounding_integer<Rep, RoundingTag>, Value> : _impl::from_value_simple<
-            rounding_integer<Value, RoundingTag>, Value> {
+    struct from_value<rounding_integer<Rep, RoundingTag>, Value> : _impl::from_value_recursive<
+            rounding_integer<Rep, RoundingTag>, Value> {
     };
 
     template<class Rep, class RoundingTag, class ValueRep, class ValueRoundingTag>
     struct from_value<rounding_integer<Rep, RoundingTag>, rounding_integer<ValueRep, ValueRoundingTag>>
             : _impl::from_value_simple<
             rounding_integer<ValueRep, RoundingTag>, rounding_integer<ValueRep, ValueRoundingTag>> {
-    };
-
-    template<class Rep, class RoundingTag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct from_value<rounding_integer<Rep, RoundingTag>, constant<Value>> : _impl::from_value_simple<
-            rounding_integer<typename std::conditional<
-                    digits<int>::value<_impl::used_digits(Value),
-                            decltype(Value),
-                            int>::type, RoundingTag>,
-                    constant<Value>> {
     };
 
     template<int Digits, class Rep, class RoundingTag>
