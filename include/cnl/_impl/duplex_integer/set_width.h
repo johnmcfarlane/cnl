@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_SET_WIDTH_H
 
 #include "instantiate_duplex_integer.h"
-#include "../num_traits/width.h"
+#include "../num_traits/set_width.h"
 #include "forward_declaration.h"
 
 /// compositional numeric library

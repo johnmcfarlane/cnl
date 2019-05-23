@@ -82,12 +82,13 @@ set(test_sources
         rounding/elastic/rounding_elastic_integer.cpp
         rounding/overflow/elastic/integer.cpp
         fixed_point/rounding/rounding_fixed_point.cpp
+        elastic/rounding/integer.cpp
         elastic/rounding/overflow/rounding_safe_integer.cpp
         overflow/elastic/safe_integer.cpp
         overflow/wide/wide_overflow_integer.cpp
         fixed_point/elastic/make_elastic_number.cpp
         fixed_point/elastic/elastic_number.cpp
-        fixed_point/elastic/rounding/rounding_elastic_number.cpp
+        fixed_point/rounding/elastic/rounding_elastic_number.cpp
         fixed_point/elastic/overflow/saturated.cpp
         static_integer/operators.cpp
         static_integer/type.cpp

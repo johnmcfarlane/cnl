@@ -89,15 +89,8 @@ namespace cnl {
         {
         }
 
-        /// constructor taking a cnl::constant object
-        template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-        constexpr fixed_point(constant<Value> rhs)
-                : fixed_point(_impl::from_rep<fixed_point<typename decltype(rhs)::value_type, 0>>(Value))
-        {
-        }
-
         /// constructor taking an integer type
-        template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
+        template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer||_impl::is_constant<S>::value, int> Dummy = 0>
         constexpr fixed_point(S const& s)
                 : _base(static_cast<Rep>(_impl::scale<-exponent, Radix>(_impl::from_value<Rep>(s))))
         {

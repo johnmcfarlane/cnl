@@ -72,6 +72,14 @@ namespace {
         static_assert(identical(cnl::safe_integer<34>{0}, cnl::safe_integer<34>{0}), "");
     }
 
+    namespace test_from_value {
+        static_assert(
+                identical(
+                        cnl::safe_integer<3>{5},
+                        cnl::from_value<cnl::safe_integer<1>, cnl::constant<5>>{}(cnl::constant<5>{})),
+                "");
+    }
+
     namespace test_add {
         static_assert(
                 identical(
@@ -128,12 +136,26 @@ namespace {
         static_assert(leading_bits(cnl::safe_integer<22, throwing_overflow_tag>{77}) == 15, "leading_bits(cnl::safe_integer)");
     }
 
+    namespace test_power {
+        static_assert(
+                identical(
+                        cnl::safe_integer<9>{256},
+                        cnl::power<cnl::safe_integer<31>, 8, 2>()),
+                "");
+    }
+
     namespace test_scale {
         static_assert(identical(cnl::safe_integer<3>{2}, cnl::_impl::scale<1>(cnl::safe_integer<2>{1})),
                 "cnl::scale<..., cnl::safe_integer<>>");
 
         static_assert(identical(cnl::safe_integer<2>{2}, cnl::_impl::scale<1>(cnl::safe_integer<1>{1})),
                 "cnl::scale<..., cnl::safe_integer<>>");
+
+        static_assert(
+                identical(
+                        cnl::safe_integer<39, cnl::saturated_overflow_tag>{123*256},
+                        cnl::_impl::scale<8, 2>(cnl::safe_integer<31, cnl::saturated_overflow_tag>{123})),
+                "");
     }
 
     namespace test_shift {

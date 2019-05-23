@@ -13,10 +13,10 @@
 #include "constant.h"
 
 #include "_impl/limits/lowest.h"
-#include "_impl/num_traits/adopt.h"
-#include "_impl/num_traits/adopt_signedness.h"
+#include "_impl/num_traits/adopt_width.h"
 #include "_impl/num_traits/digits.h"
 #include "_impl/num_traits/fixed_width_scale.h"
+#include "_impl/num_traits/set_width.h"
 #include "_impl/num_traits/width.h"
 #include "_impl/number_base.h"
 #include "_impl/type_traits/common_type.h"
@@ -103,7 +103,7 @@ namespace cnl {
     struct from_rep<elastic_integer<Digits, Narrowest>, Rep> {
         /// \brief generates an \ref elastic_integer equivalent to \c r in type and value
         CNL_NODISCARD constexpr auto operator()(Rep const& r) const
-        -> elastic_integer<Digits, cnl::_impl::adopt_signedness_t<Narrowest, Rep>>
+        -> elastic_integer<Digits, _impl::adopt_width_t<Rep, Narrowest>>
         {
             return r;
         }
@@ -493,8 +493,7 @@ namespace cnl {
     // unary operator-
     template<int RhsDigits, class RhsNarrowest>
     CNL_NODISCARD constexpr auto operator-(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
-    -> decltype(_impl::from_rep<elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>>(
-            -_impl::to_rep(static_cast<elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>>(rhs))))
+    -> elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>
     {
         using result_type = elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>;
         return _impl::from_rep<result_type>(-_impl::to_rep(static_cast<result_type>(rhs)));
@@ -503,8 +502,7 @@ namespace cnl {
     // unary operator+
     template<int RhsDigits, class RhsNarrowest>
     CNL_NODISCARD constexpr auto operator+(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
-    -> decltype(_impl::from_rep<elastic_integer<RhsDigits, RhsNarrowest>>(
-            +_impl::to_rep(static_cast<elastic_integer<RhsDigits, RhsNarrowest>>(rhs))))
+    -> elastic_integer<RhsDigits, RhsNarrowest>
     {
         return _impl::from_rep<elastic_integer<RhsDigits, RhsNarrowest>>(
                 +_impl::to_rep(static_cast<elastic_integer<RhsDigits, RhsNarrowest>>(rhs)));

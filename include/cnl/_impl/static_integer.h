@@ -21,15 +21,16 @@ namespace cnl {
                 class RoundingTag = nearest_rounding_tag,
                 class OverflowTag = undefined_overflow_tag,
                 class Narrowest = int>
-        using static_integer = rounding_integer<
+        using static_integer =
                 overflow_integer<
                         elastic_integer<
                                 Digits,
-                                wide_integer<
-                                        digits<Narrowest>::value,
-                                        Narrowest>>,
-                        OverflowTag>,
-                RoundingTag>;
+                                rounding_integer<
+                                        wide_integer<
+                                                digits<Narrowest>::value,
+                                                Narrowest>,
+                                        RoundingTag>>,
+                        OverflowTag>;
 
         template<
                 class RoundingTag = nearest_rounding_tag,

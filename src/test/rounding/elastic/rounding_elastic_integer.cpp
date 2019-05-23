@@ -64,6 +64,17 @@ namespace {
                         "from_rep<rounding_elastic_integer>");
     }
 
+    namespace test_from_value {
+        static_assert(identical(
+                rounding_elastic_integer<3>{5},
+                cnl::from_value<rounding_elastic_integer<24>, cnl::constant<5>>{}(cnl::constant<5>{})),
+                "from_value<rounding_elastic_integer>");
+        static_assert(identical(
+                rounding_elastic_integer<3>{5},
+                cnl::_impl::from_value<rounding_elastic_integer<24>>(cnl::constant<5>{})),
+                "from_value<rounding_elastic_integer>");
+    }
+
     namespace test_integer_scale
     {
         static_assert(

@@ -10,6 +10,8 @@
 #include <cnl/elastic_number.h>
 #include <cnl/fraction.h>
 #include "../../number_test.h"
+#include <cnl/_impl/type_traits/assert_same.h>
+using cnl::_impl::assert_same;
 
 #include <gtest/gtest.h>
 
@@ -91,6 +93,12 @@ namespace test_division {
             make_fixed_point(cnl::make_fraction(elastic_number<62, 0>{1}, elastic_number<62, 0>{2}))),
             "cnl::elastic_number division");
 #endif
+}
+
+namespace test_set_signedness {
+    static_assert(
+            is_signed<cnl::add_signedness_t<elastic_number<1, 0, unsigned>>>::value,
+            "");
 }
 
 namespace test_fraction_deduced {

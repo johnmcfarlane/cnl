@@ -149,6 +149,99 @@ namespace {
                 "from_value<elastic_integer, int64>");
     }
 
+    namespace test_from_rep {
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<50, int>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, int>, int>>::value,
+                "");
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<50, int>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, int>, long>>::value,
+                "");
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<50, unsigned>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, int>, unsigned>>::value,
+                "");
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<50, unsigned>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, int>, unsigned long>>::value,
+                "");
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<50, int>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, unsigned>, int>>::value,
+                "");
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<50, int>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, unsigned>, long>>::value,
+                "");
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<50, unsigned>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, unsigned>, unsigned>>::value,
+                "");
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<50, unsigned>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, unsigned>, unsigned long>>::value,
+                "");
+
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<25, int>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, int>, int>>::value,
+                "");
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<25, int>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, int>, long>>::value,
+                "");
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<25, unsigned>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, int>, unsigned>>::value,
+                "");
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<25, unsigned>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, int>, unsigned long>>::value,
+                "");
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<25, int>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, unsigned>, int>>::value,
+                "");
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<25, int>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, unsigned>, long>>::value,
+                "");
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<25, unsigned>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, unsigned>, unsigned>>::value,
+                "");
+        static_assert(
+                assert_same<
+                        cnl::elastic_integer<25, unsigned>,
+                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, unsigned>, unsigned long>>::value,
+                "");
+    }
+
+    namespace test_add_signedness {
+        static_assert(
+                cnl::is_signed<cnl::add_signedness<cnl::elastic_integer<1, unsigned>>::type>::value,
+                "");
+        static_assert(
+                cnl::is_signed<cnl::add_signedness_t<cnl::elastic_integer<1, unsigned>>>::value,
+                "");
+    }
+
     namespace test_remove_signedness {
         static_assert(
                 assert_same<
