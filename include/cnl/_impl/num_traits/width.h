@@ -9,7 +9,6 @@
 
 #include "../type_traits/is_signed.h"
 #include "digits.h"
-#include "set_digits.h"
 #include <type_traits>
 
 namespace cnl {
@@ -17,13 +16,6 @@ namespace cnl {
         template<typename T>
         struct width : std::integral_constant<int, digits<T>::value+is_signed<T>::value> {
         };
-
-        template<typename T, int Bits>
-        struct set_width : set_digits<T, Bits - is_signed<T>::value> {
-        };
-
-        template<typename T, int Bits>
-        using set_width_t = typename set_width<T, Bits>::type;
     }
 }
 
