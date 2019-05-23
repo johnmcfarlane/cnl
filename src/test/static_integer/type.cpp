@@ -20,14 +20,14 @@ namespace {
                 "cnl::static_integer parameter default test failed");
 
         static_assert(
-                std::is_same<cnl::undefined_overflow_tag, cnl::static_integer<1>::rep::overflow_tag>::value,
+                std::is_same<cnl::undefined_overflow_tag, typename cnl::static_integer<1>::overflow_tag>::value,
                 "cnl::static_integer parameter default test failed");
         static_assert(
-                std::is_same<cnl::overflow_integer<>::overflow_tag, cnl::static_integer<1>::rep::overflow_tag>::value,
+                std::is_same<cnl::overflow_integer<>::overflow_tag, cnl::static_integer<1>::overflow_tag>::value,
                 "cnl::static_integer parameter default test failed");
 
         static_assert(
-                std::is_same<cnl::nearest_rounding_tag, cnl::static_integer<1>::rounding>::value,
+                std::is_same<cnl::nearest_rounding_tag, cnl::static_integer<1>::rep::rep::rounding>::value,
                 "cnl::static_integer parameter default test failed");
         static_assert(
                 !std::is_same<cnl::native_rounding_tag, cnl::native_overflow_tag>::value,
@@ -122,14 +122,14 @@ namespace {
 
     namespace test_scale_native {
         static_assert(identical(
-                cnl::static_integer<3, cnl::native_rounding_tag>{1},
+                cnl::static_integer<1, cnl::native_rounding_tag>{1},
                 cnl::_impl::scale<-2, 2>(cnl::static_integer<3, cnl::native_rounding_tag>{7})), "");
-    }
+        }
 
     namespace test_scale_nearest {
         static_assert(identical(
-                cnl::static_integer<3, cnl::nearest_rounding_tag>{2},
-                cnl::_impl::scale<-2, 2>(cnl::static_integer<3, cnl::nearest_rounding_tag>{7})), "");
+                cnl::static_integer<2, cnl::nearest_rounding_tag>{2},
+                cnl::_impl::scale<-2, 2>(cnl::static_integer<4, cnl::nearest_rounding_tag>{7})), "");
     }
 
     namespace test_fixed_width_scale_native {
@@ -140,8 +140,8 @@ namespace {
 
     namespace test_fixed_width_scale_nearest {
         static_assert(identical(
-                cnl::static_integer<3, cnl::nearest_rounding_tag>{2},
-                cnl::_impl::fixed_width_scale<-2>(cnl::static_integer<3, cnl::nearest_rounding_tag>{7})), "");
+                cnl::static_integer<4, cnl::nearest_rounding_tag>{2},
+                cnl::_impl::fixed_width_scale<-2>(cnl::static_integer<4, cnl::nearest_rounding_tag>{7})), "");
     }
 
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)

@@ -68,6 +68,19 @@ namespace {
         ASSERT_EQ(-2.75, b) << "static_number pre-increment";
     }
 
+    TEST(static_number, stress) {
+        auto expected = 2809;
+
+        auto s = cnl::make_static_number<cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>(70) / 3;
+        auto s2 = s*s;
+        auto s2po = s2+1;
+        auto s2pooten = s2po/10;
+        auto s4pooten = s2pooten*s2pooten;
+        auto actual = static_cast<int>(s4pooten);
+
+        ASSERT_EQ(expected, actual);
+    }
+
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
     TEST(static_number, pre_increment_overflow) {
         auto a = cnl::static_number<4, -2>{3.0};
