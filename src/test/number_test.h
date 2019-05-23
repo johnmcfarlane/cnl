@@ -102,7 +102,7 @@ struct number_test {
     static_assert(is_equal_to(zero, value_type(0.)), "zero-initialized value is not represented using zero");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::width / cnl::_impl::set_width_t
+    // cnl::digits / cnl::_impl::set_digits_t
 
     static_assert(cnl::digits<value_type>::value
                     ==cnl::digits<cnl::set_digits_t<value_type, cnl::digits<value_type>::value>>::value,
