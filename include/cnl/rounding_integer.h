@@ -18,6 +18,8 @@
 #include "_impl/type_traits/common_type.h"
 #include "_impl/used_digits.h"
 
+#include <ostream>
+
 /// compositional numeric library
 namespace cnl {
     /// \brief An integer with customized rounding behavior.
@@ -271,6 +273,14 @@ namespace cnl {
             : numeric_limits<_impl::number_base<rounding_integer<Rep, RoundingTag>, Rep>> {
         static constexpr bool is_integer = true;
     };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // operator<<(std::ostream& o, cnl::rounding_integer const& i)
+
+    template<class Rep, class RoundingTag>
+    std::ostream &operator<<(std::ostream &o, rounding_integer<Rep, RoundingTag> const &i) {
+        return o << _impl::to_rep(i);
+    }
 }
 
 namespace std {
