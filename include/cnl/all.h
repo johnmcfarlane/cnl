@@ -109,6 +109,7 @@
 #include "fixed_point.h"
 #include "fraction.h"
 #include "limits.h"
+#include "math.h"
 #include "numeric.h"
 #include "num_traits.h"
 #include "overflow.h"
