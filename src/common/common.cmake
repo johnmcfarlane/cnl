@@ -20,6 +20,7 @@ if (IS_MSVC)
 
   # not tested
   set(CPP17_ENABLED_FLAGS "/std:c++17")
+  set(CPP20_ENABLED_FLAGS "/std:latest -DCNL_NEGATIVE_LEFT_SHIFT_UB")
 
   set(EXCEPTION_ENABLED_FLAGS "/GR /EHsc")
   set(EXCEPTION_DISABLED_FLAGS "/GR- -DBOOST_NO_EXCEPTIONS -DBOOST_NO_RTTI")
@@ -39,8 +40,10 @@ elseif (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
 
   if (IS_CLANG)
       string(APPEND MISC_FLAGS " -fconstexpr-backtrace-limit=0 -fconstexpr-steps=1000000000")
+      set(CPP20_ENABLED_FLAGS "-std=c++2a -DCNL_NEGATIVE_LEFT_SHIFT_UB")
   else ()
       string(APPEND MISC_FLAGS " -Wno-psabi")
+      set(CPP20_ENABLED_FLAGS "-std=c++2a -DCNL_NEGATIVE_LEFT_SHIFT_UB -fconcepts")
   endif ()
 
   set(CPP17_ENABLED_FLAGS "-std=c++17")
@@ -57,8 +60,10 @@ else ()
   message(FATAL_ERROR "unrecognized compiler: ${CMAKE_CXX_COMPILER_ID}")
 endif ()
 
-set(STD 17 CACHE STRING "version of C++ standard: 11, 14 or 17")
-if (${STD} STREQUAL "17")
+set(STD 17 CACHE STRING "version of C++ standard: 11, 14, 17 or 20")
+if (${STD} STREQUAL "20")
+    set(STD_FLAGS "${CPP20_ENABLED_FLAGS}")
+elseif (${STD} STREQUAL "17")
     set(STD_FLAGS "${CPP17_ENABLED_FLAGS}")
 else ()
     set(CMAKE_CXX_STANDARD ${STD})
