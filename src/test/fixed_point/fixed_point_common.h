@@ -1063,9 +1063,11 @@ namespace test_leading_bits {
 ////////////////////////////////////////////////////////////////////////////////
 // https://groups.google.com/a/isocpp.org/forum/?utm_medium=email&utm_source=footer#!msg/sg14/cDZIcB1LNfE/heaucUIAAgAJ
 
-static constexpr fixed_point<int32, -16> x{1.5};
-static constexpr auto y = 6.5*x - 4;
-static_assert(y == 5.75, "usage test failed");
+namespace test_natural_arithmetic {
+    static constexpr fixed_point<int32, -16> x{1.5};
+    static constexpr auto y = 6.5*x-4;
+    static_assert(y==5.75, "usage test failed");
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // FixedPointTester
