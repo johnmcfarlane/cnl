@@ -159,7 +159,7 @@ ExternalProject_Add(
         URL "https://github.com/google/googletest/archive/2fe3bd994b3189899d93f1d5a881e725e046fdc2.zip"
         URL_MD5 "8d9ba616aa2697a284bdd9e06f4d8dfe"
         UPDATE_COMMAND ""
-        CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}
+        CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_CXX_FLAGS=-fPIC -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}
         BUILD_BYPRODUCTS ${gtest_byproducts}
 )
 
