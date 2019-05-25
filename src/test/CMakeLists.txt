@@ -11,6 +11,7 @@ set(test_sources
         cstdint.cpp
         common.cpp
         limits.cpp
+        math.cpp
         num_traits.cpp
         numeric.cpp
         number_test.cpp
@@ -156,8 +157,8 @@ endif ()
 
 ExternalProject_Add(
         GoogleTest
-        URL "https://github.com/google/googletest/archive/2fe3bd994b3189899d93f1d5a881e725e046fdc2.zip"
-        URL_MD5 "8d9ba616aa2697a284bdd9e06f4d8dfe"
+        URL "https://github.com/google/googletest/archive/7f1c0f6f8122d7978c9de29d9d468f7fac9ba62c.zip"
+        URL_MD5 "57b8695ac970676e6e325f6c69824904"
         UPDATE_COMMAND ""
         CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_CXX_FLAGS=-fPIC -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}
         BUILD_BYPRODUCTS ${gtest_byproducts}
