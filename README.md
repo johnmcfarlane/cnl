@@ -20,10 +20,10 @@ Tested on x86-86 using  [Travis](https://travis-ci.org/johnmcfarlane/cnl) and
 Requires:
 
 - GCC 5.1 / Clang 3.5
-- [CMake](https://cmake.org/download/) ([3.0.2](https://docs.travis-ci.com/user/languages/cpp/#CMake))
 
 Optional:
 
+- [CMake](https://cmake.org/download/) ([3.0.2](https://docs.travis-ci.com/user/languages/cpp/#CMake))
 - [Boost](http://www.boost.org/) - facilitates multiprecision support
 - [Doxygen](http://www.doxygen.org/) - generates documentation in the *doc/gh-pages* directory
 
