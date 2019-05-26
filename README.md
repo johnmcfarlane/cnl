@@ -114,6 +114,7 @@ Examples of projects using CNL:
 
 * [CDSP](https://github.com/hbe72/cdsp) - Compositional DSP Library for 
   C++;
+* [BrewBlox firmware](https://github.com/BrewBlox/brewblox-firmware) - firmware for a brewery controller
 * [cnl_example](https://github.com/johnmcfarlane/cnl_example) - minimal
   CMake-based project which uses CNL as a dependency.
 
