@@ -5,22 +5,8 @@
 [![CircleCI](https://circleci.com/gh/johnmcfarlane/cnl/tree/develop.svg?style=svg)](https://circleci.com/gh/johnmcfarlane/cnl/tree/develop)
 [![Join the chat at https://gitter.im/cppcnl/community](https://badges.gitter.im/cppcnl/community.svg)](https://gitter.im/cppcnl/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[CNL](https://github.com/johnmcfarlane/cnl) is a numerics library written in C++
-which aims to do for `int` what the STL does for arrays.
-Its main roles are to help:
-
-* approximate real numbers using fixed-point arithmetic;
-* detect and prevent overflow and
-* increase precision through alternative rounding modes.
-
-A compositional design promotes seamless interoperability between numeric types.
-And by providing the thinnest wrappers over the widest range of numeric types,
-CNL aims to assist the development of:
-
-* large-scale simulations including video games and scientific models;
-* resource-constrained applications on embedded and mobile devices and
-* math-intensive operations on specialized hardware such as GPUs and FPGAs.
-
+The Compositional Numeric Library (CNL) is a C++ library of fixed-precision numeric classes which enhance integers to
+deliver safer, simpler, cheaper arithmetic types.
 Documentation can be found [here](http://johnmcfarlane.github.io/cnl/).
 
 ## Requirements
