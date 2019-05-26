@@ -51,6 +51,7 @@ TEST(fixed_point_wide_integer, quotient)
     ASSERT_EQ(double(expected), double(actual));
 }
 
+#if !defined(__GNUC__) || defined(__clang__)
 TEST(fixed_point_wide_integer, ctor_fraction)
 {
     using namespace cnl::literals;
@@ -60,4 +61,5 @@ TEST(fixed_point_wide_integer, ctor_fraction)
     auto actual = fixed_point{cnl::fraction<int>(1, 3)};
     ASSERT_EQ(expected, actual);
 }
+#endif
 #endif

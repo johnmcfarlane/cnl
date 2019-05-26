@@ -6,6 +6,15 @@ general:
       - gh-pages
 
 jobs:
+  "c++20":
+    docker:
+      - image: gcc:latest
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: . /root/project/.circleci/test.sh gcc ON 20
+
   "c++17":
     docker:
       - image: gcc:latest
@@ -47,6 +56,7 @@ workflows:
   version: 2
   build:
     jobs:
+      - "c++20"
       - "c++17"
       - "c++14"
       - "c++11"
