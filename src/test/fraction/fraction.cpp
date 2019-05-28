@@ -4,9 +4,6 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file
-/// \brief file containing tests of the `cnl/bits/common.h` definitions
-
 #include <cnl/fraction.h>
 
 #include <cnl/cstdint.h>
