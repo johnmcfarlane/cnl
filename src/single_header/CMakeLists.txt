@@ -9,7 +9,8 @@ function(make_single_header target output header version int128_flag gcc_intrins
             ${target}
             ALL
             cat ${CMAKE_CURRENT_LIST_DIR}/${header} > ${output_path}
-            COMMAND grep -rh \"\#include <\" ${PROJECT_SOURCE_DIR}/include/ | sort | uniq | grep -v boost > "${standard_includes_path}"
+            COMMAND grep -rh \"\#include <\" ${PROJECT_SOURCE_DIR}/include/ | sort | uniq | grep -v boost
+                    | grep -v concepts > "${standard_includes_path}"
             COMMAND cat "${standard_includes_path}" >> ${output_path}
             COMMAND ${CMAKE_CXX_COMPILER}
                         "-std=${version}" "-DCNL_USE_INT128=${int128_flag}" "${gcc_intrinsics_flag}" "-DNDEBUG" "-E" "-I${CMAKE_CURRENT_LIST_DIR}/../../include"

@@ -5,22 +5,8 @@
 [![CircleCI](https://circleci.com/gh/johnmcfarlane/cnl/tree/develop.svg?style=svg)](https://circleci.com/gh/johnmcfarlane/cnl/tree/develop)
 [![Join the chat at https://gitter.im/cppcnl/community](https://badges.gitter.im/cppcnl/community.svg)](https://gitter.im/cppcnl/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[CNL](https://github.com/johnmcfarlane/cnl) is a numerics library written in C++
-which aims to do for `int` what the STL does for arrays.
-Its main roles are to help:
-
-* approximate real numbers using fixed-point arithmetic;
-* detect and prevent overflow and
-* increase precision through alternative rounding modes.
-
-A compositional design promotes seamless interoperability between numeric types.
-And by providing the thinnest wrappers over the widest range of numeric types,
-CNL aims to assist the development of:
-
-* large-scale simulations including video games and scientific models;
-* resource-constrained applications on embedded and mobile devices and
-* math-intensive operations on specialized hardware such as GPUs and FPGAs.
-
+The Compositional Numeric Library (CNL) is a C++ library of fixed-precision numeric classes which enhance integers to
+deliver safer, simpler, cheaper arithmetic types.
 Documentation can be found [here](http://johnmcfarlane.github.io/cnl/).
 
 ## Requirements
@@ -34,10 +20,10 @@ Tested on x86-86 using  [Travis](https://travis-ci.org/johnmcfarlane/cnl) and
 Requires:
 
 - GCC 5.1 / Clang 3.5
-- [CMake](https://cmake.org/download/) ([3.0.2](https://docs.travis-ci.com/user/languages/cpp/#CMake))
 
 Optional:
 
+- [CMake](https://cmake.org/download/) ([3.0.2](https://docs.travis-ci.com/user/languages/cpp/#CMake))
 - [Boost](http://www.boost.org/) - facilitates multiprecision support
 - [Doxygen](http://www.doxygen.org/) - generates documentation in the *doc/gh-pages* directory
 
@@ -128,6 +114,7 @@ Examples of projects using CNL:
 
 * [CDSP](https://github.com/hbe72/cdsp) - Compositional DSP Library for 
   C++;
+* [BrewBlox firmware](https://github.com/BrewBlox/brewblox-firmware) - firmware for a brewery controller
 * [cnl_example](https://github.com/johnmcfarlane/cnl_example) - minimal
   CMake-based project which uses CNL as a dependency.
 
