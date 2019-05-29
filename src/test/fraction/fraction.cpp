@@ -6,7 +6,6 @@
 
 #include <cnl/fraction.h>
 
-#include <cnl/cstdint.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
@@ -35,27 +34,6 @@ namespace {
                         cnl::fraction<short, short>,
                         cnl::fraction<short>>::value,
                 "cnl::fraction second parameter should default to first");
-    }
-
-    namespace test_copy_ctor {
-        static_assert(
-                identical(
-                        cnl::fraction<short>(123),
-                        cnl::fraction<short>(cnl::fraction<short>(123))),
-                "cnl::fraction argument deduction");
-    }
-
-    namespace test_fraction_conversion_ctor {
-        static_assert(
-                identical(
-                        cnl::fraction<cnl::int64>(123),
-                        cnl::fraction<cnl::int64>(cnl::fraction<cnl::int8>(123))),
-                "cnl::fraction widening conversion from fraction");
-        static_assert(
-                identical(
-                        cnl::fraction<cnl::int64>(123),
-                        cnl::fraction<cnl::int64>(cnl::fraction<cnl::int8>(123))),
-                "cnl::fraction narrowing conversion from fraction");
     }
 
     namespace test_make_fraction {

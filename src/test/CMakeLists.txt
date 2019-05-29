@@ -38,6 +38,7 @@ set(test_sources
         fixed_point/fixed_point_built_in.cpp
         fixed_point/decimal.cpp
         fixed_point/constants.cpp
+        fraction/ctors.cpp
         fraction/fraction.cpp
         elastic/elastic_integer.cpp
         fixed_point/extras.cpp
