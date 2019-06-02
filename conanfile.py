@@ -24,7 +24,7 @@ class CnlConan(ConanFile):
     }
 
     def package(self):
-        self.copy("*.h")
+        self.copy("include/*.h")
         self.copy("LICENSE_1_0.txt", "licenses")
 
     def package_id(self):
