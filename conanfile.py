@@ -19,7 +19,7 @@ class CnlConan(ConanFile):
 
     scm = {
         "type": "git",
-        "url": "auto",
+        "url": "https://github.com/johnmcfarlane/cnl.git",
         "revision": "auto"
     }
 
