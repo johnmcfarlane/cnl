@@ -167,7 +167,7 @@ before_install:
 script:
     - cloc include
     - cloc src
-    - cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -DSTD=${STD} -DEXCEPTIONS=${EXCEPTIONS} -DINT128=${INT128} -DSANITIZE=${SANITIZE} -G "${GENERATOR}"
+    - cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -DCNL_STD=${STD} -DCNL_EXCEPTIONS=${EXCEPTIONS} -DCNL_INT128=${INT128} -DCNL_SANITIZE=${SANITIZE} -G "${GENERATOR}"
     - cmake --build . -- -j 8 Tests Benchmark Doc
     - ctest --output-on-failure -j 8
     - ./src/benchmark/Benchmark --benchmark_format=csv>result.csv

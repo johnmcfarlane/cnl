@@ -29,7 +29,7 @@ build_script:
 - cmd: >-
     set BOOST_ROOT=C:\Libraries\boost_1_66_0
 
-    cmake -DCMAKE_BUILD_TYPE=%configuration% -DEXCEPTIONS=%exceptions% -DSTD=%std% -G "%cmake_generator%" .
+    cmake -DCMAKE_BUILD_TYPE=%configuration% -DCNL_EXCEPTIONS=%exceptions% -DCNL_STD=%std% -G "%cmake_generator%" .
 
     cmake --build . --target src/test/Tests -- /property:Configuration=%configuration% /property:Platform=%msbuild_property% /maxcpucount
 

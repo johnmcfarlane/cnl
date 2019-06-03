@@ -93,7 +93,7 @@ However, it comes with a number of tests and benchmarks.
 
 2. Then to apply an option, e.g. to disabled exceptions:
 
-   `cmake -DEXCEPTIONS=OFF /some/directory/cnl`
+   `cmake -DCNL_EXCEPTIONS=OFF /some/directory/cnl`
 
 ### Integration
 

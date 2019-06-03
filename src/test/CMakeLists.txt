@@ -265,11 +265,11 @@ else ()
     set(TEST_CXX_FLAGS "-Wconversion -Wno-sign-conversion -ftemplate-backtrace-limit=0")
 endif ()
 
-set(SANITIZE ON CACHE BOOL "compile with UB sanitizer enabled")
-if (SANITIZE)
+set(CNL_SANITIZE ON CACHE BOOL "compile with UB sanitizer enabled")
+if (CNL_SANITIZE)
     set(SANITIZE_CXX_FLAGS "${SANITIZE_ENABLED_CXX_FLAGS}")
     set(SANITIZE_LINKER_FLAGS "${SANITIZE_ENABLED_LINKER_FLAGS}")
-endif (SANITIZE)
+endif (CNL_SANITIZE)
 
 foreach(source ${test_sources})
     make_test("${source}" target "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
@@ -296,7 +296,7 @@ add_dependencies(Test-glm Glm)
 ######################################################################
 # create test of Boost.SIMD integration
 
-if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND EXCEPTIONS)
+if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND CNL_EXCEPTIONS)
     # Boost.SIMD has problems building with gcc-7.x
     if(NOT IS_GCC_FAMILY OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
         if (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
@@ -318,13 +318,13 @@ if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND EXCEPTIONS)
         ExternalProject_Get_Property(BoostSimd source_dir)
         target_include_directories("${target}" PRIVATE SYSTEM "${source_dir}/include")
     endif(NOT IS_GCC_FAMILY OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
-endif(Boost_FOUND AND Boost_VERSION GREATER 106099 AND EXCEPTIONS)
+endif(Boost_FOUND AND Boost_VERSION GREATER 106099 AND CNL_EXCEPTIONS)
 
 ######################################################################
 # create test of Vc integration
 
-set(TEST_VC ON CACHE BOOL "test VC library integration")
-if(${TEST_VC} AND ${STD} STREQUAL "17" AND IS_GCC_FAMILY AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7.0.0"
+set(CNL_TEST_VC ON CACHE BOOL "test VC library integration")
+if(${CNL_TEST_VC} AND ${CNL_STD} STREQUAL "17" AND IS_GCC_FAMILY AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7.0.0"
         AND CMAKE_VERSION VERSION_GREATER "3.2")
     make_test(vc.cpp target "" "")
 
