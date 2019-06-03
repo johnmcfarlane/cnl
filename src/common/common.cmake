@@ -28,9 +28,6 @@ if (IS_MSVC)
   # 128-bit integers are not supported in MSVC
   set(INT128_ENABLED_FLAGS "")
   set(INT128_DISABLED_FLAGS "")
-
-  set(PROFILE_ENABLED_FLAGS "/Oy-")
-  set(PROFILE_DISABLED_FLAGS "")
 elseif (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
   set(MISC_FLAGS "-Wall -Wextra -Werror -Wundef -ftemplate-backtrace-limit=0")
 
@@ -53,9 +50,6 @@ elseif (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
 
   set(INT128_ENABLED_FLAGS "-DCNL_USE_INT128=1")
   set(INT128_DISABLED_FLAGS "-DCNL_USE_INT128=0 -Wpedantic")
-
-  set(PROFILE_ENABLED_FLAGS "-fno-omit-frame-pointer")
-  set(PROFILE_DISABLED_FLAGS "")
 else ()
   message(FATAL_ERROR "unrecognized compiler: ${CMAKE_CXX_COMPILER_ID}")
 endif ()
@@ -83,13 +77,6 @@ else (CNL_INT128)
     set(INT128_FLAGS "${INT128_DISABLED_FLAGS}")
 endif (CNL_INT128)
 
-set(PROFILE OFF CACHE BOOL "compile with frame pointer enabled for better profiling information")
-if (PROFILE)
-    set(PROFILE_FLAGS "${PROFILE_ENABLED_FLAGS}")
-else (PROFILE)
-    set(PROFILE_FLAGS "${PROFILE_DISABLED_FLAGS}")
-endif (PROFILE)
-
-set(COMMON_CXX_FLAGS "${MISC_FLAGS} ${STD_FLAGS} ${EXCEPTION_FLAGS} ${INT128_FLAGS} ${PROFILE_FLAGS}")
+set(COMMON_CXX_FLAGS "${MISC_FLAGS} ${STD_FLAGS} ${EXCEPTION_FLAGS} ${INT128_FLAGS}")
 
 set(BUILD_SHARED_LIBS, ON)
