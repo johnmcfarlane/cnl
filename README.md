@@ -61,11 +61,11 @@ However, it comes with a number of tests and benchmarks.
 
    * For Linux (in parallel using *N* cores):
 
-     `cmake --build . --target Tests -- -j N`
+     `cmake --build . -- -j N`
 
    * For Windows:
 
-     `cmake --build . --target src/test/Tests`
+     `cmake --build .`
 
 3. Run tests:
 
