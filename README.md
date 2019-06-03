@@ -55,7 +55,7 @@ However, it comes with a number of tests and benchmarks.
 
 1. Generate the build system:
 
-   `cmake /some/directory/cnl`
+   `cmake -DCNL_DEV=ON /some/directory/cnl`
 
 2. Build tests:
 
@@ -75,7 +75,7 @@ However, it comes with a number of tests and benchmarks.
 
 1. Generate the build system (optimized):
 
-   `cmake -DCMAKE_BUILD_TYPE=Release /some/directory/cnl`
+   `cmake -DCMAKE_BUILD_TYPE=Release -DCNL_DEV=ON /some/directory/cnl`
 
 2. Build benchmarks:
 
