@@ -23,7 +23,7 @@ def run_from_build(args, command):
 
 def run_benchmarks(args):
     # configure
-    run_from_build(args, ["cmake", args.repo, "-DCMAKE_BUILD_TYPE=Release"])
+    run_from_build(args, ["cmake", args.repo, "-DCMAKE_BUILD_TYPE=Release", "-DCNL_DEV=ON"])
 
     # build
     run_from_build(args, ["make", "Benchmark", "-j", str(args.jobs or 1)])
