@@ -22,9 +22,9 @@ namespace cnl {
 
     template<typename RhsNumerator, typename RhsDenominator>
     CNL_NODISCARD constexpr auto operator-(fraction<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(_impl::make_fraction(-rhs.numerator, -rhs.denominator))
+    -> decltype(_impl::make_fraction(-rhs.numerator, rhs.denominator))
     {
-        return _impl::make_fraction(-rhs.numerator, -rhs.denominator);
+        return _impl::make_fraction(-rhs.numerator, rhs.denominator);
     }
 
     template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>

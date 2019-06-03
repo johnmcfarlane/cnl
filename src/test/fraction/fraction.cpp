@@ -61,6 +61,15 @@ namespace {
                 static_cast<float>(cnl::fraction<int>{22, 7})), "cnl::fraction conversion operator");
     }
 
+    namespace test_minus {
+        static_assert(identical(
+                cnl::make_fraction(-2, 3),
+                -cnl::make_fraction(2, 3)), "operator-(cnl::fraction)");
+        static_assert(identical(
+                cnl::make_fraction(-1, short{-3}),
+                -cnl::make_fraction(1, short{-3})), "operator-(cnl::fraction)");
+    }
+
     namespace test_add {
         static_assert(identical(
                 cnl::make_fraction(9LL, 9),
