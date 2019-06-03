@@ -19,12 +19,12 @@ class CnlConan(ConanFile):
 
     scm = {
         "type": "git",
-        "url": "auto",
+        "url": "https://github.com/johnmcfarlane/cnl.git",
         "revision": "auto"
     }
 
     def package(self):
-        self.copy("*.h")
+        self.copy("include/*.h")
         self.copy("LICENSE_1_0.txt", "licenses")
 
     def package_id(self):
