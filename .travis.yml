@@ -86,15 +86,15 @@ matrix:
       env: C_COMPILER=clang-3.9 CXX_COMPILER=clang++-3.9 BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
     - os: linux
-      addons: &clang35
+      addons: &clang38
         apt:
           sources:
-            - llvm-toolchain-trusty-3.5
+            - llvm-toolchain-trusty-3.8
             - ubuntu-toolchain-r-test
           packages:
-            - clang-3.5
+            - clang-3.8
             - g++-5
-      env: C_COMPILER=clang-3.5 CXX_COMPILER=clang++-3.5 BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR="Unix Makefiles"
+      env: C_COMPILER=clang-3.8 CXX_COMPILER=clang++-3.8 BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR="Unix Makefiles"
 
     # C++14
     - os: linux
@@ -130,8 +130,8 @@ matrix:
       env: C_COMPILER=clang CXX_COMPILER=clang++ BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
-      addons: *clang35
-      env: C_COMPILER=clang-3.5 CXX_COMPILER=clang++-3.5 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR="Unix Makefiles"
+      addons: *clang38
+      env: C_COMPILER=clang-3.8 CXX_COMPILER=clang++-3.8 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR="Unix Makefiles"
 
     # C++17
     - os: linux
