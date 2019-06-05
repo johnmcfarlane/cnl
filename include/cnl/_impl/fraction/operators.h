@@ -121,6 +121,12 @@ namespace cnl {
     {
         return lhs.numerator*rhs.denominator>=rhs.numerator*lhs.denominator;
     }
+
+    template<typename Numerator, typename Denominator>
+    ::std::ostream& operator<<(::std::ostream& out, fraction<Numerator, Denominator> const& f)
+    {
+        return out << f.numerator << '/' << f.denominator;
+    }
 }
 
 #endif  // CNL_IMPL_FRACTION_OPERATORS_H
