@@ -32,15 +32,12 @@ namespace cnl {
         /// alias to `Denominator`
         using denominator_type = Denominator;
 
-        explicit constexpr fraction(Numerator const& n, Denominator const& d)
-                : numerator{n}, denominator{d} {}
+        explicit constexpr fraction(Numerator const& n, Denominator const& d);
 
-        explicit constexpr fraction(Numerator const& n)
-                : numerator{n}, denominator{1} {}
+        explicit constexpr fraction(Numerator const& n);
 
         template<typename RhsNumerator, typename RhsDenominator>
-        constexpr fraction(fraction<RhsNumerator, RhsDenominator> const& f)
-                : numerator(f.numerator), denominator(f.denominator) { }
+        constexpr fraction(fraction<RhsNumerator, RhsDenominator> const& f);
 
         /// returns the quotient, \ref numerator `/` \ref denominator
         template<typename Scalar, _impl::enable_if_t<std::is_floating_point<Scalar>::value, int> = 0>
