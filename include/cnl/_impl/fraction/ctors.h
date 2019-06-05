@@ -7,6 +7,8 @@
 #if !defined(CNL_IMPL_FRACTION_CTORS_H)
 #define CNL_IMPL_FRACTION_CTORS_H 1
 
+#include "make_fraction.h"
+
 #include "type.h"
 
 /// compositional numeric library
@@ -17,15 +19,27 @@ namespace cnl {
             : numerator{n}, denominator{d} {}
 
     template<typename Numerator, typename Denominator>
+    template<typename Integer,
+            _impl::enable_if_t<
+                    numeric_limits<Integer>::is_integer,
+                    int> Dummy>
     constexpr
-    fraction<Numerator, Denominator>::fraction(Numerator const& n)
-            : fraction{n, 1} {}
+    fraction<Numerator, Denominator>::fraction(Integer const& n)
+            : fraction(static_cast<Numerator>(n), 1) {}
 
     template<typename Numerator, typename Denominator>
     template<typename RhsNumerator, typename RhsDenominator>
     constexpr
     fraction<Numerator, Denominator>::fraction(fraction<RhsNumerator, RhsDenominator> const& f)
-            : fraction{f.numerator, f.denominator} { }
+            : fraction(static_cast<Numerator>(f.numerator), static_cast<Numerator>(f.denominator)) { }
+
+    template<typename Numerator, typename Denominator>
+    template<
+            typename FloatingPoint,
+            _impl::enable_if_t<
+                    numeric_limits<FloatingPoint>::is_iec559, int> Dummy>
+    constexpr fraction<Numerator, Denominator>::fraction(FloatingPoint d)
+            : fraction(_impl::make_fraction<Numerator, Denominator>(d)) { }
 }
 
 #endif  // CNL_IMPL_FRACTION_CTORS_H

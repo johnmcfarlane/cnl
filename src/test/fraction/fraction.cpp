@@ -48,7 +48,7 @@ namespace {
                 cnl::fraction<short>(123),
                 cnl::fraction(short{123})), "cnl::fraction argument deduction");
         static_assert(identical(
-                cnl::fraction<float>(3.14285714285714285714f),
+                cnl::fraction<int>(3.14285714285714285714f),
                 cnl::fraction(3.14285714285714285714f)), "cnl::fraction argument deduction");
 
         static_assert(identical(cnl::fraction<int, int>{4321, 1}, cnl::fraction{4321}));
