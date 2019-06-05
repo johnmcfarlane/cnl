@@ -19,13 +19,13 @@ namespace cnl {
     template<typename Numerator, typename Denominator>
     constexpr
     fraction<Numerator, Denominator>::fraction(Numerator const& n)
-            : numerator{n}, denominator{1} {}
+            : fraction{n, 1} {}
 
     template<typename Numerator, typename Denominator>
     template<typename RhsNumerator, typename RhsDenominator>
     constexpr
     fraction<Numerator, Denominator>::fraction(fraction<RhsNumerator, RhsDenominator> const& f)
-            : numerator(f.numerator), denominator(f.denominator) { }
+            : fraction{f.numerator, f.denominator} { }
 }
 
 #endif  // CNL_IMPL_FRACTION_CTORS_H
