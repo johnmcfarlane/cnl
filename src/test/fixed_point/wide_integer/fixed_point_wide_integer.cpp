@@ -24,7 +24,6 @@ using test_int = cnl::wide_integer<cnl::digits<int>::value, int>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // perform fixed_point tests with this type of fixed_point specialization
-
 #include "../fixed_point_common.h"
 
 TEST(fixed_point_wide_integer, to_string)
@@ -35,14 +34,6 @@ TEST(fixed_point_wide_integer, to_string)
 }
 
 #if !defined(__arm__)
-TEST(fixed_point_wide_integer, quotient200)
-{
-    using fixed_point = cnl::fixed_point<cnl::wide_integer<200, unsigned>, -196>;
-    auto expected = fixed_point{5.L/7};
-    auto actual = cnl::quotient<fixed_point>(5, 7);
-    ASSERT_EQ(double(expected), double(actual));
-}
-
 TEST(fixed_point_wide_integer, quotient)
 {
     using fixed_point = cnl::fixed_point<cnl::wide_integer<129, unsigned>, -96>;
@@ -52,6 +43,14 @@ TEST(fixed_point_wide_integer, quotient)
 }
 
 #if !defined(__GNUC__) || defined(__clang__)
+TEST(fixed_point_wide_integer, quotient200)
+{
+    using fixed_point = cnl::fixed_point<cnl::wide_integer<200, unsigned>, -196>;
+    auto expected = fixed_point{5.L/7};
+    auto actual = cnl::quotient<fixed_point>(5, 7);
+    ASSERT_EQ(double(expected), double(actual));
+}
+
 TEST(fixed_point_wide_integer, ctor_fraction)
 {
     using namespace cnl::literals;
