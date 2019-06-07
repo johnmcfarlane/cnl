@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_FRACTION_TYPE_H)
 #define CNL_IMPL_FRACTION_TYPE_H 1
 
+#include "../num_traits/set_width.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 
@@ -32,15 +33,23 @@ namespace cnl {
         /// alias to `Denominator`
         using denominator_type = Denominator;
 
-        explicit constexpr fraction(Numerator const& n, Denominator const& d)
-                : numerator{n}, denominator{d} {}
+        explicit constexpr fraction(Numerator const& n, Denominator const& d);
 
-        explicit constexpr fraction(Numerator const& n)
-                : numerator{n}, denominator{1} {}
+        template<typename Integer,
+                _impl::enable_if_t<
+                        numeric_limits<Integer>::is_integer,
+                        int> Dummy = 0>
+        explicit constexpr fraction(Integer const& i);
 
         template<typename RhsNumerator, typename RhsDenominator>
-        constexpr fraction(fraction<RhsNumerator, RhsDenominator> const& f)
-                : numerator(f.numerator), denominator(f.denominator) { }
+        constexpr fraction(fraction<RhsNumerator, RhsDenominator> const& f);
+
+        template<
+                typename FloatingPoint,
+                _impl::enable_if_t<
+                        numeric_limits<FloatingPoint>::is_iec559,
+                        int> Dummy = 0>
+        explicit constexpr fraction(FloatingPoint);
 
         /// returns the quotient, \ref numerator `/` \ref denominator
         template<typename Scalar, _impl::enable_if_t<std::is_floating_point<Scalar>::value, int> = 0>
@@ -55,6 +64,27 @@ namespace cnl {
         /// the denominator (bottom number) of the fraction
         denominator_type denominator = 1;
     };
+
+#if defined(__cpp_deduction_guides)
+    fraction(float)
+    -> fraction<_impl::set_width_t<int, int(sizeof(float)*CHAR_BIT)>>;
+
+    fraction(double)
+    -> fraction<_impl::set_width_t<int, int(sizeof(double)*CHAR_BIT)>>;
+
+#if defined(CNL_INT128_ENABLED)
+    fraction(long double)
+    -> fraction<_impl::set_width_t<int, int(sizeof(long double)*CHAR_BIT)>>;
+#endif
+
+    template<
+            typename Integer,
+            typename = _impl::enable_if_t<
+                    numeric_limits<Integer>::is_integer,
+                    int>>
+    fraction(Integer)
+    -> fraction<Integer>;
+#endif
 }
 
 #endif  // CNL_IMPL_FRACTION_TYPE_H

@@ -22,7 +22,7 @@ jobs:
       - checkout
       - run:
           name: Run tests
-          command: . /root/project/.circleci/test.sh gcc ON 17
+          command: . /root/project/.circleci/test.sh gcc OFF 17
 
   "c++14":
     docker:
@@ -40,7 +40,7 @@ jobs:
       - checkout
       - run:
           name: Run tests
-          command: . /root/project/.circleci/test.sh gcc ON 11
+          command: . /root/project/.circleci/test.sh gcc OFF 11
 
   "c++17-arm7":
     docker:

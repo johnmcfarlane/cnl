@@ -4,12 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file
-/// \brief file containing tests of the `cnl/bits/common.h` definitions
-
 #include <cnl/fraction.h>
 
-#include <cnl/cstdint.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
@@ -40,27 +36,6 @@ namespace {
                 "cnl::fraction second parameter should default to first");
     }
 
-    namespace test_copy_ctor {
-        static_assert(
-                identical(
-                        cnl::fraction<short>(123),
-                        cnl::fraction<short>(cnl::fraction<short>(123))),
-                "cnl::fraction argument deduction");
-    }
-
-    namespace test_fraction_conversion_ctor {
-        static_assert(
-                identical(
-                        cnl::fraction<cnl::int64>(123),
-                        cnl::fraction<cnl::int64>(cnl::fraction<cnl::int8>(123))),
-                "cnl::fraction widening conversion from fraction");
-        static_assert(
-                identical(
-                        cnl::fraction<cnl::int64>(123),
-                        cnl::fraction<cnl::int64>(cnl::fraction<cnl::int8>(123))),
-                "cnl::fraction narrowing conversion from fraction");
-    }
-
     namespace test_make_fraction {
         static_assert(identical(
                 3.14285714285714285714f,
@@ -73,7 +48,7 @@ namespace {
                 cnl::fraction<short>(123),
                 cnl::fraction(short{123})), "cnl::fraction argument deduction");
         static_assert(identical(
-                cnl::fraction<float>(3.14285714285714285714f),
+                cnl::fraction<int>(3.14285714285714285714f),
                 cnl::fraction(3.14285714285714285714f)), "cnl::fraction argument deduction");
 
         static_assert(identical(cnl::fraction<int, int>{4321, 1}, cnl::fraction{4321}));
@@ -84,6 +59,15 @@ namespace {
         static_assert(identical(
                 3.14285714285714285714f,
                 static_cast<float>(cnl::fraction<int>{22, 7})), "cnl::fraction conversion operator");
+    }
+
+    namespace test_minus {
+        static_assert(identical(
+                cnl::make_fraction(-2, 3),
+                -cnl::make_fraction(2, 3)), "operator-(cnl::fraction)");
+        static_assert(identical(
+                cnl::make_fraction(-1, short{-3}),
+                -cnl::make_fraction(1, short{-3})), "operator-(cnl::fraction)");
     }
 
     namespace test_add {
