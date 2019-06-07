@@ -8,6 +8,7 @@
 #define CNL_IMPL_TO_CHARS_H 1
 
 #include "assert.h"
+#include "num_traits/digits.h"
 #include "num_traits/rounding.h"
 #include "type_traits/is_signed.h"
 
@@ -25,7 +26,12 @@ namespace cnl {
     namespace _impl {
         // cnl::_impl::max_to_chars_chars
         template<typename Scalar, int Base=10>
-        struct max_to_chars_chars;
+        struct max_to_chars_chars {
+            static constexpr auto _sign_chars = static_cast<int>(cnl::is_signed<Scalar>::value);
+            static constexpr auto _integer_chars = ((cnl::digits<Scalar>::value+2)/3);
+
+            static constexpr auto value = _sign_chars+_integer_chars;
+        };
 
         // cnl::_impl::itoc
         template<typename Scalar>

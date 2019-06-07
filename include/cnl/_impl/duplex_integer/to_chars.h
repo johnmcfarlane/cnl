@@ -15,15 +15,6 @@
 namespace cnl {
     namespace _impl {
         template<typename Upper, typename Lower>
-        struct max_to_chars_chars<duplex_integer<Upper, Lower>> {
-            using _scalar = duplex_integer<Upper, Lower>;
-            static constexpr auto _sign_chars = static_cast<int>(cnl::is_signed<_scalar>::value);
-            static constexpr auto _integer_chars = ((cnl::digits<_scalar>::value+2)/3);
-
-            static constexpr auto value = _sign_chars+_integer_chars;
-        };
-
-        template<typename Upper, typename Lower>
         to_chars_result to_chars_positive(
                 char* const first, char* const last, duplex_integer<Upper, Lower> const& value) noexcept
         {
