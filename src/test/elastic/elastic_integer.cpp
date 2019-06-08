@@ -53,10 +53,6 @@ namespace {
                 cnl::_impl::comparison_operator<cnl::_impl::greater_than_op, elastic_integer<31>, elastic_integer<31>>()(
                         elastic_integer<31>{0x7fffffff}, elastic_integer<31>{cnl::numeric_limits<cnl::int32>::min()}),
                 "cnl::elastic_integer test failed");
-        static_assert(identical(
-                typename std::common_type<elastic_integer<31>, elastic_integer<32, unsigned>>::type{},
-                elastic_integer<32>{}),
-                "cnl::elastic_integer test failed");
         static_assert(cnl::_impl::less_than_op()(elastic_integer<31, unsigned>{-1},
                 elastic_integer<31>{1}),
                 "cnl::elastic_integer test failed");
