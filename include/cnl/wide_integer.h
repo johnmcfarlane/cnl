@@ -10,7 +10,6 @@
 /// \file
 /// \brief file containing definitions related to \ref cnl::wide_integer
 
-#include "_impl/wide_integer/common_type.h"
 #include "_impl/wide_integer/digits.h"
 #include "_impl/wide_integer/forward_declaration.h"
 #include "_impl/wide_integer/from_rep.h"
