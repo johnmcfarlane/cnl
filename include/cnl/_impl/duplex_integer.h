@@ -9,6 +9,7 @@
 
 #include "duplex_integer/digits.h"
 #include "duplex_integer/add_signedness.h"
+#include "duplex_integer/scale.h"
 #include "duplex_integer/multiply.h"
 #include "duplex_integer/remove_signedness.h"
 #include "duplex_integer/instantiate_duplex_integer.h"
