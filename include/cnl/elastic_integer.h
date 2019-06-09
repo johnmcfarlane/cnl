@@ -19,7 +19,6 @@
 #include "_impl/num_traits/set_width.h"
 #include "_impl/num_traits/width.h"
 #include "_impl/number_base.h"
-#include "_impl/type_traits/common_type.h"
 #include "_impl/type_traits/is_signed.h"
 #include "_impl/type_traits/add_signedness.h"
 #include "_impl/type_traits/set_signedness.h"
@@ -299,17 +298,43 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // comparison operators
 
+        template<typename T1, typename T2>
+        struct common_elastic_type;
+
+        template<int Digits1, class Narrowest1, int Digits2, class Narrowest2>
+        struct common_elastic_type<
+                cnl::elastic_integer<Digits1, Narrowest1>,
+                cnl::elastic_integer<Digits2, Narrowest2>> {
+            using type = cnl::elastic_integer<
+                    cnl::_impl::max(Digits1, Digits2),
+                    cnl::_impl::common_signedness_t<Narrowest1, Narrowest2>>;
+        };
+
+        template<int Digits1, class Narrowest1, class Rhs>
+        struct common_elastic_type<cnl::elastic_integer<Digits1, Narrowest1>, Rhs>
+                : common_elastic_type<
+                        cnl::elastic_integer<Digits1, Narrowest1>,
+                        cnl::elastic_integer<numeric_limits<Rhs>::digits, Rhs>> {
+        };
+
+        template<class Lhs, int Digits2, class Narrowest2>
+        struct common_elastic_type<Lhs, cnl::elastic_integer<Digits2, Narrowest2>>
+                : common_elastic_type<
+                        cnl::elastic_integer<numeric_limits<Lhs>::digits, Lhs>,
+                        cnl::elastic_integer<Digits2, Narrowest2>> {
+        };
+
         template<int FromDigits, class FromNarrowest, int OtherDigits, class OtherNarrowest,
                 _impl::enable_if_t<FromDigits!=OtherDigits || !std::is_same<FromNarrowest, OtherNarrowest>::value, std::nullptr_t> = nullptr>
         CNL_NODISCARD constexpr auto cast_to_common_type(
                 elastic_integer<FromDigits, FromNarrowest> const& from,
                 elastic_integer<OtherDigits, OtherNarrowest> const&)
-        -> decltype(static_cast<_impl::common_type_t<
+        -> decltype(static_cast<typename common_elastic_type<
                 elastic_integer<FromDigits, FromNarrowest>,
-                elastic_integer<OtherDigits, OtherNarrowest>>>(from)) {
-            return static_cast<_impl::common_type_t<
+                elastic_integer<OtherDigits, OtherNarrowest>>::type>(from)) {
+            return static_cast<typename common_elastic_type<
                     elastic_integer<FromDigits, FromNarrowest>,
-                    elastic_integer<OtherDigits, OtherNarrowest>>>(from);
+                    elastic_integer<OtherDigits, OtherNarrowest>>::type>(from);
         }
 
         template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
@@ -507,28 +532,7 @@ namespace cnl {
         return _impl::from_rep<elastic_integer<RhsDigits, RhsNarrowest>>(
                 +_impl::to_rep(static_cast<elastic_integer<RhsDigits, RhsNarrowest>>(rhs)));
     }
-}
 
-namespace std {
-    template<int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
-    struct common_type<cnl::elastic_integer<LhsDigits, LhsNarrowest>, cnl::elastic_integer<RhsDigits, RhsNarrowest>> {
-        using type = cnl::elastic_integer<
-                cnl::_impl::max(LhsDigits, RhsDigits),
-                cnl::_impl::common_signedness_t<LhsNarrowest, RhsNarrowest>>;
-    };
-
-    template<int LhsDigits, class LhsNarrowest, class Rhs>
-    struct common_type<cnl::elastic_integer<LhsDigits, LhsNarrowest>, Rhs>
-            : common_type<cnl::elastic_integer<LhsDigits, LhsNarrowest>, cnl::elastic_integer<numeric_limits<Rhs>::digits, Rhs>> {
-    };
-
-    template<class Lhs, int RhsDigits, class RhsNarrowest>
-    struct common_type<Lhs, cnl::elastic_integer<RhsDigits, RhsNarrowest>>
-            : common_type<cnl::elastic_integer<numeric_limits<Lhs>::digits, Lhs>, cnl::elastic_integer<RhsDigits, RhsNarrowest>> {
-    };
-}
-
-namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::numeric_limits for cnl::elastic_integer
 

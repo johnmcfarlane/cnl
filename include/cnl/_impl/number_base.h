@@ -7,80 +7,23 @@
 #if !defined(CNL_NUMBER_BASE_H)
 #define CNL_NUMBER_BASE_H 1
 
+#include "number_base/declaration.h"
+#include "number_base/definition.h"
+#include "number_base/is_derived_from_number_base.h"
+#include "number_base/to_string.h"
 #include "generic_operators.h"
 #include "num_traits/from_rep.h"
 #include "num_traits/from_value.h"
 #include "num_traits/is_composite.h"
 #include "num_traits/scale.h"
 #include "num_traits/to_rep.h"
-#include "../constant.h"
 #include "../limits.h"
 
+#include <type_traits>
 #include <utility>
 
 namespace cnl {
     namespace _impl {
-        template<class Derived, class Rep>
-        class number_base;
-
-        template<class Derived, class Rep>
-        class number_base {
-        public:
-            using rep = Rep;
-
-            CNL_NODISCARD explicit constexpr operator bool() const
-            {
-                return static_cast<bool>(_rep);
-            }
-
-        protected:
-            static_assert(numeric_limits<Rep>::is_integer, "number_base must be specialized with integer Rep type template parameter");
-
-            number_base() = default;
-
-            explicit constexpr number_base(rep const& r)
-                : _rep(r) { }
-
-            template<class T>
-            CNL_RELAXED_CONSTEXPR number_base& operator=(T const& r) {
-                _rep = r;
-                return static_cast<Derived&>(*this);
-            }
-
-            friend struct cnl::to_rep<number_base>;
-        private:
-            rep _rep;
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::is_class_derived_from_number_base
-
-        // true iff T's base class is cnl::_impl::number_base;
-        // T must be a class;
-        // used by cnl::_impl::is_derived_from_number_base
-        template<class Derived, class Enable = void>
-        struct is_class_derived_from_number_base : std::false_type {};
-
-        template<class Derived>
-        struct is_class_derived_from_number_base<const Derived> : is_class_derived_from_number_base<Derived> {};
-
-        template<class Derived>
-        struct is_class_derived_from_number_base<
-                Derived,
-                enable_if_t<std::is_base_of<number_base<Derived, typename Derived::rep>, Derived>::value>>
-                : std::true_type {};
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::is_derived_from_number_base
-
-        // true if T is the Derived parameter of a number_base type
-        template<class T, class Enable = void>
-        struct is_derived_from_number_base : std::false_type {};
-
-        template<class Derived>
-        struct is_derived_from_number_base<Derived, enable_if_t<std::is_class<Derived>::value>>
-        : is_class_derived_from_number_base<Derived> { };
-
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::depth
 

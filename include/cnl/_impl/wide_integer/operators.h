@@ -7,15 +7,20 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_OPERATORS_H)
 #define CNL_IMPL_WIDE_INTEGER_OPERATORS_H
 
-#include "common_type.h"
+#include "forward_declaration.h"
 #include "from_rep.h"
 #include "from_value.h"
 #include "make_wide_integer.h"
 #include "numeric_limits.h"
 #include "type.h"
+#include "../common.h"
 #include "../duplex_integer/operators.h"
 #include "../generic_operators.h"
 #include "../ostream.h"
+#include "../type_traits/is_signed.h"
+#include "../type_traits/set_signedness.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
@@ -51,7 +56,15 @@ namespace cnl {
                 wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>> {
             using _lhs = wide_integer<LhsDigits, LhsNarrowest>;
             using _rhs = wide_integer<RhsDigits, RhsNarrowest>;
-            using _result = typename std::common_type<_lhs, _rhs>::type;
+
+            static constexpr auto _max_digits = cnl::_impl::max(LhsDigits, RhsDigits);
+            static constexpr auto _are_signed = cnl::is_signed<LhsNarrowest>::value
+                    || cnl::is_signed<RhsNarrowest>::value;
+            using _common_type = typename std::common_type<LhsNarrowest, RhsNarrowest>::type;
+            using _narrowest = cnl::_impl::set_signedness_t<_common_type, _are_signed>;
+
+            using _result = cnl::_impl::wide_integer<cnl::_impl::max(LhsDigits, RhsDigits), _narrowest>;
+
             CNL_NODISCARD constexpr auto operator()(_lhs const& lhs, _rhs const& rhs) const -> _result
             {
                 return Operator{}(to_rep(lhs), to_rep(rhs));
