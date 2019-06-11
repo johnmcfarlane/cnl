@@ -8,6 +8,7 @@
 #define CNL_IMPL_FRACTION_GCD_H 1
 
 #include "type.h"
+#include "../gcd.h"
 
 #include <numeric>
 

@@ -106,6 +106,7 @@ set(test_sources
 set(sample_sources
         # showing off
         index.cpp
+        mullers_recurrence.cpp
         papers/p0037.cpp
         papers/p0381.cpp
         papers/p0675.cpp

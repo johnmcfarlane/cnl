@@ -15,10 +15,9 @@
 
 /// compositional numeric library
 namespace cnl {
-    namespace _impl {
-        // cnl::fraction free functions
-        using std::to_string;
+    using std::to_string;
 
+    namespace _impl {
         template<typename N, typename D>
         std::string to_string(fraction<N, D> const& f)
         {
