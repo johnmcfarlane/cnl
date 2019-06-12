@@ -152,17 +152,6 @@ namespace cnl {
         }
     };
 
-    template<int Digits, class Rep, class RoundingTag>
-    struct fixed_width_scale<Digits, 2, rounding_integer<Rep, RoundingTag>, _impl::enable_if_t<0<=Digits>> {
-        CNL_NODISCARD constexpr auto operator()(rounding_integer<Rep, RoundingTag> const& s) const
-        -> decltype(_impl::from_rep<rounding_integer<Rep, RoundingTag>>(
-                fixed_width_scale<Digits, 2, Rep>{}(_impl::to_rep(s))))
-        {
-            return _impl::from_rep<rounding_integer<Rep, RoundingTag>>(
-                    fixed_width_scale<Digits, 2, Rep>{}(_impl::to_rep(s)));
-        }
-    };
-
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::make_rounding_integer
 

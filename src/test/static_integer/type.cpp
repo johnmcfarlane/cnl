@@ -138,12 +138,6 @@ namespace {
                 cnl::_impl::fixed_width_scale<-2>(cnl::static_integer<3, cnl::native_rounding_tag>{7})), "");
     }
 
-    namespace test_fixed_width_scale_nearest {
-        static_assert(identical(
-                cnl::static_integer<4, cnl::nearest_rounding_tag>{2},
-                cnl::_impl::fixed_width_scale<-2>(cnl::static_integer<4, cnl::nearest_rounding_tag>{7})), "");
-    }
-
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
     TEST(static_integer, conversion_overflow_trapping) {
         using si = cnl::static_integer<5>;
