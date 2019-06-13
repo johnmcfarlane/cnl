@@ -14,6 +14,7 @@
 #include "_impl/scaled_integer/from_rep.h"
 #include "_impl/scaled_integer/is_scaled_integer.h"
 #include "_impl/scaled_integer/type.h"
+#include "_impl/scaled_integer/math.h"
 #include "_impl/scaled_integer/named.h"
 #include "_impl/scaled_integer/fraction.h"
 #include "_impl/scaled_integer/constants.h"

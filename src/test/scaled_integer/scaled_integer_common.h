@@ -358,12 +358,10 @@ namespace test_deduction_guides {
     static_assert(identical(cnl::make_scaled_integer(cnl::constant<369>{}), cnl::scaled_integer(cnl::constant<369>{})),
             "cnl::scaled_integer class template deduction");
 
-#if defined(__cpp_deduction_guides)
     static_assert(
             identical(
                     scaled_integer<int8>(0),
                     cnl::make_scaled_integer(int8{0})));
-#endif
     static_assert(identical(cnl::make_scaled_integer(cnl::constant<4>{}), cnl::scaled_integer(cnl::constant<4>{})),
             "cnl::scaled_integer class template deduction");
 }
