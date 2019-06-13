@@ -10,7 +10,7 @@
 #if !defined(CNL_BOOST_SIMD_H)
 #define CNL_BOOST_SIMD_H 1
 
-#include "../fixed_point.h"
+#include "../scaled_integer.h"
 
 #include <boost/simd/pack.hpp>
 

@@ -10,7 +10,7 @@
 /// \file
 /// \brief file containing definitions related to \ref cnl::static_number
 
-#include "fixed_point.h"
+#include "scaled_integer.h"
 
 #include "_impl/static_integer.h"
 

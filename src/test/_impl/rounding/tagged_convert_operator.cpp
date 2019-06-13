@@ -10,7 +10,7 @@
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_number.h>
-#include <cnl/fixed_point.h>
+#include <cnl/scaled_integer.h>
 
 
 using cnl::_impl::assert_same;

@@ -8,7 +8,7 @@
 
 #include <cnl/auxiliary/boost.multiprecision.h>
 
-#include <cnl/fixed_point.h>
+#include <cnl/scaled_integer.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 

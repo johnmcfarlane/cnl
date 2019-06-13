@@ -1,5 +1,5 @@
 #include <Vc/simd>
-#include <cnl/fixed_point.h>
+#include <cnl/scaled_integer.h>
 
 #include <gtest/gtest.h>
 

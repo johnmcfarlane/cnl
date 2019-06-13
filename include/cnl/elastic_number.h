@@ -7,11 +7,11 @@
 /// \file
 /// \brief essential definitions related to the `cnl::elastic_number` type
 
-#if !defined(CNL_ELASTIC_FIXED_POINT_H)
-#define CNL_ELASTIC_FIXED_POINT_H 1
+#if !defined(CNL_ELASTIC_NUMBER_H)
+#define CNL_ELASTIC_NUMBER_H 1
 
 #include "elastic_integer.h"
-#include "fixed_point.h"
+#include "scaled_integer.h"
 #include "limits.h"
 #include "_impl/num_traits/adopt_signedness.h"
 
@@ -144,4 +144,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_ELASTIC_FIXED_POINT_H
+#endif  // CNL_ELASTIC_NUMBER_H

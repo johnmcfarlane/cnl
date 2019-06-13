@@ -106,7 +106,7 @@
 #include "constant.h"
 #include "elastic_number.h"
 #include "elastic_integer.h"
-#include "fixed_point.h"
+#include "scaled_integer.h"
 #include "fraction.h"
 #include "limits.h"
 #include "math.h"

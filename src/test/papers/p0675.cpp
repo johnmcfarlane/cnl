@@ -11,7 +11,7 @@
 
 #include <cnl/rounding_integer.h>
 #include <cnl/num_traits.h>
-#include <cnl/fixed_point.h>
+#include <cnl/scaled_integer.h>
 #include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>

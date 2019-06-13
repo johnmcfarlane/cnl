@@ -13,7 +13,7 @@
 #include <glm/glm.hpp>
 #endif
 
-#include <cnl/fixed_point.h>
+#include <cnl/scaled_integer.h>
 #include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>

@@ -6,7 +6,7 @@
 
 #if defined(__cpp_inline_variables) && __cpp_inline_variables>=201606
 
-#include <cnl/fixed_point.h>
+#include <cnl/scaled_integer.h>
 #include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>

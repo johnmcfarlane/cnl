@@ -6,7 +6,7 @@
 
 #include <cnl/auxiliary/boost.simd.h>
 
-#include <cnl/fixed_point.h>
+#include <cnl/scaled_integer.h>
 
 #include <boost/simd/function/all.hpp>
 #include <boost/simd/function/compare_equal.hpp>
