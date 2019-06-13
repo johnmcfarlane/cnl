@@ -17,17 +17,17 @@
 namespace cnl {
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // power - one integer raised to another as a floating-point or integer type
+        // power_value - one integer raised to another as a floating-point or integer type
 
         template<
                 typename S, int Exponent, int Radix,
                 bool PositiveExponent = (0<Exponent),
                 bool OddExponent = ((Exponent & 1)!=0),
                 bool FloatingPointS = numeric_limits<S>::is_iec559>
-        struct default_power;
+        struct power_value_fn;
 
         template<typename S, int Radix>
-        struct default_power<S, 0, Radix, false, false, false> {
+        struct power_value_fn<S, 0, Radix, false, false, false> {
             CNL_NODISCARD constexpr S operator()() const
             {
                 return S{1};
@@ -35,7 +35,7 @@ namespace cnl {
         };
 
         template<typename S, int Exponent, bool OddExponent>
-        struct default_power<S, Exponent, 2, true, OddExponent, false> {
+        struct power_value_fn<S, Exponent, 2, true, OddExponent, false> {
             CNL_NODISCARD constexpr auto operator()() const
             -> decltype(decltype(std::declval<S>() >> constant<digits<S>::value-1>{}){1} << constant<Exponent>{})
             {
@@ -52,26 +52,26 @@ namespace cnl {
         };
 
         template<typename S, int Exponent, int Radix, bool OddExponent>
-        struct default_power<S, Exponent, Radix, true, OddExponent, false> {
+        struct power_value_fn<S, Exponent, Radix, true, OddExponent, false> {
             CNL_NODISCARD constexpr auto operator()() const
-            -> decltype(default_power<S, (Exponent-1), Radix>{}()*Radix)
+            -> decltype(power_value_fn<S, (Exponent-1), Radix>{}()*Radix)
             {
-                return default_power<S, (Exponent-1), Radix>{}()*Radix;
+                return power_value_fn<S, (Exponent-1), Radix>{}()*Radix;
             }
         };
 
         template<typename S, int Exponent, int Radix, bool PositiveExponent, bool OddExponent>
-        struct default_power<S, Exponent, Radix, PositiveExponent, OddExponent, true> {
+        struct power_value_fn<S, Exponent, Radix, PositiveExponent, OddExponent, true> {
             CNL_NODISCARD constexpr S operator()() const
             {
                 return Exponent
-                       ? S(1.)/default_power<S, -Exponent, Radix>{}()
+                       ? S(1.)/power_value_fn<S, -Exponent, Radix>{}()
                        : S{1.};
             }
         };
 
         template<typename S, int Exponent, int Radix>
-        struct default_power<S, Exponent, Radix, true, false, true> {
+        struct power_value_fn<S, Exponent, Radix, true, false, true> {
             CNL_NODISCARD constexpr static S square(S const& r)
             {
                 return r*r;
@@ -79,12 +79,12 @@ namespace cnl {
 
             CNL_NODISCARD constexpr S operator()() const
             {
-                return square(default_power<S, Exponent/2, Radix>{}());
+                return square(power_value_fn<S, Exponent/2, Radix>{}());
             }
         };
 
         template<typename S, int Exponent, int Radix>
-        struct default_power<S, Exponent, Radix, true, true, true> {
+        struct power_value_fn<S, Exponent, Radix, true, true, true> {
             CNL_NODISCARD constexpr static S square(S const& r)
             {
                 return r*r;
@@ -92,24 +92,16 @@ namespace cnl {
 
             CNL_NODISCARD constexpr S operator()() const
             {
-                return S(Radix)*default_power<S, (Exponent-1), Radix>{}();
+                return S(Radix)*power_value_fn<S, (Exponent-1), Radix>{}();
             }
         };
 
-        template<typename S, int Exponent, int Radix, class Enable = void>
-        struct power {
-            CNL_NODISCARD constexpr auto operator()() const
-            -> decltype(default_power<S, Exponent, Radix>{}()) {
-                return default_power<S, Exponent, Radix>{}();
-            }
-        };
-    }
-
-    template<typename S, int Exponent, int Radix>
-    CNL_NODISCARD constexpr auto power()
-    -> decltype(_impl::power<S, Exponent, Radix>{}())
-    {
-        return _impl::power<S, Exponent, Radix>{}();
+        template<typename S, int Exponent, int Radix>
+        CNL_NODISCARD constexpr auto power_value()
+        -> decltype(power_value_fn<S, Exponent, Radix>{}())
+        {
+            return power_value_fn<S, Exponent, Radix>{}();
+        }
     }
 }
 

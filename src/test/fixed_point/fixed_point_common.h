@@ -259,32 +259,32 @@ static_assert(
 static_assert(cnl::_impl::scale<-8, 2, int16>(-31488)==-123, "cnl::_impl::scale test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::power
+// power_value
 
-namespace test_power {
-    static_assert(identical(cnl::power<float, 0, 2>(), 1.f), "cnl::power test failed");
-    static_assert(identical(cnl::power<double, -1, 2>(), .5), "cnl::power test failed");
-    static_assert(identical(cnl::power<long double, 1, 2>(), 2.L), "cnl::power test failed");
-    static_assert(identical(cnl::power<float, -3, 2>(), .125f), "cnl::power test failed");
-    static_assert(identical(cnl::power<double, 7, 2>(), 128.), "cnl::power test failed");
-    static_assert(identical(cnl::power<long double, 10, 2>(), 1024.L), "cnl::power test failed");
-    static_assert(identical(cnl::power<float, 20, 2>(), 1048576.f), "cnl::power test failed");
+namespace test_power_value {
+    static_assert(identical(cnl::_impl::power_value<float, 0, 2>(), 1.f), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<double, -1, 2>(), .5), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<long double, 1, 2>(), 2.L), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<float, -3, 2>(), .125f), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<double, 7, 2>(), 128.), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<long double, 10, 2>(), 1024.L), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<float, 20, 2>(), 1048576.f), "cnl::_impl::power_value test failed");
 
-    static_assert(identical(cnl::power<float, 0, 3>(), 1.f), "cnl::power test failed");
-    static_assert(identical(cnl::power<double, -1, 3>(), 1./3), "cnl::power test failed");
-    static_assert(identical(cnl::power<long double, 1, 3>(), 3.L), "cnl::power test failed");
-    static_assert(identical(cnl::power<float, -3, 3>(), 1.f/27), "cnl::power test failed");
-    static_assert(identical(cnl::power<double, 7, 3>(), 2187.), "cnl::power test failed");
-    static_assert(identical(cnl::power<long double, 10, 3>(), 59049.L), "cnl::power test failed");
-    static_assert(identical(cnl::power<float, 20, 3>(), 3486784401.f), "cnl::power test failed");
+    static_assert(identical(cnl::_impl::power_value<float, 0, 3>(), 1.f), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<double, -1, 3>(), 1./3), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<long double, 1, 3>(), 3.L), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<float, -3, 3>(), 1.f/27), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<double, 7, 3>(), 2187.), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<long double, 10, 3>(), 59049.L), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<float, 20, 3>(), 3486784401.f), "cnl::_impl::power_value test failed");
 
-    static_assert(identical(cnl::power<float, 0, 4>(), 1.f), "cnl::power test failed");
-    static_assert(identical(cnl::power<double, -1, 4>(), .25), "cnl::power test failed");
-    static_assert(identical(cnl::power<long double, 1, 4>(), 4.L), "cnl::power test failed");
-    static_assert(identical(cnl::power<float, -3, 4>(), .015625f), "cnl::power test failed");
-    static_assert(identical(cnl::power<double, 7, 4>(), 16384.), "cnl::power test failed");
-    static_assert(identical(cnl::power<long double, 10, 4>(), 1048576.L), "cnl::power test failed");
-    static_assert(identical(cnl::power<float, 20, 4>(), 1099511627776.f), "cnl::power test failed");
+    static_assert(identical(cnl::_impl::power_value<float, 0, 4>(), 1.f), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<double, -1, 4>(), .25), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<long double, 1, 4>(), 4.L), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<float, -3, 4>(), .015625f), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<double, 7, 4>(), 16384.), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<long double, 10, 4>(), 1048576.L), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<float, 20, 4>(), 1099511627776.f), "cnl::_impl::power_value test failed");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -17,12 +17,12 @@
 using cnl::_impl::identical;
 
 namespace {
-    namespace test_power {
+    namespace test_power_value {
         static_assert(
                 identical(
                         cnl::_impl::wide_integer<16, cnl::uint8>{256},
-                        cnl::power<cnl::_impl::wide_integer<16, cnl::uint8>, 8, 2>()),
-                "cnl::power<cnl::_impl::wide_integer<16>, ...>");
+                        cnl::_impl::power_value<cnl::_impl::wide_integer<16, cnl::uint8>, 8, 2>()),
+                "cnl::_impl::power_value<cnl::_impl::wide_integer<16>, ...>");
     }
 
     namespace test_scale {

@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_TAGGED_CONVERT_OPERATOR_H)
 #define CNL_IMPL_SCALED_INTEGER_TAGGED_CONVERT_OPERATOR_H
 
-#include "../power.h"
+#include "../power_value.h"
 #include "../overflow/overflow_operator.h"
 #include "../rounding/nearest_rounding_tag.h"
 #include "../rounding/native_rounding_tag.h"
@@ -75,7 +75,7 @@ namespace cnl {
 
             CNL_NODISCARD static constexpr Input half()
             {
-                return cnl::power<Input, ResultExponent-1, ResultRadix>();
+                return power_value<Input, ResultExponent-1, ResultRadix>();
             }
 
         public:

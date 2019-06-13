@@ -10,7 +10,7 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_DEFINITION_H)
 #define CNL_IMPL_SCALED_INTEGER_DEFINITION_H 1
 
-#include "../power.h"
+#include "../power_value.h"
 #include "../num_traits/width.h"
 #include "../number_base.h"
 #include "../../constant.h"
@@ -197,7 +197,7 @@ namespace cnl {
     CNL_NODISCARD constexpr auto scaled_integer<Rep, Exponent, Radix>::one()
     -> _impl::enable_if_t<numeric_limits<S>::is_iec559, S>
     {
-        return power<S, -exponent, Radix>();
+        return _impl::power_value<S, -exponent, Radix>();
     }
 
     template<typename Rep, int Exponent, int Radix>
@@ -213,7 +213,7 @@ namespace cnl {
     CNL_NODISCARD constexpr S scaled_integer<Rep, Exponent, Radix>::inverse_one()
     {
         static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-        return power<S, exponent, Radix>();
+        return _impl::power_value<S, exponent, Radix>();
     }
 
     template<typename Rep, int Exponent, int Radix>

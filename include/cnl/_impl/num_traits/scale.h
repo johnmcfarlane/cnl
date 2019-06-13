@@ -7,7 +7,7 @@
 #ifndef CNL_IMPL_NUM_TRAITS_SCALE
 #define CNL_IMPL_NUM_TRAITS_SCALE
 
-#include "../power.h"
+#include "../power_value.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 
@@ -23,9 +23,9 @@ namespace cnl {
         template<int Digits, int Radix, typename S>
         struct default_scale<Digits, Radix, S, _impl::enable_if_t<0<=Digits>> {
             CNL_NODISCARD constexpr auto operator()(S const& s) const
-            -> decltype(s*cnl::power<S, Digits, Radix>())
+            -> decltype(s*power_value<S, Digits, Radix>())
             {
-                return s*cnl::power<S, Digits, Radix>();
+                return s*power_value<S, Digits, Radix>();
             }
         };
 
@@ -33,9 +33,9 @@ namespace cnl {
         template<int Digits, int Radix, typename S>
         struct default_scale<Digits, Radix, S, _impl::enable_if_t<Digits<0>> {
             CNL_NODISCARD constexpr auto operator()(S const& s) const
-            -> decltype(s/cnl::power<S, -Digits, Radix>())
+            -> decltype(s/power_value<S, -Digits, Radix>())
             {
-                return s/cnl::power<S, -Digits, Radix>();
+                return s/power_value<S, -Digits, Radix>();
             }
         };
     }
