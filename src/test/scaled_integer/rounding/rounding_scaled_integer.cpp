@@ -13,7 +13,7 @@ namespace {
     using cnl::rounding_integer;
 
     template<class Rep = int, int Exponent = 0, class RoundingTag = cnl::nearest_rounding_tag>
-    using rounding_scaled_integer = cnl::scaled_integer<cnl::rounding_integer<Rep, RoundingTag>, Exponent>;
+    using rounding_scaled_integer = cnl::scaled_integer<cnl::rounding_integer<Rep, RoundingTag>, cnl::power<Exponent>>;
 
     namespace test_numeric_limits {
         static_assert(cnl::numeric_limits<rounding_integer<>>::is_specialized,

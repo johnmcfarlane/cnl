@@ -17,31 +17,31 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // scaled_integer specializations of <num_traits.h> templates
 
-    template<typename Rep, int Exponent, int Radix>
-    struct digits<scaled_integer<Rep, Exponent, Radix>> : digits<Rep> {
+    template<typename Rep, class Scale>
+    struct digits<scaled_integer<Rep, Scale>> : digits<Rep> {
     };
 
-    template<typename Rep, int Exponent, int Radix, int MinNumBits>
-    struct set_digits<scaled_integer<Rep, Exponent, Radix>, MinNumBits> {
-        using type = scaled_integer<set_digits_t<Rep, MinNumBits>, Exponent, Radix>;
+    template<typename Rep, class Scale, int MinNumBits>
+    struct set_digits<scaled_integer<Rep, Scale>, MinNumBits> {
+        using type = scaled_integer<set_digits_t<Rep, MinNumBits>, Scale>;
     };
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_value<cnl::scaled_integer<>>
 
     template<typename Rep, int Exponent, int Radix, typename Value>
-    struct from_value<scaled_integer<Rep, Exponent, Radix>, Value>
-            : _impl::from_value_simple<scaled_integer<Value, 0, Radix>, Value> {
+    struct from_value<scaled_integer<Rep, power<Exponent, Radix>>, Value>
+            : _impl::from_value_simple<scaled_integer<Value, power<0, Radix>>, Value> {
     };
 
-    template<typename Rep, int Exponent, int Radix, typename ValueRep, int ValueExponent>
-    struct from_value<scaled_integer<Rep, Exponent, Radix>, scaled_integer<ValueRep, ValueExponent>> : _impl::from_value_simple<
-            scaled_integer<from_value_t<Rep, ValueRep>, ValueExponent>,
-            scaled_integer<ValueRep, ValueExponent>> {
+    template<typename Rep, class Scale, typename ValueRep, class ValueScale>
+    struct from_value<scaled_integer<Rep, Scale>, scaled_integer<ValueRep, ValueScale>> : _impl::from_value_simple<
+            scaled_integer<from_value_t<Rep, ValueRep>, ValueScale>,
+            scaled_integer<ValueRep, ValueScale>> {
     };
 
     template<typename Rep, int Exponent, int Radix, typename Numerator, typename Denominator>
-    struct from_value<scaled_integer<Rep, Exponent, Radix>, fraction<Numerator, Denominator>> {
+    struct from_value<scaled_integer<Rep, power<Exponent, Radix>>, fraction<Numerator, Denominator>> {
         CNL_NODISCARD constexpr auto operator()(fraction<Numerator, Denominator> const& value) const
         -> decltype(quotient(value.numerator, value.denominator)) {
             return quotient(value.numerator, value.denominator);
@@ -49,10 +49,10 @@ namespace cnl {
     };
 
     template<typename Rep, int Exponent, int Radix, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct from_value<scaled_integer<Rep, Exponent, Radix>, constant<Value>> : _impl::from_value_simple<
+    struct from_value<scaled_integer<Rep, power<Exponent, Radix>>, constant<Value>> : _impl::from_value_simple<
             scaled_integer<
                     set_digits_t<int, _impl::max(digits<int>::value, _impl::used_digits(Value)-trailing_bits(Value))>,
-                    trailing_bits(Value)>,
+                    power<trailing_bits(Value)>>,
             constant<Value>> {
         // same as deduction guide
     };
@@ -68,7 +68,8 @@ namespace cnl {
         };
 
         template<typename Rep, int Exponent, int Radix>
-        struct fractional_digits<scaled_integer<Rep, Exponent, Radix>> : std::integral_constant<int, -Exponent> {
+        struct fractional_digits<scaled_integer<Rep, power<Exponent, Radix>>>
+                : std::integral_constant<int, -Exponent> {
         };
 
         // cnl::_impl::integer_digits

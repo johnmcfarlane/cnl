@@ -183,14 +183,14 @@ static void circle_intersect_generic(benchmark::State& state)
 ////////////////////////////////////////////////////////////////////////////////
 // scaled_integer types
 
-using u4_4 = scaled_integer<uint8_t, -4>;
-using s3_4 = scaled_integer<int8_t, -4>;
-using u8_8 = scaled_integer<uint16_t, -8>;
-using s7_8 = scaled_integer<int16_t, -8>;
-using u16_16 = scaled_integer<uint32_t, -16>;
-using s15_16 = scaled_integer<int32_t, -16>;
-using u32_32 = scaled_integer<uint64_t, -32>;
-using s31_32 = scaled_integer<int64_t, -32>;
+using u4_4 = scaled_integer<uint8_t, cnl::power<-4>>;
+using s3_4 = scaled_integer<int8_t, cnl::power<-4>>;
+using u8_8 = scaled_integer<uint16_t, cnl::power<-8>>;
+using s7_8 = scaled_integer<int16_t, cnl::power<-8>>;
+using u16_16 = scaled_integer<uint32_t, cnl::power<-16>>;
+using s15_16 = scaled_integer<int32_t, cnl::power<-16>>;
+using u32_32 = scaled_integer<uint64_t, cnl::power<-32>>;
+using s31_32 = scaled_integer<int64_t, cnl::power<-32>>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // multi-type benchmark macros

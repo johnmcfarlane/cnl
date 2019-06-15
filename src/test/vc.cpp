@@ -84,7 +84,7 @@ namespace {
 
     // fixed-point SIMD type
     template<typename T = int, int Exponent = 0, class Abi = typename Vc::simd<T>::abi_type>
-    using fp_simd = cnl::scaled_integer<Vc::simd<T, Abi>, Exponent>;
+    using fp_simd = cnl::scaled_integer<Vc::simd<T, Abi>, cnl::power<Exponent>>;
 
     TEST(fp_vc, equal) {
         auto a = fp_simd<std::uint16_t>(static_cast<std::uint16_t>(123));

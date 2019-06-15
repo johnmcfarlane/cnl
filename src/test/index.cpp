@@ -36,13 +36,14 @@ void test_function(void(* function)(), char const* output)
 #include <cnl/all.h>
 #include <iostream>
 
+using cnl::power;
 using cnl::scaled_integer;
 using namespace std;
 
 void declaration_example()
 {
     // x is represented by an int and scaled down by 1 bit
-    auto x = scaled_integer<int, -1>{3.5};
+    auto x = scaled_integer<int, power<-1>>{3.5};
 
     // under the hood, x stores a whole number
     cout << to_rep(x) << endl;  // "7"
@@ -67,11 +68,11 @@ TEST(index, declaration_example)
 void basic_arithmetic_example()
 {
     // define a constant signed value with 3 integer and 28 fraction bits (s3:28)
-    auto pi = scaled_integer<int32_t, -28>{3.1415926535};
+    auto pi = scaled_integer<int32_t, power<-28>>{3.1415926535};
 
     // expressions involving integers return scaled_integer results
     auto tau = pi*2;
-    static_assert(is_same<decltype(tau), scaled_integer<int32_t, -28>>::value, "");
+    static_assert(is_same<decltype(tau), scaled_integer<int32_t, power<-28>>>::value, "");
 
     // "6.28319"
     cout << tau << endl;
@@ -98,17 +99,17 @@ using cnl::elastic_scaled_integer;
 void advanced_arithmetic_example()
 {
     // this variable uses all of its capacity
-    auto x = scaled_integer<uint8_t, -4>{15.9375};
+    auto x = scaled_integer<uint8_t, power<-4>>{15.9375};
 
     // 15.9375 * 15.9375 = 254.00390625 ... overflow!
-    auto xx1 = scaled_integer<uint8_t, -4>{x*x};
+    auto xx1 = scaled_integer<uint8_t, power<-4>>{x*x};
     cout << xx1 << endl;  // "14" instead!
 
     // fixed-point multiplication operator obeys usual promotion and implicit conversion rules
     auto xx = x*x;
 
     // x*x is promoted to scaled_integer<int, -8>
-    static_assert(is_same<decltype(xx), scaled_integer<int, -8>>::value, "");
+    static_assert(is_same<decltype(xx), scaled_integer<int, power<-8>>>::value, "");
     cout << xx << endl;  // "254.00390625" - correct
 
     // you can avoid the pitfalls of integer promotion for good by using the elastic_scaled_integer type
@@ -139,7 +140,7 @@ using cnl::multiprecision;
 
 // Here's a fixed-point type with any number of binary digits.
 template<int NumDigits, int Exponent = 0>
-using mp_scaled_integer = scaled_integer<multiprecision<NumDigits>, Exponent>;
+using mp_scaled_integer = scaled_integer<multiprecision<NumDigits>, power<Exponent>>;
 
 void boost_example()
 {

@@ -15,7 +15,7 @@
 namespace {
     template<int Digits, int Exponent>
     using scaled_integer_rounding_elastic_integer =
-        cnl::scaled_integer<cnl::rounding_integer<cnl::elastic_integer<Digits>>, Exponent>;
+        cnl::scaled_integer<cnl::rounding_integer<cnl::elastic_integer<Digits>>, cnl::power<Exponent>>;
 
     TEST(scaled_integer_rounding_elastic_integer, to_chars) {
         auto expected = std::string{"25.25"};

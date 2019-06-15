@@ -46,7 +46,7 @@ namespace cnl {
         };
 
         template<typename Rep, int Exponent, int Radix>
-        struct scaled_integer_rep<scaled_integer<Rep, Exponent, Radix>> : scaled_integer_rep<Rep> {
+        struct scaled_integer_rep<scaled_integer<Rep, power<Exponent, Radix>>> : scaled_integer_rep<Rep> {
         };
 
         template<typename Number>
@@ -56,7 +56,7 @@ namespace cnl {
         }
 
         template<typename Rep, int Exponent, int Radix>
-        CNL_NODISCARD constexpr Rep not_scaled_integer(scaled_integer<Rep, Exponent, Radix> const& f)
+        CNL_NODISCARD constexpr Rep not_scaled_integer(scaled_integer<Rep, power<Exponent, Radix>> const& f)
         {
             return _impl::to_rep(f);
         }
@@ -65,7 +65,7 @@ namespace cnl {
         struct exponent : constant<0> {};
 
         template<typename Rep, int Exponent, int Radix>
-        struct exponent<scaled_integer<Rep, Exponent, Radix>> : constant<Exponent> {
+        struct exponent<scaled_integer<Rep, power<Exponent, Radix>>> : constant<Exponent> {
         };
 
         template<class Quotient, class Dividend, class Divisor>
@@ -82,8 +82,8 @@ namespace cnl {
         struct result;
 
         template<typename Rep, int Exponent, int Radix, typename Dividend, typename Divisor>
-        struct result<scaled_integer<Rep, Exponent, Radix>, Dividend, Divisor> {
-            using type = scaled_integer<Rep, Exponent, Radix>;
+        struct result<scaled_integer<Rep, power<Exponent, Radix>>, Dividend, Divisor> {
+            using type = scaled_integer<Rep, power<Exponent, Radix>>;
         };
 
         template<class Dividend, class Divisor>
@@ -102,7 +102,7 @@ namespace cnl {
             using rep_type = set_digits_t<natural_result, result_digits>;
             static constexpr int rep_exponent = -fractional_digits;
 
-            using type = scaled_integer<typename scaled_integer_rep<rep_type>::type, rep_exponent>;
+            using type = scaled_integer<typename scaled_integer_rep<rep_type>::type, power<rep_exponent>>;
         };
     }
 

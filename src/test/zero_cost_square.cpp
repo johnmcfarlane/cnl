@@ -39,10 +39,10 @@ float square_elastic_integer(float input) {
 // the same function using cnl::scaled_integer
 float square_scaled_integer(float input) {
     // scaled_integer handles scaling
-    auto fixed = scaled_integer<int32_t, -16>{input};
+    auto fixed = scaled_integer<int32_t, power<-16>>{input};
 
     // but it uses int under the hood; user must still widen
-    auto prod = scaled_integer<int64_t, -16>{fixed} * fixed;
+    auto prod = scaled_integer<int64_t, power<-16>>{fixed} * fixed;
 
     return static_cast<float>(prod);
 }

@@ -27,7 +27,7 @@ namespace {
                             IntegerDigits+FractionalDigits,
                             Narrowest>,
                     cnl::saturated_overflow_tag>,
-            -FractionalDigits>;
+            cnl::power<-FractionalDigits>>;
 
     namespace test_unwrap {
         using type = saturated_elastic_scaled_integer<7, 8, std::int16_t>;

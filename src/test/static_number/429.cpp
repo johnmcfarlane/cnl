@@ -24,7 +24,7 @@ using saturated_elastic_scaled_integer = cnl::scaled_integer<
                                 int>,
                         cnl::saturated_overflow_tag>,
                 cnl::native_rounding_tag>,
-        Exponent>;
+        cnl::power<Exponent>>;
 
 TEST(a, b)
 {

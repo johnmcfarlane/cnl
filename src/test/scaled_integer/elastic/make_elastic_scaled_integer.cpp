@@ -43,13 +43,13 @@ namespace test_from_scaled_integer {
     static_assert(
             identical(
                     cnl::elastic_scaled_integer<16, -8, unsigned>{255.99609375},
-                    cnl::make_elastic_scaled_integer(cnl::scaled_integer<std::uint16_t, -8>{255.99609375})),
+                    cnl::make_elastic_scaled_integer(cnl::scaled_integer<std::uint16_t, cnl::power<-8>>{255.99609375})),
             "");
 
     static_assert(
             identical(
                     cnl::elastic_scaled_integer<cnl::digits<long>::value, 3, signed>{88},
-                    cnl::make_elastic_scaled_integer(cnl::scaled_integer<long, 3>{88})),
+                    cnl::make_elastic_scaled_integer(cnl::scaled_integer<long, cnl::power<3>>{88})),
             "");
 }
 

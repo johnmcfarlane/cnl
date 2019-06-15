@@ -8,7 +8,7 @@
 #include <cnl/_impl/type_traits/identical.h>
 
 template<typename Rep, int Exponent>
-using decimal_scaled_integer = cnl::scaled_integer<Rep, Exponent, 10>;
+using decimal_scaled_integer = cnl::scaled_integer<Rep, cnl::power<Exponent, 10>>;
 
 using cnl::_impl::identical;
 

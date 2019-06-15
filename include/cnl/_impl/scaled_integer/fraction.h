@@ -18,15 +18,15 @@
 namespace cnl {
     template<typename Rep, int Exponent, int Radix>
     template<typename Numerator, typename Denominator>
-    constexpr scaled_integer<Rep, Exponent, Radix>::scaled_integer(fraction<Numerator, Denominator> const& f)
+    constexpr scaled_integer<Rep, power<Exponent, Radix>>::scaled_integer(fraction<Numerator, Denominator> const& f)
             : scaled_integer(quotient<scaled_integer>(f.numerator, f.denominator))
     {
     }
 
     template<typename Rep, int Exponent, int Radix>
     template<typename Numerator, typename Denominator>
-    CNL_RELAXED_CONSTEXPR scaled_integer<Rep, Exponent, Radix>&
-    scaled_integer<Rep, Exponent, Radix>::operator=(fraction<Numerator, Denominator> const& f)
+    CNL_RELAXED_CONSTEXPR scaled_integer<Rep, power<Exponent, Radix>>&
+    scaled_integer<Rep, power<Exponent, Radix>>::operator=(fraction<Numerator, Denominator> const& f)
     {
         return operator=(quotient<scaled_integer>(f.numerator, f.denominator));
     }
@@ -36,7 +36,7 @@ namespace cnl {
     scaled_integer(fraction<Numerator, Denominator>)
     -> scaled_integer<
             typename decltype(quotient(std::declval<Numerator>(), std::declval<Denominator>()))::rep,
-            decltype(quotient(std::declval<Numerator>(), std::declval<Denominator>()))::exponent>;
+            power<decltype(quotient(std::declval<Numerator>(), std::declval<Denominator>()))::exponent>>;
 #endif
 }
 

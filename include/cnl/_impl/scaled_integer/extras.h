@@ -43,11 +43,11 @@ namespace cnl {
     ///
     /// \sa \ref std::vector
 
-    template<typename Rep, int Exponent, int Radix>
-    CNL_NODISCARD constexpr auto abs(scaled_integer<Rep, Exponent, Radix> const& x) noexcept
+    template<typename Rep, class Scale>
+    CNL_NODISCARD constexpr auto abs(scaled_integer<Rep, Scale> const& x) noexcept
     -> decltype(-x)
     {
-        return (x>=scaled_integer<Rep, Exponent, Radix>{}) ? static_cast<decltype(-x)>(x) : -x;
+        return (x>=scaled_integer<Rep, Scale>{}) ? static_cast<decltype(-x)>(x) : -x;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -104,10 +104,10 @@ namespace cnl {
     // https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_.28base_2.29
     template<typename Rep, int Exponent, int Radix>
     CNL_NODISCARD constexpr auto
-    sqrt(scaled_integer<Rep, Exponent, Radix> const& x)
-    -> scaled_integer <Rep, Exponent, Radix>
+    sqrt(scaled_integer<Rep, power<Exponent, Radix>> const& x)
+    -> scaled_integer<Rep, power<Exponent, Radix>>
     {
-        using type = scaled_integer<Rep, Exponent, Radix>;
+        using type = scaled_integer<Rep, power<Exponent, Radix>>;
         return _impl::to_rep(x)<0
                ? _impl::unreachable<type>("negative value passed to cnl::sqrt")
                : type{_impl::from_rep<type>(_impl::sqrt_solve1<Exponent>{}(unwrap(x)))};
@@ -118,18 +118,18 @@ namespace cnl {
 
     template<class Rep, int Exponent, int Radix,
             _impl::enable_if_t<(Exponent<0), int> dummy = 0>
-    CNL_NODISCARD constexpr auto floor(scaled_integer<Rep, Exponent, Radix> const& x)
-    -> decltype(_impl::from_rep<scaled_integer<Rep, 0, Radix>>(_impl::to_rep(x)>>constant<-Exponent>())) {
+    CNL_NODISCARD constexpr auto floor(scaled_integer<Rep, power<Exponent, Radix>> const& x)
+    -> decltype(_impl::from_rep<scaled_integer<Rep, power<0, Radix>>>(_impl::to_rep(x)>>constant<-Exponent>())) {
         static_assert(
                 Radix==2,
-                "cnl::floor(scaled_integer<Rep, Exponent, Radix>) not implemented for Exponent<0 && Radix!=2");
+                "cnl::floor(scaled_integer<Rep, power<Exponent, Radix>>) not implemented for Exponent<0 && Radix!=2");
 
-        return _impl::from_rep<scaled_integer<Rep, 0, Radix>>(_impl::to_rep(x)>>constant<-Exponent>());
+        return _impl::from_rep<scaled_integer<Rep, power<0, Radix>>>(_impl::to_rep(x)>>constant<-Exponent>());
     }
 
     template<class Rep, int Exponent, int Radix>
-    CNL_NODISCARD constexpr auto floor(scaled_integer<Rep, Exponent, Radix> const& x)
-    -> _impl::enable_if_t<Exponent>=0, scaled_integer<Rep, Exponent, Radix>> {
+    CNL_NODISCARD constexpr auto floor(scaled_integer<Rep, power<Exponent, Radix>> const& x)
+    -> _impl::enable_if_t<Exponent>=0, scaled_integer<Rep, power<Exponent, Radix>>> {
         return x;
     }
 
@@ -164,38 +164,38 @@ namespace cnl {
 
         template<typename Rep, int Exponent, int Radix, _impl::float_of_same_size<Rep>(* F)(
                 _impl::float_of_same_size<Rep>)>
-        CNL_NODISCARD constexpr scaled_integer <Rep, Exponent, Radix>
-        crib(scaled_integer<Rep, Exponent, Radix> const& x) noexcept
+        CNL_NODISCARD constexpr scaled_integer<Rep, power<Exponent, Radix>>
+        crib(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
         {
             using floating_point = _impl::float_of_same_size<Rep>;
-            return static_cast<scaled_integer<Rep, Exponent, Radix>>(F(static_cast<floating_point>(x)));
+            return static_cast<scaled_integer<Rep, power<Exponent, Radix>>>(F(static_cast<floating_point>(x)));
         }
     }
 
     template<typename Rep, int Exponent, int Radix>
-    CNL_NODISCARD constexpr scaled_integer <Rep, Exponent, Radix>
-    sin(scaled_integer<Rep, Exponent, Radix> const& x) noexcept
+    CNL_NODISCARD constexpr scaled_integer<Rep, power<Exponent, Radix>>
+    sin(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
     {
         return _impl::crib<Rep, Exponent, Radix, std::sin>(x);
     }
 
     template<typename Rep, int Exponent, int Radix>
-    CNL_NODISCARD constexpr scaled_integer <Rep, Exponent, Radix>
-    cos(scaled_integer<Rep, Exponent, Radix> const& x) noexcept
+    CNL_NODISCARD constexpr scaled_integer<Rep, power<Exponent, Radix>>
+    cos(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
     {
         return _impl::crib<Rep, Exponent, Radix, std::cos>(x);
     }
 
     template<typename Rep, int Exponent, int Radix>
-    CNL_NODISCARD constexpr scaled_integer <Rep, Exponent, Radix>
-    exp(scaled_integer<Rep, Exponent, Radix> const& x) noexcept
+    CNL_NODISCARD constexpr scaled_integer<Rep, power<Exponent, Radix>>
+    exp(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
     {
         return _impl::crib<Rep, Exponent, Radix, std::exp>(x);
     }
 
     template<typename Rep, int Exponent, int Radix>
-    CNL_NODISCARD constexpr scaled_integer <Rep, Exponent, Radix>
-    pow(scaled_integer<Rep, Exponent, Radix> const& x) noexcept
+    CNL_NODISCARD constexpr scaled_integer<Rep, power<Exponent, Radix>>
+    pow(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
     {
         return _impl::crib<Rep, Exponent, Radix, std::pow>(x);
     }
@@ -204,13 +204,13 @@ namespace cnl {
     // cnl::scaled_integer streaming - (placeholder implementation)
 
     template<typename Rep, int Exponent, int Radix>
-    ::std::ostream& operator<<(::std::ostream& out, scaled_integer<Rep, Exponent, Radix> const& fp)
+    ::std::ostream& operator<<(::std::ostream& out, scaled_integer<Rep, power<Exponent, Radix>> const& fp)
     {
         return out << to_chars(fp).data();
     }
 
     template<typename Rep, int Exponent, int Radix>
-    ::std::istream& operator>>(::std::istream& in, scaled_integer <Rep, Exponent, Radix>& fp)
+    ::std::istream& operator>>(::std::istream& in, scaled_integer<Rep, power<Exponent, Radix>>& fp)
     {
         long double ld;
         in >> ld;
@@ -227,10 +227,10 @@ namespace cnl {
     // some are temporary (assuming rounding style, traps etc.)
     // and some are undefined
     template<typename Rep, int Exponent, int Radix>
-    struct numeric_limits<cnl::scaled_integer<Rep, Exponent, Radix>>
-            : numeric_limits<cnl::_impl::number_base<cnl::scaled_integer<Rep, Exponent, Radix>, Rep>> {
+    struct numeric_limits<cnl::scaled_integer<Rep, power<Exponent, Radix>>>
+            : numeric_limits<cnl::_impl::number_base<cnl::scaled_integer<Rep, power<Exponent, Radix>>, Rep>> {
         // scaled_integer-specific helpers
-        using _value_type = cnl::scaled_integer<Rep, Exponent, Radix>;
+        using _value_type = cnl::scaled_integer<Rep, power<Exponent, Radix>>;
         using _rep = typename _value_type::rep;
         using _rep_numeric_limits = numeric_limits<_rep>;
 
@@ -289,14 +289,14 @@ namespace std {
     ////////////////////////////////////////////////////////////////////////////////
     // std::numeric_limits specialization for rounding_integer
 
-    template<typename Rep, int Exponent, int Radix>
-    struct numeric_limits<cnl::scaled_integer<Rep, Exponent, Radix>>
-            : cnl::numeric_limits<cnl::scaled_integer<Rep, Exponent, Radix>> {
+    template<typename Rep, class Scale>
+    struct numeric_limits<cnl::scaled_integer<Rep, Scale>>
+            : cnl::numeric_limits<cnl::scaled_integer<Rep, Scale>> {
     };
 
-    template<typename Rep, int Exponent, int Radix>
-    struct numeric_limits<cnl::scaled_integer<Rep, Exponent, Radix> const>
-            : cnl::numeric_limits<cnl::scaled_integer<Rep, Exponent, Radix>> {
+    template<typename Rep, class Scale>
+    struct numeric_limits<cnl::scaled_integer<Rep, Scale> const>
+            : cnl::numeric_limits<cnl::scaled_integer<Rep, Scale>> {
     };
 }
 

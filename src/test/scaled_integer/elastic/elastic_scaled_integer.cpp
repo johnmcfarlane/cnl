@@ -62,8 +62,32 @@ namespace test_ctor {
     static_assert(identical(uint32_t{0x76543210}, uint32_t(elastic_scaled_integer<64, -32, unsigned>{elastic_scaled_integer<32, 0, unsigned>{0x76543210LL}})), "cnl::elastic_scaled_integer ctor");
     static_assert(identical(uint32_t{1}, uint32_t(elastic_scaled_integer<64, -32, unsigned>{1})), "cnl::elastic_scaled_integer ctor");
 
-    static_assert(identical(cnl::scaled_integer<cnl::elastic_integer<62, int>, -40>{321}, cnl::scaled_integer<cnl::elastic_integer<62, int>, -40>{scaled_integer<cnl::elastic_integer<62, int>, -20>{321}}), "cnl::scaled_integer ctor");
-    static_assert(identical(cnl::scaled_integer<cnl::elastic_integer<62, int>, -40>{2097151.99999904632568359375}, cnl::scaled_integer<cnl::elastic_integer<62, int>, -40>{scaled_integer<cnl::elastic_integer<62, int>, -20>{2097151.99999904632568359375}}), "cnl::scaled_integer ctor");
+    static_assert(
+            identical(
+                    cnl::scaled_integer<
+                            cnl::elastic_integer<62, int>,
+                            cnl::power<-40>>{
+                        321},
+                    cnl::scaled_integer<
+                            cnl::elastic_integer<62, int>,
+                            cnl::power<-40>>{
+                        scaled_integer<
+                                cnl::elastic_integer<62, int>,
+                                cnl::power<-20>>{321}}),
+            "cnl::scaled_integer ctor");
+    static_assert(
+            identical(
+                    cnl::scaled_integer<
+                            cnl::elastic_integer<62, int>,
+                            cnl::power<-40>>{
+                        2097151.99999904632568359375},
+                    cnl::scaled_integer<
+                            cnl::elastic_integer<62, int>,
+                            cnl::power<-40>>{
+                        scaled_integer<
+                                cnl::elastic_integer<62, int>,
+                                cnl::power<-20>>{2097151.99999904632568359375}}),
+            "cnl::scaled_integer ctor");
 #endif
 }
 
@@ -419,7 +443,8 @@ struct positive_elastic_test
     ////////////////////////////////////////////////////////////////////////////////
     // test cnl::from_rep
 
-    static_assert(!cnl::_impl::from_rep<cnl::scaled_integer<cnl::elastic_integer<31, unsigned int>, -33>>(0),
+    static_assert(
+            !cnl::_impl::from_rep<cnl::scaled_integer<cnl::elastic_integer<31, unsigned int>, cnl::power<-33>>>(0),
             "cnl::from_rep<scaled_integer<elastic_integer>>(int)");
 };
 

@@ -289,14 +289,14 @@ TEST(scaled_integer_multiprecision, shift_right_constant)
 
 TEST(scaled_integer_multiprecision, unsigned_multiprecision_used_digits)
 {
-    using q4_20 = scaled_integer<unsigned_multiprecision<24>, -20>;
+    using q4_20 = scaled_integer<unsigned_multiprecision<24>, cnl::power<-20>>;
     q4_20 a = 3.051757812500000e-05;
     ASSERT_EQ(6, cnl::used_digits(a));
 }
 
 TEST(scaled_integer_multiprecision, signed_multiprecision_used_digits)
 {
-    using q4_20 = scaled_integer<signed_multiprecision<24>, -20>;
+    using q4_20 = scaled_integer<signed_multiprecision<24>, cnl::power<-20>>;
     q4_20 a = 3.051757812500000e-05;
     ASSERT_EQ(6, cnl::used_digits(a));
 }
@@ -306,21 +306,21 @@ TEST(scaled_integer_multiprecision, signed_multiprecision_used_digits)
 
 TEST(scaled_integer_multiprecision, unsigned_multiprecision_leading_bits)
 {
-    using q4_20 = scaled_integer<unsigned_multiprecision<24>, -20>;
+    using q4_20 = scaled_integer<unsigned_multiprecision<24>, cnl::power<-20>>;
     q4_20 a = 3.051757812500000e-05;
     ASSERT_EQ(18, leading_bits(a));
 }
 
 TEST(scaled_integer_multiprecision, signed_multiprecision_leading_bits)
 {
-    using q4_20 = scaled_integer<signed_multiprecision<24>, -20>;
+    using q4_20 = scaled_integer<signed_multiprecision<24>, cnl::power<-20>>;
     q4_20 a = 3.051757812500000e-05;
     ASSERT_EQ(18, leading_bits(a));
 }
 
 TEST(scaled_integer_multiprecision, sqrt)
 {
-    typedef cnl::scaled_integer<boost::multiprecision::int128_t, 0> length_t;
+    typedef cnl::scaled_integer<boost::multiprecision::int128_t> length_t;
     length_t x = length_t{ 25 };
     auto y = cnl::sqrt(x);
     ASSERT_EQ(y, 5);

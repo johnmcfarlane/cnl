@@ -13,7 +13,7 @@ namespace {
 
 namespace define_a_scaled_integer_value {
 //! [define a scaled_integer value]
-constexpr auto n = scaled_integer<std::int8_t, -3>{-2.75};
+constexpr auto n = scaled_integer<std::int8_t, power<-3>>{-2.75};
 static_assert(n==-2.75, "fixed-point type was unable to store the value");
 //! [define a scaled_integer value]
 }

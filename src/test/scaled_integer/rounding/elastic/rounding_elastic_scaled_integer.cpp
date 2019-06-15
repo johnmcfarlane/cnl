@@ -19,7 +19,9 @@ namespace {
             RoundingTag>;
 
     template<int Digits, int Exponent = 0, class RoundingTag = cnl::nearest_rounding_tag, class Narrowest = signed>
-    using rounding_elastic_scaled_integer = cnl::scaled_integer<rounding_elastic_integer<Digits, RoundingTag, Narrowest>, Exponent>;
+    using rounding_elastic_scaled_integer = cnl::scaled_integer<
+            rounding_elastic_integer<Digits, RoundingTag, Narrowest>,
+            cnl::power<Exponent>>;
 
     namespace test_ctor {
         static_assert(

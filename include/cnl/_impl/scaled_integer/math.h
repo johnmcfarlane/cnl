@@ -23,7 +23,9 @@ namespace cnl {
 
             template<class ScaledInteger>
             CNL_NODISCARD constexpr ScaledInteger rounding_conversion(double d) {
-                using one_longer = scaled_integer<set_digits_t<typename ScaledInteger::rep, digits<ScaledInteger>::value+1>, ScaledInteger::exponent-1>;
+                using one_longer = scaled_integer<
+                        set_digits_t<typename ScaledInteger::rep, digits<ScaledInteger>::value+1>,
+                        power<ScaledInteger::exponent-1>>;
                 return from_rep<ScaledInteger>(static_cast<typename ScaledInteger::rep>((_impl::to_rep(one_longer{ d }) + 1) >> 1));
             }
 
@@ -31,9 +33,13 @@ namespace cnl {
             using unsigned_rep = typename std::make_unsigned<typename ScaledInteger::rep>::type;
 
             template<class Input>
-            using make_largest_ufraction = scaled_integer<unsigned_rep<Input>, -digits<unsigned_rep<Input>>::value>;
+            using make_largest_ufraction = scaled_integer<
+                    unsigned_rep<Input>,
+                    power<-digits<unsigned_rep<Input>>::value>>;
 
-            static_assert(std::is_same<make_largest_ufraction<scaled_integer<int32_t, -15>>, scaled_integer<uint32_t, -32>>::value, "");
+            static_assert(std::is_same<
+                    make_largest_ufraction<scaled_integer<int32_t, power<-15>>>,
+                    scaled_integer<uint32_t, power<-32>>>::value, "");
 
             //TODO: template magic to get the coefficients automatically
             //from the number of bits of precision
@@ -87,9 +93,9 @@ namespace cnl {
             }
 
             template<class Rep, int Exponent>
-            CNL_NODISCARD constexpr inline scaled_integer<Rep, Exponent> evaluate_polynomial(
-                    scaled_integer<Rep, Exponent> xf) {
-                using fp = scaled_integer<Rep, Exponent>;
+            CNL_NODISCARD constexpr inline scaled_integer<Rep, power<Exponent>> evaluate_polynomial(
+                    scaled_integer<Rep, power<Exponent>> xf) {
+                using fp = scaled_integer<Rep, power<Exponent>>;
 
                 //Use a polynomial min-max approximation to generate the exponential of
                 //the fraction part. Note that the constant 1 of the polynomial is added later,
@@ -116,40 +122,44 @@ namespace cnl {
             //If the exponent is not negative, there is no fraction part,
             //so this is always zero
             template<class Rep, int Exponent>
-            CNL_NODISCARD inline constexpr auto exp2m1_0to1(scaled_integer<Rep, Exponent>)
-            -> _impl::enable_if_t<(Exponent>=0), make_largest_ufraction<scaled_integer<Rep, Exponent>>> {
+            CNL_NODISCARD inline constexpr auto exp2m1_0to1(scaled_integer<Rep, power<Exponent>>)
+            -> _impl::enable_if_t<(Exponent>=0), make_largest_ufraction<scaled_integer<Rep, power<Exponent>>>> {
                 // Cannot construct from 0, since that would be a shift by more than width of type!
-                return from_rep<make_largest_ufraction<scaled_integer<Rep, Exponent>>>(0);
+                return from_rep<make_largest_ufraction<scaled_integer<Rep, power<Exponent>>>>(0);
             }
 
             //for a positive exponent, some work needs to be done
             template<class Rep, int Exponent>
-            CNL_NODISCARD constexpr inline auto exp2m1_0to1(scaled_integer<Rep, Exponent> x)
-            -> _impl::enable_if_t<(Exponent<0), make_largest_ufraction<scaled_integer<Rep, Exponent>>> {
+            CNL_NODISCARD constexpr inline auto exp2m1_0to1(scaled_integer<Rep, power<Exponent>> x)
+            -> _impl::enable_if_t<(Exponent<0), make_largest_ufraction<scaled_integer<Rep, power<Exponent>>>> {
                 //Build the type with the same number of bits, all fraction,
                 //and unsigned. That should be enough to exactly hold enough bits
                 //to guarantee bit-accurate results
-                using im = make_largest_ufraction<scaled_integer<Rep, Exponent>>;
+                using im = make_largest_ufraction<scaled_integer<Rep, power<Exponent>>>;
                 //The intermediate value type
 
-                return evaluate_polynomial(im{scaled_integer<typename im::rep, Exponent>{x}});
+                return evaluate_polynomial(im{scaled_integer<typename im::rep, power<Exponent>>{x}});
             }
 
             template<class Rep, int Exponent, int Radix>
-            CNL_NODISCARD constexpr enable_if_t<-digits<Rep>::value<Exponent, scaled_integer<Rep, Exponent, Radix>>
-            fractional(scaled_integer<Rep, Exponent, Radix> const& x, Rep const& floored) {
+            CNL_NODISCARD constexpr enable_if_t<
+                    -digits<Rep>::value<Exponent,
+                    scaled_integer<Rep, power<Exponent, Radix>>>
+            fractional(scaled_integer<Rep, power<Exponent, Radix>> const& x, Rep const& floored) {
                 return x - floored;
             }
 
             template<class Rep, int Exponent, int Radix>
-            CNL_NODISCARD constexpr enable_if_t<-digits<Rep>::value>=Exponent, scaled_integer<Rep, Exponent, Radix>>
-            fractional(scaled_integer<Rep, Exponent, Radix> const& x, Rep const&) {
+            CNL_NODISCARD constexpr enable_if_t<
+                    -digits<Rep>::value>=Exponent,
+                    scaled_integer<Rep, power<Exponent, Radix>>>
+            fractional(scaled_integer<Rep, power<Exponent, Radix>> const& x, Rep const&) {
                 return x;
             }
 
             template<class Intermediate, typename Rep, int Exponent>
             CNL_NODISCARD constexpr typename Intermediate::rep
-                    exp2(scaled_integer<Rep, Exponent> const& x, Rep const& floored) {
+                    exp2(scaled_integer<Rep, power<Exponent>> const& x, Rep const& floored) {
                 return floored <= Exponent
                     ? typename Intermediate::rep{1}//return immediately if the shift would result in all bits being shifted out
                     //Do the shifts manually. Once the branch with shift operators is merged, could use those
@@ -169,8 +179,8 @@ namespace cnl {
     ///
     /// \return the result of the exponential, in the same representation as x
     template<class Rep, int Exponent>
-    CNL_NODISCARD constexpr scaled_integer<Rep, Exponent> exp2(scaled_integer<Rep, Exponent> x) {
-        using out_type = scaled_integer<Rep, Exponent>;
+    CNL_NODISCARD constexpr scaled_integer<Rep, power<Exponent>> exp2(scaled_integer<Rep, power<Exponent>> x) {
+        using out_type = scaled_integer<Rep, power<Exponent>>;
         // The input type
         using im = _impl::fp::make_largest_ufraction<out_type>;
 

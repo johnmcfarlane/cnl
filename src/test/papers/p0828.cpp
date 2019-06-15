@@ -128,7 +128,7 @@ namespace {
         }
 
         namespace section_4_1_2a {
-            CNL_NODISCARD constexpr auto kibi = scaled_integer<int32_t, -16>(1024); // 2^26
+            CNL_NODISCARD constexpr auto kibi = scaled_integer<int32_t, cnl::power<-16>>(1024); // 2^26
             static_assert(identical(1<<26, to_rep(kibi)), "");
 
 //            CNL_NODISCARD constexpr auto mebi = kibi * kibi;   // scaled_integer<int, -32>; value: 2^52

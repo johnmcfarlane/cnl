@@ -49,8 +49,8 @@ using uint128 = cnl::set_digits_t<test_unsigned, 128>;
 ////////////////////////////////////////////////////////////////////////////////
 // imports from cnl
 
-template <typename Rep=test_int, int Exponent=0>
-using scaled_integer = cnl::scaled_integer<Rep, Exponent>;
+template <typename Rep=test_int, class Scale=cnl::power<>>
+using scaled_integer = cnl::scaled_integer<Rep, Scale>;
 
 using cnl::_impl::assert_same;
 using cnl::_impl::identical;

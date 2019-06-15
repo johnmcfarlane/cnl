@@ -15,7 +15,7 @@
 /// compositional numeric library
 namespace cnl {
     template<typename Rep = int, int Exponent = 0, int Radix = 2>
-    using fixed_point = scaled_integer<Rep, Exponent, Radix>;
+    using fixed_point = scaled_integer<Rep, power<Exponent, Radix>>;
 
     template<typename Value>
     constexpr auto make_fixed_point(Value const& value)

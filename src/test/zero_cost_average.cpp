@@ -45,11 +45,11 @@ CNL_RELAXED_CONSTEXPR float average_elastic_integer(float input1, float input2) 
 // the same function using cnl::scaled_integer
 CNL_RELAXED_CONSTEXPR float average_scaled_integer(float input1, float input2) {
     // scaled_integer handles scaling
-    auto fixed1 = scaled_integer<int32_t, -16>{input1};
-    auto fixed2 = scaled_integer<int32_t, -16>{input2};
+    auto fixed1 = scaled_integer<int32_t, cnl::power<-16>>{input1};
+    auto fixed2 = scaled_integer<int32_t, cnl::power<-16>>{input2};
 
     // but it uses int under the hood; user must still widen
-    auto sum = scaled_integer<int64_t, -16>{fixed1} + fixed2;
+    auto sum = scaled_integer<int64_t, cnl::power<-16>>{fixed1} + fixed2;
 
     // divide-by 
     return static_cast<float>(sum >> 1_c);

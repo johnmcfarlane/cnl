@@ -14,7 +14,7 @@
 
 
 TEST(math, FPTESTFORMAT) {
-    using fp = cnl::scaled_integer<int32_t, FPTESTEXP>;
+    using fp = cnl::scaled_integer<int32_t, cnl::power<FPTESTEXP>>;
 
     //Test integer powers
     for (int i = 0; i < cnl::_impl::integer_digits<fp>::value; i++) {

@@ -25,13 +25,13 @@ namespace cnl {
                 int Radix>
         struct tagged_convert_operator<
                 nearest_rounding_tag,
-                scaled_integer<ResultRep, ResultExponent, Radix>,
-                scaled_integer<InputRep, InputExponent, Radix>,
+                scaled_integer<ResultRep, power<ResultExponent, Radix>>,
+                scaled_integer<InputRep, power<InputExponent, Radix>>,
                 _impl::enable_if_t<(ResultExponent <= InputExponent)>>
                 : tagged_convert_operator<
                         native_rounding_tag,
-                        scaled_integer<ResultRep, ResultExponent, Radix>,
-                        scaled_integer<InputRep, InputExponent, Radix>> {
+                        scaled_integer<ResultRep, power<ResultExponent, Radix>>,
+                        scaled_integer<InputRep, power<InputExponent, Radix>>> {
         };
 
         // conversion between two scaled_integer types where rounding *is* an issue
@@ -41,12 +41,12 @@ namespace cnl {
                 int Radix>
         struct tagged_convert_operator<
                 nearest_rounding_tag,
-                scaled_integer<ResultRep, ResultExponent, Radix>,
-                scaled_integer<InputRep, InputExponent, Radix>,
+                scaled_integer<ResultRep, power<ResultExponent, Radix>>,
+                scaled_integer<InputRep, power<InputExponent, Radix>>,
                 _impl::enable_if_t<!(ResultExponent<=InputExponent)>> {
         private:
-            using _result = scaled_integer<ResultRep, ResultExponent, Radix>;
-            using _input = scaled_integer<InputRep, InputExponent, Radix>;
+            using _result = scaled_integer<ResultRep, power<ResultExponent, Radix>>;
+            using _input = scaled_integer<InputRep, power<InputExponent, Radix>>;
 
             CNL_NODISCARD static constexpr _input half()
             {
@@ -67,11 +67,11 @@ namespace cnl {
                 typename Input>
         struct tagged_convert_operator<
                 nearest_rounding_tag,
-                scaled_integer<ResultRep, ResultExponent, ResultRadix>,
+                scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>,
                 Input,
                 _impl::enable_if_t<std::is_floating_point<Input>::value>> {
         private:
-            using _result = scaled_integer<ResultRep, ResultExponent, ResultRadix>;
+            using _result = scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>;
 
             CNL_NODISCARD static constexpr Input half()
             {
@@ -87,28 +87,28 @@ namespace cnl {
         };
 
         template<
-                typename ResultRep, int ResultExponent, int ResultRadix,
+                typename ResultRep, class ResultScale,
                 typename Input>
         struct tagged_convert_operator<
                 nearest_rounding_tag,
-                scaled_integer<ResultRep, ResultExponent, ResultRadix>,
+                scaled_integer<ResultRep, ResultScale>,
                 Input,
                 _impl::enable_if_t<cnl::numeric_limits<Input>::is_integer>>
                 : tagged_convert_operator<
                         nearest_rounding_tag,
-                        scaled_integer<ResultRep, ResultExponent, ResultRadix>,
+                        scaled_integer<ResultRep, ResultScale>,
                         scaled_integer<Input>> {
         };
 
         template<
                 typename Result,
-                typename InputRep, int InputExponent, int InputRadix>
+                typename InputRep, class InputScale>
         struct tagged_convert_operator<
                 nearest_rounding_tag,
                 Result,
-                scaled_integer<InputRep, InputExponent, InputRadix>,
+                scaled_integer<InputRep, InputScale>,
                 _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer>> {
-            using _input = scaled_integer<InputRep, InputExponent, InputRadix>;
+            using _input = scaled_integer<InputRep, InputScale>;
 
             CNL_NODISCARD constexpr Result operator()(_input const& from) const
             {

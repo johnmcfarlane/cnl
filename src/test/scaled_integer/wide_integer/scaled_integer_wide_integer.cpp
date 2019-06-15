@@ -29,14 +29,14 @@ using test_int = cnl::wide_integer<cnl::digits<int>::value, int>;
 TEST(scaled_integer_wide_integer, to_string)
 {
     auto const expected = "0.714285714285714285714285713708718880752631365184564249393162072010454721748828887939453125";
-    auto const actual = cnl::to_string(cnl::scaled_integer<cnl::wide_integer<100, unsigned>, -90>{5.}/7);
+    auto const actual = cnl::to_string(cnl::scaled_integer<cnl::wide_integer<100, unsigned>, cnl::power<-90>>{5.}/7);
     ASSERT_EQ(expected, actual);
 }
 
 #if !defined(__arm__)
 TEST(scaled_integer_wide_integer, quotient)
 {
-    using scaled_integer = cnl::scaled_integer<cnl::wide_integer<129, unsigned>, -96>;
+    using scaled_integer = cnl::scaled_integer<cnl::wide_integer<129, unsigned>, cnl::power<-96>>;
     auto expected = scaled_integer{1.L/3};
     auto actual = cnl::quotient<scaled_integer>(1, 3);
     ASSERT_EQ(double(expected), double(actual));
@@ -45,7 +45,7 @@ TEST(scaled_integer_wide_integer, quotient)
 #if !defined(__GNUC__) || defined(__clang__)
 TEST(scaled_integer_wide_integer, quotient200)
 {
-    using scaled_integer = cnl::scaled_integer<cnl::wide_integer<200, unsigned>, -196>;
+    using scaled_integer = cnl::scaled_integer<cnl::wide_integer<200, unsigned>, cnl::power<-196>>;
     auto expected = scaled_integer{5.L/7};
     auto actual = cnl::quotient<scaled_integer>(5, 7);
     ASSERT_EQ(double(expected), double(actual));
@@ -54,7 +54,7 @@ TEST(scaled_integer_wide_integer, quotient200)
 TEST(scaled_integer_wide_integer, ctor_fraction)
 {
     using namespace cnl::literals;
-    using scaled_integer = cnl::scaled_integer<cnl::wide_integer<200>, -100>;
+    using scaled_integer = cnl::scaled_integer<cnl::wide_integer<200>, cnl::power<-100>>;
 
     auto expected = cnl::_impl::from_rep<scaled_integer>(cnl::wide_integer<200>{0x5555555555555555555555555_wide});
     auto actual = scaled_integer{cnl::fraction<int>(1, 3)};

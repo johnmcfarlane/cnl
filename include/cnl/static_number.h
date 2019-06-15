@@ -33,7 +33,7 @@ namespace cnl {
             class Narrowest = signed>
     using static_number = scaled_integer<
             _impl::static_integer<Digits, RoundingTag, OverflowTag, Narrowest>,
-            Exponent>;
+            power<Exponent>>;
 
     /// \brief constructs a static_number from a given variable
     template<

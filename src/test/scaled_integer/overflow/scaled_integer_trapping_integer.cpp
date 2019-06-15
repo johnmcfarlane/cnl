@@ -38,7 +38,7 @@ TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), scale_up)
 
 TEST(TOKENPASTE2(TEST_LABEL, overflow_exception), assignment)
 {
-    using fp_type = scaled_integer<int8, -7>;
+    using fp_type = scaled_integer<int8, cnl::power<-7>>;
     ASSERT_DEATH(fp_type(1), "positive overflow");
 }
 #endif

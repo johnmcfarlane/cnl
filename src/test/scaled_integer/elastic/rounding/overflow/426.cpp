@@ -14,7 +14,7 @@ using saturated_elastic_scaled_integer = cnl::scaled_integer<
                                 Narrowest,
                                 cnl::saturated_overflow_tag>,
                         cnl::native_rounding_tag>>,
-        -FractionalDigits>;
+        cnl::power<-FractionalDigits>>;
 
 using temp_wide_t = saturated_elastic_scaled_integer<23, 8, int32_t>;
 using temp_t = saturated_elastic_scaled_integer<7, 8, int16_t>;

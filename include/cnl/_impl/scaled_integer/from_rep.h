@@ -18,12 +18,12 @@ namespace cnl {
     /// \tparam Exponent the \c Exponent parameter of the generated \ref scaled_integer type
     /// \tparam ArchetypeRep ignored; replaced by \c Rep
     template<typename ArchetypeRep, int Exponent, int Radix, typename Rep>
-    struct from_rep<scaled_integer<ArchetypeRep, Exponent, Radix>, Rep> {
+    struct from_rep<scaled_integer<ArchetypeRep, power<Exponent, Radix>>, Rep> {
         /// \brief generates a \ref scaled_integer equivalent to \c r in type and value
         CNL_NODISCARD constexpr auto operator()(Rep const& r) const
-        -> scaled_integer<Rep, Exponent, Radix>
+        -> scaled_integer<Rep, power<Exponent, Radix>>
         {
-            return scaled_integer<Rep, Exponent, Radix>(r, 0);
+            return scaled_integer<Rep, power<Exponent, Radix>>(r, 0);
         }
     };
 }

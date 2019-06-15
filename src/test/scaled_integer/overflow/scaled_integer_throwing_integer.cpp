@@ -41,7 +41,7 @@ TEST(throwing_integer_overflow_exception, shift_left)
 
 TEST(throwing_integer_overflow_exception, assignment)
 {
-    using fp_type = scaled_integer<int8, -7>;
+    using fp_type = scaled_integer<int8, cnl::power<-7>>;
     ASSERT_THROW((void)fp_type(1), std::overflow_error);
 }
 

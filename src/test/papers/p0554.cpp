@@ -8,6 +8,7 @@
 #include <cnl/_impl/type_traits/identical.h>
 
 namespace {
+    using cnl::power;
     using cnl::scaled_integer;
     using cnl::_impl::identical;
 
@@ -22,8 +23,8 @@ namespace {
 
     namespace type_safe {
         // sample 2 - type-safe fixed-point arithmetic
-        constexpr auto a = scaled_integer<int8_t, -3>(7.f);     // the value 7 stored in a byte with 3 fraction bits
-        constexpr auto b = scaled_integer<int8_t, -4>(3.125f);  // the value 3.125 stored in a byte with 4 fraction bits
+        constexpr auto a = scaled_integer<int8_t, power<-3>>(7.f);     // the value 7 stored in a byte with 3 fraction bits
+        constexpr auto b = scaled_integer<int8_t, power<-4>>(3.125f);  // the value 3.125 stored in a byte with 4 fraction bits
         constexpr auto c = a * b;                            // the value 21.875 stored in an `int` with 7 fraction bits
         constexpr auto d = (float)c;                         // 21.875f
         static_assert(identical(d, 21.875f), "position_paper test failed");

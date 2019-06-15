@@ -18,7 +18,7 @@ namespace {
     using boost::simd::pack;
 
     template<class T, std::size_t N, int Exponent>
-    using fpp = scaled_integer<pack<T, N>, Exponent>;
+    using fpp = scaled_integer<pack<T, N>, cnl::power<Exponent>>;
 
     template<class U, class FPP>
     struct rebind_s;

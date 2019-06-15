@@ -32,7 +32,7 @@ namespace cnl {
     /// \sa elastic_integer
 
     template<int Digits, int Exponent = 0, class Narrowest = signed>
-    using elastic_scaled_integer = scaled_integer<elastic_integer<Digits, Narrowest>, Exponent>;
+    using elastic_scaled_integer = scaled_integer<elastic_integer<Digits, Narrowest>, power<Exponent>>;
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
@@ -101,7 +101,7 @@ namespace cnl {
 
     template<typename Narrowest = void, typename Rep = int, int Exponent = 0, int Radix = 2>
     CNL_NODISCARD constexpr auto
-    make_elastic_scaled_integer(scaled_integer<Rep, Exponent, Radix> const& value)
+    make_elastic_scaled_integer(scaled_integer<Rep, power<Exponent, Radix>> const& value)
     -> elastic_scaled_integer<
             numeric_limits<Rep>::digits,
             Exponent,

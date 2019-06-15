@@ -19,8 +19,8 @@ namespace cnl {
                 : public std::false_type {
         };
 
-        template<typename Rep, int Exponent, int Radix>
-        struct is_scaled_integer<scaled_integer<Rep, Exponent, Radix>>
+        template<typename Rep, class Scale>
+        struct is_scaled_integer<scaled_integer<Rep, Scale>>
                 : public std::true_type {
         };
     }

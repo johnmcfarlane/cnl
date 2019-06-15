@@ -23,38 +23,43 @@ namespace {
         static_assert(
                 identical(
                         cnl::constant<0>{},
-                        cnl::constant<cnl::_impl::max_to_chars_chars<scaled_integer<uint8, 2>>::_sign_chars>{}),
+                        cnl::constant<cnl::_impl::max_to_chars_chars<
+                                scaled_integer<uint8, cnl::power<2>>>::_sign_chars>{}),
                 "cnl::_impl::max_to_chars_chars");  // 1020
         static_assert(
                 identical(
                         cnl::constant<4>{},
-                        cnl::constant<cnl::_impl::max_to_chars_chars<scaled_integer<uint8, 2>>::_integer_chars>{}),
+                        cnl::constant<cnl::_impl::max_to_chars_chars<
+                                scaled_integer<uint8, cnl::power<2>>>::_integer_chars>{}),
                 "cnl::_impl::max_to_chars_chars");  // 1020
         static_assert(
                 identical(
                         cnl::constant<0>{},
-                        cnl::constant<cnl::_impl::max_to_chars_chars<scaled_integer<uint8, 2>>::_radix_chars>{}),
+                        cnl::constant<cnl::_impl::max_to_chars_chars<
+                                scaled_integer<uint8, cnl::power<2>>>::_radix_chars>{}),
                 "cnl::_impl::max_to_chars_chars");  // 1020
         static_assert(
                 identical(
                         cnl::constant<0>{},
-                        cnl::constant<cnl::_impl::max_to_chars_chars<scaled_integer<uint8, 2>>::_fractional_chars>{}),
+                        cnl::constant<cnl::_impl::max_to_chars_chars<
+                                scaled_integer<uint8, cnl::power<2>>>::_fractional_chars>{}),
                 "cnl::_impl::max_to_chars_chars");  // 1020
 
         static_assert(
-                4==cnl::_impl::max_to_chars_chars<scaled_integer<uint8, 2>>::value,
+                4==cnl::_impl::max_to_chars_chars<scaled_integer<uint8, cnl::power<2>>>::value,
                 "cnl::_impl::max_to_chars_chars");  // 1020
         static_assert(
-                7==cnl::_impl::max_to_chars_chars<scaled_integer<int8, -3>>::value,
+                7==cnl::_impl::max_to_chars_chars<scaled_integer<int8, cnl::power<-3>>>::value,
                 "cnl::_impl::max_to_chars_chars");  // -15.875
         static_assert(
-                6==cnl::_impl::max_to_chars_chars<scaled_integer<uint16, 0>>::value,
+                6==cnl::_impl::max_to_chars_chars<scaled_integer<uint16, cnl::power<>>>::value,
                 "cnl::_impl::max_to_chars_chars"); // 65536
         static_assert(
-                41==cnl::_impl::max_to_chars_chars<cnl::scaled_integer<cnl::elastic_integer<41>, -38>>::value,
+                41==cnl::_impl::max_to_chars_chars<
+                        cnl::scaled_integer<cnl::elastic_integer<41>, cnl::power<-38>>>::value,
                 "cnl::_impl::max_to_chars_chars");
         static_assert(
-                45==cnl::_impl::max_to_chars_chars<scaled_integer<int64, -32>>::value,
+                45==cnl::_impl::max_to_chars_chars<cnl::scaled_integer<int64, cnl::power<-32>>>::value,
                 "cnl::_impl::max_to_chars_chars"); // −2147483647.99999999976716935634613037109375
     }
 
@@ -147,7 +152,7 @@ namespace {
 
         TEST(to_chars_natural, scaled_integer)
         {
-            test<5>(scaled_integer<int, 0>{12345});
+            test<5>(scaled_integer<int, cnl::power<>>{12345});
         }
 
         TEST(to_chars_natural, large_number)
@@ -180,92 +185,92 @@ namespace {
 
         TEST(to_chars, scaled_integer)
         {
-            test<22>("-5016.5091400146484375", cnl::scaled_integer<int, -16>(-5016.5091400146484375));
+            test<22>("-5016.5091400146484375", cnl::scaled_integer<int, cnl::power<-16>>(-5016.5091400146484375));
         }
 
         TEST(to_chars, scaled_integer_truncated)
         {
-            test<8>("5016.509", cnl::scaled_integer<unsigned, -16>(5016.5091400146484375));
+            test<8>("5016.509", cnl::scaled_integer<unsigned, cnl::power<-16>>(5016.5091400146484375));
         }
 
         TEST(to_chars, scaled_integer_just_big_enough)
         {
-            test<5>("-5016", cnl::scaled_integer<short, -2>(-5016.5091400146484375));
+            test<5>("-5016", cnl::scaled_integer<short, cnl::power<-2>>(-5016.5091400146484375));
         }
 
         TEST(to_chars, scaled_integer_too_small)
         {
-            test<4>("", cnl::scaled_integer<short, -2>(-5016.5091400146484375));
+            test<4>("", cnl::scaled_integer<short, cnl::power<-2>>(-5016.5091400146484375));
         }
 
         TEST(to_chars, scaled_integer_small)
         {
-            test<7>("0.0039", cnl::scaled_integer<int, -16>(0.00390625));
+            test<7>("0.0039", cnl::scaled_integer<int, cnl::power<-16>>(0.00390625));
         }
 
         TEST(to_chars, scaled_integer_small_single_digit)
         {
-            test<1>("0", cnl::scaled_integer<int, -16>(0.00390625));
+            test<1>("0", cnl::scaled_integer<int, cnl::power<-16>>(0.00390625));
         }
 
         TEST(to_chars, scaled_integer_small_double_digit)
         {
-            test<2>("0", cnl::scaled_integer<int, -16>(0.00390625));
+            test<2>("0", cnl::scaled_integer<int, cnl::power<-16>>(0.00390625));
         }
 
         TEST(to_chars, scaled_integer_small_tripple_digit)
         {
-            test<3>("0", cnl::scaled_integer<int, -16>(0.00390625));
+            test<3>("0", cnl::scaled_integer<int, cnl::power<-16>>(0.00390625));
         }
 
         TEST(to_chars, scaled_integer_small_negative_single_digit)
         {
-            test<1>("", cnl::scaled_integer<int, -16>(-0.00390625));
+            test<1>("", cnl::scaled_integer<int, cnl::power<-16>>(-0.00390625));
         }
 
         TEST(to_chars, scaled_integer_small_negative_double_digit)
         {
-            test<2>("-0", cnl::scaled_integer<int, -16>(-0.00390625));
+            test<2>("-0", cnl::scaled_integer<int, cnl::power<-16>>(-0.00390625));
         }
 
         TEST(to_chars, scaled_integer_small_negative_tripple_digit)
         {
-            test<3>("-0", cnl::scaled_integer<int, -16>(-0.00390625));
+            test<3>("-0", cnl::scaled_integer<int, cnl::power<-16>>(-0.00390625));
         }
 
         TEST(to_chars, scaled_integer_small_negative_quadruple_digit)
         {
-            test<4>("-0", cnl::scaled_integer<int, -16>(-0.00390625));
+            test<4>("-0", cnl::scaled_integer<int, cnl::power<-16>>(-0.00390625));
         }
 
         TEST(to_chars, scaled_integer_very_few_integer_digits)
         {
-            test<4>("-7", cnl::scaled_integer<int, -28>(-7.00390625));
+            test<4>("-7", cnl::scaled_integer<int, cnl::power<-28>>(-7.00390625));
         }
 
         TEST(to_chars, scaled_integer_decimal_positive)
         {
-            test<6>("17.917", cnl::scaled_integer<int, -3, 10>(17.917));
+            test<6>("17.917", cnl::scaled_integer<int, cnl::power<-3, 10>>(17.917));
         }
 
         TEST(to_chars, scaled_integer_decimal_negative)
         {
-            test<5>("-5.25", cnl::scaled_integer<int, -2, 10>(-5.25));
+            test<5>("-5.25", cnl::scaled_integer<int, cnl::power<-2, 10>>(-5.25));
         }
 
         TEST(to_chars, scaled_integer_decimal_no_fractional)
         {
-            test<7>("-517523", cnl::scaled_integer<int, 0, 10>(-517523));
+            test<7>("-517523", cnl::scaled_integer<int, cnl::power<0, 10>>(-517523));
         }
 
         TEST(to_chars, scaled_integer_octal_positive)
         {
-            test<9>("634124.25", cnl::scaled_integer<int, -1, 8>(634124.25));
+            test<9>("634124.25", cnl::scaled_integer<int, cnl::power<-1, 8>>(634124.25));
         }
 
         TEST(to_chars, scaled_integer_octal_negative)
         {
-            test<7>("-33.125", cnl::scaled_integer<int, -1, 8>(-33.125));
+            test<7>("-33.125", cnl::scaled_integer<int, cnl::power<-1, 8>>(-33.125));
         }
     }
 }
