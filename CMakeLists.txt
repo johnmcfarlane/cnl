@@ -1,9 +1,13 @@
-project(cnl)
-
-cmake_minimum_required(VERSION 3.0)
+if (POLICY CMP0048)
+    cmake_policy(SET CMP0048 NEW)
+endif()
 if (POLICY CMP0054)
     cmake_policy(SET CMP0054 NEW)
 endif()
+
+project(cnl VERSION 0.0.1)
+
+cmake_minimum_required(VERSION 3.7.2)
 
 set(CNL_DEV OFF CACHE BOOL "configure build for running tests and benchmarks")
 
