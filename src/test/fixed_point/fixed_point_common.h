@@ -1083,7 +1083,7 @@ struct FixedPointTesterOutsize {
     // Exponent
     static constexpr int exponent = Exponent;
     static_assert(
-            exponent == fixed_point::exponent,
+            exponent == fixed_point::scale::exponent,
             "mismatched exponent");
 
     // simply assignment to and from underlying representation

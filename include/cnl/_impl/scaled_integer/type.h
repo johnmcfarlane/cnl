@@ -10,9 +10,11 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_DEFINITION_H)
 #define CNL_IMPL_SCALED_INTEGER_DEFINITION_H 1
 
+#include "../power.h"
 #include "../power_value.h"
 #include "../num_traits/width.h"
 #include "../number_base.h"
+#include "../tagged.h"
 #include "../../constant.h"
 #include "../../numeric.h"
 #include "declaration.h"
@@ -41,15 +43,13 @@ namespace cnl {
     /// To define a fixed-point value 1 byte in size with a sign bit, 4 integer bits and 3 fractional bits:
     /// \snippet snippets.cpp define a scaled_integer value
 
-    template<typename Rep, int Exponent, int Radix>
-    class scaled_integer<Rep, power<Exponent, Radix>>
-            : public _impl::number_base<scaled_integer<Rep, power<Exponent, Radix>>, Rep> {
-        static_assert(Radix>=2, "Radix must be two or greater");
-
+    template<typename Rep, class Scale>
+    class scaled_integer
+            : public _impl::number_base<scaled_integer<Rep, Scale>, Rep> {
         static_assert(!_impl::is_scaled_integer<Rep>::value,
                 "scaled_integer of scaled_integer is not a supported");
 
-        using _base = _impl::number_base<scaled_integer<Rep, power<Exponent, Radix>>, Rep>;
+        using _base = _impl::number_base<scaled_integer<Rep, Scale>, Rep>;
     public:
         ////////////////////////////////////////////////////////////////////////////////
         // types
@@ -57,14 +57,8 @@ namespace cnl {
         /// alias to template parameter, \a Rep
         using rep = Rep;
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // constants
-
-        /// value of template parameter, \a Exponent
-        constexpr static int exponent = Exponent;
-
-        /// value of template parameter, \a Radix
-        constexpr static int radix = Radix;
+        /// alias to template parameter, \a Rep
+        using scale = Scale;
 
         ////////////////////////////////////////////////////////////////////////////////
         // functions
@@ -81,25 +75,24 @@ namespace cnl {
         scaled_integer() = default;
 
         /// constructor taking a scaled_integer type
-        template<class FromRep, int FromExponent>
-        constexpr scaled_integer(scaled_integer<FromRep, power<FromExponent, Radix>> const& rhs)
-                : _base(
-                static_cast<Rep>(_impl::scale<FromExponent-exponent, Radix>(
-                        _impl::from_value<Rep>(cnl::_impl::to_rep(rhs)))))
+        template<typename FromRep, class FromScale>
+        constexpr scaled_integer(scaled_integer<FromRep, FromScale> const& rhs)
+                : _base(convert<decltype(FromScale{}/scale{}), Rep>(
+                        _impl::from_value<Rep>(cnl::_impl::to_rep(rhs))))
         {
         }
 
         /// constructor taking an integer type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer||_impl::is_constant<S>::value, int> Dummy = 0>
         constexpr scaled_integer(S const& s)
-                : _base(static_cast<Rep>(_impl::scale<-exponent, Radix>(_impl::from_value<Rep>(s))))
+                : _base(convert<decltype(typename scale::identity{}/scale{}), Rep>(_impl::from_value<Rep>(s)))
         {
         }
 
         /// constructor taking a floating-point type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
         constexpr scaled_integer(S s)
-                :_base(floating_point_to_rep(s))
+                :_base(convert<decltype(typename scale::identity{}/scale{}), rep>(s))
         {
         }
 
@@ -111,15 +104,16 @@ namespace cnl {
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
         CNL_RELAXED_CONSTEXPR scaled_integer& operator=(S s)
         {
-            _base::operator=(floating_point_to_rep(s));
+            _base::operator=(convert<decltype(typename scale::identity{}/scale{}), rep>(s));
             return *this;
         }
 
         /// copy assignement operator taking a fixed-point type
-        template<class FromRep, int FromExponent>
-        CNL_RELAXED_CONSTEXPR scaled_integer& operator=(scaled_integer<FromRep, power<FromExponent, Radix>> const& rhs)
+        template<typename FromRep, class FromScale>
+        CNL_RELAXED_CONSTEXPR scaled_integer& operator=(scaled_integer<FromRep, FromScale> const& rhs)
         {
-            _base::operator=(scaled_integer_to_rep(rhs));
+            _base::operator=(convert<decltype(FromScale{}/scale{}), Rep>(
+                            _impl::from_value<Rep>(cnl::_impl::to_rep(rhs))));
             return *this;
         }
 
@@ -127,51 +121,16 @@ namespace cnl {
         template<typename Numerator, typename Denominator>
         CNL_RELAXED_CONSTEXPR scaled_integer& operator=(fraction<Numerator, Denominator> const& f);
 
-        /// returns value represented as integral
-        template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer, int> Dummy = 0>
+        template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer||numeric_limits<S>::is_iec559, int> Dummy = 0>
         CNL_NODISCARD explicit constexpr operator S() const
         {
-            return static_cast<S>(_impl::scale<exponent>(_impl::to_rep(*this)));
-        }
-
-        /// returns value represented as floating-point
-        template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
-        CNL_NODISCARD explicit constexpr operator S() const
-        {
-            static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-            return S(_impl::to_rep(*this))*inverse_one<S>();
+            return convert<scale, S>(_impl::to_rep(*this));
         }
 
         /// creates an instance given the underlying representation value
         template<typename, typename, typename>
         friend struct from_rep;
-
-    private:
-        template<class S>
-        CNL_NODISCARD static constexpr _impl::enable_if_t<numeric_limits<S>::is_iec559, S> one();
-
-        template<class S>
-        CNL_NODISCARD static constexpr _impl::enable_if_t<numeric_limits<S>::is_integer, S> one();
-
-        template<class S>
-        CNL_NODISCARD static constexpr S inverse_one();
-
-        template<class S>
-        CNL_NODISCARD static constexpr S rep_to_integral(rep r);
-
-        template<class S>
-        CNL_NODISCARD static constexpr rep floating_point_to_rep(S s);
-
-        template<class S>
-        CNL_NODISCARD static constexpr S rep_to_floating_point(rep r);
-
-        template<class FromRep, int FromExponent>
-        CNL_NODISCARD static constexpr rep scaled_integer_to_rep(scaled_integer<FromRep, power<FromExponent, Radix>> const& rhs);
     };
-
-    /// value of template parameter, \a Exponent
-    template<typename Rep, int Exponent, int Radix>
-    constexpr int scaled_integer<Rep, power<Exponent, Radix>>::exponent;
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::scaled_integer::scaled_integer deduction guides
@@ -188,50 +147,6 @@ namespace cnl {
     scaled_integer(Integer)
     -> scaled_integer<Integer, power<>>;
 #endif
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::scaled_integer<> member definitions
-
-    template<typename Rep, int Exponent, int Radix>
-    template<class S>
-    CNL_NODISCARD constexpr auto scaled_integer<Rep, power<Exponent, Radix>>::one()
-    -> _impl::enable_if_t<numeric_limits<S>::is_iec559, S>
-    {
-        return _impl::power_value<S, -exponent, Radix>();
-    }
-
-    template<typename Rep, int Exponent, int Radix>
-    template<class S>
-    CNL_NODISCARD constexpr auto scaled_integer<Rep, power<Exponent, Radix>>::one()
-    -> _impl::enable_if_t<numeric_limits<S>::is_integer, S>
-    {
-        return _impl::from_rep<scaled_integer<S, power<0>>>(1);
-    }
-
-    template<typename Rep, int Exponent, int Radix>
-    template<class S>
-    CNL_NODISCARD constexpr S scaled_integer<Rep, power<Exponent, Radix>>::inverse_one()
-    {
-        static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-        return _impl::power_value<S, exponent, Radix>();
-    }
-
-    template<typename Rep, int Exponent, int Radix>
-    template<class S>
-    CNL_NODISCARD constexpr typename scaled_integer<Rep, power<Exponent, Radix>>::rep
-    scaled_integer<Rep, power<Exponent, Radix>>::floating_point_to_rep(S s)
-    {
-        static_assert(numeric_limits<S>::is_iec559, "S must be floating-point type");
-        return static_cast<rep>(s*one<S>());
-    }
-
-    template<typename Rep, int Exponent, int Radix>
-    template<class FromRep, int FromExponent>
-    CNL_NODISCARD constexpr typename scaled_integer<Rep, power<Exponent, Radix>>::rep
-    scaled_integer<Rep, power<Exponent, Radix>>::scaled_integer_to_rep(scaled_integer<FromRep, power<FromExponent, Radix>> const& rhs)
-    {
-        return _impl::scale<FromExponent-exponent>(_impl::to_rep(rhs));
-    }
 }
 
 #endif  // CNL_IMPL_SCALED_INTEGER_DEFINITION_H

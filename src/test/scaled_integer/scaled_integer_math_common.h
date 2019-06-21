@@ -25,8 +25,8 @@ TEST(math, FPTESTFORMAT) {
 #if (FPTESTEXP < 0)
     for (int i = std::max(-cnl::_impl::fractional_digits<fp>::value, -(cnl::_impl::scale<cnl::_impl::integer_digits<fp>::value, 2, int32_t>(1)) + 1); i < std::min(0, cnl::_impl::integer_digits<fp>::value - 1); i++) {
         fp lhs{ exp2(fp{ static_cast<double>(i) }) };
-        EXPECT_EQ(lhs, cnl::_impl::from_rep<fp>(1 << (-fp::exponent + i)))
-            << "i = " << i << ", fixed point raw: " << cnl::_impl::to_rep(lhs) << " should be: " << (1 << (-fp::exponent + i))
+        EXPECT_EQ(lhs, cnl::_impl::from_rep<fp>(1 << (-FPTESTEXP + i)))
+            << "i = " << i << ", fixed point raw: " << cnl::_impl::to_rep(lhs) << " should be: " << (1 << (-FPTESTEXP + i))
             ;
     }
 #endif

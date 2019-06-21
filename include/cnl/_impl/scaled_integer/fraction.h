@@ -16,17 +16,17 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Rep, int Exponent, int Radix>
+    template<typename Rep, class Scale>
     template<typename Numerator, typename Denominator>
-    constexpr scaled_integer<Rep, power<Exponent, Radix>>::scaled_integer(fraction<Numerator, Denominator> const& f)
+    constexpr scaled_integer<Rep, Scale>::scaled_integer(fraction<Numerator, Denominator> const& f)
             : scaled_integer(quotient<scaled_integer>(f.numerator, f.denominator))
     {
     }
 
-    template<typename Rep, int Exponent, int Radix>
+    template<typename Rep, class Scale>
     template<typename Numerator, typename Denominator>
-    CNL_RELAXED_CONSTEXPR scaled_integer<Rep, power<Exponent, Radix>>&
-    scaled_integer<Rep, power<Exponent, Radix>>::operator=(fraction<Numerator, Denominator> const& f)
+    CNL_RELAXED_CONSTEXPR scaled_integer<Rep, Scale>&
+    scaled_integer<Rep, Scale>::operator=(fraction<Numerator, Denominator> const& f)
     {
         return operator=(quotient<scaled_integer>(f.numerator, f.denominator));
     }
@@ -36,7 +36,7 @@ namespace cnl {
     scaled_integer(fraction<Numerator, Denominator>)
     -> scaled_integer<
             typename decltype(quotient(std::declval<Numerator>(), std::declval<Denominator>()))::rep,
-            power<decltype(quotient(std::declval<Numerator>(), std::declval<Denominator>()))::exponent>>;
+            typename decltype(quotient(std::declval<Numerator>(), std::declval<Denominator>()))::scale>;
 #endif
 }
 

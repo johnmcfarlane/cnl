@@ -25,7 +25,7 @@ namespace cnl {
             CNL_NODISCARD constexpr ScaledInteger rounding_conversion(double d) {
                 using one_longer = scaled_integer<
                         set_digits_t<typename ScaledInteger::rep, digits<ScaledInteger>::value+1>,
-                        power<ScaledInteger::exponent-1>>;
+                        power<ScaledInteger::scale::exponent-1>>;
                 return from_rep<ScaledInteger>(static_cast<typename ScaledInteger::rep>((_impl::to_rep(one_longer{ d }) + 1) >> 1));
             }
 
@@ -164,7 +164,7 @@ namespace cnl {
                     ? typename Intermediate::rep{1}//return immediately if the shift would result in all bits being shifted out
                     //Do the shifts manually. Once the branch with shift operators is merged, could use those
                     : (_impl::to_rep(exp2m1_0to1<Rep, Exponent>(fractional(x, floored)))//Calculate the exponent of the fraction part
-                    >> (-Intermediate::exponent + Exponent - floored))//shift it to the right place
+                    >> (-Intermediate::scale::exponent + Exponent - floored))//shift it to the right place
                     + (Rep { 1 } << (floored - Exponent)); //The constant term must be one, to make integer powers correct
             }
         }

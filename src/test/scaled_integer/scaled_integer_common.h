@@ -1186,7 +1186,7 @@ struct ScaledIntegerTesterOutsize {
     // Exponent
     static constexpr int exponent = Exponent;
     static_assert(
-            exponent == scaled_integer::exponent,
+            exponent == scaled_integer::scale::exponent,
             "mismatched exponent");
 
     // simply assignment to and from underlying representation

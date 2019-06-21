@@ -7,13 +7,11 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_DECLARATION_H)
 #define CNL_IMPL_SCALED_INTEGER_DECLARATION_H 1
 
+#include "../power.h"
 #include "../../limits.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<int Exponent = 0, int Radix = 2>
-    struct power;
-
     /// \brief literal real number approximation that uses fixed-point arithmetic
     /// \headerfile cnl/scaled_integer.h
     ///
