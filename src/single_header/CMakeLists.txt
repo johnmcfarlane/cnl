@@ -27,7 +27,7 @@ function(make_single_header target output header version int128_flag gcc_intrins
     endif (TARGET Doc)
 endfunction()
 
-if (IS_CLANG_FAMILY)
+if (IS_CLANG_FAMILY AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "5")
     make_single_header(SingleHeader11     cnl_complete_11.h        header11.h "c++11" "0" "-DCNL_USE_GCC_INTRINSICS=0")
     make_single_header(SingleHeader11_128 cnl_complete_11_128bit.h header11.h "c++11" "1" "-DCNL_USE_GCC_INTRINSICS=1")
     make_single_header(SingleHeader14     cnl_complete_14.h        header14.h "c++14" "0" "-DCNL_USE_GCC_INTRINSICS=0")
