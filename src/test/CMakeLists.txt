@@ -90,7 +90,7 @@ set(test_sources
         fixed_point/elastic/make_elastic_number.cpp
         fixed_point/elastic/elastic_number.cpp
         fixed_point/rounding/elastic/rounding_elastic_number.cpp
-        fixed_point/elastic/overflow/saturated.cpp
+        fixed_point/overflow/elastic/integer.cpp
         static_integer/operators.cpp
         static_integer/type.cpp
         static_number/426.cpp
