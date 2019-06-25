@@ -136,11 +136,11 @@ namespace {
         static_assert(leading_bits(cnl::safe_integer<22, throwing_overflow_tag>{77}) == 15, "leading_bits(cnl::safe_integer)");
     }
 
-    namespace test_power {
+    namespace test_power_value {
         static_assert(
                 identical(
                         cnl::safe_integer<9>{256},
-                        cnl::power<cnl::safe_integer<31>, 8, 2>()),
+                        cnl::_impl::power_value<cnl::safe_integer<31>, 8, 2>()),
                 "");
     }
 

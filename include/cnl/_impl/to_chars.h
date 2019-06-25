@@ -112,7 +112,7 @@ namespace cnl {
         constexpr auto max_num_chars = _impl::max_to_chars_chars<Number>::value;
 
 #if defined(__GNUG__) && !defined(__clang__) && __GNUG__ == 6
-        // addresses uninitialized data error in operator<<(ostream,fixed_point)
+        // addresses uninitialized data error in operator<<(ostream,scaled_integer)
         std::array<char, max_num_chars+1> chars{};
 #else
         std::array<char, max_num_chars+1> chars;

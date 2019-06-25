@@ -8,7 +8,7 @@
 
 #include <cnl/auxiliary/boost.multiprecision.h>
 
-#include <cnl/fixed_point.h>
+#include <cnl/scaled_integer.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
@@ -19,7 +19,7 @@
 
 using cnl::_impl::assert_same;
 using cnl::_impl::identical;
-using cnl::fixed_point;
+using cnl::scaled_integer;
 using cnl::multiprecision;
 using cnl::set_digits_t;
 using cnl::signed_multiprecision;
@@ -79,9 +79,9 @@ namespace test_to_rep {
     static_assert(
             assert_same<
                     decltype(std::declval<unsigned_multiprecision<12>>()),
-                    decltype(cnl::to_rep<fixed_point<unsigned_multiprecision<12>>>{}(
+                    decltype(cnl::to_rep<scaled_integer<unsigned_multiprecision<12>>>{}(
                             std::declval<unsigned_multiprecision<12>>()))>::value,
-            "cnl::_impl::depth<fixed_point<boost::multiprecision>>");
+            "cnl::_impl::depth<scaled_integer<boost::multiprecision>>");
 }
 
 TEST(multiprecision, to_rep)
@@ -96,8 +96,8 @@ namespace test_impl_to_rep {
     static_assert(
             assert_same<
                     unsigned_multiprecision<987654321>,
-                    cnl::_impl::to_rep_t<fixed_point<unsigned_multiprecision<987654321>>>>::value,
-            "cnl::_impl::depth<fixed_point<boost::multiprecision>>");
+                    cnl::_impl::to_rep_t<scaled_integer<unsigned_multiprecision<987654321>>>>::value,
+            "cnl::_impl::depth<scaled_integer<boost::multiprecision>>");
     static_assert(
             assert_same<
                     unsigned_multiprecision<987654321>,
@@ -133,8 +133,8 @@ TEST(multiprecision, scale_negative)
 
 namespace test_depth {
     static_assert(
-            cnl::_impl::depth<fixed_point<unsigned_multiprecision<987654321>>>::value==1,
-            "cnl::_impl::depth<fixed_point<boost::multiprecision>>");
+            cnl::_impl::depth<scaled_integer<unsigned_multiprecision<987654321>>>::value==1,
+            "cnl::_impl::depth<scaled_integer<boost::multiprecision>>");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -193,11 +193,11 @@ TEST(multiprecision, divide)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::fixed_point<cnl::unsigned_multiprecision<>> arithmetic
+// cnl::scaled_integer<cnl::unsigned_multiprecision<>> arithmetic
 
-TEST(fixed_point_multiprecision, add)
+TEST(scaled_integer_multiprecision, add)
 {
-    using int64 = fixed_point<unsigned_multiprecision<64>>;
+    using int64 = scaled_integer<unsigned_multiprecision<64>>;
 
     auto augend = int64{123456789012345678LL};
     auto addend = int64{876543210987654321LL};
@@ -208,9 +208,9 @@ TEST(fixed_point_multiprecision, add)
     ASSERT_EQ(sum, expected);
 }
 
-TEST(fixed_point_multiprecision, subtract)
+TEST(scaled_integer_multiprecision, subtract)
 {
-    using int64 = fixed_point<unsigned_multiprecision<64>>;
+    using int64 = scaled_integer<unsigned_multiprecision<64>>;
 
     auto minuend = int64{999999999999999999LL};
     auto subtrahend = int64{876543210987654321LL};
@@ -221,10 +221,10 @@ TEST(fixed_point_multiprecision, subtract)
     ASSERT_EQ(difference, expected);
 }
 
-TEST(fixed_point_multiprecision, multiply)
+TEST(scaled_integer_multiprecision, multiply)
 {
-    using int64 = fixed_point<unsigned_multiprecision<64>>;
-    using int128 = fixed_point<unsigned_multiprecision<128>>;
+    using int64 = scaled_integer<unsigned_multiprecision<64>>;
+    using int128 = scaled_integer<unsigned_multiprecision<128>>;
 
     auto factor = int64{123456789012345678LL};
 
@@ -235,9 +235,9 @@ TEST(fixed_point_multiprecision, multiply)
     ASSERT_EQ(factor, quotient);
 }
 
-TEST(fixed_point_multiprecision, divide)
+TEST(scaled_integer_multiprecision, divide)
 {
-    using int64 = fixed_point<unsigned_multiprecision<64>>;
+    using int64 = scaled_integer<unsigned_multiprecision<64>>;
 
     auto div = int64{123456789012345678LL};
 
@@ -264,7 +264,7 @@ static_assert(
 // Boost.Multiprecision in 1.58 known to have constexpr support
 #if (BOOST_VERSION>=105800)
 
-TEST(fixed_point_multiprecision, shift_left_constant)
+TEST(scaled_integer_multiprecision, shift_left_constant)
 {
     auto lhs = cnl::unsigned_multiprecision<15>{1536};
     auto rhs = cnl::constant<3>{};
@@ -273,7 +273,7 @@ TEST(fixed_point_multiprecision, shift_left_constant)
     ASSERT_EQ(expected, actual);
 }
 
-TEST(fixed_point_multiprecision, shift_right_constant)
+TEST(scaled_integer_multiprecision, shift_right_constant)
 {
     auto lhs = cnl::unsigned_multiprecision<15>{1536};
     auto rhs = cnl::constant<3>{};
@@ -287,16 +287,16 @@ TEST(fixed_point_multiprecision, shift_right_constant)
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::used_digits<boost::multiprecision::number<>>
 
-TEST(fixed_point_multiprecision, unsigned_multiprecision_used_digits)
+TEST(scaled_integer_multiprecision, unsigned_multiprecision_used_digits)
 {
-    using q4_20 = fixed_point<unsigned_multiprecision<24>, -20>;
+    using q4_20 = scaled_integer<unsigned_multiprecision<24>, cnl::power<-20>>;
     q4_20 a = 3.051757812500000e-05;
     ASSERT_EQ(6, cnl::used_digits(a));
 }
 
-TEST(fixed_point_multiprecision, signed_multiprecision_used_digits)
+TEST(scaled_integer_multiprecision, signed_multiprecision_used_digits)
 {
-    using q4_20 = fixed_point<signed_multiprecision<24>, -20>;
+    using q4_20 = scaled_integer<signed_multiprecision<24>, cnl::power<-20>>;
     q4_20 a = 3.051757812500000e-05;
     ASSERT_EQ(6, cnl::used_digits(a));
 }
@@ -304,23 +304,23 @@ TEST(fixed_point_multiprecision, signed_multiprecision_used_digits)
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::leading_bits<boost::multiprecision::number<>>
 
-TEST(fixed_point_multiprecision, unsigned_multiprecision_leading_bits)
+TEST(scaled_integer_multiprecision, unsigned_multiprecision_leading_bits)
 {
-    using q4_20 = fixed_point<unsigned_multiprecision<24>, -20>;
+    using q4_20 = scaled_integer<unsigned_multiprecision<24>, cnl::power<-20>>;
     q4_20 a = 3.051757812500000e-05;
     ASSERT_EQ(18, leading_bits(a));
 }
 
-TEST(fixed_point_multiprecision, signed_multiprecision_leading_bits)
+TEST(scaled_integer_multiprecision, signed_multiprecision_leading_bits)
 {
-    using q4_20 = fixed_point<signed_multiprecision<24>, -20>;
+    using q4_20 = scaled_integer<signed_multiprecision<24>, cnl::power<-20>>;
     q4_20 a = 3.051757812500000e-05;
     ASSERT_EQ(18, leading_bits(a));
 }
 
-TEST(fixed_point_multiprecision, sqrt)
+TEST(scaled_integer_multiprecision, sqrt)
 {
-    typedef cnl::fixed_point<boost::multiprecision::int128_t, 0> length_t;
+    typedef cnl::scaled_integer<boost::multiprecision::int128_t> length_t;
     length_t x = length_t{ 25 };
     auto y = cnl::sqrt(x);
     ASSERT_EQ(y, 5);

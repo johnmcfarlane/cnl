@@ -30,7 +30,7 @@
  * \subsection Core_Components Core Components
  *
  * The core numeric types of CNL are:
- * - [fixed_point](@ref cnl::fixed_point) - scales integers by any exponent and base with zero-overhead and minimal
+ * - [scaled_integer](@ref cnl::scaled_integer) - scales integers by any exponent and base with zero-overhead and minimal
  * precision loss;
  * - [elastic_integer](@ref cnl::elastic_integer) - prevents overflow at compile-time by generalizing promotion rules;
  * - [overflow_integer](@ref cnl::overflow_integer) - handles integer overflow at run-time;
@@ -46,12 +46,12 @@
  * In combination, the core types produce composites which address multiple concerns.
  *
  * Provided composite types include:
- * - [elastic_number](@ref cnl::elastic_number) ([fixed_point](@ref cnl::fixed_point) and
+ * - [elastic_scaled_integer](@ref cnl::elastic_scaled_integer) ([scaled_integer](@ref cnl::scaled_integer) and
  *   [elastic_integer](@ref cnl::elastic_integer)) - real-number approximation which uses promotion to avoid overflow;
  * - [static_integer](@ref cnl::static_integer) ([rounding_integer](@ref cnl::rounding_integer),
  *   [overflow_integer](@ref cnl::overflow_integer), [elastic_integer](@ref cnl::elastic_integer) and
  *   [wide_integer](@ref cnl::wide_integer)) - fully-featured safe, accurate integer type and
- * - [static_number](@ref cnl::static_number) ([fixed_point](@ref cnl::fixed_point) and
+ * - [static_number](@ref cnl::static_number) ([scaled_integer](@ref cnl::scaled_integer) and
  *   [static_integer](@ref cnl::static_integer)) - a fully-featured safe, accurate real number approximation.
  *
  * Many more combinations are possible. For example:
@@ -67,7 +67,7 @@
  *
  * \subsection Declaration
  *
- * The [fixed_point](@ref cnl::fixed_point) type adds a scaling exponent to integers. This enables the integer to
+ * The [scaled_integer](@ref cnl::scaled_integer) type adds a scaling exponent to integers. This enables the integer to
  * represent very big or very small values.
  *
  * \snippet index.cpp declaration example
@@ -75,7 +75,7 @@
  *
  * \subsection Arithmetic_Operators Arithmetic Operators
  *
- * Specializations of [fixed_point](@ref cnl::fixed_point) behave a lot like native C/C++ numeric types.
+ * Specializations of [scaled_integer](@ref cnl::scaled_integer) behave a lot like native C/C++ numeric types.
  * Operators are designed to behave in an way which is both predictable and efficient.
  *
  * \snippet index.cpp basic arithmetic example
@@ -89,9 +89,9 @@
  *
  * \subsection Extensible
  *
- * Because one size does not fit all, [fixed_point](@ref cnl::fixed_point) is designed to make it easy to tailor new arithmetic types.
- * The [elastic_number](@ref cnl::elastic_number) type illustrates this.
- * As each calculation requires more digits, so the results of [elastic_number](@ref cnl::elastic_number) operations allocate more storage.
+ * Because one size does not fit all, [scaled_integer](@ref cnl::scaled_integer) is designed to make it easy to tailor new arithmetic types.
+ * The [elastic_scaled_integer](@ref cnl::elastic_scaled_integer) type illustrates this.
+ * As each calculation requires more digits, so the results of [elastic_scaled_integer](@ref cnl::elastic_scaled_integer) operations allocate more storage.
  *
  * \snippet index.cpp elastic example
  *
@@ -104,8 +104,9 @@
 #include "cmath.h"
 #include "cstdint.h"
 #include "constant.h"
-#include "elastic_number.h"
+#include "elastic_scaled_integer.h"
 #include "elastic_integer.h"
+#include "elastic_fixed_point.h"
 #include "fixed_point.h"
 #include "fraction.h"
 #include "limits.h"
@@ -116,6 +117,7 @@
 #include "overflow_integer.h"
 #include "rounding.h"
 #include "rounding_integer.h"
+#include "scaled_integer.h"
 #include "static_integer.h"
 #include "static_number.h"
 #include "type_traits.h"

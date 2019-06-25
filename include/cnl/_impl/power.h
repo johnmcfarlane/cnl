@@ -1,116 +1,93 @@
 
-//          Copyright John McFarlane 2018.
+//          Copyright John McFarlane 2019.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_POWER_H)
-#define CNL_IMPL_POWER_H 1
+#ifndef CNL_IMPL_SCALED_INTEGER_POWER_H
+#define CNL_IMPL_SCALED_INTEGER_POWER_H
 
-#include "num_traits/digits.h"
-#include "num_traits/from_value.h"
-#include "../constant.h"
-
-#include <type_traits>
+#include "native_tag.h"
+#include "power_value.h"
+#include "num_traits/scale.h"
 
 /// compositional numeric library
 namespace cnl {
-    namespace _impl {
+    template<int Exponent = 0, int Radix = 2>
+    struct power {
+        static_assert(Radix >= 2, "Radix must be two or greater");
+
         ////////////////////////////////////////////////////////////////////////////////
-        // power - one integer raised to another as a floating-point or integer type
+        // constants
 
-        template<
-                typename S, int Exponent, int Radix,
-                bool PositiveExponent = (0<Exponent),
-                bool OddExponent = ((Exponent & 1)!=0),
-                bool FloatingPointS = numeric_limits<S>::is_iec559>
-        struct default_power;
+        /// value of template parameter, \a Exponent
+        constexpr static int exponent = Exponent;
 
-        template<typename S, int Radix>
-        struct default_power<S, 0, Radix, false, false, false> {
-            CNL_NODISCARD constexpr S operator()() const
-            {
-                return S{1};
-            }
-        };
+        /// value of template parameter, \a Radix
+        constexpr static int radix = Radix;
 
-        template<typename S, int Exponent, bool OddExponent>
-        struct default_power<S, Exponent, 2, true, OddExponent, false> {
-            CNL_NODISCARD constexpr auto operator()() const
-            -> decltype(decltype(std::declval<S>() >> constant<digits<S>::value-1>{}){1} << constant<Exponent>{})
-            {
-                using result_numeric_limits = numeric_limits<decltype(decltype(
-                        std::declval<S>() >> constant<digits<S>::value-1>{}){1} << constant<Exponent>{})>;
-                static_assert(!std::is_integral<S>::value
-                        || !std::is_signed<S>::value
-                        || Exponent<result_numeric_limits::digits, "attempted operation will result in overflow");
+        ////////////////////////////////////////////////////////////////////////////////
+        // types
 
-                // TODO: This expression is so ugly that it might justify
-                // a separate specialization of power for elastic_integer
-                return decltype(std::declval<S>() >> constant<digits<S>::value-1>{}){1} << constant<Exponent>{};
-            }
-        };
+        using identity = power<0, Radix>;
+    };
 
-        template<typename S, int Exponent, int Radix, bool OddExponent>
-        struct default_power<S, Exponent, Radix, true, OddExponent, false> {
-            CNL_NODISCARD constexpr auto operator()() const
-            -> decltype(default_power<S, (Exponent-1), Radix>{}()*Radix)
-            {
-                return default_power<S, (Exponent-1), Radix>{}()*Radix;
-            }
-        };
+    /// value of template parameter, \a Exponent
+    template<int Exponent, int Radix>
+    constexpr int power<Exponent, Radix>::exponent;
 
-        template<typename S, int Exponent, int Radix, bool PositiveExponent, bool OddExponent>
-        struct default_power<S, Exponent, Radix, PositiveExponent, OddExponent, true> {
-            CNL_NODISCARD constexpr S operator()() const
-            {
-                return Exponent
-                       ? S(1.)/default_power<S, -Exponent, Radix>{}()
-                       : S{1.};
-            }
-        };
-
-        template<typename S, int Exponent, int Radix>
-        struct default_power<S, Exponent, Radix, true, false, true> {
-            CNL_NODISCARD constexpr static S square(S const& r)
-            {
-                return r*r;
-            }
-
-            CNL_NODISCARD constexpr S operator()() const
-            {
-                return square(default_power<S, Exponent/2, Radix>{}());
-            }
-        };
-
-        template<typename S, int Exponent, int Radix>
-        struct default_power<S, Exponent, Radix, true, true, true> {
-            CNL_NODISCARD constexpr static S square(S const& r)
-            {
-                return r*r;
-            }
-
-            CNL_NODISCARD constexpr S operator()() const
-            {
-                return S(Radix)*default_power<S, (Exponent-1), Radix>{}();
-            }
-        };
-
-        template<typename S, int Exponent, int Radix, class Enable = void>
-        struct power {
-            CNL_NODISCARD constexpr auto operator()() const
-            -> decltype(default_power<S, Exponent, Radix>{}()) {
-                return default_power<S, Exponent, Radix>{}();
-            }
-        };
+    template<int LhsExponent, int RhsExponent, int Radix>
+    constexpr auto operator/(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
+    -> power<LhsExponent-RhsExponent, Radix>
+    {
+        return power<LhsExponent-RhsExponent, Radix>{};
     }
 
-    template<typename S, int Exponent, int Radix>
-    CNL_NODISCARD constexpr auto power()
-    -> decltype(_impl::power<S, Exponent, Radix>{}())
-    {
-        return _impl::power<S, Exponent, Radix>{}();
+    namespace _impl {
+        // integer -> floating
+        template<
+                int Exponent, int Radix,
+                typename Result, typename Input>
+        struct tagged_convert_operator<
+                power<Exponent, Radix>,
+                Result, Input,
+                _impl::enable_if_t<cnl::numeric_limits<Result>::is_iec559&&cnl::numeric_limits<Input>::is_integer>> {
+            static_assert(cnl::numeric_limits<Input>::is_integer, "");
+            CNL_NODISCARD constexpr Result operator()(Input const& from) const
+            {
+                return Result(from)*_impl::power_value<Result, Exponent, Radix>();
+            }
+        };
+
+        // floating -> integer
+        template<
+                int Exponent, int Radix,
+                typename Result, typename Input>
+        struct tagged_convert_operator<
+                power<Exponent, Radix>,
+                Result, Input,
+                _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer&&cnl::numeric_limits<Input>::is_iec559>> {
+            CNL_NODISCARD constexpr Result operator()(Input const& from) const
+            {
+                return static_cast<Result>(from*_impl::power_value<Input, Exponent, Radix>());
+            }
+        };
+
+        // integer -> integer
+        template<
+                int Exponent, int Radix,
+                typename Result, typename Input>
+        struct tagged_convert_operator<
+                power<Exponent, Radix>,
+                Result, Input,
+                _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer&&cnl::numeric_limits<Input>::is_integer>> {
+            CNL_NODISCARD constexpr Result operator()(Input const& from) const
+            {
+                // when converting *from* scaled_integer
+                return static_cast<Result>(scale<Exponent, Radix>(from));
+            }
+        };
     }
 }
 
-#endif  // CNL_IMPL_POWER_H
+#endif //CNL_IMPL_SCALED_INTEGER_POWER_H

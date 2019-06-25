@@ -38,10 +38,14 @@ set(test_sources
         fixed_point/fixed_point_built_in.cpp
         fixed_point/decimal.cpp
         fixed_point/constants.cpp
+        scaled_integer/scaled_integer_built_in.cpp
+        scaled_integer/decimal.cpp
+        scaled_integer/constants.cpp
         fraction/ctors.cpp
         fraction/fraction.cpp
         elastic/elastic_integer.cpp
         fixed_point/extras.cpp
+        scaled_integer/extras.cpp
         overflow/overflow_integer.cpp
         rounding/rounding_integer.cpp
         _impl/duplex_integer/digits.cpp
@@ -62,8 +66,10 @@ set(test_sources
 
         # components in free functions
         elastic/rounding/elastic_integer_rounding.cpp
-        rounding/fixed_point/elastic_integer/elastic_number.cpp
+        rounding/fixed_point/elastic_integer/elastic_fixed_point.cpp
         rounding/fixed_point/fixed_point.cpp
+        rounding/scaled_integer/elastic_integer/elastic_scaled_integer.cpp
+        rounding/scaled_integer/scaled_integer.cpp
 
         # composites
         elastic/wide/wide_elastic_integer.cpp
@@ -80,17 +86,35 @@ set(test_sources
         fixed_point/rounding/overflow/fixed_point_rounding_overflow.cpp
         fixed_point/rounding/elastic/integer.cpp
         fixed_point/elastic/rounding/overflow/426.cpp
+        scaled_integer/integer/scaled_integer_integer.cpp
+        scaled_integer/overflow/scaled_integer_native_integer.cpp
+        scaled_integer/overflow/scaled_integer_trapping_integer.cpp
+        scaled_integer/overflow/scaled_integer_throwing_integer.cpp
+        scaled_integer/overflow/scaled_integer_saturated_integer.cpp
+        scaled_integer/rounding/scaled_integer_rounding.cpp
+        scaled_integer/wide_integer/scaled_integer_wide_integer.cpp
+        scaled_integer/wide_integer/scaled_integer_wide_integer_32.cpp
+        scaled_integer/wide_integer/scaled_integer_wide_integer_8.cpp
+        scaled_integer/overflow/undefined_overflow.cpp
+        scaled_integer/rounding/overflow/scaled_integer_rounding_overflow.cpp
+        scaled_integer/rounding/elastic/integer.cpp
+        scaled_integer/elastic/rounding/overflow/426.cpp
         rounding/elastic/rounding_elastic_integer.cpp
         rounding/overflow/elastic/integer.cpp
         fixed_point/rounding/rounding_fixed_point.cpp
+        scaled_integer/rounding/rounding_scaled_integer.cpp
         elastic/rounding/integer.cpp
         elastic/rounding/overflow/rounding_safe_integer.cpp
         overflow/elastic/safe_integer.cpp
         overflow/wide/wide_overflow_integer.cpp
-        fixed_point/elastic/make_elastic_number.cpp
-        fixed_point/elastic/elastic_number.cpp
-        fixed_point/rounding/elastic/rounding_elastic_number.cpp
-        fixed_point/overflow/elastic/integer.cpp
+        fixed_point/elastic/make_elastic_fixed_point.cpp
+        fixed_point/elastic/elastic_fixed_point.cpp
+        fixed_point/rounding/elastic/rounding_elastic_fixed_point.cpp
+        fixed_point/elastic/overflow/saturated.cpp
+        scaled_integer/elastic/make_elastic_scaled_integer.cpp
+        scaled_integer/elastic/elastic_scaled_integer.cpp
+        scaled_integer/rounding/elastic/rounding_elastic_scaled_integer.cpp
+        scaled_integer/overflow/elastic/integer.cpp
         static_integer/operators.cpp
         static_integer/type.cpp
         static_number/426.cpp
@@ -117,6 +141,7 @@ set(sample_sources
         presentations/cppdub2018.cpp
         presentations/cppnow2017.cpp
         fixed_point/math.cpp
+        scaled_integer/math.cpp
         zero_cost_square.cpp
         zero_cost_free_functions.cpp
         snippets.cpp
@@ -132,7 +157,7 @@ find_package(Boost)
 
 if(Boost_FOUND)
     if(NOT Boost_VERSION GREATER 105500)
-        message("Boost version is too low to use with cnl::fixed_point")
+        message("Boost version is too low to use with CNL")
     endif(NOT Boost_VERSION GREATER 105500)
 endif(Boost_FOUND)
 

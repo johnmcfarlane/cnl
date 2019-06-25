@@ -259,32 +259,32 @@ static_assert(
 static_assert(cnl::_impl::scale<-8, 2, int16>(-31488)==-123, "cnl::_impl::scale test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::power
+// power_value
 
-namespace test_power {
-    static_assert(identical(cnl::power<float, 0, 2>(), 1.f), "cnl::power test failed");
-    static_assert(identical(cnl::power<double, -1, 2>(), .5), "cnl::power test failed");
-    static_assert(identical(cnl::power<long double, 1, 2>(), 2.L), "cnl::power test failed");
-    static_assert(identical(cnl::power<float, -3, 2>(), .125f), "cnl::power test failed");
-    static_assert(identical(cnl::power<double, 7, 2>(), 128.), "cnl::power test failed");
-    static_assert(identical(cnl::power<long double, 10, 2>(), 1024.L), "cnl::power test failed");
-    static_assert(identical(cnl::power<float, 20, 2>(), 1048576.f), "cnl::power test failed");
+namespace test_power_value {
+    static_assert(identical(cnl::_impl::power_value<float, 0, 2>(), 1.f), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<double, -1, 2>(), .5), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<long double, 1, 2>(), 2.L), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<float, -3, 2>(), .125f), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<double, 7, 2>(), 128.), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<long double, 10, 2>(), 1024.L), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<float, 20, 2>(), 1048576.f), "cnl::_impl::power_value test failed");
 
-    static_assert(identical(cnl::power<float, 0, 3>(), 1.f), "cnl::power test failed");
-    static_assert(identical(cnl::power<double, -1, 3>(), 1./3), "cnl::power test failed");
-    static_assert(identical(cnl::power<long double, 1, 3>(), 3.L), "cnl::power test failed");
-    static_assert(identical(cnl::power<float, -3, 3>(), 1.f/27), "cnl::power test failed");
-    static_assert(identical(cnl::power<double, 7, 3>(), 2187.), "cnl::power test failed");
-    static_assert(identical(cnl::power<long double, 10, 3>(), 59049.L), "cnl::power test failed");
-    static_assert(identical(cnl::power<float, 20, 3>(), 3486784401.f), "cnl::power test failed");
+    static_assert(identical(cnl::_impl::power_value<float, 0, 3>(), 1.f), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<double, -1, 3>(), 1./3), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<long double, 1, 3>(), 3.L), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<float, -3, 3>(), 1.f/27), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<double, 7, 3>(), 2187.), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<long double, 10, 3>(), 59049.L), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<float, 20, 3>(), 3486784401.f), "cnl::_impl::power_value test failed");
 
-    static_assert(identical(cnl::power<float, 0, 4>(), 1.f), "cnl::power test failed");
-    static_assert(identical(cnl::power<double, -1, 4>(), .25), "cnl::power test failed");
-    static_assert(identical(cnl::power<long double, 1, 4>(), 4.L), "cnl::power test failed");
-    static_assert(identical(cnl::power<float, -3, 4>(), .015625f), "cnl::power test failed");
-    static_assert(identical(cnl::power<double, 7, 4>(), 16384.), "cnl::power test failed");
-    static_assert(identical(cnl::power<long double, 10, 4>(), 1048576.L), "cnl::power test failed");
-    static_assert(identical(cnl::power<float, 20, 4>(), 1099511627776.f), "cnl::power test failed");
+    static_assert(identical(cnl::_impl::power_value<float, 0, 4>(), 1.f), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<double, -1, 4>(), .25), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<long double, 1, 4>(), 4.L), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<float, -3, 4>(), .015625f), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<double, 7, 4>(), 16384.), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<long double, 10, 4>(), 1048576.L), "cnl::_impl::power_value test failed");
+    static_assert(identical(cnl::_impl::power_value<float, 20, 4>(), 1099511627776.f), "cnl::_impl::power_value test failed");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -297,7 +297,7 @@ namespace ctor {
 #endif
 
 #if defined(TEST_NATIVE_INTEGER)
-    // the equivalent test in elastic_number.cpp does not lose information
+    // the equivalent test in elastic_fixed_point.cpp does not lose information
     static_assert(identical(uint32{0x00003210U}, uint32(fixed_point<uint64, -16>{0x76543210U})), "fixed_point<>::fixed_point");
 #endif
 
@@ -348,22 +348,19 @@ namespace test_from_value {
             "cnl::_impl::from_value<fixed_point<>, cnl::constant<4>>()");
 }
 
-#if defined(__cpp_deduction_guides)
+#if defined(__cpp_deduction_guides) && defined(CNL_P1021)
 namespace test_deduction_guides {
     static_assert(identical(cnl::make_fixed_point(short{123}), cnl::fixed_point(short{123})),
             "cnl::fixed_point class template deduction");
     static_assert(identical(cnl::make_fixed_point(UINT64_C(404)), cnl::fixed_point(UINT64_C(404))),
             "cnl::fixed_point class template deduction");
-
     static_assert(identical(cnl::make_fixed_point(cnl::constant<369>{}), cnl::fixed_point(cnl::constant<369>{})),
             "cnl::fixed_point class template deduction");
 
-#if defined(__cpp_deduction_guides)
     static_assert(
             identical(
                     fixed_point<int8>(0),
                     cnl::make_fixed_point(int8{0})));
-#endif
     static_assert(identical(cnl::make_fixed_point(cnl::constant<4>{}), cnl::fixed_point(cnl::constant<4>{})),
             "cnl::fixed_point class template deduction");
 }
@@ -1086,7 +1083,7 @@ struct FixedPointTesterOutsize {
     // Exponent
     static constexpr int exponent = Exponent;
     static_assert(
-            exponent == fixed_point::exponent,
+            exponent == fixed_point::scale::exponent,
             "mismatched exponent");
 
     // simply assignment to and from underlying representation
@@ -1164,7 +1161,7 @@ struct FixedPointRepTester {
     FixedPointTesterOutsize<Rep, 100> _6;
 
     // test deduction guides
-#if defined(__cpp_deduction_guides)
+#if defined(__cpp_deduction_guides) && defined(CNL_P1021)
     static_assert(identical(cnl::fixed_point{Rep{0}}, cnl::fixed_point<Rep, 0>{0}));
     static_assert(identical(cnl::fixed_point(Rep{0}), cnl::fixed_point<Rep, 0>(0)));
 

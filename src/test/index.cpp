@@ -36,13 +36,14 @@ void test_function(void(* function)(), char const* output)
 #include <cnl/all.h>
 #include <iostream>
 
-using cnl::fixed_point;
+using cnl::power;
+using cnl::scaled_integer;
 using namespace std;
 
 void declaration_example()
 {
     // x is represented by an int and scaled down by 1 bit
-    auto x = fixed_point<int, -1>{3.5};
+    auto x = scaled_integer<int, power<-1>>{3.5};
 
     // under the hood, x stores a whole number
     cout << to_rep(x) << endl;  // "7"
@@ -67,11 +68,11 @@ TEST(index, declaration_example)
 void basic_arithmetic_example()
 {
     // define a constant signed value with 3 integer and 28 fraction bits (s3:28)
-    auto pi = fixed_point<int32_t, -28>{3.1415926535};
+    auto pi = scaled_integer<int32_t, power<-28>>{3.1415926535};
 
-    // expressions involving integers return fixed_point results
+    // expressions involving integers return scaled_integer results
     auto tau = pi*2;
-    static_assert(is_same<decltype(tau), fixed_point<int32_t, -28>>::value, "");
+    static_assert(is_same<decltype(tau), scaled_integer<int32_t, power<-28>>>::value, "");
 
     // "6.28319"
     cout << tau << endl;
@@ -93,29 +94,29 @@ TEST(index, basic_arithmetic_example)
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [advanced arithmetic example]
-using cnl::elastic_number;
+using cnl::elastic_scaled_integer;
 
 void advanced_arithmetic_example()
 {
     // this variable uses all of its capacity
-    auto x = fixed_point<uint8_t, -4>{15.9375};
+    auto x = scaled_integer<uint8_t, power<-4>>{15.9375};
 
     // 15.9375 * 15.9375 = 254.00390625 ... overflow!
-    auto xx1 = fixed_point<uint8_t, -4>{x*x};
+    auto xx1 = scaled_integer<uint8_t, power<-4>>{x*x};
     cout << xx1 << endl;  // "14" instead!
 
     // fixed-point multiplication operator obeys usual promotion and implicit conversion rules
     auto xx = x*x;
 
-    // x*x is promoted to fixed_point<int, -8>
-    static_assert(is_same<decltype(xx), fixed_point<int, -8>>::value, "");
+    // x*x is promoted to scaled_integer<int, -8>
+    static_assert(is_same<decltype(xx), scaled_integer<int, power<-8>>>::value, "");
     cout << xx << endl;  // "254.00390625" - correct
 
-    // you can avoid the pitfalls of integer promotion for good by using the elastic_number type
-    auto named_xx = make_elastic_number(x) * make_elastic_number(x);
+    // you can avoid the pitfalls of integer promotion for good by using the elastic_scaled_integer type
+    auto named_xx = make_elastic_scaled_integer(x) * make_elastic_scaled_integer(x);
 
     // this type tracks both the number of digits and the exponent to ensure lossless multiplication
-    static_assert(is_same<decltype(named_xx), elastic_number<16, -8, unsigned>>::value, "");
+    static_assert(is_same<decltype(named_xx), elastic_scaled_integer<16, -8, unsigned>>::value, "");
     cout << named_xx << endl;  // "254.00390625" - also correct but prone to overflow
 }
 //! [advanced arithmetic example]
@@ -133,18 +134,18 @@ TEST(index, advanced_arithmetic_example)
 //! [boost example]
 #include <cnl/auxiliary/boost.multiprecision.h>
 
-// With Boost.Multiprecision, fixed_point can be any size.
+// With Boost.Multiprecision, scaled_integer can be any size.
 // cnl::multiprecision aliases to a BMP type that works especially well in CNL.
 using cnl::multiprecision;
 
 // Here's a fixed-point type with any number of binary digits.
 template<int NumDigits, int Exponent = 0>
-using mp_fixed_point = fixed_point<multiprecision<NumDigits>, Exponent>;
+using mp_scaled_integer = scaled_integer<multiprecision<NumDigits>, power<Exponent>>;
 
 void boost_example()
 {
     // Create an integer with 400 binary digits and 0 fraction digits.
-    auto googol = mp_fixed_point<400>{1};
+    auto googol = mp_scaled_integer<400>{1};
 
     // A googol is 10^100.
     for (auto zeros = 0; zeros!=100; ++zeros) {
@@ -155,10 +156,10 @@ void boost_example()
     cout << googol << endl;
 
     // Dividing a s1.0 number by a u400.0 number
-    auto googolth = quotient(mp_fixed_point<1>{1}, googol);
+    auto googolth = quotient(mp_scaled_integer<1>{1}, googol);
 
     // produces a number with one integer digit and 400 fraction digits.
-    static_assert(is_same<decltype(googolth), mp_fixed_point<401, -400>>::value, "");
+    static_assert(is_same<decltype(googolth), mp_scaled_integer<401, -400>>::value, "");
 
     // Prints "1e-100" (although this value is only approximate).
     cout << googolth << endl;
@@ -198,17 +199,17 @@ void elastic_example1()
     static_assert(is_same<decltype(a2), elastic_integer<7, int8_t >> ::value, "");
 }
 
-using cnl::elastic_number;
+using cnl::elastic_scaled_integer;
 
 void elastic_example2()
 {
-    // A type such as elastic_integer can be used to specialize fixed_point.
+    // A type such as elastic_integer can be used to specialize scaled_integer.
     // Now arithmetic operations are more efficient and less error-prone.
-    auto b = elastic_number<31, -27, unsigned>{15.9375};
+    auto b = elastic_scaled_integer<31, -27, unsigned>{15.9375};
     auto bb = b*b;
 
     cout << bb << endl;  // "254.00390625"
-    static_assert(is_same<decltype(bb), elastic_number<62, -54, unsigned>>::value, "");
+    static_assert(is_same<decltype(bb), elastic_scaled_integer<62, -54, unsigned>>::value, "");
 }
 //! [elastic example]
 

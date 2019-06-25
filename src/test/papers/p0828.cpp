@@ -9,7 +9,7 @@
 
 #if (__cplusplus>201402L) && defined(CNL_EXCEPTIONS_ENABLED)
 
-#include <cnl/fixed_point.h>
+#include <cnl/scaled_integer.h>
 #include <cnl/elastic_integer.h>
 
 #include <gtest/gtest.h>
@@ -128,22 +128,22 @@ namespace {
         }
 
         namespace section_4_1_2a {
-            CNL_NODISCARD constexpr auto kibi = fixed_point<int32_t, -16>(1024); // 2^26
+            CNL_NODISCARD constexpr auto kibi = scaled_integer<int32_t, cnl::power<-16>>(1024); // 2^26
             static_assert(identical(1<<26, to_rep(kibi)), "");
 
-//            CNL_NODISCARD constexpr auto mebi = kibi * kibi;   // fixed_point<int, -32>; value: 2^52
+//            CNL_NODISCARD constexpr auto mebi = kibi * kibi;   // scaled_integer<int, -32>; value: 2^52
 //            static_assert(identical(1LL<<52, to_rep(mebi)), "");
         }
 
         namespace section_4_1_2b {
             template<int Digits, int Exponent>
-            using elastic_number = fixed_point<elastic_integer<Digits>, Exponent>;
+            using elastic_scaled_integer = scaled_integer<elastic_integer<Digits>, Exponent>;
 
-            CNL_NODISCARD constexpr auto kibi = elastic_number<31, -16>(1024); // stores value 2^26
+            CNL_NODISCARD constexpr auto kibi = elastic_scaled_integer<31, -16>(1024); // stores value 2^26
             static_assert(identical(1<<26, to_rep(to_rep(kibi))), "");
 
-            CNL_NODISCARD constexpr auto mebi = kibi * kibi;   // elastic_number<62, -32> stores value: 2^52
-            static_assert(identical(elastic_number<62, -32>{1<<20}, mebi), "");
+            CNL_NODISCARD constexpr auto mebi = kibi * kibi;   // elastic_scaled_integer<62, -32> stores value: 2^52
+            static_assert(identical(elastic_scaled_integer<62, -32>{1<<20}, mebi), "");
             static_assert(identical(INT64_C(1)<<52, to_rep(to_rep(mebi))), "");
 
         }
@@ -166,18 +166,18 @@ namespace {
 
     namespace design_decisions {
         using cnl::elastic_integer;
-        using cnl::fixed_point;
+        using cnl::scaled_integer;
 
         template<int Digits, int Exponent, class Narrowest>
-        using elastic_number = fixed_point<elastic_integer<Digits, Narrowest>, Exponent>;
+        using elastic_scaled_integer = scaled_integer<elastic_integer<Digits, Narrowest>, Exponent>;
 
         // a 15-bit number with 10 integer digits and 5 fraction digits
-        CNL_NODISCARD constexpr auto n = elastic_number<15, -5, int>{31.96875};
+        CNL_NODISCARD constexpr auto n = elastic_scaled_integer<15, -5, int>{31.96875};
 
         // a 30-bit number with 20 integer digits and 10 fraction digits;
         CNL_NODISCARD constexpr auto nn = n*n;
 
-        static_assert(identical(elastic_number<30, -10, int>{1022.0009765625}, nn), "");
+        static_assert(identical(elastic_scaled_integer<30, -10, int>{1022.0009765625}, nn), "");
     }
 }
 

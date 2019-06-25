@@ -16,7 +16,7 @@ using cnl::_impl::identical;
 template<
         int Digits,
         int Exponent>
-using saturated_elastic_fixed_point = cnl::fixed_point<
+using saturated_elastic_scaled_integer = cnl::scaled_integer<
         cnl::rounding_integer<
                 cnl::overflow_integer<
                         cnl::elastic_integer<
@@ -24,12 +24,12 @@ using saturated_elastic_fixed_point = cnl::fixed_point<
                                 int>,
                         cnl::saturated_overflow_tag>,
                 cnl::native_rounding_tag>,
-        Exponent>;
+        cnl::power<Exponent>>;
 
 TEST(a, b)
 {
-    using t1 = saturated_elastic_fixed_point<1, 0>;
-    using t2 = saturated_elastic_fixed_point<2, -1>;
+    using t1 = saturated_elastic_scaled_integer<1, 0>;
+    using t2 = saturated_elastic_scaled_integer<2, -1>;
 
     constexpr t1 a = 1;
     constexpr t2 g = a;

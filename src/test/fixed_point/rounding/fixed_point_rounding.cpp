@@ -32,11 +32,13 @@ namespace test_literals_initialization {
 
     using namespace cnl::literals;
 
-    static_assert(identical(fixed_point<int, 0>{1}, fixed_point(1_c)));
-    static_assert(identical(fixed_point<int, 1>{2}, fixed_point(2_c)));
-    static_assert(identical(fixed_point<int, 0>{3}, fixed_point(3_c)));
-    static_assert(identical(fixed_point<int, 2>{500}, fixed_point(500_c)));
-    static_assert(identical(fixed_point<int32_t, 32>{INT64_C(0x7fffffff00000000)}, fixed_point(0x7fffffff00000000_c)));
+    static_assert(identical(fixed_point<int, 0>{1}, cnl::scaled_integer(1_c)));
+    static_assert(identical(fixed_point<int, 1>{2}, cnl::scaled_integer(2_c)));
+    static_assert(identical(fixed_point<int, 0>{3}, cnl::scaled_integer(3_c)));
+    static_assert(identical(fixed_point<int, 2>{500}, cnl::scaled_integer(500_c)));
+    static_assert(identical(
+            fixed_point<int32_t, 32>{INT64_C(0x7fffffff00000000)},
+            cnl::scaled_integer(0x7fffffff00000000_c)));
 }
 
 namespace test_literals_constant {
@@ -45,7 +47,7 @@ namespace test_literals_constant {
 
     using namespace cnl::literals;
 
-    constexpr auto kibi = fixed_point(1024_c);
+    constexpr auto kibi = cnl::scaled_integer(1024_c);
     constexpr auto mebi = kibi * 1024_c;
     constexpr auto tebi = mebi * mebi;
     constexpr auto exbi = tebi * mebi;

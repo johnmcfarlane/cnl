@@ -345,10 +345,10 @@ namespace {
         static_assert(identical(cnl::rounding_integer<>{0}, cnl::rounding_integer<>{1} >> 2), "");
     }
 
-    namespace test_power {
+    namespace test_power_value {
         static_assert(identical(
                 cnl::rounding_integer<>{2},
-                cnl::_impl::default_power<cnl::rounding_integer<>, 1, 2>{}()), "");
+                cnl::_impl::power_value_fn<cnl::rounding_integer<>, 1, 2>{}()), "");
     }
 
     namespace test_shift {

@@ -6,7 +6,7 @@
 
 #include <cnl/auxiliary/boost.simd.h>
 
-#include <cnl/fixed_point.h>
+#include <cnl/scaled_integer.h>
 
 #include <boost/simd/function/all.hpp>
 #include <boost/simd/function/compare_equal.hpp>
@@ -14,11 +14,11 @@
 #include <gtest/gtest.h>
 
 namespace {
-    using cnl::fixed_point;
+    using cnl::scaled_integer;
     using boost::simd::pack;
 
     template<class T, std::size_t N, int Exponent>
-    using fpp = fixed_point<pack<T, N>, Exponent>;
+    using fpp = scaled_integer<pack<T, N>, cnl::power<Exponent>>;
 
     template<class U, class FPP>
     struct rebind_s;

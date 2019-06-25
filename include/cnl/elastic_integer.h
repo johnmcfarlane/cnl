@@ -39,7 +39,7 @@ namespace cnl {
     /// For instance, when two \ref elastic_integer values are multiplied together,
     /// the resultant type has Digits set to the sum of the operands.
     ///
-    /// \sa cnl::elastic_number
+    /// \sa cnl::elastic_scaled_integer
     template<int Digits = digits<int>::value, class Narrowest = int>
     class elastic_integer;
 
@@ -97,7 +97,7 @@ namespace cnl {
 
     /// \brief \ref elastic_integer specialization of \ref from_rep
     /// \tparam Digits ignored; replaced by number of digits of \c Rep
-    /// \tparam Exponent the \c Exponent parameter of the generated \ref fixed_point type
+    /// \tparam Exponent the \c Exponent parameter of the generated \ref scaled_integer type
     template<int Digits, typename Narrowest, typename Rep>
     struct from_rep<elastic_integer<Digits, Narrowest>, Rep> {
         /// \brief generates an \ref elastic_integer equivalent to \c r in type and value

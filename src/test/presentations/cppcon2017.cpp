@@ -74,7 +74,7 @@ namespace d {
 namespace e {
     static_assert(fixed_point<unsigned>{1u} < fixed_point<signed>{-1}, "OK(!)");
 
-#if defined(__cpp_deduction_guides)
+#if defined(__cpp_deduction_guides) && defined(CNL_P1021)
     static_assert(fixed_point{1u} < fixed_point{-1});
 #endif
 }
@@ -164,21 +164,21 @@ namespace n {
 }
 #endif
 
-#if defined(__cpp_deduction_guides) && !defined(_MSC_VER)
-#include <cnl/elastic_number.h>
+#if defined(__cpp_deduction_guides) && defined(CNL_P1021) && !defined(_MSC_VER)
+#include <cnl/elastic_fixed_point.h>
 
 using namespace cnl::literals;
 namespace o {
-    constexpr auto x = fixed_point{42ul}; // fixed_point<unsigned long, 0>{42}
+    constexpr auto x = cnl::fixed_point{42ul}; // fixed_point<unsigned long, 0>{42}
     static_assert(cnl::_impl::identical(fixed_point<unsigned long, 0>{42}, x));
 
-    constexpr auto z = fixed_point{128_c};
+    constexpr auto z = cnl::fixed_point{128_c};
     static_assert(cnl::_impl::identical(fixed_point<int, 7>{128}, z));
 
-    constexpr auto a = fixed_point{0b10000000000000000000000000000000000000000_c};
+    constexpr auto a = cnl::fixed_point{0b10000000000000000000000000000000000000000_c};
     static_assert(cnl::_impl::identical(fixed_point<int, 40>{0b10000000000000000000000000000000000000000l}, a));
 
-    constexpr auto b = fixed_point{0b11111111111111111111111111111111111111111_c};
+    constexpr auto b = cnl::fixed_point{0b11111111111111111111111111111111111111111_c};
     static_assert(cnl::_impl::identical(fixed_point<cnl::int64, 0>{0b11111111111111111111111111111111111111111l}, b));
 
     constexpr auto c = elastic_integer{2017_c};

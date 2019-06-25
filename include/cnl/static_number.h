@@ -10,7 +10,7 @@
 /// \file
 /// \brief file containing definitions related to \ref cnl::static_number
 
-#include "fixed_point.h"
+#include "scaled_integer.h"
 
 #include "_impl/static_integer.h"
 
@@ -31,9 +31,9 @@ namespace cnl {
             class RoundingTag = nearest_rounding_tag,
             class OverflowTag = undefined_overflow_tag,
             class Narrowest = signed>
-    using static_number = fixed_point<
+    using static_number = scaled_integer<
             _impl::static_integer<Digits, RoundingTag, OverflowTag, Narrowest>,
-            Exponent>;
+            power<Exponent>>;
 
     /// \brief constructs a static_number from a given variable
     template<

@@ -102,7 +102,7 @@ Add this to your system header list and include, e.g.:
 
 ```c++
 // to use a specific type:
-#include <cnl/fixed_point.h>
+#include <cnl/scaled_integer.h>
 
 // or to include all CNL types:
 #include <cnl/all.h>

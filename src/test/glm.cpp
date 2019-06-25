@@ -13,7 +13,7 @@
 #include <glm/glm.hpp>
 #endif
 
-#include <cnl/fixed_point.h>
+#include <cnl/scaled_integer.h>
 #include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>
@@ -30,11 +30,11 @@ namespace {
     }
 
     TEST(glm, fp_char_multiply) {
-        using op_fp = cnl::fixed_point<char, -4>;
+        using op_fp = cnl::scaled_integer<char, cnl::power<-4>>;
         auto lhs = glm::tvec4<op_fp>{op_fp{7.5}};
         auto rhs = glm::tvec4<op_fp>{op_fp{5.25}};
 
-        using result_fp = cnl::fixed_point<int, -8>;
+        using result_fp = cnl::scaled_integer<int, cnl::power<-8>>;
         auto expected = glm::tvec4<result_fp>{result_fp{39.375}};
         auto product = lhs*rhs;
 

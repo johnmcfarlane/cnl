@@ -105,7 +105,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="For each commit (chronologically) of the repository, run the benchmarking target and chart results as a table of benchmarks by commit.")
-    parser.add_argument("repo", help="path to the fixed_point repository - preferably a different copy than the one from which this script is run")
+    parser.add_argument("repo", help="path to the scaled_integer repository - preferably a different copy than the one from which this script is run")
     parser.add_argument("--build", help="path to cmake build folder; defaults to current folder", default=curdir)
     parser.add_argument("--range", help="range or revisions to visit")
     parser.add_argument("--filter", help="filters benchmarks based on regex pattern", default=".*")

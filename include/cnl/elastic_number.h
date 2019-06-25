@@ -7,11 +7,11 @@
 /// \file
 /// \brief essential definitions related to the `cnl::elastic_number` type
 
-#if !defined(CNL_ELASTIC_FIXED_POINT_H)
-#define CNL_ELASTIC_FIXED_POINT_H 1
+#if !defined(CNL_ELASTIC_NUMBER_H)
+#define CNL_ELASTIC_NUMBER_H 1
 
 #include "elastic_integer.h"
-#include "fixed_point.h"
+#include "scaled_integer.h"
 #include "limits.h"
 #include "_impl/num_traits/adopt_signedness.h"
 
@@ -48,11 +48,6 @@ namespace cnl {
     /// \return the given value to be represented using an \ref cnl::elastic_number type
     ///
     /// \note The return type is guaranteed to be no larger than is necessary to represent the value.
-    ///
-    /// \par Example
-    ///
-    /// To define an int-sized object using \ref make_elastic_number and \ref cnl::constant
-    /// \snippet snippets.cpp define an int-sized object using make_elastic_number and constant
 
     template<
             typename Narrowest = int,
@@ -71,6 +66,7 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::make_elastic_number
 
+    /// \brief generate an \ref cnl::elastic_number object of given value
     ///
     /// \tparam Narrowest the most narrow storage type of the resultant \ref cnl::elastic_number object
     /// \tparam Integral the type of value
@@ -78,13 +74,6 @@ namespace cnl {
     /// \param value the value with which to initialize the elastic_number object
     ///
     /// \note The return type is guaranteed to be no larger than is necessary to represent the value.
-    ///
-    /// \par Example
-    ///
-    /// To define a byte-sized object using make_elastic_number and _c:
-    /// \snippet snippets.cpp define a byte-sized object using \ref make_elastic_number and \ref _c
-    ///
-    /// \brief generate an \ref cnl::elastic_number object of given value
     template<typename Narrowest = void, typename Integral = int>
     CNL_NODISCARD constexpr auto
     make_elastic_number(Integral const& value)
@@ -144,4 +133,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_ELASTIC_FIXED_POINT_H
+#endif  // CNL_ELASTIC_NUMBER_H

@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_TYPE_H 1
 
 #include "../num_traits/width.h"
-#include "../power.h"
+#include "../power_value.h"
 #include "../type_traits/set_signedness.h"
 #include "../unreachable.h"
 #include "digits.h"
@@ -90,7 +90,7 @@ namespace cnl {
             template<typename Number, _impl::enable_if_t<numeric_limits<Number>::is_iec559, int> = 0>
             CNL_NODISCARD explicit constexpr operator Number() const
             {
-                return static_cast<Number>(_upper)*cnl::power<Number, lower_width, 2>()
+                return static_cast<Number>(_upper)*power_value<Number, lower_width, 2>()
                         +static_cast<Number>(_lower);
             }
 
