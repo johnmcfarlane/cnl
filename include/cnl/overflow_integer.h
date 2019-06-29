@@ -268,7 +268,7 @@ namespace cnl {
             -> overflow_integer<_impl::op_result<_impl::shift_left_op, LhsRep, Rhs>, LhsOverflowTag>
     {
         return _impl::from_rep<overflow_integer<_impl::op_result<_impl::shift_left_op, LhsRep, Rhs>, LhsOverflowTag>>(
-                binary_operator<LhsOverflowTag, _impl::shift_left_op>{}(_impl::to_rep(lhs), _impl::to_rep(rhs)));
+                binary_operator<LhsOverflowTag, _impl::shift_left_op>{}(_impl::to_rep(lhs), rhs));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
