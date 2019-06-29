@@ -28,28 +28,28 @@ namespace cnl {
                 : std::integral_constant<bool,
                         is_arithmetic_or_integer<N1>::value && is_arithmetic_or_integer<N2>::value> {
         };
-
-        template<typename Destination, typename Source>
-        struct tagged_convert_operator<
-                native_rounding_tag, Destination, Source> {
-            CNL_NODISCARD constexpr Destination operator()(Source const& from) const
-            {
-                return static_cast<Destination>(from);
-            }
-        };
-
-        template<typename Destination, typename Source>
-        struct tagged_convert_operator<
-                nearest_rounding_tag, Destination, Source,
-                enable_if_t<are_arithmetic_or_integer<Destination, Source>::value>> {
-            CNL_NODISCARD constexpr Destination operator()(Source const& from) const
-            {
-                return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
-                        ? static_cast<Destination>(from+((from >= Source{}) ? .5 : -.5))
-                        : static_cast<Destination>(from);
-            }
-        };
     }
+
+    template<typename Destination, typename Source>
+    struct tagged_convert_operator<
+            native_rounding_tag, Destination, Source> {
+        CNL_NODISCARD constexpr Destination operator()(Source const& from) const
+        {
+            return static_cast<Destination>(from);
+        }
+    };
+
+    template<typename Destination, typename Source>
+    struct tagged_convert_operator<
+            nearest_rounding_tag, Destination, Source,
+            _impl::enable_if_t<_impl::are_arithmetic_or_integer<Destination, Source>::value>> {
+        CNL_NODISCARD constexpr Destination operator()(Source const& from) const
+        {
+            return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
+                    ? static_cast<Destination>(from+((from >= Source{}) ? .5 : -.5))
+                    : static_cast<Destination>(from);
+        }
+    };
 }
 
 #endif  // CNL_IMPL_ROUNDING_TAGGED_CONVERT_OPERATOR_H
