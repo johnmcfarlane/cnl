@@ -23,21 +23,20 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::binary_operator<nearest_rounding_tag>
 
-    template<class Operator>
-    struct binary_operator<native_rounding_tag, Operator>
-            : binary_operator<_impl::native_tag, Operator> {
+    template<class Operator, typename Lhs, typename Rhs>
+    struct binary_operator<native_rounding_tag, Operator, Lhs, Rhs>
+            : binary_operator<_impl::native_tag, Operator, Lhs, Rhs> {
     };
 
-    template<class Operator>
-    struct binary_operator<nearest_rounding_tag, Operator> : Operator {
+    template<class Operator, typename Lhs, typename Rhs>
+    struct binary_operator<nearest_rounding_tag, Operator, Lhs, Rhs> : Operator {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::binary_operator<nearest_rounding_tag, divide_op>
 
-    template<>
-    struct binary_operator<nearest_rounding_tag, _impl::divide_op> {
-        template<class Lhs, class Rhs>
+    template<typename Lhs, typename Rhs>
+    struct binary_operator<nearest_rounding_tag, _impl::divide_op, Lhs, Rhs> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         -> decltype(lhs/rhs)
         {
@@ -56,7 +55,7 @@ namespace cnl {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs/rhs)
             {
-                return cnl::binary_operator<RoundingTag, divide_op>{}(cnl::unwrap(lhs), cnl::unwrap(rhs));
+                return cnl::binary_operator<RoundingTag, divide_op, Lhs, Rhs>{}(cnl::unwrap(lhs), cnl::unwrap(rhs));
             }
         };
 
@@ -68,7 +67,7 @@ namespace cnl {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs >> rhs)
             {
-                return cnl::binary_operator<RoundingTag, shift_right_op>{}(lhs, rhs);
+                return cnl::binary_operator<RoundingTag, shift_right_op, Lhs, Rhs>{}(lhs, rhs);
             }
         };
     }

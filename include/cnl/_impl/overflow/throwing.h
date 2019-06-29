@@ -77,8 +77,8 @@ namespace cnl {
             : _impl::unary_overflow_operator<throwing_overflow_tag, Operator> {
     };
 
-    template<class Operator>
-    struct binary_operator<throwing_overflow_tag, Operator>
+    template<class Operator, typename Lhs, typename Rhs>
+    struct binary_operator<throwing_overflow_tag, Operator, Lhs, Rhs>
             : _impl::binary_overflow_operator<throwing_overflow_tag, Operator> {
     };
 }
