@@ -41,11 +41,11 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::binary_operator
 
-    template<class Tag, class Operator>
+    template<class Tag, class Operator, typename Lhs, typename Rhs>
     struct binary_operator;
 
-    template<class Operator>
-    struct binary_operator<_impl::native_tag, Operator> : Operator {
+    template<class Operator, typename Lhs, typename Rhs>
+    struct binary_operator<_impl::native_tag, Operator, Lhs, Rhs> : Operator {
     };
 }
 

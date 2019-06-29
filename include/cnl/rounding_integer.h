@@ -187,10 +187,12 @@ namespace cnl {
                     rounding_integer<LhsRep, RoundingTag> const& lhs,
                     rounding_integer<RhsRep, RoundingTag> const& rhs) const
             -> decltype(from_rep<rounding_integer<int, RoundingTag>>(
-                    cnl::binary_operator<RoundingTag, Operator>()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
+                    cnl::binary_operator<RoundingTag, Operator, LhsRep, RhsRep>()(
+                            _impl::to_rep(lhs), _impl::to_rep(rhs))))
             {
                 return from_rep<rounding_integer<int, RoundingTag>>(
-                        cnl::binary_operator<RoundingTag, Operator>()(_impl::to_rep(lhs), _impl::to_rep(rhs)));
+                        cnl::binary_operator<RoundingTag, Operator, LhsRep, RhsRep>()(
+                                _impl::to_rep(lhs), _impl::to_rep(rhs)));
             }
         };
 

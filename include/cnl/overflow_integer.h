@@ -179,13 +179,15 @@ namespace cnl {
         template<class Operator, class LhsRep, class RhsRep, class OverflowTag>
         struct binary_operator<Operator,
                 overflow_integer<LhsRep, OverflowTag>, overflow_integer<RhsRep, OverflowTag>> {
-            CNL_NODISCARD constexpr auto operator()(
-                    overflow_integer<LhsRep, OverflowTag> const& lhs,
-                    overflow_integer<RhsRep, OverflowTag> const& rhs) const
+            using lhs_type = overflow_integer<LhsRep, OverflowTag>;
+            using rhs_type = overflow_integer<RhsRep, OverflowTag>;
+
+            CNL_NODISCARD constexpr auto operator()(lhs_type const& lhs, rhs_type const& rhs) const
             -> overflow_integer<op_result<Operator, LhsRep, RhsRep>, OverflowTag>
             {
                 return from_rep<overflow_integer<op_result<Operator, LhsRep, RhsRep>, OverflowTag>>(
-                        cnl::binary_operator<OverflowTag, Operator>{}(_impl::to_rep(lhs), _impl::to_rep(rhs)));
+                        cnl::binary_operator<OverflowTag, Operator, lhs_type, rhs_type>{}(
+                                _impl::to_rep(lhs), _impl::to_rep(rhs)));
             }
         };
 
@@ -268,7 +270,7 @@ namespace cnl {
             -> overflow_integer<_impl::op_result<_impl::shift_left_op, LhsRep, Rhs>, LhsOverflowTag>
     {
         return _impl::from_rep<overflow_integer<_impl::op_result<_impl::shift_left_op, LhsRep, Rhs>, LhsOverflowTag>>(
-                binary_operator<LhsOverflowTag, _impl::shift_left_op>{}(_impl::to_rep(lhs), rhs));
+                binary_operator<LhsOverflowTag, _impl::shift_left_op, LhsRep, Rhs>{}(_impl::to_rep(lhs), rhs));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
