@@ -55,22 +55,22 @@ namespace cnl {
                 return numeric_limits<op_result<Operator, Operands...>>::lowest();
             }
         };
-
-        template<typename Destination, typename Source>
-        struct tagged_convert_operator<saturated_overflow_tag, Destination, Source>
-                : tagged_convert_overflow_operator<saturated_overflow_tag, Destination, Source> {
-        };
-
-        template<class Operator>
-        struct tagged_unary_operator<saturated_overflow_tag, Operator>
-                : tagged_unary_overflow_operator<saturated_overflow_tag, Operator> {
-        };
-
-        template<class Operator>
-        struct tagged_binary_operator<saturated_overflow_tag, Operator>
-                : tagged_binary_overflow_operator<saturated_overflow_tag, Operator> {
-        };
     }
+
+    template<typename Destination, typename Source>
+    struct tagged_convert_operator<saturated_overflow_tag, Destination, Source>
+            : _impl::tagged_convert_overflow_operator<saturated_overflow_tag, Destination, Source> {
+    };
+
+    template<class Operator>
+    struct tagged_unary_operator<saturated_overflow_tag, Operator>
+            : _impl::tagged_unary_overflow_operator<saturated_overflow_tag, Operator> {
+    };
+
+    template<class Operator>
+    struct tagged_binary_operator<saturated_overflow_tag, Operator>
+            : _impl::tagged_binary_overflow_operator<saturated_overflow_tag, Operator> {
+    };
 }
 
 #endif  // CNL_IMPL_OVERFLOW_SATURATED_H

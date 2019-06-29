@@ -29,22 +29,22 @@ namespace cnl {
         template<typename Operator, polarity Polarity>
         struct overflow_operator<Operator, native_overflow_tag, Polarity> : Operator {
         };
-
-        template<typename Destination, typename Source>
-        struct tagged_convert_operator<native_overflow_tag, Destination, Source>
-                : tagged_convert_overflow_operator<native_overflow_tag, Destination, Source> {
-        };
-
-        template<class Operator>
-        struct tagged_unary_operator<native_overflow_tag, Operator>
-                : tagged_unary_overflow_operator<native_overflow_tag, Operator> {
-        };
-
-        template<class Operator>
-        struct tagged_binary_operator<native_overflow_tag, Operator>
-                : tagged_binary_operator<_impl::native_tag, Operator> {
-        };
     }
+
+    template<typename Destination, typename Source>
+    struct tagged_convert_operator<native_overflow_tag, Destination, Source>
+            : _impl::tagged_convert_overflow_operator<native_overflow_tag, Destination, Source> {
+    };
+
+    template<class Operator>
+    struct tagged_unary_operator<native_overflow_tag, Operator>
+            : _impl::tagged_unary_overflow_operator<native_overflow_tag, Operator> {
+    };
+
+    template<class Operator>
+    struct tagged_binary_operator<native_overflow_tag, Operator>
+            : tagged_binary_operator<_impl::native_tag, Operator> {
+    };
 }
 
 #endif  // CNL_IMPL_OVERFLOW_NATIVE_H

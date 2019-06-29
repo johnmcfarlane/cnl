@@ -20,34 +20,34 @@
 
 /// compositional numeric library
 namespace cnl {
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::tagged_binary_operator<nearest_rounding_tag>
+
+    template<class Operator>
+    struct tagged_binary_operator<native_rounding_tag, Operator>
+            : tagged_binary_operator<_impl::native_tag, Operator> {
+    };
+
+    template<class Operator>
+    struct tagged_binary_operator<nearest_rounding_tag, Operator> : Operator {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::tagged_binary_operator<nearest_rounding_tag, divide_op>
+
+    template<>
+    struct tagged_binary_operator<nearest_rounding_tag, _impl::divide_op> {
+        template<class Lhs, class Rhs>
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(lhs/rhs)
+        {
+            return (((lhs < 0) ^ (rhs < 0))
+                    ? lhs-(rhs/2)
+                    : lhs+(rhs/2))/rhs;
+        }
+    };
+
     namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::tagged_binary_operator<nearest_rounding_tag>
-
-        template<class Operator>
-        struct tagged_binary_operator<native_rounding_tag, Operator>
-                : tagged_binary_operator<native_tag, Operator> {
-        };
-
-        template<class Operator>
-        struct tagged_binary_operator<nearest_rounding_tag, Operator> : Operator {
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::tagged_binary_operator<nearest_rounding_tag, divide_op>
-
-        template<>
-        struct tagged_binary_operator<nearest_rounding_tag, divide_op> {
-            template<class Lhs, class Rhs>
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(lhs/rhs)
-            {
-                return (((lhs<0) ^ (rhs<0))
-                        ? lhs-(rhs/2)
-                        : lhs+(rhs/2))/rhs;
-            }
-        };
-
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::divide<nearest_rounding_tag, ...>
 

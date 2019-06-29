@@ -16,37 +16,37 @@ namespace cnl {
     namespace _impl {
         // match the behavior of fundamental arithmetic types
         struct native_tag {};
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::tagged_convert_operator
-
-        template<class Tag, typename Destination, typename Source, typename Enabled=void>
-        struct tagged_convert_operator;
-
-        template<typename Destination, typename Source>
-        struct tagged_convert_operator<native_tag, Destination, Source> : convert_op {
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::tagged_unary_operator
-
-        template<class Tag, class Operator>
-        struct tagged_unary_operator;
-
-        template<class Operator>
-        struct tagged_unary_operator<native_tag, Operator> : Operator {
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::tagged_binary_operator
-
-        template<class Tag, class Operator>
-        struct tagged_binary_operator;
-
-        template<class Operator>
-        struct tagged_binary_operator<native_tag, Operator> : Operator {};
-
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::tagged_convert_operator
+
+    template<class Tag, typename Destination, typename Source, typename Enabled=void>
+    struct tagged_convert_operator;
+
+    template<typename Destination, typename Source>
+    struct tagged_convert_operator<_impl::native_tag, Destination, Source> : _impl::convert_op {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::tagged_unary_operator
+
+    template<class Tag, class Operator>
+    struct tagged_unary_operator;
+
+    template<class Operator>
+    struct tagged_unary_operator<_impl::native_tag, Operator> : Operator {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::tagged_binary_operator
+
+    template<class Tag, class Operator>
+    struct tagged_binary_operator;
+
+    template<class Operator>
+    struct tagged_binary_operator<_impl::native_tag, Operator> : Operator {
+    };
 }
 
 #endif  // CNL_IMPL_NATIVE_TAG_H
