@@ -40,14 +40,14 @@ namespace cnl {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::tagged_unary_operator
+    // cnl::unary_operator
 
     template<class Tag, class Operator>
-    struct tagged_unary_operator : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
+    struct unary_operator : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
     };
 
     template<class Operator>
-    struct tagged_unary_operator<_impl::native_tag, Operator> : Operator {
+    struct unary_operator<_impl::native_tag, Operator> : Operator {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
