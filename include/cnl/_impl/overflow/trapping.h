@@ -59,17 +59,17 @@ namespace cnl {
 
     template<typename Destination, typename Source>
     struct convert_operator<trapping_overflow_tag, Destination, Source>
-            : _impl::tagged_convert_overflow_operator<trapping_overflow_tag, Destination, Source> {
+            : _impl::convert_overflow_operator<trapping_overflow_tag, Destination, Source> {
     };
 
     template<class Operator>
     struct unary_operator<trapping_overflow_tag, Operator>
-            : _impl::tagged_unary_overflow_operator<trapping_overflow_tag, Operator> {
+            : _impl::unary_overflow_operator<trapping_overflow_tag, Operator> {
     };
 
     template<class Operator>
     struct binary_operator<trapping_overflow_tag, Operator>
-            : _impl::tagged_binary_overflow_operator<trapping_overflow_tag, Operator> {
+            : _impl::binary_overflow_operator<trapping_overflow_tag, Operator> {
     };
 }
 
