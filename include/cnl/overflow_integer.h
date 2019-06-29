@@ -171,7 +171,7 @@ namespace cnl {
             -> decltype(overflow_integer<decltype(Operator()(_impl::to_rep(operand))), OverflowTag>(Operator()(_impl::to_rep(operand))))
             {
                 return from_rep<overflow_integer<op_result<Operator, Rep>, OverflowTag>>(
-                        _impl::tagged_unary_operator<OverflowTag, Operator>{}(_impl::to_rep(operand)));
+                        tagged_unary_operator<OverflowTag, Operator>{}(_impl::to_rep(operand)));
             }
         };
 
@@ -185,7 +185,7 @@ namespace cnl {
             -> overflow_integer<op_result<Operator, LhsRep, RhsRep>, OverflowTag>
             {
                 return from_rep<overflow_integer<op_result<Operator, LhsRep, RhsRep>, OverflowTag>>(
-                        _impl::tagged_binary_operator<OverflowTag, Operator>{}(_impl::to_rep(lhs), _impl::to_rep(rhs)));
+                        tagged_binary_operator<OverflowTag, Operator>{}(_impl::to_rep(lhs), _impl::to_rep(rhs)));
             }
         };
 
@@ -268,7 +268,7 @@ namespace cnl {
             -> overflow_integer<_impl::op_result<_impl::shift_left_op, LhsRep, Rhs>, LhsOverflowTag>
     {
         return _impl::from_rep<overflow_integer<_impl::op_result<_impl::shift_left_op, LhsRep, Rhs>, LhsOverflowTag>>(
-        _impl::tagged_binary_operator<LhsOverflowTag, _impl::shift_left_op>{}(_impl::to_rep(lhs), _impl::to_rep(rhs)));
+                tagged_binary_operator<LhsOverflowTag, _impl::shift_left_op>{}(_impl::to_rep(lhs), _impl::to_rep(rhs)));
     }
 
     ////////////////////////////////////////////////////////////////////////////////

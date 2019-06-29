@@ -43,51 +43,50 @@ namespace cnl {
         return power<LhsExponent-RhsExponent, Radix>{};
     }
 
-    namespace _impl {
-        // integer -> floating
-        template<
-                int Exponent, int Radix,
-                typename Result, typename Input>
-        struct tagged_convert_operator<
-                power<Exponent, Radix>,
-                Result, Input,
-                _impl::enable_if_t<cnl::numeric_limits<Result>::is_iec559&&cnl::numeric_limits<Input>::is_integer>> {
-            static_assert(cnl::numeric_limits<Input>::is_integer, "");
-            CNL_NODISCARD constexpr Result operator()(Input const& from) const
-            {
-                return Result(from)*_impl::power_value<Result, Exponent, Radix>();
-            }
-        };
+    // integer -> floating
+    template<
+            int Exponent, int Radix,
+            typename Result, typename Input>
+    struct tagged_convert_operator<
+            power<Exponent, Radix>,
+            Result, Input,
+            _impl::enable_if_t<cnl::numeric_limits<Result>::is_iec559 && cnl::numeric_limits<Input>::is_integer>> {
+        static_assert(cnl::numeric_limits<Input>::is_integer, "");
 
-        // floating -> integer
-        template<
-                int Exponent, int Radix,
-                typename Result, typename Input>
-        struct tagged_convert_operator<
-                power<Exponent, Radix>,
-                Result, Input,
-                _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer&&cnl::numeric_limits<Input>::is_iec559>> {
-            CNL_NODISCARD constexpr Result operator()(Input const& from) const
-            {
-                return static_cast<Result>(from*_impl::power_value<Input, Exponent, Radix>());
-            }
-        };
+        CNL_NODISCARD constexpr Result operator()(Input const& from) const
+        {
+            return Result(from)*_impl::power_value<Result, Exponent, Radix>();
+        }
+    };
 
-        // integer -> integer
-        template<
-                int Exponent, int Radix,
-                typename Result, typename Input>
-        struct tagged_convert_operator<
-                power<Exponent, Radix>,
-                Result, Input,
-                _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer&&cnl::numeric_limits<Input>::is_integer>> {
-            CNL_NODISCARD constexpr Result operator()(Input const& from) const
-            {
-                // when converting *from* scaled_integer
-                return static_cast<Result>(scale<Exponent, Radix>(from));
-            }
-        };
-    }
+    // floating -> integer
+    template<
+            int Exponent, int Radix,
+            typename Result, typename Input>
+    struct tagged_convert_operator<
+            power<Exponent, Radix>,
+            Result, Input,
+            _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer && cnl::numeric_limits<Input>::is_iec559>> {
+        CNL_NODISCARD constexpr Result operator()(Input const& from) const
+        {
+            return static_cast<Result>(from*_impl::power_value<Input, Exponent, Radix>());
+        }
+    };
+
+    // integer -> integer
+    template<
+            int Exponent, int Radix,
+            typename Result, typename Input>
+    struct tagged_convert_operator<
+            power<Exponent, Radix>,
+            Result, Input,
+            _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer && cnl::numeric_limits<Input>::is_integer>> {
+        CNL_NODISCARD constexpr Result operator()(Input const& from) const
+        {
+            // when converting *from* scaled_integer
+            return static_cast<Result>(_impl::scale<Exponent, Radix>(from));
+        }
+    };
 }
 
 #endif //CNL_IMPL_SCALED_INTEGER_POWER_H
