@@ -19,13 +19,13 @@ namespace cnl {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::tagged_convert_operator
+    // cnl::convert_operator
 
     template<class Tag, typename Destination, typename Source, typename Enabled=void>
-    struct tagged_convert_operator;
+    struct convert_operator;
 
     template<typename Destination, typename Source>
-    struct tagged_convert_operator<_impl::native_tag, Destination, Source> : _impl::convert_op {
+    struct convert_operator<_impl::native_tag, Destination, Source> : _impl::convert_op {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
