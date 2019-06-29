@@ -75,7 +75,7 @@ namespace cnl {
                         ? overflow_operator<Operator, OverflowTag, polarity::positive>{}(lhs, rhs)
                         : is_overflow<Operator, polarity::negative>{}(lhs, rhs)
                                 ? overflow_operator<Operator, OverflowTag, polarity::negative>{}(lhs, rhs)
-                                : cnl::binary_operator<native_tag, Operator>{}(lhs, rhs);
+                                : cnl::binary_operator<native_tag, Operator, Lhs, Rhs>{}(lhs, rhs);
             }
         };
     }
