@@ -47,7 +47,7 @@ namespace cnl {
     template<
             int Exponent, int Radix,
             typename Result, typename Input>
-    struct tagged_convert_operator<
+    struct convert_operator<
             power<Exponent, Radix>,
             Result, Input,
             _impl::enable_if_t<cnl::numeric_limits<Result>::is_iec559 && cnl::numeric_limits<Input>::is_integer>> {
@@ -63,7 +63,7 @@ namespace cnl {
     template<
             int Exponent, int Radix,
             typename Result, typename Input>
-    struct tagged_convert_operator<
+    struct convert_operator<
             power<Exponent, Radix>,
             Result, Input,
             _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer && cnl::numeric_limits<Input>::is_iec559>> {
@@ -77,7 +77,7 @@ namespace cnl {
     template<
             int Exponent, int Radix,
             typename Result, typename Input>
-    struct tagged_convert_operator<
+    struct convert_operator<
             power<Exponent, Radix>,
             Result, Input,
             _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer && cnl::numeric_limits<Input>::is_integer>> {

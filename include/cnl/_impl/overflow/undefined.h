@@ -61,7 +61,7 @@ namespace cnl {
     }
 
     template<typename Destination, typename Source>
-    struct tagged_convert_operator<undefined_overflow_tag, Destination, Source>
+    struct convert_operator<undefined_overflow_tag, Destination, Source>
             : _impl::tagged_convert_overflow_operator<undefined_overflow_tag, Destination, Source> {
     };
 
