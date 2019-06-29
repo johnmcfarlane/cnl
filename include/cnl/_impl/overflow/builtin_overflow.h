@@ -125,10 +125,10 @@ namespace cnl {
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::builtin_tagged_binary_overflow_operator
+        // cnl::_impl::builtin_binary_overflow_operator
 
         template<class OverflowTag, class Operator, class Lhs, class Rhs>
-        CNL_NODISCARD constexpr auto builtin_tagged_binary_overflow_operator(Lhs const& lhs, Rhs const& rhs)
+        CNL_NODISCARD constexpr auto builtin_binary_overflow_operator(Lhs const& lhs, Rhs const& rhs)
         -> op_result<Operator, Lhs, Rhs>
         {
             using Result = op_result<Operator, Lhs, Rhs>;

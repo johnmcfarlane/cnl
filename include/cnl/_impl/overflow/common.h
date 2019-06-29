@@ -29,7 +29,7 @@ namespace cnl {
         // overflow_convert
 
         template<class OverflowTag, typename Destination, typename Source>
-        struct tagged_convert_overflow_operator {
+        struct convert_overflow_operator {
             CNL_NODISCARD constexpr Destination operator()(Source const& from) const
             {
                 return is_overflow<convert_op, polarity::positive>{}.template operator()<Destination>(from)
@@ -43,7 +43,7 @@ namespace cnl {
         };
 
         template<class OverflowTag, class Operator>
-        struct tagged_unary_overflow_operator {
+        struct unary_overflow_operator {
             template<typename Operand>
             CNL_NODISCARD constexpr auto operator()(Operand const& operand) const
             -> op_result<Operator, Operand>
@@ -57,13 +57,13 @@ namespace cnl {
         };
 
         template<class OverflowTag, class Operator>
-        struct tagged_binary_overflow_operator {
+        struct binary_overflow_operator {
 #if defined(CNL_BUILTIN_OVERFLOW_ENABLED)
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> enable_if_t<builtin_overflow_supported<Operator, Lhs, Rhs>(), op_result<Operator, Lhs, Rhs>>
             {
-                return builtin_tagged_binary_overflow_operator<OverflowTag, Operator>(lhs, rhs);
+                return builtin_binary_overflow_operator<OverflowTag, Operator>(lhs, rhs);
             }
 #endif
 
