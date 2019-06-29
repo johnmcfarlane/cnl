@@ -171,7 +171,7 @@ namespace cnl {
             -> decltype(overflow_integer<decltype(Operator()(_impl::to_rep(operand))), OverflowTag>(Operator()(_impl::to_rep(operand))))
             {
                 return from_rep<overflow_integer<op_result<Operator, Rep>, OverflowTag>>(
-                        cnl::unary_operator<OverflowTag, Operator>{}(_impl::to_rep(operand)));
+                        cnl::unary_operator<OverflowTag, Operator, Rep>{}(_impl::to_rep(operand)));
             }
         };
 
