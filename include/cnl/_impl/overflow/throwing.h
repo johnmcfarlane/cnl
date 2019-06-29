@@ -78,7 +78,7 @@ namespace cnl {
     };
 
     template<class Operator>
-    struct tagged_binary_operator<throwing_overflow_tag, Operator>
+    struct binary_operator<throwing_overflow_tag, Operator>
             : _impl::tagged_binary_overflow_operator<throwing_overflow_tag, Operator> {
     };
 }

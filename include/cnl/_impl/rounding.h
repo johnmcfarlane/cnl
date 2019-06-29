@@ -21,22 +21,22 @@
 /// compositional numeric library
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::tagged_binary_operator<nearest_rounding_tag>
+    // cnl::binary_operator<nearest_rounding_tag>
 
     template<class Operator>
-    struct tagged_binary_operator<native_rounding_tag, Operator>
-            : tagged_binary_operator<_impl::native_tag, Operator> {
+    struct binary_operator<native_rounding_tag, Operator>
+            : binary_operator<_impl::native_tag, Operator> {
     };
 
     template<class Operator>
-    struct tagged_binary_operator<nearest_rounding_tag, Operator> : Operator {
+    struct binary_operator<nearest_rounding_tag, Operator> : Operator {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::tagged_binary_operator<nearest_rounding_tag, divide_op>
+    // cnl::binary_operator<nearest_rounding_tag, divide_op>
 
     template<>
-    struct tagged_binary_operator<nearest_rounding_tag, _impl::divide_op> {
+    struct binary_operator<nearest_rounding_tag, _impl::divide_op> {
         template<class Lhs, class Rhs>
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         -> decltype(lhs/rhs)
@@ -56,7 +56,7 @@ namespace cnl {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs/rhs)
             {
-                return tagged_binary_operator<RoundingTag, divide_op>{}(cnl::unwrap(lhs), cnl::unwrap(rhs));
+                return cnl::binary_operator<RoundingTag, divide_op>{}(cnl::unwrap(lhs), cnl::unwrap(rhs));
             }
         };
 
@@ -68,7 +68,7 @@ namespace cnl {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs >> rhs)
             {
-                return tagged_binary_operator<RoundingTag, shift_right_op>{}(lhs, rhs);
+                return cnl::binary_operator<RoundingTag, shift_right_op>{}(lhs, rhs);
             }
         };
     }

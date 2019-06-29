@@ -27,7 +27,7 @@ namespace {
 
         // subtract
         static_assert(identical(
-                cnl::tagged_binary_operator<cnl::native_overflow_tag, cnl::_impl::subtract_op>()(INT8_C(0), INT8_C(0)),
+                cnl::binary_operator<cnl::native_overflow_tag, cnl::_impl::subtract_op>()(INT8_C(0), INT8_C(0)),
                 0), "cnl::subtract test failed");
         static_assert(identical(cnl::subtract<cnl::native_overflow_tag>(INT8_C(0), INT8_C(0)), 0), "cnl::subtract test failed");
 
@@ -57,7 +57,7 @@ namespace {
 
         // add
         static_assert(identical(
-                cnl::tagged_binary_operator<cnl::saturated_overflow_tag, cnl::_impl::add_op>()(7, 23U),
+                cnl::binary_operator<cnl::saturated_overflow_tag, cnl::_impl::add_op>()(7, 23U),
                 7+23U), "");
         static_assert(identical(
                 std::numeric_limits<decltype(UINT32_C(0xFFFFFFFF)+INT32_C(0x12345678))>::max(),
@@ -107,7 +107,7 @@ namespace {
                 "cnl::shift_left test failed");
         static_assert(identical(
                 cnl::numeric_limits<int>::max(),
-                cnl::tagged_binary_operator<
+                cnl::binary_operator<
                         cnl::saturated_overflow_tag, cnl::_impl::shift_left_op>{}(std::uint8_t{255}, 30u)),
                 "");
     }
