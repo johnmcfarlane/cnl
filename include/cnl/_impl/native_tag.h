@@ -42,12 +42,12 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::unary_operator
 
-    template<class Tag, class Operator>
+    template<class Tag, class Operator, typename Rhs>
     struct unary_operator : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
     };
 
-    template<class Operator>
-    struct unary_operator<_impl::native_tag, Operator> : Operator {
+    template<class Operator, typename Rhs>
+    struct unary_operator<_impl::native_tag, Operator, Rhs> : Operator {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
