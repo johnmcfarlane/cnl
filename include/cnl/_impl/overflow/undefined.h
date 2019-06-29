@@ -65,8 +65,8 @@ namespace cnl {
             : _impl::convert_overflow_operator<undefined_overflow_tag, Destination, Source> {
     };
 
-    template<class Operator>
-    struct unary_operator<undefined_overflow_tag, Operator>
+    template<class Operator, typename Rhs>
+    struct unary_operator<undefined_overflow_tag, Operator, Rhs>
             : _impl::unary_overflow_operator<undefined_overflow_tag, Operator> {
     };
 

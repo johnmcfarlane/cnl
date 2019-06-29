@@ -31,11 +31,11 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::unary_operator
 
-    template<class Tag, class Operator>
+    template<class Tag, class Operator, typename Rhs>
     struct unary_operator;
 
-    template<class Operator>
-    struct unary_operator<_impl::native_tag, Operator> : Operator {
+    template<class Operator, typename Rhs>
+    struct unary_operator<_impl::native_tag, Operator, Rhs> : Operator {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
