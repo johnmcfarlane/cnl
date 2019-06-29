@@ -29,13 +29,13 @@ namespace cnl {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::tagged_unary_operator
+    // cnl::unary_operator
 
     template<class Tag, class Operator>
-    struct tagged_unary_operator;
+    struct unary_operator;
 
     template<class Operator>
-    struct tagged_unary_operator<_impl::native_tag, Operator> : Operator {
+    struct unary_operator<_impl::native_tag, Operator> : Operator {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
