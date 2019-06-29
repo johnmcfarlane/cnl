@@ -63,7 +63,7 @@ namespace cnl {
     };
 
     template<class Operator>
-    struct tagged_unary_operator<trapping_overflow_tag, Operator>
+    struct unary_operator<trapping_overflow_tag, Operator>
             : _impl::tagged_unary_overflow_operator<trapping_overflow_tag, Operator> {
     };
 
