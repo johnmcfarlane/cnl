@@ -51,14 +51,14 @@ namespace cnl {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::tagged_binary_operator
+    // cnl::binary_operator
 
     template<class Tag, class Operator>
-    struct tagged_binary_operator : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
+    struct binary_operator : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
     };
 
     template<class Operator>
-    struct tagged_binary_operator<_impl::native_tag, Operator> : Operator {
+    struct binary_operator<_impl::native_tag, Operator> : Operator {
     };
 }
 

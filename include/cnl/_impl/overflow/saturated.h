@@ -68,7 +68,7 @@ namespace cnl {
     };
 
     template<class Operator>
-    struct tagged_binary_operator<saturated_overflow_tag, Operator>
+    struct binary_operator<saturated_overflow_tag, Operator>
             : _impl::tagged_binary_overflow_operator<saturated_overflow_tag, Operator> {
     };
 }
