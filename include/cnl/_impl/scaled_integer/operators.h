@@ -216,26 +216,27 @@ namespace cnl {
         }
     };
 
-    namespace _impl {
-
 #if defined(CNL_OVERLOAD_RESOLUTION_HACK)
+    namespace _impl {
         template<typename LhsRep, class LhsScale, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
         struct excluded_from_specialization<scaled_integer<LhsRep, LhsScale>, constant<RhsValue>>
                 : std::true_type {
         };
+    }
 
-        template<class Operator, typename LhsRep, class LhsScale, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
-        struct shift_operator<Operator, scaled_integer<LhsRep, LhsScale>, constant<RhsValue>> {
-            CNL_NODISCARD constexpr auto operator()(scaled_integer<LhsRep, LhsScale> const& lhs, constant<RhsValue> rhs) const
-            -> decltype(_impl::from_rep<scaled_integer<decltype(_impl::to_rep(lhs) >> int(rhs)), LhsScale>>(
-                    _impl::to_rep(lhs) >> int(rhs)))
-            {
-                return _impl::from_rep<scaled_integer<decltype(_impl::to_rep(lhs) >> int(rhs)), LhsScale>>(
-                    _impl::to_rep(lhs) >> int(rhs));
-            }
-        };
+    template<class Operator, typename LhsRep, class LhsScale, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
+    struct shift_operator<_impl::native_tag, Operator, scaled_integer<LhsRep, LhsScale>, constant<RhsValue>> {
+        CNL_NODISCARD constexpr auto operator()(scaled_integer<LhsRep, LhsScale> const& lhs, constant<RhsValue> rhs) const
+        -> decltype(_impl::from_rep<scaled_integer<decltype(_impl::to_rep(lhs) >> int(rhs)), LhsScale>>(
+                _impl::to_rep(lhs) >> int(rhs)))
+        {
+            return _impl::from_rep<scaled_integer<decltype(_impl::to_rep(lhs) >> int(rhs)), LhsScale>>(
+                _impl::to_rep(lhs) >> int(rhs));
+        }
+    };
 #endif
 
+    namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
         // pre-increment/decrement arithmetic operators
 

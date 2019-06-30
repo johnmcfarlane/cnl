@@ -437,28 +437,32 @@ namespace cnl {
         }
     };
 
-    namespace _impl {
 #if defined(CNL_OVERLOAD_RESOLUTION_HACK)
+    namespace _impl {
         template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
         struct excluded_from_specialization<elastic_integer<LhsDigits, LhsNarrowest>, constant<RhsValue>>
                 : std::true_type {
         };
+    }
 
-        template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
-        struct shift_operator<
-                shift_left_op, elastic_integer<LhsDigits, LhsNarrowest>, constant<RhsValue>> {
-            CNL_NODISCARD constexpr auto operator()(elastic_integer<LhsDigits, LhsNarrowest> const& lhs, constant<RhsValue>) const
-            -> decltype(cnl::_impl::from_rep<cnl::elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
-                    cnl::_impl::to_rep(static_cast<cnl::elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
-                            lhs)) << RhsValue))
-            {
-                return cnl::_impl::from_rep<cnl::elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
-                        cnl::_impl::to_rep(static_cast<cnl::elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
-                                lhs)) << RhsValue);
-            }
-        };
+    template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
+    struct shift_operator<
+            _impl::native_tag, _impl::shift_left_op, elastic_integer<LhsDigits, LhsNarrowest>, constant<RhsValue>> {
+        CNL_NODISCARD constexpr auto operator()(
+                elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
+                constant<RhsValue>) const
+        -> decltype(_impl::from_rep<elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
+                _impl::to_rep(static_cast<elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
+                        lhs)) << RhsValue))
+        {
+            return _impl::from_rep<elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
+                    _impl::to_rep(static_cast<elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
+                            lhs)) << RhsValue);
+        }
+    };
 #endif
 
+    namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
         // pre/post operators
 
