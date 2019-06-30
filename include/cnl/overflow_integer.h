@@ -160,37 +160,38 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // binary arithmetic
 
+    ////////////////////////////////////////////////////////////////////////////////
+    // arithmetc
+
+    // for arithmetic operands with a common overflow tag
+    template<class Operator, class Rep, class OverflowTag>
+    struct unary_operator<_impl::native_tag, Operator, overflow_integer<Rep, OverflowTag>> {
+        CNL_NODISCARD constexpr auto operator()(overflow_integer<Rep, OverflowTag> const& operand) const
+        -> decltype(overflow_integer<decltype(Operator()(_impl::to_rep(operand))), OverflowTag>(Operator()(_impl::to_rep(operand))))
+        {
+            return _impl::from_rep<overflow_integer<_impl::op_result<Operator, Rep>, OverflowTag>>(
+                    cnl::unary_operator<OverflowTag, Operator, Rep>{}(_impl::to_rep(operand)));
+        }
+    };
+
+    // for arithmetic operands with a common overflow tag
+    template<class Operator, class LhsRep, class RhsRep, class OverflowTag>
+    struct binary_operator<
+            _impl::native_tag, Operator,
+            overflow_integer<LhsRep, OverflowTag>, overflow_integer<RhsRep, OverflowTag>> {
+        using lhs_type = overflow_integer<LhsRep, OverflowTag>;
+        using rhs_type = overflow_integer<RhsRep, OverflowTag>;
+
+        CNL_NODISCARD constexpr auto operator()(lhs_type const& lhs, rhs_type const& rhs) const
+        -> overflow_integer<_impl::op_result<Operator, LhsRep, RhsRep>, OverflowTag>
+        {
+            return _impl::from_rep<overflow_integer<_impl::op_result<Operator, LhsRep, RhsRep>, OverflowTag>>(
+                    cnl::binary_operator<OverflowTag, Operator, LhsRep, RhsRep>{}(
+                            _impl::to_rep(lhs), _impl::to_rep(rhs)));
+        }
+    };
+
     namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // arithmetc
-
-        // for arithmetic operands with a common overflow tag
-        template<class Operator, class Rep, class OverflowTag>
-        struct unary_operator<Operator, overflow_integer<Rep, OverflowTag>> {
-            CNL_NODISCARD constexpr auto operator()(overflow_integer<Rep, OverflowTag> const& operand) const
-            -> decltype(overflow_integer<decltype(Operator()(_impl::to_rep(operand))), OverflowTag>(Operator()(_impl::to_rep(operand))))
-            {
-                return from_rep<overflow_integer<op_result<Operator, Rep>, OverflowTag>>(
-                        cnl::unary_operator<OverflowTag, Operator, Rep>{}(_impl::to_rep(operand)));
-            }
-        };
-
-        // for arithmetic operands with a common overflow tag
-        template<class Operator, class LhsRep, class RhsRep, class OverflowTag>
-        struct binary_operator<Operator,
-                overflow_integer<LhsRep, OverflowTag>, overflow_integer<RhsRep, OverflowTag>> {
-            using lhs_type = overflow_integer<LhsRep, OverflowTag>;
-            using rhs_type = overflow_integer<RhsRep, OverflowTag>;
-
-            CNL_NODISCARD constexpr auto operator()(lhs_type const& lhs, rhs_type const& rhs) const
-            -> overflow_integer<op_result<Operator, LhsRep, RhsRep>, OverflowTag>
-            {
-                return from_rep<overflow_integer<op_result<Operator, LhsRep, RhsRep>, OverflowTag>>(
-                        cnl::binary_operator<OverflowTag, Operator, lhs_type, rhs_type>{}(
-                                _impl::to_rep(lhs), _impl::to_rep(rhs)));
-            }
-        };
-
         // for comparison operands with a common overflow tag
         template<class Operator, class LhsRep, class RhsRep, class OverflowTag>
         struct comparison_operator<Operator,

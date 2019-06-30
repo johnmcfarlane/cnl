@@ -60,7 +60,7 @@ namespace {
                 elastic_integer<1>{0}, INT32_C(0)),
                 "cnl::elastic_integer test failed");
         static_assert(identical(
-                cnl::_impl::binary_operator<cnl::_impl::multiply_op, elastic_integer<1>, std::int32_t>()(
+                cnl::binary_operator<cnl::_impl::native_tag, cnl::_impl::multiply_op, elastic_integer<1>, std::int32_t>()(
                         elastic_integer<1>{0}, INT32_C(0)), elastic_integer<31, int>{0}),
                 "cnl::elastic_integer test failed");
 
@@ -380,7 +380,7 @@ namespace {
                 elastic_integer<63, int>{0x7FFFFFFE80000001LL}), "cnl::elastic_integer test failed");
 
         static_assert(identical(
-                cnl::_impl::binary_operator<cnl::_impl::multiply_op, elastic_integer<1>, std::int32_t>()(
+                cnl::binary_operator<cnl::_impl::native_tag, cnl::_impl::multiply_op, elastic_integer<1>, std::int32_t>()(
                         elastic_integer<1>{0}, INT32_C(0)),
                 cnl::elastic_integer<31, int>{0}),
                 "cnl::elastic_integer test failed");
