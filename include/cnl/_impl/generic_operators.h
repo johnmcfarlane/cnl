@@ -10,6 +10,7 @@
 #if !defined(CNL_IMPL_GENERIC_OPERATORS_H)
 #define CNL_IMPL_GENERIC_OPERATORS_H
 
+#include "native_tag.h"
 #include "operators.h"
 #include "type_traits/enable_if.h"
 #include "../limits.h"
@@ -30,14 +31,6 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // generic operators
 
-        // can be specialized for any types without need for excessive boilerplate;
-        // will only match operands for which cnl::_impl::wants_generic_ops is defined
-        template<class Operator, class Operand, class Enable = void>
-        struct unary_operator;
-
-        template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
-        struct binary_operator;
-
         template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
         struct shift_operator;
 
@@ -55,7 +48,8 @@ namespace cnl {
             CNL_NODISCARD constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
             {
                 return lhs = static_cast<LhsOperand>(
-                        binary_operator<typename Operator::binary, LhsOperand, RhsOperand>()(lhs, rhs));
+                        cnl::binary_operator<native_tag, typename Operator::binary, LhsOperand, RhsOperand>()(
+                                lhs, rhs));
             }
         };
 
@@ -107,10 +101,10 @@ namespace cnl {
 #define CNL_DEFINE_UNARY_OPERATOR(OP, NAME) \
         template<class Operand> \
         CNL_NODISCARD constexpr auto operator OP (Operand const& operand) \
-        -> decltype(cnl::_impl::unary_operator<cnl::_impl::enable_unary_t< \
+        -> decltype(cnl::unary_operator<native_tag, enable_unary_t< \
                 Operand, cnl::_impl::NAME>, Operand>()(operand)) \
         { \
-            return cnl::_impl::unary_operator<cnl::_impl::NAME, Operand>()(operand); \
+            return cnl::unary_operator<native_tag, NAME, Operand>()(operand); \
         }
 
         CNL_DEFINE_UNARY_OPERATOR(+, plus_op)
@@ -123,10 +117,10 @@ namespace cnl {
 #define CNL_DEFINE_BINARY_OPERATOR(OP, NAME) \
         template<class LhsOperand, class RhsOperand> \
         CNL_NODISCARD constexpr auto operator OP (LhsOperand const& lhs, RhsOperand const& rhs) \
-        -> decltype(cnl::_impl::binary_operator<cnl::_impl::enable_binary_t< \
-                LhsOperand, RhsOperand, cnl::_impl::NAME>, LhsOperand, RhsOperand>()(lhs, rhs)) \
+        -> decltype(cnl::binary_operator<enable_binary_t< \
+                LhsOperand, RhsOperand, native_tag>, NAME, LhsOperand, RhsOperand>()(lhs, rhs)) \
         { \
-            return cnl::_impl::binary_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
+            return cnl::binary_operator<native_tag, NAME, LhsOperand, RhsOperand>{}(lhs, rhs); \
         }
 
         CNL_DEFINE_BINARY_OPERATOR(+, add_op)

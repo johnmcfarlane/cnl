@@ -653,9 +653,13 @@ namespace test_arithmetic {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::_scaled_integer_impl::rep_op_exponent
 
-    static_assert(identical(
-            cnl::_impl::binary_operator<cnl::_impl::subtract_op, scaled_integer<int32>, cnl::constant<369>>()(
-                    scaled_integer<int32>{999}, cnl::constant<369>{}), scaled_integer<test_int, cnl::power<0>>{630}),
+    static_assert(
+            identical(
+                    cnl::binary_operator<
+                            cnl::_impl::native_tag, cnl::_impl::subtract_op,
+                            scaled_integer<int32>, cnl::constant<369>>()(
+                                    scaled_integer<int32>{999}, cnl::constant<369>{}),
+                                    scaled_integer<test_int, cnl::power<0>>{630}),
             "cnl::_scaled_integer_impl::rep_op_exponent test failed");
 }
 

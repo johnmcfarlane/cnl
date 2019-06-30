@@ -41,36 +41,39 @@ namespace cnl {
             return wide_integer<LhsDigits, LhsNarrowest>(
                     to_rep(lhs) >> set_signedness_t<int, is_signed<Rhs>::value>(rhs));
         }
+    }
 
-        template<typename Operator, int Digits, typename Narrowest>
-        struct unary_operator<Operator, wide_integer<Digits, Narrowest>> {
-            CNL_NODISCARD constexpr auto operator()(wide_integer<Digits, Narrowest> const& rhs) const -> wide_integer<Digits, Narrowest>
-            {
-                return Operator()(to_rep(rhs));
-            }
-        };
+    template<typename Operator, int Digits, typename Narrowest>
+    struct unary_operator<_impl::native_tag, Operator, _impl::wide_integer<Digits, Narrowest>> {
+        CNL_NODISCARD constexpr auto operator()(
+                _impl::wide_integer<Digits, Narrowest> const& rhs) const -> _impl::wide_integer<Digits, Narrowest>
+        {
+            return Operator()(_impl::to_rep(rhs));
+        }
+    };
 
-        template<class Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
-        struct binary_operator<
-                Operator,
-                wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>> {
-            using _lhs = wide_integer<LhsDigits, LhsNarrowest>;
-            using _rhs = wide_integer<RhsDigits, RhsNarrowest>;
+    template<class Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
+    struct binary_operator<
+            _impl::native_tag, Operator,
+            _impl::wide_integer<LhsDigits, LhsNarrowest>, _impl::wide_integer<RhsDigits, RhsNarrowest>> {
+        using _lhs = _impl::wide_integer<LhsDigits, LhsNarrowest>;
+        using _rhs = _impl::wide_integer<RhsDigits, RhsNarrowest>;
 
-            static constexpr auto _max_digits = cnl::_impl::max(LhsDigits, RhsDigits);
-            static constexpr auto _are_signed = cnl::is_signed<LhsNarrowest>::value
-                    || cnl::is_signed<RhsNarrowest>::value;
-            using _common_type = typename std::common_type<LhsNarrowest, RhsNarrowest>::type;
-            using _narrowest = cnl::_impl::set_signedness_t<_common_type, _are_signed>;
+        static constexpr auto _max_digits = _impl::max(LhsDigits, RhsDigits);
+        static constexpr auto _are_signed = is_signed<LhsNarrowest>::value
+                || is_signed<RhsNarrowest>::value;
+        using _common_type = typename std::common_type<LhsNarrowest, RhsNarrowest>::type;
+        using _narrowest = _impl::set_signedness_t<_common_type, _are_signed>;
 
-            using _result = cnl::_impl::wide_integer<cnl::_impl::max(LhsDigits, RhsDigits), _narrowest>;
+        using _result = _impl::wide_integer<_impl::max(LhsDigits, RhsDigits), _narrowest>;
 
-            CNL_NODISCARD constexpr auto operator()(_lhs const& lhs, _rhs const& rhs) const -> _result
-            {
-                return Operator{}(to_rep(lhs), to_rep(rhs));
-            }
-        };
+        CNL_NODISCARD constexpr auto operator()(_lhs const& lhs, _rhs const& rhs) const -> _result
+        {
+            return Operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs));
+        }
+    };
 
+    namespace _impl {
         template<class Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
         struct comparison_operator<
                 Operator,
