@@ -324,7 +324,8 @@ namespace {
                         cnl::_impl::duplex_integer<
                                 cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
                                 cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32> >{1000000000ULL},
-                        cnl::_impl::binary_operator<
+                        cnl::binary_operator<
+                                cnl::_impl::native_tag,
                                 cnl::_impl::divide_op,
                                 cnl::_impl::duplex_integer<
                                         cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
@@ -420,7 +421,8 @@ namespace {
                         cnl::_impl::duplex_integer<
                                 cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
                                 cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32> >{0},
-                        cnl::_impl::binary_operator<
+                        cnl::binary_operator<
+                                cnl::_impl::native_tag,
                                 cnl::_impl::modulo_op,
                                 cnl::_impl::duplex_integer<
                                         cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
@@ -591,7 +593,8 @@ namespace {
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>{0x1234 & 0x5858},
-                        cnl::_impl::binary_operator<
+                        cnl::binary_operator<
+                                cnl::_impl::native_tag,
                                 cnl::_impl::bitwise_and_op,
                                 cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>,
                                 cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>>{}(0x1234, 0x5858)),
