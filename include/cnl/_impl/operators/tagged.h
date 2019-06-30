@@ -7,7 +7,8 @@
 #ifndef CNL_IMPL_OPERATORS_TAGGED_H
 #define CNL_IMPL_OPERATORS_TAGGED_H
 
-#include "native_tag.h"
+#include "generic.h"
+#include "operators.h"
 #include "../config.h"
 
 /// compositional numeric library
