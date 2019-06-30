@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_SHIFT_H 1
 
 #include "type.h"
-#include "../operators/generic_operators.h"
+#include "../operators/generic.h"
 #include "../operators/operators.h"
 
 /// compositional numeric library
