@@ -16,7 +16,7 @@
 #include "num_traits/is_composite.h"
 #include "num_traits/scale.h"
 #include "num_traits/to_rep.h"
-#include "operators/generic_operators.h"
+#include "operators/overloads.h"
 #include "../limits.h"
 
 #include <type_traits>

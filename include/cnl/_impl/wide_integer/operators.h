@@ -16,7 +16,7 @@
 #include "../common.h"
 #include "../ostream.h"
 #include "../duplex_integer/operators.h"
-#include "../operators/generic_operators.h"
+#include "../operators/generic.h"
 #include "../type_traits/is_signed.h"
 #include "../type_traits/set_signedness.h"
 

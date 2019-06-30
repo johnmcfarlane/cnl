@@ -11,7 +11,7 @@
 #include "numeric_limits.h"
 #include "type.h"
 #include "wants_generic_ops.h"
-#include "../operators/generic_operators.h"
+#include "../operators/generic.h"
 #include "../type_traits/common_type.h"
 
 #include <tuple>
