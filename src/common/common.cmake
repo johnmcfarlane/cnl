@@ -20,7 +20,7 @@ if (IS_MSVC)
 
   # not tested
   set(CPP17_ENABLED_FLAGS "/std:c++17")
-  set(CPP20_ENABLED_FLAGS "/std:latest -DCNL_NEGATIVE_LEFT_SHIFT_UB")
+  set(CPP20_ENABLED_FLAGS "/std:latest")
 
   set(EXCEPTION_ENABLED_FLAGS "/GR /EHsc")
   set(EXCEPTION_DISABLED_FLAGS "/GR- -DBOOST_NO_EXCEPTIONS -DBOOST_NO_RTTI")
@@ -37,10 +37,10 @@ elseif (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
 
   if (IS_CLANG)
       string(APPEND MISC_FLAGS " -fconstexpr-backtrace-limit=0 -fconstexpr-steps=1000000000")
-      set(CPP20_ENABLED_FLAGS "-std=c++2a -DCNL_NEGATIVE_LEFT_SHIFT_UB")
+      set(CPP20_ENABLED_FLAGS "-std=c++2a")
   else ()
       string(APPEND MISC_FLAGS " -Wno-psabi")
-      set(CPP20_ENABLED_FLAGS "-std=c++2a -DCNL_NEGATIVE_LEFT_SHIFT_UB -fconcepts")
+      set(CPP20_ENABLED_FLAGS "-std=c++2a -fconcepts")
   endif ()
 
   set(CPP17_ENABLED_FLAGS "-std=c++17")

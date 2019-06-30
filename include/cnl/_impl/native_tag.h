@@ -59,18 +59,6 @@ namespace cnl {
         template<class Operator>
         struct tagged_binary_operator<native_tag, Operator> : Operator {};
 
-#if (__cplusplus <= 201703L)
-        template<>
-        struct tagged_binary_operator<native_tag, shift_left_op> {
-            template<class Lhs, class Rhs>
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(lhs<<rhs)
-            {
-                using result_type = decltype(lhs<<rhs);
-                return static_cast<result_type>(static_cast<cnl::remove_signedness_t<result_type>>(lhs) << rhs);
-            }
-        };
-#endif
     }
 }
 
