@@ -101,10 +101,10 @@ namespace cnl {
 #define CNL_DEFINE_SHIFT_OPERATOR(OP, NAME) \
         template<class LhsOperand, class RhsOperand> \
         CNL_NODISCARD constexpr auto operator OP (LhsOperand const& lhs, RhsOperand const& rhs) \
-        -> decltype(shift_operator<enable_binary_t< \
-                LhsOperand, RhsOperand, NAME>, LhsOperand, RhsOperand>()(lhs, rhs)) \
+        -> decltype(cnl::shift_operator<enable_binary_t< \
+                LhsOperand, RhsOperand, native_tag>, NAME, LhsOperand, RhsOperand>()(lhs, rhs)) \
         { \
-            return shift_operator<NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
+            return cnl::shift_operator<native_tag, NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
         }
 
         CNL_DEFINE_SHIFT_OPERATOR(<<, shift_left_op)

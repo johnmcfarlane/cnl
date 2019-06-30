@@ -28,6 +28,10 @@ namespace cnl {
     };
 
     namespace _impl {
+        template<>
+        struct is_overflow_tag<throwing_overflow_tag> : std::true_type {
+        };
+
         template<typename Operator>
         struct overflow_operator<Operator, throwing_overflow_tag, polarity::positive> {
             template<typename Destination, typename Source>
@@ -66,21 +70,6 @@ namespace cnl {
             }
         };
     }
-
-    template<typename Destination, typename Source>
-    struct convert_operator<throwing_overflow_tag, Destination, Source>
-            : _impl::convert_overflow_operator<throwing_overflow_tag, Destination, Source> {
-    };
-
-    template<class Operator, typename Rhs>
-    struct unary_operator<throwing_overflow_tag, Operator, Rhs>
-            : _impl::unary_overflow_operator<throwing_overflow_tag, Operator> {
-    };
-
-    template<class Operator, typename Lhs, typename Rhs>
-    struct binary_operator<throwing_overflow_tag, Operator, Lhs, Rhs>
-            : _impl::binary_overflow_operator<throwing_overflow_tag, Operator> {
-    };
 }
 
 #endif  // CNL_IMPL_OVERFLOW_THROWING_H

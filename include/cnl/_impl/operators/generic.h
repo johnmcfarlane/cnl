@@ -38,10 +38,10 @@ namespace cnl {
     template<class Tag, class Operator, typename Lhs, typename Rhs, class Enabled=void>
     struct binary_operator;
 
-    namespace _impl {
-        template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
-        struct shift_operator;
+    template<class Tag, class Operator, class LhsOperand, class RhsOperand, class Enable = void>
+    struct shift_operator;
 
+    namespace _impl {
         template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
         struct comparison_operator;
 
