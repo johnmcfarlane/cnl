@@ -11,8 +11,8 @@
 #include "remove_signedness.h"
 #include "numeric_limits.h"
 #include "type.h"
-#include "../generic_operators.h"
-#include "../operators.h"
+#include "../operators/generic_operators.h"
+#include "../operators/operators.h"
 #include "../type_traits/set_signedness.h"
 #include "../wide_integer/rep.h"
 

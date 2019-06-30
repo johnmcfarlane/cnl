@@ -7,9 +7,9 @@
 #ifndef CNL_IMPL_SCALED_INTEGER_POWER_H
 #define CNL_IMPL_SCALED_INTEGER_POWER_H
 
-#include "native_tag.h"
 #include "power_value.h"
 #include "num_traits/scale.h"
+#include "operators/native_tag.h"
 
 /// compositional numeric library
 namespace cnl {

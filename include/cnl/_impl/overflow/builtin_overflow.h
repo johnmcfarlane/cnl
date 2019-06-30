@@ -9,8 +9,8 @@
 
 #include "overflow_operator.h"
 #include "../config.h"
-#include "../operators.h"
 #include "../polarity.h"
+#include "../operators/operators.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 #include "../unreachable.h"

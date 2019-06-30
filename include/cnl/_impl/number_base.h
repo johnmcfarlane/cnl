@@ -11,12 +11,12 @@
 #include "number_base/definition.h"
 #include "number_base/is_derived_from_number_base.h"
 #include "number_base/to_string.h"
-#include "generic_operators.h"
 #include "num_traits/from_rep.h"
 #include "num_traits/from_value.h"
 #include "num_traits/is_composite.h"
 #include "num_traits/scale.h"
 #include "num_traits/to_rep.h"
+#include "operators/generic_operators.h"
 #include "../limits.h"
 
 #include <type_traits>

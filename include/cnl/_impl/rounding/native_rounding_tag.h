@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_ROUNDING_NATIVE_ROUNDING_TAG_H)
 #define CNL_IMPL_ROUNDING_NATIVE_ROUNDING_TAG_H
 
-#include "../native_tag.h"
+#include "../operators/native_tag.h"
 
 /// compositional numeric library
 namespace cnl {
