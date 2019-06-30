@@ -9,7 +9,7 @@
 
 #include "native_rounding_tag.h"
 #include "nearest_rounding_tag.h"
-#include "../native_tag.h"
+#include "../operators/native_tag.h"
 #include "../type_traits/enable_if.h"
 #include "../../limits.h"
 

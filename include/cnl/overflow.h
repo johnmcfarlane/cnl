@@ -10,12 +10,12 @@
 #if !defined(CNL_OVERFLOW_H)
 #define CNL_OVERFLOW_H
 
+#include "_impl/operators/tagged.h"
 #include "_impl/overflow/common.h"
 #include "_impl/overflow/native.h"
 #include "_impl/overflow/saturated.h"
 #include "_impl/overflow/throwing.h"
 #include "_impl/overflow/trapping.h"
 #include "_impl/overflow/undefined.h"
-#include "_impl/tagged.h"
 
 #endif  // CNL_OVERFLOW_H

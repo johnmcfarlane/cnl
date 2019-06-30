@@ -4,8 +4,11 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_IMPL_TAGGED_H
-#define CNL_IMPL_TAGGED_H
+#ifndef CNL_IMPL_OPERATORS_TAGGED_H
+#define CNL_IMPL_OPERATORS_TAGGED_H
+
+#include "native_tag.h"
+#include "../config.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -114,4 +117,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_TAGGED_H
+#endif  // CNL_IMPL_OPERATORS_TAGGED_H

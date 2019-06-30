@@ -4,13 +4,13 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_IMPL_NATIVE_TAG_H
-#define CNL_IMPL_NATIVE_TAG_H
+#ifndef CNL_IMPL_OPERATORS_NATIVE_TAG_H
+#define CNL_IMPL_OPERATORS_NATIVE_TAG_H
 
 #include "operators.h"
-#include "type_traits/is_integral.h"
-#include "type_traits/remove_signedness.h"
-#include "../constant.h"
+#include "../type_traits/is_integral.h"
+#include "../type_traits/remove_signedness.h"
+#include "../../constant.h"
 
 #include <type_traits>
 
@@ -35,7 +35,7 @@ namespace cnl {
                 : std::integral_constant<
                         bool,
                         is_constant<T>::value
-                        || cnl::_impl::is_integral<T>::value
+                        || is_integral<T>::value
                         || std::is_floating_point<T>::value> {
         };
     }
@@ -81,4 +81,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_NATIVE_TAG_H
+#endif  // CNL_IMPL_OPERATORS_NATIVE_TAG_H

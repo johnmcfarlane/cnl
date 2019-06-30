@@ -10,8 +10,8 @@
 #include "builtin_overflow.h"
 #include "is_overflow.h"
 #include "overflow_operator.h"
-#include "../native_tag.h"
 #include "../polarity.h"
+#include "../operators/native_tag.h"
 
 /// compositional numeric library
 namespace cnl {
