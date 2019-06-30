@@ -133,40 +133,44 @@ namespace cnl {
 
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::shift_operator
+        // cnl::shift_operator
 
 #if defined(CNL_OVERLOAD_RESOLUTION_HACK)
         template<typename Lhs, typename Rhs>
         struct excluded_from_specialization : std::false_type {
         };
 #endif
+    }
 
-        template<class Operator, class Lhs, class Rhs>
-        struct shift_operator<
-                Operator, Lhs, Rhs,
-                _impl::enable_if_t<_impl::is_derived_from_number_base<Lhs>::value&&!is_same_wrapper<Lhs, Rhs>::value
+    template<class Operator, class Lhs, class Rhs>
+    struct shift_operator<
+            _impl::native_tag, Operator, Lhs, Rhs,
+            _impl::enable_if_t<
+                    _impl::is_derived_from_number_base<Lhs>::value&&!_impl::is_same_wrapper<Lhs, Rhs>::value
 #if defined(CNL_OVERLOAD_RESOLUTION_HACK)
-                &&!excluded_from_specialization<Lhs, Rhs>::value
+            &&!_impl::excluded_from_specialization<Lhs, Rhs>::value
 #endif
-        >> {
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(from_rep<Lhs>(Operator()(to_rep(lhs), rhs)))
-            {
-                return from_rep<Lhs>(Operator()(to_rep(lhs), rhs));
-            }
-        };
+    >> {
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(_impl::from_rep<Lhs>(Operator()(_impl::to_rep(lhs), rhs)))
+        {
+            return _impl::from_rep<Lhs>(Operator()(_impl::to_rep(lhs), rhs));
+        }
+    };
 
-        template<class Operator, class Lhs, class Rhs>
-        struct shift_operator<
-                Operator, Lhs, Rhs,
-                enable_if_t<is_derived_from_number_base<Lhs>::value&&is_same_wrapper<Lhs, Rhs>::value>> {
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(from_rep<Lhs>(Operator()(to_rep(lhs), to_rep(rhs))))
-            {
-                return from_rep<Lhs>(Operator()(to_rep(lhs), to_rep(rhs)));
-            }
-        };
+    template<class Operator, class Lhs, class Rhs>
+    struct shift_operator<
+            _impl::native_tag, Operator, Lhs, Rhs,
+            _impl::enable_if_t<
+                    _impl::is_derived_from_number_base<Lhs>::value&&_impl::is_same_wrapper<Lhs, Rhs>::value>> {
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(_impl::from_rep<Lhs>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
+        {
+            return _impl::from_rep<Lhs>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)));
+        }
+    };
 
+    namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::comparison_operator
 
