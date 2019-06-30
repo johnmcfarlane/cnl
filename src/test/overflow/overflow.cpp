@@ -105,12 +105,6 @@ namespace {
                 cnl::numeric_limits<cnl::int32>::max(),
                 cnl::shift_left<cnl::saturated_overflow_tag>(cnl::numeric_limits<cnl::int32>::max(), 1)),
                 "cnl::shift_left test failed");
-#if !defined(CNL_NEGATIVE_LEFT_SHIFT_UB)
-        static_assert(identical(
-                -2,
-                cnl::shift_left<cnl::saturated_overflow_tag>(-1, 1)),
-                "cnl::shift_left test failed");
-#endif
         static_assert(identical(
                 cnl::numeric_limits<int>::max(),
                 cnl::_impl::tagged_binary_operator<
@@ -119,14 +113,6 @@ namespace {
     }
 
     namespace test_negative_shift_left {
-#if !defined(CNL_NEGATIVE_LEFT_SHIFT_UB)
-        static_assert(
-                identical(
-                        2*-1073741824,
-                        cnl::shift_left<cnl::trapping_overflow_tag>(-1073741824, 1)),
-                "cnl::shift_left with negative input");
-#endif
-
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
         TEST(overflow, trap)
         {
