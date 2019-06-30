@@ -8,8 +8,8 @@
 #define CNL_IMPL_DUPLEX_INTEGER_MODULO_H 1
 
 #include "type.h"
-#include "../generic_operators.h"
-#include "../operators.h"
+#include "../operators/generic_operators.h"
+#include "../operators/operators.h"
 #include "../wide_integer/rep.h"
 
 /// compositional numeric library

@@ -12,9 +12,9 @@
 
 #include "../power.h"
 #include "../power_value.h"
-#include "../num_traits/width.h"
 #include "../number_base.h"
-#include "../tagged.h"
+#include "../num_traits/width.h"
+#include "../operators/tagged.h"
 #include "../../constant.h"
 #include "../../numeric.h"
 #include "declaration.h"
