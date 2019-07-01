@@ -307,30 +307,32 @@ namespace cnl {
                     elastic_integer<FromDigits, FromNarrowest>,
                     elastic_integer<OtherDigits, OtherNarrowest>>::type>(from);
         }
+    }
 
-        template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
-        struct comparison_operator<Operator,
-                elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>> {
-            CNL_NODISCARD constexpr auto operator()(
-                    elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
-                    elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
-            -> decltype(Operator()(cast_to_common_type(lhs, rhs), cast_to_common_type(rhs, lhs)))
-            {
-                return Operator()(cast_to_common_type(lhs, rhs), cast_to_common_type(rhs, lhs));
-            }
-        };
+    template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
+    struct comparison_operator<Operator,
+            elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>> {
+        CNL_NODISCARD constexpr auto operator()(
+                elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
+                elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
+        -> decltype(Operator()(cast_to_common_type(lhs, rhs), cast_to_common_type(rhs, lhs)))
+        {
+            return Operator()(cast_to_common_type(lhs, rhs), cast_to_common_type(rhs, lhs));
+        }
+    };
 
-        template<class Operator, int Digits, class Narrowest>
-        struct comparison_operator<Operator, elastic_integer<Digits, Narrowest>, elastic_integer<Digits, Narrowest>> {
-            CNL_NODISCARD constexpr auto operator()(
-                    elastic_integer<Digits, Narrowest> const& lhs,
-                    elastic_integer<Digits, Narrowest> const& rhs) const
-            -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
-            {
-                return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
-            }
-        };
+    template<class Operator, int Digits, class Narrowest>
+    struct comparison_operator<Operator, elastic_integer<Digits, Narrowest>, elastic_integer<Digits, Narrowest>> {
+        CNL_NODISCARD constexpr auto operator()(
+                elastic_integer<Digits, Narrowest> const& lhs,
+                elastic_integer<Digits, Narrowest> const& rhs) const
+        -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
+        {
+            return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
+        }
+    };
 
+    namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
         // arithmetic operators
 
@@ -462,20 +464,18 @@ namespace cnl {
     };
 #endif
 
-    namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // pre/post operators
+    ////////////////////////////////////////////////////////////////////////////////
+    // pre/post operators
 
-        template<class Operator, int Digits, typename Narrowest>
-        struct pre_operator<Operator, elastic_integer<Digits, Narrowest>>
-                : pre_operator<Operator, typename elastic_integer<Digits, Narrowest>::_base> {
-        };
+    template<class Operator, int Digits, typename Narrowest>
+    struct pre_operator<Operator, elastic_integer<Digits, Narrowest>>
+            : pre_operator<Operator, typename elastic_integer<Digits, Narrowest>::_base> {
+    };
 
-        template<class Operator, int Digits, typename Narrowest>
-        struct post_operator<Operator, elastic_integer<Digits, Narrowest>>
-                : post_operator<Operator, typename elastic_integer<Digits, Narrowest>::_base> {
-        };
-    }
+    template<class Operator, int Digits, typename Narrowest>
+    struct post_operator<Operator, elastic_integer<Digits, Narrowest>>
+            : post_operator<Operator, typename elastic_integer<Digits, Narrowest>::_base> {
+    };
 
 #if ! defined(CNL_OVERLOAD_RESOLUTION_HACK)
     template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>

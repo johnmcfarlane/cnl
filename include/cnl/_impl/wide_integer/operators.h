@@ -73,41 +73,41 @@ namespace cnl {
         }
     };
 
+    template<class Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
+    struct comparison_operator<
+            Operator,
+            _impl::wide_integer<LhsDigits, LhsNarrowest>, _impl::wide_integer<RhsDigits, RhsNarrowest>> {
+        CNL_NODISCARD constexpr auto operator()(
+                _impl::wide_integer<LhsDigits, LhsNarrowest> const& lhs,
+                _impl::wide_integer<RhsDigits, RhsNarrowest> const& rhs) const
+        -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
+        {
+            return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
+        }
+    };
+
+    template<class Operator, int Digits, typename Narrowest>
+    struct pre_operator<Operator, _impl::wide_integer<Digits, Narrowest>> {
+        CNL_RELAXED_CONSTEXPR auto operator()(_impl::wide_integer<Digits, Narrowest>& rhs) const
+        -> _impl::wide_integer<Digits, Narrowest>&
+        {
+            Operator()(_impl::to_rep(rhs));
+            return rhs;
+        }
+    };
+
+    template<class Operator, int Digits, typename Narrowest>
+    struct post_operator<Operator, _impl::wide_integer<Digits, Narrowest>> {
+        CNL_RELAXED_CONSTEXPR auto operator()(_impl::wide_integer<Digits, Narrowest>& lhs) const
+        -> _impl::wide_integer<Digits, Narrowest>
+        {
+            auto copy = lhs;
+            Operator()(_impl::to_rep(lhs));
+            return copy;
+        }
+    };
+
     namespace _impl {
-        template<class Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
-        struct comparison_operator<
-                Operator,
-                wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>> {
-            CNL_NODISCARD constexpr auto operator()(
-                    wide_integer<LhsDigits, LhsNarrowest> const& lhs,
-                    wide_integer<RhsDigits, RhsNarrowest> const& rhs) const
-            -> decltype(Operator()(to_rep(lhs), to_rep(rhs)))
-            {
-                return Operator()(to_rep(lhs), to_rep(rhs));
-            }
-        };
-
-        template<class Operator, int Digits, typename Narrowest>
-        struct pre_operator<Operator, wide_integer<Digits, Narrowest>> {
-            CNL_RELAXED_CONSTEXPR auto operator()(wide_integer<Digits, Narrowest>& rhs) const
-            -> wide_integer<Digits, Narrowest>&
-            {
-                Operator()(_impl::to_rep(rhs));
-                return rhs;
-            }
-        };
-
-        template<class Operator, int Digits, typename Narrowest>
-        struct post_operator<Operator, wide_integer<Digits, Narrowest>> {
-            CNL_RELAXED_CONSTEXPR auto operator()(wide_integer<Digits, Narrowest>& lhs) const
-            -> wide_integer<Digits, Narrowest>
-            {
-                auto copy = lhs;
-                Operator()(_impl::to_rep(lhs));
-                return copy;
-            }
-        };
-
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::wide_integer streaming
 
