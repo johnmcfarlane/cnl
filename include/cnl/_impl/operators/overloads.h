@@ -115,10 +115,10 @@ namespace cnl {
 #define CNL_DEFINE_COMPARISON_OPERATOR(OP, NAME) \
         template<class LhsOperand, class RhsOperand> \
         CNL_NODISCARD constexpr auto operator OP (LhsOperand const& lhs, RhsOperand const& rhs) \
-        -> decltype(comparison_operator<enable_binary_t< \
+        -> decltype(cnl::comparison_operator<enable_binary_t< \
                 LhsOperand, RhsOperand, NAME>, LhsOperand, RhsOperand>()(lhs, rhs)) \
         { \
-            return comparison_operator<NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
+            return cnl::comparison_operator<NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
         }
 
         CNL_DEFINE_COMPARISON_OPERATOR(==, equal_op)
@@ -137,9 +137,9 @@ namespace cnl {
 #define CNL_DEFINE_PRE_OPERATOR(OP, NAME) \
         template<class RhsOperand> \
         constexpr auto operator OP (RhsOperand& rhs) \
-        -> decltype(pre_operator<NAME, RhsOperand>()(rhs)) \
+        -> decltype(cnl::pre_operator<NAME, RhsOperand>()(rhs)) \
         { \
-            return pre_operator<NAME, RhsOperand>()(rhs); \
+            return cnl::pre_operator<NAME, RhsOperand>()(rhs); \
         }
 
         CNL_DEFINE_PRE_OPERATOR(++, pre_increment_op)
@@ -150,9 +150,9 @@ namespace cnl {
 #define CNL_DEFINE_POST_OPERATOR(OP, NAME) \
         template<class LhsOperand> \
         constexpr auto operator OP (LhsOperand& lhs, int) \
-        -> decltype(post_operator<NAME, LhsOperand>()(lhs)) \
+        -> decltype(cnl::post_operator<NAME, LhsOperand>()(lhs)) \
         { \
-            return post_operator<NAME, LhsOperand>()(lhs); \
+            return cnl::post_operator<NAME, LhsOperand>()(lhs); \
         }
 
         CNL_DEFINE_POST_OPERATOR(++, post_increment_op)
@@ -164,9 +164,9 @@ namespace cnl {
         template<class LhsOperand, class RhsOperand> \
         constexpr auto operator OP (LhsOperand& lhs, RhsOperand const& rhs) \
         -> enable_binary_t<LhsOperand, RhsOperand, decltype( \
-                compound_assignment_operator<NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
+                cnl::compound_assignment_operator<NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
         { \
-            return compound_assignment_operator<NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
+            return cnl::compound_assignment_operator<NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
         }
 
         CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(+=, assign_add_op)
@@ -190,9 +190,9 @@ namespace cnl {
         template<class LhsOperand, class RhsOperand> \
         constexpr auto operator OP (LhsOperand& lhs, RhsOperand const& rhs) \
         -> enable_binary_t<LhsOperand, RhsOperand, decltype( \
-                compound_assignment_shift_operator<NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
+                cnl::compound_assignment_shift_operator<NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
         { \
-            return compound_assignment_shift_operator<NAME, LhsOperand, RhsOperand>()( \
+            return cnl::compound_assignment_shift_operator<NAME, LhsOperand, RhsOperand>()( \
                     lhs, rhs); \
         }
 

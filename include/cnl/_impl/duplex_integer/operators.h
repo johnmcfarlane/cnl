@@ -147,43 +147,44 @@ namespace cnl {
             : _impl::default_binary_operator<_impl::bitwise_xor_op, Upper, Lower> {
     };
 
+    template<typename Operator, typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
+    struct comparison_operator<Operator,
+            _impl::duplex_integer<LhsUpper, LhsLower>, _impl::duplex_integer<RhsUpper, RhsLower>> {
+        CNL_NODISCARD constexpr auto operator()(
+                _impl::duplex_integer<LhsUpper, LhsLower> const& lhs,
+                _impl::duplex_integer<RhsUpper, RhsLower> const& rhs) const -> bool
+        {
+            using common_type = _impl::duplex_integer<
+                    _impl::common_type_t<LhsUpper, RhsUpper>,
+                    _impl::common_type_t<LhsLower, RhsLower>>;
+            return comparison_operator<Operator, common_type, common_type>{}(lhs, rhs);
+        }
+    };
+
+    // pre_operator
+    template<typename Upper, typename Lower>
+    struct pre_operator<_impl::pre_increment_op, _impl::duplex_integer<Upper, Lower>> {
+        CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower>& rhs) const
+        -> _impl::duplex_integer<Upper, Lower>
+        {
+            return CNL_UNLIKELY(rhs.lower()==numeric_limits<Lower>::max())
+                   ? _impl::duplex_integer<Upper, Lower>{++rhs.upper(), numeric_limits<Lower>::lowest()}
+                   : _impl::duplex_integer<Upper, Lower>{rhs.upper(), ++rhs.lower()};
+        }
+    };
+
+    template<typename Upper, typename Lower>
+    struct pre_operator<_impl::pre_decrement_op, _impl::duplex_integer<Upper, Lower>> {
+        CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower>& rhs) const
+        -> _impl::duplex_integer<Upper, Lower>
+        {
+            return CNL_UNLIKELY(rhs.lower()==numeric_limits<Lower>::lowest())
+                   ? _impl::duplex_integer<Upper, Lower>{static_cast<Upper>(--rhs.upper()), numeric_limits<Lower>::max()}
+                   : _impl::duplex_integer<Upper, Lower>{rhs.upper(), --rhs.lower()};
+        }
+    };
+
     namespace _impl {
-        template<typename Operator, typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
-        struct comparison_operator<Operator, duplex_integer<LhsUpper, LhsLower>, duplex_integer<RhsUpper, RhsLower>> {
-            CNL_NODISCARD constexpr auto operator()(
-                    duplex_integer<LhsUpper, LhsLower> const& lhs,
-                    duplex_integer<RhsUpper, RhsLower> const& rhs) const -> bool
-            {
-                using common_type = duplex_integer<
-                        common_type_t<LhsUpper, RhsUpper>,
-                        common_type_t<LhsLower, RhsLower>>;
-                return comparison_operator<Operator, common_type, common_type>{}(lhs, rhs);
-            }
-        };
-
-        // pre_operator
-        template<typename Upper, typename Lower>
-        struct pre_operator<pre_increment_op, duplex_integer<Upper, Lower>> {
-            CNL_NODISCARD constexpr auto operator()(duplex_integer<Upper, Lower>& rhs) const
-            -> duplex_integer<Upper, Lower>
-            {
-                return CNL_UNLIKELY(rhs.lower()==numeric_limits<Lower>::max())
-                       ? duplex_integer<Upper, Lower>{++rhs.upper(), numeric_limits<Lower>::lowest()}
-                       : duplex_integer<Upper, Lower>{rhs.upper(), ++rhs.lower()};
-            }
-        };
-
-        template<typename Upper, typename Lower>
-        struct pre_operator<pre_decrement_op, duplex_integer<Upper, Lower>> {
-            CNL_NODISCARD constexpr auto operator()(duplex_integer<Upper, Lower>& rhs) const
-            -> duplex_integer<Upper, Lower>
-            {
-                return CNL_UNLIKELY(rhs.lower()==numeric_limits<Lower>::lowest())
-                       ? duplex_integer<Upper, Lower>{static_cast<Upper>(--rhs.upper()), numeric_limits<Lower>::max()}
-                       : duplex_integer<Upper, Lower>{rhs.upper(), --rhs.lower()};
-            }
-        };
-
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::duplex_integer streaming
 

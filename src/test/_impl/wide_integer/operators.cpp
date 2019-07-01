@@ -25,7 +25,7 @@ namespace {
         static_assert(
                 identical(
                         true,
-                        cnl::_impl::comparison_operator<
+                        cnl::comparison_operator<
                                 cnl::_impl::equal_op,
                                 cnl::_impl::wide_integer<15>,
                                 cnl::_impl::wide_integer<63>>{}(
