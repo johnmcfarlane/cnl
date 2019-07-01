@@ -22,18 +22,7 @@ namespace cnl {
     /// \sa cnl::overflow_integer,
     /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
     /// cnl::saturated_overflow_tag, cnl::throwing_overflow_tag, cnl::trapping_overflow_tag, cnl::undefined_overflow_tag
-    struct native_overflow_tag {
-    };
-
-    namespace _impl {
-        template<>
-        struct is_overflow_tag<native_overflow_tag> : std::true_type {
-        };
-
-        template<typename Operator, polarity Polarity>
-        struct overflow_operator<Operator, native_overflow_tag, Polarity> : Operator {
-        };
-    }
+    using native_overflow_tag = _impl::native_tag;
 }
 
 #endif  // CNL_IMPL_OVERFLOW_NATIVE_H
