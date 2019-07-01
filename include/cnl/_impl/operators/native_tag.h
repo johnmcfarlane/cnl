@@ -33,7 +33,11 @@ namespace cnl {
     }
 
     template<typename Destination, typename Source>
-    struct convert_operator<_impl::native_tag, Destination, Source> : _impl::convert_op {
+    struct convert_operator<_impl::native_tag, Destination, Source> {
+        CNL_NODISCARD constexpr auto operator()(Source const& from) const -> Destination
+        {
+            return _impl::convert_op{}.template operator()<Destination>(from);
+        }
     };
 
     template<class Operator, typename Rhs>
