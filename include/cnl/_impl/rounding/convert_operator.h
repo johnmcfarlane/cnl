@@ -7,9 +7,8 @@
 #if !defined(CNL_IMPL_ROUNDING_TAGGED_CONVERT_OPERATOR_H)
 #define CNL_IMPL_ROUNDING_TAGGED_CONVERT_OPERATOR_H
 
-#include "native_rounding_tag.h"
 #include "nearest_rounding_tag.h"
-#include "../operators/native_tag.h"
+#include "../operators/generic.h"
 #include "../type_traits/enable_if.h"
 #include "../../limits.h"
 
@@ -29,15 +28,6 @@ namespace cnl {
                         is_arithmetic_or_integer<N1>::value && is_arithmetic_or_integer<N2>::value> {
         };
     }
-
-    template<typename Destination, typename Source>
-    struct convert_operator<
-            native_rounding_tag, Destination, Source> {
-        CNL_NODISCARD constexpr Destination operator()(Source const& from) const
-        {
-            return static_cast<Destination>(from);
-        }
-    };
 
     template<typename Destination, typename Source>
     struct convert_operator<

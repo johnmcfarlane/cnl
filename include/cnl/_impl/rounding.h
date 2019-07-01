@@ -12,7 +12,6 @@
 
 #include "num_traits/from_value.h"
 #include "num_traits/unwrap.h"
-#include "operators/native_tag.h"
 #include "operators/operators.h"
 #include "rounding/native_rounding_tag.h"
 #include "rounding/nearest_rounding_tag.h"
@@ -22,11 +21,6 @@
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::binary_operator<nearest_rounding_tag>
-
-    template<class Operator, typename Lhs, typename Rhs>
-    struct binary_operator<native_rounding_tag, Operator, Lhs, Rhs>
-            : binary_operator<_impl::native_tag, Operator, Lhs, Rhs> {
-    };
 
     template<class Operator, typename Lhs, typename Rhs>
     struct binary_operator<nearest_rounding_tag, Operator, Lhs, Rhs> : Operator {

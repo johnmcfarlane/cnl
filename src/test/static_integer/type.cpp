@@ -30,7 +30,7 @@ namespace {
                 std::is_same<cnl::nearest_rounding_tag, cnl::static_integer<1>::rep::rep::rounding>::value,
                 "cnl::static_integer parameter default test failed");
         static_assert(
-                !std::is_same<cnl::native_rounding_tag, cnl::native_overflow_tag>::value,
+                std::is_same<cnl::native_rounding_tag, cnl::native_overflow_tag>::value,
                 "cnl::static_integer parameter default test failed");
 
         static_assert(

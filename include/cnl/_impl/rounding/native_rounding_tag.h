@@ -19,8 +19,7 @@ namespace cnl {
     /// \sa cnl::rounding_integer,
     /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
     /// cnl::nearest_rounding_tag
-    struct native_rounding_tag : public _impl::native_tag {
-    };
+    using native_rounding_tag = _impl::native_tag;
 }
 
 #endif  // CNL_IMPL_ROUNDING_NATIVE_ROUNDING_TAG_H
