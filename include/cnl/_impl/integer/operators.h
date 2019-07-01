@@ -37,16 +37,15 @@ namespace cnl {
         }
     };
 
-    namespace _impl {
-        template<class Operator, typename LhsRep, typename RhsRep>
-        struct comparison_operator<Operator, integer<LhsRep>, integer<RhsRep>> {
-            CNL_NODISCARD constexpr auto operator()(integer<LhsRep> const& lhs, integer<RhsRep> const& rhs) const
-            -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
-            {
-                return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
-            }
-        };
-    }
+    template<class Operator, typename LhsRep, typename RhsRep>
+    struct comparison_operator<Operator, _impl::integer<LhsRep>, _impl::integer<RhsRep>> {
+        CNL_NODISCARD constexpr auto operator()(
+                _impl::integer<LhsRep> const& lhs, _impl::integer<RhsRep> const& rhs) const
+        -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
+        {
+            return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
+        }
+    };
 }
 
 #endif  // CNL_IMPL_INTEGER_OPERATORS_H

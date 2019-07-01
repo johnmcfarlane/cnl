@@ -54,32 +54,30 @@ namespace cnl {
     template<class Tag, class Operator, class LhsOperand, class RhsOperand, class Enable = void>
     struct shift_operator;
 
-    namespace _impl {
-        template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
-        struct comparison_operator;
+    template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
+    struct comparison_operator;
 
-        template<class Operator, class RhsOperand, class Enable = void>
-        struct pre_operator;
+    template<class Operator, class RhsOperand, class Enable = void>
+    struct pre_operator;
 
-        template<class Operator, class LhsOperand, class Enable = void>
-        struct post_operator;
+    template<class Operator, class LhsOperand, class Enable = void>
+    struct post_operator;
 
-        template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
-        struct compound_assignment_operator {
-            CNL_NODISCARD constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
-            {
-                return lhs = static_cast<LhsOperand>(typename Operator::binary{}(lhs, rhs));
-            }
-        };
+    template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
+    struct compound_assignment_operator {
+        CNL_NODISCARD constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
+        {
+            return lhs = static_cast<LhsOperand>(typename Operator::binary{}(lhs, rhs));
+        }
+    };
 
-        template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
-        struct compound_assignment_shift_operator {
-            CNL_NODISCARD constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
-            {
-                return lhs = static_cast<LhsOperand>(typename Operator::binary{}(lhs, rhs));
-            }
-        };
-    }
+    template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
+    struct compound_assignment_shift_operator {
+        CNL_NODISCARD constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
+        {
+            return lhs = static_cast<LhsOperand>(typename Operator::binary{}(lhs, rhs));
+        }
+    };
 }
 
 #endif  // CNL_IMPL_OPERATORS_GENERIC_OPERATORS_H
