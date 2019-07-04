@@ -7,7 +7,7 @@
 /// \file
 /// \brief tests for <cnl/_impl/integer/from_value.h>
 
-#include <cnl/_impl/integer/from_value.h>
+#include <cnl/_impl/integer.h>
 
 #include <cnl/_impl/integer/operators.h>
 #include <cnl/_impl/type_traits/identical.h>

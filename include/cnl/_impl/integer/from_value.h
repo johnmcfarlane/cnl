@@ -9,12 +9,22 @@
 
 #include "type.h"
 #include "../num_traits/from_value.h"
+#include "../../numeric.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Rep, typename Value>
-    struct from_value<_impl::integer<Rep>, Value>
-            : _impl::from_value_simple<_impl::integer<Value>, Value> {
+    template<typename Rep, class Tag, typename Value>
+    struct from_value<_impl::integer<Rep, Tag>, Value>
+            : _impl::from_value_simple<_impl::integer<Value, Tag>, Value> {
+    };
+
+    template<typename Rep, class Tag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct from_value<_impl::integer<Rep, Tag>, constant<Value>>
+            : _impl::from_value_simple<
+                    _impl::integer<
+                    set_digits_t<Rep, _impl::max(digits<int>::value, _impl::used_digits(Value)-trailing_bits(Value))>,
+                    Tag>,
+            constant<Value>> {
     };
 }
 

@@ -19,7 +19,9 @@
 namespace cnl {
     namespace _impl {
         // match the behavior of fundamental arithmetic types
-        struct native_tag {};
+        struct native_tag {
+            using identity = native_tag;
+        };
 
         // true iff given type, T, provides its own operators
         template<typename T>
