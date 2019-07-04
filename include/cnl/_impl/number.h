@@ -1,0 +1,24 @@
+
+//          Copyright John McFarlane 2019.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file ../LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
+
+#if !defined(CNL_IMPL_NUMBER_H)
+#define CNL_IMPL_NUMBER_H
+
+#include "number/declaration.h"
+#include "number/definition.h"
+#include "number/digits.h"
+#include "number/from_rep.h"
+#include "number/from_value.h"
+#include "number/is_composite.h"
+#include "number/is_number.h"
+#include "number/make_number.h"
+#include "number/numeric_limits.h"
+#include "number/operators.h"
+#include "number/scale.h"
+#include "number/set_digits.h"
+#include "number/to_rep.h"
+
+#endif  // CNL_IMPL_NUMBER_H
