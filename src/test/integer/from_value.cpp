@@ -5,11 +5,11 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests for <cnl/_impl/integer/from_value.h>
+/// \brief tests for <cnl/_impl/number/from_value.h>
 
-#include <cnl/_impl/integer/from_value.h>
+#include <cnl/_impl/integer.h>
 
-#include <cnl/_impl/integer/operators.h>
+#include <cnl/_impl/number/operators.h>
 #include <cnl/_impl/type_traits/identical.h>
 
 using cnl::_impl::identical;

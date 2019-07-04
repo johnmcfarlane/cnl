@@ -11,7 +11,6 @@
 #include "num_traits/from_rep.h"
 #include "num_traits/from_value.h"
 #include "num_traits/is_composite.h"
-#include "num_traits/rep.h"
 #include "num_traits/scale.h"
 #include "num_traits/to_rep.h"
 #include "number_base/declaration.h"
@@ -282,7 +281,7 @@ namespace cnl {
 
     template<class Derived>
     struct to_rep<Derived, _impl::enable_if_t<_impl::is_derived_from_number_base<Derived>::value>>
-            : to_rep<_impl::number_base<Derived, _impl::rep_t<Derived>>> {
+            : to_rep<_impl::number_base<Derived, typename Derived::rep>> {
     };
 
     template<int Digits, int Radix, class Derived>
@@ -304,7 +303,8 @@ namespace cnl {
     : numeric_limits<Rep> {
         // number_base-specific helpers
         using _value_type = Derived;
-        using _rep_numeric_limits = numeric_limits<Rep>;
+        using _rep = typename _value_type::rep;
+        using _rep_numeric_limits = numeric_limits<_rep>;
 
         // standard members
 
