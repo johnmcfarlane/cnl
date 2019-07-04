@@ -7,7 +7,7 @@
 /// \file
 /// \brief tests for <cnl/_impl/integer/scale.h>
 
-#include <cnl/_impl/integer/scale.h>
+#include <cnl/_impl/integer.h>
 
 #include <cnl/_impl/type_traits/identical.h>
 

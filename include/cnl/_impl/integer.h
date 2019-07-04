@@ -10,11 +10,14 @@
 #include "integer/digits.h"
 #include "integer/from_rep.h"
 #include "integer/from_value.h"
+#include "integer/is_composite.h"
+#include "integer/is_integer.h"
 #include "integer/make_integer.h"
 #include "integer/numeric_limits.h"
 #include "integer/operators.h"
 #include "integer/scale.h"
 #include "integer/set_digits.h"
+#include "integer/to_rep.h"
 #include "integer/type.h"
 
 #endif  // CNL_IMPL_INTEGER_H

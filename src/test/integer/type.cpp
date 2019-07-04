@@ -7,10 +7,8 @@
 /// \file
 /// \brief tests for <cnl/_impl/integer/type.h>
 
-#include <cnl/_impl/integer/type.h>
+#include <cnl/_impl/integer.h>
 
-#include <cnl/_impl/integer/from_rep.h>
-#include <cnl/_impl/integer/operators.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/type_traits/remove_signedness.h>

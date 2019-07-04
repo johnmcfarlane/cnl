@@ -15,15 +15,15 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::numeric_limits specialization for overflow_integer
 
-    template<class Rep>
-    struct numeric_limits<_impl::integer<Rep>>
-            : numeric_limits<_impl::number_base<_impl::integer<Rep>, Rep>> {
+    template<typename Rep, class Tag>
+    struct numeric_limits<_impl::integer<Rep, Tag>>
+            : numeric_limits<Rep> {
         static constexpr bool is_integer = true;
     };
 
-    template<class Rep>
-    struct numeric_limits<_impl::integer<Rep> const>
-            : numeric_limits<_impl::number_base<_impl::integer<Rep>, Rep>> {
+    template<typename Rep, class Tag>
+    struct numeric_limits<_impl::integer<Rep, Tag> const>
+            : numeric_limits<Rep const> {
         static constexpr bool is_integer = true;
     };
 }
