@@ -5,9 +5,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests for <cnl/_impl/integer/from_rep.h>
+/// \brief tests for <cnl/_impl/number/from_rep.h>
 
-#include <cnl/_impl/integer/from_rep.h>
+#include <cnl/_impl/integer.h>
 
 #include <cnl/_impl/type_traits/assert_same.h>
 

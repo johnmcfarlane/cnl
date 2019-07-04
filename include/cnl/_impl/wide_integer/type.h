@@ -8,7 +8,7 @@
 #define CNL_IMPL_WIDE_INTEGER_TYPE_H
 
 #include "../duplex_integer.h"
-#include "../integer/type.h"
+#include "../number/definition.h"
 #include "../number_base.h"
 #include "forward_declaration.h"
 #include "rep.h"

@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_NUMBER_BASE_IS_DERIVED_FROM_NUMBER_BASE_H)
 #define CNL_IMPL_NUMBER_BASE_IS_DERIVED_FROM_NUMBER_BASE_H 1
 
-#include "../num_traits/rep.h"
+#include "definition.h"
 #include "../type_traits/enable_if.h"
 
 #include <type_traits>
@@ -32,7 +32,7 @@ namespace cnl {
         template<class Derived>
         struct is_class_derived_from_number_base<
                 Derived,
-                enable_if_t<std::is_base_of<number_base<Derived, rep_t<Derived>>, Derived>::value>>
+                enable_if_t<std::is_base_of<number_base<Derived, typename Derived::rep>, Derived>::value>>
             : std::true_type {
         };
 
