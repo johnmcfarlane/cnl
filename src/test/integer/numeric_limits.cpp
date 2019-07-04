@@ -5,9 +5,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests for <cnl/_impl/integer/numeric_limits.h>
+/// \brief tests for <cnl/_impl/number/numeric_limits.h>
 
-#include <cnl/_impl/integer/numeric_limits.h>
+#include <cnl/_impl/integer.h>
 
 namespace {
     static_assert(

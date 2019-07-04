@@ -7,17 +7,21 @@
 #if !defined(CNL_IMPL_INTEGER_H)
 #define CNL_IMPL_INTEGER_H
 
-#include "integer/declaration.h"
-#include "integer/digits.h"
-#include "integer/from_rep.h"
-#include "integer/from_value.h"
-#include "integer/make_integer.h"
-#include "integer/numeric_limits.h"
-#include "integer/operators.h"
-#include "integer/rep.h"
-#include "integer/scale.h"
-#include "integer/set_digits.h"
-#include "integer/set_rep.h"
-#include "integer/type.h"
+#include "number.h"
+
+/// compositional numeric library
+namespace cnl {
+    namespace _impl {
+        template<typename Rep=int>
+        using integer = number<Rep, native_tag>;
+
+        template<typename Rep=int>
+        CNL_NODISCARD constexpr auto make_integer(Rep const& rep)
+        -> integer<Rep>
+        {
+            return rep;
+        }
+    }
+}
 
 #endif  // CNL_IMPL_INTEGER_H
