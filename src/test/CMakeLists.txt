@@ -30,7 +30,7 @@ set(test_sources
         # components
         constant.cpp
         integer/digits.cpp
-        integer/from_rep.cpp
+        integer/set_rep.cpp
         integer/from_value.cpp
         integer/make_integer.cpp
         integer/numeric_limits.cpp

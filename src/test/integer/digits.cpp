@@ -5,9 +5,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests for <cnl/_impl/integer/digits.h>
+/// \brief tests for <cnl/_impl/number/digits.h>
 
-#include <cnl/_impl/integer/digits.h>
+#include <cnl/_impl/integer.h>
 
 #include <cnl/_impl/type_traits/identical.h>
 
