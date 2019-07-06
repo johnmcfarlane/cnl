@@ -20,7 +20,6 @@
 #include "_impl/operators/native_tag.h"
 #include "_impl/operators/tagged.h"
 #include "_impl/type_traits/common_type.h"
-#include "_impl/type_traits/identical.h"
 
 #include <ostream>
 #include <type_traits>
