@@ -238,7 +238,7 @@ namespace cnl {
     // pre-increment/decrement arithmetic operators
 
     template<typename Operator, typename Rep, int Exponent, int Radix>
-    struct pre_operator<Operator, scaled_integer<Rep, power<Exponent, Radix>>> {
+    struct pre_operator<_impl::native_tag, Operator, scaled_integer<Rep, power<Exponent, Radix>>> {
         CNL_NODISCARD constexpr auto operator()(scaled_integer<Rep, power<Exponent, Radix>>& rhs) const
         -> decltype(typename _impl::pre_to_assign<Operator>::type{}(rhs, 1))
         {
@@ -250,7 +250,7 @@ namespace cnl {
     // post-increment/decrement arithmetic operators
 
     template<typename Operator, typename Rep, int Exponent, int Radix>
-    struct post_operator<Operator, scaled_integer<Rep, power<Exponent, Radix>>> {
+    struct post_operator<_impl::native_tag, Operator, scaled_integer<Rep, power<Exponent, Radix>>> {
         CNL_RELAXED_CONSTEXPR scaled_integer<Rep, power<Exponent, Radix>> operator()(scaled_integer<Rep, power<Exponent, Radix>>& rhs) const
         {
             auto copy = rhs;

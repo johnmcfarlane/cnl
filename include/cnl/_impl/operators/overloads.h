@@ -137,9 +137,9 @@ namespace cnl {
 #define CNL_DEFINE_PRE_OPERATOR(OP, NAME) \
         template<class RhsOperand> \
         constexpr auto operator OP (RhsOperand& rhs) \
-        -> decltype(cnl::pre_operator<NAME, RhsOperand>()(rhs)) \
+        -> decltype(cnl::pre_operator<native_tag, NAME, RhsOperand>()(rhs)) \
         { \
-            return cnl::pre_operator<NAME, RhsOperand>()(rhs); \
+            return cnl::pre_operator<native_tag, NAME, RhsOperand>()(rhs); \
         }
 
         CNL_DEFINE_PRE_OPERATOR(++, pre_increment_op)
@@ -150,9 +150,9 @@ namespace cnl {
 #define CNL_DEFINE_POST_OPERATOR(OP, NAME) \
         template<class LhsOperand> \
         constexpr auto operator OP (LhsOperand& lhs, int) \
-        -> decltype(cnl::post_operator<NAME, LhsOperand>()(lhs)) \
+        -> decltype(cnl::post_operator<native_tag, NAME, LhsOperand>()(lhs)) \
         { \
-            return cnl::post_operator<NAME, LhsOperand>()(lhs); \
+            return cnl::post_operator<native_tag, NAME, LhsOperand>()(lhs); \
         }
 
         CNL_DEFINE_POST_OPERATOR(++, post_increment_op)
@@ -164,9 +164,9 @@ namespace cnl {
         template<class LhsOperand, class RhsOperand> \
         constexpr auto operator OP (LhsOperand& lhs, RhsOperand const& rhs) \
         -> enable_binary_t<LhsOperand, RhsOperand, decltype( \
-                cnl::compound_assignment_operator<NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
+                cnl::compound_assignment_operator<native_tag, NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
         { \
-            return cnl::compound_assignment_operator<NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
+            return cnl::compound_assignment_operator<native_tag, NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
         }
 
         CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(+=, assign_add_op)
@@ -190,9 +190,9 @@ namespace cnl {
         template<class LhsOperand, class RhsOperand> \
         constexpr auto operator OP (LhsOperand& lhs, RhsOperand const& rhs) \
         -> enable_binary_t<LhsOperand, RhsOperand, decltype( \
-                cnl::compound_assignment_shift_operator<NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
+                cnl::compound_assignment_shift_operator<native_tag, NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
         { \
-            return cnl::compound_assignment_shift_operator<NAME, LhsOperand, RhsOperand>()( \
+            return cnl::compound_assignment_shift_operator<native_tag, NAME, LhsOperand, RhsOperand>()( \
                     lhs, rhs); \
         }
 
