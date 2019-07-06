@@ -227,7 +227,7 @@ namespace cnl {
     // pre/post operators
 
     template<class Operator, typename Rep, class OverflowTag>
-    struct pre_operator<Operator, overflow_integer<Rep, OverflowTag>> {
+    struct pre_operator<_impl::native_tag, Operator, overflow_integer<Rep, OverflowTag>> {
         CNL_NODISCARD constexpr auto operator()(overflow_integer<Rep, OverflowTag>& rhs) const
         -> decltype(typename _impl::pre_to_assign<Operator>::type{}(rhs, 1))
         {
@@ -236,7 +236,7 @@ namespace cnl {
     };
 
     template<class Operator, typename Rep, class OverflowTag>
-    struct post_operator<Operator, overflow_integer<Rep, OverflowTag>> {
+    struct post_operator<_impl::native_tag, Operator, overflow_integer<Rep, OverflowTag>> {
         CNL_RELAXED_CONSTEXPR auto operator()(overflow_integer<Rep, OverflowTag>& rhs) const
         -> overflow_integer<Rep, OverflowTag>
         {

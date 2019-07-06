@@ -231,13 +231,13 @@ namespace cnl {
     // pre/post operators
 
     template<class Operator, typename Rep, class RoundingTag>
-    struct pre_operator<Operator, rounding_integer<Rep, RoundingTag>>
-            : pre_operator<Operator, typename rounding_integer<Rep, RoundingTag>::_base> {
+    struct pre_operator<_impl::native_tag, Operator, rounding_integer<Rep, RoundingTag>>
+            : pre_operator<_impl::native_tag, Operator, typename rounding_integer<Rep, RoundingTag>::_base> {
     };
 
     template<class Operator, typename Rep, class RoundingTag>
-    struct post_operator<Operator, rounding_integer<Rep, RoundingTag>>
-            : post_operator<Operator, typename rounding_integer<Rep, RoundingTag>::_base> {
+    struct post_operator<_impl::native_tag, Operator, rounding_integer<Rep, RoundingTag>>
+            : post_operator<_impl::native_tag, Operator, typename rounding_integer<Rep, RoundingTag>::_base> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////

@@ -468,13 +468,13 @@ namespace cnl {
     // pre/post operators
 
     template<class Operator, int Digits, typename Narrowest>
-    struct pre_operator<Operator, elastic_integer<Digits, Narrowest>>
-            : pre_operator<Operator, typename elastic_integer<Digits, Narrowest>::_base> {
+    struct pre_operator<_impl::native_tag, Operator, elastic_integer<Digits, Narrowest>>
+            : pre_operator<_impl::native_tag, Operator, typename elastic_integer<Digits, Narrowest>::_base> {
     };
 
     template<class Operator, int Digits, typename Narrowest>
-    struct post_operator<Operator, elastic_integer<Digits, Narrowest>>
-            : post_operator<Operator, typename elastic_integer<Digits, Narrowest>::_base> {
+    struct post_operator<_impl::native_tag, Operator, elastic_integer<Digits, Narrowest>>
+            : post_operator<_impl::native_tag, Operator, typename elastic_integer<Digits, Narrowest>::_base> {
     };
 
 #if ! defined(CNL_OVERLOAD_RESOLUTION_HACK)
