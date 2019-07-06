@@ -226,7 +226,7 @@ namespace cnl {
 
     // number_base<> OP lower
     template<class Operator, class Derived, typename Rep>
-    struct pre_operator<Operator, _impl::number_base<Derived, Rep>> {
+    struct pre_operator<_impl::native_tag, Operator, _impl::number_base<Derived, Rep>> {
         CNL_RELAXED_CONSTEXPR Derived& operator()(Derived& rhs) const
         {
             Operator()(_impl::to_rep(rhs));
@@ -239,7 +239,7 @@ namespace cnl {
 
     // number_base<> OP lower
     template<class Operator, class Derived, typename Rep>
-    struct post_operator<Operator, _impl::number_base<Derived, Rep>> {
+    struct post_operator<_impl::native_tag, Operator, _impl::number_base<Derived, Rep>> {
         CNL_RELAXED_CONSTEXPR Derived operator()(Derived& lhs) const
         {
             auto copy = lhs;
