@@ -6,6 +6,8 @@
 
 #include <cnl/all.h>
 
+#include <cnl/_impl/type_traits/identical.h>
+
 namespace {
 
     template<

@@ -7,6 +7,7 @@
 #include <cnl/elastic_integer.h>
 #include <cnl/rounding_integer.h>
 #include <cnl/overflow_integer.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 namespace cnl {
     // rounding safe integer
