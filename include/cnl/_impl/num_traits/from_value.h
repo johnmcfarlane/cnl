@@ -33,7 +33,7 @@ namespace cnl {
 
     template<class Number, class Value>
     struct from_value<
-            Number, Value, _impl::enable_if_t<_impl::is_integral<Number>::value && _impl::is_integral<Value>::value>>
+            Number, Value, _impl::enable_if_t<_impl::is_integral<Number>::value>>
             : _impl::from_value_simple<Value, Value> {
     };
 
