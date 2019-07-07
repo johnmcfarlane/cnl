@@ -537,33 +537,33 @@ namespace {
     TEST(overflow_integer, minus_overflow_signed)
     {
         auto int_min = cnl::numeric_limits<cnl::overflow_integer<int>>::min();
-        ASSERT_DEATH((void)(int_min = -int_min), "positive overflow");
+        ASSERT_DEATH(int_min = -int_min, "positive overflow");
     }
 
     TEST(overflow_integer, minus_overflow_unsigned)
     {
         auto one = cnl::overflow_integer<unsigned>{1};
-        ASSERT_DEATH((void)(one = -one), "negative overflow");
+        ASSERT_DEATH(one = -one, "negative overflow");
     }
 
     TEST(overflow_integer, pre_increment_overflow) {
         auto a = cnl::overflow_integer<>{INT_MAX};
-        ASSERT_DEATH((void)++ a, "positive overflow");
+        ASSERT_DEATH(++ a, "positive overflow");
     }
 
     TEST(overflow_integer, pre_decrement_overflow) {
         auto a = cnl::overflow_integer<>{INT_MIN};
-        ASSERT_DEATH((void)-- a, "negative overflow");
+        ASSERT_DEATH(-- a, "negative overflow");
     }
 
     TEST(overflow_integer, post_increment_overflow) {
         auto a = cnl::overflow_integer<>{INT_MAX};
-        ASSERT_DEATH((void)a ++, "positive overflow");
+        ASSERT_DEATH(a ++, "positive overflow");
     }
 
     TEST(overflow_integer, post_decrement_overflow) {
         auto a = cnl::overflow_integer<>{INT_MIN};
-        ASSERT_DEATH((void)a --, "negative overflow");
+        ASSERT_DEATH(a --, "negative overflow");
     }
 #endif
 }
