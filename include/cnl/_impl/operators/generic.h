@@ -52,7 +52,7 @@ namespace cnl {
 
     template<class Tag, class Operator, class LhsOperand, class RhsOperand, class Enable = void>
     struct compound_assignment_operator {
-        CNL_NODISCARD constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
+        constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
         {
             return lhs = static_cast<LhsOperand>(
                     binary_operator<Tag, typename Operator::binary, LhsOperand, RhsOperand>{}(lhs, rhs));
@@ -61,7 +61,7 @@ namespace cnl {
 
     template<class Tag, class Operator, class LhsOperand, class RhsOperand, class Enable = void>
     struct compound_assignment_shift_operator {
-        CNL_NODISCARD constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
+        constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
         {
             return lhs = static_cast<LhsOperand>(
                     shift_operator<Tag, typename Operator::binary, LhsOperand, RhsOperand>{}(lhs, rhs));
