@@ -12,9 +12,9 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<typename Rep>
+        template<class Tag=integer<>::tag, typename Rep=integer<>::rep>
         CNL_NODISCARD constexpr auto make_integer(Rep const& rep)
-        -> integer<Rep> {
+        -> integer<Rep, Tag> {
             return rep;
         }
     }

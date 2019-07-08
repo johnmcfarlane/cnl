@@ -13,7 +13,7 @@ namespace cnl {
     // rounding safe integer
     template<
             int IntegerDigits,
-            class OverflowTag = overflow_integer<>::overflow_tag,
+            class OverflowTag = overflow_integer<>::tag,
             class RoundingTag = rounding_integer<>::rounding,
             class Narrowest = int>
     using rounding_safe_int = elastic_integer<
@@ -28,7 +28,7 @@ namespace cnl {
     >;
 
     template<
-            class OverflowTag = overflow_integer<>::overflow_tag,
+            class OverflowTag = overflow_integer<>::tag,
             class RoundingTag = rounding_integer<>::rounding,
             class Narrowest = int,
             class Input = int,
@@ -43,7 +43,7 @@ namespace cnl {
     }
 
     template<
-            class OverflowTag = overflow_integer<>::overflow_tag,
+            class OverflowTag = overflow_integer<>::tag,
             class RoundingTag = rounding_integer<>::rounding,
             class Narrowest = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE InputValue = 0>

@@ -67,13 +67,13 @@ namespace cnl {
         }
     };
 
-    template<class Operator, typename LhsRep, typename RhsRep>
-    struct binary_operator<_impl::native_tag, Operator, _impl::integer<LhsRep>, _impl::integer<RhsRep>> {
+    template<class Operator, typename LhsRep, typename RhsRep, class Tag>
+    struct binary_operator<_impl::native_tag, Operator, _impl::integer<LhsRep, Tag>, _impl::integer<RhsRep, Tag>> {
         CNL_NODISCARD constexpr auto operator()(
-                _impl::integer<LhsRep> const& lhs, _impl::integer<RhsRep> const& rhs) const
-        -> decltype(_impl::make_integer(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
+                _impl::integer<LhsRep, Tag> const& lhs, _impl::integer<RhsRep, Tag> const& rhs) const
+        -> decltype(_impl::make_integer<Tag>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
         {
-            return _impl::make_integer(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)));
+            return _impl::make_integer<Tag>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)));
         }
     };
 }

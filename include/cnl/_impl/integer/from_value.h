@@ -9,8 +9,12 @@
 
 #include "type.h"
 #include "../num_traits/from_value.h"
+#include "../num_traits/from_value_recursive.h"
+#include "../type_traits/common_type.h"
 #include "../../numeric.h"
 
+#include "is_integer.h"
+#include "../type_traits/enable_if.h"
 /// compositional numeric library
 namespace cnl {
     template<typename Rep, class Tag, typename Value>
@@ -18,13 +22,28 @@ namespace cnl {
             : _impl::from_value_simple<_impl::integer<Value, Tag>, Value> {
     };
 
-    template<typename Rep, class Tag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct from_value<_impl::integer<Rep, Tag>, constant<Value>>
+//    template<class Rep, class OverflowTag, class Value>
+//    struct from_value<overflow_integer<Rep, OverflowTag>, Value>
+//            : _impl::from_value_recursive<overflow_integer<Rep, OverflowTag>, Value> {
+//    };
+
+    template<class Rep, class Tag, class ValueRep, class ValueTag>
+    struct from_value<_impl::integer<Rep, Tag>, _impl::integer<ValueRep, ValueTag>>
             : _impl::from_value_simple<
                     _impl::integer<
-                    set_digits_t<Rep, _impl::max(digits<int>::value, _impl::used_digits(Value)-trailing_bits(Value))>,
-                    Tag>,
-            constant<Value>> {
+                            from_value_t<Rep, ValueRep>,
+                            _impl::common_type_t<Tag, ValueTag>>,
+                    _impl::integer<ValueRep, ValueTag>> {
+    };
+
+    template<typename Rep, class Tag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct from_value<_impl::integer<Rep, Tag>, constant<Value>>
+            : _impl::from_value_recursive<
+                    _impl::integer<
+                            set_digits_t<Rep, _impl::max(digits<int>::value,
+                                    _impl::used_digits(Value)-trailing_bits(Value))>,
+                            Tag>,
+                    constant<Value>> {
     };
 }
 

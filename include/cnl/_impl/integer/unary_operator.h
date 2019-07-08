@@ -16,14 +16,12 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Operator, typename Rep>
-    struct unary_operator<_impl::native_tag, Operator, _impl::integer<Rep>> {
-        CNL_NODISCARD constexpr auto operator()(_impl::integer<Rep> const& rhs) const
-        -> decltype(_impl::from_rep<_impl::integer<decltype(Operator()(_impl::to_rep(rhs)))>>(
-                Operator()(_impl::to_rep(rhs))))
+    template<typename Operator, typename Rep, class Tag>
+    struct unary_operator<_impl::native_tag, Operator, _impl::integer<Rep, Tag>> {
+        CNL_NODISCARD constexpr auto operator()(_impl::integer<Rep, Tag> const& rhs) const
+        -> decltype(_impl::from_rep<_impl::integer<Rep, Tag>>(unary_operator<Tag, Operator, Rep>{}(_impl::to_rep(rhs))))
         {
-            return _impl::from_rep<_impl::integer<decltype(Operator()(_impl::to_rep(rhs)))>>(
-                    Operator()(_impl::to_rep(rhs)));
+            return _impl::from_rep<_impl::integer<Rep, Tag>>(unary_operator<Tag, Operator, Rep>{}(_impl::to_rep(rhs)));
         }
     };
 }

@@ -18,7 +18,6 @@
 #include <gtest/gtest.h>
 
 using cnl::_impl::identical;
-using cnl::_integer_impl::is_overflow_integer;
 using cnl::overflow_integer;
 using std::declval;
 using std::is_same;
@@ -41,35 +40,6 @@ using saturated_integer = overflow_integer<Rep, cnl::saturated_overflow_tag>;
 static_assert(
         is_same<cnl::overflow_integer<>, cnl::overflow_integer<int, cnl::undefined_overflow_tag>>::value,
         "wrong default template parameters for cnl::overflow_integer");
-
-////////////////////////////////////////////////////////////////////////////////
-// cnl::_integer_impl::is_overflow_integer
-
-static_assert(!is_overflow_integer<uint8_t>::value, "cnl::is_overflow_integer test failed");
-static_assert(!is_overflow_integer<int8_t>::value, "cnl::is_overflow_integer test failed");
-static_assert(!is_overflow_integer<uint16_t>::value, "cnl::is_overflow_integer test failed");
-static_assert(!is_overflow_integer<int16_t>::value, "cnl::is_overflow_integer test failed");
-static_assert(!is_overflow_integer<uint32_t>::value, "cnl::is_overflow_integer test failed");
-static_assert(!is_overflow_integer<int32_t>::value, "cnl::is_overflow_integer test failed");
-static_assert(!is_overflow_integer<uint64_t>::value, "cnl::is_overflow_integer test failed");
-static_assert(!is_overflow_integer<int64_t>::value, "cnl::is_overflow_integer test failed");
-
-static_assert(is_overflow_integer<saturated_integer<uint8_t>>::value,
-        "cnl::is_overflow_integer test failed");
-static_assert(is_overflow_integer<saturated_integer<int8_t>>::value,
-        "cnl::is_overflow_integer test failed");
-static_assert(is_overflow_integer<saturated_integer<uint16_t>>::value,
-        "cnl::_integer_impl::is_overflow_integer test failed");
-static_assert(is_overflow_integer<saturated_integer<int16_t>>::value,
-        "cnl::_integer_impl::is_overflow_integer test failed");
-static_assert(is_overflow_integer<saturated_integer<uint32_t>>::value,
-        "cnl::_integer_impl::is_overflow_integer test failed");
-static_assert(is_overflow_integer<saturated_integer<int32_t>>::value,
-        "cnl::_integer_impl::is_overflow_integer test failed");
-static_assert(is_overflow_integer<saturated_integer<uint64_t>>::value,
-        "cnl::_integer_impl::is_overflow_integer test failed");
-static_assert(is_overflow_integer<saturated_integer<int64_t>>::value,
-        "cnl::_integer_impl::is_overflow_integer test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::saturated_integer
@@ -126,8 +96,6 @@ static_assert(identical(static_cast<throwing_integer<int32_t>>(throwing_integer<
 namespace saturated_binary_operator {
     using cnl::_impl::multiply_op;
 
-    static_assert(cnl::_impl::is_derived_from_number_base<saturated_integer<short>>::value, "");
-
     static_assert(identical(
             cnl::_impl::to_rep(saturated_integer<short>(1234)),
             short(1234)), "to_rep(saturated_integer<>) test failed");
@@ -140,7 +108,7 @@ namespace saturated_binary_operator {
                     saturated_integer<int16_t>(32767), saturated_integer<int16_t>(5000000000L)), "");
 
     static_assert(identical(
-            cnl::make_overflow_int<cnl::saturated_overflow_tag>(
+            cnl::_impl::make_integer<cnl::saturated_overflow_tag>(
                     cnl::binary_operator<
                             cnl::saturated_overflow_tag, multiply_op, signed char, signed char>()(
                                     cnl::_impl::to_rep(saturated_integer<signed char>{30}),
@@ -577,8 +545,8 @@ namespace {
         using overflow_integer = OverflowInt;
 
         using rep = typename overflow_integer::rep;
-        using overflow_tag = typename overflow_integer::overflow_tag;
-        static_assert(is_same<cnl::overflow_integer<rep, overflow_tag>, overflow_integer>::value, "cnl::overflow_integer test failed");
+        using tag = typename overflow_integer::tag;
+        static_assert(is_same<cnl::overflow_integer<rep, tag>, overflow_integer>::value, "cnl::overflow_integer test failed");
 
         static constexpr auto default_initialized = overflow_integer{0};
         static_assert(!default_initialized, "cnl::overflow_integer test failed");
