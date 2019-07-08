@@ -7,8 +7,9 @@
 #if !defined(CNL_IMPL_OVERFLOW_UNDEFINED_H)
 #define CNL_IMPL_OVERFLOW_UNDEFINED_H
 
+#include "../polarity.h"
 #include "../unreachable.h"
-#include "common.h"
+#include "is_overflow_tag.h"
 #include "overflow_operator.h"
 
 /// compositional numeric library

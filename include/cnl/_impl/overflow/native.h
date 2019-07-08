@@ -9,7 +9,7 @@
 
 #include "../operators/native_tag.h"
 #include "../polarity.h"
-#include "common.h"
+#include "is_overflow_tag.h"
 #include "overflow_operator.h"
 
 /// compositional numeric library
