@@ -12,10 +12,10 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<typename IntegerRep, typename Rep>
-    struct from_rep<_impl::integer<IntegerRep>, Rep> {
+    template<typename IntegerRep, class IntegerTag, typename Rep>
+    struct from_rep<_impl::integer<IntegerRep, IntegerTag>, Rep> {
         CNL_NODISCARD constexpr auto operator()(Rep const& rep) const
-        -> _impl::integer<Rep>
+        -> _impl::integer<Rep, IntegerTag>
         {
             return rep;
         }

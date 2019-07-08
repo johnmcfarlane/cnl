@@ -7,17 +7,24 @@
 #if !defined(CNL_IMPL_INTEGER_H)
 #define CNL_IMPL_INTEGER_H
 
+#include "integer/binary_operator.h"
+#include "integer/comparison_operator.h"
+#include "integer/declaration.h"
 #include "integer/digits.h"
 #include "integer/from_rep.h"
 #include "integer/from_value.h"
+#include "integer/inc_dec_operator.h"
 #include "integer/is_composite.h"
 #include "integer/is_integer.h"
 #include "integer/make_integer.h"
 #include "integer/numeric_limits.h"
+#include "integer/operator_helpers.h"
 #include "integer/operators.h"
 #include "integer/scale.h"
 #include "integer/set_digits.h"
+#include "integer/shift_operator.h"
 #include "integer/to_rep.h"
 #include "integer/type.h"
+#include "integer/unary_operator.h"
 
 #endif  // CNL_IMPL_INTEGER_H

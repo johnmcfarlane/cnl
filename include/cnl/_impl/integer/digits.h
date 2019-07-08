@@ -12,8 +12,8 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<class Rep>
-    struct digits<_impl::integer<Rep>>
+    template<typename Rep, class Tag>
+    struct digits<_impl::integer<Rep, Tag>>
             : digits<Rep> {
     };
 }
