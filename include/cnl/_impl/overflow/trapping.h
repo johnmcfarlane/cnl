@@ -7,8 +7,9 @@
 #if !defined(CNL_IMPL_OVERFLOW_TRAPPING_H)
 #define CNL_IMPL_OVERFLOW_TRAPPING_H
 
-#include "common.h"
+#include "is_overflow_tag.h"
 #include "overflow_operator.h"
+#include "../polarity.h"
 #include "../terminate.h"
 
 /// compositional numeric library

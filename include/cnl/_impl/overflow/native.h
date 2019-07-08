@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_OVERFLOW_NATIVE_H)
 #define CNL_IMPL_OVERFLOW_NATIVE_H
 
-#include "common.h"
+#include "is_overflow_tag.h"
 #include "overflow_operator.h"
 #include "../polarity.h"
 #include "../operators/native_tag.h"
