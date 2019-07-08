@@ -1,43 +1,23 @@
 
-//          Copyright John McFarlane 2018.
+//          Copyright John McFarlane 2019.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_OVERFLOW_COMMON_H)
-#define CNL_IMPL_OVERFLOW_COMMON_H
+#if !defined(CNL_IMPL_OVERFLOW_GENERIC_H)
+#define CNL_IMPL_OVERFLOW_GENERIC_H
 
 #include "builtin_overflow.h"
 #include "is_overflow.h"
+#include "is_overflow_tag.h"
 #include "overflow_operator.h"
 #include "../polarity.h"
-#include "../operators/native_tag.h"
+#include "../operators/generic.h"
 
 #include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
-    namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::is_overflow_tag
-
-        template<typename Tag>
-        struct is_overflow_tag : std::false_type {
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // result
-
-        template<typename Result, class OverflowTag>
-        struct positive_overflow_result;
-
-        template<typename Result, class OverflowTag>
-        struct negative_overflow_result;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // overflow_convert
-
     template<class OverflowTag, typename Destination, typename Source>
     struct convert_operator<OverflowTag, Destination, Source,
             _impl::enable_if_t<_impl::is_overflow_tag<OverflowTag>::value>> {
@@ -147,4 +127,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_OVERFLOW_COMMON_H
+#endif  // CNL_IMPL_OVERFLOW_GENERIC_H
