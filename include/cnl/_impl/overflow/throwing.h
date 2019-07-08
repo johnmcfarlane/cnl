@@ -7,8 +7,9 @@
 #if !defined(CNL_IMPL_OVERFLOW_THROWING_H)
 #define CNL_IMPL_OVERFLOW_THROWING_H
 
-#include "common.h"
+#include "is_overflow_tag.h"
 #include "overflow_operator.h"
+#include "../polarity.h"
 #include "../throw_exception.h"
 
 #include <stdexcept>
@@ -59,14 +60,6 @@ namespace cnl {
             CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
             {
                 return throw_exception<op_result<Operator, Operands...>, std::overflow_error>("negative overflow");
-            }
-        };
-
-        template<typename Result>
-        struct negative_overflow_result<Result, throwing_overflow_tag> {
-            CNL_NODISCARD constexpr Result operator()() const
-            {
-                return throw_exception<Result, std::overflow_error>("negative overflow");
             }
         };
     }
