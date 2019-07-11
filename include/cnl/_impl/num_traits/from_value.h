@@ -27,7 +27,7 @@ namespace cnl {
     }
 
     template<typename Number, typename Value, class Enable = void>
-    struct from_value : _impl::from_value_simple<void, Value> {
+    struct from_value {
         void operator()(Value const &) const;
     };
 
