@@ -19,9 +19,7 @@ namespace cnl {
     /// template instantiation based on input parameter.
     /// \sa to_rep, from_value
     template<typename Number, typename Rep, class Enable = void>
-    struct from_rep {
-        void operator()(Rep const&) const {}
-    };
+    struct from_rep;
 
     /// \brief Specialization of \ref from_rep for integer types
     ///
