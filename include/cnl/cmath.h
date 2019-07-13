@@ -18,10 +18,7 @@
 namespace cnl {
     using _impl::abs;
 
-    template<typename T>
-    CNL_NODISCARD constexpr T sqrt(T arg) {
-        return std::sqrt(arg);
-    }
+    using std::sqrt;
 }
 
 #endif //CNL_CMATH_H
