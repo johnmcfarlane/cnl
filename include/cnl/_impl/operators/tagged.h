@@ -16,18 +16,19 @@ namespace cnl {
     /// \brief converts a value to a type
     /// \headerfile cnl/all.h
     ///
-    /// \tparam Tag specifies the conversion mode, e.g. \ref cnl::native_overflow_tag
-    /// \param from value to convert from
+    /// \tparam DestTag specifies the destination behavior tag, e.g. \ref cnl::native_overflow_tag
+    /// \tparam SrcTag specifies the source behavior tag, e.g. \ref cnl::native_overflow_tag
+    /// \param src value to convert from
     /// \return value converted to
     ///
     /// \sa cnl::add, cnl::divide, cnl::shift_right, cnl::multiply, cnl::subtract,
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag, cnl::trapping_overflow_tag,
     /// cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
-    template<class Tag, typename Result, typename Input>
-    CNL_NODISCARD constexpr auto convert(Input const& from)
-    -> decltype(convert_operator<Tag, Result, Input>{}(from))
+    template<class DestTag, typename SrcTag, typename Dest, typename Src>
+    CNL_NODISCARD constexpr auto convert(Src const& src)
+    -> decltype(convert_operator<DestTag, SrcTag, Dest, Src>{}(src))
     {
-        return convert_operator<Tag, Result, Input>{}(from);
+        return convert_operator<DestTag, SrcTag, Dest, Src>{}(src);
     }
 
     /// \brief adds two values together

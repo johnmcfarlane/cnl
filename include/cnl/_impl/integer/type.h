@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_INTEGER_TYPE_H)
 #define CNL_IMPL_INTEGER_TYPE_H
 
+#include "can_convert_tag_family.h"
 #include "is_integer.h"
 #include "../num_traits/from_value.h"
 #include "../operators/generic.h"
@@ -27,10 +28,19 @@ namespace cnl {
 
             integer() = default;
 
-            /// constructor taking an _impl::integer type
-            template<typename RhsRep>
-            constexpr integer(integer<RhsRep, Tag> const& i)
-                    : _rep(convert<tag, Rep>(to_rep(i)))
+            /// constructor taking a related _impl::integer type
+            template<typename RhsRep, class RhsTag,
+                    enable_if_t<can_convert_tag_family<Tag, RhsTag>::value, int> = 0>
+            constexpr integer(integer<RhsRep, RhsTag> const& i)
+                    : _rep(convert<Tag, RhsTag, Rep>(to_rep(i)))
+            {
+            }
+
+            /// constructor taking an unrelated _impl::integer type
+            template<typename RhsRep, class RhsTag,
+                    enable_if_t<!can_convert_tag_family<Tag, RhsTag>::value, int> = 0>
+            constexpr integer(integer<RhsRep, RhsTag> const& i)
+                    : _rep(convert<Tag, _impl::native_tag, Rep>(i))
             {
             }
 
@@ -39,21 +49,21 @@ namespace cnl {
                     (numeric_limits<S>::is_integer&&!is_integer<S>::value)||is_constant<S>::value,
                     int> Dummy = 0>
             constexpr integer(S const& s)
-            : _rep(convert<tag, Rep>(_impl::from_value<Rep>(s)))
+            : _rep(convert<tag, _impl::native_tag, Rep>(_impl::from_value<Rep>(s)))
             {
             }
 
             /// constructor taking a floating-point type
             template<class S, enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
             constexpr integer(S s)
-            : _rep(convert<tag, rep>(s))
+            : _rep(convert<tag, _impl::native_tag, rep>(s))
             {
             }
 
-            template<class S>
+            template<class S, enable_if_t<!is_integer<S>::value, int> Dummy = 0>
             CNL_NODISCARD constexpr explicit operator S() const
             {
-                return convert<Tag, S>(_impl::to_rep(*this));
+                return convert<Tag, _impl::native_tag, S>(_impl::to_rep(*this));
             }
 
             CNL_NODISCARD explicit constexpr operator bool() const

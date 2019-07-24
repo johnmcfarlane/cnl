@@ -41,6 +41,17 @@ namespace cnl {
         }
     };
 
+    template<class Operator, class Lhs, typename RhsRep, class RhsTag>
+    struct shift_operator<
+            _impl::native_tag, Operator, Lhs, _impl::integer<RhsRep, RhsTag>,
+            _impl::enable_if_t<!_impl::is_integer<Lhs>::value>> {
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, _impl::integer<RhsRep, RhsTag> const& rhs) const
+        -> decltype(Operator()(lhs, RhsRep{_impl::to_rep(rhs)}))
+        {
+            return Operator()(lhs, RhsRep{_impl::to_rep(rhs)});
+        }
+    };
+
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::operator<<(std::ostream& o, cnl::_impl::integer const& i)

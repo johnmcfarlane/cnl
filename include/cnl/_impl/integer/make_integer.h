@@ -21,7 +21,7 @@ namespace cnl {
         template<class Tag=integer<>::tag, typename Rep=integer<>::rep>
         CNL_NODISCARD constexpr auto make_integer(Rep const& rep)
         -> integer<Rep, Tag> {
-            return rep;
+            return integer<Rep, Tag>{rep};
         }
     }
 }

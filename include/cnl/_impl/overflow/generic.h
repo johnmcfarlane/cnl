@@ -18,8 +18,8 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<class OverflowTag, typename Destination, typename Source>
-    struct convert_operator<OverflowTag, Destination, Source,
+    template<class OverflowTag, class SrcTag, typename Destination, typename Source>
+    struct convert_operator<OverflowTag, SrcTag, Destination, Source,
             _impl::enable_if_t<_impl::is_overflow_tag<OverflowTag>::value>> {
         CNL_NODISCARD constexpr Destination operator()(Source const& from) const
         {
