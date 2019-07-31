@@ -11,16 +11,6 @@
 
 #include "operators.h"
 
-////////////////////////////////////////////////////////////////////////////////
-// tag error message
-
-template<typename Type>
-struct CNL_ERROR___cannot_use {
-    // It you see this type in an error message then somewhere,
-    // you probably passed a non-tag type as a tag parameter.
-    struct as_a_tag;
-};
-
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
@@ -31,8 +21,7 @@ namespace cnl {
         // cnl::_impl::tagged_convert_operator
 
         template<class Tag, typename Destination, typename Source, typename Enabled=void>
-        struct tagged_convert_operator : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
-        };
+        struct tagged_convert_operator;
 
         template<typename Destination, typename Source>
         struct tagged_convert_operator<native_tag, Destination, Source> : convert_op {
@@ -42,8 +31,7 @@ namespace cnl {
         // cnl::_impl::tagged_unary_operator
 
         template<class Tag, class Operator>
-        struct tagged_unary_operator : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
-        };
+        struct tagged_unary_operator;
 
         template<class Operator>
         struct tagged_unary_operator<native_tag, Operator> : Operator {
@@ -53,8 +41,7 @@ namespace cnl {
         // cnl::_impl::tagged_binary_operator
 
         template<class Tag, class Operator>
-        struct tagged_binary_operator : public CNL_ERROR___cannot_use<Tag>::as_a_tag {
-        };
+        struct tagged_binary_operator;
 
         template<class Operator>
         struct tagged_binary_operator<native_tag, Operator> : Operator {};
