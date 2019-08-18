@@ -10,6 +10,7 @@
 #include "generic.h"
 #include "operators.h"
 #include "../config.h"
+#include "../../constant.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -28,6 +29,13 @@ namespace cnl {
     -> decltype(convert_operator<Tag, Result, Input>{}(from))
     {
         return convert_operator<Tag, Result, Input>{}(from);
+    }
+
+    template<class DestTag, typename Dest, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    CNL_NODISCARD constexpr auto convert(constant<Value> const& src)
+    -> decltype(convert_operator<DestTag, Dest, decltype(Value)>{}(src))
+    {
+        return convert_operator<DestTag, Dest, decltype(Value)>{}(src);
     }
 
     /// \brief adds two values together
