@@ -12,6 +12,7 @@
 
 #include "cstdint.h"
 #include "limits.h"
+#include "_impl/assert.h"
 
 #include <type_traits>
 
@@ -44,6 +45,23 @@ namespace cnl {
 #endif
 
         static constexpr value_type value = Value;
+
+        constexpr constant() = default;
+
+        template<typename S>
+#if (__cpp_constexpr >= 201304L)
+        constexpr explicit constant(S const& init)
+#else
+        constexpr explicit constant(S const&)
+#endif
+        {
+            static_assert(
+                    value<=cnl::numeric_limits<S>::max()&&value>=cnl::numeric_limits<S>::lowest(),
+                    "initial value couldn't possibly represent value");
+#if (__cpp_constexpr >= 201304L)
+            CNL_ASSERT(value==init);
+#endif
+        }
 
 #if defined(_MSC_VER)
         CNL_NODISCARD constexpr operator auto() const -> value_type
