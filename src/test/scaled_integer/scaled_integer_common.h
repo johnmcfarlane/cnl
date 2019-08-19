@@ -959,19 +959,11 @@ namespace test_bitshift {
             identical(
                     scaled_integer<uint8, cnl::power<-3>>{2},
                     scaled_integer<uint8, cnl::power<-4>>{1} << cnl::constant<1>{}), "bitshift test failed");
-    static_assert(
-            identical(
-                    scaled_integer<uint8, cnl::power<-5>>{.5},
-                    scaled_integer<uint8, cnl::power<-4>>{1} << cnl::constant<-1>{}), "bitshift test failed");
 
     static_assert(
             identical(
                     scaled_integer<uint8, cnl::power<-5>>{.5},
                     scaled_integer<uint8, cnl::power<-4>>{1} >> cnl::constant<1>{}), "bitshift test failed");
-    static_assert(
-            identical(
-                    scaled_integer<uint8, cnl::power<-3>>{2},
-                    scaled_integer<uint8, cnl::power<-4>>{1} >> cnl::constant<-1>{}), "bitshift test failed");
 
     // const_integer
     using namespace cnl::literals;
@@ -979,19 +971,11 @@ namespace test_bitshift {
             identical(
                     scaled_integer<uint8, cnl::power<-3>>{2},
                     scaled_integer<uint8, cnl::power<-4>>{1} << 1_c), "bitshift test failed");
-    static_assert(
-            identical(
-                    scaled_integer<uint8, cnl::power<-5>>{.5},
-                    scaled_integer<uint8, cnl::power<-4>>{1} << -1_c), "bitshift test failed");
 
     static_assert(
             identical(
                     scaled_integer<uint8, cnl::power<-5>>{.5},
                     scaled_integer<uint8, cnl::power<-4>>{1} >> 1_c), "bitshift test failed");
-    static_assert(
-            identical(
-                    scaled_integer<uint8, cnl::power<-3>>{2},
-                    scaled_integer<uint8, cnl::power<-4>>{1} >> -1_c), "bitshift test failed");
 }
 
 namespace test_bitwise_or {
