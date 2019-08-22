@@ -10,44 +10,43 @@
 #if !defined(CNL_IMPL_ROUNDING_H)
 #define CNL_IMPL_ROUNDING_H
 
-#include "native_tag.h"
-#include "rounding/native_rounding_tag.h"
-#include "rounding/nearest_rounding_tag.h"
-#include "rounding/tagged_convert_operator.h"
-#include "operators.h"
 #include "num_traits/from_value.h"
 #include "num_traits/unwrap.h"
+#include "operators/native_tag.h"
+#include "operators/operators.h"
+#include "rounding/native_rounding_tag.h"
+#include "rounding/nearest_rounding_tag.h"
+#include "rounding/convert_operator.h"
 
 /// compositional numeric library
 namespace cnl {
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::binary_operator<nearest_rounding_tag>
+
+    template<class Operator, typename Lhs, typename Rhs>
+    struct binary_operator<native_rounding_tag, Operator, Lhs, Rhs>
+            : binary_operator<_impl::native_tag, Operator, Lhs, Rhs> {
+    };
+
+    template<class Operator, typename Lhs, typename Rhs>
+    struct binary_operator<nearest_rounding_tag, Operator, Lhs, Rhs> : Operator {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::binary_operator<nearest_rounding_tag, divide_op>
+
+    template<typename Lhs, typename Rhs>
+    struct binary_operator<nearest_rounding_tag, _impl::divide_op, Lhs, Rhs> {
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(lhs/rhs)
+        {
+            return (((lhs < 0) ^ (rhs < 0))
+                    ? lhs-(rhs/2)
+                    : lhs+(rhs/2))/rhs;
+        }
+    };
+
     namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::tagged_binary_operator<nearest_rounding_tag>
-
-        template<class Operator>
-        struct tagged_binary_operator<native_rounding_tag, Operator>
-                : tagged_binary_operator<native_tag, Operator> {
-        };
-
-        template<class Operator>
-        struct tagged_binary_operator<nearest_rounding_tag, Operator> : Operator {
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::tagged_binary_operator<nearest_rounding_tag, divide_op>
-
-        template<>
-        struct tagged_binary_operator<nearest_rounding_tag, divide_op> {
-            template<class Lhs, class Rhs>
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(lhs/rhs)
-            {
-                return (((lhs<0) ^ (rhs<0))
-                        ? lhs-(rhs/2)
-                        : lhs+(rhs/2))/rhs;
-            }
-        };
-
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::divide<nearest_rounding_tag, ...>
 
@@ -56,7 +55,7 @@ namespace cnl {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs/rhs)
             {
-                return tagged_binary_operator<RoundingTag, divide_op>{}(cnl::unwrap(lhs), cnl::unwrap(rhs));
+                return cnl::binary_operator<RoundingTag, divide_op, Lhs, Rhs>{}(cnl::unwrap(lhs), cnl::unwrap(rhs));
             }
         };
 
@@ -68,7 +67,7 @@ namespace cnl {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs >> rhs)
             {
-                return tagged_binary_operator<RoundingTag, shift_right_op>{}(lhs, rhs);
+                return cnl::binary_operator<RoundingTag, shift_right_op, Lhs, Rhs>{}(lhs, rhs);
             }
         };
     }

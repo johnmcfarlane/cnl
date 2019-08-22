@@ -25,7 +25,7 @@ namespace {
         static_assert(
                 identical(
                         true,
-                        cnl::_impl::comparison_operator<
+                        cnl::comparison_operator<
                                 cnl::_impl::equal_op,
                                 cnl::_impl::wide_integer<15>,
                                 cnl::_impl::wide_integer<63>>{}(
@@ -90,16 +90,16 @@ namespace {
         static_assert(
                 identical(
                         cnl::_impl::wide_integer<16, unsigned>{0x12},
-                        cnl::_impl::binary_operator<
-                                cnl::_impl::divide_op,
+                        cnl::binary_operator<
+                                cnl::_impl::native_tag, cnl::_impl::divide_op,
                                 cnl::_impl::wide_integer<16, unsigned>,
                                 cnl::_impl::wide_integer<16, unsigned>>{}(0x1234, 0x100)),
                 "");
         static_assert(
                 identical(
                         cnl::_impl::wide_integer<16, signed>{0x12},
-                        cnl::_impl::binary_operator<
-                                cnl::_impl::divide_op,
+                        cnl::binary_operator<
+                                cnl::_impl::native_tag, cnl::_impl::divide_op,
                                 cnl::_impl::wide_integer<16, unsigned>,
                                 cnl::_impl::wide_integer<16, signed>>{}(0x1234, 0x100)),
                 "");

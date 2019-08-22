@@ -9,8 +9,8 @@
 
 #include "overflow_operator.h"
 #include "../config.h"
-#include "../operators.h"
 #include "../polarity.h"
+#include "../operators/operators.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 #include "../unreachable.h"
@@ -51,11 +51,6 @@ namespace cnl {
             }
         };
 
-#if defined(__GNUC__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wstrict-overflow"
-#endif
-
         template<>
         struct overflow_polarity<subtract_op> {
             template<typename Lhs, typename Rhs>
@@ -75,101 +70,49 @@ namespace cnl {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::builtin_overflow
+        // cnl::_impl::are_builtin_operands
 
-        enum class builtin_overflow_result {
-            overflow,   // overflow occurred
-            ok,   // overflow did not occur
-            inconclusive    // there is no built-in test for this
+        template<typename Lhs, typename Rhs>
+        struct are_builtin_operands : std::integral_constant<
+                bool, _impl::is_integral<Lhs>::value&&_impl::is_integral<Rhs>::value> {
         };
 
-        template<class Operator, typename Lhs, typename Rhs, typename Result>
-        CNL_NODISCARD constexpr builtin_overflow_result builtin_overflow(Operator, Lhs const&, Rhs const&, Result&)
-        {
-            return builtin_overflow_result::inconclusive;
-        }
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // cnl::_impl::builtin_overflow_operator
+
+        template<class Operator, typename Lhs, typename Rhs>
+        struct builtin_overflow_operator : std::false_type {
+        };
 
 #if defined(CNL_BUILTIN_OVERFLOW_ENABLED)
-
-        template<typename Lhs, typename Rhs, typename Result>
-        CNL_NODISCARD constexpr auto builtin_overflow(add_op, Lhs const& lhs, Rhs const& rhs, Result& result)
-        -> enable_if_t<
-                is_integral<Lhs>::value && is_integral<Rhs>::value && is_integral<Result>::value,
-                builtin_overflow_result>
-        {
-            return __builtin_add_overflow(lhs, rhs, &result)
-                    ? builtin_overflow_result::overflow
-                    : builtin_overflow_result::ok;
-        }
-
-        template<typename Lhs, typename Rhs, typename Result>
-        CNL_NODISCARD constexpr auto builtin_overflow(subtract_op, Lhs const& lhs, Rhs const& rhs, Result& result)
-        -> enable_if_t<
-                is_integral<Lhs>::value && is_integral<Rhs>::value && is_integral<Result>::value,
-                builtin_overflow_result>
-        {
-            return __builtin_sub_overflow(lhs, rhs, &result)
-                    ? builtin_overflow_result::overflow
-                    : builtin_overflow_result::ok;
-        }
-
-        template<typename Lhs, typename Rhs, typename Result>
-        CNL_NODISCARD constexpr auto builtin_overflow(multiply_op, Lhs const& lhs, Rhs const& rhs, Result& result)
-        -> enable_if_t<
-                is_integral<Lhs>::value && is_integral<Rhs>::value && is_integral<Result>::value,
-                builtin_overflow_result>
-        {
-            return __builtin_mul_overflow(lhs, rhs, &result)
-                    ? builtin_overflow_result::overflow
-                    : builtin_overflow_result::ok;
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::builtin_tagged_binary_overflow_operator
-
-        template<class OverflowTag, class Operator, class Lhs, class Rhs>
-        CNL_NODISCARD constexpr auto builtin_tagged_binary_overflow_operator(Lhs const& lhs, Rhs const& rhs)
-        -> op_result<Operator, Lhs, Rhs>
-        {
-            using Result = op_result<Operator, Lhs, Rhs>;
-            Result result{};
-            switch (builtin_overflow(Operator{}, lhs, rhs, result))
+        template<typename Lhs, typename Rhs>
+        struct builtin_overflow_operator<add_op, Lhs, Rhs> : are_builtin_operands<Lhs, Rhs> {
+            template<typename Result>
+            CNL_NODISCARD constexpr auto operator() (Lhs const& lhs, Rhs const& rhs, Result& result) const
             {
-            case builtin_overflow_result::ok:
-                return result;
-            case builtin_overflow_result::overflow:
-                switch (overflow_polarity<Operator>{}(lhs, rhs)) {
-                case polarity::positive:
-                    return overflow_operator<Operator, OverflowTag, polarity::positive>{}(lhs, rhs);
-                case polarity::negative:
-                    return overflow_operator<Operator, OverflowTag, polarity::negative>{}(lhs, rhs);
-                case polarity::neutral:
-                    return unreachable<Result>("CNL internal error");
-                }
-            case builtin_overflow_result::inconclusive:
-                break;
+                return __builtin_add_overflow(lhs, rhs, &result);
             }
-            return unreachable<Result>("CNL internal error");
-        }
+        };
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::builtin_overflow_supported
+        template<typename Lhs, typename Rhs>
+        struct builtin_overflow_operator<subtract_op, Lhs, Rhs> : are_builtin_operands<Lhs, Rhs> {
+            template<typename Result>
+            CNL_NODISCARD constexpr auto operator() (Lhs const& lhs, Rhs const& rhs, Result& result) const
+            {
+                return __builtin_sub_overflow(lhs, rhs, &result);
+            }
+        };
 
-        template<class Operator, typename Lhs, typename Rhs>
-        CNL_NODISCARD constexpr bool builtin_overflow_supported()
-        {
-            using Result = op_result<Operator, Lhs, Rhs>;
-            Result result{};
-            return builtin_overflow(Operator{}, Lhs{}, Rhs{}, result)!=builtin_overflow_result::inconclusive;
-        }
-#else
-
-        template<class Operator, typename Lhs, typename Rhs>
-        CNL_NODISCARD constexpr bool builtin_overflow_supported()
-        {
-            return false;
-        }
-#endif  // CNL_BUILTIN_OVERFLOW_ENABLED
+        template<typename Lhs, typename Rhs>
+        struct builtin_overflow_operator<multiply_op, Lhs, Rhs> : are_builtin_operands<Lhs, Rhs> {
+            template<typename Result>
+            CNL_NODISCARD constexpr auto operator() (Lhs const& lhs, Rhs const& rhs, Result& result) const
+            {
+                return __builtin_mul_overflow(lhs, rhs, &result);
+            }
+        };
+#endif
     }
 }
 

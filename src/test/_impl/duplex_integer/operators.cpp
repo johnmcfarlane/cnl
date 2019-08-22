@@ -324,7 +324,8 @@ namespace {
                         cnl::_impl::duplex_integer<
                                 cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
                                 cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32> >{1000000000ULL},
-                        cnl::_impl::binary_operator<
+                        cnl::binary_operator<
+                                cnl::_impl::native_tag,
                                 cnl::_impl::divide_op,
                                 cnl::_impl::duplex_integer<
                                         cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
@@ -420,7 +421,8 @@ namespace {
                         cnl::_impl::duplex_integer<
                                 cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
                                 cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32> >{0},
-                        cnl::_impl::binary_operator<
+                        cnl::binary_operator<
+                                cnl::_impl::native_tag,
                                 cnl::_impl::modulo_op,
                                 cnl::_impl::duplex_integer<
                                         cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
@@ -591,7 +593,8 @@ namespace {
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>{0x1234 & 0x5858},
-                        cnl::_impl::binary_operator<
+                        cnl::binary_operator<
+                                cnl::_impl::native_tag,
                                 cnl::_impl::bitwise_and_op,
                                 cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>,
                                 cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>>{}(0x1234, 0x5858)),
@@ -602,7 +605,8 @@ namespace {
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<signed, unsigned>{0},
-                        cnl::_impl::shift_operator<
+                        cnl::shift_operator<
+                                cnl::_impl::native_tag,
                                 cnl::_impl::shift_left_op,
                                 cnl::_impl::duplex_integer<signed, unsigned>,
                                 cnl::_impl::duplex_integer<signed, unsigned>>{}(0, 0)),
@@ -610,7 +614,8 @@ namespace {
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<cnl::int16, cnl::uint16>{0x2468ACE0},
-                        cnl::_impl::shift_operator<
+                        cnl::shift_operator<
+                                cnl::_impl::native_tag,
                                 cnl::_impl::shift_left_op,
                                 cnl::_impl::duplex_integer<cnl::int16, cnl::uint16>,
                                 cnl::_impl::duplex_integer<cnl::int16, cnl::uint16>>{}(0x12345670, 1)),
@@ -618,7 +623,8 @@ namespace {
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<signed, unsigned>{1},
-                        cnl::_impl::shift_operator<
+                        cnl::shift_operator<
+                                cnl::_impl::native_tag,
                                 cnl::_impl::shift_left_op,
                                 cnl::_impl::duplex_integer<signed, unsigned>,
                                 cnl::_impl::duplex_integer<signed, unsigned>>{}(1, 0)),
@@ -626,7 +632,8 @@ namespace {
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<signed, unsigned>{246},
-                        cnl::_impl::shift_operator<
+                        cnl::shift_operator<
+                                cnl::_impl::native_tag,
                                 cnl::_impl::shift_left_op,
                                 cnl::_impl::duplex_integer<signed, unsigned>,
                                 cnl::_impl::duplex_integer<signed, unsigned>>{}(
@@ -636,7 +643,8 @@ namespace {
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<signed, cnl::_impl::duplex_integer<unsigned, unsigned>>{0},
-                        cnl::_impl::shift_operator<
+                        cnl::shift_operator<
+                                cnl::_impl::native_tag,
                                 cnl::_impl::shift_left_op,
                                 cnl::_impl::duplex_integer<signed, cnl::_impl::duplex_integer<unsigned, unsigned>>,
                                 int>{}(0, 1)),
@@ -644,7 +652,8 @@ namespace {
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<int, unsigned int>{1LL << 34},
-                        cnl::_impl::shift_operator<
+                        cnl::shift_operator<
+                                cnl::_impl::native_tag,
                                 cnl::_impl::shift_left_op,
                                 cnl::_impl::duplex_integer<int, unsigned int>,
                                 int>{}(1, 34)),
@@ -654,7 +663,8 @@ namespace {
                 identical(
                         cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<int, unsigned int>, cnl::_impl::duplex_integer<unsigned int, unsigned int>>{
                                 1LL << 34},
-                        cnl::_impl::shift_operator<
+                        cnl::shift_operator<
+                                cnl::_impl::native_tag,
                                 cnl::_impl::shift_left_op,
                                 cnl::_impl::duplex_integer<cnl::_impl::duplex_integer<int, unsigned int>, cnl::_impl::duplex_integer<unsigned int, unsigned int> >,
                                 int>{}(1, 34)),
@@ -665,14 +675,16 @@ namespace {
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>{0},
-                        cnl::_impl::shift_operator<
+                        cnl::shift_operator<
+                                cnl::_impl::native_tag,
                                 cnl::_impl::shift_right_op,
                                 cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>,
                                 int>{}(0, 9)), "");
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>{0x7394uLL >> 0},
-                        cnl::_impl::shift_operator<
+                        cnl::shift_operator<
+                                cnl::_impl::native_tag,
                                 cnl::_impl::shift_right_op,
                                 cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>,
                                 cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>>{}(0x7394uLL, 0)),

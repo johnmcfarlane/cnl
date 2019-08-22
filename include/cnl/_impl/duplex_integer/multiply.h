@@ -13,8 +13,8 @@
 #include "type.h"
 #include "wants_generic_ops.h"
 #include "../num_traits/width.h"
-#include "../generic_operators.h"
-#include "../operators.h"
+#include "../operators/generic.h"
+#include "../operators/operators.h"
 #include "../type_traits/conditional3.h"
 
 /// compositional numeric library
@@ -103,51 +103,59 @@ namespace cnl {
                         +((result_type{_impl::long_multiply<Lower>{}(lhs_lower, rhs_lower)}));
             }
         };
-
-        // cnl::_impl::binary_operator<multiply_op, duplex_integer<>, duplex_integer<>>
-        template<typename Upper, typename Lower>
-        struct binary_operator<multiply_op, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
-            using _duplex_integer = duplex_integer<Upper, Lower>;
-
-            CNL_NODISCARD constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
-            -> _duplex_integer
-            {
-                return multiply_components(lhs.upper(), lhs.lower(), rhs.upper(), rhs.lower());
-            }
-
-            CNL_NODISCARD static constexpr auto multiply_components(
-                    Upper const& lhs_upper,
-                    Lower const& lhs_lower,
-                    Upper const& rhs_upper,
-                    Lower const& rhs_lower)
-            -> _duplex_integer
-            {
-                using common_result_type = decltype(long_multiply<Upper>{}(lhs_upper, rhs_upper));
-                return (long_multiply<Upper>{}(lhs_upper, rhs_upper) << digits<Upper>::value)
-                        +((long_multiply<Upper>{}(lhs_upper, rhs_lower)+long_multiply<Upper>{}(lhs_lower, rhs_upper))
-                                << digits<Lower>::value)
-                        +static_cast<common_result_type>(long_multiply<Lower>{}(lhs_lower, rhs_lower));
-            }
-        };
-
-        template<typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
-        struct binary_operator<multiply_op, duplex_integer<LhsUpper, LhsLower>, duplex_integer<RhsUpper, RhsLower>>
-                : heterogeneous_duplex_multiply_operator<
-                        duplex_integer<LhsUpper, LhsLower>, duplex_integer<RhsUpper, RhsLower>> {
-        };
-
-        template<typename LhsUpper, typename LhsLower, typename Rhs>
-        struct binary_operator<multiply_op, duplex_integer<LhsUpper, LhsLower>, Rhs>
-                : heterogeneous_duplex_multiply_operator<
-                        duplex_integer<LhsUpper, LhsLower>, Rhs> {
-        };
-
-        template<typename Lhs, typename RhsUpper, typename RhsLower>
-        struct binary_operator<multiply_op, Lhs, duplex_integer<RhsUpper, RhsLower>>
-                : heterogeneous_duplex_multiply_operator<
-                        Lhs, duplex_integer<RhsUpper, RhsLower>> {
-        };
     }
+
+    // cnl::_impl::binary_operator<multiply_op, duplex_integer<>, duplex_integer<>>
+    template<typename Upper, typename Lower>
+    struct binary_operator<
+            _impl::native_tag, _impl::multiply_op,
+            _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>> {
+        using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
+
+        CNL_NODISCARD constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
+        -> _duplex_integer
+        {
+            return multiply_components(lhs.upper(), lhs.lower(), rhs.upper(), rhs.lower());
+        }
+
+        CNL_NODISCARD static constexpr auto multiply_components(
+                Upper const& lhs_upper,
+                Lower const& lhs_lower,
+                Upper const& rhs_upper,
+                Lower const& rhs_lower)
+        -> _duplex_integer
+        {
+            using common_result_type = decltype(_impl::long_multiply<Upper>{}(lhs_upper, rhs_upper));
+            return (_impl::long_multiply<Upper>{}(lhs_upper, rhs_upper) << digits<Upper>::value)
+                    +((_impl::long_multiply<Upper>{}(lhs_upper, rhs_lower)+_impl::long_multiply<Upper>{}(lhs_lower, rhs_upper))
+                            << digits<Lower>::value)
+                    +static_cast<common_result_type>(_impl::long_multiply<Lower>{}(lhs_lower, rhs_lower));
+        }
+    };
+
+    template<typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
+    struct binary_operator<
+            _impl::native_tag, _impl::multiply_op,
+            _impl::duplex_integer<LhsUpper, LhsLower>, _impl::duplex_integer<RhsUpper, RhsLower>>
+            : _impl::heterogeneous_duplex_multiply_operator<
+                    _impl::duplex_integer<LhsUpper, LhsLower>, _impl::duplex_integer<RhsUpper, RhsLower>> {
+    };
+
+    template<typename LhsUpper, typename LhsLower, typename Rhs>
+    struct binary_operator<
+            _impl::native_tag, _impl::multiply_op,
+            _impl::duplex_integer<LhsUpper, LhsLower>, Rhs>
+            : _impl::heterogeneous_duplex_multiply_operator<
+                    _impl::duplex_integer<LhsUpper, LhsLower>, Rhs> {
+    };
+
+    template<typename Lhs, typename RhsUpper, typename RhsLower>
+    struct binary_operator<
+            _impl::native_tag, _impl::multiply_op,
+            Lhs, _impl::duplex_integer<RhsUpper, RhsLower>>
+            : _impl::heterogeneous_duplex_multiply_operator<
+                    Lhs, _impl::duplex_integer<RhsUpper, RhsLower>> {
+    };
 }
 
 #endif  // CNL_IMPL_DUPLEX_INTEGER_MULTIPLY_H

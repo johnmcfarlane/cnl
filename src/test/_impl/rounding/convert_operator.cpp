@@ -6,7 +6,7 @@
 /// \file
 /// \brief tests for <cnl/_impl/rounding/convert.h>
 
-#include <cnl/_impl/rounding/tagged_convert_operator.h>
+#include <cnl/_impl/rounding/convert_operator.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_scaled_integer.h>

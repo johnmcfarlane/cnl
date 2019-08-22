@@ -12,38 +12,40 @@
 #include "make_integer.h"
 #include "numeric_limits.h"
 #include "type.h"
-#include "../generic_operators.h"
+#include "../operators/generic.h"
 
 /// compositional numeric library
 namespace cnl {
-    namespace _impl {
-        template<typename Operator, typename Rep>
-        struct unary_operator<Operator, integer<Rep>> {
-            CNL_NODISCARD constexpr auto operator()(integer<Rep> const& rhs) const
-            -> decltype(from_rep<integer<decltype(Operator()(_impl::to_rep(rhs)))>>(Operator()(_impl::to_rep(rhs))))
-            {
-                return from_rep<integer<decltype(Operator()(_impl::to_rep(rhs)))>>(Operator()(_impl::to_rep(rhs)));
-            }
-        };
+    template<typename Operator, typename Rep>
+    struct unary_operator<_impl::native_tag, Operator, _impl::integer<Rep>> {
+        CNL_NODISCARD constexpr auto operator()(_impl::integer<Rep> const& rhs) const
+        -> decltype(_impl::from_rep<_impl::integer<decltype(Operator()(_impl::to_rep(rhs)))>>(
+                Operator()(_impl::to_rep(rhs))))
+        {
+            return _impl::from_rep<_impl::integer<decltype(Operator()(_impl::to_rep(rhs)))>>(
+                    Operator()(_impl::to_rep(rhs)));
+        }
+    };
 
-        template<class Operator, typename LhsRep, typename RhsRep>
-        struct binary_operator<Operator, integer<LhsRep>, integer<RhsRep>> {
-            CNL_NODISCARD constexpr auto operator()(integer<LhsRep> const& lhs, integer<RhsRep> const& rhs) const
-            -> decltype(make_integer(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
-            {
-                return make_integer(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)));
-            }
-        };
+    template<class Operator, typename LhsRep, typename RhsRep>
+    struct binary_operator<_impl::native_tag, Operator, _impl::integer<LhsRep>, _impl::integer<RhsRep>> {
+        CNL_NODISCARD constexpr auto operator()(
+                _impl::integer<LhsRep> const& lhs, _impl::integer<RhsRep> const& rhs) const
+        -> decltype(_impl::make_integer(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
+        {
+            return _impl::make_integer(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)));
+        }
+    };
 
-        template<class Operator, typename LhsRep, typename RhsRep>
-        struct comparison_operator<Operator, integer<LhsRep>, integer<RhsRep>> {
-            CNL_NODISCARD constexpr auto operator()(integer<LhsRep> const& lhs, integer<RhsRep> const& rhs) const
-            -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
-            {
-                return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
-            }
-        };
-    }
+    template<class Operator, typename LhsRep, typename RhsRep>
+    struct comparison_operator<Operator, _impl::integer<LhsRep>, _impl::integer<RhsRep>> {
+        CNL_NODISCARD constexpr auto operator()(
+                _impl::integer<LhsRep> const& lhs, _impl::integer<RhsRep> const& rhs) const
+        -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
+        {
+            return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
+        }
+    };
 }
 
 #endif  // CNL_IMPL_INTEGER_OPERATORS_H

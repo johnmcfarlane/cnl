@@ -7,11 +7,11 @@
 /// \file
 /// \brief operators represented as types
 
-#if !defined(CNL_IMPL_OPERATORS_H)
-#define CNL_IMPL_OPERATORS_H
+#if !defined(CNL_IMPL_OPERATORS_OPERATORS_H)
+#define CNL_IMPL_OPERATORS_OPERATORS_H
 
-#include "config.h"
-#include "type_traits/type_identity.h"
+#include "../config.h"
+#include "../type_traits/type_identity.h"
 
 #include <type_traits>
 
@@ -346,4 +346,4 @@ namespace cnl {
     }
 }
 
-#endif //CNL_IMPL_OPERATORS_H
+#endif //CNL_IMPL_OPERATORS_OPERATORS_H

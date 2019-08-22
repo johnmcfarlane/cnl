@@ -8,8 +8,8 @@
 #define CNL_IMPL_OVERFLOW_IS_OVERFLOW_H
 
 #include "../num_traits/digits.h"
-#include "../operators.h"
 #include "../polarity.h"
+#include "../operators/operators.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_signed.h"
 #include "../../limits.h"
@@ -282,6 +282,10 @@ namespace cnl {
 #pragma GCC diagnostic pop
 #endif
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-compare"
+#endif
         template<>
         struct is_overflow<multiply_op, polarity::positive> {
             template<typename Lhs, typename Rhs>
@@ -309,6 +313,9 @@ namespace cnl {
                                 : (rhs<Rhs{0}) && (traits::lowest()/rhs)<lhs);
             }
         };
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
         template<>
         struct is_overflow<divide_op, polarity::positive> {

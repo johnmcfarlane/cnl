@@ -9,8 +9,8 @@
 
 #include "common.h"
 #include "overflow_operator.h"
-#include "../native_tag.h"
 #include "../polarity.h"
+#include "../operators/native_tag.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -22,27 +22,16 @@ namespace cnl {
     /// \sa cnl::overflow_integer,
     /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
     /// cnl::saturated_overflow_tag, cnl::throwing_overflow_tag, cnl::trapping_overflow_tag, cnl::undefined_overflow_tag
-    struct native_overflow_tag : _impl::native_tag {
+    struct native_overflow_tag {
     };
 
     namespace _impl {
+        template<>
+        struct is_overflow_tag<native_overflow_tag> : std::true_type {
+        };
+
         template<typename Operator, polarity Polarity>
         struct overflow_operator<Operator, native_overflow_tag, Polarity> : Operator {
-        };
-
-        template<typename Destination, typename Source>
-        struct tagged_convert_operator<native_overflow_tag, Destination, Source>
-                : tagged_convert_overflow_operator<native_overflow_tag, Destination, Source> {
-        };
-
-        template<class Operator>
-        struct tagged_unary_operator<native_overflow_tag, Operator>
-                : tagged_unary_overflow_operator<native_overflow_tag, Operator> {
-        };
-
-        template<class Operator>
-        struct tagged_binary_operator<native_overflow_tag, Operator>
-                : tagged_binary_operator<_impl::native_tag, Operator> {
         };
     }
 }

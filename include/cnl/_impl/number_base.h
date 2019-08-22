@@ -11,12 +11,12 @@
 #include "number_base/definition.h"
 #include "number_base/is_derived_from_number_base.h"
 #include "number_base/to_string.h"
-#include "generic_operators.h"
 #include "num_traits/from_rep.h"
 #include "num_traits/from_value.h"
 #include "num_traits/is_composite.h"
 #include "num_traits/scale.h"
 #include "num_traits/to_rep.h"
+#include "operators/overloads.h"
 #include "../limits.h"
 
 #include <type_traits>
@@ -47,7 +47,8 @@ namespace cnl {
         };
 
         template<typename Wrapper, int WrapperN>
-        struct can_be_wrapper<Wrapper[WrapperN]> : std::false_type {};
+        struct can_be_wrapper<Wrapper[WrapperN]> : std::false_type {
+        };
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::can_be_wrapped
@@ -77,171 +78,177 @@ namespace cnl {
                         && can_be_wrapper<Wrapper>::value
                         && !is_same_wrapper<Wrapper, Rep>::value
                         && (depth<Rep>::value < depth<Wrapper>::value)> {};
+    }
 
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::binary_operator
+
+    // higher OP number_base<>
+    template<class Operator, class Lhs, class Rhs>
+    struct binary_operator<
+            _impl::native_tag, Operator, Lhs, Rhs,
+            _impl::enable_if_t<std::is_floating_point<Lhs>::value && _impl::is_derived_from_number_base<Rhs>::value>> {
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(Operator()(lhs, static_cast<Lhs>(rhs)))
+        {
+            return Operator()(lhs, static_cast<Lhs>(rhs));
+        }
+    };
+
+    // number_base<> OP higher
+    template<class Operator, class Lhs, class Rhs>
+    struct binary_operator<
+            _impl::native_tag, Operator, Lhs, Rhs,
+            _impl::enable_if_t<_impl::is_derived_from_number_base<Lhs>::value && std::is_floating_point<Rhs>::value>> {
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(Operator()(static_cast<Rhs>(lhs), rhs))
+        {
+            return Operator()(static_cast<Rhs>(lhs), rhs);
+        }
+    };
+
+    // lower OP number_base<>
+    template<class Operator, class Lhs, class Rhs>
+    struct binary_operator<
+            _impl::native_tag, Operator, Lhs, Rhs,
+            _impl::enable_if_t<_impl::can_wrap<Rhs, Lhs>::value>> {
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(Operator()(_impl::from_value<Rhs>(lhs), rhs))
+        {
+            return Operator()(_impl::from_value<Rhs>(lhs), rhs);
+        }
+    };
+
+    // number_base<> OP lower
+    template<class Operator, class Lhs, class Rhs>
+    struct binary_operator<
+            _impl::native_tag, Operator, Lhs, Rhs,
+            _impl::enable_if_t<_impl::can_wrap<Lhs, Rhs>::value>> {
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(Operator()(lhs, _impl::from_value<Lhs>(rhs)))
+        {
+            return Operator()(lhs, _impl::from_value<Lhs>(rhs));
+        }
+    };
+
+    namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::binary_operator
-
-        // higher OP number_base<>
-        template<class Operator, class Lhs, class Rhs>
-        struct binary_operator<
-                Operator, Lhs, Rhs,
-                enable_if_t<std::is_floating_point<Lhs>::value && is_derived_from_number_base<Rhs>::value>> {
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(lhs, static_cast<Lhs>(rhs)))
-            {
-                return Operator()(lhs, static_cast<Lhs>(rhs));
-            }
-        };
-
-        // number_base<> OP higher
-        template<class Operator, class Lhs, class Rhs>
-        struct binary_operator<
-                Operator, Lhs, Rhs,
-                enable_if_t<is_derived_from_number_base<Lhs>::value && std::is_floating_point<Rhs>::value>> {
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(static_cast<Rhs>(lhs), rhs))
-            {
-                return Operator()(static_cast<Rhs>(lhs), rhs);
-            }
-        };
-
-        // lower OP number_base<>
-        template<class Operator, class Lhs, class Rhs>
-        struct binary_operator<
-                Operator, Lhs, Rhs,
-                enable_if_t<can_wrap<Rhs, Lhs>::value>> {
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(from_value<Rhs>(lhs), rhs))
-            {
-                return Operator()(from_value<Rhs>(lhs), rhs);
-            }
-        };
-
-        // number_base<> OP lower
-        template<class Operator, class Lhs, class Rhs>
-        struct binary_operator<
-                Operator, Lhs, Rhs,
-                enable_if_t<can_wrap<Lhs, Rhs>::value>> {
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(lhs, from_value<Lhs>(rhs)))
-            {
-                return Operator()(lhs, from_value<Lhs>(rhs));
-            }
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::shift_operator
+        // cnl::shift_operator
 
 #if defined(CNL_OVERLOAD_RESOLUTION_HACK)
         template<typename Lhs, typename Rhs>
         struct excluded_from_specialization : std::false_type {
         };
 #endif
+    }
 
-        template<class Operator, class Lhs, class Rhs>
-        struct shift_operator<
-                Operator, Lhs, Rhs,
-                enable_if_t<is_derived_from_number_base<Lhs>::value&&!is_same_wrapper<Lhs, Rhs>::value
+    template<class Operator, class Lhs, class Rhs>
+    struct shift_operator<
+            _impl::native_tag, Operator, Lhs, Rhs,
+            _impl::enable_if_t<
+                    _impl::is_derived_from_number_base<Lhs>::value&&!_impl::is_same_wrapper<Lhs, Rhs>::value
 #if defined(CNL_OVERLOAD_RESOLUTION_HACK)
-                &&!excluded_from_specialization<Lhs, Rhs>::value
+            &&!_impl::excluded_from_specialization<Lhs, Rhs>::value
 #endif
-        >> {
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(from_rep<Lhs>(Operator()(to_rep(lhs), rhs)))
-            {
-                return from_rep<Lhs>(Operator()(to_rep(lhs), rhs));
-            }
-        };
+    >> {
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(_impl::from_rep<Lhs>(Operator()(_impl::to_rep(lhs), rhs)))
+        {
+            return _impl::from_rep<Lhs>(Operator()(_impl::to_rep(lhs), rhs));
+        }
+    };
 
-        template<class Operator, class Lhs, class Rhs>
-        struct shift_operator<
-                Operator, Lhs, Rhs,
-                enable_if_t<is_derived_from_number_base<Lhs>::value&&is_same_wrapper<Lhs, Rhs>::value>> {
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(from_rep<Lhs>(Operator()(to_rep(lhs), to_rep(rhs))))
-            {
-                return from_rep<Lhs>(Operator()(to_rep(lhs), to_rep(rhs)));
-            }
-        };
+    template<class Operator, class Lhs, class Rhs>
+    struct shift_operator<
+            _impl::native_tag, Operator, Lhs, Rhs,
+            _impl::enable_if_t<
+                    _impl::is_derived_from_number_base<Lhs>::value&&_impl::is_same_wrapper<Lhs, Rhs>::value>> {
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(_impl::from_rep<Lhs>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
+        {
+            return _impl::from_rep<Lhs>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)));
+        }
+    };
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::comparison_operator
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::_impl::comparison_operator
 
-        // higher OP number_base<>
-        template<class Operator, class Lhs, class Rhs>
-        struct comparison_operator<
-                Operator, Lhs, Rhs,
-                enable_if_t<std::is_floating_point<Lhs>::value && is_derived_from_number_base<Rhs>::value>> {
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(lhs, static_cast<Lhs>(rhs)))
-            {
-                return Operator()(lhs, static_cast<Lhs>(rhs));
-            }
-        };
+    // higher OP number_base<>
+    template<class Operator, class Lhs, class Rhs>
+    struct comparison_operator<
+            Operator, Lhs, Rhs,
+            _impl::enable_if_t<std::is_floating_point<Lhs>::value && _impl::is_derived_from_number_base<Rhs>::value>> {
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(Operator()(lhs, static_cast<Lhs>(rhs)))
+        {
+            return Operator()(lhs, static_cast<Lhs>(rhs));
+        }
+    };
 
-        // number_base<> OP higher
-        template<class Operator, class Lhs, class Rhs>
-        struct comparison_operator<
-                Operator, Lhs, Rhs,
-                enable_if_t<is_derived_from_number_base<Lhs>::value && std::is_floating_point<Rhs>::value>> {
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(static_cast<Rhs>(lhs), rhs))
-            {
-                return Operator()(static_cast<Rhs>(lhs), rhs);
-            }
-        };
+    // number_base<> OP higher
+    template<class Operator, class Lhs, class Rhs>
+    struct comparison_operator<
+            Operator, Lhs, Rhs,
+            _impl::enable_if_t<_impl::is_derived_from_number_base<Lhs>::value && std::is_floating_point<Rhs>::value>> {
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(Operator()(static_cast<Rhs>(lhs), rhs))
+        {
+            return Operator()(static_cast<Rhs>(lhs), rhs);
+        }
+    };
 
-        // lower OP number_base<>
-        template<class Operator, class Lhs, class Rhs>
-        struct comparison_operator<
-                Operator, Lhs, Rhs,
-                enable_if_t<can_wrap<Rhs, Lhs>::value>> {
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(from_value<Rhs>(lhs), rhs))
-            {
-                return Operator()(from_value<Rhs>(lhs), rhs);
-            }
-        };
+    // lower OP number_base<>
+    template<class Operator, class Lhs, class Rhs>
+    struct comparison_operator<
+            Operator, Lhs, Rhs,
+            _impl::enable_if_t<_impl::can_wrap<Rhs, Lhs>::value>> {
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(Operator()(_impl::from_value<Rhs>(lhs), rhs))
+        {
+            return Operator()(_impl::from_value<Rhs>(lhs), rhs);
+        }
+    };
 
-        // number_base<> OP lower
-        template<class Operator, class Lhs, class Rhs>
-        struct comparison_operator<
-                Operator, Lhs, Rhs,
-                enable_if_t<can_wrap<Lhs, Rhs>::value>> {
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(Operator()(lhs, from_value<Lhs>(rhs)))
-            {
-                return Operator()(lhs, from_value<Lhs>(rhs));
-            }
-        };
+    // number_base<> OP lower
+    template<class Operator, class Lhs, class Rhs>
+    struct comparison_operator<
+            Operator, Lhs, Rhs,
+            _impl::enable_if_t<_impl::can_wrap<Lhs, Rhs>::value>> {
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(Operator()(lhs, _impl::from_value<Lhs>(rhs)))
+        {
+            return Operator()(lhs, _impl::from_value<Lhs>(rhs));
+        }
+    };
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::pre_operator
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::_impl::pre_operator
 
-        // number_base<> OP lower
-        template<class Operator, class Derived, typename Rep>
-        struct pre_operator<Operator, number_base<Derived, Rep>> {
-            CNL_RELAXED_CONSTEXPR Derived& operator()(Derived& rhs) const
-            {
-                Operator()(_impl::to_rep(rhs));
-                return rhs;
-            }
-        };
+    // number_base<> OP lower
+    template<class Operator, class Derived, typename Rep>
+    struct pre_operator<_impl::native_tag, Operator, _impl::number_base<Derived, Rep>> {
+        CNL_RELAXED_CONSTEXPR Derived& operator()(Derived& rhs) const
+        {
+            Operator()(_impl::to_rep(rhs));
+            return rhs;
+        }
+    };
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::post_operator
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::_impl::post_operator
 
-        // number_base<> OP lower
-        template<class Operator, class Derived, typename Rep>
-        struct post_operator<Operator, number_base<Derived, Rep>> {
-            CNL_RELAXED_CONSTEXPR Derived operator()(Derived& lhs) const
-            {
-                auto copy = lhs;
-                Operator()(_impl::to_rep(lhs));
-                return copy;
-            }
-        };
+    // number_base<> OP lower
+    template<class Operator, class Derived, typename Rep>
+    struct post_operator<_impl::native_tag, Operator, _impl::number_base<Derived, Rep>> {
+        CNL_RELAXED_CONSTEXPR Derived operator()(Derived& lhs) const
+        {
+            auto copy = lhs;
+            Operator()(_impl::to_rep(lhs));
+            return copy;
+        }
+    };
 
+    namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::wants_generic_ops
 

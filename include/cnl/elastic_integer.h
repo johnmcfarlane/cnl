@@ -265,22 +265,6 @@ namespace cnl {
         return _elastic_integer_impl::make_type<Narrowest, Integral>{value};
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // bitwise operators
-
-    // operator~
-    template<int RhsDigits, class RhsNarrowest>
-    CNL_NODISCARD constexpr auto operator~(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
-    -> elastic_integer<RhsDigits, RhsNarrowest>
-    {
-        using elastic_integer = elastic_integer<RhsDigits, RhsNarrowest>;
-        using rep = typename elastic_integer::rep;
-        return _impl::from_rep<elastic_integer>(
-            static_cast<rep>(
-                    _impl::to_rep(rhs)
-                ^ ((static_cast<rep>(~0)) >> (numeric_limits<rep>::digits - RhsDigits))));
-    }
-
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
         // comparison operators
@@ -323,30 +307,32 @@ namespace cnl {
                     elastic_integer<FromDigits, FromNarrowest>,
                     elastic_integer<OtherDigits, OtherNarrowest>>::type>(from);
         }
+    }
 
-        template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
-        struct comparison_operator<Operator,
-                elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>> {
-            CNL_NODISCARD constexpr auto operator()(
-                    elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
-                    elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
-            -> decltype(Operator()(cast_to_common_type(lhs, rhs), cast_to_common_type(rhs, lhs)))
-            {
-                return Operator()(cast_to_common_type(lhs, rhs), cast_to_common_type(rhs, lhs));
-            }
-        };
+    template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
+    struct comparison_operator<Operator,
+            elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>> {
+        CNL_NODISCARD constexpr auto operator()(
+                elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
+                elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
+        -> decltype(Operator()(cast_to_common_type(lhs, rhs), cast_to_common_type(rhs, lhs)))
+        {
+            return Operator()(cast_to_common_type(lhs, rhs), cast_to_common_type(rhs, lhs));
+        }
+    };
 
-        template<class Operator, int Digits, class Narrowest>
-        struct comparison_operator<Operator, elastic_integer<Digits, Narrowest>, elastic_integer<Digits, Narrowest>> {
-            CNL_NODISCARD constexpr auto operator()(
-                    elastic_integer<Digits, Narrowest> const& lhs,
-                    elastic_integer<Digits, Narrowest> const& rhs) const
-            -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
-            {
-                return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
-            }
-        };
+    template<class Operator, int Digits, class Narrowest>
+    struct comparison_operator<Operator, elastic_integer<Digits, Narrowest>, elastic_integer<Digits, Narrowest>> {
+        CNL_NODISCARD constexpr auto operator()(
+                elastic_integer<Digits, Narrowest> const& lhs,
+                elastic_integer<Digits, Narrowest> const& rhs) const
+        -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
+        {
+            return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
+        }
+    };
 
+    namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
         // arithmetic operators
 
@@ -429,60 +415,67 @@ namespace cnl {
                     narrowest_width-policy::is_signed>;
             using result_type = elastic_integer<policy::digits, narrowest>;
         };
+    }
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::binary_operator
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::binary_operator
 
-        template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
-        struct binary_operator<Operator,
-                elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>> {
-            CNL_NODISCARD constexpr auto operator()(
-                    elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
-                    elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
-            -> typename operate_params<Operator, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::result_type
-            {
-                using result_type = typename operate_params<Operator, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::result_type;
-                return from_rep<result_type>(
-                        static_cast<typename result_type::rep>(Operator()(
-                                to_rep(static_cast<result_type>(lhs)),
-                                to_rep(static_cast<result_type>(rhs)))));
-            }
-        };
+    template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
+    struct binary_operator<_impl::native_tag, Operator,
+            elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>> {
+        CNL_NODISCARD constexpr auto operator()(
+                elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
+                elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
+        -> typename _impl::operate_params<
+                Operator,
+                LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::result_type
+        {
+            using result_type = typename _impl::operate_params<
+                    Operator, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::result_type;
+            return _impl::from_rep<result_type>(
+                    static_cast<typename result_type::rep>(Operator()(
+                            _impl::to_rep(static_cast<result_type>(lhs)),
+                            _impl::to_rep(static_cast<result_type>(rhs)))));
+        }
+    };
 
 #if defined(CNL_OVERLOAD_RESOLUTION_HACK)
+    namespace _impl {
         template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
         struct excluded_from_specialization<elastic_integer<LhsDigits, LhsNarrowest>, constant<RhsValue>>
                 : std::true_type {
         };
+    }
 
-        template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
-        struct shift_operator<
-                shift_left_op, elastic_integer<LhsDigits, LhsNarrowest>, constant<RhsValue>> {
-            CNL_NODISCARD constexpr auto operator()(elastic_integer<LhsDigits, LhsNarrowest> const& lhs, constant<RhsValue>) const
-            -> decltype(cnl::_impl::from_rep<cnl::elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
-                    cnl::_impl::to_rep(static_cast<cnl::elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
-                            lhs)) << RhsValue))
-            {
-                return cnl::_impl::from_rep<cnl::elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
-                        cnl::_impl::to_rep(static_cast<cnl::elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
-                                lhs)) << RhsValue);
-            }
-        };
+    template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
+    struct shift_operator<
+            _impl::native_tag, _impl::shift_left_op, elastic_integer<LhsDigits, LhsNarrowest>, constant<RhsValue>> {
+        CNL_NODISCARD constexpr auto operator()(
+                elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
+                constant<RhsValue>) const
+        -> decltype(_impl::from_rep<elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
+                _impl::to_rep(static_cast<elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
+                        lhs)) << RhsValue))
+        {
+            return _impl::from_rep<elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
+                    _impl::to_rep(static_cast<elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
+                            lhs)) << RhsValue);
+        }
+    };
 #endif
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // pre/post operators
+    ////////////////////////////////////////////////////////////////////////////////
+    // pre/post operators
 
-        template<class Operator, int Digits, typename Narrowest>
-        struct pre_operator<Operator, elastic_integer<Digits, Narrowest>>
-                : pre_operator<Operator, typename elastic_integer<Digits, Narrowest>::_base> {
-        };
+    template<class Operator, int Digits, typename Narrowest>
+    struct pre_operator<_impl::native_tag, Operator, elastic_integer<Digits, Narrowest>>
+            : pre_operator<_impl::native_tag, Operator, typename elastic_integer<Digits, Narrowest>::_base> {
+    };
 
-        template<class Operator, int Digits, typename Narrowest>
-        struct post_operator<Operator, elastic_integer<Digits, Narrowest>>
-                : post_operator<Operator, typename elastic_integer<Digits, Narrowest>::_base> {
-        };
-    }
+    template<class Operator, int Digits, typename Narrowest>
+    struct post_operator<_impl::native_tag, Operator, elastic_integer<Digits, Narrowest>>
+            : post_operator<_impl::native_tag, Operator, typename elastic_integer<Digits, Narrowest>::_base> {
+    };
 
 #if ! defined(CNL_OVERLOAD_RESOLUTION_HACK)
     template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
@@ -504,21 +497,40 @@ namespace cnl {
 
     // unary operator-
     template<int RhsDigits, class RhsNarrowest>
-    CNL_NODISCARD constexpr auto operator-(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
-    -> elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>
-    {
-        using result_type = elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>;
-        return _impl::from_rep<result_type>(-_impl::to_rep(static_cast<result_type>(rhs)));
-    }
+    struct unary_operator<_impl::native_tag, _impl::minus_op, elastic_integer<RhsDigits, RhsNarrowest>> {
+        CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
+        -> elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>
+        {
+            using result_type = elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>;
+            return _impl::from_rep<result_type>(-_impl::to_rep(static_cast<result_type>(rhs)));
+        }
+    };
 
     // unary operator+
     template<int RhsDigits, class RhsNarrowest>
-    CNL_NODISCARD constexpr auto operator+(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
-    -> elastic_integer<RhsDigits, RhsNarrowest>
-    {
-        return _impl::from_rep<elastic_integer<RhsDigits, RhsNarrowest>>(
-                +_impl::to_rep(static_cast<elastic_integer<RhsDigits, RhsNarrowest>>(rhs)));
-    }
+    struct unary_operator<_impl::native_tag, _impl::plus_op, elastic_integer<RhsDigits, RhsNarrowest>> {
+        CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
+        -> elastic_integer<RhsDigits, RhsNarrowest>
+        {
+            return _impl::from_rep<elastic_integer<RhsDigits, RhsNarrowest>>(
+                    +_impl::to_rep(static_cast<elastic_integer<RhsDigits, RhsNarrowest>>(rhs)));
+        }
+    };
+
+    // unary operator~
+    template<int RhsDigits, class RhsNarrowest>
+    struct unary_operator<_impl::native_tag, _impl::bitwise_not_op, elastic_integer<RhsDigits, RhsNarrowest>> {
+        CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
+        -> elastic_integer<RhsDigits, RhsNarrowest>
+        {
+            using elastic_integer = elastic_integer<RhsDigits, RhsNarrowest>;
+            using rep = typename elastic_integer::rep;
+            return _impl::from_rep<elastic_integer>(
+                    static_cast<rep>(
+                            _impl::to_rep(rhs)
+                                    ^ ((static_cast<rep>(~0)) >> (numeric_limits<rep>::digits - RhsDigits))));
+        }
+    };
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::numeric_limits for cnl::elastic_integer

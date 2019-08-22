@@ -29,6 +29,10 @@ namespace cnl {
     };
 
     namespace _impl {
+        template<>
+        struct is_overflow_tag<undefined_overflow_tag> : std::true_type {
+        };
+
         template<typename Operator>
         struct overflow_operator<Operator, undefined_overflow_tag, polarity::positive> {
             template<typename Destination, typename Source>
@@ -57,21 +61,6 @@ namespace cnl {
             {
                 return unreachable<op_result<Operator, Operands...>>("negative overflow");
             }
-        };
-
-        template<typename Destination, typename Source>
-        struct tagged_convert_operator<undefined_overflow_tag, Destination, Source>
-                : tagged_convert_overflow_operator<undefined_overflow_tag, Destination, Source> {
-        };
-
-        template<class Operator>
-        struct tagged_unary_operator<undefined_overflow_tag, Operator>
-                : tagged_unary_overflow_operator<undefined_overflow_tag, Operator> {
-        };
-
-        template<class Operator>
-        struct tagged_binary_operator<undefined_overflow_tag, Operator>
-                : tagged_binary_overflow_operator<undefined_overflow_tag, Operator> {
         };
     }
 }

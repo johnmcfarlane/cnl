@@ -7,12 +7,13 @@
 /// \file
 /// \brief a place to centralize most duplicate arithmetic operator boilerplate
 
-#if !defined(CNL_IMPL_GENERIC_OPERATORS_H)
-#define CNL_IMPL_GENERIC_OPERATORS_H
+#if !defined(CNL_IMPL_OPERATORS_OVERLOADS_H)
+#define CNL_IMPL_OPERATORS_OVERLOADS_H
 
-#include "operators.h"
-#include "type_traits/enable_if.h"
-#include "../limits.h"
+#include "generic.h"
+#include "native_tag.h"
+#include "../type_traits/enable_if.h"
+#include "../../limits.h"
 
 #include <type_traits>
 
@@ -20,59 +21,10 @@
 namespace cnl {
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::wants_generic_ops
-
-        // true iff T wants generic operator overloads
-        template<class T, class Enable = void>
-        struct wants_generic_ops : std::false_type {
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // generic operators
-
-        // can be specialized for any types without need for excessive boilerplate;
-        // will only match operands for which cnl::_impl::wants_generic_ops is defined
-        template<class Operator, class Operand, class Enable = void>
-        struct unary_operator;
-
-        template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
-        struct binary_operator;
-
-        template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
-        struct shift_operator;
-
-        template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
-        struct comparison_operator;
-
-        template<class Operator, class RhsOperand, class Enable = void>
-        struct pre_operator;
-
-        template<class Operator, class LhsOperand, class Enable = void>
-        struct post_operator;
-
-        template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
-        struct compound_assignment_operator {
-            CNL_NODISCARD constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
-            {
-                return lhs = static_cast<LhsOperand>(
-                        binary_operator<typename Operator::binary, LhsOperand, RhsOperand>()(lhs, rhs));
-            }
-        };
-
-        template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
-        struct compound_assignment_shift_operator {
-            CNL_NODISCARD constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
-            {
-                return lhs = static_cast<LhsOperand>(
-                        shift_operator<typename Operator::binary, LhsOperand, RhsOperand>()(lhs, rhs));
-            }
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::enable_unary_t
 
         template<class Operand, class T>
-        using enable_unary_t = ::cnl::_impl::enable_if_t<_impl::wants_generic_ops<Operand>::value, T>;
+        using enable_unary_t = enable_if_t<_impl::wants_generic_ops<Operand>::value, T>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::enable_binary_t
@@ -107,10 +59,10 @@ namespace cnl {
 #define CNL_DEFINE_UNARY_OPERATOR(OP, NAME) \
         template<class Operand> \
         CNL_NODISCARD constexpr auto operator OP (Operand const& operand) \
-        -> decltype(cnl::_impl::unary_operator<cnl::_impl::enable_unary_t< \
-                Operand, cnl::_impl::NAME>, Operand>()(operand)) \
+        -> decltype(cnl::unary_operator<native_tag, enable_unary_t< \
+                Operand, NAME>, Operand>()(operand)) \
         { \
-            return cnl::_impl::unary_operator<cnl::_impl::NAME, Operand>()(operand); \
+            return cnl::unary_operator<native_tag, NAME, Operand>()(operand); \
         }
 
         CNL_DEFINE_UNARY_OPERATOR(+, plus_op)
@@ -123,10 +75,10 @@ namespace cnl {
 #define CNL_DEFINE_BINARY_OPERATOR(OP, NAME) \
         template<class LhsOperand, class RhsOperand> \
         CNL_NODISCARD constexpr auto operator OP (LhsOperand const& lhs, RhsOperand const& rhs) \
-        -> decltype(cnl::_impl::binary_operator<cnl::_impl::enable_binary_t< \
-                LhsOperand, RhsOperand, cnl::_impl::NAME>, LhsOperand, RhsOperand>()(lhs, rhs)) \
+        -> decltype(cnl::binary_operator<enable_binary_t< \
+                LhsOperand, RhsOperand, native_tag>, NAME, LhsOperand, RhsOperand>()(lhs, rhs)) \
         { \
-            return cnl::_impl::binary_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
+            return cnl::binary_operator<native_tag, NAME, LhsOperand, RhsOperand>{}(lhs, rhs); \
         }
 
         CNL_DEFINE_BINARY_OPERATOR(+, add_op)
@@ -149,10 +101,10 @@ namespace cnl {
 #define CNL_DEFINE_SHIFT_OPERATOR(OP, NAME) \
         template<class LhsOperand, class RhsOperand> \
         CNL_NODISCARD constexpr auto operator OP (LhsOperand const& lhs, RhsOperand const& rhs) \
-        -> decltype(cnl::_impl::shift_operator<cnl::_impl::enable_binary_t< \
-                LhsOperand, RhsOperand, cnl::_impl::NAME>, LhsOperand, RhsOperand>()(lhs, rhs)) \
+        -> decltype(cnl::shift_operator<enable_binary_t< \
+                LhsOperand, RhsOperand, native_tag>, NAME, LhsOperand, RhsOperand>()(lhs, rhs)) \
         { \
-            return cnl::_impl::shift_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
+            return cnl::shift_operator<native_tag, NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
         }
 
         CNL_DEFINE_SHIFT_OPERATOR(<<, shift_left_op)
@@ -163,10 +115,10 @@ namespace cnl {
 #define CNL_DEFINE_COMPARISON_OPERATOR(OP, NAME) \
         template<class LhsOperand, class RhsOperand> \
         CNL_NODISCARD constexpr auto operator OP (LhsOperand const& lhs, RhsOperand const& rhs) \
-        -> decltype(cnl::_impl::comparison_operator<cnl::_impl::enable_binary_t< \
-                LhsOperand, RhsOperand, cnl::_impl::NAME>, LhsOperand, RhsOperand>()(lhs, rhs)) \
+        -> decltype(cnl::comparison_operator<enable_binary_t< \
+                LhsOperand, RhsOperand, NAME>, LhsOperand, RhsOperand>()(lhs, rhs)) \
         { \
-            return cnl::_impl::comparison_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
+            return cnl::comparison_operator<NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
         }
 
         CNL_DEFINE_COMPARISON_OPERATOR(==, equal_op)
@@ -185,9 +137,9 @@ namespace cnl {
 #define CNL_DEFINE_PRE_OPERATOR(OP, NAME) \
         template<class RhsOperand> \
         constexpr auto operator OP (RhsOperand& rhs) \
-        -> decltype(cnl::_impl::pre_operator<cnl::_impl::NAME, RhsOperand>()(rhs)) \
+        -> decltype(cnl::pre_operator<native_tag, NAME, RhsOperand>()(rhs)) \
         { \
-            return cnl::_impl::pre_operator<cnl::_impl::NAME, RhsOperand>()(rhs); \
+            return cnl::pre_operator<native_tag, NAME, RhsOperand>()(rhs); \
         }
 
         CNL_DEFINE_PRE_OPERATOR(++, pre_increment_op)
@@ -198,9 +150,9 @@ namespace cnl {
 #define CNL_DEFINE_POST_OPERATOR(OP, NAME) \
         template<class LhsOperand> \
         constexpr auto operator OP (LhsOperand& lhs, int) \
-        -> decltype(cnl::_impl::post_operator<cnl::_impl::NAME, LhsOperand>()(lhs)) \
+        -> decltype(cnl::post_operator<native_tag, NAME, LhsOperand>()(lhs)) \
         { \
-            return cnl::_impl::post_operator<cnl::_impl::NAME, LhsOperand>()(lhs); \
+            return cnl::post_operator<native_tag, NAME, LhsOperand>()(lhs); \
         }
 
         CNL_DEFINE_POST_OPERATOR(++, post_increment_op)
@@ -211,10 +163,10 @@ namespace cnl {
 #define CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(OP, NAME) \
         template<class LhsOperand, class RhsOperand> \
         constexpr auto operator OP (LhsOperand& lhs, RhsOperand const& rhs) \
-        -> cnl::_impl::enable_binary_t<LhsOperand, RhsOperand, decltype( \
-                cnl::_impl::compound_assignment_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
+        -> enable_binary_t<LhsOperand, RhsOperand, decltype( \
+                cnl::compound_assignment_operator<native_tag, NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
         { \
-            return cnl::_impl::compound_assignment_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
+            return cnl::compound_assignment_operator<native_tag, NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
         }
 
         CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(+=, assign_add_op)
@@ -237,10 +189,10 @@ namespace cnl {
 #define CNL_DEFINE_COMPOUND_ASSIGNMENT_SHIFT_OPERATOR(OP, NAME) \
         template<class LhsOperand, class RhsOperand> \
         constexpr auto operator OP (LhsOperand& lhs, RhsOperand const& rhs) \
-        -> cnl::_impl::enable_binary_t<LhsOperand, RhsOperand, decltype( \
-                cnl::_impl::compound_assignment_shift_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
+        -> enable_binary_t<LhsOperand, RhsOperand, decltype( \
+                cnl::compound_assignment_shift_operator<native_tag, NAME, LhsOperand, RhsOperand>()(lhs, rhs))> \
         { \
-            return cnl::_impl::compound_assignment_shift_operator<cnl::_impl::NAME, LhsOperand, RhsOperand>()( \
+            return cnl::compound_assignment_shift_operator<native_tag, NAME, LhsOperand, RhsOperand>()( \
                     lhs, rhs); \
         }
 
@@ -250,4 +202,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_GENERIC_OPERATORS_H
+#endif  // CNL_IMPL_OPERATORS_OVERLOADS_H
