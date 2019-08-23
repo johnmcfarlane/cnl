@@ -16,6 +16,7 @@ set(test_sources
         numeric.cpp
         number_test.cpp
         overflow/overflow.cpp
+        overflow/rounding/integer.cpp
         rounding/rounding.cpp
         _impl/num_traits/max_digits.cpp
         _impl/num_traits/adopt.cpp
@@ -254,7 +255,7 @@ function(make_test source out_target compile_flags linker_flags)
     if (${CNL_CLANG_TIDY})
         string(REPLACE "/" "-" clang_tidy_target "Tidy-${stripped}")
         if (NOT ${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
-            add_test("${clang_tidy_target}" "${ClangTidy}" "-p=${CMAKE_BINARY_DIR}" "-extra-arg=-Wno-unknown-warning-option" "${CMAKE_CURRENT_LIST_DIR}/${source}")
+            add_test("${clang_tidy_target}" "${ClangTidy}" "-p=${CMAKE_BINARY_DIR}" "-extra-arg=-Wno-unknown-warning-option" "-header-filter=include/cnl" "${CMAKE_CURRENT_LIST_DIR}/${source}")
         endif (NOT ${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
     endif (${CNL_CLANG_TIDY})
 

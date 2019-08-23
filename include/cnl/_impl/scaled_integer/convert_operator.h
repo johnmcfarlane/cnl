@@ -17,20 +17,13 @@
 
 /// compositional numeric library
 namespace cnl {
-    // conversion between two scaled_integer types where rounding *isn't* an issue
-    template<
-            typename ResultRep, int ResultExponent,
-            typename InputRep, int InputExponent,
-            int Radix>
+    template<int Radix, typename Result, typename Input>
     struct convert_operator<
-            nearest_rounding_tag,
-            scaled_integer<ResultRep, power<ResultExponent, Radix>>,
-            scaled_integer<InputRep, power<InputExponent, Radix>>,
-            _impl::enable_if_t<(ResultExponent <= InputExponent)>>
+            power<0, Radix>, nearest_rounding_tag,
+            Result, Input>
             : convert_operator<
-                    native_rounding_tag,
-                    scaled_integer<ResultRep, power<ResultExponent, Radix>>,
-                    scaled_integer<InputRep, power<InputExponent, Radix>>> {
+                    nearest_rounding_tag, power<0, Radix>,
+                    Result, Input> {
     };
 
     // conversion between two scaled_integer types where rounding *is* an issue
@@ -40,6 +33,7 @@ namespace cnl {
             int Radix>
     struct convert_operator<
             nearest_rounding_tag,
+            power<0, Radix>,
             scaled_integer<ResultRep, power<ResultExponent, Radix>>,
             scaled_integer<InputRep, power<InputExponent, Radix>>,
             _impl::enable_if_t<!(ResultExponent <= InputExponent)>> {
@@ -60,12 +54,26 @@ namespace cnl {
         }
     };
 
+    // conversion between two scaled_integer types where rounding *isn't* an issue
+    template<
+            typename ResultRep, int ResultExponent,
+            typename InputRep, int InputExponent,
+            int Radix>
+    struct convert_operator<
+            nearest_rounding_tag,
+            power<0, Radix>,
+            scaled_integer<ResultRep, power<ResultExponent, Radix>>,
+            scaled_integer<InputRep, power<InputExponent, Radix>>,
+            _impl::enable_if_t<ResultExponent <= InputExponent>> {
+    };
+
     // conversion from float to scaled_integer
     template<
             typename ResultRep, int ResultExponent, int ResultRadix,
             typename Input>
     struct convert_operator<
             nearest_rounding_tag,
+            power<0, ResultRadix>,
             scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>,
             Input,
             _impl::enable_if_t<std::is_floating_point<Input>::value>> {
@@ -86,34 +94,57 @@ namespace cnl {
     };
 
     template<
-            typename ResultRep, class ResultScale,
+            typename ResultRep, int ResultExponent, int ResultRadix,
             typename Input>
     struct convert_operator<
             nearest_rounding_tag,
-            scaled_integer<ResultRep, ResultScale>,
+            power<0, ResultRadix>,
+            scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>,
             Input,
             _impl::enable_if_t<cnl::numeric_limits<Input>::is_integer>>
             : convert_operator<
                     nearest_rounding_tag,
-                    scaled_integer<ResultRep, ResultScale>,
+                    power<0, ResultRadix>,
+                    scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>,
                     scaled_integer<Input>> {
     };
 
     template<
             typename Result,
-            typename InputRep, class InputScale>
+            typename InputRep, int InputExponent, int InputRadix>
     struct convert_operator<
             nearest_rounding_tag,
+            power<0, InputRadix>,
             Result,
-            scaled_integer<InputRep, InputScale>,
+            scaled_integer<InputRep, power<InputExponent, InputRadix>>,
             _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer>> {
-        using _input = scaled_integer<InputRep, InputScale>;
+        using _input = scaled_integer<InputRep, power<InputExponent, InputRadix>>;
 
         CNL_NODISCARD constexpr Result operator()(_input const& from) const
         {
             return _impl::to_rep(
-                    convert_operator<nearest_rounding_tag, scaled_integer<Result>, _input>{}(
+                    convert_operator<nearest_rounding_tag, power<0, InputRadix>, scaled_integer<Result>, _input>{}(
                             from));
+        }
+    };
+
+    template<
+            typename ResultRep, int ResultExponent, int ResultRadix,
+            typename Input>
+    struct convert_operator<
+            nearest_rounding_tag,
+            cnl::_impl::native_tag,
+            scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>,
+            Input> {
+
+        CNL_NODISCARD constexpr scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>
+        operator()(Input const& from) const
+        {
+            return convert_operator<
+                    nearest_rounding_tag,
+                    power<0, ResultRadix>,
+                    scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>,
+                    Input>{}(from);
         }
     };
 }

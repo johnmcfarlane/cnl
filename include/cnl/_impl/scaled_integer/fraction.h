@@ -16,22 +16,6 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Rep, class Scale>
-    template<typename Numerator, typename Denominator>
-    constexpr scaled_integer<Rep, Scale>::scaled_integer(fraction<Numerator, Denominator> const& f)
-            : _base(convert<Scale, Rep>(f))
-    {
-    }
-
-    template<typename Rep, class Scale>
-    template<typename Numerator, typename Denominator>
-    CNL_RELAXED_CONSTEXPR scaled_integer<Rep, Scale>&
-    scaled_integer<Rep, Scale>::operator=(fraction<Numerator, Denominator> const& f)
-    {
-        _base::operator=(convert<Scale, Rep>(f));
-        return *this;
-    }
-
 #if defined(__cpp_deduction_guides)
     template<typename Numerator, typename Denominator>
     scaled_integer(fraction<Numerator, Denominator>)
