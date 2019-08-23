@@ -8,11 +8,13 @@
 #include <cnl/rounding_integer.h>
 #include <cnl/_impl/type_traits/identical.h>
 
+#include <gtest/gtest.h>
+
 namespace cnl {
     // rounding elastic integer
     template<
             int IntegerDigits,
-            class RoundingTag = rounding_integer<>::rounding,
+            class RoundingTag = cnl::_impl::tag_t<rounding_integer<>>,
             class Narrowest = int>
     using rounding_elastic_integer = rounding_integer<
             elastic_integer<
@@ -21,7 +23,7 @@ namespace cnl {
             RoundingTag>;
 
     template<
-            class RoundingTag = rounding_integer<>::rounding,
+            class RoundingTag = cnl::_impl::tag_t<rounding_integer<>>,
             class Narrowest = int,
             class Input = int>
     CNL_NODISCARD rounding_elastic_integer<
@@ -50,7 +52,6 @@ namespace {
     }
 
     namespace test_make_rounding_elastic {
-        static_assert(identical(rounding_elastic_integer<1>{1}, rounding_elastic_integer<1>{1}), "");
         static_assert(identical(cnl::make_rounding_elastic(cnl::int16{7}), rounding_elastic_integer<15>{7}), "");
     }
 

@@ -18,6 +18,7 @@
 #include "_impl/wide_integer/make_wide_integer.h"
 #include "_impl/wide_integer/numeric_limits.h"
 #include "_impl/wide_integer/operators.h"
+#include "_impl/wide_integer/rounding.h"
 #include "_impl/wide_integer/scale.h"
 #include "_impl/wide_integer/set_digits.h"
 #include "_impl/wide_integer/type.h"

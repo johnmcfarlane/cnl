@@ -126,12 +126,6 @@ TEST(multiprecision, scale_negative)
     ASSERT_TRUE(identical(expected, actual));
 }
 
-namespace test_depth {
-    static_assert(
-            cnl::_impl::depth<scaled_integer<unsigned_multiprecision<987654321>>>::value==1,
-            "cnl::_impl::depth<scaled_integer<boost::multiprecision>>");
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::multiprecision arithmetic
 

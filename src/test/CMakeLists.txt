@@ -16,6 +16,7 @@ set(test_sources
         numeric.cpp
         number_test.cpp
         overflow/overflow.cpp
+        overflow/rounding/integer.cpp
         rounding/rounding.cpp
         _impl/num_traits/max_digits.cpp
         _impl/num_traits/adopt.cpp

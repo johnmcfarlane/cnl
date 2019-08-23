@@ -79,6 +79,7 @@ namespace cnl {
         return _impl::from_rep<typename quotient_result::type>(
                 convert<
                         typename quotient_result::scale,
+                        power<>,
                         typename quotient_result::rep>(f));
     }
 

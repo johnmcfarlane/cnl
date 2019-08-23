@@ -13,20 +13,64 @@
 #include "overflow_operator.h"
 #include "../polarity.h"
 #include "../operators/generic.h"
+#include "../type_traits/enable_if.h"
+#include "../type_traits/type_identity.h"
 
 #include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
-    template<class OverflowTag, typename Destination, typename Source>
-    struct convert_operator<OverflowTag, Destination, Source,
-            _impl::enable_if_t<_impl::is_overflow_tag<OverflowTag>::value>> {
+    namespace _impl {
+        template<class Tag1, class Tag2, class Enable = void>
+        struct common_overflow_tag;
+
+        template<class OverflowTag, class Tag>
+        struct common_overflow_tag<
+                OverflowTag, Tag,
+                enable_if_t<_impl::is_overflow_tag<OverflowTag>::value
+                &&!_impl::is_overflow_tag<Tag>::value>>
+                : type_identity<OverflowTag> {
+        };
+
+        template<class Tag, class OverflowTag>
+        struct common_overflow_tag<
+                Tag, OverflowTag,
+                enable_if_t<!_impl::is_overflow_tag<Tag>::value
+                &&_impl::is_overflow_tag<OverflowTag>::value>>
+                : type_identity<OverflowTag> {
+        };
+
+        template<class OverflowTag>
+        struct common_overflow_tag<
+                OverflowTag, OverflowTag,
+                enable_if_t<_impl::is_overflow_tag<OverflowTag>::value>>
+                : type_identity<OverflowTag> {
+        };
+
+        template<class OverflowTag1, class OverflowTag2>
+        struct common_overflow_tag<
+                OverflowTag1, OverflowTag2,
+                enable_if_t<_impl::is_overflow_tag<OverflowTag1>::value
+                        &&_impl::is_overflow_tag<OverflowTag2>::value
+                        &&!std::is_same<OverflowTag1, OverflowTag2>::value>> {
+            // TODO: More rules about which overflow tags 'beat' which other overflow tags.
+            // TODO: E.g. native is lowest 'ranking' and trapping/contract is probably highest.
+        };
+
+        template<class Tag1, class Tag2>
+        using common_overflow_tag_t = typename common_overflow_tag<Tag1, Tag2>::type;
+    }
+
+    template<class DestTag, class SrcTag, typename Destination, typename Source>
+    struct convert_operator<DestTag, SrcTag, Destination, Source,
+            _impl::enable_if_t<_impl::is_overflow_tag<DestTag>::value||_impl::is_overflow_tag<SrcTag>::value>> {
+        using overflow_tag = _impl::common_overflow_tag_t<DestTag, SrcTag>;
         CNL_NODISCARD constexpr Destination operator()(Source const& from) const
         {
             return _impl::is_overflow<_impl::convert_op, _impl::polarity::positive>{}.template operator()<Destination>(from)
-                    ? _impl::overflow_operator<_impl::convert_op, OverflowTag, _impl::polarity::positive>{}.template operator()<Destination>(from)
+                    ? _impl::overflow_operator<_impl::convert_op, overflow_tag, _impl::polarity::positive>{}.template operator()<Destination>(from)
                     : _impl::is_overflow<_impl::convert_op, _impl::polarity::negative>{}.template operator()<Destination>(from)
-                            ? _impl::overflow_operator<_impl::convert_op, OverflowTag, _impl::polarity::negative>{}.template operator()<Destination>(from)
+                            ? _impl::overflow_operator<_impl::convert_op, overflow_tag, _impl::polarity::negative>{}.template operator()<Destination>(from)
                             : static_cast<Destination>(from);
         }
     };

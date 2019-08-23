@@ -7,6 +7,8 @@
 #ifndef CNL_IMPL_SCALED_POWER_H
 #define CNL_IMPL_SCALED_POWER_H
 
+#include "../operators/is_same_tag_family.h"
+
 /// compositional numeric library
 namespace cnl {
     template<int Exponent = 0, int Radix = 2>
@@ -32,11 +34,10 @@ namespace cnl {
     template<int Exponent, int Radix>
     constexpr int power<Exponent, Radix>::exponent;
 
-    template<int LhsExponent, int RhsExponent, int Radix>
-    constexpr auto operator/(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-    -> power<LhsExponent-RhsExponent, Radix>
-    {
-        return power<LhsExponent-RhsExponent, Radix>{};
+    namespace _impl {
+        template<int Exponent1, int Radix1, int Exponent2, int Radix2>
+        struct is_same_tag_family<power<Exponent1, Radix1>, power<Exponent2, Radix2>> : std::true_type {
+        };
     }
 }
 

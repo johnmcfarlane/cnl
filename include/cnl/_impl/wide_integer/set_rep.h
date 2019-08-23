@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_SET_REP_H)
 #define CNL_IMPL_WIDE_INTEGER_SET_REP_H
 
-#include "type.h"
+#include "forward_declaration.h"
 #include "../num_traits/adopt_signedness.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/set_rep.h"

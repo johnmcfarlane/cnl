@@ -4,20 +4,19 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_WIDE_INTEGER_DIGITS_H)
-#define CNL_IMPL_WIDE_INTEGER_DIGITS_H
+#if !defined(CNL_IMPL_WIDE_INTEGER_ROUNDING_H)
+#define CNL_IMPL_WIDE_INTEGER_ROUNDING_H
 
 #include "forward_declaration.h"
-#include "../num_traits/digits.h"
 
 #include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     template<int Digits, typename Narrowest>
-    struct digits<_impl::wide_integer<Digits, Narrowest>>
-            : std::integral_constant<int, Digits> {
+    struct rounding<_impl::wide_integer<Digits, Narrowest>>
+            : rounding<Narrowest> {
     };
 }
 
-#endif  // CNL_IMPL_WIDE_INTEGER_DIGITS_H
+#endif  // CNL_IMPL_WIDE_INTEGER_ROUNDING_H

@@ -228,7 +228,7 @@ namespace cnl {
     // and some are undefined
     template<typename Rep, int Exponent, int Radix>
     struct numeric_limits<cnl::scaled_integer<Rep, power<Exponent, Radix>>>
-            : numeric_limits<cnl::_impl::number_base<cnl::scaled_integer<Rep, power<Exponent, Radix>>, Rep>> {
+            : numeric_limits<cnl::_impl::number<Rep, power<Exponent, Radix>>> {
         // scaled_integer-specific helpers
         using _value_type = cnl::scaled_integer<Rep, power<Exponent, Radix>>;
         using _rep_numeric_limits = numeric_limits<Rep>;
@@ -249,6 +249,8 @@ namespace cnl {
         {
             return _impl::from_rep<_value_type>(_rep_numeric_limits::lowest());
         }
+
+        static constexpr bool is_specialized = true;
 
         static constexpr bool is_integer = false;
 
