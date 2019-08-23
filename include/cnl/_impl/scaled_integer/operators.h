@@ -10,13 +10,13 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_OPERATORS_H)
 #define CNL_IMPL_SCALED_INTEGER_OPERATORS_H
 
+#include "is_scaled_integer.h"
 #include "type.h"
 
 #include <numeric>
 
 /// compositional numeric library
 namespace cnl {
-
     ////////////////////////////////////////////////////////////////////////////////
     // heterogeneous operator overloads
     //
@@ -161,8 +161,6 @@ namespace cnl {
         template<> struct is_zero_degree<multiply_op> : std::false_type {};
         template<> struct is_zero_degree<divide_op> : std::false_type {};
         template<> struct is_zero_degree<modulo_op> : std::false_type {};
-        template<> struct is_zero_degree<shift_left_op> : std::false_type {};
-        template<> struct is_zero_degree<shift_right_op> : std::false_type {};
     }
 
     // performs zero-degree binary operations between scaled_integer types with the same exponent
@@ -214,25 +212,49 @@ namespace cnl {
         }
     };
 
-#if defined(CNL_OVERLOAD_RESOLUTION_HACK)
-    namespace _impl {
-        template<typename LhsRep, class LhsScale, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
-        struct excluded_from_specialization<scaled_integer<LhsRep, LhsScale>, constant<RhsValue>>
-                : std::true_type {
-        };
-    }
-
-    template<class Operator, typename LhsRep, class LhsScale, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
-    struct shift_operator<_impl::native_tag, Operator, scaled_integer<LhsRep, LhsScale>, constant<RhsValue>> {
-        CNL_NODISCARD constexpr auto operator()(scaled_integer<LhsRep, LhsScale> const& lhs, constant<RhsValue> rhs) const
-        -> decltype(_impl::from_rep<scaled_integer<decltype(_impl::to_rep(lhs) >> int(rhs)), LhsScale>>(
-                _impl::to_rep(lhs) >> int(rhs)))
+    // shift_operator of non-scaled_integer and scaled_integer
+    template<class Operator, typename Lhs, typename RhsRep, class RhsScale>
+    struct shift_operator<
+            _impl::native_tag, Operator,
+            Lhs, scaled_integer<RhsRep, RhsScale>,
+                    _impl::enable_if_t<!_impl::is_number<Lhs>::value>> {
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, scaled_integer<RhsRep, RhsScale> const& rhs) const
+        -> decltype(Operator()(lhs, static_cast<RhsRep>(rhs)))
         {
-            return _impl::from_rep<scaled_integer<decltype(_impl::to_rep(lhs) >> int(rhs)), LhsScale>>(
-                _impl::to_rep(lhs) >> int(rhs));
+            return Operator()(lhs, static_cast<RhsRep>(rhs));
         }
     };
-#endif
+
+    // shift_operator of scaled_integer and non-scaled_integer
+    template<class Operator, typename LhsRep, class LhsScale, typename Rhs>
+    struct shift_operator<
+            _impl::native_tag, Operator,
+            scaled_integer<LhsRep, LhsScale>, Rhs> {
+        CNL_NODISCARD constexpr auto operator()(scaled_integer<LhsRep, LhsScale> const& lhs, Rhs const& rhs) const
+        -> decltype(_impl::from_rep<scaled_integer<
+                    decltype(Operator()(_impl::to_rep(lhs), rhs)),
+                    LhsScale>>(Operator()(_impl::to_rep(lhs), rhs)))
+        {
+            return _impl::from_rep<scaled_integer<
+                    decltype(Operator()(_impl::to_rep(lhs), rhs)),
+                    LhsScale>>(Operator()(_impl::to_rep(lhs), rhs));
+        }
+    };
+
+    // shift_operator of scaled_integer and scaled_integer
+    template<class Operator, typename LhsRep, class LhsScale, typename RhsRep, class RhsScale>
+    struct shift_operator<
+            _impl::native_tag, Operator,
+            scaled_integer<LhsRep, LhsScale>,
+            scaled_integer<RhsRep, RhsScale>> {
+        CNL_NODISCARD constexpr auto operator()(
+                scaled_integer<LhsRep, LhsScale> const& lhs,
+                scaled_integer<RhsRep, RhsScale> const& rhs) const
+        -> decltype(Operator()(lhs, static_cast<RhsRep>(rhs)))
+        {
+            return Operator()(lhs, static_cast<RhsRep>(rhs));
+        }
+    };
 
     ////////////////////////////////////////////////////////////////////////////////
     // pre-increment/decrement arithmetic operators

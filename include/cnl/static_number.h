@@ -53,7 +53,7 @@ namespace cnl {
 
     /// \brief constructs a static_number from a given constant value
     template<
-            class RoundingTag = rounding_integer<>::rounding,
+            class RoundingTag = _impl::tag_t<rounding_integer<>>,
             class OverflowTag = _impl::tag_t<overflow_integer<>>,
             class Narrowest = int,
             class Input = int,

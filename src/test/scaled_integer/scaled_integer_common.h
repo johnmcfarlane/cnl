@@ -952,20 +952,59 @@ static_assert(cnl::numeric_limits<uint128>::is_specialized, "");
 static_assert(cnl::numeric_limits<uint128>::is_integer, "");
 #endif
 
+namespace test_shift_operator_right {
+    constexpr auto expected{cnl::scaled_integer<test_int, cnl::power<-28> >{1.28125}};
+    constexpr auto lhs{cnl::scaled_integer<test_int, cnl::power<-28> >{5.125}};
+    constexpr auto rhs{test_int{2}};
+    constexpr auto op{
+            cnl::shift_operator<
+                    cnl::_impl::native_tag,
+                    cnl::_impl::shift_right_op,
+                    cnl::scaled_integer<test_int, cnl::power<-28> >,
+                    test_int>{}
+    };
+    constexpr auto actual{op(lhs, rhs)};
+    static_assert(identical(expected, actual), "");
+}
+
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
+namespace test_shift_operator_left {
+    constexpr auto expected{
+        scaled_integer<
+                decltype(std::declval<uint8>() << std::declval<test_int>()),
+                cnl::power<-4>>{2}};
+    constexpr auto lhs{scaled_integer<uint8, cnl::power<-4>>{1}};
+    constexpr auto rhs{scaled_integer<>{1}};
+    constexpr auto op{
+            cnl::shift_operator<
+                    cnl::_impl::native_tag,
+                    cnl::_impl::shift_left_op,
+                    scaled_integer<uint8, cnl::power<-4>>,
+                    scaled_integer<>>{}
+    };
+    constexpr auto actual{op(lhs, rhs)};
+    static_assert(identical(expected, actual), "");
+}
+#endif
+
 namespace test_bitshift {
     // dynamic
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
     static_assert(
             identical(
                     scaled_integer<decltype(std::declval<uint8>() << std::declval<test_int>()), cnl::power<-4>>{2},
                     scaled_integer<uint8, cnl::power<-4>>{1} << 1), "bitshift test failed");
+#endif
     static_assert(
             identical(
                     scaled_integer<decltype(std::declval<uint8>() >> std::declval<test_int>()), cnl::power<-4>>{.5},
                     scaled_integer<uint8, cnl::power<-4>>{1} >> 1), "bitshift test failed");
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>9)
     static_assert(
             identical(
                     scaled_integer<decltype(std::declval<uint8>() << std::declval<test_int>()), cnl::power<-4>>{2},
                     scaled_integer<uint8, cnl::power<-4>>{1} << scaled_integer<>{1}), "bitshift test failed");
+#endif
 
     // cnl::constant
     static_assert(

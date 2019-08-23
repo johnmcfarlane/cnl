@@ -15,7 +15,7 @@ namespace cnl {
     /// \tparam OutRep new representational type being wrapped by the resultant type
     ///
     /// \sa to_rep, from_value, set_tag, rep
-    template<typename T, class OutRep>
+    template<typename T, typename OutRep, class Enable = void>
     struct set_rep;
 
     namespace _impl {

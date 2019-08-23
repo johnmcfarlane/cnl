@@ -31,18 +31,17 @@ namespace cnl {
         };
     }
 
-    template<typename Destination, typename Source>
-    struct convert_operator<
-            native_rounding_tag, Destination, Source> {
+    template<class SrcTag, typename Destination, typename Source>
+    struct convert_operator<native_rounding_tag, SrcTag, Destination, Source> {
         CNL_NODISCARD constexpr Destination operator()(Source const& from) const
         {
-            return static_cast<Destination>(from);
+            return convert_operator<_impl::native_tag, SrcTag, Destination, Source>{}(from);
         }
     };
 
-    template<typename Destination, typename Source>
+    template<class SrcTag, typename Destination, typename Source>
     struct convert_operator<
-            nearest_rounding_tag, Destination, Source,
+            nearest_rounding_tag, SrcTag, Destination, Source,
             _impl::enable_if_t<_impl::are_arithmetic_or_integer<Destination, Source>::value>> {
         CNL_NODISCARD constexpr Destination operator()(Source const& from) const
         {
@@ -52,9 +51,9 @@ namespace cnl {
         }
     };
 
-    template<typename Destination, typename Source>
+    template<class SrcTag, typename Destination, typename Source>
     struct convert_operator<
-            tie_to_pos_inf_rounding_tag, Destination, Source,
+            tie_to_pos_inf_rounding_tag, SrcTag, Destination, Source,
             _impl::enable_if_t<_impl::are_arithmetic_or_integer<Destination, Source>::value>> {
     private:
         CNL_NODISCARD static constexpr Source ceil(Source x)
@@ -84,6 +83,14 @@ namespace cnl {
         }
     };
 
+    template<class SrcTag, typename Destination, typename Source>
+    struct convert_operator<_impl::native_tag, SrcTag, Destination, Source,
+            _impl::enable_if_t<_impl::is_rounding_tag<SrcTag>::value>> {
+        CNL_NODISCARD constexpr Destination operator()(Source const& from) const
+        {
+            return convert_operator<_impl::native_tag, _impl::native_tag, Destination, Source>{}(from);
+        }
+    };
 }
 
 #endif  // CNL_IMPL_ROUNDING_TAGGED_CONVERT_OPERATOR_H

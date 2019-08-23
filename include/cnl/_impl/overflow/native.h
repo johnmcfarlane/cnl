@@ -22,7 +22,9 @@ namespace cnl {
     /// \sa cnl::overflow_integer,
     /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
     /// cnl::saturated_overflow_tag, cnl::throwing_overflow_tag, cnl::trapping_overflow_tag, cnl::undefined_overflow_tag
-    struct native_overflow_tag {
+    struct native_overflow_tag : public _impl::native_tag {
+        native_overflow_tag() = default;
+        explicit native_overflow_tag(native_tag) {}
     };
 
     namespace _impl {

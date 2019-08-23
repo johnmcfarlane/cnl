@@ -17,6 +17,7 @@
 #include "_impl/num_traits/digits.h"
 #include "_impl/num_traits/fixed_width_scale.h"
 #include "_impl/num_traits/rep.h"
+#include "_impl/num_traits/rounding.h"
 #include "_impl/num_traits/set_width.h"
 #include "_impl/num_traits/width.h"
 #include "_impl/number_base.h"
@@ -139,6 +140,10 @@ namespace cnl {
     struct from_value<elastic_integer<Digits, Narrowest>, constant<Value>> : _impl::from_value_simple<
             elastic_integer<digits<constant<Value>>::value, int>,
             constant<Value>> {
+    };
+
+    template<int Digits, class Narrowest>
+    struct rounding<elastic_integer<Digits, Narrowest>> : rounding<_impl::rep_t<elastic_integer<Digits, Narrowest>>> {
     };
 
     // cnl::scale<..., cnl::elastic_integer<>>
