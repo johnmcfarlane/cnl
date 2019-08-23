@@ -48,11 +48,24 @@ namespace cnl {
     struct scale<Digits, Radix, _impl::number<Rep, Tag>,
             _impl::enable_if_t<_impl::is_overflow_tag<Tag>::value>> {
         using _value_type = _impl::number<Rep, Tag>;
+
         CNL_NODISCARD constexpr auto operator()(_value_type const& s) const
         -> decltype(_impl::from_rep<_value_type>(_impl::scale<Digits, Radix>(_impl::to_rep(s))))
         {
             return _impl::default_scale<Digits, Radix, _value_type>{}(s);
         }
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::set_rep<Rep, OverflowTag>
+
+    // when an _impl::number wraps a non-_impl::number
+    template<typename NumberRep, class NumberTag, typename Rep>
+    struct set_rep<
+            _impl::number<NumberRep, NumberTag>, Rep,
+            _impl::enable_if_t<_impl::is_overflow_tag<NumberTag>::value
+                    && !_impl::is_number<Rep>::value>>
+            : _impl::type_identity<_impl::number<Rep, NumberTag>> {
     };
 }
 

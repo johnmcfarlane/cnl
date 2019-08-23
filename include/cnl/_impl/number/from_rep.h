@@ -8,8 +8,8 @@
 #define CNL_IMPL_NUMBER_FROM_REP_H
 
 #include "../num_traits/from_rep.h"
-#include "../num_traits/set_rep.h"
 #include "definition.h"
+#include "set_rep.h"
 
 /// compositional numeric library
 namespace cnl {

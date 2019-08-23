@@ -18,8 +18,9 @@ namespace cnl {
     namespace _impl {
         template<class Tag=tag_t<number<>>, typename Rep=rep_t<number<>>>
         CNL_NODISCARD constexpr auto make_number(Rep const& rep)
-        -> number<Rep, Tag> {
-            return rep;
+        -> number<Rep, Tag>
+        {
+            return number<Rep, Tag>{rep};
         }
     }
 }

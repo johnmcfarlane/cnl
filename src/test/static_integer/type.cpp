@@ -14,6 +14,7 @@ namespace {
     using cnl::_impl::assert_same;
     using cnl::_impl::identical;
     using cnl::_impl::rep_t;
+    using cnl::_impl::tag_t;
 
     namespace default_parameters {
         static_assert(
@@ -31,7 +32,7 @@ namespace {
                 "cnl::static_integer parameter default test failed");
 
         static_assert(
-                std::is_same<cnl::nearest_rounding_tag, rep_t<rep_t<cnl::static_integer<1>>>::rounding>::value,
+                std::is_same<cnl::nearest_rounding_tag, tag_t<rep_t<rep_t<cnl::static_integer<1>>>>>::value,
                 "cnl::static_integer parameter default test failed");
         static_assert(
                 !std::is_same<cnl::native_rounding_tag, cnl::native_overflow_tag>::value,

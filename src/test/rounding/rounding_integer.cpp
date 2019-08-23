@@ -18,15 +18,6 @@ namespace {
     using cnl::_impl::assert_same;
     using cnl::_impl::identical;
 
-    namespace number_base_traits {
-        using cnl::_impl::number_base;
-        using cnl::_impl::is_derived_from_number_base;
-
-        static_assert(!is_derived_from_number_base<int>::value, "");
-        static_assert(!is_derived_from_number_base<number_base<rounding_integer<>, int>>::value, "");
-        static_assert(is_derived_from_number_base<rounding_integer<>>::value, "");
-    }
-
     namespace default_parameters {
         using cnl::nearest_rounding_tag;
 
@@ -35,10 +26,13 @@ namespace {
         template<typename T>
         using default_tag = cnl::nearest_rounding_tag;
 
-        static_assert(is_same<rounding_integer<>, rounding_integer<default_rep, default_tag<default_rep>>>::value, "cnl::rounding_integer parameter default test failed");
+        static_assert(is_same<rounding_integer<>, rounding_integer<default_rep, default_tag<default_rep>>>::value,
+                "cnl::rounding_integer parameter default test failed");
 
-        static_assert(is_same<cnl::_impl::rep_t<rounding_integer<>>, default_rep>::value, "cnl::rounding_integer parameter default test failed");
-        static_assert(is_same<rounding_integer<>::rounding, default_tag<default_rep>>::value, "cnl::rounding_integer parameter default test failed");
+        static_assert(is_same<cnl::_impl::rep_t<rounding_integer<>>, default_rep>::value,
+                "cnl::rounding_integer parameter default test failed");
+        static_assert(is_same<cnl::_impl::tag_t<rounding_integer<>>, default_tag<default_rep>>::value,
+                "cnl::rounding_integer parameter default test failed");
     }
 
     namespace test_rounding_t {
@@ -83,10 +77,18 @@ namespace {
                 "cnl::rounding_t<cnl::rounding_integer<>> test failed");
     }
 
-    namespace is_number {
-        using cnl::_impl::is_derived_from_number_base;
+    namespace test_is_integer {
+        static_assert(cnl::_impl::is_number<rounding_integer<>>::value, "is_number<rounding_integer<>>");
+    }
 
-        static_assert(is_derived_from_number_base<rounding_integer<>>::value, "is_derived_from_number_base<rounding_integer<>>");
+    namespace test_from_value {
+        static_assert(
+                identical(
+                        cnl::_impl::number<int, cnl::native_rounding_tag>{42},
+                        cnl::_impl::from_value<
+                                cnl::_impl::number<int, cnl::native_rounding_tag>,
+                                cnl::_impl::number<int, cnl::_impl::native_tag>>(42)),
+                "");
     }
 
     namespace test_traits {
@@ -184,12 +186,22 @@ namespace {
         static_assert(identical(cnl::rounding_integer<>{-1}, cnl::rounding_integer<>{-2}/3), "");
         static_assert(identical(cnl::rounding_integer<>{0}, cnl::rounding_integer<>{1}/-3), "");
         static_assert(identical(cnl::rounding_integer<>{1}, cnl::rounding_integer<>{5}/9), "");
+        static_assert(identical(
+                cnl::rounding_integer<long, cnl::native_rounding_tag>{321},
+                cnl::binary_operator<
+                        cnl::_impl::native_tag,
+                        cnl::_impl::divide_op,
+                        cnl::_impl::number<long, cnl::native_rounding_tag>,
+                        cnl::constant<3>>{}(
+                        cnl::_impl::number<long, cnl::native_rounding_tag>{963},
+                        cnl::constant<3>{})),
+                "");
     }
 
     namespace numeric_limits {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::numeric_limits
-        
+
         // cnl::numeric_limits<cnl::rounding_integer<>>::is_integer
         static_assert(cnl::numeric_limits<cnl::rounding_integer<int8_t, cnl::nearest_rounding_tag>>::is_integer,
                 "cnl::numeric_limits<cnl::rounding_integer<>> test failed");
@@ -326,6 +338,8 @@ namespace {
         static_assert(identical(
                 cnl::rounding_integer<>{8},
                 cnl::rounding_integer<>{1} << cnl::constant<3>{}), "");
+
+        static_assert(identical(6, 3 << cnl::rounding_integer<>{1}), "");
     }
 
     namespace test_shift_right {

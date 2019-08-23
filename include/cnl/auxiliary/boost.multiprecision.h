@@ -10,7 +10,9 @@
 #if !defined(CNL_BOOST_MULTIPRECISION_H)
 #define CNL_BOOST_MULTIPRECISION_H
 
+#include "../_impl/scaled/power.h"
 #include "../_impl/type_traits/add_signedness.h"
+#include "../_impl/type_traits/enable_if.h"
 #include "../_impl/type_traits/is_signed.h"
 #include "../_impl/type_traits/remove_signedness.h"
 #include "../constant.h"
@@ -19,9 +21,60 @@
 
 #include <boost/multiprecision/cpp_int.hpp>
 
+#include <type_traits>
+
 /// compositional numeric library
 namespace cnl {
     namespace _bmp = boost::multiprecision;
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    // generic operators of boost::multiprecision::number
+
+    namespace _impl {
+        template<typename T>
+        struct is_bmp_number : std::false_type {
+        };
+
+        template<class Backend>
+        struct is_bmp_number<_bmp::number<Backend>> : std::true_type {
+        };
+    }
+
+    template<
+            int DestExponent, int SrcExponent, int Radix,
+            unsigned NumBits, _bmp::cpp_integer_type SignType>
+    struct convert_operator<
+            cnl::power<DestExponent, Radix>,
+            cnl::power<SrcExponent, Radix>,
+            _bmp::cpp_int_backend<NumBits, NumBits, SignType>,
+            _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, SignType>>> {
+        CNL_NODISCARD constexpr auto
+        operator()(_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, SignType>> const& input) const
+        -> decltype(input.backend())
+        {
+            // when converting *from* scaled_integer
+            return input.backend();
+        }
+    };
+
+    template<
+            int DestExponent, int SrcExponent, int Radix,
+            unsigned NumBits, _bmp::cpp_integer_type SignType,
+            typename Input>
+    struct convert_operator<
+            cnl::power<DestExponent, Radix>,
+            cnl::power<SrcExponent, Radix>,
+            _bmp::cpp_int_backend<NumBits, NumBits, SignType>,
+            Input,
+            _impl::enable_if_t<!_impl::is_bmp_number<Input>::value>> {
+        CNL_NODISCARD constexpr auto
+        operator()(Input const& input) const
+        -> _bmp::cpp_int_backend<NumBits, NumBits, SignType>
+        {
+            return input;
+        }
+    };
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
