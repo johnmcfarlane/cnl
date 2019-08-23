@@ -26,6 +26,10 @@ namespace cnl {
     /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::trapping_overflow_tag, cnl::undefined_overflow_tag
     struct throwing_overflow_tag {
+        template<
+                typename ThatOverflowTag,
+                _impl::enable_if_t<_impl::is_overflow_tag<ThatOverflowTag>::value, int> Dummy>
+        constexpr throwing_overflow_tag(ThatOverflowTag const&) {}
     };
 
     namespace _impl {

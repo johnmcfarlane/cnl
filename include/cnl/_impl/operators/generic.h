@@ -10,6 +10,7 @@
 #if !defined(CNL_IMPL_OPERATORS_GENERIC_OPERATORS_H)
 #define CNL_IMPL_OPERATORS_GENERIC_OPERATORS_H
 
+#include "operators.h"
 #include "../config.h"
 
 #include <type_traits>
@@ -17,6 +18,8 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
+        struct native_tag;
+
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::wants_generic_ops
 
@@ -29,7 +32,7 @@ namespace cnl {
         // generic operators
     }
 
-    template<class Tag, typename Destination, typename Source, typename Enabled=void>
+    template<class DestTag, class SrcTag, typename Destination, typename Source, typename Enabled=void>
     struct convert_operator;
 
     template<class Tag, class Operator, typename Rhs, class Enabled=void>
@@ -56,7 +59,7 @@ namespace cnl {
         {
             using binary_operator = cnl::binary_operator<Tag, typename Operator::binary, LhsOperand, RhsOperand>;
             using binary_operator_result = decltype(binary_operator{}(lhs, rhs));
-            using convert_operator = cnl::convert_operator<Tag, LhsOperand, binary_operator_result>;
+            using convert_operator = cnl::convert_operator<Tag, _impl::native_tag, LhsOperand, binary_operator_result>;
             return lhs = convert_operator{}(binary_operator{}(lhs, rhs));
         }
     };
@@ -67,7 +70,7 @@ namespace cnl {
         {
             using shift_operator = cnl::shift_operator<Tag, typename Operator::binary, LhsOperand, RhsOperand>;
             using shift_operator_result = decltype(shift_operator{}(lhs, rhs));
-            using convert_operator = cnl::convert_operator<Tag, LhsOperand, shift_operator_result>;
+            using convert_operator = cnl::convert_operator<Tag, _impl::native_tag, LhsOperand, shift_operator_result>;
             return lhs = convert_operator{}(shift_operator{}(lhs, rhs));
         }
     };

@@ -22,7 +22,7 @@ namespace cnl {
         template<class Tag=number<>::tag, typename Rep=number<>::rep>
         CNL_NODISCARD constexpr auto make_number(Rep const& rep)
         -> number<Rep, Tag> {
-            return rep;
+            return number<Rep, Tag>{rep};
         }
     }
 }

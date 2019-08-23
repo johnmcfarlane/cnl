@@ -14,7 +14,7 @@ namespace cnl {
     template<
             int IntegerDigits,
             class OverflowTag = overflow_integer<>::tag,
-            class RoundingTag = rounding_integer<>::rounding,
+            class RoundingTag = rounding_integer<>::tag,
             class Narrowest = int>
     using rounding_safe_int = elastic_integer<
             IntegerDigits,
@@ -29,7 +29,7 @@ namespace cnl {
 
     template<
             class OverflowTag = overflow_integer<>::tag,
-            class RoundingTag = rounding_integer<>::rounding,
+            class RoundingTag = rounding_integer<>::tag,
             class Narrowest = int,
             class Input = int,
             class = _impl::enable_if_t<!_impl::is_constant<Input>::value>>
@@ -44,7 +44,7 @@ namespace cnl {
 
     template<
             class OverflowTag = overflow_integer<>::tag,
-            class RoundingTag = rounding_integer<>::rounding,
+            class RoundingTag = rounding_integer<>::tag,
             class Narrowest = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE InputValue = 0>
     CNL_NODISCARD rounding_safe_int<

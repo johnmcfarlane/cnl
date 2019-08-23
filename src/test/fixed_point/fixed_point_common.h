@@ -879,10 +879,12 @@ static_assert(cnl::numeric_limits<uint128>::is_integer, "");
 
 namespace test_bitshift {
     // dynamic
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
     static_assert(
             identical(
                     fixed_point<decltype(std::declval<uint8>() << std::declval<test_int>()), -4>{2},
                     fixed_point<uint8, -4>{1} << 1), "bitshift test failed");
+#endif
     static_assert(
             identical(
                     fixed_point<decltype(std::declval<uint8>() >> std::declval<test_int>()), -4>{.5},
