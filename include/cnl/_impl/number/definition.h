@@ -39,9 +39,14 @@ namespace cnl {
             }
 
             template<class S>
-            CNL_NODISCARD explicit constexpr operator S() const
+            CNL_NODISCARD constexpr explicit operator S() const
             {
-                return static_cast<S>(_impl::to_rep(*this));
+                return convert<Tag, S>(_impl::to_rep(*this));
+            }
+
+            CNL_NODISCARD explicit constexpr operator bool() const
+            {
+                return static_cast<bool>(_rep);
             }
 
             template<typename T, class Enable>

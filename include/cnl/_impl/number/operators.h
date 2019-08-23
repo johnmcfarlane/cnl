@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_NUMBER_OPERATORS_H)
 #define CNL_IMPL_NUMBER_OPERATORS_H
 
+#include "inc_dec_operator.h"
 #include "unary_operator.h"
 #include "binary_operator.h"
 #include "comparison_operator.h"

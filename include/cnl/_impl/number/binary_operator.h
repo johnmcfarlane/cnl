@@ -67,13 +67,18 @@ namespace cnl {
         }
     };
 
-    template<class Operator, typename LhsRep, typename RhsRep>
-    struct binary_operator<_impl::native_tag, Operator, _impl::number<LhsRep>, _impl::number<RhsRep>> {
+    template<class Operator, typename LhsRep, typename RhsRep, class Tag>
+    struct binary_operator<_impl::native_tag, Operator, _impl::number<LhsRep, Tag>, _impl::number<RhsRep, Tag>> {
+        using _rep_operator = binary_operator<Tag, Operator, LhsRep, RhsRep>;
+        using _result_rep = decltype(_rep_operator{}(std::declval<LhsRep>(), std::declval<RhsRep>()));
+        using _result_archetype = _impl::number<_result_rep, Tag>;
         CNL_NODISCARD constexpr auto operator()(
-                _impl::number<LhsRep> const& lhs, _impl::number<RhsRep> const& rhs) const
-        -> decltype(_impl::make_number(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
+                _impl::number<LhsRep, Tag> const& lhs, _impl::number<RhsRep, Tag> const& rhs) const
+        -> decltype(_impl::from_rep<_result_archetype>(
+                _rep_operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs))))
         {
-            return _impl::make_number(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)));
+            return _impl::from_rep<_result_archetype>(
+                    _rep_operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs)));
         }
     };
 }

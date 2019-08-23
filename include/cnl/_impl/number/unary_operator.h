@@ -8,6 +8,7 @@
 #define CNL_IMPL_NUMBER_UNARY_OPERATOR_H
 
 #include "from_rep.h"
+#include "make_number.h"
 #include "to_rep.h"
 #include "definition.h"
 #include "../operators/generic.h"
@@ -16,14 +17,12 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Operator, typename Rep>
-    struct unary_operator<_impl::native_tag, Operator, _impl::number<Rep>> {
-        CNL_NODISCARD constexpr auto operator()(_impl::number<Rep> const& rhs) const
-        -> decltype(_impl::from_rep<_impl::number<decltype(Operator()(_impl::to_rep(rhs)))>>(
-                Operator()(_impl::to_rep(rhs))))
+    template<typename Operator, typename Rep, class Tag>
+    struct unary_operator<_impl::native_tag, Operator, _impl::number<Rep, Tag>> {
+        CNL_NODISCARD constexpr auto operator()(_impl::number<Rep, Tag> const& rhs) const
+        -> decltype(_impl::from_rep<_impl::number<Rep, Tag>>(unary_operator<Tag, Operator, Rep>{}(_impl::to_rep(rhs))))
         {
-            return _impl::from_rep<_impl::number<decltype(Operator()(_impl::to_rep(rhs)))>>(
-                    Operator()(_impl::to_rep(rhs)));
+            return _impl::from_rep<_impl::number<Rep, Tag>>(unary_operator<Tag, Operator, Rep>{}(_impl::to_rep(rhs)));
         }
     };
 }
