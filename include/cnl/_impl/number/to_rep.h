@@ -7,20 +7,20 @@
 #if !defined(CNL_IMPL_NUMBER_TO_REP_H)
 #define CNL_IMPL_NUMBER_TO_REP_H
 
-#include "definition.h"
+#include "declaration.h"
 #include "../num_traits/to_rep.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Rep>
-    struct to_rep<_impl::number<Rep>> {
-        CNL_NODISCARD constexpr Rep& operator()(_impl::number<Rep>& number) const {
+    template<typename Rep, class Tag>
+    struct to_rep<_impl::number<Rep, Tag>> {
+        CNL_NODISCARD constexpr Rep& operator()(_impl::number<Rep, Tag>& number) const {
             return number._rep;
         }
-        CNL_NODISCARD constexpr Rep const& operator()(_impl::number<Rep> const& number) const {
+        CNL_NODISCARD constexpr Rep const& operator()(_impl::number<Rep, Tag> const& number) const {
             return number._rep;
         }
-        CNL_NODISCARD constexpr Rep&& operator()(_impl::number<Rep>&& number) const {
+        CNL_NODISCARD constexpr Rep&& operator()(_impl::number<Rep, Tag>&& number) const {
             return std::forward<Rep>(number._rep);
         }
     };

@@ -20,10 +20,10 @@ namespace {
                 "cnl::static_integer parameter default test failed");
 
         static_assert(
-                std::is_same<cnl::undefined_overflow_tag, typename cnl::static_integer<1>::overflow_tag>::value,
+                std::is_same<cnl::undefined_overflow_tag, typename cnl::static_integer<1>::tag>::value,
                 "cnl::static_integer parameter default test failed");
         static_assert(
-                std::is_same<cnl::overflow_integer<>::overflow_tag, cnl::static_integer<1>::overflow_tag>::value,
+                std::is_same<cnl::overflow_integer<>::tag, cnl::static_integer<1>::tag>::value,
                 "cnl::static_integer parameter default test failed");
 
         static_assert(
