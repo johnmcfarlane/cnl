@@ -9,6 +9,7 @@
 
 #include "power_value.h"
 #include "num_traits/scale.h"
+#include "operators/is_same_tag_family.h"
 #include "operators/native_tag.h"
 
 /// compositional numeric library
@@ -36,11 +37,10 @@ namespace cnl {
     template<int Exponent, int Radix>
     constexpr int power<Exponent, Radix>::exponent;
 
-    template<int LhsExponent, int RhsExponent, int Radix>
-    constexpr auto operator/(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-    -> power<LhsExponent-RhsExponent, Radix>
-    {
-        return power<LhsExponent-RhsExponent, Radix>{};
+    namespace _impl {
+        template<int Exponent1, int Radix1, int Exponent2, int Radix2>
+        struct is_same_tag_family<power<Exponent1, Radix1>, power<Exponent2, Radix2>> : std::true_type {
+        };
     }
 
     // integer -> floating
@@ -87,8 +87,35 @@ namespace cnl {
         CNL_NODISCARD constexpr Result operator()(Input const& from) const
         {
             // when converting *from* scaled_integer
-            return static_cast<Result>(_impl::scale<SrcExponent-DestExponent, Radix>(from));
+            return static_cast<Result>(_impl::scale<SrcExponent-DestExponent, Radix>(_impl::from_value<Result>(from)));
         }
+    };
+
+    // shims between equivalent tags
+    template<
+            int DestExponent, int DestRadix,
+            typename Result, typename Input>
+    struct convert_operator<
+            power<DestExponent, DestRadix>,
+            _impl::native_tag,
+            Result, Input>
+            : convert_operator<
+                    power<DestExponent, DestRadix>,
+                    power<0, DestRadix>,
+                    Result, Input>{
+    };
+
+    template<
+            int SrcExponent, int SrcRadix,
+            typename Result, typename Input>
+    struct convert_operator<
+            _impl::native_tag,
+            power<SrcExponent, SrcRadix>,
+            Result, Input>
+            : convert_operator<
+                    power<0, SrcRadix>,
+                    power<SrcExponent, SrcRadix>,
+                    Result, Input>{
     };
 }
 

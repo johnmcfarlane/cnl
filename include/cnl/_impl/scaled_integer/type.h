@@ -10,15 +10,15 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_DEFINITION_H)
 #define CNL_IMPL_SCALED_INTEGER_DEFINITION_H 1
 
-#include "../power.h"
-#include "../power_value.h"
-#include "../number_base.h"
-#include "../num_traits/width.h"
-#include "../operators/tagged.h"
-#include "../../constant.h"
-#include "../../numeric.h"
 #include "declaration.h"
 #include "is_scaled_integer.h"
+#include "../integer.h"
+#include "../num_traits/digits.h"
+#include "../num_traits/set_digits.h"
+#include "../power.h"
+#include "../used_digits.h"
+#include "../../fraction.h"
+#include "../../numeric.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -45,11 +45,11 @@ namespace cnl {
 
     template<typename Rep, class Scale>
     class scaled_integer
-            : public _impl::number_base<scaled_integer<Rep, Scale>, Rep> {
+            : public _impl::number<Rep, Scale> {
         static_assert(!_impl::is_scaled_integer<Rep>::value,
                 "scaled_integer of scaled_integer is not a supported");
 
-        using _base = _impl::number_base<scaled_integer<Rep, Scale>, Rep>;
+        using _base = _impl::number<Rep, Scale>;
     public:
         ////////////////////////////////////////////////////////////////////////////////
         // types
@@ -63,67 +63,37 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // functions
 
-    private:
-        // constructor taking representation explicitly using operator++(int)-style trick
-        constexpr scaled_integer(rep r, int)
-                :_base(r)
+        /// constructor taking the rep type
+        constexpr scaled_integer(rep const& r, int)
+                : _base(r, 0)
         {
         }
 
     public:
-        /// default constructor
         scaled_integer() = default;
 
-        /// constructor taking a scaled_integer type
-        template<typename FromRep, class FromScale>
-        constexpr scaled_integer(scaled_integer<FromRep, FromScale> const& rhs)
-                : _base(convert<scale, FromScale, rep>(_impl::from_value<rep>(cnl::_impl::to_rep(rhs))))
-        {
-        }
-
-        /// constructor taking an integer type
-        template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer||_impl::is_constant<S>::value, int> Dummy = 0>
-        constexpr scaled_integer(S const& s)
-                : _base(convert<scale, typename scale::identity, rep>(_impl::from_value<rep>(s)))
-        {
-        }
-
-        /// constructor taking a floating-point type
-        template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
-        constexpr scaled_integer(S s)
-                :_base(convert<scale, typename scale::identity, rep>(s))
-        {
-        }
+        /// constructor not taking cnl::fraction
+        template<
+                typename Number,
+                _impl::enable_if_t<!_impl::is_fraction<Number>::value, int> Dummy = 0>
+        constexpr scaled_integer(Number const& n)
+                : _base(n) { }
 
         /// constructor taking cnl::fraction
         template<typename Numerator, typename Denominator>
         constexpr scaled_integer(fraction<Numerator, Denominator> const& f);
 
-        /// copy assignment operator taking a floating-point type
-        template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
-        CNL_RELAXED_CONSTEXPR scaled_integer& operator=(S s)
+        /// copy assignement operator
+        template<typename S>
+        CNL_RELAXED_CONSTEXPR scaled_integer& operator=(S const& rhs)
         {
-            _base::operator=(convert<scale, typename scale::identity, rep>(s));
-            return *this;
-        }
-
-        /// copy assignement operator taking a fixed-point type
-        template<typename FromRep, class FromScale>
-        CNL_RELAXED_CONSTEXPR scaled_integer& operator=(scaled_integer<FromRep, FromScale> const& rhs)
-        {
-            _base::operator=(convert<scale, FromScale, rep>(from_value<rep, FromRep>{}(cnl::_impl::to_rep(rhs))));
+            _base::operator=(rhs);
             return *this;
         }
 
         /// copy assignement operator taking cnl::fraction
         template<typename Numerator, typename Denominator>
         CNL_RELAXED_CONSTEXPR scaled_integer& operator=(fraction<Numerator, Denominator> const& f);
-
-        template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer||numeric_limits<S>::is_iec559, int> Dummy = 0>
-        CNL_NODISCARD explicit constexpr operator S() const
-        {
-            return convert<typename scale::identity, scale, S>(_impl::to_rep(*this));
-        }
 
         /// creates an instance given the underlying representation value
         template<typename, typename, typename>

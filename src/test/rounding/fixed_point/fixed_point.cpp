@@ -14,8 +14,8 @@ namespace {
     namespace test_nearest_round_down {
         static constexpr auto expected = cnl::fixed_point<int, -1>{0.5};
         static constexpr auto actual = cnl::convert<
-                cnl::nearest_rounding_tag,
                 cnl::power<>,
+                cnl::nearest_rounding_tag,
                 cnl::fixed_point<int, -1>>(cnl::fixed_point<int, -4>{0.3125});
 
         static_assert(

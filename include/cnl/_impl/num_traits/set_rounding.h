@@ -8,7 +8,8 @@
 #define CNL_IMPL_NUM_TRAITS_SET_ROUNDING
 
 #include "rounding.h"
-#include "is_composite.h"
+#include "../number/declaration.h"
+#include "../number/is_number.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/remove_cvref.h"
 #include "../type_traits/type_identity.h"

@@ -29,15 +29,15 @@ namespace cnl {
         }
     };
 
-    template<class Operator, class Lhs, class Rhs>
+    template<class Operator, class LhsRep, class LhsTag, class Rhs>
     struct shift_operator<
-            _impl::native_tag, Operator, Lhs, Rhs,
+            _impl::native_tag, Operator, _impl::number<LhsRep, LhsTag>, Rhs,
             _impl::enable_if_t<
-                    _impl::is_number<Lhs>::value&&_impl::is_same_number_wrapper<Lhs, Rhs>::value>> {
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(_impl::from_rep<Lhs>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
+                    _impl::is_same_number_wrapper<_impl::number<LhsRep, LhsTag>, Rhs>::value>> {
+        CNL_NODISCARD constexpr auto operator()(_impl::number<LhsRep, LhsTag> const& lhs, Rhs const& rhs) const
+        -> decltype(_impl::from_rep<_impl::number<LhsRep, LhsTag>>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
         {
-            return _impl::from_rep<Lhs>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)));
+            return _impl::from_rep<_impl::number<LhsRep, LhsTag>>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)));
         }
     };
 

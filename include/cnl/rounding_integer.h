@@ -53,20 +53,6 @@ namespace cnl {
                             set_rounding_t<_impl::to_rep_t<Number>, RoundingTag>>> {
     };
 
-    template<typename IntegerRep, class IntegerTag, class OutputRoundingTag>
-    struct set_rounding<
-            _impl::number<IntegerRep, IntegerTag>, OutputRoundingTag, _impl::enable_if_t<
-                    !_impl::is_rounding_tag<IntegerTag>::value>>
-            : _impl::type_identity<_impl::number<set_rounding_t<IntegerRep, OutputRoundingTag>, IntegerTag>> {
-    };
-
-    template<typename IntegerRep, class IntegerTag, class OutputRoundingTag>
-    struct set_rounding<
-            _impl::number<IntegerRep, IntegerTag>, OutputRoundingTag,
-            _impl::enable_if_t<_impl::is_rounding_tag<IntegerTag>::value>>
-            : _impl::type_identity<_impl::number<IntegerRep, OutputRoundingTag>> {
-    };
-
     template<int Digits, class Rep, class RoundingTag>
     struct scale<Digits, 2, _impl::number<Rep, RoundingTag>,
             _impl::enable_if_t<Digits<0&&_impl::is_rounding_tag<RoundingTag>::value>>

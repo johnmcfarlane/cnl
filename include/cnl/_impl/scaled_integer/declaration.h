@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_DECLARATION_H)
 #define CNL_IMPL_SCALED_INTEGER_DECLARATION_H 1
 
+//#include "../integer/declaration.h"
 #include "../power.h"
 #include "../../limits.h"
 

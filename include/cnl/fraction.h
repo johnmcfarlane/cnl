@@ -15,6 +15,7 @@
 #include "_impl/fraction/ctors.h"
 #include "_impl/fraction/gcd.h"
 #include "_impl/fraction/hash.h"
+#include "_impl/fraction/is_fraction.h"
 #include "_impl/fraction/make_fraction.h"
 #include "_impl/fraction/operators.h"
 #include "_impl/fraction/reduce.h"
