@@ -23,7 +23,7 @@ Requires:
 
 Optional:
 
-- [CMake](https://cmake.org/download/) ([3.7.2](https://docs.travis-ci.com/user/languages/cpp/#CMake))
+- [CMake](https://cmake.org/download/) ([3.5.1](https://docs.travis-ci.com/user/languages/cpp/#CMake))
 - [Boost](http://www.boost.org/) - facilitates multiprecision support
 - [Doxygen](http://www.doxygen.org/) - generates documentation in the *doc/gh-pages* directory
 
