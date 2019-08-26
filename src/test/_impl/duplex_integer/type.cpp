@@ -225,7 +225,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::uint8{255},
-                        static_cast<cnl::uint8>(cnl::_impl::duplex_integer<int, unsigned>{255})),
+                        static_cast<cnl::uint8>(cnl::_impl::duplex_integer<int, unsigned>{cnl::uint8{255}})),
                 "");
         static_assert(
                 identical(
