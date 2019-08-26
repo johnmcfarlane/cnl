@@ -4,4 +4,7 @@
 brew update
 
 # Install
-brew install cloc ${PACKAGE}
+brew install ccache cloc ${PACKAGE}
+
+# Advice from docs.travis-ci.com/user/caching/#ccache-cache
+export PATH="/usr/local/opt/ccache/libexec:$PATH"
