@@ -2,6 +2,7 @@ dist: xenial
 sudo: required
 
 language: cpp
+cache: ccache
 
 matrix:
   include:
