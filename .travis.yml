@@ -8,169 +8,84 @@ matrix:
   include:
     # C++11
     - os: linux
-      addons: &gcc8
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-8
-      env: C_COMPILER=gcc-8 CXX_COMPILER=g++-8 BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=ON SANITIZE=ON GENERATOR=Ninja
+      env: IMAGE=gcc-8 BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
     - os: linux
-      addons: &gcc7
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
-      env: C_COMPILER=gcc-7 CXX_COMPILER=g++-7 BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: IMAGE=gcc-7 BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
     - os: osx
       osx_image: xcode8.3
       env: PACKAGE=gcc@7 C_COMPILER=gcc-7 CXX_COMPILER=g++-7 BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
-      addons: &gcc6
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-6
-      env: C_COMPILER=gcc-6 CXX_COMPILER=g++-6 BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: IMAGE=gcc-6 BUILD_TYPE=Debug STD=11 EXCEPTIONS=OFF INT128=ON SANITIZE=ON GENERATOR=Ninja
 
     - os: linux
-      addons: &gcc5
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-5
-      env: C_COMPILER=gcc-5 CXX_COMPILER=g++-5 BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: IMAGE=gcc-5 BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR="Unix Makefiles"
 
     - os: linux
-      addons: &clang6
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - clang-6.0
-      env: C_COMPILER=clang-6.0 CXX_COMPILER=clang++-6.0 BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR="Ninja"
+      env: IMAGE=clang-6.0 BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF GENERATOR="Ninja"
 
     - os: linux
-      addons: &clang5
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - clang-5.0
-      env: C_COMPILER=clang-5.0 CXX_COMPILER=clang++-5.0 BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR="Unix Makefiles"
+      env: IMAGE=clang-5.0 BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
-      addons: &clang4
-        apt:
-          sources:
-            - llvm-toolchain-trusty-4.0
-            - ubuntu-toolchain-r-test
-          packages:
-            - clang-4.0
-      env: C_COMPILER=clang-4.0 CXX_COMPILER=clang++-4.0 BUILD_TYPE=Release STD=11 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: IMAGE=clang-4.0 BUILD_TYPE=Release STD=11 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
     - os: linux
-      addons: &clang39
-        apt:
-          sources:
-            - llvm-toolchain-trusty-3.9
-            - ubuntu-toolchain-r-test
-          packages:
-            - clang-3.9
-            - g++-5
-      env: C_COMPILER=clang-3.9 CXX_COMPILER=clang++-3.9 BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: IMAGE=clang-3.9 BUILD_TYPE=Debug STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR=Ninja
 
     - os: linux
-      addons: &clang38
-        apt:
-          sources:
-            - llvm-toolchain-trusty-3.8
-            - ubuntu-toolchain-r-test
-          packages:
-            - clang-3.8
-            - g++-5
-      env: C_COMPILER=clang-3.8 CXX_COMPILER=clang++-3.8 BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR="Unix Makefiles"
+      env: IMAGE=clang-3.8 BUILD_TYPE=Release STD=11 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR="Unix Makefiles"
 
     # C++14
     - os: linux
-      addons: *gcc8
-      env: C_COMPILER=gcc-8 CXX_COMPILER=g++-8 BUILD_TYPE=Release STD=14 EXCEPTIONS=OFF INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: IMAGE=gcc-8 BUILD_TYPE=Release STD=14 EXCEPTIONS=OFF INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
-      addons: *gcc7
-      env: C_COMPILER=gcc-7 CXX_COMPILER=g++-7 BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: IMAGE=gcc-7 BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
-      addons: *gcc5
-      env: C_COMPILER=gcc-5 CXX_COMPILER=g++-5 BUILD_TYPE=Debug STD=14 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: IMAGE=gcc-5 BUILD_TYPE=Debug STD=14 EXCEPTIONS=OFF INT128=ON SANITIZE=ON GENERATOR=Ninja
 
     - os: linux
-      addons: *clang6
-      env: C_COMPILER=clang-6.0 CXX_COMPILER=clang++-6.0 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=ON GENERATOR=Ninja
+      env: IMAGE=clang-6.0 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF GENERATOR=Ninja
 
     - os: linux
-      addons: *clang5
-      env: C_COMPILER=clang-5.0 CXX_COMPILER=clang++-5.0 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR=Ninja
+      env: IMAGE=clang-5.0 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
     - os: linux
-      addons: *clang4
-      env: C_COMPILER=clang-4.0 CXX_COMPILER=clang++-4.0 BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: IMAGE=clang-4.0 BUILD_TYPE=Debug STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
-      addons: *clang39
-      env: C_COMPILER=clang-3.9 CXX_COMPILER=clang++-3.9 BUILD_TYPE=Release STD=14 EXCEPTIONS=OFF INT128=OFF SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: IMAGE=clang-3.9 BUILD_TYPE=Release STD=14 EXCEPTIONS=OFF INT128=OFF SANITIZE=ON GENERATOR="Unix Makefiles"
 
     - os: osx
       compiler: clang # clang-3.8
       env: C_COMPILER=clang CXX_COMPILER=clang++ BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
-      addons: *clang38
-      env: C_COMPILER=clang-3.8 CXX_COMPILER=clang++-3.8 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR="Unix Makefiles"
+      env: IMAGE=clang-3.8 BUILD_TYPE=Release STD=14 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR="Unix Makefiles"
 
     # C++17
     - os: linux
-      addons: *gcc8
-      env: C_COMPILER=gcc-8 CXX_COMPILER=g++-8 BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF GENERATOR="Ninja"
+      env: IMAGE=gcc-8 BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=OFF SANITIZE=OFF GENERATOR="Ninja"
 
     - os: linux
-      addons: *gcc7
-      env: C_COMPILER=gcc-7 CXX_COMPILER=g++-7 BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: IMAGE=gcc-7 BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
     - os: osx
       osx_image: xcode9
       env: PACKAGE=gcc6 C_COMPILER=gcc-6 CXX_COMPILER=g++-6 BUILD_TYPE=Release STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
-      addons: *gcc6
-      env: C_COMPILER=gcc-6 CXX_COMPILER=g++-6 BUILD_TYPE=Debug STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: IMAGE=gcc-6 BUILD_TYPE=Debug STD=17 EXCEPTIONS=ON INT128=ON SANITIZE=ON GENERATOR=Ninja
 
     - os: linux
-      addons: *gcc5
-      env: C_COMPILER=gcc-5 CXX_COMPILER=g++-5 BUILD_TYPE=Debug STD=17 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
+      env: IMAGE=gcc-5 BUILD_TYPE=Debug STD=17 EXCEPTIONS=OFF INT128=ON SANITIZE=ON GENERATOR=Ninja
 
     - os: linux
-      addons: *clang5
-      env: C_COMPILER=clang-5.0 CXX_COMPILER=clang++-5.0 BUILD_TYPE=Release STD=17 EXCEPTIONS=OFF INT128=ON SANITIZE=ON GENERATOR=Ninja
-
-
-before_install:
-  - CC=${C_COMPILER}
-  - CXX=${CXX_COMPILER}
-  - source .travis-setup-${TRAVIS_OS_NAME}.sh
+      env: IMAGE=clang-5.0 BUILD_TYPE=Release STD=17 EXCEPTIONS=OFF INT128=ON SANITIZE=OFF GENERATOR=Ninja
 
 script:
-    - cloc include
-    - cloc src
-    - cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -DCNL_DEV=ON -DCNL_STD=${STD} -DCNL_EXCEPTIONS=${EXCEPTIONS} -DCNL_INT128=${INT128} -DCNL_SANITIZE=${SANITIZE} -G "${GENERATOR}"
-    - cmake --build . -- -j 8
-    - ctest --output-on-failure -j 8
-    - ./src/benchmark/Benchmark --benchmark_format=csv>result.csv
-    - ./src/benchmark/report.py result.csv
-    - ls -l src/test src/benchmark/Benchmark
+  - .travis/test-${TRAVIS_OS_NAME}.sh
