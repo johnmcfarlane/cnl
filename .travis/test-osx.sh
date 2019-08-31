@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 
 # Before install
 brew update
@@ -12,7 +12,7 @@ brew upgrade python
 # Advice from docs.travis-ci.com/user/caching/#ccache-cache
 export PATH="/usr/local/opt/ccache/libexec:$PATH"
 
-CC=${C_COMPILER}
-CXX=${CXX_COMPILER}
+export NUM_CPUS=4
+export PROJECT_SOURCE_DIR="${TRAVIS_BUILD_DIR}"
 
 .travis/test.sh
