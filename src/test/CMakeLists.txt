@@ -161,34 +161,6 @@ if(Boost_FOUND)
     endif(NOT Boost_VERSION GREATER 105500)
 endif(Boost_FOUND)
 
-if (IS_MSVC)
-    set(gtest_byproducts
-            "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtestd${CMAKE_FIND_LIBRARY_SUFFIXES}"
-            "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}"
-    )
-    set(gtest_libs
-            debug "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtestd${CMAKE_FIND_LIBRARY_SUFFIXES}"
-            optimized "${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_FIND_LIBRARY_SUFFIXES}"
-    )
-else ()
-    set(gtest_byproducts
-            ${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a
-    )
-    set(gtest_libs
-            general ${CMAKE_CURRENT_BINARY_DIR}/lib/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a
-            pthread
-    )
-endif ()
-
-ExternalProject_Add(
-        GoogleTest
-        URL "https://github.com/google/googletest/archive/7f1c0f6f8122d7978c9de29d9d468f7fac9ba62c.zip"
-        URL_MD5 "57b8695ac970676e6e325f6c69824904"
-        UPDATE_COMMAND ""
-        CMAKE_ARGS -Dgtest_force_shared_crt=ON -DCMAKE_CXX_FLAGS=-fPIC -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}
-        BUILD_BYPRODUCTS ${gtest_byproducts}
-)
-
 ExternalProject_Add(
         Glm
         URL "https://github.com/johnmcfarlane/glm/archive/ceb6d4fd3cb24d0ff954a6470ee554e356885d0e.zip"
@@ -202,12 +174,9 @@ ExternalProject_Add(
 
 function(add_gtest_dependency target)
     # gtest
-    target_link_libraries("${target}" ${gtest_libs})
+    target_link_libraries("${target}" ${CONAN_LIBS})
 
-    ExternalProject_Get_Property(GoogleTest source_dir)
-    target_include_directories("${target}" SYSTEM PRIVATE "${source_dir}/googletest/include")
-
-    add_dependencies("${target}" GoogleTest)
+    target_include_directories("${target}" SYSTEM PRIVATE "${CONAN_INCLUDE_DIRS_GTEST}")
 endfunction(add_gtest_dependency)
 
 ######################################################################

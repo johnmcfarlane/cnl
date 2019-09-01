@@ -1,13 +1,21 @@
 #!/usr/bin/env bash
 
+set -ex
+
+GENERATOR="Unix Makefiles"
+NUM_CPUS=8
+PROJECT_SOURCE_DIR=/root/project
+SANITIZE=ON
+STD=$1
+
 mkdir /tmp/cnl
 cd /tmp/cnl
 
 apt-get update
-apt-get install -y $1 cmake libboost-dev
+apt-get install --quiet --yes ccache cloc cmake libboost-dev python3 python3-pip
+pip3 install conan
 
-cmake -DCMAKE_BUILD_TYPE=Release -DCNL_DEV=ON -DCNL_INT128=$2 -DCNL_STD=$3 /root/project
-cmake --build . -- -j 8
+conan profile new default --detect
+conan profile update settings.compiler.libcxx=libstdc++11 default
 
-ctest --output-on-failure -j 4
-src/benchmark/Benchmark
+/root/project/.travis/test.sh ${STD} "${GENERATOR}" ${NUM_CPUS} "${PROJECT_SOURCE_DIR}"

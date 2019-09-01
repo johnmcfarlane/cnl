@@ -1,4 +1,15 @@
-version: 0.1.{build}
+version: '1.0.{build}'
+
+init:
+  - cmd: echo "Downloading conan..."
+  - cmd: set PATH=%PATH%;%PYTHON%/Scripts/
+  - cmd: pip.exe install conan
+  - cmd: conan --version
+  - cmd: conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
+  - cmd: conan profile new default
+  - cmd: conan profile update settings.compiler="Visual Studio" default
+  - cmd: conan profile update settings.compiler.version=15 default
+  - cmd: conan profile update settings.os=Windows default
 
 environment:
   fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
@@ -9,6 +20,7 @@ environment:
       msbuild_property: x64
       exceptions: OFF
       std: 17
+      arch: x86_64
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     - platform: x86
       configuration: Release
@@ -16,6 +28,7 @@ environment:
       msbuild_property: win32
       exceptions: ON
       std: 11
+      arch: x86
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 Preview
     - platform: x86
       configuration: RelWithDebInfo
@@ -23,18 +36,21 @@ environment:
       msbuild_property: win32
       exceptions: ON
       std: 14
+      arch: x86
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
 build_script:
-- cmd: >-
-    set BOOST_ROOT=C:\Libraries\boost_1_66_0
+  - cmd: conan profile update settings.os=Windows default
+  - cmd: mkdir build
+  - cmd: cd build
+  - cmd: conan profile update settings.arch=%arch% default
+  - cmd: conan install --settings build_type=%configuration% --build=outdated ..
+  - cmd: set BOOST_ROOT=C:\Libraries\boost_1_66_0
+  - cmd: cmake -DCMAKE_BUILD_TYPE=%configuration% -DCNL_DEV=ON -DCNL_EXCEPTIONS=%exceptions% -DCNL_STD=%std% -G "%cmake_generator%" ..
+  - cmd: cmake --build . -- /property:Configuration=%configuration% /property:Platform=%msbuild_property% /maxcpucount
 
-    cmake -DCMAKE_BUILD_TYPE=%configuration% -DCNL_DEV=ON -DCNL_EXCEPTIONS=%exceptions% -DCNL_STD=%std% -G "%cmake_generator%" .
-
-    cmake --build . -- /property:Configuration=%configuration% /property:Platform=%msbuild_property% /maxcpucount
 test_script:
-- cmd: >-
-    ctest --output-on-failure -j 32
+  - cmd: ctest --output-on-failure -j 32
+  - cmd: src\benchmark\%configuration%\Benchmark.exe
 
-    src\benchmark\%configuration%\Benchmark.exe
 shallow_clone: true

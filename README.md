@@ -25,7 +25,10 @@ Optional:
 
 - [CMake](https://cmake.org/download/) ([3.5.1](https://docs.travis-ci.com/user/languages/cpp/#CMake))
 - [Boost](http://www.boost.org/) - facilitates multiprecision support
-- [Doxygen](http://www.doxygen.org/) - generates documentation in the *doc/gh-pages* directory
+- [Conan](https://conan.io/) - package manager makes it easier to
+  install test dependencies
+- [Doxygen](http://www.doxygen.org/) - generates documentation in the
+  *doc/gh-pages* directory
 
 ### Windows
 
@@ -53,29 +56,47 @@ However, it comes with a number of tests and benchmarks.
 
 #### Running Tests
 
+1. Prepare Conan package manager:
+
+   ```sh
+   conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
+   ```
+
 1. Generate the build system:
 
-   `cmake -DCNL_DEV=ON /some/directory/cnl`
+   ```sh
+   mkdir build
+   cd build
+   conan install --build=outdated ..
+   conan profile update settings.compiler.libcxx=libstdc++11 default
+   cmake -DCNL_DEV=ON ..
+   ```
 
-2. Build tests:
+1. Build tests:
 
-   * For Linux (in parallel using *N* cores):
+   * For Linux:
 
-     `cmake --build . -- -j N`
+     ```sh
+     cmake --build . --target Tests -- -j $(nproc)
+     ```
 
    * For Windows:
 
-     `cmake --build .`
+     ```sh
+     cmake --build .
+     ```
 
 3. Run tests:
 
-   `ctest`
+   ```sh
+   ctest
+   ```
 
 #### Running Benchmarks
 
 1. Generate the build system (optimized):
 
-   `cmake -DCMAKE_BUILD_TYPE=Release -DCNL_DEV=ON /some/directory/cnl`
+   `cmake -DCMAKE_BUILD_TYPE=Release -DCNL_DEV=ON ..`
 
 2. Build benchmarks:
 
@@ -89,11 +110,11 @@ However, it comes with a number of tests and benchmarks.
 
 1. To describe CNL build options:
 
-   `cmake -LH /some/directory/cnl`
+   `cmake -LH ..`
 
 2. Then to apply an option, e.g. to disabled exceptions:
 
-   `cmake -DCNL_EXCEPTIONS=OFF /some/directory/cnl`
+   `cmake -DCNL_EXCEPTIONS=OFF ..`
 
 ### Integration
 

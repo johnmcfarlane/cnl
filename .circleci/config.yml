@@ -13,7 +13,17 @@ jobs:
       - checkout
       - run:
           name: Run tests
-          command: . /root/project/.circleci/test.sh gcc ON 20
+          command: . /root/project/.circleci/test.sh 20
+
+  "c++17-arm7":
+    docker:
+      - image: gcc:latest
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: . /root/project/.circleci/test-arm.sh
+          no_output_timeout: 20m
 
   "c++17":
     docker:
@@ -22,7 +32,7 @@ jobs:
       - checkout
       - run:
           name: Run tests
-          command: . /root/project/.circleci/test.sh gcc OFF 17
+          command: . /root/project/.circleci/test.sh 17
 
   "c++14":
     docker:
@@ -31,7 +41,7 @@ jobs:
       - checkout
       - run:
           name: Run tests
-          command: . /root/project/.circleci/test.sh gcc ON 14
+          command: . /root/project/.circleci/test.sh 14
 
   "c++11":
     docker:
@@ -40,17 +50,7 @@ jobs:
       - checkout
       - run:
           name: Run tests
-          command: . /root/project/.circleci/test.sh gcc OFF 11
-
-  "c++17-arm7":
-    docker:
-      - image: ubuntu:18.04
-    steps:
-      - checkout
-      - run:
-          name: Run tests
-          command: . /root/project/.circleci/test-arm.sh
-          no_output_timeout: 20m
+          command: . /root/project/.circleci/test.sh 11
 
 workflows:
   version: 2

@@ -3,7 +3,6 @@
 
 from conans import ConanFile
 
-
 class CnlConan(ConanFile):
     name = "cnl"
     license = "Boost Software License 1.0"
@@ -15,7 +14,8 @@ class CnlConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake"
     no_copy_source = True
-
+    requires = "gtest/1.8.1@bincrafters/stable","benchmark/1.5.0@johnmcfarlane/stable"
+    default_options = "gtest:shared=False"
 
     scm = {
         "type": "git",
