@@ -10,11 +10,12 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_DEFINITION_H)
 #define CNL_IMPL_SCALED_INTEGER_DEFINITION_H 1
 
-#include "../power.h"
-#include "../power_value.h"
 #include "../number_base.h"
 #include "../num_traits/width.h"
 #include "../operators/tagged.h"
+#include "../power_value.h"
+#include "../scaled/convert_operator.h"
+#include "../scaled/power.h"
 #include "../../constant.h"
 #include "../../numeric.h"
 #include "declaration.h"
