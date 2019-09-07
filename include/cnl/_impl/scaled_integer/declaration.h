@@ -8,7 +8,7 @@
 #define CNL_IMPL_SCALED_INTEGER_DECLARATION_H
 
 #include "../../limits.h"
-#include "../power.h"
+#include "../scaled/power.h"
 
 /// compositional numeric library
 namespace cnl {

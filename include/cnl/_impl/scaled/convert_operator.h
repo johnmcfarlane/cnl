@@ -4,41 +4,16 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_SCALED_INTEGER_POWER_H)
-#define CNL_IMPL_SCALED_INTEGER_POWER_H
+#if !defined(CNL_IMPL_SCALED_CONVERT_OPERATOR_H)
+#define CNL_IMPL_SCALED_CONVERT_OPERATOR_H
 
-#include "num_traits/scale.h"
-#include "operators/native_tag.h"
-#include "power_value.h"
+#include "../num_traits/scale.h"
+#include "../operators/native_tag.h"
+#include "../power_value.h"
+#include "power.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<int Exponent = 0, int Radix = 2>
-    struct power {
-        static_assert(Radix >= 2, "Radix must be two or greater");
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // constants
-
-        /// value of template parameter, \a Exponent
-        constexpr static int exponent = Exponent;
-
-        /// value of template parameter, \a Radix
-        constexpr static int radix = Radix;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // types
-
-        using identity = power<0, Radix>;
-    };
-
-    template<int LhsExponent, int RhsExponent, int Radix>
-    constexpr auto operator/(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-    -> power<LhsExponent-RhsExponent, Radix>
-    {
-        return power<LhsExponent-RhsExponent, Radix>{};
-    }
-
     // integer -> floating
     template<
             int Exponent, int Radix,
@@ -85,4 +60,4 @@ namespace cnl {
     };
 }
 
-#endif //CNL_IMPL_SCALED_INTEGER_POWER_H
+#endif //CNL_IMPL_SCALED_CONVERT_OPERATOR_H
