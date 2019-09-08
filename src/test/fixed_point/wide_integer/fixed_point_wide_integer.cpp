@@ -38,7 +38,7 @@ TEST(fixed_point_wide_integer, quotient)
 {
     using fixed_point = cnl::fixed_point<cnl::wide_integer<129, unsigned>, -96>;
     auto expected = fixed_point{1.L/3};
-    auto actual = cnl::quotient<fixed_point>(1, 3);
+    auto actual = fixed_point{cnl::make_fraction(1, 3)};
     ASSERT_EQ(double(expected), double(actual));
 }
 
@@ -47,7 +47,7 @@ TEST(fixed_point_wide_integer, quotient200)
 {
     using fixed_point = cnl::fixed_point<cnl::wide_integer<200, unsigned>, -196>;
     auto expected = fixed_point{5.L/7};
-    auto actual = cnl::quotient<fixed_point>(5, 7);
+    auto actual = fixed_point{cnl::make_fraction(5, 7)};
     ASSERT_EQ(double(expected), double(actual));
 }
 

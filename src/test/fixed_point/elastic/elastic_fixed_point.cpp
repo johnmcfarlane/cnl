@@ -79,6 +79,7 @@ namespace test_division {
     using cnl::elastic_integer;
     using cnl::fixed_point;
 
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
     static_assert(identical(
             elastic_fixed_point<62, - 31>{.5},
             cnl::quotient(cnl::elastic_fixed_point<31, 0>{1}, cnl::elastic_fixed_point<31, 0>{2})),
@@ -93,6 +94,7 @@ namespace test_division {
             make_fixed_point(cnl::make_fraction(elastic_fixed_point<62, 0>{1}, elastic_fixed_point<62, 0>{2}))),
             "cnl::elastic_fixed_point division");
 #endif
+#endif
 }
 
 namespace test_set_signedness {
@@ -101,6 +103,7 @@ namespace test_set_signedness {
             "");
 }
 
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
 namespace test_fraction_deduced {
     using namespace cnl::literals;
 
@@ -114,6 +117,7 @@ namespace test_fraction_deduced {
     static_assert(identical(named, deduced));
 #endif
 }
+#endif
 
 namespace test_fraction_specific_byte {
     using namespace cnl::literals;
@@ -401,7 +405,7 @@ struct positive_elastic_test
                   "signedness is lost during multiply");
     static_assert(cnl::numeric_limits<decltype(signed_type{zero}/unsigned_type{zero})>::is_signed,
                   "signedness is lost during multiply");
-#if ! defined(_MSC_VER)
+#if ! defined(_MSC_VER) && !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
     static_assert(identical(
             cnl::elastic_fixed_point<12, -7>{3./4},
             cnl::make_fixed_point(cnl::make_fraction(
@@ -429,12 +433,14 @@ TEST(elastic_fixed_point, over_int) {
     EXPECT_EQ(e, q);
 }
 
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
 TEST(elastic_fixed_point, int_over) {
     auto f = cnl::make_fraction(elastic_integer<2>{2}, elastic_fixed_point<10, -5>{1.5});
     auto q = cnl::make_fixed_point(f);
     auto e = elastic_fixed_point<12, -5>{4./3};
     EXPECT_EQ(e, q);
 }
+#endif
 
 TEST(elastic_fixed_point, issue_88)
 {

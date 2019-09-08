@@ -65,6 +65,7 @@ namespace {
 
     namespace test_division {
 
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
         static_assert(identical(
                 rounding_elastic_scaled_integer<16, -8>{.5},
                 cnl::quotient(rounding_elastic_scaled_integer<8, 0>{1}, rounding_elastic_scaled_integer<8, 0>{2})),
@@ -111,6 +112,7 @@ namespace {
                 make_scaled_integer(cnl::make_fraction(
                         rounding_elastic_scaled_integer<62, 0>{1},
                         rounding_elastic_scaled_integer<62, 0>{2}))), "cnl::rounding_elastic_scaled_integer division");
+#endif
 #endif
     }
 

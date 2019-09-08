@@ -123,6 +123,7 @@ namespace j2 {
     using cnl::fraction;
     using cnl::make_fraction;
 
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
     constexpr auto n = scaled_integer<int16_t, power<-8>>{1.5};
     constexpr auto d = scaled_integer<int16_t, power<-8>>{2.25};
 #if defined(__cpp_deduction_guides)
@@ -133,6 +134,7 @@ namespace j2 {
     constexpr auto q = cnl::make_scaled_integer(f);
 #endif
     static_assert(identical(scaled_integer<int32_t, power<-15>>{.66666667}, q), "");
+#endif
 }
 
 namespace k {
@@ -161,7 +163,7 @@ namespace m {
     constexpr auto sq = fpe * fpe;
     static_assert(cnl::_impl::identical(scaled_integer<elastic_integer<62>, power<-62>>{0.9922027587890625}, sq), "");
 
-#if defined(CNL_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED) && (!defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8))
     constexpr auto q = make_scaled_integer(make_fraction(sq, sq));
     static_assert(cnl::_impl::identical(scaled_integer<elastic_integer<124>, power<-62>>{1}, q), "");
 #endif

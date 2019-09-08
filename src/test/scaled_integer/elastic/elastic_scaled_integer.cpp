@@ -103,6 +103,7 @@ namespace test_division {
     using cnl::elastic_integer;
     using cnl::scaled_integer;
 
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
     static_assert(identical(
             elastic_scaled_integer<62, - 31>{.5},
             cnl::quotient(cnl::elastic_scaled_integer<31, 0>{1}, cnl::elastic_scaled_integer<31, 0>{2})),
@@ -117,6 +118,7 @@ namespace test_division {
             make_scaled_integer(cnl::make_fraction(elastic_scaled_integer<62, 0>{1}, elastic_scaled_integer<62, 0>{2}))),
             "cnl::elastic_scaled_integer division");
 #endif
+#endif
 }
 
 namespace test_set_signedness {
@@ -128,6 +130,7 @@ namespace test_set_signedness {
 namespace test_fraction_deduced {
     using namespace cnl::literals;
 
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
     constexpr auto third = cnl::make_fraction(1_elastic, 3_elastic);
 
     constexpr auto named = cnl::quotient(third.numerator, third.denominator);
@@ -136,6 +139,7 @@ namespace test_fraction_deduced {
 #if defined(__cpp_deduction_guides)
     constexpr auto deduced = scaled_integer{third};
     static_assert(identical(named, deduced));
+#endif
 #endif
 }
 
@@ -425,7 +429,7 @@ struct positive_elastic_test
                   "signedness is lost during multiply");
     static_assert(cnl::numeric_limits<decltype(signed_type{zero}/unsigned_type{zero})>::is_signed,
                   "signedness is lost during multiply");
-#if ! defined(_MSC_VER)
+#if ! defined(_MSC_VER) && !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
     static_assert(identical(
             cnl::elastic_scaled_integer<12, -7>{3./4},
             cnl::make_scaled_integer(cnl::make_fraction(
@@ -454,12 +458,14 @@ TEST(elastic_scaled_integer, over_int) {
     EXPECT_EQ(e, q);
 }
 
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
 TEST(elastic_scaled_integer, int_over) {
     auto f = cnl::make_fraction(elastic_integer<2>{2}, elastic_scaled_integer<10, -5>{1.5});
     auto q = cnl::make_scaled_integer(f);
     auto e = elastic_scaled_integer<12, -5>{4./3};
     EXPECT_EQ(e, q);
 }
+#endif
 
 TEST(elastic_scaled_integer, issue_88)
 {
