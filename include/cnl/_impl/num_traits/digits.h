@@ -106,6 +106,18 @@ namespace cnl {
     template<class T>
     constexpr int digits_v = digits<T>::value;
 #endif
+
+    namespace _impl {
+        // cnl::_impl::fractional_digits
+        template <class T>
+        struct fractional_digits : std::integral_constant<int, 0> {
+        };
+
+        // cnl::_impl::integer_digits
+        template <class T>
+        struct integer_digits : std::integral_constant<int, digits<T>::value - fractional_digits<T>::value> {
+        };
+    }
 }
 
 #endif  // CNL_IMPL_NUM_TRAITS_DIGITS
