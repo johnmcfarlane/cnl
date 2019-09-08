@@ -24,7 +24,7 @@ namespace cnl {
     template<typename Numerator = int, typename Denominator = Numerator>
     struct fraction {
         static_assert(
-                _impl::is_integral<Numerator>::value==_impl::is_integral<Denominator>::value,
+                numeric_limits<Numerator>::is_iec559==numeric_limits<Denominator>::is_iec559,
                 "ill-formed if only one template parameter is floating-point");
 
         /// alias to `Numerator`
