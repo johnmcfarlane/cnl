@@ -38,7 +38,7 @@ TEST(scaled_integer_wide_integer, quotient)  // NOLINT
 {
     using scaled_integer = cnl::scaled_integer<cnl::wide_integer<129, unsigned>, cnl::power<-96>>;
     auto expected = scaled_integer{1.L/3};
-    auto actual = cnl::quotient<scaled_integer>(1, 3);
+    auto actual = scaled_integer{cnl::make_fraction(1, 3)};
     ASSERT_EQ(double(expected), double(actual));
 }
 
@@ -47,7 +47,7 @@ TEST(scaled_integer_wide_integer, quotient200)  // NOLINT
 {
     using scaled_integer = cnl::scaled_integer<cnl::wide_integer<200, unsigned>, cnl::power<-196>>;
     auto expected = scaled_integer{5.L/7};
-    auto actual = cnl::quotient<scaled_integer>(5, 7);
+    auto actual = scaled_integer{cnl::make_fraction(5, 7)};
     ASSERT_EQ(double(expected), double(actual));
 }
 

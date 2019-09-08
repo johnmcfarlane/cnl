@@ -5,24 +5,23 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests of cnl::elastic_number alias
+/// \brief tests of cnl::elastic_fixed_point alias
 
-#include <cnl/elastic_number.h>
-#include <cnl/fraction.h>
 #include "../../number_test.h"
 #include <cnl/_impl/type_traits/assert_same.h>
-using cnl::_impl::assert_same;
+#include <cnl/elastic_fixed_point.h>
+#include <cnl/fraction.h>
 
 #include <gtest/gtest.h>
 
 using std::is_same;
 
-using cnl::elastic_number;
+using cnl::elastic_fixed_point;
 using namespace cnl::literals;
-using cnl::make_elastic_number;
+using cnl::make_elastic_fixed_point;
 
 ////////////////////////////////////////////////////////////////////////////////
-// fast tests of cnl::elastic_number<> at its limits;
+// fast tests of cnl::elastic_fixed_point<> at its limits;
 // if something broke it may show up here first
 
 namespace {
@@ -32,7 +31,7 @@ namespace {
     using cnl::fixed_point;
     using cnl::set_digits_t;
 
-    static_assert(cnl::elastic_integer<64, unsigned>(0)==0u, "");
+    static_assert(cnl::elastic_integer<64, unsigned>(0)==0U, "");
 
     static_assert(identical(cnl::elastic_integer<32, int>{246}, cnl::_impl::scale<1>(cnl::elastic_integer<31, int>{123})), "");
     static_assert(identical(cnl::elastic_integer<33, unsigned>{246}, cnl::_impl::scale<1>(cnl::elastic_integer<32, unsigned>{123})), "");
@@ -49,18 +48,18 @@ namespace {
             elastic_integer<22, uint8_t>{10000}), "cnl::elastic_integer test failed");
 
     static_assert(identical(
-            elastic_number<2, -2>{1.5} << 1,
-            elastic_number<2, -2>{3}), "cnl::elastic_number test failed");
+            elastic_fixed_point<2, -2>{1.5} << 1,
+            elastic_fixed_point<2, -2>{3}), "cnl::elastic_fixed_point test failed");
 
     static_assert(identical(
-            elastic_number<2, -2>{1.5} >> 1,
-            elastic_number<2, -2>{0.75}), "cnl::elastic_number test failed");
+            elastic_fixed_point<2, -2>{1.5} >> 1,
+            elastic_fixed_point<2, -2>{0.75}), "cnl::elastic_fixed_point test failed");
 }
 
 namespace test_ctor {
 #if defined(CNL_INT128_ENABLED)
-    static_assert(identical(uint32_t{0x76543210}, uint32_t(elastic_number<64, -32, unsigned>{elastic_number<32, 0, unsigned>{0x76543210LL}})), "cnl::elastic_number ctor");
-    static_assert(identical(uint32_t{1}, uint32_t(elastic_number<64, -32, unsigned>{1})), "cnl::elastic_number ctor");
+    static_assert(identical(uint32_t{0x76543210}, uint32_t(elastic_fixed_point<64, -32, unsigned>{elastic_fixed_point<32, 0, unsigned>{0x76543210LL}})), "cnl::elastic_fixed_point ctor");
+    static_assert(identical(uint32_t{1}, uint32_t(elastic_fixed_point<64, -32, unsigned>{1})), "cnl::elastic_fixed_point ctor");
 
     static_assert(identical(cnl::fixed_point<cnl::elastic_integer<62, int>, -40>{321}, cnl::fixed_point<cnl::elastic_integer<62, int>, -40>{fixed_point<cnl::elastic_integer<62, int>, -20>{321}}), "cnl::fixed_point ctor");
     static_assert(identical(cnl::fixed_point<cnl::elastic_integer<62, int>, -40>{2097151.99999904632568359375}, cnl::fixed_point<cnl::elastic_integer<62, int>, -40>{fixed_point<cnl::elastic_integer<62, int>, -20>{2097151.99999904632568359375}}), "cnl::fixed_point ctor");
@@ -68,60 +67,64 @@ namespace test_ctor {
 }
 
 namespace test_addition {
-    static constexpr auto lhs = cnl::elastic_number<31>{1};
-    static constexpr auto rhs = cnl::elastic_number<40, -31>{1};
-    static constexpr auto expected = cnl::elastic_number<63, -31>{2};
+    static constexpr auto lhs = cnl::elastic_fixed_point<31>{1};
+    static constexpr auto rhs = cnl::elastic_fixed_point<40, -31>{1};
+    static constexpr auto expected = cnl::elastic_fixed_point<63, -31>{2};
     static constexpr auto sum = lhs + rhs;
-    static_assert(identical(expected, sum), "cnl::elastic_number addition");
+    static_assert(identical(expected, sum), "cnl::elastic_fixed_point addition");
 }
 
 namespace test_division {
     using cnl::elastic_integer;
     using cnl::fixed_point;
 
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
     static_assert(identical(
-            elastic_number<62, - 31>{.5},
-            cnl::quotient(cnl::elastic_number<31, 0>{1}, cnl::elastic_number<31, 0>{2})),
-            "cnl::quotient(cnl::elastic_number, cnl::elastic_number)");
+            elastic_fixed_point<62, - 31>{.5},
+            cnl::quotient(cnl::elastic_fixed_point<31, 0>{1}, cnl::elastic_fixed_point<31, 0>{2})),
+            "cnl::quotient(cnl::elastic_fixed_point, cnl::elastic_fixed_point)");
     static_assert(identical(
-            elastic_number<62, - 31>{.5},
-            make_fixed_point(cnl::make_fraction(elastic_number<31, 0>{1}, elastic_number<31, 0>{2}))),
-            "cnl::elastic_number division");
+            elastic_fixed_point<62, - 31>{.5},
+            make_fixed_point(cnl::make_fraction(elastic_fixed_point<31, 0>{1}, elastic_fixed_point<31, 0>{2}))),
+            "cnl::elastic_fixed_point division");
 #if defined(CNL_INT128_ENABLED)
     static_assert(identical(
-            elastic_number<124, -62>{.5},
-            make_fixed_point(cnl::make_fraction(elastic_number<62, 0>{1}, elastic_number<62, 0>{2}))),
-            "cnl::elastic_number division");
+            elastic_fixed_point<124, -62>{.5},
+            make_fixed_point(cnl::make_fraction(elastic_fixed_point<62, 0>{1}, elastic_fixed_point<62, 0>{2}))),
+            "cnl::elastic_fixed_point division");
+#endif
 #endif
 }
 
 namespace test_set_signedness {
     static_assert(
-            is_signed<cnl::add_signedness_t<elastic_number<1, 0, unsigned>>>::value,
+            is_signed<cnl::add_signedness_t<elastic_fixed_point<1, 0, unsigned>>>::value,
             "");
 }
 
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
 namespace test_fraction_deduced {
     using namespace cnl::literals;
 
     constexpr auto third = cnl::make_fraction(1_elastic, 3_elastic);
 
     constexpr auto named = cnl::quotient(third.numerator, third.denominator);
-    static_assert(identical(cnl::elastic_number<3, -2>{0.25}, named), "");
+    static_assert(identical(cnl::elastic_fixed_point<3, -2>{0.25}, named), "");
 
-#if defined(__cpp_deduction_guides)
-    constexpr auto deduced = fixed_point{third};
+#if defined(__cpp_deduction_guides) && defined(CNL_P1021)
+    constexpr auto deduced = cnl::fixed_point{third};
     static_assert(identical(named, deduced));
 #endif
 }
+#endif
 
 namespace test_fraction_specific_byte {
     using namespace cnl::literals;
 
     constexpr auto third = cnl::make_fraction(1_elastic, 3_elastic);
 
-    constexpr auto specific = elastic_number<7, -6>{third};
-    static_assert(identical(cnl::elastic_number<7, -6>{0.328125}, specific), "");
+    constexpr auto specific = elastic_fixed_point<7, -6>{third};
+    static_assert(identical(cnl::elastic_fixed_point<7, -6>{0.328125}, specific), "");
 }
 
 namespace test_fraction_specific_long {
@@ -129,50 +132,50 @@ namespace test_fraction_specific_long {
 
     constexpr auto third = cnl::make_fraction(1_elastic, 3_elastic);
 
-    constexpr auto specific = cnl::elastic_number<63, -60>{third};
+    constexpr auto specific = cnl::elastic_fixed_point<63, -60>{third};
 #if defined(_MSC_VER) || defined(__arm__)
     // MSVC's long double is less precise than 63 digits
-    static_assert(std::is_same<cnl::elastic_number<63, -60>, cnl::elastic_number<63, -60>>::value, "");
+    static_assert(std::is_same<cnl::elastic_fixed_point<63, -60>, cnl::elastic_fixed_point<63, -60>>::value, "");
     static_assert(specific > .333333333333333, "");
     static_assert(specific < .333333333333334, "");
 #else
-    static_assert(identical(cnl::elastic_number<63, -60>{1.L/3}, specific), "");
+    static_assert(identical(cnl::elastic_fixed_point<63, -60>{1.L/3}, specific), "");
 #endif
 }
 
 namespace test_sqrt {
-    static_assert(static_cast<float>(sqrt(elastic_number<31, -20>(0))) == 0.0F, "sqrt<elastic_number>");
-    static_assert(static_cast<float>(sqrt(elastic_number<31, -20>(2.0))) > 1.414213F, "sqrt<elastic_number>");
-    static_assert(static_cast<float>(sqrt(elastic_number<31, -20>(2.0))) < 1.414214F, "sqrt<elastic_number>");
-    static_assert(static_cast<float>(sqrt(elastic_number<31, -20>(4.0))) == 2.0F, "sqrt<elastic_number>");
+    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(0))) == 0.0F, "sqrt<elastic_fixed_point>");
+    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(2.0))) > 1.414213F, "sqrt<elastic_fixed_point>");
+    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(2.0))) < 1.414214F, "sqrt<elastic_fixed_point>");
+    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(4.0))) == 2.0F, "sqrt<elastic_fixed_point>");
 }
 
 namespace test_floor {
     static_assert(identical(
-            elastic_number<5, 0>{13},
-            cnl::floor(elastic_number<10, -5>{13.625})), "floor(elastic_number)");
+            elastic_fixed_point<5, 0>{13},
+            cnl::floor(elastic_fixed_point<10, -5>{13.625})), "floor(elastic_fixed_point)");
     static_assert(identical(
-            elastic_number<5, 0>{-14},
-            cnl::floor(elastic_number<10, -5>{-13.625})), "floor(elastic_number)");
+            elastic_fixed_point<5, 0>{-14},
+            cnl::floor(elastic_fixed_point<10, -5>{-13.625})), "floor(elastic_fixed_point)");
     static_assert(identical(
-            elastic_number<5, 5>{192},
-            cnl::floor(elastic_number<5, 5>{192})), "floor(elastic_number)");
+            elastic_fixed_point<5, 5>{192},
+            cnl::floor(elastic_fixed_point<5, 5>{192})), "floor(elastic_fixed_point)");
 }
 
 namespace test_abs {
     static_assert(identical(
-            elastic_number<24, -20>{0.5},
-            cnl::abs(elastic_number<24, -20>{0.5})), "abs(elastic_number)");
+            elastic_fixed_point<24, -20>{0.5},
+            cnl::abs(elastic_fixed_point<24, -20>{0.5})), "abs(elastic_fixed_point)");
     static_assert(identical(
-            elastic_number<31, -30>{0.5},
-            cnl::abs(elastic_number<31, -30>{0.5})), "abs(elastic_number)");
+            elastic_fixed_point<31, -30>{0.5},
+            cnl::abs(elastic_fixed_point<31, -30>{0.5})), "abs(elastic_fixed_point)");
 #if defined(CNL_INT128_ENABLED)
     static_assert(identical(
-            elastic_number<63, -30>{0.5},
-            cnl::abs(elastic_number<63, -30>{0.5})), "abs(elastic_number)");
+            elastic_fixed_point<63, -30>{0.5},
+            cnl::abs(elastic_fixed_point<63, -30>{0.5})), "abs(elastic_fixed_point)");
     static_assert(identical(
-            elastic_number<63, -31>{0.5},
-            cnl::abs(elastic_number<63, -31>{0.5})), "abs(elastic_number)");
+            elastic_fixed_point<63, -31>{0.5},
+            cnl::abs(elastic_fixed_point<63, -31>{0.5})), "abs(elastic_fixed_point)");
 #endif
 }
 
@@ -238,39 +241,39 @@ static_assert(bit_count(89)==4, "bit_count test failed");
 static_assert(bit_count(144)==2, "bit_count test failed");
 
 // http://stackoverflow.com/a/5775825/671509
-template<size_t size>
+template<size_t Size>
 struct print_num_as_error {
-    operator char() { return size+256; }
+    explicit operator char() { return Size+256; }
 }; //always overflow
 
 namespace test_elastic_constant_literal {
     using cnl::_impl::identical;
-    static_assert(identical(0_elastic, elastic_number<1, 0>{0}), "");
+    static_assert(identical(0_elastic, elastic_fixed_point<1, 0>{0}), "");
 
-    static_assert(identical(1_elastic, elastic_number<1, 0>{1}), "");
-    static_assert(identical(-1_elastic, elastic_number<1, 0>{-1}), "");
+    static_assert(identical(1_elastic, elastic_fixed_point<1, 0>{1}), "");
+    static_assert(identical(-1_elastic, elastic_fixed_point<1, 0>{-1}), "");
 
-    static_assert(identical(2_elastic, elastic_number<1, 1>{2}), "");
-    static_assert(identical(-2_elastic, elastic_number<1, 1>{-2}), "");
+    static_assert(identical(2_elastic, elastic_fixed_point<1, 1>{2}), "");
+    static_assert(identical(-2_elastic, elastic_fixed_point<1, 1>{-2}), "");
 
-    static_assert(identical(3_elastic, elastic_number<2, 0>{3}), "");
-    static_assert(identical(-3_elastic, elastic_number<2, 0>{-3}), "");
+    static_assert(identical(3_elastic, elastic_fixed_point<2, 0>{3}), "");
+    static_assert(identical(-3_elastic, elastic_fixed_point<2, 0>{-3}), "");
 
-    static_assert(identical(4_elastic, elastic_number<1, 2>{4}), "");
-    static_assert(identical(-4_elastic, elastic_number<1, 2>{-4}), "");
+    static_assert(identical(4_elastic, elastic_fixed_point<1, 2>{4}), "");
+    static_assert(identical(-4_elastic, elastic_fixed_point<1, 2>{-4}), "");
 
-    static_assert(identical(6_elastic, elastic_number<2, 1>{6}), "");
-    static_assert(identical(-6_elastic, elastic_number<2, 1>{-6}), "");
+    static_assert(identical(6_elastic, elastic_fixed_point<2, 1>{6}), "");
+    static_assert(identical(-6_elastic, elastic_fixed_point<2, 1>{-6}), "");
 
-    static_assert(identical(0xAA_elastic, elastic_number<7, 1>{0xaa}), "");
-    static_assert(identical(-0xaa_elastic, elastic_number<7, 1>{-0xaa}), "");
+    static_assert(identical(0xAA_elastic, elastic_fixed_point<7, 1>{0xaa}), "");
+    static_assert(identical(-0xaa_elastic, elastic_fixed_point<7, 1>{-0xaa}), "");
 
-    static_assert(identical(897341888_elastic, elastic_number<24, 6>{897341888}), "");
-    static_assert(identical(-897341888_elastic, elastic_number<24, 6>{-897341888}), "");
+    static_assert(identical(897341888_elastic, elastic_fixed_point<24, 6>{897341888}), "");
+    static_assert(identical(-897341888_elastic, elastic_fixed_point<24, 6>{-897341888}), "");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// test how elastic_number handles non-negative values;
+// test how elastic_fixed_point handles non-negative values;
 // should pass for all specializations
 
 template<class Elastic>
@@ -303,20 +306,20 @@ struct positive_elastic_test
     // test traits
 
     static_assert(cnl::numeric_limits<elastic_type>::is_signed==cnl::numeric_limits<rep>::is_signed,
-                  "signedness of elastic_number type differs from underlying fixed-point type");
+                  "signedness of elastic_fixed_point type differs from underlying fixed-point type");
     static_assert(cnl::numeric_limits<signed_type>::is_signed,
-                  "signed version of elastic_number type is not signed");
+                  "signed version of elastic_fixed_point type is not signed");
     static_assert(!cnl::numeric_limits<unsigned_type>::is_signed,
-                  "unsigned version of elastic_number type is signed");
+                  "unsigned version of elastic_fixed_point type is signed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test elastic_integer type
 
     static_assert(cnl::digits<rep>::value>=digits,
-                  "not enough digits in rep type to represent elastic_number values");
+                  "not enough digits in rep type to represent elastic_fixed_point values");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // test cnl::numeric_limits<elastic_number>
+    // test cnl::numeric_limits<elastic_fixed_point>
 
 #if !defined(_MSC_VER)
     static_assert(min==cnl::_impl::from_rep<elastic_type>(rep{1}), "cnl::numeric_limits test failed");
@@ -368,6 +371,7 @@ struct positive_elastic_test
 
     static_assert(is_less_than(max-min, max), "operator- test failed");
 
+    // NOLINTNEXTLINE(misc-redundant-expression)
     static_assert(cnl::numeric_limits<decltype(zero-zero)>::is_signed,
                   "signedness is lost during subtract");
     static_assert(cnl::numeric_limits<decltype(signed_type{zero}-unsigned_type{zero})>::is_signed,
@@ -376,10 +380,10 @@ struct positive_elastic_test
     ////////////////////////////////////////////////////////////////////////////////
     // test operator*
 
-    static_assert(is_equal_to(min*make_elastic_number(0_c), zero), "operator* test failed");
-    static_assert(is_equal_to(min*make_elastic_number(1_c), min), "operator* test failed");
-    static_assert(is_equal_to(min*make_elastic_number(2_c), min+min), "operator* test failed");
-    static_assert(is_equal_to(min*make_elastic_number(3_c), min+min+min), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic_fixed_point(0_c), zero), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic_fixed_point(1_c), min), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic_fixed_point(2_c), min+min), "operator* test failed");
+    static_assert(is_equal_to(min*make_elastic_fixed_point(3_c), min+min+min), "operator* test failed");
 
     static_assert(cnl::numeric_limits<decltype(zero*zero)>::is_signed
                   ==cnl::numeric_limits<decltype(zero)>::is_signed,
@@ -393,26 +397,28 @@ struct positive_elastic_test
     ////////////////////////////////////////////////////////////////////////////////
     // test operator/
 
-    static_assert(!is_less_than(min, min/make_elastic_number(2_c)), "operator/ test failed");
-    static_assert(is_equal_to(min/make_elastic_number(1_c), min), "operator/ test failed");
-    static_assert(is_equal_to((min+min)/make_elastic_number(2_c), min), "operator/ test failed");
-    static_assert(is_equal_to((min+min+min)/make_elastic_number(3_c), min), "operator/ test failed");
+    static_assert(!is_less_than(min, min/make_elastic_fixed_point(2_c)), "operator/ test failed");
+    static_assert(is_equal_to(min/make_elastic_fixed_point(1_c), min), "operator/ test failed");
+    static_assert(is_equal_to((min+min)/make_elastic_fixed_point(2_c), min), "operator/ test failed");
+    // NOLINTNEXTLINE(misc-redundant-expression)
+    static_assert(is_equal_to((min+min+min)/make_elastic_fixed_point(3_c), min), "operator/ test failed");
+    // NOLINTNEXTLINE(misc-redundant-expression)
     static_assert(cnl::numeric_limits<decltype(zero/zero)>::is_signed==cnl::numeric_limits<elastic_type>::is_signed,
                   "signedness is lost during multiply");
     static_assert(cnl::numeric_limits<decltype(signed_type{zero}/unsigned_type{zero})>::is_signed,
                   "signedness is lost during multiply");
-#if ! defined(_MSC_VER)
+#if ! defined(_MSC_VER) && !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
     static_assert(identical(
-            cnl::elastic_number<12, -7>{3./4},
+            cnl::elastic_fixed_point<12, -7>{3./4},
             cnl::make_fixed_point(cnl::make_fraction(
-                    cnl::elastic_number<10, -5>{1.5},
+                    cnl::elastic_fixed_point<10, -5>{1.5},
                     cnl::elastic_integer<2>{2}))),
                   "operator/ test failed");
     static_assert(identical(
-            cnl::elastic_number<12, -5>{4./3},
+            cnl::elastic_fixed_point<12, -5>{4./3},
             cnl::make_fixed_point(cnl::make_fraction(
                     cnl::elastic_integer<2>{2},
-                    cnl::elastic_number<10, -5>{1.5}))),
+                    cnl::elastic_fixed_point<10, -5>{1.5}))),
                   "operator/ test failed");
 #endif
 
@@ -423,22 +429,24 @@ struct positive_elastic_test
             "cnl::from_rep<fixed_point<elastic_integer>>(int)");
 };
 
-TEST(elastic_number, over_int) {  // NOLINT
-    auto q = cnl::elastic_number<10, -5>{1.5}/elastic_integer<2>{2};
-    auto e = cnl::elastic_number<12, -7>{3./4};
+TEST(elastic_fixed_point, over_int) {  // NOLINT
+    auto q = cnl::elastic_fixed_point<10, -5>{1.5}/elastic_integer<2>{2};
+    auto e = cnl::elastic_fixed_point<12, -7>{3./4};
     EXPECT_EQ(e, q);
 }
 
-TEST(elastic_number, int_over) {  // NOLINT
-    auto f = cnl::make_fraction(elastic_integer<2>{2}, elastic_number<10, -5>{1.5});
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
+TEST(elastic_fixed_point, int_over) {  // NOLINT
+    auto f = cnl::make_fraction(elastic_integer<2>{2}, elastic_fixed_point<10, -5>{1.5});
     auto q = cnl::make_fixed_point(f);
-    auto e = elastic_number<12, -5>{4./3};
+    auto e = elastic_fixed_point<12, -5>{4./3};
     EXPECT_EQ(e, q);
 }
+#endif
 
-TEST(elastic_number, issue_88)  // NOLINT
+TEST(elastic_fixed_point, issue_88)  // NOLINT
 {
-    using fix_t = cnl::elastic_number<30, -16>;
+    using fix_t = cnl::elastic_fixed_point<30, -16>;
     fix_t a = 2.0F;
     fix_t b = 1.0F;
     fix_t c = 1.0F;
@@ -450,7 +458,7 @@ TEST(elastic_number, issue_88)  // NOLINT
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// test how elastic_number handles negative values;
+// test how elastic_fixed_point handles negative values;
 // should pass for all signed specializations
 
 template<class Elastic>
@@ -458,7 +466,7 @@ struct signed_elastic_test :
         // test type traits given this type is signed
         test_traits<Elastic, true>,
 
-        // perform positive value tests against signed elastic_number specialization
+        // perform positive value tests against signed elastic_fixed_point specialization
         positive_elastic_test<Elastic> {
     ////////////////////////////////////////////////////////////////////////////////
     // core definitions
@@ -486,7 +494,7 @@ struct signed_elastic_test :
                   "subject of test class is not reported as signed");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // test cnl::numeric_limits<elastic_number>
+    // test cnl::numeric_limits<elastic_fixed_point>
 
     static_assert(is_less_than(negative_min, min), "cnl::numeric_limits test failed");
     static_assert(is_equal_to(-max, lowest), "comparison test error");
@@ -518,7 +526,7 @@ struct signed_elastic_test :
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-// test how elastic_number handles positive values;
+// test how elastic_fixed_point handles positive values;
 // should pass for all unsigned specializations
 
 template<class Elastic>
@@ -526,7 +534,7 @@ struct unsigned_elastic_test :
         // test type traits given this type is not signed
         test_traits<Elastic, false>,
 
-        // perform positive value tests against unsigned elastic_number specialization
+        // perform positive value tests against unsigned elastic_fixed_point specialization
         positive_elastic_test<Elastic> {
     ////////////////////////////////////////////////////////////////////////////////
     // core definitions
@@ -543,7 +551,7 @@ struct unsigned_elastic_test :
     static constexpr elastic_type lowest{numeric_limits::lowest()};
 
     ////////////////////////////////////////////////////////////////////////////////
-    // test cnl::numeric_limits<elastic_number>
+    // test cnl::numeric_limits<elastic_fixed_point>
 
     static_assert(is_equal_to(lowest, zero), "cnl::numeric_limits test failed");
     static_assert(is_less_than(lowest, min), "cnl::numeric_limits test failed");
@@ -551,20 +559,20 @@ struct unsigned_elastic_test :
 
 ////////////////////////////////////////////////////////////////////////////////
 // given values for IntegerDigits and FractionalDigits parameters,
-// triggers elastic_number<> tests with signed and unsigned specializations
+// triggers elastic_fixed_point<> tests with signed and unsigned specializations
 
 template<int IntegerDigits, int FractionalDigits>
 struct elastic_test :
-        // perform unsigned-specific value tests against unsigned elastic_number specialization
-        unsigned_elastic_test<elastic_number<IntegerDigits+FractionalDigits, -FractionalDigits, unsigned>>,
+        // perform unsigned-specific value tests against unsigned elastic_fixed_point specialization
+        unsigned_elastic_test<elastic_fixed_point<IntegerDigits+FractionalDigits, -FractionalDigits, unsigned>>,
 
-        // perform negative value tests against signed elastic_number specialization
-        signed_elastic_test<elastic_number<IntegerDigits+FractionalDigits, -FractionalDigits, signed>> {
+        // perform negative value tests against signed elastic_fixed_point specialization
+        signed_elastic_test<elastic_fixed_point<IntegerDigits+FractionalDigits, -FractionalDigits, signed>> {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 // given a value for IntegerDigits parameter,
-// triggers elastic_number<> tests against a range of values for FractionalDigits parameter
+// triggers elastic_fixed_point<> tests against a range of values for FractionalDigits parameter
 
 template<int IntegerDigits>
 struct elastic_test_with_integer_digits
@@ -575,7 +583,7 @@ struct elastic_test_with_integer_digits
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-// trigger elastic_number tests against a range of values for IntegerDigits parameter
+// trigger elastic_fixed_point tests against a range of values for IntegerDigits parameter
 
 template
 struct elastic_test_with_integer_digits<1>;
