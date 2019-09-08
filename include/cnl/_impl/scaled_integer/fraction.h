@@ -19,7 +19,7 @@ namespace cnl {
     template<typename Rep, class Scale>
     template<typename Numerator, typename Denominator>
     constexpr scaled_integer<Rep, Scale>::scaled_integer(fraction<Numerator, Denominator> const& f)
-            : scaled_integer(quotient<scaled_integer>(f.numerator, f.denominator))
+            : _base(convert<Scale, Rep>(f))
     {
     }
 
@@ -28,7 +28,7 @@ namespace cnl {
     CNL_RELAXED_CONSTEXPR scaled_integer<Rep, Scale>&
     scaled_integer<Rep, Scale>::operator=(fraction<Numerator, Denominator> const& f)
     {
-        operator=(quotient<scaled_integer>(f.numerator, f.denominator));
+        _base::operator=(convert<Scale, Rep>(f));
         return *this;
     }
 
@@ -36,8 +36,8 @@ namespace cnl {
     template<typename Numerator, typename Denominator>
     scaled_integer(fraction<Numerator, Denominator>)
     -> scaled_integer<
-            typename decltype(quotient(std::declval<Numerator>(), std::declval<Denominator>()))::rep,
-            typename decltype(quotient(std::declval<Numerator>(), std::declval<Denominator>()))::scale>;
+            typename _impl::quotient_result<Numerator, Denominator>::type::rep,
+            typename _impl::quotient_result<Numerator, Denominator>::type::scale>;
 #endif
 }
 

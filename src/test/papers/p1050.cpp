@@ -16,17 +16,11 @@ namespace {
     using _impl::identical;
     using namespace std;
 
-    constexpr auto a = quotient(1, 3);
+    constexpr auto a = make_scaled_integer(cnl::fraction{1, 3});
     static_assert(identical(scaled_integer<int64, power<-31>>{0.333333333022892475128173828125L}, a));
 
-    constexpr auto b = quotient(elastic_integer<1>{1}, elastic_integer<2>{3});
+    constexpr auto b = make_scaled_integer(cnl::fraction{elastic_integer<1>{1}, elastic_integer<2>{3}});
     static_assert(identical(scaled_integer<elastic_integer<3>, power<-2>>{0.25}, b));
-
-    constexpr auto c = quotient<scaled_integer<int, power<-16>>>(1, 3);
-    static_assert(identical(scaled_integer<int, power<-16>>{0.3333282470703125}, c));
-
-    constexpr auto d = quotient<scaled_integer<int, power<-16>>>(elastic_integer<1>{1}, elastic_integer<2>{3});
-    static_assert(identical(scaled_integer<int, power<-16>>{0.3333282470703125}, d));
 
     constexpr auto a2 = scaled_integer{fraction{1, 3}};
     static_assert(identical(scaled_integer<int64, power<-31>>{0.333333333022892475128173828125L}, a2));
