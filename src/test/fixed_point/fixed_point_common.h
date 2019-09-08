@@ -647,6 +647,7 @@ static_assert(cnl::numeric_limits<uint8>::max()/5==51, "");
 static_assert(cnl::numeric_limits<uint8>::max()/3==85, "");
 
 namespace test_divide {
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
     static_assert(
             identical(
                     fixed_point<quot_digits_t<test_int, int16>, -29>{1./127},
@@ -671,6 +672,7 @@ namespace test_divide {
     static_assert(identical(
             fixed_point<cnl::set_digits_t<int32, cnl::digits<int32>::value+2>, -18>{321LL},
             cnl::quotient(cnl::fixed_point<int32, -16>{963}, cnl::constant<3>{})), "cnl::fixed_point test failed");
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////

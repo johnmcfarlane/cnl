@@ -91,6 +91,7 @@ TEST(index, basic_arithmetic_example)  // NOLINT
     test_function(basic_arithmetic_example, "6.283185303211212158203125\n360\n");
 }
 
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [advanced arithmetic example]
@@ -176,7 +177,7 @@ TEST(index, boost_example)  // NOLINT
                                  "92147632256423245538160582575967991474270857299444514865172095596790313720703125\n");
 }
 #endif
-
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [elastic example]
