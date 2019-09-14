@@ -20,7 +20,7 @@ namespace cnl {
         template<class Derived, class Rep>
         class number_base {
         public:
-            using rep = Rep;
+            using _rep_type = Rep;
 
             CNL_NODISCARD explicit constexpr operator bool() const
             {
@@ -32,8 +32,8 @@ namespace cnl {
 
             number_base() = default;
 
-            explicit constexpr number_base(rep r)
-                : _rep(std::move(r)) { }
+            explicit constexpr number_base(Rep const& r)  // NOLINT(modernize-pass-by-value)
+                : _rep(r) { }
 
             template<class T>
             CNL_RELAXED_CONSTEXPR number_base& operator=(T const& r) {
@@ -44,7 +44,7 @@ namespace cnl {
 
             friend struct cnl::to_rep<number_base>;
         private:
-            rep _rep;
+            Rep _rep;
         };
     }
 }

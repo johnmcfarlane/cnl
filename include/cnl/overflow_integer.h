@@ -14,12 +14,14 @@
 
 #include "_impl/num_traits/from_value.h"
 #include "_impl/num_traits/from_value_recursive.h"
+#include "_impl/num_traits/rep.h"
 #include "_impl/number_base.h"
 #include "_impl/operators/generic.h"
 #include "_impl/operators/native_tag.h"
 #include "_impl/operators/tagged.h"
 #include "_impl/ostream.h"
 #include "_impl/type_traits/common_type.h"
+#include "_impl/type_traits/type_identity.h"
 
 #include <ostream>
 #include <type_traits>
@@ -33,9 +35,9 @@ namespace cnl {
     template<class Rep, class OverflowTag>
     class overflow_integer;
 
-    namespace _integer_impl {
+    namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_integer_impl::is_overflow_integer - trait to identify cnl::overflow_integer<>
+        // cnl::_impl::is_overflow_integer - trait to identify cnl::overflow_integer<>
 
         template<class T>
         struct is_overflow_integer
@@ -49,11 +51,25 @@ namespace cnl {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
+    // cnl::_impl::rep<rounding_integer<>>
+
+    template<typename Rep, class Tag>
+    struct rep<overflow_integer<Rep, Tag>> : _impl::type_identity<Rep> {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::_impl::set_rep<rounding_integer<>>
+
+    template<typename InRep, class Tag, typename OutRep>
+    struct set_rep<overflow_integer<InRep, Tag>, OutRep> : _impl::type_identity<overflow_integer<OutRep, Tag>> {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
     // cnl::overflow_integer<>
 
     template<class Rep = int, class OverflowTag = undefined_overflow_tag>
     class overflow_integer : public _impl::number_base<overflow_integer<Rep, OverflowTag>, Rep> {
-        static_assert(!_integer_impl::is_overflow_integer<Rep>::value,
+        static_assert(!_impl::is_overflow_integer<Rep>::value,
                 "overflow_integer of overflow_integer is not a supported");
     public:
         ////////////////////////////////////////////////////////////////////////////////
@@ -76,7 +92,7 @@ namespace cnl {
         {
         }
 
-        template<class Rhs, _impl::enable_if_t<!_integer_impl::is_overflow_integer<Rhs>::value, int> = 0>
+        template<class Rhs, _impl::enable_if_t<!_impl::is_overflow_integer<Rhs>::value, int> = 0>
         constexpr overflow_integer(Rhs const& rhs)  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
                 :_base(convert<overflow_tag, rep>(rhs))
         {

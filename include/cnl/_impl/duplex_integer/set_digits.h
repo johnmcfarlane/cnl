@@ -10,13 +10,13 @@
 #include "../num_traits/set_digits.h"
 #include "forward_declaration.h"
 #include "instantiate_duplex_integer.h"
-#include "to_rep.h"
+#include "rep.h"
 
 /// compositional numeric library
 namespace cnl {
     template<typename Upper, typename Lower, int Digits>
     struct set_digits<_impl::duplex_integer<Upper, Lower>, Digits>
-            : _impl::instantiate_duplex_integer<Digits, _impl::to_rep_t<Upper>> {
+            : _impl::instantiate_duplex_integer<Digits, _impl::rep_t<_impl::duplex_integer<Upper, Lower>>> {
     };
 }
 

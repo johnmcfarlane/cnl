@@ -51,22 +51,13 @@ namespace cnl {
                 "scaled_integer of scaled_integer is not a supported");
 
         using _base = _impl::number_base<scaled_integer<Rep, Scale>, Rep>;
-    public:
-        ////////////////////////////////////////////////////////////////////////////////
-        // types
-
-        /// alias to template parameter, \a Rep
-        using rep = Rep;
-
-        /// alias to template parameter, \a Rep
-        using scale = Scale;
 
         ////////////////////////////////////////////////////////////////////////////////
         // functions
 
     private:
         // constructor taking representation explicitly using operator++(int)-style trick
-        constexpr scaled_integer(rep r, int)
+        constexpr scaled_integer(Rep r, int)
                 :_base(r)
         {
         }
@@ -78,7 +69,7 @@ namespace cnl {
         /// constructor taking a scaled_integer type
         template<typename FromRep, class FromScale>
         constexpr scaled_integer(scaled_integer<FromRep, FromScale> const& rhs)  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
-                : _base(convert<decltype(FromScale{}/scale{}), Rep>(
+                : _base(convert<decltype(FromScale{}/Scale{}), Rep>(
                         _impl::from_value<Rep>(cnl::_impl::to_rep(rhs))))
         {
         }
@@ -86,14 +77,14 @@ namespace cnl {
         /// constructor taking an integer type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer||_impl::is_constant<S>::value, int> Dummy = 0>
         constexpr scaled_integer(S const& s)  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
-                : _base(convert<decltype(typename scale::identity{}/scale{}), Rep>(_impl::from_value<Rep>(s)))
+                : _base(convert<decltype(typename Scale::identity{}/Scale{}), Rep>(_impl::from_value<Rep>(s)))
         {
         }
 
         /// constructor taking a floating-point type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
         constexpr scaled_integer(S s)  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
-                :_base(convert<decltype(typename scale::identity{}/scale{}), rep>(s))
+                :_base(convert<decltype(typename Scale::identity{}/Scale{}), Rep>(s))
         {
         }
 
@@ -105,7 +96,7 @@ namespace cnl {
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
         CNL_RELAXED_CONSTEXPR scaled_integer& operator=(S s)
         {
-            _base::operator=(convert<decltype(typename scale::identity{}/scale{}), rep>(s));
+            _base::operator=(convert<decltype(typename Scale::identity{}/Scale{}), Rep>(s));
             return *this;
         }
 
@@ -113,7 +104,7 @@ namespace cnl {
         template<typename FromRep, class FromScale>
         CNL_RELAXED_CONSTEXPR scaled_integer& operator=(scaled_integer<FromRep, FromScale> const& rhs)
         {
-            _base::operator=(convert<decltype(FromScale{}/scale{}), Rep>(
+            _base::operator=(convert<decltype(FromScale{}/Scale{}), Rep>(
                             _impl::from_value<Rep>(cnl::_impl::to_rep(rhs))));
             return *this;
         }
@@ -125,7 +116,7 @@ namespace cnl {
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer||numeric_limits<S>::is_iec559, int> Dummy = 0>
         CNL_NODISCARD explicit constexpr operator S() const
         {
-            return convert<scale, S>(_impl::to_rep(*this));
+            return convert<Scale, S>(_impl::to_rep(*this));
         }
 
         /// creates an instance given the underlying representation value

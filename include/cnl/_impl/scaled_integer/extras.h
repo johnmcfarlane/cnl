@@ -231,14 +231,13 @@ namespace cnl {
             : numeric_limits<cnl::_impl::number_base<cnl::scaled_integer<Rep, power<Exponent, Radix>>, Rep>> {
         // scaled_integer-specific helpers
         using _value_type = cnl::scaled_integer<Rep, power<Exponent, Radix>>;
-        using _rep = typename _value_type::rep;
-        using _rep_numeric_limits = numeric_limits<_rep>;
+        using _rep_numeric_limits = numeric_limits<Rep>;
 
         // standard members
 
         CNL_NODISCARD static constexpr _value_type min() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep{1});
+            return _impl::from_rep<_value_type>(Rep{1});
         }
 
         CNL_NODISCARD static constexpr _value_type max() noexcept
@@ -255,32 +254,32 @@ namespace cnl {
 
         CNL_NODISCARD static constexpr _value_type epsilon() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep{1});
+            return _impl::from_rep<_value_type>(Rep{1});
         }
 
         CNL_NODISCARD static constexpr _value_type round_error() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep{0});
+            return _impl::from_rep<_value_type>(Rep{0});
         }
 
         CNL_NODISCARD static constexpr _value_type infinity() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep{0});
+            return _impl::from_rep<_value_type>(Rep{0});
         }
 
         CNL_NODISCARD static constexpr _value_type quiet_NaN() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep{0});
+            return _impl::from_rep<_value_type>(Rep{0});
         }
 
         CNL_NODISCARD static constexpr _value_type signaling_NaN() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep{0});
+            return _impl::from_rep<_value_type>(Rep{0});
         }
 
         CNL_NODISCARD static constexpr _value_type denorm_min() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep{1});
+            return _impl::from_rep<_value_type>(Rep{1});
         }
     };
 }

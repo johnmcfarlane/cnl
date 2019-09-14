@@ -119,7 +119,7 @@ namespace {
     }
 
     namespace test_from_value {
-        static_assert(std::is_same<elastic_integer<7, int>::rep, int>::value, "");
+        static_assert(std::is_same<cnl::_impl::rep_t<elastic_integer<7, int>>, int>::value, "");
         static_assert(identical(
                 elastic_integer<cnl::numeric_limits<int>::digits>{1},
                 cnl::_impl::from_value<elastic_integer<3>>(1)), "elastic_integer test failed");
@@ -147,83 +147,83 @@ namespace {
         static_assert(
                 assert_same<
                         cnl::elastic_integer<50, int>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, int>, int>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, int>, int>>::value,
                 "");
         static_assert(
                 assert_same<
                         cnl::elastic_integer<50, int>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, int>, long>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, int>, long>>::value,
                 "");
         static_assert(
                 assert_same<
                         cnl::elastic_integer<50, unsigned>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, int>, unsigned>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, int>, unsigned>>::value,
                 "");
         static_assert(
                 assert_same<
                         cnl::elastic_integer<50, unsigned>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, int>, unsigned long>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, int>, unsigned long>>::value,
                 "");
         static_assert(
                 assert_same<
                         cnl::elastic_integer<50, int>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, unsigned>, int>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, unsigned>, int>>::value,
                 "");
         static_assert(
                 assert_same<
                         cnl::elastic_integer<50, int>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, unsigned>, long>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, unsigned>, long>>::value,
                 "");
         static_assert(
                 assert_same<
                         cnl::elastic_integer<50, unsigned>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, unsigned>, unsigned>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, unsigned>, unsigned>>::value,
                 "");
         static_assert(
                 assert_same<
                         cnl::elastic_integer<50, unsigned>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<50, unsigned>, unsigned long>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<50, unsigned>, unsigned long>>::value,
                 "");
 
         static_assert(
                 assert_same<
                         cnl::elastic_integer<25, int>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, int>, int>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, int>, int>>::value,
                 "");
         static_assert(
                 assert_same<
                         cnl::elastic_integer<25, int>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, int>, long>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, int>, long>>::value,
                 "");
         static_assert(
                 assert_same<
                         cnl::elastic_integer<25, unsigned>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, int>, unsigned>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, int>, unsigned>>::value,
                 "");
         static_assert(
                 assert_same<
                         cnl::elastic_integer<25, unsigned>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, int>, unsigned long>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, int>, unsigned long>>::value,
                 "");
         static_assert(
                 assert_same<
                         cnl::elastic_integer<25, int>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, unsigned>, int>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, unsigned>, int>>::value,
                 "");
         static_assert(
                 assert_same<
                         cnl::elastic_integer<25, int>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, unsigned>, long>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, unsigned>, long>>::value,
                 "");
         static_assert(
                 assert_same<
                         cnl::elastic_integer<25, unsigned>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, unsigned>, unsigned>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, unsigned>, unsigned>>::value,
                 "");
         static_assert(
                 assert_same<
                         cnl::elastic_integer<25, unsigned>,
-                        cnl::_impl::from_rep_t<cnl::elastic_integer<25, unsigned>, unsigned long>>::value,
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<25, unsigned>, unsigned long>>::value,
                 "");
     }
 
@@ -271,18 +271,18 @@ namespace {
     }
 
     namespace test_is_elastic_integer {
-        using cnl::_elastic_integer_impl::is_elastic_integer;
-        static_assert(!is_elastic_integer<int>::value, "cnl::_elastic_integer_impl::is_elastic_integer test failed");
+        using cnl::_impl::is_elastic_integer;
+        static_assert(!is_elastic_integer<int>::value, "cnl::_impl::is_elastic_integer test failed");
         static_assert(is_elastic_integer<elastic_integer<10, int>>::value,
-                      "cnl::_elastic_integer_impl::is_elastic_integer test failed");
+                      "cnl::_impl::is_elastic_integer test failed");
     }
 
     namespace test_make_elastic_integer {
         using cnl::make_elastic_integer;
         static_assert(identical(make_elastic_integer(136_c), elastic_integer<8, int>{136}),
-                      "cnl::_elastic_integer_impl::make_elastic_integer test failed");
+                      "cnl::_impl::make_elastic_integer test failed");
         static_assert(identical(make_elastic_integer(1000000000000_c), elastic_integer<40, int>{1000000000000}),
-                      "cnl::_elastic_integer_impl::make_elastic_integer test failed");
+                      "cnl::_impl::make_elastic_integer test failed");
     }
 
     namespace test_compare {
@@ -476,7 +476,7 @@ namespace {
         ////////////////////////////////////////////////////////////////////////////////
         // type traits
 
-        static_assert(is_signed==cnl::numeric_limits<typename value_type::rep>::is_signed,
+        static_assert(is_signed==cnl::numeric_limits<cnl::_impl::rep_t<value_type>>::is_signed,
                 "signage of narrowest and rep should be the same");
         static_assert(!is_signed || numeric_limits::max()==-numeric_limits::lowest(), "type has most negative number");
         static_assert(!is_signed || -numeric_limits::max()==numeric_limits::lowest(), "type has most negative number");

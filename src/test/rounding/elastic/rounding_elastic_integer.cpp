@@ -40,8 +40,10 @@ namespace {
     using cnl::_impl::identical;
 
     namespace default_parameters {
+        using cnl::_impl::rep_t;
+
         static_assert(
-                is_same<rounding_elastic_integer<1>::rep::rep, int>::value,
+                is_same<rep_t<rep_t<rounding_elastic_integer<1>>>, int>::value,
                 "cnl::rounding_integer parameter default test failed");
     }
 

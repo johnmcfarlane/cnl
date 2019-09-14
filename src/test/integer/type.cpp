@@ -9,8 +9,8 @@
 
 #include <cnl/_impl/integer/type.h>
 
-#include <cnl/_impl/integer/from_rep.h>
 #include <cnl/_impl/integer/operators.h>
+#include <cnl/_impl/integer/rep.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/type_traits/remove_signedness.h>
@@ -19,6 +19,9 @@ using cnl::_impl::assert_same;
 using cnl::_impl::identical;
 
 namespace {
+    static_assert(cnl::_impl::is_class_derived_from_number_base<cnl::_impl::integer<>>::value, "");
+    static_assert(cnl::_impl::is_derived_from_number_base<cnl::_impl::integer<>>::value, "");
+
     namespace test_parameters {
         static_assert(
                 assert_same<cnl::_impl::integer<int>, cnl::_impl::integer<>>::value,
