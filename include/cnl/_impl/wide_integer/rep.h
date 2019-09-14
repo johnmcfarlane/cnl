@@ -10,30 +10,26 @@
 #include "../duplex_integer/instantiate_duplex_integer.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/max_digits.h"
+#include "../num_traits/rep.h"
 #include "../num_traits/set_digits.h"
 #include "../type_traits/enable_if.h"
 #include "forward_declaration.h"
 
 /// compositional numeric library
 namespace cnl {
-    namespace _impl {
-        // cnl::_impl::wide_integer_rep
-        template<int Digits, typename Narrowest, typename Enable = void>
-        struct wide_integer_rep;
+    template<int Digits, typename Narrowest>
+    struct rep<
+            _impl::wide_integer<Digits, Narrowest>,
+            _impl::enable_if_t<(_impl::max_digits<Narrowest>::value>=Digits)>>
+        : set_digits<Narrowest, _impl::max(Digits, int{digits<Narrowest>::value})> {
+    };
 
-        template<int Digits, typename Narrowest>
-        struct wide_integer_rep<Digits, Narrowest, enable_if_t<(max_digits<Narrowest>::value>=Digits)>>
-                : set_digits<Narrowest, max(Digits, digits<Narrowest>::value)> {
-        };
-
-        template<int Digits, typename Narrowest>
-        struct wide_integer_rep<Digits, Narrowest, enable_if_t<(max_digits<Narrowest>::value<Digits)>>
-                : instantiate_duplex_integer<Digits, Narrowest> {
-        };
-
-        template<int Digits, typename Narrowest>
-        using wide_integer_rep_t = typename wide_integer_rep<Digits, Narrowest>::type;
-    }
+    template<int Digits, typename Narrowest>
+    struct rep<
+            _impl::wide_integer<Digits, Narrowest>,
+            _impl::enable_if_t<(_impl::max_digits<Narrowest>::value<Digits)>>
+        : _impl::instantiate_duplex_integer<Digits, Narrowest> {
+    };
 }
 
 #endif  // CNL_IMPL_WIDE_INTEGER_REP_H

@@ -21,18 +21,16 @@ namespace cnl {
         class wide_integer
                 : public number_base<
                         wide_integer<Digits, Narrowest>,
-                        wide_integer_rep_t<Digits, Narrowest>> {
-            using _base = number_base<
-                    wide_integer<Digits, Narrowest>,
-                    wide_integer_rep_t<Digits, Narrowest>>;
-        public:
-            using rep = typename _base::rep;
+                        rep_t<wide_integer<Digits, Narrowest>>> {
+            using _rep_type = rep_t<wide_integer>;
+            using _base = number_base<wide_integer, _rep_type>;
 
+        public:
             wide_integer() = default;
 
             template<typename T>
             constexpr wide_integer(T const& value)  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
-                    : _base(static_cast<rep>(value)) { }
+                    : _base(static_cast<_rep_type>(value)) { }
 
             template<class S>
             CNL_NODISCARD explicit constexpr operator S() const

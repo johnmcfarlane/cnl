@@ -8,6 +8,8 @@
 #define CNL_IMPL_INTEGER_TYPE_H
 
 #include "../number_base.h"
+#include "declaration.h"
+#include "rep.h"
 
 /// compositional numeric library
 namespace cnl {
