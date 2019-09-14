@@ -59,10 +59,11 @@ namespace cnl {
 
 namespace {
     using cnl::_impl::identical;
+    using cnl::_impl::rep_t;
 
     namespace default_parameters {
         static_assert(
-                std::is_same<cnl::rounding_safe_int<1>::rep::rep::rep, int>::value,
+                std::is_same<rep_t<rep_t<rep_t<cnl::rounding_safe_int<1>>>>, int>::value,
                 "cnl::rounding_integer parameter default test failed");
     }
 

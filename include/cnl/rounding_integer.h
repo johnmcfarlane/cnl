@@ -10,6 +10,7 @@
 #include "_impl/num_traits/fixed_width_scale.h"
 #include "_impl/num_traits/from_value_recursive.h"
 #include "_impl/num_traits/is_composite.h"
+#include "_impl/num_traits/rep.h"
 #include "_impl/num_traits/rounding.h"
 #include "_impl/num_traits/set_rounding.h"
 #include "_impl/num_traits/to_rep.h"
@@ -17,6 +18,7 @@
 #include "_impl/rounding.h"
 #include "_impl/operators/tagged.h"
 #include "_impl/type_traits/common_type.h"
+#include "_impl/type_traits/type_identity.h"
 #include "_impl/used_digits.h"
 
 #include <ostream>
@@ -41,6 +43,13 @@ namespace cnl {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
+    // cnl::_impl::rep<rounding_integer<>>
+
+    template<typename Rep, class Tag>
+    struct rep<rounding_integer<Rep, Tag>> : _impl::type_identity<Rep> {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
     // cnl::_impl::rounding
 
     template<typename Number>
@@ -49,7 +58,7 @@ namespace cnl {
             _impl::enable_if_t<
                     is_composite<Number>::value
                             &&!_impl::is_rounding_integer<Number>::value>>
-            : rounding<_impl::to_rep_t<Number>> {
+            : rounding<_impl::rep_t<Number>> {
     };
 
     template<typename Rep, class RoundingTag>
@@ -64,9 +73,9 @@ namespace cnl {
     struct set_rounding<Number, RoundingTag, _impl::enable_if_t<
             is_composite<Number>::value && !_impl::is_rounding_integer<Number>::value>>
             : _impl::type_identity<
-                    _impl::from_rep_t<
+                    _impl::set_rep_t<
                             Number,
-                            set_rounding_t<_impl::to_rep_t<Number>, RoundingTag>>> {
+                            set_rounding_t<_impl::rep_t<Number>, RoundingTag>>> {
     };
 
     template<typename InputRep, class InputRoundingTag, class OutputRoundingTag>
@@ -114,10 +123,18 @@ namespace cnl {
     /// \tparam ArchetypeRep ignored; replaced by \c Rep
     /// \tparam RoundingTag the \c RoundingTag of the generated type
     template<typename ArchetypeRep, class RoundingTag, typename Rep>
+    struct set_rep<rounding_integer<ArchetypeRep, RoundingTag>, Rep>
+            : _impl::type_identity<rounding_integer<Rep, RoundingTag>> {
+    };
+
+    /// \brief \ref rounding_integer specialization of \ref from_rep
+    /// \tparam ArchetypeRep ignored; replaced by \c Rep
+    /// \tparam RoundingTag the \c RoundingTag of the generated type
+    template<typename ArchetypeRep, class RoundingTag, typename Rep>
     struct from_rep<rounding_integer<ArchetypeRep, RoundingTag>, Rep> {
         /// \brief generates an \ref rounding_integer equivalent to \c r in type and value
         CNL_NODISCARD constexpr auto operator()(Rep const& r) const
-        -> rounding_integer<Rep, RoundingTag>
+        -> _impl::set_rep_t<rounding_integer<ArchetypeRep, RoundingTag>, Rep>
         {
             return r;
         }

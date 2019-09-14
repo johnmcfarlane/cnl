@@ -7,6 +7,8 @@
 #if !defined(CNL_IMPL_INTEGER_TYPE_H)
 #define CNL_IMPL_INTEGER_TYPE_H
 
+#include "declaration.h"
+#include "rep.h"
 #include "../number_base.h"
 
 /// compositional numeric library

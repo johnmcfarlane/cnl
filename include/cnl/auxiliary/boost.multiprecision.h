@@ -163,6 +163,11 @@ namespace cnl {
             : _impl::type_identity<native_rounding_tag> {
     };
 
+    template<class Backend>
+    struct rep<_bmp::number<Backend>>
+            : _impl::type_identity<Backend> {
+    };
+
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     // aliases of boost::multiprecision types

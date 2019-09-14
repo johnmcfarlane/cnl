@@ -21,6 +21,10 @@
 #include "_impl/scaled_integer/constants.h"
 #include "_impl/scaled_integer/extras.h"
 #include "_impl/scaled_integer/operators.h"
+#include "_impl/scaled_integer/rep.h"
+#include "_impl/scaled_integer/set_rep.h"
+#include "_impl/scaled_integer/set_tag.h"
+#include "_impl/scaled_integer/tag.h"
 #include "_impl/scaled_integer/to_chars.h"
 #include "_impl/scaled_integer/to_string.h"
 

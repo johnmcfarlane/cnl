@@ -18,7 +18,7 @@ namespace cnl {
         template<class Derived, class Rep>
         class number_base {
         public:
-            using rep = Rep;
+            using _rep_type = Rep;
 
             CNL_NODISCARD explicit constexpr operator bool() const
             {
@@ -30,7 +30,7 @@ namespace cnl {
 
             number_base() = default;
 
-            explicit constexpr number_base(rep const& r)
+            explicit constexpr number_base(Rep const& r)
                 : _rep(r) { }
 
             template<class T>
@@ -41,7 +41,7 @@ namespace cnl {
 
             friend struct cnl::to_rep<number_base>;
         private:
-            rep _rep;
+            Rep _rep;
         };
     }
 }

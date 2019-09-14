@@ -18,7 +18,7 @@
 #include <gtest/gtest.h>
 
 using cnl::_impl::identical;
-using cnl::_integer_impl::is_overflow_integer;
+using cnl::_impl::is_overflow_integer;
 using cnl::overflow_integer;
 using std::declval;
 using std::is_same;
@@ -43,7 +43,7 @@ static_assert(
         "wrong default template parameters for cnl::overflow_integer");
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::_integer_impl::is_overflow_integer
+// cnl::_impl::is_overflow_integer
 
 static_assert(!is_overflow_integer<uint8_t>::value, "cnl::is_overflow_integer test failed");
 static_assert(!is_overflow_integer<int8_t>::value, "cnl::is_overflow_integer test failed");
@@ -59,17 +59,17 @@ static_assert(is_overflow_integer<saturated_integer<uint8_t>>::value,
 static_assert(is_overflow_integer<saturated_integer<int8_t>>::value,
         "cnl::is_overflow_integer test failed");
 static_assert(is_overflow_integer<saturated_integer<uint16_t>>::value,
-        "cnl::_integer_impl::is_overflow_integer test failed");
+        "cnl::_impl::is_overflow_integer test failed");
 static_assert(is_overflow_integer<saturated_integer<int16_t>>::value,
-        "cnl::_integer_impl::is_overflow_integer test failed");
+        "cnl::_impl::is_overflow_integer test failed");
 static_assert(is_overflow_integer<saturated_integer<uint32_t>>::value,
-        "cnl::_integer_impl::is_overflow_integer test failed");
+        "cnl::_impl::is_overflow_integer test failed");
 static_assert(is_overflow_integer<saturated_integer<int32_t>>::value,
-        "cnl::_integer_impl::is_overflow_integer test failed");
+        "cnl::_impl::is_overflow_integer test failed");
 static_assert(is_overflow_integer<saturated_integer<uint64_t>>::value,
-        "cnl::_integer_impl::is_overflow_integer test failed");
+        "cnl::_impl::is_overflow_integer test failed");
 static_assert(is_overflow_integer<saturated_integer<int64_t>>::value,
-        "cnl::_integer_impl::is_overflow_integer test failed");
+        "cnl::_impl::is_overflow_integer test failed");
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::saturated_integer

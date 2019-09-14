@@ -1170,13 +1170,13 @@ struct ScaledIntegerTesterOutsize {
     using rep = Rep;
     static_assert(sizeof(rep) == sizeof(scaled_integer), "scaled_integer must be the same size as its Rep");
     static_assert(
-            is_same<rep, typename scaled_integer::rep>::value,
+            is_same<rep, cnl::_impl::rep_t<scaled_integer>>::value,
             "mismatched rep");    // possibly overly restrictive (e.g. hardware-specific specializations)
 
     // Exponent
     static constexpr int exponent = Exponent;
     static_assert(
-            exponent == scaled_integer::scale::exponent,
+            exponent == cnl::_impl::tag_t<scaled_integer>::exponent,
             "mismatched exponent");
 
     // simply assignment to and from underlying representation

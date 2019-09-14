@@ -15,6 +15,7 @@
 #include "duplex_integer/instantiate_duplex_integer.h"
 #include "duplex_integer/to_rep.h"
 #include "duplex_integer/operators.h"
+#include "duplex_integer/rep.h"
 #include "duplex_integer/rounding.h"
 #include "duplex_integer/type.h"
 #include "duplex_integer/comparison.h"

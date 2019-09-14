@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_INTEGER_FROM_REP_H)
 #define CNL_IMPL_INTEGER_FROM_REP_H
 
+#include "set_rep.h"
 #include "type.h"
 #include "../num_traits/from_rep.h"
 
@@ -15,7 +16,7 @@ namespace cnl {
     template<typename IntegerRep, typename Rep>
     struct from_rep<_impl::integer<IntegerRep>, Rep> {
         CNL_NODISCARD constexpr auto operator()(Rep const& rep) const
-        -> _impl::integer<Rep>
+        -> _impl::set_rep_t<_impl::integer<IntegerRep>, Rep>
         {
             return rep;
         }

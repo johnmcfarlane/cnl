@@ -10,6 +10,7 @@
 #include "../type_traits/enable_if.h"
 #include "is_composite.h"
 #include "to_rep.h"
+#include "rep.h"
 
 namespace cnl {
     namespace _impl {
@@ -27,9 +28,9 @@ namespace cnl {
         template<typename Number>
         struct unwrap<Number, enable_if_t<is_composite<Number>::value>> {
             CNL_NODISCARD constexpr auto operator()(Number const& number) const
-            -> decltype(unwrap<to_rep_t<Number>>{}(to_rep(number)))
+            -> decltype(unwrap<rep_t<Number>>{}(to_rep(number)))
             {
-                return unwrap<to_rep_t<Number>>{}(to_rep(number));
+                return unwrap<rep_t<Number>>{}(to_rep(number));
             }
         };
     }

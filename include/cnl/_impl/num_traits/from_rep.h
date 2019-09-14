@@ -42,9 +42,6 @@ namespace cnl {
         {
             return cnl::from_rep<Number, Rep>{}(rep);
         }
-
-        template<class Number, class Rep>
-        using from_rep_t = decltype(from_rep<Number>(std::declval<Rep>()));
     }
 }
 

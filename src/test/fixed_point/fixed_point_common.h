@@ -1074,13 +1074,13 @@ struct FixedPointTesterOutsize {
     using rep = Rep;
     static_assert(sizeof(rep) == sizeof(fixed_point), "fixed_point must be the same size as its Rep");
     static_assert(
-            is_same<rep, typename fixed_point::rep>::value,
+            is_same<rep, cnl::_impl::rep_t<fixed_point>>::value,
             "mismatched rep");    // possibly overly restrictive (e.g. hardware-specific specializations)
 
     // Exponent
     static constexpr int exponent = Exponent;
     static_assert(
-            exponent == fixed_point::scale::exponent,
+            exponent == cnl::_impl::tag_t<fixed_point>::exponent,
             "mismatched exponent");
 
     // simply assignment to and from underlying representation

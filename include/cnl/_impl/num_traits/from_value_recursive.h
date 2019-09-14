@@ -9,6 +9,7 @@
 
 #include "from_rep.h"
 #include "from_value.h"
+#include "rep.h"
 #include "../config.h"
 
 namespace cnl {
@@ -16,7 +17,7 @@ namespace cnl {
         template<class Number, typename Value>
         struct from_value_recursive {
             CNL_NODISCARD constexpr auto operator()(Value const& value) const
-            -> decltype(cnl::_impl::from_rep<Number>(cnl::_impl::from_value<typename Number::rep>(value)))
+            -> decltype(cnl::_impl::from_rep<Number>(cnl::_impl::from_value<rep_t<Number>>(value)))
             {
                 return value;
             }

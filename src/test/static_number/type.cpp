@@ -13,10 +13,11 @@ namespace {
     using cnl::_impl::assert_same;
 
     namespace default_parameters {
+        using cnl::_impl::rep_t;
         static_assert(
                 assert_same<
                         cnl::wide_integer<>,
-                        cnl::static_number<1>::rep::rep::rep::rep>::value,
+                        rep_t<rep_t<rep_t<rep_t<cnl::static_number<1>>>>>>::value,
                 "cnl::rounding_integer parameter default test failed");
     }
 

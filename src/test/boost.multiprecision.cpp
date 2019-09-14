@@ -96,13 +96,8 @@ namespace test_impl_to_rep {
     static_assert(
             assert_same<
                     unsigned_multiprecision<987654321>,
-                    cnl::_impl::to_rep_t<scaled_integer<unsigned_multiprecision<987654321>>>>::value,
-            "cnl::_impl::depth<scaled_integer<boost::multiprecision>>");
-    static_assert(
-            assert_same<
-                    unsigned_multiprecision<987654321>,
-                    cnl::_impl::to_rep_t<unsigned_multiprecision<987654321>>>::value,
-            "cnl::_impl::depth<boost::multiprecision>");
+                    cnl::_impl::rep_t<scaled_integer<unsigned_multiprecision<987654321>>>>::value,
+            "cnl::_impl::rep_t<scaled_integer<boost::multiprecision>>");
 }
 
 TEST(multiprecision, from_value)

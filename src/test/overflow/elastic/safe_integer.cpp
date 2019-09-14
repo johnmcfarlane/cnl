@@ -40,10 +40,11 @@ namespace cnl {
 namespace {
     using std::is_same;
     using cnl::_impl::identical;
+    using cnl::_impl::rep_t;
 
     namespace default_parameters {
         static_assert(
-                is_same<cnl::safe_integer<1>::rep::rep, int>::value,
+                is_same<rep_t<rep_t<cnl::safe_integer<1>>>, int>::value,
                 "cnl::safe_integer parameter default test failed");
     }
 
