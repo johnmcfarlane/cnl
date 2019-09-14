@@ -302,7 +302,7 @@ struct positive_elastic_test
     ////////////////////////////////////////////////////////////////////////////////
     // core definitions
     using elastic_type = Elastic;
-    using rep = typename elastic_type::rep;
+    using rep = cnl::_impl::rep_t<elastic_type>;
     using numeric_limits = cnl::numeric_limits<elastic_type>;
 
     using signed_type = cnl::add_signedness_t<elastic_type>;
@@ -354,7 +354,7 @@ struct positive_elastic_test
 
     static constexpr rep max_integer{to_rep(max)};
 #if ! defined(_MSC_VER)
-    static_assert(bit_count<typename rep::rep>(to_rep(max_integer))==digits, "cnl::numeric_limits test failed");
+    static_assert(bit_count<cnl::_impl::rep_t<rep>>(to_rep(max_integer))==digits, "cnl::numeric_limits test failed");
 #endif
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -491,7 +491,7 @@ struct signed_elastic_test :
     // core definitions
 
     using elastic_type = Elastic;
-    using rep = typename elastic_type::rep;
+    using rep = cnl::_impl::rep_t<elastic_type>;
     using numeric_limits = cnl::numeric_limits<elastic_type>;
 
     ////////////////////////////////////////////////////////////////////////////////

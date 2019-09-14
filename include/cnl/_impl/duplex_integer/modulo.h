@@ -18,9 +18,10 @@ namespace cnl {
         // cnl::_impl::heterogeneous_duplex_modulo_operator
         template<typename Lhs, typename Rhs>
         struct heterogeneous_duplex_modulo_operator {
-            using common_type = wide_integer_rep_t<
-                    max(digits<Lhs>::value, digits<Rhs>::value),
-                    set_signedness_t<int, is_signed<Lhs>::value|is_signed<Rhs>::value>>;
+            using common_type = rep_t<
+                    wide_integer<
+                        max(digits<Lhs>::value, digits<Rhs>::value),
+                        set_signedness_t<int, is_signed<Lhs>::value | is_signed<Rhs>::value>>>;
 
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> Lhs
             {

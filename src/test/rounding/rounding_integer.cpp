@@ -37,7 +37,7 @@ namespace {
 
         static_assert(is_same<rounding_integer<>, rounding_integer<default_rep, default_tag<default_rep>>>::value, "cnl::rounding_integer parameter default test failed");
 
-        static_assert(is_same<rounding_integer<>::rep, default_rep>::value, "cnl::rounding_integer parameter default test failed");
+        static_assert(is_same<cnl::_impl::rep_t<rounding_integer<>>, default_rep>::value, "cnl::rounding_integer parameter default test failed");
         static_assert(is_same<rounding_integer<>::rounding, default_tag<default_rep>>::value, "cnl::rounding_integer parameter default test failed");
     }
 

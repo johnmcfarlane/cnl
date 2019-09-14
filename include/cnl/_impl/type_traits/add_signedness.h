@@ -7,11 +7,12 @@
 #if !defined(CNL_IMPL_TYPE_TRAITS_ADD_SIGNEDNESS_H)
 #define CNL_IMPL_TYPE_TRAITS_ADD_SIGNEDNESS_H
 
-#include "../num_traits/from_rep.h"
 #include "../num_traits/is_composite.h"
-#include "../num_traits/to_rep.h"
+#include "../num_traits/rep.h"
+#include "../num_traits/set_rep.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/type_identity.h"
+
 #include <type_traits>
 
 namespace cnl {
@@ -46,7 +47,7 @@ namespace cnl {
 
     template<typename T>
     struct add_signedness<T, _impl::enable_if_t<is_composite<T>::value>>
-            : _impl::type_identity<_impl::from_rep_t<T, add_signedness_t<_impl::to_rep_t<T>>>> {
+            : _impl::type_identity<_impl::set_rep_t<T, add_signedness_t<_impl::rep_t<T>>>> {
     };
 }
 

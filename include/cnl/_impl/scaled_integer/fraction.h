@@ -36,8 +36,8 @@ namespace cnl {
     template<typename Numerator, typename Denominator>
     scaled_integer(fraction<Numerator, Denominator>)
     -> scaled_integer<
-            typename _impl::quotient_result<Numerator, Denominator>::type::rep,
-            typename _impl::quotient_result<Numerator, Denominator>::type::scale>;
+            typename _impl::quotient_result<Numerator, Denominator>::rep,
+            typename _impl::quotient_result<Numerator, Denominator>::scale>;
 #endif
 }
 

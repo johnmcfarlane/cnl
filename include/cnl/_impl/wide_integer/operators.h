@@ -9,6 +9,7 @@
 
 #include "../common.h"
 #include "../duplex_integer/operators.h"
+#include "../num_traits/to_rep.h"
 #include "../operators/generic.h"
 #include "../ostream.h"
 #include "../type_traits/is_signed.h"
