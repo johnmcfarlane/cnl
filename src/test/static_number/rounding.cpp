@@ -6,6 +6,7 @@
 
 #include <cnl/static_number.h>
 #include <cnl/_impl/type_traits/assert_same.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 namespace {
     using cnl::_impl::identical;

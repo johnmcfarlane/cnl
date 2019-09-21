@@ -8,6 +8,7 @@
 #include <cnl/static_integer.h>
 
 #include <cnl/_impl/type_traits/assert_same.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>
 

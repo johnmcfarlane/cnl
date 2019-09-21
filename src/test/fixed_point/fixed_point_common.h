@@ -894,18 +894,12 @@ namespace test_bitshift {
 
     // cnl::constant
     static_assert(identical(fixed_point<uint8, -3>{2}, fixed_point<uint8, -4>{1} << cnl::constant<1>{}), "bitshift test failed");
-    static_assert(identical(fixed_point<uint8, -5>{.5}, fixed_point<uint8, -4>{1} << cnl::constant<-1>{}), "bitshift test failed");
-
     static_assert(identical(fixed_point<uint8, -5>{.5}, fixed_point<uint8, -4>{1} >> cnl::constant<1>{}), "bitshift test failed");
-    static_assert(identical(fixed_point<uint8, -3>{2}, fixed_point<uint8, -4>{1} >> cnl::constant<-1>{}), "bitshift test failed");
 
     // const_integer
     using namespace cnl::literals;
     static_assert(identical(fixed_point<uint8, -3>{2}, fixed_point<uint8, -4>{1} << 1_c), "bitshift test failed");
-    static_assert(identical(fixed_point<uint8, -5>{.5}, fixed_point<uint8, -4>{1} << -1_c), "bitshift test failed");
-
     static_assert(identical(fixed_point<uint8, -5>{.5}, fixed_point<uint8, -4>{1} >> 1_c), "bitshift test failed");
-    static_assert(identical(fixed_point<uint8, -3>{2}, fixed_point<uint8, -4>{1} >> -1_c), "bitshift test failed");
 }
 
 namespace test_bitwise_or {
