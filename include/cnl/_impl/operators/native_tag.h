@@ -44,15 +44,15 @@ namespace cnl {
 
     template<class Operator, typename Rhs>
     struct unary_operator<
-            _impl::native_tag, Operator,
-            Rhs,
+            Operator,
+            _impl::native_tag, Rhs,
             _impl::enable_if_t<_impl::has_native_operators<Rhs>::value>> : Operator {
     };
 
     template<class Operator, typename Lhs, typename Rhs>
     struct binary_operator<
-            _impl::native_tag, Operator,
-            Lhs, Rhs,
+            Operator,
+            _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<_impl::has_native_operators<Lhs>::value && _impl::has_native_operators<Rhs>::value>>
         : Operator {
     };

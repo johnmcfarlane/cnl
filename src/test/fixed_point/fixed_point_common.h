@@ -632,7 +632,9 @@ namespace test_arithmetic {
 
     static_assert(identical(
             cnl::binary_operator<
-                    cnl::_impl::native_tag, cnl::_impl::subtract_op, fixed_point<int32>, cnl::constant<369>>()(
+                    cnl::_impl::subtract_op,
+                    cnl::_impl::native_tag, cnl::_impl::native_tag,
+                    fixed_point<int32>, cnl::constant<369>>()(
                             fixed_point<int32>{999}, cnl::constant<369>{}), fixed_point<test_int, 0>{630}),
             "cnl::_fixed_point_impl::rep_op_exponent test failed");
 }

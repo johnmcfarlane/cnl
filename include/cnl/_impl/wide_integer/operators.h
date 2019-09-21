@@ -44,7 +44,7 @@ namespace cnl {
     }
 
     template<typename Operator, int Digits, typename Narrowest>
-    struct unary_operator<_impl::native_tag, Operator, _impl::wide_integer<Digits, Narrowest>> {
+    struct unary_operator<Operator, _impl::native_tag, _impl::wide_integer<Digits, Narrowest>> {
         CNL_NODISCARD constexpr auto operator()(
                 _impl::wide_integer<Digits, Narrowest> const& rhs) const -> _impl::wide_integer<Digits, Narrowest>
         {
@@ -54,7 +54,8 @@ namespace cnl {
 
     template<class Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
     struct binary_operator<
-            _impl::native_tag, Operator,
+            Operator,
+            _impl::native_tag, _impl::native_tag,
             _impl::wide_integer<LhsDigits, LhsNarrowest>, _impl::wide_integer<RhsDigits, RhsNarrowest>> {
         using _lhs = _impl::wide_integer<LhsDigits, LhsNarrowest>;
         using _rhs = _impl::wide_integer<RhsDigits, RhsNarrowest>;
@@ -87,7 +88,7 @@ namespace cnl {
     };
 
     template<class Operator, int Digits, typename Narrowest>
-    struct pre_operator<_impl::native_tag, Operator, _impl::wide_integer<Digits, Narrowest>> {
+    struct pre_operator<Operator, _impl::native_tag, _impl::wide_integer<Digits, Narrowest>> {
         CNL_RELAXED_CONSTEXPR auto operator()(_impl::wide_integer<Digits, Narrowest>& rhs) const
         -> _impl::wide_integer<Digits, Narrowest>&
         {
@@ -97,7 +98,7 @@ namespace cnl {
     };
 
     template<class Operator, int Digits, typename Narrowest>
-    struct post_operator<_impl::native_tag, Operator, _impl::wide_integer<Digits, Narrowest>> {
+    struct post_operator<Operator, _impl::native_tag, _impl::wide_integer<Digits, Narrowest>> {
         CNL_RELAXED_CONSTEXPR auto operator()(_impl::wide_integer<Digits, Narrowest>& lhs) const
         -> _impl::wide_integer<Digits, Narrowest>
         {

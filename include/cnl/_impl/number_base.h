@@ -86,7 +86,7 @@ namespace cnl {
     // higher OP number_base<>
     template<class Operator, class Lhs, class Rhs>
     struct binary_operator<
-            _impl::native_tag, Operator, Lhs, Rhs,
+            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<std::is_floating_point<Lhs>::value && _impl::is_derived_from_number_base<Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         -> decltype(Operator()(lhs, static_cast<Lhs>(rhs)))
@@ -98,7 +98,7 @@ namespace cnl {
     // number_base<> OP higher
     template<class Operator, class Lhs, class Rhs>
     struct binary_operator<
-            _impl::native_tag, Operator, Lhs, Rhs,
+            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<_impl::is_derived_from_number_base<Lhs>::value && std::is_floating_point<Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         -> decltype(Operator()(static_cast<Rhs>(lhs), rhs))
@@ -110,7 +110,7 @@ namespace cnl {
     // lower OP number_base<>
     template<class Operator, class Lhs, class Rhs>
     struct binary_operator<
-            _impl::native_tag, Operator, Lhs, Rhs,
+            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<_impl::can_wrap<Rhs, Lhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         -> decltype(Operator()(_impl::from_value<Rhs>(lhs), rhs))
@@ -122,7 +122,7 @@ namespace cnl {
     // number_base<> OP lower
     template<class Operator, class Lhs, class Rhs>
     struct binary_operator<
-            _impl::native_tag, Operator, Lhs, Rhs,
+            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<_impl::can_wrap<Lhs, Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         -> decltype(Operator()(lhs, _impl::from_value<Lhs>(rhs)))
@@ -144,7 +144,7 @@ namespace cnl {
 
     template<class Operator, class Lhs, class Rhs>
     struct shift_operator<
-            _impl::native_tag, Operator, Lhs, Rhs,
+            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<
                     _impl::is_derived_from_number_base<Lhs>::value&&!_impl::is_same_wrapper<Lhs, Rhs>::value
 #if defined(CNL_OVERLOAD_RESOLUTION_HACK)
@@ -160,7 +160,7 @@ namespace cnl {
 
     template<class Operator, class Lhs, class Rhs>
     struct shift_operator<
-            _impl::native_tag, Operator, Lhs, Rhs,
+            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<
                     _impl::is_derived_from_number_base<Lhs>::value&&_impl::is_same_wrapper<Lhs, Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
@@ -226,7 +226,7 @@ namespace cnl {
 
     // number_base<> OP lower
     template<class Operator, class Derived, typename Rep>
-    struct pre_operator<_impl::native_tag, Operator, _impl::number_base<Derived, Rep>> {
+    struct pre_operator<Operator, _impl::native_tag, _impl::number_base<Derived, Rep>> {
         CNL_RELAXED_CONSTEXPR Derived& operator()(Derived& rhs) const
         {
             Operator()(_impl::to_rep(rhs));
@@ -239,7 +239,7 @@ namespace cnl {
 
     // number_base<> OP lower
     template<class Operator, class Derived, typename Rep>
-    struct post_operator<_impl::native_tag, Operator, _impl::number_base<Derived, Rep>> {
+    struct post_operator<Operator, _impl::native_tag, _impl::number_base<Derived, Rep>> {
         CNL_RELAXED_CONSTEXPR Derived operator()(Derived& lhs) const
         {
             auto copy = lhs;

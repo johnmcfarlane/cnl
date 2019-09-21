@@ -50,9 +50,9 @@ namespace cnl {
     /// cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
     template<class Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto add(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(binary_operator<Tag, _impl::add_op, Lhs, Rhs>{}(lhs, rhs))
+    -> decltype(binary_operator<_impl::add_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs))
     {
-        return binary_operator<Tag, _impl::add_op, Lhs, Rhs>{}(lhs, rhs);
+        return binary_operator<_impl::add_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
     }
 
     /// \brief subtracts one value from another
@@ -66,9 +66,9 @@ namespace cnl {
     /// cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
     template<class Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto subtract(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(binary_operator<Tag, _impl::subtract_op, Lhs, Rhs>{}(lhs, rhs))
+    -> decltype(binary_operator<_impl::subtract_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs))
     {
-        return binary_operator<Tag, _impl::subtract_op, Lhs, Rhs>{}(lhs, rhs);
+        return binary_operator<_impl::subtract_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
     }
 
     /// \brief multiplies one value by another
@@ -82,9 +82,9 @@ namespace cnl {
     /// cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
     template<class Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto multiply(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(binary_operator<Tag, _impl::multiply_op, Lhs, Rhs>{}(lhs, rhs))
+    -> decltype(binary_operator<_impl::multiply_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs))
     {
-        return binary_operator<Tag, _impl::multiply_op, Lhs, Rhs>{}(lhs, rhs);
+        return binary_operator<_impl::multiply_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
     }
 
     /// \brief divides one value by another
@@ -98,16 +98,16 @@ namespace cnl {
     /// cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
     template<class Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(binary_operator<Tag, _impl::divide_op, Lhs, Rhs>{}(lhs, rhs))
+    -> decltype(binary_operator<_impl::divide_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs))
     {
-        return binary_operator<Tag, _impl::divide_op, Lhs, Rhs>{}(lhs, rhs);
+        return binary_operator<_impl::divide_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
     }
 
     template<class Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto shift_left(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(binary_operator<Tag, _impl::shift_left_op, Lhs, Rhs>{}(lhs, rhs))
+    -> decltype(binary_operator<_impl::shift_left_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs))
     {
-        return binary_operator<Tag, _impl::shift_left_op, Lhs, Rhs>{}(lhs, rhs);
+        return binary_operator<_impl::shift_left_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
     }
 
     /// \brief bitwise left-shifts one value by another
@@ -121,9 +121,9 @@ namespace cnl {
     /// cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
     template<class Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto shift_right(Lhs const& lhs, Rhs const& rhs)
-    -> decltype(binary_operator<Tag, _impl::shift_right_op, Lhs, Rhs>{}(lhs, rhs))
+    -> decltype(binary_operator<_impl::shift_right_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs))
     {
-        return binary_operator<Tag, _impl::shift_right_op, Lhs, Rhs>{}(lhs, rhs);
+        return binary_operator<_impl::shift_right_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
     }
 }
 

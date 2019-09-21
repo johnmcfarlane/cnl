@@ -24,24 +24,25 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::divide<nearest_rounding_tag, ...>
 
-        template<class RoundingTag, class Lhs, class Rhs>
+        template<class LhsTag, class RhsTag, class Lhs, class Rhs>
         struct divide {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs/rhs)
             {
-                return cnl::binary_operator<RoundingTag, divide_op, Lhs, Rhs>{}(cnl::unwrap(lhs), cnl::unwrap(rhs));
+                return cnl::binary_operator<divide_op, LhsTag, RhsTag, Lhs, Rhs>{}(
+                        cnl::unwrap(lhs), cnl::unwrap(rhs));
             }
         };
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::shift_right
 
-        template<class RoundingTag, class Lhs, class Rhs>
+        template<class LhsTag, class RhsTag, class Lhs, class Rhs>
         struct shift_right {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs >> rhs)
             {
-                return cnl::binary_operator<RoundingTag, shift_right_op, Lhs, Rhs>{}(lhs, rhs);
+                return cnl::binary_operator<shift_right_op, LhsTag, RhsTag, Lhs, Rhs>{}(lhs, rhs);
             }
         };
     }

@@ -39,28 +39,28 @@ namespace cnl {
     };
 
     template<class Operator, typename Operand>
-    struct unary_operator<native_rounding_tag, Operator, Operand>
-            : unary_operator<_impl::native_tag, Operator, Operand> {
+    struct unary_operator<Operator, native_rounding_tag, Operand>
+            : unary_operator<Operator, _impl::native_tag, Operand> {
     };
 
     template<class Operator, typename Lhs, typename Rhs>
-    struct binary_operator<native_rounding_tag, Operator, Lhs, Rhs>
-            : binary_operator<_impl::native_tag, Operator, Lhs, Rhs> {
+    struct binary_operator<Operator, native_rounding_tag, native_rounding_tag, Lhs, Rhs>
+            : binary_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
     };
 
     template<class Operator, typename Lhs, typename Rhs>
-    struct shift_operator<native_rounding_tag, Operator, Lhs, Rhs>
-            : shift_operator<_impl::native_tag, Operator, Lhs, Rhs> {
+    struct shift_operator<Operator, native_rounding_tag, native_rounding_tag, Lhs, Rhs>
+            : shift_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
     };
 
     template<class Operator, typename Rhs>
-    struct pre_operator<native_rounding_tag, Operator, Rhs>
-            : pre_operator<_impl::native_tag, Operator, Rhs> {
+    struct pre_operator<Operator, native_rounding_tag, Rhs>
+            : pre_operator<Operator, _impl::native_tag, Rhs> {
     };
 
     template<class Operator, typename Rhs>
-    struct post_operator<native_rounding_tag, Operator, Rhs>
-            : post_operator<_impl::native_tag, Operator, Rhs> {
+    struct post_operator<Operator, native_rounding_tag, Rhs>
+            : post_operator<Operator, _impl::native_tag, Rhs> {
     };
 }
 

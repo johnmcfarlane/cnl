@@ -434,7 +434,9 @@ namespace cnl {
     // cnl::binary_operator
 
     template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
-    struct binary_operator<_impl::native_tag, Operator,
+    struct binary_operator<
+            Operator,
+            _impl::native_tag, _impl::native_tag,
             elastic_integer<LhsDigits, LhsNarrowest>, elastic_integer<RhsDigits, RhsNarrowest>> {
         CNL_NODISCARD constexpr auto operator()(
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
@@ -462,7 +464,9 @@ namespace cnl {
 
     template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
     struct shift_operator<
-            _impl::native_tag, _impl::shift_left_op, elastic_integer<LhsDigits, LhsNarrowest>, constant<RhsValue>> {
+            _impl::shift_left_op,
+            _impl::native_tag, _impl::native_tag,
+            elastic_integer<LhsDigits, LhsNarrowest>, constant<RhsValue>> {
         CNL_NODISCARD constexpr auto operator()(
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
                 constant<RhsValue>) const
@@ -481,13 +485,13 @@ namespace cnl {
     // pre/post operators
 
     template<class Operator, int Digits, typename Narrowest>
-    struct pre_operator<_impl::native_tag, Operator, elastic_integer<Digits, Narrowest>>
-            : pre_operator<_impl::native_tag, Operator, typename elastic_integer<Digits, Narrowest>::_base> {
+    struct pre_operator<Operator, _impl::native_tag, elastic_integer<Digits, Narrowest>>
+            : pre_operator<Operator, _impl::native_tag, typename elastic_integer<Digits, Narrowest>::_base> {
     };
 
     template<class Operator, int Digits, typename Narrowest>
-    struct post_operator<_impl::native_tag, Operator, elastic_integer<Digits, Narrowest>>
-            : post_operator<_impl::native_tag, Operator, typename elastic_integer<Digits, Narrowest>::_base> {
+    struct post_operator<Operator, _impl::native_tag, elastic_integer<Digits, Narrowest>>
+            : post_operator<Operator, _impl::native_tag, typename elastic_integer<Digits, Narrowest>::_base> {
     };
 
 #if ! defined(CNL_OVERLOAD_RESOLUTION_HACK)
@@ -510,7 +514,7 @@ namespace cnl {
 
     // unary operator-
     template<int RhsDigits, class RhsNarrowest>
-    struct unary_operator<_impl::native_tag, _impl::minus_op, elastic_integer<RhsDigits, RhsNarrowest>> {
+    struct unary_operator<_impl::minus_op, _impl::native_tag, elastic_integer<RhsDigits, RhsNarrowest>> {
         CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
         -> elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>
         {
@@ -521,7 +525,7 @@ namespace cnl {
 
     // unary operator+
     template<int RhsDigits, class RhsNarrowest>
-    struct unary_operator<_impl::native_tag, _impl::plus_op, elastic_integer<RhsDigits, RhsNarrowest>> {
+    struct unary_operator<_impl::plus_op, _impl::native_tag, elastic_integer<RhsDigits, RhsNarrowest>> {
         CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
         -> elastic_integer<RhsDigits, RhsNarrowest>
         {
@@ -532,7 +536,7 @@ namespace cnl {
 
     // unary operator~
     template<int RhsDigits, class RhsNarrowest>
-    struct unary_operator<_impl::native_tag, _impl::bitwise_not_op, elastic_integer<RhsDigits, RhsNarrowest>> {
+    struct unary_operator<_impl::bitwise_not_op, _impl::native_tag, elastic_integer<RhsDigits, RhsNarrowest>> {
         CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
         -> elastic_integer<RhsDigits, RhsNarrowest>
         {

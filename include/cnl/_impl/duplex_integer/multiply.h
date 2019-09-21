@@ -108,7 +108,8 @@ namespace cnl {
     // cnl::_impl::binary_operator<multiply_op, duplex_integer<>, duplex_integer<>>
     template<typename Upper, typename Lower>
     struct binary_operator<
-            _impl::native_tag, _impl::multiply_op,
+            _impl::multiply_op,
+            _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>> {
         using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
 
@@ -135,7 +136,8 @@ namespace cnl {
 
     template<typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
     struct binary_operator<
-            _impl::native_tag, _impl::multiply_op,
+            _impl::multiply_op,
+            _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<LhsUpper, LhsLower>, _impl::duplex_integer<RhsUpper, RhsLower>>
             : _impl::heterogeneous_duplex_multiply_operator<
                     _impl::duplex_integer<LhsUpper, LhsLower>, _impl::duplex_integer<RhsUpper, RhsLower>> {
@@ -143,7 +145,8 @@ namespace cnl {
 
     template<typename LhsUpper, typename LhsLower, typename Rhs>
     struct binary_operator<
-            _impl::native_tag, _impl::multiply_op,
+            _impl::multiply_op,
+            _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<LhsUpper, LhsLower>, Rhs>
             : _impl::heterogeneous_duplex_multiply_operator<
                     _impl::duplex_integer<LhsUpper, LhsLower>, Rhs> {
@@ -151,7 +154,8 @@ namespace cnl {
 
     template<typename Lhs, typename RhsUpper, typename RhsLower>
     struct binary_operator<
-            _impl::native_tag, _impl::multiply_op,
+            _impl::multiply_op,
+            _impl::native_tag, _impl::native_tag,
             Lhs, _impl::duplex_integer<RhsUpper, RhsLower>>
             : _impl::heterogeneous_duplex_multiply_operator<
                     Lhs, _impl::duplex_integer<RhsUpper, RhsLower>> {

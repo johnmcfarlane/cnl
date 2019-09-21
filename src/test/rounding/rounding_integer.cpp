@@ -187,12 +187,11 @@ namespace {
         static_assert(identical(
                 cnl::rounding_integer<long, cnl::native_rounding_tag>{321},
                 cnl::binary_operator<
-                        cnl::_impl::native_tag,
                         cnl::_impl::divide_op,
-                        cnl::_impl::number<long, cnl::native_rounding_tag>,
-                        cnl::constant<3>>{}(
-                        cnl::_impl::number<long, cnl::native_rounding_tag>{963},
-                        cnl::constant<3>{})),
+                        cnl::_impl::native_tag, cnl::_impl::native_tag,
+                        cnl::_impl::number<long, cnl::native_rounding_tag>, cnl::constant<3>>{}(
+                                cnl::_impl::number<long, cnl::native_rounding_tag>{963},
+                                cnl::constant<3>{})),
                 "");
     }
 

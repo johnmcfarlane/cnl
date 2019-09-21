@@ -14,19 +14,19 @@
 
 namespace cnl {
     template<class Operator, typename Rep, class Tag>
-    struct pre_operator<_impl::native_tag, Operator, _impl::number<Rep, Tag>> {
+    struct pre_operator<Operator, _impl::native_tag, _impl::number<Rep, Tag>> {
         CNL_RELAXED_CONSTEXPR _impl::number<Rep, Tag>& operator()(_impl::number<Rep, Tag>& rhs) const
         {
-            pre_operator<Tag, Operator, Rep>{}(_impl::to_rep(rhs));
+            pre_operator<Operator, Tag, Rep>{}(_impl::to_rep(rhs));
             return rhs;
         }
     };
 
     template<class Operator, typename Rep, class Tag>
-    struct post_operator<_impl::native_tag, Operator, _impl::number<Rep, Tag>> {
+    struct post_operator<Operator, _impl::native_tag, _impl::number<Rep, Tag>> {
         CNL_RELAXED_CONSTEXPR _impl::number<Rep, Tag> operator()(_impl::number<Rep, Tag>& lhs) const
         {
-            return post_operator<Tag, Operator, Rep>{}(_impl::to_rep(lhs));
+            return post_operator<Operator, Tag, Rep>{}(_impl::to_rep(lhs));
         }
     };
 }

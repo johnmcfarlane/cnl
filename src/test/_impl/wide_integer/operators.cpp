@@ -91,7 +91,8 @@ namespace {
                 identical(
                         cnl::_impl::wide_integer<16, unsigned>{0x12},
                         cnl::binary_operator<
-                                cnl::_impl::native_tag, cnl::_impl::divide_op,
+                                cnl::_impl::divide_op,
+                                cnl::_impl::native_tag, cnl::_impl::native_tag,
                                 cnl::_impl::wide_integer<16, unsigned>,
                                 cnl::_impl::wide_integer<16, unsigned>>{}(0x1234, 0x100)),
                 "");
@@ -99,7 +100,8 @@ namespace {
                 identical(
                         cnl::_impl::wide_integer<16, signed>{0x12},
                         cnl::binary_operator<
-                                cnl::_impl::native_tag, cnl::_impl::divide_op,
+                                cnl::_impl::divide_op,
+                                cnl::_impl::native_tag, cnl::_impl::native_tag,
                                 cnl::_impl::wide_integer<16, unsigned>,
                                 cnl::_impl::wide_integer<16, signed>>{}(0x1234, 0x100)),
                 "");
