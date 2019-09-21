@@ -34,17 +34,17 @@ namespace cnl {
     }
 
     template<class Operator, typename Operand>
-    struct unary_operator<nearest_rounding_tag, Operator, Operand>
-            : unary_operator<_impl::native_tag, Operator, Operand> {
+    struct unary_operator<Operator, nearest_rounding_tag, Operand>
+            : unary_operator<Operator, _impl::native_tag, Operand> {
     };
 
     template<class Operator, typename Lhs, typename Rhs>
-    struct binary_operator<nearest_rounding_tag, Operator, Lhs, Rhs>
+    struct binary_operator<Operator, nearest_rounding_tag, nearest_rounding_tag, Lhs, Rhs>
             : Operator {
     };
 
     template<typename Lhs, typename Rhs>
-    struct binary_operator<nearest_rounding_tag, _impl::divide_op, Lhs, Rhs> {
+    struct binary_operator<_impl::divide_op, nearest_rounding_tag, nearest_rounding_tag, Lhs, Rhs> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         -> decltype(lhs/rhs)
         {
@@ -55,17 +55,17 @@ namespace cnl {
     };
 
     template<class Operator, typename Lhs, typename Rhs>
-    struct shift_operator<nearest_rounding_tag, Operator, Lhs, Rhs>
+    struct shift_operator<Operator, nearest_rounding_tag, nearest_rounding_tag, Lhs, Rhs>
             : Operator {
     };
 
     template<class Operator, typename Rhs>
-    struct pre_operator<nearest_rounding_tag, Operator, Rhs>
+    struct pre_operator<Operator, nearest_rounding_tag, Rhs>
             : Operator {
     };
 
     template<class Operator, typename Rhs>
-    struct post_operator<nearest_rounding_tag, Operator, Rhs>
+    struct post_operator<Operator, nearest_rounding_tag, Rhs>
             : Operator {
     };
 }

@@ -100,7 +100,12 @@ namespace saturated_binary_operator {
             cnl::_impl::to_rep(saturated_integer<short>(1234)),
             short(1234)), "to_rep(saturated_integer<>) test failed");
 
-    static_assert(identical(cnl::binary_operator<cnl::_impl::native_tag, cnl::_impl::multiply_op, saturated_integer<short>, float>()(
+    static_assert(
+            identical(
+                    cnl::binary_operator<
+                            cnl::_impl::multiply_op,
+                            cnl::_impl::native_tag, cnl::_impl::native_tag,
+                            saturated_integer<short>, float>()(
             saturated_integer<short>(1234), 2.), 2468.F), "cnl::saturated_integer test failed");
 
     static_assert(
@@ -110,25 +115,33 @@ namespace saturated_binary_operator {
     static_assert(identical(
             cnl::_impl::make_number<cnl::saturated_overflow_tag>(
                     cnl::binary_operator<
-                            cnl::saturated_overflow_tag, multiply_op, signed char, signed char>()(
+                            multiply_op,
+                            cnl::saturated_overflow_tag, cnl::saturated_overflow_tag,
+                            signed char, signed char>()(
                                     cnl::_impl::to_rep(saturated_integer<signed char>{30}),
                                     cnl::_impl::to_rep(saturated_integer<signed char>{40}))),
             saturated_integer<int>{1200}), "");
 
-    static_assert(identical(
-            cnl::binary_operator<cnl::_impl::native_tag, multiply_op, saturated_integer<signed char>, saturated_integer<signed char>>()(
-                    saturated_integer<signed char>{30}, saturated_integer<signed char>{40}),
-            saturated_integer<int>{1200}), "");
+    static_assert(
+            identical(
+                    cnl::binary_operator<
+                            multiply_op,
+                            cnl::_impl::native_tag, cnl::_impl::native_tag,
+                            saturated_integer<signed char>, saturated_integer<signed char>>()(
+                            saturated_integer<signed char>{30}, saturated_integer<signed char>{40}),
+                    saturated_integer<int>{1200}), "");
 
     static_assert(identical(
             cnl::binary_operator<
-                    cnl::_impl::native_tag, cnl::_impl::multiply_op,
+                    cnl::_impl::multiply_op,
+                    cnl::_impl::native_tag, cnl::_impl::native_tag,
                     saturated_integer<signed char>, saturated_integer<signed char>>()(30, 40),
             saturated_integer<int>{1200}), "");
 
     static_assert(identical(
             cnl::binary_operator<
-                    cnl::_impl::native_tag, cnl::_impl::multiply_op,
+                    cnl::_impl::multiply_op,
+                    cnl::_impl::native_tag, cnl::_impl::native_tag,
                     unsigned, throwing_integer<cnl::uint8>>()(3U, throwing_integer<cnl::uint8>{4}),
             throwing_integer<unsigned>{12}),
             "cnl::binary_operator test failed");
@@ -546,16 +559,18 @@ namespace {
 
         using rep = cnl::_impl::rep_t<overflow_integer>;
         using tag = cnl::_impl::tag_t<overflow_integer>;
-        static_assert(is_same<cnl::overflow_integer<rep, tag>, overflow_integer>::value, "cnl::overflow_integer test failed");
+        static_assert(is_same<cnl::overflow_integer<rep, tag>, overflow_integer>::value,
+                "cnl::overflow_integer test failed");
 
         static constexpr auto default_initialized = overflow_integer{0};
         static_assert(!default_initialized, "cnl::overflow_integer test failed");
 
-        static_assert(+default_initialized == default_initialized, "cnl::overflow_integer test failed");
+        static_assert(+default_initialized==default_initialized, "cnl::overflow_integer test failed");
 #if !defined(_MSC_VER)
-        static_assert(-default_initialized == default_initialized, "cnl::overflow_integer test failed");
+        static_assert(-default_initialized==default_initialized, "cnl::overflow_integer test failed");
 #endif
-        static_assert(default_initialized+default_initialized == default_initialized, "cnl::overflow_integer test failed");
+        static_assert(default_initialized+default_initialized==default_initialized,
+                "cnl::overflow_integer test failed");
         // NOLINTNEXTLINE(misc-redundant-expression)
         static_assert(default_initialized-default_initialized == default_initialized, "cnl::overflow_integer test failed");
         static_assert(default_initialized*default_initialized == default_initialized, "cnl::overflow_integer test failed");

@@ -60,8 +60,11 @@ namespace {
                 elastic_integer<1>{0}, INT32_C(0)),
                 "cnl::elastic_integer test failed");
         static_assert(identical(
-                cnl::binary_operator<cnl::_impl::native_tag, cnl::_impl::multiply_op, elastic_integer<1>, std::int32_t>()(
-                        elastic_integer<1>{0}, INT32_C(0)), elastic_integer<31, int>{0}),
+                cnl::binary_operator<
+                        cnl::_impl::multiply_op,
+                        cnl::_impl::native_tag, cnl::_impl::native_tag,
+                        elastic_integer<1>, std::int32_t>()(
+                                elastic_integer<1>{0}, INT32_C(0)), elastic_integer<31, int>{0}),
                 "cnl::elastic_integer test failed");
 
         static_assert(cnl::comparison_operator<equal_op, elastic_integer<8>, elastic_integer<8>>()(
@@ -378,8 +381,10 @@ namespace {
                 elastic_integer<63, int>{0x7FFFFFFE80000001LL}), "cnl::elastic_integer test failed");
 
         static_assert(identical(
-                cnl::binary_operator<cnl::_impl::native_tag, cnl::_impl::multiply_op, elastic_integer<1>, std::int32_t>()(
-                        elastic_integer<1>{0}, INT32_C(0)),
+                cnl::binary_operator<
+                        cnl::_impl::multiply_op,
+                        cnl::_impl::native_tag, cnl::_impl::native_tag, elastic_integer<1>, std::int32_t>()(
+                                elastic_integer<1>{0}, INT32_C(0)),
                 cnl::elastic_integer<31, int>{0}),
                 "cnl::elastic_integer test failed");
         static_assert(identical(to_rep(elastic_integer<4>{13}), 13), "cnl::elastic_integer test failed");
@@ -407,8 +412,10 @@ namespace {
     namespace test_shift_right {
         static_assert(identical(
                 elastic_integer<1>{1},
-                cnl::_impl::shift_right<cnl::nearest_rounding_tag, cnl::elastic_integer<2>, cnl::constant<1>>{}(
-                        elastic_integer<2>{2}, {})), "shift_right<elastic_integer>");
+                cnl::_impl::shift_right<
+                        cnl::nearest_rounding_tag, cnl::nearest_rounding_tag,
+                        cnl::elastic_integer<2>, cnl::constant<1>>{}(
+                                elastic_integer<2>{2}, {})), "shift_right<elastic_integer>");
     }
 
     namespace test_numeric_limits {

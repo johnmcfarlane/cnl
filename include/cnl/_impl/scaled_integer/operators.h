@@ -23,7 +23,7 @@ namespace cnl {
     // compare two objects of different scaled_integer specializations
 
     template<typename Operator, typename Rep, int Exponent, int Radix>
-    struct unary_operator<_impl::native_tag, Operator, scaled_integer<Rep, power<Exponent, Radix>>> {
+    struct unary_operator<Operator, _impl::native_tag, scaled_integer<Rep, power<Exponent, Radix>>> {
         CNL_NODISCARD constexpr auto operator()(scaled_integer<Rep, power<Exponent, Radix>> const& rhs) const
         -> decltype(_impl::from_rep<scaled_integer<decltype(Operator()(_impl::to_rep(rhs))), power<Exponent, Radix>>>(
                 Operator()(_impl::to_rep(rhs))))
@@ -95,7 +95,8 @@ namespace cnl {
 
     template<typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
     struct binary_operator<
-            _impl::native_tag, _impl::multiply_op,
+            _impl::multiply_op,
+            _impl::native_tag, _impl::native_tag,
             scaled_integer<LhsRep, power<LhsExponent, Radix>>,
             scaled_integer<RhsRep, power<RhsExponent, Radix>>> {
         CNL_NODISCARD constexpr auto operator()(
@@ -116,7 +117,8 @@ namespace cnl {
 
     template<typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
     struct binary_operator<
-            _impl::native_tag, _impl::divide_op,
+            _impl::divide_op,
+            _impl::native_tag, _impl::native_tag,
             scaled_integer<LhsRep, power<LhsExponent, Radix>>,
             scaled_integer<RhsRep, power<RhsExponent, Radix>>> {
         CNL_NODISCARD constexpr auto operator()(
@@ -137,7 +139,8 @@ namespace cnl {
 
     template<typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
     struct binary_operator<
-            _impl::native_tag, _impl::modulo_op,
+            _impl::modulo_op,
+            _impl::native_tag, _impl::native_tag,
             scaled_integer<LhsRep, power<LhsExponent, Radix>>,
             scaled_integer<RhsRep, power<RhsExponent, Radix>>> {
         CNL_NODISCARD constexpr auto operator()(
@@ -166,7 +169,8 @@ namespace cnl {
     // performs zero-degree binary operations between scaled_integer types with the same exponent
     template<class Operator, class LhsRep, class RhsRep, int Exponent, int Radix>
     struct binary_operator<
-            _impl::native_tag, Operator,
+            Operator,
+            _impl::native_tag, _impl::native_tag,
             scaled_integer<LhsRep, power<Exponent, Radix>>,
             scaled_integer<RhsRep, power<Exponent, Radix>>,
             _impl::enable_if_t<_impl::is_zero_degree<Operator>::value>> {
@@ -186,7 +190,8 @@ namespace cnl {
     // performs zero-degree binary operations between scaled_integer types with the different exponents
     template<typename Operator, typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent, int Radix>
     struct binary_operator<
-            _impl::native_tag, Operator,
+            Operator,
+            _impl::native_tag, _impl::native_tag,
             scaled_integer<LhsRep, power<LhsExponent, Radix>>,
             scaled_integer<RhsRep, power<RhsExponent, Radix>>,
             _impl::enable_if_t<_impl::is_zero_degree<Operator>::value>> {
@@ -215,7 +220,8 @@ namespace cnl {
     // shift_operator of non-scaled_integer and scaled_integer
     template<class Operator, typename Lhs, typename RhsRep, class RhsScale>
     struct shift_operator<
-            _impl::native_tag, Operator,
+            Operator,
+            _impl::native_tag, _impl::native_tag,
             Lhs, scaled_integer<RhsRep, RhsScale>,
                     _impl::enable_if_t<!_impl::is_number<Lhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, scaled_integer<RhsRep, RhsScale> const& rhs) const
@@ -228,7 +234,8 @@ namespace cnl {
     // shift_operator of scaled_integer and non-scaled_integer
     template<class Operator, typename LhsRep, class LhsScale, typename Rhs>
     struct shift_operator<
-            _impl::native_tag, Operator,
+            Operator,
+            _impl::native_tag, _impl::native_tag,
             scaled_integer<LhsRep, LhsScale>, Rhs> {
         CNL_NODISCARD constexpr auto operator()(scaled_integer<LhsRep, LhsScale> const& lhs, Rhs const& rhs) const
         -> decltype(_impl::from_rep<scaled_integer<
@@ -242,9 +249,10 @@ namespace cnl {
     };
 
     // shift_operator of scaled_integer and scaled_integer
-    template<class Operator, typename LhsRep, class LhsScale, typename RhsRep, class RhsScale>
+    template<class Operator, class LhsScale, class RhsScale, typename LhsRep, typename RhsRep>
     struct shift_operator<
-            _impl::native_tag, Operator,
+            Operator,
+            _impl::native_tag, _impl::native_tag,
             scaled_integer<LhsRep, LhsScale>,
             scaled_integer<RhsRep, RhsScale>> {
         CNL_NODISCARD constexpr auto operator()(
@@ -260,7 +268,7 @@ namespace cnl {
     // pre-increment/decrement arithmetic operators
 
     template<typename Operator, typename Rep, int Exponent, int Radix>
-    struct pre_operator<_impl::native_tag, Operator, scaled_integer<Rep, power<Exponent, Radix>>> {
+    struct pre_operator<Operator, _impl::native_tag, scaled_integer<Rep, power<Exponent, Radix>>> {
         CNL_NODISCARD constexpr auto operator()(scaled_integer<Rep, power<Exponent, Radix>>& rhs) const
         -> decltype(typename _impl::pre_to_assign<Operator>::type{}(rhs, 1))
         {
@@ -272,7 +280,7 @@ namespace cnl {
     // post-increment/decrement arithmetic operators
 
     template<typename Operator, typename Rep, int Exponent, int Radix>
-    struct post_operator<_impl::native_tag, Operator, scaled_integer<Rep, power<Exponent, Radix>>> {
+    struct post_operator<Operator, _impl::native_tag, scaled_integer<Rep, power<Exponent, Radix>>> {
         CNL_RELAXED_CONSTEXPR scaled_integer<Rep, power<Exponent, Radix>> operator()(scaled_integer<Rep, power<Exponent, Radix>>& rhs) const
         {
             auto copy = rhs;
