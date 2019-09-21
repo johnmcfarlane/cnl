@@ -75,8 +75,8 @@ namespace cnl {
         }
     };
 
-    template<class OverflowTag, class Operator, typename Operand>
-    struct unary_operator<OverflowTag, Operator, Operand,
+    template<class Operator, class OverflowTag, typename Operand>
+    struct unary_operator<Operator, OverflowTag, Operand,
             _impl::enable_if_t<_impl::is_overflow_tag<OverflowTag>::value>> {
         CNL_NODISCARD constexpr auto operator()(Operand const& operand) const
         -> _impl::op_result<Operator, Operand>
@@ -90,10 +90,14 @@ namespace cnl {
     };
 
 #if defined(CNL_BUILTIN_OVERFLOW_ENABLED)
-    template<class OverflowTag, class Operator, typename Lhs, typename Rhs>
-    struct binary_operator<OverflowTag, Operator, Lhs, Rhs,
-            _impl::enable_if_t<_impl::is_overflow_tag<OverflowTag>::value
-                    &&_impl::builtin_overflow_operator<Operator, Lhs, Rhs>::value>> {
+    template<class Operator, class LhsTag, class RhsTag, typename Lhs, typename Rhs>
+    struct binary_operator<
+            Operator,
+            LhsTag, RhsTag,
+            Lhs, Rhs,
+            _impl::enable_if_t<_impl::is_overflow_tag<LhsTag>::value
+                    && _impl::is_overflow_tag<RhsTag>::value
+                    && _impl::builtin_overflow_operator<Operator, Lhs, Rhs>::value>> {
         using result_type = _impl::op_result<Operator, Lhs, Rhs>;
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         -> result_type
@@ -105,9 +109,11 @@ namespace cnl {
 
             switch (_impl::overflow_polarity<Operator>{}(lhs, rhs)) {
             case _impl::polarity::positive:
-                return _impl::overflow_operator<Operator, OverflowTag, _impl::polarity::positive>{}(lhs, rhs);
+                return _impl::overflow_operator<
+                        Operator, _impl::common_overflow_tag_t<LhsTag, RhsTag>, _impl::polarity::positive>{}(lhs, rhs);
             case _impl::polarity::negative:
-                return _impl::overflow_operator<Operator, OverflowTag, _impl::polarity::negative>{}(lhs, rhs);
+                return _impl::overflow_operator<
+                        Operator, _impl::common_overflow_tag_t<LhsTag, RhsTag>, _impl::polarity::negative>{}(lhs, rhs);
             default:
                 return _impl::unreachable<result_type>("CNL internal error");
             }
@@ -115,56 +121,67 @@ namespace cnl {
     };
 #endif
 
-    template<class OverflowTag, class Operator, typename Lhs, typename Rhs>
-    struct binary_operator<OverflowTag, Operator, Lhs, Rhs,
-            _impl::enable_if_t<_impl::is_overflow_tag<OverflowTag>::value
-                    &&!_impl::builtin_overflow_operator<Operator, Lhs, Rhs>::value>> {
+    template<class Operator, class LhsTag, class RhsTag, typename Lhs, typename Rhs>
+    struct binary_operator<Operator, LhsTag, RhsTag, Lhs, Rhs,
+            _impl::enable_if_t<_impl::is_overflow_tag<LhsTag>::value
+                    && _impl::is_overflow_tag<RhsTag>::value
+                    && !_impl::builtin_overflow_operator<Operator, Lhs, Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         -> _impl::op_result<Operator, Lhs, Rhs>
         {
             return _impl::is_overflow<Operator, _impl::polarity::positive>{}(lhs, rhs)
-                    ? _impl::overflow_operator<Operator, OverflowTag, _impl::polarity::positive>{}(lhs, rhs)
+                    ? _impl::overflow_operator<
+                            Operator,
+                            _impl::common_overflow_tag_t<LhsTag, RhsTag>, _impl::polarity::positive>{}(lhs, rhs)
                     : _impl::is_overflow<Operator, _impl::polarity::negative>{}(lhs, rhs)
-                            ? _impl::overflow_operator<Operator, OverflowTag, _impl::polarity::negative>{}(lhs, rhs)
+                            ? _impl::overflow_operator<
+                                    Operator,
+                                    _impl::common_overflow_tag_t<LhsTag, RhsTag>, _impl::polarity::negative>{}(lhs, rhs)
                             : Operator{}(lhs, rhs);
         }
     };
 
-    template<class OverflowTag, class Operator, typename Lhs, typename Rhs>
-    struct shift_operator<OverflowTag, Operator, Lhs, Rhs,
-            _impl::enable_if_t<_impl::is_overflow_tag<OverflowTag>::value>> {
+    template<class Operator, class LhsTag, class RhsTag, typename Lhs, typename Rhs>
+    struct shift_operator<Operator, LhsTag, RhsTag, Lhs, Rhs,
+            _impl::enable_if_t<_impl::is_overflow_tag<LhsTag>::value&&_impl::is_overflow_tag<RhsTag>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         -> _impl::op_result<Operator, Lhs, Rhs>
         {
             return _impl::is_overflow<Operator, _impl::polarity::positive>{}(lhs, rhs)
-                    ? _impl::overflow_operator<Operator, OverflowTag, _impl::polarity::positive>{}(lhs, rhs)
+                    ? _impl::overflow_operator<
+                            Operator,
+                            _impl::common_overflow_tag_t<LhsTag, RhsTag>, _impl::polarity::positive>{}(lhs, rhs)
                     : _impl::is_overflow<Operator, _impl::polarity::negative>{}(lhs, rhs)
-                            ? _impl::overflow_operator<Operator, OverflowTag, _impl::polarity::negative>{}(lhs, rhs)
+                            ? _impl::overflow_operator<
+                                    Operator,
+                                    _impl::common_overflow_tag_t<LhsTag, RhsTag>, _impl::polarity::negative>{}(lhs, rhs)
                             : Operator{}(lhs, rhs);
         }
     };
 
-    template<class OverflowTag, class Operator, typename Rhs>
-    struct pre_operator<OverflowTag, Operator, Rhs,
+    template<class Operator, class OverflowTag, typename Rhs>
+    struct pre_operator<Operator, OverflowTag, Rhs,
             _impl::enable_if_t<_impl::is_overflow_tag<OverflowTag>::value>> {
         constexpr auto operator()(Rhs& rhs) const
         -> Rhs
         {
             return compound_assignment_operator<
-                    OverflowTag, typename _impl::pre_to_assign<Operator>::type,
+                    typename _impl::pre_to_assign<Operator>::type,
+                    OverflowTag, OverflowTag,
                     Rhs, int>{}(rhs, 1);
         }
     };
 
-    template<class OverflowTag, class Operator, typename Rhs>
-    struct post_operator<OverflowTag, Operator, Rhs,
+    template<class Operator, class OverflowTag, typename Rhs>
+    struct post_operator<Operator, OverflowTag, Rhs,
             _impl::enable_if_t<_impl::is_overflow_tag<OverflowTag>::value>> {
         CNL_RELAXED_CONSTEXPR auto operator()(Rhs& rhs) const
         -> Rhs
         {
             auto copy = rhs;
             compound_assignment_operator<
-                    OverflowTag, typename _impl::post_to_assign<Operator>::type,
+                    typename _impl::post_to_assign<Operator>::type, 
+                    OverflowTag, OverflowTag,
                     Rhs, int>{}(rhs, 1);
             return copy;
         }
