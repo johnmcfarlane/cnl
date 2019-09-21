@@ -662,7 +662,8 @@ namespace test_arithmetic {
     static_assert(
             identical(
                     cnl::binary_operator<
-                            cnl::_impl::native_tag, cnl::_impl::subtract_op,
+                            cnl::_impl::subtract_op,
+                            cnl::_impl::native_tag, cnl::_impl::native_tag,
                             scaled_integer<int32>, cnl::constant<369>>()(
                                     scaled_integer<int32>{999}, cnl::constant<369>{}),
                                     scaled_integer<test_int, cnl::power<0>>{630}),
@@ -958,8 +959,8 @@ namespace test_shift_operator_right {
     constexpr auto rhs{test_int{2}};
     constexpr auto op{
             cnl::shift_operator<
-                    cnl::_impl::native_tag,
                     cnl::_impl::shift_right_op,
+                    cnl::_impl::native_tag, cnl::_impl::native_tag,
                     cnl::scaled_integer<test_int, cnl::power<-28> >,
                     test_int>{}
     };
@@ -977,8 +978,8 @@ namespace test_shift_operator_left {
     constexpr auto rhs{scaled_integer<>{1}};
     constexpr auto op{
             cnl::shift_operator<
-                    cnl::_impl::native_tag,
                     cnl::_impl::shift_left_op,
+                    cnl::_impl::native_tag, cnl::_impl::native_tag,
                     scaled_integer<uint8, cnl::power<-4>>,
                     scaled_integer<>>{}
     };

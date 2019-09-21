@@ -39,7 +39,8 @@ namespace cnl {
             -> _impl::number<_impl::op_result<_impl::shift_left_op, LhsRep, Rhs>, LhsOverflowTag>
     {
         return _impl::from_rep<_impl::number<_impl::op_result<_impl::shift_left_op, LhsRep, Rhs>, LhsOverflowTag>>(
-                binary_operator<LhsOverflowTag, _impl::shift_left_op, LhsRep, Rhs>{}(_impl::to_rep(lhs), rhs));
+                binary_operator<_impl::shift_left_op, LhsOverflowTag, LhsOverflowTag, LhsRep, Rhs>{}(
+                        _impl::to_rep(lhs), rhs));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
