@@ -48,7 +48,7 @@ namespace cnl {
 
         // cnl::_impl::to_chars_natural
         template<class Integer>
-        char* to_chars_natural(char* const ptr, char* const last, Integer const& value)
+        char* to_chars_natural(char* ptr, char* last, Integer const& value)
         {
             auto const quotient = value/10;
 

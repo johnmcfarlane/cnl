@@ -7,6 +7,8 @@
 #if !defined(CNL_IMPL_NUMBER_TYPE_H)
 #define CNL_IMPL_NUMBER_TYPE_H
 
+#include <utility>
+
 #include "../num_traits/from_value.h"
 #include "../operators/generic.h"
 #include "../operators/native_tag.h"
@@ -14,6 +16,7 @@
 #include "../type_traits/enable_if.h"
 #include "can_convert_tag_family.h"
 #include "is_number.h"
+#include "tag.h"
 #include "to_rep.h"
 
 /// compositional numeric library
@@ -43,10 +46,10 @@ namespace cnl {
             }
 
             /// constructor taking an unrelated _impl::number type
-            template<typename RhsRep, class RhsTag,
-                    enable_if_t<!can_convert_tag_family<Tag, RhsTag>::value, int> = 0>
+            template<typename Number,
+                    enable_if_t<is_number<Number>::value&&!can_convert_tag_family<Tag, tag_t<Number>>::value, int> = 0>
             // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
-            constexpr number(number<RhsRep, RhsTag> const& i)
+            constexpr number(Number const& i)
                     : _rep(convert<Tag, _impl::native_tag, Rep>(i))
             {
             }

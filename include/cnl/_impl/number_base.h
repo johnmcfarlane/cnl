@@ -133,45 +133,6 @@ namespace cnl {
         }
     };
 
-    namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::shift_operator
-
-#if defined(CNL_OVERLOAD_RESOLUTION_HACK)
-        template<typename Lhs, typename Rhs>
-        struct excluded_from_specialization : std::false_type {
-        };
-#endif
-    }
-
-    template<class Operator, class Lhs, class Rhs>
-    struct shift_operator<
-            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<
-                    _impl::is_derived_from_number_base<Lhs>::value&&!_impl::is_same_wrapper<Lhs, Rhs>::value
-#if defined(CNL_OVERLOAD_RESOLUTION_HACK)
-            &&!_impl::excluded_from_specialization<Lhs, Rhs>::value
-#endif
-    >> {
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(_impl::from_rep<Lhs>(Operator()(_impl::to_rep(lhs), rhs)))
-        {
-            return _impl::from_rep<Lhs>(Operator()(_impl::to_rep(lhs), rhs));
-        }
-    };
-
-    template<class Operator, class Lhs, class Rhs>
-    struct shift_operator<
-            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<
-                    _impl::is_derived_from_number_base<Lhs>::value&&_impl::is_same_wrapper<Lhs, Rhs>::value>> {
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(_impl::from_rep<Lhs>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs))))
-        {
-            return _impl::from_rep<Lhs>(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)));
-        }
-    };
-
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::_impl::comparison_operator
 

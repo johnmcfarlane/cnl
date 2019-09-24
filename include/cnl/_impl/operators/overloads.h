@@ -13,13 +13,14 @@
 #include "../../limits.h"
 #include "../type_traits/enable_if.h"
 #include "generic.h"
-#include "native_tag.h"
 
 #include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
+        struct native_tag;
+
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::enable_unary_t
 
@@ -29,7 +30,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::enable_binary_t
 
-        template<class LhsOperand, class RhsOperand>
+        template<class LhsOperand, class RhsOperand, class Enable = void>
         struct enable_binary;
 
         template<class LhsOperand, int LhsSize, class RhsOperand>
@@ -43,10 +44,12 @@ namespace cnl {
         };
 
         template<class LhsOperand, class RhsOperand>
-        struct enable_binary
+        struct enable_binary<LhsOperand, RhsOperand>
                 : std::integral_constant<
                         bool,
-                        (numeric_limits<LhsOperand>::is_specialized && numeric_limits<RhsOperand>::is_specialized)
+                        ((numeric_limits<LhsOperand>::is_specialized && numeric_limits<RhsOperand>::is_specialized)
+                                || (_impl::wants_generic_ops<LhsOperand>::value
+                                        && _impl::wants_generic_ops<RhsOperand>::value))
                                 && (_impl::wants_generic_ops<LhsOperand>::value
                                         || _impl::wants_generic_ops<RhsOperand>::value)> {
         };

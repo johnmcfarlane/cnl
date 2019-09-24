@@ -13,20 +13,21 @@
 #include "to_rep.h"
 
 namespace cnl {
-    template<class Operator, typename Rep, class Tag>
-    struct pre_operator<Operator, _impl::native_tag, _impl::number<Rep, Tag>> {
-        CNL_RELAXED_CONSTEXPR _impl::number<Rep, Tag>& operator()(_impl::number<Rep, Tag>& rhs) const
+    template<class Operator, class Number>
+    struct pre_operator<Operator, _impl::native_tag, Number, _impl::enable_if_t<_impl::is_number<Number>::value>> {
+        CNL_RELAXED_CONSTEXPR Number& operator()(Number& rhs) const
         {
-            pre_operator<Operator, Tag, Rep>{}(_impl::to_rep(rhs));
+            pre_operator<Operator, _impl::tag_t<Number>, _impl::rep_t<Number>>{}(_impl::to_rep(rhs));
             return rhs;
         }
     };
 
-    template<class Operator, typename Rep, class Tag>
-    struct post_operator<Operator, _impl::native_tag, _impl::number<Rep, Tag>> {
-        CNL_RELAXED_CONSTEXPR _impl::number<Rep, Tag> operator()(_impl::number<Rep, Tag>& lhs) const
+    template<class Operator, class Number>
+    struct post_operator<Operator, _impl::native_tag, Number, _impl::enable_if_t<_impl::is_number<Number>::value>> {
+        CNL_RELAXED_CONSTEXPR Number operator()(Number& lhs) const
         {
-            return post_operator<Operator, Tag, Rep>{}(_impl::to_rep(lhs));
+            return _impl::from_rep<Number>(post_operator<Operator, _impl::tag_t<Number>, _impl::rep_t<Number>>{}(
+                    _impl::to_rep(lhs)));
         }
     };
 }

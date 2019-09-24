@@ -221,7 +221,20 @@ namespace cnl {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const -> decltype(lhs += rhs)
             {
+#if defined(__GNUC__)
+// GCC warns against short+=short
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#elif defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable: 4244)
+#endif
                 return lhs += rhs;
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(pop)
+#endif
             }
         };
 
@@ -231,7 +244,20 @@ namespace cnl {
             template<class Lhs, class Rhs>
             constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const -> decltype(lhs -= rhs)
             {
+#if defined(__GNUC__)
+// GCC warns against short-=short
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#elif defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable: 4244)
+#endif
                 return lhs -= rhs;
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(pop)
+#endif
             }
         };
 

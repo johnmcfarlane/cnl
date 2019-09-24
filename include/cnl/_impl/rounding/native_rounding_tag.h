@@ -22,9 +22,7 @@ namespace cnl {
     /// \sa cnl::rounding_integer,
     /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
     /// cnl::nearest_rounding_tag
-    struct native_rounding_tag : public _impl::native_tag {
-        native_rounding_tag() = default;
-        native_rounding_tag(native_tag) {}  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
+    struct native_rounding_tag : _impl::homogeneous_operator_tag_base {
     };
 
     namespace _impl {
@@ -48,8 +46,8 @@ namespace cnl {
             : binary_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
     };
 
-    template<class Operator, typename Lhs, typename Rhs>
-    struct shift_operator<Operator, native_rounding_tag, native_rounding_tag, Lhs, Rhs>
+    template<class Operator, class RhsTag, typename Lhs, typename Rhs>
+    struct shift_operator<Operator, native_rounding_tag, RhsTag, Lhs, Rhs>
             : shift_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
     };
 
