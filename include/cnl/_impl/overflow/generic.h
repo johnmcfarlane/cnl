@@ -145,7 +145,7 @@ namespace cnl {
 
     template<class Operator, class LhsTag, class RhsTag, typename Lhs, typename Rhs>
     struct shift_operator<Operator, LhsTag, RhsTag, Lhs, Rhs,
-            _impl::enable_if_t<_impl::is_overflow_tag<LhsTag>::value&&_impl::is_overflow_tag<RhsTag>::value>> {
+            _impl::enable_if_t<_impl::is_overflow_tag<LhsTag>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         -> _impl::op_result<Operator, Lhs, Rhs>
         {

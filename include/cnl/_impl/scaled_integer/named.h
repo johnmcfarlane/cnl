@@ -12,7 +12,10 @@
 
 #include "../../fraction.h"
 #include "../common.h"
-#include "../scaled/convert_operator.h"
+#include "../num_traits/rep.h"
+#include "../num_traits/tag.h"
+#include "../scaled/power.h"
+#include "../type_traits/enable_if.h"
 
 /// compositional numeric library
 namespace cnl {

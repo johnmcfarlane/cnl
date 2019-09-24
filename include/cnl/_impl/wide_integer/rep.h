@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_REP_H)
 #define CNL_IMPL_WIDE_INTEGER_REP_H
 
+#include "../common.h"
 #include "../duplex_integer/instantiate_duplex_integer.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/max_digits.h"

@@ -576,6 +576,15 @@ namespace {
         using namespace cnl::literals;
 
         // by int
+        static_assert(identical(
+                elastic_integer<5+34, unsigned>{0b11001110101011101001LL << 34},
+                cnl::shift_operator<
+                        cnl::_impl::shift_left_op,
+                        cnl::_impl::native_tag, cnl::_impl::native_tag,
+                        elastic_integer<39, unsigned>, int>{}(
+                                elastic_integer<5+34, unsigned>{0b11001110101011101001},
+                                34)),
+                        "shift_left test failed");
         static_assert(identical(elastic_integer<9>{14} << 4, elastic_integer<9>{14 << 4}), "shift_left test failed");
 #if defined(__cpp_binary_literals)
         static_assert(identical(

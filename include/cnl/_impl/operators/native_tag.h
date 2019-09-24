@@ -11,6 +11,7 @@
 #include "../type_traits/is_integral.h"
 #include "../type_traits/remove_signedness.h"
 #include "generic.h"
+#include "homogeneous_operator_tag_base.h"
 #include "operators.h"
 
 #include <type_traits>
@@ -19,7 +20,7 @@
 namespace cnl {
     namespace _impl {
         // match the behavior of fundamental arithmetic types
-        struct native_tag {
+        struct native_tag : homogeneous_operator_tag_base {
             using identity = native_tag;
         };
 
@@ -54,6 +55,16 @@ namespace cnl {
             Operator,
             _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<_impl::has_native_operators<Lhs>::value && _impl::has_native_operators<Rhs>::value>>
+        : Operator {
+    };
+
+    template<class Operator, typename Lhs, typename Rhs>
+    struct shift_operator<
+            Operator,
+            _impl::native_tag, _impl::native_tag, Lhs, Rhs,
+            _impl::enable_if_t<
+                    _impl::has_native_operators<Lhs>::value
+                    && _impl::has_native_operators<Rhs>::value>>
         : Operator {
     };
 }

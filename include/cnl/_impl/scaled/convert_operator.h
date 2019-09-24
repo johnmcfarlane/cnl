@@ -10,10 +10,10 @@
 #include "../../fraction.h"
 #include "../num_traits/fixed_width_scale.h"
 #include "../num_traits/scale.h"
-#include "../operators/is_same_tag_family.h"
 #include "../operators/native_tag.h"
 #include "../power_value.h"
 #include "../scaled_integer/declaration.h"
+#include "is_same_tag_family.h"
 #include "power.h"
 
 /// compositional numeric library

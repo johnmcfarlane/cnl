@@ -188,19 +188,6 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// CNL_OVERLOAD_RESOLUTION_HACK
-
-#if defined(CNL_OVERLOAD_RESOLUTION_HACK)
-#error CNL_OVERLOAD_RESOLUTION_HACK already defined
-#endif
-
-#if defined(__GNUG__) && !defined(__clang__) && (__GNUG__ < 9)
-// older versions of GCC seem to have difficulty resolving overloads
-// where non-type template parameters are involved
-#define CNL_OVERLOAD_RESOLUTION_HACK
-#endif
-
-////////////////////////////////////////////////////////////////////////////////
 // CNL_NODISCARD
 
 #if defined(CNL_NODISCARD)

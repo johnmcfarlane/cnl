@@ -424,6 +424,24 @@ namespace test_plus {
 
 namespace test_shift_left {
     static_assert(
+            identical(
+                    cnl::shift_operator<
+                            cnl::_impl::shift_left_op,
+                            cnl::saturated_overflow_tag, cnl::_impl::native_tag,
+                            std::uint8_t, unsigned>{}(
+                                    255, 30U),
+                    cnl::numeric_limits<int>::max()),
+            "");
+    static_assert(
+            identical(
+                    cnl::shift_operator<
+                            cnl::_impl::shift_left_op,
+                            cnl::_impl::native_tag, cnl::_impl::native_tag,
+                            saturated_integer<std::uint8_t>, unsigned>{}(
+                                    saturated_integer<std::uint8_t>(255), 30U),
+                    cnl::numeric_limits<saturated_integer<int>>::max()),
+            "");
+    static_assert(
             identical(saturated_integer<std::uint8_t>(255) << 30U, cnl::numeric_limits<saturated_integer<int>>::max()),
             "");
     static_assert(identical(throwing_integer<std::int8_t>(1) << 10, throwing_integer<int>(1024)), "");
