@@ -32,18 +32,6 @@ namespace cnl {
     using overflow_integer = _impl::number<Rep, Tag>;
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::operator<<(cnl::_impl::number, ...)
-
-    template<class LhsRep, class LhsOverflowTag, typename Rhs>
-    CNL_NODISCARD constexpr auto operator<<(_impl::number<LhsRep, LhsOverflowTag> const& lhs, Rhs const& rhs)
-            -> _impl::number<_impl::op_result<_impl::shift_left_op, LhsRep, Rhs>, LhsOverflowTag>
-    {
-        return _impl::from_rep<_impl::number<_impl::op_result<_impl::shift_left_op, LhsRep, Rhs>, LhsOverflowTag>>(
-                binary_operator<_impl::shift_left_op, LhsOverflowTag, LhsOverflowTag, LhsRep, Rhs>{}(
-                        _impl::to_rep(lhs), rhs));
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
     // cnl::scale<..., overflow_integer<>>
 
     template<int Digits, int Radix, typename Rep, class Tag>
