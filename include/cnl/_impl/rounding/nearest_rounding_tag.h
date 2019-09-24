@@ -24,7 +24,7 @@ namespace cnl {
     /// \sa cnl::rounding_integer,
     /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
     /// cnl::native_rounding_tag
-    struct nearest_rounding_tag {
+    struct nearest_rounding_tag : _impl::homogeneous_operator_tag_base {
     };
 
     namespace _impl {
@@ -54,8 +54,8 @@ namespace cnl {
         }
     };
 
-    template<class Operator, typename Lhs, typename Rhs>
-    struct shift_operator<Operator, nearest_rounding_tag, nearest_rounding_tag, Lhs, Rhs>
+    template<class Operator, class RhsTag, typename Lhs, typename Rhs>
+    struct shift_operator<Operator, nearest_rounding_tag, RhsTag, Lhs, Rhs>
             : Operator {
     };
 

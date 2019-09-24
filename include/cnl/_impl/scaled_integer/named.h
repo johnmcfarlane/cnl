@@ -11,7 +11,10 @@
 #define CNL_IMPL_SCALED_INTEGER_NAMED_H 1
 
 #include "../common.h"
-#include "../scaled/convert_operator.h"
+#include "../num_traits/rep.h"
+#include "../num_traits/tag.h"
+#include "../scaled/power.h"
+#include "../type_traits/enable_if.h"
 #include "../../fraction.h"
 
 /// compositional numeric library

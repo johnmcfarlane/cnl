@@ -100,6 +100,15 @@ namespace {
         static_assert(identical(
                 wide_elastic_integer<3>{1},
                 wide_elastic_integer<3>{7} >> 2), "");
+        static_assert(
+                identical(
+                        wide_elastic_integer<4>{1},
+                        cnl::shift_operator<
+                                cnl::_impl::shift_right_op,
+                                cnl::_impl::native_tag, cnl::_impl::native_tag,
+                                wide_elastic_integer<4>, cnl::elastic_integer<2>>{}(
+                                        wide_elastic_integer<4>{12}, cnl::elastic_integer<2>{3})),
+                "");
         static_assert(identical(
                 wide_elastic_integer<4>{1},
                 wide_elastic_integer<4>{12} >> cnl::elastic_integer<2>{3}),

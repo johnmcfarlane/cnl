@@ -640,41 +640,6 @@ namespace test_arithmetic {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// multiplication
-
-static_assert(cnl::numeric_limits<uint8>::max()/5==51, "");
-static_assert(cnl::numeric_limits<uint8>::max()/3==85, "");
-
-namespace test_divide {
-#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
-    static_assert(
-            identical(
-                    fixed_point<quot_digits_t<test_int, int16>, -29>{1./127},
-                    cnl::quotient(fixed_point<test_int, -14>{1}, int16{127})),
-            "cnl::quotient test failed");
-    static_assert(identical(cnl::quotient(int32(-999), int32(3)), fixed_point<quot_digits_t<>, -31>{-333LL}),
-            "cnl::fixed_point test failed");
-    static_assert(identical(cnl::quotient(fixed_point<uint32, 10>{10240}, uint32{3u}), fixed_point<uint64,
-            -22>{3413.3333333}), "cnl::fixed_point division test failed");
-    static_assert(
-            identical(
-                    fixed_point<quot_digits_t<test_int, uint8>, -6>{40},
-                    cnl::quotient(test_int{10}, fixed_point<uint8, -2>{0.25})),
-            "cnl::fixed_point division test failed");
-#if defined(CNL_INT128_ENABLED)
-    static_assert(identical(
-            cnl::quotient(fixed_point<uint64, 0>{0xFFFFFFFE00000001LL}, fixed_point<uint64, -32>{0xffffffffULL}),
-            fixed_point<uint128, -32>{0xffffffffULL}), "cnl::fixed_point test failed");
-#endif
-    static_assert(identical(cnl::quotient(fixed_point<uint32, 0>{0xFFFE0001LL}, fixed_point<uint32, 0>{0xffff}),
-            fixed_point<uint64, -32>{0xffffLL}), "cnl::fixed_point test failed");
-    static_assert(identical(
-            fixed_point<cnl::set_digits_t<int32, cnl::digits<int32>::value+2>, -18>{321LL},
-            cnl::quotient(cnl::fixed_point<int32, -16>{963}, cnl::constant<3>{})), "cnl::fixed_point test failed");
-#endif
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // comparison
 
 // These tests pass but produce a signed/unsigned comparison warning as a side effect.
@@ -929,6 +894,41 @@ namespace test_bitwise_xor {
             fixed_point<unsigned, -16>{48.5},
             fixed_point<unsigned, -12>{125.125} ^ fixed_point<unsigned, -16>{77.625}),
                   "operator^(fixed_point<>,fixed_point<>)");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// quotient
+
+static_assert(cnl::numeric_limits<uint8>::max()/5==51, "");
+static_assert(cnl::numeric_limits<uint8>::max()/3==85, "");
+
+namespace test_quotient {
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
+    static_assert(
+            identical(
+                    fixed_point<quot_digits_t<test_int, int16>, -29>{1./127},
+                    cnl::quotient(fixed_point<test_int, -14>{1}, int16{127})),
+            "cnl::quotient test failed");
+    static_assert(identical(cnl::quotient(int32(-999), int32(3)), fixed_point<quot_digits_t<>, -31>{-333LL}),
+            "cnl::fixed_point test failed");
+    static_assert(identical(cnl::quotient(fixed_point<uint32, 10>{10240}, uint32{3u}), fixed_point<uint64,
+            -22>{3413.3333333}), "cnl::fixed_point division test failed");
+    static_assert(
+            identical(
+                    fixed_point<quot_digits_t<test_int, uint8>, -6>{40},
+                    cnl::quotient(test_int{10}, fixed_point<uint8, -2>{0.25})),
+            "cnl::fixed_point division test failed");
+#if defined(CNL_INT128_ENABLED)
+    static_assert(identical(
+            cnl::quotient(fixed_point<uint64, 0>{0xFFFFFFFE00000001LL}, fixed_point<uint64, -32>{0xffffffffULL}),
+            fixed_point<uint128, -32>{0xffffffffULL}), "cnl::fixed_point test failed");
+#endif
+    static_assert(identical(cnl::quotient(fixed_point<uint32, 0>{0xFFFE0001LL}, fixed_point<uint32, 0>{0xffff}),
+            fixed_point<uint64, -32>{0xffffLL}), "cnl::fixed_point test failed");
+    static_assert(identical(
+            fixed_point<cnl::set_digits_t<int32, cnl::digits<int32>::value+2>, -18>{321LL},
+            cnl::quotient(cnl::fixed_point<int32, -16>{963}, cnl::constant<3>{})), "cnl::fixed_point test failed");
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////

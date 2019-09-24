@@ -10,7 +10,11 @@
 #include "is_number.h"
 #include "make_number.h"
 #include "operator_helpers.h"
+#include "../num_traits/set_rep.h"
+#include "../num_traits/set_tag.h"
 #include "../operators/generic.h"
+#include "../operators/is_same_tag_family.h"
+#include "../operators/operators.h"
 #include "../operators/overloads.h"
 #include "../operators/native_tag.h"
 #include "../type_traits/enable_if.h"
@@ -67,20 +71,30 @@ namespace cnl {
         }
     };
 
-    template<class Operator, typename LhsRep, typename RhsRep, class Tag>
+    template<class Operator, typename Lhs, typename Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag,
-            _impl::number<LhsRep, Tag>, _impl::number<RhsRep, Tag>> {
-        using _rep_operator = binary_operator<Operator, Tag, Tag, LhsRep, RhsRep>;
-        using _result_rep = decltype(_rep_operator{}(std::declval<LhsRep>(), std::declval<RhsRep>()));
-        using _result_archetype = _impl::number<_result_rep, Tag>;
-        CNL_NODISCARD constexpr auto operator()(
-                _impl::number<LhsRep, Tag> const& lhs, _impl::number<RhsRep, Tag> const& rhs) const
-        -> decltype(_impl::from_rep<_result_archetype>(
-                _rep_operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs))))
+            Lhs, Rhs,
+            _impl::enable_if_t<_impl::is_number<Lhs>::value
+                    &&_impl::is_number<Rhs>::value
+                    &&_impl::is_same_tag_family<_impl::tag_t<Lhs>, _impl::tag_t<Rhs>>::value>> {
+        using _rep_operator = binary_operator<
+                Operator,
+                _impl::tag_t<Lhs>, _impl::tag_t<Rhs>,
+                _impl::rep_t<Lhs>, _impl::rep_t<Rhs>>;
+        using _result_rep = decltype(_rep_operator{}(_impl::to_rep(std::declval<Lhs>()), _impl::to_rep(std::declval<Rhs>())));
+        using _result_tag = _impl::op_result<Operator, _impl::tag_t<Lhs>, _impl::tag_t<Rhs>>;
+
+        // test the facets of the hyper-diamond
+        using _result_lhs = _impl::set_rep_t<_impl::set_tag_t<Lhs, _result_tag>, _result_rep>;
+        using _result_rhs = _impl::set_tag_t<_impl::set_rep_t<Rhs, _result_rep>, _result_tag>;
+        static_assert(std::is_same<_result_lhs, _result_rhs>::value, "don't know how to reconcile Lhs and Rhs");
+
+        using _result_archetype = typename std::common_type<_result_lhs, _result_rhs>::type;
+        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(_impl::from_rep<_result_archetype>(_rep_operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs))))
         {
-            return _impl::from_rep<_result_archetype>(
-                    _rep_operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs)));
+            return _impl::from_rep<_result_archetype>(_rep_operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs)));
         }
     };
 }

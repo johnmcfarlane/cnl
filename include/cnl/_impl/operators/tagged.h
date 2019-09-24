@@ -39,6 +39,15 @@ namespace cnl {
         return convert_operator<DestTag, SrcTag, Dest, decltype(Value)>{}(src);
     }
 
+    namespace _impl {
+        template<class Operator, class Tag, typename Lhs, typename Rhs>
+        CNL_NODISCARD constexpr auto binary_operate(Lhs const& lhs, Rhs const& rhs)
+        -> decltype(binary_operator<Operator, Tag, Tag, Lhs, Rhs>{}(lhs, rhs))
+        {
+            return binary_operator<Operator, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
+        }
+    }
+
     /// \brief adds two values together
     /// \headerfile cnl/all.h
     ///

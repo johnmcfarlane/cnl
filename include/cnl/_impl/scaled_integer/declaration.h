@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_DECLARATION_H)
 #define CNL_IMPL_SCALED_INTEGER_DECLARATION_H 1
 
-#include "../scaled/power.h"
+#include "../scaled/declaration.h"
 #include "../../limits.h"
 
 /// compositional numeric library

@@ -66,11 +66,24 @@ namespace cnl {
         using _common_type = typename std::common_type<LhsNarrowest, RhsNarrowest>::type;
         using _narrowest = _impl::set_signedness_t<_common_type, _are_signed>;
 
-        using _result = _impl::wide_integer<_impl::max(LhsDigits, RhsDigits), _narrowest>;
+        using _result = _impl::wide_integer<_max_digits, _narrowest>;
 
         CNL_NODISCARD constexpr auto operator()(_lhs const& lhs, _rhs const& rhs) const -> _result
         {
             return Operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs));
+        }
+    };
+
+    template<class Operator, int LhsDigits, typename LhsNarrowest, class Rhs>
+    struct shift_operator<
+            Operator,
+            _impl::native_tag, _impl::native_tag,
+            _impl::wide_integer<LhsDigits, LhsNarrowest>, Rhs> {
+        using _lhs = _impl::wide_integer<LhsDigits, LhsNarrowest>;
+        CNL_NODISCARD constexpr auto operator()(_lhs const& lhs, Rhs const& rhs) const
+        -> _lhs
+        {
+            return Operator{}(_impl::to_rep(lhs), rhs);
         }
     };
 

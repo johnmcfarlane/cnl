@@ -15,7 +15,7 @@
 namespace cnl {
     namespace _impl {
         template<class Tag1, class Tag2, class Enabled=void>
-        struct is_same_tag_family : std::false_type {
+        struct is_same_tag_family : std::is_same<Tag1, Tag2> {
         };
     }
 }

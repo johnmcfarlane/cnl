@@ -16,7 +16,6 @@
 #include "../num_traits/digits.h"
 #include "../num_traits/set_digits.h"
 #include "../number.h"
-#include "../scaled/convert_operator.h"
 #include "../scaled/power.h"
 #include "../used_digits.h"
 #include "../../fraction.h"

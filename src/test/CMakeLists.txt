@@ -48,6 +48,7 @@ set(test_sources
         fixed_point/extras.cpp
         scaled_integer/extras.cpp
         overflow/overflow_integer.cpp
+        overflow/overflow_tag.cpp
         rounding/rounding_integer.cpp
         _impl/duplex_integer/digits.cpp
         _impl/duplex_integer/numeric_limits.cpp

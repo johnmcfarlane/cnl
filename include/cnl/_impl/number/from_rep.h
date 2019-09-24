@@ -9,6 +9,7 @@
 
 #include "definition.h"
 #include "../num_traits/from_rep.h"
+#include "cnl/_impl/operators/homogeneous_operator_tag_base.h"
 #include "../operators/is_same_tag_family.h"
 #include "../type_traits/enable_if.h"
 
@@ -21,7 +22,7 @@ namespace cnl {
     template<typename NumberRep, class NumberTag, typename Rep>
     struct from_rep<
             _impl::number<NumberRep, NumberTag>, Rep,
-            _impl::enable_if_t<!_impl::is_number<Rep>::value>> {
+            _impl::enable_if_t<_impl::is_homogeneous_operator_tag<NumberTag>::value && !_impl::is_number<Rep>::value>> {
         CNL_NODISCARD constexpr auto operator()(Rep const& rep) const
         -> _impl::number<Rep, NumberTag>
         {

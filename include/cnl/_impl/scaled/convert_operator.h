@@ -7,12 +7,13 @@
 #ifndef CNL_IMPL_SCALED_CONVERT_OPERATOR_H
 #define CNL_IMPL_SCALED_CONVERT_OPERATOR_H
 
+#include "is_same_tag_family.h"
 #include "power.h"
 #include "../num_traits/fixed_width_scale.h"
 #include "../num_traits/scale.h"
-#include "../operators/is_same_tag_family.h"
 #include "../operators/native_tag.h"
 #include "../power_value.h"
+#include "../scaled_integer/declaration.h"
 #include "../../fraction.h"
 
 /// compositional numeric library

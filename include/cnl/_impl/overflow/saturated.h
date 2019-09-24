@@ -23,7 +23,7 @@ namespace cnl {
     /// \sa cnl::overflow_integer,
     /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
     /// cnl::native_overflow_tag, cnl::throwing_overflow_tag, cnl::trapping_overflow_tag, cnl::undefined_overflow_tag
-    struct saturated_overflow_tag {
+    struct saturated_overflow_tag : _impl::homogeneous_operator_tag_base {
         template<
                 typename ThatOverflowTag,
                 _impl::enable_if_t<_impl::is_overflow_tag<ThatOverflowTag>::value, int> Dummy>

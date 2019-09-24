@@ -665,58 +665,6 @@ namespace test_arithmetic {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// multiplication
-
-static_assert(cnl::numeric_limits<uint8>::max()/5==51, "");
-static_assert(cnl::numeric_limits<uint8>::max()/3==85, "");
-
-namespace test_divide {
-#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
-    static_assert(
-            identical(
-                    scaled_integer<quot_digits_t<test_int, int16>, cnl::power<-29>>{1./127},
-                    cnl::quotient(scaled_integer<test_int, cnl::power<-14>>{1}, int16{127})),
-            "cnl::quotient test failed");
-    static_assert(
-            identical(
-                    cnl::quotient(int32(-999), int32(3)),
-                    scaled_integer<quot_digits_t<>, cnl::power<-31>>{-333LL}),
-            "cnl::scaled_integer test failed");
-    static_assert(
-            identical(
-                    cnl::quotient(scaled_integer<uint32, cnl::power<10>>{10240}, uint32{3u}),
-                    scaled_integer<uint64, cnl::power<-22>>{3413.3333333}),
-            "cnl::scaled_integer division test failed");
-    static_assert(
-            identical(
-                    scaled_integer<quot_digits_t<test_int, uint8>, cnl::power<-6>>{40},
-                    cnl::quotient(test_int{10}, scaled_integer<uint8, cnl::power<-2>>{0.25})),
-            "cnl::scaled_integer division test failed");
-#if defined(CNL_INT128_ENABLED)
-    static_assert(
-            identical(
-                    cnl::quotient(
-                            scaled_integer<uint64, cnl::power<0>>{0xFFFFFFFE00000001LL},
-                            scaled_integer<uint64, cnl::power<-32>>{0xffffffffULL}),
-                    scaled_integer<uint128, cnl::power<-32>>{0xffffffffULL}),
-            "cnl::scaled_integer test failed");
-#endif
-    static_assert(
-            identical(
-                    cnl::quotient(
-                            scaled_integer<uint32, cnl::power<0>>{0xFFFE0001LL},
-                            scaled_integer<uint32, cnl::power<0>>{0xffff}),
-                    scaled_integer<uint64, cnl::power<-32>>{0xffffLL}),
-            "cnl::scaled_integer test failed");
-    static_assert(
-            identical(
-                    scaled_integer<cnl::set_digits_t<int32, cnl::digits<int32>::value+2>, cnl::power<-18>>{321LL},
-                    cnl::quotient(cnl::scaled_integer<int32, cnl::power<-16>>{963}, cnl::constant<3>{})),
-            "cnl::scaled_integer test failed");
-#endif
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // comparison
 
 // These tests pass but produce a signed/unsigned comparison warning as a side effect.
@@ -1039,6 +987,58 @@ namespace test_bitwise_xor {
             scaled_integer<test_unsigned, cnl::power<-16>>{48.5},
             scaled_integer<test_unsigned, cnl::power<-12>>{125.125} ^ scaled_integer<test_unsigned, cnl::power<-16>>{77.625}),
                   "operator^(scaled_integer<>,scaled_integer<>)");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// quotient
+
+static_assert(cnl::numeric_limits<uint8>::max()/5==51, "");
+static_assert(cnl::numeric_limits<uint8>::max()/3==85, "");
+
+namespace test_quotient {
+#if !defined(__clang__) || (__clang_major__>3) || (__clang_minor__>8)
+    static_assert(
+            identical(
+                    scaled_integer<quot_digits_t<test_int, int16>, cnl::power<-29>>{1./127},
+                    cnl::quotient(scaled_integer<test_int, cnl::power<-14>>{1}, int16{127})),
+            "cnl::quotient test failed");
+    static_assert(
+            identical(
+                    cnl::quotient(int32(-999), int32(3)),
+                    scaled_integer<quot_digits_t<>, cnl::power<-31>>{-333LL}),
+            "cnl::scaled_integer test failed");
+    static_assert(
+            identical(
+                    cnl::quotient(scaled_integer<uint32, cnl::power<10>>{10240}, uint32{3u}),
+                    scaled_integer<uint64, cnl::power<-22>>{3413.3333333}),
+            "cnl::scaled_integer division test failed");
+    static_assert(
+            identical(
+                    scaled_integer<quot_digits_t<test_int, uint8>, cnl::power<-6>>{40},
+                    cnl::quotient(test_int{10}, scaled_integer<uint8, cnl::power<-2>>{0.25})),
+            "cnl::scaled_integer division test failed");
+#if defined(CNL_INT128_ENABLED)
+    static_assert(
+            identical(
+                    cnl::quotient(
+                            scaled_integer<uint64, cnl::power<0>>{0xFFFFFFFE00000001LL},
+                            scaled_integer<uint64, cnl::power<-32>>{0xffffffffULL}),
+                    scaled_integer<uint128, cnl::power<-32>>{0xffffffffULL}),
+            "cnl::scaled_integer test failed");
+#endif
+    static_assert(
+            identical(
+                    cnl::quotient(
+                            scaled_integer<uint32, cnl::power<0>>{0xFFFE0001LL},
+                            scaled_integer<uint32, cnl::power<0>>{0xffff}),
+                    scaled_integer<uint64, cnl::power<-32>>{0xffffLL}),
+            "cnl::scaled_integer test failed");
+    static_assert(
+            identical(
+                    scaled_integer<cnl::set_digits_t<int32, cnl::digits<int32>::value+2>, cnl::power<-18>>{321LL},
+                    cnl::quotient(cnl::scaled_integer<int32, cnl::power<-16>>{963}, cnl::constant<3>{})),
+            "cnl::scaled_integer test failed");
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////

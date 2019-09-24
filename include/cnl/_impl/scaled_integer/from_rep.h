@@ -8,6 +8,7 @@
 #define CNL_IMPL_SCALED_INTEGER_FROM_REP_H 1
 
 #include "type.h"
+#include "../number/declaration.h"
 #include "../num_traits/from_rep.h"
 
 /// compositional numeric library
@@ -26,6 +27,11 @@ namespace cnl {
         {
             return result_type(r, 0);
         }
+    };
+
+    template<typename ArchetypeRep, int Exponent, int Radix, typename Rep>
+    struct from_rep<_impl::number<ArchetypeRep, power<Exponent, Radix>>, Rep>
+            : from_rep<scaled_integer<ArchetypeRep, power<Exponent, Radix>>, Rep> {
     };
 }
 
