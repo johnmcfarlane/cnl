@@ -203,6 +203,15 @@ add_gtest_dependency(TestPlain)
 add_dependencies(Tests TestPlain)
 
 ######################################################################
+# ClangTidy
+
+find_program(ClangTidy clang-tidy)
+
+if (${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
+    message(STATUS "ClangTidy not found.")
+endif (${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
+
+######################################################################
 # make_test
 
 # given the path to a source file containing gtest tests,
