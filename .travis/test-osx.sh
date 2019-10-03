@@ -20,4 +20,4 @@ then
   conan profile update settings.compiler.libcxx=libstdc++11 default
 fi
 
-.travis/test.sh ${STD} "${GENERATOR}" ${NUM_CPUS} "${PROJECT_SOURCE_DIR}"
+.travis/test.sh ${STD} "${GENERATOR}" ${NUM_CPUS} "${PROJECT_SOURCE_DIR}" ON

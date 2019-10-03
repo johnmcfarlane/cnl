@@ -37,12 +37,11 @@ elseif (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
 
   if (IS_CLANG)
       string(APPEND MISC_FLAGS " -fconstexpr-backtrace-limit=0 -fconstexpr-steps=1000000000")
-      set(CPP20_ENABLED_FLAGS "-std=c++2a")
   else ()
       string(APPEND MISC_FLAGS " -Wno-psabi")
-      set(CPP20_ENABLED_FLAGS "-std=c++2a -fconcepts")
   endif ()
 
+  set(CPP20_ENABLED_FLAGS "-std=c++2a")
   set(CPP17_ENABLED_FLAGS "-std=c++17")
 
   set(EXCEPTION_ENABLED_FLAGS "-fexceptions -frtti")

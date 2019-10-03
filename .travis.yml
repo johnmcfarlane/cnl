@@ -7,60 +7,59 @@ cache: ccache
 matrix:
   include:
     - os: linux
-      env: IMAGE=gcc-9 STD=11 SANITIZE=OFF GENERATOR=Ninja
+      env: IMAGE=gcc-9 STD=11 SANITIZE=OFF GENERATOR=Ninja CLANG_TIDY=ON
     - os: linux
-      env: IMAGE=gcc-9 STD=20 SANITIZE=OFF GENERATOR=Ninja
+      env: IMAGE=gcc-9 STD=20 SANITIZE=OFF GENERATOR=Ninja CLANG_TIDY=OFF
 
     - os: linux
-      env: IMAGE=gcc-8 STD=17 SANITIZE=OFF GENERATOR=Ninja
+      env: IMAGE=gcc-8 STD=17 SANITIZE=OFF GENERATOR=Ninja CLANG_TIDY=ON
 
     - os: linux
-      env: IMAGE=gcc-7 STD=17 SANITIZE=OFF GENERATOR=Ninja
+      env: IMAGE=gcc-7 STD=17 SANITIZE=OFF GENERATOR=Ninja CLANG_TIDY=OFF
 
     - os: osx
       osx_image: xcode8.3
       env: PACKAGE=gcc@7 CC=gcc-7 CXX=g++-7 STD=11 SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
-      env: IMAGE=gcc-6 STD=17 SANITIZE=ON GENERATOR=Ninja
+      env: IMAGE=gcc-6 STD=17 SANITIZE=ON GENERATOR=Ninja CLANG_TIDY=OFF
 
     - os: linux
-      env: IMAGE=gcc-5 STD=11 SANITIZE=ON GENERATOR=Ninja
+      env: IMAGE=gcc-5 STD=11 SANITIZE=ON GENERATOR=Ninja CLANG_TIDY=OFF
     - os: linux
-      env: IMAGE=gcc-5 STD=14 SANITIZE=ON GENERATOR=Ninja
+      env: IMAGE=gcc-5 STD=14 SANITIZE=ON GENERATOR=Ninja CLANG_TIDY=ON
     - os: linux
-      env: IMAGE=gcc-5 STD=17 SANITIZE=ON GENERATOR=Ninja
+      env: IMAGE=gcc-5 STD=17 SANITIZE=ON GENERATOR=Ninja CLANG_TIDY=OFF
 
     - os: osx
       compiler: clang # clang-3.8
       env: CC=clang CXX=clang++ STD=14 SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
-      env: IMAGE=clang-7.0 STD=20 SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: IMAGE=clang-7.0 STD=20 SANITIZE=OFF GENERATOR="Unix Makefiles" CLANG_TIDY=ON
 
     - os: linux
-      env: IMAGE=clang-6.0 STD=20 SANITIZE=OFF GENERATOR=Ninja
+      env: IMAGE=clang-6.0 STD=20 SANITIZE=OFF GENERATOR=Ninja CLANG_TIDY=OFF
 
     - os: linux
-      env: IMAGE=clang-5.0 STD=17 SANITIZE=OFF GENERATOR="Unix Makefiles"
+      env: IMAGE=clang-5.0 STD=17 SANITIZE=OFF GENERATOR="Unix Makefiles" CLANG_TIDY=OFF
     - os: linux
-      env: IMAGE=clang-5.0 STD=20 SANITIZE=OFF GENERATOR=Ninja
+      env: IMAGE=clang-5.0 STD=20 SANITIZE=OFF GENERATOR=Ninja CLANG_TIDY=OFF
 
     - os: osx
       osx_image: xcode9
       env: PACKAGE=gcc6 CC=gcc-6 CXX=g++-6 STD=17 SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
-      env: IMAGE=clang-4.0 STD=14 SANITIZE=OFF GENERATOR=Ninja
+      env: IMAGE=clang-4.0 STD=14 SANITIZE=OFF GENERATOR=Ninja CLANG_TIDY=OFF
 
     - os: linux
-      env: IMAGE=clang-3.9 STD=14 SANITIZE=ON GENERATOR=Ninja
+      env: IMAGE=clang-3.9 STD=14 SANITIZE=ON GENERATOR=Ninja CLANG_TIDY=OFF
 
     - os: linux
-      env: IMAGE=clang-3.8 STD=11 SANITIZE=ON GENERATOR="Unix Makefiles"
+      env: IMAGE=clang-3.8 STD=11 SANITIZE=ON GENERATOR="Unix Makefiles" CLANG_TIDY=OFF
     - os: linux
-      env: IMAGE=clang-3.8 STD=14 SANITIZE=ON GENERATOR=Ninja
-
+      env: IMAGE=clang-3.8 STD=14 SANITIZE=ON GENERATOR=Ninja CLANG_TIDY=OFF
 
 script:
   - .travis/test-${TRAVIS_OS_NAME}.sh

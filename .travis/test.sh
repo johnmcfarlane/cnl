@@ -6,6 +6,7 @@ STD=$1
 GENERATOR=$2
 NUM_CPUS=$3
 PROJECT_SOURCE_DIR=$4
+CLANG_TIDY=$5
 
 cloc "${PROJECT_SOURCE_DIR}"/include
 cloc "${PROJECT_SOURCE_DIR}"/src
@@ -22,6 +23,7 @@ build_and_test () {
   cmake \
     -DCMAKE_BUILD_TYPE="$1" \
     -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
     -DCNL_DEV=ON -DCNL_STD=${STD} \
     -DCNL_EXCEPTIONS=$2 \
     -DCNL_INT128=$3 \
@@ -31,6 +33,11 @@ build_and_test () {
 
   cmake --build . -- -j $NUM_CPUS
   ctest --output-on-failure -j $NUM_CPUS
+
+  if [ $CLANG_TIDY == ON ]
+  then
+    run-clang-tidy -extra-arg=-Wno-unknown-warning-option -j ${NUM_CPUS}
+  fi
 }
 
 ccache --show-stats
