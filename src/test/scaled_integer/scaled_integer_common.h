@@ -587,7 +587,7 @@ static_assert(scaled_integer<int8, cnl::power<-7>>(.5)==.5f, "cnl::scaled_intege
 static_assert(scaled_integer<int8, cnl::power<-7>>(.125f)==.125L, "cnl::scaled_integer test failed");
 static_assert(scaled_integer<int16, cnl::power<-7>>(123.125f)==123.125f, "cnl::scaled_integer test failed");
 static_assert(scaled_integer<int32, cnl::power<-7>>(123.125f)==123.125, "cnl::scaled_integer test failed");
-static_assert(scaled_integer<int64, cnl::power<-7>>(123.125l)==123.125f, "cnl::scaled_integer test failed");
+static_assert(scaled_integer<int64, cnl::power<-7>>(123.125L)==123.125f, "cnl::scaled_integer test failed");
 
 // exponent == 16
 static_assert(scaled_integer<uint8, cnl::power<16>>(test_int{ 65536 }) == 65536.f, "cnl::scaled_integer test failed");
@@ -596,14 +596,14 @@ static_assert(scaled_integer<uint16, cnl::power<16>>(6553.)==0u, "cnl::scaled_in
 #else
 static_assert(scaled_integer<uint16, cnl::power<16>>(6553.)==0, "cnl::scaled_integer test failed");
 #endif
-static_assert((scaled_integer<uint32, cnl::power<16>>(4294967296l))==4294967296.f, "cnl::scaled_integer test failed");
+static_assert((scaled_integer<uint32, cnl::power<16>>(4294967296L))==4294967296.f, "cnl::scaled_integer test failed");
 #if defined(CNL_INT128_ENABLED)
-static_assert((scaled_integer<uint64, cnl::power<16>>(1125895611875328l))==1125895611875328ul, "cnl::scaled_integer test failed");
+static_assert((scaled_integer<uint64, cnl::power<16>>(1125895611875328L))==1125895611875328UL, "cnl::scaled_integer test failed");
 #endif
 
 static_assert(scaled_integer<int8, cnl::power<16>>(-65536)==-65536.f, "cnl::scaled_integer test failed");
 static_assert(scaled_integer<int16, cnl::power<16>>(-6553.)==0, "cnl::scaled_integer test failed");
-static_assert((scaled_integer<int32, cnl::power<16>>(-4294967296l))==-4294967296.f, "cnl::scaled_integer test failed");
+static_assert((scaled_integer<int32, cnl::power<16>>(-4294967296L))==-4294967296.f, "cnl::scaled_integer test failed");
 static_assert((scaled_integer<int64, cnl::power<16>>(-0x800000000000LL))==-0x800000000000LL, "cnl::scaled_integer test failed");
 
 // exponent = 1

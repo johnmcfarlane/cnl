@@ -564,7 +564,7 @@ static_assert(fixed_point<int8, -7>(.5)==.5f, "cnl::fixed_point test failed");
 static_assert(fixed_point<int8, -7>(.125f)==.125L, "cnl::fixed_point test failed");
 static_assert(fixed_point<int16, -7>(123.125f)==123.125f, "cnl::fixed_point test failed");
 static_assert(fixed_point<int32, -7>(123.125f)==123.125, "cnl::fixed_point test failed");
-static_assert(fixed_point<int64, -7>(123.125l)==123.125f, "cnl::fixed_point test failed");
+static_assert(fixed_point<int64, -7>(123.125L)==123.125f, "cnl::fixed_point test failed");
 
 // exponent == 16
 static_assert(fixed_point<uint8, 16>(test_int{ 65536 }) == 65536.f, "cnl::fixed_point test failed");
@@ -573,14 +573,14 @@ static_assert(fixed_point<uint16, 16>(6553.)==0u, "cnl::fixed_point test failed"
 #else
 static_assert(fixed_point<uint16, 16>(6553.)==0, "cnl::fixed_point test failed");
 #endif
-static_assert((fixed_point<uint32, 16>(4294967296l))==4294967296.f, "cnl::fixed_point test failed");
+static_assert((fixed_point<uint32, 16>(4294967296L))==4294967296.f, "cnl::fixed_point test failed");
 #if defined(CNL_INT128_ENABLED)
-static_assert((fixed_point<uint64, 16>(1125895611875328l))==1125895611875328ul, "cnl::fixed_point test failed");
+static_assert((fixed_point<uint64, 16>(1125895611875328L))==1125895611875328UL, "cnl::fixed_point test failed");
 #endif
 
 static_assert(fixed_point<int8, 16>(-65536)==-65536.f, "cnl::fixed_point test failed");
 static_assert(fixed_point<int16, 16>(-6553.)==0, "cnl::fixed_point test failed");
-static_assert((fixed_point<int32, 16>(-4294967296l))==-4294967296.f, "cnl::fixed_point test failed");
+static_assert((fixed_point<int32, 16>(-4294967296L))==-4294967296.f, "cnl::fixed_point test failed");
 static_assert((fixed_point<int64, 16>(-0x800000000000LL))==-0x800000000000LL, "cnl::fixed_point test failed");
 
 // exponent = 1

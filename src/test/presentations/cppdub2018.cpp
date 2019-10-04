@@ -193,10 +193,10 @@ namespace o {
     static_assert(cnl::_impl::identical(scaled_integer<int, power<7>>{128}, z));
 
     constexpr auto a = scaled_integer{0b10000000000000000000000000000000000000000_c};
-    static_assert(cnl::_impl::identical(scaled_integer<int, power<40>>{0b10000000000000000000000000000000000000000l}, a));
+    static_assert(cnl::_impl::identical(scaled_integer<int, power<40>>{0b10000000000000000000000000000000000000000L}, a));
 
     constexpr auto b = scaled_integer{0b11111111111111111111111111111111111111111_c};
-    static_assert(cnl::_impl::identical(scaled_integer<cnl::int64, power<>>{0b11111111111111111111111111111111111111111l}, b));
+    static_assert(cnl::_impl::identical(scaled_integer<cnl::int64, power<>>{0b11111111111111111111111111111111111111111L}, b));
 
     constexpr auto c = elastic_integer{2018_c};
     static_assert(cnl::_impl::identical(elastic_integer<11>{2018}, c));

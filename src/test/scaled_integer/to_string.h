@@ -15,7 +15,7 @@
 #include <iterator>
 #include <string>
 
-namespace {
+namespace {  // NOLINT(cert-dcl59-cpp)
     namespace test_to_string {
         TEST(to_string, scaled_integer_negative)
         {
