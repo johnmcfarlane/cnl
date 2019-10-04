@@ -36,6 +36,7 @@ namespace cnl {
             template<class T>
             CNL_RELAXED_CONSTEXPR number_base& operator=(T const& r) {
                 _rep = r;
+                // NOLINTNEXTLINE(cppcoreguidelines-c-copy-assignment-signature)
                 return static_cast<Derived&>(*this);
             }
 
