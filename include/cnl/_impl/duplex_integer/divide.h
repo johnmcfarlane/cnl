@@ -107,7 +107,7 @@ namespace cnl {
 
             _unsigned_duplex_integer quot = 0;
             if (static_cast<unsigned_upper>(high)>=divisor) {
-                high /= divisor;
+                high /= divisor;  // NOLINT(clang-analyzer-core.DivideZero)
                 quot = _unsigned_duplex_integer{high, 0};
                 rem -= _unsigned_duplex_integer(high*divisor, 0);
             }

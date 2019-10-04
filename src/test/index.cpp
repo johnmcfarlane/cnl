@@ -197,6 +197,9 @@ void elastic_example1()
     // Addition requires smaller results.
     auto a2 = a+a;
     static_assert(is_same<decltype(a2), elastic_integer<7, int8_t >> ::value, "");
+
+    (void)aa;
+    (void)a2;
 }
 
 using cnl::elastic_scaled_integer;

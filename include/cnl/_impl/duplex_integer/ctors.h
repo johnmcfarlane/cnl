@@ -36,6 +36,8 @@ namespace cnl {
         -> enable_if_t<digits<Lower>::value>=digits<Integer>::value, Upper>
         {
             // sign-friendly flush
+            // TODO: Not reproduced locally. Investigate.
+            // NOLINTNEXTLINE(clang-analyzer-core.UndefinedBinaryOperatorResult)
             return static_cast<Upper>((input >> (digits<Integer>::value-1)) >> 1);
         }
 

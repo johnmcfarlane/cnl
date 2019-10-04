@@ -121,6 +121,8 @@ namespace cnl {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs << rhs)
             {
+                // TODO: Not reproduced locally. Investigate.
+                // NOLINTNEXTLINE(clang-analyzer-core.UndefinedBinaryOperatorResult)
                 return lhs << rhs;
             }
         };
