@@ -4,9 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/cstdint.h>
 #include <cnl/_impl/num_traits/adopt.h>
 #include <cnl/_impl/type_traits/assert_same.h>
+#include <cnl/cstdint.h>
 
 namespace {
     using cnl::_impl::assert_same;

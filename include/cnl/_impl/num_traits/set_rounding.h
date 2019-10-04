@@ -7,11 +7,11 @@
 #ifndef CNL_IMPL_NUM_TRAITS_SET_ROUNDING
 #define CNL_IMPL_NUM_TRAITS_SET_ROUNDING
 
-#include "rounding.h"
-#include "is_composite.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/remove_cvref.h"
 #include "../type_traits/type_identity.h"
+#include "is_composite.h"
+#include "rounding.h"
 
 namespace cnl {
     /// \brief given a numeric type, defines member `type` as the equivalent type with the given rounding mode

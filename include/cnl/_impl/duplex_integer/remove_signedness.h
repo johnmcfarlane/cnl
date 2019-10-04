@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_REMOVE_SIGNEDNESS_H)
 #define CNL_IMPL_DUPLEX_INTEGER_REMOVE_SIGNEDNESS_H
 
-#include "forward_declaration.h"
 #include "../type_traits/remove_signedness.h"
 #include "../type_traits/type_identity.h"
+#include "forward_declaration.h"
 
 /// compositional numeric library
 namespace cnl {

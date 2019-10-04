@@ -8,11 +8,11 @@
 #define CNL_IMPL_SCALED_INTEGER_TO_CHARS_H
 
 #include "../../rounding_integer.h"
-#include "num_traits.h"
-#include "type.h"
 #include "../assert.h"
 #include "../num_traits/fixed_width_scale.h"
 #include "../to_chars.h"
+#include "num_traits.h"
+#include "type.h"
 
 #include <array>
 #include <iterator>

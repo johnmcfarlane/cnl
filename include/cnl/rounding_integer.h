@@ -14,8 +14,8 @@
 #include "_impl/num_traits/set_rounding.h"
 #include "_impl/num_traits/to_rep.h"
 #include "_impl/number_base.h"
-#include "_impl/rounding.h"
 #include "_impl/operators/tagged.h"
+#include "_impl/rounding.h"
 #include "_impl/type_traits/common_type.h"
 #include "_impl/used_digits.h"
 

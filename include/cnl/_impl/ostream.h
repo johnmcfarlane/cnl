@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_OSTREAM_H)
 #define CNL_IMPL_OSTREAM_H
 
-#include "to_chars.h"
 #include "../cstdint.h"
+#include "to_chars.h"
 
 #include <array>
 #include <ostream>

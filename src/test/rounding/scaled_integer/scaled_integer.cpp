@@ -4,9 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/scaled_integer.h>
-#include <cnl/rounding.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/rounding.h>
+#include <cnl/scaled_integer.h>
 
 using cnl::_impl::identical;
 

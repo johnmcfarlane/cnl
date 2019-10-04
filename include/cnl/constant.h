@@ -10,9 +10,9 @@
 #if !defined(CNL_CONSTANT_H)
 #define CNL_CONSTANT_H
 
+#include "_impl/assert.h"
 #include "cstdint.h"
 #include "limits.h"  // NOLINT(modernize-deprecated-headers)
-#include "_impl/assert.h"
 
 #include <type_traits>
 

@@ -7,10 +7,10 @@
 #ifndef CNL_IMPL_NUMBER_BASE_TO_STRING_H
 #define CNL_IMPL_NUMBER_BASE_TO_STRING_H
 
-#include "definition.h"
-#include "is_derived_from_number_base.h"
 #include "../num_traits/to_rep.h"
 #include "../type_traits/enable_if.h"
+#include "definition.h"
+#include "is_derived_from_number_base.h"
 
 #include <string>
 

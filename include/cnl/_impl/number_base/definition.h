@@ -9,8 +9,8 @@
 
 #include "declaration.h"
 
-#include "../num_traits/to_rep.h"
 #include "../../limits.h"
+#include "../num_traits/to_rep.h"
 
 #include <utility>
 

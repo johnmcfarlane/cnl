@@ -5,9 +5,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/elastic_integer.h>
-#include <cnl/scaled_integer.h>
 #include <cnl/num_traits.h>
 #include <cnl/overflow_integer.h>
+#include <cnl/scaled_integer.h>
 
 #include <cnl/_impl/type_traits/identical.h>
 

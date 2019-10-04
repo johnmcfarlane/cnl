@@ -21,8 +21,8 @@ using test_int = cnl::rounding_integer<cnl::overflow_integer<int, cnl::native_ov
 ////////////////////////////////////////////////////////////////////////////////
 // perform fixed_point tests with this type of fixed_point specialization
 
-#include <fixed_point/fixed_point_common.h>
 #include <cnl/constant.h>
+#include <fixed_point/fixed_point_common.h>
 
 #if defined(__cpp_deduction_guides)
 

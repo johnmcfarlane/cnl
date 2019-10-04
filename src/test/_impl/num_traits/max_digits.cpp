@@ -4,9 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <cnl/_impl/config.h>
 #include <cnl/_impl/num_traits/max_digits.h>
 #include <cnl/_impl/type_traits/identical.h>
-#include <cnl/_impl/config.h>
 
 namespace {
     using cnl::_impl::identical;

@@ -9,8 +9,8 @@
 
 #include "config.h"
 
-#include <exception>
 #include <cstdio>
+#include <exception>
 
 namespace cnl {
     namespace _impl {

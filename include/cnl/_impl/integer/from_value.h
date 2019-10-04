@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_INTEGER_FROM_VALUE_H)
 #define CNL_IMPL_INTEGER_FROM_VALUE_H
 
-#include "type.h"
 #include "../num_traits/from_value.h"
+#include "type.h"
 
 /// compositional numeric library
 namespace cnl {

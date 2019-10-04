@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_ROUNDING_H)
 #define CNL_IMPL_DUPLEX_INTEGER_ROUNDING_H
 
-#include "forward_declaration.h"
 #include "../num_traits/rounding.h"
 #include "../type_traits/type_identity.h"
+#include "forward_declaration.h"
 
 #include <type_traits>
 

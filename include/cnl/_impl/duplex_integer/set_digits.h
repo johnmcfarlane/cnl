@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_SET_DIGITS_H)
 #define CNL_IMPL_DUPLEX_INTEGER_SET_DIGITS_H
 
-#include "instantiate_duplex_integer.h"
 #include "../num_traits/set_digits.h"
 #include "forward_declaration.h"
+#include "instantiate_duplex_integer.h"
 #include "to_rep.h"
 
 /// compositional numeric library

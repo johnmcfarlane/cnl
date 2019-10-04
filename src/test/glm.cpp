@@ -13,8 +13,8 @@
 #include <glm/glm.hpp>
 #endif
 
-#include <cnl/scaled_integer.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/scaled_integer.h>
 
 #include <gtest/gtest.h>
 

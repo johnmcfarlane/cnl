@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_TO_CHARS_H)
 #define CNL_IMPL_DUPLEX_INTEGER_TO_CHARS_H
 
-#include "type.h"
-#include "../to_chars.h"
 #include "../num_traits/set_rounding.h"
+#include "../to_chars.h"
+#include "type.h"
 
 /// compositional numeric library
 namespace cnl {

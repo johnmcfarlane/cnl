@@ -7,10 +7,10 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_DIGITS_H)
 #define CNL_IMPL_DUPLEX_INTEGER_DIGITS_H
 
-#include "forward_declaration.h"
-#include "remove_signedness.h"
 #include "../assert.h"
 #include "../num_traits/digits.h"
+#include "forward_declaration.h"
+#include "remove_signedness.h"
 
 #include <type_traits>
 

@@ -7,10 +7,10 @@
 /// \file
 /// \brief tests for <cnl/_impl/wide_integer/scale.h>
 
-#include <cnl/_impl/wide_integer/scale.h>
+#include <cnl/_impl/num_traits/fixed_width_scale.h>
 #include <cnl/_impl/wide_integer/digits.h>
 #include <cnl/_impl/wide_integer/operators.h>
-#include <cnl/_impl/num_traits/fixed_width_scale.h>
+#include <cnl/_impl/wide_integer/scale.h>
 
 #include <cnl/_impl/type_traits/identical.h>
 

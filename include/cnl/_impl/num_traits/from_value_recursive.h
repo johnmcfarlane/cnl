@@ -7,9 +7,9 @@
 #ifndef CNL_IMPL_NUM_TRAITS_FROM_VALUE_RECURSIVE
 #define CNL_IMPL_NUM_TRAITS_FROM_VALUE_RECURSIVE
 
+#include "../config.h"
 #include "from_rep.h"
 #include "from_value.h"
-#include "../config.h"
 
 namespace cnl {
     namespace _impl {

@@ -7,8 +7,8 @@
 #ifndef CNL_IMPL_NUM_TRAITS_ROUNDING
 #define CNL_IMPL_NUM_TRAITS_ROUNDING
 
-#include "../rounding/nearest_rounding_tag.h"
 #include "../rounding/native_rounding_tag.h"
+#include "../rounding/nearest_rounding_tag.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 #include "../type_traits/type_identity.h"

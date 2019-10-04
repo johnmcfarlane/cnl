@@ -7,10 +7,10 @@
 #ifndef CNL_IMPL_OPERATORS_TAGGED_H
 #define CNL_IMPL_OPERATORS_TAGGED_H
 
+#include "../../constant.h"
+#include "../config.h"
 #include "generic.h"
 #include "operators.h"
-#include "../config.h"
-#include "../../constant.h"
 
 /// compositional numeric library
 namespace cnl {

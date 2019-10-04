@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_LITERALS_H)
 #define CNL_IMPL_WIDE_INTEGER_LITERALS_H
 
-#include "type.h"
-#include "operators.h"
 #include "../unreachable.h"
+#include "operators.h"
+#include "type.h"
 
 /// compositional numeric library
 namespace cnl {

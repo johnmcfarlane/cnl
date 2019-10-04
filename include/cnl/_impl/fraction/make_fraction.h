@@ -7,11 +7,11 @@
 #if !defined(CNL_IMPL_FRACTION_MAKE_FRACTION_H)
 #define CNL_IMPL_FRACTION_MAKE_FRACTION_H
 
-#include "type.h"
+#include "../../limits.h"
 #include "../assert.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/remove_signedness.h"
-#include "../../limits.h"
+#include "type.h"
 
 #include <type_traits>
 

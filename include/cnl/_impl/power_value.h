@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_POWER_H)
 #define CNL_IMPL_POWER_H
 
+#include "../constant.h"
 #include "num_traits/digits.h"
 #include "num_traits/from_value.h"
-#include "../constant.h"
 
 #include <type_traits>
 

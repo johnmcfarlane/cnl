@@ -10,9 +10,9 @@
 #include <cnl/limits.h>
 #include <cnl/wide_integer.h>
 
-#include <cnl/cstdint.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/cstdint.h>
 
 #include <gtest/gtest.h>
 

@@ -10,10 +10,10 @@
 #if !defined(CNL_ELASTIC_FIXED_POINT_H)
 #define CNL_ELASTIC_FIXED_POINT_H
 
+#include "_impl/num_traits/adopt_signedness.h"
 #include "elastic_integer.h"
 #include "fixed_point.h"
 #include "limits.h"  // NOLINT(modernize-deprecated-headers)
-#include "_impl/num_traits/adopt_signedness.h"
 
 #include <type_traits>
 

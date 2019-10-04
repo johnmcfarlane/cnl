@@ -4,9 +4,9 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/scaled_integer.h>
 #include <cnl/overflow_integer.h>
 #include <cnl/rounding_integer.h>
+#include <cnl/scaled_integer.h>
 
 #include <cinttypes>
 
@@ -21,8 +21,8 @@ using test_int = cnl::rounding_integer<cnl::overflow_integer<int, cnl::native_ov
 ////////////////////////////////////////////////////////////////////////////////
 // perform scaled_integer tests with this type of scaled_integer specialization
 
-#include <scaled_integer/scaled_integer_common.h>
 #include <cnl/constant.h>
+#include <scaled_integer/scaled_integer_common.h>
 
 #if defined(__cpp_deduction_guides)
 

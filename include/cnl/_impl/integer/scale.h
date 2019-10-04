@@ -7,10 +7,10 @@
 #if !defined(CNL_IMPL_INTEGER_SCALE_H)
 #define CNL_IMPL_INTEGER_SCALE_H
 
+#include "../num_traits/scale.h"
 #include "digits.h"
 #include "operators.h"
 #include "type.h"
-#include "../num_traits/scale.h"
 
 /// compositional numeric library
 namespace cnl {

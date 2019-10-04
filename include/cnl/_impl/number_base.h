@@ -7,17 +7,17 @@
 #if !defined(CNL_NUMBER_BASE_H)
 #define CNL_NUMBER_BASE_H
 
-#include "number_base/declaration.h"
-#include "number_base/definition.h"
-#include "number_base/is_derived_from_number_base.h"
-#include "number_base/to_string.h"
+#include "../limits.h"
 #include "num_traits/from_rep.h"
 #include "num_traits/from_value.h"
 #include "num_traits/is_composite.h"
 #include "num_traits/scale.h"
 #include "num_traits/to_rep.h"
+#include "number_base/declaration.h"
+#include "number_base/definition.h"
+#include "number_base/is_derived_from_number_base.h"
+#include "number_base/to_string.h"
 #include "operators/overloads.h"
-#include "../limits.h"
 
 #include <type_traits>
 #include <utility>

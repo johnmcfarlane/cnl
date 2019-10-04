@@ -7,8 +7,8 @@
 /// \file
 /// \brief Signed 15:16 Fixed-Point Average Function Using cnl::elastic_scaled_integer
 
-#include <cnl/elastic_scaled_integer.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/elastic_scaled_integer.h>
 
 #include <gtest/gtest.h>
 
