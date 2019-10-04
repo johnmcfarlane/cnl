@@ -1,5 +1,6 @@
 ---
 Checks: >
+  cppcoreguidelines-c-copy-assignment-signature,
   cppcoreguidelines-macro-usage,
   cppcoreguidelines-no-malloc,
   modernize-deprecated-headers,
