@@ -136,6 +136,7 @@ namespace udl_impl {
     // general purpose integer literal parser
 
     template<int NumChars>
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
     CNL_NODISCARD constexpr std::intmax_t parse(const char (& s)[NumChars]) {
         if (s[0] == '0') {
             if (s[1] == 'b' || s[1] == 'B') {

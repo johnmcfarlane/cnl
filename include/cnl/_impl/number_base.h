@@ -47,7 +47,8 @@ namespace cnl {
         };
 
         template<typename Wrapper, int WrapperN>
-        struct can_be_wrapper<Wrapper[WrapperN]> : std::false_type {
+        struct can_be_wrapper<Wrapper[WrapperN]>  // NOLINT(cppcoreguidelines-avoid-c-arrays)
+                : std::false_type {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -59,7 +60,8 @@ namespace cnl {
         };
 
         template<typename Rep, int RepN>
-        struct can_be_wrapped<Rep[RepN]> : std::false_type {};
+        struct can_be_wrapped<Rep[RepN]>  // NOLINT(cppcoreguidelines-avoid-c-arrays)
+                : std::false_type {};
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::is_same_wrapper

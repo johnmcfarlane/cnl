@@ -33,7 +33,7 @@ namespace a {
     using namespace std::experimental;
     using byte = std::uint8_t;
 
-    unordered_map<filesystem::path, unique_ptr<byte[]>> cache;
+    unordered_map<filesystem::path, unique_ptr<byte[]>> cache;  // NOLINT(cppcoreguidelines-avoid-c-arrays)
 }
 #endif
 

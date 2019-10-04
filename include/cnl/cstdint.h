@@ -104,7 +104,7 @@ namespace cnl {
         }
 
         template<int NumChars>
-        CNL_NODISCARD constexpr intmax parse(const char (& s)[NumChars])
+        CNL_NODISCARD constexpr intmax parse(const char (& s)[NumChars])  // NOLINT(cppcoreguidelines-avoid-c-arrays)
         {
             return (s[0]=='-')
                    ? -parse_positive(s+1)

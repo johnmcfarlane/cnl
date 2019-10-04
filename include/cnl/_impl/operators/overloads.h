@@ -33,11 +33,13 @@ namespace cnl {
         struct enable_binary;
 
         template<class LhsOperand, int LhsSize, class RhsOperand>
-        struct enable_binary<LhsOperand[LhsSize], RhsOperand> : std::false_type {
+        struct enable_binary<LhsOperand[LhsSize], RhsOperand>  // NOLINT(cppcoreguidelines-avoid-c-arrays)
+                : std::false_type {
         };
 
         template<class LhsOperand, class RhsOperand, int RhsSize>
-        struct enable_binary<LhsOperand, RhsOperand[RhsSize]> : std::false_type {
+        struct enable_binary<LhsOperand, RhsOperand[RhsSize]>  // NOLINT(cppcoreguidelines-avoid-c-arrays)
+                : std::false_type {
         };
 
         template<class LhsOperand, class RhsOperand>
