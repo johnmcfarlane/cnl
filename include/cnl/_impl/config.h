@@ -46,9 +46,9 @@
 #endif
 
 #if defined(__SIZEOF_INT128__)
-#define CNL_CAN_USE_INT128 1
+#define CNL_CAN_USE_INT128 1  // NOLINT(cppcoreguidelines-macro-usage)
 #else
-#define CNL_CAN_USE_INT128 0
+#define CNL_CAN_USE_INT128 0  // NOLINT(cppcoreguidelines-macro-usage)
 #endif
 
 #if CNL_USE_INT128
@@ -85,9 +85,9 @@
 #endif
 
 #if (__cpp_constexpr >= 201304L)
-#define CNL_RELAXED_CONSTEXPR constexpr
+#define CNL_RELAXED_CONSTEXPR constexpr  // NOLINT(cppcoreguidelines-macro-usage)
 #else
-#define CNL_RELAXED_CONSTEXPR
+#define CNL_RELAXED_CONSTEXPR  // NOLINT(cppcoreguidelines-macro-usage)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -208,7 +208,7 @@
 #endif
 
 #if (__cplusplus >= 201703L) && !defined(_MSC_VER)
-#define CNL_NODISCARD [[nodiscard]]
+#define CNL_NODISCARD [[nodiscard]]  // NOLINT(cppcoreguidelines-macro-usage)
 #endif
 
 #if ! defined(CNL_NODISCARD)

@@ -8,7 +8,7 @@
 /// \brief definitions supporting generic treatment of numeric types
 
 #if !defined(CNL_TYPE_TRAITS_H)
-#define CNL_TYPE_TRAITS_H 1
+#define CNL_TYPE_TRAITS_H
 
 #include "_impl/type_traits/common_type.h"
 #include "_impl/type_traits/enable_if.h"

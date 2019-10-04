@@ -8,7 +8,7 @@
 /// \brief essential definitions related to the `cnl::elastic_scaled_integer` type
 
 #if !defined(CNL_ELASTIC_SCALED_INTEGER_H)
-#define CNL_ELASTIC_SCALED_INTEGER_H 1
+#define CNL_ELASTIC_SCALED_INTEGER_H
 
 #include "elastic_integer.h"
 #include "scaled_integer.h"

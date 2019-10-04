@@ -8,7 +8,7 @@
 /// \brief CNL alternative to \verbatim<limits>\endverbatim with 128-bit support
 
 #if !defined(CNL_LIMITS_H)
-#define CNL_LIMITS_H 1
+#define CNL_LIMITS_H
 
 #include "cstdint.h"
 

@@ -13,8 +13,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // test name generation
 
-#define TOKENPASTE(x, y) x ## y
-#define TOKENPASTE2(x, y) TOKENPASTE(x, y)
+#define TOKENPASTE(x, y) x ## y  // NOLINT(cppcoreguidelines-macro-usage)
+#define TOKENPASTE2(x, y) TOKENPASTE(x, y)  // NOLINT(cppcoreguidelines-macro-usage)
 
 ////////////////////////////////////////////////////////////////////////////////
 // imports from std

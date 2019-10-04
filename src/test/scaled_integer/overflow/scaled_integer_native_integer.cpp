@@ -8,7 +8,7 @@
 #include <cnl/overflow_integer.h>
 
 #define TEST_NATIVE_INTEGER
-#define TEST_LABEL native_integer_
+#define TEST_LABEL native_integer_  // NOLINT(cppcoreguidelines-macro-usage)
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as scaled_integer Rep type

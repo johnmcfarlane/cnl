@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_STATIC_NUBER_H)
-#define CNL_STATIC_NUBER_H 1
+#define CNL_STATIC_NUBER_H
 
 /// \file
 /// \brief file containing definitions related to \ref cnl::static_number

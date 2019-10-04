@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_ROUNDING_INTEGER_H)
-#define CNL_ROUNDING_INTEGER_H 1
+#define CNL_ROUNDING_INTEGER_H
 
 #include "_impl/num_traits/fixed_width_scale.h"
 #include "_impl/num_traits/from_value_recursive.h"

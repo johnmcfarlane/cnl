@@ -8,7 +8,7 @@
 /// \brief definition of `cnl::scaled_integer` type
 
 #if !defined(CNL_IMPL_SCALED_INTEGER_DEFINITION_H)
-#define CNL_IMPL_SCALED_INTEGER_DEFINITION_H 1
+#define CNL_IMPL_SCALED_INTEGER_DEFINITION_H
 
 #include "../power.h"
 #include "../power_value.h"

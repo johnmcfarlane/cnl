@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_FRACTION_MAKE_FRACTION_H)
-#define CNL_IMPL_FRACTION_MAKE_FRACTION_H 1
+#define CNL_IMPL_FRACTION_MAKE_FRACTION_H
 
 #include "type.h"
 #include "../assert.h"

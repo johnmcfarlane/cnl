@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_FRACTION_OPERATORS_H)
-#define CNL_IMPL_FRACTION_OPERATORS_H 1
+#define CNL_IMPL_FRACTION_OPERATORS_H
 
 #include "make_fraction.h"
 #include "type.h"

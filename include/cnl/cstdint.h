@@ -19,11 +19,21 @@
 // CNL_INTMAX_C and CNL_UINTMAX_C
 
 #if defined(CNL_INT128_ENABLED)
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_INTMAX_C(N) (::cnl::_cnlint_impl::parse(CNL_STR(N)))
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_UINTMAX_C(N) (static_cast<::cnl::uint128>(::cnl::_cnlint_impl::parse(CNL_STR(N))))
+
 #else
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_INTMAX_C INTMAX_C
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_UINTMAX_C UINTMAX_C
+
 #endif
 
 /// compositional numeric library

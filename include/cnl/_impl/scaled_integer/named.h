@@ -8,7 +8,7 @@
 /// \brief essential named definitions related to the `cnl::scaled_integer` type
 
 #if !defined(CNL_IMPL_SCALED_INTEGER_NAMED_H)
-#define CNL_IMPL_SCALED_INTEGER_NAMED_H 1
+#define CNL_IMPL_SCALED_INTEGER_NAMED_H
 
 #include "../common.h"
 #include "../num_traits/fixed_width_scale.h"

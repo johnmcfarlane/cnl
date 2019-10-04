@@ -8,7 +8,7 @@
 /// \brief definitions supporting generic treatment of numeric types
 
 #if !defined(CNL_NUM_TRAITS)
-#define CNL_NUM_TRAITS 1
+#define CNL_NUM_TRAITS
 
 #include "_impl/num_traits/digits.h"
 #include "_impl/num_traits/from_rep.h"

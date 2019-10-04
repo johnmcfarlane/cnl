@@ -8,7 +8,7 @@
 /// \brief definitions and specializations that adapt Boost.Multiprecision for use with @ref cnl::scaled_integer
 
 #if !defined(CNL_BOOST_MULTIPRECISION_H)
-#define CNL_BOOST_MULTIPRECISION_H 1
+#define CNL_BOOST_MULTIPRECISION_H
 
 #include "../constant.h"
 #include "../num_traits.h"

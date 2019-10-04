@@ -8,7 +8,7 @@
 /// \brief essential `fraction` definitions related to the `scaled_integer` type
 
 #if !defined(CNL_IMPL_SCALED_INTEGER_FRACTION_H)
-#define CNL_IMPL_SCALED_INTEGER_FRACTION_H 1
+#define CNL_IMPL_SCALED_INTEGER_FRACTION_H
 
 #include "named.h"
 

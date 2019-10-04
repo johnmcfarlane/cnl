@@ -13,7 +13,7 @@
 // TODO: Every `#if !defined(TEST_WIDE_INTEGER)` is a TODO
 #define TEST_WIDE_INTEGER
 #define TEST_WIDE_INTEGER_32
-#define TEST_LABEL wide_integer_32_
+#define TEST_LABEL wide_integer_32_  // NOLINT(cppcoreguidelines-macro-usage)
 
 ////////////////////////////////////////////////////////////////////////////////
 // wide_integer type used as fixed_point Rep type

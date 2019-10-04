@@ -22,6 +22,7 @@ namespace {
             auto epsilon = std::numeric_limits<T>::epsilon();
 
 // Google Test's lack of support for long double results in unneccessary floating-point conversions.
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_EXPECT_NEAR(expected, actual, epsilon) EXPECT_NEAR(double(expected), double(actual), double(epsilon))
 
             CNL_EXPECT_NEAR(std::exp(T{1}), cnl::math::e_v<T>, epsilon);
