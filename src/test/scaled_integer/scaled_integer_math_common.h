@@ -10,7 +10,7 @@
 
 #include <algorithm>
 #include <array>
-#include <stdint.h>
+#include <cstdint>
 
 
 TEST(math, FPTESTFORMAT) {

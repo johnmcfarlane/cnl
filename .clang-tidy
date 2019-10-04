@@ -1,6 +1,7 @@
 ---
 Checks: >
   cppcoreguidelines-no-malloc,
+  modernize-deprecated-headers,
   -clang-analyzer-*,
 WarningsAsErrors: '*'
 HeaderFilterRegex: 'cnl'

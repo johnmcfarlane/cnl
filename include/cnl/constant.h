@@ -11,7 +11,7 @@
 #define CNL_CONSTANT_H 1
 
 #include "cstdint.h"
-#include "limits.h"
+#include "limits.h"  // NOLINT(modernize-deprecated-headers)
 #include "_impl/assert.h"
 
 #include <type_traits>
