@@ -7,7 +7,7 @@
 /// \file cnl/num_traits.h
 /// \brief definitions supporting \ref cnl::set_digits
 
-#ifndef CNL_IMPL_NUM_TRAITS_SET_WIDTH
+#if !defined(CNL_IMPL_NUM_TRAITS_SET_WIDTH)
 #define CNL_IMPL_NUM_TRAITS_SET_WIDTH
 
 #include "../type_traits/is_signed.h"

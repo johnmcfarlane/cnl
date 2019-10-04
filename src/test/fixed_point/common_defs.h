@@ -7,6 +7,9 @@
 // included from fixed_point_common.h;
 // contains definitions that aid testing and which depend upon definition of test_int
 
+#if !defined(TEST_FIXED_POINT_COMMON_DEFS_H)
+#define TEST_FIXED_POINT_COMMON_DEFS_H
+
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
@@ -57,3 +60,5 @@ using fixed_point = cnl::fixed_point<Rep, Exponent>;
 
 using cnl::_impl::assert_same;
 using cnl::_impl::identical;
+
+#endif

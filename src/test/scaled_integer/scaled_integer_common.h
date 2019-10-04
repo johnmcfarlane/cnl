@@ -9,6 +9,9 @@
 // The tests may fail on types which are not compact,
 // i.e. where (sizeof(test_int)*CHAR_BIT > cnl::width(test_int)::value).
 
+#if !defined(TEST_SCALED_INTEGER_SCALED_INTEGER_COMMON_H)
+#define TEST_SCALED_INTEGER_SCALED_INTEGER_COMMON_H
+
 #include <cnl/fraction.h>
 
 #include <gtest/gtest.h>
@@ -1271,3 +1274,5 @@ template struct ScaledIntegerRepTester<uint32>;
 
 template struct ScaledIntegerRepTester<int64>;
 template struct ScaledIntegerRepTester<uint64>;
+
+#endif

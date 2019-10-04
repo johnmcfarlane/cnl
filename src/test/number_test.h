@@ -4,6 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#if !defined(TEST_NUMBER_TEST_H)
+#define TEST_NUMBER_TEST_H
+
 #include <cnl/limits.h>
 #include <cnl/num_traits.h>
 #include <cnl/numeric.h>
@@ -191,3 +194,5 @@ struct number_test_by_rep_by_tag {
 
     constexpr static number_test_by_rep<test_subject, TypeSpecificTestSuite> instance{};
 };
+
+#endif

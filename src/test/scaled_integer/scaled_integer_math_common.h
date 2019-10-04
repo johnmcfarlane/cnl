@@ -6,6 +6,9 @@
 
 //No include guards: we mean to include this for each case separately
 
+#if !defined(TEST_SCALED_INTEGER_SCALED_INTEGER_MATH_COMMON_H)
+#define TEST_SCALED_INTEGER_SCALED_INTEGER_MATH_COMMON_H
+
 #include <cnl/_impl/scaled_integer/math.h>
 
 #include <algorithm>
@@ -85,3 +88,4 @@ TEST(math, FPTESTFORMAT) {
     EXPECT_EQ(exp2(minimum), fp{ exp2(doublerepmini) });
 }
 
+#endif

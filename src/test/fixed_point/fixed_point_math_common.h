@@ -6,6 +6,9 @@
 
 //No include guards: we mean to include this for each case separately
 
+#if !defined(TEST_FIXED_POINT_FIXED_POINT_MATH_COMMON_H)
+#define TEST_FIXED_POINT_FIXED_POINT_MATH_COMMON_H
+
 #include <cnl/fixed_point.h>
 
 #include <algorithm>
@@ -85,3 +88,4 @@ TEST(math, FPTESTFORMAT) {
     EXPECT_EQ(exp2(minimum), fp{ exp2(doublerepmini) });
 }
 
+#endif

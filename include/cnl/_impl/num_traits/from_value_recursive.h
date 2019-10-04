@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_IMPL_NUM_TRAITS_FROM_VALUE_RECURSIVE
+#if !defined(CNL_IMPL_NUM_TRAITS_FROM_VALUE_RECURSIVE)
 #define CNL_IMPL_NUM_TRAITS_FROM_VALUE_RECURSIVE
 
 #include "../config.h"

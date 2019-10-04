@@ -7,7 +7,7 @@
 /// \file
 /// \brief scaled_integer specializations of math constants from <cnl/numeric.h>
 
-#ifndef CNL_IMPL_SCALED_INTEGER_CONSTANTS_H
+#if !defined(CNL_IMPL_SCALED_INTEGER_CONSTANTS_H)
 #define CNL_IMPL_SCALED_INTEGER_CONSTANTS_H
 
 #include "num_traits.h"

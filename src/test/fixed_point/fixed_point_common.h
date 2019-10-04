@@ -9,6 +9,9 @@
 // The tests may fail on types which are not compact,
 // i.e. where (sizeof(test_int)*CHAR_BIT > cnl::width(test_int)::value).
 
+#if !defined(TEST_FIXED_POINT_FIXED_POINT_COMMON_DEFS_H)
+#define TEST_FIXED_POINT_FIXED_POINT_COMMON_DEFS_H
+
 #include <cnl/fraction.h>
 
 #include <gtest/gtest.h>
@@ -1175,3 +1178,5 @@ template struct FixedPointRepTester<uint32>;
 
 template struct FixedPointRepTester<int64>;
 template struct FixedPointRepTester<uint64>;
+
+#endif

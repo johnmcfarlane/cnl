@@ -7,6 +7,9 @@
 // included from scaled_integer_common.h;
 // contains definitions that aid testing and which depend upon definition of test_int
 
+#if !defined(TEST_SCALED_INTEGER_COMMON_DEFS_H)
+#define TEST_SCALED_INTEGER_COMMON_DEFS_H
+
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
@@ -54,3 +57,5 @@ using scaled_integer = cnl::scaled_integer<Rep, Scale>;
 
 using cnl::_impl::assert_same;
 using cnl::_impl::identical;
+
+#endif

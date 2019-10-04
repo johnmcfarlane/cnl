@@ -4,6 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#if !defined(CNL_IMPL_MATH_H)
+#define CNL_IMPL_MATH_H
+
 #include "config.h"
 
 /// compositional numeric library
@@ -215,3 +218,5 @@ namespace cnl {
     }
 #endif  // defined(__cpp_inline_variables)
 }
+
+#endif
