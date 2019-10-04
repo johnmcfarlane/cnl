@@ -3,7 +3,7 @@ Checks: >
   cert-*,
   clang-analyzer-*,
   cppcoreguidelines-*,
-  modernize-deprecated-headers,
+  modernize-*,
   -cert-err58-cpp,
   -clang-analyzer-core.UndefinedBinaryOperatorResult,
   -clang-analyzer-cplusplus.InnerPointer,
@@ -17,6 +17,10 @@ Checks: >
   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
   -cppcoreguidelines-pro-type-vararg,
   -cppcoreguidelines-special-member-functions,
+  -modernize-avoid-c-arrays,
+  -modernize-concat-nested-namespaces,
+  -modernize-unary-static-assert,
+  -modernize-use-noexcept,
 WarningsAsErrors: '*'
 HeaderFilterRegex: 'cnl'
 AnalyzeTemporaryDtors: false
