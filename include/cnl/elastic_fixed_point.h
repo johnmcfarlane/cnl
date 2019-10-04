@@ -8,7 +8,7 @@
 /// \brief essential definitions related to the `cnl::elastic_fixed_point` type
 
 #if !defined(CNL_ELASTIC_FIXED_POINT_H)
-#define CNL_ELASTIC_FIXED_POINT_H 1
+#define CNL_ELASTIC_FIXED_POINT_H
 
 #include "elastic_integer.h"
 #include "fixed_point.h"

@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_FRACTION_TO_STRING_H)
-#define CNL_IMPL_FRACTION_TO_STRING_H 1
+#define CNL_IMPL_FRACTION_TO_STRING_H
 
 #include "gcd.h"
 #include "make_fraction.h"

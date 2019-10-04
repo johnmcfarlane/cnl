@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_NUMBER_BASE_H)
-#define CNL_NUMBER_BASE_H 1
+#define CNL_NUMBER_BASE_H
 
 #include "number_base/declaration.h"
 #include "number_base/definition.h"

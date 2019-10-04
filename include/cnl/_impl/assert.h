@@ -7,7 +7,7 @@
 // definitions that are directly required by more than one header of the API
 
 #if !defined(CNL_IMPL_ASSERT_H)
-#define CNL_IMPL_ASSERT_H 1
+#define CNL_IMPL_ASSERT_H
 
 #include "common.h"
 #include "terminate.h"
@@ -18,9 +18,11 @@
 // CNL_ASSERT - enforces that a condition *must* be true
 #if defined(CNL_RELEASE)
 // in release builds,
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_ASSERT(CONDITION) CNL_ASSUME(CONDITION)
 #elif defined(CNL_DEBUG)
 #include <exception>
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_ASSERT(CONDITION) \
     (CNL_LIKELY(CONDITION) \
         ? static_cast<void>(0) \

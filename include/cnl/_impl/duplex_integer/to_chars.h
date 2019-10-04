@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_TO_CHARS_H)
-#define CNL_IMPL_DUPLEX_INTEGER_TO_CHARS_H 1
+#define CNL_IMPL_DUPLEX_INTEGER_TO_CHARS_H
 
 #include "type.h"
 #include "../to_chars.h"

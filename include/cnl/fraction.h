@@ -8,7 +8,7 @@
 /// \brief definition of `cnl::fraction` type
 
 #if !defined(CNL_FRACTION_H)
-#define CNL_FRACTION_H 1
+#define CNL_FRACTION_H
 
 #include "_impl/fraction/abs.h"
 #include "_impl/fraction/canonical.h"

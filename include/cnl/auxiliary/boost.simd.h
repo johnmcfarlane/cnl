@@ -8,7 +8,7 @@
 /// \brief definitions and specializations that adapt Boost.SIMD for use with @ref cnl::scaled_integer
 
 #if !defined(CNL_BOOST_SIMD_H)
-#define CNL_BOOST_SIMD_H 1
+#define CNL_BOOST_SIMD_H
 
 #include "../scaled_integer.h"
 

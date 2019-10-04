@@ -8,7 +8,7 @@
 /// \brief essential definitions related to the `cnl::overflow_integer` type
 
 #if !defined(CNL_OVERFLOW_INT_H)
-#define CNL_OVERFLOW_INT_H 1
+#define CNL_OVERFLOW_INT_H
 
 #include "overflow.h"
 

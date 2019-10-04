@@ -8,7 +8,7 @@
 /// \brief all definitions related to the `cnl::scaled_integer` type
 
 #if !defined(CNL_SCALED_INTEGER_H)
-#define CNL_SCALED_INTEGER_H 1
+#define CNL_SCALED_INTEGER_H
 
 #include "_impl/scaled_integer/convert_operator.h"
 #include "_impl/scaled_integer/declaration.h"

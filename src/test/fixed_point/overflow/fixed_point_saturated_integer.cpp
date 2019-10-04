@@ -8,7 +8,7 @@
 #include <cnl/overflow_integer.h>
 
 #define TEST_SATURATED_OVERFLOW_INTEGER
-#define TEST_LABEL saturated_integer_
+#define TEST_LABEL saturated_integer_  // NOLINT(cppcoreguidelines-macro-usage)
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Rep type

@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_WIDE_INTEGER_H)
-#define CNL_WIDE_INTEGER_H 1
+#define CNL_WIDE_INTEGER_H
 
 /// \file
 /// \brief file containing definitions related to \ref cnl::wide_integer

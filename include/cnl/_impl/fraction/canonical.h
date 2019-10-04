@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_FRACTION_CANONICAL_H)
-#define CNL_IMPL_FRACTION_CANONICAL_H 1
+#define CNL_IMPL_FRACTION_CANONICAL_H
 
 #include "reduce.h"
 #include "type.h"

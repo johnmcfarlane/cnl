@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_NUMBER_BASE_IS_DERIVED_FROM_NUMBER_BASE_H)
-#define CNL_IMPL_NUMBER_BASE_IS_DERIVED_FROM_NUMBER_BASE_H 1
+#define CNL_IMPL_NUMBER_BASE_IS_DERIVED_FROM_NUMBER_BASE_H
 
 #include "../type_traits/enable_if.h"
 

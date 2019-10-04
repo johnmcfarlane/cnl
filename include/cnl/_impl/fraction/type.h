@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_FRACTION_TYPE_H)
-#define CNL_IMPL_FRACTION_TYPE_H 1
+#define CNL_IMPL_FRACTION_TYPE_H
 
 #include "../num_traits/set_width.h"
 #include "../type_traits/enable_if.h"

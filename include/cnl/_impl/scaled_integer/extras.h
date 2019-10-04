@@ -10,7 +10,7 @@
 /// included from cnl/scaled_integer.h - do not include directly!
 
 #if !defined(CNL_IMPL_SCALED_INTEGER_EXTRAS_H)
-#define CNL_IMPL_SCALED_INTEGER_EXTRAS_H 1
+#define CNL_IMPL_SCALED_INTEGER_EXTRAS_H
 
 #include "to_chars.h"
 #include "type.h"

@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_TO_CHARS_H)
-#define CNL_IMPL_TO_CHARS_H 1
+#define CNL_IMPL_TO_CHARS_H
 
 #include "assert.h"  // NOLINT(modernize-deprecated-headers)
 #include "num_traits/digits.h"

@@ -9,7 +9,7 @@
 #include <cinttypes>
 
 #define TEST_NATIVE_INTEGER
-#define TEST_LABEL built_in_
+#define TEST_LABEL built_in_  // NOLINT(cppcoreguidelines-macro-usage)
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Rep type

@@ -1,5 +1,6 @@
 ---
 Checks: >
+  cppcoreguidelines-macro-usage,
   cppcoreguidelines-no-malloc,
   modernize-deprecated-headers,
   -clang-analyzer-*,
