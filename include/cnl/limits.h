@@ -29,7 +29,9 @@ namespace cnl {
 
         class _s {
         public:
-            constexpr _s(uint64 upper, uint64 lower) : value(lower + (int128{upper} << 64)) {}
+            constexpr _s(uint64 upper, uint64 lower)  // NOLINT(cppcoreguidelines-pro-type-member-init)
+                    :value(lower+(int128{upper} << 64)) { }
+
             CNL_NODISCARD constexpr operator int128() const { return value; }
         private:
             int128 value;
@@ -58,7 +60,9 @@ namespace cnl {
 
         class _s {
         public:
-            constexpr _s(uint64 upper, uint64 lower) : value(lower + (uint128{upper} << 64)) {}
+            constexpr _s(uint64 upper, uint64 lower)  // NOLINT(cppcoreguidelines-pro-type-member-init)
+                    :value(lower+(uint128{upper} << 64)) { }
+
             CNL_NODISCARD constexpr operator uint128() const { return value; }
         private:
             uint128 value;
