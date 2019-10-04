@@ -7,15 +7,15 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_MULTIPLY_H)
 #define CNL_IMPL_DUPLEX_INTEGER_MULTIPLY_H
 
+#include "../num_traits/width.h"
+#include "../operators/generic.h"
+#include "../operators/operators.h"
+#include "../type_traits/conditional3.h"
 #include "digits.h"
 #include "numeric_limits.h"
 #include "set_width.h"
 #include "type.h"
 #include "wants_generic_ops.h"
-#include "../num_traits/width.h"
-#include "../operators/generic.h"
-#include "../operators/operators.h"
-#include "../type_traits/conditional3.h"
 
 /// compositional numeric library
 namespace cnl {

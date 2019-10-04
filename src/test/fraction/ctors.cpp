@@ -11,9 +11,9 @@
 
 #include <cnl/fraction.h>
 
-#include <cnl/cstdint.h>
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/type_traits/assert_same.h>
+#include <cnl/_impl/type_traits/identical.h>
+#include <cnl/cstdint.h>
 
 namespace {
     using cnl::_impl::identical;

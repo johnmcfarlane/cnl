@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_SCALE_H)
 #define CNL_IMPL_DUPLEX_INTEGER_SCALE_H
 
-#include "forward_declaration.h"
 #include "../num_traits/scale.h"
+#include "forward_declaration.h"
 
 /// compositional numeric library
 namespace cnl {

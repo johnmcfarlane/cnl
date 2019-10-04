@@ -7,8 +7,8 @@
 #ifndef CNL_IMPL_CMATH_ABS
 #define CNL_IMPL_CMATH_ABS
 
-#include "../type_traits/is_signed.h"
 #include "../type_traits/enable_if.h"
+#include "../type_traits/is_signed.h"
 
 namespace cnl {
     namespace _impl {

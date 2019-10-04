@@ -7,11 +7,11 @@
 #if !defined(CNL_IMPL_OVERFLOW_COMMON_H)
 #define CNL_IMPL_OVERFLOW_COMMON_H
 
+#include "../operators/native_tag.h"
+#include "../polarity.h"
 #include "builtin_overflow.h"
 #include "is_overflow.h"
 #include "overflow_operator.h"
-#include "../polarity.h"
-#include "../operators/native_tag.h"
 
 #include <type_traits>
 

@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_OVERFLOW_SATURATED_H)
 #define CNL_IMPL_OVERFLOW_SATURATED_H
 
+#include "../terminate.h"
 #include "common.h"
 #include "overflow_operator.h"
-#include "../terminate.h"
 
 /// compositional numeric library
 namespace cnl {

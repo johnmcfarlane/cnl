@@ -8,12 +8,12 @@
 #define CNL_IMPL_NUM_TRAITS_MAX_DIGITS
 
 #include "../../cstdint.h"
+#include "../type_traits/enable_if.h"
+#include "../type_traits/is_integral.h"
+#include "../type_traits/is_signed.h"
 #include "digits.h"
 #include "is_composite.h"
 #include "to_rep.h"
-#include "../type_traits/is_integral.h"
-#include "../type_traits/is_signed.h"
-#include "../type_traits/enable_if.h"
 
 namespace cnl {
     namespace _impl {

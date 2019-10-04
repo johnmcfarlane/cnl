@@ -9,8 +9,8 @@
 
 #include <cnl/_impl/wide_integer/from_value.h>
 
-#include <cnl/_impl/wide_integer/operators.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/_impl/wide_integer/operators.h>
 
 using cnl::_impl::identical;
 

@@ -7,8 +7,8 @@
 #ifndef CNL_IMPL_NUM_TRAITS_ADOPT_WIDTH
 #define CNL_IMPL_NUM_TRAITS_ADOPT_WIDTH
 
-#include "width.h"
 #include "set_width.h"
+#include "width.h"
 
 namespace cnl {
     namespace _impl {

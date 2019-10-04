@@ -4,8 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/fixed_point.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/fixed_point.h>
 
 template<typename Rep, int Exponent>
 using decimal_fixed_point = cnl::fixed_point<Rep, Exponent, 10>;

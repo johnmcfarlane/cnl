@@ -7,10 +7,10 @@
 #ifndef CNL_IMPL_NUM_TRAITS_TO_REP
 #define CNL_IMPL_NUM_TRAITS_TO_REP
 
-#include "../type_traits/remove_cvref.h"
+#include "../../constant.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
-#include "../../constant.h"
+#include "../type_traits/remove_cvref.h"
 
 #include <type_traits>
 #include <utility>

@@ -8,8 +8,8 @@
 #define CNL_IMPL_FRACTION_HASH_H
 
 #include "../../bit.h"
-#include "../type_traits/is_integral.h"
 #include "../num_traits/width.h"
+#include "../type_traits/is_integral.h"
 #include "canonical.h"
 #include "type.h"
 

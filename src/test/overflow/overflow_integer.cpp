@@ -10,8 +10,8 @@
 #pragma warning(disable: 4146)
 #endif
 
-#include <cnl/overflow_integer.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/overflow_integer.h>
 
 #include "../number_test.h"
 

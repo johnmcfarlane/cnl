@@ -4,9 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/math.h>
-#include <cnl/constant.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/constant.h>
+#include <cnl/math.h>
 
 #include <gtest/gtest.h>
 

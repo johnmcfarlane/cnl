@@ -10,6 +10,7 @@
 #ifndef CNL_IMPL_SCALED_INTEGER_CONSTANTS_H
 #define CNL_IMPL_SCALED_INTEGER_CONSTANTS_H
 
+#include "num_traits.h"
 #include "type.h"
 
 #include "../../math.h"

@@ -7,11 +7,11 @@
 #ifndef CNL_IMPL_TYPE_TRAITS_IS_SIGNED
 #define CNL_IMPL_TYPE_TRAITS_IS_SIGNED
 
+#include "../../constant.h"
 #include "../../cstdint.h"
 #include "../num_traits/is_composite.h"
 #include "../num_traits/to_rep.h"
 #include "enable_if.h"
-#include "../../constant.h"
 
 #include <type_traits>
 

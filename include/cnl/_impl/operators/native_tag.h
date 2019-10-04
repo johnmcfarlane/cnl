@@ -7,11 +7,11 @@
 #ifndef CNL_IMPL_OPERATORS_NATIVE_TAG_H
 #define CNL_IMPL_OPERATORS_NATIVE_TAG_H
 
-#include "generic.h"
-#include "operators.h"
+#include "../../constant.h"
 #include "../type_traits/is_integral.h"
 #include "../type_traits/remove_signedness.h"
-#include "../../constant.h"
+#include "generic.h"
+#include "operators.h"
 
 #include <type_traits>
 

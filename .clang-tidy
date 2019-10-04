@@ -3,6 +3,7 @@ Checks: >
   cert-*,
   clang-analyzer-*,
   cppcoreguidelines-*,
+  llvm-include-order,
   modernize-*,
   -cert-err58-cpp,
   -clang-analyzer-core.UndefinedBinaryOperatorResult,

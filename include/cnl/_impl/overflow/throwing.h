@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_OVERFLOW_THROWING_H)
 #define CNL_IMPL_OVERFLOW_THROWING_H
 
+#include "../throw_exception.h"
 #include "common.h"
 #include "overflow_operator.h"
-#include "../throw_exception.h"
 
 #include <stdexcept>
 

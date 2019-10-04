@@ -10,10 +10,10 @@
 #if !defined(CNL_ELASTIC_SCALED_INTEGER_H)
 #define CNL_ELASTIC_SCALED_INTEGER_H
 
-#include "elastic_integer.h"
-#include "scaled_integer.h"
-#include "limits.h"  // NOLINT(modernize-deprecated-headers)
 #include "_impl/num_traits/adopt_signedness.h"
+#include "elastic_integer.h"
+#include "limits.h"  // NOLINT(modernize-deprecated-headers)
+#include "scaled_integer.h"
 
 #include <type_traits>
 

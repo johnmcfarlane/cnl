@@ -12,9 +12,9 @@
 #ifndef CNL_TEST_FIXED_POINT_FRACTION_CTOR_H
 #define CNL_TEST_FIXED_POINT_FRACTION_CTOR_H
 
+#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/fixed_point.h>
 #include <cnl/fraction.h>
-#include <cnl/_impl/type_traits/identical.h>
 
 namespace {  // NOLINT(cert-dcl59-cpp)
     using cnl::_impl::identical;

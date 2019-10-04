@@ -7,10 +7,10 @@
 /// \file
 /// \brief tests of cnl::elastic_scaled_integer alias
 
-#include <cnl/elastic_scaled_integer.h>
-#include <cnl/fraction.h>
 #include "../../number_test.h"
 #include <cnl/_impl/type_traits/assert_same.h>
+#include <cnl/elastic_scaled_integer.h>
+#include <cnl/fraction.h>
 using cnl::_impl::assert_same;
 
 #include <gtest/gtest.h>

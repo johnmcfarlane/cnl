@@ -7,8 +7,8 @@
 /// \file
 /// \brief file containing tests of the `cnl/cmath.h` definitions
 
-#include <cnl/cmath.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/cmath.h>
 
 namespace {
     using cnl::_impl::identical;

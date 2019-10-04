@@ -12,13 +12,13 @@
 
 #include "overflow.h"
 
-#include "_impl/number_base.h"
-#include "_impl/ostream.h"
 #include "_impl/num_traits/from_value.h"
 #include "_impl/num_traits/from_value_recursive.h"
+#include "_impl/number_base.h"
 #include "_impl/operators/generic.h"
 #include "_impl/operators/native_tag.h"
 #include "_impl/operators/tagged.h"
+#include "_impl/ostream.h"
 #include "_impl/type_traits/common_type.h"
 
 #include <ostream>

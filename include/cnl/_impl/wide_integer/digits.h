@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_DIGITS_H)
 #define CNL_IMPL_WIDE_INTEGER_DIGITS_H
 
-#include "type.h"
 #include "../num_traits/digits.h"
+#include "type.h"
 
 #include <type_traits>
 

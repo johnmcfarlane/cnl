@@ -7,12 +7,12 @@
 #if !defined(CNL_IMPL_INTEGER_OPERATORS_H)
 #define CNL_IMPL_INTEGER_OPERATORS_H
 
+#include "../operators/generic.h"
 #include "from_rep.h"
 #include "from_value.h"
 #include "make_integer.h"
 #include "numeric_limits.h"
 #include "type.h"
-#include "../operators/generic.h"
 
 /// compositional numeric library
 namespace cnl {

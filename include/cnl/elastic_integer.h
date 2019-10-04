@@ -19,8 +19,8 @@
 #include "_impl/num_traits/set_width.h"
 #include "_impl/num_traits/width.h"
 #include "_impl/number_base.h"
-#include "_impl/type_traits/is_signed.h"
 #include "_impl/type_traits/add_signedness.h"
+#include "_impl/type_traits/is_signed.h"
 #include "_impl/type_traits/set_signedness.h"
 
 #include <ostream>

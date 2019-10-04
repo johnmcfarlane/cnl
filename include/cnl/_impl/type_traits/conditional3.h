@@ -7,8 +7,8 @@
 #ifndef CNL_IMPL_TYPE_TRAITS_CONDITIONAL3_H
 #define CNL_IMPL_TYPE_TRAITS_CONDITIONAL3_H
 
-#include "type_identity.h"
 #include "../polarity.h"
+#include "type_identity.h"
 
 namespace cnl {
     namespace _impl {

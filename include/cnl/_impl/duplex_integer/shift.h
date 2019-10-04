@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_SHIFT_H)
 #define CNL_IMPL_DUPLEX_INTEGER_SHIFT_H
 
-#include "type.h"
 #include "../operators/generic.h"
 #include "../operators/operators.h"
+#include "type.h"
 
 /// compositional numeric library
 namespace cnl {

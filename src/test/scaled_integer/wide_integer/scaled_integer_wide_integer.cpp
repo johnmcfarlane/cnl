@@ -4,9 +4,9 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <cnl/_impl/num_traits/digits.h>
 #include <cnl/scaled_integer.h>
 #include <cnl/wide_integer.h>
-#include <cnl/_impl/num_traits/digits.h>
 
 #include <cinttypes>
 

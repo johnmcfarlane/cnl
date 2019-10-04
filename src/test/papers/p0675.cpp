@@ -9,10 +9,10 @@
 
 #if defined(__cpp_deduction_guides)
 
-#include <cnl/rounding_integer.h>
-#include <cnl/num_traits.h>
-#include <cnl/scaled_integer.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/num_traits.h>
+#include <cnl/rounding_integer.h>
+#include <cnl/scaled_integer.h>
 
 #include <gtest/gtest.h>
 

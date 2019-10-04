@@ -12,9 +12,9 @@
 
 #include "../../constant.h"
 #include "../../cstdint.h"
-#include "../used_digits.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_signed.h"
+#include "../used_digits.h"
 #include "is_composite.h"
 
 #include <type_traits>
