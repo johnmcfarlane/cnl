@@ -7,7 +7,7 @@
 /// \file cnl/num_traits.h
 /// \brief definitions supporting \ref cnl::digits
 
-#ifndef CNL_IMPL_NUM_TRAITS_DIGITS
+#if !defined(CNL_IMPL_NUM_TRAITS_DIGITS)
 #define CNL_IMPL_NUM_TRAITS_DIGITS
 
 #include "../../constant.h"

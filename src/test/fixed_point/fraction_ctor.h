@@ -9,7 +9,7 @@
 // The tests may fail on types which are not compact,
 // i.e. where (sizeof(test_int)*CHAR_BIT > cnl::width(test_int)::value).
 
-#ifndef CNL_TEST_FIXED_POINT_FRACTION_CTOR_H
+#if !defined(CNL_TEST_FIXED_POINT_FRACTION_CTOR_H)
 #define CNL_TEST_FIXED_POINT_FRACTION_CTOR_H
 
 #include <cnl/_impl/type_traits/identical.h>

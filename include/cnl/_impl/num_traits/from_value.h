@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_IMPL_NUM_TRAITS_FROM_VALUE
+#if !defined(CNL_IMPL_NUM_TRAITS_FROM_VALUE)
 #define CNL_IMPL_NUM_TRAITS_FROM_VALUE
 
 #include "../../constant.h"

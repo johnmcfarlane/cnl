@@ -97,7 +97,7 @@
  *
  * */
 
-#ifndef CNL_ALL_H
+#if !defined(CNL_ALL_H)
 #define CNL_ALL_H
 
 #include "bit.h"

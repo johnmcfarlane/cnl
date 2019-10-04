@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_IMPL_NUMBER_BASE_TO_STRING_H
+#if !defined(CNL_IMPL_NUMBER_BASE_TO_STRING_H)
 #define CNL_IMPL_NUMBER_BASE_TO_STRING_H
 
 #include "../num_traits/to_rep.h"

@@ -16,6 +16,7 @@
 #include "_impl/num_traits/adopt_width.h"
 #include "_impl/num_traits/digits.h"
 #include "_impl/num_traits/fixed_width_scale.h"
+#include "_impl/num_traits/set_digits.h"
 #include "_impl/num_traits/set_width.h"
 #include "_impl/num_traits/width.h"
 #include "_impl/number_base.h"

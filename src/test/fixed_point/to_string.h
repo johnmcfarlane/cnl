@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_TEST_FIXED_POINT_TO_STRING_H
+#if !defined(CNL_TEST_FIXED_POINT_TO_STRING_H)
 #define CNL_TEST_FIXED_POINT_TO_STRING_H
 
 #include <cnl/fixed_point.h>

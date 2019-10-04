@@ -7,7 +7,7 @@
 /// \file
 /// \brief some cmath specializations for `cnl::scaled_integer` type;
 
-#ifndef CNL_IMPL_SCALED_INTEGER_MATH_H
+#if !defined(CNL_IMPL_SCALED_INTEGER_MATH_H)
 #define CNL_IMPL_SCALED_INTEGER_MATH_H
 
 #include "type.h"

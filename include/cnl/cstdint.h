@@ -7,7 +7,7 @@
 /// \file
 /// \brief file containing definitions equivalent to those in \verbatim<cstdint>\endverbatim
 
-#ifndef CNL_CSTDINT_H
+#if !defined(CNL_CSTDINT_H)
 #define CNL_CSTDINT_H
 
 #include "_impl/common.h"
