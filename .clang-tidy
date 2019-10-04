@@ -1,10 +1,14 @@
 ---
 Checks: >
   cert-*,
+  clang-analyzer-*,
   cppcoreguidelines-*,
   modernize-deprecated-headers,
   -cert-err58-cpp,
-  -clang-analyzer-*,
+  -clang-analyzer-core.UndefinedBinaryOperatorResult,
+  -clang-analyzer-cplusplus.InnerPointer,
+  -clang-analyzer-cplusplus.NewDelete,
+  -clang-analyzer-cplusplus.NewDeleteLeaks,
   -cppcoreguidelines-avoid-goto,
   -cppcoreguidelines-avoid-magic-numbers,
   -cppcoreguidelines-owning-memory,
