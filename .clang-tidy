@@ -1,7 +1,9 @@
 ---
 Checks: >
+  cert-*,
   cppcoreguidelines-*,
   modernize-deprecated-headers,
+  -cert-err58-cpp,
   -clang-analyzer-*,
   -cppcoreguidelines-avoid-goto,
   -cppcoreguidelines-avoid-magic-numbers,

@@ -176,10 +176,10 @@ namespace o {
     static_assert(cnl::_impl::identical(fixed_point<int, 7>{128}, z));
 
     constexpr auto a = cnl::fixed_point{0b10000000000000000000000000000000000000000_c};
-    static_assert(cnl::_impl::identical(fixed_point<int, 40>{0b10000000000000000000000000000000000000000l}, a));
+    static_assert(cnl::_impl::identical(fixed_point<int, 40>{0b10000000000000000000000000000000000000000L}, a));
 
     constexpr auto b = cnl::fixed_point{0b11111111111111111111111111111111111111111_c};
-    static_assert(cnl::_impl::identical(fixed_point<cnl::int64, 0>{0b11111111111111111111111111111111111111111l}, b));
+    static_assert(cnl::_impl::identical(fixed_point<cnl::int64, 0>{0b11111111111111111111111111111111111111111L}, b));
 
     constexpr auto c = elastic_integer{2017_c};
     static_assert(cnl::_impl::identical(elastic_integer<11>{2017}, c));

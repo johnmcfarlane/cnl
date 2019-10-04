@@ -16,7 +16,7 @@
 #include <cnl/fraction.h>
 #include <cnl/_impl/type_traits/identical.h>
 
-namespace {
+namespace {  // NOLINT(cert-dcl59-cpp)
     using cnl::_impl::identical;
 
     template<class Op, typename Lhs, typename Rhs>
