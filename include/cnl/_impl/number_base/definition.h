@@ -12,6 +12,8 @@
 #include "../num_traits/to_rep.h"
 #include "../../limits.h"
 
+#include <utility>
+
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
@@ -30,8 +32,8 @@ namespace cnl {
 
             number_base() = default;
 
-            explicit constexpr number_base(rep const& r)
-                : _rep(r) { }
+            explicit constexpr number_base(rep r)
+                : _rep(std::move(r)) { }
 
             template<class T>
             CNL_RELAXED_CONSTEXPR number_base& operator=(T const& r) {

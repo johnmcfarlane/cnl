@@ -320,7 +320,7 @@ TEST(scaled_integer_multiprecision, signed_multiprecision_leading_bits)
 
 TEST(scaled_integer_multiprecision, sqrt)
 {
-    typedef cnl::scaled_integer<boost::multiprecision::int128_t> length_t;
+    using length_t = cnl::scaled_integer<boost::multiprecision::int128_t> ;
     length_t x = length_t{ 25 };
     auto y = cnl::sqrt(x);
     ASSERT_EQ(y, 5);
