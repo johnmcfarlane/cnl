@@ -115,7 +115,7 @@ namespace cnl {
         // addresses uninitialized data error in operator<<(ostream,scaled_integer)
         std::array<char, max_num_chars+1> chars{};
 #else
-        std::array<char, max_num_chars+1> chars;
+        std::array<char, max_num_chars+1> chars{};
 #endif
 
         auto result = to_chars(chars.data(), chars.data()+max_num_chars, value);
