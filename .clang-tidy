@@ -3,6 +3,7 @@ Checks: >
   cppcoreguidelines-c-copy-assignment-signature,
   cppcoreguidelines-macro-usage,
   cppcoreguidelines-no-malloc,
+  cppcoreguidelines-pro-type-member-init,
   modernize-deprecated-headers,
   -clang-analyzer-*,
 WarningsAsErrors: '*'

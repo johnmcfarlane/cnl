@@ -27,9 +27,11 @@ namespace cnl {
         static int const digits = CHAR_BIT*sizeof(int128)-1;
         static int const digits10 = 38;
 
-        struct _s {
+        class _s {
+        public:
             constexpr _s(uint64 upper, uint64 lower) : value(lower + (int128{upper} << 64)) {}
             CNL_NODISCARD constexpr operator int128() const { return value; }
+        private:
             int128 value;
         };
 
@@ -54,9 +56,11 @@ namespace cnl {
         static int const digits = CHAR_BIT*sizeof(int128);
         static int const digits10 = 38;
 
-        struct _s {
+        class _s {
+        public:
             constexpr _s(uint64 upper, uint64 lower) : value(lower + (uint128{upper} << 64)) {}
             CNL_NODISCARD constexpr operator uint128() const { return value; }
+        private:
             uint128 value;
         };
 
