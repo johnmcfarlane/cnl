@@ -6,6 +6,7 @@ Checks: >
   hicpp-*,
   llvm-*,
   modernize-*,
+  readability-braces-around-statements,
   readability-else-after-return,
   -cert-err58-cpp,
   -clang-analyzer-cplusplus.InnerPointer,
