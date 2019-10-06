@@ -161,12 +161,6 @@ namespace cnl {
             }
         };
 
-        template<class Operator, typename ... Operands>
-        constexpr int operator_overflow_traits<Operator, Operands...>::positive_digits;
-
-        template<class Operator, typename ... Operands>
-        constexpr int operator_overflow_traits<Operator, Operands...>::negative_digits;
-
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::is_overflow
 

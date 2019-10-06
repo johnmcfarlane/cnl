@@ -62,21 +62,6 @@ namespace cnl {
                         0.000021498763160402416) };
             };
 
-            template<class CoeffType>
-            constexpr CoeffType poly_coeffs<CoeffType>::a1;
-            template<class CoeffType>
-            constexpr CoeffType poly_coeffs<CoeffType>::a2;
-            template<class CoeffType>
-            constexpr CoeffType poly_coeffs<CoeffType>::a3;
-            template<class CoeffType>
-            constexpr CoeffType poly_coeffs<CoeffType>::a4;
-            template<class CoeffType>
-            constexpr CoeffType poly_coeffs<CoeffType>::a5;
-            template<class CoeffType>
-            constexpr CoeffType poly_coeffs<CoeffType>::a6;
-            template<class CoeffType>
-            constexpr CoeffType poly_coeffs<CoeffType>::a7;
-
             template<typename A, typename B>
             CNL_NODISCARD constexpr auto safe_multiply(A const& a, B const& b)
             -> enable_if_t<digits<decltype(a*b)>::value <= digits<A>::value+digits<B>::value,

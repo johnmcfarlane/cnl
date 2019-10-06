@@ -48,10 +48,6 @@ namespace cnl {
             return sensible_right_shift<Upper>(input, digits<Lower>::value);
         }
 
-        // cnl::_impl::duplex_integer::duplex_integer
-        template<typename Upper, typename Lower>
-        constexpr int duplex_integer<Upper, Lower>::lower_width;
-
         template<typename Upper, typename Lower>
         constexpr duplex_integer<Upper, Lower>::duplex_integer(upper_type const& u, lower_type const& l)
                 :_upper(u), _lower(l) { }
