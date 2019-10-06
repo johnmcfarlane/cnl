@@ -63,15 +63,6 @@ namespace {
     }
 
     namespace test_division {
-        TEST(a, b)
-        {
-            auto ex = wide_elastic_integer<2>{3/4};
-            auto n = wide_elastic_integer<2>{3};
-            auto d = wide_elastic_integer<3>{4};
-            auto q = n/d;
-            ASSERT_EQ(ex, q);
-        }
-
         static_assert(identical(wide_elastic_integer<2>{3/4},
                 wide_elastic_integer<2>{3}
                         /wide_elastic_integer<3>{4}), "");
