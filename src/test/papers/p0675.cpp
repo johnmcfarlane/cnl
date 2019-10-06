@@ -64,12 +64,11 @@ namespace acme {
             auto product_rep = lhs_rep * rhs_rep;
             return smart_integer{product_rep};
         }
-        else {
-            auto lhs_rep_signed = std::make_signed_t<LhsRep>(lhs_rep);
-            auto rhs_rep_signed = std::make_signed_t<RhsRep>(rhs_rep);
-            auto product_rep = lhs_rep_signed * rhs_rep_signed;
-            return smart_integer{product_rep};
-        }
+
+        auto lhs_rep_signed = std::make_signed_t<LhsRep>(lhs_rep);
+        auto rhs_rep_signed = std::make_signed_t<RhsRep>(rhs_rep);
+        auto product_rep = lhs_rep_signed * rhs_rep_signed;
+        return smart_integer{product_rep};
     }
 }
 

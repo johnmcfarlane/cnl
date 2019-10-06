@@ -6,6 +6,7 @@ Checks: >
   hicpp-*,
   llvm-*,
   modernize-*,
+  readability-else-after-return,
   -cert-err58-cpp,
   -clang-analyzer-cplusplus.InnerPointer,
   -clang-analyzer-cplusplus.NewDelete,

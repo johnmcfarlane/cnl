@@ -142,16 +142,13 @@ namespace udl_impl {
             if (s[1] == 'b' || s[1] == 'B') {
                 return parse(s + 2, 2, parse_bin_char);
             }
-            else if (s[1] == 'x' || s[1] == 'X') {
+            if (s[1] == 'x' || s[1] == 'X') {
                 return parse(s + 2, 16, parse_hex_char);
             }
-            else {
-                return parse(s + 1, 8, parse_oct_char);
-            }
+            return parse(s + 1, 8, parse_oct_char);
         }
-        else {
-            return parse(s, 10, parse_dec_char);
-        }
+
+        return parse(s, 10, parse_dec_char);
     }
 
     static_assert(identical(parse("123"), std::intmax_t{123}));

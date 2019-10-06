@@ -87,16 +87,15 @@ namespace cnl {
                     // +ve
                     return to_chars_positive(first, last, value);
                 }
-                else {
-                    auto const destination_length = std::distance(first, last);
-                    if (destination_length<2) {
-                        return to_chars_result{last, std::errc::value_too_large};
-                    }
 
-                    // -ve
-                    *first = '-';
-                    return to_chars_positive(first+1, last, -value);
+                auto const destination_length = std::distance(first, last);
+                if (destination_length<2) {
+                    return to_chars_result{last, std::errc::value_too_large};
                 }
+
+                // -ve
+                *first = '-';
+                return to_chars_positive(first+1, last, -value);
             }
         };
     }
