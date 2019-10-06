@@ -120,7 +120,7 @@ namespace example {
         return sqrt(x*x+y*y+z*z);
     }
 
-    TEST(proposal, examples)
+    TEST(proposal, examples)  // NOLINT
     {
         constexpr auto m = magnitude(
                 scaled_integer<uint16_t, power<-12>>(1),

@@ -96,7 +96,7 @@ namespace {
                 "");
     }
 
-    TEST(wide_elastic_integer, pre_increment)
+    TEST(wide_elastic_integer, pre_increment)  // NOLINT
     {
         auto a = wide_elastic_integer<3>{6};
         auto& b = ++a;
@@ -107,7 +107,7 @@ namespace {
         ASSERT_EQ(7, b) << "wide_elastic_integer pre-increment";
     }
 
-    TEST(wide_elastic_integer, pre_decrement)
+    TEST(wide_elastic_integer, pre_decrement)  // NOLINT
     {
         auto a = wide_elastic_integer<3>{-6};
         auto& b = --a;
@@ -118,7 +118,7 @@ namespace {
         ASSERT_EQ(-7, b) << "wide_elastic_integer pre-increment";
     }
 
-    TEST(wide_elastic_integer, post_increment)
+    TEST(wide_elastic_integer, post_increment)  // NOLINT
     {
         auto a = wide_elastic_integer<3>{6};
         auto const& b = a++;
@@ -130,7 +130,7 @@ namespace {
         ASSERT_EQ(6, b) << "wide_elastic_integer pre-increment";
     }
 
-    TEST(wide_elastic_integer, post_decrement)
+    TEST(wide_elastic_integer, post_decrement)  // NOLINT
     {
         auto a = wide_elastic_integer<3>{-6};
         auto const& b = a--;

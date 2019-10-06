@@ -16,7 +16,7 @@
 #include <cstdint>
 
 
-TEST(math, FPTESTFORMAT) {
+TEST(math, FPTESTFORMAT) {  // NOLINT
     using fp = cnl::fixed_point<int32_t, FPTESTEXP>;
 
     //Test integer powers

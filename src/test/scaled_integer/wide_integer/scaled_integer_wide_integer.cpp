@@ -26,7 +26,7 @@ using test_int = cnl::wide_integer<cnl::digits<int>::value, int>;
 // perform scaled_integer tests with this type of scaled_integer specialization
 #include "../scaled_integer_common.h"
 
-TEST(scaled_integer_wide_integer, to_string)
+TEST(scaled_integer_wide_integer, to_string)  // NOLINT
 {
     auto const expected = "0.714285714285714285714285713708718880752631365184564249393162072010454721748828887939453125";
     auto const actual = cnl::to_string(cnl::scaled_integer<cnl::wide_integer<100, unsigned>, cnl::power<-90>>{5.}/7);
@@ -34,7 +34,7 @@ TEST(scaled_integer_wide_integer, to_string)
 }
 
 #if !defined(__arm__)
-TEST(scaled_integer_wide_integer, quotient)
+TEST(scaled_integer_wide_integer, quotient)  // NOLINT
 {
     using scaled_integer = cnl::scaled_integer<cnl::wide_integer<129, unsigned>, cnl::power<-96>>;
     auto expected = scaled_integer{1.L/3};
@@ -43,7 +43,7 @@ TEST(scaled_integer_wide_integer, quotient)
 }
 
 #if !defined(__GNUC__) || defined(__clang__)
-TEST(scaled_integer_wide_integer, quotient200)
+TEST(scaled_integer_wide_integer, quotient200)  // NOLINT
 {
     using scaled_integer = cnl::scaled_integer<cnl::wide_integer<200, unsigned>, cnl::power<-196>>;
     auto expected = scaled_integer{5.L/7};
@@ -51,7 +51,7 @@ TEST(scaled_integer_wide_integer, quotient200)
     ASSERT_EQ(double(expected), double(actual));
 }
 
-TEST(scaled_integer_wide_integer, ctor_fraction)
+TEST(scaled_integer_wide_integer, ctor_fraction)  // NOLINT
 {
     using namespace cnl::literals;
     using scaled_integer = cnl::scaled_integer<cnl::wide_integer<200>, cnl::power<-100>>;

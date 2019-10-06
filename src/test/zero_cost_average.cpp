@@ -83,19 +83,19 @@ static_assert(identical(average_elastic_integer(32000.125, 27805.75), 29902.9375
 static_assert(identical(average_scaled_integer(32000.125, 27805.75), 29902.9375F), "average_scaled_integer test failed");
 static_assert(identical(average_elastic(32000.125, 27805.75), 29902.9375F), "average_elastic test failed");
 #else
-TEST(zero_cost_average, integer) {
+TEST(zero_cost_average, integer) {  // NOLINT
     ASSERT_EQ(average_integer(32000.125, 27805.75), 29902.9375F);
 }
 
-TEST(zero_cost_average, elastic_integer) {
+TEST(zero_cost_average, elastic_integer) {  // NOLINT
     ASSERT_EQ(average_elastic_integer(30000, 0.125), 15000.0625F);
 }
 
-TEST(zero_cost_average, scaled_integer) {
+TEST(zero_cost_average, scaled_integer) {  // NOLINT
     ASSERT_EQ(average_scaled_integer(30000, 0.125), 15000.0625F);
 }
 
-TEST(zero_cost_average, elastic_scaled_integer) {
+TEST(zero_cost_average, elastic_scaled_integer) {  // NOLINT
     ASSERT_EQ(average_elastic(30000, 0.125), 15000.0625F);
 }
 #endif

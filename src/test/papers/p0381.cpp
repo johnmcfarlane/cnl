@@ -28,12 +28,12 @@ namespace sample1 {
     static_assert(UCHAR_MAX==255, "incorrect assumption about value of UCHAR_MAX");
     static_assert(UCHAR_MAX*UCHAR_MAX==65025, "incorrect assumption about value of UCHAR_MAX");
 
-    TEST(p0381, multiply_uint8_ok)
+    TEST(p0381, multiply_uint8_ok)  // NOLINT
     {
         ASSERT_EQ(100, multiply(10, 10));
     }
 
-    TEST(p0381, multiply_uint8_overflow)
+    TEST(p0381, multiply_uint8_overflow)  // NOLINT
     {
         ASSERT_NE(400, multiply(20, 20));
     }
@@ -55,12 +55,12 @@ namespace sample2 {
     static_assert(is_same<decltype(declval<unsigned>()*declval<unsigned>()), unsigned>::value,
             "incorrect assumption about type of result of unsigned * unsigned");
 
-    TEST(p0381, multiply_unsigned_ok)
+    TEST(p0381, multiply_unsigned_ok)  // NOLINT
     {
         ASSERT_EQ(400U, multiply(20U, 20U));
     }
 
-    TEST(p0381, multiply_unsigned_overflow)
+    TEST(p0381, multiply_unsigned_overflow)  // NOLINT
     {
         ASSERT_NE(static_cast<wide_type>(UINT_MAX)*static_cast<wide_type>(UINT_MAX),
                 static_cast<wide_type>(multiply(UINT_MAX, UINT_MAX)));
@@ -78,12 +78,12 @@ namespace sample3 {
     static_assert(is_same<uint64_t, decltype(multiply(declval<uint32_t>(), declval<uint32_t>()))>::value,
             "incorrect assumption about result of multiply function");
 
-    TEST(p0381, multiply_unsigned_ok)
+    TEST(p0381, multiply_unsigned_ok)  // NOLINT
     {
         ASSERT_EQ(400U, multiply(20U, 20U));
     }
 
-    TEST(p0381, multiply_unsigned_still_ok)
+    TEST(p0381, multiply_unsigned_still_ok)  // NOLINT
     {
         ASSERT_EQ(static_cast<uint64_t>(UINT_MAX)*static_cast<uint64_t>(UINT_MAX),
                 static_cast<uint64_t>(multiply(UINT_MAX, UINT_MAX)));
@@ -120,12 +120,12 @@ namespace sample5 {
 //    static_assert(is_same<int32_t, decltype(multiply(declval<int16_t>(), declval<int16_t>()))>::value,
 //            "incorrect assumption about result of multiply function");
 
-    TEST(p0381, multiply_unsigned_ok)
+    TEST(p0381, multiply_unsigned_ok)  // NOLINT
     {
         ASSERT_EQ(400U, multiply(20U, 20U));
     }
 
-    TEST(p0381, multiply_unsigned_still_ok)
+    TEST(p0381, multiply_unsigned_still_ok)  // NOLINT
     {
         ASSERT_EQ(static_cast<uint64_t>(UINT_MAX)*static_cast<uint64_t>(UINT_MAX),
                 static_cast<uint64_t>(multiply(UINT_MAX, UINT_MAX)));

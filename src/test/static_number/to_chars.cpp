@@ -12,7 +12,7 @@
 #include <string>
 
 namespace {
-    TEST(static_number, to_chars)
+    TEST(static_number, to_chars)  // NOLINT
     {
         auto const num_chars = 12;
         auto buffer = std::array<char, num_chars+1>{};
@@ -30,7 +30,7 @@ namespace {
     }
 
 #if defined(CNL_INT128_ENABLED)
-    TEST(static_number, to_chars_wider)
+    TEST(static_number, to_chars_wider)  // NOLINT
     {
         auto const num_chars = 12;
         auto buffer = std::array<char, num_chars+1>{};

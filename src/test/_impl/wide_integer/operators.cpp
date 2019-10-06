@@ -59,7 +59,7 @@ namespace {
 #endif
 
 #if !defined(__arm__) && defined(__clang__)
-        TEST(wide_integer, minus)
+        TEST(wide_integer, minus)  // NOLINT
         {
             auto expected = cnl::_impl::wide_integer<1000, int>{-17292375928362489LL};
             auto actual = -cnl::_impl::wide_integer<1000, int>{17292375928362489LL};
@@ -105,7 +105,7 @@ namespace {
                 "");
 
 #if defined(__clang__)
-        TEST(wide_integer, divide)
+        TEST(wide_integer, divide)  // NOLINT
         {
             using namespace cnl::_impl;
             auto expected = 0x5555555555555555555555555555555555555555555555555_wide;

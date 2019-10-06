@@ -84,7 +84,7 @@ namespace test_to_rep {
             "cnl::_impl::depth<scaled_integer<boost::multiprecision>>");
 }
 
-TEST(multiprecision, to_rep)
+TEST(multiprecision, to_rep)  // NOLINT
 {
     auto const expected = unsigned_multiprecision<5432>{123};
     auto const actual = cnl::to_rep<unsigned_multiprecision<5432>>{}(123);
@@ -105,7 +105,7 @@ namespace test_impl_to_rep {
             "cnl::_impl::depth<boost::multiprecision>");
 }
 
-TEST(multiprecision, from_value)
+TEST(multiprecision, from_value)  // NOLINT
 {
     auto const expected = unsigned_multiprecision<43212>{53};
     auto const actual = cnl::from_value<
@@ -115,7 +115,7 @@ TEST(multiprecision, from_value)
     ASSERT_TRUE(identical(expected, actual));
 }
 
-TEST(multiprecision, scale_positive)
+TEST(multiprecision, scale_positive)  // NOLINT
 {
     auto const expected = signed_multiprecision<321>{768*(1 << 5)};
     auto const actual = cnl::_impl::scale<5, 2>(signed_multiprecision<321>{768});
@@ -123,7 +123,7 @@ TEST(multiprecision, scale_positive)
     ASSERT_TRUE(identical(expected, actual));
 }
 
-TEST(multiprecision, scale_negative)
+TEST(multiprecision, scale_negative)  // NOLINT
 {
     auto const expected = unsigned_multiprecision<321>{768/(1 << 5)};
     auto const actual = cnl::_impl::scale<-5, 2>(unsigned_multiprecision<321>{768});
@@ -140,7 +140,7 @@ namespace test_depth {
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::multiprecision arithmetic
 
-TEST(multiprecision, add)
+TEST(multiprecision, add)  // NOLINT
 {
     using int64 = unsigned_multiprecision<64>;
 
@@ -153,7 +153,7 @@ TEST(multiprecision, add)
     ASSERT_EQ(sum, expected);
 }
 
-TEST(multiprecision, subtract)
+TEST(multiprecision, subtract)  // NOLINT
 {
     using int64 = cnl::unsigned_multiprecision<64>;
 
@@ -166,7 +166,7 @@ TEST(multiprecision, subtract)
     ASSERT_EQ(difference, expected);
 }
 
-TEST(multiprecision, multiply)
+TEST(multiprecision, multiply)  // NOLINT
 {
     using int64 = unsigned_multiprecision<64>;
     using int128 = unsigned_multiprecision<128>;
@@ -180,7 +180,7 @@ TEST(multiprecision, multiply)
     ASSERT_EQ(factor, quotient);
 }
 
-TEST(multiprecision, divide)
+TEST(multiprecision, divide)  // NOLINT
 {
     using int64 = unsigned_multiprecision<64>;
 
@@ -195,7 +195,7 @@ TEST(multiprecision, divide)
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::scaled_integer<cnl::unsigned_multiprecision<>> arithmetic
 
-TEST(scaled_integer_multiprecision, add)
+TEST(scaled_integer_multiprecision, add)  // NOLINT
 {
     using int64 = scaled_integer<unsigned_multiprecision<64>>;
 
@@ -208,7 +208,7 @@ TEST(scaled_integer_multiprecision, add)
     ASSERT_EQ(sum, expected);
 }
 
-TEST(scaled_integer_multiprecision, subtract)
+TEST(scaled_integer_multiprecision, subtract)  // NOLINT
 {
     using int64 = scaled_integer<unsigned_multiprecision<64>>;
 
@@ -221,7 +221,7 @@ TEST(scaled_integer_multiprecision, subtract)
     ASSERT_EQ(difference, expected);
 }
 
-TEST(scaled_integer_multiprecision, multiply)
+TEST(scaled_integer_multiprecision, multiply)  // NOLINT
 {
     using int64 = scaled_integer<unsigned_multiprecision<64>>;
     using int128 = scaled_integer<unsigned_multiprecision<128>>;
@@ -235,7 +235,7 @@ TEST(scaled_integer_multiprecision, multiply)
     ASSERT_EQ(factor, quotient);
 }
 
-TEST(scaled_integer_multiprecision, divide)
+TEST(scaled_integer_multiprecision, divide)  // NOLINT
 {
     using int64 = scaled_integer<unsigned_multiprecision<64>>;
 
@@ -264,7 +264,7 @@ static_assert(
 // Boost.Multiprecision in 1.58 known to have constexpr support
 #if (BOOST_VERSION>=105800)
 
-TEST(scaled_integer_multiprecision, shift_left_constant)
+TEST(scaled_integer_multiprecision, shift_left_constant)  // NOLINT
 {
     auto lhs = cnl::unsigned_multiprecision<15>{1536};
     auto rhs = cnl::constant<3>{};
@@ -273,7 +273,7 @@ TEST(scaled_integer_multiprecision, shift_left_constant)
     ASSERT_EQ(expected, actual);
 }
 
-TEST(scaled_integer_multiprecision, shift_right_constant)
+TEST(scaled_integer_multiprecision, shift_right_constant)  // NOLINT
 {
     auto lhs = cnl::unsigned_multiprecision<15>{1536};
     auto rhs = cnl::constant<3>{};
@@ -287,14 +287,14 @@ TEST(scaled_integer_multiprecision, shift_right_constant)
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::used_digits<boost::multiprecision::number<>>
 
-TEST(scaled_integer_multiprecision, unsigned_multiprecision_used_digits)
+TEST(scaled_integer_multiprecision, unsigned_multiprecision_used_digits)  // NOLINT
 {
     using q4_20 = scaled_integer<unsigned_multiprecision<24>, cnl::power<-20>>;
     q4_20 a = 3.051757812500000e-05;
     ASSERT_EQ(6, cnl::used_digits(a));
 }
 
-TEST(scaled_integer_multiprecision, signed_multiprecision_used_digits)
+TEST(scaled_integer_multiprecision, signed_multiprecision_used_digits)  // NOLINT
 {
     using q4_20 = scaled_integer<signed_multiprecision<24>, cnl::power<-20>>;
     q4_20 a = 3.051757812500000e-05;
@@ -304,21 +304,21 @@ TEST(scaled_integer_multiprecision, signed_multiprecision_used_digits)
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::leading_bits<boost::multiprecision::number<>>
 
-TEST(scaled_integer_multiprecision, unsigned_multiprecision_leading_bits)
+TEST(scaled_integer_multiprecision, unsigned_multiprecision_leading_bits)  // NOLINT
 {
     using q4_20 = scaled_integer<unsigned_multiprecision<24>, cnl::power<-20>>;
     q4_20 a = 3.051757812500000e-05;
     ASSERT_EQ(18, leading_bits(a));
 }
 
-TEST(scaled_integer_multiprecision, signed_multiprecision_leading_bits)
+TEST(scaled_integer_multiprecision, signed_multiprecision_leading_bits)  // NOLINT
 {
     using q4_20 = scaled_integer<signed_multiprecision<24>, cnl::power<-20>>;
     q4_20 a = 3.051757812500000e-05;
     ASSERT_EQ(18, leading_bits(a));
 }
 
-TEST(scaled_integer_multiprecision, sqrt)
+TEST(scaled_integer_multiprecision, sqrt)  // NOLINT
 {
     using length_t = cnl::scaled_integer<boost::multiprecision::int128_t> ;
     length_t x = length_t{ 25 };

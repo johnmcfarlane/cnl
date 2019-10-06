@@ -476,7 +476,7 @@ namespace test_used_digits {
 }
 
 namespace {
-    TEST(overflow_integer, pre_increment) {
+    TEST(overflow_integer, pre_increment) {  // NOLINT
         auto a = cnl::overflow_integer<>{INT_MAX-1};
         auto& b = ++ a;
         static_assert(
@@ -486,7 +486,7 @@ namespace {
         ASSERT_EQ(INT_MAX, b) << "static_integer pre-increment";
     }
 
-    TEST(overflow_integer, pre_decrement) {
+    TEST(overflow_integer, pre_decrement) {  // NOLINT
         auto a = overflow_integer<>{INT_MIN+1};
         auto& b = -- a;
         static_assert(
@@ -496,7 +496,7 @@ namespace {
         ASSERT_EQ(INT_MIN, b) << "static_integer pre-increment";
     }
 
-    TEST(overflow_integer, post_increment) {
+    TEST(overflow_integer, post_increment) {  // NOLINT
         auto a = cnl::overflow_integer<>{INT_MAX-1};
         auto const& b = a ++;
         static_assert(
@@ -507,7 +507,7 @@ namespace {
         ASSERT_EQ(INT_MAX-1, b) << "static_integer pre-increment";
     }
 
-    TEST(overflow_integer, post_decrement) {
+    TEST(overflow_integer, post_decrement) {  // NOLINT
         auto a = overflow_integer<>{INT_MIN+1};
         auto const& b = a --;
         static_assert(
@@ -520,48 +520,48 @@ namespace {
 
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
 
-    TEST(overflow_integer, conversion_positive_overflow)
+    TEST(overflow_integer, conversion_positive_overflow)  // NOLINT
     {
         constexpr auto short_max = cnl::numeric_limits<short>::max();
         auto a = cnl::overflow_integer<>{static_cast<int>(short_max)+1};
         ASSERT_DEATH((void)a.operator short(), "positive overflow");
     }
 
-    TEST(overflow_integer, conversion_negaive_overflow)
+    TEST(overflow_integer, conversion_negaive_overflow)  // NOLINT
     {
         constexpr auto short_min = cnl::numeric_limits<short>::min();
         auto a = cnl::overflow_integer<>{static_cast<int>(short_min)-1};
         ASSERT_DEATH((void)a.operator short(), "negative overflow");
     }
 
-    TEST(overflow_integer, minus_overflow_signed)
+    TEST(overflow_integer, minus_overflow_signed)  // NOLINT
     {
         auto int_min = cnl::numeric_limits<cnl::overflow_integer<int>>::min();
         ASSERT_DEATH(int_min = -int_min, "positive overflow");
     }
 
-    TEST(overflow_integer, minus_overflow_unsigned)
+    TEST(overflow_integer, minus_overflow_unsigned)  // NOLINT
     {
         auto one = cnl::overflow_integer<unsigned>{1};
         ASSERT_DEATH(one = -one, "negative overflow");
     }
 
-    TEST(overflow_integer, pre_increment_overflow) {
+    TEST(overflow_integer, pre_increment_overflow) {  // NOLINT
         auto a = cnl::overflow_integer<>{INT_MAX};
         ASSERT_DEATH(++ a, "positive overflow");
     }
 
-    TEST(overflow_integer, pre_decrement_overflow) {
+    TEST(overflow_integer, pre_decrement_overflow) {  // NOLINT
         auto a = cnl::overflow_integer<>{INT_MIN};
         ASSERT_DEATH(-- a, "negative overflow");
     }
 
-    TEST(overflow_integer, post_increment_overflow) {
+    TEST(overflow_integer, post_increment_overflow) {  // NOLINT
         auto a = cnl::overflow_integer<>{INT_MAX};
         ASSERT_DEATH(a ++, "positive overflow");
     }
 
-    TEST(overflow_integer, post_decrement_overflow) {
+    TEST(overflow_integer, post_decrement_overflow) {  // NOLINT
         auto a = cnl::overflow_integer<>{INT_MIN};
         ASSERT_DEATH(a --, "negative overflow");
     }

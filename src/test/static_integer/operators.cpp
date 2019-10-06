@@ -20,7 +20,7 @@ namespace {
     }
 
     namespace test_division_native {
-        TEST(static_integer, division_native) {
+        TEST(static_integer, division_native) {  // NOLINT
             auto ex = cnl::static_integer<2, cnl::native_rounding_tag>{3/4};
             auto n = cnl::static_integer<2, cnl::native_rounding_tag>{3};
             auto d = cnl::static_integer<3, cnl::native_rounding_tag>{4};
@@ -88,7 +88,7 @@ namespace {
         using namespace cnl::literals;
 
 #if  defined(__GNUG__) && !defined(__clang__) && __GNUG__ <= 5
-        TEST(static_integer, divide)
+        TEST(static_integer, divide)  // NOLINT
         {
             auto expected = cnl::make_static_integer(
                     231584178474632390847141970017375815706539969331281128078915168015826259279872_wide);
@@ -127,14 +127,14 @@ namespace {
     }
 
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
-    TEST(static_integer, most_negative_number) {
+    TEST(static_integer, most_negative_number) {  // NOLINT
         static_assert(cnl::static_integer<1>{1}, "in-range boundary test");
         static_assert(cnl::static_integer<1>{-1}, "in-range boundary test");
         ASSERT_DEATH(cnl::static_integer<1>{-2}, "negative overflow");
     }
 #endif
 
-    TEST(static_integer, pre_increment) {
+    TEST(static_integer, pre_increment) {  // NOLINT
         auto a = cnl::static_integer<3>{6};
         auto& b = ++ a;
         static_assert(
@@ -144,7 +144,7 @@ namespace {
         ASSERT_EQ(7, b) << "static_integer pre-increment";
     }
 
-    TEST(static_integer, pre_decrement) {
+    TEST(static_integer, pre_decrement) {  // NOLINT
         auto a = cnl::static_integer<3>{-6};
         auto& b = -- a;
         static_assert(
@@ -154,7 +154,7 @@ namespace {
         ASSERT_EQ(-7, b) << "static_integer pre-increment";
     }
 
-    TEST(static_integer, post_increment) {
+    TEST(static_integer, post_increment) {  // NOLINT
         auto a = cnl::static_integer<3>{6};
         auto const& b = a ++;
         static_assert(
@@ -165,7 +165,7 @@ namespace {
         ASSERT_EQ(6, b) << "static_integer pre-increment";
     }
 
-    TEST(static_integer, post_decrement) {
+    TEST(static_integer, post_decrement) {  // NOLINT
         auto a = cnl::static_integer<3>{-6};
         auto const& b = a --;
         static_assert(
@@ -177,22 +177,22 @@ namespace {
     }
 
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
-    TEST(static_integer, pre_increment_overflow) {
+    TEST(static_integer, pre_increment_overflow) {  // NOLINT
         auto a = cnl::static_integer<3>{7};
         ASSERT_DEATH(++ a, "positive overflow");
     }
 
-    TEST(static_integer, pre_decrement_overflow) {
+    TEST(static_integer, pre_decrement_overflow) {  // NOLINT
         auto a = cnl::static_integer<3>{-7};
         ASSERT_DEATH(-- a, "negative overflow");
     }
 
-    TEST(static_integer, post_increment_overflow) {
+    TEST(static_integer, post_increment_overflow) {  // NOLINT
         auto a = cnl::static_integer<3>{7};
         ASSERT_DEATH(a ++, "positive overflow");
     }
 
-    TEST(static_integer, post_decrement_overflow) {
+    TEST(static_integer, post_decrement_overflow) {  // NOLINT
         auto a = cnl::static_integer<3>{-7};
         ASSERT_DEATH(a --, "negative overflow");
     }

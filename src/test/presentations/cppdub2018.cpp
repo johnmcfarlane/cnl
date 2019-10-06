@@ -89,7 +89,7 @@ namespace f {
 #if (__cplusplus >= 201703L)
 namespace g {
     auto n = scaled_integer<int, power<-8>>{1.5};
-    auto nn = n * n;    // scaled_integer<int, -16>;
+    auto nn = n * n;
 
     static_assert(std::is_same<decltype(nn), scaled_integer<int, power<-16>>>::value);
 }

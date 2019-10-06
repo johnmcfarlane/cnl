@@ -32,7 +32,7 @@ namespace {
                 "constructor taking wide_integer");
     }
 
-    TEST(wide_integer, post_decrement) {
+    TEST(wide_integer, post_decrement) {  // NOLINT
         auto a = cnl::wide_integer<3>{-6};
         auto const& b = a --;
         static_assert(

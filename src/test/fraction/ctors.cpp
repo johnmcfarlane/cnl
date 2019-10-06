@@ -50,7 +50,7 @@ namespace {
         ASSERT_EQ(denominator, actual.denominator);
     }
 
-    TEST(fraction, float_ctor_int64)
+    TEST(fraction, float_ctor_int64)  // NOLINT
     {
         TestFloatingCtor<cnl::int64>(.1, 1, 10);
         TestFloatingCtor<cnl::int64>(0.999, 999, 1000);
@@ -73,18 +73,18 @@ namespace {
     }
 
 #if defined(CNL_DEBUG)
-    TEST(fraction_ctor, float_ctor_int64_double_inv22)
+    TEST(fraction_ctor, float_ctor_int64_double_inv22)  // NOLINT
     {
         ASSERT_DEATH(cnl::fraction<cnl::int64>(1e-22), "");
     }
 
-    TEST(fraction_ctor, float_ctor_int64_double_inv30)
+    TEST(fraction_ctor, float_ctor_int64_double_inv30)  // NOLINT
     {
         ASSERT_DEATH(cnl::fraction<cnl::int64>(1e-30), "");
     }
 #endif
 
-    TEST(fraction, float_ctor_int32)
+    TEST(fraction, float_ctor_int32)  // NOLINT
     {
         TestFloatingCtor<cnl::int32>(.1, 1, 10);
         TestFloatingCtor<cnl::int32>(0.999, 999, 1000);
@@ -103,28 +103,28 @@ namespace {
     }
 
 #if defined(CNL_DEBUG)
-    TEST(fraction_ctor, float_ctor_int32_double_inv15)
+    TEST(fraction_ctor, float_ctor_int32_double_inv15)  // NOLINT
     {
         ASSERT_DEATH(cnl::fraction<cnl::int32>(1e-15), "");
     }
 
-    TEST(fraction_ctor, float_ctor_int32_double_inv22)
+    TEST(fraction_ctor, float_ctor_int32_double_inv22)  // NOLINT
     {
         ASSERT_DEATH(cnl::fraction<cnl::int32>(1e-22), "");
     }
 
-    TEST(fraction_ctor, float_ctor_int32_double_inv30)
+    TEST(fraction_ctor, float_ctor_int32_double_inv30)  // NOLINT
     {
         ASSERT_DEATH(cnl::fraction<cnl::int32>(1e-30), "");
     }
 
-    TEST(fraction_ctor, float_ctor_int32_double_15)
+    TEST(fraction_ctor, float_ctor_int32_double_15)  // NOLINT
     {
         ASSERT_DEATH(cnl::fraction<cnl::int32>(1e15), "");
     }
 #endif
 
-    TEST(fraction, float_ctor_int16)
+    TEST(fraction, float_ctor_int16)  // NOLINT
     {
         TestFloatingCtor<cnl::int16>(.1, 1, 10);
         TestFloatingCtor<cnl::int16>(0.999, 999, 1000);
@@ -141,32 +141,32 @@ namespace {
     }
 
 #if defined(CNL_DEBUG)
-    TEST(fraction_ctor, float_ctor_int16_double_inv9)
+    TEST(fraction_ctor, float_ctor_int16_double_inv9)  // NOLINT
     {
         ASSERT_DEATH(cnl::fraction<cnl::int16>(1e-9), "");
     }
 
-    TEST(fraction_ctor, float_ctor_int16_double_inv15)
+    TEST(fraction_ctor, float_ctor_int16_double_inv15)  // NOLINT
     {
         ASSERT_DEATH(cnl::fraction<cnl::int16>(1e-15), "");
     }
 
-    TEST(fraction_ctor, float_ctor_int16_double_inv22)
+    TEST(fraction_ctor, float_ctor_int16_double_inv22)  // NOLINT
     {
         ASSERT_DEATH(cnl::fraction<cnl::int16>(1e-22), "");
     }
 
-    TEST(fraction_ctor, float_ctor_int16_double_inv30)
+    TEST(fraction_ctor, float_ctor_int16_double_inv30)  // NOLINT
     {
         ASSERT_DEATH(cnl::fraction<cnl::int16>(1e-30), "");
     }
 
-    TEST(fraction_ctor, float_ctor_int16_double_9)
+    TEST(fraction_ctor, float_ctor_int16_double_9)  // NOLINT
     {
         ASSERT_DEATH(cnl::fraction<cnl::int16>(1e9), "");
     }
 
-    TEST(fraction_ctor, float_ctor_int16_double_15)
+    TEST(fraction_ctor, float_ctor_int16_double_15)  // NOLINT
     {
         ASSERT_DEATH(cnl::fraction<cnl::int16>(1e15), "");
     }
