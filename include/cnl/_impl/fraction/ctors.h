@@ -24,8 +24,8 @@ namespace cnl {
                     numeric_limits<Integer>::is_integer,
                     int> Dummy>
     constexpr
-    fraction<Numerator, Denominator>::fraction(Integer const& n)
-            : fraction(static_cast<Numerator>(n), 1) {}
+    fraction<Numerator, Denominator>::fraction(Integer const& i)
+            : fraction(static_cast<Numerator>(i), 1) {}
 
     template<typename Numerator, typename Denominator>
     template<typename RhsNumerator, typename RhsDenominator>
