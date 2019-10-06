@@ -3,6 +3,7 @@ Checks: >
   cert-*,
   clang-analyzer-*,
   cppcoreguidelines-*,
+  hicpp-braces-around-statements,
   hicpp-explicit-conversions,
   hicpp-uppercase-literal-suffix,
   llvm-*,

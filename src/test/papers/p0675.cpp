@@ -59,6 +59,7 @@ namespace acme {
     {
         auto const lhs_rep = to_rep(lhs);
         auto const rhs_rep = to_rep(rhs);
+        // NOLINTNEXTLINE(hicpp-braces-around-statements)
         if constexpr (std::numeric_limits<LhsRep>::is_signed == std::numeric_limits<RhsRep>::is_signed) {
             auto product_rep = lhs_rep * rhs_rep;
             return smart_integer{product_rep};
