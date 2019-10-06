@@ -92,7 +92,7 @@ namespace design_decisions {
 
         constexpr auto h = scaled_integer<int8_t, power<-2>>{12.5} <= scaled_integer<short, power<>>{8};
         static_assert(is_same_v<decltype(h), const bool>);
-        static_assert(h == false);
+        static_assert(!h);
     }
 
     namespace division {
