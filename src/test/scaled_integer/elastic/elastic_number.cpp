@@ -141,10 +141,10 @@ namespace test_fraction_specific_long {
 }
 
 namespace test_sqrt {
-    static_assert(static_cast<float>(sqrt(elastic_number<31, -20>(0))) == 0.0f, "sqrt<elastic_number>");
-    static_assert(static_cast<float>(sqrt(elastic_number<31, -20>(2.0))) > 1.414213f, "sqrt<elastic_number>");
-    static_assert(static_cast<float>(sqrt(elastic_number<31, -20>(2.0))) < 1.414214f, "sqrt<elastic_number>");
-    static_assert(static_cast<float>(sqrt(elastic_number<31, -20>(4.0))) == 2.0f, "sqrt<elastic_number>");
+    static_assert(static_cast<float>(sqrt(elastic_number<31, -20>(0))) == 0.0F, "sqrt<elastic_number>");
+    static_assert(static_cast<float>(sqrt(elastic_number<31, -20>(2.0))) > 1.414213F, "sqrt<elastic_number>");
+    static_assert(static_cast<float>(sqrt(elastic_number<31, -20>(2.0))) < 1.414214F, "sqrt<elastic_number>");
+    static_assert(static_cast<float>(sqrt(elastic_number<31, -20>(4.0))) == 2.0F, "sqrt<elastic_number>");
 }
 
 namespace test_floor {
@@ -439,14 +439,14 @@ TEST(elastic_number, int_over) {
 TEST(elastic_number, issue_88)
 {
     using fix_t = cnl::elastic_number<30, -16>;
-    fix_t a = 2.0f;
-    fix_t b = 1.0f;
-    fix_t c = 1.0f;
-    EXPECT_EQ(static_cast<float>(a),2.0f);
-    EXPECT_EQ(static_cast<float>(b),1.0f);
-    EXPECT_EQ(static_cast<float>(c),1.0f);
+    fix_t a = 2.0F;
+    fix_t b = 1.0F;
+    fix_t c = 1.0F;
+    EXPECT_EQ(static_cast<float>(a),2.0F);
+    EXPECT_EQ(static_cast<float>(b),1.0F);
+    EXPECT_EQ(static_cast<float>(c),1.0F);
     fix_t d = c + a*b;
-    EXPECT_EQ(static_cast<float>(d),3.0f);
+    EXPECT_EQ(static_cast<float>(d),3.0F);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -45,7 +45,7 @@ namespace design_decisions {
         using cnl::constant;
         using cnl::scaled_integer;
 
-        auto a = scaled_integer(0ul);
+        auto a = scaled_integer(0UL);
         static_assert(is_same_v<decltype(a), scaled_integer<unsigned long, power<>>>);
 
         constexpr auto b = scaled_integer(constant<0xFF00000000L>{});
@@ -57,8 +57,8 @@ namespace design_decisions {
         using cnl::constant;
         using cnl::scaled_integer;
 
-        auto a = scaled_integer<long long>(3) + 4.f;
-        static_assert(is_same_v<decltype(a), decltype(3.f + 4.f)>);
+        auto a = scaled_integer<long long>(3) + 4.F;
+        static_assert(is_same_v<decltype(a), decltype(3.F + 4.F)>);
 
 #if ! defined(__clang__)
         // TODO: either this must compile on Clang or the operator must be written
@@ -66,7 +66,7 @@ namespace design_decisions {
         static_assert(is_same_v<decltype(b), decltype(scaled_integer<unsigned>(200) - scaled_integer<int>(100))>);
 #endif
 
-        auto c = scaled_integer<>(5) * 6ul;
+        auto c = scaled_integer<>(5) * 6UL;
         static_assert(is_same_v<decltype(c), decltype(scaled_integer<>(5) * scaled_integer<unsigned long>(6))>);
 
         constexpr auto d = scaled_integer<uint8_t, power<-7>>{1.25} * scaled_integer<uint8_t, power<-3>>{8};

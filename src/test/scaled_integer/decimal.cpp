@@ -59,11 +59,11 @@ namespace test_equal {
 namespace test_add {
     static_assert(identical(
             decimal_scaled_integer<int, -5>{1.5}+decimal_scaled_integer<int, -5>{5.1},
-            decimal_scaled_integer<int, -5>{6.59998989105224609375f}), "");
+            decimal_scaled_integer<int, -5>{6.59998989105224609375F}), "");
 
     static_assert(identical(
-            76.5f+decimal_scaled_integer<int, -5>{1.25},
-            77.75f), "");
+            76.5F+decimal_scaled_integer<int, -5>{1.25},
+            77.75F), "");
 }
 
 namespace test_multiply {

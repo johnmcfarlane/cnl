@@ -38,7 +38,7 @@ namespace {
 
     namespace test_make_fraction {
         static_assert(identical(
-                3.14285714285714285714f,
+                3.14285714285714285714F,
                 static_cast<float>(cnl::make_fraction(22, 7))), "cnl::make_fraction");
     }
 
@@ -48,8 +48,8 @@ namespace {
                 cnl::fraction<short>(123),
                 cnl::fraction(short{123})), "cnl::fraction argument deduction");
         static_assert(identical(
-                cnl::fraction<int>(3.14285714285714285714f),
-                cnl::fraction(3.14285714285714285714f)), "cnl::fraction argument deduction");
+                cnl::fraction<int>(3.14285714285714285714F),
+                cnl::fraction(3.14285714285714285714F)), "cnl::fraction argument deduction");
 
         static_assert(identical(cnl::fraction<int, int>{4321, 1}, cnl::fraction{4321}));
     }
@@ -57,7 +57,7 @@ namespace {
 
     namespace test_conversion_op {
         static_assert(identical(
-                3.14285714285714285714f,
+                3.14285714285714285714F,
                 static_cast<float>(cnl::fraction<int>{22, 7})), "cnl::fraction conversion operator");
     }
 

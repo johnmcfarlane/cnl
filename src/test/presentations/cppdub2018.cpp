@@ -40,7 +40,7 @@ namespace a {
 
 namespace b {
     void f() {
-        auto n = cnl::scaled_integer<int, cnl::power<-8>>{ 0.25f };
+        auto n = cnl::scaled_integer<int, cnl::power<-8>>{ 0.25F };
         std::cout << n * 5; // prints "1.25"
     }
 }
@@ -73,10 +73,10 @@ namespace d {
 }
 
 namespace e {
-    static_assert(scaled_integer<unsigned>{1u} < scaled_integer<signed>{-1}, "OK(!)");
+    static_assert(scaled_integer<unsigned>{1U} < scaled_integer<signed>{-1}, "OK(!)");
 
 #if defined(__cpp_deduction_guides)
-    static_assert(scaled_integer{1u} < scaled_integer{-1});
+    static_assert(scaled_integer{1U} < scaled_integer{-1});
 #endif
 }
 
@@ -187,7 +187,7 @@ namespace n {
 
 using namespace cnl::literals;
 namespace o {
-    constexpr auto x = scaled_integer{42ul}; // scaled_integer<unsigned long, 0>{42}
+    constexpr auto x = scaled_integer{42UL}; // scaled_integer<unsigned long, 0>{42}
     static_assert(cnl::_impl::identical(scaled_integer<unsigned long, power<>>{42}, x));
 
     constexpr auto z = scaled_integer{128_c};

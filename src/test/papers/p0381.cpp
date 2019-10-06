@@ -57,7 +57,7 @@ namespace sample2 {
 
     TEST(p0381, multiply_unsigned_ok)
     {
-        ASSERT_EQ(400u, multiply(20u, 20u));
+        ASSERT_EQ(400U, multiply(20U, 20U));
     }
 
     TEST(p0381, multiply_unsigned_overflow)
@@ -80,7 +80,7 @@ namespace sample3 {
 
     TEST(p0381, multiply_unsigned_ok)
     {
-        ASSERT_EQ(400u, multiply(20u, 20u));
+        ASSERT_EQ(400U, multiply(20U, 20U));
     }
 
     TEST(p0381, multiply_unsigned_still_ok)
@@ -122,7 +122,7 @@ namespace sample5 {
 
     TEST(p0381, multiply_unsigned_ok)
     {
-        ASSERT_EQ(400u, multiply(20u, 20u));
+        ASSERT_EQ(400U, multiply(20U, 20U));
     }
 
     TEST(p0381, multiply_unsigned_still_ok)
