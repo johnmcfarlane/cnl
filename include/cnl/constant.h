@@ -64,12 +64,12 @@ namespace cnl {
         }
 
 #if defined(_MSC_VER)
-        CNL_NODISCARD constexpr operator auto() const -> value_type
+        CNL_NODISCARD constexpr operator auto() const -> value_type  // NOLINT(hicpp-explicit-conversions)
         {
             return value;
         }
 #else
-        CNL_NODISCARD constexpr operator value_type() const
+        CNL_NODISCARD constexpr operator value_type() const  // NOLINT(hicpp-explicit-conversions)
         {
             return value;
         }

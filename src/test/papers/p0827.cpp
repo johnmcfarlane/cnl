@@ -31,7 +31,7 @@ struct constant {
     using value_type = decltype(Value);
     static constexpr value_type value = Value;
 
-    CNL_NODISCARD constexpr operator value_type() const {
+    CNL_NODISCARD constexpr operator value_type() const {  // NOLINT(hicpp-explicit-conversions)
         return value;
     }
 };

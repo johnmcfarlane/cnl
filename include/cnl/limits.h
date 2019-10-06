@@ -32,19 +32,22 @@ namespace cnl {
             constexpr _s(uint64 upper, uint64 lower)  // NOLINT(cppcoreguidelines-pro-type-member-init)
                     :value(lower+(int128{upper} << 64)) { }
 
-            CNL_NODISCARD constexpr operator int128() const { return value; }
+            CNL_NODISCARD explicit constexpr operator int128() const
+            {
+                return value;
+            }
         private:
             int128 value;
         };
 
         CNL_NODISCARD static constexpr int128 min()
         {
-            return _s(0x8000000000000000, 0x0000000000000000);
+            return int128(_s(0x8000000000000000, 0x0000000000000000));
         }
 
         CNL_NODISCARD static constexpr int128 max()
         {
-            return _s(0x7fffffffffffffff, 0xffffffffffffffff);
+            return int128(_s(0x7fffffffffffffff, 0xffffffffffffffff));
         }
 
         CNL_NODISCARD static constexpr int128 lowest()
@@ -63,7 +66,10 @@ namespace cnl {
             constexpr _s(uint64 upper, uint64 lower)  // NOLINT(cppcoreguidelines-pro-type-member-init)
                     :value(lower+(uint128{upper} << 64)) { }
 
-            CNL_NODISCARD constexpr operator uint128() const { return value; }
+            CNL_NODISCARD explicit constexpr operator uint128() const
+            {
+                return value;
+            }
         private:
             uint128 value;
         };
@@ -75,7 +81,7 @@ namespace cnl {
 
         CNL_NODISCARD static constexpr uint128 max()
         {
-            return _s(0xffffffffffffffff, 0xffffffffffffffff);
+            return uint128(_s(0xffffffffffffffff, 0xffffffffffffffff));
         }
 
         CNL_NODISCARD static constexpr int128 lowest()

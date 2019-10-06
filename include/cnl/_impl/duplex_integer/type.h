@@ -54,10 +54,10 @@ namespace cnl {
             constexpr duplex_integer(upper_type const& u, lower_type const& l);
 
             template<typename Integer, _impl::enable_if_t<(numeric_limits<Integer>::is_integer), int> Dummy = 0>
-            constexpr duplex_integer(Integer const& i);
+            constexpr duplex_integer(Integer const& i);  // NOLINT(hicpp-explicit-conversions)
 
             template<typename Number, _impl::enable_if_t<(numeric_limits<Number>::is_iec559), int> Dummy = 0>
-            constexpr duplex_integer(Number const& i);
+            constexpr duplex_integer(Number const& i);  // NOLINT(hicpp-explicit-conversions)
 
             CNL_NODISCARD constexpr auto upper() const -> upper_type const&
             {

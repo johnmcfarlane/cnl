@@ -31,7 +31,7 @@ namespace cnl {
             wide_integer() = default;
 
             template<typename T>
-            constexpr wide_integer(T const& value)
+            constexpr wide_integer(T const& value)  // NOLINT(hicpp-explicit-conversions)
                     : _base(static_cast<rep>(value)) { }
 
             template<class S>

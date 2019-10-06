@@ -172,7 +172,7 @@ namespace cnl {
 
         /// construct from numeric type
         template<class Number, _impl::enable_if_t<numeric_limits<Number>::is_specialized, int> = 0>
-        constexpr elastic_integer(Number n)
+        constexpr elastic_integer(Number n)  // NOLINT(hicpp-explicit-conversions)
                 : _base(static_cast<rep>(n))
         {
         }
@@ -186,7 +186,7 @@ namespace cnl {
 
         /// constructor taking an integral constant
         template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-        constexpr elastic_integer(constant<Value>)
+        explicit constexpr elastic_integer(constant<Value>)
                 : _base(static_cast<rep>(Value))
         {
         }

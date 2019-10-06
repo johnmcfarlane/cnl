@@ -34,7 +34,7 @@ namespace prototypes {
     class overflow_integer {
     public:
         template<typename Input>
-        constexpr overflow_integer(Input const& r)
+        explicit constexpr overflow_integer(Input const& r)
                 :_rep(r) { }
 
         CNL_NODISCARD constexpr Rep const& data() const { return _rep; }

@@ -76,7 +76,7 @@ namespace cnl {
 
         /// constructor taking a scaled_integer type
         template<typename FromRep, class FromScale>
-        constexpr scaled_integer(scaled_integer<FromRep, FromScale> const& rhs)
+        constexpr scaled_integer(scaled_integer<FromRep, FromScale> const& rhs)  // NOLINT(hicpp-explicit-conversions)
                 : _base(convert<decltype(FromScale{}/scale{}), Rep>(
                         _impl::from_value<Rep>(cnl::_impl::to_rep(rhs))))
         {
@@ -84,21 +84,21 @@ namespace cnl {
 
         /// constructor taking an integer type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_integer||_impl::is_constant<S>::value, int> Dummy = 0>
-        constexpr scaled_integer(S const& s)
+        constexpr scaled_integer(S const& s)  // NOLINT(hicpp-explicit-conversions)
                 : _base(convert<decltype(typename scale::identity{}/scale{}), Rep>(_impl::from_value<Rep>(s)))
         {
         }
 
         /// constructor taking a floating-point type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
-        constexpr scaled_integer(S s)
+        constexpr scaled_integer(S s)  // NOLINT(hicpp-explicit-conversions)
                 :_base(convert<decltype(typename scale::identity{}/scale{}), rep>(s))
         {
         }
 
         /// constructor taking cnl::fraction
         template<typename Numerator, typename Denominator>
-        constexpr scaled_integer(fraction<Numerator, Denominator> const& f);
+        constexpr scaled_integer(fraction<Numerator, Denominator> const& f);  // NOLINT(hicpp-explicit-conversions)
 
         /// copy assignment operator taking a floating-point type
         template<class S, _impl::enable_if_t<numeric_limits<S>::is_iec559, int> Dummy = 0>
