@@ -376,7 +376,7 @@ namespace {
                 elastic_integer<15, int>{0x7fff}*elastic_integer<16, unsigned>{0xffff},
                 elastic_integer<31, int>{0x7FFE8001}), "cnl::elastic_integer test failed");
         static_assert(identical(
-                elastic_integer<31, int>{0x7fffffff}*elastic_integer<32, int>{0xffffffffu},
+                elastic_integer<31, int>{0x7fffffff}*elastic_integer<32, int>{0xffffffffU},
                 elastic_integer<63, int>{0x7FFFFFFE80000001LL}), "cnl::elastic_integer test failed");
 
         static_assert(identical(

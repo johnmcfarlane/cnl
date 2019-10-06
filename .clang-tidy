@@ -4,6 +4,7 @@ Checks: >
   clang-analyzer-*,
   cppcoreguidelines-*,
   hicpp-explicit-conversions,
+  hicpp-uppercase-literal-suffix,
   llvm-*,
   modernize-*,
   -cert-err58-cpp,

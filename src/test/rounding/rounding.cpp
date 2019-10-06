@@ -19,7 +19,7 @@ namespace {
             static_assert(identical(cnl::convert<cnl::nearest_rounding_tag, cnl::int16>(-1000.5L),
                                     cnl::int16{-1001}),
                           "cnl::convert test failed");
-            static_assert(identical(cnl::convert<cnl::nearest_rounding_tag, cnl::int32>(55.2f), 55),
+            static_assert(identical(cnl::convert<cnl::nearest_rounding_tag, cnl::int32>(55.2F), 55),
                           "cnl::convert test failed");
 
             static_assert(identical(-1, cnl::convert<cnl::nearest_rounding_tag, int>(-0.50)),
@@ -37,7 +37,7 @@ namespace {
             static_assert(identical(cnl::convert<cnl::native_rounding_tag, cnl::int16>(-1000.5L),
                                     cnl::int16{-1000}),
                           "cnl::convert test failed");
-            static_assert(identical(cnl::convert<cnl::native_rounding_tag, cnl::int32>(55.2f), 55),
+            static_assert(identical(cnl::convert<cnl::native_rounding_tag, cnl::int32>(55.2F), 55),
                           "cnl::convert test failed");
 
             static_assert(identical(-0, cnl::convert<cnl::native_rounding_tag, int>(-0.50)),

@@ -39,7 +39,7 @@ namespace a {
 
 namespace b {
     void f() {
-        auto n = fixed_point<int, -8>{ 0.25f };
+        auto n = fixed_point<int, -8>{ 0.25F };
         std::cout << float(n * 5); // prints "1.25"
     }
 }
@@ -72,7 +72,7 @@ namespace d {
 }
 
 namespace e {
-    static_assert(fixed_point<unsigned>{1u} < fixed_point<signed>{-1}, "OK(!)");
+    static_assert(fixed_point<unsigned>{1U} < fixed_point<signed>{-1}, "OK(!)");
 
 #if defined(__cpp_deduction_guides) && defined(CNL_P1021)
     static_assert(fixed_point{1u} < fixed_point{-1});

@@ -110,7 +110,7 @@ namespace {
                 cnl::numeric_limits<int>::max(),
                 cnl::binary_operator<
                         cnl::saturated_overflow_tag, cnl::_impl::shift_left_op, std::uint8_t, unsigned>{}(
-                                std::uint8_t{255}, 30u)),
+                                std::uint8_t{255}, 30U)),
                 "");
     }
 

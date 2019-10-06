@@ -131,17 +131,17 @@ namespace {
 #if (__cpp_constexpr >= 201304L)
         static_assert(
                 identical(
-                        0u,
+                        0U,
                         cnl::_impl::duplex_integer<cnl::int8, unsigned>{}.lower()),
                 "");
         static_assert(
                 identical(
-                        0u,
+                        0U,
                         cnl::_impl::duplex_integer<cnl::int8, unsigned>{0}.lower()),
                 "");
         static_assert(
                 identical(
-                        650u,
+                        650U,
                         cnl::_impl::duplex_integer<cnl::int8, unsigned>{650}.lower()),
                 "");
         static_assert(
@@ -164,21 +164,21 @@ namespace {
 
         TEST(duplex_integer, lower_int8_value)
         {
-            auto expected = 0u;
+            auto expected = 0U;
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{}.lower();
             ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, lower_int8_zero)
         {
-            auto expected = 0u;
+            auto expected = 0U;
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{0}.lower();
             ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, lower_int8_650)
         {
-            auto expected = 650u;
+            auto expected = 650U;
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{650}.lower();
             ASSERT_EQ(expected, actual);
         }
@@ -192,14 +192,14 @@ namespace {
 
         TEST(duplex_integer, lower_int8_123)
         {
-            auto expected = 123u;
+            auto expected = 123U;
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{123}.lower();
             ASSERT_EQ(expected, actual);
         }
 
         TEST(duplex_integer, lower_int8_minus_1)
         {
-            auto expected = 0xFFFFFFFFu;
+            auto expected = 0xFFFFFFFFU;
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{-1}.lower();
             ASSERT_EQ(expected, actual);
         }
@@ -304,7 +304,7 @@ namespace {
     namespace test_to_rep {
         static_assert(
                 identical(
-                        4567u,
+                        4567U,
                         cnl::to_rep<cnl::_impl::duplex_integer<
                                 cnl::_impl::duplex_integer<unsigned int, unsigned int>,
                                 cnl::_impl::duplex_integer<unsigned int, unsigned int> >>{}(

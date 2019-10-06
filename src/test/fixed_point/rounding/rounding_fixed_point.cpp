@@ -33,10 +33,10 @@ namespace {
                 rounding_integer<std::uint16_t>{3872}), "rounding_fixed_point ctor test failed");
 
         static_assert(identical(
-                to_rep(rounding_fixed_point<std::int32_t, -1>(0.249f)),
+                to_rep(rounding_fixed_point<std::int32_t, -1>(0.249F)),
                 rounding_integer<std::int32_t>{0}), "rounding_fixed_point ctor test failed");
         static_assert(identical(
-                to_rep(rounding_fixed_point<std::int32_t, -1>(0.25f)),
+                to_rep(rounding_fixed_point<std::int32_t, -1>(0.25F)),
                 rounding_integer<std::int32_t>{1}), "rounding_fixed_point ctor test failed");
     }
 

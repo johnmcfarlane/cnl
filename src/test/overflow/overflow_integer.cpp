@@ -104,19 +104,19 @@ static_assert(saturated_integer<int8_t>(126)==126, "cnl::saturated_integer test 
 static_assert(saturated_integer<int8_t>(127)==127, "cnl::saturated_integer test failed");
 static_assert(saturated_integer<int8_t>(128)==127, "cnl::saturated_integer test failed");
 
-static_assert(saturated_integer<uint8_t>(-1e38f)==0, "cnl::saturated_integer test failed");
+static_assert(saturated_integer<uint8_t>(-1e38F)==0, "cnl::saturated_integer test failed");
 static_assert(saturated_integer<uint8_t>(0.)==0, "cnl::saturated_integer test failed");
-static_assert(saturated_integer<uint8_t>(1.f)==1, "cnl::saturated_integer test failed");
+static_assert(saturated_integer<uint8_t>(1.F)==1, "cnl::saturated_integer test failed");
 static_assert(saturated_integer<uint8_t>(254.)==254, "cnl::saturated_integer test failed");
-static_assert(saturated_integer<uint8_t>(255.f)==255, "cnl::saturated_integer test failed");
+static_assert(saturated_integer<uint8_t>(255.F)==255, "cnl::saturated_integer test failed");
 static_assert(saturated_integer<uint8_t>(1e50)==255, "cnl::saturated_integer test failed");
 
 static_assert(saturated_integer<int8_t>(-1e50)==-128, "cnl::saturated_integer test failed");
-static_assert(saturated_integer<int8_t>(-128.f)==-128, "cnl::saturated_integer test failed");
+static_assert(saturated_integer<int8_t>(-128.F)==-128, "cnl::saturated_integer test failed");
 static_assert(saturated_integer<int8_t>(-127.)==-127, "cnl::saturated_integer test failed");
-static_assert(saturated_integer<int8_t>(126.f)==126, "cnl::saturated_integer test failed");
+static_assert(saturated_integer<int8_t>(126.F)==126, "cnl::saturated_integer test failed");
 static_assert(saturated_integer<int8_t>(127.)==127, "cnl::saturated_integer test failed");
-static_assert(saturated_integer<int8_t>(1e38f)==127, "cnl::saturated_integer test failed");
+static_assert(saturated_integer<int8_t>(1e38F)==127, "cnl::saturated_integer test failed");
 
 static_assert(identical(throwing_integer<int32_t>{throwing_integer<uint16_t>{50005}}, throwing_integer<int32_t>{50005}),
               "throwing_integer test failed");
@@ -133,7 +133,7 @@ namespace saturated_binary_operator {
             short(1234)), "to_rep(saturated_integer<>) test failed");
 
     static_assert(identical(cnl::binary_operator<cnl::_impl::native_tag, cnl::_impl::multiply_op, saturated_integer<short>, float>()(
-            saturated_integer<short>(1234), 2.), 2468.f), "cnl::saturated_integer test failed");
+            saturated_integer<short>(1234), 2.), 2468.F), "cnl::saturated_integer test failed");
 
     static_assert(
             cnl::comparison_operator<cnl::_impl::equal_op, saturated_integer<int16_t>, saturated_integer<int16_t>>()(
@@ -161,7 +161,7 @@ namespace saturated_binary_operator {
     static_assert(identical(
             cnl::binary_operator<
                     cnl::_impl::native_tag, cnl::_impl::multiply_op,
-                    unsigned, throwing_integer<cnl::uint8>>()(3u, throwing_integer<cnl::uint8>{4}),
+                    unsigned, throwing_integer<cnl::uint8>>()(3U, throwing_integer<cnl::uint8>{4}),
             throwing_integer<unsigned>{12}),
             "cnl::binary_operator test failed");
 }
@@ -443,7 +443,7 @@ namespace test_plus {
 
 namespace test_shift_left {
     static_assert(
-            identical(saturated_integer<std::uint8_t>(255) << 30u, cnl::numeric_limits<saturated_integer<int>>::max()),
+            identical(saturated_integer<std::uint8_t>(255) << 30U, cnl::numeric_limits<saturated_integer<int>>::max()),
             "");
     static_assert(identical(throwing_integer<std::int8_t>(1) << 10, throwing_integer<int>(1024)), "");
 }

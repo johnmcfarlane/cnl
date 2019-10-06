@@ -375,7 +375,7 @@ namespace {
         static_assert(!test_subtract_negative{}(-1, cnl::numeric_limits<int>::min()),
                 "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::positive>");
 
-        static_assert(test_subtract_negative{}(0u, 1u),
+        static_assert(test_subtract_negative{}(0U, 1U),
                 "cnl::_impl::is_overflow<cnl::_impl::subtract_op, cnl::_impl::polarity::negative>");
     }
 
@@ -532,7 +532,7 @@ namespace {
         using shift_left_test = cnl::_impl::is_overflow<cnl::_impl::shift_left_op, cnl::_impl::polarity::positive>;
 
         static_assert(
-                shift_left_test{}(std::uint8_t{255}, 30u),
+                shift_left_test{}(std::uint8_t{255}, 30U),
                 "cnl::_impl::is_overflow<cnl::_impl::shift_left_op, cnl::_impl::polarity::positive>");
     }
 }

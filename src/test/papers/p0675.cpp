@@ -105,15 +105,15 @@ namespace {
 
     TEST(P0675, smart_multiply) {
         // smart_integer chooses appropriate signedness for results of arithmetic operations
-        auto a = smart_integer{7u};
+        auto a = smart_integer{7U};
         auto b = smart_integer{-3};
         auto c = a * b;  // smart_integer<int>{-21}
         ASSERT_TRUE(identical(smart_integer<int>{-21}, c));
     }
 
     TEST(P0675, smart_add) {
-        auto m = smart_integer{5u};
-        auto s = smart_integer{10u};
+        auto m = smart_integer{5U};
+        auto s = smart_integer{10U};
         auto d = m - s;  // smart_integer<int>{-5}
         ASSERT_TRUE(identical(smart_integer<int>{-5}, d));
     }

@@ -32,7 +32,7 @@ namespace {
     using cnl::fixed_point;
     using cnl::set_digits_t;
 
-    static_assert(cnl::elastic_integer<64, unsigned>(0)==0u, "");
+    static_assert(cnl::elastic_integer<64, unsigned>(0)==0U, "");
 
     static_assert(identical(cnl::elastic_integer<32, int>{246}, cnl::_impl::scale<1>(cnl::elastic_integer<31, int>{123})), "");
     static_assert(identical(cnl::elastic_integer<33, unsigned>{246}, cnl::_impl::scale<1>(cnl::elastic_integer<32, unsigned>{123})), "");
@@ -141,10 +141,10 @@ namespace test_fraction_specific_long {
 }
 
 namespace test_sqrt {
-    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(0))) == 0.0f, "sqrt<elastic_fixed_point>");
-    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(2.0))) > 1.414213f, "sqrt<elastic_fixed_point>");
-    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(2.0))) < 1.414214f, "sqrt<elastic_fixed_point>");
-    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(4.0))) == 2.0f, "sqrt<elastic_fixed_point>");
+    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(0))) == 0.0F, "sqrt<elastic_fixed_point>");
+    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(2.0))) > 1.414213F, "sqrt<elastic_fixed_point>");
+    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(2.0))) < 1.414214F, "sqrt<elastic_fixed_point>");
+    static_assert(static_cast<float>(sqrt(elastic_fixed_point<31, -20>(4.0))) == 2.0F, "sqrt<elastic_fixed_point>");
 }
 
 namespace test_floor {
@@ -439,14 +439,14 @@ TEST(elastic_fixed_point, int_over) {
 TEST(elastic_fixed_point, issue_88)
 {
     using fix_t = cnl::elastic_fixed_point<30, -16>;
-    fix_t a = 2.0f;
-    fix_t b = 1.0f;
-    fix_t c = 1.0f;
-    EXPECT_EQ(static_cast<float>(a),2.0f);
-    EXPECT_EQ(static_cast<float>(b),1.0f);
-    EXPECT_EQ(static_cast<float>(c),1.0f);
+    fix_t a = 2.0F;
+    fix_t b = 1.0F;
+    fix_t c = 1.0F;
+    EXPECT_EQ(static_cast<float>(a),2.0F);
+    EXPECT_EQ(static_cast<float>(b),1.0F);
+    EXPECT_EQ(static_cast<float>(c),1.0F);
     fix_t d = c + a*b;
-    EXPECT_EQ(static_cast<float>(d),3.0f);
+    EXPECT_EQ(static_cast<float>(d),3.0F);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
