@@ -8,6 +8,7 @@ Checks: >
   modernize-*,
   readability-braces-around-statements,
   readability-else-after-return,
+  readability-inconsistent-declaration-parameter-name,
   -cert-err58-cpp,
   -clang-analyzer-cplusplus.InnerPointer,
   -clang-analyzer-cplusplus.NewDelete,
