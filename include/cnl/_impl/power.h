@@ -32,10 +32,6 @@ namespace cnl {
         using identity = power<0, Radix>;
     };
 
-    /// value of template parameter, \a Exponent
-    template<int Exponent, int Radix>
-    constexpr int power<Exponent, Radix>::exponent;
-
     template<int LhsExponent, int RhsExponent, int Radix>
     constexpr auto operator/(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
     -> power<LhsExponent-RhsExponent, Radix>
