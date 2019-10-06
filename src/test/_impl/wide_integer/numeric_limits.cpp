@@ -7,12 +7,10 @@
 /// \file
 /// \brief tests for <cnl/_impl/wide_integer/numeric_limits.h>
 
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/wide_integer/numeric_limits.h>
 #include <cnl/_impl/wide_integer/operators.h>
 
-using cnl::_impl::assert_same;
 using cnl::_impl::identical;
 
 namespace {

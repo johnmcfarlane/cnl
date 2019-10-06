@@ -172,7 +172,7 @@ namespace cnl {
 
         /// construct from numeric type
         template<class Number, _impl::enable_if_t<numeric_limits<Number>::is_specialized, int> = 0>
-        constexpr elastic_integer(Number n)  // NOLINT(hicpp-explicit-conversions)
+        constexpr elastic_integer(Number n)  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
                 : _base(static_cast<rep>(n))
         {
         }

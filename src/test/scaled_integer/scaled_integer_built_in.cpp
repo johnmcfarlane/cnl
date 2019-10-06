@@ -41,8 +41,7 @@ namespace test_literals_initialization {
 }
 
 namespace test_literals_constant {
-    using cnl::_impl::identical;
-    using cnl::scaled_integer;
+    using cnl::scaled_integer;  // NOLINT(misc-unused-using-decls)
 
     using namespace cnl::literals;
 

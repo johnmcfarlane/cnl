@@ -186,7 +186,7 @@ TEST(multiprecision, divide)  // NOLINT
 
     auto div = int64{123456789012345678LL};
 
-    auto quotient = div/div;
+    auto quotient = div/div;  // NOLINT(misc-redundant-expression)
     auto expected = 1;
 
     ASSERT_EQ(quotient, expected);
@@ -241,7 +241,7 @@ TEST(scaled_integer_multiprecision, divide)  // NOLINT
 
     auto div = int64{123456789012345678LL};
 
-    auto quotient = div/div;
+    auto quotient = div/div;  // NOLINT(misc-redundant-expression)
     auto expected = 1;
 
     ASSERT_EQ(quotient, expected);

@@ -7,15 +7,11 @@
 /// \brief tests for <cnl/_impl/rounding/convert.h>
 
 #include <cnl/_impl/rounding/convert_operator.h>
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_scaled_integer.h>
 #include <cnl/scaled_integer.h>
 
-
-using cnl::_impl::assert_same;
 using cnl::_impl::identical;
-
 
 namespace  test_convert_nearest_rounding_native_datatypes
 {

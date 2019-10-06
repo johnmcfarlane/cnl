@@ -26,7 +26,7 @@ namespace cnl {
         template<typename Upper, typename Lower>
         to_chars_result to_chars(
                 char* const first,
-                char* const last,
+                char* const last,  // NOLINT(readability-non-const-parameter)
                 _impl::duplex_integer<Upper, Lower> const& value)
         {
             if (!value) {

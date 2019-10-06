@@ -40,9 +40,6 @@ namespace {
     using cnl::_impl::identical;
 
     namespace default_parameters {
-        using cnl::rounding_integer;
-        using cnl::elastic_integer;
-
         static_assert(
                 is_same<rounding_elastic_integer<1>::rep::rep, int>::value,
                 "cnl::rounding_integer parameter default test failed");

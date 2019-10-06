@@ -48,7 +48,7 @@ namespace cnl {
 
     namespace _impl {
         template<class Number>
-        CNL_NODISCARD constexpr auto to_rep(Number&& number)
+        CNL_NODISCARD constexpr auto to_rep(Number&& number)  // NOLINT(misc-unused-parameters)
         -> decltype(cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number))) {
             return cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number));
         }

@@ -24,7 +24,7 @@ namespace {
                 cnl::static_number<24, -8>{-45678.765625});
         ASSERT_EQ(std::errc{}, result.ec);
         ASSERT_EQ(chars_last, result.ptr);
-        *chars_last = '\0';
+        (*chars_last) = '\0';
 
         ASSERT_EQ(std::string{"-45678.76562"}, chars_first);
     }

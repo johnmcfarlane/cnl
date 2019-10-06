@@ -70,14 +70,14 @@ namespace cnl {
         overflow_integer() = default;
 
         template<class RhsRep, class RhsOverflowTag>
-        // NOLINTNEXTLINE(hicpp-explicit-conversions)
+        // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
         constexpr overflow_integer(overflow_integer<RhsRep, RhsOverflowTag> const& rhs)
                 :overflow_integer(_impl::to_rep(rhs))
         {
         }
 
         template<class Rhs, _impl::enable_if_t<!_integer_impl::is_overflow_integer<Rhs>::value, int> dummy = 0>
-        constexpr overflow_integer(Rhs const& rhs)  // NOLINT(hicpp-explicit-conversions)
+        constexpr overflow_integer(Rhs const& rhs)  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
                 :_base(convert<overflow_tag, rep>(rhs))
         {
         }
