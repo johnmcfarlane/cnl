@@ -3,6 +3,7 @@ Checks: >
   cert-*,
   clang-analyzer-*,
   cppcoreguidelines-*,
+  hicpp-explicit-conversions,
   llvm-*,
   modernize-*,
   -cert-err58-cpp,

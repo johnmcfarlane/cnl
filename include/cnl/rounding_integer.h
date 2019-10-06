@@ -88,7 +88,7 @@ namespace cnl {
         rounding_integer() = default;
 
         template<class T>
-        constexpr rounding_integer(T const& v)
+        constexpr rounding_integer(T const& v)  // NOLINT(hicpp-explicit-conversions)
                 : _base(convert<rounding, Rep>(v)) { }
 
         template<class T>
