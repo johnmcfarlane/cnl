@@ -23,12 +23,12 @@
 template<class Lhs, class Rhs>
 CNL_NODISCARD constexpr bool is_equal_to(Lhs const& lhs, Rhs const& rhs)
 {
-    return ((lhs==rhs)==true)
-            && ((lhs!=rhs)==false)
-            && ((lhs<rhs)==false)
-            && ((lhs>rhs)==false)
-            && ((lhs<=rhs)==true)
-            && ((lhs>=rhs)==true);
+    return ((lhs==rhs))
+            && (!(lhs!=rhs))
+            && (!(lhs<rhs))
+            && (!(lhs>rhs))
+            && ((lhs<=rhs))
+            && ((lhs>=rhs));
 }
 
 static_assert(is_equal_to<int>(0, 0), "less_than_test test failed");
@@ -37,12 +37,12 @@ static_assert(is_equal_to<int>(0, 0), "less_than_test test failed");
 template<class Lesser, class Greater>
 CNL_NODISCARD constexpr bool is_less_than(Lesser const& lesser, Greater const& greater)
 {
-    return ((lesser==greater)==false)
-            && ((lesser!=greater)==true)
-            && ((lesser<greater)==true)
-            && ((lesser>greater)==false)
-            && ((lesser<=greater)==true)
-            && ((lesser>=greater)==false);
+    return (!(lesser==greater))
+            && ((lesser!=greater))
+            && ((lesser<greater))
+            && (!(lesser>greater))
+            && ((lesser<=greater))
+            && (!(lesser>=greater));
 }
 
 static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
