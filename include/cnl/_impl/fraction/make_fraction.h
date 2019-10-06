@@ -61,7 +61,8 @@ namespace cnl {
             if (FloatingPoint(right)==d) {
                 return right;
             }
-            auto lefts{0}, rights{0};
+            auto lefts{0};
+            auto rights{0};
             for (;;) {
                 auto const mid{fraction<uint_t>(
                         uint_t(left.numerator+right.numerator),
