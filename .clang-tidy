@@ -17,6 +17,7 @@ Checks: >
   -cppcoreguidelines-pro-bounds-constant-array-index,
   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
   -cppcoreguidelines-pro-type-vararg,
+  hicpp-deprecated-headers,
   -llvm-namespace-comment,
   -modernize-avoid-c-arrays,
   -modernize-concat-nested-namespaces,

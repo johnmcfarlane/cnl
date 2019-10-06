@@ -12,7 +12,7 @@
 
 #include "_impl/assert.h"
 #include "cstdint.h"
-#include "limits.h"  // NOLINT(modernize-deprecated-headers)
+#include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
 
 #include <type_traits>
 
