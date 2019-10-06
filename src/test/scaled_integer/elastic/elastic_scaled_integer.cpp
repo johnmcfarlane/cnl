@@ -8,10 +8,9 @@
 /// \brief tests of cnl::elastic_scaled_integer alias
 
 #include "../../number_test.h"
-#include <cnl/_impl/type_traits/assert_same.h>
+
 #include <cnl/elastic_scaled_integer.h>
 #include <cnl/fraction.h>
-using cnl::_impl::assert_same;
 
 #include <gtest/gtest.h>
 
@@ -392,6 +391,7 @@ struct positive_elastic_test
 
     static_assert(is_less_than(max-min, max), "operator- test failed");
 
+    // NOLINTNEXTLINE(misc-redundant-expression)
     static_assert(cnl::numeric_limits<decltype(zero-zero)>::is_signed,
                   "signedness is lost during subtract");
     static_assert(cnl::numeric_limits<decltype(signed_type{zero}-unsigned_type{zero})>::is_signed,
@@ -419,8 +419,10 @@ struct positive_elastic_test
 
     static_assert(!is_less_than(min, min/make_elastic_scaled_integer(2_c)), "operator/ test failed");
     static_assert(is_equal_to(min/make_elastic_scaled_integer(1_c), min), "operator/ test failed");
+    // NOLINTNEXTLINE(misc-redundant-expression)
     static_assert(is_equal_to((min+min)/make_elastic_scaled_integer(2_c), min), "operator/ test failed");
     static_assert(is_equal_to((min+min+min)/make_elastic_scaled_integer(3_c), min), "operator/ test failed");
+    // NOLINTNEXTLINE(misc-redundant-expression)
     static_assert(cnl::numeric_limits<decltype(zero/zero)>::is_signed==cnl::numeric_limits<elastic_type>::is_signed,
                   "signedness is lost during multiply");
     static_assert(cnl::numeric_limits<decltype(signed_type{zero}/unsigned_type{zero})>::is_signed,

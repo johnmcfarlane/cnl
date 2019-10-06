@@ -8,11 +8,8 @@
 #include <cnl/static_number.h>
 
 #include <cnl/_impl/type_traits/assert_same.h>
-#include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>
-
-using cnl::_impl::identical;
 
 template<
         int Digits,

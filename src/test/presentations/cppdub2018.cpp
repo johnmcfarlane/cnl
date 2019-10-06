@@ -120,13 +120,10 @@ namespace j {
 }
 
 namespace j2 {
-    using cnl::fraction;
-    using cnl::make_fraction;
-
     constexpr auto n = scaled_integer<int16_t, power<-8>>{1.5};
     constexpr auto d = scaled_integer<int16_t, power<-8>>{2.25};
 #if defined(__cpp_deduction_guides)
-    constexpr auto f = fraction{n, d};
+    constexpr auto f = cnl::fraction{n, d};
     constexpr auto q = scaled_integer{f};
 #else
     constexpr auto f = cnl::make_fraction(n, d);

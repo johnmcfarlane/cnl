@@ -50,7 +50,7 @@ static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
 ////////////////////////////////////////////////////////////////////////////////
 // number_test
 
-using cnl::_impl::identical;
+using cnl::_impl::identical;  // NOLINT(google-global-names-in-headers)
 
 // performs tests that should pass for all numeric types (except maybe const_integer);
 // invokes specific tests that only pass for subject types 
@@ -127,13 +127,13 @@ struct number_test {
     ////////////////////////////////////////////////////////////////////////////////
     // test operator-
 
-    static_assert(is_equal_to(zero-zero, zero), "operator- test failed");
-    static_assert(is_equal_to(zero-zero-zero, zero), "operator- test failed");
+    static_assert(is_equal_to(zero-zero, zero), "operator- test failed");  // NOLINT(misc-redundant-expression)
+    static_assert(is_equal_to(zero-zero-zero, zero), "operator- test failed");  // NOLINT(misc-redundant-expression)
 
-    static_assert(is_equal_to(min-min, zero), "operator- test failed");
+    static_assert(is_equal_to(min-min, zero), "operator- test failed");  // NOLINT(misc-redundant-expression)
     static_assert(is_equal_to(min-zero, min), "operator- test failed");
 
-    static_assert(is_equal_to(max-max, zero), "operator- test failed");
+    static_assert(is_equal_to(max-max, zero), "operator- test failed");  // NOLINT(misc-redundant-expression)
 
     ////////////////////////////////////////////////////////////////////////////////
     // numeric traits

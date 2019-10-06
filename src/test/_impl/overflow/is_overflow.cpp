@@ -8,8 +8,6 @@
 #include <cnl/_impl/type_traits/identical.h>
 
 namespace {
-    using cnl::_impl::identical;
-
     namespace test_overflow_digits_positive {
         using cnl::_impl::overflow_digits;
         using cnl::_impl::polarity;

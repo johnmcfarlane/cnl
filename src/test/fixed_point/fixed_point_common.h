@@ -223,8 +223,8 @@ static_assert(cnl::_impl::scale<8>(uint8{0x12})==0x1200, "cnl::_impl::scale test
 #endif
 
 #if defined(TEST_SATURATED_OVERFLOW_INTEGER)
-static_assert(identical(cnl::_impl::scale<8, 2, uint16>((uint16)0x1234), uint16{0x1234}<<8), "cnl::_impl::scale test failed");
-static_assert(cnl::_impl::scale<8, 2, uint16>((uint8)0x1234) == 0xff00, "cnl::_impl::scale test failed");
+static_assert(identical(cnl::_impl::scale<8, 2, uint16>(uint16{0x1234}), uint16{0x1234}<<8), "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<8, 2, uint16>(uint8{0x1234}) == 0xff00, "cnl::_impl::scale test failed");
 static_assert(cnl::_impl::scale<8, 2, uint8>(0x34) == test_int{0x3400}, "cnl::_impl::scale test failed");
 #endif
 
@@ -235,18 +235,18 @@ static_assert(cnl::_impl::scale<8, 2, int16>(-123)==-31488, "cnl::_impl::scale t
 
 static_assert(
         identical(
-                decltype(std::declval<uint16>()/std::declval<uint16>()){0x12},
+                decltype(std::declval<uint16>()/std::declval<uint16>()){0x12},  // NOLINT(misc-redundant-expression)
                 cnl::_impl::scale<-8, 2, uint16>(0x1234)),
         "cnl::_impl::scale test failed");
 static_assert(
         identical(
-                decltype(std::declval<uint16>()/std::declval<uint16>()){0x12},
-                cnl::_impl::scale<-8, 2, uint16>((uint16) 0x1234)),
+                decltype(std::declval<uint16>()/std::declval<uint16>()){0x12},  // NOLINT(misc-redundant-expression)
+                cnl::_impl::scale<-8, 2, uint16>(uint16{0x1234})),
         "cnl::_impl::scale test failed");
 static_assert(
         identical(
-                decltype(std::declval<uint16>()/std::declval<uint16>()){0},
-                cnl::_impl::scale<-8, 2, uint16>((uint8) 0x34)),
+                decltype(std::declval<uint16>()/std::declval<uint16>()){0},  // NOLINT(misc-redundant-expression)
+                cnl::_impl::scale<-8, 2, uint16>(uint8{0x34})),
         "cnl::_impl::scale test failed");
 static_assert(cnl::_impl::scale<-8, 2, int16>(-31488)==-123, "cnl::_impl::scale test failed");
 
@@ -766,6 +766,7 @@ static_assert((fixed_point<int16, -4>(123.125)-fixed_point<int16, -4>(246.875))=
 static_assert(fixed_point<int8, -5>(2.125)-fixed_point<int8, -5>(3.25)==-1.125F, "cnl::fixed_point subtraction test failed");
 static_assert(
         identical(
+                // NOLINTNEXTLINE(misc-redundant-expression)
                 fixed_point<decltype(std::declval<int8>()-std::declval<int8>()), -5>(2.125-3.25),
                 fixed_point<int8, -5>(2.125)-fixed_point<int8, -5>(3.25)),
         "cnl::fixed_point subtraction test failed");
@@ -776,6 +777,7 @@ static_assert(
         "cnl::fixed_point subtraction test failed");
 static_assert(
         identical(
+                // NOLINTNEXTLINE(misc-redundant-expression)
                 fixed_point<decltype(std::declval<test_signed>()-std::declval<test_int>()), -3>{0.875-2048},
                 fixed_point<int8, -3>(0.875)-2048),
         "cnl::fixed_point subtraction test failed");
@@ -828,6 +830,7 @@ static_assert(identical(-2074569866.7809765625, fixed_point<int64, -32>(16777215
 // division
 static_assert(
         identical(
+                // NOLINTNEXTLINE(misc-redundant-expression)
                 fixed_point<decltype(std::declval<int8>()/std::declval<int8>()), 0>{-15.75},
                 fixed_point<int8, -1>{63}/fixed_point<int8, -1>{-4}),
         "cnl::fixed_point test failed");
@@ -835,6 +838,7 @@ static_assert(identical(fixed_point<test_int, -1>{63}/fixed_point<int8, -1>{-4},
         "cnl::fixed_point test failed");
 static_assert(
         identical(
+                // NOLINTNEXTLINE(misc-redundant-expression)
                 fixed_point<decltype(std::declval<int8>()/std::declval<int8>()), 0>{31.75},
                 fixed_point<int8, 1>{-255}/fixed_point<int8, 1>{-8}),
         "cnl::fixed_point test failed");
@@ -842,6 +846,7 @@ static_assert((fixed_point<int8, 1>(-255)/fixed_point<int8, 1>(-8))==31, "cnl::f
 
 static_assert(
         identical(
+                // NOLINTNEXTLINE(misc-redundant-expression)
                 fixed_point<decltype(std::declval<int8>()/std::declval<int8>()), 0>{0},
                 fixed_point<int8, -5>{2.5}/fixed_point<int8, -5>{-4.F}),
         "cnl::fixed_point division test failed");
@@ -1127,7 +1132,7 @@ struct FixedPointTesterOutsize {
             "promotion rule for addition fixed_point<Rep> should match its Rep");
     static_assert(
             is_same<
-                    decltype(min - min),
+                    decltype(min - min),  // NOLINT(misc-redundant-expression)
                     ::fixed_point<decltype(declval<rep>() - declval<rep>()), exponent>>::value,
             "promotion rule for subtraction fixed_point<Rep> should match its Rep");
 };

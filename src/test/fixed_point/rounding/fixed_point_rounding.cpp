@@ -42,7 +42,6 @@ namespace test_literals_initialization {
 }
 
 namespace test_literals_constant {
-    using cnl::_impl::identical;
     using cnl::fixed_point;
 
     using namespace cnl::literals;

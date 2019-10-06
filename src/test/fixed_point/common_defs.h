@@ -25,8 +25,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // imports from std
 
-using std::is_same;
-using std::declval;
+using std::is_same;  // NOLINT(google-global-names-in-headers)
+using std::declval;  // NOLINT(google-global-names-in-headers)
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer definitions
@@ -58,7 +58,7 @@ using uint128 = cnl::set_digits_t<test_unsigned, 128>;
 template <typename Rep=test_int, int Exponent=0>
 using fixed_point = cnl::fixed_point<Rep, Exponent>;
 
-using cnl::_impl::assert_same;
-using cnl::_impl::identical;
+using cnl::_impl::assert_same;  // NOLINT(google-global-names-in-headers)
+using cnl::_impl::identical;  // NOLINT(google-global-names-in-headers)
 
 #endif

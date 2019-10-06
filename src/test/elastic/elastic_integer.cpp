@@ -119,8 +119,6 @@ namespace {
     }
 
     namespace test_from_value {
-        using cnl::from_value;
-
         static_assert(std::is_same<elastic_integer<7, int>::rep, int>::value, "");
         static_assert(identical(
                 elastic_integer<cnl::numeric_limits<int>::digits>{1},

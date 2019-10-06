@@ -35,7 +35,7 @@ namespace cnl {
 
         // cnl::_impl::itoc
         template<typename Scalar>
-        char itoc(Scalar value) noexcept
+        char itoc(Scalar value)
         {
             static_assert(
                     std::is_same<

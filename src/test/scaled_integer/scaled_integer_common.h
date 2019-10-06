@@ -223,8 +223,8 @@ static_assert(cnl::_impl::scale<8>(uint8{0x12})==0x1200, "cnl::_impl::scale test
 #endif
 
 #if defined(TEST_SATURATED_OVERFLOW_INTEGER)
-static_assert(identical(cnl::_impl::scale<8, 2, uint16>((uint16)0x1234), uint16{0x1234}<<8), "cnl::_impl::scale test failed");
-static_assert(cnl::_impl::scale<8, 2, uint16>((uint8)0x1234) == 0xff00, "cnl::_impl::scale test failed");
+static_assert(identical(cnl::_impl::scale<8, 2, uint16>(uint16{0x1234}), uint16{0x1234}<<8), "cnl::_impl::scale test failed");
+static_assert(cnl::_impl::scale<8, 2, uint16>(uint8{0x1234}) == 0xff00, "cnl::_impl::scale test failed");
 static_assert(cnl::_impl::scale<8, 2, uint8>(0x34) == test_int{0x3400}, "cnl::_impl::scale test failed");
 #endif
 
@@ -235,18 +235,21 @@ static_assert(cnl::_impl::scale<8, 2, int16>(-123)==-31488, "cnl::_impl::scale t
 
 static_assert(
         identical(
+                // NOLINTNEXTLINE(misc-redundant-expression)
                 decltype(std::declval<uint16>()/std::declval<uint16>()){0x12},
                 cnl::_impl::scale<-8, 2, uint16>(0x1234)),
         "cnl::_impl::scale test failed");
 static_assert(
         identical(
+                // NOLINTNEXTLINE(misc-redundant-expression)
                 decltype(std::declval<uint16>()/std::declval<uint16>()){0x12},
-                cnl::_impl::scale<-8, 2, uint16>((uint16) 0x1234)),
+                cnl::_impl::scale<-8, 2, uint16>(uint16{0x1234})),
         "cnl::_impl::scale test failed");
 static_assert(
         identical(
+                // NOLINTNEXTLINE(misc-redundant-expression)
                 decltype(std::declval<uint16>()/std::declval<uint16>()){0},
-                cnl::_impl::scale<-8, 2, uint16>((uint8) 0x34)),
+                cnl::_impl::scale<-8, 2, uint16>(uint8{0x34})),
         "cnl::_impl::scale test failed");
 static_assert(cnl::_impl::scale<-8, 2, int16>(-31488)==-123, "cnl::_impl::scale test failed");
 
@@ -810,6 +813,7 @@ static_assert((scaled_integer<int16, cnl::power<-4>>(123.125)-scaled_integer<int
 static_assert(scaled_integer<int8, cnl::power<-5>>(2.125)-scaled_integer<int8, cnl::power<-5>>(3.25)==-1.125F, "cnl::scaled_integer subtraction test failed");
 static_assert(
         identical(
+                // NOLINTNEXTLINE(misc-redundant-expression)
                 scaled_integer<decltype(std::declval<int8>()-std::declval<int8>()), cnl::power<-5>>(2.125-3.25),
                 scaled_integer<int8, cnl::power<-5>>(2.125)-scaled_integer<int8, cnl::power<-5>>(3.25)),
         "cnl::scaled_integer subtraction test failed");
@@ -821,6 +825,7 @@ static_assert(
 static_assert(
         identical(
                 scaled_integer<
+                        // NOLINTNEXTLINE(misc-redundant-expression)
                         decltype(std::declval<test_signed>()-std::declval<test_int>()),
                         cnl::power<-3>>{0.875-2048},
                 scaled_integer<int8, cnl::power<-3>>(0.875)-2048),
@@ -883,6 +888,7 @@ static_assert(identical(-2074569866.7809765625, scaled_integer<int64, cnl::power
 // division
 static_assert(
         identical(
+                // NOLINTNEXTLINE(misc-redundant-expression)
                 scaled_integer<decltype(std::declval<int8>()/std::declval<int8>()), cnl::power<0>>{-15.75},
                 scaled_integer<int8, cnl::power<-1>>{63}/scaled_integer<int8, cnl::power<-1>>{-4}),
         "cnl::scaled_integer test failed");
@@ -893,6 +899,7 @@ static_assert(
         "cnl::scaled_integer test failed");
 static_assert(
         identical(
+                // NOLINTNEXTLINE(misc-redundant-expression)
                 scaled_integer<decltype(std::declval<int8>()/std::declval<int8>()), cnl::power<0>>{31.75},
                 scaled_integer<int8, cnl::power<1>>{-255}/scaled_integer<int8, cnl::power<1>>{-8}),
         "cnl::scaled_integer test failed");
@@ -902,6 +909,7 @@ static_assert(
 
 static_assert(
         identical(
+                // NOLINTNEXTLINE(misc-redundant-expression)
                 scaled_integer<decltype(std::declval<int8>()/std::declval<int8>()), cnl::power<0>>{0},
                 scaled_integer<int8, cnl::power<-5>>{2.5}/scaled_integer<int8, cnl::power<-5>>{-4.F}),
         "cnl::scaled_integer division test failed");
@@ -1223,7 +1231,7 @@ struct ScaledIntegerTesterOutsize {
             "promotion rule for addition scaled_integer<Rep> should match its Rep");
     static_assert(
             is_same<
-                    decltype(min - min),
+                    decltype(min - min),  // NOLINT(misc-redundant-expression)
                     ::scaled_integer<decltype(declval<rep>() - declval<rep>()), cnl::power<exponent>>>::value,
             "promotion rule for subtraction scaled_integer<Rep> should match its Rep");
 };

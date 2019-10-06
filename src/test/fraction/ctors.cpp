@@ -69,7 +69,7 @@ namespace {
         TestFloatingCtor<cnl::int64>(237.0000000001, 2370294537913, 10001242776);
         TestFloatingCtor<cnl::int64>(237.0000000000000000000000000000000000001L, 237, 1);
         TestFloatingCtor<cnl::int64>(236.9999999999999999999999999999999999999L, 237, 1);
-        TestFloatingCtor<cnl::int64>(double{23/7}, 3, 1);
+        TestFloatingCtor<cnl::int64>(double{23/7}, 3, 1);  // NOLINT(bugprone-integer-division)
     }
 
 #if defined(CNL_DEBUG)
@@ -99,7 +99,7 @@ namespace {
         TestFloatingCtor<cnl::int32>(1.0/237.0, 1, 237);
         TestFloatingCtor<cnl::int32>(237.001, 237001, 1000);
         TestFloatingCtor<cnl::int32>(237.000001, 237000001, 1000000);
-        TestFloatingCtor<cnl::int32>(double{23/7}, 3, 1);
+        TestFloatingCtor<cnl::int32>(double{23/7}, 3, 1);  // NOLINT(bugprone-integer-division)
     }
 
 #if defined(CNL_DEBUG)
@@ -137,7 +137,7 @@ namespace {
         TestFloatingCtor<cnl::int16>(1.0/237.0, 1, 237);
         TestFloatingCtor<cnl::int16>(237.01, 23701, 100);
         TestFloatingCtor<cnl::int16>(237.001, 32470, 137);
-        TestFloatingCtor<cnl::int16>(double{23/7}, 3, 1);
+        TestFloatingCtor<cnl::int16>(double{23/7}, 3, 1);  // NOLINT(bugprone-integer-division)
     }
 
 #if defined(CNL_DEBUG)

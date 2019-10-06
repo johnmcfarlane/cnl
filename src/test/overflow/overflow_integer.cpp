@@ -588,6 +588,7 @@ namespace {
         static_assert(-default_initialized == default_initialized, "cnl::overflow_integer test failed");
 #endif
         static_assert(default_initialized+default_initialized == default_initialized, "cnl::overflow_integer test failed");
+        // NOLINTNEXTLINE(misc-redundant-expression)
         static_assert(default_initialized-default_initialized == default_initialized, "cnl::overflow_integer test failed");
         static_assert(default_initialized*default_initialized == default_initialized, "cnl::overflow_integer test failed");
         static_assert(default_initialized/1 == default_initialized, "cnl::overflow_integer test failed");

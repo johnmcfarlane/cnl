@@ -22,8 +22,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // imports from std
 
-using std::is_same;
-using std::declval;
+using std::is_same;  // NOLINT(google-global-names-in-headers)
+using std::declval;  // NOLINT(google-global-names-in-headers)
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer definitions
@@ -55,7 +55,7 @@ using uint128 = cnl::set_digits_t<test_unsigned, 128>;
 template <typename Rep=test_int, class Scale=cnl::power<>>
 using scaled_integer = cnl::scaled_integer<Rep, Scale>;
 
-using cnl::_impl::assert_same;
-using cnl::_impl::identical;
+using cnl::_impl::assert_same;  // NOLINT(google-global-names-in-headers)
+using cnl::_impl::identical;  // NOLINT(google-global-names-in-headers)
 
 #endif

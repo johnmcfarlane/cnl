@@ -12,7 +12,6 @@
 #include <boost/integer.hpp>
 #endif
 
-using std::declval;
 using std::is_same;
 
 namespace sample1 {
@@ -40,6 +39,8 @@ namespace sample1 {
 }
 
 #if (__cplusplus>=201402L)
+using std::declval;
+
 namespace sample2 {
     // range of a*b is UINT_MAX*UINT_MAX but range of return value is UINT_MAX
     auto multiply(unsigned a, unsigned b)
@@ -140,6 +141,7 @@ namespace determining {
     static_assert(digits<uint16_t>::value == 16, "the digits of uint16_t is exactly 16 bits");
     static_assert(digits<long long>::value >= 63, "long long has a digits of at least 64 bits");
     static_assert(digits<long>::value >= digits<short>::value, "short is no longer than long");
+    // NOLINTNEXTLINE(misc-redundant-expression)
     static_assert(digits<wchar_t>::value >= digits<char>::value, "a wide character is at least as wide as a character");
 }
 

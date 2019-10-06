@@ -11,13 +11,11 @@
 
 #include <cnl/_impl/wide_integer/literals.h>
 
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cmath.h>
 
 #include <gtest/gtest.h>
 
-using cnl::_impl::assert_same;
 using cnl::_impl::identical;
 
 namespace {

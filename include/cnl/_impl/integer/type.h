@@ -21,7 +21,7 @@ namespace cnl {
             integer() = default;
 
             template<typename T>
-            constexpr integer(T const& value)  // NOLINT(hicpp-explicit-conversions)
+            constexpr integer(T const& value)  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
                     : _base(static_cast<Rep>(value)) { }
 
             template<class S>

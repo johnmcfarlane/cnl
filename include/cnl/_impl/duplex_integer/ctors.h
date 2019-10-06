@@ -53,10 +53,10 @@ namespace cnl {
                 :_upper(u), _lower(l) { }
 
         template<typename Upper, typename Lower>
-        template<typename Integer, _impl::enable_if_t<(numeric_limits<Integer>::is_integer), int> Dummy>
-        constexpr duplex_integer<Upper, Lower>::duplex_integer(Integer const& i)
-                : _upper(calculate_upper<Upper, Lower>(i)),
-                  _lower(calculate_lower<Lower>(i))
+        template<typename Number, _impl::enable_if_t<(numeric_limits<Number>::is_integer), int> Dummy>
+        constexpr duplex_integer<Upper, Lower>::duplex_integer(Number const& n)
+                : _upper(calculate_upper<Upper, Lower>(n)),
+                  _lower(calculate_lower<Lower>(n))
         {
         }
 

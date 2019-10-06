@@ -15,7 +15,6 @@
 
 using cnl::_impl::identical;
 using cnl::power;
-using std::declval;
 
 template<class T, class U>
 inline constexpr bool is_same_v = std::is_same<T, U>::value;
@@ -54,7 +53,7 @@ namespace design_decisions {
     }
 
     namespace operators {
-        using cnl::constant;
+        using cnl::constant;  // NOLINT(misc-unused-using-decls)
         using cnl::scaled_integer;
 
         auto a = scaled_integer<long long>(3) + 4.F;
@@ -97,7 +96,7 @@ namespace design_decisions {
 
     namespace division {
         using cnl::scaled_integer;
-        using cnl::fraction;
+        using cnl::fraction;  // NOLINT(misc-unused-using-decls)
         using std::int64_t;
 
         constexpr auto i = scaled_integer{fraction{1, 3}};
