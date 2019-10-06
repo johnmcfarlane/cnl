@@ -423,20 +423,20 @@ struct positive_elastic_test
             "cnl::from_rep<fixed_point<elastic_integer>>(int)");
 };
 
-TEST(elastic_number, over_int) {
+TEST(elastic_number, over_int) {  // NOLINT
     auto q = cnl::elastic_number<10, -5>{1.5}/elastic_integer<2>{2};
     auto e = cnl::elastic_number<12, -7>{3./4};
     EXPECT_EQ(e, q);
 }
 
-TEST(elastic_number, int_over) {
+TEST(elastic_number, int_over) {  // NOLINT
     auto f = cnl::make_fraction(elastic_integer<2>{2}, elastic_number<10, -5>{1.5});
     auto q = cnl::make_fixed_point(f);
     auto e = elastic_number<12, -5>{4./3};
     EXPECT_EQ(e, q);
 }
 
-TEST(elastic_number, issue_88)
+TEST(elastic_number, issue_88)  // NOLINT
 {
     using fix_t = cnl::elastic_number<30, -16>;
     fix_t a = 2.0F;

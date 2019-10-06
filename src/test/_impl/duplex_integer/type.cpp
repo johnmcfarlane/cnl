@@ -27,7 +27,7 @@ namespace {
                                 cnl::_impl::instantiate_duplex_integer_t<95, cnl::int32>{0x1234567890abcdef}}),
                 "");
 
-        TEST(duplex_integer, float_ctor)
+        TEST(duplex_integer, float_ctor)  // NOLINT
         {
             constexpr auto expected = cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{cnl::uint64(1.23456e15)};
             auto const actual = cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{1.23456e15};
@@ -75,49 +75,49 @@ namespace {
                 "");
 #endif
 
-        TEST(duplex_integer, upper_int8_value)
+        TEST(duplex_integer, upper_int8_value)  // NOLINT
         {
             auto expected = cnl::int8{0};
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{}.upper();
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, upper_int8_zero)
+        TEST(duplex_integer, upper_int8_zero)  // NOLINT
         {
             auto expected = cnl::int8{0};
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{0}.upper();
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, upper_int8_650)
+        TEST(duplex_integer, upper_int8_650)  // NOLINT
         {
             auto expected = cnl::int8{0};
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{650}.upper();
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, upper_int8_minus_650)
+        TEST(duplex_integer, upper_int8_minus_650)  // NOLINT
         {
             auto expected = cnl::int8{-1};
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{-650}.upper();
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, upper_int8_123)
+        TEST(duplex_integer, upper_int8_123)  // NOLINT
         {
             auto expected = cnl::int8{0};
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{123}.upper();
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, upper_int8_minus_1)
+        TEST(duplex_integer, upper_int8_minus_1)  // NOLINT
         {
             auto expected = cnl::int8{-1};
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{-1}.upper();
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, upper_nested)
+        TEST(duplex_integer, upper_nested)  // NOLINT
         {
             auto expected = cnl::_impl::duplex_integer<int, unsigned int>{0};
             auto actual = cnl::_impl::duplex_integer<
@@ -162,49 +162,49 @@ namespace {
                 "");
 #endif
 
-        TEST(duplex_integer, lower_int8_value)
+        TEST(duplex_integer, lower_int8_value)  // NOLINT
         {
             auto expected = 0U;
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{}.lower();
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, lower_int8_zero)
+        TEST(duplex_integer, lower_int8_zero)  // NOLINT
         {
             auto expected = 0U;
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{0}.lower();
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, lower_int8_650)
+        TEST(duplex_integer, lower_int8_650)  // NOLINT
         {
             auto expected = 650U;
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{650}.lower();
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, lower_int8_minus_650)
+        TEST(duplex_integer, lower_int8_minus_650)  // NOLINT
         {
             auto expected = static_cast<unsigned>(-650);
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{-650}.lower();
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, lower_int8_123)
+        TEST(duplex_integer, lower_int8_123)  // NOLINT
         {
             auto expected = 123U;
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{123}.lower();
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, lower_int8_minus_1)
+        TEST(duplex_integer, lower_int8_minus_1)  // NOLINT
         {
             auto expected = 0xFFFFFFFFU;
             auto actual = cnl::_impl::duplex_integer<cnl::int8, unsigned>{-1}.lower();
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, lower_nested)
+        TEST(duplex_integer, lower_nested)  // NOLINT
         {
             auto expected = cnl::_impl::duplex_integer<unsigned int, unsigned int>{0x600000000LL};
             auto actual = cnl::_impl::duplex_integer<
@@ -240,7 +240,7 @@ namespace {
                 "");
 #endif
 
-        TEST(duplex_integer, lower)
+        TEST(duplex_integer, lower)  // NOLINT
         {
             auto expected = cnl::uint16{0x5678};
             auto actual = cnl::_impl::duplex_integer<signed short, unsigned short>{0x12345678}.lower();

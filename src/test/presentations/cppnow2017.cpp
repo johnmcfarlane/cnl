@@ -69,7 +69,7 @@ namespace prototypes {
 }
 
 #if defined(CNL_EXCEPTIONS_ENABLED)
-TEST(cppnow2017, overflow_int_example)
+TEST(cppnow2017, overflow_int_example)  // NOLINT
 {
     // multiplication of overflow_integer<int> cannot exceed numeric limits
     EXPECT_THROW((void)(overflow_integer<int32_t>{cnl::numeric_limits<int32_t>::max()}*2), overflow_error);

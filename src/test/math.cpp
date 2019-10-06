@@ -40,17 +40,17 @@ namespace {
             CNL_EXPECT_NEAR(1.6180339887498948482045868343656381L, cnl::math::phi_v<T>, epsilon);
         }
 
-        TEST(numeric, float_constants)
+        TEST(numeric, float_constants)  // NOLINT
         {
             test_type<float>();
         }
 
-        TEST(numeric, double_constants)
+        TEST(numeric, double_constants)  // NOLINT
         {
             test_type<double>();
         }
 
-        TEST(numeric, long_double_constants)
+        TEST(numeric, long_double_constants)  // NOLINT
         {
             test_type<long double>();
         }

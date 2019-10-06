@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // copy assignment
 
-TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_scaled_integer)
+TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_scaled_integer)  // NOLINT
 {
     auto lhs = scaled_integer<int32, cnl::power<-16>>(0);
     lhs = static_cast<scaled_integer<int32, cnl::power<-16>>>(123.456);
@@ -33,21 +33,21 @@ TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_scaled_integer)
     ASSERT_EQ(expected, lhs);
 }
 
-TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_floating_point)
+TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_floating_point)  // NOLINT
 {
     auto lhs = scaled_integer<uint32, cnl::power<-16>>(0);
     lhs = 234.567;
     ASSERT_EQ(lhs, 234.56698608398438);
 }
 
-TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_integer)
+TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_integer)  // NOLINT
 {
     auto lhs = scaled_integer<int32, cnl::power<-16>>(0);
     lhs = static_cast<scaled_integer<int32, cnl::power<-16>>>(543);
     ASSERT_EQ(lhs, 543);
 }
 
-TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_fractional)
+TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_fractional)  // NOLINT
 {
     auto lhs = cnl::scaled_integer<test_int, cnl::power<-15>>{0};
     lhs = cnl::make_fraction(int16{1}, int16{3});
@@ -55,7 +55,7 @@ TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_fractional)
 }
 
 #if !defined(TEST_WIDE_INTEGER_8)
-TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_alternative_specialization)
+TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_alternative_specialization)  // NOLINT
 {
     auto lhs = scaled_integer<uint32, cnl::power<-16>>(0);
     lhs = scaled_integer<uint8>(87.65);
@@ -67,42 +67,42 @@ TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_alternative_specialization)
 // compound assignment
 
 namespace test_compound_assignment {
-    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_f_i) {
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_f_i) {  // NOLINT
         auto lhs = scaled_integer<uint32, cnl::power<-16>>{7};
         auto rhs = uint32{12};
         lhs += rhs;
         ASSERT_EQ(lhs, 19U);
     }
 
-    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_i_f) {
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_i_f) {  // NOLINT
         auto lhs = int32{7};
         auto rhs = scaled_integer<int32, cnl::power<-16>>{12};
         lhs += rhs;
         ASSERT_EQ(lhs, 19);
     }
 
-    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_f_f) {
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_f_f) {  // NOLINT
         auto rhs = scaled_integer<int32, cnl::power<-16>>{12.25};
         auto lhs = scaled_integer<int64, cnl::power<-20>>{18726.125L};
         lhs += rhs;
         ASSERT_EQ(lhs, 18738.375);
     }
 
-    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_f_i) {
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_f_i) {  // NOLINT
         auto lhs = scaled_integer<int32, cnl::power<-16>>{7};
         auto rhs = int32{12};
         lhs -= rhs;
         ASSERT_EQ(lhs, -5);
     }
 
-    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_i_f) {
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_i_f) {  // NOLINT
         auto lhs = 18726.125L;
         auto rhs = scaled_integer<uint8, cnl::power<-4>>{2.5};
         lhs -= rhs;
         ASSERT_EQ(lhs, 18723.625L);
     }
 
-    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_f_f) {
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_f_f) {  // NOLINT
         auto lhs = scaled_integer<int64, cnl::power<-6>>{18726.125L};
         auto rhs = scaled_integer<uint8, cnl::power<-4>>{2.5};
         lhs -= rhs;
@@ -113,7 +113,7 @@ namespace test_compound_assignment {
 ////////////////////////////////////////////////////////////////////////////////
 // compound assignment
 
-TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), from_compound_assignment)
+TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), from_compound_assignment)  // NOLINT
 {
     auto x = scaled_integer<int16, cnl::power<-8>>(22.75);
     ASSERT_EQ(x += 12.5, 35.25L);
@@ -127,7 +127,7 @@ TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), from_compound_assignment)
 ////////////////////////////////////////////////////////////////////////////////
 // increment/decrement operators
 
-TEST(TOKENPASTE2(TEST_LABEL, pre), increment)
+TEST(TOKENPASTE2(TEST_LABEL, pre), increment)  // NOLINT
 {
     auto b = scaled_integer<int16, cnl::power<-8>>(22.75);
     auto &a = ++b;
@@ -137,7 +137,7 @@ TEST(TOKENPASTE2(TEST_LABEL, pre), increment)
     ASSERT_EQ(23.75, b);
 }
 
-TEST(TOKENPASTE2(TEST_LABEL, pre), decrement)
+TEST(TOKENPASTE2(TEST_LABEL, pre), decrement)  // NOLINT
 {
     auto b = scaled_integer<int16, cnl::power<-8>>(22.75);
     auto &a = --b;
@@ -147,7 +147,7 @@ TEST(TOKENPASTE2(TEST_LABEL, pre), decrement)
     ASSERT_EQ(21.75, b);
 }
 
-TEST(TOKENPASTE2(TEST_LABEL, post), increment)
+TEST(TOKENPASTE2(TEST_LABEL, post), increment)  // NOLINT
 {
     auto b = scaled_integer<int16, cnl::power<-8>>(22.75);
     auto a = b++;
@@ -157,7 +157,7 @@ TEST(TOKENPASTE2(TEST_LABEL, post), increment)
     ASSERT_EQ(23.75, b);
 }
 
-TEST(TOKENPASTE2(TEST_LABEL, post), decrement)
+TEST(TOKENPASTE2(TEST_LABEL, post), decrement)  // NOLINT
 {
     auto b = scaled_integer<int16, cnl::power<-8>>(22.75);
     auto a = b--;
@@ -172,7 +172,7 @@ TEST(TOKENPASTE2(TEST_LABEL, post), decrement)
 
 #if defined(CNL_EXCEPTIONS_ENABLED) && !defined(CNL_UNREACHABLE_UB_ENABLED)
 
-TEST(TOKENPASTE2(TEST_LABEL, sqrt_exception), from_alternative_specialization)
+TEST(TOKENPASTE2(TEST_LABEL, sqrt_exception), from_alternative_specialization)  // NOLINT
 {
     ASSERT_DEATH((void)sqrt(scaled_integer<>(-1)), "negative value passed to cnl::sqrt\n");
 }

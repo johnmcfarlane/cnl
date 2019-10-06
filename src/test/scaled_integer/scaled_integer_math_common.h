@@ -16,7 +16,7 @@
 #include <cstdint>
 
 
-TEST(math, FPTESTFORMAT) {
+TEST(math, FPTESTFORMAT) {  // NOLINT
     using fp = cnl::scaled_integer<int32_t, cnl::power<FPTESTEXP>>;
 
     //Test integer powers

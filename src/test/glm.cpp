@@ -19,7 +19,7 @@
 #include <gtest/gtest.h>
 
 namespace {
-    TEST(glm, char_multiply) {
+    TEST(glm, char_multiply) {  // NOLINT
         auto lhs = glm::tvec4<char>{7};
         auto rhs = glm::tvec4<char>{5};
 
@@ -29,7 +29,7 @@ namespace {
         ASSERT_TRUE(cnl::_impl::identical(expected, product));
     }
 
-    TEST(glm, fp_char_multiply) {
+    TEST(glm, fp_char_multiply) {  // NOLINT
         using op_fp = cnl::scaled_integer<char, cnl::power<-4>>;
         auto lhs = glm::tvec4<op_fp>{op_fp{7.5}};
         auto rhs = glm::tvec4<op_fp>{op_fp{5.25}};

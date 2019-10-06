@@ -88,7 +88,7 @@ namespace f {
 #if (__cplusplus >= 201703L)
 namespace g {
     auto n = fixed_point<int, -8>{1.5};
-    auto nn = n * n;    // fixed_point<int, -16>;
+    auto nn = n * n;
 
     static_assert(std::is_same<decltype(nn), fixed_point<int, -16>>::value);
 }

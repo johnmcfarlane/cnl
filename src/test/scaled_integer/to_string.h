@@ -17,14 +17,14 @@
 
 namespace {  // NOLINT(cert-dcl59-cpp)
     namespace test_to_string {
-        TEST(to_string, scaled_integer_negative)
+        TEST(to_string, scaled_integer_negative)  // NOLINT
         {
             ASSERT_EQ(
                     std::string{"-5016.5091400146484375"},
                     cnl::to_string(cnl::scaled_integer<int, cnl::power<-16>>(-5016.5091400146484375)));
         }
 
-        TEST(to_string, scaled_integer_small)
+        TEST(to_string, scaled_integer_small)  // NOLINT
         {
             ASSERT_EQ(
                     std::string{"0.00390625"},

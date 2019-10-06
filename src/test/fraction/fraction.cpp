@@ -206,7 +206,7 @@ namespace {
 #endif
 
 #if defined(__cpp_lib_gcd)
-    TEST(fraction, hash)
+    TEST(fraction, hash)  // NOLINT
     {
         ASSERT_NE(
                 (std::hash<cnl::fraction<>>{}(cnl::fraction<>{1, 2})),

@@ -28,18 +28,18 @@ using test_int = cnl::overflow_integer<int, cnl::throwing_overflow_tag>;
 
 #if defined(CNL_EXCEPTIONS_ENABLED)
 
-TEST(throwing_integer_overflow_exception, narrow)
+TEST(throwing_integer_overflow_exception, narrow)  // NOLINT
 {
     ASSERT_THROW((uint8) 0x1234, std::overflow_error);
 }
 
-TEST(throwing_integer_overflow_exception, shift_left)
+TEST(throwing_integer_overflow_exception, shift_left)  // NOLINT
 {
     auto scale = cnl::scale<30, 2, test_int>{};
     ASSERT_THROW((void)scale(2), std::overflow_error);
 }
 
-TEST(throwing_integer_overflow_exception, assignment)
+TEST(throwing_integer_overflow_exception, assignment)  // NOLINT
 {
     using fp_type = fixed_point<int8, -7>;
     ASSERT_THROW((void)fp_type(1), std::overflow_error);

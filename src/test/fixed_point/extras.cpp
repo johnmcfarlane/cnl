@@ -12,7 +12,7 @@
 using cnl::fixed_point;
 using cnl::_impl::identical;
 
-TEST(utils_tests, sin)
+TEST(utils_tests, sin)  // NOLINT
 {
     ASSERT_EQ(sin(fixed_point<cnl::uint8, -6>(0)), 0);
     ASSERT_EQ(sin(fixed_point<cnl::int16, -13>(3.1415926)), 0.F);
@@ -22,7 +22,7 @@ TEST(utils_tests, sin)
     ASSERT_EQ(sin(fixed_point<cnl::int16, -10>(-3.1415926/3)), -.865234375);
 }
 
-TEST(utils_tests, cos)
+TEST(utils_tests, cos)  // NOLINT
 {
     ASSERT_EQ(cos(fixed_point<cnl::uint8, -6>(0)), 1.F);
     ASSERT_EQ(cos(fixed_point<cnl::int16, -13>(3.1415926)), -1);

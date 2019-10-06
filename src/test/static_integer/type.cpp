@@ -139,7 +139,7 @@ namespace {
     }
 
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
-    TEST(static_integer, conversion_overflow_trapping) {
+    TEST(static_integer, conversion_overflow_trapping) {  // NOLINT
         using si = cnl::static_integer<5>;
         ASSERT_DEATH(si{32}, "positive overflow");
     }

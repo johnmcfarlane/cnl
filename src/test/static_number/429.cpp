@@ -27,7 +27,7 @@ using saturated_elastic_scaled_integer = cnl::scaled_integer<
                 cnl::native_rounding_tag>,
         cnl::power<Exponent>>;
 
-TEST(a, b)
+TEST(a, b)  // NOLINT
 {
     using t1 = saturated_elastic_scaled_integer<1, 0>;
     using t2 = saturated_elastic_scaled_integer<2, -1>;

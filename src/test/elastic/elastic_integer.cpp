@@ -614,7 +614,7 @@ namespace {
 #endif
     }
 
-    TEST(elastic_integer, to_rep_ref) {
+    TEST(elastic_integer, to_rep_ref) {  // NOLINT
         auto i = 123;
         auto e = cnl::elastic_integer<10>{i};
         int& expected = i;
@@ -622,7 +622,7 @@ namespace {
         ASSERT_TRUE(equal);
     }
 
-    TEST(elastic_integer, to_rep_const_ref) {
+    TEST(elastic_integer, to_rep_const_ref) {  // NOLINT
         auto i = 123;
         auto const e = cnl::elastic_integer<10>{i};
         int const& expected = i;
@@ -630,13 +630,13 @@ namespace {
         ASSERT_TRUE(equal);
     }
 
-    TEST(elastic_integer, to_rep_rvalue_ref) {
+    TEST(elastic_integer, to_rep_rvalue_ref) {  // NOLINT
         auto i = 123;
         auto equal = identical(i, cnl::_impl::to_rep(cnl::elastic_integer<10>{i}));
         ASSERT_TRUE(equal);
     }
 
-    TEST(elastic_integer, pre_increment) {
+    TEST(elastic_integer, pre_increment) {  // NOLINT
         auto i = 123;
         auto a = cnl::elastic_integer<10>{i};
         auto& b = ++a;
@@ -646,7 +646,7 @@ namespace {
         static_assert(std::is_same<cnl::elastic_integer<10>&, decltype(b)>::value, "");
     }
 
-    TEST(elastic_integer, pre_decrement) {
+    TEST(elastic_integer, pre_decrement) {  // NOLINT
         auto i = 123;
         auto a = cnl::elastic_integer<10>{i};
         auto& b = --a;
@@ -656,7 +656,7 @@ namespace {
         static_assert(std::is_same<cnl::elastic_integer<10>&, decltype(b)>::value, "");
     }
 
-    TEST(elastic_integer, post_increment) {
+    TEST(elastic_integer, post_increment) {  // NOLINT
         auto i = 123;
         auto a = cnl::elastic_integer<10>{i};
         auto b = a++;
@@ -666,7 +666,7 @@ namespace {
         static_assert(std::is_same<cnl::elastic_integer<10>, decltype(b)>::value, "");
     }
 
-    TEST(elastic_integer, post_decrement) {
+    TEST(elastic_integer, post_decrement) {  // NOLINT
         auto i = 123;
         auto a = cnl::elastic_integer<10>{i};
         auto b = a--;

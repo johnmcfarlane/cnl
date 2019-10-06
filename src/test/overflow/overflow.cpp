@@ -116,7 +116,7 @@ namespace {
 
     namespace test_negative_shift_left {
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
-        TEST(overflow, trap)
+        TEST(overflow, trap)  // NOLINT
         {
             ASSERT_DEATH(
                     (void)cnl::shift_left<cnl::trapping_overflow_tag>(-1073741825, 1),

@@ -57,7 +57,7 @@ void declaration_example()
 }
 //! [declaration example]
 
-TEST(index, declaration_example)
+TEST(index, declaration_example)  // NOLINT
 {
     test_function(declaration_example, "7\n3.5\n1.5\n");
 }
@@ -86,7 +86,7 @@ void basic_arithmetic_example()
 }
 //! [basic arithmetic example]
 
-TEST(index, basic_arithmetic_example)
+TEST(index, basic_arithmetic_example)  // NOLINT
 {
     test_function(basic_arithmetic_example, "6.283185303211212158203125\n360\n");
 }
@@ -121,7 +121,7 @@ void advanced_arithmetic_example()
 }
 //! [advanced arithmetic example]
 
-TEST(index, advanced_arithmetic_example)
+TEST(index, advanced_arithmetic_example)  // NOLINT
 {
     test_function(advanced_arithmetic_example, "14\n254.00390625\n254.00390625\n");
 }
@@ -166,7 +166,7 @@ void boost_example()
 }
 //! [boost example]
 
-TEST(index, boost_example)
+TEST(index, boost_example)  // NOLINT
 {
     test_function(boost_example, "1000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
                                  "0000000000000000\n0.00000000000000000000000000000000000000000000000000000000000000000"
@@ -216,7 +216,7 @@ void elastic_example2()
 }
 //! [elastic example]
 
-TEST(index, elastic_example)
+TEST(index, elastic_example)  // NOLINT
 {
     test_function(elastic_example1, "");
     test_function(elastic_example2, "254.00390625\n");
