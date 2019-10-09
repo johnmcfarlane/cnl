@@ -64,5 +64,129 @@ CheckOptions:
     value:           llvm
   - key:             modernize-use-nullptr.NullMacros
     value:           'NULL'
+  - key:             readability-identifier-naming.AbstractClassCase
+    value:           snake_case
+  - key:             readability-identifier-naming.AbstractClassPrefix
+    value:           ''
+  - key:             readability-identifier-naming.ClassCase
+    value:           snake_case
+  - key:             readability-identifier-naming.ClassPrefix
+    value:           ''
+  - key:             readability-identifier-naming.ClassConstantCase
+    value:           snake_case
+  - key:             readability-identifier-naming.ClassConstantPrefix
+    value:           ''
+  - key:             readability-identifier-naming.ClassMemberCase
+    value:           snake_case
+  - key:             readability-identifier-naming.ClassMethodCase
+    value:           snake_case
+  - key:             readability-identifier-naming.ConstantCase
+    value:           snake_case
+  - key:             readability-identifier-naming.ConstantSuffix
+    value:           ''
+  - key:             readability-identifier-naming.ConstexprFunctionCase
+    value:           snake_case
+  - key:             readability-identifier-naming.ConstexprMethodCase
+    value:           snake_case
+  - key:             readability-identifier-naming.ConstexprVariableCase
+    value:           snake_case
+  - key:             readability-identifier-naming.EnumCase
+    value:           snake_case
+  - key:             readability-identifier-naming.EnumPrefix
+    value:           ''
+  - key:             readability-identifier-naming.EnumConstantCase
+    value:           snake_case
+  - key:             readability-identifier-naming.FunctionCase
+    value:           snake_case
+  - key:             readability-identifier-naming.GlobalConstantCase
+    value:           snake_case
+  - key:             readability-identifier-naming.GlobalFunctionCase
+    value:           snake_case
+  - key:             readability-identifier-naming.GlobalVariableCase
+    value:           snake_case
+  - key:             readability-identifier-naming.GlobalVariablePrefix
+    value:           ''
+  - key:             readability-identifier-naming.InlineNamespaceCase
+    value:           snake_case
+  - key:             readability-identifier-naming.LocalConstantCase
+    value:           snake_case
+  - key:             readability-identifier-naming.LocalConstantPrefix
+    value:           ''
+  - key:             readability-identifier-naming.LocalVariableCase
+    value:           snake_case
+  - key:             readability-identifier-naming.MemberCase
+    value:           snake_case
+  - key:             readability-identifier-naming.MemberPrefix
+    value:           ''
+  - key:             readability-identifier-naming.ConstantMemberCase
+    value:           snake_case
+  - key:             readability-identifier-naming.PrivateMemberPrefix
+    value:           '_'
+  - key:             readability-identifier-naming.ProtectedMemberPrefix
+    value:           '_'
+  - key:             readability-identifier-naming.PublicMemberCase
+    value:           snake_case
+  - key:             readability-identifier-naming.MethodCase
+    value:           snake_case
+  - key:             readability-identifier-naming.PrivateMethodPrefix
+    value:           ''
+  - key:             readability-identifier-naming.ProtectedMethodPrefix
+    value:           '_'
+  - key:             readability-identifier-naming.NamespaceCase
+    value:           snake_case
+  - key:             readability-identifier-naming.ParameterCase
+    value:           snake_case
+  - key:             readability-identifier-naming.ParameterPrefix
+    value:           ''
+  - key:             readability-identifier-naming.ConstantParameterCase
+    value:           snake_case
+  - key:             readability-identifier-naming.ConstantParameterPrefix
+    value:           ''
+  - key:             readability-identifier-naming.ParameterPackCase
+    value:           snake_case
+  - key:             readability-identifier-naming.PureFunctionCase
+    value:           snake_case
+  - key:             readability-identifier-naming.PureMethodCase
+    value:           snake_case
+  - key:             readability-identifier-naming.StaticConstantCase
+    value:           snake_case
+  - key:             readability-identifier-naming.StaticVariableCase
+    value:           snake_case
+  - key:             readability-identifier-naming.StaticVariablePrefix
+    value:           ''
+  - key:             readability-identifier-naming.StructCase
+    value:           snake_case
+  - key:             readability-identifier-naming.TemplateParameterCase
+    value:           CamelCase
+  - key:             readability-identifier-naming.TemplateTemplateParameterCase
+    value:           CamelCase
+  - key:             readability-identifier-naming.TemplateUsingCase
+    value:           snake_case
+  - key:             readability-identifier-naming.TemplateUsingPrefix
+    value:           ''
+  - key:             readability-identifier-naming.TypeTemplateParameterCase
+    value:           CamelCase
+  - key:             readability-identifier-naming.TypeTemplateParameterSuffix
+    value:           ''
+  - key:             readability-identifier-naming.TypedefCase
+    value:           snake_case
+  - key:             readability-identifier-naming.TypedefSuffix
+    value:           '_t'
+  - key:             readability-identifier-naming.UnionCase
+    value:           snake_case
+  - key:             readability-identifier-naming.UnionPrefix
+    value:           ''
+  - key:             readability-identifier-naming.UsingCase
+    value:           snake_case
+  - key:             readability-identifier-naming.ValueTemplateParameterCase
+    value:           CamelCase
+  - key:             readability-identifier-naming.VariableCase
+    value:           snake_case
+  - key:             readability-identifier-naming.VirtualMethodCase
+    value:           snake_case
+  - key:             readability-identifier-naming.VirtualMethodPrefix
+    value:           ''
+  - key:             readability-identifier-naming.IgnoreFailedSplit
+    value:           0
 ...
 
