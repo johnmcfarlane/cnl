@@ -10,10 +10,8 @@
 /// included from cnl/scaled_integer.h - do not include directly!
 
 #if !defined(CNL_IMPL_SCALED_INTEGER_EXTRAS_H)
-#define CNL_IMPL_SCALED_INTEGER_EXTRAS_H 1
+#define CNL_IMPL_SCALED_INTEGER_EXTRAS_H
 
-#include "to_chars.h"
-#include "type.h"
 #include "../cmath/abs.h"
 #include "../config.h"
 #include "../num_traits/fixed_width_scale.h"
@@ -21,6 +19,8 @@
 #include "../num_traits/unwrap.h"
 #include "../num_traits/width.h"
 #include "../unreachable.h"
+#include "to_chars.h"
+#include "type.h"
 
 #include <cmath>
 #if defined(CNL_IOSTREAM_ENABLED)

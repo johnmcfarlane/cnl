@@ -7,11 +7,11 @@
 #if !defined(CNL_IMPL_TYPE_TRAITS_REMOVE_SIGNEDNESS_H)
 #define CNL_IMPL_TYPE_TRAITS_REMOVE_SIGNEDNESS_H
 
-#include "enable_if.h"
+#include "../num_traits/from_rep.h"
 #include "../num_traits/is_composite.h"
 #include "../num_traits/to_rep.h"
-#include "../num_traits/from_rep.h"
 #include "../type_traits/type_identity.h"
+#include "enable_if.h"
 #include <type_traits>
 
 namespace cnl {

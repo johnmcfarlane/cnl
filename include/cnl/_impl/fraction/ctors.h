@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_FRACTION_CTORS_H)
-#define CNL_IMPL_FRACTION_CTORS_H 1
+#define CNL_IMPL_FRACTION_CTORS_H
 
 #include "make_fraction.h"
 
@@ -24,8 +24,8 @@ namespace cnl {
                     numeric_limits<Integer>::is_integer,
                     int> Dummy>
     constexpr
-    fraction<Numerator, Denominator>::fraction(Integer const& n)
-            : fraction(static_cast<Numerator>(n), 1) {}
+    fraction<Numerator, Denominator>::fraction(Integer const& i)
+            : fraction(static_cast<Numerator>(i), 1) {}
 
     template<typename Numerator, typename Denominator>
     template<typename RhsNumerator, typename RhsDenominator>

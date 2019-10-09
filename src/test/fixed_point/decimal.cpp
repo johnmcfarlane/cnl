@@ -4,8 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/fixed_point.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/fixed_point.h>
 
 template<typename Rep, int Exponent>
 using decimal_fixed_point = cnl::fixed_point<Rep, Exponent, 10>;
@@ -59,11 +59,11 @@ namespace test_equal {
 namespace test_add {
     static_assert(identical(
             decimal_fixed_point<int, -5>{1.5}+decimal_fixed_point<int, -5>{5.1},
-            decimal_fixed_point<int, -5>{6.59998989105224609375f}), "");
+            decimal_fixed_point<int, -5>{6.59998989105224609375F}), "");
 
     static_assert(identical(
-            76.5f+decimal_fixed_point<int, -5>{1.25},
-            77.75f), "");
+            76.5F+decimal_fixed_point<int, -5>{1.25},
+            77.75F), "");
 }
 
 namespace test_multiply {

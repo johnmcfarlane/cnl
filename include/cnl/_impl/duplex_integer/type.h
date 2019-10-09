@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_TYPE_H)
-#define CNL_IMPL_DUPLEX_INTEGER_TYPE_H 1
+#define CNL_IMPL_DUPLEX_INTEGER_TYPE_H
 
 #include "../num_traits/width.h"
 #include "../power_value.h"
@@ -53,11 +53,11 @@ namespace cnl {
 
             constexpr duplex_integer(upper_type const& u, lower_type const& l);
 
-            template<typename Integer, _impl::enable_if_t<(numeric_limits<Integer>::is_integer), int> Dummy = 0>
-            constexpr duplex_integer(Integer const& i);
+            template<typename Number, _impl::enable_if_t<(numeric_limits<Number>::is_integer), int> Dummy = 0>
+            constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
 
             template<typename Number, _impl::enable_if_t<(numeric_limits<Number>::is_iec559), int> Dummy = 0>
-            constexpr duplex_integer(Number const& i);
+            constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
 
             CNL_NODISCARD constexpr auto upper() const -> upper_type const&
             {

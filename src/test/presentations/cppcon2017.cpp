@@ -4,9 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/fixed_point.h>
 #include <cnl/fraction.h>
-#include <cnl/_impl/type_traits/identical.h>
 
 #include <cstddef>
 #include <iostream>
@@ -33,13 +33,13 @@ namespace a {
     using namespace std::experimental;
     using byte = std::uint8_t;
 
-    unordered_map<filesystem::path, unique_ptr<byte[]>> cache;
+    unordered_map<filesystem::path, unique_ptr<byte[]>> cache;  // NOLINT(cppcoreguidelines-avoid-c-arrays)
 }
 #endif
 
 namespace b {
     void f() {
-        auto n = fixed_point<int, -8>{ 0.25f };
+        auto n = fixed_point<int, -8>{ 0.25F };
         std::cout << float(n * 5); // prints "1.25"
     }
 }
@@ -72,7 +72,7 @@ namespace d {
 }
 
 namespace e {
-    static_assert(fixed_point<unsigned>{1u} < fixed_point<signed>{-1}, "OK(!)");
+    static_assert(fixed_point<unsigned>{1U} < fixed_point<signed>{-1}, "OK(!)");
 
 #if defined(__cpp_deduction_guides) && defined(CNL_P1021)
     static_assert(fixed_point{1u} < fixed_point{-1});
@@ -88,7 +88,7 @@ namespace f {
 #if (__cplusplus >= 201703L)
 namespace g {
     auto n = fixed_point<int, -8>{1.5};
-    auto nn = n * n;    // fixed_point<int, -16>;
+    auto nn = n * n;
 
     static_assert(std::is_same<decltype(nn), fixed_point<int, -16>>::value);
 }
@@ -123,6 +123,7 @@ namespace k {
         auto n = fixed_point<int, -31>{0.99609375};
         auto nn = n*n;    // fixed_point<int, -62>{0.9922027587890625};
         static_assert(std::is_same<fixed_point<int, -62>, decltype(nn)>::value, "");
+        (void)nn;
     }
 }
 
@@ -176,10 +177,10 @@ namespace o {
     static_assert(cnl::_impl::identical(fixed_point<int, 7>{128}, z));
 
     constexpr auto a = cnl::fixed_point{0b10000000000000000000000000000000000000000_c};
-    static_assert(cnl::_impl::identical(fixed_point<int, 40>{0b10000000000000000000000000000000000000000l}, a));
+    static_assert(cnl::_impl::identical(fixed_point<int, 40>{0b10000000000000000000000000000000000000000L}, a));
 
     constexpr auto b = cnl::fixed_point{0b11111111111111111111111111111111111111111_c};
-    static_assert(cnl::_impl::identical(fixed_point<cnl::int64, 0>{0b11111111111111111111111111111111111111111l}, b));
+    static_assert(cnl::_impl::identical(fixed_point<cnl::int64, 0>{0b11111111111111111111111111111111111111111L}, b));
 
     constexpr auto c = elastic_integer{2017_c};
     static_assert(cnl::_impl::identical(elastic_integer<11>{2017}, c));

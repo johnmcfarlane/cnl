@@ -6,8 +6,8 @@
 
 #if defined(__cpp_inline_variables) && __cpp_inline_variables>=201606
 
-#include <cnl/scaled_integer.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/scaled_integer.h>
 
 #include <gtest/gtest.h>
 
@@ -15,7 +15,6 @@
 
 using cnl::_impl::identical;
 using cnl::power;
-using std::declval;
 
 template<class T, class U>
 inline constexpr bool is_same_v = std::is_same<T, U>::value;
@@ -45,7 +44,7 @@ namespace design_decisions {
         using cnl::constant;
         using cnl::scaled_integer;
 
-        auto a = scaled_integer(0ul);
+        auto a = scaled_integer(0UL);
         static_assert(is_same_v<decltype(a), scaled_integer<unsigned long, power<>>>);
 
         constexpr auto b = scaled_integer(constant<0xFF00000000L>{});
@@ -54,11 +53,11 @@ namespace design_decisions {
     }
 
     namespace operators {
-        using cnl::constant;
+        using cnl::constant;  // NOLINT(misc-unused-using-decls)
         using cnl::scaled_integer;
 
-        auto a = scaled_integer<long long>(3) + 4.f;
-        static_assert(is_same_v<decltype(a), decltype(3.f + 4.f)>);
+        auto a = scaled_integer<long long>(3) + 4.F;
+        static_assert(is_same_v<decltype(a), decltype(3.F + 4.F)>);
 
 #if ! defined(__clang__)
         // TODO: either this must compile on Clang or the operator must be written
@@ -66,7 +65,7 @@ namespace design_decisions {
         static_assert(is_same_v<decltype(b), decltype(scaled_integer<unsigned>(200) - scaled_integer<int>(100))>);
 #endif
 
-        auto c = scaled_integer<>(5) * 6ul;
+        auto c = scaled_integer<>(5) * 6UL;
         static_assert(is_same_v<decltype(c), decltype(scaled_integer<>(5) * scaled_integer<unsigned long>(6))>);
 
         constexpr auto d = scaled_integer<uint8_t, power<-7>>{1.25} * scaled_integer<uint8_t, power<-3>>{8};
@@ -92,12 +91,12 @@ namespace design_decisions {
 
         constexpr auto h = scaled_integer<int8_t, power<-2>>{12.5} <= scaled_integer<short, power<>>{8};
         static_assert(is_same_v<decltype(h), const bool>);
-        static_assert(h == false);
+        static_assert(!h);
     }
 
     namespace division {
         using cnl::scaled_integer;
-        using cnl::fraction;
+        using cnl::fraction;  // NOLINT(misc-unused-using-decls)
         using std::int64_t;
 
         constexpr auto i = scaled_integer{fraction{1, 3}};
@@ -120,7 +119,7 @@ namespace example {
         return sqrt(x*x+y*y+z*z);
     }
 
-    TEST(proposal, examples)
+    TEST(proposal, examples)  // NOLINT
     {
         constexpr auto m = magnitude(
                 scaled_integer<uint16_t, power<-12>>(1),

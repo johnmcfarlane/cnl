@@ -5,13 +5,13 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_FRACTION_MAKE_FRACTION_H)
-#define CNL_IMPL_FRACTION_MAKE_FRACTION_H 1
+#define CNL_IMPL_FRACTION_MAKE_FRACTION_H
 
-#include "type.h"
+#include "../../limits.h"
 #include "../assert.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/remove_signedness.h"
-#include "../../limits.h"
+#include "type.h"
 
 #include <type_traits>
 
@@ -61,7 +61,8 @@ namespace cnl {
             if (FloatingPoint(right)==d) {
                 return right;
             }
-            auto lefts{0}, rights{0};
+            auto lefts{0};
+            auto rights{0};
             for (;;) {
                 auto const mid{fraction<uint_t>(
                         uint_t(left.numerator+right.numerator),

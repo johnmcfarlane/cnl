@@ -8,7 +8,7 @@
 /// \brief `cnl::scaled_integer` operators
 
 #if !defined(CNL_IMPL_SCALED_INTEGER_OPERATORS_H)
-#define CNL_IMPL_SCALED_INTEGER_OPERATORS_H 1
+#define CNL_IMPL_SCALED_INTEGER_OPERATORS_H
 
 #include "type.h"
 

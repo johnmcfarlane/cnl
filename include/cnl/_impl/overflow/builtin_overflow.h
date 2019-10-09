@@ -4,16 +4,16 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_IMPL_OVERFLOW_BUILTIN_OVERFLOW_H
+#if !defined(CNL_IMPL_OVERFLOW_BUILTIN_OVERFLOW_H)
 #define CNL_IMPL_OVERFLOW_BUILTIN_OVERFLOW_H
 
-#include "overflow_operator.h"
 #include "../config.h"
-#include "../polarity.h"
 #include "../operators/operators.h"
+#include "../polarity.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 #include "../unreachable.h"
+#include "overflow_operator.h"
 
 /// compositional numeric library
 namespace cnl {

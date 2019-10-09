@@ -8,7 +8,7 @@
 /// \brief CNL alternative to \verbatim<limits>\endverbatim with 128-bit support
 
 #if !defined(CNL_LIMITS_H)
-#define CNL_LIMITS_H 1
+#define CNL_LIMITS_H
 
 #include "cstdint.h"
 
@@ -27,20 +27,28 @@ namespace cnl {
         static int const digits = CHAR_BIT*sizeof(int128)-1;
         static int const digits10 = 38;
 
-        struct _s {
-            constexpr _s(uint64 upper, uint64 lower) : value(lower + (int128{upper} << 64)) {}
-            CNL_NODISCARD constexpr operator int128() const { return value; }
+        class _s {
+        public:
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
+            constexpr _s(uint64 upper, uint64 lower)
+                    :value(lower+(int128{upper} << 64)) { }
+
+            CNL_NODISCARD explicit constexpr operator int128() const
+            {
+                return value;
+            }
+        private:
             int128 value;
         };
 
         CNL_NODISCARD static constexpr int128 min()
         {
-            return _s(0x8000000000000000, 0x0000000000000000);
+            return int128(_s(0x8000000000000000, 0x0000000000000000));
         }
 
         CNL_NODISCARD static constexpr int128 max()
         {
-            return _s(0x7fffffffffffffff, 0xffffffffffffffff);
+            return int128(_s(0x7fffffffffffffff, 0xffffffffffffffff));
         }
 
         CNL_NODISCARD static constexpr int128 lowest()
@@ -54,9 +62,17 @@ namespace cnl {
         static int const digits = CHAR_BIT*sizeof(int128);
         static int const digits10 = 38;
 
-        struct _s {
-            constexpr _s(uint64 upper, uint64 lower) : value(lower + (uint128{upper} << 64)) {}
-            CNL_NODISCARD constexpr operator uint128() const { return value; }
+        class _s {
+        public:
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
+            constexpr _s(uint64 upper, uint64 lower)
+                    :value(lower+(uint128{upper} << 64)) { }
+
+            CNL_NODISCARD explicit constexpr operator uint128() const
+            {
+                return value;
+            }
+        private:
             uint128 value;
         };
 
@@ -67,7 +83,7 @@ namespace cnl {
 
         CNL_NODISCARD static constexpr uint128 max()
         {
-            return _s(0xffffffffffffffff, 0xffffffffffffffff);
+            return uint128(_s(0xffffffffffffffff, 0xffffffffffffffff));
         }
 
         CNL_NODISCARD static constexpr int128 lowest()

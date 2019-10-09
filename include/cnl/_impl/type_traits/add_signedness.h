@@ -4,13 +4,13 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_IMPL_TYPE_TRAITS_ADD_SIGNEDNESS_H
+#if !defined(CNL_IMPL_TYPE_TRAITS_ADD_SIGNEDNESS_H)
 #define CNL_IMPL_TYPE_TRAITS_ADD_SIGNEDNESS_H
 
-#include "../type_traits/enable_if.h"
+#include "../num_traits/from_rep.h"
 #include "../num_traits/is_composite.h"
 #include "../num_traits/to_rep.h"
-#include "../num_traits/from_rep.h"
+#include "../type_traits/enable_if.h"
 #include "../type_traits/type_identity.h"
 #include <type_traits>
 

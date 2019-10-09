@@ -8,12 +8,12 @@
 /// \brief essential definitions related to the `cnl::elastic_fixed_point` type
 
 #if !defined(CNL_ELASTIC_FIXED_POINT_H)
-#define CNL_ELASTIC_FIXED_POINT_H 1
+#define CNL_ELASTIC_FIXED_POINT_H
 
+#include "_impl/num_traits/adopt_signedness.h"
 #include "elastic_integer.h"
 #include "fixed_point.h"
-#include "limits.h"
-#include "_impl/num_traits/adopt_signedness.h"
+#include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
 
 #include <type_traits>
 

@@ -4,8 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/scaled_integer.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/scaled_integer.h>
 
 #include <gtest/gtest.h>
 
@@ -13,23 +13,23 @@ using cnl::power;
 using cnl::scaled_integer;
 using cnl::_impl::identical;
 
-TEST(utils_tests, sin)
+TEST(utils_tests, sin)  // NOLINT
 {
     ASSERT_EQ(sin(scaled_integer<cnl::uint8, power<-6>>(0)), 0);
-    ASSERT_EQ(sin(scaled_integer<cnl::int16, power<-13>>(3.1415926)), 0.f);
+    ASSERT_EQ(sin(scaled_integer<cnl::int16, power<-13>>(3.1415926)), 0.F);
     ASSERT_EQ(sin(scaled_integer<cnl::uint16, power<-14>>(3.1415926/2)), 1);
     ASSERT_EQ(sin(scaled_integer<cnl::int32, power<-24>>(3.1415926*7./2.)), -1);
-    ASSERT_EQ(sin(scaled_integer<cnl::int32, power<-28>>(3.1415926/4)), .707106769f);
+    ASSERT_EQ(sin(scaled_integer<cnl::int32, power<-28>>(3.1415926/4)), .707106769F);
     ASSERT_EQ(sin(scaled_integer<cnl::int16, power<-10>>(-3.1415926/3)), -.865234375);
 }
 
-TEST(utils_tests, cos)
+TEST(utils_tests, cos)  // NOLINT
 {
-    ASSERT_EQ(cos(scaled_integer<cnl::uint8, power<-6>>(0)), 1.f);
+    ASSERT_EQ(cos(scaled_integer<cnl::uint8, power<-6>>(0)), 1.F);
     ASSERT_EQ(cos(scaled_integer<cnl::int16, power<-13>>(3.1415926)), -1);
     ASSERT_EQ(cos(scaled_integer<cnl::uint16, power<-14>>(3.1415926/2)), 0.L);
-    ASSERT_EQ(cos(scaled_integer<cnl::int32, power<-20>>(3.1415926*7./2.)), 0.f);
-    ASSERT_EQ(cos(scaled_integer<cnl::int32, power<-28>>(3.1415926/4)), .707106829f);
+    ASSERT_EQ(cos(scaled_integer<cnl::int32, power<-20>>(3.1415926*7./2.)), 0.F);
+    ASSERT_EQ(cos(scaled_integer<cnl::int32, power<-28>>(3.1415926/4)), .707106829F);
     ASSERT_EQ(cos(scaled_integer<cnl::int16, power<-10>>(-3.1415926/3)), .5L);
 }
 
@@ -52,10 +52,10 @@ static_assert(abs(scaled_integer<cnl::uint16, power<-8>>(5))==5, "cnl::abs test 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::sqrt
 
-static_assert(static_cast<float>(sqrt(scaled_integer<cnl::int32, power<-20>>(0))) == 0.0f, "cnl::sqrt<scaled_integer>");
-static_assert(static_cast<float>(sqrt(scaled_integer<cnl::int32, power<-20>>(2.0))) > 1.414213f, "cnl::sqrt<scaled_integer>");
-static_assert(static_cast<float>(sqrt(scaled_integer<cnl::int32, power<-20>>(2.0))) < 1.414214f, "cnl::sqrt<scaled_integer>");
-static_assert(static_cast<float>(sqrt(scaled_integer<cnl::int32, power<-20>>(4.0))) == 2.0f, "cnl::sqrt<scaled_integer>");
+static_assert(static_cast<float>(sqrt(scaled_integer<cnl::int32, power<-20>>(0))) == 0.0F, "cnl::sqrt<scaled_integer>");
+static_assert(static_cast<float>(sqrt(scaled_integer<cnl::int32, power<-20>>(2.0))) > 1.414213F, "cnl::sqrt<scaled_integer>");
+static_assert(static_cast<float>(sqrt(scaled_integer<cnl::int32, power<-20>>(2.0))) < 1.414214F, "cnl::sqrt<scaled_integer>");
+static_assert(static_cast<float>(sqrt(scaled_integer<cnl::int32, power<-20>>(4.0))) == 2.0F, "cnl::sqrt<scaled_integer>");
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::floor

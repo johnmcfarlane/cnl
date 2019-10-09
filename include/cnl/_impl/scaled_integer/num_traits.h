@@ -8,7 +8,7 @@
 /// \brief \ref cnl::scaled_integer specializations of num_traits traits and similar
 
 #if !defined(CNL_IMPL_SCALED_INTEGER_NUM_TRAITS_H)
-#define CNL_IMPL_SCALED_INTEGER_NUM_TRAITS_H 1
+#define CNL_IMPL_SCALED_INTEGER_NUM_TRAITS_H
 
 #include "type.h"
 

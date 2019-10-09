@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_SET_DIGITS_H)
 #define CNL_IMPL_WIDE_INTEGER_SET_DIGITS_H
 
-#include "type.h"
 #include "../num_traits/set_digits.h"
 #include "../type_traits/type_identity.h"
+#include "type.h"
 
 /// compositional numeric library
 namespace cnl {

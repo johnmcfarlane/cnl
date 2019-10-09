@@ -4,31 +4,31 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/fixed_point.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/fixed_point.h>
 
 #include <gtest/gtest.h>
 
 using cnl::fixed_point;
 using cnl::_impl::identical;
 
-TEST(utils_tests, sin)
+TEST(utils_tests, sin)  // NOLINT
 {
     ASSERT_EQ(sin(fixed_point<cnl::uint8, -6>(0)), 0);
-    ASSERT_EQ(sin(fixed_point<cnl::int16, -13>(3.1415926)), 0.f);
+    ASSERT_EQ(sin(fixed_point<cnl::int16, -13>(3.1415926)), 0.F);
     ASSERT_EQ(sin(fixed_point<cnl::uint16, -14>(3.1415926/2)), 1);
     ASSERT_EQ(sin(fixed_point<cnl::int32, -24>(3.1415926*7./2.)), -1);
-    ASSERT_EQ(sin(fixed_point<cnl::int32, -28>(3.1415926/4)), .707106769f);
+    ASSERT_EQ(sin(fixed_point<cnl::int32, -28>(3.1415926/4)), .707106769F);
     ASSERT_EQ(sin(fixed_point<cnl::int16, -10>(-3.1415926/3)), -.865234375);
 }
 
-TEST(utils_tests, cos)
+TEST(utils_tests, cos)  // NOLINT
 {
-    ASSERT_EQ(cos(fixed_point<cnl::uint8, -6>(0)), 1.f);
+    ASSERT_EQ(cos(fixed_point<cnl::uint8, -6>(0)), 1.F);
     ASSERT_EQ(cos(fixed_point<cnl::int16, -13>(3.1415926)), -1);
     ASSERT_EQ(cos(fixed_point<cnl::uint16, -14>(3.1415926/2)), 0.L);
-    ASSERT_EQ(cos(fixed_point<cnl::int32, -20>(3.1415926*7./2.)), 0.f);
-    ASSERT_EQ(cos(fixed_point<cnl::int32, -28>(3.1415926/4)), .707106829f);
+    ASSERT_EQ(cos(fixed_point<cnl::int32, -20>(3.1415926*7./2.)), 0.F);
+    ASSERT_EQ(cos(fixed_point<cnl::int32, -28>(3.1415926/4)), .707106829F);
     ASSERT_EQ(cos(fixed_point<cnl::int16, -10>(-3.1415926/3)), .5L);
 }
 
@@ -51,10 +51,10 @@ static_assert(abs(fixed_point<cnl::uint16, -8>(5))==5, "cnl::abs test failed");
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::sqrt
 
-static_assert(static_cast<float>(sqrt(fixed_point<cnl::int32, -20>(0))) == 0.0f, "cnl::sqrt<fixed_point>");
-static_assert(static_cast<float>(sqrt(fixed_point<cnl::int32, -20>(2.0))) > 1.414213f, "cnl::sqrt<fixed_point>");
-static_assert(static_cast<float>(sqrt(fixed_point<cnl::int32, -20>(2.0))) < 1.414214f, "cnl::sqrt<fixed_point>");
-static_assert(static_cast<float>(sqrt(fixed_point<cnl::int32, -20>(4.0))) == 2.0f, "cnl::sqrt<fixed_point>");
+static_assert(static_cast<float>(sqrt(fixed_point<cnl::int32, -20>(0))) == 0.0F, "cnl::sqrt<fixed_point>");
+static_assert(static_cast<float>(sqrt(fixed_point<cnl::int32, -20>(2.0))) > 1.414213F, "cnl::sqrt<fixed_point>");
+static_assert(static_cast<float>(sqrt(fixed_point<cnl::int32, -20>(2.0))) < 1.414214F, "cnl::sqrt<fixed_point>");
+static_assert(static_cast<float>(sqrt(fixed_point<cnl::int32, -20>(4.0))) == 2.0F, "cnl::sqrt<fixed_point>");
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::floor

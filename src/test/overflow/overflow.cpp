@@ -4,8 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/overflow.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/overflow.h>
 
 #include <gtest/gtest.h>
 
@@ -110,13 +110,13 @@ namespace {
                 cnl::numeric_limits<int>::max(),
                 cnl::binary_operator<
                         cnl::saturated_overflow_tag, cnl::_impl::shift_left_op, std::uint8_t, unsigned>{}(
-                                std::uint8_t{255}, 30u)),
+                                std::uint8_t{255}, 30U)),
                 "");
     }
 
     namespace test_negative_shift_left {
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
-        TEST(overflow, trap)
+        TEST(overflow, trap)  // NOLINT
         {
             ASSERT_DEATH(
                     (void)cnl::shift_left<cnl::trapping_overflow_tag>(-1073741825, 1),

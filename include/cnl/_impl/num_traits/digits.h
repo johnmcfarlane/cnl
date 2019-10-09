@@ -7,14 +7,14 @@
 /// \file cnl/num_traits.h
 /// \brief definitions supporting \ref cnl::digits
 
-#ifndef CNL_IMPL_NUM_TRAITS_DIGITS
+#if !defined(CNL_IMPL_NUM_TRAITS_DIGITS)
 #define CNL_IMPL_NUM_TRAITS_DIGITS
 
 #include "../../constant.h"
 #include "../../cstdint.h"
-#include "../used_digits.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_signed.h"
+#include "../used_digits.h"
 #include "is_composite.h"
 
 #include <type_traits>

@@ -4,7 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_TEST_BOOST_THROW_EXCEPTION_H
+#if !defined(CNL_TEST_BOOST_THROW_EXCEPTION_H)
 #define CNL_TEST_BOOST_THROW_EXCEPTION_H
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -14,7 +14,7 @@
 
 namespace boost {
 #if defined(BOOST_NO_EXCEPTIONS)
-    inline void throw_exception(std::exception const&) {
+    inline void throw_exception(std::exception const&) {  // NOLINT(readability-redundant-declaration)
         std::terminate();
     }
 #endif

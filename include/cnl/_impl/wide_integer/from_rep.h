@@ -7,10 +7,10 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_FROM_REP_H)
 #define CNL_IMPL_WIDE_INTEGER_FROM_REP_H
 
-#include "type.h"
 #include "../num_traits/adopt_signedness.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/from_rep.h"
+#include "type.h"
 
 /// compositional numeric library
 namespace cnl {

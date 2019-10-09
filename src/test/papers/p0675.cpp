@@ -9,10 +9,10 @@
 
 #if defined(__cpp_deduction_guides)
 
-#include <cnl/rounding_integer.h>
-#include <cnl/num_traits.h>
-#include <cnl/scaled_integer.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/num_traits.h>
+#include <cnl/rounding_integer.h>
+#include <cnl/scaled_integer.h>
 
 #include <gtest/gtest.h>
 
@@ -59,16 +59,16 @@ namespace acme {
     {
         auto const lhs_rep = to_rep(lhs);
         auto const rhs_rep = to_rep(rhs);
+        // NOLINTNEXTLINE(bugprone-suspicious-semicolon,hicpp-braces-around-statements,misc-suspicious-semicolon,readability-braces-around-statements,google-readability-braces-around-statements)
         if constexpr (std::numeric_limits<LhsRep>::is_signed == std::numeric_limits<RhsRep>::is_signed) {
             auto product_rep = lhs_rep * rhs_rep;
             return smart_integer{product_rep};
         }
-        else {
-            auto lhs_rep_signed = std::make_signed_t<LhsRep>(lhs_rep);
-            auto rhs_rep_signed = std::make_signed_t<RhsRep>(rhs_rep);
-            auto product_rep = lhs_rep_signed * rhs_rep_signed;
-            return smart_integer{product_rep};
-        }
+
+        auto lhs_rep_signed = std::make_signed_t<LhsRep>(lhs_rep);
+        auto rhs_rep_signed = std::make_signed_t<RhsRep>(rhs_rep);
+        auto product_rep = lhs_rep_signed * rhs_rep_signed;
+        return smart_integer{product_rep};
     }
 }
 
@@ -88,7 +88,7 @@ namespace {
     template<class Rep>
     using rounded_integer = cnl::rounding_integer<Rep>;
 
-    TEST(P0675, compose_from_fundamental) {
+    TEST(P0675, compose_from_fundamental) {  // NOLINT
         // use an unsigned 16-bit integer to approximate a real number with 2 integer and 14 fraction digits
         auto pi = scaled_integer<uint16_t, power<-14>>{3.141};
         ASSERT_TRUE(pi > 3.1 && pi < 3.2);
@@ -98,22 +98,22 @@ namespace {
         ASSERT_TRUE(num_children == 3);
     }
 
-    TEST(P0675, compose_from_components) {
+    TEST(P0675, compose_from_components) {  // NOLINT
         auto num = scaled_integer<rounded_integer<uint8_t>, power<-4>>{15.9375};
         ASSERT_TRUE((cnl::from_rep<decltype(num), int>{}(1) == 1. / 16));
     }
 
-    TEST(P0675, smart_multiply) {
+    TEST(P0675, smart_multiply) {  // NOLINT
         // smart_integer chooses appropriate signedness for results of arithmetic operations
-        auto a = smart_integer{7u};
+        auto a = smart_integer{7U};
         auto b = smart_integer{-3};
         auto c = a * b;  // smart_integer<int>{-21}
         ASSERT_TRUE(identical(smart_integer<int>{-21}, c));
     }
 
-    TEST(P0675, smart_add) {
-        auto m = smart_integer{5u};
-        auto s = smart_integer{10u};
+    TEST(P0675, smart_add) {  // NOLINT
+        auto m = smart_integer{5U};
+        auto s = smart_integer{10U};
         auto d = m - s;  // smart_integer<int>{-5}
         ASSERT_TRUE(identical(smart_integer<int>{-5}, d));
     }

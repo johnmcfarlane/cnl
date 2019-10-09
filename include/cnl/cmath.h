@@ -7,7 +7,7 @@
 /// \file
 /// \brief file containing definitions that might go in \verbatim<cmath>\endverbatim if they were standard
 
-#ifndef CNL_CMATH_H
+#if !defined(CNL_CMATH_H)
 #define CNL_CMATH_H
 
 #include "_impl/cmath/abs.h"

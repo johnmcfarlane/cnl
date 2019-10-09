@@ -7,10 +7,10 @@
 #if !defined(CNL_IMPL_OVERFLOW_NATIVE_H)
 #define CNL_IMPL_OVERFLOW_NATIVE_H
 
+#include "../operators/native_tag.h"
+#include "../polarity.h"
 #include "common.h"
 #include "overflow_operator.h"
-#include "../polarity.h"
-#include "../operators/native_tag.h"
 
 /// compositional numeric library
 namespace cnl {

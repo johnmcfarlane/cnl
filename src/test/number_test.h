@@ -4,7 +4,11 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#if !defined(TEST_NUMBER_TEST_H)
+#define TEST_NUMBER_TEST_H
+
 #include <cnl/limits.h>
+#include <cnl/num_traits.h>
 #include <cnl/numeric.h>
 
 #include <cnl/_impl/common.h>
@@ -19,12 +23,12 @@
 template<class Lhs, class Rhs>
 CNL_NODISCARD constexpr bool is_equal_to(Lhs const& lhs, Rhs const& rhs)
 {
-    return ((lhs==rhs)==true)
-            && ((lhs!=rhs)==false)
-            && ((lhs<rhs)==false)
-            && ((lhs>rhs)==false)
-            && ((lhs<=rhs)==true)
-            && ((lhs>=rhs)==true);
+    return ((lhs==rhs))
+            && (!(lhs!=rhs))
+            && (!(lhs<rhs))
+            && (!(lhs>rhs))
+            && ((lhs<=rhs))
+            && ((lhs>=rhs));
 }
 
 static_assert(is_equal_to<int>(0, 0), "less_than_test test failed");
@@ -33,12 +37,12 @@ static_assert(is_equal_to<int>(0, 0), "less_than_test test failed");
 template<class Lesser, class Greater>
 CNL_NODISCARD constexpr bool is_less_than(Lesser const& lesser, Greater const& greater)
 {
-    return ((lesser==greater)==false)
-            && ((lesser!=greater)==true)
-            && ((lesser<greater)==true)
-            && ((lesser>greater)==false)
-            && ((lesser<=greater)==true)
-            && ((lesser>=greater)==false);
+    return (!(lesser==greater))
+            && ((lesser!=greater))
+            && ((lesser<greater))
+            && (!(lesser>greater))
+            && ((lesser<=greater))
+            && (!(lesser>=greater));
 }
 
 static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
@@ -46,7 +50,7 @@ static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
 ////////////////////////////////////////////////////////////////////////////////
 // number_test
 
-using cnl::_impl::identical;
+using cnl::_impl::identical;  // NOLINT(google-global-names-in-headers)
 
 // performs tests that should pass for all numeric types (except maybe const_integer);
 // invokes specific tests that only pass for subject types 
@@ -123,13 +127,13 @@ struct number_test {
     ////////////////////////////////////////////////////////////////////////////////
     // test operator-
 
-    static_assert(is_equal_to(zero-zero, zero), "operator- test failed");
-    static_assert(is_equal_to(zero-zero-zero, zero), "operator- test failed");
+    static_assert(is_equal_to(zero-zero, zero), "operator- test failed");  // NOLINT(misc-redundant-expression)
+    static_assert(is_equal_to(zero-zero-zero, zero), "operator- test failed");  // NOLINT(misc-redundant-expression)
 
-    static_assert(is_equal_to(min-min, zero), "operator- test failed");
+    static_assert(is_equal_to(min-min, zero), "operator- test failed");  // NOLINT(misc-redundant-expression)
     static_assert(is_equal_to(min-zero, min), "operator- test failed");
 
-    static_assert(is_equal_to(max-max, zero), "operator- test failed");
+    static_assert(is_equal_to(max-max, zero), "operator- test failed");  // NOLINT(misc-redundant-expression)
 
     ////////////////////////////////////////////////////////////////////////////////
     // numeric traits
@@ -190,3 +194,5 @@ struct number_test_by_rep_by_tag {
 
     constexpr static number_test_by_rep<test_subject, TypeSpecificTestSuite> instance{};
 };
+
+#endif

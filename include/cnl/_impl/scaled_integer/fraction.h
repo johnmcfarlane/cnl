@@ -8,7 +8,7 @@
 /// \brief essential `fraction` definitions related to the `scaled_integer` type
 
 #if !defined(CNL_IMPL_SCALED_INTEGER_FRACTION_H)
-#define CNL_IMPL_SCALED_INTEGER_FRACTION_H 1
+#define CNL_IMPL_SCALED_INTEGER_FRACTION_H
 
 #include "named.h"
 
@@ -28,7 +28,8 @@ namespace cnl {
     CNL_RELAXED_CONSTEXPR scaled_integer<Rep, Scale>&
     scaled_integer<Rep, Scale>::operator=(fraction<Numerator, Denominator> const& f)
     {
-        return operator=(quotient<scaled_integer>(f.numerator, f.denominator));
+        operator=(quotient<scaled_integer>(f.numerator, f.denominator));
+        return *this;
     }
 
 #if defined(__cpp_deduction_guides)

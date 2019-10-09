@@ -58,7 +58,7 @@ namespace {
                         cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>,
                         cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>>{1}), "");
 
-        TEST(duplex_integer, minus)
+        TEST(duplex_integer, minus)  // NOLINT
         {
             auto expected = cnl::_impl::duplex_integer<
                     cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>,
@@ -337,7 +337,7 @@ namespace {
         static_assert(identical(0x12, 0x1234/cnl::_impl::duplex_integer<int, unsigned>{0x100}), "");
 #endif
 
-        TEST(duplex_integer, divide)
+        TEST(duplex_integer, divide)  // NOLINT
         {
             auto expected = cnl::_impl::duplex_integer<int, unsigned>{0x12};
             auto actual = cnl::_impl::duplex_integer<int, unsigned>{0x1234}
@@ -345,14 +345,14 @@ namespace {
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, int_divide_by_duplex)
+        TEST(duplex_integer, int_divide_by_duplex)  // NOLINT
         {
             auto expected = 0x12;
             auto actual = 0x1234/cnl::_impl::duplex_integer<int, unsigned>{0x100};
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, divide128)
+        TEST(duplex_integer, divide128)  // NOLINT
         {
             using type = cnl::_impl::duplex_integer<
                     cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
@@ -368,7 +368,7 @@ namespace {
             ASSERT_EQ((expected), (actual));
         }
 
-        TEST(duplex_integer, divide160)
+        TEST(duplex_integer, divide160)  // NOLINT
         {
             using type = cnl::_impl::duplex_integer<
                     cnl::_impl::duplex_integer<
@@ -387,7 +387,7 @@ namespace {
         }
 
 #if defined(CNL_INT128_ENABLED)
-        TEST(duplex_integer, divide255)
+        TEST(duplex_integer, divide255)  // NOLINT
         {
             using duplex_integer =
                     cnl::_impl::duplex_integer<
@@ -434,7 +434,7 @@ namespace {
         static_assert(identical(0x12, 0x1234%cnl::_impl::duplex_integer<int, unsigned>{0x100}), "");
 #endif
 
-        TEST(duplex_integer, modulo)
+        TEST(duplex_integer, modulo)  // NOLINT
         {
             auto expected = cnl::_impl::duplex_integer<int, unsigned>{0x34};
             auto actual = cnl::_impl::duplex_integer<int, unsigned>{0x1234}
@@ -442,14 +442,14 @@ namespace {
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, int_modulo_by_duplex)
+        TEST(duplex_integer, int_modulo_by_duplex)  // NOLINT
         {
             auto expected = 0x12;
             auto actual = 0x1234%cnl::_impl::duplex_integer<int, unsigned>{0x100};
             ASSERT_EQ(expected, actual);
         }
 
-        TEST(duplex_integer, modulo128)
+        TEST(duplex_integer, modulo128)  // NOLINT
         {
             using type = cnl::_impl::duplex_integer<
                     cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>,
@@ -465,7 +465,7 @@ namespace {
             ASSERT_EQ((expected), (actual));
         }
 
-        TEST(duplex_integer, modulo160)
+        TEST(duplex_integer, modulo160)  // NOLINT
         {
             using type = cnl::_impl::duplex_integer<
                     cnl::_impl::duplex_integer<
@@ -484,7 +484,7 @@ namespace {
         }
 
 #if defined(CNL_INT128_ENABLED)
-        TEST(duplex_integer, modulo255)
+        TEST(duplex_integer, modulo255)  // NOLINT
         {
             using type = cnl::_impl::duplex_integer<
                     cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>,
@@ -682,12 +682,12 @@ namespace {
                                 int>{}(0, 9)), "");
         static_assert(
                 identical(
-                        cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>{0x7394uLL >> 0},
+                        cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>{0x7394ULL >> 0},
                         cnl::shift_operator<
                                 cnl::_impl::native_tag,
                                 cnl::_impl::shift_right_op,
                                 cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>,
-                                cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>>{}(0x7394uLL, 0)),
+                                cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>>{}(0x7394ULL, 0)),
                 "");
     }
 

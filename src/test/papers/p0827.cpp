@@ -31,6 +31,7 @@ struct constant {
     using value_type = decltype(Value);
     static constexpr value_type value = Value;
 
+    // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
     CNL_NODISCARD constexpr operator value_type() const {
         return value;
     }
@@ -136,21 +137,19 @@ namespace udl_impl {
     // general purpose integer literal parser
 
     template<int NumChars>
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
     CNL_NODISCARD constexpr std::intmax_t parse(const char (& s)[NumChars]) {
         if (s[0] == '0') {
             if (s[1] == 'b' || s[1] == 'B') {
                 return parse(s + 2, 2, parse_bin_char);
             }
-            else if (s[1] == 'x' || s[1] == 'X') {
+            if (s[1] == 'x' || s[1] == 'X') {
                 return parse(s + 2, 16, parse_hex_char);
             }
-            else {
-                return parse(s + 1, 8, parse_oct_char);
-            }
+            return parse(s + 1, 8, parse_oct_char);
         }
-        else {
-            return parse(s, 10, parse_dec_char);
-        }
+
+        return parse(s, 10, parse_dec_char);
     }
 
     static_assert(identical(parse("123"), std::intmax_t{123}));

@@ -7,8 +7,8 @@
 /// \file
 /// \brief file containing tests of the `cnl/cmath.h` definitions
 
-#include <cnl/cmath.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/cmath.h>
 
 namespace {
     using cnl::_impl::identical;
@@ -24,6 +24,6 @@ namespace {
         static_assert(identical(cnl::abs(CNL_UINTMAX_C(302398479)), CNL_UINTMAX_C(302398479)), "cnl::abs(cnl::uintmax)");
 
         static_assert(identical(cnl::abs(-302398479.), 302398479.), "cnl::abs(double)");
-        static_assert(identical(cnl::abs(302398479.f), 302398479.f), "cnl::abs(float)");
+        static_assert(identical(cnl::abs(302398479.F), 302398479.F), "cnl::abs(float)");
     }
 }

@@ -12,7 +12,7 @@
 #include <string>
 
 namespace {
-    TEST(static_number, to_chars)
+    TEST(static_number, to_chars)  // NOLINT
     {
         auto const num_chars = 12;
         auto buffer = std::array<char, num_chars+1>{};
@@ -24,13 +24,13 @@ namespace {
                 cnl::static_number<24, -8>{-45678.765625});
         ASSERT_EQ(std::errc{}, result.ec);
         ASSERT_EQ(chars_last, result.ptr);
-        *chars_last = '\0';
+        (*chars_last) = '\0';
 
         ASSERT_EQ(std::string{"-45678.76562"}, chars_first);
     }
 
 #if defined(CNL_INT128_ENABLED)
-    TEST(static_number, to_chars_wider)
+    TEST(static_number, to_chars_wider)  // NOLINT
     {
         auto const num_chars = 12;
         auto buffer = std::array<char, num_chars+1>{};

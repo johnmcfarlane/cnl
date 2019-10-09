@@ -4,13 +4,13 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_IMPL_NUM_TRAITS_TO_REP
+#if !defined(CNL_IMPL_NUM_TRAITS_TO_REP)
 #define CNL_IMPL_NUM_TRAITS_TO_REP
 
-#include "../type_traits/remove_cvref.h"
+#include "../../constant.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
-#include "../../constant.h"
+#include "../type_traits/remove_cvref.h"
 
 #include <type_traits>
 #include <utility>
@@ -48,7 +48,7 @@ namespace cnl {
 
     namespace _impl {
         template<class Number>
-        CNL_NODISCARD constexpr auto to_rep(Number&& number)
+        CNL_NODISCARD constexpr auto to_rep(Number&& number)  // NOLINT(misc-unused-parameters)
         -> decltype(cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number))) {
             return cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number));
         }

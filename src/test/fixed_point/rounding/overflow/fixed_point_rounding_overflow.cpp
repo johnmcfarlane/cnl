@@ -11,7 +11,7 @@
 #include <cinttypes>
 
 #define TEST_NATIVE_INTEGER
-#define TEST_LABEL static_integer_
+#define TEST_LABEL static_integer_  // NOLINT(cppcoreguidelines-macro-usage)
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Rep type
@@ -21,8 +21,8 @@ using test_int = cnl::rounding_integer<cnl::overflow_integer<int, cnl::native_ov
 ////////////////////////////////////////////////////////////////////////////////
 // perform fixed_point tests with this type of fixed_point specialization
 
-#include <fixed_point/fixed_point_common.h>
 #include <cnl/constant.h>
+#include <fixed_point/fixed_point_common.h>
 
 #if defined(__cpp_deduction_guides)
 
@@ -42,9 +42,6 @@ namespace test_literals_initialization {
 }
 
 namespace test_literals_constant {
-    using cnl::_impl::identical;
-    using cnl::fixed_point;
-
     using namespace cnl::literals;
 
     constexpr auto kibi = cnl::scaled_integer(1024_c);

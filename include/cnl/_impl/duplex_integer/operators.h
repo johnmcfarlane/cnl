@@ -5,13 +5,20 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_OPERATORS_H)
-#define CNL_IMPL_DUPLEX_INTEGER_OPERATORS_H 1
+#define CNL_IMPL_DUPLEX_INTEGER_OPERATORS_H
 
+#include "../common.h"
+#include "../num_traits/width.h"
+#include "../operators/generic.h"
+#include "../operators/operators.h"
+#include "../type_traits/common_type.h"
+#include "../wide_integer/operators.h"
+#include "../wide_integer/type.h"
+#include "add_signedness.h"
 #include "comparison.h"
 #include "ctors.h"
 #include "digits.h"
 #include "divide.h"
-#include "add_signedness.h"
 #include "modulo.h"
 #include "multiply.h"
 #include "numeric_limits.h"
@@ -19,12 +26,6 @@
 #include "shift.h"
 #include "to_chars.h"
 #include "type.h"
-#include "../common.h"
-#include "../num_traits/width.h"
-#include "../operators/generic.h"
-#include "../operators/operators.h"
-#include "../wide_integer/type.h"
-#include "../wide_integer/operators.h"
 
 #include <ostream>
 

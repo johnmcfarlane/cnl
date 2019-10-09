@@ -7,8 +7,8 @@
 /// \file
 /// \brief tests for cnl/limits.h
 
-#include <cnl/limits.h>
 #include <cnl/cstdint.h>
+#include <cnl/limits.h>
 
 #include <type_traits>
 

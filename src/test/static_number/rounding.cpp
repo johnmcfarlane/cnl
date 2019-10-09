@@ -4,12 +4,10 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/static_number.h>
 #include <cnl/_impl/type_traits/assert_same.h>
-#include <cnl/_impl/type_traits/identical.h>
+#include <cnl/static_number.h>
 
 namespace {
-    using cnl::_impl::identical;
     using cnl::_impl::assert_same;
 
     namespace test_rounding_t {

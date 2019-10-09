@@ -4,15 +4,15 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_IMPL_SCALED_INTEGER_TO_CHARS_H
+#if !defined(CNL_IMPL_SCALED_INTEGER_TO_CHARS_H)
 #define CNL_IMPL_SCALED_INTEGER_TO_CHARS_H
 
 #include "../../rounding_integer.h"
-#include "num_traits.h"
-#include "type.h"
 #include "../assert.h"
 #include "../num_traits/fixed_width_scale.h"
 #include "../to_chars.h"
+#include "num_traits.h"
+#include "type.h"
 
 #include <array>
 #include <iterator>
@@ -81,7 +81,7 @@ namespace cnl {
         auto to_chars_fractional_specialized(
                 char* first,
                 char const* const last,
-                scaled_integer<Rep, power<Exponent, Radix>> value) noexcept
+                scaled_integer<Rep, power<Exponent, Radix>> value)
         -> enable_if_t<integer_digits<scaled_integer<Rep, power<Exponent, Radix>>>::value>=4, char*>
         {
             do {
@@ -111,7 +111,7 @@ namespace cnl {
         auto to_chars_fractional_specialized(
                 char* const first,
                 char* last,
-                scaled_integer<Rep, power<Exponent, Radix>> const& value) noexcept
+                scaled_integer<Rep, power<Exponent, Radix>> const& value)
         -> enable_if_t<integer_digits<scaled_integer<Rep, power<Exponent, Radix>>>::value<4, char*>
         {
             // zero-out all of the characters in the output string
@@ -168,7 +168,7 @@ namespace cnl {
         auto to_chars_fractional(
                 char* first,
                 char* last,
-                scaled_integer<Rep, power<Exponent, Radix>> const& value) noexcept
+                scaled_integer<Rep, power<Exponent, Radix>> const& value)
         -> to_chars_result
         {
             auto const destination_length = std::distance(first, last);
@@ -200,7 +200,7 @@ namespace cnl {
         to_chars_result to_chars_positive(
                 char* const first,
                 char* const last,
-                scaled_integer<Rep, power<Exponent, Radix>> const& value) noexcept
+                scaled_integer<Rep, power<Exponent, Radix>> const& value)
         {
             auto const split = _impl::split<Rep, Exponent, Radix>{}(value);
             auto const natural_last = to_chars_natural(first, last, split.first);
@@ -220,7 +220,7 @@ namespace cnl {
     template<typename Rep, int Exponent, int Radix>
     to_chars_result to_chars(
             char* const first,
-            char* const last,
+            char* const last,  // NOLINT(readability-non-const-parameter)
             cnl::scaled_integer<Rep, power<Exponent, Radix>> const& value)
     {
         if (!value) {

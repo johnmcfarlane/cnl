@@ -8,17 +8,17 @@
 /// \brief essential definitions related to the `cnl::overflow_integer` type
 
 #if !defined(CNL_OVERFLOW_INT_H)
-#define CNL_OVERFLOW_INT_H 1
+#define CNL_OVERFLOW_INT_H
 
 #include "overflow.h"
 
-#include "_impl/number_base.h"
-#include "_impl/ostream.h"
 #include "_impl/num_traits/from_value.h"
 #include "_impl/num_traits/from_value_recursive.h"
+#include "_impl/number_base.h"
 #include "_impl/operators/generic.h"
 #include "_impl/operators/native_tag.h"
 #include "_impl/operators/tagged.h"
+#include "_impl/ostream.h"
 #include "_impl/type_traits/common_type.h"
 
 #include <ostream>
@@ -70,20 +70,21 @@ namespace cnl {
         overflow_integer() = default;
 
         template<class RhsRep, class RhsOverflowTag>
+        // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
         constexpr overflow_integer(overflow_integer<RhsRep, RhsOverflowTag> const& rhs)
                 :overflow_integer(_impl::to_rep(rhs))
         {
         }
 
         template<class Rhs, _impl::enable_if_t<!_integer_impl::is_overflow_integer<Rhs>::value, int> dummy = 0>
-        constexpr overflow_integer(Rhs const& rhs)
+        constexpr overflow_integer(Rhs const& rhs)  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
                 :_base(convert<overflow_tag, rep>(rhs))
         {
         }
 
         /// constructor taking an integral constant
         template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-        constexpr overflow_integer(constant<Value>)
+        explicit constexpr overflow_integer(constant<Value>)
                 : _base(static_cast<rep>(Value))
         {
             static_assert(Value <= numeric_limits<rep>::max(), "initialization by out-of-range value");

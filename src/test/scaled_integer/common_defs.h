@@ -7,20 +7,23 @@
 // included from scaled_integer_common.h;
 // contains definitions that aid testing and which depend upon definition of test_int
 
+#if !defined(TEST_SCALED_INTEGER_COMMON_DEFS_H)
+#define TEST_SCALED_INTEGER_COMMON_DEFS_H
+
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // test name generation
 
-#define TOKENPASTE(x, y) x ## y
-#define TOKENPASTE2(x, y) TOKENPASTE(x, y)
+#define TOKENPASTE(x, y) x ## y  // NOLINT(cppcoreguidelines-macro-usage)
+#define TOKENPASTE2(x, y) TOKENPASTE(x, y)  // NOLINT(cppcoreguidelines-macro-usage)
 
 ////////////////////////////////////////////////////////////////////////////////
 // imports from std
 
-using std::is_same;
-using std::declval;
+using std::is_same;  // NOLINT(google-global-names-in-headers)
+using std::declval;  // NOLINT(google-global-names-in-headers)
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer definitions
@@ -52,5 +55,7 @@ using uint128 = cnl::set_digits_t<test_unsigned, 128>;
 template <typename Rep=test_int, class Scale=cnl::power<>>
 using scaled_integer = cnl::scaled_integer<Rep, Scale>;
 
-using cnl::_impl::assert_same;
-using cnl::_impl::identical;
+using cnl::_impl::assert_same;  // NOLINT(google-global-names-in-headers)
+using cnl::_impl::identical;  // NOLINT(google-global-names-in-headers)
+
+#endif

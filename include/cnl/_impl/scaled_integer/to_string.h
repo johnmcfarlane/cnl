@@ -4,11 +4,11 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_IMPL_SCALED_INTEGER_TO_STRING_H
+#if !defined(CNL_IMPL_SCALED_INTEGER_TO_STRING_H)
 #define CNL_IMPL_SCALED_INTEGER_TO_STRING_H
 
-#include "type.h"
 #include "to_chars.h"
+#include "type.h"
 
 #include <string>
 

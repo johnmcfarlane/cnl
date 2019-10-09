@@ -5,17 +5,17 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_DIVIDE_H)
-#define CNL_IMPL_DUPLEX_INTEGER_DIVIDE_H 1
+#define CNL_IMPL_DUPLEX_INTEGER_DIVIDE_H
 
-#include "ctors.h"
-#include "remove_signedness.h"
-#include "numeric_limits.h"
-#include "type.h"
 #include "../operators/generic.h"
 #include "../operators/native_tag.h"
 #include "../operators/operators.h"
 #include "../type_traits/set_signedness.h"
 #include "../wide_integer/rep.h"
+#include "ctors.h"
+#include "numeric_limits.h"
+#include "remove_signedness.h"
+#include "type.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -107,7 +107,7 @@ namespace cnl {
 
             _unsigned_duplex_integer quot = 0;
             if (static_cast<unsigned_upper>(high)>=divisor) {
-                high /= divisor;
+                high /= divisor;  // NOLINT(clang-analyzer-core.DivideZero)
                 quot = _unsigned_duplex_integer{high, 0};
                 rem -= _unsigned_duplex_integer(high*divisor, 0);
             }

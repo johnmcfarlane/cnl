@@ -5,12 +5,12 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_CTORS_H)
-#define CNL_IMPL_DUPLEX_INTEGER_CTORS_H 1
+#define CNL_IMPL_DUPLEX_INTEGER_CTORS_H
 
-#include "type.h"
-#include "operators.h"
 #include "../power_value.h"
 #include "../type_traits/enable_if.h"
+#include "operators.h"
+#include "type.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -36,6 +36,8 @@ namespace cnl {
         -> enable_if_t<digits<Lower>::value>=digits<Integer>::value, Upper>
         {
             // sign-friendly flush
+            // TODO: Not reproduced locally. Investigate.
+            // NOLINTNEXTLINE(clang-analyzer-core.UndefinedBinaryOperatorResult)
             return static_cast<Upper>((input >> (digits<Integer>::value-1)) >> 1);
         }
 
@@ -46,19 +48,15 @@ namespace cnl {
             return sensible_right_shift<Upper>(input, digits<Lower>::value);
         }
 
-        // cnl::_impl::duplex_integer::duplex_integer
-        template<typename Upper, typename Lower>
-        constexpr int duplex_integer<Upper, Lower>::lower_width;
-
         template<typename Upper, typename Lower>
         constexpr duplex_integer<Upper, Lower>::duplex_integer(upper_type const& u, lower_type const& l)
                 :_upper(u), _lower(l) { }
 
         template<typename Upper, typename Lower>
-        template<typename Integer, _impl::enable_if_t<(numeric_limits<Integer>::is_integer), int> Dummy>
-        constexpr duplex_integer<Upper, Lower>::duplex_integer(Integer const& i)
-                : _upper(calculate_upper<Upper, Lower>(i)),
-                  _lower(calculate_lower<Lower>(i))
+        template<typename Number, _impl::enable_if_t<(numeric_limits<Number>::is_integer), int> Dummy>
+        constexpr duplex_integer<Upper, Lower>::duplex_integer(Number const& n)
+                : _upper(calculate_upper<Upper, Lower>(n)),
+                  _lower(calculate_lower<Lower>(n))
         {
         }
 

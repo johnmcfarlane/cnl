@@ -5,11 +5,11 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_FRACTION_ABS_H)
-#define CNL_IMPL_FRACTION_ABS_H 1
+#define CNL_IMPL_FRACTION_ABS_H
 
 #include "../cmath/abs.h"
-#include "type.h"
 #include "make_fraction.h"
+#include "type.h"
 
 /// compositional numeric library
 namespace cnl {

@@ -16,24 +16,24 @@ using namespace cnl;
 // without using a fixed-point library
 float square_int(float input) {
     // user must fixed_width_scale values by the correct amount
-    auto fixed = static_cast<int32_t>(input * 65536.f);
+    auto fixed = static_cast<int32_t>(input * 65536.F);
 
     // user must remember to widen the result to avoid overflow
     auto prod = int64_t{fixed} * fixed;
 
     // user must remember that the fixed_width_scale also was squared
-    return static_cast<float>(prod) / 4294967296.f;
+    return static_cast<float>(prod) / 4294967296.F;
 }
 
 // the same function using cnl::elastic_integer
 float square_elastic_integer(float input) {
-    auto fixed = elastic_integer<31>{input * 65536.f};
+    auto fixed = elastic_integer<31>{input * 65536.F};
 
     // elastic_integer automatically widens the result
     auto prod = fixed * fixed;
 
     // but the user must still do all the scaling themselves
-    return static_cast<float>(prod) / 4294967296.f;
+    return static_cast<float>(prod) / 4294967296.F;
 }
 
 // the same function using cnl::scaled_integer

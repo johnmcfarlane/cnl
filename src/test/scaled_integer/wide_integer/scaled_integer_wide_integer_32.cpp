@@ -4,16 +4,16 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <cnl/_impl/num_traits/digits.h>
 #include <cnl/scaled_integer.h>
 #include <cnl/wide_integer.h>
-#include <cnl/_impl/num_traits/digits.h>
 
 #include <cinttypes>
 
 // TODO: Every `#if !defined(TEST_WIDE_INTEGER)` is a TODO
 #define TEST_WIDE_INTEGER
 #define TEST_WIDE_INTEGER_32
-#define TEST_LABEL wide_integer_32_
+#define TEST_LABEL wide_integer_32_  // NOLINT(cppcoreguidelines-macro-usage)
 
 ////////////////////////////////////////////////////////////////////////////////
 // wide_integer type used as scaled_integer Rep type

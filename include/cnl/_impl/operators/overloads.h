@@ -10,10 +10,10 @@
 #if !defined(CNL_IMPL_OPERATORS_OVERLOADS_H)
 #define CNL_IMPL_OPERATORS_OVERLOADS_H
 
+#include "../../limits.h"
+#include "../type_traits/enable_if.h"
 #include "generic.h"
 #include "native_tag.h"
-#include "../type_traits/enable_if.h"
-#include "../../limits.h"
 
 #include <type_traits>
 
@@ -33,11 +33,13 @@ namespace cnl {
         struct enable_binary;
 
         template<class LhsOperand, int LhsSize, class RhsOperand>
-        struct enable_binary<LhsOperand[LhsSize], RhsOperand> : std::false_type {
+        struct enable_binary<LhsOperand[LhsSize], RhsOperand>  // NOLINT(cppcoreguidelines-avoid-c-arrays)
+                : std::false_type {
         };
 
         template<class LhsOperand, class RhsOperand, int RhsSize>
-        struct enable_binary<LhsOperand, RhsOperand[RhsSize]> : std::false_type {
+        struct enable_binary<LhsOperand, RhsOperand[RhsSize]>  // NOLINT(cppcoreguidelines-avoid-c-arrays)
+                : std::false_type {
         };
 
         template<class LhsOperand, class RhsOperand>
@@ -56,6 +58,8 @@ namespace cnl {
         // operator overloads
 
         // unary operators
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_UNARY_OPERATOR(OP, NAME) \
         template<class Operand> \
         CNL_NODISCARD constexpr auto operator OP (Operand const& operand) \
@@ -72,6 +76,8 @@ namespace cnl {
         CNL_DEFINE_UNARY_OPERATOR(~, bitwise_not_op)
 
         // binary operators
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_BINARY_OPERATOR(OP, NAME) \
         template<class LhsOperand, class RhsOperand> \
         CNL_NODISCARD constexpr auto operator OP (LhsOperand const& lhs, RhsOperand const& rhs) \
@@ -98,6 +104,8 @@ namespace cnl {
         CNL_DEFINE_BINARY_OPERATOR(^, bitwise_xor_op)
 
         // binary operators
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_SHIFT_OPERATOR(OP, NAME) \
         template<class LhsOperand, class RhsOperand> \
         CNL_NODISCARD constexpr auto operator OP (LhsOperand const& lhs, RhsOperand const& rhs) \
@@ -112,6 +120,8 @@ namespace cnl {
         CNL_DEFINE_SHIFT_OPERATOR(>>, shift_right_op)
 
         // comparison operators
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_COMPARISON_OPERATOR(OP, NAME) \
         template<class LhsOperand, class RhsOperand> \
         CNL_NODISCARD constexpr auto operator OP (LhsOperand const& lhs, RhsOperand const& rhs) \
@@ -134,6 +144,8 @@ namespace cnl {
         CNL_DEFINE_COMPARISON_OPERATOR(>=, greater_than_or_equal_op)
 
         // pre increment/decrement
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_PRE_OPERATOR(OP, NAME) \
         template<class RhsOperand> \
         constexpr auto operator OP (RhsOperand& rhs) \
@@ -147,6 +159,8 @@ namespace cnl {
         CNL_DEFINE_PRE_OPERATOR(--, pre_decrement_op)
 
         // post increment/decrement
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_POST_OPERATOR(OP, NAME) \
         template<class LhsOperand> \
         constexpr auto operator OP (LhsOperand& lhs, int) \
@@ -160,6 +174,8 @@ namespace cnl {
         CNL_DEFINE_POST_OPERATOR(--, post_decrement_op)
 
         // compound assignment operators
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(OP, NAME) \
         template<class LhsOperand, class RhsOperand> \
         constexpr auto operator OP (LhsOperand& lhs, RhsOperand const& rhs) \
@@ -186,6 +202,8 @@ namespace cnl {
         CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(^=, assign_bitwise_xor_op)
 
         // compound assignment shift operators
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_COMPOUND_ASSIGNMENT_SHIFT_OPERATOR(OP, NAME) \
         template<class LhsOperand, class RhsOperand> \
         constexpr auto operator OP (LhsOperand& lhs, RhsOperand const& rhs) \

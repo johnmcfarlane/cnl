@@ -6,8 +6,8 @@
 
 #include <gtest/gtest.h>
 
-#include <cnl/scaled_integer.h>
 #include <cnl/_impl/scaled_integer/math.h>
+#include <cnl/scaled_integer.h>
 
 //Fails due to cast being out-of-range:
 #include "scaled_integer_math_Q0.h"

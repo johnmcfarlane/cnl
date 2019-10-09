@@ -4,12 +4,12 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_IMPL_SCALED_INTEGER_POWER_H
+#if !defined(CNL_IMPL_SCALED_INTEGER_POWER_H)
 #define CNL_IMPL_SCALED_INTEGER_POWER_H
 
-#include "power_value.h"
 #include "num_traits/scale.h"
 #include "operators/native_tag.h"
+#include "power_value.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -31,10 +31,6 @@ namespace cnl {
 
         using identity = power<0, Radix>;
     };
-
-    /// value of template parameter, \a Exponent
-    template<int Exponent, int Radix>
-    constexpr int power<Exponent, Radix>::exponent;
 
     template<int LhsExponent, int RhsExponent, int Radix>
     constexpr auto operator/(power<LhsExponent, Radix>, power<RhsExponent, Radix>)

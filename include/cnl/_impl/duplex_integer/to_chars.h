@@ -5,11 +5,11 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_TO_CHARS_H)
-#define CNL_IMPL_DUPLEX_INTEGER_TO_CHARS_H 1
+#define CNL_IMPL_DUPLEX_INTEGER_TO_CHARS_H
 
-#include "type.h"
-#include "../to_chars.h"
 #include "../num_traits/set_rounding.h"
+#include "../to_chars.h"
+#include "type.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -26,7 +26,7 @@ namespace cnl {
         template<typename Upper, typename Lower>
         to_chars_result to_chars(
                 char* const first,
-                char* const last,
+                char* const last,  // NOLINT(readability-non-const-parameter)
                 _impl::duplex_integer<Upper, Lower> const& value)
         {
             if (!value) {

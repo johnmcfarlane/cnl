@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_FRACTION_TYPE_H)
-#define CNL_IMPL_FRACTION_TYPE_H 1
+#define CNL_IMPL_FRACTION_TYPE_H
 
 #include "../num_traits/set_width.h"
 #include "../type_traits/enable_if.h"
@@ -42,7 +42,7 @@ namespace cnl {
         explicit constexpr fraction(Integer const& i);
 
         template<typename RhsNumerator, typename RhsDenominator>
-        constexpr fraction(fraction<RhsNumerator, RhsDenominator> const& f);
+        constexpr fraction(fraction<RhsNumerator, RhsDenominator> const& f);  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
 
         template<
                 typename FloatingPoint,
@@ -59,10 +59,10 @@ namespace cnl {
         }
 
         /// the numerator (top number) of the fraction
-        numerator_type numerator;
+        numerator_type numerator;  // NOLINT(misc-non-private-member-variables-in-classes)
 
         /// the denominator (bottom number) of the fraction
-        denominator_type denominator = 1;
+        denominator_type denominator = 1;  // NOLINT(misc-non-private-member-variables-in-classes)
     };
 
 #if defined(__cpp_deduction_guides)

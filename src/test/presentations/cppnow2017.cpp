@@ -6,9 +6,9 @@
 
 #if (__cplusplus>=201402L)
 
+#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_integer.h>
 #include <cnl/overflow_integer.h>
-#include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>
 
@@ -34,7 +34,7 @@ namespace prototypes {
     class overflow_integer {
     public:
         template<typename Input>
-        constexpr overflow_integer(Input const& r)
+        explicit constexpr overflow_integer(Input const& r)
                 :_rep(r) { }
 
         CNL_NODISCARD constexpr Rep const& data() const { return _rep; }
@@ -69,7 +69,7 @@ namespace prototypes {
 }
 
 #if defined(CNL_EXCEPTIONS_ENABLED)
-TEST(cppnow2017, overflow_int_example)
+TEST(cppnow2017, overflow_int_example)  // NOLINT
 {
     // multiplication of overflow_integer<int> cannot exceed numeric limits
     EXPECT_THROW((void)(overflow_integer<int32_t>{cnl::numeric_limits<int32_t>::max()}*2), overflow_error);

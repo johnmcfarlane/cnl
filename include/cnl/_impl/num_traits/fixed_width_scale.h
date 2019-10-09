@@ -4,15 +4,15 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_IMPL_NUM_TRAITS_FIXED_WIDTH_SCALE
+#if !defined(CNL_IMPL_NUM_TRAITS_FIXED_WIDTH_SCALE)
 #define CNL_IMPL_NUM_TRAITS_FIXED_WIDTH_SCALE
 
+#include "../type_traits/enable_if.h"
 #include "digits.h"
 #include "from_rep.h"
 #include "is_composite.h"
 #include "scale.h"
 #include "to_rep.h"
-#include "../type_traits/enable_if.h"
 
 namespace cnl {
     // returns a scaled value of the same type

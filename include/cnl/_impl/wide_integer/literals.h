@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_LITERALS_H)
 #define CNL_IMPL_WIDE_INTEGER_LITERALS_H
 
-#include "type.h"
-#include "operators.h"
 #include "../unreachable.h"
+#include "operators.h"
+#include "type.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -35,6 +35,7 @@ namespace cnl {
         }
 
         template<int NumChars>
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
         CNL_NODISCARD constexpr auto decimal_wide_integer_parse(const char (& s)[NumChars])
         -> wide_integer<(NumChars-1)*3322/1000+1>
         {
@@ -58,6 +59,7 @@ namespace cnl {
         }
 
         template<int NumChars>
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
         CNL_NODISCARD constexpr auto octal_wide_integer_parse(const char (& s)[NumChars])
         -> wide_integer<(NumChars-1)*3>
         {
@@ -82,6 +84,7 @@ namespace cnl {
         }
 
         template<int NumChars>
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
         CNL_NODISCARD constexpr auto binary_wide_integer_parse(const char (& s)[NumChars])
         -> wide_integer<NumChars-1>
         {
@@ -116,6 +119,7 @@ namespace cnl {
         }
 
         template<int NumChars>
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
         CNL_NODISCARD constexpr auto hexadecimal_wide_integer_parse(const char (& s)[NumChars])
         -> wide_integer<(NumChars-1)*4>
         {

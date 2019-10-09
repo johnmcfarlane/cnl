@@ -97,22 +97,22 @@
  *
  * */
 
-#ifndef CNL_ALL_H
+#if !defined(CNL_ALL_H)
 #define CNL_ALL_H
 
 #include "bit.h"
 #include "cmath.h"
-#include "cstdint.h"
 #include "constant.h"
-#include "elastic_scaled_integer.h"
-#include "elastic_integer.h"
+#include "cstdint.h"
 #include "elastic_fixed_point.h"
+#include "elastic_integer.h"
+#include "elastic_scaled_integer.h"
 #include "fixed_point.h"
 #include "fraction.h"
-#include "limits.h"
-#include "math.h"
-#include "numeric.h"
+#include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
+#include "math.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
 #include "num_traits.h"
+#include "numeric.h"
 #include "overflow.h"
 #include "overflow_integer.h"
 #include "rounding.h"

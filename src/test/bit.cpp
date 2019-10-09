@@ -7,8 +7,8 @@
 /// \file
 /// \brief tests for <cnl/bit.h>
 
-#include <cnl/bit.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/bit.h>
 
 using cnl::_impl::identical;
 
@@ -18,8 +18,8 @@ namespace {
         static_assert(identical(cnl::rotl(cnl::uint8{0x80}, 0xffa), cnl::uint8{0x2}), "cnl::rotl<uint8_t>");
         static_assert(identical(cnl::rotl(cnl::uint8{0x14}, unsigned(-5)), cnl::uint8{0xa0}), "cnl::rotl<uint8_t>");
 
-        static_assert(identical(cnl::rotl(6u, 6), 384u), "cnl::rotl<unsigned>");
-        static_assert(identical(cnl::rotl(0x12345678u, 9), 0x68ACF024u), "cnl::rotl<unsigned>");
+        static_assert(identical(cnl::rotl(6U, 6), 384U), "cnl::rotl<unsigned>");
+        static_assert(identical(cnl::rotl(0x12345678U, 9), 0x68ACF024U), "cnl::rotl<unsigned>");
 
 #if defined(CNL_INT128_ENABLED)
         static_assert(identical(cnl::rotl(CNL_UINTMAX_C(0x12345678), 9), CNL_UINTMAX_C(0x2468ACF000)),
@@ -35,8 +35,8 @@ namespace {
         static_assert(identical(cnl::rotr(cnl::uint8{0x80}, 0xffa), cnl::uint8{0x20}), "cnl::rotr<uint8_t>");
         static_assert(identical(cnl::rotr(cnl::uint8{0x14}, unsigned(-5)), cnl::uint8{0x82}), "cnl::rotr<uint8_t>");
 
-        static_assert(identical(cnl::rotr(6u, 6), 402653184u), "cnl::rotr<unsigned>");
-        static_assert(identical(cnl::rotr(0x12345678u, 7), 0xF02468ACu), "cnl::rotr<unsigned>");
+        static_assert(identical(cnl::rotr(6U, 6), 402653184U), "cnl::rotr<unsigned>");
+        static_assert(identical(cnl::rotr(0x12345678U, 7), 0xF02468ACU), "cnl::rotr<unsigned>");
 
 #if defined(CNL_INT128_ENABLED)
         static_assert(identical(cnl::rotr(CNL_UINTMAX_C(0x12345678), -9), CNL_UINTMAX_C(0x2468ACF000)),

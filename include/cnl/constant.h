@@ -8,21 +8,21 @@
 /// \brief essential definitions related to `std::constant` type and its UDL, ""_c
 
 #if !defined(CNL_CONSTANT_H)
-#define CNL_CONSTANT_H 1
+#define CNL_CONSTANT_H
 
-#include "cstdint.h"
-#include "limits.h"
 #include "_impl/assert.h"
+#include "cstdint.h"
+#include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
 
 #include <type_traits>
 
 // CNL_IMPL_CONSTANT_VALUE_TYPE - determines cnl::constant<>::value_type
 #if defined(CNL_TEMPLATE_AUTO)
 // If template<auto> feature is available, cnl::constant's value can be any type.
-#define CNL_IMPL_CONSTANT_VALUE_TYPE auto
+#define CNL_IMPL_CONSTANT_VALUE_TYPE auto  // NOLINT(cppcoreguidelines-macro-usage)
 #else
 // Otherwise it is defaulted to the widest quantity type that can be used as a template argument.
-#define CNL_IMPL_CONSTANT_VALUE_TYPE ::cnl::intmax
+#define CNL_IMPL_CONSTANT_VALUE_TYPE ::cnl::intmax  // NOLINT(cppcoreguidelines-macro-usage)
 #endif
 
 /// compositional numeric library
@@ -64,11 +64,13 @@ namespace cnl {
         }
 
 #if defined(_MSC_VER)
+        // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
         CNL_NODISCARD constexpr operator auto() const -> value_type
         {
             return value;
         }
 #else
+        // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
         CNL_NODISCARD constexpr operator value_type() const
         {
             return value;
@@ -79,6 +81,7 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::constant operator overloads
 
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_IMPL_CONSTANT_UNARY(OPERATOR) \
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value> \
     CNL_NODISCARD constexpr auto operator OPERATOR(constant<Value>) noexcept \
@@ -86,6 +89,7 @@ namespace cnl {
         return constant<OPERATOR Value>{}; \
     }
 
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_IMPL_CONSTANT_BINARY(OPERATOR) \
     template<CNL_IMPL_CONSTANT_VALUE_TYPE LhsValue, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue> \
     CNL_NODISCARD constexpr auto operator OPERATOR(constant<LhsValue>, constant<RhsValue>) noexcept \

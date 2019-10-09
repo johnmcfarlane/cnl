@@ -4,9 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/rounding_integer.h>
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/type_traits/assert_same.h>
+#include <cnl/_impl/type_traits/identical.h>
+#include <cnl/rounding_integer.h>
 
 #include "../number_test.h"
 
@@ -364,7 +364,7 @@ namespace {
                 cnl::_impl::scale<-1>(cnl::rounding_integer<int, cnl::native_rounding_tag>{-1})), "cnl::_impl::scale<-1>(rounding_integer)");
     }
 
-    TEST(rounding_integer, pre_increment) {
+    TEST(rounding_integer, pre_increment) {  // NOLINT
         auto a = cnl::rounding_integer<>{INT_MAX-1};
         auto& b = ++ a;
         static_assert(
@@ -374,7 +374,7 @@ namespace {
         ASSERT_EQ(INT_MAX, b) << "static_integer pre-increment";
     }
 
-    TEST(rounding_integer, pre_decrement) {
+    TEST(rounding_integer, pre_decrement) {  // NOLINT
         auto a = rounding_integer<>{INT_MIN+1};
         auto& b = -- a;
         static_assert(
@@ -384,7 +384,7 @@ namespace {
         ASSERT_EQ(INT_MIN, b) << "static_integer pre-increment";
     }
 
-    TEST(rounding_integer, post_increment) {
+    TEST(rounding_integer, post_increment) {  // NOLINT
         auto a = cnl::rounding_integer<>{INT_MAX-1};
         auto const& b = a ++;
         static_assert(
@@ -395,7 +395,7 @@ namespace {
         ASSERT_EQ(INT_MAX-1, b) << "static_integer pre-increment";
     }
 
-    TEST(rounding_integer, post_decrement) {
+    TEST(rounding_integer, post_decrement) {  // NOLINT
         auto a = rounding_integer<>{INT_MIN+1};
         auto const& b = a --;
         static_assert(

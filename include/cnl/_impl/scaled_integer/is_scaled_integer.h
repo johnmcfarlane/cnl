@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_SCALED_INTEGER_IS_SCALED_INTEGER_H)
-#define CNL_IMPL_SCALED_INTEGER_IS_SCALED_INTEGER_H 1
+#define CNL_IMPL_SCALED_INTEGER_IS_SCALED_INTEGER_H
 
 #include "declaration.h"
 

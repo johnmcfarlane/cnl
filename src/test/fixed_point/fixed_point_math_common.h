@@ -6,14 +6,17 @@
 
 //No include guards: we mean to include this for each case separately
 
+#if !defined(TEST_FIXED_POINT_FIXED_POINT_MATH_COMMON_H)
+#define TEST_FIXED_POINT_FIXED_POINT_MATH_COMMON_H
+
 #include <cnl/fixed_point.h>
 
 #include <algorithm>
 #include <array>
-#include <stdint.h>
+#include <cstdint>
 
 
-TEST(math, FPTESTFORMAT) {
+TEST(math, FPTESTFORMAT) {  // NOLINT
     using fp = cnl::fixed_point<int32_t, FPTESTEXP>;
 
     //Test integer powers
@@ -85,3 +88,4 @@ TEST(math, FPTESTFORMAT) {
     EXPECT_EQ(exp2(minimum), fp{ exp2(doublerepmini) });
 }
 
+#endif

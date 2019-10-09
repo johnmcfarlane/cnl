@@ -4,13 +4,13 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_TERMINATE_H
+#if !defined(CNL_TERMINATE_H)
 #define CNL_TERMINATE_H
 
 #include "config.h"
 
-#include <exception>
 #include <cstdio>
+#include <exception>
 
 namespace cnl {
     namespace _impl {

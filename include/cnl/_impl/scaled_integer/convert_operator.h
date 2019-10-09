@@ -7,10 +7,10 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_TAGGED_CONVERT_OPERATOR_H)
 #define CNL_IMPL_SCALED_INTEGER_TAGGED_CONVERT_OPERATOR_H
 
-#include "../power_value.h"
 #include "../overflow/overflow_operator.h"
-#include "../rounding/nearest_rounding_tag.h"
+#include "../power_value.h"
 #include "../rounding/native_rounding_tag.h"
+#include "../rounding/nearest_rounding_tag.h"
 #include "../type_traits/enable_if.h"
 #include "declaration.h"
 #include "from_rep.h"

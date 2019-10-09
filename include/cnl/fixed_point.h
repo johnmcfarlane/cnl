@@ -8,7 +8,7 @@
 /// \brief contains fixed_point alias to scaled_integer
 
 #if !defined(CNL_FIXED_POINT_H)
-#define CNL_FIXED_POINT_H 1
+#define CNL_FIXED_POINT_H
 
 #include "scaled_integer.h"
 

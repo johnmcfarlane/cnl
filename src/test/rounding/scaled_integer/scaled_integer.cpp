@@ -4,9 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/scaled_integer.h>
-#include <cnl/rounding.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/rounding.h>
+#include <cnl/scaled_integer.h>
 
 using cnl::_impl::identical;
 
@@ -34,7 +34,7 @@ namespace {
     namespace test_nearest_round_up_float {
         static constexpr auto expected = cnl::scaled_integer<int, cnl::power<-2>>{-0.25};
         static constexpr auto actual = cnl::convert<cnl::nearest_rounding_tag, cnl::scaled_integer<int, cnl::power<-2>>>(
-                -0.3125f);
+                -0.3125F);
 
         static_assert(
                 identical(expected, actual),

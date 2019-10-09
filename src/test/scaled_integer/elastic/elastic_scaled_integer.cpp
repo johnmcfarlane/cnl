@@ -7,11 +7,10 @@
 /// \file
 /// \brief tests of cnl::elastic_scaled_integer alias
 
+#include "../../number_test.h"
+
 #include <cnl/elastic_scaled_integer.h>
 #include <cnl/fraction.h>
-#include "../../number_test.h"
-#include <cnl/_impl/type_traits/assert_same.h>
-using cnl::_impl::assert_same;
 
 #include <gtest/gtest.h>
 
@@ -32,7 +31,7 @@ namespace {
     using cnl::scaled_integer;
     using cnl::set_digits_t;
 
-    static_assert(cnl::elastic_integer<64, unsigned>(0)==0u, "");
+    static_assert(cnl::elastic_integer<64, unsigned>(0)==0U, "");
 
     static_assert(identical(cnl::elastic_integer<32, int>{246}, cnl::_impl::scale<1>(cnl::elastic_integer<31, int>{123})), "");
     static_assert(identical(cnl::elastic_integer<33, unsigned>{246}, cnl::_impl::scale<1>(cnl::elastic_integer<32, unsigned>{123})), "");
@@ -165,10 +164,10 @@ namespace test_fraction_specific_long {
 }
 
 namespace test_sqrt {
-    static_assert(static_cast<float>(sqrt(elastic_scaled_integer<31, -20>(0))) == 0.0f, "sqrt<elastic_scaled_integer>");
-    static_assert(static_cast<float>(sqrt(elastic_scaled_integer<31, -20>(2.0))) > 1.414213f, "sqrt<elastic_scaled_integer>");
-    static_assert(static_cast<float>(sqrt(elastic_scaled_integer<31, -20>(2.0))) < 1.414214f, "sqrt<elastic_scaled_integer>");
-    static_assert(static_cast<float>(sqrt(elastic_scaled_integer<31, -20>(4.0))) == 2.0f, "sqrt<elastic_scaled_integer>");
+    static_assert(static_cast<float>(sqrt(elastic_scaled_integer<31, -20>(0))) == 0.0F, "sqrt<elastic_scaled_integer>");
+    static_assert(static_cast<float>(sqrt(elastic_scaled_integer<31, -20>(2.0))) > 1.414213F, "sqrt<elastic_scaled_integer>");
+    static_assert(static_cast<float>(sqrt(elastic_scaled_integer<31, -20>(2.0))) < 1.414214F, "sqrt<elastic_scaled_integer>");
+    static_assert(static_cast<float>(sqrt(elastic_scaled_integer<31, -20>(4.0))) == 2.0F, "sqrt<elastic_scaled_integer>");
 }
 
 namespace test_floor {
@@ -264,7 +263,7 @@ static_assert(bit_count(144)==2, "bit_count test failed");
 // http://stackoverflow.com/a/5775825/671509
 template<size_t size>
 struct print_num_as_error {
-    operator char() { return size+256; }
+    explicit operator char() { return size+256; }
 }; //always overflow
 
 namespace test_elastic_constant_literal {
@@ -392,6 +391,7 @@ struct positive_elastic_test
 
     static_assert(is_less_than(max-min, max), "operator- test failed");
 
+    // NOLINTNEXTLINE(misc-redundant-expression)
     static_assert(cnl::numeric_limits<decltype(zero-zero)>::is_signed,
                   "signedness is lost during subtract");
     static_assert(cnl::numeric_limits<decltype(signed_type{zero}-unsigned_type{zero})>::is_signed,
@@ -419,8 +419,10 @@ struct positive_elastic_test
 
     static_assert(!is_less_than(min, min/make_elastic_scaled_integer(2_c)), "operator/ test failed");
     static_assert(is_equal_to(min/make_elastic_scaled_integer(1_c), min), "operator/ test failed");
+    // NOLINTNEXTLINE(misc-redundant-expression)
     static_assert(is_equal_to((min+min)/make_elastic_scaled_integer(2_c), min), "operator/ test failed");
     static_assert(is_equal_to((min+min+min)/make_elastic_scaled_integer(3_c), min), "operator/ test failed");
+    // NOLINTNEXTLINE(misc-redundant-expression)
     static_assert(cnl::numeric_limits<decltype(zero/zero)>::is_signed==cnl::numeric_limits<elastic_type>::is_signed,
                   "signedness is lost during multiply");
     static_assert(cnl::numeric_limits<decltype(signed_type{zero}/unsigned_type{zero})>::is_signed,
@@ -448,30 +450,30 @@ struct positive_elastic_test
             "cnl::from_rep<scaled_integer<elastic_integer>>(int)");
 };
 
-TEST(elastic_scaled_integer, over_int) {
+TEST(elastic_scaled_integer, over_int) {  // NOLINT
     auto q = cnl::elastic_scaled_integer<10, -5>{1.5}/elastic_integer<2>{2};
     auto e = cnl::elastic_scaled_integer<12, -7>{3./4};
     EXPECT_EQ(e, q);
 }
 
-TEST(elastic_scaled_integer, int_over) {
+TEST(elastic_scaled_integer, int_over) {  // NOLINT
     auto f = cnl::make_fraction(elastic_integer<2>{2}, elastic_scaled_integer<10, -5>{1.5});
     auto q = cnl::make_scaled_integer(f);
     auto e = elastic_scaled_integer<12, -5>{4./3};
     EXPECT_EQ(e, q);
 }
 
-TEST(elastic_scaled_integer, issue_88)
+TEST(elastic_scaled_integer, issue_88)  // NOLINT
 {
     using fix_t = cnl::elastic_scaled_integer<30, -16>;
-    fix_t a = 2.0f;
-    fix_t b = 1.0f;
-    fix_t c = 1.0f;
-    EXPECT_EQ(static_cast<float>(a),2.0f);
-    EXPECT_EQ(static_cast<float>(b),1.0f);
-    EXPECT_EQ(static_cast<float>(c),1.0f);
+    fix_t a = 2.0F;
+    fix_t b = 1.0F;
+    fix_t c = 1.0F;
+    EXPECT_EQ(static_cast<float>(a),2.0F);
+    EXPECT_EQ(static_cast<float>(b),1.0F);
+    EXPECT_EQ(static_cast<float>(c),1.0F);
     fix_t d = c + a*b;
-    EXPECT_EQ(static_cast<float>(d),3.0f);
+    EXPECT_EQ(static_cast<float>(d),3.0F);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

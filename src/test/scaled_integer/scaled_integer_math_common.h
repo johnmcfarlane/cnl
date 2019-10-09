@@ -6,14 +6,17 @@
 
 //No include guards: we mean to include this for each case separately
 
+#if !defined(TEST_SCALED_INTEGER_SCALED_INTEGER_MATH_COMMON_H)
+#define TEST_SCALED_INTEGER_SCALED_INTEGER_MATH_COMMON_H
+
 #include <cnl/_impl/scaled_integer/math.h>
 
 #include <algorithm>
 #include <array>
-#include <stdint.h>
+#include <cstdint>
 
 
-TEST(math, FPTESTFORMAT) {
+TEST(math, FPTESTFORMAT) {  // NOLINT
     using fp = cnl::scaled_integer<int32_t, cnl::power<FPTESTEXP>>;
 
     //Test integer powers
@@ -85,3 +88,4 @@ TEST(math, FPTESTFORMAT) {
     EXPECT_EQ(exp2(minimum), fp{ exp2(doublerepmini) });
 }
 
+#endif

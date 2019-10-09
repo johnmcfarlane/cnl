@@ -4,9 +4,9 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/fixed_point.h>
 #include <cnl/_impl/assert.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/fixed_point.h>
 
 #include <gtest/gtest.h>
 
@@ -39,7 +39,7 @@ namespace {
         return error;
     }
 
-    TEST(fixed_point_constants, e) {
+    TEST(fixed_point_constants, e) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::e_v<cnl::fixed_point<cnl::uint8, -6>>, cnl::math::e_v<long double>), .006L);
         EXPECT_LT(get_error(cnl::math::e_v<cnl::fixed_point<cnl::int16, -4>>, cnl::math::e_v<long double>), .015L);
         EXPECT_LT(get_error(cnl::math::e_v<cnl::fixed_point<cnl::int32, -16>>, cnl::math::e_v<long double>), .000002L);
@@ -49,7 +49,7 @@ namespace {
 #endif
     }
 
-    TEST(fixed_point_constants, log2e) {
+    TEST(fixed_point_constants, log2e) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::log2e_v<cnl::fixed_point<cnl::uint8, -6>>, cnl::math::log2e_v<long double>),
                 .006L);
         EXPECT_LT(get_error(cnl::math::log2e_v<cnl::fixed_point<cnl::int16, -4>>, cnl::math::log2e_v<long double>),
@@ -60,7 +60,7 @@ namespace {
                 .0000000000000000002L);
     }
 
-    TEST(fixed_point_constants, log10e) {
+    TEST(fixed_point_constants, log10e) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::log10e_v<cnl::fixed_point<cnl::uint8, -6>>, cnl::math::log10e_v<long double>),
                 .03L);
         EXPECT_LT(get_error(cnl::math::log10e_v<cnl::fixed_point<cnl::int16, -4>>, cnl::math::log10e_v<long double>),
@@ -71,7 +71,7 @@ namespace {
                 .0000000000000000004L);
     }
 
-    TEST(fixed_point_constants, pi) {
+    TEST(fixed_point_constants, pi) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::pi_v<cnl::fixed_point<cnl::uint8, -6>>, cnl::math::pi_v<long double>), .006L);
         EXPECT_LT(get_error(cnl::math::pi_v<cnl::fixed_point<cnl::int16, -4>>, cnl::math::pi_v<long double>), .015L);
         EXPECT_LT(get_error(cnl::math::pi_v<cnl::fixed_point<cnl::int32, -16>>, cnl::math::pi_v<long double>),
@@ -82,7 +82,7 @@ namespace {
 #endif
     }
 
-    TEST(fixed_point_constants, invpi) {
+    TEST(fixed_point_constants, invpi) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::inv_pi_v<cnl::fixed_point<cnl::uint8, -6>>, cnl::math::inv_pi_v<long double>),
                 .02L);
         EXPECT_LT(get_error(cnl::math::inv_pi_v<cnl::fixed_point<cnl::int16, -4>>, cnl::math::inv_pi_v<long double>),
@@ -93,7 +93,7 @@ namespace {
                 .0000000000000000003L);
     }
 
-    TEST(fixed_point_constants, inv_sqrtpi)
+    TEST(fixed_point_constants, inv_sqrtpi)  // NOLINT
     {
         EXPECT_LT(get_error(cnl::math::inv_sqrtpi_v<cnl::fixed_point<cnl::uint8, -6>>,
                 cnl::math::inv_sqrtpi_v<long double>), .02L);
@@ -105,7 +105,7 @@ namespace {
                 cnl::math::inv_sqrtpi_v<long double>), .0000000000000000003L);
     }
 
-    TEST(fixed_point_constants, ln2) {
+    TEST(fixed_point_constants, ln2) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::ln2_v<cnl::fixed_point<cnl::uint8, -6>>, cnl::math::ln2_v<long double>), .01L);
         EXPECT_LT(get_error(cnl::math::ln2_v<cnl::fixed_point<cnl::int16, -4>>, cnl::math::ln2_v<long double>), .015L);
         EXPECT_LT(get_error(cnl::math::ln2_v<cnl::fixed_point<cnl::int32, -16>>, cnl::math::ln2_v<long double>),
@@ -114,7 +114,7 @@ namespace {
                 .0000000000000000002L);
     }
 
-    TEST(fixed_point_constants, ln10) {
+    TEST(fixed_point_constants, ln10) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::ln10_v<cnl::fixed_point<cnl::uint8, -6>>, cnl::math::ln10_v<long double>),
                 .006L);
         EXPECT_LT(get_error(cnl::math::ln10_v<cnl::fixed_point<cnl::int16, -4>>, cnl::math::ln10_v<long double>),
@@ -125,7 +125,7 @@ namespace {
                 .0000000000000000002L);
     }
 
-    TEST(fixed_point_constants, sqrt2) {
+    TEST(fixed_point_constants, sqrt2) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::sqrt2_v<cnl::fixed_point<cnl::uint8, -6>>, cnl::math::sqrt2_v<long double>),
                 .006L);
         EXPECT_LT(get_error(cnl::math::sqrt2_v<cnl::fixed_point<cnl::int16, -4>>, cnl::math::sqrt2_v<long double>),
@@ -136,7 +136,7 @@ namespace {
                 .0000000000000000002L);
     }
 
-    TEST(fixed_point_constants, sqrt3) {
+    TEST(fixed_point_constants, sqrt3) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::sqrt3_v<cnl::fixed_point<cnl::uint8, -6>>, cnl::math::sqrt3_v<long double>),
                 .02L);
         EXPECT_LT(get_error(cnl::math::sqrt3_v<cnl::fixed_point<cnl::int16, -4>>, cnl::math::sqrt3_v<long double>),
@@ -147,7 +147,7 @@ namespace {
                 .0000000000000000003L);
     }
 
-    TEST(fixed_point_constants, invsqrt3) {
+    TEST(fixed_point_constants, invsqrt3) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::inv_sqrt3_v<cnl::fixed_point<cnl::uint8, -6>>,
                 cnl::math::inv_sqrt3_v<long double>), .03L);
         EXPECT_LT(get_error(cnl::math::inv_sqrt3_v<cnl::fixed_point<cnl::int16, -4>>,
@@ -158,7 +158,7 @@ namespace {
                 cnl::math::inv_sqrt3_v<long double>), .0000000000000000003L);
     }
 
-    TEST(fixed_point_constants, egamma) {
+    TEST(fixed_point_constants, egamma) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::egamma_v<cnl::fixed_point<cnl::uint8, -6>>, cnl::math::egamma_v<long double>),
                 .03L);
         EXPECT_LT(get_error(cnl::math::egamma_v<cnl::fixed_point<cnl::int16, -4>>, cnl::math::egamma_v<long double>),
@@ -169,7 +169,7 @@ namespace {
                 .0000000000000000003L);
     }
 
-    TEST(fixed_point_constants, phi) {
+    TEST(fixed_point_constants, phi) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::phi_v<cnl::fixed_point<cnl::uint8, -6>>, cnl::math::phi_v<long double>), .02L);
         EXPECT_LT(get_error(cnl::math::phi_v<cnl::fixed_point<cnl::int16, -4>>, cnl::math::phi_v<long double>), .04L);
         EXPECT_LT(get_error(cnl::math::phi_v<cnl::fixed_point<cnl::int32, -16>>, cnl::math::phi_v<long double>),

@@ -7,7 +7,7 @@
 /// \file
 /// \brief file containing definitions equivalent to those in \verbatim<cstdint>\endverbatim
 
-#ifndef CNL_CSTDINT_H
+#if !defined(CNL_CSTDINT_H)
 #define CNL_CSTDINT_H
 
 #include "_impl/common.h"
@@ -19,11 +19,21 @@
 // CNL_INTMAX_C and CNL_UINTMAX_C
 
 #if defined(CNL_INT128_ENABLED)
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_INTMAX_C(N) (::cnl::_cnlint_impl::parse(CNL_STR(N)))
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_UINTMAX_C(N) (static_cast<::cnl::uint128>(::cnl::_cnlint_impl::parse(CNL_STR(N))))
+
 #else
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_INTMAX_C INTMAX_C
+
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_UINTMAX_C UINTMAX_C
+
 #endif
 
 /// compositional numeric library
@@ -94,7 +104,7 @@ namespace cnl {
         }
 
         template<int NumChars>
-        CNL_NODISCARD constexpr intmax parse(const char (& s)[NumChars])
+        CNL_NODISCARD constexpr intmax parse(const char (& s)[NumChars])  // NOLINT(cppcoreguidelines-avoid-c-arrays)
         {
             return (s[0]=='-')
                    ? -parse_positive(s+1)

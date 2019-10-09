@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_IMPL_NUM_TRAITS_UNWRAP_H
+#if !defined(CNL_IMPL_NUM_TRAITS_UNWRAP_H)
 #define CNL_IMPL_NUM_TRAITS_UNWRAP_H
 
 #include "../type_traits/enable_if.h"

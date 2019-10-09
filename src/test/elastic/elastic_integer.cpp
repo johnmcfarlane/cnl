@@ -7,12 +7,12 @@
 /// \file
 /// \brief file containing tests of the `cnl::elastic_integer` type
 
-#include <cnl/elastic_integer.h>
-#include <cnl/numeric.h>
-#include <cnl/_impl/rounding.h>
 #include <cnl/_impl/common.h>
+#include <cnl/_impl/rounding.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/elastic_integer.h>
+#include <cnl/numeric.h>
 
 #include <gtest/gtest.h>
 
@@ -119,8 +119,6 @@ namespace {
     }
 
     namespace test_from_value {
-        using cnl::from_value;
-
         static_assert(std::is_same<elastic_integer<7, int>::rep, int>::value, "");
         static_assert(identical(
                 elastic_integer<cnl::numeric_limits<int>::digits>{1},
@@ -376,7 +374,7 @@ namespace {
                 elastic_integer<15, int>{0x7fff}*elastic_integer<16, unsigned>{0xffff},
                 elastic_integer<31, int>{0x7FFE8001}), "cnl::elastic_integer test failed");
         static_assert(identical(
-                elastic_integer<31, int>{0x7fffffff}*elastic_integer<32, int>{0xffffffffu},
+                elastic_integer<31, int>{0x7fffffff}*elastic_integer<32, int>{0xffffffffU},
                 elastic_integer<63, int>{0x7FFFFFFE80000001LL}), "cnl::elastic_integer test failed");
 
         static_assert(identical(
@@ -614,7 +612,7 @@ namespace {
 #endif
     }
 
-    TEST(elastic_integer, to_rep_ref) {
+    TEST(elastic_integer, to_rep_ref) {  // NOLINT
         auto i = 123;
         auto e = cnl::elastic_integer<10>{i};
         int& expected = i;
@@ -622,7 +620,7 @@ namespace {
         ASSERT_TRUE(equal);
     }
 
-    TEST(elastic_integer, to_rep_const_ref) {
+    TEST(elastic_integer, to_rep_const_ref) {  // NOLINT
         auto i = 123;
         auto const e = cnl::elastic_integer<10>{i};
         int const& expected = i;
@@ -630,13 +628,13 @@ namespace {
         ASSERT_TRUE(equal);
     }
 
-    TEST(elastic_integer, to_rep_rvalue_ref) {
+    TEST(elastic_integer, to_rep_rvalue_ref) {  // NOLINT
         auto i = 123;
         auto equal = identical(i, cnl::_impl::to_rep(cnl::elastic_integer<10>{i}));
         ASSERT_TRUE(equal);
     }
 
-    TEST(elastic_integer, pre_increment) {
+    TEST(elastic_integer, pre_increment) {  // NOLINT
         auto i = 123;
         auto a = cnl::elastic_integer<10>{i};
         auto& b = ++a;
@@ -646,7 +644,7 @@ namespace {
         static_assert(std::is_same<cnl::elastic_integer<10>&, decltype(b)>::value, "");
     }
 
-    TEST(elastic_integer, pre_decrement) {
+    TEST(elastic_integer, pre_decrement) {  // NOLINT
         auto i = 123;
         auto a = cnl::elastic_integer<10>{i};
         auto& b = --a;
@@ -656,7 +654,7 @@ namespace {
         static_assert(std::is_same<cnl::elastic_integer<10>&, decltype(b)>::value, "");
     }
 
-    TEST(elastic_integer, post_increment) {
+    TEST(elastic_integer, post_increment) {  // NOLINT
         auto i = 123;
         auto a = cnl::elastic_integer<10>{i};
         auto b = a++;
@@ -666,7 +664,7 @@ namespace {
         static_assert(std::is_same<cnl::elastic_integer<10>, decltype(b)>::value, "");
     }
 
-    TEST(elastic_integer, post_decrement) {
+    TEST(elastic_integer, post_decrement) {  // NOLINT
         auto i = 123;
         auto a = cnl::elastic_integer<10>{i};
         auto b = a--;

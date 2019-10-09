@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_TEST_FIXED_POINT_TO_CHARS_H
+#if !defined(CNL_TEST_FIXED_POINT_TO_CHARS_H)
 #define CNL_TEST_FIXED_POINT_TO_CHARS_H
 
 #include <cnl/elastic_integer.h>
@@ -16,7 +16,7 @@
 #include <iterator>
 #include <string>
 
-namespace {
+namespace {  // NOLINT(cert-dcl59-cpp)
     using cnl::_impl::identical;
 
     namespace test_max_to_chars_chars {
@@ -100,67 +100,67 @@ namespace {
             test_chars(expected, buffer_begin, buffer_last);
         }
 
-        TEST(to_chars_natural, zero)
+        TEST(to_chars_natural, zero)  // NOLINT
         {
             test<0>(0);
         }
 
-        TEST(to_chars_natural, one)
+        TEST(to_chars_natural, one)  // NOLINT
         {
             test<1>(1);
         }
 
-        TEST(to_chars_natural, one_too_short)
+        TEST(to_chars_natural, one_too_short)  // NOLINT
         {
             test<0>(1);
         }
 
-        TEST(to_chars_natural, nine)
+        TEST(to_chars_natural, nine)  // NOLINT
         {
             test<1>(9);
         }
 
-        TEST(to_chars_natural, ten)
+        TEST(to_chars_natural, ten)  // NOLINT
         {
             test<2>(10);
         }
 
-        TEST(to_chars_natural, fifty_too_short)
+        TEST(to_chars_natural, fifty_too_short)  // NOLINT
         {
             test<1>(50);
         }
 
-        TEST(to_chars_natural, fourty_two_way_too_short)
+        TEST(to_chars_natural, fourty_two_way_too_short)  // NOLINT
         {
             test<0>(42);
         }
 
-        TEST(to_chars_natural, ninety_nine)
+        TEST(to_chars_natural, ninety_nine)  // NOLINT
         {
             test<2>(99);
         }
 
-        TEST(to_chars_natural, one_hundred)
+        TEST(to_chars_natural, one_hundred)  // NOLINT
         {
             test<3>(100);
         }
 
-        TEST(to_chars_natural, int8_max)
+        TEST(to_chars_natural, int8_max)  // NOLINT
         {
             test<3>(cnl::numeric_limits<int8>::max());
         }
 
-        TEST(to_chars_natural, scaled_integer)
+        TEST(to_chars_natural, scaled_integer)  // NOLINT
         {
             test<5>(scaled_integer<int, cnl::power<>>{12345});
         }
 
-        TEST(to_chars_natural, large_number)
+        TEST(to_chars_natural, large_number)  // NOLINT
         {
             test<200>(23947569375693275LL);
         }
 
-        TEST(to_chars_natural, large_number_way_too_short)
+        TEST(to_chars_natural, large_number_way_too_short)  // NOLINT
         {
             test<1>(23947569375693275LL);
         }
@@ -183,92 +183,92 @@ namespace {
             test_chars(expected, buffer_begin, result.ptr);
         }
 
-        TEST(to_chars, scaled_integer)
+        TEST(to_chars, scaled_integer)  // NOLINT
         {
             test<22>("-5016.5091400146484375", cnl::scaled_integer<int, cnl::power<-16>>(-5016.5091400146484375));
         }
 
-        TEST(to_chars, scaled_integer_truncated)
+        TEST(to_chars, scaled_integer_truncated)  // NOLINT
         {
             test<8>("5016.509", cnl::scaled_integer<unsigned, cnl::power<-16>>(5016.5091400146484375));
         }
 
-        TEST(to_chars, scaled_integer_just_big_enough)
+        TEST(to_chars, scaled_integer_just_big_enough)  // NOLINT
         {
             test<5>("-5016", cnl::scaled_integer<short, cnl::power<-2>>(-5016.5091400146484375));
         }
 
-        TEST(to_chars, scaled_integer_too_small)
+        TEST(to_chars, scaled_integer_too_small)  // NOLINT
         {
             test<4>("", cnl::scaled_integer<short, cnl::power<-2>>(-5016.5091400146484375));
         }
 
-        TEST(to_chars, scaled_integer_small)
+        TEST(to_chars, scaled_integer_small)  // NOLINT
         {
             test<7>("0.0039", cnl::scaled_integer<int, cnl::power<-16>>(0.00390625));
         }
 
-        TEST(to_chars, scaled_integer_small_single_digit)
+        TEST(to_chars, scaled_integer_small_single_digit)  // NOLINT
         {
             test<1>("0", cnl::scaled_integer<int, cnl::power<-16>>(0.00390625));
         }
 
-        TEST(to_chars, scaled_integer_small_double_digit)
+        TEST(to_chars, scaled_integer_small_double_digit)  // NOLINT
         {
             test<2>("0", cnl::scaled_integer<int, cnl::power<-16>>(0.00390625));
         }
 
-        TEST(to_chars, scaled_integer_small_tripple_digit)
+        TEST(to_chars, scaled_integer_small_tripple_digit)  // NOLINT
         {
             test<3>("0", cnl::scaled_integer<int, cnl::power<-16>>(0.00390625));
         }
 
-        TEST(to_chars, scaled_integer_small_negative_single_digit)
+        TEST(to_chars, scaled_integer_small_negative_single_digit)  // NOLINT
         {
             test<1>("", cnl::scaled_integer<int, cnl::power<-16>>(-0.00390625));
         }
 
-        TEST(to_chars, scaled_integer_small_negative_double_digit)
+        TEST(to_chars, scaled_integer_small_negative_double_digit)  // NOLINT
         {
             test<2>("-0", cnl::scaled_integer<int, cnl::power<-16>>(-0.00390625));
         }
 
-        TEST(to_chars, scaled_integer_small_negative_tripple_digit)
+        TEST(to_chars, scaled_integer_small_negative_tripple_digit)  // NOLINT
         {
             test<3>("-0", cnl::scaled_integer<int, cnl::power<-16>>(-0.00390625));
         }
 
-        TEST(to_chars, scaled_integer_small_negative_quadruple_digit)
+        TEST(to_chars, scaled_integer_small_negative_quadruple_digit)  // NOLINT
         {
             test<4>("-0", cnl::scaled_integer<int, cnl::power<-16>>(-0.00390625));
         }
 
-        TEST(to_chars, scaled_integer_very_few_integer_digits)
+        TEST(to_chars, scaled_integer_very_few_integer_digits)  // NOLINT
         {
             test<4>("-7", cnl::scaled_integer<int, cnl::power<-28>>(-7.00390625));
         }
 
-        TEST(to_chars, scaled_integer_decimal_positive)
+        TEST(to_chars, scaled_integer_decimal_positive)  // NOLINT
         {
             test<6>("17.917", cnl::scaled_integer<int, cnl::power<-3, 10>>(17.917));
         }
 
-        TEST(to_chars, scaled_integer_decimal_negative)
+        TEST(to_chars, scaled_integer_decimal_negative)  // NOLINT
         {
             test<5>("-5.25", cnl::scaled_integer<int, cnl::power<-2, 10>>(-5.25));
         }
 
-        TEST(to_chars, scaled_integer_decimal_no_fractional)
+        TEST(to_chars, scaled_integer_decimal_no_fractional)  // NOLINT
         {
             test<7>("-517523", cnl::scaled_integer<int, cnl::power<0, 10>>(-517523));
         }
 
-        TEST(to_chars, scaled_integer_octal_positive)
+        TEST(to_chars, scaled_integer_octal_positive)  // NOLINT
         {
             test<9>("634124.25", cnl::scaled_integer<int, cnl::power<-1, 8>>(634124.25));
         }
 
-        TEST(to_chars, scaled_integer_octal_negative)
+        TEST(to_chars, scaled_integer_octal_negative)  // NOLINT
         {
             test<7>("-33.125", cnl::scaled_integer<int, cnl::power<-1, 8>>(-33.125));
         }

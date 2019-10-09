@@ -114,7 +114,7 @@ namespace {
             static_assert(identical(elastic_integer<13>{4096}, b), "");
         }
 
-        TEST(p0828, section_4_1_1) {
+        TEST(p0828, section_4_1_1) {  // NOLINT
             elastic_integer<10> a = 1023;   // within range; OK
 
             auto b = elastic_integer<9>(a);  // narrowing cast exceeds range; undefined behavior

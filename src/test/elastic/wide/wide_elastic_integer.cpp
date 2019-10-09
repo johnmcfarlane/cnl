@@ -7,8 +7,8 @@
 #include <cnl/elastic_integer.h>
 #include <cnl/wide_integer.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/type_traits/assert_same.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 #include <gtest/gtest.h>
 
@@ -63,15 +63,6 @@ namespace {
     }
 
     namespace test_division {
-        TEST(a, b)
-        {
-            auto ex = wide_elastic_integer<2>{3/4};
-            auto n = wide_elastic_integer<2>{3};
-            auto d = wide_elastic_integer<3>{4};
-            auto q = n/d;
-            ASSERT_EQ(ex, q);
-        }
-
         static_assert(identical(wide_elastic_integer<2>{3/4},
                 wide_elastic_integer<2>{3}
                         /wide_elastic_integer<3>{4}), "");
@@ -105,7 +96,7 @@ namespace {
                 "");
     }
 
-    TEST(wide_elastic_integer, pre_increment)
+    TEST(wide_elastic_integer, pre_increment)  // NOLINT
     {
         auto a = wide_elastic_integer<3>{6};
         auto& b = ++a;
@@ -116,7 +107,7 @@ namespace {
         ASSERT_EQ(7, b) << "wide_elastic_integer pre-increment";
     }
 
-    TEST(wide_elastic_integer, pre_decrement)
+    TEST(wide_elastic_integer, pre_decrement)  // NOLINT
     {
         auto a = wide_elastic_integer<3>{-6};
         auto& b = --a;
@@ -127,7 +118,7 @@ namespace {
         ASSERT_EQ(-7, b) << "wide_elastic_integer pre-increment";
     }
 
-    TEST(wide_elastic_integer, post_increment)
+    TEST(wide_elastic_integer, post_increment)  // NOLINT
     {
         auto a = wide_elastic_integer<3>{6};
         auto const& b = a++;
@@ -139,7 +130,7 @@ namespace {
         ASSERT_EQ(6, b) << "wide_elastic_integer pre-increment";
     }
 
-    TEST(wide_elastic_integer, post_decrement)
+    TEST(wide_elastic_integer, post_decrement)  // NOLINT
     {
         auto a = wide_elastic_integer<3>{-6};
         auto const& b = a--;

@@ -8,7 +8,7 @@
 /// \brief essential definitions related to the `cnl::elastic_integer` type
 
 #if !defined(CNL_ELASTIC_INTEGER_H)
-#define CNL_ELASTIC_INTEGER_H 1
+#define CNL_ELASTIC_INTEGER_H
 
 #include "constant.h"
 
@@ -16,11 +16,12 @@
 #include "_impl/num_traits/adopt_width.h"
 #include "_impl/num_traits/digits.h"
 #include "_impl/num_traits/fixed_width_scale.h"
+#include "_impl/num_traits/set_digits.h"
 #include "_impl/num_traits/set_width.h"
 #include "_impl/num_traits/width.h"
 #include "_impl/number_base.h"
-#include "_impl/type_traits/is_signed.h"
 #include "_impl/type_traits/add_signedness.h"
+#include "_impl/type_traits/is_signed.h"
 #include "_impl/type_traits/set_signedness.h"
 
 #include <ostream>
@@ -171,7 +172,7 @@ namespace cnl {
 
         /// construct from numeric type
         template<class Number, _impl::enable_if_t<numeric_limits<Number>::is_specialized, int> = 0>
-        constexpr elastic_integer(Number n)
+        constexpr elastic_integer(Number n)  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
                 : _base(static_cast<rep>(n))
         {
         }
@@ -185,7 +186,7 @@ namespace cnl {
 
         /// constructor taking an integral constant
         template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-        constexpr elastic_integer(constant<Value>)
+        explicit constexpr elastic_integer(constant<Value>)
                 : _base(static_cast<rep>(Value))
         {
         }

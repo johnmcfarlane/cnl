@@ -5,12 +5,14 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_NUMBER_BASE_DEFINITION_H)
-#define CNL_IMPL_NUMBER_BASE_DEFINITION_H 1
+#define CNL_IMPL_NUMBER_BASE_DEFINITION_H
 
 #include "declaration.h"
 
-#include "../num_traits/to_rep.h"
 #include "../../limits.h"
+#include "../num_traits/to_rep.h"
+
+#include <utility>
 
 /// compositional numeric library
 namespace cnl {
@@ -30,12 +32,13 @@ namespace cnl {
 
             number_base() = default;
 
-            explicit constexpr number_base(rep const& r)
-                : _rep(r) { }
+            explicit constexpr number_base(rep r)
+                : _rep(std::move(r)) { }
 
             template<class T>
             CNL_RELAXED_CONSTEXPR number_base& operator=(T const& r) {
                 _rep = r;
+                // NOLINTNEXTLINE(cppcoreguidelines-c-copy-assignment-signature, misc-unconventional-assign-operator)
                 return static_cast<Derived&>(*this);
             }
 

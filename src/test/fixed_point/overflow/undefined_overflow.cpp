@@ -8,7 +8,7 @@
 #include <cnl/overflow_integer.h>
 
 #define TEST_UNDEFINED_OVERFLOW_INTEGER
-#define TEST_LABEL undefined_overflow_
+#define TEST_LABEL undefined_overflow_  // NOLINT(cppcoreguidelines-macro-usage)
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Rep type

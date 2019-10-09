@@ -11,7 +11,7 @@
 #include <cinttypes>
 
 #define TEST_NATIVE_INTEGER
-#define TEST_LABEL rounding_integer_
+#define TEST_LABEL rounding_integer_  // NOLINT(cppcoreguidelines-macro-usage)
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as fixed_point Rep type
@@ -42,7 +42,6 @@ namespace test_literals_initialization {
 }
 
 namespace test_literals_constant {
-    using cnl::_impl::identical;
     using cnl::fixed_point;
 
     using namespace cnl::literals;

@@ -4,9 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/scaled_integer.h>
-#include <cnl/fraction.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/fraction.h>
+#include <cnl/scaled_integer.h>
 
 #include <cstddef>
 #include <iostream>
@@ -34,13 +34,13 @@ namespace a {
     using namespace std::experimental;
     using byte = std::uint8_t;
 
-    unordered_map<filesystem::path, unique_ptr<byte[]>> cache;
+    unordered_map<filesystem::path, unique_ptr<byte[]>> cache;  // NOLINT(cppcoreguidelines-avoid-c-arrays)
 }
 #endif
 
 namespace b {
     void f() {
-        auto n = cnl::scaled_integer<int, cnl::power<-8>>{ 0.25f };
+        auto n = cnl::scaled_integer<int, cnl::power<-8>>{ 0.25F };
         std::cout << n * 5; // prints "1.25"
     }
 }
@@ -73,10 +73,10 @@ namespace d {
 }
 
 namespace e {
-    static_assert(scaled_integer<unsigned>{1u} < scaled_integer<signed>{-1}, "OK(!)");
+    static_assert(scaled_integer<unsigned>{1U} < scaled_integer<signed>{-1}, "OK(!)");
 
 #if defined(__cpp_deduction_guides)
-    static_assert(scaled_integer{1u} < scaled_integer{-1});
+    static_assert(scaled_integer{1U} < scaled_integer{-1});
 #endif
 }
 
@@ -89,7 +89,7 @@ namespace f {
 #if (__cplusplus >= 201703L)
 namespace g {
     auto n = scaled_integer<int, power<-8>>{1.5};
-    auto nn = n * n;    // scaled_integer<int, -16>;
+    auto nn = n * n;
 
     static_assert(std::is_same<decltype(nn), scaled_integer<int, power<-16>>>::value);
 }
@@ -120,13 +120,10 @@ namespace j {
 }
 
 namespace j2 {
-    using cnl::fraction;
-    using cnl::make_fraction;
-
     constexpr auto n = scaled_integer<int16_t, power<-8>>{1.5};
     constexpr auto d = scaled_integer<int16_t, power<-8>>{2.25};
 #if defined(__cpp_deduction_guides)
-    constexpr auto f = fraction{n, d};
+    constexpr auto f = cnl::fraction{n, d};
     constexpr auto q = scaled_integer{f};
 #else
     constexpr auto f = cnl::make_fraction(n, d);
@@ -140,6 +137,7 @@ namespace k {
         auto n = scaled_integer<int, power<-31>>{0.99609375};
         auto nn = n*n;    // scaled_integer<int, -62>{0.9922027587890625};
         static_assert(std::is_same<scaled_integer<int, power<-62>>, decltype(nn)>::value, "");
+        (void)nn;
     }
 }
 
@@ -186,17 +184,17 @@ namespace n {
 
 using namespace cnl::literals;
 namespace o {
-    constexpr auto x = scaled_integer{42ul}; // scaled_integer<unsigned long, 0>{42}
+    constexpr auto x = scaled_integer{42UL}; // scaled_integer<unsigned long, 0>{42}
     static_assert(cnl::_impl::identical(scaled_integer<unsigned long, power<>>{42}, x));
 
     constexpr auto z = scaled_integer{128_c};
     static_assert(cnl::_impl::identical(scaled_integer<int, power<7>>{128}, z));
 
     constexpr auto a = scaled_integer{0b10000000000000000000000000000000000000000_c};
-    static_assert(cnl::_impl::identical(scaled_integer<int, power<40>>{0b10000000000000000000000000000000000000000l}, a));
+    static_assert(cnl::_impl::identical(scaled_integer<int, power<40>>{0b10000000000000000000000000000000000000000L}, a));
 
     constexpr auto b = scaled_integer{0b11111111111111111111111111111111111111111_c};
-    static_assert(cnl::_impl::identical(scaled_integer<cnl::int64, power<>>{0b11111111111111111111111111111111111111111l}, b));
+    static_assert(cnl::_impl::identical(scaled_integer<cnl::int64, power<>>{0b11111111111111111111111111111111111111111L}, b));
 
     constexpr auto c = elastic_integer{2018_c};
     static_assert(cnl::_impl::identical(elastic_integer<11>{2018}, c));

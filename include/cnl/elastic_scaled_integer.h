@@ -8,12 +8,12 @@
 /// \brief essential definitions related to the `cnl::elastic_scaled_integer` type
 
 #if !defined(CNL_ELASTIC_SCALED_INTEGER_H)
-#define CNL_ELASTIC_SCALED_INTEGER_H 1
+#define CNL_ELASTIC_SCALED_INTEGER_H
 
-#include "elastic_integer.h"
-#include "scaled_integer.h"
-#include "limits.h"
 #include "_impl/num_traits/adopt_signedness.h"
+#include "elastic_integer.h"
+#include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
+#include "scaled_integer.h"
 
 #include <type_traits>
 

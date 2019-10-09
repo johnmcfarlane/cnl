@@ -4,9 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/fixed_point.h>
 #include <cnl/rounding_integer.h>
-#include <cnl/_impl/type_traits/identical.h>
 
 namespace {
     using cnl::_impl::identical;
@@ -33,10 +33,10 @@ namespace {
                 rounding_integer<std::uint16_t>{3872}), "rounding_fixed_point ctor test failed");
 
         static_assert(identical(
-                to_rep(rounding_fixed_point<std::int32_t, -1>(0.249f)),
+                to_rep(rounding_fixed_point<std::int32_t, -1>(0.249F)),
                 rounding_integer<std::int32_t>{0}), "rounding_fixed_point ctor test failed");
         static_assert(identical(
-                to_rep(rounding_fixed_point<std::int32_t, -1>(0.25f)),
+                to_rep(rounding_fixed_point<std::int32_t, -1>(0.25F)),
                 rounding_integer<std::int32_t>{1}), "rounding_fixed_point ctor test failed");
     }
 

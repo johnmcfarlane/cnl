@@ -4,11 +4,11 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/scaled_integer.h>
 #include <cnl/overflow_integer.h>
+#include <cnl/scaled_integer.h>
 
 #define TEST_NATIVE_INTEGER
-#define TEST_LABEL native_integer_
+#define TEST_LABEL native_integer_  // NOLINT(cppcoreguidelines-macro-usage)
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as scaled_integer Rep type

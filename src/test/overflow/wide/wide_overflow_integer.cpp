@@ -13,7 +13,7 @@ template<int Digits, class OverflowTag = cnl::native_overflow_tag>
 using wide_overflow_integer = cnl::overflow_integer<cnl::wide_integer<Digits>, OverflowTag>;
 
 namespace {
-    TEST(wide_overflow_integer, divide)
+    TEST(wide_overflow_integer, divide)  // NOLINT
     {
         auto expected = wide_overflow_integer<100>{std::pow(2.L, 50.L)/3};
         auto dividend = wide_overflow_integer<100>(1) << 50;

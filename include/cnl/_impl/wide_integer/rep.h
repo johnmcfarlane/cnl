@@ -7,12 +7,12 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_REP_H)
 #define CNL_IMPL_WIDE_INTEGER_REP_H
 
-#include "forward_declaration.h"
 #include "../duplex_integer/instantiate_duplex_integer.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/max_digits.h"
 #include "../num_traits/set_digits.h"
 #include "../type_traits/enable_if.h"
+#include "forward_declaration.h"
 
 /// compositional numeric library
 namespace cnl {

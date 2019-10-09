@@ -4,9 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_integer.h>
 #include <cnl/rounding_integer.h>
-#include <cnl/_impl/type_traits/identical.h>
 
 namespace cnl {
     // rounding elastic integer
@@ -40,9 +40,6 @@ namespace {
     using cnl::_impl::identical;
 
     namespace default_parameters {
-        using cnl::rounding_integer;
-        using cnl::elastic_integer;
-
         static_assert(
                 is_same<rounding_elastic_integer<1>::rep::rep, int>::value,
                 "cnl::rounding_integer parameter default test failed");

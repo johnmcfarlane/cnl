@@ -5,9 +5,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_TO_CHARS_H)
-#define CNL_IMPL_TO_CHARS_H 1
+#define CNL_IMPL_TO_CHARS_H
 
-#include "assert.h"
+#include "assert.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
 #include "num_traits/digits.h"
 #include "num_traits/rounding.h"
 #include "type_traits/is_signed.h"
@@ -35,7 +35,7 @@ namespace cnl {
 
         // cnl::_impl::itoc
         template<typename Scalar>
-        char itoc(Scalar value) noexcept
+        char itoc(Scalar value)
         {
             static_assert(
                     std::is_same<
@@ -87,16 +87,15 @@ namespace cnl {
                     // +ve
                     return to_chars_positive(first, last, value);
                 }
-                else {
-                    auto const destination_length = std::distance(first, last);
-                    if (destination_length<2) {
-                        return to_chars_result{last, std::errc::value_too_large};
-                    }
 
-                    // -ve
-                    *first = '-';
-                    return to_chars_positive(first+1, last, -value);
+                auto const destination_length = std::distance(first, last);
+                if (destination_length<2) {
+                    return to_chars_result{last, std::errc::value_too_large};
                 }
+
+                // -ve
+                *first = '-';
+                return to_chars_positive(first+1, last, -value);
             }
         };
     }
@@ -115,7 +114,7 @@ namespace cnl {
         // addresses uninitialized data error in operator<<(ostream,scaled_integer)
         std::array<char, max_num_chars+1> chars{};
 #else
-        std::array<char, max_num_chars+1> chars;
+        std::array<char, max_num_chars+1> chars{};
 #endif
 
         auto result = to_chars(chars.data(), chars.data()+max_num_chars, value);

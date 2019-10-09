@@ -4,9 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/static_integer.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/static_integer.h>
 
 #include <gtest/gtest.h>
 
@@ -16,6 +16,7 @@ namespace {
 
     namespace default_parameters {
         static_assert(
+                // NOLINTNEXTLINE(misc-redundant-expression)
                 cnl::digits<int>::value == cnl::digits<cnl::static_integer<>>::value,
                 "cnl::static_integer parameter default test failed");
 
@@ -139,7 +140,7 @@ namespace {
     }
 
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
-    TEST(static_integer, conversion_overflow_trapping) {
+    TEST(static_integer, conversion_overflow_trapping) {  // NOLINT
         using si = cnl::static_integer<5>;
         ASSERT_DEATH(si{32}, "positive overflow");
     }

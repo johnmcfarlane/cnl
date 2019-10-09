@@ -4,11 +4,11 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CNL_IMPL_NUM_TRAITS_ADOPT_WIDTH
+#if !defined(CNL_IMPL_NUM_TRAITS_ADOPT_WIDTH)
 #define CNL_IMPL_NUM_TRAITS_ADOPT_WIDTH
 
-#include "width.h"
 #include "set_width.h"
+#include "width.h"
 
 namespace cnl {
     namespace _impl {

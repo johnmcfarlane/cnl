@@ -7,8 +7,8 @@
 /// \file
 /// \brief file containing tests of the `cnl/bits/common.h` definitions
 
-#include <cnl/cstdint.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/cstdint.h>
 
 namespace {
     using cnl::_impl::identical;
@@ -41,7 +41,7 @@ namespace {
                 CNL_INTMAX_C(0x123456789ABCDEF0123456789ABCDEF)),
                 "cnl::_cnlint_impl::parse test failed");
         static_assert(identical(
-                (cnl::uint128)parse("0x123456789ABCDEF0123456789ABCDEF"),
+                cnl::uint128{parse("0x123456789ABCDEF0123456789ABCDEF")},
                 CNL_UINTMAX_C(0x123456789ABCDEF0123456789ABCDEF)),
                 "cnl::_cnlint_impl::parse test failed");
 #endif

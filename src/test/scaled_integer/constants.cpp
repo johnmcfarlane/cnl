@@ -4,9 +4,9 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/scaled_integer.h>
 #include <cnl/_impl/assert.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/scaled_integer.h>
 
 #include <gtest/gtest.h>
 
@@ -41,7 +41,7 @@ namespace {
         return error;
     }
 
-    TEST(scaled_integer_constants, e) {
+    TEST(scaled_integer_constants, e) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::e_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>, cnl::math::e_v<long double>), .006L);
         EXPECT_LT(get_error(cnl::math::e_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>, cnl::math::e_v<long double>), .015L);
         EXPECT_LT(get_error(cnl::math::e_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>, cnl::math::e_v<long double>), .000002L);
@@ -51,7 +51,7 @@ namespace {
 #endif
     }
 
-    TEST(scaled_integer_constants, log2e) {
+    TEST(scaled_integer_constants, log2e) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::log2e_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>, cnl::math::log2e_v<long double>),
                 .006L);
         EXPECT_LT(get_error(cnl::math::log2e_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>, cnl::math::log2e_v<long double>),
@@ -62,7 +62,7 @@ namespace {
                 .0000000000000000002L);
     }
 
-    TEST(scaled_integer_constants, log10e) {
+    TEST(scaled_integer_constants, log10e) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::log10e_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>, cnl::math::log10e_v<long double>),
                 .03L);
         EXPECT_LT(get_error(cnl::math::log10e_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>, cnl::math::log10e_v<long double>),
@@ -73,7 +73,7 @@ namespace {
                 .0000000000000000004L);
     }
 
-    TEST(scaled_integer_constants, pi) {
+    TEST(scaled_integer_constants, pi) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::pi_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>, cnl::math::pi_v<long double>), .006L);
         EXPECT_LT(get_error(cnl::math::pi_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>, cnl::math::pi_v<long double>), .015L);
         EXPECT_LT(get_error(cnl::math::pi_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>, cnl::math::pi_v<long double>),
@@ -84,7 +84,7 @@ namespace {
 #endif
     }
 
-    TEST(scaled_integer_constants, invpi) {
+    TEST(scaled_integer_constants, invpi) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::inv_pi_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>, cnl::math::inv_pi_v<long double>),
                 .02L);
         EXPECT_LT(get_error(cnl::math::inv_pi_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>, cnl::math::inv_pi_v<long double>),
@@ -95,7 +95,7 @@ namespace {
                 .0000000000000000003L);
     }
 
-    TEST(scaled_integer_constants, inv_sqrtpi)
+    TEST(scaled_integer_constants, inv_sqrtpi)  // NOLINT
     {
         EXPECT_LT(get_error(cnl::math::inv_sqrtpi_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>,
                 cnl::math::inv_sqrtpi_v<long double>), .02L);
@@ -107,7 +107,7 @@ namespace {
                 cnl::math::inv_sqrtpi_v<long double>), .0000000000000000003L);
     }
 
-    TEST(scaled_integer_constants, ln2) {
+    TEST(scaled_integer_constants, ln2) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::ln2_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>, cnl::math::ln2_v<long double>), .01L);
         EXPECT_LT(get_error(cnl::math::ln2_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>, cnl::math::ln2_v<long double>), .015L);
         EXPECT_LT(get_error(cnl::math::ln2_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>, cnl::math::ln2_v<long double>),
@@ -116,7 +116,7 @@ namespace {
                 .0000000000000000002L);
     }
 
-    TEST(scaled_integer_constants, ln10) {
+    TEST(scaled_integer_constants, ln10) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::ln10_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>, cnl::math::ln10_v<long double>),
                 .006L);
         EXPECT_LT(get_error(cnl::math::ln10_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>, cnl::math::ln10_v<long double>),
@@ -127,7 +127,7 @@ namespace {
                 .0000000000000000002L);
     }
 
-    TEST(scaled_integer_constants, sqrt2) {
+    TEST(scaled_integer_constants, sqrt2) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::sqrt2_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>, cnl::math::sqrt2_v<long double>),
                 .006L);
         EXPECT_LT(get_error(cnl::math::sqrt2_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>, cnl::math::sqrt2_v<long double>),
@@ -138,7 +138,7 @@ namespace {
                 .0000000000000000002L);
     }
 
-    TEST(scaled_integer_constants, sqrt3) {
+    TEST(scaled_integer_constants, sqrt3) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::sqrt3_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>, cnl::math::sqrt3_v<long double>),
                 .02L);
         EXPECT_LT(get_error(cnl::math::sqrt3_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>, cnl::math::sqrt3_v<long double>),
@@ -149,7 +149,7 @@ namespace {
                 .0000000000000000003L);
     }
 
-    TEST(scaled_integer_constants, invsqrt3) {
+    TEST(scaled_integer_constants, invsqrt3) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::inv_sqrt3_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>,
                 cnl::math::inv_sqrt3_v<long double>), .03L);
         EXPECT_LT(get_error(cnl::math::inv_sqrt3_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>,
@@ -160,7 +160,7 @@ namespace {
                 cnl::math::inv_sqrt3_v<long double>), .0000000000000000003L);
     }
 
-    TEST(scaled_integer_constants, egamma) {
+    TEST(scaled_integer_constants, egamma) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::egamma_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>, cnl::math::egamma_v<long double>),
                 .03L);
         EXPECT_LT(get_error(cnl::math::egamma_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>, cnl::math::egamma_v<long double>),
@@ -171,7 +171,7 @@ namespace {
                 .0000000000000000003L);
     }
 
-    TEST(scaled_integer_constants, phi) {
+    TEST(scaled_integer_constants, phi) {  // NOLINT
         EXPECT_LT(get_error(cnl::math::phi_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>, cnl::math::phi_v<long double>), .02L);
         EXPECT_LT(get_error(cnl::math::phi_v<cnl::scaled_integer<cnl::int16, cnl::power<-4>>>, cnl::math::phi_v<long double>), .04L);
         EXPECT_LT(get_error(cnl::math::phi_v<cnl::scaled_integer<cnl::int32, cnl::power<-16>>>, cnl::math::phi_v<long double>),

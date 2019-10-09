@@ -5,10 +5,10 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #if !defined(CNL_IMPL_SCALED_INTEGER_DECLARATION_H)
-#define CNL_IMPL_SCALED_INTEGER_DECLARATION_H 1
+#define CNL_IMPL_SCALED_INTEGER_DECLARATION_H
 
-#include "../power.h"
 #include "../../limits.h"
+#include "../power.h"
 
 /// compositional numeric library
 namespace cnl {
