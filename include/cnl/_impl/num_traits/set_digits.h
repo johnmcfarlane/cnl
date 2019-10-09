@@ -39,18 +39,18 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::enable_for_range
 
-        template<typename T, int digits>
+        template<typename T, int Digits>
         struct narrower_than
                 : std::integral_constant<
                         bool,
-                        std::is_same<T, void>::value ? true : numeric_limits<T>::digits<digits> {
+                        std::is_same<T, void>::value ? true : numeric_limits<T>::digits<Digits> {
         };
 
-        template<typename T, int digits>
+        template<typename T, int Digits>
         struct no_narrower_than
                 : std::integral_constant<
                         bool,
-                        std::is_same<T, void>::value ? true : numeric_limits<T>::digits>=digits> {
+                        std::is_same<T, void>::value ? true : numeric_limits<T>::digits>=Digits> {
         };
 
         template<int MinNumDigits, class Smaller, class T>
@@ -147,7 +147,7 @@ namespace cnl {
     ///
     /// \tparam T the source type
     /// \tparam Digits the desired number of digits
-    template<class T, int Digits, class _Enable = void>
+    template<class T, int Digits, class Enable = void>
     struct set_digits;
 
     template<class T, int Digits>

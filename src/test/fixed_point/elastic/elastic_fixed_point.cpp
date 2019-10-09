@@ -237,9 +237,9 @@ static_assert(bit_count(89)==4, "bit_count test failed");
 static_assert(bit_count(144)==2, "bit_count test failed");
 
 // http://stackoverflow.com/a/5775825/671509
-template<size_t size>
+template<size_t Size>
 struct print_num_as_error {
-    explicit operator char() { return size+256; }
+    explicit operator char() { return Size+256; }
 }; //always overflow
 
 namespace test_elastic_constant_literal {

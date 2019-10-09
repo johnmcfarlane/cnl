@@ -27,16 +27,16 @@ namespace acme {
     // example type, smart_integer, shares characteristics with cnl::elastic_integer
     template<class Rep>
     struct smart_integer {
-        explicit constexpr smart_integer(Rep const& rhs) : value(rhs) {}
+        explicit constexpr smart_integer(Rep const& rhs) : _value(rhs) {}
         friend constexpr Rep to_rep<>(smart_integer<Rep> const& number);
     private:
-        Rep value;
+        Rep _value;
     };
 
     template<typename Rep>
     CNL_NODISCARD constexpr Rep to_rep(smart_integer<Rep> const& number)
     {
-        return number.value;
+        return number._value;
     }
 
     template<class LhsRep, class RhsRep>

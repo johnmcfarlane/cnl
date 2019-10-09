@@ -67,7 +67,7 @@ namespace cnl {
         }
 
         // cnl::_impl::to_chars_non_zero
-        template<typename Number, bool is_signed = is_signed<Number>::value>
+        template<typename Number, bool IsSigned = is_signed<Number>::value>
         struct to_chars_non_zero;
 
         template<typename Number>

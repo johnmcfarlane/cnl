@@ -76,7 +76,7 @@ namespace cnl {
         {
         }
 
-        template<class Rhs, _impl::enable_if_t<!_integer_impl::is_overflow_integer<Rhs>::value, int> dummy = 0>
+        template<class Rhs, _impl::enable_if_t<!_integer_impl::is_overflow_integer<Rhs>::value, int> = 0>
         constexpr overflow_integer(Rhs const& rhs)  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
                 :_base(convert<overflow_tag, rep>(rhs))
         {

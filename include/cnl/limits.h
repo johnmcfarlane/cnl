@@ -31,14 +31,14 @@ namespace cnl {
         public:
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
             constexpr _s(uint64 upper, uint64 lower)
-                    :value(lower+(int128{upper} << 64)) { }
+                    :_value(lower+(int128{upper} << 64)) { }
 
             CNL_NODISCARD explicit constexpr operator int128() const
             {
-                return value;
+                return _value;
             }
         private:
-            int128 value;
+            int128 _value;
         };
 
         CNL_NODISCARD static constexpr int128 min()
@@ -66,14 +66,14 @@ namespace cnl {
         public:
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
             constexpr _s(uint64 upper, uint64 lower)
-                    :value(lower+(uint128{upper} << 64)) { }
+                    :_value(lower+(uint128{upper} << 64)) { }
 
             CNL_NODISCARD explicit constexpr operator uint128() const
             {
-                return value;
+                return _value;
             }
         private:
-            uint128 value;
+            uint128 _value;
         };
 
         CNL_NODISCARD static constexpr int128 min()
