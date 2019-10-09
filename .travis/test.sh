@@ -30,7 +30,9 @@ build_and_test () {
     "${PROJECT_SOURCE_DIR}"
 
   cmake --build . -- -j $NUM_CPUS
-  ctest --output-on-failure -j $NUM_CPUS
+  ctest --output-on-failure \
+    -j $NUM_CPUS \
+    -E ClangTidy-_impl-wide_integer-literals\|ClangTidy-static_integer-operators\|ClangTidy-vc
 }
 
 ccache --show-stats
