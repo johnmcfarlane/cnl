@@ -35,7 +35,7 @@ build_and_test () {
   cmake --build . -- -j $NUM_CPUS
   ctest --output-on-failure \
     -j $NUM_CPUS \
-    -E ClangTidy-_impl-wide_integer-literals\|ClangTidy-static_integer-operators
+    -E Tidy-_impl-wide_integer-literals\|Tidy-static_integer-operators
 }
 
 ccache --show-stats
