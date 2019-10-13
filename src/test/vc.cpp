@@ -60,7 +60,7 @@ namespace {
     }
 
     TEST(vc, bitwise_shift_by_unsigned) {  // NOLINT
-        auto a = Vc::simd<int>(123) << 1u;
+        auto a = Vc::simd<int>(123) << 1U;
         EXPECT_TRUE(simd_identical(Vc::simd<int>{246}, a));
     }
 
@@ -99,14 +99,16 @@ namespace {
     }
 
     TEST(fp_vc, add) {  // NOLINT
-        std::int16_t a = 1234, b = 8765;
+        std::int16_t a = 1234;
+        std::int16_t b = 8765;
         auto expected = fp_simd<std::int16_t>(static_cast<std::int16_t>(a*b));
         auto actual = fp_simd<std::int16_t>(a)*fp_simd<std::int16_t>(b);
         EXPECT_TRUE(simd_identical(expected, actual));
     }
 
     TEST(fp_vc, multiply) {  // NOLINT
-        std::int16_t a = 1234, b = 8765;
+        std::int16_t a = 1234;
+        std::int16_t b = 8765;
         auto expected = fp_simd<std::int16_t>(static_cast<std::int16_t>(a*b));
         auto actual = fp_simd<std::int16_t>(a)*fp_simd<std::int16_t>(b);
         EXPECT_TRUE(simd_identical(expected, actual));

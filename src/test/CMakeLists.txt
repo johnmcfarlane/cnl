@@ -244,7 +244,7 @@ function(make_test source out_target compile_flags linker_flags)
     endif(Boost_FOUND)
 
     if (${CNL_CLANG_TIDY})
-        string(REPLACE "/" "-" clang_tidy_target "ClangTidy-${stripped}")
+        string(REPLACE "/" "-" clang_tidy_target "Tidy-${stripped}")
         if (NOT ${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
             add_test("${clang_tidy_target}" "${ClangTidy}" "-p=${CMAKE_BINARY_DIR}" "-extra-arg=-Wno-unknown-warning-option" "${CMAKE_CURRENT_LIST_DIR}/${source}")
         endif (NOT ${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")

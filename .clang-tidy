@@ -23,9 +23,7 @@ Checks: >
   -hicpp-use-noexcept,
   -hicpp-vararg,
   -hicpp-signed-bitwise,
-  -hicpp-special-member-functions,
   -llvm-namespace-comment,
-  -misc-definitions-in-headers,
   -misc-unused-parameters,
   -modernize-avoid-c-arrays,
   -modernize-concat-nested-namespaces,
@@ -35,7 +33,7 @@ Checks: >
   -readability-magic-numbers,
   -readability-named-parameter,
 WarningsAsErrors: '*'
-HeaderFilterRegex: 'cnl'
+HeaderFilterRegex: 'include/cnl'
 AnalyzeTemporaryDtors: false
 FormatStyle:     none
 User:            john
