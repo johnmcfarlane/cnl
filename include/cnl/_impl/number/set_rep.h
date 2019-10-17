@@ -19,21 +19,21 @@ namespace cnl {
     };
 
     // when one _impl::number wraps a dissimilar _impl::number
-    template<typename ArchetypeRep, class ArchetypeTag, typename RepRep, class RepTag>
-    struct set_rep<
-            _impl::number<ArchetypeRep, ArchetypeTag>,
-            _impl::number<RepRep, RepTag>,
-            _impl::enable_if_t<!_impl::can_convert_tag_family<ArchetypeTag, RepTag>::value>>
-        : _impl::type_identity<_impl::number<_impl::number<RepRep, RepTag>, ArchetypeTag>> {
+    template<typename ArchetypeRep, class ArchetypeTag, class Rep>
+    struct set_rep<_impl::number<ArchetypeRep, ArchetypeTag>, Rep, _impl::enable_if_t<_impl::is_number<Rep>::value
+            && !_impl::can_convert_tag_family<ArchetypeTag, _impl::tag_t<Rep>>::value>>
+        : _impl::type_identity<_impl::number<Rep, ArchetypeTag>> {
     };
 
     // when one _impl::number is converted to a similar _impl::number
-    template<typename ArchetypeRep, class ArchetypeTag, typename RepRep, class RepTag>
+    template<typename ArchetypeRep, class ArchetypeTag, class Rep>
     struct set_rep<
             _impl::number<ArchetypeRep, ArchetypeTag>,
-            _impl::number<RepRep, RepTag>,
-            _impl::enable_if_t<_impl::can_convert_tag_family<ArchetypeTag, RepTag>::value>>
-        : _impl::type_identity<_impl::number<RepRep, RepTag>> {
+            Rep,
+            _impl::enable_if_t<
+                    _impl::is_number<Rep>::value
+                    && _impl::can_convert_tag_family<ArchetypeTag, _impl::tag_t<Rep>>::value>>
+        : _impl::type_identity<Rep> {
     };
 }
 
