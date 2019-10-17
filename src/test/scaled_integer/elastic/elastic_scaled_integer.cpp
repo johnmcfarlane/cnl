@@ -51,8 +51,25 @@ namespace {
             elastic_scaled_integer<2, -2>{3}), "cnl::elastic_scaled_integer test failed");
 
     static_assert(identical(
+            elastic_scaled_integer<2, -2>{1.5} << 1,
+            elastic_scaled_integer<2, -2>{3}), "cnl::elastic_scaled_integer test failed");
+
+    static_assert(identical(
             elastic_scaled_integer<2, -2>{1.5} >> 1,
             elastic_scaled_integer<2, -2>{0.75}), "cnl::elastic_scaled_integer test failed");
+}
+
+namespace test_from_value {
+    static_assert(
+            identical(
+                    cnl::scaled_integer<unsigned>{42},
+                    cnl::_impl::from_value<elastic_scaled_integer<20, 10>>(42U)),
+            "");
+    static_assert(
+            identical(
+                    elastic_scaled_integer<20, 0>{cnl::elastic_integer<20>{42}},
+                    cnl::_impl::from_value<elastic_scaled_integer<20, 10>>(cnl::elastic_integer<20>{42})),
+            "");
 }
 
 namespace test_ctor {

@@ -7,7 +7,6 @@
 /// \file
 /// \brief file containing tests of the `cnl::elastic_integer` type
 
-#include <cnl/_impl/common.h>
 #include <cnl/_impl/rounding.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
@@ -24,13 +23,6 @@ namespace {
 
     ////////////////////////////////////////////////////////////////////////////////
     // simple one-off tests
-    namespace test_depth {
-        static_assert(cnl::_impl::depth<int>::value == 0, "");
-        static_assert(assert_same<int&&, decltype(to_rep(elastic_integer<2>{}))>::value, "");
-        static_assert(cnl::_impl::depth<elastic_integer<0>>::value == 1, "");
-        static_assert(cnl::_impl::depth<elastic_integer<1>>::value == 1, "");
-    }
-
     namespace test_digits {
         using cnl::digits;
 
@@ -38,13 +30,17 @@ namespace {
     }
 
     namespace test_operate {
-        using cnl::_impl::is_derived_from_number_base;
         using cnl::_impl::equal_op;
+
+        static_assert(cnl::numeric_limits<cnl::elastic_integer<>>::is_specialized, "");
+        static_assert(cnl::_impl::is_number<cnl::elastic_integer<>>::value, "");
+        static_assert(cnl::_impl::wants_generic_ops<cnl::elastic_integer<>>::value, "");
+        static_assert(cnl::_impl::can_be_number_wrapper<cnl::elastic_integer<>>::value, "");
+        static_assert(!cnl::_impl::is_same_number_wrapper<cnl::elastic_integer<>, int>::value, "");
+        static_assert(cnl::_impl::number_can_wrap<cnl::elastic_integer<>, int>::value, "");
 
         static_assert(cnl::_impl::enable_binary<double, cnl::elastic_integer<31, int>>::value,
                 "failed to meet conditions for applying operator*(double, cnl::elastic_integer)");
-        static_assert(is_derived_from_number_base<elastic_integer<1>>::value,
-                "cnl::_impl::is_derived_from_number_base test failed");
         static_assert(
                 cnl::comparison_operator<cnl::_impl::greater_than_op, elastic_integer<31>, elastic_integer<31>>()(
                         elastic_integer<31>{0x7fffffff}, elastic_integer<31>{cnl::numeric_limits<cnl::int32>::min()}),
@@ -53,18 +49,37 @@ namespace {
                 cnl::comparison_operator<cnl::_impl::greater_than_op, elastic_integer<31>, elastic_integer<31>>()(
                         elastic_integer<31>{0x7fffffff}, elastic_integer<31>{cnl::numeric_limits<cnl::int32>::min()}),
                 "cnl::elastic_integer test failed");
-        static_assert(cnl::_impl::less_than_op()(elastic_integer<31, unsigned>{-1},
-                elastic_integer<31>{1}),
+        static_assert(cnl::comparison_operator<
+                cnl::_impl::less_than_op,
+                elastic_integer<31, signed>, elastic_integer<31, unsigned>>{}(elastic_integer<>{42}, elastic_integer<31, unsigned>{43U}),
+                "cnl::elastic_integer test failed");
+        static_assert(cnl::_impl::less_than_op()(elastic_integer<32, unsigned>{42},
+                elastic_integer<>{43}),
                 "cnl::elastic_integer test failed");
         static_assert(cnl::comparison_operator<cnl::_impl::equal_op, elastic_integer<1>, std::int32_t>()(
                 elastic_integer<1>{0}, INT32_C(0)),
                 "cnl::elastic_integer test failed");
+        static_assert(cnl::_impl::is_same_tag_family<cnl::elastic_tag<1>, cnl::elastic_tag<31>>::value, "");
+        static_assert(
+                assert_same<
+                        cnl::elastic_tag<31>,
+                        cnl::_impl::tag_t<cnl::elastic_integer<>>>::value,
+                "");
         static_assert(identical(
+                elastic_integer<1, int>{0},
+                cnl::binary_operator<
+                        cnl::_impl::multiply_op,
+                        cnl::_impl::native_tag, cnl::_impl::native_tag,
+                        elastic_integer<1>, elastic_integer<1>>{}(
+                        elastic_integer<1>{0}, elastic_integer<1>(0))),
+                "cnl::elastic_integer test failed");
+        static_assert(identical(
+                elastic_integer<31, int>{0},
                 cnl::binary_operator<
                         cnl::_impl::multiply_op,
                         cnl::_impl::native_tag, cnl::_impl::native_tag,
                         elastic_integer<1>, std::int32_t>()(
-                                elastic_integer<1>{0}, INT32_C(0)), elastic_integer<31, int>{0}),
+                                elastic_integer<1>{0}, INT32_C(0))),
                 "cnl::elastic_integer test failed");
 
         static_assert(cnl::comparison_operator<equal_op, elastic_integer<8>, elastic_integer<8>>()(
@@ -549,6 +564,17 @@ namespace {
         static_assert(digits<elastic_integer<3>>::value>=3, "cnl::digits / cnl::set_digits test failed");
         static_assert(identical(set_digits_t<elastic_integer<1>, 3>{6}, elastic_integer<3>{6}), "cnl::digits / cnl::set_digits test failed");
     }
+    namespace test_used_digits {
+        static_assert(cnl::used_digits(elastic_integer<7>{3})==2, "used_digits test failed");
+        static_assert(cnl::used_digits(elastic_integer<12, cnl::uint16>{10})==4, "used_digits test failed");
+    }
+
+    namespace test_leading_bits {
+        using cnl::leading_bits;
+
+        static_assert(leading_bits(elastic_integer<7>{3})==5, "leading_bits test failed");
+        static_assert(leading_bits(elastic_integer<12, cnl::uint16>{10})==8, "leading_bits test failed");
+    }
 
     namespace test_used_digits {
         static_assert(cnl::used_digits(elastic_integer<7>{3})==2, "used_digits test failed");
@@ -562,12 +588,7 @@ namespace {
         static_assert(leading_bits(elastic_integer<12, cnl::uint16>{10})==8, "leading_bits test failed");
     }
 
-    namespace test_power_value {
-        static_assert(identical(cnl::elastic_integer<11>{1024}, cnl::_impl::power_value<cnl::elastic_integer<1>, 10, 2>()),
-        "power_value test failed");
-    }
-
-    namespace test_shift {
+    namespace test_scale {
         static_assert(identical(cnl::elastic_integer<11>{1024}, cnl::_impl::scale<10, 2>(cnl::elastic_integer<1>(1))), "");
         static_assert(identical(cnl::elastic_integer<3>{6}, cnl::_impl::scale<1, 2>(cnl::elastic_integer<2>{3})), "");
     }
@@ -576,23 +597,26 @@ namespace {
         using namespace cnl::literals;
 
         // by int
-        static_assert(identical(
-                elastic_integer<5+34, unsigned>{0b11001110101011101001LL << 34},
-                cnl::shift_operator<
-                        cnl::_impl::shift_left_op,
-                        cnl::_impl::native_tag, cnl::_impl::native_tag,
-                        elastic_integer<39, unsigned>, int>{}(
-                                elastic_integer<5+34, unsigned>{0b11001110101011101001},
-                                34)),
-                        "shift_left test failed");
         static_assert(identical(elastic_integer<9>{14} << 4, elastic_integer<9>{14 << 4}), "shift_left test failed");
 #if defined(__cpp_binary_literals)
+        static_assert(
+                identical(
+                        elastic_integer<5+34, unsigned>{0b11001110101011101001LL << 34},
+                        cnl::shift_operator<
+                                cnl::_impl::shift_left_op,
+                                cnl::_impl::native_tag, cnl::_impl::native_tag,
+                                elastic_integer<39, unsigned>, int>{}(
+                                        elastic_integer<5+34, unsigned>{0b11001110101011101001},
+                                        34)),
+                "shift_left test failed");
         static_assert(identical(
                 elastic_integer<5+34, unsigned>{0b11001110101011101001LL << 34},
                 elastic_integer<5+34, unsigned>{0b11001110101011101001} << 34), "shift_left test failed");
 #endif
 
         // by cnl::constant
+        static_assert(
+                cnl::_impl::enable_binary<elastic_integer<>, cnl::constant<1>>::value, "");
         static_assert(identical(elastic_integer<5>{14} << 4_c, elastic_integer<9>{14 << 4}), "shift_left test failed");
 #if defined(__cpp_binary_literals)
         static_assert(identical(
@@ -626,6 +650,14 @@ namespace {
                 elastic_integer<20+34, unsigned>{0b11001110101011101001LL << 34} >> 34_c),
                 "shift_left test failed");
 #endif
+    }
+
+    namespace test_power_value {
+        static_assert(
+                identical(
+                        cnl::elastic_integer<11>{1024},
+                        cnl::_impl::power_value<cnl::elastic_integer<1>, 10, 2>()),
+                "power_value test failed");
     }
 
     TEST(elastic_integer, to_rep_ref) {  // NOLINT
