@@ -9,11 +9,14 @@
 
 #include "../operators/native_tag.h"
 #include "definition.h"
+#include "from_rep.h"
+#include "rep.h"
+#include "tag.h"
 
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<class Tag=native_tag, typename Rep=int>
+        template<class Tag=tag_t<number<>>, typename Rep=rep_t<number<>>>
         CNL_NODISCARD constexpr auto make_number(Rep const& rep)
         -> number<Rep, Tag> {
             return rep;

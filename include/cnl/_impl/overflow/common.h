@@ -119,6 +119,32 @@ namespace cnl {
                             : Operator{}(lhs, rhs);
         }
     };
+
+    template<class OverflowTag, class Operator, typename Rhs>
+    struct pre_operator<OverflowTag, Operator, Rhs,
+            _impl::enable_if_t<_impl::is_overflow_tag<OverflowTag>::value>> {
+        constexpr auto operator()(Rhs& rhs) const
+        -> Rhs
+        {
+            return compound_assignment_operator<
+                    OverflowTag, typename _impl::pre_to_assign<Operator>::type,
+                    Rhs, int>{}(rhs, 1);
+        }
+    };
+
+    template<class OverflowTag, class Operator, typename Rhs>
+    struct post_operator<OverflowTag, Operator, Rhs,
+            _impl::enable_if_t<_impl::is_overflow_tag<OverflowTag>::value>> {
+        CNL_RELAXED_CONSTEXPR auto operator()(Rhs& rhs) const
+        -> Rhs
+        {
+            auto copy = rhs;
+            compound_assignment_operator<
+                    OverflowTag, typename _impl::post_to_assign<Operator>::type,
+                    Rhs, int>{}(rhs, 1);
+            return copy;
+        }
+    };
 }
 
 #endif  // CNL_IMPL_OVERFLOW_COMMON_H

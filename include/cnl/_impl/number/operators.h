@@ -9,6 +9,7 @@
 
 #include "binary_operator.h"
 #include "comparison_operator.h"
+#include "inc_dec_operator.h"
 #include "shift_operator.h"
 #include "unary_operator.h"
 
