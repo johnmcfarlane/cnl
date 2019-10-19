@@ -66,10 +66,10 @@ namespace cnl {
         }
     };
 
-    template<class Operator, typename LhsRep, typename RhsRep>
-    struct comparison_operator<Operator, _impl::number<LhsRep>, _impl::number<RhsRep>> {
+    template<class Operator, typename LhsRep, typename RhsRep, class Tag>
+    struct comparison_operator<Operator, _impl::number<LhsRep, Tag>, _impl::number<RhsRep, Tag>> {
         CNL_NODISCARD constexpr auto operator()(
-                _impl::number<LhsRep> const& lhs, _impl::number<RhsRep> const& rhs) const
+                _impl::number<LhsRep, Tag> const& lhs, _impl::number<RhsRep, Tag> const& rhs) const
         -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
         {
             return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));

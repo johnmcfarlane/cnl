@@ -10,9 +10,9 @@
 /// \file
 /// \brief file containing definitions related to \ref cnl::static_number
 
-#include "scaled_integer.h"
-
+#include "_impl/number/tag.h"
 #include "_impl/static_integer.h"
+#include "scaled_integer.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -54,7 +54,7 @@ namespace cnl {
     /// \brief constructs a static_number from a given constant value
     template<
             class RoundingTag = rounding_integer<>::rounding,
-            class OverflowTag = overflow_integer<>::overflow_tag,
+            class OverflowTag = _impl::tag_t<overflow_integer<>>,
             class Narrowest = int,
             class Input = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE Value>

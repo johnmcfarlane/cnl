@@ -13,9 +13,9 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<class Rep, int Digits>
-    struct set_digits<_impl::number<Rep>, Digits>
-            : _impl::type_identity<_impl::number<set_digits_t<Rep, Digits>>> {
+    template<typename Rep, class Tag, int Digits>
+    struct set_digits<_impl::number<Rep, Tag>, Digits>
+        : _impl::type_identity<_impl::number<set_digits_t<Rep, Digits>, Tag>> {
     };
 }
 

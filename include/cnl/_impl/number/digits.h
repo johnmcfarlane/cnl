@@ -8,7 +8,7 @@
 #define CNL_IMPL_NUMBER_DIGITS_H
 
 #include "../num_traits/digits.h"
-#include "declaration.h"
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {
