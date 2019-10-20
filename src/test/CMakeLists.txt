@@ -232,9 +232,10 @@ function(make_test source out_target compile_flags linker_flags)
     target_link_libraries("${target}" Cnl TestMain "${linker_flags}")
     target_include_directories("${target}" PRIVATE "${CMAKE_CURRENT_LIST_DIR}")
 
+    # Google Test dependency
     add_gtest_dependency("${target}")
 
-    # Boost
+    # Boost dependency
     if(Boost_FOUND)
         if(Boost_VERSION GREATER 105500)
             # only compile multiprecision.cpp if Boost.Multiprecision is available
@@ -243,6 +244,7 @@ function(make_test source out_target compile_flags linker_flags)
         endif(Boost_VERSION GREATER 105500)
     endif(Boost_FOUND)
 
+    # Clang-Tidy test
     if (${CNL_CLANG_TIDY})
         string(REPLACE "/" "-" clang_tidy_target "Tidy-${stripped}")
         if (NOT ${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
