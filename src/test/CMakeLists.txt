@@ -222,27 +222,35 @@ function(make_test source out_target compile_flags linker_flags)
 
     # turn source file path into target name (e.g. "foo/bar.cpp" -> "test-foo-bar")
     string(REPLACE ".cpp" "" stripped "${source}")
-    string(REPLACE "/" "-" target "Test-${stripped}")
-    set(${out_target} "${target}" PARENT_SCOPE)
+    string(REPLACE "/" "-" target_slug "Test-${stripped}")
+    set(target "${target_slug}")
+    set(lib_target "lib${target_slug}")
+
+    # Create a library with the test file in.
+    # (This is so the test source and main.cpp can be built in parallel.)
+    add_library("${lib_target}" "${source}")
+    target_include_directories("${lib_target}" PRIVATE "${CMAKE_CURRENT_LIST_DIR}")
+    set_target_properties("${lib_target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${compile_flags}")
+    target_link_libraries("${lib_target}" Cnl)
 
     # create a target and make it a test
-    add_executable("${target}" "${source}")
+    add_executable("${target}" blank.cpp)
     add_test("${target}" "${target}")
-    set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${compile_flags}")
-    target_link_libraries("${target}" Cnl TestMain "${linker_flags}")
-    target_include_directories("${target}" PRIVATE "${CMAKE_CURRENT_LIST_DIR}")
+    target_link_libraries("${target}" "${lib_target}" TestMain "${linker_flags}")
 
-    add_gtest_dependency("${target}")
+    # Google Test dependency
+    add_gtest_dependency("${lib_target}")
 
-    # Boost
+    # Boost dependency
     if(Boost_FOUND)
         if(Boost_VERSION GREATER 105500)
             # only compile multiprecision.cpp if Boost.Multiprecision is available
-            target_compile_definitions("${target}" PRIVATE "-DCNL_BOOST_ENABLED")
-            target_include_directories("${target}" SYSTEM PRIVATE "${Boost_INCLUDE_DIRS}")
+            target_compile_definitions("${lib_target}" PRIVATE "-DCNL_BOOST_ENABLED")
+            target_include_directories("${lib_target}" SYSTEM PRIVATE "${Boost_INCLUDE_DIRS}")
         endif(Boost_VERSION GREATER 105500)
     endif(Boost_FOUND)
 
+    # Clang-Tidy test
     if (${CNL_CLANG_TIDY})
         string(REPLACE "/" "-" clang_tidy_target "Tidy-${stripped}")
         if (NOT ${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
@@ -250,7 +258,11 @@ function(make_test source out_target compile_flags linker_flags)
         endif (NOT ${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
     endif (${CNL_CLANG_TIDY})
 
+    # Add to Tests custom target.
     add_dependencies(Tests "${target}")
+
+    # Return name of test target.
+    set(${out_target} "${lib_target}" PARENT_SCOPE)
 endfunction(make_test)
 
 ######################################################################
@@ -302,8 +314,8 @@ endforeach(source)
 # create test of GLM integration
 
 ExternalProject_Get_Property(Glm source_dir)
-target_include_directories(Test-glm SYSTEM PRIVATE "${source_dir}")
-add_dependencies(Test-glm Glm)
+target_include_directories(libTest-glm SYSTEM PRIVATE "${source_dir}")
+add_dependencies(libTest-glm Glm)
 
 ######################################################################
 # create test of Boost.SIMD integration
