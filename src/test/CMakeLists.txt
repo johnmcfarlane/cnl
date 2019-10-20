@@ -223,7 +223,6 @@ function(make_test source out_target compile_flags linker_flags)
     # turn source file path into target name (e.g. "foo/bar.cpp" -> "test-foo-bar")
     string(REPLACE ".cpp" "" stripped "${source}")
     string(REPLACE "/" "-" target "Test-${stripped}")
-    set(${out_target} "${target}" PARENT_SCOPE)
 
     # create a target and make it a test
     add_executable("${target}" "${source}")
@@ -252,7 +251,11 @@ function(make_test source out_target compile_flags linker_flags)
         endif (NOT ${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
     endif (${CNL_CLANG_TIDY})
 
+    # Add to Tests custom target.
     add_dependencies(Tests "${target}")
+
+    # Return name of test target.
+    set(${out_target} "${target}" PARENT_SCOPE)
 endfunction(make_test)
 
 ######################################################################
