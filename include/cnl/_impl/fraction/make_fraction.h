@@ -71,34 +71,34 @@ namespace cnl {
                 CNL_ASSERT(int_t(mid.denominator) >= 0);
 
                 auto f = [mid, d](
-                        int& fars, fraction<int_t>& far,
-                        int& nears, fraction<int_t>& near) {
+                        int& fars, fraction<int_t>& f,
+                        int& nears, fraction<int_t>& n) {
                     nears = 0;
                     if (fars++ < 3) {
-                        far = mid;
+                        f = mid;
                         return false;
                     }
-                    auto const dividend{d*FloatingPoint(far.denominator)-FloatingPoint(far.numerator)};
-                    auto const divisor{FloatingPoint(near.numerator)-d*FloatingPoint(near.denominator)};
+                    auto const dividend{d*FloatingPoint(f.denominator)-FloatingPoint(f.numerator)};
+                    auto const divisor{FloatingPoint(n.numerator)-d*FloatingPoint(n.denominator)};
                     auto const n0{dividend/divisor};
                     CNL_ASSERT(n0 <= FloatingPoint(cnl::numeric_limits<int_t>::max()));
 
-                    auto const n1{((FloatingPoint(far.denominator)+FloatingPoint(near.denominator)*n0)
+                    auto const n1{((FloatingPoint(f.denominator)+FloatingPoint(n.denominator)*n0)
                             > FloatingPoint(cnl::numeric_limits<int_t>::max()))
-                            ? int_t(FloatingPoint(cnl::numeric_limits<int_t>::max()-far.denominator)
-                                    /FloatingPoint(near.denominator))
+                            ? int_t(FloatingPoint(cnl::numeric_limits<int_t>::max()-f.denominator)
+                                    /FloatingPoint(n.denominator))
                             : int_t(n0)};
-                    auto const n2{((FloatingPoint(far.numerator)+FloatingPoint(near.numerator*n1))
+                    auto const n2{((FloatingPoint(f.numerator)+FloatingPoint(n.numerator*n1))
                             > FloatingPoint(cnl::numeric_limits<int_t>::max()))
-                            ? int_t(FloatingPoint(cnl::numeric_limits<int_t>::max()-far.numerator-near.numerator)
-                                    /FloatingPoint(near.numerator))
+                            ? int_t(FloatingPoint(cnl::numeric_limits<int_t>::max()-f.numerator-n.numerator)
+                                    /FloatingPoint(n.numerator))
                             : n1};
                     if (!n2) {
                         return true;
                     }
-                    far.numerator = int_t(far.numerator+n2*near.numerator);
-                    far.denominator = int_t(far.denominator+n2*near.denominator);
-                    return FloatingPoint(far) == d;
+                    f.numerator = int_t(f.numerator+n2*n.numerator);
+                    f.denominator = int_t(f.denominator+n2*n.denominator);
+                    return FloatingPoint(f) == d;
                 };
 
                 auto mid_q{FloatingPoint(mid)};
