@@ -236,7 +236,7 @@ function(make_test source out_target compile_flags linker_flags)
     # create a target and make it a test
     add_executable("${target}" blank.cpp)
     add_test("${target}" "${target}")
-    target_link_libraries("${target}" "${lib_target}" TestMain "${linker_flags}")
+    target_link_libraries("${target}" TestMain "${lib_target}" "${linker_flags}")
 
     # Google Test dependency
     add_gtest_dependency("${lib_target}")
