@@ -10,6 +10,7 @@
 #include "../../numeric.h"
 #include "../num_traits/from_value.h"
 #include "../num_traits/from_value_recursive.h"
+#include "../operators/generic.h"
 #include "../type_traits/common_type.h"
 #include "definition.h"
 
@@ -18,8 +19,13 @@ namespace cnl {
     template<typename Rep, class Tag, typename Value>
     struct from_value<
             _impl::number<Rep, Tag>, Value,
-            _impl::enable_if_t<!_impl::is_number<Value>::value && !_impl::is_constant<Value>::value>>
-            : _impl::from_value_simple<_impl::number<Value, Tag>, Value> {
+            _impl::enable_if_t<!_impl::is_number<Value>::value && !_impl::is_constant<Value>::value>> {
+        using deduction = cnl::deduction<Tag, Value>;
+        using deduced = _impl::number<typename deduction::type, typename deduction::tag>;
+        CNL_NODISCARD constexpr auto operator()(Value const& value) const
+        {
+            return deduced{value};
+        }
     };
 
     template<class ArchetypeRep, class ArchetypeTag, class ValueRep, class ValueTag>

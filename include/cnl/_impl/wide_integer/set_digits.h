@@ -9,7 +9,7 @@
 
 #include "../num_traits/set_digits.h"
 #include "../type_traits/type_identity.h"
-#include "type.h"
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {

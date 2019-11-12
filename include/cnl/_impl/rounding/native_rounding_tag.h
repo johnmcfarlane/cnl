@@ -22,7 +22,8 @@ namespace cnl {
     /// \sa cnl::rounding_integer,
     /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
     /// cnl::nearest_rounding_tag
-    struct native_rounding_tag : _impl::homogeneous_operator_tag_base {
+    struct native_rounding_tag
+            : _impl::homogeneous_deduction_tag_base, _impl::homogeneous_operator_tag_base {
     };
 
     namespace _impl {

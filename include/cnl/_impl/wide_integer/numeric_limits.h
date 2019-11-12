@@ -10,9 +10,9 @@
 #include "../../limits.h"
 #include "../duplex_integer.h"
 #include "../limits/lowest.h"
+#include "../num_traits/rep.h"
+#include "definition.h"
 #include "from_rep.h"
-#include "rep.h"
-#include "type.h"
 
 /// compositional numeric library
 namespace cnl {

@@ -7,11 +7,12 @@
 /// \file
 /// \brief tests for <cnl/wide_integer.h>
 
-#include <cnl/limits.h>
-#include <cnl/wide_integer.h>
+#include <cnl/_impl/wide_integer/definition.h>
 
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/limits.h>
+#include <cnl/wide_integer.h>
 #include <cnl/cstdint.h>
 
 #include <gtest/gtest.h>
@@ -41,5 +42,23 @@ namespace {
         ASSERT_NE(&b, &a) << "cnl::wide_integer pre-increment return address";
         ASSERT_EQ(-7, a) << "cnl::wide_integer pre-increment";
         ASSERT_EQ(-6, b) << "cnl::wide_integer pre-increment";
+    }
+
+    namespace test_add {
+        static_assert(
+                identical(
+                        cnl::wide_integer<31>{2},
+                        cnl::binary_operator<
+                                cnl::_impl::add_op,
+                                cnl::_impl::native_tag, cnl::_impl::native_tag,
+                                cnl::wide_integer<31>, cnl::wide_integer<31>>{}(
+                                cnl::wide_integer<31>{1},
+                                cnl::wide_integer<31>{1})),
+                "");
+        static_assert(
+                identical(
+                        cnl::wide_integer<31>{2},
+                        cnl::wide_integer<31>{1}+cnl::wide_integer<31>{1}),
+                "");
     }
 }

@@ -7,9 +7,10 @@
 /// \file
 /// \brief tests for <cnl/_impl/wide_integer/numeric_limits.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/wide_integer/numeric_limits.h>
-#include <cnl/_impl/wide_integer/operators.h>
+
+#include <cnl/_impl/type_traits/identical.h>
+#include <cnl/wide_integer.h>
 
 using cnl::_impl::identical;
 

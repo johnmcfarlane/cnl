@@ -10,6 +10,8 @@
 
 int main(int argc, char** argv)
 {
+//    void print_it();
+//    print_it();
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }

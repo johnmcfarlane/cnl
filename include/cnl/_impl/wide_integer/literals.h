@@ -9,8 +9,8 @@
 
 #include "../num_traits/rep.h"
 #include "../unreachable.h"
-#include "operators.h"
-#include "type.h"
+#include "generic.h"
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {

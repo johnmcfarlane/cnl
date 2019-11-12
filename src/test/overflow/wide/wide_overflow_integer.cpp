@@ -6,8 +6,11 @@
 
 #include <cnl/overflow_integer.h>
 #include <cnl/wide_integer.h>
+#include <cnl/_impl/ostream.h>
 
 #include <gtest/gtest.h>
+
+#include <cmath>
 
 template<int Digits, class OverflowTag = cnl::native_overflow_tag>
 using wide_overflow_integer = cnl::overflow_integer<cnl::wide_integer<Digits>, OverflowTag>;

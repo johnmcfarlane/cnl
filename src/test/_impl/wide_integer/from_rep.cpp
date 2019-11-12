@@ -7,7 +7,7 @@
 /// \file
 /// \brief tests for <cnl/_impl/wide_integer/from_rep.h>
 
-#include <cnl/_impl/wide_integer/from_rep.h>
+#include <cnl/wide_integer.h>
 
 #include <cnl/_impl/type_traits/assert_same.h>
 

@@ -11,7 +11,7 @@
 #include "../num_traits/digits.h"
 #include "../num_traits/set_rep.h"
 #include "../type_traits/type_identity.h"
-#include "forward_declaration.h"
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {

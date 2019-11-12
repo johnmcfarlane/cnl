@@ -9,18 +9,18 @@
 
 #include "../num_traits/from_rep.h"
 #include "set_rep.h"
-#include "type.h"
+#include "definition.h"
 
 /// compositional numeric library
-namespace cnl {
-    template<int Digits, typename Narrowest, typename Rep>
-    struct from_rep<_impl::wide_integer<Digits, Narrowest>, Rep> {
-        CNL_NODISCARD constexpr auto operator()(Rep const& rep) const
-        -> _impl::set_rep_t<_impl::wide_integer<Digits, Narrowest>, Rep>
-        {
-            return rep;
-        }
-    };
-}
+//namespace cnl {
+//    template<int Digits, typename Narrowest, typename Rep>
+//    struct from_rep<_impl::wide_integer<Digits, Narrowest>, Rep> {
+//        CNL_NODISCARD constexpr auto operator()(Rep const& rep) const
+//        -> _impl::set_rep_t<_impl::wide_integer<Digits, Narrowest>, Rep>
+//        {
+//            return rep;
+//        }
+//    };
+//}
 
 #endif  // CNL_IMPL_WIDE_INTEGER_FROM_REP_H

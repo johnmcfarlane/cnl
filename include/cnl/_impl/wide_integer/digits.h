@@ -8,7 +8,7 @@
 #define CNL_IMPL_WIDE_INTEGER_DIGITS_H
 
 #include "../num_traits/digits.h"
-#include "forward_declaration.h"
+#include "definition.h"
 
 #include <type_traits>
 

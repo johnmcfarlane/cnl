@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_ROUNDING_H)
 #define CNL_IMPL_WIDE_INTEGER_ROUNDING_H
 
-#include "forward_declaration.h"
+#include "definition.h"
 
 #include <type_traits>
 

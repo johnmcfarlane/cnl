@@ -61,10 +61,10 @@ set(test_sources
         _impl/wide_integer/literals.cpp
         _impl/wide_integer/make_wide_integer.cpp
         _impl/wide_integer/numeric_limits.cpp
-        _impl/wide_integer/operators.cpp
         _impl/wide_integer/scale.cpp
         _impl/wide_integer/set_digits.cpp
-        _impl/wide_integer/type.cpp
+        _impl/wide_integer/definition.cpp
+        _impl/wide_tag/generic.cpp
 
         # components in free functions
         elastic/rounding/elastic_integer_rounding.cpp
@@ -238,7 +238,7 @@ function(make_test source out_target compile_flags linker_flags)
     # create a target and make it a test
     add_executable("${target}" blank.cpp)
     add_test("${target}" "${target}")
-    target_link_libraries("${target}" TestMain "${lib_target}" "${linker_flags}")
+    target_link_libraries("${target}" TestMain "-Wl,--whole-archive" "${lib_target}" "${linker_flags}")
 
     # Google Test dependency
     add_gtest_dependency("${lib_target}")
