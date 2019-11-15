@@ -5,6 +5,9 @@ enable_testing()
 # source files containing tests of the correctness of CNL;
 # ideally compiles with every warning that CNL user might choose
 set(test_sources
+        # test cnl/all.h
+        all.cpp
+
         # free functions
         bit.cpp
         cmath.cpp
@@ -180,14 +183,6 @@ function(add_gtest_dependency target)
 endfunction(add_gtest_dependency)
 
 ######################################################################
-# test main - per-test main function initializes gtest
-
-add_library(TestMain main.cpp)
-set_target_properties(TestMain PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS}")
-target_link_libraries(TestMain Cnl)
-add_gtest_dependency(TestMain)
-
-######################################################################
 # Tests - the full suite of tests
 
 add_custom_target(Tests)
@@ -195,7 +190,7 @@ add_custom_target(Tests)
 ######################################################################
 # test plain - the main.cpp project with *no* tests of compiler flags
 
-add_executable(TestPlain main.cpp)
+add_executable(TestPlain all.cpp)
 set_target_properties(TestPlain PROPERTIES COMPILE_FLAGS "${STD_FLAGS}")
 target_link_libraries(TestPlain Cnl)
 add_test(TestPlain TestPlain)
@@ -222,31 +217,24 @@ function(make_test source out_target compile_flags linker_flags)
 
     # turn source file path into target name (e.g. "foo/bar.cpp" -> "test-foo-bar")
     string(REPLACE ".cpp" "" stripped "${source}")
-    string(REPLACE "/" "-" target_slug "Test-${stripped}")
-    set(target "${target_slug}")
-    set(lib_target "lib${target_slug}")
-
-    # Create a library with the test file in.
-    # (This is so the test source and main.cpp can be built in parallel.)
-    add_library("${lib_target}" "${source}")
-    target_include_directories("${lib_target}" PRIVATE "${CMAKE_CURRENT_LIST_DIR}")
-    set_target_properties("${lib_target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${compile_flags}")
-    target_link_libraries("${lib_target}" Cnl)
+    string(REPLACE "/" "-" target "Test-${stripped}")
 
     # create a target and make it a test
-    add_executable("${target}" blank.cpp)
+    add_executable("${target}" "${source}")
+    target_include_directories("${target}" PRIVATE "${CMAKE_CURRENT_LIST_DIR}")
+    set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${compile_flags}")
+    target_link_libraries("${target}" Cnl ${linker_flags})
     add_test("${target}" "${target}")
-    target_link_libraries("${target}" TestMain "${lib_target}" "${linker_flags}")
 
     # Google Test dependency
-    add_gtest_dependency("${lib_target}")
+    add_gtest_dependency("${target}")
 
     # Boost dependency
     if(Boost_FOUND)
         if(Boost_VERSION GREATER 105500)
             # only compile multiprecision.cpp if Boost.Multiprecision is available
-            target_compile_definitions("${lib_target}" PRIVATE "-DCNL_BOOST_ENABLED")
-            target_include_directories("${lib_target}" SYSTEM PRIVATE "${Boost_INCLUDE_DIRS}")
+            target_compile_definitions("${target}" PRIVATE "-DCNL_BOOST_ENABLED")
+            target_include_directories("${target}" SYSTEM PRIVATE "${Boost_INCLUDE_DIRS}")
         endif(Boost_VERSION GREATER 105500)
     endif(Boost_FOUND)
 
@@ -262,7 +250,7 @@ function(make_test source out_target compile_flags linker_flags)
     add_dependencies(Tests "${target}")
 
     # Return name of test target.
-    set(${out_target} "${lib_target}" PARENT_SCOPE)
+    set(${out_target} "${target}" PARENT_SCOPE)
 endfunction(make_test)
 
 ######################################################################
@@ -314,8 +302,8 @@ endforeach(source)
 # create test of GLM integration
 
 ExternalProject_Get_Property(Glm source_dir)
-target_include_directories(libTest-glm SYSTEM PRIVATE "${source_dir}")
-add_dependencies(libTest-glm Glm)
+target_include_directories(Test-glm SYSTEM PRIVATE "${source_dir}")
+add_dependencies(Test-glm Glm)
 
 ######################################################################
 # create test of Boost.SIMD integration
