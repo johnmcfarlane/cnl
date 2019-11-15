@@ -1,8 +1,8 @@
 # Compositional Numeric Library
 
-[![Build Status](https://travis-ci.org/johnmcfarlane/cnl.svg?branch=develop)](https://travis-ci.org/johnmcfarlane/cnl)
-[![Build status](https://ci.appveyor.com/api/projects/status/9s7daasmvku9ttvd/branch/develop?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/cnl/branch/develop)
-[![CircleCI](https://circleci.com/gh/johnmcfarlane/cnl/tree/develop.svg?style=svg)](https://circleci.com/gh/johnmcfarlane/cnl/tree/develop)
+[![Build Status](https://travis-ci.org/johnmcfarlane/cnl.svg?branch=master)](https://travis-ci.org/johnmcfarlane/cnl)
+[![Build status](https://ci.appveyor.com/api/projects/status/9s7daasmvku9ttvd/branch/master?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/cnl/branch/master)
+[![CircleCI](https://circleci.com/gh/johnmcfarlane/cnl/tree/master.svg?style=svg)](https://circleci.com/gh/johnmcfarlane/cnl/tree/master)
 [![Join the chat at https://gitter.im/cppcnl/community](https://badges.gitter.im/cppcnl/community.svg)](https://gitter.im/cppcnl/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 The Compositional Numeric Library (CNL) is a C++ library of fixed-precision numeric classes which enhance integers to
@@ -32,7 +32,7 @@ Optional:
 
 ### Windows
 
-Tested on [AppVeyor](https://ci.appveyor.com/project/johnmcfarlane/cnl/branch/develop)
+Tested on [AppVeyor](https://ci.appveyor.com/project/johnmcfarlane/cnl/branch/master)
 and on *Windows 10 Professional* with *CMake 3.8.0*. Requires:
 
 - MSBuild 15.0 (VS 2017)
