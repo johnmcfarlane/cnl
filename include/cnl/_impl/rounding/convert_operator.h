@@ -12,6 +12,7 @@
 #include "../type_traits/enable_if.h"
 #include "native_rounding_tag.h"
 #include "nearest_rounding_tag.h"
+#include "half_up_rounding_tag.h"
 
 #include <type_traits>
 
@@ -50,6 +51,19 @@ namespace cnl {
                     : static_cast<Destination>(from);
         }
     };
+
+    template<typename Destination, typename Source>
+    struct convert_operator<
+            half_up_rounding_tag, Destination, Source,
+            _impl::enable_if_t<_impl::are_arithmetic_or_integer<Destination, Source>::value>> {
+        CNL_NODISCARD constexpr Destination operator()(Source const& from) const
+        {
+            return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
+                    ? static_cast<Destination>(from+((from >= Source{}) ? .5 : -.5))
+                    : static_cast<Destination>(from);
+        }
+    };
+
 }
 
 #endif  // CNL_IMPL_ROUNDING_TAGGED_CONVERT_OPERATOR_H
