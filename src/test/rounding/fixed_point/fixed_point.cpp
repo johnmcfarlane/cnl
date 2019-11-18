@@ -211,6 +211,17 @@ namespace {
                 6),
                 "cnl::convert<half_up_rounding_tag, fixed_point, fixed_point>");
 
+        static_assert(identical(
+                cnl::convert<cnl::half_up_rounding_tag, cnl::fixed_point<int32_t, -1>>
+                        (cnl::fixed_point<int32_t, -4>{5.25}),
+                cnl::fixed_point<int32_t, -1>{5.5}),
+                "cnl::convert<half_up_rounding_tag, fixed_point, fixed_point>");
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{5.25}),
+                84),
+                "cnl::convert<half_up_rounding_tag, fixed_point, fixed_point>");
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -1>{5.5}),
+                11),
+                "cnl::convert<half_up_rounding_tag, fixed_point, fixed_point>");
 
         // Negative
         static_assert(identical(
@@ -237,6 +248,17 @@ namespace {
                 -5),
                 "cnl::convert<half_up_rounding_tag, fixed_point, fixed_point>");
 
+        static_assert(identical(
+                cnl::convert<cnl::half_up_rounding_tag, cnl::fixed_point<int32_t, -1>>
+                        (cnl::fixed_point<int32_t, -4>{-5.25}),
+                cnl::fixed_point<int32_t, -1>{-5.0}),
+                "cnl::convert<half_up_rounding_tag, fixed_point, fixed_point>");
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{-5.25}),
+                -84),
+                "cnl::convert<half_up_rounding_tag, fixed_point, fixed_point>");
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -1>{-5.0}),
+                -10),
+                "cnl::convert<half_up_rounding_tag, fixed_point, fixed_point>");
     }
 
 }

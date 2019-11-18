@@ -163,7 +163,7 @@ namespace cnl {
         CNL_NODISCARD constexpr _result operator()(_input const& from) const
         {
             // TODO: unsigned specialization
-            return static_cast<_result>(from+half());
+            return _impl::from_rep<_result>(_impl::to_rep(from+half())>>(ResultExponent-InputExponent));
         }
     };
 
