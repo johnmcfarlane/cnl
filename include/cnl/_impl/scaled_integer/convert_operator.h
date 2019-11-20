@@ -11,7 +11,7 @@
 #include "../power_value.h"
 #include "../rounding/native_rounding_tag.h"
 #include "../rounding/nearest_rounding_tag.h"
-#include "../rounding/half_up_rounding_tag.h"
+#include "../rounding/towards_infinity_rounding_tag.h"
 #include "../type_traits/enable_if.h"
 #include "declaration.h"
 #include "from_rep.h"
@@ -130,7 +130,7 @@ namespace cnl {
             typename InputRep, int InputExponent,
             int Radix>
     struct convert_operator<
-            half_up_rounding_tag,
+            towards_infinity_rounding_tag,
             scaled_integer<ResultRep, power<ResultExponent, Radix>>,
             scaled_integer<InputRep, power<InputExponent, Radix>>,
             _impl::enable_if_t<(ResultExponent <= InputExponent)>>
@@ -146,7 +146,7 @@ namespace cnl {
             typename InputRep, int InputExponent,
             int Radix>
     struct convert_operator<
-            half_up_rounding_tag,
+            towards_infinity_rounding_tag,
             scaled_integer<ResultRep, power<ResultExponent, Radix>>,
             scaled_integer<InputRep, power<InputExponent, Radix>>,
             _impl::enable_if_t<!(ResultExponent <= InputExponent)>> {
@@ -172,7 +172,7 @@ namespace cnl {
             typename ResultRep, int ResultExponent, int ResultRadix,
             typename Input>
     struct convert_operator<
-            half_up_rounding_tag,
+            towards_infinity_rounding_tag,
             scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>,
             Input,
             _impl::enable_if_t<std::is_floating_point<Input>::value>> {
@@ -196,12 +196,12 @@ namespace cnl {
             typename ResultRep, class ResultScale,
             typename Input>
     struct convert_operator<
-            half_up_rounding_tag,
+            towards_infinity_rounding_tag,
             scaled_integer<ResultRep, ResultScale>,
             Input,
             _impl::enable_if_t<cnl::numeric_limits<Input>::is_integer>>
             : convert_operator<
-                    half_up_rounding_tag,
+                    towards_infinity_rounding_tag,
                     scaled_integer<ResultRep, ResultScale>,
                     scaled_integer<Input>> {
     };
@@ -210,7 +210,7 @@ namespace cnl {
             typename Result,
             typename InputRep, class InputScale>
     struct convert_operator<
-            half_up_rounding_tag,
+            towards_infinity_rounding_tag,
             Result,
             scaled_integer<InputRep, InputScale>,
             _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer>> {
@@ -219,7 +219,7 @@ namespace cnl {
         CNL_NODISCARD constexpr Result operator()(_input const& from) const
         {
             return _impl::to_rep(
-                    convert_operator<half_up_rounding_tag, scaled_integer<Result>, _input>{}(
+                    convert_operator<towards_infinity_rounding_tag, scaled_integer<Result>, _input>{}(
                             from));
         }
     };
