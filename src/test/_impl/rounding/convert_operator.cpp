@@ -29,7 +29,15 @@ namespace  test_convert_nearest_rounding_native_datatypes
             "cnl::convert<nearest_rounding_tag, int, float>");
 
     static_assert(
+            cnl::_impl::identical(1, cnl::convert<cnl::nearest_rounding_tag, int, float>(0.5F)),
+            "cnl::convert<nearest_rounding_tag, int, float>");
+
+    static_assert(
             cnl::_impl::identical(1, cnl::convert<cnl::nearest_rounding_tag, int, float>(0.725F)),
+            "cnl::convert<nearest_rounding_tag, int, float>");
+
+    static_assert(
+            cnl::_impl::identical(-1, cnl::convert<cnl::nearest_rounding_tag, int, float>(-0.5F)),
             "cnl::convert<nearest_rounding_tag, int, float>");
 
     static_assert(
@@ -81,4 +89,48 @@ namespace test_convert_nearest_rounding_scaled_integer
                     cnl::scaled_integer<int, cnl::power<-4>>>(a);
     static_assert(identical(cnl::scaled_integer<int, cnl::power<-2>>{0.25}, c),
             "cnl::convert<nearest_rounding_tag, scaled_integer, scaled_integer>");
+}
+
+namespace  test_convert_towards_infinity_rounding_native_datatypes
+{
+
+    static_assert(
+            cnl::_impl::identical(0.123F, cnl::convert<cnl::towards_infinity_rounding_tag, float, float>(0.123F)),
+            "cnl::convert<towards_infinity_rounding_tag, float, float>");
+
+    static_assert(
+            cnl::_impl::identical(0.125, cnl::convert<cnl::towards_infinity_rounding_tag, double, float>(0.125F)),
+            "cnl::convert<towards_infinity_rounding_tag, double, float>");
+
+    static_assert(
+            cnl::_impl::identical(0, cnl::convert<cnl::towards_infinity_rounding_tag, int, float>(0.125F)),
+            "cnl::convert<towards_infinity_rounding_tag, int, float>");
+
+    static_assert(
+            cnl::_impl::identical(1, cnl::convert<cnl::towards_infinity_rounding_tag, int, float>(0.5F)),
+            "cnl::convert<towards_infinity_rounding_tag, int, float>");
+
+    static_assert(
+            cnl::_impl::identical(1, cnl::convert<cnl::towards_infinity_rounding_tag, int, float>(0.725F)),
+            "cnl::convert<towards_infinity_rounding_tag, int, float>");
+
+    static_assert(
+            cnl::_impl::identical(0, cnl::convert<cnl::towards_infinity_rounding_tag, int, float>(-0.5F)),
+            "cnl::convert<towards_infinity_rounding_tag, int, float>");
+
+    static_assert(
+            cnl::_impl::identical(-1, cnl::convert<cnl::towards_infinity_rounding_tag, int, float>(-0.725F)),
+            "cnl::convert<towards_infinity_rounding_tag, int, float>");
+
+    static_assert(
+            cnl::_impl::identical(3, cnl::convert<cnl::towards_infinity_rounding_tag, int, int>(3)),
+            "cnl::convert<towards_infinity_rounding_tag, int, int>");
+
+    static_assert(
+            cnl::_impl::identical(3L, cnl::convert<cnl::towards_infinity_rounding_tag, long, int>(3)),
+            "cnl::convert<towards_infinity_rounding_tag, long, int>");
+
+    static_assert(
+            cnl::_impl::identical(3.0, cnl::convert<cnl::towards_infinity_rounding_tag, double, int>(3)),
+            "cnl::convert<towards_infinity_rounding_tag, double, int>");
 }
