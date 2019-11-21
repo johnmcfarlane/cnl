@@ -56,10 +56,24 @@ namespace cnl {
     struct convert_operator<
             towards_infinity_rounding_tag, Destination, Source,
             _impl::enable_if_t<_impl::are_arithmetic_or_integer<Destination, Source>::value>> {
+    private:
+        CNL_NODISCARD static constexpr Source ceil(Source x)
+        {
+            return static_cast<Source>((x - static_cast<Destination>(x)) > 0
+                ? static_cast<Destination>(x+1)
+                : static_cast<Destination>(x));
+        }
+        CNL_NODISCARD static constexpr Source floor(Source x)
+        {
+            return static_cast<Source>(x > 0
+                ? static_cast<Destination>(x)
+                : static_cast<Destination>(x-0.9999999999));
+        }
+    public:
         CNL_NODISCARD constexpr Destination operator()(Source const& from) const
         {
             return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
-                    ? static_cast<Destination>(from+((from >= Source{}) ? .5 : -.5))
+                    ? static_cast<Destination>(ceil(floor(2*from)/2))
                     : static_cast<Destination>(from);
         }
     };
