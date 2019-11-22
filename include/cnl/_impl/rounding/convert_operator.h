@@ -15,6 +15,7 @@
 #include "towards_infinity_rounding_tag.h"
 
 #include <type_traits>
+#include <cmath>
 
 /// compositional numeric library
 namespace cnl {
@@ -63,11 +64,17 @@ namespace cnl {
                 ? static_cast<Destination>(x+1)
                 : static_cast<Destination>(x));
         }
+        CNL_NODISCARD static constexpr Destination floor_residual(Source x, Source x_whole)
+        {
+            return static_cast<Destination>((x < Source(0)) && (x < x_whole));
+        }
+        CNL_NODISCARD static constexpr Source floor_int (Source x, Source x_whole)
+        {
+            return (x_whole - static_cast<Source>(floor_residual(x, x_whole)));
+        }
         CNL_NODISCARD static constexpr Source floor(Source x)
         {
-            return static_cast<Source>(x > 0
-                ? static_cast<Destination>(x)
-                : static_cast<Destination>(x-0.9999999999));
+            return floor_int(x, static_cast<Source>(static_cast<Destination>(x)));
         }
     public:
         CNL_NODISCARD constexpr Destination operator()(Source const& from) const
