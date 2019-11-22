@@ -17,7 +17,6 @@
 #include "rounding/convert_operator.h"
 #include "rounding/native_rounding_tag.h"
 #include "rounding/nearest_rounding_tag.h"
-#include "rounding/towards_infinity_rounding_tag.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -44,22 +43,6 @@ namespace cnl {
             return (((lhs < 0) ^ (rhs < 0))
                     ? lhs-(rhs/2)
                     : lhs+(rhs/2))/rhs;
-        }
-    };
-
-    template<class Operator, typename Lhs, typename Rhs>
-    struct binary_operator<towards_infinity_rounding_tag, Operator, Lhs, Rhs> : Operator {
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::binary_operator<towards_infinity_rounding_tag, divide_op>
-
-    template<typename Lhs, typename Rhs>
-    struct binary_operator<towards_infinity_rounding_tag, _impl::divide_op, Lhs, Rhs> {
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(lhs/rhs)
-        {
-            return ((lhs+(rhs/2)))/rhs;
         }
     };
 
