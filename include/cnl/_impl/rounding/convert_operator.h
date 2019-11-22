@@ -15,7 +15,6 @@
 #include "towards_infinity_rounding_tag.h"
 
 #include <type_traits>
-#include <cmath>
 
 /// compositional numeric library
 namespace cnl {
