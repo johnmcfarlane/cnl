@@ -59,7 +59,7 @@ namespace cnl {
     private:
         CNL_NODISCARD static constexpr Source ceil(Source x)
         {
-            return static_cast<Source>((x - static_cast<Destination>(x)) > 0
+            return static_cast<Source>((x - static_cast<Source>(static_cast<Destination>(x))) > 0
                 ? static_cast<Destination>(x+1)
                 : static_cast<Destination>(x));
         }
