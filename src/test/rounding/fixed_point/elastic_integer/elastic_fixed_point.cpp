@@ -31,11 +31,11 @@ namespace {
                 "cnl::convert<cnl::nearest_rounding_tag, cnl::elastic_fixed_point, cnl::elastic_fixed_point>");
     }
 
-    namespace elastic_fixed_point_towards_infinity_rounding {
+    namespace elastic_fixed_point_tie_to_pos_inf_rounding {
 
         // Positive
         static_assert(identical(
-                cnl::convert<cnl::towards_infinity_rounding_tag, cnl::elastic_fixed_point<16, 0>>
+                cnl::convert<cnl::tie_to_pos_inf_rounding_tag, cnl::elastic_fixed_point<16, 0>>
                         (cnl::elastic_fixed_point<16, -4>{5.25}),
                 cnl::elastic_fixed_point<16, 0>{5.0}),
                 "");
@@ -47,7 +47,7 @@ namespace {
                 "");
 
         static_assert(identical(
-                cnl::convert<cnl::towards_infinity_rounding_tag, cnl::elastic_fixed_point<16, 0>>
+                cnl::convert<cnl::tie_to_pos_inf_rounding_tag, cnl::elastic_fixed_point<16, 0>>
                         (cnl::elastic_fixed_point<16, -4>{5.5}),
                 cnl::elastic_fixed_point<16, 0>{6.0}),
                 "");
@@ -59,7 +59,7 @@ namespace {
                 "");
 
         static_assert(identical(
-                cnl::convert<cnl::towards_infinity_rounding_tag, cnl::elastic_fixed_point<16, -1>>
+                cnl::convert<cnl::tie_to_pos_inf_rounding_tag, cnl::elastic_fixed_point<16, -1>>
                         (cnl::elastic_fixed_point<16, -4>{5.25}),
                 cnl::elastic_fixed_point<16, -1>{5.5}),
                 "");
@@ -72,7 +72,7 @@ namespace {
 
         // Negative
         static_assert(identical(
-                cnl::convert<cnl::towards_infinity_rounding_tag, cnl::elastic_fixed_point<16, 0>>
+                cnl::convert<cnl::tie_to_pos_inf_rounding_tag, cnl::elastic_fixed_point<16, 0>>
                         (cnl::elastic_fixed_point<16, -4>{-5.25}),
                 cnl::elastic_fixed_point<16, 0>{-5.0}),
                 "");
@@ -84,7 +84,7 @@ namespace {
                 "");
 
         static_assert(identical(
-                cnl::convert<cnl::towards_infinity_rounding_tag, cnl::elastic_fixed_point<16, 0>>
+                cnl::convert<cnl::tie_to_pos_inf_rounding_tag, cnl::elastic_fixed_point<16, 0>>
                         (cnl::elastic_fixed_point<16, -4>{-5.5}),
                 cnl::elastic_fixed_point<16, 0>{-5.0}),
                 "");
@@ -96,7 +96,7 @@ namespace {
                 "");
 
         static_assert(identical(
-                cnl::convert<cnl::towards_infinity_rounding_tag, cnl::elastic_fixed_point<16, -1>>
+                cnl::convert<cnl::tie_to_pos_inf_rounding_tag, cnl::elastic_fixed_point<16, -1>>
                         (cnl::elastic_fixed_point<16, -4>{-5.25}),
                 cnl::elastic_fixed_point<16, -1>{-5.0}),
                 "");

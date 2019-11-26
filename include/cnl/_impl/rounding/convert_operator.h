@@ -12,7 +12,7 @@
 #include "../type_traits/enable_if.h"
 #include "native_rounding_tag.h"
 #include "nearest_rounding_tag.h"
-#include "towards_infinity_rounding_tag.h"
+#include "tie_to_pos_inf_rounding_tag.h"
 
 #include <type_traits>
 
@@ -54,7 +54,7 @@ namespace cnl {
 
     template<typename Destination, typename Source>
     struct convert_operator<
-            towards_infinity_rounding_tag, Destination, Source,
+            tie_to_pos_inf_rounding_tag, Destination, Source,
             _impl::enable_if_t<_impl::are_arithmetic_or_integer<Destination, Source>::value>> {
     private:
         CNL_NODISCARD static constexpr Source ceil(Source x)
