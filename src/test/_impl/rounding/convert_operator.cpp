@@ -111,6 +111,10 @@ namespace  test_convert_towards_infinity_rounding_native_datatypes
             "cnl::convert<towards_infinity_rounding_tag, int, float>");
 
     static_assert(
+            cnl::_impl::identical(0, cnl::convert<cnl::towards_infinity_rounding_tag, int, float>(-0.125F)),
+            "cnl::convert<towards_infinity_rounding_tag, int, float>");
+
+    static_assert(
             cnl::_impl::identical(1, cnl::convert<cnl::towards_infinity_rounding_tag, int, float>(0.5F)),
             "cnl::convert<towards_infinity_rounding_tag, int, float>");
 
