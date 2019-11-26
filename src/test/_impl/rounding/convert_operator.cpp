@@ -29,6 +29,10 @@ namespace  test_convert_nearest_rounding_native_datatypes
             "cnl::convert<nearest_rounding_tag, int, float>");
 
     static_assert(
+            cnl::_impl::identical(0, cnl::convert<cnl::nearest_rounding_tag, int, float>(-0.125F)),
+            "cnl::convert<nearest_rounding_tag, int, float>");
+
+    static_assert(
             cnl::_impl::identical(1, cnl::convert<cnl::nearest_rounding_tag, int, float>(0.5F)),
             "cnl::convert<nearest_rounding_tag, int, float>");
 
