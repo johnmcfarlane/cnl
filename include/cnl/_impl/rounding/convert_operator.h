@@ -12,6 +12,7 @@
 #include "../type_traits/enable_if.h"
 #include "native_rounding_tag.h"
 #include "nearest_rounding_tag.h"
+#include "tie_to_pos_inf_rounding_tag.h"
 
 #include <type_traits>
 
@@ -50,6 +51,39 @@ namespace cnl {
                     : static_cast<Destination>(from);
         }
     };
+
+    template<typename Destination, typename Source>
+    struct convert_operator<
+            tie_to_pos_inf_rounding_tag, Destination, Source,
+            _impl::enable_if_t<_impl::are_arithmetic_or_integer<Destination, Source>::value>> {
+    private:
+        CNL_NODISCARD static constexpr Source ceil(Source x)
+        {
+            return static_cast<Source>((x - static_cast<Source>(static_cast<Destination>(x))) > 0
+                ? static_cast<Destination>(x+1)
+                : static_cast<Destination>(x));
+        }
+        CNL_NODISCARD static constexpr Destination floor_residual(Source x, Source x_whole)
+        {
+            return static_cast<Destination>((x < Source(0)) && (x < x_whole));
+        }
+        CNL_NODISCARD static constexpr Source floor_int (Source x, Source x_whole)
+        {
+            return (x_whole - static_cast<Source>(floor_residual(x, x_whole)));
+        }
+        CNL_NODISCARD static constexpr Source floor(Source x)
+        {
+            return floor_int(x, static_cast<Source>(static_cast<Destination>(x)));
+        }
+    public:
+        CNL_NODISCARD constexpr Destination operator()(Source const& from) const
+        {
+            return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
+                    ? static_cast<Destination>(ceil(floor(2*from)/2))
+                    : static_cast<Destination>(from);
+        }
+    };
+
 }
 
 #endif  // CNL_IMPL_ROUNDING_TAGGED_CONVERT_OPERATOR_H
