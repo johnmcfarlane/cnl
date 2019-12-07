@@ -2,11 +2,13 @@
 
 set -ex
 
-STD=$1
-GENERATOR=$2
-NUM_CPUS=$3
-PROJECT_SOURCE_DIR=$4
-CLANG_TIDY=$5
+SCRIPT_DIR=$(dirname "$0")
+
+STD=${1:-17}
+GENERATOR=${2:-"Unix Makefiles"}
+NUM_CPUS=${3:-$(nproc)}
+PROJECT_SOURCE_DIR=${4:-"${SCRIPT_DIR}/.."}
+CLANG_TIDY=${5:-1}
 
 cloc "${PROJECT_SOURCE_DIR}"/include
 cloc "${PROJECT_SOURCE_DIR}"/src
