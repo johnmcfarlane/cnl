@@ -44,13 +44,12 @@ build_script:
   - cmd: mkdir build
   - cmd: cd build
   - cmd: conan profile update settings.arch=%arch% default
-  - cmd: conan install --settings build_type=%configuration% --build=outdated ..
   - cmd: set BOOST_ROOT=C:\Libraries\boost_1_66_0
   - cmd: cmake -DCMAKE_BUILD_TYPE=%configuration% -DCNL_DEV=ON -DCNL_EXCEPTIONS=%exceptions% -DCNL_STD=%std% -G "%cmake_generator%" ..
   - cmd: cmake --build . -- /property:Configuration=%configuration% /property:Platform=%msbuild_property% /maxcpucount
 
 test_script:
   - cmd: ctest --output-on-failure -j 32
-  - cmd: src\benchmark\%configuration%\Benchmark.exe
+  - cmd: bin\Benchmark.exe
 
 shallow_clone: true

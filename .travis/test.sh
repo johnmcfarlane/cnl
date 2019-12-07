@@ -19,7 +19,6 @@ cmake --version
 conan --version
 
 conan remote add --force johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
-conan install --build=outdated "${PROJECT_SOURCE_DIR}"
 
 build_and_test () {
   cmake \
@@ -45,6 +44,6 @@ build_and_test Debug OFF OFF
 build_and_test Release ON ON
 ccache --show-stats
 
-src/benchmark/Benchmark --benchmark_format=csv>result.csv
+bin/Benchmark --benchmark_format=csv>result.csv
 "${PROJECT_SOURCE_DIR}"/src/benchmark/report.py result.csv
-ls -l src/test src/benchmark/Benchmark
+ls -l bin

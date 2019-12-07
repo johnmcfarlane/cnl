@@ -67,9 +67,7 @@ However, it comes with a number of tests and benchmarks.
    ```sh
    mkdir build
    cd build
-   conan install --build=outdated ..
-   conan profile update settings.compiler.libcxx=libstdc++11 default
-   cmake -DCNL_DEV=ON ..
+   cmake -DCMAKE_BUILD_TYPE=Debug -DCNL_DEV=ON ..
    ```
 
 1. Build tests:

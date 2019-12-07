@@ -193,7 +193,7 @@ add_custom_target(Tests)
 add_executable(TestPlain all.cpp)
 set_target_properties(TestPlain PROPERTIES COMPILE_FLAGS "${STD_FLAGS}")
 target_link_libraries(TestPlain Cnl)
-add_test(TestPlain TestPlain)
+add_test(TestPlain "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/TestPlain")
 add_gtest_dependency(TestPlain)
 add_dependencies(Tests TestPlain)
 
@@ -224,7 +224,7 @@ function(make_test source out_target compile_flags linker_flags)
     target_include_directories("${target}" PRIVATE "${CMAKE_CURRENT_LIST_DIR}")
     set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${compile_flags}")
     target_link_libraries("${target}" Cnl ${linker_flags})
-    add_test("${target}" "${target}")
+    add_test("${target}" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${target}")
 
     # Google Test dependency
     add_gtest_dependency("${target}")
@@ -242,7 +242,12 @@ function(make_test source out_target compile_flags linker_flags)
     if (${CNL_CLANG_TIDY})
         string(REPLACE "/" "-" clang_tidy_target "Tidy-${stripped}")
         if (NOT ${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
-            add_test("${clang_tidy_target}" "${ClangTidy}" "-p=${CMAKE_BINARY_DIR}" "-extra-arg=-Wno-unknown-warning-option" "${CMAKE_CURRENT_LIST_DIR}/${source}")
+            add_test(
+                    "${clang_tidy_target}"
+                    "${ClangTidy}"
+                    "-p=${CMAKE_BINARY_DIR}"
+                    "-extra-arg=-Wno-unknown-warning-option"
+                    "${CMAKE_CURRENT_LIST_DIR}/${source}")
         endif (NOT ${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
     endif (${CNL_CLANG_TIDY})
 

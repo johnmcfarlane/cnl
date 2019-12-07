@@ -20,7 +20,6 @@ conan profile update settings.os=Linux default
 mkdir /tmp/cnl
 cd /tmp/cnl
 
-conan install --build=outdated /root/project
 cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_CXX_FLAGS="-march=armv7-a" \
