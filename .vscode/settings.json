@@ -1,0 +1,7 @@
+{
+    "cmake.configureArgs": [
+        "-DCNL_DEV=ON",
+        "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+    ]
+}
