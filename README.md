@@ -19,7 +19,7 @@ Tested on x86-86 using  [Travis](https://travis-ci.org/johnmcfarlane/cnl) and
 
 Requires:
 
-- GCC 5.1 / Clang 3.8
+- GCC 5.1 / Clang 4.0
 
 Optional:
 
