@@ -12,6 +12,7 @@
 #include "../type_traits/add_signedness.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
+#include "../type_traits/remove_cvref.h"
 #include "../used_digits.h"
 #include "digits.h"
 #include "set_digits.h"
@@ -52,9 +53,9 @@ namespace cnl {
     namespace _impl {
         template<typename Number, typename Value>
         CNL_NODISCARD constexpr auto from_value(Value const& value)
-        -> decltype(cnl::from_value<Number, Value>{}(value))
+        -> decltype(cnl::from_value<Number, remove_cvref_t<Value>>{}(value))
         {
-            return cnl::from_value<Number, Value>{}(value);
+            return cnl::from_value<Number, remove_cvref_t<Value>>{}(value);
         }
     }
 
