@@ -7,33 +7,34 @@
 /// \file
 /// \brief tests for <cnl/_impl/wide_integer/numeric_limits.h>
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/wide_integer/numeric_limits.h>
-#include <cnl/_impl/wide_integer/operators.h>
+
+#include <cnl/_impl/type_traits/identical.h>
+#include <cnl/wide_integer.h>
 
 using cnl::_impl::identical;
 
 namespace {
     static_assert(
-            cnl::numeric_limits<cnl::_impl::wide_integer<>>::is_specialized,
-            "cnl::numeric_limits<cnl::_impl::wide_integer>::is_specialized");
+            cnl::numeric_limits<cnl::wide_integer<>>::is_specialized,
+            "cnl::numeric_limits<cnl::wide_integer>::is_specialized");
     static_assert(
             identical(
-                    cnl::_impl::wide_integer<8, unsigned>{255},
-                    cnl::numeric_limits<cnl::_impl::wide_integer<8, unsigned>>::max()),
-            "cnl::numeric_limits<cnl::_impl::wide_integer>::max");
+                    cnl::wide_integer<8, unsigned>{255},
+                    cnl::numeric_limits<cnl::wide_integer<8, unsigned>>::max()),
+            "cnl::numeric_limits<cnl::wide_integer>::max");
     static_assert(
             identical(
-                    cnl::_impl::wide_integer<10>{1023},
-                    cnl::numeric_limits<cnl::_impl::wide_integer<10>>::max()),
+                    cnl::wide_integer<10>{1023},
+                    cnl::numeric_limits<cnl::wide_integer<10>>::max()),
             "");
     static_assert(
             identical(
-                    cnl::_impl::wide_integer<6>{-64},
-                    cnl::numeric_limits<cnl::_impl::wide_integer<6>>::lowest()),
+                    cnl::wide_integer<6>{-64},
+                    cnl::numeric_limits<cnl::wide_integer<6>>::lowest()),
             "");
     static_assert(
-            cnl::numeric_limits<cnl::_impl::wide_integer<100>>::lowest()
-                    <-cnl::numeric_limits<cnl::_impl::wide_integer<100>>::max(),
+            cnl::numeric_limits<cnl::wide_integer<100>>::lowest()
+                    <-cnl::numeric_limits<cnl::wide_integer<100>>::max(),
             "");
 }

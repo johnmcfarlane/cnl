@@ -8,15 +8,16 @@
 #define CNL_IMPL_WIDE_INTEGER_FROM_REP_H
 
 #include "../num_traits/from_rep.h"
+#include "../wide_tag/declaration.h"
+#include "definition.h"
 #include "set_rep.h"
-#include "type.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<int Digits, typename Narrowest, typename Rep>
-    struct from_rep<_impl::wide_integer<Digits, Narrowest>, Rep> {
+    template<typename ArchetypeRep, int Digits, typename Narrowest, typename Rep>
+    struct from_rep<_impl::number<ArchetypeRep, wide_tag<Digits, Narrowest>>, Rep> {
         CNL_NODISCARD constexpr auto operator()(Rep const& rep) const
-        -> _impl::set_rep_t<_impl::wide_integer<Digits, Narrowest>, Rep>
+        -> _impl::set_rep_t<_impl::number<ArchetypeRep, wide_tag<Digits, Narrowest>>, Rep>
         {
             return rep;
         }

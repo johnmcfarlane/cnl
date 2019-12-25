@@ -13,6 +13,7 @@
 #include "duplex_integer/digits.h"
 #include "duplex_integer/divide.h"
 #include "duplex_integer/forward_declaration.h"
+#include "duplex_integer/from_value.h"
 #include "duplex_integer/instantiate_duplex_integer.h"
 #include "duplex_integer/is_duplex_integer.h"
 #include "duplex_integer/is_signed.h"

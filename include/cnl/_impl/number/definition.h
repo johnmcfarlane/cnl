@@ -11,10 +11,10 @@
 
 #include "../num_traits/from_value.h"
 #include "../operators/generic.h"
-#include "../operators/native_tag.h"
 #include "../operators/tagged.h"
 #include "../type_traits/enable_if.h"
 #include "can_convert_tag_family.h"
+#include "declaration.h"
 #include "is_number.h"
 #include "tag.h"
 #include "to_rep.h"
@@ -23,7 +23,7 @@
 namespace cnl {
     namespace _impl {
         // a numeric type parameterized on storage and behavior
-        template<typename Rep=int, class Tag=native_tag>
+        template<typename Rep, class Tag>
         class number {
         public:
             number() = default;

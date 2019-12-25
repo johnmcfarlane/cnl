@@ -9,8 +9,8 @@
 
 #include "../num_traits/rep.h"
 #include "../unreachable.h"
-#include "operators.h"
-#include "type.h"
+#include "definition.h"
+#include "generic.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -19,7 +19,8 @@ namespace cnl {
         // known-base integer literal parser
 
         template<int Base, typename ParseDigit, typename Integer>
-        CNL_NODISCARD constexpr auto wide_integer_parse(char const* s, ParseDigit parse_digit, Integer const& value) -> Integer
+        CNL_NODISCARD constexpr auto
+        wide_integer_parse(char const* s, ParseDigit parse_digit, Integer const& value) -> Integer
         {
             return *s
                     ? wide_integer_parse<Base>(
@@ -32,7 +33,7 @@ namespace cnl {
         // decimal
         CNL_NODISCARD constexpr int parse_dec_char(char c)
         {
-            return (c>='0' && c<='9') ? c-'0' : unreachable<int>("invalid decimal digits");
+            return (c >= '0' && c <= '9') ? c-'0' : unreachable<int>("invalid decimal digits");
         }
 
         template<int NumChars>
@@ -41,7 +42,7 @@ namespace cnl {
         -> wide_integer<(NumChars-1)*3322/1000+1>
         {
             using result = wide_integer<(NumChars-1)*3322/1000+1>;
-            return result(wide_integer_parse<10>(s, parse_dec_char, rep_t<result>{}));
+            return result(wide_integer_parse<10>(s, parse_dec_char, rep_t < result > {}));
         }
 
         template<char ... Chars>
@@ -56,7 +57,7 @@ namespace cnl {
         // octal
         CNL_NODISCARD constexpr int parse_oct_char(char c)
         {
-            return (c>='0' && c<='7') ? c-'0' : unreachable<int>("invalid octal digits");
+            return (c >= '0' && c <= '7') ? c-'0' : unreachable<int>("invalid octal digits");
         }
 
         template<int NumChars>
@@ -65,7 +66,7 @@ namespace cnl {
         -> wide_integer<(NumChars-1)*3>
         {
             using result = wide_integer<(NumChars-1)*3>;
-            return result(wide_integer_parse<8>(s, parse_oct_char, rep_t<result>{}));
+            return result(wide_integer_parse<8>(s, parse_oct_char, rep_t < result > {}));
         }
 
         template<char ... Chars>
@@ -90,7 +91,7 @@ namespace cnl {
         -> wide_integer<NumChars-1>
         {
             using result = wide_integer<NumChars-1>;
-            return result(wide_integer_parse<2>(s, parse_bin_char, rep_t<result>{}));
+            return result(wide_integer_parse<2>(s, parse_bin_char, rep_t < result > {}));
         }
 
         template<char ... Chars>
@@ -110,12 +111,13 @@ namespace cnl {
                 return binary_wide_integer_parse<sizeof...(Chars)+1>({Chars..., '\0'});
             }
         };
+
 #endif
 
         // hexadecimal
         CNL_NODISCARD constexpr int parse_hex_char(char c)
         {
-            return (c>='0' && c<='9') ? c-'0' : (c>='a' && c<='z') ? c+10-'a' : (c>='A' && c<='Z') ? c
+            return (c >= '0' && c <= '9') ? c-'0' : (c >= 'a' && c <= 'z') ? c+10-'a' : (c >= 'A' && c <= 'Z') ? c
                     +10-'A' : unreachable<int>("invalid hexadecimal digits");
         }
 
@@ -125,7 +127,7 @@ namespace cnl {
         -> wide_integer<(NumChars-1)*4>
         {
             using result = wide_integer<(NumChars-1)*4>;
-            return result(wide_integer_parse<16>(s, parse_hex_char, rep_t<result>{}));
+            return result(wide_integer_parse<16>(s, parse_hex_char, rep_t < result > {}));
         }
 
         template<char ... Chars>
@@ -145,7 +147,9 @@ namespace cnl {
                 return hexadecimal_wide_integer_parse<sizeof...(Chars)+1>({Chars..., '\0'});
             }
         };
+    }
 
+    namespace literals {
         // cnl::_impl::operator "" _wide()
         template<char ... Chars>
         CNL_NODISCARD constexpr auto operator "" _wide()

@@ -236,26 +236,26 @@ static_assert(cnl::_impl::scale<8, 2, int16>(-123)==-31488, "cnl::_impl::scale t
 static_assert(
         identical(
                 // NOLINTNEXTLINE(misc-redundant-expression)
-                decltype(std::declval<uint16>()/std::declval<uint16>()){0x12},
+                decltype(std::declval<uint16>()/(std::declval<uint16>()<<8)){0x12},
                 cnl::_impl::scale<-8, 2, uint16>(0x1234)),
         "cnl::_impl::scale test failed");
 static_assert(
         identical(
                 // NOLINTNEXTLINE(misc-redundant-expression)
-                decltype(std::declval<uint16>()/std::declval<uint16>()){0x12},
+                decltype(std::declval<uint16>()/(std::declval<uint16>()<<8)){0x12},
                 cnl::_impl::scale<-8, 2, uint16>(uint16{0x1234})),
         "cnl::_impl::scale test failed");
 static_assert(
         identical(
                 // NOLINTNEXTLINE(misc-redundant-expression)
-                decltype(std::declval<uint16>()/std::declval<uint16>()){0},
+                decltype(std::declval<uint16>()/(std::declval<uint16>()<<8)){0},
                 cnl::_impl::scale<-8, 2, uint16>(uint8{0x34})),
         "cnl::_impl::scale test failed");
 static_assert(cnl::_impl::scale<-8, 2, int16>(-31488)==-123, "cnl::_impl::scale test failed");
 
 static_assert(
         identical(
-                decltype(std::declval<uint16>()*std::declval<uint16>()){0x123400},
+                decltype(std::declval<uint16>()*(std::declval<uint16>()<<8)){0x123400},
                 cnl::_impl::scale<8, 2>(uint16{0x1234})),
         "cnl::_impl::scale test failed");
 
@@ -596,7 +596,9 @@ static_assert(scaled_integer<int32, cnl::power<-7>>(123.125F)==123.125, "cnl::sc
 static_assert(scaled_integer<int64, cnl::power<-7>>(123.125L)==123.125F, "cnl::scaled_integer test failed");
 
 // exponent == 16
+#if !defined(TEST_WIDE_INTEGER_8)
 static_assert(scaled_integer<uint8, cnl::power<16>>(test_int{ 65536 }) == 65536.F, "cnl::scaled_integer test failed");
+#endif
 #if defined(TEST_WIDE_INTEGER_INT) || defined(TEST_WIDE_INTEGER_32)
 static_assert(scaled_integer<uint16, cnl::power<16>>(6553.)==0U, "cnl::scaled_integer test failed");
 #else
@@ -709,7 +711,9 @@ static_assert(!(scaled_integer<int32, cnl::power<-3>>(-4.5)<-5.6), "cnl::scaled_
 static_assert(scaled_integer<int16, cnl::power<-13>>(3.141) > 3, "cnl::scaled_integer test failed");
 static_assert(scaled_integer<int32, cnl::power<-15>>{-0.2} < 0, "cnl::scaled_integer test failed");
 
+#if !defined(TEST_WIDE_INTEGER_8)
 static_assert(scaled_integer<uint8, cnl::power<4>>(768)==uint8{768/16}*uint8{16}, "cnl::scaled_integer test failed");
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // arithmetic

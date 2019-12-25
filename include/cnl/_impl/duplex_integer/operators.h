@@ -7,13 +7,12 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_OPERATORS_H)
 #define CNL_IMPL_DUPLEX_INTEGER_OPERATORS_H
 
+#include "../../wide_integer.h"
 #include "../common.h"
 #include "../num_traits/width.h"
 #include "../operators/generic.h"
 #include "../operators/operators.h"
 #include "../type_traits/common_type.h"
-#include "../wide_integer/operators.h"
-#include "../wide_integer/type.h"
 #include "add_signedness.h"
 #include "comparison.h"
 #include "ctors.h"

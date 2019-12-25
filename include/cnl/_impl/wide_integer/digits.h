@@ -8,14 +8,14 @@
 #define CNL_IMPL_WIDE_INTEGER_DIGITS_H
 
 #include "../num_traits/digits.h"
-#include "forward_declaration.h"
+#include "definition.h"
 
 #include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     template<int Digits, typename Narrowest>
-    struct digits<_impl::wide_integer<Digits, Narrowest>>
+    struct digits<wide_integer<Digits, Narrowest>>
             : std::integral_constant<int, Digits> {
     };
 }
