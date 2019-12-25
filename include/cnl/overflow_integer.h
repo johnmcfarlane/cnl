@@ -56,6 +56,16 @@ namespace cnl {
                     && !_impl::is_number<Rep>::value>>
             : _impl::type_identity<_impl::number<Rep, NumberTag>> {
     };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::set_rep<Rep, OverflowTag>
+
+    template<typename NumberRep, class NumberTag, class Tag>
+    struct set_tag<
+            _impl::number<NumberRep, NumberTag>, Tag,
+            _impl::enable_if_t<_impl::is_overflow_tag<NumberTag>::value>>
+            : _impl::type_identity<_impl::number<NumberRep, Tag>> {
+    };
 }
 
 #endif  // CNL_OVERFLOW_INT_H

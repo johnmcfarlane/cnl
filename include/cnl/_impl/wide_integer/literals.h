@@ -9,8 +9,8 @@
 
 #include "../num_traits/rep.h"
 #include "../unreachable.h"
-#include "operators.h"
-#include "type.h"
+#include "definition.h"
+#include "generic.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -19,7 +19,8 @@ namespace cnl {
         // known-base integer literal parser
 
         template<int Base, typename ParseDigit, typename Integer>
-        CNL_NODISCARD constexpr auto wide_integer_parse(char const* s, ParseDigit parse_digit, Integer const& value) -> Integer
+        CNL_NODISCARD constexpr auto
+        wide_integer_parse(char const* s, ParseDigit parse_digit, Integer const& value) -> Integer
         {
             return *s
                     ? wide_integer_parse<Base>(
@@ -145,7 +146,9 @@ namespace cnl {
                 return hexadecimal_wide_integer_parse<sizeof...(Chars)+1>({Chars..., '\0'});
             }
         };
+    }
 
+    namespace literals {
         // cnl::_impl::operator "" _wide()
         template<char ... Chars>
         CNL_NODISCARD constexpr auto operator "" _wide()

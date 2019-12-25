@@ -73,15 +73,24 @@ namespace cnl {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::set_rep<Rep, RoundingTag>
+    // cnl::set_rep<rounding_integer, Rep>
 
-    // when an _impl::number wraps a non-_impl::number
     template<typename NumberRep, class NumberTag, typename Rep>
     struct set_rep<
             _impl::number<NumberRep, NumberTag>, Rep,
             _impl::enable_if_t<_impl::is_rounding_tag<NumberTag>::value
                     && !_impl::is_number<Rep>::value>>
             : _impl::type_identity<_impl::number<Rep, NumberTag>> {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::set_tag<rounding_integer, Tag>
+
+    template<typename NumberRep, class NumberTag, class Tag>
+    struct set_tag<
+            _impl::number<NumberRep, NumberTag>, Tag,
+            _impl::enable_if_t<_impl::is_rounding_tag<NumberTag>::value>>
+            : _impl::type_identity<_impl::number<NumberRep, Tag>> {
     };
 }
 

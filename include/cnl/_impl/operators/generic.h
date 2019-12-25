@@ -32,6 +32,9 @@ namespace cnl {
         // generic operators
     }
 
+    template<class ArchetypeTag, typename Initializer, typename Enabled=void>
+    struct deduction;
+
     template<class DestTag, class SrcTag, typename Destination, typename Source, typename Enabled=void>
     struct convert_operator;
 

@@ -9,6 +9,7 @@
 
 #include "../num_traits/set_rep.h"
 #include "../type_traits/type_identity.h"
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {

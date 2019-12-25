@@ -9,13 +9,13 @@
 
 #include "../num_traits/set_digits.h"
 #include "../type_traits/type_identity.h"
-#include "type.h"
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {
     template<int FromDigits, class Rep, int ToDigits>
-    struct set_digits<_impl::wide_integer<FromDigits, Rep>, ToDigits>
-            : _impl::type_identity<_impl::wide_integer<ToDigits, Rep>> {
+    struct set_digits<wide_integer<FromDigits, Rep>, ToDigits>
+            : _impl::type_identity<wide_integer<ToDigits, Rep>> {
     };
 }
 

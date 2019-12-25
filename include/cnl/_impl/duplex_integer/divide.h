@@ -11,7 +11,7 @@
 #include "../operators/native_tag.h"
 #include "../operators/operators.h"
 #include "../type_traits/set_signedness.h"
-#include "../wide_integer/rep.h"
+#include "../wide_integer/definition.h"
 #include "ctors.h"
 #include "numeric_limits.h"
 #include "remove_signedness.h"
