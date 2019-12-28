@@ -10,6 +10,7 @@ PROJECT_SOURCE_DIR="${TRAVIS_BUILD_DIR}"
 
 # Before install
 brew update
+brew unlink python@2
 
 # Install
 brew install ccache cloc conan ${PACKAGE}
