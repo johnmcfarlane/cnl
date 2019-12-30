@@ -212,7 +212,7 @@ namespace cnl {
     template<typename Rep, int Exponent, int Radix>
     ::std::istream& operator>>(::std::istream& in, scaled_integer<Rep, power<Exponent, Radix>>& fp)
     {
-        long double ld;
+        long double ld{};
         in >> ld;
         fp = ld;
         return in;
