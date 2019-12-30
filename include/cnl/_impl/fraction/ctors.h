@@ -15,8 +15,8 @@
 namespace cnl {
     template<typename Numerator, typename Denominator>
     constexpr
-    fraction<Numerator, Denominator>::fraction(Numerator const& n, Denominator const& d)
-            : numerator{n}, denominator{d} {}
+    fraction<Numerator, Denominator>::fraction(Numerator n, Denominator d)
+            : numerator{std::move(n)}, denominator{std::move(d)} {}
 
     template<typename Numerator, typename Denominator>
     template<typename Integer,

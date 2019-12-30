@@ -33,7 +33,7 @@ namespace cnl {
         /// alias to `Denominator`
         using denominator_type = Denominator;
 
-        explicit constexpr fraction(Numerator const& n, Denominator const& d);
+        explicit constexpr fraction(Numerator n, Denominator d);
 
         template<typename Integer,
                 _impl::enable_if_t<
