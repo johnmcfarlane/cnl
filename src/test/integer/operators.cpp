@@ -5,9 +5,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests for <cnl/_impl/integer/operators.h>
+/// \brief tests for <cnl/_impl/number/operators.h>
 
-#include <cnl/_impl/integer/operators.h>
+#include <cnl/_impl/integer.h>
 
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
@@ -42,6 +42,16 @@ namespace {
     }
 
     namespace test_add {
+        static_assert(cnl::_impl::is_number<cnl::_impl::integer<>>::value, "");
+        static_assert(
+                identical(
+                        cnl::_impl::integer<>{123+234},
+                        cnl::binary_operator<
+                                cnl::_impl::add_op,
+                                cnl::_impl::native_tag, cnl::_impl::native_tag,
+                                cnl::_impl::integer<>, cnl::_impl::integer<>>{}(
+                                cnl::_impl::integer<>{123}, cnl::_impl::integer<>{234})),
+                "cnl::_impl::integer add");
         static_assert(
                 identical(
                         cnl::_impl::integer<>{123+234},

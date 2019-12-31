@@ -7,7 +7,7 @@
 /// \file
 /// \brief tests for <cnl/_impl/wide_integer/from_rep.h>
 
-#include <cnl/_impl/wide_integer/from_rep.h>
+#include <cnl/wide_integer.h>
 
 #include <cnl/_impl/type_traits/assert_same.h>
 
@@ -16,12 +16,40 @@ using cnl::_impl::assert_same;
 namespace {
     static_assert(
             assert_same<
-                    cnl::_impl::wide_integer<31, int>,
-                    cnl::_impl::from_rep_t<cnl::_impl::wide_integer<>, std::int64_t>>::value,
-            "cnl::from_rep_t<cnl::_impl::wide_integer>");
+                    cnl::wide_integer<16, cnl::int8>,
+                    typename cnl::set_rep<
+                            cnl::_impl::number<unsigned short, cnl::wide_tag<16, cnl::uint8>>,
+                            int>::type
+            >::value,
+            "cnl::wide_integer<16, uint8> << cnl::constant");
     static_assert(
             assert_same<
-                    cnl::_impl::wide_integer<31, unsigned int>,
-                    cnl::_impl::from_rep_t<cnl::_impl::wide_integer<>, std::uint32_t>>::value,
-            "cnl::from_rep_t<cnl::_impl::wide_integer>");
+                    cnl::wide_integer<31, int>,
+                    typename cnl::set_rep<cnl::wide_integer<>, std::int64_t>::type>::value,
+            "cnl::from_rep_t<cnl::wide_integer>");
+#if defined(CNL_INT128_ENABLED)
+    static_assert(
+            assert_same<
+                    cnl::_impl::number<cnl::uint128, cnl::wide_tag<128, unsigned int> >,
+                    typename cnl::set_rep<
+                            cnl::_impl::number<long unsigned int, cnl::wide_tag<128, unsigned int>>,
+                            long unsigned int>::type>::value,
+            "cnl::from_rep_t<cnl::wide_integer>");
+#endif
+    static_assert(
+            assert_same<
+                    cnl::wide_integer<31, unsigned int>,
+                    cnl::_impl::set_rep_t<cnl::wide_integer<>, std::uint32_t>>::value,
+            "cnl::from_rep_t<cnl::wide_integer>");
+
+    static_assert(
+            assert_same<
+                    cnl::wide_integer<15, short>,
+                    cnl::_impl::set_rep_t<cnl::wide_integer<15, short>, std::int16_t>>::value,
+            "cnl::from_rep_t<cnl::wide_integer>");
+    static_assert(
+            assert_same<
+                    cnl::wide_integer<15, unsigned short>,
+                    cnl::_impl::set_rep_t<cnl::wide_integer<15, short>, std::uint16_t>>::value,
+            "cnl::from_rep_t<cnl::wide_integer>");
 }

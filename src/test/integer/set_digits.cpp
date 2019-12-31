@@ -7,7 +7,7 @@
 /// \file
 /// \brief tests for <cnl/_impl/integer/set_digits.h>
 
-#include <cnl/_impl/integer/set_digits.h>
+#include <cnl/_impl/integer.h>
 
 #include <cnl/_impl/type_traits/assert_same.h>
 

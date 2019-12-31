@@ -215,6 +215,14 @@ namespace cnl {
             }
         };
 
+#if defined(__GNUC__)
+// GCC warns against short+=short and short-=short
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#elif defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable: 4244)
+#endif
         struct assign_add_op {
             using binary = add_op;
 
@@ -234,6 +242,11 @@ namespace cnl {
                 return lhs -= rhs;
             }
         };
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
         struct assign_multiply_op {
             using binary = multiply_op;

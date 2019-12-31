@@ -24,11 +24,12 @@ namespace {
                     Narrowest>>;
 
     namespace default_parameters {
+        using cnl::_impl::rep_t;
         static_assert(
-                assert_same<int, wide_elastic_integer<>::rep::rep>::value,
+                assert_same<int, rep_t<rep_t<wide_elastic_integer<>>>>::value,
                 "wide_elastic_integer parameter default test failed");
         static_assert(
-                assert_same<cnl::elastic_integer<>::rep, wide_elastic_integer<>::rep::rep>::value,
+                assert_same<rep_t<cnl::elastic_integer<>>, rep_t<rep_t<wide_elastic_integer<>>>>::value,
                 "wide_elastic_integer parameter default test failed");
     }
 
@@ -90,6 +91,15 @@ namespace {
         static_assert(identical(
                 wide_elastic_integer<3>{1},
                 wide_elastic_integer<3>{7} >> 2), "");
+        static_assert(
+                identical(
+                        wide_elastic_integer<4>{1},
+                        cnl::shift_operator<
+                                cnl::_impl::shift_right_op,
+                                cnl::_impl::native_tag, cnl::_impl::native_tag,
+                                wide_elastic_integer<4>, cnl::elastic_integer<2>>{}(
+                                        wide_elastic_integer<4>{12}, cnl::elastic_integer<2>{3})),
+                "");
         static_assert(identical(
                 wide_elastic_integer<4>{1},
                 wide_elastic_integer<4>{12} >> cnl::elastic_integer<2>{3}),

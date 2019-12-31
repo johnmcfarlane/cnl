@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_MODULO_H)
 #define CNL_IMPL_DUPLEX_INTEGER_MODULO_H
 
+#include "../../wide_integer.h"
 #include "../operators/generic.h"
 #include "../operators/operators.h"
-#include "../wide_integer/rep.h"
 #include "type.h"
 
 /// compositional numeric library
@@ -18,9 +18,10 @@ namespace cnl {
         // cnl::_impl::heterogeneous_duplex_modulo_operator
         template<typename Lhs, typename Rhs>
         struct heterogeneous_duplex_modulo_operator {
-            using common_type = wide_integer_rep_t<
-                    max(digits<Lhs>::value, digits<Rhs>::value),
-                    set_signedness_t<int, is_signed<Lhs>::value|is_signed<Rhs>::value>>;
+            using common_type = rep_t<
+                    wide_integer<
+                        max(digits<Lhs>::value, digits<Rhs>::value),
+                        set_signedness_t<int, is_signed<Lhs>::value | is_signed<Rhs>::value>>>;
 
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> Lhs
             {
@@ -32,7 +33,8 @@ namespace cnl {
     // cnl::_impl::binary_operator<modulo_op, duplex_integer<>, duplex_integer<>
     template<typename Upper, typename Lower>
     struct binary_operator<
-            _impl::native_tag, _impl::modulo_op,
+            _impl::modulo_op,
+            _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>> {
         using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
         using _unsigned_duplex_integer = remove_signedness_t<_duplex_integer>;
@@ -46,19 +48,26 @@ namespace cnl {
 
     template<typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
     struct binary_operator<
-            _impl::native_tag, _impl::modulo_op,
+            _impl::modulo_op,
+            _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<LhsUpper, LhsLower>, _impl::duplex_integer<RhsUpper, RhsLower>>
             : _impl::heterogeneous_duplex_modulo_operator<
                     _impl::duplex_integer<LhsUpper, LhsLower>, _impl::duplex_integer<RhsUpper, RhsLower>> {
     };
 
     template<typename Lhs, typename RhsUpper, typename RhsLower>
-    struct binary_operator<_impl::native_tag, _impl::modulo_op, Lhs, _impl::duplex_integer<RhsUpper, RhsLower>>
+    struct binary_operator<
+            _impl::modulo_op,
+            _impl::native_tag, _impl::native_tag,
+            Lhs, _impl::duplex_integer<RhsUpper, RhsLower>>
             : _impl::heterogeneous_duplex_modulo_operator<Lhs, _impl::duplex_integer<RhsUpper, RhsLower>> {
     };
 
     template<typename LhsUpper, typename LhsLower, typename Rhs>
-    struct binary_operator<_impl::native_tag, _impl::modulo_op, _impl::duplex_integer<LhsUpper, LhsLower>, Rhs>
+    struct binary_operator<
+            _impl::modulo_op,
+            _impl::native_tag, _impl::native_tag,
+            _impl::duplex_integer<LhsUpper, LhsLower>, Rhs>
             : _impl::heterogeneous_duplex_modulo_operator<_impl::duplex_integer<LhsUpper, LhsLower>, Rhs> {
     };
 }

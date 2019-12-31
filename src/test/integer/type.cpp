@@ -5,12 +5,10 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests for <cnl/_impl/integer/type.h>
+/// \brief tests for <cnl/_impl/number/type.h>
 
-#include <cnl/_impl/integer/type.h>
+#include <cnl/_impl/integer.h>
 
-#include <cnl/_impl/integer/from_rep.h>
-#include <cnl/_impl/integer/operators.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/type_traits/remove_signedness.h>
@@ -21,29 +19,29 @@ using cnl::_impl::identical;
 namespace {
     namespace test_parameters {
         static_assert(
-                assert_same<cnl::_impl::integer<int>, cnl::_impl::integer<>>::value,
-                "default parameters of cnl::integer");
+                assert_same<cnl::_impl::number<int>, cnl::_impl::number<>>::value,
+                "default parameters of cnl::number");
     }
 
     namespace test_is_composite {
         static_assert(
-                identical(true, cnl::is_composite<cnl::_impl::integer<>>::value),
-                "is_composite<integer>");
+                identical(true, cnl::is_composite<cnl::_impl::number<>>::value),
+                "is_composite<number>");
     }
 
     namespace test_remove_signedness {
         static_assert(
                 assert_same<
-                        cnl::_impl::integer<unsigned short>,
-                        cnl::remove_signedness<cnl::_impl::integer<signed short>>::type>::value,
-                "cnl::remove_signedness<cnl::_impl::integer>");
+                        cnl::_impl::number<unsigned short>,
+                        cnl::remove_signedness<cnl::_impl::number<signed short>>::type>::value,
+                "cnl::remove_signedness<cnl::_impl::number>");
     }
 
     namespace test_default_ctor {
         static_assert(
                 identical(
-                        cnl::_impl::integer<int>{0},
-                        cnl::_impl::integer<int>{}),
-                "default ctor of cnl::integer");
+                        cnl::_impl::number<int>{0},
+                        cnl::_impl::number<int>{}),
+                "default ctor of cnl::number");
     }
 }

@@ -20,54 +20,29 @@
 
 /// compositional numeric library
 namespace cnl {
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::binary_operator<nearest_rounding_tag>
-
-    template<class Operator, typename Lhs, typename Rhs>
-    struct binary_operator<native_rounding_tag, Operator, Lhs, Rhs>
-            : binary_operator<_impl::native_tag, Operator, Lhs, Rhs> {
-    };
-
-    template<class Operator, typename Lhs, typename Rhs>
-    struct binary_operator<nearest_rounding_tag, Operator, Lhs, Rhs> : Operator {
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::binary_operator<nearest_rounding_tag, divide_op>
-
-    template<typename Lhs, typename Rhs>
-    struct binary_operator<nearest_rounding_tag, _impl::divide_op, Lhs, Rhs> {
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(lhs/rhs)
-        {
-            return (((lhs < 0) ^ (rhs < 0))
-                    ? lhs-(rhs/2)
-                    : lhs+(rhs/2))/rhs;
-        }
-    };
-
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::divide<nearest_rounding_tag, ...>
 
-        template<class RoundingTag, class Lhs, class Rhs>
+        template<class LhsTag, class RhsTag, class Lhs, class Rhs>
         struct divide {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs/rhs)
             {
-                return cnl::binary_operator<RoundingTag, divide_op, Lhs, Rhs>{}(cnl::unwrap(lhs), cnl::unwrap(rhs));
+                return cnl::binary_operator<divide_op, LhsTag, RhsTag, Lhs, Rhs>{}(
+                        cnl::unwrap(lhs), cnl::unwrap(rhs));
             }
         };
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::shift_right
 
-        template<class RoundingTag, class Lhs, class Rhs>
+        template<class LhsTag, class RhsTag, class Lhs, class Rhs>
         struct shift_right {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             -> decltype(lhs >> rhs)
             {
-                return cnl::binary_operator<RoundingTag, shift_right_op, Lhs, Rhs>{}(lhs, rhs);
+                return cnl::binary_operator<shift_right_op, LhsTag, RhsTag, Lhs, Rhs>{}(lhs, rhs);
             }
         };
     }

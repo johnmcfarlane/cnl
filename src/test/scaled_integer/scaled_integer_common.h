@@ -236,26 +236,26 @@ static_assert(cnl::_impl::scale<8, 2, int16>(-123)==-31488, "cnl::_impl::scale t
 static_assert(
         identical(
                 // NOLINTNEXTLINE(misc-redundant-expression)
-                decltype(std::declval<uint16>()/std::declval<uint16>()){0x12},
+                decltype(std::declval<uint16>()/(std::declval<uint16>() << 8)){0x12},
                 cnl::_impl::scale<-8, 2, uint16>(0x1234)),
         "cnl::_impl::scale test failed");
 static_assert(
         identical(
                 // NOLINTNEXTLINE(misc-redundant-expression)
-                decltype(std::declval<uint16>()/std::declval<uint16>()){0x12},
+                decltype(std::declval<uint16>()/(std::declval<uint16>() << 8)){0x12},
                 cnl::_impl::scale<-8, 2, uint16>(uint16{0x1234})),
         "cnl::_impl::scale test failed");
 static_assert(
         identical(
                 // NOLINTNEXTLINE(misc-redundant-expression)
-                decltype(std::declval<uint16>()/std::declval<uint16>()){0},
+                decltype(std::declval<uint16>()/(std::declval<uint16>() << 8)){0},
                 cnl::_impl::scale<-8, 2, uint16>(uint8{0x34})),
         "cnl::_impl::scale test failed");
 static_assert(cnl::_impl::scale<-8, 2, int16>(-31488)==-123, "cnl::_impl::scale test failed");
 
 static_assert(
         identical(
-                decltype(std::declval<uint16>()*std::declval<uint16>()){0x123400},
+                decltype(std::declval<uint16>()*(std::declval<uint16>() << 8)){0x123400},
                 cnl::_impl::scale<8, 2>(uint16{0x1234})),
         "cnl::_impl::scale test failed");
 
@@ -596,7 +596,9 @@ static_assert(scaled_integer<int32, cnl::power<-7>>(123.125F)==123.125, "cnl::sc
 static_assert(scaled_integer<int64, cnl::power<-7>>(123.125L)==123.125F, "cnl::scaled_integer test failed");
 
 // exponent == 16
+#if !defined(TEST_WIDE_INTEGER_8)
 static_assert(scaled_integer<uint8, cnl::power<16>>(test_int{ 65536 }) == 65536.F, "cnl::scaled_integer test failed");
+#endif
 #if defined(TEST_WIDE_INTEGER_INT) || defined(TEST_WIDE_INTEGER_32)
 static_assert(scaled_integer<uint16, cnl::power<16>>(6553.)==0U, "cnl::scaled_integer test failed");
 #else
@@ -662,61 +664,12 @@ namespace test_arithmetic {
     static_assert(
             identical(
                     cnl::binary_operator<
-                            cnl::_impl::native_tag, cnl::_impl::subtract_op,
+                            cnl::_impl::subtract_op,
+                            cnl::_impl::native_tag, cnl::_impl::native_tag,
                             scaled_integer<int32>, cnl::constant<369>>()(
                                     scaled_integer<int32>{999}, cnl::constant<369>{}),
                                     scaled_integer<test_int, cnl::power<0>>{630}),
             "cnl::_scaled_integer_impl::rep_op_exponent test failed");
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// multiplication
-
-static_assert(cnl::numeric_limits<uint8>::max()/5==51, "");
-static_assert(cnl::numeric_limits<uint8>::max()/3==85, "");
-
-namespace test_divide {
-    static_assert(
-            identical(
-                    scaled_integer<quot_digits_t<test_int, int16>, cnl::power<-29>>{1./127},
-                    cnl::quotient(scaled_integer<test_int, cnl::power<-14>>{1}, int16{127})),
-            "cnl::quotient test failed");
-    static_assert(
-            identical(
-                    cnl::quotient(int32(-999), int32(3)),
-                    scaled_integer<quot_digits_t<>, cnl::power<-31>>{-333LL}),
-            "cnl::scaled_integer test failed");
-    static_assert(
-            identical(
-                    cnl::quotient(scaled_integer<uint32, cnl::power<10>>{10240}, uint32{3U}),
-                    scaled_integer<uint64, cnl::power<-22>>{3413.3333333}),
-            "cnl::scaled_integer division test failed");
-    static_assert(
-            identical(
-                    scaled_integer<quot_digits_t<test_int, uint8>, cnl::power<-6>>{40},
-                    cnl::quotient(test_int{10}, scaled_integer<uint8, cnl::power<-2>>{0.25})),
-            "cnl::scaled_integer division test failed");
-#if defined(CNL_INT128_ENABLED)
-    static_assert(
-            identical(
-                    cnl::quotient(
-                            scaled_integer<uint64, cnl::power<0>>{0xFFFFFFFE00000001LL},
-                            scaled_integer<uint64, cnl::power<-32>>{0xffffffffULL}),
-                    scaled_integer<uint128, cnl::power<-32>>{0xffffffffULL}),
-            "cnl::scaled_integer test failed");
-#endif
-    static_assert(
-            identical(
-                    cnl::quotient(
-                            scaled_integer<uint32, cnl::power<0>>{0xFFFE0001LL},
-                            scaled_integer<uint32, cnl::power<0>>{0xffff}),
-                    scaled_integer<uint64, cnl::power<-32>>{0xffffLL}),
-            "cnl::scaled_integer test failed");
-    static_assert(
-            identical(
-                    scaled_integer<cnl::set_digits_t<int32, cnl::digits<int32>::value+2>, cnl::power<-18>>{321LL},
-                    cnl::quotient(cnl::scaled_integer<int32, cnl::power<-16>>{963}, cnl::constant<3>{})),
-            "cnl::scaled_integer test failed");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -758,7 +711,9 @@ static_assert(!(scaled_integer<int32, cnl::power<-3>>(-4.5)<-5.6), "cnl::scaled_
 static_assert(scaled_integer<int16, cnl::power<-13>>(3.141) > 3, "cnl::scaled_integer test failed");
 static_assert(scaled_integer<int32, cnl::power<-15>>{-0.2} < 0, "cnl::scaled_integer test failed");
 
+#if !defined(TEST_WIDE_INTEGER_8)
 static_assert(scaled_integer<uint8, cnl::power<4>>(768)==uint8{768/16}*uint8{16}, "cnl::scaled_integer test failed");
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // arithmetic
@@ -950,20 +905,59 @@ static_assert(cnl::numeric_limits<uint128>::is_specialized, "");
 static_assert(cnl::numeric_limits<uint128>::is_integer, "");
 #endif
 
+namespace test_shift_operator_right {
+    constexpr auto expected{cnl::scaled_integer<test_int, cnl::power<-28> >{1.28125}};
+    constexpr auto lhs{cnl::scaled_integer<test_int, cnl::power<-28> >{5.125}};
+    constexpr auto rhs{test_int{2}};
+    constexpr auto op{
+            cnl::shift_operator<
+                    cnl::_impl::shift_right_op,
+                    cnl::_impl::native_tag, cnl::_impl::native_tag,
+                    cnl::scaled_integer<test_int, cnl::power<-28> >,
+                    test_int>{}
+    };
+    constexpr auto actual{op(lhs, rhs)};
+    static_assert(identical(expected, actual), "");
+}
+
+#if !defined(__clang__) || (__clang_major__ > 3) || (__clang_minor__ > 8)
+namespace test_shift_operator_left {
+    constexpr auto expected{
+            scaled_integer<
+                    decltype(std::declval<uint8>() << std::declval<test_int>()),
+                    cnl::power<-4>>{2}};
+    constexpr auto lhs{scaled_integer<uint8, cnl::power<-4>>{1}};
+    constexpr auto rhs{scaled_integer<>{1}};
+    constexpr auto op{
+            cnl::shift_operator<
+                    cnl::_impl::shift_left_op,
+                    cnl::_impl::native_tag, cnl::_impl::native_tag,
+                    scaled_integer<uint8, cnl::power<-4>>,
+                    scaled_integer<>>{}
+    };
+    constexpr auto actual{op(lhs, rhs)};
+    static_assert(identical(expected, actual), "");
+}
+#endif
+
 namespace test_bitshift {
     // dynamic
+#if !defined(__clang__) || (__clang_major__ > 3) || (__clang_minor__ > 8)
     static_assert(
             identical(
                     scaled_integer<decltype(std::declval<uint8>() << std::declval<test_int>()), cnl::power<-4>>{2},
                     scaled_integer<uint8, cnl::power<-4>>{1} << 1), "bitshift test failed");
+#endif
     static_assert(
             identical(
                     scaled_integer<decltype(std::declval<uint8>() >> std::declval<test_int>()), cnl::power<-4>>{.5},
                     scaled_integer<uint8, cnl::power<-4>>{1} >> 1), "bitshift test failed");
+#if !defined(__clang__) || (__clang_major__ > 3) || (__clang_minor__ > 9)
     static_assert(
             identical(
                     scaled_integer<decltype(std::declval<uint8>() << std::declval<test_int>()), cnl::power<-4>>{2},
                     scaled_integer<uint8, cnl::power<-4>>{1} << scaled_integer<>{1}), "bitshift test failed");
+#endif
 
     // cnl::constant
     static_assert(
@@ -1000,14 +994,67 @@ namespace test_bitwise_and {
     static_assert(identical(
             scaled_integer<test_unsigned, cnl::power<-16>>{77.125},
             scaled_integer<test_unsigned, cnl::power<-12>>{125.125} & scaled_integer<test_unsigned, cnl::power<-16>>{77.625}),
-                  "operator&(scaled_integer<>,scaled_integer<>)");
+            "operator&(scaled_integer<>,scaled_integer<>)");
 }
 
 namespace test_bitwise_xor {
     static_assert(identical(
             scaled_integer<test_unsigned, cnl::power<-16>>{48.5},
-            scaled_integer<test_unsigned, cnl::power<-12>>{125.125} ^ scaled_integer<test_unsigned, cnl::power<-16>>{77.625}),
-                  "operator^(scaled_integer<>,scaled_integer<>)");
+            scaled_integer<test_unsigned, cnl::power<-12>>{125.125}
+                    ^ scaled_integer<test_unsigned, cnl::power<-16>>{77.625}),
+            "operator^(scaled_integer<>,scaled_integer<>)");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// quotient
+
+static_assert(cnl::numeric_limits<uint8>::max()/5==51, "");
+static_assert(cnl::numeric_limits<uint8>::max()/3==85, "");
+
+namespace test_quotient {
+#if !defined(__clang__) || (__clang_major__ > 3) || (__clang_minor__ > 8)
+    static_assert(
+            identical(
+                    scaled_integer<quot_digits_t<test_int, int16>, cnl::power<-29>>{1./127},
+                    cnl::quotient(scaled_integer<test_int, cnl::power<-14>>{1}, int16{127})),
+            "cnl::quotient test failed");
+    static_assert(
+            identical(
+                    cnl::quotient(int32(-999), int32(3)),
+                    scaled_integer<quot_digits_t<>, cnl::power<-31>>{-333LL}),
+            "cnl::scaled_integer test failed");
+    static_assert(
+            identical(
+                    cnl::quotient(scaled_integer<uint32, cnl::power<10>>{10240}, uint32{3u}),
+                    scaled_integer<uint64, cnl::power<-22>>{3413.3333333}),
+            "cnl::scaled_integer division test failed");
+    static_assert(
+            identical(
+                    scaled_integer<quot_digits_t<test_int, uint8>, cnl::power<-6>>{40},
+                    cnl::quotient(test_int{10}, scaled_integer<uint8, cnl::power<-2>>{0.25})),
+            "cnl::scaled_integer division test failed");
+#if defined(CNL_INT128_ENABLED)
+    static_assert(
+            identical(
+                    cnl::quotient(
+                            scaled_integer<uint64, cnl::power<0>>{0xFFFFFFFE00000001LL},
+                            scaled_integer<uint64, cnl::power<-32>>{0xffffffffULL}),
+                    scaled_integer<uint128, cnl::power<-32>>{0xffffffffULL}),
+            "cnl::scaled_integer test failed");
+#endif
+    static_assert(
+            identical(
+                    cnl::quotient(
+                            scaled_integer<uint32, cnl::power<0>>{0xFFFE0001LL},
+                            scaled_integer<uint32, cnl::power<0>>{0xffff}),
+                    scaled_integer<uint64, cnl::power<-32>>{0xffffLL}),
+            "cnl::scaled_integer test failed");
+    static_assert(
+            identical(
+                    scaled_integer<cnl::set_digits_t<int32, cnl::digits<int32>::value+2>, cnl::power<-18>>{321LL},
+                    cnl::quotient(cnl::scaled_integer<int32, cnl::power<-16>>{963}, cnl::constant<3>{})),
+            "cnl::scaled_integer test failed");
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1179,13 +1226,13 @@ struct ScaledIntegerTesterOutsize {
     using rep = Rep;
     static_assert(sizeof(rep) == sizeof(scaled_integer), "scaled_integer must be the same size as its Rep");
     static_assert(
-            is_same<rep, typename scaled_integer::rep>::value,
+            is_same<rep, cnl::_impl::rep_t<scaled_integer>>::value,
             "mismatched rep");    // possibly overly restrictive (e.g. hardware-specific specializations)
 
     // Exponent
     static constexpr int exponent = Exponent;
     static_assert(
-            exponent == scaled_integer::scale::exponent,
+            exponent==cnl::_impl::tag_t<scaled_integer>::exponent,
             "mismatched exponent");
 
     // simply assignment to and from underlying representation

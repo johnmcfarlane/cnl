@@ -40,10 +40,11 @@ namespace cnl {
 namespace {
     using std::is_same;
     using cnl::_impl::identical;
+    using cnl::_impl::rep_t;
 
     namespace default_parameters {
         static_assert(
-                is_same<cnl::safe_integer<1>::rep::rep, int>::value,
+                is_same<rep_t<rep_t<cnl::safe_integer<1>>>, int>::value,
                 "cnl::safe_integer parameter default test failed");
     }
 
@@ -60,7 +61,7 @@ namespace {
 
     namespace test_comparison {
         static_assert(identical(
-                cnl::convert<cnl::throwing_overflow_tag, cnl::elastic_integer<10>>(0),
+                cnl::convert<cnl::throwing_overflow_tag, cnl::_impl::native_tag, cnl::elastic_integer<10>>(0),
                 cnl::elastic_integer<10>{0}), "");
 #if defined(__cpp_binary_literals)
         static_assert(cnl::safe_integer<10>(0b1010101010)==cnl::safe_integer<10>(0b1010101010), "");

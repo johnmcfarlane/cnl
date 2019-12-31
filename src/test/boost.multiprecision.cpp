@@ -96,13 +96,8 @@ namespace test_impl_to_rep {
     static_assert(
             assert_same<
                     unsigned_multiprecision<987654321>,
-                    cnl::_impl::to_rep_t<scaled_integer<unsigned_multiprecision<987654321>>>>::value,
-            "cnl::_impl::depth<scaled_integer<boost::multiprecision>>");
-    static_assert(
-            assert_same<
-                    unsigned_multiprecision<987654321>,
-                    cnl::_impl::to_rep_t<unsigned_multiprecision<987654321>>>::value,
-            "cnl::_impl::depth<boost::multiprecision>");
+                    cnl::_impl::rep_t<scaled_integer<unsigned_multiprecision<987654321>>>>::value,
+            "cnl::_impl::rep_t<scaled_integer<boost::multiprecision>>");
 }
 
 TEST(multiprecision, from_value)  // NOLINT
@@ -129,12 +124,6 @@ TEST(multiprecision, scale_negative)  // NOLINT
     auto const actual = cnl::_impl::scale<-5, 2>(unsigned_multiprecision<321>{768});
     ASSERT_EQ(expected, actual);
     ASSERT_TRUE(identical(expected, actual));
-}
-
-namespace test_depth {
-    static_assert(
-            cnl::_impl::depth<scaled_integer<unsigned_multiprecision<987654321>>>::value==1,
-            "cnl::_impl::depth<scaled_integer<boost::multiprecision>>");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

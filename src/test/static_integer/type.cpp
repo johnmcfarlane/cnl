@@ -4,6 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <cnl/_impl/num_traits/fixed_width_scale.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/static_integer.h>
@@ -13,6 +14,8 @@
 namespace {
     using cnl::_impl::assert_same;
     using cnl::_impl::identical;
+    using cnl::_impl::rep_t;
+    using cnl::_impl::tag_t;
 
     namespace default_parameters {
         static_assert(
@@ -21,14 +24,16 @@ namespace {
                 "cnl::static_integer parameter default test failed");
 
         static_assert(
-                std::is_same<cnl::undefined_overflow_tag, typename cnl::static_integer<1>::overflow_tag>::value,
+                std::is_same<cnl::undefined_overflow_tag, cnl::_impl::tag_t<cnl::static_integer<1>>>::value,
                 "cnl::static_integer parameter default test failed");
         static_assert(
-                std::is_same<cnl::overflow_integer<>::overflow_tag, cnl::static_integer<1>::overflow_tag>::value,
+                std::is_same<
+                        cnl::_impl::tag_t<cnl::overflow_integer<>>,
+                        cnl::_impl::tag_t<cnl::static_integer<1>>>::value,
                 "cnl::static_integer parameter default test failed");
 
         static_assert(
-                std::is_same<cnl::nearest_rounding_tag, cnl::static_integer<1>::rep::rep::rounding>::value,
+                std::is_same<cnl::nearest_rounding_tag, tag_t<rep_t<rep_t<cnl::static_integer<1>>>>>::value,
                 "cnl::static_integer parameter default test failed");
         static_assert(
                 !std::is_same<cnl::native_rounding_tag, cnl::native_overflow_tag>::value,
@@ -37,12 +42,12 @@ namespace {
         static_assert(
                 assert_same<
                         cnl::wide_integer<>,
-                        cnl::static_integer<>::rep::rep::rep>::value,
+                        rep_t<rep_t<rep_t<cnl::static_integer<>>>>>::value,
                 "cnl::static_integer parameter default test failed");
         static_assert(
                 assert_same<
-                        cnl::elastic_integer<31, cnl::wide_integer<>>::rep,
-                        cnl::static_integer<>::rep::rep::rep>::value,
+                        rep_t<cnl::elastic_integer<31, cnl::wide_integer<>>>,
+                        rep_t<rep_t<rep_t<cnl::static_integer<>>>>>::value,
                 "cnl::static_integer parameter default test failed");
     }
 

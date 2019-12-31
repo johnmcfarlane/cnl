@@ -4,12 +4,21 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_integer.h>
 #include <cnl/rounding.h>
 
 namespace {
+    using cnl::_impl::assert_same;
     using cnl::_impl::identical;
+
+    namespace test_rounding {
+        static_assert(
+                assert_same<
+                        cnl::native_rounding_tag,
+                        typename cnl::rounding<cnl::elastic_integer<>>::type>::value, "");
+    }
 
     namespace test_shift_right_nearest {
         static_assert(

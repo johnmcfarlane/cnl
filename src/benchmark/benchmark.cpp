@@ -10,7 +10,7 @@
 
 #include <benchmark/benchmark.h>
 
-#define ESCAPE(X) escape_cppcon2015(&X)
+#define ESCAPE(X) escape_cppcon2015(&(X))
 //#define ESCAPE(X) escape_codedive2015(&X)
 //#define ESCAPE(x) benchmark::DoNotOptimize(x)
 

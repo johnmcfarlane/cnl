@@ -11,7 +11,7 @@
 #include "../operators/native_tag.h"
 #include "../operators/operators.h"
 #include "../type_traits/set_signedness.h"
-#include "../wide_integer/rep.h"
+#include "../wide_integer/definition.h"
 #include "ctors.h"
 #include "numeric_limits.h"
 #include "remove_signedness.h"
@@ -23,9 +23,10 @@ namespace cnl {
         // cnl::_impl::heterogeneous_duplex_divide_operator
         template<typename Lhs, typename Rhs>
         struct heterogeneous_duplex_divide_operator {
-            using common_type = wide_integer_rep_t<
-                    max(digits<Lhs>::value, digits<Rhs>::value),
-                    set_signedness_t<int, is_signed<Lhs>::value|is_signed<Rhs>::value>>;
+            using common_type = rep_t<
+                    wide_integer<
+                        max(digits<Lhs>::value, digits<Rhs>::value),
+                        set_signedness_t<int, is_signed<Lhs>::value|is_signed<Rhs>::value>>>;
 
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> Lhs
             {
@@ -37,7 +38,8 @@ namespace cnl {
     // cnl::_impl::binary_operator<divide_op, duplex_integer<>, duplex_integer<>
     template<typename Upper, typename Lower>
     struct binary_operator<
-            _impl::native_tag, _impl::divide_op,
+            _impl::divide_op,
+            _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>> {
         using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
         using _unsigned_duplex_integer = remove_signedness_t<_duplex_integer>;
@@ -133,19 +135,26 @@ namespace cnl {
 
         template<typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
         struct binary_operator<
-                _impl::native_tag, _impl::divide_op,
+                _impl::divide_op,
+                _impl::native_tag, _impl::native_tag,
                 _impl::duplex_integer<LhsUpper, LhsLower>, _impl::duplex_integer<RhsUpper, RhsLower>>
                 : _impl::heterogeneous_duplex_divide_operator<
                         _impl::duplex_integer<LhsUpper, LhsLower>, _impl::duplex_integer<RhsUpper, RhsLower>> {
         };
 
     template<typename Lhs, typename RhsUpper, typename RhsLower>
-    struct binary_operator<_impl::native_tag, _impl::divide_op, Lhs, _impl::duplex_integer<RhsUpper, RhsLower>>
+    struct binary_operator<
+            _impl::divide_op,
+            _impl::native_tag, _impl::native_tag,
+            Lhs, _impl::duplex_integer<RhsUpper, RhsLower>>
             : _impl::heterogeneous_duplex_divide_operator<Lhs, _impl::duplex_integer<RhsUpper, RhsLower>> {
     };
 
     template<typename LhsUpper, typename LhsLower, typename Rhs>
-    struct binary_operator<_impl::native_tag, _impl::divide_op, _impl::duplex_integer<LhsUpper, LhsLower>, Rhs>
+    struct binary_operator<
+            _impl::divide_op,
+            _impl::native_tag, _impl::native_tag,
+            _impl::duplex_integer<LhsUpper, LhsLower>, Rhs>
             : _impl::heterogeneous_duplex_divide_operator<_impl::duplex_integer<LhsUpper, LhsLower>, Rhs> {
     };
 }

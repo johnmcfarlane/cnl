@@ -52,8 +52,25 @@ namespace {
             elastic_scaled_integer<2, -2>{3}), "cnl::elastic_scaled_integer test failed");
 
     static_assert(identical(
+            elastic_scaled_integer<2, -2>{1.5} << 1,
+            elastic_scaled_integer<2, -2>{3}), "cnl::elastic_scaled_integer test failed");
+
+    static_assert(identical(
             elastic_scaled_integer<2, -2>{1.5} >> 1,
             elastic_scaled_integer<2, -2>{0.75}), "cnl::elastic_scaled_integer test failed");
+}
+
+namespace test_from_value {
+    static_assert(
+            identical(
+                    cnl::scaled_integer<unsigned>{42},
+                    cnl::_impl::from_value<elastic_scaled_integer<20, 10>>(42U)),
+            "");
+    static_assert(
+            identical(
+                    elastic_scaled_integer<20, 0>{cnl::elastic_integer<20>{42}},
+                    cnl::_impl::from_value<elastic_scaled_integer<20, 10>>(cnl::elastic_integer<20>{42})),
+            "");
 }
 
 namespace test_ctor {
@@ -302,7 +319,7 @@ struct positive_elastic_test
     ////////////////////////////////////////////////////////////////////////////////
     // core definitions
     using elastic_type = Elastic;
-    using rep = typename elastic_type::rep;
+    using rep = cnl::_impl::rep_t<elastic_type>;
     using numeric_limits = cnl::numeric_limits<elastic_type>;
 
     using signed_type = cnl::add_signedness_t<elastic_type>;
@@ -354,7 +371,7 @@ struct positive_elastic_test
 
     static constexpr rep max_integer{to_rep(max)};
 #if ! defined(_MSC_VER)
-    static_assert(bit_count<typename rep::rep>(to_rep(max_integer))==digits, "cnl::numeric_limits test failed");
+    static_assert(bit_count<cnl::_impl::rep_t<rep>>(to_rep(max_integer))==digits, "cnl::numeric_limits test failed");
 #endif
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -491,7 +508,7 @@ struct signed_elastic_test :
     // core definitions
 
     using elastic_type = Elastic;
-    using rep = typename elastic_type::rep;
+    using rep = cnl::_impl::rep_t<elastic_type>;
     using numeric_limits = cnl::numeric_limits<elastic_type>;
 
     ////////////////////////////////////////////////////////////////////////////////

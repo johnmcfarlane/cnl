@@ -11,6 +11,8 @@
 #include "../type_traits/is_integral.h"
 #include "../type_traits/remove_signedness.h"
 #include "generic.h"
+#include "homogeneous_deduction_tag_base.h"
+#include "homogeneous_operator_tag_base.h"
 #include "operators.h"
 
 #include <type_traits>
@@ -19,7 +21,9 @@
 namespace cnl {
     namespace _impl {
         // match the behavior of fundamental arithmetic types
-        struct native_tag {};
+        struct native_tag : homogeneous_deduction_tag_base, homogeneous_operator_tag_base {
+            using identity = native_tag;
+        };
 
         // true iff given type, T, provides its own operators
         template<typename T>
@@ -33,7 +37,7 @@ namespace cnl {
     }
 
     template<typename Destination, typename Source>
-    struct convert_operator<_impl::native_tag, Destination, Source> {
+    struct convert_operator<_impl::native_tag, _impl::native_tag, Destination, Source> {
         CNL_NODISCARD constexpr auto operator()(Source const& from) const -> Destination
         {
             return _impl::convert_op{}.template operator()<Destination>(from);
@@ -42,16 +46,26 @@ namespace cnl {
 
     template<class Operator, typename Rhs>
     struct unary_operator<
-            _impl::native_tag, Operator,
-            Rhs,
+            Operator,
+            _impl::native_tag, Rhs,
             _impl::enable_if_t<_impl::has_native_operators<Rhs>::value>> : Operator {
     };
 
     template<class Operator, typename Lhs, typename Rhs>
     struct binary_operator<
-            _impl::native_tag, Operator,
-            Lhs, Rhs,
+            Operator,
+            _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<_impl::has_native_operators<Lhs>::value && _impl::has_native_operators<Rhs>::value>>
+        : Operator {
+    };
+
+    template<class Operator, typename Lhs, typename Rhs>
+    struct shift_operator<
+            Operator,
+            _impl::native_tag, _impl::native_tag, Lhs, Rhs,
+            _impl::enable_if_t<
+                    _impl::has_native_operators<Lhs>::value
+                    && _impl::has_native_operators<Rhs>::value>>
         : Operator {
     };
 }

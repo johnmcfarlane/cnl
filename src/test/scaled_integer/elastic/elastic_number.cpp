@@ -279,7 +279,7 @@ struct positive_elastic_test
     ////////////////////////////////////////////////////////////////////////////////
     // core definitions
     using elastic_type = Elastic;
-    using rep = typename elastic_type::rep;
+    using rep = cnl::_impl::rep_t<elastic_type>;
     using numeric_limits = cnl::numeric_limits<elastic_type>;
 
     using signed_type = cnl::add_signedness_t<elastic_type>;
@@ -464,7 +464,7 @@ struct signed_elastic_test :
     // core definitions
 
     using elastic_type = Elastic;
-    using rep = typename elastic_type::rep;
+    using rep = cnl::_impl::rep_t<elastic_type>;
     using numeric_limits = cnl::numeric_limits<elastic_type>;
 
     ////////////////////////////////////////////////////////////////////////////////

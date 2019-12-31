@@ -4,6 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <cnl/_impl/number/tag.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_integer.h>
 #include <cnl/overflow_integer.h>
@@ -13,8 +14,8 @@ namespace cnl {
     // rounding safe integer
     template<
             int IntegerDigits,
-            class OverflowTag = overflow_integer<>::overflow_tag,
-            class RoundingTag = rounding_integer<>::rounding,
+            class OverflowTag = _impl::tag_t<overflow_integer<>>,
+            class RoundingTag = _impl::tag_t<rounding_integer<>>,
             class Narrowest = int>
     using rounding_safe_int = elastic_integer<
             IntegerDigits,
@@ -28,8 +29,8 @@ namespace cnl {
     >;
 
     template<
-            class OverflowTag = overflow_integer<>::overflow_tag,
-            class RoundingTag = rounding_integer<>::rounding,
+            class OverflowTag = _impl::tag_t<overflow_integer<>>,
+            class RoundingTag = _impl::tag_t<rounding_integer<>>,
             class Narrowest = int,
             class Input = int,
             class = _impl::enable_if_t<!_impl::is_constant<Input>::value>>
@@ -43,8 +44,8 @@ namespace cnl {
     }
 
     template<
-            class OverflowTag = overflow_integer<>::overflow_tag,
-            class RoundingTag = rounding_integer<>::rounding,
+            class OverflowTag = _impl::tag_t<overflow_integer<>>,
+            class RoundingTag = _impl::tag_t<rounding_integer<>>,
             class Narrowest = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE InputValue = 0>
     CNL_NODISCARD rounding_safe_int<
@@ -59,10 +60,12 @@ namespace cnl {
 
 namespace {
     using cnl::_impl::identical;
+    using cnl::_impl::rep_t;
 
     namespace default_parameters {
+        using cnl::_impl::rep_t;
         static_assert(
-                std::is_same<cnl::rounding_safe_int<1>::rep::rep::rep, int>::value,
+                std::is_same<rep_t<rep_t<rep_t<cnl::rounding_safe_int<1>>>>, int>::value,
                 "cnl::rounding_integer parameter default test failed");
     }
 

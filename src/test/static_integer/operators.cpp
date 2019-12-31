@@ -15,8 +15,8 @@
 namespace {
     namespace test_minus {
         static_assert(identical(
-                cnl::_impl::wide_integer<300, int>{-1729348762983LL},
-                -cnl::_impl::wide_integer<300, int>{1729348762983LL}), "");
+                cnl::wide_integer<300, int>{-1729348762983LL},
+                -cnl::wide_integer<300, int>{1729348762983LL}), "");
     }
 
     namespace test_division_native {

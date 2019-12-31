@@ -7,33 +7,12 @@
 #if !defined(CNL_IMPL_SCALED_POWER_H)
 #define CNL_IMPL_SCALED_POWER_H
 
-/// compositional numeric library
-namespace cnl {
-    template<int Exponent = 0, int Radix = 2>
-    struct power {
-        static_assert(Radix >= 2, "Radix must be two or greater");
+#include "binary_operator.h"
+#include "convert_operator.h"
+#include "definition.h"
+#include "inc_dec_operator.h"
+#include "is_same_tag_family.h"
+#include "is_scaled_tag.h"
+#include "shift_operator.h"
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // constants
-
-        /// value of template parameter, \a Exponent
-        constexpr static int exponent = Exponent;
-
-        /// value of template parameter, \a Radix
-        constexpr static int radix = Radix;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // types
-
-        using identity = power<0, Radix>;
-    };
-
-    template<int LhsExponent, int RhsExponent, int Radix>
-    constexpr auto operator/(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-    -> power<LhsExponent-RhsExponent, Radix>
-    {
-        return power<LhsExponent-RhsExponent, Radix>{};
-    }
-}
-
-#endif //CNL_IMPL_SCALED_POWER_H
+#endif // CNL_IMPL_SCALED_POWER_H

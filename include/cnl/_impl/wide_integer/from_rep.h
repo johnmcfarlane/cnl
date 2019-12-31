@@ -7,19 +7,17 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_FROM_REP_H)
 #define CNL_IMPL_WIDE_INTEGER_FROM_REP_H
 
-#include "../num_traits/adopt_signedness.h"
-#include "../num_traits/digits.h"
 #include "../num_traits/from_rep.h"
-#include "type.h"
+#include "../wide_tag/declaration.h"
+#include "definition.h"
+#include "set_rep.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<int Digits, typename Narrowest, typename Rep>
-    struct from_rep<_impl::wide_integer<Digits, Narrowest>, Rep> {
+    template<typename ArchetypeRep, int Digits, typename Narrowest, typename Rep>
+    struct from_rep<_impl::number<ArchetypeRep, wide_tag<Digits, Narrowest>>, Rep> {
         CNL_NODISCARD constexpr auto operator()(Rep const& rep) const
-        -> _impl::wide_integer<
-                Digits,
-                _impl::adopt_signedness_t<Narrowest, Rep>>
+        -> _impl::set_rep_t<_impl::number<ArchetypeRep, wide_tag<Digits, Narrowest>>, Rep>
         {
             return rep;
         }

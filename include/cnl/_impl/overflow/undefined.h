@@ -7,8 +7,10 @@
 #if !defined(CNL_IMPL_OVERFLOW_UNDEFINED_H)
 #define CNL_IMPL_OVERFLOW_UNDEFINED_H
 
+#include "../operators/homogeneous_operator_tag_base.h"
+#include "../polarity.h"
 #include "../unreachable.h"
-#include "common.h"
+#include "is_overflow_tag.h"
 #include "overflow_operator.h"
 
 /// compositional numeric library
@@ -25,7 +27,8 @@ namespace cnl {
     /// \sa cnl::overflow_integer,
     /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag, cnl::trapping_overflow_tag
-    struct undefined_overflow_tag {
+    struct undefined_overflow_tag
+            : _impl::homogeneous_deduction_tag_base, _impl::homogeneous_operator_tag_base {
     };
 
     namespace _impl {

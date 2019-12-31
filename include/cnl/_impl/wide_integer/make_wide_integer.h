@@ -8,7 +8,7 @@
 #define CNL_IMPL_WIDE_INTEGER_MAKE_WIDE_INTEGER_H
 
 #include "../num_traits/adopt_signedness.h"
-#include "type.h"
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {

@@ -52,9 +52,6 @@ namespace cnl {
         -> decltype(cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number))) {
             return cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number));
         }
-
-        template<class Number>
-        using to_rep_t = typename std::remove_reference<decltype(to_rep(std::declval<Number>()))>::type;
     }
 }
 

@@ -19,6 +19,7 @@ set(test_sources
         numeric.cpp
         number_test.cpp
         overflow/overflow.cpp
+        overflow/rounding/integer.cpp
         rounding/rounding.cpp
         _impl/num_traits/max_digits.cpp
         _impl/num_traits/adopt.cpp
@@ -30,7 +31,7 @@ set(test_sources
         # components
         constant.cpp
         integer/digits.cpp
-        integer/from_rep.cpp
+        integer/set_rep.cpp
         integer/from_value.cpp
         integer/make_integer.cpp
         integer/numeric_limits.cpp
@@ -46,6 +47,7 @@ set(test_sources
         elastic/elastic_integer.cpp
         scaled_integer/extras.cpp
         overflow/overflow_integer.cpp
+        overflow/overflow_tag.cpp
         rounding/rounding_integer.cpp
         _impl/duplex_integer/digits.cpp
         _impl/duplex_integer/numeric_limits.cpp
@@ -58,10 +60,10 @@ set(test_sources
         _impl/wide_integer/literals.cpp
         _impl/wide_integer/make_wide_integer.cpp
         _impl/wide_integer/numeric_limits.cpp
-        _impl/wide_integer/operators.cpp
         _impl/wide_integer/scale.cpp
         _impl/wide_integer/set_digits.cpp
-        _impl/wide_integer/type.cpp
+        _impl/wide_integer/definition.cpp
+        _impl/wide_integer/generic.cpp
 
         # components in free functions
         elastic/rounding/elastic_integer_rounding.cpp
@@ -224,6 +226,7 @@ function(make_test source out_target compile_flags linker_flags)
                     "${ClangTidy}"
                     "-p=${CMAKE_BINARY_DIR}"
                     "-extra-arg=-Wno-unknown-warning-option"
+                    "-header-filter=include/cnl"
                     "${CMAKE_CURRENT_LIST_DIR}/${source}")
         endif (NOT ${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
     endif (${CNL_CLANG_TIDY})
