@@ -10,6 +10,7 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_NUM_TRAITS_H)
 #define CNL_IMPL_SCALED_INTEGER_NUM_TRAITS_H
 
+#include "../../fraction.h"
 #include "type.h"
 
 /// compositional numeric library
@@ -43,8 +44,9 @@ namespace cnl {
     template<typename Rep, int Exponent, int Radix, typename Numerator, typename Denominator>
     struct from_value<scaled_integer<Rep, power<Exponent, Radix>>, fraction<Numerator, Denominator>> {
         CNL_NODISCARD constexpr auto operator()(fraction<Numerator, Denominator> const& value) const
-        -> decltype(quotient(value.numerator, value.denominator)) {
-            return quotient(value.numerator, value.denominator);
+        -> decltype(make_scaled_integer(value))
+        {
+            return make_scaled_integer(value);
         }
     };
 
@@ -61,20 +63,9 @@ namespace cnl {
     // scaled_integer specializations of scaled_integer-specific templates
 
     namespace _impl {
-
-        // cnl::_impl::fractional_digits
-        template <class T>
-        struct fractional_digits : std::integral_constant<int, 0> {
-        };
-
         template<typename Rep, int Exponent, int Radix>
         struct fractional_digits<scaled_integer<Rep, power<Exponent, Radix>>>
                 : std::integral_constant<int, -Exponent> {
-        };
-
-        // cnl::_impl::integer_digits
-        template <class T>
-        struct integer_digits : std::integral_constant<int, digits<T>::value - fractional_digits<T>::value> {
         };
     }
 }

@@ -62,7 +62,8 @@ namespace {  // NOLINT(cert-dcl59-cpp)
 
         // nicely-widened quotient
         constexpr auto nq = cnl::make_scaled_integer(f);
-        static_assert(identical(cnl::quotient(n, d), nq), "cnl::make_scaled_integer(cnl::fraction)");
+        static_assert(identical(cnl::make_scaled_integer(cnl::make_fraction(n, d)), nq),
+                "cnl::make_scaled_integer(cnl::fraction)");
 #if defined(__cpp_deduction_guides)
         static_assert(
                 identical(nq, cnl::scaled_integer{f}),

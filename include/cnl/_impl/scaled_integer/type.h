@@ -15,8 +15,9 @@
 #include "../num_traits/width.h"
 #include "../number_base.h"
 #include "../operators/tagged.h"
-#include "../power.h"
 #include "../power_value.h"
+#include "../scaled/convert_operator.h"
+#include "../scaled/power.h"
 #include "declaration.h"
 #include "is_scaled_integer.h"
 
