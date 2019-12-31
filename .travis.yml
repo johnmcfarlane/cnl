@@ -11,18 +11,20 @@ matrix:
     - os: linux
       env: IMAGE=gcc-9 STD=20 SANITIZE=OFF GENERATOR=Ninja CLANG_TIDY=OFF
 
+    - os: osx
+      osx_image: xcode11.2
+      env: PACKAGE=gcc@8 VERSION=8 CC=gcc-8 CXX=g++-8 STD=11 SANITIZE=OFF GENERATOR="Unix Makefiles"
     - os: linux
       env: IMAGE=gcc-8 STD=17 SANITIZE=OFF GENERATOR=Ninja CLANG_TIDY=ON
 
     - os: linux
       env: IMAGE=gcc-7 STD=17 SANITIZE=OFF GENERATOR=Ninja CLANG_TIDY=OFF
 
+    - os: linux
+      env: IMAGE=gcc-6 STD=17 SANITIZE=ON GENERATOR=Ninja CLANG_TIDY=OFF
     - os: osx
       osx_image: xcode10
       env: PACKAGE=gcc@6 VERSION=6 CC=gcc-6 CXX=g++-6 STD=11 SANITIZE=OFF GENERATOR="Unix Makefiles"
-
-    - os: linux
-      env: IMAGE=gcc-6 STD=17 SANITIZE=ON GENERATOR=Ninja CLANG_TIDY=OFF
 
     - os: linux
       env: IMAGE=gcc-5 STD=11 SANITIZE=ON GENERATOR=Ninja CLANG_TIDY=OFF
@@ -31,24 +33,19 @@ matrix:
     - os: linux
       env: IMAGE=gcc-5 STD=17 SANITIZE=ON GENERATOR=Ninja CLANG_TIDY=OFF
 
-    - os: osx
-      compiler: clang
-      env: CC=clang CXX=clang++ STD=14 SANITIZE=OFF GENERATOR="Unix Makefiles"
-
     - os: linux
       env: IMAGE=clang-7.0 STD=20 SANITIZE=OFF GENERATOR="Unix Makefiles" CLANG_TIDY=ON
 
     - os: linux
       env: IMAGE=clang-6.0 STD=20 SANITIZE=OFF GENERATOR=Ninja CLANG_TIDY=OFF
 
+    - os: osx
+      compiler: clang  # 5.0.2
+      env: CC=clang CXX=clang++ STD=14 SANITIZE=OFF GENERATOR="Unix Makefiles"
     - os: linux
       env: IMAGE=clang-5.0 STD=17 SANITIZE=OFF GENERATOR="Unix Makefiles" CLANG_TIDY=OFF
     - os: linux
       env: IMAGE=clang-5.0 STD=20 SANITIZE=OFF GENERATOR=Ninja CLANG_TIDY=OFF
-
-    - os: osx
-      osx_image: xcode11.2
-      env: PACKAGE=gcc@8 VERSION=8 CC=gcc-8 CXX=g++-8 STD=11 SANITIZE=OFF GENERATOR="Unix Makefiles"
 
     - os: linux
       env: IMAGE=clang-4.0 STD=14 SANITIZE=OFF GENERATOR=Ninja CLANG_TIDY=OFF
