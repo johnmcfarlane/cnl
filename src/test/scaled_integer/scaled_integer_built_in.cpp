@@ -20,7 +20,6 @@ using test_int = int;
 // perform scaled_integer tests with this type of scaled_integer specialization
 
 #include "scaled_integer_common.h"
-#include <cnl/constant.h>
 
 #if defined(__cpp_deduction_guides)
 
