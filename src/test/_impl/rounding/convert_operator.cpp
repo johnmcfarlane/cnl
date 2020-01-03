@@ -178,3 +178,12 @@ namespace  test_convert_tie_to_pos_inf_rounding_native_datatypes
                     cnl::convert<cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag, double, int>(3)),
             "cnl::convert<tie_to_pos_inf_rounding_tag, double, int>");
 }
+
+namespace test_convert_native_rounding
+{
+    static_assert(
+            cnl::_impl::identical(
+                    short{3},
+                    cnl::convert_operator<cnl::native_rounding_tag, cnl::native_rounding_tag, short, long>{}(3L)),
+            "convert_operator<native_rounding_tag, native_rounding_tag, short, long>");
+}
