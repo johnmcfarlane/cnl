@@ -44,7 +44,7 @@ set(test_sources
         scaled_integer/constants.cpp
         fraction/ctors.cpp
         fraction/fraction.cpp
-        elastic/elastic_integer.cpp
+        elastic_integer/elastic_integer.cpp
         scaled_integer/extras.cpp
         overflow/overflow_integer.cpp
         overflow/overflow_tag.cpp
@@ -66,14 +66,14 @@ set(test_sources
         _impl/wide_integer/generic.cpp
 
         # components in free functions
-        elastic/rounding/elastic_integer_rounding.cpp
+        elastic_integer/rounding_integer/rounding_elastic_integer.cpp
         rounding/fixed_point/elastic_integer/elastic_fixed_point.cpp
         rounding/fixed_point/fixed_point.cpp
         rounding/scaled_integer/elastic_integer/elastic_scaled_integer.cpp
         rounding/scaled_integer/scaled_integer.cpp
 
         # composites
-        elastic/wide/wide_elastic_integer.cpp
+        elastic_integer/wide_integer/wide_elastic_integer.cpp
         scaled_integer/integer/scaled_integer_integer.cpp
         scaled_integer/overflow/scaled_integer_native_integer.cpp
         scaled_integer/overflow/scaled_integer_trapping_integer.cpp
@@ -87,11 +87,11 @@ set(test_sources
         scaled_integer/rounding/overflow/scaled_integer_rounding_overflow.cpp
         scaled_integer/rounding/elastic/integer.cpp
         scaled_integer/elastic/rounding/overflow/426.cpp
-        rounding/elastic/rounding_elastic_integer.cpp
+        rounding/elastic_integer/elastic_integer.cpp
         rounding/overflow/elastic/integer.cpp
         scaled_integer/rounding/rounding_scaled_integer.cpp
-        elastic/rounding/integer.cpp
-        elastic/rounding/overflow/rounding_safe_integer.cpp
+        elastic_integer/rounding_integer/set_rounding.cpp
+        elastic_integer/rounding_integer/overflow_integer/rounding_safe_integer.cpp
         overflow/elastic/safe_integer.cpp
         overflow/wide/wide_overflow_integer.cpp
         scaled_integer/elastic/make_elastic_scaled_integer.cpp

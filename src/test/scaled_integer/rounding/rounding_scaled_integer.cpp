@@ -8,6 +8,21 @@
 #include <cnl/rounding_integer.h>
 #include <cnl/scaled_integer.h>
 
+#include <cinttypes>
+
+#define TEST_NATIVE_INTEGER
+#define TEST_LABEL rounding_integer_  // NOLINT(cppcoreguidelines-macro-usage)
+
+////////////////////////////////////////////////////////////////////////////////
+// integer types used as scaled_integer Rep type
+
+using test_int = cnl::rounding_integer<int, cnl::native_rounding_tag>;
+
+////////////////////////////////////////////////////////////////////////////////
+// perform scaled_integer tests with this type of scaled_integer specialization
+
+#include "../scaled_integer_common.h"
+
 namespace {
     using cnl::_impl::identical;
     using cnl::rounding_integer;

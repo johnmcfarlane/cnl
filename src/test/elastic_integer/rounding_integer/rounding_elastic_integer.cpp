@@ -1,16 +1,17 @@
 
-//          Copyright John McFarlane 2015 - 2017.
+//          Copyright John McFarlane 2018.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/number/from_rep.h>
-#include <cnl/_impl/type_traits/assert_same.h>
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_integer.h>
 #include <cnl/rounding_integer.h>
 
-#include <gtest/gtest.h>
+#include <cnl/_impl/type_traits/assert_same.h>
+#include <cnl/_impl/type_traits/identical.h>
+
+using cnl::_impl::assert_same;
+using cnl::_impl::identical;
 
 namespace cnl {
     // rounding elastic integer
@@ -73,7 +74,7 @@ namespace {
         static_assert(identical(
                 rounding_elastic_integer<16>{0},
                 cnl::_impl::from_rep<rounding_elastic_integer<24>>(cnl::elastic_integer<16>(0))),
-                        "from_rep<rounding_elastic_integer>");
+                "from_rep<rounding_elastic_integer>");
     }
 
     namespace test_make_rounding_elastic {
