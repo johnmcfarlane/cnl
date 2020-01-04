@@ -58,7 +58,7 @@ namespace cnl {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::set_rep<Rep, OverflowTag>
+    // cnl::set_tag<overflow_integer, OverflowTag>
 
     template<typename NumberRep, class NumberTag, class Tag>
     struct set_tag<
