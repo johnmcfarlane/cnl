@@ -29,16 +29,18 @@ namespace cnl {
         }
     };
 
-    template<class ArchetypeRep, class ArchetypeTag, class ValueRep, class ValueTag>
+    template<typename ArchetypeRep, class ArchetypeTag, typename Value>
     struct from_value<
             _impl::number<ArchetypeRep, ArchetypeTag>,
-            _impl::number<ValueRep, ValueTag>,
-            _impl::enable_if_t<!_impl::can_convert_tag_family<ArchetypeTag, ValueTag>::value>> {
+            Value,
+            _impl::enable_if_t<!_impl::can_convert_tag_family<ArchetypeTag, _impl::tag_t<Value>>::value>> {
         using result_type = _impl::number<
-                from_value_t<ArchetypeRep, ValueRep>,
+                from_value_t<ArchetypeRep, _impl::rep_t<Value>>,
                 ArchetypeTag>;
 
-        CNL_NODISCARD constexpr auto operator()(_impl::number<ValueRep, ValueTag> const& value) const
+        CNL_NODISCARD constexpr auto operator()(
+                _impl::number<_impl::rep_t<Value>,
+                _impl::tag_t<Value>> const& value) const
         -> result_type
         {
             return result_type{value};

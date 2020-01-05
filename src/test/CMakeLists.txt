@@ -89,6 +89,7 @@ set(test_sources
         scaled_integer/elastic/rounding/overflow/426.cpp
         rounding/elastic_integer/elastic_integer.cpp
         rounding/overflow/elastic/integer.cpp
+        rounding/rounding_integer/rounding_integer.cpp
         rounding/wide_integer/wide_integer.cpp
         scaled_integer/rounding/rounding_scaled_integer.cpp
         elastic_integer/rounding_integer/set_rounding.cpp
