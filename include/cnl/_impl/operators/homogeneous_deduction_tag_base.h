@@ -34,7 +34,7 @@ namespace cnl {
         // tag associated with deduced type
         using tag = ArchetypeTag;
 
-        // deduced type
+        // deduced type; equivalent to rep type of a component
         using type = Initializer;
     };
 }
