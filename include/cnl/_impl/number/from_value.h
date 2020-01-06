@@ -38,9 +38,7 @@ namespace cnl {
                 from_value_t<ArchetypeRep, _impl::rep_t<Value>>,
                 ArchetypeTag>;
 
-        CNL_NODISCARD constexpr auto operator()(
-                _impl::number<_impl::rep_t<Value>,
-                _impl::tag_t<Value>> const& value) const
+        CNL_NODISCARD constexpr auto operator()(Value const& value) const
         -> result_type
         {
             return result_type{value};
