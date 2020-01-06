@@ -28,7 +28,7 @@ namespace {
 
         static_assert(
                 identical(
-                        cnl::_impl::number<cnl::elastic_integer<31, int>, cnl::nearest_rounding_tag>{42},
+                        cnl::_impl::number<cnl::elastic_integer<13, int>, cnl::nearest_rounding_tag>{42},
                         cnl::from_value<
                                 cnl::_impl::number<cnl::elastic_integer<24, int>, cnl::nearest_rounding_tag>,
                                 cnl::elastic_integer<13, int>>{}(

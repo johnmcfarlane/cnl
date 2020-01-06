@@ -90,7 +90,7 @@ namespace {
                 rounding_elastic_integer<7>{70}), "rounding_elastic_integer operator*");
         static_assert(
                 identical(
-                        cnl::_impl::number<cnl::elastic_integer<55, int>, cnl::nearest_rounding_tag>{54},
+                        cnl::_impl::number<cnl::elastic_integer<37, int>, cnl::nearest_rounding_tag>{54},
                         cnl::binary_operator<
                                 cnl::_impl::multiply_op,
                                 cnl::_impl::native_tag,

@@ -35,7 +35,7 @@ namespace cnl {
             Value,
             _impl::enable_if_t<!_impl::can_convert_tag_family<ArchetypeTag, _impl::tag_t<Value>>::value>> {
         using result_type = _impl::number<
-                from_value_t<ArchetypeRep, _impl::rep_t<Value>>,
+                from_value_t<ArchetypeRep, Value>,
                 ArchetypeTag>;
 
         CNL_NODISCARD constexpr auto operator()(Value const& value) const

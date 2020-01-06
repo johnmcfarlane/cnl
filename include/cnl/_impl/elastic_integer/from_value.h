@@ -26,7 +26,7 @@ namespace cnl {
     template<int Digits, typename Narrowest, int ValueDigits, typename ValueNarrowest>
     struct from_value<elastic_integer<Digits, Narrowest>, elastic_integer<ValueDigits, ValueNarrowest>>
         : _impl::from_value_simple<
-                elastic_integer<_impl::max(Digits, ValueDigits), Narrowest>,
+                elastic_integer<ValueDigits, Narrowest>,
                 elastic_integer<ValueDigits, Narrowest>> {
     };
 

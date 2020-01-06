@@ -84,7 +84,9 @@ namespace {
     namespace test_from_value {
         static_assert(
                 identical(
-                        cnl::_impl::number<int, cnl::native_rounding_tag>{42},
+                        cnl::_impl::number<
+                                cnl::_impl::number<int, cnl::_impl::native_tag>,
+                                cnl::native_rounding_tag>{42},
                         cnl::_impl::from_value<
                                 cnl::_impl::number<int, cnl::native_rounding_tag>,
                                 cnl::_impl::number<int, cnl::_impl::native_tag>>(42)),
