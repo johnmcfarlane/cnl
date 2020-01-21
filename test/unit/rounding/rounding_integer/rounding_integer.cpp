@@ -35,4 +35,23 @@ namespace {
                                 cnl::elastic_integer<13, int>{42})),
                 "");
     }
+
+    namespace acme {
+        template<typename T>
+        class number
+        {};
+    }
+    namespace test_convert_operator {
+        static_assert(
+                identical(0,
+                        cnl::convert_operator<
+                                cnl::power<-20, 2>,
+                                cnl::power<0, 2>,
+                                cnl::_impl::number<cnl::elastic_integer<24, int>, cnl::nearest_rounding_tag>,
+                                acme::number<
+                                        cnl::scaled_integer<
+                                                cnl::_impl::number<cnl::elastic_integer<24, int>, cnl::nearest_rounding_tag>,
+                                                cnl::power<-20, 2>>>>{}(0)),
+                "");
+    }
 }
