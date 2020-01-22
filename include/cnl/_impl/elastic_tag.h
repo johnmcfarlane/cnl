@@ -8,6 +8,7 @@
 #define CNL_IMPL_ELASTIC_TAG_H
 
 #include "elastic_tag/declaration.h"
+#include "elastic_tag/deduction.h"
 #include "elastic_tag/definition.h"
 #include "elastic_tag/generic.h"
 #include "elastic_tag/inc_dec_operator.h"

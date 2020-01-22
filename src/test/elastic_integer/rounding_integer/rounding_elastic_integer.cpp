@@ -1,16 +1,19 @@
 
-//          Copyright John McFarlane 2015 - 2017.
+//          Copyright John McFarlane 2018.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/number/from_rep.h>
-#include <cnl/_impl/type_traits/assert_same.h>
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_integer.h>
 #include <cnl/rounding_integer.h>
 
+#include <cnl/_impl/type_traits/assert_same.h>
+#include <cnl/_impl/type_traits/identical.h>
+
 #include <gtest/gtest.h>
+
+using cnl::_impl::assert_same;
+using cnl::_impl::identical;
 
 namespace cnl {
     // rounding elastic integer
@@ -41,8 +44,6 @@ namespace cnl {
 namespace {
     using cnl::rounding_elastic_integer;
     using std::is_same;
-    using cnl::_impl::assert_same;
-    using cnl::_impl::identical;
 
     namespace default_parameters {
         using cnl::_impl::rep_t;
@@ -52,6 +53,10 @@ namespace {
         static_assert(
                 is_same<rep_t<rep_t<rounding_elastic_integer<1>>>, int>::value,
                 "cnl::rounding_integer parameter default test failed");
+    }
+
+    namespace test_is_number {
+        static_assert(cnl::_impl::is_number<cnl::elastic_integer<>>::value && !cnl::_impl::is_number<int>::value, "");
     }
 
     namespace test_from_rep {
@@ -73,7 +78,7 @@ namespace {
         static_assert(identical(
                 rounding_elastic_integer<16>{0},
                 cnl::_impl::from_rep<rounding_elastic_integer<24>>(cnl::elastic_integer<16>(0))),
-                        "from_rep<rounding_elastic_integer>");
+                "from_rep<rounding_elastic_integer>");
     }
 
     namespace test_make_rounding_elastic {
@@ -81,9 +86,22 @@ namespace {
     }
 
     namespace test_multiply {
-        static_assert(cnl::_impl::is_number<cnl::elastic_integer<>>::value && !cnl::_impl::is_number<int>::value, "");
         static_assert(identical(rounding_elastic_integer<3>{7}*rounding_elastic_integer<4>{10},
                 rounding_elastic_integer<7>{70}), "rounding_elastic_integer operator*");
+        static_assert(
+                identical(
+                        cnl::_impl::number<cnl::elastic_integer<37, int>, cnl::nearest_rounding_tag>{54},
+                        cnl::binary_operator<
+                                cnl::_impl::multiply_op,
+                                cnl::_impl::native_tag,
+                                cnl::_impl::native_tag,
+                                cnl::_impl::number<cnl::elastic_integer<24, int>, cnl::nearest_rounding_tag>,
+                                cnl::elastic_integer<13, int>>{}(
+                                        cnl::_impl::number<
+                                                cnl::elastic_integer<24, int>,
+                                                cnl::nearest_rounding_tag>{6},
+                                        cnl::elastic_integer<13, int>{9})),
+                "binary_operator<multiply_op, native_tag, native_tag, rounding_elastic_integer, elastic_integer>");
     }
 
     namespace test_from_value {

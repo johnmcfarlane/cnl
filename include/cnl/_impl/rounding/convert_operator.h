@@ -32,7 +32,9 @@ namespace cnl {
     }
 
     template<class SrcTag, typename Destination, typename Source>
-    struct convert_operator<native_rounding_tag, SrcTag, Destination, Source> {
+    struct convert_operator<
+            native_rounding_tag, SrcTag, Destination, Source,
+            _impl::enable_if_t<!_impl::is_rounding_tag<SrcTag>::value>> {
         CNL_NODISCARD constexpr Destination operator()(Source const& from) const
         {
             return convert_operator<_impl::native_tag, SrcTag, Destination, Source>{}(from);
@@ -42,7 +44,9 @@ namespace cnl {
     template<class SrcTag, typename Destination, typename Source>
     struct convert_operator<
             nearest_rounding_tag, SrcTag, Destination, Source,
-            _impl::enable_if_t<_impl::are_arithmetic_or_integer<Destination, Source>::value>> {
+            _impl::enable_if_t<
+                    !_impl::is_rounding_tag<SrcTag>::value
+                    &&_impl::are_arithmetic_or_integer<Destination, Source>::value>> {
         CNL_NODISCARD constexpr Destination operator()(Source const& from) const
         {
             return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
@@ -90,6 +94,15 @@ namespace cnl {
         {
             return convert_operator<_impl::native_tag, _impl::native_tag, Destination, Source>{}(from);
         }
+    };
+
+    template<class DestRoundingTag, typename Destination, class SrcRoundingTag, typename Source>
+    struct convert_operator<
+            DestRoundingTag, SrcRoundingTag,
+            Destination, Source,
+            _impl::enable_if_t<
+                    _impl::is_rounding_tag<DestRoundingTag>::value&&_impl::is_rounding_tag<SrcRoundingTag>::value>>
+            : convert_operator<DestRoundingTag, _impl::native_tag, Destination, Source> {
     };
 }
 

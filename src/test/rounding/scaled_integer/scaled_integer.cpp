@@ -146,4 +146,16 @@ namespace {
                                 cnl::scaled_integer<int, cnl::power<2>>>(6)),
                 "cnl::convert<cnl::native_rounding_tag, cnl::_impl::native_tag, cnl::scaled_integer, int>");
     }
+
+    namespace test_convert_nearest_rounding_elastic_number
+    {
+        static constexpr auto a = cnl::scaled_integer<int, cnl::power<-4>>{0.3125};
+        static constexpr auto b = cnl::convert_operator<
+                cnl::nearest_rounding_tag,
+                cnl::native_rounding_tag,
+                cnl::scaled_integer<int, cnl::power<-1>>,
+                cnl::scaled_integer<int, cnl::power<-4>>>{}(a);
+        static_assert(identical(cnl::scaled_integer<int, cnl::power<-1>>{0.5}, b),
+                "convert_operator<native_rounding_tag, nearest_rounding_tag, scaled_integer, scaled_integer>");
+    }
 }
