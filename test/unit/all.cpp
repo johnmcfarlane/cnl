@@ -7,7 +7,8 @@
 //#include "boost/program_options/detail/value_semantic.hpp"
 #include <boost/program_options/options_description.hpp>
 //#include <cnl/all.h>
-#include <cnl/scaled_integer.h>
+//#include <cnl/scaled_integer.h>
+#include <cnl/_impl/scaled_integer/to_chars.h>
 
 int main()
 {
