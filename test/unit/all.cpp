@@ -6,9 +6,10 @@
 
 //#include "boost/program_options/detail/value_semantic.hpp"
 #include <boost/program_options/options_description.hpp>
-#include <cnl/all.h>
+//#include <cnl/all.h>
+#include <cnl/scaled_integer.h>
 
 int main()
 {
-    return 1;
+    return 0;
 }
