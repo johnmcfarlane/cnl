@@ -7,7 +7,7 @@
 /// \file
 /// \brief file containing definitions equivalent to those in \verbatim<bit>\endverbatim
 
-#ifndef(CNL_BIT_H)
+#ifndef CNL_BIT_H
 #define CNL_BIT_H
 
 #include "_impl/num_traits/digits.h"
