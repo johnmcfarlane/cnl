@@ -22,6 +22,8 @@ namespace cnl {
 
 #if defined(CNL_INT128_ENABLED)
 
+    static_assert(std::numeric_limits<__int128>::is_specialized, "");
+
     template<>
     struct numeric_limits<int128> : numeric_limits<long long> {
         static int const digits = CHAR_BIT*sizeof(int128)-1;
