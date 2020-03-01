@@ -22,14 +22,17 @@ conan --version
 conan remote add --force johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
 
 build_and_test () {
+  BUILD_TYPE="$1"
+  EXCEPTIONS="$2"
+  INT128="$3"
   cmake \
-    -DCMAKE_BUILD_TYPE="$1" \
+    -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
     -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
     -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
     -DCNL_CLANG_TIDY=${CLANG_TIDY} \
     -DCNL_DEV=ON -DCNL_STD=${STD} \
-    -DCNL_EXCEPTIONS=$2 \
-    -DCNL_INT128=$3 \
+    -DCNL_EXCEPTIONS="${EXCEPTIONS}" \
+    -DCNL_INT128="${INT128}" \
     -DCNL_SANITIZE=${SANITIZE} \
     -G "${GENERATOR}" \
     "${PROJECT_SOURCE_DIR}"
