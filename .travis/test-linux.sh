@@ -13,8 +13,9 @@ docker run \
   -w /ws \
   johnmcfarlane/cnl_ci:${IMAGE} \
   /cnl/.travis/test.sh \
-    "${STD}" \
+    "${CLANG_TIDY}" \
     "${GENERATOR}" \
     "${NUM_CPUS}" \
     "${PROJECT_SOURCE_DIR}" \
-    "${CLANG_TIDY}"
+    "${SANITIZE}" \
+    "${STD}"

@@ -4,11 +4,12 @@ set -ex
 
 SCRIPT_DIR=$(dirname "$0")
 
-STD=${1:-17}
+CLANG_TIDY=${1:-1}
 GENERATOR=${2:-"Unix Makefiles"}
 NUM_CPUS=${3:-$(nproc)}
 PROJECT_SOURCE_DIR=${4:-"${SCRIPT_DIR}/.."}
-CLANG_TIDY=${5:-1}
+SANITIZE=${5:-"OFF"}
+STD=${6:-17}
 
 cloc "${PROJECT_SOURCE_DIR}"/include
 cloc "${PROJECT_SOURCE_DIR}"/src
