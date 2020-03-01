@@ -8,6 +8,32 @@
 /// \brief include-all header for the CNL numeric library;
 /// contains front page of user manual
 
+#if !defined(CNL_ALL_H)
+#define CNL_ALL_H
+
+#include "bit.h"
+#include "cmath.h"
+#include "constant.h"
+#include "cstdint.h"
+#include "elastic_fixed_point.h"
+#include "elastic_integer.h"
+#include "elastic_scaled_integer.h"
+#include "fixed_point.h"
+#include "fraction.h"
+#include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
+#include "math.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
+#include "num_traits.h"
+#include "numeric.h"
+#include "overflow.h"
+#include "overflow_integer.h"
+#include "rounding.h"
+#include "rounding_integer.h"
+#include "scaled_integer.h"
+#include "static_integer.h"
+#include "static_number.h"
+#include "type_traits.h"
+#include "wide_integer.h"
+
 /*! \mainpage User Manual
  *
  * \section Introduction
@@ -96,31 +122,5 @@
  * \snippet index.cpp elastic example
  *
  * */
-
-#if !defined(CNL_ALL_H)
-#define CNL_ALL_H
-
-#include "bit.h"
-#include "cmath.h"
-#include "constant.h"
-#include "cstdint.h"
-#include "elastic_fixed_point.h"
-#include "elastic_integer.h"
-#include "elastic_scaled_integer.h"
-#include "fixed_point.h"
-#include "fraction.h"
-#include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
-#include "math.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
-#include "num_traits.h"
-#include "numeric.h"
-#include "overflow.h"
-#include "overflow_integer.h"
-#include "rounding.h"
-#include "rounding_integer.h"
-#include "scaled_integer.h"
-#include "static_integer.h"
-#include "static_number.h"
-#include "type_traits.h"
-#include "wide_integer.h"
 
 #endif  // CNL_ALL_H

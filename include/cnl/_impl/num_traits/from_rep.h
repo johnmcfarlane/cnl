@@ -4,6 +4,9 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+/// \file cnl/num_traits.h
+/// \brief primary class template definition of \ref cnl::from_rep
+
 #if !defined(CNL_IMPL_NUM_TRAITS_FROM_REP)
 #define CNL_IMPL_NUM_TRAITS_FROM_REP
 
@@ -12,6 +15,7 @@
 
 namespace cnl {
     /// \brief generic function object that returns the number encapsulating a given value
+    /// \file cnl/num_traits.h
     ///
     /// \tparam Number archetype for the encapsulating type
     ///
@@ -21,7 +25,8 @@ namespace cnl {
     template<typename Number, typename Rep, class Enable = void>
     struct from_rep;
 
-    /// \brief Specialization of \ref from_rep for integer types
+    /// \private \brief Specialization of \ref from_rep for integer types
+    /// \file cnl/num_traits.h
     ///
     /// \tparam Number fundamental integer type to return
     ///

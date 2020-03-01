@@ -41,6 +41,7 @@ namespace cnl {
         }
     };
 
+    /// \private specialization converting between native floats and any integers
     template<class SrcTag, typename Destination, typename Source>
     struct convert_operator<
             nearest_rounding_tag, SrcTag, Destination, Source,

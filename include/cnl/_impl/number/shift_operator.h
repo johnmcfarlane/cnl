@@ -19,7 +19,7 @@
 
 /// compositional numeric library
 namespace cnl {
-    // number << non-number
+    /// \private (number, rep-type)
     template<class Operator, typename LhsRep, class LhsTag, class Rhs>
     struct shift_operator<
             Operator,
@@ -40,8 +40,7 @@ namespace cnl {
         }
     };
 
-    // number<int, Foo> << number<int, Foo>
-    // includes derived classes
+    /// \private (number, number-derived)
     template<class Operator, typename LhsRep, class LhsTag, class Rhs>
     struct shift_operator<
             Operator,
@@ -61,8 +60,7 @@ namespace cnl {
         }
     };
 
-    // non-number << number
-    // includes derived classes
+    /// \private (non-number, number-derived)
     template<class Operator, class Lhs, class Rhs>
     struct shift_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,

@@ -83,6 +83,7 @@ namespace cnl {
         }
     };
 
+    /// \private (elastic_integer, elastic_integer)
     template<class Operator, int Digits, class Narrowest>
     struct comparison_operator<Operator, elastic_integer<Digits, Narrowest>, elastic_integer<Digits, Narrowest>> {
         CNL_NODISCARD constexpr auto operator()(
@@ -94,8 +95,7 @@ namespace cnl {
         }
     };
 
-    // elastic_integer << non-constant
-    // elastic_integer >> non-constant
+    /// \private (elastic_integer, non-constant)
     template<class Operator, int LhsDigits, class LhsRep, typename Rhs>
     struct shift_operator<
             Operator,
@@ -111,6 +111,7 @@ namespace cnl {
         }
     };
 
+    /// \private (elastic_integer, constant)
     template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
     struct shift_operator<
             _impl::shift_left_op,
@@ -129,6 +130,7 @@ namespace cnl {
         }
     };
 
+    /// \private (elastic_integer, constant)
     template<
             int LhsDigits, class LhsNarrowest,
             CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
@@ -149,7 +151,7 @@ namespace cnl {
         }
     };
 
-    // unary operator-
+    /// \private elastic_integer specialization
     template<int RhsDigits, class RhsNarrowest>
     struct unary_operator<_impl::minus_op, _impl::native_tag, elastic_integer<RhsDigits, RhsNarrowest>> {
         CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
@@ -160,7 +162,7 @@ namespace cnl {
         }
     };
 
-    // unary operator+
+    /// \private elastic_integer specialization
     template<int RhsDigits, class RhsNarrowest>
     struct unary_operator<_impl::plus_op, _impl::native_tag, elastic_integer<RhsDigits, RhsNarrowest>> {
         CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
@@ -171,7 +173,7 @@ namespace cnl {
         }
     };
 
-    // unary operator~
+    /// \private elastic_integer specialization
     template<int RhsDigits, class RhsNarrowest>
     struct unary_operator<_impl::bitwise_not_op, _impl::native_tag, elastic_integer<RhsDigits, RhsNarrowest>> {
         CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const

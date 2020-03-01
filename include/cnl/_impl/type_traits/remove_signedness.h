@@ -29,10 +29,13 @@ namespace cnl {
     };
 
 #if defined(CNL_INT128_ENABLED)
+    /// \private
     template<>
     struct remove_signedness<int128> {
         using type = uint128;
     };
+
+    /// \private
     template<>
     struct remove_signedness<uint128> {
         using type = uint128;

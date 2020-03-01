@@ -91,6 +91,7 @@ namespace cnl {
     };
 
 #if defined(CNL_BUILTIN_OVERFLOW_ENABLED)
+    /// \private specialization covering toolchain built-in overfow detection
     template<class Operator, class LhsTag, class RhsTag, typename Lhs, typename Rhs>
     struct binary_operator<
             Operator,

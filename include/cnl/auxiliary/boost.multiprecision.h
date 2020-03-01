@@ -136,6 +136,7 @@ namespace cnl {
         using type = _bmp::number<_bmp::cpp_int_backend<MinNumDigits, MinNumDigits, _bmp::unsigned_magnitude>>;
     };
 
+    /// \private signed BMP backend specialization
     template<unsigned NumBits, int MinNumDigits>
     struct set_digits<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>, MinNumDigits> {
         using type = _bmp::number<_bmp::cpp_int_backend<MinNumDigits+1, MinNumDigits+1, _bmp::signed_magnitude>>;

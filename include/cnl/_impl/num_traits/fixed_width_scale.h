@@ -15,10 +15,12 @@
 #include "to_rep.h"
 
 namespace cnl {
-    // returns a scaled value of the same type
+    /// \brief returns a scaled value of the same type
+    /// \headerfile cnl/scaled_integer.h
     template<int Digits, int Radix, class Scalar, class Enable=void>
     struct fixed_width_scale;
 
+    /// \private specialization for non-composite types
     template<int Digits, int Radix, typename S>
     struct fixed_width_scale<Digits, Radix, S, _impl::enable_if_t<!is_composite<S>::value>> {
         CNL_NODISCARD constexpr S operator()(S const& s) const
@@ -39,6 +41,7 @@ namespace cnl {
         }
     }
 
+    /// \private specialization for composite types
     template<int Digits, int Radix, typename Composite>
     struct fixed_width_scale<
             Digits, Radix, Composite,

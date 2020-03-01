@@ -23,7 +23,7 @@
 
 /// compositional numeric library
 namespace cnl {
-    // higher OP number<>
+    /// \private specialization for (floating, number<>)
     template<class Operator, class Lhs, class Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
@@ -35,7 +35,7 @@ namespace cnl {
         }
     };
 
-    // number<> OP higher
+    /// \private specialization for (number<>, floating)
     template<class Operator, class Lhs, class Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
@@ -47,7 +47,7 @@ namespace cnl {
         }
     };
 
-    // lower OP number<>
+    /// \private specialization for (U, number<T>) where number<U> is desirable
     template<class Operator, class Lhs, class Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
@@ -59,7 +59,7 @@ namespace cnl {
         }
     };
 
-    // number<> OP lower
+    /// \private specialization for (number<T>, U) where number<U> is desirable
     template<class Operator, class Lhs, class Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
@@ -71,6 +71,7 @@ namespace cnl {
         }
     };
 
+    /// \private specialization for related number<> operands
     template<class Operator, typename Lhs, typename Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag,

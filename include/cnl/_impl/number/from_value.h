@@ -16,6 +16,7 @@
 
 /// compositional numeric library
 namespace cnl {
+    /// \private specialization wrapping non-composite, non-constant types in \ref number 
     template<typename Rep, class Tag, typename Value>
     struct from_value<
             _impl::number<Rep, Tag>, Value,
@@ -29,6 +30,7 @@ namespace cnl {
         }
     };
 
+    /// \private specialization preventing related types wrapping one another 
     template<typename ArchetypeRep, class ArchetypeTag, typename Value>
     struct from_value<
             _impl::number<ArchetypeRep, ArchetypeTag>,

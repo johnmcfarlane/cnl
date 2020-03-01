@@ -16,6 +16,7 @@
 
 /// compositional numeric library
 namespace cnl {
+    /// \private specialization for (duplex_integer<>, anything-else)
     template<class Duplex, class Value>
     struct from_value<
             Duplex, Value,
@@ -27,6 +28,7 @@ namespace cnl {
         }
     };
 
+    /// \private specialization for (duplex_integer<>, duplex_integer<>)
     template<class Duplex, class Value>
     struct from_value<
             Duplex, Value,

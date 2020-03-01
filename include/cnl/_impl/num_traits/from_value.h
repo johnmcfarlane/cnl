@@ -27,6 +27,8 @@ namespace cnl {
         };
     }
 
+    /// \brief returns a scaled value of the same type
+    /// \headerfile cnl/scaled_integer.h
     template<typename Number, typename Value, class Enable = void>
     struct from_value {
         void operator()(Value const &) const;

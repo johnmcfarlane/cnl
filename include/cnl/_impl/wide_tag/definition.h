@@ -18,7 +18,7 @@
 
 /// compositional numeric library
 namespace cnl {
-    // When number can be represented in a single integer
+    /// \private specialization for when number can be represented in a single integer
     template<int Digits, typename Narrowest>
     struct wide_tag<
             Digits,
@@ -30,7 +30,7 @@ namespace cnl {
                 _impl::max(cnl::digits<Narrowest>::value, Digits)>;
     };
 
-    // when number must be represented using multiple integers
+    /// \private specialization for when number must be represented using multiple integers
     template<int Digits, typename Narrowest>
     struct wide_tag<
             Digits,

@@ -16,6 +16,7 @@
 
 /// compositional numeric library
 namespace cnl {
+    /// \private \ref elastic_integer specialization for non-composite types
     template<int Digits, class Narrowest, class Rep>
     struct from_rep<elastic_integer<Digits, Narrowest>, Rep> {
         CNL_NODISCARD constexpr auto operator()(Rep const& r) const

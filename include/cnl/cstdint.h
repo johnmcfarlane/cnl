@@ -50,7 +50,11 @@ namespace cnl {
 
 #if defined(CNL_INT128_ENABLED)
     // to disable 128-bit integer support, #define CNL_USE_INT128=0
+
+    /// \brief 128-bit signed integer on supporting systems
     using int128 = __int128;
+
+    /// \brief 128-bit unsigned integer on supporting systems
     using uint128 = unsigned __int128;
 
     using intmax = int128;

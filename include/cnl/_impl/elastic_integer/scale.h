@@ -18,6 +18,7 @@
 
 /// compositional numeric library
 namespace cnl {
+    /// \private right-shifting elastic_integer specialization
     template<int ShiftDigits, int ScaleRadix, int ScalarDigits, class ScalarNarrowest>
     struct scale<
             ShiftDigits,
@@ -34,6 +35,7 @@ namespace cnl {
         }
     };
 
+    /// \private left-shifting elastic_integer specialization
     template<int ShiftDigits, int ScalarDigits, class ScalarNarrowest>
     struct scale<
             ShiftDigits,
