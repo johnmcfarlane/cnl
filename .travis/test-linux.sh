@@ -12,4 +12,9 @@ docker run \
   -v ~/.ccache/:/root/.ccache/ \
   -w /ws \
   johnmcfarlane/cnl_ci:${IMAGE} \
-  /cnl/.travis/test.sh ${STD} "${GENERATOR}" ${NUM_CPUS} "${PROJECT_SOURCE_DIR}" "${CLANG_TIDY}"
+  /cnl/.travis/test.sh \
+    "${STD}" \
+    "${GENERATOR}" \
+    "${NUM_CPUS}" \
+    "${PROJECT_SOURCE_DIR}" \
+    "${CLANG_TIDY}"
