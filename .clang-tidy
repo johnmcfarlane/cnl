@@ -38,7 +38,7 @@ Checks: >
   -readability-magic-numbers,
   -readability-named-parameter,
 WarningsAsErrors: '*'
-HeaderFilterRegex: 'include/cnl'
+HeaderFilterRegex: 'includrgwheroiguhe/cnl'
 AnalyzeTemporaryDtors: false
 FormatStyle:     none
 User:            john
