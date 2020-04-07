@@ -8,7 +8,11 @@ STD=${1:-17}
 GENERATOR=${2:-"Unix Makefiles"}
 NUM_CPUS=${3:-$(nproc)}
 PROJECT_SOURCE_DIR=${4:-"${SCRIPT_DIR}/.."}
-CLANG_TIDY=${5:-1}
+
+if [ "$5" == ON ]
+then
+  CLANG_TIDY="clang-tidy"
+fi
 
 cloc "${PROJECT_SOURCE_DIR}"/include
 cloc "${PROJECT_SOURCE_DIR}"/src
@@ -25,7 +29,7 @@ build_and_test () {
     -DCMAKE_BUILD_TYPE="$1" \
     -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
     -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-    -DCNL_CLANG_TIDY=${CLANG_TIDY} \
+    -DCMAKE_CXX_CLANG_TIDY=${CLANG_TIDY} \
     -DCNL_DEV=ON -DCNL_STD=${STD} \
     -DCNL_EXCEPTIONS=$2 \
     -DCNL_INT128=$3 \
