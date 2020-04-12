@@ -18,4 +18,4 @@ pip3 install conan
 conan profile new default --detect
 conan profile update settings.compiler.libcxx=libstdc++11 default
 
-/root/project/.travis/test.sh ${STD} "${GENERATOR}" ${NUM_CPUS} "${PROJECT_SOURCE_DIR}" OFF
+/root/project/.travis/test.sh ${STD} "${GENERATOR}" ${NUM_CPUS} "${PROJECT_SOURCE_DIR}" ON
