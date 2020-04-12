@@ -19,6 +19,7 @@ Checks: >
   -google-readability-namespace-comments,
   -google-readability-todo,
   -google-runtime-int,
+  -google-runtime-references,
   -fuchsia-*,
   -hicpp-avoid-c-arrays,
   -hicpp-avoid-goto,

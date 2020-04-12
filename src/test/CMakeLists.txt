@@ -179,17 +179,6 @@ add_gtest_dependency(TestPlain)
 add_dependencies(Tests TestPlain)
 
 ######################################################################
-# ClangTidy
-
-set(CNL_CLANG_TIDY OFF CACHE BOOL "create Clang-Tidy tests")
-
-find_program(ClangTidy clang-tidy)
-
-if (${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
-    message(STATUS "ClangTidy not found.")
-endif (${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
-
-######################################################################
 # make_test
 
 # given the path to a source file containing gtest tests,
@@ -218,20 +207,6 @@ function(make_test source out_target compile_flags linker_flags)
             target_include_directories("${target}" SYSTEM PRIVATE "${Boost_INCLUDE_DIRS}")
         endif(Boost_VERSION GREATER 105500)
     endif(Boost_FOUND)
-
-    # Clang-Tidy test
-    if (${CNL_CLANG_TIDY})
-        string(REPLACE "/" "-" clang_tidy_target "Tidy-${stripped}")
-        if (NOT ${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
-            add_test(
-                    "${clang_tidy_target}"
-                    "${ClangTidy}"
-                    "-p=${CMAKE_BINARY_DIR}"
-                    "-extra-arg=-Wno-unknown-warning-option"
-                    "-header-filter=include/cnl"
-                    "${CMAKE_CURRENT_LIST_DIR}/${source}")
-        endif (NOT ${ClangTidy} STREQUAL "ClangTidy-NOTFOUND")
-    endif (${CNL_CLANG_TIDY})
 
     # Add to Tests custom target.
     add_dependencies(Tests "${target}")

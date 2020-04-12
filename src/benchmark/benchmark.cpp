@@ -10,10 +10,6 @@
 
 #include <benchmark/benchmark.h>
 
-#define ESCAPE(X) escape_cppcon2015(&(X))
-//#define ESCAPE(X) escape_codedive2015(&X)
-//#define ESCAPE(x) benchmark::DoNotOptimize(x)
-
 using std::numeric_limits;
 using cnl::scaled_integer;
 
@@ -21,41 +17,6 @@ using cnl::scaled_integer;
 // entry point
 
 BENCHMARK_MAIN();
-
-////////////////////////////////////////////////////////////////////////////////
-// optimization circumvention:
-// https://youtu.be/nXaxk27zwlk?t=40m40s or
-// https://youtu.be/vrfYLlR8X8k?t=29m25s
-
-#if defined(__clang__) || defined(__GNUG__)
-
-void escape_cppcon2015(void const* p)
-{
-    asm volatile(""::"g"(p):"memory");
-}
-
-template <class T>
-void escape_codedive2015(T&& p)
-{
-    asm volatile("": "+r" (p));
-}
-
-void clobber()
-{
-    asm volatile("":::"memory");
-}
-
-#else
-// TODO: Find equivalents `if defined(_MSC_VER)`
-template <class T>
-void escape_cppcon2015(T&&)
-{
-}
-
-void clobber()
-{
-}
-#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // benchmarking functions
@@ -66,10 +27,10 @@ static void add(benchmark::State& state)
     auto addend1 = static_cast<T>(numeric_limits<T>::max()/5);
     auto addend2 = static_cast<T>(numeric_limits<T>::max()/3);
     while (state.KeepRunning()) {
-        ESCAPE(addend1);
-        ESCAPE(addend2);
+        benchmark::DoNotOptimize(addend1);
+        benchmark::DoNotOptimize(addend2);
         auto value = addend1+addend2;
-        ESCAPE(value);
+        benchmark::DoNotOptimize(value);
     }
 }
 
@@ -79,10 +40,10 @@ static void sub(benchmark::State& state)
     auto minuend = static_cast<T>(numeric_limits<T>::max()/5);
     auto subtrahend = static_cast<T>(numeric_limits<T>::max()/3);
     while (state.KeepRunning()) {
-        ESCAPE(minuend);
-        ESCAPE(subtrahend);
+        benchmark::DoNotOptimize(minuend);
+        benchmark::DoNotOptimize(subtrahend);
         auto value = minuend+subtrahend;
-        ESCAPE(value);
+        benchmark::DoNotOptimize(value);
     }
 }
 
@@ -92,10 +53,10 @@ static void mul(benchmark::State& state)
     auto factor1 = static_cast<T>(numeric_limits<T>::max()/int8_t{5});
     auto factor2 = static_cast<T>(numeric_limits<T>::max()/int8_t{3});
     while (state.KeepRunning()) {
-        ESCAPE(factor1);
-        ESCAPE(factor2);
+        benchmark::DoNotOptimize(factor1);
+        benchmark::DoNotOptimize(factor2);
         auto value = factor1*factor2;
-        ESCAPE(value);
+        benchmark::DoNotOptimize(value);
     }
 }
 
@@ -105,10 +66,10 @@ static void div(benchmark::State& state)
     auto nume = static_cast<T>(numeric_limits<T>::max()/int8_t{5});
     auto denom = static_cast<T>(numeric_limits<T>::max()/int8_t{3});
     while (state.KeepRunning()) {
-        ESCAPE(nume);
-        ESCAPE(denom);
+        benchmark::DoNotOptimize(nume);
+        benchmark::DoNotOptimize(denom);
         auto value = nume/denom;
-        ESCAPE(value);
+        benchmark::DoNotOptimize(value);
     }
 }
 
@@ -117,9 +78,9 @@ static void bm_sqrt(benchmark::State& state)
 {
     auto input = static_cast<T>(numeric_limits<T>::max()/int8_t{5});
     while (state.KeepRunning()) {
-        ESCAPE(input);
+        benchmark::DoNotOptimize(input);
         auto output = cnl::sqrt(input);
-        ESCAPE(output);
+        benchmark::DoNotOptimize(output);
     }
 }
 
@@ -130,11 +91,11 @@ static void bm_magnitude_squared(benchmark::State& state)
     auto y = T {4LL};
     auto z = T {9LL};
     while (state.KeepRunning()) {
-        ESCAPE(x);
-        ESCAPE(y);
-        ESCAPE(z);
+        benchmark::DoNotOptimize(x);
+        benchmark::DoNotOptimize(y);
+        benchmark::DoNotOptimize(z);
         auto value = magnitude_squared(x, y, z);
-        ESCAPE(value);
+        benchmark::DoNotOptimize(value);
     }
 }
 
@@ -148,14 +109,14 @@ static void bm_circle_intersect_generic(benchmark::State& state)
     auto y2 = T {13LL};
     auto r2 = T {9LL};
     while (state.KeepRunning()) {
-        ESCAPE(x1);
-        ESCAPE(y1);
-        ESCAPE(r1);
-        ESCAPE(x2);
-        ESCAPE(y2);
-        ESCAPE(r2);
+        benchmark::DoNotOptimize(x1);
+        benchmark::DoNotOptimize(y1);
+        benchmark::DoNotOptimize(r1);
+        benchmark::DoNotOptimize(x2);
+        benchmark::DoNotOptimize(y2);
+        benchmark::DoNotOptimize(r2);
         auto value = circle_intersect_generic(x1, y1, r1, x2, y2, r2);
-        ESCAPE(value);
+        benchmark::DoNotOptimize(value);
     }
 }
 
@@ -169,14 +130,14 @@ static void circle_intersect_generic(benchmark::State& state)
     auto y2 = T {13};
     auto r2 = T {9};
     while (state.KeepRunning()) {
-        ESCAPE(x1);
-        ESCAPE(y1);
-        ESCAPE(r1);
-        ESCAPE(x2);
-        ESCAPE(y2);
-        ESCAPE(r2);
+        benchmark::DoNotOptimize(x1);
+        benchmark::DoNotOptimize(y1);
+        benchmark::DoNotOptimize(r1);
+        benchmark::DoNotOptimize(x2);
+        benchmark::DoNotOptimize(y2);
+        benchmark::DoNotOptimize(r2);
         auto value = circle_intersect_generic(x1, y1, r1, x2, y2, r2);
-        ESCAPE(value);
+        benchmark::DoNotOptimize(value);
     }
 }
 
@@ -195,11 +156,13 @@ using s31_32 = scaled_integer<int64_t, cnl::power<-32>>;
 ////////////////////////////////////////////////////////////////////////////////
 // multi-type benchmark macros
 
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define FIXED_POINT_BENCHMARK_FLOAT(fn) \
     BENCHMARK_TEMPLATE1(fn, float); \
     BENCHMARK_TEMPLATE1(fn, double); \
     BENCHMARK_TEMPLATE1(fn, long double);
 
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define FIXED_POINT_BENCHMARK_INT(fn) \
     BENCHMARK_TEMPLATE1(fn, int8_t); \
     BENCHMARK_TEMPLATE1(fn, uint8_t); \
@@ -212,6 +175,7 @@ using s31_32 = scaled_integer<int64_t, cnl::power<-32>>;
 
 // types that can store values >= 1
 #if defined(CNL_INT128_ENABLED)
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define FIXED_POINT_BENCHMARK_FIXED(fn) \
     BENCHMARK_TEMPLATE1(fn, u4_4); \
     BENCHMARK_TEMPLATE1(fn, s3_4); \
@@ -222,6 +186,7 @@ using s31_32 = scaled_integer<int64_t, cnl::power<-32>>;
     BENCHMARK_TEMPLATE1(fn, u32_32); \
     BENCHMARK_TEMPLATE1(fn, s31_32);
 #else
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define FIXED_POINT_BENCHMARK_FIXED(fn) \
     BENCHMARK_TEMPLATE1(fn, u4_4); \
     BENCHMARK_TEMPLATE1(fn, s3_4); \
@@ -231,10 +196,12 @@ using s31_32 = scaled_integer<int64_t, cnl::power<-32>>;
     BENCHMARK_TEMPLATE1(fn, s15_16);
 #endif
 
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define FIXED_POINT_BENCHMARK_REAL(fn) \
     FIXED_POINT_BENCHMARK_FLOAT(fn) \
     FIXED_POINT_BENCHMARK_FIXED(fn)
 
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define FIXED_POINT_BENCHMARK_COMPLETE(fn) \
     FIXED_POINT_BENCHMARK_REAL(fn) \
     FIXED_POINT_BENCHMARK_INT(fn)
@@ -242,14 +209,24 @@ using s31_32 = scaled_integer<int64_t, cnl::power<-32>>;
 ////////////////////////////////////////////////////////////////////////////////
 // benchmark invocations
 
+// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
 FIXED_POINT_BENCHMARK_COMPLETE(add)
+
+// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
 FIXED_POINT_BENCHMARK_COMPLETE(sub)
+
+// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
 FIXED_POINT_BENCHMARK_COMPLETE(mul)
+
+// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
 FIXED_POINT_BENCHMARK_COMPLETE(div)
 
+// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
 FIXED_POINT_BENCHMARK_REAL(bm_magnitude_squared)
 
+// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
 FIXED_POINT_BENCHMARK_REAL(bm_circle_intersect_generic)
 
 // tests involving unoptimized math function, cnl::sqrt
+// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
 FIXED_POINT_BENCHMARK_REAL(bm_sqrt)
