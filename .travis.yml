@@ -7,6 +7,9 @@ cache: ccache
 matrix:
   include:
     - os: linux
+      env: IMAGE=clang-10 STD=20 SANITIZE=ON GENERATOR=Ninja CLANG_TIDY=ON
+
+    - os: linux
       env: IMAGE=gcc-9 STD=11 SANITIZE=OFF GENERATOR=Ninja CLANG_TIDY=ON
     - os: linux
       env: IMAGE=gcc-9 STD=20 SANITIZE=OFF GENERATOR=Ninja CLANG_TIDY=OFF
