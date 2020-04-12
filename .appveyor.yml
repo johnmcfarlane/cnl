@@ -29,7 +29,7 @@ environment:
       exceptions: ON
       std: 11
       arch: x86
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017 Preview
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     - platform: x86
       configuration: RelWithDebInfo
       cmake_generator: "Visual Studio 15 2017"
