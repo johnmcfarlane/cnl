@@ -4,14 +4,15 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/scaled_integer.h>
+#include <cnl/_impl/config.h>
 
 #include <cmath>
 
 template <typename FP>
-CNL_NODISCARD constexpr FP magnitude_squared(FP const& x, FP const& y, FP const& z)
+CNL_NODISCARD constexpr auto magnitude_squared(FP const& x, FP const& y, FP const& z)
+-> decltype(x * x + y * y + z * z)
 {
-	return static_cast<FP>(x * x + y * y + z * z);
+	return x * x + y * y + z * z;
 }
 
 template <typename Real>

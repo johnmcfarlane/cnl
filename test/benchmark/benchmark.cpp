@@ -7,6 +7,7 @@
 #include "sample_functions.h"
 
 #include <cnl/cmath.h>
+#include <cnl/scaled_integer.h>
 
 #include <benchmark/benchmark.h>
 
@@ -95,6 +96,7 @@ static void bm_magnitude_squared(benchmark::State& state)
         benchmark::DoNotOptimize(y);
         benchmark::DoNotOptimize(z);
         auto value = magnitude_squared(x, y, z);
+        CNL_ASSERT(value==98.);
         benchmark::DoNotOptimize(value);
     }
 }
@@ -145,13 +147,13 @@ static void circle_intersect_generic(benchmark::State& state)
 // scaled_integer types
 
 using u4_4 = scaled_integer<uint8_t, cnl::power<-4>>;
-using s3_4 = scaled_integer<int8_t, cnl::power<-4>>;
+using s4_3 = scaled_integer<int8_t, cnl::power<-3>>;
 using u8_8 = scaled_integer<uint16_t, cnl::power<-8>>;
 using s7_8 = scaled_integer<int16_t, cnl::power<-8>>;
-using u16_16 = scaled_integer<uint32_t, cnl::power<-16>>;
-using s15_16 = scaled_integer<int32_t, cnl::power<-16>>;
-using u32_32 = scaled_integer<uint64_t, cnl::power<-32>>;
-using s31_32 = scaled_integer<int64_t, cnl::power<-32>>;
+using u20_12 = scaled_integer<uint32_t, cnl::power<-12>>;
+using s19_12 = scaled_integer<int32_t, cnl::power<-12>>;
+using u36_28 = scaled_integer<uint64_t, cnl::power<-28>>;
+using s35_28 = scaled_integer<int64_t, cnl::power<-28>>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // multi-type benchmark macros
@@ -178,22 +180,22 @@ using s31_32 = scaled_integer<int64_t, cnl::power<-32>>;
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define FIXED_POINT_BENCHMARK_FIXED(fn) \
     BENCHMARK_TEMPLATE1(fn, u4_4); \
-    BENCHMARK_TEMPLATE1(fn, s3_4); \
+    BENCHMARK_TEMPLATE1(fn, s4_3); \
     BENCHMARK_TEMPLATE1(fn, u8_8); \
     BENCHMARK_TEMPLATE1(fn, s7_8); \
-    BENCHMARK_TEMPLATE1(fn, u16_16); \
-    BENCHMARK_TEMPLATE1(fn, s15_16); \
-    BENCHMARK_TEMPLATE1(fn, u32_32); \
-    BENCHMARK_TEMPLATE1(fn, s31_32);
+    BENCHMARK_TEMPLATE1(fn, u20_12); \
+    BENCHMARK_TEMPLATE1(fn, s19_12); \
+    BENCHMARK_TEMPLATE1(fn, u36_28); \
+    BENCHMARK_TEMPLATE1(fn, s35_28);
 #else
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define FIXED_POINT_BENCHMARK_FIXED(fn) \
     BENCHMARK_TEMPLATE1(fn, u4_4); \
-    BENCHMARK_TEMPLATE1(fn, s3_4); \
+    BENCHMARK_TEMPLATE1(fn, s4_3); \
     BENCHMARK_TEMPLATE1(fn, u8_8); \
     BENCHMARK_TEMPLATE1(fn, s7_8); \
-    BENCHMARK_TEMPLATE1(fn, u16_16); \
-    BENCHMARK_TEMPLATE1(fn, s15_16);
+    BENCHMARK_TEMPLATE1(fn, u20_12); \
+    BENCHMARK_TEMPLATE1(fn, s19_12);
 #endif
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
