@@ -16,8 +16,8 @@ namespace {
     {
         auto const num_chars = 12;
         auto buffer = std::array<char, num_chars+1>{};
-        auto chars_first = buffer.data();
-        auto chars_last = chars_first+num_chars;
+        auto* chars_first = buffer.data();
+        auto* chars_last = chars_first+num_chars;
         auto result = cnl::to_chars(
                 chars_first,
                 chars_last,
@@ -34,8 +34,8 @@ namespace {
     {
         auto const num_chars = 12;
         auto buffer = std::array<char, num_chars+1>{};
-        auto chars_first = buffer.data();
-        auto chars_last = chars_first+num_chars;
+        auto* chars_first = buffer.data();
+        auto* chars_last = chars_first+num_chars;
         auto result = cnl::to_chars(
                 chars_first,
                 chars_last,

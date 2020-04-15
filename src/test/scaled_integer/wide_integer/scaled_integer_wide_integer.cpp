@@ -28,7 +28,7 @@ using test_int = cnl::wide_integer<cnl::digits<int>::value, int>;
 
 TEST(scaled_integer_wide_integer, to_string)  // NOLINT
 {
-    auto const expected = "0.714285714285714285714285713708718880752631365184564249393162072010454721748828887939453125";
+    auto const* expected = "0.714285714285714285714285713708718880752631365184564249393162072010454721748828887939453125";
     auto const actual = cnl::to_string(cnl::scaled_integer<cnl::wide_integer<100, unsigned>, cnl::power<-90>>{5.}/7);
     ASSERT_EQ(expected, actual);
 }
