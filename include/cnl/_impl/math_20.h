@@ -12,6 +12,9 @@
 ///
 ///     template<class T> concept FloatingPoint = is_floating_point_v<T>;
 
+#if !defined(CNL_IMPL_MATH_20_H)
+#define CNL_IMPL_MATH_20_H
+
 #if __has_include(<concepts>)
 #include <concepts>
 #else
@@ -72,3 +75,5 @@ namespace cnl {
 
     }
 }
+
+#endif

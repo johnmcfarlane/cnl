@@ -14,6 +14,7 @@ Checks: >
   -cppcoreguidelines-pro-bounds-constant-array-index,
   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
   -cppcoreguidelines-pro-type-vararg,
+  -darwin-dispatch-once-nonstatic,
   -google-build-namespaces,
   -google-build-using-namespace,
   -google-readability-namespace-comments,
