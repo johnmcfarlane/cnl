@@ -14,13 +14,8 @@ set(CNL_DEV OFF CACHE BOOL "configure build for running tests and benchmarks")
 if (CNL_DEV)
     include(cmake/install-conan.cmake)
 
-    # runs a suite of compile-time tests using `static_assert`
-    # and run-time tests using gtest
     include(CTest)
-    add_subdirectory("src/unit")
-
-    # performs a selection of benchmark tests using googletest
-    add_subdirectory("src/benchmark")
+    add_subdirectory("src")
 
     # generate documentation
     add_subdirectory("doc")
