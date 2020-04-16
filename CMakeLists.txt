@@ -15,7 +15,7 @@ if (CNL_DEV)
     include(cmake/install-conan.cmake)
 
     include(CTest)
-    add_subdirectory("src")
+    add_subdirectory("test")
 
     # generate documentation
     add_subdirectory("doc")
