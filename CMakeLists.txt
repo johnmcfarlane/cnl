@@ -24,9 +24,6 @@ if (CNL_DEV)
 
     # generate documentation
     add_subdirectory("doc")
-
-    # generate single-header header
-    add_subdirectory("src/single_header")
 else ()
     message(STATUS "Use CNL_DEV=ON to build tests.")
 endif (CNL_DEV)
