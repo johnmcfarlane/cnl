@@ -30,16 +30,16 @@ build_and_test () {
     -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
     -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
     -DCMAKE_CXX_CLANG_TIDY=${CLANG_TIDY} \
-    -DCNL_DEV=ON -DCNL_STD=${STD} \
-    -DCNL_EXCEPTIONS=$2 \
-    -DCNL_INT128=$3 \
-    -DCNL_SANITIZE=${SANITIZE} \
+    -DCNL_DEV=ON -DCNL_STD="${STD}" \
+    -DCNL_EXCEPTIONS="$2" \
+    -DCNL_INT128="$3" \
+    -DCNL_SANITIZE="${SANITIZE}" \
     -G "${GENERATOR}" \
     "${PROJECT_SOURCE_DIR}"
 
-  cmake --build . -- -j $NUM_CPUS
+  cmake --build . -- -j "$NUM_CPUS"
   ctest --output-on-failure \
-    -j $NUM_CPUS \
+    -j "$NUM_CPUS" \
     -E Tidy-_impl-wide_integer-literals\|Tidy-static_integer-operators
 }
 
@@ -50,4 +50,7 @@ ccache --show-stats
 
 bin/Benchmark --benchmark_format=csv>result.csv
 "${PROJECT_SOURCE_DIR}"/test/benchmark/report.py result.csv
+
+"${PROJECT_SOURCE_DIR}"/test/scripts/shellcheck.sh
+
 ls -l bin

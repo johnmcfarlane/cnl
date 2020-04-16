@@ -13,14 +13,15 @@ brew update
 brew unlink python@2
 
 # Install
-brew install ccache cloc conan ${PACKAGE}
+# shellcheck disable=SC2086
+brew install ccache cloc conan shellcheck ${PACKAGE}
 
 conan profile new default --detect
 if [ "$CXX" != "clang++" ]
 then
   conan profile update settings.compiler=gcc default
   conan profile update settings.compiler.libcxx=libstdc++11 default
-  conan profile update settings.compiler.version=${VERSION} default
+  conan profile update settings.compiler.version="${VERSION}" default
 fi
 
-.travis/test.sh ${STD} "${GENERATOR}" ${NUM_CPUS} "${PROJECT_SOURCE_DIR}" OFF
+.travis/test.sh "${STD}" "${GENERATOR}" ${NUM_CPUS} "${PROJECT_SOURCE_DIR}" OFF
