@@ -17,7 +17,7 @@ if (CNL_DEV)
     # runs a suite of compile-time tests using `static_assert`
     # and run-time tests using gtest
     include(CTest)
-    add_subdirectory("src/test")
+    add_subdirectory("src/unit")
 
     # performs a selection of benchmark tests using googletest
     add_subdirectory("src/benchmark")
