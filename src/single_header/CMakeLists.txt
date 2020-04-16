@@ -1,4 +1,4 @@
-include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
+include("../../cmake/common.cmake")
 
 function(make_single_header target output header version int128_flag gcc_intrinsics_flag)
     string(REPLACE " " ";" COMMON_CXX_FLAGS_LIST ${COMMON_CXX_FLAGS})
