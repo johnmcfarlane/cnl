@@ -1,10 +1,10 @@
 dist: xenial
-sudo: required
 
 language: cpp
 cache: ccache
+os: linux
 
-matrix:
+jobs:
   include:
     - os: linux
       env: IMAGE=clang-10 STD=20 SANITIZE=ON GENERATOR=Ninja CLANG_TIDY=ON
