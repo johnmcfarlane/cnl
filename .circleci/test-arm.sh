@@ -5,7 +5,7 @@ set -ex
 export CXX=arm-linux-gnueabi-g++-8
 
 apt-get update
-apt-get install --quiet --yes $1 ccache cloc cmake libboost-dev g++-8-arm-linux-gnueabi python3 python3-pip
+apt-get install --quiet --yes ccache cloc cmake libboost-dev g++-8-arm-linux-gnueabi python3 python3-pip
 pip3 install conan
 
 conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
