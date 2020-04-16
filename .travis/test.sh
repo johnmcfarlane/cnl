@@ -15,7 +15,7 @@ then
 fi
 
 cloc "${PROJECT_SOURCE_DIR}"/include
-cloc "${PROJECT_SOURCE_DIR}"/src
+cloc "${PROJECT_SOURCE_DIR}"/test
 
 cc --version
 c++ --version
@@ -49,5 +49,5 @@ build_and_test Release ON ON
 ccache --show-stats
 
 bin/Benchmark --benchmark_format=csv>result.csv
-"${PROJECT_SOURCE_DIR}"/src/benchmark/report.py result.csv
+"${PROJECT_SOURCE_DIR}"/test/benchmark/report.py result.csv
 ls -l bin

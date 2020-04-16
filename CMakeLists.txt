@@ -12,21 +12,13 @@ cmake_minimum_required(VERSION 3.5.1)
 set(CNL_DEV OFF CACHE BOOL "configure build for running tests and benchmarks")
 
 if (CNL_DEV)
-    include(${PROJECT_SOURCE_DIR}/src/common/install-conan.cmake)
+    include(cmake/install-conan.cmake)
 
-    # runs a suite of compile-time tests using `static_assert`
-    # and run-time tests using gtest
     include(CTest)
-    add_subdirectory("src/test")
-
-    # performs a selection of benchmark tests using googletest
-    add_subdirectory("src/benchmark")
+    add_subdirectory("test")
 
     # generate documentation
     add_subdirectory("doc")
-
-    # generate single-header header
-    add_subdirectory("src/single_header")
 else ()
     message(STATUS "Use CNL_DEV=ON to build tests.")
 endif (CNL_DEV)

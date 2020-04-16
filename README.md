@@ -102,7 +102,7 @@ However, it comes with a number of tests and benchmarks.
 
 3. Run benchmarks:
 
-   `src/benchmark/Benchmark`
+   `test/benchmark/Benchmark`
 
 #### Additional build system generation options:
 

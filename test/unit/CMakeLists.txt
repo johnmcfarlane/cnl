@@ -1,4 +1,4 @@
-include("../common/common.cmake")
+include("../../cmake/common.cmake")
 
 enable_testing()
 

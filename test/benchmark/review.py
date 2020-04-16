@@ -49,7 +49,7 @@ def make_row(commit, benchmarks, names):
 
 # get a list of the commit SHAs in ascending chronological order
 def get_commits(args):
-    watch_files = ["--", "include", "src/benchmarks/*", "CMakeLists.txt", "*.cmake"]
+    watch_files = ["--", "include", "test/benchmarks/*", "CMakeLists.txt", "*.cmake"]
     git_log_args = (["--merges"] if args.merges else []) + (["--no-merges"] if args.no_merges else []) + [
                        "--all",
                        "--date-order",

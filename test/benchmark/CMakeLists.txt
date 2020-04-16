@@ -1,4 +1,4 @@
-include("${CMAKE_CURRENT_LIST_DIR}/../common/common.cmake")
+include("../../cmake/common.cmake")
 
 ######################################################################
 # Benchmark target
