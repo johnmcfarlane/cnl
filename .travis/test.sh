@@ -50,4 +50,7 @@ ccache --show-stats
 
 bin/Benchmark --benchmark_format=csv>result.csv
 "${PROJECT_SOURCE_DIR}"/test/benchmark/report.py result.csv
+
+"${PROJECT_SOURCE_DIR}"/test/scripts/shellcheck.sh
+
 ls -l bin

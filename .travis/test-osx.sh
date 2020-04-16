@@ -14,7 +14,7 @@ brew unlink python@2
 
 # Install
 # shellcheck disable=SC2086
-brew install ccache cloc conan ${PACKAGE}
+brew install ccache cloc conan shellcheck ${PACKAGE}
 
 conan profile new default --detect
 if [ "$CXX" != "clang++" ]
