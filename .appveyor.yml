@@ -50,6 +50,6 @@ build_script:
 
 test_script:
   - cmd: ctest --output-on-failure -j 32
-  - cmd: bin\Benchmark.exe
+  - cmd: test\bin\Benchmark.exe
 
 shallow_clone: true

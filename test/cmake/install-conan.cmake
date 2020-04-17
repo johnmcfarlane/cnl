@@ -14,5 +14,5 @@ conan_cmake_run(REQUIRES
         BASIC_SETUP
         BUILD outdated)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+include(${CMAKE_BINARY_DIR}/test/conanbuildinfo.cmake)
 conan_basic_setup(NO_OUTPUT_DIRS)
