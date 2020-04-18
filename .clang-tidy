@@ -44,7 +44,7 @@ HeaderFilterRegex: 'include/cnl'
 AnalyzeTemporaryDtors: false
 FormatStyle:     none
 User:            john
-CheckOptions:    
+CheckOptions:
   - key:             cert-dcl16-c.NewSuffixes
     value:           'L;LL;LU;LLU'
   - key:             cppcoreguidelines-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
