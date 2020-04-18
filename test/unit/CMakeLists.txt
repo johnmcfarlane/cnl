@@ -288,7 +288,7 @@ if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND CNL_EXCEPTIONS)
         add_dependencies("${target}" BoostSimd)
 
         ExternalProject_Get_Property(BoostSimd source_dir)
-        target_include_directories("${target}" PRIVATE SYSTEM "${source_dir}/include")
+        target_include_directories("${target}" SYSTEM PRIVATE "${source_dir}/include")
     endif(NOT IS_GCC_FAMILY OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
 endif(Boost_FOUND AND Boost_VERSION GREATER 106099 AND CNL_EXCEPTIONS)
 
@@ -311,5 +311,5 @@ if(${CNL_TEST_VC} AND ${CNL_STD} STREQUAL "17" AND IS_GCC_FAMILY AND CMAKE_CXX_C
     add_dependencies("${target}" Vc)
 
     ExternalProject_Get_Property(Vc source_dir)
-    target_include_directories("${target}" PRIVATE SYSTEM "${source_dir}")
+    target_include_directories("${target}" SYSTEM PRIVATE "${source_dir}")
 endif()
