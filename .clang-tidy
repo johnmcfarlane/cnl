@@ -1,50 +1,42 @@
 ---
 Checks: >
   *,
-  -cert-err58-cpp,
-  -clang-analyzer-cplusplus.InnerPointer,
-  -clang-analyzer-cplusplus.NewDelete,
-  -clang-analyzer-cplusplus.NewDeleteLeaks,
-  -clang-analyzer-osx.cocoa.RetainCount,
-  -clang-analyzer-osx.cocoa.RetainCountBase,
-  -clang-analyzer-osx.OSObjectRetainCount,
-  -cppcoreguidelines-avoid-goto,
-  -cppcoreguidelines-avoid-magic-numbers,
-  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+  -clang-analyzer-osx.*,
   -cppcoreguidelines-pro-bounds-constant-array-index,
-  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
-  -cppcoreguidelines-pro-type-vararg,
   -darwin-dispatch-once-nonstatic,
-  -google-build-namespaces,
+  -fuchsia-*,
   -google-build-using-namespace,
   -google-readability-namespace-comments,
   -google-readability-todo,
   -google-runtime-int,
   -google-runtime-references,
-  -fuchsia-*,
   -hicpp-avoid-c-arrays,
+  -llvm-namespace-comment,
+  -cert-err58-cpp,
+  -cppcoreguidelines-avoid-goto,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+  -cppcoreguidelines-pro-type-vararg,
   -hicpp-avoid-goto,
   -hicpp-no-array-decay,
-  -hicpp-use-noexcept,
-  -hicpp-vararg,
   -hicpp-signed-bitwise,
-  -llvm-namespace-comment,
+  -hicpp-vararg,
   -misc-definitions-in-headers,
-  -misc-unused-parameters,
   -modernize-avoid-c-arrays,
   -modernize-concat-nested-namespaces,
   -modernize-unary-static-assert,
-  -modernize-use-noexcept,
   -modernize-use-trailing-return-type,
   -readability-implicit-bool-conversion,
   -readability-magic-numbers,
   -readability-named-parameter,
+
 WarningsAsErrors: '*'
 HeaderFilterRegex: 'include/cnl'
 AnalyzeTemporaryDtors: false
 FormatStyle:     none
 User:            john
-CheckOptions:    
+CheckOptions:
   - key:             cert-dcl16-c.NewSuffixes
     value:           'L;LL;LU;LLU'
   - key:             cppcoreguidelines-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
