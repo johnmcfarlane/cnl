@@ -139,7 +139,13 @@ struct number_test {
     // numeric traits
 
     // would not pass for boost.multiprecision
-    static_assert(cnl::is_composite<value_type>::value != std::is_fundamental<value_type>::value, "is_composite test failed");
+    static_assert(
+#if defined(CNL_INT128_ENABLED)
+            // std::is_fundamental isn't specialized for __int128
+            std::is_same<value_type, cnl::int128>::value || std::is_same<value_type, cnl::uint128>::value ||
+#endif
+                    cnl::is_composite<value_type>::value!=std::is_fundamental<value_type>::value,
+            "is_composite test failed");
 
     static constexpr auto lowest_from_rep = cnl::_impl::from_rep<value_type>(cnl::_impl::to_rep(lowest));
     static_assert(identical(lowest_from_rep, lowest), "cnl::_impl::to_rep & from_rep test failed");
