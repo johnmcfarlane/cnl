@@ -24,4 +24,7 @@ then
   conan profile update settings.compiler.version="${VERSION}" default
 fi
 
-.travis/test.sh "${STD}" "${GENERATOR}" ${NUM_CPUS} "${PROJECT_SOURCE_DIR}" OFF
+pwd
+mkdir -p ../build && cd ../build
+
+"${PROJECT_SOURCE_DIR}"/.travis/test.sh "${STD}" "${GENERATOR}" ${NUM_CPUS} "${PROJECT_SOURCE_DIR}" OFF
