@@ -1,3 +1,5 @@
+#if defined(__cpp_inline_variables)
+
 #include <Vc/simd>
 #include <cnl/scaled_integer.h>
 
@@ -122,3 +124,5 @@ namespace {
         EXPECT_TRUE(simd_identical(expected, actual));
     }
 }
+
+#endif
