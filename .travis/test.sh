@@ -48,9 +48,9 @@ build_and_test Debug OFF OFF
 build_and_test Release ON ON
 ccache --show-stats
 
-bin/Benchmark --benchmark_format=csv>result.csv
+test/bin/Benchmark --benchmark_format=csv>result.csv
 "${PROJECT_SOURCE_DIR}"/test/benchmark/report.py result.csv
 
 "${PROJECT_SOURCE_DIR}"/test/scripts/shellcheck.sh
 
-ls -l bin
+ls -l test/bin

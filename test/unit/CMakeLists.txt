@@ -1,5 +1,3 @@
-include("../../cmake/common.cmake")
-
 enable_testing()
 
 # source files containing tests of the correctness of CNL;
