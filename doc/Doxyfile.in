@@ -91,7 +91,7 @@ GENERATE_TESTLIST = YES
 GENERATE_BUGLIST = YES
 GENERATE_DEPRECATEDLIST = YES
 SHOW_USED_FILES = NO
-SHOW_FILES = NO
+SHOW_FILES = YES
 SHOW_NAMESPACES = YES
 LAYOUT_FILE =
 
@@ -136,13 +136,13 @@ COLS_IN_ALPHA_INDEX = 1
 #---------------------------------------------------------------------------
 # Configuration options related to the preprocessor
 #---------------------------------------------------------------------------
-ENABLE_PREPROCESSING = NO
+ENABLE_PREPROCESSING = YES
 MACRO_EXPANSION = YES
 EXPAND_ONLY_PREDEF = NO
 SEARCH_INCLUDES = YES
 INCLUDE_PATH = ../include
 INCLUDE_FILE_PATTERNS =
-PREDEFINED =
+PREDEFINED = CNL_CAN_USE_INT128
 EXPAND_AS_DEFINED =
 SKIP_FUNCTION_MACROS = NO
 

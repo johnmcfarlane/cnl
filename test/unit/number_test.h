@@ -12,6 +12,7 @@
 #include <cnl/numeric.h>
 
 #include <cnl/_impl/common.h>
+#include <cnl/_impl/config.h>
 #include <cnl/_impl/type_traits/identical.h>
 
 #include <type_traits>
@@ -139,7 +140,13 @@ struct number_test {
     // numeric traits
 
     // would not pass for boost.multiprecision
-    static_assert(cnl::is_composite<value_type>::value != std::is_fundamental<value_type>::value, "is_composite test failed");
+    static_assert(
+#if defined(CNL_INT128_ENABLED)
+            // std::is_fundamental isn't specialized for __int128
+            std::is_same<value_type, cnl::int128>::value || std::is_same<value_type, cnl::uint128>::value ||
+#endif
+                    cnl::is_composite<value_type>::value!=std::is_fundamental<value_type>::value,
+            "is_composite test failed");
 
     static constexpr auto lowest_from_rep = cnl::_impl::from_rep<value_type>(cnl::_impl::to_rep(lowest));
     static_assert(identical(lowest_from_rep, lowest), "cnl::_impl::to_rep & from_rep test failed");
@@ -171,9 +178,9 @@ struct number_test_suite
 template<template<class> class NumericType, template<class> class TypeSpecificTestSuite = std::is_integral>
 struct number_test_by_rep
         : number_test_suite<NumericType<char>, TypeSpecificTestSuite>,
-#if defined(CNL_INT128)
-          number_test_suite<NumericType<CNL_INT128>, TypeSpecificTestSuite>,
-          number_test_suite<NumericType<CNL_UINT128>, TypeSpecificTestSuite>,
+#if defined(CNL_INT128_ENABLED)
+          number_test_suite<NumericType<cnl::int128>, TypeSpecificTestSuite>,
+          number_test_suite<NumericType<cnl::uint128>, TypeSpecificTestSuite>,
 #endif
           number_test_suite<NumericType<cnl::int8>, TypeSpecificTestSuite>,
           number_test_suite<NumericType<cnl::uint8>, TypeSpecificTestSuite>,
