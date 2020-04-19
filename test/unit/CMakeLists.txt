@@ -247,7 +247,7 @@ endforeach(source)
 
 foreach(source ${sample_sources})
     if (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
-        make_test("${source}" target "-fpermissive -Wno-sign-compare -Wno-strict-overflow" "")
+        make_test("${source}" target "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS} -fpermissive -Wno-sign-compare -Wno-conversion -Wno-strict-overflow" "${SANITIZE_LINKER_FLAGS}" "")
     else ()
         make_test("${source}" target "/wd4018" "")
     endif ()

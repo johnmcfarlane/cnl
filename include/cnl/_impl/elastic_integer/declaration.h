@@ -18,7 +18,7 @@ namespace cnl {
     /// \tparam Narrowest the most narrow integer type to use for storage
     ///
     /// \note The value is stored in an object of \c Narrowest or
-    /// \ref cnl::set_digits_t<Narrowest, Digits>.
+    /// \ref cnl::set_gidits_t<Narrowest, Digits>.
     /// \note Arithmetic operations result in types with an adjusted Digits parameter accordingly.
     /// For instance, when two \ref elastic_integer values are multiplied together,
     /// the resultant type has Digits set to the sum of the operands.
