@@ -162,11 +162,6 @@ function(add_gtest_dependency target)
 endfunction(add_gtest_dependency)
 
 ######################################################################
-# test-all - the full suite of tests
-
-add_custom_target(test-all)
-
-######################################################################
 # test plain - the main.cpp project with *no* tests of compiler flags
 
 add_executable(test-unit-plain all.cpp)
