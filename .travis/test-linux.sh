@@ -18,7 +18,7 @@ ccache --show-stats
 
 docker run \
   --cap-add SYS_PTRACE \
-  --volume "${PROJECT_DIR}":"${CONTAINER_PROJECT_DIR}" \
+  --volume ${PROJECT_DIR}:"${CONTAINER_PROJECT_DIR}" \
   --volume "${HOME}"/.ccache:/root/.ccache \
   --workdir /ws \
   "johnmcfarlane/${IMG}" \
