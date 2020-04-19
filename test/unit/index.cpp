@@ -46,17 +46,23 @@ using namespace std;
 void declaration_example()
 {
     // x is represented by an int and scaled down by 1 bit
-    auto x = scaled_integer<int, power<-1>>{3.5};
+    auto* x = new scaled_integer<int, power<-1>>{3.5};
 
     // under the hood, x stores a whole number
-    cout << to_rep(x) << endl;  // "7"
+    cout << to_rep(*x) << endl;  // "7"
 
     // but it multiplies that whole number by 2^-1 to produce a real number
-    cout << x << endl;  // "3.5"
+    cout << *x << endl;  // "3.5"
 
-    // like an int, x has limited precision
-    x /= 2;
-    cout << x << endl;  // "1.5"
+    // like an int, *x has limited precision
+    (*x) /= 2;
+    cout << *x << endl;  // "1.5"
+
+    if (*x == 1.5) {
+        return;
+    }
+
+    delete x;  // NOLINT(cppcoreguidelines-owning-memory)
 }
 //! [declaration example]
 

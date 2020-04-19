@@ -82,7 +82,7 @@ or even include the root header directly in your code:
 
 ### Test
 
-The test suite uses CMake and depends on Google Test and Google Benchmark.
+The test suite uses CMake and depends on Google Test and Google Benchmark. 
 Optional integration tests use Boost.Multiprecision and Boost.SIMD.
 
 1. Conan can be used to pull in essential dependencies.
