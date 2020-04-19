@@ -169,12 +169,12 @@ add_custom_target(test-all)
 ######################################################################
 # test plain - the main.cpp project with *no* tests of compiler flags
 
-add_executable(TestPlain all.cpp)
-set_target_properties(TestPlain PROPERTIES COMPILE_FLAGS "${STD_FLAGS}")
-target_link_libraries(TestPlain Cnl)
-add_test(TestPlain "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/TestPlain")
-add_gtest_dependency(TestPlain)
-add_dependencies(test-all TestPlain)
+add_executable(test-unit-plain all.cpp)
+set_target_properties(test-unit-plain PROPERTIES COMPILE_FLAGS "${STD_FLAGS}")
+target_link_libraries(test-unit-plain Cnl)
+add_test(test-unit-plain "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test-unit-plain")
+add_gtest_dependency(test-unit-plain)
+add_dependencies(test-all test-unit-plain)
 
 ######################################################################
 # make_test
