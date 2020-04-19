@@ -1,10 +1,7 @@
 ######################################################################
 # Benchmark target
 
-add_executable(
-        test-benchmark
-        ${CMAKE_CURRENT_LIST_DIR}/benchmark.cpp
-)
+add_executable(test-benchmark benchmark.cpp)
 
 set_target_properties(
         test-benchmark
