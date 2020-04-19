@@ -162,9 +162,9 @@ function(add_gtest_dependency target)
 endfunction(add_gtest_dependency)
 
 ######################################################################
-# Tests - the full suite of tests
+# test-all - the full suite of tests
 
-add_custom_target(Tests)
+add_custom_target(test-all)
 
 ######################################################################
 # test plain - the main.cpp project with *no* tests of compiler flags
@@ -174,7 +174,7 @@ set_target_properties(TestPlain PROPERTIES COMPILE_FLAGS "${STD_FLAGS}")
 target_link_libraries(TestPlain Cnl)
 add_test(TestPlain "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/TestPlain")
 add_gtest_dependency(TestPlain)
-add_dependencies(Tests TestPlain)
+add_dependencies(test-all TestPlain)
 
 ######################################################################
 # make_test
@@ -206,8 +206,8 @@ function(make_test source out_target compile_flags linker_flags)
         endif(Boost_VERSION GREATER 105500)
     endif(Boost_FOUND)
 
-    # Add to Tests custom target.
-    add_dependencies(Tests "${target}")
+    # Add to test-all custom target.
+    add_dependencies(test-all "${target}")
 
     # Return name of test target.
     set(${out_target} "${target}" PARENT_SCOPE)

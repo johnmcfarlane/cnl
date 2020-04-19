@@ -75,7 +75,7 @@ However, it comes with a number of tests and benchmarks.
    * For Linux:
 
      ```sh
-     cmake --build . --target Tests -- -j $(nproc)
+     cmake --build . --target test-all -- -j $(nproc)
      ```
 
    * For Windows:

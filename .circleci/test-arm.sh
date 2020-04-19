@@ -26,4 +26,4 @@ cmake \
     -DCNL_DEV=ON -DCNL_INT128=OFF \
     -DCNL_TEST_VC=OFF \
     /root/project
-cmake --build . --target Tests -- -j 8
+cmake --build . --target test-all -- -j 8
