@@ -49,7 +49,7 @@ build_script:
   - cmd: cmake --build . -- /property:Configuration=%configuration% /property:Platform=%msbuild_property% /maxcpucount
 
 test_script:
-  - cmd: ctest --output-on-failure --parallel 8
+  - cmd: ctest --exclude-regex test-benchmark --output-on-failure --parallel 8
   - cmd: test\bin\test-benchmark.exe
 
 shallow_clone: true

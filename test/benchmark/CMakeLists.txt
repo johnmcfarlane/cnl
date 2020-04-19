@@ -14,3 +14,5 @@ elseif(IS_CLANG_FAMILY OR IS_GCC_FAMILY)
   target_link_libraries(test-benchmark pthread)
 endif()
 
+add_dependencies(test-all test-benchmark)
+add_test(test-benchmark "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test-benchmark")

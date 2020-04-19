@@ -39,7 +39,8 @@ build_and_test () {
 
   cmake --build . -- -j "$NUM_CPUS"
   ctest --output-on-failure \
-    --parallel "$NUM_CPUS"
+    --parallel "$NUM_CPUS" \
+    --exclude-regex test-benchmark
 }
 
 ccache --show-stats
