@@ -183,9 +183,9 @@ add_dependencies(test-all TestPlain)
 # creates and returns a target that runs them
 function(make_test source out_target compile_flags linker_flags)
 
-    # turn source file path into target name (e.g. "foo/bar.cpp" -> "test-foo-bar")
+    # turn source file path into target name (e.g. "foo/bar.cpp" -> "test-unit-foo-bar")
     string(REPLACE ".cpp" "" stripped "${source}")
-    string(REPLACE "/" "-" target "Test-${stripped}")
+    string(REPLACE "/" "-" target "test-unit-${stripped}")
 
     # create a target and make it a test
     add_executable("${target}" "${source}")
@@ -262,8 +262,8 @@ endforeach(source)
 # create test of GLM integration
 
 ExternalProject_Get_Property(Glm source_dir)
-target_include_directories(Test-glm SYSTEM PRIVATE "${source_dir}")
-add_dependencies(Test-glm Glm)
+target_include_directories(test-unit-glm SYSTEM PRIVATE "${source_dir}")
+add_dependencies(test-unit-glm Glm)
 
 ######################################################################
 # create test of Boost.SIMD integration
