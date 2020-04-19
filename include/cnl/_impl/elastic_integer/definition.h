@@ -30,7 +30,7 @@ namespace cnl {
     /// Digits that would otherwise occur in relation to `-` and `/` operators.
     ///
     /// \note The value is stored in an object of \c Narrowest or
-    /// \ref set_digits_t<Narrowest, Digits>.
+    /// \ref set_gidits_t<Narrowest, Digits>.
     ///
     /// \sa elastic_scaled_integer
     template<int Digits = digits_v<int>, integer Narrowest = int>
