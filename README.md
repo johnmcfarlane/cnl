@@ -98,11 +98,11 @@ However, it comes with a number of tests and benchmarks.
 
 2. Build benchmarks:
 
-   `cmake --build . --target Benchmark`
+   `cmake --build . --target test-benchmark`
 
 3. Run benchmarks:
 
-   `test/benchmark/Benchmark`
+   `test/bin/test-benchmark`
 
 #### Additional build system generation options:
 

@@ -2,22 +2,22 @@
 # Benchmark target
 
 add_executable(
-        Benchmark
+        test-benchmark
         ${CMAKE_CURRENT_LIST_DIR}/benchmark.cpp
 )
 
 set_target_properties(
-        Benchmark
+        test-benchmark
         PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS}"
 )
 
-target_link_libraries(Benchmark Cnl)
+target_link_libraries(test-benchmark Cnl)
 
 ######################################################################
 # add external project, google/benchmark
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-  target_link_libraries(Benchmark Shlwapi)
+  target_link_libraries(test-benchmark Shlwapi)
 endif()
 
 find_package(Threads REQUIRED)
@@ -25,7 +25,7 @@ find_package(Threads REQUIRED)
 ######################################################################
 # hitch gbm to test
 
-target_link_libraries(Benchmark ${CONAN_LIBS})
+target_link_libraries(test-benchmark ${CONAN_LIBS})
 if (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
-  target_link_libraries(Benchmark pthread)
+  target_link_libraries(test-benchmark pthread)
 endif ()
