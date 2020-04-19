@@ -39,7 +39,7 @@ build_and_test () {
 
   cmake --build . -- -j "$NUM_CPUS"
   ctest --output-on-failure \
-    -j "$NUM_CPUS"
+    --parallel "$NUM_CPUS"
 }
 
 ccache --show-stats
