@@ -176,5 +176,5 @@ Examples of projects using CNL:
 
 All feedback greatly appreciated.
 
-* [CNL Issues](https://github.com/johnmcfarlane/cnl/issues)
-* [cnl@john.mcfarlane.name](mailto:cnl@john.mcfarlane.name)
+- [CNL Issues](https://github.com/johnmcfarlane/cnl/issues)
+- [cnl@john.mcfarlane.name](mailto:cnl@john.mcfarlane.name)
