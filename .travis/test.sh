@@ -39,8 +39,8 @@ build_and_test () {
 
   cmake --build . -- -j "$NUM_CPUS"
   ctest --output-on-failure \
-    -j "$NUM_CPUS" \
-    -E Tidy-_impl-wide_integer-literals\|Tidy-static_integer-operators
+    --parallel "$NUM_CPUS" \
+    --exclude-regex test-benchmark
 }
 
 ccache --show-stats
@@ -48,7 +48,7 @@ build_and_test Debug OFF OFF
 build_and_test Release ON ON
 ccache --show-stats
 
-test/bin/Benchmark --benchmark_format=csv>result.csv
+test/bin/test-benchmark --benchmark_format=csv>result.csv
 "${PROJECT_SOURCE_DIR}"/test/benchmark/report.py result.csv
 
 "${PROJECT_SOURCE_DIR}"/test/scripts/shellcheck.sh

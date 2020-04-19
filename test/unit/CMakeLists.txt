@@ -162,19 +162,14 @@ function(add_gtest_dependency target)
 endfunction(add_gtest_dependency)
 
 ######################################################################
-# Tests - the full suite of tests
-
-add_custom_target(Tests)
-
-######################################################################
 # test plain - the main.cpp project with *no* tests of compiler flags
 
-add_executable(TestPlain all.cpp)
-set_target_properties(TestPlain PROPERTIES COMPILE_FLAGS "${STD_FLAGS}")
-target_link_libraries(TestPlain Cnl)
-add_test(TestPlain "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/TestPlain")
-add_gtest_dependency(TestPlain)
-add_dependencies(Tests TestPlain)
+add_executable(test-unit-plain all.cpp)
+set_target_properties(test-unit-plain PROPERTIES COMPILE_FLAGS "${STD_FLAGS}")
+target_link_libraries(test-unit-plain Cnl)
+add_test(test-unit-plain "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test-unit-plain")
+add_gtest_dependency(test-unit-plain)
+add_dependencies(test-all test-unit-plain)
 
 ######################################################################
 # make_test
@@ -183,9 +178,9 @@ add_dependencies(Tests TestPlain)
 # creates and returns a target that runs them
 function(make_test source out_target compile_flags linker_flags)
 
-    # turn source file path into target name (e.g. "foo/bar.cpp" -> "test-foo-bar")
+    # turn source file path into target name (e.g. "foo/bar.cpp" -> "test-unit-foo-bar")
     string(REPLACE ".cpp" "" stripped "${source}")
-    string(REPLACE "/" "-" target "Test-${stripped}")
+    string(REPLACE "/" "-" target "test-unit-${stripped}")
 
     # create a target and make it a test
     add_executable("${target}" "${source}")
@@ -206,8 +201,8 @@ function(make_test source out_target compile_flags linker_flags)
         endif(Boost_VERSION GREATER 105500)
     endif(Boost_FOUND)
 
-    # Add to Tests custom target.
-    add_dependencies(Tests "${target}")
+    # Add to test-all custom target.
+    add_dependencies(test-all "${target}")
 
     # Return name of test target.
     set(${out_target} "${target}" PARENT_SCOPE)
@@ -262,8 +257,8 @@ endforeach(source)
 # create test of GLM integration
 
 ExternalProject_Get_Property(Glm source_dir)
-target_include_directories(Test-glm SYSTEM PRIVATE "${source_dir}")
-add_dependencies(Test-glm Glm)
+target_include_directories(test-unit-glm SYSTEM PRIVATE "${source_dir}")
+add_dependencies(test-unit-glm Glm)
 
 ######################################################################
 # create test of Boost.SIMD integration
