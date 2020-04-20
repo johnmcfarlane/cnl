@@ -13,7 +13,7 @@ jobs:
       - checkout
       - run:
           name: Run tests
-          command: . /root/project/.circleci/test.sh 20
+          command: NUM_CPUS=2 . /root/project/.circleci/test.sh 20
 
   "c++17-arm7":
     docker:
@@ -22,7 +22,7 @@ jobs:
       - checkout
       - run:
           name: Run tests
-          command: . /root/project/.circleci/test-arm.sh
+          command: NUM_CPUS=2 . /root/project/.circleci/test-arm.sh
           no_output_timeout: 20m
 
   "c++17":
@@ -32,7 +32,7 @@ jobs:
       - checkout
       - run:
           name: Run tests
-          command: . /root/project/.circleci/test.sh 17
+          command: NUM_CPUS=2 . /root/project/.circleci/test.sh 17
 
   "c++14":
     docker:
@@ -41,7 +41,7 @@ jobs:
       - checkout
       - run:
           name: Run tests
-          command: . /root/project/.circleci/test.sh 14
+          command: NUM_CPUS=2 . /root/project/.circleci/test.sh 14
 
   "c++11":
     docker:
@@ -50,7 +50,7 @@ jobs:
       - checkout
       - run:
           name: Run tests
-          command: . /root/project/.circleci/test.sh 11
+          command: NUM_CPUS=2 . /root/project/.circleci/test.sh 11
 
 workflows:
   version: 2

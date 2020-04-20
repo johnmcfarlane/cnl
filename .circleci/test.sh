@@ -2,10 +2,6 @@
 
 set -ex
 
-GENERATOR="Unix Makefiles"
-NUM_CPUS=8
-PROJECT_SOURCE_DIR=/root/project
-export SANITIZE=ON
 STD=$1
 
 mkdir /tmp/cnl
@@ -18,4 +14,6 @@ pip3 install conan
 conan profile new default --detect
 conan profile update settings.compiler.libcxx=libstdc++11 default
 
-/root/project/.travis/test.sh "${STD}" "${GENERATOR}" ${NUM_CPUS} "${PROJECT_SOURCE_DIR}" OFF
+/root/project/test/scripts/unit-test.sh \
+  -DCMAKE_CXX_STANDARD="${STD}" \
+  -G "Unix Makefiles"

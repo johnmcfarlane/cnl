@@ -4,15 +4,12 @@
 
 set -euo pipefail
 
-BUILD_DIR=$(pwd)
-PROJECT_DIR=$(cd "$(dirname "$0")"/../..; pwd)
+BITS_DIR=$(
+  cd "$(dirname "$0")"/bits
+  pwd
+)
 
-cmake \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCNL_DEV=ON \
-  -G Ninja \
-  "${PROJECT_DIR}"
+"${BITS_DIR}/config.sh" \
+  "$@"
 
-cmake \
-  --build "${BUILD_DIR}" \
-  --target Doc
+"${BITS_DIR}/build.sh" Doc

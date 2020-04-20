@@ -6,7 +6,7 @@
         {
             "label": "test",
             "type": "shell",
-            "command": "${workspaceRoot}/.travis/test.sh",
+            "command": "${workspaceRoot}/test/scripts/test-all.sh",
             "group": {
                 "kind": "build",
                 "isDefault": true
