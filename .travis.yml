@@ -8,14 +8,14 @@ jobs:
   include:
     - name: Linux/Clang 10, Clang-Tidy
       os: linux
-      env: IMG=cnl_ci:clang-10 SCRIPT=clang-tidy STANDARD=20
+      env: IMG=cnl_ci:clang-10 SCRIPT=clang-tidy STANDARD=20 TOOLCHAIN=clang
 
     - name: Linux/Clang 10, Benchmark
       os: linux
-      env: IMG=cnl_ci:clang-10 SCRIPT=benchmark STANDARD=20 GENERATOR="Unix Makefiles"
+      env: IMG=cnl_ci:clang-10 SCRIPT=benchmark STANDARD=20 TOOLCHAIN=clang GENERATOR="Unix Makefiles"
     - name: Linux/Clang 10, Sanitize
       os: linux
-      env: IMG=cnl_ci:clang-10 SCRIPT=sanitize-clang STANDARD=20
+      env: IMG=cnl_ci:clang-10 SCRIPT=sanitize-clang STANDARD=20 TOOLCHAIN=clang
 
     - name: Linux/GCC 9, Benchmark
       os: linux
@@ -31,7 +31,7 @@ jobs:
 
     - name: Linux/Clang 7, Unit test
       os: linux
-      env: IMG=cnl_ci:clang-7 SCRIPT=unit-test
+      env: IMG=cnl_ci:clang-7 SCRIPT=unit-test TOOLCHAIN=clang
 
     - name: Linux/GCC 7, Unit test
       os: linux
@@ -45,11 +45,11 @@ jobs:
     - name: OS X/Clang 5.0.2, Unit test
       os: osx
       compiler: clang
-      env: CC=clang CXX=clang++ STANDARD=14 SCRIPT=unit-test EXCEPTIONS=OFF
+      env: CC=clang CXX=clang++ STANDARD=14 SCRIPT=unit-test EXCEPTIONS=OFF TOOLCHAIN=clang
 
     - name: Linux/Clang 4, Unit test
       os: linux
-      env: IMG=cnl_ci:clang-4 SCRIPT=unit-test STANDARD=14 INT128=OFF
+      env: IMG=cnl_ci:clang-4 SCRIPT=unit-test STANDARD=14 INT128=OFF TOOLCHAIN=clang
 
     - name: Linux/GCC 5, Unit test
       os: linux

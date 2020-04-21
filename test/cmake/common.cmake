@@ -14,54 +14,6 @@ else ()
     set(IS_CLANG_FAMILY 0)
 endif ()
 
-if (IS_MSVC)
-  # https://developercommunity.visualstudio.com/content/problem/55671/c4307-issued-for-unsigned.html
-  set(MISC_FLAGS "/W4 /WX /errorReport:prompt /nologo /wd4307")
-
-  # not tested
-  set(CPP17_ENABLED_FLAGS "/std:c++17")
-  set(CPP20_ENABLED_FLAGS "/std:latest")
-
-  set(EXCEPTION_ENABLED_FLAGS "/GR /EHsc")
-  set(EXCEPTION_DISABLED_FLAGS "/GR- -DBOOST_NO_EXCEPTIONS -DBOOST_NO_RTTI")
-
-  # 128-bit integers are not supported in MSVC
-  set(INT128_ENABLED_FLAGS "")
-  set(INT128_DISABLED_FLAGS "")
-elseif (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
-  set(MISC_FLAGS "-Wall -Wextra -Werror -Wundef -ftemplate-backtrace-limit=0")
-
-  if (NOT IS_APPLECLANG)
-      string(APPEND MISC_FLAGS " -pthread")
-  endif ()
-
-  if (IS_CLANG)
-      string(APPEND MISC_FLAGS " -fconstexpr-backtrace-limit=0 -fconstexpr-steps=1000000000")
-  else ()
-      string(APPEND MISC_FLAGS " -Wno-psabi")
-  endif ()
-
-  set(CPP20_ENABLED_FLAGS "-std=c++2a")
-  set(CPP17_ENABLED_FLAGS "-std=c++17")
-
-  set(EXCEPTION_ENABLED_FLAGS "-fexceptions -frtti")
-  set(EXCEPTION_DISABLED_FLAGS "-DBOOST_NO_EXCEPTIONS -DBOOST_NO_RTTI -fno-exceptions -fno-rtti")
-
-  set(INT128_ENABLED_FLAGS "-DCNL_USE_INT128=1")
-  set(INT128_DISABLED_FLAGS "-DCNL_USE_INT128=0 -Wpedantic")
-else ()
-  message(FATAL_ERROR "unrecognized compiler: ${CMAKE_CXX_COMPILER_ID}")
-endif ()
-
-set(CNL_STD 17 CACHE STRING "version of C++ standard: 11, 14, 17 or 20")
-if (${CNL_STD} STREQUAL "20")
-    set(STD_FLAGS "${CPP20_ENABLED_FLAGS}")
-elseif (${CNL_STD} STREQUAL "17")
-    set(STD_FLAGS "${CPP17_ENABLED_FLAGS}")
-else ()
-    set(CMAKE_CXX_STANDARD ${CNL_STD})
-endif ()
-
 set(CNL_EXCEPTIONS ON CACHE BOOL "compile with exceptions enabled")
 if (CNL_EXCEPTIONS)
     set(EXCEPTION_FLAGS "${EXCEPTION_ENABLED_FLAGS}")
@@ -76,4 +28,4 @@ else (CNL_INT128)
     set(INT128_FLAGS "${INT128_DISABLED_FLAGS}")
 endif (CNL_INT128)
 
-set(COMMON_CXX_FLAGS "${MISC_FLAGS} ${STD_FLAGS} ${EXCEPTION_FLAGS} ${INT128_FLAGS}")
+set(COMMON_CXX_FLAGS "${MISC_FLAGS} ${EXCEPTION_FLAGS} ${INT128_FLAGS}")

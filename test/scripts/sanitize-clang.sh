@@ -12,6 +12,7 @@ PROJECT_DIR=$(
 
 "${PROJECT_DIR}/test/scripts/test-all.sh" \
   -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_TOOLCHAIN_FILE="${PROJECT_DIR}/test/cmake/toolchain/clang.cmake" \
   -DCNL_INT128=ON \
   -DCNL_SANITIZE=ON \
   "$@"

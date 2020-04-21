@@ -165,7 +165,6 @@ endfunction(add_gtest_dependency)
 # test plain - the main.cpp project with *no* tests of compiler flags
 
 add_executable(test-unit-plain all.cpp)
-set_target_properties(test-unit-plain PROPERTIES COMPILE_FLAGS "${STD_FLAGS}")
 target_link_libraries(test-unit-plain Cnl)
 add_test(test-unit-plain "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test-unit-plain")
 add_gtest_dependency(test-unit-plain)
@@ -210,21 +209,6 @@ endfunction(make_test)
 
 ######################################################################
 # create tests to verify CNL
-
-if (IS_MSVC)
-    set(SANITIZE_ENABLED_CXX_FLAGS "")
-elseif (IS_CLANG)
-    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "3.8.0")
-        set(SANITIZE_ENABLED_CXX_FLAGS "-fsanitize=undefined -fsanitize=address")
-        set(SANITIZE_ENABLED_LINKER_FLAGS "-fsanitize=undefined --rtlib=compiler-rt -lasan")
-    else ()
-        set(SANITIZE_ENABLED_CXX_FLAGS "-fsanitize=undefined -fsanitize-trap=undefined -fsanitize=address")
-        set(SANITIZE_ENABLED_LINKER_FLAGS "-fsanitize=address -rtlib=compiler-rt -lgcc_s")
-    endif ()
-else ()
-    set(SANITIZE_ENABLED_CXX_FLAGS "-fsanitize=undefined -fsanitize-undefined-trap-on-error -fsanitize=address")
-    set(SANITIZE_ENABLED_LINKER_FLAGS "-fsanitize=address -static-libasan")
-endif ()
 
 if (IS_MSVC)
     set(TEST_CXX_FLAGS "")

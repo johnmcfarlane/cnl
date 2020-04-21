@@ -12,6 +12,7 @@ PROJECT_DIR=$(
 
 "${PROJECT_DIR}/test/scripts/bits/config.sh" \
   -DCMAKE_CXX_CLANG_TIDY=clang-tidy \
+  -DCMAKE_TOOLCHAIN_FILE="${PROJECT_DIR}/test/cmake/toolchain/clang.cmake" \
   -DCNL_INT128=ON \
   "${PROJECT_DIR}" \
   "$@"

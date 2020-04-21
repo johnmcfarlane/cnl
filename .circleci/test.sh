@@ -16,4 +16,5 @@ conan profile update settings.compiler.libcxx=libstdc++11 default
 
 /root/project/test/scripts/unit-test.sh \
   -DCMAKE_CXX_STANDARD="${STD}" \
+  -DCMAKE_TOOLCHAIN_FILE=/root/project/test/cmake/toolchain/gcc.cmake \
   -G "Unix Makefiles"
