@@ -240,11 +240,7 @@ add_dependencies(test-unit-glm Glm)
 if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND CNL_EXCEPTIONS)
     # Boost.SIMD has problems building with gcc-7.x
     if(NOT IS_GCC_FAMILY OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
-        if (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
-            make_test(boost.simd.cpp target "-Wno-conversion" "")
-        else ()
-            make_test(boost.simd.cpp target "" "")
-        endif ()
+        make_test(boost.simd.cpp target "${SAMPLE_CXX_FLAGS}" "")
 
         ExternalProject_Add(
             BoostSimd
