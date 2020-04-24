@@ -224,11 +224,7 @@ endforeach(source)
 # create tests to show off CNL
 
 foreach(source ${sample_sources})
-    if (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
-        make_test("${source}" target "-fpermissive -Wno-sign-compare -Wno-strict-overflow" "")
-    else ()
-        make_test("${source}" target "/wd4018" "")
-    endif ()
+    make_test("${source}" target "${SAMPLE_CXX_FLAGS}" "")
 endforeach(source)
 
 ######################################################################
