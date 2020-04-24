@@ -5,7 +5,15 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/_impl/type_traits/identical.h>
+
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable: 4308)
+#endif
 #include <cnl/overflow.h>
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 #include <gtest/gtest.h>
 
