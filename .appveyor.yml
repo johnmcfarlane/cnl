@@ -16,13 +16,13 @@ environment:
   matrix:
     - platform: x64
       configuration: Debug
-      cmake_generator: "Visual Studio 15"
+      cmake_generator: "Visual Studio 16 2019"
       cmake_arch: x64
       msbuild_property: x64
       exceptions: OFF
       std: 17
       arch: x86_64
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 
     - platform: x86
       configuration: Release
