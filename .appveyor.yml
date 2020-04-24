@@ -22,20 +22,13 @@ environment:
       std: 17
       arch: x86_64
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+
     - platform: x86
       configuration: Release
       cmake_generator: "Visual Studio 15 2017"
       msbuild_property: win32
       exceptions: ON
       std: 11
-      arch: x86
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    - platform: x86
-      configuration: RelWithDebInfo
-      cmake_generator: "Visual Studio 15 2017"
-      msbuild_property: win32
-      exceptions: ON
-      std: 14
       arch: x86
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
