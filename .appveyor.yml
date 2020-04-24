@@ -16,7 +16,8 @@ environment:
   matrix:
     - platform: x64
       configuration: Debug
-      cmake_generator: "Visual Studio 15 2017 Win64"
+      cmake_generator: "Visual Studio 15"
+      cmake_arch: x64
       msbuild_property: x64
       exceptions: OFF
       std: 17
@@ -26,6 +27,7 @@ environment:
     - platform: x86
       configuration: Release
       cmake_generator: "Visual Studio 15 2017"
+      cmake_arch: Win32
       msbuild_property: win32
       exceptions: ON
       std: 11
@@ -38,7 +40,7 @@ build_script:
   - cmd: cd build
   - cmd: conan profile update settings.arch=%arch% default
   - cmd: set BOOST_ROOT=C:\Libraries\boost_1_66_0
-  - cmd: cmake -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_TOOLCHAIN_FILE=../test/cmake/toolchain/msvc.cmake -DCNL_DEV=ON -DCNL_EXCEPTIONS=%exceptions% -DCNL_STD=%std% -G "%cmake_generator%" ..
+  - cmd: cmake -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_TOOLCHAIN_FILE=../test/cmake/toolchain/msvc.cmake -DCNL_DEV=ON -DCNL_EXCEPTIONS=%exceptions% -DCNL_STD=%std% -G "%cmake_generator%" -A "%cmake_arch%" ..
   - cmd: cmake --build . -- /property:Configuration=%configuration% /property:Platform=%msbuild_property% /maxcpucount
 
 test_script:
