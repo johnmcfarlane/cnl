@@ -258,10 +258,11 @@ namespace cnl {
             {
                 using traits = operator_overflow_traits<subtract_op, Lhs, Rhs>;
                 return (max(overflow_digits<Lhs, polarity::positive>::value,
-                        overflow_digits<Rhs, polarity::positive>::value)+1
+                        overflow_digits<Rhs, polarity::negative>::value)+1
                         >traits::positive_digits)
                         && rhs<Rhs{0}
-                        && lhs>traits::max()+rhs;
+                        // NOLINTNEXTLINE(bugprone-misplaced-widening-cast)
+                        && lhs>static_cast<typename traits::result>(numeric_limits<Rhs>::max()+rhs);
             }
         };
 
