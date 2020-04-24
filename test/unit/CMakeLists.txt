@@ -239,22 +239,20 @@ add_dependencies(test-unit-glm Glm)
 
 if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND CNL_EXCEPTIONS)
     # Boost.SIMD has problems building with gcc-7.x
-    if(NOT IS_GCC_FAMILY OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
-        make_test(boost.simd.cpp target "${SAMPLE_CXX_FLAGS}" "")
+    make_test(boost.simd.cpp target "${SAMPLE_CXX_FLAGS}" "")
 
-        ExternalProject_Add(
-            BoostSimd
-            URL "https://github.com/johnmcfarlane/boost.simd/archive/cnl.zip"
-            URL_MD5 "29e0e22801fb8cfb7742005c89183bba"
-            UPDATE_COMMAND ""
-            INSTALL_COMMAND ""
-            CMAKE_ARGS "-DBoost_INCLUDE_DIR=${Boost_INCLUDE_DIR}"
-        )
-        add_dependencies("${target}" BoostSimd)
+    ExternalProject_Add(
+        BoostSimd
+        URL "https://github.com/johnmcfarlane/boost.simd/archive/cnl.zip"
+        URL_MD5 "29e0e22801fb8cfb7742005c89183bba"
+        UPDATE_COMMAND ""
+        INSTALL_COMMAND ""
+        CMAKE_ARGS "-DBoost_INCLUDE_DIR=${Boost_INCLUDE_DIR}"
+    )
+    add_dependencies("${target}" BoostSimd)
 
-        ExternalProject_Get_Property(BoostSimd source_dir)
-        target_include_directories("${target}" SYSTEM PRIVATE "${source_dir}/include")
-    endif(NOT IS_GCC_FAMILY OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
+    ExternalProject_Get_Property(BoostSimd source_dir)
+    target_include_directories("${target}" SYSTEM PRIVATE "${source_dir}/include")
 endif(Boost_FOUND AND Boost_VERSION GREATER 106099 AND CNL_EXCEPTIONS)
 
 ######################################################################
