@@ -10,6 +10,8 @@
 #include "make_fraction.h"
 #include "type.h"
 
+#include <ostream>
+
 /// compositional numeric library
 namespace cnl {
     // cnl::fraction arithmetic
