@@ -5,7 +5,7 @@ set_target_properties(
         PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS}"
 )
 
-target_link_libraries(test-benchmark Cnl ${CONAN_LIBS})
+target_link_libraries(test-benchmark ${COMMON_LINK_FLAGS})
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
   target_link_libraries(test-benchmark Shlwapi)

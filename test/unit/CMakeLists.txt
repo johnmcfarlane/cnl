@@ -155,9 +155,6 @@ ExternalProject_Add(
 # add_gtest_dependency
 
 function(add_gtest_dependency target)
-    # gtest
-    target_link_libraries("${target}" ${CONAN_LIBS})
-
     target_include_directories("${target}" SYSTEM PRIVATE "${CONAN_INCLUDE_DIRS_GTEST}")
 endfunction(add_gtest_dependency)
 
@@ -165,7 +162,8 @@ endfunction(add_gtest_dependency)
 # test plain - the main.cpp project with *no* tests of compiler flags
 
 add_executable(test-unit-plain all.cpp)
-target_link_libraries(test-unit-plain Cnl)
+set_target_properties(test-unit-plain PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS}")
+target_link_libraries(test-unit-plain "${COMMON_LINK_FLAGS}")
 add_test(test-unit-plain "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test-unit-plain")
 add_gtest_dependency(test-unit-plain)
 add_dependencies(test-all test-unit-plain)
@@ -185,7 +183,7 @@ function(make_test source out_target compile_flags linker_flags)
     add_executable("${target}" "${source}")
     target_include_directories("${target}" PRIVATE "${CMAKE_CURRENT_LIST_DIR}")
     set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${compile_flags}")
-    target_link_libraries("${target}" Cnl ${linker_flags})
+    target_link_libraries("${target}" "${COMMON_LINK_FLAGS}" ${linker_flags})
     add_test("${target}" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${target}")
 
     # Google Test dependency
@@ -210,18 +208,6 @@ endfunction(make_test)
 ######################################################################
 # create tests to verify CNL
 
-if (IS_MSVC)
-    set(TEST_CXX_FLAGS "")
-else ()
-    set(TEST_CXX_FLAGS "-Wconversion -Wno-sign-conversion -ftemplate-backtrace-limit=0")
-endif ()
-
-set(CNL_SANITIZE ON CACHE BOOL "compile with UB sanitizer enabled")
-if (CNL_SANITIZE)
-    set(SANITIZE_CXX_FLAGS "${SANITIZE_ENABLED_CXX_FLAGS}")
-    set(SANITIZE_LINKER_FLAGS "${SANITIZE_ENABLED_LINKER_FLAGS}")
-endif (CNL_SANITIZE)
-
 foreach(source ${test_sources})
     make_test("${source}" target "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
 endforeach(source)
@@ -230,11 +216,7 @@ endforeach(source)
 # create tests to show off CNL
 
 foreach(source ${sample_sources})
-    if (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
-        make_test("${source}" target "-fpermissive -Wno-sign-compare -Wno-strict-overflow" "")
-    else ()
-        make_test("${source}" target "/wd4018" "")
-    endif ()
+    make_test("${source}" target "${SAMPLE_CXX_FLAGS}" "")
 endforeach(source)
 
 ######################################################################
@@ -249,26 +231,20 @@ add_dependencies(test-unit-glm Glm)
 
 if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND CNL_EXCEPTIONS)
     # Boost.SIMD has problems building with gcc-7.x
-    if(NOT IS_GCC_FAMILY OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
-        if (IS_CLANG_FAMILY OR IS_GCC_FAMILY)
-            make_test(boost.simd.cpp target "-Wno-conversion" "")
-        else ()
-            make_test(boost.simd.cpp target "" "")
-        endif ()
+    make_test(boost.simd.cpp target "${SAMPLE_CXX_FLAGS}" "")
 
-        ExternalProject_Add(
-            BoostSimd
-            URL "https://github.com/johnmcfarlane/boost.simd/archive/cnl.zip"
-            URL_MD5 "29e0e22801fb8cfb7742005c89183bba"
-            UPDATE_COMMAND ""
-            INSTALL_COMMAND ""
-            CMAKE_ARGS "-DBoost_INCLUDE_DIR=${Boost_INCLUDE_DIR}"
-        )
-        add_dependencies("${target}" BoostSimd)
+    ExternalProject_Add(
+        BoostSimd
+        URL "https://github.com/johnmcfarlane/boost.simd/archive/cnl.zip"
+        URL_MD5 "29e0e22801fb8cfb7742005c89183bba"
+        UPDATE_COMMAND ""
+        INSTALL_COMMAND ""
+        CMAKE_ARGS "-DBoost_INCLUDE_DIR=${Boost_INCLUDE_DIR}"
+    )
+    add_dependencies("${target}" BoostSimd)
 
-        ExternalProject_Get_Property(BoostSimd source_dir)
-        target_include_directories("${target}" SYSTEM PRIVATE "${source_dir}/include")
-    endif(NOT IS_GCC_FAMILY OR CMAKE_CXX_COMPILER_VERSION VERSION_LESS "7.0.0")
+    ExternalProject_Get_Property(BoostSimd source_dir)
+    target_include_directories("${target}" SYSTEM PRIVATE "${source_dir}/include")
 endif(Boost_FOUND AND Boost_VERSION GREATER 106099 AND CNL_EXCEPTIONS)
 
 ######################################################################

@@ -11,3 +11,6 @@ set(INT128_DISABLED_FLAGS "-DCNL_USE_INT128=0")
 
 set(SANITIZE_ENABLED_CXX_FLAGS "-fsanitize=address,undefined -fsanitize-trap=undefined -g -O0")
 set(SANITIZE_ENABLED_LINKER_FLAGS "-fsanitize=address,undefined -rtlib=compiler-rt -lgcc_s")
+
+set(TEST_CXX_FLAGS "-Wconversion -Wno-sign-conversion -ftemplate-backtrace-limit=0")
+set(SAMPLE_CXX_FLAGS "-fpermissive -Wno-sign-compare -Wno-strict-overflow")

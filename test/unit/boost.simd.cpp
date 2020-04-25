@@ -4,6 +4,8 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#if !defined(__GNUG__) || (__GNUG__ <= 7)
+
 #include <cnl/auxiliary/boost.simd.h>
 
 #include <cnl/scaled_integer.h>
@@ -162,3 +164,5 @@ namespace {
         ASSERT_EQ(expected, sum);
     }
 }
+
+#endif
