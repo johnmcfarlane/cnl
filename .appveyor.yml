@@ -40,7 +40,7 @@ build_script:
   - cmd: cd build
   - cmd: conan profile update settings.arch=%arch% default
   - cmd: set BOOST_ROOT=C:\Libraries\boost_1_66_0
-  - cmd: cmake -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_TOOLCHAIN_FILE=../test/cmake/toolchain/msvc.cmake -DCNL_DEV=ON -DCNL_EXCEPTIONS=%exceptions% -DCNL_STD=%std% -G "%cmake_generator%" -A "%cmake_arch%" ..
+  - cmd: cmake -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_TOOLCHAIN_FILE=../test/cmake/toolchain/msvc.cmake -DCNL_DEV=ON -DCNL_EXCEPTIONS=%exceptions% -DCMAKE_CXX_STANDARD=%std% -G "%cmake_generator%" -A "%cmake_arch%" ..
   - cmd: cmake --build . -- /property:Configuration=%configuration% /property:Platform=%msbuild_property% /maxcpucount
 
 test_script:
