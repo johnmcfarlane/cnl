@@ -3,17 +3,6 @@
 ######################################################################
 # build flags
 
-string(COMPARE EQUAL "${CMAKE_CXX_COMPILER_ID}" "AppleClang" IS_APPLECLANG)
-string(COMPARE EQUAL "${CMAKE_CXX_COMPILER_ID}" "Clang" IS_CLANG)
-string(COMPARE EQUAL "${CMAKE_CXX_COMPILER_ID}" "GNU" IS_GCC_FAMILY)
-string(COMPARE EQUAL "${CMAKE_CXX_COMPILER_ID}" "MSVC" IS_MSVC)
-
-if (IS_CLANG OR IS_APPLECLANG)
-    set(IS_CLANG_FAMILY 1)
-else ()
-    set(IS_CLANG_FAMILY 0)
-endif ()
-
 set(CNL_EXCEPTIONS ON CACHE BOOL "compile with exceptions enabled")
 if (CNL_EXCEPTIONS)
     set(EXCEPTION_FLAGS "${EXCEPTION_ENABLED_FLAGS}")
