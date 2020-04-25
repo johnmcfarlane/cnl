@@ -165,6 +165,7 @@ endfunction(add_gtest_dependency)
 # test plain - the main.cpp project with *no* tests of compiler flags
 
 add_executable(test-unit-plain all.cpp)
+set_target_properties(test-unit-plain PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS}")
 target_link_libraries(test-unit-plain Cnl)
 add_test(test-unit-plain "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test-unit-plain")
 add_gtest_dependency(test-unit-plain)
