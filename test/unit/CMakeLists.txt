@@ -211,12 +211,6 @@ endfunction(make_test)
 ######################################################################
 # create tests to verify CNL
 
-set(CNL_SANITIZE ON CACHE BOOL "compile with UB sanitizer enabled")
-if (CNL_SANITIZE)
-    set(SANITIZE_CXX_FLAGS "${SANITIZE_ENABLED_CXX_FLAGS}")
-    set(SANITIZE_LINKER_FLAGS "${SANITIZE_ENABLED_LINKER_FLAGS}")
-endif (CNL_SANITIZE)
-
 foreach(source ${test_sources})
     make_test("${source}" target "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
 endforeach(source)
