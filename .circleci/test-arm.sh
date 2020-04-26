@@ -2,19 +2,15 @@
 
 set -ex
 
-export CXX=arm-linux-gnueabi-g++-8
+export CXX=arm-linux-gnueabi-g++-9
 
 apt-get update
-apt-get install --quiet --yes ccache cloc cmake g++-8-arm-linux-gnueabi libboost-dev ninja-build python3 python3-pip
-pip3 install conan
+apt-get install --quiet --yes g++-9-arm-linux-gnueabi libboost-dev
 
-conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
-conan profile new default
-cat ~/.conan/profiles/default
 conan profile update settings.arch=armv7 default
 conan profile update settings.compiler=gcc default
 conan profile update settings.compiler.libcxx=libstdc++11 default
-conan profile update settings.compiler.version=8 default
+conan profile update settings.compiler.version=10 default
 conan profile update settings.os=Linux default
 
 mkdir /tmp/cnl

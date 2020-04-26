@@ -8,11 +8,7 @@ mkdir /tmp/cnl
 cd /tmp/cnl
 
 apt-get update
-apt-get install --quiet --yes ccache clang-tidy cloc cmake libboost-dev python3 python3-pip shellcheck
-pip3 install conan
-
-conan profile new default --detect
-conan profile update settings.compiler.libcxx=libstdc++11 default
+apt-get install --quiet --yes libboost-dev
 
 /root/project/test/scripts/unit-test.sh \
   -DCMAKE_CXX_STANDARD="${STD}" \
