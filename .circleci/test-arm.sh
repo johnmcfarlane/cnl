@@ -8,10 +8,7 @@ apt-get update
 apt-get install --quiet --yes g++-9-arm-linux-gnueabi libboost-dev
 
 conan profile update settings.arch=armv7 default
-conan profile update settings.compiler=gcc default
 conan profile update settings.compiler.libcxx=libstdc++11 default
-conan profile update settings.compiler.version=10 default
-conan profile update settings.os=Linux default
 
 mkdir /tmp/cnl
 cd /tmp/cnl
