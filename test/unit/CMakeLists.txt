@@ -247,3 +247,25 @@ if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND CNL_EXCEPTIONS)
     ExternalProject_Get_Property(BoostSimd source_dir)
     target_include_directories("${target}" SYSTEM PRIVATE "${source_dir}/include")
 endif(Boost_FOUND AND Boost_VERSION GREATER 106099 AND CNL_EXCEPTIONS)
+
+######################################################################
+# create test of Vc integration
+
+set(CNL_TEST_STD_SIMD ON CACHE BOOL "test std-simd library integration")
+if(${CNL_TEST_STD_SIMD})
+    make_test(std-simd.cpp target "" "")
+
+    ExternalProject_Add(
+            std-simd
+            URL "https://github.com/VcDevel/std-simd/releases/download/simd-1.0.0/simd-1.0.0.tar.gz"
+            URL_MD5 "795cdc72c583c579ffe86cb6db267844"
+            BUILD_COMMAND ""
+            CONFIGURE_COMMAND ""
+            INSTALL_COMMAND ""
+            UPDATE_COMMAND ""
+    )
+    add_dependencies("${target}" std-simd)
+
+    ExternalProject_Get_Property(std-simd source_dir)
+    target_include_directories("${target}" SYSTEM PRIVATE "${source_dir}")
+endif()

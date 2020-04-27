@@ -14,3 +14,5 @@ set(SANITIZE_ENABLED_LINKER_FLAGS "-fsanitize=address,undefined -static-libasan"
 
 set(TEST_CXX_FLAGS "-Wconversion -Wno-sign-conversion -ftemplate-backtrace-limit=0")
 set(SAMPLE_CXX_FLAGS "-fpermissive -Wno-sign-compare -Wno-strict-overflow")
+
+set(CNL_TEST_STD_SIMD OFF)
