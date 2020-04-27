@@ -61,7 +61,7 @@ jobs:
 
     - name: Linux/ShellCheck, Shell script lint
       os: linux
-      env: IMG=cnl_ci:base-19.10 SCRIPT=shellcheck
+      env: IMG=cnl_ci:base-20.04 SCRIPT=shellcheck
 
 script:
   - .travis/test-${TRAVIS_OS_NAME}.sh
