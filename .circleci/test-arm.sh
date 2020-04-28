@@ -16,7 +16,6 @@ cd /tmp/cnl
 /root/project/test/scripts/bits/config.sh \
   -DCNL_DEV=ON \
   -DCNL_INT128=OFF \
-  -DCNL_TEST_VC=OFF \
   -DCMAKE_TOOLCHAIN_FILE=/root/project/test/cmake/toolchain/gcc-armv7-a.cmake
 
 /root/project/test/scripts/bits/build.sh \

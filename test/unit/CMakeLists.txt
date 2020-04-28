@@ -246,25 +246,3 @@ if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND CNL_EXCEPTIONS)
     ExternalProject_Get_Property(BoostSimd source_dir)
     target_include_directories("${target}" SYSTEM PRIVATE "${source_dir}/include")
 endif(Boost_FOUND AND Boost_VERSION GREATER 106099 AND CNL_EXCEPTIONS)
-
-######################################################################
-# create test of Vc integration
-
-set(CNL_TEST_VC ON CACHE BOOL "test VC library integration")
-if(${CNL_TEST_VC} AND IS_GCC_FAMILY AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7.0.0"
-        AND CMAKE_VERSION VERSION_GREATER "3.2")
-    make_test(vc.cpp target "" "")
-
-    ExternalProject_Add(
-            Vc
-            URL "https://github.com/johnmcfarlane/Vc/archive/37ea0c6a0455ee91d62dc04d082bd4bac9fac5b3.zip"
-            URL_MD5 "bab6f17c63e128b3c28ac9aa9324dd09"
-            UPDATE_COMMAND ""
-            INSTALL_COMMAND ""
-            CMAKE_ARGS "-DBUILD_TESTING=OFF"
-    )
-    add_dependencies("${target}" Vc)
-
-    ExternalProject_Get_Property(Vc source_dir)
-    target_include_directories("${target}" SYSTEM PRIVATE "${source_dir}")
-endif()
