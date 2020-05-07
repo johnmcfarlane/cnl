@@ -26,7 +26,7 @@ namespace cnl {
             power<DestExponent, Radix>,
             power<SrcExponent, Radix>,
             Dest, Src,
-            _impl::enable_if_t<cnl::numeric_limits<Dest>::is_iec559 && cnl::numeric_limits<Src>::is_integer>> {
+            _impl::enable_if_t<!cnl::numeric_limits<Dest>::is_integer && cnl::numeric_limits<Src>::is_integer>> {
         static_assert(cnl::numeric_limits<Src>::is_integer, "");
 
         CNL_NODISCARD constexpr Dest operator()(Src const& from) const
@@ -43,7 +43,7 @@ namespace cnl {
             power<DestExponent, Radix>,
             power<SrcExponent, Radix>,
             Result, Input,
-            _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer && cnl::numeric_limits<Input>::is_iec559>> {
+            _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer && !cnl::numeric_limits<Input>::is_integer>> {
         CNL_NODISCARD constexpr Result operator()(Input const& from) const
         {
             return static_cast<Result>(from*_impl::power_value<Input, SrcExponent-DestExponent, Radix>());
@@ -125,28 +125,28 @@ namespace cnl {
         };
     }
 
-    template<
-            int DestExponent, int Radix,
-            typename Dest,
-            typename SrcNumerator, typename SrcDenominator>
-    struct convert_operator<
-            cnl::power<DestExponent, Radix>,
-            cnl::power<0, Radix>,
-            Dest,
-            cnl::fraction<SrcNumerator, SrcDenominator>> {
-        CNL_NODISCARD constexpr Dest operator()(cnl::fraction<SrcNumerator, SrcDenominator> const& from) const
-        {
-            static_assert(_impl::exponent<Dest>::value==0, "TODO");
-
-            return static_cast<Dest>(
-                    _impl::fixed_width_scale<
-                            _impl::exponent<SrcNumerator>::value
-                                    -_impl::exponent<SrcDenominator>::value
-                                    -DestExponent, Radix>(
-                            static_cast<Dest>(_impl::not_scaled_integer(from.numerator)))
-                            /_impl::not_scaled_integer(from.denominator));
-        }
-    };
+//    template<
+//            int DestExponent, int Radix,
+//            typename Dest,
+//            typename SrcNumerator, typename SrcDenominator>
+//    struct convert_operator<
+//            cnl::power<DestExponent, Radix>,
+//            cnl::power<0, Radix>,
+//            Dest,
+//            cnl::fraction<SrcNumerator, SrcDenominator>> {
+//        CNL_NODISCARD constexpr Dest operator()(cnl::fraction<SrcNumerator, SrcDenominator> const& from) const
+//        {
+//            static_assert(_impl::exponent<Dest>::value==0, "TODO");
+//
+//            return static_cast<Dest>(
+//                    _impl::fixed_width_scale<
+//                            _impl::exponent<SrcNumerator>::value
+//                                    -_impl::exponent<SrcDenominator>::value
+//                                    -DestExponent, Radix>(
+//                            static_cast<Dest>(_impl::not_scaled_integer(from.numerator)))
+//                            /_impl::not_scaled_integer(from.denominator));
+//        }
+//    };
 }
 
 #endif //CNL_IMPL_SCALED_CONVERT_OPERATOR_H

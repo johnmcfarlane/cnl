@@ -21,7 +21,7 @@ namespace cnl {
     namespace _impl {
         template<class N>
         struct is_arithmetic_or_integer
-                : std::integral_constant<bool, std::is_floating_point<N>::value || numeric_limits<N>::is_integer> {
+                : std::integral_constant<bool, numeric_limits<N>::is_specialized> {
         };
 
         template<class N1, class N2>
