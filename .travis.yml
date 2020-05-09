@@ -57,7 +57,7 @@ jobs:
 
     - name: Linux/Doxygen, Documentation
       os: linux
-      env: IMG=cnl_ci:gcc-9 SCRIPT=doxygen
+      env: IMG=cnl_ci:base-20.04 SCRIPT=doxygen
 
     - name: Linux/ShellCheck, Shell script lint
       os: linux
