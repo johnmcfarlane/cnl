@@ -37,17 +37,17 @@ namespace cnl {
         template<typename S, int Exponent, bool OddExponent>
         struct power_value_fn<S, Exponent, 2, true, OddExponent, false> {
             CNL_NODISCARD constexpr auto operator()() const
-            -> decltype(decltype(std::declval<S>() >> constant<digits<S>::value-1>{}){1} << constant<Exponent>{})
+            -> decltype(decltype(std::declval<S>() >> std::declval<constant<digits<S>::value-1>>()){1} << constant<Exponent>{})
             {
                 using result_numeric_limits = numeric_limits<decltype(decltype(
-                        std::declval<S>() >> constant<digits<S>::value-1>{}){1} << constant<Exponent>{})>;
+                        std::declval<S>() >> std::declval<constant<digits<S>::value-1>>()){1} << constant<Exponent>{})>;
                 static_assert(!std::is_integral<S>::value
                         || !std::is_signed<S>::value
                         || Exponent<result_numeric_limits::digits, "attempted operation will result in overflow");
 
                 // TODO: This expression is so ugly that it might justify
                 // a separate specialization of power for elastic_integer
-                return decltype(std::declval<S>() >> constant<digits<S>::value-1>{}){1} << constant<Exponent>{};
+                return decltype(std::declval<S>() >> std::declval<constant<digits<S>::value-1>>()){1} << constant<Exponent>{};
             }
         };
 
