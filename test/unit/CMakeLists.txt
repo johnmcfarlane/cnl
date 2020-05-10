@@ -159,7 +159,7 @@ function(add_gtest_dependency target)
 endfunction(add_gtest_dependency)
 
 ######################################################################
-# test plain - the main.cpp project with *no* tests of compiler flags
+# test plain - the all.cpp project with *no* tests of compiler flags
 
 add_executable(test-unit-plain all.cpp)
 set_target_properties(test-unit-plain PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS}")
