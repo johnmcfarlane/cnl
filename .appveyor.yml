@@ -8,7 +8,6 @@ init:
   - cmd: conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
   - cmd: conan profile new default
   - cmd: conan profile update settings.compiler="Visual Studio" default
-  - cmd: conan profile update settings.compiler.version=15 default
   - cmd: conan profile update settings.os=Windows default
 
 environment:
@@ -19,6 +18,7 @@ environment:
       cmake_generator: "Visual Studio 16 2019"
       cmake_arch: x64
       msbuild_property: x64
+      compiler_version: 16
       exceptions: OFF
       std: 17
       arch: x86_64
@@ -29,6 +29,7 @@ environment:
       cmake_generator: "Visual Studio 15 2017"
       cmake_arch: Win32
       msbuild_property: win32
+      compiler_version: 15
       exceptions: ON
       std: 11
       arch: x86
@@ -39,12 +40,14 @@ build_script:
   - cmd: mkdir build
   - cmd: cd build
   - cmd: conan profile update settings.arch=%arch% default
+  - cmd: conan profile update settings.compiler.version=%compiler_version% default
+  - cmd: conan install --build=missing --generator cmake_find_package --settings build_type=%configuration% %APPVEYOR_BUILD_FOLDER%
   - cmd: set BOOST_ROOT=C:\Libraries\boost_1_66_0
-  - cmd: cmake -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_TOOLCHAIN_FILE=../test/cmake/toolchain/msvc.cmake -DCNL_DEV=ON -DCNL_EXCEPTIONS=%exceptions% -DCMAKE_CXX_STANDARD=%std% -G "%cmake_generator%" -A "%cmake_arch%" ..
+  - cmd: cmake -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_MODULE_PATH=C:/projects/cnl/build -DCMAKE_TOOLCHAIN_FILE=../test/cmake/toolchain/msvc.cmake -DCNL_DEV=ON -DCNL_EXCEPTIONS=%exceptions% -DCMAKE_CXX_STANDARD=%std% -G "%cmake_generator%" -A "%cmake_arch%" ..
   - cmd: cmake --build . -- /property:Configuration=%configuration% /property:Platform=%msbuild_property% /maxcpucount
 
 test_script:
   - cmd: ctest --exclude-regex test-benchmark --output-on-failure --parallel 8
-  - cmd: test\bin\test-benchmark.exe
+  - cmd: test\benchmark\%configuration%\test-benchmark.exe
 
 shallow_clone: true

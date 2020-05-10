@@ -1,7 +1,9 @@
 {
-    "cmake.configureArgs": [
-        "-DCNL_DEV=ON",
-        "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
-        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
-    ]
+    "cmake.configureSettings": {
+        "CNL_DEV": "ON",
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_COMPILER_LAUNCHER": "ccache",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_MODULE_PATH": "${workspaceFolder}/build",
+    },
 }

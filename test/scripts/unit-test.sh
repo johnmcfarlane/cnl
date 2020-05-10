@@ -11,6 +11,7 @@ PROJECT_DIR=$(
 )
 
 "${PROJECT_DIR}/test/scripts/bits/config.sh" \
+  -DCMAKE_MODULE_PATH="$(pwd)" \
   "$@"
 
 "${PROJECT_DIR}/test/scripts/bits/build.sh" test-all

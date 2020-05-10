@@ -12,11 +12,16 @@ PROJECT_DIR=$(
 cloc "${PROJECT_DIR}"/include
 cloc "${PROJECT_DIR}"/test
 
-conan remote add --force johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
+conan install \
+  --build=missing \
+  --generator cmake_find_package \
+  --settings build_type=Release \
+  "${PROJECT_DIR}"
 
 cmake \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+  -DCMAKE_MODULE_PATH="$(pwd)" \
   -DCNL_DEV=ON \
   -G Ninja \
   "$@" \

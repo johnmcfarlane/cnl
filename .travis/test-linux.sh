@@ -20,10 +20,10 @@ docker run \
   --cap-add SYS_PTRACE \
   --volume "${PROJECT_DIR}":"${CONTAINER_PROJECT_DIR}" \
   --volume "${HOME}"/.ccache:/root/.ccache \
-  --volume "${HOME}"/.conan:/root/.conan \
   --workdir /ws \
   "johnmcfarlane/${IMG}" \
-  bash -c "\"${CONTAINER_PROJECT_DIR}/test/scripts/${SCRIPT}.sh\" \
+  bash -c "conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl \
+    && \"${CONTAINER_PROJECT_DIR}/test/scripts/${SCRIPT}.sh\" \
     -DCMAKE_CXX_STANDARD=\"${STANDARD}\" \
     -DCMAKE_TOOLCHAIN_FILE=\"${CONTAINER_PROJECT_DIR}/test/cmake/toolchain/${TOOLCHAIN}\".cmake \
     -DCNL_EXCEPTIONS=\"${EXCEPTIONS}\" \

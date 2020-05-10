@@ -24,7 +24,8 @@ if [ -n "${PACKAGE-}" ]; then
   brew install "${PACKAGE}"
 fi
 
-conan profile new default --detect
+conan profile new --detect default
+
 if [ "$CXX" != "clang++" ]; then
   conan profile update settings.compiler=gcc default
   conan profile update settings.compiler.libcxx=libstdc++11 default
@@ -33,6 +34,9 @@ fi
 
 pwd
 mkdir -p ../build && cd ../build
+
+conan remote add \
+  johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
 
 "${PROJECT_DIR}/test/scripts/${SCRIPT}.sh" \
   -DCMAKE_CXX_STANDARD="${STANDARD}" \

@@ -12,7 +12,7 @@ class CnlConan(ConanFile):
     description = "A Compositional Numeric Library for C++"
     topics = ("fixed-point", "value-types")
     settings = "os", "compiler", "build_type", "arch"
-    generators = "cmake"
+    generators = "cmake_find_package"
     no_copy_source = True
     requires = "gtest/1.8.1@bincrafters/stable","benchmark/1.5.0@johnmcfarlane/stable"
     default_options = "gtest:shared=False"

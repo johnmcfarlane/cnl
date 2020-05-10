@@ -154,8 +154,10 @@ ExternalProject_Add(
 ######################################################################
 # add_gtest_dependency
 
+find_package(gtest REQUIRED)
+
 function(add_gtest_dependency target)
-    target_include_directories("${target}" SYSTEM PRIVATE "${CONAN_INCLUDE_DIRS_GTEST}")
+    target_link_libraries("${target}" gtest::gtest)
 endfunction(add_gtest_dependency)
 
 ######################################################################

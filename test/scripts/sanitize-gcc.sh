@@ -4,13 +4,13 @@
 
 set -euo pipefail
 
+export CXX=g++
 PROJECT_DIR=$(
   cd "$(dirname "$0")"/../..
   pwd
 )
 
 "${PROJECT_DIR}/test/scripts/test-all.sh" \
-  -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_TOOLCHAIN_FILE="${PROJECT_DIR}/test/cmake/toolchain/gcc.cmake" \
   -DCNL_INT128=ON \
   -DCNL_SANITIZE=ON \

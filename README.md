@@ -20,20 +20,14 @@ Tested on x86-86 using  [Travis](https://travis-ci.org/johnmcfarlane/cnl) and
 Requires:
 
 - GCC 5.1 / Clang 4.0
-
-Optional:
-
 - [CMake](https://cmake.org/download/) ([3.5.1](https://docs.travis-ci.com/user/languages/cpp/#CMake))
-- [Boost](http://www.boost.org/) - facilitates multiprecision support
-- [Conan](https://conan.io/) - package manager makes it easier to
-  install test dependencies
-- [Doxygen](http://www.doxygen.org/) - generates documentation in the
-  *doc/gh-pages* directory
 
 ### Windows
 
 Tested on [AppVeyor](https://ci.appveyor.com/project/johnmcfarlane/cnl/branch/master)
-and on *Windows 10 Professional* with *CMake 3.8.0*. Requires:
+and on *Windows 10 Professional* with *CMake 3.8.0*.
+
+Requires:
 
 - MSBuild 15.0 (VS 2017)
 - [CMake](https://cmake.org/download/) 3.8.0
@@ -45,66 +39,60 @@ and on *Windows 10 Professional* with *CMake 3.8.0*. Requires:
 The library is [hosted](https://github.com/johnmcfarlane/cnl) on GitHub:
 
 ```shell
-cd /some/directory
 git clone https://github.com/johnmcfarlane/cnl.git
 ```
 
 ### Build
 
-CNL is a header-only library so there is no need to build it.
-However, it comes with a number of tests and benchmarks.
+The CNL library is comprised of headers found in the [src](src) directory.
+CMake scripts are provided.
 
-#### Running Tests
+To build and install CNL on your system:
 
-1. Prepare Conan package manager:
+```sh
+cmake cnl
+cmake --build . --target install
+```
 
-   ```sh
-   conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
+### Test
+
+The test suite uses CMake and depends on Google Test and Google Benchmark.
+Optional integration tests use Boost.Multiprecision and Boost.SIMD.
+
+1. Conan can be used to pull in essential dependencies:
+
+   ```shell
+   conan remote add --force johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
+   conan profile new --detect --force default
+   conan profile update settings.compiler.libcxx=libstdc++11 default
+   conan install --build=missing --generator cmake_find_package cnl
    ```
 
-1. Generate the build system:
+2. Configure the project for development
 
-   ```sh
-   mkdir build
-   cd build
-   cmake -DCMAKE_BUILD_TYPE=Debug -DCNL_DEV=ON ..
+   ```shell
+   cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_MODULE_PATH=$(pwd) -DCNL_DEV=ON cnl
    ```
 
-1. Build tests:
-
-   * For Linux:
-
-     ```sh
-     cmake --build . --target test-all -- -j $(nproc)
-     ```
-
-   * For Windows:
-
-     ```sh
-     cmake --build .
-     ```
-
-3. Run tests:
+3. Build tests:
 
    ```sh
-   ctest
+   cmake --build . --target test-all
    ```
 
-#### Running Benchmarks
+4. Run tests:
 
-1. Generate the build system (optimized):
+   ```sh
+   ctest -R test-unit
+   ```
 
-   `cmake -DCMAKE_BUILD_TYPE=Release -DCNL_DEV=ON ..`
+5. Run benchmarks:
 
-2. Build benchmarks:
+   ```sh
+   ctest -R test-benchmark
+   ```
 
-   `cmake --build . --target test-benchmark`
-
-3. Run benchmarks:
-
-   `test/bin/test-benchmark`
-
-#### Additional build system generation options:
+### Additional build system generation options:
 
 1. To describe CNL build options:
 
