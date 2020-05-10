@@ -17,12 +17,12 @@ jobs:
       os: linux
       env: IMG=cnl_ci:clang-10 SCRIPT=sanitize-clang STANDARD=20 TOOLCHAIN=clang
 
-    - name: Linux/GCC 9, Benchmark
+    - name: Linux/GCC 10, Benchmark
       os: linux
-      env: IMG=cnl_ci:gcc-9 SCRIPT=benchmark STANDARD=20
-    - name: Linux/GCC 9, Sanitize
+      env: IMG=cnl_ci:gcc-10 SCRIPT=benchmark STANDARD=20
+    - name: Linux/GCC 10, Sanitize
       os: linux
-      env: IMG=cnl_ci:gcc-9 SCRIPT=sanitize-gcc STANDARD=20 GENERATOR="Unix Makefiles"
+      env: IMG=cnl_ci:gcc-10 SCRIPT=sanitize-gcc STANDARD=20 GENERATOR="Unix Makefiles"
 
     - name: OS X/GCC 8, Unit test
       os: osx
@@ -57,7 +57,7 @@ jobs:
 
     - name: Linux/Doxygen, Documentation
       os: linux
-      env: IMG=cnl_ci:gcc-9 SCRIPT=doxygen
+      env: IMG=cnl_ci:base-20.04 SCRIPT=doxygen
 
     - name: Linux/ShellCheck, Shell script lint
       os: linux

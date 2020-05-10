@@ -8,7 +8,7 @@ general:
 jobs:
   "c++20":
     docker:
-      - image: johnmcfarlane/cnl_ci:gcc-9
+      - image: johnmcfarlane/cnl_ci:gcc-10
     steps:
       - checkout
       - run:
@@ -17,7 +17,7 @@ jobs:
 
   "c++17-arm7":
     docker:
-      - image: johnmcfarlane/cnl_ci:gcc-9
+      - image: johnmcfarlane/cnl_ci:gcc-10
     steps:
       - checkout
       - run:
@@ -27,7 +27,7 @@ jobs:
 
   "c++17":
     docker:
-      - image: johnmcfarlane/cnl_ci:gcc-9
+      - image: johnmcfarlane/cnl_ci:gcc-10
     steps:
       - checkout
       - run:
@@ -36,7 +36,7 @@ jobs:
 
   "c++14":
     docker:
-      - image: johnmcfarlane/cnl_ci:gcc-9
+      - image: johnmcfarlane/cnl_ci:gcc-10
     steps:
       - checkout
       - run:
@@ -45,7 +45,7 @@ jobs:
 
   "c++11":
     docker:
-      - image: johnmcfarlane/cnl_ci:gcc-9
+      - image: johnmcfarlane/cnl_ci:gcc-10
     steps:
       - checkout
       - run:
