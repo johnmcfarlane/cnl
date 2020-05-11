@@ -2,10 +2,10 @@
 
 set -ex
 
-export CXX=arm-linux-gnueabi-g++-9
+export CXX=arm-linux-gnueabi-g++-10
 
 apt-get update
-apt-get install --quiet --yes g++-9-arm-linux-gnueabi libboost-dev
+apt-get install --quiet --yes g++-10-arm-linux-gnueabi libboost-dev
 
 conan profile update settings.arch=armv7 default
 conan profile update settings.compiler.libcxx=libstdc++11 default
