@@ -9,7 +9,6 @@
 #include <cnl/_impl/scaled_integer/math.h>
 #include <cnl/scaled_integer.h>
 
-//Fails due to cast being out-of-range:
 #include "scaled_integer_math_Q0.h"
 #include "scaled_integer_math_Q1.h"
 #include "scaled_integer_math_Q15.h"
