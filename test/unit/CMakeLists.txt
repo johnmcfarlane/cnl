@@ -123,7 +123,6 @@ set(sample_sources
         presentations/cppcon2017.cpp
         presentations/cppdub2018.cpp
         presentations/cppnow2017.cpp
-        scaled_integer/math.cpp
         zero_cost_square.cpp
         zero_cost_free_functions.cpp
         snippets.cpp
@@ -216,8 +215,10 @@ endforeach(source)
 # create tests to show off CNL
 
 foreach(source ${sample_sources})
-    make_test("${source}" target "${SAMPLE_CXX_FLAGS}" "")
+    make_test("${source}" target "${SAMPLE_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
 endforeach(source)
+
+make_test(scaled_integer/math.cpp target "${SAMPLE_CXX_FLAGS}" "")
 
 ######################################################################
 # create test of GLM integration
