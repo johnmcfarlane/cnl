@@ -71,7 +71,7 @@ Optional integration tests use Boost.Multiprecision and Boost.SIMD.
 2. Configure the project for development
 
    ```shell
-   cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PROJECT_cnl_INCLUDE:FILEPATH="$(pwd)"/conan_paths.cmake -DCNL_DEV=ON cnl
+   cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PROJECT_cnl_INCLUDE:FILEPATH="$(pwd)"/conan_paths.cmake cnl
    ```
 
 3. Build tests:

@@ -9,17 +9,11 @@ project(cnl VERSION 0.0.1)
 
 cmake_minimum_required(VERSION 3.5.1)
 
-set(CNL_DEV OFF CACHE BOOL "configure build for running tests and benchmarks")
+include(CTest)
+add_subdirectory("test")
 
-if (CNL_DEV)
-    include(CTest)
-    add_subdirectory("test")
-
-    # generate documentation
-    add_subdirectory("doc")
-else ()
-    message(STATUS "Use CNL_DEV=ON to build tests.")
-endif (CNL_DEV)
+# generate documentation
+add_subdirectory("doc")
 
 # the CNL library
 add_library(Cnl INTERFACE)

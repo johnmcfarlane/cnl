@@ -1,6 +1,5 @@
 {
     "cmake.configureSettings": {
-        "CNL_DEV": "ON",
         "CMAKE_BUILD_TYPE": "Release",
         "CMAKE_CXX_COMPILER_LAUNCHER": "ccache",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",

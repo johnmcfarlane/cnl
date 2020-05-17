@@ -6,6 +6,44 @@ general:
       - gh-pages
 
 jobs:
+  "cmake-install":
+    docker:
+      - image: ubuntu:16.04
+    steps:
+      - checkout
+      - run:
+          name: Setup system to install CNL
+          command: apt update --quiet && apt install --yes cmake g++
+      - run:
+          name: Install CNL
+          command: cmake . && cmake --build . --target install
+
+  "cmake-test":
+    docker:
+      - image: ubuntu:16.04
+    steps:
+      - checkout
+      - run:
+          name: Setup system to test CNL
+          command: apt update --quiet && apt install --yes cmake g++ git
+      - run:
+          name: Build/install GTest
+          command: >
+            git clone https://github.com/google/googletest.git &&
+            cd googletest &&
+            mkdir build &&
+            cd build &&
+            cmake -DCMAKE_CXX_FLAGS=-std=c++14 .. &&
+            cmake --build . --target install -- -j "$(nproc)"
+      - run:
+          name: Test CNL
+          command: >
+            mkdir build &&
+            cd build &&
+            cmake -DCMAKE_CXX_FLAGS=-std=c++14 .. &&
+            cmake --build . --target test-all -- -j "$(nproc)" &&
+            ctest --parallel "$(nproc)"
+
   "c++20":
     docker:
       - image: johnmcfarlane/cnl_ci:gcc-10
@@ -56,6 +94,8 @@ workflows:
   version: 2
   build:
     jobs:
+      - "cmake-install"
+      - "cmake-test"
       - "c++20"
       - "c++17"
       - "c++14"

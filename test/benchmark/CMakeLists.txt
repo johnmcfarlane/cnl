@@ -5,7 +5,6 @@ set_target_properties(
         PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS}"
 )
 
-find_package(benchmark REQUIRED)
 target_link_libraries(test-benchmark benchmark::benchmark ${COMMON_LINK_FLAGS})
 
 add_dependencies(test-all test-benchmark)
