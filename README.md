@@ -65,13 +65,13 @@ Optional integration tests use Boost.Multiprecision and Boost.SIMD.
    conan remote add --force johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
    conan profile new --detect --force default
    conan profile update settings.compiler.libcxx=libstdc++11 default
-   conan install --build=missing --generator cmake_find_package cnl
+   conan install --build=missing cnl
    ```
 
 2. Configure the project for development
 
    ```shell
-   cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_MODULE_PATH=$(pwd) -DCNL_DEV=ON cnl
+   cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PROJECT_cnl_INCLUDE:FILEPATH="$(pwd)"/conan_paths.cmake -DCNL_DEV=ON cnl
    ```
 
 3. Build tests:

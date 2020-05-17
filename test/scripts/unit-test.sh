@@ -11,7 +11,7 @@ PROJECT_DIR=$(
 )
 
 "${PROJECT_DIR}/test/scripts/bits/config.sh" \
-  -DCMAKE_MODULE_PATH="$(pwd)" \
+  -DCMAKE_PROJECT_cnl_INCLUDE:FILEPATH="$(pwd)"/conan_paths.cmake \
   "$@"
 
 "${PROJECT_DIR}/test/scripts/bits/build.sh" test-all

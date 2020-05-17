@@ -154,10 +154,10 @@ ExternalProject_Add(
 ######################################################################
 # add_gtest_dependency
 
-find_package(gtest REQUIRED)
+find_package(GTest REQUIRED)
 
 function(add_gtest_dependency target)
-    target_link_libraries("${target}" gtest::gtest)
+    target_link_libraries("${target}" GTest::Main)
 endfunction(add_gtest_dependency)
 
 ######################################################################
