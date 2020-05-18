@@ -40,6 +40,13 @@ namespace cnl {
     ///
     /// \note Currently, only binary support and partial decimal support is tested.
     ///
+    /// \note The type makes no effort to avoid errors resulting from overflow or underflow.
+    /// Consider specializing with:
+    /// * \ref rounding_integer to reduce precision loss;
+    /// * \ref elastic_integer to avoid out-of-range errors;
+    /// * \ref overflow_integer to detect out-of-range errors; and
+    /// * \ref static_integer to combine all of the above.
+    ///
     /// \par Examples
     ///
     /// To define a fixed-point value 1 byte in size with a sign bit, 4 integer bits and 3 fractional bits:
