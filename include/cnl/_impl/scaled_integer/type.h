@@ -38,7 +38,7 @@ namespace cnl {
     /// Scales the integer by `pow(Radix, Exponent)` to produce the scaled number.
     /// By default, represents an `int` with no fractional digits using binary arithmetic.
     ///
-    /// \note Currently, only binary support and partial decimal support is provided.
+    /// \note Currently, only binary support and partial decimal support is tested.
     ///
     /// \par Examples
     ///
