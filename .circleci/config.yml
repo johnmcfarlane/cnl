@@ -41,7 +41,7 @@ jobs:
             mkdir build &&
             cd build &&
             cmake -DCMAKE_CXX_FLAGS=-std=c++14 .. &&
-            cmake --build . --target test-all -- -j "$(nproc)" &&
+            cmake --build . --target test-all -- -j 1 &&
             ctest --parallel "$(nproc)"
 
   "c++20":
