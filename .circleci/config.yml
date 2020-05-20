@@ -34,15 +34,15 @@ jobs:
             mkdir build &&
             cd build &&
             cmake -DCMAKE_CXX_FLAGS=-std=c++14 .. &&
-            cmake --build . --target install -- -j "$(nproc)"
+            cmake --build . --target install -- --jobs 2
       - run:
           name: Test CNL
           command: >
             mkdir build &&
             cd build &&
             cmake -DCMAKE_CXX_FLAGS=-std=c++14 .. &&
-            cmake --build . --target test-all -- -j "$(nproc)" &&
-            ctest --parallel "$(nproc)"
+            cmake --build . --target test-all -- --jobs 2 &&
+            ctest --parallel 2
 
   "c++20":
     docker:
