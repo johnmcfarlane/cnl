@@ -26,11 +26,7 @@ jobs:
       - run:
           name: Test CNL
           command: >
-            echo `mkdir build &&
-            cd build &&
-            cmake -DCMAKE_CXX_FLAGS=-std=c++14 .. &&
-            cmake --build . --target test-all -- -j "$(nproc)" &&
-            ctest --parallel "$(nproc)"`
+            echo "$(nproc)"
 
   "c++20":
     docker:
