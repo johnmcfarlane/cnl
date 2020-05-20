@@ -34,7 +34,7 @@ jobs:
           command: getconf _NPROCESSORS_ONLN
       - run:
           name: Test CNL
-          command: sudo dmidecode -t processor | egrep 'Designation|Count'
+          command: dmidecode -t processor | egrep 'Designation|Count'
       - run:
           name: Test CNL
           command: inxi -C
