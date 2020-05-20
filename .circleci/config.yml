@@ -25,13 +25,22 @@ jobs:
       - checkout
       - run:
           name: Test CNL
-          command: >
-            echo grep -c ^processor /proc/cpuinfo \
-            && lscpu | grep 'CPU(s):' | head -1 | awk '{print $2}' \
-            && getconf _NPROCESSORS_ONLN \
-            && sudo dmidecode -t processor | egrep 'Designation|Count' \
-            && inxi -C \
-            && hwinfo --short --cpu
+          command: echo grep -c ^processor /proc/cpuinfo
+      - run:
+          name: Test CNL
+          command: lscpu | grep 'CPU(s):' | head -1 | awk '{print $2}'
+      - run:
+          name: Test CNL
+          command: getconf _NPROCESSORS_ONLN
+      - run:
+          name: Test CNL
+          command: sudo dmidecode -t processor | egrep 'Designation|Count'
+      - run:
+          name: Test CNL
+          command: inxi -C
+      - run:
+          name: Test CNL
+          command: hwinfo --short --cpu
 
   "c++20":
     docker:
