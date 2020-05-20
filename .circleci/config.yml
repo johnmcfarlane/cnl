@@ -20,7 +20,7 @@ jobs:
 
   "cmake-test":
     docker:
-      - image: ubuntu:16.04
+      - image: johnmcfarlane/cnl_ci:gcc-head
     steps:
       - checkout
       - run:
