@@ -6,17 +6,17 @@ general:
       - gh-pages
 
 jobs:
-  "cmake-install":
-    docker:
-      - image: ubuntu:16.04
-    steps:
-      - checkout
-      - run:
-          name: Setup system to install CNL
-          command: apt update --quiet && apt install --yes cmake g++
-      - run:
-          name: Install CNL
-          command: cmake . && cmake --build . --target install
+  # "cmake-install":
+  #   docker:
+  #     - image: ubuntu:16.04
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Setup system to install CNL
+  #         command: apt update --quiet && apt install --yes cmake g++
+  #     - run:
+  #         name: Install CNL
+  #         command: cmake . && cmake --build . --target install
 
   "cmake-test":
     docker:
@@ -38,57 +38,65 @@ jobs:
       - run:
           name: Test CNL
           command: >
+            echo mkdir build &&
+            cd build &&
+            cmake -DCMAKE_CXX_FLAGS=-std=c++14 .. &&
+            cmake --build . --target test-all -- -j "$(nproc)" &&
+            ctest --parallel "$(nproc)"
+      - run:
+          name: Test CNL
+          command: >
             mkdir build &&
             cd build &&
             cmake -DCMAKE_CXX_FLAGS=-std=c++14 .. &&
             cmake --build . --target test-all -- -j "$(nproc)" &&
             ctest --parallel "$(nproc)"
 
-  "c++20":
-    docker:
-      - image: johnmcfarlane/cnl_ci:gcc-10
-    steps:
-      - checkout
-      - run:
-          name: Run tests
-          command: NUM_CPUS=2 . /root/project/.circleci/test.sh 20
+  # "c++20":
+  #   docker:
+  #     - image: johnmcfarlane/cnl_ci:gcc-10
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Run tests
+  #         command: NUM_CPUS=2 . /root/project/.circleci/test.sh 20
 
-  "c++17-arm7":
-    docker:
-      - image: johnmcfarlane/cnl_ci:gcc-10
-    steps:
-      - checkout
-      - run:
-          name: Run tests
-          command: NUM_CPUS=2 . /root/project/.circleci/test-arm.sh
-          no_output_timeout: 20m
+  # "c++17-arm7":
+  #   docker:
+  #     - image: johnmcfarlane/cnl_ci:gcc-10
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Run tests
+  #         command: NUM_CPUS=2 . /root/project/.circleci/test-arm.sh
+  #         no_output_timeout: 20m
 
-  "c++17":
-    docker:
-      - image: johnmcfarlane/cnl_ci:gcc-10
-    steps:
-      - checkout
-      - run:
-          name: Run tests
-          command: NUM_CPUS=2 . /root/project/.circleci/test.sh 17
+  # "c++17":
+  #   docker:
+  #     - image: johnmcfarlane/cnl_ci:gcc-10
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Run tests
+  #         command: NUM_CPUS=2 . /root/project/.circleci/test.sh 17
 
-  "c++14":
-    docker:
-      - image: johnmcfarlane/cnl_ci:gcc-10
-    steps:
-      - checkout
-      - run:
-          name: Run tests
-          command: NUM_CPUS=2 . /root/project/.circleci/test.sh 14
+  # "c++14":
+  #   docker:
+  #     - image: johnmcfarlane/cnl_ci:gcc-10
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Run tests
+  #         command: NUM_CPUS=2 . /root/project/.circleci/test.sh 14
 
-  "c++11":
-    docker:
-      - image: johnmcfarlane/cnl_ci:gcc-10
-    steps:
-      - checkout
-      - run:
-          name: Run tests
-          command: NUM_CPUS=2 . /root/project/.circleci/test.sh 11
+  # "c++11":
+  #   docker:
+  #     - image: johnmcfarlane/cnl_ci:gcc-10
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Run tests
+  #         command: NUM_CPUS=2 . /root/project/.circleci/test.sh 11
 
 workflows:
   version: 2

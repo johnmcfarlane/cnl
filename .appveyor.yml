@@ -44,7 +44,7 @@ build_script:
   - cmd: conan install --build=missing --settings build_type=%configuration% %APPVEYOR_BUILD_FOLDER%
   - cmd: set BOOST_ROOT=C:\Libraries\boost_1_66_0
   - cmd: cmake -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_PROJECT_cnl_INCLUDE:FILEPATH=C:/projects/cnl/build/conan_paths.cmake -DCMAKE_TOOLCHAIN_FILE=../test/cmake/toolchain/msvc.cmake -DCNL_EXCEPTIONS=%exceptions% -DCMAKE_CXX_STANDARD=%std% -G "%cmake_generator%" -A "%cmake_arch%" ..
-  - cmd: cmake --build . -- /property:Configuration=%configuration% /property:Platform=%msbuild_property% /maxcpucount
+  # - cmd: cmake --build . -- /property:Configuration=%configuration% /property:Platform=%msbuild_property% /maxcpucount
 
 test_script:
   - cmd: ctest --exclude-regex test-benchmark --output-on-failure --parallel 8
