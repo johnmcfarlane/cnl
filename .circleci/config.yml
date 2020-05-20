@@ -26,7 +26,12 @@ jobs:
       - run:
           name: Test CNL
           command: >
-            echo "$(nproc)"
+            echo grep -c ^processor /proc/cpuinfo \
+            && lscpu | grep 'CPU(s):' | head -1 | awk '{print $2}' \
+            && getconf _NPROCESSORS_ONLN \
+            && sudo dmidecode -t processor | egrep 'Designation|Count' \
+            && inxi -C \
+            && hwinfo --short --cpu
 
   "c++20":
     docker:
