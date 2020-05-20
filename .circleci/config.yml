@@ -25,16 +25,16 @@ jobs:
       - checkout
       - run:
           name: Test CNL
-          command: echo grep -c ^processor /proc/cpuinfo
+          command: grep -c ^processor /proc/cpuinfo
       - run:
           name: Test CNL
           command: lscpu | grep 'CPU(s):' | head -1 | awk '{print $2}'
       - run:
           name: Test CNL
           command: getconf _NPROCESSORS_ONLN
-      - run:
-          name: Test CNL
-          command: dmidecode -t processor | egrep 'Designation|Count'
+      # - run:
+      #     name: Test CNL
+      #     command: dmidecode -t processor | egrep 'Designation|Count'
       - run:
           name: Test CNL
           command: inxi -C
