@@ -38,7 +38,14 @@ namespace cnl {
     /// Scales the integer by `pow(Radix, Exponent)` to produce the scaled number.
     /// By default, represents an `int` with no fractional digits using binary arithmetic.
     ///
-    /// \note Currently, only binary support and partial decimal support is provided.
+    /// \note Currently, only binary support and partial decimal support is tested.
+    ///
+    /// \note The type makes no effort to avoid errors resulting from overflow or underflow.
+    /// Consider specializing with:
+    /// * \ref rounding_integer to reduce precision loss;
+    /// * \ref elastic_integer to avoid out-of-range errors;
+    /// * \ref overflow_integer to detect out-of-range errors; and
+    /// * \ref static_integer to combine all of the above.
     ///
     /// \par Examples
     ///
