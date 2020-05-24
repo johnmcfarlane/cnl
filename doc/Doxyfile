@@ -315,11 +315,9 @@ GENERATE_TAGFILE =
 ALLEXTERNALS = NO
 EXTERNAL_GROUPS = YES
 EXTERNAL_PAGES = YES
-PERL_PATH = /usr/bin/perl
 #---------------------------------------------------------------------------
 # Configuration options related to the dot tool
 #---------------------------------------------------------------------------
-MSCGEN_PATH =
 DIA_PATH =
 DOT_NUM_THREADS = 0
 DOT_FONTNAME = Helvetica
