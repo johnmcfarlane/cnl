@@ -12,9 +12,6 @@ cmake_minimum_required(VERSION 3.5.1)
 include(CTest)
 add_subdirectory("test")
 
-# generate documentation
-add_subdirectory("doc")
-
 # the CNL library
 add_library(Cnl INTERFACE)
 

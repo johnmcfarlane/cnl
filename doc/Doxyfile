@@ -9,9 +9,9 @@ PROJECT_BRIEF = "Compositional Numeric Library"
 PROJECT_LOGO =
 PROJECT_NUMBER = rev.0.1.0
 
-STRIP_FROM_PATH = ../include
+STRIP_FROM_PATH = "$(CNL_DIR)/include"
 BUILTIN_STL_SUPPORT = YES
-STRIP_FROM_INC_PATH = ../include
+STRIP_FROM_PATH = "$(CNL_DIR)/include"
 ALIASES =
 ENABLED_SECTIONS =
 MARKDOWN_SUPPORT = YES
@@ -27,14 +27,14 @@ OUTPUT_LANGUAGE = English
 #---------------------------------------------------------------------------
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT = @doc_INPUTFILES@
+INPUT = "$(CNL_DIR)/include"
 EXCLUDE_SYMBOLS = \
  cnl::_*
 FILE_PATTERNS = *
 RECURSIVE = YES
-EXCLUDE = @CMAKE_CURRENT_LIST_DIR@/../include/cnl/_impl/number/numeric_limits.h \
-  @CMAKE_CURRENT_LIST_DIR@/../include/cnl/_impl/scaled_integer/extras.h
-EXAMPLE_PATH = ../test/unit
+EXCLUDE = "$(CNL_DIR)/include/cnl/_impl/number/numeric_limits.h" \
+  "$(CNL_DIR)/include/cnl/_impl/scaled_integer/extras.h"
+EXAMPLE_PATH = "$(CNL_DIR)/test/unit"
 EXAMPLE_RECURSIVE = YES
 IMAGE_PATH =
 WARN_IF_UNDOCUMENTED = YES
@@ -140,7 +140,7 @@ ENABLE_PREPROCESSING = YES
 MACRO_EXPANSION = YES
 EXPAND_ONLY_PREDEF = NO
 SEARCH_INCLUDES = YES
-INCLUDE_PATH = ../include
+INCLUDE_PATH = "$(CNL_DIR)/include"
 INCLUDE_FILE_PATTERNS =
 PREDEFINED = CNL_CAN_USE_INT128
 EXPAND_AS_DEFINED =
@@ -195,7 +195,7 @@ HTML_FILE_EXTENSION = .html
 HTML_HEADER =
 HTML_FOOTER =
 HTML_STYLESHEET =
-HTML_EXTRA_STYLESHEET = cnl.css
+HTML_EXTRA_STYLESHEET = "$(CNL_DIR)/doc/cnl.css"
 HTML_EXTRA_FILES =
 HTML_COLORSTYLE_HUE = 75 # 0 - 359
 HTML_COLORSTYLE_SAT = 110 # 0 - 255
@@ -218,7 +218,7 @@ MATHJAX_RELPATH = http://cdn.mathjax.org/mathjax/latest
 MATHJAX_EXTENSIONS =
 MATHJAX_CODEFILE =
 
-TAGFILES += "@doc_TAGFILE@"
+TAGFILES = cppreference-doxygen-web.tag.xml=http://en.cppreference.com/w/
 GENERATE_DOCSET = NO
 DOCSET_FEEDNAME = "Doxygen generated docs"
 DOCSET_BUNDLE_ID = org.doxygen.Project
