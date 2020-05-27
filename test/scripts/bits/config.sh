@@ -20,7 +20,7 @@ conan install \
 cmake \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-  -DCMAKE_PROJECT_cnl_INCLUDE:FILEPATH="$(pwd)"/conan_paths.cmake \
+  -DCMAKE_PROJECT_INCLUDE:FILEPATH="$(pwd)"/conan_paths.cmake \
   -G Ninja \
   "$@" \
   "${PROJECT_DIR}"
