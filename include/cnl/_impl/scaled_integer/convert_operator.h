@@ -19,7 +19,7 @@
 /// compositional numeric library
 namespace cnl {
     ////////////////////////////////////////////////////////
-    /// cnl::nearest_rounding_tag
+    // cnl::nearest_rounding_tag
 
     template<int Radix, typename Result, typename Input>
     struct convert_operator<

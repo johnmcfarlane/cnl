@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file cnl/num_traits.h
-/// \brief primary class template definition of \ref cnl::from_rep
+/// \brief defines \ref cnl::from_rep
 
 #if !defined(CNL_IMPL_NUM_TRAITS_FROM_REP)
 #define CNL_IMPL_NUM_TRAITS_FROM_REP
@@ -14,24 +14,24 @@
 #include "../type_traits/is_integral.h"
 
 namespace cnl {
+    /// \defgroup from_rep from_rep
     /// \brief generic function object that returns the number encapsulating a given value
-    /// \file cnl/num_traits.h
     ///
     /// \tparam Number archetype for the encapsulating type
     ///
     /// \note Rather than returning Number, invocation may return an alternative
     /// template instantiation based on input parameter.
     /// \sa to_rep, from_value
+    ///
+    /// \headerfile cnl/num_traits.h
+
+    /// \brief primary class template definition of \ref cnl::from_rep
+    /// \ingroup from_rep
     template<typename Number, typename Rep, class Enable = void>
     struct from_rep;
 
-    /// \private \brief Specialization of \ref from_rep for integer types
-    /// \file cnl/num_traits.h
-    ///
-    /// \tparam Number fundamental integer type to return
-    ///
-    /// \note This specialization *does* return integers of type, \c Number
-    /// \sa to_rep, from_value
+    /// \brief Specialization of \ref from_rep for integer types
+    /// \ingroup from_rep
     template<typename Number, typename Rep>
     struct from_rep<Number, Rep, _impl::enable_if_t<cnl::_impl::is_integral<Number>::value>> {
         CNL_NODISCARD constexpr Number operator()(Rep const& rep) const {

@@ -13,7 +13,7 @@
 
 /// compositional numeric library
 namespace cnl {
-    /// \brief \ref scaled_integer specialization of \ref from_rep
+    /// \private \brief \ref scaled_integer specialization of \ref from_rep
     /// \headerfile cnl/scaled_integer.h
     ///
     /// \tparam Exponent the \c Exponent parameter of the generated \ref scaled_integer type

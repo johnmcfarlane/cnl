@@ -16,7 +16,8 @@
 
 /// compositional numeric library
 namespace cnl {
-    /// \private \ref elastic_integer specialization for non-composite types
+    /// \brief specialization of \ref from_rep for elastic_integer
+    /// \ingroup from_rep
     template<int Digits, class Narrowest, class Rep>
     struct from_rep<elastic_integer<Digits, Narrowest>, Rep> {
         CNL_NODISCARD constexpr auto operator()(Rep const& r) const
@@ -26,6 +27,8 @@ namespace cnl {
         }
     };
 
+    /// \brief specialization of \ref from_rep for base class of elastic_integer
+    /// \ingroup from_rep
     template<typename ArchetypeRep, int Digits, typename Narrowest, typename Rep>
     struct from_rep<_impl::number<ArchetypeRep, elastic_tag<Digits, Narrowest>>, Rep>
             : from_rep<elastic_integer<Digits, Narrowest>, Rep> {
