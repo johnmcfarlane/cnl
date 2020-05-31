@@ -82,7 +82,7 @@ INLINE_GROUPED_CLASSES = NO
 INLINE_SIMPLE_STRUCTS = NO
 
 # Generated formats
-GENERATE_HTML = YES
+GENERATE_HTML = NO
 GENERATE_LATEX = NO
 
 
@@ -190,7 +190,7 @@ IGNORE_PREFIX =
 #---------------------------------------------------------------------------
 # Configuration options related to the HTML output
 #---------------------------------------------------------------------------
-HTML_OUTPUT = gh-pages
+HTML_OUTPUT =
 HTML_FILE_EXTENSION = .html
 HTML_HEADER =
 HTML_FOOTER =
@@ -289,7 +289,7 @@ MAN_LINKS = NO
 #---------------------------------------------------------------------------
 # Configuration options related to the XML output
 #---------------------------------------------------------------------------
-GENERATE_XML = NO
+GENERATE_XML = YES
 XML_OUTPUT = xml
 XML_PROGRAMLISTING = YES
 #---------------------------------------------------------------------------
