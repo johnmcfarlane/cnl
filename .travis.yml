@@ -6,62 +6,9 @@ os: linux
 
 jobs:
   include:
-    - name: Linux/Clang 10, Clang-Tidy
-      os: linux
-      env: IMG=cnl_ci:clang-10 SCRIPT=test/scripts/clang-tidy.sh STANDARD=20 TOOLCHAIN=clang
-
-    - name: OS X/GCC 8, Unit test
-      os: osx
-      osx_image: xcode11.2
-      env: CC=gcc-8 CXX=g++-8 PACKAGE=gcc@8 VERSION=8 SCRIPT=test/scripts/unit-test.sh
-
-    - name: Linux/Clang 10, Benchmark
-      os: linux
-      env: IMG=cnl_ci:clang-10 SCRIPT=test/scripts/benchmark.sh STANDARD=20 TOOLCHAIN=clang GENERATOR="Unix Makefiles"
-    - name: Linux/Clang 10, Sanitize
-      os: linux
-      env: IMG=cnl_ci:clang-10 SCRIPT=test/scripts/sanitize-clang.sh STANDARD=20 TOOLCHAIN=clang
-
-    - name: OS X/GCC 6, Unit test
-      os: osx
-      osx_image: xcode10
-      env: CC=gcc-6 CXX=g++-6 PACKAGE=gcc@6 VERSION=6 SCRIPT=test/scripts/unit-test.sh STANDARD=14 INT128=OFF
-
-    - name: Linux/GCC 10, Benchmark
-      os: linux
-      env: IMG=cnl_ci:gcc-10 SCRIPT=test/scripts/benchmark.sh STANDARD=20
-    - name: Linux/GCC 10, Sanitize
-      os: linux
-      env: IMG=cnl_ci:gcc-10 SCRIPT=test/scripts/sanitize-gcc.sh STANDARD=20 GENERATOR="Unix Makefiles"
-
-    - name: OS X/Clang 5.0.2, Unit test
-      os: osx
-      compiler: clang
-      env: CC=clang CXX=clang++ STANDARD=14 SCRIPT=test/scripts/unit-test.sh EXCEPTIONS=OFF TOOLCHAIN=clang
-
-    - name: Linux/Clang 7, Unit test
-      os: linux
-      env: IMG=cnl_ci:clang-7 SCRIPT=test/scripts/unit-test.sh TOOLCHAIN=clang
-
-    - name: Linux/GCC 7, Unit test
-      os: linux
-      env: IMG=cnl_ci:gcc-7 SCRIPT=test/scripts/unit-test.sh STANDARD=11
-
-    - name: Linux/Clang 4, Unit test
-      os: linux
-      env: IMG=cnl_ci:clang-4 SCRIPT=test/scripts/unit-test.sh STANDARD=14 INT128=OFF TOOLCHAIN=clang
-
-    - name: Linux/GCC 5, Unit test
-      os: linux
-      env: IMG=cnl_ci:gcc-5 SCRIPT=test/scripts/unit-test.sh STANDARD=14 EXCEPTIONS=OFF GENERATOR="Unix Makefiles"
-
     - name: Linux/Doxygen, Documentation
       os: linux
       env: IMG=cnl_ci:gcc-10 SCRIPT=doc/generate.sh
-
-    - name: Linux/ShellCheck, Shell script lint
-      os: linux
-      env: IMG=cnl_ci:base-20.04 SCRIPT=test/scripts/shellcheck.sh
 
 script:
   - .travis/test-${TRAVIS_OS_NAME}.sh
