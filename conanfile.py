@@ -14,7 +14,7 @@ class CnlConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake_paths"
     no_copy_source = True
-    requires = "gtest/1.8.1","benchmark/1.5.0@johnmcfarlane/stable"
+    requires = "gtest/1.10.0","benchmark/1.5.0@johnmcfarlane/stable"
 
     scm = {
         "type": "git",
