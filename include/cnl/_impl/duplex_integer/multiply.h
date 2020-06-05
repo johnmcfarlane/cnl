@@ -52,8 +52,8 @@ namespace cnl {
             template<typename Lhs, typename Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> result_type<Lhs, Rhs>
             {
-                using result_type = result_type<Lhs, Rhs>;
-                return static_cast<result_type>(lhs)*static_cast<result_type>(rhs);
+                using product_type = result_type<Lhs, Rhs>;
+                return static_cast<product_type>(lhs)*static_cast<product_type>(rhs);
             }
         };
 

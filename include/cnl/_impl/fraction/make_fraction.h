@@ -70,7 +70,7 @@ namespace cnl {
                 CNL_ASSERT(int_t(mid.numerator) >= 0);
                 CNL_ASSERT(int_t(mid.denominator) >= 0);
 
-                auto f = [mid, d](
+                auto fn = [mid, d](
                         int& fars, fraction<int_t>& f,
                         int& nears, fraction<int_t>& n) {
                     nears = 0;
@@ -103,12 +103,12 @@ namespace cnl {
 
                 auto mid_q{FloatingPoint(mid)};
                 if (mid_q < d) {
-                    if (f(lefts, left, rights, right)) {
+                    if (fn(lefts, left, rights, right)) {
                         return left;
                     }
                 }
                 else if (mid_q > d) {
-                    if (f(rights, right, lefts, left)) {
+                    if (fn(rights, right, lefts, left)) {
                         return right;
                     }
                 }
