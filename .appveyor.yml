@@ -14,7 +14,7 @@ environment:
   fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
   matrix:
     - platform: x64
-      configuration: Debug
+      configuration: Release
       cmake_generator: "Visual Studio 16 2019"
       cmake_arch: x64
       msbuild_property: x64
