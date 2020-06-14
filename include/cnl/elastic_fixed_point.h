@@ -102,36 +102,6 @@ namespace cnl {
     {
         return {value};
     }
-
-    /// \c user-defined literals
-    namespace literals {
-        ////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::literals::operator "" _elastic
-
-        /// \brief generate an \ref cnl::elastic_fixed_point object using a literal
-        ///
-        /// \tparam Digits the characters of the literal sequence
-        ///
-        /// \return the given value to be represented using an \ref cnl::elastic_fixed_point type
-        ///
-        /// \note The return type is guaranteed to be no larger
-        /// than is necessary to represent the maximum value of Integral.
-        ///
-        /// \par Example
-        ///
-        /// To define an int-sized object with value 1536:
-        /// \snippet snippets.cpp define an object using elastic literal
-
-        template<char... Chars>
-        CNL_NODISCARD constexpr auto operator "" _elastic()
-        -> decltype(make_elastic_fixed_point<int>(
-                constant<_cnlint_impl::parse<sizeof...(Chars)+1>({Chars..., '\0'})>{}))
-        {
-            return make_elastic_fixed_point<int>(
-                    constant<_cnlint_impl::parse<sizeof...(Chars)+1>({Chars..., '\0'})>{});
-        }
-    }
 }
 
 #endif  // CNL_ELASTIC_FIXED_POINT_H
