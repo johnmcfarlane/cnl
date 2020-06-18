@@ -17,6 +17,7 @@
 #include "rounding/convert_operator.h"
 #include "rounding/native_rounding_tag.h"
 #include "rounding/nearest_rounding_tag.h"
+#include "rounding/tie_to_pos_inf_rounding_tag.h"
 
 /// compositional numeric library
 namespace cnl {
