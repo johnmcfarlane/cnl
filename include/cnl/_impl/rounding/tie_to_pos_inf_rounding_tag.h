@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_ROUNDING_TIE_TO_POS_INF_ROUNDING_TAG_H)
 #define CNL_IMPL_ROUNDING_TIE_TO_POS_INF_ROUNDING_TAG_H
 
+#include "../cmath/abs.h"
 #include "../operators/generic.h"
 #include "../operators/native_tag.h"
 #include "is_rounding_tag.h"
@@ -47,23 +48,24 @@ namespace cnl {
     template<typename Lhs, typename Rhs>
     struct binary_operator<_impl::divide_op, tie_to_pos_inf_rounding_tag, tie_to_pos_inf_rounding_tag, Lhs, Rhs> {
     private:
-        CNL_NODISCARD constexpr auto myabs(Lhs const& lhs) const
-        {
-            return lhs < 0 ? -lhs : lhs;
-        }
-        CNL_NODISCARD constexpr auto step2(Lhs const& lhs, Rhs const& rhs) const
+        using result_type = decltype(std::declval<Lhs>()/std::declval<Rhs>());
+
+        template<typename LhsParam, typename RhsParam>
+        CNL_NODISCARD constexpr auto step2(LhsParam const& lhs, RhsParam const& rhs) const
+        -> result_type
         {
             return (lhs < 0)
-            ? -((myabs(lhs) + (rhs - (lhs < 0 ? 1 : 0))/2) / rhs)
-            : (myabs(lhs) + (rhs - (lhs < 0 ? 1 : 0))/2) / rhs;
+            ? -((_impl::abs(lhs) + (rhs - (lhs < 0 ? 1 : 0))/2) / rhs)
+            : +((_impl::abs(lhs) + (rhs - (lhs < 0 ? 1 : 0))/2) / rhs);
         }
         CNL_NODISCARD constexpr auto step1(Lhs const& lhs, Rhs const& rhs) const
+        -> result_type
         {
             return (rhs < 0) ? step2(-lhs, -rhs) : step2(lhs, rhs);
         }
     public:
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(lhs/rhs)
+        -> result_type
         {
             return step1(lhs, rhs);
         }
