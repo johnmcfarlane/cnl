@@ -4,5 +4,6 @@
         "CMAKE_CXX_COMPILER_LAUNCHER": "ccache",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
         "CMAKE_MODULE_PATH": "${workspaceFolder}/build",
+        "CMAKE_CXX_STANDARD": "11",
     },
 }

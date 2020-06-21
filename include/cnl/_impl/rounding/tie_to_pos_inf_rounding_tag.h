@@ -48,16 +48,21 @@ namespace cnl {
     struct binary_operator<_impl::divide_op, tie_to_pos_inf_rounding_tag, tie_to_pos_inf_rounding_tag, Lhs, Rhs> {
     private:
         CNL_NODISCARD constexpr auto myabs(Lhs const& lhs) const
+        -> decltype(lhs < 0 ? -lhs : lhs)
         {
             return lhs < 0 ? -lhs : lhs;
         }
         CNL_NODISCARD constexpr auto step2(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype(return (lhs < 0)
+            ? -((myabs(lhs) + (rhs - (lhs < 0 ? 1 : 0))/2) / rhs)
+            : +((myabs(lhs) + (rhs - (lhs < 0 ? 1 : 0))/2) / rhs))
         {
             return (lhs < 0)
             ? -((myabs(lhs) + (rhs - (lhs < 0 ? 1 : 0))/2) / rhs)
-            : (myabs(lhs) + (rhs - (lhs < 0 ? 1 : 0))/2) / rhs;
+            : +((myabs(lhs) + (rhs - (lhs < 0 ? 1 : 0))/2) / rhs);
         }
         CNL_NODISCARD constexpr auto step1(Lhs const& lhs, Rhs const& rhs) const
+        -> decltype((rhs < 0) ? step2(-lhs, -rhs) : step2(lhs, rhs))
         {
             return (rhs < 0) ? step2(-lhs, -rhs) : step2(lhs, rhs);
         }
