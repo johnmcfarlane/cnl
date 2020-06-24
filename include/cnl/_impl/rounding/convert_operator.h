@@ -58,7 +58,9 @@ namespace cnl {
     template<class SrcTag, typename Destination, typename Source>
     struct convert_operator<
             tie_to_pos_inf_rounding_tag, SrcTag, Destination, Source,
-            _impl::enable_if_t<_impl::are_arithmetic_or_integer<Destination, Source>::value>> {
+            _impl::enable_if_t<
+                    !_impl::is_rounding_tag<SrcTag>::value
+                    &&_impl::are_arithmetic_or_integer<Destination, Source>::value>> {
     private:
         CNL_NODISCARD static constexpr Source ceil(Source x)
         {
