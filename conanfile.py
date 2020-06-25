@@ -2,9 +2,15 @@
 # -*- coding: utf-8 -*-
 
 from conans import ConanFile
+from conans.tools import load
+import re, os
 
 class CnlConan(ConanFile):
     name = "cnl"
+    def set_version(self):
+        content = load(os.path.join(self.recipe_folder, "CMakeLists.txt"))
+        version = re.search(r"project\(cnl VERSION (.*)\)", content).group(1)
+        self.version = version.strip()
     license = "Boost Software License 1.0"
     author = "John McFarlane <cnl@john.mcfarlane.name>"
     url = "https://github.com/johnmcfarlane/cnl"
