@@ -9,5 +9,13 @@ PROJECT_DIR=$(
   pwd
 )
 
+# Modify Doxyfile settings with environment variables.
+export HTML_OUTPUT=${HTML_OUTPUT:-"${PROJECT_DIR}/doc/gh-pages"}
+export CNL_VERSION=${CNL_VERSION:-"development"}
+export CNL_DIR="${PROJECT_DIR}"
+
+# Download std documentation.
 wget -N http://upload.cppreference.com/mwiki/images/f/f8/cppreference-doxygen-web.tag.xml
-CNL_DIR="${PROJECT_DIR}" doxygen "${PROJECT_DIR}/doc/Doxyfile"
+
+# Generate CNL documentation.
+doxygen "${PROJECT_DIR}/doc/Doxyfile"
