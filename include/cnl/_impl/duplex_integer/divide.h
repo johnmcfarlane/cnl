@@ -56,7 +56,7 @@ namespace cnl {
                      : non_negative_division(lhs, rhs);
         }
 
-        // lifted from: https://github.com/torvalds/linux/blob/master/lib/div64.c#L142
+        // lifted from: https://github.com/torvalds/linux/blob/5ac94332248ee017964ba368cdda4ce647e3aba7/lib/math/div64.c#L142
         static CNL_RELAXED_CONSTEXPR auto non_negative_division(
                 _unsigned_duplex_integer const& dividend,
                 _unsigned_duplex_integer const& divisor)

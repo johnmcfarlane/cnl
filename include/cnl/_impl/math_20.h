@@ -6,7 +6,6 @@
 
 /// \file
 /// \brief Reference implementation of the \verbatim<math>\endverbatim header for https://wg21.link/P0631.
-/// source: https://github.com/levmin/P0631/blob/master/math
 ///
 /// The following concept needs to be present in the concepts header:
 ///

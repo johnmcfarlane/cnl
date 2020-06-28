@@ -63,7 +63,7 @@
  * \section Examples
  *
  * The following examples can be found in the
- * [test suite](https://github.com/johnmcfarlane/cnl/blob/master/test/unit/index.cpp).
+ * [test suite](../../test/unit/index.cpp).
  *
  * \subsection Declaration
  *
