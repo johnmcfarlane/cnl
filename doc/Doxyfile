@@ -7,7 +7,7 @@ DOXYFILE_ENCODING = UTF-8
 PROJECT_NAME = "CNL"
 PROJECT_BRIEF = "Compositional Numeric Library"
 PROJECT_LOGO =
-PROJECT_NUMBER = rev.0.1.0
+PROJECT_NUMBER = "$(CNL_VERSION)"
 
 STRIP_FROM_PATH = "$(CNL_DIR)/include"
 BUILTIN_STL_SUPPORT = YES
@@ -190,7 +190,7 @@ IGNORE_PREFIX =
 #---------------------------------------------------------------------------
 # Configuration options related to the HTML output
 #---------------------------------------------------------------------------
-HTML_OUTPUT = gh-pages
+HTML_OUTPUT = "$(HTML_OUTPUT)"
 HTML_FILE_EXTENSION = .html
 HTML_HEADER =
 HTML_FOOTER =

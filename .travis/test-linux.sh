@@ -23,7 +23,7 @@ docker run \
   --workdir /ws \
   "johnmcfarlane/${IMG}" \
   bash -c "conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl \
-    && \"${CONTAINER_PROJECT_DIR}/${SCRIPT}\" \
+    && CNL_VERSION=${TRAVIS_BRANCH} CONAN_PASS=${CONAN_PASS} CONAN_USER=${CONAN_USER} GITHUB_TOKEN=${GITHUB_TOKEN} \"${CONTAINER_PROJECT_DIR}/${SCRIPT}\" \
     -DCMAKE_CXX_STANDARD=\"${STANDARD}\" \
     -DCMAKE_TOOLCHAIN_FILE=\"${CONTAINER_PROJECT_DIR}/test/cmake/toolchain/${TOOLCHAIN}\".cmake \
     -DCNL_EXCEPTIONS=\"${EXCEPTIONS}\" \

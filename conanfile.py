@@ -19,7 +19,6 @@ class CnlConan(ConanFile):
     scm = {
         "type": "git",
         "url": "https://github.com/johnmcfarlane/cnl.git",
-        "revision": "auto"
     }
 
     def package(self):
