@@ -64,7 +64,7 @@ jobs:
           skip_cleanup: true
           verbose: true
           on:
-            branch: main
+            all_branches: true
             condition: $TRAVIS_BRANCH =~ ^v([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)$
 
     - name: Linux/ShellCheck, Shell script lint
