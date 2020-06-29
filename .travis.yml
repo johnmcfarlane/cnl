@@ -58,6 +58,14 @@ jobs:
     - name: Linux/Doxygen, Documentation
       os: linux
       env: IMG=cnl_ci:gcc-10 SCRIPT=doc/generate.sh
+      deploy:
+        - provider: script
+          script: SCRIPT=.travis/deploy.sh .travis/test-${TRAVIS_OS_NAME}.sh
+          skip_cleanup: true
+          verbose: true
+          on:
+            branch: main
+            condition: $TRAVIS_BRANCH =~ ^v([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)$
 
     - name: Linux/ShellCheck, Shell script lint
       os: linux
