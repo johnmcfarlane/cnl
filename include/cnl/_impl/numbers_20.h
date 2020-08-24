@@ -11,8 +11,8 @@
 ///
 ///     template<class T> concept floating_point = is_floating_point_v<T>;
 
-#if !defined(CNL_IMPL_MATH_20_H)
-#define CNL_IMPL_MATH_20_H
+#if !defined(CNL_IMPL_NUMBERS_20_H)
+#define CNL_IMPL_NUMBERS_20_H
 
 #if __has_include(<concepts>)
 #include <concepts>
@@ -28,7 +28,7 @@ namespace cnl {
 #endif
     }
 
-    namespace math {
+    namespace numbers {
 
         template<typename> inline constexpr bool __always_false = false;
 

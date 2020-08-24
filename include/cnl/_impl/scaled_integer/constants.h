@@ -13,7 +13,7 @@
 #include "num_traits.h"
 #include "type.h"
 
-#include "../../math.h"
+#include "../../numbers.h"
 #include "../used_digits.h"
 
 /// compositional numeric library
@@ -91,7 +91,7 @@ namespace cnl {
         }
     }
 
-    namespace math {
+    namespace numbers {
         /// specialization of \ref cnl::e for \ref cnl::scaled_integer
         template<typename Rep, int Exponent> inline constexpr scaled_integer<Rep, power<Exponent>> e_v<scaled_integer<Rep, power<Exponent>>> {
                 _impl::constant_with_fallback<long double, Rep, Exponent>(e_v<long double>, _impl::e<Rep, Exponent>)

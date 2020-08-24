@@ -12,10 +12,10 @@ set(test_sources
         cstdint.cpp
         common.cpp
         limits.cpp
-        math.cpp
         num_traits.cpp
         numeric.cpp
         number_test.cpp
+        numbers.cpp
         overflow/overflow.cpp
         overflow/rounding/integer.cpp
         rounding/rounding.cpp

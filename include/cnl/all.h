@@ -110,8 +110,8 @@
 #include "fixed_point.h"
 #include "fraction.h"
 #include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
-#include "math.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
 #include "num_traits.h"
+#include "numbers.h"
 #include "numeric.h"
 #include "overflow.h"
 #include "overflow_integer.h"

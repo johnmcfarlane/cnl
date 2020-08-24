@@ -6,7 +6,7 @@
 
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/constant.h>
-#include <cnl/math.h>
+#include <cnl/numbers.h>
 
 #include <gtest/gtest.h>
 
