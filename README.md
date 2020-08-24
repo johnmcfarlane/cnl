@@ -40,6 +40,7 @@ The library is [hosted](https://github.com/johnmcfarlane/cnl) on GitHub:
 
 ```shell
 git clone https://github.com/johnmcfarlane/cnl.git
+cd cnl
 ```
 
 ### Build
@@ -50,7 +51,8 @@ CMake scripts are provided.
 To build and install CNL on your system:
 
 ```sh
-cmake cnl
+mkdir build && cd build
+cmake ..
 cmake --build . --target install
 ```
 
@@ -65,13 +67,13 @@ Optional integration tests use Boost.Multiprecision and Boost.SIMD.
    conan remote add --force johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
    conan profile new --detect --force default
    conan profile update settings.compiler.libcxx=libstdc++11 default
-   conan install --build=missing cnl
+   conan install --build=missing ..
    ```
 
 2. Configure the project for development
 
    ```shell
-   cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PROJECT_cnl_INCLUDE:FILEPATH="$(pwd)"/conan_paths.cmake cnl
+   cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PROJECT_cnl_INCLUDE:FILEPATH="$(pwd)"/conan_paths.cmake ..
    ```
 
 3. Build tests:
