@@ -63,7 +63,7 @@ namespace cnl {
 #endif
         }
 
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && _MSC_VER < 1924
         // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
         CNL_NODISCARD constexpr operator auto() const -> value_type
         {
