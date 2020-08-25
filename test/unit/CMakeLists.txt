@@ -39,7 +39,7 @@ set(test_sources
         integer/type.cpp
         scaled_integer/scaled_integer_built_in.cpp
         scaled_integer/decimal.cpp
-        scaled_integer/constants.cpp
+        scaled_integer/numbers.cpp
         fraction/ctors.cpp
         fraction/fraction.cpp
         elastic_integer/elastic_integer.cpp

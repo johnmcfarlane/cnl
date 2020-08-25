@@ -16,7 +16,7 @@
 namespace {
 #if defined(__cpp_inline_variables)
 
-    namespace test_math_constants {
+    namespace test_numbers {
         template<typename T>
         void test_type()
         {

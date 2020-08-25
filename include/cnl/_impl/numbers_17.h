@@ -13,7 +13,7 @@
 namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::math_constants
+    // cnl::numbers
 
 #if defined(__cpp_inline_variables)
     namespace _impl {
