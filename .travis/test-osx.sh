@@ -15,7 +15,6 @@ export NUM_CPUS=4
 PROJECT_DIR="${TRAVIS_BUILD_DIR}"
 
 # Before install
-brew update
 brew unlink python@2
 
 # Install
