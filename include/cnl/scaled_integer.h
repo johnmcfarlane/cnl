@@ -10,7 +10,6 @@
 #if !defined(CNL_SCALED_INTEGER_H)
 #define CNL_SCALED_INTEGER_H
 
-#include "_impl/scaled_integer/constants.h"
 #include "_impl/scaled_integer/convert_operator.h"
 #include "_impl/scaled_integer/declaration.h"
 #include "_impl/scaled_integer/extras.h"
@@ -21,6 +20,7 @@
 #include "_impl/scaled_integer/math.h"
 #include "_impl/scaled_integer/named.h"
 #include "_impl/scaled_integer/num_traits.h"
+#include "_impl/scaled_integer/numbers.h"
 #include "_impl/scaled_integer/operators.h"
 #include "_impl/scaled_integer/rep.h"
 #include "_impl/scaled_integer/set_rep.h"

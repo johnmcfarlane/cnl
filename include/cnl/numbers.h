@@ -4,16 +4,16 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file cnl/math.h
-/// \brief functions that might belong in the \verbatim<math>\endverbatim header
+/// \file cnl/numbers.h
+/// \brief functions that might belong in the \verbatim<numbers>\endverbatim header
 
-#if !defined(CNL_MATH_H)
-#define CNL_MATH_H
+#if !defined(CNL_NUMBERS_H)
+#define CNL_NUMBERS_H
 
 #if defined(__cpp_concepts)
-#include "_impl/math_20.h"
+#include "_impl/numbers_20.h"
 #else
-#include "_impl/math_17.h"
+#include "_impl/numbers_17.h"
 #endif
 
-#endif  // CNL_MATH_H
+#endif  // CNL_NUMBERS_H

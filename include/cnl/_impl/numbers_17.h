@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_MATH_17_H)
-#define CNL_IMPL_MATH_17_H
+#if !defined(CNL_IMPL_NUMBERS_17_H)
+#define CNL_IMPL_NUMBERS_17_H
 
 #include "config.h"
 
@@ -13,7 +13,7 @@
 namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::math_constants
+    // cnl::numbers
 
 #if defined(__cpp_inline_variables)
     namespace _impl {
@@ -25,7 +25,7 @@ namespace cnl {
         CNL_NODISCARD constexpr T deleted_fn() = delete;
     }
 
-    namespace math {
+    namespace numbers {
         /// partial implementation of [P0631](http://wg21.link/p0631)
 
         // values taken from c++ (GCC) 7.2.0 implementation of math.h; disclaimer: may be a bit or two off
