@@ -9,17 +9,40 @@ jobs:
     - name: OS X/GCC 8, Unit test
       os: osx
       osx_image: xcode11.2
-      env: CC=gcc-8 CXX=g++-8 PACKAGE=gcc@8 VERSION=8 SCRIPT=test/scripts/unit-test.sh
+      env: CC=gcc-8 CXX=g++-8 VERSION=8 SCRIPT=test/scripts/unit-test.sh
+      addons:
+        homebrew:
+          packages:
+          - ccache
+          - cloc
+          - conan
+          - gcc@8
+          update: true
 
     - name: OS X/GCC 6, Unit test
       os: osx
       osx_image: xcode10
-      env: CC=gcc-6 CXX=g++-6 PACKAGE=gcc@6 VERSION=6 SCRIPT=test/scripts/unit-test.sh STANDARD=14 INT128=OFF
+      env: CC=gcc-6 CXX=g++-6 VERSION=6 SCRIPT=test/scripts/unit-test.sh STANDARD=14 INT128=OFF
+      addons:
+        homebrew:
+          packages:
+          - ccache
+          - cloc
+          - conan
+          - gcc@6
+          update: true
 
     - name: OS X/Clang 5.0.2, Unit test
       os: osx
       compiler: clang
       env: CC=clang CXX=clang++ STANDARD=14 SCRIPT=test/scripts/unit-test.sh EXCEPTIONS=OFF TOOLCHAIN=clang
+      addons:
+        homebrew:
+          packages:
+          - ccache
+          - cloc
+          - conan
+          update: true
 
     - name: Linux/Clang 10, Clang-Tidy
       os: linux

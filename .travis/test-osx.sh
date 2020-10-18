@@ -17,12 +17,6 @@ PROJECT_DIR="${TRAVIS_BUILD_DIR}"
 # Before install
 brew unlink python@2
 
-# Install
-brew install ccache cloc conan
-if [ -n "${PACKAGE-}" ]; then
-  brew install "${PACKAGE}"
-fi
-
 conan profile new --detect default
 
 if [ "$CXX" != "clang++" ]; then
