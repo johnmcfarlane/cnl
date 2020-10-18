@@ -29,8 +29,9 @@ jobs:
       - run:
           name: Build/install GTest
           command: >
-            git clone --branch release-1.10.0 https://github.com/google/googletest.git &&
+            git clone https://github.com/google/googletest.git &&
             cd googletest &&
+            git checkout 3c95bf552405fd0cc63cea0ca2f6c4cd89c8d356 &&
             mkdir build &&
             cd build &&
             cmake .. &&
