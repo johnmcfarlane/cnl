@@ -177,7 +177,7 @@ namespace cnl {
     template<class Operator, class OverflowTag, typename Rhs>
     struct post_operator<Operator, OverflowTag, Rhs,
             _impl::enable_if_t<_impl::is_overflow_tag<OverflowTag>::value>> {
-        CNL_RELAXED_CONSTEXPR auto operator()(Rhs& rhs) const
+        constexpr auto operator()(Rhs& rhs) const
         -> Rhs
         {
             auto copy = rhs;

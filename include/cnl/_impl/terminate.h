@@ -15,7 +15,7 @@
 namespace cnl {
     namespace _impl {
         template<class Result>
-        [[noreturn]] CNL_RELAXED_CONSTEXPR Result terminate(char const* message) noexcept
+        [[noreturn]] constexpr Result terminate(char const* message) noexcept
         {
             std::fputs(message, stderr);
             std::fputc('\n', stderr);

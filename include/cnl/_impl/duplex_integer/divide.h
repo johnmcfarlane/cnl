@@ -57,7 +57,7 @@ namespace cnl {
         }
 
         // lifted from: https://github.com/torvalds/linux/blob/5ac94332248ee017964ba368cdda4ce647e3aba7/lib/math/div64.c#L142
-        static CNL_RELAXED_CONSTEXPR auto non_negative_division(
+        static constexpr auto non_negative_division(
                 _unsigned_duplex_integer const& dividend,
                 _unsigned_duplex_integer const& divisor)
         -> _unsigned_duplex_integer
@@ -80,7 +80,7 @@ namespace cnl {
             return quot;
         }
 
-        static CNL_RELAXED_CONSTEXPR auto fls(Upper n) -> int
+        static constexpr auto fls(Upper n) -> int
         {
             auto half_digits = numeric_limits<_duplex_integer>::digits/2;
 
@@ -96,7 +96,7 @@ namespace cnl {
         };
 
         // from Linux div64_32
-        static CNL_RELAXED_CONSTEXPR auto
+        static constexpr auto
         div_by_lower(_unsigned_duplex_integer const& dividend, Lower const& divisor)
         -> _unsigned_duplex_integer
         {
