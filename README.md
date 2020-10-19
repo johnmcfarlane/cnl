@@ -1,8 +1,6 @@
 # Compositional Numeric Library
 
-[![Build Status](https://travis-ci.org/johnmcfarlane/cnl.svg?branch=main)](https://travis-ci.org/johnmcfarlane/cnl)
-[![Build status](https://ci.appveyor.com/api/projects/status/9s7daasmvku9ttvd/branch/main?svg=true)](https://ci.appveyor.com/project/johnmcfarlane/cnl/branch/main)
-[![CircleCI](https://circleci.com/gh/johnmcfarlane/cnl/tree/main.svg?style=svg)](https://circleci.com/gh/johnmcfarlane/cnl/tree/main)
+[![Integration Tests](https://github.com/johnmcfarlane/cnl/workflows/Integration%20Tests/badge.svg)](https://github.com/johnmcfarlane/cnl/actions?query=workflow:Test+branch:main)
 [![Join the chat at https://gitter.im/cppcnl/community](https://badges.gitter.im/cppcnl/community.svg)](https://gitter.im/cppcnl/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 The Compositional Numeric Library (CNL) is a C++ library of fixed-precision numeric classes which enhance integers to
@@ -11,25 +9,27 @@ Documentation can be found [here](http://johnmcfarlane.github.io/cnl/).
 
 ## Requirements
 
+CNL requires a C++11-compatible tool chain and is tested on the following systems:
+
 ### Linux
 
-Compiled on x86-64 and armv7.
-Tested on x86-86 using  [Travis](https://travis-ci.org/johnmcfarlane/cnl) and
-[CircleCI](https://circleci.com/gh/johnmcfarlane/cnl).
+Tested:
 
-Requires:
+- GCC 5 - 10 / Clang 5 - 11
+- [CMake](https://cmake.org/download/) 3.5.1
 
-- GCC 5.1 / Clang 4.0
-- [CMake](https://cmake.org/download/) ([3.5.1](https://docs.travis-ci.com/user/languages/cpp/#CMake))
+### OS X
+
+Tested:
+
+- GCC 10
+- [CMake](https://cmake.org/download/) 3.5.1
 
 ### Windows
 
-Tested on [AppVeyor](https://ci.appveyor.com/project/johnmcfarlane/cnl/branch/main)
-and on *Windows 10 Professional* with *CMake 3.8.0*.
+Tested:
 
-Requires:
-
-- MSBuild 15.0 (VS 2017)
+- Visual Studio 2019 Version 16.7
 - [CMake](https://cmake.org/download/) 3.8.0
 
 ## Instructions
