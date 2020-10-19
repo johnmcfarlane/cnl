@@ -10,7 +10,9 @@ Documentation can be found [here](http://johnmcfarlane.github.io/cnl/).
 
 ## Requirements
 
-CNL requires a C++11-compatible tool chain and is tested on the following systems:
+The latest version of CNL requires a C++20-compatible tool chain.
+([Version 1.x](https://github.com/johnmcfarlane/cnl/tree/v1.x) supports C++11.)
+CNL is tested on the following systems:
 
 ### Linux
 
