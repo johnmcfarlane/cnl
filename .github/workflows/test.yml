@@ -1,0 +1,259 @@
+name: Integration Tests
+
+on: [push]
+
+jobs:
+  # Build and test many combinations on Linux using Conan
+  posix-conan-test:
+    strategy:
+      matrix:
+        include:
+          # OS X
+          - os: osx
+            compiler: gcc
+            arch: x86_64
+            build-type: Release
+            cxx: g++-10
+            exceptions: "ON"
+            generator: "Ninja"
+            int128: "ON"
+            os-version: macos-11.0
+            version: 10
+            toolchain: gcc.cmake
+
+          # Clang-10
+          - compiler: clang
+            version: 10
+            os: linux
+            arch: x86_64
+            build-type: Release
+            cxx: clang++
+            exceptions: "ON"
+            generator: "Ninja"
+            int128: "ON"
+            linux-container: johnmcfarlane/cnl_ci:clang-10-libstdcpp
+            os-version: ubuntu-20.04
+            toolchain: clang-libstdc++.cmake
+
+          # GCC
+          - compiler: gcc
+            os: linux
+            arch: x86_64
+            build-type: Release
+            cxx: g++-10
+            exceptions: "ON"
+            generator: "Ninja"
+            int128: "ON"
+            linux-container: johnmcfarlane/cnl_ci:gcc-10
+            os-version: ubuntu-20.04
+            toolchain: gcc.cmake
+            version: 10
+
+          # Clang-11
+          - compiler: clang
+            version: 11
+            os: linux
+            arch: x86_64
+            build-type: Release
+            cxx: clang++
+            exceptions: "ON"
+            generator: "Ninja"
+            int128: "ON"
+            linux-container: johnmcfarlane/cnl_ci:clang-11
+            os-version: ubuntu-20.04
+            toolchain: clang-libc++.cmake
+
+          # Contrary
+          - exceptions: "OFF"
+            int128: "OFF"
+            os: linux
+            arch: x86_64
+            build-type: Debug
+            compiler: gcc
+            cxx: g++-10
+            generator: "Unix Makefiles"
+            linux-container: johnmcfarlane/cnl_ci:gcc-10
+            os-version: ubuntu-20.04
+            toolchain: gcc.cmake
+            version: 10
+
+            # ARMv7
+          - arch: armv7
+            os: linux
+            build-type: Release
+            compiler: gcc
+            cxx: arm-linux-gnueabi-g++-10
+            exceptions: "ON"
+            generator: "Ninja"
+            int128: "OFF"
+            linux-container: johnmcfarlane/cnl_ci:gcc-10
+            os-version: ubuntu-20.04
+            toolchain: gcc-armv7.cmake
+            version: 10
+
+    container: ${{matrix.linux-container}}
+    env:
+      CC: ${{matrix.compiler}}
+      CXX: ${{matrix.cxx}}
+      CONAN_PROFILE: .github/${{matrix.os}}-${{matrix.compiler}}-${{matrix.version}}-${{matrix.arch}}-profile
+
+    runs-on: ${{matrix.os-version}}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Brew packages
+      if: ( matrix.os == 'osx' )
+      run: brew install conan coreutils gcc@10 ninja
+
+    - name: Install ARMv7 packages
+      if: ( matrix.arch == 'armv7' )
+      run: apt-get install --quiet --yes g++-10-arm-linux-gnueabi libboost-dev
+
+    - name: Add CNL's Conan remote
+      run: conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
+
+    - name: Install dependencies
+      run: |
+        conan install \
+          --build \
+          --profile $GITHUB_WORKSPACE/$CONAN_PROFILE \
+          $GITHUB_WORKSPACE
+
+    - name: Configure build system
+      run: |
+        cmake \
+          -DCMAKE_BUILD_TYPE=${{matrix.build-type}} \
+          -DCMAKE_PROJECT_INCLUDE:FILEPATH=$(pwd)/conan_paths.cmake \
+          -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$(pwd)/test/cmake/toolchain/${{matrix.toolchain}} \
+          -DCNL_INT128=${{matrix.int128}} \
+          -DCNL_EXCEPTIONS=${{matrix.exceptions}} \
+          -G "${{matrix.generator}}" \
+          $GITHUB_WORKSPACE
+
+    - name: Build tests
+      run: cmake --build . -- -j $(nproc)
+
+    - name: Test library
+      if: ( matrix.arch != 'armv7' )
+      run: ctest --output-on-failure --parallel $(nproc)
+
+  # Build and test many combinations on Linux using Conan
+  windows-conan-test:
+    runs-on: windows-2019
+    strategy:
+      matrix:
+        arch: [x86_64, x86]
+        include:
+          - arch: x86_64
+            cmake_arch: x64
+            exceptions: "ON"
+            msbuild_property: x64
+          - arch: x86
+            cmake_arch: Win32
+            exceptions: "OFF"
+            msbuild_property: win32
+
+    steps:
+    - uses: actions/checkout@v2
+    - run: pip.exe install conan
+    - run: conan --version
+    - run: conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
+    - run: conan profile new default
+    - run: conan profile update settings.compiler="Visual Studio" default
+    - run: conan profile update settings.os=Windows default
+    - run: conan profile update settings.arch=${{matrix.arch}} default
+    - run: conan profile update settings.compiler.version=16 default
+    - run: mkdir ${{runner.workspace}}\build
+    - working-directory: ${{runner.workspace}}/build
+      run: conan install --build=missing --settings build_type=Release $env:GITHUB_WORKSPACE
+    - working-directory: ${{runner.workspace}}/build
+      run: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PROJECT_cnl_INCLUDE:FILEPATH=${{runner.workspace}}\build\conan_paths.cmake -DCMAKE_TOOLCHAIN_FILE="$env:GITHUB_WORKSPACE"\test\cmake\toolchain\msvc.cmake -DCNL_EXCEPTIONS=${{matrix.exceptions}} -G "Visual Studio 16 2019" -A "${{matrix.cmake_arch}}" $env:GITHUB_WORKSPACE
+    - working-directory: ${{runner.workspace}}/build
+      run: cmake --build . -- /property:Configuration=Release /property:Platform=${{matrix.msbuild_property}} /maxcpucount
+    - working-directory: ${{runner.workspace}}/build
+      run: ctest --exclude-regex test-benchmark --output-on-failure --parallel 8
+    - working-directory: ${{runner.workspace}}/build
+      run: test\benchmark\Release\test-benchmark.exe
+
+  # Build and test on Linux using only CMake
+  linux-cmake-test:
+    strategy:
+      matrix:
+        compiler: [gcc-10, clang-11]
+
+        include:
+          - compiler: gcc-10
+            toolchain: gcc.cmake
+            container: johnmcfarlane/cnl_ci:gcc-10
+          - compiler: clang-11
+            toolchain: clang-libstdc++.cmake
+            container: johnmcfarlane/cnl_ci:clang-10-libstdcpp
+
+    container: ${{matrix.container}}
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build and Install GTest
+      run: |
+        git clone https://github.com/google/googletest.git && \
+        cd googletest && \
+        git checkout 3c95bf552405fd0cc63cea0ca2f6c4cd89c8d356 && \
+        cmake \
+          -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/cmake/toolchain/${{matrix.toolchain}} \
+          . && \
+        cmake --build . --target install -- --jobs 2
+
+    - name: Configure CNL
+      run: |
+        cmake \
+          -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/cmake/toolchain/${{matrix.toolchain}} \
+          $GITHUB_WORKSPACE
+
+    - name: Build CNL
+      run: cmake --build $GITHUB_WORKSPACE --target test-all -- --jobs 2
+
+    - name: Test CNL
+      run: ctest --output-on-failure --parallel 2
+
+  # Install on Linux using only CMake
+  linux-cmake-install:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Configure CNL
+      run: cmake $GITHUB_WORKSPACE
+
+    - name: Install CNL
+      run: sudo cmake --build $GITHUB_WORKSPACE --target install
+
+  # Test shell scripts
+  shellcheck:
+    runs-on: ubuntu-20.04
+    container: johnmcfarlane/cnl_ci:base-20.04
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Run All Tests
+      shell: bash
+      run: $GITHUB_WORKSPACE/test/scripts/shellcheck.sh
+
+  # Test documentation generation
+  doxygen:
+    runs-on: ubuntu-18.04
+    container: johnmcfarlane/cnl_ci:gcc-10
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Generate documentation
+      shell: bash
+      run: $GITHUB_WORKSPACE/doc/generate.sh
+
+    - name: Upload documentation
+      uses: actions/upload-artifact@v2
+      with:
+        name: documentation
+        path: $GITHUB_WORKSPACE/doc/gh-pages
