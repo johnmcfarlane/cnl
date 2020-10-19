@@ -13,7 +13,8 @@
 #include <unordered_map>
 
 #if (__cplusplus >= 201703L)
-#include <experimental/filesystem>
+#include <filesystem>
+namespace filesystem = std::filesystem;
 #endif
 
 using cnl::power;
@@ -21,17 +22,16 @@ using cnl::scaled_integer;
 
 #if (__cplusplus >= 201703L)
 template<>
-struct std::hash<std::experimental::filesystem::path> {
-    size_t operator()(std::experimental::filesystem::path const& p) const
+struct std::hash<filesystem::path> {
+    size_t operator()(filesystem::path const& p) const
     {
-        return std::experimental::filesystem::hash_value(p);
+        return filesystem::hash_value(p);
     }
 };
 
 namespace a {
     using std::unique_ptr;
     using std::unordered_map;
-    using namespace std::experimental;
     using byte = std::uint8_t;
 
     unordered_map<filesystem::path, unique_ptr<byte[]>> cache;  // NOLINT(cppcoreguidelines-avoid-c-arrays)
