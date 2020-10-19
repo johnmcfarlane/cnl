@@ -74,7 +74,7 @@ namespace d {
 namespace e {
     static_assert(fixed_point<unsigned>{1U} < fixed_point<signed>{-1}, "OK(!)");
 
-#if defined(__cpp_deduction_guides) && defined(CNL_P1021)
+#if defined(CNL_P1021)
     static_assert(fixed_point{1u} < fixed_point{-1});
 #endif
 }
@@ -165,7 +165,7 @@ namespace n {
 }
 #endif
 
-#if defined(__cpp_deduction_guides) && defined(CNL_P1021) && !defined(_MSC_VER)
+#if defined(CNL_P1021) && !defined(_MSC_VER)
 #include <cnl/elastic_fixed_point.h>
 
 using namespace cnl::literals;

@@ -14,7 +14,6 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-#if defined(__cpp_lib_gcd)
         template<typename Numerator, typename Denominator, typename Gcd>
         CNL_NODISCARD constexpr auto reduce_from_gcd(fraction<Numerator, Denominator> const& f, Gcd const& gcd)
         {
@@ -26,7 +25,6 @@ namespace cnl {
         {
             return reduce_from_gcd(f, gcd(f));
         }
-#endif
     }
 }
 

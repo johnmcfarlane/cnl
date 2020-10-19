@@ -20,8 +20,6 @@
 /// compositional numeric library
 namespace cnl {
 
-#if defined(__cpp_inline_variables)
-
     ////////////////////////////////////////////////////////////////////////////////
     // scaled_integer specializations of math constants from numeric.h
 
@@ -160,7 +158,6 @@ namespace std {
                 cnl::scaled_integer<Rep, cnl::power<Exponent>>{phi_v<long double>}
         };
     }
-#endif  // defined(__cpp_inline_variables)
 }
 
 #endif // CNL_IMPL_SCALED_INTEGER_CONSTANTS_H

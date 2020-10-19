@@ -21,8 +21,6 @@ using test_int = int;
 
 #include "scaled_integer_common.h"
 
-#if defined(__cpp_deduction_guides)
-
 namespace test_literals_initialization {
     using cnl::_impl::identical;
     using cnl::scaled_integer;
@@ -51,5 +49,3 @@ namespace test_literals_constant {
     constexpr auto yobi = exbi * mebi;
     static_assert(yobi == 1208925819614629174706176.L);
 }
-
-#endif

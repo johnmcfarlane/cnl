@@ -7,8 +7,6 @@
 /// \file
 /// \brief tests of C++17-only examples listed in paper, P0675
 
-#if defined(__cpp_deduction_guides)
-
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/num_traits.h>
 #include <cnl/rounding_integer.h>
@@ -151,5 +149,3 @@ namespace {
                 from_value_t<scaled_integer<int16_t, power<-1>>, unsigned long>{99UL}));
     }
 }
-
-#endif  // defined(__cpp_deduction_guides)

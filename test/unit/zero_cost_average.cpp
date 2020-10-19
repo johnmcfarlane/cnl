@@ -77,25 +77,7 @@ using cnl::_impl::identical;
 static_assert(identical(65536_elastic, elastic_scaled_integer<1, 16>{65536}), "mistaken comment in average_elastic");
 static_assert(identical(1_elastic/65536_elastic, elastic_scaled_integer<1, -16>{0.0000152587890625}), "mistaken comment in average_elastic");
 
-#if (__cpp_constexpr >= 201304L)
 static_assert(identical(average_integer(32000.125, 27805.75), 29902.9375F), "average_integer test failed");
 static_assert(identical(average_elastic_integer(32000.125, 27805.75), 29902.9375F), "average_elastic_integer test failed");
 static_assert(identical(average_scaled_integer(32000.125, 27805.75), 29902.9375F), "average_scaled_integer test failed");
 static_assert(identical(average_elastic(32000.125, 27805.75), 29902.9375F), "average_elastic test failed");
-#else
-TEST(zero_cost_average, integer) {  // NOLINT
-    ASSERT_EQ(average_integer(32000.125, 27805.75), 29902.9375F);
-}
-
-TEST(zero_cost_average, elastic_integer) {  // NOLINT
-    ASSERT_EQ(average_elastic_integer(30000, 0.125), 15000.0625F);
-}
-
-TEST(zero_cost_average, scaled_integer) {  // NOLINT
-    ASSERT_EQ(average_scaled_integer(30000, 0.125), 15000.0625F);
-}
-
-TEST(zero_cost_average, elastic_scaled_integer) {  // NOLINT
-    ASSERT_EQ(average_elastic(30000, 0.125), 15000.0625F);
-}
-#endif

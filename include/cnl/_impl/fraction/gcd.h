@@ -14,13 +14,11 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-#if defined(__cpp_lib_gcd)
         template<typename Numerator, typename Denominator>
         CNL_NODISCARD constexpr auto gcd(fraction<Numerator, Denominator> const& f) {
             using std::gcd;
             return gcd(f.numerator, f.denominator);
         }
-#endif
     }
 }
 

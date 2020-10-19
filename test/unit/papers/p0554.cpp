@@ -37,7 +37,6 @@ namespace {
         static_assert(identical(quotient, elastic_scaled_integer<7, 0>{0}), "position_paper test failed");
     }
 
-#if defined(__cpp_deduction_guides)
     namespace division2 {
         using cnl::elastic_scaled_integer;
         using cnl::scaled_integer;  // NOLINT(misc-unused-using-decls)
@@ -47,5 +46,4 @@ namespace {
         constexpr auto quotient = scaled_integer{fraction{numerator, denominator}};
         static_assert(identical(quotient, elastic_scaled_integer<12, -8>{0.28125}), "position_paper test failed");
     }
-#endif
 }

@@ -39,9 +39,7 @@ namespace {  // NOLINT(cert-dcl59-cpp)
     namespace test_jax2018_example {
         // pi stored as s5.10 (truncated rounding)
         constexpr auto n = cnl::_impl::from_rep<cnl::scaled_integer<int16, cnl::power<-10>>>(int16{3216});
-#if defined(__cpp_inline_variables)
         static_assert(identical(std::numbers::pi_v<cnl::scaled_integer<int16, cnl::power<-10>>>, n));
-#endif
         static_assert(identical(int16{3216}, cnl::_impl::to_rep(n)), "cnl::_impl::to_rep(cnl::scaled_integer)");
         static_assert(identical(3.140625, static_cast<double>(n)), "cnl::scaled_integer::operator double()");
 
@@ -51,9 +49,7 @@ namespace {  // NOLINT(cert-dcl59-cpp)
 
         // n / d
         constexpr auto f = make_fraction(n, d);
-#if defined(__cpp_deduction_guides)
         static_assert(identical(cnl::fraction{n, d}, f), "cnl::fraction CTAD");
-#endif
         static_assert(
                 identical(
                         cnl::fraction<cnl::scaled_integer<int16, cnl::power<-10>>,
@@ -64,11 +60,9 @@ namespace {  // NOLINT(cert-dcl59-cpp)
         constexpr auto nq = cnl::make_scaled_integer(f);
         static_assert(identical(cnl::make_scaled_integer(cnl::make_fraction(n, d)), nq),
                 "cnl::make_scaled_integer(cnl::fraction)");
-#if defined(__cpp_deduction_guides)
         static_assert(
                 identical(nq, cnl::scaled_integer{f}),
                 "cnl::scaled_integer::scaled_integer(fraction) w. CTAD");
-#endif
 
         // custom-width quotient (must be wide enough to perform widened division)
         constexpr auto cq = cnl::scaled_integer<uint16, cnl::power<-4>>{f};
@@ -85,10 +79,8 @@ namespace {  // NOLINT(cert-dcl59-cpp)
                 scaled_integer<quot_digits_t<>, cnl::power<-31>>{0.333333333022892475128173828125L},
                 named), "");
 
-#if defined(__cpp_deduction_guides)
         constexpr auto deduced = cnl::scaled_integer{third};
         static_assert(identical(named, deduced));
-#endif
     }
 
     namespace test_fraction_specific_int {
@@ -99,10 +91,8 @@ namespace {  // NOLINT(cert-dcl59-cpp)
                 cnl::scaled_integer<quot_digits_t<>, cnl::power<-31>>{0.333333333022892475128173828125L},
                 named), "");
 
-#if defined(__cpp_deduction_guides)
         constexpr auto deduced = cnl::scaled_integer{third};
         static_assert(identical(named, deduced));
-#endif
 
         constexpr auto specific = cnl::scaled_integer<int64, cnl::power<-31>>{third};
         static_assert(identical(
@@ -116,10 +106,8 @@ namespace {  // NOLINT(cert-dcl59-cpp)
         constexpr auto named = cnl::quotient(third.numerator, third.denominator);
         static_assert(identical(cnl::scaled_integer<quot_digits_t<int8>, cnl::power<-7>>{0.328125}, named), "");
 
-#if defined(__cpp_deduction_guides)
         constexpr auto deduced = cnl::scaled_integer{third};
         static_assert(identical(named, deduced));
-#endif
 
         constexpr auto specific = cnl::scaled_integer<test_int, cnl::power<-7>>{third};
         static_assert(identical(cnl::scaled_integer<test_int, cnl::power<-7>>{0.328125}, specific), "");
@@ -133,10 +121,8 @@ namespace {  // NOLINT(cert-dcl59-cpp)
                 cnl::scaled_integer<quot_digits_t<int16>, cnl::power<-15>>{0.33331298828125},
                 named), "");
 
-#if defined(__cpp_deduction_guides)
         constexpr auto deduced = cnl::scaled_integer{third};
         static_assert(identical(named, deduced));
-#endif
 
         constexpr auto specific = cnl::scaled_integer<uint8, cnl::power<-7>>{third};
         static_assert(identical(cnl::scaled_integer<uint8, cnl::power<-7>>{0.328125}, specific), "");

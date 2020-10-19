@@ -65,7 +65,7 @@ namespace {
     namespace test_divide {
         using namespace cnl::literals;
 
-#if defined(__clang__) && (__cpp_constexpr >= 201304L) && defined(CNL_INT128_ENABLED)
+#if defined(__clang__) && defined(CNL_INT128_ENABLED)
         static_assert(
                 identical(
                         cnl::static_integer<226>(

@@ -63,9 +63,7 @@ namespace {
         static_assert(identical(
                 cnl::convert<cnl::throwing_overflow_tag, cnl::_impl::native_tag, cnl::elastic_integer<10>>(0),
                 cnl::elastic_integer<10>{0}), "");
-#if defined(__cpp_binary_literals)
         static_assert(cnl::safe_integer<10>(0b1010101010)==cnl::safe_integer<10>(0b1010101010), "");
-#endif
     }
 
     namespace test_make_safe_int {

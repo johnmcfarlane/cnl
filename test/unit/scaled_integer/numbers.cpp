@@ -12,8 +12,6 @@
 
 namespace {
 
-#if defined(__cpp_inline_variables)
-
     using cnl::_impl::identical;
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -179,6 +177,4 @@ namespace {
         EXPECT_LT(get_error(std::numbers::phi_v<cnl::scaled_integer<cnl::uint64, cnl::power<-62>>>, std::numbers::phi_v<long double>),
                 .0000000000000000003L);
     }
-
-#endif  // defined(__cpp_inline_variables)
 }

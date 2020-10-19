@@ -4,8 +4,6 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if defined(__cpp_inline_variables) && __cpp_inline_variables>=201606
-
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/scaled_integer.h>
 
@@ -150,5 +148,3 @@ namespace open_issues {
         //static_assert(lhs < rhs);
     }
 }
-
-#endif  // __cpp_inline_variables>201606

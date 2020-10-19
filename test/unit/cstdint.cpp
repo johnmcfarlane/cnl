@@ -15,9 +15,7 @@ namespace {
 
     namespace test_cnl_intmax_c {
         static_assert(identical(cnl::intmax{1}, CNL_INTMAX_C(1)), "");
-#if defined(__cpp_binary_literals)
         static_assert(identical(cnl::intmax{-5}, CNL_INTMAX_C(-0b101)), "");
-#endif
         static_assert(identical(cnl::intmax{32}, CNL_INTMAX_C(+0x20)), "");
         static_assert(identical(cnl::intmax{-83}, CNL_INTMAX_C(-0123)), "");
         static_assert(identical(cnl::intmax{1233456789012345678LL}, CNL_INTMAX_C(1233456789012345678)), "");
@@ -47,12 +45,10 @@ namespace {
 #endif
         static_assert(identical(parse("07777041726354"), CNL_INTMAX_C(07777041726354)),
                 "cnl::_cnlint_impl::parse test failed");
-#if defined(__cpp_binary_literals)
         static_assert(identical(
                 parse("0b011010000110100000011111101000000010110110101"),
                 CNL_INTMAX_C(0b011010000110100000011111101000000010110110101)),
                 "cnl::_cnlint_impl::parse test failed");
-#endif
         static_assert(parse("0XaA") == CNL_INTMAX_C(0xAa),
                 "cnl::_cnlint_impl::digits_to_integral test failed");
     }

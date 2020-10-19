@@ -149,10 +149,8 @@ namespace test_fraction_deduced {
     constexpr auto named = cnl::quotient(third.numerator, third.denominator);
     static_assert(identical(cnl::elastic_scaled_integer<3, -2>{0.25}, named), "");
 
-#if defined(__cpp_deduction_guides)
     constexpr auto deduced = scaled_integer{third};
     static_assert(identical(named, deduced));
-#endif
 }
 
 namespace test_fraction_specific_byte {

@@ -15,7 +15,6 @@
 
 #include <functional>
 
-#if defined(__cpp_lib_gcd)
 namespace std {
     template<typename Numerator, typename Denominator>
     struct hash<cnl::fraction<Numerator, Denominator>> {
@@ -46,6 +45,5 @@ namespace std {
         }
     };
 }
-#endif
 
 #endif  // CNL_IMPL_FRACTION_HASH_H

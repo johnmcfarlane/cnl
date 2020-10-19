@@ -13,7 +13,6 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-#if defined(__cpp_lib_gcd)
         template<typename Numerator, typename Denominator>
         CNL_NODISCARD constexpr auto negated(fraction<Numerator, Denominator> const& rhs)
         -> decltype(_impl::make_fraction(-rhs.numerator, -rhs.denominator))
@@ -33,7 +32,6 @@ namespace cnl {
         {
             return canonical_from_reduce(reduce(f));
         }
-#endif
     }
 }
 

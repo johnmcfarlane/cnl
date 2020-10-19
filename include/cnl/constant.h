@@ -49,18 +49,12 @@ namespace cnl {
         constexpr constant() = default;
 
         template<typename S>
-#if (__cpp_constexpr >= 201304L)
         constexpr explicit constant(S const& init)
-#else
-        constexpr explicit constant(S const&)
-#endif
         {
             static_assert(
                     value<=cnl::numeric_limits<S>::max()&&value>=cnl::numeric_limits<S>::lowest(),
                     "initial value couldn't possibly represent value");
-#if (__cpp_constexpr >= 201304L)
             CNL_ASSERT(value==init);
-#endif
         }
 
 #if defined(_MSC_VER) && _MSC_VER < 1924

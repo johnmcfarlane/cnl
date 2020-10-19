@@ -94,7 +94,6 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::scaled_integer::scaled_integer deduction guides
 
-#if defined(__cpp_deduction_guides)
     // same as cnl::make_scaled_integer
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     scaled_integer(::cnl::constant<Value>)
@@ -105,7 +104,6 @@ namespace cnl {
     template<class Integer>
     scaled_integer(Integer)
     -> scaled_integer<Integer, power<>>;
-#endif
 }
 
 #endif  // CNL_IMPL_SCALED_INTEGER_DEFINITION_H

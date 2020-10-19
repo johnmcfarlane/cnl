@@ -356,7 +356,6 @@ namespace test_from_value {
             "cnl::_impl::from_value<scaled_integer<>, cnl::constant<4>>()");
 }
 
-#if defined(__cpp_deduction_guides)
 namespace test_deduction_guides {
     static_assert(identical(cnl::make_scaled_integer(short{123}), cnl::scaled_integer(short{123})),
             "cnl::scaled_integer class template deduction");
@@ -373,19 +372,6 @@ namespace test_deduction_guides {
     static_assert(identical(cnl::make_scaled_integer(cnl::constant<4>{}), cnl::scaled_integer(cnl::constant<4>{})),
             "cnl::scaled_integer class template deduction");
 }
-#else
-namespace test_make_scaled_integer {
-    static_assert(identical(scaled_integer<short>{123}, cnl::make_scaled_integer(short{123})),
-            "cnl::make_scaled_integer");
-    static_assert(identical(scaled_integer<std::uint64_t>{404}, cnl::make_scaled_integer(UINT64_C(404))),
-            "cnl::make_scaled_integer");
-
-    static_assert(identical(scaled_integer<int>{369}, cnl::make_scaled_integer(cnl::constant<369>{})),
-            "cnl::make_scaled_integer");
-    static_assert(identical(scaled_integer<int, cnl::power<2>>{4}, cnl::make_scaled_integer(cnl::constant<4>{})),
-            "cnl::make_scaled_integer");
-}
-#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -1310,12 +1296,10 @@ struct ScaledIntegerRepTester {
     ScaledIntegerTesterOutsize<Rep, 100> _6;
 
     // test deduction guides
-#if defined(__cpp_deduction_guides)
     static_assert(identical(cnl::scaled_integer{Rep{0}}, cnl::scaled_integer<Rep, cnl::power<0>>{0}));
     static_assert(identical(cnl::scaled_integer(Rep{0}), cnl::scaled_integer<Rep, cnl::power<0>>(0)));
 
     static_assert(identical(cnl::make_scaled_integer(Rep{0}), cnl::scaled_integer(Rep{0})));
-#endif
 };
 
 template struct ScaledIntegerRepTester<int8>;

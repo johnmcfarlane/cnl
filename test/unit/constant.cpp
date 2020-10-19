@@ -16,7 +16,6 @@ namespace {
     namespace test_literals {
         using namespace cnl::literals;
 
-#if defined(__cpp_binary_literals)
         static_assert(identical(
                 0b011010000110100000011111101000000010110110101_c,
                 cnl::constant<CNL_INTMAX_C(0b011010000110100000011111101000000010110110101)>()),
@@ -26,7 +25,6 @@ namespace {
                 0b1101000011010000001111110100000001011011010101101000011010000001111110100000001011011010101101000011010000001111110100000001011_c,
                 cnl::constant<CNL_INTMAX_C(0b1101000011010000001111110100000001011011010101101000011010000001111110100000001011011010101101000011010000001111110100000001011)>()),
                 "cnl::literals test failed");
-#endif
 #endif
 
         static_assert(identical(07777041726354_c, cnl::constant<CNL_INTMAX_C(07777041726354)>()),

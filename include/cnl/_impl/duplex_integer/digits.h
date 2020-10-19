@@ -24,9 +24,7 @@ namespace cnl {
         CNL_NODISCARD constexpr auto sensible_right_shift(Lhs const& lhs, int rhs)
         -> enable_if_t<digits<Result>::value <= digits<decltype(lhs>>rhs)>::value, Result>
         {
-#if (__cpp_constexpr >= 201304L)
             CNL_ASSERT(rhs>=0);
-#endif
             using promoted_type = decltype(lhs >> rhs);
             return static_cast<Result>((rhs>=digits<promoted_type>::value)
                     // TODO: Not reproduced locally. Investigate.
@@ -41,9 +39,7 @@ namespace cnl {
         CNL_NODISCARD constexpr auto sensible_right_shift(Lhs const& lhs, int rhs)
         -> enable_if_t<(digits<Result>::value > digits<decltype(lhs>>rhs)>::value), Result>
         {
-#if (__cpp_constexpr >= 201304L)
             CNL_ASSERT(rhs>=0);
-#endif
             using promoted_type = decltype(lhs >> rhs);
             return (rhs>=digits<promoted_type>::value)
                    ? Result{}
@@ -54,9 +50,7 @@ namespace cnl {
         CNL_NODISCARD constexpr auto sensible_left_shift(Lhs const& lhs, int rhs)
         -> enable_if_t<digits<Result>::value <= digits<decltype(lhs<<rhs)>::value, Result>
         {
-#if (__cpp_constexpr >= 201304L)
             CNL_ASSERT(rhs>=0);
-#endif
             using promoted_type = decltype(lhs << rhs);
             using unsigned_type = remove_signedness_t<decltype(lhs & lhs)>;
             return (rhs>=digits<promoted_type>::value)

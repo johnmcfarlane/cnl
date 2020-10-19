@@ -71,7 +71,6 @@ namespace cnl {
         using narrowest = set_digits_t<S, machine_digits<is_signed<S>::value>::value>;
     }
 
-#if defined(__cpp_deduction_guides)
     template<class S>
     elastic_integer(S const& s)
     -> elastic_integer<digits_v<S>, _impl::narrowest<S>>;
@@ -79,7 +78,6 @@ namespace cnl {
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     elastic_integer(constant<Value>)
     -> elastic_integer<digits_v<constant<Value>>>;
-#endif
 }
 
 #endif  // CNL_IMPL_ELASTIC_INTEGER_DEFINITION_H
