@@ -40,7 +40,7 @@ namespace {  // NOLINT(cert-dcl59-cpp)
         // pi stored as s5.10 (truncated rounding)
         constexpr auto n = cnl::_impl::from_rep<cnl::scaled_integer<int16, cnl::power<-10>>>(int16{3216});
 #if defined(__cpp_inline_variables)
-        static_assert(identical(cnl::numbers::pi_v<cnl::scaled_integer<int16, cnl::power<-10>>>, n));
+        static_assert(identical(std::numbers::pi_v<cnl::scaled_integer<int16, cnl::power<-10>>>, n));
 #endif
         static_assert(identical(int16{3216}, cnl::_impl::to_rep(n)), "cnl::_impl::to_rep(cnl::scaled_integer)");
         static_assert(identical(3.140625, static_cast<double>(n)), "cnl::scaled_integer::operator double()");
