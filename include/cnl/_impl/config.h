@@ -82,19 +82,6 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// CNL_RELAXED_CONSTEXPR macro definition
-
-#if defined(CNL_RELAXED_CONSTEXPR)
-#error CNL_RELAXED_CONSTEXPR already defined
-#endif
-
-#if (__cpp_constexpr >= 201304L)
-#define CNL_RELAXED_CONSTEXPR constexpr  // NOLINT(cppcoreguidelines-macro-usage)
-#else
-#define CNL_RELAXED_CONSTEXPR  // NOLINT(cppcoreguidelines-macro-usage)
-#endif
-
-////////////////////////////////////////////////////////////////////////////////
 // CNL_TEMPLATE_AUTO feature test
 
 #if defined(CNL_TEMPLATE_AUTO)

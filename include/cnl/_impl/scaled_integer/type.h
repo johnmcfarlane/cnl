@@ -82,7 +82,7 @@ namespace cnl {
 
         /// copy assignement operator
         template<typename S>
-        CNL_RELAXED_CONSTEXPR scaled_integer& operator=(S const& rhs)
+        constexpr scaled_integer& operator=(S const& rhs)
         {
             _base::operator=(rhs);
             return *this;

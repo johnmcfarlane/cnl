@@ -17,7 +17,7 @@ namespace cnl {
     struct pre_operator<
             Operator, _impl::native_tag, Number,
             _impl::enable_if_t<_impl::is_number<Number>::value>> {
-        CNL_RELAXED_CONSTEXPR Number& operator()(Number& rhs) const
+        constexpr Number& operator()(Number& rhs) const
         {
             pre_operator<Operator, _impl::tag_t<Number>, _impl::rep_t<Number>>{}(
                     _impl::to_rep(rhs));
@@ -29,7 +29,7 @@ namespace cnl {
     struct post_operator<
             Operator, _impl::native_tag, Number,
             _impl::enable_if_t<_impl::is_number<Number>::value>> {
-        CNL_RELAXED_CONSTEXPR Number operator()(Number& lhs) const
+        constexpr Number operator()(Number& lhs) const
         {
             return _impl::from_rep<Number>(
                     post_operator<Operator, _impl::tag_t<Number>, _impl::rep_t<Number>>{}(
