@@ -40,13 +40,11 @@ namespace {
     namespace test_literal {
         using namespace cnl::literals;
 
-#if defined(__cpp_binary_literals) && (__cpp_binary_literals >= 201304L)
         static_assert(
                 identical(
                         cnl::wide_integer<27>{0b101100101010100110101010100},
                         0b101100101010100110101010100_wide),
                 "");
-#endif
 
         static_assert(identical(cnl::wide_integer<30>{123456789}, 123456789_wide), "");
 

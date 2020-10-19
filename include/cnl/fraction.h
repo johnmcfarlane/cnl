@@ -24,12 +24,10 @@
 /// compositional numeric library
 namespace cnl {
     using _impl::abs;
-    using _impl::make_fraction;
-    using _impl::to_string;
-#if defined(__cpp_lib_gcd)
     using _impl::canonical;
+    using _impl::make_fraction;
     using _impl::reduce;
-#endif
+    using _impl::to_string;
 }
 
 #endif  // CNL_FRACTION_H

@@ -386,7 +386,6 @@ namespace {
     }
 
     namespace test_divide {
-#if (__cpp_constexpr >= 201304L)
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<int, unsigned>{0x12},
@@ -412,7 +411,6 @@ namespace {
                 "");
         static_assert(
                 identical(0x12, 0x1234 / cnl::_impl::duplex_integer<int, unsigned>{0x100}), "");
-#endif
 
         TEST(duplex_integer, divide)  // NOLINT
         {
@@ -484,7 +482,6 @@ namespace {
     }
 
     namespace test_modulo {
-#if (__cpp_constexpr >= 201304L)
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<int, unsigned>{0x34},
@@ -509,7 +506,6 @@ namespace {
                 "");
         static_assert(
                 identical(0x12, 0x1234 % cnl::_impl::duplex_integer<int, unsigned>{0x100}), "");
-#endif
 
         TEST(duplex_integer, modulo)  // NOLINT
         {

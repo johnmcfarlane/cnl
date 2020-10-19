@@ -75,7 +75,6 @@ namespace cnl {
             }
         };
 
-#if defined(__cpp_binary_literals) && (__cpp_binary_literals >= 201304L)
         // binary
         CNL_NODISCARD constexpr int parse_bin_char(char c)
         {
@@ -109,7 +108,6 @@ namespace cnl {
                 return binary_wide_integer_parse<sizeof...(Chars) + 1>({Chars..., '\0'});
             }
         };
-#endif
 
         // hexadecimal
         CNL_NODISCARD constexpr int parse_hex_char(char c)

@@ -105,7 +105,6 @@ namespace {
                 "cnl::elastic_integer test failed");
     }
 
-#if defined(__cpp_deduction_guides)
     namespace test_deduction_guides {
         static_assert(
                 identical(elastic_integer{128_c}, elastic_integer<8>{128}),
@@ -120,7 +119,6 @@ namespace {
                 identical(elastic_integer{-127_c}, elastic_integer<7>{-127}),
                 "elastic_integer test failed");
     }
-#endif
 
     namespace test_to_rep {
         static_assert(cnl::_impl::equal_op()(1, to_rep(elastic_integer<8>{1})), "");
@@ -331,10 +329,8 @@ namespace {
                 "elastic_integer test failed");
 
         static_assert(identical(elastic_integer<4>{10_c}, elastic_integer<4>{10}), "");
-#if defined(__cpp_deduction_guides)
         static_assert(
                 identical(elastic_integer{cnl::constant<1000>{}}, elastic_integer<10>{1000}), "");
-#endif
         static_assert(
                 identical(elastic_integer<10>{cnl::constant<1000>{}}, elastic_integer<10>{1000}),
                 "");
@@ -557,11 +553,7 @@ namespace {
     namespace test_avg_fn {
         CNL_NODISCARD constexpr int avg(int a, int b)
         {
-#if defined(__cpp_deduction_guides)
             return int((cnl::elastic_integer{a} + cnl::elastic_integer{b}) / 2);
-#else
-            return int((cnl::make_elastic_integer(a) + cnl::make_elastic_integer(b)) / 2);
-#endif
         }
 
         static_assert(avg(INT_MAX, INT_MAX) == INT_MAX, "avg using elastic_integer");
@@ -668,13 +660,8 @@ namespace {
 #endif
 
     // user-defined literal initialization
-#if defined(__cpp_deduction_guides)
     // with class template deduction
     static_assert(identical(elastic_integer(1_c), elastic_integer<1>{1}), "");
-#else
-    // without class template deduction
-    static_assert(identical(elastic_integer<1>(1_c), elastic_integer<1>{1}), "");
-#endif
 
     namespace test_is_composite {
         using cnl::is_composite;
@@ -747,7 +734,6 @@ namespace {
         static_assert(
                 identical(elastic_integer<9>{14} << 4, elastic_integer<9>{14 << 4}),
                 "shift_left test failed");
-#if defined(__cpp_binary_literals)
         static_assert(
                 identical(
                         elastic_integer<5 + 34, unsigned>{0b11001110101011101001LL << 34},
@@ -761,20 +747,17 @@ namespace {
                         elastic_integer<5 + 34, unsigned>{0b11001110101011101001LL << 34},
                         elastic_integer<5 + 34, unsigned>{0b11001110101011101001} << 34),
                 "shift_left test failed");
-#endif
 
         // by cnl::constant
         static_assert(cnl::_impl::enable_binary<elastic_integer<>, cnl::constant<1>>::value, "");
         static_assert(
                 identical(elastic_integer<5>{14} << 4_c, elastic_integer<9>{14 << 4}),
                 "shift_left test failed");
-#if defined(__cpp_binary_literals)
         static_assert(
                 identical(
                         elastic_integer<20 + 34, unsigned>{0b11001110101011101001LL << 34},
                         elastic_integer<20, unsigned>{0b11001110101011101001} << 34_c),
                 "shift_left test failed");
-#endif
         static_assert(
                 identical(
                         elastic_integer<20 + 34, unsigned>{0xCD123LL << 34},
@@ -794,25 +777,21 @@ namespace {
         static_assert(
                 identical(elastic_integer<9>{14 << 4} >> 4, elastic_integer<9>{14}),
                 "shift_left test failed");
-#if defined(__cpp_binary_literals)
         static_assert(
                 identical(
                         elastic_integer<5 + 34, unsigned>{0b11001110101011101001},
                         elastic_integer<5 + 34, unsigned>{0b11001110101011101001LL << 34} >> 34),
                 "shift_left test failed");
-#endif
 
         // by cnl::constant
         static_assert(
                 identical(elastic_integer<9>{14 << 4} >> 4_c, elastic_integer<5>{14}),
                 "shift_left test failed");
-#if defined(__cpp_binary_literals)
         static_assert(
                 identical(
                         elastic_integer<20, unsigned>{0b11001110101011101001},
                         elastic_integer<20 + 34, unsigned>{0b11001110101011101001LL << 34} >> 34_c),
                 "shift_left test failed");
-#endif
     }
 
     namespace test_power_value {

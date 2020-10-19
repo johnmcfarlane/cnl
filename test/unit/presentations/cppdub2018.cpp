@@ -80,9 +80,7 @@ namespace d {
 namespace e {
     static_assert(scaled_integer<unsigned>{1U} < scaled_integer<signed>{-1}, "OK(!)");
 
-#if defined(__cpp_deduction_guides)
     static_assert(scaled_integer{1U} < scaled_integer{-1});
-#endif
 }
 
 namespace f {
@@ -128,13 +126,8 @@ namespace j {
 namespace j2 {
     constexpr auto n = scaled_integer<int16_t, power<-8>>{1.5};
     constexpr auto d = scaled_integer<int16_t, power<-8>>{2.25};
-#if defined(__cpp_deduction_guides)
     constexpr auto f = cnl::fraction{n, d};
     constexpr auto q = scaled_integer{f};
-#else
-    constexpr auto f = cnl::make_fraction(n, d);
-    constexpr auto q = cnl::make_scaled_integer(f);
-#endif
     static_assert(identical(scaled_integer<int32_t, power<-15>>{.66666667}, q), "");
 }
 
@@ -191,7 +184,6 @@ namespace n {
 }
 #endif
 
-#if defined(__cpp_deduction_guides) && !defined(_MSC_VER)
 #include <cnl/elastic_scaled_integer.h>
 
 using namespace cnl::literals;
@@ -219,4 +211,3 @@ namespace o {
     constexpr auto s = e >> 1_c;
     static_assert(cnl::_impl::identical(scaled_integer<elastic_integer<7>, power<11>>{0x3f800}, s));
 }
-#endif
