@@ -41,7 +41,7 @@ namespace {
                 cnl::_impl::from_rep<cnl::scaled_integer<int16, cnl::power<-10>>>(int16{3216});
 #if defined(__cpp_inline_variables)
         static_assert(
-                identical(cnl::numbers::pi_v<cnl::scaled_integer<int16, cnl::power<-10>>>, n));
+                identical(std::numbers::pi_v<cnl::scaled_integer<int16, cnl::power<-10>>>, n));
 #endif
         static_assert(
                 identical(int16{3216}, cnl::_impl::to_rep(n)),
