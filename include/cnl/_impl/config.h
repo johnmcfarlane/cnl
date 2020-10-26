@@ -11,17 +11,6 @@
 #define CNL_CONFIG_H
 
 ////////////////////////////////////////////////////////////////////////////////
-// test for language version
-
-#if defined(_MSC_VER)
-#if (_MSC_VER<1916)
-#error CNL requires Microsoft C++ version 19.16 or above.
-#endif
-#elif !defined(__cplusplus) || (__cplusplus < 201103L)
-#error CNL requires C++11 or above.
-#endif
-
-////////////////////////////////////////////////////////////////////////////////
 // CNL_DEBUG and CNL_RELEASE macro definitions
 
 // Customization point: define either CNL_DEBUG or CNL_RELEASE
