@@ -56,11 +56,6 @@ namespace cnl {
         static constexpr int _rhs_left_shift = RhsExponent-_common_exponent;
     public:
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(_impl::binary_operate<
-                Operator,
-                _common_power>(
-                _impl::scale<_lhs_left_shift, Radix>(lhs),
-                _impl::scale<_rhs_left_shift, Radix>(rhs)))
         {
             return _impl::binary_operate<
                     Operator,

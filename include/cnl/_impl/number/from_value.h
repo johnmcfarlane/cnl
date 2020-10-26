@@ -60,7 +60,6 @@ namespace cnl {
     template<typename Rep, class Tag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<_impl::number<Rep, Tag>, constant<Value>> {
         CNL_NODISCARD constexpr auto operator()(constant<Value>) const
-        -> decltype(_impl::make_number<Tag>(_impl::from_value<Rep>(constant<Value>{})))
         {
             return _impl::make_number<Tag>(_impl::from_value<Rep>(constant<Value>{}));
         }

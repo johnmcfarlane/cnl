@@ -118,7 +118,6 @@ namespace example {
 
     template<class Fp>
     CNL_NODISCARD constexpr auto magnitude(Fp x, Fp y, Fp z)
-    -> decltype(sqrt(x*x+y*y+z*z))
     {
         return sqrt(x*x+y*y+z*z);
     }

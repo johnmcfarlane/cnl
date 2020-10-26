@@ -80,9 +80,6 @@ namespace cnl {
         using result_rep = typename result_tag::_rep;
 
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(Operator()(
-                static_cast<result_rep>(lhs),
-                static_cast<result_rep>(rhs)))
         {
             return Operator()(
                     static_cast<result_rep>(lhs),
@@ -98,7 +95,6 @@ namespace cnl {
             Lhs, Rhs,
             _impl::enable_if_t<_impl::is_elastic_tag<LhsTag>::value && !_impl::is_constant<Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(Operator{}(lhs, rhs))
         {
             return Operator{}(lhs, rhs);
         }

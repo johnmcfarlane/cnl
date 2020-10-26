@@ -44,7 +44,6 @@ namespace cnl {
     template<typename Rep, int Exponent, int Radix, typename Numerator, typename Denominator>
     struct from_value<scaled_integer<Rep, power<Exponent, Radix>>, fraction<Numerator, Denominator>> {
         CNL_NODISCARD constexpr auto operator()(fraction<Numerator, Denominator> const& value) const
-        -> decltype(make_scaled_integer(value))
         {
             return make_scaled_integer(value);
         }

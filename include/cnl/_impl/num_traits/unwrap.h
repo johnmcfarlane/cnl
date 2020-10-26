@@ -28,7 +28,6 @@ namespace cnl {
         template<typename Number>
         struct unwrap<Number, enable_if_t<is_composite<Number>::value>> {
             CNL_NODISCARD constexpr auto operator()(Number const& number) const
-            -> decltype(unwrap<rep_t<Number>>{}(to_rep(number)))
             {
                 return unwrap<rep_t<Number>>{}(to_rep(number));
             }
@@ -37,7 +36,6 @@ namespace cnl {
 
     template<typename Number>
     CNL_NODISCARD constexpr auto unwrap(Number const& number)
-    -> decltype(_impl::unwrap<Number>{}(number))
     {
         return _impl::unwrap<Number>{}(number);
     }

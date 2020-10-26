@@ -51,7 +51,6 @@ namespace cnl {
             _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, SignType>>> {
         CNL_NODISCARD constexpr auto
         operator()(_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, SignType>> const& input) const
-        -> decltype(input.backend())
         {
             // when converting *from* scaled_integer
             return input.backend();
@@ -263,28 +262,24 @@ namespace cnl {
 
     template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     CNL_NODISCARD constexpr auto operator<<(_sized_integer_impl::number<NumBits, _bmp::signed_magnitude> const& lhs, constant<Value>)
-    -> decltype(lhs << Value)
     {
         return lhs << Value;
     }
 
     template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     CNL_NODISCARD constexpr auto operator<<(_sized_integer_impl::number<NumBits, _bmp::unsigned_magnitude> const& lhs, constant<Value>)
-    -> decltype(lhs << Value)
     {
         return lhs << Value;
     }
 
     template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     CNL_NODISCARD constexpr auto operator>>(_sized_integer_impl::number<NumBits, _bmp::unsigned_magnitude> const& lhs, constant<Value>)
-    -> decltype(lhs >> Value)
     {
         return lhs >> Value;
     }
 
     template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     CNL_NODISCARD constexpr auto operator>>(_sized_integer_impl::number<NumBits, _bmp::signed_magnitude> const& lhs, constant<Value>)
-    -> decltype(lhs >> Value)
     {
         return lhs >> Value;
     }

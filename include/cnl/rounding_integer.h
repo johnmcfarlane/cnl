@@ -64,8 +64,6 @@ namespace cnl {
     struct scale<Digits, Radix, _impl::number<Rep, RoundingTag>,
             _impl::enable_if_t<0 <= Digits && _impl::is_rounding_tag<RoundingTag>::value>> {
         CNL_NODISCARD constexpr auto operator()(_impl::number<Rep, RoundingTag> const& s) const
-        -> decltype(_impl::from_rep<_impl::number<Rep, RoundingTag>>(
-                scale<Digits, Radix, Rep>{}(_impl::to_rep(s))))
         {
             return _impl::from_rep<_impl::number<Rep, RoundingTag>>(
                     scale<Digits, Radix, Rep>{}(_impl::to_rep(s)));

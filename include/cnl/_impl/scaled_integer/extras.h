@@ -118,8 +118,7 @@ namespace cnl {
 
     template<class Rep, int Exponent, int Radix,
             _impl::enable_if_t<(Exponent<0), int> = 0>
-    CNL_NODISCARD constexpr auto floor(scaled_integer<Rep, power<Exponent, Radix>> const& x)
-    -> decltype(_impl::from_rep<scaled_integer<Rep, power<0, Radix>>>(_impl::to_rep(x)>>constant<-Exponent>())) {
+    CNL_NODISCARD constexpr auto floor(scaled_integer<Rep, power<Exponent, Radix>> const& x) {
         static_assert(
                 Radix==2,
                 "cnl::floor(scaled_integer<Rep, power<Exponent, Radix>>) not implemented for Exponent<0 && Radix!=2");

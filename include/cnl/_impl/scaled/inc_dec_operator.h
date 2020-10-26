@@ -16,8 +16,6 @@ namespace cnl {
     template<class Operator, int Exponent, int Radix, typename Rhs>
     struct pre_operator<Operator, power<Exponent, Radix>, Rhs> {
         constexpr auto operator()(Rhs& rhs) const
-        -> decltype(typename _impl::pre_to_assign<Operator>::type{}(
-                rhs, _impl::power_value<Rhs, -Exponent, Radix>()))
         {
             return typename _impl::pre_to_assign<Operator>::type{}(
                     rhs, _impl::power_value<Rhs, -Exponent, Radix>());

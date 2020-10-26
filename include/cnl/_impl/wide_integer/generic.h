@@ -27,7 +27,6 @@ namespace cnl {
         CNL_NODISCARD constexpr auto operator()(
                 wide_integer<LhsDigits, LhsNarrowest> const& lhs,
                 wide_integer<RhsDigits, RhsNarrowest> const& rhs) const
-        -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
         {
             return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
         }

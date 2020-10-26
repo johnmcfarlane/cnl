@@ -19,7 +19,6 @@ namespace cnl {
 
     template<typename Value>
     constexpr auto make_fixed_point(Value const& value)
-    -> decltype(make_scaled_integer(value))
     {
         return make_scaled_integer(value);
     }

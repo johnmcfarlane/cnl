@@ -61,10 +61,7 @@ namespace cnl {
                         || !std::is_same<FromNarrowest, OtherNarrowest>::value, std::nullptr_t> = nullptr>
         CNL_NODISCARD constexpr auto cast_to_common_type(
                 elastic_integer<FromDigits, FromNarrowest> const& from,
-                elastic_integer<OtherDigits, OtherNarrowest> const&)
-        -> decltype(static_cast<typename common_elastic_type<
-                elastic_integer<FromDigits, FromNarrowest>,
-                elastic_integer<OtherDigits, OtherNarrowest>>::type>(from)) {
+                elastic_integer<OtherDigits, OtherNarrowest> const&) {
             return static_cast<typename common_elastic_type<
                     elastic_integer<FromDigits, FromNarrowest>,
                     elastic_integer<OtherDigits, OtherNarrowest>>::type>(from);
@@ -77,7 +74,6 @@ namespace cnl {
         CNL_NODISCARD constexpr auto operator()(
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
                 elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
-        -> decltype(Operator()(cast_to_common_type(lhs, rhs), cast_to_common_type(rhs, lhs)))
         {
             return Operator()(cast_to_common_type(lhs, rhs), cast_to_common_type(rhs, lhs));
         }
@@ -88,7 +84,6 @@ namespace cnl {
         CNL_NODISCARD constexpr auto operator()(
                 elastic_integer<Digits, Narrowest> const& lhs,
                 elastic_integer<Digits, Narrowest> const& rhs) const
-        -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
         {
             return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
         }
@@ -105,7 +100,6 @@ namespace cnl {
         using lhs_type = elastic_integer<LhsDigits, LhsRep>;
 
         CNL_NODISCARD constexpr auto operator()(lhs_type const& lhs, Rhs const& rhs) const
-        -> decltype(_impl::from_rep<lhs_type>(Operator{}(_impl::to_rep(lhs), rhs)))
         {
             return _impl::from_rep<lhs_type>(Operator{}(_impl::to_rep(lhs), rhs));
         }
@@ -119,9 +113,6 @@ namespace cnl {
         CNL_NODISCARD constexpr auto operator()(
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
                 constant<RhsValue>) const
-        -> decltype(_impl::from_rep<elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
-                _impl::to_rep(static_cast<elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
-                        lhs)) << RhsValue))
         {
             return _impl::from_rep<elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
                     _impl::to_rep(static_cast<elastic_integer<LhsDigits+int{RhsValue}, LhsNarrowest>>(
@@ -139,9 +130,6 @@ namespace cnl {
         CNL_NODISCARD constexpr auto operator()(
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
                 constant<RhsValue>) const
-        -> decltype(_impl::from_rep<elastic_integer<LhsDigits-int{RhsValue}, LhsNarrowest>>(
-                _impl::to_rep(static_cast<elastic_integer<LhsDigits, LhsNarrowest>>(
-                        lhs)) >> RhsValue))
         {
             return _impl::from_rep<elastic_integer<LhsDigits-int{RhsValue}, LhsNarrowest>>(
                     _impl::to_rep(static_cast<elastic_integer<LhsDigits, LhsNarrowest>>(

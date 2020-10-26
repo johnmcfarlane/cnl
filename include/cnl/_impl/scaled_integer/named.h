@@ -34,7 +34,6 @@ namespace cnl {
     /// in favor of class template deduction.
     template<typename Value>
     CNL_NODISCARD constexpr auto make_scaled_integer(Value const& value)
-    -> decltype(_impl::from_value<scaled_integer<>, Value>(value))
     {
         return _impl::from_value<scaled_integer<>, Value>(value);
     }
@@ -102,7 +101,6 @@ namespace cnl {
             class Dividend,
             class Divisor>
     CNL_NODISCARD constexpr auto quotient(Dividend const& dividend, Divisor const& divisor)
-    -> decltype(make_scaled_integer(make_fraction(dividend, divisor)))
     {
         return make_scaled_integer(make_fraction(dividend, divisor));
     }

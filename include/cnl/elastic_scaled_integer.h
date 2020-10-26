@@ -135,8 +135,6 @@ namespace cnl {
 
         template<char... Chars>
         CNL_NODISCARD constexpr auto operator "" _elastic()
-        -> decltype(make_elastic_scaled_integer<int>(
-                constant<_cnlint_impl::parse<sizeof...(Chars)+1>({Chars..., '\0'})>{}))
         {
             return make_elastic_scaled_integer<int>(
                     constant<_cnlint_impl::parse<sizeof...(Chars)+1>({Chars..., '\0'})>{});

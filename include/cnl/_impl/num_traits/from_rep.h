@@ -38,7 +38,6 @@ namespace cnl {
     namespace _impl {
         template<class Number, class Rep>
         CNL_NODISCARD constexpr auto from_rep(Rep const& rep)
-        -> decltype(cnl::from_rep<Number, Rep>{}(rep))
         {
             return cnl::from_rep<Number, Rep>{}(rep);
         }

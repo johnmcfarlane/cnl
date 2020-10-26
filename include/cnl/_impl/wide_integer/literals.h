@@ -48,7 +48,6 @@ namespace cnl {
         template<char ... Chars>
         struct wide_integer_parser {
             CNL_NODISCARD constexpr auto operator()() const
-            -> decltype(decimal_wide_integer_parse<sizeof...(Chars)+1>({Chars..., '\0'}))
             {
                 return decimal_wide_integer_parse<sizeof...(Chars)+1>({Chars..., '\0'});
             }
@@ -72,7 +71,6 @@ namespace cnl {
         template<char ... Chars>
         struct wide_integer_parser<'0', Chars...> {
             CNL_NODISCARD constexpr auto operator()() const
-            -> decltype(octal_wide_integer_parse<sizeof...(Chars)+1>({Chars..., '\0'}))
             {
                 return octal_wide_integer_parse<sizeof...(Chars)+1>({Chars..., '\0'});
             }
@@ -96,7 +94,6 @@ namespace cnl {
         template<char ... Chars>
         struct wide_integer_parser<'0', 'B', Chars...> {
             CNL_NODISCARD constexpr auto operator()() const
-            -> decltype(binary_wide_integer_parse<sizeof...(Chars)+1>({Chars..., '\0'}))
             {
                 return binary_wide_integer_parse<sizeof...(Chars)+1>({Chars..., '\0'});
             }
@@ -105,7 +102,6 @@ namespace cnl {
         template<char ... Chars>
         struct wide_integer_parser<'0', 'b', Chars...> {
             CNL_NODISCARD constexpr auto operator()() const
-            -> decltype(binary_wide_integer_parse<sizeof...(Chars)+1>({Chars..., '\0'}))
             {
                 return binary_wide_integer_parse<sizeof...(Chars)+1>({Chars..., '\0'});
             }
@@ -130,7 +126,6 @@ namespace cnl {
         template<char ... Chars>
         struct wide_integer_parser<'0', 'X', Chars...> {
             CNL_NODISCARD constexpr auto operator()() const
-            -> decltype(hexadecimal_wide_integer_parse<sizeof...(Chars)+1>({Chars..., '\0'}))
             {
                 return hexadecimal_wide_integer_parse<sizeof...(Chars)+1>({Chars..., '\0'});
             }
@@ -139,7 +134,6 @@ namespace cnl {
         template<char ... Chars>
         struct wide_integer_parser<'0', 'x', Chars...> {
             CNL_NODISCARD constexpr auto operator()() const
-            -> decltype(hexadecimal_wide_integer_parse<sizeof...(Chars)+1>({Chars..., '\0'}))
             {
                 return hexadecimal_wide_integer_parse<sizeof...(Chars)+1>({Chars..., '\0'});
             }
@@ -150,7 +144,6 @@ namespace cnl {
         // cnl::_impl::operator "" _wide()
         template<char ... Chars>
         CNL_NODISCARD constexpr auto operator "" _wide()
-        -> decltype(_impl::wide_integer_parser<Chars...>{}())
         {
             return _impl::wide_integer_parser<Chars...>{}();
         }

@@ -33,7 +33,6 @@ namespace cnl {
                     Rhs>;
 
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(std::declval<common_type>()*std::declval<common_type>())
             {
                 return static_cast<common_type>(lhs)*static_cast<common_type>(rhs);
             }

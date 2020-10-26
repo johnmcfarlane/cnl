@@ -16,7 +16,6 @@ namespace cnl {
     namespace _impl {
         template<typename N, typename D>
         CNL_NODISCARD constexpr auto abs(fraction<N, D> const& f)
-        -> decltype(make_fraction(abs(f.numerator), abs(f.denominator)))
         {
             return make_fraction(abs(f.numerator), abs(f.denominator));
         }
