@@ -9,7 +9,7 @@
 
 #include <cnl/_impl/config.h>
 
-#if (__cplusplus >= 201703L) && defined(CNL_EXCEPTIONS_ENABLED)
+#if defined(CNL_EXCEPTIONS_ENABLED)
 
 #include <cstdint>
 #include <stdexcept>

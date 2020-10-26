@@ -12,15 +12,12 @@
 #include <iostream>
 #include <unordered_map>
 
-#if (__cplusplus >= 201703L)
 #include <filesystem>
 namespace filesystem = std::filesystem;
-#endif
 
 using cnl::power;
 using cnl::scaled_integer;
 
-#if (__cplusplus >= 201703L)
 template<>
 struct std::hash<filesystem::path> {
     size_t operator()(filesystem::path const& p) const
@@ -37,7 +34,6 @@ namespace a {
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,cppcoreguidelines-avoid-non-const-global-variables)
     unordered_map<filesystem::path, unique_ptr<byte[]>> cache;
 }
-#endif
 
 namespace b {
     void f()
@@ -89,7 +85,6 @@ namespace f {
     static_assert(unsigned{1} < signed{-1}, "evaluates to true");
 }
 
-#if (__cplusplus >= 201703L)
 namespace g {
     constexpr auto n = scaled_integer<int, power<-8>>{1.5};
     constexpr auto nn = n * n;
@@ -114,7 +109,6 @@ namespace i {
     static_assert(std::is_same<decltype(q), const scaled_integer<cnl::int64, power<-31>>>::value);
     static_assert(q == 0.66666666651144623756408691);
 }
-#endif
 
 namespace j {
     constexpr auto n = scaled_integer<uint8_t, power<-8>>{0.99609375};
@@ -170,7 +164,6 @@ namespace m {
 #endif
 }
 
-#if (__cplusplus >= 201703L)
 #include <cnl/overflow_integer.h>
 using cnl::overflow_integer;
 namespace n {
@@ -182,7 +175,6 @@ namespace n {
     //    constexpr overflow<uint8_t> k = i + 1;
     //    static_assert(cnl::_impl::identical(overflow<int>{256}, k));
 }
-#endif
 
 #include <cnl/elastic_scaled_integer.h>
 
