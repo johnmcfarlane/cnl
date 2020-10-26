@@ -9,8 +9,6 @@
 #include <cnl/fraction.h>
 #include <cnl/scaled_integer.h>
 
-#if (__cplusplus >= 201703L)
-
 namespace {
     using namespace cnl;
     using _impl::identical;
@@ -34,5 +32,3 @@ namespace {
     constexpr auto d2 = scaled_integer<int, power<-16>>{fraction{elastic_integer<1>{1}, elastic_integer<2>{3}}};
     static_assert(identical(scaled_integer<int, power<-16>>{0.3333282470703125}, d2));
 }
-
-#endif

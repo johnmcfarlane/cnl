@@ -12,14 +12,11 @@
 #include <iostream>
 #include <unordered_map>
 
-#if (__cplusplus >= 201703L)
 #include <filesystem>
 namespace filesystem = std::filesystem;
-#endif
 
 using cnl::fixed_point;
 
-#if (__cplusplus >= 201703L)
 template<>
 struct std::hash<filesystem::path> {
     size_t operator()(filesystem::path const& p) const
@@ -35,7 +32,6 @@ namespace a {
 
     unordered_map<filesystem::path, unique_ptr<byte[]>> cache;  // NOLINT(cppcoreguidelines-avoid-c-arrays)
 }
-#endif
 
 namespace b {
     void f() {
@@ -85,7 +81,6 @@ namespace f {
     static_assert(unsigned{1}<signed{-1}, "evaluates to true");
 }
 
-#if (__cplusplus >= 201703L)
 namespace g {
     auto n = fixed_point<int, -8>{1.5};
     auto nn = n * n;
@@ -110,7 +105,6 @@ namespace i {
     static_assert(std::is_same<decltype(q), const fixed_point<cnl::int64, -31>>::value);
     static_assert(q == 0.66666666651144623756408691);
 }
-#endif
 
 namespace j {
     constexpr auto n = fixed_point<uint8_t, -8>{0.99609375};
@@ -151,7 +145,6 @@ namespace m {
 #endif
 }
 
-#if (__cplusplus >= 201703L)
 #include <cnl/overflow_integer.h>
 using cnl::overflow_integer;
 namespace n {
@@ -163,7 +156,6 @@ namespace n {
 //    constexpr overflow<uint8_t> k = i + 1;
 //    static_assert(cnl::_impl::identical(overflow<int>{256}, k));
 }
-#endif
 
 #if defined(CNL_P1021) && !defined(_MSC_VER)
 #include <cnl/elastic_fixed_point.h>

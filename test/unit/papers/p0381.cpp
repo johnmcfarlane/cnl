@@ -38,7 +38,6 @@ namespace sample1 {
     }
 }
 
-#if (__cplusplus>=201402L)
 using std::declval;
 
 namespace sample2 {
@@ -133,7 +132,6 @@ namespace sample5 {
     }
 }
 #endif  // defined(CNL_BOOST_ENABLED)
-#endif  // C++14
 
 namespace determining {
     using cnl::digits;

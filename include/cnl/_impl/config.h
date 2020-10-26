@@ -179,7 +179,7 @@
 #error CNL_NODISCARD already defined
 #endif
 
-#if (__cplusplus >= 201703L) && !defined(_MSC_VER)
+#if !defined(_MSC_VER)
 #define CNL_NODISCARD [[nodiscard]]  // NOLINT(cppcoreguidelines-macro-usage)
 #endif
 
