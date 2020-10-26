@@ -35,9 +35,7 @@ namespace cnl {
 
         template<typename S, int Exponent, bool OddExponent>
         struct power_value_fn<S, Exponent, 2, true, OddExponent, false> {
-            CNL_NODISCARD constexpr auto operator()() const -> decltype(
-                    decltype(std::declval<S>() >> std::declval<constant<digits<S>::value - 1>>()){1}
-                    << constant<Exponent>{})
+            CNL_NODISCARD constexpr auto operator()() const
             {
                 using result_numeric_limits = numeric_limits<decltype(
                         decltype(
@@ -61,7 +59,6 @@ namespace cnl {
         template<typename S, int Exponent, int Radix, bool OddExponent>
         struct power_value_fn<S, Exponent, Radix, true, OddExponent, false> {
             CNL_NODISCARD constexpr auto operator()() const
-                    -> decltype(power_value_fn<S, (Exponent - 1), Radix>{}() * Radix)
             {
                 return power_value_fn<S, (Exponent - 1), Radix>{}() * Radix;
             }
@@ -103,7 +100,6 @@ namespace cnl {
 
         template<typename S, int Exponent, int Radix>
         CNL_NODISCARD constexpr auto power_value()
-                -> decltype(power_value_fn<S, Exponent, Radix>{}())
         {
             return power_value_fn<S, Exponent, Radix>{}();
         }

@@ -68,10 +68,8 @@ namespace cnl {
 #define CNL_DEFINE_UNARY_OPERATOR(OP, NAME) \
     template<class Operand> \
     CNL_NODISCARD constexpr auto operator OP(Operand const& operand) \
-            ->decltype(cnl::unary_operator<enable_unary_t<Operand, NAME>, native_tag, Operand>()( \
-                    operand)) \
     { \
-        return cnl::unary_operator<NAME, native_tag, Operand>()(operand); \
+        return cnl::unary_operator<enable_unary_t<Operand, NAME>, native_tag, Operand>()(operand); \
     }
 
         CNL_DEFINE_UNARY_OPERATOR(+, plus_op)
@@ -158,8 +156,7 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_PRE_OPERATOR(OP, NAME) \
     template<class RhsOperand> \
-    constexpr auto operator OP(RhsOperand& rhs) \
-            ->decltype(cnl::pre_operator<NAME, native_tag, RhsOperand>()(rhs)) \
+    constexpr decltype(auto) operator OP(RhsOperand& rhs) \
     { \
         return cnl::pre_operator<NAME, native_tag, RhsOperand>()(rhs); \
     }

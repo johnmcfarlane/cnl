@@ -84,7 +84,6 @@ namespace cnl {
     struct shift_operator<
             Operator, wide_tag<LhsDigits, LhsNarrowest>, _impl::native_tag, Lhs, Rhs> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                -> decltype(Operator{}(lhs, rhs))
         {
             return Operator{}(lhs, rhs);
         }

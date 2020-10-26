@@ -16,10 +16,9 @@ namespace cnl {
     namespace _impl {
         template<class Number, typename Value>
         struct from_value_recursive {
-            CNL_NODISCARD constexpr auto operator()(Value const& value) const -> decltype(
-                    cnl::_impl::from_rep<Number>(cnl::_impl::from_value<rep_t<Number>>(value)))
+            CNL_NODISCARD constexpr auto operator()(Value const& value) const
             {
-                return value;
+                return cnl::_impl::from_rep<Number>(cnl::_impl::from_value<rep_t<Number>>(value));
             }
         };
     }
