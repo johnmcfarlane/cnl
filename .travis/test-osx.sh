@@ -11,6 +11,7 @@ TOOLCHAIN=${TOOLCHAIN:-gcc}
 # Advice from docs.travis-ci.com/user/caching/#ccache-cache
 PATH="/usr/local/opt/ccache/libexec:$PATH"
 
+export HOMEBREW_NO_AUTO_UPDATE=1 
 export NUM_CPUS=4
 PROJECT_DIR="${TRAVIS_BUILD_DIR}"
 
