@@ -40,7 +40,7 @@ TEST(_426, minus_150)  // NOLINT
 
 TEST(_426, plus_150)  // NOLINT
 {
-    temp_wide_t tw = 150;
-    temp_t t = tw;
+    temp_wide_t tw = 150;  // NOLINT(cppcoreguidelines-init-variables)
+    temp_t t = tw;  // NOLINT(cppcoreguidelines-init-variables)
     ASSERT_EQ(cnl::numeric_limits<temp_t>::max(), t);
 }

@@ -105,6 +105,7 @@ namespace elastic_integer_example {
 }
 
 namespace acme_ndebug {
+// NOLINTNEXTLINE(bugprone-reserved-identifier,cert-dcl37-c,cert-dcl51-cpp,readability-identifier-naming)
 #define _NDEBUG
 
     namespace acme {
@@ -222,6 +223,7 @@ namespace composite {
         return overflow_integer<decltype(product)>{product};
     }
 
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-non-const-global-variables)
     auto a = safe_elastic_integer<4>{14}*safe_elastic_integer<3>{6};
     static_assert(is_same<decltype(a), safe_elastic_integer<7>>::value, "error in CppNow 2017 slide");
 }

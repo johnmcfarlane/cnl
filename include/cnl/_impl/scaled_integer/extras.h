@@ -269,12 +269,12 @@ namespace cnl {
             return _impl::from_rep<_value_type>(Rep{0});
         }
 
-        CNL_NODISCARD static constexpr _value_type quiet_NaN() noexcept
+        CNL_NODISCARD static constexpr _value_type quiet_NaN() noexcept // NOLINT(readability-identifier-naming)
         {
             return _impl::from_rep<_value_type>(Rep{0});
         }
 
-        CNL_NODISCARD static constexpr _value_type signaling_NaN() noexcept
+        CNL_NODISCARD static constexpr _value_type signaling_NaN() noexcept // NOLINT(readability-identifier-naming)
         {
             return _impl::from_rep<_value_type>(Rep{0});
         }

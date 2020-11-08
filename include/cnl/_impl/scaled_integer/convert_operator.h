@@ -82,7 +82,7 @@ namespace cnl {
             Input,
             _impl::enable_if_t<std::is_floating_point<Input>::value>> {
     private:
-        using _result = scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>;
+        using result = scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>;
 
         CNL_NODISCARD static constexpr Input half()
         {
@@ -90,10 +90,10 @@ namespace cnl {
         }
 
     public:
-        CNL_NODISCARD constexpr _result operator()(Input const& from) const
+        CNL_NODISCARD constexpr result operator()(Input const& from) const
         {
             // TODO: unsigned specialization
-            return static_cast<_result>(from+((from >= 0) ? half() : -half()));
+            return static_cast<result>(from+((from >= 0) ? half() : -half()));
         }
     };
 

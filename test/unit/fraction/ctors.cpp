@@ -41,7 +41,7 @@ namespace {
     }
 
     template<typename NumDenom, typename FloatingPoint>
-    void TestFloatingCtor(FloatingPoint initializer, NumDenom numerator, NumDenom denominator)
+    void test_floating_ctor(FloatingPoint initializer, NumDenom numerator, NumDenom denominator)
     {
         auto actual = cnl::fraction<NumDenom>(initializer);
         static_assert(assert_same<NumDenom, decltype(actual.numerator)>::value, "");
@@ -52,24 +52,24 @@ namespace {
 
     TEST(fraction, float_ctor_int64)  // NOLINT
     {
-        TestFloatingCtor<cnl::int64>(.1, 1, 10);
-        TestFloatingCtor<cnl::int64>(0.999, 999, 1000);
-        TestFloatingCtor<cnl::int64>(1., 1, 1);
-        TestFloatingCtor<cnl::int64>(1.001, 1001, 1000);
-        TestFloatingCtor<cnl::int64>(1.001001001001001001001001001001001001001, 1000, 999);
-        TestFloatingCtor<cnl::int64>(10., 10, 1);
-        TestFloatingCtor<cnl::int64>(10.25, 41, 4);
-        TestFloatingCtor<cnl::int64>(1e-9, 1, 1000000000);
-        TestFloatingCtor<cnl::int64>(1e-15, 1, 1000000000000000);
-        TestFloatingCtor<cnl::int64>(1e9, 1000000000, 1);
-        TestFloatingCtor<cnl::int64>(1e15, 1000000000000000, 1);
-        TestFloatingCtor<cnl::int64>(1.0/3.0, 1, 3);
-        TestFloatingCtor<cnl::int64>(1.0/237.0, 1, 237);
-        TestFloatingCtor<cnl::int64>(237.001, 237001, 1000);
-        TestFloatingCtor<cnl::int64>(237.0000000001, 2370294537913, 10001242776);
-        TestFloatingCtor<cnl::int64>(237.0000000000000000000000000000000000001L, 237, 1);
-        TestFloatingCtor<cnl::int64>(236.9999999999999999999999999999999999999L, 237, 1);
-        TestFloatingCtor<cnl::int64>(double{23/7}, 3, 1);  // NOLINT(bugprone-integer-division)
+        test_floating_ctor<cnl::int64>(.1, 1, 10);
+        test_floating_ctor<cnl::int64>(0.999, 999, 1000);
+        test_floating_ctor<cnl::int64>(1., 1, 1);
+        test_floating_ctor<cnl::int64>(1.001, 1001, 1000);
+        test_floating_ctor<cnl::int64>(1.001001001001001001001001001001001001001, 1000, 999);
+        test_floating_ctor<cnl::int64>(10., 10, 1);
+        test_floating_ctor<cnl::int64>(10.25, 41, 4);
+        test_floating_ctor<cnl::int64>(1e-9, 1, 1000000000);
+        test_floating_ctor<cnl::int64>(1e-15, 1, 1000000000000000);
+        test_floating_ctor<cnl::int64>(1e9, 1000000000, 1);
+        test_floating_ctor<cnl::int64>(1e15, 1000000000000000, 1);
+        test_floating_ctor<cnl::int64>(1.0/3.0, 1, 3);
+        test_floating_ctor<cnl::int64>(1.0/237.0, 1, 237);
+        test_floating_ctor<cnl::int64>(237.001, 237001, 1000);
+        test_floating_ctor<cnl::int64>(237.0000000001, 2370294537913, 10001242776);
+        test_floating_ctor<cnl::int64>(237.0000000000000000000000000000000000001L, 237, 1);
+        test_floating_ctor<cnl::int64>(236.9999999999999999999999999999999999999L, 237, 1);
+        test_floating_ctor<cnl::int64>(double{23/7}, 3, 1);  // NOLINT(bugprone-integer-division)
     }
 
 #if defined(CNL_DEBUG)
@@ -86,20 +86,20 @@ namespace {
 
     TEST(fraction, float_ctor_int32)  // NOLINT
     {
-        TestFloatingCtor<cnl::int32>(.1, 1, 10);
-        TestFloatingCtor<cnl::int32>(0.999, 999, 1000);
-        TestFloatingCtor<cnl::int32>(1., 1, 1);
-        TestFloatingCtor<cnl::int32>(1.001, 1001, 1000);
-        TestFloatingCtor<cnl::int32>(1.001001001001001001001001001001001001001, 1000, 999);
-        TestFloatingCtor<cnl::int32>(10., 10, 1);
-        TestFloatingCtor<cnl::int32>(10.25, 41, 4);
-        TestFloatingCtor<cnl::int32>(1e-9, 1, 1000000000);
-        TestFloatingCtor<cnl::int32>(1e9, 1000000000, 1);
-        TestFloatingCtor<cnl::int32>(1.0/3.0, 1, 3);
-        TestFloatingCtor<cnl::int32>(1.0/237.0, 1, 237);
-        TestFloatingCtor<cnl::int32>(237.001, 237001, 1000);
-        TestFloatingCtor<cnl::int32>(237.000001, 237000001, 1000000);
-        TestFloatingCtor<cnl::int32>(double{23/7}, 3, 1);  // NOLINT(bugprone-integer-division)
+        test_floating_ctor<cnl::int32>(.1, 1, 10);
+        test_floating_ctor<cnl::int32>(0.999, 999, 1000);
+        test_floating_ctor<cnl::int32>(1., 1, 1);
+        test_floating_ctor<cnl::int32>(1.001, 1001, 1000);
+        test_floating_ctor<cnl::int32>(1.001001001001001001001001001001001001001, 1000, 999);
+        test_floating_ctor<cnl::int32>(10., 10, 1);
+        test_floating_ctor<cnl::int32>(10.25, 41, 4);
+        test_floating_ctor<cnl::int32>(1e-9, 1, 1000000000);
+        test_floating_ctor<cnl::int32>(1e9, 1000000000, 1);
+        test_floating_ctor<cnl::int32>(1.0/3.0, 1, 3);
+        test_floating_ctor<cnl::int32>(1.0/237.0, 1, 237);
+        test_floating_ctor<cnl::int32>(237.001, 237001, 1000);
+        test_floating_ctor<cnl::int32>(237.000001, 237000001, 1000000);
+        test_floating_ctor<cnl::int32>(double{23/7}, 3, 1);  // NOLINT(bugprone-integer-division)
     }
 
 #if defined(CNL_DEBUG)
@@ -126,18 +126,18 @@ namespace {
 
     TEST(fraction, float_ctor_int16)  // NOLINT
     {
-        TestFloatingCtor<cnl::int16>(.1, 1, 10);
-        TestFloatingCtor<cnl::int16>(0.999, 999, 1000);
-        TestFloatingCtor<cnl::int16>(1., 1, 1);
-        TestFloatingCtor<cnl::int16>(1.001, 1001, 1000);
-        TestFloatingCtor<cnl::int16>(1.001001001001001001001001001001001001001, 1000, 999);
-        TestFloatingCtor<cnl::int16>(10., 10, 1);
-        TestFloatingCtor<cnl::int16>(10.25, 41, 4);
-        TestFloatingCtor<cnl::int16>(1.0/3.0, 1, 3);
-        TestFloatingCtor<cnl::int16>(1.0/237.0, 1, 237);
-        TestFloatingCtor<cnl::int16>(237.01, 23701, 100);
-        TestFloatingCtor<cnl::int16>(237.001, 32470, 137);
-        TestFloatingCtor<cnl::int16>(double{23/7}, 3, 1);  // NOLINT(bugprone-integer-division)
+        test_floating_ctor<cnl::int16>(.1, 1, 10);
+        test_floating_ctor<cnl::int16>(0.999, 999, 1000);
+        test_floating_ctor<cnl::int16>(1., 1, 1);
+        test_floating_ctor<cnl::int16>(1.001, 1001, 1000);
+        test_floating_ctor<cnl::int16>(1.001001001001001001001001001001001001001, 1000, 999);
+        test_floating_ctor<cnl::int16>(10., 10, 1);
+        test_floating_ctor<cnl::int16>(10.25, 41, 4);
+        test_floating_ctor<cnl::int16>(1.0/3.0, 1, 3);
+        test_floating_ctor<cnl::int16>(1.0/237.0, 1, 237);
+        test_floating_ctor<cnl::int16>(237.01, 23701, 100);
+        test_floating_ctor<cnl::int16>(237.001, 32470, 137);
+        test_floating_ctor<cnl::int16>(double{23/7}, 3, 1);  // NOLINT(bugprone-integer-division)
     }
 
 #if defined(CNL_DEBUG)

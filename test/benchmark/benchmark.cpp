@@ -209,24 +209,24 @@ using s31_32 = scaled_integer<int64_t, cnl::power<-32>>;
 ////////////////////////////////////////////////////////////////////////////////
 // benchmark invocations
 
-// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
+// NOLINTNEXTLINE(cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-non-const-global-variables)
 FIXED_POINT_BENCHMARK_COMPLETE(add)
 
-// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
+// NOLINTNEXTLINE(cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-non-const-global-variables)
 FIXED_POINT_BENCHMARK_COMPLETE(sub)
 
-// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
+// NOLINTNEXTLINE(cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-non-const-global-variables)
 FIXED_POINT_BENCHMARK_COMPLETE(mul)
 
-// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
+// NOLINTNEXTLINE(cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-non-const-global-variables)
 FIXED_POINT_BENCHMARK_COMPLETE(div)
 
-// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
+// NOLINTNEXTLINE(cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-non-const-global-variables)
 FIXED_POINT_BENCHMARK_REAL(bm_magnitude_squared)
 
-// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
+// NOLINTNEXTLINE(cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-non-const-global-variables)
 FIXED_POINT_BENCHMARK_REAL(bm_circle_intersect_generic)
 
 // tests involving unoptimized math function, cnl::sqrt
-// NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
+// NOLINTNEXTLINE(cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-non-const-global-variables)
 FIXED_POINT_BENCHMARK_REAL(bm_sqrt)

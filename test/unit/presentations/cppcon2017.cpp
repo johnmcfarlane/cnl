@@ -33,7 +33,7 @@ namespace a {
     using std::unordered_map;
     using byte = std::uint8_t;
 
-    unordered_map<filesystem::path, unique_ptr<byte[]>> cache;  // NOLINT(cppcoreguidelines-avoid-c-arrays)
+    unordered_map<filesystem::path, unique_ptr<byte[]>> cache;  // NOLINT(cppcoreguidelines-avoid-c-arrays,cppcoreguidelines-avoid-non-const-global-variables)
 }
 #endif
 
@@ -87,10 +87,10 @@ namespace f {
 
 #if (__cplusplus >= 201703L)
 namespace g {
-    auto n = fixed_point<int, -8>{1.5};
-    auto nn = n * n;
+    constexpr auto n = fixed_point<int, -8>{1.5};
+    constexpr auto nn = n * n;
 
-    static_assert(std::is_same<decltype(nn), fixed_point<int, -16>>::value);
+    static_assert(std::is_same<decltype(nn), fixed_point<int, -16> const>::value);
 }
 
 namespace h {
