@@ -10,9 +10,9 @@ jobs:
   posix-conan-test:
     strategy:
       matrix:
-        name: [clang-11, osx-gcc-10, gcc-10, clang-11-sanitize, clang-5, gcc-5, gcc-7, armv7]
+        name: [clang-11, osx-gcc-10, gcc-10, clang-11-sanitize, armv7]
         include:
-          # Clang-11
+          # Clang-11 (w. Clang-Tidy)
           - name: clang-11
             compiler: clang
             version: "11"
@@ -27,7 +27,6 @@ jobs:
             linux-container: johnmcfarlane/cnl_ci:clang-11-libcpp
             os-version: ubuntu-20.04
             sanitize: "False"
-            std: 17
             stdlib: libc++
             toolchain: clang-tidy-libc++.cmake
 
@@ -45,30 +44,28 @@ jobs:
             int128: "True"
             os-version: macos-10.15
             sanitize: "False"
-            std: 20
             stdlib: libstdc++11
             toolchain: gcc.cmake
 
-          # GCC-10
+          # GCC-10 (Contrary)
           - name: gcc-10
             compiler: gcc
             version: "10"
             os: linux
             arch: x86_64
-            build-type: Release
+            build-type: Debug
             cc: gcc-10
             cxx: g++-10
-            exceptions: "True"
-            generator: "Ninja"
-            int128: "True"
+            exceptions: "False"
+            generator: "Unix Makefiles"
+            int128: "False"
             linux-container: johnmcfarlane/cnl_ci:gcc-10
             os-version: ubuntu-20.04
             sanitize: "False"
-            std: 20
             stdlib: libstdc++11
             toolchain: gcc.cmake
 
-          # Sanitizers
+          # Clang-11 (w. ASan + UBSan)
           - name: clang-11-sanitize
             compiler: clang
             version: "11"
@@ -83,68 +80,10 @@ jobs:
             linux-container: johnmcfarlane/cnl_ci:clang-11-libcpp
             os-version: ubuntu-20.04
             sanitize: "True"
-            std: 17
             stdlib: libc++
             toolchain: clang-libc++.cmake
 
-          # Clang-5
-          - name: clang-5
-            compiler: clang
-            version: "5.0"
-            os: linux
-            arch: x86_64
-            build-type: Release
-            cc: clang
-            cxx: clang++
-            exceptions: "True"
-            generator: "Ninja"
-            int128: "True"
-            linux-container: johnmcfarlane/cnl_ci:clang-5-libstdcpp
-            os-version: ubuntu-20.04
-            sanitize: "False"
-            std: 11
-            stdlib: libstdc++11
-            toolchain: clang.cmake
-
-          # GCC-5
-          - name: gcc-5
-            compiler: gcc
-            version: "5"
-            os: linux
-            arch: x86_64
-            build-type: Release
-            cc: gcc-5
-            cxx: g++-5
-            exceptions: "True"
-            generator: "Ninja"
-            int128: "True"
-            linux-container: johnmcfarlane/cnl_ci:gcc-5
-            os-version: ubuntu-20.04
-            sanitize: "False"
-            std: 11
-            stdlib: libstdc++11
-            toolchain: gcc.cmake
-
-          # Contrary
-          - name: gcc-7
-            cxx: g++-7
-            cc: gcc-7
-            version: "7"
-            exceptions: "False"
-            int128: "False"
-            os: linux
-            arch: x86_64
-            build-type: Debug
-            compiler: gcc
-            generator: "Unix Makefiles"
-            linux-container: johnmcfarlane/cnl_ci:gcc-7
-            os-version: ubuntu-18.04
-            sanitize: "False"
-            std: 14
-            stdlib: libstdc++11
-            toolchain: gcc.cmake
-
-          # ARMv7
+          # GCC-10 (for ARMv7)
           - name: armv7
             arch: armv7
             compiler: gcc
@@ -159,7 +98,6 @@ jobs:
             linux-container: johnmcfarlane/cnl_ci:gcc-10
             os-version: ubuntu-20.04
             sanitize: "False"
-            std: 20
             stdlib: libstdc++11
             toolchain: gcc-armv7.cmake
 
@@ -186,7 +124,7 @@ jobs:
         conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl && \
         conan profile new default --detect && \
         conan profile update settings.compiler=${{matrix.compiler}} default && \
-        conan profile update settings.compiler.cppstd=${{matrix.std}} default && \
+        conan profile update settings.compiler.cppstd=20 default && \
         conan profile update settings.compiler.libcxx=${{matrix.stdlib}} default && \
         conan profile update settings.compiler.version=${{matrix.version}} default && \
         conan profile update settings.arch=${{matrix.arch}} default
@@ -241,6 +179,7 @@ jobs:
         conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl;
         conan profile new default;
         conan profile update settings.compiler="Visual Studio" default;
+        conan profile update settings.compiler.cppstd=20 default;
         conan profile update settings.os=Windows default;
         conan profile update settings.arch=${{matrix.arch}} default;
         conan profile update settings.compiler.version=16 default
