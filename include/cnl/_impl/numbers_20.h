@@ -21,34 +21,29 @@
 
 namespace cnl {
     namespace _impl {
-#if __has_include(<concepts>)
-        using std::floating_point;
-#else
         template<class T> concept floating_point = std::is_floating_point_v<T>;
-#endif
+
+        template<typename> inline constexpr bool always_false = false;
+
+        template<typename T> inline constexpr T invalid_template() {
+            static_assert(always_false<T>, "This template needs to be specialized."); return T();
+        }
     }
 
     namespace numbers {
-
-        template<typename> inline constexpr bool __always_false = false;
-
-        template<typename T> inline constexpr T __invalidTemplate() {
-            static_assert(__always_false<T>, "This template needs to be specialized."); return T();
-        }
-
-        template <typename T> inline constexpr T e_v          = __invalidTemplate<T>();
-        template <typename T> inline constexpr T log2e_v      = __invalidTemplate<T>();
-        template <typename T> inline constexpr T log10e_v     = __invalidTemplate<T>();
-        template <typename T> inline constexpr T pi_v         = __invalidTemplate<T>();
-        template <typename T> inline constexpr T inv_pi_v     = __invalidTemplate<T>();
-        template <typename T> inline constexpr T inv_sqrtpi_v = __invalidTemplate<T>();
-        template <typename T> inline constexpr T ln2_v        = __invalidTemplate<T>();
-        template <typename T> inline constexpr T ln10_v       = __invalidTemplate<T>();
-        template <typename T> inline constexpr T sqrt2_v      = __invalidTemplate<T>();
-        template <typename T> inline constexpr T sqrt3_v      = __invalidTemplate<T>();
-        template <typename T> inline constexpr T inv_sqrt3_v  = __invalidTemplate<T>();
-        template <typename T> inline constexpr T egamma_v     = __invalidTemplate<T>();
-        template <typename T> inline constexpr T phi_v        = __invalidTemplate<T>();
+        template <typename T> inline constexpr T e_v          = _impl::invalid_template<T>();
+        template <typename T> inline constexpr T log2e_v      = _impl::invalid_template<T>();
+        template <typename T> inline constexpr T log10e_v     = _impl::invalid_template<T>();
+        template <typename T> inline constexpr T pi_v         = _impl::invalid_template<T>();
+        template <typename T> inline constexpr T inv_pi_v     = _impl::invalid_template<T>();
+        template <typename T> inline constexpr T inv_sqrtpi_v = _impl::invalid_template<T>();
+        template <typename T> inline constexpr T ln2_v        = _impl::invalid_template<T>();
+        template <typename T> inline constexpr T ln10_v       = _impl::invalid_template<T>();
+        template <typename T> inline constexpr T sqrt2_v      = _impl::invalid_template<T>();
+        template <typename T> inline constexpr T sqrt3_v      = _impl::invalid_template<T>();
+        template <typename T> inline constexpr T inv_sqrt3_v  = _impl::invalid_template<T>();
+        template <typename T> inline constexpr T egamma_v     = _impl::invalid_template<T>();
+        template <typename T> inline constexpr T phi_v        = _impl::invalid_template<T>();
 
         template <_impl::floating_point T> inline constexpr T e_v<T>          = T(2.718281828459045235360287471352662498L);
         template <_impl::floating_point T> inline constexpr T log2e_v<T>      = T(1.442695040888963407359924681001892137L);

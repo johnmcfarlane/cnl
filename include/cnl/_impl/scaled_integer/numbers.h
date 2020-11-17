@@ -74,7 +74,7 @@ namespace cnl {
         // Given two alternative ways to generate a constant value:
         // tries to choose the best and returns the result.
         template<typename Float, typename Rep, int Exponent>
-        CNL_NODISCARD constexpr auto constant_with_fallback(Float constant, scaled_integer<Rep, power<Exponent>>(*procedure)()) {
+        CNL_NODISCARD constexpr auto constant_with_fallback(Float constant, scaled_integer<Rep, power<Exponent>>(*procedure)()) {  // NOLINT(misc-unused-parameters)
             using fp = scaled_integer<Rep, power<Exponent>>;
 
             auto const required_integer_digits = used_digits(static_cast<int>(constant));

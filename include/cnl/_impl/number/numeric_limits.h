@@ -49,12 +49,12 @@ namespace cnl {
             return static_cast<_value_type>(_rep_numeric_limits::infinity());
         }
 
-        CNL_NODISCARD static constexpr _value_type quiet_NaN() noexcept
+        CNL_NODISCARD static constexpr _value_type quiet_NaN() noexcept // NOLINT(readability-identifier-naming)
         {
             return static_cast<_value_type>(_rep_numeric_limits::quiet_NaN());
         }
 
-        CNL_NODISCARD static constexpr _value_type signaling_NaN() noexcept
+        CNL_NODISCARD static constexpr _value_type signaling_NaN() noexcept // NOLINT(readability-identifier-naming)
         {
             return static_cast<_value_type>(_rep_numeric_limits::signaling_NaN());
         }

@@ -25,7 +25,7 @@ namespace cnl {
             Narrowest,
             _impl::enable_if_t<(Digits <= _impl::max_digits<Narrowest>::value)>>
         : _impl::homogeneous_operator_tag_base {
-        using _rep = set_digits_t<
+        using rep = set_digits_t<
                 Narrowest,
                 _impl::max(cnl::digits<Narrowest>::value, Digits)>;
     };
@@ -37,7 +37,7 @@ namespace cnl {
             Narrowest,
             _impl::enable_if_t<(_impl::max_digits<Narrowest>::value<Digits)>>
         : _impl::homogeneous_operator_tag_base {
-        using _rep = _impl::instantiate_duplex_integer_t<Digits, Narrowest>;
+        using rep = _impl::instantiate_duplex_integer_t<Digits, Narrowest>;
     };
 }
 

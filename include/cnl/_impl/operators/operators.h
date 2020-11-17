@@ -153,33 +153,33 @@ namespace cnl {
 
         struct less_than_op {
             template<class Lhs, class Rhs>
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs<rhs)
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs<rhs)  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             {
-                return lhs<rhs;
+                return lhs<rhs;  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             }
         };
 
         struct greater_than_op {
             template<class Lhs, class Rhs>
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs>rhs)
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs>rhs)  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             {
-                return lhs>rhs;
+                return lhs>rhs;  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             }
         };
 
         struct less_than_or_equal_op {
             template<class Lhs, class Rhs>
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs<=rhs)
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs<=rhs)  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             {
-                return lhs<=rhs;
+                return lhs<=rhs;  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             }
         };
 
         struct greater_than_or_equal_op {
             template<class Lhs, class Rhs>
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs>=rhs)
+            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> decltype(lhs>=rhs)  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             {
-                return lhs>=rhs;
+                return lhs>=rhs;  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             }
         };
 

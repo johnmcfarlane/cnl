@@ -24,6 +24,7 @@ namespace cnl {
     namespace _impl {
         template<typename Rep, int Exponent>
         struct max_to_chars_chars<scaled_integer<Rep, power<Exponent>>> {
+        private:
             using _scalar = cnl::scaled_integer<Rep, power<Exponent>>;
             static constexpr auto _fractional_digits = cnl::_impl::fractional_digits<_scalar>::value;
 
@@ -31,6 +32,7 @@ namespace cnl {
             static constexpr auto _integer_chars = ((cnl::_impl::integer_digits<_scalar>::value + 2) / 3);
             static constexpr auto _radix_chars = static_cast<int>(_fractional_digits > 0);
             static constexpr auto _fractional_chars = max(0, _fractional_digits);
+        public:
 
             static constexpr auto value = _sign_chars + _integer_chars + _radix_chars + _fractional_chars;
         };

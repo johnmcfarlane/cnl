@@ -22,33 +22,38 @@ namespace cnl {
 
 #if defined(CNL_INT128_ENABLED)
 
+    namespace _impl
+    {
+        // compose a 128-bit integer from two 64-bit integers
+        template<typename Integer128>
+        class join128 {
+        public:
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
+            constexpr join128(uint64 upper, uint64 lower)
+                    :_value(lower+(Integer128{upper} << 64)) { }
+
+            CNL_NODISCARD explicit constexpr operator Integer128() const
+            {
+                return _value;
+            }
+        private:
+            Integer128 _value;
+        };
+    }
+
     template<>
     struct numeric_limits<int128> : numeric_limits<long long> {
         static int const digits = CHAR_BIT*sizeof(int128)-1;
         static int const digits10 = 38;
 
-        class _s {
-        public:
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
-            constexpr _s(uint64 upper, uint64 lower)
-                    :_value(lower+(int128{upper} << 64)) { }
-
-            CNL_NODISCARD explicit constexpr operator int128() const
-            {
-                return _value;
-            }
-        private:
-            int128 _value;
-        };
-
         CNL_NODISCARD static constexpr int128 min()
         {
-            return int128(_s(0x8000000000000000, 0x0000000000000000));
+            return int128(_impl::join128<int128>(0x8000000000000000, 0x0000000000000000));
         }
 
         CNL_NODISCARD static constexpr int128 max()
         {
-            return int128(_s(0x7fffffffffffffff, 0xffffffffffffffff));
+            return int128(_impl::join128<int128>(0x7fffffffffffffff, 0xffffffffffffffff));
         }
 
         CNL_NODISCARD static constexpr int128 lowest()
@@ -62,20 +67,6 @@ namespace cnl {
         static int const digits = CHAR_BIT*sizeof(int128);
         static int const digits10 = 38;
 
-        class _s {
-        public:
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
-            constexpr _s(uint64 upper, uint64 lower)
-                    :_value(lower+(uint128{upper} << 64)) { }
-
-            CNL_NODISCARD explicit constexpr operator uint128() const
-            {
-                return _value;
-            }
-        private:
-            uint128 _value;
-        };
-
         CNL_NODISCARD static constexpr int128 min()
         {
             return 0;
@@ -83,10 +74,10 @@ namespace cnl {
 
         CNL_NODISCARD static constexpr uint128 max()
         {
-            return uint128(_s(0xffffffffffffffff, 0xffffffffffffffff));
+            return uint128(_impl::join128<uint128>(0xffffffffffffffff, 0xffffffffffffffff));
         }
 
-        CNL_NODISCARD static constexpr int128 lowest()
+        CNL_NODISCARD static constexpr uint128 lowest()
         {
             return min();
         }

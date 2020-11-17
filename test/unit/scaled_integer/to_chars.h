@@ -21,31 +21,6 @@ namespace {  // NOLINT(cert-dcl59-cpp)
 
     namespace test_max_to_chars_chars {
         static_assert(
-                identical(
-                        cnl::constant<0>{},
-                        cnl::constant<cnl::_impl::max_to_chars_chars<
-                                scaled_integer<uint8, cnl::power<2>>>::_sign_chars>{}),
-                "cnl::_impl::max_to_chars_chars");  // 1020
-        static_assert(
-                identical(
-                        cnl::constant<4>{},
-                        cnl::constant<cnl::_impl::max_to_chars_chars<
-                                scaled_integer<uint8, cnl::power<2>>>::_integer_chars>{}),
-                "cnl::_impl::max_to_chars_chars");  // 1020
-        static_assert(
-                identical(
-                        cnl::constant<0>{},
-                        cnl::constant<cnl::_impl::max_to_chars_chars<
-                                scaled_integer<uint8, cnl::power<2>>>::_radix_chars>{}),
-                "cnl::_impl::max_to_chars_chars");  // 1020
-        static_assert(
-                identical(
-                        cnl::constant<0>{},
-                        cnl::constant<cnl::_impl::max_to_chars_chars<
-                                scaled_integer<uint8, cnl::power<2>>>::_fractional_chars>{}),
-                "cnl::_impl::max_to_chars_chars");  // 1020
-
-        static_assert(
                 4==cnl::_impl::max_to_chars_chars<scaled_integer<uint8, cnl::power<2>>>::value,
                 "cnl::_impl::max_to_chars_chars");  // 1020
         static_assert(

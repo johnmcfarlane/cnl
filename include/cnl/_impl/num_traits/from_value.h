@@ -41,12 +41,12 @@ namespace cnl {
     template<class Number, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<Number, constant<Value>, _impl::enable_if_t<_impl::is_integral<Number>::value>> {
     private:
-        using _result_type = set_digits_t<
+        using result_type = set_digits_t<
                 add_signedness_t<Number>,
                 _impl::max(digits<int>::value, _impl::used_digits(Value))>;
     public:
-        CNL_NODISCARD constexpr _result_type operator()(constant<Value> const &value) const {
-            return _result_type(value);
+        CNL_NODISCARD constexpr result_type operator()(constant<Value> const &value) const {
+            return result_type(value);
         }
     };
 
