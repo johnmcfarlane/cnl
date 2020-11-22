@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Configure, build and run performance benchmarks
+# Configure, build and run tests with given `conan install` parameters
 
 set -euo pipefail
 
@@ -11,14 +11,12 @@ PROJECT_DIR=$(
 
 conan install \
   --build missing \
-  --options target=test-benchmark \
+  --env CONAN_CMAKE_GENERATOR=Ninja \
   "${PROJECT_DIR}" \
   "$@"
 
 conan build \
   --build \
   --configure \
+  --test \
   "${PROJECT_DIR}"
-
-test/benchmark/test-benchmark --benchmark_format=csv | tee result.csv
-"${PROJECT_DIR}"/test/benchmark/report.py result.csv

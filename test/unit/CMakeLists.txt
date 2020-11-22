@@ -157,8 +157,14 @@ ExternalProject_Add(
 # add_gtest_dependency
 
 function(add_gtest_dependency target)
-    target_link_libraries("${target}" GTest::Main)
+    target_link_libraries("${target}" ${CNL_GTEST_MAIN_TARGET})
 endfunction(add_gtest_dependency)
+
+######################################################################
+# add test-unit target
+
+add_custom_target(test-unit)
+add_dependencies(test-all test-unit)
 
 ######################################################################
 # test plain - the all.cpp project with *no* tests of compiler flags
@@ -168,7 +174,7 @@ set_target_properties(test-unit-plain PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLA
 target_link_libraries(test-unit-plain "${COMMON_LINK_FLAGS}")
 add_test(test-unit-plain "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test-unit-plain")
 add_gtest_dependency(test-unit-plain)
-add_dependencies(test-all test-unit-plain)
+add_dependencies(test-unit test-unit-plain)
 
 ######################################################################
 # make_test
@@ -200,8 +206,8 @@ function(make_test source out_target compile_flags linker_flags)
         endif(Boost_VERSION GREATER 105500)
     endif(Boost_FOUND)
 
-    # Add to test-all custom target.
-    add_dependencies(test-all "${target}")
+    # Add to test-unit custom target.
+    add_dependencies(test-unit "${target}")
 
     # Return name of test target.
     set(${out_target} "${target}" PARENT_SCOPE)
