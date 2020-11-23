@@ -11,36 +11,36 @@
 using cnl::_impl::identical;
 
 namespace {
-    namespace test_nearest_round_down {
-        static constexpr auto expected = cnl::elastic_fixed_point<4, -1>{0.5};
+    namespace test_native_round_down {
+        static constexpr auto expected = cnl::elastic_fixed_point<4, -1>{0.0};
         static constexpr auto actual = cnl::convert<
-                cnl::nearest_rounding_tag,
-                cnl::power<>,
+                cnl::native_rounding_tag,
+                cnl::_impl::native_tag,
                 cnl::elastic_fixed_point<4, -1>>(cnl::elastic_fixed_point<8, -4>{0.3125});
 
         static_assert(
                 identical(expected, actual),
-                "cnl::convert<cnl::nearest_rounding_tag, cnl::power<>, cnl::elastic_fixed_point, cnl::elastic_fixed_point>");
+                "cnl::convert<cnl::native_rounding_tag, cnl::power<>, cnl::elastic_fixed_point, cnl::elastic_fixed_point>");
     }
 
-    namespace test_nearest_round_up {
+    namespace test_native_round_up {
         static constexpr auto expected = cnl::elastic_fixed_point<4, -2>{0.25};
         static constexpr auto actual = cnl::convert<
-                cnl::nearest_rounding_tag,
-                cnl::power<>,
+                cnl::native_rounding_tag,
+                cnl::_impl::native_tag,
                 cnl::elastic_fixed_point<4, -2>>(
                 cnl::elastic_fixed_point<8, -4>{0.3125});
 
         static_assert(
                 identical(expected, actual),
-                "cnl::convert<cnl::nearest_rounding_tag, cnl::power<>, cnl::elastic_fixed_point, cnl::elastic_fixed_point>");
+                "cnl::convert<cnl::native_rounding_tag, cnl::power<>, cnl::elastic_fixed_point, cnl::elastic_fixed_point>");
     }
 
-    namespace elastic_fixed_point_nearest_rounding {
+    namespace elastic_fixed_point_native_rounding {
 
         // Positive
         static_assert(identical(
-                cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, cnl::elastic_fixed_point<16, 0>>
+                cnl::convert<cnl::native_rounding_tag, cnl::_impl::native_tag, cnl::elastic_fixed_point<16, 0>>
                         (cnl::elastic_fixed_point<16, -4>{5.25}),
                 cnl::elastic_fixed_point<16, 0>{5.0}),
                 "");
@@ -52,32 +52,32 @@ namespace {
                 "");
 
         static_assert(identical(
-                cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, cnl::elastic_fixed_point<16, 0>>
+                cnl::convert<cnl::native_rounding_tag, cnl::_impl::native_tag, cnl::elastic_fixed_point<16, 0>>
                         (cnl::elastic_fixed_point<16, -4>{5.5}),
-                cnl::elastic_fixed_point<16, 0>{6.0}),
+                cnl::elastic_fixed_point<16, 0>{5.0}),
                 "");
         static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{5.5}),
                 88),
                 "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, 0>{6.0}),
-                6),
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, 0>{5.0}),
+                5),
                 "");
 
         static_assert(identical(
-                cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, cnl::elastic_fixed_point<16, -1>>
+                cnl::convert<cnl::native_rounding_tag, cnl::_impl::native_tag, cnl::elastic_fixed_point<16, -1>>
                         (cnl::elastic_fixed_point<16, -4>{5.25}),
-                cnl::elastic_fixed_point<16, -1>{5.5}),
+                cnl::elastic_fixed_point<16, -1>{5.0}),
                 "");
         static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{5.25}),
                 84),
                 "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -1>{5.5}),
-                11),
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -1>{5.0}),
+                10),
                 "");
 
         // Negative
         static_assert(identical(
-                cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, cnl::elastic_fixed_point<16, 0>>
+                cnl::convert<cnl::native_rounding_tag, cnl::_impl::native_tag, cnl::elastic_fixed_point<16, 0>>
                         (cnl::elastic_fixed_point<16, -4>{-5.25}),
                 cnl::elastic_fixed_point<16, 0>{-5.0}),
                 "");
@@ -89,36 +89,42 @@ namespace {
                 "");
 
         static_assert(identical(
-                cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, cnl::elastic_fixed_point<16, 0>>
+                cnl::convert<cnl::native_rounding_tag, cnl::_impl::native_tag, cnl::elastic_fixed_point<16, 0>>
                         (cnl::elastic_fixed_point<16, -4>{-5.5}),
-                cnl::elastic_fixed_point<16, 0>{-6.0}),
+                cnl::elastic_fixed_point<16, 0>{-5.0}),
                 "");
         static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{-5.5}),
                 -88),
                 "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, 0>{-6.0}),
-                -6),
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, 0>{-5.0}),
+                -5),
                 "");
 
         static_assert(identical(
-                cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, cnl::elastic_fixed_point<16, -1>>
+                cnl::convert<cnl::native_rounding_tag, cnl::_impl::native_tag, cnl::elastic_fixed_point<16, -1>>
                         (cnl::elastic_fixed_point<16, -4>{-5.25}),
-                cnl::elastic_fixed_point<16, -1>{-5.5}),
+                cnl::elastic_fixed_point<16, -1>{-5.0}),
                 "");
         static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{-5.25}),
                 -84),
                 "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -1>{-5.5}),
-                -11),
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -1>{-5.0}),
+                -10),
                 "");
     }
 
-    using T0 = cnl::elastic_fixed_point<24, -20>;
-    using T1 = cnl::elastic_fixed_point<16, -8>;
-    using T2 = cnl::elastic_fixed_point<8, -4>;
-    using T3 = cnl::elastic_fixed_point<5, -1>;
+    namespace efxp_round_test{
+        using T0 = cnl::elastic_fixed_point<24, -20>;
+        using T1 = cnl::elastic_fixed_point<16, -8>;
+        using T2 = cnl::elastic_fixed_point<8, -4>;
+        using T3 = cnl::elastic_fixed_point<5, -1>;
+    }
 
     namespace elastic_fixed_point_implicit_conversions {
+        using efxp_round_test::T1;
+        using efxp_round_test::T2;
+        using efxp_round_test::T3;
+
         static_assert(identical(T2{0.25}, static_cast<T2>(T1{0.25})),
                 "conversion 1 (elastic_fixed_point)");
         static_assert(identical(T2{-0.25}, static_cast<T2>(T1{-0.25})),
@@ -134,6 +140,10 @@ namespace {
     }
 
     namespace elastic_fixed_point_multiply {
+        using efxp_round_test::T0;
+        using efxp_round_test::T2;
+        using efxp_round_test::T3;
+
         static constexpr auto expected1 = T3{0.0};
         static constexpr T3 result1 = T2{0.5}*T2{0.5};
         static_assert(identical(expected1, result1), "test 1 multiply and round (elastic_fixed_point)");
@@ -156,6 +166,9 @@ namespace {
     }
 
     namespace elastic_fixed_point_divide {
+        using efxp_round_test::T2;
+        using efxp_round_test::T3;
+        
         static constexpr auto expected1 = T3{1.0};
         static constexpr T3 result1 = cnl::quotient(T2{0.5}, T2{0.5});
         static_assert(identical(expected1, result1), "test 1 divide and round (elastic_fixed_point)");

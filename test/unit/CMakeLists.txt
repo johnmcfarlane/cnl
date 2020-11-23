@@ -88,6 +88,7 @@ set(test_sources
         rounding/elastic_integer/elastic_integer.cpp
         rounding/fixed_point/elastic_integer/elastic_fixed_point_tie_to_pos_inf.cpp
         rounding/fixed_point/elastic_integer/elastic_fixed_point_neg_inf.cpp
+        rounding/fixed_point/elastic_integer/elastic_fixed_point_nearest.cpp
         rounding/overflow/elastic/integer.cpp
         rounding/rounding_integer/rounding_integer.cpp
         rounding/wide_integer/wide_integer.cpp

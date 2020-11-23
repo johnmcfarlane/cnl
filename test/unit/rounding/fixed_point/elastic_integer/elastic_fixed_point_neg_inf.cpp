@@ -3,10 +3,8 @@
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
-#include <cnl/all.h>
-#include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
-
+#include <cnl/all.h>
 #include <gtest/gtest.h>
 
 using cnl::_impl::identical;
@@ -90,38 +88,44 @@ namespace {
                 "");
     }
 
-    template<
-            int IntegerDigits,
-            class RoundingTag = cnl::_impl::tag_t<cnl::rounding_integer<>>,
-            class Narrowest = int>
-    using rounding_elastic_integer = cnl::rounding_integer<
-            cnl::elastic_integer<
-                    IntegerDigits,
-                    Narrowest>,
-            RoundingTag>;
+    namespace efxp_neg_inf_round_test {
+        template<
+                int IntegerDigits,
+                class RoundingTag = cnl::_impl::tag_t<cnl::rounding_integer<>>,
+                class Narrowest = int>
+        using rounding_elastic_integer = cnl::rounding_integer<
+                cnl::elastic_integer<
+                        IntegerDigits,
+                        Narrowest>,
+                RoundingTag>;
 
-    template<
-            class RoundingTag = cnl::_impl::tag_t<cnl::rounding_integer<>>,
-            class Narrowest = int,
-            class Input = int>
-    CNL_NODISCARD rounding_elastic_integer<
-            cnl::numeric_limits<Input>::digits,
-            RoundingTag,
-            Narrowest>
-    constexpr make_rounding_elastic(Input const& input)
-    {
-        return input;
+        template<
+                class RoundingTag = cnl::_impl::tag_t<cnl::rounding_integer<>>,
+                class Narrowest = int,
+                class Input = int>
+        CNL_NODISCARD rounding_elastic_integer<
+                cnl::numeric_limits<Input>::digits,
+                RoundingTag,
+                Narrowest>
+        constexpr make_rounding_elastic(Input const& input)
+        {
+            return input;
+        }
+
+        template<int Digits, int Exponent = 0, class RoundingTag = cnl::neg_inf_rounding_tag, class Narrowest = signed>
+        using elastic_fixed_point_neg_inf = cnl::fixed_point<rounding_elastic_integer<Digits, RoundingTag, Narrowest>, Exponent>;
+
+        using T0 = elastic_fixed_point_neg_inf<24, -20>;
+        using T1 = elastic_fixed_point_neg_inf<16, -8>;
+        using T2 = elastic_fixed_point_neg_inf<8, -4>;
+        using T3 = elastic_fixed_point_neg_inf<5, -1>;
     }
 
-    template<int Digits, int Exponent = 0, class RoundingTag = cnl::neg_inf_rounding_tag, class Narrowest = signed>
-    using elastic_fixed_point_neg_inf = cnl::fixed_point<rounding_elastic_integer<Digits, RoundingTag, Narrowest>, Exponent>;
-
-    using T0 = elastic_fixed_point_neg_inf<24, -20>;
-    using T1 = elastic_fixed_point_neg_inf<16, -8>;
-    using T2 = elastic_fixed_point_neg_inf<8, -4>;
-    using T3 = elastic_fixed_point_neg_inf<5, -1>;
-
     namespace elastic_fixed_point_neg_inf_implicit_conversions {
+        using efxp_neg_inf_round_test::T1;
+        using efxp_neg_inf_round_test::T2;
+        using efxp_neg_inf_round_test::T3;
+
         static_assert(identical(T2{0.25}, static_cast<T2>(T1{0.25})),
                 "conversion 1 (elastic_fixed_point_neg_inf)");
         static_assert(identical(T2{-0.25}, static_cast<T2>(T1{-0.25})),
@@ -137,6 +141,10 @@ namespace {
     }
 
     namespace elastic_fixed_point_neg_inf_multiply {
+        using efxp_neg_inf_round_test::T0;
+        using efxp_neg_inf_round_test::T2;
+        using efxp_neg_inf_round_test::T3;
+
         static constexpr auto expected1 = T3{0.0};
         static constexpr T3 result1 = T2{0.5}*T2{0.5};
         static_assert(identical(expected1, result1), "test 1 multiply and round (elastic_fixed_point_neg_inf)");
@@ -159,6 +167,9 @@ namespace {
     }
 
     namespace elastic_fixed_point_neg_inf_divide {
+        using efxp_neg_inf_round_test::T2;
+        using efxp_neg_inf_round_test::T3;
+
         static constexpr auto expected1 = T3{1.0};
         static constexpr T3 result1 = cnl::quotient(T2{0.5}, T2{0.5});
         static_assert(identical(expected1, result1), "test 1 divide and round (elastic_fixed_point_neg_inf)");
