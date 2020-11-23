@@ -113,6 +113,7 @@ namespace {
                 "");
     }
 
+    using T0 = cnl::elastic_fixed_point<24, -20>;
     using T1 = cnl::elastic_fixed_point<16, -8>;
     using T2 = cnl::elastic_fixed_point<8, -4>;
     using T3 = cnl::elastic_fixed_point<5, -1>;
@@ -148,6 +149,10 @@ namespace {
         static constexpr auto expected4 = T3{0.5};
         static constexpr T3 result4 = T2{3.0}*T2{0.25};
         static_assert(identical(expected4, result4), "test 4 multiply and round (elastic_fixed_point)");
+
+        static constexpr auto expected5 = T0{1.0};
+        static constexpr T0 result5 = T0{2.0}*T0{0.5};
+        static_assert(identical(expected5, result5), "test 5 multiply and round (elastic_fixed_point)");
     }
 
     namespace elastic_fixed_point_divide {

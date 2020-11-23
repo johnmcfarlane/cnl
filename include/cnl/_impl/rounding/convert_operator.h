@@ -63,12 +63,7 @@ namespace cnl {
                     !_impl::is_rounding_tag<SrcTag>::value
                     &&_impl::are_arithmetic_or_integer<Destination, Source>::value>> {
     private:
-        CNL_NODISCARD static constexpr Source ceil(Source x)
-        {
-            return static_cast<Source>((x - static_cast<Source>(static_cast<Destination>(x))) > 0
-                ? static_cast<Destination>(x+1)
-                : static_cast<Destination>(x));
-        }
+
         CNL_NODISCARD static constexpr Destination floor_residual(Source x, Source x_whole)
         {
             return static_cast<Destination>((x < Source(0)) && (x < x_whole));
@@ -85,7 +80,7 @@ namespace cnl {
         CNL_NODISCARD constexpr Destination operator()(Source const& from) const
         {
             return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
-                    ? static_cast<Destination>(ceil(floor(2*from)/2))
+                    ? static_cast<Destination>(floor(from + static_cast<Source>(.5L)))
                     : static_cast<Destination>(from);
         }
     };

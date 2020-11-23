@@ -116,6 +116,7 @@ namespace {
     template<int Digits, int Exponent = 0, class RoundingTag = cnl::neg_inf_rounding_tag, class Narrowest = signed>
     using elastic_fixed_point_neg_inf = cnl::fixed_point<rounding_elastic_integer<Digits, RoundingTag, Narrowest>, Exponent>;
 
+    using T0 = elastic_fixed_point_neg_inf<24, -20>;
     using T1 = elastic_fixed_point_neg_inf<16, -8>;
     using T2 = elastic_fixed_point_neg_inf<8, -4>;
     using T3 = elastic_fixed_point_neg_inf<5, -1>;
@@ -151,6 +152,10 @@ namespace {
         static constexpr auto expected4 = T3{0.5};
         static constexpr T3 result4 = T2{3.0}*T2{0.25};
         static_assert(identical(expected4, result4), "test 4 multiply and round (elastic_fixed_point_neg_inf)");
+
+        static constexpr auto expected5 = T0{1.0};
+        static constexpr T0 result5 = T0{2.0}*T0{0.5};
+        static_assert(identical(expected5, result5), "test 5 multiply and round (elastic_fixed_point_neg_inf)");
     }
 
     namespace elastic_fixed_point_neg_inf_divide {
