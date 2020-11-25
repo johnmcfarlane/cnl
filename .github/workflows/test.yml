@@ -37,7 +37,7 @@ jobs:
             exceptions: "ON"
             generator: "Ninja"
             int128: "ON"
-            os-version: macos-11.0
+            os-version: macos-10.15
             std: 20
             stdlib: libstdc++11
             toolchain: gcc.cmake
