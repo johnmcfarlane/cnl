@@ -7,9 +7,11 @@ jobs:
   posix-conan-test:
     strategy:
       matrix:
+        name: [clang-11, osx-gcc-10, gcc-10, clang-5, gcc-5, gcc-7, armv7]
         include:
           # Clang-11
-          - compiler: clang
+          - name: clang-11
+            compiler: clang
             version: "11"
             os: linux
             arch: x86_64
@@ -27,7 +29,8 @@ jobs:
             toolchain: clang-libc++.cmake
 
           # OS X
-          - os: osx
+          - name: osx-gcc-10
+            os: osx
             compiler: gcc
             version: "10"
             arch: x86_64
@@ -43,7 +46,8 @@ jobs:
             toolchain: gcc.cmake
 
           # GCC-10
-          - compiler: gcc
+          - name: gcc-10
+            compiler: gcc
             version: "10"
             os: linux
             arch: x86_64
@@ -60,7 +64,8 @@ jobs:
             toolchain: gcc.cmake
 
           # Clang-5
-          - compiler: clang
+          - name: clang-5
+            compiler: clang
             version: "5.0"
             os: linux
             arch: x86_64
@@ -77,7 +82,8 @@ jobs:
             toolchain: clang.cmake
 
           # GCC-5
-          - compiler: gcc
+          - name: gcc-5
+            compiler: gcc
             version: "5"
             os: linux
             arch: x86_64
@@ -94,7 +100,8 @@ jobs:
             toolchain: gcc.cmake
 
           # Contrary
-          - cxx: g++-7
+          - name: gcc-7
+            cxx: g++-7
             cc: gcc-7
             version: "7"
             exceptions: "OFF"
@@ -111,7 +118,8 @@ jobs:
             toolchain: gcc.cmake
 
           # ARMv7
-          - arch: armv7
+          - name: armv7
+            arch: armv7
             compiler: gcc
             version: "10"
             os: linux
