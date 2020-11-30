@@ -113,105 +113,94 @@ namespace {
                 "");
     }
 
-    namespace efxp_nearest_round_test {
-        template<
-                int IntegerDigits,
-                class RoundingTag = cnl::_impl::tag_t<cnl::rounding_integer<>>,
-                class Narrowest = int>
-        using rounding_elastic_integer = cnl::rounding_integer<
-                cnl::elastic_integer<
-                        IntegerDigits,
-                        Narrowest>,
-                RoundingTag>;
+    template<
+            int IntegerDigits,
+            class RoundingTag = cnl::_impl::tag_t<cnl::rounding_integer<>>,
+            class Narrowest = int>
+    using rounding_elastic_integer = cnl::rounding_integer<
+            cnl::elastic_integer<
+                    IntegerDigits,
+                    Narrowest>,
+            RoundingTag>;
 
-        template<
-                class RoundingTag = cnl::_impl::tag_t<cnl::rounding_integer<>>,
-                class Narrowest = int,
-                class Input = int>
-        CNL_NODISCARD rounding_elastic_integer<
-                cnl::numeric_limits<Input>::digits,
-                RoundingTag,
-                Narrowest>
-        constexpr make_rounding_elastic(Input const& input)
-        {
-            return input;
-        }
-
-        template<int Digits, int Exponent = 0, class RoundingTag = cnl::nearest_rounding_tag, class Narrowest = signed>
-        using elastic_fixed_point_nearest = cnl::fixed_point<rounding_elastic_integer<Digits, RoundingTag, Narrowest>, Exponent>;
-        using T0 = elastic_fixed_point_nearest<24, -20>;
-        using T1 = elastic_fixed_point_nearest<16, -8>;
-        using T2 = elastic_fixed_point_nearest<8, -4>;
-        using T3 = elastic_fixed_point_nearest<5, -1>;
+    template<
+            class RoundingTag = cnl::_impl::tag_t<cnl::rounding_integer<>>,
+            class Narrowest = int,
+            class Input = int>
+    CNL_NODISCARD rounding_elastic_integer<
+            cnl::numeric_limits<Input>::digits,
+            RoundingTag,
+            Narrowest>
+    constexpr make_rounding_elastic(Input const& input)
+    {
+        return input;
     }
 
-    namespace elastic_fixed_point_implicit_conversions {
-        using efxp_nearest_round_test::T1;
-        using efxp_nearest_round_test::T2;
-        using efxp_nearest_round_test::T3;
+    template<int Digits, int Exponent = 0, class RoundingTag = cnl::nearest_rounding_tag, class Narrowest = signed>
+    using elastic_fixed_point_nearest = cnl::fixed_point<rounding_elastic_integer<Digits, RoundingTag, Narrowest>, Exponent>;
 
-        static_assert(identical(T2{0.25}, static_cast<T2>(T1{0.25})),
+    namespace elastic_fixed_point_nearest_implicit_conversions {
+        using q4_4 = elastic_fixed_point_nearest<8, -4>;
+        using q4_1 = elastic_fixed_point_nearest<5, -1>;
+
+        static_assert(identical(q4_1{0.5}, static_cast<q4_1>(q4_4{0.25})),
                 "conversion 1 (elastic_fixed_point_nearest)");
-        static_assert(identical(T2{-0.25}, static_cast<T2>(T1{-0.25})),
+        static_assert(identical(q4_1{-0.5}, static_cast<q4_1>(q4_4{-0.25})),
                 "conversion 2 (elastic_fixed_point_nearest)");
-        static_assert(identical(T3{0.5}, static_cast<T3>(T2{0.25})),
+        static_assert(identical(q4_1{-1.0}, static_cast<q4_1>(q4_4{-0.75})),
                 "conversion 3 (elastic_fixed_point_nearest)");
-        static_assert(identical(T3{-0.5}, static_cast<T3>(T2{-0.25})),
-                "conversion 3 (elastic_fixed_point_nearest)");
-        static_assert(identical(T3{-1.0}, static_cast<T3>(T2{-0.75})),
-                "conversion 3 (elastic_fixed_point_nearest)");
-        static_assert(identical(T3{1.0}, static_cast<T3>(T2{0.75})),
-                "conversion 3 (elastic_fixed_point_nearest)");
+        static_assert(identical(q4_1{1.0}, static_cast<q4_1>(q4_4{0.75})),
+                "conversion 4 (elastic_fixed_point_nearest)");
     }
 
-    namespace elastic_fixed_point_multiply {
-        using efxp_nearest_round_test::T0;
-        using efxp_nearest_round_test::T2;
-        using efxp_nearest_round_test::T3;
+    namespace elastic_fixed_point_nearest_multiply {
+        using q4_20 = elastic_fixed_point_nearest<24, -20>;
+        using q4_4 = elastic_fixed_point_nearest<8, -4>;
+        using q4_1 = elastic_fixed_point_nearest<5, -1>;
 
-        static constexpr auto expected1 = T3{0.5};
-        static constexpr T3 result1 = T2{0.5}*T2{0.5};
+        static constexpr auto expected1 = q4_1{0.5};
+        static constexpr q4_1 result1 = q4_4{0.5}*q4_4{0.5};
         static_assert(identical(expected1, result1), "test 1 multiply and round (elastic_fixed_point_nearest)");
 
-        static constexpr auto expected2 = T3{-0.5};
-        static constexpr T3 result2 = T2{-0.5}*T2{0.5};
+        static constexpr auto expected2 = q4_1{-0.5};
+        static constexpr q4_1 result2 = q4_4{-0.5}*q4_4{0.5};
         static_assert(identical(expected2, result2), "test 2 multiply and round (elastic_fixed_point_nearest)");
 
-        static constexpr auto expected3 = T3{-1.0};
-        static constexpr T3 result3 = T2{-3.0}*T2{0.25};
+        static constexpr auto expected3 = q4_1{-1.0};
+        static constexpr q4_1 result3 = q4_4{-3.0}*q4_4{0.25};
         static_assert(identical(expected3, result3), "test 3 multiply and round (elastic_fixed_point_nearest)");
 
-        static constexpr auto expected4 = T3{1.0};
-        static constexpr T3 result4 = T2{3.0}*T2{0.25};
+        static constexpr auto expected4 = q4_1{1.0};
+        static constexpr q4_1 result4 = q4_4{3.0}*q4_4{0.25};
         static_assert(identical(expected4, result4), "test 4 multiply and round (elastic_fixed_point_nearest)");
 
-        static constexpr auto expected5 = T0{1.0};
-        static constexpr T0 result5 = T0{2.0}*T0{0.5};
+        static constexpr auto expected5 = q4_20{1.0};
+        static constexpr q4_20 result5 = q4_20{2.0}*q4_20{0.5};
         static_assert(identical(expected5, result5), "test 5 multiply and round (elastic_fixed_point_nearest)");
     }
 
-    namespace elastic_fixed_point_divide {
-        using efxp_nearest_round_test::T2;
-        using efxp_nearest_round_test::T3;
+    namespace elastic_fixed_point_nearest_divide {
+        using q4_4 = elastic_fixed_point_nearest<8, -4>;
+        using q4_1 = elastic_fixed_point_nearest<5, -1>;
 
-        static constexpr auto expected1 = T3{1.0};
-        static constexpr T3 result1 = cnl::quotient(T2{0.5}, T2{0.5});
+        static constexpr auto expected1 = q4_1{1.0};
+        static constexpr q4_1 result1 = cnl::quotient(q4_4{0.5}, q4_4{0.5});
         static_assert(identical(expected1, result1), "test 1 divide and round (elastic_fixed_point_nearest)");
 
-        static constexpr auto expected2 = T3{-1.0};
-        static constexpr T3 result2 = cnl::quotient(T2{-0.5}, T2{0.5});
+        static constexpr auto expected2 = q4_1{-1.0};
+        static constexpr q4_1 result2= cnl::quotient(q4_4{-0.5}, q4_4{0.5});
         static_assert(identical(expected2, result2), "test 2 divide and round (elastic_fixed_point_nearest)");
 
-        static constexpr auto expected3 = T3{0.5};
-        static constexpr T3 result3 = cnl::quotient(T2{0.5}, T2{2.0});
+        static constexpr auto expected3 = q4_1{0.5};
+        static constexpr q4_1 result3 = cnl::quotient(q4_4{0.5}, q4_4{2.0});
         static_assert(identical(expected3, result3), "test 3 divide and round (elastic_fixed_point_nearest)");
 
-        static constexpr auto expected4 = T3{0.5};
-        static constexpr T3 result4 = cnl::quotient(T2{0.5}, T2{1.5});
+        static constexpr auto expected4 = q4_1{0.5};
+        static constexpr q4_1 result4 = cnl::quotient(q4_4{0.5}, q4_4{1.5});
         static_assert(identical(expected4, result4), "test 4 divide and round (elastic_fixed_point_nearest)");
 
-        static constexpr auto expected5 = T3{-0.5};
-        static constexpr T3 result5 = cnl::quotient(T2{-0.5}, T2{1.5});
+        static constexpr auto expected5 = q4_1{-0.5};
+        static constexpr q4_1 result5 = cnl::quotient(q4_4{-0.5}, q4_4{1.5});
         static_assert(identical(expected5, result5), "test 5 divide and round (elastic_fixed_point_nearest)");
     }
 }
