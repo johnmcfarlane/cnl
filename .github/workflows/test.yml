@@ -1,6 +1,9 @@
 name: Test
 
-on: [push]
+on: 
+  push:
+    branches:
+      - '**'
 
 jobs:
   # Build and test many combinations on Linux/OS X using Conan
