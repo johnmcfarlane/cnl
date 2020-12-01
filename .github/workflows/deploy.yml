@@ -16,14 +16,10 @@ jobs:
         fetch-depth: 0
         submodules: true
 
-    - name: Generate documentation
-      shell: bash
-      run: $GITHUB_WORKSPACE/doc/generate.sh
-
     - name: Deploy
       shell: bash
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         CONAN_PASS: ${{secrets.BINTRAY_API_KEY}}
         CONAN_USER: ${{secrets.BINTRAY_USERNAME}}
-      run: CNL_VERSION=$GITHUB_REF $GITHUB_WORKSPACE/.github/deploy.sh
+      run: CNL_VERSION_TAG=$GITHUB_REF $GITHUB_WORKSPACE/.github/deploy.sh

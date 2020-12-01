@@ -11,15 +11,18 @@ PROJECT_DIR=$(
 regex='^refs\/tags\/v([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)$'
 
 # Extract Semver from Git tag.
-echo "Tag: ${CNL_VERSION}"
-if [[ "${CNL_VERSION}" =~ $regex ]]
+echo "Tag: ${CNL_VERSION_TAG}"
+if [[ "${CNL_VERSION_TAG}" =~ $regex ]]
 then
-    export version="${BASH_REMATCH[1]}"
-    echo "CNL version ${version}"
+    export CNL_VERSION="${BASH_REMATCH[1]}"
+    echo "CNL version ${CNL_VERSION}"
 else
-    echo "Tag ${CNL_VERSION} not recognized as Semver version tag"
+    echo "Tag ${CNL_VERSION_TAG} not recognized as Semver version tag"
     exit 1
 fi
+
+# Generate documentation
+"${PROJECT_DIR}/doc/generate.sh"
 
 # Push revision of documentation
 pushd "${PROJECT_DIR}/doc/gh-pages"
@@ -29,7 +32,7 @@ git remote set-url origin "https://johnmcfarlane:${GITHUB_TOKEN}@github.com/john
 git reset origin/gh-pages
 git checkout gh-pages
 git add .
-if git commit -m"Documentation v${version}"
+if git commit -m"Documentation v${CNL_VERSION}"
 then
   git push
 fi
@@ -39,5 +42,5 @@ popd
 conan remote add --force johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
 conan user -p "${CONAN_PASS}" -r johnmcfarlane/cnl "${CONAN_USER}"
 conan install --build=missing "${PROJECT_DIR}"
-conan create . "cnl/${version}@johnmcfarlane/development"
-conan upload "cnl/${version}@johnmcfarlane/development" -r johnmcfarlane/cnl
+conan create "${PROJECT_DIR}" "cnl/${CNL_VERSION}@johnmcfarlane/development"
+conan upload "cnl/${CNL_VERSION}@johnmcfarlane/development" -r johnmcfarlane/cnl
