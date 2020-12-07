@@ -4,19 +4,10 @@
 
 set -euo pipefail
 
-NUM_CPUS=${NUM_CPUS:-$(nproc)}
 PROJECT_DIR=$(
   cd "$(dirname "$0")"/../..
   pwd
 )
 
-"${PROJECT_DIR}/test/scripts/bits/config.sh" \
-  -DCMAKE_PROJECT_cnl_INCLUDE:FILEPATH="$(pwd)"/conan_paths.cmake \
-  "$@"
-
-"${PROJECT_DIR}/test/scripts/bits/build.sh" test-all
-
-ctest \
-  --output-on-failure \
-  --parallel "${NUM_CPUS}" \
-  --tests-regex ^test-unit-
+"${PROJECT_DIR}/test/scripts/test.sh" \
+  --options target=test-unit
