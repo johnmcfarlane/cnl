@@ -1,5 +1,0 @@
-{
-    "cmake.configureSettings": {
-        "CMAKE_PROJECT_INCLUDE": "${workspaceFolder}/build/conan_paths.cmake",
-    },
-}
