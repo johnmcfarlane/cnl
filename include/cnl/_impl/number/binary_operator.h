@@ -27,8 +27,7 @@ namespace cnl {
     template<class Operator, class Lhs, class Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<
-                    std::is_floating_point<Lhs>::value && _impl::is_number<Rhs>::value>> {
+            _impl::enable_if_t<std::is_floating_point<Lhs>::value && _impl::is_number<Rhs>>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(lhs, static_cast<Lhs>(rhs));
@@ -39,8 +38,7 @@ namespace cnl {
     template<class Operator, class Lhs, class Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<
-                    _impl::is_number<Lhs>::value && std::is_floating_point<Rhs>::value>> {
+            _impl::enable_if_t<_impl::is_number<Lhs> && std::is_floating_point<Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(static_cast<Rhs>(lhs), rhs);
@@ -73,8 +71,7 @@ namespace cnl {
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<
-                    _impl::is_number<Lhs>::value && _impl::is_number<Rhs>::value
-                    && _impl::is_same_tag_family<_impl::tag_t<Lhs>, _impl::tag_t<Rhs>>::value>> {
+                    _impl::is_number<Lhs> && _impl::is_number<Rhs> && _impl::is_same_tag_family<_impl::tag_t<Lhs>, _impl::tag_t<Rhs>>::value>> {
         using _rep_operator = binary_operator<
                 Operator, _impl::tag_t<Lhs>, _impl::tag_t<Rhs>, _impl::rep_t<Lhs>,
                 _impl::rep_t<Rhs>>;

@@ -38,7 +38,7 @@ namespace {
     }
 
     namespace test_add {
-        static_assert(cnl::_impl::is_number<cnl::_impl::integer<>>::value);
+        static_assert(cnl::_impl::is_number<cnl::_impl::integer<>>);
         static_assert(
                 identical(
                         cnl::_impl::integer<>{123 + 234},

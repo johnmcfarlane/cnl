@@ -19,8 +19,7 @@ namespace cnl {
     template<typename Rep, class Tag, typename Value>
     struct from_value<
             _impl::number<Rep, Tag>, Value,
-            _impl::enable_if_t<
-                    !_impl::is_number<Value>::value && !_impl::is_constant<Value>::value>> {
+            _impl::enable_if_t<!_impl::is_number<Value> && !_impl::is_constant<Value>::value>> {
         using deduction = cnl::deduction<Tag, Value>;
         using deduced = _impl::number<typename deduction::type, typename deduction::tag>;
 

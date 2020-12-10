@@ -50,8 +50,7 @@ namespace cnl {
             template<
                     typename Number,
                     enable_if_t<
-                            is_number<Number>::value
-                                    && !can_convert_tag_family<Tag, tag_t<Number>>::value,
+                            is_number<Number> && !can_convert_tag_family<Tag, tag_t<Number>>::value,
                             int> = 0>
             // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
             constexpr number(Number const& i)
@@ -60,14 +59,14 @@ namespace cnl {
             }
 
             /// constructor taking a number type that isn't _impl::number
-            template<class S, enable_if_t<!is_number<S>::value, int> Dummy = 0>
+            template<class S, enable_if_t<!is_number<S>, int> Dummy = 0>
             // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
             constexpr number(S const& s)
                 : _rep(convert<Tag, _impl::native_tag, Rep>(s))
             {
             }
 
-            template<class S, enable_if_t<!is_number<S>::value, int> Dummy = 0>
+            template<class S, enable_if_t<!is_number<S>, int> Dummy = 0>
             CNL_NODISCARD constexpr explicit operator S() const
             {
                 return convert<_impl::native_tag, Tag, S>(_rep);

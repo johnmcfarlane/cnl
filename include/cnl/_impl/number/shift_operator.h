@@ -38,7 +38,7 @@ namespace cnl {
     template<class Operator, typename LhsRep, class LhsTag, class Rhs>
     struct shift_operator<
             Operator, _impl::native_tag, _impl::native_tag, _impl::number<LhsRep, LhsTag>, Rhs,
-            _impl::enable_if_t<_impl::is_number<Rhs>::value>> {
+            _impl::enable_if_t<_impl::is_number<Rhs>>> {
         CNL_NODISCARD constexpr auto operator()(
                 _impl::number<LhsRep, LhsTag> const& lhs, Rhs const& rhs) const
         {
@@ -54,7 +54,7 @@ namespace cnl {
     template<class Operator, class Lhs, class Rhs>
     struct shift_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<!_impl::is_number<Lhs>::value && _impl::is_number<Rhs>::value>> {
+            _impl::enable_if_t<!_impl::is_number<Lhs> && _impl::is_number<Rhs>>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(lhs, _impl::rep_t<Rhs>{_impl::to_rep(rhs)});

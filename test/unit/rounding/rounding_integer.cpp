@@ -72,8 +72,7 @@ namespace {
     }
 
     namespace test_is_integer {
-        static_assert(
-                cnl::_impl::is_number<rounding_integer<>>::value, "is_number<rounding_integer<>>");
+        static_assert(cnl::_impl::is_number<rounding_integer<>>, "is_number<rounding_integer<>>");
     }
 
     namespace test_from_value {
