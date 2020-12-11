@@ -14,8 +14,7 @@
 namespace cnl {
     namespace _impl {
         template<typename Upper, typename Lower>
-        struct wants_generic_ops<duplex_integer<Upper, Lower>> : std::true_type {
-        };
+        inline constexpr auto wants_generic_ops<duplex_integer<Upper, Lower>> = true;
     }
 }
 

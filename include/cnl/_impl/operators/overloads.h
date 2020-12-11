@@ -25,7 +25,7 @@ namespace cnl {
         // cnl::_impl::enable_unary_t
 
         template<class Operand, class T>
-        using enable_unary_t = enable_if_t<_impl::wants_generic_ops<Operand>::value, T>;
+        using enable_unary_t = enable_if_t<_impl::wants_generic_ops<Operand>, T>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::enable_binary_t
@@ -50,10 +50,8 @@ namespace cnl {
             : std::integral_constant<
                       bool, ((numeric_limits<LhsOperand>::is_specialized
                               && numeric_limits<RhsOperand>::is_specialized)
-                             || (_impl::wants_generic_ops<LhsOperand>::value
-                                 && _impl::wants_generic_ops<RhsOperand>::value))
-                                    && (_impl::wants_generic_ops<LhsOperand>::value
-                                        || _impl::wants_generic_ops<RhsOperand>::value)> {
+                             || (_impl::wants_generic_ops<LhsOperand> && _impl::wants_generic_ops<RhsOperand>))
+                                    && (_impl::wants_generic_ops<LhsOperand> || _impl::wants_generic_ops<RhsOperand>)> {
         };
 
         template<class LhsOperand, class RhsOperand, class T>
