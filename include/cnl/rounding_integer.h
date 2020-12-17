@@ -33,39 +33,44 @@ namespace cnl {
     template<class Number>
     struct rounding<
             Number,
-            _impl::enable_if_t<_impl::is_number<Number>::value && !_impl::is_rounding_tag<typename Number::tag>::value>>
-            : rounding<typename Number::rep> {
+            _impl::enable_if_t<
+                    _impl::is_number<Number>::value &&
+                    !_impl::is_rounding_tag<typename Number::tag>::value>>
+        : rounding<typename Number::rep> {
     };
 
     template<typename Rep, class RoundingTag>
-    struct rounding<_impl::number<Rep, RoundingTag>, _impl::enable_if_t<_impl::is_rounding_tag<RoundingTag>::value>>
-            : _impl::type_identity<RoundingTag> {
+    struct rounding<
+            _impl::number<Rep, RoundingTag>,
+            _impl::enable_if_t<_impl::is_rounding_tag<RoundingTag>::value>>
+        : _impl::type_identity<RoundingTag> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::_impl::set_rounding
 
     template<typename Number, class RoundingTag>
-    struct set_rounding<Number, RoundingTag, _impl::enable_if_t<
-            is_composite<Number>::value && !_impl::is_number<Number>::value>>
-            : _impl::type_identity<
-                    _impl::set_rep_t<
-                            Number,
-                            set_rounding_t<_impl::rep_t<Number>, RoundingTag>>> {
+    struct set_rounding<
+            Number, RoundingTag,
+            _impl::enable_if_t<is_composite<Number>::value && !_impl::is_number<Number>::value>>
+        : _impl::type_identity<
+                  _impl::set_rep_t<Number, set_rounding_t<_impl::rep_t<Number>, RoundingTag>>> {
     };
 
     template<int Digits, class Rep, class RoundingTag>
-    struct scale<Digits, 2, _impl::number<Rep, RoundingTag>,
-            _impl::enable_if_t<Digits < 0 && _impl::is_rounding_tag<RoundingTag>::value>>
-            : _impl::default_scale<Digits, 2, _impl::number<Rep, RoundingTag>> {
+            struct scale < Digits,
+            2, _impl::number<Rep, RoundingTag>,
+            _impl::enable_if_t<Digits<0 && _impl::is_rounding_tag<RoundingTag>::value>>
+        : _impl::default_scale<Digits, 2, _impl::number<Rep, RoundingTag>> {
     };
 
     template<int Digits, int Radix, class Rep, class RoundingTag>
-    struct scale<Digits, Radix, _impl::number<Rep, RoundingTag>,
+    struct scale<
+            Digits, Radix, _impl::number<Rep, RoundingTag>,
             _impl::enable_if_t<0 <= Digits && _impl::is_rounding_tag<RoundingTag>::value>> {
         CNL_NODISCARD constexpr auto operator()(_impl::number<Rep, RoundingTag> const& s) const
-        -> decltype(_impl::from_rep<_impl::number<Rep, RoundingTag>>(
-                scale<Digits, Radix, Rep>{}(_impl::to_rep(s))))
+                -> decltype(_impl::from_rep<_impl::number<Rep, RoundingTag>>(
+                        scale<Digits, Radix, Rep>{}(_impl::to_rep(s))))
         {
             return _impl::from_rep<_impl::number<Rep, RoundingTag>>(
                     scale<Digits, Radix, Rep>{}(_impl::to_rep(s)));
@@ -78,9 +83,9 @@ namespace cnl {
     template<typename NumberRep, class NumberTag, typename Rep>
     struct set_rep<
             _impl::number<NumberRep, NumberTag>, Rep,
-            _impl::enable_if_t<_impl::is_rounding_tag<NumberTag>::value
-                    && !_impl::is_number<Rep>::value>>
-            : _impl::type_identity<_impl::number<Rep, NumberTag>> {
+            _impl::enable_if_t<
+                    _impl::is_rounding_tag<NumberTag>::value && !_impl::is_number<Rep>::value>>
+        : _impl::type_identity<_impl::number<Rep, NumberTag>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -90,8 +95,8 @@ namespace cnl {
     struct set_tag<
             _impl::number<NumberRep, NumberTag>, Tag,
             _impl::enable_if_t<_impl::is_rounding_tag<NumberTag>::value>>
-            : _impl::type_identity<_impl::number<NumberRep, Tag>> {
+        : _impl::type_identity<_impl::number<NumberRep, Tag>> {
     };
 }
 
-#endif  // CNL_ROUNDING_INTEGER_H
+#endif // CNL_ROUNDING_INTEGER_H

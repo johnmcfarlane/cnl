@@ -24,4 +24,4 @@ namespace cnl {
     }
 }
 
-#endif //CNL_TERMINATE_H
+#endif // CNL_TERMINATE_H

@@ -33,59 +33,58 @@ namespace cnl {
 
     /// value of template parameter, \a Exponent
 
-
     template<int LhsExponent, int RhsExponent, int Radix>
     CNL_NODISCARD constexpr auto operator+(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-    -> power<_impl::min(LhsExponent, RhsExponent), Radix>
+            -> power<_impl::min(LhsExponent, RhsExponent), Radix>
     {
         return power<_impl::min(LhsExponent, RhsExponent), Radix>{};
     }
 
     template<int LhsExponent, int RhsExponent, int Radix>
     CNL_NODISCARD constexpr auto operator-(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-    -> power<_impl::min(LhsExponent, RhsExponent), Radix>
+            -> power<_impl::min(LhsExponent, RhsExponent), Radix>
     {
         return power<_impl::min(LhsExponent, RhsExponent), Radix>{};
     }
 
     template<int LhsExponent, int RhsExponent, int Radix>
     CNL_NODISCARD constexpr auto operator*(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-    -> power<LhsExponent+RhsExponent, Radix>
+            -> power<LhsExponent + RhsExponent, Radix>
     {
-        return power<LhsExponent+RhsExponent, Radix>{};
+        return power<LhsExponent + RhsExponent, Radix>{};
     }
 
     template<int LhsExponent, int RhsExponent, int Radix>
     CNL_NODISCARD constexpr auto operator/(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-    -> power<LhsExponent-RhsExponent, Radix>
+            -> power<LhsExponent - RhsExponent, Radix>
     {
-        return power<LhsExponent-RhsExponent, Radix>{};
+        return power<LhsExponent - RhsExponent, Radix>{};
     }
 
     template<int LhsExponent, int RhsExponent, int Radix>
     CNL_NODISCARD constexpr auto operator%(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-    -> power<LhsExponent, Radix>
+            -> power<LhsExponent, Radix>
     {
         return power<LhsExponent, Radix>{};
     }
 
     template<int LhsExponent, int RhsExponent, int Radix>
     CNL_NODISCARD constexpr auto operator&(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-    -> power<_impl::min(LhsExponent, RhsExponent), Radix>
+            -> power<_impl::min(LhsExponent, RhsExponent), Radix>
     {
         return power<_impl::min(LhsExponent, RhsExponent), Radix>{};
     }
 
     template<int LhsExponent, int RhsExponent, int Radix>
     CNL_NODISCARD constexpr auto operator|(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-    -> power<_impl::min(LhsExponent, RhsExponent), Radix>
+            -> power<_impl::min(LhsExponent, RhsExponent), Radix>
     {
         return power<_impl::min(LhsExponent, RhsExponent), Radix>{};
     }
 
     template<int LhsExponent, int RhsExponent, int Radix>
     CNL_NODISCARD constexpr auto operator^(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-    -> power<_impl::min(LhsExponent, RhsExponent), Radix>
+            -> power<_impl::min(LhsExponent, RhsExponent), Radix>
     {
         return power<_impl::min(LhsExponent, RhsExponent), Radix>{};
     }

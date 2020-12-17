@@ -13,32 +13,24 @@ namespace {
 
 #if defined(CNL_INT128_ENABLED)
     static_assert(
-            identical(cnl::_impl::max_digits<cnl::uint8>::value, 128),
-            "cnl::_impl::max_digits<>");
+            identical(cnl::_impl::max_digits<cnl::uint8>::value, 128), "cnl::_impl::max_digits<>");
     static_assert(
-            identical(cnl::_impl::max_digits<cnl::int16>::value, 127),
-            "cnl::_impl::max_digits<>");
+            identical(cnl::_impl::max_digits<cnl::int16>::value, 127), "cnl::_impl::max_digits<>");
     static_assert(
-            identical(cnl::_impl::max_digits<cnl::uint32>::value, 128),
-            "cnl::_impl::max_digits<>");
+            identical(cnl::_impl::max_digits<cnl::uint32>::value, 128), "cnl::_impl::max_digits<>");
     static_assert(
-            identical(cnl::_impl::max_digits<cnl::int64>::value, 127),
-            "cnl::_impl::max_digits<>");
+            identical(cnl::_impl::max_digits<cnl::int64>::value, 127), "cnl::_impl::max_digits<>");
     static_assert(
             identical(cnl::_impl::max_digits<cnl::uint128>::value, 128),
             "cnl::_impl::max_digits<>");
 #else
     static_assert(
-            identical(cnl::_impl::max_digits<cnl::int8>::value, 63),
-            "cnl::_impl::max_digits<>");
+            identical(cnl::_impl::max_digits<cnl::int8>::value, 63), "cnl::_impl::max_digits<>");
     static_assert(
-            identical(cnl::_impl::max_digits<cnl::uint16>::value, 64),
-            "cnl::_impl::max_digits<>");
+            identical(cnl::_impl::max_digits<cnl::uint16>::value, 64), "cnl::_impl::max_digits<>");
     static_assert(
-            identical(cnl::_impl::max_digits<cnl::int32>::value, 63),
-            "cnl::_impl::max_digits<>");
+            identical(cnl::_impl::max_digits<cnl::int32>::value, 63), "cnl::_impl::max_digits<>");
     static_assert(
-            identical(cnl::_impl::max_digits<cnl::uint64>::value, 64),
-            "cnl::_impl::max_digits<>");
+            identical(cnl::_impl::max_digits<cnl::uint64>::value, 64), "cnl::_impl::max_digits<>");
 #endif
 }

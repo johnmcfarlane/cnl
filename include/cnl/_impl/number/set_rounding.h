@@ -20,15 +20,20 @@ namespace cnl {
     template<class Number, class RoundingTag>
     struct set_rounding<
             Number, RoundingTag,
-            _impl::enable_if_t<_impl::is_number<Number>::value && !_impl::is_rounding_tag<_impl::tag_t<Number>>::value>>
+            _impl::enable_if_t<
+                    _impl::is_number<Number>::value &&
+                    !_impl::is_rounding_tag<_impl::tag_t<Number>>::value>>
         : set_rep<Number, set_rounding_t<_impl::rep_t<Number>, RoundingTag>> {
     };
 
     template<class Number, class RoundingTag>
-    struct set_rounding<Number, RoundingTag,
-            _impl::enable_if_t<_impl::is_number<Number>::value && _impl::is_rounding_tag<_impl::tag_t<Number>>::value>>
+    struct set_rounding<
+            Number, RoundingTag,
+            _impl::enable_if_t<
+                    _impl::is_number<Number>::value &&
+                    _impl::is_rounding_tag<_impl::tag_t<Number>>::value>>
         : set_tag<Number, RoundingTag> {
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_SET_ROUNDING_H
+#endif // CNL_IMPL_NUMBER_SET_ROUNDING_H

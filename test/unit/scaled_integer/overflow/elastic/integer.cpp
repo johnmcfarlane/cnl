@@ -17,15 +17,10 @@
 using cnl::_impl::identical;
 
 namespace {
-    template<
-            int IntegerDigits,
-            int FractionalDigits,
-            class Narrowest>
+    template<int IntegerDigits, int FractionalDigits, class Narrowest>
     using saturated_elastic_scaled_integer = cnl::scaled_integer<
             cnl::overflow_integer<
-                    cnl::elastic_integer<
-                            IntegerDigits+FractionalDigits,
-                            Narrowest>,
+                    cnl::elastic_integer<IntegerDigits + FractionalDigits, Narrowest>,
                     cnl::saturated_overflow_tag>,
             cnl::power<-FractionalDigits>>;
 

@@ -21,4 +21,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_ADOPT_DIGITS
+#endif // CNL_IMPL_NUM_TRAITS_ADOPT_DIGITS

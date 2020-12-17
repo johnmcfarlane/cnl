@@ -16,4 +16,4 @@ namespace cnl {
     class scaled_integer;
 }
 
-#endif  // CNL_IMPL_SCALED_INTEGER_DECLARATION_H
+#endif // CNL_IMPL_SCALED_INTEGER_DECLARATION_H

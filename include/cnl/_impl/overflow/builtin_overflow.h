@@ -65,7 +65,7 @@ namespace cnl {
             template<typename Lhs, typename Rhs>
             CNL_NODISCARD constexpr polarity operator()(Lhs const& lhs, Rhs const& rhs) const
             {
-                return measure_polarity(lhs)*measure_polarity(rhs);
+                return measure_polarity(lhs) * measure_polarity(rhs);
             }
         };
 
@@ -73,10 +73,10 @@ namespace cnl {
         // cnl::_impl::are_builtin_operands
 
         template<typename Lhs, typename Rhs>
-        struct are_builtin_operands : std::integral_constant<
-                bool, _impl::is_integral<Lhs>::value&&_impl::is_integral<Rhs>::value> {
+        struct are_builtin_operands
+            : std::integral_constant<
+                      bool, _impl::is_integral<Lhs>::value && _impl::is_integral<Rhs>::value> {
         };
-
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::builtin_overflow_operator
@@ -89,7 +89,8 @@ namespace cnl {
         template<typename Lhs, typename Rhs>
         struct builtin_overflow_operator<add_op, Lhs, Rhs> : are_builtin_operands<Lhs, Rhs> {
             template<typename Result>
-            CNL_NODISCARD constexpr auto operator() (Lhs const& lhs, Rhs const& rhs, Result& result) const
+            CNL_NODISCARD constexpr auto operator()(
+                    Lhs const& lhs, Rhs const& rhs, Result& result) const
             {
                 return __builtin_add_overflow(lhs, rhs, &result);
             }
@@ -98,7 +99,8 @@ namespace cnl {
         template<typename Lhs, typename Rhs>
         struct builtin_overflow_operator<subtract_op, Lhs, Rhs> : are_builtin_operands<Lhs, Rhs> {
             template<typename Result>
-            CNL_NODISCARD constexpr auto operator() (Lhs const& lhs, Rhs const& rhs, Result& result) const
+            CNL_NODISCARD constexpr auto operator()(
+                    Lhs const& lhs, Rhs const& rhs, Result& result) const
             {
                 return __builtin_sub_overflow(lhs, rhs, &result);
             }
@@ -107,7 +109,8 @@ namespace cnl {
         template<typename Lhs, typename Rhs>
         struct builtin_overflow_operator<multiply_op, Lhs, Rhs> : are_builtin_operands<Lhs, Rhs> {
             template<typename Result>
-            CNL_NODISCARD constexpr auto operator() (Lhs const& lhs, Rhs const& rhs, Result& result) const
+            CNL_NODISCARD constexpr auto operator()(
+                    Lhs const& lhs, Rhs const& rhs, Result& result) const
             {
                 return __builtin_mul_overflow(lhs, rhs, &result);
             }
@@ -116,4 +119,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_OVERFLOW_BUILTIN_OVERFLOW_H
+#endif // CNL_IMPL_OVERFLOW_BUILTIN_OVERFLOW_H

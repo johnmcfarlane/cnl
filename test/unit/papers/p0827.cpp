@@ -18,7 +18,8 @@
 // test helper
 
 template<typename Expected, typename Actual>
-CNL_NODISCARD constexpr auto identical(Expected const& expected, Actual const& actual) {
+CNL_NODISCARD constexpr auto identical(Expected const& expected, Actual const& actual)
+{
     static_assert(std::is_same<Expected, Actual>::value);
     return expected == actual;
 }
@@ -32,7 +33,8 @@ struct constant {
     static constexpr value_type value = Value;
 
     // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
-    CNL_NODISCARD constexpr operator value_type() const {
+    CNL_NODISCARD constexpr operator value_type() const
+    {
         return value;
     }
 };
@@ -42,48 +44,57 @@ struct constant {
 
 // unary
 template<auto Value1>
-CNL_NODISCARD constexpr auto operator!(constant<Value1>) noexcept {
-    return constant<! Value1>{};
+CNL_NODISCARD constexpr auto operator!(constant<Value1>) noexcept
+{
+    return constant<!Value1>{};
 }
 
 template<auto Value1>
-CNL_NODISCARD constexpr auto operator+(constant<Value1>) noexcept {
-    return constant<+ Value1>{};
+CNL_NODISCARD constexpr auto operator+(constant<Value1>) noexcept
+{
+    return constant<+Value1>{};
 }
 
 template<auto Value1>
-CNL_NODISCARD constexpr auto operator-(constant<Value1>) noexcept {
-    return constant<- Value1>{};
+CNL_NODISCARD constexpr auto operator-(constant<Value1>) noexcept
+{
+    return constant<-Value1>{};
 }
 
 // binary
 template<auto Value1, auto Value2>
-CNL_NODISCARD constexpr auto operator+(constant<Value1>, constant<Value2>) noexcept {
+CNL_NODISCARD constexpr auto operator+(constant<Value1>, constant<Value2>) noexcept
+{
     return constant<Value1 + Value2>{};
 }
 
 template<auto Value1, auto Value2>
-CNL_NODISCARD constexpr auto operator-(constant<Value1>, constant<Value2>) noexcept {
+CNL_NODISCARD constexpr auto operator-(constant<Value1>, constant<Value2>) noexcept
+{
     return constant<Value1 - Value2>{};
 }
 
 template<auto Value1, auto Value2>
-CNL_NODISCARD constexpr auto operator*(constant<Value1>, constant<Value2>) noexcept {
+CNL_NODISCARD constexpr auto operator*(constant<Value1>, constant<Value2>) noexcept
+{
     return constant<Value1 * Value2>{};
 }
 
 template<auto Value1, auto Value2>
-CNL_NODISCARD constexpr auto operator/(constant<Value1>, constant<Value2>) noexcept {
+CNL_NODISCARD constexpr auto operator/(constant<Value1>, constant<Value2>) noexcept
+{
     return constant<Value1 / Value2>{};
 }
 
 template<auto Value1, auto Value2>
-CNL_NODISCARD constexpr auto operator==(constant<Value1>, constant<Value2>) noexcept {
+CNL_NODISCARD constexpr auto operator==(constant<Value1>, constant<Value2>) noexcept
+{
     return constant<Value1 == Value2>{};
 }
 
 template<auto Value1, auto Value2>
-CNL_NODISCARD constexpr auto operator!=(constant<Value1>, constant<Value2>) noexcept {
+CNL_NODISCARD constexpr auto operator!=(constant<Value1>, constant<Value2>) noexcept
+{
     return constant<Value1 != Value2>{};
 }
 
@@ -97,28 +108,41 @@ namespace udl_impl {
     ////////////////////////////////////////////////////////////////////////////////
     // digit parsers
 
-    CNL_NODISCARD constexpr int parse_bin_char(char c) {
-        return (c == '0') ? 0 : (c == '1') ? 1 : throw std::invalid_argument("invalid hexadecimal digits");
+    CNL_NODISCARD constexpr int parse_bin_char(char c)
+    {
+        return (c == '0')
+                ? 0
+                : (c == '1') ? 1 : throw std::invalid_argument("invalid hexadecimal digits");
     }
 
-    CNL_NODISCARD constexpr int parse_dec_char(char c) {
-        return (c >= '0' && c <= '9') ? c - '0' : throw std::invalid_argument("invalid decimal digits");
+    CNL_NODISCARD constexpr int parse_dec_char(char c)
+    {
+        return (c >= '0' && c <= '9') ? c - '0'
+                                      : throw std::invalid_argument("invalid decimal digits");
     }
 
-    CNL_NODISCARD constexpr int parse_oct_char(char c) {
-        return (c >= '0' && c <= '7') ? c - '0' : throw std::invalid_argument("invalid octal digits");
+    CNL_NODISCARD constexpr int parse_oct_char(char c)
+    {
+        return (c >= '0' && c <= '7') ? c - '0'
+                                      : throw std::invalid_argument("invalid octal digits");
     }
 
-    CNL_NODISCARD constexpr int parse_hex_char(char c) {
-        return (c >= '0' && c <= '9') ? c - '0' : (c >= 'a' && c <= 'z') ? c + 10 - 'a' : (c >= 'A' && c <= 'Z') ? c
-                + 10 - 'A' : throw std::invalid_argument("invalid hexadecimal digits");
+    CNL_NODISCARD constexpr int parse_hex_char(char c)
+    {
+        return (c >= '0' && c <= '9') ? c - '0'
+                                      : (c >= 'a' && c <= 'z') ? c + 10 - 'a'
+                                                               : (c >= 'A' && c <= 'Z')
+                                ? c + 10 - 'A'
+                                : throw std::invalid_argument("invalid hexadecimal digits");
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     // known-base integer literal parser
 
     template<typename ParseDigit>
-    CNL_NODISCARD constexpr std::intmax_t parse(char const* s, int base, ParseDigit parse_digit, std::intmax_t value = 0) {
+    CNL_NODISCARD constexpr std::intmax_t parse(
+            char const* s, int base, ParseDigit parse_digit, std::intmax_t value = 0)
+    {
         auto c = *s;
         if (!c) {
             return value;
@@ -138,7 +162,8 @@ namespace udl_impl {
 
     template<int NumChars>
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
-    CNL_NODISCARD constexpr std::intmax_t parse(const char (& s)[NumChars]) {
+    CNL_NODISCARD constexpr std::intmax_t parse(const char (&s)[NumChars])
+    {
         if (s[0] == '0') {
             if (s[1] == 'b' || s[1] == 'B') {
                 return parse(s + 2, 2, parse_bin_char);
@@ -159,8 +184,9 @@ namespace udl_impl {
     static_assert(identical(parse("3"), std::intmax_t{3}));
 }
 
-template<char ... Chars>
-CNL_NODISCARD constexpr auto operator "" _static() noexcept {
+template<char... Chars>
+CNL_NODISCARD constexpr auto operator"" _static() noexcept
+{
     return constant<udl_impl::parse<sizeof...(Chars) + 1>({Chars..., '\0'})>{};
 }
 

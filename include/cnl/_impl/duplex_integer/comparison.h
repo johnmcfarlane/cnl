@@ -19,7 +19,8 @@
 /// compositional numeric library
 namespace cnl {
     template<typename Operator, typename Upper, typename Lower>
-    struct comparison_operator<Operator, _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>> {
+    struct comparison_operator<
+            Operator, _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>> {
         CNL_NODISCARD constexpr auto operator()(
                 _impl::duplex_integer<Upper, Lower> const& lhs,
                 _impl::duplex_integer<Upper, Lower> const& rhs) const -> bool
@@ -30,8 +31,10 @@ namespace cnl {
     };
 
     template<class Operator, typename Lhs, typename Rhs>
-    struct comparison_operator<Operator, Lhs, Rhs,
-            _impl::enable_if_t<_impl::is_duplex_integer<Lhs>::value!=_impl::is_duplex_integer<Rhs>::value>> {
+    struct comparison_operator<
+            Operator, Lhs, Rhs,
+            _impl::enable_if_t<
+                    _impl::is_duplex_integer<Lhs>::value != _impl::is_duplex_integer<Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> bool
         {
             using common_type = _impl::common_type_t<Lhs, Rhs>;
@@ -40,4 +43,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_DUPLEX_INTEGER_COMPARISON_H
+#endif // CNL_IMPL_DUPLEX_INTEGER_COMPARISON_H

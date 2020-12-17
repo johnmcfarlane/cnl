@@ -19,7 +19,7 @@ namespace cnl {
     template<int Digits, class Narrowest, class Rep>
     struct from_rep<elastic_integer<Digits, Narrowest>, Rep> {
         CNL_NODISCARD constexpr auto operator()(Rep const& r) const
-        -> _impl::set_rep_t<elastic_integer<Digits, Narrowest>, Rep>
+                -> _impl::set_rep_t<elastic_integer<Digits, Narrowest>, Rep>
         {
             return r;
         }
@@ -27,7 +27,7 @@ namespace cnl {
 
     template<typename ArchetypeRep, int Digits, typename Narrowest, typename Rep>
     struct from_rep<_impl::number<ArchetypeRep, elastic_tag<Digits, Narrowest>>, Rep>
-            : from_rep<elastic_integer<Digits, Narrowest>, Rep> {
+        : from_rep<elastic_integer<Digits, Narrowest>, Rep> {
     };
 }
 

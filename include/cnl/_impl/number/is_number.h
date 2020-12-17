@@ -19,10 +19,9 @@ namespace cnl {
         };
 
         template<typename Rep, class Tag>
-        struct is_number<_impl::number<Rep, Tag>>
-                : std::true_type {
+        struct is_number<_impl::number<Rep, Tag>> : std::true_type {
         };
     }
 }
 
-#endif  // CNL_IMPL_NUMBER_IS_NUMBER_H
+#endif // CNL_IMPL_NUMBER_IS_NUMBER_H

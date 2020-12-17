@@ -21,18 +21,19 @@
 namespace cnl {
     namespace _impl {
         // match the behavior of fundamental arithmetic types
-        struct native_tag : homogeneous_deduction_tag_base, homogeneous_operator_tag_base {
+        struct native_tag
+            : homogeneous_deduction_tag_base
+            , homogeneous_operator_tag_base {
             using identity = native_tag;
         };
 
         // true iff given type, T, provides its own operators
         template<typename T>
         struct has_native_operators
-                : std::integral_constant<
-                        bool,
-                        is_constant<T>::value
-                        || is_integral<T>::value
-                        || std::is_floating_point<T>::value> {
+            : std::integral_constant<
+                      bool,
+                      is_constant<T>::value || is_integral<T>::value ||
+                              std::is_floating_point<T>::value> {
         };
     }
 
@@ -46,28 +47,25 @@ namespace cnl {
 
     template<class Operator, typename Rhs>
     struct unary_operator<
-            Operator,
-            _impl::native_tag, Rhs,
+            Operator, _impl::native_tag, Rhs,
             _impl::enable_if_t<_impl::has_native_operators<Rhs>::value>> : Operator {
     };
 
     template<class Operator, typename Lhs, typename Rhs>
     struct binary_operator<
-            Operator,
-            _impl::native_tag, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<_impl::has_native_operators<Lhs>::value && _impl::has_native_operators<Rhs>::value>>
-        : Operator {
+            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
+            _impl::enable_if_t<
+                    _impl::has_native_operators<Lhs>::value &&
+                    _impl::has_native_operators<Rhs>::value>> : Operator {
     };
 
     template<class Operator, typename Lhs, typename Rhs>
     struct shift_operator<
-            Operator,
-            _impl::native_tag, _impl::native_tag, Lhs, Rhs,
+            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<
-                    _impl::has_native_operators<Lhs>::value
-                    && _impl::has_native_operators<Rhs>::value>>
-        : Operator {
+                    _impl::has_native_operators<Lhs>::value &&
+                    _impl::has_native_operators<Rhs>::value>> : Operator {
     };
 }
 
-#endif  // CNL_IMPL_OPERATORS_NATIVE_TAG_H
+#endif // CNL_IMPL_OPERATORS_NATIVE_TAG_H

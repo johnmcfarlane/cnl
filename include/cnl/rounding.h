@@ -13,4 +13,4 @@
 #include "_impl/operators/tagged.h"
 #include "_impl/rounding.h"
 
-#endif  // CNL_ROUNDING_H
+#endif // CNL_ROUNDING_H

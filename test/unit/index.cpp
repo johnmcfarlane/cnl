@@ -13,23 +13,22 @@
 #include <iostream>
 
 // calls the given function and checks that it produces the expected output
-void test_function(void(* function)(), char const* output)
+void test_function(void (*function)(), char const* output)
 {
     // substitute cout for a string
     std::stringstream captured_cout;
     std::streambuf* coutbuf = std::cout.rdbuf();
-    std::cout.rdbuf(captured_cout.rdbuf()); //redirect cout to out.txt!
+    std::cout.rdbuf(captured_cout.rdbuf()); // redirect cout to out.txt!
 
     // run example from documentation
     function();
 
     // restore cout
-    std::cout.rdbuf(coutbuf); //reset to standard output again
+    std::cout.rdbuf(coutbuf); // reset to standard output again
 
     // test the content of the string
     ASSERT_EQ(output, captured_cout.str());
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [declaration example]
@@ -46,22 +45,21 @@ void declaration_example()
     auto x = scaled_integer<int, power<-1>>{3.5};
 
     // under the hood, x stores a whole number
-    cout << to_rep(x) << endl;  // "7"
+    cout << to_rep(x) << endl; // "7"
 
     // but it multiplies that whole number by 2^-1 to produce a real number
-    cout << x << endl;  // "3.5"
+    cout << x << endl; // "3.5"
 
     // like an int, x has limited precision
     x /= 2;
-    cout << x << endl;  // "1.5"
+    cout << x << endl; // "1.5"
 }
 //! [declaration example]
 
-TEST(index, declaration_example)  // NOLINT
+TEST(index, declaration_example) // NOLINT
 {
     test_function(declaration_example, "7\n3.5\n1.5\n");
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [basic arithmetic example]
@@ -71,14 +69,14 @@ void basic_arithmetic_example()
     auto pi = scaled_integer<int32_t, power<-28>>{3.1415926535};
 
     // expressions involving integers return scaled_integer results
-    auto tau = pi*2;
+    auto tau = pi * 2;
     static_assert(is_same<decltype(tau), scaled_integer<int32_t, power<-28>>>::value, "");
 
     // "6.28319"
     cout << tau << endl;
 
     // expressions involving floating-point values return floating-point results
-    auto degrees = tau*(180/3.1415926534);
+    auto degrees = tau * (180 / 3.1415926534);
     static_assert(is_same<decltype(degrees), double>::value, "");
 
     // "360"
@@ -86,11 +84,10 @@ void basic_arithmetic_example()
 }
 //! [basic arithmetic example]
 
-TEST(index, basic_arithmetic_example)  // NOLINT
+TEST(index, basic_arithmetic_example) // NOLINT
 {
     test_function(basic_arithmetic_example, "6.283185303211212158203125\n360\n");
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [advanced arithmetic example]
@@ -102,30 +99,30 @@ void advanced_arithmetic_example()
     auto x = scaled_integer<uint8_t, power<-4>>{15.9375};
 
     // 15.9375 * 15.9375 = 254.00390625 ... overflow!
-    auto xx1 = scaled_integer<uint8_t, power<-4>>{x*x};
-    cout << xx1 << endl;  // "14" instead!
+    auto xx1 = scaled_integer<uint8_t, power<-4>>{x * x};
+    cout << xx1 << endl; // "14" instead!
 
     // fixed-point multiplication operator obeys usual promotion and implicit conversion rules
-    auto xx = x*x;
+    auto xx = x * x;
 
     // x*x is promoted to scaled_integer<int, -8>
     static_assert(is_same<decltype(xx), scaled_integer<int, power<-8>>>::value, "");
-    cout << xx << endl;  // "254.00390625" - correct
+    cout << xx << endl; // "254.00390625" - correct
 
-    // you can avoid the pitfalls of integer promotion for good by using the elastic_scaled_integer type
+    // you can avoid the pitfalls of integer promotion for good by using the elastic_scaled_integer
+    // type
     auto named_xx = make_elastic_scaled_integer(x) * make_elastic_scaled_integer(x);
 
     // this type tracks both the number of digits and the exponent to ensure lossless multiplication
     static_assert(is_same<decltype(named_xx), elastic_scaled_integer<16, -8, unsigned>>::value, "");
-    cout << named_xx << endl;  // "254.00390625" - also correct but prone to overflow
+    cout << named_xx << endl; // "254.00390625" - also correct but prone to overflow
 }
 //! [advanced arithmetic example]
 
-TEST(index, advanced_arithmetic_example)  // NOLINT
+TEST(index, advanced_arithmetic_example) // NOLINT
 {
     test_function(advanced_arithmetic_example, "14\n254.00390625\n254.00390625\n");
 }
-
 
 #if defined(CNL_BOOST_ENABLED)
 #include "boost.throw_exception.h"
@@ -148,7 +145,7 @@ void boost_example()
     auto googol = mp_scaled_integer<400>{1};
 
     // A googol is 10^100.
-    for (auto zeros = 0; zeros!=100; ++zeros) {
+    for (auto zeros = 0; zeros != 100; ++zeros) {
         googol *= 10;
     }
 
@@ -166,17 +163,18 @@ void boost_example()
 }
 //! [boost example]
 
-TEST(index, boost_example)  // NOLINT
+TEST(index, boost_example) // NOLINT
 {
-    test_function(boost_example, "1000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-                                 "0000000000000000\n0.00000000000000000000000000000000000000000000000000000000000000000"
-                                 "0000000000000000000000000000000000099999999999999999999770774623585337708826862887672"
-                                 "4831177561317388688460742223401456454683384940352996717699238685486962227178573245938"
-                                 "1164968077139637589293145550457554693525163515374773301313531059788797333232314526850"
-                                 "92147632256423245538160582575967991474270857299444514865172095596790313720703125\n");
+    test_function(
+            boost_example,
+            "1000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            "0000000000000000\n0.00000000000000000000000000000000000000000000000000000000000000000"
+            "0000000000000000000000000000000000099999999999999999999770774623585337708826862887672"
+            "4831177561317388688460742223401456454683384940352996717699238685486962227178573245938"
+            "1164968077139637589293145550457554693525163515374773301313531059788797333232314526850"
+            "92147632256423245538160582575967991474270857299444514865172095596790313720703125\n");
 }
 #endif
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //! [elastic example]
@@ -185,18 +183,18 @@ using cnl::elastic_integer;
 void elastic_example1()
 {
     // Consider an integer type which keeps count of the bits that it uses.
-    auto a = elastic_integer<6, int8_t>{ 63 };
+    auto a = elastic_integer<6, int8_t>{63};
 
     // Results of its operations widen as required.
-    auto aa = a*a;
-    static_assert(is_same<decltype(aa), elastic_integer<12, int8_t >> ::value, "");
+    auto aa = a * a;
+    static_assert(is_same<decltype(aa), elastic_integer<12, int8_t>>::value, "");
 
     // Obviously, this type no longer fits in a byte.
-    static_assert(sizeof(aa)==2, "");
+    static_assert(sizeof(aa) == 2, "");
 
     // Addition requires smaller results.
-    auto a2 = a+a;
-    static_assert(is_same<decltype(a2), elastic_integer<7, int8_t >> ::value, "");
+    auto a2 = a + a;
+    static_assert(is_same<decltype(a2), elastic_integer<7, int8_t>>::value, "");
 
     (void)aa;
     (void)a2;
@@ -209,14 +207,14 @@ void elastic_example2()
     // A type such as elastic_integer can be used to specialize scaled_integer.
     // Now arithmetic operations are more efficient and less error-prone.
     auto b = elastic_scaled_integer<31, -27, unsigned>{15.9375};
-    auto bb = b*b;
+    auto bb = b * b;
 
-    cout << bb << endl;  // "254.00390625"
+    cout << bb << endl; // "254.00390625"
     static_assert(is_same<decltype(bb), elastic_scaled_integer<62, -54, unsigned>>::value, "");
 }
 //! [elastic example]
 
-TEST(index, elastic_example)  // NOLINT
+TEST(index, elastic_example) // NOLINT
 {
     test_function(elastic_example1, "");
     test_function(elastic_example2, "254.00390625\n");

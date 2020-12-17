@@ -31,4 +31,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_TYPE_TRAITS_SET_SIGNEDNESS
+#endif // CNL_IMPL_TYPE_TRAITS_SET_SIGNEDNESS

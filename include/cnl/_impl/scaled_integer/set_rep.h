@@ -14,7 +14,8 @@
 /// compositional numeric library
 namespace cnl {
     template<typename InRep, class Scale, typename OutRep>
-    struct set_rep<scaled_integer<InRep, Scale>, OutRep> : _impl::type_identity<scaled_integer<OutRep, Scale>> {
+    struct set_rep<scaled_integer<InRep, Scale>, OutRep>
+        : _impl::type_identity<scaled_integer<OutRep, Scale>> {
     };
 }
 

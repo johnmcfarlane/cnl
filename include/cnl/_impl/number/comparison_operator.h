@@ -22,9 +22,10 @@ namespace cnl {
     template<class Operator, class Lhs, class Rhs>
     struct comparison_operator<
             Operator, Lhs, Rhs,
-            _impl::enable_if_t<std::is_floating_point<Lhs>::value && _impl::is_number<Rhs>::value>> {
+            _impl::enable_if_t<
+                    std::is_floating_point<Lhs>::value && _impl::is_number<Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(Operator()(lhs, static_cast<Lhs>(rhs)))
+                -> decltype(Operator()(lhs, static_cast<Lhs>(rhs)))
         {
             return Operator()(lhs, static_cast<Lhs>(rhs));
         }
@@ -34,9 +35,10 @@ namespace cnl {
     template<class Operator, class Lhs, class Rhs>
     struct comparison_operator<
             Operator, Lhs, Rhs,
-            _impl::enable_if_t<_impl::is_number<Lhs>::value && std::is_floating_point<Rhs>::value>> {
+            _impl::enable_if_t<
+                    _impl::is_number<Lhs>::value && std::is_floating_point<Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(Operator()(static_cast<Rhs>(lhs), rhs))
+                -> decltype(Operator()(static_cast<Rhs>(lhs), rhs))
         {
             return Operator()(static_cast<Rhs>(lhs), rhs);
         }
@@ -45,10 +47,9 @@ namespace cnl {
     // lower OP number<>
     template<class Operator, class Lhs, class Rhs>
     struct comparison_operator<
-            Operator, Lhs, Rhs,
-            _impl::enable_if_t<_impl::number_can_wrap<Rhs, Lhs>::value>> {
+            Operator, Lhs, Rhs, _impl::enable_if_t<_impl::number_can_wrap<Rhs, Lhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(Operator()(_impl::from_value<Rhs>(lhs), rhs))
+                -> decltype(Operator()(_impl::from_value<Rhs>(lhs), rhs))
         {
             return Operator()(_impl::from_value<Rhs>(lhs), rhs);
         }
@@ -57,10 +58,9 @@ namespace cnl {
     // number<> OP lower
     template<class Operator, class Lhs, class Rhs>
     struct comparison_operator<
-            Operator, Lhs, Rhs,
-            _impl::enable_if_t<_impl::number_can_wrap<Lhs, Rhs>::value>> {
+            Operator, Lhs, Rhs, _impl::enable_if_t<_impl::number_can_wrap<Lhs, Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(Operator()(lhs, _impl::from_value<Lhs>(rhs)))
+                -> decltype(Operator()(lhs, _impl::from_value<Lhs>(rhs)))
         {
             return Operator()(lhs, _impl::from_value<Lhs>(rhs));
         }
@@ -70,11 +70,11 @@ namespace cnl {
     struct comparison_operator<Operator, _impl::number<LhsRep, Tag>, _impl::number<RhsRep, Tag>> {
         CNL_NODISCARD constexpr auto operator()(
                 _impl::number<LhsRep, Tag> const& lhs, _impl::number<RhsRep, Tag> const& rhs) const
-        -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
+                -> decltype(Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs)))
         {
             return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
         }
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_COMPARISON_OPERATOR_H
+#endif // CNL_IMPL_NUMBER_COMPARISON_OPERATOR_H

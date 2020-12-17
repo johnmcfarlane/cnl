@@ -91,9 +91,8 @@ namespace cnl {
     };
 
     template<typename T>
-    struct is_signed<T, _impl::enable_if_t<is_composite<T>::value>>
-            : is_signed<_impl::rep_t<T>> {
+    struct is_signed<T, _impl::enable_if_t<is_composite<T>::value>> : is_signed<_impl::rep_t<T>> {
     };
 }
 
-#endif  // CNL_IMPL_TYPE_TRAITS_IS_SIGNED
+#endif // CNL_IMPL_TYPE_TRAITS_IS_SIGNED

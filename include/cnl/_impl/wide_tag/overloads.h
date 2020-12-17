@@ -17,92 +17,82 @@
 namespace cnl {
     namespace _impl {
         template<
-                class Operator,
-                int LhsDigits, typename LhsNarrowest,
-                int RhsDigits, typename RhsNarrowest>
+                class Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits,
+                typename RhsNarrowest>
         struct wide_tag_overload_params {
             static constexpr bool is_signed{
-                    cnl::is_signed<LhsNarrowest>::value | cnl::is_signed<RhsNarrowest>::value
-            };
+                    cnl::is_signed<LhsNarrowest>::value | cnl::is_signed<RhsNarrowest>::value};
             static constexpr int digits{max(LhsDigits, RhsDigits)};
 
             using narrowest = _impl::set_width_t<
                     _impl::set_signedness_t<
-                            _impl::op_result<Operator, LhsNarrowest, RhsNarrowest>,
-                            is_signed>,
+                            _impl::op_result<Operator, LhsNarrowest, RhsNarrowest>, is_signed>,
                     _impl::max(
-                            _impl::width<LhsNarrowest>::value,
-                            _impl::width<RhsNarrowest>::value)>;
+                            _impl::width<LhsNarrowest>::value, _impl::width<RhsNarrowest>::value)>;
 
             using type = wide_tag<digits, narrowest>;
         };
     }
 
-    template<
-            int LhsDigits, typename LhsNarrowest,
-            int RhsDigits, typename RhsNarrowest>
-    CNL_NODISCARD constexpr auto operator+(wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>)
-    -> typename _impl::wide_tag_overload_params<
-            _impl::add_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
+    template<int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
+    CNL_NODISCARD constexpr auto operator+(
+            wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>) ->
+            typename _impl::wide_tag_overload_params<
+                    _impl::add_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
     {
         return typename _impl::wide_tag_overload_params<
                 _impl::add_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type{};
     }
 
-    template<
-            int LhsDigits, typename LhsNarrowest,
-            int RhsDigits, typename RhsNarrowest>
-    CNL_NODISCARD constexpr auto operator-(wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>)
-    -> typename _impl::wide_tag_overload_params<
-            _impl::subtract_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
+    template<int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
+    CNL_NODISCARD constexpr auto operator-(
+            wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>) ->
+            typename _impl::wide_tag_overload_params<
+                    _impl::subtract_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
     {
         return typename _impl::wide_tag_overload_params<
                 _impl::subtract_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type{};
     }
 
-    template<
-            int LhsDigits, typename LhsNarrowest,
-            int RhsDigits, typename RhsNarrowest>
-    CNL_NODISCARD constexpr auto operator*(wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>)
-    -> typename _impl::wide_tag_overload_params<
-            _impl::multiply_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
+    template<int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
+    CNL_NODISCARD constexpr auto operator*(
+            wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>) ->
+            typename _impl::wide_tag_overload_params<
+                    _impl::multiply_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
     {
         return typename _impl::wide_tag_overload_params<
                 _impl::multiply_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type{};
     }
 
-    template<
-            int LhsDigits, typename LhsNarrowest,
-            int RhsDigits, typename RhsNarrowest>
-    CNL_NODISCARD constexpr auto operator/(wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>)
-    -> typename _impl::wide_tag_overload_params<
-            _impl::divide_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
+    template<int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
+    CNL_NODISCARD constexpr auto operator/(
+            wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>) ->
+            typename _impl::wide_tag_overload_params<
+                    _impl::divide_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
     {
         return typename _impl::wide_tag_overload_params<
                 _impl::divide_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type{};
     }
 
-    template<
-            int LhsDigits, typename LhsNarrowest,
-            int RhsDigits, typename RhsNarrowest>
-    CNL_NODISCARD constexpr auto operator%(wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>)
-    -> typename _impl::wide_tag_overload_params<
-            _impl::modulo_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
+    template<int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
+    CNL_NODISCARD constexpr auto operator%(
+            wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>) ->
+            typename _impl::wide_tag_overload_params<
+                    _impl::modulo_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
     {
         return typename _impl::wide_tag_overload_params<
                 _impl::modulo_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type{};
     }
 
-    template<
-            int LhsDigits, typename LhsNarrowest,
-            int RhsDigits, typename RhsNarrowest>
-    CNL_NODISCARD constexpr auto operator&(wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>)
-    -> typename _impl::wide_tag_overload_params<
-            _impl::bitwise_and_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
+    template<int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
+    CNL_NODISCARD constexpr auto operator&(
+            wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>) ->
+            typename _impl::wide_tag_overload_params<
+                    _impl::bitwise_and_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
     {
         return typename _impl::wide_tag_overload_params<
                 _impl::bitwise_and_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type{};
     }
 }
 
-#endif  // CNL_IMPL_TAG_TAG_OVERLOADS_H
+#endif // CNL_IMPL_TAG_TAG_OVERLOADS_H

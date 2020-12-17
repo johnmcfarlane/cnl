@@ -14,10 +14,11 @@
 
 namespace boost {
 #if defined(BOOST_NO_EXCEPTIONS)
-    inline void throw_exception(std::exception const&) {  // NOLINT(readability-redundant-declaration)
+    inline void throw_exception(std::exception const&)
+    { // NOLINT(readability-redundant-declaration)
         std::terminate();
     }
 #endif
 }
 
-#endif //CNL_TEST_BOOST_THROW_EXCEPTION_H
+#endif // CNL_TEST_BOOST_THROW_EXCEPTION_H

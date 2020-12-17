@@ -22,54 +22,56 @@ namespace cnl {
 
         template<typename Result, typename Lhs>
         CNL_NODISCARD constexpr auto sensible_right_shift(Lhs const& lhs, int rhs)
-        -> enable_if_t<digits<Result>::value <= digits<decltype(lhs>>rhs)>::value, Result>
+                -> enable_if_t<digits<Result>::value <= digits<decltype(lhs >> rhs)>::value, Result>
         {
 #if (__cpp_constexpr >= 201304L)
-            CNL_ASSERT(rhs>=0);
+            CNL_ASSERT(rhs >= 0);
 #endif
             using promoted_type = decltype(lhs >> rhs);
-            return static_cast<Result>((rhs>=digits<promoted_type>::value)
-                    // TODO: Not reproduced locally. Investigate.
-                    // NOLINTNEXTLINE(clang-analyzer-core.UndefinedBinaryOperatorResult)
-                   ? lhs >> (digits<Lhs>::value-1) >> 1
-                    // TODO: Not reproduced locally. Investigate.
-                    // NOLINTNEXTLINE(clang-analyzer-core.UndefinedBinaryOperatorResult)
-                   : (lhs >> rhs) & static_cast<promoted_type>(~Result{}));
+            return static_cast<Result>(
+                    (rhs >= digits<promoted_type>::value)
+                            // TODO: Not reproduced locally. Investigate.
+                            // NOLINTNEXTLINE(clang-analyzer-core.UndefinedBinaryOperatorResult)
+                            ? lhs >> (digits<Lhs>::value - 1) >> 1
+                            // TODO: Not reproduced locally. Investigate.
+                            // NOLINTNEXTLINE(clang-analyzer-core.UndefinedBinaryOperatorResult)
+                            : (lhs >> rhs) & static_cast<promoted_type>(~Result{}));
         }
 
         template<typename Result, typename Lhs>
-        CNL_NODISCARD constexpr auto sensible_right_shift(Lhs const& lhs, int rhs)
-        -> enable_if_t<(digits<Result>::value > digits<decltype(lhs>>rhs)>::value), Result>
+        CNL_NODISCARD constexpr auto sensible_right_shift(Lhs const& lhs, int rhs) -> enable_if_t<
+                (digits<Result>::value > digits<decltype(lhs >> rhs)>::value), Result>
         {
 #if (__cpp_constexpr >= 201304L)
-            CNL_ASSERT(rhs>=0);
+            CNL_ASSERT(rhs >= 0);
 #endif
             using promoted_type = decltype(lhs >> rhs);
-            return (rhs>=digits<promoted_type>::value)
-                   ? Result{}
-                   : static_cast<Result>(lhs >> rhs);
+            return (rhs >= digits<promoted_type>::value) ? Result{}
+                                                         : static_cast<Result>(lhs >> rhs);
         }
 
         template<typename Result, typename Lhs>
         CNL_NODISCARD constexpr auto sensible_left_shift(Lhs const& lhs, int rhs)
-        -> enable_if_t<digits<Result>::value <= digits<decltype(lhs<<rhs)>::value, Result>
+                -> enable_if_t<digits<Result>::value <= digits<decltype(lhs << rhs)>::value, Result>
         {
 #if (__cpp_constexpr >= 201304L)
-            CNL_ASSERT(rhs>=0);
+            CNL_ASSERT(rhs >= 0);
 #endif
             using promoted_type = decltype(lhs << rhs);
             using unsigned_type = remove_signedness_t<decltype(lhs & lhs)>;
-            return (rhs>=digits<promoted_type>::value)
-                   ? Result{}
-                   : static_cast<Result>(
-                            // TODO: Not reproduced locally. Investigate.
-                            // NOLINTNEXTLINE(clang-analyzer-core.UndefinedBinaryOperatorResult)
-                           static_cast<unsigned_type>(lhs & sensible_right_shift<Lhs>(~Result{}, rhs)) << rhs);
+            return (rhs >= digits<promoted_type>::value)
+                    ? Result{}
+                    : static_cast<Result>(
+                              // TODO: Not reproduced locally. Investigate.
+                              // NOLINTNEXTLINE(clang-analyzer-core.UndefinedBinaryOperatorResult)
+                              static_cast<unsigned_type>(
+                                      lhs & sensible_right_shift<Lhs>(~Result{}, rhs))
+                              << rhs);
         }
 
         template<typename Result, typename Lhs>
-        CNL_NODISCARD constexpr auto sensible_left_shift(Lhs const& lhs, int rhs)
-        -> enable_if_t<(digits<Result>::value > digits<decltype(lhs<<rhs)>::value), Result>
+        CNL_NODISCARD constexpr auto sensible_left_shift(Lhs const& lhs, int rhs) -> enable_if_t<
+                (digits<Result>::value > digits<decltype(lhs << rhs)>::value), Result>
         {
             return sensible_left_shift<Result>(static_cast<Result>(lhs), rhs);
         }
@@ -77,9 +79,8 @@ namespace cnl {
         template<typename Result, typename Lhs>
         CNL_NODISCARD constexpr auto extra_sensible_right_shift(Lhs const& lhs, int rhs) -> Result
         {
-            return (rhs<0)
-                    ? sensible_left_shift<Result>(lhs, -rhs)
-                    : sensible_right_shift<Result>(lhs, rhs);
+            return (rhs < 0) ? sensible_left_shift<Result>(lhs, -rhs)
+                             : sensible_right_shift<Result>(lhs, rhs);
         }
     }
 
@@ -88,8 +89,8 @@ namespace cnl {
 
     template<typename Upper, typename Lower>
     struct digits<_impl::duplex_integer<Upper, Lower>>
-            : std::integral_constant<int, digits<Upper>::value+digits<Lower>::value> {
+        : std::integral_constant<int, digits<Upper>::value + digits<Lower>::value> {
     };
 }
 
-#endif  // CNL_IMPL_DUPLEX_INTEGER_DIGITS_H
+#endif // CNL_IMPL_DUPLEX_INTEGER_DIGITS_H

@@ -16,9 +16,8 @@
 /// compositional numeric library
 namespace cnl {
     template<int Digits, class Narrowest>
-    struct numeric_limits<elastic_integer<Digits, Narrowest>>
-            : numeric_limits<Narrowest> {
-    private:
+    struct numeric_limits<elastic_integer<Digits, Narrowest>> : numeric_limits<Narrowest> {
+      private:
         // elastic integer-specific helpers
         using _narrowest_numeric_limits = numeric_limits<Narrowest>;
         using _value_type = elastic_integer<Digits, Narrowest>;
@@ -27,10 +26,11 @@ namespace cnl {
 
         CNL_NODISCARD static constexpr _rep rep_max() noexcept
         {
-            return static_cast<_rep>(_rep_numeric_limits::max() >> (_rep_numeric_limits::digits-digits));
+            return static_cast<_rep>(
+                    _rep_numeric_limits::max() >> (_rep_numeric_limits::digits - digits));
         }
-    public:
 
+      public:
         // standard members
         static constexpr int digits = Digits;
 
@@ -52,8 +52,8 @@ namespace cnl {
 
     template<int Digits, class Narrowest>
     struct numeric_limits<elastic_integer<Digits, Narrowest> const>
-            : numeric_limits<elastic_integer<Digits, Narrowest>> {
+        : numeric_limits<elastic_integer<Digits, Narrowest>> {
     };
 }
 
-#endif  // CNL_IMPL_ELASTIC_INTEGER_LIMITS_H
+#endif // CNL_IMPL_ELASTIC_INTEGER_LIMITS_H

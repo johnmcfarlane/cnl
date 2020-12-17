@@ -28,4 +28,4 @@ namespace cnl {
     class elastic_integer;
 }
 
-#endif  // CNL_IMPL_ELASTIC_INTEGER_DECLARATION_H
+#endif // CNL_IMPL_ELASTIC_INTEGER_DECLARATION_H

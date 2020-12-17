@@ -25,4 +25,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_TYPE_TRAITS_ASSERT_SAME_H
+#endif // CNL_IMPL_TYPE_TRAITS_ASSERT_SAME_H

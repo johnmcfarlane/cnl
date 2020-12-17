@@ -49,13 +49,13 @@ namespace cnl {
     ///
     /// \par Examples
     ///
-    /// To define a fixed-point value 1 byte in size with a sign bit, 4 integer bits and 3 fractional bits:
-    /// \snippet snippets.cpp define a scaled_integer value
+    /// To define a fixed-point value 1 byte in size with a sign bit, 4 integer bits and 3
+    /// fractional bits: \snippet snippets.cpp define a scaled_integer value
 
     template<typename Rep, class Scale>
-    class scaled_integer
-            : public _impl::number<Rep, Scale> {
-        static_assert(!_impl::is_scaled_integer<Rep>::value,
+    class scaled_integer : public _impl::number<Rep, Scale> {
+        static_assert(
+                !_impl::is_scaled_integer<Rep>::value,
                 "scaled_integer of scaled_integer is not a supported");
 
         using _base = _impl::number<Rep, Scale>;
@@ -63,20 +63,23 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // functions
 
-    private:
+      private:
         // constructor taking representation explicitly using operator++(int)-style trick
         constexpr scaled_integer(Rep r, int)
-                :_base(r, 0)
+            : _base(r, 0)
         {
         }
 
-    public:
+      public:
         scaled_integer() = default;
 
         /// constructor not taking cnl::fraction
         template<typename Number>
-        constexpr scaled_integer(Number const& n)  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
-                : _base(n) { }
+        // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
+        constexpr scaled_integer(Number const& n)
+            : _base(n)
+        {
+        }
 
         /// copy assignement operator
         template<typename S>
@@ -97,15 +100,15 @@ namespace cnl {
 #if defined(__cpp_deduction_guides)
     // same as cnl::make_scaled_integer
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    scaled_integer(::cnl::constant<Value>)
-    -> scaled_integer<
-            set_digits_t<int, _impl::max(digits_v<int>, _impl::used_digits(Value)-trailing_bits(Value))>,
+    scaled_integer(::cnl::constant<Value>) -> scaled_integer<
+            set_digits_t<
+                    int,
+                    _impl::max(digits_v<int>, _impl::used_digits(Value) - trailing_bits(Value))>,
             power<trailing_bits(Value)>>;
 
     template<class Integer>
-    scaled_integer(Integer)
-    -> scaled_integer<Integer, power<>>;
+    scaled_integer(Integer) -> scaled_integer<Integer, power<>>;
 #endif
 }
 
-#endif  // CNL_IMPL_SCALED_INTEGER_DEFINITION_H
+#endif // CNL_IMPL_SCALED_INTEGER_DEFINITION_H

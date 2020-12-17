@@ -32,4 +32,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_LIMITS_LOWEST_H
+#endif // CNL_IMPL_LIMITS_LOWEST_H

@@ -24,9 +24,7 @@
 /// compositional numeric library
 namespace cnl {
     template<int ArchetypeDigits, typename ArchetypeNarrowest, typename Initializer>
-    struct deduction<
-            wide_tag<ArchetypeDigits, ArchetypeNarrowest>,
-            Initializer> {
+    struct deduction<wide_tag<ArchetypeDigits, ArchetypeNarrowest>, Initializer> {
         // tag associated with deduced type
         using tag = wide_tag<
                 digits<Initializer>::value,
@@ -36,14 +34,9 @@ namespace cnl {
         using type = Initializer;
     };
 
-    template<
-            int DestDigits, class DestNarrowest,
-            class SrcTag,
-            typename Dest, typename Src>
+    template<int DestDigits, class DestNarrowest, class SrcTag, typename Dest, typename Src>
     struct convert_operator<
-            wide_tag<DestDigits, DestNarrowest>,
-            SrcTag,
-            Dest, Src,
+            wide_tag<DestDigits, DestNarrowest>, SrcTag, Dest, Src,
             _impl::enable_if_t<!_impl::is_wide_tag<SrcTag>::value>> {
         CNL_NODISCARD constexpr Dest operator()(Src const& from) const
         {
@@ -51,79 +44,56 @@ namespace cnl {
         }
     };
 
-    template<
-            class DestTag,
-            int SrcDigits, class SrcNarrowest,
-            typename Dest, typename Src>
-    struct convert_operator<
-            DestTag,
-            wide_tag<SrcDigits, SrcNarrowest>,
-            Dest, Src> {
+    template<class DestTag, int SrcDigits, class SrcNarrowest, typename Dest, typename Src>
+    struct convert_operator<DestTag, wide_tag<SrcDigits, SrcNarrowest>, Dest, Src> {
         CNL_NODISCARD constexpr Dest operator()(Src const& from) const
         {
             return convert_operator<_impl::native_tag, _impl::native_tag, Dest, Src>{}(from);
         }
     };
 
-    template<
-            typename Operator,
-            int Digits, typename Narrowest,
-            class Rhs>
+    template<typename Operator, int Digits, typename Narrowest, class Rhs>
     struct unary_operator<Operator, wide_tag<Digits, Narrowest>, Rhs>
-            : unary_operator<Operator, _impl::native_tag, Rhs> {
+        : unary_operator<Operator, _impl::native_tag, Rhs> {
     };
 
     template<
-            class Operator,
-            int LhsDigits, class LhsNarrowest,
-            int RhsDigits, class RhsNarrowest,
+            class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
             class Lhs, class Rhs>
     struct binary_operator<
-            Operator,
-            wide_tag<LhsDigits, LhsNarrowest>,
-            wide_tag<RhsDigits, RhsNarrowest>,
-            Lhs, Rhs> {
-    private:
+            Operator, wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>, Lhs,
+            Rhs> {
+      private:
         static constexpr auto _max_digits{_impl::max(LhsDigits, RhsDigits)};
-        static constexpr auto _are_signed{is_signed<LhsNarrowest>::value
-                || is_signed<RhsNarrowest>::value};
+        static constexpr auto _are_signed{
+                is_signed<LhsNarrowest>::value || is_signed<RhsNarrowest>::value};
         using common_type = typename std::common_type<LhsNarrowest, RhsNarrowest>::type;
         using narrowest = _impl::set_signedness_t<common_type, _are_signed>;
 
         using result_tag = wide_tag<_max_digits, narrowest>;
         using result = typename result_tag::rep;
 
-    public:
+      public:
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> result
         {
             return static_cast<result>(Operator{}(lhs, rhs));
         }
     };
 
-    template<
-            class Operator,
-            int LhsDigits, typename LhsNarrowest,
-            typename Lhs, typename Rhs>
+    template<class Operator, int LhsDigits, typename LhsNarrowest, typename Lhs, typename Rhs>
     struct shift_operator<
-            Operator,
-            wide_tag<LhsDigits, LhsNarrowest>, _impl::native_tag,
-            Lhs, Rhs> {
+            Operator, wide_tag<LhsDigits, LhsNarrowest>, _impl::native_tag, Lhs, Rhs> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        -> decltype(Operator{}(lhs, rhs))
+                -> decltype(Operator{}(lhs, rhs))
         {
             return Operator{}(lhs, rhs);
         }
     };
 
-    template<
-            class Operator,
-            int LhsDigits, class LhsNarrowest,
-            int RhsDigits, class RhsNarrowest>
+    template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
     struct comparison_operator<
-            Operator,
-            wide_tag<LhsDigits, LhsNarrowest>,
-            wide_tag<RhsDigits, RhsNarrowest>>
-            : comparison_operator<Operator, cnl::_impl::native_tag, cnl::_impl::native_tag> {
+            Operator, wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>>
+        : comparison_operator<Operator, cnl::_impl::native_tag, cnl::_impl::native_tag> {
     };
 
     template<class Operator, int Digits, typename Narrowest, typename Rhs>
@@ -135,4 +105,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_WIDE_TAG_GENERIC_H
+#endif // CNL_IMPL_WIDE_TAG_GENERIC_H

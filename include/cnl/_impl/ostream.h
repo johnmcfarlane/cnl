@@ -32,4 +32,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_OSTREAM_H
+#endif // CNL_IMPL_OSTREAM_H

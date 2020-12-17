@@ -15,9 +15,8 @@
 namespace cnl {
     /// \brief An integer of limitless width.
     template<int Digits = digits<int>::value, typename Narrowest = int>
-    using wide_integer = _impl::number<
-            typename wide_tag<Digits, Narrowest>::rep,
-            wide_tag<Digits, Narrowest>>;
+    using wide_integer =
+            _impl::number<typename wide_tag<Digits, Narrowest>::rep, wide_tag<Digits, Narrowest>>;
 }
 
-#endif  // CNL_IMPL_WIDE_INTEGER_DEFINITION_H
+#endif // CNL_IMPL_WIDE_INTEGER_DEFINITION_H

@@ -27,7 +27,7 @@ namespace cnl {
         template<typename Number, typename Rep>
         struct wrap<Number, Rep, enable_if_t<is_composite<Number>::value>> {
             CNL_NODISCARD constexpr auto operator()(Rep const& rep) const
-            -> decltype(from_rep<Number>(wrap<rep_t<Number>, Rep>{}(rep)))
+                    -> decltype(from_rep<Number>(wrap<rep_t<Number>, Rep>{}(rep)))
             {
                 return from_rep<Number>(wrap<rep_t<Number>, Rep>{}(rep));
             }
@@ -35,11 +35,10 @@ namespace cnl {
     }
 
     template<typename Number, typename Rep>
-    CNL_NODISCARD constexpr auto wrap(Rep const& rep)
-    -> decltype(_impl::wrap<Number, Rep>{}(rep))
+    CNL_NODISCARD constexpr auto wrap(Rep const& rep) -> decltype(_impl::wrap<Number, Rep>{}(rep))
     {
         return _impl::wrap<Number, Rep>{}(rep);
     }
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_WRAP_H
+#endif // CNL_IMPL_NUM_TRAITS_WRAP_H

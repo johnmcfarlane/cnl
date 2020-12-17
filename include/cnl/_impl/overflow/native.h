@@ -21,9 +21,11 @@ namespace cnl {
     /// \headerfile cnl/overflow.h
     /// \sa cnl::overflow_integer,
     /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
-    /// cnl::saturated_overflow_tag, cnl::throwing_overflow_tag, cnl::trapping_overflow_tag, cnl::undefined_overflow_tag
+    /// cnl::saturated_overflow_tag, cnl::throwing_overflow_tag, cnl::trapping_overflow_tag,
+    /// cnl::undefined_overflow_tag
     struct native_overflow_tag
-            : _impl::homogeneous_deduction_tag_base, _impl::homogeneous_operator_tag_base {
+        : _impl::homogeneous_deduction_tag_base
+        , _impl::homogeneous_operator_tag_base {
     };
 
     namespace _impl {
@@ -37,4 +39,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_OVERFLOW_NATIVE_H
+#endif // CNL_IMPL_OVERFLOW_NATIVE_H

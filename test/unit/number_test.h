@@ -24,12 +24,8 @@
 template<class Lhs, class Rhs>
 CNL_NODISCARD constexpr bool is_equal_to(Lhs const& lhs, Rhs const& rhs)
 {
-    return ((lhs==rhs))
-            && (!(lhs!=rhs))
-            && (!(lhs<rhs))
-            && (!(lhs>rhs))
-            && ((lhs<=rhs))
-            && ((lhs>=rhs));
+    return ((lhs == rhs)) && (!(lhs != rhs)) && (!(lhs < rhs)) && (!(lhs > rhs)) &&
+            ((lhs <= rhs)) && ((lhs >= rhs));
 }
 
 static_assert(is_equal_to<int>(0, 0), "less_than_test test failed");
@@ -38,12 +34,8 @@ static_assert(is_equal_to<int>(0, 0), "less_than_test test failed");
 template<class Lesser, class Greater>
 CNL_NODISCARD constexpr bool is_less_than(Lesser const& lesser, Greater const& greater)
 {
-    return (!(lesser==greater))
-            && ((lesser!=greater))
-            && ((lesser<greater))
-            && (!(lesser>greater))
-            && ((lesser<=greater))
-            && (!(lesser>=greater));
+    return (!(lesser == greater)) && ((lesser != greater)) && ((lesser < greater)) &&
+            (!(lesser > greater)) && ((lesser <= greater)) && (!(lesser >= greater));
 }
 
 static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
@@ -51,10 +43,10 @@ static_assert(is_less_than<int>(0, 1), "less_than_test test failed");
 ////////////////////////////////////////////////////////////////////////////////
 // number_test
 
-using cnl::_impl::identical;  // NOLINT(google-global-names-in-headers)
+using cnl::_impl::identical; // NOLINT(google-global-names-in-headers)
 
 // performs tests that should pass for all numeric types (except maybe const_integer);
-// invokes specific tests that only pass for subject types 
+// invokes specific tests that only pass for subject types
 template<class Number>
 struct number_test {
     using value_type = Number;
@@ -62,15 +54,16 @@ struct number_test {
 
     static constexpr value_type zero = cnl::from_rep<value_type, int>{}(0);
 #if defined(_MSC_VER)
-    static constexpr value_type negative_zero{ zero };
+    static constexpr value_type negative_zero{zero};
 #else
-    static constexpr value_type negative_zero{ -zero };
-#endif    
+    static constexpr value_type negative_zero{-zero};
+#endif
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::numeric_limits
 
-    static_assert(numeric_limits::is_specialized, "numeric_limits is not specialized for this type");
+    static_assert(
+            numeric_limits::is_specialized, "numeric_limits is not specialized for this type");
 
     static constexpr value_type min{numeric_limits::min()};
     static constexpr value_type max{numeric_limits::max()};
@@ -104,37 +97,54 @@ struct number_test {
     static_assert(is_equal_to(static_cast<double>(zero), 0.), "comparison test error");
 
     // comparisons between zero and zero-initialized value
-    static_assert(is_equal_to(zero, value_type(0.)), "zero-initialized value is not represented using zero");
+    static_assert(
+            is_equal_to(zero, value_type(0.)),
+            "zero-initialized value is not represented using zero");
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::digits / cnl::_impl::set_digits_t
 
-    static_assert(cnl::digits<value_type>::value
-                    ==cnl::digits<cnl::set_digits_t<value_type, cnl::digits<value_type>::value>>::value,
+    static_assert(
+            cnl::digits<value_type>::value ==
+                    cnl::digits<
+                            cnl::set_digits_t<value_type, cnl::digits<value_type>::value>>::value,
             "cnl::digits / cnl::set_digits test failed");
 
-    static_assert(cnl::digits<cnl::set_digits_t<value_type, 3>>::value>=3, "cnl::digits / cnl::set_digits test failed");
-    static_assert(cnl::digits<cnl::set_digits_t<value_type, 9>>::value>=9, "cnl::digits / cnl::set_digits test failed");
-    static_assert(cnl::digits<cnl::set_digits_t<value_type, 63>>::value>32,
+    static_assert(
+            cnl::digits<cnl::set_digits_t<value_type, 3>>::value >= 3,
+            "cnl::digits / cnl::set_digits test failed");
+    static_assert(
+            cnl::digits<cnl::set_digits_t<value_type, 9>>::value >= 9,
+            "cnl::digits / cnl::set_digits test failed");
+    static_assert(
+            cnl::digits<cnl::set_digits_t<value_type, 63>>::value > 32,
             "cnl::digits / cnl::set_digits test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test operator+
 
     // TODO: arithmetic failing for GCC 7
-    static_assert(zero+zero==zero, "operator+ test failed");
-    static_assert(zero+zero+zero==zero, "operator+ test failed");
+    static_assert(zero + zero == zero, "operator+ test failed");
+    static_assert(zero + zero + zero == zero, "operator+ test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
     // test operator-
 
-    static_assert(is_equal_to(zero-zero, zero), "operator- test failed");  // NOLINT(misc-redundant-expression)
-    static_assert(is_equal_to(zero-zero-zero, zero), "operator- test failed");  // NOLINT(misc-redundant-expression)
+    static_assert(
+            is_equal_to(zero - zero, zero),
+            "operator- test failed"); // NOLINT(misc-redundant-expression)
+    static_assert(
+            is_equal_to(zero - zero - zero, zero),
+            "operator- test failed"); // NOLINT(misc-redundant-expression)
 
-    static_assert(is_equal_to(min-min, zero), "operator- test failed");  // NOLINT(misc-redundant-expression)
-    static_assert(is_equal_to(min-zero, min), "operator- test failed");
+    static_assert(
+            is_equal_to(min - min, zero),
+            "operator- test failed"); // NOLINT(misc-redundant-expression)
+    static_assert(is_equal_to(min - zero, min), "operator- test failed");
 
-    static_assert(is_equal_to(max-max, zero), "operator- test failed");  // NOLINT(misc-redundant-expression)
+    static_assert(
+            is_equal_to(max - max, zero),
+            "operator- test failed"); // NOLINT(misc-redundant-expression)
 
     ////////////////////////////////////////////////////////////////////////////////
     // numeric traits
@@ -143,15 +153,18 @@ struct number_test {
     static_assert(
 #if defined(CNL_INT128_ENABLED)
             // std::is_fundamental isn't specialized for __int128
-            std::is_same<value_type, cnl::int128>::value || std::is_same<value_type, cnl::uint128>::value ||
+            std::is_same<value_type, cnl::int128>::value ||
+                    std::is_same<value_type, cnl::uint128>::value ||
 #endif
-                    cnl::is_composite<value_type>::value!=std::is_fundamental<value_type>::value,
+                    cnl::is_composite<value_type>::value != std::is_fundamental<value_type>::value,
             "is_composite test failed");
 
-    static constexpr auto lowest_from_rep = cnl::_impl::from_rep<value_type>(cnl::_impl::to_rep(lowest));
+    static constexpr auto lowest_from_rep =
+            cnl::_impl::from_rep<value_type>(cnl::_impl::to_rep(lowest));
     static_assert(identical(lowest_from_rep, lowest), "cnl::_impl::to_rep & from_rep test failed");
 
-    static constexpr auto zero_from_rep = cnl::_impl::from_rep<value_type>(cnl::_impl::to_rep(zero));
+    static constexpr auto zero_from_rep =
+            cnl::_impl::from_rep<value_type>(cnl::_impl::to_rep(zero));
     static_assert(identical(zero_from_rep, zero), "cnl::_impl::to_rep & from_rep test failed");
 
     static constexpr auto max_from_rep = cnl::_impl::from_rep<value_type>(cnl::_impl::to_rep(max));
@@ -160,41 +173,48 @@ struct number_test {
     ////////////////////////////////////////////////////////////////////////////////
     // bit functions
 
-    static_assert(cnl::used_digits(zero)==0, "used_digits test failed");
-    static_assert(cnl::used_digits(max)==cnl::digits<value_type>::value, "used_digits test failed");
+    static_assert(cnl::used_digits(zero) == 0, "used_digits test failed");
+    static_assert(
+            cnl::used_digits(max) == cnl::digits<value_type>::value, "used_digits test failed");
 
-    static_assert(cnl::leading_bits(zero)==cnl::digits<value_type>::value, "leading_bits test failed");
-    static_assert(cnl::leading_bits(max)==0, "leading_bits test failed");
+    static_assert(
+            cnl::leading_bits(zero) == cnl::digits<value_type>::value, "leading_bits test failed");
+    static_assert(cnl::leading_bits(max) == 0, "leading_bits test failed");
 };
 
 // performs tests that should pass for all numeric types (except maybe const_integer);
 // invokes specific tests that only pass for subject types
 template<class Number, template<class> class TypeSpecificTestSuite>
 struct number_test_suite
-        : number_test<Number>
-        , TypeSpecificTestSuite<Number> {
+    : number_test<Number>
+    , TypeSpecificTestSuite<Number> {
 };
 
-template<template<class> class NumericType, template<class> class TypeSpecificTestSuite = std::is_integral>
+template<
+        template<class> class NumericType,
+        template<class> class TypeSpecificTestSuite = std::is_integral>
 struct number_test_by_rep
-        : number_test_suite<NumericType<char>, TypeSpecificTestSuite>,
+    : number_test_suite<NumericType<char>, TypeSpecificTestSuite>
+    ,
 #if defined(CNL_INT128_ENABLED)
-          number_test_suite<NumericType<cnl::int128>, TypeSpecificTestSuite>,
-          number_test_suite<NumericType<cnl::uint128>, TypeSpecificTestSuite>,
+      number_test_suite<NumericType<cnl::int128>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<cnl::uint128>, TypeSpecificTestSuite>
+    ,
 #endif
-          number_test_suite<NumericType<cnl::int8>, TypeSpecificTestSuite>,
-          number_test_suite<NumericType<cnl::uint8>, TypeSpecificTestSuite>,
-          number_test_suite<NumericType<cnl::int16>, TypeSpecificTestSuite>,
-          number_test_suite<NumericType<cnl::uint16>, TypeSpecificTestSuite>,
-          number_test_suite<NumericType<cnl::int32>, TypeSpecificTestSuite>,
-          number_test_suite<NumericType<cnl::uint32>, TypeSpecificTestSuite>,
-          number_test_suite<NumericType<cnl::int64>, TypeSpecificTestSuite>,
-          number_test_suite<NumericType<cnl::uint64>, TypeSpecificTestSuite>
-{
+      number_test_suite<NumericType<cnl::int8>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<cnl::uint8>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<cnl::int16>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<cnl::uint16>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<cnl::int32>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<cnl::uint32>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<cnl::int64>, TypeSpecificTestSuite>
+    , number_test_suite<NumericType<cnl::uint64>, TypeSpecificTestSuite> {
 };
 
 // given a rounding tag, invokes number_test_suite for integers of all built-in types
-template<template <class, class> class NumericType, class Tag, template<class> class TypeSpecificTestSuite = std::is_integral>
+template<
+        template<class, class> class NumericType, class Tag,
+        template<class> class TypeSpecificTestSuite = std::is_integral>
 struct number_test_by_rep_by_tag {
     template<class Rep>
     using test_subject = NumericType<Rep, Tag>;

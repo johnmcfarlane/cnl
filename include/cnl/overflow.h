@@ -18,4 +18,4 @@
 #include "_impl/overflow/trapping.h"
 #include "_impl/overflow/undefined.h"
 
-#endif  // CNL_OVERFLOW_H
+#endif // CNL_OVERFLOW_H

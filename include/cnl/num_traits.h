@@ -25,4 +25,4 @@
 #include "_impl/num_traits/unwrap.h"
 #include "_impl/num_traits/wrap.h"
 
-#endif  // CNL_NUM_TRAITS
+#endif // CNL_NUM_TRAITS

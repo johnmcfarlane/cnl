@@ -47,8 +47,8 @@ namespace cnl {
 
     template<typename T>
     struct add_signedness<T, _impl::enable_if_t<is_composite<T>::value>>
-            : _impl::type_identity<_impl::set_rep_t<T, add_signedness_t<_impl::rep_t<T>>>> {
+        : _impl::type_identity<_impl::set_rep_t<T, add_signedness_t<_impl::rep_t<T>>>> {
     };
 }
 
-#endif  // CNL_IMPL_TYPE_TRAITS_ADD_SIGNEDNESS_H
+#endif // CNL_IMPL_TYPE_TRAITS_ADD_SIGNEDNESS_H

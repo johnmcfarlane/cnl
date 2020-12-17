@@ -15,8 +15,8 @@
 namespace cnl {
     template<typename Upper, typename Lower>
     struct remove_signedness<_impl::duplex_integer<Upper, Lower>>
-            : _impl::type_identity<_impl::duplex_integer<remove_signedness_t<Upper>, Lower>> {
+        : _impl::type_identity<_impl::duplex_integer<remove_signedness_t<Upper>, Lower>> {
     };
 }
 
-#endif  // CNL_IMPL_DUPLEX_INTEGER_REMOVE_SIGNEDNESS_H
+#endif // CNL_IMPL_DUPLEX_INTEGER_REMOVE_SIGNEDNESS_H

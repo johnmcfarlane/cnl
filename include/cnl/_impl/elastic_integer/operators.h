@@ -21,4 +21,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_ELASTIC_INTEGER_OPERATORS_H
+#endif // CNL_IMPL_ELASTIC_INTEGER_OPERATORS_H

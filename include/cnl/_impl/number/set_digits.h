@@ -19,4 +19,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_SET_DIGITS_H
+#endif // CNL_IMPL_NUMBER_SET_DIGITS_H

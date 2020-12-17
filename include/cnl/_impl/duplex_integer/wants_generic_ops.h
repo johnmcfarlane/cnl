@@ -19,4 +19,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_DUPLEX_INTEGER_WANTS_GENERIC_OPS_H
+#endif // CNL_IMPL_DUPLEX_INTEGER_WANTS_GENERIC_OPS_H

@@ -20,14 +20,13 @@
 namespace cnl {
     template<int ShiftDigits, int ScaleRadix, int ScalarDigits, class ScalarNarrowest>
     struct scale<
-            ShiftDigits,
-            ScaleRadix,
-            elastic_integer<ScalarDigits, ScalarNarrowest>,
+            ShiftDigits, ScaleRadix, elastic_integer<ScalarDigits, ScalarNarrowest>,
             _impl::enable_if_t<(0 <= ShiftDigits)>> {
-        CNL_NODISCARD constexpr auto operator()(elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
-        -> elastic_integer<ShiftDigits+ScalarDigits, ScalarNarrowest>
+        CNL_NODISCARD constexpr auto operator()(
+                elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
+                -> elastic_integer<ShiftDigits + ScalarDigits, ScalarNarrowest>
         {
-            using result_type = elastic_integer<ShiftDigits+ScalarDigits, ScalarNarrowest>;
+            using result_type = elastic_integer<ShiftDigits + ScalarDigits, ScalarNarrowest>;
             using result_rep = _impl::rep_t<result_type>;
             return _impl::from_rep<result_type>(
                     scale<ShiftDigits, ScaleRadix, result_rep>()(_impl::to_rep(s)));
@@ -36,18 +35,17 @@ namespace cnl {
 
     template<int ShiftDigits, int ScalarDigits, class ScalarNarrowest>
     struct scale<
-            ShiftDigits,
-            2,
-            elastic_integer<ScalarDigits, ScalarNarrowest>,
+            ShiftDigits, 2, elastic_integer<ScalarDigits, ScalarNarrowest>,
             _impl::enable_if_t<(ShiftDigits < 0)>> {
-        CNL_NODISCARD constexpr auto operator()(elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
-        -> elastic_integer<ShiftDigits+ScalarDigits, ScalarNarrowest>
+        CNL_NODISCARD constexpr auto operator()(
+                elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
+                -> elastic_integer<ShiftDigits + ScalarDigits, ScalarNarrowest>
         {
-            using divisor_type = elastic_integer<1-ShiftDigits, ScalarNarrowest>;
+            using divisor_type = elastic_integer<1 - ShiftDigits, ScalarNarrowest>;
             using divisor_rep = _impl::rep_t<divisor_type>;
             return _impl::to_rep(s) / (divisor_rep{1} << -ShiftDigits);
         }
     };
 }
 
-#endif  // CNL_IMPL_ELASTIC_INTEGER_H
+#endif // CNL_IMPL_ELASTIC_INTEGER_H

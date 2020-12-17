@@ -24,4 +24,4 @@ namespace cnl {
     }
 }
 
-#endif //CNL_IMPL_ELASTIC_TAG_IS_ELASTIC_TAG_H
+#endif // CNL_IMPL_ELASTIC_TAG_IS_ELASTIC_TAG_H

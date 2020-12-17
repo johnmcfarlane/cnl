@@ -12,9 +12,9 @@
 namespace cnl {
     namespace _impl {
         // pre-C++14 enable_if_t
-        template<bool C, class ... T>
-        using enable_if_t = typename std::enable_if<C, T ...>::type;
+        template<bool C, class... T>
+        using enable_if_t = typename std::enable_if<C, T...>::type;
     }
 }
 
-#endif  // CNL_IMPL_TYPE_TRAITS_ENABLE_IF
+#endif // CNL_IMPL_TYPE_TRAITS_ENABLE_IF

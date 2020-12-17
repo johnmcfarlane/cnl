@@ -14,7 +14,7 @@
 // test for language version
 
 #if defined(_MSC_VER)
-#if (_MSC_VER<1916)
+#if (_MSC_VER < 1916)
 #error CNL requires Microsoft C++ version 19.16 or above.
 #endif
 #elif !defined(__cplusplus) || (__cplusplus < 201103L)
@@ -49,9 +49,9 @@
 #endif
 
 #if defined(__SIZEOF_INT128__)
-#define CNL_CAN_USE_INT128 1  // NOLINT(cppcoreguidelines-macro-usage)
+#define CNL_CAN_USE_INT128 1 // NOLINT(cppcoreguidelines-macro-usage)
 #else
-#define CNL_CAN_USE_INT128 0  // NOLINT(cppcoreguidelines-macro-usage)
+#define CNL_CAN_USE_INT128 0 // NOLINT(cppcoreguidelines-macro-usage)
 #endif
 
 #if !defined(CNL_USE_INT128)
@@ -60,7 +60,7 @@
 ///        defaults to `1` on supported platforms.
 /// \note GCC pedantic warnings must be disabled in order to use `__int128`.
 /// \sa CNL_INT128_ENABLED, cnl::int128, cnl::uint128
-#define CNL_USE_INT128 CNL_CAN_USE_INT128  // NOLINT(cppcoreguidelines-macro-usage)
+#define CNL_USE_INT128 CNL_CAN_USE_INT128 // NOLINT(cppcoreguidelines-macro-usage)
 #endif
 
 #if CNL_USE_INT128
@@ -100,9 +100,9 @@
 #endif
 
 #if (__cpp_constexpr >= 201304L)
-#define CNL_RELAXED_CONSTEXPR constexpr  // NOLINT(cppcoreguidelines-macro-usage)
+#define CNL_RELAXED_CONSTEXPR constexpr // NOLINT(cppcoreguidelines-macro-usage)
 #else
-#define CNL_RELAXED_CONSTEXPR  // NOLINT(cppcoreguidelines-macro-usage)
+#define CNL_RELAXED_CONSTEXPR // NOLINT(cppcoreguidelines-macro-usage)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -188,17 +188,19 @@
 
 #if defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_TOOLCHAIN)
 #error CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_TOOLCHAIN already defined
-#elif  defined(__GNUG__) && !defined(__clang__) && __GNUG__ >= 7
+#elif defined(__GNUG__) && !defined(__clang__) && __GNUG__ >= 7
 #define CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_TOOLCHAIN
 #endif
 
 #if defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_LANGUAGE)
 #error CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_LANGUAGE already defined
-#elif (__cpp_constexpr >= 201304L) && (__cpp_decltype_auto >= 201304L) && (__cpp_variable_templates >= 201304)
+#elif (__cpp_constexpr >= 201304L) && (__cpp_decltype_auto >= 201304L) && \
+        (__cpp_variable_templates >= 201304)
 #define CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_LANGUAGE
 #endif
 
-#if defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_TOOLCHAIN) && defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_LANGUAGE)
+#if defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_TOOLCHAIN) && \
+        defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_LANGUAGE)
 #define CNL_BUILTIN_OVERFLOW_ENABLED
 #endif
 
@@ -210,13 +212,13 @@
 #endif
 
 #if (__cplusplus >= 201703L) && !defined(_MSC_VER)
-#define CNL_NODISCARD [[nodiscard]]  // NOLINT(cppcoreguidelines-macro-usage)
+#define CNL_NODISCARD [[nodiscard]] // NOLINT(cppcoreguidelines-macro-usage)
 #endif
 
-#if ! defined(CNL_NODISCARD)
+#if !defined(CNL_NODISCARD)
 #define CNL_NODISCARD
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#endif  // CNL_CONFIG_H
+#endif // CNL_CONFIG_H

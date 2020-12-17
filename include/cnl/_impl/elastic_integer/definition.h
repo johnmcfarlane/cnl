@@ -16,9 +16,8 @@
 namespace cnl {
     namespace _impl {
         template<int Digits, class Narrowest>
-        using elastic_rep_t = typename set_digits<
-                Narrowest,
-                _impl::max(digits<Narrowest>::value, Digits)>::type;
+        using elastic_rep_t =
+                typename set_digits<Narrowest, _impl::max(digits<Narrowest>::value, Digits)>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::is_elastic_integer
@@ -45,9 +44,10 @@ namespace cnl {
 
     template<int Digits, class Narrowest>
     class elastic_integer : public _impl::elastic_integer_base_t<Digits, Narrowest> {
-    public:
+      public:
         using _base = _impl::elastic_integer_base_t<Digits, Narrowest>;
-        static_assert(!_impl::is_elastic_integer<_impl::rep_t<_base>>::value,
+        static_assert(
+                !_impl::is_elastic_integer<_impl::rep_t<_base>>::value,
                 "elastic_integer of elastic_integer is not a supported");
 
         /// default constructor
@@ -57,7 +57,9 @@ namespace cnl {
         template<typename Number>
         // NOLINTNEXTLINE(google-explicit-constructor, hicpp-explicit-conversions)
         constexpr elastic_integer(Number const& n)
-                : _base(n) { }
+            : _base(n)
+        {
+        }
     };
 
     namespace _impl {
@@ -73,13 +75,11 @@ namespace cnl {
 
 #if defined(__cpp_deduction_guides)
     template<class S>
-    elastic_integer(S const& s)
-    -> elastic_integer<digits_v<S>, _impl::narrowest<S>>;
+    elastic_integer(S const& s) -> elastic_integer<digits_v<S>, _impl::narrowest<S>>;
 
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    elastic_integer(constant<Value>)
-    -> elastic_integer<digits_v<constant<Value>>>;
+    elastic_integer(constant<Value>) -> elastic_integer<digits_v<constant<Value>>>;
 #endif
 }
 
-#endif  // CNL_IMPL_ELASTIC_INTEGER_DEFINITION_H
+#endif // CNL_IMPL_ELASTIC_INTEGER_DEFINITION_H

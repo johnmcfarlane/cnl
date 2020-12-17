@@ -33,7 +33,7 @@ namespace cnl {
         template<class Wrapper>
         struct number_depth<Wrapper, true> {
             using _rep = _impl::rep_t<Wrapper>;
-            static constexpr auto value = number_depth<_rep>::value+1;
+            static constexpr auto value = number_depth<_rep>::value + 1;
         };
 
         template<class T>
@@ -56,8 +56,11 @@ namespace cnl {
         // cnl::_impl::can_be_wrapped_by_number
 
         template<typename Rep>
-        struct can_be_wrapped_by_number : std::integral_constant<bool,
-                cnl::numeric_limits<Rep>::is_specialized && !std::is_floating_point<Rep>::value> {
+        struct can_be_wrapped_by_number
+            : std::integral_constant<
+                      bool,
+                      cnl::numeric_limits<Rep>::is_specialized &&
+                              !std::is_floating_point<Rep>::value> {
         };
 
         template<typename Rep, int RepN>
@@ -69,8 +72,9 @@ namespace cnl {
         // cnl::_impl::is_same_number_wrapper
 
         template<typename T1, typename T2>
-        struct is_same_number_wrapper : std::integral_constant<bool,
-                std::is_same<from_value_t<T1, int>, from_value_t<T2, int>>::value> {
+        struct is_same_number_wrapper
+            : std::integral_constant<
+                      bool, std::is_same<from_value_t<T1, int>, from_value_t<T2, int>>::value> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -78,12 +82,14 @@ namespace cnl {
 
         template<typename Wrapper, typename Rep>
         struct number_can_wrap
-                : std::integral_constant<bool, can_be_wrapped_by_number<Rep>::value
-                        && can_be_number_wrapper<Wrapper>::value
-                        && !is_same_number_wrapper<Wrapper, Rep>::value
-                        && (number_depth<Rep>::value < number_depth<Wrapper>::value)> {
+            : std::integral_constant<
+                      bool,
+                      can_be_wrapped_by_number<Rep>::value &&
+                              can_be_number_wrapper<Wrapper>::value &&
+                              !is_same_number_wrapper<Wrapper, Rep>::value &&
+                              (number_depth<Rep>::value < number_depth<Wrapper>::value)> {
         };
     }
 }
 
-#endif  // CNL_IMPL_NUMBER_OPERATOR_HELPERS_H
+#endif // CNL_IMPL_NUMBER_OPERATOR_HELPERS_H

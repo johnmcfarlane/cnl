@@ -17,14 +17,16 @@
 namespace cnl {
     template<typename Upper, typename Lower>
     struct rounding<_impl::duplex_integer<Upper, Lower>>
-            : _impl::type_identity<native_rounding_tag> {
+        : _impl::type_identity<native_rounding_tag> {
         static_assert(
                 std::is_same<rounding_t<Upper>, native_rounding_tag>::value,
-                "This type can only be specialized with integers that have int-like rounding behavior.");
+                "This type can only be specialized with integers that have int-like rounding "
+                "behavior.");
         static_assert(
                 std::is_same<rounding_t<Lower>, native_rounding_tag>::value,
-                "This type can only be specialized with integers that have int-like rounding behavior.");
+                "This type can only be specialized with integers that have int-like rounding "
+                "behavior.");
     };
 }
 
-#endif  // CNL_IMPL_DUPLEX_INTEGER_ROUNDING_H
+#endif // CNL_IMPL_DUPLEX_INTEGER_ROUNDING_H

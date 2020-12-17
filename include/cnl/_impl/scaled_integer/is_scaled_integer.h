@@ -15,15 +15,13 @@
 namespace cnl {
     namespace _impl {
         template<class T>
-        struct is_scaled_integer
-                : public std::false_type {
+        struct is_scaled_integer : public std::false_type {
         };
 
         template<typename Rep, class Scale>
-        struct is_scaled_integer<scaled_integer<Rep, Scale>>
-                : public std::true_type {
+        struct is_scaled_integer<scaled_integer<Rep, Scale>> : public std::true_type {
         };
     }
 }
 
-#endif  // CNL_IMPL_SCALED_INTEGER_IS_SCALED_INTEGER_H
+#endif // CNL_IMPL_SCALED_INTEGER_IS_SCALED_INTEGER_H

@@ -18,4 +18,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_ELASTIC_INTEGER_SET_DIGITS_H
+#endif // CNL_IMPL_ELASTIC_INTEGER_SET_DIGITS_H

@@ -36,4 +36,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_TYPE_TRAITS_IS_INTEGRAL
+#endif // CNL_IMPL_TYPE_TRAITS_IS_INTEGRAL

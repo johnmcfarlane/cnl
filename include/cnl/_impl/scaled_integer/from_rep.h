@@ -20,10 +20,10 @@ namespace cnl {
     /// \tparam ArchetypeRep ignored; replaced by \c Rep
     template<typename ArchetypeRep, int Exponent, int Radix, typename Rep>
     struct from_rep<scaled_integer<ArchetypeRep, power<Exponent, Radix>>, Rep> {
-        using result_type = _impl::set_rep_t<scaled_integer<ArchetypeRep, power<Exponent, Radix>>, Rep>;
+        using result_type =
+                _impl::set_rep_t<scaled_integer<ArchetypeRep, power<Exponent, Radix>>, Rep>;
         /// \brief generates a \ref scaled_integer equivalent to \c r in type and value
-        CNL_NODISCARD constexpr auto operator()(Rep const& r) const
-        -> result_type
+        CNL_NODISCARD constexpr auto operator()(Rep const& r) const -> result_type
         {
             return result_type(r, 0);
         }

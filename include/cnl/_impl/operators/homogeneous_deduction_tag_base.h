@@ -22,8 +22,7 @@ namespace cnl {
         };
 
         template<class Tag>
-        struct is_homogeneous_deduction_tag
-                : std::is_base_of<homogeneous_deduction_tag_base, Tag> {
+        struct is_homogeneous_deduction_tag : std::is_base_of<homogeneous_deduction_tag_base, Tag> {
         };
     }
 
@@ -39,4 +38,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_OPERATORS_IS_HOMOGENEOUS_DEDUCTION_TAG_H
+#endif // CNL_IMPL_OPERATORS_IS_HOMOGENEOUS_DEDUCTION_TAG_H

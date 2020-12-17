@@ -14,12 +14,13 @@ using cnl::_impl::identical;
 namespace {
     namespace test_convert_native_rounding {
         static_assert(
-                identical(cnl::_impl::number<int, cnl::wide_tag<31, int, void>>{42},
+                identical(
+                        cnl::_impl::number<int, cnl::wide_tag<31, int, void>>{42},
                         cnl::convert_operator<
-                                cnl::nearest_rounding_tag,
-                                cnl::native_rounding_tag,
+                                cnl::nearest_rounding_tag, cnl::native_rounding_tag,
                                 cnl::_impl::number<int, cnl::wide_tag<31, int, void>>,
                                 cnl::_impl::number<int, cnl::wide_tag<31, int, void>>>{}(42)),
-                "convert_operator<nearest_rounding_tag, native_rounding_tag, wide_integer, wide_integer>");
+                "convert_operator<nearest_rounding_tag, native_rounding_tag, wide_integer, "
+                "wide_integer>");
     }
 }

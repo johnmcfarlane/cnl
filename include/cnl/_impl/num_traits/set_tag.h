@@ -24,4 +24,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_SET_TAG_H
+#endif // CNL_IMPL_NUM_TRAITS_SET_TAG_H

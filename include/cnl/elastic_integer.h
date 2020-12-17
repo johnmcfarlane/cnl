@@ -28,4 +28,4 @@
 #include "_impl/elastic_integer/tag.h"
 #include "_impl/elastic_tag.h"
 
-#endif  // CNL_ELASTIC_INTEGER_H
+#endif // CNL_ELASTIC_INTEGER_H

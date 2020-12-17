@@ -14,9 +14,9 @@
 namespace cnl {
     namespace _impl {
         template<typename T>
-        struct width : std::integral_constant<int, digits<T>::value+is_signed<T>::value> {
+        struct width : std::integral_constant<int, digits<T>::value + is_signed<T>::value> {
         };
     }
 }
 
-#endif  // CNL_IMPL_TYPE_TRAITS_WIDTH
+#endif // CNL_IMPL_TYPE_TRAITS_WIDTH

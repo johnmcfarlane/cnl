@@ -12,16 +12,14 @@
 #include <string>
 
 namespace {
-    TEST(static_number, to_chars)  // NOLINT
+    TEST(static_number, to_chars) // NOLINT
     {
         auto const num_chars = 12;
-        auto buffer = std::array<char, num_chars+1>{};
+        auto buffer = std::array<char, num_chars + 1>{};
         auto* chars_first = buffer.data();
-        auto* chars_last = chars_first+num_chars;
-        auto result = cnl::to_chars(
-                chars_first,
-                chars_last,
-                cnl::static_number<24, -8>{-45678.765625});
+        auto* chars_last = chars_first + num_chars;
+        auto result =
+                cnl::to_chars(chars_first, chars_last, cnl::static_number<24, -8>{-45678.765625});
         ASSERT_EQ(std::errc{}, result.ec);
         ASSERT_EQ(chars_last, result.ptr);
         (*chars_last) = '\0';
@@ -30,16 +28,14 @@ namespace {
     }
 
 #if defined(CNL_INT128_ENABLED)
-    TEST(static_number, to_chars_wider)  // NOLINT
+    TEST(static_number, to_chars_wider) // NOLINT
     {
         auto const num_chars = 12;
-        auto buffer = std::array<char, num_chars+1>{};
+        auto buffer = std::array<char, num_chars + 1>{};
         auto* chars_first = buffer.data();
-        auto* chars_last = chars_first+num_chars;
-        auto result = cnl::to_chars(
-                chars_first,
-                chars_last,
-                cnl::static_number<28, -8>{937016.765625});
+        auto* chars_last = chars_first + num_chars;
+        auto result =
+                cnl::to_chars(chars_first, chars_last, cnl::static_number<28, -8>{937016.765625});
         ASSERT_EQ(std::errc{}, result.ec);
         ASSERT_EQ(chars_last, result.ptr);
         *chars_last = '\0';

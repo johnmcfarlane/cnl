@@ -33,4 +33,4 @@
 #include "duplex_integer/type.h"
 #include "duplex_integer/wants_generic_ops.h"
 
-#endif  // CNL_IMPL_DUPLEX_INTEGER_H
+#endif // CNL_IMPL_DUPLEX_INTEGER_H

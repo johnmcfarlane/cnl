@@ -21,21 +21,22 @@ namespace cnl {
         struct default_scale;
 
         template<int Digits, int Radix, typename S>
-        struct default_scale<Digits, Radix, S, _impl::enable_if_t<0<=Digits>> {
+        struct default_scale<Digits, Radix, S, _impl::enable_if_t<0 <= Digits>> {
             CNL_NODISCARD constexpr auto operator()(S const& s) const
-            -> decltype(s*power_value<S, Digits, Radix>())
+                    -> decltype(s * power_value<S, Digits, Radix>())
             {
-                return s*power_value<S, Digits, Radix>();
+                return s * power_value<S, Digits, Radix>();
             }
         };
 
         // cnl::default_scale<-ve, cnl::constant<>>
         template<int Digits, int Radix, typename S>
-        struct default_scale<Digits, Radix, S, _impl::enable_if_t<Digits<0>> {
+                struct default_scale < Digits,
+                Radix, S, _impl::enable_if_t<Digits<0>> {
             CNL_NODISCARD constexpr auto operator()(S const& s) const
-            -> decltype(s/power_value<S, -Digits, Radix>())
+                    -> decltype(s / power_value<S, -Digits, Radix>())
             {
-                return s/power_value<S, -Digits, Radix>();
+                return s / power_value<S, -Digits, Radix>();
             }
         };
     }
@@ -43,18 +44,18 @@ namespace cnl {
     // cnl::scale<..., fundamental-integer>
     template<int Digits, int Radix, class S>
     struct scale<Digits, Radix, S, _impl::enable_if_t<cnl::_impl::is_integral<S>::value>>
-            : _impl::default_scale<Digits, Radix, S> {
+        : _impl::default_scale<Digits, Radix, S> {
     };
 
     namespace _impl {
         // cnl::_impl::scale - convenience wrapper for cnl::scale
-        template<int Digits, int Radix=2, class S>
+        template<int Digits, int Radix = 2, class S>
         CNL_NODISCARD constexpr auto scale(S const& s)
-        -> decltype(cnl::scale<Digits, Radix, S>{}(s))
+                -> decltype(cnl::scale<Digits, Radix, S>{}(s))
         {
             return cnl::scale<Digits, Radix, S>{}(s);
         }
     }
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_SCALE
+#endif // CNL_IMPL_NUM_TRAITS_SCALE

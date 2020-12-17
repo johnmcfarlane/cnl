@@ -14,4 +14,4 @@
 #include "wide_tag/is_wide_tag.h"
 #include "wide_tag/overloads.h"
 
-#endif  // CNL_IMPL_WIDE_TAG_H
+#endif // CNL_IMPL_WIDE_TAG_H

@@ -15,16 +15,17 @@
 #include <iterator>
 #include <string>
 
-namespace {  // NOLINT(cert-dcl59-cpp)
+namespace { // NOLINT(cert-dcl59-cpp)
     namespace test_to_string {
-        TEST(to_string, scaled_integer_negative)  // NOLINT
+        TEST(to_string, scaled_integer_negative) // NOLINT
         {
             ASSERT_EQ(
                     std::string{"-5016.5091400146484375"},
-                    cnl::to_string(cnl::scaled_integer<int, cnl::power<-16>>(-5016.5091400146484375)));
+                    cnl::to_string(
+                            cnl::scaled_integer<int, cnl::power<-16>>(-5016.5091400146484375)));
         }
 
-        TEST(to_string, scaled_integer_small)  // NOLINT
+        TEST(to_string, scaled_integer_small) // NOLINT
         {
             ASSERT_EQ(
                     std::string{"0.00390625"},
@@ -33,4 +34,4 @@ namespace {  // NOLINT(cert-dcl59-cpp)
     }
 }
 
-#endif  // CNL_TEST_FIXED_POINT_TO_STRING_H
+#endif // CNL_TEST_FIXED_POINT_TO_STRING_H

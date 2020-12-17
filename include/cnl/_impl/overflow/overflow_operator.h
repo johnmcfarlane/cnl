@@ -17,4 +17,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_OVERFLOW_OPERATOR_H
+#endif // CNL_IMPL_OVERFLOW_OPERATOR_H

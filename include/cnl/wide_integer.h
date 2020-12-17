@@ -22,4 +22,4 @@
 #include "_impl/wide_integer/set_rep.h"
 #include "_impl/wide_integer/set_tag.h"
 
-#endif  // CNL_WIDE_INTEGER_H
+#endif // CNL_WIDE_INTEGER_H

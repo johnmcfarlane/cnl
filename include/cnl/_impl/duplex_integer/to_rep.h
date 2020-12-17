@@ -14,12 +14,12 @@
 namespace cnl {
     template<typename Upper, typename Lower>
     struct to_rep<_impl::duplex_integer<Upper, Lower>> {
-        CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& number) const
-        -> _impl::rep_t<_impl::duplex_integer<Upper, Lower>>
+        CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& number)
+                const -> _impl::rep_t<_impl::duplex_integer<Upper, Lower>>
         {
             return _impl::to_rep(Upper(number));
         }
     };
 }
 
-#endif  // CNL_IMPL_DUPLEX_INTEGER_TO_REP_H
+#endif // CNL_IMPL_DUPLEX_INTEGER_TO_REP_H

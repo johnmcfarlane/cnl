@@ -17,4 +17,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_REP_H
+#endif // CNL_IMPL_NUMBER_REP_H

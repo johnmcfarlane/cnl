@@ -25,33 +25,37 @@ namespace cnl {
         // a numeric type parameterized on storage and behavior
         template<typename Rep, class Tag>
         class number {
-        public:
+          public:
             number() = default;
 
-        protected:
+          protected:
             /// constructor taking the rep type
             constexpr number(Rep r, int)
                 : _rep(std::move(std::move(r)))
             {
             }
 
-        public:
+          public:
             /// constructor taking a related _impl::number type
-            template<typename RhsRep, class RhsTag,
+            template<
+                    typename RhsRep, class RhsTag,
                     enable_if_t<can_convert_tag_family<Tag, RhsTag>::value, int> = 0>
             // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
             constexpr number(number<RhsRep, RhsTag> const& i)
-                    : _rep(convert<Tag, RhsTag, Rep>(to_rep(i)))
+                : _rep(convert<Tag, RhsTag, Rep>(to_rep(i)))
             {
             }
 
             /// constructor taking an unrelated _impl::number type
-            template<typename Number,
-                    enable_if_t<is_number<Number>::value
-                            && !can_convert_tag_family<Tag, tag_t<Number>>::value, int> = 0>
+            template<
+                    typename Number,
+                    enable_if_t<
+                            is_number<Number>::value &&
+                                    !can_convert_tag_family<Tag, tag_t<Number>>::value,
+                            int> = 0>
             // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
             constexpr number(Number const& i)
-                    : _rep(convert<Tag, _impl::native_tag, Rep>(i))
+                : _rep(convert<Tag, _impl::native_tag, Rep>(i))
             {
             }
 
@@ -76,10 +80,11 @@ namespace cnl {
 
             template<typename T, class Enable>
             friend struct cnl::to_rep;
-        private:
+
+          private:
             Rep _rep;
         };
     }
 }
 
-#endif  // CNL_IMPL_NUMBER_TYPE_H
+#endif // CNL_IMPL_NUMBER_TYPE_H

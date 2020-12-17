@@ -16,4 +16,4 @@
 #include "_impl/numbers_17.h"
 #endif
 
-#endif  // CNL_NUMBERS_H
+#endif // CNL_NUMBERS_H

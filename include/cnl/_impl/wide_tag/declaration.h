@@ -11,8 +11,8 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<int Digits, typename Narrowest=int, class Enable=void>
+    template<int Digits, typename Narrowest = int, class Enable = void>
     struct wide_tag;
 }
 
-#endif  // CNL_IMPL_WIDE_TAG_DECLARATION_H
+#endif // CNL_IMPL_WIDE_TAG_DECLARATION_H

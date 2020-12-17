@@ -14,33 +14,31 @@
 #include "rounding.h"
 
 namespace cnl {
-    /// \brief given a numeric type, defines member `type` as the equivalent type with the given rounding mode
-    /// \headerfile cnl/num_traits.h
-    /// \note User-specializations of this type are permitted.
-    /// \note Native numeric types are only convertible to \ref cnl::native_rounding_tag.
+    /// \brief given a numeric type, defines member `type` as the equivalent type with the given
+    /// rounding mode \headerfile cnl/num_traits.h \note User-specializations of this type are
+    /// permitted. \note Native numeric types are only convertible to \ref cnl::native_rounding_tag.
     /// \sa cnl::rounding, cnl::set_rounding_t,
     /// cnl::native_rounding_tag, cnl::nearest_rounding_tag
     template<typename Number, class RoundingTag, class Enable = void>
     struct set_rounding;
 
     template<typename Number>
-    struct set_rounding<Number, rounding_t<Number>, _impl::enable_if_t<!is_composite<Number>::value>>
-            : _impl::type_identity<Number> {
+    struct set_rounding<
+            Number, rounding_t<Number>, _impl::enable_if_t<!is_composite<Number>::value>>
+        : _impl::type_identity<Number> {
     };
 
     template<typename Number, class RoundingTag>
     struct set_rounding<Number const&, RoundingTag>
-            : set_rounding<_impl::remove_cvref_t<Number>, RoundingTag> {
+        : set_rounding<_impl::remove_cvref_t<Number>, RoundingTag> {
     };
 
     template<typename Number, class RoundingTag>
-    struct set_rounding<Number&, RoundingTag>
-            : set_rounding<Number, RoundingTag> {
+    struct set_rounding<Number&, RoundingTag> : set_rounding<Number, RoundingTag> {
     };
 
     template<typename Number, class RoundingTag>
-    struct set_rounding<Number&&, RoundingTag>
-            : set_rounding<Number, RoundingTag> {
+    struct set_rounding<Number&&, RoundingTag> : set_rounding<Number, RoundingTag> {
     };
 
     /// \brief helper alias of \ref cnl::set_rounding
@@ -51,4 +49,4 @@ namespace cnl {
     using set_rounding_t = typename set_rounding<Number, RoundingTag>::type;
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_SET_ROUNDING
+#endif // CNL_IMPL_NUM_TRAITS_SET_ROUNDING

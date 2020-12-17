@@ -21,4 +21,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_IS_COMPOSITE_H
+#endif // CNL_IMPL_NUMBER_IS_COMPOSITE_H

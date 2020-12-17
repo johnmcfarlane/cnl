@@ -30,4 +30,4 @@
 #include "_impl/scaled_integer/to_string.h"
 #include "_impl/scaled_integer/type.h"
 
-#endif  // CNL_SCALED_INTEGER_H
+#endif // CNL_SCALED_INTEGER_H

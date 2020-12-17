@@ -33,4 +33,4 @@
 #include "number/to_rep.h"
 #include "number/unary_operator.h"
 
-#endif  // CNL_IMPL_NUMBER_H
+#endif // CNL_IMPL_NUMBER_H

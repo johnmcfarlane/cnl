@@ -5,7 +5,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief definitions and specializations that adapt Boost.SIMD for use with @ref cnl::scaled_integer
+/// \brief definitions and specializations that adapt Boost.SIMD for use with @ref
+/// cnl::scaled_integer
 
 #if !defined(CNL_BOOST_SIMD_H)
 #define CNL_BOOST_SIMD_H
@@ -16,7 +17,8 @@
 
 namespace cnl {
     template<class T, std::size_t N, int Exponent>
-    ::std::ostream& operator<<(::std::ostream& out, scaled_integer<boost::simd::pack<T, N>, power<Exponent>> const& fp)
+    ::std::ostream& operator<<(
+            ::std::ostream& out, scaled_integer<boost::simd::pack<T, N>, power<Exponent>> const& fp)
     {
         return out << static_cast<boost::simd::pack<long double, N>>(fp);
     }
@@ -35,7 +37,8 @@ namespace cnl {
     };
 
     template<int Digits, int Radix, class T, std::size_t N>
-    struct scale<Digits, Radix, boost::simd::pack<T, N>> : _impl::default_scale<Digits, Radix, boost::simd::pack<T, N>> {
+    struct scale<Digits, Radix, boost::simd::pack<T, N>>
+        : _impl::default_scale<Digits, Radix, boost::simd::pack<T, N>> {
     };
 
     template<class T, std::size_t N>
@@ -55,7 +58,8 @@ namespace cnl {
 
 namespace std {
     template<class T, std::size_t N>
-    struct numeric_limits<boost::simd::pack<T, N>> : numeric_limits<T> {};
+    struct numeric_limits<boost::simd::pack<T, N>> : numeric_limits<T> {
+    };
 }
 
-#endif  // CNL_BOOST_SIMD_H
+#endif // CNL_BOOST_SIMD_H

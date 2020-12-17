@@ -15,12 +15,11 @@ namespace cnl {
     namespace _impl {
         template<typename Rep>
         CNL_NODISCARD constexpr auto make_wide_integer(Rep const& rep)
-        -> wide_integer<
-                digits<Rep>::value,
-                adopt_signedness_t<int, Rep>> {
+                -> wide_integer<digits<Rep>::value, adopt_signedness_t<int, Rep>>
+        {
             return rep;
         }
     }
 }
 
-#endif  // CNL_IMPL_WIDE_INTEGER_MAKE_WIDE_INTEGER_H
+#endif // CNL_IMPL_WIDE_INTEGER_MAKE_WIDE_INTEGER_H

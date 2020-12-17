@@ -20,24 +20,21 @@ namespace {
                 identical(
                         true,
                         cnl::comparison_operator<
-                                cnl::_impl::equal_op,
-                                cnl::_impl::integer<short>,
+                                cnl::_impl::equal_op, cnl::_impl::integer<short>,
                                 cnl::_impl::integer<long>>{}(
-                                        cnl::_impl::integer<short>{-3},
-                                        cnl::_impl::integer<long>{-3})),
+                                cnl::_impl::integer<short>{-3}, cnl::_impl::integer<long>{-3})),
                 "cnl::_impl::integer equality");
         static_assert(
                 identical(
                         true,
-                        cnl::_impl::integer<unsigned long>{3}==cnl::_impl::integer<unsigned short>{3}),
+                        cnl::_impl::integer<unsigned long>{3} ==
+                                cnl::_impl::integer<unsigned short>{3}),
                 "cnl::_impl::integer equality");
     }
 
     namespace test_minus {
         static_assert(
-                identical(
-                        cnl::_impl::integer<>{-3},
-                        -cnl::_impl::integer<>{3}),
+                identical(cnl::_impl::integer<>{-3}, -cnl::_impl::integer<>{3}),
                 "cnl::_impl::integer minus");
     }
 
@@ -45,30 +42,27 @@ namespace {
         static_assert(cnl::_impl::is_number<cnl::_impl::integer<>>::value, "");
         static_assert(
                 identical(
-                        cnl::_impl::integer<>{123+234},
+                        cnl::_impl::integer<>{123 + 234},
                         cnl::binary_operator<
-                                cnl::_impl::add_op,
-                                cnl::_impl::native_tag, cnl::_impl::native_tag,
+                                cnl::_impl::add_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
                                 cnl::_impl::integer<>, cnl::_impl::integer<>>{}(
                                 cnl::_impl::integer<>{123}, cnl::_impl::integer<>{234})),
                 "cnl::_impl::integer add");
         static_assert(
                 identical(
-                        cnl::_impl::integer<>{123+234},
-                        cnl::_impl::integer<>{123}+cnl::_impl::integer<>{234}),
+                        cnl::_impl::integer<>{123 + 234},
+                        cnl::_impl::integer<>{123} + cnl::_impl::integer<>{234}),
                 "cnl::_impl::integer add");
         static_assert(
-                identical(
-                        cnl::_impl::integer<>{123+234},
-                        cnl::_impl::integer<>{123}+234),
+                identical(cnl::_impl::integer<>{123 + 234}, cnl::_impl::integer<>{123} + 234),
                 "cnl::_impl::integer add");
     }
 
     namespace test_right_shift {
         static_assert(
                 identical(
-                        cnl::_impl::integer<int64_t>{0xAA<<1},
-                        cnl::_impl::integer<int64_t>{0xAA}<<1),
+                        cnl::_impl::integer<int64_t>{0xAA << 1},
+                        cnl::_impl::integer<int64_t>{0xAA} << 1),
                 "cnl::_impl::integer right shift");
     }
 }

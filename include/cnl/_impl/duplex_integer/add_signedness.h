@@ -14,9 +14,9 @@
 /// compositional numeric library
 namespace cnl {
     template<typename Upper, typename Lower>
-    struct add_signedness<_impl::duplex_integer < Upper, Lower>>
-    : _impl::type_identity<_impl::duplex_integer<add_signedness_t < Upper>, Lower>> {
+    struct add_signedness<_impl::duplex_integer<Upper, Lower>>
+        : _impl::type_identity<_impl::duplex_integer<add_signedness_t<Upper>, Lower>> {
     };
 }
 
-#endif  // CNL_IMPL_DUPLEX_INTEGER_ADD_SIGNEDNESS_H
+#endif // CNL_IMPL_DUPLEX_INTEGER_ADD_SIGNEDNESS_H

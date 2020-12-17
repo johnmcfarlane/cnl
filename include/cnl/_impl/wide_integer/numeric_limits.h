@@ -21,7 +21,7 @@ namespace cnl {
 
     template<int Digits, typename Narrowest>
     struct numeric_limits<wide_integer<Digits, Narrowest>>
-            : numeric_limits<_impl::rep_t<wide_integer<Digits, Narrowest>>> {
+        : numeric_limits<_impl::rep_t<wide_integer<Digits, Narrowest>>> {
         static constexpr bool is_integer = true;
         // wide_integer-specific helpers
         using _narrowest_numeric_limits = numeric_limits<Narrowest>;
@@ -39,20 +39,22 @@ namespace cnl {
 
         CNL_NODISCARD static constexpr _value_type max() noexcept
         {
-            return static_cast<_rep>(_rep_numeric_limits::max() >> (_rep_numeric_limits::digits-digits));
+            return static_cast<_rep>(
+                    _rep_numeric_limits::max() >> (_rep_numeric_limits::digits - digits));
         }
 
         CNL_NODISCARD static constexpr _value_type lowest() noexcept
         {
-            return static_cast<_rep>(_rep_numeric_limits::lowest() >> (_rep_numeric_limits::digits-digits));
+            return static_cast<_rep>(
+                    _rep_numeric_limits::lowest() >> (_rep_numeric_limits::digits - digits));
         }
     };
 
     template<int Digits, typename Narrowest>
     struct numeric_limits<wide_integer<Digits, Narrowest> const>
-            : numeric_limits<wide_integer<Digits, Narrowest>> {
+        : numeric_limits<wide_integer<Digits, Narrowest>> {
         static constexpr bool is_integer = true;
     };
 }
 
-#endif  // CNL_IMPL_WIDE_INTEGER_NUMERIC_LIMITS_H
+#endif // CNL_IMPL_WIDE_INTEGER_NUMERIC_LIMITS_H

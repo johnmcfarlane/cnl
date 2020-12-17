@@ -13,10 +13,15 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<int Digits, int Radix, typename NumberRep, int NumberTagDigits, typename NumberTagNarrowest>
-    struct scale<Digits, Radix, _impl::number<NumberRep, wide_tag<NumberTagDigits, NumberTagNarrowest>>>
-            : _impl::default_scale<Digits, Radix, _impl::number<NumberRep, wide_tag<NumberTagDigits, NumberTagNarrowest>>> {
+    template<
+            int Digits, int Radix, typename NumberRep, int NumberTagDigits,
+            typename NumberTagNarrowest>
+    struct scale<
+            Digits, Radix, _impl::number<NumberRep, wide_tag<NumberTagDigits, NumberTagNarrowest>>>
+        : _impl::default_scale<
+                  Digits, Radix,
+                  _impl::number<NumberRep, wide_tag<NumberTagDigits, NumberTagNarrowest>>> {
     };
 }
 
-#endif  // CNL_IMPL_WIDE_INTEGER_SCALE_H
+#endif // CNL_IMPL_WIDE_INTEGER_SCALE_H

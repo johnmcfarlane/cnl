@@ -23,10 +23,12 @@ namespace cnl {
             template<class Integer>
             CNL_NODISCARD constexpr int operator()(Integer const& value, int radix) const
             {
-                static_assert(cnl::numeric_limits<Integer>::is_integer,
-                        "Integer parameter of used_digits_positive() must be a fundamental integer.");
+                static_assert(
+                        cnl::numeric_limits<Integer>::is_integer,
+                        "Integer parameter of used_digits_positive() must be a fundamental "
+                        "integer.");
 
-                return (value>0) ? 1+used_digits_signed<false>{}(value/radix, radix) : 0;
+                return (value > 0) ? 1 + used_digits_signed<false>{}(value / radix, radix) : 0;
             }
         };
 
@@ -35,28 +37,31 @@ namespace cnl {
             template<class Integer>
             CNL_NODISCARD constexpr int operator()(Integer const& value, int radix) const
             {
-                static_assert(cnl::numeric_limits<Integer>::is_integer,
-                        "Integer parameter of used_digits_signed()() must be a fundamental integer.");
+                static_assert(
+                        cnl::numeric_limits<Integer>::is_integer,
+                        "Integer parameter of used_digits_signed()() must be a fundamental "
+                        "integer.");
 
                 // Most negative number is not exploited;
                 // thus negating the result or subtracting it from something else
                 // will less likely result in overflow.
-                return (value<0)
-                       ? used_digits_signed<false>{}(Integer(-1)-value, radix)
-                       : used_digits_signed<false>{}(value, radix);
+                return (value < 0) ? used_digits_signed<false>{}(Integer(-1) - value, radix)
+                                   : used_digits_signed<false>{}(value, radix);
             }
         };
 
         template<typename Integer>
-        CNL_NODISCARD constexpr int used_digits(Integer const& value, int radix = numeric_limits<Integer>::radix)
+        CNL_NODISCARD constexpr int used_digits(
+                Integer const& value, int radix = numeric_limits<Integer>::radix)
         {
-            static_assert(std::is_integral<Integer>::value
-                    || std::is_same<Integer, intmax>::value
-                    || std::is_same<Integer, uintmax>::value, "Integer must be a fundamental integral");
+            static_assert(
+                    std::is_integral<Integer>::value || std::is_same<Integer, intmax>::value ||
+                            std::is_same<Integer, uintmax>::value,
+                    "Integer must be a fundamental integral");
 
             return used_digits_signed<std::is_signed<Integer>::value>{}(value, radix);
         }
     }
 }
 
-#endif  // CNL_IMPL_USED_DIGITS_H
+#endif // CNL_IMPL_USED_DIGITS_H

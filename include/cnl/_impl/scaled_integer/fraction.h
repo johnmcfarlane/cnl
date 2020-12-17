@@ -18,11 +18,10 @@
 namespace cnl {
 #if defined(__cpp_deduction_guides)
     template<typename Numerator, typename Denominator>
-    scaled_integer(fraction<Numerator, Denominator>)
-    -> scaled_integer<
+    scaled_integer(fraction<Numerator, Denominator>) -> scaled_integer<
             typename _impl::quotient_result<Numerator, Denominator>::rep,
             typename _impl::quotient_result<Numerator, Denominator>::scale>;
 #endif
 }
 
-#endif  // CNL_IMPL_SCALED_INTEGER_FRACTION_H
+#endif // CNL_IMPL_SCALED_INTEGER_FRACTION_H

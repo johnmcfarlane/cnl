@@ -16,7 +16,7 @@
 
 namespace cnl {
     // returns a scaled value of the same type
-    template<int Digits, int Radix, class Scalar, class Enable=void>
+    template<int Digits, int Radix, class Scalar, class Enable = void>
     struct fixed_width_scale;
 
     template<int Digits, int Radix, typename S>
@@ -24,7 +24,7 @@ namespace cnl {
         CNL_NODISCARD constexpr S operator()(S const& s) const
         {
             static_assert(
-                    Radix!=2||digits<S>::value>-Digits,
+                    Radix != 2 || digits<S>::value > -Digits,
                     "this operation will flush the given value");
 
             return static_cast<S>(scale<Digits, Radix, S>()(s));
@@ -32,7 +32,7 @@ namespace cnl {
     };
 
     namespace _impl {
-        template<int Digits, int Radix=2, class S=void>
+        template<int Digits, int Radix = 2, class S = void>
         CNL_NODISCARD constexpr S fixed_width_scale(S const& s)
         {
             return cnl::fixed_width_scale<Digits, Radix, S>()(s);
@@ -41,13 +41,13 @@ namespace cnl {
 
     template<int Digits, int Radix, typename Composite>
     struct fixed_width_scale<
-            Digits, Radix, Composite,
-            _impl::enable_if_t<is_composite<Composite>::value>> {
+            Digits, Radix, Composite, _impl::enable_if_t<is_composite<Composite>::value>> {
         CNL_NODISCARD constexpr Composite operator()(Composite const& s) const
         {
-            return _impl::from_rep<Composite>(_impl::fixed_width_scale<Digits, Radix>(_impl::to_rep(s)));
+            return _impl::from_rep<Composite>(
+                    _impl::fixed_width_scale<Digits, Radix>(_impl::to_rep(s)));
         }
     };
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_FIXED_WIDTH_SCALE
+#endif // CNL_IMPL_NUM_TRAITS_FIXED_WIDTH_SCALE

@@ -18,15 +18,17 @@
 namespace cnl {
     /// \brief tag to specify throw-on-overflow behavior in arithemtic operations
     ///
-    /// Arithmetic operations using this tag throw \ref std::overflow_error when the result exceeds the range of the
-    /// result type.
+    /// Arithmetic operations using this tag throw \ref std::overflow_error when the result exceeds
+    /// the range of the result type.
     ///
     /// \headerfile cnl/overflow.h
     /// \sa cnl::overflow_integer,
     /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
-    /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::trapping_overflow_tag, cnl::undefined_overflow_tag
+    /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::trapping_overflow_tag,
+    /// cnl::undefined_overflow_tag
     struct throwing_overflow_tag
-            : _impl::homogeneous_deduction_tag_base, _impl::homogeneous_operator_tag_base {
+        : _impl::homogeneous_deduction_tag_base
+        , _impl::homogeneous_operator_tag_base {
     };
 
     namespace _impl {
@@ -42,10 +44,12 @@ namespace cnl {
                 return throw_exception<Destination, std::overflow_error>("positive overflow");
             }
 
-            template<class ... Operands>
-            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            template<class... Operands>
+            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(
+                    Operands const&...) const
             {
-                return throw_exception<op_result<Operator, Operands...>, std::overflow_error>("positive overflow");
+                return throw_exception<op_result<Operator, Operands...>, std::overflow_error>(
+                        "positive overflow");
             }
         };
 
@@ -57,13 +61,15 @@ namespace cnl {
                 return throw_exception<Destination, std::overflow_error>("negative overflow");
             }
 
-            template<class ... Operands>
-            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            template<class... Operands>
+            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(
+                    Operands const&...) const
             {
-                return throw_exception<op_result<Operator, Operands...>, std::overflow_error>("negative overflow");
+                return throw_exception<op_result<Operator, Operands...>, std::overflow_error>(
+                        "negative overflow");
             }
         };
     }
 }
 
-#endif  // CNL_IMPL_OVERFLOW_THROWING_H
+#endif // CNL_IMPL_OVERFLOW_THROWING_H

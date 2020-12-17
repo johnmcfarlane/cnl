@@ -16,9 +16,7 @@
 /// compositional numeric library
 namespace cnl {
     template<int ArchetypeDigits, typename ArchetypeNarrowest, typename Initializer>
-    struct deduction<
-            elastic_tag<ArchetypeDigits, ArchetypeNarrowest>,
-            Initializer> {
+    struct deduction<elastic_tag<ArchetypeDigits, ArchetypeNarrowest>, Initializer> {
         // tag associated with deduced type
         using tag = elastic_tag<
                 digits<Initializer>::value,
@@ -29,4 +27,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_ELASTIC_INTEGER_DEDUCTION_H
+#endif // CNL_IMPL_ELASTIC_INTEGER_DEDUCTION_H

@@ -13,9 +13,7 @@ namespace {
     namespace test_rounding_t {
         static_assert(
                 assert_same<
-                        cnl::nearest_rounding_tag,
-                        cnl::rounding_t<cnl::static_number<1>>
-                >::value,
+                        cnl::nearest_rounding_tag, cnl::rounding_t<cnl::static_number<1>>>::value,
                 "cnl::rounding_t<cnl::static_number<>> test failed");
     }
 }

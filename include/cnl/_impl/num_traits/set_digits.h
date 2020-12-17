@@ -40,22 +40,21 @@ namespace cnl {
         // cnl::_impl::enable_for_range
 
         template<typename T, int Digits>
-        struct narrower_than
-                : std::integral_constant<
-                        bool,
-                        std::is_same<T, void>::value ? true : numeric_limits<T>::digits<Digits> {
+                struct narrower_than : std::integral_constant < bool
+            , std::is_same<T, void>::value ? true : numeric_limits<T>::digits<Digits> {
         };
 
         template<typename T, int Digits>
         struct no_narrower_than
-                : std::integral_constant<
-                        bool,
-                        std::is_same<T, void>::value ? true : numeric_limits<T>::digits>=Digits> {
+            : std::integral_constant<
+                      bool,
+                      std::is_same<T, void>::value ? true : numeric_limits<T>::digits >= Digits> {
         };
 
         template<int MinNumDigits, class Smaller, class T>
         using enable_for_range_t = typename std::enable_if<
-                no_narrower_than<T, MinNumDigits>::value && narrower_than<Smaller, MinNumDigits>::value>::type;
+                no_narrower_than<T, MinNumDigits>::value &&
+                narrower_than<Smaller, MinNumDigits>::value>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::set_digits_signed
@@ -92,7 +91,8 @@ namespace cnl {
 
         template<int MinNumDigits>
         struct set_digits_signed<MinNumDigits, enable_for_range_t<MinNumDigits, intmax, void>>
-                : signed_integer_cannot_have<MinNumDigits>::template digits_because_maximum_is<numeric_limits<intmax>::digits> {
+            : signed_integer_cannot_have<MinNumDigits>::template digits_because_maximum_is<
+                      numeric_limits<intmax>::digits> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -123,14 +123,16 @@ namespace cnl {
 
 #if defined(CNL_INT128_ENABLED)
         template<int MinNumDigits>
-        struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, uint64, uint128>> {
+        struct set_digits_unsigned<
+                MinNumDigits, enable_for_range_t<MinNumDigits, uint64, uint128>> {
             using type = uint128;
         };
 #endif
 
         template<int MinNumDigits>
         struct set_digits_unsigned<MinNumDigits, enable_for_range_t<MinNumDigits, uintmax, void>>
-                : unsigned_integer_cannot_have<MinNumDigits>::template digits_because_maximum_is<numeric_limits<uintmax>::digits> {
+            : unsigned_integer_cannot_have<MinNumDigits>::template digits_because_maximum_is<
+                      numeric_limits<uintmax>::digits> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -138,8 +140,7 @@ namespace cnl {
 
         template<class Integer, int MinNumDigits>
         using set_digits_integer = typename std::conditional<
-                numeric_limits<Integer>::is_signed,
-                set_digits_signed<MinNumDigits>,
+                numeric_limits<Integer>::is_signed, set_digits_signed<MinNumDigits>,
                 set_digits_unsigned<MinNumDigits>>::type;
     }
 
@@ -152,18 +153,16 @@ namespace cnl {
 
     template<class T, int Digits>
     struct set_digits<T, Digits, _impl::enable_if_t<_impl::is_integral<T>::value>>
-            : _impl::set_digits_integer<T, Digits> {
+        : _impl::set_digits_integer<T, Digits> {
     };
 
 #if defined(CNL_INT128_ENABLED)
     template<int Digits>
-    struct set_digits<int128, Digits>
-            : _impl::set_digits_integer<signed, Digits> {
+    struct set_digits<int128, Digits> : _impl::set_digits_integer<signed, Digits> {
     };
 
     template<int Digits>
-    struct set_digits<uint128, Digits>
-            : _impl::set_digits_integer<unsigned, Digits> {
+    struct set_digits<uint128, Digits> : _impl::set_digits_integer<unsigned, Digits> {
     };
 #endif
 
@@ -172,4 +171,4 @@ namespace cnl {
     using set_digits_t = typename set_digits<T, Digits>::type;
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_SET_DIGITS
+#endif // CNL_IMPL_NUM_TRAITS_SET_DIGITS

@@ -18,4 +18,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_TAG_H
+#endif // CNL_IMPL_NUMBER_TAG_H

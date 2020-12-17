@@ -13,4 +13,4 @@
 #include "shift_operator.h"
 #include "unary_operator.h"
 
-#endif  // CNL_IMPL_NUMBER_OPERATORS_H
+#endif // CNL_IMPL_NUMBER_OPERATORS_H

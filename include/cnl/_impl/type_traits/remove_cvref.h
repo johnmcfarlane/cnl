@@ -15,8 +15,9 @@ namespace cnl {
         // cnl::_impl::remove_cvref_t
 
         template<typename T>
-        using remove_cvref_t = typename std::remove_cv<typename std::remove_reference<T>::type>::type;
+        using remove_cvref_t =
+                typename std::remove_cv<typename std::remove_reference<T>::type>::type;
     }
 }
 
-#endif  // CNL_IMPL_TYPE_TRAITS_REMOVE_CVREF_H
+#endif // CNL_IMPL_TYPE_TRAITS_REMOVE_CVREF_H

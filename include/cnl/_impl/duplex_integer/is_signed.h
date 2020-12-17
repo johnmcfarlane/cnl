@@ -14,8 +14,8 @@
 namespace cnl {
     template<typename Upper, typename Lower>
     struct is_signed<_impl::duplex_integer<Upper, Lower>>
-            : std::integral_constant<bool, is_signed<Upper>::value> {
+        : std::integral_constant<bool, is_signed<Upper>::value> {
     };
 }
 
-#endif  // CNL_IMPL_DUPLEX_INTEGER_IS_SIGNED_H
+#endif // CNL_IMPL_DUPLEX_INTEGER_IS_SIGNED_H

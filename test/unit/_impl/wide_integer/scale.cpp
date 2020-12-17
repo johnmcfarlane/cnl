@@ -36,7 +36,8 @@ namespace {
         static_assert(
                 identical(
                         cnl::wide_integer<16, unsigned>{0x12},
-                        cnl::wide_integer<16, unsigned>{0x1234}/cnl::wide_integer<16, unsigned>{0x100}),
+                        cnl::wide_integer<16, unsigned>{0x1234} /
+                                cnl::wide_integer<16, unsigned>{0x100}),
                 "cnl::_impl::scale test failed");
         static_assert(
                 identical(

@@ -18,11 +18,10 @@ namespace cnl {
     using fixed_point = scaled_integer<Rep, power<Exponent, Radix>>;
 
     template<typename Value>
-    constexpr auto make_fixed_point(Value const& value)
-    -> decltype(make_scaled_integer(value))
+    constexpr auto make_fixed_point(Value const& value) -> decltype(make_scaled_integer(value))
     {
         return make_scaled_integer(value);
     }
 }
 
-#endif  // CNL_FIXED_POINT_H
+#endif // CNL_FIXED_POINT_H

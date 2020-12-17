@@ -18,32 +18,35 @@
 namespace cnl {
 
     template<class T>
-    struct numeric_limits : std::numeric_limits<T> {};
+    struct numeric_limits : std::numeric_limits<T> {
+    };
 
 #if defined(CNL_INT128_ENABLED)
 
-    namespace _impl
-    {
+    namespace _impl {
         // compose a 128-bit integer from two 64-bit integers
         template<typename Integer128>
         class join128 {
-        public:
+          public:
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
             constexpr join128(uint64 upper, uint64 lower)
-                    :_value(lower+(Integer128{upper} << 64)) { }
+                : _value(lower + (Integer128{upper} << 64))
+            {
+            }
 
             CNL_NODISCARD explicit constexpr operator Integer128() const
             {
                 return _value;
             }
-        private:
+
+          private:
             Integer128 _value;
         };
     }
 
     template<>
     struct numeric_limits<int128> : numeric_limits<long long> {
-        static int const digits = CHAR_BIT*sizeof(int128)-1;
+        static int const digits = CHAR_BIT * sizeof(int128) - 1;
         static int const digits10 = 38;
 
         CNL_NODISCARD static constexpr int128 min()
@@ -64,7 +67,7 @@ namespace cnl {
 
     template<>
     struct numeric_limits<uint128> : numeric_limits<unsigned long long> {
-        static int const digits = CHAR_BIT*sizeof(int128);
+        static int const digits = CHAR_BIT * sizeof(int128);
         static int const digits10 = 38;
 
         CNL_NODISCARD static constexpr int128 min()
@@ -83,7 +86,7 @@ namespace cnl {
         }
     };
 
-#endif  // CNL_INT128_ENABLED
+#endif // CNL_INT128_ENABLED
 }
 
-#endif  // CNL_LIMITS_H
+#endif // CNL_LIMITS_H

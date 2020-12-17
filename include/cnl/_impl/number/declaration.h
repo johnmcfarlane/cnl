@@ -12,9 +12,9 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<typename Rep=int, class Tag=native_tag>
+        template<typename Rep = int, class Tag = native_tag>
         class number;
     }
 }
 
-#endif  // CNL_IMPL_NUMBER_DECLARATION_H
+#endif // CNL_IMPL_NUMBER_DECLARATION_H

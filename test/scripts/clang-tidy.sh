@@ -11,5 +11,5 @@ PROJECT_DIR=$(
 )
 
 "${PROJECT_DIR}/test/scripts/test.sh" \
-  --env CONAN_CMAKE_TOOLCHAIN_FILE="${PROJECT_DIR}/test/cmake/toolchain/clang-tidy-libc++.cmake" \
+  --env CONAN_CMAKE_TOOLCHAIN_FILE="${PROJECT_DIR}/test/cmake/toolchain/clang-tidy.cmake" \
   --env CXX=clang++

@@ -16,4 +16,4 @@
 #include "elastic_tag/is_same_tag_family.h"
 #include "elastic_tag/overloads.h"
 
-#endif  // CNL_IMPL_ELASTIC_TAG_H
+#endif // CNL_IMPL_ELASTIC_TAG_H

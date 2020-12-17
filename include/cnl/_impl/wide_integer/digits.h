@@ -15,9 +15,8 @@
 /// compositional numeric library
 namespace cnl {
     template<int Digits, typename Narrowest>
-    struct digits<wide_integer<Digits, Narrowest>>
-            : std::integral_constant<int, Digits> {
+    struct digits<wide_integer<Digits, Narrowest>> : std::integral_constant<int, Digits> {
     };
 }
 
-#endif  // CNL_IMPL_WIDE_INTEGER_DIGITS_H
+#endif // CNL_IMPL_WIDE_INTEGER_DIGITS_H

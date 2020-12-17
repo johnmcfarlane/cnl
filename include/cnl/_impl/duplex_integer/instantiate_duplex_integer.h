@@ -43,15 +43,17 @@ namespace cnl {
 
         template<typename Word, int NumWords>
         struct multiword_integer {
-        private:
-            static_assert(NumWords>2, "");
+          private:
+            static_assert(NumWords > 2, "");
             static constexpr auto num_words = NumWords;
-            static constexpr auto num_words_rounded_up = (1 << used_digits(num_words-1));
-            static constexpr auto upper_num_words = num_words_rounded_up/2;
-            static constexpr auto lower_num_words = num_words-upper_num_words;
+            static constexpr auto num_words_rounded_up = (1 << used_digits(num_words - 1));
+            static constexpr auto upper_num_words = num_words_rounded_up / 2;
+            static constexpr auto lower_num_words = num_words - upper_num_words;
             using upper = typename multiword_integer<Word, upper_num_words>::type;
-            using lower = typename multiword_integer<set_signedness_t<Word, false>, lower_num_words>::type;
-        public:
+            using lower = typename multiword_integer<
+                    set_signedness_t<Word, false>, lower_num_words>::type;
+
+          public:
             using type = duplex_integer<upper, lower>;
         };
 
@@ -66,8 +68,8 @@ namespace cnl {
         struct is_power_of_two;
 
         template<int N>
-        struct is_power_of_two<N, enable_if_t<(N>0)>>
-                : std::integral_constant<bool, !(N & (N-1))> {
+        struct is_power_of_two<N, enable_if_t<(N > 0)>>
+            : std::integral_constant<bool, !(N & (N - 1))> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -79,14 +81,15 @@ namespace cnl {
         template<typename Narrowest>
         struct optimal_duplex<Narrowest, unsigned> {
             static constexpr auto double_word_digits = max_digits<Narrowest>::value;
-            static_assert(double_word_digits>=2 && is_power_of_two<double_word_digits>::value,
+            static_assert(
+                    double_word_digits >= 2 && is_power_of_two<double_word_digits>::value,
                     "invalid integer type, Narrowest");
 
             // Because multiword_integer needs to perform double-width arithmetic operations,
             // its word type should be half the maximum width.
-            static constexpr auto word_digits = double_word_digits/2;
+            static constexpr auto word_digits = double_word_digits / 2;
             using word = set_digits_t<Narrowest, word_digits>;
-            static_assert(digits<word>::value==word_digits, "failed to half a double-width word");
+            static_assert(digits<word>::value == word_digits, "failed to half a double-width word");
 
             using type = word;
         };
@@ -106,8 +109,9 @@ namespace cnl {
         struct instantiate_duplex_integer {
             using word = typename optimal_duplex<Narrowest>::type;
             static constexpr auto num_sign_bits = is_signed<word>::value;
-            static constexpr auto word_digits = digits<word>::value+num_sign_bits;
-            static constexpr auto required_num_words = (Digits+num_sign_bits+word_digits-1)/word_digits;
+            static constexpr auto word_digits = digits<word>::value + num_sign_bits;
+            static constexpr auto required_num_words =
+                    (Digits + num_sign_bits + word_digits - 1) / word_digits;
 
             // Otherwise, it's not multi!
             static constexpr auto plural_num_words = max(2, required_num_words);
@@ -116,8 +120,9 @@ namespace cnl {
         };
 
         template<int Digits, typename Narrowest>
-        using instantiate_duplex_integer_t = typename instantiate_duplex_integer<Digits, Narrowest>::type;
+        using instantiate_duplex_integer_t =
+                typename instantiate_duplex_integer<Digits, Narrowest>::type;
     }
 }
 
-#endif  // CNL_IMPL_DUPLEX_INTEGER_INSTANTIATE_DUPLEX_INTEGER_H
+#endif // CNL_IMPL_DUPLEX_INTEGER_INSTANTIATE_DUPLEX_INTEGER_H

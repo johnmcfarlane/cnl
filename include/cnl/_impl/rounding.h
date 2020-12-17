@@ -29,7 +29,7 @@ namespace cnl {
         template<class LhsTag, class RhsTag, class Lhs, class Rhs>
         struct divide {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(lhs/rhs)
+                    -> decltype(lhs / rhs)
             {
                 return cnl::binary_operator<divide_op, LhsTag, RhsTag, Lhs, Rhs>{}(
                         cnl::unwrap(lhs), cnl::unwrap(rhs));
@@ -42,7 +42,7 @@ namespace cnl {
         template<class LhsTag, class RhsTag, class Lhs, class Rhs>
         struct shift_right {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-            -> decltype(lhs >> rhs)
+                    -> decltype(lhs >> rhs)
             {
                 return cnl::binary_operator<shift_right_op, LhsTag, RhsTag, Lhs, Rhs>{}(lhs, rhs);
             }
@@ -50,4 +50,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_ROUNDING_H
+#endif // CNL_IMPL_ROUNDING_H

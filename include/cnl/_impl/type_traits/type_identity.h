@@ -22,4 +22,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_TYPE_TRAITS_TYPE_IDENTITY_H
+#endif // CNL_IMPL_TYPE_TRAITS_TYPE_IDENTITY_H

@@ -16,15 +16,17 @@
 namespace cnl {
     /// \brief tag to match the overflow behavior of fundamental arithmetic types
     ///
-    /// Arithmetic operations using this tag return the closest representable value when the result exceeds the range of
-    /// the result type.
+    /// Arithmetic operations using this tag return the closest representable value when the result
+    /// exceeds the range of the result type.
     ///
     /// \headerfile cnl/overflow.h
     /// \sa cnl::overflow_integer,
     /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
-    /// cnl::native_overflow_tag, cnl::throwing_overflow_tag, cnl::trapping_overflow_tag, cnl::undefined_overflow_tag
+    /// cnl::native_overflow_tag, cnl::throwing_overflow_tag, cnl::trapping_overflow_tag,
+    /// cnl::undefined_overflow_tag
     struct saturated_overflow_tag
-            : _impl::homogeneous_deduction_tag_base, _impl::homogeneous_operator_tag_base {
+        : _impl::homogeneous_deduction_tag_base
+        , _impl::homogeneous_operator_tag_base {
     };
 
     namespace _impl {
@@ -40,8 +42,9 @@ namespace cnl {
                 return numeric_limits<Destination>::max();
             }
 
-            template<class ... Operands>
-            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            template<class... Operands>
+            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(
+                    Operands const&...) const
             {
                 return numeric_limits<op_result<Operator, Operands...>>::max();
             }
@@ -55,8 +58,9 @@ namespace cnl {
                 return numeric_limits<Destination>::lowest();
             }
 
-            template<class ... Operands>
-            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(Operands const& ...) const
+            template<class... Operands>
+            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(
+                    Operands const&...) const
             {
                 return numeric_limits<op_result<Operator, Operands...>>::lowest();
             }
@@ -64,4 +68,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_OVERFLOW_SATURATED_H
+#endif // CNL_IMPL_OVERFLOW_SATURATED_H

@@ -20,9 +20,8 @@ namespace cnl {
         // power_value - one integer raised to another as a floating-point or integer type
 
         template<
-                typename S, int Exponent, int Radix,
-                bool PositiveExponent = (0<Exponent),
-                bool OddExponent = ((Exponent & 1)!=0),
+                typename S, int Exponent, int Radix, bool PositiveExponent = (0 < Exponent),
+                bool OddExponent = ((Exponent & 1) != 0),
                 bool FloatingPointS = numeric_limits<S>::is_iec559>
         struct power_value_fn;
 
@@ -36,27 +35,35 @@ namespace cnl {
 
         template<typename S, int Exponent, bool OddExponent>
         struct power_value_fn<S, Exponent, 2, true, OddExponent, false> {
-            CNL_NODISCARD constexpr auto operator()() const
-            -> decltype(decltype(std::declval<S>() >> std::declval<constant<digits<S>::value-1>>()){1} << constant<Exponent>{})
+            CNL_NODISCARD constexpr auto operator()() const -> decltype(
+                    decltype(std::declval<S>() >> std::declval<constant<digits<S>::value - 1>>()){1}
+                    << constant<Exponent>{})
             {
-                using result_numeric_limits = numeric_limits<decltype(decltype(
-                        std::declval<S>() >> std::declval<constant<digits<S>::value-1>>()){1} << constant<Exponent>{})>;
-                static_assert(!std::is_integral<S>::value
-                        || !std::is_signed<S>::value
-                        || Exponent<result_numeric_limits::digits, "attempted operation will result in overflow");
+                using result_numeric_limits = numeric_limits<decltype(
+                        decltype(
+                                std::declval<S>() >>
+                                std::declval<constant<digits<S>::value - 1>>()){1}
+                        << constant<Exponent>{})>;
+                static_assert(
+                        !std::is_integral<S>::value || !std::is_signed<S>::value ||
+                                Exponent < result_numeric_limits::digits,
+                        "attempted operation will result in overflow");
 
                 // TODO: This expression is so ugly that it might justify
                 // a separate specialization of power for elastic_integer
-                return decltype(std::declval<S>() >> std::declval<constant<digits<S>::value-1>>()){1} << constant<Exponent>{};
+                return decltype(
+                               std::declval<S>() >>
+                               std::declval<constant<digits<S>::value - 1>>()){1}
+                << constant<Exponent>{};
             }
         };
 
         template<typename S, int Exponent, int Radix, bool OddExponent>
         struct power_value_fn<S, Exponent, Radix, true, OddExponent, false> {
             CNL_NODISCARD constexpr auto operator()() const
-            -> decltype(power_value_fn<S, (Exponent-1), Radix>{}()*Radix)
+                    -> decltype(power_value_fn<S, (Exponent - 1), Radix>{}() * Radix)
             {
-                return power_value_fn<S, (Exponent-1), Radix>{}()*Radix;
+                return power_value_fn<S, (Exponent - 1), Radix>{}() * Radix;
             }
         };
 
@@ -64,9 +71,7 @@ namespace cnl {
         struct power_value_fn<S, Exponent, Radix, PositiveExponent, OddExponent, true> {
             CNL_NODISCARD constexpr S operator()() const
             {
-                return Exponent
-                       ? S(1.)/power_value_fn<S, -Exponent, Radix>{}()
-                       : S{1.};
+                return Exponent ? S(1.) / power_value_fn<S, -Exponent, Radix>{}() : S{1.};
             }
         };
 
@@ -74,12 +79,12 @@ namespace cnl {
         struct power_value_fn<S, Exponent, Radix, true, false, true> {
             CNL_NODISCARD constexpr static S square(S const& r)
             {
-                return r*r;
+                return r * r;
             }
 
             CNL_NODISCARD constexpr S operator()() const
             {
-                return square(power_value_fn<S, Exponent/2, Radix>{}());
+                return square(power_value_fn<S, Exponent / 2, Radix>{}());
             }
         };
 
@@ -87,22 +92,22 @@ namespace cnl {
         struct power_value_fn<S, Exponent, Radix, true, true, true> {
             CNL_NODISCARD constexpr static S square(S const& r)
             {
-                return r*r;
+                return r * r;
             }
 
             CNL_NODISCARD constexpr S operator()() const
             {
-                return S(Radix)*power_value_fn<S, (Exponent-1), Radix>{}();
+                return S(Radix) * power_value_fn<S, (Exponent - 1), Radix>{}();
             }
         };
 
         template<typename S, int Exponent, int Radix>
         CNL_NODISCARD constexpr auto power_value()
-        -> decltype(power_value_fn<S, Exponent, Radix>{}())
+                -> decltype(power_value_fn<S, Exponent, Radix>{}())
         {
             return power_value_fn<S, Exponent, Radix>{}();
         }
     }
 }
 
-#endif  // CNL_IMPL_POWER_H
+#endif // CNL_IMPL_POWER_H

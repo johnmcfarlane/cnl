@@ -8,7 +8,7 @@
 #include <cnl/scaled_integer.h>
 
 #define TEST_UNDEFINED_OVERFLOW_INTEGER
-#define TEST_LABEL undefined_overflow_  // NOLINT(cppcoreguidelines-macro-usage)
+#define TEST_LABEL undefined_overflow_ // NOLINT(cppcoreguidelines-macro-usage)
 
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as scaled_integer Rep type

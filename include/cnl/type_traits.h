@@ -35,4 +35,4 @@ namespace cnl {
     using _impl::type_identity_t;
 }
 
-#endif  // CNL_TYPE_TRAITS_H
+#endif // CNL_TYPE_TRAITS_H

@@ -16,8 +16,9 @@
 namespace cnl {
     template<typename Upper, typename Lower, int Digits>
     struct set_digits<_impl::duplex_integer<Upper, Lower>, Digits>
-            : _impl::instantiate_duplex_integer<Digits, _impl::rep_t<_impl::duplex_integer<Upper, Lower>>> {
+        : _impl::instantiate_duplex_integer<
+                  Digits, _impl::rep_t<_impl::duplex_integer<Upper, Lower>>> {
     };
 }
 
-#endif  // CNL_IMPL_DUPLEX_INTEGER_SET_DIGITS_H
+#endif // CNL_IMPL_DUPLEX_INTEGER_SET_DIGITS_H

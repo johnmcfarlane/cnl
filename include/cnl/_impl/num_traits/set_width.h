@@ -24,4 +24,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_SET_WIDTH
+#endif // CNL_IMPL_NUM_TRAITS_SET_WIDTH

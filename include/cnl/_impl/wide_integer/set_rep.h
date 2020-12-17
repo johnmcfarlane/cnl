@@ -18,8 +18,9 @@
 namespace cnl {
     template<typename NumberRep, int NumberTagDigits, typename NumberTagNarrowest, typename Rep>
     struct set_rep<_impl::number<NumberRep, wide_tag<NumberTagDigits, NumberTagNarrowest>>, Rep>
-        : _impl::type_identity<wide_integer<NumberTagDigits, _impl::adopt_signedness_t<NumberTagNarrowest, Rep>>> {
+        : _impl::type_identity<wide_integer<
+                  NumberTagDigits, _impl::adopt_signedness_t<NumberTagNarrowest, Rep>>> {
     };
 }
 
-#endif  // CNL_IMPL_WIDE_INTEGER_SET_REP_H
+#endif // CNL_IMPL_WIDE_INTEGER_SET_REP_H
