@@ -76,7 +76,8 @@ namespace {
         static_assert(std::is_same<expected_type, actual_type>::value, "");
     }
 
-    TEST(boost_simd, scale) {  // NOLINT
+    TEST(boost_simd, scale)  // NOLINT
+    {
         using pack = boost::simd::pack<int, 2>;
         auto input = pack{65535, 0};
         auto output = cnl::_impl::fixed_width_scale<5>(input);
@@ -84,7 +85,8 @@ namespace {
         ASSERT_TRUE(boost::simd::compare_equal(expected, output));
     }
 
-    TEST(boost_simd, shift_left) {  // NOLINT
+    TEST(boost_simd, shift_left)  // NOLINT
+    {
         using pack = boost::simd::pack<int, 2>;
         auto input = pack{65535, 0};
         auto output = cnl::_impl::scale<5>(input);
@@ -92,7 +94,8 @@ namespace {
         ASSERT_TRUE(boost::simd::compare_equal(expected, output));
     }
 
-    TEST(boost_simd, shift_right) {  // NOLINT
+    TEST(boost_simd, shift_right)  // NOLINT
+    {
         using pack = boost::simd::pack<cnl::int64, 2>;
         auto input = pack{65535, 0};
         auto output = cnl::_impl::scale<-5>(input);
@@ -100,7 +103,8 @@ namespace {
         ASSERT_TRUE(boost::simd::compare_equal(expected, output));
     }
 
-    TEST(boost_simd, equality) {  // NOLINT
+    TEST(boost_simd, equality)  // NOLINT
+    {
         using fpp = fpp<short, 4, -4>;
         using init = initializer<fpp>;
         auto lhs = fpp(init(6.25, -8., 0., 1.625));
@@ -108,7 +112,8 @@ namespace {
         ASSERT_EQ(lhs, rhs);
     }
 
-    TEST(boost_simd, inequality) {  // NOLINT
+    TEST(boost_simd, inequality)  // NOLINT
+    {
         using fpp = fpp<cnl::uint64, 2, -32>;
         using init = initializer<fpp>;
         auto lhs = fpp{init{8237416.17618, 3278928.9012393}};
@@ -116,7 +121,8 @@ namespace {
         ASSERT_NE(lhs, rhs);
     }
 
-    TEST(boost_simd, conversion) {  // NOLINT
+    TEST(boost_simd, conversion)  // NOLINT
+    {
         using wide_type = pack<cnl::int64, 2>;
         using narrow_type = pack<cnl::uint16, 2>;
         auto w = wide_type{pack<cnl::int64, 2>{INT64_C(5000000000), INT64_C(-42000000000000)}};
@@ -140,7 +146,8 @@ namespace {
         EXPECT_TRUE(boost::simd::compare_equal(static_cast<narrow_type>(wide_explicit), n));
     }
 
-    TEST(boost_simd, multiply) {  // NOLINT
+    TEST(boost_simd, multiply)  // NOLINT
+    {
         using operand_type = fpp<short, 2, -4>;
         using result_type = fpp<short, 2, -8>;
         using initializer = initializer<operand_type>;
@@ -152,7 +159,8 @@ namespace {
         ASSERT_EQ(expected, product);
     }
 
-    TEST(boost_simd, add) {  // NOLINT
+    TEST(boost_simd, add)  // NOLINT
+    {
         using operand_type = fpp<int, 4, -16>;
         using result_type = operand_type;
         using initializer = initializer<operand_type>;

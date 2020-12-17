@@ -42,7 +42,8 @@ namespace cnl {
         explicit constexpr fraction(Integer const& i);
 
         template<typename RhsNumerator, typename RhsDenominator>
-        constexpr fraction(fraction<RhsNumerator, RhsDenominator> const& f);  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
+        // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
+        constexpr fraction(fraction<RhsNumerator, RhsDenominator> const& f);
 
         template<
                 typename FloatingPoint,

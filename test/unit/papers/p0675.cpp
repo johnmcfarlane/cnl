@@ -98,12 +98,14 @@ namespace {
         ASSERT_TRUE(num_children == 3);
     }
 
-    TEST(P0675, compose_from_components) {  // NOLINT
+    TEST(P0675, compose_from_components)  // NOLINT
+    {
         auto num = scaled_integer<rounded_integer<uint8_t>, power<-4>>{15.9375};
         ASSERT_TRUE((cnl::from_rep<decltype(num), int>{}(1) == 1. / 16));
     }
 
-    TEST(P0675, smart_multiply) {  // NOLINT
+    TEST(P0675, smart_multiply)  // NOLINT
+    {
         // smart_integer chooses appropriate signedness for results of arithmetic operations
         auto a = smart_integer{7U};
         auto b = smart_integer{-3};
@@ -111,7 +113,8 @@ namespace {
         ASSERT_TRUE(identical(smart_integer<int>{-21}, c));
     }
 
-    TEST(P0675, smart_add) {  // NOLINT
+    TEST(P0675, smart_add)  // NOLINT
+    {
         auto m = smart_integer{5U};
         auto s = smart_integer{10U};
         auto d = m - s;  // smart_integer<int>{-5}

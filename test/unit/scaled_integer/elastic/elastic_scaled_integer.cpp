@@ -467,13 +467,15 @@ struct positive_elastic_test
             "cnl::from_rep<scaled_integer<elastic_integer>>(int)");
 };
 
-TEST(elastic_scaled_integer, over_int) {  // NOLINT
+TEST(elastic_scaled_integer, over_int)  // NOLINT
+{
     auto q = cnl::elastic_scaled_integer<10, -5>{1.5}/elastic_integer<2>{2};
     auto e = cnl::elastic_scaled_integer<12, -7>{3./4};
     EXPECT_EQ(e, q);
 }
 
-TEST(elastic_scaled_integer, int_over) {  // NOLINT
+TEST(elastic_scaled_integer, int_over)  // NOLINT
+{
     auto f = cnl::make_fraction(elastic_integer<2>{2}, elastic_scaled_integer<10, -5>{1.5});
     auto q = cnl::make_scaled_integer(f);
     auto e = elastic_scaled_integer<12, -5>{4./3};

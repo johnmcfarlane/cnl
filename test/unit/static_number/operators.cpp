@@ -19,14 +19,16 @@ namespace {
     }
 
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
-    TEST(static_number, most_negative_number) {  // NOLINT
+    TEST(static_number, most_negative_number)  // NOLINT
+    {
         static_assert(cnl::static_number<1>{1}, "in-range boundary test");
         static_assert(cnl::static_number<1>{-1}, "in-range boundary test");
         ASSERT_DEATH(cnl::static_number<1>{-2}, "negative overflow");
     }
 #endif
 
-    TEST(static_number, pre_increment) {  // NOLINT
+    TEST(static_number, pre_increment)  // NOLINT
+    {
         auto a = cnl::static_number<4, -2>{2.75};
         auto& b = ++ a;
         static_assert(
@@ -36,7 +38,8 @@ namespace {
         ASSERT_EQ(3.75, b) << "static_number pre-increment";
     }
 
-    TEST(static_number, pre_decrement) {  // NOLINT
+    TEST(static_number, pre_decrement)  // NOLINT
+    {
         auto a = cnl::static_number<4, -2>{-2.75};
         auto& b = -- a;
         static_assert(
@@ -46,7 +49,8 @@ namespace {
         ASSERT_EQ(-3.75, b) << "static_number pre-increment";
     }
 
-    TEST(static_number, post_increment) {  // NOLINT
+    TEST(static_number, post_increment)  // NOLINT
+    {
         auto a = cnl::static_number<4, -2>{2.75};
         auto const& b = a ++;
         static_assert(
@@ -57,7 +61,8 @@ namespace {
         ASSERT_EQ(2.75, b) << "static_number pre-increment";
     }
 
-    TEST(static_number, post_decrement) {  // NOLINT
+    TEST(static_number, post_decrement)  // NOLINT
+    {
         auto a = cnl::static_number<4, -2>{-2.75};
         auto const& b = a --;
         static_assert(
@@ -68,7 +73,8 @@ namespace {
         ASSERT_EQ(-2.75, b) << "static_number pre-increment";
     }
 
-    TEST(static_number, stress) {  // NOLINT
+    TEST(static_number, stress)  // NOLINT
+    {
         auto expected = 2809;
 
         auto s = cnl::make_static_number<cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>(70) / 3;
@@ -82,22 +88,26 @@ namespace {
     }
 
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
-    TEST(static_number, pre_increment_overflow) {  // NOLINT
+    TEST(static_number, pre_increment_overflow)  // NOLINT
+    {
         auto a = cnl::static_number<4, -2>{3.0};
         ASSERT_DEATH(++ a, "positive overflow");
     }
 
-    TEST(static_number, pre_decrement_overflow) {  // NOLINT
+    TEST(static_number, pre_decrement_overflow)  // NOLINT
+    {
         auto a = cnl::static_number<4, -2>{-3.0};
         ASSERT_DEATH(-- a, "negative overflow");
     }
 
-    TEST(static_number, post_increment_overflow) {  // NOLINT
+    TEST(static_number, post_increment_overflow)  // NOLINT
+    {
         auto a = cnl::static_number<4, -2>{3.0};
         ASSERT_DEATH(a ++, "positive overflow");
     }
 
-    TEST(static_number, post_decrement_overflow) {  // NOLINT
+    TEST(static_number, post_decrement_overflow)  // NOLINT
+    {
         auto a = cnl::static_number<4, -2>{-3.0};
         ASSERT_DEATH(a --, "negative overflow");
     }

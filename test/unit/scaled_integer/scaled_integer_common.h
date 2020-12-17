@@ -67,42 +67,48 @@ TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_alternative_specialization) 
 // compound assignment
 
 namespace test_compound_assignment {
-    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_f_i) {  // NOLINT
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_f_i)  // NOLINT
+    {
         auto lhs = scaled_integer<uint32, cnl::power<-16>>{7};
         auto rhs = uint32{12};
         lhs += rhs;
         ASSERT_EQ(lhs, 19U);
     }
 
-    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_i_f) {  // NOLINT
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_i_f)  // NOLINT
+    {
         auto lhs = int32{7};
         auto rhs = scaled_integer<int32, cnl::power<-16>>{12};
         lhs += rhs;
         ASSERT_EQ(lhs, 19);
     }
 
-    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_f_f) {  // NOLINT
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), add_f_f)  // NOLINT
+    {
         auto rhs = scaled_integer<int32, cnl::power<-16>>{12.25};
         auto lhs = scaled_integer<int64, cnl::power<-20>>{18726.125L};
         lhs += rhs;
         ASSERT_EQ(lhs, 18738.375);
     }
 
-    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_f_i) {  // NOLINT
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_f_i)  // NOLINT
+    {
         auto lhs = scaled_integer<int32, cnl::power<-16>>{7};
         auto rhs = int32{12};
         lhs -= rhs;
         ASSERT_EQ(lhs, -5);
     }
 
-    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_i_f) {  // NOLINT
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_i_f)  // NOLINT
+    {
         auto lhs = 18726.125L;
         auto rhs = scaled_integer<uint8, cnl::power<-4>>{2.5};
         lhs -= rhs;
         ASSERT_EQ(lhs, 18723.625L);
     }
 
-    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_f_f) {  // NOLINT
+    TEST(TOKENPASTE2(TEST_LABEL, compound_assignment), sub_f_f)  // NOLINT
+    {
         auto lhs = scaled_integer<int64, cnl::power<-6>>{18726.125L};
         auto rhs = scaled_integer<uint8, cnl::power<-4>>{2.5};
         lhs -= rhs;

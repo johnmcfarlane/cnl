@@ -198,7 +198,8 @@ namespace {
         static_assert(_impl::identical(cnl::leading_bits(CNL_INTMAX_C(0x0)), 127), "cnl::leading_bits");
 #endif
 
-        TEST(numeric, leading_bits) {  // NOLINT
+        TEST(numeric, leading_bits)  // NOLINT
+        {
             EXPECT_EQ(leading_bits(INT32_C(0)), 31);
             EXPECT_EQ(leading_bits(INT32_C(127)), 24);
             EXPECT_EQ(leading_bits(INT32_C(64)), 24);

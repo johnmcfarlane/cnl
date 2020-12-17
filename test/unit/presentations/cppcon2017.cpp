@@ -33,7 +33,8 @@ namespace a {
     using std::unordered_map;
     using byte = std::uint8_t;
 
-    unordered_map<filesystem::path, unique_ptr<byte[]>> cache;  // NOLINT(cppcoreguidelines-avoid-c-arrays,cppcoreguidelines-avoid-non-const-global-variables)
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,cppcoreguidelines-avoid-non-const-global-variables)
+    unordered_map<filesystem::path, unique_ptr<byte[]>> cache;
 }
 #endif
 
