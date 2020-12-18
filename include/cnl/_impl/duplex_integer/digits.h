@@ -30,11 +30,7 @@ namespace cnl {
             using promoted_type = decltype(lhs >> rhs);
             return static_cast<Result>(
                     (rhs >= digits<promoted_type>::value)
-                            // TODO: Not reproduced locally. Investigate.
-                            // NOLINTNEXTLINE(clang-analyzer-core.UndefinedBinaryOperatorResult)
                             ? lhs >> (digits<Lhs>::value - 1) >> 1
-                            // TODO: Not reproduced locally. Investigate.
-                            // NOLINTNEXTLINE(clang-analyzer-core.UndefinedBinaryOperatorResult)
                             : (lhs >> rhs) & static_cast<promoted_type>(~Result{}));
         }
 
@@ -62,8 +58,6 @@ namespace cnl {
             return (rhs >= digits<promoted_type>::value)
                     ? Result{}
                     : static_cast<Result>(
-                              // TODO: Not reproduced locally. Investigate.
-                              // NOLINTNEXTLINE(clang-analyzer-core.UndefinedBinaryOperatorResult)
                               static_cast<unsigned_type>(
                                       lhs & sensible_right_shift<Lhs>(~Result{}, rhs))
                               << rhs);
