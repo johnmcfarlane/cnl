@@ -161,12 +161,6 @@ namespace cnl {
             }
         };
 
-        template<class Operator, typename ... Operands>
-        int constexpr operator_overflow_traits<Operator, Operands...>::positive_digits;  // NOLINT(readability-redundant-declaration)
-
-        template<class Operator, typename ... Operands>
-        int constexpr operator_overflow_traits<Operator, Operands...>::negative_digits;  // NOLINT(readability-redundant-declaration)
-
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::is_overflow
 
