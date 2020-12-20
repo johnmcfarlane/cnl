@@ -16,7 +16,7 @@
 #include <cnl/fraction.h>
 #include <cnl/scaled_integer.h>
 
-namespace {  // NOLINT(cert-dcl59-cpp)
+namespace {
     using cnl::_impl::identical;
 
     template<class Op, typename Lhs, typename Rhs>

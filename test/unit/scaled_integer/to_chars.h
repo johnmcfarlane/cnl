@@ -16,7 +16,7 @@
 #include <iterator>
 #include <string>
 
-namespace {  // NOLINT(cert-dcl59-cpp)
+namespace {
     using cnl::_impl::identical;
 
     namespace test_max_to_chars_chars {
