@@ -16,8 +16,6 @@ using cnl::_impl::identical;
 
 namespace {
     static_assert(
-            identical(
-                    cnl::_impl::integer<long>{1},
-                    cnl::_impl::make_integer(1L)),
+            identical(cnl::_impl::integer<long>{1}, cnl::_impl::make_integer(1L)),
             "cnl::make_integer<cnl::_impl::integer>");
 }

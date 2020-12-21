@@ -37,21 +37,25 @@ namespace cnl {
 
         public:
             /// constructor taking a related _impl::number type
-            template<typename RhsRep, class RhsTag,
+            template<
+                    typename RhsRep, class RhsTag,
                     enable_if_t<can_convert_tag_family<Tag, RhsTag>::value, int> = 0>
             // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
             constexpr number(number<RhsRep, RhsTag> const& i)
-                    : _rep(convert<Tag, RhsTag, Rep>(to_rep(i)))
+                : _rep(convert<Tag, RhsTag, Rep>(to_rep(i)))
             {
             }
 
             /// constructor taking an unrelated _impl::number type
-            template<typename Number,
-                    enable_if_t<is_number<Number>::value
-                            && !can_convert_tag_family<Tag, tag_t<Number>>::value, int> = 0>
+            template<
+                    typename Number,
+                    enable_if_t<
+                            is_number<Number>::value
+                                    && !can_convert_tag_family<Tag, tag_t<Number>>::value,
+                            int> = 0>
             // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
             constexpr number(Number const& i)
-                    : _rep(convert<Tag, _impl::native_tag, Rep>(i))
+                : _rep(convert<Tag, _impl::native_tag, Rep>(i))
             {
             }
 
@@ -76,6 +80,7 @@ namespace cnl {
 
             template<typename T, class Enable>
             friend struct cnl::to_rep;
+
         private:
             Rep _rep;
         };

@@ -21,38 +21,37 @@ namespace {
 
     namespace test_max_to_chars_chars {
         static_assert(
-                4==cnl::_impl::max_to_chars_chars<scaled_integer<uint8, cnl::power<2>>>::value,
+                4 == cnl::_impl::max_to_chars_chars<scaled_integer<uint8, cnl::power<2>>>::value,
                 "cnl::_impl::max_to_chars_chars");  // 1020
         static_assert(
-                7==cnl::_impl::max_to_chars_chars<scaled_integer<int8, cnl::power<-3>>>::value,
+                7 == cnl::_impl::max_to_chars_chars<scaled_integer<int8, cnl::power<-3>>>::value,
                 "cnl::_impl::max_to_chars_chars");  // -15.875
         static_assert(
-                6==cnl::_impl::max_to_chars_chars<scaled_integer<uint16, cnl::power<>>>::value,
-                "cnl::_impl::max_to_chars_chars"); // 65536
+                6 == cnl::_impl::max_to_chars_chars<scaled_integer<uint16, cnl::power<>>>::value,
+                "cnl::_impl::max_to_chars_chars");  // 65536
         static_assert(
-                41==cnl::_impl::max_to_chars_chars<
-                        cnl::scaled_integer<cnl::elastic_integer<41>, cnl::power<-38>>>::value,
+                41
+                        == cnl::_impl::max_to_chars_chars<cnl::scaled_integer<
+                                cnl::elastic_integer<41>, cnl::power<-38>>>::value,
                 "cnl::_impl::max_to_chars_chars");
         static_assert(
-                45==cnl::_impl::max_to_chars_chars<cnl::scaled_integer<int64, cnl::power<-32>>>::value,
-                "cnl::_impl::max_to_chars_chars"); // −2147483647.99999999976716935634613037109375
+                45
+                        == cnl::_impl::max_to_chars_chars<
+                                cnl::scaled_integer<int64, cnl::power<-32>>>::value,
+                "cnl::_impl::max_to_chars_chars");  // −2147483647.99999999976716935634613037109375
     }
 
     void test_chars(
-            std::string const& expected,
-            char const* const buffer_first,
+            std::string const& expected, char const* const buffer_first,
             char const* const buffer_last)
     {
         auto const expected_length = static_cast<int>(expected.length());
         auto const actual_length = std::distance(buffer_first, buffer_last);
 
-        ASSERT_EQ(expected_length, actual_length)
-                                << "result is wrong length";
+        ASSERT_EQ(expected_length, actual_length) << "result is wrong length";
 
-        ASSERT_EQ(0, expected.compare(
-                0, actual_length,
-                buffer_first, expected_length))
-                                << "result has wrong characters";
+        ASSERT_EQ(0, expected.compare(0, actual_length, buffer_first, expected_length))
+                << "result has wrong characters";
     }
 
     namespace test_to_chars_natural {
@@ -67,7 +66,7 @@ namespace {
             auto const buffer_end = buffer.data() + buffer.size();
 
             auto buffer_last = cnl::_impl::to_chars_natural(buffer_begin, buffer_end, value);
-            if (BufferSize<expected_length) {
+            if (BufferSize < expected_length) {
                 ASSERT_EQ(nullptr, buffer_last);
                 return;
             }
@@ -150,7 +149,7 @@ namespace {
             auto const buffer_end = buffer.data() + buffer.size();
 
             auto result = cnl::to_chars(buffer_begin, buffer_end, value);
-            if (result.ec!=std::errc{}) {
+            if (result.ec != std::errc{}) {
                 ASSERT_EQ(buffer_end, result.ptr);
                 return;
             }
@@ -160,12 +159,15 @@ namespace {
 
         TEST(to_chars, scaled_integer)  // NOLINT
         {
-            test<22>("-5016.5091400146484375", cnl::scaled_integer<int, cnl::power<-16>>(-5016.5091400146484375));
+            test<22>(
+                    "-5016.5091400146484375",
+                    cnl::scaled_integer<int, cnl::power<-16>>(-5016.5091400146484375));
         }
 
         TEST(to_chars, scaled_integer_truncated)  // NOLINT
         {
-            test<8>("5016.509", cnl::scaled_integer<unsigned, cnl::power<-16>>(5016.5091400146484375));
+            test<8>("5016.509",
+                    cnl::scaled_integer<unsigned, cnl::power<-16>>(5016.5091400146484375));
         }
 
         TEST(to_chars, scaled_integer_just_big_enough)  // NOLINT

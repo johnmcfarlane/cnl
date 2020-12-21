@@ -8,10 +8,9 @@
 #define TEST_SCALED_INTEGER_SCALED_INTEGER_MATH_Q31_H
 
 #define FPTESTFORMAT exp2on0Q31  // NOLINT(cppcoreguidelines-macro-usage)
-#define FPTESTEXP	(-31)  // NOLINT(cppcoreguidelines-macro-usage)
+#define FPTESTEXP (-31)  // NOLINT(cppcoreguidelines-macro-usage)
 
 #include "scaled_integer_math_common.h"
-
 
 #undef FPTESTEXP
 #undef FPTESTFORMAT

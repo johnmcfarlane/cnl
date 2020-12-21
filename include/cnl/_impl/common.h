@@ -43,7 +43,7 @@ namespace cnl {
         template<class T>
         CNL_NODISCARD constexpr T max(T a, T b)
         {
-            return (a<b) ? b : a;
+            return (a < b) ? b : a;
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ namespace cnl {
         template<class T>
         CNL_NODISCARD constexpr T min(T a, T b)
         {
-            return (a<b) ? a : b;
+            return (a < b) ? a : b;
         }
     }
 }

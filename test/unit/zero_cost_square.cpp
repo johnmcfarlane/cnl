@@ -14,7 +14,8 @@ using namespace cnl;
 
 // square a nunber using 15:16 fixed-point arithmetic
 // without using a fixed-point library
-float square_int(float input) {
+float square_int(float input)
+{
     // user must fixed_width_scale values by the correct amount
     auto fixed = static_cast<int32_t>(input * 65536.F);
 
@@ -26,7 +27,8 @@ float square_int(float input) {
 }
 
 // the same function using cnl::elastic_integer
-float square_elastic_integer(float input) {
+float square_elastic_integer(float input)
+{
     auto fixed = elastic_integer<31>{input * 65536.F};
 
     // elastic_integer automatically widens the result
@@ -37,7 +39,8 @@ float square_elastic_integer(float input) {
 }
 
 // the same function using cnl::scaled_integer
-float square_scaled_integer(float input) {
+float square_scaled_integer(float input)
+{
     // scaled_integer handles scaling
     auto fixed = scaled_integer<int32_t, power<-16>>{input};
 
@@ -48,7 +51,8 @@ float square_scaled_integer(float input) {
 }
 
 // finally, the composition of scaled_integer and elastic_integer
-float square_elastic(float input) {
+float square_elastic(float input)
+{
     // alias to scaled_integer<elastic_integer<31, int>, -16>
     auto fixed = elastic_scaled_integer<15, 16>{input};
 

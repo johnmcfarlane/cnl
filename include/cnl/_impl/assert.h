@@ -24,9 +24,7 @@
 #include <exception>
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_ASSERT(CONDITION) \
-    (CNL_LIKELY(CONDITION) \
-        ? static_cast<void>(0) \
-        : cnl::_impl::terminate<void>(#CONDITION))
+    (CNL_LIKELY(CONDITION) ? static_cast<void>(0) : cnl::_impl::terminate<void>(#CONDITION))
 #else
 #error internal library error
 #endif

@@ -40,20 +40,23 @@ namespace a {
 #endif
 
 namespace b {
-    void f() {
-        auto n = cnl::scaled_integer<int, cnl::power<-8>>{ 0.25F };
-        std::cout << n * 5; // prints "1.25"
+    void f()
+    {
+        auto n = cnl::scaled_integer<int, cnl::power<-8>>{0.25F};
+        std::cout << n * 5;  // prints "1.25"
     }
 }
 
 namespace c {
-    bool foo(float f) {
+    bool foo(float f)
+    {
         auto fixed = scaled_integer<int, power<-16>>{f};
         auto fixed_plus_one = fixed + 1;
         return fixed_plus_one > fixed;
     }
 
-    bool foo_reduced(float) {
+    bool foo_reduced(float)
+    {
         return true;
     }
 }
@@ -61,16 +64,17 @@ namespace c {
 namespace d {
     using std::numeric_limits;
 
-    float bar() {
+    float bar()
+    {
         return static_cast<float>(std::numeric_limits<scaled_integer<int, power<-16>>>::max() + 1);
     }
 
     static_assert(1 == 1, "this does compile");
-    //static_assert(1 != 1, "this does not compile");
-    //static_assert(1 << 1000, "this does not compile");
+    // static_assert(1 != 1, "this does not compile");
+    // static_assert(1 << 1000, "this does not compile");
 
     static_assert(numeric_limits<scaled_integer<int, power<-16>>>::max() - 1, "this does compile");
-    //static_assert(numeric_limits<scaled_integer<int, -16>>::max() + 1, "this does not compile!");
+    // static_assert(numeric_limits<scaled_integer<int, -16>>::max() + 1, "this does not compile!");
 }
 
 namespace e {
@@ -82,9 +86,9 @@ namespace e {
 }
 
 namespace f {
-    //static_assert(numeric_limits<int>::max()+1, "error");
+    // static_assert(numeric_limits<int>::max()+1, "error");
 
-    static_assert(unsigned{1}<signed{-1}, "evaluates to true");
+    static_assert(unsigned{1} < signed{-1}, "evaluates to true");
 }
 
 #if (__cplusplus >= 201703L)
@@ -98,7 +102,7 @@ namespace g {
 namespace h {
     constexpr auto n = scaled_integer<int, power<-8>>{1.5};
     constexpr auto d = scaled_integer<int, power<-8>>{2.25};
-    constexpr auto q = n / d;    // scaled_integer<int, cnl::power<0>>;
+    constexpr auto q = n / d;  // scaled_integer<int, cnl::power<0>>;
 
     static_assert(std::is_same<decltype(q), const scaled_integer<int, power<>>>::value);
     static_assert(q == 0);
@@ -116,8 +120,9 @@ namespace i {
 
 namespace j {
     constexpr auto n = scaled_integer<uint8_t, power<-8>>{0.99609375};
-    constexpr auto nn = n * n;    // scaled_integer<int, power<-16>>{0.9922027587890625};
-    static_assert(cnl::_impl::identical(scaled_integer<int, power<-16>>{0.9922027587890625}, nn), "");
+    constexpr auto nn = n * n;  // scaled_integer<int, power<-16>>{0.9922027587890625};
+    static_assert(
+            cnl::_impl::identical(scaled_integer<int, power<-16>>{0.9922027587890625}, nn), "");
 }
 
 namespace j2 {
@@ -134,9 +139,10 @@ namespace j2 {
 }
 
 namespace k {
-    void f() {
+    void f()
+    {
         auto n = scaled_integer<int, power<-31>>{0.99609375};
-        auto nn = n*n;    // scaled_integer<int, -62>{0.9922027587890625};
+        auto nn = n * n;  // scaled_integer<int, -62>{0.9922027587890625};
         static_assert(std::is_same<scaled_integer<int, power<-62>>, decltype(nn)>::value, "");
         (void)nn;
     }
@@ -145,24 +151,29 @@ namespace k {
 #include <cnl/elastic_integer.h>
 using cnl::elastic_integer;
 namespace l {
-    constexpr auto e = elastic_integer<31>{0x7FFFFFFF};   // r has 31 or more digits
+    constexpr auto e = elastic_integer<31>{0x7FFFFFFF};  // r has 31 or more digits
 
     constexpr auto ee = e * e;
     static_assert(cnl::_impl::identical(elastic_integer<62>{INT64_C(0x3FFFFFFF00000001)}, ee), "");
 
     constexpr auto _2ee = ee + ee;
-    static_assert(cnl::_impl::identical(elastic_integer<63>{INT64_C(0x7FFFFFFE00000002)}, _2ee), "");
+    static_assert(
+            cnl::_impl::identical(elastic_integer<63>{INT64_C(0x7FFFFFFE00000002)}, _2ee), "");
 }
 
 namespace m {
     constexpr auto fpe = scaled_integer<elastic_integer<31>, power<-31>>{0.99609375};
 
     constexpr auto sq = fpe * fpe;
-    static_assert(cnl::_impl::identical(scaled_integer<elastic_integer<62>, power<-62>>{0.9922027587890625}, sq), "");
+    static_assert(
+            cnl::_impl::identical(
+                    scaled_integer<elastic_integer<62>, power<-62>>{0.9922027587890625}, sq),
+            "");
 
 #if defined(CNL_INT128_ENABLED)
     constexpr auto q = make_scaled_integer(make_fraction(sq, sq));
-    static_assert(cnl::_impl::identical(scaled_integer<elastic_integer<124>, power<-62>>{1}, q), "");
+    static_assert(
+            cnl::_impl::identical(scaled_integer<elastic_integer<124>, power<-62>>{1}, q), "");
 #endif
 }
 
@@ -175,8 +186,8 @@ namespace n {
     constexpr auto j = i + 1;
     static_assert(cnl::_impl::identical(overflow_integer<int>{256}, j));
 
-//    constexpr overflow<uint8_t> k = i + 1;
-//    static_assert(cnl::_impl::identical(overflow<int>{256}, k));
+    //    constexpr overflow<uint8_t> k = i + 1;
+    //    static_assert(cnl::_impl::identical(overflow<int>{256}, k));
 }
 #endif
 
@@ -185,17 +196,19 @@ namespace n {
 
 using namespace cnl::literals;
 namespace o {
-    constexpr auto x = scaled_integer{42UL}; // scaled_integer<unsigned long, 0>{42}
+    constexpr auto x = scaled_integer{42UL};  // scaled_integer<unsigned long, 0>{42}
     static_assert(cnl::_impl::identical(scaled_integer<unsigned long, power<>>{42}, x));
 
     constexpr auto z = scaled_integer{128_c};
     static_assert(cnl::_impl::identical(scaled_integer<int, power<7>>{128}, z));
 
     constexpr auto a = scaled_integer{0b10000000000000000000000000000000000000000_c};
-    static_assert(cnl::_impl::identical(scaled_integer<int, power<40>>{0b10000000000000000000000000000000000000000L}, a));
+    static_assert(cnl::_impl::identical(
+            scaled_integer<int, power<40>>{0b10000000000000000000000000000000000000000L}, a));
 
     constexpr auto b = scaled_integer{0b11111111111111111111111111111111111111111_c};
-    static_assert(cnl::_impl::identical(scaled_integer<cnl::int64, power<>>{0b11111111111111111111111111111111111111111L}, b));
+    static_assert(cnl::_impl::identical(
+            scaled_integer<cnl::int64, power<>>{0b11111111111111111111111111111111111111111L}, b));
 
     constexpr auto c = elastic_integer{2018_c};
     static_assert(cnl::_impl::identical(elastic_integer<11>{2018}, c));

@@ -50,16 +50,14 @@ namespace {
                 identical(
                         cnl::wide_integer<31>{2},
                         cnl::binary_operator<
-                                cnl::_impl::add_op,
-                                cnl::_impl::native_tag, cnl::_impl::native_tag,
+                                cnl::_impl::add_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
                                 cnl::wide_integer<31>, cnl::wide_integer<31>>{}(
-                                cnl::wide_integer<31>{1},
-                                cnl::wide_integer<31>{1})),
+                                cnl::wide_integer<31>{1}, cnl::wide_integer<31>{1})),
                 "");
         static_assert(
                 identical(
                         cnl::wide_integer<31>{2},
-                        cnl::wide_integer<31>{1}+cnl::wide_integer<31>{1}),
+                        cnl::wide_integer<31>{1} + cnl::wide_integer<31>{1}),
                 "");
     }
 
@@ -68,16 +66,14 @@ namespace {
                 identical(
                         cnl::wide_integer<31>{2},
                         cnl::binary_operator<
-                                cnl::_impl::add_op,
-                                cnl::_impl::native_tag, cnl::_impl::native_tag,
+                                cnl::_impl::add_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
                                 cnl::wide_integer<31>, cnl::wide_integer<31>>{}(
-                                cnl::wide_integer<31>{1},
-                                cnl::wide_integer<31>{1})),
+                                cnl::wide_integer<31>{1}, cnl::wide_integer<31>{1})),
                 "");
         static_assert(
                 identical(
                         cnl::wide_integer<31>{2},
-                        cnl::wide_integer<31>{1}+cnl::wide_integer<31>{1}),
+                        cnl::wide_integer<31>{1} + cnl::wide_integer<31>{1}),
                 "");
     }
 }

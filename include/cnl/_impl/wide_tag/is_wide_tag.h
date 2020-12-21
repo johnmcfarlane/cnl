@@ -24,4 +24,4 @@ namespace cnl {
     }
 }
 
-#endif //CNL_IMPL_WIDE_TAG_IS_WIDE_TAG_H
+#endif  // CNL_IMPL_WIDE_TAG_IS_WIDE_TAG_H

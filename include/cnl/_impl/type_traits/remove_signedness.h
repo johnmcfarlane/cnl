@@ -25,7 +25,8 @@ namespace cnl {
     struct remove_signedness;
 
     template<class T>
-    struct remove_signedness<T, _impl::enable_if_t<std::is_integral<T>::value>> : std::make_unsigned<T> {
+    struct remove_signedness<T, _impl::enable_if_t<std::is_integral<T>::value>>
+        : std::make_unsigned<T> {
     };
 
 #if defined(CNL_INT128_ENABLED)
@@ -47,7 +48,7 @@ namespace cnl {
 
     template<typename T>
     struct remove_signedness<T, _impl::enable_if_t<is_composite<T>::value>>
-            : _impl::type_identity<_impl::set_rep_t<T, remove_signedness_t<_impl::rep_t<T>>>> {
+        : _impl::type_identity<_impl::set_rep_t<T, remove_signedness_t<_impl::rep_t<T>>>> {
     };
 }
 

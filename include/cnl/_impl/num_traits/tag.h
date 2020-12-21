@@ -13,8 +13,8 @@ namespace cnl {
     ///
     /// \tparam T component whose behavioral tag type to return
     ///
-    /// \note The behavioral tag or 'Tag' type of a numeric component is central to CNL's method of delivering an
-    /// arithmetic API.
+    /// \note The behavioral tag or 'Tag' type of a numeric component is central to CNL's method of
+    /// delivering an arithmetic API.
     ///
     /// \sa set_tag, rep
     template<typename T>

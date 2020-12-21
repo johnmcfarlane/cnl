@@ -25,12 +25,12 @@ namespace cnl {
 
     namespace _impl {
         // cnl::_impl::max_to_chars_chars
-        template<typename Scalar, int Base=10>
+        template<typename Scalar, int Base = 10>
         struct max_to_chars_chars {
             static constexpr auto _sign_chars = static_cast<int>(cnl::is_signed<Scalar>::value);
-            static constexpr auto _integer_chars = ((cnl::digits<Scalar>::value+2)/3);
+            static constexpr auto _integer_chars = ((cnl::digits<Scalar>::value + 2) / 3);
 
-            static constexpr auto value = _sign_chars+_integer_chars;
+            static constexpr auto value = _sign_chars + _integer_chars;
         };
 
         // cnl::_impl::itoc
@@ -38,11 +38,9 @@ namespace cnl {
         char itoc(Scalar value)
         {
             static_assert(
-                    std::is_same<
-                            typename rounding<Scalar>::type,
-                            native_rounding_tag>::value,
+                    std::is_same<typename rounding<Scalar>::type, native_rounding_tag>::value,
                     "wrong rounding type");
-            auto c = '0'+static_cast<int>(value);
+            auto c = '0' + static_cast<int>(value);
             return static_cast<char>(c);
         }
 
@@ -50,20 +48,18 @@ namespace cnl {
         template<class Integer>
         char* to_chars_natural(char* ptr, char* last, Integer const& value)
         {
-            auto const quotient = value/10;
+            auto const quotient = value / 10;
 
-            auto const next_ptr = quotient
-                    ? to_chars_natural(ptr, last, quotient)
-                    : ptr;
+            auto const next_ptr = quotient ? to_chars_natural(ptr, last, quotient) : ptr;
 
-            if (next_ptr==last || next_ptr==nullptr) {
+            if (next_ptr == last || next_ptr == nullptr) {
                 return nullptr;
             }
 
-            auto const remainder = value-(quotient*10);
+            auto const remainder = value - (quotient * 10);
             *next_ptr = itoc(remainder);
 
-            return next_ptr+1;
+            return next_ptr + 1;
         }
 
         // cnl::_impl::to_chars_non_zero
@@ -72,7 +68,8 @@ namespace cnl {
 
         template<typename Number>
         struct to_chars_non_zero<Number, false> {
-            to_chars_result operator()(char* const first, char* const last, Number const& value) const
+            to_chars_result operator()(
+                    char* const first, char* const last, Number const& value) const
             {
                 // +ve
                 return to_chars_positive(first, last, value);
@@ -81,21 +78,22 @@ namespace cnl {
 
         template<typename Number>
         struct to_chars_non_zero<Number, true> {
-            to_chars_result operator()(char* const first, char* const last, Number const& value) const
+            to_chars_result operator()(
+                    char* const first, char* const last, Number const& value) const
             {
-                if (value>Number{}) {
+                if (value > Number{}) {
                     // +ve
                     return to_chars_positive(first, last, value);
                 }
 
                 auto const destination_length = std::distance(first, last);
-                if (destination_length<2) {
+                if (destination_length < 2) {
                     return to_chars_result{last, std::errc::value_too_large};
                 }
 
                 // -ve
                 *first = '-';
-                return to_chars_positive(first+1, last, -value);
+                return to_chars_positive(first + 1, last, -value);
             }
         };
     }
@@ -103,24 +101,21 @@ namespace cnl {
     // overload of cnl::to_chars returning fixed-size array of chars
     // large enough to store any possible result for given input type
     template<typename Number>
-    std::array<
-            char,
-            _impl::max_to_chars_chars<Number>::value+1>
-    to_chars(Number const& value)
+    std::array<char, _impl::max_to_chars_chars<Number>::value + 1> to_chars(Number const& value)
     {
         constexpr auto max_num_chars = _impl::max_to_chars_chars<Number>::value;
 
 #if defined(__GNUG__) && !defined(__clang__) && __GNUG__ == 6
         // addresses uninitialized data error in operator<<(ostream,scaled_integer)
-        std::array<char, max_num_chars+1> chars{};
+        std::array<char, max_num_chars + 1> chars{};
 #else
-        std::array<char, max_num_chars+1> chars{};
+        std::array<char, max_num_chars + 1> chars{};
 #endif
 
-        auto result = to_chars(chars.data(), chars.data()+max_num_chars, value);
-        CNL_ASSERT(result.ptr>chars.data());
-        CNL_ASSERT(result.ptr<=chars.data()+max_num_chars);
-        CNL_ASSERT(result.ec==std::errc{});
+        auto result = to_chars(chars.data(), chars.data() + max_num_chars, value);
+        CNL_ASSERT(result.ptr > chars.data());
+        CNL_ASSERT(result.ptr <= chars.data() + max_num_chars);
+        CNL_ASSERT(result.ec == std::errc{});
 
         *result.ptr = '\0';
         return chars;

@@ -19,8 +19,7 @@ namespace {
                     cnl::wide_integer<16, cnl::int8>,
                     typename cnl::set_rep<
                             cnl::_impl::number<unsigned short, cnl::wide_tag<16, cnl::uint8>>,
-                            int>::type
-            >::value,
+                            int>::type>::value,
             "cnl::wide_integer<16, uint8> << cnl::constant");
     static_assert(
             assert_same<
@@ -30,7 +29,7 @@ namespace {
 #if defined(CNL_INT128_ENABLED)
     static_assert(
             assert_same<
-                    cnl::_impl::number<cnl::uint128, cnl::wide_tag<128, unsigned int> >,
+                    cnl::_impl::number<cnl::uint128, cnl::wide_tag<128, unsigned int>>,
                     typename cnl::set_rep<
                             cnl::_impl::number<long unsigned int, cnl::wide_tag<128, unsigned int>>,
                             long unsigned int>::type>::value,

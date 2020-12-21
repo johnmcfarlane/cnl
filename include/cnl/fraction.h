@@ -27,8 +27,8 @@ namespace cnl {
     using _impl::make_fraction;
     using _impl::to_string;
 #if defined(__cpp_lib_gcd)
-    using _impl::reduce;
     using _impl::canonical;
+    using _impl::reduce;
 #endif
 }
 

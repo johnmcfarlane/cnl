@@ -25,7 +25,7 @@ namespace cnl {
             auto const numerator_string = to_string(f.numerator);
             auto const denominator_string = to_string(f.denominator);
 
-            auto const total_length = numerator_string.length()+1+denominator_string.length();
+            auto const total_length = numerator_string.length() + 1 + denominator_string.length();
             std::string fraction_string;
             fraction_string.reserve(total_length);
 

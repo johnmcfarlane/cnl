@@ -13,15 +13,12 @@
 #include <gtest/gtest.h>
 
 namespace {
-    using cnl::_impl::identical;
     using cnl::_impl::assert_same;
+    using cnl::_impl::identical;
 
-    template<int Digits = cnl::digits<int>::value, typename Narrowest=int>
+    template<int Digits = cnl::digits<int>::value, typename Narrowest = int>
     using wide_elastic_integer = cnl::elastic_integer<
-            Digits,
-            cnl::wide_integer<
-                    cnl::digits<Narrowest>::value,
-                    Narrowest>>;
+            Digits, cnl::wide_integer<cnl::digits<Narrowest>::value, Narrowest>>;
 
     namespace default_parameters {
         using cnl::_impl::rep_t;
@@ -29,80 +26,62 @@ namespace {
                 assert_same<int, rep_t<rep_t<wide_elastic_integer<>>>>::value,
                 "wide_elastic_integer parameter default test failed");
         static_assert(
-                assert_same<rep_t<cnl::elastic_integer<>>, rep_t<rep_t<wide_elastic_integer<>>>>::value,
+                assert_same<
+                        rep_t<cnl::elastic_integer<>>, rep_t<rep_t<wide_elastic_integer<>>>>::value,
                 "wide_elastic_integer parameter default test failed");
     }
 
     namespace test_conversion {
-        static_assert(identical(
-                wide_elastic_integer<2>{-1},
-                wide_elastic_integer<2>{-1.500}), "");
-        static_assert(identical(
-                wide_elastic_integer<2>{-1},
-                wide_elastic_integer<2>{-1.499}), "");
-        static_assert(identical(
-                wide_elastic_integer<2>{-0},
-                wide_elastic_integer<2>{-.500}), "");
-        static_assert(identical(
-                wide_elastic_integer<2>{0},
-                wide_elastic_integer<2>{.499}), "");
-        static_assert(identical(
-                wide_elastic_integer<2>{0},
-                wide_elastic_integer<2>{.500}), "");
-        static_assert(identical(
-                wide_elastic_integer<2>{1},
-                wide_elastic_integer<2>{1.499}), "");
-        static_assert(identical(
-                wide_elastic_integer<2>{1},
-                wide_elastic_integer<2>{1.500}), "");
-        static_assert(identical(
-                wide_elastic_integer<2>{2},
-                wide_elastic_integer<2>{2.499}), "");
-        static_assert(identical(
-                wide_elastic_integer<2>{2},
-                wide_elastic_integer<2>{2.500}), "");
+        static_assert(identical(wide_elastic_integer<2>{-1}, wide_elastic_integer<2>{-1.500}), "");
+        static_assert(identical(wide_elastic_integer<2>{-1}, wide_elastic_integer<2>{-1.499}), "");
+        static_assert(identical(wide_elastic_integer<2>{-0}, wide_elastic_integer<2>{-.500}), "");
+        static_assert(identical(wide_elastic_integer<2>{0}, wide_elastic_integer<2>{.499}), "");
+        static_assert(identical(wide_elastic_integer<2>{0}, wide_elastic_integer<2>{.500}), "");
+        static_assert(identical(wide_elastic_integer<2>{1}, wide_elastic_integer<2>{1.499}), "");
+        static_assert(identical(wide_elastic_integer<2>{1}, wide_elastic_integer<2>{1.500}), "");
+        static_assert(identical(wide_elastic_integer<2>{2}, wide_elastic_integer<2>{2.499}), "");
+        static_assert(identical(wide_elastic_integer<2>{2}, wide_elastic_integer<2>{2.500}), "");
     }
 
     namespace test_division {
-        static_assert(identical(wide_elastic_integer<2>{3/4},
-                wide_elastic_integer<2>{3}
-                        /wide_elastic_integer<3>{4}), "");
-        static_assert(identical(
-                wide_elastic_integer<31>{0},
-                -9/wide_elastic_integer<4>{10}), "");
-        static_assert(identical(
-                wide_elastic_integer<2>{0},
-                wide_elastic_integer<2>{-2}/3), "");
-        static_assert(identical(
-                wide_elastic_integer<2>{0},
-                wide_elastic_integer<2>{1}/-3), "");
+        static_assert(
+                identical(
+                        wide_elastic_integer<2>{3 / 4},
+                        wide_elastic_integer<2>{3} / wide_elastic_integer<3>{4}),
+                "");
+        static_assert(identical(wide_elastic_integer<31>{0}, -9 / wide_elastic_integer<4>{10}), "");
+        static_assert(identical(wide_elastic_integer<2>{0}, wide_elastic_integer<2>{-2} / 3), "");
+        static_assert(identical(wide_elastic_integer<2>{0}, wide_elastic_integer<2>{1} / -3), "");
     }
 
     namespace test_multiply {
-        static_assert(identical(wide_elastic_integer<6>{7}*wide_elastic_integer<13>{321},
-                wide_elastic_integer<19>{2247}), "");
+        static_assert(
+                identical(
+                        wide_elastic_integer<6>{7} * wide_elastic_integer<13>{321},
+                        wide_elastic_integer<19>{2247}),
+                "");
     }
 
     namespace test_shift_right {
-        static_assert(identical(
-                wide_elastic_integer<1>{1},
-                wide_elastic_integer<3>{7} >> cnl::constant<2>{}),
+        static_assert(
+                identical(
+                        wide_elastic_integer<1>{1},
+                        wide_elastic_integer<3>{7} >> cnl::constant<2>{}),
                 "");
-        static_assert(identical(
-                wide_elastic_integer<3>{1},
-                wide_elastic_integer<3>{7} >> 2), "");
+        static_assert(identical(wide_elastic_integer<3>{1}, wide_elastic_integer<3>{7} >> 2), "");
         static_assert(
                 identical(
                         wide_elastic_integer<4>{1},
                         cnl::shift_operator<
-                                cnl::_impl::shift_right_op,
-                                cnl::_impl::native_tag, cnl::_impl::native_tag,
-                                wide_elastic_integer<4>, cnl::elastic_integer<2>>{}(
-                                        wide_elastic_integer<4>{12}, cnl::elastic_integer<2>{3})),
+                                cnl::_impl::shift_right_op, cnl::_impl::native_tag,
+                                cnl::_impl::native_tag, wide_elastic_integer<4>,
+                                cnl::elastic_integer<2>>{}(
+                                wide_elastic_integer<4>{12}, cnl::elastic_integer<2>{3})),
                 "");
-        static_assert(identical(
-                wide_elastic_integer<4>{1},
-                wide_elastic_integer<4>{12} >> cnl::elastic_integer<2>{3}),
+        static_assert(
+                identical(
+                        wide_elastic_integer<4>{1},
+                        wide_elastic_integer<4>{12} >> cnl::elastic_integer<2>{3}),
                 "");
     }
 

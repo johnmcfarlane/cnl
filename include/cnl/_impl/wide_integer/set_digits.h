@@ -15,7 +15,7 @@
 namespace cnl {
     template<int FromDigits, class Rep, int ToDigits>
     struct set_digits<wide_integer<FromDigits, Rep>, ToDigits>
-            : _impl::type_identity<wide_integer<ToDigits, Rep>> {
+        : _impl::type_identity<wide_integer<ToDigits, Rep>> {
     };
 }
 

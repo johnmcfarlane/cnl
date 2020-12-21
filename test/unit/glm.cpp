@@ -6,9 +6,9 @@
 
 #if defined(_MSC_VER)
 #pragma warning(push)
-#pragma warning(disable: 4201)
+#pragma warning(disable : 4201)
 #include <glm/glm.hpp>
-#pragma warning(pop) 
+#pragma warning(pop)
 #else
 #include <glm/glm.hpp>
 #endif
@@ -25,7 +25,7 @@ namespace {
         auto rhs = glm::tvec4<char>{5};
 
         auto expected = glm::tvec4<int>{35};
-        auto product = lhs*rhs;
+        auto product = lhs * rhs;
 
         ASSERT_TRUE(cnl::_impl::identical(expected, product));
     }
@@ -38,7 +38,7 @@ namespace {
 
         using result_fp = cnl::scaled_integer<int, cnl::power<-8>>;
         auto expected = glm::tvec4<result_fp>{result_fp{39.375}};
-        auto product = lhs*rhs;
+        auto product = lhs * rhs;
 
         ASSERT_TRUE(cnl::_impl::identical(expected, product));
     }

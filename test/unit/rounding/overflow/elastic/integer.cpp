@@ -14,11 +14,7 @@ using cnl::_impl::identical;
 
 template<int Digits>
 using saturated_elastic_integer = cnl::rounding_integer<
-        cnl::overflow_integer<
-                cnl::elastic_integer<
-                        Digits,
-                        int>,
-                cnl::saturated_overflow_tag>,
+        cnl::overflow_integer<cnl::elastic_integer<Digits, int>, cnl::saturated_overflow_tag>,
         cnl::native_rounding_tag>;
 
 namespace test_saturated_scale {

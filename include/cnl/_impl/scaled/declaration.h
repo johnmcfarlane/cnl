@@ -13,4 +13,4 @@ namespace cnl {
     struct power;
 }
 
-#endif // CNL_IMPL_SCALED_DECLARATION_H
+#endif  // CNL_IMPL_SCALED_DECLARATION_H

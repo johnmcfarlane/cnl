@@ -16,8 +16,8 @@
 #include <gtest/gtest.h>
 
 namespace {
-    using cnl::scaled_integer;
     using boost::simd::pack;
+    using cnl::scaled_integer;
 
     template<class T, std::size_t N, int Exponent>
     using fpp = scaled_integer<pack<T, N>, cnl::power<Exponent>>;
@@ -39,13 +39,15 @@ namespace {
 
 namespace cnl {
     template<class T, std::size_t N, int Exponent>
-    bool operator==(fpp<T, N, Exponent> const& lhs, fpp<T, N, Exponent> const& rhs) noexcept {
+    bool operator==(fpp<T, N, Exponent> const& lhs, fpp<T, N, Exponent> const& rhs) noexcept
+    {
         return boost::simd::compare_equal(cnl::_impl::to_rep(lhs), cnl::_impl::to_rep(rhs));
     }
 
     template<class T, std::size_t N, int Exponent>
-    bool operator!=(fpp<T, N, Exponent> const& lhs, fpp<T, N, Exponent> const& rhs) noexcept {
-        return !(lhs==rhs);
+    bool operator!=(fpp<T, N, Exponent> const& lhs, fpp<T, N, Exponent> const& rhs) noexcept
+    {
+        return !(lhs == rhs);
     }
 }
 
@@ -54,8 +56,8 @@ namespace {
         static_assert(cnl::numeric_limits<pack<int>>::is_integer, "");
         static_assert(!cnl::numeric_limits<pack<int>>::is_iec559, "");
 
-        static_assert(!cnl::numeric_limits<pack < float>>::is_integer, "");
-        static_assert(cnl::numeric_limits<pack < float>>::is_iec559, "");
+        static_assert(!cnl::numeric_limits<pack<float>>::is_integer, "");
+        static_assert(cnl::numeric_limits<pack<float>>::is_iec559, "");
     }
 
     namespace test_set_digits {
@@ -81,7 +83,7 @@ namespace {
         using pack = boost::simd::pack<int, 2>;
         auto input = pack{65535, 0};
         auto output = cnl::_impl::fixed_width_scale<5>(input);
-        auto expected = pack{65535<<5, 0};
+        auto expected = pack{65535 << 5, 0};
         ASSERT_TRUE(boost::simd::compare_equal(expected, output));
     }
 
@@ -90,7 +92,7 @@ namespace {
         using pack = boost::simd::pack<int, 2>;
         auto input = pack{65535, 0};
         auto output = cnl::_impl::scale<5>(input);
-        auto expected = pack{65535*32, 0};
+        auto expected = pack{65535 * 32, 0};
         ASSERT_TRUE(boost::simd::compare_equal(expected, output));
     }
 
@@ -99,7 +101,7 @@ namespace {
         using pack = boost::simd::pack<cnl::int64, 2>;
         auto input = pack{65535, 0};
         auto output = cnl::_impl::scale<-5>(input);
-        auto expected = pack{65535>>5, 0};
+        auto expected = pack{65535 >> 5, 0};
         ASSERT_TRUE(boost::simd::compare_equal(expected, output));
     }
 
@@ -128,18 +130,18 @@ namespace {
         auto w = wide_type{pack<cnl::int64, 2>{INT64_C(5000000000), INT64_C(-42000000000000)}};
         auto n = narrow_type{pack<cnl::uint16, 2>{INT16_C(32000), INT64_C(-7)}};
 
-        w = static_cast<wide_type>(n);    // requires new explicit operator
-        n = static_cast<narrow_type>(w);    // requires new explicit conversion operator
-        //w = n;    // doesn't compile with or without explicit conversion operator
-        //n = w;    // doesn't compile with or without explicit conversion operator
+        w = static_cast<wide_type>(n);  // requires new explicit operator
+        n = static_cast<narrow_type>(w);  // requires new explicit conversion operator
+        // w = n;    // doesn't compile with or without explicit conversion operator
+        // n = w;    // doesn't compile with or without explicit conversion operator
 
-        auto narrow_implicit = narrow_type(w);    // happens already
+        auto narrow_implicit = narrow_type(w);  // happens already
         EXPECT_TRUE(boost::simd::compare_equal(static_cast<wide_type>(narrow_implicit), w));
 
         auto wide_implicit = wide_type(n);  // happens already
         EXPECT_TRUE(boost::simd::compare_equal(static_cast<narrow_type>(wide_implicit), n));
 
-        auto narrow_explicit = narrow_type{w};    // happens already
+        auto narrow_explicit = narrow_type{w};  // happens already
         EXPECT_TRUE(boost::simd::compare_equal(static_cast<wide_type>(narrow_explicit), w));
 
         auto wide_explicit = wide_type{n};  // happens already
@@ -165,7 +167,7 @@ namespace {
         using result_type = operand_type;
         using initializer = initializer<operand_type>;
 
-        auto expected = result_type{initializer{7.9375+-1, -8.+.125, 0+-5, 3.5+-3.5}};
+        auto expected = result_type{initializer{7.9375 + -1, -8. + .125, 0 + -5, 3.5 + -3.5}};
         auto augend = operand_type{initializer{7.9375, -8., 0, 3.5}};
         auto addend = operand_type{initializer{-1, .125, -5, -3.5}};
         auto sum = augend + addend;

@@ -25,12 +25,11 @@ using test_int = cnl::overflow_integer<int, cnl::throwing_overflow_tag>;
 ////////////////////////////////////////////////////////////////////////////////
 // throwing_integer-specific exceptions tests
 
-
 #if defined(CNL_EXCEPTIONS_ENABLED)
 
 TEST(throwing_integer_overflow_exception, narrow)  // NOLINT
 {
-    ASSERT_THROW((uint8) 0x1234, std::overflow_error);
+    ASSERT_THROW((uint8)0x1234, std::overflow_error);
 }
 
 TEST(throwing_integer_overflow_exception, shift_left)  // NOLINT

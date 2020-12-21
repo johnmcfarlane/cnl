@@ -18,8 +18,9 @@ namespace cnl {
     /// \headerfile cnl/elastic_integer.h
     template<int Digits, typename Narrowest, int NewDigits, typename NewNarrowest>
     struct set_tag<elastic_integer<Digits, Narrowest>, elastic_tag<NewDigits, NewNarrowest>>
-            : _impl::type_identity<elastic_integer<NewDigits, _impl::adopt_width_t<NewNarrowest, Narrowest>>> {
+        : _impl::type_identity<
+                  elastic_integer<NewDigits, _impl::adopt_width_t<NewNarrowest, Narrowest>>> {
     };
 }
 
-#endif // CNL_IMPL_ELASTIC_INTEGER_SET_TAG_H
+#endif  // CNL_IMPL_ELASTIC_INTEGER_SET_TAG_H

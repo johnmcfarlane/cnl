@@ -28,8 +28,6 @@ namespace {
     static_assert(
             identical(
                     cnl::wide_integer<100>{123},
-                    cnl::from_value<
-                            cnl::wide_integer<100>,
-                            cnl::wide_integer<100>>{}(123)),
+                    cnl::from_value<cnl::wide_integer<100>, cnl::wide_integer<100>>{}(123)),
             "cnl::from_value<cnl::_impl::wide_integer<100>>");
 }

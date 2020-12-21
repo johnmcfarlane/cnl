@@ -23,4 +23,4 @@ namespace cnl {
     }
 }
 
-#endif // CNL_IMPL_ELASTIC_TAG_IS_SAME_TAG_FAMILY_H
+#endif  // CNL_IMPL_ELASTIC_TAG_IS_SAME_TAG_FAMILY_H

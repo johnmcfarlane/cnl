@@ -17,17 +17,15 @@
 namespace cnl {
     // shift_operator of scaled_integer and scaled_integer
     template<class Operator, int LhsExponent, int Radix, typename Lhs, typename Rhs>
-    struct shift_operator<
-            Operator,
-            power<LhsExponent, Radix>, _impl::native_tag,
-            Lhs, Rhs> : Operator {
+    struct shift_operator<Operator, power<LhsExponent, Radix>, _impl::native_tag, Lhs, Rhs>
+        : Operator {
     };
 
     // shift_operator of scaled_integer and something else
     template<class Operator, int LhsExponent, int Radix, typename Lhs, typename Rhs>
     struct shift_operator<Operator, power<LhsExponent, Radix>, power<0, Radix>, Lhs, Rhs>
-            : shift_operator<Operator, power<LhsExponent, Radix>, _impl::native_tag, Lhs, Rhs> {
+        : shift_operator<Operator, power<LhsExponent, Radix>, _impl::native_tag, Lhs, Rhs> {
     };
 }
 
-#endif // CNL_IMPL_SCALED_SHIFT_OPERATOR_H
+#endif  // CNL_IMPL_SCALED_SHIFT_OPERATOR_H

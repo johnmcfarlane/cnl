@@ -16,11 +16,10 @@
 namespace cnl {
     namespace _impl {
         template<int Digits1, typename Narrowest1, int Digits2, typename Narrowest2>
-        struct is_same_tag_family<
-                wide_tag<Digits1, Narrowest1>, wide_tag<Digits2, Narrowest2>>
+        struct is_same_tag_family<wide_tag<Digits1, Narrowest1>, wide_tag<Digits2, Narrowest2>>
             : std::true_type {
         };
     }
 }
 
-#endif // CNL_IMPL_WIDE_TAG_IS_SAME_TAG_FAMILY_H
+#endif  // CNL_IMPL_WIDE_TAG_IS_SAME_TAG_FAMILY_H

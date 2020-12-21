@@ -15,10 +15,12 @@
 namespace cnl {
     namespace _impl {
         template<typename T>
-        struct is_duplex_integer : std::false_type {};
+        struct is_duplex_integer : std::false_type {
+        };
 
         template<typename Upper, typename Lower>
-        struct is_duplex_integer<duplex_integer<Upper, Lower>> : std::true_type {};
+        struct is_duplex_integer<duplex_integer<Upper, Lower>> : std::true_type {
+        };
     }
 }
 

@@ -17,8 +17,9 @@
 namespace cnl {
     template<class Number>
     struct rounding<
-            Number,
-            _impl::enable_if_t<_impl::is_number<Number>::value && !_impl::is_rounding_tag<_impl::tag_t<Number>>::value>>
+            Number, _impl::enable_if_t<
+                            _impl::is_number<Number>::value
+                            && !_impl::is_rounding_tag<_impl::tag_t<Number>>::value>>
         : rounding<_impl::rep_t<Number>> {
     };
 }

@@ -16,9 +16,10 @@ namespace cnl {
     namespace _impl {
 #if defined(__cpp_lib_gcd)
         template<typename Numerator, typename Denominator, typename Gcd>
-        CNL_NODISCARD constexpr auto reduce_from_gcd(fraction<Numerator, Denominator> const& f, Gcd const& gcd)
+        CNL_NODISCARD constexpr auto reduce_from_gcd(
+                fraction<Numerator, Denominator> const& f, Gcd const& gcd)
         {
-            return make_fraction(f.numerator/gcd, f.denominator/gcd);
+            return make_fraction(f.numerator / gcd, f.denominator / gcd);
         }
 
         template<typename Numerator, typename Denominator>

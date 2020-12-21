@@ -13,8 +13,8 @@
 namespace cnl {
     namespace _impl {
         // pre-C++14 common_type_t
-        template<class ... T>
-        using common_type_t = typename std::common_type<T ...>::type;
+        template<class... T>
+        using common_type_t = typename std::common_type<T...>::type;
     }
 }
 

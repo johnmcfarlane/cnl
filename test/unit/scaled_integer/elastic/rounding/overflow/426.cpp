@@ -2,17 +2,12 @@
 
 #include <gtest/gtest.h>
 
-template<
-        int IntegerDigits,
-        int FractionalDigits,
-        class Narrowest>
+template<int IntegerDigits, int FractionalDigits, class Narrowest>
 using saturated_elastic_scaled_integer = cnl::scaled_integer<
         cnl::elastic_integer<
-                IntegerDigits+FractionalDigits,
+                IntegerDigits + FractionalDigits,
                 cnl::rounding_integer<
-                        cnl::overflow_integer<
-                                Narrowest,
-                                cnl::saturated_overflow_tag>,
+                        cnl::overflow_integer<Narrowest, cnl::saturated_overflow_tag>,
                         cnl::native_rounding_tag>>,
         cnl::power<-FractionalDigits>>;
 

@@ -15,4 +15,4 @@
 #include "is_scaled_tag.h"
 #include "shift_operator.h"
 
-#endif // CNL_IMPL_SCALED_POWER_H
+#endif  // CNL_IMPL_SCALED_POWER_H

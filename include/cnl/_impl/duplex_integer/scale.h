@@ -14,7 +14,7 @@
 namespace cnl {
     template<int Digits, int Radix, typename Upper, typename Lower>
     struct scale<Digits, Radix, _impl::duplex_integer<Upper, Lower>>
-            : _impl::default_scale<Digits, Radix, _impl::duplex_integer<Upper, Lower>> {
+        : _impl::default_scale<Digits, Radix, _impl::duplex_integer<Upper, Lower>> {
     };
 }
 

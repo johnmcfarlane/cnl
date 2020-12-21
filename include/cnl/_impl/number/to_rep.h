@@ -17,13 +17,16 @@ namespace cnl {
     template<class Number>
     struct to_rep<Number, _impl::enable_if_t<_impl::is_number<Number>::value>> {
         using rep_type = _impl::rep_t<Number>;
-        CNL_NODISCARD constexpr rep_type& operator()(Number& number) const {
+        CNL_NODISCARD constexpr rep_type& operator()(Number& number) const
+        {
             return number._rep;
         }
-        CNL_NODISCARD constexpr rep_type const& operator()(Number const& number) const {
+        CNL_NODISCARD constexpr rep_type const& operator()(Number const& number) const
+        {
             return number._rep;
         }
-        CNL_NODISCARD constexpr rep_type&& operator()(Number&& number) const {
+        CNL_NODISCARD constexpr rep_type&& operator()(Number&& number) const
+        {
             return std::forward<rep_type>(number._rep);
         }
     };

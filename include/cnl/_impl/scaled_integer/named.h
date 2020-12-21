@@ -34,7 +34,7 @@ namespace cnl {
     /// in favor of class template deduction.
     template<typename Value>
     CNL_NODISCARD constexpr auto make_scaled_integer(Value const& value)
-    -> decltype(_impl::from_value<scaled_integer<>, Value>(value))
+            -> decltype(_impl::from_value<scaled_integer<>, Value>(value))
     {
         return _impl::from_value<scaled_integer<>, Value>(value);
     }
@@ -46,19 +46,20 @@ namespace cnl {
         };
 
         template<typename Rep, int Exponent, int Radix>
-        struct scaled_integer_rep<scaled_integer<Rep, power<Exponent, Radix>>> : scaled_integer_rep<Rep> {
+        struct scaled_integer_rep<scaled_integer<Rep, power<Exponent, Radix>>>
+            : scaled_integer_rep<Rep> {
         };
 
         template<class Dividend, class Divisor>
         struct quotient_result {
             using natural_result = _impl::op_result<_impl::divide_op, Dividend, Divisor>;
 
-            static constexpr int integer_digits =
-                    _impl::integer_digits<Dividend>::value+_impl::fractional_digits<Divisor>::value;
-            static constexpr int fractional_digits =
-                    _impl::fractional_digits<Dividend>::value+_impl::integer_digits<Divisor>::value;
+            static constexpr int integer_digits = _impl::integer_digits<Dividend>::value
+                                                + _impl::fractional_digits<Divisor>::value;
+            static constexpr int fractional_digits = _impl::fractional_digits<Dividend>::value
+                                                   + _impl::integer_digits<Divisor>::value;
 
-            static constexpr auto necessary_digits = integer_digits+fractional_digits;
+            static constexpr auto necessary_digits = integer_digits + fractional_digits;
             static constexpr auto natural_digits = digits<natural_result>::value;
             static constexpr auto result_digits = _impl::max(necessary_digits, natural_digits);
 
@@ -72,18 +73,14 @@ namespace cnl {
         };
     }
 
-    template<
-            class Dividend,
-            class Divisor>
-    CNL_NODISCARD constexpr auto make_scaled_integer(fraction<Dividend, Divisor> const& f)
-    -> typename _impl::quotient_result<Dividend, Divisor>::type
+    template<class Dividend, class Divisor>
+    CNL_NODISCARD constexpr auto make_scaled_integer(fraction<Dividend, Divisor> const& f) ->
+            typename _impl::quotient_result<Dividend, Divisor>::type
     {
         using quotient_result = _impl::quotient_result<Dividend, Divisor>;
         return _impl::from_rep<typename quotient_result::type>(
-                convert<
-                        typename quotient_result::scale,
-                        power<>,
-                        typename quotient_result::rep>(f));
+                convert<typename quotient_result::scale, power<>, typename quotient_result::rep>(
+                        f));
     }
 
     /// \brief calculates the quotient of two \ref scaled_integer values
@@ -95,14 +92,12 @@ namespace cnl {
     ///
     /// \return quotient: dividend / divisor
     ///
-    /// \note This function provides 'quasi-exact' division as described in [P1368](http://wg21.link/p1368r1).
+    /// \note This function provides 'quasi-exact' division as described in
+    /// [P1368](http://wg21.link/p1368r1).
 
-
-    template<
-            class Dividend,
-            class Divisor>
+    template<class Dividend, class Divisor>
     CNL_NODISCARD constexpr auto quotient(Dividend const& dividend, Divisor const& divisor)
-    -> decltype(make_scaled_integer(make_fraction(dividend, divisor)))
+            -> decltype(make_scaled_integer(make_fraction(dividend, divisor)))
     {
         return make_scaled_integer(make_fraction(dividend, divisor));
     }

@@ -16,13 +16,9 @@ using cnl::_impl::identical;
 
 namespace {
     static_assert(
-            identical(
-                    cnl::wide_integer<31>{5},
-                    cnl::_impl::make_wide_integer(int{5})),
+            identical(cnl::wide_integer<31>{5}, cnl::_impl::make_wide_integer(int{5})),
             "cnl::make_wide_integer");
     static_assert(
-            identical(
-                    cnl::wide_integer<63>{1},
-                    cnl::_impl::make_wide_integer(INT64_C(1))),
+            identical(cnl::wide_integer<63>{1}, cnl::_impl::make_wide_integer(INT64_C(1))),
             "cnl::make_wide_integer");
 }

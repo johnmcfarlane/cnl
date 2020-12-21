@@ -21,7 +21,8 @@ namespace {
         {
             ASSERT_EQ(
                     std::string{"-5016.5091400146484375"},
-                    cnl::to_string(cnl::scaled_integer<int, cnl::power<-16>>(-5016.5091400146484375)));
+                    cnl::to_string(
+                            cnl::scaled_integer<int, cnl::power<-16>>(-5016.5091400146484375)));
         }
 
         TEST(to_string, scaled_integer_small)  // NOLINT

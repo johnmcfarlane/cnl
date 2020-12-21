@@ -19,13 +19,16 @@ namespace cnl {
     namespace _impl {
         template<typename Number>
         struct default_to_rep {
-            CNL_NODISCARD constexpr Number& operator()(Number& number) const {
+            CNL_NODISCARD constexpr Number& operator()(Number& number) const
+            {
                 return number;
             };
-            CNL_NODISCARD constexpr Number const& operator()(Number const& number) const {
+            CNL_NODISCARD constexpr Number const& operator()(Number const& number) const
+            {
                 return number;
             };
-            CNL_NODISCARD constexpr Number&& operator()(Number&& number) const {
+            CNL_NODISCARD constexpr Number&& operator()(Number&& number) const
+            {
                 return std::forward<Number>(number);
             };
         };
@@ -39,17 +42,18 @@ namespace cnl {
     struct to_rep;
 
     template<typename Number>
-    struct to_rep<Number, _impl::enable_if_t<
-            _impl::is_integral<Number>::value
-            ||std::is_floating_point<Number>::value
-            ||_impl::is_constant<Number>::value>>
-            : _impl::default_to_rep<Number> {
+    struct to_rep<
+            Number,
+            _impl::enable_if_t<
+                    _impl::is_integral<Number>::value || std::is_floating_point<Number>::value
+                    || _impl::is_constant<Number>::value>> : _impl::default_to_rep<Number> {
     };
 
     namespace _impl {
         template<class Number>
         CNL_NODISCARD constexpr auto to_rep(Number&& number)  // NOLINT(misc-unused-parameters)
-        -> decltype(cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number))) {
+                -> decltype(cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number)))
+        {
             return cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number));
         }
     }

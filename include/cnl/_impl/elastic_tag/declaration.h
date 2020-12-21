@@ -11,7 +11,7 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<int Digits, typename Narrowest=int>
+    template<int Digits, typename Narrowest = int>
     struct elastic_tag;
 }
 

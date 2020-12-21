@@ -13,4 +13,3 @@
 #include "scaled_integer_math_Q1.h"
 #include "scaled_integer_math_Q15.h"
 #include "scaled_integer_math_Q31.h"
-

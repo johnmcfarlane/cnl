@@ -24,7 +24,7 @@ namespace cnl {
     template<typename Numerator = int, typename Denominator = Numerator>
     struct fraction {
         static_assert(
-                numeric_limits<Numerator>::is_iec559==numeric_limits<Denominator>::is_iec559,
+                numeric_limits<Numerator>::is_iec559 == numeric_limits<Denominator>::is_iec559,
                 "ill-formed if only one template parameter is floating-point");
 
         /// alias to `Numerator`
@@ -35,10 +35,9 @@ namespace cnl {
 
         explicit constexpr fraction(Numerator n, Denominator d);
 
-        template<typename Integer,
-                _impl::enable_if_t<
-                        numeric_limits<Integer>::is_integer,
-                        int> Dummy = 0>
+        template<
+                typename Integer,
+                _impl::enable_if_t<numeric_limits<Integer>::is_integer, int> Dummy = 0>
         explicit constexpr fraction(Integer const& i);
 
         template<typename RhsNumerator, typename RhsDenominator>
@@ -47,16 +46,15 @@ namespace cnl {
 
         template<
                 typename FloatingPoint,
-                _impl::enable_if_t<
-                        numeric_limits<FloatingPoint>::is_iec559,
-                        int> Dummy = 0>
+                _impl::enable_if_t<numeric_limits<FloatingPoint>::is_iec559, int> Dummy = 0>
         explicit constexpr fraction(FloatingPoint);
 
         /// returns the quotient, \ref numerator `/` \ref denominator
-        template<typename Scalar, _impl::enable_if_t<std::is_floating_point<Scalar>::value, int> = 0>
+        template<
+                typename Scalar, _impl::enable_if_t<std::is_floating_point<Scalar>::value, int> = 0>
         CNL_NODISCARD explicit constexpr operator Scalar() const
         {
-            return static_cast<Scalar>(numerator)/static_cast<Scalar>(denominator);
+            return static_cast<Scalar>(numerator) / static_cast<Scalar>(denominator);
         }
 
         /// the numerator (top number) of the fraction
@@ -67,24 +65,18 @@ namespace cnl {
     };
 
 #if defined(__cpp_deduction_guides)
-    fraction(float)
-    -> fraction<_impl::set_width_t<int, int(sizeof(float)*CHAR_BIT)>>;
+    fraction(float)->fraction<_impl::set_width_t<int, int(sizeof(float) * CHAR_BIT)>>;
 
-    fraction(double)
-    -> fraction<_impl::set_width_t<int, int(sizeof(double)*CHAR_BIT)>>;
+    fraction(double)->fraction<_impl::set_width_t<int, int(sizeof(double) * CHAR_BIT)>>;
 
 #if defined(CNL_INT128_ENABLED)
-    fraction(long double)
-    -> fraction<_impl::set_width_t<int, int(sizeof(long double)*CHAR_BIT)>>;
+    fraction(long double)->fraction<_impl::set_width_t<int, int(sizeof(long double) * CHAR_BIT)>>;
 #endif
 
     template<
             typename Integer,
-            typename = _impl::enable_if_t<
-                    numeric_limits<Integer>::is_integer,
-                    int>>
-    fraction(Integer)
-    -> fraction<Integer>;
+            typename = _impl::enable_if_t<numeric_limits<Integer>::is_integer, int>>
+    fraction(Integer) -> fraction<Integer>;
 #endif
 }
 
