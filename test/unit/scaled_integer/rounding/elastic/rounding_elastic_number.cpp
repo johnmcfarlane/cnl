@@ -23,14 +23,12 @@ namespace {
         static_assert(
                 identical(
                         rounding_elastic_number<24, -20>{1.5},
-                        rounding_elastic_number<24, -20>{rounding_elastic_number<49, -40>{1.5}}),
-                "");
+                        rounding_elastic_number<24, -20>{rounding_elastic_number<49, -40>{1.5}}));
 #if defined(CNL_INT128_ENABLED)
         static_assert(
                 identical(
                         rounding_elastic_number<48, -40>{1.5},
-                        rounding_elastic_number<48, -40>{rounding_elastic_number<97, -80>{1.5}}),
-                "");
+                        rounding_elastic_number<48, -40>{rounding_elastic_number<97, -80>{1.5}}));
 #endif
     }
 

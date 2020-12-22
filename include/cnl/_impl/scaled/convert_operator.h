@@ -24,7 +24,7 @@ namespace cnl {
             power<DestExponent, Radix>, power<SrcExponent, Radix>, Dest, Src,
             _impl::enable_if_t<
                     cnl::numeric_limits<Dest>::is_iec559 && cnl::numeric_limits<Src>::is_integer>> {
-        static_assert(cnl::numeric_limits<Src>::is_integer, "");
+        static_assert(cnl::numeric_limits<Src>::is_integer);
 
         CNL_NODISCARD constexpr Dest operator()(Src const& from) const
         {

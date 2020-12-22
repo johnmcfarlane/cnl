@@ -15,6 +15,5 @@ using cnl::_impl::identical;
 
 namespace {
     static_assert(
-            identical(39, cnl::digits<cnl::_impl::duplex_integer<cnl::int8, cnl::uint32>>::value),
-            "");
+            identical(39, cnl::digits<cnl::_impl::duplex_integer<cnl::int8, cnl::uint32>>::value));
 }

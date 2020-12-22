@@ -27,6 +27,5 @@ namespace {
             "cnl::set_digits<cnl::wide_integer>");
 
     static_assert(
-            assert_same<cnl::wide_integer<32>, cnl::set_digits_t<cnl::wide_integer<31>, 32>>::value,
-            "");
+            assert_same<cnl::wide_integer<32>, cnl::set_digits_t<cnl::wide_integer<31>, 32>>::value);
 }

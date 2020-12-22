@@ -23,24 +23,24 @@ namespace {
 
         namespace section_2_1 {
             CNL_NODISCARD constexpr auto positive_unsigned_overflow = UINT_MAX + 1;  // 0U
-            static_assert(identical(0U, positive_unsigned_overflow), "");
+            static_assert(identical(0U, positive_unsigned_overflow));
 
             //            auto positive_signed_overflow = INT_MAX + 1; // undefined behavior
 
             CNL_NODISCARD constexpr auto negative_unsigned_overflow = 0U > -1;  // false
-            static_assert(identical(false, negative_unsigned_overflow), "");
+            static_assert(identical(false, negative_unsigned_overflow));
         }
 
         namespace section_2_2 {
             CNL_NODISCARD constexpr auto positive_unsigned_ok =
                     static_cast<unsigned long long>(UINT_MAX) + 1;
-            static_assert(identical(0x100000000ULL, positive_unsigned_ok), "");
+            static_assert(identical(0x100000000ULL, positive_unsigned_ok));
 
             CNL_NODISCARD constexpr auto positive_signed_ok = static_cast<long long>(INT_MAX) + 1;
-            static_assert(identical(0x80000000LL, positive_signed_ok), "");
+            static_assert(identical(0x80000000LL, positive_signed_ok));
 
             CNL_NODISCARD constexpr auto negative_unsigned_ok = static_cast<long long>(0U) > -1;
-            static_assert(identical(true, negative_unsigned_ok), "");
+            static_assert(identical(true, negative_unsigned_ok));
         }
 
         namespace section_2_3 {
@@ -63,11 +63,9 @@ namespace {
             static_assert(
                     identical(
                             INT64_C(0x7fffffff0000000),
-                            multiply(INT32_C(0x7fffffff), INT32_C(0x10000000))),
-                    "");
+                            multiply(INT32_C(0x7fffffff), INT32_C(0x10000000))));
             static_assert(
-                    identical(UINT32_C(0xffff000), multiply(uint16_t(0xffff), uint16_t(0x1000))),
-                    "");
+                    identical(UINT32_C(0xffff000), multiply(uint16_t(0xffff), uint16_t(0x1000))));
         }
 
         namespace section_2_4 {
@@ -93,27 +91,27 @@ namespace {
                 return elastic_integer<16, unsigned>(d);
             }
 
-            static_assert(identical(elastic_integer<16, unsigned>{45254}, d(32000, 32000)), "");
+            static_assert(identical(elastic_integer<16, unsigned>{45254}, d(32000, 32000)));
         }
 
         namespace section_2_5_a {
             CNL_NODISCARD constexpr auto a =
                     elastic_integer(123);  // commonly deduced as elastic_integer<31>
-            static_assert(identical(elastic_integer<31>{123}, a), "");
+            static_assert(identical(elastic_integer<31>{123}, a));
 
             CNL_NODISCARD constexpr auto b = elastic_integer(
                     UINT64_C(4096));  // commonly deduced as elastic_integer<64, unsigned>
-            static_assert(identical(elastic_integer<64, unsigned>{4096}, b), "");
+            static_assert(identical(elastic_integer<64, unsigned>{4096}, b));
         }
 
         namespace section_2_5_b {
             CNL_NODISCARD constexpr auto a =
                     elastic_integer(constant<123>());  // deduced as elastic_integer<7>
-            static_assert(identical(elastic_integer<7>{123}, a), "");
+            static_assert(identical(elastic_integer<7>{123}, a));
 
             CNL_NODISCARD constexpr auto b =
                     elastic_integer(constant<4096>());  // deduced as elastic_integer<13>
-            static_assert(identical(elastic_integer<13>{4096}, b), "");
+            static_assert(identical(elastic_integer<13>{4096}, b));
         }
 
         namespace section_2_5_c {
@@ -121,11 +119,11 @@ namespace {
 
             CNL_NODISCARD constexpr auto a =
                     elastic_integer(123_c);  // deduced as elastic_integer<7>
-            static_assert(identical(elastic_integer<7>{123}, a), "");
+            static_assert(identical(elastic_integer<7>{123}, a));
 
             CNL_NODISCARD constexpr auto b =
                     elastic_integer(4096_c);  // deduced as elastic_integer<13>
-            static_assert(identical(elastic_integer<13>{4096}, b), "");
+            static_assert(identical(elastic_integer<13>{4096}, b));
         }
 
         TEST(p0828, section_4_1_1)
@@ -145,10 +143,10 @@ namespace {
         namespace section_4_1_2a {
             CNL_NODISCARD constexpr auto kibi =
                     scaled_integer<int32_t, cnl::power<-16>>(1024);  // 2^26
-            static_assert(identical(1 << 26, to_rep(kibi)), "");
+            static_assert(identical(1 << 26, to_rep(kibi)));
 
             //            CNL_NODISCARD constexpr auto mebi = kibi * kibi;   // scaled_integer<int,
-            //            -32>; value: 2^52 static_assert(identical(1LL<<52, to_rep(mebi)), "");
+            //            -32>; value: 2^52 static_assert(identical(1LL<<52, to_rep(mebi)));
         }
 
         namespace section_4_1_2b {
@@ -157,12 +155,12 @@ namespace {
 
             CNL_NODISCARD constexpr auto kibi =
                     elastic_scaled_integer<31, -16>(1024);  // stores value 2^26
-            static_assert(identical(1 << 26, to_rep(to_rep(kibi))), "");
+            static_assert(identical(1 << 26, to_rep(to_rep(kibi))));
 
             CNL_NODISCARD constexpr auto mebi =
                     kibi * kibi;  // elastic_scaled_integer<62, -32> stores value: 2^52
-            static_assert(identical(elastic_scaled_integer<62, -32>{1 << 20}, mebi), "");
-            static_assert(identical(INT64_C(1) << 52, to_rep(to_rep(mebi))), "");
+            static_assert(identical(elastic_scaled_integer<62, -32>{1 << 20}, mebi));
+            static_assert(identical(INT64_C(1) << 52, to_rep(to_rep(mebi))));
 
         }
 
@@ -195,7 +193,7 @@ namespace {
         // a 30-bit number with 20 integer digits and 10 fraction digits;
         CNL_NODISCARD constexpr auto nn = n * n;
 
-        static_assert(identical(elastic_scaled_integer<30, -10, int>{1022.0009765625}, nn), "");
+        static_assert(identical(elastic_scaled_integer<30, -10, int>{1022.0009765625}, nn));
     }
 }
 

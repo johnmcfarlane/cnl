@@ -137,7 +137,7 @@ TEST(TOKENPASTE2(TEST_LABEL, pre), increment)  // NOLINT
 {
     auto b = scaled_integer<int16, cnl::power<-8>>(22.75);
     auto& a = ++b;
-    static_assert(std::is_same<scaled_integer<int16, cnl::power<-8>>&, decltype(a)>::value, "");
+    static_assert(std::is_same<scaled_integer<int16, cnl::power<-8>>&, decltype(a)>::value);
     ASSERT_EQ(&b, &a);
     ASSERT_EQ(23.75, a);
     ASSERT_EQ(23.75, b);
@@ -147,7 +147,7 @@ TEST(TOKENPASTE2(TEST_LABEL, pre), decrement)  // NOLINT
 {
     auto b = scaled_integer<int16, cnl::power<-8>>(22.75);
     auto& a = --b;
-    static_assert(std::is_same<scaled_integer<int16, cnl::power<-8>>&, decltype(a)>::value, "");
+    static_assert(std::is_same<scaled_integer<int16, cnl::power<-8>>&, decltype(a)>::value);
     ASSERT_EQ(&b, &a);
     ASSERT_EQ(21.75, a);
     ASSERT_EQ(21.75, b);
@@ -157,7 +157,7 @@ TEST(TOKENPASTE2(TEST_LABEL, post), increment)  // NOLINT
 {
     auto b = scaled_integer<int16, cnl::power<-8>>(22.75);
     auto a = b++;
-    static_assert(std::is_same<scaled_integer<int16, cnl::power<-8>>, decltype(a)>::value, "");
+    static_assert(std::is_same<scaled_integer<int16, cnl::power<-8>>, decltype(a)>::value);
     ASSERT_NE(&b, &a);
     ASSERT_EQ(22.75, a);
     ASSERT_EQ(23.75, b);
@@ -167,7 +167,7 @@ TEST(TOKENPASTE2(TEST_LABEL, post), decrement)  // NOLINT
 {
     auto b = scaled_integer<int16, cnl::power<-8>>(22.75);
     auto a = b--;
-    static_assert(std::is_same<scaled_integer<int16, cnl::power<-8>>, decltype(a)>::value, "");
+    static_assert(std::is_same<scaled_integer<int16, cnl::power<-8>>, decltype(a)>::value);
     ASSERT_NE(&b, &a);
     ASSERT_EQ(22.75, a);
     ASSERT_EQ(21.75, b);
@@ -426,8 +426,7 @@ namespace test_from_value {
     static_assert(
             identical(
                     scaled_integer<>{3},
-                    cnl::from_value<scaled_integer<test_int, cnl::power<-1>>, test_int>{}(3)),
-            "");
+                    cnl::from_value<scaled_integer<test_int, cnl::power<-1>>, test_int>{}(3)));
     static_assert(
             identical(
                     scaled_integer<short>{123},
@@ -572,8 +571,7 @@ namespace test_set_digits_t {
             assert_same<
                     cnl::scaled_integer<set_digits_t<long unsigned int, 96U>, cnl::power<-96>>,
                     cnl::set_digits_t<
-                            cnl::scaled_integer<long unsigned int, cnl::power<-96>>, 96U>>::value,
-            "");
+                            cnl::scaled_integer<long unsigned int, cnl::power<-96>>, 96U>>::value);
 #if defined(__GNUC__)
 #pragma GCC diagnostic pop
 #endif
@@ -1182,8 +1180,8 @@ static_assert(
                 scaled_integer<uint32, cnl::power<0>>{1}),
         "cnl::scaled_integer test failed");
 #if defined(CNL_INT128_ENABLED)
-static_assert(cnl::numeric_limits<uint128>::is_specialized, "");
-static_assert(cnl::numeric_limits<uint128>::is_integer, "");
+static_assert(cnl::numeric_limits<uint128>::is_specialized);
+static_assert(cnl::numeric_limits<uint128>::is_integer);
 #endif
 
 namespace test_shift_operator_right {
@@ -1194,7 +1192,7 @@ namespace test_shift_operator_right {
             cnl::_impl::shift_right_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
             cnl::scaled_integer<test_int, cnl::power<-28>>, test_int>{}};
     constexpr auto actual{op(lhs, rhs)};
-    static_assert(identical(expected, actual), "");
+    static_assert(identical(expected, actual));
 }
 
 #if !defined(__clang__) || (__clang_major__ > 3) || (__clang_minor__ > 8)
@@ -1207,7 +1205,7 @@ namespace test_shift_operator_left {
             cnl::_impl::shift_left_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
             scaled_integer<uint8, cnl::power<-4>>, scaled_integer<>>{}};
     constexpr auto actual{op(lhs, rhs)};
-    static_assert(identical(expected, actual), "");
+    static_assert(identical(expected, actual));
 }
 #endif
 
@@ -1297,8 +1295,8 @@ namespace test_bitwise_xor {
 ////////////////////////////////////////////////////////////////////////////////
 // quotient
 
-static_assert(cnl::numeric_limits<uint8>::max() / 5 == 51, "");
-static_assert(cnl::numeric_limits<uint8>::max() / 3 == 85, "");
+static_assert(cnl::numeric_limits<uint8>::max() / 5 == 51);
+static_assert(cnl::numeric_limits<uint8>::max() / 3 == 85);
 
 namespace test_quotient {
 #if !defined(__clang__) || (__clang_major__ > 3) || (__clang_minor__ > 8)
@@ -1439,38 +1437,32 @@ static_assert(
 static_assert(
         test_numeric_limits<test_signed, -16>(
                 1 / 65536., cnl::numeric_limits<test_signed>::max() / 65536.,
-                cnl::numeric_limits<test_signed>::lowest() / 65536.),
-        "");
+                cnl::numeric_limits<test_signed>::lowest() / 65536.));
 
 static_assert(
         test_numeric_limits<test_unsigned, -16>(
                 1 / 65536., cnl::numeric_limits<test_unsigned>::max() / 65536.,
-                cnl::numeric_limits<test_unsigned>::lowest() / 65536.),
-        "");
+                cnl::numeric_limits<test_unsigned>::lowest() / 65536.));
 
 static_assert(
         test_numeric_limits<test_signed, 0>(
                 1, cnl::numeric_limits<test_signed>::max(),
-                cnl::numeric_limits<test_signed>::lowest()),
-        "");
+                cnl::numeric_limits<test_signed>::lowest()));
 
 static_assert(
         test_numeric_limits<test_unsigned, 0U>(
                 1U, cnl::numeric_limits<test_unsigned>::max(),
-                cnl::numeric_limits<test_unsigned>::lowest()),
-        "");
+                cnl::numeric_limits<test_unsigned>::lowest()));
 
 static_assert(
         test_numeric_limits<test_signed, 16>(
                 65536., cnl::numeric_limits<test_signed>::max() * 65536.,
-                cnl::numeric_limits<test_signed>::lowest() * 65536.),
-        "");
+                cnl::numeric_limits<test_signed>::lowest() * 65536.));
 
 static_assert(
         test_numeric_limits<test_unsigned, 16>(
                 65536., cnl::numeric_limits<test_unsigned>::max() * 65536.,
-                cnl::numeric_limits<test_unsigned>::lowest() * 65536.),
-        "");
+                cnl::numeric_limits<test_unsigned>::lowest() * 65536.));
 
 static_assert(
         cnl::numeric_limits<scaled_integer<test_int, cnl::power<256>>>::lowest() < -1.e86,

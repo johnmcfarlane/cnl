@@ -863,7 +863,7 @@ namespace {
         ////////////////////////////////////////////////////////////////////////////////
         // most negative number
 
-        static_assert(cnl::_impl::has_most_negative_number<int>::value, "");
+        static_assert(cnl::_impl::has_most_negative_number<int>::value);
         static_assert(
                 divide_test<cnl::_impl::polarity::positive>{}(INT_MIN, -1),
                 "cnl::_impl::is_overflow<cnl::_impl::divide_op, cnl::_impl::polarity::positive>");

@@ -33,7 +33,6 @@ namespace {
                                 cnl::_impl::number<
                                         cnl::elastic_integer<24, int>, cnl::nearest_rounding_tag>,
                                 cnl::elastic_integer<13, int>>{}(cnl::elastic_integer<13, int>{
-                                42})),
-                "");
+                                42})));
     }
 }

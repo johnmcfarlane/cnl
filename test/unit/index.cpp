@@ -70,14 +70,14 @@ void basic_arithmetic_example()
 
     // expressions involving integers return scaled_integer results
     auto tau = pi * 2;
-    static_assert(is_same<decltype(tau), scaled_integer<int32_t, power<-28>>>::value, "");
+    static_assert(is_same<decltype(tau), scaled_integer<int32_t, power<-28>>>::value);
 
     // "6.28319"
     cout << tau << endl;
 
     // expressions involving floating-point values return floating-point results
     auto degrees = tau * (180 / 3.1415926534);
-    static_assert(is_same<decltype(degrees), double>::value, "");
+    static_assert(is_same<decltype(degrees), double>::value);
 
     // "360"
     cout << degrees << '\n';
@@ -106,7 +106,7 @@ void advanced_arithmetic_example()
     auto xx = x * x;
 
     // x*x is promoted to scaled_integer<int, -8>
-    static_assert(is_same<decltype(xx), scaled_integer<int, power<-8>>>::value, "");
+    static_assert(is_same<decltype(xx), scaled_integer<int, power<-8>>>::value);
     cout << xx << endl;  // "254.00390625" - correct
 
     // you can avoid the pitfalls of integer promotion for good by using the elastic_scaled_integer
@@ -114,7 +114,7 @@ void advanced_arithmetic_example()
     auto named_xx = make_elastic_scaled_integer(x) * make_elastic_scaled_integer(x);
 
     // this type tracks both the number of digits and the exponent to ensure lossless multiplication
-    static_assert(is_same<decltype(named_xx), elastic_scaled_integer<16, -8, unsigned>>::value, "");
+    static_assert(is_same<decltype(named_xx), elastic_scaled_integer<16, -8, unsigned>>::value);
     cout << named_xx << endl;  // "254.00390625" - also correct but prone to overflow
 }
 //! [advanced arithmetic example]
@@ -156,7 +156,7 @@ void boost_example()
     auto googolth = quotient(mp_scaled_integer<1>{1}, googol);
 
     // produces a number with one integer digit and 400 fraction digits.
-    static_assert(is_same<decltype(googolth), mp_scaled_integer<401, -400>>::value, "");
+    static_assert(is_same<decltype(googolth), mp_scaled_integer<401, -400>>::value);
 
     // Prints "1e-100" (although this value is only approximate).
     cout << googolth << endl;
@@ -187,14 +187,14 @@ void elastic_example1()
 
     // Results of its operations widen as required.
     auto aa = a * a;
-    static_assert(is_same<decltype(aa), elastic_integer<12, int8_t>>::value, "");
+    static_assert(is_same<decltype(aa), elastic_integer<12, int8_t>>::value);
 
     // Obviously, this type no longer fits in a byte.
-    static_assert(sizeof(aa) == 2, "");
+    static_assert(sizeof(aa) == 2);
 
     // Addition requires smaller results.
     auto a2 = a + a;
-    static_assert(is_same<decltype(a2), elastic_integer<7, int8_t>>::value, "");
+    static_assert(is_same<decltype(a2), elastic_integer<7, int8_t>>::value);
 
     (void)aa;
     (void)a2;
@@ -210,7 +210,7 @@ void elastic_example2()
     auto bb = b * b;
 
     cout << bb << endl;  // "254.00390625"
-    static_assert(is_same<decltype(bb), elastic_scaled_integer<62, -54, unsigned>>::value, "");
+    static_assert(is_same<decltype(bb), elastic_scaled_integer<62, -54, unsigned>>::value);
 }
 //! [elastic example]
 

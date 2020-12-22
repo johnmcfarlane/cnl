@@ -114,7 +114,7 @@ namespace j {
     constexpr auto n = scaled_integer<uint8_t, power<-8>>{0.99609375};
     constexpr auto nn = n * n;  // scaled_integer<int, power<-16>>{0.9922027587890625};
     static_assert(
-            cnl::_impl::identical(scaled_integer<int, power<-16>>{0.9922027587890625}, nn), "");
+            cnl::_impl::identical(scaled_integer<int, power<-16>>{0.9922027587890625}, nn));
 }
 
 namespace j2 {
@@ -122,7 +122,7 @@ namespace j2 {
     constexpr auto d = scaled_integer<int16_t, power<-8>>{2.25};
     constexpr auto f = cnl::fraction{n, d};
     constexpr auto q = scaled_integer{f};
-    static_assert(identical(scaled_integer<int32_t, power<-15>>{.66666667}, q), "");
+    static_assert(identical(scaled_integer<int32_t, power<-15>>{.66666667}, q));
 }
 
 namespace k {
@@ -130,7 +130,7 @@ namespace k {
     {
         auto n = scaled_integer<int, power<-31>>{0.99609375};
         auto nn = n * n;  // scaled_integer<int, -62>{0.9922027587890625};
-        static_assert(std::is_same<scaled_integer<int, power<-62>>, decltype(nn)>::value, "");
+        static_assert(std::is_same<scaled_integer<int, power<-62>>, decltype(nn)>::value);
         (void)nn;
     }
 }
@@ -141,11 +141,11 @@ namespace l {
     constexpr auto e = elastic_integer<31>{0x7FFFFFFF};  // r has 31 or more digits
 
     constexpr auto ee = e * e;
-    static_assert(cnl::_impl::identical(elastic_integer<62>{INT64_C(0x3FFFFFFF00000001)}, ee), "");
+    static_assert(cnl::_impl::identical(elastic_integer<62>{INT64_C(0x3FFFFFFF00000001)}, ee));
 
     constexpr auto _2ee = ee + ee;
     static_assert(
-            cnl::_impl::identical(elastic_integer<63>{INT64_C(0x7FFFFFFE00000002)}, _2ee), "");
+            cnl::_impl::identical(elastic_integer<63>{INT64_C(0x7FFFFFFE00000002)}, _2ee));
 }
 
 namespace m {
@@ -154,13 +154,12 @@ namespace m {
     constexpr auto sq = fpe * fpe;
     static_assert(
             cnl::_impl::identical(
-                    scaled_integer<elastic_integer<62>, power<-62>>{0.9922027587890625}, sq),
-            "");
+                    scaled_integer<elastic_integer<62>, power<-62>>{0.9922027587890625}, sq));
 
 #if defined(CNL_INT128_ENABLED)
     constexpr auto q = make_scaled_integer(make_fraction(sq, sq));
     static_assert(
-            cnl::_impl::identical(scaled_integer<elastic_integer<124>, power<-62>>{1}, q), "");
+            cnl::_impl::identical(scaled_integer<elastic_integer<124>, power<-62>>{1}, q));
 #endif
 }
 

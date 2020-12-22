@@ -113,48 +113,48 @@ namespace {
 
     namespace test_set_digits {
         using cnl::set_digits;
-        static_assert(identical(cnl::set_digits<cnl::int32, 32>::type{0}, cnl::int64{0}), "");
+        static_assert(identical(cnl::set_digits<cnl::int32, 32>::type{0}, cnl::int64{0}));
 
-        static_assert(identical(cnl::set_digits<cnl::uint8, 1>::type{234}, cnl::uint8{234}), "");
-        static_assert(identical(cnl::set_digits<cnl::uintmax, 1>::type{234}, cnl::uint8{234}), "");
-        static_assert(identical(cnl::set_digits<cnl::int8, 1>::type{123}, cnl::int8{123}), "");
-        static_assert(identical(cnl::set_digits<cnl::intmax, 1>::type{123}, cnl::int8{123}), "");
+        static_assert(identical(cnl::set_digits<cnl::uint8, 1>::type{234}, cnl::uint8{234}));
+        static_assert(identical(cnl::set_digits<cnl::uintmax, 1>::type{234}, cnl::uint8{234}));
+        static_assert(identical(cnl::set_digits<cnl::int8, 1>::type{123}, cnl::int8{123}));
+        static_assert(identical(cnl::set_digits<cnl::intmax, 1>::type{123}, cnl::int8{123}));
 
-        static_assert(identical(cnl::set_digits<cnl::uint8, 10>::type{234}, cnl::uint16{234}), "");
+        static_assert(identical(cnl::set_digits<cnl::uint8, 10>::type{234}, cnl::uint16{234}));
         static_assert(
-                identical(cnl::set_digits<cnl::uintmax, 10>::type{234}, cnl::uint16{234}), "");
-        static_assert(identical(cnl::set_digits<cnl::int8, 10>::type{234}, cnl::int16{234}), "");
-        static_assert(identical(cnl::set_digits<cnl::intmax, 10>::type{234}, cnl::int16{234}), "");
+                identical(cnl::set_digits<cnl::uintmax, 10>::type{234}, cnl::uint16{234}));
+        static_assert(identical(cnl::set_digits<cnl::int8, 10>::type{234}, cnl::int16{234}));
+        static_assert(identical(cnl::set_digits<cnl::intmax, 10>::type{234}, cnl::int16{234}));
 
-        static_assert(identical(cnl::set_digits<cnl::uint8, 64>::type{234}, cnl::uint64{234}), "");
+        static_assert(identical(cnl::set_digits<cnl::uint8, 64>::type{234}, cnl::uint64{234}));
         static_assert(
-                identical(cnl::set_digits<cnl::uintmax, 64>::type{234}, cnl::uint64{234}), "");
-        static_assert(identical(cnl::set_digits<cnl::int8, 63>::type{234}, cnl::int64{234}), "");
-        static_assert(identical(cnl::set_digits<cnl::intmax, 63>::type{234}, cnl::int64{234}), "");
+                identical(cnl::set_digits<cnl::uintmax, 64>::type{234}, cnl::uint64{234}));
+        static_assert(identical(cnl::set_digits<cnl::int8, 63>::type{234}, cnl::int64{234}));
+        static_assert(identical(cnl::set_digits<cnl::intmax, 63>::type{234}, cnl::int64{234}));
 
 #if defined(CNL_INT128_ENABLED)
         static_assert(
-                identical(cnl::set_digits<cnl::uint8, 128>::type{234}, cnl::uint128{234}), "");
+                identical(cnl::set_digits<cnl::uint8, 128>::type{234}, cnl::uint128{234}));
         static_assert(
-                identical(cnl::set_digits<cnl::uintmax, 128>::type{234}, cnl::uint128{234}), "");
-        static_assert(identical(cnl::set_digits<cnl::int8, 127>::type{234}, cnl::int128{234}), "");
+                identical(cnl::set_digits<cnl::uintmax, 128>::type{234}, cnl::uint128{234}));
+        static_assert(identical(cnl::set_digits<cnl::int8, 127>::type{234}, cnl::int128{234}));
         static_assert(
-                identical(cnl::set_digits<cnl::intmax, 127>::type{234}, cnl::int128{234}), "");
+                identical(cnl::set_digits<cnl::intmax, 127>::type{234}, cnl::int128{234}));
 #endif
     }
 
     namespace test_digits_2 {
-        static_assert(cnl::digits<cnl::int8>::value == 7, "");
-        static_assert(cnl::digits<cnl::uint8>::value == 8, "");
-        static_assert(cnl::digits<cnl::int16>::value == 15, "");
-        static_assert(cnl::digits<cnl::uint16>::value == 16, "");
-        static_assert(cnl::digits<cnl::int32>::value == 31, "");
-        static_assert(cnl::digits<cnl::uint32>::value == 32, "");
-        static_assert(cnl::digits<cnl::int64>::value == 63, "");
-        static_assert(cnl::digits<cnl::uint64>::value == 64, "");
+        static_assert(cnl::digits<cnl::int8>::value == 7);
+        static_assert(cnl::digits<cnl::uint8>::value == 8);
+        static_assert(cnl::digits<cnl::int16>::value == 15);
+        static_assert(cnl::digits<cnl::uint16>::value == 16);
+        static_assert(cnl::digits<cnl::int32>::value == 31);
+        static_assert(cnl::digits<cnl::uint32>::value == 32);
+        static_assert(cnl::digits<cnl::int64>::value == 63);
+        static_assert(cnl::digits<cnl::uint64>::value == 64);
 #if defined(CNL_INT128_ENABLED)
-        static_assert(cnl::digits<cnl::int128>::value == 127, "");
-        static_assert(cnl::digits<cnl::uint128>::value == 128, "");
+        static_assert(cnl::digits<cnl::int128>::value == 127);
+        static_assert(cnl::digits<cnl::uint128>::value == 128);
 #endif
     }
 

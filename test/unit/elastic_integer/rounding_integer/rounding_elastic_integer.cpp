@@ -51,8 +51,7 @@ namespace {
     namespace test_is_number {
         static_assert(
                 cnl::_impl::is_number<cnl::elastic_integer<>>::value
-                        && !cnl::_impl::is_number<int>::value,
-                "");
+                && !cnl::_impl::is_number<int>::value);
     }
 
     namespace test_from_rep {
@@ -65,13 +64,11 @@ namespace {
         static_assert(
                 assert_same<
                         cnl::elastic_integer<7, int>,
-                        cnl::_impl::set_rep_t<cnl::elastic_integer<7, int>, int>>::value,
-                "");
+                        cnl::_impl::set_rep_t<cnl::elastic_integer<7, int>, int>>::value);
         static_assert(
                 identical(
                         cnl::elastic_integer<7, int>{42},
-                        cnl::from_rep<cnl::elastic_integer<7>, int>{}(42)),
-                "");
+                        cnl::from_rep<cnl::elastic_integer<7>, int>{}(42)));
         static_assert(
                 identical(
                         rounding_elastic_integer<16>{0},
@@ -83,8 +80,7 @@ namespace {
     namespace test_make_rounding_elastic {
         static_assert(
                 identical(
-                        cnl::make_rounding_elastic(cnl::int16{7}), rounding_elastic_integer<15>{7}),
-                "");
+                        cnl::make_rounding_elastic(cnl::int16{7}), rounding_elastic_integer<15>{7}));
     }
 
     namespace test_multiply {

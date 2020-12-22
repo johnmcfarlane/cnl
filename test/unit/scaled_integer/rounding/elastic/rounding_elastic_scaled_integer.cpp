@@ -26,15 +26,13 @@ namespace {
                 identical(
                         rounding_elastic_scaled_integer<24, -20>{1.5},
                         rounding_elastic_scaled_integer<24, -20>{
-                                rounding_elastic_scaled_integer<49, -40>{1.5}}),
-                "");
+                                rounding_elastic_scaled_integer<49, -40>{1.5}}));
 #if defined(CNL_INT128_ENABLED)
         static_assert(
                 identical(
                         rounding_elastic_scaled_integer<48, -40>{1.5},
                         rounding_elastic_scaled_integer<48, -40>{
-                                rounding_elastic_scaled_integer<97, -80>{1.5}}),
-                "");
+                                rounding_elastic_scaled_integer<97, -80>{1.5}}));
 #endif
     }
 

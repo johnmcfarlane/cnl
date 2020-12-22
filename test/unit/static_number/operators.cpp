@@ -16,8 +16,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::static_number<6>{7} * cnl::static_number<13>{321},
-                        cnl::static_number<19>{2247}),
-                "");
+                        cnl::static_number<19>{2247}));
     }
 
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)

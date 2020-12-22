@@ -127,8 +127,7 @@ namespace saturated_binary_operator {
     static_assert(
             cnl::comparison_operator<
                     cnl::_impl::equal_op, saturated_integer<int16_t>, saturated_integer<int16_t>>()(
-                    saturated_integer<int16_t>(32767), saturated_integer<int16_t>(5000000000L)),
-            "");
+                    saturated_integer<int16_t>(32767), saturated_integer<int16_t>(5000000000L)));
 
     static_assert(
             identical(
@@ -138,8 +137,7 @@ namespace saturated_binary_operator {
                                     cnl::saturated_overflow_tag, signed char, signed char>()(
                                     cnl::_impl::to_rep(saturated_integer<signed char>{30}),
                                     cnl::_impl::to_rep(saturated_integer<signed char>{40}))),
-                    saturated_integer<int>{1200}),
-            "");
+                    saturated_integer<int>{1200}));
 
     static_assert(
             identical(
@@ -147,8 +145,7 @@ namespace saturated_binary_operator {
                             multiply_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
                             saturated_integer<signed char>, saturated_integer<signed char>>()(
                             saturated_integer<signed char>{30}, saturated_integer<signed char>{40}),
-                    saturated_integer<int>{1200}),
-            "");
+                    saturated_integer<int>{1200}));
 
     static_assert(
             identical(
@@ -156,8 +153,7 @@ namespace saturated_binary_operator {
                             cnl::_impl::multiply_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
                             saturated_integer<signed char>, saturated_integer<signed char>>()(
                             30, 40),
-                    saturated_integer<int>{1200}),
-            "");
+                    saturated_integer<int>{1200}));
 
     static_assert(
             identical(
@@ -175,7 +171,7 @@ namespace saturated_binary_operator {
 namespace test_constructor {
     using namespace cnl::literals;
 
-    static_assert(throwing_integer<int>(7_c) > throwing_integer<int>(6_c), "");
+    static_assert(throwing_integer<int>(7_c) > throwing_integer<int>(6_c));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -184,9 +180,8 @@ namespace test_constructor {
 namespace test_equal {
     static_assert(
             cnl::comparison_operator<cnl::_impl::equal_op, throwing_integer<short>, double>()(
-                    throwing_integer<short>{0}, 0.),
-            "");
-    static_assert(throwing_integer<short>{0} == 0., "");
+                    throwing_integer<short>{0}, 0.));
+    static_assert(throwing_integer<short>{0} == 0.);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -204,7 +199,7 @@ static_assert(
                 == 100 - cnl::numeric_limits<int16_t>::max(),
         "cnl::saturated_integer test failed");
 static_assert(
-        throwing_integer<char>{0} - throwing_integer<char>{0} == throwing_integer<char>{0}, "");
+        throwing_integer<char>{0} - throwing_integer<char>{0} == throwing_integer<char>{0});
 
 // multiplication
 static_assert(
@@ -225,7 +220,7 @@ static_assert(
         int16_t(31) / saturated_integer<int8_t>(-2) == -15, "cnl::saturated_integer test failed");
 
 static_assert(
-        is_same<decltype(declval<saturated_integer<>>() / declval<double>()), double>::value, "");
+        is_same<decltype(declval<saturated_integer<>>() / declval<double>()), double>::value);
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::numeric_limits
@@ -554,52 +549,47 @@ namespace test_to_rep {
     static_assert(
             identical(cnl::_impl::to_rep(cnl::overflow_integer<uint64_t>{54}), uint64_t{54}),
             "cnl::_impl::to_rep<overflow_integer<>>()");
-    static_assert(identical(cnl::_impl::to_rep(native_integer<cnl::uint8>{3}), cnl::uint8{3}), "");
+    static_assert(identical(cnl::_impl::to_rep(native_integer<cnl::uint8>{3}), cnl::uint8{3}));
 }
 
 namespace test_from_rep {
     using cnl::from_rep;
 
     static_assert(
-            identical(from_rep<native_integer<int>, int>()(746352), native_integer<int>{746352}),
-            "");
-    static_assert(from_rep<native_integer<short>, short>()(short{1}), "");
-    static_assert(from_rep<throwing_integer<short>, short>()(short{1}), "");
+            identical(from_rep<native_integer<int>, int>()(746352), native_integer<int>{746352}));
+    static_assert(from_rep<native_integer<short>, short>()(short{1}));
+    static_assert(from_rep<throwing_integer<short>, short>()(short{1}));
 }
 
 namespace test_impl_from_rep {
 
     static_assert(
             identical(
-                    cnl::_impl::from_rep<native_integer<int>>(746352), native_integer<int>{746352}),
-            "");
+                    cnl::_impl::from_rep<native_integer<int>>(746352), native_integer<int>{746352}));
     static_assert(
-            identical(cnl::_impl::from_rep<native_integer<short>>(1), native_integer<int>{1}), "");
+            identical(cnl::_impl::from_rep<native_integer<short>>(1), native_integer<int>{1}));
     static_assert(
-            identical(cnl::_impl::from_rep<throwing_integer<short>>(1), throwing_integer<int>{1}),
-            "");
+            identical(cnl::_impl::from_rep<throwing_integer<short>>(1), throwing_integer<int>{1}));
 }
 
 namespace test_from_value {
     static_assert(
             identical(
                     native_integer<long long>{746352},
-                    cnl::_impl::from_value<native_integer<int>>(746352LL)),
-            "");
-    static_assert(identical(746352LL, cnl::_impl::from_value<int>(746352LL)), "");
+                    cnl::_impl::from_value<native_integer<int>>(746352LL)));
+    static_assert(identical(746352LL, cnl::_impl::from_value<int>(746352LL)));
     static_assert(
             identical(
                     native_integer<long long>{746352},
-                    cnl::_impl::from_value<native_integer<int>>(native_integer<long long>{746352})),
-            "");
+                    cnl::_impl::from_value<native_integer<int>>(native_integer<long long>{746352})));
 }
 
 namespace test_minus {
-    static_assert(identical(-throwing_integer<short>(1), throwing_integer<int>(-1)), "");
+    static_assert(identical(-throwing_integer<short>(1), throwing_integer<int>(-1)));
 }
 
 namespace test_plus {
-    static_assert(identical(+throwing_integer<short>(1), throwing_integer<int>(1)), "");
+    static_assert(identical(+throwing_integer<short>(1), throwing_integer<int>(1)));
 }
 
 namespace test_shift_left {
@@ -608,23 +598,20 @@ namespace test_shift_left {
                     cnl::shift_operator<
                             cnl::_impl::shift_left_op, cnl::saturated_overflow_tag,
                             cnl::_impl::native_tag, std::uint8_t, unsigned>{}(255, 30U),
-                    cnl::numeric_limits<int>::max()),
-            "");
+                    cnl::numeric_limits<int>::max()));
     static_assert(
             identical(
                     cnl::shift_operator<
                             cnl::_impl::shift_left_op, cnl::_impl::native_tag,
                             cnl::_impl::native_tag, saturated_integer<std::uint8_t>, unsigned>{}(
                             saturated_integer<std::uint8_t>(255), 30U),
-                    cnl::numeric_limits<saturated_integer<int>>::max()),
-            "");
+                    cnl::numeric_limits<saturated_integer<int>>::max()));
     static_assert(
             identical(
                     saturated_integer<std::uint8_t>(255) << 30U,
-                    cnl::numeric_limits<saturated_integer<int>>::max()),
-            "");
+                    cnl::numeric_limits<saturated_integer<int>>::max()));
     static_assert(
-            identical(throwing_integer<std::int8_t>(1) << 10, throwing_integer<int>(1024)), "");
+            identical(throwing_integer<std::int8_t>(1) << 10, throwing_integer<int>(1024)));
 }
 
 namespace test_scale {

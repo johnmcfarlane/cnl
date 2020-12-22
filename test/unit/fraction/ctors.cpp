@@ -43,8 +43,8 @@ namespace {
     void test_floating_ctor(FloatingPoint initializer, NumDenom numerator, NumDenom denominator)
     {
         auto actual = cnl::fraction<NumDenom>(initializer);
-        static_assert(assert_same<NumDenom, decltype(actual.numerator)>::value, "");
-        static_assert(assert_same<NumDenom, decltype(actual.denominator)>::value, "");
+        static_assert(assert_same<NumDenom, decltype(actual.numerator)>::value);
+        static_assert(assert_same<NumDenom, decltype(actual.denominator)>::value);
         ASSERT_EQ(numerator, actual.numerator);
         ASSERT_EQ(denominator, actual.denominator);
     }

@@ -42,17 +42,14 @@ namespace {
         static_assert(
                 identical(
                         cnl::numeric_limits<safe_saturating_integer_2>::lowest(),
-                        safe_saturating_integer_2{-3}),
-                "");
+                        safe_saturating_integer_2{-3}));
         static_assert(
                 identical(
                         cnl::numeric_limits<safe_saturating_integer_2>::max(),
-                        safe_saturating_integer_2{3}),
-                "");
+                        safe_saturating_integer_2{3}));
         static_assert(
                 cnl::numeric_limits<safe_saturating_integer_2>::lowest()
-                        < cnl::numeric_limits<safe_saturating_integer_2>::max(),
-                "");
+                < cnl::numeric_limits<safe_saturating_integer_2>::max());
     }
 
     namespace test_comparison {
@@ -61,15 +58,14 @@ namespace {
                         cnl::convert<
                                 cnl::throwing_overflow_tag, cnl::_impl::native_tag,
                                 cnl::elastic_integer<10>>(0),
-                        cnl::elastic_integer<10>{0}),
-                "");
+                        cnl::elastic_integer<10>{0}));
         static_assert(
-                cnl::safe_integer<10>(0b1010101010) == cnl::safe_integer<10>(0b1010101010), "");
+                cnl::safe_integer<10>(0b1010101010) == cnl::safe_integer<10>(0b1010101010));
     }
 
     namespace test_make_safe_int {
-        static_assert(identical(cnl::make_safe_int(cnl::int16{7}), cnl::safe_integer<15>{7}), "");
-        static_assert(identical(cnl::safe_integer<34>{0}, cnl::safe_integer<34>{0}), "");
+        static_assert(identical(cnl::make_safe_int(cnl::int16{7}), cnl::safe_integer<15>{7}));
+        static_assert(identical(cnl::safe_integer<34>{0}, cnl::safe_integer<34>{0}));
     }
 
     namespace test_from_value {
@@ -77,8 +73,7 @@ namespace {
                 identical(
                         cnl::safe_integer<3>{5},
                         cnl::from_value<cnl::safe_integer<1>, cnl::constant<5>>{}(
-                                cnl::constant<5>{})),
-                "");
+                                cnl::constant<5>{})));
     }
 
     namespace test_add {
@@ -118,8 +113,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::safe_integer<2>{3 / 4},
-                        cnl::safe_integer<2>{3} / cnl::safe_integer<3>{4}),
-                "");
+                        cnl::safe_integer<2>{3} / cnl::safe_integer<3>{4}));
     }
 
     namespace test_is_composite {
@@ -146,8 +140,8 @@ namespace {
         using cnl::throwing_overflow_tag;
 
         static_assert(
-                cnl::used_digits(cnl::safe_integer<1, throwing_overflow_tag, char>{0}) == 0, "");
-        static_assert(cnl::used_digits(cnl::safe_integer<22, throwing_overflow_tag>{77}) == 7, "");
+                cnl::used_digits(cnl::safe_integer<1, throwing_overflow_tag, char>{0}) == 0);
+        static_assert(cnl::used_digits(cnl::safe_integer<22, throwing_overflow_tag>{77}) == 7);
     }
 
     namespace test_leading_bits {
@@ -166,8 +160,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::safe_integer<9>{256},
-                        cnl::_impl::power_value<cnl::safe_integer<31>, 8, 2>()),
-                "");
+                        cnl::_impl::power_value<cnl::safe_integer<31>, 8, 2>()));
     }
 
     namespace test_scale {
@@ -183,14 +176,12 @@ namespace {
                 identical(
                         cnl::safe_integer<39, cnl::saturated_overflow_tag>{123 * 256},
                         cnl::_impl::scale<8, 2>(cnl::safe_integer<31, cnl::saturated_overflow_tag>{
-                                123})),
-                "");
+                                123})));
     }
 
     namespace test_shift {
         static_assert(
-                identical(cnl::safe_integer<2>{2}, cnl::safe_integer<1>{1} << cnl::constant<1>{}),
-                "");
+                identical(cnl::safe_integer<2>{2}, cnl::safe_integer<1>{1} << cnl::constant<1>{}));
     }
 
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)

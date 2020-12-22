@@ -64,103 +64,85 @@ namespace {
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::native_rounding_tag>{-1},
-                        cnl::static_integer<2, cnl::native_rounding_tag>{-1.500}),
-                "");
+                        cnl::static_integer<2, cnl::native_rounding_tag>{-1.500}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::native_rounding_tag>{-1},
-                        cnl::static_integer<2, cnl::native_rounding_tag>{-1.499}),
-                "");
+                        cnl::static_integer<2, cnl::native_rounding_tag>{-1.499}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::native_rounding_tag>{-0},
-                        cnl::static_integer<2, cnl::native_rounding_tag>{-.500}),
-                "");
+                        cnl::static_integer<2, cnl::native_rounding_tag>{-.500}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::native_rounding_tag>{0},
-                        cnl::static_integer<2, cnl::native_rounding_tag>{.499}),
-                "");
+                        cnl::static_integer<2, cnl::native_rounding_tag>{.499}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::native_rounding_tag>{0},
-                        cnl::static_integer<2, cnl::native_rounding_tag>{.500}),
-                "");
+                        cnl::static_integer<2, cnl::native_rounding_tag>{.500}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::native_rounding_tag>{1},
-                        cnl::static_integer<2, cnl::native_rounding_tag>{1.499}),
-                "");
+                        cnl::static_integer<2, cnl::native_rounding_tag>{1.499}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::native_rounding_tag>{1},
-                        cnl::static_integer<2, cnl::native_rounding_tag>{1.500}),
-                "");
+                        cnl::static_integer<2, cnl::native_rounding_tag>{1.500}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::native_rounding_tag>{2},
-                        cnl::static_integer<2, cnl::native_rounding_tag>{2.499}),
-                "");
+                        cnl::static_integer<2, cnl::native_rounding_tag>{2.499}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::native_rounding_tag>{2},
-                        cnl::static_integer<2, cnl::native_rounding_tag>{2.500}),
-                "");
+                        cnl::static_integer<2, cnl::native_rounding_tag>{2.500}));
     }
 
     namespace test_conversion_nearest {
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::nearest_rounding_tag>{-2},
-                        cnl::static_integer<2, cnl::nearest_rounding_tag>{-1.500}),
-                "");
+                        cnl::static_integer<2, cnl::nearest_rounding_tag>{-1.500}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::nearest_rounding_tag>{-1},
-                        cnl::static_integer<2, cnl::nearest_rounding_tag>{-1.499}),
-                "");
+                        cnl::static_integer<2, cnl::nearest_rounding_tag>{-1.499}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::nearest_rounding_tag>{-1},
-                        cnl::static_integer<2, cnl::nearest_rounding_tag>{-.500}),
-                "");
+                        cnl::static_integer<2, cnl::nearest_rounding_tag>{-.500}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::nearest_rounding_tag>{0},
-                        cnl::static_integer<2, cnl::nearest_rounding_tag>{.499}),
-                "");
+                        cnl::static_integer<2, cnl::nearest_rounding_tag>{.499}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::nearest_rounding_tag>{1},
-                        cnl::static_integer<2, cnl::nearest_rounding_tag>{.500}),
-                "");
+                        cnl::static_integer<2, cnl::nearest_rounding_tag>{.500}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::nearest_rounding_tag>{1},
-                        cnl::static_integer<2, cnl::nearest_rounding_tag>{1.499}),
-                "");
+                        cnl::static_integer<2, cnl::nearest_rounding_tag>{1.499}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::nearest_rounding_tag>{2},
-                        cnl::static_integer<2, cnl::nearest_rounding_tag>{1.500}),
-                "");
+                        cnl::static_integer<2, cnl::nearest_rounding_tag>{1.500}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::nearest_rounding_tag>{2},
-                        cnl::static_integer<2, cnl::nearest_rounding_tag>{2.499}),
-                "");
+                        cnl::static_integer<2, cnl::nearest_rounding_tag>{2.499}));
         static_assert(
                 identical(
                         cnl::static_integer<2, cnl::nearest_rounding_tag>{3},
-                        cnl::static_integer<2, cnl::nearest_rounding_tag>{2.500}),
-                "");
+                        cnl::static_integer<2, cnl::nearest_rounding_tag>{2.500}));
     }
 
     namespace test_make_static_integer {
         using namespace cnl::literals;
         static_assert(
-                identical(cnl::make_static_integer(cnl::int16{7}), cnl::static_integer<15>{7}), "");
-        static_assert(identical(cnl::make_static_integer(7_c), cnl::static_integer<3>{7}), "");
+                identical(cnl::make_static_integer(cnl::int16{7}), cnl::static_integer<15>{7}));
+        static_assert(identical(cnl::make_static_integer(7_c), cnl::static_integer<3>{7}));
     }
 
     namespace test_scale_native {
@@ -168,8 +150,7 @@ namespace {
                 identical(
                         cnl::static_integer<1, cnl::native_rounding_tag>{1},
                         cnl::_impl::scale<-2, 2>(cnl::static_integer<3, cnl::native_rounding_tag>{
-                                7})),
-                "");
+                                7})));
     }
 
     namespace test_scale_nearest {
@@ -177,8 +158,7 @@ namespace {
                 identical(
                         cnl::static_integer<2, cnl::nearest_rounding_tag>{2},
                         cnl::_impl::scale<-2, 2>(cnl::static_integer<4, cnl::nearest_rounding_tag>{
-                                7})),
-                "");
+                                7})));
     }
 
     namespace test_fixed_width_scale_native {
@@ -186,8 +166,7 @@ namespace {
                 identical(
                         cnl::static_integer<3, cnl::native_rounding_tag>{1},
                         cnl::_impl::fixed_width_scale<-2>(
-                                cnl::static_integer<3, cnl::native_rounding_tag>{7})),
-                "");
+                                cnl::static_integer<3, cnl::native_rounding_tag>{7})));
     }
 
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
@@ -203,6 +182,5 @@ namespace {
                     cnl::static_integer<5, cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>{
                             31},
                     cnl::static_integer<5, cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>{
-                            32}),
-            "");
+                            32}));
 }

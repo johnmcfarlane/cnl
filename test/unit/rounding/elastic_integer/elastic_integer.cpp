@@ -40,7 +40,6 @@ namespace {
         static_assert(
                 assert_same<
                         cnl::native_rounding_tag,
-                        typename cnl::rounding<cnl::elastic_integer<>>::type>::value,
-                "");
+                        typename cnl::rounding<cnl::elastic_integer<>>::type>::value);
     }
 }

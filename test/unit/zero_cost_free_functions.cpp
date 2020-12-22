@@ -23,10 +23,9 @@ using rounding_overflow_int = rounding_integer<overflow_integer<Rep, OverflowTag
 static_assert(
         identical(
                 rounding_overflow_int<>{2} * rounding_overflow_int<>{3},
-                rounding_overflow_int<>{6}),
-        "");
+                rounding_overflow_int<>{6}));
 
-static_assert(identical(INT_MAX, cnl::multiply<cnl::saturated_overflow_tag>(INT_MAX, INT_MAX)), "");
+static_assert(identical(INT_MAX, cnl::multiply<cnl::saturated_overflow_tag>(INT_MAX, INT_MAX)));
 
 int bare_saturate(int a, int b)
 {

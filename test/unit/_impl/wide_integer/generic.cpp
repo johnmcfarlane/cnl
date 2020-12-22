@@ -61,8 +61,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::wide_integer<500, int>{-17292375928362489LL},
-                        -cnl::wide_integer<500, int>{17292375928362489LL}),
-                "");
+                        -cnl::wide_integer<500, int>{17292375928362489LL}));
 #endif
 
 #if !defined(__arm__) && defined(__clang__)
@@ -108,16 +107,14 @@ namespace {
                         cnl::binary_operator<
                                 cnl::_impl::divide_op, cnl::_impl::native_tag,
                                 cnl::_impl::native_tag, cnl::wide_integer<16, unsigned>,
-                                cnl::wide_integer<16, unsigned>>{}(0x1234, 0x100)),
-                "");
+                                cnl::wide_integer<16, unsigned>>{}(0x1234, 0x100)));
         static_assert(
                 identical(
                         cnl::wide_integer<16, signed>{0x12},
                         cnl::binary_operator<
                                 cnl::_impl::divide_op, cnl::_impl::native_tag,
                                 cnl::_impl::native_tag, cnl::wide_integer<16, unsigned>,
-                                cnl::wide_integer<16, signed>>{}(0x1234, 0x100)),
-                "");
+                                cnl::wide_integer<16, signed>>{}(0x1234, 0x100)));
 
 #if defined(__clang__)
         TEST(wide_integer, divide)  // NOLINT

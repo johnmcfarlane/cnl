@@ -44,7 +44,7 @@ namespace cnl {
         template<typename Word, int NumWords>
         struct multiword_integer {
         private:
-            static_assert(NumWords > 2, "");
+            static_assert(NumWords > 2);
             static constexpr auto num_words = NumWords;
             static constexpr auto num_words_rounded_up = (1 << used_digits(num_words - 1));
             static constexpr auto upper_num_words = num_words_rounded_up / 2;
