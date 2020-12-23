@@ -15,6 +15,8 @@ add_subdirectory("test")
 # the CNL library
 add_library(Cnl INTERFACE)
 
+target_compile_features(Cnl INTERFACE cxx_std_20)
+
 target_include_directories(
         Cnl INTERFACE
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
