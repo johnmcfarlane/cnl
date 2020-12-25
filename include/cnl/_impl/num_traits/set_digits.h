@@ -151,8 +151,8 @@ namespace cnl {
     template<class T, int Digits, class Enable = void>
     struct set_digits;
 
-    template<class T, int Digits>
-    struct set_digits<T, Digits, _impl::enable_if_t<_impl::is_integral<T>::value>>
+    template<_impl::integral T, int Digits>
+    struct set_digits<T, Digits>
         : _impl::set_digits_integer<T, Digits> {
     };
 

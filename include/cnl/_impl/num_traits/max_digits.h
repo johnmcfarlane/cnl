@@ -33,8 +33,8 @@ namespace cnl {
         template<typename T, class Enable = void>
         struct max_digits;
 
-        template<typename T>
-        struct max_digits<T, enable_if_t<is_integral<T>::value>>
+        template<_impl::integral T>
+        struct max_digits<T>
             : max_digits_fundamental<is_signed<T>::value> {
         };
 

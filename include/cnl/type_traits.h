@@ -24,8 +24,8 @@ namespace cnl {
 
     using _impl::enable_if_t;
 
+    using _impl::integral;
     using _impl::is_integral;
-    using _impl::is_integral_v;
 
     using _impl::remove_cvref_t;
 

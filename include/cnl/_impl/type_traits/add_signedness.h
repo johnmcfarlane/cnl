@@ -25,7 +25,7 @@ namespace cnl {
     struct add_signedness;
 
     template<class T>
-    struct add_signedness<T, _impl::enable_if_t<std::is_integral<T>::value>> : std::make_signed<T> {
+    requires std::is_integral_v<T> struct add_signedness<T> : std::make_signed<T> {
     };
 
 #if defined(CNL_INT128_ENABLED)

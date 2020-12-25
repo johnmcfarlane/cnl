@@ -33,14 +33,13 @@ namespace cnl {
         void operator()(Value const&) const;
     };
 
-    template<class Number, class Value>
-    struct from_value<Number, Value, _impl::enable_if_t<_impl::is_integral<Number>::value>>
+    template<_impl::integral Number, class Value>
+    struct from_value<Number, Value>
         : _impl::from_value_simple<Value, Value> {
     };
 
-    template<class Number, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct from_value<
-            Number, constant<Value>, _impl::enable_if_t<_impl::is_integral<Number>::value>> {
+    template<_impl::integral Number, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct from_value<Number, constant<Value>> {
     private:
         using result_type = set_digits_t<
                 add_signedness_t<Number>,

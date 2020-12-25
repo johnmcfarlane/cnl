@@ -25,7 +25,7 @@ namespace cnl {
     struct remove_signedness;
 
     template<class T>
-    struct remove_signedness<T, _impl::enable_if_t<std::is_integral<T>::value>>
+    requires std::is_integral_v<T> struct remove_signedness<T>
         : std::make_unsigned<T> {
     };
 

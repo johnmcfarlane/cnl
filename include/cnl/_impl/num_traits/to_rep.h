@@ -45,7 +45,7 @@ namespace cnl {
     struct to_rep<
             Number,
             _impl::enable_if_t<
-                    _impl::is_integral<Number>::value || std::is_floating_point<Number>::value
+                    _impl::is_integral<Number> || std::is_floating_point<Number>::value
                     || _impl::is_constant<Number>::value>> : _impl::default_to_rep<Number> {
     };
 
