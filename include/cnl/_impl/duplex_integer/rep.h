@@ -10,7 +10,6 @@
 #include "../num_traits/to_rep.h"
 #include "../type_traits/type_identity.h"
 #include "forward_declaration.h"
-#include "rep.h"
 
 /// compositional numeric library
 namespace cnl {
