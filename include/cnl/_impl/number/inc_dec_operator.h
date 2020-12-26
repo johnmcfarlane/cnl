@@ -10,6 +10,7 @@
 #include "../operators/generic.h"
 #include "../operators/native_tag.h"
 #include "definition.h"
+#include "rep_of.h"
 #include "to_rep.h"
 
 namespace cnl {
