@@ -16,7 +16,8 @@
 namespace cnl {
     namespace _impl {
         template<int Digits, typename Narrowest>
-        ::std::ostream& operator<<(::std::ostream& out, wide_integer<Digits, Narrowest> const& value)
+        ::std::ostream& operator<<(
+                ::std::ostream& out, wide_integer<Digits, Narrowest> const& value)
         {
             return out << to_rep(value);
         }

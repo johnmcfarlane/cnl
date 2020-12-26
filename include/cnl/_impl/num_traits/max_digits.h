@@ -35,12 +35,11 @@ namespace cnl {
 
         template<typename T>
         struct max_digits<T, enable_if_t<is_integral<T>::value>>
-                : max_digits_fundamental<is_signed<T>::value> {
+            : max_digits_fundamental<is_signed<T>::value> {
         };
 
         template<typename T>
-        struct max_digits<T, enable_if_t<is_composite<T>::value>>
-                : max_digits<rep_t<T>> {
+        struct max_digits<T, enable_if_t<is_composite<T>::value>> : max_digits<rep_t<T>> {
         };
     }
 }

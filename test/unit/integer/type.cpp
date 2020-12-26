@@ -39,9 +39,7 @@ namespace {
 
     namespace test_default_ctor {
         static_assert(
-                identical(
-                        cnl::_impl::number<int>{0},
-                        cnl::_impl::number<int>{}),
+                identical(cnl::_impl::number<int>{0}, cnl::_impl::number<int>{}),
                 "default ctor of cnl::number");
     }
 }

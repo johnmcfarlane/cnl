@@ -23,7 +23,8 @@ namespace cnl {
     /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
     /// cnl::nearest_rounding_tag
     struct native_rounding_tag
-            : _impl::homogeneous_deduction_tag_base, _impl::homogeneous_operator_tag_base {
+        : _impl::homogeneous_deduction_tag_base
+        , _impl::homogeneous_operator_tag_base {
     };
 
     namespace _impl {
@@ -34,32 +35,32 @@ namespace cnl {
 
     template<typename Destination, typename Source>
     struct convert_operator<native_rounding_tag, _impl::native_tag, Destination, Source>
-            : convert_operator<_impl::native_tag, _impl::native_tag, Destination, Source> {
+        : convert_operator<_impl::native_tag, _impl::native_tag, Destination, Source> {
     };
 
     template<class Operator, typename Operand>
     struct unary_operator<Operator, native_rounding_tag, Operand>
-            : unary_operator<Operator, _impl::native_tag, Operand> {
+        : unary_operator<Operator, _impl::native_tag, Operand> {
     };
 
     template<class Operator, typename Lhs, typename Rhs>
     struct binary_operator<Operator, native_rounding_tag, native_rounding_tag, Lhs, Rhs>
-            : binary_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
+        : binary_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
     };
 
     template<class Operator, class RhsTag, typename Lhs, typename Rhs>
     struct shift_operator<Operator, native_rounding_tag, RhsTag, Lhs, Rhs>
-            : shift_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
+        : shift_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
     };
 
     template<class Operator, typename Rhs>
     struct pre_operator<Operator, native_rounding_tag, Rhs>
-            : pre_operator<Operator, _impl::native_tag, Rhs> {
+        : pre_operator<Operator, _impl::native_tag, Rhs> {
     };
 
     template<class Operator, typename Rhs>
     struct post_operator<Operator, native_rounding_tag, Rhs>
-            : post_operator<Operator, _impl::native_tag, Rhs> {
+        : post_operator<Operator, _impl::native_tag, Rhs> {
     };
 }
 

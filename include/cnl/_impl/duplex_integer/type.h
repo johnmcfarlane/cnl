@@ -24,17 +24,17 @@ namespace cnl {
         template<typename Integer>
         CNL_NODISCARD constexpr bool is_flushed(Integer const& value)
         {
-            return value==0 || value==static_cast<Integer>(~Integer{});
+            return value == 0 || value == static_cast<Integer>(~Integer{});
         }
 
         template<typename Result, typename Upper, typename Lower>
         CNL_NODISCARD constexpr auto upper_value(Upper const& upper) -> Result
         {
-            return (digits<Result>::value<=digits<Lower>::value)
-                   ? !is_flushed(upper)
-                     ? unreachable<Result>("overflow in narrowing conversion")
-                     : Result{}
-                   : Result(sensible_left_shift<Result>(upper, digits<Lower>::value));
+            return (digits<Result>::value <= digits<Lower>::value)
+                         ? !is_flushed(upper)
+                                 ? unreachable<Result>("overflow in narrowing conversion")
+                                 : Result{}
+                         : Result(sensible_left_shift<Result>(upper, digits<Lower>::value));
         }
 
         // Class duplex_integer is bigendian because this is consistent with std::pair.
@@ -48,16 +48,23 @@ namespace cnl {
             using lower_type = Lower;
 
             static constexpr int lower_width = width<lower_type>::value;
+
         public:
             duplex_integer() = default;
 
             constexpr duplex_integer(upper_type const& u, lower_type const& l);
 
-            template<typename Number, _impl::enable_if_t<(numeric_limits<Number>::is_integer), int> Dummy = 0>
-            constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
+            template<
+                    typename Number,
+                    _impl::enable_if_t<(numeric_limits<Number>::is_integer), int> Dummy = 0>
+            constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions,
+                    // google-explicit-constructor)
 
-            template<typename Number, _impl::enable_if_t<(numeric_limits<Number>::is_iec559), int> Dummy = 0>
-            constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
+            template<
+                    typename Number,
+                    _impl::enable_if_t<(numeric_limits<Number>::is_iec559), int> Dummy = 0>
+            constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions,
+                    // google-explicit-constructor)
 
             CNL_NODISCARD constexpr auto upper() const -> upper_type const&
             {
@@ -79,19 +86,25 @@ namespace cnl {
                 return _lower;
             }
 
-            CNL_NODISCARD explicit constexpr operator bool() const { return _lower || _upper; }
+            CNL_NODISCARD explicit constexpr operator bool() const
+            {
+                return _lower || _upper;
+            }
 
-            template<typename Integer, _impl::enable_if_t<numeric_limits<Integer>::is_integer, int> = 0>
+            template<
+                    typename Integer,
+                    _impl::enable_if_t<numeric_limits<Integer>::is_integer, int> = 0>
             CNL_NODISCARD explicit constexpr operator Integer() const
             {
                 return upper_value<Integer, Upper, Lower>(_upper) | static_cast<Integer>(_lower);
             }
 
-            template<typename Number, _impl::enable_if_t<numeric_limits<Number>::is_iec559, int> = 0>
+            template<
+                    typename Number, _impl::enable_if_t<numeric_limits<Number>::is_iec559, int> = 0>
             CNL_NODISCARD explicit constexpr operator Number() const
             {
-                return static_cast<Number>(_upper)*power_value<Number, lower_width, 2>()
-                        +static_cast<Number>(_lower);
+                return static_cast<Number>(_upper) * power_value<Number, lower_width, 2>()
+                     + static_cast<Number>(_lower);
             }
 
         private:

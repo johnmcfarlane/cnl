@@ -25,16 +25,18 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::are_composite
 
-        template<class ... Args>
+        template<class... Args>
         struct are_composite;
 
         template<>
         struct are_composite<> : std::false_type {
         };
 
-        template<class ArgHead, class ... ArgTail>
+        template<class ArgHead, class... ArgTail>
         struct are_composite<ArgHead, ArgTail...>
-                : std::integral_constant<bool, is_composite<typename std::decay<ArgHead>::type>::value || are_composite<ArgTail...>::value> {
+            : std::integral_constant<
+                      bool, is_composite<typename std::decay<ArgHead>::type>::value
+                                    || are_composite<ArgTail...>::value> {
         };
     }
 }

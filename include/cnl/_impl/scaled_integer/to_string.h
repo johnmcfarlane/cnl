@@ -17,7 +17,8 @@ namespace cnl {
     using std::to_string;
 
     template<typename Rep, int Exponent>
-    std::string to_string(cnl::scaled_integer<Rep, power<Exponent>> const& value)  // NOLINT(misc-unused-parameters)
+    std::string to_string(cnl::scaled_integer<Rep, power<Exponent>> const&
+                                  value)  // NOLINT(misc-unused-parameters)
     {
         auto chars = to_chars(value);
         return chars.data();

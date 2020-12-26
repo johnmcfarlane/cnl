@@ -13,9 +13,10 @@ namespace cnl {
     ///
     /// \tparam T component whose representational type to return
     ///
-    /// \note The representational or 'Rep' type of a numeric component is central to CNL's method of encapsulation and
-    /// abstraction. Typically, this is the type of the member variable in many of the numeric types. Many of the
-    /// properties of a component -- such as precision, range and signedness -- will be established by the Rep type.
+    /// \note The representational or 'Rep' type of a numeric component is central to CNL's method
+    /// of encapsulation and abstraction. Typically, this is the type of the member variable in many
+    /// of the numeric types. Many of the properties of a component -- such as precision, range and
+    /// signedness -- will be established by the Rep type.
     ///
     /// \sa to_rep, from_value, tag, set_rep
     template<typename T, class Enable = void>

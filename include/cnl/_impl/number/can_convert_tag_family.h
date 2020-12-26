@@ -16,11 +16,10 @@ namespace cnl {
     namespace _impl {
         template<class ToTag, class FromTag>
         struct can_convert_tag_family
-                : std::integral_constant<
-                        bool,
-                        is_same_tag_family<ToTag, FromTag>::value
-                                || std::is_base_of<ToTag, FromTag>::value
-                                || std::is_base_of<FromTag, ToTag>::value> {
+            : std::integral_constant<
+                      bool, is_same_tag_family<ToTag, FromTag>::value
+                                    || std::is_base_of<ToTag, FromTag>::value
+                                    || std::is_base_of<FromTag, ToTag>::value> {
         };
     }
 }

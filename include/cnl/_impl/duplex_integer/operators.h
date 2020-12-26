@@ -36,8 +36,8 @@ namespace cnl {
         struct default_binary_operator {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
-            CNL_NODISCARD constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
-            -> _duplex_integer
+            CNL_NODISCARD constexpr auto operator()(
+                    _duplex_integer const& lhs, _duplex_integer const& rhs) const -> _duplex_integer
             {
                 return _duplex_integer(
                         static_cast<Upper>(Operator{}(lhs.upper(), rhs.upper())),
@@ -51,21 +51,23 @@ namespace cnl {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
             static constexpr auto lower_digits = digits<Lower>::value;
-            using wide_lower = set_digits_t<set_signedness_t<Lower, true>, lower_digits+1>;
+            using wide_lower = set_digits_t<set_signedness_t<Lower, true>, lower_digits + 1>;
 
-            CNL_NODISCARD constexpr auto operator()(_duplex_integer const& lhs, _duplex_integer const& rhs) const
-            -> _duplex_integer
+            CNL_NODISCARD constexpr auto operator()(
+                    _duplex_integer const& lhs, _duplex_integer const& rhs) const -> _duplex_integer
             {
                 return from_sums(
                         static_cast<Upper>(Operator{}(lhs.upper(), rhs.upper())),
                         wide_lower(Operator{}(wide_lower{lhs.lower()}, wide_lower{rhs.lower()})));
             }
 
-            CNL_NODISCARD static constexpr auto from_sums(Upper const& upper_sum, wide_lower const& lower_sum)
-            -> _duplex_integer
+            CNL_NODISCARD static constexpr auto from_sums(
+                    Upper const& upper_sum, wide_lower const& lower_sum) -> _duplex_integer
             {
                 return _duplex_integer{
-                        static_cast<Upper>(upper_sum+static_cast<Upper>(lower_sum >> constant<lower_digits>{})),
+                        static_cast<Upper>(
+                                upper_sum
+                                + static_cast<Upper>(lower_sum >> constant<lower_digits>{})),
                         static_cast<Lower>(lower_sum)};
             }
         };
@@ -73,9 +75,10 @@ namespace cnl {
 
     // unary_operator
     template<typename Upper, typename Lower>
-    struct unary_operator<_impl::bitwise_not_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>> {
-        CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& rhs) const
-        -> _impl::duplex_integer<Upper, Lower>
+    struct unary_operator<
+            _impl::bitwise_not_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>> {
+        CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& rhs)
+                const -> _impl::duplex_integer<Upper, Lower>
         {
             return _impl::duplex_integer<Upper, Lower>(~rhs.upper(), ~rhs.lower());
         }
@@ -83,20 +86,20 @@ namespace cnl {
 
     template<typename Upper, typename Lower>
     struct unary_operator<_impl::minus_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>> {
-        CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& rhs) const
-        -> _impl::duplex_integer<Upper, Lower>
+        CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& rhs)
+                const -> _impl::duplex_integer<Upper, Lower>
         {
-            return unary_operator<_impl::bitwise_not_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>>{}(
-                    rhs-_impl::duplex_integer<Upper, Lower>{1});
+            return unary_operator<
+                    _impl::bitwise_not_op, _impl::native_tag,
+                    _impl::duplex_integer<Upper, Lower>>{}(
+                    rhs - _impl::duplex_integer<Upper, Lower>{1});
         }
     };
 
     template<typename Upper, typename Lower>
-    struct unary_operator<
-            _impl::plus_op, _impl::native_tag,
-            _impl::duplex_integer<Upper, Lower>> {
-        CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& rhs) const
-        -> _impl::duplex_integer<Upper, Lower>
+    struct unary_operator<_impl::plus_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>> {
+        CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& rhs)
+                const -> _impl::duplex_integer<Upper, Lower>
         {
             return _impl::duplex_integer<Upper, Lower>(+rhs.upper(), +rhs.lower());
         }
@@ -105,58 +108,54 @@ namespace cnl {
     // binary_operator
     template<class Operator, typename Upper, typename Lower, typename Rhs>
     struct binary_operator<
-            Operator,
-            _impl::native_tag, _impl::native_tag,
-            _impl::duplex_integer<Upper, Lower>, Rhs>
-            : binary_operator<
-                    Operator,
-                    _impl::native_tag, _impl::native_tag,
-                    _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>> {
+            Operator, _impl::native_tag, _impl::native_tag, _impl::duplex_integer<Upper, Lower>,
+            Rhs>
+        : binary_operator<
+                  Operator, _impl::native_tag, _impl::native_tag,
+                  _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>> {
     };
 
     template<typename Upper, typename Lower>
     struct binary_operator<
-            _impl::add_op,
-            _impl::native_tag, _impl::native_tag,
+            _impl::add_op, _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>>
-            : _impl::first_degree_binary_operator<_impl::add_op, Upper, Lower> {
+        : _impl::first_degree_binary_operator<_impl::add_op, Upper, Lower> {
     };
 
     template<typename Upper, typename Lower>
     struct binary_operator<
-            _impl::subtract_op,
-            _impl::native_tag, _impl::native_tag,
+            _impl::subtract_op, _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>>
-            : _impl::first_degree_binary_operator<_impl::subtract_op, Upper, Lower> {
+        : _impl::first_degree_binary_operator<_impl::subtract_op, Upper, Lower> {
     };
 
     template<typename Upper, typename Lower>
     struct binary_operator<
-            _impl::bitwise_or_op,
-            _impl::native_tag, _impl::native_tag,
+            _impl::bitwise_or_op, _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>>
-            : _impl::default_binary_operator<_impl::bitwise_or_op, Upper, Lower> {
+        : _impl::default_binary_operator<_impl::bitwise_or_op, Upper, Lower> {
     };
 
     template<typename Upper, typename Lower>
     struct binary_operator<
-            _impl::bitwise_and_op,
-            _impl::native_tag, _impl::native_tag,
+            _impl::bitwise_and_op, _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>>
-            : _impl::default_binary_operator<_impl::bitwise_and_op, Upper, Lower> {
+        : _impl::default_binary_operator<_impl::bitwise_and_op, Upper, Lower> {
     };
 
     template<typename Upper, typename Lower>
     struct binary_operator<
-            _impl::bitwise_xor_op,
-            _impl::native_tag, _impl::native_tag,
+            _impl::bitwise_xor_op, _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>>
-            : _impl::default_binary_operator<_impl::bitwise_xor_op, Upper, Lower> {
+        : _impl::default_binary_operator<_impl::bitwise_xor_op, Upper, Lower> {
     };
 
-    template<typename Operator, typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
-    struct comparison_operator<Operator,
-            _impl::duplex_integer<LhsUpper, LhsLower>, _impl::duplex_integer<RhsUpper, RhsLower>> {
+    template<
+            typename Operator, typename LhsUpper, typename LhsLower, typename RhsUpper,
+            typename RhsLower>
+    struct comparison_operator<
+            Operator, _impl::duplex_integer<LhsUpper, LhsLower>,
+            _impl::duplex_integer<RhsUpper, RhsLower>> {
         CNL_NODISCARD constexpr auto operator()(
                 _impl::duplex_integer<LhsUpper, LhsLower> const& lhs,
                 _impl::duplex_integer<RhsUpper, RhsLower> const& rhs) const -> bool
@@ -170,24 +169,29 @@ namespace cnl {
 
     // pre_operator
     template<typename Upper, typename Lower>
-    struct pre_operator<_impl::pre_increment_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>> {
+    struct pre_operator<
+            _impl::pre_increment_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>> {
         CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower>& rhs) const
-        -> _impl::duplex_integer<Upper, Lower>
+                -> _impl::duplex_integer<Upper, Lower>
         {
-            return CNL_UNLIKELY(rhs.lower()==numeric_limits<Lower>::max())
-                   ? _impl::duplex_integer<Upper, Lower>{++rhs.upper(), numeric_limits<Lower>::lowest()}
-                   : _impl::duplex_integer<Upper, Lower>{rhs.upper(), ++rhs.lower()};
+            return CNL_UNLIKELY(rhs.lower() == numeric_limits<Lower>::max())
+                         ? _impl::duplex_integer<
+                                 Upper, Lower>{++rhs.upper(), numeric_limits<Lower>::lowest()}
+                         : _impl::duplex_integer<Upper, Lower>{rhs.upper(), ++rhs.lower()};
         }
     };
 
     template<typename Upper, typename Lower>
-    struct pre_operator<_impl::pre_decrement_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>> {
+    struct pre_operator<
+            _impl::pre_decrement_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>> {
         CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower>& rhs) const
-        -> _impl::duplex_integer<Upper, Lower>
+                -> _impl::duplex_integer<Upper, Lower>
         {
-            return CNL_UNLIKELY(rhs.lower()==numeric_limits<Lower>::lowest())
-                   ? _impl::duplex_integer<Upper, Lower>{static_cast<Upper>(--rhs.upper()), numeric_limits<Lower>::max()}
-                   : _impl::duplex_integer<Upper, Lower>{rhs.upper(), --rhs.lower()};
+            return CNL_UNLIKELY(rhs.lower() == numeric_limits<Lower>::lowest())
+                         ? _impl::duplex_integer<
+                                 Upper,
+                                 Lower>{static_cast<Upper>(--rhs.upper()), numeric_limits<Lower>::max()}
+                         : _impl::duplex_integer<Upper, Lower>{rhs.upper(), --rhs.lower()};
         }
     };
 

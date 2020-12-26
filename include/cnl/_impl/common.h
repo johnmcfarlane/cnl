@@ -16,8 +16,10 @@
 
 // CNL_LIKELY - hints that a condition is likely to be true
 #if defined(__clang__) || defined(__GNUC__)
-#define CNL_LIKELY(CONDITION) __builtin_expect(!!(CONDITION), 1)  // NOLINT(cppcoreguidelines-macro-usage)
-#define CNL_UNLIKELY(CONDITION) __builtin_expect(!!(CONDITION), 0)  // NOLINT(cppcoreguidelines-macro-usage)
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define CNL_LIKELY(CONDITION) __builtin_expect(!!(CONDITION), 1)
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define CNL_UNLIKELY(CONDITION) __builtin_expect(!!(CONDITION), 0)
 #else
 #define CNL_LIKELY(CONDITION) (!!(CONDITION))
 #define CNL_UNLIKELY(CONDITION) (!!(CONDITION))
@@ -27,7 +29,8 @@
 #ifdef _MSC_VER
 #define CNL_ASSUME(cond) __assume(cond)
 #elif defined(__GNUC__)
-#define CNL_ASSUME(cond) ((cond) ? static_cast<void>(0) : __builtin_unreachable())  // NOLINT(cppcoreguidelines-macro-usage)
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define CNL_ASSUME(cond) ((cond) ? static_cast<void>(0) : __builtin_unreachable())
 #else
 #define CNL_ASSUME(cond) static_cast<void>((cond) ? 0 : 0)
 #endif
@@ -40,7 +43,7 @@ namespace cnl {
         template<class T>
         CNL_NODISCARD constexpr T max(T a, T b)
         {
-            return (a<b) ? b : a;
+            return (a < b) ? b : a;
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -49,7 +52,7 @@ namespace cnl {
         template<class T>
         CNL_NODISCARD constexpr T min(T a, T b)
         {
-            return (a<b) ? a : b;
+            return (a < b) ? a : b;
         }
     }
 }

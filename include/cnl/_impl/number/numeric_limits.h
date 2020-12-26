@@ -13,9 +13,7 @@
 /// compositional numeric library
 namespace cnl {
     template<typename Rep, class Tag>
-    struct numeric_limits<_impl::number<Rep, Tag>>
-            : cnl::numeric_limits<Rep>
-                    {
+    struct numeric_limits<_impl::number<Rep, Tag>> : cnl::numeric_limits<Rep> {
         using _value_type = _impl::number<Rep, Tag>;
         using _rep_numeric_limits = numeric_limits<Rep>;
 
@@ -49,12 +47,14 @@ namespace cnl {
             return static_cast<_value_type>(_rep_numeric_limits::infinity());
         }
 
-        CNL_NODISCARD static constexpr _value_type quiet_NaN() noexcept // NOLINT(readability-identifier-naming)
+        CNL_NODISCARD static constexpr _value_type
+        quiet_NaN() noexcept  // NOLINT(readability-identifier-naming)
         {
             return static_cast<_value_type>(_rep_numeric_limits::quiet_NaN());
         }
 
-        CNL_NODISCARD static constexpr _value_type signaling_NaN() noexcept // NOLINT(readability-identifier-naming)
+        CNL_NODISCARD static constexpr _value_type
+        signaling_NaN() noexcept  // NOLINT(readability-identifier-naming)
         {
             return static_cast<_value_type>(_rep_numeric_limits::signaling_NaN());
         }
@@ -66,8 +66,7 @@ namespace cnl {
     };
 
     template<typename Rep, class Tag>
-    struct numeric_limits<_impl::number<Rep, Tag> const>
-            : numeric_limits<_impl::number<Rep, Tag>> {
+    struct numeric_limits<_impl::number<Rep, Tag> const> : numeric_limits<_impl::number<Rep, Tag>> {
     };
 }
 
@@ -77,12 +76,12 @@ namespace std {
 
     template<typename Rep, class Tag>
     struct numeric_limits<cnl::_impl::number<Rep, Tag>>
-            : cnl::numeric_limits<cnl::_impl::number<Rep, Tag>> {
+        : cnl::numeric_limits<cnl::_impl::number<Rep, Tag>> {
     };
 
     template<typename Rep, class Tag>
     struct numeric_limits<cnl::_impl::number<Rep, Tag> const>
-            : cnl::numeric_limits<cnl::_impl::number<Rep, Tag>> {
+        : cnl::numeric_limits<cnl::_impl::number<Rep, Tag>> {
     };
 }
 

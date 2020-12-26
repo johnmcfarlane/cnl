@@ -16,7 +16,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as scaled_integer Rep type
 
-using test_int = cnl::rounding_integer<cnl::overflow_integer<int, cnl::native_overflow_tag>, cnl::native_rounding_tag>;
+using test_int = cnl::rounding_integer<
+        cnl::overflow_integer<int, cnl::native_overflow_tag>, cnl::native_rounding_tag>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // perform scaled_integer tests with this type of scaled_integer specialization

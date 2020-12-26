@@ -21,4 +21,4 @@ namespace cnl {
     };
 }
 
-#endif // CNL_IMPL_ELASTIC_TAG_INC_DEC_OPERATOR_H
+#endif  // CNL_IMPL_ELASTIC_TAG_INC_DEC_OPERATOR_H

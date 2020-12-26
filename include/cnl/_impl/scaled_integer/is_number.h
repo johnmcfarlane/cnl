@@ -14,8 +14,7 @@
 namespace cnl {
     namespace _impl {
         template<typename Rep, class Scale>
-        struct is_number<scaled_integer<Rep, Scale>>
-            : public std::true_type {
+        struct is_number<scaled_integer<Rep, Scale>> : public std::true_type {
         };
     }
 }

@@ -16,15 +16,17 @@
 namespace cnl {
     /// \brief tag to specify trap-on-overflow behavior in arithemtic operations
     ///
-    /// Arithmetic operations using this tag call \ref std::terminate when the result exceeds the range of the result
-    /// type.
+    /// Arithmetic operations using this tag call \ref std::terminate when the result exceeds the
+    /// range of the result type.
     ///
     /// \headerfile cnl/overflow.h
     /// \sa cnl::overflow_integer,
     /// cnl::add, cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
-    /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag, cnl::undefined_overflow_tag
+    /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
+    /// cnl::undefined_overflow_tag
     struct trapping_overflow_tag
-            : _impl::homogeneous_deduction_tag_base, _impl::homogeneous_operator_tag_base {
+        : _impl::homogeneous_deduction_tag_base
+        , _impl::homogeneous_operator_tag_base {
     };
 
     namespace _impl {
@@ -40,8 +42,9 @@ namespace cnl {
                 return terminate<Destination>("positive overflow");
             }
 
-            template<class ... Operands>
-            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(Operands const&...) const
+            template<class... Operands>
+            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(
+                    Operands const&...) const
             {
                 return terminate<op_result<Operator, Operands...>>("positive overflow");
             }
@@ -55,8 +58,9 @@ namespace cnl {
                 return terminate<Destination>("negative overflow");
             }
 
-            template<class ... Operands>
-            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(Operands const&...) const
+            template<class... Operands>
+            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(
+                    Operands const&...) const
             {
                 return terminate<op_result<Operator, Operands...>>("negative overflow");
             }

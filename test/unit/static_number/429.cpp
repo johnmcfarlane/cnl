@@ -11,16 +11,11 @@
 
 #include <gtest/gtest.h>
 
-template<
-        int Digits,
-        int Exponent>
+template<int Digits, int Exponent>
 using saturated_elastic_scaled_integer = cnl::scaled_integer<
         cnl::rounding_integer<
                 cnl::overflow_integer<
-                        cnl::elastic_integer<
-                                Digits,
-                                int>,
-                        cnl::saturated_overflow_tag>,
+                        cnl::elastic_integer<Digits, int>, cnl::saturated_overflow_tag>,
                 cnl::native_rounding_tag>,
         cnl::power<Exponent>>;
 

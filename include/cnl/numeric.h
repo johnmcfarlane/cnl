@@ -43,14 +43,16 @@ namespace cnl {
     template<class Integer>
     CNL_NODISCARD constexpr int trailing_bits(Integer const& value)
     {
-        return value ? _numeric_impl::trailing_bits<Integer, is_signed<Integer>::value>()(value) : 0;
+        return value ? _numeric_impl::trailing_bits<Integer, is_signed<Integer>::value>()(value)
+                     : 0;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::used_digits
 
     template<typename Integer>
-    CNL_NODISCARD constexpr int used_digits(Integer const& value, int radix = numeric_limits<Integer>::radix)
+    CNL_NODISCARD constexpr int used_digits(
+            Integer const& value, int radix = numeric_limits<Integer>::radix)
     {
         return _impl::used_digits_signed<is_signed<Integer>::value>{}(unwrap(value), radix);
     }
@@ -61,7 +63,7 @@ namespace cnl {
     template<class Integer>
     CNL_NODISCARD constexpr int leading_bits(Integer const& value)
     {
-        return digits<Integer>::value-cnl::used_digits(value);
+        return digits<Integer>::value - cnl::used_digits(value);
     }
 }
 

@@ -56,10 +56,11 @@ namespace cnl {
 #endif
         {
             static_assert(
-                    value<=cnl::numeric_limits<S>::max()&&value>=cnl::numeric_limits<S>::lowest(),
+                    value <= cnl::numeric_limits<S>::max()
+                            && value >= cnl::numeric_limits<S>::lowest(),
                     "initial value couldn't possibly represent value");
 #if (__cpp_constexpr >= 201304L)
-            CNL_ASSERT(value==init);
+            CNL_ASSERT(value == init);
 #endif
         }
 
@@ -84,17 +85,20 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_IMPL_CONSTANT_UNARY(OPERATOR) \
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value> \
-    CNL_NODISCARD constexpr auto operator OPERATOR(constant<Value>) noexcept \
-    -> constant<OPERATOR Value> { \
+    CNL_NODISCARD constexpr auto operator OPERATOR( \
+            constant<Value>) noexcept->constant<OPERATOR Value> \
+    { \
         return constant<OPERATOR Value>{}; \
     }
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_IMPL_CONSTANT_BINARY(OPERATOR) \
     template<CNL_IMPL_CONSTANT_VALUE_TYPE LhsValue, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue> \
-    CNL_NODISCARD constexpr auto operator OPERATOR(constant<LhsValue>, constant<RhsValue>) noexcept \
-    -> constant<(LhsValue OPERATOR RhsValue)> { \
-        return constant<(LhsValue OPERATOR RhsValue)>{};\
+    CNL_NODISCARD constexpr auto operator OPERATOR( \
+            constant<LhsValue>, \
+            constant<RhsValue>) noexcept->constant<(LhsValue OPERATOR RhsValue)> \
+    { \
+        return constant<(LhsValue OPERATOR RhsValue)>{}; \
     }
 
     // arithmetic
@@ -145,8 +149,8 @@ namespace cnl {
 
     namespace literals {
         template<char... Chars>
-        CNL_NODISCARD constexpr auto operator "" _c()
-        -> constant<_cnlint_impl::parse<Chars...,'\0'>()>
+        CNL_NODISCARD constexpr auto operator"" _c()
+                -> constant<_cnlint_impl::parse<Chars..., '\0'>()>
         {
             return {};
         }
@@ -156,7 +160,8 @@ namespace cnl {
     // cnl::numeric_limits<cnl::constant>
 
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct numeric_limits<constant<Value>> : cnl::numeric_limits<typename constant<Value>::value_type> {
+    struct numeric_limits<constant<Value>>
+        : cnl::numeric_limits<typename constant<Value>::value_type> {
         using _value_type = typename constant<Value>::value_type;
 
         CNL_NODISCARD static constexpr _value_type min()

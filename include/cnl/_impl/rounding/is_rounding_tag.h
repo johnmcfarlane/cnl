@@ -23,7 +23,8 @@ namespace cnl {
         };
 
         template<class Tag1, class Tag2>
-        struct is_same_tag_family<Tag1, Tag2,
+        struct is_same_tag_family<
+                Tag1, Tag2,
                 enable_if_t<is_rounding_tag<Tag1>::value && is_rounding_tag<Tag2>::value>>
             : std::true_type {
         };

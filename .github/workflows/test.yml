@@ -262,6 +262,23 @@ jobs:
       run: sudo cmake --build $GITHUB_WORKSPACE --target install
 
   # Test shell scripts
+  clang-format:
+    runs-on: ubuntu-20.04
+    container: johnmcfarlane/cnl_ci:clang-11
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Format code
+      shell: bash
+      run: $GITHUB_WORKSPACE/test/scripts/clang-format.sh
+
+    - name: Show/test for changes
+      shell: bash
+      run: |
+        git diff && \
+        if [[ `git status --porcelain` ]]; then exit 1; fi
+
+  # Test shell scripts
   shellcheck:
     runs-on: ubuntu-20.04
     container: johnmcfarlane/cnl_ci:base-20.04

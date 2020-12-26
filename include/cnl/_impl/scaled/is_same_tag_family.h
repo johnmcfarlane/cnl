@@ -24,4 +24,4 @@ namespace cnl {
     }
 }
 
-#endif // CNL_IMPL_SCALED_IS_SAME_TAG_FAMILY_H
+#endif  // CNL_IMPL_SCALED_IS_SAME_TAG_FAMILY_H

@@ -19,9 +19,11 @@ namespace cnl {
     template<class Duplex, class Value>
     struct from_value<
             Duplex, Value,
-            _impl::enable_if_t<_impl::is_duplex_integer<Duplex>::value && !_impl::is_duplex_integer<Value>::value>> {
+            _impl::enable_if_t<
+                    _impl::is_duplex_integer<Duplex>::value
+                    && !_impl::is_duplex_integer<Value>::value>> {
         CNL_NODISCARD constexpr auto operator()(Value const& value) const
-        -> _impl::instantiate_duplex_integer<digits<Value>::value, Value>
+                -> _impl::instantiate_duplex_integer<digits<Value>::value, Value>
         {
             return value;
         }
@@ -30,9 +32,10 @@ namespace cnl {
     template<class Duplex, class Value>
     struct from_value<
             Duplex, Value,
-            _impl::enable_if_t<_impl::is_duplex_integer<Duplex>::value && _impl::is_duplex_integer<Value>::value>> {
-        CNL_NODISCARD constexpr auto operator()(Value const& value) const
-        -> Value
+            _impl::enable_if_t<
+                    _impl::is_duplex_integer<Duplex>::value
+                    && _impl::is_duplex_integer<Value>::value>> {
+        CNL_NODISCARD constexpr auto operator()(Value const& value) const -> Value
         {
             return value;
         }

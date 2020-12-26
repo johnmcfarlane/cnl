@@ -17,111 +17,139 @@ namespace cnl {
     // cnl::fraction arithmetic
     template<typename RhsNumerator, typename RhsDenominator>
     CNL_NODISCARD constexpr auto operator+(fraction<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(_impl::make_fraction(+rhs.numerator, +rhs.denominator))
+            -> decltype(_impl::make_fraction(+rhs.numerator, +rhs.denominator))
     {
         return _impl::make_fraction(+rhs.numerator, +rhs.denominator);
     }
 
     template<typename RhsNumerator, typename RhsDenominator>
     CNL_NODISCARD constexpr auto operator-(fraction<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(_impl::make_fraction(-rhs.numerator, rhs.denominator))
+            -> decltype(_impl::make_fraction(-rhs.numerator, rhs.denominator))
     {
         return _impl::make_fraction(-rhs.numerator, rhs.denominator);
     }
 
-    template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
+    template<
+            typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
+            typename RhsDenominator>
     CNL_NODISCARD constexpr auto operator+(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(_impl::make_fraction(
-            lhs.numerator*rhs.denominator+rhs.numerator*lhs.denominator, lhs.denominator*rhs.denominator))
+            -> decltype(_impl::make_fraction(
+                    lhs.numerator * rhs.denominator + rhs.numerator * lhs.denominator,
+                    lhs.denominator* rhs.denominator))
     {
         return _impl::make_fraction(
-                lhs.numerator*rhs.denominator+rhs.numerator*lhs.denominator, lhs.denominator*rhs.denominator);
+                lhs.numerator * rhs.denominator + rhs.numerator * lhs.denominator,
+                lhs.denominator * rhs.denominator);
     }
 
-    template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
+    template<
+            typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
+            typename RhsDenominator>
     CNL_NODISCARD constexpr auto operator-(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(_impl::make_fraction(
-            lhs.numerator*rhs.denominator-rhs.numerator*lhs.denominator, lhs.denominator*rhs.denominator))
+            -> decltype(_impl::make_fraction(
+                    lhs.numerator * rhs.denominator - rhs.numerator * lhs.denominator,
+                    lhs.denominator* rhs.denominator))
     {
         return _impl::make_fraction(
-                lhs.numerator*rhs.denominator-rhs.numerator*lhs.denominator, lhs.denominator*rhs.denominator);
+                lhs.numerator * rhs.denominator - rhs.numerator * lhs.denominator,
+                lhs.denominator * rhs.denominator);
     }
 
-    template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
+    template<
+            typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
+            typename RhsDenominator>
     CNL_NODISCARD constexpr auto operator*(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(_impl::make_fraction(lhs.numerator*rhs.numerator, lhs.denominator*rhs.denominator))
+            -> decltype(_impl::make_fraction(
+                    lhs.numerator * rhs.numerator, lhs.denominator* rhs.denominator))
     {
-        return _impl::make_fraction(lhs.numerator*rhs.numerator, lhs.denominator*rhs.denominator);
+        return _impl::make_fraction(
+                lhs.numerator * rhs.numerator, lhs.denominator * rhs.denominator);
     }
 
-    template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
+    template<
+            typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
+            typename RhsDenominator>
     CNL_NODISCARD constexpr auto operator/(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(_impl::make_fraction(lhs.numerator*rhs.denominator, lhs.denominator*rhs.numerator))
+            -> decltype(_impl::make_fraction(
+                    lhs.numerator * rhs.denominator, lhs.denominator* rhs.numerator))
     {
-        return _impl::make_fraction(lhs.numerator*rhs.denominator, lhs.denominator*rhs.numerator);
+        return _impl::make_fraction(
+                lhs.numerator * rhs.denominator, lhs.denominator * rhs.numerator);
     }
 
     // cnl::fraction comparison
-    template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
+    template<
+            typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
+            typename RhsDenominator>
     CNL_NODISCARD constexpr auto operator==(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(lhs.numerator*rhs.denominator==rhs.numerator*lhs.denominator)
+            -> decltype(lhs.numerator * rhs.denominator == rhs.numerator * lhs.denominator)
     {
-        return lhs.numerator*rhs.denominator==rhs.numerator*lhs.denominator;
+        return lhs.numerator * rhs.denominator == rhs.numerator * lhs.denominator;
     }
 
-    template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
+    template<
+            typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
+            typename RhsDenominator>
     CNL_NODISCARD constexpr auto operator!=(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(lhs.numerator*rhs.denominator!=rhs.numerator*lhs.denominator)
+            -> decltype(lhs.numerator * rhs.denominator != rhs.numerator * lhs.denominator)
     {
-        return lhs.numerator*rhs.denominator!=rhs.numerator*lhs.denominator;
+        return lhs.numerator * rhs.denominator != rhs.numerator * lhs.denominator;
     }
 
-    template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
+    template<
+            typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
+            typename RhsDenominator>
     CNL_NODISCARD constexpr auto operator<(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(lhs.numerator*rhs.denominator<rhs.numerator*lhs.denominator)
+            -> decltype(lhs.numerator * rhs.denominator < rhs.numerator * lhs.denominator)
     {
-        return lhs.numerator*rhs.denominator<rhs.numerator*lhs.denominator;
+        return lhs.numerator * rhs.denominator < rhs.numerator * lhs.denominator;
     }
 
-    template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
+    template<
+            typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
+            typename RhsDenominator>
     CNL_NODISCARD constexpr auto operator>(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(lhs.numerator*rhs.denominator>rhs.numerator*lhs.denominator)
+            -> decltype(lhs.numerator * rhs.denominator > rhs.numerator * lhs.denominator)
     {
-        return lhs.numerator*rhs.denominator>rhs.numerator*lhs.denominator;
+        return lhs.numerator * rhs.denominator > rhs.numerator * lhs.denominator;
     }
 
-    template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
+    template<
+            typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
+            typename RhsDenominator>
     CNL_NODISCARD constexpr auto operator<=(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(lhs.numerator*rhs.denominator<=rhs.numerator*lhs.denominator)
+            -> decltype(lhs.numerator * rhs.denominator <= rhs.numerator * lhs.denominator)
     {
-        return lhs.numerator*rhs.denominator<=rhs.numerator*lhs.denominator;
+        return lhs.numerator * rhs.denominator <= rhs.numerator * lhs.denominator;
     }
 
-    template<typename LhsNumerator, typename LhsDenominator, typename RhsNumerator, typename RhsDenominator>
+    template<
+            typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
+            typename RhsDenominator>
     CNL_NODISCARD constexpr auto operator>=(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
-    -> decltype(lhs.numerator*rhs.denominator>=rhs.numerator*lhs.denominator)
+            -> decltype(lhs.numerator * rhs.denominator >= rhs.numerator * lhs.denominator)
     {
-        return lhs.numerator*rhs.denominator>=rhs.numerator*lhs.denominator;
+        return lhs.numerator * rhs.denominator >= rhs.numerator * lhs.denominator;
     }
 
     template<typename Numerator, typename Denominator>

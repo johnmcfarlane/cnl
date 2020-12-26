@@ -23,7 +23,8 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl-specific definitions
 
-    /// \brief literal real number approximation that uses fixed-point arithmetic and auto-widens to avoid overflow
+    /// \brief literal real number approximation that uses fixed-point arithmetic and auto-widens to
+    /// avoid overflow
     ///
     /// \tparam Digits the total number of integer and fractional digits stored
     /// \tparam Exponent the exponent by which the number is scale
@@ -47,17 +48,13 @@ namespace cnl {
     ///
     /// \return the given value to be represented using an \ref cnl::elastic_fixed_point type
     ///
-    /// \note The return type is guaranteed to be no larger than is necessary to represent the value.
+    /// \note The return type is guaranteed to be no larger than is necessary to represent the
+    /// value.
 
-    template<
-            typename Narrowest = int,
-            CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0>
-    CNL_NODISCARD constexpr auto
-    make_elastic_fixed_point(constant<Value>)
-    -> elastic_fixed_point<
-            _impl::max(digits<constant<Value>>::value-trailing_bits(Value), 1),
-            trailing_bits(Value),
-            Narrowest>
+    template<typename Narrowest = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0>
+    CNL_NODISCARD constexpr auto make_elastic_fixed_point(constant<Value>) -> elastic_fixed_point<
+            _impl::max(digits<constant<Value>>::value - trailing_bits(Value), 1),
+            trailing_bits(Value), Narrowest>
     {
         return Value;
     }
@@ -67,38 +64,34 @@ namespace cnl {
     // cnl::make_elastic_fixed_point
 
     ///
-    /// \tparam Narrowest the most narrow storage type of the resultant \ref cnl::elastic_fixed_point object
-    /// \tparam Integral the type of value
+    /// \tparam Narrowest the most narrow storage type of the resultant \ref
+    /// cnl::elastic_fixed_point object \tparam Integral the type of value
     ///
     /// \param value the value with which to initialize the elastic_fixed_point object
     ///
-    /// \note The return type is guaranteed to be no larger than is necessary to represent the value.
+    /// \note The return type is guaranteed to be no larger than is necessary to represent the
+    /// value.
     ///
     /// \brief generate an \ref cnl::elastic_fixed_point object of given value
     template<typename Narrowest = void, typename Integral = int>
-    CNL_NODISCARD constexpr auto
-    make_elastic_fixed_point(Integral const& value)
-    -> elastic_fixed_point<
-            numeric_limits<Integral>::digits,
-            0,
-            typename std::conditional<
-                    std::is_same<void, Narrowest>::value,
-                    _impl::adopt_signedness_t<int, Integral>,
-                    Narrowest>::type>
+    CNL_NODISCARD constexpr auto make_elastic_fixed_point(Integral const& value)
+            -> elastic_fixed_point<
+                    numeric_limits<Integral>::digits, 0,
+                    typename std::conditional<
+                            std::is_same<void, Narrowest>::value,
+                            _impl::adopt_signedness_t<int, Integral>, Narrowest>::type>
     {
         return {value};
     }
 
     template<typename Narrowest = void, typename Rep = int, int Exponent = 0, int Radix = 2>
-    CNL_NODISCARD constexpr auto
-    make_elastic_fixed_point(fixed_point<Rep, Exponent, Radix> const& value)
-    -> elastic_fixed_point<
-            numeric_limits<Rep>::digits,
-            Exponent,
-            typename std::conditional<
-                    std::is_same<void, Narrowest>::value,
-                    _impl::adopt_signedness_t<int, Rep>,
-                    Narrowest>::type>
+    CNL_NODISCARD constexpr auto make_elastic_fixed_point(
+            fixed_point<Rep, Exponent, Radix> const& value)
+            -> elastic_fixed_point<
+                    numeric_limits<Rep>::digits, Exponent,
+                    typename std::conditional<
+                            std::is_same<void, Narrowest>::value,
+                            _impl::adopt_signedness_t<int, Rep>, Narrowest>::type>
     {
         return {value};
     }

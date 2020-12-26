@@ -10,8 +10,8 @@
 
 #include <benchmark/benchmark.h>
 
-using std::numeric_limits;
 using cnl::scaled_integer;
+using std::numeric_limits;
 
 ////////////////////////////////////////////////////////////////////////////////
 // entry point
@@ -24,12 +24,12 @@ BENCHMARK_MAIN();
 template<class T>
 static void add(benchmark::State& state)
 {
-    auto addend1 = static_cast<T>(numeric_limits<T>::max()/5);
-    auto addend2 = static_cast<T>(numeric_limits<T>::max()/3);
+    auto addend1 = static_cast<T>(numeric_limits<T>::max() / 5);
+    auto addend2 = static_cast<T>(numeric_limits<T>::max() / 3);
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(addend1);
         benchmark::DoNotOptimize(addend2);
-        auto value = addend1+addend2;
+        auto value = addend1 + addend2;
         benchmark::DoNotOptimize(value);
     }
 }
@@ -37,12 +37,12 @@ static void add(benchmark::State& state)
 template<class T>
 static void sub(benchmark::State& state)
 {
-    auto minuend = static_cast<T>(numeric_limits<T>::max()/5);
-    auto subtrahend = static_cast<T>(numeric_limits<T>::max()/3);
+    auto minuend = static_cast<T>(numeric_limits<T>::max() / 5);
+    auto subtrahend = static_cast<T>(numeric_limits<T>::max() / 3);
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(minuend);
         benchmark::DoNotOptimize(subtrahend);
-        auto value = minuend+subtrahend;
+        auto value = minuend + subtrahend;
         benchmark::DoNotOptimize(value);
     }
 }
@@ -50,12 +50,12 @@ static void sub(benchmark::State& state)
 template<class T>
 static void mul(benchmark::State& state)
 {
-    auto factor1 = static_cast<T>(numeric_limits<T>::max()/int8_t{5});
-    auto factor2 = static_cast<T>(numeric_limits<T>::max()/int8_t{3});
+    auto factor1 = static_cast<T>(numeric_limits<T>::max() / int8_t{5});
+    auto factor2 = static_cast<T>(numeric_limits<T>::max() / int8_t{3});
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(factor1);
         benchmark::DoNotOptimize(factor2);
-        auto value = factor1*factor2;
+        auto value = factor1 * factor2;
         benchmark::DoNotOptimize(value);
     }
 }
@@ -63,12 +63,12 @@ static void mul(benchmark::State& state)
 template<class T>
 static void div(benchmark::State& state)
 {
-    auto nume = static_cast<T>(numeric_limits<T>::max()/int8_t{5});
-    auto denom = static_cast<T>(numeric_limits<T>::max()/int8_t{3});
+    auto nume = static_cast<T>(numeric_limits<T>::max() / int8_t{5});
+    auto denom = static_cast<T>(numeric_limits<T>::max() / int8_t{3});
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(nume);
         benchmark::DoNotOptimize(denom);
-        auto value = nume/denom;
+        auto value = nume / denom;
         benchmark::DoNotOptimize(value);
     }
 }
@@ -76,7 +76,7 @@ static void div(benchmark::State& state)
 template<class T>
 static void bm_sqrt(benchmark::State& state)
 {
-    auto input = static_cast<T>(numeric_limits<T>::max()/int8_t{5});
+    auto input = static_cast<T>(numeric_limits<T>::max() / int8_t{5});
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(input);
         auto output = cnl::sqrt(input);
@@ -87,9 +87,9 @@ static void bm_sqrt(benchmark::State& state)
 template<class T>
 static void bm_magnitude_squared(benchmark::State& state)
 {
-    auto x = T {1LL};
-    auto y = T {4LL};
-    auto z = T {9LL};
+    auto x = T{1LL};
+    auto y = T{4LL};
+    auto z = T{9LL};
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(x);
         benchmark::DoNotOptimize(y);
@@ -102,12 +102,12 @@ static void bm_magnitude_squared(benchmark::State& state)
 template<class T>
 static void bm_circle_intersect_generic(benchmark::State& state)
 {
-    auto x1 = T {0LL};
-    auto y1 = T {10LL};
-    auto r1 = T {14LL};
-    auto x2 = T {4LL};
-    auto y2 = T {13LL};
-    auto r2 = T {9LL};
+    auto x1 = T{0LL};
+    auto y1 = T{10LL};
+    auto r1 = T{14LL};
+    auto x2 = T{4LL};
+    auto y2 = T{13LL};
+    auto r2 = T{9LL};
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(x1);
         benchmark::DoNotOptimize(y1);
@@ -123,12 +123,12 @@ static void bm_circle_intersect_generic(benchmark::State& state)
 template<class T>
 static void circle_intersect_generic(benchmark::State& state)
 {
-    auto x1 = T {0};
-    auto y1 = T {10};
-    auto r1 = T {14};
-    auto x2 = T {4};
-    auto y2 = T {13};
-    auto r2 = T {9};
+    auto x1 = T{0};
+    auto y1 = T{10};
+    auto r1 = T{14};
+    auto x2 = T{4};
+    auto y2 = T{13};
+    auto r2 = T{9};
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(x1);
         benchmark::DoNotOptimize(y1);

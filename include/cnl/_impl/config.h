@@ -177,17 +177,19 @@
 
 #if defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_TOOLCHAIN)
 #error CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_TOOLCHAIN already defined
-#elif  defined(__GNUG__) && !defined(__clang__) && __GNUG__ >= 7
+#elif defined(__GNUG__) && !defined(__clang__) && __GNUG__ >= 7
 #define CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_TOOLCHAIN
 #endif
 
 #if defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_LANGUAGE)
 #error CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_LANGUAGE already defined
-#elif (__cpp_constexpr >= 201304L) && (__cpp_decltype_auto >= 201304L) && (__cpp_variable_templates >= 201304)
+#elif (__cpp_constexpr >= 201304L) && (__cpp_decltype_auto >= 201304L) \
+        && (__cpp_variable_templates >= 201304)
 #define CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_LANGUAGE
 #endif
 
-#if defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_TOOLCHAIN) && defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_LANGUAGE)
+#if defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_TOOLCHAIN) \
+        && defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_LANGUAGE)
 #define CNL_BUILTIN_OVERFLOW_ENABLED
 #endif
 
@@ -202,7 +204,7 @@
 #define CNL_NODISCARD [[nodiscard]]  // NOLINT(cppcoreguidelines-macro-usage)
 #endif
 
-#if ! defined(CNL_NODISCARD)
+#if !defined(CNL_NODISCARD)
 #define CNL_NODISCARD
 #endif
 

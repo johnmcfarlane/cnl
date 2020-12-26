@@ -26,4 +26,4 @@ namespace cnl {
     }
 }
 
-#endif //CNL_THROW_EXCEPTION_H
+#endif  // CNL_THROW_EXCEPTION_H

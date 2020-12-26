@@ -18,4 +18,4 @@ namespace cnl {
     };
 }
 
-#endif // CNL_IMPL_SCALED_INTEGER_REP_H
+#endif  // CNL_IMPL_SCALED_INTEGER_REP_H

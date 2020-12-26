@@ -5,7 +5,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief file containing definitions that might go in \verbatim<cmath>\endverbatim if they were standard
+/// \brief file containing definitions that might go in \verbatim<cmath>\endverbatim if they were
+/// standard
 
 #if !defined(CNL_CMATH_H)
 #define CNL_CMATH_H
@@ -21,4 +22,4 @@ namespace cnl {
     using std::sqrt;
 }
 
-#endif //CNL_CMATH_H
+#endif  // CNL_CMATH_H

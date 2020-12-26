@@ -20,8 +20,7 @@ namespace {
                     cnl::_impl::set_rep_t<cnl::_impl::integer<>, long long>>::value,
             "cnl::from_rep_t<cnl::_impl::integer>");
     static_assert(
-            assert_same<
-                    cnl::_impl::integer<>,
-                    cnl::_impl::set_rep_t<cnl::_impl::integer<>, int>>::value,
+            assert_same<cnl::_impl::integer<>, cnl::_impl::set_rep_t<cnl::_impl::integer<>, int>>::
+                    value,
             "cnl::from_rep_t<cnl::_impl::integer>");
 }

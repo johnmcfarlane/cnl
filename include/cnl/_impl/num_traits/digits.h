@@ -34,7 +34,7 @@ namespace cnl {
     namespace _impl {
         template<typename Integer>
         struct fundamental_digits
-                : std::integral_constant<int, CHAR_BIT*sizeof(Integer)-is_signed<Integer>::value> {
+            : std::integral_constant<int, CHAR_BIT * sizeof(Integer) - is_signed<Integer>::value> {
         };
     }
 
@@ -97,9 +97,8 @@ namespace cnl {
 #endif
 
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct digits<constant<Value>> : std::integral_constant<
-            int,
-            _impl::used_digits((Value<0) ? -Value : Value)> {
+    struct digits<constant<Value>>
+        : std::integral_constant<int, _impl::used_digits((Value < 0) ? -Value : Value)> {
     };
 
 #if defined(__cpp_variable_templates) && (__cpp_variable_templates >= 201304)
@@ -109,13 +108,14 @@ namespace cnl {
 
     namespace _impl {
         // cnl::_impl::fractional_digits
-        template <class T>
+        template<class T>
         struct fractional_digits : std::integral_constant<int, 0> {
         };
 
         // cnl::_impl::integer_digits
-        template <class T>
-        struct integer_digits : std::integral_constant<int, digits<T>::value - fractional_digits<T>::value> {
+        template<class T>
+        struct integer_digits
+            : std::integral_constant<int, digits<T>::value - fractional_digits<T>::value> {
         };
     }
 }

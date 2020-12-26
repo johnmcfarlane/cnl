@@ -14,18 +14,17 @@ namespace cnl {
     namespace _impl {
         template<typename T>
         CNL_NODISCARD constexpr auto abs(T const& value)
-        -> enable_if_t<is_signed<T>::value, T>
+                -> enable_if_t<is_signed<T>::value, T>
         {
             static_assert(
                     std::is_same<decltype(+value), decltype(-value)>::value,
                     "cnl::abs only supports types with symetrically-typed unary operators");
 
-            return static_cast<T>((value<0) ? -value : +value);
+            return static_cast<T>((value < 0) ? -value : +value);
         }
 
         template<typename T>
-        CNL_NODISCARD constexpr auto abs(T const& value)
-        -> enable_if_t<!is_signed<T>::value, T>
+        CNL_NODISCARD constexpr auto abs(T const& value) -> enable_if_t<!is_signed<T>::value, T>
         {
             return value;
         }

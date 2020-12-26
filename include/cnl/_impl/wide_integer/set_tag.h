@@ -16,8 +16,10 @@
 /// compositional numeric library
 namespace cnl {
     template<typename NumberRep, class NumberTag, class Tag>
-    struct set_tag<_impl::number<NumberRep, NumberTag>, Tag, _impl::enable_if_t<_impl::is_wide_tag<Tag>::value>>
-            : _impl::type_identity<_impl::number<typename Tag::rep, Tag>> {
+    struct set_tag<
+            _impl::number<NumberRep, NumberTag>, Tag,
+            _impl::enable_if_t<_impl::is_wide_tag<Tag>::value>>
+        : _impl::type_identity<_impl::number<typename Tag::rep, Tag>> {
     };
 }
 
