@@ -10,7 +10,7 @@
 #include "../../limits.h"
 #include "../duplex_integer.h"
 #include "../limits/lowest.h"
-#include "../num_traits/rep.h"
+#include "../num_traits/rep_of.h"
 #include "definition.h"
 #include "from_rep.h"
 
@@ -21,12 +21,12 @@ namespace cnl {
 
     template<int Digits, typename Narrowest>
     struct numeric_limits<wide_integer<Digits, Narrowest>>
-        : numeric_limits<_impl::rep_t<wide_integer<Digits, Narrowest>>> {
+        : numeric_limits<_impl::rep_of_t<wide_integer<Digits, Narrowest>>> {
         static constexpr bool is_integer = true;
         // wide_integer-specific helpers
         using _narrowest_numeric_limits = numeric_limits<Narrowest>;
         using _value_type = wide_integer<Digits, Narrowest>;
-        using _rep = _impl::rep_t<_value_type>;
+        using _rep = _impl::rep_of_t<_value_type>;
         using _rep_numeric_limits = numeric_limits<_rep>;
 
         // standard members

@@ -10,7 +10,7 @@
 #include "../../constant.h"
 #include "../../cstdint.h"
 #include "../num_traits/is_composite.h"
-#include "../num_traits/rep.h"
+#include "../num_traits/rep_of.h"
 #include "enable_if.h"
 
 #include <type_traits>
@@ -91,7 +91,7 @@ namespace cnl {
     };
 
     template<typename T>
-    struct is_signed<T, _impl::enable_if_t<is_composite<T>::value>> : is_signed<_impl::rep_t<T>> {
+    struct is_signed<T, _impl::enable_if_t<is_composite<T>::value>> : is_signed<_impl::rep_of_t<T>> {
     };
 }
 

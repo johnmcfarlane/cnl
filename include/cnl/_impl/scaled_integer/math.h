@@ -10,8 +10,8 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_MATH_H)
 #define CNL_IMPL_SCALED_INTEGER_MATH_H
 
-#include "rep.h"
-#include "tag.h"
+#include "rep_of.h"
+#include "tag_of.h"
 #include "type.h"
 
 /// compositional numeric library
@@ -27,14 +27,14 @@ namespace cnl {
             CNL_NODISCARD constexpr ScaledInteger rounding_conversion(double d)
             {
                 using one_longer = scaled_integer<
-                        set_digits_t<rep_t<ScaledInteger>, digits<ScaledInteger>::value + 1>,
-                        power<tag_t<ScaledInteger>::exponent - 1>>;
+                        set_digits_t<rep_of_t<ScaledInteger>, digits<ScaledInteger>::value + 1>,
+                        power<tag_of_t<ScaledInteger>::exponent - 1>>;
                 return from_rep<ScaledInteger>(
-                        static_cast<rep_t<ScaledInteger>>((_impl::to_rep(one_longer{d}) + 1) >> 1));
+                        static_cast<rep_of_t<ScaledInteger>>((_impl::to_rep(one_longer{d}) + 1) >> 1));
             }
 
             template<class ScaledInteger>
-            using unsigned_rep = typename std::make_unsigned<rep_t<ScaledInteger>>::type;
+            using unsigned_rep = typename std::make_unsigned<rep_of_t<ScaledInteger>>::type;
 
             template<class Input>
             using make_largest_ufraction =
@@ -142,7 +142,7 @@ namespace cnl {
                 using im = make_largest_ufraction<scaled_integer<Rep, power<Exponent>>>;
                 // The intermediate value type
 
-                return evaluate_polynomial(im{scaled_integer<rep_t<im>, power<Exponent>>{x}});
+                return evaluate_polynomial(im{scaled_integer<rep_of_t<im>, power<Exponent>>{x}});
             }
 
             template<class Rep, int Exponent, int Radix>
@@ -164,18 +164,18 @@ namespace cnl {
             }
 
             template<class Intermediate, typename Rep, int Exponent>
-            CNL_NODISCARD constexpr rep_t<Intermediate> exp2(
+            CNL_NODISCARD constexpr rep_of_t<Intermediate> exp2(
                     scaled_integer<Rep, power<Exponent>> const& x, Rep const& floored)
             {
                 return floored <= Exponent
-                             ? rep_t<Intermediate>{1}  // return immediately if the shift would
+                             ? rep_of_t<Intermediate>{1}  // return immediately if the shift would
                              // result in all bits being shifted out
                              // Do the shifts manually. Once the branch with shift operators is
                              // merged, could use those
                              : (_impl::to_rep(exp2m1_0to1<Rep, Exponent>(fractional(
                                         x,
                                         floored)))  // Calculate the exponent of the fraction part
-                                >> (-tag_t<Intermediate>::exponent + Exponent
+                                >> (-tag_of_t<Intermediate>::exponent + Exponent
                                     - floored))  // shift it to the right place
                                        + (Rep{1}
                                           << (floored

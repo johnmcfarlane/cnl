@@ -10,7 +10,7 @@
 #include "../operators/generic.h"
 #include "../type_traits/enable_if.h"
 #include "is_number.h"
-#include "rep.h"
+#include "rep_of.h"
 
 #include <type_traits>
 
@@ -31,7 +31,7 @@ namespace cnl {
 
         template<class Wrapper>
         struct number_depth<Wrapper, true> {
-            using _rep = _impl::rep_t<Wrapper>;
+            using _rep = _impl::rep_of_t<Wrapper>;
             static constexpr auto value = number_depth<_rep>::value + 1;
         };
 

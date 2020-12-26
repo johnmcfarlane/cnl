@@ -71,13 +71,13 @@ namespace cnl {
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<
-                    _impl::is_same_tag_family<_impl::tag_t<Lhs>, _impl::tag_t<Rhs>>::value>> {
+                    _impl::is_same_tag_family<_impl::tag_of_t<Lhs>, _impl::tag_of_t<Rhs>>::value>> {
         using _rep_operator = binary_operator<
-                Operator, _impl::tag_t<Lhs>, _impl::tag_t<Rhs>, _impl::rep_t<Lhs>,
-                _impl::rep_t<Rhs>>;
+                Operator, _impl::tag_of_t<Lhs>, _impl::tag_of_t<Rhs>, _impl::rep_of_t<Lhs>,
+                _impl::rep_of_t<Rhs>>;
         using _result_rep = decltype(_rep_operator{}(
                 _impl::to_rep(std::declval<Lhs>()), _impl::to_rep(std::declval<Rhs>())));
-        using _result_tag = _impl::op_result<Operator, _impl::tag_t<Lhs>, _impl::tag_t<Rhs>>;
+        using _result_tag = _impl::op_result<Operator, _impl::tag_of_t<Lhs>, _impl::tag_of_t<Rhs>>;
         using _result_archetype = _impl::set_rep_t<_impl::set_tag_t<Lhs, _result_tag>, _result_rep>;
 
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const

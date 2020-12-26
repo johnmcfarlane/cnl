@@ -22,7 +22,7 @@
 #include "duplex_integer/numeric_limits.h"
 #include "duplex_integer/operators.h"
 #include "duplex_integer/remove_signedness.h"
-#include "duplex_integer/rep.h"
+#include "duplex_integer/rep_of.h"
 #include "duplex_integer/rounding.h"
 #include "duplex_integer/scale.h"
 #include "duplex_integer/set_digits.h"

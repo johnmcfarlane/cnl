@@ -23,7 +23,7 @@ namespace cnl {
     struct set_rep<
             _impl::number<ArchetypeRep, ArchetypeTag>, Rep,
             _impl::enable_if_t<
-                    !_impl::can_convert_tag_family<ArchetypeTag, _impl::tag_t<Rep>>::value>>
+                    !_impl::can_convert_tag_family<ArchetypeTag, _impl::tag_of_t<Rep>>::value>>
         : _impl::type_identity<_impl::number<Rep, ArchetypeTag>> {
     };
 
@@ -32,7 +32,7 @@ namespace cnl {
     struct set_rep<
             _impl::number<ArchetypeRep, ArchetypeTag>, Rep,
             _impl::enable_if_t<
-                    _impl::can_convert_tag_family<ArchetypeTag, _impl::tag_t<Rep>>::value>>
+                    _impl::can_convert_tag_family<ArchetypeTag, _impl::tag_of_t<Rep>>::value>>
         : _impl::type_identity<Rep> {
     };
 }

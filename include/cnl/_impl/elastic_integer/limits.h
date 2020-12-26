@@ -11,7 +11,7 @@
 #include "../limits/lowest.h"
 #include "definition.h"
 #include "from_rep.h"
-#include "rep.h"
+#include "rep_of.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -21,7 +21,7 @@ namespace cnl {
         // elastic integer-specific helpers
         using _narrowest_numeric_limits = numeric_limits<Narrowest>;
         using _value_type = elastic_integer<Digits, Narrowest>;
-        using _rep = _impl::rep_t<_value_type>;
+        using _rep = _impl::rep_of_t<_value_type>;
         using _rep_numeric_limits = numeric_limits<_rep>;
 
         CNL_NODISCARD static constexpr _rep rep_max() noexcept

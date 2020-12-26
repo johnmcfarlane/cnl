@@ -16,7 +16,7 @@
 #include "can_convert_tag_family.h"
 #include "declaration.h"
 #include "is_number.h"
-#include "tag.h"
+#include "tag_of.h"
 #include "to_rep.h"
 
 /// compositional numeric library
@@ -50,7 +50,7 @@ namespace cnl {
             template<
                     _impl::wrapper Number,
                     enable_if_t<
-                            !can_convert_tag_family<Tag, tag_t<Number>>::value,
+                            !can_convert_tag_family<Tag, tag_of_t<Number>>::value,
                             int> = 0>
             // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
             constexpr number(Number const& i)

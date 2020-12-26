@@ -21,7 +21,7 @@
 #include "number/numeric_limits.h"
 #include "number/operator_helpers.h"
 #include "number/operators.h"
-#include "number/rep.h"
+#include "number/rep_of.h"
 #include "number/rounding.h"
 #include "number/scale.h"
 #include "number/set_digits.h"
@@ -29,7 +29,7 @@
 #include "number/set_rounding.h"
 #include "number/set_tag.h"
 #include "number/shift_operator.h"
-#include "number/tag.h"
+#include "number/tag_of.h"
 #include "number/to_rep.h"
 #include "number/unary_operator.h"
 

@@ -10,7 +10,7 @@
 #include "../config.h"
 #include "from_rep.h"
 #include "from_value.h"
-#include "rep.h"
+#include "rep_of.h"
 
 namespace cnl {
     namespace _impl {
@@ -18,7 +18,7 @@ namespace cnl {
         struct from_value_recursive {
             CNL_NODISCARD constexpr auto operator()(Value const& value) const
             {
-                return cnl::_impl::from_rep<Number>(cnl::_impl::from_value<rep_t<Number>>(value));
+                return cnl::_impl::from_rep<Number>(cnl::_impl::from_value<rep_of_t<Number>>(value));
             }
         };
     }

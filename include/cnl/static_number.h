@@ -10,7 +10,7 @@
 /// \file
 /// \brief file containing definitions related to \ref cnl::static_number
 
-#include "_impl/number/tag.h"
+#include "_impl/number/tag_of.h"
 #include "_impl/static_integer.h"
 #include "scaled_integer.h"
 
@@ -44,8 +44,8 @@ namespace cnl {
 
     /// \brief constructs a static_number from a given constant value
     template<
-            class RoundingTag = _impl::tag_t<rounding_integer<>>,
-            class OverflowTag = _impl::tag_t<overflow_integer<>>, class Narrowest = int,
+            class RoundingTag = _impl::tag_of_t<rounding_integer<>>,
+            class OverflowTag = _impl::tag_of_t<overflow_integer<>>, class Narrowest = int,
             class Input = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     CNL_NODISCARD constexpr auto make_static_number(constant<Value> const&) -> static_number<
             _impl::used_digits(Value) - trailing_bits(Value), trailing_bits(Value), RoundingTag,

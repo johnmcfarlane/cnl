@@ -8,7 +8,7 @@
 #define CNL_ROUNDING_INTEGER_H
 
 #include "_impl/num_traits/is_composite.h"
-#include "_impl/num_traits/rep.h"
+#include "_impl/num_traits/rep_of.h"
 #include "_impl/num_traits/rounding.h"
 #include "_impl/num_traits/set_rounding.h"
 #include "_impl/num_traits/to_rep.h"
@@ -51,7 +51,7 @@ namespace cnl {
             Number, RoundingTag,
             _impl::enable_if_t<is_composite<Number>::value && !_impl::is_number<Number>>>
         : _impl::type_identity<
-                  _impl::set_rep_t<Number, set_rounding_t<_impl::rep_t<Number>, RoundingTag>>> {
+                  _impl::set_rep_t<Number, set_rounding_t<_impl::rep_of_t<Number>, RoundingTag>>> {
     };
 
     template<int Digits, class Rep, class RoundingTag>

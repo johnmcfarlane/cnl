@@ -8,7 +8,7 @@
 #define CNL_IMPL_ELASTIC_INTEGER_H
 
 #include "../num_traits/from_rep.h"
-#include "../num_traits/rep.h"
+#include "../num_traits/rep_of.h"
 #include "../num_traits/scale.h"
 #include "../num_traits/to_rep.h"
 #include "../type_traits/enable_if.h"
@@ -27,7 +27,7 @@ namespace cnl {
                 -> elastic_integer<ShiftDigits + ScalarDigits, ScalarNarrowest>
         {
             using result_type = elastic_integer<ShiftDigits + ScalarDigits, ScalarNarrowest>;
-            using result_rep = _impl::rep_t<result_type>;
+            using result_rep = _impl::rep_of_t<result_type>;
             return _impl::from_rep<result_type>(
                     scale<ShiftDigits, ScaleRadix, result_rep>()(_impl::to_rep(s)));
         }
@@ -42,7 +42,7 @@ namespace cnl {
                 -> elastic_integer<ShiftDigits + ScalarDigits, ScalarNarrowest>
         {
             using divisor_type = elastic_integer<1 - ShiftDigits, ScalarNarrowest>;
-            using divisor_rep = _impl::rep_t<divisor_type>;
+            using divisor_rep = _impl::rep_of_t<divisor_type>;
             return _impl::to_rep(s) / (divisor_rep{1} << -ShiftDigits);
         }
     };
