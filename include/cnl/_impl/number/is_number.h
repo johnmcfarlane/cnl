@@ -19,6 +19,9 @@ namespace cnl {
 
         template<typename Rep, class Tag>
         inline constexpr bool is_number<_impl::number<Rep, Tag>> = true;
+
+        template<typename T>
+        concept wrapper = is_number<T>;
     }
 }
 

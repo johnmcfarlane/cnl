@@ -14,8 +14,8 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<class Number>
-    struct to_rep<Number, _impl::enable_if_t<_impl::is_number<Number>>> {
+    template<_impl::wrapper Number>
+    struct to_rep<Number> {
         using rep_type = _impl::rep_t<Number>;
         CNL_NODISCARD constexpr rep_type& operator()(Number& number) const
         {

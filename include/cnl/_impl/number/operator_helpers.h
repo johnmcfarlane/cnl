@@ -20,8 +20,8 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::wants_generic_ops<number<>>
 
-        template<class Number>
-        inline constexpr auto wants_generic_ops<Number, enable_if_t<is_number<Number>>> = true;
+        template<_impl::wrapper Number>
+        inline constexpr auto wants_generic_ops<Number> = true;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::number_depth

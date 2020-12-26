@@ -48,9 +48,9 @@ namespace cnl {
 
             /// constructor taking an unrelated _impl::number type
             template<
-                    typename Number,
+                    _impl::wrapper Number,
                     enable_if_t<
-                            is_number<Number> && !can_convert_tag_family<Tag, tag_t<Number>>::value,
+                            !can_convert_tag_family<Tag, tag_t<Number>>::value,
                             int> = 0>
             // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
             constexpr number(Number const& i)

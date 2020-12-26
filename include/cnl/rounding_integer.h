@@ -30,10 +30,9 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::rounding
 
-    template<class Number>
+    template<_impl::wrapper Number>
     struct rounding<
-            Number, _impl::enable_if_t<
-                            _impl::is_number<Number> && !_impl::is_rounding_tag<typename Number::tag>::value>>
+            Number, _impl::enable_if_t<!_impl::is_rounding_tag<typename Number::tag>::value>>
         : rounding<typename Number::rep> {
     };
 

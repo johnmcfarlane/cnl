@@ -15,8 +15,8 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<class Number>
-    struct is_composite<Number, _impl::enable_if_t<_impl::is_number<Number>>> : std::true_type {
+    template<_impl::wrapper Number>
+    struct is_composite<Number> : std::true_type {
     };
 }
 
