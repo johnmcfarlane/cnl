@@ -38,7 +38,6 @@ namespace {
     }
 
     namespace test_upper {
-#if (__cpp_constexpr >= 201304L)
         static_assert(
                 identical(cnl::int8{0}, cnl::_impl::duplex_integer<cnl::int8, unsigned>{}.upper()),
                 "");
@@ -68,7 +67,6 @@ namespace {
                                 0x600000000LL}
                                 .upper()),
                 "");
-#endif
 
         TEST(duplex_integer, upper_int8_value)  // NOLINT
         {
@@ -125,7 +123,6 @@ namespace {
     }
 
     namespace test_lower {
-#if (__cpp_constexpr >= 201304L)
         static_assert(identical(0U, cnl::_impl::duplex_integer<cnl::int8, unsigned>{}.lower()), "");
         static_assert(
                 identical(0U, cnl::_impl::duplex_integer<cnl::int8, unsigned>{0}.lower()), "");
@@ -150,7 +147,6 @@ namespace {
                                 0x600000000LL}
                                 .lower()),
                 "");
-#endif
 
         TEST(duplex_integer, lower_int8_value)  // NOLINT
         {
@@ -225,14 +221,12 @@ namespace {
                         cnl::int16{1},
                         static_cast<cnl::int16>(cnl::_impl::duplex_integer<int, unsigned>{1})),
                 "");
-#if (__cpp_constexpr >= 201304L)
         static_assert(
                 identical(
                         cnl::uint16{0x5678},
                         cnl::_impl::duplex_integer<signed short, unsigned short>{0x12345678}
                                 .lower()),
                 "");
-#endif
 
         TEST(duplex_integer, lower)  // NOLINT
         {

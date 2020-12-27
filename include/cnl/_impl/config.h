@@ -82,19 +82,6 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// CNL_RELAXED_CONSTEXPR macro definition
-
-#if defined(CNL_RELAXED_CONSTEXPR)
-#error CNL_RELAXED_CONSTEXPR already defined
-#endif
-
-#if (__cpp_constexpr >= 201304L)
-#define CNL_RELAXED_CONSTEXPR constexpr  // NOLINT(cppcoreguidelines-macro-usage)
-#else
-#define CNL_RELAXED_CONSTEXPR  // NOLINT(cppcoreguidelines-macro-usage)
-#endif
-
-////////////////////////////////////////////////////////////////////////////////
 // CNL_TEMPLATE_AUTO feature test
 
 #if defined(CNL_TEMPLATE_AUTO)
@@ -177,19 +164,11 @@
 
 #if defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_TOOLCHAIN)
 #error CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_TOOLCHAIN already defined
-#elif defined(__GNUG__) && !defined(__clang__) && __GNUG__ >= 7
+#elif defined(__GNUG__) && !defined(__clang__)
 #define CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_TOOLCHAIN
 #endif
 
-#if defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_LANGUAGE)
-#error CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_LANGUAGE already defined
-#elif (__cpp_constexpr >= 201304L) && (__cpp_decltype_auto >= 201304L) \
-        && (__cpp_variable_templates >= 201304)
-#define CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_LANGUAGE
-#endif
-
-#if defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_TOOLCHAIN) \
-        && defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_LANGUAGE)
+#if defined(CNL_BUILTIN_OVERFLOW_SUPPORTED_BY_TOOLCHAIN)
 #define CNL_BUILTIN_OVERFLOW_ENABLED
 #endif
 
@@ -200,7 +179,7 @@
 #error CNL_NODISCARD already defined
 #endif
 
-#if (__cplusplus >= 201703L) && !defined(_MSC_VER)
+#if !defined(_MSC_VER)
 #define CNL_NODISCARD [[nodiscard]]  // NOLINT(cppcoreguidelines-macro-usage)
 #endif
 

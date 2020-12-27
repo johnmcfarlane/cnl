@@ -101,10 +101,8 @@ namespace cnl {
         : std::integral_constant<int, _impl::used_digits((Value < 0) ? -Value : Value)> {
     };
 
-#if defined(__cpp_variable_templates) && (__cpp_variable_templates >= 201304)
     template<class T>
     constexpr int digits_v = digits<T>::value;
-#endif
 
     namespace _impl {
         // cnl::_impl::fractional_digits

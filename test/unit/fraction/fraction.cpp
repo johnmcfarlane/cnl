@@ -38,7 +38,6 @@ namespace {
                 "cnl::make_fraction");
     }
 
-#if defined(__cpp_deduction_guides)
     namespace test_deduction_guide {
         static_assert(
                 identical(cnl::fraction<short>(123), cnl::fraction(short{123})),
@@ -51,7 +50,6 @@ namespace {
 
         static_assert(identical(cnl::fraction<int, int>{4321, 1}, cnl::fraction{4321}));
     }
-#endif
 
     namespace test_conversion_op {
         static_assert(
@@ -169,7 +167,6 @@ namespace {
                 "reduce(cnl::fraction)");
     }
 
-#if defined(__cpp_lib_gcd)
     namespace test_reduce {
         static_assert(
                 identical(
@@ -186,9 +183,7 @@ namespace {
                 identical(cnl::fraction<>(2, -1), cnl::reduce(cnl::fraction<>(6, -3))),
                 "reduce(cnl::fraction)");
     }
-#endif
 
-#if defined(__cpp_lib_gcd)
     namespace test_canonical {
         static_assert(
                 identical(
@@ -205,9 +200,7 @@ namespace {
                 identical(cnl::fraction<>(-2, 1), cnl::canonical(cnl::fraction<>(6, -3))),
                 "canonical(cnl::fraction)");
     }
-#endif
 
-#if defined(__cpp_lib_gcd)
     TEST(fraction, hash)  // NOLINT
     {
         ASSERT_NE(
@@ -217,5 +210,4 @@ namespace {
                 (std::hash<cnl::fraction<>>{}(cnl::fraction<>{1, 2})),
                 (std::hash<cnl::fraction<>>{}(cnl::fraction<>{12, 24})));
     }
-#endif
 }

@@ -16,7 +16,7 @@ using namespace cnl;
 using namespace cnl::literals;
 
 // average two nunbers using 15:16 fixed-point arithmetic using native types
-CNL_RELAXED_CONSTEXPR float average_integer(float input1, float input2)
+constexpr float average_integer(float input1, float input2)
 {
     // user must fixed_width_scale values by the correct amount
     auto fixed1 = static_cast<int32_t>(input1 * 65536.F);
@@ -31,7 +31,7 @@ CNL_RELAXED_CONSTEXPR float average_integer(float input1, float input2)
 
 // the same function using cnl::elastic_integer -
 // a numeric type which widens to avoid overflow
-CNL_RELAXED_CONSTEXPR float average_elastic_integer(float input1, float input2)
+constexpr float average_elastic_integer(float input1, float input2)
 {
     // elastic_integer behaves a lot like native ints
     auto fixed1 = elastic_integer<31>{input1 * 65536.F};
@@ -45,7 +45,7 @@ CNL_RELAXED_CONSTEXPR float average_elastic_integer(float input1, float input2)
 }
 
 // the same function using cnl::scaled_integer
-CNL_RELAXED_CONSTEXPR float average_scaled_integer(float input1, float input2)
+constexpr float average_scaled_integer(float input1, float input2)
 {
     // scaled_integer handles scaling
     auto fixed1 = scaled_integer<int32_t, cnl::power<-16>>{input1};
@@ -59,7 +59,7 @@ CNL_RELAXED_CONSTEXPR float average_scaled_integer(float input1, float input2)
 }
 
 // finally, the composition of scaled_integer and elastic_integer
-CNL_RELAXED_CONSTEXPR float average_elastic(float input1, float input2)
+constexpr float average_elastic(float input1, float input2)
 {
     // define optimally-scaled quantity types with this user-defined literal;
     // e.g. 65536_elastic uses 2 bits of storage
@@ -85,7 +85,6 @@ static_assert(
         identical(1_elastic / 65536_elastic, elastic_scaled_integer<1, -16>{0.0000152587890625}),
         "mistaken comment in average_elastic");
 
-#if (__cpp_constexpr >= 201304L)
 static_assert(
         identical(average_integer(32000.125, 27805.75), 29902.9375F),
         "average_integer test failed");
@@ -98,24 +97,3 @@ static_assert(
 static_assert(
         identical(average_elastic(32000.125, 27805.75), 29902.9375F),
         "average_elastic test failed");
-#else
-TEST(zero_cost_average, integer)  // NOLINT
-{
-    ASSERT_EQ(average_integer(32000.125, 27805.75), 29902.9375F);
-}
-
-TEST(zero_cost_average, elastic_integer)  // NOLINT
-{
-    ASSERT_EQ(average_elastic_integer(30000, 0.125), 15000.0625F);
-}
-
-TEST(zero_cost_average, scaled_integer)  // NOLINT
-{
-    ASSERT_EQ(average_scaled_integer(30000, 0.125), 15000.0625F);
-}
-
-TEST(zero_cost_average, elastic_scaled_integer)  // NOLINT
-{
-    ASSERT_EQ(average_elastic(30000, 0.125), 15000.0625F);
-}
-#endif

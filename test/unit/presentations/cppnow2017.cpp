@@ -4,8 +4,6 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if (__cplusplus >= 201402L)
-
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_integer.h>
 #include <cnl/overflow_integer.h>
@@ -230,8 +228,7 @@ namespace composite {
     {
         auto product = a.data() * b.data();
 
-        if (cnl::numeric_limits<Rep1>::digits + cnl::numeric_limits<Rep2>::digits
-            > cnl::numeric_limits<decltype(product)>::digits) {
+        if constexpr (cnl::numeric_limits<Rep1>::digits + cnl::numeric_limits<Rep2>::digits > cnl::numeric_limits<decltype(product)>::digits) {
             // do some overflow checking
         }
 
@@ -243,5 +240,3 @@ namespace composite {
     static_assert(
             is_same<decltype(a), safe_elastic_integer<7>>::value, "error in CppNow 2017 slide");
 }
-
-#endif  // (__cplusplus>=201402L)

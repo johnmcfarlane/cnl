@@ -12,15 +12,12 @@
 #include <iostream>
 #include <unordered_map>
 
-#if (__cplusplus >= 201703L)
 #include <filesystem>
 namespace filesystem = std::filesystem;
-#endif
 
 using cnl::power;
 using cnl::scaled_integer;
 
-#if (__cplusplus >= 201703L)
 template<>
 struct std::hash<filesystem::path> {
     size_t operator()(filesystem::path const& p) const
@@ -37,7 +34,6 @@ namespace a {
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,cppcoreguidelines-avoid-non-const-global-variables)
     unordered_map<filesystem::path, unique_ptr<byte[]>> cache;
 }
-#endif
 
 namespace b {
     void f()
@@ -80,9 +76,7 @@ namespace d {
 namespace e {
     static_assert(scaled_integer<unsigned>{1U} < scaled_integer<signed>{-1}, "OK(!)");
 
-#if defined(__cpp_deduction_guides)
     static_assert(scaled_integer{1U} < scaled_integer{-1});
-#endif
 }
 
 namespace f {
@@ -91,7 +85,6 @@ namespace f {
     static_assert(unsigned{1} < signed{-1}, "evaluates to true");
 }
 
-#if (__cplusplus >= 201703L)
 namespace g {
     constexpr auto n = scaled_integer<int, power<-8>>{1.5};
     constexpr auto nn = n * n;
@@ -116,7 +109,6 @@ namespace i {
     static_assert(std::is_same<decltype(q), const scaled_integer<cnl::int64, power<-31>>>::value);
     static_assert(q == 0.66666666651144623756408691);
 }
-#endif
 
 namespace j {
     constexpr auto n = scaled_integer<uint8_t, power<-8>>{0.99609375};
@@ -128,13 +120,8 @@ namespace j {
 namespace j2 {
     constexpr auto n = scaled_integer<int16_t, power<-8>>{1.5};
     constexpr auto d = scaled_integer<int16_t, power<-8>>{2.25};
-#if defined(__cpp_deduction_guides)
     constexpr auto f = cnl::fraction{n, d};
     constexpr auto q = scaled_integer{f};
-#else
-    constexpr auto f = cnl::make_fraction(n, d);
-    constexpr auto q = cnl::make_scaled_integer(f);
-#endif
     static_assert(identical(scaled_integer<int32_t, power<-15>>{.66666667}, q), "");
 }
 
@@ -177,7 +164,6 @@ namespace m {
 #endif
 }
 
-#if (__cplusplus >= 201703L)
 #include <cnl/overflow_integer.h>
 using cnl::overflow_integer;
 namespace n {
@@ -189,9 +175,7 @@ namespace n {
     //    constexpr overflow<uint8_t> k = i + 1;
     //    static_assert(cnl::_impl::identical(overflow<int>{256}, k));
 }
-#endif
 
-#if defined(__cpp_deduction_guides) && !defined(_MSC_VER)
 #include <cnl/elastic_scaled_integer.h>
 
 using namespace cnl::literals;
@@ -219,4 +203,3 @@ namespace o {
     constexpr auto s = e >> 1_c;
     static_assert(cnl::_impl::identical(scaled_integer<elastic_integer<7>, power<11>>{0x3f800}, s));
 }
-#endif

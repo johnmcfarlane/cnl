@@ -191,7 +191,7 @@ namespace cnl {
     struct post_operator<
             Operator, OverflowTag, Rhs,
             _impl::enable_if_t<_impl::is_overflow_tag<OverflowTag>::value>> {
-        CNL_RELAXED_CONSTEXPR auto operator()(Rhs& rhs) const -> Rhs
+        constexpr auto operator()(Rhs& rhs) const -> Rhs
         {
             auto copy = rhs;
             compound_assignment_operator<

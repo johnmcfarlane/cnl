@@ -64,7 +64,6 @@ namespace cnl {
         denominator_type denominator = 1;  // NOLINT(misc-non-private-member-variables-in-classes)
     };
 
-#if defined(__cpp_deduction_guides)
     fraction(float)->fraction<_impl::set_width_t<int, int(sizeof(float) * CHAR_BIT)>>;
 
     fraction(double)->fraction<_impl::set_width_t<int, int(sizeof(double) * CHAR_BIT)>>;
@@ -77,7 +76,6 @@ namespace cnl {
             typename Integer,
             typename = _impl::enable_if_t<numeric_limits<Integer>::is_integer, int>>
     fraction(Integer) -> fraction<Integer>;
-#endif
 }
 
 #endif  // CNL_IMPL_FRACTION_TYPE_H

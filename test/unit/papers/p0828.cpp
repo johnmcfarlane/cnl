@@ -7,7 +7,7 @@
 /// \file
 /// \brief tests of features from library proposal, P0828
 
-#if (__cplusplus > 201402L) && defined(CNL_EXCEPTIONS_ENABLED)
+#if defined(CNL_EXCEPTIONS_ENABLED)
 
 #include <cnl/elastic_integer.h>
 #include <cnl/scaled_integer.h>

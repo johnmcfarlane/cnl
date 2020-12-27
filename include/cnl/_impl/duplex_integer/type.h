@@ -71,7 +71,7 @@ namespace cnl {
                 return _upper;
             }
 
-            CNL_RELAXED_CONSTEXPR auto upper() -> upper_type&
+            constexpr auto upper() -> upper_type&
             {
                 return _upper;
             }
@@ -81,7 +81,7 @@ namespace cnl {
                 return _lower;
             }
 
-            CNL_RELAXED_CONSTEXPR auto lower() -> lower_type&
+            constexpr auto lower() -> lower_type&
             {
                 return _lower;
             }

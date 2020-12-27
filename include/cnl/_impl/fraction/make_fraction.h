@@ -37,10 +37,8 @@ namespace cnl {
         template<
                 typename Numerator, typename Denominator = Numerator,
                 typename FloatingPoint = float>
-        CNL_NODISCARD CNL_RELAXED_CONSTEXPR auto make_fraction(FloatingPoint d)
-                -> _impl::enable_if_t<
-                        numeric_limits<FloatingPoint>::is_iec559,
-                        cnl::fraction<Numerator, Denominator>>
+        CNL_NODISCARD constexpr auto make_fraction(FloatingPoint d) -> _impl::enable_if_t<
+                numeric_limits<FloatingPoint>::is_iec559, cnl::fraction<Numerator, Denominator>>
         {
             // merge requests gratefully received
             static_assert(
