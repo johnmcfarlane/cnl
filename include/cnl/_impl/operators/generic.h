@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief a place to centralize most duplicate arithmetic operator boilerplate
+/// \brief primary templates providing basis for arithmetic operator customization points
 
 #if !defined(CNL_IMPL_OPERATORS_GENERIC_OPERATORS_H)
 #define CNL_IMPL_OPERATORS_GENERIC_OPERATORS_H
