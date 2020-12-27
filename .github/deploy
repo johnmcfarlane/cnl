@@ -22,7 +22,7 @@ else
 fi
 
 # Generate documentation
-"${PROJECT_DIR}/doc/generate.sh"
+"${PROJECT_DIR}/doc/generate"
 
 # Push revision of documentation
 pushd "${PROJECT_DIR}/doc/gh-pages"
@@ -39,7 +39,7 @@ fi
 popd
 
 # Upload new version of CNL Conan package to Bintray
-"${PROJECT_DIR}/test/scripts/conan-setup.sh"
+"${PROJECT_DIR}/test/scripts/conan-setup"
 conan user -p "${CONAN_PASS}" -r johnmcfarlane/cnl "${CONAN_USER}"
 conan install --build=missing "${PROJECT_DIR}"
 conan create "${PROJECT_DIR}" "cnl/${CNL_VERSION}@johnmcfarlane/development"
