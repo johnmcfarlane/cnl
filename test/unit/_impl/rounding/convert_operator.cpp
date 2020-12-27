@@ -17,7 +17,7 @@ namespace test_convert_nearest_rounding_native_datatypes {
 
     static_assert(
             cnl::_impl::identical(
-                    0.123F, cnl::convert<cnl::nearest_rounding_tag, float, float>(0.123F)),
+                    0.123F, cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, float, float>(0.123F)),
             "cnl::convert<nearest_rounding_tag, cnl::_impl::native_tag, float, float>");
 
     static_assert(
