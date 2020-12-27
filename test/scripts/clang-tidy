@@ -10,6 +10,6 @@ PROJECT_DIR=$(
   pwd
 )
 
-"${PROJECT_DIR}/test/scripts/test.sh" \
+"${PROJECT_DIR}/test/scripts/test" \
   --env CONAN_CMAKE_TOOLCHAIN_FILE="${PROJECT_DIR}/test/cmake/toolchain/clang-tidy-libc++.cmake" \
   --env CXX=clang++
