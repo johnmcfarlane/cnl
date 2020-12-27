@@ -39,7 +39,7 @@ fi
 popd
 
 # Upload new version of CNL Conan package to Bintray
-conan remote add --force johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
+"${PROJECT_DIR}/test/scripts/conan-setup.sh"
 conan user -p "${CONAN_PASS}" -r johnmcfarlane/cnl "${CONAN_USER}"
 conan install --build=missing "${PROJECT_DIR}"
 conan create "${PROJECT_DIR}" "cnl/${CNL_VERSION}@johnmcfarlane/development"
