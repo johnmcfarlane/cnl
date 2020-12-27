@@ -9,7 +9,7 @@ PROJECT_DIR=$(
   pwd
 )
 
-"${PROJECT_DIR}/test/scripts/test.sh" \
+"${PROJECT_DIR}/test/scripts/test" \
   --env CONAN_CMAKE_TOOLCHAIN_FILE="${PROJECT_DIR}/test/cmake/toolchain/gcc.cmake" \
   --env CXX=g++ \
   --env LSAN_OPTIONS=verbosity=1:log_threads=1 \
