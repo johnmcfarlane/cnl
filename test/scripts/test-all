@@ -9,5 +9,5 @@ PROJECT_DIR=$(
   pwd
 )
 
-"${PROJECT_DIR}"/test/scripts/test.sh \
+"${PROJECT_DIR}"/test/scripts/test \
   --options target=test-all

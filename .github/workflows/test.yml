@@ -270,7 +270,7 @@ jobs:
 
     - name: Format code
       shell: bash
-      run: $GITHUB_WORKSPACE/test/scripts/clang-format.sh
+      run: $GITHUB_WORKSPACE/test/scripts/clang-format
 
     - name: Show/test for changes
       shell: bash
@@ -287,7 +287,7 @@ jobs:
 
     - name: Run All Tests
       shell: bash
-      run: $GITHUB_WORKSPACE/test/scripts/shellcheck.sh
+      run: $GITHUB_WORKSPACE/test/scripts/shellcheck
 
   # Test documentation generation
   doxygen:
@@ -301,7 +301,7 @@ jobs:
 
     - name: Generate documentation
       shell: bash
-      run: $GITHUB_WORKSPACE/doc/generate.sh
+      run: $GITHUB_WORKSPACE/doc/generate
 
     - name: Upload documentation
       uses: actions/upload-artifact@v2
