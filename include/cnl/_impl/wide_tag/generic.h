@@ -27,7 +27,7 @@ namespace cnl {
     struct deduction<wide_tag<ArchetypeDigits, ArchetypeNarrowest>, Initializer> {
         // tag associated with deduced type
         using tag = wide_tag<
-                digits<Initializer>::value,
+                digits<Initializer>,
                 _impl::set_width_t<Initializer, _impl::width<ArchetypeNarrowest>::value>>;
 
         // deduced type

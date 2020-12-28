@@ -24,7 +24,7 @@ namespace cnl {
         CNL_NODISCARD constexpr auto pi(int const max_iterations)
         {
             using fp = scaled_integer<Rep, power<Exponent>>;
-            constexpr auto four = scaled_integer<Rep, power<3 - digits_v<Rep>>>{4.};
+            constexpr auto four = scaled_integer<Rep, power<3 - digits<Rep>>>{4.};
 
             auto previous = fp{3.};
             for (auto n = 2; n != (max_iterations << 1); n += 4) {
@@ -49,7 +49,7 @@ namespace cnl {
         CNL_NODISCARD constexpr auto e(int const max_iterations)
         {
             using fp = scaled_integer<Rep, power<Exponent>>;
-            constexpr auto one = scaled_integer<Rep, power<2 - digits_v<Rep>>>{1.};
+            constexpr auto one = scaled_integer<Rep, power<2 - digits<Rep>>>{1.};
 
             auto previous = fp{2.};
             auto factor = 2;
@@ -80,8 +80,8 @@ namespace cnl {
 
             auto const required_integer_digits = used_digits(static_cast<int>(constant));
 
-            constexpr auto fixed_fractional_digits = fractional_digits<fp>::value;
-            // expect: integer_digits<fp>::value >= required_integer_digits
+            constexpr auto fixed_fractional_digits = fractional_digits<fp>;
+            // expect: integer_digits<fp> >= required_integer_digits
 
             constexpr auto float_digits = std::numeric_limits<Float>::digits;
             auto const float_fractional_digits = float_digits - required_integer_digits;

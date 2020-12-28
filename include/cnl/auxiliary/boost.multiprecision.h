@@ -123,14 +123,12 @@ namespace cnl {
     };
 
     template<unsigned NumBits>
-    struct digits<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>>
-        : std::integral_constant<int, NumBits - 1> {
-    };
+    inline constexpr int
+            digits<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> = NumBits - 1;
 
     template<unsigned NumBits>
-    struct digits<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>>
-        : std::integral_constant<int, NumBits> {
-    };
+    inline constexpr int
+            digits<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> = NumBits;
 
     template<unsigned NumBits, int MinNumDigits>
     struct set_digits<
@@ -189,7 +187,7 @@ namespace cnl {
             _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>, Value,
             _impl::enable_if_t<!_impl::is_boost_multiprecision<Value>::value>> {
     private:
-        static constexpr auto _bits = digits<Value>::value + 1;
+        static constexpr auto _bits = digits<Value> + 1;
 
     public:
         CNL_NODISCARD constexpr auto operator()(Value const& value) const
@@ -204,7 +202,7 @@ namespace cnl {
             _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>, Value,
             _impl::enable_if_t<!_impl::is_boost_multiprecision<Value>::value>> {
     private:
-        static constexpr auto _bits = digits<Value>::value;
+        static constexpr auto _bits = digits<Value>;
 
     public:
         CNL_NODISCARD constexpr auto operator()(Value const& value) const
@@ -253,7 +251,7 @@ namespace cnl {
     ///
     /// \tparam NumDigits number of digits constituting the integer value (excluding sign bit)
     /// \sa cnl::unsigned_multiprecision, cnl::multiprecision
-    template<unsigned NumDigits = digits<int>::value>
+    template<unsigned NumDigits = digits<int>>
     using signed_multiprecision =
             _sized_integer_impl::number<NumDigits + 1, _bmp::signed_magnitude>;
 
@@ -262,7 +260,7 @@ namespace cnl {
     ///
     /// \tparam NumDigits number of digits constituting the integer value (excluding sign bit)
     /// \sa cnl::signed_multiprecision, cnl::multiprecision
-    template<unsigned NumDigits = digits<unsigned>::value>
+    template<unsigned NumDigits = digits<unsigned>>
     using unsigned_multiprecision =
             _sized_integer_impl::number<NumDigits, _bmp::unsigned_magnitude>;
 
@@ -271,7 +269,7 @@ namespace cnl {
     ///
     /// \tparam NumDigits number of digits constituting the integer value (excluding sign bit)
     /// \sa cnl::signed_multiprecision, cnl::unsigned_multiprecision
-    template<unsigned NumDigits = digits<int>::value>
+    template<unsigned NumDigits = digits<int>>
     using multiprecision = signed_multiprecision<NumDigits>;
 
     ////////////////////////////////////////////////////////////////////////////////

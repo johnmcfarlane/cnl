@@ -24,8 +24,8 @@ namespace {
         using result_type = decltype(Op{}(std::declval<Lhs>(), std::declval<Rhs>()));
         using type = cnl::set_digits_t<
                 result_type, cnl::_impl::max(
-                                     cnl::digits<result_type>::value,
-                                     cnl::digits<Lhs>::value + cnl::digits<Rhs>::value)>;
+                                     cnl::digits<result_type>,
+                                     cnl::digits<Lhs> + cnl::digits<Rhs>)>;
     };
 
     template<class Op, typename Lhs, typename Rhs = Lhs>

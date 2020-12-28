@@ -65,10 +65,7 @@ namespace cnl {
 
         // requires positive N
         template<int N>
-        inline constexpr auto is_power_of_two = false;
-
-        template<int N>
-        requires(N > 0) inline constexpr auto is_power_of_two<N> = !(N & (N - 1));
+        inline constexpr auto is_power_of_two = N > 0 && !(N & (N - 1));
 
         ////////////////////////////////////////////////////////////////////////////////
         // optimal_duplex
@@ -78,7 +75,7 @@ namespace cnl {
 
         template<typename Narrowest>
         struct optimal_duplex<Narrowest, unsigned> {
-            static constexpr auto double_word_digits = max_digits<Narrowest>::value;
+            static constexpr auto double_word_digits = max_digits<Narrowest>;
             static_assert(
                     double_word_digits >= 2 && is_power_of_two<double_word_digits>,
                     "invalid integer type, Narrowest");
@@ -87,7 +84,7 @@ namespace cnl {
             // its word type should be half the maximum width.
             static constexpr auto word_digits = double_word_digits / 2;
             using word = set_digits_t<Narrowest, word_digits>;
-            static_assert(digits<word>::value == word_digits, "failed to half a double-width word");
+            static_assert(digits<word> == word_digits, "failed to half a double-width word");
 
             using type = word;
         };
@@ -107,7 +104,7 @@ namespace cnl {
         struct instantiate_duplex_integer {
             using word = typename optimal_duplex<Narrowest>::type;
             static constexpr auto num_sign_bits = is_signed<word>::value;
-            static constexpr auto word_digits = digits<word>::value + num_sign_bits;
+            static constexpr auto word_digits = digits<word> + num_sign_bits;
             static constexpr auto required_num_words =
                     (Digits + num_sign_bits + word_digits - 1) / word_digits;
 

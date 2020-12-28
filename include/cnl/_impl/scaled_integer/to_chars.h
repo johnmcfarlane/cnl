@@ -27,11 +27,11 @@ namespace cnl {
         private:
             using _scalar = cnl::scaled_integer<Rep, power<Exponent>>;
             static constexpr auto _fractional_digits =
-                    cnl::_impl::fractional_digits<_scalar>::value;
+                    cnl::_impl::fractional_digits<_scalar>;
 
             static constexpr auto _sign_chars = static_cast<int>(cnl::is_signed<_scalar>::value);
             static constexpr auto _integer_chars =
-                    ((cnl::_impl::integer_digits<_scalar>::value + 2) / 3);
+                    ((cnl::_impl::integer_digits<_scalar> + 2) / 3);
             static constexpr auto _radix_chars = static_cast<int>(_fractional_digits > 0);
             static constexpr auto _fractional_chars = max(0, _fractional_digits);
 
@@ -44,7 +44,7 @@ namespace cnl {
         // components
         template<
                 typename Rep, int Exponent, int Radix,
-                bool Flushed = (Radix == 2 && Exponent <= -digits<Rep>::value)>
+                bool Flushed = (Radix == 2 && Exponent <= -digits<Rep>)>
         struct split;
 
         template<typename Rep, int Exponent, int Radix>
@@ -86,7 +86,7 @@ namespace cnl {
                 char* first, char const* const last,
                 scaled_integer<Rep, power<Exponent, Radix>> value)
                 -> enable_if_t<
-                        integer_digits<scaled_integer<Rep, power<Exponent, Radix>>>::value >= 4,
+                        integer_digits<scaled_integer<Rep, power<Exponent, Radix>>> >= 4,
                         char*>
         {
             do {
@@ -116,7 +116,7 @@ namespace cnl {
                         char* const first, char* last,
                         scaled_integer<Rep, power<Exponent, Radix>> const& value)
                         -> enable_if_t < integer_digits<
-                scaled_integer<Rep, power<Exponent, Radix>>>::value<4, char*>
+                scaled_integer<Rep, power<Exponent, Radix>>><4, char*>
         {
             // zero-out all of the characters in the output string
             std::fill<char*>(first, last, '0');

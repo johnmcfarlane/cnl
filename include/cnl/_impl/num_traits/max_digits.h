@@ -19,28 +19,23 @@ namespace cnl {
     namespace _impl {
         // max_digits_fundamental
         template<bool Signed>
-        struct max_digits_fundamental;
+        inline constexpr int max_digits_fundamental = 0;
 
         template<>
-        struct max_digits_fundamental<true> : digits<intmax> {
-        };
+        inline constexpr auto max_digits_fundamental<true> = digits<intmax>;
 
         template<>
-        struct max_digits_fundamental<false> : digits<uintmax> {
-        };
+        inline constexpr auto max_digits_fundamental<false> = digits<uintmax>;
 
         // max_digits
         template<typename T, class Enable = void>
-        struct max_digits;
+        inline constexpr int max_digits = 0;
 
         template<_impl::integral T>
-        struct max_digits<T>
-            : max_digits_fundamental<is_signed<T>::value> {
-        };
+        inline constexpr auto max_digits<T> = max_digits_fundamental<is_signed<T>::value>;
 
         template<typename T>
-        struct max_digits<T, enable_if_t<is_composite<T>::value>> : max_digits<rep_of_t<T>> {
-        };
+        requires is_composite<T>::value inline constexpr auto max_digits<T> = max_digits<rep_of_t<T>>;
     }
 }
 

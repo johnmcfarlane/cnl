@@ -27,7 +27,7 @@ namespace cnl {
             CNL_NODISCARD constexpr ScaledInteger rounding_conversion(double d)
             {
                 using one_longer = scaled_integer<
-                        set_digits_t<rep_of_t<ScaledInteger>, digits<ScaledInteger>::value + 1>,
+                        set_digits_t<rep_of_t<ScaledInteger>, digits<ScaledInteger> + 1>,
                         power<tag_of_t<ScaledInteger>::exponent - 1>>;
                 return from_rep<ScaledInteger>(
                         static_cast<rep_of_t<ScaledInteger>>((_impl::to_rep(one_longer{d}) + 1) >> 1));
@@ -38,7 +38,7 @@ namespace cnl {
 
             template<class Input>
             using make_largest_ufraction =
-                    scaled_integer<unsigned_rep<Input>, power<-digits<unsigned_rep<Input>>::value>>;
+                    scaled_integer<unsigned_rep<Input>, power<-digits<unsigned_rep<Input>>>>;
 
             static_assert(
                     std::is_same<
@@ -66,18 +66,18 @@ namespace cnl {
 
             template<typename A, typename B>
             CNL_NODISCARD constexpr auto safe_multiply(A const& a, B const& b) -> enable_if_t<
-                    digits<decltype(a * b)>::value <= digits<A>::value + digits<B>::value,
+                    digits<decltype(a * b)> <= digits<A> + digits<B>,
                     decltype(
-                            set_digits_t<A, digits<A>::value + digits<B>::value>{a}
-                            * set_digits_t<B, digits<A>::value + digits<B>::value>{b})>
+                            set_digits_t<A, digits<A> + digits<B>>{a}
+                            * set_digits_t<B, digits<A> + digits<B>>{b})>
             {
-                return set_digits_t<A, digits<A>::value + digits<B>::value>{a}
-                     * set_digits_t<B, digits<A>::value + digits<B>::value>{b};
+                return set_digits_t<A, digits<A> + digits<B>>{a}
+                     * set_digits_t<B, digits<A> + digits<B>>{b};
             }
 
             template<typename A, typename B>
             CNL_NODISCARD constexpr auto safe_multiply(A const& a, B const& b) -> enable_if_t<
-                    digits<A>::value + digits<B>::value <= digits<decltype(a * b)>::value,
+                    digits<A> + digits<B> <= digits<decltype(a * b)>,
                     decltype(a * b)>
             {
                 return a * b;
@@ -147,7 +147,7 @@ namespace cnl {
 
             template<class Rep, int Exponent, int Radix>
                     CNL_NODISCARD constexpr enable_if_t
-                    < -digits<Rep>::value<Exponent, scaled_integer<Rep, power<Exponent, Radix>>>
+                    < -digits<Rep><Exponent, scaled_integer<Rep, power<Exponent, Radix>>>
                       fractional(
                               scaled_integer<Rep, power<Exponent, Radix>> const& x,
                               Rep const& floored)
@@ -157,7 +157,7 @@ namespace cnl {
 
             template<class Rep, int Exponent, int Radix>
             CNL_NODISCARD constexpr enable_if_t<
-                    -digits<Rep>::value >= Exponent, scaled_integer<Rep, power<Exponent, Radix>>>
+                    -digits<Rep> >= Exponent, scaled_integer<Rep, power<Exponent, Radix>>>
             fractional(scaled_integer<Rep, power<Exponent, Radix>> const& x, Rep const&)
             {
                 return x;

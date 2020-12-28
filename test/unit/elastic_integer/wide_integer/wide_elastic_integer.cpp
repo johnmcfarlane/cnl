@@ -16,9 +16,9 @@ namespace {
     using cnl::_impl::assert_same;
     using cnl::_impl::identical;
 
-    template<int Digits = cnl::digits<int>::value, typename Narrowest = int>
+    template<int Digits = cnl::digits<int>, typename Narrowest = int>
     using wide_elastic_integer = cnl::elastic_integer<
-            Digits, cnl::wide_integer<cnl::digits<Narrowest>::value, Narrowest>>;
+            Digits, cnl::wide_integer<cnl::digits<Narrowest>, Narrowest>>;
 
     namespace default_parameters {
         using cnl::_impl::rep_of_t;

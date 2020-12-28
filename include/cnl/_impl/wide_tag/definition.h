@@ -21,15 +21,15 @@ namespace cnl {
     // When number can be represented in a single integer
     template<int Digits, typename Narrowest>
     struct wide_tag<
-            Digits, Narrowest, _impl::enable_if_t<(Digits <= _impl::max_digits<Narrowest>::value)>>
+            Digits, Narrowest, _impl::enable_if_t<(Digits <= _impl::max_digits<Narrowest>)>>
         : _impl::homogeneous_operator_tag_base {
-        using rep = set_digits_t<Narrowest, _impl::max(cnl::digits<Narrowest>::value, Digits)>;
+        using rep = set_digits_t<Narrowest, _impl::max(cnl::digits<Narrowest>, Digits)>;
     };
 
     // when number must be represented using multiple integers
     template<int Digits, typename Narrowest>
     struct wide_tag<
-            Digits, Narrowest, _impl::enable_if_t<(_impl::max_digits<Narrowest>::value < Digits)>>
+            Digits, Narrowest, _impl::enable_if_t<(_impl::max_digits<Narrowest> < Digits)>>
         : _impl::homogeneous_operator_tag_base {
         using rep = _impl::instantiate_duplex_integer_t<Digits, Narrowest>;
     };

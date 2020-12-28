@@ -105,7 +105,7 @@ namespace cnl {
     scaled_integer(::cnl::constant<Value>) -> scaled_integer<
             set_digits_t<
                     int,
-                    _impl::max(digits_v<int>, _impl::used_digits(Value) - trailing_bits(Value))>,
+                    _impl::max(digits<int>, _impl::used_digits(Value) - trailing_bits(Value))>,
             power<trailing_bits(Value)>>;
 
     template<class Integer>

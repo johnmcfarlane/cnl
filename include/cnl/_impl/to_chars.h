@@ -28,7 +28,7 @@ namespace cnl {
         template<typename Scalar, int Base = 10>
         struct max_to_chars_chars {
             static constexpr auto _sign_chars = static_cast<int>(cnl::is_signed<Scalar>::value);
-            static constexpr auto _integer_chars = ((cnl::digits<Scalar>::value + 2) / 3);
+            static constexpr auto _integer_chars = ((cnl::digits<Scalar> + 2) / 3);
 
             static constexpr auto value = _sign_chars + _integer_chars;
         };

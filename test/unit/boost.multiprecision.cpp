@@ -77,29 +77,15 @@ static_assert(
         "cnl::remove_signedness<{un}signed_multiprecision>::remove_signedness test failed");
 
 // test cnl::width<{un}signed_multiprecision>
-static_assert(
-        cnl::digits<signed_multiprecision<11>>::value >= 11,
-        "cnl::digits<signed_multiprecision>::value test failed");
-static_assert(
-        cnl::digits<unsigned_multiprecision<12>>::value >= 12,
-        "cnl::digits<signed_multiprecision>::value test failed");
+static_assert(cnl::digits<signed_multiprecision<11>> >= 11);
+static_assert(cnl::digits<unsigned_multiprecision<12>> >= 12);
 
 // test cnl::set_digits_t<{un}signed_multiprecision>
-static_assert(
-        cnl::digits<set_digits_t<signed_multiprecision<13>, 57>>::value >= 57,
-        "set_digits_t<signed_multiprecision> test failed");
-static_assert(
-        cnl::digits<set_digits_t<unsigned_multiprecision<14>, 3>>::value >= 3,
-        "set_digits_t<signed_multiprecision> test failed");
+static_assert(cnl::digits<set_digits_t<signed_multiprecision<13>, 57>> >= 57);
+static_assert(cnl::digits<set_digits_t<unsigned_multiprecision<14>, 3>> >= 3);
 
-static_assert(
-        cnl::digits<set_digits_t<signed_multiprecision<120>, 3>>::value
-                <= cnl::digits<signed_multiprecision<120>>::value,
-        "set_digits_t<signed_multiprecision> test failed");
-static_assert(
-        cnl::digits<unsigned_multiprecision<128>>::value
-                >= cnl::digits<set_digits_t<unsigned_multiprecision<128>, 16>>::value,
-        "set_digits_t<signed_multiprecision> test failed");
+static_assert(cnl::digits<set_digits_t<signed_multiprecision<120>, 3>> <= cnl::digits<signed_multiprecision<120>>);
+static_assert(cnl::digits<unsigned_multiprecision<128>> >= cnl::digits<set_digits_t<unsigned_multiprecision<128>, 16>>);
 
 namespace test_to_rep {
     static_assert(
@@ -265,13 +251,9 @@ TEST(scaled_integer_multiprecision, divide)  // NOLINT
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::digits<boost::multiprecision::number<>>
 
-static_assert(
-        cnl::digits<unsigned_multiprecision<24>>::value == 24,
-        "cnl::digits<boost::multiprecision::number<>> test failed");
+static_assert(cnl::digits<unsigned_multiprecision<24>> == 24);
 
-static_assert(
-        cnl::digits<signed_multiprecision<24>>::value == 24,
-        "cnl::digits<boost::multiprecision::number<>> test failed");
+static_assert(cnl::digits<signed_multiprecision<24>> == 24);
 
 ////////////////////////////////////////////////////////////////////////////////
 // bitwise shift with boost::multiprecision and cnl::constant

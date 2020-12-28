@@ -63,7 +63,7 @@ namespace cnl {
     template<class Integer>
     CNL_NODISCARD constexpr int leading_bits(Integer const& value)
     {
-        return digits<Integer>::value - cnl::used_digits(value);
+        return digits<Integer> - cnl::used_digits(value);
     }
 }
 
