@@ -18,14 +18,14 @@ namespace cnl {
         // cnl::_impl::calculate_lower
         template<typename Lower, typename Integer>
         CNL_NODISCARD constexpr auto calculate_lower(Integer const& input)
-                -> enable_if_t<digits<Lower>::value >= digits<Integer>::value, Lower>
+                -> enable_if_t<digits<Lower> >= digits<Integer>, Lower>
         {
             return Lower(input) & numeric_limits<Lower>::max();
         }
 
         template<typename Lower, typename Integer>
                 CNL_NODISCARD constexpr auto calculate_lower(Integer const& input)
-                        -> enable_if_t < digits<Lower>::value<digits<Integer>::value, Lower>
+                        -> enable_if_t < digits<Lower><digits<Integer>, Lower>
         {
             return static_cast<Lower>(input & static_cast<Integer>(numeric_limits<Lower>::max()));
         }
@@ -33,19 +33,19 @@ namespace cnl {
         // cnl::_impl::calculate upper
         template<typename Upper, typename Lower, typename Integer>
         CNL_NODISCARD constexpr auto calculate_upper(Integer const& input)
-                -> enable_if_t<digits<Lower>::value >= digits<Integer>::value, Upper>
+                -> enable_if_t<digits<Lower> >= digits<Integer>, Upper>
         {
             // sign-friendly flush
             // TODO: Not reproduced locally. Investigate.
             // NOLINTNEXTLINE(clang-analyzer-core.UndefinedBinaryOperatorResult)
-            return static_cast<Upper>((input >> (digits<Integer>::value - 1)) >> 1);
+            return static_cast<Upper>((input >> (digits<Integer> - 1)) >> 1);
         }
 
         template<typename Upper, typename Lower, typename Integer>
                 CNL_NODISCARD constexpr auto calculate_upper(Integer const& input)
-                        -> enable_if_t < digits<Lower>::value<digits<Integer>::value, Upper>
+                        -> enable_if_t < digits<Lower><digits<Integer>, Upper>
         {
-            return sensible_right_shift<Upper>(input, digits<Lower>::value);
+            return sensible_right_shift<Upper>(input, digits<Lower>);
         }
 
         template<typename Upper, typename Lower>

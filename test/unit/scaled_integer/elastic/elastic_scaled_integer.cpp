@@ -53,7 +53,7 @@ namespace {
 #endif
 
     static_assert(
-            digits<set_digits_t<elastic_integer<15, uint8_t>, 22>>::value == 22,
+            digits<set_digits_t<elastic_integer<15, uint8_t>, 22>> == 22,
             "cnl::elastic_integer test failed");
 
     static_assert(
@@ -370,8 +370,8 @@ struct positive_elastic_test : number_test<Elastic> {
     static constexpr elastic_type max{numeric_limits::max()};
     static constexpr elastic_type lowest{numeric_limits::lowest()};
 
-    static constexpr int integer_digits = cnl::_impl::integer_digits<elastic_type>::value;
-    static constexpr int fractional_digits = cnl::_impl::fractional_digits<elastic_type>::value;
+    static constexpr int integer_digits = cnl::_impl::integer_digits<elastic_type>;
+    static constexpr int fractional_digits = cnl::_impl::fractional_digits<elastic_type>;
     static constexpr int digits = integer_digits + fractional_digits;
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -391,7 +391,7 @@ struct positive_elastic_test : number_test<Elastic> {
     // test elastic_integer type
 
     static_assert(
-            cnl::digits<rep>::value >= digits,
+            cnl::digits<rep> >= digits,
             "not enough digits in rep type to represent elastic_scaled_integer values");
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -433,12 +433,10 @@ struct positive_elastic_test : number_test<Elastic> {
 
     using negate_result = decltype(-zero);
     static_assert(
-            cnl::_impl::integer_digits<negate_result>::value
-                    == cnl::_impl::integer_digits<elastic_type>::value,
+            cnl::_impl::integer_digits<negate_result> == cnl::_impl::integer_digits<elastic_type>,
             "negative of positive value has wrong number of integer digits");
     static_assert(
-            cnl::_impl::fractional_digits<negate_result>::value
-                    == cnl::_impl::fractional_digits<elastic_type>::value,
+            cnl::_impl::fractional_digits<negate_result> == cnl::_impl::fractional_digits<elastic_type>,
             "negative of positive value has wrong number of fraction digits");
 
     ////////////////////////////////////////////////////////////////////////////////

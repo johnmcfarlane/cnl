@@ -460,7 +460,7 @@ namespace test_digits {
     using cnl::set_digits_t;
 
     static_assert(
-            digits<overflow_integer<int8_t>>::value == 7,
+            digits<overflow_integer<int8_t>> == 7,
             "cnl::digits / cnl::set_digits test failed");
     static_assert(
             identical(

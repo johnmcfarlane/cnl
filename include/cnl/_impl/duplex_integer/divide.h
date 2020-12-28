@@ -24,7 +24,7 @@ namespace cnl {
         template<typename Lhs, typename Rhs>
         struct heterogeneous_duplex_divide_operator {
             using common_type = rep_of_t<wide_integer<
-                    max(digits<Lhs>::value, digits<Rhs>::value),
+                    max(digits<Lhs>, digits<Rhs>),
                     set_signedness_t<int, is_signed<Lhs>::value | is_signed<Rhs>::value>>>;
 
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> Lhs

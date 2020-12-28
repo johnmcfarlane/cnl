@@ -60,7 +60,7 @@ namespace cnl {
     template<typename Narrowest = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0>
     CNL_NODISCARD constexpr auto make_elastic_scaled_integer(constant<Value>)
             -> elastic_scaled_integer<
-                    _impl::max(digits<constant<Value>>::value - trailing_bits(Value), 1),
+                    _impl::max(digits<constant<Value>> - trailing_bits(Value), 1),
                     trailing_bits(Value), Narrowest>
     {
         return Value;

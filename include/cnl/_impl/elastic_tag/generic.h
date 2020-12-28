@@ -70,8 +70,8 @@ namespace cnl {
     struct binary_operator<
             Operator, elastic_tag<LhsDigits, LhsNarrowest>, elastic_tag<RhsDigits, RhsNarrowest>,
             Lhs, Rhs> {
-        static_assert(digits<Lhs>::value >= LhsDigits, "LHS number is not wide enough");
-        static_assert(digits<Rhs>::value >= RhsDigits, "RHS number is not wide enough");
+        static_assert(digits<Lhs> >= LhsDigits, "LHS number is not wide enough");
+        static_assert(digits<Rhs> >= RhsDigits, "RHS number is not wide enough");
 
         using result_tag = decltype(Operator{}(
                 std::declval<elastic_tag<LhsDigits, LhsNarrowest>>(),

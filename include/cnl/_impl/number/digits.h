@@ -14,8 +14,7 @@
 /// compositional numeric library
 namespace cnl {
     template<typename Rep, tag Tag>
-    struct digits<_impl::number<Rep, Tag>> : digits<Rep> {
-    };
+    inline constexpr auto digits<_impl::number<Rep, Tag>> = digits<Rep>;
 }
 
 #endif  // CNL_IMPL_NUMBER_DIGITS_H

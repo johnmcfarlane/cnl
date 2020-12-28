@@ -23,7 +23,7 @@ namespace cnl {
                     _impl::is_duplex_integer<Duplex>::value
                     && !_impl::is_duplex_integer<Value>::value>> {
         CNL_NODISCARD constexpr auto operator()(Value const& value) const
-                -> _impl::instantiate_duplex_integer<digits<Value>::value, Value>
+                -> _impl::instantiate_duplex_integer<digits<Value>, Value>
         {
             return value;
         }

@@ -65,7 +65,7 @@ namespace test_from_scaled_integer {
 
     static_assert(
             identical(
-                    cnl::elastic_scaled_integer<cnl::digits<long>::value, 3, signed>{88},
+                    cnl::elastic_scaled_integer<cnl::digits<long>, 3, signed>{88},
                     cnl::make_elastic_scaled_integer(cnl::scaled_integer<long, cnl::power<3>>{88})));
 }
 
@@ -196,26 +196,26 @@ struct make_elastic_test {
     using type = typename std::remove_const<decltype(elastic_value)>::type;
 
     static_assert(
-            Value <= 0 || (Value / (1LL << cnl::_impl::integer_digits<type>::value)) == 0,
+            Value <= 0 || (Value / (1LL << cnl::_impl::integer_digits<type>)) == 0,
             "elastic_scaled_integer type capacity is too big");
     static_assert(
-            Value >= 0 || cnl::_impl::integer_digits<type>::value >= 60
-                    || (Value / (1LL << (cnl::_impl::integer_digits<type>::value + 1))) == 0,
+            Value >= 0 || cnl::_impl::integer_digits<type> >= 60
+                    || (Value / (1LL << (cnl::_impl::integer_digits<type> + 1))) == 0,
             "elastic_scaled_integer type capacity is too big");
     static_assert(
             Value <= 0
                     || (Value
-                        >> cnl::_impl::max<int>(0, cnl::_impl::integer_digits<type>::value - 1))
+                        >> cnl::_impl::max<int>(0, cnl::_impl::integer_digits<type> - 1))
                                != 0,
             "elastic_scaled_integer type capacity is too small");
     static_assert(
-            Value >= 0 || (Value >> (cnl::_impl::integer_digits<type>::value)) != 0,
+            Value >= 0 || (Value >> (cnl::_impl::integer_digits<type>)) != 0,
             "elastic_scaled_integer type capacity is too small");
     static_assert(
-            Value || cnl::_impl::integer_digits<type>::value == 0,
+            Value || cnl::_impl::integer_digits<type> == 0,
             "elastic_scaled_integer type capacity is too small");
 
-    static constexpr int lsz = 1 << (-cnl::_impl::fractional_digits<type>::value);
+    static constexpr int lsz = 1 << (-cnl::_impl::fractional_digits<type>);
     static_assert(Value == ((Value / lsz) * lsz), "fractional_digits is too low");
 
     static constexpr int lsz1 = lsz * 2;

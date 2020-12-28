@@ -20,7 +20,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // wide_integer type used as scaled_integer Rep type
 
-using test_int = cnl::wide_integer<cnl::digits<int>::value, int>;
+using test_int = cnl::wide_integer<cnl::digits<int>, int>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // perform scaled_integer tests with this type of scaled_integer specialization

@@ -43,7 +43,7 @@ namespace cnl {
     private:
         using result_type = set_digits_t<
                 add_signedness_t<Number>,
-                _impl::max(digits<int>::value, _impl::used_digits(Value))>;
+                _impl::max(digits<int>, _impl::used_digits(Value))>;
 
     public:
         CNL_NODISCARD constexpr result_type operator()(constant<Value> const& value) const
