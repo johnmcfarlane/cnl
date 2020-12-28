@@ -15,13 +15,13 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<class Operator, int Exponent, int Radix, typename Lhs, typename Rhs>
+    template<_impl::binary_op Operator, int Exponent, int Radix, typename Lhs, typename Rhs>
     struct binary_operator<Operator, power<Exponent, Radix>, power<Exponent, Radix>, Lhs, Rhs>
         : Operator {
     };
 
     namespace _impl {
-        template<class Operator>
+        template<binary_op Operator>
         struct is_zero_degree : std::true_type {
         };
         template<>
@@ -35,8 +35,7 @@ namespace cnl {
         };
     }
 
-    template<
-            class Operator, int LhsExponent, int RhsExponent, int Radix, typename Lhs, typename Rhs>
+    template<_impl::binary_op Operator, int LhsExponent, int RhsExponent, int Radix, typename Lhs, typename Rhs>
     struct binary_operator<
             Operator, power<LhsExponent, Radix>, power<RhsExponent, Radix>, Lhs, Rhs,
             _impl::enable_if_t<
@@ -56,8 +55,7 @@ namespace cnl {
         }
     };
 
-    template<
-            class Operator, int LhsExponent, int RhsExponent, int Radix, typename Lhs, typename Rhs>
+    template<_impl::binary_op Operator, int LhsExponent, int RhsExponent, int Radix, typename Lhs, typename Rhs>
     struct binary_operator<
             Operator, power<LhsExponent, Radix>, power<RhsExponent, Radix>, Lhs, Rhs,
             _impl::enable_if_t<

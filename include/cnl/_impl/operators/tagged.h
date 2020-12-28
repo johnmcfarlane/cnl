@@ -39,7 +39,7 @@ namespace cnl {
     }
 
     namespace _impl {
-        template<class Operator, tag Tag, typename Lhs, typename Rhs>
+        template<_impl::binary_op Operator, tag Tag, typename Lhs, typename Rhs>
         CNL_NODISCARD constexpr auto binary_operate(Lhs const& lhs, Rhs const& rhs)
         {
             return binary_operator<Operator, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);

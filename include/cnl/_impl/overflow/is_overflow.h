@@ -138,7 +138,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::operator_overflow_traits
 
-        template<class Operator, typename... Operands>
+        template<op Operator, typename... Operands>
         struct operator_overflow_traits {
             using result = op_result<Operator, Operands...>;
             using numeric_limits = cnl::numeric_limits<result>;

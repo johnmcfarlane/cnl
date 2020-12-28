@@ -19,7 +19,7 @@
 /// compositional numeric library
 namespace cnl {
     // higher OP number<>
-    template<class Operator, class Lhs, _impl::wrapper Rhs>
+    template<_impl::comparison_op Operator, class Lhs, _impl::wrapper Rhs>
     struct comparison_operator<
             Operator, Lhs, Rhs,
             _impl::enable_if_t<std::is_floating_point<Lhs>::value>> {
@@ -30,7 +30,7 @@ namespace cnl {
     };
 
     // number<> OP higher
-    template<class Operator, _impl::wrapper Lhs, class Rhs>
+    template<_impl::comparison_op Operator, _impl::wrapper Lhs, class Rhs>
     struct comparison_operator<
             Operator, Lhs, Rhs,
             _impl::enable_if_t<std::is_floating_point<Rhs>::value>> {
@@ -41,7 +41,7 @@ namespace cnl {
     };
 
     // lower OP number<>
-    template<class Operator, class Lhs, class Rhs>
+    template<_impl::comparison_op Operator, class Lhs, class Rhs>
     struct comparison_operator<
             Operator, Lhs, Rhs, _impl::enable_if_t<_impl::number_can_wrap<Rhs, Lhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
@@ -51,7 +51,7 @@ namespace cnl {
     };
 
     // number<> OP lower
-    template<class Operator, class Lhs, class Rhs>
+    template<_impl::comparison_op Operator, class Lhs, class Rhs>
     struct comparison_operator<
             Operator, Lhs, Rhs, _impl::enable_if_t<_impl::number_can_wrap<Lhs, Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
@@ -60,7 +60,7 @@ namespace cnl {
         }
     };
 
-    template<class Operator, typename LhsRep, typename RhsRep, tag Tag>
+    template<_impl::comparison_op Operator, typename LhsRep, typename RhsRep, tag Tag>
     struct comparison_operator<Operator, _impl::number<LhsRep, Tag>, _impl::number<RhsRep, Tag>> {
         CNL_NODISCARD constexpr auto operator()(
                 _impl::number<LhsRep, Tag> const& lhs, _impl::number<RhsRep, Tag> const& rhs) const

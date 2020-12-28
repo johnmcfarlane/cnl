@@ -97,7 +97,7 @@ namespace cnl {
 
     // scaled_integer << non-constant
     // scaled_integer >> non-constant
-    template<class Operator, typename LhsRep, int LhsExponent, int LhsRadix, typename Rhs>
+    template<_impl::shift_op Operator, typename LhsRep, int LhsExponent, int LhsRadix, typename Rhs>
     struct shift_operator<
             Operator, _impl::native_tag, _impl::native_tag,
             scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>, Rhs,

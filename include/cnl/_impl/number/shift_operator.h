@@ -20,7 +20,7 @@
 /// compositional numeric library
 namespace cnl {
     // number << non-number
-    template<class Operator, typename LhsRep, tag LhsTag, class Rhs>
+    template<_impl::shift_op Operator, typename LhsRep, tag LhsTag, class Rhs>
     struct shift_operator<
             Operator, _impl::native_tag, _impl::native_tag, _impl::number<LhsRep, LhsTag>, Rhs,
             _impl::enable_if_t<_impl::number_can_wrap<_impl::number<LhsRep, LhsTag>, Rhs>::value>> {
@@ -35,7 +35,7 @@ namespace cnl {
 
     // number<int, Foo> << number<int, Foo>
     // includes derived classes
-    template<class Operator, typename LhsRep, tag LhsTag, _impl::wrapper Rhs>
+    template<_impl::shift_op Operator, typename LhsRep, tag LhsTag, _impl::wrapper Rhs>
     struct shift_operator<
             Operator, _impl::native_tag, _impl::native_tag, _impl::number<LhsRep, LhsTag>, Rhs> {
         CNL_NODISCARD constexpr auto operator()(
@@ -50,7 +50,7 @@ namespace cnl {
 
     // non-number << number
     // includes derived classes
-    template<class Operator, class Lhs, _impl::wrapper Rhs>
+    template<_impl::shift_op Operator, class Lhs, _impl::wrapper Rhs>
     struct shift_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<!_impl::is_number<Lhs>>> {

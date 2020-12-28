@@ -41,7 +41,7 @@ namespace cnl {
     };
 
     template<
-            class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
+            _impl::binary_op Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
             typename Lhs, typename Rhs>
     struct binary_operator<
             Operator, elastic_tag<LhsDigits, LhsNarrowest>, elastic_tag<RhsDigits, RhsNarrowest>,
@@ -61,7 +61,7 @@ namespace cnl {
     };
 
     // shift_operator of scaled_integer and scaled_integer
-    template<class Operator, int LhsDigits, typename LhsNarrowest, typename Lhs, typename Rhs>
+    template<_impl::shift_op Operator, int LhsDigits, typename LhsNarrowest, typename Lhs, typename Rhs>
     struct shift_operator<
             Operator, elastic_tag<LhsDigits, LhsNarrowest>, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<!_impl::is_constant<Rhs>::value>> {
@@ -73,7 +73,7 @@ namespace cnl {
 
     // shift_operator of scaled_integer and something else
     template<
-            class Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits,
+            _impl::shift_op Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits,
             typename RhsNarrowest, typename Lhs, typename Rhs>
     struct shift_operator<
             Operator, elastic_tag<LhsDigits, LhsNarrowest>, elastic_tag<RhsDigits, RhsNarrowest>,
@@ -82,11 +82,11 @@ namespace cnl {
                   Operator, elastic_tag<LhsDigits, LhsNarrowest>, _impl::native_tag, Lhs, Rhs> {
     };
 
-    template<int Digits, class Narrowest, class Operator, typename Rhs>
+    template<int Digits, class Narrowest, _impl::pre_op Operator, typename Rhs>
     struct pre_operator<elastic_tag<Digits, Narrowest>, Operator, Rhs> : Operator {
     };
 
-    template<int Digits, class Narrowest, class Operator, typename Rhs>
+    template<int Digits, class Narrowest, _impl::pre_op Operator, typename Rhs>
     struct post_operator<elastic_tag<Digits, Narrowest>, Operator, Rhs> : Operator {
     };
 }

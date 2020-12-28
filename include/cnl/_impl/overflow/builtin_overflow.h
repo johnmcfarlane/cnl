@@ -21,7 +21,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::overflow_polarity
 
-        template<class Operator>
+        template<op Operator>
         struct overflow_polarity;
 
         template<>
@@ -81,7 +81,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::builtin_overflow_operator
 
-        template<class Operator, typename Lhs, typename Rhs>
+        template<binary_op Operator, typename Lhs, typename Rhs>
         struct builtin_overflow_operator : std::false_type {
         };
 

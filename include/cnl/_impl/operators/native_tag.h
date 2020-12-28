@@ -46,13 +46,13 @@ namespace cnl {
         }
     };
 
-    template<class Operator, typename Rhs>
+    template<_impl::unary_op Operator, typename Rhs>
     struct unary_operator<
             Operator, _impl::native_tag, Rhs,
             _impl::enable_if_t<_impl::has_native_operators<Rhs>::value>> : Operator {
     };
 
-    template<class Operator, typename Lhs, typename Rhs>
+    template<_impl::binary_op Operator, typename Lhs, typename Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<
@@ -60,7 +60,7 @@ namespace cnl {
                     && _impl::has_native_operators<Rhs>::value>> : Operator {
     };
 
-    template<class Operator, typename Lhs, typename Rhs>
+    template<_impl::shift_op Operator, typename Lhs, typename Rhs>
     struct shift_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<

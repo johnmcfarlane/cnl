@@ -37,7 +37,7 @@ namespace cnl {
                 wants_generic_ops<Tag, enable_if_t<is_homogeneous_operator_tag<Tag>::value>> = true;
     }
 
-    template<class Operator, tag Tag>
+    template<_impl::binary_op Operator, tag Tag>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Tag, Tag,
             _impl::enable_if_t<_impl::is_homogeneous_operator_tag<Tag>::value>> {
@@ -47,7 +47,7 @@ namespace cnl {
         }
     };
 
-    template<class Operator, tag Tag>
+    template<_impl::comparison_op Operator, tag Tag>
     struct comparison_operator<
             Operator, Tag, Tag,
             _impl::enable_if_t<_impl::is_homogeneous_operator_tag<Tag>::value>> {

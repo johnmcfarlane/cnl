@@ -71,7 +71,7 @@ namespace cnl {
         }
     }
 
-    template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
+    template<_impl::comparison_op Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
     struct comparison_operator<
             Operator, elastic_integer<LhsDigits, LhsNarrowest>,
             elastic_integer<RhsDigits, RhsNarrowest>> {
@@ -83,7 +83,7 @@ namespace cnl {
         }
     };
 
-    template<class Operator, int Digits, class Narrowest>
+    template<_impl::comparison_op Operator, int Digits, class Narrowest>
     struct comparison_operator<
             Operator, elastic_integer<Digits, Narrowest>, elastic_integer<Digits, Narrowest>> {
         CNL_NODISCARD constexpr auto operator()(
@@ -96,7 +96,7 @@ namespace cnl {
 
     // elastic_integer << non-constant
     // elastic_integer >> non-constant
-    template<class Operator, int LhsDigits, class LhsRep, typename Rhs>
+    template<_impl::shift_op Operator, int LhsDigits, class LhsRep, typename Rhs>
     struct shift_operator<
             Operator, _impl::native_tag, _impl::native_tag, elastic_integer<LhsDigits, LhsRep>, Rhs,
             _impl::enable_if_t<!_impl::is_constant<Rhs>::value>> {

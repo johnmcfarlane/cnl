@@ -30,7 +30,7 @@ namespace cnl {
         }
     };
 
-    template<class Operator, typename Lhs, typename Rhs>
+    template<_impl::comparison_op Operator, typename Lhs, typename Rhs>
     struct comparison_operator<
             Operator, Lhs, Rhs,
             _impl::enable_if_t<

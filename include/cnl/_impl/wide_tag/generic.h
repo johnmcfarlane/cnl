@@ -58,7 +58,7 @@ namespace cnl {
     };
 
     template<
-            class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
+            _impl::binary_op Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
             class Lhs, class Rhs>
     struct binary_operator<
             Operator, wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>, Lhs,
@@ -80,7 +80,7 @@ namespace cnl {
         }
     };
 
-    template<class Operator, int LhsDigits, typename LhsNarrowest, typename Lhs, typename Rhs>
+    template<_impl::shift_op Operator, int LhsDigits, typename LhsNarrowest, typename Lhs, typename Rhs>
     struct shift_operator<
             Operator, wide_tag<LhsDigits, LhsNarrowest>, _impl::native_tag, Lhs, Rhs> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
@@ -89,17 +89,17 @@ namespace cnl {
         }
     };
 
-    template<class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
+    template<_impl::comparison_op Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
     struct comparison_operator<
             Operator, wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>>
         : comparison_operator<Operator, cnl::_impl::native_tag, cnl::_impl::native_tag> {
     };
 
-    template<class Operator, int Digits, typename Narrowest, typename Rhs>
+    template<_impl::pre_op Operator, int Digits, typename Narrowest, typename Rhs>
     struct pre_operator<Operator, wide_tag<Digits, Narrowest>, Rhs> : Operator {
     };
 
-    template<class Operator, int Digits, typename Narrowest, typename Lhs>
+    template<_impl::post_op Operator, int Digits, typename Narrowest, typename Lhs>
     struct post_operator<Operator, wide_tag<Digits, Narrowest>, Lhs> : Operator {
     };
 }
