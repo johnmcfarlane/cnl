@@ -9,6 +9,7 @@ jobs:
   # Build and test many combinations on Linux/OS X using Conan
   posix-conan-test:
     strategy:
+      fail-fast: false
       matrix:
         name: [clang-11, osx-gcc-10, gcc-10, clang-11-sanitize, armv7]
         include:
