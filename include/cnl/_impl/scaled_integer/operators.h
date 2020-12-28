@@ -28,10 +28,6 @@ namespace cnl {
             Operator, _impl::native_tag, scaled_integer<Rep, power<Exponent, Radix>>> {
         CNL_NODISCARD constexpr auto operator()(
                 scaled_integer<Rep, power<Exponent, Radix>> const& rhs) const
-                -> decltype(
-                        _impl::from_rep<scaled_integer<
-                                decltype(Operator()(_impl::to_rep(rhs))), power<Exponent, Radix>>>(
-                                Operator()(_impl::to_rep(rhs))))
         {
             return _impl::from_rep<scaled_integer<
                     decltype(Operator()(_impl::to_rep(rhs))), power<Exponent, Radix>>>(
@@ -46,7 +42,6 @@ namespace cnl {
         CNL_NODISCARD constexpr auto operator()(
                 scaled_integer<LhsRep, Scale> const& lhs,
                 scaled_integer<RhsRep, Scale> const& rhs) const
-                -> decltype(Operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs)))
         {
             return Operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs));
         }
@@ -70,7 +65,6 @@ namespace cnl {
         CNL_NODISCARD constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, Radix>> const& lhs,
                 scaled_integer<RhsRep, power<RhsExponent, Radix>> const& rhs) const
-                -> decltype(operator_type{}(lhs, rhs))
         {
             return operator_type{}(lhs, rhs);
         }
@@ -93,7 +87,6 @@ namespace cnl {
         CNL_NODISCARD constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, Radix>> const& lhs,
                 scaled_integer<RhsRep, power<RhsExponent, Radix>> const& rhs) const
-                -> decltype(operator_type{}(lhs, rhs))
         {
             return operator_type{}(lhs, rhs);
         }
@@ -111,7 +104,6 @@ namespace cnl {
             _impl::enable_if_t<!_impl::is_constant<Rhs>::value>> {
         using lhs_type = scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>;
         CNL_NODISCARD constexpr auto operator()(lhs_type const& lhs, Rhs const& rhs) const
-                -> decltype(_impl::from_rep<lhs_type>(Operator{}(_impl::to_rep(lhs), rhs)))
         {
             return _impl::from_rep<lhs_type>(Operator{}(_impl::to_rep(lhs), rhs));
         }
@@ -126,7 +118,6 @@ namespace cnl {
         CNL_NODISCARD constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, LhsRadix>> const& lhs,
                 constant<RhsValue>) const
-                -> decltype(_impl::from_rep<result_type>(_impl::to_rep(lhs)))
         {
             return _impl::from_rep<result_type>(_impl::to_rep(lhs));
         };
@@ -141,7 +132,6 @@ namespace cnl {
         CNL_NODISCARD constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, LhsRadix>> const& lhs,
                 constant<RhsValue>) const
-                -> decltype(_impl::from_rep<result_type>(_impl::to_rep(lhs)))
         {
             return _impl::from_rep<result_type>(_impl::to_rep(lhs));
         };

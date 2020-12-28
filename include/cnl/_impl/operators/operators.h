@@ -24,7 +24,6 @@ namespace cnl {
         struct convert_op {
             template<class Destination, class Source>
             CNL_NODISCARD constexpr auto operator()(Source const& source) const
-                    -> decltype(static_cast<Destination>(source))
             {
                 return static_cast<Destination>(source);
             }
@@ -32,7 +31,7 @@ namespace cnl {
 
         struct minus_op {
             template<class Rhs>
-            CNL_NODISCARD constexpr auto operator()(Rhs const& rhs) const -> decltype(-rhs)
+            CNL_NODISCARD constexpr auto operator()(Rhs const& rhs) const
             {
                 return -rhs;
             }
@@ -40,7 +39,7 @@ namespace cnl {
 
         struct plus_op {
             template<class Rhs>
-            CNL_NODISCARD constexpr auto operator()(Rhs const& rhs) const -> decltype(+rhs)
+            CNL_NODISCARD constexpr auto operator()(Rhs const& rhs) const
             {
                 return +rhs;
             }
@@ -49,7 +48,6 @@ namespace cnl {
         struct bitwise_not_op {
             template<class Rhs>
             CNL_NODISCARD constexpr auto operator()(Rhs const& rhs) const
-                    -> decltype(~std::declval<Rhs>())
             {
                 return ~rhs;
             }
@@ -58,7 +56,6 @@ namespace cnl {
         struct add_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs + rhs)
             {
                 return lhs + rhs;
             }
@@ -67,7 +64,6 @@ namespace cnl {
         struct subtract_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs - rhs)
             {
                 return lhs - rhs;
             }
@@ -76,7 +72,6 @@ namespace cnl {
         struct multiply_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs * rhs)
             {
                 return lhs * rhs;
             }
@@ -85,7 +80,6 @@ namespace cnl {
         struct divide_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs / rhs)
             {
                 return lhs / rhs;
             }
@@ -94,7 +88,6 @@ namespace cnl {
         struct modulo_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs % rhs)
             {
                 return lhs % rhs;
             }
@@ -103,7 +96,6 @@ namespace cnl {
         struct bitwise_or_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs | rhs)
             {
                 return lhs | rhs;
             }
@@ -112,7 +104,6 @@ namespace cnl {
         struct bitwise_and_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs & rhs)
             {
                 return lhs & rhs;
             }
@@ -121,7 +112,6 @@ namespace cnl {
         struct bitwise_xor_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs ^ rhs)
             {
                 return lhs ^ rhs;
             }
@@ -130,7 +120,6 @@ namespace cnl {
         struct shift_left_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs << rhs)
             {
                 return lhs << rhs;
             }
@@ -139,7 +128,6 @@ namespace cnl {
         struct shift_right_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs >> rhs)
             {
                 return lhs >> rhs;
             }
@@ -148,7 +136,6 @@ namespace cnl {
         struct equal_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs == rhs)
             {
                 return lhs == rhs;
             }
@@ -157,7 +144,6 @@ namespace cnl {
         struct not_equal_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs != rhs)
             {
                 return lhs != rhs;
             }
@@ -166,7 +152,6 @@ namespace cnl {
         struct less_than_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs < rhs)  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             {
                 return lhs < rhs;  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             }
@@ -175,7 +160,6 @@ namespace cnl {
         struct greater_than_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs > rhs)  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             {
                 return lhs > rhs;  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             }
@@ -184,7 +168,6 @@ namespace cnl {
         struct less_than_or_equal_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs <= rhs)  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             {
                 return lhs <= rhs;  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             }
@@ -193,7 +176,6 @@ namespace cnl {
         struct greater_than_or_equal_op {
             template<class Lhs, class Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> decltype(lhs >= rhs)  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             {
                 return lhs >= rhs;  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             }
@@ -201,7 +183,7 @@ namespace cnl {
 
         struct pre_increment_op {
             template<class Rhs>
-            constexpr auto operator()(Rhs& rhs) const -> decltype(++rhs)
+            constexpr auto operator()(Rhs& rhs) const
             {
                 return ++rhs;
             }
@@ -209,7 +191,7 @@ namespace cnl {
 
         struct pre_decrement_op {
             template<class Rhs>
-            constexpr auto operator()(Rhs& rhs) const -> decltype(--rhs)
+            constexpr auto operator()(Rhs& rhs) const
             {
                 return --rhs;
             }
@@ -217,7 +199,7 @@ namespace cnl {
 
         struct post_increment_op {
             template<class Lhs>
-            constexpr auto operator()(Lhs& lhs) const -> decltype(lhs++)
+            constexpr auto operator()(Lhs& lhs) const
             {
                 return lhs++;
             }
@@ -225,7 +207,7 @@ namespace cnl {
 
         struct post_decrement_op {
             template<class Lhs>
-            constexpr auto operator()(Lhs& lhs) const -> decltype(lhs--)
+            constexpr auto operator()(Lhs& lhs) const
             {
                 return lhs--;
             }
@@ -243,7 +225,7 @@ namespace cnl {
             using binary = add_op;
 
             template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const -> decltype(lhs += rhs)
+            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const
             {
                 return lhs += rhs;
             }
@@ -253,7 +235,7 @@ namespace cnl {
             using binary = subtract_op;
 
             template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const -> decltype(lhs -= rhs)
+            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const
             {
                 return lhs -= rhs;
             }
@@ -268,7 +250,7 @@ namespace cnl {
             using binary = multiply_op;
 
             template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const -> decltype(lhs *= rhs)
+            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const
             {
                 return lhs *= rhs;
             }
@@ -278,7 +260,7 @@ namespace cnl {
             using binary = divide_op;
 
             template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const -> decltype(lhs /= rhs)
+            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const
             {
                 return lhs /= rhs;
             }
@@ -288,7 +270,7 @@ namespace cnl {
             using binary = modulo_op;
 
             template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const -> decltype(lhs %= rhs)
+            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const
             {
                 return lhs %= rhs;
             }
@@ -298,7 +280,7 @@ namespace cnl {
             using binary = bitwise_or_op;
 
             template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const -> decltype(lhs |= rhs)
+            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const
             {
                 return lhs |= rhs;
             }
@@ -308,7 +290,7 @@ namespace cnl {
             using binary = bitwise_and_op;
 
             template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const -> decltype(lhs &= rhs)
+            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const
             {
                 return lhs &= rhs;
             }
@@ -318,7 +300,7 @@ namespace cnl {
             using binary = bitwise_xor_op;
 
             template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const -> decltype(lhs ^= rhs)
+            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const
             {
                 return lhs ^= rhs;
             }
@@ -328,7 +310,7 @@ namespace cnl {
             using binary = shift_left_op;
 
             template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const -> decltype(lhs <<= rhs)
+            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const
             {
                 return lhs <<= rhs;
             }
@@ -338,7 +320,7 @@ namespace cnl {
             using binary = shift_right_op;
 
             template<class Lhs, class Rhs>
-            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const -> decltype(lhs >>= rhs)
+            constexpr auto operator()(Lhs& lhs, Rhs const& rhs) const
             {
                 return lhs >>= rhs;
             }

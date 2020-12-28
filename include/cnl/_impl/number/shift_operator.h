@@ -26,9 +26,6 @@ namespace cnl {
             _impl::enable_if_t<_impl::number_can_wrap<_impl::number<LhsRep, LhsTag>, Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(
                 _impl::number<LhsRep, LhsTag> const& lhs, Rhs const& rhs) const
-                -> decltype(_impl::from_rep<_impl::number<LhsRep, LhsTag>>(
-                        shift_operator<Operator, LhsTag, _impl::native_tag, LhsRep, Rhs>{}(
-                                _impl::to_rep(lhs), rhs)))
         {
             return _impl::from_rep<_impl::number<LhsRep, LhsTag>>(
                     shift_operator<Operator, LhsTag, _impl::native_tag, LhsRep, Rhs>{}(
@@ -44,10 +41,6 @@ namespace cnl {
             _impl::enable_if_t<_impl::is_number<Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(
                 _impl::number<LhsRep, LhsTag> const& lhs, Rhs const& rhs) const
-                -> decltype(_impl::from_rep<_impl::number<LhsRep, LhsTag>>(
-                        shift_operator<
-                                Operator, LhsTag, _impl::native_tag, LhsRep, _impl::rep_t<Rhs>>{}(
-                                _impl::to_rep(lhs), _impl::to_rep(rhs))))
         {
             return _impl::from_rep<_impl::number<LhsRep, LhsTag>>(
                     shift_operator<
@@ -63,7 +56,6 @@ namespace cnl {
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<!_impl::is_number<Lhs>::value && _impl::is_number<Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                -> decltype(Operator()(lhs, _impl::rep_t<Rhs>{_impl::to_rep(rhs)}))
         {
             return Operator()(lhs, _impl::rep_t<Rhs>{_impl::to_rep(rhs)});
         }
