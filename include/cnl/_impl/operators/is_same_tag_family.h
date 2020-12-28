@@ -7,14 +7,14 @@
 #if !defined(CNL_IMPL_OPERATORS_IS_SAME_TAG_FAMILY_H)
 #define CNL_IMPL_OPERATORS_IS_SAME_TAG_FAMILY_H
 
-#include "../type_traits/enable_if.h"
+#include "../num_traits/tag.h"
 
 #include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<class Tag1, class Tag2, class Enabled = void>
+        template<tag Tag1, tag Tag2, class Enabled = void>
         struct is_same_tag_family : std::is_same<Tag1, Tag2> {
         };
     }

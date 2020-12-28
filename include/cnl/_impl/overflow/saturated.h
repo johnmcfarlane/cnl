@@ -10,6 +10,7 @@
 #include "../polarity.h"
 #include "../terminate.h"
 #include "is_overflow_tag.h"
+#include "is_tag.h"
 #include "overflow_operator.h"
 
 /// compositional numeric library

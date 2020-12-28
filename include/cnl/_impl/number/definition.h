@@ -23,7 +23,7 @@
 namespace cnl {
     namespace _impl {
         // a numeric type parameterized on storage and behavior
-        template<typename Rep, class Tag>
+        template<typename Rep, tag Tag>
         class number {
         public:
             number() = default;
@@ -38,7 +38,7 @@ namespace cnl {
         public:
             /// constructor taking a related _impl::number type
             template<
-                    typename RhsRep, class RhsTag,
+                    typename RhsRep, tag RhsTag,
                     enable_if_t<can_convert_tag_family<Tag, RhsTag>::value, int> = 0>
             // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
             constexpr number(number<RhsRep, RhsTag> const& i)

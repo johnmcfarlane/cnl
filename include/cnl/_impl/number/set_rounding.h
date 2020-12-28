@@ -17,14 +17,14 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<_impl::wrapper Number, class RoundingTag>
+    template<_impl::wrapper Number, rounding_tag RoundingTag>
     struct set_rounding<
             Number, RoundingTag,
             _impl::enable_if_t<!_impl::is_rounding_tag<_impl::tag_of_t<Number>>::value>>
         : set_rep<Number, set_rounding_t<_impl::rep_of_t<Number>, RoundingTag>> {
     };
 
-    template<_impl::wrapper Number, class RoundingTag>
+    template<_impl::wrapper Number, rounding_tag RoundingTag>
     struct set_rounding<
             Number, RoundingTag,
             _impl::enable_if_t<_impl::is_rounding_tag<_impl::tag_of_t<Number>>::value>>

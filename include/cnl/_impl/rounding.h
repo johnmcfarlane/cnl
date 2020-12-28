@@ -26,7 +26,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::divide<nearest_rounding_tag, ...>
 
-        template<class LhsTag, class RhsTag, class Lhs, class Rhs>
+        template<tag LhsTag, tag RhsTag, class Lhs, class Rhs>
         struct divide {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {
@@ -38,7 +38,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::shift_right
 
-        template<class LhsTag, class RhsTag, class Lhs, class Rhs>
+        template<tag LhsTag, tag RhsTag, class Lhs, class Rhs>
         struct shift_right {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {

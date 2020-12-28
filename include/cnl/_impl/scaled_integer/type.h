@@ -52,7 +52,11 @@ namespace cnl {
     /// To define a fixed-point value 1 byte in size with a sign bit, 4 integer bits and 3
     /// fractional bits: \snippet snippets.cpp define a scaled_integer value
 
+#if defined(__GNUG__) && !defined(__clang__)
+    template<typename Rep, scaled_tag Scale>
+#else
     template<typename Rep, class Scale>
+#endif
     class scaled_integer : public _impl::number<Rep, Scale> {
         static_assert(
                 !_impl::is_scaled_integer<Rep>::value,

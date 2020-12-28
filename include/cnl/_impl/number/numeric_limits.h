@@ -8,11 +8,12 @@
 #define CNL_IMPL_NUMBER_NUMERIC_LIMITS_H
 
 #include "../../limits.h"
+#include "../num_traits/tag.h"
 #include "definition.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Rep, class Tag>
+    template<typename Rep, tag Tag>
     struct numeric_limits<_impl::number<Rep, Tag>> : cnl::numeric_limits<Rep> {
         using _value_type = _impl::number<Rep, Tag>;
         using _rep_numeric_limits = numeric_limits<Rep>;
@@ -65,7 +66,7 @@ namespace cnl {
         }
     };
 
-    template<typename Rep, class Tag>
+    template<typename Rep, tag Tag>
     struct numeric_limits<_impl::number<Rep, Tag> const> : numeric_limits<_impl::number<Rep, Tag>> {
     };
 }
@@ -74,12 +75,12 @@ namespace std {
     ////////////////////////////////////////////////////////////////////////////////
     // std::numeric_limits specialization for overflow_number
 
-    template<typename Rep, class Tag>
+    template<typename Rep, cnl::tag Tag>
     struct numeric_limits<cnl::_impl::number<Rep, Tag>>
         : cnl::numeric_limits<cnl::_impl::number<Rep, Tag>> {
     };
 
-    template<typename Rep, class Tag>
+    template<typename Rep, cnl::tag Tag>
     struct numeric_limits<cnl::_impl::number<Rep, Tag> const>
         : cnl::numeric_limits<cnl::_impl::number<Rep, Tag>> {
     };

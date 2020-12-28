@@ -18,13 +18,13 @@ using cnl::_impl::identical;
 namespace cnl {
     // rounding elastic integer
     template<
-            int IntegerDigits, class RoundingTag = cnl::_impl::tag_of_t<rounding_integer<>>,
+            int IntegerDigits, rounding_tag RoundingTag = cnl::_impl::tag_of_t<rounding_integer<>>,
             class Narrowest = int>
     using rounding_elastic_integer =
             rounding_integer<elastic_integer<IntegerDigits, Narrowest>, RoundingTag>;
 
     template<
-            class RoundingTag = cnl::_impl::tag_of_t<rounding_integer<>>, class Narrowest = int,
+            rounding_tag RoundingTag = cnl::_impl::tag_of_t<rounding_integer<>>, class Narrowest = int,
             class Input = int>
     CNL_NODISCARD rounding_elastic_integer<
             numeric_limits<Input>::digits, RoundingTag,

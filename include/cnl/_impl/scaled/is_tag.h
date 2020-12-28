@@ -4,18 +4,16 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_REP_OF_H)
-#define CNL_IMPL_NUMBER_REP_OF_H
+#if !defined(CNL_IMPL_SCALED_IS_TAG_H)
+#define CNL_IMPL_SCALED_IS_TAG_H
 
 #include "../num_traits/tag.h"
-#include "../type_traits/type_identity.h"
 #include "declaration.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Rep, tag Tag>
-    struct rep_of<_impl::number<Rep, Tag>> : _impl::type_identity<Rep> {
-    };
+    template<int Exponent, int Radix>
+    inline constexpr auto is_tag<power<Exponent, Radix>> = true;
 }
 
-#endif  // CNL_IMPL_NUMBER_REP_OF_H
+#endif  // CNL_IMPL_SCALED_IS_TAG_H

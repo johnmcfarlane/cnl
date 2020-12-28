@@ -21,11 +21,14 @@ namespace cnl {
         template<typename Tag>
         struct is_rounding_tag : std::false_type {
         };
+    }
 
-        template<class Tag1, class Tag2>
-        struct is_same_tag_family<
-                Tag1, Tag2,
-                enable_if_t<is_rounding_tag<Tag1>::value && is_rounding_tag<Tag2>::value>>
+    template<class T>
+    concept rounding_tag = _impl::is_rounding_tag<T>::value;
+
+    namespace _impl {
+        template<rounding_tag Tag1, rounding_tag Tag2>
+        struct is_same_tag_family<Tag1, Tag2>
             : std::true_type {
         };
     }

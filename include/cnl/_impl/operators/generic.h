@@ -11,6 +11,7 @@
 #define CNL_IMPL_OPERATORS_GENERIC_OPERATORS_H
 
 #include "../config.h"
+#include "../num_traits/tag.h"
 
 #include <type_traits>
 
@@ -34,34 +35,34 @@ namespace cnl {
     struct deduction;
 
     template<
-            class DestTag, class SrcTag, typename Destination, typename Source,
+            tag DestTag, tag SrcTag, typename Destination, typename Source,
             typename Enabled = void>
     struct convert_operator;
 
-    template<class Operator, class RhsTag, typename Rhs, class Enabled = void>
+    template<class Operator, tag RhsTag, typename Rhs, class Enabled = void>
     struct unary_operator;
 
     template<
-            class Operator, class LhsTag, class RhsTag, typename Lhs, typename Rhs,
+            class Operator, tag LhsTag, tag RhsTag, typename Lhs, typename Rhs,
             class Enabled = void>
     struct binary_operator;
 
     template<
-            class Operator, class LhsTag, class RhsTag, class LhsOperand, class RhsOperand,
+            class Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,
             class Enable = void>
     struct shift_operator;
 
     template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
     struct comparison_operator;
 
-    template<class Operator, class Tag, class RhsOperand, class Enable = void>
+    template<class Operator, tag RhsTag, class RhsOperand, class Enable = void>
     struct pre_operator;
 
-    template<class Operator, class Tag, class LhsOperand, class Enable = void>
+    template<class Operator, tag LhsTag, class LhsOperand, class Enable = void>
     struct post_operator;
 
     template<
-            class Operator, class LhsTag, class RhsTag, class LhsOperand, class RhsOperand,
+            class Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,
             class Enable = void>
     struct compound_assignment_operator {
         constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
@@ -76,7 +77,7 @@ namespace cnl {
     };
 
     template<
-            class Operator, class LhsTag, class RhsTag, class LhsOperand, class RhsOperand,
+            class Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,
             class Enable = void>
     struct compound_assignment_shift_operator {
         constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const

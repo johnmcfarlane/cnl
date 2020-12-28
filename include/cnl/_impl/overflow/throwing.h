@@ -10,6 +10,7 @@
 #include "../polarity.h"
 #include "../throw_exception.h"
 #include "is_overflow_tag.h"
+#include "is_tag.h"
 #include "overflow_operator.h"
 
 #include <stdexcept>

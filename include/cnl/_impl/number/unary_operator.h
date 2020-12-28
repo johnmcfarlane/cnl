@@ -17,7 +17,7 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Operator, typename Rep, class Tag>
+    template<typename Operator, typename Rep, tag Tag>
     struct unary_operator<Operator, _impl::native_tag, _impl::number<Rep, Tag>> {
         CNL_NODISCARD constexpr auto operator()(_impl::number<Rep, Tag> const& rhs) const
         {

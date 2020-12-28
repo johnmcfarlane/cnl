@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_NUMBER_IS_NUMBER_H)
 #define CNL_IMPL_NUMBER_IS_NUMBER_H
 
+#include "../num_traits/tag.h"
 #include "declaration.h"
 
 #include <type_traits>
@@ -17,7 +18,7 @@ namespace cnl {
         template<typename T>
         inline constexpr bool is_number = false;
 
-        template<typename Rep, class Tag>
+        template<typename Rep, tag Tag>
         inline constexpr bool is_number<_impl::number<Rep, Tag>> = true;
 
         template<typename T>

@@ -15,8 +15,8 @@ namespace {
     using cnl::_impl::identical;
 
     template<
-            typename Rep = int, class OverflowTag = cnl::undefined_overflow_tag,
-            class RoundingTag = cnl::nearest_rounding_tag>
+            typename Rep = int, cnl::overflow_tag OverflowTag = cnl::undefined_overflow_tag,
+            cnl::rounding_tag RoundingTag = cnl::nearest_rounding_tag>
     using rounding_overflow_integer =
             cnl::overflow_integer<cnl::rounding_integer<Rep, RoundingTag>, OverflowTag>;
 

@@ -8,12 +8,13 @@
 #define CNL_IMPL_NUMBER_FROM_REP_H
 
 #include "../num_traits/from_rep.h"
+#include "../num_traits/tag.h"
 #include "definition.h"
 #include "set_rep.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<typename NumberRep, typename NumberTag, typename Rep>
+    template<typename NumberRep, tag NumberTag, typename Rep>
     struct from_rep<_impl::number<NumberRep, NumberTag>, Rep> {
         CNL_NODISCARD constexpr auto operator()(Rep const& rep) const
                 -> _impl::set_rep_t<_impl::number<NumberRep, NumberTag>, Rep>

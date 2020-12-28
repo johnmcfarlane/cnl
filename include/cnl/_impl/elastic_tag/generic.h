@@ -85,11 +85,10 @@ namespace cnl {
     };
 
     // shift_operator of scaled_integer and scaled_integer
-    template<class Operator, class LhsTag, typename Lhs, typename Rhs>
+    template<class Operator, int LhsDigits, typename LhsNarrowest, typename Lhs, typename Rhs>
     struct shift_operator<
-            Operator, LhsTag, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<
-                    _impl::is_elastic_tag<LhsTag>::value && !_impl::is_constant<Rhs>::value>> {
+            Operator, elastic_tag<LhsDigits, LhsNarrowest>, _impl::native_tag, Lhs, Rhs,
+            _impl::enable_if_t<!_impl::is_constant<Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator{}(lhs, rhs);

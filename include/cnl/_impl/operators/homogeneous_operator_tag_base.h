@@ -23,7 +23,7 @@ namespace cnl {
         struct homogeneous_operator_tag_base {
         };
 
-        template<class Tag>
+        template<tag Tag>
         struct is_homogeneous_operator_tag : std::is_base_of<homogeneous_operator_tag_base, Tag> {
         };
 
@@ -32,12 +32,12 @@ namespace cnl {
         // the result's tag is also `rounding_nearest_tag`.
         // But when you add two `elastic_integer_tag<N>` numbers together,
         // the result's tag is NOT also `elastic_integer_tag<N>`, <gosh>.
-        template<class Tag>
+        template<tag Tag>
         inline constexpr auto
                 wants_generic_ops<Tag, enable_if_t<is_homogeneous_operator_tag<Tag>::value>> = true;
     }
 
-    template<class Operator, class Tag>
+    template<class Operator, tag Tag>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Tag, Tag,
             _impl::enable_if_t<_impl::is_homogeneous_operator_tag<Tag>::value>> {
@@ -47,7 +47,7 @@ namespace cnl {
         }
     };
 
-    template<class Operator, class Tag>
+    template<class Operator, tag Tag>
     struct comparison_operator<
             Operator, Tag, Tag,
             _impl::enable_if_t<_impl::is_homogeneous_operator_tag<Tag>::value>> {

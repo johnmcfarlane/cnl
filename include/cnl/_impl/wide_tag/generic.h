@@ -34,7 +34,7 @@ namespace cnl {
         using type = Initializer;
     };
 
-    template<int DestDigits, class DestNarrowest, class SrcTag, typename Dest, typename Src>
+    template<int DestDigits, class DestNarrowest, tag SrcTag, typename Dest, typename Src>
     struct convert_operator<
             wide_tag<DestDigits, DestNarrowest>, SrcTag, Dest, Src,
             _impl::enable_if_t<!_impl::is_wide_tag<SrcTag>::value>> {
@@ -44,7 +44,7 @@ namespace cnl {
         }
     };
 
-    template<class DestTag, int SrcDigits, class SrcNarrowest, typename Dest, typename Src>
+    template<tag DestTag, int SrcDigits, class SrcNarrowest, typename Dest, typename Src>
     struct convert_operator<DestTag, wide_tag<SrcDigits, SrcNarrowest>, Dest, Src> {
         CNL_NODISCARD constexpr Dest operator()(Src const& from) const
         {

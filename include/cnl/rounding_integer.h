@@ -16,6 +16,7 @@
 #include "_impl/operators/tagged.h"
 #include "_impl/rounding.h"
 #include "_impl/rounding/convert_operator.h"
+#include "_impl/rounding/is_rounding_tag.h"
 #include "_impl/rounding/nearest_rounding_tag.h"
 #include "_impl/type_traits/type_identity.h"
 
@@ -24,7 +25,7 @@
 /// compositional numeric library
 namespace cnl {
     /// \brief An integer which detects overflow.
-    template<typename Rep = int, class Tag = nearest_rounding_tag>
+    template<typename Rep = int, rounding_tag Tag = nearest_rounding_tag>
     using rounding_integer = _impl::number<Rep, Tag>;
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -36,38 +37,36 @@ namespace cnl {
         : rounding<typename Number::rep> {
     };
 
-    template<typename Rep, class RoundingTag>
-    struct rounding<
-            _impl::number<Rep, RoundingTag>,
-            _impl::enable_if_t<_impl::is_rounding_tag<RoundingTag>::value>>
-        : _impl::type_identity<RoundingTag> {
+    template<typename Rep, rounding_tag Tag>
+    struct rounding<_impl::number<Rep, Tag>>
+        : _impl::type_identity<Tag> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::_impl::set_rounding
 
-    template<typename Number, class RoundingTag>
+    template<typename Number, rounding_tag Tag>
     struct set_rounding<
-            Number, RoundingTag,
+            Number, Tag,
             _impl::enable_if_t<is_composite<Number>::value && !_impl::is_number<Number>>>
         : _impl::type_identity<
-                  _impl::set_rep_t<Number, set_rounding_t<_impl::rep_of_t<Number>, RoundingTag>>> {
+                  _impl::set_rep_t<Number, set_rounding_t<_impl::rep_of_t<Number>, Tag>>> {
     };
 
-    template<int Digits, class Rep, class RoundingTag>
+    template<int Digits, class Rep, rounding_tag Tag>
             struct scale < Digits,
-            2, _impl::number<Rep, RoundingTag>,
-            _impl::enable_if_t<Digits<0 && _impl::is_rounding_tag<RoundingTag>::value>>
-        : _impl::default_scale<Digits, 2, _impl::number<Rep, RoundingTag>> {
+            2, _impl::number<Rep, Tag>,
+            _impl::enable_if_t<Digits<0>>
+        : _impl::default_scale<Digits, 2, _impl::number<Rep, Tag>> {
     };
 
-    template<int Digits, int Radix, class Rep, class RoundingTag>
+    template<int Digits, int Radix, class Rep, rounding_tag Tag>
     struct scale<
-            Digits, Radix, _impl::number<Rep, RoundingTag>,
-            _impl::enable_if_t<0 <= Digits && _impl::is_rounding_tag<RoundingTag>::value>> {
-        CNL_NODISCARD constexpr auto operator()(_impl::number<Rep, RoundingTag> const& s) const
+            Digits, Radix, _impl::number<Rep, Tag>,
+            _impl::enable_if_t<0 <= Digits>> {
+        CNL_NODISCARD constexpr auto operator()(_impl::number<Rep, Tag> const& s) const
         {
-            return _impl::from_rep<_impl::number<Rep, RoundingTag>>(
+            return _impl::from_rep<_impl::number<Rep, Tag>>(
                     scale<Digits, Radix, Rep>{}(_impl::to_rep(s)));
         }
     };
@@ -75,20 +74,18 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::set_rep<rounding_integer, Rep>
 
-    template<typename NumberRep, class NumberTag, typename Rep>
+    template<typename NumberRep, rounding_tag NumberTag, typename Rep>
     struct set_rep<
             _impl::number<NumberRep, NumberTag>, Rep,
-            _impl::enable_if_t<_impl::is_rounding_tag<NumberTag>::value && !_impl::is_number<Rep>>>
+            _impl::enable_if_t<!_impl::is_number<Rep>>>
         : _impl::type_identity<_impl::number<Rep, NumberTag>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::set_tag<rounding_integer, Tag>
 
-    template<typename NumberRep, class NumberTag, class Tag>
-    struct set_tag<
-            _impl::number<NumberRep, NumberTag>, Tag,
-            _impl::enable_if_t<_impl::is_rounding_tag<NumberTag>::value>>
+    template<typename NumberRep, rounding_tag NumberTag, tag Tag>
+    struct set_tag<_impl::number<NumberRep, NumberTag>, Tag>
         : _impl::type_identity<_impl::number<NumberRep, Tag>> {
     };
 }

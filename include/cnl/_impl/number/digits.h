@@ -8,11 +8,12 @@
 #define CNL_IMPL_NUMBER_DIGITS_H
 
 #include "../num_traits/digits.h"
+#include "../num_traits/tag.h"
 #include "definition.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Rep, class Tag>
+    template<typename Rep, tag Tag>
     struct digits<_impl::number<Rep, Tag>> : digits<Rep> {
     };
 }

@@ -13,7 +13,7 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Rep, class Tag>
+    template<typename Rep, tag Tag>
     struct tag_of<_impl::number<Rep, Tag>> : _impl::type_identity<Tag> {
     };
 }

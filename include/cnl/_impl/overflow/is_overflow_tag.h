@@ -17,11 +17,14 @@ namespace cnl {
         template<typename Tag>
         struct is_overflow_tag : std::false_type {
         };
+    }
 
-        template<class Tag1, class Tag2>
-        struct is_same_tag_family<
-                Tag1, Tag2,
-                enable_if_t<is_overflow_tag<Tag1>::value && is_overflow_tag<Tag2>::value>>
+    template<class T>
+    concept overflow_tag = _impl::is_overflow_tag<T>::value;
+
+    namespace _impl {
+        template<overflow_tag Tag1, overflow_tag Tag2>
+        struct is_same_tag_family<Tag1, Tag2>
             : std::true_type {
         };
     }

@@ -27,7 +27,7 @@ namespace {
     using cnl::rounding_integer;
     using cnl::_impl::identical;
 
-    template<class Rep = int, int Exponent = 0, class RoundingTag = cnl::nearest_rounding_tag>
+    template<class Rep = int, int Exponent = 0, cnl::rounding_tag RoundingTag = cnl::nearest_rounding_tag>
     using rounding_scaled_integer =
             cnl::scaled_integer<cnl::rounding_integer<Rep, RoundingTag>, cnl::power<Exponent>>;
 

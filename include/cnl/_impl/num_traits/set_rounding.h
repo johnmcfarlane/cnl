@@ -19,7 +19,7 @@ namespace cnl {
     /// permitted. \note Native numeric types are only convertible to \ref cnl::native_rounding_tag.
     /// \sa cnl::rounding, cnl::set_rounding_t,
     /// cnl::native_rounding_tag, cnl::nearest_rounding_tag
-    template<typename Number, class RoundingTag, class Enable = void>
+    template<typename Number, rounding_tag RoundingTag, class Enable = void>
     struct set_rounding;
 
     template<typename Number>
@@ -28,16 +28,16 @@ namespace cnl {
         : _impl::type_identity<Number> {
     };
 
-    template<typename Number, class RoundingTag>
+    template<typename Number, rounding_tag RoundingTag>
     struct set_rounding<Number const&, RoundingTag>
         : set_rounding<_impl::remove_cvref_t<Number>, RoundingTag> {
     };
 
-    template<typename Number, class RoundingTag>
+    template<typename Number, rounding_tag RoundingTag>
     struct set_rounding<Number&, RoundingTag> : set_rounding<Number, RoundingTag> {
     };
 
-    template<typename Number, class RoundingTag>
+    template<typename Number, rounding_tag RoundingTag>
     struct set_rounding<Number&&, RoundingTag> : set_rounding<Number, RoundingTag> {
     };
 
@@ -45,7 +45,7 @@ namespace cnl {
     /// \headerfile cnl/num_traits.h
     /// \sa cnl::set_rounding, cnl::rounding_t,
     /// cnl::native_rounding_tag, cnl::nearest_rounding_tag
-    template<typename Number, class RoundingTag>
+    template<typename Number, rounding_tag RoundingTag>
     using set_rounding_t = typename set_rounding<Number, RoundingTag>::type;
 }
 

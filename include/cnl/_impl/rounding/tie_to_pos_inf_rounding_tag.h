@@ -11,6 +11,7 @@
 #include "../operators/generic.h"
 #include "../operators/native_tag.h"
 #include "is_rounding_tag.h"
+#include "is_tag.h"
 
 #include <type_traits>
 
@@ -72,7 +73,7 @@ namespace cnl {
         }
     };
 
-    template<class Operator, class RhsTag, typename Lhs, typename Rhs>
+    template<class Operator, tag RhsTag, typename Lhs, typename Rhs>
     struct shift_operator<Operator, tie_to_pos_inf_rounding_tag, RhsTag, Lhs, Rhs> : Operator {
     };
 

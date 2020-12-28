@@ -18,7 +18,7 @@ namespace cnl {
         struct is_scaled_integer : public std::false_type {
         };
 
-        template<typename Rep, class Scale>
+        template<typename Rep, scaled_tag Scale>
         struct is_scaled_integer<scaled_integer<Rep, Scale>> : public std::true_type {
         };
     }

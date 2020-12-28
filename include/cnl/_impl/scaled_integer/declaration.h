@@ -9,10 +9,15 @@
 
 #include "../../limits.h"
 #include "../scaled/declaration.h"
+#include "../scaled/is_scaled_tag.h"
 
 /// compositional numeric library
 namespace cnl {
+#if defined(__GNUG__) && !defined(__clang__)
+    template<typename Rep = int, scaled_tag Scale = power<>>
+#else
     template<typename Rep = int, class Scale = power<>>
+#endif
     class scaled_integer;
 }
 

@@ -16,9 +16,8 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<class Tag1, class Tag2>
-        struct is_same_tag_family<
-                Tag1, Tag2, enable_if_t<is_scaled_tag<Tag1>::value && is_scaled_tag<Tag2>::value>>
+        template<int Exponent1, int Radix1, int Exponent2, int Radix2>
+        struct is_same_tag_family<power<Exponent1, Radix1>, power<Exponent2, Radix2>>
             : std::true_type {
         };
     }

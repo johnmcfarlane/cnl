@@ -11,12 +11,12 @@
 namespace {
 
     template<
-            int IntegerDigits, class RoundingTag = cnl::nearest_rounding_tag, class Narrowest = int>
+            int IntegerDigits, cnl::rounding_tag RoundingTag = cnl::nearest_rounding_tag, class Narrowest = int>
     using rounding_elastic_integer =
             cnl::rounding_integer<cnl::elastic_integer<IntegerDigits, Narrowest>, RoundingTag>;
 
     template<
-            int Digits, int Exponent = 0, class RoundingTag = cnl::nearest_rounding_tag,
+            int Digits, int Exponent = 0, cnl::rounding_tag RoundingTag = cnl::nearest_rounding_tag,
             class Narrowest = signed>
     using rounding_elastic_scaled_integer = cnl::scaled_integer<
             rounding_elastic_integer<Digits, RoundingTag, Narrowest>, cnl::power<Exponent>>;

@@ -11,6 +11,7 @@
 #include "wide_tag/definition.h"
 #include "wide_tag/generic.h"
 #include "wide_tag/is_same_tag_family.h"
+#include "wide_tag/is_tag.h"
 #include "wide_tag/is_wide_tag.h"
 #include "wide_tag/overloads.h"
 

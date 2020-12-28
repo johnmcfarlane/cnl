@@ -14,7 +14,7 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<class ToTag, class FromTag>
+        template<tag ToTag, tag FromTag>
         struct can_convert_tag_family
             : std::integral_constant<
                       bool, is_same_tag_family<ToTag, FromTag>::value
