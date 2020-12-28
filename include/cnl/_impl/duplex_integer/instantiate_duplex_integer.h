@@ -64,13 +64,11 @@ namespace cnl {
         // is_power_of_two
 
         // requires positive N
-        template<int N, class Enable = void>
-        struct is_power_of_two;
+        template<int N>
+        inline constexpr auto is_power_of_two = false;
 
         template<int N>
-        struct is_power_of_two<N, enable_if_t<(N > 0)>>
-            : std::integral_constant<bool, !(N & (N - 1))> {
-        };
+        requires(N > 0) inline constexpr auto is_power_of_two<N> = !(N & (N - 1));
 
         ////////////////////////////////////////////////////////////////////////////////
         // optimal_duplex
@@ -82,7 +80,7 @@ namespace cnl {
         struct optimal_duplex<Narrowest, unsigned> {
             static constexpr auto double_word_digits = max_digits<Narrowest>::value;
             static_assert(
-                    double_word_digits >= 2 && is_power_of_two<double_word_digits>::value,
+                    double_word_digits >= 2 && is_power_of_two<double_word_digits>,
                     "invalid integer type, Narrowest");
 
             // Because multiword_integer needs to perform double-width arithmetic operations,
