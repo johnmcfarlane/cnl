@@ -21,6 +21,5 @@ namespace test_saturated_scale {
     static_assert(
             identical(
                     saturated_elastic_integer<2>{2},
-                    cnl::_impl::scale<1>(saturated_elastic_integer<1>{1})),
-            "");
+                    cnl::_impl::scale<1>(saturated_elastic_integer<1>{1})));
 }

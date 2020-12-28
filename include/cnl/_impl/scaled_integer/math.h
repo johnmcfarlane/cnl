@@ -43,8 +43,7 @@ namespace cnl {
             static_assert(
                     std::is_same<
                             make_largest_ufraction<scaled_integer<int32_t, power<-15>>>,
-                            scaled_integer<uint32_t, power<-32>>>::value,
-                    "");
+                            scaled_integer<uint32_t, power<-32>>>::value);
 
             // TODO: template magic to get the coefficients automatically
             // from the number of bits of precision

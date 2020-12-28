@@ -25,8 +25,7 @@ namespace {
                         cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{0x1234567890abcdef},
                         cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{
                                 cnl::_impl::instantiate_duplex_integer_t<95, cnl::int32>{
-                                        0x1234567890abcdef}}),
-                "");
+                                        0x1234567890abcdef}}));
 
         TEST(duplex_integer, float_ctor)  // NOLINT
         {
@@ -39,25 +38,20 @@ namespace {
 
     namespace test_upper {
         static_assert(
-                identical(cnl::int8{0}, cnl::_impl::duplex_integer<cnl::int8, unsigned>{}.upper()),
-                "");
+                identical(cnl::int8{0}, cnl::_impl::duplex_integer<cnl::int8, unsigned>{}.upper()));
         static_assert(
-                identical(cnl::int8{0}, cnl::_impl::duplex_integer<cnl::int8, unsigned>{0}.upper()),
-                "");
+                identical(cnl::int8{0}, cnl::_impl::duplex_integer<cnl::int8, unsigned>{0}.upper()));
         static_assert(
                 identical(
-                        cnl::int8{0}, cnl::_impl::duplex_integer<cnl::int8, unsigned>{650}.upper()),
-                "");
+                        cnl::int8{0}, cnl::_impl::duplex_integer<cnl::int8, unsigned>{650}.upper()));
         static_assert(
                 identical(
                         cnl::int8{-1},
-                        cnl::_impl::duplex_integer<cnl::int8, unsigned>{-650}.upper()),
-                "");
+                        cnl::_impl::duplex_integer<cnl::int8, unsigned>{-650}.upper()));
         static_assert(
-                identical(short{0}, cnl::_impl::duplex_integer<short, unsigned short>{123}.upper()),
-                "");
+                identical(short{0}, cnl::_impl::duplex_integer<short, unsigned short>{123}.upper()));
         static_assert(
-                identical(int{-1}, cnl::_impl::duplex_integer<int, unsigned>{-1}.upper()), "");
+                identical(int{-1}, cnl::_impl::duplex_integer<int, unsigned>{-1}.upper()));
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<int, unsigned int>{0},
@@ -65,8 +59,7 @@ namespace {
                                 cnl::_impl::duplex_integer<int, unsigned int>,
                                 cnl::_impl::duplex_integer<unsigned int, unsigned int>>{
                                 0x600000000LL}
-                                .upper()),
-                "");
+                                .upper()));
 
         TEST(duplex_integer, upper_int8_value)  // NOLINT
         {
@@ -123,21 +116,19 @@ namespace {
     }
 
     namespace test_lower {
-        static_assert(identical(0U, cnl::_impl::duplex_integer<cnl::int8, unsigned>{}.lower()), "");
+        static_assert(identical(0U, cnl::_impl::duplex_integer<cnl::int8, unsigned>{}.lower()));
         static_assert(
-                identical(0U, cnl::_impl::duplex_integer<cnl::int8, unsigned>{0}.lower()), "");
+                identical(0U, cnl::_impl::duplex_integer<cnl::int8, unsigned>{0}.lower()));
         static_assert(
-                identical(650U, cnl::_impl::duplex_integer<cnl::int8, unsigned>{650}.lower()), "");
+                identical(650U, cnl::_impl::duplex_integer<cnl::int8, unsigned>{650}.lower()));
         static_assert(
                 identical(
                         unsigned(-650),
-                        cnl::_impl::duplex_integer<cnl::int8, unsigned>{-650}.lower()),
-                "");
+                        cnl::_impl::duplex_integer<cnl::int8, unsigned>{-650}.lower()));
         static_assert(
                 identical(
                         unsigned{cnl::numeric_limits<unsigned>::max()},
-                        cnl::_impl::duplex_integer<int, unsigned>{-1}.lower()),
-                "");
+                        cnl::_impl::duplex_integer<int, unsigned>{-1}.lower()));
         static_assert(
                 identical(
                         cnl::_impl::duplex_integer<unsigned int, unsigned int>{0x600000000LL},
@@ -145,8 +136,7 @@ namespace {
                                 cnl::_impl::duplex_integer<int, unsigned int>,
                                 cnl::_impl::duplex_integer<unsigned int, unsigned int>>{
                                 0x600000000LL}
-                                .lower()),
-                "");
+                                .lower()));
 
         TEST(duplex_integer, lower_int8_value)  // NOLINT
         {
@@ -203,10 +193,10 @@ namespace {
     }
 
     namespace test_bool {
-        static_assert(!cnl::_impl::duplex_integer<int, unsigned>{}, "");
-        static_assert(!cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>{0}, "");
-        static_assert(cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>{0x1234}, "");
-        static_assert(cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>{0x1234}, "");
+        static_assert(!cnl::_impl::duplex_integer<int, unsigned>{});
+        static_assert(!cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>{0});
+        static_assert(cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>{0x1234});
+        static_assert(cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>{0x1234});
     }
 
     namespace test_int {
@@ -214,19 +204,16 @@ namespace {
                 identical(
                         cnl::uint8{255},
                         static_cast<cnl::uint8>(cnl::_impl::duplex_integer<int, unsigned>{
-                                cnl::uint8{255}})),
-                "");
+                                cnl::uint8{255}})));
         static_assert(
                 identical(
                         cnl::int16{1},
-                        static_cast<cnl::int16>(cnl::_impl::duplex_integer<int, unsigned>{1})),
-                "");
+                        static_cast<cnl::int16>(cnl::_impl::duplex_integer<int, unsigned>{1})));
         static_assert(
                 identical(
                         cnl::uint16{0x5678},
                         cnl::_impl::duplex_integer<signed short, unsigned short>{0x12345678}
-                                .lower()),
-                "");
+                                .lower()));
 
         TEST(duplex_integer, lower)  // NOLINT
         {
@@ -240,33 +227,28 @@ namespace {
                 identical(
                         cnl::uint64{0x0102},
                         static_cast<cnl::uint64>(cnl::_impl::duplex_integer<cnl::uint8, cnl::uint8>{
-                                0x0102})),
-                "");
+                                0x0102})));
         static_assert(
                 identical(
                         cnl::int64{0x0102},
                         static_cast<cnl::int64>(cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>{
-                                0x0102})),
-                "");
+                                0x0102})));
         static_assert(
                 identical(
                         cnl::uint64{0x12345678},
                         static_cast<cnl::uint64>(
                                 cnl::_impl::duplex_integer<signed short, unsigned short>{
-                                        0x12345678})),
-                "");
+                                        0x12345678})));
 
         static_assert(
                 static_cast<cnl::uint64>(cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>{
-                        UINT64_C(0xFEDCBA9876543210)}),
-                "");
+                        UINT64_C(0xFEDCBA9876543210)}));
         static_assert(
                 identical(
                         cnl::uint64{0xFEDCBA9876543210},
                         static_cast<cnl::uint64>(
                                 cnl::_impl::duplex_integer<cnl::uint64, cnl::uint64>{
-                                        UINT64_C(0xFEDCBA9876543210)})),
-                "");
+                                        UINT64_C(0xFEDCBA9876543210)})));
 
 #if defined(CNL_INT128_ENABLED)
         static_assert(
@@ -274,30 +256,26 @@ namespace {
                         CNL_INTMAX_C(-2029872569029388),
                         static_cast<cnl::int128>(
                                 cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>{
-                                        INT64_C(-2029872569029388)})),
-                "");
+                                        INT64_C(-2029872569029388)})));
         static_assert(
                 identical(
                         CNL_INTMAX_C(0x0123456789ABCDEF),
                         static_cast<cnl::int128>(
                                 cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{
-                                        INT64_C(0x0123456789ABCDEF)})),
-                "");
+                                        INT64_C(0x0123456789ABCDEF)})));
 #endif
         static_assert(
                 identical(
                         cnl::uint16(-1 >> 16),
                         static_cast<cnl::uint16>(
-                                cnl::_impl::duplex_integer<cnl::int16, cnl::uint16>{-1, 65535})),
-                "");
+                                cnl::_impl::duplex_integer<cnl::int16, cnl::uint16>{-1, 65535})));
         static_assert(
                 identical(
                         INT32_C(-1),
                         static_cast<cnl::int32>(
                                 cnl::_impl::duplex_integer<
                                         cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
-                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{-1})),
-                "");
+                                        cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>{-1})));
     }
 
     namespace test_to_rep {
@@ -306,8 +284,7 @@ namespace {
                         4567U,
                         cnl::to_rep<cnl::_impl::duplex_integer<
                                 cnl::_impl::duplex_integer<unsigned int, unsigned int>,
-                                cnl::_impl::duplex_integer<unsigned int, unsigned int>>>{}(4567)),
-                "");
+                                cnl::_impl::duplex_integer<unsigned int, unsigned int>>>{}(4567)));
     }
 
     namespace test_from_value {

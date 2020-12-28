@@ -24,7 +24,7 @@ namespace {
     static_assert(std::is_same<int, std::int32_t>::value, "untested platform");
     static_assert(std::is_same<unsigned int, std::uint32_t>::value, "untested platform");
     static_assert(sizeof(long long) == 8, "untested platform");
-    static_assert(cnl::numeric_limits<int8_t>::lowest() == -128, "");
+    static_assert(cnl::numeric_limits<int8_t>::lowest() == -128);
 
 #if defined(CNL_INT128_ENABLED)
     namespace test_cnl_numeric_limits_int128 {

@@ -88,8 +88,7 @@ namespace {
                 identical(
                         scaled_integer<quot_digits_t<>, cnl::power<-31>>{
                                 0.333333333022892475128173828125L},
-                        named),
-                "");
+                        named));
 
         constexpr auto deduced = cnl::scaled_integer{third};
         static_assert(identical(named, deduced));
@@ -103,8 +102,7 @@ namespace {
                 identical(
                         cnl::scaled_integer<quot_digits_t<>, cnl::power<-31>>{
                                 0.333333333022892475128173828125L},
-                        named),
-                "");
+                        named));
 
         constexpr auto deduced = cnl::scaled_integer{third};
         static_assert(identical(named, deduced));
@@ -114,8 +112,7 @@ namespace {
                 identical(
                         cnl::scaled_integer<int64, cnl::power<-31>>{
                                 0.333333333022892475128173828125L},
-                        specific),
-                "");
+                        specific));
     }
 
     namespace test_fraction_specific_8bit {
@@ -124,15 +121,14 @@ namespace {
         constexpr auto named = cnl::quotient(third.numerator, third.denominator);
         static_assert(
                 identical(
-                        cnl::scaled_integer<quot_digits_t<int8>, cnl::power<-7>>{0.328125}, named),
-                "");
+                        cnl::scaled_integer<quot_digits_t<int8>, cnl::power<-7>>{0.328125}, named));
 
         constexpr auto deduced = cnl::scaled_integer{third};
         static_assert(identical(named, deduced));
 
         constexpr auto specific = cnl::scaled_integer<test_int, cnl::power<-7>>{third};
         static_assert(
-                identical(cnl::scaled_integer<test_int, cnl::power<-7>>{0.328125}, specific), "");
+                identical(cnl::scaled_integer<test_int, cnl::power<-7>>{0.328125}, specific));
     }
 
     namespace test_fraction_specific_16bit {
@@ -143,15 +139,14 @@ namespace {
                 identical(
                         cnl::scaled_integer<quot_digits_t<int16>, cnl::power<-15>>{
                                 0.33331298828125},
-                        named),
-                "");
+                        named));
 
         constexpr auto deduced = cnl::scaled_integer{third};
         static_assert(identical(named, deduced));
 
         constexpr auto specific = cnl::scaled_integer<uint8, cnl::power<-7>>{third};
         static_assert(
-                identical(cnl::scaled_integer<uint8, cnl::power<-7>>{0.328125}, specific), "");
+                identical(cnl::scaled_integer<uint8, cnl::power<-7>>{0.328125}, specific));
     }
 }
 

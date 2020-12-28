@@ -114,7 +114,7 @@ namespace i {
 namespace j {
     constexpr auto n = fixed_point<uint8_t, -8>{0.99609375};
     constexpr auto nn = n * n;  // fixed_point<int, -16>{0.9922027587890625};
-    static_assert(cnl::_impl::identical(fixed_point<int, -16>{0.9922027587890625}, nn), "");
+    static_assert(cnl::_impl::identical(fixed_point<int, -16>{0.9922027587890625}, nn));
 }
 
 namespace k {
@@ -122,7 +122,7 @@ namespace k {
     {
         auto n = fixed_point<int, -31>{0.99609375};
         auto nn = n * n;  // fixed_point<int, -62>{0.9922027587890625};
-        static_assert(std::is_same<fixed_point<int, -62>, decltype(nn)>::value, "");
+        static_assert(std::is_same<fixed_point<int, -62>, decltype(nn)>::value);
         (void)nn;
     }
 }
@@ -133,11 +133,11 @@ namespace l {
     constexpr auto e = elastic_integer<31>{0x7FFFFFFF};  // r has 31 or more digits
 
     constexpr auto ee = e * e;
-    static_assert(cnl::_impl::identical(elastic_integer<62>{INT64_C(0x3FFFFFFF00000001)}, ee), "");
+    static_assert(cnl::_impl::identical(elastic_integer<62>{INT64_C(0x3FFFFFFF00000001)}, ee));
 
     constexpr auto _2ee = ee + ee;
     static_assert(
-            cnl::_impl::identical(elastic_integer<63>{INT64_C(0x7FFFFFFE00000002)}, _2ee), "");
+            cnl::_impl::identical(elastic_integer<63>{INT64_C(0x7FFFFFFE00000002)}, _2ee));
 }
 
 namespace m {
@@ -145,12 +145,11 @@ namespace m {
 
     constexpr auto sq = fpe * fpe;
     static_assert(
-            cnl::_impl::identical(fixed_point<elastic_integer<62>, -62>{0.9922027587890625}, sq),
-            "");
+            cnl::_impl::identical(fixed_point<elastic_integer<62>, -62>{0.9922027587890625}, sq));
 
 #if defined(CNL_INT128_ENABLED)
     constexpr auto q = make_fixed_point(make_fraction(sq, sq));
-    static_assert(cnl::_impl::identical(fixed_point<elastic_integer<124>, -62>{1}, q), "");
+    static_assert(cnl::_impl::identical(fixed_point<elastic_integer<124>, -62>{1}, q));
 #endif
 }
 

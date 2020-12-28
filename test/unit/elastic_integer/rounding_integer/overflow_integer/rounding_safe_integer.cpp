@@ -56,17 +56,15 @@ namespace {
         static_assert(
                 identical(
                         cnl::rounding_safe_int<6>{7} * cnl::rounding_safe_int<13>{321},
-                        cnl::rounding_safe_int<19>{2247}),
-                "");
+                        cnl::rounding_safe_int<19>{2247}));
     }
 
     namespace test_make_rounding_safe_int {
         using namespace cnl::literals;
         static_assert(
                 identical(
-                        cnl::make_rounding_safe_int(cnl::int16{7}), cnl::rounding_safe_int<15>{7}),
-                "");
+                        cnl::make_rounding_safe_int(cnl::int16{7}), cnl::rounding_safe_int<15>{7}));
         static_assert(
-                identical(cnl::make_rounding_safe_int(7_c), cnl::rounding_safe_int<3>{7}), "");
+                identical(cnl::make_rounding_safe_int(7_c), cnl::rounding_safe_int<3>{7}));
     }
 }

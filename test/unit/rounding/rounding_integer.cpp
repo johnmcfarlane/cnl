@@ -84,8 +84,7 @@ namespace {
                                 cnl::native_rounding_tag>{42},
                         cnl::_impl::from_value<
                                 cnl::_impl::number<int, cnl::native_rounding_tag>,
-                                cnl::_impl::number<int, cnl::_impl::native_tag>>(42)),
-                "");
+                                cnl::_impl::number<int, cnl::_impl::native_tag>>(42)));
     }
 
     namespace test_traits {
@@ -198,9 +197,9 @@ namespace {
     }
 
     namespace divide {
-        static_assert(identical(cnl::rounding_integer<>{-1}, cnl::rounding_integer<>{-2} / 3), "");
-        static_assert(identical(cnl::rounding_integer<>{0}, cnl::rounding_integer<>{1} / -3), "");
-        static_assert(identical(cnl::rounding_integer<>{1}, cnl::rounding_integer<>{5} / 9), "");
+        static_assert(identical(cnl::rounding_integer<>{-1}, cnl::rounding_integer<>{-2} / 3));
+        static_assert(identical(cnl::rounding_integer<>{0}, cnl::rounding_integer<>{1} / -3));
+        static_assert(identical(cnl::rounding_integer<>{1}, cnl::rounding_integer<>{5} / 9));
         static_assert(
                 identical(
                         cnl::rounding_integer<long, cnl::native_rounding_tag>{321},
@@ -210,8 +209,7 @@ namespace {
                                 cnl::_impl::number<long, cnl::native_rounding_tag>,
                                 cnl::constant<3>>{}(
                                 cnl::_impl::number<long, cnl::native_rounding_tag>{963},
-                                cnl::constant<3>{})),
-                "");
+                                cnl::constant<3>{})));
     }
 
     namespace numeric_limits {
@@ -453,47 +451,41 @@ namespace {
         static_assert(
                 identical(
                         cnl::rounding_integer<>{8},
-                        cnl::rounding_integer<>{1} << cnl::rounding_integer<>{3}),
-                "");
+                        cnl::rounding_integer<>{1} << cnl::rounding_integer<>{3}));
 
         static_assert(
                 identical(
                         cnl::rounding_integer<>{8},
-                        cnl::rounding_integer<>{1} << cnl::constant<3>{}),
-                "");
+                        cnl::rounding_integer<>{1} << cnl::constant<3>{}));
 
-        static_assert(identical(6, 3 << cnl::rounding_integer<>{1}), "");
+        static_assert(identical(6, 3 << cnl::rounding_integer<>{1}));
     }
 
     namespace test_shift_right {
         static_assert(
                 identical(
                         cnl::rounding_integer<>{2},
-                        cnl::rounding_integer<>{16} >> cnl::rounding_integer<>{3}),
-                "");
+                        cnl::rounding_integer<>{16} >> cnl::rounding_integer<>{3}));
 
         static_assert(
                 identical(
                         cnl::rounding_integer<>{1},
-                        cnl::rounding_integer<>{15} >> cnl::rounding_integer<>{3}),
-                "");
+                        cnl::rounding_integer<>{15} >> cnl::rounding_integer<>{3}));
 
         static_assert(
                 identical(
                         cnl::rounding_integer<>{11},
-                        cnl::rounding_integer<>{11} >> cnl::rounding_integer<>{0}),
-                "");
+                        cnl::rounding_integer<>{11} >> cnl::rounding_integer<>{0}));
 
-        static_assert(identical(cnl::rounding_integer<>{0}, cnl::rounding_integer<>{1} >> 1), "");
-        static_assert(identical(cnl::rounding_integer<>{0}, cnl::rounding_integer<>{1} >> 2), "");
+        static_assert(identical(cnl::rounding_integer<>{0}, cnl::rounding_integer<>{1} >> 1));
+        static_assert(identical(cnl::rounding_integer<>{0}, cnl::rounding_integer<>{1} >> 2));
     }
 
     namespace test_power_value {
         static_assert(
                 identical(
                         cnl::rounding_integer<>{2},
-                        cnl::_impl::power_value_fn<cnl::rounding_integer<>, 1, 2>{}()),
-                "");
+                        cnl::_impl::power_value_fn<cnl::rounding_integer<>, 1, 2>{}()));
     }
 
     namespace test_shift {

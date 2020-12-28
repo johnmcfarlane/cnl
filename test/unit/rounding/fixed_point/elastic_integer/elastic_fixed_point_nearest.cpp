@@ -44,10 +44,9 @@ namespace {
                                 cnl::nearest_rounding_tag, cnl::_impl::native_tag,
                                 cnl::elastic_fixed_point<16, 0>>(cnl::elastic_fixed_point<16, -4>{
                                 5.25}),
-                        cnl::elastic_fixed_point<16, 0>{5.0}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{5.25}), 84), "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, 0>{5.0}), 5), "");
+                        cnl::elastic_fixed_point<16, 0>{5.0}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{5.25}), 84));
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, 0>{5.0}), 5));
 
         static_assert(
                 identical(
@@ -55,10 +54,9 @@ namespace {
                                 cnl::nearest_rounding_tag, cnl::_impl::native_tag,
                                 cnl::elastic_fixed_point<16, 0>>(cnl::elastic_fixed_point<16, -4>{
                                 5.5}),
-                        cnl::elastic_fixed_point<16, 0>{6.0}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{5.5}), 88), "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, 0>{6.0}), 6), "");
+                        cnl::elastic_fixed_point<16, 0>{6.0}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{5.5}), 88));
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, 0>{6.0}), 6));
 
         static_assert(
                 identical(
@@ -66,10 +64,9 @@ namespace {
                                 cnl::nearest_rounding_tag, cnl::_impl::native_tag,
                                 cnl::elastic_fixed_point<16, -1>>(cnl::elastic_fixed_point<16, -4>{
                                 5.25}),
-                        cnl::elastic_fixed_point<16, -1>{5.5}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{5.25}), 84), "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -1>{5.5}), 11), "");
+                        cnl::elastic_fixed_point<16, -1>{5.5}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{5.25}), 84));
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -1>{5.5}), 11));
 
         // Negative
         static_assert(
@@ -78,10 +75,9 @@ namespace {
                                 cnl::nearest_rounding_tag, cnl::_impl::native_tag,
                                 cnl::elastic_fixed_point<16, 0>>(cnl::elastic_fixed_point<16, -4>{
                                 -5.25}),
-                        cnl::elastic_fixed_point<16, 0>{-5.0}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{-5.25}), -84), "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, 0>{-5.0}), -5), "");
+                        cnl::elastic_fixed_point<16, 0>{-5.0}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{-5.25}), -84));
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, 0>{-5.0}), -5));
 
         static_assert(
                 identical(
@@ -89,10 +85,9 @@ namespace {
                                 cnl::nearest_rounding_tag, cnl::_impl::native_tag,
                                 cnl::elastic_fixed_point<16, 0>>(cnl::elastic_fixed_point<16, -4>{
                                 -5.5}),
-                        cnl::elastic_fixed_point<16, 0>{-6.0}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{-5.5}), -88), "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, 0>{-6.0}), -6), "");
+                        cnl::elastic_fixed_point<16, 0>{-6.0}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{-5.5}), -88));
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, 0>{-6.0}), -6));
 
         static_assert(
                 identical(
@@ -100,10 +95,9 @@ namespace {
                                 cnl::nearest_rounding_tag, cnl::_impl::native_tag,
                                 cnl::elastic_fixed_point<16, -1>>(cnl::elastic_fixed_point<16, -4>{
                                 -5.25}),
-                        cnl::elastic_fixed_point<16, -1>{-5.5}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{-5.25}), -84), "");
-        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -1>{-5.5}), -11), "");
+                        cnl::elastic_fixed_point<16, -1>{-5.5}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -4>{-5.25}), -84));
+        static_assert(identical(cnl::unwrap(cnl::elastic_fixed_point<16, -1>{-5.5}), -11));
     }
 
     template<

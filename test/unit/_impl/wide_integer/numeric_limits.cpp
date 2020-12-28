@@ -25,14 +25,11 @@ namespace {
             "cnl::numeric_limits<cnl::wide_integer>::max");
     static_assert(
             identical(
-                    cnl::wide_integer<10>{1023}, cnl::numeric_limits<cnl::wide_integer<10>>::max()),
-            "");
+                    cnl::wide_integer<10>{1023}, cnl::numeric_limits<cnl::wide_integer<10>>::max()));
     static_assert(
             identical(
-                    cnl::wide_integer<6>{-64}, cnl::numeric_limits<cnl::wide_integer<6>>::lowest()),
-            "");
+                    cnl::wide_integer<6>{-64}, cnl::numeric_limits<cnl::wide_integer<6>>::lowest()));
     static_assert(
             cnl::numeric_limits<cnl::wide_integer<100>>::lowest()
-                    < -cnl::numeric_limits<cnl::wide_integer<100>>::max(),
-            "");
+            < -cnl::numeric_limits<cnl::wide_integer<100>>::max());
 }

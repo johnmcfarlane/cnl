@@ -117,8 +117,7 @@ namespace {
                         cnl::binary_operator<
                                 cnl::_impl::add_op, cnl::saturated_overflow_tag,
                                 cnl::saturated_overflow_tag, signed, unsigned>()(7, 23U),
-                        7 + 23U),
-                "");
+                        7 + 23U));
         static_assert(
                 identical(
                         std::numeric_limits<
@@ -152,8 +151,7 @@ namespace {
                 identical(
                         cnl::numeric_limits<int>::max(),
                         cnl::subtract<cnl::saturated_overflow_tag>(
-                                0, cnl::numeric_limits<int>::min())),
-                "");
+                                0, cnl::numeric_limits<int>::min())));
 
         // multiply
         static_assert(
@@ -202,8 +200,7 @@ namespace {
                         cnl::binary_operator<
                                 cnl::_impl::shift_left_op, cnl::saturated_overflow_tag,
                                 cnl::saturated_overflow_tag, std::uint8_t, unsigned>{}(
-                                std::uint8_t{255}, 30U)),
-                "");
+                                std::uint8_t{255}, 30U)));
     }
 
     namespace test_negative_shift_left {

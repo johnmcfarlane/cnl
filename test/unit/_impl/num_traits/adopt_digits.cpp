@@ -11,27 +11,21 @@ namespace {
     using cnl::_impl::assert_same;
 
     static_assert(
-            assert_same<cnl::_impl::adopt_digits_t<cnl::int32, cnl::uint32>, cnl::int64>::value,
-            "");
+            assert_same<cnl::_impl::adopt_digits_t<cnl::int32, cnl::uint32>, cnl::int64>::value);
     static_assert(
-            assert_same<cnl::_impl::adopt_digits_t<cnl::int32, cnl::int32>, cnl::int32>::value, "");
+            assert_same<cnl::_impl::adopt_digits_t<cnl::int32, cnl::int32>, cnl::int32>::value);
 #if defined(CNL_INT128_ENABLED)
     static_assert(
-            assert_same<cnl::_impl::adopt_digits_t<cnl::int64, cnl::uint64>, cnl::int128>::value,
-            "");
+            assert_same<cnl::_impl::adopt_digits_t<cnl::int64, cnl::uint64>, cnl::int128>::value);
 #endif
     static_assert(
-            assert_same<cnl::_impl::adopt_digits_t<cnl::int64, cnl::int64>, cnl::int64>::value, "");
+            assert_same<cnl::_impl::adopt_digits_t<cnl::int64, cnl::int64>, cnl::int64>::value);
     static_assert(
-            assert_same<cnl::_impl::adopt_digits_t<cnl::uint32, cnl::uint32>, cnl::uint32>::value,
-            "");
+            assert_same<cnl::_impl::adopt_digits_t<cnl::uint32, cnl::uint32>, cnl::uint32>::value);
     static_assert(
-            assert_same<cnl::_impl::adopt_digits_t<cnl::uint32, cnl::int32>, cnl::uint32>::value,
-            "");
+            assert_same<cnl::_impl::adopt_digits_t<cnl::uint32, cnl::int32>, cnl::uint32>::value);
     static_assert(
-            assert_same<cnl::_impl::adopt_digits_t<cnl::uint64, cnl::uint64>, cnl::uint64>::value,
-            "");
+            assert_same<cnl::_impl::adopt_digits_t<cnl::uint64, cnl::uint64>, cnl::uint64>::value);
     static_assert(
-            assert_same<cnl::_impl::adopt_digits_t<cnl::uint64, cnl::int64>, cnl::uint64>::value,
-            "");
+            assert_same<cnl::_impl::adopt_digits_t<cnl::uint64, cnl::int64>, cnl::uint64>::value);
 }

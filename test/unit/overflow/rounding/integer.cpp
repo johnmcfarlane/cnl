@@ -23,29 +23,23 @@ namespace {
     namespace test_is_same_tag_family {
         static_assert(
                 cnl::_impl::is_same_tag_family<
-                        cnl::nearest_rounding_tag, cnl::nearest_rounding_tag>::value,
-                "");
+                        cnl::nearest_rounding_tag, cnl::nearest_rounding_tag>::value);
         static_assert(
                 cnl::_impl::is_same_tag_family<
-                        cnl::native_rounding_tag, cnl::nearest_rounding_tag>::value,
-                "");
+                        cnl::native_rounding_tag, cnl::nearest_rounding_tag>::value);
 
         static_assert(
                 !cnl::_impl::is_same_tag_family<
-                        cnl::native_overflow_tag, cnl::native_rounding_tag>::value,
-                "");
+                        cnl::native_overflow_tag, cnl::native_rounding_tag>::value);
         static_assert(
                 !cnl::_impl::is_same_tag_family<
-                        cnl::native_rounding_tag, cnl::native_overflow_tag>::value,
-                "");
+                        cnl::native_rounding_tag, cnl::native_overflow_tag>::value);
         static_assert(
                 !cnl::_impl::is_same_tag_family<
-                        cnl::saturated_overflow_tag, cnl::nearest_rounding_tag>::value,
-                "");
+                        cnl::saturated_overflow_tag, cnl::nearest_rounding_tag>::value);
         static_assert(
                 !cnl::_impl::is_same_tag_family<
-                        cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>::value,
-                "");
+                        cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>::value);
     }
 
     namespace test_construct {
@@ -55,7 +49,7 @@ namespace {
             constexpr auto in{42};
             constexpr auto ac{rounding_overflow_integer<
                     short, cnl::undefined_overflow_tag, cnl::native_rounding_tag>{in}};
-            static_assert(identical(ex, ac), "");
+            static_assert(identical(ex, ac));
         }
 
         namespace from_rounding_integer {
@@ -64,7 +58,7 @@ namespace {
             constexpr auto in{cnl::rounding_integer<short, cnl::native_rounding_tag>{42}};
             constexpr auto ac{rounding_overflow_integer<
                     short, cnl::undefined_overflow_tag, cnl::native_rounding_tag>{in}};
-            static_assert(identical(ex, ac), "");
+            static_assert(identical(ex, ac));
         }
     }
 
@@ -76,7 +70,7 @@ namespace {
             constexpr auto ac{cnl::from_rep<
                     rounding_overflow_integer<>,
                     cnl::rounding_integer<short, cnl::native_rounding_tag>>{}(in)};
-            static_assert(identical(ex, ac), "");
+            static_assert(identical(ex, ac));
         }
 
         namespace from_overflow_integer {
@@ -86,7 +80,7 @@ namespace {
                     rounding_overflow_integer<
                             short, cnl::native_overflow_tag, cnl::nearest_rounding_tag>,
                     cnl::overflow_integer<short, cnl::native_overflow_tag>>{}(in)};
-            static_assert(identical(ex, ac), "");
+            static_assert(identical(ex, ac));
         }
     }
 }

@@ -53,29 +53,29 @@ namespace cnl {
 
 namespace {
     namespace test_numeric_limits {
-        static_assert(cnl::numeric_limits<pack<int>>::is_integer, "");
-        static_assert(!cnl::numeric_limits<pack<int>>::is_iec559, "");
+        static_assert(cnl::numeric_limits<pack<int>>::is_integer);
+        static_assert(!cnl::numeric_limits<pack<int>>::is_iec559);
 
-        static_assert(!cnl::numeric_limits<pack<float>>::is_integer, "");
-        static_assert(cnl::numeric_limits<pack<float>>::is_iec559, "");
+        static_assert(!cnl::numeric_limits<pack<float>>::is_integer);
+        static_assert(cnl::numeric_limits<pack<float>>::is_iec559);
     }
 
     namespace test_set_digits {
         using actual_type = cnl::set_digits_t<boost::simd::pack<signed, 8>, 15>;
         using expected_type = boost::simd::pack<cnl::int16, 8>;
-        static_assert(std::is_same<actual_type, expected_type>::value, "");
+        static_assert(std::is_same<actual_type, expected_type>::value);
     }
 
     namespace test_remove_signedness {
         using actual_type = cnl::remove_signedness_t<boost::simd::pack<cnl::int16, 2>>;
         using expected_type = boost::simd::pack<cnl::uint16, 2>;
-        static_assert(std::is_same<expected_type, actual_type>::value, "");
+        static_assert(std::is_same<expected_type, actual_type>::value);
     }
 
     namespace test_add_signedness {
         using actual_type = cnl::add_signedness_t<boost::simd::pack<unsigned, 8>>;
         using expected_type = boost::simd::pack<signed, 8>;
-        static_assert(std::is_same<expected_type, actual_type>::value, "");
+        static_assert(std::is_same<expected_type, actual_type>::value);
     }
 
     TEST(boost_simd, scale)  // NOLINT

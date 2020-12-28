@@ -127,30 +127,27 @@ namespace {
                         cnl::convert<
                                 cnl::nearest_rounding_tag, cnl::_impl::native_tag,
                                 cnl::fixed_point<int32_t, 0>>(cnl::fixed_point<int32_t, -4>{5.25}),
-                        cnl::fixed_point<int32_t, 0>{5.0}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{5.25}), 84), "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{5.0}), 5), "");
+                        cnl::fixed_point<int32_t, 0>{5.0}));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{5.25}), 84));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{5.0}), 5));
 
         static_assert(
                 identical(
                         cnl::convert<
                                 cnl::nearest_rounding_tag, cnl::_impl::native_tag,
                                 cnl::fixed_point<int32_t, 0>>(cnl::fixed_point<int32_t, -4>{5.5}),
-                        cnl::fixed_point<int32_t, 0>{6.0}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{5.5}), 88), "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{6.0}), 6), "");
+                        cnl::fixed_point<int32_t, 0>{6.0}));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{5.5}), 88));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{6.0}), 6));
 
         static_assert(
                 identical(
                         cnl::convert<
                                 cnl::nearest_rounding_tag, cnl::_impl::native_tag,
                                 cnl::fixed_point<int32_t, -1>>(cnl::fixed_point<int32_t, -4>{5.25}),
-                        cnl::fixed_point<int32_t, -1>{5.5}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{5.25}), 84), "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -1>{5.5}), 11), "");
+                        cnl::fixed_point<int32_t, -1>{5.5}));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{5.25}), 84));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -1>{5.5}), 11));
 
         // Negative
         static_assert(
@@ -158,20 +155,18 @@ namespace {
                         cnl::convert<
                                 cnl::nearest_rounding_tag, cnl::_impl::native_tag,
                                 cnl::fixed_point<int32_t, 0>>(cnl::fixed_point<int32_t, -4>{-5.25}),
-                        cnl::fixed_point<int32_t, 0>{-5.0}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{-5.25}), -84), "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{-5.0}), -5), "");
+                        cnl::fixed_point<int32_t, 0>{-5.0}));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{-5.25}), -84));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{-5.0}), -5));
 
         static_assert(
                 identical(
                         cnl::convert<
                                 cnl::nearest_rounding_tag, cnl::_impl::native_tag,
                                 cnl::fixed_point<int32_t, 0>>(cnl::fixed_point<int32_t, -4>{-5.5}),
-                        cnl::fixed_point<int32_t, 0>{-6.0}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{-5.5}), -88), "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{-6.0}), -6), "");
+                        cnl::fixed_point<int32_t, 0>{-6.0}));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{-5.5}), -88));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{-6.0}), -6));
 
         static_assert(
                 identical(
@@ -179,10 +174,9 @@ namespace {
                                 cnl::nearest_rounding_tag, cnl::_impl::native_tag,
                                 cnl::fixed_point<int32_t, -1>>(cnl::fixed_point<int32_t, -4>{
                                 -5.25}),
-                        cnl::fixed_point<int32_t, -1>{-5.5}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{-5.25}), -84), "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -1>{-5.5}), -11), "");
+                        cnl::fixed_point<int32_t, -1>{-5.5}));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{-5.25}), -84));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -1>{-5.5}), -11));
     }
 
     namespace fixed_point_tie_to_pos_inf_rounding {
@@ -193,30 +187,27 @@ namespace {
                         cnl::convert<
                                 cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag,
                                 cnl::fixed_point<int32_t, 0>>(cnl::fixed_point<int32_t, -4>{5.25}),
-                        cnl::fixed_point<int32_t, 0>{5.0}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{5.25}), 84), "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{5.0}), 5), "");
+                        cnl::fixed_point<int32_t, 0>{5.0}));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{5.25}), 84));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{5.0}), 5));
 
         static_assert(
                 identical(
                         cnl::convert<
                                 cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag,
                                 cnl::fixed_point<int32_t, 0>>(cnl::fixed_point<int32_t, -4>{5.5}),
-                        cnl::fixed_point<int32_t, 0>{6.0}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{5.5}), 88), "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{6.0}), 6), "");
+                        cnl::fixed_point<int32_t, 0>{6.0}));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{5.5}), 88));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{6.0}), 6));
 
         static_assert(
                 identical(
                         cnl::convert<
                                 cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag,
                                 cnl::fixed_point<int32_t, -1>>(cnl::fixed_point<int32_t, -4>{5.25}),
-                        cnl::fixed_point<int32_t, -1>{5.5}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{5.25}), 84), "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -1>{5.5}), 11), "");
+                        cnl::fixed_point<int32_t, -1>{5.5}));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{5.25}), 84));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -1>{5.5}), 11));
 
         // Negative
         static_assert(
@@ -224,20 +215,18 @@ namespace {
                         cnl::convert<
                                 cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag,
                                 cnl::fixed_point<int32_t, 0>>(cnl::fixed_point<int32_t, -4>{-5.25}),
-                        cnl::fixed_point<int32_t, 0>{-5.0}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{-5.25}), -84), "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{-5.0}), -5), "");
+                        cnl::fixed_point<int32_t, 0>{-5.0}));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{-5.25}), -84));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{-5.0}), -5));
 
         static_assert(
                 identical(
                         cnl::convert<
                                 cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag,
                                 cnl::fixed_point<int32_t, 0>>(cnl::fixed_point<int32_t, -4>{-5.5}),
-                        cnl::fixed_point<int32_t, 0>{-5.0}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{-5.5}), -88), "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{-5.0}), -5), "");
+                        cnl::fixed_point<int32_t, 0>{-5.0}));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{-5.5}), -88));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, 0>{-5.0}), -5));
 
         static_assert(
                 identical(
@@ -245,10 +234,9 @@ namespace {
                                 cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag,
                                 cnl::fixed_point<int32_t, -1>>(cnl::fixed_point<int32_t, -4>{
                                 -5.25}),
-                        cnl::fixed_point<int32_t, -1>{-5.0}),
-                "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{-5.25}), -84), "");
-        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -1>{-5.0}), -10), "");
+                        cnl::fixed_point<int32_t, -1>{-5.0}));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -4>{-5.25}), -84));
+        static_assert(identical(cnl::unwrap(cnl::fixed_point<int32_t, -1>{-5.0}), -10));
     }
 
 }

@@ -18,8 +18,7 @@ using cnl::_impl::identical;
 namespace {
     namespace test_is_specialize {
         static_assert(
-                cnl::numeric_limits<cnl::_impl::duplex_integer<int, unsigned int>>::is_specialized,
-                "");
+                cnl::numeric_limits<cnl::_impl::duplex_integer<int, unsigned int>>::is_specialized);
     }
 
     namespace test_max {
@@ -49,7 +48,6 @@ namespace {
     namespace test_mnn {
         static_assert(
                 cnl::numeric_limits<cnl::_impl::duplex_integer<int, unsigned>>::lowest()
-                        < -cnl::numeric_limits<cnl::_impl::duplex_integer<int, unsigned>>::max(),
-                "");
+                < -cnl::numeric_limits<cnl::_impl::duplex_integer<int, unsigned>>::max());
     }
 }
