@@ -50,8 +50,7 @@ namespace {
 
     namespace test_is_number {
         static_assert(
-                cnl::_impl::is_number<cnl::elastic_integer<>>::value
-                && !cnl::_impl::is_number<int>::value);
+                cnl::_impl::is_number<cnl::elastic_integer<>> && !cnl::_impl::is_number<int>);
     }
 
     namespace test_from_rep {

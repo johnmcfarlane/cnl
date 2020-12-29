@@ -30,11 +30,9 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::rounding
 
-    template<class Number>
+    template<_impl::wrapper Number>
     struct rounding<
-            Number, _impl::enable_if_t<
-                            _impl::is_number<Number>::value
-                            && !_impl::is_rounding_tag<typename Number::tag>::value>>
+            Number, _impl::enable_if_t<!_impl::is_rounding_tag<typename Number::tag>::value>>
         : rounding<typename Number::rep> {
     };
 
@@ -51,7 +49,7 @@ namespace cnl {
     template<typename Number, class RoundingTag>
     struct set_rounding<
             Number, RoundingTag,
-            _impl::enable_if_t<is_composite<Number>::value && !_impl::is_number<Number>::value>>
+            _impl::enable_if_t<is_composite<Number>::value && !_impl::is_number<Number>>>
         : _impl::type_identity<
                   _impl::set_rep_t<Number, set_rounding_t<_impl::rep_t<Number>, RoundingTag>>> {
     };
@@ -80,8 +78,7 @@ namespace cnl {
     template<typename NumberRep, class NumberTag, typename Rep>
     struct set_rep<
             _impl::number<NumberRep, NumberTag>, Rep,
-            _impl::enable_if_t<
-                    _impl::is_rounding_tag<NumberTag>::value && !_impl::is_number<Rep>::value>>
+            _impl::enable_if_t<_impl::is_rounding_tag<NumberTag>::value && !_impl::is_number<Rep>>>
         : _impl::type_identity<_impl::number<Rep, NumberTag>> {
     };
 

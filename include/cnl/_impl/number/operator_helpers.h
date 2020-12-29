@@ -20,8 +20,8 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::wants_generic_ops<number<>>
 
-        template<class Number>
-        inline constexpr auto wants_generic_ops<Number, enable_if_t<is_number<Number>::value>> = true;
+        template<_impl::wrapper Number>
+        inline constexpr auto wants_generic_ops<Number> = true;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::number_depth
@@ -43,13 +43,11 @@ namespace cnl {
         // cnl::_impl::can_be_number_wrapper
 
         template<typename Wrapper>
-        struct can_be_number_wrapper : is_number<Wrapper> {
-        };
+        inline constexpr auto can_be_number_wrapper = is_number<Wrapper>;
 
         template<typename Wrapper, int WrapperN>
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
-        struct can_be_number_wrapper<Wrapper[WrapperN]> : std::false_type {
-        };
+        inline constexpr auto can_be_number_wrapper<Wrapper[WrapperN]> = false;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::can_be_wrapped_by_number
@@ -82,8 +80,7 @@ namespace cnl {
         struct number_can_wrap
             : std::integral_constant<
                       bool, can_be_wrapped_by_number<Rep>::value
-                                    && can_be_number_wrapper<Wrapper>::value
-                                    && !is_same_number_wrapper<Wrapper, Rep>::value
+                                    && can_be_number_wrapper<Wrapper> && !is_same_number_wrapper<Wrapper, Rep>::value
                                     && (number_depth<Rep>::value < number_depth<Wrapper>::value)> {
         };
     }

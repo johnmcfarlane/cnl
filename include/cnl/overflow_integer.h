@@ -53,8 +53,7 @@ namespace cnl {
     template<typename NumberRep, class NumberTag, typename Rep>
     struct set_rep<
             _impl::number<NumberRep, NumberTag>, Rep,
-            _impl::enable_if_t<
-                    _impl::is_overflow_tag<NumberTag>::value && !_impl::is_number<Rep>::value>>
+            _impl::enable_if_t<_impl::is_overflow_tag<NumberTag>::value && !_impl::is_number<Rep>>>
         : _impl::type_identity<_impl::number<Rep, NumberTag>> {
     };
 

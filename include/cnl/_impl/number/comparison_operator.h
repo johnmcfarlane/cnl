@@ -19,11 +19,10 @@
 /// compositional numeric library
 namespace cnl {
     // higher OP number<>
-    template<class Operator, class Lhs, class Rhs>
+    template<class Operator, class Lhs, _impl::wrapper Rhs>
     struct comparison_operator<
             Operator, Lhs, Rhs,
-            _impl::enable_if_t<
-                    std::is_floating_point<Lhs>::value && _impl::is_number<Rhs>::value>> {
+            _impl::enable_if_t<std::is_floating_point<Lhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(lhs, static_cast<Lhs>(rhs));
@@ -31,11 +30,10 @@ namespace cnl {
     };
 
     // number<> OP higher
-    template<class Operator, class Lhs, class Rhs>
+    template<class Operator, _impl::wrapper Lhs, class Rhs>
     struct comparison_operator<
             Operator, Lhs, Rhs,
-            _impl::enable_if_t<
-                    _impl::is_number<Lhs>::value && std::is_floating_point<Rhs>::value>> {
+            _impl::enable_if_t<std::is_floating_point<Rhs>::value>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(static_cast<Rhs>(lhs), rhs);
