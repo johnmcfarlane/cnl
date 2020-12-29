@@ -33,9 +33,8 @@ namespace cnl {
         // But when you add two `elastic_integer_tag<N>` numbers together,
         // the result's tag is NOT also `elastic_integer_tag<N>`, <gosh>.
         template<class Tag>
-        struct wants_generic_ops<Tag, enable_if_t<is_homogeneous_operator_tag<Tag>::value>>
-            : std::true_type {
-        };
+        inline constexpr auto
+                wants_generic_ops<Tag, enable_if_t<is_homogeneous_operator_tag<Tag>::value>> = true;
     }
 
     template<class Operator, class Tag>

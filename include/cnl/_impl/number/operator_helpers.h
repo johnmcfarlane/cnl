@@ -21,8 +21,7 @@ namespace cnl {
         // cnl::_impl::wants_generic_ops<number<>>
 
         template<class Number>
-        struct wants_generic_ops<Number, enable_if_t<is_number<Number>::value>> : std::true_type {
-        };
+        inline constexpr auto wants_generic_ops<Number, enable_if_t<is_number<Number>::value>> = true;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::number_depth
