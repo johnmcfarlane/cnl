@@ -18,13 +18,13 @@ using cnl::_impl::identical;
 namespace cnl {
     // rounding elastic integer
     template<
-            int IntegerDigits, class RoundingTag = cnl::_impl::tag_t<rounding_integer<>>,
+            int IntegerDigits, rounding_tag RoundingTag = cnl::_impl::tag_of_t<rounding_integer<>>,
             class Narrowest = int>
     using rounding_elastic_integer =
             rounding_integer<elastic_integer<IntegerDigits, Narrowest>, RoundingTag>;
 
     template<
-            class RoundingTag = cnl::_impl::tag_t<rounding_integer<>>, class Narrowest = int,
+            rounding_tag RoundingTag = cnl::_impl::tag_of_t<rounding_integer<>>, class Narrowest = int,
             class Input = int>
     CNL_NODISCARD rounding_elastic_integer<
             numeric_limits<Input>::digits, RoundingTag,
@@ -41,10 +41,10 @@ namespace {
     namespace default_parameters {
         using cnl::elastic_integer;
         using cnl::rounding_integer;
-        using cnl::_impl::rep_t;
+        using cnl::_impl::rep_of_t;
 
         static_assert(
-                is_same<rep_t<rep_t<rounding_elastic_integer<1>>>, int>::value,
+                is_same<rep_of_t<rep_of_t<rounding_elastic_integer<1>>>, int>::value,
                 "cnl::rounding_integer parameter default test failed");
     }
 

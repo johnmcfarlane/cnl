@@ -233,7 +233,7 @@ namespace cnl {
     };
 
     template<class Backend>
-    struct rep<_bmp::number<Backend>> : _impl::type_identity<Backend> {
+    struct rep_of<_bmp::number<Backend>> : _impl::type_identity<Backend> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////

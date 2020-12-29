@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_LITERALS_H)
 #define CNL_IMPL_WIDE_INTEGER_LITERALS_H
 
-#include "../num_traits/rep.h"
+#include "../num_traits/rep_of.h"
 #include "../unreachable.h"
 #include "definition.h"
 #include "generic.h"
@@ -39,7 +39,7 @@ namespace cnl {
                 -> wide_integer<(NumChars - 1) * 3322 / 1000 + 1>
         {
             using result = wide_integer<(NumChars - 1) * 3322 / 1000 + 1>;
-            return result(wide_integer_parse<10>(s, parse_dec_char, rep_t<result>{}));
+            return result(wide_integer_parse<10>(s, parse_dec_char, rep_of_t<result>{}));
         }
 
         template<char... Chars>
@@ -62,7 +62,7 @@ namespace cnl {
                 -> wide_integer<(NumChars - 1) * 3>
         {
             using result = wide_integer<(NumChars - 1) * 3>;
-            return result(wide_integer_parse<8>(s, parse_oct_char, rep_t<result>{}));
+            return result(wide_integer_parse<8>(s, parse_oct_char, rep_of_t<result>{}));
         }
 
         template<char... Chars>
@@ -86,7 +86,7 @@ namespace cnl {
                 -> wide_integer<NumChars - 1>
         {
             using result = wide_integer<NumChars - 1>;
-            return result(wide_integer_parse<2>(s, parse_bin_char, rep_t<result>{}));
+            return result(wide_integer_parse<2>(s, parse_bin_char, rep_of_t<result>{}));
         }
 
         template<char... Chars>
@@ -120,7 +120,7 @@ namespace cnl {
                 -> wide_integer<(NumChars - 1) * 4>
         {
             using result = wide_integer<(NumChars - 1) * 4>;
-            return result(wide_integer_parse<16>(s, parse_hex_char, rep_t<result>{}));
+            return result(wide_integer_parse<16>(s, parse_hex_char, rep_of_t<result>{}));
         }
 
         template<char... Chars>

@@ -20,6 +20,9 @@ namespace cnl {
     template<int Exponent, int Radix>
     struct is_scaled_tag<power<Exponent, Radix>> : std::true_type {
     };
+
+    template<class Tag>
+    concept scaled_tag = is_scaled_tag<Tag>::value;
 }
 
 #endif  // CNL_IMPL_SCALED_IS_SCALED_TAG_H

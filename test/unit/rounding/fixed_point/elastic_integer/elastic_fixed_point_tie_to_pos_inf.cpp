@@ -76,13 +76,13 @@ namespace {
     }
 
     template<
-            int IntegerDigits, class RoundingTag = cnl::_impl::tag_t<cnl::rounding_integer<>>,
+            int IntegerDigits, cnl::rounding_tag RoundingTag = cnl::_impl::tag_of_t<cnl::rounding_integer<>>,
             class Narrowest = int>
     using rounding_elastic_integer =
             cnl::rounding_integer<cnl::elastic_integer<IntegerDigits, Narrowest>, RoundingTag>;
 
     template<
-            class RoundingTag = cnl::_impl::tag_t<cnl::rounding_integer<>>, class Narrowest = int,
+            cnl::rounding_tag RoundingTag = cnl::_impl::tag_of_t<cnl::rounding_integer<>>, class Narrowest = int,
             class Input = int>
     CNL_NODISCARD rounding_elastic_integer<
             cnl::numeric_limits<Input>::digits, RoundingTag,
@@ -92,7 +92,7 @@ namespace {
     }
 
     template<
-            int Digits, int Exponent = 0, class RoundingTag = cnl::tie_to_pos_inf_rounding_tag,
+            int Digits, int Exponent = 0, cnl::rounding_tag RoundingTag = cnl::tie_to_pos_inf_rounding_tag,
             class Narrowest = signed>
     using elastic_fixed_point_tie_to_pos_inf =
             cnl::fixed_point<rounding_elastic_integer<Digits, RoundingTag, Narrowest>, Exponent>;

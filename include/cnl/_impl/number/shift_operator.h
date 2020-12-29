@@ -12,7 +12,7 @@
 #include "from_rep.h"
 #include "is_number.h"
 #include "operator_helpers.h"
-#include "tag.h"
+#include "tag_of.h"
 #include "to_rep.h"
 
 #include <ostream>
@@ -20,7 +20,7 @@
 /// compositional numeric library
 namespace cnl {
     // number << non-number
-    template<class Operator, typename LhsRep, class LhsTag, class Rhs>
+    template<class Operator, typename LhsRep, tag LhsTag, class Rhs>
     struct shift_operator<
             Operator, _impl::native_tag, _impl::native_tag, _impl::number<LhsRep, LhsTag>, Rhs,
             _impl::enable_if_t<_impl::number_can_wrap<_impl::number<LhsRep, LhsTag>, Rhs>::value>> {
@@ -35,7 +35,7 @@ namespace cnl {
 
     // number<int, Foo> << number<int, Foo>
     // includes derived classes
-    template<class Operator, typename LhsRep, class LhsTag, _impl::wrapper Rhs>
+    template<class Operator, typename LhsRep, tag LhsTag, _impl::wrapper Rhs>
     struct shift_operator<
             Operator, _impl::native_tag, _impl::native_tag, _impl::number<LhsRep, LhsTag>, Rhs> {
         CNL_NODISCARD constexpr auto operator()(
@@ -43,7 +43,7 @@ namespace cnl {
         {
             return _impl::from_rep<_impl::number<LhsRep, LhsTag>>(
                     shift_operator<
-                            Operator, LhsTag, _impl::native_tag, LhsRep, _impl::rep_t<Rhs>>{}(
+                            Operator, LhsTag, _impl::native_tag, LhsRep, _impl::rep_of_t<Rhs>>{}(
                             _impl::to_rep(lhs), _impl::to_rep(rhs)));
         }
     };
@@ -56,7 +56,7 @@ namespace cnl {
             _impl::enable_if_t<!_impl::is_number<Lhs>>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
-            return Operator()(lhs, _impl::rep_t<Rhs>{_impl::to_rep(rhs)});
+            return Operator()(lhs, _impl::rep_of_t<Rhs>{_impl::to_rep(rhs)});
         }
     };
 
@@ -64,7 +64,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::operator<<(std::ostream& o, cnl::_impl::number const& i)
 
-        template<class Rep, class Tag>
+        template<class Rep, tag Tag>
         std::ostream& operator<<(std::ostream& o, number<Rep, Tag> const& i)
         {
             return o << to_rep(i);

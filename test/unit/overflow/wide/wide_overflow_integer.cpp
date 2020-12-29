@@ -12,7 +12,7 @@
 
 #include <cmath>
 
-template<int Digits, class OverflowTag = cnl::native_overflow_tag>
+template<int Digits, cnl::overflow_tag OverflowTag = cnl::native_overflow_tag>
 using wide_overflow_integer = cnl::overflow_integer<cnl::wide_integer<Digits>, OverflowTag>;
 
 namespace {

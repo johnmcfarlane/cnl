@@ -9,6 +9,7 @@
 
 #include "../../constant.h"
 #include "../config.h"
+#include "../num_traits/tag.h"
 #include "generic.h"
 #include "operators.h"
 
@@ -25,20 +26,20 @@ namespace cnl {
     /// \sa cnl::add, cnl::divide, cnl::shift_right, cnl::multiply, cnl::subtract,
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
-    template<class DestTag, typename SrcTag, typename Dest, typename Src>
+    template<tag DestTag, tag SrcTag, typename Dest, typename Src>
     CNL_NODISCARD constexpr auto convert(Src const& src)
     {
         return convert_operator<DestTag, SrcTag, Dest, Src>{}(src);
     }
 
-    template<class DestTag, class SrcTag, typename Dest, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    template<tag DestTag, tag SrcTag, typename Dest, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     CNL_NODISCARD constexpr auto convert(constant<Value> const& src)
     {
         return convert_operator<DestTag, SrcTag, Dest, decltype(Value)>{}(src);
     }
 
     namespace _impl {
-        template<class Operator, class Tag, typename Lhs, typename Rhs>
+        template<class Operator, tag Tag, typename Lhs, typename Rhs>
         CNL_NODISCARD constexpr auto binary_operate(Lhs const& lhs, Rhs const& rhs)
         {
             return binary_operator<Operator, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
@@ -54,7 +55,7 @@ namespace cnl {
     /// \sa cnl::convert, cnl::divide, cnl::shift_right, cnl::multiply, cnl::subtract,
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
-    template<class Tag, typename Lhs, typename Rhs>
+    template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto add(Lhs const& lhs, Rhs const& rhs)
     {
         return binary_operator<_impl::add_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
@@ -69,7 +70,7 @@ namespace cnl {
     /// \sa cnl::add, cnl::convert, cnl::divide, cnl::shift_right, cnl::multiply,
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
-    template<class Tag, typename Lhs, typename Rhs>
+    template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto subtract(Lhs const& lhs, Rhs const& rhs)
     {
         return binary_operator<_impl::subtract_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
@@ -84,7 +85,7 @@ namespace cnl {
     /// \sa cnl::add, cnl::convert, cnl::divide, cnl::subtract, cnl::shift_right,
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
-    template<class Tag, typename Lhs, typename Rhs>
+    template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto multiply(Lhs const& lhs, Rhs const& rhs)
     {
         return binary_operator<_impl::multiply_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
@@ -99,13 +100,13 @@ namespace cnl {
     /// \sa cnl::add, cnl::convert, cnl::shift_right, cnl::multiply, cnl::subtract,
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
-    template<class Tag, typename Lhs, typename Rhs>
+    template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
     {
         return binary_operator<_impl::divide_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
     }
 
-    template<class Tag, typename Lhs, typename Rhs>
+    template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto shift_left(Lhs const& lhs, Rhs const& rhs)
     {
         return binary_operator<_impl::shift_left_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
@@ -120,7 +121,7 @@ namespace cnl {
     /// \sa cnl::add, cnl::convert, cnl::divide, cnl::multiply, cnl::subtract,
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
-    template<class Tag, typename Lhs, typename Rhs>
+    template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto shift_right(Lhs const& lhs, Rhs const& rhs)
     {
         return binary_operator<_impl::shift_right_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);

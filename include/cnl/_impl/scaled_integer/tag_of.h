@@ -4,18 +4,18 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_TAG_H)
-#define CNL_IMPL_NUMBER_TAG_H
+#if !defined(CNL_IMPL_SCALED_INTEGER_TAG_OF_H)
+#define CNL_IMPL_SCALED_INTEGER_TAG_OF_H
 
-#include "../num_traits/tag.h"
+#include "../num_traits/tag_of.h"
 #include "../type_traits/type_identity.h"
 #include "declaration.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Rep, class Tag>
-    struct tag<_impl::number<Rep, Tag>> : _impl::type_identity<Tag> {
+    template<typename Rep, class Scale>
+    struct tag_of<scaled_integer<Rep, Scale>> : _impl::type_identity<Scale> {
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_TAG_H
+#endif  // CNL_IMPL_SCALED_INTEGER_TAG_OF_H

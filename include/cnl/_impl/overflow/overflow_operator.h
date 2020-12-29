@@ -8,11 +8,12 @@
 #define CNL_IMPL_OVERFLOW_OPERATOR_H
 
 #include "../polarity.h"
+#include "is_overflow_tag.h"
 
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<typename Operator, typename OverflowTag, polarity Polarity>
+        template<typename Operator, overflow_tag Tag, polarity Polarity>
         struct overflow_operator;
     }
 }

@@ -10,13 +10,14 @@
 #include "../../numeric.h"
 #include "../num_traits/from_value.h"
 #include "../num_traits/from_value_recursive.h"
+#include "../num_traits/tag.h"
 #include "../operators/generic.h"
 #include "../type_traits/common_type.h"
 #include "definition.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Rep, class Tag, typename Value>
+    template<typename Rep, tag Tag, typename Value>
     struct from_value<
             _impl::number<Rep, Tag>, Value,
             _impl::enable_if_t<!_impl::is_number<Value> && !_impl::is_constant<Value>::value>> {
@@ -29,11 +30,11 @@ namespace cnl {
         }
     };
 
-    template<typename ArchetypeRep, class ArchetypeTag, typename Value>
+    template<typename ArchetypeRep, tag ArchetypeTag, typename Value>
     struct from_value<
             _impl::number<ArchetypeRep, ArchetypeTag>, Value,
             _impl::enable_if_t<
-                    !_impl::can_convert_tag_family<ArchetypeTag, _impl::tag_t<Value>>::value>> {
+                    !_impl::can_convert_tag_family<ArchetypeTag, _impl::tag_of_t<Value>>::value>> {
         using result_type = _impl::number<from_value_t<ArchetypeRep, Value>, ArchetypeTag>;
 
         CNL_NODISCARD constexpr auto operator()(Value const& value) const -> result_type
@@ -42,7 +43,7 @@ namespace cnl {
         }
     };
 
-    template<class ArchetypeRep, class ArchetypeTag, class ValueRep, class ValueTag>
+    template<class ArchetypeRep, tag ArchetypeTag, class ValueRep, class ValueTag>
     struct from_value<
             _impl::number<ArchetypeRep, ArchetypeTag>, _impl::number<ValueRep, ValueTag>,
             _impl::enable_if_t<_impl::can_convert_tag_family<ArchetypeTag, ValueTag>::value>>
@@ -51,7 +52,7 @@ namespace cnl {
                   _impl::number<ValueRep, ValueTag>> {
     };
 
-    template<typename Rep, class Tag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    template<typename Rep, tag Tag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<_impl::number<Rep, Tag>, constant<Value>> {
         CNL_NODISCARD constexpr auto operator()(constant<Value>) const
         {

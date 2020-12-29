@@ -71,7 +71,7 @@ namespace {
         static_assert(
                 cnl::_impl::is_same_tag_family<cnl::elastic_tag<1>, cnl::elastic_tag<31>>::value);
         static_assert(
-                assert_same<cnl::elastic_tag<31>, cnl::_impl::tag_t<cnl::elastic_integer<>>>::value);
+                assert_same<cnl::elastic_tag<31>, cnl::_impl::tag_of_t<cnl::elastic_integer<>>>::value);
         static_assert(
                 identical(
                         elastic_integer<1, int>{0},
@@ -163,7 +163,7 @@ namespace {
     }
 
     namespace test_from_value {
-        static_assert(std::is_same<cnl::_impl::rep_t<elastic_integer<7, int>>, int>::value);
+        static_assert(std::is_same<cnl::_impl::rep_of_t<elastic_integer<7, int>>, int>::value);
         static_assert(
                 identical(
                         elastic_integer<cnl::numeric_limits<int>::digits>{1},
@@ -580,7 +580,7 @@ namespace {
         // type traits
 
         static_assert(
-                is_signed == cnl::numeric_limits<cnl::_impl::rep_t<value_type>>::is_signed,
+                is_signed == cnl::numeric_limits<cnl::_impl::rep_of_t<value_type>>::is_signed,
                 "signage of narrowest and rep should be the same");
         static_assert(
                 !is_signed || numeric_limits::max() == -numeric_limits::lowest(),

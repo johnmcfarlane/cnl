@@ -38,8 +38,8 @@ namespace cnl {
 
         template<int Digits, class Narrowest>
         using elastic_integer_base_t = _impl::number<
-                _impl::rep_t<elastic_integer<Digits, Narrowest>>,
-                _impl::tag_t<elastic_integer<Digits, Narrowest>>>;
+                _impl::rep_of_t<elastic_integer<Digits, Narrowest>>,
+                _impl::tag_of_t<elastic_integer<Digits, Narrowest>>>;
     }
 
     template<int Digits, class Narrowest>
@@ -47,7 +47,7 @@ namespace cnl {
     public:
         using _base = _impl::elastic_integer_base_t<Digits, Narrowest>;
         static_assert(
-                !_impl::is_elastic_integer<_impl::rep_t<_base>>::value,
+                !_impl::is_elastic_integer<_impl::rep_of_t<_base>>::value,
                 "elastic_integer of elastic_integer is not a supported");
 
         /// default constructor

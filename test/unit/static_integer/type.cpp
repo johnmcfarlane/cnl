@@ -14,8 +14,8 @@
 namespace {
     using cnl::_impl::assert_same;
     using cnl::_impl::identical;
-    using cnl::_impl::rep_t;
-    using cnl::_impl::tag_t;
+    using cnl::_impl::rep_of_t;
+    using cnl::_impl::tag_of_t;
 
     namespace default_parameters {
         static_assert(
@@ -26,30 +26,30 @@ namespace {
         static_assert(
                 std::is_same<
                         cnl::undefined_overflow_tag,
-                        cnl::_impl::tag_t<cnl::static_integer<1>>>::value,
+                        cnl::_impl::tag_of_t<cnl::static_integer<1>>>::value,
                 "cnl::static_integer parameter default test failed");
         static_assert(
                 std::is_same<
-                        cnl::_impl::tag_t<cnl::overflow_integer<>>,
-                        cnl::_impl::tag_t<cnl::static_integer<1>>>::value,
+                        cnl::_impl::tag_of_t<cnl::overflow_integer<>>,
+                        cnl::_impl::tag_of_t<cnl::static_integer<1>>>::value,
                 "cnl::static_integer parameter default test failed");
 
         static_assert(
                 std::is_same<
                         cnl::nearest_rounding_tag,
-                        tag_t<rep_t<rep_t<cnl::static_integer<1>>>>>::value,
+                        tag_of_t<rep_of_t<rep_of_t<cnl::static_integer<1>>>>>::value,
                 "cnl::static_integer parameter default test failed");
         static_assert(
                 !std::is_same<cnl::native_rounding_tag, cnl::native_overflow_tag>::value,
                 "cnl::static_integer parameter default test failed");
 
         static_assert(
-                assert_same<cnl::wide_integer<>, rep_t<rep_t<rep_t<cnl::static_integer<>>>>>::value,
+                assert_same<cnl::wide_integer<>, rep_of_t<rep_of_t<rep_of_t<cnl::static_integer<>>>>>::value,
                 "cnl::static_integer parameter default test failed");
         static_assert(
                 assert_same<
-                        rep_t<cnl::elastic_integer<31, cnl::wide_integer<>>>,
-                        rep_t<rep_t<rep_t<cnl::static_integer<>>>>>::value,
+                        rep_of_t<cnl::elastic_integer<31, cnl::wide_integer<>>>,
+                        rep_of_t<rep_of_t<rep_of_t<cnl::static_integer<>>>>>::value,
                 "cnl::static_integer parameter default test failed");
     }
 

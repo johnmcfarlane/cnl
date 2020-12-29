@@ -7,27 +7,27 @@
 #if !defined(CNL_IMPL_NUMBER_SET_ROUNDING_H)
 #define CNL_IMPL_NUMBER_SET_ROUNDING_H
 
-#include "../num_traits/rep.h"
+#include "../num_traits/rep_of.h"
 #include "../num_traits/set_rounding.h"
 #include "../num_traits/set_tag.h"
-#include "../num_traits/tag.h"
+#include "../num_traits/tag_of.h"
 #include "../rounding/is_rounding_tag.h"
 #include "../type_traits/enable_if.h"
 #include "is_number.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<_impl::wrapper Number, class RoundingTag>
+    template<_impl::wrapper Number, rounding_tag RoundingTag>
     struct set_rounding<
             Number, RoundingTag,
-            _impl::enable_if_t<!_impl::is_rounding_tag<_impl::tag_t<Number>>::value>>
-        : set_rep<Number, set_rounding_t<_impl::rep_t<Number>, RoundingTag>> {
+            _impl::enable_if_t<!_impl::is_rounding_tag<_impl::tag_of_t<Number>>::value>>
+        : set_rep<Number, set_rounding_t<_impl::rep_of_t<Number>, RoundingTag>> {
     };
 
-    template<_impl::wrapper Number, class RoundingTag>
+    template<_impl::wrapper Number, rounding_tag RoundingTag>
     struct set_rounding<
             Number, RoundingTag,
-            _impl::enable_if_t<_impl::is_rounding_tag<_impl::tag_t<Number>>::value>>
+            _impl::enable_if_t<_impl::is_rounding_tag<_impl::tag_of_t<Number>>::value>>
         : set_tag<Number, RoundingTag> {
     };
 }

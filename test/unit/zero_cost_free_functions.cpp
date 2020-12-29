@@ -16,8 +16,8 @@ using cnl::_impl::identical;
 
 // rounding safe integer
 template<
-        class Rep = int, class RoundingTag = nearest_rounding_tag,
-        class OverflowTag = undefined_overflow_tag>
+        class Rep = int, rounding_tag RoundingTag = nearest_rounding_tag,
+        overflow_tag OverflowTag = undefined_overflow_tag>
 using rounding_overflow_int = rounding_integer<overflow_integer<Rep, OverflowTag>, RoundingTag>;
 
 static_assert(

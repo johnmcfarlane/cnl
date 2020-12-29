@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_NUMBER_ROUNDING_H)
 #define CNL_IMPL_NUMBER_ROUNDING_H
 
-#include "../num_traits/rep.h"
+#include "../num_traits/rep_of.h"
 #include "../num_traits/rounding.h"
-#include "../num_traits/tag.h"
+#include "../num_traits/tag_of.h"
 #include "../type_traits/enable_if.h"
 #include "is_number.h"
 
@@ -18,8 +18,8 @@ namespace cnl {
     template<_impl::wrapper Number>
     struct rounding<
             Number,
-            _impl::enable_if_t<!_impl::is_rounding_tag<_impl::tag_t<Number>>::value>>
-        : rounding<_impl::rep_t<Number>> {
+            _impl::enable_if_t<!_impl::is_rounding_tag<_impl::tag_of_t<Number>>::value>>
+        : rounding<_impl::rep_of_t<Number>> {
     };
 }
 

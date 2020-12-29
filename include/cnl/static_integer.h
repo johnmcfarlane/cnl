@@ -10,6 +10,8 @@
 /// \file
 /// \brief file containing definitions related to \ref cnl::static_integer
 
+#include "_impl/overflow/is_overflow_tag.h"
+#include "_impl/rounding/is_rounding_tag.h"
 #include "_impl/static_integer.h"
 
 /// compositional numeric library
@@ -23,8 +25,8 @@ namespace cnl {
     ///
     /// \sa cnl::static_number
     template<
-            int Digits = digits<int>::value, class RoundingTag = nearest_rounding_tag,
-            class OverflowTag = undefined_overflow_tag, class Narrowest = int>
+            int Digits = digits<int>::value, rounding_tag RoundingTag = nearest_rounding_tag,
+            overflow_tag OverflowTag = undefined_overflow_tag, class Narrowest = int>
     using static_integer = _impl::static_integer<Digits, RoundingTag, OverflowTag, Narrowest>;
 
     /// \brief constructs a static_integer from a given value

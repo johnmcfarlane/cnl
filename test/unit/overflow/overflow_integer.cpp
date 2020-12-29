@@ -758,8 +758,8 @@ namespace {
     struct test_overflow_int {
         using overflow_integer = OverflowInt;
 
-        using rep = cnl::_impl::rep_t<overflow_integer>;
-        using tag = cnl::_impl::tag_t<overflow_integer>;
+        using rep = cnl::_impl::rep_of_t<overflow_integer>;
+        using tag = cnl::_impl::tag_of_t<overflow_integer>;
         static_assert(
                 is_same<cnl::overflow_integer<rep, tag>, overflow_integer>::value,
                 "cnl::overflow_integer test failed");

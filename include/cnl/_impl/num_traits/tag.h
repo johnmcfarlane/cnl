@@ -9,21 +9,11 @@
 
 /// compositional numeric library
 namespace cnl {
-    /// \brief meta-function object that returns the Tag type of a component
-    ///
-    /// \tparam T component whose behavioral tag type to return
-    ///
-    /// \note The behavioral tag or 'Tag' type of a numeric component is central to CNL's method of
-    /// delivering an arithmetic API.
-    ///
-    /// \sa set_tag, rep
-    template<typename T>
-    struct tag;
+    template<class T>
+    inline constexpr auto is_tag = false;
 
-    namespace _impl {
-        template<typename T>
-        using tag_t = typename tag<T>::type;
-    }
+    template<class T>
+    concept tag = is_tag<T>;
 }
 
 #endif  // CNL_IMPL_NUM_TRAITS_TAG_H

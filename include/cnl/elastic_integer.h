@@ -20,12 +20,12 @@
 #include "_impl/elastic_integer/limits.h"
 #include "_impl/elastic_integer/make_elastic_integer.h"
 #include "_impl/elastic_integer/operators.h"
-#include "_impl/elastic_integer/rep.h"
+#include "_impl/elastic_integer/rep_of.h"
 #include "_impl/elastic_integer/scale.h"
 #include "_impl/elastic_integer/set_digits.h"
 #include "_impl/elastic_integer/set_rep.h"
 #include "_impl/elastic_integer/set_tag.h"
-#include "_impl/elastic_integer/tag.h"
+#include "_impl/elastic_integer/tag_of.h"
 #include "_impl/elastic_tag.h"
 
 #endif  // CNL_ELASTIC_INTEGER_H

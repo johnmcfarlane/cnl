@@ -60,7 +60,7 @@ namespace cnl {
         }
     };
 
-    template<class Operator, typename LhsRep, typename RhsRep, class Tag>
+    template<class Operator, typename LhsRep, typename RhsRep, tag Tag>
     struct comparison_operator<Operator, _impl::number<LhsRep, Tag>, _impl::number<RhsRep, Tag>> {
         CNL_NODISCARD constexpr auto operator()(
                 _impl::number<LhsRep, Tag> const& lhs, _impl::number<RhsRep, Tag> const& rhs) const

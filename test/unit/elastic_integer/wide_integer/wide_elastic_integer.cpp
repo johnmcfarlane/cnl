@@ -21,13 +21,13 @@ namespace {
             Digits, cnl::wide_integer<cnl::digits<Narrowest>::value, Narrowest>>;
 
     namespace default_parameters {
-        using cnl::_impl::rep_t;
+        using cnl::_impl::rep_of_t;
         static_assert(
-                assert_same<int, rep_t<rep_t<wide_elastic_integer<>>>>::value,
+                assert_same<int, rep_of_t<rep_of_t<wide_elastic_integer<>>>>::value,
                 "wide_elastic_integer parameter default test failed");
         static_assert(
                 assert_same<
-                        rep_t<cnl::elastic_integer<>>, rep_t<rep_t<wide_elastic_integer<>>>>::value,
+                        rep_of_t<cnl::elastic_integer<>>, rep_of_t<rep_of_t<wide_elastic_integer<>>>>::value,
                 "wide_elastic_integer parameter default test failed");
     }
 

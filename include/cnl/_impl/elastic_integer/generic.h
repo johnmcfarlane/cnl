@@ -169,7 +169,7 @@ namespace cnl {
                 const -> elastic_integer<RhsDigits, RhsNarrowest>
         {
             using elastic_integer = elastic_integer<RhsDigits, RhsNarrowest>;
-            using rep = _impl::rep_t<elastic_integer>;
+            using rep = _impl::rep_of_t<elastic_integer>;
             return _impl::from_rep<elastic_integer>(static_cast<rep>(
                     _impl::to_rep(rhs)
                     ^ ((static_cast<rep>(~0)) >> (numeric_limits<rep>::digits - RhsDigits))));

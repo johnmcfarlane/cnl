@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUM_TRAITS_REP_H)
-#define CNL_IMPL_NUM_TRAITS_REP_H
+#if !defined(CNL_IMPL_NUM_TRAITS_REP_OF_H)
+#define CNL_IMPL_NUM_TRAITS_REP_OF_H
 
 /// compositional numeric library
 namespace cnl {
@@ -18,14 +18,14 @@ namespace cnl {
     /// of the numeric types. Many of the properties of a component -- such as precision, range and
     /// signedness -- will be established by the Rep type.
     ///
-    /// \sa to_rep, from_value, tag, set_rep
+    /// \sa to_rep, from_value, tag_of, set_rep
     template<typename T, class Enable = void>
-    struct rep;
+    struct rep_of;
 
     namespace _impl {
         template<typename T>
-        using rep_t = typename rep<T>::type;
+        using rep_of_t = typename rep_of<T>::type;
     }
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_REP_H
+#endif  // CNL_IMPL_NUM_TRAITS_REP_OF_H

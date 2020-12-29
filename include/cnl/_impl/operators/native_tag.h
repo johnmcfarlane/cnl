@@ -35,6 +35,9 @@ namespace cnl {
         };
     }
 
+    template<>
+    inline constexpr auto is_tag<_impl::native_tag> = true;
+
     template<typename Destination, typename Source>
     struct convert_operator<_impl::native_tag, _impl::native_tag, Destination, Source> {
         CNL_NODISCARD constexpr auto operator()(Source const& from) const -> Destination

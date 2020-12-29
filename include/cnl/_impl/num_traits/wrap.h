@@ -9,7 +9,7 @@
 
 #include "../type_traits/enable_if.h"
 #include "is_composite.h"
-#include "rep.h"
+#include "rep_of.h"
 
 namespace cnl {
     namespace _impl {
@@ -28,7 +28,7 @@ namespace cnl {
         struct wrap<Number, Rep, enable_if_t<is_composite<Number>::value>> {
             CNL_NODISCARD constexpr auto operator()(Rep const& rep) const
             {
-                return from_rep<Number>(wrap<rep_t<Number>, Rep>{}(rep));
+                return from_rep<Number>(wrap<rep_of_t<Number>, Rep>{}(rep));
             }
         };
     }

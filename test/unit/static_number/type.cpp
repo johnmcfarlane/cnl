@@ -13,11 +13,11 @@ namespace {
     using cnl::_impl::identical;
 
     namespace default_parameters {
-        using cnl::_impl::rep_t;
+        using cnl::_impl::rep_of_t;
         static_assert(
                 assert_same<
                         cnl::wide_integer<>,
-                        rep_t<rep_t<rep_t<rep_t<cnl::static_number<1>>>>>>::value,
+                        rep_of_t<rep_of_t<rep_of_t<rep_of_t<cnl::static_number<1>>>>>>::value,
                 "cnl::rounding_integer parameter default test failed");
     }
 

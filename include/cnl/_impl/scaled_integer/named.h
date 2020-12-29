@@ -12,8 +12,8 @@
 
 #include "../../fraction.h"
 #include "../common.h"
-#include "../num_traits/rep.h"
-#include "../num_traits/tag.h"
+#include "../num_traits/rep_of.h"
+#include "../num_traits/tag_of.h"
 #include "../scaled/power.h"
 #include "../type_traits/enable_if.h"
 

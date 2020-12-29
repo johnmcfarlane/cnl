@@ -9,6 +9,7 @@
 
 #include "../operators/native_tag.h"
 #include "is_rounding_tag.h"
+#include "is_tag.h"
 
 #include <type_traits>
 
@@ -48,7 +49,7 @@ namespace cnl {
         : binary_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
     };
 
-    template<class Operator, class RhsTag, typename Lhs, typename Rhs>
+    template<class Operator, tag RhsTag, typename Lhs, typename Rhs>
     struct shift_operator<Operator, native_rounding_tag, RhsTag, Lhs, Rhs>
         : shift_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
     };

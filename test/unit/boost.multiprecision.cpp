@@ -122,8 +122,8 @@ namespace test_impl_to_rep {
     static_assert(
             assert_same<
                     unsigned_multiprecision<987654321>,
-                    cnl::_impl::rep_t<scaled_integer<unsigned_multiprecision<987654321>>>>::value,
-            "cnl::_impl::rep_t<scaled_integer<boost::multiprecision>>");
+                    cnl::_impl::rep_of_t<scaled_integer<unsigned_multiprecision<987654321>>>>::value,
+            "cnl::_impl::rep_of_t<scaled_integer<boost::multiprecision>>");
 }
 
 TEST(multiprecision, from_value)  // NOLINT

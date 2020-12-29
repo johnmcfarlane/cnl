@@ -9,12 +9,12 @@
 namespace {
 
     template<
-            int IntegerDigits, class RoundingTag = cnl::nearest_rounding_tag, class Narrowest = int>
+            int IntegerDigits, rounding_tag RoundingTag = cnl::nearest_rounding_tag, class Narrowest = int>
     using rounding_elastic_integer =
             cnl::rounding_integer<cnl::elastic_integer<IntegerDigits, Narrowest>, RoundingTag>;
 
     template<
-            int Digits, int Exponent = 0, class RoundingTag = cnl::nearest_rounding_tag,
+            int Digits, int Exponent = 0, rounding_tag RoundingTag = cnl::nearest_rounding_tag,
             class Narrowest = signed>
     using rounding_elastic_number =
             cnl::fixed_point<rounding_elastic_integer<Digits, RoundingTag, Narrowest>, Exponent>;

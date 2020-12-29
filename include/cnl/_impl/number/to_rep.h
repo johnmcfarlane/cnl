@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_NUMBER_TO_REP_H)
 #define CNL_IMPL_NUMBER_TO_REP_H
 
-#include "../num_traits/rep.h"
+#include "../num_traits/rep_of.h"
 #include "../num_traits/to_rep.h"
 #include "../type_traits/enable_if.h"
 #include "is_number.h"
@@ -16,7 +16,7 @@
 namespace cnl {
     template<_impl::wrapper Number>
     struct to_rep<Number> {
-        using rep_type = _impl::rep_t<Number>;
+        using rep_type = _impl::rep_of_t<Number>;
         CNL_NODISCARD constexpr rep_type& operator()(Number& number) const
         {
             return number._rep;

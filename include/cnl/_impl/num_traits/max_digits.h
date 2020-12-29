@@ -13,7 +13,7 @@
 #include "../type_traits/is_signed.h"
 #include "digits.h"
 #include "is_composite.h"
-#include "rep.h"
+#include "rep_of.h"
 
 namespace cnl {
     namespace _impl {
@@ -39,7 +39,7 @@ namespace cnl {
         };
 
         template<typename T>
-        struct max_digits<T, enable_if_t<is_composite<T>::value>> : max_digits<rep_t<T>> {
+        struct max_digits<T, enable_if_t<is_composite<T>::value>> : max_digits<rep_of_t<T>> {
         };
     }
 }

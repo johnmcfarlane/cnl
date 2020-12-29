@@ -205,7 +205,7 @@ struct number_test_by_rep
 
 // given a rounding tag, invokes number_test_suite for integers of all built-in types
 template<
-        template<class, class> class NumericType, class Tag,
+        template<class, class> class NumericType, cnl::tag Tag,
         template<class> class TypeSpecificTestSuite = std::is_integral>
 struct number_test_by_rep_by_tag {
     template<class Rep>

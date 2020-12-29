@@ -13,10 +13,10 @@
 
 namespace cnl {
     // safe elastic integer
-    template<int IntegerDigits, class OverflowTag = undefined_overflow_tag, class Narrowest = int>
+    template<int IntegerDigits, overflow_tag OverflowTag = undefined_overflow_tag, class Narrowest = int>
     using safe_integer = overflow_integer<elastic_integer<IntegerDigits, Narrowest>, OverflowTag>;
 
-    template<class OverflowTag = undefined_overflow_tag, class Narrowest = int, class Input = int>
+    template<overflow_tag OverflowTag = undefined_overflow_tag, class Narrowest = int, class Input = int>
     CNL_NODISCARD safe_integer<
             numeric_limits<Input>::digits, OverflowTag,
             Narrowest> constexpr make_safe_int(Input const& input)
@@ -27,12 +27,12 @@ namespace cnl {
 
 namespace {
     using cnl::_impl::identical;
-    using cnl::_impl::rep_t;
+    using cnl::_impl::rep_of_t;
     using std::is_same;
 
     namespace default_parameters {
         static_assert(
-                is_same<rep_t<rep_t<cnl::safe_integer<1>>>, int>::value,
+                is_same<rep_of_t<rep_of_t<cnl::safe_integer<1>>>, int>::value,
                 "cnl::safe_integer parameter default test failed");
     }
 
@@ -273,7 +273,7 @@ namespace {
 }
 
 // given a rounding tag, invokes number_test_suite for integers of all built-in types
-template<int NumDigits, class OverflowTag>
+template<int NumDigits, cnl::overflow_tag OverflowTag>
 struct test_safe_int {
     template<class Rep>
     using test_subject = cnl::safe_integer<NumDigits, OverflowTag, Rep>;
