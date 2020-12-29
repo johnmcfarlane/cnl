@@ -23,8 +23,7 @@ namespace std {
         // There is no equivalent to GCD for floating-point fractions.
         // The solution may be to canonicalize the exponents somehow.
         static_assert(
-                cnl::_impl::is_integral<Numerator>::value
-                        && cnl::_impl::is_integral<Denominator>::value,
+                cnl::_impl::is_integral<Numerator> && cnl::_impl::is_integral<Denominator>,
                 "std::hash<cnl::fractional<T>> - T must be an integer");
 
         CNL_NODISCARD constexpr size_t operator()(

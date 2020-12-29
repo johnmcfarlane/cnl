@@ -31,8 +31,7 @@ namespace cnl {
         template<typename T>
         struct has_native_operators
             : std::integral_constant<
-                      bool, is_constant<T>::value || is_integral<T>::value
-                                    || std::is_floating_point<T>::value> {
+                      bool, is_constant<T>::value || is_integral<T> || std::is_floating_point<T>::value> {
         };
     }
 

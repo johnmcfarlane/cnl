@@ -26,8 +26,8 @@ namespace cnl {
     struct rounding<Number&&> : rounding<Number> {
     };
 
-    template<typename Number>
-    struct rounding<Number, _impl::enable_if_t<_impl::is_integral<Number>::value>>
+    template<_impl::integral Number>
+    struct rounding<Number>
         : _impl::type_identity<native_rounding_tag> {
     };
 

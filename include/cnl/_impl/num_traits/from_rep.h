@@ -27,8 +27,8 @@ namespace cnl {
     ///
     /// \note This specialization *does* return integers of type, \c Number
     /// \sa to_rep, from_value
-    template<typename Number, typename Rep>
-    struct from_rep<Number, Rep, _impl::enable_if_t<cnl::_impl::is_integral<Number>::value>> {
+    template<_impl::integral Number, typename Rep>
+    struct from_rep<Number, Rep> {
         CNL_NODISCARD constexpr Number operator()(Rep const& rep) const
         {
             // by default, a number type's rep type is the number type itself

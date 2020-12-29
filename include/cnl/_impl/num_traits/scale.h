@@ -40,8 +40,8 @@ namespace cnl {
     }
 
     // cnl::scale<..., fundamental-integer>
-    template<int Digits, int Radix, class S>
-    struct scale<Digits, Radix, S, _impl::enable_if_t<cnl::_impl::is_integral<S>::value>>
+    template<int Digits, int Radix, _impl::integral S>
+    struct scale<Digits, Radix, S>
         : _impl::default_scale<Digits, Radix, S> {
     };
 
