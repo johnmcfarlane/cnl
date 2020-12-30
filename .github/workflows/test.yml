@@ -191,10 +191,12 @@ jobs:
             cmake_arch: x64
             exceptions: "True"
             msbuild_property: x64
+            sanitize: "True"
           - arch: x86
             cmake_arch: Win32
             exceptions: "False"
             msbuild_property: win32
+            sanitize: "False"
 
     steps:
     - uses: actions/checkout@v2
@@ -220,6 +222,7 @@ jobs:
           --env CONAN_CMAKE_GENERATOR="Visual Studio 16 2019" `
           --env CONAN_CMAKE_TOOLCHAIN_FILE="$env:GITHUB_WORKSPACE"\test\toolchain\msvc.cmake `
           --options enable_exceptions=${{matrix.exceptions}} `
+          --options sanitize=${{matrix.sanitize}} `
           --options target=test-all `
           --options test_pattern="^test-unit-" `
           --settings build_type=Release `
