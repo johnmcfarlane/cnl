@@ -52,11 +52,9 @@ namespace {
 
         static_assert(identical(cnl::wide_integer<16>{0x1532}, 0x1532_wide));
 
-#if !defined(_MSC_VER)
         static_assert(
                 identical(
                         cnl::wide_integer<66>{01273465273645012763450LL},
                         01273465273645012763450_wide));
-#endif
     }
 }

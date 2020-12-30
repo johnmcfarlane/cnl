@@ -45,7 +45,6 @@ TEST(scaled_integer_wide_integer, quotient)  // NOLINT
     ASSERT_EQ(double(expected), double(actual));
 }
 
-#if !defined(__GNUC__) || defined(__clang__)
 TEST(scaled_integer_wide_integer, quotient200)  // NOLINT
 {
     using scaled_integer = cnl::scaled_integer<cnl::wide_integer<200, unsigned>, cnl::power<-196>>;
@@ -64,5 +63,4 @@ TEST(scaled_integer_wide_integer, ctor_fraction)  // NOLINT
     auto actual = scaled_integer{cnl::fraction<int>(1, 3)};
     ASSERT_EQ(expected, actual);
 }
-#endif
 #endif
