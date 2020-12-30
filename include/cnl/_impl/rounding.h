@@ -42,7 +42,7 @@ namespace cnl {
         struct shift_right {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {
-                return cnl::binary_operator<shift_right_op, LhsTag, RhsTag, Lhs, Rhs>{}(lhs, rhs);
+                return cnl::shift_operator<shift_right_op, LhsTag, RhsTag, Lhs, Rhs>{}(lhs, rhs);
             }
         };
     }

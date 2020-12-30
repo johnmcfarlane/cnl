@@ -109,7 +109,7 @@ namespace cnl {
     template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto shift_left(Lhs const& lhs, Rhs const& rhs)
     {
-        return binary_operator<_impl::shift_left_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
+        return shift_operator<_impl::shift_left_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
     }
 
     /// \brief bitwise left-shifts one value by another
@@ -124,7 +124,7 @@ namespace cnl {
     template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto shift_right(Lhs const& lhs, Rhs const& rhs)
     {
-        return binary_operator<_impl::shift_right_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
+        return shift_operator<_impl::shift_right_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
     }
 }
 
