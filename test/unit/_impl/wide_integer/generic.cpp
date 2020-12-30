@@ -64,14 +64,12 @@ namespace {
                         -cnl::wide_integer<500, int>{17292375928362489LL}));
 #endif
 
-#if !defined(__arm__) && defined(__clang__)
         TEST(wide_integer, minus)  // NOLINT
         {
             auto expected = cnl::wide_integer<1000, int>{-17292375928362489LL};
             auto actual = -cnl::wide_integer<1000, int>{17292375928362489LL};
             ASSERT_EQ(expected, actual);
         }
-#endif
     }
 
     namespace test_add {
@@ -116,7 +114,6 @@ namespace {
                                 cnl::_impl::native_tag, cnl::wide_integer<16, unsigned>,
                                 cnl::wide_integer<16, signed>>{}(0x1234, 0x100)));
 
-#if defined(__clang__)
         TEST(wide_integer, divide)  // NOLINT
         {
             using namespace cnl::literals;
@@ -129,7 +126,6 @@ namespace {
 
             ASSERT_EQ(expected, actual);
         }
-#endif
     }
 
     namespace test_shift_left {

@@ -623,9 +623,7 @@ static_assert(
         "cnl::scaled_integer test failed");
 
 namespace test_glvalue_error {
-#if !defined(__GNUG__)  // Bug 71504?
     constexpr auto q = scaled_integer<test_int, cnl::power<0>>{1} / 1;
-#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1195,7 +1193,6 @@ namespace test_shift_operator_right {
     static_assert(identical(expected, actual));
 }
 
-#if !defined(__clang__) || (__clang_major__ > 3) || (__clang_minor__ > 8)
 namespace test_shift_operator_left {
     constexpr auto expected{scaled_integer<
             decltype(std::declval<uint8>() << std::declval<test_int>()), cnl::power<-4>>{2}};
@@ -1207,11 +1204,9 @@ namespace test_shift_operator_left {
     constexpr auto actual{op(lhs, rhs)};
     static_assert(identical(expected, actual));
 }
-#endif
 
 namespace test_bitshift {
     // dynamic
-#if !defined(__clang__) || (__clang_major__ > 3) || (__clang_minor__ > 8)
     static_assert(
             identical(
                     scaled_integer<
@@ -1219,7 +1214,6 @@ namespace test_bitshift {
                             cnl::power<-4>>{2},
                     scaled_integer<uint8, cnl::power<-4>>{1} << 1),
             "bitshift test failed");
-#endif
     static_assert(
             identical(
                     scaled_integer<
@@ -1227,7 +1221,6 @@ namespace test_bitshift {
                             cnl::power<-4>>{.5},
                     scaled_integer<uint8, cnl::power<-4>>{1} >> 1),
             "bitshift test failed");
-#if !defined(__clang__) || (__clang_major__ > 3) || (__clang_minor__ > 9)
     static_assert(
             identical(
                     scaled_integer<
@@ -1235,7 +1228,6 @@ namespace test_bitshift {
                             cnl::power<-4>>{2},
                     scaled_integer<uint8, cnl::power<-4>>{1} << scaled_integer<>{1}),
             "bitshift test failed");
-#endif
 
     // cnl::constant
     static_assert(
@@ -1299,7 +1291,6 @@ static_assert(cnl::numeric_limits<uint8>::max() / 5 == 51);
 static_assert(cnl::numeric_limits<uint8>::max() / 3 == 85);
 
 namespace test_quotient {
-#if !defined(__clang__) || (__clang_major__ > 3) || (__clang_minor__ > 8)
     static_assert(
             identical(
                     scaled_integer<quot_digits_t<test_int, int16>, cnl::power<-29>>{1. / 127},
@@ -1344,7 +1335,6 @@ namespace test_quotient {
                     cnl::quotient(
                             cnl::scaled_integer<int32, cnl::power<-16>>{963}, cnl::constant<3>{})),
             "cnl::scaled_integer test failed");
-#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////

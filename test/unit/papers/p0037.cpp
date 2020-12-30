@@ -63,13 +63,10 @@ namespace design_decisions {
         constexpr auto a = scaled_integer<long long>(3) + 4.F;
         static_assert(is_same_v<decltype(a), decltype(3.F + 4.F) const>);
 
-#if !defined(__clang__)
-        // TODO: either this must compile on Clang or the operator must be written
-        auto b = scaled_integer(200U) - constant<100L>{};
+        constexpr auto b = scaled_integer(200U) - constant<100L>{};
         static_assert(is_same_v<
                       decltype(b),
-                      decltype(scaled_integer<unsigned>(200) - scaled_integer<int>(100))>);
-#endif
+                      decltype(scaled_integer<unsigned>(200) - scaled_integer<int>(100)) const>);
 
         constexpr auto c = scaled_integer<>(5) * 6UL;
         static_assert(is_same_v<
