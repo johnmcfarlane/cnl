@@ -72,18 +72,18 @@ namespace {
     }
 
     namespace test_is_integer {
-        static_assert(cnl::_impl::is_number<rounding_integer<>>, "is_number<rounding_integer<>>");
+        static_assert(cnl::_impl::is_wrapper<rounding_integer<>>, "is_wrapper<rounding_integer<>>");
     }
 
     namespace test_from_value {
         static_assert(
                 identical(
-                        cnl::_impl::number<
-                                cnl::_impl::number<int, cnl::_impl::native_tag>,
+                        cnl::_impl::wrapper<
+                                cnl::_impl::wrapper<int, cnl::_impl::native_tag>,
                                 cnl::native_rounding_tag>{42},
                         cnl::_impl::from_value<
-                                cnl::_impl::number<int, cnl::native_rounding_tag>,
-                                cnl::_impl::number<int, cnl::_impl::native_tag>>(42)));
+                                cnl::_impl::wrapper<int, cnl::native_rounding_tag>,
+                                cnl::_impl::wrapper<int, cnl::_impl::native_tag>>(42)));
     }
 
     namespace test_traits {
@@ -205,9 +205,9 @@ namespace {
                         cnl::binary_operator<
                                 cnl::_impl::divide_op, cnl::_impl::native_tag,
                                 cnl::_impl::native_tag,
-                                cnl::_impl::number<long, cnl::native_rounding_tag>,
+                                cnl::_impl::wrapper<long, cnl::native_rounding_tag>,
                                 cnl::constant<3>>{}(
-                                cnl::_impl::number<long, cnl::native_rounding_tag>{963},
+                                cnl::_impl::wrapper<long, cnl::native_rounding_tag>{963},
                                 cnl::constant<3>{})));
     }
 

@@ -50,7 +50,7 @@ namespace {
 
     namespace test_is_number {
         static_assert(
-                cnl::_impl::is_number<cnl::elastic_integer<>> && !cnl::_impl::is_number<int>);
+                cnl::_impl::is_wrapper<cnl::elastic_integer<>> && !cnl::_impl::is_wrapper<int>);
     }
 
     namespace test_from_rep {
@@ -90,15 +90,15 @@ namespace {
                 "rounding_elastic_integer operator*");
         static_assert(
                 identical(
-                        cnl::_impl::number<
+                        cnl::_impl::wrapper<
                                 cnl::elastic_integer<37, int>, cnl::nearest_rounding_tag>{54},
                         cnl::binary_operator<
                                 cnl::_impl::multiply_op, cnl::_impl::native_tag,
                                 cnl::_impl::native_tag,
-                                cnl::_impl::number<
+                                cnl::_impl::wrapper<
                                         cnl::elastic_integer<24, int>, cnl::nearest_rounding_tag>,
                                 cnl::elastic_integer<13, int>>{}(
-                                cnl::_impl::number<
+                                cnl::_impl::wrapper<
                                         cnl::elastic_integer<24, int>, cnl::nearest_rounding_tag>{
                                         6},
                                 cnl::elastic_integer<13, int>{9})),

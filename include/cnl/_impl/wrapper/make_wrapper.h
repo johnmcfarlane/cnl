@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_MAKE_NUMBER_H)
-#define CNL_IMPL_NUMBER_MAKE_NUMBER_H
+#if !defined(CNL_IMPL_WRAPPER_MAKE_WRAPPER_H)
+#define CNL_IMPL_WRAPPER_MAKE_WRAPPER_H
 
 #include "../num_traits/tag.h"
 #include "../operators/native_tag.h"
@@ -17,12 +17,12 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<tag Tag = tag_of_t<number<>>, typename Rep = rep_of_t<number<>>>
-        CNL_NODISCARD constexpr auto make_number(Rep const& rep) -> number<Rep, Tag>
+        template<tag Tag = tag_of_t<wrapper<>>, typename Rep = rep_of_t<wrapper<>>>
+        CNL_NODISCARD constexpr auto make_wrapper(Rep const& rep) -> wrapper<Rep, Tag>
         {
-            return number<Rep, Tag>{rep};
+            return wrapper<Rep, Tag>{rep};
         }
     }
 }
 
-#endif  // CNL_IMPL_NUMBER_MAKE_NUMBER_H
+#endif  // CNL_IMPL_WRAPPER_MAKE_WRAPPER_H

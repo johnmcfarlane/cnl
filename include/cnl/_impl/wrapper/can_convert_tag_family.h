@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_CAN_CONVERT_TAG_FAMILY_H)
-#define CNL_IMPL_NUMBER_CAN_CONVERT_TAG_FAMILY_H
+#if !defined(CNL_IMPL_WRAPPER_CAN_CONVERT_TAG_FAMILY_H)
+#define CNL_IMPL_WRAPPER_CAN_CONVERT_TAG_FAMILY_H
 
 #include "../operators/is_same_tag_family.h"
 
@@ -24,4 +24,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_NUMBER_CAN_CONVERT_TAG_FAMILY_H
+#endif  // CNL_IMPL_WRAPPER_CAN_CONVERT_TAG_FAMILY_H

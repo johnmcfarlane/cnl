@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_SET_ROUNDING_H)
-#define CNL_IMPL_NUMBER_SET_ROUNDING_H
+#if !defined(CNL_IMPL_WRAPPER_SET_ROUNDING_H)
+#define CNL_IMPL_WRAPPER_SET_ROUNDING_H
 
 #include "../num_traits/rep_of.h"
 #include "../num_traits/set_rounding.h"
@@ -13,7 +13,7 @@
 #include "../num_traits/tag_of.h"
 #include "../rounding/is_rounding_tag.h"
 #include "../type_traits/enable_if.h"
-#include "is_number.h"
+#include "is_wrapper.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -32,4 +32,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_SET_ROUNDING_H
+#endif  // CNL_IMPL_WRAPPER_SET_ROUNDING_H

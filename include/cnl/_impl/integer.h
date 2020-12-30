@@ -7,13 +7,13 @@
 #if !defined(CNL_IMPL_INTEGER_H)
 #define CNL_IMPL_INTEGER_H
 
-#include "number.h"
+#include "wrapper.h"
 
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
         template<typename Rep = int>
-        using integer = number<Rep, native_tag>;
+        using integer = wrapper<Rep, native_tag>;
 
         template<typename Rep = int>
         CNL_NODISCARD constexpr auto make_integer(Rep const& rep) -> integer<Rep>

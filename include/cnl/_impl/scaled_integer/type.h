@@ -15,10 +15,10 @@
 #include "../integer.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/set_digits.h"
-#include "../number.h"
 #include "../scaled/inc_dec_operator.h"
 #include "../scaled/power.h"
 #include "../used_digits.h"
+#include "../wrapper.h"
 #include "declaration.h"
 #include "is_scaled_integer.h"
 
@@ -57,12 +57,12 @@ namespace cnl {
 #else
     template<typename Rep, class Scale>
 #endif
-    class scaled_integer : public _impl::number<Rep, Scale> {
+    class scaled_integer : public _impl::wrapper<Rep, Scale> {
         static_assert(
                 !_impl::is_scaled_integer<Rep>::value,
                 "scaled_integer of scaled_integer is not a supported");
 
-        using _base = _impl::number<Rep, Scale>;
+        using _base = _impl::wrapper<Rep, Scale>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // functions

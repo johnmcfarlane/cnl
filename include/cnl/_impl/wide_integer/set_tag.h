@@ -18,9 +18,9 @@
 namespace cnl {
     template<typename NumberRep, class NumberTag, tag Tag>
     struct set_tag<
-            _impl::number<NumberRep, NumberTag>, Tag,
+            _impl::wrapper<NumberRep, NumberTag>, Tag,
             _impl::enable_if_t<_impl::is_wide_tag<Tag>::value>>
-        : std::type_identity<_impl::number<typename Tag::rep, Tag>> {
+        : std::type_identity<_impl::wrapper<typename Tag::rep, Tag>> {
     };
 }
 

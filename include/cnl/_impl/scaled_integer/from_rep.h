@@ -8,7 +8,7 @@
 #define CNL_IMPL_SCALED_INTEGER_FROM_REP_H
 
 #include "../num_traits/from_rep.h"
-#include "../number/declaration.h"
+#include "../wrapper/declaration.h"
 #include "type.h"
 
 /// compositional numeric library

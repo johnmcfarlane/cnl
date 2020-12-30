@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests for <cnl/_impl/number/operators.h>
+/// \brief tests for <cnl/_impl/wrapper/operators.h>
 
 #include <cnl/_impl/integer.h>
 
@@ -38,7 +38,7 @@ namespace {
     }
 
     namespace test_add {
-        static_assert(cnl::_impl::is_number<cnl::_impl::integer<>>);
+        static_assert(cnl::_impl::is_wrapper<cnl::_impl::integer<>>);
         static_assert(
                 identical(
                         cnl::_impl::integer<>{123 + 234},

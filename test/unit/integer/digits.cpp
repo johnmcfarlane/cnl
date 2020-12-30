@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests for <cnl/_impl/number/digits.h>
+/// \brief tests for <cnl/_impl/wrapper/digits.h>
 
 #include <cnl/_impl/integer.h>
 

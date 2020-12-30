@@ -17,10 +17,10 @@ namespace cnl {
             int Digits, int Radix, typename NumberRep, int NumberTagDigits,
             typename NumberTagNarrowest>
     struct scale<
-            Digits, Radix, _impl::number<NumberRep, wide_tag<NumberTagDigits, NumberTagNarrowest>>>
+            Digits, Radix, _impl::wrapper<NumberRep, wide_tag<NumberTagDigits, NumberTagNarrowest>>>
         : _impl::default_scale<
                   Digits, Radix,
-                  _impl::number<NumberRep, wide_tag<NumberTagDigits, NumberTagNarrowest>>> {
+                  _impl::wrapper<NumberRep, wide_tag<NumberTagDigits, NumberTagNarrowest>>> {
     };
 }
 

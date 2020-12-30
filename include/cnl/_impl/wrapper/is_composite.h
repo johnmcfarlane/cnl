@@ -4,12 +4,12 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_IS_COMPOSITE_H)
-#define CNL_IMPL_NUMBER_IS_COMPOSITE_H
+#if !defined(CNL_IMPL_WRAPPER_IS_COMPOSITE_H)
+#define CNL_IMPL_WRAPPER_IS_COMPOSITE_H
 
 #include "../num_traits/is_composite.h"
 #include "../type_traits/enable_if.h"
-#include "is_number.h"
+#include "is_wrapper.h"
 
 #include <type_traits>
 
@@ -20,4 +20,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_IS_COMPOSITE_H
+#endif  // CNL_IMPL_WRAPPER_IS_COMPOSITE_H

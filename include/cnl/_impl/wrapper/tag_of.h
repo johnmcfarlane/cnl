@@ -4,10 +4,10 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_REP_OF_H)
-#define CNL_IMPL_NUMBER_REP_OF_H
+#if !defined(CNL_IMPL_WRAPPER_TAG_OF_H)
+#define CNL_IMPL_WRAPPER_TAG_OF_H
 
-#include "../num_traits/tag.h"
+#include "../num_traits/tag_of.h"
 #include "declaration.h"
 
 #include <type_traits>
@@ -15,8 +15,8 @@
 /// compositional numeric library
 namespace cnl {
     template<typename Rep, tag Tag>
-    struct rep_of<_impl::number<Rep, Tag>> : std::type_identity<Rep> {
+    struct tag_of<_impl::wrapper<Rep, Tag>> : std::type_identity<Tag> {
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_REP_OF_H
+#endif  // CNL_IMPL_WRAPPER_TAG_OF_H

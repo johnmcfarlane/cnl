@@ -4,12 +4,12 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_OPERATOR_HELPERS_H)
-#define CNL_IMPL_NUMBER_OPERATOR_HELPERS_H
+#if !defined(CNL_IMPL_WRAPPER_OPERATOR_HELPERS_H)
+#define CNL_IMPL_WRAPPER_OPERATOR_HELPERS_H
 
 #include "../operators/generic.h"
 #include "../type_traits/enable_if.h"
-#include "is_number.h"
+#include "is_wrapper.h"
 #include "rep_of.h"
 
 #include <type_traits>
@@ -43,7 +43,7 @@ namespace cnl {
         // cnl::_impl::can_be_number_wrapper
 
         template<typename Wrapper>
-        inline constexpr auto can_be_number_wrapper = is_number<Wrapper>;
+        inline constexpr auto can_be_number_wrapper = is_wrapper<Wrapper>;
 
         template<typename Wrapper, int WrapperN>
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
@@ -86,4 +86,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_NUMBER_OPERATOR_HELPERS_H
+#endif  // CNL_IMPL_WRAPPER_OPERATOR_HELPERS_H

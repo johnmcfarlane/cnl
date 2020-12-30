@@ -4,13 +4,13 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_TO_REP_H)
-#define CNL_IMPL_NUMBER_TO_REP_H
+#if !defined(CNL_IMPL_WRAPPER_TO_REP_H)
+#define CNL_IMPL_WRAPPER_TO_REP_H
 
 #include "../num_traits/rep_of.h"
 #include "../num_traits/to_rep.h"
 #include "../type_traits/enable_if.h"
-#include "is_number.h"
+#include "is_wrapper.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -32,4 +32,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_TO_REP_H
+#endif  // CNL_IMPL_WRAPPER_TO_REP_H

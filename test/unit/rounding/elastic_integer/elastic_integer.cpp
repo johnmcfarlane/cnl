@@ -7,9 +7,9 @@
 #include <cnl/elastic_integer.h>
 #include <cnl/rounding.h>
 
-#include <cnl/_impl/number/from_rep.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/_impl/wrapper/from_rep.h>
 
 #include <gtest/gtest.h>
 

@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_DECLARATION_H)
-#define CNL_IMPL_NUMBER_DECLARATION_H
+#if !defined(CNL_IMPL_WRAPPER_DECLARATION_H)
+#define CNL_IMPL_WRAPPER_DECLARATION_H
 
 #include "../operators/native_tag.h"
 
@@ -13,8 +13,8 @@
 namespace cnl {
     namespace _impl {
         template<typename Rep = int, tag Tag = native_tag>
-        class number;
+        class wrapper;
     }
 }
 
-#endif  // CNL_IMPL_NUMBER_DECLARATION_H
+#endif  // CNL_IMPL_WRAPPER_DECLARATION_H

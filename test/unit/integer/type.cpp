@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests for <cnl/_impl/number/type.h>
+/// \brief tests for <cnl/_impl/wrapper/type.h>
 
 #include <cnl/_impl/integer.h>
 
@@ -19,27 +19,27 @@ using cnl::_impl::identical;
 namespace {
     namespace test_parameters {
         static_assert(
-                assert_same<cnl::_impl::number<int>, cnl::_impl::number<>>::value,
+                assert_same<cnl::_impl::wrapper<int>, cnl::_impl::wrapper<>>::value,
                 "default parameters of cnl::number");
     }
 
     namespace test_is_composite {
         static_assert(
-                identical(true, cnl::is_composite<cnl::_impl::number<>>::value),
+                identical(true, cnl::is_composite<cnl::_impl::wrapper<>>::value),
                 "is_composite<number>");
     }
 
     namespace test_remove_signedness {
         static_assert(
                 assert_same<
-                        cnl::_impl::number<unsigned short>,
-                        cnl::remove_signedness<cnl::_impl::number<signed short>>::type>::value,
-                "cnl::remove_signedness<cnl::_impl::number>");
+                        cnl::_impl::wrapper<unsigned short>,
+                        cnl::remove_signedness<cnl::_impl::wrapper<signed short>>::type>::value,
+                "cnl::remove_signedness<cnl::_impl::wrapper>");
     }
 
     namespace test_default_ctor {
         static_assert(
-                identical(cnl::_impl::number<int>{0}, cnl::_impl::number<int>{}),
+                identical(cnl::_impl::wrapper<int>{0}, cnl::_impl::wrapper<int>{}),
                 "default ctor of cnl::number");
     }
 }

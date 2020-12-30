@@ -16,7 +16,7 @@
 #include "_impl/elastic_integer/from_rep.h"
 #include "_impl/elastic_integer/from_value.h"
 #include "_impl/elastic_integer/generic.h"
-#include "_impl/elastic_integer/is_number.h"
+#include "_impl/elastic_integer/is_wrapper.h"
 #include "_impl/elastic_integer/limits.h"
 #include "_impl/elastic_integer/make_elastic_integer.h"
 #include "_impl/elastic_integer/operators.h"
