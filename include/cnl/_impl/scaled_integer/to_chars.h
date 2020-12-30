@@ -120,11 +120,11 @@ namespace cnl {
         {
             // zero-out all of the characters in the output string
             std::fill<char*>(first, last, '0');
-            auto const digits = std::distance(first, last);
+            auto const decimal_digits = std::distance(first, last);
 
             // store fractional bit, 0.5, as a sequence of decimal digits
             std::array<char, static_cast<std::size_t>((Exponent * -302LL) / 100)> bit{};
-            CNL_ASSERT(std::ptrdiff_t(bit.size()) >= digits);
+            CNL_ASSERT(std::ptrdiff_t(bit.size()) >= decimal_digits);
 
             // Initially, the sequence is { 5, 0, 0, 0, ... }.
             bit[0] = 5;
@@ -136,7 +136,7 @@ namespace cnl {
                 if (value & mask) {
                     // add it to the output string.
                     auto carry = 0;
-                    for (auto pos = digits - 1; pos >= 0; --pos) {
+                    for (auto pos = decimal_digits - 1; pos >= 0; --pos) {
                         *(first + pos) = char(*(first + pos) + bit[pos] + carry);
                         if (*(first + pos) > '9') {
                             *(first + pos) = char(*(first + pos) - 10);
