@@ -24,7 +24,7 @@
 /// compositional numeric library
 namespace cnl {
     // higher OP number<>
-    template<_impl::binary_op Operator, class Lhs, _impl::wrapper Rhs>
+    template<_impl::binary_op Operator, class Lhs, _impl::wrapped Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<std::is_floating_point<Lhs>::value>> {
@@ -35,7 +35,7 @@ namespace cnl {
     };
 
     // number<> OP higher
-    template<_impl::binary_op Operator, _impl::wrapper Lhs, class Rhs>
+    template<_impl::binary_op Operator, _impl::wrapped Lhs, class Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<std::is_floating_point<Rhs>::value>> {
@@ -67,7 +67,7 @@ namespace cnl {
         }
     };
 
-    template<_impl::binary_op Operator, _impl::wrapper Lhs, _impl::wrapper Rhs>
+    template<_impl::binary_op Operator, _impl::wrapped Lhs, _impl::wrapped Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<

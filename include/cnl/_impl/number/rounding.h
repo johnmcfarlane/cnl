@@ -15,7 +15,7 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<_impl::wrapper Number>
+    template<_impl::wrapped Number>
     struct rounding<
             Number,
             _impl::enable_if_t<!_impl::is_rounding_tag<_impl::tag_of_t<Number>>::value>>

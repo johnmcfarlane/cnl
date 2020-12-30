@@ -14,7 +14,7 @@
 #include "to_rep.h"
 
 namespace cnl {
-    template<_impl::pre_op Operator, _impl::wrapper Number>
+    template<_impl::pre_op Operator, _impl::wrapped Number>
     struct pre_operator<Operator, _impl::native_tag, Number> {
         constexpr Number& operator()(Number& rhs) const
         {
@@ -24,7 +24,7 @@ namespace cnl {
         }
     };
 
-    template<_impl::post_op Operator, _impl::wrapper Number>
+    template<_impl::post_op Operator, _impl::wrapped Number>
     struct post_operator<Operator, _impl::native_tag, Number> {
         constexpr Number operator()(Number& lhs) const
         {

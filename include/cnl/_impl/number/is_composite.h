@@ -15,7 +15,7 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<_impl::wrapper Number>
+    template<_impl::wrapped Number>
     struct is_composite<Number> : std::true_type {
     };
 }

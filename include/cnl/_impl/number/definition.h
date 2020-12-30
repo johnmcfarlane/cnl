@@ -48,7 +48,7 @@ namespace cnl {
 
             /// constructor taking an unrelated _impl::number type
             template<
-                    _impl::wrapper Number,
+                    _impl::wrapped Number,
                     enable_if_t<
                             !can_convert_tag_family<Tag, tag_of_t<Number>>::value,
                             int> = 0>

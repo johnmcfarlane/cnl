@@ -20,7 +20,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::wants_generic_ops<number<>>
 
-        template<_impl::wrapper Number>
+        template<_impl::wrapped Number>
         inline constexpr auto wants_generic_ops<Number> = true;
 
         ////////////////////////////////////////////////////////////////////////////////

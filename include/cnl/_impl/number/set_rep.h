@@ -20,7 +20,7 @@ namespace cnl {
     };
 
     // when one _impl::number wraps a dissimilar _impl::number
-    template<typename ArchetypeRep, class ArchetypeTag, _impl::wrapper Rep>
+    template<typename ArchetypeRep, class ArchetypeTag, _impl::wrapped Rep>
     struct set_rep<
             _impl::number<ArchetypeRep, ArchetypeTag>, Rep,
             _impl::enable_if_t<
@@ -29,7 +29,7 @@ namespace cnl {
     };
 
     // when one _impl::number is converted to a similar _impl::number
-    template<typename ArchetypeRep, class ArchetypeTag, _impl::wrapper Rep>
+    template<typename ArchetypeRep, class ArchetypeTag, _impl::wrapped Rep>
     struct set_rep<
             _impl::number<ArchetypeRep, ArchetypeTag>, Rep,
             _impl::enable_if_t<

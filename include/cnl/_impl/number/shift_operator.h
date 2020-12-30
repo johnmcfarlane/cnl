@@ -35,7 +35,7 @@ namespace cnl {
 
     // number<int, Foo> << number<int, Foo>
     // includes derived classes
-    template<_impl::shift_op Operator, typename LhsRep, tag LhsTag, _impl::wrapper Rhs>
+    template<_impl::shift_op Operator, typename LhsRep, tag LhsTag, _impl::wrapped Rhs>
     struct shift_operator<
             Operator, _impl::native_tag, _impl::native_tag, _impl::number<LhsRep, LhsTag>, Rhs> {
         CNL_NODISCARD constexpr auto operator()(
@@ -50,7 +50,7 @@ namespace cnl {
 
     // non-number << number
     // includes derived classes
-    template<_impl::shift_op Operator, class Lhs, _impl::wrapper Rhs>
+    template<_impl::shift_op Operator, class Lhs, _impl::wrapped Rhs>
     struct shift_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<!_impl::is_number<Lhs>>> {
