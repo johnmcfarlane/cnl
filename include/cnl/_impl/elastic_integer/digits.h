@@ -15,8 +15,7 @@
 /// compositional numeric library
 namespace cnl {
     template<int Digits, class Narrowest>
-    struct digits<elastic_integer<Digits, Narrowest>> : std::integral_constant<int, Digits> {
-    };
+    inline constexpr auto digits<elastic_integer<Digits, Narrowest>> = Digits;
 }
 
 #endif  // CNL_IMPL_ELASTIC_INTEGER_DIGITS_H

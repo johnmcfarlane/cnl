@@ -26,7 +26,7 @@ namespace {
     namespace test_digits {
         using cnl::digits;
 
-        static_assert(digits<elastic_integer<7, int>>::value == 7, "elastic_integer test failed");
+        static_assert(digits<elastic_integer<7, int>> == 7, "elastic_integer test failed");
     }
 
     namespace test_operate {
@@ -125,12 +125,12 @@ namespace {
     namespace test_impl_make_number {
         static_assert(
                 identical(
-                        elastic_integer<cnl::digits<int>::value>{14},
+                        elastic_integer<cnl::digits<int>>{14},
                         cnl::_impl::from_value<elastic_integer<>>(14)),
                 "cnl::_impl::from_value<elastic_integer> test failed");
         static_assert(
                 identical(
-                        elastic_integer<cnl::digits<int>::value>{22},
+                        elastic_integer<cnl::digits<int>>{22},
                         cnl::_impl::from_value<elastic_integer<>>(elastic_integer<>{22})),
                 "cnl::_impl::from_value<elastic_integer> test failed");
 
@@ -570,7 +570,7 @@ namespace {
         ////////////////////////////////////////////////////////////////////////////////
         // members
 
-        static constexpr int digits = cnl::digits<value_type>::value;
+        static constexpr int digits = cnl::digits<value_type>;
         static constexpr bool is_signed = numeric_limits::is_signed;
         static_assert(
                 is_signed == cnl::numeric_limits<narrowest>::is_signed,
@@ -651,7 +651,7 @@ namespace {
         using cnl::set_digits_t;
 
         static_assert(
-                digits<elastic_integer<3>>::value >= 3,
+                digits<elastic_integer<3>> >= 3,
                 "cnl::digits / cnl::set_digits test failed");
         static_assert(
                 identical(set_digits_t<elastic_integer<1>, 3>{6}, elastic_integer<3>{6}),

@@ -25,7 +25,8 @@ namespace cnl {
         };
 
         template<tag OverflowTag, tag Tag>
-        requires(_impl::is_overflow_tag<OverflowTag>::value && !_impl::is_overflow_tag<Tag>::value) struct common_overflow_tag<OverflowTag, Tag> : type_identity<OverflowTag> {
+        requires(_impl::is_overflow_tag<OverflowTag>::value && !_impl::is_overflow_tag<Tag>::value) struct common_overflow_tag<OverflowTag, Tag>
+            : type_identity<OverflowTag> {
         };
 
         template<tag Tag, tag OverflowTag>

@@ -24,7 +24,7 @@ namespace cnl {
     /// the resultant type has Digits set to the sum of the operands.
     ///
     /// \sa cnl::elastic_scaled_integer
-    template<int Digits = digits<int>::value, class Narrowest = int>
+    template<int Digits = digits<int>, class Narrowest = int>
     class elastic_integer;
 }
 

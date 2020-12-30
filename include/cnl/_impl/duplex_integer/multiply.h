@@ -88,11 +88,10 @@ namespace cnl {
                     RhsLower const& rhs_lower) -> result_type
             {
                 return ((result_type{_impl::long_multiply<Upper>{}(lhs_upper, rhs_upper)})
-                        << (digits<Lower>::value + digits<Upper>::value))
+                        << (digits<Lower> + digits<Upper>))
                      + ((result_type{_impl::long_multiply<Upper>{}(lhs_lower, rhs_upper)}
                          + result_type{_impl::long_multiply<Upper>{}(lhs_upper, rhs_lower)})
-                        << digits<Lower>::value)
-                     + ((result_type{_impl::long_multiply<Lower>{}(lhs_lower, rhs_lower)}));
+                        << digits<Lower>)+((result_type{_impl::long_multiply<Lower>{}(lhs_lower, rhs_lower)}));
             }
         };
     }
@@ -116,12 +115,8 @@ namespace cnl {
         {
             using common_result_type =
                     decltype(_impl::long_multiply<Upper>{}(lhs_upper, rhs_upper));
-            return (_impl::long_multiply<Upper>{}(lhs_upper, rhs_upper) << digits<Upper>::value)
-                 + ((_impl::long_multiply<Upper>{}(lhs_upper, rhs_lower)
-                     + _impl::long_multiply<Upper>{}(lhs_lower, rhs_upper))
-                    << digits<Lower>::value)
-                 + static_cast<common_result_type>(
-                           _impl::long_multiply<Lower>{}(lhs_lower, rhs_lower));
+            return (_impl::long_multiply<Upper>{}(lhs_upper, rhs_upper) << digits<Upper>)+((_impl::long_multiply<Upper>{}(lhs_upper, rhs_lower) + _impl::long_multiply<Upper>{}(lhs_lower, rhs_upper)) << digits<Lower>)+static_cast<common_result_type>(
+                    _impl::long_multiply<Lower>{}(lhs_lower, rhs_lower));
         }
     };
 

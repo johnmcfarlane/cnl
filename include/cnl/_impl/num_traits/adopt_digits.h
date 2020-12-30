@@ -13,7 +13,7 @@
 namespace cnl {
     namespace _impl {
         template<typename Mimic, typename Source>
-        struct adopt_digits : set_digits<Mimic, digits<Source>::value> {
+        struct adopt_digits : set_digits<Mimic, digits<Source>> {
         };
 
         template<typename Mimic, typename Source>

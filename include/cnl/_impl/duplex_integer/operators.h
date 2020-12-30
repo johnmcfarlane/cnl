@@ -50,7 +50,7 @@ namespace cnl {
         struct first_degree_binary_operator {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
-            static constexpr auto lower_digits = digits<Lower>::value;
+            static constexpr auto lower_digits = digits<Lower>;
             using wide_lower = set_digits_t<set_signedness_t<Lower, true>, lower_digits + 1>;
 
             CNL_NODISCARD constexpr auto operator()(

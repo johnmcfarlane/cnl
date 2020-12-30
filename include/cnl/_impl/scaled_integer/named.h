@@ -53,13 +53,11 @@ namespace cnl {
         struct quotient_result {
             using natural_result = _impl::op_result<_impl::divide_op, Dividend, Divisor>;
 
-            static constexpr int integer_digits = _impl::integer_digits<Dividend>::value
-                                                + _impl::fractional_digits<Divisor>::value;
-            static constexpr int fractional_digits = _impl::fractional_digits<Dividend>::value
-                                                   + _impl::integer_digits<Divisor>::value;
+            static constexpr int integer_digits = _impl::integer_digits<Dividend> + _impl::fractional_digits<Divisor>;
+            static constexpr int fractional_digits = _impl::fractional_digits<Dividend> + _impl::integer_digits<Divisor>;
 
             static constexpr auto necessary_digits = integer_digits + fractional_digits;
-            static constexpr auto natural_digits = digits<natural_result>::value;
+            static constexpr auto natural_digits = digits<natural_result>;
             static constexpr auto result_digits = _impl::max(necessary_digits, natural_digits);
 
             using rep_type = set_digits_t<natural_result, result_digits>;

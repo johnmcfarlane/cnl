@@ -17,7 +17,7 @@ namespace cnl {
     namespace _impl {
         template<int Digits, class Narrowest>
         using elastic_rep_t =
-                typename set_digits<Narrowest, _impl::max(digits<Narrowest>::value, Digits)>::type;
+                typename set_digits<Narrowest, _impl::max(digits<Narrowest>, Digits)>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::is_elastic_integer
@@ -66,7 +66,7 @@ namespace cnl {
         template<bool Signed>
         struct machine_digits {
             static constexpr int value =
-                    digits<typename std::conditional<Signed, signed, unsigned>::type>::value;
+                    digits<typename std::conditional<Signed, signed, unsigned>::type>;
         };
 
         template<typename S>
@@ -74,10 +74,10 @@ namespace cnl {
     }
 
     template<class S>
-    elastic_integer(S const& s) -> elastic_integer<digits_v<S>, _impl::narrowest<S>>;
+    elastic_integer(S const& s) -> elastic_integer<digits<S>, _impl::narrowest<S>>;
 
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    elastic_integer(constant<Value>) -> elastic_integer<digits_v<constant<Value>>>;
+    elastic_integer(constant<Value>) -> elastic_integer<digits<constant<Value>>>;
 }
 
 #endif  // CNL_IMPL_ELASTIC_INTEGER_DEFINITION_H

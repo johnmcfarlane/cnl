@@ -24,8 +24,7 @@ namespace cnl {
     }
 
     template<class T, std::size_t N>
-    struct digits<boost::simd::pack<T, N>> : digits<T> {
-    };
+    inline constexpr auto digits<boost::simd::pack<T, N>> = digits<T>;
 
     template<class T, std::size_t N, int Digits>
     struct set_digits<boost::simd::pack<T, N>, Digits> {

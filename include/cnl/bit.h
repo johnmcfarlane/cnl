@@ -62,14 +62,14 @@ namespace cnl {
     template<typename T>
     CNL_NODISCARD constexpr T rotl(T x, unsigned int s)
     {
-        return _bit_impl::rotl(x, s, cnl::digits<T>::value);
+        return _bit_impl::rotl(x, s, cnl::digits<T>);
     }
 
     // rotr - rotate bits to the right
     template<typename T>
     CNL_NODISCARD constexpr T rotr(T x, unsigned int s)
     {
-        return _bit_impl::rotr(x, s, cnl::digits<T>::value);
+        return _bit_impl::rotr(x, s, cnl::digits<T>);
     }
 
     // countl_zero - count 0-bits to the left
@@ -81,19 +81,19 @@ namespace cnl {
     template<>
     CNL_NODISCARD constexpr int countl_zero(unsigned int x)
     {
-        return x ? __builtin_clz(x) : cnl::digits<unsigned int>::value;
+        return x ? __builtin_clz(x) : cnl::digits<unsigned int>;
     }
 
     template<>
     CNL_NODISCARD constexpr int countl_zero(unsigned long x)
     {
-        return x ? __builtin_clzl(x) : cnl::digits<unsigned long>::value;
+        return x ? __builtin_clzl(x) : cnl::digits<unsigned long>;
     }
 
     template<>
     CNL_NODISCARD constexpr int countl_zero(unsigned long long x)
     {
-        return x ? __builtin_clzll(x) : cnl::digits<unsigned long long>::value;
+        return x ? __builtin_clzll(x) : cnl::digits<unsigned long long>;
     }
 
 #endif
@@ -103,7 +103,7 @@ namespace cnl {
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
-        return x ? countl_zero<T>(static_cast<T>(x >> 1)) - 1 : cnl::digits<T>::value;
+        return x ? countl_zero<T>(static_cast<T>(x >> 1)) - 1 : cnl::digits<T>;
     }
 
     // countl_one - count 1-bits to the left
@@ -115,19 +115,19 @@ namespace cnl {
     template<>
     CNL_NODISCARD constexpr int countl_one(unsigned int x)
     {
-        return ~x ? __builtin_clz(~x) : cnl::digits<unsigned int>::value;
+        return ~x ? __builtin_clz(~x) : cnl::digits<unsigned int>;
     }
 
     template<>
     CNL_NODISCARD constexpr int countl_one(unsigned long x)
     {
-        return ~x ? __builtin_clzl(~x) : cnl::digits<unsigned long>::value;
+        return ~x ? __builtin_clzl(~x) : cnl::digits<unsigned long>;
     }
 
     template<>
     CNL_NODISCARD constexpr int countl_one(unsigned long long x)
     {
-        return ~x ? __builtin_clzll(~x) : cnl::digits<unsigned long long>::value;
+        return ~x ? __builtin_clzll(~x) : cnl::digits<unsigned long long>;
     }
 
 #endif
@@ -137,7 +137,7 @@ namespace cnl {
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
-        return (x & (T{1} << (cnl::digits<T>::value - 1)))
+        return (x & (T{1} << (cnl::digits<T> - 1)))
                      ? countl_one<T>(static_cast<T>(x << 1)) + 1
                      : 0;
     }
@@ -157,13 +157,13 @@ namespace cnl {
     template<>
     CNL_NODISCARD constexpr int countr_zero(unsigned long x)
     {
-        return x ? __builtin_ctzl(x) : cnl::digits<unsigned long>::value;
+        return x ? __builtin_ctzl(x) : cnl::digits<unsigned long>;
     }
 
     template<>
     CNL_NODISCARD constexpr int countr_zero(unsigned long long x)
     {
-        return x ? __builtin_ctzll(x) : cnl::digits<unsigned long long>::value;
+        return x ? __builtin_ctzll(x) : cnl::digits<unsigned long long>;
     }
 
 #endif
@@ -171,7 +171,7 @@ namespace cnl {
     template<typename T>
     CNL_NODISCARD constexpr int countr_zero(T x)
     {
-        return x ? _bit_impl::countr_zero(x) : cnl::digits<T>::value;
+        return x ? _bit_impl::countr_zero(x) : cnl::digits<T>;
     }
 
     // countr_one - count 1-bits to the right
@@ -241,7 +241,7 @@ namespace cnl {
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
-        return x ? static_cast<T>(T{1} << (digits<T>::value - countl_zero(T(x - T(1))))) : T{0};
+        return x ? static_cast<T>(T{1} << (digits<T> - countl_zero(T(x - T(1))))) : T{0};
     }
 
     // floor2 - greatest power of 2 no greater than x
@@ -250,7 +250,7 @@ namespace cnl {
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
-        return x ? static_cast<T>(T{1} << (digits<T>::value - 1 - countl_zero(x))) : T{0};
+        return x ? static_cast<T>(T{1} << (digits<T> - 1 - countl_zero(x))) : T{0};
     }
 
     // log2p1 - one plus log2(x)
@@ -259,7 +259,7 @@ namespace cnl {
     {
         static_assert(_bit_impl::is_integral_unsigned<T>(), "T must be unsigned integer");
 
-        return digits<T>::value - countl_zero(x);
+        return digits<T> - countl_zero(x);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -339,7 +339,7 @@ namespace cnl {
     template<typename T>
     CNL_NODISCARD constexpr int countr_used(T x)
     {
-        return digits<T>::value - countl_rb(x);
+        return digits<T> - countl_rb(x);
     }
 
 }

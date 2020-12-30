@@ -48,7 +48,7 @@ namespace {
             CNL_NODISCARD constexpr auto multiply(Operand a, Operand b)
             {
                 // Get the number of digits in the input type.
-                CNL_NODISCARD constexpr auto operand_digits = digits_v<Operand>;
+                CNL_NODISCARD constexpr auto operand_digits = digits<Operand>;
 
                 // Results of multiplication contain twice the number of digits.
                 CNL_NODISCARD constexpr auto result_digits = operand_digits * 2;

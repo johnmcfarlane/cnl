@@ -146,11 +146,11 @@ namespace sample5 {
 namespace determining {
     using cnl::digits;
 
-    static_assert(digits<uint16_t>::value == 16, "the digits of uint16_t is exactly 16 bits");
-    static_assert(digits<long long>::value >= 63, "long long has a digits of at least 64 bits");
-    static_assert(digits<long>::value >= digits<short>::value, "short is no longer than long");
+    static_assert(digits<uint16_t> == 16, "the digits of uint16_t is exactly 16 bits");
+    static_assert(digits<long long> >= 63, "long long has a digits of at least 64 bits");
+    static_assert(digits<long> >= digits<short>, "short is no longer than long");
     // NOLINTNEXTLINE(misc-redundant-expression)
-    static_assert(digits<wchar_t>::value >= digits<char>::value, "a wide character is at least as wide as a character");
+    static_assert(digits<wchar_t> >= digits<char>, "a wide character is at least as wide as a character");
 }
 
 namespace specifiying {
@@ -170,5 +170,5 @@ namespace specifiying {
                     || is_same<set_digits_t<char, 63>, uint64_t>::value,
             "char may or may not be signed so the result may be uint64_t or int64_t");
     static_assert(
-            digits<set_digits_t<int, 10>>::value >= 10, "result must be at least 10 bits wide");
+            digits<set_digits_t<int, 10>> >= 10, "result must be at least 10 bits wide");
 }

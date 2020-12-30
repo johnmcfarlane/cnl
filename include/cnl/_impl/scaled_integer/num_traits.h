@@ -19,8 +19,7 @@ namespace cnl {
     // scaled_integer specializations of <num_traits.h> templates
 
     template<typename Rep, class Scale>
-    struct digits<scaled_integer<Rep, Scale>> : digits<Rep> {
-    };
+    inline constexpr auto digits<scaled_integer<Rep, Scale>> = digits<Rep>;
 
     template<typename Rep, class Scale, int MinNumBits>
     struct set_digits<scaled_integer<Rep, Scale>, MinNumBits> {
@@ -57,7 +56,7 @@ namespace cnl {
                   scaled_integer<
                           set_digits_t<
                                   int, _impl::max(
-                                               digits<int>::value,
+                                               digits<int>,
                                                _impl::used_digits(Value) - trailing_bits(Value))>,
                           power<trailing_bits(Value)>>,
                   constant<Value>> {
@@ -69,9 +68,7 @@ namespace cnl {
 
     namespace _impl {
         template<typename Rep, int Exponent, int Radix>
-        struct fractional_digits<scaled_integer<Rep, power<Exponent, Radix>>>
-            : std::integral_constant<int, -Exponent> {
-        };
+        inline constexpr auto fractional_digits<scaled_integer<Rep, power<Exponent, Radix>>> = -Exponent;
     }
 }
 

@@ -1330,7 +1330,7 @@ namespace test_quotient {
     static_assert(
             identical(
                     scaled_integer<
-                            cnl::set_digits_t<int32, cnl::digits<int32>::value + 2>,
+                            cnl::set_digits_t<int32, cnl::digits<int32> + 2>,
                             cnl::power<-18>>{321LL},
                     cnl::quotient(
                             cnl::scaled_integer<int32, cnl::power<-16>>{963}, cnl::constant<3>{})),
