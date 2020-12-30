@@ -10,8 +10,9 @@
 #include "../num_traits/adopt_width.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/set_rep.h"
-#include "../type_traits/type_identity.h"
 #include "declaration.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
@@ -19,7 +20,7 @@ namespace cnl {
     /// \headerfile cnl/elastic_integer.h
     template<int Digits, typename Narrowest, typename Rep>
     struct set_rep<elastic_integer<Digits, Narrowest>, Rep>
-        : _impl::type_identity<elastic_integer<Digits, _impl::adopt_width_t<Rep, Narrowest>>> {
+        : std::type_identity<elastic_integer<Digits, _impl::adopt_width_t<Rep, Narrowest>>> {
     };
 }
 

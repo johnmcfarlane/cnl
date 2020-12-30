@@ -52,7 +52,7 @@ namespace cnl {
     struct set_rep<
             _impl::number<NumberRep, NumberTag>, Rep,
             _impl::enable_if_t<!_impl::is_number<Rep>>>
-        : _impl::type_identity<_impl::number<Rep, NumberTag>> {
+        : std::type_identity<_impl::number<Rep, NumberTag>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -60,7 +60,7 @@ namespace cnl {
 
     template<typename NumberRep, overflow_tag NumberTag, tag Tag>
     struct set_tag<_impl::number<NumberRep, NumberTag>, Tag>
-        : _impl::type_identity<_impl::number<NumberRep, Tag>> {
+        : std::type_identity<_impl::number<NumberRep, Tag>> {
     };
 }
 

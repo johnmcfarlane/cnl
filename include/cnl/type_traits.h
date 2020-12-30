@@ -14,7 +14,6 @@
 #include "_impl/type_traits/enable_if.h"
 #include "_impl/type_traits/is_integral.h"
 #include "_impl/type_traits/remove_cvref.h"
-#include "_impl/type_traits/type_identity.h"
 
 #include <type_traits>
 
@@ -29,8 +28,8 @@ namespace cnl {
 
     using _impl::remove_cvref_t;
 
-    using _impl::type_identity;
-    using _impl::type_identity_t;
+    using std::type_identity;
+    using std::type_identity_t;
 }
 
 #endif  // CNL_TYPE_TRAITS_H

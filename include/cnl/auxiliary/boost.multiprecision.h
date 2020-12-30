@@ -227,11 +227,11 @@ namespace cnl {
     };
 
     template<class Backend>
-    struct rounding<_bmp::number<Backend>> : _impl::type_identity<native_rounding_tag> {
+    struct rounding<_bmp::number<Backend>> : std::type_identity<native_rounding_tag> {
     };
 
     template<class Backend>
-    struct rep_of<_bmp::number<Backend>> : _impl::type_identity<Backend> {
+    struct rep_of<_bmp::number<Backend>> : std::type_identity<Backend> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////

@@ -8,13 +8,14 @@
 #define CNL_IMPL_NUMBER_SET_TAG_H
 
 #include "../num_traits/set_tag.h"
-#include "../type_traits/type_identity.h"
 #include "declaration.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     template<typename Rep, class OutTag>
-    struct set_tag<_impl::number<Rep>, OutTag> : _impl::type_identity<_impl::number<Rep, OutTag>> {
+    struct set_tag<_impl::number<Rep>, OutTag> : std::type_identity<_impl::number<Rep, OutTag>> {
     };
 }
 

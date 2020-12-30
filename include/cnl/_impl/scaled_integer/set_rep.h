@@ -8,14 +8,15 @@
 #define CNL_IMPL_SCALED_INTEGER_SET_REP_H
 
 #include "../num_traits/set_rep.h"
-#include "../type_traits/type_identity.h"
 #include "declaration.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     template<typename InRep, class Scale, typename OutRep>
     struct set_rep<scaled_integer<InRep, Scale>, OutRep>
-        : _impl::type_identity<scaled_integer<OutRep, Scale>> {
+        : std::type_identity<scaled_integer<OutRep, Scale>> {
     };
 }
 

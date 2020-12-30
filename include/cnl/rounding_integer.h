@@ -18,9 +18,9 @@
 #include "_impl/rounding/convert_operator.h"
 #include "_impl/rounding/is_rounding_tag.h"
 #include "_impl/rounding/nearest_rounding_tag.h"
-#include "_impl/type_traits/type_identity.h"
 
 #include <ostream>
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
@@ -39,7 +39,7 @@ namespace cnl {
 
     template<typename Rep, rounding_tag Tag>
     struct rounding<_impl::number<Rep, Tag>>
-        : _impl::type_identity<Tag> {
+        : std::type_identity<Tag> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -49,7 +49,7 @@ namespace cnl {
     struct set_rounding<
             Number, Tag,
             _impl::enable_if_t<is_composite<Number>::value && !_impl::is_number<Number>>>
-        : _impl::type_identity<
+        : std::type_identity<
                   _impl::set_rep_t<Number, set_rounding_t<_impl::rep_of_t<Number>, Tag>>> {
     };
 
@@ -78,7 +78,7 @@ namespace cnl {
     struct set_rep<
             _impl::number<NumberRep, NumberTag>, Rep,
             _impl::enable_if_t<!_impl::is_number<Rep>>>
-        : _impl::type_identity<_impl::number<Rep, NumberTag>> {
+        : std::type_identity<_impl::number<Rep, NumberTag>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +86,7 @@ namespace cnl {
 
     template<typename NumberRep, rounding_tag NumberTag, tag Tag>
     struct set_tag<_impl::number<NumberRep, NumberTag>, Tag>
-        : _impl::type_identity<_impl::number<NumberRep, Tag>> {
+        : std::type_identity<_impl::number<NumberRep, Tag>> {
     };
 }
 

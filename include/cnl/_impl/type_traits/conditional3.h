@@ -8,7 +8,8 @@
 #define CNL_IMPL_TYPE_TRAITS_CONDITIONAL3_H
 
 #include "../polarity.h"
-#include "type_identity.h"
+
+#include <type_traits>
 
 namespace cnl {
     namespace _impl {
@@ -19,17 +20,17 @@ namespace cnl {
 
         template<int Value, typename Positive, typename Zero, typename Negative>
         struct conditional3<Value, Positive, Zero, Negative, polarity::neutral>
-            : type_identity<Zero> {
+            : std::type_identity<Zero> {
         };
 
         template<int Value, typename Positive, typename Zero, typename Negative>
         struct conditional3<Value, Positive, Zero, Negative, polarity::negative>
-            : type_identity<Negative> {
+            : std::type_identity<Negative> {
         };
 
         template<int Value, typename Positive, typename Zero, typename Negative>
         struct conditional3<Value, Positive, Zero, Negative, polarity::positive>
-            : type_identity<Positive> {
+            : std::type_identity<Positive> {
         };
 
         template<int Value, typename Positive, typename Zero, typename Negative>

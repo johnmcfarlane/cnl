@@ -8,13 +8,14 @@
 #define CNL_IMPL_NUMBER_TAG_OF_H
 
 #include "../num_traits/tag_of.h"
-#include "../type_traits/type_identity.h"
 #include "declaration.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     template<typename Rep, tag Tag>
-    struct tag_of<_impl::number<Rep, Tag>> : _impl::type_identity<Tag> {
+    struct tag_of<_impl::number<Rep, Tag>> : std::type_identity<Tag> {
     };
 }
 

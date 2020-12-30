@@ -8,7 +8,6 @@
 #define CNL_IMPL_DUPLEX_INTEGER_ROUNDING_H
 
 #include "../num_traits/rounding.h"
-#include "../type_traits/type_identity.h"
 #include "forward_declaration.h"
 
 #include <type_traits>
@@ -17,7 +16,7 @@
 namespace cnl {
     template<typename Upper, typename Lower>
     struct rounding<_impl::duplex_integer<Upper, Lower>>
-        : _impl::type_identity<native_rounding_tag> {
+        : std::type_identity<native_rounding_tag> {
         static_assert(
                 std::is_same<rounding_t<Upper>, native_rounding_tag>::value,
                 "This type can only be specialized with integers that have int-like rounding "

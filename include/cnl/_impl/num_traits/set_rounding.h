@@ -9,9 +9,10 @@
 
 #include "../type_traits/enable_if.h"
 #include "../type_traits/remove_cvref.h"
-#include "../type_traits/type_identity.h"
 #include "is_composite.h"
 #include "rounding.h"
+
+#include <type_traits>
 
 namespace cnl {
     /// \brief given a numeric type, defines member `type` as the equivalent type with the given
@@ -25,7 +26,7 @@ namespace cnl {
     template<typename Number>
     struct set_rounding<
             Number, rounding_t<Number>, _impl::enable_if_t<!is_composite<Number>::value>>
-        : _impl::type_identity<Number> {
+        : std::type_identity<Number> {
     };
 
     template<typename Number, rounding_tag RoundingTag>

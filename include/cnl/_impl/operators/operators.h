@@ -11,7 +11,6 @@
 #define CNL_IMPL_OPERATORS_OPERATORS_H
 
 #include "../config.h"
-#include "../type_traits/type_identity.h"
 
 #include <type_traits>
 
@@ -339,22 +338,22 @@ namespace cnl {
         struct pre_to_assign;
 
         template<>
-        struct pre_to_assign<pre_increment_op> : type_identity<assign_add_op> {
+        struct pre_to_assign<pre_increment_op> : std::type_identity<assign_add_op> {
         };
 
         template<>
-        struct pre_to_assign<pre_decrement_op> : type_identity<assign_subtract_op> {
+        struct pre_to_assign<pre_decrement_op> : std::type_identity<assign_subtract_op> {
         };
 
         template<class Operator>
         struct post_to_assign;
 
         template<>
-        struct post_to_assign<post_increment_op> : type_identity<assign_add_op> {
+        struct post_to_assign<post_increment_op> : std::type_identity<assign_add_op> {
         };
 
         template<>
-        struct post_to_assign<post_decrement_op> : type_identity<assign_subtract_op> {
+        struct post_to_assign<post_decrement_op> : std::type_identity<assign_subtract_op> {
         };
     }
 }

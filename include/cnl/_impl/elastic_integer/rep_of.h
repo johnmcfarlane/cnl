@@ -18,7 +18,7 @@ namespace cnl {
     /// \headerfile cnl/elastic_integer.h
     template<int Digits, typename Narrowest>
     struct rep_of<elastic_integer<Digits, Narrowest>>
-        : _impl::type_identity<typename elastic_tag<Digits, Narrowest>::_rep> {
+        : std::type_identity<typename elastic_tag<Digits, Narrowest>::_rep> {
     };
 }
 

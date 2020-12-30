@@ -9,7 +9,6 @@
 
 #include "../operators/generic.h"
 #include "../polarity.h"
-#include "../type_traits/type_identity.h"
 #include "builtin_overflow.h"
 #include "is_overflow.h"
 #include "is_overflow_tag.h"
@@ -26,17 +25,17 @@ namespace cnl {
 
         template<tag OverflowTag, tag Tag>
         requires(_impl::is_overflow_tag<OverflowTag>::value && !_impl::is_overflow_tag<Tag>::value) struct common_overflow_tag<OverflowTag, Tag>
-            : type_identity<OverflowTag> {
+            : std::type_identity<OverflowTag> {
         };
 
         template<tag Tag, tag OverflowTag>
         requires(!_impl::is_overflow_tag<Tag>::value && _impl::is_overflow_tag<OverflowTag>::value) struct common_overflow_tag<Tag, OverflowTag>
-            : type_identity<OverflowTag> {
+            : std::type_identity<OverflowTag> {
         };
 
         template<overflow_tag OverflowTag>
         struct common_overflow_tag<OverflowTag, OverflowTag>
-            : type_identity<OverflowTag> {
+            : std::type_identity<OverflowTag> {
         };
 
         template<tag Tag1, tag Tag2>
