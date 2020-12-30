@@ -9,8 +9,9 @@
 
 #include "../num_traits/adopt_width.h"
 #include "../num_traits/set_tag.h"
-#include "../type_traits/type_identity.h"
 #include "declaration.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
@@ -18,7 +19,7 @@ namespace cnl {
     /// \headerfile cnl/elastic_integer.h
     template<int Digits, typename Narrowest, int NewDigits, typename NewNarrowest>
     struct set_tag<elastic_integer<Digits, Narrowest>, elastic_tag<NewDigits, NewNarrowest>>
-        : _impl::type_identity<
+        : std::type_identity<
                   elastic_integer<NewDigits, _impl::adopt_width_t<NewNarrowest, Narrowest>>> {
     };
 }

@@ -8,14 +8,15 @@
 #define CNL_IMPL_WIDE_INTEGER_SET_DIGITS_H
 
 #include "../num_traits/set_digits.h"
-#include "../type_traits/type_identity.h"
 #include "definition.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     template<int FromDigits, class Rep, int ToDigits>
     struct set_digits<wide_integer<FromDigits, Rep>, ToDigits>
-        : _impl::type_identity<wide_integer<ToDigits, Rep>> {
+        : std::type_identity<wide_integer<ToDigits, Rep>> {
     };
 }
 

@@ -8,14 +8,15 @@
 #define CNL_IMPL_NUMBER_SET_REP_H
 
 #include "../num_traits/set_rep.h"
-#include "../type_traits/type_identity.h"
 #include "definition.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     // when an _impl::number wraps a non-_impl::number
     template<typename NumberRep, typename Rep>
-    struct set_rep<_impl::number<NumberRep>, Rep> : _impl::type_identity<_impl::number<Rep>> {
+    struct set_rep<_impl::number<NumberRep>, Rep> : std::type_identity<_impl::number<Rep>> {
     };
 
     // when one _impl::number wraps a dissimilar _impl::number
@@ -24,7 +25,7 @@ namespace cnl {
             _impl::number<ArchetypeRep, ArchetypeTag>, Rep,
             _impl::enable_if_t<
                     !_impl::can_convert_tag_family<ArchetypeTag, _impl::tag_of_t<Rep>>::value>>
-        : _impl::type_identity<_impl::number<Rep, ArchetypeTag>> {
+        : std::type_identity<_impl::number<Rep, ArchetypeTag>> {
     };
 
     // when one _impl::number is converted to a similar _impl::number
@@ -33,7 +34,7 @@ namespace cnl {
             _impl::number<ArchetypeRep, ArchetypeTag>, Rep,
             _impl::enable_if_t<
                     _impl::can_convert_tag_family<ArchetypeTag, _impl::tag_of_t<Rep>>::value>>
-        : _impl::type_identity<Rep> {
+        : std::type_identity<Rep> {
     };
 }
 

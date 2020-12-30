@@ -8,13 +8,14 @@
 #define CNL_IMPL_DUPLEX_INTEGER_REP_OF_H
 
 #include "../num_traits/to_rep.h"
-#include "../type_traits/type_identity.h"
 #include "forward_declaration.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     template<typename Upper, typename Lower>
-    struct rep_of<_impl::duplex_integer<Upper, Lower>> : _impl::type_identity<Upper> {
+    struct rep_of<_impl::duplex_integer<Upper, Lower>> : std::type_identity<Upper> {
     };
 
     template<typename UpperUpper, typename UpperLower, typename Lower>

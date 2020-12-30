@@ -10,7 +10,6 @@
 #include "../num_traits/is_composite.h"
 #include "../num_traits/rep_of.h"
 #include "../num_traits/set_rep.h"
-#include "../type_traits/type_identity.h"
 #include "enable_if.h"
 
 #include <type_traits>
@@ -48,7 +47,7 @@ namespace cnl {
 
     template<typename T>
     struct remove_signedness<T, _impl::enable_if_t<is_composite<T>::value>>
-        : _impl::type_identity<_impl::set_rep_t<T, remove_signedness_t<_impl::rep_of_t<T>>>> {
+        : std::type_identity<_impl::set_rep_t<T, remove_signedness_t<_impl::rep_of_t<T>>>> {
     };
 }
 

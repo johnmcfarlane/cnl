@@ -9,14 +9,15 @@
 
 #include "../num_traits/set_digits.h"
 #include "../num_traits/tag.h"
-#include "../type_traits/type_identity.h"
 #include "definition.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     template<typename Rep, tag Tag, int Digits>
     struct set_digits<_impl::number<Rep, Tag>, Digits>
-        : _impl::type_identity<_impl::number<set_digits_t<Rep, Digits>, Tag>> {
+        : std::type_identity<_impl::number<set_digits_t<Rep, Digits>, Tag>> {
     };
 }
 

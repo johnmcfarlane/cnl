@@ -11,7 +11,8 @@
 #include "../rounding/nearest_rounding_tag.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
-#include "../type_traits/type_identity.h"
+
+#include <type_traits>
 
 namespace cnl {
     /// \brief given a numeric type, defines member `type` as its rounding mode
@@ -28,7 +29,7 @@ namespace cnl {
 
     template<_impl::integral Number>
     struct rounding<Number>
-        : _impl::type_identity<native_rounding_tag> {
+        : std::type_identity<native_rounding_tag> {
     };
 
     /// \brief helper alias of \ref cnl::rounding

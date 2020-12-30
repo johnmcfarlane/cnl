@@ -9,9 +9,10 @@
 
 #include "../num_traits/set_tag.h"
 #include "../type_traits/enable_if.h"
-#include "../type_traits/type_identity.h"
 #include "../wide_tag/is_wide_tag.h"
 #include "definition.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
@@ -19,7 +20,7 @@ namespace cnl {
     struct set_tag<
             _impl::number<NumberRep, NumberTag>, Tag,
             _impl::enable_if_t<_impl::is_wide_tag<Tag>::value>>
-        : _impl::type_identity<_impl::number<typename Tag::rep, Tag>> {
+        : std::type_identity<_impl::number<typename Tag::rep, Tag>> {
     };
 }
 
