@@ -24,19 +24,19 @@ namespace cnl {
         inline constexpr auto wants_generic_ops<Number> = true;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::number_depth
+        // cnl::_impl::composition_depth
 
-        template<class Wrapper, bool IsComposite = is_composite<Wrapper>::value>
-        struct number_depth;
+        template<class Number, bool IsComposite = is_composite<Number>::value>
+        struct composition_depth;
 
-        template<class Wrapper>
-        struct number_depth<Wrapper, true> {
-            using _rep = _impl::rep_of_t<Wrapper>;
-            static constexpr auto value = number_depth<_rep>::value + 1;
+        template<class Number>
+        struct composition_depth<Number, true> {
+            using _rep = _impl::rep_of_t<Number>;
+            static constexpr auto value = composition_depth<_rep>::value + 1;
         };
 
         template<class T>
-        struct number_depth<T, false> : std::integral_constant<int, 0> {
+        struct composition_depth<T, false> : std::integral_constant<int, 0> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ namespace cnl {
             : std::integral_constant<
                       bool, can_be_wrapped_by_number<Rep>::value
                                     && can_be_number_wrapper<Wrapper> && !is_same_number_wrapper<Wrapper, Rep>::value
-                                    && (number_depth<Rep>::value < number_depth<Wrapper>::value)> {
+                                    && (composition_depth<Rep>::value < composition_depth<Wrapper>::value)> {
         };
     }
 }
