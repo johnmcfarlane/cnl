@@ -78,37 +78,37 @@ namespace {
     namespace test_divide {
         using namespace cnl::literals;
 
-#if defined(__clang__) && defined(CNL_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED)
         static_assert(
                 identical(
-                        cnl::static_integer<226>(
+                        cnl::static_integer<225>(
                                 3333333333333333333333333333333333333333333333333333333333333333333_wide),
                         cnl::make_static_integer(
                                 10000000000000000000000000000000000000000000000000000000000000000000_wide)
                                 / 3));
 
+#if defined(__clang__)
         static_assert(
                 identical(
-                        cnl::static_integer<260>(
+                        cnl::static_integer<258>(
                                 33333333333333333333333333333333333333333333333333333333333333333333333333333_wide),
                         cnl::make_static_integer(
                                 100000000000000000000000000000000000000000000000000000000000000000000000000000_wide)
                                 / 3));
+#endif
 #endif
     }
 
     namespace test_shift_left {
         using namespace cnl::literals;
 
-#if defined(__GNUG__) && !defined(__clang__) && __GNUG__ <= 5
-        TEST(static_integer, divide)  // NOLINT
+        TEST(static_integer, shift_left)  // NOLINT
         {
             auto expected = cnl::make_static_integer(
                     231584178474632390847141970017375815706539969331281128078915168015826259279872_wide);
             auto actual = cnl::static_integer<260>{1} << 257;
             ASSERT_EQ(expected, actual);
         }
-#endif
     }
 
     namespace test_shift_right_native {
