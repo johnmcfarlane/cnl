@@ -46,7 +46,7 @@ namespace {
         using namespace cnl::literals;
         constexpr auto n = 34_elastic;
 
-        static_assert(n == 34, "n now has the value, 1536");
+        static_assert(n == 34);
         static_assert(
                 std::is_same<decltype(n), elastic_scaled_integer<5, 1> const>::value,
                 "type only uses 1 bit of range");
