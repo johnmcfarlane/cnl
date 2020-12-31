@@ -13,7 +13,7 @@ namespace {
 
     namespace test_arithmetic {
         static_assert(
-                cnl::_impl::is_homogeneous_operator_tag<cnl::undefined_overflow_tag>::value);
+                cnl::_impl::homogeneous_operator_tag<cnl::undefined_overflow_tag>);
         static_assert(
                 cnl::_impl::enable_binary<
                         cnl::undefined_overflow_tag, cnl::undefined_overflow_tag>::value);
