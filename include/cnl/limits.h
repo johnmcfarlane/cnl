@@ -10,7 +10,8 @@
 #if !defined(CNL_LIMITS_H)
 #define CNL_LIMITS_H
 
-#include "cstdint.h"
+#include "_impl/config.h"
+#include "_impl/cstdint/types.h"
 
 #include <climits>
 #include <limits>

@@ -8,7 +8,7 @@
 #define CNL_IMPL_NUM_TRAITS_FROM_VALUE
 
 #include "../../constant.h"
-
+#include "../common.h"
 #include "../type_traits/add_signedness.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"

@@ -10,7 +10,9 @@
 #if !defined(CNL_CONSTANT_H)
 #define CNL_CONSTANT_H
 
-#include "_impl/assert.h"
+#include "_impl/config.h"
+#include "_impl/num_traits/digits.h"
+#include "_impl/type_traits/is_signed.h"
 #include "cstdint.h"
 #include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
 
@@ -149,6 +151,19 @@ namespace cnl {
             return {};
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // numeric traits
+
+    template<auto Value>
+    inline constexpr int digits<constant<Value>> = _impl::used_digits((Value < 0) ? -Value : Value);
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // type traits
+
+    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct is_signed<constant<Value>> : is_signed<decltype(Value)> {
+    };
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::numeric_limits<cnl::constant>

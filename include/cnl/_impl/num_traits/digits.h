@@ -10,8 +10,6 @@
 #if !defined(CNL_IMPL_NUM_TRAITS_DIGITS)
 #define CNL_IMPL_NUM_TRAITS_DIGITS
 
-#include "../../constant.h"
-#include "../../cstdint.h"
 #include "../type_traits/is_integral.h"
 #include "../type_traits/is_signed.h"
 #include "../used_digits.h"
@@ -38,9 +36,6 @@ namespace cnl {
 
     template<_impl::integral Integer>
     inline constexpr int digits<Integer> = _impl::fundamental_digits<Integer>;
-
-    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    inline constexpr int digits<constant<Value>> = _impl::used_digits((Value < 0) ? -Value : Value);
 
     namespace _impl {
         // cnl::_impl::fractional_digits

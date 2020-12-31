@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_TYPE_TRAITS_IS_SIGNED)
 #define CNL_IMPL_TYPE_TRAITS_IS_SIGNED
 
-#include "../../constant.h"
-#include "../../cstdint.h"
+#include "../config.h"
+#include "../cstdint/types.h"
 #include "../num_traits/is_composite.h"
 #include "../num_traits/rep_of.h"
 #include "enable_if.h"
@@ -84,10 +84,6 @@ namespace cnl {
     };
     template<>
     struct is_signed<long double> : std::true_type {
-    };
-
-    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct is_signed<constant<Value>> : is_signed<decltype(Value)> {
     };
 
     template<typename T>
