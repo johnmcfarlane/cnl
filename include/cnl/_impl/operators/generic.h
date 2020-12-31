@@ -25,7 +25,7 @@ namespace cnl {
         // cnl::_impl::wants_generic_ops
 
         // true iff T wants generic operator overloads
-        template<class T, class Enable = void>
+        template<class T>
         inline constexpr auto wants_generic_ops = false;
 
         ////////////////////////////////////////////////////////////////////////////////

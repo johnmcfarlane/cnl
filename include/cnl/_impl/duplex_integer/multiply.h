@@ -15,7 +15,6 @@
 #include "numeric_limits.h"
 #include "set_width.h"
 #include "type.h"
-#include "wants_generic_ops.h"
 
 /// compositional numeric library
 namespace cnl {
