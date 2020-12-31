@@ -45,6 +45,12 @@ namespace {
         ASSERT_EQ(-6, b) << "cnl::wide_integer pre-increment";
     }
 
+    namespace test_max_digits {
+        static_assert(identical(
+                0x7fffffff,
+                cnl::_impl::max_digits<cnl::wide_integer<0>>));
+    }
+
     namespace test_add {
         static_assert(
                 identical(
