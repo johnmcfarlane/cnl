@@ -32,7 +32,7 @@
 namespace cnl {
     namespace _impl {
         // default_binary_operator
-        template<class Operator, typename Upper, typename Lower>
+        template<binary_op Operator, typename Upper, typename Lower>
         struct default_binary_operator {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
@@ -46,7 +46,7 @@ namespace cnl {
         };
 
         // add_op and subtract_op
-        template<class Operator, typename Upper, typename Lower>
+        template<binary_op Operator, typename Upper, typename Lower>
         struct first_degree_binary_operator {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
@@ -106,7 +106,7 @@ namespace cnl {
     };
 
     // binary_operator
-    template<class Operator, typename Upper, typename Lower, typename Rhs>
+    template<_impl::binary_op Operator, typename Upper, typename Lower, typename Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, _impl::duplex_integer<Upper, Lower>,
             Rhs>
@@ -151,7 +151,7 @@ namespace cnl {
     };
 
     template<
-            typename Operator, typename LhsUpper, typename LhsLower, typename RhsUpper,
+            _impl::comparison_op Operator, typename LhsUpper, typename LhsLower, typename RhsUpper,
             typename RhsLower>
     struct comparison_operator<
             Operator, _impl::duplex_integer<LhsUpper, LhsLower>,

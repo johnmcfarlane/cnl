@@ -193,7 +193,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::numeric_limits<int>::max(),
-                        cnl::binary_operator<
+                        cnl::shift_operator<
                                 cnl::_impl::shift_left_op, cnl::saturated_overflow_tag,
                                 cnl::saturated_overflow_tag, std::uint8_t, unsigned>{}(
                                 std::uint8_t{255}, 30U)));

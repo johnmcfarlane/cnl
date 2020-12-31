@@ -13,7 +13,7 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<class Operation, int LhsDigits, bool LhsIsSigned, int RhsDigits, bool RhsIsSigned>
+        template<binary_op Operation, int LhsDigits, bool LhsIsSigned, int RhsDigits, bool RhsIsSigned>
         struct policy;
 
         template<int LhsDigits, bool LhsIsSigned, int RhsDigits, bool RhsIsSigned>

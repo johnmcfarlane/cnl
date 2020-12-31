@@ -17,7 +17,7 @@
 namespace cnl {
     namespace _impl {
         template<
-                class Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits,
+                binary_op Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits,
                 typename RhsNarrowest>
         struct wide_tag_overload_params {
             static constexpr bool is_signed{

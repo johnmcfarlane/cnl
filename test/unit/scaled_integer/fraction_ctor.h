@@ -19,7 +19,7 @@
 namespace {
     using cnl::_impl::identical;
 
-    template<class Op, typename Lhs, typename Rhs>
+    template<cnl::_impl::binary_op Op, typename Lhs, typename Rhs>
     struct sum_digits {
         using result_type = decltype(Op{}(std::declval<Lhs>(), std::declval<Rhs>()));
         using type = cnl::set_digits_t<
@@ -28,7 +28,7 @@ namespace {
                                      cnl::digits<Lhs> + cnl::digits<Rhs>)>;
     };
 
-    template<class Op, typename Lhs, typename Rhs = Lhs>
+    template<cnl::_impl::binary_op Op, typename Lhs, typename Rhs = Lhs>
     using sum_digits_t = typename sum_digits<Op, Lhs, Rhs>::type;
 
     template<typename Lhs = test_int, typename Rhs = Lhs>

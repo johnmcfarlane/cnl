@@ -37,12 +37,12 @@ namespace cnl {
         };
     }
 
-    template<class Operator, typename Operand>
+    template<_impl::unary_op Operator, typename Operand>
     struct unary_operator<Operator, tie_to_pos_inf_rounding_tag, Operand>
         : unary_operator<Operator, _impl::native_tag, Operand> {
     };
 
-    template<class Operator, typename Lhs, typename Rhs>
+    template<_impl::binary_op Operator, typename Lhs, typename Rhs>
     struct binary_operator<
             Operator, tie_to_pos_inf_rounding_tag, tie_to_pos_inf_rounding_tag, Lhs, Rhs>
         : Operator {
@@ -73,15 +73,15 @@ namespace cnl {
         }
     };
 
-    template<class Operator, tag RhsTag, typename Lhs, typename Rhs>
+    template<_impl::shift_op Operator, tag RhsTag, typename Lhs, typename Rhs>
     struct shift_operator<Operator, tie_to_pos_inf_rounding_tag, RhsTag, Lhs, Rhs> : Operator {
     };
 
-    template<class Operator, typename Rhs>
+    template<_impl::pre_op Operator, typename Rhs>
     struct pre_operator<Operator, tie_to_pos_inf_rounding_tag, Rhs> : Operator {
     };
 
-    template<class Operator, typename Rhs>
+    template<_impl::post_op Operator, typename Rhs>
     struct post_operator<Operator, tie_to_pos_inf_rounding_tag, Rhs> : Operator {
     };
 }

@@ -12,6 +12,7 @@
 
 #include "../config.h"
 #include "../num_traits/tag.h"
+#include "operators.h"
 
 #include <type_traits>
 
@@ -39,30 +40,30 @@ namespace cnl {
             typename Enabled = void>
     struct convert_operator;
 
-    template<class Operator, tag RhsTag, typename Rhs, class Enabled = void>
+    template<_impl::unary_op Operator, tag RhsTag, typename Rhs, class Enabled = void>
     struct unary_operator;
 
     template<
-            class Operator, tag LhsTag, tag RhsTag, typename Lhs, typename Rhs,
+            _impl::binary_op Operator, tag LhsTag, tag RhsTag, typename Lhs, typename Rhs,
             class Enabled = void>
     struct binary_operator;
 
     template<
-            class Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,
+            _impl::shift_op Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,
             class Enable = void>
     struct shift_operator;
 
-    template<class Operator, class LhsOperand, class RhsOperand, class Enable = void>
+    template<_impl::comparison_op Operator, class LhsOperand, class RhsOperand, class Enable = void>
     struct comparison_operator;
 
-    template<class Operator, tag RhsTag, class RhsOperand, class Enable = void>
+    template<_impl::pre_op Operator, tag RhsTag, class RhsOperand, class Enable = void>
     struct pre_operator;
 
-    template<class Operator, tag LhsTag, class LhsOperand, class Enable = void>
+    template<_impl::post_op Operator, tag LhsTag, class LhsOperand, class Enable = void>
     struct post_operator;
 
     template<
-            class Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,
+            _impl::assign_op Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,
             class Enable = void>
     struct compound_assignment_operator {
         constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
@@ -77,7 +78,7 @@ namespace cnl {
     };
 
     template<
-            class Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,
+            _impl::assign_shift_op Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,
             class Enable = void>
     struct compound_assignment_shift_operator {
         constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const

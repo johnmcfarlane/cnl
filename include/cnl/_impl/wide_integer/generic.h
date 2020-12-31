@@ -17,7 +17,7 @@
 /// compositional numeric library
 namespace cnl {
     template<
-            class Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits,
+            _impl::comparison_op Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits,
             typename RhsNarrowest>
     struct comparison_operator<
             Operator, wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>,

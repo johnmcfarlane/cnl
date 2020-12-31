@@ -40,32 +40,8 @@ namespace cnl {
         : convert_operator<_impl::native_tag, _impl::native_tag, Destination, Source> {
     };
 
-    namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // operate_params
-
-        template<
-                class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits,
-                class RhsNarrowest>
-        struct operate_params {
-            using policy = typename _impl::policy<
-                    Operator, LhsDigits, numeric_limits<LhsNarrowest>::is_signed, LhsDigits,
-                    numeric_limits<RhsNarrowest>::is_signed>;
-
-            using lhs_rep = typename elastic_tag<LhsDigits, LhsNarrowest>::_rep;
-            using rhs_rep = typename elastic_tag<RhsDigits, RhsNarrowest>::_rep;
-            using rep_result = typename _impl::op_result<Operator, lhs_rep, rhs_rep>;
-
-            static constexpr int narrowest_width =
-                    _impl::max(width<LhsNarrowest>::value, width<RhsNarrowest>::value);
-            using narrowest = set_digits_t<
-                    _impl::set_signedness_t<rep_result, policy::is_signed>,
-                    narrowest_width - policy::is_signed>;
-        };
-    }
-
     template<
-            class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
+            _impl::binary_op Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
             typename Lhs, typename Rhs>
     struct binary_operator<
             Operator, elastic_tag<LhsDigits, LhsNarrowest>, elastic_tag<RhsDigits, RhsNarrowest>,
@@ -85,7 +61,7 @@ namespace cnl {
     };
 
     // shift_operator of scaled_integer and scaled_integer
-    template<class Operator, int LhsDigits, typename LhsNarrowest, typename Lhs, typename Rhs>
+    template<_impl::shift_op Operator, int LhsDigits, typename LhsNarrowest, typename Lhs, typename Rhs>
     struct shift_operator<
             Operator, elastic_tag<LhsDigits, LhsNarrowest>, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<!_impl::is_constant<Rhs>::value>> {
@@ -97,7 +73,7 @@ namespace cnl {
 
     // shift_operator of scaled_integer and something else
     template<
-            class Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits,
+            _impl::shift_op Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits,
             typename RhsNarrowest, typename Lhs, typename Rhs>
     struct shift_operator<
             Operator, elastic_tag<LhsDigits, LhsNarrowest>, elastic_tag<RhsDigits, RhsNarrowest>,
@@ -106,11 +82,11 @@ namespace cnl {
                   Operator, elastic_tag<LhsDigits, LhsNarrowest>, _impl::native_tag, Lhs, Rhs> {
     };
 
-    template<int Digits, class Narrowest, class Operator, typename Rhs>
+    template<int Digits, class Narrowest, _impl::pre_op Operator, typename Rhs>
     struct pre_operator<elastic_tag<Digits, Narrowest>, Operator, Rhs> : Operator {
     };
 
-    template<int Digits, class Narrowest, class Operator, typename Rhs>
+    template<int Digits, class Narrowest, _impl::pre_op Operator, typename Rhs>
     struct post_operator<elastic_tag<Digits, Narrowest>, Operator, Rhs> : Operator {
     };
 }
