@@ -77,7 +77,7 @@ namespace cnl {
         CNL_NODISCARD constexpr int parse_bin_char(char c)
         {
             return (c == '0') ? 0 : (c == '1') ? 1
-                                               : unreachable<int>("invalid hexadecimal digits");
+                                               : unreachable<int>("invalid binary digits");
         }
 
         template<int NumChars>

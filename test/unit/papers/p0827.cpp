@@ -112,7 +112,7 @@ namespace udl_impl {
     {
         return (c == '0') ? 0
              : (c == '1') ? 1
-                          : throw std::invalid_argument("invalid hexadecimal digits");
+                          : throw std::invalid_argument("invalid binary digits");
     }
 
     CNL_NODISCARD constexpr int parse_dec_char(char c)
