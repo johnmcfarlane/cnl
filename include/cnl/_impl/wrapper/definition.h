@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_TYPE_H)
-#define CNL_IMPL_NUMBER_TYPE_H
+#if !defined(CNL_IMPL_WRAPPER_TYPE_H)
+#define CNL_IMPL_WRAPPER_TYPE_H
 
 #include <utility>
 
@@ -15,7 +15,7 @@
 #include "../type_traits/enable_if.h"
 #include "can_convert_tag_family.h"
 #include "declaration.h"
-#include "is_number.h"
+#include "is_wrapper.h"
 #include "tag_of.h"
 #include "to_rep.h"
 
@@ -24,49 +24,49 @@ namespace cnl {
     namespace _impl {
         // a numeric type parameterized on storage and behavior
         template<typename Rep, tag Tag>
-        class number {
+        class wrapper {
         public:
-            number() = default;
+            wrapper() = default;
 
         protected:
             /// constructor taking the rep type
-            constexpr number(Rep r, int)
+            constexpr wrapper(Rep r, int)
                 : _rep(std::move(std::move(r)))
             {
             }
 
         public:
-            /// constructor taking a related _impl::number type
+            /// constructor taking a related _impl::wrapper type
             template<
                     typename RhsRep, tag RhsTag,
                     enable_if_t<can_convert_tag_family<Tag, RhsTag>::value, int> = 0>
             // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
-            constexpr number(number<RhsRep, RhsTag> const& i)
+            constexpr wrapper(wrapper<RhsRep, RhsTag> const& i)
                 : _rep(convert<Tag, RhsTag, Rep>(to_rep(i)))
             {
             }
 
-            /// constructor taking an unrelated _impl::number type
+            /// constructor taking an unrelated _impl::wrapper type
             template<
-                    _impl::wrapper Number,
+                    _impl::wrapped Number,
                     enable_if_t<
                             !can_convert_tag_family<Tag, tag_of_t<Number>>::value,
                             int> = 0>
             // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
-            constexpr number(Number const& i)
+            constexpr wrapper(Number const& i)
                 : _rep(convert<Tag, _impl::native_tag, Rep>(i))
             {
             }
 
-            /// constructor taking a number type that isn't _impl::number
-            template<class S, enable_if_t<!is_number<S>, int> Dummy = 0>
+            /// constructor taking a number type that isn't _impl::wrapper
+            template<class S, enable_if_t<!is_wrapper<S>, int> Dummy = 0>
             // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
-            constexpr number(S const& s)
+            constexpr wrapper(S const& s)
                 : _rep(convert<Tag, _impl::native_tag, Rep>(s))
             {
             }
 
-            template<class S, enable_if_t<!is_number<S>, int> Dummy = 0>
+            template<class S, enable_if_t<!is_wrapper<S>, int> Dummy = 0>
             CNL_NODISCARD constexpr explicit operator S() const
             {
                 return convert<_impl::native_tag, Tag, S>(_rep);
@@ -86,4 +86,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_NUMBER_TYPE_H
+#endif  // CNL_IMPL_WRAPPER_TYPE_H

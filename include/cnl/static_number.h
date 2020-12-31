@@ -10,8 +10,8 @@
 /// \file
 /// \brief file containing definitions related to \ref cnl::static_number
 
-#include "_impl/number/tag_of.h"
 #include "_impl/static_integer.h"
+#include "_impl/wrapper/tag_of.h"
 #include "scaled_integer.h"
 
 /// compositional numeric library

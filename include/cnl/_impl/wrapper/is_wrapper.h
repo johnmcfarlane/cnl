@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_IS_NUMBER_H)
-#define CNL_IMPL_NUMBER_IS_NUMBER_H
+#if !defined(CNL_IMPL_WRAPPER_IS_WRAPPER_H)
+#define CNL_IMPL_WRAPPER_IS_WRAPPER_H
 
 #include "../num_traits/tag.h"
 #include "declaration.h"
@@ -16,14 +16,14 @@
 namespace cnl {
     namespace _impl {
         template<typename T>
-        inline constexpr bool is_number = false;
+        inline constexpr bool is_wrapper = false;
 
         template<typename Rep, tag Tag>
-        inline constexpr bool is_number<_impl::number<Rep, Tag>> = true;
+        inline constexpr auto is_wrapper<_impl::wrapper<Rep, Tag>> = true;
 
         template<typename T>
-        concept wrapper = is_number<T>;
+        concept wrapped = is_wrapper<T>;
     }
 }
 
-#endif  // CNL_IMPL_NUMBER_IS_NUMBER_H
+#endif  // CNL_IMPL_WRAPPER_IS_WRAPPER_H

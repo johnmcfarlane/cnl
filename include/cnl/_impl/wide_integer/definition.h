@@ -8,15 +8,15 @@
 #define CNL_IMPL_WIDE_INTEGER_DEFINITION_H
 
 #include "../num_traits/digits.h"
-#include "../number.h"
 #include "../wide_tag.h"
+#include "../wrapper.h"
 
 /// compositional numeric library
 namespace cnl {
     /// \brief An integer of limitless width.
     template<int Digits = digits<int>, typename Narrowest = int>
     using wide_integer =
-            _impl::number<typename wide_tag<Digits, Narrowest>::rep, wide_tag<Digits, Narrowest>>;
+            _impl::wrapper<typename wide_tag<Digits, Narrowest>::rep, wide_tag<Digits, Narrowest>>;
 }
 
 #endif  // CNL_IMPL_WIDE_INTEGER_DEFINITION_H

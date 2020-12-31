@@ -9,7 +9,7 @@
 
 #include "../elastic_tag.h"
 #include "../num_traits/set_digits.h"
-#include "../number.h"
+#include "../wrapper.h"
 #include "declaration.h"
 
 /// compositional numeric library
@@ -31,13 +31,13 @@ namespace cnl {
         };
 
         template<typename Rep, int Digits, typename Narrowest>
-        struct is_elastic_integer<number<Rep, elastic_tag<Digits, Narrowest>>>;
+        struct is_elastic_integer<wrapper<Rep, elastic_tag<Digits, Narrowest>>>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::elastic_integer_base_t
 
         template<int Digits, class Narrowest>
-        using elastic_integer_base_t = _impl::number<
+        using elastic_integer_base_t = _impl::wrapper<
                 _impl::rep_of_t<elastic_integer<Digits, Narrowest>>,
                 _impl::tag_of_t<elastic_integer<Digits, Narrowest>>>;
     }

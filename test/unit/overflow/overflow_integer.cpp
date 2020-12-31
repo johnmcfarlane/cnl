@@ -131,7 +131,7 @@ namespace saturated_binary_operator {
 
     static_assert(
             identical(
-                    cnl::_impl::make_number<cnl::saturated_overflow_tag>(
+                    cnl::_impl::make_wrapper<cnl::saturated_overflow_tag>(
                             cnl::binary_operator<
                                     multiply_op, cnl::saturated_overflow_tag,
                                     cnl::saturated_overflow_tag, signed char, signed char>()(

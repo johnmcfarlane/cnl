@@ -26,7 +26,7 @@ namespace cnl {
     };
 
     template<typename ArchetypeRep, int Digits, typename Narrowest, typename Rep>
-    struct from_rep<_impl::number<ArchetypeRep, elastic_tag<Digits, Narrowest>>, Rep>
+    struct from_rep<_impl::wrapper<ArchetypeRep, elastic_tag<Digits, Narrowest>>, Rep>
         : from_rep<elastic_integer<Digits, Narrowest>, Rep> {
     };
 }

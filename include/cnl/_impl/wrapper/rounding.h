@@ -4,18 +4,18 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_ROUNDING_H)
-#define CNL_IMPL_NUMBER_ROUNDING_H
+#if !defined(CNL_IMPL_WRAPPER_ROUNDING_H)
+#define CNL_IMPL_WRAPPER_ROUNDING_H
 
 #include "../num_traits/rep_of.h"
 #include "../num_traits/rounding.h"
 #include "../num_traits/tag_of.h"
 #include "../type_traits/enable_if.h"
-#include "is_number.h"
+#include "is_wrapper.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<_impl::wrapper Number>
+    template<_impl::wrapped Number>
     struct rounding<
             Number,
             _impl::enable_if_t<!_impl::is_rounding_tag<_impl::tag_of_t<Number>>::value>>
@@ -23,4 +23,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_ROUNDING_H
+#endif  // CNL_IMPL_WRAPPER_ROUNDING_H

@@ -4,12 +4,12 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_OPERATOR_HELPERS_H)
-#define CNL_IMPL_NUMBER_OPERATOR_HELPERS_H
+#if !defined(CNL_IMPL_WRAPPER_OPERATOR_HELPERS_H)
+#define CNL_IMPL_WRAPPER_OPERATOR_HELPERS_H
 
 #include "../operators/generic.h"
 #include "../type_traits/enable_if.h"
-#include "is_number.h"
+#include "is_wrapper.h"
 #include "rep_of.h"
 
 #include <type_traits>
@@ -20,30 +20,30 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::wants_generic_ops<number<>>
 
-        template<_impl::wrapper Number>
+        template<_impl::wrapped Number>
         inline constexpr auto wants_generic_ops<Number> = true;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::number_depth
+        // cnl::_impl::composition_depth
 
-        template<class Wrapper, bool IsComposite = is_composite<Wrapper>::value>
-        struct number_depth;
+        template<class Number, bool IsComposite = is_composite<Number>::value>
+        struct composition_depth;
 
-        template<class Wrapper>
-        struct number_depth<Wrapper, true> {
-            using _rep = _impl::rep_of_t<Wrapper>;
-            static constexpr auto value = number_depth<_rep>::value + 1;
+        template<class Number>
+        struct composition_depth<Number, true> {
+            using _rep = _impl::rep_of_t<Number>;
+            static constexpr auto value = composition_depth<_rep>::value + 1;
         };
 
         template<class T>
-        struct number_depth<T, false> : std::integral_constant<int, 0> {
+        struct composition_depth<T, false> : std::integral_constant<int, 0> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::can_be_number_wrapper
 
         template<typename Wrapper>
-        inline constexpr auto can_be_number_wrapper = is_number<Wrapper>;
+        inline constexpr auto can_be_number_wrapper = is_wrapper<Wrapper>;
 
         template<typename Wrapper, int WrapperN>
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
@@ -81,9 +81,9 @@ namespace cnl {
             : std::integral_constant<
                       bool, can_be_wrapped_by_number<Rep>::value
                                     && can_be_number_wrapper<Wrapper> && !is_same_number_wrapper<Wrapper, Rep>::value
-                                    && (number_depth<Rep>::value < number_depth<Wrapper>::value)> {
+                                    && (composition_depth<Rep>::value < composition_depth<Wrapper>::value)> {
         };
     }
 }
 
-#endif  // CNL_IMPL_NUMBER_OPERATOR_HELPERS_H
+#endif  // CNL_IMPL_WRAPPER_OPERATOR_HELPERS_H

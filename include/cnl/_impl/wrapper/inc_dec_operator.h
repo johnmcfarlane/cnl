@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_INC_DEC_OPERATOR_H)
-#define CNL_IMPL_NUMBER_INC_DEC_OPERATOR_H
+#if !defined(CNL_IMPL_WRAPPER_INC_DEC_OPERATOR_H)
+#define CNL_IMPL_WRAPPER_INC_DEC_OPERATOR_H
 
 #include "../operators/generic.h"
 #include "../operators/native_tag.h"
@@ -14,7 +14,7 @@
 #include "to_rep.h"
 
 namespace cnl {
-    template<_impl::pre_op Operator, _impl::wrapper Number>
+    template<_impl::pre_op Operator, _impl::wrapped Number>
     struct pre_operator<Operator, _impl::native_tag, Number> {
         constexpr Number& operator()(Number& rhs) const
         {
@@ -24,7 +24,7 @@ namespace cnl {
         }
     };
 
-    template<_impl::post_op Operator, _impl::wrapper Number>
+    template<_impl::post_op Operator, _impl::wrapped Number>
     struct post_operator<Operator, _impl::native_tag, Number> {
         constexpr Number operator()(Number& lhs) const
         {
@@ -35,4 +35,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_INC_DEC_OPERATOR_H
+#endif  // CNL_IMPL_WRAPPER_INC_DEC_OPERATOR_H

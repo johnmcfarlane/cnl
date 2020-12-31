@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_NUMERIC_LIMITS_H)
-#define CNL_IMPL_NUMBER_NUMERIC_LIMITS_H
+#if !defined(CNL_IMPL_WRAPPER_NUMERIC_LIMITS_H)
+#define CNL_IMPL_WRAPPER_NUMERIC_LIMITS_H
 
 #include "../../limits.h"
 #include "../num_traits/tag.h"
@@ -14,8 +14,8 @@
 /// compositional numeric library
 namespace cnl {
     template<typename Rep, tag Tag>
-    struct numeric_limits<_impl::number<Rep, Tag>> : cnl::numeric_limits<Rep> {
-        using _value_type = _impl::number<Rep, Tag>;
+    struct numeric_limits<_impl::wrapper<Rep, Tag>> : cnl::numeric_limits<Rep> {
+        using _value_type = _impl::wrapper<Rep, Tag>;
         using _rep_numeric_limits = numeric_limits<Rep>;
 
         CNL_NODISCARD static constexpr _value_type min() noexcept
@@ -67,7 +67,7 @@ namespace cnl {
     };
 
     template<typename Rep, tag Tag>
-    struct numeric_limits<_impl::number<Rep, Tag> const> : numeric_limits<_impl::number<Rep, Tag>> {
+    struct numeric_limits<_impl::wrapper<Rep, Tag> const> : numeric_limits<_impl::wrapper<Rep, Tag>> {
     };
 }
 
@@ -76,14 +76,14 @@ namespace std {
     // std::numeric_limits specialization for overflow_number
 
     template<typename Rep, cnl::tag Tag>
-    struct numeric_limits<cnl::_impl::number<Rep, Tag>>
-        : cnl::numeric_limits<cnl::_impl::number<Rep, Tag>> {
+    struct numeric_limits<cnl::_impl::wrapper<Rep, Tag>>
+        : cnl::numeric_limits<cnl::_impl::wrapper<Rep, Tag>> {
     };
 
     template<typename Rep, cnl::tag Tag>
-    struct numeric_limits<cnl::_impl::number<Rep, Tag> const>
-        : cnl::numeric_limits<cnl::_impl::number<Rep, Tag>> {
+    struct numeric_limits<cnl::_impl::wrapper<Rep, Tag> const>
+        : cnl::numeric_limits<cnl::_impl::wrapper<Rep, Tag>> {
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_NUMERIC_LIMITS_H
+#endif  // CNL_IMPL_WRAPPER_NUMERIC_LIMITS_H

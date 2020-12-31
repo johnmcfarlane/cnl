@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_BINARY_OPERATOR_H)
-#define CNL_IMPL_NUMBER_BINARY_OPERATOR_H
+#if !defined(CNL_IMPL_WRAPPER_BINARY_OPERATOR_H)
+#define CNL_IMPL_WRAPPER_BINARY_OPERATOR_H
 
 #include "../num_traits/set_rep.h"
 #include "../num_traits/set_tag.h"
@@ -15,8 +15,8 @@
 #include "../operators/operators.h"
 #include "../operators/overloads.h"
 #include "../type_traits/enable_if.h"
-#include "is_number.h"
-#include "make_number.h"
+#include "is_wrapper.h"
+#include "make_wrapper.h"
 #include "operator_helpers.h"
 
 #include <type_traits>
@@ -24,7 +24,7 @@
 /// compositional numeric library
 namespace cnl {
     // higher OP number<>
-    template<_impl::binary_op Operator, class Lhs, _impl::wrapper Rhs>
+    template<_impl::binary_op Operator, class Lhs, _impl::wrapped Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<std::is_floating_point<Lhs>::value>> {
@@ -35,7 +35,7 @@ namespace cnl {
     };
 
     // number<> OP higher
-    template<_impl::binary_op Operator, _impl::wrapper Lhs, class Rhs>
+    template<_impl::binary_op Operator, _impl::wrapped Lhs, class Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<std::is_floating_point<Rhs>::value>> {
@@ -67,7 +67,7 @@ namespace cnl {
         }
     };
 
-    template<_impl::binary_op Operator, _impl::wrapper Lhs, _impl::wrapper Rhs>
+    template<_impl::binary_op Operator, _impl::wrapped Lhs, _impl::wrapped Rhs>
     struct binary_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<
@@ -88,4 +88,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_BINARY_OPERATOR_H
+#endif  // CNL_IMPL_WRAPPER_BINARY_OPERATOR_H

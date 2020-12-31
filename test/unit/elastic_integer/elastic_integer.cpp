@@ -33,7 +33,7 @@ namespace {
         using cnl::_impl::equal_op;
 
         static_assert(cnl::numeric_limits<cnl::elastic_integer<>>::is_specialized);
-        static_assert(cnl::_impl::is_number<cnl::elastic_integer<>>);
+        static_assert(cnl::_impl::is_wrapper<cnl::elastic_integer<>>);
         static_assert(cnl::_impl::wants_generic_ops<cnl::elastic_integer<>>);
         static_assert(cnl::_impl::can_be_number_wrapper<cnl::elastic_integer<>>);
         static_assert(!cnl::_impl::is_same_number_wrapper<cnl::elastic_integer<>, int>::value);

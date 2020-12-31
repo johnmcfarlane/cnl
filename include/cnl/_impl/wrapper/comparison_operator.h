@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBER_COMPARISON_OPERATOR_H)
-#define CNL_IMPL_NUMBER_COMPARISON_OPERATOR_H
+#if !defined(CNL_IMPL_WRAPPER_COMPARISON_OPERATOR_H)
+#define CNL_IMPL_WRAPPER_COMPARISON_OPERATOR_H
 
 #include "../num_traits/from_value.h"
 #include "../operators/generic.h"
@@ -19,7 +19,7 @@
 /// compositional numeric library
 namespace cnl {
     // higher OP number<>
-    template<_impl::comparison_op Operator, class Lhs, _impl::wrapper Rhs>
+    template<_impl::comparison_op Operator, class Lhs, _impl::wrapped Rhs>
     struct comparison_operator<
             Operator, Lhs, Rhs,
             _impl::enable_if_t<std::is_floating_point<Lhs>::value>> {
@@ -30,7 +30,7 @@ namespace cnl {
     };
 
     // number<> OP higher
-    template<_impl::comparison_op Operator, _impl::wrapper Lhs, class Rhs>
+    template<_impl::comparison_op Operator, _impl::wrapped Lhs, class Rhs>
     struct comparison_operator<
             Operator, Lhs, Rhs,
             _impl::enable_if_t<std::is_floating_point<Rhs>::value>> {
@@ -61,13 +61,13 @@ namespace cnl {
     };
 
     template<_impl::comparison_op Operator, typename LhsRep, typename RhsRep, tag Tag>
-    struct comparison_operator<Operator, _impl::number<LhsRep, Tag>, _impl::number<RhsRep, Tag>> {
+    struct comparison_operator<Operator, _impl::wrapper<LhsRep, Tag>, _impl::wrapper<RhsRep, Tag>> {
         CNL_NODISCARD constexpr auto operator()(
-                _impl::number<LhsRep, Tag> const& lhs, _impl::number<RhsRep, Tag> const& rhs) const
+                _impl::wrapper<LhsRep, Tag> const& lhs, _impl::wrapper<RhsRep, Tag> const& rhs) const
         {
             return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
         }
     };
 }
 
-#endif  // CNL_IMPL_NUMBER_COMPARISON_OPERATOR_H
+#endif  // CNL_IMPL_WRAPPER_COMPARISON_OPERATOR_H

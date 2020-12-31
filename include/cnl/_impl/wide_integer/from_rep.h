@@ -15,9 +15,9 @@
 /// compositional numeric library
 namespace cnl {
     template<typename ArchetypeRep, int Digits, typename Narrowest, typename Rep>
-    struct from_rep<_impl::number<ArchetypeRep, wide_tag<Digits, Narrowest>>, Rep> {
+    struct from_rep<_impl::wrapper<ArchetypeRep, wide_tag<Digits, Narrowest>>, Rep> {
         CNL_NODISCARD constexpr auto operator()(Rep const& rep) const
-                -> _impl::set_rep_t<_impl::number<ArchetypeRep, wide_tag<Digits, Narrowest>>, Rep>
+                -> _impl::set_rep_t<_impl::wrapper<ArchetypeRep, wide_tag<Digits, Narrowest>>, Rep>
         {
             return rep;
         }
