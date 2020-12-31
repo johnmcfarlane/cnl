@@ -40,30 +40,6 @@ namespace cnl {
         : convert_operator<_impl::native_tag, _impl::native_tag, Destination, Source> {
     };
 
-    namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // operate_params
-
-        template<
-                class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits,
-                class RhsNarrowest>
-        struct operate_params {
-            using policy = typename _impl::policy<
-                    Operator, LhsDigits, numeric_limits<LhsNarrowest>::is_signed, LhsDigits,
-                    numeric_limits<RhsNarrowest>::is_signed>;
-
-            using lhs_rep = typename elastic_tag<LhsDigits, LhsNarrowest>::_rep;
-            using rhs_rep = typename elastic_tag<RhsDigits, RhsNarrowest>::_rep;
-            using rep_result = typename _impl::op_result<Operator, lhs_rep, rhs_rep>;
-
-            static constexpr int narrowest_width =
-                    _impl::max(width<LhsNarrowest>::value, width<RhsNarrowest>::value);
-            using narrowest = set_digits_t<
-                    _impl::set_signedness_t<rep_result, policy::is_signed>,
-                    narrowest_width - policy::is_signed>;
-        };
-    }
-
     template<
             class Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
             typename Lhs, typename Rhs>
