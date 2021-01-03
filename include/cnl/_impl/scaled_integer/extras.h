@@ -41,7 +41,7 @@ namespace cnl {
     ///
     /// \return `|x|`
     ///
-    /// \sa \ref std::abs
+    /// \sa \ref std::fabs
 
     template<typename Rep, class Scale>
     CNL_NODISCARD constexpr auto abs(scaled_integer<Rep, Scale> const& x) noexcept
