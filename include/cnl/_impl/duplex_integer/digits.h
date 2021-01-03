@@ -52,7 +52,7 @@ namespace cnl {
         {
             CNL_ASSERT(rhs >= 0);
             using promoted_type = decltype(lhs << rhs);
-            using unsigned_type = remove_signedness_t<decltype(lhs & lhs)>;
+            using unsigned_type = remove_signedness_t<promoted_type>;
             return (rhs >= digits<promoted_type>)
                          ? Result{}
                          : static_cast<Result>(
