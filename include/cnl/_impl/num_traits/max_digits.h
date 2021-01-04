@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_NUM_TRAITS_MAX_DIGITS)
 #define CNL_IMPL_NUM_TRAITS_MAX_DIGITS
 
-#include "../../cstdint.h"
+#include "../cstdint/types.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 #include "../type_traits/is_signed.h"

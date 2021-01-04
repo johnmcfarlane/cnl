@@ -10,8 +10,6 @@
 #include "../num_traits/digits.h"
 #include "definition.h"
 
-#include <type_traits>
-
 /// compositional numeric library
 namespace cnl {
     template<int Digits, typename Narrowest>
