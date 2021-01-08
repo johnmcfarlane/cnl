@@ -7,7 +7,7 @@
 /// \file
 /// \brief tests for <cnl/_impl/wrapper/make_wrapper.h>
 
-#include <cnl/_impl/integer.h>
+#include <cnl/_impl/wrapper/make_wrapper.h>
 
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/wrapper/operators.h>
@@ -15,7 +15,5 @@
 using cnl::_impl::identical;
 
 namespace {
-    static_assert(
-            identical(cnl::_impl::integer<long>{1}, cnl::_impl::make_integer(1L)),
-            "cnl::make_integer<cnl::_impl::integer>");
+    static_assert(identical(cnl::_impl::wrapper<long>{1}, cnl::_impl::make_wrapper(1L)));
 }

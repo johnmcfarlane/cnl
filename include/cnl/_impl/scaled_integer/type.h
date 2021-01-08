@@ -12,7 +12,6 @@
 
 #include "../../fraction.h"
 #include "../../numeric.h"
-#include "../integer.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/set_digits.h"
 #include "../scaled/inc_dec_operator.h"

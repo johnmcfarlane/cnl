@@ -7,7 +7,7 @@
 /// \file
 /// \brief tests for <cnl/_impl/wrapper/from_value.h>
 
-#include <cnl/_impl/integer.h>
+#include <cnl/_impl/wrapper/from_value.h>
 
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/wrapper/operators.h>
@@ -17,12 +17,10 @@ using cnl::_impl::identical;
 namespace {
     static_assert(
             identical(
-                    cnl::_impl::integer<unsigned long long>{654},
-                    cnl::from_value<cnl::_impl::integer<>, unsigned long long>{}(654ULL)),
-            "cnl::from_value<cnl::_impl::integer>");
+                    cnl::_impl::wrapper<unsigned long long>{654},
+                    cnl::from_value<cnl::_impl::wrapper<>, unsigned long long>{}(654ULL)));
     static_assert(
             identical(
-                    cnl::_impl::integer<unsigned long long>{654},
-                    cnl::_impl::from_value<cnl::_impl::integer<>>(654ULL)),
-            "cnl::from_value<cnl::_impl::integer>");
+                    cnl::_impl::wrapper<unsigned long long>{654},
+                    cnl::_impl::from_value<cnl::_impl::wrapper<>>(654ULL)));
 }

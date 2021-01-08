@@ -14,6 +14,7 @@
 #include "../operators/generic.h"
 #include "../type_traits/common_type.h"
 #include "definition.h"
+#include "make_wrapper.h"
 
 /// compositional numeric library
 namespace cnl {
