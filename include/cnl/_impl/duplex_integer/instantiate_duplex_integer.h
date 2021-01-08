@@ -12,7 +12,6 @@
 #include "../num_traits/max_digits.h"
 #include "../num_traits/set_digits.h"
 #include "../type_traits/add_signedness.h"
-#include "../type_traits/enable_if.h"
 #include "../type_traits/is_signed.h"
 #include "../type_traits/set_signedness.h"
 #include "forward_declaration.h"

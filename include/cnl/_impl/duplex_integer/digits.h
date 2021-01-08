@@ -21,8 +21,8 @@ namespace cnl {
         // 'sensible' shift operations - for when the compiler is being obtuse
 
         template<typename Result, typename Lhs>
-        CNL_NODISCARD constexpr auto sensible_right_shift(Lhs const& lhs, int rhs)
-                -> enable_if_t<digits<Result> <= digits<decltype(lhs >> rhs)>, Result>
+        CNL_NODISCARD constexpr auto sensible_right_shift(Lhs const& lhs, int rhs) -> Result
+                requires(digits<Result> <= digits<decltype(lhs >> rhs)>)
         {
             CNL_ASSERT(rhs >= 0);
             using promoted_type = decltype(lhs >> rhs);
@@ -37,8 +37,8 @@ namespace cnl {
         }
 
         template<typename Result, typename Lhs>
-        CNL_NODISCARD constexpr auto sensible_right_shift(Lhs const& lhs, int rhs) -> enable_if_t<
-                (digits<Result> > digits<decltype(lhs >> rhs)>), Result>
+        CNL_NODISCARD constexpr auto sensible_right_shift(Lhs const& lhs, int rhs) -> Result
+                requires(digits<Result> > digits<decltype(lhs >> rhs)>)
         {
             CNL_ASSERT(rhs >= 0);
             using promoted_type = decltype(lhs >> rhs);
@@ -47,8 +47,8 @@ namespace cnl {
         }
 
         template<typename Result, typename Lhs>
-        CNL_NODISCARD constexpr auto sensible_left_shift(Lhs const& lhs, int rhs)
-                -> enable_if_t<digits<Result> <= digits<decltype(lhs << rhs)>, Result>
+        CNL_NODISCARD constexpr auto sensible_left_shift(Lhs const& lhs, int rhs) -> Result
+                requires(digits<Result> <= digits<decltype(lhs << rhs)>)
         {
             CNL_ASSERT(rhs >= 0);
             using promoted_type = decltype(lhs << rhs);
@@ -64,8 +64,8 @@ namespace cnl {
         }
 
         template<typename Result, typename Lhs>
-        CNL_NODISCARD constexpr auto sensible_left_shift(Lhs const& lhs, int rhs) -> enable_if_t<
-                (digits<Result> > digits<decltype(lhs << rhs)>), Result>
+        CNL_NODISCARD constexpr auto sensible_left_shift(Lhs const& lhs, int rhs) -> Result
+                requires(digits<Result> > digits<decltype(lhs << rhs)>)
         {
             return sensible_left_shift<Result>(static_cast<Result>(lhs), rhs);
         }

@@ -58,9 +58,7 @@ namespace cnl {
             constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions,
                     // google-explicit-constructor)
 
-            template<
-                    typename Number,
-                    _impl::enable_if_t<(numeric_limits<Number>::is_iec559), int> Dummy = 0>
+            template<floating_point Number>
             constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions,
                     // google-explicit-constructor)
 
@@ -95,8 +93,7 @@ namespace cnl {
                 return upper_value<Integer, Upper, Lower>(_upper) | static_cast<Integer>(_lower);
             }
 
-            template<
-                    typename Number, _impl::enable_if_t<numeric_limits<Number>::is_iec559, int> = 0>
+            template<floating_point Number>
             CNL_NODISCARD explicit constexpr operator Number() const
             {
                 return static_cast<Number>(_upper) * power_value<Number, lower_width, 2>()
