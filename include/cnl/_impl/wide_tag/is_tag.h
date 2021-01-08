@@ -9,6 +9,7 @@
 
 #include "../num_traits/tag.h"
 #include "declaration.h"
+#include "is_wide_tag.h"
 
 /// compositional numeric library
 namespace cnl {

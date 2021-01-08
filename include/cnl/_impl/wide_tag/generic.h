@@ -13,7 +13,6 @@
 #include "../num_traits/to_rep.h"
 #include "../num_traits/width.h"
 #include "../operators/generic.h"
-#include "../type_traits/enable_if.h"
 #include "../type_traits/is_signed.h"
 #include "../type_traits/set_signedness.h"
 #include "definition.h"
@@ -34,18 +33,16 @@ namespace cnl {
         using type = Initializer;
     };
 
-    template<int DestDigits, class DestNarrowest, tag SrcTag, typename Dest, typename Src>
-    struct convert_operator<
-            wide_tag<DestDigits, DestNarrowest>, SrcTag, Dest, Src,
-            _impl::enable_if_t<!_impl::is_wide_tag<SrcTag>::value>> {
+    template<_impl::wide_tag DestTag, tag SrcTag, typename Dest, typename Src>
+    requires(!_impl::is_wide_tag<SrcTag>) struct convert_operator<DestTag, SrcTag, Dest, Src> {
         CNL_NODISCARD constexpr Dest operator()(Src const& from) const
         {
             return convert_operator<_impl::native_tag, SrcTag, Dest, Src>{}(from);
         }
     };
 
-    template<tag DestTag, int SrcDigits, class SrcNarrowest, typename Dest, typename Src>
-    struct convert_operator<DestTag, wide_tag<SrcDigits, SrcNarrowest>, Dest, Src> {
+    template<tag DestTag, _impl::wide_tag SrcTag, typename Dest, typename Src>
+    struct convert_operator<DestTag, SrcTag, Dest, Src> {
         CNL_NODISCARD constexpr Dest operator()(Src const& from) const
         {
             return convert_operator<_impl::native_tag, _impl::native_tag, Dest, Src>{}(from);

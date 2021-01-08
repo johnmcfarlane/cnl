@@ -18,11 +18,9 @@ namespace cnl {
     template<
             _impl::comparison_op Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits,
             typename RhsNarrowest>
-            requires (!std::is_same_v<
-                    wide_integer<LhsDigits, LhsNarrowest>,
-                    wide_integer<RhsDigits, RhsNarrowest>>)
-    struct comparison_operator<
-            Operator, wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>> {
+    requires(!std::is_same_v<
+             wide_integer<LhsDigits, LhsNarrowest>,
+             wide_integer<RhsDigits, RhsNarrowest>>) struct comparison_operator<Operator, wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>> {
         CNL_NODISCARD constexpr auto operator()(
                 wide_integer<LhsDigits, LhsNarrowest> const& lhs,
                 wide_integer<RhsDigits, RhsNarrowest> const& rhs) const
