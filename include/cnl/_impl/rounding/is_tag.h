@@ -8,6 +8,7 @@
 #define CNL_IMPL_ROUNDING_IS_TAG_H
 
 #include "../num_traits/tag.h"
+#include "is_rounding_tag.h"
 
 /// compositional numeric library
 namespace cnl {
