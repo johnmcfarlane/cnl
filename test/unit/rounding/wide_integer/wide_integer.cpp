@@ -15,11 +15,11 @@ namespace {
     namespace test_convert_native_rounding {
         static_assert(
                 identical(
-                        cnl::_impl::wrapper<int, cnl::wide_tag<31, int, void>>{42},
+                        cnl::_impl::wrapper<int, cnl::wide_tag<31, int>>{42},
                         cnl::convert_operator<
                                 cnl::nearest_rounding_tag, cnl::native_rounding_tag,
-                                cnl::_impl::wrapper<int, cnl::wide_tag<31, int, void>>,
-                                cnl::_impl::wrapper<int, cnl::wide_tag<31, int, void>>>{}(42)),
+                                cnl::_impl::wrapper<int, cnl::wide_tag<31, int>>,
+                                cnl::_impl::wrapper<int, cnl::wide_tag<31, int>>>{}(42)),
                 "convert_operator<nearest_rounding_tag, native_rounding_tag, wide_integer, "
                 "wide_integer>");
     }
