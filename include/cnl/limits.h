@@ -21,6 +21,11 @@ namespace cnl {
     struct numeric_limits : std::numeric_limits<T> {
     };
 
+    namespace _impl {
+        template<typename T>
+        concept integer = numeric_limits<T>::is_integer;
+    }
+
 #if defined(CNL_INT128_ENABLED)
 
     namespace _impl {

@@ -54,9 +54,7 @@ namespace cnl {
 
             constexpr duplex_integer(upper_type const& u, lower_type const& l);
 
-            template<
-                    typename Number,
-                    _impl::enable_if_t<(numeric_limits<Number>::is_integer), int> Dummy = 0>
+            template<integer Number>
             constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions,
                     // google-explicit-constructor)
 
@@ -91,9 +89,7 @@ namespace cnl {
                 return _lower || _upper;
             }
 
-            template<
-                    typename Integer,
-                    _impl::enable_if_t<numeric_limits<Integer>::is_integer, int> = 0>
+            template<integer Integer>
             CNL_NODISCARD explicit constexpr operator Integer() const
             {
                 return upper_value<Integer, Upper, Lower>(_upper) | static_cast<Integer>(_lower);

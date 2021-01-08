@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_CTORS_H)
 #define CNL_IMPL_DUPLEX_INTEGER_CTORS_H
 
+#include "../../limits.h"
 #include "../power_value.h"
 #include "../type_traits/enable_if.h"
 #include "operators.h"
@@ -57,9 +58,7 @@ namespace cnl {
         }
 
         template<typename Upper, typename Lower>
-        template<
-                typename Number,
-                _impl::enable_if_t<(numeric_limits<Number>::is_integer), int> Dummy>
+        template<integer Number>
         constexpr duplex_integer<Upper, Lower>::duplex_integer(Number const& n)
             : _upper(calculate_upper<Upper, Lower>(n))
             , _lower(calculate_lower<Lower>(n))
