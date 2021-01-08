@@ -36,9 +36,7 @@ namespace cnl {
     }
 
     template<typename Numerator, typename Denominator>
-    template<
-            typename FloatingPoint,
-            _impl::enable_if_t<numeric_limits<FloatingPoint>::is_iec559, int> Dummy>
+    template<_impl::floating_point FloatingPoint>
     constexpr fraction<Numerator, Denominator>::fraction(FloatingPoint d)
         : fraction(_impl::make_fraction<Numerator, Denominator>(d))
     {
