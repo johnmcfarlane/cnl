@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# specialised alternative to init-build-clang tailored to run MSan and ASan
+
+set -euo pipefail
+
+export TOOLCHAIN="${TOOLCHAIN:-clang.cmake}"
+export LSAN_OPTIONS=verbosity=1:log_threads=1
+
+script_dir=$(
+  cd "$(dirname "$0")"
+  pwd
+)
+
+"${script_dir}/init-build-clang" \
+  --settings build_type=Debug \
+  --options sanitize=True \
+  "$@"

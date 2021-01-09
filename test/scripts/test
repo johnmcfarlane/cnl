@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 
-# Configure, build and run tests with given `conan install` parameters
+# build and run tests;
+# called after init-build* has prepared a build directory
+
+# Example:
+#   path/to/cnl/test/scripts/init-system
+#   mkdir my-build-directory
+#   cd my-build-directory
+#   INT128=False TARGET=test-all CONAN_CMAKE_GENERATOR="Unix Makefiles" path/to/cnl/test/scripts/init-build
+#   path/to/cnl/test/scripts/test
 
 set -euo pipefail
 
@@ -9,14 +17,4 @@ PROJECT_DIR=$(
   pwd
 )
 
-conan install \
-  --build missing \
-  --env CONAN_CMAKE_GENERATOR=Ninja \
-  "${PROJECT_DIR}" \
-  "$@"
-
-conan build \
-  --build \
-  --configure \
-  --test \
-  "${PROJECT_DIR}"
+conan build --build --test "${PROJECT_DIR}"
