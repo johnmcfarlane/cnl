@@ -127,6 +127,7 @@ jobs:
         conan profile update settings.compiler.cppstd=20 default && \
         conan profile update settings.compiler.libcxx=${{matrix.stdlib}} default && \
         conan profile update settings.compiler.version=${{matrix.version}} default && \
+        conan profile update settings.build_type=${{matrix.build-type}} default && \
         conan profile update settings.arch=${{matrix.arch}} default
 
     - name: Install dependencies
