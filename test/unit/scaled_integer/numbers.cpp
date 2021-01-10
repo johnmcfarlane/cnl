@@ -12,6 +12,8 @@
 
 #include <gtest/gtest.h>
 
+#include <version>
+
 #if defined(__cpp_lib_math_constants)
 
 namespace {
@@ -21,14 +23,12 @@ namespace {
     ////////////////////////////////////////////////////////////////////////////////
     // simple one-off tests
 
-#if defined(__cpp_lib_math_constants)
     // 8-bit pi
     static_assert(
             identical(
                     cnl::scaled_integer<cnl::uint8, cnl::power<-6>>{3.140625},
                     std::numbers::pi_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>),
             "std::numbers::pi_v test failed");
-#endif
 
     ////////////////////////////////////////////////////////////////////////////////
     // precision tests

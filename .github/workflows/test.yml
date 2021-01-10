@@ -10,7 +10,7 @@ jobs:
   posix-conan-test:
     strategy:
       matrix:
-        name: [clang-11, osx-gcc-10, gcc-10, clang-11-sanitize, armv7]
+        name: [clang-11, osx-gcc-10, gcc-10, clang-10, clang-11-sanitize, armv7]
         include:
           # Clang-11 (w. Clang-Tidy)
           - name: clang-11
@@ -64,6 +64,24 @@ jobs:
             sanitize: "False"
             stdlib: libstdc++11
             toolchain: gcc.cmake
+
+          # Clang-10
+          - name: clang-10
+            compiler: clang
+            version: "10"
+            os: linux
+            arch: x86_64
+            build-type: Release
+            cc: clang
+            cxx: clang++
+            exceptions: "True"
+            generator: "Ninja"
+            int128: "True"
+            linux-container: johnmcfarlane/cnl_ci:clang-10-libcpp
+            os-version: ubuntu-20.04
+            sanitize: "False"
+            stdlib: libc++
+            toolchain: clang-libc++.cmake
 
           # Clang-11 (w. ASan + UBSan)
           - name: clang-11-sanitize
