@@ -5,9 +5,9 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests for <cnl/_impl/wrapper/digits.h>
+/// \brief tests for <cnl/_impl/wrapper/scale.h>
 
-#include <cnl/_impl/integer.h>
+#include <cnl/_impl/wrapper/scale.h>
 
 #include <cnl/_impl/type_traits/identical.h>
 
@@ -15,6 +15,7 @@ using cnl::_impl::identical;
 
 namespace {
     static_assert(
-            identical(cnl::digits<char>, cnl::digits<cnl::_impl::integer<char>>),
-            "cnl::digits<cnl::_impl::integer>");
+            identical(
+                    cnl::_impl::wrapper<int64_t>{0x55},
+                    cnl::scale<-1, 2, cnl::_impl::wrapper<int64_t>>{}(0xAA)));
 }

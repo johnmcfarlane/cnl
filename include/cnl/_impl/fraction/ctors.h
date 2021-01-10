@@ -21,7 +21,7 @@ namespace cnl {
     }
 
     template<typename Numerator, typename Denominator>
-    template<typename Integer, _impl::enable_if_t<numeric_limits<Integer>::is_integer, int> Dummy>
+    template<_impl::integer Integer>
     constexpr fraction<Numerator, Denominator>::fraction(Integer const& i)
         : fraction(static_cast<Numerator>(i), 1)
     {

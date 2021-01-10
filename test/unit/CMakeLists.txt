@@ -27,15 +27,15 @@ set(test_sources
 
         # components
         constant.cpp
-        integer/digits.cpp
-        integer/set_rep.cpp
-        integer/from_value.cpp
-        integer/make_integer.cpp
-        integer/numeric_limits.cpp
-        integer/operators.cpp
-        integer/scale.cpp
-        integer/set_digits.cpp
-        integer/type.cpp
+        wrapper/digits.cpp
+        wrapper/set_rep.cpp
+        wrapper/from_value.cpp
+        wrapper/make_wrapper.cpp
+        wrapper/numeric_limits.cpp
+        wrapper/operators.cpp
+        wrapper/scale.cpp
+        wrapper/set_digits.cpp
+        wrapper/type.cpp
         scaled_integer/scaled_integer_built_in.cpp
         scaled_integer/decimal.cpp
         scaled_integer/numbers.cpp
@@ -71,7 +71,6 @@ set(test_sources
 
         # composites
         elastic_integer/wide_integer/wide_elastic_integer.cpp
-        scaled_integer/integer/scaled_integer_integer.cpp
         scaled_integer/overflow/scaled_integer_native_integer.cpp
         scaled_integer/overflow/scaled_integer_trapping_integer.cpp
         scaled_integer/overflow/scaled_integer_throwing_integer.cpp
@@ -80,6 +79,7 @@ set(test_sources
         scaled_integer/wide_integer/scaled_integer_wide_integer.cpp
         scaled_integer/wide_integer/scaled_integer_wide_integer_32.cpp
         scaled_integer/wide_integer/scaled_integer_wide_integer_8.cpp
+        scaled_integer/wrapper/scaled_integer_wrapper.cpp
         scaled_integer/overflow/undefined_overflow.cpp
         scaled_integer/rounding/overflow/scaled_integer_rounding_overflow.cpp
         scaled_integer/rounding/elastic/integer.cpp

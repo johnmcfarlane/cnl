@@ -5,13 +5,17 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests for <cnl/_impl/wrapper/type.h>
+/// \brief tests for <cnl/_impl/wrapper/declaration.h>
 
-#include <cnl/_impl/integer.h>
+#include <cnl/_impl/wrapper/declaration.h>
 
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/_impl/type_traits/remove_signedness.h>
+#include <cnl/_impl/wrapper/is_composite.h>
+#include <cnl/_impl/wrapper/operators.h>
+#include <cnl/_impl/wrapper/rep_of.h>
+#include <cnl/_impl/wrapper/set_rep.h>
 
 using cnl::_impl::assert_same;
 using cnl::_impl::identical;

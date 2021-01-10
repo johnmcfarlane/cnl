@@ -8,6 +8,7 @@
 #define CNL_IMPL_SCALED_CONVERT_OPERATOR_H
 
 #include "../../fraction.h"
+#include "../../limits.h"
 #include "../num_traits/fixed_width_scale.h"
 #include "../num_traits/scale.h"
 #include "../operators/native_tag.h"
@@ -19,13 +20,10 @@
 /// compositional numeric library
 namespace cnl {
     // integer -> floating
-    template<int DestExponent, int SrcExponent, int Radix, typename Dest, typename Src>
+    template<int DestExponent, int SrcExponent, int Radix, typename Dest, _impl::integer Src>
     struct convert_operator<
             power<DestExponent, Radix>, power<SrcExponent, Radix>, Dest, Src,
-            _impl::enable_if_t<
-                    cnl::numeric_limits<Dest>::is_iec559 && cnl::numeric_limits<Src>::is_integer>> {
-        static_assert(cnl::numeric_limits<Src>::is_integer);
-
+            _impl::enable_if_t<cnl::numeric_limits<Dest>::is_iec559>> {
         CNL_NODISCARD constexpr Dest operator()(Src const& from) const
         {
             return Dest(from) * _impl::power_value<Dest, SrcExponent - DestExponent, Radix>();
@@ -33,12 +31,10 @@ namespace cnl {
     };
 
     // floating -> integer
-    template<int DestExponent, int SrcExponent, int Radix, typename Result, typename Input>
+    template<int DestExponent, int SrcExponent, int Radix, _impl::integer Result, typename Input>
     struct convert_operator<
             power<DestExponent, Radix>, power<SrcExponent, Radix>, Result, Input,
-            _impl::enable_if_t<
-                    cnl::numeric_limits<Result>::is_integer
-                    && cnl::numeric_limits<Input>::is_iec559>> {
+            _impl::enable_if_t<cnl::numeric_limits<Input>::is_iec559>> {
         CNL_NODISCARD constexpr Result operator()(Input const& from) const
         {
             return static_cast<Result>(
@@ -47,12 +43,9 @@ namespace cnl {
     };
 
     // integer -> integer
-    template<int DestExponent, int SrcExponent, int Radix, typename Result, typename Input>
+    template<int DestExponent, int SrcExponent, int Radix, _impl::integer Result, _impl::integer Input>
     struct convert_operator<
-            power<DestExponent, Radix>, power<SrcExponent, Radix>, Result, Input,
-            _impl::enable_if_t<
-                    cnl::numeric_limits<Result>::is_integer
-                    && cnl::numeric_limits<Input>::is_integer>> {
+            power<DestExponent, Radix>, power<SrcExponent, Radix>, Result, Input> {
         CNL_NODISCARD constexpr Result operator()(Input const& from) const
         {
             // when converting *from* scaled_integer

@@ -4,7 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/integer.h>
+#include <cnl/_impl/wrapper.h>
 #include <cnl/scaled_integer.h>
 
 #include <cinttypes>
@@ -15,7 +15,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // integer type used as scaled_integer Rep type
 
-using test_int = cnl::_impl::integer<int>;
+using test_int = cnl::_impl::wrapper<int>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // perform scaled_integer tests with this type of scaled_integer specialization

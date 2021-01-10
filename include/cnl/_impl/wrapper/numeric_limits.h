@@ -10,6 +10,7 @@
 #include "../../limits.h"
 #include "../num_traits/tag.h"
 #include "definition.h"
+#include "from_rep.h"
 
 /// compositional numeric library
 namespace cnl {

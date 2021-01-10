@@ -7,10 +7,10 @@
 /// \file
 /// \brief tests for <cnl/_impl/wrapper/numeric_limits.h>
 
-#include <cnl/_impl/integer.h>
+#include <cnl/_impl/wrapper/numeric_limits.h>
+
+#include <cnl/_impl/wrapper/from_rep.h>
 
 namespace {
-    static_assert(
-            cnl::numeric_limits<cnl::_impl::integer<>>::is_specialized,
-            "cnl::numeric_limits<cnl::_impl::integer>::is_specialized");
+    static_assert(cnl::numeric_limits<cnl::_impl::wrapper<>>::is_specialized);
 }

@@ -84,22 +84,20 @@ namespace cnl {
         }
     };
 
-    template<typename ResultRep, int ResultExponent, int ResultRadix, typename Input>
+    template<typename ResultRep, int ResultExponent, int ResultRadix, _impl::integer Input>
     struct convert_operator<
             nearest_rounding_tag, power<0, ResultRadix>,
-            scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, Input,
-            _impl::enable_if_t<cnl::numeric_limits<Input>::is_integer>>
+            scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, Input>
         : convert_operator<
                   nearest_rounding_tag, power<0, ResultRadix>,
                   scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>,
                   scaled_integer<Input>> {
     };
 
-    template<typename Result, typename InputRep, int InputExponent, int InputRadix>
+    template<_impl::integer Result, typename InputRep, int InputExponent, int InputRadix>
     struct convert_operator<
             nearest_rounding_tag, power<0, InputRadix>, Result,
-            scaled_integer<InputRep, power<InputExponent, InputRadix>>,
-            _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer>> {
+            scaled_integer<InputRep, power<InputExponent, InputRadix>>> {
         using _input = scaled_integer<InputRep, power<InputExponent, InputRadix>>;
 
         CNL_NODISCARD constexpr Result operator()(_input const& from) const
@@ -189,20 +187,19 @@ namespace cnl {
         }
     };
 
-    template<typename ResultRep, class ResultScale, typename Input>
+    template<typename ResultRep, class ResultScale, _impl::integer Input>
     struct convert_operator<
-            tie_to_pos_inf_rounding_tag, _impl::native_tag, scaled_integer<ResultRep, ResultScale>,
-            Input, _impl::enable_if_t<cnl::numeric_limits<Input>::is_integer>>
+            tie_to_pos_inf_rounding_tag, _impl::native_tag,
+            scaled_integer<ResultRep, ResultScale>, Input>
         : convert_operator<
                   tie_to_pos_inf_rounding_tag, _impl::native_tag,
                   scaled_integer<ResultRep, ResultScale>, scaled_integer<Input>> {
     };
 
-    template<typename Result, typename InputRep, class InputScale>
+    template<_impl::integer Result, typename InputRep, class InputScale>
     struct convert_operator<
-            tie_to_pos_inf_rounding_tag, _impl::native_tag, Result,
-            scaled_integer<InputRep, InputScale>,
-            _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer>> {
+            tie_to_pos_inf_rounding_tag, _impl::native_tag,
+            Result, scaled_integer<InputRep, InputScale>> {
         using _input = scaled_integer<InputRep, InputScale>;
 
         CNL_NODISCARD constexpr Result operator()(_input const& from) const
@@ -268,19 +265,18 @@ namespace cnl {
         }
     };
 
-    template<typename ResultRep, class ResultScale, typename Input>
+    template<typename ResultRep, class ResultScale, _impl::integer Input>
     struct convert_operator<
-            neg_inf_rounding_tag, _impl::native_tag, scaled_integer<ResultRep, ResultScale>, Input,
-            _impl::enable_if_t<cnl::numeric_limits<Input>::is_integer>>
+            neg_inf_rounding_tag, _impl::native_tag, scaled_integer<ResultRep, ResultScale>, Input>
         : convert_operator<
                   neg_inf_rounding_tag, _impl::native_tag, scaled_integer<ResultRep, ResultScale>,
                   scaled_integer<Input>> {
     };
 
-    template<typename Result, typename InputRep, class InputScale>
+    template<_impl::integer Result, typename InputRep, class InputScale>
     struct convert_operator<
-            neg_inf_rounding_tag, _impl::native_tag, Result, scaled_integer<InputRep, InputScale>,
-            _impl::enable_if_t<cnl::numeric_limits<Result>::is_integer>> {
+            neg_inf_rounding_tag, _impl::native_tag,
+            Result, scaled_integer<InputRep, InputScale>> {
         using _input = scaled_integer<InputRep, InputScale>;
 
         CNL_NODISCARD constexpr Result operator()(_input const& from) const
