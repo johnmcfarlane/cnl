@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# specialised alternative to init-build-gcc tailored to build armv7
+
+set -euo pipefail
+
+export ARCH="${ARCH:-armv7}"
+export CC="${CC:-arm-linux-gnueabi-gcc}"
+export COMPILER="${COMPILER:-gcc}"
+export CXX="${CXX:-arm-linux-gnueabi-g++}"
+export INT128=False
+export STDLIB="${STDLIB:-libstdc++11}"
+export TOOLCHAIN="${TOOLCHAIN:-gcc-armv7.cmake}"
+
+script_dir=$(
+  cd "$(dirname "$0")"
+  pwd
+)
+
+"${script_dir}/init-build-gcc" "$@"

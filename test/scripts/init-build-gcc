@@ -8,7 +8,7 @@ export CC="${CC:-gcc}"
 export COMPILER="${COMPILER:-gcc}"
 export CXX="${CXX:-g++}"
 export STDLIB="${STDLIB:-libstdc++11}"
-export CONAN_CMAKE_TOOLCHAIN_FILE="${CONAN_CMAKE_TOOLCHAIN_FILE:-gcc.cmake}"
+export TOOLCHAIN="${TOOLCHAIN:-gcc.cmake}"
 
 script_dir=$(
   cd "$(dirname "$0")"
