@@ -22,6 +22,7 @@ set(test_sources
         _impl/num_traits/adopt.cpp
         _impl/num_traits/adopt_digits.cpp
         _impl/num_traits/adopt_signedness.cpp
+        _impl/ostream.cpp
         _impl/overflow/is_overflow.cpp
         _impl/rounding/convert_operator.cpp
 
