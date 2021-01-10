@@ -12,6 +12,7 @@
 #include "../num_traits/width.h"
 #include "../operators/custom_operator.h"
 #include "../operators/operators.h"
+#include "../to_chars.h"
 #include "../type_traits/common_type.h"
 #include "add_signedness.h"
 #include "comparison.h"
@@ -23,7 +24,6 @@
 #include "numeric_limits.h"
 #include "set_digits.h"
 #include "shift.h"
-#include "to_chars.h"
 #include "type.h"
 
 #include <ostream>
