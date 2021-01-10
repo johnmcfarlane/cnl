@@ -13,6 +13,7 @@ cnl_dir=$(
 )
 
 # parameters
+ARCH="${ARCH:-x86_64}"
 COMPILER="${COMPILER:-gcc}"
 ENABLE_EXCEPTIONS="${ENABLE_EXCEPTIONS:-True}"
 GENERATOR="${GENERATOR:-Ninja}"
@@ -37,6 +38,7 @@ fi
 
 # create Conan profile in the build directory
 conan profile new --detect ./profile
+conan profile update settings.arch="${ARCH}" ./profile
 conan profile update settings.compiler="${COMPILER}" ./profile
 conan profile update settings.compiler.libcxx="${STDLIB}" ./profile
 
