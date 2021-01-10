@@ -9,7 +9,6 @@
 
 #include "../num_traits/to_rep.h"
 #include "../operators/generic.h"
-#include "../type_traits/enable_if.h"
 #include "definition.h"
 
 #include <type_traits>
@@ -19,11 +18,9 @@ namespace cnl {
     template<
             _impl::comparison_op Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits,
             typename RhsNarrowest>
-    struct comparison_operator<
-            Operator, wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>,
-            _impl::enable_if_t<!std::is_same<
-                    wide_integer<LhsDigits, LhsNarrowest>,
-                    wide_integer<RhsDigits, RhsNarrowest>>::value>> {
+    requires(!std::is_same_v<
+             wide_integer<LhsDigits, LhsNarrowest>,
+             wide_integer<RhsDigits, RhsNarrowest>>) struct comparison_operator<Operator, wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>> {
         CNL_NODISCARD constexpr auto operator()(
                 wide_integer<LhsDigits, LhsNarrowest> const& lhs,
                 wide_integer<RhsDigits, RhsNarrowest> const& rhs) const

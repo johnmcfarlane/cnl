@@ -23,6 +23,9 @@ namespace cnl {
 
     namespace _impl {
         template<typename T>
+        concept floating_point = numeric_limits<T>::is_iec559;
+
+        template<typename T>
         concept integer = numeric_limits<T>::is_integer;
     }
 

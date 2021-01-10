@@ -36,9 +36,8 @@ namespace cnl {
         /// creates a fraction from a floating-point number
         template<
                 typename Numerator, typename Denominator = Numerator,
-                typename FloatingPoint = float>
-        CNL_NODISCARD constexpr auto make_fraction(FloatingPoint d) -> _impl::enable_if_t<
-                numeric_limits<FloatingPoint>::is_iec559, cnl::fraction<Numerator, Denominator>>
+                _impl::floating_point FloatingPoint = float>
+        CNL_NODISCARD constexpr auto make_fraction(FloatingPoint d) -> cnl::fraction<Numerator, Denominator>
         {
             // merge requests gratefully received
             static_assert(

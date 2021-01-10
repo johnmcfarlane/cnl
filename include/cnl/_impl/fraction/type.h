@@ -43,9 +43,7 @@ namespace cnl {
         // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
         constexpr fraction(fraction<RhsNumerator, RhsDenominator> const& f);
 
-        template<
-                typename FloatingPoint,
-                _impl::enable_if_t<numeric_limits<FloatingPoint>::is_iec559, int> Dummy = 0>
+        template<_impl::floating_point FloatingPoint>
         explicit constexpr fraction(FloatingPoint);
 
         /// returns the quotient, \ref numerator `/` \ref denominator

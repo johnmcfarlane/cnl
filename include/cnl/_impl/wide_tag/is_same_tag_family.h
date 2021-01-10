@@ -15,8 +15,8 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<int Digits1, typename Narrowest1, int Digits2, typename Narrowest2>
-        struct is_same_tag_family<wide_tag<Digits1, Narrowest1>, wide_tag<Digits2, Narrowest2>>
+        template<wide_tag Tag1, wide_tag Tag2>
+        struct is_same_tag_family<Tag1, Tag2>
             : std::true_type {
         };
     }

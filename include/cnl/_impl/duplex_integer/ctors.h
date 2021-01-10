@@ -9,7 +9,6 @@
 
 #include "../../limits.h"
 #include "../power_value.h"
-#include "../type_traits/enable_if.h"
 #include "operators.h"
 #include "type.h"
 
@@ -18,23 +17,23 @@ namespace cnl {
     namespace _impl {
         // cnl::_impl::calculate_lower
         template<typename Lower, typename Integer>
-        CNL_NODISCARD constexpr auto calculate_lower(Integer const& input)
-                -> enable_if_t<digits<Lower> >= digits<Integer>, Lower>
+        requires(digits<Lower> >= digits<Integer>)
+                CNL_NODISCARD constexpr auto calculate_lower(Integer const& input) -> Lower
         {
             return Lower(input) & numeric_limits<Lower>::max();
         }
 
         template<typename Lower, typename Integer>
-                CNL_NODISCARD constexpr auto calculate_lower(Integer const& input)
-                        -> enable_if_t < digits<Lower><digits<Integer>, Lower>
+        requires(digits<Lower> < digits<Integer>)
+                CNL_NODISCARD constexpr auto calculate_lower(Integer const& input) -> Lower
         {
             return static_cast<Lower>(input & static_cast<Integer>(numeric_limits<Lower>::max()));
         }
 
         // cnl::_impl::calculate upper
         template<typename Upper, typename Lower, typename Integer>
-        CNL_NODISCARD constexpr auto calculate_upper(Integer const& input)
-                -> enable_if_t<digits<Lower> >= digits<Integer>, Upper>
+        requires(digits<Lower> >= digits<Integer>)
+                CNL_NODISCARD constexpr auto calculate_upper(Integer const& input) -> Upper
         {
             // sign-friendly flush
             // TODO: Not reproduced locally. Investigate.
@@ -43,8 +42,8 @@ namespace cnl {
         }
 
         template<typename Upper, typename Lower, typename Integer>
-                CNL_NODISCARD constexpr auto calculate_upper(Integer const& input)
-                        -> enable_if_t < digits<Lower><digits<Integer>, Upper>
+        requires(digits<Lower> < digits<Integer>)
+                CNL_NODISCARD constexpr auto calculate_upper(Integer const& input) -> Upper
         {
             return sensible_right_shift<Upper>(input, digits<Lower>);
         }
@@ -69,8 +68,7 @@ namespace cnl {
         // std::fmod and std::fmod is not declared constexpr. (See wg21.link/p0533 for efforts to
         // remedy this.)
         template<typename Upper, typename Lower>
-        template<
-                typename Number, _impl::enable_if_t<(numeric_limits<Number>::is_iec559), int> Dummy>
+        template<floating_point Number>
         constexpr duplex_integer<Upper, Lower>::duplex_integer(Number const& n)
             : _upper(Upper(n / power_value<Number, lower_width, 2>()))
             , _lower(Lower(std::fmod(n, power_value<Number, lower_width, 2>())))

@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_WIDE_TAG_IS_WIDE_TAG_H)
 #define CNL_IMPL_WIDE_TAG_IS_WIDE_TAG_H
 
+#include "../num_traits/tag.h"
 #include "declaration.h"
 
 #include <type_traits>
@@ -15,12 +16,13 @@
 namespace cnl {
     namespace _impl {
         template<typename T>
-        struct is_wide_tag : std::false_type {
-        };
+        inline constexpr auto is_wide_tag = false;
 
         template<int Digits, typename Narrowest>
-        struct is_wide_tag<wide_tag<Digits, Narrowest>> : std::true_type {
-        };
+        inline constexpr auto is_wide_tag<wide_tag<Digits, Narrowest>> = true;
+
+        template<class T>
+        concept wide_tag = is_tag<T>&& is_wide_tag<T>;
     }
 }
 

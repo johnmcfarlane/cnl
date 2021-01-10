@@ -13,25 +13,35 @@
 #include "../num_traits/max_digits.h"
 #include "../num_traits/set_digits.h"
 #include "../operators/homogeneous_operator_tag_base.h"
-#include "../type_traits/enable_if.h"
 #include "declaration.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
-    // When number can be represented in a single integer
-    template<int Digits, typename Narrowest>
-    struct wide_tag<
-            Digits, Narrowest, _impl::enable_if_t<(Digits <= _impl::max_digits<Narrowest>)>>
-        : _impl::homogeneous_operator_tag_base {
-        using rep = set_digits_t<Narrowest, _impl::max(cnl::digits<Narrowest>, Digits)>;
-    };
+    namespace _impl {
+        template<int Digits, typename Narrowest, bool NeedsDuplex>
+        struct wide_tag_rep;
 
-    // when number must be represented using multiple integers
+        // When number can be represented in a single integer
+        template<int Digits, typename Narrowest>
+        struct wide_tag_rep<Digits, Narrowest, false>
+            : std::type_identity<set_digits_t<Narrowest, max(cnl::digits<Narrowest>, Digits)>> {
+        };
+
+        // when number must be represented using multiple integers
+        template<int Digits, typename Narrowest>
+        struct wide_tag_rep<Digits, Narrowest, true>
+            : std::type_identity<instantiate_duplex_integer_t<Digits, Narrowest>> {
+        };
+
+        template<int Digits, typename Narrowest, bool NeedsDuplex>
+        using wide_tag_rep_t = typename wide_tag_rep<Digits, Narrowest, NeedsDuplex>::type;
+    }
+
     template<int Digits, typename Narrowest>
-    struct wide_tag<
-            Digits, Narrowest, _impl::enable_if_t<(_impl::max_digits<Narrowest> < Digits)>>
-        : _impl::homogeneous_operator_tag_base {
-        using rep = _impl::instantiate_duplex_integer_t<Digits, Narrowest>;
+    struct wide_tag : _impl::homogeneous_operator_tag_base {
+        using rep = _impl::wide_tag_rep_t<Digits, Narrowest, (Digits > _impl::max_digits<Narrowest>)>;
     };
 }
 

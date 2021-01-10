@@ -30,10 +30,7 @@ namespace cnl {
     };
 
     template<_impl::comparison_op Operator, typename Lhs, typename Rhs>
-    struct comparison_operator<
-            Operator, Lhs, Rhs,
-            _impl::enable_if_t<
-                    _impl::is_duplex_integer<Lhs>::value != _impl::is_duplex_integer<Rhs>::value>> {
+    requires(_impl::is_duplex_integer<Lhs>::value != _impl::is_duplex_integer<Rhs>::value) struct comparison_operator<Operator, Lhs, Rhs> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> bool
         {
             using common_type = _impl::common_type_t<Lhs, Rhs>;
