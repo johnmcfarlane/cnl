@@ -4,11 +4,15 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <cnl/_impl/scaled_integer/numbers.h>
+
 #include <cnl/_impl/assert.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/scaled_integer.h>
 
 #include <gtest/gtest.h>
+
+#if defined(__cpp_lib_math_constants)
 
 namespace {
 
@@ -17,12 +21,14 @@ namespace {
     ////////////////////////////////////////////////////////////////////////////////
     // simple one-off tests
 
+#if defined(__cpp_lib_math_constants)
     // 8-bit pi
     static_assert(
             identical(
                     cnl::scaled_integer<cnl::uint8, cnl::power<-6>>{3.140625},
                     std::numbers::pi_v<cnl::scaled_integer<cnl::uint8, cnl::power<-6>>>),
             "std::numbers::pi_v test failed");
+#endif
 
     ////////////////////////////////////////////////////////////////////////////////
     // precision tests
@@ -358,3 +364,5 @@ namespace {
                 .0000000000000000003L);
     }
 }
+
+#endif
