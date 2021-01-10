@@ -8,6 +8,7 @@
 #define CNL_IMPL_FRACTION_OPERATORS_H
 
 #include "make_fraction.h"
+#include "to_string.h"
 #include "type.h"
 
 #include <ostream>
@@ -137,7 +138,7 @@ namespace cnl {
     template<typename Numerator, typename Denominator>
     ::std::ostream& operator<<(::std::ostream& out, fraction<Numerator, Denominator> const& f)
     {
-        return out << f.numerator << '/' << f.denominator;
+        return out << to_string(f);
     }
 }
 
