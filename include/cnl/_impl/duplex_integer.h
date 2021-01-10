@@ -28,7 +28,6 @@
 #include "duplex_integer/set_digits.h"
 #include "duplex_integer/set_width.h"
 #include "duplex_integer/shift.h"
-#include "duplex_integer/to_chars.h"
 #include "duplex_integer/to_rep.h"
 #include "duplex_integer/type.h"
 #include "duplex_integer/wants_generic_ops.h"

@@ -13,20 +13,52 @@
 
 namespace {
 #if defined(CNL_INT128_ENABLED)
-    TEST(ostream, int128)  // NOLINT
+    TEST(ostream, int128_42)  // NOLINT
     {
         using cnl::operator<<;
         std::stringstream s;
-        s << cnl::int128{15};
-        ASSERT_EQ("15", s.str());  // NOLINT
+        s << cnl::int128{42};
+        ASSERT_EQ("42", s.str());  // NOLINT
     }
 
-    TEST(ostream, uint128)  // NOLINT
+    TEST(ostream, int128_max)  // NOLINT
     {
         using cnl::operator<<;
         std::stringstream s;
-        s << cnl::uint128{15};
-        ASSERT_EQ("15", s.str());  // NOLINT
+        s << cnl::numeric_limits<cnl::int128>::max();
+        ASSERT_EQ("170141183460469231731687303715884105727", s.str());  // NOLINT
+    }
+
+    TEST(ostream, int128_min)  // NOLINT
+    {
+        using cnl::operator<<;
+        std::stringstream s;
+        s << cnl::numeric_limits<cnl::int128>::min();
+        ASSERT_EQ("-170141183460469231731687303715884105728", s.str());  // NOLINT
+    }
+
+    TEST(ostream, uint128_42)  // NOLINT
+    {
+        using cnl::operator<<;
+        std::stringstream s;
+        s << cnl::uint128{42};
+        ASSERT_EQ("42", s.str());  // NOLINT
+    }
+
+    TEST(ostream, uint128_max)  // NOLINT
+    {
+        using cnl::operator<<;
+        std::stringstream s;
+        s << cnl::numeric_limits<cnl::uint128>::max();
+        ASSERT_EQ("340282366920938463463374607431768211455", s.str());  // NOLINT
+    }
+
+    TEST(ostream, uint128_min)  // NOLINT
+    {
+        using cnl::operator<<;
+        std::stringstream s;
+        s << cnl::numeric_limits<cnl::uint128>::min();
+        ASSERT_EQ("0", s.str());  // NOLINT
     }
 #endif
 }
