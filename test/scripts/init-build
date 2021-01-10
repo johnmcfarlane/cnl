@@ -24,8 +24,16 @@ TOOLCHAIN="${TOOLCHAIN:-gcc.cmake}"
 
 export CC="${CC:-gcc}"
 export CONAN_CMAKE_GENERATOR="${GENERATOR}"
-export CONAN_CMAKE_TOOLCHAIN_FILE="${cnl_dir}/test/cmake/toolchain/${TOOLCHAIN}"
 export CXX="${CXX:-g++}"
+
+# Determine CMake toolchain file
+toolchain_dir="${cnl_dir}/test/cmake/toolchain"
+export CONAN_CMAKE_TOOLCHAIN_FILE="${toolchain_dir}/${TOOLCHAIN}"
+if [ ! -f "${CONAN_CMAKE_TOOLCHAIN_FILE}" ]; then
+  echo CMake toolchain file, "${CONAN_CMAKE_TOOLCHAIN_FILE}", not found. Valid TOOLCHAIN values:
+  ls -1 "${toolchain_dir}"
+  exit 1
+fi
 
 # create Conan profile in the build directory
 conan profile new --detect ./profile
