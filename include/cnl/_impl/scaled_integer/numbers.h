@@ -15,6 +15,10 @@
 
 #include "../used_digits.h"
 
+#include <version>
+
+#if defined(__cpp_lib_math_constants)
+
 #include <numbers>
 
 /// compositional numeric library
@@ -177,5 +181,7 @@ namespace std {
                         cnl::scaled_integer<Rep, cnl::power<Exponent>>{phi_v<long double>}};
     }
 }
+
+#endif  // __cpp_­lib_­math_­constants
 
 #endif  // CNL_IMPL_SCALED_INTEGER_CONSTANTS_H
