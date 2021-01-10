@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# turn the (empty) working directory into a build environment;
+# called after init-system;
+# called in an empty build directory;
+# called before test/scripts/test
+
+set -euo pipefail
+
+cnl_dir=$(
+  cd "$(dirname "$0")"/../..
+  pwd
+)
+
+# parameters
+COMPILER="${COMPILER:-gcc}"
+ENABLE_EXCEPTIONS="${ENABLE_EXCEPTIONS:-True}"
+GENERATOR="${GENERATOR:-Ninja}"
+INT128="${INT128:-True}"
+SANITIZE="${SANITIZE:-True}"
+STDLIB="${STDLIB:-libstdc++11}"
+TARGET="${TARGET:-test-unit}"
+TOOLCHAIN="${TOOLCHAIN:-gcc.cmake}"
+
+export CC="${CC:-gcc}"
+export CONAN_CMAKE_GENERATOR="${GENERATOR}"
+export CONAN_CMAKE_TOOLCHAIN_FILE="${cnl_dir}/test/cmake/toolchain/${TOOLCHAIN}"
+export CXX="${CXX:-g++}"
+
+# create Conan profile in the build directory
+conan profile new --detect ./profile
+conan profile update settings.compiler="${COMPILER}" ./profile
+conan profile update settings.compiler.libcxx="${STDLIB}" ./profile
+
+# get dependencies ready
+conan install \
+  --build missing \
+  --options enable_exceptions="${ENABLE_EXCEPTIONS}" \
+  --options int128="${INT128}" \
+  --options sanitize="${SANITIZE}" \
+  --options target="${TARGET}" \
+  --profile ./profile \
+  "$@" \
+  "${cnl_dir}"
+
+# configure build system
+conan build --configure "${cnl_dir}"

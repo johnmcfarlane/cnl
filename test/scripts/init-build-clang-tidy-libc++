@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# specialised alternative to init-build-clang-libc++ runs Clang-Tidy
+
+set -euo pipefail
+
+export TOOLCHAIN=clang-tidy-libc++.cmake
+
+script_dir=$(
+  cd "$(dirname "$0")"
+  pwd
+)
+
+"${script_dir}/init-build-clang-libc++" "$@"

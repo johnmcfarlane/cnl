@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# specialised alternative to init-build tailored to GCC toolchain
+
+set -euo pipefail
+
+export CC="${CC:-gcc}"
+export COMPILER="${COMPILER:-gcc}"
+export CXX="${CXX:-g++}"
+export STDLIB="${STDLIB:-libstdc++11}"
+export CONAN_CMAKE_TOOLCHAIN_FILE="${CONAN_CMAKE_TOOLCHAIN_FILE:-gcc.cmake}"
+
+script_dir=$(
+  cd "$(dirname "$0")"
+  pwd
+)
+
+"${script_dir}/init-build" "$@"

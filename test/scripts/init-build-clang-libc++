@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# specialised alternative to init-build-clang tailored to libc++
+
+set -euo pipefail
+
+export STDLIB=libc++
+export TOOLCHAIN="${TOOLCHAIN:-clang-libc++.cmake}"
+
+script_dir=$(
+  cd "$(dirname "$0")"
+  pwd
+)
+
+"${script_dir}/init-build-clang" "$@"
