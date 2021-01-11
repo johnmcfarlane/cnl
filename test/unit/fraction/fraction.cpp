@@ -11,6 +11,8 @@
 
 #include <gtest/gtest.h>
 
+#include <string>
+
 namespace {
     using cnl::_impl::assert_same;
     using cnl::_impl::identical;
@@ -209,5 +211,19 @@ namespace {
         ASSERT_EQ(
                 (std::hash<cnl::fraction<>>{}(cnl::fraction<>{1, 2})),
                 (std::hash<cnl::fraction<>>{}(cnl::fraction<>{12, 24})));
+    }
+
+    TEST(fraction, to_string)  // NOLINT
+    {
+        using namespace std::literals::string_literals;
+        ASSERT_EQ("5/7"s, cnl::to_string(cnl::fraction{cnl::int8{5}, cnl::uint8{7}}));
+    }
+
+    TEST(fraction, ostream)  // NOLINT
+    {
+        using namespace std::literals::string_literals;
+        std::stringstream s;
+        s << cnl::fraction{cnl::int8{5}, cnl::uint8{7}};
+        ASSERT_EQ("5/7"s, s.str());
     }
 }
