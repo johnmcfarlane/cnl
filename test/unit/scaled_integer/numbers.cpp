@@ -4,11 +4,17 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#include <cnl/_impl/scaled_integer/numbers.h>
+
 #include <cnl/_impl/assert.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/scaled_integer.h>
 
 #include <gtest/gtest.h>
+
+#include <version>
+
+#if defined(__cpp_lib_math_constants)
 
 namespace {
 
@@ -358,3 +364,5 @@ namespace {
                 .0000000000000000003L);
     }
 }
+
+#endif

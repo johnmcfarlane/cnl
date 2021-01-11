@@ -39,8 +39,10 @@ namespace {
         // pi stored as s5.10 (truncated rounding)
         constexpr auto n =
                 cnl::_impl::from_rep<cnl::scaled_integer<int16, cnl::power<-10>>>(int16{3216});
+#if defined(__cpp_lib_math_constants)
         static_assert(
                 identical(std::numbers::pi_v<cnl::scaled_integer<int16, cnl::power<-10>>>, n));
+#endif
         static_assert(
                 identical(int16{3216}, cnl::_impl::to_rep(n)),
                 "cnl::_impl::to_rep(cnl::scaled_integer)");
