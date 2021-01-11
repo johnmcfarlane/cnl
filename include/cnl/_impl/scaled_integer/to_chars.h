@@ -19,6 +19,8 @@
 #include <type_traits>
 #include <utility>
 
+#include <charconv>
+
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
@@ -170,11 +172,11 @@ namespace cnl {
         template<typename Rep, int Exponent, int Radix>
         auto to_chars_fractional(
                 char* first, char* last, scaled_integer<Rep, power<Exponent, Radix>> const& value)
-                -> to_chars_result
+                -> std::to_chars_result
         {
             auto const destination_length = std::distance(first, last);
             if (destination_length < 2) {
-                return to_chars_result{first, std::errc{}};
+                return std::to_chars_result{first, std::errc{}};
             }
 
             *first = '.';
@@ -194,22 +196,22 @@ namespace cnl {
                 --last;
             }
 
-            return to_chars_result{last, std::errc{}};
+            return std::to_chars_result{last, std::errc{}};
         }
 
         template<typename Rep, int Exponent, int Radix>
-        to_chars_result to_chars_positive(
+        std::to_chars_result to_chars_positive(
                 char* const first, char* const last,
                 scaled_integer<Rep, power<Exponent, Radix>> const& value)
         {
             auto const split = _impl::split<Rep, Exponent, Radix>{}(value);
             auto const natural_last = to_chars_natural(first, last, split.first);
             if (!natural_last) {
-                return to_chars_result{last, std::errc::value_too_large};
+                return std::to_chars_result{last, std::errc::value_too_large};
             }
 
             if (!split.second) {
-                return to_chars_result{natural_last, std::errc{}};
+                return std::to_chars_result{natural_last, std::errc{}};
             }
 
             return to_chars_fractional(natural_last, last, split.second);
@@ -218,7 +220,7 @@ namespace cnl {
 
     // partial implementation of std::to_chars overloaded on cnl::scaled_integer
     template<typename Rep, int Exponent, int Radix>
-    to_chars_result to_chars(
+    std::to_chars_result to_chars(
             char* const first,
             char* const last,  // NOLINT(readability-non-const-parameter)
             cnl::scaled_integer<Rep, power<Exponent, Radix>> const& value)
@@ -226,12 +228,12 @@ namespace cnl {
         if (!value) {
             if (first == last) {
                 // buffer too small to contain "0"
-                return to_chars_result{last, std::errc::value_too_large};
+                return std::to_chars_result{last, std::errc::value_too_large};
             }
 
             // zero
             *first = '0';
-            return to_chars_result{first + 1, std::errc{}};
+            return std::to_chars_result{first + 1, std::errc{}};
         }
 
         using native_rounding_type = set_rounding_t<decltype(value), native_rounding_tag>;
