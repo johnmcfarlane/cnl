@@ -104,7 +104,7 @@ namespace {
             test<1>(50);
         }
 
-        TEST(to_chars_natural, fourty_two_way_too_short)  // NOLINT
+        TEST(to_chars_natural, forty_two_way_too_short)  // NOLINT
         {
             test<0>(42);
         }
