@@ -21,6 +21,10 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
+        template<typename T>
+        inline constexpr auto epsilon_value{
+                cnl::numeric_limits<T>::epsilon() ? cnl::numeric_limits<T>::epsilon() : T{1}};
+
         // cnl::_impl::max_to_chars_chars
         template<typename Scalar, int Base = 10>
         struct max_to_chars_chars {
@@ -102,7 +106,9 @@ namespace cnl {
                 // -ve
                 *first = '-';
                 using unsigned_number = remove_signedness_t<Number>;
-                auto const negated{unsigned_number(-(value + Number{1})) + Number{1}};
+                unsigned_number const negated{
+                        as_unsigned(-(value + epsilon_value<Number>))
+                        + epsilon_value<unsigned_number>};
                 return to_chars_positive(first + 1, last, negated);
             }
         };

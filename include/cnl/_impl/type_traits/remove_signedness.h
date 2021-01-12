@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_TYPE_TRAITS_REMOVE_SIGNEDNESS_H)
 #define CNL_IMPL_TYPE_TRAITS_REMOVE_SIGNEDNESS_H
 
+#include "../../limits.h"
 #include "../num_traits/is_composite.h"
 #include "../num_traits/rep_of.h"
 #include "../num_traits/set_rep.h"
@@ -49,6 +50,14 @@ namespace cnl {
     struct remove_signedness<T, _impl::enable_if_t<is_composite<T>::value>>
         : std::type_identity<_impl::set_rep_t<T, remove_signedness_t<_impl::rep_of_t<T>>>> {
     };
+
+    namespace _impl {
+        template<typename T>
+        constexpr auto as_unsigned(T const& t)
+        {
+            return remove_signedness_t<T>(t);
+        }
+    }
 }
 
 #endif  // CNL_IMPL_TYPE_TRAITS_REMOVE_SIGNEDNESS_H

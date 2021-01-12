@@ -112,15 +112,17 @@ namespace cnl {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
                 -> _impl::op_result<Operator, Lhs, Rhs>
         {
-            return _impl::is_overflow<Operator, _impl::polarity::positive>{}(lhs, rhs)
-                         ? _impl::overflow_operator<
-                                 Operator, _impl::common_overflow_tag_t<LhsTag, RhsTag>,
-                                 _impl::polarity::positive>{}(lhs, rhs)
-                 : _impl::is_overflow<Operator, _impl::polarity::negative>{}(lhs, rhs)
-                         ? _impl::overflow_operator<
-                                 Operator, _impl::common_overflow_tag_t<LhsTag, RhsTag>,
-                                 _impl::polarity::negative>{}(lhs, rhs)
-                         : Operator{}(lhs, rhs);
+            if (_impl::is_overflow<Operator, _impl::polarity::positive>{}(lhs, rhs)) {
+                return _impl::overflow_operator<
+                        Operator, _impl::common_overflow_tag_t<LhsTag, RhsTag>,
+                        _impl::polarity::positive>{}(lhs, rhs);
+            }
+            if (_impl::is_overflow<Operator, _impl::polarity::negative>{}(lhs, rhs)) {
+                return _impl::overflow_operator<
+                        Operator, _impl::common_overflow_tag_t<LhsTag, RhsTag>,
+                        _impl::polarity::negative>{}(lhs, rhs);
+            }
+            return Operator{}(lhs, rhs);
         }
     };
 

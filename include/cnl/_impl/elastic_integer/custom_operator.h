@@ -16,46 +16,51 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::common_signedness
 
-        template<class T1, class T2>
+        template<binary_op Operator, class T1, class T2>
         struct common_signedness {
             static constexpr bool _are_signed =
                     numeric_limits<T1>::is_signed | numeric_limits<T2>::is_signed;
+            using t1 = set_signedness_t<T1, _are_signed>;
+            using t2 = set_signedness_t<T2, _are_signed>;
 
-            using type = typename std::common_type<
-                    set_signedness_t<T1, _are_signed>, set_signedness_t<T2, _are_signed>>::type;
+            using type = decltype(Operator{}(std::declval<t1>(), std::declval<t2>()));
         };
 
-        template<class T1, class T2>
-        using common_signedness_t = typename common_signedness<T1, T2>::type;
+        template<binary_op Operator, class T1, class T2>
+        using common_signedness_t = typename common_signedness<Operator, T1, T2>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::common_elastic_type
 
-        template<typename T1, typename T2>
+        template<binary_op Operator, typename T1, typename T2>
         struct common_elastic_type;
 
-        template<int Digits1, class Narrowest1, int Digits2, class Narrowest2>
+        template<binary_op Operator, int Digits1, class Narrowest1, int Digits2, class Narrowest2>
         struct common_elastic_type<
+                Operator,
                 elastic_integer<Digits1, Narrowest1>, elastic_integer<Digits2, Narrowest2>> {
             using type = elastic_integer<
-                    max(Digits1, Digits2), common_signedness_t<Narrowest1, Narrowest2>>;
+                    max(Digits1, Digits2), common_signedness_t<Operator, Narrowest1, Narrowest2>>;
         };
 
-        template<int Digits1, class Narrowest1, class Rhs>
-        struct common_elastic_type<elastic_integer<Digits1, Narrowest1>, Rhs>
+        template<binary_op Operator, int Digits1, class Narrowest1, class Rhs>
+        struct common_elastic_type<Operator, elastic_integer<Digits1, Narrowest1>, Rhs>
             : common_elastic_type<
+                      Operator,
                       elastic_integer<Digits1, Narrowest1>,
                       elastic_integer<numeric_limits<Rhs>::digits, Rhs>> {
         };
 
-        template<class Lhs, int Digits2, class Narrowest2>
-        struct common_elastic_type<Lhs, elastic_integer<Digits2, Narrowest2>>
+        template<binary_op Operator, class Lhs, int Digits2, class Narrowest2>
+        struct common_elastic_type<Operator, Lhs, elastic_integer<Digits2, Narrowest2>>
             : common_elastic_type<
+                      Operator,
                       elastic_integer<numeric_limits<Lhs>::digits, Lhs>,
                       elastic_integer<Digits2, Narrowest2>> {
         };
 
         template<
+                binary_op Operator,
                 int FromDigits, class FromNarrowest, int OtherDigits, class OtherNarrowest,
                 enable_if_t<
                         FromDigits != OtherDigits
@@ -66,6 +71,7 @@ namespace cnl {
                 elastic_integer<OtherDigits, OtherNarrowest> const&)
         {
             return static_cast<typename common_elastic_type<
+                    Operator,
                     elastic_integer<FromDigits, FromNarrowest>,
                     elastic_integer<OtherDigits, OtherNarrowest>>::type>(from);
         }
@@ -80,7 +86,9 @@ namespace cnl {
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
                 elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
         {
-            return Operator()(cast_to_common_type(lhs, rhs), cast_to_common_type(rhs, lhs));
+            return Operator()(
+                    _impl::cast_to_common_type<Operator>(lhs, rhs),
+                    _impl::cast_to_common_type<Operator>(rhs, lhs));
         }
     };
 

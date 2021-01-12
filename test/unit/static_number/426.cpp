@@ -16,29 +16,33 @@ using saturated_elastic_scaled_integer = cnl::static_number<
 using temp_wide_t = saturated_elastic_scaled_integer<23, 8, int32_t>;
 using temp_t = saturated_elastic_scaled_integer<7, 8, int16_t>;
 
-TEST(_426, half)  // NOLINT
-{
-    // non-clipping/non-overflowing conversion
-    temp_wide_t tw = 0.5;
-    temp_t t = tw;
-    ASSERT_EQ(temp_t(0.5), t);
-}
+static_assert(cnl::_impl::epsilon_value<int> == 1);
+static_assert(cnl::_impl::epsilon_value<cnl::scaled_integer<int, cnl::power<-2>>> == 0.25);
+static_assert(cnl::_impl::epsilon_value<cnl::scaled_integer<int, cnl::power<2>>> == 4);
 
-TEST(_426, minus_150)  // NOLINT
-{
-    // clipping conversion should be constrained to min/max
-    temp_wide_t tw = -150;
-    temp_t t = tw;
-    temp_t lowest = cnl::numeric_limits<temp_t>::lowest();
-    ASSERT_EQ(lowest, t);
+// TEST(_426, half)  // NOLINT
+// {
+//     // non-clipping/non-overflowing conversion
+//     temp_wide_t tw = 0.5;
+//     temp_t t = tw;
+//     ASSERT_EQ(temp_t(0.5), t);
+// }
 
-    ASSERT_EQ(-32767, cnl::unwrap(t));
-    ASSERT_EQ(-32767, cnl::unwrap(lowest));
-}
+// TEST(_426, minus_150)  // NOLINT
+// {
+//     // clipping conversion should be constrained to min/max
+//     temp_wide_t tw = -150;
+//     temp_t t = tw;
+//     temp_t lowest = cnl::numeric_limits<temp_t>::lowest();
+//     ASSERT_EQ(lowest, t);
 
-TEST(_426, plus_150)  // NOLINT
-{
-    temp_wide_t tw = 150;  // NOLINT(cppcoreguidelines-init-variables)
-    temp_t t = tw;  // NOLINT(cppcoreguidelines-init-variables)
-    ASSERT_EQ(cnl::numeric_limits<temp_t>::max(), t);
-}
+//     ASSERT_EQ(-32767, cnl::unwrap(t));
+//     ASSERT_EQ(-32767, cnl::unwrap(lowest));
+// }
+
+// TEST(_426, plus_150)  // NOLINT
+// {
+//     temp_wide_t tw = 150;  // NOLINT(cppcoreguidelines-init-variables)
+//     temp_t t = tw;  // NOLINT(cppcoreguidelines-init-variables)
+//     ASSERT_EQ(cnl::numeric_limits<temp_t>::max(), t);
+// }
