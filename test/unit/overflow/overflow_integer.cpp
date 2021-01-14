@@ -109,7 +109,7 @@ static_assert(
                 throwing_integer<int32_t>{50005}),
         "throwing_integer test failed");
 
-namespace saturated_binary_operator {
+namespace saturated_binary_arithmetic_operator {
     using cnl::_impl::multiply_op;
 
     static_assert(
@@ -118,7 +118,7 @@ namespace saturated_binary_operator {
 
     static_assert(
             identical(
-                    cnl::binary_operator<
+                    cnl::binary_arithmetic_operator<
                             cnl::_impl::multiply_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
                             saturated_integer<short>, float>()(saturated_integer<short>(1234), 2.),
                     2468.F),
@@ -132,7 +132,7 @@ namespace saturated_binary_operator {
     static_assert(
             identical(
                     cnl::_impl::make_wrapper<cnl::saturated_overflow_tag>(
-                            cnl::binary_operator<
+                            cnl::binary_arithmetic_operator<
                                     multiply_op, cnl::saturated_overflow_tag,
                                     cnl::saturated_overflow_tag, signed char, signed char>()(
                                     cnl::_impl::to_rep(saturated_integer<signed char>{30}),
@@ -141,7 +141,7 @@ namespace saturated_binary_operator {
 
     static_assert(
             identical(
-                    cnl::binary_operator<
+                    cnl::binary_arithmetic_operator<
                             multiply_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
                             saturated_integer<signed char>, saturated_integer<signed char>>()(
                             saturated_integer<signed char>{30}, saturated_integer<signed char>{40}),
@@ -149,7 +149,7 @@ namespace saturated_binary_operator {
 
     static_assert(
             identical(
-                    cnl::binary_operator<
+                    cnl::binary_arithmetic_operator<
                             cnl::_impl::multiply_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
                             saturated_integer<signed char>, saturated_integer<signed char>>()(
                             30, 40),
@@ -157,12 +157,12 @@ namespace saturated_binary_operator {
 
     static_assert(
             identical(
-                    cnl::binary_operator<
+                    cnl::binary_arithmetic_operator<
                             cnl::_impl::multiply_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
                             unsigned, throwing_integer<cnl::uint8>>()(
                             3U, throwing_integer<cnl::uint8>{4}),
                     throwing_integer<unsigned>{12}),
-            "cnl::binary_operator test failed");
+            "cnl::binary_arithmetic_operator test failed");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

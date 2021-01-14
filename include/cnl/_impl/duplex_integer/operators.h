@@ -31,9 +31,9 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        // default_binary_operator
-        template<binary_op Operator, typename Upper, typename Lower>
-        struct default_binary_operator {
+        // default_binary_arithmetic_operator
+        template<binary_arithmetic_op Operator, typename Upper, typename Lower>
+        struct default_binary_arithmetic_operator {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
             CNL_NODISCARD constexpr auto operator()(
@@ -46,8 +46,8 @@ namespace cnl {
         };
 
         // add_op and subtract_op
-        template<binary_op Operator, typename Upper, typename Lower>
-        struct first_degree_binary_operator {
+        template<binary_arithmetic_op Operator, typename Upper, typename Lower>
+        struct first_degree_binary_arithmetic_operator {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
             static constexpr auto lower_digits = digits<Lower>;
@@ -105,49 +105,49 @@ namespace cnl {
         }
     };
 
-    // binary_operator
-    template<_impl::binary_op Operator, typename Upper, typename Lower, typename Rhs>
-    struct binary_operator<
+    // binary_arithmetic_operator
+    template<_impl::binary_arithmetic_op Operator, typename Upper, typename Lower, typename Rhs>
+    struct binary_arithmetic_operator<
             Operator, _impl::native_tag, _impl::native_tag, _impl::duplex_integer<Upper, Lower>,
             Rhs>
-        : binary_operator<
+        : binary_arithmetic_operator<
                   Operator, _impl::native_tag, _impl::native_tag,
                   _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>> {
     };
 
     template<typename Upper, typename Lower>
-    struct binary_operator<
+    struct binary_arithmetic_operator<
             _impl::add_op, _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>>
-        : _impl::first_degree_binary_operator<_impl::add_op, Upper, Lower> {
+        : _impl::first_degree_binary_arithmetic_operator<_impl::add_op, Upper, Lower> {
     };
 
     template<typename Upper, typename Lower>
-    struct binary_operator<
+    struct binary_arithmetic_operator<
             _impl::subtract_op, _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>>
-        : _impl::first_degree_binary_operator<_impl::subtract_op, Upper, Lower> {
+        : _impl::first_degree_binary_arithmetic_operator<_impl::subtract_op, Upper, Lower> {
     };
 
     template<typename Upper, typename Lower>
-    struct binary_operator<
+    struct binary_arithmetic_operator<
             _impl::bitwise_or_op, _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>>
-        : _impl::default_binary_operator<_impl::bitwise_or_op, Upper, Lower> {
+        : _impl::default_binary_arithmetic_operator<_impl::bitwise_or_op, Upper, Lower> {
     };
 
     template<typename Upper, typename Lower>
-    struct binary_operator<
+    struct binary_arithmetic_operator<
             _impl::bitwise_and_op, _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>>
-        : _impl::default_binary_operator<_impl::bitwise_and_op, Upper, Lower> {
+        : _impl::default_binary_arithmetic_operator<_impl::bitwise_and_op, Upper, Lower> {
     };
 
     template<typename Upper, typename Lower>
-    struct binary_operator<
+    struct binary_arithmetic_operator<
             _impl::bitwise_xor_op, _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>>
-        : _impl::default_binary_operator<_impl::bitwise_xor_op, Upper, Lower> {
+        : _impl::default_binary_arithmetic_operator<_impl::bitwise_xor_op, Upper, Lower> {
     };
 
     template<

@@ -85,7 +85,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::wide_integer<8, signed>{5},
-                        cnl::binary_operator<
+                        cnl::binary_arithmetic_operator<
                                 cnl::_impl::add_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
                                 cnl::wide_integer<8, unsigned>, cnl::wide_integer<7, signed>>{}(
                                 cnl::wide_integer<8, unsigned>{2},
@@ -102,14 +102,14 @@ namespace {
         static_assert(
                 identical(
                         cnl::wide_integer<16, unsigned>{0x12},
-                        cnl::binary_operator<
+                        cnl::binary_arithmetic_operator<
                                 cnl::_impl::divide_op, cnl::_impl::native_tag,
                                 cnl::_impl::native_tag, cnl::wide_integer<16, unsigned>,
                                 cnl::wide_integer<16, unsigned>>{}(0x1234, 0x100)));
         static_assert(
                 identical(
                         cnl::wide_integer<16, signed>{0x12},
-                        cnl::binary_operator<
+                        cnl::binary_arithmetic_operator<
                                 cnl::_impl::divide_op, cnl::_impl::native_tag,
                                 cnl::_impl::native_tag, cnl::wide_integer<16, unsigned>,
                                 cnl::wide_integer<16, signed>>{}(0x1234, 0x100)));

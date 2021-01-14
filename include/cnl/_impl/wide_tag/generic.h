@@ -55,9 +55,9 @@ namespace cnl {
     };
 
     template<
-            _impl::binary_op Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
+            _impl::binary_arithmetic_op Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
             class Lhs, class Rhs>
-    struct binary_operator<
+    struct binary_arithmetic_operator<
             Operator, wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>, Lhs,
             Rhs> {
     private:

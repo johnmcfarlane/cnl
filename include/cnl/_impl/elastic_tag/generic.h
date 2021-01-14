@@ -41,9 +41,9 @@ namespace cnl {
     };
 
     template<
-            _impl::binary_op Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
+            _impl::binary_arithmetic_op Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
             typename Lhs, typename Rhs>
-    struct binary_operator<
+    struct binary_arithmetic_operator<
             Operator, elastic_tag<LhsDigits, LhsNarrowest>, elastic_tag<RhsDigits, RhsNarrowest>,
             Lhs, Rhs> {
         static_assert(digits<Lhs> >= LhsDigits, "LHS number is not wide enough");

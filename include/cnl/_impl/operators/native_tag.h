@@ -52,8 +52,8 @@ namespace cnl {
             _impl::enable_if_t<_impl::has_native_operators<Rhs>::value>> : Operator {
     };
 
-    template<_impl::binary_op Operator, typename Lhs, typename Rhs>
-    struct binary_operator<
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
+    struct binary_arithmetic_operator<
             Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
             _impl::enable_if_t<
                     _impl::has_native_operators<Lhs>::value

@@ -28,7 +28,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::undefined_overflow_tag{},
-                        cnl::binary_operator<
+                        cnl::binary_arithmetic_operator<
                                 cnl::_impl::add_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
                                 cnl::undefined_overflow_tag, cnl::undefined_overflow_tag>{}(
                                 cnl::undefined_overflow_tag{}, cnl::undefined_overflow_tag{})),

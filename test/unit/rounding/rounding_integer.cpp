@@ -202,7 +202,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::rounding_integer<long, cnl::native_rounding_tag>{321},
-                        cnl::binary_operator<
+                        cnl::binary_arithmetic_operator<
                                 cnl::_impl::divide_op, cnl::_impl::native_tag,
                                 cnl::_impl::native_tag,
                                 cnl::_impl::wrapper<long, cnl::native_rounding_tag>,

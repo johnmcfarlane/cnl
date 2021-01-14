@@ -44,9 +44,9 @@ namespace cnl {
         : unary_operator<Operator, _impl::native_tag, Operand> {
     };
 
-    template<_impl::binary_op Operator, typename Lhs, typename Rhs>
-    struct binary_operator<Operator, native_rounding_tag, native_rounding_tag, Lhs, Rhs>
-        : binary_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
+    struct binary_arithmetic_operator<Operator, native_rounding_tag, native_rounding_tag, Lhs, Rhs>
+        : binary_arithmetic_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
     };
 
     template<_impl::shift_op Operator, tag RhsTag, typename Lhs, typename Rhs>

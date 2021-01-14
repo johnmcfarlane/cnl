@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_WRAPPER_H)
 #define CNL_IMPL_WRAPPER_H
 
-#include "wrapper/binary_operator.h"
+#include "wrapper/binary_arithmetic_operator.h"
 #include "wrapper/comparison_operator.h"
 #include "wrapper/declaration.h"
 #include "wrapper/definition.h"

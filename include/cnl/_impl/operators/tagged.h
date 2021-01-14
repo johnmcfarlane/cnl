@@ -39,10 +39,10 @@ namespace cnl {
     }
 
     namespace _impl {
-        template<_impl::binary_op Operator, tag Tag, typename Lhs, typename Rhs>
-        CNL_NODISCARD constexpr auto binary_operate(Lhs const& lhs, Rhs const& rhs)
+        template<_impl::binary_arithmetic_op Operator, tag Tag, typename Lhs, typename Rhs>
+        CNL_NODISCARD constexpr auto binary_arithmetic_operate(Lhs const& lhs, Rhs const& rhs)
         {
-            return binary_operator<Operator, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
+            return binary_arithmetic_operator<Operator, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
         }
     }
 
@@ -58,7 +58,7 @@ namespace cnl {
     template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto add(Lhs const& lhs, Rhs const& rhs)
     {
-        return binary_operator<_impl::add_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
+        return binary_arithmetic_operator<_impl::add_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
     }
 
     /// \brief subtracts one value from another
@@ -73,7 +73,7 @@ namespace cnl {
     template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto subtract(Lhs const& lhs, Rhs const& rhs)
     {
-        return binary_operator<_impl::subtract_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
+        return binary_arithmetic_operator<_impl::subtract_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
     }
 
     /// \brief multiplies one value by another
@@ -88,7 +88,7 @@ namespace cnl {
     template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto multiply(Lhs const& lhs, Rhs const& rhs)
     {
-        return binary_operator<_impl::multiply_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
+        return binary_arithmetic_operator<_impl::multiply_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
     }
 
     /// \brief divides one value by another
@@ -103,7 +103,7 @@ namespace cnl {
     template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
     {
-        return binary_operator<_impl::divide_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
+        return binary_arithmetic_operator<_impl::divide_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
     }
 
     template<tag Tag, typename Lhs, typename Rhs>

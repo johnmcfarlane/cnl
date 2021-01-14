@@ -40,7 +40,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::_impl::wrapper<>{123 + 234},
-                        cnl::binary_operator<
+                        cnl::binary_arithmetic_operator<
                                 cnl::_impl::add_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
                                 cnl::_impl::wrapper<>, cnl::_impl::wrapper<>>{}(
                                 cnl::_impl::wrapper<>{123}, cnl::_impl::wrapper<>{234})));

@@ -804,7 +804,7 @@ namespace test_arithmetic {
 
     static_assert(
             identical(
-                    cnl::binary_operator<
+                    cnl::binary_arithmetic_operator<
                             cnl::_impl::subtract_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
                             scaled_integer<int32>, cnl::constant<369>>()(
                             scaled_integer<int32>{999}, cnl::constant<369>{}),

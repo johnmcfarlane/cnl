@@ -34,8 +34,8 @@ namespace cnl {
         inline constexpr auto wants_generic_ops<Tag> = true;
     }
 
-    template<_impl::binary_op Operator, _impl::homogeneous_operator_tag Tag>
-    struct binary_operator<Operator, _impl::native_tag, _impl::native_tag, Tag, Tag> {
+    template<_impl::binary_arithmetic_op Operator, _impl::homogeneous_operator_tag Tag>
+    struct binary_arithmetic_operator<Operator, _impl::native_tag, _impl::native_tag, Tag, Tag> {
         CNL_NODISCARD constexpr Tag operator()(Tag, Tag) const
         {
             return Tag{};

@@ -30,9 +30,9 @@ namespace cnl {
         };
     }
 
-    // cnl::_impl::binary_operator<modulo_op, duplex_integer<>, duplex_integer<>
+    // cnl::_impl::binary_arithmetic_operator<modulo_op, duplex_integer<>, duplex_integer<>
     template<typename Upper, typename Lower>
-    struct binary_operator<
+    struct binary_arithmetic_operator<
             _impl::modulo_op, _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<Upper, Lower>, _impl::duplex_integer<Upper, Lower>> {
         using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
@@ -46,7 +46,7 @@ namespace cnl {
     };
 
     template<typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
-    struct binary_operator<
+    struct binary_arithmetic_operator<
             _impl::modulo_op, _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<LhsUpper, LhsLower>, _impl::duplex_integer<RhsUpper, RhsLower>>
         : _impl::heterogeneous_duplex_modulo_operator<
@@ -55,7 +55,7 @@ namespace cnl {
     };
 
     template<typename Lhs, typename RhsUpper, typename RhsLower>
-    struct binary_operator<
+    struct binary_arithmetic_operator<
             _impl::modulo_op, _impl::native_tag, _impl::native_tag, Lhs,
             _impl::duplex_integer<RhsUpper, RhsLower>>
         : _impl::heterogeneous_duplex_modulo_operator<
@@ -63,7 +63,7 @@ namespace cnl {
     };
 
     template<typename LhsUpper, typename LhsLower, typename Rhs>
-    struct binary_operator<
+    struct binary_arithmetic_operator<
             _impl::modulo_op, _impl::native_tag, _impl::native_tag,
             _impl::duplex_integer<LhsUpper, LhsLower>, Rhs>
         : _impl::heterogeneous_duplex_modulo_operator<

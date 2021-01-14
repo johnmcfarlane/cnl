@@ -53,7 +53,7 @@ namespace {
         // subtract
         static_assert(
                 identical(
-                        cnl::binary_operator<
+                        cnl::binary_arithmetic_operator<
                                 cnl::_impl::subtract_op, cnl::native_overflow_tag,
                                 cnl::native_overflow_tag, cnl::int8, cnl::int8>()(
                                 INT8_C(0), INT8_C(0)),
@@ -112,7 +112,7 @@ namespace {
         // add
         static_assert(
                 identical(
-                        cnl::binary_operator<
+                        cnl::binary_arithmetic_operator<
                                 cnl::_impl::add_op, cnl::saturated_overflow_tag,
                                 cnl::saturated_overflow_tag, signed, unsigned>()(7, 23U),
                         7 + 23U));

@@ -75,7 +75,7 @@ namespace {
         static_assert(
                 identical(
                         elastic_integer<1, int>{0},
-                        cnl::binary_operator<
+                        cnl::binary_arithmetic_operator<
                                 cnl::_impl::multiply_op, cnl::_impl::native_tag,
                                 cnl::_impl::native_tag, elastic_integer<1>, elastic_integer<1>>{}(
                                 elastic_integer<1>{0}, elastic_integer<1>(0))),
@@ -83,7 +83,7 @@ namespace {
         static_assert(
                 identical(
                         elastic_integer<31, int>{0},
-                        cnl::binary_operator<
+                        cnl::binary_arithmetic_operator<
                                 cnl::_impl::multiply_op, cnl::_impl::native_tag,
                                 cnl::_impl::native_tag, elastic_integer<1>, std::int32_t>()(
                                 elastic_integer<1>{0}, INT32_C(0))),
@@ -462,7 +462,7 @@ namespace {
 
         static_assert(
                 identical(
-                        cnl::binary_operator<
+                        cnl::binary_arithmetic_operator<
                                 cnl::_impl::multiply_op, cnl::_impl::native_tag,
                                 cnl::_impl::native_tag, elastic_integer<1>, std::int32_t>()(
                                 elastic_integer<1>{0}, INT32_C(0)),

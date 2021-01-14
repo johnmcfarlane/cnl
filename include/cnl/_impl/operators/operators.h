@@ -338,23 +338,23 @@ namespace cnl {
         inline constexpr auto is_unary_op<bitwise_not_op> = true;
 
         template<class T>
-        inline constexpr auto is_binary_op = false;
+        inline constexpr auto is_binary_arithmetic_op = false;
         template<>
-        inline constexpr auto is_binary_op<add_op> = true;
+        inline constexpr auto is_binary_arithmetic_op<add_op> = true;
         template<>
-        inline constexpr auto is_binary_op<subtract_op> = true;
+        inline constexpr auto is_binary_arithmetic_op<subtract_op> = true;
         template<>
-        inline constexpr auto is_binary_op<multiply_op> = true;
+        inline constexpr auto is_binary_arithmetic_op<multiply_op> = true;
         template<>
-        inline constexpr auto is_binary_op<divide_op> = true;
+        inline constexpr auto is_binary_arithmetic_op<divide_op> = true;
         template<>
-        inline constexpr auto is_binary_op<modulo_op> = true;
+        inline constexpr auto is_binary_arithmetic_op<modulo_op> = true;
         template<>
-        inline constexpr auto is_binary_op<bitwise_or_op> = true;
+        inline constexpr auto is_binary_arithmetic_op<bitwise_or_op> = true;
         template<>
-        inline constexpr auto is_binary_op<bitwise_and_op> = true;
+        inline constexpr auto is_binary_arithmetic_op<bitwise_and_op> = true;
         template<>
-        inline constexpr auto is_binary_op<bitwise_xor_op> = true;
+        inline constexpr auto is_binary_arithmetic_op<bitwise_xor_op> = true;
 
         template<class T>
         inline constexpr auto is_shift_op = false;
@@ -419,14 +419,14 @@ namespace cnl {
         inline constexpr auto is_assign_shift_op<assign_shift_right_op> = true;
 
         template<class T>
-        inline constexpr auto is_op = is_unary_op<T> || is_binary_op<T> || is_shift_op<T> || is_comparison_op<T> || is_prefix_op<T> || is_postfix_op<T> || is_assign_op<T> || is_assign_shift_op<T>;
+        inline constexpr auto is_op = is_unary_op<T> || is_binary_arithmetic_op<T> || is_shift_op<T> || is_comparison_op<T> || is_prefix_op<T> || is_postfix_op<T> || is_assign_op<T> || is_assign_shift_op<T>;
         template<>
         inline constexpr auto is_op<convert_op> = true;
 
         template<class T>
         concept unary_op = is_unary_op<T>;
         template<class T>
-        concept binary_op = is_binary_op<T>;
+        concept binary_arithmetic_op = is_binary_arithmetic_op<T>;
         template<class T>
         concept shift_op = is_shift_op<T>;
         template<class T>

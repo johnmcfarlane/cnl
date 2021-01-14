@@ -30,7 +30,7 @@ namespace cnl {
         struct divide {
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {
-                return cnl::binary_operator<divide_op, LhsTag, RhsTag, Lhs, Rhs>{}(
+                return cnl::binary_arithmetic_operator<divide_op, LhsTag, RhsTag, Lhs, Rhs>{}(
                         cnl::unwrap(lhs), cnl::unwrap(rhs));
             }
         };

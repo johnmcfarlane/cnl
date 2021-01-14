@@ -78,8 +78,8 @@ namespace cnl {
     };
 
 #if defined(CNL_BUILTIN_OVERFLOW_ENABLED)
-    template<_impl::binary_op Operator, overflow_tag LhsTag, overflow_tag RhsTag, typename Lhs, typename Rhs>
-    requires _impl::builtin_overflow_operator<Operator, Lhs, Rhs>::value struct binary_operator<Operator, LhsTag, RhsTag, Lhs, Rhs> {
+    template<_impl::binary_arithmetic_op Operator, overflow_tag LhsTag, overflow_tag RhsTag, typename Lhs, typename Rhs>
+    requires _impl::builtin_overflow_operator<Operator, Lhs, Rhs>::value struct binary_arithmetic_operator<Operator, LhsTag, RhsTag, Lhs, Rhs> {
         using result_type = _impl::op_result<Operator, Lhs, Rhs>;
 
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> result_type
@@ -105,8 +105,8 @@ namespace cnl {
     };
 #endif
 
-    template<_impl::binary_op Operator, overflow_tag LhsTag, overflow_tag RhsTag, typename Lhs, typename Rhs>
-    requires(!_impl::builtin_overflow_operator<Operator, Lhs, Rhs>::value) struct binary_operator<Operator, LhsTag, RhsTag, Lhs, Rhs> {
+    template<_impl::binary_arithmetic_op Operator, overflow_tag LhsTag, overflow_tag RhsTag, typename Lhs, typename Rhs>
+    requires(!_impl::builtin_overflow_operator<Operator, Lhs, Rhs>::value) struct binary_arithmetic_operator<Operator, LhsTag, RhsTag, Lhs, Rhs> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
                 -> _impl::op_result<Operator, Lhs, Rhs>
         {

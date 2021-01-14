@@ -44,9 +44,9 @@ namespace cnl {
     struct unary_operator;
 
     template<
-            _impl::binary_op Operator, tag LhsTag, tag RhsTag, typename Lhs, typename Rhs,
+            _impl::binary_arithmetic_op Operator, tag LhsTag, tag RhsTag, typename Lhs, typename Rhs,
             class Enabled = void>
-    struct binary_operator;
+    struct binary_arithmetic_operator;
 
     template<
             _impl::shift_op Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,
@@ -68,12 +68,12 @@ namespace cnl {
     struct compound_assignment_operator {
         constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
         {
-            using binary_operator = cnl::binary_operator<
+            using binary_arithmetic_operator = cnl::binary_arithmetic_operator<
                     typename Operator::binary, LhsTag, RhsTag, LhsOperand, RhsOperand>;
-            using binary_operator_result = decltype(binary_operator{}(lhs, rhs));
+            using binary_arithmetic_operator_result = decltype(binary_arithmetic_operator{}(lhs, rhs));
             using convert_operator =
-                    cnl::convert_operator<LhsTag, RhsTag, LhsOperand, binary_operator_result>;
-            return lhs = convert_operator{}(binary_operator{}(lhs, rhs));
+                    cnl::convert_operator<LhsTag, RhsTag, LhsOperand, binary_arithmetic_operator_result>;
+            return lhs = convert_operator{}(binary_arithmetic_operator{}(lhs, rhs));
         }
     };
 

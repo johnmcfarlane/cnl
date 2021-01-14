@@ -42,14 +42,14 @@ namespace cnl {
         : unary_operator<Operator, _impl::native_tag, Operand> {
     };
 
-    template<_impl::binary_op Operator, typename Lhs, typename Rhs>
-    struct binary_operator<
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
+    struct binary_arithmetic_operator<
             Operator, tie_to_pos_inf_rounding_tag, tie_to_pos_inf_rounding_tag, Lhs, Rhs>
         : Operator {
     };
 
     template<typename Lhs, typename Rhs>
-    struct binary_operator<
+    struct binary_arithmetic_operator<
             _impl::divide_op, tie_to_pos_inf_rounding_tag, tie_to_pos_inf_rounding_tag, Lhs, Rhs> {
     private:
         using result_type = decltype(std::declval<Lhs>() / std::declval<Rhs>());

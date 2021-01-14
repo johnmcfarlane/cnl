@@ -41,13 +41,13 @@ namespace cnl {
         : unary_operator<Operator, _impl::native_tag, Operand> {
     };
 
-    template<_impl::binary_op Operator, typename Lhs, typename Rhs>
-    struct binary_operator<Operator, nearest_rounding_tag, nearest_rounding_tag, Lhs, Rhs>
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
+    struct binary_arithmetic_operator<Operator, nearest_rounding_tag, nearest_rounding_tag, Lhs, Rhs>
         : Operator {
     };
 
     template<typename Lhs, typename Rhs>
-    struct binary_operator<_impl::divide_op, nearest_rounding_tag, nearest_rounding_tag, Lhs, Rhs> {
+    struct binary_arithmetic_operator<_impl::divide_op, nearest_rounding_tag, nearest_rounding_tag, Lhs, Rhs> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
                 -> decltype(lhs / rhs)
         {
