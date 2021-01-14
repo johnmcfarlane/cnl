@@ -138,7 +138,7 @@ namespace cnl {
 
     // unary operator-
     template<int RhsDigits, class RhsNarrowest>
-    struct unary_operator<
+    struct unary_arithmetic_operator<
             _impl::minus_op, _impl::native_tag, elastic_integer<RhsDigits, RhsNarrowest>> {
         CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
                 const -> elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>
@@ -151,7 +151,7 @@ namespace cnl {
 
     // unary operator+
     template<int RhsDigits, class RhsNarrowest>
-    struct unary_operator<
+    struct unary_arithmetic_operator<
             _impl::plus_op, _impl::native_tag, elastic_integer<RhsDigits, RhsNarrowest>> {
         CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
                 const -> elastic_integer<RhsDigits, RhsNarrowest>
@@ -163,7 +163,7 @@ namespace cnl {
 
     // unary operator~
     template<int RhsDigits, class RhsNarrowest>
-    struct unary_operator<
+    struct unary_arithmetic_operator<
             _impl::bitwise_not_op, _impl::native_tag, elastic_integer<RhsDigits, RhsNarrowest>> {
         CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
                 const -> elastic_integer<RhsDigits, RhsNarrowest>

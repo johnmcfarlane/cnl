@@ -46,8 +46,8 @@ namespace cnl {
         }
     };
 
-    template<_impl::unary_op Operator, typename Rhs>
-    struct unary_operator<
+    template<_impl::unary_arithmetic_op Operator, typename Rhs>
+    struct unary_arithmetic_operator<
             Operator, _impl::native_tag, Rhs,
             _impl::enable_if_t<_impl::has_native_operators<Rhs>::value>> : Operator {
     };

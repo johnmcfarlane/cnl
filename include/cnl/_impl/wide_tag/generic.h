@@ -50,8 +50,8 @@ namespace cnl {
     };
 
     template<typename Operator, int Digits, typename Narrowest, class Rhs>
-    struct unary_operator<Operator, wide_tag<Digits, Narrowest>, Rhs>
-        : unary_operator<Operator, _impl::native_tag, Rhs> {
+    struct unary_arithmetic_operator<Operator, wide_tag<Digits, Narrowest>, Rhs>
+        : unary_arithmetic_operator<Operator, _impl::native_tag, Rhs> {
     };
 
     template<

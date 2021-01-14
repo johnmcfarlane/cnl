@@ -68,7 +68,7 @@ namespace cnl {
     template<class Operand> \
     CNL_NODISCARD constexpr auto operator OP(Operand const& operand) \
     { \
-        return cnl::unary_operator<enable_unary_t<Operand, NAME>, native_tag, Operand>()(operand); \
+        return cnl::unary_arithmetic_operator<enable_unary_t<Operand, NAME>, native_tag, Operand>()(operand); \
     }
 
         CNL_DEFINE_UNARY_OPERATOR(+, plus_op)

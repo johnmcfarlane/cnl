@@ -40,8 +40,8 @@ namespace cnl {
             typename Enabled = void>
     struct convert_operator;
 
-    template<_impl::unary_op Operator, tag RhsTag, typename Rhs, class Enabled = void>
-    struct unary_operator;
+    template<_impl::unary_arithmetic_op Operator, tag RhsTag, typename Rhs, class Enabled = void>
+    struct unary_arithmetic_operator;
 
     template<
             _impl::binary_arithmetic_op Operator, tag LhsTag, tag RhsTag, typename Lhs, typename Rhs,

@@ -38,9 +38,9 @@ namespace cnl {
         };
     }
 
-    template<_impl::unary_op Operator, typename Operand>
-    struct unary_operator<Operator, neg_inf_rounding_tag, Operand>
-        : unary_operator<Operator, _impl::native_tag, Operand> {
+    template<_impl::unary_arithmetic_op Operator, typename Operand>
+    struct unary_arithmetic_operator<Operator, neg_inf_rounding_tag, Operand>
+        : unary_arithmetic_operator<Operator, _impl::native_tag, Operand> {
     };
 
     template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>

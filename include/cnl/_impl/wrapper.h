@@ -31,6 +31,6 @@
 #include "wrapper/shift_operator.h"
 #include "wrapper/tag_of.h"
 #include "wrapper/to_rep.h"
-#include "wrapper/unary_operator.h"
+#include "wrapper/unary_arithmetic_operator.h"
 
 #endif  // CNL_IMPL_WRAPPER_H

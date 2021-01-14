@@ -24,7 +24,7 @@ namespace cnl {
     // compare two objects of different scaled_integer specializations
 
     template<typename Operator, typename Rep, int Exponent, int Radix>
-    struct unary_operator<
+    struct unary_arithmetic_operator<
             Operator, _impl::native_tag, scaled_integer<Rep, power<Exponent, Radix>>> {
         CNL_NODISCARD constexpr auto operator()(
                 scaled_integer<Rep, power<Exponent, Radix>> const& rhs) const

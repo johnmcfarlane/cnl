@@ -329,13 +329,13 @@ namespace cnl {
         // operator trait/concept
 
         template<class T>
-        inline constexpr auto is_unary_op = false;
+        inline constexpr auto is_unary_arithmetic_op = false;
         template<>
-        inline constexpr auto is_unary_op<minus_op> = true;
+        inline constexpr auto is_unary_arithmetic_op<minus_op> = true;
         template<>
-        inline constexpr auto is_unary_op<plus_op> = true;
+        inline constexpr auto is_unary_arithmetic_op<plus_op> = true;
         template<>
-        inline constexpr auto is_unary_op<bitwise_not_op> = true;
+        inline constexpr auto is_unary_arithmetic_op<bitwise_not_op> = true;
 
         template<class T>
         inline constexpr auto is_binary_arithmetic_op = false;
@@ -419,12 +419,12 @@ namespace cnl {
         inline constexpr auto is_assign_shift_op<assign_shift_right_op> = true;
 
         template<class T>
-        inline constexpr auto is_op = is_unary_op<T> || is_binary_arithmetic_op<T> || is_shift_op<T> || is_comparison_op<T> || is_prefix_op<T> || is_postfix_op<T> || is_assign_op<T> || is_assign_shift_op<T>;
+        inline constexpr auto is_op = is_unary_arithmetic_op<T> || is_binary_arithmetic_op<T> || is_shift_op<T> || is_comparison_op<T> || is_prefix_op<T> || is_postfix_op<T> || is_assign_op<T> || is_assign_shift_op<T>;
         template<>
         inline constexpr auto is_op<convert_op> = true;
 
         template<class T>
-        concept unary_op = is_unary_op<T>;
+        concept unary_arithmetic_op = is_unary_arithmetic_op<T>;
         template<class T>
         concept binary_arithmetic_op = is_binary_arithmetic_op<T>;
         template<class T>

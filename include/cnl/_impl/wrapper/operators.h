@@ -11,6 +11,6 @@
 #include "comparison_operator.h"
 #include "inc_dec_operator.h"
 #include "shift_operator.h"
-#include "unary_operator.h"
+#include "unary_arithmetic_operator.h"
 
 #endif  // CNL_IMPL_WRAPPER_OPERATORS_H

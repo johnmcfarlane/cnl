@@ -73,9 +73,9 @@ namespace cnl {
         };
     }
 
-    // unary_operator
+    // unary_arithmetic_operator
     template<typename Upper, typename Lower>
-    struct unary_operator<
+    struct unary_arithmetic_operator<
             _impl::bitwise_not_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>> {
         CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& rhs)
                 const -> _impl::duplex_integer<Upper, Lower>
@@ -85,11 +85,11 @@ namespace cnl {
     };
 
     template<typename Upper, typename Lower>
-    struct unary_operator<_impl::minus_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>> {
+    struct unary_arithmetic_operator<_impl::minus_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>> {
         CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& rhs)
                 const -> _impl::duplex_integer<Upper, Lower>
         {
-            return unary_operator<
+            return unary_arithmetic_operator<
                     _impl::bitwise_not_op, _impl::native_tag,
                     _impl::duplex_integer<Upper, Lower>>{}(
                     rhs - _impl::duplex_integer<Upper, Lower>{1});
@@ -97,7 +97,7 @@ namespace cnl {
     };
 
     template<typename Upper, typename Lower>
-    struct unary_operator<_impl::plus_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>> {
+    struct unary_arithmetic_operator<_impl::plus_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>> {
         CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& rhs)
                 const -> _impl::duplex_integer<Upper, Lower>
         {
