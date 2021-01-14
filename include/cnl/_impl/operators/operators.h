@@ -379,6 +379,9 @@ namespace cnl {
         inline constexpr auto is_comparison_op<greater_than_or_equal_op> = true;
 
         template<class T>
+        inline constexpr auto is_binary_op = is_binary_arithmetic_op<T> || is_shift_op<T> || is_comparison_op<T>;
+
+        template<class T>
         inline constexpr auto is_prefix_op = false;
         template<>
         inline constexpr auto is_prefix_op<pre_increment_op> = true;
@@ -431,6 +434,8 @@ namespace cnl {
         concept shift_op = is_shift_op<T>;
         template<class T>
         concept comparison_op = is_comparison_op<T>;
+        template<class T>
+        concept binary_op = is_binary_op<T>;
         template<class T>
         concept prefix_op = is_prefix_op<T>;
         template<class T>
