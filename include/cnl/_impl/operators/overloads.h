@@ -66,9 +66,10 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_UNARY_OPERATOR(OP, NAME) \
     template<class Operand> \
-    CNL_NODISCARD constexpr auto operator OP(Operand const& operand) \
+    requires _impl::wants_generic_ops<Operand> \
+            CNL_NODISCARD constexpr auto operator OP(Operand const& operand) \
     { \
-        return cnl::unary_arithmetic_operator<enable_unary_t<Operand, NAME>, native_tag, Operand>()(operand); \
+        return cnl::custom_operator<NAME, cnl::operand<Operand>>()(operand); \
     }
 
         CNL_DEFINE_UNARY_OPERATOR(+, plus_op)

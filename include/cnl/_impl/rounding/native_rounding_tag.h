@@ -40,8 +40,8 @@ namespace cnl {
     };
 
     template<_impl::unary_arithmetic_op Operator, typename Operand>
-    struct unary_arithmetic_operator<Operator, native_rounding_tag, Operand>
-        : unary_arithmetic_operator<Operator, _impl::native_tag, Operand> {
+    struct custom_operator<Operator, operand<Operand, native_rounding_tag>>
+        : custom_operator<Operator, operand<Operand, _impl::native_tag>> {
     };
 
     template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>

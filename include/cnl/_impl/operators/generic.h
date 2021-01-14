@@ -27,10 +27,35 @@ namespace cnl {
         // true iff T wants generic operator overloads
         template<class T>
         inline constexpr auto wants_generic_ops = false;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // generic operators
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::operand
+
+    /// \brief used as Operands parameter of \ref cnl::custom_operator
+    /// \tparam Rep type of operand handled by custom_operator specialization
+    /// \tparam Tag behavior of `Rep` handled by custom_operator specialization
+    template<typename Rep, tag Tag = _impl::native_tag>
+    class operand;
+
+    namespace _impl {
+        template<typename T>
+        inline constexpr bool is_operand_specialization = false;
+
+        template<typename Rep, typename Tag>
+        inline constexpr bool is_operand_specialization<operand<Rep, Tag>> = true;
+
+        template<typename T>
+        concept operand_specialization = is_operand_specialization<T>;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // generic operators
+
+    /// \brief customization point for operator overloads
+    /// \note avoids the need to overload every last operator
+    template<_impl::op Operator, _impl::operand_specialization... Operands>
+    struct custom_operator;
 
     template<class ArchetypeTag, typename Initializer>
     struct deduction;
@@ -39,9 +64,6 @@ namespace cnl {
             tag DestTag, tag SrcTag, typename Destination, typename Source,
             typename Enabled = void>
     struct convert_operator;
-
-    template<_impl::unary_arithmetic_op Operator, tag RhsTag, typename Rhs, class Enabled = void>
-    struct unary_arithmetic_operator;
 
     template<
             _impl::binary_arithmetic_op Operator, tag LhsTag, tag RhsTag, typename Lhs, typename Rhs,

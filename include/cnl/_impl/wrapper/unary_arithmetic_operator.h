@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_WRAPPER_UNARY_OPERATOR_H)
 #define CNL_IMPL_WRAPPER_UNARY_OPERATOR_H
 
+#include "../config.h"
 #include "../operators/generic.h"
 #include "../operators/native_tag.h"
 #include "../operators/overloads.h"
@@ -17,12 +18,12 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Operator, typename Rep, tag Tag>
-    struct unary_arithmetic_operator<Operator, _impl::native_tag, _impl::wrapper<Rep, Tag>> {
+    template<_impl::unary_arithmetic_op Operator, typename Rep, tag Tag>
+    struct custom_operator<Operator, operand<_impl::wrapper<Rep, Tag>>> {
         CNL_NODISCARD constexpr auto operator()(_impl::wrapper<Rep, Tag> const& rhs) const
         {
             return _impl::from_rep<_impl::wrapper<Rep, Tag>>(
-                    unary_arithmetic_operator<Operator, Tag, Rep>{}(_impl::to_rep(rhs)));
+                    custom_operator<Operator, operand<Rep, Tag>>{}(_impl::to_rep(rhs)));
         }
     };
 }

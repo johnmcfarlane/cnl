@@ -49,7 +49,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::wide_integer<>{-3},
-                        cnl::unary_arithmetic_operator<cnl::_impl::minus_op, cnl::wide_tag<31>, int>{}(
+                        cnl::custom_operator<cnl::_impl::minus_op, cnl::operand<int, cnl::wide_tag<31>>>{}(
                                 cnl::wide_integer<>{3})),
                 "cnl::wide_integer minus");
         static_assert(
