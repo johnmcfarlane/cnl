@@ -32,7 +32,7 @@ namespace cnl {
         // generic operators
     }
 
-    template<class ArchetypeTag, typename Initializer, typename Enabled = void>
+    template<class ArchetypeTag, typename Initializer>
     struct deduction;
 
     template<

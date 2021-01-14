@@ -27,9 +27,8 @@ namespace cnl {
     }
 
     template<class ArchetypeTag, typename Initializer>
-    struct deduction<
-            ArchetypeTag, Initializer,
-            _impl::enable_if_t<_impl::is_homogeneous_deduction_tag<ArchetypeTag>::value>> {
+    requires _impl::is_homogeneous_deduction_tag<ArchetypeTag>::value
+    struct deduction<ArchetypeTag, Initializer> {
         // tag associated with deduced type
         using tag = ArchetypeTag;
 
