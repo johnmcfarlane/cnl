@@ -291,19 +291,4 @@ namespace cnl {
     };
 }
 
-namespace std {
-    ////////////////////////////////////////////////////////////////////////////////
-    // std::numeric_limits specialization for rounding_integer
-
-    template<typename Rep, class Scale>
-    struct numeric_limits<cnl::scaled_integer<Rep, Scale>>
-        : cnl::numeric_limits<cnl::scaled_integer<Rep, Scale>> {
-    };
-
-    template<typename Rep, class Scale>
-    struct numeric_limits<cnl::scaled_integer<Rep, Scale> const>
-        : cnl::numeric_limits<cnl::scaled_integer<Rep, Scale>> {
-    };
-}
-
 #endif  // CNL_IMPL_SCALED_INTEGER_EXTRAS_H

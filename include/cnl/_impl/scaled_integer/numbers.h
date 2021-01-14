@@ -10,10 +10,10 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_CONSTANTS_H)
 #define CNL_IMPL_SCALED_INTEGER_CONSTANTS_H
 
+#include "../../limits.h"
+#include "../used_digits.h"
 #include "num_traits.h"
 #include "type.h"
-
-#include "../used_digits.h"
 
 #include <version>
 
@@ -87,7 +87,7 @@ namespace cnl {
             constexpr auto fixed_fractional_digits = fractional_digits<fp>;
             // expect: integer_digits<fp> >= required_integer_digits
 
-            constexpr auto float_digits = std::numeric_limits<Float>::digits;
+            constexpr auto float_digits = cnl::numeric_limits<Float>::digits;
             auto const float_fractional_digits = float_digits - required_integer_digits;
 
             return (float_fractional_digits >= fixed_fractional_digits) ? fp{constant}
