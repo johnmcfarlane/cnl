@@ -54,14 +54,14 @@ namespace cnl {
         : shift_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
     };
 
-    template<_impl::pre_op Operator, typename Rhs>
-    struct pre_operator<Operator, native_rounding_tag, Rhs>
-        : pre_operator<Operator, _impl::native_tag, Rhs> {
+    template<_impl::prefix_op Operator, typename Rhs>
+    struct prefix_operator<Operator, native_rounding_tag, Rhs>
+        : prefix_operator<Operator, _impl::native_tag, Rhs> {
     };
 
-    template<_impl::post_op Operator, typename Rhs>
-    struct post_operator<Operator, native_rounding_tag, Rhs>
-        : post_operator<Operator, _impl::native_tag, Rhs> {
+    template<_impl::postfix_op Operator, typename Rhs>
+    struct postfix_operator<Operator, native_rounding_tag, Rhs>
+        : postfix_operator<Operator, _impl::native_tag, Rhs> {
     };
 }
 

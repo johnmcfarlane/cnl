@@ -56,11 +56,11 @@ namespace cnl {
     template<_impl::comparison_op Operator, class LhsOperand, class RhsOperand, class Enable = void>
     struct comparison_operator;
 
-    template<_impl::pre_op Operator, tag RhsTag, class RhsOperand, class Enable = void>
-    struct pre_operator;
+    template<_impl::prefix_op Operator, tag RhsTag, class RhsOperand, class Enable = void>
+    struct prefix_operator;
 
-    template<_impl::post_op Operator, tag LhsTag, class LhsOperand, class Enable = void>
-    struct post_operator;
+    template<_impl::postfix_op Operator, tag LhsTag, class LhsOperand, class Enable = void>
+    struct postfix_operator;
 
     template<
             _impl::assign_op Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,

@@ -92,12 +92,12 @@ namespace cnl {
         : comparison_operator<Operator, cnl::_impl::native_tag, cnl::_impl::native_tag> {
     };
 
-    template<_impl::pre_op Operator, int Digits, typename Narrowest, typename Rhs>
-    struct pre_operator<Operator, wide_tag<Digits, Narrowest>, Rhs> : Operator {
+    template<_impl::prefix_op Operator, int Digits, typename Narrowest, typename Rhs>
+    struct prefix_operator<Operator, wide_tag<Digits, Narrowest>, Rhs> : Operator {
     };
 
-    template<_impl::post_op Operator, int Digits, typename Narrowest, typename Lhs>
-    struct post_operator<Operator, wide_tag<Digits, Narrowest>, Lhs> : Operator {
+    template<_impl::postfix_op Operator, int Digits, typename Narrowest, typename Lhs>
+    struct postfix_operator<Operator, wide_tag<Digits, Narrowest>, Lhs> : Operator {
     };
 }
 

@@ -82,12 +82,12 @@ namespace cnl {
                   Operator, elastic_tag<LhsDigits, LhsNarrowest>, _impl::native_tag, Lhs, Rhs> {
     };
 
-    template<int Digits, class Narrowest, _impl::pre_op Operator, typename Rhs>
-    struct pre_operator<elastic_tag<Digits, Narrowest>, Operator, Rhs> : Operator {
+    template<int Digits, class Narrowest, _impl::prefix_op Operator, typename Rhs>
+    struct prefix_operator<elastic_tag<Digits, Narrowest>, Operator, Rhs> : Operator {
     };
 
-    template<int Digits, class Narrowest, _impl::pre_op Operator, typename Rhs>
-    struct post_operator<elastic_tag<Digits, Narrowest>, Operator, Rhs> : Operator {
+    template<int Digits, class Narrowest, _impl::prefix_op Operator, typename Rhs>
+    struct postfix_operator<elastic_tag<Digits, Narrowest>, Operator, Rhs> : Operator {
     };
 }
 

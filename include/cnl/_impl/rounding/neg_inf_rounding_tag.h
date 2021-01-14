@@ -79,12 +79,12 @@ namespace cnl {
     struct shift_operator<Operator, neg_inf_rounding_tag, RhsTag, Lhs, Rhs> : Operator {
     };
 
-    template<_impl::pre_op Operator, typename Rhs>
-    struct pre_operator<Operator, neg_inf_rounding_tag, Rhs> : Operator {
+    template<_impl::prefix_op Operator, typename Rhs>
+    struct prefix_operator<Operator, neg_inf_rounding_tag, Rhs> : Operator {
     };
 
-    template<_impl::post_op Operator, typename Rhs>
-    struct post_operator<Operator, neg_inf_rounding_tag, Rhs> : Operator {
+    template<_impl::postfix_op Operator, typename Rhs>
+    struct postfix_operator<Operator, neg_inf_rounding_tag, Rhs> : Operator {
     };
 }
 

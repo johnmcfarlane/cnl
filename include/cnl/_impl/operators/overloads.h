@@ -157,7 +157,7 @@ namespace cnl {
     template<class RhsOperand> \
     constexpr decltype(auto) operator OP(RhsOperand& rhs) \
     { \
-        return cnl::pre_operator<NAME, native_tag, RhsOperand>()(rhs); \
+        return cnl::prefix_operator<NAME, native_tag, RhsOperand>()(rhs); \
     }
 
         CNL_DEFINE_PRE_OPERATOR(++, pre_increment_op)
@@ -170,9 +170,9 @@ namespace cnl {
 #define CNL_DEFINE_POST_OPERATOR(OP, NAME) \
     template<class LhsOperand> \
     constexpr auto operator OP(LhsOperand& lhs, int) \
-            ->decltype(cnl::post_operator<NAME, native_tag, LhsOperand>()(lhs)) \
+            ->decltype(cnl::postfix_operator<NAME, native_tag, LhsOperand>()(lhs)) \
     { \
-        return cnl::post_operator<NAME, native_tag, LhsOperand>()(lhs); \
+        return cnl::postfix_operator<NAME, native_tag, LhsOperand>()(lhs); \
     }
 
         CNL_DEFINE_POST_OPERATOR(++, post_increment_op)
