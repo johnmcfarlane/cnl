@@ -224,7 +224,7 @@ namespace cnl {
 
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
-    // std::numeric_limits for cnl::scaled_integer
+    // cnl::numeric_limits of cnl::scaled_integer
 
     // note: some members are guessed,
     // some are temporary (assuming rounding style, traps etc.)
