@@ -10,8 +10,8 @@
 
 #include <benchmark/benchmark.h>
 
+using cnl::numeric_limits;
 using cnl::scaled_integer;
-using std::numeric_limits;
 
 ////////////////////////////////////////////////////////////////////////////////
 // entry point

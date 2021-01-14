@@ -72,19 +72,4 @@ namespace cnl {
     };
 }
 
-namespace std {
-    ////////////////////////////////////////////////////////////////////////////////
-    // std::numeric_limits specialization for overflow_number
-
-    template<typename Rep, cnl::tag Tag>
-    struct numeric_limits<cnl::_impl::wrapper<Rep, Tag>>
-        : cnl::numeric_limits<cnl::_impl::wrapper<Rep, Tag>> {
-    };
-
-    template<typename Rep, cnl::tag Tag>
-    struct numeric_limits<cnl::_impl::wrapper<Rep, Tag> const>
-        : cnl::numeric_limits<cnl::_impl::wrapper<Rep, Tag>> {
-    };
-}
-
 #endif  // CNL_IMPL_WRAPPER_NUMERIC_LIMITS_H
