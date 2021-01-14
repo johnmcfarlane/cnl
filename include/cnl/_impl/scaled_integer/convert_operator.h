@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_TAGGED_CONVERT_OPERATOR_H)
 #define CNL_IMPL_SCALED_INTEGER_TAGGED_CONVERT_OPERATOR_H
 
+#include "../../limits.h"
 #include "../overflow/overflow_operator.h"
 #include "../power_value.h"
 #include "../rounding/native_rounding_tag.h"
@@ -63,11 +64,10 @@ namespace cnl {
     };
 
     // conversion from float to scaled_integer
-    template<typename ResultRep, int ResultExponent, int ResultRadix, typename Input>
+    template<typename ResultRep, int ResultExponent, int ResultRadix, _impl::floating_point Input>
     struct convert_operator<
             nearest_rounding_tag, power<0, ResultRadix>,
-            scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, Input,
-            _impl::enable_if_t<std::is_floating_point<Input>::value>> {
+            scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, Input> {
     private:
         using result = scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>;
 
@@ -166,11 +166,10 @@ namespace cnl {
     };
 
     // conversion from float to scaled_integer
-    template<typename ResultRep, int ResultExponent, int ResultRadix, typename Input>
+    template<typename ResultRep, int ResultExponent, int ResultRadix, _impl::floating_point Input>
     struct convert_operator<
             tie_to_pos_inf_rounding_tag, _impl::native_tag,
-            scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, Input,
-            _impl::enable_if_t<std::is_floating_point<Input>::value>> {
+            scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, Input> {
     private:
         using _result = scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>;
 
@@ -249,11 +248,10 @@ namespace cnl {
     };
 
     // conversion from float to scaled_integer
-    template<typename ResultRep, int ResultExponent, int ResultRadix, typename Input>
+    template<typename ResultRep, int ResultExponent, int ResultRadix, _impl::floating_point Input>
     struct convert_operator<
             neg_inf_rounding_tag, _impl::native_tag,
-            scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, Input,
-            _impl::enable_if_t<std::is_floating_point<Input>::value>> {
+            scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, Input> {
     private:
         using _result = scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>;
 

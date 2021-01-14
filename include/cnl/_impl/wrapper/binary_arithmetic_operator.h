@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_WRAPPER_BINARY_OPERATOR_H)
 #define CNL_IMPL_WRAPPER_BINARY_OPERATOR_H
 
+#include "../../limits.h"
 #include "../num_traits/set_rep.h"
 #include "../num_traits/set_tag.h"
 #include "../operators/generic.h"
@@ -24,10 +25,8 @@
 /// compositional numeric library
 namespace cnl {
     // higher OP number<>
-    template<_impl::binary_arithmetic_op Operator, class Lhs, _impl::wrapped Rhs>
-    struct binary_arithmetic_operator<
-            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<std::is_floating_point<Lhs>::value>> {
+    template<_impl::binary_arithmetic_op Operator, _impl::floating_point Lhs, _impl::wrapped Rhs>
+    struct binary_arithmetic_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(lhs, static_cast<Lhs>(rhs));
@@ -35,10 +34,8 @@ namespace cnl {
     };
 
     // number<> OP higher
-    template<_impl::binary_arithmetic_op Operator, _impl::wrapped Lhs, class Rhs>
-    struct binary_arithmetic_operator<
-            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<std::is_floating_point<Rhs>::value>> {
+    template<_impl::binary_arithmetic_op Operator, _impl::wrapped Lhs, _impl::floating_point Rhs>
+    struct binary_arithmetic_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(static_cast<Rhs>(lhs), rhs);

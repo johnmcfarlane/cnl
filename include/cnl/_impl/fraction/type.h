@@ -47,8 +47,7 @@ namespace cnl {
         explicit constexpr fraction(FloatingPoint);
 
         /// returns the quotient, \ref numerator `/` \ref denominator
-        template<
-                typename Scalar, _impl::enable_if_t<std::is_floating_point<Scalar>::value, int> = 0>
+        template<_impl::floating_point Scalar>
         CNL_NODISCARD explicit constexpr operator Scalar() const
         {
             return static_cast<Scalar>(numerator) / static_cast<Scalar>(denominator);

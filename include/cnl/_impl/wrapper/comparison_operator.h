@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_WRAPPER_COMPARISON_OPERATOR_H)
 #define CNL_IMPL_WRAPPER_COMPARISON_OPERATOR_H
 
+#include "../../limits.h"
 #include "../num_traits/from_value.h"
 #include "../operators/generic.h"
 #include "../operators/overloads.h"
@@ -19,10 +20,8 @@
 /// compositional numeric library
 namespace cnl {
     // higher OP number<>
-    template<_impl::comparison_op Operator, class Lhs, _impl::wrapped Rhs>
-    struct comparison_operator<
-            Operator, Lhs, Rhs,
-            _impl::enable_if_t<std::is_floating_point<Lhs>::value>> {
+    template<_impl::comparison_op Operator, _impl::floating_point Lhs, _impl::wrapped Rhs>
+    struct comparison_operator<Operator, Lhs, Rhs> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(lhs, static_cast<Lhs>(rhs));
@@ -30,10 +29,8 @@ namespace cnl {
     };
 
     // number<> OP higher
-    template<_impl::comparison_op Operator, _impl::wrapped Lhs, class Rhs>
-    struct comparison_operator<
-            Operator, Lhs, Rhs,
-            _impl::enable_if_t<std::is_floating_point<Rhs>::value>> {
+    template<_impl::comparison_op Operator, _impl::wrapped Lhs, _impl::floating_point Rhs>
+    struct comparison_operator<Operator, Lhs, Rhs> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(static_cast<Rhs>(lhs), rhs);
