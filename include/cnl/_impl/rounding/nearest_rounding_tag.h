@@ -42,12 +42,12 @@ namespace cnl {
     };
 
     template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
-    struct binary_arithmetic_operator<Operator, nearest_rounding_tag, nearest_rounding_tag, Lhs, Rhs>
+    struct custom_operator<Operator, operand<Lhs, nearest_rounding_tag>, operand<Rhs, nearest_rounding_tag>>
         : Operator {
     };
 
     template<typename Lhs, typename Rhs>
-    struct binary_arithmetic_operator<_impl::divide_op, nearest_rounding_tag, nearest_rounding_tag, Lhs, Rhs> {
+    struct custom_operator<_impl::divide_op, operand<Lhs, nearest_rounding_tag>, operand<Rhs, nearest_rounding_tag>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
                 -> decltype(lhs / rhs)
         {
@@ -55,8 +55,8 @@ namespace cnl {
         }
     };
 
-    template<_impl::shift_op Operator, tag RhsTag, typename Lhs, typename Rhs>
-    struct shift_operator<Operator, nearest_rounding_tag, RhsTag, Lhs, Rhs> : Operator {
+    template<_impl::shift_op Operator, typename Lhs, typename Rhs, tag RhsTag>
+    struct custom_operator<Operator, operand<Lhs, nearest_rounding_tag>, operand<Rhs, RhsTag>> : Operator {
     };
 
     template<_impl::prefix_op Operator, typename Rhs>

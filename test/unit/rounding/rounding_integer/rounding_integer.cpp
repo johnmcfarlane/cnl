@@ -17,13 +17,11 @@ namespace {
         static_assert(
                 cnl::_impl::identical(
                         cnl::_impl::wrapper<int, cnl::nearest_rounding_tag>{54},
-                        cnl::binary_arithmetic_operator<
-                                cnl::_impl::multiply_op, cnl::_impl::native_tag,
-                                cnl::_impl::native_tag,
-                                cnl::_impl::wrapper<int, cnl::nearest_rounding_tag>, int>{}(
-                                cnl::_impl::wrapper<int, cnl::nearest_rounding_tag>{6}, 9)),
-                "binary_arithmetic_operator<multiply_op, native_tag, native_tag, nearest_rounding_integer, "
-                "int>");
+                        cnl::custom_operator<
+                                cnl::_impl::multiply_op,
+                                cnl::operand<cnl::_impl::wrapper<int, cnl::nearest_rounding_tag>>,
+                                cnl::operand<int>>{}(
+                                cnl::_impl::wrapper<int, cnl::nearest_rounding_tag>{6}, 9)));
 
         static_assert(
                 identical(

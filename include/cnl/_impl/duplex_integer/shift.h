@@ -14,9 +14,10 @@
 /// compositional numeric library
 namespace cnl {
     template<typename Upper, typename Lower, typename Rhs>
-    struct shift_operator<
-            _impl::shift_left_op, _impl::native_tag, _impl::native_tag,
-            _impl::duplex_integer<Upper, Lower>, Rhs> {
+    struct custom_operator<
+            _impl::shift_left_op,
+            operand<_impl::duplex_integer<Upper, Lower>>,
+            operand<Rhs>> {
         using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
 
         CNL_NODISCARD constexpr auto operator()(_duplex_integer const& lhs, Rhs const& rhs) const
@@ -38,9 +39,10 @@ namespace cnl {
     };
 
     template<typename Upper, typename Lower, typename Rhs>
-    struct shift_operator<
-            _impl::shift_right_op, _impl::native_tag, _impl::native_tag,
-            _impl::duplex_integer<Upper, Lower>, Rhs> {
+    struct custom_operator<
+            _impl::shift_right_op,
+            operand<_impl::duplex_integer<Upper, Lower>>,
+            operand<Rhs>> {
         using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
 
         CNL_NODISCARD constexpr auto operator()(_duplex_integer const& lhs, Rhs const& rhs) const

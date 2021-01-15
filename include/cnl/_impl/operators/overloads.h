@@ -83,12 +83,11 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_BINARY_OPERATOR(OP, NAME) \
     template<class LhsOperand, class RhsOperand> \
-    CNL_NODISCARD constexpr auto operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
-            ->decltype(cnl::binary_arithmetic_operator< \
-                       enable_binary_t<LhsOperand, RhsOperand, NAME>, native_tag, native_tag, \
-                       LhsOperand, RhsOperand>()(lhs, rhs)) \
+    requires(enable_binary<LhsOperand, RhsOperand>::value) \
+            CNL_NODISCARD constexpr auto \
+            operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
     { \
-        return cnl::binary_arithmetic_operator<NAME, native_tag, native_tag, LhsOperand, RhsOperand>{}( \
+        return cnl::custom_operator<NAME, cnl::operand<LhsOperand>, cnl::operand<RhsOperand>>{}( \
                 lhs, rhs); \
     }
 
@@ -113,13 +112,11 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_SHIFT_OPERATOR(OP, NAME) \
     template<class LhsOperand, class RhsOperand> \
-    CNL_NODISCARD constexpr auto operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
-            ->decltype(cnl::shift_operator< \
-                       enable_binary_t<LhsOperand, RhsOperand, NAME>, native_tag, native_tag, \
-                       LhsOperand, RhsOperand>()(lhs, rhs)) \
+    requires enable_binary<LhsOperand, RhsOperand>::value \
+            CNL_NODISCARD constexpr auto \
+            operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
     { \
-        return cnl::shift_operator<NAME, native_tag, native_tag, LhsOperand, RhsOperand>()( \
-                lhs, rhs); \
+        return cnl::custom_operator<NAME, operand<LhsOperand>, operand<RhsOperand>>()(lhs, rhs); \
     }
 
         CNL_DEFINE_SHIFT_OPERATOR(<<, shift_left_op)
@@ -131,12 +128,11 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_COMPARISON_OPERATOR(OP, NAME) \
     template<class LhsOperand, class RhsOperand> \
-    CNL_NODISCARD constexpr auto operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
-            ->decltype(cnl::comparison_operator< \
-                       enable_binary_t<LhsOperand, RhsOperand, NAME>, LhsOperand, RhsOperand>()( \
-                    lhs, rhs)) \
+    requires enable_binary<LhsOperand, RhsOperand>::value \
+            CNL_NODISCARD constexpr auto \
+            operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
     { \
-        return cnl::comparison_operator<NAME, LhsOperand, RhsOperand>()(lhs, rhs); \
+        return cnl::custom_operator<NAME, operand<LhsOperand>, operand<RhsOperand>>()(lhs, rhs); \
     }
 
         CNL_DEFINE_COMPARISON_OPERATOR(==, equal_op)

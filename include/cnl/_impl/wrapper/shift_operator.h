@@ -21,14 +21,15 @@
 namespace cnl {
     // number << non-number
     template<_impl::shift_op Operator, typename LhsRep, tag LhsTag, class Rhs>
-    struct shift_operator<
-            Operator, _impl::native_tag, _impl::native_tag, _impl::wrapper<LhsRep, LhsTag>, Rhs,
-            _impl::enable_if_t<_impl::number_can_wrap<_impl::wrapper<LhsRep, LhsTag>, Rhs>::value>> {
+    requires _impl::number_can_wrap<_impl::wrapper<LhsRep, LhsTag>, Rhs>::value struct custom_operator<
+            Operator,
+            operand<_impl::wrapper<LhsRep, LhsTag>>,
+            operand<Rhs>> {
         CNL_NODISCARD constexpr auto operator()(
                 _impl::wrapper<LhsRep, LhsTag> const& lhs, Rhs const& rhs) const
         {
             return _impl::from_rep<_impl::wrapper<LhsRep, LhsTag>>(
-                    shift_operator<Operator, LhsTag, _impl::native_tag, LhsRep, Rhs>{}(
+                    custom_operator<Operator, operand<LhsRep, LhsTag>, operand<Rhs>>{}(
                             _impl::to_rep(lhs), rhs));
         }
     };
@@ -36,14 +37,14 @@ namespace cnl {
     // number<int, Foo> << number<int, Foo>
     // includes derived classes
     template<_impl::shift_op Operator, typename LhsRep, tag LhsTag, _impl::wrapped Rhs>
-    struct shift_operator<
-            Operator, _impl::native_tag, _impl::native_tag, _impl::wrapper<LhsRep, LhsTag>, Rhs> {
+    struct custom_operator<
+            Operator, operand<_impl::wrapper<LhsRep, LhsTag>>, operand<Rhs>> {
         CNL_NODISCARD constexpr auto operator()(
                 _impl::wrapper<LhsRep, LhsTag> const& lhs, Rhs const& rhs) const
         {
             return _impl::from_rep<_impl::wrapper<LhsRep, LhsTag>>(
-                    shift_operator<
-                            Operator, LhsTag, _impl::native_tag, LhsRep, _impl::rep_of_t<Rhs>>{}(
+                    custom_operator<
+                            Operator, operand<LhsRep, LhsTag>, operand<_impl::rep_of_t<Rhs>>>{}(
                             _impl::to_rep(lhs), _impl::to_rep(rhs)));
         }
     };
@@ -51,9 +52,7 @@ namespace cnl {
     // non-number << number
     // includes derived classes
     template<_impl::shift_op Operator, class Lhs, _impl::wrapped Rhs>
-    struct shift_operator<
-            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<!_impl::is_wrapper<Lhs>>> {
+    requires(!_impl::is_wrapper<Lhs>) struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(lhs, _impl::rep_of_t<Rhs>{_impl::to_rep(rhs)});

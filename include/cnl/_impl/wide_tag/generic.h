@@ -13,6 +13,7 @@
 #include "../num_traits/to_rep.h"
 #include "../num_traits/width.h"
 #include "../operators/generic.h"
+#include "../operators/native_tag.h"
 #include "../type_traits/is_signed.h"
 #include "../type_traits/set_signedness.h"
 #include "definition.h"
@@ -57,9 +58,10 @@ namespace cnl {
     template<
             _impl::binary_arithmetic_op Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
             class Lhs, class Rhs>
-    struct binary_arithmetic_operator<
-            Operator, wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>, Lhs,
-            Rhs> {
+    struct custom_operator<
+            Operator,
+            operand<Lhs, wide_tag<LhsDigits, LhsNarrowest>>,
+            operand<Rhs, wide_tag<RhsDigits, RhsNarrowest>>> {
     private:
         static constexpr auto _max_digits{_impl::max(LhsDigits, RhsDigits)};
         static constexpr auto _are_signed{
@@ -77,9 +79,11 @@ namespace cnl {
         }
     };
 
-    template<_impl::shift_op Operator, int LhsDigits, typename LhsNarrowest, typename Lhs, typename Rhs>
-    struct shift_operator<
-            Operator, wide_tag<LhsDigits, LhsNarrowest>, _impl::native_tag, Lhs, Rhs> {
+    template<_impl::shift_op Operator, typename Lhs, int LhsDigits, typename LhsNarrowest, typename Rhs>
+    struct custom_operator<
+            Operator,
+            operand<Lhs, wide_tag<LhsDigits, LhsNarrowest>>,
+            operand<Rhs>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator{}(lhs, rhs);
@@ -87,9 +91,12 @@ namespace cnl {
     };
 
     template<_impl::comparison_op Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
-    struct comparison_operator<
+    struct custom_operator<
             Operator, wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>>
-        : comparison_operator<Operator, cnl::_impl::native_tag, cnl::_impl::native_tag> {
+        : custom_operator<
+                  Operator,
+                  operand<_impl::native_tag>,
+                  operand<_impl::native_tag>> {
     };
 
     template<_impl::prefix_op Operator, int Digits, typename Narrowest, typename Rhs>

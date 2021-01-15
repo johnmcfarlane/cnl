@@ -45,13 +45,18 @@ namespace cnl {
     };
 
     template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
-    struct binary_arithmetic_operator<Operator, native_rounding_tag, native_rounding_tag, Lhs, Rhs>
-        : binary_arithmetic_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
+    struct custom_operator<
+            Operator,
+            operand<Lhs, native_rounding_tag>,
+            operand<Rhs, native_rounding_tag>>
+        : custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
     };
 
     template<_impl::shift_op Operator, tag RhsTag, typename Lhs, typename Rhs>
-    struct shift_operator<Operator, native_rounding_tag, RhsTag, Lhs, Rhs>
-        : shift_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
+    struct custom_operator<
+            Operator,
+            operand<Lhs, native_rounding_tag>, operand<Rhs, RhsTag>>
+        : custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
     };
 
     template<_impl::prefix_op Operator, typename Rhs>

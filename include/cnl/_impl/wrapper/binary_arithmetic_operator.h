@@ -26,7 +26,7 @@
 namespace cnl {
     // higher OP number<>
     template<_impl::binary_arithmetic_op Operator, _impl::floating_point Lhs, _impl::wrapped Rhs>
-    struct binary_arithmetic_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
+    struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(lhs, static_cast<Lhs>(rhs));
@@ -35,7 +35,7 @@ namespace cnl {
 
     // number<> OP higher
     template<_impl::binary_arithmetic_op Operator, _impl::wrapped Lhs, _impl::floating_point Rhs>
-    struct binary_arithmetic_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
+    struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(static_cast<Rhs>(lhs), rhs);
@@ -44,9 +44,7 @@ namespace cnl {
 
     // lower OP number<>
     template<_impl::binary_arithmetic_op Operator, class Lhs, class Rhs>
-    struct binary_arithmetic_operator<
-            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<_impl::number_can_wrap<Rhs, Lhs>::value>> {
+    requires _impl::number_can_wrap<Rhs, Lhs>::value struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(_impl::from_value<Rhs>(lhs), rhs);
@@ -55,9 +53,7 @@ namespace cnl {
 
     // number<> OP lower
     template<_impl::binary_arithmetic_op Operator, class Lhs, class Rhs>
-    struct binary_arithmetic_operator<
-            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<_impl::number_can_wrap<Lhs, Rhs>::value>> {
+    requires _impl::number_can_wrap<Lhs, Rhs>::value struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(lhs, _impl::from_value<Lhs>(rhs));
@@ -65,13 +61,11 @@ namespace cnl {
     };
 
     template<_impl::binary_arithmetic_op Operator, _impl::wrapped Lhs, _impl::wrapped Rhs>
-    struct binary_arithmetic_operator<
-            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<
-                    _impl::is_same_tag_family<_impl::tag_of_t<Lhs>, _impl::tag_of_t<Rhs>>::value>> {
-        using _rep_operator = binary_arithmetic_operator<
-                Operator, _impl::tag_of_t<Lhs>, _impl::tag_of_t<Rhs>, _impl::rep_of_t<Lhs>,
-                _impl::rep_of_t<Rhs>>;
+    requires(_impl::is_same_tag_family<_impl::tag_of_t<Lhs>, _impl::tag_of_t<Rhs>>::value) struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
+        using _rep_operator = custom_operator<
+                Operator,
+                operand<_impl::rep_of_t<Lhs>, _impl::tag_of_t<Lhs>>,
+                operand<_impl::rep_of_t<Rhs>, _impl::tag_of_t<Rhs>>>;
         using _result_rep = decltype(_rep_operator{}(
                 _impl::to_rep(std::declval<Lhs>()), _impl::to_rep(std::declval<Rhs>())));
         using _result_tag = _impl::op_result<Operator, _impl::tag_of_t<Lhs>, _impl::tag_of_t<Rhs>>;

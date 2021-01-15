@@ -16,15 +16,15 @@
 /// compositional numeric library
 namespace cnl {
     // shift_operator of scaled_integer and scaled_integer
-    template<_impl::shift_op Operator, int LhsExponent, int Radix, typename Lhs, typename Rhs>
-    struct shift_operator<Operator, power<LhsExponent, Radix>, _impl::native_tag, Lhs, Rhs>
+    template<_impl::shift_op Operator, typename Lhs, int LhsExponent, typename Rhs, int Radix>
+    struct custom_operator<Operator, operand<Lhs, power<LhsExponent, Radix>>, operand<Rhs>>
         : Operator {
     };
 
     // shift_operator of scaled_integer and something else
-    template<_impl::shift_op Operator, int LhsExponent, int Radix, typename Lhs, typename Rhs>
-    struct shift_operator<Operator, power<LhsExponent, Radix>, power<0, Radix>, Lhs, Rhs>
-        : shift_operator<Operator, power<LhsExponent, Radix>, _impl::native_tag, Lhs, Rhs> {
+    template<_impl::shift_op Operator, typename Lhs, int LhsExponent, typename Rhs, int Radix>
+    struct custom_operator<Operator, operand<Lhs, power<LhsExponent, Radix>>, operand<Rhs, power<0, Radix>>>
+        : custom_operator<Operator, operand<Lhs, power<LhsExponent, Radix>>, operand<Rhs>> {
     };
 }
 

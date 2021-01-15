@@ -20,8 +20,6 @@
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // heterogeneous operator overloads
-    //
-    // compare two objects of different scaled_integer specializations
 
     template<_impl::unary_arithmetic_op Operator, typename Rep, int Exponent, int Radix>
     struct custom_operator<
@@ -36,9 +34,9 @@ namespace cnl {
     };
 
     // comparison between operands with different rep
-    template<typename Operator, typename LhsRep, typename RhsRep, class Scale>
-    struct comparison_operator<
-            Operator, scaled_integer<LhsRep, Scale>, scaled_integer<RhsRep, Scale>> {
+    template<_impl::comparison_op Operator, typename LhsRep, typename RhsRep, class Scale>
+    struct custom_operator<
+            Operator, operand<scaled_integer<LhsRep, Scale>>, operand<scaled_integer<RhsRep, Scale>>> {
         CNL_NODISCARD constexpr auto operator()(
                 scaled_integer<LhsRep, Scale> const& lhs,
                 scaled_integer<RhsRep, Scale> const& rhs) const
@@ -49,18 +47,20 @@ namespace cnl {
 
     // comparison between operands with different rep and exponent
     template<
-            typename Operator, typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent,
+            _impl::comparison_op Operator,
+            typename LhsRep, int LhsExponent,
+            typename RhsRep, int RhsExponent,
             int Radix>
-    struct comparison_operator<
-            Operator, scaled_integer<LhsRep, power<LhsExponent, Radix>>,
-            scaled_integer<RhsRep, power<RhsExponent, Radix>>,
-            _impl::enable_if_t<(LhsExponent < RhsExponent)>> {
+    requires(LhsExponent < RhsExponent) struct custom_operator<
+            Operator,
+            operand<scaled_integer<LhsRep, power<LhsExponent, Radix>>>,
+            operand<scaled_integer<RhsRep, power<RhsExponent, Radix>>>> {
         static constexpr int shiftage = RhsExponent - LhsExponent;
         using lhs_type = scaled_integer<LhsRep, power<LhsExponent, Radix>>;
         using rhs_type = scaled_integer<
                 decltype(std::declval<RhsRep>() << constant<shiftage>()),
                 power<LhsExponent, Radix>>;
-        using operator_type = comparison_operator<Operator, lhs_type, rhs_type>;
+        using operator_type = custom_operator<Operator, operand<lhs_type>, operand<rhs_type>>;
 
         CNL_NODISCARD constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, Radix>> const& lhs,
@@ -71,18 +71,20 @@ namespace cnl {
     };
 
     template<
-            typename Operator, typename LhsRep, int LhsExponent, typename RhsRep, int RhsExponent,
+            _impl::comparison_op Operator,
+            typename LhsRep, int LhsExponent,
+            typename RhsRep, int RhsExponent,
             int Radix>
-    struct comparison_operator<
-            Operator, scaled_integer<LhsRep, power<LhsExponent, Radix>>,
-            scaled_integer<RhsRep, power<RhsExponent, Radix>>,
-            _impl::enable_if_t<(RhsExponent < LhsExponent)>> {
+    requires(RhsExponent < LhsExponent) struct custom_operator<
+            Operator,
+            operand<scaled_integer<LhsRep, power<LhsExponent, Radix>>>,
+            operand<scaled_integer<RhsRep, power<RhsExponent, Radix>>>> {
         static constexpr int shiftage = LhsExponent - RhsExponent;
         using lhs_type = scaled_integer<
                 decltype(std::declval<LhsRep>() << constant<shiftage>()),
                 power<RhsExponent, Radix>>;
         using rhs_type = scaled_integer<RhsRep, power<RhsExponent, Radix>>;
-        using operator_type = comparison_operator<Operator, lhs_type, rhs_type>;
+        using operator_type = custom_operator<Operator, operand<lhs_type>, operand<rhs_type>>;
 
         CNL_NODISCARD constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, Radix>> const& lhs,
@@ -98,10 +100,10 @@ namespace cnl {
     // scaled_integer << non-constant
     // scaled_integer >> non-constant
     template<_impl::shift_op Operator, typename LhsRep, int LhsExponent, int LhsRadix, typename Rhs>
-    struct shift_operator<
-            Operator, _impl::native_tag, _impl::native_tag,
-            scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>, Rhs,
-            _impl::enable_if_t<!_impl::is_constant<Rhs>::value>> {
+    requires(!_impl::is_constant<Rhs>::value) struct custom_operator<
+            Operator,
+            operand<scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>>,
+            operand<Rhs>> {
         using lhs_type = scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>;
         CNL_NODISCARD constexpr auto operator()(lhs_type const& lhs, Rhs const& rhs) const
         {
@@ -111,9 +113,10 @@ namespace cnl {
 
     // scaled_integer << constant
     template<typename LhsRep, int LhsExponent, int LhsRadix, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
-    struct shift_operator<
-            _impl::shift_left_op, _impl::native_tag, _impl::native_tag,
-            scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>, constant<RhsValue>> {
+    struct custom_operator<
+            _impl::shift_left_op,
+            operand<scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>>,
+            operand<constant<RhsValue>>> {
         using result_type = scaled_integer<LhsRep, power<LhsExponent + int(RhsValue), LhsRadix>>;
         CNL_NODISCARD constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, LhsRadix>> const& lhs,
@@ -125,9 +128,10 @@ namespace cnl {
 
     // scaled_integer >> constant
     template<typename LhsRep, int LhsExponent, int LhsRadix, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
-    struct shift_operator<
-            _impl::shift_right_op, _impl::native_tag, _impl::native_tag,
-            scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>, constant<RhsValue>> {
+    struct custom_operator<
+            _impl::shift_right_op,
+            operand<scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>>,
+            operand<constant<RhsValue>>> {
         using result_type = scaled_integer<LhsRep, power<LhsExponent - int(RhsValue), LhsRadix>>;
         CNL_NODISCARD constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, LhsRadix>> const& lhs,

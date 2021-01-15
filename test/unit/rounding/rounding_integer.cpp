@@ -148,16 +148,23 @@ namespace {
 
     namespace test_operate {
         static_assert(
-                cnl::comparison_operator<
-                        cnl::_impl::equal_op, rounding_integer<>, rounding_integer<>>()(
+                cnl::custom_operator<
+                        cnl::_impl::equal_op,
+                        cnl::operand<rounding_integer<>>,
+                        cnl::operand<rounding_integer<>>>()(
                         rounding_integer<>{2468}, rounding_integer<>{2468}),
                 "cnl::numeric_traits<rounding_integer> test failed");
         static_assert(
-                cnl::comparison_operator<cnl::_impl::equal_op, int, rounding_integer<>>()(
+                cnl::custom_operator<
+                        cnl::_impl::equal_op,
+                        cnl::operand<int>,
+                        cnl::operand<rounding_integer<>>>()(
                         2468, rounding_integer<>{2468}),
                 "cnl::numeric_traits<rounding_integer> test failed");
         static_assert(
-                cnl::comparison_operator<cnl::_impl::greater_than_op, rounding_integer<>, int>()(
+                cnl::custom_operator<
+                        cnl::_impl::greater_than_op,
+                        cnl::operand<rounding_integer<>>, cnl::operand<int>>()(
                         rounding_integer<>{234}, 233),
                 "cnl::numeric_traits<rounding_integer> test failed");
     }
@@ -202,11 +209,10 @@ namespace {
         static_assert(
                 identical(
                         cnl::rounding_integer<long, cnl::native_rounding_tag>{321},
-                        cnl::binary_arithmetic_operator<
-                                cnl::_impl::divide_op, cnl::_impl::native_tag,
-                                cnl::_impl::native_tag,
-                                cnl::_impl::wrapper<long, cnl::native_rounding_tag>,
-                                cnl::constant<3>>{}(
+                        cnl::custom_operator<
+                                cnl::_impl::divide_op,
+                                cnl::operand<cnl::_impl::wrapper<long, cnl::native_rounding_tag>>,
+                                cnl::operand<cnl::constant<3>>>{}(
                                 cnl::_impl::wrapper<long, cnl::native_rounding_tag>{963},
                                 cnl::constant<3>{})));
     }

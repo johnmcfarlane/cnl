@@ -35,7 +35,7 @@ namespace cnl {
     }
 
     template<_impl::binary_arithmetic_op Operator, _impl::homogeneous_operator_tag Tag>
-    struct binary_arithmetic_operator<Operator, _impl::native_tag, _impl::native_tag, Tag, Tag> {
+    struct custom_operator<Operator, operand<Tag>, operand<Tag>> {
         CNL_NODISCARD constexpr Tag operator()(Tag, Tag) const
         {
             return Tag{};
@@ -43,7 +43,7 @@ namespace cnl {
     };
 
     template<_impl::comparison_op Operator, _impl::homogeneous_operator_tag Tag>
-    struct comparison_operator<Operator, Tag, Tag> {
+    struct custom_operator<Operator, operand<Tag>, operand<Tag>> {
         CNL_NODISCARD constexpr bool operator()(Tag, Tag) const
         {
             return true;

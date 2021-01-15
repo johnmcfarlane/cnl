@@ -65,19 +65,6 @@ namespace cnl {
             typename Enabled = void>
     struct convert_operator;
 
-    template<
-            _impl::binary_arithmetic_op Operator, tag LhsTag, tag RhsTag, typename Lhs, typename Rhs,
-            class Enabled = void>
-    struct binary_arithmetic_operator;
-
-    template<
-            _impl::shift_op Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,
-            class Enable = void>
-    struct shift_operator;
-
-    template<_impl::comparison_op Operator, class LhsOperand, class RhsOperand, class Enable = void>
-    struct comparison_operator;
-
     template<_impl::prefix_op Operator, tag RhsTag, class RhsOperand, class Enable = void>
     struct prefix_operator;
 
@@ -90,8 +77,8 @@ namespace cnl {
     struct compound_assignment_operator {
         constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
         {
-            using binary_arithmetic_operator = cnl::binary_arithmetic_operator<
-                    typename Operator::binary, LhsTag, RhsTag, LhsOperand, RhsOperand>;
+            using binary_arithmetic_operator = cnl::custom_operator<
+                    typename Operator::binary, operand<LhsOperand, LhsTag>, operand<RhsOperand, RhsTag>>;
             using binary_arithmetic_operator_result = decltype(binary_arithmetic_operator{}(lhs, rhs));
             using convert_operator =
                     cnl::convert_operator<LhsTag, RhsTag, LhsOperand, binary_arithmetic_operator_result>;
@@ -105,8 +92,8 @@ namespace cnl {
     struct compound_assignment_shift_operator {
         constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
         {
-            using shift_operator = cnl::shift_operator<
-                    typename Operator::binary, LhsTag, RhsTag, LhsOperand, RhsOperand>;
+            using shift_operator = cnl::custom_operator<
+                    typename Operator::binary, operand<LhsOperand, LhsTag>, operand<RhsOperand, RhsTag>>;
             using shift_operator_result = decltype(shift_operator{}(lhs, rhs));
             using convert_operator =
                     cnl::convert_operator<LhsTag, RhsTag, LhsOperand, shift_operator_result>;

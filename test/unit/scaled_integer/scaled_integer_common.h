@@ -804,9 +804,10 @@ namespace test_arithmetic {
 
     static_assert(
             identical(
-                    cnl::binary_arithmetic_operator<
-                            cnl::_impl::subtract_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
-                            scaled_integer<int32>, cnl::constant<369>>()(
+                    cnl::custom_operator<
+                            cnl::_impl::subtract_op,
+                            cnl::operand<scaled_integer<int32>>,
+                            cnl::operand<cnl::constant<369>>>()(
                             scaled_integer<int32>{999}, cnl::constant<369>{}),
                     scaled_integer<test_int, cnl::power<0>>{630}),
             "cnl::_scaled_integer_impl::rep_op_exponent test failed");
@@ -1186,9 +1187,10 @@ namespace test_shift_operator_right {
     constexpr auto expected{cnl::scaled_integer<test_int, cnl::power<-28>>{1.28125}};
     constexpr auto lhs{cnl::scaled_integer<test_int, cnl::power<-28>>{5.125}};
     constexpr auto rhs{test_int{2}};
-    constexpr auto op{cnl::shift_operator<
-            cnl::_impl::shift_right_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
-            cnl::scaled_integer<test_int, cnl::power<-28>>, test_int>{}};
+    constexpr auto op{cnl::custom_operator<
+            cnl::_impl::shift_right_op,
+            cnl::operand<cnl::scaled_integer<test_int, cnl::power<-28>>>,
+            cnl::operand<test_int>>{}};
     constexpr auto actual{op(lhs, rhs)};
     static_assert(identical(expected, actual));
 }
@@ -1198,9 +1200,10 @@ namespace test_shift_operator_left {
             decltype(std::declval<uint8>() << std::declval<test_int>()), cnl::power<-4>>{2}};
     constexpr auto lhs{scaled_integer<uint8, cnl::power<-4>>{1}};
     constexpr auto rhs{scaled_integer<>{1}};
-    constexpr auto op{cnl::shift_operator<
-            cnl::_impl::shift_left_op, cnl::_impl::native_tag, cnl::_impl::native_tag,
-            scaled_integer<uint8, cnl::power<-4>>, scaled_integer<>>{}};
+    constexpr auto op{cnl::custom_operator<
+            cnl::_impl::shift_left_op,
+            cnl::operand<scaled_integer<uint8, cnl::power<-4>>>,
+            cnl::operand<scaled_integer<>>>{}};
     constexpr auto actual{op(lhs, rhs)};
     static_assert(identical(expected, actual));
 }

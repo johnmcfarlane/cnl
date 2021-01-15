@@ -15,8 +15,8 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<_impl::binary_arithmetic_op Operator, int Exponent, int Radix, typename Lhs, typename Rhs>
-    struct binary_arithmetic_operator<Operator, power<Exponent, Radix>, power<Exponent, Radix>, Lhs, Rhs>
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs, int Exponent, int Radix>
+    struct custom_operator<Operator, operand<Lhs, power<Exponent, Radix>>, operand<Rhs, power<Exponent, Radix>>>
         : Operator {
     };
 
@@ -35,11 +35,11 @@ namespace cnl {
         };
     }
 
-    template<_impl::binary_arithmetic_op Operator, int LhsExponent, int RhsExponent, int Radix, typename Lhs, typename Rhs>
-    struct binary_arithmetic_operator<
-            Operator, power<LhsExponent, Radix>, power<RhsExponent, Radix>, Lhs, Rhs,
-            _impl::enable_if_t<
-                    LhsExponent != RhsExponent && _impl::is_zero_degree<Operator>::value>> {
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, int LhsExponent, int RhsExponent, typename Rhs, int Radix>
+    requires(LhsExponent != RhsExponent && _impl::is_zero_degree<Operator>::value) struct custom_operator<
+            Operator,
+            operand<Lhs, power<LhsExponent, Radix>>,
+            operand<Rhs, power<RhsExponent, Radix>>> {
     private:
         static constexpr int _common_exponent = _impl::min(LhsExponent, RhsExponent);
         using _common_power = power<_common_exponent, Radix>;
@@ -55,11 +55,11 @@ namespace cnl {
         }
     };
 
-    template<_impl::binary_arithmetic_op Operator, int LhsExponent, int RhsExponent, int Radix, typename Lhs, typename Rhs>
-    struct binary_arithmetic_operator<
-            Operator, power<LhsExponent, Radix>, power<RhsExponent, Radix>, Lhs, Rhs,
-            _impl::enable_if_t<
-                    LhsExponent != RhsExponent && !_impl::is_zero_degree<Operator>::value>>
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, int LhsExponent, typename Rhs, int RhsExponent, int Radix>
+    requires(LhsExponent != RhsExponent && !_impl::is_zero_degree<Operator>::value) struct custom_operator<
+            Operator,
+            operand<Lhs, power<LhsExponent, Radix>>,
+            operand<Rhs, power<RhsExponent, Radix>>>
         : Operator {
     };
 }

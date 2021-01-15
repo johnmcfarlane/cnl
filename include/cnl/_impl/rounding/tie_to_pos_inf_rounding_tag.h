@@ -43,14 +43,18 @@ namespace cnl {
     };
 
     template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
-    struct binary_arithmetic_operator<
-            Operator, tie_to_pos_inf_rounding_tag, tie_to_pos_inf_rounding_tag, Lhs, Rhs>
+    struct custom_operator<
+            Operator,
+            operand<Lhs, tie_to_pos_inf_rounding_tag>,
+            operand<Rhs, tie_to_pos_inf_rounding_tag>>
         : Operator {
     };
 
     template<typename Lhs, typename Rhs>
-    struct binary_arithmetic_operator<
-            _impl::divide_op, tie_to_pos_inf_rounding_tag, tie_to_pos_inf_rounding_tag, Lhs, Rhs> {
+    struct custom_operator<
+            _impl::divide_op,
+            operand<Lhs, tie_to_pos_inf_rounding_tag>,
+            operand<Rhs, tie_to_pos_inf_rounding_tag>> {
     private:
         using result_type = decltype(std::declval<Lhs>() / std::declval<Rhs>());
 
@@ -73,8 +77,8 @@ namespace cnl {
         }
     };
 
-    template<_impl::shift_op Operator, tag RhsTag, typename Lhs, typename Rhs>
-    struct shift_operator<Operator, tie_to_pos_inf_rounding_tag, RhsTag, Lhs, Rhs> : Operator {
+    template<_impl::shift_op Operator, typename Lhs, typename Rhs, tag RhsTag>
+    struct custom_operator<Operator, operand<Lhs, tie_to_pos_inf_rounding_tag>, operand<Rhs, RhsTag>> : Operator {
     };
 
     template<_impl::prefix_op Operator, typename Rhs>

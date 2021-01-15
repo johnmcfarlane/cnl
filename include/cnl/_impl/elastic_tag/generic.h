@@ -41,11 +41,13 @@ namespace cnl {
     };
 
     template<
-            _impl::binary_arithmetic_op Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest,
-            typename Lhs, typename Rhs>
-    struct binary_arithmetic_operator<
-            Operator, elastic_tag<LhsDigits, LhsNarrowest>, elastic_tag<RhsDigits, RhsNarrowest>,
-            Lhs, Rhs> {
+            _impl::binary_arithmetic_op Operator,
+            typename Lhs, int LhsDigits, class LhsNarrowest,
+            typename Rhs, int RhsDigits, class RhsNarrowest>
+    struct custom_operator<
+            Operator,
+            operand<Lhs, elastic_tag<LhsDigits, LhsNarrowest>>,
+            operand<Rhs, elastic_tag<RhsDigits, RhsNarrowest>>> {
         static_assert(digits<Lhs> >= LhsDigits, "LHS number is not wide enough");
         static_assert(digits<Rhs> >= RhsDigits, "RHS number is not wide enough");
 
@@ -61,10 +63,11 @@ namespace cnl {
     };
 
     // shift_operator of scaled_integer and scaled_integer
-    template<_impl::shift_op Operator, int LhsDigits, typename LhsNarrowest, typename Lhs, typename Rhs>
-    struct shift_operator<
-            Operator, elastic_tag<LhsDigits, LhsNarrowest>, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<!_impl::is_constant<Rhs>::value>> {
+    template<_impl::shift_op Operator, typename Lhs, int LhsDigits, typename LhsNarrowest, typename Rhs>
+    requires(!_impl::is_constant<Rhs>::value) struct custom_operator<
+            Operator,
+            operand<Lhs, elastic_tag<LhsDigits, LhsNarrowest>>,
+            operand<Rhs>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator{}(lhs, rhs);
@@ -73,13 +76,17 @@ namespace cnl {
 
     // shift_operator of scaled_integer and something else
     template<
-            _impl::shift_op Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits,
-            typename RhsNarrowest, typename Lhs, typename Rhs>
-    struct shift_operator<
-            Operator, elastic_tag<LhsDigits, LhsNarrowest>, elastic_tag<RhsDigits, RhsNarrowest>,
-            Lhs, Rhs>
-        : shift_operator<
-                  Operator, elastic_tag<LhsDigits, LhsNarrowest>, _impl::native_tag, Lhs, Rhs> {
+            _impl::shift_op Operator,
+            typename Lhs, int LhsDigits, typename LhsNarrowest, int RhsDigits,
+            typename Rhs, typename RhsNarrowest>
+    struct custom_operator<
+            Operator,
+            operand<Lhs, elastic_tag<LhsDigits, LhsNarrowest>>,
+            operand<Rhs, elastic_tag<RhsDigits, RhsNarrowest>>>
+        : custom_operator<
+                  Operator,
+                  operand<Lhs, elastic_tag<LhsDigits, LhsNarrowest>>,
+                  operand<Rhs, _impl::native_tag>> {
     };
 
     template<int Digits, class Narrowest, _impl::prefix_op Operator, typename Rhs>

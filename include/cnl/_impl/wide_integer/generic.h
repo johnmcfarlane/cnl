@@ -20,7 +20,11 @@ namespace cnl {
             typename RhsNarrowest>
     requires(!std::is_same_v<
              wide_integer<LhsDigits, LhsNarrowest>,
-             wide_integer<RhsDigits, RhsNarrowest>>) struct comparison_operator<Operator, wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>> {
+             wide_integer<RhsDigits, RhsNarrowest>>) struct
+            custom_operator<
+                    Operator,
+                    operand<wide_integer<LhsDigits, LhsNarrowest>>,
+                    operand<wide_integer<RhsDigits, RhsNarrowest>>> {
         CNL_NODISCARD constexpr auto operator()(
                 wide_integer<LhsDigits, LhsNarrowest> const& lhs,
                 wide_integer<RhsDigits, RhsNarrowest> const& rhs) const
