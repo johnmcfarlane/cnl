@@ -17,7 +17,7 @@ then
     export CNL_VERSION="${BASH_REMATCH[1]}"
     echo "CNL version ${CNL_VERSION}"
 else
-    echo "Tag ${CNL_VERSION_TAG} not recognized as Semver version tag"
+    echo "Tag ${CNL_VERSION_TAG} not recognized as Semver version tag in the form refs/tags/v1.2.3"
     exit 1
 fi
 
