@@ -21,20 +21,29 @@ else
     exit 1
 fi
 
+# Clone CNL at gh-pages branch
+git clone \
+  --branch gh-pages \
+  --single-branch \
+  "https://johnmcfarlane:${GITHUB_TOKEN}@github.com/johnmcfarlane/cnl.git" \
+  htdocs
+
 # Generate documentation
+rm -rf htdocs/*
 "${PROJECT_DIR}/doc/generate"
 
 # Push revision of documentation
-pushd "${PROJECT_DIR}/doc/gh-pages"
+pushd htdocs
 git config --global user.email "github@john.mcfarlane.name"
 git config --global user.name "John McFarlane"
-git remote set-url origin "https://johnmcfarlane:${GITHUB_TOKEN}@github.com/johnmcfarlane/cnl.git"
 git reset origin/gh-pages
 git checkout gh-pages
 git add .
-if git commit -m"Documentation v${CNL_VERSION}"
+if git commit \
+  --amend \
+  --message="Documentation v${CNL_VERSION}"
 then
-  git push
+  git push --force
 fi
 popd
 
