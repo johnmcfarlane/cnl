@@ -20,7 +20,7 @@ GENERATOR="${GENERATOR:-Ninja}"
 INT128="${INT128:-True}"
 SANITIZE="${SANITIZE:-True}"
 STDLIB="${STDLIB:-libstdc++11}"
-TARGET="${TARGET:-test-unit}"
+TARGET="${TARGET:-test-all}"
 TOOLCHAIN="${TOOLCHAIN:-gcc.cmake}"
 
 export CC="${CC:-gcc}"

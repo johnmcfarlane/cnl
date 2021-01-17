@@ -16,11 +16,15 @@ class CnlConan(ConanFile):
     options = {"enable_exceptions": [False, True],
                "int128": [False, True],
                "sanitize": [False, True],
-               "target": ["test-all", "test-benchmark", "test-unit"]}
+               "target": ["test-all", "test-benchmark", "test-unit"],
+               "test_pattern": ["^test-", "test-benchmark", "^test-unit-"],
+    }
     default_options = {"enable_exceptions": True,
                        "int128": True,
                        "sanitize": False,
-                       "target": "test-all"}
+                       "target": "test-all",
+                       "test_pattern": "^test-unit-",
+    }
     generators = "cmake_find_package"
     no_copy_source = True
     requires = "gtest/1.10.0","benchmark/1.5.0@johnmcfarlane/stable"
@@ -80,13 +84,7 @@ class CnlConan(ConanFile):
         self.run(f'cmake {build} {target} {cmake.build_config}')
     
     def test_phase(self):
-        target_to_test_pattern = {
-            "test-all": "^test-",
-            "test-benchmark": "test-benchmark",
-            "test-unit": "^test-unit-"
-        }
-
         self.run("ctest --output-on-failure --parallel {} --tests-regex {}".format(
             tools.cpu_count(),
-            target_to_test_pattern[str(self.options.target)]
+            self.options.test_pattern
         ))
