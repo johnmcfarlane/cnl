@@ -20,7 +20,7 @@ class CnlConan(ConanFile):
     default_options = {"enable_exceptions": True,
                        "int128": True,
                        "sanitize": False,
-                       "target": "test-unit"}
+                       "target": "test-all"}
     generators = "cmake_find_package"
     no_copy_source = True
     requires = "gtest/1.10.0","benchmark/1.5.0@johnmcfarlane/stable"
