@@ -175,10 +175,10 @@ namespace cnl {
         }
     };
 
-    // prefix_operator
+    // prefix operators
     template<typename Upper, typename Lower>
-    struct prefix_operator<
-            _impl::pre_increment_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>> {
+    struct custom_operator<
+            _impl::pre_increment_op, operand<_impl::duplex_integer<Upper, Lower>>> {
         CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower>& rhs) const
                 -> _impl::duplex_integer<Upper, Lower>
         {
@@ -190,8 +190,8 @@ namespace cnl {
     };
 
     template<typename Upper, typename Lower>
-    struct prefix_operator<
-            _impl::pre_decrement_op, _impl::native_tag, _impl::duplex_integer<Upper, Lower>> {
+    struct custom_operator<
+            _impl::pre_decrement_op, operand<_impl::duplex_integer<Upper, Lower>>> {
         CNL_NODISCARD constexpr auto operator()(_impl::duplex_integer<Upper, Lower>& rhs) const
                 -> _impl::duplex_integer<Upper, Lower>
         {

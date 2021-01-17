@@ -60,13 +60,13 @@ namespace cnl {
     };
 
     template<_impl::prefix_op Operator, typename Rhs>
-    struct prefix_operator<Operator, native_rounding_tag, Rhs>
-        : prefix_operator<Operator, _impl::native_tag, Rhs> {
+    struct custom_operator<Operator, native_rounding_tag, Rhs>
+        : custom_operator<Operator, operand<Rhs, _impl::native_tag>> {
     };
 
     template<_impl::postfix_op Operator, typename Rhs>
-    struct postfix_operator<Operator, native_rounding_tag, Rhs>
-        : postfix_operator<Operator, _impl::native_tag, Rhs> {
+    struct custom_operator<Operator, native_rounding_tag, Rhs>
+        : custom_operator<Operator, operand<Rhs, _impl::native_tag>> {
     };
 }
 

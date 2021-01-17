@@ -80,11 +80,11 @@ namespace cnl {
     };
 
     template<_impl::prefix_op Operator, typename Rhs>
-    struct prefix_operator<Operator, neg_inf_rounding_tag, Rhs> : Operator {
+    struct custom_operator<Operator, operand<Rhs, neg_inf_rounding_tag>> : Operator {
     };
 
-    template<_impl::postfix_op Operator, typename Rhs>
-    struct postfix_operator<Operator, neg_inf_rounding_tag, Rhs> : Operator {
+    template<_impl::postfix_op Operator, typename Lhs>
+    struct custom_operator<Operator, operand<Lhs, neg_inf_rounding_tag>> : Operator {
     };
 }
 

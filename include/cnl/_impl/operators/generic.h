@@ -65,12 +65,6 @@ namespace cnl {
             typename Enabled = void>
     struct convert_operator;
 
-    template<_impl::prefix_op Operator, tag RhsTag, class RhsOperand, class Enable = void>
-    struct prefix_operator;
-
-    template<_impl::postfix_op Operator, tag LhsTag, class LhsOperand, class Enable = void>
-    struct postfix_operator;
-
     template<
             _impl::assign_op Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,
             class Enable = void>

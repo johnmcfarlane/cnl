@@ -15,21 +15,21 @@
 
 namespace cnl {
     template<_impl::prefix_op Operator, _impl::wrapped Number>
-    struct prefix_operator<Operator, _impl::native_tag, Number> {
+    struct custom_operator<Operator, operand<Number>> {
         constexpr Number& operator()(Number& rhs) const
         {
-            prefix_operator<Operator, _impl::tag_of_t<Number>, _impl::rep_of_t<Number>>{}(
+            custom_operator<Operator, operand<_impl::rep_of_t<Number>, _impl::tag_of_t<Number>>>{}(
                     _impl::to_rep(rhs));
             return rhs;
         }
     };
 
     template<_impl::postfix_op Operator, _impl::wrapped Number>
-    struct postfix_operator<Operator, _impl::native_tag, Number> {
+    struct custom_operator<Operator, operand<Number, _impl::native_tag>> {
         constexpr Number operator()(Number& lhs) const
         {
             return _impl::from_rep<Number>(
-                    postfix_operator<Operator, _impl::tag_of_t<Number>, _impl::rep_of_t<Number>>{}(
+                    custom_operator<Operator, operand<_impl::rep_of_t<Number>, _impl::tag_of_t<Number>>>{}(
                             _impl::to_rep(lhs)));
         }
     };

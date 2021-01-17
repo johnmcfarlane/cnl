@@ -12,12 +12,12 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<_impl::prefix_op Operator, int Digits, typename Narrowest, typename Rhs>
-    struct prefix_operator<Operator, elastic_tag<Digits, Narrowest>, Rhs> : Operator {
+    template<_impl::prefix_op Operator, typename Rhs, int Digits, typename Narrowest>
+    struct custom_operator<Operator, operand<Rhs, elastic_tag<Digits, Narrowest>>> : Operator {
     };
 
-    template<_impl::postfix_op Operator, int Digits, typename Narrowest, typename Lhs>
-    struct postfix_operator<Operator, elastic_tag<Digits, Narrowest>, Lhs> : Operator {
+    template<_impl::postfix_op Operator, typename Lhs, int Digits, typename Narrowest>
+    struct custom_operator<Operator, operand<Lhs, elastic_tag<Digits, Narrowest>>> : Operator {
     };
 }
 

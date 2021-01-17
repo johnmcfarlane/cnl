@@ -139,8 +139,8 @@ namespace cnl {
         }
     };
 
-    template<_impl::prefix_op Operator, overflow_tag OverflowTag, typename Rhs>
-    struct prefix_operator<Operator, OverflowTag, Rhs> {
+    template<_impl::prefix_op Operator, typename Rhs, overflow_tag OverflowTag>
+    struct custom_operator<Operator, operand<Rhs, OverflowTag>> {
         constexpr auto operator()(Rhs& rhs) const -> Rhs
         {
             return compound_assignment_operator<
@@ -149,8 +149,8 @@ namespace cnl {
         }
     };
 
-    template<_impl::postfix_op Operator, overflow_tag OverflowTag, typename Rhs>
-    struct postfix_operator<Operator, OverflowTag, Rhs> {
+    template<_impl::postfix_op Operator, typename Rhs, overflow_tag OverflowTag>
+    struct custom_operator<Operator, operand<Rhs, OverflowTag>> {
         constexpr auto operator()(Rhs& rhs) const -> Rhs
         {
             auto copy = rhs;
