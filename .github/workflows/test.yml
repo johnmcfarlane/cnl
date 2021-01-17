@@ -167,7 +167,7 @@ jobs:
       run: conan build --test $GITHUB_WORKSPACE
 
     - name: Run benchmarks
-      if: (matrix.name=='clang-11' || matrix.name=='gcc-10')
+      if: ( matrix.name != 'clang-11' && matrix.arch != 'armv7' )
       run: |
         ./test/benchmark/test-benchmark --benchmark_format=csv | tee result.csv \
         "${GITHUB_WORKSPACE}"/test/benchmark/report.py result.csv
