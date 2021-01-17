@@ -88,14 +88,6 @@ namespace cnl {
                   operand<Lhs, elastic_tag<LhsDigits, LhsNarrowest>>,
                   operand<Rhs, _impl::native_tag>> {
     };
-
-    template<int Digits, class Narrowest, _impl::prefix_op Operator, typename Rhs>
-    struct prefix_operator<elastic_tag<Digits, Narrowest>, Operator, Rhs> : Operator {
-    };
-
-    template<int Digits, class Narrowest, _impl::prefix_op Operator, typename Rhs>
-    struct postfix_operator<elastic_tag<Digits, Narrowest>, Operator, Rhs> : Operator {
-    };
 }
 
 #endif  // CNL_IMPL_ELASTIC_TAG_GENERIC_H
