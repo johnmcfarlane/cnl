@@ -139,7 +139,6 @@ jobs:
 
     - name: Initialise Conan
       run: |
-        conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl && \
         conan profile new default --detect && \
         conan profile update settings.compiler=${{matrix.compiler}} default && \
         conan profile update settings.compiler.cppstd=20 default && \
@@ -168,7 +167,7 @@ jobs:
       run: conan build --test $GITHUB_WORKSPACE
 
     - name: Run benchmarks
-      if: (matrix.name=='clang-11' || matrix.name=='gcc-10')
+      if: ( matrix.name != 'clang-11' && matrix.arch != 'armv7' )
       run: |
         ./test/benchmark/test-benchmark --benchmark_format=csv | tee result.csv \
         "${GITHUB_WORKSPACE}"/test/benchmark/report.py result.csv
@@ -195,7 +194,6 @@ jobs:
     - name: Initialise Conan
       run: |
         pip.exe install conan;
-        conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl;
         conan profile new default;
         conan profile update settings.compiler="Visual Studio" default;
         conan profile update settings.compiler.cppstd=20 default;

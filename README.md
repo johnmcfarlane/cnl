@@ -67,7 +67,6 @@ Optional integration tests use Boost.Multiprecision and Boost.SIMD.
 1. Conan can be used to pull in essential dependencies:
 
    ```shell
-   conan remote add --force johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
    conan profile new --detect --force default
    conan profile update settings.compiler.libcxx=libstdc++11 default
    conan install --build=missing ..
