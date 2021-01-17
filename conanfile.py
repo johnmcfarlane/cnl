@@ -27,7 +27,7 @@ class CnlConan(ConanFile):
     }
     generators = "cmake_find_package"
     no_copy_source = True
-    requires = "gtest/1.10.0","benchmark/1.5.0@johnmcfarlane/stable"
+    requires = "gtest/1.10.0", "benchmark/1.5.2"
 
     scm = {
         "revision": "main",
