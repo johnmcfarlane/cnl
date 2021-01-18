@@ -215,11 +215,11 @@ namespace cnl {
     constexpr auto operator OP(LhsOperand& lhs, RhsOperand const& rhs) \
             ->enable_binary_t< \
                     LhsOperand, RhsOperand, \
-                    decltype(cnl::compound_assignment_shift_operator< \
-                             NAME, native_tag, native_tag, LhsOperand, RhsOperand>()(lhs, rhs))> \
+                    decltype(cnl::custom_operator< \
+                             NAME, operand<LhsOperand>, operand<RhsOperand>>()(lhs, rhs))> \
     { \
-        return cnl::compound_assignment_shift_operator< \
-                NAME, native_tag, native_tag, LhsOperand, RhsOperand>()(lhs, rhs); \
+        return cnl::custom_operator< \
+                NAME, operand<LhsOperand>, operand<RhsOperand>>()(lhs, rhs); \
     }
 
         CNL_DEFINE_COMPOUND_ASSIGNMENT_SHIFT_OPERATOR(<<=, assign_shift_left_op)

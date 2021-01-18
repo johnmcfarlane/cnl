@@ -79,9 +79,8 @@ namespace cnl {
     };
 
     template<
-            _impl::assign_shift_op Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,
-            class Enable = void>
-    struct compound_assignment_shift_operator {
+            _impl::assign_shift_op Operator, class LhsOperand, tag LhsTag, class RhsOperand, tag RhsTag>
+    struct custom_operator<Operator, operand<LhsOperand, LhsTag>, operand<RhsOperand, RhsTag>> {
         constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
         {
             using shift_operator = cnl::custom_operator<
