@@ -60,10 +60,11 @@ namespace cnl {
     template<class ArchetypeTag, typename Initializer>
     struct deduction;
 
-    template<
-            _impl::assign_op Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,
-            class Enable = void>
-    struct compound_assignment_operator {
+    template<_impl::assign_op Operator, class LhsOperand, tag LhsTag, class RhsOperand, tag RhsTag>
+    struct custom_operator<
+            Operator,
+            operand<LhsOperand, LhsTag>,
+            operand<RhsOperand, RhsTag>> {
         constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
         {
             using binary_arithmetic_operator = cnl::custom_operator<
