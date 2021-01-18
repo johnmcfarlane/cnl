@@ -11,7 +11,7 @@
 #include "../num_traits/from_value.h"
 #include "../num_traits/from_value_recursive.h"
 #include "../num_traits/tag.h"
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../type_traits/common_type.h"
 #include "definition.h"
 #include "make_wrapper.h"

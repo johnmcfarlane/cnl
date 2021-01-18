@@ -10,7 +10,7 @@
 #include "../../limits.h"
 #include "../num_traits/set_rep.h"
 #include "../num_traits/set_tag.h"
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../operators/is_same_tag_family.h"
 #include "../operators/native_tag.h"
 #include "../operators/operators.h"

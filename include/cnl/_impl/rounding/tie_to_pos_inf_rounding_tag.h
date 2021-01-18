@@ -8,7 +8,7 @@
 #define CNL_IMPL_ROUNDING_TIE_TO_POS_INF_ROUNDING_TAG_H
 
 #include "../cmath/abs.h"
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../operators/native_tag.h"
 #include "is_rounding_tag.h"
 #include "is_tag.h"

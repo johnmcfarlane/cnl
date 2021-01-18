@@ -10,7 +10,7 @@
 #include "../../constant.h"
 #include "../config.h"
 #include "../num_traits/tag.h"
-#include "generic.h"
+#include "custom_operator.h"
 #include "operators.h"
 
 /// compositional numeric library

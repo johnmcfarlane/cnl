@@ -10,7 +10,7 @@
 #include "../../wide_integer.h"
 #include "../common.h"
 #include "../num_traits/width.h"
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../operators/operators.h"
 #include "../type_traits/common_type.h"
 #include "add_signedness.h"

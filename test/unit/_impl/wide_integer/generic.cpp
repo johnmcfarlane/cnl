@@ -7,7 +7,7 @@
 /// \file
 /// \brief tests for \ref cnl::wide_integer operators
 
-#include <cnl/_impl/wide_tag/generic.h>
+#include <cnl/_impl/wide_tag/custom_operator.h>
 
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cmath.h>

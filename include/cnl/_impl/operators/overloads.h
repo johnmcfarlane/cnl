@@ -12,7 +12,7 @@
 
 #include "../../limits.h"
 #include "../type_traits/enable_if.h"
-#include "generic.h"
+#include "custom_operator.h"
 #include "operators.h"
 
 #include <type_traits>

@@ -8,7 +8,7 @@
 #define CNL_IMPL_WRAPPER_UNARY_OPERATOR_H
 
 #include "../config.h"
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../operators/native_tag.h"
 #include "../operators/overloads.h"
 #include "definition.h"

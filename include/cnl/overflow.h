@@ -11,7 +11,7 @@
 #define CNL_OVERFLOW_H
 
 #include "_impl/operators/tagged.h"
-#include "_impl/overflow/generic.h"
+#include "_impl/overflow/custom_operator.h"
 #include "_impl/overflow/native.h"
 #include "_impl/overflow/saturated.h"
 #include "_impl/overflow/throwing.h"

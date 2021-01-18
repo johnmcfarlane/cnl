@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_MODULO_H
 
 #include "../../wide_integer.h"
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../operators/operators.h"
 #include "type.h"
 

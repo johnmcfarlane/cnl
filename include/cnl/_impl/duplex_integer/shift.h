@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_SHIFT_H)
 #define CNL_IMPL_DUPLEX_INTEGER_SHIFT_H
 
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../operators/operators.h"
 #include "type.h"
 

@@ -12,7 +12,7 @@
 #include "../num_traits/set_width.h"
 #include "../num_traits/to_rep.h"
 #include "../num_traits/width.h"
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../operators/native_tag.h"
 #include "../type_traits/is_signed.h"
 #include "../type_traits/set_signedness.h"

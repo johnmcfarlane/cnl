@@ -8,7 +8,7 @@
 #define CNL_IMPL_SCALED_SHIFT_OPERATOR_H
 
 #include "../num_traits/scale.h"
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../operators/tagged.h"
 #include "../type_traits/enable_if.h"
 #include "definition.h"

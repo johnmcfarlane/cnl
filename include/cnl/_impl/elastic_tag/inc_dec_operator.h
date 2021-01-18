@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_ELASTIC_TAG_INC_DEC_OPERATOR_H)
 #define CNL_IMPL_ELASTIC_TAG_INC_DEC_OPERATOR_H
 
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "declaration.h"
 
 /// compositional numeric library

@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_MULTIPLY_H
 
 #include "../num_traits/width.h"
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../operators/operators.h"
 #include "../type_traits/conditional3.h"
 #include "digits.h"

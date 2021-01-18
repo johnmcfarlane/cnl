@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_OVERFLOW_GENERIC_H)
 #define CNL_IMPL_OVERFLOW_GENERIC_H
 
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../polarity.h"
 #include "builtin_overflow.h"
 #include "is_overflow.h"

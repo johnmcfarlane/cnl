@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_WRAPPER_INC_DEC_OPERATOR_H)
 #define CNL_IMPL_WRAPPER_INC_DEC_OPERATOR_H
 
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../operators/native_tag.h"
 #include "definition.h"
 #include "rep_of.h"

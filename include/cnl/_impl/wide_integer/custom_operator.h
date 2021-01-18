@@ -8,7 +8,7 @@
 #define CNL_IMPL_WIDE_INTEGER_GENERIC_H
 
 #include "../num_traits/to_rep.h"
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "definition.h"
 
 #include <type_traits>

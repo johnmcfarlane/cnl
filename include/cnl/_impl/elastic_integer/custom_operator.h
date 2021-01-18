@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_ELASTIC_INTEGER_GENERIC_H)
 #define CNL_IMPL_ELASTIC_INTEGER_GENERIC_H
 
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "definition.h"
 
 /// compositional numeric library
