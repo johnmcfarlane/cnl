@@ -396,33 +396,30 @@ namespace cnl {
         inline constexpr auto is_postfix_op<post_decrement_op> = true;
 
         template<class T>
-        inline constexpr auto is_assign_op = false;
+        inline constexpr auto is_compound_assign_op = false;
         template<>
-        inline constexpr auto is_assign_op<assign_add_op> = true;
+        inline constexpr auto is_compound_assign_op<assign_add_op> = true;
         template<>
-        inline constexpr auto is_assign_op<assign_subtract_op> = true;
+        inline constexpr auto is_compound_assign_op<assign_subtract_op> = true;
         template<>
-        inline constexpr auto is_assign_op<assign_multiply_op> = true;
+        inline constexpr auto is_compound_assign_op<assign_multiply_op> = true;
         template<>
-        inline constexpr auto is_assign_op<assign_divide_op> = true;
+        inline constexpr auto is_compound_assign_op<assign_divide_op> = true;
         template<>
-        inline constexpr auto is_assign_op<assign_modulo_op> = true;
+        inline constexpr auto is_compound_assign_op<assign_modulo_op> = true;
         template<>
-        inline constexpr auto is_assign_op<assign_bitwise_or_op> = true;
+        inline constexpr auto is_compound_assign_op<assign_bitwise_or_op> = true;
         template<>
-        inline constexpr auto is_assign_op<assign_bitwise_and_op> = true;
+        inline constexpr auto is_compound_assign_op<assign_bitwise_and_op> = true;
         template<>
-        inline constexpr auto is_assign_op<assign_bitwise_xor_op> = true;
+        inline constexpr auto is_compound_assign_op<assign_bitwise_xor_op> = true;
+        template<>
+        inline constexpr auto is_compound_assign_op<assign_shift_left_op> = true;
+        template<>
+        inline constexpr auto is_compound_assign_op<assign_shift_right_op> = true;
 
         template<class T>
-        inline constexpr auto is_assign_shift_op = false;
-        template<>
-        inline constexpr auto is_assign_shift_op<assign_shift_left_op> = true;
-        template<>
-        inline constexpr auto is_assign_shift_op<assign_shift_right_op> = true;
-
-        template<class T>
-        inline constexpr auto is_op = is_unary_arithmetic_op<T> || is_binary_arithmetic_op<T> || is_shift_op<T> || is_comparison_op<T> || is_prefix_op<T> || is_postfix_op<T> || is_assign_op<T> || is_assign_shift_op<T>;
+        inline constexpr auto is_op = is_unary_arithmetic_op<T> || is_binary_arithmetic_op<T> || is_shift_op<T> || is_comparison_op<T> || is_prefix_op<T> || is_postfix_op<T> || is_compound_assign_op<T>;
         template<>
         inline constexpr auto is_op<convert_op> = true;
 
@@ -441,9 +438,7 @@ namespace cnl {
         template<class T>
         concept postfix_op = is_postfix_op<T>;
         template<class T>
-        concept assign_op = is_assign_op<T>;
-        template<class T>
-        concept assign_shift_op = is_assign_shift_op<T>;
+        concept compound_assign_op = is_compound_assign_op<T>;
         template<typename T>
         concept op = is_op<T>;
 

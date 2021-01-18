@@ -60,37 +60,21 @@ namespace cnl {
     template<class ArchetypeTag, typename Initializer>
     struct deduction;
 
-    template<_impl::assign_op Operator, class LhsOperand, tag LhsTag, class RhsOperand, tag RhsTag>
+    template<_impl::compound_assign_op Operator, class LhsOperand, tag LhsTag, class RhsOperand, tag RhsTag>
     struct custom_operator<
             Operator,
             operand<LhsOperand, LhsTag>,
             operand<RhsOperand, RhsTag>> {
         constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
         {
-            using binary_arithmetic_operator = cnl::custom_operator<
+            using compound_assign_operator = cnl::custom_operator<
                     typename Operator::binary, operand<LhsOperand, LhsTag>, operand<RhsOperand, RhsTag>>;
-            using binary_arithmetic_operator_result = decltype(binary_arithmetic_operator{}(lhs, rhs));
+            using compound_assign_operator_result = decltype(compound_assign_operator{}(lhs, rhs));
             using convert_operator = cnl::custom_operator<
                     _impl::convert_op,
-                    operand<binary_arithmetic_operator_result, RhsTag>,
+                    operand<compound_assign_operator_result, RhsTag>,
                     operand<LhsOperand, LhsTag>>;
-            return lhs = convert_operator{}(binary_arithmetic_operator{}(lhs, rhs));
-        }
-    };
-
-    template<
-            _impl::assign_shift_op Operator, class LhsOperand, tag LhsTag, class RhsOperand, tag RhsTag>
-    struct custom_operator<Operator, operand<LhsOperand, LhsTag>, operand<RhsOperand, RhsTag>> {
-        constexpr LhsOperand& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
-        {
-            using shift_operator = cnl::custom_operator<
-                    typename Operator::binary, operand<LhsOperand, LhsTag>, operand<RhsOperand, RhsTag>>;
-            using shift_operator_result = decltype(shift_operator{}(lhs, rhs));
-            using convert_operator = cnl::custom_operator<
-                    _impl::convert_op,
-                    operand<shift_operator_result, RhsTag>,
-                    operand<LhsOperand, LhsTag>>;
-            return lhs = convert_operator{}(shift_operator{}(lhs, rhs));
+            return lhs = convert_operator{}(compound_assign_operator{}(lhs, rhs));
         }
     };
 }
