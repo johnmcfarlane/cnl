@@ -92,17 +92,16 @@ namespace {
                 identical(
                         cnl::_impl::wrapper<
                                 cnl::elastic_integer<37, int>, cnl::nearest_rounding_tag>{54},
-                        cnl::binary_operator<
-                                cnl::_impl::multiply_op, cnl::_impl::native_tag,
-                                cnl::_impl::native_tag,
-                                cnl::_impl::wrapper<
-                                        cnl::elastic_integer<24, int>, cnl::nearest_rounding_tag>,
-                                cnl::elastic_integer<13, int>>{}(
+                        cnl::custom_operator<
+                                cnl::_impl::multiply_op,
+                                cnl::operand<cnl::_impl::wrapper<
+                                        cnl::elastic_integer<24, int>, cnl::nearest_rounding_tag>>,
+                                cnl::operand<cnl::elastic_integer<13, int>>>{}(
                                 cnl::_impl::wrapper<
                                         cnl::elastic_integer<24, int>, cnl::nearest_rounding_tag>{
                                         6},
                                 cnl::elastic_integer<13, int>{9})),
-                "binary_operator<multiply_op, native_tag, native_tag, rounding_elastic_integer, "
+                "binary_arithmetic_operator<multiply_op, native_tag, native_tag, rounding_elastic_integer, "
                 "elastic_integer>");
     }
 

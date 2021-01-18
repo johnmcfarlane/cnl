@@ -8,7 +8,7 @@
 #define CNL_IMPL_WIDE_INTEGER_GENERIC_H
 
 #include "../num_traits/to_rep.h"
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "definition.h"
 
 #include <type_traits>
@@ -20,7 +20,11 @@ namespace cnl {
             typename RhsNarrowest>
     requires(!std::is_same_v<
              wide_integer<LhsDigits, LhsNarrowest>,
-             wide_integer<RhsDigits, RhsNarrowest>>) struct comparison_operator<Operator, wide_integer<LhsDigits, LhsNarrowest>, wide_integer<RhsDigits, RhsNarrowest>> {
+             wide_integer<RhsDigits, RhsNarrowest>>) struct
+            custom_operator<
+                    Operator,
+                    operand<wide_integer<LhsDigits, LhsNarrowest>>,
+                    operand<wide_integer<RhsDigits, RhsNarrowest>>> {
         CNL_NODISCARD constexpr auto operator()(
                 wide_integer<LhsDigits, LhsNarrowest> const& lhs,
                 wide_integer<RhsDigits, RhsNarrowest> const& rhs) const

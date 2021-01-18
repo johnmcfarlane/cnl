@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "../num_traits/from_value.h"
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../operators/tagged.h"
 #include "../type_traits/enable_if.h"
 #include "can_convert_tag_family.h"

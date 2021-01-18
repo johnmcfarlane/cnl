@@ -8,8 +8,8 @@
 #define CNL_IMPL_WIDE_INTEGER_SCALE_H
 
 #include "../num_traits/scale.h"
+#include "custom_operator.h"
 #include "definition.h"
-#include "generic.h"
 
 /// compositional numeric library
 namespace cnl {

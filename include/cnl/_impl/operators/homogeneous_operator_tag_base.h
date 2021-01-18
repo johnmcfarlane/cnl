@@ -8,7 +8,7 @@
 #define CNL_IMPL_OPERATORS_IS_HOMOGENEOUS_OPERATOR_TAG_H
 
 #include "../config.h"
-#include "generic.h"
+#include "custom_operator.h"
 #include "overloads.h"
 
 #include <type_traits>
@@ -34,8 +34,8 @@ namespace cnl {
         inline constexpr auto wants_generic_ops<Tag> = true;
     }
 
-    template<_impl::binary_op Operator, _impl::homogeneous_operator_tag Tag>
-    struct binary_operator<Operator, _impl::native_tag, _impl::native_tag, Tag, Tag> {
+    template<_impl::binary_arithmetic_op Operator, _impl::homogeneous_operator_tag Tag>
+    struct custom_operator<Operator, operand<Tag>, operand<Tag>> {
         CNL_NODISCARD constexpr Tag operator()(Tag, Tag) const
         {
             return Tag{};
@@ -43,7 +43,7 @@ namespace cnl {
     };
 
     template<_impl::comparison_op Operator, _impl::homogeneous_operator_tag Tag>
-    struct comparison_operator<Operator, Tag, Tag> {
+    struct custom_operator<Operator, operand<Tag>, operand<Tag>> {
         CNL_NODISCARD constexpr bool operator()(Tag, Tag) const
         {
             return true;

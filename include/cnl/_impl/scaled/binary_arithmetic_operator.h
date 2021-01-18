@@ -8,20 +8,20 @@
 #define CNL_IMPL_SCALED_BINARY_OPERATOR_H
 
 #include "../num_traits/scale.h"
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../operators/tagged.h"
 #include "../type_traits/enable_if.h"
 #include "definition.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<_impl::binary_op Operator, int Exponent, int Radix, typename Lhs, typename Rhs>
-    struct binary_operator<Operator, power<Exponent, Radix>, power<Exponent, Radix>, Lhs, Rhs>
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs, int Exponent, int Radix>
+    struct custom_operator<Operator, operand<Lhs, power<Exponent, Radix>>, operand<Rhs, power<Exponent, Radix>>>
         : Operator {
     };
 
     namespace _impl {
-        template<binary_op Operator>
+        template<binary_arithmetic_op Operator>
         struct is_zero_degree : std::true_type {
         };
         template<>
@@ -35,11 +35,11 @@ namespace cnl {
         };
     }
 
-    template<_impl::binary_op Operator, int LhsExponent, int RhsExponent, int Radix, typename Lhs, typename Rhs>
-    struct binary_operator<
-            Operator, power<LhsExponent, Radix>, power<RhsExponent, Radix>, Lhs, Rhs,
-            _impl::enable_if_t<
-                    LhsExponent != RhsExponent && _impl::is_zero_degree<Operator>::value>> {
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, int LhsExponent, int RhsExponent, typename Rhs, int Radix>
+    requires(LhsExponent != RhsExponent && _impl::is_zero_degree<Operator>::value) struct custom_operator<
+            Operator,
+            operand<Lhs, power<LhsExponent, Radix>>,
+            operand<Rhs, power<RhsExponent, Radix>>> {
     private:
         static constexpr int _common_exponent = _impl::min(LhsExponent, RhsExponent);
         using _common_power = power<_common_exponent, Radix>;
@@ -49,17 +49,17 @@ namespace cnl {
     public:
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
-            return _impl::binary_operate<Operator, _common_power>(
+            return _impl::binary_arithmetic_operate<Operator, _common_power>(
                     _impl::scale<_lhs_left_shift, Radix>(lhs),
                     _impl::scale<_rhs_left_shift, Radix>(rhs));
         }
     };
 
-    template<_impl::binary_op Operator, int LhsExponent, int RhsExponent, int Radix, typename Lhs, typename Rhs>
-    struct binary_operator<
-            Operator, power<LhsExponent, Radix>, power<RhsExponent, Radix>, Lhs, Rhs,
-            _impl::enable_if_t<
-                    LhsExponent != RhsExponent && !_impl::is_zero_degree<Operator>::value>>
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, int LhsExponent, typename Rhs, int RhsExponent, int Radix>
+    requires(LhsExponent != RhsExponent && !_impl::is_zero_degree<Operator>::value) struct custom_operator<
+            Operator,
+            operand<Lhs, power<LhsExponent, Radix>>,
+            operand<Rhs, power<RhsExponent, Radix>>>
         : Operator {
     };
 }

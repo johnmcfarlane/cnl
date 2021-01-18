@@ -7,29 +7,29 @@
 #if !defined(CNL_IMPL_WRAPPER_INC_DEC_OPERATOR_H)
 #define CNL_IMPL_WRAPPER_INC_DEC_OPERATOR_H
 
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../operators/native_tag.h"
 #include "definition.h"
 #include "rep_of.h"
 #include "to_rep.h"
 
 namespace cnl {
-    template<_impl::pre_op Operator, _impl::wrapped Number>
-    struct pre_operator<Operator, _impl::native_tag, Number> {
+    template<_impl::prefix_op Operator, _impl::wrapped Number>
+    struct custom_operator<Operator, operand<Number>> {
         constexpr Number& operator()(Number& rhs) const
         {
-            pre_operator<Operator, _impl::tag_of_t<Number>, _impl::rep_of_t<Number>>{}(
+            custom_operator<Operator, operand<_impl::rep_of_t<Number>, _impl::tag_of_t<Number>>>{}(
                     _impl::to_rep(rhs));
             return rhs;
         }
     };
 
-    template<_impl::post_op Operator, _impl::wrapped Number>
-    struct post_operator<Operator, _impl::native_tag, Number> {
+    template<_impl::postfix_op Operator, _impl::wrapped Number>
+    struct custom_operator<Operator, operand<Number, _impl::native_tag>> {
         constexpr Number operator()(Number& lhs) const
         {
             return _impl::from_rep<Number>(
-                    post_operator<Operator, _impl::tag_of_t<Number>, _impl::rep_of_t<Number>>{}(
+                    custom_operator<Operator, operand<_impl::rep_of_t<Number>, _impl::tag_of_t<Number>>>{}(
                             _impl::to_rep(lhs)));
         }
     };

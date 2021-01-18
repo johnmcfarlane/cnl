@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_OVERFLOW_GENERIC_H)
 #define CNL_IMPL_OVERFLOW_GENERIC_H
 
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../polarity.h"
 #include "builtin_overflow.h"
 #include "is_overflow.h"
@@ -42,8 +42,9 @@ namespace cnl {
         using common_overflow_tag_t = typename common_overflow_tag<Tag1, Tag2>::type;
     }
 
-    template<tag DestTag, tag SrcTag, typename Destination, typename Source>
-    requires(_impl::is_overflow_tag<DestTag>::value || _impl::is_overflow_tag<SrcTag>::value) struct convert_operator<DestTag, SrcTag, Destination, Source> {
+    /// \cond
+    template<typename Source, tag SrcTag, typename Destination, tag DestTag>
+    requires(_impl::is_overflow_tag<DestTag>::value || _impl::is_overflow_tag<SrcTag>::value) struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination, DestTag>> {
         using overflow_tag = _impl::common_overflow_tag_t<DestTag, SrcTag>;
 
         CNL_NODISCARD constexpr Destination operator()(Source const& from) const
@@ -61,9 +62,10 @@ namespace cnl {
                          : static_cast<Destination>(from);
         }
     };
+    /// \endcond
 
-    template<_impl::unary_op Operator, overflow_tag Tag, typename Operand>
-    struct unary_operator<Operator, Tag, Operand> {
+    template<_impl::unary_arithmetic_op Operator, typename Operand, overflow_tag Tag>
+    struct custom_operator<Operator, operand<Operand, Tag>> {
         CNL_NODISCARD constexpr auto operator()(Operand const& operand) const
                 -> _impl::op_result<Operator, Operand>
         {
@@ -78,8 +80,8 @@ namespace cnl {
     };
 
 #if defined(CNL_BUILTIN_OVERFLOW_ENABLED)
-    template<_impl::binary_op Operator, overflow_tag LhsTag, overflow_tag RhsTag, typename Lhs, typename Rhs>
-    requires _impl::builtin_overflow_operator<Operator, Lhs, Rhs>::value struct binary_operator<Operator, LhsTag, RhsTag, Lhs, Rhs> {
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, overflow_tag LhsTag, typename Rhs, overflow_tag RhsTag>
+    requires _impl::builtin_overflow_operator<Operator, Lhs, Rhs>::value struct custom_operator<Operator, operand<Lhs, LhsTag>, operand<Rhs, RhsTag>> {
         using result_type = _impl::op_result<Operator, Lhs, Rhs>;
 
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> result_type
@@ -105,8 +107,8 @@ namespace cnl {
     };
 #endif
 
-    template<_impl::binary_op Operator, overflow_tag LhsTag, overflow_tag RhsTag, typename Lhs, typename Rhs>
-    requires(!_impl::builtin_overflow_operator<Operator, Lhs, Rhs>::value) struct binary_operator<Operator, LhsTag, RhsTag, Lhs, Rhs> {
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, overflow_tag LhsTag, typename Rhs, overflow_tag RhsTag>
+    requires(!_impl::builtin_overflow_operator<Operator, Lhs, Rhs>::value) struct custom_operator<Operator, operand<Lhs, LhsTag>, operand<Rhs, RhsTag>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
                 -> _impl::op_result<Operator, Lhs, Rhs>
         {
@@ -122,8 +124,8 @@ namespace cnl {
         }
     };
 
-    template<_impl::shift_op Operator, overflow_tag LhsTag, tag RhsTag, typename Lhs, typename Rhs>
-    struct shift_operator<Operator, LhsTag, RhsTag, Lhs, Rhs> {
+    template<_impl::shift_op Operator, typename Lhs, overflow_tag LhsTag, typename Rhs, tag RhsTag>
+    struct custom_operator<Operator, operand<Lhs, LhsTag>, operand<Rhs, RhsTag>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
                 -> _impl::op_result<Operator, Lhs, Rhs>
         {
@@ -139,24 +141,26 @@ namespace cnl {
         }
     };
 
-    template<_impl::pre_op Operator, overflow_tag OverflowTag, typename Rhs>
-    struct pre_operator<Operator, OverflowTag, Rhs> {
+    template<_impl::prefix_op Operator, typename Rhs, overflow_tag OverflowTag>
+    struct custom_operator<Operator, operand<Rhs, OverflowTag>> {
         constexpr auto operator()(Rhs& rhs) const -> Rhs
         {
-            return compound_assignment_operator<
-                    typename _impl::pre_to_assign<Operator>::type, OverflowTag, OverflowTag, Rhs,
-                    int>{}(rhs, 1);
+            return custom_operator<
+                    typename _impl::pre_to_assign<Operator>::type,
+                    operand<Rhs, OverflowTag>,
+                    operand<int, OverflowTag>>{}(rhs, 1);
         }
     };
 
-    template<_impl::post_op Operator, overflow_tag OverflowTag, typename Rhs>
-    struct post_operator<Operator, OverflowTag, Rhs> {
+    template<_impl::postfix_op Operator, typename Rhs, overflow_tag OverflowTag>
+    struct custom_operator<Operator, operand<Rhs, OverflowTag>> {
         constexpr auto operator()(Rhs& rhs) const -> Rhs
         {
             auto copy = rhs;
-            compound_assignment_operator<
-                    typename _impl::post_to_assign<Operator>::type, OverflowTag, OverflowTag, Rhs,
-                    int>{}(rhs, 1);
+            custom_operator<
+                    typename _impl::post_to_assign<Operator>::type,
+                    operand<Rhs, OverflowTag>,
+                    operand<int, OverflowTag>>{}(rhs, 1);
             return copy;
         }
     };

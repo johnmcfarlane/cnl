@@ -8,6 +8,7 @@
 /// \brief tests for <cnl/_impl/wide_integer/set_digits.h>
 
 #include <cnl/_impl/wide_integer/set_digits.h>
+#include <cnl/wide_integer.h>
 
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/wide_integer.h>

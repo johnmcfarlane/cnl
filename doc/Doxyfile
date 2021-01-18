@@ -32,9 +32,7 @@ EXCLUDE_SYMBOLS = \
  cnl::_*
 FILE_PATTERNS = *
 RECURSIVE = YES
-EXCLUDE = "$(CNL_DIR)/include/cnl/_impl/wrapper/numeric_limits.h" \
-  "$(CNL_DIR)/include/cnl/_impl/scaled_integer/extras.h" \
-  "$(CNL_DIR)/include/cnl/_impl/scaled_integer/numbers.h"
+EXCLUDE =
 EXAMPLE_PATH = "$(CNL_DIR)/test/unit"
 EXAMPLE_RECURSIVE = YES
 IMAGE_PATH =

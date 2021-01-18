@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_WRAPPER_H)
 #define CNL_IMPL_WRAPPER_H
 
-#include "wrapper/binary_operator.h"
+#include "wrapper/binary_arithmetic_operator.h"
 #include "wrapper/comparison_operator.h"
 #include "wrapper/declaration.h"
 #include "wrapper/definition.h"
@@ -31,6 +31,6 @@
 #include "wrapper/shift_operator.h"
 #include "wrapper/tag_of.h"
 #include "wrapper/to_rep.h"
-#include "wrapper/unary_operator.h"
+#include "wrapper/unary_arithmetic_operator.h"
 
 #endif  // CNL_IMPL_WRAPPER_H

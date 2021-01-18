@@ -10,7 +10,7 @@
 #include "../../constant.h"
 #include "../config.h"
 #include "../num_traits/tag.h"
-#include "generic.h"
+#include "custom_operator.h"
 #include "operators.h"
 
 /// compositional numeric library
@@ -29,20 +29,20 @@ namespace cnl {
     template<tag DestTag, tag SrcTag, typename Dest, typename Src>
     CNL_NODISCARD constexpr auto convert(Src const& src)
     {
-        return convert_operator<DestTag, SrcTag, Dest, Src>{}(src);
+        return custom_operator<_impl::convert_op, operand<Src, SrcTag>, operand<Dest, DestTag>>{}(src);
     }
 
     template<tag DestTag, tag SrcTag, typename Dest, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     CNL_NODISCARD constexpr auto convert(constant<Value> const& src)
     {
-        return convert_operator<DestTag, SrcTag, Dest, decltype(Value)>{}(src);
+        return custom_operator<_impl::convert_op, operand<decltype(Value), SrcTag>, operand<Dest, DestTag>>{}(src);
     }
 
     namespace _impl {
-        template<_impl::binary_op Operator, tag Tag, typename Lhs, typename Rhs>
-        CNL_NODISCARD constexpr auto binary_operate(Lhs const& lhs, Rhs const& rhs)
+        template<_impl::binary_arithmetic_op Operator, tag Tag, typename Lhs, typename Rhs>
+        CNL_NODISCARD constexpr auto binary_arithmetic_operate(Lhs const& lhs, Rhs const& rhs)
         {
-            return binary_operator<Operator, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
+            return custom_operator<Operator, operand<Lhs, Tag>, operand<Rhs, Tag>>{}(lhs, rhs);
         }
     }
 
@@ -58,7 +58,7 @@ namespace cnl {
     template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto add(Lhs const& lhs, Rhs const& rhs)
     {
-        return binary_operator<_impl::add_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
+        return custom_operator<_impl::add_op, operand<Lhs, Tag>, operand<Rhs, Tag>>{}(lhs, rhs);
     }
 
     /// \brief subtracts one value from another
@@ -73,7 +73,7 @@ namespace cnl {
     template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto subtract(Lhs const& lhs, Rhs const& rhs)
     {
-        return binary_operator<_impl::subtract_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
+        return custom_operator<_impl::subtract_op, operand<Lhs, Tag>, operand<Rhs, Tag>>{}(lhs, rhs);
     }
 
     /// \brief multiplies one value by another
@@ -88,7 +88,7 @@ namespace cnl {
     template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto multiply(Lhs const& lhs, Rhs const& rhs)
     {
-        return binary_operator<_impl::multiply_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
+        return custom_operator<_impl::multiply_op, operand<Lhs, Tag>, operand<Rhs, Tag>>{}(lhs, rhs);
     }
 
     /// \brief divides one value by another
@@ -103,13 +103,13 @@ namespace cnl {
     template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
     {
-        return binary_operator<_impl::divide_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
+        return custom_operator<_impl::divide_op, operand<Lhs, Tag>, operand<Rhs, Tag>>{}(lhs, rhs);
     }
 
     template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto shift_left(Lhs const& lhs, Rhs const& rhs)
     {
-        return shift_operator<_impl::shift_left_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
+        return custom_operator<_impl::shift_left_op, operand<Lhs, Tag>, operand<Rhs, Tag>>{}(lhs, rhs);
     }
 
     /// \brief bitwise left-shifts one value by another
@@ -124,7 +124,7 @@ namespace cnl {
     template<tag Tag, typename Lhs, typename Rhs>
     CNL_NODISCARD constexpr auto shift_right(Lhs const& lhs, Rhs const& rhs)
     {
-        return shift_operator<_impl::shift_right_op, Tag, Tag, Lhs, Rhs>{}(lhs, rhs);
+        return custom_operator<_impl::shift_right_op, operand<Lhs, Tag>, operand<Rhs, Tag>>{}(lhs, rhs);
     }
 }
 

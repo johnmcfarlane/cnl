@@ -10,7 +10,7 @@
 #include "../../constant.h"
 #include "../type_traits/is_integral.h"
 #include "../type_traits/remove_signedness.h"
-#include "generic.h"
+#include "custom_operator.h"
 #include "homogeneous_deduction_tag_base.h"
 #include "homogeneous_operator_tag_base.h"
 #include "operators.h"
@@ -38,34 +38,24 @@ namespace cnl {
     template<>
     inline constexpr auto is_tag<_impl::native_tag> = true;
 
-    template<typename Destination, typename Source>
-    struct convert_operator<_impl::native_tag, _impl::native_tag, Destination, Source> {
+    template<typename Source, typename Destination>
+    struct custom_operator<_impl::convert_op, operand<Source>, operand<Destination>> {
         CNL_NODISCARD constexpr auto operator()(Source const& from) const -> Destination
         {
             return _impl::convert_op{}.template operator()<Destination>(from);
         }
     };
 
-    template<_impl::unary_op Operator, typename Rhs>
-    struct unary_operator<
-            Operator, _impl::native_tag, Rhs,
-            _impl::enable_if_t<_impl::has_native_operators<Rhs>::value>> : Operator {
+    template<_impl::unary_arithmetic_op Operator, typename Rhs>
+    requires(_impl::has_native_operators<Rhs>::value) struct custom_operator<Operator, operand<Rhs>> : Operator {
     };
 
-    template<_impl::binary_op Operator, typename Lhs, typename Rhs>
-    struct binary_operator<
-            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<
-                    _impl::has_native_operators<Lhs>::value
-                    && _impl::has_native_operators<Rhs>::value>> : Operator {
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
+    requires(_impl::has_native_operators<Lhs>::value&& _impl::has_native_operators<Rhs>::value) struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> : Operator {
     };
 
     template<_impl::shift_op Operator, typename Lhs, typename Rhs>
-    struct shift_operator<
-            Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs,
-            _impl::enable_if_t<
-                    _impl::has_native_operators<Lhs>::value
-                    && _impl::has_native_operators<Rhs>::value>> : Operator {
+    requires(_impl::has_native_operators<Lhs>::value&& _impl::has_native_operators<Rhs>::value) struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> : Operator {
     };
 }
 

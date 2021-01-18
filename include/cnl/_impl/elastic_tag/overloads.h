@@ -18,7 +18,7 @@
 namespace cnl {
     namespace _impl {
         template<
-                binary_op Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits,
+                binary_arithmetic_op Operator, int LhsDigits, typename LhsNarrowest, int RhsDigits,
                 typename RhsNarrowest>
         struct elastic_tag_overload_params {
             using policy = typename _impl::policy<

@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_WANTS_GENERIC_OPS_H)
 #define CNL_IMPL_DUPLEX_INTEGER_WANTS_GENERIC_OPS_H
 
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "forward_declaration.h"
 
 /// compositional numeric library

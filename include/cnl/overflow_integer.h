@@ -15,7 +15,7 @@
 #include "_impl/num_traits/from_value.h"
 #include "_impl/num_traits/from_value_recursive.h"
 #include "_impl/num_traits/rep_of.h"
-#include "_impl/operators/generic.h"
+#include "_impl/operators/custom_operator.h"
 #include "_impl/operators/native_tag.h"
 #include "_impl/operators/tagged.h"
 #include "_impl/ostream.h"

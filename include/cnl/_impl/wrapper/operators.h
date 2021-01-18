@@ -7,10 +7,10 @@
 #if !defined(CNL_IMPL_WRAPPER_OPERATORS_H)
 #define CNL_IMPL_WRAPPER_OPERATORS_H
 
-#include "binary_operator.h"
+#include "binary_arithmetic_operator.h"
 #include "comparison_operator.h"
 #include "inc_dec_operator.h"
 #include "shift_operator.h"
-#include "unary_operator.h"
+#include "unary_arithmetic_operator.h"
 
 #endif  // CNL_IMPL_WRAPPER_OPERATORS_H

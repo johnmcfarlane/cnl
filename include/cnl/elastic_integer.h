@@ -10,12 +10,12 @@
 #if !defined(CNL_ELASTIC_INTEGER_H)
 #define CNL_ELASTIC_INTEGER_H
 
+#include "_impl/elastic_integer/custom_operator.h"
 #include "_impl/elastic_integer/declaration.h"
 #include "_impl/elastic_integer/definition.h"
 #include "_impl/elastic_integer/digits.h"
 #include "_impl/elastic_integer/from_rep.h"
 #include "_impl/elastic_integer/from_value.h"
-#include "_impl/elastic_integer/generic.h"
 #include "_impl/elastic_integer/is_wrapper.h"
 #include "_impl/elastic_integer/limits.h"
 #include "_impl/elastic_integer/make_elastic_integer.h"

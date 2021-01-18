@@ -81,7 +81,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::builtin_overflow_operator
 
-        template<binary_op Operator, typename Lhs, typename Rhs>
+        template<binary_arithmetic_op Operator, typename Lhs, typename Rhs>
         struct builtin_overflow_operator : std::false_type {
         };
 

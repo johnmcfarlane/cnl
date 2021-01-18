@@ -34,34 +34,39 @@ namespace cnl {
         };
     }
 
-    template<typename Destination, typename Source>
-    struct convert_operator<native_rounding_tag, _impl::native_tag, Destination, Source>
-        : convert_operator<_impl::native_tag, _impl::native_tag, Destination, Source> {
+    template<typename Source, typename Destination>
+    struct custom_operator<_impl::convert_op, operand<Source>, operand<Destination, native_rounding_tag>>
+        : custom_operator<_impl::convert_op, operand<Source>, operand<Destination>> {
     };
 
-    template<_impl::unary_op Operator, typename Operand>
-    struct unary_operator<Operator, native_rounding_tag, Operand>
-        : unary_operator<Operator, _impl::native_tag, Operand> {
+    template<_impl::unary_arithmetic_op Operator, typename Operand>
+    struct custom_operator<Operator, operand<Operand, native_rounding_tag>>
+        : custom_operator<Operator, operand<Operand, _impl::native_tag>> {
     };
 
-    template<_impl::binary_op Operator, typename Lhs, typename Rhs>
-    struct binary_operator<Operator, native_rounding_tag, native_rounding_tag, Lhs, Rhs>
-        : binary_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
+    struct custom_operator<
+            Operator,
+            operand<Lhs, native_rounding_tag>,
+            operand<Rhs, native_rounding_tag>>
+        : custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
     };
 
     template<_impl::shift_op Operator, tag RhsTag, typename Lhs, typename Rhs>
-    struct shift_operator<Operator, native_rounding_tag, RhsTag, Lhs, Rhs>
-        : shift_operator<Operator, _impl::native_tag, _impl::native_tag, Lhs, Rhs> {
+    struct custom_operator<
+            Operator,
+            operand<Lhs, native_rounding_tag>, operand<Rhs, RhsTag>>
+        : custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
     };
 
-    template<_impl::pre_op Operator, typename Rhs>
-    struct pre_operator<Operator, native_rounding_tag, Rhs>
-        : pre_operator<Operator, _impl::native_tag, Rhs> {
+    template<_impl::prefix_op Operator, typename Rhs>
+    struct custom_operator<Operator, native_rounding_tag, Rhs>
+        : custom_operator<Operator, operand<Rhs, _impl::native_tag>> {
     };
 
-    template<_impl::post_op Operator, typename Rhs>
-    struct post_operator<Operator, native_rounding_tag, Rhs>
-        : post_operator<Operator, _impl::native_tag, Rhs> {
+    template<_impl::postfix_op Operator, typename Rhs>
+    struct custom_operator<Operator, native_rounding_tag, Rhs>
+        : custom_operator<Operator, operand<Rhs, _impl::native_tag>> {
     };
 }
 

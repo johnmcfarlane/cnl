@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_ROUNDING_NEAREST_ROUNDING_TAG_H)
 #define CNL_IMPL_ROUNDING_NEAREST_ROUNDING_TAG_H
 
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../operators/native_tag.h"
 #include "is_rounding_tag.h"
 #include "is_tag.h"
@@ -36,18 +36,18 @@ namespace cnl {
         };
     }
 
-    template<_impl::unary_op Operator, typename Operand>
-    struct unary_operator<Operator, nearest_rounding_tag, Operand>
-        : unary_operator<Operator, _impl::native_tag, Operand> {
+    template<_impl::unary_arithmetic_op Operator, typename Operand>
+    struct custom_operator<Operator, operand<Operand, nearest_rounding_tag>>
+        : custom_operator<Operator, operand<Operand, _impl::native_tag>> {
     };
 
-    template<_impl::binary_op Operator, typename Lhs, typename Rhs>
-    struct binary_operator<Operator, nearest_rounding_tag, nearest_rounding_tag, Lhs, Rhs>
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
+    struct custom_operator<Operator, operand<Lhs, nearest_rounding_tag>, operand<Rhs, nearest_rounding_tag>>
         : Operator {
     };
 
     template<typename Lhs, typename Rhs>
-    struct binary_operator<_impl::divide_op, nearest_rounding_tag, nearest_rounding_tag, Lhs, Rhs> {
+    struct custom_operator<_impl::divide_op, operand<Lhs, nearest_rounding_tag>, operand<Rhs, nearest_rounding_tag>> {
         CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
                 -> decltype(lhs / rhs)
         {
@@ -55,16 +55,16 @@ namespace cnl {
         }
     };
 
-    template<_impl::shift_op Operator, tag RhsTag, typename Lhs, typename Rhs>
-    struct shift_operator<Operator, nearest_rounding_tag, RhsTag, Lhs, Rhs> : Operator {
+    template<_impl::shift_op Operator, typename Lhs, typename Rhs, tag RhsTag>
+    struct custom_operator<Operator, operand<Lhs, nearest_rounding_tag>, operand<Rhs, RhsTag>> : Operator {
     };
 
-    template<_impl::pre_op Operator, typename Rhs>
-    struct pre_operator<Operator, nearest_rounding_tag, Rhs> : Operator {
+    template<_impl::prefix_op Operator, typename Rhs>
+    struct custom_operator<Operator, operand<Rhs, nearest_rounding_tag>> : Operator {
     };
 
-    template<_impl::post_op Operator, typename Rhs>
-    struct post_operator<Operator, nearest_rounding_tag, Rhs> : Operator {
+    template<_impl::postfix_op Operator, typename Lhs>
+    struct custom_operator<Operator, operand<Lhs, nearest_rounding_tag>> : Operator {
     };
 }
 

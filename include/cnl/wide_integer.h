@@ -9,10 +9,10 @@
 
 /// \file
 
+#include "_impl/wide_integer/custom_operator.h"
 #include "_impl/wide_integer/definition.h"
 #include "_impl/wide_integer/digits.h"
 #include "_impl/wide_integer/from_rep.h"
-#include "_impl/wide_integer/generic.h"
 #include "_impl/wide_integer/literals.h"
 #include "_impl/wide_integer/make_wide_integer.h"
 #include "_impl/wide_integer/numeric_limits.h"

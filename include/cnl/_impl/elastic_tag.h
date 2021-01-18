@@ -7,10 +7,10 @@
 #if !defined(CNL_IMPL_ELASTIC_TAG_H)
 #define CNL_IMPL_ELASTIC_TAG_H
 
+#include "elastic_tag/custom_operator.h"
 #include "elastic_tag/declaration.h"
 #include "elastic_tag/deduction.h"
 #include "elastic_tag/definition.h"
-#include "elastic_tag/generic.h"
 #include "elastic_tag/inc_dec_operator.h"
 #include "elastic_tag/is_elastic_tag.h"
 #include "elastic_tag/is_same_tag_family.h"

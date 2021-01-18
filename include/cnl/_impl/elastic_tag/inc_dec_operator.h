@@ -7,17 +7,17 @@
 #if !defined(CNL_IMPL_ELASTIC_TAG_INC_DEC_OPERATOR_H)
 #define CNL_IMPL_ELASTIC_TAG_INC_DEC_OPERATOR_H
 
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "declaration.h"
 
 /// compositional numeric library
 namespace cnl {
-    template<_impl::pre_op Operator, int Digits, typename Narrowest, typename Rhs>
-    struct pre_operator<Operator, elastic_tag<Digits, Narrowest>, Rhs> : Operator {
+    template<_impl::prefix_op Operator, typename Rhs, int Digits, typename Narrowest>
+    struct custom_operator<Operator, operand<Rhs, elastic_tag<Digits, Narrowest>>> : Operator {
     };
 
-    template<_impl::post_op Operator, int Digits, typename Narrowest, typename Lhs>
-    struct post_operator<Operator, elastic_tag<Digits, Narrowest>, Lhs> : Operator {
+    template<_impl::postfix_op Operator, typename Lhs, int Digits, typename Narrowest>
+    struct custom_operator<Operator, operand<Lhs, elastic_tag<Digits, Narrowest>>> : Operator {
     };
 }
 

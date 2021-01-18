@@ -53,9 +53,10 @@ namespace {
         // subtract
         static_assert(
                 identical(
-                        cnl::binary_operator<
-                                cnl::_impl::subtract_op, cnl::native_overflow_tag,
-                                cnl::native_overflow_tag, cnl::int8, cnl::int8>()(
+                        cnl::custom_operator<
+                                cnl::_impl::subtract_op,
+                                cnl::operand<cnl::int8, cnl::native_overflow_tag>,
+                                cnl::operand<cnl::int8, cnl::native_overflow_tag>>()(
                                 INT8_C(0), INT8_C(0)),
                         0),
                 "cnl::subtract test failed");
@@ -112,9 +113,10 @@ namespace {
         // add
         static_assert(
                 identical(
-                        cnl::binary_operator<
-                                cnl::_impl::add_op, cnl::saturated_overflow_tag,
-                                cnl::saturated_overflow_tag, signed, unsigned>()(7, 23U),
+                        cnl::custom_operator<
+                                cnl::_impl::add_op,
+                                cnl::operand<signed, cnl::saturated_overflow_tag>,
+                                cnl::operand<unsigned, cnl::saturated_overflow_tag>>()(7, 23U),
                         7 + 23U));
         static_assert(
                 identical(
@@ -193,9 +195,10 @@ namespace {
         static_assert(
                 identical(
                         cnl::numeric_limits<int>::max(),
-                        cnl::shift_operator<
-                                cnl::_impl::shift_left_op, cnl::saturated_overflow_tag,
-                                cnl::saturated_overflow_tag, std::uint8_t, unsigned>{}(
+                        cnl::custom_operator<
+                                cnl::_impl::shift_left_op,
+                                cnl::operand<std::uint8_t, cnl::saturated_overflow_tag>,
+                                cnl::operand<unsigned, cnl::saturated_overflow_tag>>{}(
                                 std::uint8_t{255}, 30U)));
     }
 

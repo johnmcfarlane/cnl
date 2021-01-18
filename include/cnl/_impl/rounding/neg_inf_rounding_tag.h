@@ -8,7 +8,7 @@
 #define CNL_IMPL_ROUNDING_FLOOR_ROUNDING_TAG_H
 
 #include "../cmath/abs.h"
-#include "../operators/generic.h"
+#include "../operators/custom_operator.h"
 #include "../operators/native_tag.h"
 #include "is_rounding_tag.h"
 #include "is_tag.h"
@@ -38,18 +38,18 @@ namespace cnl {
         };
     }
 
-    template<_impl::unary_op Operator, typename Operand>
-    struct unary_operator<Operator, neg_inf_rounding_tag, Operand>
-        : unary_operator<Operator, _impl::native_tag, Operand> {
+    template<_impl::unary_arithmetic_op Operator, typename Operand>
+    struct custom_operator<Operator, operand<Operand, neg_inf_rounding_tag>>
+        : custom_operator<Operator, operand<Operand, _impl::native_tag>> {
     };
 
-    template<_impl::binary_op Operator, typename Lhs, typename Rhs>
-    struct binary_operator<Operator, neg_inf_rounding_tag, neg_inf_rounding_tag, Lhs, Rhs>
+    template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
+    struct custom_operator<Operator, operand<Lhs, neg_inf_rounding_tag>, operand<Rhs, neg_inf_rounding_tag>>
         : Operator {
     };
 
     template<typename Lhs, typename Rhs>
-    struct binary_operator<_impl::divide_op, neg_inf_rounding_tag, neg_inf_rounding_tag, Lhs, Rhs> {
+    struct custom_operator<_impl::divide_op, operand<Lhs, neg_inf_rounding_tag>, operand<Rhs, neg_inf_rounding_tag>> {
     private:
         using result_type = decltype(std::declval<Lhs>() / std::declval<Rhs>());
         CNL_NODISCARD constexpr auto remainder(Lhs const& lhs, Rhs const& rhs) const -> result_type
@@ -76,15 +76,15 @@ namespace cnl {
     };
 
     template<_impl::shift_op Operator, tag RhsTag, typename Lhs, typename Rhs>
-    struct shift_operator<Operator, neg_inf_rounding_tag, RhsTag, Lhs, Rhs> : Operator {
+    struct custom_operator<Operator, operand<Lhs, neg_inf_rounding_tag>, operand<Rhs, RhsTag>> : Operator {
     };
 
-    template<_impl::pre_op Operator, typename Rhs>
-    struct pre_operator<Operator, neg_inf_rounding_tag, Rhs> : Operator {
+    template<_impl::prefix_op Operator, typename Rhs>
+    struct custom_operator<Operator, operand<Rhs, neg_inf_rounding_tag>> : Operator {
     };
 
-    template<_impl::post_op Operator, typename Rhs>
-    struct post_operator<Operator, neg_inf_rounding_tag, Rhs> : Operator {
+    template<_impl::postfix_op Operator, typename Lhs>
+    struct custom_operator<Operator, operand<Lhs, neg_inf_rounding_tag>> : Operator {
     };
 }
 
