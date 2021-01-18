@@ -107,11 +107,10 @@ namespace {
     namespace test_native_int {
         static_assert(
                 identical(
-                        2, cnl::convert_operator<
-                                   cnl::native_rounding_tag, cnl::_impl::native_tag, int,
-                                   cnl::scaled_integer<int, cnl::power<-2>>>{}(2.5)),
-                "cnl::convert<cnl::native_rounding_tag, cnl::_impl::native_tag, int, "
-                "cnl::scaled_integer>");
+                        2, cnl::custom_operator<
+                                   cnl::_impl::convert_op,
+                                   cnl::operand<cnl::scaled_integer<int, cnl::power<-2>>, cnl::_impl::native_tag>,
+                                   cnl::operand<int, cnl::native_rounding_tag>>{}(2.5)));
         static_assert(
                 identical(
                         2, cnl::convert<cnl::native_rounding_tag, cnl::_impl::native_tag, int>(
@@ -141,13 +140,11 @@ namespace {
 
     namespace test_convert_nearest_rounding_elastic_number {
         static constexpr auto a = cnl::scaled_integer<int, cnl::power<-4>>{0.3125};
-        static constexpr auto b = cnl::convert_operator<
-                cnl::nearest_rounding_tag, cnl::native_rounding_tag,
-                cnl::scaled_integer<int, cnl::power<-1>>,
-                cnl::scaled_integer<int, cnl::power<-4>>>{}(a);
+        static constexpr auto b = cnl::custom_operator<
+                cnl::_impl::convert_op,
+                cnl::operand<cnl::scaled_integer<int, cnl::power<-4>>, cnl::native_rounding_tag>,
+                cnl::operand<cnl::scaled_integer<int, cnl::power<-1>>, cnl::nearest_rounding_tag>>{}(a);
         static_assert(
-                identical(cnl::scaled_integer<int, cnl::power<-1>>{0.5}, b),
-                "convert_operator<native_rounding_tag, nearest_rounding_tag, scaled_integer, "
-                "scaled_integer>");
+                identical(cnl::scaled_integer<int, cnl::power<-1>>{0.5}, b));
     }
 }

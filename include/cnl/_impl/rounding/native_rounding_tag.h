@@ -34,9 +34,9 @@ namespace cnl {
         };
     }
 
-    template<typename Destination, typename Source>
-    struct convert_operator<native_rounding_tag, _impl::native_tag, Destination, Source>
-        : convert_operator<_impl::native_tag, _impl::native_tag, Destination, Source> {
+    template<typename Source, typename Destination>
+    struct custom_operator<_impl::convert_op, operand<Source>, operand<Destination, native_rounding_tag>>
+        : custom_operator<_impl::convert_op, operand<Source>, operand<Destination>> {
     };
 
     template<_impl::unary_arithmetic_op Operator, typename Operand>

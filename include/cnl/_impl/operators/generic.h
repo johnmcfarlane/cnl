@@ -61,11 +61,6 @@ namespace cnl {
     struct deduction;
 
     template<
-            tag DestTag, tag SrcTag, typename Destination, typename Source,
-            typename Enabled = void>
-    struct convert_operator;
-
-    template<
             _impl::assign_op Operator, tag LhsTag, tag RhsTag, class LhsOperand, class RhsOperand,
             class Enable = void>
     struct compound_assignment_operator {
@@ -74,8 +69,10 @@ namespace cnl {
             using binary_arithmetic_operator = cnl::custom_operator<
                     typename Operator::binary, operand<LhsOperand, LhsTag>, operand<RhsOperand, RhsTag>>;
             using binary_arithmetic_operator_result = decltype(binary_arithmetic_operator{}(lhs, rhs));
-            using convert_operator =
-                    cnl::convert_operator<LhsTag, RhsTag, LhsOperand, binary_arithmetic_operator_result>;
+            using convert_operator = cnl::custom_operator<
+                    _impl::convert_op,
+                    operand<binary_arithmetic_operator_result, RhsTag>,
+                    operand<LhsOperand, LhsTag>>;
             return lhs = convert_operator{}(binary_arithmetic_operator{}(lhs, rhs));
         }
     };
@@ -89,8 +86,10 @@ namespace cnl {
             using shift_operator = cnl::custom_operator<
                     typename Operator::binary, operand<LhsOperand, LhsTag>, operand<RhsOperand, RhsTag>>;
             using shift_operator_result = decltype(shift_operator{}(lhs, rhs));
-            using convert_operator =
-                    cnl::convert_operator<LhsTag, RhsTag, LhsOperand, shift_operator_result>;
+            using convert_operator = cnl::custom_operator<
+                    _impl::convert_op,
+                    operand<shift_operator_result, RhsTag>,
+                    operand<LhsOperand, LhsTag>>;
             return lhs = convert_operator{}(shift_operator{}(lhs, rhs));
         }
     };

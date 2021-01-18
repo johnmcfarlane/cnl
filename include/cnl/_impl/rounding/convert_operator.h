@@ -34,22 +34,21 @@ namespace cnl {
         };
     }
 
-    template<tag SrcTag, typename Destination, typename Source>
-    struct convert_operator<
-            native_rounding_tag, SrcTag, Destination, Source,
-            _impl::enable_if_t<!_impl::is_rounding_tag<SrcTag>::value>> {
+    /// \cond
+    template<typename Source, tag SrcTag, typename Destination>
+    requires(!_impl::is_rounding_tag<SrcTag>::value) struct custom_operator<
+            _impl::convert_op,
+            operand<Source, SrcTag>,
+            operand<Destination, native_rounding_tag>> {
         CNL_NODISCARD constexpr Destination operator()(Source const& from) const
         {
-            return convert_operator<_impl::native_tag, SrcTag, Destination, Source>{}(from);
+            return custom_operator<
+                    _impl::convert_op, operand<Source, SrcTag>, operand<Destination>>{}(from);
         }
     };
 
-    template<tag SrcTag, typename Destination, typename Source>
-    struct convert_operator<
-            nearest_rounding_tag, SrcTag, Destination, Source,
-            _impl::enable_if_t<
-                    !_impl::is_rounding_tag<SrcTag>::value
-                    && _impl::are_arithmetic_or_integer<Destination, Source>::value>> {
+    template<typename Source, tag SrcTag, typename Destination>
+    requires(!_impl::is_rounding_tag<SrcTag>::value && _impl::are_arithmetic_or_integer<Destination, Source>::value) struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination, nearest_rounding_tag>> {
         CNL_NODISCARD constexpr Destination operator()(Source const& from) const
         {
             return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
@@ -59,12 +58,8 @@ namespace cnl {
         }
     };
 
-    template<tag SrcTag, typename Destination, typename Source>
-    struct convert_operator<
-            tie_to_pos_inf_rounding_tag, SrcTag, Destination, Source,
-            _impl::enable_if_t<
-                    !_impl::is_rounding_tag<SrcTag>::value
-                    && _impl::are_arithmetic_or_integer<Destination, Source>::value>> {
+    template<typename Source, tag SrcTag, typename Destination>
+    requires(!_impl::is_rounding_tag<SrcTag>::value && _impl::are_arithmetic_or_integer<Destination, Source>::value) struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination, tie_to_pos_inf_rounding_tag>> {
     private:
         CNL_NODISCARD static constexpr Destination floor_residual(Source x, Source x_whole)
         {
@@ -88,12 +83,8 @@ namespace cnl {
         }
     };
 
-    template<tag SrcTag, typename Destination, typename Source>
-    struct convert_operator<
-            neg_inf_rounding_tag, SrcTag, Destination, Source,
-            _impl::enable_if_t<
-                    !_impl::is_rounding_tag<SrcTag>::value
-                    && _impl::are_arithmetic_or_integer<Destination, Source>::value>> {
+    template<typename Source, tag SrcTag, typename Destination>
+    requires(!_impl::is_rounding_tag<SrcTag>::value && _impl::are_arithmetic_or_integer<Destination, Source>::value) struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination, neg_inf_rounding_tag>> {
     private:
         CNL_NODISCARD static constexpr Destination floor_residual(Source x, Source x_whole)
         {
@@ -116,19 +107,20 @@ namespace cnl {
                          : static_cast<Destination>(from);
         }
     };
+    /// \endcond
 
-    template<rounding_tag SrcTag, typename Destination, typename Source>
-    struct convert_operator<_impl::native_tag, SrcTag, Destination, Source> {
+    template<typename Source, rounding_tag SrcTag, typename Destination>
+    struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination>> {
         CNL_NODISCARD constexpr Destination operator()(Source const& from) const
         {
-            return convert_operator<_impl::native_tag, _impl::native_tag, Destination, Source>{}(
+            return custom_operator<_impl::convert_op, operand<Source>, operand<Destination>>{}(
                     from);
         }
     };
 
-    template<rounding_tag DestRoundingTag, rounding_tag SrcRoundingTag, typename Destination, typename Source>
-    struct convert_operator<DestRoundingTag, SrcRoundingTag, Destination, Source>
-        : convert_operator<DestRoundingTag, _impl::native_tag, Destination, Source> {
+    template<typename Source, rounding_tag SrcRoundingTag, typename Destination, rounding_tag DestRoundingTag>
+    struct custom_operator<_impl::convert_op, operand<Source, SrcRoundingTag>, operand<Destination, DestRoundingTag>>
+        : custom_operator<_impl::convert_op, operand<Source>, operand<Destination, DestRoundingTag>> {
     };
 }
 

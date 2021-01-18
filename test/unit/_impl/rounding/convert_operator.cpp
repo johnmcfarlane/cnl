@@ -214,7 +214,9 @@ namespace test_convert_native_rounding {
     static_assert(
             cnl::_impl::identical(
                     short{3},
-                    cnl::convert_operator<
-                            cnl::native_rounding_tag, cnl::native_rounding_tag, short, long>{}(3L)),
-            "convert_operator<native_rounding_tag, native_rounding_tag, short, long>");
+                    cnl::custom_operator<
+                            cnl::_impl::convert_op,
+                            cnl::operand<long, cnl::native_rounding_tag>,
+                            cnl::operand<short, cnl::native_rounding_tag>>{}(3L)),
+            "custom_operator<_impl::convert_op, native_rounding_tag, native_rounding_tag, short, long>");
 }

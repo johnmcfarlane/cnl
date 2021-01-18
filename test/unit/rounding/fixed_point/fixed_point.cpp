@@ -88,9 +88,10 @@ namespace {
     namespace test_native_int {
         static_assert(
                 identical(
-                        2, cnl::convert_operator<
-                                   cnl::native_rounding_tag, cnl::_impl::native_tag, int,
-                                   cnl::fixed_point<int, -2>>{}(2.5)),
+                        2, cnl::custom_operator<
+                                   cnl::_impl::convert_op,
+                                   cnl::operand<cnl::fixed_point<int, -2>, cnl::_impl::native_tag>,
+                                   cnl::operand<int, cnl::native_rounding_tag>>{}(2.5)),
                 "cnl::convert<cnl::native_rounding_tag, int, cnl::fixed_point>");
         static_assert(
                 identical(

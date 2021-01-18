@@ -20,24 +20,31 @@
 /// compositional numeric library
 namespace cnl {
     template<
-            int DestDigits, class DestNarrowest, int SrcDigits, class SrcNarrowest,
-            typename Destination, typename Source>
-    struct convert_operator<
-            cnl::elastic_tag<DestDigits, DestNarrowest>, cnl::elastic_tag<SrcDigits, SrcNarrowest>,
-            Destination, Source>
-        : convert_operator<_impl::native_tag, _impl::native_tag, Destination, Source> {
+            typename Source, int SrcDigits, class SrcNarrowest,
+            typename Destination, int DestDigits, class DestNarrowest>
+    struct custom_operator<
+            _impl::convert_op,
+            operand<Source, cnl::elastic_tag<SrcDigits, SrcNarrowest>>,
+            operand<Destination, cnl::elastic_tag<DestDigits, DestNarrowest>>>
+        : custom_operator<
+                  _impl::convert_op,
+                  operand<Source>,
+                  operand<Destination>> {
     };
 
-    template<int DestDigits, class DestNarrowest, typename Destination, typename Source>
-    struct convert_operator<
-            cnl::elastic_tag<DestDigits, DestNarrowest>, cnl::_impl::native_tag, Destination,
-            Source> : convert_operator<_impl::native_tag, _impl::native_tag, Destination, Source> {
+    template<typename Source, typename Destination, int DestDigits, class DestNarrowest>
+    struct custom_operator<
+            _impl::convert_op,
+            operand<Source>,
+            operand<Destination, cnl::elastic_tag<DestDigits, DestNarrowest>>> : custom_operator<_impl::convert_op, operand<Source>, operand<Destination>> {
     };
 
-    template<int Digits, class Narrowest, typename Destination, typename Source>
-    struct convert_operator<
-            cnl::_impl::native_tag, cnl::elastic_tag<Digits, Narrowest>, Destination, Source>
-        : convert_operator<_impl::native_tag, _impl::native_tag, Destination, Source> {
+    template<typename Source, int Digits, class Narrowest, typename Destination>
+    struct custom_operator<
+            _impl::convert_op,
+            operand<Source, cnl::elastic_tag<Digits, Narrowest>>,
+            operand<Destination>>
+        : custom_operator<_impl::convert_op, operand<Source>, operand<Destination>> {
     };
 
     template<

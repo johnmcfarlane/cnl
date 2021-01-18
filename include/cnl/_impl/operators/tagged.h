@@ -29,13 +29,13 @@ namespace cnl {
     template<tag DestTag, tag SrcTag, typename Dest, typename Src>
     CNL_NODISCARD constexpr auto convert(Src const& src)
     {
-        return convert_operator<DestTag, SrcTag, Dest, Src>{}(src);
+        return custom_operator<_impl::convert_op, operand<Src, SrcTag>, operand<Dest, DestTag>>{}(src);
     }
 
     template<tag DestTag, tag SrcTag, typename Dest, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     CNL_NODISCARD constexpr auto convert(constant<Value> const& src)
     {
-        return convert_operator<DestTag, SrcTag, Dest, decltype(Value)>{}(src);
+        return custom_operator<_impl::convert_op, operand<decltype(Value), SrcTag>, operand<Dest, DestTag>>{}(src);
     }
 
     namespace _impl {
