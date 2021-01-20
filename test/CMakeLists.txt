@@ -1,7 +1,5 @@
 include(cmake/common.cmake)
 
-include(ExternalProject)
-
 add_custom_target(test-all)
 
 find_package(benchmark)
