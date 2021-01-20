@@ -130,7 +130,6 @@ set(sample_sources
         snippets.cpp
         zero_cost_average.cpp
         boost.multiprecision.cpp
-        glm.cpp
 )
 
 ######################################################################
@@ -143,14 +142,6 @@ if(Boost_FOUND)
         message("Boost version is too low to use with CNL")
     endif(NOT Boost_VERSION GREATER 105500)
 endif(Boost_FOUND)
-
-ExternalProject_Add(
-        Glm
-        URL "https://github.com/johnmcfarlane/glm/archive/ceb6d4fd3cb24d0ff954a6470ee554e356885d0e.zip"
-        URL_MD5 "7fa4dc69b3c5a991fdf0135dbf26e22c"
-        UPDATE_COMMAND ""
-        INSTALL_COMMAND ""
-)
 
 ######################################################################
 # add_gtest_dependency
@@ -227,10 +218,3 @@ foreach(source ${sample_sources})
 endforeach(source)
 
 make_test(scaled_integer/math.cpp target "${SAMPLE_CXX_FLAGS}" "")
-
-######################################################################
-# create test of GLM integration
-
-ExternalProject_Get_Property(Glm source_dir)
-target_include_directories(test-unit-glm SYSTEM PRIVATE "${source_dir}")
-add_dependencies(test-unit-glm Glm)
