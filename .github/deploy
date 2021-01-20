@@ -8,16 +8,28 @@ PROJECT_DIR=$(
 )
 
 # identifies a Semver tag prefixed with 'refs/tags/v', e.g. "refs/tags/v1.2.3" -> "1.2.3".
-regex='^refs\/tags\/v([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)$'
+
+# the "refs/tags/v1.2.3" bit
+release_pattern='refs\/tags\/v([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)'
+# the "-alpha" bit
+prerelease_pattern='-([A-Za-z0-9-]+)'
 
 # Extract Semver from Git tag.
 echo "Tag: ${CNL_VERSION_TAG}"
-if [[ "${CNL_VERSION_TAG}" =~ $regex ]]
+if [[ "${CNL_VERSION_TAG}" =~ ^${release_pattern}$ ]]
 then
     export CNL_VERSION="${BASH_REMATCH[1]}"
+    export CNL_CHANNEL="stable"
+    echo "CNL version ${CNL_VERSION}"
+elif [[ "${CNL_VERSION_TAG}" =~ ^${release_pattern}${prerelease_pattern}$ ]]
+then
+    export CNL_VERSION="${BASH_REMATCH[1]}"
+    export CNL_CHANNEL="${BASH_REMATCH[2]}"
     echo "CNL version ${CNL_VERSION}"
 else
-    echo "Tag ${CNL_VERSION_TAG} not recognized as Semver version tag in the form refs/tags/v1.2.3"
+    echo "Tag ${CNL_VERSION_TAG} not recognized as Semver version tag in either of the forms:"
+    echo "  refs/tags/v1.2.3"
+    echo "  refs/tags/v1.2.3-alpha"
     exit 1
 fi
 
@@ -41,7 +53,7 @@ git checkout gh-pages
 git add .
 if git commit \
   --amend \
-  --message="Documentation v${CNL_VERSION}"
+  --message="Documentation v${CNL_VERSION}-${CNL_CHANNEL}"
 then
   git push --force
 fi
@@ -51,5 +63,5 @@ popd
 conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
 conan user -p "${CONAN_PASS}" -r johnmcfarlane/cnl "${CONAN_USER}"
 conan install --build=missing "${PROJECT_DIR}"
-conan create "${PROJECT_DIR}" "cnl/${CNL_VERSION}@johnmcfarlane/development"
-conan upload "cnl/${CNL_VERSION}@johnmcfarlane/development" -r johnmcfarlane/cnl
+conan create "${PROJECT_DIR}" "cnl/${CNL_VERSION}@johnmcfarlane/${CNL_CHANNEL}"
+conan upload "cnl/${CNL_VERSION}@johnmcfarlane/${CNL_CHANNEL}" -r johnmcfarlane/cnl
