@@ -234,24 +234,3 @@ make_test(scaled_integer/math.cpp target "${SAMPLE_CXX_FLAGS}" "")
 ExternalProject_Get_Property(Glm source_dir)
 target_include_directories(test-unit-glm SYSTEM PRIVATE "${source_dir}")
 add_dependencies(test-unit-glm Glm)
-
-######################################################################
-# create test of Boost.SIMD integration
-
-if(Boost_FOUND AND Boost_VERSION GREATER 106099 AND CNL_EXCEPTIONS)
-    # Boost.SIMD has problems building with gcc-7.x
-    make_test(boost.simd.cpp target "${SAMPLE_CXX_FLAGS}" "")
-
-    ExternalProject_Add(
-        BoostSimd
-        URL "https://github.com/johnmcfarlane/boost.simd/archive/cnl.zip"
-        URL_MD5 "29e0e22801fb8cfb7742005c89183bba"
-        UPDATE_COMMAND ""
-        INSTALL_COMMAND ""
-        CMAKE_ARGS "-DBoost_INCLUDE_DIR=${Boost_INCLUDE_DIR}"
-    )
-    add_dependencies("${target}" BoostSimd)
-
-    ExternalProject_Get_Property(BoostSimd source_dir)
-    target_include_directories("${target}" SYSTEM PRIVATE "${source_dir}/include")
-endif(Boost_FOUND AND Boost_VERSION GREATER 106099 AND CNL_EXCEPTIONS)
