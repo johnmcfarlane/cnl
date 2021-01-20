@@ -152,7 +152,7 @@ jobs:
         conan install \
           --build=missing \
           --env CONAN_CMAKE_GENERATOR="${{matrix.generator}}" \
-          --env CONAN_CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/test/cmake/toolchain/${{matrix.toolchain}} \
+          --env CONAN_CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
           --options int128=${{matrix.int128}} \
           --options enable_exceptions=${{matrix.exceptions}} \
           --options sanitize=${{matrix.sanitize}} \
@@ -211,7 +211,7 @@ jobs:
         conan install `
           --build=missing `
           --env CONAN_CMAKE_GENERATOR="Visual Studio 16 2019" `
-          --env CONAN_CMAKE_TOOLCHAIN_FILE="$env:GITHUB_WORKSPACE"\test\cmake\toolchain\msvc.cmake `
+          --env CONAN_CMAKE_TOOLCHAIN_FILE="$env:GITHUB_WORKSPACE"\test\toolchain\msvc.cmake `
           --options enable_exceptions=${{matrix.exceptions}} `
           --options target=test-all `
           --options test_pattern="^test-unit-" `
@@ -252,14 +252,14 @@ jobs:
         cd googletest && \
         git checkout 3c95bf552405fd0cc63cea0ca2f6c4cd89c8d356 && \
         cmake \
-          -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/cmake/toolchain/${{matrix.toolchain}} \
+          -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
           . && \
         cmake --build . --target install
 
     - name: Configure CNL
       run: |
         cmake \
-          -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/cmake/toolchain/${{matrix.toolchain}} \
+          -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
           $GITHUB_WORKSPACE
 
     - name: Build CNL
