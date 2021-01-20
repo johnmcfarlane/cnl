@@ -16,14 +16,14 @@ class CnlConan(ConanFile):
     options = {"enable_exceptions": [False, True],
                "int128": [False, True],
                "sanitize": [False, True],
-               "target": ["test-all", "test-benchmark", "test-unit"],
-               "test_pattern": ["^test-", "test-benchmark", "^test-unit-"],
+               "target": [None, "test-all", "test-benchmark", "test-unit"],
+               "test_pattern": [None, "^test-", "test-benchmark", "^test-unit-"],
     }
     default_options = {"enable_exceptions": True,
                        "int128": True,
                        "sanitize": False,
-                       "target": "test-all",
-                       "test_pattern": "^test-unit-",
+                       "target": None,
+                       "test_pattern": None,
     }
     generators = "cmake_find_package"
     no_copy_source = True
@@ -41,12 +41,13 @@ class CnlConan(ConanFile):
         if self.should_configure:
             self.configure_phase(cmake)
 
-        if self.should_build:
+        if self.should_build and self.options.target:
             self.build_phase(cmake)
 
-        cmake.install()
+        if self.options.target:
+            cmake.install()
 
-        if self.should_test:
+        if self.should_test and self.options.test_pattern:
             self.test_phase();
 
     def package(self):
@@ -78,12 +79,14 @@ class CnlConan(ConanFile):
         self.run(f'cmake {cmake.command_line}{std} {module_path} {gtest_hack} {exceptions} {int128} {sanitize} {self.source_folder}')
     
     def build_phase(self, cmake):
+        assert(self.options.target)
         build = "--build {}".format(self.build_folder)
         target = "--target {}".format(self.options.target)
 
         self.run(f'cmake {build} {target} {cmake.build_config}')
     
     def test_phase(self):
+        assert(self.options.test_pattern)
         self.run("ctest --output-on-failure --parallel {} --tests-regex {}".format(
             tools.cpu_count(),
             self.options.test_pattern
