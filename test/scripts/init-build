@@ -21,6 +21,7 @@ INT128="${INT128:-True}"
 SANITIZE="${SANITIZE:-True}"
 STDLIB="${STDLIB:-libstdc++11}"
 TARGET="${TARGET:-test-all}"
+TEST_PATTERN="${TEST_PATTERN:-^test-unit-}"
 TOOLCHAIN="${TOOLCHAIN:-gcc.cmake}"
 
 export CC="${CC:-gcc}"
@@ -49,6 +50,7 @@ conan install \
   --options int128="${INT128}" \
   --options sanitize="${SANITIZE}" \
   --options target="${TARGET}" \
+  --options test_pattern="${TEST_PATTERN}" \
   --profile ./profile \
   "$@" \
   "${cnl_dir}"

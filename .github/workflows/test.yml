@@ -157,6 +157,7 @@ jobs:
           --options enable_exceptions=${{matrix.exceptions}} \
           --options sanitize=${{matrix.sanitize}} \
           --options target=test-all \
+          --options test_pattern="^test-unit-" \
           $GITHUB_WORKSPACE
 
     - name: Build tests
@@ -213,6 +214,7 @@ jobs:
           --env CONAN_CMAKE_TOOLCHAIN_FILE="$env:GITHUB_WORKSPACE"\test\cmake\toolchain\msvc.cmake `
           --options enable_exceptions=${{matrix.exceptions}} `
           --options target=test-all `
+          --options test_pattern="^test-unit-" `
           --settings build_type=Release `
           $env:GITHUB_WORKSPACE
 
@@ -324,4 +326,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: documentation
-        path: ${{github.workspace}}/doc/gh-pages/
+        path: ${{github.workspace}}/htdocs
