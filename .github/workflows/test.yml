@@ -351,4 +351,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: documentation
-        path: ${{github.workspace}}/doc/gh-pages/
+        path: ${{github.workspace}}/htdocs
