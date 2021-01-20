@@ -1,6 +1,3 @@
-﻿include(ExternalProject)
-
-######################################################################
 # build flags
 
 set(CNL_EXCEPTIONS ON CACHE BOOL "compile with exceptions enabled")
