@@ -18,13 +18,15 @@ prerelease_pattern='-([A-Za-z0-9-]+)'
 echo "Tag: ${CNL_VERSION_TAG}"
 if [[ "${CNL_VERSION_TAG}" =~ ^${release_pattern}$ ]]
 then
-    export CNL_VERSION="${BASH_REMATCH[1]}"
-    export CNL_CHANNEL="stable"
+    CNL_VERSION="${BASH_REMATCH[1]}"
+    CNL_CHANNEL="stable"
+    export CNL_PROJECT_NUMBER=${CNL_VERSION}
     echo "CNL version ${CNL_VERSION}"
 elif [[ "${CNL_VERSION_TAG}" =~ ^${release_pattern}${prerelease_pattern}$ ]]
 then
-    export CNL_VERSION="${BASH_REMATCH[1]}"
-    export CNL_CHANNEL="${BASH_REMATCH[2]}"
+    CNL_VERSION="${BASH_REMATCH[1]}"
+    CNL_CHANNEL="${BASH_REMATCH[2]}"
+    export CNL_PROJECT_NUMBER="${CNL_VERSION} (${CNL_CHANNEL})"
     echo "CNL version ${CNL_VERSION}"
 else
     echo "Tag ${CNL_VERSION_TAG} not recognized as Semver version tag in either of the forms:"
