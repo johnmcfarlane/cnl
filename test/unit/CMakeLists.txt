@@ -210,6 +210,10 @@ foreach(source ${test_sources})
     make_test("${source}" target "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
 endforeach(source)
 
+if (CNL_SANITIZE)
+    make_test(ub.cpp target "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
+endif(CNL_SANITIZE)
+
 ######################################################################
 # create tests to show off CNL
 
