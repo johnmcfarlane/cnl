@@ -11,7 +11,7 @@ PROJECT_DIR=$(
 
 # Modify Doxyfile settings with environment variables.
 export HTML_OUTPUT=${HTML_OUTPUT:-"$(pwd)/htdocs"}
-export CNL_VERSION=${CNL_VERSION:-"development"}
+export CNL_PROJECT_NUMBER=${CNL_PROJECT_NUMBER:-"development"}
 export CNL_DIR="${PROJECT_DIR}"
 
 # Download std documentation.
