@@ -35,7 +35,7 @@
  * zero-overhead and minimal precision loss;
  * - [elastic_integer](@ref cnl::elastic_integer) - prevents overflow at compile-time by
  * generalizing promotion rules;
- * - [overflow_integer](@ref cnl::overflow_integer) - handles integer overflow at run-time;
+ * - [overflow_integer](@ref cnl::overflow_integer) - handles integer overflow at runtime;
  * - [rounding_integer](@ref cnl::rounding_integer) - improves rounding behavior of integers;
  * - [wide_integer](@ref cnl::wide_integer) - provides integers wider than 64 and 128 bits using
  * multi-word arithmetic;
