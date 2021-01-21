@@ -51,9 +51,9 @@
  * In combination, the core types produce composites which address multiple concerns.
  *
  * Provided composite types include:
- * - [elastic_scaled_integer](@ref cnl::elastic_scaled_integer) ([scaled_integer](@ref
- * cnl::scaled_integer) and [elastic_integer](@ref cnl::elastic_integer)) - real-number
- * approximation which uses promotion to avoid overflow;
+ * - [elastic_scaled_integer](@ref cnl::elastic_scaled_integer)
+ *   ([scaled_integer](@ref cnl::scaled_integer) and [elastic_integer](@ref cnl::elastic_integer)) -
+ *   real-number approximation which uses promotion to avoid overflow;
  * - [static_integer](@ref cnl::static_integer) ([rounding_integer](@ref cnl::rounding_integer),
  *   [overflow_integer](@ref cnl::overflow_integer), [elastic_integer](@ref cnl::elastic_integer)
  * and [wide_integer](@ref cnl::wide_integer)) - fully-featured safe, accurate integer type and
@@ -62,10 +62,10 @@
  * approximation.
  *
  * Many more combinations are possible. For example:
- * - `safe_integer` ([overflow_integer](@ref cnl::overflow_integer) and [elastic_integer](@ref
- * cnl::elastic_integer));
- * - `wide_elastic_integer` ([elastic_integer](@ref cnl::elastic_integer) and [wide_integer](@ref
- * cnl::wide_integer)) and
+ * - `safe_integer` ([overflow_integer](@ref cnl::overflow_integer) and
+ *   [elastic_integer](@ref cnl::elastic_integer));
+ * - `wide_elastic_integer` ([elastic_integer](@ref cnl::elastic_integer) and
+ *   [wide_integer](@ref cnl::wide_integer)) and
  * - `safe_fraction` ([fraction](@ref cnl::fraction) and `safe_integer`).
  *
  * \section Examples
@@ -99,10 +99,10 @@
  * \subsection Extensible
  *
  * Because one size does not fit all, [scaled_integer](@ref cnl::scaled_integer) is designed to make
- * it easy to tailor new arithmetic types. The [elastic_scaled_integer](@ref
- * cnl::elastic_scaled_integer) type illustrates this. As each calculation requires more digits, so
- * the results of [elastic_scaled_integer](@ref cnl::elastic_scaled_integer) operations allocate
- * more storage.
+ * it easy to tailor new arithmetic types. The
+ * [elastic_scaled_integer](@ref cnl::elastic_scaled_integer) type illustrates this. As each
+ * calculation requires more digits, so the results of
+ * [elastic_scaled_integer](@ref cnl::elastic_scaled_integer) operations allocate more storage.
  *
  * \snippet index.cpp elastic example
  *
