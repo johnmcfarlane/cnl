@@ -13,16 +13,11 @@
 #include "type_traits/is_signed.h"
 
 #include <array>
+#include <charconv>
 #include <system_error>
 
 /// compositional numeric library
 namespace cnl {
-    // cnl::to_chars_result - equivalent to std::to_chars_result
-    struct to_chars_result {
-        char* ptr;
-        std::errc ec;
-    };
-
     namespace _impl {
         // cnl::_impl::max_to_chars_chars
         template<typename Scalar, int Base = 10>
@@ -68,7 +63,7 @@ namespace cnl {
 
         template<typename Number>
         struct to_chars_non_zero<Number, false> {
-            to_chars_result operator()(
+            std::to_chars_result operator()(
                     char* const first, char* const last, Number const& value) const
             {
                 // +ve
@@ -78,7 +73,7 @@ namespace cnl {
 
         template<typename Number>
         struct to_chars_non_zero<Number, true> {
-            to_chars_result operator()(
+            std::to_chars_result operator()(
                     char* const first, char* const last, Number const& value) const
             {
                 if (value > Number{}) {
@@ -88,7 +83,7 @@ namespace cnl {
 
                 auto const destination_length = std::distance(first, last);
                 if (destination_length < 2) {
-                    return to_chars_result{last, std::errc::value_too_large};
+                    return std::to_chars_result{last, std::errc::value_too_large};
                 }
 
                 // -ve
