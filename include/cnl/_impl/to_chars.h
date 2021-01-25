@@ -7,9 +7,11 @@
 #if !defined(CNL_IMPL_TO_CHARS_H)
 #define CNL_IMPL_TO_CHARS_H
 
-#include "assert.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
+#include "assert.h"  // NOLINT(modernize-deprecated-headers, hicpp-deprecated-headers)
+#include "limits.h"  // NOLINT(modernize-deprecated-headers, hicpp-deprecated-headers)
 #include "num_traits/digits.h"
 #include "num_traits/rounding.h"
+#include "num_traits/set_rounding.h"
 #include "type_traits/is_signed.h"
 
 #include <array>
@@ -57,6 +59,17 @@ namespace cnl {
             return next_ptr + 1;
         }
 
+        template<_impl::integer Integer>
+        std::to_chars_result to_chars_positive(
+                char* const first,  // NOLINT(readability-avoid-const-params-in-decls)
+                char* const last,  // NOLINT(readability-avoid-const-params-in-decls)
+                Integer const& value) noexcept
+        {
+            auto const natural_last = to_chars_natural(first, last, value);
+            return std::to_chars_result{
+                    natural_last, natural_last ? std::errc{} : std::errc::value_too_large};
+        }
+
         // cnl::_impl::to_chars_non_zero
         template<typename Number, bool IsSigned = is_signed<Number>::value>
         struct to_chars_non_zero;
@@ -88,9 +101,38 @@ namespace cnl {
 
                 // -ve
                 *first = '-';
+
+                // implementation does not support the most negative number
+                CNL_ASSERT(-numeric_limits<decltype(-value)>::max() <= value);
+
                 return to_chars_positive(first + 1, last, -value);
             }
         };
+    }
+
+    // partial implementation of std::to_chars overloaded on cnl::duplex_integer
+    template<_impl::integer Integer>
+    std::to_chars_result to_chars(
+            char* const first,  // NOLINT(readability-avoid-const-params-in-decls)
+            char* const last,  // NOLINT(readability-avoid-const-params-in-decls,readability-non-const-parameter)
+            Integer const& value)
+    {
+        if (!value) {
+            if (first == last) {
+                // buffer too small to contain "0"
+                return std::to_chars_result{last, std::errc::value_too_large};
+            }
+
+            // zero
+            *first = '0';
+            return std::to_chars_result{first + 1, std::errc{}};
+        }
+
+        using native_rounding_type = set_rounding_t<decltype(value), native_rounding_tag>;
+        auto const& native_rounding_value = static_cast<native_rounding_type>(value);
+
+        return _impl::to_chars_non_zero<native_rounding_type>{}(
+                first, last, native_rounding_value);
     }
 
     // overload of cnl::to_chars returning fixed-size array of chars
