@@ -13,7 +13,6 @@
 #include "_impl/num_traits/digits.h"
 #include "_impl/type_traits/is_signed.h"
 #include "_impl/type_traits/remove_signedness.h"
-#include "cstdint.h"
 
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////

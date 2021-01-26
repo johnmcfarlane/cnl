@@ -7,9 +7,8 @@
 #if !defined(CNL_IMPL_TYPE_TRAITS_IS_INTEGRAL)
 #define CNL_IMPL_TYPE_TRAITS_IS_INTEGRAL
 
-#include "../../cstdint.h"
-
 #include "../config.h"
+#include "../cstdint/types.h"
 
 #include <type_traits>
 

@@ -9,6 +9,7 @@
 
 #include "../../limits.h"
 #include "../../numeric.h"
+#include "../common.h"
 #include "../num_traits/digits.h"
 #include "../operators/operators.h"
 #include "../polarity.h"

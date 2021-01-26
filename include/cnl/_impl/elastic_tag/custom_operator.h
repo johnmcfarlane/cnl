@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_ELASTIC_TAG_GENERIC_H)
 #define CNL_IMPL_ELASTIC_TAG_GENERIC_H
 
+#include "../../constant.h"
 #include "../num_traits/set_digits.h"
 #include "../num_traits/width.h"
 #include "../operators/overloads.h"

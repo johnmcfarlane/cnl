@@ -28,37 +28,30 @@ namespace {
         using cnl::_cnlint_impl::parse;
 
         static_assert(
-                identical(parse("0"), CNL_INTMAX_C(0)), "cnl::_cnlint_impl::parse test failed");
+                identical(parse<'0', '\0'>(), CNL_INTMAX_C(0)));
         static_assert(
-                identical(parse("1"), CNL_INTMAX_C(1)), "cnl::_cnlint_impl::parse test failed");
-        static_assert(
-                identical(parse("9081726354"), CNL_INTMAX_C(9081726354)),
-                "cnl::_cnlint_impl::parse test failed");
-        static_assert(
-                identical(parse("0x9081726354"), CNL_INTMAX_C(0x9081726354)),
-                "cnl::_cnlint_impl::parse test failed");
+                identical(parse<'1', '\0'>(), CNL_INTMAX_C(1)));
+        static_assert(identical(
+                parse<'9', '0', '8', '1', '7', '2', '6', '3', '5', '4', '\0'>(),
+                CNL_INTMAX_C(9081726354)));
+        static_assert(identical(
+                parse<'0', 'x', '9', '0', '8', '1', '7', '2', '6', '3', '5', '4', '\0'>(),
+                CNL_INTMAX_C(0x9081726354)));
 #if defined(CNL_INT128_ENABLED)
-        static_assert(
-                identical(
-                        parse("0x123456789ABCDEF0123456789ABCDEF"),
-                        CNL_INTMAX_C(0x123456789ABCDEF0123456789ABCDEF)),
-                "cnl::_cnlint_impl::parse test failed");
-        static_assert(
-                identical(
-                        cnl::uint128{parse("0x123456789ABCDEF0123456789ABCDEF")},
-                        CNL_UINTMAX_C(0x123456789ABCDEF0123456789ABCDEF)),
-                "cnl::_cnlint_impl::parse test failed");
+        static_assert(identical(
+                parse<'0', 'x', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', '\0'>(),
+                CNL_INTMAX_C(0x123456789ABCDEF0123456789ABCDEF)));
+        static_assert(identical(
+                cnl::uint128{parse<'0', 'x', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', '\0'>()},
+                CNL_UINTMAX_C(0x123456789ABCDEF0123456789ABCDEF)));
 #endif
+        static_assert(identical(
+                parse<'0', '7', '7', '7', '7', '0', '4', '1', '7', '2', '6', '3', '5', '4', '\0'>(),
+                CNL_INTMAX_C(07777041726354)));
+        static_assert(identical(
+                parse<'0', 'b', '0', '1', '1', '0', '1', '0', '0', '0', '0', '1', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1', '1', '1', '1', '1', '1', '0', '1', '0', '0', '0', '0', '0', '0', '0', '1', '0', '1', '1', '0', '1', '1', '0', '1', '0', '1', '\0'>(),
+                CNL_INTMAX_C(0b011010000110100000011111101000000010110110101)));
         static_assert(
-                identical(parse("07777041726354"), CNL_INTMAX_C(07777041726354)),
-                "cnl::_cnlint_impl::parse test failed");
-        static_assert(
-                identical(
-                        parse("0b011010000110100000011111101000000010110110101"),
-                        CNL_INTMAX_C(0b011010000110100000011111101000000010110110101)),
-                "cnl::_cnlint_impl::parse test failed");
-        static_assert(
-                parse("0XaA") == CNL_INTMAX_C(0xAa),
-                "cnl::_cnlint_impl::digits_to_integral test failed");
+                identical(parse<'0', 'X', 'a', 'A', '\0'>(), CNL_INTMAX_C(0xAa)));
     }
 }

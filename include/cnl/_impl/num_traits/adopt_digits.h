@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_NUM_TRAITS_ADOPT_DIGITS)
 #define CNL_IMPL_NUM_TRAITS_ADOPT_DIGITS
 
+#include "../../cstdint.h"
 #include "digits.h"
 #include "set_digits.h"
 
