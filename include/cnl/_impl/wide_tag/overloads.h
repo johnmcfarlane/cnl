@@ -21,7 +21,7 @@ namespace cnl {
                 typename RhsNarrowest>
         struct wide_tag_overload_params {
             static constexpr bool is_signed{
-                    cnl::is_signed<LhsNarrowest>::value | cnl::is_signed<RhsNarrowest>::value};
+                    is_signed<LhsNarrowest> | is_signed<RhsNarrowest>};
             static constexpr int digits{max(LhsDigits, RhsDigits)};
 
             using narrowest = _impl::set_width_t<

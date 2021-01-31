@@ -47,7 +47,7 @@ namespace cnl {
 
             using int_t = Numerator;
             static_assert(
-                    is_signed<int_t>::value,
+                    is_signed<int_t>,
                     "This function only supports cnl::fraction of signed integers.");
 
             using uint_t = cnl::remove_signedness_t<int_t>;

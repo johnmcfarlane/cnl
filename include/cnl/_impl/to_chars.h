@@ -24,7 +24,7 @@ namespace cnl {
         // cnl::_impl::max_to_chars_chars
         template<typename Scalar, int Base = 10>
         struct max_to_chars_chars {
-            static constexpr auto _sign_chars = static_cast<int>(cnl::is_signed<Scalar>::value);
+            static constexpr auto _sign_chars = static_cast<int>(is_signed<Scalar>);
             static constexpr auto _integer_chars = ((cnl::digits<Scalar> + 2) / 3);
 
             static constexpr auto value = _sign_chars + _integer_chars;
@@ -71,7 +71,7 @@ namespace cnl {
         }
 
         // cnl::_impl::to_chars_non_zero
-        template<typename Number, bool IsSigned = is_signed<Number>::value>
+        template<typename Number, bool IsSigned = is_signed<Number>>
         struct to_chars_non_zero;
 
         template<typename Number>

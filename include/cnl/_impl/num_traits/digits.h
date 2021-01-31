@@ -31,7 +31,7 @@ namespace cnl {
 
     namespace _impl {
         template<typename Integer>
-        inline constexpr auto fundamental_digits = CHAR_BIT * sizeof(Integer) - is_signed<Integer>::value;
+        inline constexpr auto fundamental_digits = CHAR_BIT * sizeof(Integer) - is_signed<Integer>;
     }
 
     template<_impl::integral Integer>

@@ -153,7 +153,7 @@ namespace test_division {
 
 namespace test_set_signedness {
     static_assert(
-            is_signed<cnl::add_signedness_t<elastic_scaled_integer<1, 0, unsigned>>>::value);
+            is_signed<cnl::add_signedness_t<elastic_scaled_integer<1, 0, unsigned>>>);
 }
 
 namespace test_fraction_deduced {
@@ -188,7 +188,7 @@ namespace test_fraction_specific_long {
     static_assert(
             std::is_same<
                     cnl::elastic_scaled_integer<63, -60>,
-                    cnl::elastic_scaled_integer<63, -60>>::value);
+                    cnl::elastic_scaled_integer<63, -60>>);
     static_assert(specific > .333333333333333);
     static_assert(specific < .333333333333334);
 #else
@@ -263,12 +263,12 @@ struct test_traits {
             cnl::numeric_limits<T>::is_signed == IsSigned,
             "cnl::numeric_limits<T>::is_signed fails for give type, T");
     static_assert(
-            is_signed<T>::value == IsSigned, "cnl::add_signedness failed cnl::numeric_limits test");
+            is_signed<T> == IsSigned, "cnl::add_signedness failed cnl::numeric_limits test");
     static_assert(
-            is_signed<cnl::add_signedness_t<T>>::value,
+            is_signed<cnl::add_signedness_t<T>>,
             "cnl::add_signedness failed cnl::numeric_limits test");
     static_assert(
-            !is_signed<cnl::remove_signedness_t<T>>::value,
+            !is_signed<cnl::remove_signedness_t<T>>,
             "cnl::remove_signedness failed cnl::numeric_limits test");
 };
 

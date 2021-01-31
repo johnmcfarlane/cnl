@@ -13,9 +13,7 @@
 /// compositional numeric library
 namespace cnl {
     template<typename Upper, typename Lower>
-    struct is_signed<_impl::duplex_integer<Upper, Lower>>
-        : std::integral_constant<bool, is_signed<Upper>::value> {
-    };
+    inline constexpr bool is_signed<_impl::duplex_integer<Upper, Lower>> = is_signed<Upper>;
 }
 
 #endif  // CNL_IMPL_DUPLEX_INTEGER_IS_SIGNED_H

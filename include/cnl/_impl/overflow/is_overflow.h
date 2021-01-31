@@ -34,7 +34,7 @@ namespace cnl {
 
         template<class T>
         struct overflow_digits<T, polarity::negative>
-            : public std::integral_constant<int, cnl::is_signed<T>::value ? digits<T> : 0> {
+            : public std::integral_constant<int, cnl::is_signed<T> ? digits<T> : 0> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@ namespace cnl {
         // 1. type is unsigned
         // 2. type is symmetrical around zero (e.g. elastic_integer)
         // 3. type has most negative number
-        template<typename Operand, bool IsSigned = is_signed<Operand>::value>
+        template<typename Operand, bool IsSigned = is_signed<Operand>>
         struct has_most_negative_number : std::false_type {
         };
 
@@ -208,7 +208,7 @@ namespace cnl {
             template<typename Rhs>
             CNL_NODISCARD constexpr bool operator()(Rhs const& rhs) const
             {
-                return !is_signed<Rhs>::value && rhs;
+                return !is_signed<Rhs> && rhs;
             }
         };
 #if defined(_MSC_VER)
@@ -331,7 +331,7 @@ namespace cnl {
         struct is_overflow<shift_left_op, polarity::negative> {
             template<typename Lhs, typename Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> enable_if_t<is_signed<Lhs>::value, bool>
+                    -> enable_if_t<is_signed<Lhs>, bool>
             {
                 using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
                 return lhs < 0 ? rhs > 0 ? rhs < traits::positive_digits
@@ -343,7 +343,7 @@ namespace cnl {
 
             template<typename Lhs, typename Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const&, Rhs const&) const
-                    -> enable_if_t<!is_signed<Lhs>::value, bool>
+                    -> enable_if_t<!is_signed<Lhs>, bool>
             {
                 return false;
             }

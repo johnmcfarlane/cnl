@@ -20,7 +20,7 @@ namespace cnl {
         struct heterogeneous_duplex_modulo_operator {
             using common_type = rep_of_t<wide_integer<
                     max(digits<Lhs>, digits<Rhs>),
-                    set_signedness_t<int, is_signed<Lhs>::value | is_signed<Rhs>::value>>>;
+                    set_signedness_t<int, is_signed<Lhs> | is_signed<Rhs>>>>;
 
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> Lhs
             {

@@ -290,9 +290,9 @@ namespace {
 
     namespace test_add_signedness {
         static_assert(
-                cnl::is_signed<cnl::add_signedness<cnl::elastic_integer<1, unsigned>>::type>::value);
+                cnl::is_signed<cnl::add_signedness<cnl::elastic_integer<1, unsigned>>::type>);
         static_assert(
-                cnl::is_signed<cnl::add_signedness_t<cnl::elastic_integer<1, unsigned>>>::value);
+                cnl::is_signed<cnl::add_signedness_t<cnl::elastic_integer<1, unsigned>>>);
     }
 
     namespace test_remove_signedness {

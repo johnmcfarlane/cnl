@@ -42,7 +42,7 @@ namespace cnl {
 
         template<typename Upper, typename Lower>
         class duplex_integer {
-            static_assert(!is_signed<Lower>::value, "Lower component must be unsigned.");
+            static_assert(!is_signed<Lower>, "Lower component must be unsigned.");
 
             using upper_type = Upper;
             using lower_type = Lower;

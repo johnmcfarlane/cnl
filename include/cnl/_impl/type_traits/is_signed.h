@@ -16,79 +16,60 @@
 #include <type_traits>
 
 namespace cnl {
-    template<typename T, class Enable = void>
-    struct is_signed;
+    template<typename T>
+    inline constexpr bool is_signed = false;
 
     template<>
-    struct is_signed<char> : std::is_signed<char> {
-    };
+    inline constexpr bool is_signed<char> = std::is_signed_v<char>;
     template<>
-    struct is_signed<signed char> : std::true_type {
-    };
+    inline constexpr bool is_signed<signed char> = true;
     template<>
-    struct is_signed<unsigned char> : std::false_type {
-    };
+    inline constexpr bool is_signed<unsigned char> = false;
 
     template<>
-    struct is_signed<wchar_t> : std::is_signed<char> {
-    };
+    inline constexpr bool is_signed<wchar_t> = std::is_signed_v<char>;
     template<>
-    struct is_signed<char16_t> : std::is_signed<char16_t> {
-    };
+    inline constexpr bool is_signed<char16_t> = std::is_signed_v<char16_t>;
     template<>
-    struct is_signed<char32_t> : std::is_signed<char32_t> {
-    };
+    inline constexpr bool is_signed<char32_t> = std::is_signed_v<char32_t>;
 
     template<>
-    struct is_signed<signed short> : std::true_type {
-    };
+    inline constexpr bool is_signed<signed short> = true;
     template<>
-    struct is_signed<unsigned short> : std::false_type {
-    };
+    inline constexpr bool is_signed<unsigned short> = false;
 
     template<>
-    struct is_signed<signed int> : std::true_type {
-    };
+    inline constexpr bool is_signed<signed int> = true;
     template<>
-    struct is_signed<unsigned int> : std::false_type {
-    };
+    inline constexpr bool is_signed<unsigned int> = false;
 
     template<>
-    struct is_signed<signed long> : std::true_type {
-    };
+    inline constexpr bool is_signed<signed long> = true;
     template<>
-    struct is_signed<unsigned long> : std::false_type {
-    };
+    inline constexpr bool is_signed<unsigned long> = false;
 
     template<>
-    struct is_signed<signed long long> : std::true_type {
-    };
+    inline constexpr bool is_signed<signed long long> = true;
     template<>
-    struct is_signed<unsigned long long> : std::false_type {
-    };
+    inline constexpr bool is_signed<unsigned long long> = false;
 
 #if defined(CNL_INT128_ENABLED)
     template<>
-    struct is_signed<int128> : std::true_type {
-    };
+    inline constexpr bool is_signed<int128> = true;
     template<>
-    struct is_signed<uint128> : std::false_type {
-    };
+    inline constexpr bool is_signed<uint128> = false;
 #endif
 
     template<>
-    struct is_signed<float> : std::true_type {
-    };
+    inline constexpr bool is_signed<float> = true;
     template<>
-    struct is_signed<double> : std::true_type {
-    };
+    inline constexpr bool is_signed<double> = true;
     template<>
-    struct is_signed<long double> : std::true_type {
-    };
+    inline constexpr bool is_signed<long double> = true;
 
     template<typename T>
-    struct is_signed<T, _impl::enable_if_t<is_composite<T>::value>> : is_signed<_impl::rep_of_t<T>> {
-    };
+    requires is_composite<T>::value
+    inline constexpr bool is_signed<T> = is_signed<_impl::rep_of_t<T>>;
 }
 
 #endif  // CNL_IMPL_TYPE_TRAITS_IS_SIGNED

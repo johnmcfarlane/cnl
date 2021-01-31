@@ -16,7 +16,7 @@
 namespace cnl {
     namespace _impl {
         template<class T, int Width>
-        struct set_width : set_digits<T, Width - is_signed<T>::value> {
+        struct set_width : set_digits<T, Width - is_signed<T>> {
         };
 
         template<class T, int Width>

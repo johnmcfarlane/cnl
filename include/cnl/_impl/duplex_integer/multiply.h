@@ -23,7 +23,7 @@ namespace cnl {
         struct heterogeneous_duplex_multiply_operator {
             using common_type = conditional3_t<
                     width<Lhs> - width<Rhs>, Lhs,
-                    conditional3_t<(is_signed<Lhs>::value - is_signed<Rhs>::value), Lhs, void, Rhs>,
+                    conditional3_t<(is_signed<Lhs> - is_signed<Rhs>), Lhs, void, Rhs>,
                     Rhs>;
 
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const

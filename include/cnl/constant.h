@@ -162,8 +162,7 @@ namespace cnl {
     // type traits
 
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct is_signed<constant<Value>> : is_signed<decltype(Value)> {
-    };
+    inline constexpr bool is_signed<constant<Value>> = is_signed<decltype(Value)>;
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::numeric_limits<cnl::constant>

@@ -23,13 +23,13 @@ namespace cnl {
         template<typename T>
         CNL_NODISCARD constexpr bool is_integral_unsigned()
         {
-            return numeric_limits<T>::is_integer && !is_signed<T>::value;
+            return numeric_limits<T>::is_integer && !is_signed<T>;
         }
 
         template<typename T>
         CNL_NODISCARD constexpr bool is_integral_signed()
         {
-            return numeric_limits<T>::is_integer && is_signed<T>::value;
+            return numeric_limits<T>::is_integer && is_signed<T>;
         }
 
         template<typename T>
@@ -331,7 +331,7 @@ namespace cnl {
     template<typename T>
     CNL_NODISCARD constexpr int countl_rb(T x)  // NOLINT(misc-unused-parameters)
     {
-        return _bit_impl::countl_rb<is_signed<T>::value>()(x);
+        return _bit_impl::countl_rb<is_signed<T>>()(x);
     }
 
     // countr_used - count total used bits to the right

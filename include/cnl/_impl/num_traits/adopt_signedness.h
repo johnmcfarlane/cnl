@@ -13,7 +13,7 @@
 namespace cnl {
     namespace _impl {
         template<typename Mimic, typename Source>
-        struct adopt_signedness : set_signedness<Mimic, is_signed<Source>::value> {
+        struct adopt_signedness : set_signedness<Mimic, is_signed<Source>> {
         };
 
         template<typename Mimic, typename Source>

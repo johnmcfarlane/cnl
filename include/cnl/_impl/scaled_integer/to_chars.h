@@ -31,7 +31,7 @@ namespace cnl {
             static constexpr auto _fractional_digits =
                     cnl::_impl::fractional_digits<_scalar>;
 
-            static constexpr auto _sign_chars = static_cast<int>(cnl::is_signed<_scalar>::value);
+            static constexpr auto _sign_chars = static_cast<int>(is_signed<_scalar>);
             static constexpr auto _integer_chars =
                     ((cnl::_impl::integer_digits<_scalar> + 2) / 3);
             static constexpr auto _radix_chars = static_cast<int>(_fractional_digits > 0);

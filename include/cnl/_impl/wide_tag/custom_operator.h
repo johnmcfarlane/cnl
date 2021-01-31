@@ -69,7 +69,7 @@ namespace cnl {
     private:
         static constexpr auto _max_digits{_impl::max(LhsDigits, RhsDigits)};
         static constexpr auto _are_signed{
-                is_signed<LhsNarrowest>::value || is_signed<RhsNarrowest>::value};
+                is_signed<LhsNarrowest> || is_signed<RhsNarrowest>};
         using common_type = typename std::common_type<LhsNarrowest, RhsNarrowest>::type;
         using narrowest = _impl::set_signedness_t<common_type, _are_signed>;
 

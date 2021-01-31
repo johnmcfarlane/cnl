@@ -14,7 +14,7 @@ namespace cnl {
     namespace _impl {
         template<typename T>
         CNL_NODISCARD constexpr auto abs(T const& value)
-                -> enable_if_t<is_signed<T>::value, T>
+                -> enable_if_t<is_signed<T>, T>
         {
             static_assert(std::is_same<decltype(+value), decltype(-value)>::value);
 
@@ -22,7 +22,7 @@ namespace cnl {
         }
 
         template<typename T>
-        CNL_NODISCARD constexpr auto abs(T const& value) -> enable_if_t<!is_signed<T>::value, T>
+        CNL_NODISCARD constexpr auto abs(T const& value) -> enable_if_t<!is_signed<T>, T>
         {
             return value;
         }

@@ -43,7 +43,7 @@ namespace cnl {
                                 >> std::declval<constant<digits<S> - 1>>()){1}
                         << constant<Exponent>{})>;
                 static_assert(
-                        !std::is_integral<S>::value || !std::is_signed<S>::value
+                        !std::is_integral<S>::value || !std::is_signed_v<S>
                                 || Exponent < result_numeric_limits::digits,
                         "attempted operation will result in overflow");
 

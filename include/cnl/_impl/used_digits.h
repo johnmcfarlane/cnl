@@ -46,7 +46,7 @@ namespace cnl {
         CNL_NODISCARD constexpr int used_digits(
                 Integer const& value, int radix = numeric_limits<Integer>::radix)
         {
-            return used_digits_signed<std::is_signed<Integer>::value>{}(value, radix);
+            return used_digits_signed<std::is_signed_v<Integer>>{}(value, radix);
         }
     }
 }

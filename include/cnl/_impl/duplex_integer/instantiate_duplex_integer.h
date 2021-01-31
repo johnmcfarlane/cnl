@@ -69,7 +69,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // optimal_duplex
 
-        template<typename Word, typename Signedness = set_signedness_t<int, is_signed<Word>::value>>
+        template<typename Word, typename Signedness = set_signedness_t<int, is_signed<Word>>>
         struct optimal_duplex;
 
         template<typename Narrowest>
@@ -102,7 +102,7 @@ namespace cnl {
         template<int Digits, typename Narrowest>
         struct instantiate_duplex_integer {
             using word = typename optimal_duplex<Narrowest>::type;
-            static constexpr auto num_sign_bits = is_signed<word>::value;
+            static constexpr auto num_sign_bits = is_signed<word>;
             static constexpr auto word_digits = digits<word> + num_sign_bits;
             static constexpr auto required_num_words =
                     (Digits + num_sign_bits + word_digits - 1) / word_digits;
