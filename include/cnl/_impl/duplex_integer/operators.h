@@ -14,13 +14,13 @@
 #include "../operators/operators.h"
 #include "../to_chars.h"
 #include "../type_traits/common_type.h"
-#include "add_signedness.h"
 #include "comparison.h"
 #include "ctors.h"
 #include "digits.h"
 #include "divide.h"
 #include "modulo.h"
 #include "multiply.h"
+#include "numbers.h"
 #include "numeric_limits.h"
 #include "set_digits.h"
 #include "shift.h"
@@ -51,7 +51,7 @@ namespace cnl {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
             static constexpr auto lower_digits = digits<Lower>;
-            using wide_lower = set_digits_t<set_signedness_t<Lower, true>, lower_digits + 1>;
+            using wide_lower = set_digits_t<numbers::set_signedness_t<Lower, true>, lower_digits + 1>;
 
             CNL_NODISCARD constexpr auto operator()(
                     _duplex_integer const& lhs, _duplex_integer const& rhs) const -> _duplex_integer

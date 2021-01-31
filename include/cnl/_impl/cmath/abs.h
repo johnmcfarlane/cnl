@@ -7,14 +7,13 @@
 #if !defined(CNL_IMPL_CMATH_ABS)
 #define CNL_IMPL_CMATH_ABS
 
-#include "../type_traits/enable_if.h"
-#include "../type_traits/is_signed.h"
+#include "../numbers/signedness.h"
 
 namespace cnl {
     namespace _impl {
         template<typename T>
-        CNL_NODISCARD constexpr auto abs(T const& value)
-                -> enable_if_t<is_signed<T>::value, T>
+        requires(numbers::signedness_v<T>)
+                CNL_NODISCARD constexpr auto abs(T const& value)
         {
             static_assert(std::is_same<decltype(+value), decltype(-value)>::value);
 
@@ -22,7 +21,8 @@ namespace cnl {
         }
 
         template<typename T>
-        CNL_NODISCARD constexpr auto abs(T const& value) -> enable_if_t<!is_signed<T>::value, T>
+        requires(!numbers::signedness_v<T>)
+                CNL_NODISCARD constexpr auto abs(T const& value)
         {
             return value;
         }

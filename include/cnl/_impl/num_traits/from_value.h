@@ -9,8 +9,7 @@
 
 #include "../../constant.h"
 #include "../common.h"
-#include "../type_traits/add_signedness.h"
-#include "../type_traits/enable_if.h"
+#include "../numbers/set_signedness.h"
 #include "../type_traits/is_integral.h"
 #include "../type_traits/remove_cvref.h"
 #include "../used_digits.h"
@@ -42,7 +41,7 @@ namespace cnl {
     struct from_value<Number, constant<Value>> {
     private:
         using result_type = set_digits_t<
-                add_signedness_t<Number>,
+                numbers::set_signedness_t<Number, true>,
                 _impl::max(digits<int>, _impl::used_digits(Value))>;
 
     public:

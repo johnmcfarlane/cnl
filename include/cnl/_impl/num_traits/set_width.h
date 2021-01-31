@@ -10,13 +10,13 @@
 #if !defined(CNL_IMPL_NUM_TRAITS_SET_WIDTH)
 #define CNL_IMPL_NUM_TRAITS_SET_WIDTH
 
-#include "../type_traits/is_signed.h"
+#include "../numbers/signedness.h"
 #include "set_digits.h"
 
 namespace cnl {
     namespace _impl {
         template<class T, int Width>
-        struct set_width : set_digits<T, Width - is_signed<T>::value> {
+        struct set_width : set_digits<T, Width - numbers::signedness_v<T>> {
         };
 
         template<class T, int Width>

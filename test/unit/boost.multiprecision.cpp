@@ -34,47 +34,38 @@ namespace test_is_boost_multiprecision {
             "cnl::is_boost_multiprecision<>");
 }
 
-// test cnl::is_signed<{un}signed_multiprecision>::value
+// test cnl::numbers::signedness<{un}signed_multiprecision>::value
 static_assert(
-        cnl::is_signed<signed_multiprecision<1>>::value,
-        "cnl::is_signed<signed_multiprecision<>>::value test failed");
+        cnl::numbers::signedness<signed_multiprecision<1>>::value,
+        "cnl::numbers::signedness<signed_multiprecision<>>::value test failed");
 static_assert(
-        cnl::is_signed<signed_multiprecision<3>>::value,
-        "cnl::is_signed<signed_multiprecision<>>::value test failed");
+        cnl::numbers::signedness<signed_multiprecision<3>>::value,
+        "cnl::numbers::signedness<signed_multiprecision<>>::value test failed");
 static_assert(
-        !cnl::is_signed<unsigned_multiprecision<5>>::value,
-        "cnl::is_signed<unsigned_multiprecision<>>::value test failed");
+        !cnl::numbers::signedness<unsigned_multiprecision<5>>::value,
+        "cnl::numbers::signedness<unsigned_multiprecision<>>::value test failed");
 static_assert(
-        !cnl::is_signed<unsigned_multiprecision<7>>::value,
-        "cnl::is_signed<unsigned_multiprecision<>>::value test failed");
+        !cnl::numbers::signedness<unsigned_multiprecision<7>>::value,
+        "cnl::numbers::signedness<unsigned_multiprecision<>>::value test failed");
 
-// test cnl::add_signedness<{un}signed_multiprecision>::add_signedness
+// test cnl::numbers::set_signedness_t<{un}signed_multiprecision>
 static_assert(
-        cnl::is_signed<cnl::add_signedness_t<signed_multiprecision<9>>>::value,
-        "cnl::add_signedness<{un}signed_multiprecision>::add_signedness test failed");
+        cnl::numbers::signedness<cnl::numbers::set_signedness_t<signed_multiprecision<9>, true>>::value);
 static_assert(
-        cnl::is_signed<cnl::add_signedness_t<unsigned_multiprecision<10>>>::value,
-        "cnl::add_signedness<{un}signed_multiprecision>::add_signedness test failed");
+        cnl::numbers::signedness<cnl::numbers::set_signedness_t<unsigned_multiprecision<10>, true>>::value);
 static_assert(
-        cnl::is_signed<cnl::add_signedness_t<signed_multiprecision<9>>>::value,
-        "cnl::add_signedness<{un}signed_multiprecision>::add_signedness test failed");
+        cnl::numbers::signedness<cnl::numbers::set_signedness_t<signed_multiprecision<9>, true>>::value);
 static_assert(
-        cnl::is_signed<cnl::add_signedness_t<unsigned_multiprecision<10>>>::value,
-        "cnl::add_signedness<{un}signed_multiprecision>::add_signedness test failed");
+        cnl::numbers::signedness<cnl::numbers::set_signedness_t<unsigned_multiprecision<10>, true>>::value);
 
-// test cnl::remove_signedness_t<{un}signed_multiprecision>
 static_assert(
-        !cnl::is_signed<cnl::remove_signedness_t<signed_multiprecision<9>>>::value,
-        "cnl::remove_signedness<{un}signed_multiprecision>::remove_signedness test failed");
+        !cnl::numbers::signedness<cnl::numbers::set_signedness_t<signed_multiprecision<9>, false>>::value);
 static_assert(
-        !cnl::is_signed<cnl::remove_signedness_t<unsigned_multiprecision<10>>>::value,
-        "cnl::remove_signedness<{un}signed_multiprecision>::remove_signedness test failed");
+        !cnl::numbers::signedness<cnl::numbers::set_signedness_t<unsigned_multiprecision<10>, false>>::value);
 static_assert(
-        !cnl::is_signed<cnl::remove_signedness_t<signed_multiprecision<9>>>::value,
-        "cnl::remove_signedness<{un}signed_multiprecision>::remove_signedness test failed");
+        !cnl::numbers::signedness<cnl::numbers::set_signedness_t<signed_multiprecision<9>, false>>::value);
 static_assert(
-        !cnl::is_signed<cnl::remove_signedness_t<unsigned_multiprecision<10>>>::value,
-        "cnl::remove_signedness<{un}signed_multiprecision>::remove_signedness test failed");
+        !cnl::numbers::signedness<cnl::numbers::set_signedness_t<unsigned_multiprecision<10>, false>>::value);
 
 // test cnl::width<{un}signed_multiprecision>
 static_assert(cnl::digits<signed_multiprecision<11>> >= 11);

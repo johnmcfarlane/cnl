@@ -11,8 +11,8 @@
 #define CNL_BIT_H
 
 #include "_impl/num_traits/digits.h"
-#include "_impl/type_traits/is_signed.h"
-#include "_impl/type_traits/remove_signedness.h"
+#include "_impl/numbers/set_signedness.h"
+#include "_impl/numbers/signedness.h"
 
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
@@ -23,13 +23,13 @@ namespace cnl {
         template<typename T>
         CNL_NODISCARD constexpr bool is_integral_unsigned()
         {
-            return numeric_limits<T>::is_integer && !is_signed<T>::value;
+            return numeric_limits<T>::is_integer && !numbers::signedness<T>::value;
         }
 
         template<typename T>
         CNL_NODISCARD constexpr bool is_integral_signed()
         {
-            return numeric_limits<T>::is_integer && is_signed<T>::value;
+            return numeric_limits<T>::is_integer && numbers::signedness<T>::value;
         }
 
         template<typename T>
@@ -295,7 +295,7 @@ namespace cnl {
     {
         static_assert(_bit_impl::is_integral_signed<T>(), "T must be signed integer");
 
-        using unsigned_type = typename remove_signedness<T>::type;
+        using unsigned_type = numbers::set_signedness_t<T, false>;
 
         return ((x < 0) ? countl_one(static_cast<unsigned_type>(x))
                         : countl_zero(static_cast<unsigned_type>(x)))
@@ -331,7 +331,7 @@ namespace cnl {
     template<typename T>
     CNL_NODISCARD constexpr int countl_rb(T x)  // NOLINT(misc-unused-parameters)
     {
-        return _bit_impl::countl_rb<is_signed<T>::value>()(x);
+        return _bit_impl::countl_rb<numbers::signedness<T>::value>()(x);
     }
 
     // countr_used - count total used bits to the right

@@ -8,12 +8,12 @@
 #define CNL_IMPL_DUPLEX_INTEGER_TYPE_H
 
 #include "../num_traits/width.h"
+#include "../numbers/set_signedness.h"
 #include "../power_value.h"
-#include "../type_traits/set_signedness.h"
 #include "../unreachable.h"
 #include "digits.h"
 #include "forward_declaration.h"
-#include "is_signed.h"
+#include "numbers.h"
 
 #include <cmath>
 #include <iterator>
@@ -42,7 +42,7 @@ namespace cnl {
 
         template<typename Upper, typename Lower>
         class duplex_integer {
-            static_assert(!is_signed<Lower>::value, "Lower component must be unsigned.");
+            static_assert(!numbers::signedness_v<Lower>, "Lower component must be unsigned.");
 
             using upper_type = Upper;
             using lower_type = Lower;

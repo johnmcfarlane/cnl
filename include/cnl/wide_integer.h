@@ -16,6 +16,7 @@
 #include "_impl/wide_integer/literals.h"
 #include "_impl/wide_integer/make_wide_integer.h"
 #include "_impl/wide_integer/max_digits.h"
+#include "_impl/wide_integer/numbers.h"
 #include "_impl/wide_integer/numeric_limits.h"
 #include "_impl/wide_integer/operators.h"
 #include "_impl/wide_integer/scale.h"

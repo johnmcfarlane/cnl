@@ -9,8 +9,8 @@
 
 #include "../num_traits/set_width.h"
 #include "../num_traits/width.h"
-#include "../type_traits/is_signed.h"
-#include "../type_traits/set_signedness.h"
+#include "../numbers/set_signedness.h"
+#include "../numbers/signedness.h"
 #include "definition.h"
 #include "policy.h"
 
@@ -22,10 +22,10 @@ namespace cnl {
                 typename RhsNarrowest>
         struct elastic_tag_overload_params {
             using policy = typename _impl::policy<
-                    Operator, LhsDigits, numeric_limits<LhsNarrowest>::is_signed, RhsDigits,
-                    numeric_limits<RhsNarrowest>::is_signed>;
+                    Operator, LhsDigits, numbers::signedness_v<LhsNarrowest>, RhsDigits,
+                    numbers::signedness_v<RhsNarrowest>>;
             using narrowest = _impl::set_width_t<
-                    _impl::set_signedness_t<
+                    numbers::set_signedness_t<
                             _impl::op_result<Operator, LhsNarrowest, RhsNarrowest>,
                             policy::is_signed>,
                     _impl::max(

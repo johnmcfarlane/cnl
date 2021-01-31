@@ -12,6 +12,7 @@
 #include "../num_traits/fixed_width_scale.h"
 #include "../to_chars.h"
 #include "num_traits.h"
+#include "numbers.h"
 #include "type.h"
 
 #include <array>
@@ -31,7 +32,7 @@ namespace cnl {
             static constexpr auto _fractional_digits =
                     cnl::_impl::fractional_digits<_scalar>;
 
-            static constexpr auto _sign_chars = static_cast<int>(cnl::is_signed<_scalar>::value);
+            static constexpr auto _sign_chars = static_cast<int>(cnl::numbers::signedness_v<_scalar>);
             static constexpr auto _integer_chars =
                     ((cnl::_impl::integer_digits<_scalar> + 2) / 3);
             static constexpr auto _radix_chars = static_cast<int>(_fractional_digits > 0);

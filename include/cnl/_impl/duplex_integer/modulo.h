@@ -10,6 +10,7 @@
 #include "../../wide_integer.h"
 #include "../operators/custom_operator.h"
 #include "../operators/operators.h"
+#include "numbers.h"
 #include "type.h"
 
 /// compositional numeric library
@@ -20,7 +21,7 @@ namespace cnl {
         struct heterogeneous_duplex_modulo_operator {
             using common_type = rep_of_t<wide_integer<
                     max(digits<Lhs>, digits<Rhs>),
-                    set_signedness_t<int, is_signed<Lhs>::value | is_signed<Rhs>::value>>>;
+                    numbers::set_signedness_t<int, numbers::signedness_v<Lhs> | numbers::signedness_v<Rhs>>>>;
 
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> Lhs
             {
@@ -37,7 +38,7 @@ namespace cnl {
             operand<_impl::duplex_integer<Upper, Lower>>,
             operand<_impl::duplex_integer<Upper, Lower>>> {
         using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
-        using _unsigned_duplex_integer = remove_signedness_t<_duplex_integer>;
+        using _unsigned_duplex_integer = numbers::set_signedness_t<_duplex_integer, false>;
 
         CNL_NODISCARD constexpr auto operator()(
                 _duplex_integer const& lhs, _duplex_integer const& rhs) const -> _duplex_integer

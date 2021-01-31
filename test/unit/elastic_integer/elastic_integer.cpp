@@ -288,34 +288,24 @@ namespace {
                         value);
     }
 
-    namespace test_add_signedness {
-        static_assert(
-                cnl::is_signed<cnl::add_signedness<cnl::elastic_integer<1, unsigned>>::type>::value);
-        static_assert(
-                cnl::is_signed<cnl::add_signedness_t<cnl::elastic_integer<1, unsigned>>>::value);
-    }
-
-    namespace test_remove_signedness {
-        static_assert(
-                assert_same<
-                        cnl::elastic_integer<39, unsigned int>,
-                        typename cnl::remove_signedness<
-                                cnl::elastic_integer<39, unsigned int>>::type>::value);
-    }
-
     namespace test_set_signedness {
         static_assert(
+                cnl::numbers::signedness_v<cnl::numbers::set_signedness_t<cnl::elastic_integer<1, unsigned>, true>>);
+        static_assert(
+                cnl::numbers::signedness_v<cnl::numbers::set_signedness_t<cnl::elastic_integer<1, unsigned>, true>>);
+
+        static_assert(
                 assert_same<
                         cnl::elastic_integer<39, unsigned int>,
-                        typename cnl::_impl::set_signedness<
-                                cnl::elastic_integer<39, unsigned int>, false>::type>::value);
+                        cnl::numbers::set_signedness_t<
+                                cnl::elastic_integer<39, unsigned int>, false>>::value);
     }
 
     namespace test_set_signedness_t {
         static_assert(
                 assert_same<
                         cnl::elastic_integer<39, unsigned int>,
-                        cnl::_impl::set_signedness_t<
+                        cnl::numbers::set_signedness_t<
                                 cnl::elastic_integer<39, unsigned int>, false>>::value);
     }
 
@@ -610,7 +600,7 @@ namespace {
                 "type has most negative number");
 
         static_assert(
-                identical(cnl::_impl::set_signedness_t<value_type, is_signed>{0}, value_type{0}));
+                identical(cnl::numbers::set_signedness_t<value_type, is_signed>{0}, value_type{0}));
 
         ////////////////////////////////////////////////////////////////////////////////
         // constructors

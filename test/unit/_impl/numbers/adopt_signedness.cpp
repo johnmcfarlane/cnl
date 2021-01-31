@@ -4,7 +4,7 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/num_traits/adopt_signedness.h>
+#include <cnl/_impl/numbers/adopt_signedness.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 
 namespace {

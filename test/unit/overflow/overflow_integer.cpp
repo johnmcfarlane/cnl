@@ -347,80 +347,58 @@ namespace test_digits {
             "cnl::digits / cnl::set_digits test failed");
 }
 
-namespace test_add_signedness {
-    using cnl::add_signedness;
+namespace test_set_signedness {
+    using cnl::numbers::set_signedness;
 
-    // cnl::remove_signedness<cnl::saturated_integer<>>
     static_assert(
-            is_same<add_signedness<saturated_integer<int8_t>>::type,
-                    saturated_integer<int8_t>>::value,
-            "cnl::add_signedness<cnl::saturated_integer<>> test failed");
+            is_same<set_signedness<saturated_integer<int8_t>, true>::type,
+                    saturated_integer<int8_t>>::value);
     static_assert(
-            is_same<add_signedness<saturated_integer<uint8_t>>::type,
-                    saturated_integer<int8_t>>::value,
-            "cnl::add_signedness<cnl::saturated_integer<>> test failed");
+            is_same<set_signedness<saturated_integer<uint8_t>, true>::type,
+                    saturated_integer<int8_t>>::value);
     static_assert(
-            is_same<add_signedness<saturated_integer<int16_t>>::type,
-                    saturated_integer<int16_t>>::value,
-            "cnl::add_signedness<cnl::saturated_integer<>> test failed");
+            is_same<set_signedness<saturated_integer<int16_t>, true>::type,
+                    saturated_integer<int16_t>>::value);
     static_assert(
-            is_same<add_signedness<saturated_integer<uint16_t>>::type,
-                    saturated_integer<int16_t>>::value,
-            "cnl::add_signedness<cnl::saturated_integer<>> test failed");
+            is_same<set_signedness<saturated_integer<uint16_t>, true>::type,
+                    saturated_integer<int16_t>>::value);
     static_assert(
-            is_same<add_signedness<saturated_integer<int32_t>>::type,
-                    saturated_integer<int32_t>>::value,
-            "cnl::add_signedness<cnl::saturated_integer<>> test failed");
+            is_same<set_signedness<saturated_integer<int32_t>, true>::type,
+                    saturated_integer<int32_t>>::value);
     static_assert(
-            is_same<add_signedness<saturated_integer<uint32_t>>::type,
-                    saturated_integer<int32_t>>::value,
-            "cnl::add_signedness<cnl::saturated_integer<>> test failed");
+            is_same<set_signedness<saturated_integer<uint32_t>, true>::type,
+                    saturated_integer<int32_t>>::value);
     static_assert(
-            is_same<add_signedness<saturated_integer<int64_t>>::type,
-                    saturated_integer<int64_t>>::value,
-            "cnl::add_signedness<cnl::saturated_integer<>> test failed");
+            is_same<set_signedness<saturated_integer<int64_t>, true>::type,
+                    saturated_integer<int64_t>>::value);
     static_assert(
-            is_same<add_signedness<saturated_integer<uint64_t>>::type,
-                    saturated_integer<int64_t>>::value,
-            "cnl::add_signedness<cnl::saturated_integer<>> test failed");
-}
+            is_same<set_signedness<saturated_integer<uint64_t>, true>::type,
+                    saturated_integer<int64_t>>::value);
 
-namespace test_remove_signedness {
-    using cnl::remove_signedness;
-
-    // cnl::remove_signedness<cnl::saturated_integer<>>
     static_assert(
-            is_same<remove_signedness<saturated_integer<int8_t>>::type,
-                    saturated_integer<uint8_t>>::value,
-            "cnl::remove_signedness<cnl::saturated_integer<>>::type test failed");
+            is_same<set_signedness<saturated_integer<int8_t>, false>::type,
+                    saturated_integer<uint8_t>>::value);
     static_assert(
-            is_same<remove_signedness<saturated_integer<uint8_t>>::type,
-                    saturated_integer<uint8_t>>::value,
-            "cnl::remove_signedness<cnl::saturated_integer<>>::type test failed");
+            is_same<set_signedness<saturated_integer<uint8_t>, false>::type,
+                    saturated_integer<uint8_t>>::value);
     static_assert(
-            is_same<remove_signedness<saturated_integer<int16_t>>::type,
-                    saturated_integer<uint16_t>>::value,
-            "cnl::remove_signedness<cnl::saturated_integer<>>::type test failed");
+            is_same<set_signedness<saturated_integer<int16_t>, false>::type,
+                    saturated_integer<uint16_t>>::value);
     static_assert(
-            is_same<remove_signedness<saturated_integer<uint16_t>>::type,
-                    saturated_integer<uint16_t>>::value,
-            "cnl::remove_signedness<cnl::saturated_integer<>>::type test failed");
+            is_same<set_signedness<saturated_integer<uint16_t>, false>::type,
+                    saturated_integer<uint16_t>>::value);
     static_assert(
-            is_same<remove_signedness<saturated_integer<int32_t>>::type,
-                    saturated_integer<uint32_t>>::value,
-            "cnl::remove_signedness<cnl::saturated_integer<>>::type test failed");
+            is_same<set_signedness<saturated_integer<int32_t>, false>::type,
+                    saturated_integer<uint32_t>>::value);
     static_assert(
-            is_same<remove_signedness<saturated_integer<uint32_t>>::type,
-                    saturated_integer<uint32_t>>::value,
-            "cnl::remove_signedness<cnl::saturated_integer<>>::type test failed");
+            is_same<set_signedness<saturated_integer<uint32_t>, false>::type,
+                    saturated_integer<uint32_t>>::value);
     static_assert(
-            is_same<remove_signedness<saturated_integer<int64_t>>::type,
-                    saturated_integer<uint64_t>>::value,
-            "cnl::remove_signedness<cnl::saturated_integer<>>::type test failed");
+            is_same<set_signedness<saturated_integer<int64_t>, false>::type,
+                    saturated_integer<uint64_t>>::value);
     static_assert(
-            is_same<remove_signedness<saturated_integer<uint64_t>>::type,
-                    saturated_integer<uint64_t>>::value,
-            "cnl::remove_signedness<cnl::saturated_integer<>>::type test failed");
+            is_same<set_signedness<saturated_integer<uint64_t>, false>::type,
+                    saturated_integer<uint64_t>>::value);
 }
 
 namespace test_to_rep {

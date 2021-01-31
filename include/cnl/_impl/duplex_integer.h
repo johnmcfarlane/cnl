@@ -7,7 +7,6 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_H)
 #define CNL_IMPL_DUPLEX_INTEGER_H
 
-#include "duplex_integer/add_signedness.h"
 #include "duplex_integer/comparison.h"
 #include "duplex_integer/ctors.h"
 #include "duplex_integer/digits.h"
@@ -16,12 +15,11 @@
 #include "duplex_integer/from_value.h"
 #include "duplex_integer/instantiate_duplex_integer.h"
 #include "duplex_integer/is_duplex_integer.h"
-#include "duplex_integer/is_signed.h"
 #include "duplex_integer/modulo.h"
 #include "duplex_integer/multiply.h"
+#include "duplex_integer/numbers.h"
 #include "duplex_integer/numeric_limits.h"
 #include "duplex_integer/operators.h"
-#include "duplex_integer/remove_signedness.h"
 #include "duplex_integer/rep_of.h"
 #include "duplex_integer/rounding.h"
 #include "duplex_integer/scale.h"

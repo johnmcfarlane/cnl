@@ -32,10 +32,10 @@ using std::is_same;  // NOLINT(google-global-names-in-headers)
 // depends upon test_signed and test_unsigned defined in including source file
 
 static_assert(
-        sizeof(int) == 4, "warning: many of the tests in this file assume a 4-byte integer!z");
+        sizeof(int) == 4, "warning: many of the tests in this file assume a 4-byte integer!");
 
 using test_signed = test_int;
-using test_unsigned = cnl::_impl::adopt_width_t<cnl::remove_signedness_t<test_signed>, unsigned>;
+using test_unsigned = cnl::_impl::adopt_width_t<cnl::numbers::set_signedness_t<test_signed, false>, unsigned>;
 
 using int8 = cnl::set_digits_t<test_signed, 7>;
 using uint8 = cnl::set_digits_t<test_unsigned, 8>;

@@ -9,8 +9,7 @@
 
 #include "../../limits.h"
 #include "../assert.h"
-#include "../type_traits/enable_if.h"
-#include "../type_traits/remove_signedness.h"
+#include "../numbers/set_signedness.h"
 #include "type.h"
 
 #include <type_traits>
@@ -47,10 +46,10 @@ namespace cnl {
 
             using int_t = Numerator;
             static_assert(
-                    is_signed<int_t>::value,
+                    numbers::signedness_v<int_t>,
                     "This function only supports cnl::fraction of signed integers.");
 
-            using uint_t = cnl::remove_signedness_t<int_t>;
+            using uint_t = numbers::set_signedness_t<int_t, false>;
 
             if (d < FloatingPoint{}) {
                 return cnl::fraction<Numerator, Denominator>(-make_fraction<int_t>(-d));

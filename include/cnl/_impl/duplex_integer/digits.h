@@ -10,7 +10,7 @@
 #include "../assert.h"
 #include "../num_traits/digits.h"
 #include "forward_declaration.h"
-#include "remove_signedness.h"
+#include "numbers.h"
 
 #include <type_traits>
 
@@ -48,7 +48,7 @@ namespace cnl {
         {
             CNL_ASSERT(rhs >= 0);
             using promoted_type = decltype(lhs << rhs);
-            using unsigned_type = remove_signedness_t<promoted_type>;
+            using unsigned_type = numbers::set_signedness_t<promoted_type, false>;
             return (rhs >= digits<promoted_type>)
                          ? Result{}
                          : static_cast<Result>(

@@ -7,13 +7,13 @@
 #if !defined(CNL_IMPL_TYPE_TRAITS_WIDTH)
 #define CNL_IMPL_TYPE_TRAITS_WIDTH
 
-#include "../type_traits/is_signed.h"
+#include "../numbers/signedness.h"
 #include "digits.h"
 
 namespace cnl {
     namespace _impl {
         template<typename T>
-        inline constexpr int width = digits<T> + is_signed<T>::value;
+        inline constexpr int width = digits<T> + numbers::signedness_v<T>;
     }
 }
 

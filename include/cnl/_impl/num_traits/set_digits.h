@@ -11,7 +11,9 @@
 #define CNL_IMPL_NUM_TRAITS_SET_DIGITS
 
 #include "../../limits.h"
+#include "../config.h"
 #include "../cstdint/types.h"
+#include "../numbers/signedness.h"
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 
@@ -141,7 +143,7 @@ namespace cnl {
 
         template<class Integer, int MinNumDigits>
         using set_digits_integer = typename std::conditional<
-                numeric_limits<Integer>::is_signed, set_digits_signed<MinNumDigits>,
+                numbers::signedness_v<Integer>, set_digits_signed<MinNumDigits>,
                 set_digits_unsigned<MinNumDigits>>::type;
     }
 

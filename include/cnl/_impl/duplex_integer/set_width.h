@@ -19,7 +19,7 @@ namespace cnl {
         struct set_width<_impl::duplex_integer<Upper, Lower>, Digits> {
             using word = _impl::rep_of_t<Upper>;
             using type = typename _impl::instantiate_duplex_integer<
-                    Digits + !is_signed<word>::value, word>::type;
+                    Digits + !numbers::signedness_v<word>, word>::type;
         };
     }
 }
