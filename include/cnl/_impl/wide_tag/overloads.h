@@ -28,7 +28,7 @@ namespace cnl {
                     _impl::set_signedness_t<
                             _impl::op_result<Operator, LhsNarrowest, RhsNarrowest>, is_signed>,
                     _impl::max(
-                            _impl::width<LhsNarrowest>::value, _impl::width<RhsNarrowest>::value)>;
+                            _impl::width<LhsNarrowest>, _impl::width<RhsNarrowest>)>;
 
             using type = cnl::wide_tag<digits, narrowest>;
         };

@@ -9,13 +9,11 @@
 
 #include "../type_traits/is_signed.h"
 #include "digits.h"
-#include <type_traits>
 
 namespace cnl {
     namespace _impl {
         template<typename T>
-        struct width : std::integral_constant<int, digits<T> + is_signed<T>::value> {
-        };
+        inline constexpr int width = digits<T> + is_signed<T>::value;
     }
 }
 

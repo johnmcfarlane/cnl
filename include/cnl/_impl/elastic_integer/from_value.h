@@ -19,7 +19,7 @@ namespace cnl {
         : _impl::from_value_simple<
                   elastic_integer<
                           digits<Value>,
-                          _impl::set_width_t<Value, _impl::width<Narrowest>::value>>,
+                          _impl::set_width_t<Value, _impl::width<Narrowest>>>,
                   Value> {
     };
 

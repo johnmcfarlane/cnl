@@ -29,7 +29,7 @@ namespace cnl {
                             _impl::op_result<Operator, LhsNarrowest, RhsNarrowest>,
                             policy::is_signed>,
                     _impl::max(
-                            _impl::width<LhsNarrowest>::value, _impl::width<RhsNarrowest>::value)>;
+                            _impl::width<LhsNarrowest>, _impl::width<RhsNarrowest>)>;
 
             using type = elastic_tag<policy::digits, narrowest>;
         };

@@ -42,7 +42,7 @@ namespace std {
 
         CNL_NODISCARD static constexpr size_t from_canonical_hashes(size_t const n, size_t const d)
         {
-            return n ^ cnl::rotl(d, cnl::_impl::width<size_t>::value / 2);
+            return n ^ cnl::rotl(d, cnl::_impl::width<size_t> / 2);
         }
     };
 }
