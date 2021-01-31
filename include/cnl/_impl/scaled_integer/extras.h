@@ -71,7 +71,7 @@ namespace cnl {
             template<class Rep>
             CNL_NODISCARD constexpr Rep operator()(Rep n) const
             {
-                using widened_rep = _impl::set_width_t<Rep, _impl::width<Rep>::value * 2>;
+                using widened_rep = _impl::set_width_t<Rep, _impl::width<Rep> * 2>;
                 return static_cast<Rep>(sqrt_solve3<widened_rep>(
                         _impl::fixed_width_scale<-Exponent>(static_cast<widened_rep>(n)),
                         widened_rep(
@@ -160,7 +160,7 @@ namespace cnl {
         };
 
         template<class T>
-        using float_of_same_size = typename float_of_size<_impl::width<T>::value>::type;
+        using float_of_same_size = typename float_of_size<_impl::width<T>>::type;
 
         template<
                 typename Rep, int Exponent, int Radix,

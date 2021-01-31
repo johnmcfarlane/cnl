@@ -47,7 +47,7 @@ namespace cnl {
             using upper_type = Upper;
             using lower_type = Lower;
 
-            static constexpr int lower_width = width<lower_type>::value;
+            static constexpr int lower_width = width<lower_type>;
 
         public:
             duplex_integer() = default;
