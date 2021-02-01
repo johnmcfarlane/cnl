@@ -28,7 +28,7 @@ namespace cnl {
         // tag associated with deduced type
         using tag = wide_tag<
                 digits<Initializer>,
-                _impl::set_width_t<Initializer, _impl::width<ArchetypeNarrowest>::value>>;
+                _impl::set_width_t<Initializer, _impl::width<ArchetypeNarrowest>>>;
 
         // deduced type
         using type = Initializer;

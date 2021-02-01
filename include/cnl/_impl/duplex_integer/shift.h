@@ -33,7 +33,7 @@ namespace cnl {
             return _duplex_integer(
                     _impl::sensible_left_shift<Upper>(lhs.upper(), rhs)
                             | _impl::extra_sensible_right_shift<Upper>(
-                                    lhs.lower(), _impl::width<Lower>::value - rhs),
+                                    lhs.lower(), _impl::width<Lower> - rhs),
                     _impl::sensible_left_shift<Lower>(lhs.lower(), rhs));
         }
     };
@@ -70,7 +70,7 @@ namespace cnl {
             return static_cast<Lower>(
                     _impl::sensible_right_shift<Lower>(lhs.lower(), rhs)
                     | _impl::extra_sensible_right_shift<Lower>(
-                            lhs.upper(), rhs - _impl::width<Lower>::value));
+                            lhs.upper(), rhs - _impl::width<Lower>));
         }
     };
 }

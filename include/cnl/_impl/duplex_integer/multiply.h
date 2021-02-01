@@ -22,7 +22,7 @@ namespace cnl {
         template<typename Lhs, typename Rhs>
         struct heterogeneous_duplex_multiply_operator {
             using common_type = conditional3_t<
-                    width<Lhs>::value - width<Rhs>::value, Lhs,
+                    width<Lhs> - width<Rhs>, Lhs,
                     conditional3_t<(is_signed<Lhs>::value - is_signed<Rhs>::value), Lhs, void, Rhs>,
                     Rhs>;
 
@@ -40,7 +40,7 @@ namespace cnl {
         template<typename Word>
         struct long_multiply {
             template<typename Lhs, typename Rhs>
-            using result_type = set_width_t<Word, width<Lhs>::value + width<Rhs>::value>;
+            using result_type = set_width_t<Word, width<Lhs> + width<Rhs>>;
 
             template<typename Lhs, typename Rhs>
             CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const

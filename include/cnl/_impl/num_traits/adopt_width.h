@@ -13,7 +13,7 @@
 namespace cnl {
     namespace _impl {
         template<typename Mimic, typename Source>
-        struct adopt_width : set_width<Mimic, width<Source>::value> {
+        struct adopt_width : set_width<Mimic, width<Source>> {
         };
 
         template<typename Mimic, typename Source>
