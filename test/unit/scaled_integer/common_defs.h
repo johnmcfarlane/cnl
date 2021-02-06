@@ -10,6 +10,7 @@
 #if !defined(TEST_SCALED_INTEGER_COMMON_DEFS_H)
 #define TEST_SCALED_INTEGER_COMMON_DEFS_H
 
+#include <cnl/_impl/num_traits/adopt_width.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
@@ -34,7 +35,7 @@ static_assert(
         sizeof(int) == 4, "warning: many of the tests in this file assume a 4-byte integer!z");
 
 using test_signed = test_int;
-using test_unsigned = cnl::remove_signedness_t<test_signed>;
+using test_unsigned = cnl::_impl::adopt_width_t<cnl::remove_signedness_t<test_signed>, unsigned>;
 
 using int8 = cnl::set_digits_t<test_signed, 7>;
 using uint8 = cnl::set_digits_t<test_unsigned, 8>;
