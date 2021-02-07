@@ -712,11 +712,6 @@ static_assert(
         "cnl::scaled_integer test failed");
 
 // exponent == 16
-#if !defined(TEST_WIDE_INTEGER_8)
-static_assert(
-        scaled_integer<uint8, cnl::power<16>>(test_int{65536}) == 65536.F,
-        "cnl::scaled_integer test failed");
-#endif
 #if defined(TEST_WIDE_INTEGER_INT) || defined(TEST_WIDE_INTEGER_32)
 static_assert(
         scaled_integer<uint16, cnl::power<16>>(6553.) == 0U, "cnl::scaled_integer test failed");
@@ -763,11 +758,9 @@ static_assert(scaled_integer<int8, cnl::power<1>>(-5) == -4, "cnl::scaled_intege
 static_assert(
         scaled_integer<uint8, cnl::power<-4>>(scaled_integer<int16, cnl::power<-8>>(1.5)) == 1.5,
         "cnl::scaled_integer test failed");
-#if !defined(TEST_WIDE_INTEGER_8)
 static_assert(
         scaled_integer<uint16, cnl::power<-8>>(scaled_integer<int8, cnl::power<-4>>(3.25)) == 3.25,
         "cnl::scaled_integer test failed");
-#endif
 static_assert(
         identical(
                 scaled_integer<uint8, cnl::power<4>>{768},
@@ -817,7 +810,7 @@ namespace test_arithmetic {
 // comparison
 
 // These tests pass but produce a signed/unsigned comparison warning as a side effect.
-#if !defined(TEST_WIDE_INTEGER)
+#if !defined(TEST_WIDE_INTEGER_32) && !defined(TEST_WIDE_INTEGER_INT)
 // heterogeneous fixed-point to fixed-point comparison
 static_assert(
         scaled_integer<uint8, cnl::power<-4>>(4.5) == scaled_integer<int16, cnl::power<-7>>(4.5),
@@ -837,10 +830,12 @@ static_assert(
 static_assert(
         scaled_integer<uint8, cnl::power<-4>>(4.5) < scaled_integer<int16, cnl::power<-7>>(5.6),
         "cnl::scaled_integer test failed");
+#endif
 static_assert(
         !(scaled_integer<int8, cnl::power<-3>>(-4.5) < scaled_integer<int16, cnl::power<-7>>(-5.6)),
         "cnl::scaled_integer test failed");
 
+#if !defined(TEST_WIDE_INTEGER_32) && !defined(TEST_WIDE_INTEGER_INT)
 static_assert(
         scaled_integer<uint8, cnl::power<-4>>(4.6) > scaled_integer<int16, cnl::power<-8>>(.5),
         "cnl::scaled_integer test failed");
@@ -931,7 +926,6 @@ static_assert(
                         cnl::power<-4>>{2050.25},
                 scaled_integer<>{2048} + scaled_integer<uint8, cnl::power<-4>>{2.25}),
         "cnl::scaled_integer addition operator test failed");
-#if !defined(TEST_WIDE_INTEGER_8)
 static_assert(
         identical(
                 scaled_integer<
@@ -941,7 +935,6 @@ static_assert(
                         cnl::power<0>>{12288},
                 2048 + scaled_integer<uint8, cnl::power<10>>(10240)),
         "cnl::scaled_integer addition operator test failed");
-#endif
 static_assert(
         identical(
                 16777981.428100586F,
@@ -1012,7 +1005,6 @@ static_assert(
                         cnl::power<-3>>{0.875 - 2048},
                 scaled_integer<int8, cnl::power<-3>>(0.875) - 2048),
         "cnl::scaled_integer subtraction test failed");
-#if !defined(TEST_WIDE_INTEGER_8)
 static_assert(
         identical(
                 scaled_integer<
@@ -1020,7 +1012,6 @@ static_assert(
                         10240 - 2048},
                 scaled_integer<uint8, cnl::power<10>>(10240) - 2048),
         "cnl::scaled_integer subtraction test failed");
-#endif
 static_assert(
         identical(
                 -16776450.564086914F,
@@ -1054,7 +1045,6 @@ static_assert(
         "cnl::scaled_integer multiplication test failed");
 #endif
 
-#if !defined(TEST_WIDE_INTEGER)
 static_assert(
         identical(
                 scaled_integer<uint8, cnl::power<10>>{10240} * 3U,
@@ -1069,7 +1059,6 @@ static_assert(
                 3U * scaled_integer<uint8, cnl::power<10>>{10240},
                 scaled_integer<test_unsigned, cnl::power<10>>{30720}),
         "cnl::scaled_integer multiplication test failed");
-#endif
 
 static_assert(
         identical(
@@ -1488,13 +1477,18 @@ static_assert(
 
 #if !defined(TEST_WIDE_INTEGER_INT) && !defined(TEST_WIDE_INTEGER_32)
 static_assert(sqrt(scaled_integer<uint8>(225)) == 15, "cnl::sqrt test failed");
+#endif
 static_assert(sqrt(scaled_integer<int8>(81)) == 9, "cnl::sqrt test failed");
 
+#if !defined(TEST_WIDE_INTEGER_INT) && !defined(TEST_WIDE_INTEGER_32)
 static_assert(sqrt(scaled_integer<uint8, cnl::power<-1>>(4)) == 2, "cnl::sqrt test failed");
+#endif
 static_assert(sqrt(scaled_integer<int, cnl::power<-2>>(9)) == 3, "cnl::sqrt test failed");
 static_assert(sqrt(scaled_integer<int8, cnl::power<-2>>(9)) == 3, "cnl::sqrt test failed");
 
+#if !defined(TEST_WIDE_INTEGER_INT) && !defined(TEST_WIDE_INTEGER_32)
 static_assert(sqrt(scaled_integer<uint8, cnl::power<-4>>(4)) == 2, "cnl::sqrt test failed");
+#endif
 static_assert(
         static_cast<float>(sqrt(scaled_integer<int32, cnl::power<-24>>(3.141592654)))
                 > 1.7724537849426,
@@ -1503,7 +1497,6 @@ static_assert(
         static_cast<float>(sqrt(scaled_integer<int32, cnl::power<-24>>(3.141592654)))
                 < 1.7724537849427,
         "cnl::sqrt test failed");
-#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // std::leading_bits<scaled_integer>

@@ -26,6 +26,10 @@ using test_int = cnl::wide_integer<cnl::digits<int>, int>;
 // perform scaled_integer tests with this type of scaled_integer specialization
 #include "../scaled_integer_common.h"
 
+static_assert(identical(cnl::wide_integer<cnl::digits<int>, int>{42}, test_int{42}));
+static_assert(identical(cnl::wide_integer<cnl::digits<unsigned>, unsigned>{42}, test_unsigned{42}));
+static_assert(identical(cnl::wide_integer<cnl::digits<std::uint32_t>, unsigned>{42}, uint32{42}));
+
 TEST(scaled_integer_wide_integer, to_string)  // NOLINT
 {
     auto const* expected = "0."
