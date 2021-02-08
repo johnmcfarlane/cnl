@@ -11,7 +11,6 @@ Checks: >
   -hicpp-signed-bitwise,
   -llvm-namespace-comment,
   -llvmlibc-*,
-  -cppcoreguidelines-avoid-goto,
   -cppcoreguidelines-avoid-magic-numbers,
   -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
   -cppcoreguidelines-pro-bounds-constant-array-index,
