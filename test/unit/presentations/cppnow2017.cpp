@@ -75,15 +75,15 @@ namespace prototypes {
 TEST(cppnow2017, overflow_int_example)  // NOLINT
 {
     // multiplication of overflow_integer<int> cannot exceed numeric limits
-    EXPECT_THROW(
+    EXPECT_THROW(  // NOLINT
             (void)(overflow_integer<int32_t>{cnl::numeric_limits<int32_t>::max()} * 2),
             overflow_error);
 
     // difference from overflow_integer<unsigned> cannot be negative
-    EXPECT_THROW((void)(overflow_integer<unsigned>{0} - 1), overflow_error);
+    EXPECT_THROW((void)(overflow_integer<unsigned>{0} - 1), overflow_error);  // NOLINT
 
     // conversion to overflow_integer<char> cannot exceed numeric limits
-    EXPECT_THROW(
+    EXPECT_THROW(  // NOLINT
             (void)(overflow_integer<short>{cnl::numeric_limits<double>::max()}), overflow_error);
 
     // value of overflow_integer<int> cannot be indeterminate
