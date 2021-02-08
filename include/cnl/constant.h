@@ -12,7 +12,7 @@
 
 #include "_impl/config.h"
 #include "_impl/num_traits/digits.h"
-#include "_impl/type_traits/is_signed.h"
+#include "_impl/numbers/signedness.h"
 #include "cstdint.h"
 #include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
 
@@ -159,11 +159,13 @@ namespace cnl {
     inline constexpr int digits<constant<Value>> = _impl::used_digits((Value < 0) ? -Value : Value);
 
     ////////////////////////////////////////////////////////////////////////////////
-    // type traits
+    // numbers traits
 
-    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    struct is_signed<constant<Value>> : is_signed<decltype(Value)> {
-    };
+    namespace numbers {
+        template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+        struct signedness<constant<Value>> : signedness<decltype(Value)> {
+        };
+    }
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::numeric_limits<cnl::constant>

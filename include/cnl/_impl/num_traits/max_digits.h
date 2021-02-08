@@ -8,9 +8,8 @@
 #define CNL_IMPL_NUM_TRAITS_MAX_DIGITS
 
 #include "../cstdint/types.h"
-#include "../type_traits/enable_if.h"
+#include "../numbers/signedness.h"
 #include "../type_traits/is_integral.h"
-#include "../type_traits/is_signed.h"
 #include "digits.h"
 #include "is_composite.h"
 #include "rep_of.h"
@@ -32,7 +31,7 @@ namespace cnl {
         inline constexpr int max_digits = 0;
 
         template<_impl::integral T>
-        inline constexpr auto max_digits<T> = max_digits_fundamental<is_signed<T>::value>;
+        inline constexpr auto max_digits<T> = max_digits_fundamental<numbers::signedness_v<T>>;
 
         template<typename T>
         requires is_composite<T>::value inline constexpr auto max_digits<T> = max_digits<rep_of_t<T>>;

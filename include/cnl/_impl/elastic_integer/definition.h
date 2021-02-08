@@ -70,7 +70,7 @@ namespace cnl {
         };
 
         template<typename S>
-        using narrowest = set_digits_t<S, machine_digits<is_signed<S>::value>::value>;
+        using narrowest = set_digits_t<S, machine_digits<numbers::signedness_v<S>>::value>;
     }
 
     template<class S>

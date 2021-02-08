@@ -19,9 +19,8 @@ set(test_sources
         overflow/rounding/integer.cpp
         rounding/rounding.cpp
         _impl/num_traits/max_digits.cpp
-        _impl/num_traits/adopt.cpp
         _impl/num_traits/adopt_digits.cpp
-        _impl/num_traits/adopt_signedness.cpp
+        _impl/numbers/adopt_signedness.cpp
         _impl/ostream.cpp
         _impl/overflow/is_overflow.cpp
         _impl/rounding/convert_operator.cpp

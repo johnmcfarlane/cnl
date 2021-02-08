@@ -9,8 +9,8 @@
 
 #include "../num_traits/set_width.h"
 #include "../num_traits/width.h"
-#include "../type_traits/is_signed.h"
-#include "../type_traits/set_signedness.h"
+#include "../numbers/set_signedness.h"
+#include "../numbers/signedness.h"
 #include "definition.h"
 
 /// compositional numeric library
@@ -21,11 +21,11 @@ namespace cnl {
                 typename RhsNarrowest>
         struct wide_tag_overload_params {
             static constexpr bool is_signed{
-                    cnl::is_signed<LhsNarrowest>::value | cnl::is_signed<RhsNarrowest>::value};
+                    numbers::signedness_v<LhsNarrowest> | numbers::signedness_v<RhsNarrowest>};
             static constexpr int digits{max(LhsDigits, RhsDigits)};
 
             using narrowest = _impl::set_width_t<
-                    _impl::set_signedness_t<
+                    numbers::set_signedness_t<
                             _impl::op_result<Operator, LhsNarrowest, RhsNarrowest>, is_signed>,
                     _impl::max(
                             _impl::width<LhsNarrowest>, _impl::width<RhsNarrowest>)>;

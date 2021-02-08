@@ -12,10 +12,10 @@
 #include "../num_traits/set_width.h"
 #include "../num_traits/to_rep.h"
 #include "../num_traits/width.h"
+#include "../numbers/set_signedness.h"
+#include "../numbers/signedness.h"
 #include "../operators/custom_operator.h"
 #include "../operators/native_tag.h"
-#include "../type_traits/is_signed.h"
-#include "../type_traits/set_signedness.h"
 #include "definition.h"
 #include "is_wide_tag.h"
 
@@ -69,9 +69,9 @@ namespace cnl {
     private:
         static constexpr auto _max_digits{_impl::max(LhsDigits, RhsDigits)};
         static constexpr auto _are_signed{
-                is_signed<LhsNarrowest>::value || is_signed<RhsNarrowest>::value};
+                numbers::signedness_v<LhsNarrowest> || numbers::signedness_v<RhsNarrowest>};
         using common_type = typename std::common_type<LhsNarrowest, RhsNarrowest>::type;
-        using narrowest = _impl::set_signedness_t<common_type, _are_signed>;
+        using narrowest = numbers::set_signedness_t<common_type, _are_signed>;
 
         using result_tag = wide_tag<_max_digits, narrowest>;
         using result = typename result_tag::rep;

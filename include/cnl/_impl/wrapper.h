@@ -18,6 +18,7 @@
 #include "wrapper/is_composite.h"
 #include "wrapper/is_wrapper.h"
 #include "wrapper/make_wrapper.h"
+#include "wrapper/numbers.h"
 #include "wrapper/numeric_limits.h"
 #include "wrapper/operator_helpers.h"
 #include "wrapper/operators.h"

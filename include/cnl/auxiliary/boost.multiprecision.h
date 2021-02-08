@@ -11,11 +11,10 @@
 #if !defined(CNL_BOOST_MULTIPRECISION_H)
 #define CNL_BOOST_MULTIPRECISION_H
 
+#include "../_impl/numbers/set_signedness.h"
+#include "../_impl/numbers/signedness.h"
 #include "../_impl/scaled/power.h"
-#include "../_impl/type_traits/add_signedness.h"
 #include "../_impl/type_traits/enable_if.h"
-#include "../_impl/type_traits/is_signed.h"
-#include "../_impl/type_traits/remove_signedness.h"
 #include "../constant.h"
 #include "../num_traits.h"
 #include "../rounding_integer.h"
@@ -86,44 +85,53 @@ namespace cnl {
         struct is_boost_multiprecision<_bmp::number<Backend>> : std::true_type {
         };
     }
+}
 
+/// compositional numeric library, numbers header/namespace
+namespace cnl::numbers {
     template<unsigned NumBits>
-    struct is_signed<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>>
+    struct signedness<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>>
         : std::true_type {
     };
 
     template<unsigned NumBits>
-    struct is_signed<
+    struct signedness<
             _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>>
         : std::false_type {
     };
 
     template<unsigned NumBits>
-    struct add_signedness<
-            _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> {
+    struct set_signedness<
+            _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>,
+            true> {
         using type = _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>;
     };
 
     template<unsigned NumBits>
-    struct add_signedness<
-            _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> {
+    struct set_signedness<
+            _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>,
+            true> {
         using type = _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>;
     };
 
     template<unsigned NumBits>
-    struct remove_signedness<
-            _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> {
+    struct set_signedness<
+            _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>,
+            false> {
         using type =
                 _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>;
     };
 
     template<unsigned NumBits>
-    struct remove_signedness<
-            _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> {
+    struct set_signedness<
+            _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>,
+            false> {
         using type =
                 _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>;
     };
+}
 
+namespace cnl {
     template<unsigned NumBits>
     inline constexpr int
             digits<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> = NumBits - 1;

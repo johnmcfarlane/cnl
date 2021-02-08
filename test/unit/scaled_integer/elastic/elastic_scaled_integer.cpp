@@ -27,7 +27,6 @@ using cnl::make_elastic_scaled_integer;
 namespace {
     using cnl::digits;
     using cnl::elastic_integer;
-    using cnl::is_signed;
     using cnl::scaled_integer;
     using cnl::set_digits_t;
 
@@ -153,7 +152,7 @@ namespace test_division {
 
 namespace test_set_signedness {
     static_assert(
-            is_signed<cnl::add_signedness_t<elastic_scaled_integer<1, 0, unsigned>>>::value);
+            cnl::numbers::signedness_v<cnl::numbers::set_signedness_t<elastic_scaled_integer<1, 0, unsigned>, true>>);
 }
 
 namespace test_fraction_deduced {
@@ -263,13 +262,11 @@ struct test_traits {
             cnl::numeric_limits<T>::is_signed == IsSigned,
             "cnl::numeric_limits<T>::is_signed fails for give type, T");
     static_assert(
-            is_signed<T>::value == IsSigned, "cnl::add_signedness failed cnl::numeric_limits test");
+            cnl::numbers::signedness_v<T> == IsSigned);
     static_assert(
-            is_signed<cnl::add_signedness_t<T>>::value,
-            "cnl::add_signedness failed cnl::numeric_limits test");
+            cnl::numbers::signedness_v<cnl::numbers::set_signedness_t<T, true>>);
     static_assert(
-            !is_signed<cnl::remove_signedness_t<T>>::value,
-            "cnl::remove_signedness failed cnl::numeric_limits test");
+            !cnl::numbers::signedness_v<cnl::numbers::set_signedness_t<T, false>>);
 };
 
 template struct test_traits<cnl::uint8, false>;
@@ -357,8 +354,8 @@ struct positive_elastic_test : number_test<Elastic> {
     using rep = cnl::_impl::rep_of_t<elastic_type>;
     using numeric_limits = cnl::numeric_limits<elastic_type>;
 
-    using signed_type = cnl::add_signedness_t<elastic_type>;
-    using unsigned_type = cnl::remove_signedness_t<elastic_type>;
+    using signed_type = cnl::numbers::set_signedness_t<elastic_type, true>;
+    using unsigned_type = cnl::numbers::set_signedness_t<elastic_type, false>;
 
     ////////////////////////////////////////////////////////////////////////////////
     // useful constants
@@ -602,8 +599,7 @@ struct signed_elastic_test
             cnl::numeric_limits<elastic_type>::is_signed,
             "subject of test class is not reported as signed");
     static_assert(
-            is_same<cnl::add_signedness_t<elastic_type>, elastic_type>::value,
-            "subject of test class is not reported as signed");
+            is_same<cnl::numbers::set_signedness_t<elastic_type, true>, elastic_type>::value);
 
     ////////////////////////////////////////////////////////////////////////////////
     // test cnl::numeric_limits<elastic_scaled_integer>

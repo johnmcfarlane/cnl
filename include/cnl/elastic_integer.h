@@ -10,6 +10,7 @@
 #if !defined(CNL_ELASTIC_INTEGER_H)
 #define CNL_ELASTIC_INTEGER_H
 
+#include "_impl/elastic_integer/abs.h"
 #include "_impl/elastic_integer/custom_operator.h"
 #include "_impl/elastic_integer/declaration.h"
 #include "_impl/elastic_integer/definition.h"
@@ -19,6 +20,7 @@
 #include "_impl/elastic_integer/is_wrapper.h"
 #include "_impl/elastic_integer/limits.h"
 #include "_impl/elastic_integer/make_elastic_integer.h"
+#include "_impl/elastic_integer/numbers.h"
 #include "_impl/elastic_integer/operators.h"
 #include "_impl/elastic_integer/rep_of.h"
 #include "_impl/elastic_integer/scale.h"

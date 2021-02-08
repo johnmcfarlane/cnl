@@ -11,9 +11,8 @@
 #include "../num_traits/digits.h"
 #include "../num_traits/max_digits.h"
 #include "../num_traits/set_digits.h"
-#include "../type_traits/add_signedness.h"
-#include "../type_traits/is_signed.h"
-#include "../type_traits/set_signedness.h"
+#include "../numbers/set_signedness.h"
+#include "../numbers/signedness.h"
 #include "forward_declaration.h"
 
 #include <type_traits>
@@ -36,7 +35,7 @@ namespace cnl {
         template<typename Word>
         struct multiword_integer<Word, 2> {
             using upper = Word;
-            using lower = set_signedness_t<upper, false>;
+            using lower = numbers::set_signedness_t<upper, false>;
             using type = duplex_integer<upper, lower>;
         };
 
@@ -50,7 +49,7 @@ namespace cnl {
             static constexpr auto lower_num_words = num_words - upper_num_words;
             using upper = typename multiword_integer<Word, upper_num_words>::type;
             using lower = typename multiword_integer<
-                    set_signedness_t<Word, false>, lower_num_words>::type;
+                    numbers::set_signedness_t<Word, false>, lower_num_words>::type;
 
         public:
             using type = duplex_integer<upper, lower>;
@@ -69,7 +68,7 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // optimal_duplex
 
-        template<typename Word, typename Signedness = set_signedness_t<int, is_signed<Word>::value>>
+        template<typename Word, typename Signedness = numbers::set_signedness_t<int, numbers::signedness_v<Word>>>
         struct optimal_duplex;
 
         template<typename Narrowest>
@@ -90,10 +89,10 @@ namespace cnl {
 
         template<typename Narrowest>
         struct optimal_duplex<Narrowest, signed> {
-            using unsigned_narrowest = remove_signedness_t<Narrowest>;
+            using unsigned_narrowest = numbers::set_signedness_t<Narrowest, false>;
             using unsigned_multiword_integer = optimal_duplex<unsigned_narrowest, unsigned>;
 
-            using type = add_signedness_t<typename unsigned_multiword_integer::type>;
+            using type = numbers::set_signedness_t<typename unsigned_multiword_integer::type, true>;
         };
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -102,7 +101,7 @@ namespace cnl {
         template<int Digits, typename Narrowest>
         struct instantiate_duplex_integer {
             using word = typename optimal_duplex<Narrowest>::type;
-            static constexpr auto num_sign_bits = is_signed<word>::value;
+            static constexpr auto num_sign_bits = numbers::signedness_v<word>;
             static constexpr auto word_digits = digits<word> + num_sign_bits;
             static constexpr auto required_num_words =
                     (Digits + num_sign_bits + word_digits - 1) / word_digits;

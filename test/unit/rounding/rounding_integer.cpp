@@ -88,33 +88,30 @@ namespace {
 
     namespace test_traits {
 
-        namespace test_add_signedness_t {
-            using cnl::add_signedness_t;
+        namespace test_set_signedness_t {
+            using cnl::numbers::set_signedness_t;
 
             static_assert(
                     std::is_same<
-                            rounding_integer<int>, add_signedness_t<rounding_integer<int>>>::value,
-                    "cnl::add_signedness_t<cnl::rounding_integer<>>");
+                            rounding_integer<int>,
+                            cnl::numbers::set_signedness_t<rounding_integer<int>, true>>::value);
             static_assert(
                     std::is_same<
                             rounding_integer<short>,
-                            add_signedness_t<rounding_integer<unsigned short>>>::value,
-                    "cnl::add_signedness_t<cnl::rounding_integer<>>");
+                            cnl::numbers::set_signedness_t<rounding_integer<unsigned short>, true>>::value);
         }
 
-        namespace test_remove_signedness_t {
-            using cnl::remove_signedness_t;
+        namespace test_set_signedness_t {
+            using cnl::numbers::set_signedness_t;
 
             static_assert(
                     std::is_same<
                             rounding_integer<unsigned char>,
-                            remove_signedness_t<rounding_integer<unsigned char>>>::value,
-                    "cnl::remove_signedness_t<cnl::rounding_integer<>>");
+                            set_signedness_t<rounding_integer<unsigned char>, false>>::value);
             static_assert(
                     std::is_same<
                             rounding_integer<unsigned long long>,
-                            remove_signedness_t<rounding_integer<long long>>>::value,
-                    "cnl::remove_signedness_t<cnl::rounding_integer<>>");
+                            set_signedness_t<rounding_integer<long long>, false>>::value);
         }
 
         namespace test_to_rep {

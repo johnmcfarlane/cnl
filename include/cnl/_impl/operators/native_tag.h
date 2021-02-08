@@ -8,8 +8,8 @@
 #define CNL_IMPL_OPERATORS_NATIVE_TAG_H
 
 #include "../../constant.h"
+#include "../numbers/set_signedness.h"
 #include "../type_traits/is_integral.h"
-#include "../type_traits/remove_signedness.h"
 #include "custom_operator.h"
 #include "homogeneous_deduction_tag_base.h"
 #include "homogeneous_operator_tag_base.h"

@@ -19,10 +19,11 @@ namespace cnl {
         template<class T1, class T2>
         struct common_signedness {
             static constexpr bool _are_signed =
-                    numeric_limits<T1>::is_signed | numeric_limits<T2>::is_signed;
+                    numbers::signedness_v<T1> | numbers::signedness_v<T2>;
 
             using type = typename std::common_type<
-                    set_signedness_t<T1, _are_signed>, set_signedness_t<T2, _are_signed>>::type;
+                    numbers::set_signedness_t<T1, _are_signed>,
+                    numbers::set_signedness_t<T2, _are_signed>>::type;
         };
 
         template<class T1, class T2>
@@ -147,10 +148,10 @@ namespace cnl {
     struct custom_operator<
             _impl::minus_op, operand<elastic_integer<RhsDigits, RhsNarrowest>>> {
         CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
-                const -> elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>
+                const -> elastic_integer<RhsDigits, typename numbers::set_signedness_t<RhsNarrowest, true>>
         {
             using result_type =
-                    elastic_integer<RhsDigits, typename add_signedness<RhsNarrowest>::type>;
+                    elastic_integer<RhsDigits, typename numbers::set_signedness_t<RhsNarrowest, true>>;
             return _impl::from_rep<result_type>(-_impl::to_rep(static_cast<result_type>(rhs)));
         }
     };
