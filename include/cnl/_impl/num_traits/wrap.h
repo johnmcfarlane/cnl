@@ -18,7 +18,7 @@ namespace cnl {
 
         template<typename Number, typename Rep>
         struct wrap<Number, Rep, enable_if_t<!is_composite<Number>::value>> {
-            CNL_NODISCARD constexpr Number operator()(Rep const& number) const
+            CNL_NODISCARD constexpr auto operator()(Rep const& number) const
             {
                 return number;
             }

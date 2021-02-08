@@ -24,17 +24,17 @@ namespace cnl {
         // standard members
         static constexpr int digits = _lower_numeric_limits::digits + _upper_numeric_limits::digits;
 
-        CNL_NODISCARD static constexpr _value_type lowest() noexcept
+        CNL_NODISCARD static constexpr auto lowest() noexcept
         {
             return _value_type{numeric_limits<Upper>::lowest(), numeric_limits<Lower>::lowest()};
         }
 
-        CNL_NODISCARD static constexpr _value_type min() noexcept
+        CNL_NODISCARD static constexpr auto min() noexcept
         {
             return _value_type{numeric_limits<Upper>::min(), numeric_limits<Lower>::min()};
         }
 
-        CNL_NODISCARD static constexpr _value_type max() noexcept
+        CNL_NODISCARD static constexpr auto max() noexcept
         {
             return _value_type{numeric_limits<Upper>::max(), numeric_limits<Lower>::max()};
         }

@@ -173,7 +173,6 @@ namespace cnl {
         template<typename Rep, int Exponent, int Radix>
         auto to_chars_fractional(
                 char* first, char* last, scaled_integer<Rep, power<Exponent, Radix>> const& value)
-                -> std::to_chars_result
         {
             auto const destination_length = std::distance(first, last);
             if (destination_length < 2) {
@@ -201,7 +200,7 @@ namespace cnl {
         }
 
         template<typename Rep, int Exponent, int Radix>
-        std::to_chars_result to_chars_positive(
+        auto to_chars_positive(
                 char* const first, char* const last,
                 scaled_integer<Rep, power<Exponent, Radix>> const& value)
         {
@@ -221,7 +220,7 @@ namespace cnl {
 
     // partial implementation of std::to_chars overloaded on cnl::scaled_integer
     template<typename Rep, int Exponent, int Radix>
-    std::to_chars_result to_chars(
+    auto to_chars(
             char* const first,
             char* const last,  // NOLINT(readability-non-const-parameter)
             cnl::scaled_integer<Rep, power<Exponent, Radix>> const& value)

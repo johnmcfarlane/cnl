@@ -136,7 +136,8 @@ namespace cnl {
     }
 
     template<typename Numerator, typename Denominator>
-    ::std::ostream& operator<<(::std::ostream& out, fraction<Numerator, Denominator> const& f)
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type)
+    auto& operator<<(std::ostream& out, fraction<Numerator, Denominator> const& f)
     {
         return out << to_string(f);
     }

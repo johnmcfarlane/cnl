@@ -16,9 +16,9 @@ using std::is_same;
 
 namespace sample1 {
     // range of a*b is UCHAR_MAX*UCHAR_MAX but range of return value is UCHAR_MAX
-    uint8_t multiply(uint8_t a, uint8_t b)
+    auto multiply(uint8_t a, uint8_t b)
     {
-        return a * b;
+        return uint8_t(a * b);
     }
 
     // sample 1 tests

@@ -54,7 +54,7 @@ namespace cnl {
 
     namespace _impl {
         template<class Rep>
-        CNL_NODISCARD constexpr Rep sqrt_solve3(Rep n, Rep bit, Rep result)
+        CNL_NODISCARD constexpr auto sqrt_solve3(Rep n, Rep bit, Rep result) -> Rep
         {
             return (bit != Rep{0})
                          ? (n >= result + bit) ? sqrt_solve3<Rep>(
@@ -69,7 +69,7 @@ namespace cnl {
         template<int Exponent>
         struct sqrt_solve1 {
             template<class Rep>
-            CNL_NODISCARD constexpr Rep operator()(Rep n) const
+            CNL_NODISCARD constexpr auto operator()(Rep n) const
             {
                 using widened_rep = _impl::set_width_t<Rep, _impl::width<Rep> * 2>;
                 return static_cast<Rep>(sqrt_solve3<widened_rep>(
@@ -165,8 +165,8 @@ namespace cnl {
         template<
                 typename Rep, int Exponent, int Radix,
                 _impl::float_of_same_size<Rep> (*F)(_impl::float_of_same_size<Rep>)>
-        CNL_NODISCARD constexpr scaled_integer<Rep, power<Exponent, Radix>> crib(
-                scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
+        CNL_NODISCARD constexpr auto
+        crib(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
         {
             using floating_point = _impl::float_of_same_size<Rep>;
             return static_cast<scaled_integer<Rep, power<Exponent, Radix>>>(
@@ -175,29 +175,25 @@ namespace cnl {
     }
 
     template<typename Rep, int Exponent, int Radix>
-    CNL_NODISCARD constexpr scaled_integer<Rep, power<Exponent, Radix>> sin(
-            scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
+    CNL_NODISCARD constexpr auto sin(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
     {
         return _impl::crib<Rep, Exponent, Radix, std::sin>(x);
     }
 
     template<typename Rep, int Exponent, int Radix>
-    CNL_NODISCARD constexpr scaled_integer<Rep, power<Exponent, Radix>> cos(
-            scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
+    CNL_NODISCARD constexpr auto cos(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
     {
         return _impl::crib<Rep, Exponent, Radix, std::cos>(x);
     }
 
     template<typename Rep, int Exponent, int Radix>
-    CNL_NODISCARD constexpr scaled_integer<Rep, power<Exponent, Radix>> exp(
-            scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
+    CNL_NODISCARD constexpr auto exp(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
     {
         return _impl::crib<Rep, Exponent, Radix, std::exp>(x);
     }
 
     template<typename Rep, int Exponent, int Radix>
-    CNL_NODISCARD constexpr scaled_integer<Rep, power<Exponent, Radix>> pow(
-            scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
+    CNL_NODISCARD constexpr auto pow(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
     {
         return _impl::crib<Rep, Exponent, Radix, std::pow>(x);
     }
@@ -206,14 +202,15 @@ namespace cnl {
     // cnl::scaled_integer streaming - (placeholder implementation)
 
     template<typename Rep, int Exponent, int Radix>
-    ::std::ostream& operator<<(
-            ::std::ostream& out, scaled_integer<Rep, power<Exponent, Radix>> const& fp)
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type)
+    auto& operator<<(std::ostream& out, scaled_integer<Rep, power<Exponent, Radix>> const& fp)
     {
         return out << to_chars(fp).data();
     }
 
     template<typename Rep, int Exponent, int Radix>
-    ::std::istream& operator>>(::std::istream& in, scaled_integer<Rep, power<Exponent, Radix>>& fp)
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type)
+    auto& operator>>(std::istream& in, scaled_integer<Rep, power<Exponent, Radix>>& fp)
     {
         long double ld{};
         in >> ld;
@@ -238,17 +235,17 @@ namespace cnl {
 
         // standard members
 
-        CNL_NODISCARD static constexpr _value_type min() noexcept
+        CNL_NODISCARD static constexpr auto min() noexcept
         {
             return _impl::from_rep<_value_type>(Rep{1});
         }
 
-        CNL_NODISCARD static constexpr _value_type max() noexcept
+        CNL_NODISCARD static constexpr auto max() noexcept
         {
             return _impl::from_rep<_value_type>(_rep_numeric_limits::max());
         }
 
-        CNL_NODISCARD static constexpr _value_type lowest() noexcept
+        CNL_NODISCARD static constexpr auto lowest() noexcept
         {
             return _impl::from_rep<_value_type>(_rep_numeric_limits::lowest());
         }
@@ -257,34 +254,34 @@ namespace cnl {
 
         static constexpr bool is_integer = false;
 
-        CNL_NODISCARD static constexpr _value_type epsilon() noexcept
+        CNL_NODISCARD static constexpr auto epsilon() noexcept
         {
             return _impl::from_rep<_value_type>(Rep{1});
         }
 
-        CNL_NODISCARD static constexpr _value_type round_error() noexcept
+        CNL_NODISCARD static constexpr auto round_error() noexcept
         {
             return _impl::from_rep<_value_type>(Rep{0});
         }
 
-        CNL_NODISCARD static constexpr _value_type infinity() noexcept
+        CNL_NODISCARD static constexpr auto infinity() noexcept
         {
             return _impl::from_rep<_value_type>(Rep{0});
         }
 
-        CNL_NODISCARD static constexpr _value_type
+        CNL_NODISCARD static constexpr auto
         quiet_NaN() noexcept  // NOLINT(readability-identifier-naming)
         {
             return _impl::from_rep<_value_type>(Rep{0});
         }
 
-        CNL_NODISCARD static constexpr _value_type
+        CNL_NODISCARD static constexpr auto
         signaling_NaN() noexcept  // NOLINT(readability-identifier-naming)
         {
             return _impl::from_rep<_value_type>(Rep{0});
         }
 
-        CNL_NODISCARD static constexpr _value_type denorm_min() noexcept
+        CNL_NODISCARD static constexpr auto denorm_min() noexcept
         {
             return _impl::from_rep<_value_type>(Rep{1});
         }

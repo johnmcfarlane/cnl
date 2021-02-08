@@ -23,7 +23,7 @@ namespace cnl {
     namespace _numeric_impl {
         template<class Integer, bool IsSigned>
         struct trailing_bits {
-            CNL_NODISCARD constexpr int operator()(Integer const& integer) const noexcept
+            CNL_NODISCARD constexpr auto operator()(Integer const& integer) const noexcept
             {
                 return countr_zero(integer);
             }
@@ -31,7 +31,7 @@ namespace cnl {
 
         template<class Integer>
         struct trailing_bits<Integer, true> {
-            CNL_NODISCARD constexpr int operator()(Integer const& integer) const noexcept
+            CNL_NODISCARD constexpr auto operator()(Integer const& integer) const noexcept
             {
                 using unsigned_type = numbers::set_signedness_t<Integer, false>;
                 return countr_zero(static_cast<unsigned_type>(integer));
@@ -41,7 +41,7 @@ namespace cnl {
 
     // count of the right redundant trailing bits
     template<class Integer>
-    CNL_NODISCARD constexpr int trailing_bits(Integer const& value)
+    CNL_NODISCARD constexpr auto trailing_bits(Integer const& value)
     {
         return value ? _numeric_impl::trailing_bits<Integer, numbers::signedness_v<Integer>>()(value)
                      : 0;
@@ -51,7 +51,7 @@ namespace cnl {
     // cnl::used_digits
 
     template<typename Integer>
-    CNL_NODISCARD constexpr int used_digits(
+    CNL_NODISCARD constexpr auto used_digits(
             Integer const& value, int radix = numeric_limits<Integer>::radix)
     {
         return _impl::used_digits_signed<numbers::signedness_v<Integer>>{}(unwrap(value), radix);
@@ -61,7 +61,7 @@ namespace cnl {
     // cnl::leading_bits
 
     template<class Integer>
-    CNL_NODISCARD constexpr int leading_bits(Integer const& value)
+    CNL_NODISCARD constexpr auto leading_bits(Integer const& value)
     {
         return digits<Integer> - cnl::used_digits(value);
     }

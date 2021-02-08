@@ -40,7 +40,7 @@ namespace cnl {
             _impl::convert_op,
             operand<Source, SrcTag>,
             operand<Destination, native_rounding_tag>> {
-        CNL_NODISCARD constexpr Destination operator()(Source const& from) const
+        CNL_NODISCARD constexpr auto operator()(Source const& from) const
         {
             return custom_operator<
                     _impl::convert_op, operand<Source, SrcTag>, operand<Destination>>{}(from);
@@ -49,7 +49,7 @@ namespace cnl {
 
     template<typename Source, tag SrcTag, typename Destination>
     requires(!_impl::is_rounding_tag<SrcTag>::value && _impl::are_arithmetic_or_integer<Destination, Source>::value) struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination, nearest_rounding_tag>> {
-        CNL_NODISCARD constexpr Destination operator()(Source const& from) const
+        CNL_NODISCARD constexpr auto operator()(Source const& from) const
         {
             return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
                          ? static_cast<Destination>(
@@ -61,21 +61,21 @@ namespace cnl {
     template<typename Source, tag SrcTag, typename Destination>
     requires(!_impl::is_rounding_tag<SrcTag>::value && _impl::are_arithmetic_or_integer<Destination, Source>::value) struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination, tie_to_pos_inf_rounding_tag>> {
     private:
-        CNL_NODISCARD static constexpr Destination floor_residual(Source x, Source x_whole)
+        CNL_NODISCARD static constexpr auto floor_residual(Source x, Source x_whole)
         {
             return static_cast<Destination>((x < Source(0)) && (x < x_whole));
         }
-        CNL_NODISCARD static constexpr Source floor_int(Source x, Source x_whole)
+        CNL_NODISCARD static constexpr auto floor_int(Source x, Source x_whole)
         {
             return (x_whole - static_cast<Source>(floor_residual(x, x_whole)));
         }
-        CNL_NODISCARD static constexpr Source floor(Source x)
+        CNL_NODISCARD static constexpr auto floor(Source x)
         {
             return floor_int(x, static_cast<Source>(static_cast<Destination>(x)));
         }
 
     public:
-        CNL_NODISCARD constexpr Destination operator()(Source const& from) const
+        CNL_NODISCARD constexpr auto operator()(Source const& from) const
         {
             return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
                          ? static_cast<Destination>(floor(from + static_cast<Source>(.5L)))
@@ -86,21 +86,21 @@ namespace cnl {
     template<typename Source, tag SrcTag, typename Destination>
     requires(!_impl::is_rounding_tag<SrcTag>::value && _impl::are_arithmetic_or_integer<Destination, Source>::value) struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination, neg_inf_rounding_tag>> {
     private:
-        CNL_NODISCARD static constexpr Destination floor_residual(Source x, Source x_whole)
+        CNL_NODISCARD static constexpr auto floor_residual(Source x, Source x_whole)
         {
             return static_cast<Destination>((x < Source(0)) && (x < x_whole));
         }
-        CNL_NODISCARD static constexpr Source floor_int(Source x, Source x_whole)
+        CNL_NODISCARD static constexpr auto floor_int(Source x, Source x_whole)
         {
             return (x_whole - static_cast<Source>(floor_residual(x, x_whole)));
         }
-        CNL_NODISCARD static constexpr Source floor(Source x)
+        CNL_NODISCARD static constexpr auto floor(Source x)
         {
             return floor_int(x, static_cast<Source>(static_cast<Destination>(x)));
         }
 
     public:
-        CNL_NODISCARD constexpr Destination operator()(Source const& from) const
+        CNL_NODISCARD constexpr auto operator()(Source const& from) const
         {
             return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
                          ? static_cast<Destination>(floor(from))
@@ -111,7 +111,7 @@ namespace cnl {
 
     template<typename Source, rounding_tag SrcTag, typename Destination>
     struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination>> {
-        CNL_NODISCARD constexpr Destination operator()(Source const& from) const
+        CNL_NODISCARD constexpr auto operator()(Source const& from) const
         {
             return custom_operator<_impl::convert_op, operand<Source>, operand<Destination>>{}(
                     from);

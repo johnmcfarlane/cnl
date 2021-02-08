@@ -15,7 +15,8 @@
 /// compositional numeric library
 namespace cnl {
     template<int Digits, class Narrowest>
-    std::ostream& operator<<(std::ostream& o, elastic_integer<Digits, Narrowest> const& i)
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type)
+    auto& operator<<(std::ostream& o, elastic_integer<Digits, Narrowest> const& i)
     {
         return o << _impl::to_rep(i);
     }

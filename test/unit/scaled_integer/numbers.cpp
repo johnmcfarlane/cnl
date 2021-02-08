@@ -35,7 +35,7 @@ namespace {
 
     // where greater of inputs is max and lesser is min, returns 1-max/min
     template<class Rep, int Exponent>
-    long double get_error(cnl::scaled_integer<Rep, cnl::power<Exponent>> fp_constant, long double ld_constant)
+    auto get_error(cnl::scaled_integer<Rep, cnl::power<Exponent>> fp_constant, long double ld_constant)
     {
         CNL_ASSERT(fp_constant > 0.);
         CNL_ASSERT(ld_constant > 0.);

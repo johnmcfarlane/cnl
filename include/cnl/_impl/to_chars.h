@@ -32,7 +32,7 @@ namespace cnl {
 
         // cnl::_impl::itoc
         template<typename Scalar>
-        char itoc(Scalar value)
+        auto itoc(Scalar value)
         {
             static_assert(
                     std::is_same<typename rounding<Scalar>::type, native_rounding_tag>::value,
@@ -43,7 +43,7 @@ namespace cnl {
 
         // cnl::_impl::to_chars_natural
         template<class Integer>
-        char* to_chars_natural(char* ptr, char* last, Integer const& value)
+        auto to_chars_natural(char* ptr, char* last, Integer const& value) -> char*
         {
             auto const quotient = value / 10;
 
@@ -60,7 +60,7 @@ namespace cnl {
         }
 
         template<_impl::integer Integer>
-        std::to_chars_result to_chars_positive(
+        auto to_chars_positive(
                 char* const first,  // NOLINT(readability-avoid-const-params-in-decls)
                 char* const last,  // NOLINT(readability-avoid-const-params-in-decls)
                 Integer const& value) noexcept
@@ -76,8 +76,7 @@ namespace cnl {
 
         template<typename Number>
         struct to_chars_non_zero<Number, false> {
-            std::to_chars_result operator()(
-                    char* const first, char* const last, Number const& value) const
+            auto operator()(char* const first, char* const last, Number const& value) const
             {
                 // +ve
                 return to_chars_positive(first, last, value);
@@ -86,8 +85,7 @@ namespace cnl {
 
         template<typename Number>
         struct to_chars_non_zero<Number, true> {
-            std::to_chars_result operator()(
-                    char* const first, char* const last, Number const& value) const
+            auto operator()(char* const first, char* const last, Number const& value) const
             {
                 if (value > Number{}) {
                     // +ve
@@ -112,7 +110,7 @@ namespace cnl {
 
     // partial implementation of std::to_chars overloaded on cnl::duplex_integer
     template<_impl::integer Integer>
-    std::to_chars_result to_chars(
+    auto to_chars(
             char* const first,  // NOLINT(readability-avoid-const-params-in-decls)
             char* const last,  // NOLINT(readability-avoid-const-params-in-decls,readability-non-const-parameter)
             Integer const& value)
@@ -138,7 +136,7 @@ namespace cnl {
     // overload of cnl::to_chars returning fixed-size array of chars
     // large enough to store any possible result for given input type
     template<typename Number>
-    std::array<char, _impl::max_to_chars_chars<Number>::value + 1> to_chars(Number const& value)
+    auto to_chars(Number const& value)
     {
         constexpr auto max_num_chars = _impl::max_to_chars_chars<Number>::value;
 

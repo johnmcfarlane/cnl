@@ -17,11 +17,11 @@ namespace cnl {
     using safe_integer = overflow_integer<elastic_integer<IntegerDigits, Narrowest>, OverflowTag>;
 
     template<overflow_tag OverflowTag = undefined_overflow_tag, class Narrowest = int, class Input = int>
-    CNL_NODISCARD safe_integer<
-            numeric_limits<Input>::digits, OverflowTag,
-            Narrowest> constexpr make_safe_int(Input const& input)
+    CNL_NODISCARD constexpr auto make_safe_int(Input const& input)
     {
-        return input;
+        return safe_integer<
+                numeric_limits<Input>::digits, OverflowTag,
+                Narrowest>{input};
     }
 }
 

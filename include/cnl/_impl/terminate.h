@@ -15,7 +15,7 @@
 namespace cnl {
     namespace _impl {
         template<class Result>
-        [[noreturn]] constexpr Result terminate(char const* message) noexcept
+        [[noreturn]] constexpr auto terminate(char const* message) noexcept -> Result
         {
             std::fputs(message, stderr);
             std::fputc('\n', stderr);

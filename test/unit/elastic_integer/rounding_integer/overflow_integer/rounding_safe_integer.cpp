@@ -22,22 +22,22 @@ namespace cnl {
             overflow_tag OverflowTag = _impl::tag_of_t<overflow_integer<>>,
             rounding_tag RoundingTag = _impl::tag_of_t<rounding_integer<>>, class Narrowest = int,
             class Input = int, class = _impl::enable_if_t<!_impl::is_constant<Input>::value>>
-    CNL_NODISCARD rounding_safe_int<
-            numeric_limits<Input>::digits, OverflowTag, RoundingTag,
-            Narrowest> constexpr make_rounding_safe_int(Input const& input)
+    CNL_NODISCARD constexpr auto make_rounding_safe_int(Input const& input)
     {
-        return input;
+        return rounding_safe_int<
+                numeric_limits<Input>::digits, OverflowTag, RoundingTag,
+                Narrowest>{input};
     }
 
     template<
             overflow_tag OverflowTag = _impl::tag_of_t<overflow_integer<>>,
             rounding_tag RoundingTag = _impl::tag_of_t<rounding_integer<>>, class Narrowest = int,
             CNL_IMPL_CONSTANT_VALUE_TYPE InputValue = 0>
-    CNL_NODISCARD rounding_safe_int<
-            _impl::used_digits(InputValue), OverflowTag, RoundingTag,
-            Narrowest> constexpr make_rounding_safe_int(constant<InputValue>)
+    CNL_NODISCARD constexpr auto make_rounding_safe_int(constant<InputValue>)
     {
-        return InputValue;
+        return rounding_safe_int<
+                _impl::used_digits(InputValue), OverflowTag, RoundingTag,
+                Narrowest>{InputValue};
     }
 }
 

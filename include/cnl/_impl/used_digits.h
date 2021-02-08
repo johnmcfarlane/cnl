@@ -23,7 +23,7 @@ namespace cnl {
         template<>
         struct used_digits_signed<false> {
             template<_impl::integer Integer>
-            CNL_NODISCARD constexpr int operator()(Integer const& value, int radix) const
+            CNL_NODISCARD constexpr auto operator()(Integer const& value, int radix) const -> int
             {
                 return (value > 0) ? 1 + used_digits_signed<false>{}(value / radix, radix) : 0;
             }
@@ -32,7 +32,7 @@ namespace cnl {
         template<>
         struct used_digits_signed<true> {
             template<_impl::integer Integer>
-            CNL_NODISCARD constexpr int operator()(Integer const& value, int radix) const
+            CNL_NODISCARD constexpr auto operator()(Integer const& value, int radix) const
             {
                 // Most negative number is not exploited;
                 // thus negating the result or subtracting it from something else
@@ -43,7 +43,7 @@ namespace cnl {
         };
 
         template<_impl::integer Integer>
-        CNL_NODISCARD constexpr int used_digits(
+        CNL_NODISCARD constexpr auto used_digits(
                 Integer const& value, int radix = numeric_limits<Integer>::radix)
         {
             return used_digits_signed<std::is_signed<Integer>::value>{}(value, radix);

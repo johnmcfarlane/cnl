@@ -20,9 +20,9 @@ namespace cnl {
     namespace _impl {
         template<typename Result, typename Value>
         struct from_value_simple {
-            CNL_NODISCARD constexpr Result operator()(Value const& value) const
+            CNL_NODISCARD constexpr auto operator()(Value const& value) const
             {
-                return value;
+                return Result{value};
             }
         };
     }
@@ -45,7 +45,7 @@ namespace cnl {
                 _impl::max(digits<int>, _impl::used_digits(Value))>;
 
     public:
-        CNL_NODISCARD constexpr result_type operator()(constant<Value> const& value) const
+        CNL_NODISCARD constexpr auto operator()(constant<Value> const& value) const
         {
             return result_type(value);
         }

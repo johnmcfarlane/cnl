@@ -25,7 +25,7 @@ namespace cnl {
             _impl::convert_op,
             operand<Src, power<SrcExponent, Radix>>,
             operand<Dest, power<DestExponent, Radix>>> {
-        CNL_NODISCARD constexpr Dest operator()(Src const& from) const
+        CNL_NODISCARD constexpr auto operator()(Src const& from) const
         {
             return Dest(from) * _impl::power_value<Dest, SrcExponent - DestExponent, Radix>();
         }
@@ -37,7 +37,7 @@ namespace cnl {
             _impl::convert_op,
             operand<Input, power<SrcExponent, Radix>>,
             operand<Result, power<DestExponent, Radix>>> {
-        CNL_NODISCARD constexpr Result operator()(Input const& from) const
+        CNL_NODISCARD constexpr auto operator()(Input const& from) const
         {
             return static_cast<Result>(
                     from * _impl::power_value<Input, SrcExponent - DestExponent, Radix>());
@@ -49,7 +49,7 @@ namespace cnl {
     struct custom_operator<
             _impl::convert_op,
             operand<Input, power<SrcExponent, Radix>>, operand<Result, power<DestExponent, Radix>>> {
-        CNL_NODISCARD constexpr Result operator()(Input const& from) const
+        CNL_NODISCARD constexpr auto operator()(Input const& from) const
         {
             // when converting *from* scaled_integer
             return static_cast<Result>(_impl::scale<SrcExponent - DestExponent, Radix>(
@@ -76,13 +76,13 @@ namespace cnl {
 
     namespace _impl {
         template<typename Number>
-        CNL_NODISCARD constexpr Number not_scaled_integer(Number const& number)
+        CNL_NODISCARD constexpr auto not_scaled_integer(Number const& number)
         {
             return number;
         }
 
         template<typename Rep, int Exponent, int Radix>
-        CNL_NODISCARD constexpr Rep not_scaled_integer(
+        CNL_NODISCARD constexpr auto not_scaled_integer(
                 scaled_integer<Rep, power<Exponent, Radix>> const& f)
         {
             return _impl::to_rep(f);
@@ -111,7 +111,7 @@ namespace cnl {
             _impl::convert_op,
             operand<cnl::fraction<SrcNumerator, SrcDenominator>, cnl::power<0, Radix>>,
             operand<Dest, cnl::power<DestExponent, Radix>>> {
-        CNL_NODISCARD constexpr Dest operator()(
+        CNL_NODISCARD constexpr auto operator()(
                 cnl::fraction<SrcNumerator, SrcDenominator> const& from) const
         {
             static_assert(_impl::exponent<Dest>::value == 0, "TODO");

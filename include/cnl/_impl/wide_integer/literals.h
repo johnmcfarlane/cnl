@@ -28,7 +28,7 @@ namespace cnl {
         }
 
         // decimal
-        CNL_NODISCARD constexpr int parse_dec_char(char c)
+        CNL_NODISCARD constexpr auto parse_dec_char(char c)
         {
             return (c >= '0' && c <= '9') ? c - '0' : unreachable<int>("invalid decimal digits");
         }
@@ -51,7 +51,7 @@ namespace cnl {
         };
 
         // octal
-        CNL_NODISCARD constexpr int parse_oct_char(char c)
+        CNL_NODISCARD constexpr auto parse_oct_char(char c)
         {
             return (c >= '0' && c <= '7') ? c - '0' : unreachable<int>("invalid octal digits");
         }
@@ -74,7 +74,7 @@ namespace cnl {
         };
 
         // binary
-        CNL_NODISCARD constexpr int parse_bin_char(char c)
+        CNL_NODISCARD constexpr auto parse_bin_char(char c)
         {
             return (c == '0') ? 0 : (c == '1') ? 1
                                                : unreachable<int>("invalid binary digits");
@@ -106,7 +106,7 @@ namespace cnl {
         };
 
         // hexadecimal
-        CNL_NODISCARD constexpr int parse_hex_char(char c)
+        CNL_NODISCARD constexpr auto parse_hex_char(char c)
         {
             return (c >= '0' && c <= '9') ? c - '0'
                  : (c >= 'a' && c <= 'z') ? c + 10 - 'a'

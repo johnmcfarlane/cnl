@@ -175,19 +175,19 @@ namespace cnl {
         : cnl::numeric_limits<typename constant<Value>::value_type> {
         using _value_type = typename constant<Value>::value_type;
 
-        CNL_NODISCARD static constexpr _value_type min()
+        CNL_NODISCARD static constexpr auto min()
         {
-            return {};
+            return _value_type{};
         }
 
-        CNL_NODISCARD static constexpr _value_type max()
+        CNL_NODISCARD static constexpr auto max()
         {
-            return {};
+            return _value_type{};
         }
 
-        CNL_NODISCARD static constexpr _value_type lowest()
+        CNL_NODISCARD static constexpr auto lowest()
         {
-            return {};
+            return _value_type{};
         }
     };
 }

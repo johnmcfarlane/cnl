@@ -27,12 +27,12 @@ static_assert(
 
 static_assert(identical(INT_MAX, cnl::multiply<cnl::saturated_overflow_tag>(INT_MAX, INT_MAX)));
 
-int bare_saturate(int a, int b)
+auto bare_saturate(int a, int b)
 {
     return cnl::multiply<cnl::saturated_overflow_tag>(a, b);
 }
 
-rounding_overflow_int<> psi_saturate(rounding_overflow_int<> a, rounding_overflow_int<> b)
+auto psi_saturate(rounding_overflow_int<> a, rounding_overflow_int<> b)
 {
     return cnl::multiply<cnl::saturated_overflow_tag>(a, b);
 }

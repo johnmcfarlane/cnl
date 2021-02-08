@@ -22,7 +22,7 @@
 namespace cnl {
     namespace _impl {
         template<typename Integer>
-        CNL_NODISCARD constexpr bool is_flushed(Integer const& value)
+        CNL_NODISCARD constexpr auto is_flushed(Integer const& value)
         {
             return value == 0 || value == static_cast<Integer>(~Integer{});
         }

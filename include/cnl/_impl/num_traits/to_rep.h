@@ -19,15 +19,18 @@ namespace cnl {
     namespace _impl {
         template<typename Number>
         struct default_to_rep {
-            CNL_NODISCARD constexpr Number& operator()(Number& number) const
+            // NOLINTNEXTLINE(modernize-use-trailing-return-type)
+            CNL_NODISCARD constexpr auto& operator()(Number& number) const
             {
                 return number;
             };
-            CNL_NODISCARD constexpr Number const& operator()(Number const& number) const
+            // NOLINTNEXTLINE(modernize-use-trailing-return-type)
+            CNL_NODISCARD constexpr auto const& operator()(Number const& number) const
             {
                 return number;
             };
-            CNL_NODISCARD constexpr Number&& operator()(Number&& number) const
+            // NOLINTNEXTLINE(modernize-use-trailing-return-type)
+            CNL_NODISCARD constexpr auto&& operator()(Number&& number) const
             {
                 return std::forward<Number>(number);
             };
