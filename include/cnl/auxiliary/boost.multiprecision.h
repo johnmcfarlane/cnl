@@ -57,11 +57,13 @@ namespace cnl {
         }
     };
 
-    /// \cond
     template<
             int DestExponent, int SrcExponent, int Radix, unsigned NumBits,
             _bmp::cpp_integer_type SignType, typename Input>
-    requires(!_impl::is_bmp_number<Input>::value) struct custom_operator<
+    /// \cond
+    requires(!_impl::is_bmp_number<Input>::value)
+    /// \endcond
+    struct custom_operator<
             _impl::convert_op,
             operand<Input, cnl::power<SrcExponent, Radix>>,
             operand<_bmp::cpp_int_backend<NumBits, NumBits, SignType>, cnl::power<DestExponent, Radix>>> {
@@ -71,7 +73,6 @@ namespace cnl {
             return input;
         }
     };
-    /// \endcond
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////

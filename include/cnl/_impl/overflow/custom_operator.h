@@ -42,9 +42,11 @@ namespace cnl {
         using common_overflow_tag_t = typename common_overflow_tag<Tag1, Tag2>::type;
     }
 
-    /// \cond
     template<typename Source, tag SrcTag, typename Destination, tag DestTag>
-    requires(_impl::is_overflow_tag<DestTag>::value || _impl::is_overflow_tag<SrcTag>::value) struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination, DestTag>> {
+    /// \cond
+    requires(_impl::is_overflow_tag<DestTag>::value || _impl::is_overflow_tag<SrcTag>::value)
+    /// \endcond
+    struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination, DestTag>> {
         using overflow_tag = _impl::common_overflow_tag_t<DestTag, SrcTag>;
 
         CNL_NODISCARD constexpr Destination operator()(Source const& from) const
@@ -62,7 +64,6 @@ namespace cnl {
                          : static_cast<Destination>(from);
         }
     };
-    /// \endcond
 
     template<_impl::unary_arithmetic_op Operator, typename Operand, overflow_tag Tag>
     struct custom_operator<Operator, operand<Operand, Tag>> {

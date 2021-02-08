@@ -34,9 +34,11 @@ namespace cnl {
         using type = Initializer;
     };
 
-    /// \cond
     template<typename Src, tag SrcTag, typename Dest, _impl::wide_tag DestTag>
-    requires(!_impl::is_wide_tag<SrcTag>) struct custom_operator<
+    /// \cond
+    requires(!_impl::is_wide_tag<SrcTag>)
+    /// \endcond
+    struct custom_operator<
             _impl::convert_op,
             operand<Src, SrcTag>, operand<Dest, DestTag>> {
         CNL_NODISCARD constexpr Dest operator()(Src const& from) const
@@ -44,7 +46,6 @@ namespace cnl {
             return custom_operator<_impl::convert_op, operand<Src, SrcTag>, operand<Dest>>{}(from);
         }
     };
-    /// \endcond
 
     template<typename Src, _impl::wide_tag SrcTag, typename Dest, tag DestTag>
     struct custom_operator<_impl::convert_op, operand<Src, SrcTag>, operand<Dest, DestTag>> {

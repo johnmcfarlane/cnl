@@ -34,13 +34,15 @@ namespace cnl {
                   operand<Result, nearest_rounding_tag>> {
     };
 
-    /// \cond
     // conversion between two scaled_integer types where rounding *is* an issue
     template<
             typename InputRep, int InputExponent,
             typename ResultRep, int ResultExponent,
             int Radix>
-    requires(!(ResultExponent <= InputExponent)) struct custom_operator<
+    /// \cond
+    requires(!(ResultExponent <= InputExponent))
+    /// \endcond
+    struct custom_operator<
             _impl::convert_op,
             operand<scaled_integer<InputRep, power<InputExponent, Radix>>, power<0, Radix>>,
             operand<scaled_integer<ResultRep, power<ResultExponent, Radix>>, nearest_rounding_tag>> {
@@ -66,12 +68,14 @@ namespace cnl {
             typename InputRep, int InputExponent,
             typename ResultRep, int ResultExponent,
             int Radix>
-    requires(ResultExponent <= InputExponent) struct custom_operator<
+    /// \cond
+    requires(ResultExponent <= InputExponent)
+    /// \endcond
+    struct custom_operator<
             _impl::convert_op,
             operand<scaled_integer<InputRep, power<InputExponent, Radix>>, power<0, Radix>>,
             operand<scaled_integer<ResultRep, power<ResultExponent, Radix>>, nearest_rounding_tag>> {
     };
-    /// \endcond
 
     // conversion from float to scaled_integer
     template<_impl::floating_point Input, typename ResultRep, int ResultExponent, int ResultRadix>
@@ -142,12 +146,14 @@ namespace cnl {
     /// cnl::tie_to_pos_inf_rounding_tag
 
     // conversion between two scaled_integer types where rounding *isn't* an issue
-    /// \cond
     template<
             typename InputRep, int InputExponent,
             typename ResultRep, int ResultExponent,
             int Radix>
-    requires(ResultExponent <= InputExponent) struct custom_operator<
+    /// \cond
+    requires(ResultExponent <= InputExponent)
+    /// \endcond
+    struct custom_operator<
             _impl::convert_op,
             operand<scaled_integer<InputRep, power<InputExponent, Radix>>, _impl::native_tag>,
             operand<scaled_integer<ResultRep, power<ResultExponent, Radix>>, tie_to_pos_inf_rounding_tag>>
@@ -162,7 +168,10 @@ namespace cnl {
             typename InputRep, int InputExponent,
             typename ResultRep, int ResultExponent,
             int Radix>
-    requires(!(ResultExponent <= InputExponent)) struct custom_operator<
+    /// \cond
+    requires(!(ResultExponent <= InputExponent))
+    /// \endcond
+    struct custom_operator<
             _impl::convert_op,
             operand<scaled_integer<InputRep, power<InputExponent, Radix>>, _impl::native_tag>,
             operand<scaled_integer<ResultRep, power<ResultExponent, Radix>>, tie_to_pos_inf_rounding_tag>> {
@@ -183,7 +192,6 @@ namespace cnl {
                     _impl::to_rep(from + half()) >> (ResultExponent - InputExponent));
         }
     };
-    /// \endcond
 
     // conversion from float to scaled_integer
     template<
@@ -240,12 +248,14 @@ namespace cnl {
     /// cnl::neg_inf_rounding_tag
 
     // conversion between two scaled_integer types where rounding *isn't* an issue
-    /// \cond
     template<
             typename InputRep, int InputExponent,
             typename ResultRep, int ResultExponent,
             int Radix>
-    requires(ResultExponent <= InputExponent) struct custom_operator<
+    /// \cond
+    requires(ResultExponent <= InputExponent)
+    /// \endcond
+    struct custom_operator<
             _impl::convert_op,
             operand<scaled_integer<InputRep, power<InputExponent, Radix>>, _impl::native_tag>,
             operand<scaled_integer<ResultRep, power<ResultExponent, Radix>>, neg_inf_rounding_tag>>
@@ -260,7 +270,10 @@ namespace cnl {
             typename InputRep, int InputExponent,
             typename ResultRep, int ResultExponent,
             int Radix>
-    requires(!(ResultExponent <= InputExponent)) struct custom_operator<
+    /// \cond
+    requires(!(ResultExponent <= InputExponent))
+    /// \endcond
+    struct custom_operator<
             _impl::convert_op,
             operand<scaled_integer<InputRep, power<InputExponent, Radix>>, _impl::native_tag>,
             operand<scaled_integer<ResultRep, power<ResultExponent, Radix>>, neg_inf_rounding_tag>> {
@@ -276,7 +289,6 @@ namespace cnl {
                     _impl::to_rep(from) >> (ResultExponent - InputExponent));
         }
     };
-    /// \endcond
 
     // conversion from float to scaled_integer
     template<
