@@ -14,6 +14,7 @@ Checks: >
   -hicpp-signed-bitwise,
   -llvm-namespace-comment,
   -llvmlibc-*,
+  -readability-implicit-bool-conversion,
   -readability-magic-numbers,
   -readability-named-parameter,
   -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
@@ -30,7 +31,6 @@ Checks: >
   -modernize-concat-nested-namespaces,
   -modernize-unary-static-assert,
   -modernize-use-trailing-return-type,
-  -readability-implicit-bool-conversion,
 
 WarningsAsErrors: '*'
 HeaderFilterRegex: 'include/cnl'
