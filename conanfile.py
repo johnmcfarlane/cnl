@@ -13,17 +13,21 @@ class CnlConan(ConanFile):
     description = "A Compositional Numeric Library for C++"
     topics = ("fixed-point", "value-types")
     settings = "os", "compiler", "build_type", "arch"
-    options = {"enable_exceptions": [False, True],
-               "int128": [False, True],
-               "sanitize": [False, True],
-               "target": [None, "test-all", "test-benchmark", "test-unit"],
-               "test_pattern": [None, "^test-", "test-benchmark", "^test-unit-"],
+    options = {
+        "clang_tidy": [False, True],
+        "enable_exceptions": [False, True],
+        "int128": [False, True],
+        "sanitize": [False, True],
+        "target": [None, "test-all", "test-benchmark", "test-unit"],
+        "test_pattern": [None, "^test-", "test-benchmark", "^test-unit-"],
     }
-    default_options = {"enable_exceptions": True,
-                       "int128": True,
-                       "sanitize": False,
-                       "target": None,
-                       "test_pattern": None,
+    default_options = {
+        "clang_tidy": False,
+        "enable_exceptions": True,
+        "int128": True,
+        "sanitize": False,
+        "target": None,
+        "test_pattern": None,
     }
     generators = "cmake_find_package"
     no_copy_source = True
@@ -69,6 +73,7 @@ class CnlConan(ConanFile):
         module_path = "-DCMAKE_MODULE_PATH:FILEPATH={}".format(
             self.build_folder)
         gtest_hack = "-DCNL_GTEST_MAIN_TARGET:STRING=GTest::gtest_main"
+        clang_tidy = "-DCMAKE_CXX_CLANG_TIDY=clang-tidy" if self.options.clang_tidy else ""
         exceptions = "-DCNL_EXCEPTIONS={}".format(
             conan_option_to_cmake_boolean(self.options.enable_exceptions))
         int128 = "-DCNL_INT128={}".format(
@@ -76,7 +81,7 @@ class CnlConan(ConanFile):
         sanitize = "-DCNL_SANITIZE={}".format(
             conan_option_to_cmake_boolean(self.options.sanitize))
 
-        self.run(f'cmake {cmake.command_line}{std} {module_path} {gtest_hack} {exceptions} {int128} {sanitize} {self.source_folder}')
+        self.run(f'cmake {cmake.command_line}{std} {module_path} {gtest_hack} {clang_tidy} {exceptions} {int128} {sanitize} {self.source_folder}')
     
     def build_phase(self, cmake):
         assert(self.options.target)

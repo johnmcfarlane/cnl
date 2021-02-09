@@ -20,6 +20,7 @@ jobs:
             arch: x86_64
             build-type: Release
             cc: clang
+            clang_tidy: "True"
             cxx: clang++
             exceptions: "True"
             generator: "Ninja"
@@ -28,7 +29,7 @@ jobs:
             os-version: ubuntu-20.04
             sanitize: "False"
             stdlib: libc++
-            toolchain: clang-tidy-libc++.cmake
+            toolchain: clang-libc++.cmake
 
           # OS X
           - name: osx-gcc-10
@@ -38,6 +39,7 @@ jobs:
             arch: x86_64
             build-type: Release
             cc: gcc-10
+            clang_tidy: "False"
             cxx: g++-10
             exceptions: "True"
             generator: "Ninja"
@@ -55,6 +57,7 @@ jobs:
             arch: x86_64
             build-type: Debug
             cc: gcc-10
+            clang_tidy: "False"
             cxx: g++-10
             exceptions: "False"
             generator: "Unix Makefiles"
@@ -73,6 +76,7 @@ jobs:
             arch: x86_64
             build-type: Release
             cc: clang
+            clang_tidy: "False"
             cxx: clang++
             exceptions: "True"
             generator: "Ninja"
@@ -91,6 +95,7 @@ jobs:
             arch: x86_64
             build-type: Release
             cc: clang
+            clang_tidy: "False"
             cxx: clang++
             exceptions: "True"
             generator: "Ninja"
@@ -109,6 +114,7 @@ jobs:
             os: linux
             build-type: Release
             cc: arm-linux-gnueabi-gcc-10
+            clang_tidy: "False"
             cxx: arm-linux-gnueabi-g++-10
             exceptions: "True"
             generator: "Ninja"
@@ -153,6 +159,7 @@ jobs:
           --build=missing \
           --env CONAN_CMAKE_GENERATOR="${{matrix.generator}}" \
           --env CONAN_CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
+          --options clang_tidy=${{matrix.clang_tidy}} \
           --options int128=${{matrix.int128}} \
           --options enable_exceptions=${{matrix.exceptions}} \
           --options sanitize=${{matrix.sanitize}} \
