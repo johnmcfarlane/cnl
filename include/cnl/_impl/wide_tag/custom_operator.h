@@ -39,7 +39,7 @@ namespace cnl {
     requires(!_impl::is_wide_tag<SrcTag>) struct custom_operator<
             _impl::convert_op,
             operand<Src, SrcTag>, operand<Dest, DestTag>> {
-        CNL_NODISCARD constexpr Dest operator()(Src const& from) const
+        CNL_NODISCARD constexpr auto operator()(Src const& from) const
         {
             return custom_operator<_impl::convert_op, operand<Src, SrcTag>, operand<Dest>>{}(from);
         }
@@ -48,7 +48,7 @@ namespace cnl {
 
     template<typename Src, _impl::wide_tag SrcTag, typename Dest, tag DestTag>
     struct custom_operator<_impl::convert_op, operand<Src, SrcTag>, operand<Dest, DestTag>> {
-        CNL_NODISCARD constexpr Dest operator()(Src const& from) const
+        CNL_NODISCARD constexpr auto operator()(Src const& from) const
         {
             return custom_operator<_impl::convert_op, operand<Src>, operand<Dest>>{}(from);
         }

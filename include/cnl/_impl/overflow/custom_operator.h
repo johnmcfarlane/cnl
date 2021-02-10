@@ -47,7 +47,7 @@ namespace cnl {
     requires(_impl::is_overflow_tag<DestTag>::value || _impl::is_overflow_tag<SrcTag>::value) struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination, DestTag>> {
         using overflow_tag = _impl::common_overflow_tag_t<DestTag, SrcTag>;
 
-        CNL_NODISCARD constexpr Destination operator()(Source const& from) const
+        CNL_NODISCARD constexpr auto operator()(Source const& from) const
         {
             return _impl::is_overflow<_impl::convert_op, _impl::polarity::positive>{}
                                    .template operator()<Destination>(from)

@@ -37,7 +37,8 @@ namespace prototypes {
         {
         }
 
-        CNL_NODISCARD constexpr Rep const& data() const
+        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
+        CNL_NODISCARD constexpr auto const& data() const
         {
             return _rep;
         }

@@ -19,7 +19,7 @@ using cnl::fixed_point;
 
 template<>
 struct std::hash<filesystem::path> {
-    size_t operator()(filesystem::path const& p) const
+    auto operator()(filesystem::path const& p) const
     {
         return filesystem::hash_value(p);
     }
@@ -43,14 +43,14 @@ namespace b {
 }
 
 namespace c {
-    bool foo(float f)
+    auto foo(float f)
     {
         auto fixed = fixed_point<int, -16>{f};
         auto fixed_plus_one = fixed + 1;
         return fixed_plus_one > fixed;
     }
 
-    bool foo_reduced(float)
+    auto foo_reduced(float)
     {
         return true;
     }
@@ -59,7 +59,7 @@ namespace c {
 namespace d {
     using std::numeric_limits;
 
-    float bar()
+    auto bar()
     {
         return static_cast<float>(std::numeric_limits<fixed_point<int, -16>>::max() + 1);
     }

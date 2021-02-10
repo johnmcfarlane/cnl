@@ -14,6 +14,7 @@ cnl_dir=$(
 
 # parameters
 ARCH="${ARCH:-x86_64}"
+CLANG_TIDY="${CLANG_TIDY:-False}"
 COMPILER="${COMPILER:-gcc}"
 ENABLE_EXCEPTIONS="${ENABLE_EXCEPTIONS:-True}"
 GENERATOR="${GENERATOR:-Ninja}"
@@ -46,6 +47,7 @@ conan profile update settings.compiler.libcxx="${STDLIB}" ./profile
 # get dependencies ready
 conan install \
   --build missing \
+  --options clang_tidy="${CLANG_TIDY}" \
   --options enable_exceptions="${ENABLE_EXCEPTIONS}" \
   --options int128="${INT128}" \
   --options sanitize="${SANITIZE}" \

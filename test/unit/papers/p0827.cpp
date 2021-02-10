@@ -108,26 +108,26 @@ namespace udl_impl {
     ////////////////////////////////////////////////////////////////////////////////
     // digit parsers
 
-    CNL_NODISCARD constexpr int parse_bin_char(char c)
+    CNL_NODISCARD constexpr auto parse_bin_char(char c)
     {
         return (c == '0') ? 0
              : (c == '1') ? 1
                           : throw std::invalid_argument("invalid binary digits");
     }
 
-    CNL_NODISCARD constexpr int parse_dec_char(char c)
+    CNL_NODISCARD constexpr auto parse_dec_char(char c)
     {
         return (c >= '0' && c <= '9') ? c - '0'
                                       : throw std::invalid_argument("invalid decimal digits");
     }
 
-    CNL_NODISCARD constexpr int parse_oct_char(char c)
+    CNL_NODISCARD constexpr auto parse_oct_char(char c)
     {
         return (c >= '0' && c <= '7') ? c - '0'
                                       : throw std::invalid_argument("invalid octal digits");
     }
 
-    CNL_NODISCARD constexpr int parse_hex_char(char c)
+    CNL_NODISCARD constexpr auto parse_hex_char(char c)
     {
         return (c >= '0' && c <= '9') ? c - '0'
              : (c >= 'a' && c <= 'z') ? c + 10 - 'a'
@@ -139,7 +139,7 @@ namespace udl_impl {
     // known-base integer literal parser
 
     template<typename ParseDigit>
-    CNL_NODISCARD constexpr std::intmax_t parse(
+    CNL_NODISCARD constexpr auto parse(
             char const* s, int base, ParseDigit parse_digit, std::intmax_t value = 0)
     {
         auto c = *s;
@@ -161,7 +161,7 @@ namespace udl_impl {
 
     template<int NumChars>
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
-    CNL_NODISCARD constexpr std::intmax_t parse(const char (&s)[NumChars])
+    CNL_NODISCARD constexpr auto parse(const char (&s)[NumChars])
     {
         if (s[0] == '0') {
             if (s[1] == 'b' || s[1] == 'B') {

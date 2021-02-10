@@ -17,7 +17,7 @@ namespace cnl {
         // cnl::_impl::identical - compiles iff same type; returns true iff equal
 
         template<class A, class B>
-        CNL_NODISCARD constexpr bool identical(A const& a, B const& b)
+        CNL_NODISCARD constexpr auto identical(A const& a, B const& b)
         {
             static_assert(std::is_same<A, B>::value, "different types");
             return a == b;

@@ -20,7 +20,7 @@ namespace cnl {
         using std::to_string;
 
         template<typename N, typename D>
-        std::string to_string(fraction<N, D> const& f)
+        auto to_string(fraction<N, D> const& f)
         {
             auto const numerator_string = to_string(f.numerator);
             auto const denominator_string = to_string(f.denominator);

@@ -24,7 +24,7 @@ namespace cnl {
         namespace fp {
 
             template<class ScaledInteger>
-            CNL_NODISCARD constexpr ScaledInteger rounding_conversion(double d)
+            CNL_NODISCARD constexpr auto rounding_conversion(double d)
             {
                 using one_longer = scaled_integer<
                         set_digits_t<rep_of_t<ScaledInteger>, digits<ScaledInteger> + 1>,
@@ -84,7 +84,7 @@ namespace cnl {
             }
 
             template<class Rep, int Exponent>
-            CNL_NODISCARD inline constexpr scaled_integer<Rep, power<Exponent>> evaluate_polynomial(
+            CNL_NODISCARD inline constexpr auto evaluate_polynomial(
                     scaled_integer<Rep, power<Exponent>> xf)
             {
                 using fp = scaled_integer<Rep, power<Exponent>>;
@@ -146,25 +146,23 @@ namespace cnl {
             }
 
             template<class Rep, int Exponent, int Radix>
-                    CNL_NODISCARD constexpr enable_if_t
-                    < -digits<Rep><Exponent, scaled_integer<Rep, power<Exponent, Radix>>>
-                      fractional(
-                              scaled_integer<Rep, power<Exponent, Radix>> const& x,
-                              Rep const& floored)
+            requires(-digits<Rep> < Exponent)
+                    CNL_NODISCARD constexpr auto fractional(
+                            scaled_integer<Rep, power<Exponent, Radix>> const& x,
+                            Rep const& floored)
             {
                 return x - floored;
             }
 
             template<class Rep, int Exponent, int Radix>
-            CNL_NODISCARD constexpr enable_if_t<
-                    -digits<Rep> >= Exponent, scaled_integer<Rep, power<Exponent, Radix>>>
-            fractional(scaled_integer<Rep, power<Exponent, Radix>> const& x, Rep const&)
+            requires(-digits<Rep> >= Exponent)
+                    CNL_NODISCARD constexpr auto fractional(scaled_integer<Rep, power<Exponent, Radix>> const& x, Rep const&)
             {
                 return x;
             }
 
             template<class Intermediate, typename Rep, int Exponent>
-            CNL_NODISCARD constexpr rep_of_t<Intermediate> exp2(
+            CNL_NODISCARD constexpr auto exp2(
                     scaled_integer<Rep, power<Exponent>> const& x, Rep const& floored)
             {
                 return floored <= Exponent
@@ -194,8 +192,8 @@ namespace cnl {
     ///
     /// \return the result of the exponential, in the same representation as x
     template<class Rep, int Exponent>
-    CNL_NODISCARD constexpr scaled_integer<Rep, power<Exponent>> exp2(
-            scaled_integer<Rep, power<Exponent>> x)
+    CNL_NODISCARD constexpr auto
+    exp2(scaled_integer<Rep, power<Exponent>> x) -> scaled_integer<Rep, power<Exponent>>
     {
         using out_type = scaled_integer<Rep, power<Exponent>>;
         // The input type

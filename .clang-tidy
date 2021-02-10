@@ -30,7 +30,6 @@ Checks: >
   -modernize-avoid-c-arrays,
   -modernize-concat-nested-namespaces,
   -modernize-unary-static-assert,
-  -modernize-use-trailing-return-type,
 
 WarningsAsErrors: '*'
 HeaderFilterRegex: 'include/cnl'

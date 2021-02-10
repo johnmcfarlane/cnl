@@ -62,17 +62,17 @@ namespace cnl {
         static int const digits = CHAR_BIT * sizeof(int128) - 1;
         static int const digits10 = 38;
 
-        CNL_NODISCARD static constexpr int128 min()
+        CNL_NODISCARD static constexpr auto min()
         {
             return int128(_impl::join128<int128>(0x8000000000000000, 0x0000000000000000));
         }
 
-        CNL_NODISCARD static constexpr int128 max()
+        CNL_NODISCARD static constexpr auto max()
         {
             return int128(_impl::join128<int128>(0x7fffffffffffffff, 0xffffffffffffffff));
         }
 
-        CNL_NODISCARD static constexpr int128 lowest()
+        CNL_NODISCARD static constexpr auto lowest()
         {
             return min();
         }
@@ -83,17 +83,17 @@ namespace cnl {
         static int const digits = CHAR_BIT * sizeof(int128);
         static int const digits10 = 38;
 
-        CNL_NODISCARD static constexpr int128 min()
+        CNL_NODISCARD static constexpr auto min()
         {
             return 0;
         }
 
-        CNL_NODISCARD static constexpr uint128 max()
+        CNL_NODISCARD static constexpr auto max()
         {
             return uint128(_impl::join128<uint128>(0xffffffffffffffff, 0xffffffffffffffff));
         }
 
-        CNL_NODISCARD static constexpr uint128 lowest()
+        CNL_NODISCARD static constexpr auto lowest()
         {
             return min();
         }

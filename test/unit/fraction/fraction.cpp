@@ -18,7 +18,7 @@ namespace {
     using cnl::_impl::identical;
 
     template<typename Numerator, typename Denominator>
-    CNL_NODISCARD constexpr bool identical(
+    CNL_NODISCARD constexpr auto identical(
             cnl::fraction<Numerator, Denominator> const& a,
             cnl::fraction<Numerator, Denominator> const& b)
     {

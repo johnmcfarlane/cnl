@@ -38,14 +38,13 @@ namespace cnl {
         template<typename Operator>
         struct overflow_operator<Operator, saturated_overflow_tag, polarity::positive> {
             template<typename Destination, typename Source>
-            CNL_NODISCARD constexpr Destination operator()(Source const&) const
+            CNL_NODISCARD constexpr auto operator()(Source const&) const
             {
                 return numeric_limits<Destination>::max();
             }
 
             template<class... Operands>
-            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(
-                    Operands const&...) const
+            CNL_NODISCARD constexpr auto operator()(Operands const&...) const
             {
                 return numeric_limits<op_result<Operator, Operands...>>::max();
             }
@@ -54,14 +53,13 @@ namespace cnl {
         template<typename Operator>
         struct overflow_operator<Operator, saturated_overflow_tag, polarity::negative> {
             template<typename Destination, typename Source>
-            CNL_NODISCARD constexpr Destination operator()(Source const&) const
+            CNL_NODISCARD constexpr auto operator()(Source const&) const
             {
                 return numeric_limits<Destination>::lowest();
             }
 
             template<class... Operands>
-            CNL_NODISCARD constexpr op_result<Operator, Operands...> operator()(
-                    Operands const&...) const
+            CNL_NODISCARD constexpr auto operator()(Operands const&...) const
             {
                 return numeric_limits<op_result<Operator, Operands...>>::lowest();
             }

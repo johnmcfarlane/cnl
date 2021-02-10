@@ -31,7 +31,7 @@ namespace cnl {
 
         template<int LhsDigits, bool LhsIsSigned, int RhsDigits, bool RhsIsSigned>
         struct policy<_impl::multiply_op, LhsDigits, LhsIsSigned, RhsDigits, RhsIsSigned> {
-            static constexpr int contribution(int operand_digits)
+            static constexpr auto contribution(int operand_digits)
             {
                 return operand_digits == 1 ? 0 : operand_digits;
             }

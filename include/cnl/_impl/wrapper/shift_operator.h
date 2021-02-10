@@ -64,7 +64,7 @@ namespace cnl {
         // cnl::_impl::operator<<(std::ostream& o, cnl::_impl::wrapper const& i)
 
         template<class Rep, tag Tag>
-        std::ostream& operator<<(std::ostream& o, wrapper<Rep, Tag> const& i)
+        auto& operator<<(std::ostream& o, wrapper<Rep, Tag> const& i)  // NOLINT(modernize-use-trailing-return-type)
         {
             return o << to_rep(i);
         }

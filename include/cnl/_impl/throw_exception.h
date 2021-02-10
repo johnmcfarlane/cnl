@@ -15,7 +15,7 @@
 namespace cnl {
     namespace _impl {
         template<typename Result, class Exception>
-        Result throw_exception(char const* message)
+        auto throw_exception(char const* message) -> Result
         {
 #if defined(CNL_EXCEPTIONS_ENABLED)
             return true ? throw Exception(message) : Result{};

@@ -85,7 +85,8 @@ namespace cnl {
 
         /// copy assignement operator
         template<typename S>
-        constexpr scaled_integer& operator=(S const& rhs)
+        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
+        constexpr auto& operator=(S const& rhs)
         {
             _base::operator=(rhs);
             return *this;

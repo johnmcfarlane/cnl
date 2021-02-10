@@ -30,11 +30,11 @@ namespace cnl {
                 rounding_tag RoundingTag = nearest_rounding_tag,
                 overflow_tag OverflowTag = undefined_overflow_tag, class Narrowest = int,
                 class Input = int>
-        CNL_NODISCARD _impl::enable_if_t<
-                !_impl::is_constant<Input>::value,
-                static_integer<
-                        numeric_limits<Input>::digits, RoundingTag, OverflowTag,
-                        Narrowest>> constexpr make_static_integer(Input const& input)
+        requires(!_impl::is_constant<Input>::value)
+                CNL_NODISCARD constexpr auto make_static_integer(Input const& input)
+                        -> static_integer<
+                                numeric_limits<Input>::digits, RoundingTag, OverflowTag,
+                                Narrowest>
         {
             return input;
         }
@@ -43,11 +43,9 @@ namespace cnl {
                 rounding_tag RoundingTag = nearest_rounding_tag,
                 overflow_tag OverflowTag = undefined_overflow_tag, class Narrowest = int,
                 CNL_IMPL_CONSTANT_VALUE_TYPE InputValue = 0>
-        CNL_NODISCARD static_integer<
-                used_digits(InputValue), RoundingTag, OverflowTag,
-                Narrowest> constexpr make_static_integer(constant<InputValue>)
+        CNL_NODISCARD constexpr auto make_static_integer(constant<InputValue>)
         {
-            return InputValue;
+            return static_integer<used_digits(InputValue), RoundingTag, OverflowTag, Narrowest>{InputValue};
         }
     }
 }

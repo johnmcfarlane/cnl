@@ -29,6 +29,15 @@ namespace {
         static_assert(digits<elastic_integer<7, int>> == 7, "elastic_integer test failed");
     }
 
+    namespace test_limits {
+        static_assert(identical(
+                cnl::elastic_integer<4>{-15}, cnl::numeric_limits<cnl::elastic_integer<4>>::lowest()));
+        static_assert(identical(
+                cnl::elastic_integer<4>{15}, cnl::numeric_limits<cnl::elastic_integer<4>>::max()));
+        static_assert(identical(
+                cnl::elastic_integer<4>{1}, cnl::numeric_limits<cnl::elastic_integer<4>>::min()));
+    }
+
     namespace test_operate {
         using cnl::_impl::equal_op;
 
@@ -537,7 +546,7 @@ namespace {
     }
 
     namespace test_avg_fn {
-        CNL_NODISCARD constexpr int avg(int a, int b)
+        CNL_NODISCARD constexpr auto avg(int a, int b)
         {
             return int((cnl::elastic_integer{a} + cnl::elastic_integer{b}) / 2);
         }

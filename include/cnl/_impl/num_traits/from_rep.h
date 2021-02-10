@@ -29,7 +29,7 @@ namespace cnl {
     /// \sa to_rep, from_value
     template<_impl::integral Number, typename Rep>
     struct from_rep<Number, Rep> {
-        CNL_NODISCARD constexpr Number operator()(Rep const& rep) const
+        CNL_NODISCARD constexpr auto operator()(Rep const& rep) const
         {
             // by default, a number type's rep type is the number type itself
             return static_cast<Number>(rep);
