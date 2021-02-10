@@ -25,6 +25,7 @@
 #include "_impl/scaled_integer/rep_of.h"
 #include "_impl/scaled_integer/set_rep.h"
 #include "_impl/scaled_integer/set_tag.h"
+#include "_impl/scaled_integer/sqrt.h"
 #include "_impl/scaled_integer/tag_of.h"
 #include "_impl/scaled_integer/to_chars.h"
 #include "_impl/scaled_integer/to_string.h"
