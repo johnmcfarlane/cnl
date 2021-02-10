@@ -8,6 +8,7 @@
 #define CNL_IMPL_WIDE_INTEGER_NUMBERS_H
 
 #include "../../numbers.h"
+#include "../num_traits/adopt_width.h"
 #include "definition.h"
 
 /// compositional numeric library, numbers header/namespace
@@ -18,7 +19,9 @@ namespace cnl::numbers {
 
     template<int Digits, class Narrowest, bool IsSigned>
     struct set_signedness<wide_integer<Digits, Narrowest>, IsSigned>
-        : std::type_identity<wide_integer<Digits, set_signedness_t<Narrowest, IsSigned>>> {
+        : _impl::adopt_width<
+                  wide_integer<Digits, set_signedness_t<Narrowest, IsSigned>>,
+                  wide_integer<Digits, Narrowest>> {
     };
 }
 
