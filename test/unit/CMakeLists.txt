@@ -135,13 +135,7 @@ set(sample_sources
 ######################################################################
 # pull in external dependencies
 
-find_package(Boost)
-
-if(Boost_FOUND)
-    if(NOT Boost_VERSION GREATER 105500)
-        message("Boost version is too low to use with CNL")
-    endif(NOT Boost_VERSION GREATER 105500)
-endif(Boost_FOUND)
+find_package(Boost 1.55.0)
 
 ######################################################################
 # add_gtest_dependency
