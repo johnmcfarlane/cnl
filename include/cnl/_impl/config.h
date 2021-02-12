@@ -173,20 +173,5 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// CNL_NODISCARD
-
-#if defined(CNL_NODISCARD)
-#error CNL_NODISCARD already defined
-#endif
-
-#if !defined(_MSC_VER)
-#define CNL_NODISCARD [[nodiscard]]  // NOLINT(cppcoreguidelines-macro-usage)
-#endif
-
-#if !defined(CNL_NODISCARD)
-#define CNL_NODISCARD
-#endif
-
-////////////////////////////////////////////////////////////////////////////////
 
 #endif  // CNL_CONFIG_H

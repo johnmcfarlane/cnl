@@ -20,7 +20,7 @@ namespace cnl {
     namespace _impl {
         template<typename Result, typename Value>
         struct from_value_simple {
-            CNL_NODISCARD constexpr auto operator()(Value const& value) const
+            [[nodiscard]] constexpr auto operator()(Value const& value) const
             {
                 return Result{value};
             }
@@ -45,7 +45,7 @@ namespace cnl {
                 _impl::max(digits<int>, _impl::used_digits(Value))>;
 
     public:
-        CNL_NODISCARD constexpr auto operator()(constant<Value> const& value) const
+        [[nodiscard]] constexpr auto operator()(constant<Value> const& value) const
         {
             return result_type(value);
         }
@@ -53,7 +53,7 @@ namespace cnl {
 
     namespace _impl {
         template<typename Number, typename Value>
-        CNL_NODISCARD constexpr auto from_value(Value const& value)
+        [[nodiscard]] constexpr auto from_value(Value const& value)
                 -> decltype(cnl::from_value<Number, remove_cvref_t<Value>>{}(value))
         {
             return cnl::from_value<Number, remove_cvref_t<Value>>{}(value);

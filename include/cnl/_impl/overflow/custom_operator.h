@@ -47,7 +47,7 @@ namespace cnl {
     requires(_impl::is_overflow_tag<DestTag>::value || _impl::is_overflow_tag<SrcTag>::value) struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination, DestTag>> {
         using overflow_tag = _impl::common_overflow_tag_t<DestTag, SrcTag>;
 
-        CNL_NODISCARD constexpr auto operator()(Source const& from) const
+        [[nodiscard]] constexpr auto operator()(Source const& from) const
         {
             return _impl::is_overflow<_impl::convert_op, _impl::polarity::positive>{}
                                    .template operator()<Destination>(from)
@@ -66,7 +66,7 @@ namespace cnl {
 
     template<_impl::unary_arithmetic_op Operator, typename Operand, overflow_tag Tag>
     struct custom_operator<Operator, operand<Operand, Tag>> {
-        CNL_NODISCARD constexpr auto operator()(Operand const& operand) const
+        [[nodiscard]] constexpr auto operator()(Operand const& operand) const
                 -> _impl::op_result<Operator, Operand>
         {
             return _impl::is_overflow<Operator, _impl::polarity::positive>{}(operand)
@@ -84,7 +84,7 @@ namespace cnl {
     requires _impl::builtin_overflow_operator<Operator, Lhs, Rhs>::value struct custom_operator<Operator, operand<Lhs, LhsTag>, operand<Rhs, RhsTag>> {
         using result_type = _impl::op_result<Operator, Lhs, Rhs>;
 
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> result_type
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> result_type
         {
             result_type result{};
             if (!_impl::builtin_overflow_operator<Operator, Lhs, Rhs>{}(lhs, rhs, result)) {
@@ -109,7 +109,7 @@ namespace cnl {
 
     template<_impl::binary_arithmetic_op Operator, typename Lhs, overflow_tag LhsTag, typename Rhs, overflow_tag RhsTag>
     requires(!_impl::builtin_overflow_operator<Operator, Lhs, Rhs>::value) struct custom_operator<Operator, operand<Lhs, LhsTag>, operand<Rhs, RhsTag>> {
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
                 -> _impl::op_result<Operator, Lhs, Rhs>
         {
             return _impl::is_overflow<Operator, _impl::polarity::positive>{}(lhs, rhs)
@@ -126,7 +126,7 @@ namespace cnl {
 
     template<_impl::shift_op Operator, typename Lhs, overflow_tag LhsTag, typename Rhs, tag RhsTag>
     struct custom_operator<Operator, operand<Lhs, LhsTag>, operand<Rhs, RhsTag>> {
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
                 -> _impl::op_result<Operator, Lhs, Rhs>
         {
             return _impl::is_overflow<Operator, _impl::polarity::positive>{}(lhs, rhs)

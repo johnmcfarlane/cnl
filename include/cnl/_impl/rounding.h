@@ -28,7 +28,7 @@ namespace cnl {
 
         template<tag LhsTag, tag RhsTag, class Lhs, class Rhs>
         struct divide {
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 return cnl::custom_operator<divide_op, operand<Lhs, LhsTag>, operand<Rhs, RhsTag>>{}(
                         cnl::unwrap(lhs), cnl::unwrap(rhs));
@@ -40,7 +40,7 @@ namespace cnl {
 
         template<class Lhs, tag LhsTag, class Rhs, tag RhsTag>
         struct shift_right {
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 return cnl::custom_operator<shift_right_op, operand<Lhs, LhsTag>, operand<Rhs, RhsTag>>{}(lhs, rhs);
             }

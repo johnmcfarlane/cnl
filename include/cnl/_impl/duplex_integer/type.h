@@ -22,13 +22,13 @@
 namespace cnl {
     namespace _impl {
         template<typename Integer>
-        CNL_NODISCARD constexpr auto is_flushed(Integer const& value)
+        [[nodiscard]] constexpr auto is_flushed(Integer const& value)
         {
             return value == 0 || value == static_cast<Integer>(~Integer{});
         }
 
         template<typename Result, typename Upper, typename Lower>
-        CNL_NODISCARD constexpr auto upper_value(Upper const& upper) -> Result
+        [[nodiscard]] constexpr auto upper_value(Upper const& upper) -> Result
         {
             return (digits<Result> <= digits<Lower>)
                          ? !is_flushed(upper)
@@ -62,7 +62,7 @@ namespace cnl {
             constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions,
                     // google-explicit-constructor)
 
-            CNL_NODISCARD constexpr auto upper() const -> upper_type const&
+            [[nodiscard]] constexpr auto upper() const -> upper_type const&
             {
                 return _upper;
             }
@@ -72,7 +72,7 @@ namespace cnl {
                 return _upper;
             }
 
-            CNL_NODISCARD constexpr auto lower() const -> lower_type const&
+            [[nodiscard]] constexpr auto lower() const -> lower_type const&
             {
                 return _lower;
             }
@@ -82,19 +82,19 @@ namespace cnl {
                 return _lower;
             }
 
-            CNL_NODISCARD explicit constexpr operator bool() const
+            [[nodiscard]] explicit constexpr operator bool() const
             {
                 return _lower || _upper;
             }
 
             template<integer Integer>
-            CNL_NODISCARD explicit constexpr operator Integer() const
+            [[nodiscard]] explicit constexpr operator Integer() const
             {
                 return upper_value<Integer, Upper, Lower>(_upper) | static_cast<Integer>(_lower);
             }
 
             template<floating_point Number>
-            CNL_NODISCARD explicit constexpr operator Number() const
+            [[nodiscard]] explicit constexpr operator Number() const
             {
                 return static_cast<Number>(_upper) * power_value<Number, lower_width, 2>()
                      + static_cast<Number>(_lower);

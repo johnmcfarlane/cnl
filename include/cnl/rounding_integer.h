@@ -64,7 +64,7 @@ namespace cnl {
     struct scale<
             Digits, Radix, _impl::wrapper<Rep, Tag>,
             _impl::enable_if_t<0 <= Digits>> {
-        CNL_NODISCARD constexpr auto operator()(_impl::wrapper<Rep, Tag> const& s) const
+        [[nodiscard]] constexpr auto operator()(_impl::wrapper<Rep, Tag> const& s) const
         {
             return _impl::from_rep<_impl::wrapper<Rep, Tag>>(
                     scale<Digits, Radix, Rep>{}(_impl::to_rep(s)));

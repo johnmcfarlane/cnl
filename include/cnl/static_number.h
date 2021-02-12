@@ -36,7 +36,7 @@ namespace cnl {
             rounding_tag RoundingTag = nearest_rounding_tag, overflow_tag OverflowTag = undefined_overflow_tag,
             class Narrowest = signed, class Input = int>
 
-    CNL_NODISCARD constexpr auto make_static_number(Input const& input)
+    [[nodiscard]] constexpr auto make_static_number(Input const& input)
             -> static_number<numeric_limits<Input>::digits, 0, RoundingTag, OverflowTag, Narrowest>
     {
         return input;
@@ -47,7 +47,7 @@ namespace cnl {
             rounding_tag RoundingTag = _impl::tag_of_t<rounding_integer<>>,
             overflow_tag OverflowTag = _impl::tag_of_t<overflow_integer<>>, class Narrowest = int,
             class Input = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    CNL_NODISCARD constexpr auto make_static_number(constant<Value> const&) -> static_number<
+    [[nodiscard]] constexpr auto make_static_number(constant<Value> const&) -> static_number<
             _impl::used_digits(Value) - trailing_bits(Value), trailing_bits(Value), RoundingTag,
             OverflowTag, Narrowest>
     {

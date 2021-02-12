@@ -59,19 +59,19 @@ namespace cnl {
         using result_type = decltype(std::declval<Lhs>() / std::declval<Rhs>());
 
         template<typename LhsParam, typename RhsParam>
-        CNL_NODISCARD constexpr auto step2(LhsParam const& lhs, RhsParam const& rhs) const
+        [[nodiscard]] constexpr auto step2(LhsParam const& lhs, RhsParam const& rhs) const
                 -> result_type
         {
             return (lhs < 0) ? -((_impl::abs(lhs) + (rhs - (lhs < 0 ? 1 : 0)) / 2) / rhs)
                              : +((_impl::abs(lhs) + (rhs - (lhs < 0 ? 1 : 0)) / 2) / rhs);
         }
-        CNL_NODISCARD constexpr auto step1(Lhs const& lhs, Rhs const& rhs) const -> result_type
+        [[nodiscard]] constexpr auto step1(Lhs const& lhs, Rhs const& rhs) const -> result_type
         {
             return (rhs < 0) ? step2(-lhs, -rhs) : step2(lhs, rhs);
         }
 
     public:
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> result_type
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> result_type
         {
             return step1(lhs, rhs);
         }

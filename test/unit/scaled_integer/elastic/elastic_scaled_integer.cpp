@@ -289,7 +289,7 @@ template struct test_traits<cnl::int64, true>;
 // useful functions
 
 template<typename T>
-CNL_NODISCARD constexpr auto bit_count(T const& n) -> int
+[[nodiscard]] constexpr auto bit_count(T const& n) -> int
 {
     return n ? 1 + bit_count(n & (n - 1)) : 0;
 }

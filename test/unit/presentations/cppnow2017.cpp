@@ -38,7 +38,7 @@ namespace prototypes {
         }
 
         // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-        CNL_NODISCARD constexpr auto const& data() const
+        [[nodiscard]] constexpr auto const& data() const
         {
             return _rep;
         }
@@ -224,7 +224,7 @@ namespace composite {
     using safe_elastic_integer = overflow_integer<elastic_integer<Digits, Narrowest>>;
 
     template<typename Rep1, typename Rep2>
-    CNL_NODISCARD constexpr auto operator*(
+    [[nodiscard]] constexpr auto operator*(
             overflow_integer<Rep1> const& a, overflow_integer<Rep2> const& b)
     {
         auto product = a.data() * b.data();

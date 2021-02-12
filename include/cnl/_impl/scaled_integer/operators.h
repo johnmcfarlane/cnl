@@ -24,7 +24,7 @@ namespace cnl {
     template<_impl::unary_arithmetic_op Operator, typename Rep, int Exponent, int Radix>
     struct custom_operator<
             Operator, operand<scaled_integer<Rep, power<Exponent, Radix>>>> {
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 scaled_integer<Rep, power<Exponent, Radix>> const& rhs) const
         {
             return _impl::from_rep<scaled_integer<
@@ -37,7 +37,7 @@ namespace cnl {
     template<_impl::comparison_op Operator, typename LhsRep, typename RhsRep, class Scale>
     struct custom_operator<
             Operator, operand<scaled_integer<LhsRep, Scale>>, operand<scaled_integer<RhsRep, Scale>>> {
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 scaled_integer<LhsRep, Scale> const& lhs,
                 scaled_integer<RhsRep, Scale> const& rhs) const
         {
@@ -62,7 +62,7 @@ namespace cnl {
                 power<LhsExponent, Radix>>;
         using operator_type = custom_operator<Operator, operand<lhs_type>, operand<rhs_type>>;
 
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, Radix>> const& lhs,
                 scaled_integer<RhsRep, power<RhsExponent, Radix>> const& rhs) const
         {
@@ -86,7 +86,7 @@ namespace cnl {
         using rhs_type = scaled_integer<RhsRep, power<RhsExponent, Radix>>;
         using operator_type = custom_operator<Operator, operand<lhs_type>, operand<rhs_type>>;
 
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, Radix>> const& lhs,
                 scaled_integer<RhsRep, power<RhsExponent, Radix>> const& rhs) const
         {
@@ -105,7 +105,7 @@ namespace cnl {
             operand<scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>>,
             operand<Rhs>> {
         using lhs_type = scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>;
-        CNL_NODISCARD constexpr auto operator()(lhs_type const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(lhs_type const& lhs, Rhs const& rhs) const
         {
             return _impl::from_rep<lhs_type>(Operator{}(_impl::to_rep(lhs), rhs));
         }
@@ -118,7 +118,7 @@ namespace cnl {
             operand<scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>>,
             operand<constant<RhsValue>>> {
         using result_type = scaled_integer<LhsRep, power<LhsExponent + int(RhsValue), LhsRadix>>;
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, LhsRadix>> const& lhs,
                 constant<RhsValue>) const
         {
@@ -133,7 +133,7 @@ namespace cnl {
             operand<scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>>,
             operand<constant<RhsValue>>> {
         using result_type = scaled_integer<LhsRep, power<LhsExponent - int(RhsValue), LhsRadix>>;
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, LhsRadix>> const& lhs,
                 constant<RhsValue>) const
         {

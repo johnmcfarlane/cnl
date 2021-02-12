@@ -19,7 +19,7 @@ namespace cnl {
     namespace _impl {
         /// creates a fraction with types deduced from the numerator and denominator
         template<typename Numerator, typename Denominator>
-        CNL_NODISCARD constexpr auto make_fraction(
+        [[nodiscard]] constexpr auto make_fraction(
                 Numerator const& n, Denominator const& d)
         {
             return fraction<Numerator, Denominator>{n, d};
@@ -27,7 +27,7 @@ namespace cnl {
 
         /// creates a fraction with types deduced from the numerator
         template<typename Numerator>
-        CNL_NODISCARD constexpr auto make_fraction(Numerator const& n)
+        [[nodiscard]] constexpr auto make_fraction(Numerator const& n)
         {
             return fraction<Numerator, Numerator>{n, 1};
         }
@@ -36,7 +36,7 @@ namespace cnl {
         template<
                 typename Numerator, typename Denominator = Numerator,
                 _impl::floating_point FloatingPoint = float>
-        CNL_NODISCARD constexpr auto make_fraction(FloatingPoint d) -> cnl::fraction<Numerator, Denominator>
+        [[nodiscard]] constexpr auto make_fraction(FloatingPoint d) -> cnl::fraction<Numerator, Denominator>
         {
             // merge requests gratefully received
             static_assert(

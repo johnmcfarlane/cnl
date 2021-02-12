@@ -20,7 +20,7 @@
 namespace cnl {
     template<_impl::unary_arithmetic_op Operator, typename Rep, tag Tag>
     struct custom_operator<Operator, operand<_impl::wrapper<Rep, Tag>>> {
-        CNL_NODISCARD constexpr auto operator()(_impl::wrapper<Rep, Tag> const& rhs) const
+        [[nodiscard]] constexpr auto operator()(_impl::wrapper<Rep, Tag> const& rhs) const
         {
             return _impl::from_rep<_impl::wrapper<Rep, Tag>>(
                     custom_operator<Operator, operand<Rep, Tag>>{}(_impl::to_rep(rhs)));

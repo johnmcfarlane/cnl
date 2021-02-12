@@ -67,12 +67,12 @@ namespace cnl {
             }
 
             template<class S, enable_if_t<!is_wrapper<S>, int> Dummy = 0>
-            CNL_NODISCARD constexpr explicit operator S() const
+            [[nodiscard]] constexpr explicit operator S() const
             {
                 return convert<_impl::native_tag, Tag, S>(_rep);
             }
 
-            CNL_NODISCARD explicit constexpr operator bool() const
+            [[nodiscard]] explicit constexpr operator bool() const
             {
                 return static_cast<bool>(_rep);
             }

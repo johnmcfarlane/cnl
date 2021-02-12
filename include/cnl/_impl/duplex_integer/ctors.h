@@ -18,14 +18,14 @@ namespace cnl {
         // cnl::_impl::calculate_lower
         template<typename Lower, typename Integer>
         requires(digits<Lower> >= digits<Integer>)
-                CNL_NODISCARD constexpr auto calculate_lower(Integer const& input) -> Lower
+                [[nodiscard]] constexpr auto calculate_lower(Integer const& input) -> Lower
         {
             return Lower(input) & numeric_limits<Lower>::max();
         }
 
         template<typename Lower, typename Integer>
         requires(digits<Lower> < digits<Integer>)
-                CNL_NODISCARD constexpr auto calculate_lower(Integer const& input) -> Lower
+                [[nodiscard]] constexpr auto calculate_lower(Integer const& input) -> Lower
         {
             return static_cast<Lower>(input & static_cast<Integer>(numeric_limits<Lower>::max()));
         }
@@ -33,7 +33,7 @@ namespace cnl {
         // cnl::_impl::calculate upper
         template<typename Upper, typename Lower, typename Integer>
         requires(digits<Lower> >= digits<Integer>)
-                CNL_NODISCARD constexpr auto calculate_upper(Integer const& input) -> Upper
+                [[nodiscard]] constexpr auto calculate_upper(Integer const& input) -> Upper
         {
             // sign-friendly flush
             // TODO: Not reproduced locally. Investigate.
@@ -43,7 +43,7 @@ namespace cnl {
 
         template<typename Upper, typename Lower, typename Integer>
         requires(digits<Lower> < digits<Integer>)
-                CNL_NODISCARD constexpr auto calculate_upper(Integer const& input) -> Upper
+                [[nodiscard]] constexpr auto calculate_upper(Integer const& input) -> Upper
         {
             return sensible_right_shift<Upper>(input, digits<Lower>);
         }

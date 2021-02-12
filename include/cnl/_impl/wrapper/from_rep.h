@@ -16,7 +16,7 @@
 namespace cnl {
     template<typename NumberRep, tag NumberTag, typename Rep>
     struct from_rep<_impl::wrapper<NumberRep, NumberTag>, Rep> {
-        CNL_NODISCARD constexpr auto operator()(Rep const& rep) const
+        [[nodiscard]] constexpr auto operator()(Rep const& rep) const
                 -> _impl::set_rep_t<_impl::wrapper<NumberRep, NumberTag>, Rep>
         {
             return rep;

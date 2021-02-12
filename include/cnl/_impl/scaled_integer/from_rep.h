@@ -23,7 +23,7 @@ namespace cnl {
         using result_type =
                 _impl::set_rep_t<scaled_integer<ArchetypeRep, power<Exponent, Radix>>, Rep>;
         /// \brief generates a \ref scaled_integer equivalent to \c r in type and value
-        CNL_NODISCARD constexpr auto operator()(Rep const& r) const -> result_type
+        [[nodiscard]] constexpr auto operator()(Rep const& r) const -> result_type
         {
             return result_type(r, 0);
         }

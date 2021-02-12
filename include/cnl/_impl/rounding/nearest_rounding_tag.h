@@ -48,7 +48,7 @@ namespace cnl {
 
     template<typename Lhs, typename Rhs>
     struct custom_operator<_impl::divide_op, operand<Lhs, nearest_rounding_tag>, operand<Rhs, nearest_rounding_tag>> {
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
                 -> decltype(lhs / rhs)
         {
             return (((lhs < 0) ^ (rhs < 0)) ? lhs - (rhs / 2) : lhs + (rhs / 2)) / rhs;

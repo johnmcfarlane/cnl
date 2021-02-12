@@ -17,7 +17,7 @@
 /// compositional numeric library
 namespace cnl {
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    CNL_NODISCARD constexpr auto make_elastic_integer(constant<Value>)
+    [[nodiscard]] constexpr auto make_elastic_integer(constant<Value>)
             -> elastic_integer<digits<constant<Value>>>
     {
         return elastic_integer<digits<constant<Value>>>{Value};
@@ -45,7 +45,7 @@ namespace cnl {
     template<
             class Narrowest = void, class Integral,
             _impl::enable_if_t<!_impl::is_constant<Integral>::value, int> = 0>
-    CNL_NODISCARD constexpr auto make_elastic_integer(Integral const& value)
+    [[nodiscard]] constexpr auto make_elastic_integer(Integral const& value)
             -> _impl::make_type<Narrowest, Integral>
     {
         return _impl::make_type<Narrowest, Integral>{value};

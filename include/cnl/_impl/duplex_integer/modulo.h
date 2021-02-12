@@ -23,7 +23,7 @@ namespace cnl {
                     max(digits<Lhs>, digits<Rhs>),
                     numbers::set_signedness_t<int, numbers::signedness_v<Lhs> | numbers::signedness_v<Rhs>>>>;
 
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> Lhs
+            [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> Lhs
             {
                 return static_cast<Lhs>(
                         static_cast<common_type>(lhs) / static_cast<common_type>(rhs));
@@ -40,7 +40,7 @@ namespace cnl {
         using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
         using _unsigned_duplex_integer = numbers::set_signedness_t<_duplex_integer, false>;
 
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 _duplex_integer const& lhs, _duplex_integer const& rhs) const -> _duplex_integer
         {
             return lhs - rhs * (lhs / rhs);

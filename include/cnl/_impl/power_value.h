@@ -27,7 +27,7 @@ namespace cnl {
 
         template<typename S, int Radix>
         struct power_value_fn<S, 0, Radix, false, false, false> {
-            CNL_NODISCARD constexpr auto operator()() const
+            [[nodiscard]] constexpr auto operator()() const
             {
                 return S{1};
             }
@@ -35,7 +35,7 @@ namespace cnl {
 
         template<typename S, int Exponent, bool OddExponent>
         struct power_value_fn<S, Exponent, 2, true, OddExponent, false> {
-            CNL_NODISCARD constexpr auto operator()() const
+            [[nodiscard]] constexpr auto operator()() const
             {
                 using result_numeric_limits = numeric_limits<decltype(
                         decltype(
@@ -58,7 +58,7 @@ namespace cnl {
 
         template<typename S, int Exponent, int Radix, bool OddExponent>
         struct power_value_fn<S, Exponent, Radix, true, OddExponent, false> {
-            CNL_NODISCARD constexpr auto operator()() const
+            [[nodiscard]] constexpr auto operator()() const
             {
                 return power_value_fn<S, (Exponent - 1), Radix>{}() * Radix;
             }
@@ -66,7 +66,7 @@ namespace cnl {
 
         template<typename S, int Exponent, int Radix, bool PositiveExponent, bool OddExponent>
         struct power_value_fn<S, Exponent, Radix, PositiveExponent, OddExponent, true> {
-            CNL_NODISCARD constexpr auto operator()() const -> S
+            [[nodiscard]] constexpr auto operator()() const -> S
             {
                 return Exponent ? S(1.) / power_value_fn<S, -Exponent, Radix>{}() : S{1.};
             }
@@ -74,12 +74,12 @@ namespace cnl {
 
         template<typename S, int Exponent, int Radix>
         struct power_value_fn<S, Exponent, Radix, true, false, true> {
-            CNL_NODISCARD constexpr static auto square(S const& r)
+            [[nodiscard]] constexpr static auto square(S const& r)
             {
                 return r * r;
             }
 
-            CNL_NODISCARD constexpr auto operator()() const
+            [[nodiscard]] constexpr auto operator()() const
             {
                 return square(power_value_fn<S, Exponent / 2, Radix>{}());
             }
@@ -87,19 +87,19 @@ namespace cnl {
 
         template<typename S, int Exponent, int Radix>
         struct power_value_fn<S, Exponent, Radix, true, true, true> {
-            CNL_NODISCARD constexpr static auto square(S const& r)
+            [[nodiscard]] constexpr static auto square(S const& r)
             {
                 return r * r;
             }
 
-            CNL_NODISCARD constexpr auto operator()() const
+            [[nodiscard]] constexpr auto operator()() const
             {
                 return S(Radix) * power_value_fn<S, (Exponent - 1), Radix>{}();
             }
         };
 
         template<typename S, int Exponent, int Radix>
-        CNL_NODISCARD constexpr auto power_value()
+        [[nodiscard]] constexpr auto power_value()
         {
             return power_value_fn<S, Exponent, Radix>{}();
         }

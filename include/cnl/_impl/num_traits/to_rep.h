@@ -20,17 +20,17 @@ namespace cnl {
         template<typename Number>
         struct default_to_rep {
             // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-            CNL_NODISCARD constexpr auto& operator()(Number& number) const
+            [[nodiscard]] constexpr auto& operator()(Number& number) const
             {
                 return number;
             };
             // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-            CNL_NODISCARD constexpr auto const& operator()(Number const& number) const
+            [[nodiscard]] constexpr auto const& operator()(Number const& number) const
             {
                 return number;
             };
             // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-            CNL_NODISCARD constexpr auto&& operator()(Number&& number) const
+            [[nodiscard]] constexpr auto&& operator()(Number&& number) const
             {
                 return std::forward<Number>(number);
             };
@@ -54,7 +54,7 @@ namespace cnl {
 
     namespace _impl {
         template<class Number>
-        CNL_NODISCARD constexpr auto to_rep(Number&& number)  // NOLINT(misc-unused-parameters)
+        [[nodiscard]] constexpr auto to_rep(Number&& number)  // NOLINT(misc-unused-parameters)
                 -> decltype(cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number)))
         {
             return cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number));

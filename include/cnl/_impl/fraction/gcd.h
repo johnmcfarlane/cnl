@@ -15,7 +15,7 @@
 namespace cnl {
     namespace _impl {
         template<typename Numerator, typename Denominator>
-        CNL_NODISCARD constexpr auto gcd(fraction<Numerator, Denominator> const& f)
+        [[nodiscard]] constexpr auto gcd(fraction<Numerator, Denominator> const& f)
         {
             using std::gcd;
             return gcd(f.numerator, f.denominator);

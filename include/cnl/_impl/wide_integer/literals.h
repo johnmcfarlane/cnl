@@ -19,7 +19,7 @@ namespace cnl {
         // known-base integer literal parser
 
         template<int Base, typename ParseDigit, typename Integer>
-        CNL_NODISCARD constexpr auto wide_integer_parse(
+        [[nodiscard]] constexpr auto wide_integer_parse(
                 char const* s, ParseDigit parse_digit, Integer const& value) -> Integer
         {
             return *s ? wide_integer_parse<Base>(
@@ -28,14 +28,14 @@ namespace cnl {
         }
 
         // decimal
-        CNL_NODISCARD constexpr auto parse_dec_char(char c)
+        [[nodiscard]] constexpr auto parse_dec_char(char c)
         {
             return (c >= '0' && c <= '9') ? c - '0' : unreachable<int>("invalid decimal digits");
         }
 
         template<int NumChars>
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
-        CNL_NODISCARD constexpr auto decimal_wide_integer_parse(const char (&s)[NumChars])
+        [[nodiscard]] constexpr auto decimal_wide_integer_parse(const char (&s)[NumChars])
                 -> wide_integer<(NumChars - 1) * 3322 / 1000 + 1>
         {
             using result = wide_integer<(NumChars - 1) * 3322 / 1000 + 1>;
@@ -44,21 +44,21 @@ namespace cnl {
 
         template<char... Chars>
         struct wide_integer_parser {
-            CNL_NODISCARD constexpr auto operator()() const
+            [[nodiscard]] constexpr auto operator()() const
             {
                 return decimal_wide_integer_parse<sizeof...(Chars) + 1>({Chars..., '\0'});
             }
         };
 
         // octal
-        CNL_NODISCARD constexpr auto parse_oct_char(char c)
+        [[nodiscard]] constexpr auto parse_oct_char(char c)
         {
             return (c >= '0' && c <= '7') ? c - '0' : unreachable<int>("invalid octal digits");
         }
 
         template<int NumChars>
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
-        CNL_NODISCARD constexpr auto octal_wide_integer_parse(const char (&s)[NumChars])
+        [[nodiscard]] constexpr auto octal_wide_integer_parse(const char (&s)[NumChars])
                 -> wide_integer<(NumChars - 1) * 3>
         {
             using result = wide_integer<(NumChars - 1) * 3>;
@@ -67,14 +67,14 @@ namespace cnl {
 
         template<char... Chars>
         struct wide_integer_parser<'0', Chars...> {
-            CNL_NODISCARD constexpr auto operator()() const
+            [[nodiscard]] constexpr auto operator()() const
             {
                 return octal_wide_integer_parse<sizeof...(Chars) + 1>({Chars..., '\0'});
             }
         };
 
         // binary
-        CNL_NODISCARD constexpr auto parse_bin_char(char c)
+        [[nodiscard]] constexpr auto parse_bin_char(char c)
         {
             return (c == '0') ? 0 : (c == '1') ? 1
                                                : unreachable<int>("invalid binary digits");
@@ -82,7 +82,7 @@ namespace cnl {
 
         template<int NumChars>
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
-        CNL_NODISCARD constexpr auto binary_wide_integer_parse(const char (&s)[NumChars])
+        [[nodiscard]] constexpr auto binary_wide_integer_parse(const char (&s)[NumChars])
                 -> wide_integer<NumChars - 1>
         {
             using result = wide_integer<NumChars - 1>;
@@ -91,7 +91,7 @@ namespace cnl {
 
         template<char... Chars>
         struct wide_integer_parser<'0', 'B', Chars...> {
-            CNL_NODISCARD constexpr auto operator()() const
+            [[nodiscard]] constexpr auto operator()() const
             {
                 return binary_wide_integer_parse<sizeof...(Chars) + 1>({Chars..., '\0'});
             }
@@ -99,14 +99,14 @@ namespace cnl {
 
         template<char... Chars>
         struct wide_integer_parser<'0', 'b', Chars...> {
-            CNL_NODISCARD constexpr auto operator()() const
+            [[nodiscard]] constexpr auto operator()() const
             {
                 return binary_wide_integer_parse<sizeof...(Chars) + 1>({Chars..., '\0'});
             }
         };
 
         // hexadecimal
-        CNL_NODISCARD constexpr auto parse_hex_char(char c)
+        [[nodiscard]] constexpr auto parse_hex_char(char c)
         {
             return (c >= '0' && c <= '9') ? c - '0'
                  : (c >= 'a' && c <= 'z') ? c + 10 - 'a'
@@ -116,7 +116,7 @@ namespace cnl {
 
         template<int NumChars>
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
-        CNL_NODISCARD constexpr auto hexadecimal_wide_integer_parse(const char (&s)[NumChars])
+        [[nodiscard]] constexpr auto hexadecimal_wide_integer_parse(const char (&s)[NumChars])
                 -> wide_integer<(NumChars - 1) * 4>
         {
             using result = wide_integer<(NumChars - 1) * 4>;
@@ -125,7 +125,7 @@ namespace cnl {
 
         template<char... Chars>
         struct wide_integer_parser<'0', 'X', Chars...> {
-            CNL_NODISCARD constexpr auto operator()() const
+            [[nodiscard]] constexpr auto operator()() const
             {
                 return hexadecimal_wide_integer_parse<sizeof...(Chars) + 1>({Chars..., '\0'});
             }
@@ -133,7 +133,7 @@ namespace cnl {
 
         template<char... Chars>
         struct wide_integer_parser<'0', 'x', Chars...> {
-            CNL_NODISCARD constexpr auto operator()() const
+            [[nodiscard]] constexpr auto operator()() const
             {
                 return hexadecimal_wide_integer_parse<sizeof...(Chars) + 1>({Chars..., '\0'});
             }
@@ -143,7 +143,7 @@ namespace cnl {
     namespace literals {
         // cnl::_impl::operator "" _wide()
         template<char... Chars>
-        CNL_NODISCARD constexpr auto operator"" _wide()
+        [[nodiscard]] constexpr auto operator"" _wide()
         {
             return _impl::wide_integer_parser<Chars...>{}();
         }

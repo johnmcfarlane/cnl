@@ -15,14 +15,14 @@
 namespace cnl {
     namespace _impl {
         template<typename Numerator, typename Denominator, typename Gcd>
-        CNL_NODISCARD constexpr auto reduce_from_gcd(
+        [[nodiscard]] constexpr auto reduce_from_gcd(
                 fraction<Numerator, Denominator> const& f, Gcd const& gcd)
         {
             return make_fraction(f.numerator / gcd, f.denominator / gcd);
         }
 
         template<typename Numerator, typename Denominator>
-        CNL_NODISCARD constexpr auto reduce(fraction<Numerator, Denominator> const& f)
+        [[nodiscard]] constexpr auto reduce(fraction<Numerator, Denominator> const& f)
         {
             return reduce_from_gcd(f, gcd(f));
         }

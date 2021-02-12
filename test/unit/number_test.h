@@ -22,7 +22,7 @@
 
 // Lhs == Rhs
 template<class Lhs, class Rhs>
-CNL_NODISCARD constexpr bool is_equal_to(Lhs const& lhs, Rhs const& rhs)
+[[nodiscard]] constexpr bool is_equal_to(Lhs const& lhs, Rhs const& rhs)
 {
     return ((lhs == rhs)) && (!(lhs != rhs)) && (!(lhs < rhs)) && (!(lhs > rhs)) && ((lhs <= rhs))
         && ((lhs >= rhs));
@@ -32,7 +32,7 @@ static_assert(is_equal_to<int>(0, 0), "less_than_test test failed");
 
 // lesser < greater
 template<class Lesser, class Greater>
-CNL_NODISCARD constexpr bool is_less_than(Lesser const& lesser, Greater const& greater)
+[[nodiscard]] constexpr bool is_less_than(Lesser const& lesser, Greater const& greater)
 {
     return (!(lesser == greater)) && ((lesser != greater)) && ((lesser < greater))
         && (!(lesser > greater)) && ((lesser <= greater)) && (!(lesser >= greater));

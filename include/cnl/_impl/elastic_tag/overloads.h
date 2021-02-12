@@ -36,7 +36,7 @@ namespace cnl {
     }
 
     template<int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
-    CNL_NODISCARD constexpr auto operator+(
+    [[nodiscard]] constexpr auto operator+(
             elastic_tag<LhsDigits, LhsNarrowest>, elastic_tag<RhsDigits, RhsNarrowest>) ->
             typename _impl::elastic_tag_overload_params<
                     _impl::add_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
@@ -46,7 +46,7 @@ namespace cnl {
     }
 
     template<int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
-    CNL_NODISCARD constexpr auto operator-(
+    [[nodiscard]] constexpr auto operator-(
             elastic_tag<LhsDigits, LhsNarrowest>, elastic_tag<RhsDigits, RhsNarrowest>) ->
             typename _impl::elastic_tag_overload_params<
                     _impl::subtract_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
@@ -56,7 +56,7 @@ namespace cnl {
     }
 
     template<int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
-    CNL_NODISCARD constexpr auto operator*(
+    [[nodiscard]] constexpr auto operator*(
             elastic_tag<LhsDigits, LhsNarrowest>, elastic_tag<RhsDigits, RhsNarrowest>) ->
             typename _impl::elastic_tag_overload_params<
                     _impl::multiply_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
@@ -66,7 +66,7 @@ namespace cnl {
     }
 
     template<int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
-    CNL_NODISCARD constexpr auto operator/(
+    [[nodiscard]] constexpr auto operator/(
             elastic_tag<LhsDigits, LhsNarrowest>, elastic_tag<RhsDigits, RhsNarrowest>) ->
             typename _impl::elastic_tag_overload_params<
                     _impl::divide_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
@@ -76,7 +76,7 @@ namespace cnl {
     }
 
     template<int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
-    CNL_NODISCARD constexpr auto operator%(
+    [[nodiscard]] constexpr auto operator%(
             elastic_tag<LhsDigits, LhsNarrowest>, elastic_tag<RhsDigits, RhsNarrowest>) ->
             typename _impl::elastic_tag_overload_params<
                     _impl::modulo_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type
@@ -86,7 +86,7 @@ namespace cnl {
     }
 
     template<int LhsDigits, typename LhsNarrowest, int RhsDigits, typename RhsNarrowest>
-    CNL_NODISCARD constexpr auto operator&(
+    [[nodiscard]] constexpr auto operator&(
             elastic_tag<LhsDigits, LhsNarrowest>, elastic_tag<RhsDigits, RhsNarrowest>) ->
             typename _impl::elastic_tag_overload_params<
                     _impl::bitwise_and_op, LhsDigits, LhsNarrowest, RhsDigits, RhsNarrowest>::type

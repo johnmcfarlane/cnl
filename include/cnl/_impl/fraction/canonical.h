@@ -14,20 +14,20 @@
 namespace cnl {
     namespace _impl {
         template<typename Numerator, typename Denominator>
-        CNL_NODISCARD constexpr auto negated(fraction<Numerator, Denominator> const& rhs)
+        [[nodiscard]] constexpr auto negated(fraction<Numerator, Denominator> const& rhs)
         {
             return _impl::make_fraction(-rhs.numerator, -rhs.denominator);
         }
 
         template<typename Numerator, typename Denominator>
-        CNL_NODISCARD constexpr auto canonical_from_reduce(
+        [[nodiscard]] constexpr auto canonical_from_reduce(
                 fraction<Numerator, Denominator> const& f)
         {
             return (f.denominator < Denominator(0.)) ? negated(f) : f;
         }
 
         template<typename Numerator, typename Denominator>
-        CNL_NODISCARD constexpr auto canonical(fraction<Numerator, Denominator> const& f)
+        [[nodiscard]] constexpr auto canonical(fraction<Numerator, Denominator> const& f)
         {
             return canonical_from_reduce(reduce(f));
         }

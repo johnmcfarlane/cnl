@@ -62,7 +62,7 @@ namespace cnl {
                         FromDigits != OtherDigits
                                 || !std::is_same<FromNarrowest, OtherNarrowest>::value,
                         std::nullptr_t> = nullptr>
-        CNL_NODISCARD constexpr auto cast_to_common_type(
+        [[nodiscard]] constexpr auto cast_to_common_type(
                 elastic_integer<FromDigits, FromNarrowest> const& from,
                 elastic_integer<OtherDigits, OtherNarrowest> const&)
         {
@@ -77,7 +77,7 @@ namespace cnl {
             Operator,
             operand<elastic_integer<LhsDigits, LhsNarrowest>>,
             operand<elastic_integer<RhsDigits, RhsNarrowest>>> {
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
                 elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
         {
@@ -90,7 +90,7 @@ namespace cnl {
             Operator,
             operand<elastic_integer<Digits, Narrowest>>,
             operand<elastic_integer<Digits, Narrowest>>> {
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 elastic_integer<Digits, Narrowest> const& lhs,
                 elastic_integer<Digits, Narrowest> const& rhs) const
         {
@@ -107,7 +107,7 @@ namespace cnl {
             operand<Rhs>> {
         using lhs_type = elastic_integer<LhsDigits, LhsRep>;
 
-        CNL_NODISCARD constexpr auto operator()(lhs_type const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(lhs_type const& lhs, Rhs const& rhs) const
         {
             return _impl::from_rep<lhs_type>(Operator{}(_impl::to_rep(lhs), rhs));
         }
@@ -118,7 +118,7 @@ namespace cnl {
             _impl::shift_left_op,
             operand<elastic_integer<LhsDigits, LhsNarrowest>>,
             operand<constant<RhsValue>>> {
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs, constant<RhsValue>) const
         {
             return _impl::from_rep<elastic_integer<LhsDigits + int{RhsValue}, LhsNarrowest>>(
@@ -134,7 +134,7 @@ namespace cnl {
             _impl::shift_right_op,
             operand<elastic_integer<LhsDigits, LhsNarrowest>>,
             operand<constant<RhsValue>>> {
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs, constant<RhsValue>) const
         {
             return _impl::from_rep<elastic_integer<LhsDigits - int{RhsValue}, LhsNarrowest>>(
@@ -147,7 +147,7 @@ namespace cnl {
     template<int RhsDigits, class RhsNarrowest>
     struct custom_operator<
             _impl::minus_op, operand<elastic_integer<RhsDigits, RhsNarrowest>>> {
-        CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
+        [[nodiscard]] constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
                 const -> elastic_integer<RhsDigits, typename numbers::set_signedness_t<RhsNarrowest, true>>
         {
             using result_type =
@@ -160,7 +160,7 @@ namespace cnl {
     template<int RhsDigits, class RhsNarrowest>
     struct custom_operator<
             _impl::plus_op, operand<elastic_integer<RhsDigits, RhsNarrowest>>> {
-        CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
+        [[nodiscard]] constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
                 const -> elastic_integer<RhsDigits, RhsNarrowest>
         {
             return _impl::from_rep<elastic_integer<RhsDigits, RhsNarrowest>>(
@@ -172,7 +172,7 @@ namespace cnl {
     template<int RhsDigits, class RhsNarrowest>
     struct custom_operator<
             _impl::bitwise_not_op, operand<elastic_integer<RhsDigits, RhsNarrowest>>> {
-        CNL_NODISCARD constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
+        [[nodiscard]] constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
                 const -> elastic_integer<RhsDigits, RhsNarrowest>
         {
             using elastic_integer = elastic_integer<RhsDigits, RhsNarrowest>;

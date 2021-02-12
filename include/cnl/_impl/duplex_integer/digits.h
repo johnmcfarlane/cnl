@@ -21,7 +21,7 @@ namespace cnl {
         // 'sensible' shift operations - for when the compiler is being obtuse
 
         template<typename Result, typename Lhs>
-        CNL_NODISCARD constexpr auto sensible_right_shift(Lhs const& lhs, int rhs) -> Result
+        [[nodiscard]] constexpr auto sensible_right_shift(Lhs const& lhs, int rhs) -> Result
                 requires(digits<Result> <= digits<decltype(lhs >> rhs)>)
         {
             CNL_ASSERT(rhs >= 0);
@@ -33,7 +33,7 @@ namespace cnl {
         }
 
         template<typename Result, typename Lhs>
-        CNL_NODISCARD constexpr auto sensible_right_shift(Lhs const& lhs, int rhs) -> Result
+        [[nodiscard]] constexpr auto sensible_right_shift(Lhs const& lhs, int rhs) -> Result
                 requires(digits<Result> > digits<decltype(lhs >> rhs)>)
         {
             CNL_ASSERT(rhs >= 0);
@@ -43,7 +43,7 @@ namespace cnl {
         }
 
         template<typename Result, typename Lhs>
-        CNL_NODISCARD constexpr auto sensible_left_shift(Lhs const& lhs, int rhs) -> Result
+        [[nodiscard]] constexpr auto sensible_left_shift(Lhs const& lhs, int rhs) -> Result
                 requires(digits<Result> <= digits<decltype(lhs << rhs)>)
         {
             CNL_ASSERT(rhs >= 0);
@@ -60,14 +60,14 @@ namespace cnl {
         }
 
         template<typename Result, typename Lhs>
-        CNL_NODISCARD constexpr auto sensible_left_shift(Lhs const& lhs, int rhs) -> Result
+        [[nodiscard]] constexpr auto sensible_left_shift(Lhs const& lhs, int rhs) -> Result
                 requires(digits<Result> > digits<decltype(lhs << rhs)>)
         {
             return sensible_left_shift<Result>(static_cast<Result>(lhs), rhs);
         }
 
         template<typename Result, typename Lhs>
-        CNL_NODISCARD constexpr auto extra_sensible_right_shift(Lhs const& lhs, int rhs) -> Result
+        [[nodiscard]] constexpr auto extra_sensible_right_shift(Lhs const& lhs, int rhs) -> Result
         {
             return (rhs < 0) ? sensible_left_shift<Result>(lhs, -rhs)
                              : sensible_right_shift<Result>(lhs, rhs);

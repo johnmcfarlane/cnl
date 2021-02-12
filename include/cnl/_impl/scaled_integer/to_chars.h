@@ -55,7 +55,7 @@ namespace cnl {
         private:
             using value_type = scaled_integer<Rep, power<Exponent, Radix>>;
 
-            CNL_NODISCARD constexpr auto integral(value_type const& scalar) const
+            [[nodiscard]] constexpr auto integral(value_type const& scalar) const
             {
                 return scale<Exponent, Radix>(to_rep(scalar));
             }
@@ -67,7 +67,7 @@ namespace cnl {
             }
 
         public:
-            CNL_NODISCARD constexpr auto operator()(value_type const& value) const
+            [[nodiscard]] constexpr auto operator()(value_type const& value) const
             {
                 return from_integral_and_value(integral(value), value);
             }
@@ -77,7 +77,7 @@ namespace cnl {
         struct split<Rep, Exponent, Radix, true> {
             using value_type = scaled_integer<Rep, power<Exponent, Radix>>;
 
-            CNL_NODISCARD constexpr auto operator()(value_type const& value) const
+            [[nodiscard]] constexpr auto operator()(value_type const& value) const
             {
                 return std::make_pair(Rep{}, value);
             }

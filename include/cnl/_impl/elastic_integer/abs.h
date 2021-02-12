@@ -15,7 +15,7 @@
 namespace cnl {
     namespace _impl {
         template<int Digits, typename Narrowest>
-        CNL_NODISCARD constexpr auto abs(elastic_integer<Digits, Narrowest> const& n)
+        [[nodiscard]] constexpr auto abs(elastic_integer<Digits, Narrowest> const& n)
         {
             return from_rep<elastic_integer<Digits, Narrowest>>(abs(to_rep(n)));
         }

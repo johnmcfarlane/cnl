@@ -47,7 +47,7 @@ namespace cnl {
             {
             }
 
-            CNL_NODISCARD explicit constexpr operator Integer128() const
+            [[nodiscard]] explicit constexpr operator Integer128() const
             {
                 return _value;
             }
@@ -62,17 +62,17 @@ namespace cnl {
         static int const digits = CHAR_BIT * sizeof(int128) - 1;
         static int const digits10 = 38;
 
-        CNL_NODISCARD static constexpr auto min()
+        [[nodiscard]] static constexpr auto min()
         {
             return int128(_impl::join128<int128>(0x8000000000000000, 0x0000000000000000));
         }
 
-        CNL_NODISCARD static constexpr auto max()
+        [[nodiscard]] static constexpr auto max()
         {
             return int128(_impl::join128<int128>(0x7fffffffffffffff, 0xffffffffffffffff));
         }
 
-        CNL_NODISCARD static constexpr auto lowest()
+        [[nodiscard]] static constexpr auto lowest()
         {
             return min();
         }
@@ -83,17 +83,17 @@ namespace cnl {
         static int const digits = CHAR_BIT * sizeof(int128);
         static int const digits10 = 38;
 
-        CNL_NODISCARD static constexpr auto min()
+        [[nodiscard]] static constexpr auto min()
         {
             return 0;
         }
 
-        CNL_NODISCARD static constexpr auto max()
+        [[nodiscard]] static constexpr auto max()
         {
             return uint128(_impl::join128<uint128>(0xffffffffffffffff, 0xffffffffffffffff));
         }
 
-        CNL_NODISCARD static constexpr auto lowest()
+        [[nodiscard]] static constexpr auto lowest()
         {
             return min();
         }

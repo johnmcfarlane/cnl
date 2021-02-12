@@ -27,7 +27,7 @@ namespace cnl {
     // higher OP number<>
     template<_impl::binary_arithmetic_op Operator, _impl::floating_point Lhs, _impl::wrapped Rhs>
     struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(lhs, static_cast<Lhs>(rhs));
         }
@@ -36,7 +36,7 @@ namespace cnl {
     // number<> OP higher
     template<_impl::binary_arithmetic_op Operator, _impl::wrapped Lhs, _impl::floating_point Rhs>
     struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(static_cast<Rhs>(lhs), rhs);
         }
@@ -45,7 +45,7 @@ namespace cnl {
     // lower OP number<>
     template<_impl::binary_arithmetic_op Operator, class Lhs, class Rhs>
     requires _impl::number_can_wrap<Rhs, Lhs>::value struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(_impl::from_value<Rhs>(lhs), rhs);
         }
@@ -54,7 +54,7 @@ namespace cnl {
     // number<> OP lower
     template<_impl::binary_arithmetic_op Operator, class Lhs, class Rhs>
     requires _impl::number_can_wrap<Lhs, Rhs>::value struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(lhs, _impl::from_value<Lhs>(rhs));
         }
@@ -71,7 +71,7 @@ namespace cnl {
         using _result_tag = _impl::op_result<Operator, _impl::tag_of_t<Lhs>, _impl::tag_of_t<Rhs>>;
         using _result_archetype = _impl::set_rep_t<_impl::set_tag_t<Lhs, _result_tag>, _result_rep>;
 
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return _impl::from_rep<_result_archetype>(
                     _rep_operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs)));

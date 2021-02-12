@@ -66,8 +66,7 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_UNARY_OPERATOR(OP, NAME) \
     template<class Operand> \
-    requires _impl::wants_generic_ops<Operand> \
-            CNL_NODISCARD constexpr auto operator OP(Operand const& operand) \
+    requires _impl::wants_generic_ops<Operand> [[nodiscard]] constexpr auto operator OP(Operand const& operand) \
     { \
         return cnl::custom_operator<NAME, cnl::operand<Operand>>()(operand); \
     }
@@ -84,7 +83,7 @@ namespace cnl {
 #define CNL_DEFINE_BINARY_OPERATOR(OP, NAME) \
     template<class LhsOperand, class RhsOperand> \
     requires(enable_binary<LhsOperand, RhsOperand>::value) \
-            CNL_NODISCARD constexpr auto \
+            [[nodiscard]] constexpr auto \
             operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
     { \
         return cnl::custom_operator<NAME, cnl::operand<LhsOperand>, cnl::operand<RhsOperand>>{}( \
@@ -113,7 +112,7 @@ namespace cnl {
 #define CNL_DEFINE_SHIFT_OPERATOR(OP, NAME) \
     template<class LhsOperand, class RhsOperand> \
     requires enable_binary<LhsOperand, RhsOperand>::value \
-            CNL_NODISCARD constexpr auto \
+            [[nodiscard]] constexpr auto \
             operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
     { \
         return cnl::custom_operator<NAME, operand<LhsOperand>, operand<RhsOperand>>()(lhs, rhs); \
@@ -129,7 +128,7 @@ namespace cnl {
 #define CNL_DEFINE_COMPARISON_OPERATOR(OP, NAME) \
     template<class LhsOperand, class RhsOperand> \
     requires enable_binary<LhsOperand, RhsOperand>::value \
-            CNL_NODISCARD constexpr auto \
+            [[nodiscard]] constexpr auto \
             operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
     { \
         return cnl::custom_operator<NAME, operand<LhsOperand>, operand<RhsOperand>>()(lhs, rhs); \

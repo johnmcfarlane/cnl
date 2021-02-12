@@ -27,7 +27,7 @@ namespace cnl {
         template<>
         struct overflow_polarity<convert_op> {
             template<typename Destination, typename Source>
-            CNL_NODISCARD constexpr auto operator()(Source const& from) const
+            [[nodiscard]] constexpr auto operator()(Source const& from) const
             {
                 return measure_polarity(from);
             }
@@ -36,7 +36,7 @@ namespace cnl {
         template<>
         struct overflow_polarity<minus_op> {
             template<typename Rhs>
-            CNL_NODISCARD constexpr auto operator()(Rhs const& rhs) const
+            [[nodiscard]] constexpr auto operator()(Rhs const& rhs) const
             {
                 return -measure_polarity(rhs);
             }
@@ -45,7 +45,7 @@ namespace cnl {
         template<>
         struct overflow_polarity<add_op> {
             template<typename Lhs, typename Rhs>
-            CNL_NODISCARD constexpr auto operator()(Lhs const&, Rhs const& rhs) const
+            [[nodiscard]] constexpr auto operator()(Lhs const&, Rhs const& rhs) const
             {
                 return measure_polarity(rhs);
             }
@@ -54,7 +54,7 @@ namespace cnl {
         template<>
         struct overflow_polarity<subtract_op> {
             template<typename Lhs, typename Rhs>
-            CNL_NODISCARD constexpr auto operator()(Lhs const&, Rhs const& rhs) const
+            [[nodiscard]] constexpr auto operator()(Lhs const&, Rhs const& rhs) const
             {
                 return -measure_polarity(rhs);
             }
@@ -63,7 +63,7 @@ namespace cnl {
         template<>
         struct overflow_polarity<multiply_op> {
             template<typename Lhs, typename Rhs>
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 return measure_polarity(lhs) * measure_polarity(rhs);
             }
@@ -89,7 +89,7 @@ namespace cnl {
         template<typename Lhs, typename Rhs>
         struct builtin_overflow_operator<add_op, Lhs, Rhs> : are_builtin_operands<Lhs, Rhs> {
             template<typename Result>
-            CNL_NODISCARD constexpr auto operator()(
+            [[nodiscard]] constexpr auto operator()(
                     Lhs const& lhs, Rhs const& rhs, Result& result) const
             {
                 return __builtin_add_overflow(lhs, rhs, &result);
@@ -99,7 +99,7 @@ namespace cnl {
         template<typename Lhs, typename Rhs>
         struct builtin_overflow_operator<subtract_op, Lhs, Rhs> : are_builtin_operands<Lhs, Rhs> {
             template<typename Result>
-            CNL_NODISCARD constexpr auto operator()(
+            [[nodiscard]] constexpr auto operator()(
                     Lhs const& lhs, Rhs const& rhs, Result& result) const
             {
                 return __builtin_sub_overflow(lhs, rhs, &result);
@@ -109,7 +109,7 @@ namespace cnl {
         template<typename Lhs, typename Rhs>
         struct builtin_overflow_operator<multiply_op, Lhs, Rhs> : are_builtin_operands<Lhs, Rhs> {
             template<typename Result>
-            CNL_NODISCARD constexpr auto operator()(
+            [[nodiscard]] constexpr auto operator()(
                     Lhs const& lhs, Rhs const& rhs, Result& result) const
             {
                 return __builtin_mul_overflow(lhs, rhs, &result);

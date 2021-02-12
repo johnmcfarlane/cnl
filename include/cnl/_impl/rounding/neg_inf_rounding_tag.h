@@ -52,22 +52,22 @@ namespace cnl {
     struct custom_operator<_impl::divide_op, operand<Lhs, neg_inf_rounding_tag>, operand<Rhs, neg_inf_rounding_tag>> {
     private:
         using result_type = decltype(std::declval<Lhs>() / std::declval<Rhs>());
-        CNL_NODISCARD constexpr auto remainder(Lhs const& lhs, Rhs const& rhs) const -> result_type
+        [[nodiscard]] constexpr auto remainder(Lhs const& lhs, Rhs const& rhs) const -> result_type
         {
             return lhs % rhs;
         }
-        CNL_NODISCARD constexpr auto division(Lhs const& lhs, Rhs const& rhs) const -> result_type
+        [[nodiscard]] constexpr auto division(Lhs const& lhs, Rhs const& rhs) const -> result_type
         {
             return lhs / rhs;
         }
-        CNL_NODISCARD constexpr auto division_neg(Lhs const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto division_neg(Lhs const& lhs, Rhs const& rhs) const
                 -> result_type
         {
             return lhs / rhs - 1;
         }
 
     public:
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> result_type
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> result_type
         {
             return ((remainder(lhs, rhs) != 0) && ((remainder(lhs, rhs) < 0) != (rhs < 0)))
                          ? division_neg(lhs, rhs)

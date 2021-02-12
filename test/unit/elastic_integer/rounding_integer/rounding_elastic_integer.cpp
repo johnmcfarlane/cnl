@@ -26,7 +26,7 @@ namespace cnl {
     template<
             rounding_tag RoundingTag = cnl::_impl::tag_of_t<rounding_integer<>>, class Narrowest = int,
             class Input = int>
-    CNL_NODISCARD auto constexpr make_rounding_elastic(Input const& input)
+    [[nodiscard]] auto constexpr make_rounding_elastic(Input const& input)
     {
         return rounding_elastic_integer<
                 numeric_limits<Input>::digits, RoundingTag,

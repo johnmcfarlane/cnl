@@ -26,7 +26,7 @@
 namespace cnl {
     namespace _impl {
         template<typename Rep, int Exponent>
-        CNL_NODISCARD constexpr auto pi(int const max_iterations)
+        [[nodiscard]] constexpr auto pi(int const max_iterations)
         {
             using fp = scaled_integer<Rep, power<Exponent>>;
             constexpr auto four = scaled_integer<Rep, power<3 - digits<Rep>>>{4.};
@@ -45,13 +45,13 @@ namespace cnl {
         }
 
         template<typename Rep, int Exponent>
-        CNL_NODISCARD constexpr auto pi()
+        [[nodiscard]] constexpr auto pi()
         {
             return pi<Rep, Exponent>(0);
         }
 
         template<typename Rep, int Exponent>
-        CNL_NODISCARD constexpr auto e(int const max_iterations)
+        [[nodiscard]] constexpr auto e(int const max_iterations)
         {
             using fp = scaled_integer<Rep, power<Exponent>>;
             constexpr auto one = scaled_integer<Rep, power<2 - digits<Rep>>>{1.};
@@ -70,7 +70,7 @@ namespace cnl {
         }
 
         template<typename Rep, int Exponent>
-        CNL_NODISCARD constexpr auto e()
+        [[nodiscard]] constexpr auto e()
         {
             return e<Rep, Exponent>(0);
         }
@@ -78,7 +78,7 @@ namespace cnl {
         // Given two alternative ways to generate a constant value:
         // tries to choose the best and returns the result.
         template<typename Float, typename Rep, int Exponent>
-        CNL_NODISCARD constexpr auto constant_with_fallback(
+        [[nodiscard]] constexpr auto constant_with_fallback(
                 // NOLINTNEXTLINE(misc-unused-parameters)
                 Float constant, scaled_integer<Rep, power<Exponent>> (*procedure)())
         {
