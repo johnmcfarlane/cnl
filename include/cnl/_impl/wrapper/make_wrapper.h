@@ -18,7 +18,7 @@
 namespace cnl {
     namespace _impl {
         template<tag Tag = tag_of_t<wrapper<>>, typename Rep = rep_of_t<wrapper<>>>
-        CNL_NODISCARD constexpr auto make_wrapper(Rep const& rep) -> wrapper<Rep, Tag>
+        [[nodiscard]] constexpr auto make_wrapper(Rep const& rep) -> wrapper<Rep, Tag>
         {
             return wrapper<Rep, Tag>{rep};
         }

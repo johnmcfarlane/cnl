@@ -40,7 +40,7 @@ namespace cnl {
 
     template<typename Source, typename Destination>
     struct custom_operator<_impl::convert_op, operand<Source>, operand<Destination>> {
-        CNL_NODISCARD constexpr auto operator()(Source const& from) const -> Destination
+        [[nodiscard]] constexpr auto operator()(Source const& from) const -> Destination
         {
             return _impl::convert_op{}.template operator()<Destination>(from);
         }

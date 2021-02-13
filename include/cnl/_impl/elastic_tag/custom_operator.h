@@ -64,7 +64,7 @@ namespace cnl {
                 std::declval<elastic_tag<RhsDigits, RhsNarrowest>>()));
         using result_rep = typename result_tag::_rep;
 
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(static_cast<result_rep>(lhs), static_cast<result_rep>(rhs));
         }
@@ -76,7 +76,7 @@ namespace cnl {
             Operator,
             operand<Lhs, elastic_tag<LhsDigits, LhsNarrowest>>,
             operand<Rhs>> {
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator{}(lhs, rhs);
         }

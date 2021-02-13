@@ -1333,7 +1333,7 @@ namespace test_quotient {
 // cnl::numeric_limits<scaled_integer<>>
 
 template<class Rep, int Exponent, class Min, class Max, class Lowest>
-CNL_NODISCARD constexpr bool test_numeric_limits(Min min, Max max, Lowest lowest)
+[[nodiscard]] constexpr bool test_numeric_limits(Min min, Max max, Lowest lowest)
 {
     using fp = scaled_integer<Rep, cnl::power<Exponent>>;
     using nl = cnl::numeric_limits<fp>;

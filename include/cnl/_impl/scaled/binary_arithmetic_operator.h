@@ -47,7 +47,7 @@ namespace cnl {
         static constexpr int _rhs_left_shift = RhsExponent - _common_exponent;
 
     public:
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return _impl::binary_arithmetic_operate<Operator, _common_power>(
                     _impl::scale<_lhs_left_shift, Radix>(lhs),

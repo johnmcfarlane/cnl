@@ -27,20 +27,20 @@ namespace cnl {
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
     template<tag DestTag, tag SrcTag, typename Dest, typename Src>
-    CNL_NODISCARD constexpr auto convert(Src const& src)
+    [[nodiscard]] constexpr auto convert(Src const& src)
     {
         return custom_operator<_impl::convert_op, operand<Src, SrcTag>, operand<Dest, DestTag>>{}(src);
     }
 
     template<tag DestTag, tag SrcTag, typename Dest, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    CNL_NODISCARD constexpr auto convert(constant<Value> const& src)
+    [[nodiscard]] constexpr auto convert(constant<Value> const& src)
     {
         return custom_operator<_impl::convert_op, operand<decltype(Value), SrcTag>, operand<Dest, DestTag>>{}(src);
     }
 
     namespace _impl {
         template<_impl::binary_arithmetic_op Operator, tag Tag, typename Lhs, typename Rhs>
-        CNL_NODISCARD constexpr auto binary_arithmetic_operate(Lhs const& lhs, Rhs const& rhs)
+        [[nodiscard]] constexpr auto binary_arithmetic_operate(Lhs const& lhs, Rhs const& rhs)
         {
             return custom_operator<Operator, operand<Lhs, Tag>, operand<Rhs, Tag>>{}(lhs, rhs);
         }
@@ -56,7 +56,7 @@ namespace cnl {
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
     template<tag Tag, typename Lhs, typename Rhs>
-    CNL_NODISCARD constexpr auto add(Lhs const& lhs, Rhs const& rhs)
+    [[nodiscard]] constexpr auto add(Lhs const& lhs, Rhs const& rhs)
     {
         return custom_operator<_impl::add_op, operand<Lhs, Tag>, operand<Rhs, Tag>>{}(lhs, rhs);
     }
@@ -71,7 +71,7 @@ namespace cnl {
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
     template<tag Tag, typename Lhs, typename Rhs>
-    CNL_NODISCARD constexpr auto subtract(Lhs const& lhs, Rhs const& rhs)
+    [[nodiscard]] constexpr auto subtract(Lhs const& lhs, Rhs const& rhs)
     {
         return custom_operator<_impl::subtract_op, operand<Lhs, Tag>, operand<Rhs, Tag>>{}(lhs, rhs);
     }
@@ -86,7 +86,7 @@ namespace cnl {
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
     template<tag Tag, typename Lhs, typename Rhs>
-    CNL_NODISCARD constexpr auto multiply(Lhs const& lhs, Rhs const& rhs)
+    [[nodiscard]] constexpr auto multiply(Lhs const& lhs, Rhs const& rhs)
     {
         return custom_operator<_impl::multiply_op, operand<Lhs, Tag>, operand<Rhs, Tag>>{}(lhs, rhs);
     }
@@ -101,13 +101,13 @@ namespace cnl {
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
     template<tag Tag, typename Lhs, typename Rhs>
-    CNL_NODISCARD constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
+    [[nodiscard]] constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
     {
         return custom_operator<_impl::divide_op, operand<Lhs, Tag>, operand<Rhs, Tag>>{}(lhs, rhs);
     }
 
     template<tag Tag, typename Lhs, typename Rhs>
-    CNL_NODISCARD constexpr auto shift_left(Lhs const& lhs, Rhs const& rhs)
+    [[nodiscard]] constexpr auto shift_left(Lhs const& lhs, Rhs const& rhs)
     {
         return custom_operator<_impl::shift_left_op, operand<Lhs, Tag>, operand<Rhs, Tag>>{}(lhs, rhs);
     }
@@ -122,7 +122,7 @@ namespace cnl {
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
     template<tag Tag, typename Lhs, typename Rhs>
-    CNL_NODISCARD constexpr auto shift_right(Lhs const& lhs, Rhs const& rhs)
+    [[nodiscard]] constexpr auto shift_right(Lhs const& lhs, Rhs const& rhs)
     {
         return custom_operator<_impl::shift_right_op, operand<Lhs, Tag>, operand<Rhs, Tag>>{}(lhs, rhs);
     }

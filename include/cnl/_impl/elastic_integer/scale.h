@@ -22,7 +22,7 @@ namespace cnl {
     struct scale<
             ShiftDigits, ScaleRadix, elastic_integer<ScalarDigits, ScalarNarrowest>,
             _impl::enable_if_t<(0 <= ShiftDigits)>> {
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
                 -> elastic_integer<ShiftDigits + ScalarDigits, ScalarNarrowest>
         {
@@ -37,7 +37,7 @@ namespace cnl {
     struct scale<
             ShiftDigits, 2, elastic_integer<ScalarDigits, ScalarNarrowest>,
             _impl::enable_if_t<(ShiftDigits < 0)>> {
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
                 -> elastic_integer<ShiftDigits + ScalarDigits, ScalarNarrowest>
         {

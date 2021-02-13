@@ -25,7 +25,7 @@ namespace cnl {
             Operator,
             operand<_impl::wrapper<LhsRep, LhsTag>>,
             operand<Rhs>> {
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 _impl::wrapper<LhsRep, LhsTag> const& lhs, Rhs const& rhs) const
         {
             return _impl::from_rep<_impl::wrapper<LhsRep, LhsTag>>(
@@ -39,7 +39,7 @@ namespace cnl {
     template<_impl::shift_op Operator, typename LhsRep, tag LhsTag, _impl::wrapped Rhs>
     struct custom_operator<
             Operator, operand<_impl::wrapper<LhsRep, LhsTag>>, operand<Rhs>> {
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 _impl::wrapper<LhsRep, LhsTag> const& lhs, Rhs const& rhs) const
         {
             return _impl::from_rep<_impl::wrapper<LhsRep, LhsTag>>(
@@ -53,7 +53,7 @@ namespace cnl {
     // includes derived classes
     template<_impl::shift_op Operator, class Lhs, _impl::wrapped Rhs>
     requires(!_impl::is_wrapper<Lhs>) struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(lhs, _impl::rep_of_t<Rhs>{_impl::to_rep(rhs)});
         }

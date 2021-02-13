@@ -21,7 +21,7 @@ namespace cnl {
 
     template<int Digits, int Radix, typename S>
     struct fixed_width_scale<Digits, Radix, S, _impl::enable_if_t<!is_composite<S>::value>> {
-        CNL_NODISCARD constexpr auto operator()(S const& s) const
+        [[nodiscard]] constexpr auto operator()(S const& s) const
         {
             static_assert(
                     Radix != 2 || digits<S> > -Digits,
@@ -33,7 +33,7 @@ namespace cnl {
 
     namespace _impl {
         template<int Digits, int Radix = 2, class S = void>
-        CNL_NODISCARD constexpr auto fixed_width_scale(S const& s)
+        [[nodiscard]] constexpr auto fixed_width_scale(S const& s)
         {
             return cnl::fixed_width_scale<Digits, Radix, S>()(s);
         }
@@ -42,7 +42,7 @@ namespace cnl {
     template<int Digits, int Radix, typename Composite>
     struct fixed_width_scale<
             Digits, Radix, Composite, _impl::enable_if_t<is_composite<Composite>::value>> {
-        CNL_NODISCARD constexpr auto operator()(Composite const& s) const
+        [[nodiscard]] constexpr auto operator()(Composite const& s) const
         {
             return _impl::from_rep<Composite>(
                     _impl::fixed_width_scale<Digits, Radix>(_impl::to_rep(s)));

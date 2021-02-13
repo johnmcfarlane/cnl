@@ -48,7 +48,7 @@ namespace cnl {
             _impl::convert_op,
             operand<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, SignType>>, cnl::power<SrcExponent, Radix>>,
             operand<_bmp::cpp_int_backend<NumBits, NumBits, SignType>, cnl::power<DestExponent, Radix>>> {
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, SignType>> const& input) const
         {
             // when converting *from* scaled_integer
@@ -64,7 +64,7 @@ namespace cnl {
             _impl::convert_op,
             operand<Input, cnl::power<SrcExponent, Radix>>,
             operand<_bmp::cpp_int_backend<NumBits, NumBits, SignType>, cnl::power<DestExponent, Radix>>> {
-        CNL_NODISCARD constexpr auto operator()(Input const& input) const
+        [[nodiscard]] constexpr auto operator()(Input const& input) const
                 -> _bmp::cpp_int_backend<NumBits, NumBits, SignType>
         {
             return input;
@@ -160,15 +160,15 @@ namespace cnl {
     struct to_rep<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> {
         using _number_type =
                 _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>;
-        CNL_NODISCARD constexpr _number_type& operator()(_number_type& number) const
+        [[nodiscard]] constexpr _number_type& operator()(_number_type& number) const
         {
             return number;
         };
-        CNL_NODISCARD constexpr _number_type const& operator()(_number_type const& number) const
+        [[nodiscard]] constexpr _number_type const& operator()(_number_type const& number) const
         {
             return number;
         };
-        CNL_NODISCARD constexpr _number_type operator()(_number_type&& number) const
+        [[nodiscard]] constexpr _number_type operator()(_number_type&& number) const
         {
             return number;
         };
@@ -178,15 +178,15 @@ namespace cnl {
     struct to_rep<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> {
         using _number_type =
                 _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>;
-        CNL_NODISCARD constexpr _number_type& operator()(_number_type& number) const
+        [[nodiscard]] constexpr _number_type& operator()(_number_type& number) const
         {
             return number;
         };
-        CNL_NODISCARD constexpr _number_type const& operator()(_number_type const& number) const
+        [[nodiscard]] constexpr _number_type const& operator()(_number_type const& number) const
         {
             return number;
         };
-        CNL_NODISCARD constexpr _number_type operator()(_number_type&& number) const
+        [[nodiscard]] constexpr _number_type operator()(_number_type&& number) const
         {
             return std::move(number);
         };
@@ -200,7 +200,7 @@ namespace cnl {
         static constexpr auto _bits = digits<Value> + 1;
 
     public:
-        CNL_NODISCARD constexpr auto operator()(Value const& value) const
+        [[nodiscard]] constexpr auto operator()(Value const& value) const
                 -> _bmp::number<_bmp::cpp_int_backend<_bits, _bits, _bmp::signed_magnitude>>
         {
             return value;
@@ -215,7 +215,7 @@ namespace cnl {
         static constexpr auto _bits = digits<Value>;
 
     public:
-        CNL_NODISCARD constexpr auto operator()(Value const& value) const
+        [[nodiscard]] constexpr auto operator()(Value const& value) const
                 -> _bmp::number<_bmp::cpp_int_backend<_bits, _bits, _bmp::unsigned_magnitude>>
         {
             return value;
@@ -224,7 +224,7 @@ namespace cnl {
 
     template<class LhsBackend, class RhsBackend>
     struct from_value<_bmp::number<LhsBackend>, _bmp::number<RhsBackend>> {
-        CNL_NODISCARD constexpr auto operator()(_bmp::number<RhsBackend> const& value) const
+        [[nodiscard]] constexpr auto operator()(_bmp::number<RhsBackend> const& value) const
                 -> _bmp::number<RhsBackend>
         {
             return value;
@@ -287,7 +287,7 @@ namespace cnl {
     // boost::multiprecision bitwise shift operators
 
     template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    CNL_NODISCARD constexpr auto operator<<(
+    [[nodiscard]] constexpr auto operator<<(
             _sized_integer_impl::number<NumBits, _bmp::signed_magnitude> const& lhs,
             constant<Value>)
     {
@@ -295,7 +295,7 @@ namespace cnl {
     }
 
     template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    CNL_NODISCARD constexpr auto operator<<(
+    [[nodiscard]] constexpr auto operator<<(
             _sized_integer_impl::number<NumBits, _bmp::unsigned_magnitude> const& lhs,
             constant<Value>)
     {
@@ -303,7 +303,7 @@ namespace cnl {
     }
 
     template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    CNL_NODISCARD constexpr auto operator>>(
+    [[nodiscard]] constexpr auto operator>>(
             _sized_integer_impl::number<NumBits, _bmp::unsigned_magnitude> const& lhs,
             constant<Value>)
     {
@@ -311,7 +311,7 @@ namespace cnl {
     }
 
     template<unsigned NumBits, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    CNL_NODISCARD constexpr auto operator>>(
+    [[nodiscard]] constexpr auto operator>>(
             _sized_integer_impl::number<NumBits, _bmp::signed_magnitude> const& lhs,
             constant<Value>)
     {

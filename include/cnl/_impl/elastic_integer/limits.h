@@ -23,7 +23,7 @@ namespace cnl {
         using _rep = _impl::rep_of_t<_value_type>;
         using _rep_numeric_limits = numeric_limits<_rep>;
 
-        CNL_NODISCARD static constexpr auto rep_max() noexcept
+        [[nodiscard]] static constexpr auto rep_max() noexcept
         {
             return static_cast<_rep>(
                     _rep_numeric_limits::max() >> (_rep_numeric_limits::digits - digits));
@@ -33,17 +33,17 @@ namespace cnl {
         // standard members
         static constexpr int digits = Digits;
 
-        CNL_NODISCARD static constexpr auto min() noexcept
+        [[nodiscard]] static constexpr auto min() noexcept
         {
             return _value_type{1};
         }
 
-        CNL_NODISCARD static constexpr auto max() noexcept
+        [[nodiscard]] static constexpr auto max() noexcept
         {
             return _value_type{rep_max()};
         }
 
-        CNL_NODISCARD static constexpr auto lowest() noexcept
+        [[nodiscard]] static constexpr auto lowest() noexcept
         {
             return _value_type{_impl::lowest<_rep, numbers::signedness_v<Narrowest>>()(rep_max())};
         }

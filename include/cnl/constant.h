@@ -62,13 +62,13 @@ namespace cnl {
 
 #if defined(_MSC_VER) && _MSC_VER < 1924
         // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
-        CNL_NODISCARD constexpr operator auto() const -> value_type
+        [[nodiscard]] constexpr operator auto() const -> value_type
         {
             return value;
         }
 #else
         // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
-        CNL_NODISCARD constexpr operator value_type() const
+        [[nodiscard]] constexpr operator value_type() const
         {
             return value;
         }
@@ -81,7 +81,7 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_IMPL_CONSTANT_UNARY(OPERATOR) \
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value> \
-    CNL_NODISCARD constexpr auto operator OPERATOR( \
+    [[nodiscard]] constexpr auto operator OPERATOR( \
             constant<Value>) noexcept->constant<OPERATOR Value> \
     { \
         return constant<OPERATOR Value>{}; \
@@ -90,7 +90,7 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_IMPL_CONSTANT_BINARY(OPERATOR) \
     template<CNL_IMPL_CONSTANT_VALUE_TYPE LhsValue, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue> \
-    CNL_NODISCARD constexpr auto operator OPERATOR( \
+    [[nodiscard]] constexpr auto operator OPERATOR( \
             constant<LhsValue>, \
             constant<RhsValue>) noexcept->constant<(LhsValue OPERATOR RhsValue)> \
     { \
@@ -145,7 +145,7 @@ namespace cnl {
 
     namespace literals {
         template<char... Chars>
-        CNL_NODISCARD constexpr auto operator"" _c()
+        [[nodiscard]] constexpr auto operator"" _c()
                 -> constant<_cnlint_impl::parse<Chars..., '\0'>()>
         {
             return {};
@@ -175,17 +175,17 @@ namespace cnl {
         : cnl::numeric_limits<typename constant<Value>::value_type> {
         using _value_type = typename constant<Value>::value_type;
 
-        CNL_NODISCARD static constexpr auto min()
+        [[nodiscard]] static constexpr auto min()
         {
             return _value_type{};
         }
 
-        CNL_NODISCARD static constexpr auto max()
+        [[nodiscard]] static constexpr auto max()
         {
             return _value_type{};
         }
 
-        CNL_NODISCARD static constexpr auto lowest()
+        [[nodiscard]] static constexpr auto lowest()
         {
             return _value_type{};
         }

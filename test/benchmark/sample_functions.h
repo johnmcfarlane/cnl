@@ -9,7 +9,7 @@
 #include <cmath>
 
 template<typename FP>
-CNL_NODISCARD constexpr FP magnitude_squared(FP const& x, FP const& y, FP const& z)
+[[nodiscard]] constexpr FP magnitude_squared(FP const& x, FP const& y, FP const& z)
 {
     return static_cast<FP>(x * x + y * y + z * z);
 }

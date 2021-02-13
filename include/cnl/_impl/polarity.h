@@ -16,18 +16,18 @@ namespace cnl {
                               neutral = 0,
                               positive = 1 };
 
-        CNL_NODISCARD constexpr auto operator-(polarity const& p)
+        [[nodiscard]] constexpr auto operator-(polarity const& p)
         {
             return static_cast<polarity>(-static_cast<int>(p));
         }
 
-        CNL_NODISCARD constexpr auto operator*(polarity const& lhs, polarity const& rhs)
+        [[nodiscard]] constexpr auto operator*(polarity const& lhs, polarity const& rhs)
         {
             return static_cast<polarity>(static_cast<int>(lhs) * static_cast<int>(rhs));
         }
 
         template<typename T>
-        CNL_NODISCARD constexpr auto measure_polarity(T const& value)
+        [[nodiscard]] constexpr auto measure_polarity(T const& value)
         {
             return (value > T{}) ? polarity::positive
                  : (value < T{}) ? polarity::negative

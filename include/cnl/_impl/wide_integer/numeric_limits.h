@@ -32,18 +32,18 @@ namespace cnl {
         // standard members
         static constexpr int digits = Digits;
 
-        CNL_NODISCARD static constexpr auto min() noexcept
+        [[nodiscard]] static constexpr auto min() noexcept
         {
             return _value_type{1};
         }
 
-        CNL_NODISCARD static constexpr auto max() noexcept
+        [[nodiscard]] static constexpr auto max() noexcept
         {
             return _value_type{
                     _rep_numeric_limits::max() >> (_rep_numeric_limits::digits - digits)};
         }
 
-        CNL_NODISCARD static constexpr auto lowest() noexcept
+        [[nodiscard]] static constexpr auto lowest() noexcept
         {
             return _value_type{
                     _rep_numeric_limits::lowest() >> (_rep_numeric_limits::digits - digits)};

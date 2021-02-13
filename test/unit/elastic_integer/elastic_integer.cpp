@@ -546,7 +546,7 @@ namespace {
     }
 
     namespace test_avg_fn {
-        CNL_NODISCARD constexpr auto avg(int a, int b)
+        [[nodiscard]] constexpr auto avg(int a, int b)
         {
             return int((cnl::elastic_integer{a} + cnl::elastic_integer{b}) / 2);
         }

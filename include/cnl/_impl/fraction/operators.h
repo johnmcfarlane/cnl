@@ -17,13 +17,13 @@
 namespace cnl {
     // cnl::fraction arithmetic
     template<typename RhsNumerator, typename RhsDenominator>
-    CNL_NODISCARD constexpr auto operator+(fraction<RhsNumerator, RhsDenominator> const& rhs)
+    [[nodiscard]] constexpr auto operator+(fraction<RhsNumerator, RhsDenominator> const& rhs)
     {
         return _impl::make_fraction(+rhs.numerator, +rhs.denominator);
     }
 
     template<typename RhsNumerator, typename RhsDenominator>
-    CNL_NODISCARD constexpr auto operator-(fraction<RhsNumerator, RhsDenominator> const& rhs)
+    [[nodiscard]] constexpr auto operator-(fraction<RhsNumerator, RhsDenominator> const& rhs)
     {
         return _impl::make_fraction(-rhs.numerator, rhs.denominator);
     }
@@ -31,7 +31,7 @@ namespace cnl {
     template<
             typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
             typename RhsDenominator>
-    CNL_NODISCARD constexpr auto operator+(
+    [[nodiscard]] constexpr auto operator+(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
     {
@@ -43,7 +43,7 @@ namespace cnl {
     template<
             typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
             typename RhsDenominator>
-    CNL_NODISCARD constexpr auto operator-(
+    [[nodiscard]] constexpr auto operator-(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
     {
@@ -55,7 +55,7 @@ namespace cnl {
     template<
             typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
             typename RhsDenominator>
-    CNL_NODISCARD constexpr auto operator*(
+    [[nodiscard]] constexpr auto operator*(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
     {
@@ -66,7 +66,7 @@ namespace cnl {
     template<
             typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
             typename RhsDenominator>
-    CNL_NODISCARD constexpr auto operator/(
+    [[nodiscard]] constexpr auto operator/(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
     {
@@ -78,7 +78,7 @@ namespace cnl {
     template<
             typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
             typename RhsDenominator>
-    CNL_NODISCARD constexpr auto operator==(
+    [[nodiscard]] constexpr auto operator==(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
     {
@@ -88,7 +88,7 @@ namespace cnl {
     template<
             typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
             typename RhsDenominator>
-    CNL_NODISCARD constexpr auto operator!=(
+    [[nodiscard]] constexpr auto operator!=(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
     {
@@ -98,7 +98,7 @@ namespace cnl {
     template<
             typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
             typename RhsDenominator>
-    CNL_NODISCARD constexpr auto operator<(
+    [[nodiscard]] constexpr auto operator<(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
     {
@@ -108,7 +108,7 @@ namespace cnl {
     template<
             typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
             typename RhsDenominator>
-    CNL_NODISCARD constexpr auto operator>(
+    [[nodiscard]] constexpr auto operator>(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
     {
@@ -118,7 +118,7 @@ namespace cnl {
     template<
             typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
             typename RhsDenominator>
-    CNL_NODISCARD constexpr auto operator<=(
+    [[nodiscard]] constexpr auto operator<=(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
     {
@@ -128,7 +128,7 @@ namespace cnl {
     template<
             typename LhsNumerator, typename LhsDenominator, typename RhsNumerator,
             typename RhsDenominator>
-    CNL_NODISCARD constexpr auto operator>=(
+    [[nodiscard]] constexpr auto operator>=(
             fraction<LhsNumerator, LhsDenominator> const& lhs,
             fraction<RhsNumerator, RhsDenominator> const& rhs)
     {

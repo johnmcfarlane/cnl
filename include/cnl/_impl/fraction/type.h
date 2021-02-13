@@ -48,7 +48,7 @@ namespace cnl {
 
         /// returns the quotient, \ref numerator `/` \ref denominator
         template<_impl::floating_point Scalar>
-        CNL_NODISCARD explicit constexpr operator Scalar() const
+        [[nodiscard]] explicit constexpr operator Scalar() const
         {
             return static_cast<Scalar>(numerator) / static_cast<Scalar>(denominator);
         }

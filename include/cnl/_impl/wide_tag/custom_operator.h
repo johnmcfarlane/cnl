@@ -39,7 +39,7 @@ namespace cnl {
     requires(!_impl::is_wide_tag<SrcTag>) struct custom_operator<
             _impl::convert_op,
             operand<Src, SrcTag>, operand<Dest, DestTag>> {
-        CNL_NODISCARD constexpr auto operator()(Src const& from) const
+        [[nodiscard]] constexpr auto operator()(Src const& from) const
         {
             return custom_operator<_impl::convert_op, operand<Src, SrcTag>, operand<Dest>>{}(from);
         }
@@ -48,7 +48,7 @@ namespace cnl {
 
     template<typename Src, _impl::wide_tag SrcTag, typename Dest, tag DestTag>
     struct custom_operator<_impl::convert_op, operand<Src, SrcTag>, operand<Dest, DestTag>> {
-        CNL_NODISCARD constexpr auto operator()(Src const& from) const
+        [[nodiscard]] constexpr auto operator()(Src const& from) const
         {
             return custom_operator<_impl::convert_op, operand<Src>, operand<Dest>>{}(from);
         }
@@ -77,7 +77,7 @@ namespace cnl {
         using result = typename result_tag::rep;
 
     public:
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> result
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> result
         {
             return static_cast<result>(Operator{}(lhs, rhs));
         }
@@ -88,7 +88,7 @@ namespace cnl {
             Operator,
             operand<Lhs, wide_tag<LhsDigits, LhsNarrowest>>,
             operand<Rhs>> {
-        CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator{}(lhs, rhs);
         }

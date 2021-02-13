@@ -25,7 +25,7 @@ namespace cnl {
         using deduction = cnl::deduction<Tag, Value>;
         using deduced = _impl::wrapper<typename deduction::type, typename deduction::tag>;
 
-        CNL_NODISCARD constexpr auto operator()(Value const& value) const -> deduced
+        [[nodiscard]] constexpr auto operator()(Value const& value) const -> deduced
         {
             return deduced{value};
         }
@@ -38,7 +38,7 @@ namespace cnl {
                     !_impl::can_convert_tag_family<ArchetypeTag, _impl::tag_of_t<Value>>::value>> {
         using result_type = _impl::wrapper<from_value_t<ArchetypeRep, Value>, ArchetypeTag>;
 
-        CNL_NODISCARD constexpr auto operator()(Value const& value) const -> result_type
+        [[nodiscard]] constexpr auto operator()(Value const& value) const -> result_type
         {
             return result_type{value};
         }
@@ -55,7 +55,7 @@ namespace cnl {
 
     template<typename Rep, tag Tag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<_impl::wrapper<Rep, Tag>, constant<Value>> {
-        CNL_NODISCARD constexpr auto operator()(constant<Value>) const
+        [[nodiscard]] constexpr auto operator()(constant<Value>) const
         {
             return _impl::make_wrapper<Tag>(_impl::from_value<Rep>(constant<Value>{}));
         }

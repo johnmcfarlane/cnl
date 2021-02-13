@@ -25,7 +25,7 @@ namespace cnl {
                     Operator,
                     operand<wide_integer<LhsDigits, LhsNarrowest>>,
                     operand<wide_integer<RhsDigits, RhsNarrowest>>> {
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 wide_integer<LhsDigits, LhsNarrowest> const& lhs,
                 wide_integer<RhsDigits, RhsNarrowest> const& rhs) const
         {

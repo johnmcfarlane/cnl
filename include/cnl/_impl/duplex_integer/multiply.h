@@ -26,7 +26,7 @@ namespace cnl {
                     conditional3_t<(numbers::signedness_v<Lhs> - numbers::signedness_v<Rhs>), Lhs, void, Rhs>,
                     Rhs>;
 
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 return static_cast<common_type>(lhs) * static_cast<common_type>(rhs);
             }
@@ -43,7 +43,7 @@ namespace cnl {
             using result_type = set_width_t<Word, width<Lhs> + width<Rhs>>;
 
             template<typename Lhs, typename Rhs>
-            CNL_NODISCARD constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
                     -> result_type<Lhs, Rhs>
             {
                 using product_type = result_type<Lhs, Rhs>;
@@ -58,7 +58,7 @@ namespace cnl {
                     duplex_integer<duplex_integer<Upper, Lower>, duplex_integer<Lower, Lower>>;
 
             template<typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
-            CNL_NODISCARD constexpr auto operator()(
+            [[nodiscard]] constexpr auto operator()(
                     duplex_integer<LhsUpper, LhsLower> const& lhs,
                     duplex_integer<RhsUpper, RhsLower> const& rhs) const -> result_type
             {
@@ -66,7 +66,7 @@ namespace cnl {
             }
 
             template<typename Lhs, typename RhsUpper, typename RhsLower>
-            CNL_NODISCARD constexpr auto operator()(
+            [[nodiscard]] constexpr auto operator()(
                     Lhs const& lhs, duplex_integer<RhsUpper, RhsLower> const& rhs) const
                     -> result_type
             {
@@ -74,7 +74,7 @@ namespace cnl {
             }
 
             template<typename LhsUpper, typename LhsLower, typename Rhs>
-            CNL_NODISCARD constexpr auto operator()(
+            [[nodiscard]] constexpr auto operator()(
                     duplex_integer<LhsUpper, LhsLower> const& lhs, Rhs const& rhs) const
                     -> result_type
             {
@@ -82,7 +82,7 @@ namespace cnl {
             }
 
             template<typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
-            CNL_NODISCARD static constexpr auto multiply_components(
+            [[nodiscard]] static constexpr auto multiply_components(
                     LhsUpper const& lhs_upper, LhsLower const& lhs_lower, RhsUpper const& rhs_upper,
                     RhsLower const& rhs_lower) -> result_type
             {
@@ -103,13 +103,13 @@ namespace cnl {
             operand<_impl::duplex_integer<Upper, Lower>>> {
         using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
 
-        CNL_NODISCARD constexpr auto operator()(
+        [[nodiscard]] constexpr auto operator()(
                 _duplex_integer const& lhs, _duplex_integer const& rhs) const -> _duplex_integer
         {
             return multiply_components(lhs.upper(), lhs.lower(), rhs.upper(), rhs.lower());
         }
 
-        CNL_NODISCARD static constexpr auto multiply_components(
+        [[nodiscard]] static constexpr auto multiply_components(
                 Upper const& lhs_upper, Lower const& lhs_lower, Upper const& rhs_upper,
                 Lower const& rhs_lower) -> _duplex_integer
         {

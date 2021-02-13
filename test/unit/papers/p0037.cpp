@@ -123,7 +123,7 @@ namespace example {
     using cnl::scaled_integer;
 
     template<class Fp>
-    CNL_NODISCARD constexpr auto magnitude(Fp x, Fp y, Fp z)
+    [[nodiscard]] constexpr auto magnitude(Fp x, Fp y, Fp z)
     {
         return sqrt(x * x + y * y + z * z);
     }

@@ -19,49 +19,49 @@ namespace cnl {
         using _value_type = _impl::wrapper<Rep, Tag>;
         using _rep_numeric_limits = numeric_limits<Rep>;
 
-        CNL_NODISCARD static constexpr auto min() noexcept
+        [[nodiscard]] static constexpr auto min() noexcept
         {
             return _impl::from_rep<_value_type>(_rep_numeric_limits::min());
         }
 
-        CNL_NODISCARD static constexpr auto max() noexcept
+        [[nodiscard]] static constexpr auto max() noexcept
         {
             return _impl::from_rep<_value_type>(_rep_numeric_limits::max());
         }
 
-        CNL_NODISCARD static constexpr auto lowest() noexcept
+        [[nodiscard]] static constexpr auto lowest() noexcept
         {
             return _impl::from_rep<_value_type>(_rep_numeric_limits::lowest());
         }
 
-        CNL_NODISCARD static constexpr auto epsilon() noexcept
+        [[nodiscard]] static constexpr auto epsilon() noexcept
         {
             return _impl::from_rep<_value_type>(_rep_numeric_limits::round_error());
         }
 
-        CNL_NODISCARD static constexpr auto round_error() noexcept
+        [[nodiscard]] static constexpr auto round_error() noexcept
         {
             return static_cast<_value_type>(_rep_numeric_limits::round_error());
         }
 
-        CNL_NODISCARD static constexpr auto infinity() noexcept
+        [[nodiscard]] static constexpr auto infinity() noexcept
         {
             return static_cast<_value_type>(_rep_numeric_limits::infinity());
         }
 
-        CNL_NODISCARD static constexpr auto
+        [[nodiscard]] static constexpr auto
         quiet_NaN() noexcept  // NOLINT(readability-identifier-naming)
         {
             return static_cast<_value_type>(_rep_numeric_limits::quiet_NaN());
         }
 
-        CNL_NODISCARD static constexpr auto
+        [[nodiscard]] static constexpr auto
         signaling_NaN() noexcept  // NOLINT(readability-identifier-naming)
         {
             return static_cast<_value_type>(_rep_numeric_limits::signaling_NaN());
         }
 
-        CNL_NODISCARD static constexpr auto denorm_min() noexcept
+        [[nodiscard]] static constexpr auto denorm_min() noexcept
         {
             return static_cast<_value_type>(_rep_numeric_limits::denorm_min());
         }

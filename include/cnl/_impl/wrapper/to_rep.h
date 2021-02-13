@@ -19,19 +19,19 @@ namespace cnl {
         using rep_type = _impl::rep_of_t<Number>;
 
         // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-        CNL_NODISCARD constexpr auto& operator()(Number& number) const
+        [[nodiscard]] constexpr auto& operator()(Number& number) const
         {
             return number._rep;
         }
 
         // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-        CNL_NODISCARD constexpr auto const& operator()(Number const& number) const
+        [[nodiscard]] constexpr auto const& operator()(Number const& number) const
         {
             return number._rep;
         }
 
         // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-        CNL_NODISCARD constexpr auto&& operator()(Number&& number) const
+        [[nodiscard]] constexpr auto&& operator()(Number&& number) const
         {
             return std::forward<rep_type>(number._rep);
         }

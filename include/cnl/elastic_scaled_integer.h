@@ -58,7 +58,7 @@ namespace cnl {
     /// \snippet snippets.cpp define an int-sized object using make_elastic_scaled_integer and constant
 
     template<typename Narrowest = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0>
-    CNL_NODISCARD constexpr auto make_elastic_scaled_integer(constant<Value>)
+    [[nodiscard]] constexpr auto make_elastic_scaled_integer(constant<Value>)
             -> elastic_scaled_integer<
                     _impl::max(digits<constant<Value>> - trailing_bits(Value), 1),
                     trailing_bits(Value), Narrowest>
@@ -86,7 +86,7 @@ namespace cnl {
     ///
     /// \brief generate an \ref cnl::elastic_scaled_integer object of given value
     template<typename Narrowest = void, typename Integral = int>
-    CNL_NODISCARD constexpr auto make_elastic_scaled_integer(Integral const& value)
+    [[nodiscard]] constexpr auto make_elastic_scaled_integer(Integral const& value)
             -> elastic_scaled_integer<
                     numeric_limits<Integral>::digits, 0,
                     typename std::conditional<
@@ -97,7 +97,7 @@ namespace cnl {
     }
 
     template<typename Narrowest = void, typename Rep = int, int Exponent = 0, int Radix = 2>
-    CNL_NODISCARD constexpr auto make_elastic_scaled_integer(
+    [[nodiscard]] constexpr auto make_elastic_scaled_integer(
             scaled_integer<Rep, power<Exponent, Radix>> const& value)
             -> elastic_scaled_integer<
                     numeric_limits<Rep>::digits, Exponent,
@@ -129,7 +129,7 @@ namespace cnl {
         /// \snippet snippets.cpp define an object using elastic literal
 
         template<char... Chars>
-        CNL_NODISCARD constexpr auto operator"" _elastic()
+        [[nodiscard]] constexpr auto operator"" _elastic()
         {
             return make_elastic_scaled_integer<int>(
                     constant<_cnlint_impl::parse<sizeof...(Chars) + 1>({Chars..., '\0'})>{});

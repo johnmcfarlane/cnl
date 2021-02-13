@@ -42,7 +42,7 @@ namespace cnl {
 
     namespace _cnlint_impl {
         template<typename ParseDigit>
-        CNL_NODISCARD constexpr auto
+        [[nodiscard]] constexpr auto
         parse(char const* s, int base, ParseDigit parse_digit, intmax value = 0) -> intmax
         {
             return (*s) ? parse(s + 1, base, parse_digit, parse_digit(*s) + value * base) : value;
@@ -51,23 +51,23 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // digit parsers
 
-        CNL_NODISCARD constexpr auto parse_bin_char(char c)
+        [[nodiscard]] constexpr auto parse_bin_char(char c)
         {
             return (c == '0') ? 0 : (c == '1') ? 1
                                                : int{};
         }
 
-        CNL_NODISCARD constexpr auto parse_dec_char(char c)
+        [[nodiscard]] constexpr auto parse_dec_char(char c)
         {
             return (c >= '0' && c <= '9') ? c - '0' : int{};
         }
 
-        CNL_NODISCARD constexpr auto parse_oct_char(char c)
+        [[nodiscard]] constexpr auto parse_oct_char(char c)
         {
             return (c >= '0' && c <= '7') ? c - '0' : int{};
         }
 
-        CNL_NODISCARD constexpr auto parse_hex_char(char c)
+        [[nodiscard]] constexpr auto parse_hex_char(char c)
         {
             return (c >= '0' && c <= '9') ? c - '0'
                  : (c >= 'a' && c <= 'z') ? c + 10 - 'a'
@@ -75,7 +75,7 @@ namespace cnl {
                                           : int{};
         }
 
-        CNL_NODISCARD constexpr auto parse_positive(char const* s)
+        [[nodiscard]] constexpr auto parse_positive(char const* s)
         {
             return (s[0] != '0')                ? parse(s, 10, parse_dec_char)
                  : (s[1] == 'x' || s[1] == 'X') ? parse(s + 2, 16, parse_hex_char)
@@ -84,7 +84,7 @@ namespace cnl {
         }
 
         template<int NumChars>
-        CNL_NODISCARD constexpr auto parse(
+        [[nodiscard]] constexpr auto parse(
                 const char (&s)[NumChars])  // NOLINT(cppcoreguidelines-avoid-c-arrays)
         {
             return (s[0] == '-') ? -parse_positive(s + 1)
@@ -93,7 +93,7 @@ namespace cnl {
         }
 
         template<char... Chars>
-        CNL_NODISCARD constexpr auto parse()
+        [[nodiscard]] constexpr auto parse()
         {
             return parse<sizeof...(Chars) + 1>({Chars..., '\0'});
         }

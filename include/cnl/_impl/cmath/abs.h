@@ -13,7 +13,7 @@ namespace cnl {
     namespace _impl {
         template<typename T>
         requires(numbers::signedness_v<T>)
-                CNL_NODISCARD constexpr auto abs(T const& value)
+                [[nodiscard]] constexpr auto abs(T const& value)
         {
             static_assert(std::is_same<decltype(+value), decltype(-value)>::value);
 
@@ -22,7 +22,7 @@ namespace cnl {
 
         template<typename T>
         requires(!numbers::signedness_v<T>)
-                CNL_NODISCARD constexpr auto abs(T const& value)
+                [[nodiscard]] constexpr auto abs(T const& value)
         {
             return value;
         }

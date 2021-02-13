@@ -52,7 +52,7 @@ namespace cnl {
     /// value.
 
     template<typename Narrowest = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0>
-    CNL_NODISCARD constexpr auto make_elastic_fixed_point(constant<Value>) -> elastic_fixed_point<
+    [[nodiscard]] constexpr auto make_elastic_fixed_point(constant<Value>) -> elastic_fixed_point<
             _impl::max(digits<constant<Value>> - trailing_bits(Value), 1),
             trailing_bits(Value), Narrowest>
     {
@@ -74,7 +74,7 @@ namespace cnl {
     ///
     /// \brief generate an \ref cnl::elastic_fixed_point object of given value
     template<typename Narrowest = void, typename Integral = int>
-    CNL_NODISCARD constexpr auto make_elastic_fixed_point(Integral const& value)
+    [[nodiscard]] constexpr auto make_elastic_fixed_point(Integral const& value)
             -> elastic_fixed_point<
                     numeric_limits<Integral>::digits, 0,
                     typename std::conditional<
@@ -85,7 +85,7 @@ namespace cnl {
     }
 
     template<typename Narrowest = void, typename Rep = int, int Exponent = 0, int Radix = 2>
-    CNL_NODISCARD constexpr auto make_elastic_fixed_point(
+    [[nodiscard]] constexpr auto make_elastic_fixed_point(
             fixed_point<Rep, Exponent, Radix> const& value)
             -> elastic_fixed_point<
                     numeric_limits<Rep>::digits, Exponent,

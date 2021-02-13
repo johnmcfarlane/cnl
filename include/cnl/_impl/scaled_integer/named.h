@@ -33,7 +33,7 @@ namespace cnl {
     /// \note This function is deprecated after C++17
     /// in favor of class template deduction.
     template<typename Value>
-    CNL_NODISCARD constexpr auto make_scaled_integer(Value const& value)
+    [[nodiscard]] constexpr auto make_scaled_integer(Value const& value)
     {
         return _impl::from_value<scaled_integer<>, Value>(value);
     }
@@ -71,7 +71,7 @@ namespace cnl {
     }
 
     template<class Dividend, class Divisor>
-    CNL_NODISCARD constexpr auto make_scaled_integer(fraction<Dividend, Divisor> const& f) ->
+    [[nodiscard]] constexpr auto make_scaled_integer(fraction<Dividend, Divisor> const& f) ->
             typename _impl::quotient_result<Dividend, Divisor>::type
     {
         using quotient_result = _impl::quotient_result<Dividend, Divisor>;
@@ -93,7 +93,7 @@ namespace cnl {
     /// [P1368](http://wg21.link/p1368r1).
 
     template<class Dividend, class Divisor>
-    CNL_NODISCARD constexpr auto quotient(Dividend const& dividend, Divisor const& divisor)
+    [[nodiscard]] constexpr auto quotient(Dividend const& dividend, Divisor const& divisor)
     {
         return make_scaled_integer(make_fraction(dividend, divisor));
     }
