@@ -12,6 +12,7 @@
 #define CNL_CMATH_H
 
 #include "_impl/cmath/abs.h"
+#include "_impl/cmath/sqrt.h"
 
 #include <cmath>
 

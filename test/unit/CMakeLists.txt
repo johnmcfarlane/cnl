@@ -19,6 +19,7 @@ set(test_sources
         overflow/rounding/integer.cpp
         rounding/rounding.cpp
         _impl/cmath/abs.cpp
+        _impl/cmath/sqrt.cpp
         _impl/num_traits/max_digits.cpp
         _impl/num_traits/adopt_digits.cpp
         _impl/numbers/adopt_signedness.cpp
