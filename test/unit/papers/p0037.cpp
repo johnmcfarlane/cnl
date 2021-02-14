@@ -20,7 +20,6 @@ inline constexpr bool is_same_v = std::is_same<T, U>::value;
 namespace {
     static_assert(cnl::numeric_limits<cnl::scaled_integer<>>::is_specialized);
     static_assert(cnl::_impl::wants_generic_ops<cnl::scaled_integer<>>);
-    static_assert(cnl::_impl::enable_binary<cnl::scaled_integer<>, double>::value);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
