@@ -4,7 +4,6 @@
 # called after init-build* has prepared a build directory
 
 # Example:
-#   path/to/cnl/test/scripts/init-system
 #   mkdir my-build-directory
 #   cd my-build-directory
 #   INT128=False TARGET=test-all CONAN_CMAKE_GENERATOR="Unix Makefiles" path/to/cnl/test/scripts/init-build
