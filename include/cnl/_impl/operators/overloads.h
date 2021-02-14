@@ -23,12 +23,6 @@ namespace cnl {
         struct native_tag;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::enable_unary_t
-
-        template<class Operand, class T>
-        using enable_unary_t = enable_if_t<_impl::wants_generic_ops<Operand>, T>;
-
-        ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::enable_binary_t
 
         template<class LhsOperand, class RhsOperand, class Enable = void>
