@@ -49,9 +49,6 @@ namespace {
         static_assert(cnl::_impl::number_can_wrap<cnl::elastic_integer<>, int>::value);
 
         static_assert(
-                cnl::_impl::enable_binary<double, cnl::elastic_integer<31, int>>::value,
-                "failed to meet conditions for applying operator*(double, cnl::elastic_integer)");
-        static_assert(
                 cnl::custom_operator<
                         cnl::_impl::greater_than_op,
                         cnl::operand<elastic_integer<31>>,
@@ -742,7 +739,6 @@ namespace {
                 "shift_left test failed");
 
         // by cnl::constant
-        static_assert(cnl::_impl::enable_binary<elastic_integer<>, cnl::constant<1>>::value);
         static_assert(
                 identical(elastic_integer<5>{14} << 4_c, elastic_integer<9>{14 << 4}),
                 "shift_left test failed");

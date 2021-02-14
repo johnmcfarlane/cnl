@@ -10,12 +10,8 @@
 #if !defined(CNL_IMPL_OPERATORS_OVERLOADS_H)
 #define CNL_IMPL_OPERATORS_OVERLOADS_H
 
-#include "../../limits.h"
-#include "../type_traits/enable_if.h"
 #include "custom_operator.h"
 #include "operators.h"
-
-#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
@@ -23,40 +19,11 @@ namespace cnl {
         struct native_tag;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::enable_unary_t
+        // cnl::_impl::wants_generic_ops_binary
 
-        template<class Operand, class T>
-        using enable_unary_t = enable_if_t<_impl::wants_generic_ops<Operand>, T>;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::enable_binary_t
-
-        template<class LhsOperand, class RhsOperand, class Enable = void>
-        struct enable_binary;
-
-        template<class LhsOperand, int LhsSize, class RhsOperand>
-        struct enable_binary<
-                LhsOperand[LhsSize], RhsOperand>  // NOLINT(cppcoreguidelines-avoid-c-arrays)
-            : std::false_type {
-        };
-
-        template<class LhsOperand, class RhsOperand, int RhsSize>
-        struct enable_binary<
-                LhsOperand, RhsOperand[RhsSize]>  // NOLINT(cppcoreguidelines-avoid-c-arrays)
-            : std::false_type {
-        };
-
-        template<class LhsOperand, class RhsOperand>
-        struct enable_binary<LhsOperand, RhsOperand>
-            : std::integral_constant<
-                      bool, ((numeric_limits<LhsOperand>::is_specialized
-                              && numeric_limits<RhsOperand>::is_specialized)
-                             || (_impl::wants_generic_ops<LhsOperand> && _impl::wants_generic_ops<RhsOperand>))
-                                    && (_impl::wants_generic_ops<LhsOperand> || _impl::wants_generic_ops<RhsOperand>)> {
-        };
-
-        template<class LhsOperand, class RhsOperand, class T>
-        using enable_binary_t = _impl::enable_if_t<enable_binary<LhsOperand, RhsOperand>::value, T>;
+        template<typename LhsOperand, typename RhsOperand>
+        inline constexpr auto wants_generic_ops_binary =
+                _impl::wants_generic_ops<LhsOperand> || _impl::wants_generic_ops<RhsOperand>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // operator overloads
@@ -82,9 +49,8 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_BINARY_OPERATOR(OP, NAME) \
     template<class LhsOperand, class RhsOperand> \
-    requires(enable_binary<LhsOperand, RhsOperand>::value) \
-            [[nodiscard]] constexpr auto \
-            operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
+    requires wants_generic_ops_binary<LhsOperand, RhsOperand> [[nodiscard]] constexpr auto \
+    operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
     { \
         return cnl::custom_operator<NAME, cnl::operand<LhsOperand>, cnl::operand<RhsOperand>>{}( \
                 lhs, rhs); \
@@ -111,9 +77,8 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_SHIFT_OPERATOR(OP, NAME) \
     template<class LhsOperand, class RhsOperand> \
-    requires enable_binary<LhsOperand, RhsOperand>::value \
-            [[nodiscard]] constexpr auto \
-            operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
+    requires wants_generic_ops_binary<LhsOperand, RhsOperand> [[nodiscard]] constexpr auto \
+    operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
     { \
         return cnl::custom_operator<NAME, operand<LhsOperand>, operand<RhsOperand>>()(lhs, rhs); \
     }
@@ -127,9 +92,8 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_COMPARISON_OPERATOR(OP, NAME) \
     template<class LhsOperand, class RhsOperand> \
-    requires enable_binary<LhsOperand, RhsOperand>::value \
-            [[nodiscard]] constexpr auto \
-            operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
+    requires wants_generic_ops_binary<LhsOperand, RhsOperand> [[nodiscard]] constexpr auto \
+    operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
     { \
         return cnl::custom_operator<NAME, operand<LhsOperand>, operand<RhsOperand>>()(lhs, rhs); \
     }
@@ -180,11 +144,7 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(OP, NAME) \
     template<class LhsOperand, class RhsOperand> \
-    constexpr auto operator OP(LhsOperand& lhs, RhsOperand const& rhs) \
-            ->enable_binary_t< \
-                    LhsOperand, RhsOperand, \
-                    decltype(cnl::custom_operator< \
-                             NAME, operand<LhsOperand>, operand<RhsOperand>>()(lhs, rhs))> \
+    requires _impl::wants_generic_ops_binary<LhsOperand, RhsOperand> constexpr auto operator OP(LhsOperand& lhs, RhsOperand const& rhs) \
     { \
         return cnl::custom_operator< \
                 NAME, operand<LhsOperand>, operand<RhsOperand>>()(lhs, rhs); \
@@ -211,11 +171,7 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_COMPOUND_ASSIGNMENT_SHIFT_OPERATOR(OP, NAME) \
     template<class LhsOperand, class RhsOperand> \
-    constexpr auto operator OP(LhsOperand& lhs, RhsOperand const& rhs) \
-            ->enable_binary_t< \
-                    LhsOperand, RhsOperand, \
-                    decltype(cnl::custom_operator< \
-                             NAME, operand<LhsOperand>, operand<RhsOperand>>()(lhs, rhs))> \
+    requires _impl::wants_generic_ops_binary<LhsOperand, RhsOperand> constexpr auto operator OP(LhsOperand& lhs, RhsOperand const& rhs) \
     { \
         return cnl::custom_operator< \
                 NAME, operand<LhsOperand>, operand<RhsOperand>>()(lhs, rhs); \
