@@ -197,13 +197,13 @@ namespace test_fraction_specific_long {
 
 namespace test_sqrt {
     static_assert(identical(
-            elastic_scaled_integer<31, -10>(0),
+            elastic_scaled_integer<16, -10>(0),
             sqrt(elastic_scaled_integer<31, -20>(0))));
     static_assert(identical(
-            elastic_scaled_integer<31, -10>(1.4140625),
+            elastic_scaled_integer<16, -10>(1.4140625),
             sqrt(elastic_scaled_integer<31, -20>(2.0))));
     static_assert(identical(
-            elastic_scaled_integer<31, -10>(2.0),
+            elastic_scaled_integer<16, -10>(2.0),
             sqrt(elastic_scaled_integer<31, -20>(4.0))));
 }
 
