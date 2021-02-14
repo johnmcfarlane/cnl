@@ -132,9 +132,7 @@ namespace example {
         constexpr auto m = magnitude(
                 scaled_integer<uint16_t, power<-12>>(1), scaled_integer<uint16_t, power<-12>>(4),
                 scaled_integer<uint16_t, power<-12>>(9));
-        static_assert(
-                identical(m, scaled_integer<int, power<-24>>{9.8994948863983154}),
-                "Incorrect information in proposal section, Examples");
+        static_assert(identical(m, scaled_integer<int, power<-12>>{9.8994140625}));
     }
 }
 
