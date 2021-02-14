@@ -28,18 +28,6 @@ namespace cnl {
         template<class LhsOperand, class RhsOperand, class Enable = void>
         struct enable_binary;
 
-        template<class LhsOperand, int LhsSize, class RhsOperand>
-        struct enable_binary<
-                LhsOperand[LhsSize], RhsOperand>  // NOLINT(cppcoreguidelines-avoid-c-arrays)
-            : std::false_type {
-        };
-
-        template<class LhsOperand, class RhsOperand, int RhsSize>
-        struct enable_binary<
-                LhsOperand, RhsOperand[RhsSize]>  // NOLINT(cppcoreguidelines-avoid-c-arrays)
-            : std::false_type {
-        };
-
         template<class LhsOperand, class RhsOperand>
         struct enable_binary<LhsOperand, RhsOperand>
             : std::integral_constant<
