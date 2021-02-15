@@ -11,6 +11,8 @@
 #include "../num_traits/set_digits.h"
 #include "../wrapper.h"
 #include "declaration.h"
+#include "rep_of.h"
+#include "tag_of.h"
 
 /// compositional numeric library
 namespace cnl {

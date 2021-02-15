@@ -180,7 +180,7 @@ TEST(TOKENPASTE2(TEST_LABEL, post), decrement)  // NOLINT
 
 TEST(TOKENPASTE2(TEST_LABEL, sqrt_exception), from_alternative_specialization)  // NOLINT
 {
-    ASSERT_DEATH((void)sqrt(scaled_integer<>(-1)), "negative value passed to cnl::sqrt\n");
+    ASSERT_DEATH((void)sqrt(scaled_integer<>(-1)), "x >= Integer{0}");
 }
 
 #endif
@@ -1480,23 +1480,22 @@ static_assert(sqrt(scaled_integer<uint8>(225)) == 15, "cnl::sqrt test failed");
 #endif
 static_assert(sqrt(scaled_integer<int8>(81)) == 9, "cnl::sqrt test failed");
 
-#if !defined(TEST_WIDE_INTEGER_INT) && !defined(TEST_WIDE_INTEGER_32)
-static_assert(sqrt(scaled_integer<uint8, cnl::power<-1>>(4)) == 2, "cnl::sqrt test failed");
-#endif
-static_assert(sqrt(scaled_integer<int, cnl::power<-2>>(9)) == 3, "cnl::sqrt test failed");
-static_assert(sqrt(scaled_integer<int8, cnl::power<-2>>(9)) == 3, "cnl::sqrt test failed");
+static_assert(identical(
+        scaled_integer<decltype(+uint8{}), cnl::power<-1>>(2),
+        sqrt(scaled_integer<uint8, cnl::power<-2>>(4))));
+static_assert(identical(
+        scaled_integer<test_int, cnl::power<-1>>(3),
+        sqrt(scaled_integer<test_int, cnl::power<-2>>(9))));
+static_assert(identical(
+        scaled_integer<decltype(+int8{}), cnl::power<-1>>(3),
+        sqrt(scaled_integer<int8, cnl::power<-2>>(9))));
 
-#if !defined(TEST_WIDE_INTEGER_INT) && !defined(TEST_WIDE_INTEGER_32)
-static_assert(sqrt(scaled_integer<uint8, cnl::power<-4>>(4)) == 2, "cnl::sqrt test failed");
-#endif
-static_assert(
-        static_cast<float>(sqrt(scaled_integer<int32, cnl::power<-24>>(3.141592654)))
-                > 1.7724537849426,
-        "cnl::sqrt test failed");
-static_assert(
-        static_cast<float>(sqrt(scaled_integer<int32, cnl::power<-24>>(3.141592654)))
-                < 1.7724537849427,
-        "cnl::sqrt test failed");
+static_assert(identical(
+        scaled_integer<decltype(+uint8{}), cnl::power<-2>>(2),
+        sqrt(scaled_integer<uint8, cnl::power<-4>>(4))));
+static_assert(identical(
+        scaled_integer<int32, cnl::power<-12>>(1.7724537849426),
+        sqrt(scaled_integer<int32, cnl::power<-24>>(3.141592654))));
 
 ////////////////////////////////////////////////////////////////////////////////
 // std::leading_bits<scaled_integer>

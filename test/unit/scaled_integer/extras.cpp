@@ -56,18 +56,15 @@ static_assert(abs(scaled_integer<cnl::uint16, power<-8>>(5)) == 5, "cnl::abs tes
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::sqrt
 
-static_assert(
-        static_cast<float>(sqrt(scaled_integer<cnl::int32, power<-20>>(0))) == 0.0F,
-        "cnl::sqrt<scaled_integer>");
-static_assert(
-        static_cast<float>(sqrt(scaled_integer<cnl::int32, power<-20>>(2.0))) > 1.414213F,
-        "cnl::sqrt<scaled_integer>");
-static_assert(
-        static_cast<float>(sqrt(scaled_integer<cnl::int32, power<-20>>(2.0))) < 1.414214F,
-        "cnl::sqrt<scaled_integer>");
-static_assert(
-        static_cast<float>(sqrt(scaled_integer<cnl::int32, power<-20>>(4.0))) == 2.0F,
-        "cnl::sqrt<scaled_integer>");
+static_assert(identical(
+        scaled_integer<cnl::int32, power<-10>>{0},
+        sqrt(scaled_integer<cnl::int32, power<-20>>(0))));
+static_assert(identical(
+        scaled_integer<cnl::int32, power<-10>>{1.4140625},
+        sqrt(scaled_integer<cnl::int32, power<-20>>(2.0))));
+static_assert(identical(
+        scaled_integer<cnl::int32, power<-10>>{2.0},
+        sqrt(scaled_integer<cnl::int32, power<-20>>(4.0))));
 
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::floor

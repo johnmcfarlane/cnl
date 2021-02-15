@@ -27,6 +27,7 @@
 #include "_impl/elastic_integer/set_digits.h"
 #include "_impl/elastic_integer/set_rep.h"
 #include "_impl/elastic_integer/set_tag.h"
+#include "_impl/elastic_integer/sqrt.h"
 #include "_impl/elastic_integer/tag_of.h"
 #include "_impl/elastic_tag.h"
 

@@ -196,18 +196,15 @@ namespace test_fraction_specific_long {
 }
 
 namespace test_sqrt {
-    static_assert(
-            static_cast<float>(sqrt(elastic_scaled_integer<31, -20>(0))) == 0.0F,
-            "sqrt<elastic_scaled_integer>");
-    static_assert(
-            static_cast<float>(sqrt(elastic_scaled_integer<31, -20>(2.0))) > 1.414213F,
-            "sqrt<elastic_scaled_integer>");
-    static_assert(
-            static_cast<float>(sqrt(elastic_scaled_integer<31, -20>(2.0))) < 1.414214F,
-            "sqrt<elastic_scaled_integer>");
-    static_assert(
-            static_cast<float>(sqrt(elastic_scaled_integer<31, -20>(4.0))) == 2.0F,
-            "sqrt<elastic_scaled_integer>");
+    static_assert(identical(
+            elastic_scaled_integer<16, -10>(0),
+            sqrt(elastic_scaled_integer<31, -20>(0))));
+    static_assert(identical(
+            elastic_scaled_integer<16, -10>(1.4140625),
+            sqrt(elastic_scaled_integer<31, -20>(2.0))));
+    static_assert(identical(
+            elastic_scaled_integer<16, -10>(2.0),
+            sqrt(elastic_scaled_integer<31, -20>(4.0))));
 }
 
 namespace test_floor {
