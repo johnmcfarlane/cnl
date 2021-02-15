@@ -168,6 +168,17 @@ namespace {
                                                 cnl::uint32>>{{0, 0}, {0xC0000000, 0}}));
     }
 
+    TEST(duplex_integer, multiply)  // NOLINT
+    {
+        using namespace cnl::literals;
+        using t = cnl::_impl::instantiate_duplex_integer_t<129, unsigned>;
+        auto expected = t{79228162514264337593543950336_wide};
+        auto lhs = t{4294967296LL};
+        auto rhs = t{18446744073709551616_wide};
+        auto actual = lhs * rhs;
+        ASSERT_EQ(expected, actual);
+    }
+
     namespace test_multiply {
         static_assert(
                 identical(

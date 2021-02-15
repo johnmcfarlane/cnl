@@ -18,6 +18,17 @@
 using cnl::_impl::identical;
 
 namespace {
+    TEST(wide_integer, multiply)  // NOLINT
+    {
+        using namespace cnl::literals;
+        using w = cnl::wide_integer<130>;
+        auto expected = w{584178474632390847141000000000000000000_wide};
+        auto lhs = w{584178474632390847141_wide};
+        auto rhs = w{1000000000000000000_wide};
+        auto actual = lhs * rhs;
+        ASSERT_EQ(expected, actual);
+    }
+
     namespace test_equals {
         static_assert(
                 identical(
