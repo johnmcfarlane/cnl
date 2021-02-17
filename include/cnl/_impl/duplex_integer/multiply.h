@@ -113,10 +113,14 @@ namespace cnl {
                 Upper const& lhs_upper, Lower const& lhs_lower, Upper const& rhs_upper,
                 Lower const& rhs_lower) -> _duplex_integer
         {
-            using common_result_type =
-                    decltype(_impl::long_multiply<Upper>{}(lhs_upper, rhs_upper));
-            return (_impl::long_multiply<Upper>{}(lhs_upper, rhs_upper) << digits<Upper>)+((_impl::long_multiply<Upper>{}(lhs_upper, rhs_lower) + _impl::long_multiply<Upper>{}(lhs_lower, rhs_upper)) << digits<Lower>)+static_cast<common_result_type>(
-                    _impl::long_multiply<Lower>{}(lhs_lower, rhs_lower));
+            auto const upper_upper{_impl::long_multiply<Upper>{}(lhs_upper, rhs_upper)};
+            auto const upper_lower{_impl::long_multiply<Upper>{}(lhs_upper, rhs_lower)};
+            auto const lower_upper{_impl::long_multiply<Upper>{}(lhs_lower, rhs_upper)};
+            auto const lower_lower{_impl::long_multiply<Lower>{}(lhs_lower, rhs_lower)};
+            auto const upper{_impl::sensible_left_shift<_duplex_integer>(upper_upper, digits<Lower> * 2)};
+            auto const mid{(upper_lower + lower_upper) << digits<Lower>};
+            auto const lower{lower_lower};
+            return upper + mid + lower;
         }
     };
 
