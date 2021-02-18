@@ -7,10 +7,12 @@
 /// \file
 /// \brief file containing tests of the `cnl::elastic_integer` type
 
+#include <cnl/elastic_integer.h>
+
 #include <cnl/_impl/rounding.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
-#include <cnl/elastic_integer.h>
+#include <cnl/cstdint.h>
 #include <cnl/numeric.h>
 
 #include <gtest/gtest.h>
