@@ -27,7 +27,7 @@ namespace cnl {
         inline constexpr auto max_digits_fundamental<false> = digits<uintmax>;
 
         // max_digits
-        template<typename T, class Enable = void>
+        template<typename T>
         inline constexpr int max_digits = 0;
 
         template<_impl::integral T>
