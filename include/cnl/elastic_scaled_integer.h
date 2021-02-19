@@ -132,7 +132,7 @@ namespace cnl {
         [[nodiscard]] constexpr auto operator"" _elastic()
         {
             return make_elastic_scaled_integer<int>(
-                    constant<_cnlint_impl::parse<sizeof...(Chars) + 1>({Chars..., '\0'})>{});
+                    constant<_impl::parse<::cnl::intmax, Chars...>()>{});
         }
     }
 }

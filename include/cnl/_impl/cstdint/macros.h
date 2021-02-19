@@ -12,6 +12,7 @@
 
 #include "../common.h"
 #include "../config.h"
+#include "../parse.h"
 #include "types.h"
 
 #include <cstdint>
@@ -22,10 +23,10 @@
 #if defined(CNL_INT128_ENABLED)
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define CNL_INTMAX_C(N) (::cnl::_cnlint_impl::parse(CNL_STR(N)))
+#define CNL_INTMAX_C(N) (::cnl::_impl::parse<::cnl::intmax>(CNL_STR(N)))
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define CNL_UINTMAX_C(N) (static_cast<::cnl::uint128>(::cnl::_cnlint_impl::parse(CNL_STR(N))))
+#define CNL_UINTMAX_C(N) (::cnl::_impl::parse<::cnl::uintmax>(CNL_STR(N)))
 
 #else
 
@@ -36,68 +37,5 @@
 #define CNL_UINTMAX_C UINTMAX_C
 
 #endif
-
-/// compositional numeric library
-namespace cnl {
-
-    namespace _cnlint_impl {
-        template<typename ParseDigit>
-        [[nodiscard]] constexpr auto
-        parse(char const* s, int base, ParseDigit parse_digit, intmax value = 0) -> intmax
-        {
-            return (*s) ? parse(s + 1, base, parse_digit, parse_digit(*s) + value * base) : value;
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // digit parsers
-
-        [[nodiscard]] constexpr auto parse_bin_char(char c)
-        {
-            return (c == '0') ? 0 : (c == '1') ? 1
-                                               : int{};
-        }
-
-        [[nodiscard]] constexpr auto parse_dec_char(char c)
-        {
-            return (c >= '0' && c <= '9') ? c - '0' : int{};
-        }
-
-        [[nodiscard]] constexpr auto parse_oct_char(char c)
-        {
-            return (c >= '0' && c <= '7') ? c - '0' : int{};
-        }
-
-        [[nodiscard]] constexpr auto parse_hex_char(char c)
-        {
-            return (c >= '0' && c <= '9') ? c - '0'
-                 : (c >= 'a' && c <= 'z') ? c + 10 - 'a'
-                 : (c >= 'A' && c <= 'Z') ? c + 10 - 'A'
-                                          : int{};
-        }
-
-        [[nodiscard]] constexpr auto parse_positive(char const* s)
-        {
-            return (s[0] != '0')                ? parse(s, 10, parse_dec_char)
-                 : (s[1] == 'x' || s[1] == 'X') ? parse(s + 2, 16, parse_hex_char)
-                 : (s[1] == 'b' || s[1] == 'B') ? parse(s + 2, 2, parse_bin_char)
-                                                : parse(s + 1, 8, parse_oct_char);
-        }
-
-        template<int NumChars>
-        [[nodiscard]] constexpr auto parse(
-                const char (&s)[NumChars])  // NOLINT(cppcoreguidelines-avoid-c-arrays)
-        {
-            return (s[0] == '-') ? -parse_positive(s + 1)
-                 : s[0] == '+'   ? parse_positive(s + 1)
-                                 : parse_positive(s);
-        }
-
-        template<char... Chars>
-        [[nodiscard]] constexpr auto parse()
-        {
-            return parse<sizeof...(Chars) + 1>({Chars..., '\0'});
-        }
-    }
-}
 
 #endif  // CNL_IMPL_CSTDINT_MACROS_H
