@@ -38,7 +38,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::wide_integer<27>{0b101100101010100110101010100},
-                        0b101100101010100110101010100_wide));
+                        0b1011001010101001101010'10100_wide));
 
         static_assert(identical(cnl::wide_integer<29>{123456789}, 123456789_wide));
 
@@ -47,7 +47,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::wide_integer<182>{1} << 180,
-                        1532495540865888858358347027150309183618739122183602176_wide));
+                        15324955408'6'5'8'8'8858358347027150309183618739122183602176_wide));
 #endif
 
         static_assert(identical(cnl::wide_integer<15>{0x1532}, 0x1532_wide));
@@ -55,6 +55,6 @@ namespace {
         static_assert(
                 identical(
                         cnl::wide_integer<65>{01273465273645012763450LL},
-                        01273465273645012763450_wide));
+                        012734652'7364'50127634'50_wide));
     }
 }

@@ -15,6 +15,7 @@
 #include "num_traits/set_digits.h"
 #include "unreachable.h"
 
+#include <algorithm>
 #include <cstring>
 #include <numeric>
 #include <tuple>
@@ -163,10 +164,13 @@ namespace cnl {
             int stride;
             int first_numeral;
             int num_bits;
+            int num_digits;
         };
 
+        constexpr auto separator{'\''};
+
         [[nodiscard]] constexpr auto scan_msb(
-                char const* str, bool is_negative, int base, int stride, int offset, int max_num_bits)
+                char const* str, int length, bool is_negative, int base, int stride, int offset, int max_num_bits)
         {
             // If most significant digit char is not too great, use a slightly narrower result type.
             // In turn, ensure that large signed numbers don't 'nudge' over to wider types.
@@ -180,24 +184,30 @@ namespace cnl {
                     is_negative, base,
                     stride,
                     offset,
-                    max_num_bits - (first_digit * 2 < base)};
+                    max_num_bits - (first_digit * 2 < base),
+                    length};
         }
 
         [[nodiscard]] constexpr auto scan_base(char const* str, bool is_negative, int offset, int length)
         {
+            auto const separators{int(std::count(str, str + length - 1, separator))};
+            length -= separators;
             if (str[offset] != '0' || offset + 1 >= length) {
                 static_assert(std::numeric_limits<int32_t>::digits10 == 9);
-                return scan_msb(str, is_negative, 10, 18, offset, (length * 3322 + 678) / 1000);
+                return scan_msb(str, length, is_negative, 10, 18, offset, (length * 3322 + 678) / 1000);
             }
             switch (str[offset + 1]) {
             case 'B':
             case 'b':
-                return scan_msb(str, is_negative, 2, 63, offset + 2, length - 2);
+                length -= 2;
+                return scan_msb(str, length, is_negative, 2, 63, offset + 2, length);
             case 'X':
             case 'x':
-                return scan_msb(str, is_negative, 16, 15, offset + 2, (length - 2) * 4);
+                length -= 2;
+                return scan_msb(str, length, is_negative, 16, 15, offset + 2, length * 4);
             default:
-                return scan_msb(str, is_negative, 8, 21, offset + 1, (length - 1) * 3);
+                length -= 1;
+                return scan_msb(str, length, is_negative, 8, 21, offset + 1, length * 3);
             }
         }
 
@@ -233,8 +243,13 @@ namespace cnl {
                 int64 init{};
                 num_digits -= n;
                 CNL_ASSERT(num_digits >= 0);
-                while (n--) {
-                    init = scale_op(init) + char_to_digit(*first++);
+                while (n) {
+                    auto const digit{*first++};
+                    CNL_ASSERT(digit);
+                    if (digit != separator) {
+                        init = scale_op(init) + char_to_digit(digit);
+                        n--;
+                    }
                 }
                 return init;
             };
@@ -255,15 +270,15 @@ namespace cnl {
         template<typename Result, int NumChars>
         [[nodiscard]] constexpr auto parse_string(
                 // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays)
-                char const (&str)[NumChars], bool is_negative, int base, int stride, int first_numeral)
+                char const (&str)[NumChars], int num_digits, bool is_negative, int base, int stride, int first_numeral)
         {
-            return parse_string<Result>(str + first_numeral, NumChars - first_numeral, is_negative, base, stride);
+            return parse_string<Result>(str + first_numeral, num_digits, is_negative, base, stride);
         }
 
-        template<typename Result, bool IsNegative, int Base, int Stride, int FirstNumeral, char... Chars>
+        template<typename Result, int NumDigits, bool IsNegative, int Base, int Stride, int FirstNumeral, char... Chars>
         [[nodiscard]] constexpr auto parse_string()
         {
-            return parse_string<Result, sizeof...(Chars)>({Chars...}, IsNegative, Base, Stride, FirstNumeral);
+            return parse_string<Result, sizeof...(Chars)>({Chars...}, NumDigits, IsNegative, Base, Stride, FirstNumeral);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -276,7 +291,7 @@ namespace cnl {
             auto params{scan_string(str, length)};
             return parse_string<Narrowest>(
                     str + params.first_numeral,
-                    length - params.first_numeral,
+                    params.num_digits,
                     params.is_negative,
                     params.base,
                     params.stride);
@@ -292,6 +307,7 @@ namespace cnl {
 
             return parse_string<
                     result_type,
+                    params.num_digits,
                     params.is_negative,
                     params.base,
                     params.stride,
