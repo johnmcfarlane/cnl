@@ -49,6 +49,7 @@ set(test_sources
         overflow/overflow_tag.cpp
         rounding/rounding_integer.cpp
         _impl/duplex_integer/digits.cpp
+        _impl/duplex_integer/from_value.cpp
         _impl/duplex_integer/numeric_limits.cpp
         _impl/duplex_integer/operators.cpp
         _impl/duplex_integer/instantiate_duplex_integer.cpp
