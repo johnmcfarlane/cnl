@@ -98,18 +98,24 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // instantiate_duplex_integer
 
+        template<typename Word>
+        [[nodiscard]] constexpr auto duplex_num_words(int min_digits)
+        {
+            auto const num_sign_bits = numbers::signedness_v<Word>;
+            auto const word_digits = digits<Word> + num_sign_bits;
+            auto const required_num_words =
+                    (min_digits + num_sign_bits + word_digits - 1) / word_digits;
+
+            // Otherwise, it's not multi!
+            auto const plural_num_words = std::max(2, required_num_words);
+
+            return plural_num_words;
+        }
+
         template<int Digits, typename Narrowest>
         struct instantiate_duplex_integer {
             using word = typename optimal_duplex<Narrowest>::type;
-            static constexpr auto num_sign_bits = numbers::signedness_v<word>;
-            static constexpr auto word_digits = digits<word> + num_sign_bits;
-            static constexpr auto required_num_words =
-                    (Digits + num_sign_bits + word_digits - 1) / word_digits;
-
-            // Otherwise, it's not multi!
-            static constexpr auto plural_num_words = std::max(2, required_num_words);
-
-            using type = multiword_integer_t<word, plural_num_words>;
+            using type = multiword_integer_t<word, duplex_num_words<word>(Digits)>;
         };
 
         template<int Digits, typename Narrowest>
