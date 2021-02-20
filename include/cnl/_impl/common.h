@@ -11,9 +11,6 @@
 
 #include "config.h"
 
-#define CNL_STR_HELPER(x) #x  // NOLINT(cppcoreguidelines-macro-usage)
-#define CNL_STR(x) CNL_STR_HELPER(x)  // NOLINT(cppcoreguidelines-macro-usage)
-
 // CNL_LIKELY - hints that a condition is likely to be true
 #if defined(__clang__) || defined(__GNUC__)
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
