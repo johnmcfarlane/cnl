@@ -24,8 +24,8 @@ namespace cnl {
         }
     };
 
-    template<class Duplex, class Value>
-    requires(_impl::is_duplex_integer<Duplex>::value&& _impl::is_duplex_integer<Value>::value) struct from_value<Duplex, Value> {
+    template<_impl::any_duplex_integer Duplex, _impl::any_duplex_integer Value>
+    struct from_value<Duplex, Value> {
         [[nodiscard]] constexpr auto operator()(Value const& value) const -> Value
         {
             return value;
