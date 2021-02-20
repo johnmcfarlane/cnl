@@ -10,7 +10,6 @@
 #if !defined(CNL_IMPL_CSTDINT_MACROS_H)
 #define CNL_IMPL_CSTDINT_MACROS_H
 
-#include "../common.h"
 #include "../config.h"
 #include "../parse.h"
 #include "types.h"
@@ -21,6 +20,9 @@
 // CNL_INTMAX_C and CNL_UINTMAX_C
 
 #if defined(CNL_INT128_ENABLED)
+
+#define CNL_STR_HELPER(x) #x  // NOLINT(cppcoreguidelines-macro-usage)
+#define CNL_STR(x) CNL_STR_HELPER(x)  // NOLINT(cppcoreguidelines-macro-usage)
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_INTMAX_C(N) (::cnl::_impl::parse<::cnl::intmax>(CNL_STR(N)))

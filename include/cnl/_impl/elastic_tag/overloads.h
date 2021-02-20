@@ -14,6 +14,8 @@
 #include "definition.h"
 #include "policy.h"
 
+#include <algorithm>
+
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
@@ -28,7 +30,7 @@ namespace cnl {
                     numbers::set_signedness_t<
                             _impl::op_result<Operator, LhsNarrowest, RhsNarrowest>,
                             policy::is_signed>,
-                    _impl::max(
+                    std::max(
                             _impl::width<LhsNarrowest>, _impl::width<RhsNarrowest>)>;
 
             using type = elastic_tag<policy::digits, narrowest>;

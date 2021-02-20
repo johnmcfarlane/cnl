@@ -13,6 +13,8 @@
 #include "../numbers/signedness.h"
 #include "definition.h"
 
+#include <algorithm>
+
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
@@ -22,12 +24,12 @@ namespace cnl {
         struct wide_tag_overload_params {
             static constexpr bool is_signed{
                     numbers::signedness_v<LhsNarrowest> | numbers::signedness_v<RhsNarrowest>};
-            static constexpr int digits{max(LhsDigits, RhsDigits)};
+            static constexpr int digits{std::max(LhsDigits, RhsDigits)};
 
             using narrowest = _impl::set_width_t<
                     numbers::set_signedness_t<
                             _impl::op_result<Operator, LhsNarrowest, RhsNarrowest>, is_signed>,
-                    _impl::max(
+                    std::max(
                             _impl::width<LhsNarrowest>, _impl::width<RhsNarrowest>)>;
 
             using type = cnl::wide_tag<digits, narrowest>;

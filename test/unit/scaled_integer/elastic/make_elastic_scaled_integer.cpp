@@ -7,6 +7,8 @@
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/elastic_scaled_integer.h>
 
+#include <algorithm>
+
 ////////////////////////////////////////////////////////////////////////////////
 // cnl::make_elastic_scaled_integer
 
@@ -205,7 +207,7 @@ struct make_elastic_test {
     static_assert(
             Value <= 0
                     || (Value
-                        >> cnl::_impl::max<int>(0, cnl::_impl::integer_digits<type> - 1))
+                        >> std::max<int>(0, cnl::_impl::integer_digits<type> - 1))
                                != 0,
             "elastic_scaled_integer type capacity is too small");
     static_assert(

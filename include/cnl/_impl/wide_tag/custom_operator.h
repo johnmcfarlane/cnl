@@ -7,7 +7,6 @@
 #if !defined(CNL_IMPL_WIDE_TAG_GENERIC_H)
 #define CNL_IMPL_WIDE_TAG_GENERIC_H
 
-#include "../common.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/set_width.h"
 #include "../num_traits/to_rep.h"
@@ -19,6 +18,7 @@
 #include "definition.h"
 #include "is_wide_tag.h"
 
+#include <algorithm>
 #include <type_traits>
 
 /// compositional numeric library
@@ -67,7 +67,7 @@ namespace cnl {
             operand<Lhs, wide_tag<LhsDigits, LhsNarrowest>>,
             operand<Rhs, wide_tag<RhsDigits, RhsNarrowest>>> {
     private:
-        static constexpr auto _max_digits{_impl::max(LhsDigits, RhsDigits)};
+        static constexpr auto _max_digits{std::max(LhsDigits, RhsDigits)};
         static constexpr auto _are_signed{
                 numbers::signedness_v<LhsNarrowest> || numbers::signedness_v<RhsNarrowest>};
         using common_type = typename std::common_type<LhsNarrowest, RhsNarrowest>::type;

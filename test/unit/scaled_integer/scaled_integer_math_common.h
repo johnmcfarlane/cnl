@@ -44,7 +44,7 @@ TEST(math, FPTESTFORMAT)  // NOLINT
     constexpr std::array<double, 13> fracts{{
             static_cast<double>(cnl::numeric_limits<fp>::min()),  // As close to zero as possible
             0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9,
-            cnl::_impl::min(
+            std::min(
                     1., static_cast<double>(
                                 cnl::numeric_limits<fp>::max()))  // As close to one as possible
     }};

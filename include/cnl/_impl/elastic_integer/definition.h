@@ -14,12 +14,14 @@
 #include "rep_of.h"
 #include "tag_of.h"
 
+#include <algorithm>
+
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
         template<int Digits, class Narrowest>
         using elastic_rep_t =
-                typename set_digits<Narrowest, _impl::max(digits<Narrowest>, Digits)>::type;
+                typename set_digits<Narrowest, std::max(digits<Narrowest>, Digits)>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::is_elastic_integer

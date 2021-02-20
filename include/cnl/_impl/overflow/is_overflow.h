@@ -9,13 +9,13 @@
 
 #include "../../limits.h"
 #include "../../numeric.h"
-#include "../common.h"
 #include "../num_traits/digits.h"
 #include "../numbers/signedness.h"
 #include "../operators/operators.h"
 #include "../polarity.h"
 #include "../type_traits/enable_if.h"
 
+#include <algorithm>
 #include <type_traits>
 
 /// compositional numeric library
@@ -221,8 +221,7 @@ namespace cnl {
             [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<add_op, Lhs, Rhs>;
-                return (max(overflow_digits<Lhs, polarity::positive>::value,
-                            overflow_digits<Rhs, polarity::positive>::value)
+                return (std::max(overflow_digits<Lhs, polarity::positive>::value, overflow_digits<Rhs, polarity::positive>::value)
                                 + 1
                         > traits::positive_digits)
                     && lhs > Lhs{0} && rhs > Rhs{0} &&
@@ -236,8 +235,7 @@ namespace cnl {
             [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<add_op, Lhs, Rhs>;
-                return (max(overflow_digits<Lhs, polarity::positive>::value,
-                            overflow_digits<Rhs, polarity::positive>::value)
+                return (std::max(overflow_digits<Lhs, polarity::positive>::value, overflow_digits<Rhs, polarity::positive>::value)
                                 + 1
                         > traits::positive_digits)
                     && lhs < Lhs{0} && rhs < Rhs{0} &&
@@ -255,8 +253,7 @@ namespace cnl {
             [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<subtract_op, Lhs, Rhs>;
-                return (max(overflow_digits<Lhs, polarity::positive>::value,
-                            overflow_digits<Rhs, polarity::negative>::value)
+                return (std::max(overflow_digits<Lhs, polarity::positive>::value, overflow_digits<Rhs, polarity::negative>::value)
                                 + 1
                         > traits::positive_digits)
                     && rhs < Rhs{0}  // NOLINTNEXTLINE(bugprone-misplaced-widening-cast)
@@ -270,8 +267,7 @@ namespace cnl {
             [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<subtract_op, Lhs, Rhs>;
-                return (max(overflow_digits<Lhs, polarity::positive>::value,
-                            overflow_digits<Rhs, polarity::positive>::value)
+                return (std::max(overflow_digits<Lhs, polarity::positive>::value, overflow_digits<Rhs, polarity::positive>::value)
                                 + 1
                         > traits::positive_digits)
                     && (rhs >= 0) && lhs < traits::lowest() + rhs;

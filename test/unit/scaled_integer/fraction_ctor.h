@@ -16,6 +16,8 @@
 #include <cnl/fraction.h>
 #include <cnl/scaled_integer.h>
 
+#include <algorithm>
+
 namespace {
     using cnl::_impl::identical;
 
@@ -23,7 +25,7 @@ namespace {
     struct sum_digits {
         using result_type = decltype(Op{}(std::declval<Lhs>(), std::declval<Rhs>()));
         using type = cnl::set_digits_t<
-                result_type, cnl::_impl::max(
+                result_type, std::max(
                                      cnl::digits<result_type>,
                                      cnl::digits<Lhs> + cnl::digits<Rhs>)>;
     };

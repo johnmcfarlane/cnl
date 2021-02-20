@@ -11,7 +11,6 @@
 #include <cnl/num_traits.h>
 #include <cnl/numeric.h>
 
-#include <cnl/_impl/common.h>
 #include <cnl/_impl/config.h>
 #include <cnl/_impl/type_traits/identical.h>
 

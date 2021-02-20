@@ -7,7 +7,6 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_INSTANTIATE_DUPLEX_INTEGER_H)
 #define CNL_IMPL_DUPLEX_INTEGER_INSTANTIATE_DUPLEX_INTEGER_H
 
-#include "../common.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/max_digits.h"
 #include "../num_traits/set_digits.h"
@@ -15,6 +14,7 @@
 #include "../numbers/signedness.h"
 #include "forward_declaration.h"
 
+#include <algorithm>
 #include <type_traits>
 
 /// compositional numeric library
@@ -107,7 +107,7 @@ namespace cnl {
                     (Digits + num_sign_bits + word_digits - 1) / word_digits;
 
             // Otherwise, it's not multi!
-            static constexpr auto plural_num_words = max(2, required_num_words);
+            static constexpr auto plural_num_words = std::max(2, required_num_words);
 
             using type = multiword_integer_t<word, plural_num_words>;
         };

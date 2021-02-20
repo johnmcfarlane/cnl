@@ -8,7 +8,6 @@
 #define CNL_IMPL_PARSE_H
 
 #include "assert.h"  // NOLINT(modernize-deprecated-headers, hicpp-deprecated-headers)
-#include "common.h"
 #include "config.h"
 #include "num_traits/digits.h"
 #include "num_traits/max_digits.h"
@@ -302,7 +301,7 @@ namespace cnl {
         {
             constexpr auto params{scan_string({Chars...})};
             constexpr auto result_digits{
-                    max(digits<Narrowest>, min(params.num_bits, max_digits<Narrowest>))};
+                    std::max(digits<Narrowest>, std::min(params.num_bits, max_digits<Narrowest>))};
             using result_type = set_digits_t<Narrowest, result_digits>;
 
             return parse_string<

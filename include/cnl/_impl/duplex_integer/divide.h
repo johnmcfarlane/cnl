@@ -17,6 +17,8 @@
 #include "numeric_limits.h"
 #include "type.h"
 
+#include <algorithm>
+
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
@@ -24,7 +26,7 @@ namespace cnl {
         template<typename Lhs, typename Rhs>
         struct heterogeneous_duplex_divide_operator {
             using common_type = rep_of_t<wide_integer<
-                    max(digits<Lhs>, digits<Rhs>),
+                    std::max(digits<Lhs>, digits<Rhs>),
                     numbers::set_signedness_t<int, numbers::signedness_v<Lhs> | numbers::signedness_v<Rhs>>>>;
 
             [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> Lhs

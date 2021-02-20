@@ -11,11 +11,12 @@
 #define CNL_IMPL_SCALED_INTEGER_NAMED_H
 
 #include "../../fraction.h"
-#include "../common.h"
 #include "../num_traits/rep_of.h"
 #include "../num_traits/tag_of.h"
 #include "../scaled/power.h"
 #include "../type_traits/enable_if.h"
+
+#include <algorithm>
 
 /// compositional numeric library
 namespace cnl {
@@ -58,7 +59,7 @@ namespace cnl {
 
             static constexpr auto necessary_digits = integer_digits + fractional_digits;
             static constexpr auto natural_digits = digits<natural_result>;
-            static constexpr auto result_digits = _impl::max(necessary_digits, natural_digits);
+            static constexpr auto result_digits = std::max(necessary_digits, natural_digits);
 
             using rep_type = set_digits_t<natural_result, result_digits>;
 

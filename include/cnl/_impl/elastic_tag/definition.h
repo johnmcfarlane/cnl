@@ -7,17 +7,18 @@
 #if !defined(CNL_IMPL_ELASTIC_TAG_DEFINITION_H)
 #define CNL_IMPL_ELASTIC_TAG_DEFINITION_H
 
-#include "../common.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/set_digits.h"
 #include "declaration.h"
+
+#include <algorithm>
 
 /// compositional numeric library
 namespace cnl {
     template<int Digits, typename Narrowest>
     struct elastic_tag {
         // A remarkable property of the elastic_tag is that it's rep type is dependent upon it.
-        using _rep = set_digits_t<Narrowest, _impl::max(digits<Narrowest>, Digits)>;
+        using _rep = set_digits_t<Narrowest, std::max(digits<Narrowest>, Digits)>;
     };
 }
 

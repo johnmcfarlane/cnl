@@ -9,8 +9,21 @@
 #if !defined(CNL_IMPL_ASSERT_H)
 #define CNL_IMPL_ASSERT_H
 
-#include "common.h"
+#include "config.h"
+#include "likely.h"
 #include "terminate.h"
+
+////////////////////////////////////////////////////////////////////////////////
+// CNL_ASSUME - hints that a condition *must* be true
+
+#ifdef _MSC_VER
+#define CNL_ASSUME(cond) __assume(cond)
+#elif defined(__GNUC__)
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define CNL_ASSUME(cond) ((cond) ? static_cast<void>(0) : __builtin_unreachable())
+#else
+#define CNL_ASSUME(cond) static_cast<void>((cond) ? 0 : 0)
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // CNL_ASSERT - with passing resemblance to code from github.com/Microsoft/GSL
