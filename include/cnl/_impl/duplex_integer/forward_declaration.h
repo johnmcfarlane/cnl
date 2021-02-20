@@ -12,6 +12,18 @@ namespace cnl {
     namespace _impl {
         template<typename Upper, typename Lower>
         class duplex_integer;
+
+        template<typename T>
+        struct duplex_integer_upper : std::type_identity<T> {
+        };
+
+        template<typename Upper, typename Lower>
+        struct duplex_integer_upper<duplex_integer<Upper, Lower>>
+            : duplex_integer_upper<Upper> {
+        };
+
+        template<typename T>
+        using duplex_integer_upper_t = typename duplex_integer_upper<T>::type;
     }
 }
 

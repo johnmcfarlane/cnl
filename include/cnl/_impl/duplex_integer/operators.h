@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_OPERATORS_H)
 #define CNL_IMPL_DUPLEX_INTEGER_OPERATORS_H
 
+#include "../../limits.h"
 #include "../../wide_integer.h"
 #include "../likely.h"
 #include "../num_traits/width.h"
@@ -46,8 +47,13 @@ namespace cnl {
         };
 
         // add_op and subtract_op
-        template<binary_arithmetic_op Operator, typename Upper, typename Lower>
+        template<binary_arithmetic_op Operator, any_duplex_integer Lhs, any_duplex_integer Rhs>
         struct first_degree_binary_arithmetic_operator {
+        };
+
+        template<binary_arithmetic_op Operator, typename Upper, typename Lower>
+        struct first_degree_binary_arithmetic_operator<
+                Operator, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
             static constexpr auto lower_digits = digits<Lower>;
@@ -69,6 +75,32 @@ namespace cnl {
                                 upper_sum
                                 + static_cast<Upper>(lower_sum >> constant<lower_digits>{})),
                         static_cast<Lower>(lower_sum)};
+            }
+        };
+
+        template<
+                binary_arithmetic_op Operator,
+                _impl::integer LhsUpper, _impl::integer LhsLower,
+                _impl::integer RhsUpper, _impl::integer RhsLower>
+        struct first_degree_binary_arithmetic_operator<
+                Operator,
+                duplex_integer<LhsUpper, LhsLower>,
+                duplex_integer<RhsUpper, RhsLower>> {
+            using lhs_type = duplex_integer<LhsUpper, LhsLower>;
+            using rhs_type = duplex_integer<RhsUpper, RhsLower>;
+
+            using lhs_upper_word = duplex_integer_upper_t<LhsUpper>;
+            using rhs_upper_word = duplex_integer_upper_t<RhsUpper>;
+            using common_word = decltype(std::declval<lhs_upper_word>() + std::declval<rhs_upper_word>());
+            static constexpr int max_digits = std::max(digits<lhs_type>, digits<rhs_type>);
+            using common_duplex_integer = instantiate_duplex_integer_t<max_digits, common_word>;
+
+            [[nodiscard]] constexpr auto operator()(
+                    lhs_type const& lhs, rhs_type const& rhs) const
+                    -> common_duplex_integer
+            {
+                return first_degree_binary_arithmetic_operator<
+                        Operator, common_duplex_integer, common_duplex_integer>{}(lhs, rhs);
             }
         };
     }
@@ -106,31 +138,36 @@ namespace cnl {
         }
     };
 
-    template<_impl::binary_arithmetic_op Operator, typename Upper, typename Lower, typename Rhs>
-    struct custom_operator<
-            Operator,
-            operand<_impl::duplex_integer<Upper, Lower>>,
-            operand<Rhs>>
-        : custom_operator<
-                  Operator,
-                  operand<_impl::duplex_integer<Upper, Lower>>,
-                  operand<_impl::duplex_integer<Upper, Lower>>> {
+    template<_impl::binary_arithmetic_op Operator, _impl::any_duplex_integer Lhs, _impl::integer Rhs>
+    requires(!_impl::is_duplex_integer_v<Rhs>) struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        {
+            return custom_operator<Operator, operand<Lhs>, operand<Lhs>>{}(lhs, rhs);
+        }
     };
 
-    template<typename Upper, typename Lower>
-    struct custom_operator<
-            _impl::add_op,
-            operand<_impl::duplex_integer<Upper, Lower>>,
-            operand<_impl::duplex_integer<Upper, Lower>>>
-        : _impl::first_degree_binary_arithmetic_operator<_impl::add_op, Upper, Lower> {
+    template<_impl::binary_arithmetic_op Operator, _impl::integer Lhs, _impl::any_duplex_integer Rhs>
+    requires(!_impl::is_duplex_integer_v<Lhs>) struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        {
+            return custom_operator<Operator, operand<Rhs>, operand<Rhs>>{}(lhs, rhs);
+        }
     };
 
-    template<typename Upper, typename Lower>
-    struct custom_operator<
-            _impl::subtract_op,
-            operand<_impl::duplex_integer<Upper, Lower>>,
-            operand<_impl::duplex_integer<Upper, Lower>>>
-        : _impl::first_degree_binary_arithmetic_operator<_impl::subtract_op, Upper, Lower> {
+    template<_impl::any_duplex_integer Lhs, _impl::any_duplex_integer Rhs>
+    struct custom_operator<_impl::add_op, operand<Lhs>, operand<Rhs>> {
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        {
+            return _impl::first_degree_binary_arithmetic_operator<_impl::add_op, Lhs, Rhs>{}(lhs, rhs);
+        }
+    };
+
+    template<_impl::any_duplex_integer Lhs, _impl::any_duplex_integer Rhs>
+    struct custom_operator<_impl::subtract_op, operand<Lhs>, operand<Rhs>> {
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        {
+            return _impl::first_degree_binary_arithmetic_operator<_impl::subtract_op, Lhs, Rhs>{}(lhs, rhs);
+        }
     };
 
     template<typename Upper, typename Lower>

@@ -72,6 +72,20 @@ namespace {
 #endif
     }
 
+    TEST(duplex_integer, add)  // NOLINT
+    {
+        using namespace cnl::literals;
+        using narrower = cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>;
+        using wider = cnl::_impl::duplex_integer<
+                cnl::_impl::duplex_integer<cnl::int32, cnl::uint32>,
+                cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>>;
+        auto const expected{wider{0x1'00000000'00000000_wide}};
+        auto const lhs{narrower{0}};
+        auto const rhs{wider{0x1'00000000'00000000_wide}};
+        auto const actual(lhs + rhs);
+        ASSERT_EQ(expected, actual);
+    }
+
     namespace test_add {
         static_assert(
                 identical(
