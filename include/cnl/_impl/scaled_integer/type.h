@@ -21,6 +21,8 @@
 #include "declaration.h"
 #include "is_scaled_integer.h"
 
+#include <algorithm>
+
 /// compositional numeric library
 namespace cnl {
     template<typename Numerator, typename Denominator>
@@ -105,7 +107,7 @@ namespace cnl {
     scaled_integer(::cnl::constant<Value>) -> scaled_integer<
             set_digits_t<
                     int,
-                    _impl::max(digits<int>, _impl::used_digits(Value) - trailing_bits(Value))>,
+                    std::max(digits<int>, _impl::used_digits(Value) - trailing_bits(Value))>,
             power<trailing_bits(Value)>>;
 
     template<class Integer>

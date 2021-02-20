@@ -7,8 +7,9 @@
 #if !defined(CNL_IMPL_ELASTIC_TAG_POLICY_H)
 #define CNL_IMPL_ELASTIC_TAG_POLICY_H
 
-#include "../common.h"
 #include "../operators/operators.h"
+
+#include <algorithm>
 
 /// compositional numeric library
 namespace cnl {
@@ -18,14 +19,14 @@ namespace cnl {
 
         template<int LhsDigits, bool LhsIsSigned, int RhsDigits, bool RhsIsSigned>
         struct policy<_impl::add_op, LhsDigits, LhsIsSigned, RhsDigits, RhsIsSigned> {
-            static constexpr int digits = _impl::max(LhsDigits, RhsDigits) + 1;
+            static constexpr int digits = std::max(LhsDigits, RhsDigits) + 1;
             static constexpr bool is_signed = LhsIsSigned || RhsIsSigned;
         };
 
         template<int LhsDigits, bool LhsIsSigned, int RhsDigits, bool RhsIsSigned>
         struct policy<_impl::subtract_op, LhsDigits, LhsIsSigned, RhsDigits, RhsIsSigned> {
             static constexpr int digits =
-                    _impl::max(LhsDigits, RhsDigits) + (LhsIsSigned | RhsIsSigned);
+                    std::max(LhsDigits, RhsDigits) + (LhsIsSigned | RhsIsSigned);
             static constexpr bool is_signed = true;
         };
 
@@ -35,7 +36,7 @@ namespace cnl {
             {
                 return operand_digits == 1 ? 0 : operand_digits;
             }
-            static constexpr int digits = max(1, contribution(LhsDigits) + contribution(RhsDigits));
+            static constexpr int digits = std::max(1, contribution(LhsDigits) + contribution(RhsDigits));
             static constexpr bool is_signed = LhsIsSigned || RhsIsSigned;
         };
 
@@ -53,19 +54,19 @@ namespace cnl {
 
         template<int LhsDigits, bool LhsIsSigned, int RhsDigits, bool RhsIsSigned>
         struct policy<_impl::bitwise_or_op, LhsDigits, LhsIsSigned, RhsDigits, RhsIsSigned> {
-            static constexpr int digits = _impl::max(LhsDigits, RhsDigits);
+            static constexpr int digits = std::max(LhsDigits, RhsDigits);
             static constexpr bool is_signed = LhsIsSigned || RhsIsSigned;
         };
 
         template<int LhsDigits, bool LhsIsSigned, int RhsDigits, bool RhsIsSigned>
         struct policy<_impl::bitwise_and_op, LhsDigits, LhsIsSigned, RhsDigits, RhsIsSigned> {
-            static constexpr int digits = _impl::min(LhsDigits, RhsDigits);
+            static constexpr int digits = std::min(LhsDigits, RhsDigits);
             static constexpr bool is_signed = LhsIsSigned || RhsIsSigned;
         };
 
         template<int LhsDigits, bool LhsIsSigned, int RhsDigits, bool RhsIsSigned>
         struct policy<_impl::bitwise_xor_op, LhsDigits, LhsIsSigned, RhsDigits, RhsIsSigned> {
-            static constexpr int digits = _impl::max(LhsDigits, RhsDigits);
+            static constexpr int digits = std::max(LhsDigits, RhsDigits);
             static constexpr bool is_signed = LhsIsSigned || RhsIsSigned;
         };
     }

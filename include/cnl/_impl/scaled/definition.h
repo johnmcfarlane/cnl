@@ -7,8 +7,9 @@
 #if !defined(CNL_IMPL_SCALED_DEFINITION_H)
 #define CNL_IMPL_SCALED_DEFINITION_H
 
-#include "../common.h"
 #include "declaration.h"
+
+#include <algorithm>
 
 /// compositional numeric library
 namespace cnl {
@@ -35,16 +36,16 @@ namespace cnl {
 
     template<int LhsExponent, int RhsExponent, int Radix>
     [[nodiscard]] constexpr auto operator+(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-            -> power<_impl::min(LhsExponent, RhsExponent), Radix>
+            -> power<std::min(LhsExponent, RhsExponent), Radix>
     {
-        return power<_impl::min(LhsExponent, RhsExponent), Radix>{};
+        return power<std::min(LhsExponent, RhsExponent), Radix>{};
     }
 
     template<int LhsExponent, int RhsExponent, int Radix>
     [[nodiscard]] constexpr auto operator-(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-            -> power<_impl::min(LhsExponent, RhsExponent), Radix>
+            -> power<std::min(LhsExponent, RhsExponent), Radix>
     {
-        return power<_impl::min(LhsExponent, RhsExponent), Radix>{};
+        return power<std::min(LhsExponent, RhsExponent), Radix>{};
     }
 
     template<int LhsExponent, int RhsExponent, int Radix>
@@ -70,23 +71,23 @@ namespace cnl {
 
     template<int LhsExponent, int RhsExponent, int Radix>
     [[nodiscard]] constexpr auto operator&(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-            -> power<_impl::min(LhsExponent, RhsExponent), Radix>
+            -> power<std::min(LhsExponent, RhsExponent), Radix>
     {
-        return power<_impl::min(LhsExponent, RhsExponent), Radix>{};
+        return power<std::min(LhsExponent, RhsExponent), Radix>{};
     }
 
     template<int LhsExponent, int RhsExponent, int Radix>
     [[nodiscard]] constexpr auto operator|(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-            -> power<_impl::min(LhsExponent, RhsExponent), Radix>
+            -> power<std::min(LhsExponent, RhsExponent), Radix>
     {
-        return power<_impl::min(LhsExponent, RhsExponent), Radix>{};
+        return power<std::min(LhsExponent, RhsExponent), Radix>{};
     }
 
     template<int LhsExponent, int RhsExponent, int Radix>
     [[nodiscard]] constexpr auto operator^(power<LhsExponent, Radix>, power<RhsExponent, Radix>)
-            -> power<_impl::min(LhsExponent, RhsExponent), Radix>
+            -> power<std::min(LhsExponent, RhsExponent), Radix>
     {
-        return power<_impl::min(LhsExponent, RhsExponent), Radix>{};
+        return power<std::min(LhsExponent, RhsExponent), Radix>{};
     }
 }
 

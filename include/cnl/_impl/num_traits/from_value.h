@@ -8,13 +8,14 @@
 #define CNL_IMPL_NUM_TRAITS_FROM_VALUE
 
 #include "../../constant.h"
-#include "../common.h"
 #include "../numbers/set_signedness.h"
 #include "../type_traits/is_integral.h"
 #include "../type_traits/remove_cvref.h"
 #include "../used_digits.h"
 #include "digits.h"
 #include "set_digits.h"
+
+#include <algorithm>
 
 namespace cnl {
     namespace _impl {
@@ -42,7 +43,7 @@ namespace cnl {
     private:
         using result_type = set_digits_t<
                 numbers::set_signedness_t<Number, true>,
-                _impl::max(digits<int>, _impl::used_digits(Value))>;
+                std::max(digits<int>, _impl::used_digits(Value))>;
 
     public:
         [[nodiscard]] constexpr auto operator()(constant<Value> const& value) const

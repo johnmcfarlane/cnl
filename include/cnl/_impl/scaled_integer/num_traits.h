@@ -13,6 +13,8 @@
 #include "../../fraction.h"
 #include "type.h"
 
+#include <algorithm>
+
 /// compositional numeric library
 namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
@@ -55,7 +57,7 @@ namespace cnl {
         : _impl::from_value_simple<
                   scaled_integer<
                           set_digits_t<
-                                  int, _impl::max(
+                                  int, std::max(
                                                digits<int>,
                                                _impl::used_digits(Value) - trailing_bits(Value))>,
                           power<trailing_bits(Value)>>,

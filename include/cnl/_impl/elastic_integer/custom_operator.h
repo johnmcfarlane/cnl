@@ -10,6 +10,8 @@
 #include "../operators/custom_operator.h"
 #include "definition.h"
 
+#include <algorithm>
+
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
@@ -39,7 +41,7 @@ namespace cnl {
         struct common_elastic_type<
                 elastic_integer<Digits1, Narrowest1>, elastic_integer<Digits2, Narrowest2>> {
             using type = elastic_integer<
-                    max(Digits1, Digits2), common_signedness_t<Narrowest1, Narrowest2>>;
+                    std::max(Digits1, Digits2), common_signedness_t<Narrowest1, Narrowest2>>;
         };
 
         template<int Digits1, class Narrowest1, class Rhs>

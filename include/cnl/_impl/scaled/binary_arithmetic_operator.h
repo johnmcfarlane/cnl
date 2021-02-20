@@ -13,6 +13,8 @@
 #include "../type_traits/enable_if.h"
 #include "definition.h"
 
+#include <algorithm>
+
 /// compositional numeric library
 namespace cnl {
     template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs, int Exponent, int Radix>
@@ -41,7 +43,7 @@ namespace cnl {
             operand<Lhs, power<LhsExponent, Radix>>,
             operand<Rhs, power<RhsExponent, Radix>>> {
     private:
-        static constexpr int _common_exponent = _impl::min(LhsExponent, RhsExponent);
+        static constexpr int _common_exponent = std::min(LhsExponent, RhsExponent);
         using _common_power = power<_common_exponent, Radix>;
         static constexpr int _lhs_left_shift = LhsExponent - _common_exponent;
         static constexpr int _rhs_left_shift = RhsExponent - _common_exponent;

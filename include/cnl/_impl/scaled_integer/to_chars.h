@@ -15,12 +15,12 @@
 #include "numbers.h"
 #include "type.h"
 
+#include <algorithm>
 #include <array>
+#include <charconv>
 #include <iterator>
 #include <type_traits>
 #include <utility>
-
-#include <charconv>
 
 /// compositional numeric library
 namespace cnl {
@@ -36,7 +36,7 @@ namespace cnl {
             static constexpr auto _integer_chars =
                     ((cnl::_impl::integer_digits<_scalar> + 2) / 3);
             static constexpr auto _radix_chars = static_cast<int>(_fractional_digits > 0);
-            static constexpr auto _fractional_chars = max(0, _fractional_digits);
+            static constexpr auto _fractional_chars = std::max(0, _fractional_digits);
 
         public:
             static constexpr auto value =

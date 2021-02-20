@@ -10,7 +10,6 @@
 #if !defined(CNL_IMPL_CSTDINT_MACROS_H)
 #define CNL_IMPL_CSTDINT_MACROS_H
 
-#include "../common.h"
 #include "../config.h"
 #include "../parse.h"
 #include "types.h"
