@@ -11,17 +11,6 @@
 
 #include "config.h"
 
-// CNL_LIKELY - hints that a condition is likely to be true
-#if defined(__clang__) || defined(__GNUC__)
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define CNL_LIKELY(CONDITION) __builtin_expect(!!(CONDITION), 1)
-// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define CNL_UNLIKELY(CONDITION) __builtin_expect(!!(CONDITION), 0)
-#else
-#define CNL_LIKELY(CONDITION) (!!(CONDITION))
-#define CNL_UNLIKELY(CONDITION) (!!(CONDITION))
-#endif
-
 namespace cnl {
     namespace _impl {
         ////////////////////////////////////////////////////////////////////////////////

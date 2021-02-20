@@ -9,8 +9,8 @@
 #if !defined(CNL_IMPL_ASSERT_H)
 #define CNL_IMPL_ASSERT_H
 
-#include "common.h"
 #include "config.h"
+#include "likely.h"
 #include "terminate.h"
 
 ////////////////////////////////////////////////////////////////////////////////

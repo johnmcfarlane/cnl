@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_OPERATORS_H
 
 #include "../../wide_integer.h"
-#include "../common.h"
+#include "../likely.h"
 #include "../num_traits/width.h"
 #include "../operators/custom_operator.h"
 #include "../operators/operators.h"
