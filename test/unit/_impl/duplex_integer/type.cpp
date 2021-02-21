@@ -286,13 +286,4 @@ namespace {
                                 cnl::_impl::duplex_integer<unsigned int, unsigned int>,
                                 cnl::_impl::duplex_integer<unsigned int, unsigned int>>>{}(4567)));
     }
-
-    namespace test_from_value {
-        using duplex100 = cnl::_impl::duplex_integer<
-                cnl::_impl::duplex_integer<int, unsigned int>,
-                cnl::_impl::duplex_integer<unsigned int, unsigned int>>;
-        static_assert(
-                identical(duplex100{123}, cnl::from_value<duplex100, duplex100>{}(duplex100{123})),
-                "cnl::from_value<cnl::_impl::duplex<...>>");
-    }
 }
