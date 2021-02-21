@@ -91,7 +91,7 @@ namespace cnl {
                 auto const upper_lower{_impl::long_multiply<Upper>{}(lhs_upper, rhs_lower)};
                 auto const lower_upper{_impl::long_multiply<Upper>{}(lhs_lower, rhs_upper)};
                 auto const lower_lower{_impl::long_multiply<Lower>{}(lhs_lower, rhs_lower)};
-                auto const upper{_impl::sensible_left_shift<_duplex_integer>(
+                auto const upper{_impl::sensible_left_shift<result_type>(
                         upper_upper,
                         digits<LhsLower> + digits<RhsLower>)};
                 auto const mid{
