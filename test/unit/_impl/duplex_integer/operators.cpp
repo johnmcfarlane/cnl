@@ -223,6 +223,51 @@ namespace {
         ASSERT_EQ(expected, actual);
     }
 
+    TEST(duplex_integer, multiply4)  // NOLINT
+    {
+        using namespace cnl::literals;
+        using t = cnl::_impl::duplex_integer<
+                cnl::_impl::duplex_integer<
+                        cnl::_impl::duplex_integer<int, unsigned int>,
+                        cnl::_impl::duplex_integer<unsigned int, unsigned int>>,
+                cnl::_impl::duplex_integer<unsigned int, unsigned int>>;
+        auto const expected{t{0x8'0000000A'00000007'00000004'00000001_wide}};
+        auto const lhs{t{0x4'00000003'00000002'00000001_wide}};
+        auto const rhs{t{0x2'00000001LL}};
+        auto const actual(lhs * rhs);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST(duplex_integer, multiply5)  // NOLINT
+    {
+        using namespace cnl::literals;
+        using t = cnl::_impl::duplex_integer<
+                cnl::_impl::duplex_integer<
+                        cnl::_impl::duplex_integer<int, unsigned int>,
+                        cnl::_impl::duplex_integer<unsigned int, unsigned int>>,
+                cnl::_impl::duplex_integer<unsigned int, unsigned int>>;
+        auto const expected{t{0x14FD00EEBA0BB3DB0D0F411252A0FB7F58_wide}};
+        auto const lhs{t{0x12725DD1D243ABA0E75FE645C_wide}};
+        auto const rhs{t{0x123456789ALL}};
+        auto const actual(lhs * rhs);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST(duplex_integer, multiply6)  // NOLINT
+    {
+        using namespace cnl::literals;
+        using t = cnl::_impl::duplex_integer<
+                cnl::_impl::duplex_integer<
+                        cnl::_impl::duplex_integer<int, unsigned int>,
+                        cnl::_impl::duplex_integer<unsigned int, unsigned int>>,
+                cnl::_impl::duplex_integer<unsigned int, unsigned int>>;
+        auto const expected{t{1532495540865888858358347027150309183000000000000000000_wide}};
+        auto const lhs{t{1532495540865888858358347027150309183_wide}};
+        auto const rhs{t{1000000000000000000LL}};
+        auto const actual(lhs * rhs);
+        ASSERT_EQ(expected, actual);
+    }
+
     namespace test_multiply {
         static_assert(
                 identical(
