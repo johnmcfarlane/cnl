@@ -114,7 +114,7 @@ namespace cnl {
                 char* const first,
                 char* last,
                 scaled_integer<Rep, power<Exponent, Radix>> const& value)
-        -> enable_if_t<integer_digits<scaled_integer<Rep, power<Exponent, Radix>>>::value<4, char*>
+        -> enable_if_t<(integer_digits<scaled_integer<Rep, power<Exponent, Radix>>>::value<4), char*>
         {
             // zero-out all of the characters in the output string
             std::fill<char*>(first, last, '0');
