@@ -182,14 +182,44 @@ namespace {
                                                 cnl::uint32>>{{0, 0}, {0xC0000000, 0}}));
     }
 
-    TEST(duplex_integer, multiply)  // NOLINT
+    TEST(duplex_integer, multiply1)  // NOLINT
     {
         using namespace cnl::literals;
-        using t = cnl::_impl::instantiate_duplex_integer_t<129, unsigned>;
-        auto expected = t{79228162514264337593543950336_wide};
-        auto lhs = t{4294967296LL};
-        auto rhs = t{18446744073709551616_wide};
+        using t = cnl::_impl::instantiate_duplex_integer_t<97, unsigned>;
+        auto expected = t{0x1'00000000'00000000'00000000_wide};
+        auto lhs = t{0x1'00000000LL};
+        auto rhs = t{0x1'00000000'00000000_wide};
         auto actual = lhs * rhs;
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST(duplex_integer, multiply2)  // NOLINT
+    {
+        using namespace cnl::literals;
+        using t = cnl::_impl::duplex_integer<
+                cnl::_impl::duplex_integer<
+                        cnl::_impl::duplex_integer<int, unsigned int>,
+                        cnl::_impl::duplex_integer<unsigned int, unsigned int>>,
+                cnl::_impl::duplex_integer<unsigned int, unsigned int>>;
+        auto const expected{t{1} << 96};
+        auto const lhs{t{1} << 64};
+        auto const rhs{t{1} << 32};
+        auto const actual(lhs * rhs);
+        ASSERT_EQ(expected, actual);
+    }
+
+    TEST(duplex_integer, multiply3)  // NOLINT
+    {
+        using namespace cnl::literals;
+        using t = cnl::_impl::duplex_integer<
+                cnl::_impl::duplex_integer<
+                        cnl::_impl::duplex_integer<int, unsigned int>,
+                        cnl::_impl::duplex_integer<unsigned int, unsigned int>>,
+                cnl::_impl::duplex_integer<unsigned int, unsigned int>>;
+        auto const lhs{t{0x10000000'00000000'00000000'00000000_wide}};
+        auto const rhs{t{0x10'00000000LL}};
+        auto const actual(lhs * rhs);
+        auto const expected{t{0x1'00000000'00000000'00000000'00000000'00000000_wide}};
         ASSERT_EQ(expected, actual);
     }
 
