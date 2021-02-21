@@ -1,4 +1,4 @@
-set(MISC_FLAGS "/W4 /WX /errorReport:prompt /nologo /wd4307")
+set(MISC_FLAGS "/Wall /WX /errorReport:prompt /nologo /wd4307 /wd4464 /wd4514 /wd4557 /wd4625 /wd4626 /wd4668 /wd4686 /wd4710 /wd4711 /wd4738 /wd4820 /wd5026 /wd5027 /wd5045")
 
 set(EXCEPTION_ENABLED_FLAGS "/GR /EHsc")
 set(EXCEPTION_DISABLED_FLAGS "/GR- -DBOOST_NO_EXCEPTIONS -DBOOST_NO_RTTI")
