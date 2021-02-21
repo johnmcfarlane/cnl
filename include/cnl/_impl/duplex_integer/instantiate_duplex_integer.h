@@ -69,10 +69,7 @@ namespace cnl {
             auto const required_num_words =
                     (min_digits + num_sign_bits + word_digits - 1) / word_digits;
 
-            // Otherwise, it's not multi!
-            auto const plural_num_words = std::max(2, required_num_words);
-
-            return plural_num_words;
+            return required_num_words;
         }
 
         template<int Digits, typename Narrowest>

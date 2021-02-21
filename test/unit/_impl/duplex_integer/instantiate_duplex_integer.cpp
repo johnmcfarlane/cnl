@@ -13,7 +13,7 @@ namespace {
 
     static_assert(
             assert_same<
-                    cnl::_impl::duplex_integer<cnl::int8, cnl::uint8>,
+                    cnl::int8,
                     cnl::_impl::instantiate_duplex_integer_t<1, cnl::int8>>::value);
     static_assert(
             assert_same<
