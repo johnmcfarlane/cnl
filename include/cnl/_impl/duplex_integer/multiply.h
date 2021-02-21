@@ -54,8 +54,9 @@ namespace cnl {
         // duplex_integer<int64, int64>
         template<typename Upper, typename Lower>
         struct long_multiply<duplex_integer<Upper, Lower>> {
+            using _duplex_integer = duplex_integer<Upper, Lower>;
             using result_type =
-                    duplex_integer<duplex_integer<Upper, Lower>, duplex_integer<Lower, Lower>>;
+                    duplex_integer<_duplex_integer, duplex_integer<Lower, Lower>>;
 
             template<typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
             [[nodiscard]] constexpr auto operator()(
@@ -86,11 +87,17 @@ namespace cnl {
                     LhsUpper const& lhs_upper, LhsLower const& lhs_lower, RhsUpper const& rhs_upper,
                     RhsLower const& rhs_lower) -> result_type
             {
-                return ((result_type{_impl::long_multiply<Upper>{}(lhs_upper, rhs_upper)})
-                        << (digits<Lower> + digits<Upper>))
-                     + ((result_type{_impl::long_multiply<Upper>{}(lhs_lower, rhs_upper)}
-                         + result_type{_impl::long_multiply<Upper>{}(lhs_upper, rhs_lower)})
-                        << digits<Lower>)+((result_type{_impl::long_multiply<Lower>{}(lhs_lower, rhs_lower)}));
+                auto const upper_upper{_impl::long_multiply<Upper>{}(lhs_upper, rhs_upper)};
+                auto const upper_lower{_impl::long_multiply<Upper>{}(lhs_upper, rhs_lower)};
+                auto const lower_upper{_impl::long_multiply<Upper>{}(lhs_lower, rhs_upper)};
+                auto const lower_lower{_impl::long_multiply<Lower>{}(lhs_lower, rhs_lower)};
+                auto const upper{_impl::sensible_left_shift<_duplex_integer>(
+                        upper_upper,
+                        digits<LhsLower> + digits<RhsLower>)};
+                auto const mid{
+                        (result_type{upper_lower} << digits<LhsLower>)+(result_type{lower_upper} << digits<RhsLower>)};
+                auto const lower{lower_lower};
+                return upper + mid + lower;
             }
         };
     }

@@ -21,6 +21,12 @@ namespace cnl {
         template<typename Upper, typename Lower>
         struct is_duplex_integer<duplex_integer<Upper, Lower>> : std::true_type {
         };
+
+        template<typename T>
+        inline constexpr auto is_duplex_integer_v = is_duplex_integer<T>::value;
+
+        template<typename T>
+        concept any_duplex_integer = is_duplex_integer_v<T>;
     }
 }
 
