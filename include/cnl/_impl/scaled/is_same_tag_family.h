@@ -8,7 +8,6 @@
 #define CNL_IMPL_SCALED_IS_SAME_TAG_FAMILY_H
 
 #include "../operators/is_same_tag_family.h"
-#include "../type_traits/enable_if.h"
 #include "is_scaled_tag.h"
 
 #include <type_traits>

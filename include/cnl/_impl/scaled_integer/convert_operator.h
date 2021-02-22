@@ -14,7 +14,6 @@
 #include "../rounding/nearest_rounding_tag.h"
 #include "../rounding/neg_inf_rounding_tag.h"
 #include "../rounding/tie_to_pos_inf_rounding_tag.h"
-#include "../type_traits/enable_if.h"
 #include "declaration.h"
 #include "from_rep.h"
 

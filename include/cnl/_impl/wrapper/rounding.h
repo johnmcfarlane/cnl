@@ -10,7 +10,6 @@
 #include "../num_traits/rep_of.h"
 #include "../num_traits/rounding.h"
 #include "../num_traits/tag_of.h"
-#include "../type_traits/enable_if.h"
 #include "is_wrapper.h"
 
 /// compositional numeric library

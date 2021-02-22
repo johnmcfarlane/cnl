@@ -8,7 +8,6 @@
 #define CNL_IMPL_WRAPPER_SHIFT_OPERATOR_H
 
 #include "../operators/native_tag.h"
-#include "../type_traits/enable_if.h"
 #include "from_rep.h"
 #include "is_wrapper.h"
 #include "operator_helpers.h"

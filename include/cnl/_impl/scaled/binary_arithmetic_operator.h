@@ -10,7 +10,6 @@
 #include "../num_traits/scale.h"
 #include "../operators/custom_operator.h"
 #include "../operators/tagged.h"
-#include "../type_traits/enable_if.h"
 #include "definition.h"
 
 #include <algorithm>
