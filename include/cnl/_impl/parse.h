@@ -158,12 +158,12 @@ namespace cnl {
         // scan_string
 
         struct params {
-            bool is_negative;
             int base;
             int stride;
             int first_numeral;
             int num_bits;
             int num_digits;
+            bool is_negative;
         };
 
         constexpr auto separator{'\''};
@@ -180,11 +180,12 @@ namespace cnl {
             auto const first_digit_char{str[offset]};
             auto const first_digit{make_char_to_digit_positive(base)(first_digit_char)};
             return params{
-                    is_negative, base,
+                    base,
                     stride,
                     offset,
                     max_num_bits - (first_digit * 2 < base),
-                    length};
+                    length,
+                    is_negative};
         }
 
         [[nodiscard]] constexpr auto scan_base(char const* str, bool is_negative, int offset, int length)
