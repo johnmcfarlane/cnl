@@ -20,22 +20,18 @@ namespace cnl {
     };
 
     // when one _impl::wrapper wraps a dissimilar _impl::wrapper
+    /// \cond
     template<typename ArchetypeRep, class ArchetypeTag, _impl::wrapped Rep>
-    struct set_rep<
-            _impl::wrapper<ArchetypeRep, ArchetypeTag>, Rep,
-            _impl::enable_if_t<
-                    !_impl::can_convert_tag_family<ArchetypeTag, _impl::tag_of_t<Rep>>::value>>
+    requires(!_impl::can_convert_tag_family<ArchetypeTag, _impl::tag_of_t<Rep>>::value) struct set_rep<_impl::wrapper<ArchetypeRep, ArchetypeTag>, Rep>
         : std::type_identity<_impl::wrapper<Rep, ArchetypeTag>> {
     };
 
     // when one _impl::wrapper is converted to a similar _impl::wrapper
     template<typename ArchetypeRep, class ArchetypeTag, _impl::wrapped Rep>
-    struct set_rep<
-            _impl::wrapper<ArchetypeRep, ArchetypeTag>, Rep,
-            _impl::enable_if_t<
-                    _impl::can_convert_tag_family<ArchetypeTag, _impl::tag_of_t<Rep>>::value>>
+    requires(_impl::can_convert_tag_family<ArchetypeTag, _impl::tag_of_t<Rep>>::value) struct set_rep<_impl::wrapper<ArchetypeRep, ArchetypeTag>, Rep>
         : std::type_identity<Rep> {
     };
+    /// \endcond
 }
 
 #endif  // CNL_IMPL_WRAPPER_SET_REP_H
