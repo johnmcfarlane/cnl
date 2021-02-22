@@ -31,11 +31,12 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::rounding
 
+    /// \cond
     template<_impl::wrapped Number>
-    struct rounding<
-            Number, _impl::enable_if_t<!_impl::is_rounding_tag<typename Number::tag>::value>>
+    requires(!_impl::is_rounding_tag<typename Number::tag>::value) struct rounding<Number>
         : rounding<typename Number::rep> {
     };
+    /// \endcond
 
     template<typename Rep, rounding_tag Tag>
     struct rounding<_impl::wrapper<Rep, Tag>>

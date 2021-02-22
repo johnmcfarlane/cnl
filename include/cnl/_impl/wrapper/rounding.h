@@ -15,12 +15,12 @@
 
 /// compositional numeric library
 namespace cnl {
+    /// \cond
     template<_impl::wrapped Number>
-    struct rounding<
-            Number,
-            _impl::enable_if_t<!_impl::is_rounding_tag<_impl::tag_of_t<Number>>::value>>
+    requires(!_impl::is_rounding_tag<_impl::tag_of_t<Number>>::value) struct rounding<Number>
         : rounding<_impl::rep_of_t<Number>> {
     };
+    /// \endcond
 }
 
 #endif  // CNL_IMPL_WRAPPER_ROUNDING_H
