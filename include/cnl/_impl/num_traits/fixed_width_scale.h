@@ -31,7 +31,7 @@ namespace cnl {
     };
 
     namespace _impl {
-        template<int Digits, int Radix = 2, class S = void>
+        template<int Digits, int Radix = 2, class S>
         [[nodiscard]] constexpr auto fixed_width_scale(S const& s)
         {
             return cnl::fixed_width_scale<Digits, Radix, S>()(s);
