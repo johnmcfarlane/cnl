@@ -9,7 +9,7 @@
 
 #include "../num_traits/set_width.h"
 #include "forward_declaration.h"
-#include "instantiate_duplex_integer.h"
+#include "narrowest_integer.h"
 #include "rep_of.h"
 
 /// compositional numeric library
@@ -18,7 +18,7 @@ namespace cnl {
         template<typename Upper, typename Lower, int Digits>
         struct set_width<_impl::duplex_integer<Upper, Lower>, Digits> {
             using word = _impl::rep_of_t<Upper>;
-            using type = typename _impl::instantiate_duplex_integer<
+            using type = typename _impl::narrowest_integer<
                     Digits + !numbers::signedness_v<word>, word>::type;
         };
     }

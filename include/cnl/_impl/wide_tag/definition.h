@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_WIDE_TAG_DEFINITION_H)
 #define CNL_IMPL_WIDE_TAG_DEFINITION_H
 
-#include "../duplex_integer/instantiate_duplex_integer.h"
+#include "../duplex_integer/narrowest_integer.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/max_digits.h"
 #include "../num_traits/set_digits.h"
@@ -32,7 +32,7 @@ namespace cnl {
         // when number must be represented using multiple integers
         template<int Digits, typename Narrowest>
         struct wide_tag_rep<Digits, Narrowest, true>
-            : std::type_identity<instantiate_duplex_integer_t<Digits, Narrowest>> {
+            : std::type_identity<narrowest_integer_t<Digits, Narrowest>> {
         };
 
         template<int Digits, typename Narrowest, bool NeedsDuplex>

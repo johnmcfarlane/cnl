@@ -24,7 +24,7 @@ namespace {
                 identical(
                         cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{0x1234567890abcdef},
                         cnl::_impl::duplex_integer<cnl::uint32, cnl::uint32>{
-                                cnl::_impl::instantiate_duplex_integer_t<95, cnl::int32>{
+                                cnl::_impl::narrowest_integer_t<95, cnl::int32>{
                                         0x1234567890abcdef}}));
 
         TEST(duplex_integer, float_ctor)  // NOLINT
