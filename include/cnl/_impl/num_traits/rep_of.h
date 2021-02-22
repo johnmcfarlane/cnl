@@ -19,7 +19,7 @@ namespace cnl {
     /// signedness -- will be established by the Rep type.
     ///
     /// \sa to_rep, from_value, tag_of, set_rep
-    template<typename T, class Enable = void>
+    template<typename T>
     struct rep_of;
 
     namespace _impl {
