@@ -11,7 +11,6 @@
 #define CNL_TYPE_TRAITS_H
 
 #include "_impl/type_traits/common_type.h"
-#include "_impl/type_traits/enable_if.h"
 #include "_impl/type_traits/is_integral.h"
 #include "_impl/type_traits/remove_cvref.h"
 
@@ -20,8 +19,6 @@
 /// compositional numeric library
 namespace cnl {
     using _impl::common_type_t;
-
-    using _impl::enable_if_t;
 
     using _impl::integral;
     using _impl::is_integral;
