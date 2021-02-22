@@ -200,7 +200,7 @@ constexpr auto z = 0b10_static * 07_static + 0x2A_static / -3_static;
 // value of z is result of 2*7 + 42/-3
 static_assert(z == 0);
 
-// type of z is an instance of constant<>
+// type of z is an specialization of constant<>
 static_assert(std::is_same<const constant<intmax_t{0}>, decltype(z)>::value);
 
 #endif

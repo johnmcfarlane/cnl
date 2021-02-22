@@ -24,7 +24,7 @@ using std::declval;
 using std::is_same;
 
 ////////////////////////////////////////////////////////////////////////////////
-// aliases for different partial instantiations of cnl::overflow_integer
+// aliases for different partial specializations of cnl::overflow_integer
 
 template<typename Rep = int>
 using native_integer = overflow_integer<Rep, cnl::native_overflow_tag>;
