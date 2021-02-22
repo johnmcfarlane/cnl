@@ -7,7 +7,6 @@
 #if !defined(CNL_IMPL_NUM_TRAITS_SET_ROUNDING)
 #define CNL_IMPL_NUM_TRAITS_SET_ROUNDING
 
-#include "../type_traits/enable_if.h"
 #include "../type_traits/remove_cvref.h"
 #include "is_composite.h"
 #include "rounding.h"
@@ -20,12 +19,11 @@ namespace cnl {
     /// permitted. \note Native numeric types are only convertible to \ref cnl::native_rounding_tag.
     /// \sa cnl::rounding, cnl::set_rounding_t,
     /// cnl::native_rounding_tag, cnl::nearest_rounding_tag
-    template<typename Number, rounding_tag RoundingTag, class Enable = void>
+    template<typename Number, rounding_tag RoundingTag>
     struct set_rounding;
 
     template<typename Number>
-    struct set_rounding<
-            Number, rounding_t<Number>, _impl::enable_if_t<!is_composite<Number>::value>>
+    requires(!is_composite_v<Number>) struct set_rounding<Number, rounding_t<Number>>
         : std::type_identity<Number> {
     };
 

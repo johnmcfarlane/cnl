@@ -47,9 +47,7 @@ namespace cnl {
     // cnl::_impl::set_rounding
 
     template<typename Number, rounding_tag Tag>
-    struct set_rounding<
-            Number, Tag,
-            _impl::enable_if_t<is_composite<Number>::value && !_impl::is_wrapper<Number>>>
+    requires(is_composite<Number>::value && !_impl::is_wrapper<Number>) struct set_rounding<Number, Tag>
         : std::type_identity<
                   _impl::set_rep_t<Number, set_rounding_t<_impl::rep_of_t<Number>, Tag>>> {
     };
