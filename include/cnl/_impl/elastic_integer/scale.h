@@ -11,7 +11,6 @@
 #include "../num_traits/rep_of.h"
 #include "../num_traits/scale.h"
 #include "../num_traits/to_rep.h"
-#include "../type_traits/enable_if.h"
 #include "definition.h"
 
 #include <type_traits>
@@ -19,9 +18,8 @@
 /// compositional numeric library
 namespace cnl {
     template<int ShiftDigits, int ScaleRadix, int ScalarDigits, class ScalarNarrowest>
-    struct scale<
-            ShiftDigits, ScaleRadix, elastic_integer<ScalarDigits, ScalarNarrowest>,
-            _impl::enable_if_t<(0 <= ShiftDigits)>> {
+    requires(0 <= ShiftDigits) struct scale<
+            ShiftDigits, ScaleRadix, elastic_integer<ScalarDigits, ScalarNarrowest>> {
         [[nodiscard]] constexpr auto operator()(
                 elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
                 -> elastic_integer<ShiftDigits + ScalarDigits, ScalarNarrowest>
@@ -34,9 +32,8 @@ namespace cnl {
     };
 
     template<int ShiftDigits, int ScalarDigits, class ScalarNarrowest>
-    struct scale<
-            ShiftDigits, 2, elastic_integer<ScalarDigits, ScalarNarrowest>,
-            _impl::enable_if_t<(ShiftDigits < 0)>> {
+    requires(ShiftDigits < 0) struct scale<
+            ShiftDigits, 2, elastic_integer<ScalarDigits, ScalarNarrowest>> {
         [[nodiscard]] constexpr auto operator()(
                 elastic_integer<ScalarDigits, ScalarNarrowest> const& s) const
                 -> elastic_integer<ShiftDigits + ScalarDigits, ScalarNarrowest>

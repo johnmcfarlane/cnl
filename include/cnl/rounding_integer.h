@@ -54,17 +54,16 @@ namespace cnl {
                   _impl::set_rep_t<Number, set_rounding_t<_impl::rep_of_t<Number>, Tag>>> {
     };
 
+    /// \cond
     template<int Digits, class Rep, rounding_tag Tag>
-            struct scale < Digits,
-            2, _impl::wrapper<Rep, Tag>,
-            _impl::enable_if_t<Digits<0>>
+    requires(Digits < 0) struct scale<Digits, 2, _impl::wrapper<Rep, Tag>>
         : _impl::default_scale<Digits, 2, _impl::wrapper<Rep, Tag>> {
     };
+    /// \endcond
 
     template<int Digits, int Radix, class Rep, rounding_tag Tag>
-    struct scale<
-            Digits, Radix, _impl::wrapper<Rep, Tag>,
-            _impl::enable_if_t<0 <= Digits>> {
+    requires(0 <= Digits) struct scale<
+            Digits, Radix, _impl::wrapper<Rep, Tag>> {
         [[nodiscard]] constexpr auto operator()(_impl::wrapper<Rep, Tag> const& s) const
         {
             return _impl::from_rep<_impl::wrapper<Rep, Tag>>(
@@ -75,12 +74,13 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::set_rep<rounding_integer, Rep>
 
+    /// \cond
     template<typename NumberRep, rounding_tag NumberTag, typename Rep>
-    struct set_rep<
-            _impl::wrapper<NumberRep, NumberTag>, Rep,
-            _impl::enable_if_t<!_impl::is_wrapper<Rep>>>
+    requires(!_impl::is_wrapper<Rep>) struct set_rep<
+            _impl::wrapper<NumberRep, NumberTag>, Rep>
         : std::type_identity<_impl::wrapper<Rep, NumberTag>> {
     };
+    /// \endcond
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::set_tag<rounding_integer, Tag>
