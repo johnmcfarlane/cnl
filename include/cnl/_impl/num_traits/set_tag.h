@@ -17,7 +17,7 @@ namespace cnl {
     /// \tparam OutRep new behavior type being wrapped by the resultant type
     ///
     /// \sa to_rep, from_rep, set_rep, tag
-    template<typename T, tag OutTag, class Enable = void>
+    template<typename T, tag OutTag>
     struct set_tag;
 
     namespace _impl {
