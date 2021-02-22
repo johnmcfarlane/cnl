@@ -95,7 +95,7 @@ namespace cnl {
         }
 
         /// creates an instance given the underlying representation value
-        template<typename, typename, typename>
+        template<typename, typename>
         friend struct from_rep;
     };
 
