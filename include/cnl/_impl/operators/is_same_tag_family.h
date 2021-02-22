@@ -14,8 +14,10 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<tag Tag1, tag Tag2, class Enabled = void>
-        struct is_same_tag_family : std::is_same<Tag1, Tag2> {
+        template<typename Tag1, typename Tag2>
+        struct is_same_tag_family {
+            static constexpr auto value =
+                    std::is_same_v<Tag1, Tag2> && is_tag<Tag1> && is_tag<Tag2>;
         };
     }
 }

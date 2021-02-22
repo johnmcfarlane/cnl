@@ -18,10 +18,10 @@
 
 /// compositional numeric library
 namespace cnl {
+    /// \cond
     template<typename Rep, tag Tag, typename Value>
-    struct from_value<
-            _impl::wrapper<Rep, Tag>, Value,
-            _impl::enable_if_t<!_impl::is_wrapper<Value> && !_impl::is_constant<Value>::value>> {
+    requires(!_impl::is_wrapper<Value> && !_impl::is_constant<Value>::value) struct from_value<
+            _impl::wrapper<Rep, Tag>, Value> {
         using deduction = cnl::deduction<Tag, Value>;
         using deduced = _impl::wrapper<typename deduction::type, typename deduction::tag>;
 
@@ -32,10 +32,8 @@ namespace cnl {
     };
 
     template<typename ArchetypeRep, tag ArchetypeTag, typename Value>
-    struct from_value<
-            _impl::wrapper<ArchetypeRep, ArchetypeTag>, Value,
-            _impl::enable_if_t<
-                    !_impl::can_convert_tag_family<ArchetypeTag, _impl::tag_of_t<Value>>::value>> {
+    requires(!_impl::can_convert_tag_family<ArchetypeTag, _impl::tag_of_t<Value>>::value) struct from_value<
+            _impl::wrapper<ArchetypeRep, ArchetypeTag>, Value> {
         using result_type = _impl::wrapper<from_value_t<ArchetypeRep, Value>, ArchetypeTag>;
 
         [[nodiscard]] constexpr auto operator()(Value const& value) const -> result_type
@@ -45,13 +43,13 @@ namespace cnl {
     };
 
     template<class ArchetypeRep, tag ArchetypeTag, class ValueRep, class ValueTag>
-    struct from_value<
-            _impl::wrapper<ArchetypeRep, ArchetypeTag>, _impl::wrapper<ValueRep, ValueTag>,
-            _impl::enable_if_t<_impl::can_convert_tag_family<ArchetypeTag, ValueTag>::value>>
+    requires(_impl::can_convert_tag_family<ArchetypeTag, ValueTag>::value) struct from_value<
+            _impl::wrapper<ArchetypeRep, ArchetypeTag>, _impl::wrapper<ValueRep, ValueTag>>
         : _impl::from_value_simple<
                   _impl::wrapper<from_value_t<ArchetypeRep, ValueRep>, ArchetypeTag>,
                   _impl::wrapper<ValueRep, ValueTag>> {
     };
+    /// \endcond
 
     template<typename Rep, tag Tag, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<_impl::wrapper<Rep, Tag>, constant<Value>> {

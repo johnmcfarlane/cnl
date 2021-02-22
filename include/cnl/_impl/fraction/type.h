@@ -9,7 +9,6 @@
 
 #include "../../limits.h"
 #include "../num_traits/set_width.h"
-#include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 
 #include <type_traits>

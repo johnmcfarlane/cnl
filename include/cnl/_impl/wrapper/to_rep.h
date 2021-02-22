@@ -9,7 +9,6 @@
 
 #include "../num_traits/rep_of.h"
 #include "../num_traits/to_rep.h"
-#include "../type_traits/enable_if.h"
 #include "is_wrapper.h"
 
 /// compositional numeric library

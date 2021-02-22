@@ -7,7 +7,6 @@
 #if !defined(CNL_IMPL_OPERATORS_IS_HOMOGENEOUS_DEDUCTION_TAG_H)
 #define CNL_IMPL_OPERATORS_IS_HOMOGENEOUS_DEDUCTION_TAG_H
 
-#include "../type_traits/enable_if.h"
 #include "custom_operator.h"
 
 #include <type_traits>

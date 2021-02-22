@@ -12,22 +12,17 @@
 #include "../num_traits/set_tag.h"
 #include "../num_traits/tag_of.h"
 #include "../rounding/is_rounding_tag.h"
-#include "../type_traits/enable_if.h"
 #include "is_wrapper.h"
 
 /// compositional numeric library
 namespace cnl {
     template<_impl::wrapped Number, rounding_tag RoundingTag>
-    struct set_rounding<
-            Number, RoundingTag,
-            _impl::enable_if_t<!_impl::is_rounding_tag<_impl::tag_of_t<Number>>::value>>
+    requires(!_impl::is_rounding_tag<_impl::tag_of_t<Number>>::value) struct set_rounding<Number, RoundingTag>
         : set_rep<Number, set_rounding_t<_impl::rep_of_t<Number>, RoundingTag>> {
     };
 
     template<_impl::wrapped Number, rounding_tag RoundingTag>
-    struct set_rounding<
-            Number, RoundingTag,
-            _impl::enable_if_t<_impl::is_rounding_tag<_impl::tag_of_t<Number>>::value>>
+    requires(_impl::is_rounding_tag<_impl::tag_of_t<Number>>::value) struct set_rounding<Number, RoundingTag>
         : set_tag<Number, RoundingTag> {
     };
 }

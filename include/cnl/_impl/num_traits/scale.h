@@ -8,20 +8,19 @@
 #define CNL_IMPL_NUM_TRAITS_SCALE
 
 #include "../power_value.h"
-#include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 
 namespace cnl {
-    template<int Digits, int Radix, class S, class Enable = void>
+    template<int Digits, int Radix, class S>
     struct scale;
 
     namespace _impl {
         // fundamental integer-friendly cnl::scale algorithm
-        template<int Digits, int Radix, typename S, class Enable = void>
+        template<int Digits, int Radix, typename S>
         struct default_scale;
 
         template<int Digits, int Radix, typename S>
-        struct default_scale<Digits, Radix, S, _impl::enable_if_t<0 <= Digits>> {
+        requires(0 <= Digits) struct default_scale<Digits, Radix, S> {
             [[nodiscard]] constexpr auto operator()(S const& s) const
             {
                 return s * power_value<S, Digits, Radix>();
@@ -30,8 +29,7 @@ namespace cnl {
 
         // cnl::default_scale<-ve, cnl::constant<>>
         template<int Digits, int Radix, typename S>
-                struct default_scale < Digits,
-                Radix, S, _impl::enable_if_t<Digits<0>> {
+        requires(Digits < 0) struct default_scale<Digits, Radix, S> {
             [[nodiscard]] constexpr auto operator()(S const& s) const
             {
                 return s / power_value<S, -Digits, Radix>();

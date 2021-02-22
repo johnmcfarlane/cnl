@@ -7,7 +7,6 @@
 #if !defined(CNL_IMPL_NUM_TRAITS_FIXED_WIDTH_SCALE)
 #define CNL_IMPL_NUM_TRAITS_FIXED_WIDTH_SCALE
 
-#include "../type_traits/enable_if.h"
 #include "digits.h"
 #include "from_rep.h"
 #include "is_composite.h"
@@ -16,11 +15,11 @@
 
 namespace cnl {
     // returns a scaled value of the same type
-    template<int Digits, int Radix, class Scalar, class Enable = void>
+    template<int Digits, int Radix, class Scalar>
     struct fixed_width_scale;
 
     template<int Digits, int Radix, typename S>
-    struct fixed_width_scale<Digits, Radix, S, _impl::enable_if_t<!is_composite<S>::value>> {
+    requires(!is_composite<S>::value) struct fixed_width_scale<Digits, Radix, S> {
         [[nodiscard]] constexpr auto operator()(S const& s) const
         {
             static_assert(
@@ -32,7 +31,7 @@ namespace cnl {
     };
 
     namespace _impl {
-        template<int Digits, int Radix = 2, class S = void>
+        template<int Digits, int Radix = 2, class S>
         [[nodiscard]] constexpr auto fixed_width_scale(S const& s)
         {
             return cnl::fixed_width_scale<Digits, Radix, S>()(s);
@@ -40,8 +39,8 @@ namespace cnl {
     }
 
     template<int Digits, int Radix, typename Composite>
-    struct fixed_width_scale<
-            Digits, Radix, Composite, _impl::enable_if_t<is_composite<Composite>::value>> {
+    requires is_composite_v<Composite> struct fixed_width_scale<
+            Digits, Radix, Composite> {
         [[nodiscard]] constexpr auto operator()(Composite const& s) const
         {
             return _impl::from_rep<Composite>(

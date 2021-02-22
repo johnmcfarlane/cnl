@@ -48,20 +48,23 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::floor
 
-    template<class Rep, int Exponent, int Radix, _impl::enable_if_t<(Exponent < 0), int> = 0>
-    [[nodiscard]] constexpr auto floor(scaled_integer<Rep, power<Exponent, Radix>> const& x)
+    template<class Rep, int Exponent, int Radix>
+    requires(Exponent < 0)
+            [[nodiscard]] constexpr auto floor(scaled_integer<Rep, power<Exponent, Radix>> const& x)
     {
         static_assert(
                 Radix == 2, "cnl::floor(scaled_integer<Rep, power<Exponent, Radix>>) not "
                             "implemented for Exponent<0 && Radix!=2");
 
+        /// \cond
         return _impl::from_rep<scaled_integer<Rep, power<0, Radix>>>(
                 _impl::to_rep(x) >> constant<-Exponent>());
+        /// \endcond
     }
 
     template<class Rep, int Exponent, int Radix>
-    [[nodiscard]] constexpr auto floor(scaled_integer<Rep, power<Exponent, Radix>> const& x)
-            -> _impl::enable_if_t<Exponent >= 0, scaled_integer<Rep, power<Exponent, Radix>>>
+    requires(Exponent >= 0)
+            [[nodiscard]] constexpr auto floor(scaled_integer<Rep, power<Exponent, Radix>> const& x)
     {
         return x;
     }
@@ -74,26 +77,21 @@ namespace cnl {
     // many <cmath> functions are not [[nodiscard]] constexpr.
 
     namespace _impl {
-        template<int NumBits, class Enable = void>
+        template<int NumBits>
         struct float_of_size;
 
         template<int NumBits>
-        struct float_of_size<NumBits, enable_if_t<NumBits <= sizeof(float) * CHAR_BIT>> {
+        requires(NumBits <= sizeof(float) * CHAR_BIT) struct float_of_size<NumBits> {
             using type = float;
         };
 
         template<int NumBits>
-                struct float_of_size < NumBits,
-                enable_if_t<
-                        sizeof(float) * CHAR_BIT<NumBits && NumBits <= sizeof(double) * CHAR_BIT>> {
+        requires(sizeof(float) * CHAR_BIT < NumBits && NumBits <= sizeof(double) * CHAR_BIT) struct float_of_size<NumBits> {
             using type = double;
         };
 
         template<int NumBits>
-                struct float_of_size < NumBits,
-                enable_if_t<
-                        sizeof(double)
-                        * CHAR_BIT<NumBits && NumBits <= sizeof(long double) * CHAR_BIT>> {
+        requires(sizeof(double) * CHAR_BIT < NumBits && NumBits <= sizeof(long double) * CHAR_BIT) struct float_of_size<NumBits> {
             using type = long double;
         };
 

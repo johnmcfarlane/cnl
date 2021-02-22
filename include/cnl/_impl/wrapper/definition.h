@@ -12,7 +12,6 @@
 #include "../num_traits/from_value.h"
 #include "../operators/custom_operator.h"
 #include "../operators/tagged.h"
-#include "../type_traits/enable_if.h"
 #include "can_convert_tag_family.h"
 #include "declaration.h"
 #include "is_wrapper.h"
@@ -37,37 +36,37 @@ namespace cnl {
 
         public:
             /// constructor taking a related _impl::wrapper type
-            template<
-                    typename RhsRep, tag RhsTag,
-                    enable_if_t<can_convert_tag_family<Tag, RhsTag>::value, int> = 0>
-            // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
-            constexpr wrapper(wrapper<RhsRep, RhsTag> const& i)
+            template<typename RhsRep, tag RhsTag>
+            requires can_convert_tag_family<Tag, RhsTag>::value
+                    // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
+                    constexpr wrapper(wrapper<RhsRep, RhsTag> const& i)
                 : _rep(convert<Tag, RhsTag, Rep>(to_rep(i)))
             {
             }
 
             /// constructor taking an unrelated _impl::wrapper type
-            template<
-                    _impl::wrapped Number,
-                    enable_if_t<
-                            !can_convert_tag_family<Tag, tag_of_t<Number>>::value,
-                            int> = 0>
-            // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
-            constexpr wrapper(Number const& i)
+            template<_impl::wrapped Number>
+            requires(!can_convert_tag_family<Tag, tag_of_t<Number>>::value)
+                    // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
+                    constexpr wrapper(Number const& i)
                 : _rep(convert<Tag, _impl::native_tag, Rep>(i))
             {
             }
 
             /// constructor taking a number type that isn't _impl::wrapper
-            template<class S, enable_if_t<!is_wrapper<S>, int> Dummy = 0>
-            // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
-            constexpr wrapper(S const& s)
+            template<class S>
+            requires(!is_wrapper<S>)
+                    // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
+                    constexpr wrapper(S const& s)
                 : _rep(convert<Tag, _impl::native_tag, Rep>(s))
+
             {
             }
 
-            template<class S, enable_if_t<!is_wrapper<S>, int> Dummy = 0>
-            [[nodiscard]] constexpr explicit operator S() const
+            template<class S>
+            requires(!is_wrapper<S>)
+                    [[nodiscard]] constexpr explicit
+                    operator S() const
             {
                 return convert<_impl::native_tag, Tag, S>(_rep);
             }
@@ -77,7 +76,7 @@ namespace cnl {
                 return static_cast<bool>(_rep);
             }
 
-            template<typename T, class Enable>
+            template<typename T>
             friend struct cnl::to_rep;
 
         private:

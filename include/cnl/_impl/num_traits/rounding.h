@@ -9,7 +9,6 @@
 
 #include "../rounding/native_rounding_tag.h"
 #include "../rounding/nearest_rounding_tag.h"
-#include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 
 #include <type_traits>
@@ -20,7 +19,7 @@ namespace cnl {
     /// \note User-specializations of this type are permitted.
     /// \sa cnl::set_rounding, cnl::rounding_t,
     /// cnl::native_rounding_tag, cnl::nearest_rounding_tag
-    template<typename Number, class Enable = void>
+    template<typename Number>
     struct rounding;
 
     template<typename Number>

@@ -10,17 +10,16 @@
 #include "../num_traits/rep_of.h"
 #include "../num_traits/rounding.h"
 #include "../num_traits/tag_of.h"
-#include "../type_traits/enable_if.h"
 #include "is_wrapper.h"
 
 /// compositional numeric library
 namespace cnl {
+    /// \cond
     template<_impl::wrapped Number>
-    struct rounding<
-            Number,
-            _impl::enable_if_t<!_impl::is_rounding_tag<_impl::tag_of_t<Number>>::value>>
+    requires(!_impl::is_rounding_tag<_impl::tag_of_t<Number>>::value) struct rounding<Number>
         : rounding<_impl::rep_of_t<Number>> {
     };
+    /// \endcond
 }
 
 #endif  // CNL_IMPL_WRAPPER_ROUNDING_H

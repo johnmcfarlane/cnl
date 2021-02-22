@@ -10,7 +10,6 @@
 #include "../config.h"
 #include "../operators/operators.h"
 #include "../polarity.h"
-#include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 #include "../unreachable.h"
 #include "overflow_operator.h"

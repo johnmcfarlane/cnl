@@ -8,7 +8,6 @@
 #define CNL_IMPL_ELASTIC_INTEGER_MAKE_ELASTIC_INTEGER_H
 
 #include "../../constant.h"
-#include "../type_traits/enable_if.h"
 #include "definition.h"
 #include "digits.h"
 
@@ -42,11 +41,9 @@ namespace cnl {
                 elastic_integer<digits<Integral>, make_narrowest_t<Narrowest, Integral>>;
     }
 
-    template<
-            class Narrowest = void, class Integral,
-            _impl::enable_if_t<!_impl::is_constant<Integral>::value, int> = 0>
-    [[nodiscard]] constexpr auto make_elastic_integer(Integral const& value)
-            -> _impl::make_type<Narrowest, Integral>
+    template<class Narrowest = void, class Integral>
+    requires(!_impl::is_constant<Integral>::value)
+            [[nodiscard]] constexpr auto make_elastic_integer(Integral const& value)
     {
         return _impl::make_type<Narrowest, Integral>{value};
     }

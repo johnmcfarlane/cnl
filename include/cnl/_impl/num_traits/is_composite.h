@@ -10,7 +10,7 @@
 #include <type_traits>
 
 namespace cnl {
-    template<class T, class Enable = void>
+    template<class T>
     struct is_composite : std::false_type {
         static_assert(!std::is_const<T>::value, "T is const");
         static_assert(!std::is_volatile<T>::value, "T is volatile");

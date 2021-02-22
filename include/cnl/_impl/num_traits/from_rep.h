@@ -7,7 +7,6 @@
 #if !defined(CNL_IMPL_NUM_TRAITS_FROM_REP)
 #define CNL_IMPL_NUM_TRAITS_FROM_REP
 
-#include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 
 namespace cnl {
@@ -18,7 +17,7 @@ namespace cnl {
     /// \note Rather than returning Number, invocation may return an alternative
     /// template specialization based on input parameter.
     /// \sa to_rep, from_value
-    template<typename Number, typename Rep, class Enable = void>
+    template<typename Number, typename Repd>
     struct from_rep;
 
     /// \brief Specialization of \ref from_rep for integer types

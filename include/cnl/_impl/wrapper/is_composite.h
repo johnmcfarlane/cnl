@@ -8,7 +8,6 @@
 #define CNL_IMPL_WRAPPER_IS_COMPOSITE_H
 
 #include "../num_traits/is_composite.h"
-#include "../type_traits/enable_if.h"
 #include "is_wrapper.h"
 
 #include <type_traits>

@@ -19,7 +19,6 @@
 #include "_impl/operators/native_tag.h"
 #include "_impl/operators/tagged.h"
 #include "_impl/ostream.h"
-#include "_impl/type_traits/enable_if.h"
 #include "_impl/wrapper.h"
 
 #include <type_traits>
@@ -48,12 +47,12 @@ namespace cnl {
     // cnl::set_rep<Rep, OverflowTag>
 
     // when an _impl::wrapper wraps a non-_impl::wrapper
+    /// \cond
     template<typename NumberRep, overflow_tag NumberTag, typename Rep>
-    struct set_rep<
-            _impl::wrapper<NumberRep, NumberTag>, Rep,
-            _impl::enable_if_t<!_impl::is_wrapper<Rep>>>
+    requires(!_impl::is_wrapper<Rep>) struct set_rep<_impl::wrapper<NumberRep, NumberTag>, Rep>
         : std::type_identity<_impl::wrapper<Rep, NumberTag>> {
     };
+    /// \endcond
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::set_tag<overflow_integer, OverflowTag>

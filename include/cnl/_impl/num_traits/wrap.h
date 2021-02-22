@@ -7,17 +7,16 @@
 #if !defined(CNL_IMPL_NUM_TRAITS_WRAP_H)
 #define CNL_IMPL_NUM_TRAITS_WRAP_H
 
-#include "../type_traits/enable_if.h"
 #include "is_composite.h"
 #include "rep_of.h"
 
 namespace cnl {
     namespace _impl {
-        template<typename Number, typename Rep, typename Enable = void>
+        template<typename Number, typename Rep>
         struct wrap;
 
         template<typename Number, typename Rep>
-        struct wrap<Number, Rep, enable_if_t<!is_composite<Number>::value>> {
+        requires(!is_composite_v<Number>) struct wrap<Number, Rep> {
             [[nodiscard]] constexpr auto operator()(Rep const& number) const
             {
                 return number;
@@ -25,7 +24,7 @@ namespace cnl {
         };
 
         template<typename Number, typename Rep>
-        struct wrap<Number, Rep, enable_if_t<is_composite<Number>::value>> {
+        requires(is_composite_v<Number>) struct wrap<Number, Rep> {
             [[nodiscard]] constexpr auto operator()(Rep const& rep) const
             {
                 return from_rep<Number>(wrap<rep_of_t<Number>, Rep>{}(rep));
