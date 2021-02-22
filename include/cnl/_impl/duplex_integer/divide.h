@@ -45,6 +45,7 @@ namespace cnl {
             operand<_impl::duplex_integer<Upper, Lower>>> {
         using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
         using _unsigned_duplex_integer = numbers::set_signedness_t<_duplex_integer, false>;
+        using _unsigned_upper = numbers::set_signedness_t<Upper, false>;
 
         [[nodiscard]] constexpr auto operator()(
                 _duplex_integer const& lhs, _duplex_integer const& rhs) const -> _duplex_integer
@@ -80,14 +81,14 @@ namespace cnl {
             return quot;
         }
 
-        static constexpr auto fls(Upper n) -> int
+        static constexpr auto fls(_unsigned_upper n) -> int
         {
             auto half_digits = numeric_limits<_duplex_integer>::digits / 2;
 
             if (!n) {
                 return 0;
             }
-            auto const msd = Upper{1} << (half_digits - 1);
+            auto const msd = _unsigned_upper{1} << (half_digits - 1);
             for (int r = half_digits;; n <<= 1, r--) {
                 if (n & msd) {
                     return r;

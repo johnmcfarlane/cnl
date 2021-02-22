@@ -110,9 +110,9 @@ namespace cnl {
     struct custom_operator<
             _impl::bitwise_not_op, operand<_impl::duplex_integer<Upper, Lower>>> {
         [[nodiscard]] constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& rhs)
-                const -> _impl::duplex_integer<Upper, Lower>
+                const
         {
-            return _impl::duplex_integer<Upper, Lower>(~rhs.upper(), ~rhs.lower());
+            return _impl::duplex_integer(Upper(~rhs.upper()), Lower(~rhs.lower()));
         }
     };
 

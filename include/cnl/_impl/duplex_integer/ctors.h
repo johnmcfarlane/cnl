@@ -18,9 +18,9 @@ namespace cnl {
         // cnl::_impl::calculate_lower
         template<typename Lower, typename Integer>
         requires(digits<Lower> >= digits<Integer>)
-                [[nodiscard]] constexpr auto calculate_lower(Integer const& input) -> Lower
+                [[nodiscard]] constexpr auto calculate_lower(Integer const& input)
         {
-            return Lower(input) & numeric_limits<Lower>::max();
+            return Lower(Lower(input) & numeric_limits<Lower>::max());
         }
 
         template<typename Lower, typename Integer>

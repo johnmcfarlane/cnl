@@ -50,6 +50,9 @@ namespace {
 
         ASSERT_EQ(expected_length, actual_length) << "result is wrong length";
 
+#if defined(_MSC_VER)
+#pragma warning(disable : 4365)
+#endif
         ASSERT_EQ(0, expected.compare(0, actual_length, buffer_first, expected_length))
                 << "result has wrong characters";
     }

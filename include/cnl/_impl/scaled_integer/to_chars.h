@@ -140,7 +140,7 @@ namespace cnl {
                     // add it to the output string.
                     auto carry = 0;
                     for (auto pos = decimal_digits - 1; pos >= 0; --pos) {
-                        *(first + pos) = char(*(first + pos) + bit[pos] + carry);
+                        *(first + pos) = char(*(first + pos) + bit[unsigned(pos)] + carry);
                         if (*(first + pos) > '9') {
                             *(first + pos) = char(*(first + pos) - 10);
                             carry = 1;

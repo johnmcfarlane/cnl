@@ -90,7 +90,7 @@ namespace cnl {
             template<integer Integer>
             [[nodiscard]] explicit constexpr operator Integer() const
             {
-                return upper_value<Integer, Upper, Lower>(_upper) | static_cast<Integer>(_lower);
+                return Integer(upper_value<Integer, Upper, Lower>(_upper) | static_cast<Integer>(_lower));
             }
 
             template<floating_point Number>
