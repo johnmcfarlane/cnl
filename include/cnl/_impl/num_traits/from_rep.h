@@ -16,7 +16,7 @@ namespace cnl {
     /// \tparam Number archetype for the encapsulating type
     ///
     /// \note Rather than returning Number, invocation may return an alternative
-    /// template instantiation based on input parameter.
+    /// template specialization based on input parameter.
     /// \sa to_rep, from_value
     template<typename Number, typename Rep, class Enable = void>
     struct from_rep;

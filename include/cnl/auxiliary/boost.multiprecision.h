@@ -257,7 +257,7 @@ namespace cnl {
     }
 
     /// \brief alias to a signed, fixed-size Boost.Multiprecision type
-    /// suitable for instantiating \ref cnl::scaled_integer
+    /// suitable for specializing \ref cnl::scaled_integer
     ///
     /// \tparam NumDigits number of digits constituting the integer value (excluding sign bit)
     /// \sa cnl::unsigned_multiprecision, cnl::multiprecision
@@ -266,7 +266,7 @@ namespace cnl {
             _sized_integer_impl::number<NumDigits + 1, _bmp::signed_magnitude>;
 
     /// \brief alias to an unsigned, fixed-size Boost.Multiprecision type
-    /// suitable for instantiating \ref cnl::scaled_integer
+    /// suitable for specializing \ref cnl::scaled_integer
     ///
     /// \tparam NumDigits number of digits constituting the integer value (excluding sign bit)
     /// \sa cnl::signed_multiprecision, cnl::multiprecision
@@ -275,7 +275,7 @@ namespace cnl {
             _sized_integer_impl::number<NumDigits, _bmp::unsigned_magnitude>;
 
     /// \brief alias to a signed, fixed-size Boost.Multiprecision type
-    /// suitable for instantiating \ref cnl::scaled_integer
+    /// suitable for specializing \ref cnl::scaled_integer
     ///
     /// \tparam NumDigits number of digits constituting the integer value (excluding sign bit)
     /// \sa cnl::signed_multiprecision, cnl::unsigned_multiprecision

@@ -185,7 +185,7 @@ namespace {
     TEST(duplex_integer, multiply1)  // NOLINT
     {
         using namespace cnl::literals;
-        using t = cnl::_impl::instantiate_duplex_integer_t<97, unsigned>;
+        using t = cnl::_impl::narrowest_integer_t<97, unsigned>;
         auto expected = t{0x1'00000000'00000000'00000000_wide};
         auto lhs = t{0x1'00000000LL};
         auto rhs = t{0x1'00000000'00000000_wide};

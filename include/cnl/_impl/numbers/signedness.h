@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file cnl/numbers.h
-/// \brief primary template and related instantiations of \ref cnl::numbers::signedness
+/// \brief primary template and related specializations of \ref cnl::numbers::signedness
 
 #if !defined(CNL_IMPL_NUMBERS_SIGNEDNESS_H)
 #define CNL_IMPL_NUMBERS_SIGNEDNESS_H

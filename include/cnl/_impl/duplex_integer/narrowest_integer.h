@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_DUPLEX_INTEGER_INSTANTIATE_DUPLEX_INTEGER_H)
-#define CNL_IMPL_DUPLEX_INTEGER_INSTANTIATE_DUPLEX_INTEGER_H
+#if !defined(CNL_IMPL_DUPLEX_INTEGER_NARROWEST_INTEGER_H)
+#define CNL_IMPL_DUPLEX_INTEGER_NARROWEST_INTEGER_H
 
 #include "../num_traits/digits.h"
 #include "../num_traits/max_digits.h"
@@ -59,7 +59,7 @@ namespace cnl {
         using multiword_integer_t = typename multiword_integer<Word, NumWords>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // instantiate_duplex_integer
+        // narrowest_integer
 
         template<typename Word>
         [[nodiscard]] constexpr auto duplex_num_words(int min_digits)
@@ -73,14 +73,14 @@ namespace cnl {
         }
 
         template<int Digits, typename Narrowest>
-        struct instantiate_duplex_integer {
+        struct narrowest_integer {
             using type = multiword_integer_t<Narrowest, duplex_num_words<Narrowest>(Digits)>;
         };
 
         template<int Digits, typename Narrowest>
-        using instantiate_duplex_integer_t =
-                typename instantiate_duplex_integer<Digits, Narrowest>::type;
+        using narrowest_integer_t =
+                typename narrowest_integer<Digits, Narrowest>::type;
     }
 }
 
-#endif  // CNL_IMPL_DUPLEX_INTEGER_INSTANTIATE_DUPLEX_INTEGER_H
+#endif  // CNL_IMPL_DUPLEX_INTEGER_NARROWEST_INTEGER_H
