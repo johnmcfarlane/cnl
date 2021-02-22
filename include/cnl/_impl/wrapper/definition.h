@@ -77,7 +77,7 @@ namespace cnl {
                 return static_cast<bool>(_rep);
             }
 
-            template<typename T, class Enable>
+            template<typename T>
             friend struct cnl::to_rep;
 
         private:

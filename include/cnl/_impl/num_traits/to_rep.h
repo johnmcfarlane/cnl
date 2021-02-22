@@ -8,7 +8,6 @@
 #define CNL_IMPL_NUM_TRAITS_TO_REP
 
 #include "../../constant.h"
-#include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 #include "../type_traits/remove_cvref.h"
 
@@ -41,16 +40,15 @@ namespace cnl {
     /// \param number the 'outer' object
     /// \return the 'inner' value
     /// \sa from_rep, from_value
-    template<typename Number, class Enable = void>
+    template<typename Number>
     struct to_rep;
 
+    /// \cond
     template<typename Number>
-    struct to_rep<
-            Number,
-            _impl::enable_if_t<
-                    _impl::is_integral<Number> || std::is_floating_point<Number>::value
-                    || _impl::is_constant<Number>::value>> : _impl::default_to_rep<Number> {
+    requires(_impl::is_integral<Number> || std::is_floating_point_v<Number> || _impl::is_constant<Number>::value) struct to_rep<Number>
+        : _impl::default_to_rep<Number> {
     };
+    /// \endcond
 
     namespace _impl {
         template<class Number>
