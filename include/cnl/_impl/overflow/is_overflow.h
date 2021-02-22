@@ -13,7 +13,6 @@
 #include "../numbers/signedness.h"
 #include "../operators/operators.h"
 #include "../polarity.h"
-#include "../type_traits/enable_if.h"
 
 #include <algorithm>
 #include <type_traits>
@@ -326,8 +325,7 @@ namespace cnl {
         template<>
         struct is_overflow<shift_left_op, polarity::negative> {
             template<typename Lhs, typename Rhs>
-            [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                    -> enable_if_t<numbers::signedness_v<Lhs>, bool>
+            requires numbers::signedness_v<Lhs> [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
                 return lhs < 0 ? rhs > 0 ? rhs < traits::positive_digits
@@ -338,8 +336,9 @@ namespace cnl {
             }
 
             template<typename Lhs, typename Rhs>
-            [[nodiscard]] constexpr auto operator()(Lhs const&, Rhs const&) const
-                    -> enable_if_t<!numbers::signedness_v<Lhs>, bool>
+            requires(!numbers::signedness_v<Lhs>)
+                    [[nodiscard]] constexpr auto
+                    operator()(Lhs const&, Rhs const&) const
             {
                 return false;
             }

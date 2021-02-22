@@ -14,7 +14,6 @@
 #include "../_impl/numbers/set_signedness.h"
 #include "../_impl/numbers/signedness.h"
 #include "../_impl/scaled/power.h"
-#include "../_impl/type_traits/enable_if.h"
 #include "../constant.h"
 #include "../num_traits.h"
 #include "../rounding_integer.h"
@@ -192,10 +191,11 @@ namespace cnl {
         };
     };
 
+    /// \cond
     template<unsigned NumBits, class Value>
-    struct from_value<
-            _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>, Value,
-            _impl::enable_if_t<!_impl::is_boost_multiprecision<Value>::value>> {
+    requires(!_impl::is_boost_multiprecision<Value>::value) struct from_value<
+            _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>,
+            Value> {
     private:
         static constexpr auto _bits = digits<Value> + 1;
 
@@ -208,9 +208,9 @@ namespace cnl {
     };
 
     template<unsigned NumBits, class Value>
-    struct from_value<
-            _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>, Value,
-            _impl::enable_if_t<!_impl::is_boost_multiprecision<Value>::value>> {
+    requires(!_impl::is_boost_multiprecision<Value>::value) struct from_value<
+            _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>,
+            Value> {
     private:
         static constexpr auto _bits = digits<Value>;
 
@@ -221,6 +221,7 @@ namespace cnl {
             return value;
         }
     };
+    /// \endcond
 
     template<class LhsBackend, class RhsBackend>
     struct from_value<_bmp::number<LhsBackend>, _bmp::number<RhsBackend>> {

@@ -58,15 +58,11 @@ namespace cnl {
                       elastic_integer<Digits2, Narrowest2>> {
         };
 
-        template<
-                int FromDigits, class FromNarrowest, int OtherDigits, class OtherNarrowest,
-                enable_if_t<
-                        FromDigits != OtherDigits
-                                || !std::is_same<FromNarrowest, OtherNarrowest>::value,
-                        std::nullptr_t> = nullptr>
-        [[nodiscard]] constexpr auto cast_to_common_type(
-                elastic_integer<FromDigits, FromNarrowest> const& from,
-                elastic_integer<OtherDigits, OtherNarrowest> const&)
+        template<int FromDigits, class FromNarrowest, int OtherDigits, class OtherNarrowest>
+        requires(FromDigits != OtherDigits || !std::is_same<FromNarrowest, OtherNarrowest>::value)
+                [[nodiscard]] constexpr auto cast_to_common_type(
+                        elastic_integer<FromDigits, FromNarrowest> const& from,
+                        elastic_integer<OtherDigits, OtherNarrowest> const&)
         {
             return static_cast<typename common_elastic_type<
                     elastic_integer<FromDigits, FromNarrowest>,

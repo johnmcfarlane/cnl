@@ -86,11 +86,9 @@ namespace cnl {
         // case where value has enough integer digits to hold range, [0..10)
         template<typename Rep, int Exponent, int Radix>
         auto to_chars_fractional_specialized(
-                char* first, char const* const last,
-                scaled_integer<Rep, power<Exponent, Radix>> value)
-                -> enable_if_t<
-                        integer_digits<scaled_integer<Rep, power<Exponent, Radix>>> >= 4,
-                        char*>
+                char* first,
+                char const* const last,  // NOLINT(readability-avoid-const-params-in-decls)
+                scaled_integer<Rep, power<Exponent, Radix>> value) requires(integer_digits<scaled_integer<Rep, power<Exponent, Radix>>> >= 4)
         {
             do {
                 // to_chars only supports scaled_integer types that can represent all decimal units.
@@ -115,11 +113,10 @@ namespace cnl {
 
         // case where value doesn't have enough integer digits to hold range, [0..10)
         template<typename Rep, int Exponent, int Radix>
-                auto to_chars_fractional_specialized(
-                        char* const first, char* last,
-                        scaled_integer<Rep, power<Exponent, Radix>> const& value)
-                        -> enable_if_t < integer_digits<
-                scaled_integer<Rep, power<Exponent, Radix>>><4, char*>
+        auto to_chars_fractional_specialized(
+                char* const first,  // NOLINT(readability-avoid-const-params-in-decls)
+                char* last,
+                scaled_integer<Rep, power<Exponent, Radix>> const& value) requires(integer_digits<scaled_integer<Rep, power<Exponent, Radix>>> < 4)
         {
             // zero-out all of the characters in the output string
             std::fill<char*>(first, last, '0');
@@ -127,7 +124,10 @@ namespace cnl {
 
             // store fractional bit, 0.5, as a sequence of decimal digits
             std::array<char, static_cast<std::size_t>((Exponent * -302LL) / 100)> bit{};
+
+            /// \cond
             CNL_ASSERT(std::ptrdiff_t(bit.size()) >= decimal_digits);
+            /// \endcond
 
             // Initially, the sequence is { 5, 0, 0, 0, ... }.
             bit[0] = 5;

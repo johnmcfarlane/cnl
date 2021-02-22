@@ -65,20 +65,14 @@ namespace cnl {
             };
 
             template<typename A, typename B>
-            [[nodiscard]] constexpr auto safe_multiply(A const& a, B const& b) -> enable_if_t<
-                    digits<decltype(a * b)> <= digits<A> + digits<B>,
-                    decltype(
-                            set_digits_t<A, digits<A> + digits<B>>{a}
-                            * set_digits_t<B, digits<A> + digits<B>>{b})>
+            [[nodiscard]] constexpr auto safe_multiply(A const& a, B const& b) requires(digits<decltype(a * b)> <= digits<A> + digits<B>)
             {
                 return set_digits_t<A, digits<A> + digits<B>>{a}
                      * set_digits_t<B, digits<A> + digits<B>>{b};
             }
 
             template<typename A, typename B>
-            [[nodiscard]] constexpr auto safe_multiply(A const& a, B const& b) -> enable_if_t<
-                    digits<A> + digits<B> <= digits<decltype(a * b)>,
-                    decltype(a * b)>
+            [[nodiscard]] constexpr auto safe_multiply(A const& a, B const& b) requires(digits<A> + digits<B> <= digits<decltype(a * b)>)
             {
                 return a * b;
             }
@@ -120,10 +114,7 @@ namespace cnl {
             // If the exponent is not negative, there is no fraction part,
             // so this is always zero
             template<class Rep, int Exponent>
-            [[nodiscard]] inline constexpr auto exp2m1_0to1(scaled_integer<Rep, power<Exponent>>)
-                    -> _impl::enable_if_t<
-                            (Exponent >= 0),
-                            make_largest_ufraction<scaled_integer<Rep, power<Exponent>>>>
+            [[nodiscard]] inline constexpr auto exp2m1_0to1(scaled_integer<Rep, power<Exponent>>) requires(Exponent >= 0)
             {
                 // Cannot construct from 0, since that would be a shift by more than width of type!
                 return from_rep<make_largest_ufraction<scaled_integer<Rep, power<Exponent>>>>(0);
@@ -131,10 +122,7 @@ namespace cnl {
 
             // for a positive exponent, some work needs to be done
             template<class Rep, int Exponent>
-            [[nodiscard]] inline constexpr auto exp2m1_0to1(scaled_integer<Rep, power<Exponent>> x)
-                    -> _impl::enable_if_t<
-                            (Exponent < 0),
-                            make_largest_ufraction<scaled_integer<Rep, power<Exponent>>>>
+            [[nodiscard]] inline constexpr auto exp2m1_0to1(scaled_integer<Rep, power<Exponent>> x) requires(Exponent < 0)
             {
                 // Build the type with the same number of bits, all fraction,
                 // and unsigned. That should be enough to exactly hold enough bits

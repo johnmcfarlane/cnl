@@ -21,8 +21,8 @@ namespace cnl {
     template<
             overflow_tag OverflowTag = _impl::tag_of_t<overflow_integer<>>,
             rounding_tag RoundingTag = _impl::tag_of_t<rounding_integer<>>, class Narrowest = int,
-            class Input = int, class = _impl::enable_if_t<!_impl::is_constant<Input>::value>>
-    [[nodiscard]] constexpr auto make_rounding_safe_int(Input const& input)
+            class Input = int>
+    [[nodiscard]] constexpr auto make_rounding_safe_int(Input const& input) requires(!_impl::is_constant<Input>::value)
     {
         return rounding_safe_int<
                 numeric_limits<Input>::digits, OverflowTag, RoundingTag,
