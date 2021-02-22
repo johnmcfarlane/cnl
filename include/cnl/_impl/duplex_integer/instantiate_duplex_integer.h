@@ -59,57 +59,22 @@ namespace cnl {
         using multiword_integer_t = typename multiword_integer<Word, NumWords>::type;
 
         ////////////////////////////////////////////////////////////////////////////////
-        // is_power_of_two
-
-        // requires positive N
-        template<int N>
-        inline constexpr auto is_power_of_two = N > 0 && !(N & (N - 1));
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // optimal_duplex
-
-        template<typename Word, typename Signedness = numbers::set_signedness_t<int, numbers::signedness_v<Word>>>
-        struct optimal_duplex;
-
-        template<typename Narrowest>
-        struct optimal_duplex<Narrowest, unsigned> {
-            static constexpr auto double_word_digits = max_digits<Narrowest>;
-            static_assert(
-                    double_word_digits >= 2 && is_power_of_two<double_word_digits>,
-                    "invalid integer type, Narrowest");
-
-            // Because multiword_integer needs to perform double-width arithmetic operations,
-            // its word type should be half the maximum width.
-            static constexpr auto word_digits = double_word_digits / 2;
-            using word = set_digits_t<Narrowest, word_digits>;
-            static_assert(digits<word> == word_digits, "failed to half a double-width word");
-
-            using type = word;
-        };
-
-        template<typename Narrowest>
-        struct optimal_duplex<Narrowest, signed> {
-            using unsigned_narrowest = numbers::set_signedness_t<Narrowest, false>;
-            using unsigned_multiword_integer = optimal_duplex<unsigned_narrowest, unsigned>;
-
-            using type = numbers::set_signedness_t<typename unsigned_multiword_integer::type, true>;
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
         // instantiate_duplex_integer
+
+        template<typename Word>
+        [[nodiscard]] constexpr auto duplex_num_words(int min_digits)
+        {
+            auto const num_sign_bits = numbers::signedness_v<Word>;
+            auto const word_digits = digits<Word> + num_sign_bits;
+            auto const required_num_words =
+                    (min_digits + num_sign_bits + word_digits - 1) / word_digits;
+
+            return required_num_words;
+        }
 
         template<int Digits, typename Narrowest>
         struct instantiate_duplex_integer {
-            using word = typename optimal_duplex<Narrowest>::type;
-            static constexpr auto num_sign_bits = numbers::signedness_v<word>;
-            static constexpr auto word_digits = digits<word> + num_sign_bits;
-            static constexpr auto required_num_words =
-                    (Digits + num_sign_bits + word_digits - 1) / word_digits;
-
-            // Otherwise, it's not multi!
-            static constexpr auto plural_num_words = std::max(2, required_num_words);
-
-            using type = multiword_integer_t<word, plural_num_words>;
+            using type = multiword_integer_t<Narrowest, duplex_num_words<Narrowest>(Digits)>;
         };
 
         template<int Digits, typename Narrowest>

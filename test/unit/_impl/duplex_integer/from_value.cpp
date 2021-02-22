@@ -23,10 +23,10 @@ using duplex_127_long = cnl::_impl::duplex_integer<cnl::int64, cnl::uint64>;
 
 #if defined(CNL_INT128_ENABLED)
 static_assert(identical(
-        duplex_127_long{0x3258739857398573LL},
+        duplex_63_int{0x3258739857398573LL},
         cnl::_impl::from_value<duplex_63_int>(0x3258739857398573LL)));
 static_assert(identical(
-        duplex_127_long{0x3258739857398573LL},
+        duplex_63_int{0x3258739857398573LL},
         cnl::_impl::from_value<duplex_127_int>(0x3258739857398573LL)));
 #else
 static_assert(identical(
