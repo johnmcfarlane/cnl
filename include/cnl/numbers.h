@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file cnl/numbers.h
-/// \brief functions that might belong in the \verbatim<numbers>\endverbatim header
+/// \brief definitions that might belong in the \verbatim<numbers>\endverbatim header
 
 #if !defined(CNL_NUMBERS_H)
 #define CNL_NUMBERS_H
