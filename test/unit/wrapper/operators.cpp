@@ -22,8 +22,8 @@ namespace {
                         true,
                         cnl::custom_operator<
                                 cnl::_impl::equal_op,
-                                cnl::operand<cnl::_impl::wrapper<short>>,
-                                cnl::operand<cnl::_impl::wrapper<long>>>{}(
+                                cnl::op_value<cnl::_impl::wrapper<short>>,
+                                cnl::op_value<cnl::_impl::wrapper<long>>>{}(
                                 cnl::_impl::wrapper<short>{-3}, cnl::_impl::wrapper<long>{-3})));
         static_assert(
                 identical(
@@ -43,8 +43,8 @@ namespace {
                         cnl::_impl::wrapper<>{123 + 234},
                         cnl::custom_operator<
                                 cnl::_impl::add_op,
-                                cnl::operand<cnl::_impl::wrapper<>>,
-                                cnl::operand<cnl::_impl::wrapper<>>>{}(
+                                cnl::op_value<cnl::_impl::wrapper<>>,
+                                cnl::op_value<cnl::_impl::wrapper<>>>{}(
                                 cnl::_impl::wrapper<>{123}, cnl::_impl::wrapper<>{234})));
         static_assert(
                 identical(

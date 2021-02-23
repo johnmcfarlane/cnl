@@ -20,8 +20,8 @@ namespace cnl {
     template<_impl::comparison_op Operator, typename Upper, typename Lower>
     struct custom_operator<
             Operator,
-            operand<_impl::duplex_integer<Upper, Lower>>,
-            operand<_impl::duplex_integer<Upper, Lower>>> {
+            op_value<_impl::duplex_integer<Upper, Lower>>,
+            op_value<_impl::duplex_integer<Upper, Lower>>> {
         [[nodiscard]] constexpr auto operator()(
                 _impl::duplex_integer<Upper, Lower> const& lhs,
                 _impl::duplex_integer<Upper, Lower> const& rhs) const -> bool
@@ -32,11 +32,11 @@ namespace cnl {
     };
 
     template<_impl::comparison_op Operator, typename Lhs, typename Rhs>
-    requires(_impl::is_duplex_integer<Lhs>::value != _impl::is_duplex_integer<Rhs>::value) struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> {
+    requires(_impl::is_duplex_integer<Lhs>::value != _impl::is_duplex_integer<Rhs>::value) struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> bool
         {
             using common_type = _impl::common_type_t<Lhs, Rhs>;
-            return custom_operator<Operator, operand<common_type>, operand<common_type>>{}(lhs, rhs);
+            return custom_operator<Operator, op_value<common_type>, op_value<common_type>>{}(lhs, rhs);
         }
     };
 }

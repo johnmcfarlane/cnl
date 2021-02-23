@@ -216,7 +216,7 @@ namespace test_convert_native_rounding {
                     short{3},
                     cnl::custom_operator<
                             cnl::_impl::convert_op,
-                            cnl::operand<long, cnl::native_rounding_tag>,
-                            cnl::operand<short, cnl::native_rounding_tag>>{}(3L)),
+                            cnl::op_value<long, cnl::native_rounding_tag>,
+                            cnl::op_value<short, cnl::native_rounding_tag>>{}(3L)),
             "custom_operator<_impl::convert_op, native_rounding_tag, native_rounding_tag, short, long>");
 }

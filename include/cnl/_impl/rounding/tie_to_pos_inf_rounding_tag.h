@@ -38,23 +38,23 @@ namespace cnl {
     }
 
     template<_impl::unary_arithmetic_op Operator, typename Operand>
-    struct custom_operator<Operator, operand<Operand, tie_to_pos_inf_rounding_tag>>
-        : custom_operator<Operator, operand<Operand, _impl::native_tag>> {
+    struct custom_operator<Operator, op_value<Operand, tie_to_pos_inf_rounding_tag>>
+        : custom_operator<Operator, op_value<Operand, _impl::native_tag>> {
     };
 
     template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
     struct custom_operator<
             Operator,
-            operand<Lhs, tie_to_pos_inf_rounding_tag>,
-            operand<Rhs, tie_to_pos_inf_rounding_tag>>
+            op_value<Lhs, tie_to_pos_inf_rounding_tag>,
+            op_value<Rhs, tie_to_pos_inf_rounding_tag>>
         : Operator {
     };
 
     template<typename Lhs, typename Rhs>
     struct custom_operator<
             _impl::divide_op,
-            operand<Lhs, tie_to_pos_inf_rounding_tag>,
-            operand<Rhs, tie_to_pos_inf_rounding_tag>> {
+            op_value<Lhs, tie_to_pos_inf_rounding_tag>,
+            op_value<Rhs, tie_to_pos_inf_rounding_tag>> {
     private:
         using result_type = decltype(std::declval<Lhs>() / std::declval<Rhs>());
 
@@ -78,15 +78,15 @@ namespace cnl {
     };
 
     template<_impl::shift_op Operator, typename Lhs, typename Rhs, tag RhsTag>
-    struct custom_operator<Operator, operand<Lhs, tie_to_pos_inf_rounding_tag>, operand<Rhs, RhsTag>> : Operator {
+    struct custom_operator<Operator, op_value<Lhs, tie_to_pos_inf_rounding_tag>, op_value<Rhs, RhsTag>> : Operator {
     };
 
     template<_impl::prefix_op Operator, typename Rhs>
-    struct custom_operator<Operator, operand<Rhs, tie_to_pos_inf_rounding_tag>> : Operator {
+    struct custom_operator<Operator, op_value<Rhs, tie_to_pos_inf_rounding_tag>> : Operator {
     };
 
     template<_impl::postfix_op Operator, typename Lhs>
-    struct custom_operator<Operator, operand<Lhs, tie_to_pos_inf_rounding_tag>> : Operator {
+    struct custom_operator<Operator, op_value<Lhs, tie_to_pos_inf_rounding_tag>> : Operator {
     };
 }
 

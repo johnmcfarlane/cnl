@@ -55,8 +55,8 @@ namespace {
                 identical(
                         cnl::custom_operator<
                                 cnl::_impl::subtract_op,
-                                cnl::operand<cnl::int8, cnl::native_overflow_tag>,
-                                cnl::operand<cnl::int8, cnl::native_overflow_tag>>()(
+                                cnl::op_value<cnl::int8, cnl::native_overflow_tag>,
+                                cnl::op_value<cnl::int8, cnl::native_overflow_tag>>()(
                                 INT8_C(0), INT8_C(0)),
                         0),
                 "cnl::subtract test failed");
@@ -115,8 +115,8 @@ namespace {
                 identical(
                         cnl::custom_operator<
                                 cnl::_impl::add_op,
-                                cnl::operand<signed, cnl::saturated_overflow_tag>,
-                                cnl::operand<unsigned, cnl::saturated_overflow_tag>>()(7, 23U),
+                                cnl::op_value<signed, cnl::saturated_overflow_tag>,
+                                cnl::op_value<unsigned, cnl::saturated_overflow_tag>>()(7, 23U),
                         7 + 23U));
         static_assert(
                 identical(
@@ -197,8 +197,8 @@ namespace {
                         cnl::numeric_limits<int>::max(),
                         cnl::custom_operator<
                                 cnl::_impl::shift_left_op,
-                                cnl::operand<std::uint8_t, cnl::saturated_overflow_tag>,
-                                cnl::operand<unsigned, cnl::saturated_overflow_tag>>{}(
+                                cnl::op_value<std::uint8_t, cnl::saturated_overflow_tag>,
+                                cnl::op_value<unsigned, cnl::saturated_overflow_tag>>{}(
                                 std::uint8_t{255}, 30U)));
     }
 

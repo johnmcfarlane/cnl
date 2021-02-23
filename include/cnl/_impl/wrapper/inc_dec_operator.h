@@ -15,22 +15,22 @@
 
 namespace cnl {
     template<_impl::prefix_op Operator, _impl::wrapped Number>
-    struct custom_operator<Operator, operand<Number>> {
+    struct custom_operator<Operator, op_value<Number>> {
         // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         constexpr auto& operator()(Number& rhs) const
         {
-            custom_operator<Operator, operand<_impl::rep_of_t<Number>, _impl::tag_of_t<Number>>>{}(
+            custom_operator<Operator, op_value<_impl::rep_of_t<Number>, _impl::tag_of_t<Number>>>{}(
                     _impl::to_rep(rhs));
             return rhs;
         }
     };
 
     template<_impl::postfix_op Operator, _impl::wrapped Number>
-    struct custom_operator<Operator, operand<Number, _impl::native_tag>> {
+    struct custom_operator<Operator, op_value<Number, _impl::native_tag>> {
         constexpr auto operator()(Number& lhs) const
         {
             return _impl::from_rep<Number>(
-                    custom_operator<Operator, operand<_impl::rep_of_t<Number>, _impl::tag_of_t<Number>>>{}(
+                    custom_operator<Operator, op_value<_impl::rep_of_t<Number>, _impl::tag_of_t<Number>>>{}(
                             _impl::to_rep(lhs)));
         }
     };

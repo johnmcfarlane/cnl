@@ -38,25 +38,25 @@ namespace cnl {
     template<typename Src, tag SrcTag, typename Dest, _impl::wide_tag DestTag>
     requires(!_impl::is_wide_tag<SrcTag>) struct custom_operator<
             _impl::convert_op,
-            operand<Src, SrcTag>, operand<Dest, DestTag>> {
+            op_value<Src, SrcTag>, op_value<Dest, DestTag>> {
         [[nodiscard]] constexpr auto operator()(Src const& from) const
         {
-            return custom_operator<_impl::convert_op, operand<Src, SrcTag>, operand<Dest>>{}(from);
+            return custom_operator<_impl::convert_op, op_value<Src, SrcTag>, op_value<Dest>>{}(from);
         }
     };
     /// \endcond
 
     template<typename Src, _impl::wide_tag SrcTag, typename Dest, tag DestTag>
-    struct custom_operator<_impl::convert_op, operand<Src, SrcTag>, operand<Dest, DestTag>> {
+    struct custom_operator<_impl::convert_op, op_value<Src, SrcTag>, op_value<Dest, DestTag>> {
         [[nodiscard]] constexpr auto operator()(Src const& from) const
         {
-            return custom_operator<_impl::convert_op, operand<Src>, operand<Dest>>{}(from);
+            return custom_operator<_impl::convert_op, op_value<Src>, op_value<Dest>>{}(from);
         }
     };
 
     template<_impl::unary_arithmetic_op Operator, int Digits, typename Narrowest, class Rhs>
-    struct custom_operator<Operator, operand<Rhs, wide_tag<Digits, Narrowest>>>
-        : custom_operator<Operator, operand<Rhs, _impl::native_tag>> {
+    struct custom_operator<Operator, op_value<Rhs, wide_tag<Digits, Narrowest>>>
+        : custom_operator<Operator, op_value<Rhs, _impl::native_tag>> {
     };
 
     template<
@@ -64,8 +64,8 @@ namespace cnl {
             class Lhs, class Rhs>
     struct custom_operator<
             Operator,
-            operand<Lhs, wide_tag<LhsDigits, LhsNarrowest>>,
-            operand<Rhs, wide_tag<RhsDigits, RhsNarrowest>>> {
+            op_value<Lhs, wide_tag<LhsDigits, LhsNarrowest>>,
+            op_value<Rhs, wide_tag<RhsDigits, RhsNarrowest>>> {
     private:
         static constexpr auto _max_digits{std::max(LhsDigits, RhsDigits)};
         static constexpr auto _are_signed{
@@ -86,8 +86,8 @@ namespace cnl {
     template<_impl::shift_op Operator, typename Lhs, int LhsDigits, typename LhsNarrowest, typename Rhs>
     struct custom_operator<
             Operator,
-            operand<Lhs, wide_tag<LhsDigits, LhsNarrowest>>,
-            operand<Rhs>> {
+            op_value<Lhs, wide_tag<LhsDigits, LhsNarrowest>>,
+            op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator{}(lhs, rhs);
@@ -99,16 +99,16 @@ namespace cnl {
             Operator, wide_tag<LhsDigits, LhsNarrowest>, wide_tag<RhsDigits, RhsNarrowest>>
         : custom_operator<
                   Operator,
-                  operand<_impl::native_tag>,
-                  operand<_impl::native_tag>> {
+                  op_value<_impl::native_tag>,
+                  op_value<_impl::native_tag>> {
     };
 
     template<_impl::prefix_op Operator, typename Rhs, int Digits, typename Narrowest>
-    struct custom_operator<Operator, operand<Rhs, wide_tag<Digits, Narrowest>>> : Operator {
+    struct custom_operator<Operator, op_value<Rhs, wide_tag<Digits, Narrowest>>> : Operator {
     };
 
     template<_impl::postfix_op Operator, typename Lhs, int Digits, typename Narrowest>
-    struct custom_operator<Operator, operand<Lhs, wide_tag<Digits, Narrowest>>> : Operator {
+    struct custom_operator<Operator, op_value<Lhs, wide_tag<Digits, Narrowest>>> : Operator {
     };
 }
 

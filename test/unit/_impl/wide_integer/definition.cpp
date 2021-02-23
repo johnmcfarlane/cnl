@@ -57,8 +57,8 @@ namespace {
                         cnl::wide_integer<31>{2},
                         cnl::custom_operator<
                                 cnl::_impl::add_op,
-                                cnl::operand<cnl::wide_integer<31>>,
-                                cnl::operand<cnl::wide_integer<31>>>{}(
+                                cnl::op_value<cnl::wide_integer<31>>,
+                                cnl::op_value<cnl::wide_integer<31>>>{}(
                                 cnl::wide_integer<31>{1}, cnl::wide_integer<31>{1})));
         static_assert(
                 identical(
@@ -72,8 +72,8 @@ namespace {
                         cnl::wide_integer<31>{2},
                         cnl::custom_operator<
                                 cnl::_impl::add_op,
-                                cnl::operand<cnl::wide_integer<31>>,
-                                cnl::operand<cnl::wide_integer<31>>>{}(
+                                cnl::op_value<cnl::wide_integer<31>>,
+                                cnl::op_value<cnl::wide_integer<31>>>{}(
                                 cnl::wide_integer<31>{1}, cnl::wide_integer<31>{1})));
         static_assert(
                 identical(

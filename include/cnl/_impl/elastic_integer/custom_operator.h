@@ -73,8 +73,8 @@ namespace cnl {
     template<_impl::comparison_op Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
     struct custom_operator<
             Operator,
-            operand<elastic_integer<LhsDigits, LhsNarrowest>>,
-            operand<elastic_integer<RhsDigits, RhsNarrowest>>> {
+            op_value<elastic_integer<LhsDigits, LhsNarrowest>>,
+            op_value<elastic_integer<RhsDigits, RhsNarrowest>>> {
         [[nodiscard]] constexpr auto operator()(
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
                 elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
@@ -86,8 +86,8 @@ namespace cnl {
     template<_impl::comparison_op Operator, int Digits, class Narrowest>
     struct custom_operator<
             Operator,
-            operand<elastic_integer<Digits, Narrowest>>,
-            operand<elastic_integer<Digits, Narrowest>>> {
+            op_value<elastic_integer<Digits, Narrowest>>,
+            op_value<elastic_integer<Digits, Narrowest>>> {
         [[nodiscard]] constexpr auto operator()(
                 elastic_integer<Digits, Narrowest> const& lhs,
                 elastic_integer<Digits, Narrowest> const& rhs) const
@@ -101,8 +101,8 @@ namespace cnl {
     template<_impl::shift_op Operator, class LhsRep, int LhsDigits, typename Rhs>
     requires(!_impl::is_constant<Rhs>::value) struct custom_operator<
             Operator,
-            operand<elastic_integer<LhsDigits, LhsRep>>,
-            operand<Rhs>> {
+            op_value<elastic_integer<LhsDigits, LhsRep>>,
+            op_value<Rhs>> {
         using lhs_type = elastic_integer<LhsDigits, LhsRep>;
 
         [[nodiscard]] constexpr auto operator()(lhs_type const& lhs, Rhs const& rhs) const
@@ -114,8 +114,8 @@ namespace cnl {
     template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
     struct custom_operator<
             _impl::shift_left_op,
-            operand<elastic_integer<LhsDigits, LhsNarrowest>>,
-            operand<constant<RhsValue>>> {
+            op_value<elastic_integer<LhsDigits, LhsNarrowest>>,
+            op_value<constant<RhsValue>>> {
         [[nodiscard]] constexpr auto operator()(
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs, constant<RhsValue>) const
         {
@@ -130,8 +130,8 @@ namespace cnl {
     template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
     struct custom_operator<
             _impl::shift_right_op,
-            operand<elastic_integer<LhsDigits, LhsNarrowest>>,
-            operand<constant<RhsValue>>> {
+            op_value<elastic_integer<LhsDigits, LhsNarrowest>>,
+            op_value<constant<RhsValue>>> {
         [[nodiscard]] constexpr auto operator()(
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs, constant<RhsValue>) const
         {
@@ -144,7 +144,7 @@ namespace cnl {
     // unary operator-
     template<int RhsDigits, class RhsNarrowest>
     struct custom_operator<
-            _impl::minus_op, operand<elastic_integer<RhsDigits, RhsNarrowest>>> {
+            _impl::minus_op, op_value<elastic_integer<RhsDigits, RhsNarrowest>>> {
         [[nodiscard]] constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
                 const -> elastic_integer<RhsDigits, typename numbers::set_signedness_t<RhsNarrowest, true>>
         {
@@ -157,7 +157,7 @@ namespace cnl {
     // unary operator+
     template<int RhsDigits, class RhsNarrowest>
     struct custom_operator<
-            _impl::plus_op, operand<elastic_integer<RhsDigits, RhsNarrowest>>> {
+            _impl::plus_op, op_value<elastic_integer<RhsDigits, RhsNarrowest>>> {
         [[nodiscard]] constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
                 const -> elastic_integer<RhsDigits, RhsNarrowest>
         {
@@ -169,7 +169,7 @@ namespace cnl {
     // unary operator~
     template<int RhsDigits, class RhsNarrowest>
     struct custom_operator<
-            _impl::bitwise_not_op, operand<elastic_integer<RhsDigits, RhsNarrowest>>> {
+            _impl::bitwise_not_op, op_value<elastic_integer<RhsDigits, RhsNarrowest>>> {
         [[nodiscard]] constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
                 const -> elastic_integer<RhsDigits, RhsNarrowest>
         {

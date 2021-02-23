@@ -19,8 +19,8 @@ namespace {
                         cnl::_impl::wrapper<int, cnl::nearest_rounding_tag>{54},
                         cnl::custom_operator<
                                 cnl::_impl::multiply_op,
-                                cnl::operand<cnl::_impl::wrapper<int, cnl::nearest_rounding_tag>>,
-                                cnl::operand<int>>{}(
+                                cnl::op_value<cnl::_impl::wrapper<int, cnl::nearest_rounding_tag>>,
+                                cnl::op_value<int>>{}(
                                 cnl::_impl::wrapper<int, cnl::nearest_rounding_tag>{6}, 9)));
 
         static_assert(

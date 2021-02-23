@@ -19,11 +19,11 @@
 /// compositional numeric library
 namespace cnl {
     template<_impl::unary_arithmetic_op Operator, typename Rep, tag Tag>
-    struct custom_operator<Operator, operand<_impl::wrapper<Rep, Tag>>> {
+    struct custom_operator<Operator, op_value<_impl::wrapper<Rep, Tag>>> {
         [[nodiscard]] constexpr auto operator()(_impl::wrapper<Rep, Tag> const& rhs) const
         {
             return _impl::from_rep<_impl::wrapper<Rep, Tag>>(
-                    custom_operator<Operator, operand<Rep, Tag>>{}(_impl::to_rep(rhs)));
+                    custom_operator<Operator, op_value<Rep, Tag>>{}(_impl::to_rep(rhs)));
         }
     };
 }

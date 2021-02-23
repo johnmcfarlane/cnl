@@ -30,20 +30,20 @@ namespace cnl {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::operand
+    // cnl::op_value
 
-    /// \brief used as Operands parameter of \ref cnl::custom_operator
-    /// \tparam Rep type of operand handled by custom_operator specialization
+    /// \brief operand or result of operation;used as Operands parameter of \ref cnl::custom_operator
+    /// \tparam Rep type of value handled by custom_operator specialization
     /// \tparam Tag behavior of `Rep` handled by custom_operator specialization
     template<typename Rep, tag Tag = _impl::native_tag>
-    class operand;
+    class op_value;
 
     namespace _impl {
         template<typename T>
         inline constexpr bool is_operand_specialization = false;
 
         template<typename Rep, typename Tag>
-        inline constexpr bool is_operand_specialization<operand<Rep, Tag>> = true;
+        inline constexpr bool is_operand_specialization<op_value<Rep, Tag>> = true;
 
         template<typename T>
         concept operand_specialization = is_operand_specialization<T>;
@@ -63,18 +63,18 @@ namespace cnl {
     template<_impl::compound_assign_op Operator, class LhsOperand, tag LhsTag, class RhsOperand, tag RhsTag>
     struct custom_operator<
             Operator,
-            operand<LhsOperand, LhsTag>,
-            operand<RhsOperand, RhsTag>> {
+            op_value<LhsOperand, LhsTag>,
+            op_value<RhsOperand, RhsTag>> {
         // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         constexpr auto& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
         {
             using compound_assign_operator = cnl::custom_operator<
-                    typename Operator::binary, operand<LhsOperand, LhsTag>, operand<RhsOperand, RhsTag>>;
+                    typename Operator::binary, op_value<LhsOperand, LhsTag>, op_value<RhsOperand, RhsTag>>;
             using compound_assign_operator_result = decltype(compound_assign_operator{}(lhs, rhs));
             using convert_operator = cnl::custom_operator<
                     _impl::convert_op,
-                    operand<compound_assign_operator_result, RhsTag>,
-                    operand<LhsOperand, LhsTag>>;
+                    op_value<compound_assign_operator_result, RhsTag>,
+                    op_value<LhsOperand, LhsTag>>;
             return lhs = convert_operator{}(compound_assign_operator{}(lhs, rhs));
         }
     };

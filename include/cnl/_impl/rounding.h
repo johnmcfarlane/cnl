@@ -30,7 +30,7 @@ namespace cnl {
         struct divide {
             [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {
-                return cnl::custom_operator<divide_op, operand<Lhs, LhsTag>, operand<Rhs, RhsTag>>{}(
+                return cnl::custom_operator<divide_op, op_value<Lhs, LhsTag>, op_value<Rhs, RhsTag>>{}(
                         cnl::unwrap(lhs), cnl::unwrap(rhs));
             }
         };
@@ -42,7 +42,7 @@ namespace cnl {
         struct shift_right {
             [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {
-                return cnl::custom_operator<shift_right_op, operand<Lhs, LhsTag>, operand<Rhs, RhsTag>>{}(lhs, rhs);
+                return cnl::custom_operator<shift_right_op, op_value<Lhs, LhsTag>, op_value<Rhs, RhsTag>>{}(lhs, rhs);
             }
         };
     }
