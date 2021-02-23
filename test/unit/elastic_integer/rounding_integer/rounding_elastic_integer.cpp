@@ -48,7 +48,7 @@ namespace {
                 "cnl::rounding_integer parameter default test failed");
     }
 
-    namespace test_is_number {
+    namespace test_is_wrapper {
         static_assert(
                 cnl::_impl::is_wrapper<cnl::elastic_integer<>> && !cnl::_impl::is_wrapper<int>);
     }
