@@ -132,7 +132,6 @@ set(sample_sources
         zero_cost_free_functions.cpp
         snippets.cpp
         zero_cost_average.cpp
-        boost.multiprecision.cpp
 )
 
 ######################################################################
@@ -168,7 +167,7 @@ add_dependencies(test-unit test-unit-plain)
 
 # given the path to a source file containing gtest tests,
 # creates and returns a target that runs them
-function(make_test source out_target compile_flags linker_flags)
+function(make_test source compile_flags linker_flags)
 
     # turn source file path into target name (e.g. "foo/bar.cpp" -> "test-unit-foo-bar")
     string(REPLACE ".cpp" "" stripped "${source}")
@@ -186,36 +185,37 @@ function(make_test source out_target compile_flags linker_flags)
 
     # Boost dependency
     if(Boost_FOUND)
-        if(Boost_VERSION GREATER 105500)
-            # only compile multiprecision.cpp if Boost.Multiprecision is available
-            target_compile_definitions("${target}" PRIVATE "-DCNL_BOOST_ENABLED")
-            target_include_directories("${target}" SYSTEM PRIVATE "${Boost_INCLUDE_DIRS}")
-        endif(Boost_VERSION GREATER 105500)
+        target_compile_definitions("${target}" PRIVATE "-DCNL_BOOST_ENABLED")
+        target_include_directories("${target}" SYSTEM PRIVATE "${Boost_INCLUDE_DIRS}")
     endif(Boost_FOUND)
 
     # Add to test-unit custom target.
     add_dependencies(test-unit "${target}")
-
-    # Return name of test target.
-    set(${out_target} "${target}" PARENT_SCOPE)
 endfunction(make_test)
 
 ######################################################################
 # create tests to verify CNL
 
 foreach(source ${test_sources})
-    make_test("${source}" target "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
+    make_test("${source}" "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
 endforeach(source)
 
 if (CNL_SANITIZE)
-    make_test(ub.cpp target "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
+    make_test(ub.cpp "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
 endif(CNL_SANITIZE)
 
 ######################################################################
 # create tests to show off CNL
 
 foreach(source ${sample_sources})
-    make_test("${source}" target "${SAMPLE_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
+    make_test("${source}" "${SAMPLE_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
 endforeach(source)
 
-make_test(scaled_integer/math.cpp target "${SAMPLE_CXX_FLAGS}" "")
+make_test(scaled_integer/math.cpp "${SAMPLE_CXX_FLAGS}" "")
+
+######################################################################
+# make test of Boost.Multiprecision integration
+
+if(Boost_FOUND)
+    make_test(boost.multiprecision.cpp "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
+endif(Boost_FOUND)

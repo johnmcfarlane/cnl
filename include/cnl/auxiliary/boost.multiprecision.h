@@ -159,15 +159,21 @@ namespace cnl {
     struct to_rep<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> {
         using _number_type =
                 _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>;
-        [[nodiscard]] constexpr _number_type& operator()(_number_type& number) const
+
+        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
+        [[nodiscard]] constexpr auto& operator()(_number_type& number) const
         {
             return number;
         };
-        [[nodiscard]] constexpr _number_type const& operator()(_number_type const& number) const
+
+        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
+        [[nodiscard]] constexpr auto const& operator()(_number_type const& number) const
         {
             return number;
         };
-        [[nodiscard]] constexpr _number_type operator()(_number_type&& number) const
+
+        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
+        [[nodiscard]] constexpr auto operator()(_number_type&& number) const
         {
             return number;
         };
@@ -177,15 +183,21 @@ namespace cnl {
     struct to_rep<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> {
         using _number_type =
                 _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>;
-        [[nodiscard]] constexpr _number_type& operator()(_number_type& number) const
+
+        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
+        [[nodiscard]] constexpr auto& operator()(_number_type& number) const
         {
             return number;
         };
-        [[nodiscard]] constexpr _number_type const& operator()(_number_type const& number) const
+
+        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
+        [[nodiscard]] constexpr auto const& operator()(_number_type const& number) const
         {
             return number;
         };
-        [[nodiscard]] constexpr _number_type operator()(_number_type&& number) const
+
+        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
+        [[nodiscard]] constexpr auto operator()(_number_type&& number) const
         {
             return std::move(number);
         };
