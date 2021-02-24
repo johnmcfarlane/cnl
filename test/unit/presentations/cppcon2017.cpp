@@ -5,8 +5,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 #include <cnl/_impl/type_traits/identical.h>
-#include <cnl/fixed_point.h>
 #include <cnl/fraction.h>
+#include <cnl/scaled_integer.h>
 
 #include <cstddef>
 #include <iostream>
@@ -15,7 +15,8 @@
 #include <filesystem>
 namespace filesystem = std::filesystem;
 
-using cnl::fixed_point;
+template<typename Rep = int, int Exponent = 0, int Radix = 2>
+using fixed_point = cnl::scaled_integer<Rep, cnl::power<Exponent, Radix>>;
 
 template<>
 struct std::hash<filesystem::path> {
@@ -148,7 +149,7 @@ namespace m {
             cnl::_impl::identical(fixed_point<elastic_integer<62>, -62>{0.9922027587890625}, sq));
 
 #if defined(CNL_INT128_ENABLED)
-    constexpr auto q = make_fixed_point(make_fraction(sq, sq));
+    constexpr auto q = make_scaled_integer(make_fraction(sq, sq));
     static_assert(cnl::_impl::identical(fixed_point<elastic_integer<124>, -62>{1}, q));
 #endif
 }

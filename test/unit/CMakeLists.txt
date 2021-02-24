@@ -67,9 +67,10 @@ set(test_sources
 
         # components in free functions
         elastic_integer/rounding_integer/rounding_elastic_integer.cpp
-        rounding/fixed_point/elastic_integer/elastic_fixed_point.cpp
-        rounding/fixed_point/fixed_point.cpp
         rounding/scaled_integer/elastic_integer/elastic_scaled_integer.cpp
+        rounding/scaled_integer/elastic_integer/elastic_scaled_integer_tie_to_pos_inf.cpp
+        rounding/scaled_integer/elastic_integer/elastic_scaled_integer_neg_inf.cpp
+        rounding/scaled_integer/elastic_integer/elastic_scaled_integer_nearest.cpp
         rounding/scaled_integer/scaled_integer.cpp
 
         # composites
@@ -88,9 +89,6 @@ set(test_sources
         scaled_integer/rounding/elastic/integer.cpp
         scaled_integer/elastic/rounding/overflow/426.cpp
         rounding/elastic_integer/elastic_integer.cpp
-        rounding/fixed_point/elastic_integer/elastic_fixed_point_tie_to_pos_inf.cpp
-        rounding/fixed_point/elastic_integer/elastic_fixed_point_neg_inf.cpp
-        rounding/fixed_point/elastic_integer/elastic_fixed_point_nearest.cpp
         rounding/overflow/elastic/integer.cpp
         rounding/rounding_integer/rounding_integer.cpp
         rounding/wide_integer/wide_integer.cpp
