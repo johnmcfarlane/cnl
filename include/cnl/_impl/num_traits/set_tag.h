@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_NUM_TRAITS_SET_TAG_H)
 #define CNL_IMPL_NUM_TRAITS_SET_TAG_H
 
-#include "tag.h"
+#include "../operators/tag.h"
 
 /// compositional numeric library
 namespace cnl {

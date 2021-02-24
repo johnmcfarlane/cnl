@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_ELASTIC_TAG_IS_TAG_H)
 #define CNL_IMPL_ELASTIC_TAG_IS_TAG_H
 
-#include "../num_traits/tag.h"
+#include "../operators/tag.h"
 #include "declaration.h"
 
 /// compositional numeric library

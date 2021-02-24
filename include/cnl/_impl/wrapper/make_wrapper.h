@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_WRAPPER_MAKE_WRAPPER_H)
 #define CNL_IMPL_WRAPPER_MAKE_WRAPPER_H
 
-#include "../num_traits/tag.h"
 #include "../operators/native_tag.h"
+#include "../operators/tag.h"
 #include "definition.h"
 #include "from_rep.h"
 #include "rep_of.h"

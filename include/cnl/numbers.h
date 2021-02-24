@@ -15,5 +15,6 @@
 #endif
 
 #include "_impl/numbers/signedness.h"
+#include "_impl/operators/tag.h"
 
 #endif  // CNL_NUMBERS_H

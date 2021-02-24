@@ -11,7 +11,7 @@
 #define CNL_IMPL_OPERATORS_GENERIC_OPERATORS_H
 
 #include "../config.h"
-#include "../num_traits/tag.h"
+#include "../operators/tag.h"
 #include "operators.h"
 
 #include <type_traits>

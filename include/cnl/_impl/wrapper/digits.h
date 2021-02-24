@@ -8,7 +8,7 @@
 #define CNL_IMPL_WRAPPER_DIGITS_H
 
 #include "../num_traits/digits.h"
-#include "../num_traits/tag.h"
+#include "../operators/tag.h"
 #include "definition.h"
 
 /// compositional numeric library

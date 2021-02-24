@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_OPERATORS_IS_SAME_TAG_FAMILY_H)
 #define CNL_IMPL_OPERATORS_IS_SAME_TAG_FAMILY_H
 
-#include "../num_traits/tag.h"
+#include "../operators/tag.h"
 
 #include <type_traits>
 

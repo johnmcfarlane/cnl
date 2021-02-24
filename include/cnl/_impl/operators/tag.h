@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUM_TRAITS_TAG_H)
-#define CNL_IMPL_NUM_TRAITS_TAG_H
+#if !defined(CNL_IMPL_OPERATORS_TAG_H)
+#define CNL_IMPL_OPERATORS_TAG_H
 
 /// compositional numeric library
 namespace cnl {
@@ -16,4 +16,4 @@ namespace cnl {
     concept tag = is_tag<T>;
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_TAG_H
+#endif  // CNL_IMPL_OPERATORS_TAG_H
