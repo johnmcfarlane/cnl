@@ -40,6 +40,20 @@ namespace cnl {
         };
     }
 
+    template<class Backend>
+    struct is_integer<_bmp::number<Backend>> : std::true_type {
+    };
+
+    template<
+            unsigned MinBits,
+            unsigned MaxBits,
+            _bmp::cpp_integer_type SignType,
+            _bmp::cpp_int_check_type Checked,
+            class Allocator>
+    struct is_integer<_bmp::cpp_int_backend<MinBits, MaxBits, SignType, Checked, Allocator>>
+        : std::true_type {
+    };
+
     template<
             int DestExponent, int SrcExponent, int Radix, unsigned NumBits,
             _bmp::cpp_integer_type SignType>

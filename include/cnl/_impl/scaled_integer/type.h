@@ -11,6 +11,7 @@
 #define CNL_IMPL_SCALED_INTEGER_DEFINITION_H
 
 #include "../../fraction.h"
+#include "../../integer.h"
 #include "../../numeric.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/set_digits.h"
@@ -54,15 +55,11 @@ namespace cnl {
     /// fractional bits: \snippet snippets.cpp define a scaled_integer value
 
 #if defined(__GNUG__) && !defined(__clang__)
-    template<typename Rep, scaled_tag Scale>
+    template<integer Rep, scaled_tag Scale>
 #else
-    template<typename Rep, class Scale>
+    template<integer Rep, class Scale>
 #endif
     class scaled_integer : public _impl::wrapper<Rep, Scale> {
-        static_assert(
-                !_impl::is_scaled_integer<Rep>::value,
-                "scaled_integer of scaled_integer is not a supported");
-
         using _base = _impl::wrapper<Rep, Scale>;
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -110,7 +107,7 @@ namespace cnl {
                     std::max(digits<int>, _impl::used_digits(Value) - trailing_bits(Value))>,
             power<trailing_bits(Value)>>;
 
-    template<class Integer>
+    template<integer Integer>
     scaled_integer(Integer) -> scaled_integer<Integer, power<>>;
 }
 

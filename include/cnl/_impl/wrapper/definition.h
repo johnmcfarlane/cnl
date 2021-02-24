@@ -22,7 +22,7 @@
 namespace cnl {
     namespace _impl {
         // a numeric type parameterized on storage and behavior
-        template<typename Rep, tag Tag>
+        template<integer Rep, tag Tag>
         class wrapper {
         public:
             wrapper() = default;

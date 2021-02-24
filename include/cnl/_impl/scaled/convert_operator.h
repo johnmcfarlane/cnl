@@ -8,7 +8,7 @@
 #define CNL_IMPL_SCALED_CONVERT_OPERATOR_H
 
 #include "../../fraction.h"
-#include "../../limits.h"
+#include "../../integer.h"
 #include "../num_traits/fixed_width_scale.h"
 #include "../num_traits/scale.h"
 #include "../operators/native_tag.h"
@@ -20,7 +20,7 @@
 /// compositional numeric library
 namespace cnl {
     // integer -> floating
-    template<_impl::integer Src, int SrcExponent, _impl::floating_point Dest, int DestExponent, int Radix>
+    template<integer Src, int SrcExponent, _impl::floating_point Dest, int DestExponent, int Radix>
     struct custom_operator<
             _impl::convert_op,
             op_value<Src, power<SrcExponent, Radix>>,
@@ -32,7 +32,7 @@ namespace cnl {
     };
 
     // floating -> integer
-    template<_impl::floating_point Input, int SrcExponent, _impl::integer Result, int DestExponent, int Radix>
+    template<_impl::floating_point Input, int SrcExponent, integer Result, int DestExponent, int Radix>
     struct custom_operator<
             _impl::convert_op,
             op_value<Input, power<SrcExponent, Radix>>,
@@ -45,7 +45,7 @@ namespace cnl {
     };
 
     // integer -> integer
-    template<_impl::integer Input, int SrcExponent, _impl::integer Result, int DestExponent, int Radix>
+    template<integer Input, int SrcExponent, integer Result, int DestExponent, int Radix>
     struct custom_operator<
             _impl::convert_op,
             op_value<Input, power<SrcExponent, Radix>>, op_value<Result, power<DestExponent, Radix>>> {

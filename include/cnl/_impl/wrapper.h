@@ -15,6 +15,7 @@
 #include "wrapper/from_rep.h"
 #include "wrapper/from_value.h"
 #include "wrapper/inc_dec_operator.h"
+#include "wrapper/integer.h"
 #include "wrapper/is_composite.h"
 #include "wrapper/is_wrapper.h"
 #include "wrapper/make_wrapper.h"

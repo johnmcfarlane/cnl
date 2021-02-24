@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_TO_CHARS_H)
 #define CNL_IMPL_TO_CHARS_H
 
+#include "../integer.h"
 #include "assert.h"  // NOLINT(modernize-deprecated-headers, hicpp-deprecated-headers)
 #include "limits.h"  // NOLINT(modernize-deprecated-headers, hicpp-deprecated-headers)
 #include "num_traits/digits.h"
@@ -59,7 +60,7 @@ namespace cnl {
             return next_ptr + 1;
         }
 
-        template<_impl::integer Integer>
+        template<integer Integer>
         auto to_chars_positive(
                 char* const first,  // NOLINT(readability-avoid-const-params-in-decls)
                 char* const last,  // NOLINT(readability-avoid-const-params-in-decls)
@@ -109,7 +110,7 @@ namespace cnl {
     }
 
     // partial implementation of std::to_chars overloaded on cnl::duplex_integer
-    template<_impl::integer Integer>
+    template<integer Integer>
     auto to_chars(
             char* const first,  // NOLINT(readability-avoid-const-params-in-decls)
             char* const last,  // NOLINT(readability-avoid-const-params-in-decls,readability-non-const-parameter)

@@ -12,6 +12,7 @@
 #include <cnl/_impl/numbers/set_signedness.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
+#include <cnl/_impl/wrapper/integer.h>
 #include <cnl/_impl/wrapper/is_composite.h>
 #include <cnl/_impl/wrapper/operators.h>
 #include <cnl/_impl/wrapper/rep_of.h>
@@ -21,6 +22,11 @@ using cnl::_impl::assert_same;
 using cnl::_impl::identical;
 
 namespace {
+    namespace test_concepts {
+        static_assert(cnl::integer<cnl::_impl::wrapper<int>>);
+        static_assert(cnl::integer<const cnl::_impl::wrapper<long long unsigned int>>);
+    }
+
     namespace test_parameters {
         static_assert(
                 assert_same<cnl::_impl::wrapper<int>, cnl::_impl::wrapper<>>::value,

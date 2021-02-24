@@ -11,6 +11,7 @@
 #include "../operators/tag.h"
 #include "definition.h"
 #include "from_rep.h"
+#include "integer.h"
 #include "rep_of.h"
 #include "tag_of.h"
 

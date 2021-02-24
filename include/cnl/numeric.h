@@ -23,18 +23,18 @@ namespace cnl {
     namespace _numeric_impl {
         template<class Integer, bool IsSigned>
         struct trailing_bits {
-            [[nodiscard]] constexpr auto operator()(Integer const& integer) const noexcept
+            [[nodiscard]] constexpr auto operator()(Integer const& n) const noexcept
             {
-                return countr_zero(integer);
+                return countr_zero(n);
             }
         };
 
         template<class Integer>
         struct trailing_bits<Integer, true> {
-            [[nodiscard]] constexpr auto operator()(Integer const& integer) const noexcept
+            [[nodiscard]] constexpr auto operator()(Integer const& n) const noexcept
             {
                 using unsigned_type = numbers::set_signedness_t<Integer, false>;
-                return countr_zero(static_cast<unsigned_type>(integer));
+                return countr_zero(static_cast<unsigned_type>(n));
             }
         };
     }

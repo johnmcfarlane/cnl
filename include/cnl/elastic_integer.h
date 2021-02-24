@@ -17,6 +17,7 @@
 #include "_impl/elastic_integer/digits.h"
 #include "_impl/elastic_integer/from_rep.h"
 #include "_impl/elastic_integer/from_value.h"
+#include "_impl/elastic_integer/integer.h"
 #include "_impl/elastic_integer/is_wrapper.h"
 #include "_impl/elastic_integer/limits.h"
 #include "_impl/elastic_integer/make_elastic_integer.h"

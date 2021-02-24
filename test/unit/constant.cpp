@@ -9,11 +9,20 @@
 
 #include <cnl/constant.h>
 
+#include <cnl/integer.h>
+
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/cstdint.h>
 
+#include <type_traits>
+
 namespace {
     using cnl::_impl::identical;
+
+    namespace test_concepts {
+        static_assert(cnl::integer<cnl::constant<42>>);
+        static_assert(cnl::integer<cnl::constant<42> const>);
+    }
 
     namespace test_literals {
         using namespace cnl::literals;

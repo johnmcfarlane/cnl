@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_USED_DIGITS_H)
 #define CNL_IMPL_USED_DIGITS_H
 
+#include "../integer.h"
 #include "../limits.h"
 
 #include <type_traits>
@@ -22,7 +23,7 @@ namespace cnl {
 
         template<>
         struct used_digits_signed<false> {
-            template<_impl::integer Integer>
+            template<integer Integer>
             [[nodiscard]] constexpr auto operator()(Integer const& value, int radix) const -> int
             {
                 return (value > 0) ? 1 + used_digits_signed<false>{}(value / radix, radix) : 0;
@@ -31,7 +32,7 @@ namespace cnl {
 
         template<>
         struct used_digits_signed<true> {
-            template<_impl::integer Integer>
+            template<integer Integer>
             [[nodiscard]] constexpr auto operator()(Integer const& value, int radix) const
             {
                 // Most negative number is not exploited;
@@ -42,7 +43,7 @@ namespace cnl {
             }
         };
 
-        template<_impl::integer Integer>
+        template<integer Integer>
         [[nodiscard]] constexpr auto used_digits(
                 Integer const& value, int radix = numeric_limits<Integer>::radix)
         {

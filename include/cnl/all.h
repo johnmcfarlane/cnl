@@ -155,6 +155,7 @@
 #include "elastic_scaled_integer.h"
 #include "fixed_point.h"
 #include "fraction.h"
+#include "integer.h"
 #include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
 #include "num_traits.h"
 #include "numeric.h"

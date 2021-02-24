@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_ELASTIC_INTEGER_DEFINITION_H)
 #define CNL_IMPL_ELASTIC_INTEGER_DEFINITION_H
 
+#include "../../integer.h"
 #include "../elastic_tag.h"
 #include "../num_traits/set_digits.h"
 #include "../wrapper.h"
@@ -19,7 +20,7 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<int Digits, class Narrowest>
+        template<int Digits, integer Narrowest>
         using elastic_rep_t =
                 typename set_digits<Narrowest, std::max(digits<Narrowest>, Digits)>::type;
 
@@ -30,23 +31,23 @@ namespace cnl {
         struct is_elastic_integer : std::false_type {
         };
 
-        template<int Digits, class Narrowest>
+        template<int Digits, integer Narrowest>
         struct is_elastic_integer<elastic_integer<Digits, Narrowest>> : std::true_type {
         };
 
-        template<typename Rep, int Digits, typename Narrowest>
+        template<integer Rep, int Digits, integer Narrowest>
         struct is_elastic_integer<wrapper<Rep, elastic_tag<Digits, Narrowest>>>;
 
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::_impl::elastic_integer_base_t
 
-        template<int Digits, class Narrowest>
+        template<int Digits, integer Narrowest>
         using elastic_integer_base_t = _impl::wrapper<
                 _impl::rep_of_t<elastic_integer<Digits, Narrowest>>,
                 _impl::tag_of_t<elastic_integer<Digits, Narrowest>>>;
     }
 
-    template<int Digits, class Narrowest>
+    template<int Digits, integer Narrowest>
     class elastic_integer : public _impl::elastic_integer_base_t<Digits, Narrowest> {
     public:
         using _base = _impl::elastic_integer_base_t<Digits, Narrowest>;
@@ -73,7 +74,7 @@ namespace cnl {
                     digits<typename std::conditional<Signed, signed, unsigned>::type>;
         };
 
-        template<typename S>
+        template<integer S>
         using narrowest = set_digits_t<S, machine_digits<numbers::signedness_v<S>>::value>;
     }
 

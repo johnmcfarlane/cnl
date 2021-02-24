@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_FRACTION_TYPE_H)
 #define CNL_IMPL_FRACTION_TYPE_H
 
+#include "../../integer.h"
 #include "../../limits.h"
 #include "../num_traits/set_width.h"
 #include "../type_traits/is_integral.h"
@@ -35,7 +36,7 @@ namespace cnl {
 
         explicit constexpr fraction(Numerator n, Denominator d);
 
-        template<_impl::integer Integer>
+        template<integer Integer>
         explicit constexpr fraction(Integer const& i);
 
         template<typename RhsNumerator, typename RhsDenominator>
@@ -67,7 +68,7 @@ namespace cnl {
     fraction(long double)->fraction<_impl::set_width_t<int, int(sizeof(long double) * CHAR_BIT)>>;
 #endif
 
-    template<_impl::integer Integer>
+    template<integer Integer>
     fraction(Integer) -> fraction<Integer>;
 }
 

@@ -7,12 +7,13 @@
 #if !defined(CNL_IMPL_WRAPPER_DECLARATION_H)
 #define CNL_IMPL_WRAPPER_DECLARATION_H
 
+#include "../../integer.h"
 #include "../operators/native_tag.h"
 
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<typename Rep = int, tag Tag = native_tag>
+        template<integer Rep = int, tag Tag = native_tag>
         class wrapper;
     }
 }

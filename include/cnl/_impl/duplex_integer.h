@@ -13,6 +13,7 @@
 #include "duplex_integer/divide.h"
 #include "duplex_integer/forward_declaration.h"
 #include "duplex_integer/from_value.h"
+#include "duplex_integer/integer.h"
 #include "duplex_integer/is_duplex_integer.h"
 #include "duplex_integer/modulo.h"
 #include "duplex_integer/multiply.h"

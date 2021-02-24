@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_FRACTION_CTORS_H)
 #define CNL_IMPL_FRACTION_CTORS_H
 
+#include "../../integer.h"
 #include "make_fraction.h"
 
 #include "type.h"
@@ -21,7 +22,7 @@ namespace cnl {
     }
 
     template<typename Numerator, typename Denominator>
-    template<_impl::integer Integer>
+    template<integer Integer>
     constexpr fraction<Numerator, Denominator>::fraction(Integer const& i)
         : fraction(static_cast<Numerator>(i), 1)
     {
