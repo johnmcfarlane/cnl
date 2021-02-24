@@ -4,8 +4,6 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if defined(CNL_BOOST_ENABLED) && !defined(_WIN64)
-
 #include <cnl/auxiliary/boost.multiprecision.h>
 
 #include <cnl/_impl/type_traits/assert_same.h>
@@ -313,5 +311,3 @@ TEST(scaled_integer_multiprecision, sqrt)  // NOLINT
     auto y = cnl::sqrt(x);
     ASSERT_EQ(y, 5);
 }
-
-#endif  // CNL_BOOST_ENABLED
