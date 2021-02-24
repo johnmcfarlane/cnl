@@ -15,6 +15,7 @@
 #include "_impl/num_traits/digits.h"
 #include "_impl/numbers/signedness.h"
 #include "_impl/parse.h"
+#include "integer.h"
 #include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
 
 #include <type_traits>
@@ -167,6 +168,17 @@ namespace cnl {
         struct signedness<constant<Value>> : signedness<decltype(Value)> {
         };
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // concepts
+
+    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct is_integer<constant<Value>> : is_integer<decltype(Value)> {
+    };
+
+    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct is_integer<constant<Value> const> : is_integer<decltype(Value)> {
+    };
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::numeric_limits<cnl::constant>

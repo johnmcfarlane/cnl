@@ -4,9 +4,12 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_FRACTION_TYPE_H)
-#define CNL_IMPL_FRACTION_TYPE_H
+#if !defined(CNL_IMPL_FRACTION_DEFINITION_H)
+#define CNL_IMPL_FRACTION_DEFINITION_H
 
+#include "../../fixed_point.h"
+#include "../../floating_point.h"
+#include "../../integer.h"
 #include "../../limits.h"
 #include "../num_traits/set_width.h"
 #include "../type_traits/is_integral.h"
@@ -21,7 +24,7 @@ namespace cnl {
     /// \tparam Numerator the type of numerator
     /// \tparam Exponent the type of denominator
 
-    template<typename Numerator = int, typename Denominator = Numerator>
+    template<fixed_point Numerator = int, fixed_point Denominator = Numerator>
     struct fraction {
         static_assert(
                 numeric_limits<Numerator>::is_iec559 == numeric_limits<Denominator>::is_iec559,
@@ -35,18 +38,18 @@ namespace cnl {
 
         explicit constexpr fraction(Numerator n, Denominator d);
 
-        template<_impl::integer Integer>
+        template<integer Integer>
         explicit constexpr fraction(Integer const& i);
 
-        template<typename RhsNumerator, typename RhsDenominator>
+        template<fixed_point RhsNumerator, fixed_point RhsDenominator>
         // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
         constexpr fraction(fraction<RhsNumerator, RhsDenominator> const& f);
 
-        template<_impl::floating_point FloatingPoint>
+        template<floating_point FloatingPoint>
         explicit constexpr fraction(FloatingPoint);
 
         /// returns the quotient, \ref numerator `/` \ref denominator
-        template<_impl::floating_point Scalar>
+        template<floating_point Scalar>
         [[nodiscard]] explicit constexpr operator Scalar() const
         {
             return static_cast<Scalar>(numerator) / static_cast<Scalar>(denominator);
@@ -67,8 +70,8 @@ namespace cnl {
     fraction(long double)->fraction<_impl::set_width_t<int, int(sizeof(long double) * CHAR_BIT)>>;
 #endif
 
-    template<_impl::integer Integer>
+    template<integer Integer>
     fraction(Integer) -> fraction<Integer>;
 }
 
-#endif  // CNL_IMPL_FRACTION_TYPE_H
+#endif  // CNL_IMPL_FRACTION_DEFINITION_H

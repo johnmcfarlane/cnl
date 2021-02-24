@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_WANTS_GENERIC_OPS_H
 
 #include "../operators/custom_operator.h"
-#include "forward_declaration.h"
+#include "declaration.h"
 
 /// compositional numeric library
 namespace cnl {

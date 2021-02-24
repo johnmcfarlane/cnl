@@ -9,7 +9,7 @@
 
 #include "../num_traits/from_rep.h"
 #include "../wrapper/declaration.h"
-#include "type.h"
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {

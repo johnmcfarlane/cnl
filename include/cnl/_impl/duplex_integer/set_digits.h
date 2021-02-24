@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_SET_DIGITS_H
 
 #include "../num_traits/set_digits.h"
-#include "forward_declaration.h"
+#include "declaration.h"
 #include "narrowest_integer.h"
 #include "rep_of.h"
 

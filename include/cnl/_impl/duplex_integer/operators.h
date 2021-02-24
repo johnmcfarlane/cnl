@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_OPERATORS_H)
 #define CNL_IMPL_DUPLEX_INTEGER_OPERATORS_H
 
+#include "../../integer.h"
 #include "../../limits.h"
 #include "../../wide_integer.h"
 #include "../likely.h"
@@ -17,6 +18,7 @@
 #include "../type_traits/common_type.h"
 #include "comparison.h"
 #include "ctors.h"
+#include "definition.h"
 #include "digits.h"
 #include "divide.h"
 #include "modulo.h"
@@ -25,7 +27,6 @@
 #include "numeric_limits.h"
 #include "set_digits.h"
 #include "shift.h"
-#include "type.h"
 
 #include <ostream>
 
@@ -80,8 +81,8 @@ namespace cnl {
 
         template<
                 binary_arithmetic_op Operator,
-                _impl::integer LhsUpper, _impl::integer LhsLower,
-                _impl::integer RhsUpper, _impl::integer RhsLower>
+                integer LhsUpper, integer LhsLower,
+                integer RhsUpper, integer RhsLower>
         struct first_degree_binary_arithmetic_operator<
                 Operator,
                 duplex_integer<LhsUpper, LhsLower>,
@@ -138,7 +139,7 @@ namespace cnl {
         }
     };
 
-    template<_impl::binary_arithmetic_op Operator, _impl::any_duplex_integer Lhs, _impl::integer Rhs>
+    template<_impl::binary_arithmetic_op Operator, _impl::any_duplex_integer Lhs, integer Rhs>
     requires(!_impl::is_duplex_integer_v<Rhs>) struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
@@ -146,7 +147,7 @@ namespace cnl {
         }
     };
 
-    template<_impl::binary_arithmetic_op Operator, _impl::integer Lhs, _impl::any_duplex_integer Rhs>
+    template<_impl::binary_arithmetic_op Operator, integer Lhs, _impl::any_duplex_integer Rhs>
     requires(!_impl::is_duplex_integer_v<Lhs>) struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {

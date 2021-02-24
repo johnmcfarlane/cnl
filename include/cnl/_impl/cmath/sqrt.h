@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_CMATH_SQRT_H)
 #define CNL_IMPL_CMATH_SQRT_H
 
-#include "../../limits.h"
+#include "../../integer.h"
 #include "../assert.h"
 #include "../num_traits/digits.h"
 
@@ -19,7 +19,7 @@ namespace cnl {
     /// \note This function has O(n) complexity where n is the number of significant digits.
     /// \pre `x` must be non-negative
 
-    template<_impl::integer Integer>
+    template<integer Integer>
     [[nodiscard]] constexpr auto sqrt(Integer const& x)
     {
         // https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_.28base_2.29

@@ -4,22 +4,21 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_FIXED_POINT_H)
-#define CNL_FIXED_POINT_H
+#if !defined(CNL_ARITHMETIC_H)
+#define CNL_ARITHMETIC_H
 
-#include "integer.h"
+#include "_impl/operators/tag.h"
+#include "number.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     template<typename T>
-    struct is_fixed_point : is_integer<T> {
-    };
+    inline constexpr auto is_arithmetic_v = is_number_v<T> || is_tag<T>;
 
     template<typename T>
-    inline constexpr auto is_fixed_point_v = is_fixed_point<T>::value;
-
-    template<typename T>
-    concept fixed_point = is_fixed_point_v<T>;
+    concept arithmetic = is_arithmetic_v<T>;
 }
 
-#endif  // CNL_FIXED_POINT_H
+#endif  // CNL_ARITHMETIC_H

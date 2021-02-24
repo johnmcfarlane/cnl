@@ -10,9 +10,9 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_MATH_H)
 #define CNL_IMPL_SCALED_INTEGER_MATH_H
 
+#include "definition.h"
 #include "rep_of.h"
 #include "tag_of.h"
-#include "type.h"
 
 /// compositional numeric library
 namespace cnl {

@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_IS_DUPLEX_INTEGER_H)
 #define CNL_IMPL_DUPLEX_INTEGER_IS_DUPLEX_INTEGER_H
 
-#include "forward_declaration.h"
+#include "declaration.h"
 
 #include <type_traits>
 

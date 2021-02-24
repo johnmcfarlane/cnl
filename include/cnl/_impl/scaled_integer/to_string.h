@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_TO_STRING_H)
 #define CNL_IMPL_SCALED_INTEGER_TO_STRING_H
 
+#include "definition.h"
 #include "to_chars.h"
-#include "type.h"
 
 #include <string>
 

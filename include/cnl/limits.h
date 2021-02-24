@@ -26,14 +26,6 @@ namespace cnl {
     struct numeric_limits<T const> : numeric_limits<T> {
     };
 
-    namespace _impl {
-        template<typename T>
-        concept floating_point = numeric_limits<T>::is_iec559;
-
-        template<typename T>
-        concept integer = numeric_limits<T>::is_integer;
-    }
-
 #if defined(CNL_INT128_ENABLED)
 
     namespace _impl {

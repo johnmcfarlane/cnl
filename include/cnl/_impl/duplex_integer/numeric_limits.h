@@ -10,7 +10,7 @@
 #include "../../limits.h"
 #include "../num_traits/from_rep.h"
 #include "ctors.h"
-#include "forward_declaration.h"
+#include "declaration.h"
 
 /// compositional numeric library
 namespace cnl {

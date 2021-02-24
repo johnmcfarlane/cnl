@@ -10,8 +10,9 @@
 #if !defined(CNL_IMPL_OPERATORS_GENERIC_OPERATORS_H)
 #define CNL_IMPL_OPERATORS_GENERIC_OPERATORS_H
 
+#include "../../arithmetic.h"
 #include "../config.h"
-#include "../num_traits/tag.h"
+#include "../operators/tag.h"
 #include "operators.h"
 
 #include <type_traits>
@@ -35,14 +36,14 @@ namespace cnl {
     /// \brief operand or result of operation;used as Operands parameter of \ref cnl::custom_operator
     /// \tparam Rep type of value handled by custom_operator specialization
     /// \tparam Tag behavior of `Rep` handled by custom_operator specialization
-    template<typename Rep, tag Tag = _impl::native_tag>
+    template<arithmetic Rep, tag Tag = _impl::native_tag>
     class op_value;
 
     namespace _impl {
         template<typename T>
         inline constexpr bool is_operand_specialization = false;
 
-        template<typename Rep, typename Tag>
+        template<arithmetic Rep, typename Tag>
         inline constexpr bool is_operand_specialization<op_value<Rep, Tag>> = true;
 
         template<typename T>

@@ -9,7 +9,7 @@
 
 #include "../assert.h"
 #include "../num_traits/digits.h"
-#include "forward_declaration.h"
+#include "declaration.h"
 #include "numbers.h"
 
 #include <type_traits>

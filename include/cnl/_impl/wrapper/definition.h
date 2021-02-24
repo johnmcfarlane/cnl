@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_WRAPPER_TYPE_H)
-#define CNL_IMPL_WRAPPER_TYPE_H
+#if !defined(CNL_IMPL_WRAPPER_DEFINITION_H)
+#define CNL_IMPL_WRAPPER_DEFINITION_H
 
 #include <utility>
 
@@ -22,7 +22,7 @@
 namespace cnl {
     namespace _impl {
         // a numeric type parameterized on storage and behavior
-        template<typename Rep, tag Tag>
+        template<integer Rep, tag Tag>
         class wrapper {
         public:
             wrapper() = default;
@@ -85,4 +85,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_WRAPPER_TYPE_H
+#endif  // CNL_IMPL_WRAPPER_DEFINITION_H

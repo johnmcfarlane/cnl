@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_FRACTION_TO_STRING_H)
 #define CNL_IMPL_FRACTION_TO_STRING_H
 
+#include "definition.h"
 #include "gcd.h"
 #include "make_fraction.h"
-#include "type.h"
 
 #include <string>
 

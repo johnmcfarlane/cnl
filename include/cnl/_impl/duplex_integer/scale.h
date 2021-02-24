@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_SCALE_H
 
 #include "../num_traits/scale.h"
-#include "forward_declaration.h"
+#include "declaration.h"
 
 /// compositional numeric library
 namespace cnl {

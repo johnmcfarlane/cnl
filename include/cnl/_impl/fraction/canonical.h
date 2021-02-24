@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_FRACTION_CANONICAL_H)
 #define CNL_IMPL_FRACTION_CANONICAL_H
 
+#include "definition.h"
 #include "reduce.h"
-#include "type.h"
 
 /// compositional numeric library
 namespace cnl {

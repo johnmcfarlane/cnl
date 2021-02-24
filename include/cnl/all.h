@@ -146,17 +146,20 @@
 #if !defined(CNL_ALL_H)
 #define CNL_ALL_H
 
+#include "arithmetic.h"
 #include "bit.h"
 #include "cmath.h"
 #include "constant.h"
 #include "cstdint.h"
-#include "elastic_fixed_point.h"
 #include "elastic_integer.h"
 #include "elastic_scaled_integer.h"
 #include "fixed_point.h"
+#include "floating_point.h"
 #include "fraction.h"
+#include "integer.h"
 #include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
 #include "num_traits.h"
+#include "number.h"
 #include "numeric.h"
 #include "overflow.h"
 #include "overflow_integer.h"

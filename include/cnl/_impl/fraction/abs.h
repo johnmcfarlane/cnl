@@ -8,8 +8,8 @@
 #define CNL_IMPL_FRACTION_ABS_H
 
 #include "../cmath/abs.h"
+#include "definition.h"
 #include "make_fraction.h"
-#include "type.h"
 
 /// compositional numeric library
 namespace cnl {

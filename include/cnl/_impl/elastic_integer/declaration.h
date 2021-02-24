@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_ELASTIC_INTEGER_DECLARATION_H)
 #define CNL_IMPL_ELASTIC_INTEGER_DECLARATION_H
 
+#include "../../integer.h"
 #include "../num_traits/digits.h"
 
 /// compositional numeric library
@@ -24,7 +25,7 @@ namespace cnl {
     /// the resultant type has Digits set to the sum of the operands.
     ///
     /// \sa cnl::elastic_scaled_integer
-    template<int Digits = digits<int>, class Narrowest = int>
+    template<int Digits = digits<int>, integer Narrowest = int>
     class elastic_integer;
 }
 

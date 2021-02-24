@@ -4,22 +4,21 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_FIXED_POINT_H)
-#define CNL_FIXED_POINT_H
+#if !defined(CNL_NUMBER_H)
+#define CNL_NUMBER_H
 
-#include "integer.h"
+#include "fixed_point.h"
+#include "floating_point.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {
     template<typename T>
-    struct is_fixed_point : is_integer<T> {
-    };
+    inline constexpr auto is_number_v = is_fixed_point_v<T> || is_floating_point_v<T>;
 
     template<typename T>
-    inline constexpr auto is_fixed_point_v = is_fixed_point<T>::value;
-
-    template<typename T>
-    concept fixed_point = is_fixed_point_v<T>;
+    concept number = is_number_v<T>;
 }
 
-#endif  // CNL_FIXED_POINT_H
+#endif  // CNL_NUMBER_H

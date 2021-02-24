@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_REP_OF_H
 
 #include "../num_traits/to_rep.h"
-#include "forward_declaration.h"
+#include "declaration.h"
 
 #include <type_traits>
 

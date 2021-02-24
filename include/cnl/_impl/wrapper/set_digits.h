@@ -8,7 +8,7 @@
 #define CNL_IMPL_WRAPPER_SET_DIGITS_H
 
 #include "../num_traits/set_digits.h"
-#include "../num_traits/tag.h"
+#include "../operators/tag.h"
 #include "definition.h"
 
 #include <type_traits>

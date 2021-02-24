@@ -11,8 +11,8 @@
 #define CNL_IMPL_SCALED_INTEGER_OPERATORS_H
 
 #include "../scaled/power.h"
+#include "definition.h"
 #include "is_scaled_integer.h"
-#include "type.h"
 
 #include <numeric>
 

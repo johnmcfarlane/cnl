@@ -8,7 +8,7 @@
 #define CNL_IMPL_WRAPPER_FROM_REP_H
 
 #include "../num_traits/from_rep.h"
-#include "../num_traits/tag.h"
+#include "../operators/tag.h"
 #include "definition.h"
 #include "set_rep.h"
 

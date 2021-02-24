@@ -37,7 +37,7 @@ set(test_sources
         wrapper/operators.cpp
         wrapper/scale.cpp
         wrapper/set_digits.cpp
-        wrapper/type.cpp
+        wrapper/declaration.cpp
         scaled_integer/scaled_integer_built_in.cpp
         scaled_integer/decimal.cpp
         scaled_integer/numbers.cpp
@@ -48,12 +48,12 @@ set(test_sources
         overflow/overflow_integer.cpp
         overflow/overflow_tag.cpp
         rounding/rounding_integer.cpp
+        _impl/duplex_integer/definition.cpp
         _impl/duplex_integer/digits.cpp
         _impl/duplex_integer/from_value.cpp
         _impl/duplex_integer/numeric_limits.cpp
         _impl/duplex_integer/operators.cpp
         _impl/duplex_integer/narrowest_integer.cpp
-        _impl/duplex_integer/type.cpp
         _impl/wide_integer/digits.cpp
         _impl/wide_integer/from_rep.cpp
         _impl/wide_integer/from_value.cpp
@@ -67,9 +67,10 @@ set(test_sources
 
         # components in free functions
         elastic_integer/rounding_integer/rounding_elastic_integer.cpp
-        rounding/fixed_point/elastic_integer/elastic_fixed_point.cpp
-        rounding/fixed_point/fixed_point.cpp
         rounding/scaled_integer/elastic_integer/elastic_scaled_integer.cpp
+        rounding/scaled_integer/elastic_integer/elastic_scaled_integer_tie_to_pos_inf.cpp
+        rounding/scaled_integer/elastic_integer/elastic_scaled_integer_neg_inf.cpp
+        rounding/scaled_integer/elastic_integer/elastic_scaled_integer_nearest.cpp
         rounding/scaled_integer/scaled_integer.cpp
 
         # composites
@@ -88,9 +89,6 @@ set(test_sources
         scaled_integer/rounding/elastic/integer.cpp
         scaled_integer/elastic/rounding/overflow/426.cpp
         rounding/elastic_integer/elastic_integer.cpp
-        rounding/fixed_point/elastic_integer/elastic_fixed_point_tie_to_pos_inf.cpp
-        rounding/fixed_point/elastic_integer/elastic_fixed_point_neg_inf.cpp
-        rounding/fixed_point/elastic_integer/elastic_fixed_point_nearest.cpp
         rounding/overflow/elastic/integer.cpp
         rounding/rounding_integer/rounding_integer.cpp
         rounding/wide_integer/wide_integer.cpp

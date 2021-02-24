@@ -12,8 +12,8 @@
 
 #include "../../limits.h"
 #include "../used_digits.h"
+#include "definition.h"
 #include "num_traits.h"
-#include "type.h"
 
 #include <type_traits>
 #include <version>

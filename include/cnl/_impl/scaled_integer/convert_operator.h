@@ -7,7 +7,8 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_TAGGED_CONVERT_OPERATOR_H)
 #define CNL_IMPL_SCALED_INTEGER_TAGGED_CONVERT_OPERATOR_H
 
-#include "../../limits.h"
+#include "../../floating_point.h"
+#include "../../integer.h"
 #include "../overflow/overflow_operator.h"
 #include "../power_value.h"
 #include "../rounding/native_rounding_tag.h"
@@ -73,7 +74,7 @@ namespace cnl {
     /// \endcond
 
     // conversion from float to scaled_integer
-    template<_impl::floating_point Input, typename ResultRep, int ResultExponent, int ResultRadix>
+    template<floating_point Input, typename ResultRep, int ResultExponent, int ResultRadix>
     struct custom_operator<
             _impl::convert_op,
             op_value<Input, power<0, ResultRadix>>,
@@ -94,7 +95,7 @@ namespace cnl {
         }
     };
 
-    template<_impl::integer Input, typename ResultRep, int ResultExponent, int ResultRadix>
+    template<integer Input, typename ResultRep, int ResultExponent, int ResultRadix>
     struct custom_operator<
             _impl::convert_op,
             op_value<Input, power<0, ResultRadix>>,
@@ -105,7 +106,7 @@ namespace cnl {
                   op_value<scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, nearest_rounding_tag>> {
     };
 
-    template<typename InputRep, int InputExponent, int InputRadix, _impl::integer Result>
+    template<typename InputRep, int InputExponent, int InputRadix, integer Result>
     struct custom_operator<
             _impl::convert_op,
             op_value<scaled_integer<InputRep, power<InputExponent, InputRadix>>, power<0, InputRadix>>,
@@ -186,7 +187,7 @@ namespace cnl {
 
     // conversion from float to scaled_integer
     template<
-            _impl::floating_point Input,
+            floating_point Input,
             typename ResultRep, int ResultExponent, int ResultRadix>
     struct custom_operator<
             _impl::convert_op,
@@ -208,7 +209,7 @@ namespace cnl {
         }
     };
 
-    template<_impl::integer Input, typename ResultRep, class ResultScale>
+    template<integer Input, typename ResultRep, class ResultScale>
     struct custom_operator<
             _impl::convert_op,
             op_value<Input, _impl::native_tag>,
@@ -219,7 +220,7 @@ namespace cnl {
                   op_value<scaled_integer<ResultRep, ResultScale>, tie_to_pos_inf_rounding_tag>> {
     };
 
-    template<typename InputRep, class InputScale, _impl::integer Result>
+    template<typename InputRep, class InputScale, integer Result>
     struct custom_operator<
             _impl::convert_op,
             op_value<scaled_integer<InputRep, InputScale>, _impl::native_tag>,
@@ -279,7 +280,7 @@ namespace cnl {
 
     // conversion from float to scaled_integer
     template<
-            _impl::floating_point Input,
+            floating_point Input,
             typename ResultRep, int ResultExponent, int ResultRadix>
     struct custom_operator<
             _impl::convert_op,
@@ -296,7 +297,7 @@ namespace cnl {
         }
     };
 
-    template<_impl::integer Input, typename ResultRep, class ResultScale>
+    template<integer Input, typename ResultRep, class ResultScale>
     struct custom_operator<
             _impl::convert_op,
             op_value<Input, _impl::native_tag>,
@@ -307,7 +308,7 @@ namespace cnl {
                   op_value<scaled_integer<ResultRep, ResultScale>, neg_inf_rounding_tag>> {
     };
 
-    template<typename InputRep, class InputScale, _impl::integer Result>
+    template<typename InputRep, class InputScale, integer Result>
     struct custom_operator<
             _impl::convert_op,
             op_value<scaled_integer<InputRep, InputScale>, _impl::native_tag>,

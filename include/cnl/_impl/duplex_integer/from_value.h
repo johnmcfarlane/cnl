@@ -8,8 +8,8 @@
 #define CNL_IMPL_DUPLEX_INTEGER_FROM_VALUE_H
 
 #include "../num_traits/from_value.h"
+#include "declaration.h"
 #include "digits.h"
-#include "forward_declaration.h"
 #include "is_duplex_integer.h"
 #include "narrowest_integer.h"
 
