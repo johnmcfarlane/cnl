@@ -23,8 +23,8 @@ namespace cnl {
     template<_impl::integer Src, int SrcExponent, _impl::floating_point Dest, int DestExponent, int Radix>
     struct custom_operator<
             _impl::convert_op,
-            operand<Src, power<SrcExponent, Radix>>,
-            operand<Dest, power<DestExponent, Radix>>> {
+            op_value<Src, power<SrcExponent, Radix>>,
+            op_value<Dest, power<DestExponent, Radix>>> {
         [[nodiscard]] constexpr auto operator()(Src const& from) const
         {
             return Dest(from) * _impl::power_value<Dest, SrcExponent - DestExponent, Radix>();
@@ -35,8 +35,8 @@ namespace cnl {
     template<_impl::floating_point Input, int SrcExponent, _impl::integer Result, int DestExponent, int Radix>
     struct custom_operator<
             _impl::convert_op,
-            operand<Input, power<SrcExponent, Radix>>,
-            operand<Result, power<DestExponent, Radix>>> {
+            op_value<Input, power<SrcExponent, Radix>>,
+            op_value<Result, power<DestExponent, Radix>>> {
         [[nodiscard]] constexpr auto operator()(Input const& from) const
         {
             return static_cast<Result>(
@@ -48,7 +48,7 @@ namespace cnl {
     template<_impl::integer Input, int SrcExponent, _impl::integer Result, int DestExponent, int Radix>
     struct custom_operator<
             _impl::convert_op,
-            operand<Input, power<SrcExponent, Radix>>, operand<Result, power<DestExponent, Radix>>> {
+            op_value<Input, power<SrcExponent, Radix>>, op_value<Result, power<DestExponent, Radix>>> {
         [[nodiscard]] constexpr auto operator()(Input const& from) const
         {
             // when converting *from* scaled_integer
@@ -59,16 +59,16 @@ namespace cnl {
 
     // shims between equivalent tags
     template<typename Input, typename Result, int DestExponent, int DestRadix>
-    struct custom_operator<_impl::convert_op, operand<Input>, operand<Result, power<DestExponent, DestRadix>>>
+    struct custom_operator<_impl::convert_op, op_value<Input>, op_value<Result, power<DestExponent, DestRadix>>>
         : custom_operator<
                   _impl::convert_op,
-                  operand<Input, power<0, DestRadix>>,
-                  operand<Result, power<DestExponent, DestRadix>>> {
+                  op_value<Input, power<0, DestRadix>>,
+                  op_value<Result, power<DestExponent, DestRadix>>> {
     };
 
     template<typename Input, int SrcExponent, int SrcRadix, typename Result>
-    struct custom_operator<_impl::convert_op, operand<Input, power<SrcExponent, SrcRadix>>, operand<Result>>
-        : custom_operator<_impl::convert_op, operand<Input, power<SrcExponent, SrcRadix>>, operand<Result, power<0, SrcRadix>>> {
+    struct custom_operator<_impl::convert_op, op_value<Input, power<SrcExponent, SrcRadix>>, op_value<Result>>
+        : custom_operator<_impl::convert_op, op_value<Input, power<SrcExponent, SrcRadix>>, op_value<Result, power<0, SrcRadix>>> {
     };
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -109,8 +109,8 @@ namespace cnl {
             typename Dest, int DestExponent, int Radix>
     struct custom_operator<
             _impl::convert_op,
-            operand<cnl::fraction<SrcNumerator, SrcDenominator>, cnl::power<0, Radix>>,
-            operand<Dest, cnl::power<DestExponent, Radix>>> {
+            op_value<cnl::fraction<SrcNumerator, SrcDenominator>, cnl::power<0, Radix>>,
+            op_value<Dest, cnl::power<DestExponent, Radix>>> {
         [[nodiscard]] constexpr auto operator()(
                 cnl::fraction<SrcNumerator, SrcDenominator> const& from) const
         {

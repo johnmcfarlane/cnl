@@ -25,27 +25,27 @@ namespace cnl {
             typename Destination, int DestDigits, class DestNarrowest>
     struct custom_operator<
             _impl::convert_op,
-            operand<Source, cnl::elastic_tag<SrcDigits, SrcNarrowest>>,
-            operand<Destination, cnl::elastic_tag<DestDigits, DestNarrowest>>>
+            op_value<Source, cnl::elastic_tag<SrcDigits, SrcNarrowest>>,
+            op_value<Destination, cnl::elastic_tag<DestDigits, DestNarrowest>>>
         : custom_operator<
                   _impl::convert_op,
-                  operand<Source>,
-                  operand<Destination>> {
+                  op_value<Source>,
+                  op_value<Destination>> {
     };
 
     template<typename Source, typename Destination, int DestDigits, class DestNarrowest>
     struct custom_operator<
             _impl::convert_op,
-            operand<Source>,
-            operand<Destination, cnl::elastic_tag<DestDigits, DestNarrowest>>> : custom_operator<_impl::convert_op, operand<Source>, operand<Destination>> {
+            op_value<Source>,
+            op_value<Destination, cnl::elastic_tag<DestDigits, DestNarrowest>>> : custom_operator<_impl::convert_op, op_value<Source>, op_value<Destination>> {
     };
 
     template<typename Source, int Digits, class Narrowest, typename Destination>
     struct custom_operator<
             _impl::convert_op,
-            operand<Source, cnl::elastic_tag<Digits, Narrowest>>,
-            operand<Destination>>
-        : custom_operator<_impl::convert_op, operand<Source>, operand<Destination>> {
+            op_value<Source, cnl::elastic_tag<Digits, Narrowest>>,
+            op_value<Destination>>
+        : custom_operator<_impl::convert_op, op_value<Source>, op_value<Destination>> {
     };
 
     template<
@@ -54,8 +54,8 @@ namespace cnl {
             typename Rhs, int RhsDigits, class RhsNarrowest>
     struct custom_operator<
             Operator,
-            operand<Lhs, elastic_tag<LhsDigits, LhsNarrowest>>,
-            operand<Rhs, elastic_tag<RhsDigits, RhsNarrowest>>> {
+            op_value<Lhs, elastic_tag<LhsDigits, LhsNarrowest>>,
+            op_value<Rhs, elastic_tag<RhsDigits, RhsNarrowest>>> {
         static_assert(digits<Lhs> >= LhsDigits, "LHS number is not wide enough");
         static_assert(digits<Rhs> >= RhsDigits, "RHS number is not wide enough");
 
@@ -74,8 +74,8 @@ namespace cnl {
     template<_impl::shift_op Operator, typename Lhs, int LhsDigits, typename LhsNarrowest, typename Rhs>
     requires(!_impl::is_constant<Rhs>::value) struct custom_operator<
             Operator,
-            operand<Lhs, elastic_tag<LhsDigits, LhsNarrowest>>,
-            operand<Rhs>> {
+            op_value<Lhs, elastic_tag<LhsDigits, LhsNarrowest>>,
+            op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator{}(lhs, rhs);
@@ -89,12 +89,12 @@ namespace cnl {
             typename Rhs, typename RhsNarrowest>
     struct custom_operator<
             Operator,
-            operand<Lhs, elastic_tag<LhsDigits, LhsNarrowest>>,
-            operand<Rhs, elastic_tag<RhsDigits, RhsNarrowest>>>
+            op_value<Lhs, elastic_tag<LhsDigits, LhsNarrowest>>,
+            op_value<Rhs, elastic_tag<RhsDigits, RhsNarrowest>>>
         : custom_operator<
                   Operator,
-                  operand<Lhs, elastic_tag<LhsDigits, LhsNarrowest>>,
-                  operand<Rhs, _impl::native_tag>> {
+                  op_value<Lhs, elastic_tag<LhsDigits, LhsNarrowest>>,
+                  op_value<Rhs, _impl::native_tag>> {
     };
 }
 

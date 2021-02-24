@@ -53,24 +53,24 @@ namespace {
         static_assert(
                 cnl::custom_operator<
                         cnl::_impl::greater_than_op,
-                        cnl::operand<elastic_integer<31>>,
-                        cnl::operand<elastic_integer<31>>>()(
+                        cnl::op_value<elastic_integer<31>>,
+                        cnl::op_value<elastic_integer<31>>>()(
                         elastic_integer<31>{0x7fffffff},
                         elastic_integer<31>{cnl::numeric_limits<cnl::int32>::min()}),
                 "cnl::elastic_integer test failed");
         static_assert(
                 cnl::custom_operator<
                         cnl::_impl::greater_than_op,
-                        cnl::operand<elastic_integer<31>>,
-                        cnl::operand<elastic_integer<31>>>()(
+                        cnl::op_value<elastic_integer<31>>,
+                        cnl::op_value<elastic_integer<31>>>()(
                         elastic_integer<31>{0x7fffffff},
                         elastic_integer<31>{cnl::numeric_limits<cnl::int32>::min()}),
                 "cnl::elastic_integer test failed");
         static_assert(
                 cnl::custom_operator<
                         cnl::_impl::less_than_op,
-                        cnl::operand<elastic_integer<31, signed>>,
-                        cnl::operand<elastic_integer<31, unsigned>>>{}(
+                        cnl::op_value<elastic_integer<31, signed>>,
+                        cnl::op_value<elastic_integer<31, unsigned>>>{}(
                         elastic_integer<>{42}, elastic_integer<31, unsigned>{43U}),
                 "cnl::elastic_integer test failed");
         static_assert(
@@ -80,8 +80,8 @@ namespace {
         static_assert(
                 cnl::custom_operator<
                         cnl::_impl::equal_op,
-                        cnl::operand<elastic_integer<1>>,
-                        cnl::operand<std::int32_t>>()(
+                        cnl::op_value<elastic_integer<1>>,
+                        cnl::op_value<std::int32_t>>()(
                         elastic_integer<1>{0}, INT32_C(0)),
                 "cnl::elastic_integer test failed");
         static_assert(
@@ -93,8 +93,8 @@ namespace {
                         elastic_integer<1, int>{0},
                         cnl::custom_operator<
                                 cnl::_impl::multiply_op,
-                                cnl::operand<elastic_integer<1>>,
-                                cnl::operand<elastic_integer<1>>>{}(
+                                cnl::op_value<elastic_integer<1>>,
+                                cnl::op_value<elastic_integer<1>>>{}(
                                 elastic_integer<1>{0}, elastic_integer<1>(0))),
                 "cnl::elastic_integer test failed");
         static_assert(
@@ -102,30 +102,30 @@ namespace {
                         elastic_integer<31, int>{0},
                         cnl::custom_operator<
                                 cnl::_impl::multiply_op,
-                                cnl::operand<elastic_integer<1>>,
-                                cnl::operand<std::int32_t>>()(
+                                cnl::op_value<elastic_integer<1>>,
+                                cnl::op_value<std::int32_t>>()(
                                 elastic_integer<1>{0}, INT32_C(0))),
                 "cnl::elastic_integer test failed");
 
         static_assert(
                 cnl::custom_operator<
                         equal_op,
-                        cnl::operand<elastic_integer<8>>,
-                        cnl::operand<elastic_integer<8>>>()(
+                        cnl::op_value<elastic_integer<8>>,
+                        cnl::op_value<elastic_integer<8>>>()(
                         elastic_integer<8>{1L}, elastic_integer<8>{1}),
                 "elastic_integer comparison test failed");
         static_assert(
                 cnl::custom_operator<
                         equal_op,
-                        cnl::operand<elastic_integer<12, cnl::uint16>>,
-                        cnl::operand<int>>()(
+                        cnl::op_value<elastic_integer<12, cnl::uint16>>,
+                        cnl::op_value<int>>()(
                         elastic_integer<12, cnl::uint16>{1324}, 1324),
                 "cnl::elastic_integer test failed");
         static_assert(
                 cnl::custom_operator<
                         equal_op,
-                        cnl::operand<elastic_integer<12, cnl::uint16>>,
-                        cnl::operand<int>>()(
+                        cnl::op_value<elastic_integer<12, cnl::uint16>>,
+                        cnl::op_value<int>>()(
                         ~elastic_integer<12, cnl::uint16>{0}, 0xFFF),
                 "cnl::elastic_integer test failed");
     }
@@ -481,8 +481,8 @@ namespace {
                 identical(
                         cnl::custom_operator<
                                 cnl::_impl::multiply_op,
-                                cnl::operand<elastic_integer<1>>,
-                                cnl::operand<std::int32_t>>()(
+                                cnl::op_value<elastic_integer<1>>,
+                                cnl::op_value<std::int32_t>>()(
                                 elastic_integer<1>{0}, INT32_C(0)),
                         cnl::elastic_integer<31, int>{0}),
                 "cnl::elastic_integer test failed");
@@ -730,8 +730,8 @@ namespace {
                         elastic_integer<5 + 34, unsigned>{0b11001110101011101001LL << 34},
                         cnl::custom_operator<
                                 cnl::_impl::shift_left_op,
-                                cnl::operand<elastic_integer<39, unsigned>>,
-                                cnl::operand<int>>{}(
+                                cnl::op_value<elastic_integer<39, unsigned>>,
+                                cnl::op_value<int>>{}(
                                 elastic_integer<5 + 34, unsigned>{0b11001110101011101001}, 34)),
                 "shift_left test failed");
         static_assert(

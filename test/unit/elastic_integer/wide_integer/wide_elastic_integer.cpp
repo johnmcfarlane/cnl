@@ -71,8 +71,8 @@ namespace {
                         wide_elastic_integer<4>{1},
                         cnl::custom_operator<
                                 cnl::_impl::shift_right_op,
-                                cnl::operand<wide_elastic_integer<4>>,
-                                cnl::operand<cnl::elastic_integer<2>>>{}(
+                                cnl::op_value<wide_elastic_integer<4>>,
+                                cnl::op_value<cnl::elastic_integer<2>>>{}(
                                 wide_elastic_integer<4>{12}, cnl::elastic_integer<2>{3})));
         static_assert(
                 identical(

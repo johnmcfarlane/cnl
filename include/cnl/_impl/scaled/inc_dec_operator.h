@@ -14,7 +14,7 @@
 /// compositional numeric library
 namespace cnl {
     template<_impl::prefix_op Operator, typename Rhs, int Exponent, int Radix>
-    struct custom_operator<Operator, operand<Rhs, power<Exponent, Radix>>> {
+    struct custom_operator<Operator, op_value<Rhs, power<Exponent, Radix>>> {
         constexpr auto operator()(Rhs& rhs) const
         {
             return typename _impl::pre_to_assign<Operator>::type{}(
@@ -23,7 +23,7 @@ namespace cnl {
     };
 
     template<_impl::postfix_op Operator, typename Lhs, int Exponent, int Radix>
-    struct custom_operator<Operator, operand<Lhs, power<Exponent, Radix>>> {
+    struct custom_operator<Operator, op_value<Lhs, power<Exponent, Radix>>> {
         constexpr auto operator()(Lhs& lhs) const -> Lhs
         {
             auto copy = lhs;

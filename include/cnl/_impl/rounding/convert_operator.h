@@ -37,17 +37,17 @@ namespace cnl {
     template<typename Source, tag SrcTag, typename Destination>
     requires(!_impl::is_rounding_tag<SrcTag>::value) struct custom_operator<
             _impl::convert_op,
-            operand<Source, SrcTag>,
-            operand<Destination, native_rounding_tag>> {
+            op_value<Source, SrcTag>,
+            op_value<Destination, native_rounding_tag>> {
         [[nodiscard]] constexpr auto operator()(Source const& from) const
         {
             return custom_operator<
-                    _impl::convert_op, operand<Source, SrcTag>, operand<Destination>>{}(from);
+                    _impl::convert_op, op_value<Source, SrcTag>, op_value<Destination>>{}(from);
         }
     };
 
     template<typename Source, tag SrcTag, typename Destination>
-    requires(!_impl::is_rounding_tag<SrcTag>::value && _impl::are_arithmetic_or_integer<Destination, Source>::value) struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination, nearest_rounding_tag>> {
+    requires(!_impl::is_rounding_tag<SrcTag>::value && _impl::are_arithmetic_or_integer<Destination, Source>::value) struct custom_operator<_impl::convert_op, op_value<Source, SrcTag>, op_value<Destination, nearest_rounding_tag>> {
         [[nodiscard]] constexpr auto operator()(Source const& from) const
         {
             return numeric_limits<Destination>::is_integer && std::is_floating_point<Source>::value
@@ -58,7 +58,7 @@ namespace cnl {
     };
 
     template<typename Source, tag SrcTag, typename Destination>
-    requires(!_impl::is_rounding_tag<SrcTag>::value && _impl::are_arithmetic_or_integer<Destination, Source>::value) struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination, tie_to_pos_inf_rounding_tag>> {
+    requires(!_impl::is_rounding_tag<SrcTag>::value && _impl::are_arithmetic_or_integer<Destination, Source>::value) struct custom_operator<_impl::convert_op, op_value<Source, SrcTag>, op_value<Destination, tie_to_pos_inf_rounding_tag>> {
     private:
         [[nodiscard]] static constexpr auto floor_residual(Source x, Source x_whole)
         {
@@ -83,7 +83,7 @@ namespace cnl {
     };
 
     template<typename Source, tag SrcTag, typename Destination>
-    requires(!_impl::is_rounding_tag<SrcTag>::value && _impl::are_arithmetic_or_integer<Destination, Source>::value) struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination, neg_inf_rounding_tag>> {
+    requires(!_impl::is_rounding_tag<SrcTag>::value && _impl::are_arithmetic_or_integer<Destination, Source>::value) struct custom_operator<_impl::convert_op, op_value<Source, SrcTag>, op_value<Destination, neg_inf_rounding_tag>> {
     private:
         [[nodiscard]] static constexpr auto floor_residual(Source x, Source x_whole)
         {
@@ -109,17 +109,17 @@ namespace cnl {
     /// \endcond
 
     template<typename Source, rounding_tag SrcTag, typename Destination>
-    struct custom_operator<_impl::convert_op, operand<Source, SrcTag>, operand<Destination>> {
+    struct custom_operator<_impl::convert_op, op_value<Source, SrcTag>, op_value<Destination>> {
         [[nodiscard]] constexpr auto operator()(Source const& from) const
         {
-            return custom_operator<_impl::convert_op, operand<Source>, operand<Destination>>{}(
+            return custom_operator<_impl::convert_op, op_value<Source>, op_value<Destination>>{}(
                     from);
         }
     };
 
     template<typename Source, rounding_tag SrcRoundingTag, typename Destination, rounding_tag DestRoundingTag>
-    struct custom_operator<_impl::convert_op, operand<Source, SrcRoundingTag>, operand<Destination, DestRoundingTag>>
-        : custom_operator<_impl::convert_op, operand<Source>, operand<Destination, DestRoundingTag>> {
+    struct custom_operator<_impl::convert_op, op_value<Source, SrcRoundingTag>, op_value<Destination, DestRoundingTag>>
+        : custom_operator<_impl::convert_op, op_value<Source>, op_value<Destination, DestRoundingTag>> {
     };
 }
 

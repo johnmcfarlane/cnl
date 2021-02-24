@@ -41,8 +41,8 @@ namespace cnl {
     template<typename Upper, typename Lower>
     struct custom_operator<
             _impl::divide_op,
-            operand<_impl::duplex_integer<Upper, Lower>>,
-            operand<_impl::duplex_integer<Upper, Lower>>> {
+            op_value<_impl::duplex_integer<Upper, Lower>>,
+            op_value<_impl::duplex_integer<Upper, Lower>>> {
         using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
         using _unsigned_duplex_integer = numbers::set_signedness_t<_duplex_integer, false>;
 
@@ -135,8 +135,8 @@ namespace cnl {
     template<typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
     struct custom_operator<
             _impl::divide_op,
-            operand<_impl::duplex_integer<LhsUpper, LhsLower>>,
-            operand<_impl::duplex_integer<RhsUpper, RhsLower>>>
+            op_value<_impl::duplex_integer<LhsUpper, LhsLower>>,
+            op_value<_impl::duplex_integer<RhsUpper, RhsLower>>>
         : _impl::heterogeneous_duplex_divide_operator<
                   _impl::duplex_integer<LhsUpper, LhsLower>,
                   _impl::duplex_integer<RhsUpper, RhsLower>> {
@@ -145,8 +145,8 @@ namespace cnl {
     template<typename Lhs, typename RhsUpper, typename RhsLower>
     struct custom_operator<
             _impl::divide_op,
-            operand<Lhs>,
-            operand<_impl::duplex_integer<RhsUpper, RhsLower>>>
+            op_value<Lhs>,
+            op_value<_impl::duplex_integer<RhsUpper, RhsLower>>>
         : _impl::heterogeneous_duplex_divide_operator<
                   Lhs, _impl::duplex_integer<RhsUpper, RhsLower>> {
     };
@@ -154,8 +154,8 @@ namespace cnl {
     template<typename LhsUpper, typename LhsLower, typename Rhs>
     struct custom_operator<
             _impl::divide_op,
-            operand<_impl::duplex_integer<LhsUpper, LhsLower>>,
-            operand<Rhs>>
+            op_value<_impl::duplex_integer<LhsUpper, LhsLower>>,
+            op_value<Rhs>>
         : _impl::heterogeneous_duplex_divide_operator<
                   _impl::duplex_integer<LhsUpper, LhsLower>, Rhs> {
     };

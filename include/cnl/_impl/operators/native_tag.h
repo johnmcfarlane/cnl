@@ -39,7 +39,7 @@ namespace cnl {
     inline constexpr auto is_tag<_impl::native_tag> = true;
 
     template<typename Source, typename Destination>
-    struct custom_operator<_impl::convert_op, operand<Source>, operand<Destination>> {
+    struct custom_operator<_impl::convert_op, op_value<Source>, op_value<Destination>> {
         [[nodiscard]] constexpr auto operator()(Source const& from) const -> Destination
         {
             return _impl::convert_op{}.template operator()<Destination>(from);
@@ -47,15 +47,15 @@ namespace cnl {
     };
 
     template<_impl::unary_arithmetic_op Operator, typename Rhs>
-    requires(_impl::has_native_operators<Rhs>::value) struct custom_operator<Operator, operand<Rhs>> : Operator {
+    requires(_impl::has_native_operators<Rhs>::value) struct custom_operator<Operator, op_value<Rhs>> : Operator {
     };
 
     template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
-    requires(_impl::has_native_operators<Lhs>::value&& _impl::has_native_operators<Rhs>::value) struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> : Operator {
+    requires(_impl::has_native_operators<Lhs>::value&& _impl::has_native_operators<Rhs>::value) struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> : Operator {
     };
 
     template<_impl::shift_op Operator, typename Lhs, typename Rhs>
-    requires(_impl::has_native_operators<Lhs>::value&& _impl::has_native_operators<Rhs>::value) struct custom_operator<Operator, operand<Lhs>, operand<Rhs>> : Operator {
+    requires(_impl::has_native_operators<Lhs>::value&& _impl::has_native_operators<Rhs>::value) struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> : Operator {
     };
 }
 

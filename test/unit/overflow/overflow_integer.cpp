@@ -56,8 +56,8 @@ static_assert(
 static_assert(
         cnl::custom_operator<
                 cnl::_impl::equal_op,
-                cnl::operand<saturated_integer<uint8_t>>,
-                cnl::operand<int>>()(
+                cnl::op_value<saturated_integer<uint8_t>>,
+                cnl::op_value<int>>()(
                 saturated_integer<uint8_t>(-1), 0),
         "cnl::saturated_integer equality test failed");
 
@@ -123,16 +123,16 @@ namespace saturated_binary_arithmetic_operator {
             identical(
                     cnl::custom_operator<
                             cnl::_impl::multiply_op,
-                            cnl::operand<saturated_integer<short>>,
-                            cnl::operand<float>>()(saturated_integer<short>(1234), 2.),
+                            cnl::op_value<saturated_integer<short>>,
+                            cnl::op_value<float>>()(saturated_integer<short>(1234), 2.),
                     2468.F),
             "cnl::saturated_integer test failed");
 
     static_assert(
             cnl::custom_operator<
                     cnl::_impl::equal_op,
-                    cnl::operand<saturated_integer<int16_t>>,
-                    cnl::operand<saturated_integer<int16_t>>>()(
+                    cnl::op_value<saturated_integer<int16_t>>,
+                    cnl::op_value<saturated_integer<int16_t>>>()(
                     saturated_integer<int16_t>(32767), saturated_integer<int16_t>(5000000000L)));
 
     static_assert(
@@ -140,8 +140,8 @@ namespace saturated_binary_arithmetic_operator {
                     cnl::_impl::make_wrapper<cnl::saturated_overflow_tag>(
                             cnl::custom_operator<
                                     multiply_op,
-                                    cnl::operand<signed char, cnl::saturated_overflow_tag>,
-                                    cnl::operand<signed char, cnl::saturated_overflow_tag>>()(
+                                    cnl::op_value<signed char, cnl::saturated_overflow_tag>,
+                                    cnl::op_value<signed char, cnl::saturated_overflow_tag>>()(
                                     cnl::_impl::to_rep(saturated_integer<signed char>{30}),
                                     cnl::_impl::to_rep(saturated_integer<signed char>{40}))),
                     saturated_integer<int>{1200}));
@@ -150,8 +150,8 @@ namespace saturated_binary_arithmetic_operator {
             identical(
                     cnl::custom_operator<
                             multiply_op,
-                            cnl::operand<saturated_integer<signed char>>,
-                            cnl::operand<saturated_integer<signed char>>>()(
+                            cnl::op_value<saturated_integer<signed char>>,
+                            cnl::op_value<saturated_integer<signed char>>>()(
                             saturated_integer<signed char>{30}, saturated_integer<signed char>{40}),
                     saturated_integer<int>{1200}));
 
@@ -159,8 +159,8 @@ namespace saturated_binary_arithmetic_operator {
             identical(
                     cnl::custom_operator<
                             cnl::_impl::multiply_op,
-                            cnl::operand<saturated_integer<signed char>>,
-                            cnl::operand<saturated_integer<signed char>>>()(
+                            cnl::op_value<saturated_integer<signed char>>,
+                            cnl::op_value<saturated_integer<signed char>>>()(
                             30, 40),
                     saturated_integer<int>{1200}));
 
@@ -168,8 +168,8 @@ namespace saturated_binary_arithmetic_operator {
             identical(
                     cnl::custom_operator<
                             cnl::_impl::multiply_op,
-                            cnl::operand<unsigned>,
-                            cnl::operand<throwing_integer<cnl::uint8>>>()(
+                            cnl::op_value<unsigned>,
+                            cnl::op_value<throwing_integer<cnl::uint8>>>()(
                             3U, throwing_integer<cnl::uint8>{4}),
                     throwing_integer<unsigned>{12}));
 }
@@ -189,7 +189,7 @@ namespace test_constructor {
 namespace test_equal {
     static_assert(
             cnl::custom_operator<
-                    cnl::_impl::equal_op, cnl::operand<throwing_integer<short>>, cnl::operand<double>>()(
+                    cnl::_impl::equal_op, cnl::op_value<throwing_integer<short>>, cnl::op_value<double>>()(
                     throwing_integer<short>{0}, 0.));
     static_assert(throwing_integer<short>{0} == 0.);
 }
@@ -453,15 +453,15 @@ namespace test_shift_left {
             identical(
                     cnl::custom_operator<
                             cnl::_impl::shift_left_op,
-                            cnl::operand<std::uint8_t, cnl::saturated_overflow_tag>,
-                            cnl::operand<unsigned, cnl::_impl::native_tag>>{}(255, 30U),
+                            cnl::op_value<std::uint8_t, cnl::saturated_overflow_tag>,
+                            cnl::op_value<unsigned, cnl::_impl::native_tag>>{}(255, 30U),
                     cnl::numeric_limits<int>::max()));
     static_assert(
             identical(
                     cnl::custom_operator<
                             cnl::_impl::shift_left_op,
-                            cnl::operand<saturated_integer<std::uint8_t>>,
-                            cnl::operand<unsigned>>{}(
+                            cnl::op_value<saturated_integer<std::uint8_t>>,
+                            cnl::op_value<unsigned>>{}(
                             saturated_integer<std::uint8_t>(255), 30U),
                     cnl::numeric_limits<saturated_integer<int>>::max()));
     static_assert(

@@ -45,8 +45,8 @@ namespace cnl {
             _bmp::cpp_integer_type SignType>
     struct custom_operator<
             _impl::convert_op,
-            operand<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, SignType>>, cnl::power<SrcExponent, Radix>>,
-            operand<_bmp::cpp_int_backend<NumBits, NumBits, SignType>, cnl::power<DestExponent, Radix>>> {
+            op_value<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, SignType>>, cnl::power<SrcExponent, Radix>>,
+            op_value<_bmp::cpp_int_backend<NumBits, NumBits, SignType>, cnl::power<DestExponent, Radix>>> {
         [[nodiscard]] constexpr auto operator()(
                 _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, SignType>> const& input) const
         {
@@ -61,8 +61,8 @@ namespace cnl {
             _bmp::cpp_integer_type SignType, typename Input>
     requires(!_impl::is_bmp_number<Input>::value) struct custom_operator<
             _impl::convert_op,
-            operand<Input, cnl::power<SrcExponent, Radix>>,
-            operand<_bmp::cpp_int_backend<NumBits, NumBits, SignType>, cnl::power<DestExponent, Radix>>> {
+            op_value<Input, cnl::power<SrcExponent, Radix>>,
+            op_value<_bmp::cpp_int_backend<NumBits, NumBits, SignType>, cnl::power<DestExponent, Radix>>> {
         [[nodiscard]] constexpr auto operator()(Input const& input) const
                 -> _bmp::cpp_int_backend<NumBits, NumBits, SignType>
         {

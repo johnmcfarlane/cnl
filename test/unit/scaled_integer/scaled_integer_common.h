@@ -799,8 +799,8 @@ namespace test_arithmetic {
             identical(
                     cnl::custom_operator<
                             cnl::_impl::subtract_op,
-                            cnl::operand<scaled_integer<int32>>,
-                            cnl::operand<cnl::constant<369>>>()(
+                            cnl::op_value<scaled_integer<int32>>,
+                            cnl::op_value<cnl::constant<369>>>()(
                             scaled_integer<int32>{999}, cnl::constant<369>{}),
                     scaled_integer<test_int, cnl::power<0>>{630}),
             "cnl::_scaled_integer_impl::rep_op_exponent test failed");
@@ -1178,8 +1178,8 @@ namespace test_shift_operator_right {
     constexpr auto rhs{test_int{2}};
     constexpr auto op{cnl::custom_operator<
             cnl::_impl::shift_right_op,
-            cnl::operand<cnl::scaled_integer<test_int, cnl::power<-28>>>,
-            cnl::operand<test_int>>{}};
+            cnl::op_value<cnl::scaled_integer<test_int, cnl::power<-28>>>,
+            cnl::op_value<test_int>>{}};
     constexpr auto actual{op(lhs, rhs)};
     static_assert(identical(expected, actual));
 }
@@ -1191,8 +1191,8 @@ namespace test_shift_operator_left {
     constexpr auto rhs{scaled_integer<>{1}};
     constexpr auto op{cnl::custom_operator<
             cnl::_impl::shift_left_op,
-            cnl::operand<scaled_integer<uint8, cnl::power<-4>>>,
-            cnl::operand<scaled_integer<>>>{}};
+            cnl::op_value<scaled_integer<uint8, cnl::power<-4>>>,
+            cnl::op_value<scaled_integer<>>>{}};
     constexpr auto actual{op(lhs, rhs)};
     static_assert(identical(expected, actual));
 }

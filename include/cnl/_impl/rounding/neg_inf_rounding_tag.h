@@ -39,17 +39,17 @@ namespace cnl {
     }
 
     template<_impl::unary_arithmetic_op Operator, typename Operand>
-    struct custom_operator<Operator, operand<Operand, neg_inf_rounding_tag>>
-        : custom_operator<Operator, operand<Operand, _impl::native_tag>> {
+    struct custom_operator<Operator, op_value<Operand, neg_inf_rounding_tag>>
+        : custom_operator<Operator, op_value<Operand, _impl::native_tag>> {
     };
 
     template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
-    struct custom_operator<Operator, operand<Lhs, neg_inf_rounding_tag>, operand<Rhs, neg_inf_rounding_tag>>
+    struct custom_operator<Operator, op_value<Lhs, neg_inf_rounding_tag>, op_value<Rhs, neg_inf_rounding_tag>>
         : Operator {
     };
 
     template<typename Lhs, typename Rhs>
-    struct custom_operator<_impl::divide_op, operand<Lhs, neg_inf_rounding_tag>, operand<Rhs, neg_inf_rounding_tag>> {
+    struct custom_operator<_impl::divide_op, op_value<Lhs, neg_inf_rounding_tag>, op_value<Rhs, neg_inf_rounding_tag>> {
     private:
         using result_type = decltype(std::declval<Lhs>() / std::declval<Rhs>());
         [[nodiscard]] constexpr auto remainder(Lhs const& lhs, Rhs const& rhs) const -> result_type
@@ -76,15 +76,15 @@ namespace cnl {
     };
 
     template<_impl::shift_op Operator, tag RhsTag, typename Lhs, typename Rhs>
-    struct custom_operator<Operator, operand<Lhs, neg_inf_rounding_tag>, operand<Rhs, RhsTag>> : Operator {
+    struct custom_operator<Operator, op_value<Lhs, neg_inf_rounding_tag>, op_value<Rhs, RhsTag>> : Operator {
     };
 
     template<_impl::prefix_op Operator, typename Rhs>
-    struct custom_operator<Operator, operand<Rhs, neg_inf_rounding_tag>> : Operator {
+    struct custom_operator<Operator, op_value<Rhs, neg_inf_rounding_tag>> : Operator {
     };
 
     template<_impl::postfix_op Operator, typename Lhs>
-    struct custom_operator<Operator, operand<Lhs, neg_inf_rounding_tag>> : Operator {
+    struct custom_operator<Operator, op_value<Lhs, neg_inf_rounding_tag>> : Operator {
     };
 }
 

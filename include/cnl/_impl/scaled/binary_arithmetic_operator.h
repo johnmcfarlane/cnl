@@ -17,7 +17,7 @@
 /// compositional numeric library
 namespace cnl {
     template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs, int Exponent, int Radix>
-    struct custom_operator<Operator, operand<Lhs, power<Exponent, Radix>>, operand<Rhs, power<Exponent, Radix>>>
+    struct custom_operator<Operator, op_value<Lhs, power<Exponent, Radix>>, op_value<Rhs, power<Exponent, Radix>>>
         : Operator {
     };
 
@@ -39,8 +39,8 @@ namespace cnl {
     template<_impl::binary_arithmetic_op Operator, typename Lhs, int LhsExponent, int RhsExponent, typename Rhs, int Radix>
     requires(LhsExponent != RhsExponent && _impl::is_zero_degree<Operator>::value) struct custom_operator<
             Operator,
-            operand<Lhs, power<LhsExponent, Radix>>,
-            operand<Rhs, power<RhsExponent, Radix>>> {
+            op_value<Lhs, power<LhsExponent, Radix>>,
+            op_value<Rhs, power<RhsExponent, Radix>>> {
     private:
         static constexpr int _common_exponent = std::min(LhsExponent, RhsExponent);
         using _common_power = power<_common_exponent, Radix>;
@@ -59,8 +59,8 @@ namespace cnl {
     template<_impl::binary_arithmetic_op Operator, typename Lhs, int LhsExponent, typename Rhs, int RhsExponent, int Radix>
     requires(LhsExponent != RhsExponent && !_impl::is_zero_degree<Operator>::value) struct custom_operator<
             Operator,
-            operand<Lhs, power<LhsExponent, Radix>>,
-            operand<Rhs, power<RhsExponent, Radix>>>
+            op_value<Lhs, power<LhsExponent, Radix>>,
+            op_value<Rhs, power<RhsExponent, Radix>>>
         : Operator {
     };
 }

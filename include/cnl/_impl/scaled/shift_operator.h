@@ -16,14 +16,14 @@
 namespace cnl {
     // shift_operator of scaled_integer and scaled_integer
     template<_impl::shift_op Operator, typename Lhs, int LhsExponent, typename Rhs, int Radix>
-    struct custom_operator<Operator, operand<Lhs, power<LhsExponent, Radix>>, operand<Rhs>>
+    struct custom_operator<Operator, op_value<Lhs, power<LhsExponent, Radix>>, op_value<Rhs>>
         : Operator {
     };
 
     // shift_operator of scaled_integer and something else
     template<_impl::shift_op Operator, typename Lhs, int LhsExponent, typename Rhs, int Radix>
-    struct custom_operator<Operator, operand<Lhs, power<LhsExponent, Radix>>, operand<Rhs, power<0, Radix>>>
-        : custom_operator<Operator, operand<Lhs, power<LhsExponent, Radix>>, operand<Rhs>> {
+    struct custom_operator<Operator, op_value<Lhs, power<LhsExponent, Radix>>, op_value<Rhs, power<0, Radix>>>
+        : custom_operator<Operator, op_value<Lhs, power<LhsExponent, Radix>>, op_value<Rhs>> {
     };
 }
 

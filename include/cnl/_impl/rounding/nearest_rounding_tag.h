@@ -37,17 +37,17 @@ namespace cnl {
     }
 
     template<_impl::unary_arithmetic_op Operator, typename Operand>
-    struct custom_operator<Operator, operand<Operand, nearest_rounding_tag>>
-        : custom_operator<Operator, operand<Operand, _impl::native_tag>> {
+    struct custom_operator<Operator, op_value<Operand, nearest_rounding_tag>>
+        : custom_operator<Operator, op_value<Operand, _impl::native_tag>> {
     };
 
     template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
-    struct custom_operator<Operator, operand<Lhs, nearest_rounding_tag>, operand<Rhs, nearest_rounding_tag>>
+    struct custom_operator<Operator, op_value<Lhs, nearest_rounding_tag>, op_value<Rhs, nearest_rounding_tag>>
         : Operator {
     };
 
     template<typename Lhs, typename Rhs>
-    struct custom_operator<_impl::divide_op, operand<Lhs, nearest_rounding_tag>, operand<Rhs, nearest_rounding_tag>> {
+    struct custom_operator<_impl::divide_op, op_value<Lhs, nearest_rounding_tag>, op_value<Rhs, nearest_rounding_tag>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
                 -> decltype(lhs / rhs)
         {
@@ -56,15 +56,15 @@ namespace cnl {
     };
 
     template<_impl::shift_op Operator, typename Lhs, typename Rhs, tag RhsTag>
-    struct custom_operator<Operator, operand<Lhs, nearest_rounding_tag>, operand<Rhs, RhsTag>> : Operator {
+    struct custom_operator<Operator, op_value<Lhs, nearest_rounding_tag>, op_value<Rhs, RhsTag>> : Operator {
     };
 
     template<_impl::prefix_op Operator, typename Rhs>
-    struct custom_operator<Operator, operand<Rhs, nearest_rounding_tag>> : Operator {
+    struct custom_operator<Operator, op_value<Rhs, nearest_rounding_tag>> : Operator {
     };
 
     template<_impl::postfix_op Operator, typename Lhs>
-    struct custom_operator<Operator, operand<Lhs, nearest_rounding_tag>> : Operator {
+    struct custom_operator<Operator, op_value<Lhs, nearest_rounding_tag>> : Operator {
     };
 }
 

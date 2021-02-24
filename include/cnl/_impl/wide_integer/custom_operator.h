@@ -23,8 +23,8 @@ namespace cnl {
              wide_integer<RhsDigits, RhsNarrowest>>) struct
             custom_operator<
                     Operator,
-                    operand<wide_integer<LhsDigits, LhsNarrowest>>,
-                    operand<wide_integer<RhsDigits, RhsNarrowest>>> {
+                    op_value<wide_integer<LhsDigits, LhsNarrowest>>,
+                    op_value<wide_integer<RhsDigits, RhsNarrowest>>> {
         [[nodiscard]] constexpr auto operator()(
                 wide_integer<LhsDigits, LhsNarrowest> const& lhs,
                 wide_integer<RhsDigits, RhsNarrowest> const& rhs) const

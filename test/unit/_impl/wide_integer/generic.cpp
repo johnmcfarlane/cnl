@@ -34,16 +34,16 @@ namespace {
                 identical(
                         true, cnl::custom_operator<
                                       cnl::_impl::equal_op,
-                                      cnl::operand<cnl::wide_integer<15>>,
-                                      cnl::operand<cnl::wide_integer<15>>>{}(
+                                      cnl::op_value<cnl::wide_integer<15>>,
+                                      cnl::op_value<cnl::wide_integer<15>>>{}(
                                       cnl::wide_integer<15>{-3}, cnl::wide_integer<15>{-3})),
                 "cnl::wide_integer equality");
         static_assert(
                 identical(
                         true, cnl::custom_operator<
                                       cnl::_impl::equal_op,
-                                      cnl::operand<cnl::wide_integer<15>>,
-                                      cnl::operand<cnl::wide_integer<63>>>{}(
+                                      cnl::op_value<cnl::wide_integer<15>>,
+                                      cnl::op_value<cnl::wide_integer<63>>>{}(
                                       cnl::wide_integer<15>{-3}, cnl::wide_integer<63>{-3})),
                 "cnl::wide_integer equality");
         static_assert(
@@ -62,7 +62,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::wide_integer<>{-3},
-                        cnl::custom_operator<cnl::_impl::minus_op, cnl::operand<int, cnl::wide_tag<31>>>{}(
+                        cnl::custom_operator<cnl::_impl::minus_op, cnl::op_value<int, cnl::wide_tag<31>>>{}(
                                 cnl::wide_integer<>{3})),
                 "cnl::wide_integer minus");
         static_assert(
@@ -100,8 +100,8 @@ namespace {
                         cnl::wide_integer<8, signed>{5},
                         cnl::custom_operator<
                                 cnl::_impl::add_op,
-                                cnl::operand<cnl::wide_integer<8, unsigned>>,
-                                cnl::operand<cnl::wide_integer<7, signed>>>{}(
+                                cnl::op_value<cnl::wide_integer<8, unsigned>>,
+                                cnl::op_value<cnl::wide_integer<7, signed>>>{}(
                                 cnl::wide_integer<8, unsigned>{2},
                                 cnl::wide_integer<7, signed>{3})),
                 "cnl::wide_integer add");
@@ -118,15 +118,15 @@ namespace {
                         cnl::wide_integer<16, unsigned>{0x12},
                         cnl::custom_operator<
                                 cnl::_impl::divide_op,
-                                cnl::operand<cnl::wide_integer<16, unsigned>>,
-                                cnl::operand<cnl::wide_integer<16, unsigned>>>{}(0x1234, 0x100)));
+                                cnl::op_value<cnl::wide_integer<16, unsigned>>,
+                                cnl::op_value<cnl::wide_integer<16, unsigned>>>{}(0x1234, 0x100)));
         static_assert(
                 identical(
                         cnl::wide_integer<16, signed>{0x12},
                         cnl::custom_operator<
                                 cnl::_impl::divide_op,
-                                cnl::operand<cnl::wide_integer<16, unsigned>>,
-                                cnl::operand<cnl::wide_integer<16, signed>>>{}(0x1234, 0x100)));
+                                cnl::op_value<cnl::wide_integer<16, unsigned>>,
+                                cnl::op_value<cnl::wide_integer<16, signed>>>{}(0x1234, 0x100)));
 
         TEST(wide_integer, divide)  // NOLINT
         {

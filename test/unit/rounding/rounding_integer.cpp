@@ -147,21 +147,21 @@ namespace {
         static_assert(
                 cnl::custom_operator<
                         cnl::_impl::equal_op,
-                        cnl::operand<rounding_integer<>>,
-                        cnl::operand<rounding_integer<>>>()(
+                        cnl::op_value<rounding_integer<>>,
+                        cnl::op_value<rounding_integer<>>>()(
                         rounding_integer<>{2468}, rounding_integer<>{2468}),
                 "cnl::numeric_traits<rounding_integer> test failed");
         static_assert(
                 cnl::custom_operator<
                         cnl::_impl::equal_op,
-                        cnl::operand<int>,
-                        cnl::operand<rounding_integer<>>>()(
+                        cnl::op_value<int>,
+                        cnl::op_value<rounding_integer<>>>()(
                         2468, rounding_integer<>{2468}),
                 "cnl::numeric_traits<rounding_integer> test failed");
         static_assert(
                 cnl::custom_operator<
                         cnl::_impl::greater_than_op,
-                        cnl::operand<rounding_integer<>>, cnl::operand<int>>()(
+                        cnl::op_value<rounding_integer<>>, cnl::op_value<int>>()(
                         rounding_integer<>{234}, 233),
                 "cnl::numeric_traits<rounding_integer> test failed");
     }
@@ -208,8 +208,8 @@ namespace {
                         cnl::rounding_integer<long, cnl::native_rounding_tag>{321},
                         cnl::custom_operator<
                                 cnl::_impl::divide_op,
-                                cnl::operand<cnl::_impl::wrapper<long, cnl::native_rounding_tag>>,
-                                cnl::operand<cnl::constant<3>>>{}(
+                                cnl::op_value<cnl::_impl::wrapper<long, cnl::native_rounding_tag>>,
+                                cnl::op_value<cnl::constant<3>>>{}(
                                 cnl::_impl::wrapper<long, cnl::native_rounding_tag>{963},
                                 cnl::constant<3>{})));
     }

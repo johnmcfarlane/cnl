@@ -18,8 +18,8 @@ namespace {
                         cnl::_impl::wrapper<int, cnl::wide_tag<31, int>>{42},
                         cnl::custom_operator<
                                 cnl::_impl::convert_op,
-                                cnl::operand<cnl::_impl::wrapper<int, cnl::wide_tag<31, int>>, cnl::native_rounding_tag>,
-                                cnl::operand<cnl::_impl::wrapper<int, cnl::wide_tag<31, int>>, cnl::nearest_rounding_tag>>{}(42)),
+                                cnl::op_value<cnl::_impl::wrapper<int, cnl::wide_tag<31, int>>, cnl::native_rounding_tag>,
+                                cnl::op_value<cnl::_impl::wrapper<int, cnl::wide_tag<31, int>>, cnl::nearest_rounding_tag>>{}(42)),
                 "custom_operator<_impl::convert_op, nearest_rounding_tag, native_rounding_tag, wide_integer, "
                 "wide_integer>");
     }
