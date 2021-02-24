@@ -17,6 +17,7 @@
 #include <cnl/_impl/wrapper/operators.h>
 #include <cnl/_impl/wrapper/rep_of.h>
 #include <cnl/_impl/wrapper/set_rep.h>
+#include <cnl/fixed_point.h>
 
 using cnl::_impl::assert_same;
 using cnl::_impl::identical;
@@ -24,7 +25,9 @@ using cnl::_impl::identical;
 namespace {
     namespace test_concepts {
         static_assert(cnl::integer<cnl::_impl::wrapper<int>>);
-        static_assert(cnl::integer<const cnl::_impl::wrapper<long long unsigned int>>);
+        static_assert(cnl::integer<cnl::_impl::wrapper<long long unsigned int> const>);
+        static_assert(cnl::fixed_point<cnl::_impl::wrapper<int>>);
+        static_assert(cnl::fixed_point<cnl::_impl::wrapper<int> const>);
     }
 
     namespace test_parameters {

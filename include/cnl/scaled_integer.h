@@ -13,6 +13,7 @@
 #include "_impl/scaled_integer/convert_operator.h"
 #include "_impl/scaled_integer/declaration.h"
 #include "_impl/scaled_integer/extras.h"
+#include "_impl/scaled_integer/fixed_point.h"
 #include "_impl/scaled_integer/fraction.h"
 #include "_impl/scaled_integer/from_rep.h"
 #include "_impl/scaled_integer/is_scaled_integer.h"

@@ -26,7 +26,7 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Numerator, typename Denominator>
+    template<fixed_point Numerator, fixed_point Denominator>
     struct fraction;
 
     /// \brief literal real number approximation that uses fixed-point arithmetic

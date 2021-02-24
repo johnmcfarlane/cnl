@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_FRACTION_TYPE_H)
 #define CNL_IMPL_FRACTION_TYPE_H
 
+#include "../../fixed_point.h"
 #include "../../floating_point.h"
 #include "../../integer.h"
 #include "../../limits.h"
@@ -23,7 +24,7 @@ namespace cnl {
     /// \tparam Numerator the type of numerator
     /// \tparam Exponent the type of denominator
 
-    template<typename Numerator = int, typename Denominator = Numerator>
+    template<fixed_point Numerator = int, fixed_point Denominator = Numerator>
     struct fraction {
         static_assert(
                 numeric_limits<Numerator>::is_iec559 == numeric_limits<Denominator>::is_iec559,
@@ -40,7 +41,7 @@ namespace cnl {
         template<integer Integer>
         explicit constexpr fraction(Integer const& i);
 
-        template<typename RhsNumerator, typename RhsDenominator>
+        template<fixed_point RhsNumerator, fixed_point RhsDenominator>
         // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
         constexpr fraction(fraction<RhsNumerator, RhsDenominator> const& f);
 

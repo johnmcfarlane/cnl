@@ -9,6 +9,7 @@
 
 #include <cnl/constant.h>
 
+#include <cnl/fixed_point.h>
 #include <cnl/integer.h>
 
 #include <cnl/_impl/type_traits/identical.h>
@@ -22,6 +23,9 @@ namespace {
     namespace test_concepts {
         static_assert(cnl::integer<cnl::constant<42>>);
         static_assert(cnl::integer<cnl::constant<42> const>);
+
+        static_assert(cnl::fixed_point<cnl::constant<42>>);
+        static_assert(cnl::fixed_point<cnl::constant<42> const>);
     }
 
     namespace test_literals {
