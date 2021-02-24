@@ -13,9 +13,9 @@
 #include "../operators/operators.h"
 #include "../wide_integer/definition.h"
 #include "ctors.h"
+#include "definition.h"
 #include "numbers.h"
 #include "numeric_limits.h"
-#include "type.h"
 
 #include <algorithm>
 

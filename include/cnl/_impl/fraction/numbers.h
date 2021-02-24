@@ -8,7 +8,7 @@
 #define CNL_IMPL_FRACTION_NUMBERS_H
 
 #include "../../numbers.h"
-#include "type.h"
+#include "definition.h"
 
 #include <type_traits>
 

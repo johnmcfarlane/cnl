@@ -37,7 +37,7 @@ set(test_sources
         wrapper/operators.cpp
         wrapper/scale.cpp
         wrapper/set_digits.cpp
-        wrapper/type.cpp
+        wrapper/declaration.cpp
         scaled_integer/scaled_integer_built_in.cpp
         scaled_integer/decimal.cpp
         scaled_integer/numbers.cpp
@@ -48,12 +48,12 @@ set(test_sources
         overflow/overflow_integer.cpp
         overflow/overflow_tag.cpp
         rounding/rounding_integer.cpp
+        _impl/duplex_integer/definition.cpp
         _impl/duplex_integer/digits.cpp
         _impl/duplex_integer/from_value.cpp
         _impl/duplex_integer/numeric_limits.cpp
         _impl/duplex_integer/operators.cpp
         _impl/duplex_integer/narrowest_integer.cpp
-        _impl/duplex_integer/type.cpp
         _impl/wide_integer/digits.cpp
         _impl/wide_integer/from_rep.cpp
         _impl/wide_integer/from_value.cpp

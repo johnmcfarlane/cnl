@@ -12,7 +12,7 @@
 #include "../num_traits/set_digits.h"
 #include "../numbers/set_signedness.h"
 #include "../numbers/signedness.h"
-#include "forward_declaration.h"
+#include "declaration.h"
 
 #include <algorithm>
 #include <type_traits>

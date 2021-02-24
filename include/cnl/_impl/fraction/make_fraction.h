@@ -11,7 +11,7 @@
 #include "../../limits.h"
 #include "../assert.h"
 #include "../numbers/set_signedness.h"
-#include "type.h"
+#include "definition.h"
 
 #include <type_traits>
 

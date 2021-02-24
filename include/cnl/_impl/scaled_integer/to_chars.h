@@ -11,9 +11,9 @@
 #include "../assert.h"
 #include "../num_traits/fixed_width_scale.h"
 #include "../to_chars.h"
+#include "definition.h"
 #include "num_traits.h"
 #include "numbers.h"
-#include "type.h"
 
 #include <algorithm>
 #include <array>

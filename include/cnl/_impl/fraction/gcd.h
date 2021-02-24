@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_FRACTION_GCD_H)
 #define CNL_IMPL_FRACTION_GCD_H
 
-#include "type.h"
+#include "definition.h"
 
 #include <numeric>
 

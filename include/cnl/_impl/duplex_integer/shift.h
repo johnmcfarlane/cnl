@@ -9,7 +9,7 @@
 
 #include "../operators/custom_operator.h"
 #include "../operators/operators.h"
-#include "type.h"
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {

@@ -11,10 +11,10 @@
 #include "../operators/custom_operator.h"
 #include "../operators/operators.h"
 #include "../type_traits/conditional3.h"
+#include "definition.h"
 #include "digits.h"
 #include "numeric_limits.h"
 #include "set_width.h"
-#include "type.h"
 
 /// compositional numeric library
 namespace cnl {

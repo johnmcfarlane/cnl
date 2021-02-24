@@ -11,7 +11,7 @@
 #include "../../integer.h"
 #include "make_fraction.h"
 
-#include "type.h"
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {

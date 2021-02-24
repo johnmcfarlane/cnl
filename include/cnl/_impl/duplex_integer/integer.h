@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_INTEGER_H
 
 #include "../../integer.h"
-#include "forward_declaration.h"
+#include "declaration.h"
 
 /// compositional numeric library
 namespace cnl {

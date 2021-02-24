@@ -10,8 +10,8 @@
 #include "../../wide_integer.h"
 #include "../operators/custom_operator.h"
 #include "../operators/operators.h"
+#include "definition.h"
 #include "numbers.h"
-#include "type.h"
 
 #include <algorithm>
 

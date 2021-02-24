@@ -7,9 +7,9 @@
 /// \file
 /// \brief tests for <cnl/_impl/duplex_integer/numeric_limits.h>
 
+#include <cnl/_impl/duplex_integer/definition.h>
 #include <cnl/_impl/duplex_integer/numeric_limits.h>
 #include <cnl/_impl/duplex_integer/operators.h>
-#include <cnl/_impl/duplex_integer/type.h>
 
 #include <cnl/_impl/type_traits/identical.h>
 

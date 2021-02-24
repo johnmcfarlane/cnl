@@ -5,11 +5,12 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests for <cnl/_impl/duplex_integer/type.h>
+/// \brief tests for <cnl/_impl/duplex_integer/definition.h>
+
+#include <cnl/_impl/duplex_integer/definition.h>
 
 #include <cnl/_impl/duplex_integer/ctors.h>
 #include <cnl/_impl/duplex_integer/operators.h>
-#include <cnl/_impl/duplex_integer/type.h>
 #include <cnl/cstdint.h>
 
 #include <cnl/_impl/type_traits/identical.h>

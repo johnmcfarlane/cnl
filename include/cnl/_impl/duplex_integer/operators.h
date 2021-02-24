@@ -18,6 +18,7 @@
 #include "../type_traits/common_type.h"
 #include "comparison.h"
 #include "ctors.h"
+#include "definition.h"
 #include "digits.h"
 #include "divide.h"
 #include "modulo.h"
@@ -26,7 +27,6 @@
 #include "numeric_limits.h"
 #include "set_digits.h"
 #include "shift.h"
-#include "type.h"
 
 #include <ostream>
 

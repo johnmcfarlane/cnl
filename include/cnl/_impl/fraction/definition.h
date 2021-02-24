@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_FRACTION_TYPE_H)
-#define CNL_IMPL_FRACTION_TYPE_H
+#if !defined(CNL_IMPL_FRACTION_DEFINITION_H)
+#define CNL_IMPL_FRACTION_DEFINITION_H
 
 #include "../../fixed_point.h"
 #include "../../floating_point.h"
@@ -74,4 +74,4 @@ namespace cnl {
     fraction(Integer) -> fraction<Integer>;
 }
 
-#endif  // CNL_IMPL_FRACTION_TYPE_H
+#endif  // CNL_IMPL_FRACTION_DEFINITION_H

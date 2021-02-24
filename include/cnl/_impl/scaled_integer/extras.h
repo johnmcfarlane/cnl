@@ -15,8 +15,8 @@
 #include "../cmath/abs.h"
 #include "../config.h"
 #include "../num_traits/width.h"
+#include "definition.h"
 #include "to_chars.h"
-#include "type.h"
 
 #include <cmath>
 #if defined(CNL_IOSTREAM_ENABLED)

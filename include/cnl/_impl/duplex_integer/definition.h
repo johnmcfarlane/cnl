@@ -4,16 +4,16 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_DUPLEX_INTEGER_TYPE_H)
-#define CNL_IMPL_DUPLEX_INTEGER_TYPE_H
+#if !defined(CNL_IMPL_DUPLEX_INTEGER_DEFINITION_H)
+#define CNL_IMPL_DUPLEX_INTEGER_DEFINITION_H
 
 #include "../../floating_point.h"
 #include "../num_traits/width.h"
 #include "../numbers/set_signedness.h"
 #include "../power_value.h"
 #include "../unreachable.h"
+#include "declaration.h"
 #include "digits.h"
-#include "forward_declaration.h"
 #include "numbers.h"
 
 #include <cmath>
@@ -109,4 +109,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_DUPLEX_INTEGER_TYPE_H
+#endif  // CNL_IMPL_DUPLEX_INTEGER_DEFINITION_H

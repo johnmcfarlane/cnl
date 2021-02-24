@@ -9,9 +9,9 @@
 
 #include "../operators/custom_operator.h"
 #include "../type_traits/common_type.h"
+#include "definition.h"
 #include "is_duplex_integer.h"
 #include "numeric_limits.h"
-#include "type.h"
 
 #include <tuple>
 

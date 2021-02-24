@@ -8,7 +8,7 @@
 #define CNL_IMPL_FRACTION_NUMBER_H
 
 #include "../../number.h"
-#include "type.h"
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {

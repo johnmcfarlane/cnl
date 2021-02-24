@@ -9,9 +9,10 @@
 
 #include "duplex_integer/comparison.h"
 #include "duplex_integer/ctors.h"
+#include "duplex_integer/declaration.h"
+#include "duplex_integer/definition.h"
 #include "duplex_integer/digits.h"
 #include "duplex_integer/divide.h"
-#include "duplex_integer/forward_declaration.h"
 #include "duplex_integer/from_value.h"
 #include "duplex_integer/integer.h"
 #include "duplex_integer/is_duplex_integer.h"
@@ -28,7 +29,6 @@
 #include "duplex_integer/set_width.h"
 #include "duplex_integer/shift.h"
 #include "duplex_integer/to_rep.h"
-#include "duplex_integer/type.h"
 #include "duplex_integer/wants_generic_ops.h"
 
 #endif  // CNL_IMPL_DUPLEX_INTEGER_H

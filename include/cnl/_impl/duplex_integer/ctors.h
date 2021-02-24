@@ -10,8 +10,8 @@
 #include "../../floating_point.h"
 #include "../../limits.h"
 #include "../power_value.h"
+#include "definition.h"
 #include "operators.h"
-#include "type.h"
 
 /// compositional numeric library
 namespace cnl {

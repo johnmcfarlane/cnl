@@ -11,7 +11,7 @@
 #include "../num_traits/width.h"
 #include "../type_traits/is_integral.h"
 #include "canonical.h"
-#include "type.h"
+#include "definition.h"
 
 #include <functional>
 

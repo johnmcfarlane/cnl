@@ -8,7 +8,7 @@
 #define CNL_IMPL_SCALED_INTEGER_SQRT_H
 
 #include "../cmath/sqrt.h"
-#include "type.h"
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {

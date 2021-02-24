@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_ROUNDING_H
 
 #include "../num_traits/rounding.h"
-#include "forward_declaration.h"
+#include "declaration.h"
 
 #include <type_traits>
 
