@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_SCALED_CONVERT_OPERATOR_H)
 #define CNL_IMPL_SCALED_CONVERT_OPERATOR_H
 
+#include "../../floating_point.h"
 #include "../../fraction.h"
 #include "../../integer.h"
 #include "../num_traits/fixed_width_scale.h"
@@ -20,7 +21,7 @@
 /// compositional numeric library
 namespace cnl {
     // integer -> floating
-    template<integer Src, int SrcExponent, _impl::floating_point Dest, int DestExponent, int Radix>
+    template<integer Src, int SrcExponent, floating_point Dest, int DestExponent, int Radix>
     struct custom_operator<
             _impl::convert_op,
             op_value<Src, power<SrcExponent, Radix>>,
@@ -32,7 +33,7 @@ namespace cnl {
     };
 
     // floating -> integer
-    template<_impl::floating_point Input, int SrcExponent, integer Result, int DestExponent, int Radix>
+    template<floating_point Input, int SrcExponent, integer Result, int DestExponent, int Radix>
     struct custom_operator<
             _impl::convert_op,
             op_value<Input, power<SrcExponent, Radix>>,

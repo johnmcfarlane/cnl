@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_FRACTION_TYPE_H)
 #define CNL_IMPL_FRACTION_TYPE_H
 
+#include "../../floating_point.h"
 #include "../../integer.h"
 #include "../../limits.h"
 #include "../num_traits/set_width.h"
@@ -43,11 +44,11 @@ namespace cnl {
         // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
         constexpr fraction(fraction<RhsNumerator, RhsDenominator> const& f);
 
-        template<_impl::floating_point FloatingPoint>
+        template<floating_point FloatingPoint>
         explicit constexpr fraction(FloatingPoint);
 
         /// returns the quotient, \ref numerator `/` \ref denominator
-        template<_impl::floating_point Scalar>
+        template<floating_point Scalar>
         [[nodiscard]] explicit constexpr operator Scalar() const
         {
             return static_cast<Scalar>(numerator) / static_cast<Scalar>(denominator);

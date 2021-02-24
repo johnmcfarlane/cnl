@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_WRAPPER_BINARY_OPERATOR_H)
 #define CNL_IMPL_WRAPPER_BINARY_OPERATOR_H
 
-#include "../../limits.h"
+#include "../../floating_point.h"
 #include "../num_traits/set_rep.h"
 #include "../num_traits/set_tag.h"
 #include "../operators/custom_operator.h"
@@ -25,7 +25,7 @@
 /// compositional numeric library
 namespace cnl {
     // higher OP number<>
-    template<_impl::binary_arithmetic_op Operator, _impl::floating_point Lhs, _impl::wrapped Rhs>
+    template<_impl::binary_arithmetic_op Operator, floating_point Lhs, _impl::wrapped Rhs>
     struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
@@ -34,7 +34,7 @@ namespace cnl {
     };
 
     // number<> OP higher
-    template<_impl::binary_arithmetic_op Operator, _impl::wrapped Lhs, _impl::floating_point Rhs>
+    template<_impl::binary_arithmetic_op Operator, _impl::wrapped Lhs, floating_point Rhs>
     struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {

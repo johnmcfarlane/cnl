@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_TAGGED_CONVERT_OPERATOR_H)
 #define CNL_IMPL_SCALED_INTEGER_TAGGED_CONVERT_OPERATOR_H
 
+#include "../../floating_point.h"
 #include "../../integer.h"
 #include "../overflow/overflow_operator.h"
 #include "../power_value.h"
@@ -73,7 +74,7 @@ namespace cnl {
     /// \endcond
 
     // conversion from float to scaled_integer
-    template<_impl::floating_point Input, typename ResultRep, int ResultExponent, int ResultRadix>
+    template<floating_point Input, typename ResultRep, int ResultExponent, int ResultRadix>
     struct custom_operator<
             _impl::convert_op,
             op_value<Input, power<0, ResultRadix>>,
@@ -186,7 +187,7 @@ namespace cnl {
 
     // conversion from float to scaled_integer
     template<
-            _impl::floating_point Input,
+            floating_point Input,
             typename ResultRep, int ResultExponent, int ResultRadix>
     struct custom_operator<
             _impl::convert_op,
@@ -279,7 +280,7 @@ namespace cnl {
 
     // conversion from float to scaled_integer
     template<
-            _impl::floating_point Input,
+            floating_point Input,
             typename ResultRep, int ResultExponent, int ResultRadix>
     struct custom_operator<
             _impl::convert_op,
