@@ -22,7 +22,7 @@ namespace acme {
     template<class Rep>
     struct smart_integer;
     template<class Rep>
-    [[nodiscard]] constexpr auto to_rep(smart_integer<Rep> const& number) -> Rep;
+    [[nodiscard]] constexpr auto to_rep(smart_integer<Rep> const& n) -> Rep;
 
     // example type, smart_integer, shares characteristics with cnl::elastic_integer
     template<class Rep>
@@ -31,16 +31,16 @@ namespace acme {
             : _value(rhs)
         {
         }
-        friend constexpr auto to_rep<>(smart_integer<Rep> const& number) -> Rep;
+        friend constexpr auto to_rep<>(smart_integer<Rep> const& n) -> Rep;
 
     private:
         Rep _value;
     };
 
     template<typename Rep>
-    [[nodiscard]] constexpr auto to_rep(smart_integer<Rep> const& number) -> Rep
+    [[nodiscard]] constexpr auto to_rep(smart_integer<Rep> const& n) -> Rep
     {
-        return number._value;
+        return n._value;
     }
 
     template<class LhsRep, class RhsRep>

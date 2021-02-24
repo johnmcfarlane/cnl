@@ -158,6 +158,7 @@
 #include "integer.h"
 #include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
 #include "num_traits.h"
+#include "number.h"
 #include "numeric.h"
 #include "overflow.h"
 #include "overflow_integer.h"

@@ -19,19 +19,19 @@ namespace cnl {
         template<typename Number>
         struct default_to_rep {
             // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-            [[nodiscard]] constexpr auto& operator()(Number& number) const
+            [[nodiscard]] constexpr auto& operator()(Number& n) const
             {
-                return number;
+                return n;
             };
             // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-            [[nodiscard]] constexpr auto const& operator()(Number const& number) const
+            [[nodiscard]] constexpr auto const& operator()(Number const& n) const
             {
-                return number;
+                return n;
             };
             // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-            [[nodiscard]] constexpr auto&& operator()(Number&& number) const
+            [[nodiscard]] constexpr auto&& operator()(Number&& n) const
             {
-                return std::forward<Number>(number);
+                return std::forward<Number>(n);
             };
         };
     }
@@ -52,10 +52,10 @@ namespace cnl {
 
     namespace _impl {
         template<class Number>
-        [[nodiscard]] constexpr auto to_rep(Number&& number)  // NOLINT(misc-unused-parameters)
-                -> decltype(cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number)))
+        [[nodiscard]] constexpr auto to_rep(Number&& n)  // NOLINT(misc-unused-parameters)
+                -> decltype(cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(n)))
         {
-            return cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(number));
+            return cnl::to_rep<remove_cvref_t<Number>>()(std::forward<Number>(n));
         }
     }
 }

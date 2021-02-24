@@ -175,21 +175,21 @@ namespace cnl {
                 _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>;
 
         // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-        [[nodiscard]] constexpr auto& operator()(_number_type& number) const
+        [[nodiscard]] constexpr auto& operator()(_number_type& n) const
         {
-            return number;
+            return n;
         };
 
         // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-        [[nodiscard]] constexpr auto const& operator()(_number_type const& number) const
+        [[nodiscard]] constexpr auto const& operator()(_number_type const& n) const
         {
-            return number;
+            return n;
         };
 
         // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-        [[nodiscard]] constexpr auto operator()(_number_type&& number) const
+        [[nodiscard]] constexpr auto operator()(_number_type&& n) const
         {
-            return number;
+            return n;
         };
     };
 
@@ -199,21 +199,21 @@ namespace cnl {
                 _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>;
 
         // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-        [[nodiscard]] constexpr auto& operator()(_number_type& number) const
+        [[nodiscard]] constexpr auto& operator()(_number_type& n) const
         {
-            return number;
+            return n;
         };
 
         // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-        [[nodiscard]] constexpr auto const& operator()(_number_type const& number) const
+        [[nodiscard]] constexpr auto const& operator()(_number_type const& n) const
         {
-            return number;
+            return n;
         };
 
         // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-        [[nodiscard]] constexpr auto operator()(_number_type&& number) const
+        [[nodiscard]] constexpr auto operator()(_number_type&& n) const
         {
-            return std::move(number);
+            return std::move(n);
         };
     };
 

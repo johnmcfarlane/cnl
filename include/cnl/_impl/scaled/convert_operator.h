@@ -77,9 +77,9 @@ namespace cnl {
 
     namespace _impl {
         template<typename Number>
-        [[nodiscard]] constexpr auto not_scaled_integer(Number const& number)
+        [[nodiscard]] constexpr auto not_scaled_integer(Number const& n)
         {
-            return number;
+            return n;
         }
 
         template<typename Rep, int Exponent, int Radix>

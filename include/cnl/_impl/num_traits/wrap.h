@@ -17,9 +17,9 @@ namespace cnl {
 
         template<typename Number, typename Rep>
         requires(!is_composite_v<Number>) struct wrap<Number, Rep> {
-            [[nodiscard]] constexpr auto operator()(Rep const& number) const
+            [[nodiscard]] constexpr auto operator()(Rep const& n) const
             {
-                return number;
+                return n;
             }
         };
 

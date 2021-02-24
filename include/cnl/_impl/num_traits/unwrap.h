@@ -18,25 +18,25 @@ namespace cnl {
 
         template<typename Number>
         requires(!is_composite<Number>::value) struct unwrap<Number> {
-            [[nodiscard]] constexpr auto operator()(Number const& number) const
+            [[nodiscard]] constexpr auto operator()(Number const& n) const
             {
-                return number;
+                return n;
             }
         };
 
         template<typename Number>
         requires is_composite_v<Number> struct unwrap<Number> {
-            [[nodiscard]] constexpr auto operator()(Number const& number) const
+            [[nodiscard]] constexpr auto operator()(Number const& n) const
             {
-                return unwrap<rep_of_t<Number>>{}(to_rep(number));
+                return unwrap<rep_of_t<Number>>{}(to_rep(n));
             }
         };
     }
 
     template<typename Number>
-    [[nodiscard]] constexpr auto unwrap(Number const& number)
+    [[nodiscard]] constexpr auto unwrap(Number const& n)
     {
-        return _impl::unwrap<Number>{}(number);
+        return _impl::unwrap<Number>{}(n);
     }
 }
 
