@@ -146,6 +146,7 @@
 #if !defined(CNL_ALL_H)
 #define CNL_ALL_H
 
+#include "arithmetic.h"
 #include "bit.h"
 #include "cmath.h"
 #include "constant.h"

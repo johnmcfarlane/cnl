@@ -32,6 +32,9 @@ namespace {
 
         static_assert(cnl::number<cnl::_impl::wrapper<int>>);
         static_assert(cnl::number<cnl::_impl::wrapper<int> const>);
+
+        static_assert(cnl::arithmetic<cnl::_impl::wrapper<int>>);
+        static_assert(cnl::arithmetic<cnl::_impl::wrapper<long long unsigned int> const>);
     }
 
     namespace test_parameters {

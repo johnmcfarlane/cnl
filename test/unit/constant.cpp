@@ -9,6 +9,7 @@
 
 #include <cnl/constant.h>
 
+#include <cnl/arithmetic.h>
 #include <cnl/cstdint.h>
 #include <cnl/fixed_point.h>
 #include <cnl/integer.h>
@@ -30,6 +31,9 @@ namespace {
 
         static_assert(cnl::number<cnl::constant<42>>);
         static_assert(cnl::number<cnl::constant<42> const>);
+
+        static_assert(cnl::arithmetic<cnl::constant<42>>);
+        static_assert(cnl::arithmetic<cnl::constant<42> const>);
     }
 
     namespace test_literals {
