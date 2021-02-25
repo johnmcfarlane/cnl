@@ -1,6 +1,6 @@
 set(
     MISC_FLAGS
-    "-Werror -Wall -Wextra -Wno-psabi -Wpedantic -Wshadow -Wundef -fconcepts -fconstexpr-ops-limit=134217728 -ftemplate-backtrace-limit=0 -pthread"
+    "-Werror -Wall -Wextra -Wno-psabi -Wpedantic -Wshadow -Wundef -fconcepts -fconstexpr-ops-limit=134217728 -fdiagnostics-color=always -ftemplate-backtrace-limit=0 -pthread"
 )
 
 set(EXCEPTION_ENABLED_FLAGS "-fexceptions -frtti")
