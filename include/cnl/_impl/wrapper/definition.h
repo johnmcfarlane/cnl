@@ -45,7 +45,7 @@ namespace cnl {
             }
 
             /// constructor taking an unrelated _impl::wrapper type
-            template<_impl::wrapped Number>
+            template<_impl::any_wrapper Number>
             requires(!can_convert_tag_family<Tag, tag_of_t<Number>>::value)
                     // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
                     constexpr wrapper(Number const& i)

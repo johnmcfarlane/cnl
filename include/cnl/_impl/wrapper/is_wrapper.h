@@ -22,7 +22,7 @@ namespace cnl {
         inline constexpr auto is_wrapper<_impl::wrapper<Rep, Tag>> = true;
 
         template<typename T>
-        concept wrapped = is_wrapper<T>;
+        concept any_wrapper = is_wrapper<T>;
     }
 }
 

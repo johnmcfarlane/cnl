@@ -25,7 +25,7 @@
 /// compositional numeric library
 namespace cnl {
     // higher OP number<>
-    template<_impl::binary_arithmetic_op Operator, floating_point Lhs, _impl::wrapped Rhs>
+    template<_impl::binary_arithmetic_op Operator, floating_point Lhs, _impl::any_wrapper Rhs>
     struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
@@ -34,7 +34,7 @@ namespace cnl {
     };
 
     // number<> OP higher
-    template<_impl::binary_arithmetic_op Operator, _impl::wrapped Lhs, floating_point Rhs>
+    template<_impl::binary_arithmetic_op Operator, _impl::any_wrapper Lhs, floating_point Rhs>
     struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
@@ -60,7 +60,7 @@ namespace cnl {
         }
     };
 
-    template<_impl::binary_arithmetic_op Operator, _impl::wrapped Lhs, _impl::wrapped Rhs>
+    template<_impl::binary_arithmetic_op Operator, _impl::any_wrapper Lhs, _impl::any_wrapper Rhs>
     requires(_impl::is_same_tag_family<_impl::tag_of_t<Lhs>, _impl::tag_of_t<Rhs>>::value) struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         using _rep_operator = custom_operator<
                 Operator,

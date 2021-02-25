@@ -32,7 +32,7 @@ namespace cnl {
     // cnl::rounding
 
     /// \cond
-    template<_impl::wrapped Number>
+    template<_impl::any_wrapper Number>
     requires(!_impl::is_rounding_tag<typename Number::tag>::value) struct rounding<Number>
         : rounding<typename Number::rep> {
     };
