@@ -16,13 +16,13 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs, int Exponent, int Radix>
+    template<_impl::binary_op Operator, typename Lhs, typename Rhs, int Exponent, int Radix>
     struct custom_operator<Operator, op_value<Lhs, power<Exponent, Radix>>, op_value<Rhs, power<Exponent, Radix>>>
         : Operator {
     };
 
     namespace _impl {
-        template<binary_arithmetic_op Operator>
+        template<binary_op Operator>
         struct is_zero_degree : std::true_type {
         };
         template<>
@@ -36,7 +36,7 @@ namespace cnl {
         };
     }
 
-    template<_impl::binary_arithmetic_op Operator, typename Lhs, int LhsExponent, int RhsExponent, typename Rhs, int Radix>
+    template<_impl::binary_op Operator, typename Lhs, int LhsExponent, int RhsExponent, typename Rhs, int Radix>
     requires(LhsExponent != RhsExponent && _impl::is_zero_degree<Operator>::value) struct custom_operator<
             Operator,
             op_value<Lhs, power<LhsExponent, Radix>>,
@@ -56,7 +56,7 @@ namespace cnl {
         }
     };
 
-    template<_impl::binary_arithmetic_op Operator, typename Lhs, int LhsExponent, typename Rhs, int RhsExponent, int Radix>
+    template<_impl::binary_op Operator, typename Lhs, int LhsExponent, typename Rhs, int RhsExponent, int Radix>
     requires(LhsExponent != RhsExponent && !_impl::is_zero_degree<Operator>::value) struct custom_operator<
             Operator,
             op_value<Lhs, power<LhsExponent, Radix>>,
