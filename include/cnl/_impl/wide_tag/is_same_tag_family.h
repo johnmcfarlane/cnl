@@ -15,7 +15,7 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<wide_tag Tag1, wide_tag Tag2>
+        template<any_wide_tag Tag1, any_wide_tag Tag2>
         struct is_same_tag_family<Tag1, Tag2>
             : std::true_type {
         };
