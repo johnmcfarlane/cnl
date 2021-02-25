@@ -17,7 +17,7 @@ namespace cnl {
     /// \note Rather than returning Number, invocation may return an alternative
     /// template specialization based on input parameter.
     /// \sa to_rep, from_value
-    template<typename Number, typename Repd>
+    template<typename Number, typename Rep>
     struct from_rep;
 
     /// \brief Specialization of \ref from_rep for integer types

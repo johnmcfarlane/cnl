@@ -35,7 +35,7 @@ namespace cnl {
     };
 
     /// \cond
-    template<typename Src, tag SrcTag, typename Dest, _impl::wide_tag DestTag>
+    template<typename Src, tag SrcTag, typename Dest, _impl::any_wide_tag DestTag>
     requires(!_impl::is_wide_tag<SrcTag>) struct custom_operator<
             _impl::convert_op,
             op_value<Src, SrcTag>, op_value<Dest, DestTag>> {
@@ -46,7 +46,7 @@ namespace cnl {
     };
     /// \endcond
 
-    template<typename Src, _impl::wide_tag SrcTag, typename Dest, tag DestTag>
+    template<typename Src, _impl::any_wide_tag SrcTag, typename Dest, tag DestTag>
     struct custom_operator<_impl::convert_op, op_value<Src, SrcTag>, op_value<Dest, DestTag>> {
         [[nodiscard]] constexpr auto operator()(Src const& from) const
         {

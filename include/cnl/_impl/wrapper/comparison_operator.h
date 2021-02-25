@@ -19,7 +19,7 @@
 /// compositional numeric library
 namespace cnl {
     // higher OP number<>
-    template<_impl::comparison_op Operator, floating_point Lhs, _impl::wrapped Rhs>
+    template<_impl::comparison_op Operator, floating_point Lhs, _impl::any_wrapper Rhs>
     struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
@@ -28,7 +28,7 @@ namespace cnl {
     };
 
     // number<> OP higher
-    template<_impl::comparison_op Operator, _impl::wrapped Lhs, floating_point Rhs>
+    template<_impl::comparison_op Operator, _impl::any_wrapper Lhs, floating_point Rhs>
     struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {

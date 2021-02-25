@@ -50,11 +50,7 @@ namespace cnl {
     requires(_impl::has_native_operators<Rhs>::value) struct custom_operator<Operator, op_value<Rhs>> : Operator {
     };
 
-    template<_impl::binary_arithmetic_op Operator, typename Lhs, typename Rhs>
-    requires(_impl::has_native_operators<Lhs>::value&& _impl::has_native_operators<Rhs>::value) struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> : Operator {
-    };
-
-    template<_impl::shift_op Operator, typename Lhs, typename Rhs>
+    template<_impl::binary_op Operator, typename Lhs, typename Rhs>
     requires(_impl::has_native_operators<Lhs>::value&& _impl::has_native_operators<Rhs>::value) struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> : Operator {
     };
 }

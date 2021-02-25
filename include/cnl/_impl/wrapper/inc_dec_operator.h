@@ -14,7 +14,7 @@
 #include "to_rep.h"
 
 namespace cnl {
-    template<_impl::prefix_op Operator, _impl::wrapped Number>
+    template<_impl::prefix_op Operator, _impl::any_wrapper Number>
     struct custom_operator<Operator, op_value<Number>> {
         // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         constexpr auto& operator()(Number& rhs) const
@@ -25,7 +25,7 @@ namespace cnl {
         }
     };
 
-    template<_impl::postfix_op Operator, _impl::wrapped Number>
+    template<_impl::postfix_op Operator, _impl::any_wrapper Number>
     struct custom_operator<Operator, op_value<Number, _impl::native_tag>> {
         constexpr auto operator()(Number& lhs) const
         {

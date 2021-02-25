@@ -15,7 +15,7 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<typename NumberRep, _impl::wide_tag NumberTag, _impl::wide_tag Tag>
+    template<typename NumberRep, _impl::any_wide_tag NumberTag, _impl::any_wide_tag Tag>
     struct set_tag<_impl::wrapper<NumberRep, NumberTag>, Tag>
         : std::type_identity<_impl::wrapper<typename Tag::rep, Tag>> {
     };
