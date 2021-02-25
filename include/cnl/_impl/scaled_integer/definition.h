@@ -20,7 +20,6 @@
 #include "../used_digits.h"
 #include "../wrapper.h"
 #include "declaration.h"
-#include "is_scaled_integer.h"
 
 #include <algorithm>
 

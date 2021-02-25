@@ -12,7 +12,6 @@
 
 #include "../scaled/power.h"
 #include "definition.h"
-#include "is_scaled_integer.h"
 
 #include <numeric>
 
