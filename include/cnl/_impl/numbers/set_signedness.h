@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUMBERS_SET_SIGNEDNESS)
-#define CNL_IMPL_NUMBERS_SET_SIGNEDNESS
+#if !defined(CNL_IMPL_NUMBERS_SET_SIGNEDNESS_H)
+#define CNL_IMPL_NUMBERS_SET_SIGNEDNESS_H
 
 #include "../../limits.h"
 #include "../config.h"
@@ -47,4 +47,4 @@ namespace cnl::numbers {
     using set_signedness_t = typename set_signedness<T, IsSigned>::type;
 }
 
-#endif  // CNL_IMPL_NUMBERS_SET_SIGNEDNESS
+#endif  // CNL_IMPL_NUMBERS_SET_SIGNEDNESS_H

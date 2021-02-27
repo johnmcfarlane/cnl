@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUM_TRAITS_IS_COMPOSITE)
-#define CNL_IMPL_NUM_TRAITS_IS_COMPOSITE
+#if !defined(CNL_IMPL_NUM_TRAITS_IS_COMPOSITE_H)
+#define CNL_IMPL_NUM_TRAITS_IS_COMPOSITE_H
 
 #include <type_traits>
 
@@ -39,4 +39,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_IS_COMPOSITE
+#endif  // CNL_IMPL_NUM_TRAITS_IS_COMPOSITE_H

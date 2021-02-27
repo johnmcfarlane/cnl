@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_TYPE_TRAITS_WIDTH)
-#define CNL_IMPL_TYPE_TRAITS_WIDTH
+#if !defined(CNL_IMPL_TYPE_TRAITS_WIDTH_H)
+#define CNL_IMPL_TYPE_TRAITS_WIDTH_H
 
 #include "../numbers/signedness.h"
 #include "digits.h"
@@ -17,4 +17,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_TYPE_TRAITS_WIDTH
+#endif  // CNL_IMPL_TYPE_TRAITS_WIDTH_H

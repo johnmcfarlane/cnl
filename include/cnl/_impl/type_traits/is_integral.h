@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_TYPE_TRAITS_IS_INTEGRAL)
-#define CNL_IMPL_TYPE_TRAITS_IS_INTEGRAL
+#if !defined(CNL_IMPL_TYPE_TRAITS_IS_INTEGRAL_H)
+#define CNL_IMPL_TYPE_TRAITS_IS_INTEGRAL_H
 
 #include "../config.h"
 #include "../cstdint/types.h"
@@ -30,4 +30,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_TYPE_TRAITS_IS_INTEGRAL
+#endif  // CNL_IMPL_TYPE_TRAITS_IS_INTEGRAL_H

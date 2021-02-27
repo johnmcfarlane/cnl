@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUM_TRAITS_SET_ROUNDING)
-#define CNL_IMPL_NUM_TRAITS_SET_ROUNDING
+#if !defined(CNL_IMPL_NUM_TRAITS_SET_ROUNDING_H)
+#define CNL_IMPL_NUM_TRAITS_SET_ROUNDING_H
 
 #include "../type_traits/remove_cvref.h"
 #include "is_composite.h"
@@ -48,4 +48,4 @@ namespace cnl {
     using set_rounding_t = typename set_rounding<Number, RoundingTag>::type;
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_SET_ROUNDING
+#endif  // CNL_IMPL_NUM_TRAITS_SET_ROUNDING_H

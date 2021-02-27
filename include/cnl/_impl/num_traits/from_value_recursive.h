@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUM_TRAITS_FROM_VALUE_RECURSIVE)
-#define CNL_IMPL_NUM_TRAITS_FROM_VALUE_RECURSIVE
+#if !defined(CNL_IMPL_NUM_TRAITS_FROM_VALUE_RECURSIVE_H)
+#define CNL_IMPL_NUM_TRAITS_FROM_VALUE_RECURSIVE_H
 
 #include "../config.h"
 #include "from_rep.h"
@@ -24,4 +24,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_FROM_VALUE_RECURSIVE
+#endif  // CNL_IMPL_NUM_TRAITS_FROM_VALUE_RECURSIVE_H

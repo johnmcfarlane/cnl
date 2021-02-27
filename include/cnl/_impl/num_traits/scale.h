@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUM_TRAITS_SCALE)
-#define CNL_IMPL_NUM_TRAITS_SCALE
+#if !defined(CNL_IMPL_NUM_TRAITS_SCALE_H)
+#define CNL_IMPL_NUM_TRAITS_SCALE_H
 
 #include "../power_value.h"
 #include "../type_traits/is_integral.h"
@@ -53,4 +53,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_SCALE
+#endif  // CNL_IMPL_NUM_TRAITS_SCALE_H

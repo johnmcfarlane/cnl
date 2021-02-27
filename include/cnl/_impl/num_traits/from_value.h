@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUM_TRAITS_FROM_VALUE)
-#define CNL_IMPL_NUM_TRAITS_FROM_VALUE
+#if !defined(CNL_IMPL_NUM_TRAITS_FROM_VALUE_H)
+#define CNL_IMPL_NUM_TRAITS_FROM_VALUE_H
 
 #include "../../constant.h"
 #include "../numbers/set_signedness.h"
@@ -65,4 +65,4 @@ namespace cnl {
     using from_value_t = decltype(_impl::from_value<Number>(std::declval<Value>()));
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_FROM_VALUE
+#endif  // CNL_IMPL_NUM_TRAITS_FROM_VALUE_H
