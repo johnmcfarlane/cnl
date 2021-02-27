@@ -18,6 +18,8 @@ namespace cnl {
             _impl::shift_left_op,
             op_value<_impl::duplex_integer<Upper, Lower>>,
             op_value<Rhs>> {
+        using result_tag = _impl::native_tag;
+
         using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
 
         [[nodiscard]] constexpr auto operator()(_duplex_integer const& lhs, Rhs const& rhs) const
@@ -43,6 +45,8 @@ namespace cnl {
             _impl::shift_right_op,
             op_value<_impl::duplex_integer<Upper, Lower>>,
             op_value<Rhs>> {
+        using result_tag = _impl::native_tag;
+
         using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
 
         [[nodiscard]] constexpr auto operator()(_duplex_integer const& lhs, Rhs const& rhs) const

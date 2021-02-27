@@ -75,6 +75,8 @@ namespace cnl {
             Operator,
             op_value<elastic_integer<LhsDigits, LhsNarrowest>>,
             op_value<elastic_integer<RhsDigits, RhsNarrowest>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs,
                 elastic_integer<RhsDigits, RhsNarrowest> const& rhs) const
@@ -88,6 +90,8 @@ namespace cnl {
             Operator,
             op_value<elastic_integer<Digits, Narrowest>>,
             op_value<elastic_integer<Digits, Narrowest>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(
                 elastic_integer<Digits, Narrowest> const& lhs,
                 elastic_integer<Digits, Narrowest> const& rhs) const
@@ -103,11 +107,13 @@ namespace cnl {
             Operator,
             op_value<elastic_integer<LhsDigits, LhsRep>>,
             op_value<Rhs>> {
-        using lhs_type = elastic_integer<LhsDigits, LhsRep>;
+        using result_tag = _impl::native_tag;
 
-        [[nodiscard]] constexpr auto operator()(lhs_type const& lhs, Rhs const& rhs) const
+        using _lhs_type = elastic_integer<LhsDigits, LhsRep>;
+
+        [[nodiscard]] constexpr auto operator()(_lhs_type const& lhs, Rhs const& rhs) const
         {
-            return _impl::from_rep<lhs_type>(Operator{}(_impl::to_rep(lhs), rhs));
+            return _impl::from_rep<_lhs_type>(Operator{}(_impl::to_rep(lhs), rhs));
         }
     };
 
@@ -116,6 +122,8 @@ namespace cnl {
             _impl::shift_left_op,
             op_value<elastic_integer<LhsDigits, LhsNarrowest>>,
             op_value<constant<RhsValue>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs, constant<RhsValue>) const
         {
@@ -132,6 +140,8 @@ namespace cnl {
             _impl::shift_right_op,
             op_value<elastic_integer<LhsDigits, LhsNarrowest>>,
             op_value<constant<RhsValue>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs, constant<RhsValue>) const
         {
@@ -145,6 +155,8 @@ namespace cnl {
     template<int RhsDigits, class RhsNarrowest>
     struct custom_operator<
             _impl::minus_op, op_value<elastic_integer<RhsDigits, RhsNarrowest>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
                 const -> elastic_integer<RhsDigits, typename numbers::set_signedness_t<RhsNarrowest, true>>
         {
@@ -158,6 +170,8 @@ namespace cnl {
     template<int RhsDigits, class RhsNarrowest>
     struct custom_operator<
             _impl::plus_op, op_value<elastic_integer<RhsDigits, RhsNarrowest>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
                 const -> elastic_integer<RhsDigits, RhsNarrowest>
         {
@@ -170,6 +184,8 @@ namespace cnl {
     template<int RhsDigits, class RhsNarrowest>
     struct custom_operator<
             _impl::bitwise_not_op, op_value<elastic_integer<RhsDigits, RhsNarrowest>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
                 const -> elastic_integer<RhsDigits, RhsNarrowest>
         {

@@ -25,6 +25,8 @@ namespace cnl {
                     Operator,
                     op_value<wide_integer<LhsDigits, LhsNarrowest>>,
                     op_value<wide_integer<RhsDigits, RhsNarrowest>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(
                 wide_integer<LhsDigits, LhsNarrowest> const& lhs,
                 wide_integer<RhsDigits, RhsNarrowest> const& rhs) const

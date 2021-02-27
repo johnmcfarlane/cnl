@@ -23,6 +23,8 @@ namespace cnl {
     template<_impl::unary_arithmetic_op Operator, typename Rep, int Exponent, int Radix>
     struct custom_operator<
             Operator, op_value<scaled_integer<Rep, power<Exponent, Radix>>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(
                 scaled_integer<Rep, power<Exponent, Radix>> const& rhs) const
         {
@@ -36,6 +38,8 @@ namespace cnl {
     template<_impl::comparison_op Operator, typename LhsRep, typename RhsRep, class Scale>
     struct custom_operator<
             Operator, op_value<scaled_integer<LhsRep, Scale>>, op_value<scaled_integer<RhsRep, Scale>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(
                 scaled_integer<LhsRep, Scale> const& lhs,
                 scaled_integer<RhsRep, Scale> const& rhs) const
@@ -54,6 +58,8 @@ namespace cnl {
             Operator,
             op_value<scaled_integer<LhsRep, power<LhsExponent, Radix>>>,
             op_value<scaled_integer<RhsRep, power<RhsExponent, Radix>>>> {
+        using result_tag = _impl::native_tag;
+
         static constexpr int shiftage = RhsExponent - LhsExponent;
         using lhs_type = scaled_integer<LhsRep, power<LhsExponent, Radix>>;
         using rhs_type = scaled_integer<
@@ -78,6 +84,8 @@ namespace cnl {
             Operator,
             op_value<scaled_integer<LhsRep, power<LhsExponent, Radix>>>,
             op_value<scaled_integer<RhsRep, power<RhsExponent, Radix>>>> {
+        using result_tag = _impl::native_tag;
+
         static constexpr int shiftage = LhsExponent - RhsExponent;
         using lhs_type = scaled_integer<
                 decltype(std::declval<LhsRep>() << constant<shiftage>()),
@@ -103,6 +111,8 @@ namespace cnl {
             Operator,
             op_value<scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>>,
             op_value<Rhs>> {
+        using result_tag = _impl::native_tag;
+
         using lhs_type = scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>;
         [[nodiscard]] constexpr auto operator()(lhs_type const& lhs, Rhs const& rhs) const
         {
@@ -116,11 +126,13 @@ namespace cnl {
             _impl::shift_left_op,
             op_value<scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>>,
             op_value<constant<RhsValue>>> {
-        using result_type = scaled_integer<LhsRep, power<LhsExponent + int(RhsValue), LhsRadix>>;
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, LhsRadix>> const& lhs,
                 constant<RhsValue>) const
         {
+            using result_type = scaled_integer<LhsRep, power<LhsExponent + int(RhsValue), LhsRadix>>;
             return _impl::from_rep<result_type>(_impl::to_rep(lhs));
         };
     };
@@ -131,11 +143,13 @@ namespace cnl {
             _impl::shift_right_op,
             op_value<scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>>,
             op_value<constant<RhsValue>>> {
-        using result_type = scaled_integer<LhsRep, power<LhsExponent - int(RhsValue), LhsRadix>>;
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, LhsRadix>> const& lhs,
                 constant<RhsValue>) const
         {
+            using result_type = scaled_integer<LhsRep, power<LhsExponent - int(RhsValue), LhsRadix>>;
             return _impl::from_rep<result_type>(_impl::to_rep(lhs));
         };
     };

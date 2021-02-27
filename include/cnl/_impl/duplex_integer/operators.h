@@ -36,6 +36,8 @@ namespace cnl {
         // default binary arithmetic operator
         template<binary_arithmetic_op Operator, typename Upper, typename Lower>
         struct default_binary_arithmetic_operator {
+            using result_tag = _impl::native_tag;
+
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
             [[nodiscard]] constexpr auto operator()(
@@ -55,6 +57,8 @@ namespace cnl {
         template<binary_arithmetic_op Operator, typename Upper, typename Lower>
         struct first_degree_binary_arithmetic_operator<
                 Operator, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
+            using result_tag = _impl::native_tag;
+
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
             static constexpr auto lower_digits = digits<Lower>;
@@ -87,6 +91,8 @@ namespace cnl {
                 Operator,
                 duplex_integer<LhsUpper, LhsLower>,
                 duplex_integer<RhsUpper, RhsLower>> {
+            using result_tag = _impl::native_tag;
+
             using lhs_type = duplex_integer<LhsUpper, LhsLower>;
             using rhs_type = duplex_integer<RhsUpper, RhsLower>;
 
@@ -110,6 +116,8 @@ namespace cnl {
     template<typename Upper, typename Lower>
     struct custom_operator<
             _impl::bitwise_not_op, op_value<_impl::duplex_integer<Upper, Lower>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& rhs)
                 const -> _impl::duplex_integer<Upper, Lower>
         {
@@ -120,6 +128,8 @@ namespace cnl {
     // binary arithmetic
     template<typename Upper, typename Lower>
     struct custom_operator<_impl::minus_op, op_value<_impl::duplex_integer<Upper, Lower>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& rhs)
                 const -> _impl::duplex_integer<Upper, Lower>
         {
@@ -132,6 +142,8 @@ namespace cnl {
 
     template<typename Upper, typename Lower>
     struct custom_operator<_impl::plus_op, op_value<_impl::duplex_integer<Upper, Lower>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& rhs)
                 const -> _impl::duplex_integer<Upper, Lower>
         {
@@ -141,6 +153,8 @@ namespace cnl {
 
     template<_impl::binary_arithmetic_op Operator, _impl::any_duplex_integer Lhs, integer Rhs>
     requires(!_impl::is_duplex_integer_v<Rhs>) struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return custom_operator<Operator, op_value<Lhs>, op_value<Lhs>>{}(lhs, rhs);
@@ -149,6 +163,8 @@ namespace cnl {
 
     template<_impl::binary_arithmetic_op Operator, integer Lhs, _impl::any_duplex_integer Rhs>
     requires(!_impl::is_duplex_integer_v<Lhs>) struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return custom_operator<Operator, op_value<Rhs>, op_value<Rhs>>{}(lhs, rhs);
@@ -157,6 +173,8 @@ namespace cnl {
 
     template<_impl::any_duplex_integer Lhs, _impl::any_duplex_integer Rhs>
     struct custom_operator<_impl::add_op, op_value<Lhs>, op_value<Rhs>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return _impl::first_degree_binary_arithmetic_operator<_impl::add_op, Lhs, Rhs>{}(lhs, rhs);
@@ -165,6 +183,8 @@ namespace cnl {
 
     template<_impl::any_duplex_integer Lhs, _impl::any_duplex_integer Rhs>
     struct custom_operator<_impl::subtract_op, op_value<Lhs>, op_value<Rhs>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return _impl::first_degree_binary_arithmetic_operator<_impl::subtract_op, Lhs, Rhs>{}(lhs, rhs);
@@ -202,6 +222,8 @@ namespace cnl {
             Operator,
             op_value<_impl::duplex_integer<LhsUpper, LhsLower>>,
             op_value<_impl::duplex_integer<RhsUpper, RhsLower>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(
                 _impl::duplex_integer<LhsUpper, LhsLower> const& lhs,
                 _impl::duplex_integer<RhsUpper, RhsLower> const& rhs) const -> bool

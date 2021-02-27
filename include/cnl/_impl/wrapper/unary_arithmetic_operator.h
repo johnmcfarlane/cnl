@@ -20,6 +20,8 @@
 namespace cnl {
     template<_impl::unary_arithmetic_op Operator, typename Rep, tag Tag>
     struct custom_operator<Operator, op_value<_impl::wrapper<Rep, Tag>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(_impl::wrapper<Rep, Tag> const& rhs) const
         {
             return _impl::from_rep<_impl::wrapper<Rep, Tag>>(

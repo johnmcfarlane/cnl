@@ -101,6 +101,7 @@ namespace cnl {
                   Operator,
                   op_value<_impl::native_tag>,
                   op_value<_impl::native_tag>> {
+        using result_tag = _impl::native_tag;
     };
 
     template<_impl::prefix_op Operator, typename Rhs, int Digits, typename Narrowest>

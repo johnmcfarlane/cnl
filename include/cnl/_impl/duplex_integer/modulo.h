@@ -21,6 +21,8 @@ namespace cnl {
         // cnl::_impl::heterogeneous_duplex_modulo_operator
         template<typename Lhs, typename Rhs>
         struct heterogeneous_duplex_modulo_operator {
+            using result_tag = _impl::native_tag;
+
             using common_type = rep_of_t<wide_integer<
                     std::max(digits<Lhs>, digits<Rhs>),
                     numbers::set_signedness_t<int, numbers::signedness_v<Lhs> | numbers::signedness_v<Rhs>>>>;
@@ -39,6 +41,8 @@ namespace cnl {
             _impl::modulo_op,
             op_value<_impl::duplex_integer<Upper, Lower>>,
             op_value<_impl::duplex_integer<Upper, Lower>>> {
+        using result_tag = _impl::native_tag;
+
         using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
         using _unsigned_duplex_integer = numbers::set_signedness_t<_duplex_integer, false>;
 

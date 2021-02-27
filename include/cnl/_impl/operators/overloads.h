@@ -36,7 +36,9 @@ namespace cnl {
     template<class Operand> \
     requires _impl::wants_generic_ops<Operand> [[nodiscard]] constexpr auto operator OP(Operand const& rhs) \
     { \
-        return cnl::custom_operator<NAME, cnl::op_value<Operand>>()(rhs); \
+        using custom_operator = cnl::custom_operator<NAME, cnl::op_value<Operand>>; \
+        static_assert(std::is_same_v<cnl::_impl::native_tag, typename custom_operator::result_tag>); \
+        return custom_operator{}(rhs); \
     }
 
         CNL_DEFINE_UNARY_OPERATOR(+, plus_op)
@@ -53,8 +55,9 @@ namespace cnl {
     requires wants_generic_ops_binary<LhsOperand, RhsOperand> [[nodiscard]] constexpr auto \
     operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
     { \
-        return cnl::custom_operator<NAME, cnl::op_value<LhsOperand>, cnl::op_value<RhsOperand>>{}( \
-                lhs, rhs); \
+        using custom_operator = cnl::custom_operator<NAME, cnl::op_value<LhsOperand>, cnl::op_value<RhsOperand>>; \
+        static_assert(std::is_same_v<cnl::_impl::native_tag, typename custom_operator::result_tag>); \
+        return custom_operator{}(lhs, rhs); \
     }
 
         CNL_DEFINE_BINARY_OPERATOR(+, add_op)
@@ -81,7 +84,9 @@ namespace cnl {
     requires wants_generic_ops_binary<LhsOperand, RhsOperand> [[nodiscard]] constexpr auto \
     operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
     { \
-        return cnl::custom_operator<NAME, op_value<LhsOperand>, op_value<RhsOperand>>()(lhs, rhs); \
+        using custom_operator = cnl::custom_operator<NAME, cnl::op_value<LhsOperand>, cnl::op_value<RhsOperand>>; \
+        static_assert(std::is_same_v<cnl::_impl::native_tag, typename custom_operator::result_tag>); \
+        return custom_operator{}(lhs, rhs); \
     }
 
         CNL_DEFINE_SHIFT_OPERATOR(<<, shift_left_op)
@@ -96,7 +101,9 @@ namespace cnl {
     requires wants_generic_ops_binary<LhsOperand, RhsOperand> [[nodiscard]] constexpr auto \
     operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
     { \
-        return cnl::custom_operator<NAME, op_value<LhsOperand>, op_value<RhsOperand>>()(lhs, rhs); \
+        using custom_operator = cnl::custom_operator<NAME, cnl::op_value<LhsOperand>, cnl::op_value<RhsOperand>>; \
+        static_assert(std::is_same_v<cnl::_impl::native_tag, typename custom_operator::result_tag>); \
+        return custom_operator{}(lhs, rhs); \
     }
 
         CNL_DEFINE_COMPARISON_OPERATOR(==, equal_op)

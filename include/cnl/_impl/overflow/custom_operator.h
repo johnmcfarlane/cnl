@@ -66,6 +66,8 @@ namespace cnl {
 
     template<_impl::unary_arithmetic_op Operator, typename Operand, overflow_tag Tag>
     struct custom_operator<Operator, op_value<Operand, Tag>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(Operand const& rhs) const
                 -> _impl::op_result<Operator, Operand>
         {

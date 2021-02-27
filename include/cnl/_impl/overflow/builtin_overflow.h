@@ -34,6 +34,8 @@ namespace cnl {
 
         template<>
         struct overflow_polarity<minus_op> {
+            using result_tag = _impl::native_tag;
+
             template<typename Rhs>
             [[nodiscard]] constexpr auto operator()(Rhs const& rhs) const
             {

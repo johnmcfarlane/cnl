@@ -21,6 +21,8 @@ namespace cnl {
     namespace _impl {
         template<typename Lhs, typename Rhs>
         struct heterogeneous_duplex_multiply_operator {
+            using result_tag = _impl::native_tag;
+
             using common_type = conditional3_t<
                     width<Lhs> - width<Rhs>, Lhs,
                     conditional3_t<(numbers::signedness_v<Lhs> - numbers::signedness_v<Rhs>), Lhs, void, Rhs>,
@@ -108,6 +110,8 @@ namespace cnl {
             _impl::multiply_op,
             op_value<_impl::duplex_integer<Upper, Lower>>,
             op_value<_impl::duplex_integer<Upper, Lower>>> {
+        using result_tag = _impl::native_tag;
+
         using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
 
         [[nodiscard]] constexpr auto operator()(

@@ -21,6 +21,8 @@ namespace cnl {
     // higher OP number<>
     template<_impl::comparison_op Operator, floating_point Lhs, _impl::any_wrapper Rhs>
     struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(lhs, static_cast<Lhs>(rhs));
@@ -30,6 +32,8 @@ namespace cnl {
     // number<> OP higher
     template<_impl::comparison_op Operator, _impl::any_wrapper Lhs, floating_point Rhs>
     struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(static_cast<Rhs>(lhs), rhs);
@@ -39,6 +43,8 @@ namespace cnl {
     // lower OP number<>
     template<_impl::comparison_op Operator, class Lhs, class Rhs>
     requires _impl::number_can_wrap<Rhs, Lhs>::value struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(_impl::from_value<Rhs>(lhs), rhs);
@@ -48,6 +54,8 @@ namespace cnl {
     // number<> OP lower
     template<_impl::comparison_op Operator, class Lhs, class Rhs>
     requires _impl::number_can_wrap<Lhs, Rhs>::value struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
             return Operator()(lhs, _impl::from_value<Lhs>(rhs));
@@ -56,6 +64,8 @@ namespace cnl {
 
     template<_impl::comparison_op Operator, typename LhsRep, typename RhsRep, tag Tag>
     struct custom_operator<Operator, op_value<_impl::wrapper<LhsRep, Tag>>, op_value<_impl::wrapper<RhsRep, Tag>>> {
+        using result_tag = _impl::native_tag;
+
         [[nodiscard]] constexpr auto operator()(
                 _impl::wrapper<LhsRep, Tag> const& lhs, _impl::wrapper<RhsRep, Tag> const& rhs) const
         {
