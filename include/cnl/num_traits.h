@@ -7,8 +7,8 @@
 /// \file cnl/num_traits.h
 /// \brief definitions supporting generic treatment of numeric types
 
-#if !defined(CNL_NUM_TRAITS)
-#define CNL_NUM_TRAITS
+#if !defined(CNL_NUM_TRAITS_H)
+#define CNL_NUM_TRAITS_H
 
 #include "_impl/num_traits/digits.h"
 #include "_impl/num_traits/fixed_width_scale.h"
@@ -25,4 +25,4 @@
 #include "_impl/num_traits/unwrap.h"
 #include "_impl/num_traits/wrap.h"
 
-#endif  // CNL_NUM_TRAITS
+#endif  // CNL_NUM_TRAITS_H

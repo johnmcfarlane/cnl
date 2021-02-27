@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_NUM_TRAITS_ROUNDING)
-#define CNL_IMPL_NUM_TRAITS_ROUNDING
+#if !defined(CNL_IMPL_NUM_TRAITS_ROUNDING_H)
+#define CNL_IMPL_NUM_TRAITS_ROUNDING_H
 
 #include "../rounding/native_rounding_tag.h"
 #include "../rounding/nearest_rounding_tag.h"
@@ -39,4 +39,4 @@ namespace cnl {
     using rounding_t = typename rounding<Number>::type;
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_ROUNDING
+#endif  // CNL_IMPL_NUM_TRAITS_ROUNDING_H

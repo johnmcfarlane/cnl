@@ -7,8 +7,8 @@
 /// \file cnl/num_traits.h
 /// \brief definitions supporting \ref cnl::set_digits
 
-#if !defined(CNL_IMPL_NUM_TRAITS_SET_DIGITS)
-#define CNL_IMPL_NUM_TRAITS_SET_DIGITS
+#if !defined(CNL_IMPL_NUM_TRAITS_SET_DIGITS_H)
+#define CNL_IMPL_NUM_TRAITS_SET_DIGITS_H
 
 #include "../../limits.h"
 #include "../config.h"
@@ -171,4 +171,4 @@ namespace cnl {
     using set_digits_t = typename set_digits<T, Digits>::type;
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_SET_DIGITS
+#endif  // CNL_IMPL_NUM_TRAITS_SET_DIGITS_H

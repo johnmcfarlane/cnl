@@ -7,8 +7,8 @@
 /// \file cnl/num_traits.h
 /// \brief definitions supporting \ref cnl::set_digits
 
-#if !defined(CNL_IMPL_NUM_TRAITS_SET_WIDTH)
-#define CNL_IMPL_NUM_TRAITS_SET_WIDTH
+#if !defined(CNL_IMPL_NUM_TRAITS_SET_WIDTH_H)
+#define CNL_IMPL_NUM_TRAITS_SET_WIDTH_H
 
 #include "../numbers/signedness.h"
 #include "set_digits.h"
@@ -24,4 +24,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_SET_WIDTH
+#endif  // CNL_IMPL_NUM_TRAITS_SET_WIDTH_H

@@ -7,8 +7,8 @@
 /// \file cnl/num_traits.h
 /// \brief definitions supporting \ref cnl::digits
 
-#if !defined(CNL_IMPL_NUM_TRAITS_DIGITS)
-#define CNL_IMPL_NUM_TRAITS_DIGITS
+#if !defined(CNL_IMPL_NUM_TRAITS_DIGITS_H)
+#define CNL_IMPL_NUM_TRAITS_DIGITS_H
 
 #include "../numbers/signedness.h"
 #include "../type_traits/is_integral.h"
@@ -48,4 +48,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_NUM_TRAITS_DIGITS
+#endif  // CNL_IMPL_NUM_TRAITS_DIGITS_H
