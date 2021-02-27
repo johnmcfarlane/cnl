@@ -20,20 +20,6 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // heterogeneous operator overloads
 
-    template<_impl::unary_arithmetic_op Operator, typename Rep, int Exponent, int Radix>
-    struct custom_operator<
-            Operator, op_value<scaled_integer<Rep, power<Exponent, Radix>>>> {
-        using result_tag = _impl::native_tag;
-
-        [[nodiscard]] constexpr auto operator()(
-                scaled_integer<Rep, power<Exponent, Radix>> const& rhs) const
-        {
-            return _impl::from_rep<scaled_integer<
-                    decltype(Operator()(_impl::to_rep(rhs))), power<Exponent, Radix>>>(
-                    Operator()(_impl::to_rep(rhs)));
-        }
-    };
-
     // comparison between operands with different rep
     template<_impl::comparison_op Operator, typename LhsRep, typename RhsRep, class Scale>
     struct custom_operator<

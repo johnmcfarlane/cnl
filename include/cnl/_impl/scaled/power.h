@@ -14,5 +14,6 @@
 #include "is_same_tag_family.h"
 #include "is_scaled_tag.h"
 #include "is_tag.h"
+#include "unary_operator.h"
 
 #endif  // CNL_IMPL_SCALED_POWER_H
