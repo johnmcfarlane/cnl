@@ -24,7 +24,7 @@
 
 /// compositional numeric library
 namespace cnl {
-    // higher OP number<>
+    // higher OP any_wrapper
     template<_impl::binary_arithmetic_op Operator, floating_point Lhs, _impl::any_wrapper Rhs>
     struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
@@ -33,7 +33,7 @@ namespace cnl {
         }
     };
 
-    // number<> OP higher
+    // any_wrapper OP higher
     template<_impl::binary_arithmetic_op Operator, _impl::any_wrapper Lhs, floating_point Rhs>
     struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
@@ -42,7 +42,7 @@ namespace cnl {
         }
     };
 
-    // lower OP number<>
+    // lower OP any_wrapper
     template<_impl::binary_arithmetic_op Operator, class Lhs, class Rhs>
     requires _impl::number_can_wrap<Rhs, Lhs>::value struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
@@ -51,7 +51,7 @@ namespace cnl {
         }
     };
 
-    // number<> OP lower
+    // any_wrapper OP lower
     template<_impl::binary_arithmetic_op Operator, class Lhs, class Rhs>
     requires _impl::number_can_wrap<Lhs, Rhs>::value struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const

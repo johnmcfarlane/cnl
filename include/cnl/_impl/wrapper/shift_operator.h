@@ -18,7 +18,17 @@
 
 /// compositional numeric library
 namespace cnl {
-    // number << non-number
+    // non-wrapper << wrapper
+    // includes derived classes
+    template<_impl::shift_op Operator, class Lhs, _impl::any_wrapper Rhs>
+    requires(!_impl::is_wrapper<Lhs>) struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
+        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        {
+            return Operator()(lhs, _impl::rep_of_t<Rhs>{_impl::to_rep(rhs)});
+        }
+    };
+
+    // wrapper << non-wrapper
     template<_impl::shift_op Operator, typename LhsRep, tag LhsTag, class Rhs>
     requires _impl::number_can_wrap<_impl::wrapper<LhsRep, LhsTag>, Rhs>::value struct custom_operator<
             Operator,
@@ -33,7 +43,7 @@ namespace cnl {
         }
     };
 
-    // number<int, Foo> << number<int, Foo>
+    // wrapper<int, Foo> << wrapper<int, Foo>
     // includes derived classes
     template<_impl::shift_op Operator, typename LhsRep, tag LhsTag, _impl::any_wrapper Rhs>
     struct custom_operator<
@@ -45,16 +55,6 @@ namespace cnl {
                     custom_operator<
                             Operator, op_value<LhsRep, LhsTag>, op_value<_impl::rep_of_t<Rhs>>>{}(
                             _impl::to_rep(lhs), _impl::to_rep(rhs)));
-        }
-    };
-
-    // non-number << number
-    // includes derived classes
-    template<_impl::shift_op Operator, class Lhs, _impl::any_wrapper Rhs>
-    requires(!_impl::is_wrapper<Lhs>) struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
-        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-        {
-            return Operator()(lhs, _impl::rep_of_t<Rhs>{_impl::to_rep(rhs)});
         }
     };
 
