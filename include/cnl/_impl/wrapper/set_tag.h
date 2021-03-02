@@ -14,8 +14,9 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<typename Rep, class OutTag>
-    struct set_tag<_impl::wrapper<Rep>, OutTag> : std::type_identity<_impl::wrapper<Rep, OutTag>> {
+    template<typename Rep, class Tag, class OutTag>
+    struct set_tag<_impl::wrapper<Rep, Tag>, OutTag>
+        : std::type_identity<_impl::wrapper<Rep, OutTag>> {
     };
 }
 
