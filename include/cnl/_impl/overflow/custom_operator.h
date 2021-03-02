@@ -110,7 +110,6 @@ namespace cnl {
     template<_impl::binary_arithmetic_op Operator, typename Lhs, overflow_tag LhsTag, typename Rhs, overflow_tag RhsTag>
     requires(!_impl::builtin_overflow_operator<Operator, Lhs, Rhs>::value) struct custom_operator<Operator, op_value<Lhs, LhsTag>, op_value<Rhs, RhsTag>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
-                -> _impl::op_result<Operator, Lhs, Rhs>
         {
             return _impl::is_overflow<Operator, _impl::polarity::positive>{}(lhs, rhs)
                          ? _impl::overflow_operator<
