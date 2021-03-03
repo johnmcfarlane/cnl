@@ -141,28 +141,15 @@ namespace cnl {
         }
     };
 
-    // unary operator-
-    template<int RhsDigits, class RhsNarrowest>
-    struct custom_operator<
-            _impl::minus_op, op_value<elastic_integer<RhsDigits, RhsNarrowest>>> {
+    // unary +/-
+    template<_impl::unary_arithmetic_op Operator, int RhsDigits, class RhsNarrowest>
+    struct custom_operator<Operator, op_value<elastic_integer<RhsDigits, RhsNarrowest>>> {
         [[nodiscard]] constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
                 const -> elastic_integer<RhsDigits, typename numbers::set_signedness_t<RhsNarrowest, true>>
         {
             using result_type =
                     elastic_integer<RhsDigits, typename numbers::set_signedness_t<RhsNarrowest, true>>;
-            return _impl::from_rep<result_type>(-_impl::to_rep(static_cast<result_type>(rhs)));
-        }
-    };
-
-    // unary operator+
-    template<int RhsDigits, class RhsNarrowest>
-    struct custom_operator<
-            _impl::plus_op, op_value<elastic_integer<RhsDigits, RhsNarrowest>>> {
-        [[nodiscard]] constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
-                const -> elastic_integer<RhsDigits, RhsNarrowest>
-        {
-            return _impl::from_rep<elastic_integer<RhsDigits, RhsNarrowest>>(
-                    +_impl::to_rep(static_cast<elastic_integer<RhsDigits, RhsNarrowest>>(rhs)));
+            return _impl::from_rep<result_type>(Operator{}(_impl::to_rep(static_cast<result_type>(rhs))));
         }
     };
 

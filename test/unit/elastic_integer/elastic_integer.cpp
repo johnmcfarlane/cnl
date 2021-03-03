@@ -377,7 +377,7 @@ namespace {
 
     namespace test_unary_add {
         static_assert(
-                identical(+elastic_integer<1, unsigned>{1}, elastic_integer<1, unsigned>{1}),
+                identical(+elastic_integer<1, unsigned>{1}, elastic_integer<1, signed>{1}),
                 "elastic_integer test failed");
     }
 
