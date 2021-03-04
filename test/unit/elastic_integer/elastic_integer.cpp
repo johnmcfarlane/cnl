@@ -130,21 +130,6 @@ namespace {
                 "cnl::elastic_integer test failed");
     }
 
-    namespace test_deduction_guides {
-        static_assert(
-                identical(elastic_integer{128_c}, elastic_integer<8>{128}),
-                "elastic_integer test failed");
-        static_assert(
-                identical(elastic_integer{127_c}, elastic_integer<7>{127}),
-                "elastic_integer test failed");
-        static_assert(
-                identical(elastic_integer{-128_c}, elastic_integer<8>{-128}),
-                "elastic_integer test failed");
-        static_assert(
-                identical(elastic_integer{-127_c}, elastic_integer<7>{-127}),
-                "elastic_integer test failed");
-    }
-
     namespace test_to_rep {
         static_assert(cnl::_impl::equal_op()(1, to_rep(elastic_integer<8>{1})));
     }
@@ -323,10 +308,6 @@ namespace {
                 "elastic_integer test failed");
 
         static_assert(identical(elastic_integer<4>{10_c}, elastic_integer<4>{10}));
-        static_assert(
-                identical(elastic_integer{cnl::constant<1000>{}}, elastic_integer<10>{1000}));
-        static_assert(
-                identical(elastic_integer<10>{cnl::constant<1000>{}}, elastic_integer<10>{1000}));
     }
 
     namespace test_is_elastic_integer {
@@ -340,6 +321,8 @@ namespace {
 
     namespace test_make_elastic_integer {
         using cnl::make_elastic_integer;
+        static_assert(
+                identical(make_elastic_integer(cnl::constant<1000>{}), elastic_integer<10>{1000}));
         static_assert(
                 identical(make_elastic_integer(136_c), elastic_integer<8, int>{136}),
                 "cnl::_impl::make_elastic_integer test failed");
@@ -651,10 +634,6 @@ namespace {
     template struct elastic_integer_test<
             elastic_integer<39, unsigned int>, 0, 1, (INT64_C(1) << 39) - 1>;
 #endif
-
-    // user-defined literal initialization
-    // with class template deduction
-    static_assert(identical(elastic_integer(1_c), elastic_integer<1>{1}));
 
     namespace test_is_composite {
         using cnl::is_composite;

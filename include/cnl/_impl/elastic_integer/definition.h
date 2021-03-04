@@ -66,23 +66,6 @@ namespace cnl {
         {
         }
     };
-
-    namespace _impl {
-        template<bool Signed>
-        struct machine_digits {
-            static constexpr int value =
-                    digits<typename std::conditional<Signed, signed, unsigned>::type>;
-        };
-
-        template<integer S>
-        using narrowest = set_digits_t<S, machine_digits<numbers::signedness_v<S>>::value>;
-    }
-
-    template<class S>
-    elastic_integer(S const& s) -> elastic_integer<digits<S>, _impl::narrowest<S>>;
-
-    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    elastic_integer(constant<Value>) -> elastic_integer<digits<constant<Value>>>;
 }
 
 #endif  // CNL_IMPL_ELASTIC_INTEGER_DEFINITION_H
