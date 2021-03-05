@@ -310,15 +310,6 @@ namespace {
         static_assert(identical(elastic_integer<4>{10_c}, elastic_integer<4>{10}));
     }
 
-    namespace test_is_elastic_integer {
-        using cnl::_impl::is_elastic_integer;
-        static_assert(
-                !is_elastic_integer<int>::value, "cnl::_impl::is_elastic_integer test failed");
-        static_assert(
-                is_elastic_integer<elastic_integer<10, int>>::value,
-                "cnl::_impl::is_elastic_integer test failed");
-    }
-
     namespace test_make_elastic_integer {
         using cnl::make_elastic_integer;
         static_assert(
@@ -530,7 +521,7 @@ namespace {
     namespace test_avg_fn {
         [[nodiscard]] constexpr auto avg(int a, int b)
         {
-            return int((cnl::elastic_integer{a} + cnl::elastic_integer{b}) / 2);
+            return int((cnl::make_elastic_integer(a) + cnl::make_elastic_integer(b)) / 2);
         }
 
         static_assert(avg(INT_MAX, INT_MAX) == INT_MAX, "avg using elastic_integer");

@@ -8,9 +8,8 @@
 #define CNL_IMPL_ELASTIC_INTEGER_SET_REP_H
 
 #include "../num_traits/adopt_width.h"
-#include "../num_traits/digits.h"
 #include "../num_traits/set_rep.h"
-#include "declaration.h"
+#include "definition.h"
 
 #include <type_traits>
 

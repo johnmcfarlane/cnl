@@ -13,7 +13,6 @@
 #include "../numbers/set_signedness.h"
 #include "../operators/overloads.h"
 #include "definition.h"
-#include "is_elastic_tag.h"
 #include "policy.h"
 
 #include <type_traits>
