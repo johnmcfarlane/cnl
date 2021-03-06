@@ -8,9 +8,7 @@
 #define CNL_IMPL_ELASTIC_INTEGER_DIGITS_H
 
 #include "../num_traits/digits.h"
-#include "declaration.h"
-
-#include <type_traits>
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {

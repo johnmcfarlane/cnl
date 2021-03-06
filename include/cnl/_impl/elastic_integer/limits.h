@@ -9,9 +9,9 @@
 
 #include "../../limits.h"
 #include "../limits/lowest.h"
+#include "../num_traits/rep_of.h"
+#include "../numbers/signedness.h"
 #include "definition.h"
-#include "from_rep.h"
-#include "rep_of.h"
 
 /// compositional numeric library
 namespace cnl {

@@ -11,7 +11,7 @@
 #define CNL_IMPL_ELASTIC_INTEGER_FROM_REP_H
 
 #include "../num_traits/from_rep.h"
-#include "declaration.h"
+#include "definition.h"
 #include "set_rep.h"
 
 /// compositional numeric library
@@ -23,11 +23,6 @@ namespace cnl {
         {
             return r;
         }
-    };
-
-    template<typename ArchetypeRep, int Digits, typename Narrowest, typename Rep>
-    struct from_rep<_impl::wrapper<ArchetypeRep, elastic_tag<Digits, Narrowest>>, Rep>
-        : from_rep<elastic_integer<Digits, Narrowest>, Rep> {
     };
 }
 

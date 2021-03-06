@@ -71,7 +71,7 @@ namespace cnl {
     }
 
     template<_impl::comparison_op Operator, int LhsDigits, class LhsNarrowest, int RhsDigits, class RhsNarrowest>
-    struct custom_operator<
+    requires(!std::is_same_v<elastic_tag<LhsDigits, LhsNarrowest>, elastic_tag<RhsDigits, RhsNarrowest>>) struct custom_operator<
             Operator,
             op_value<elastic_integer<LhsDigits, LhsNarrowest>>,
             op_value<elastic_integer<RhsDigits, RhsNarrowest>>> {
@@ -83,27 +83,14 @@ namespace cnl {
         }
     };
 
-    template<_impl::comparison_op Operator, int Digits, class Narrowest>
-    struct custom_operator<
-            Operator,
-            op_value<elastic_integer<Digits, Narrowest>>,
-            op_value<elastic_integer<Digits, Narrowest>>> {
-        [[nodiscard]] constexpr auto operator()(
-                elastic_integer<Digits, Narrowest> const& lhs,
-                elastic_integer<Digits, Narrowest> const& rhs) const
-        {
-            return Operator()(_impl::to_rep(lhs), _impl::to_rep(rhs));
-        }
-    };
-
     // elastic_integer << non-constant
     // elastic_integer >> non-constant
-    template<_impl::shift_op Operator, class LhsRep, int LhsDigits, typename Rhs>
+    template<_impl::shift_op Operator, integer LhsRep, int LhsDigits, integer LhsNarrowest, typename Rhs>
     requires(!_impl::is_constant<Rhs>::value) struct custom_operator<
             Operator,
-            op_value<elastic_integer<LhsDigits, LhsRep>>,
+            op_value<_impl::wrapper<LhsRep, elastic_tag<LhsDigits, LhsNarrowest>>>,
             op_value<Rhs>> {
-        using lhs_type = elastic_integer<LhsDigits, LhsRep>;
+        using lhs_type = _impl::wrapper<LhsRep, elastic_tag<LhsDigits, LhsNarrowest>>;
 
         [[nodiscard]] constexpr auto operator()(lhs_type const& lhs, Rhs const& rhs) const
         {
@@ -127,10 +114,10 @@ namespace cnl {
         }
     };
 
-    template<int LhsDigits, class LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
+    template<integer LhsRep, int LhsDigits, integer LhsNarrowest, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>
     struct custom_operator<
             _impl::shift_right_op,
-            op_value<elastic_integer<LhsDigits, LhsNarrowest>>,
+            op_value<_impl::wrapper<LhsRep, elastic_tag<LhsDigits, LhsNarrowest>>>,
             op_value<constant<RhsValue>>> {
         [[nodiscard]] constexpr auto operator()(
                 elastic_integer<LhsDigits, LhsNarrowest> const& lhs, constant<RhsValue>) const
@@ -141,26 +128,40 @@ namespace cnl {
         }
     };
 
+    namespace _impl {
+        template<typename T>
+        struct tag_narrowest;
+
+        template<int Digits, typename Narrowest>
+        struct tag_narrowest<elastic_tag<Digits, Narrowest>> : std::type_identity<Narrowest> {
+        };
+
+        template<typename T>
+        using tag_narrowest_t = typename tag_narrowest<T>::type;
+    }
+
     // unary +/-
-    template<_impl::unary_arithmetic_op Operator, int RhsDigits, class RhsNarrowest>
-    struct custom_operator<Operator, op_value<elastic_integer<RhsDigits, RhsNarrowest>>> {
-        [[nodiscard]] constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
-                const -> elastic_integer<RhsDigits, typename numbers::set_signedness_t<RhsNarrowest, true>>
+    template<_impl::unary_arithmetic_op Operator, integer RhsRep, int RhsDigits, integer RhsNarrowest>
+    requires(!std::is_same_v<_impl::bitwise_not_op, Operator>) struct custom_operator<Operator, op_value<_impl::wrapper<RhsRep, elastic_tag<RhsDigits, RhsNarrowest>>>> {
+        using rhs_type = _impl::wrapper<RhsRep, elastic_tag<RhsDigits, RhsNarrowest>>;
+        [[nodiscard]] constexpr auto operator()(rhs_type const& rhs) const
         {
-            using result_type =
-                    elastic_integer<RhsDigits, typename numbers::set_signedness_t<RhsNarrowest, true>>;
+            constexpr auto result_digits = digits<rhs_type>;
+            using rhs_narrowest = _impl::tag_narrowest_t<_impl::tag_of_t<rhs_type>>;
+            using result_narrowest = numbers::set_signedness_t<rhs_narrowest, true>;
+            using result_type = elastic_integer<result_digits, result_narrowest>;
             return _impl::from_rep<result_type>(Operator{}(_impl::to_rep(static_cast<result_type>(rhs))));
         }
     };
 
     // unary operator~
-    template<int RhsDigits, class RhsNarrowest>
+    template<integer RhsRep, int RhsDigits, integer RhsNarrowest>
     struct custom_operator<
-            _impl::bitwise_not_op, op_value<elastic_integer<RhsDigits, RhsNarrowest>>> {
-        [[nodiscard]] constexpr auto operator()(elastic_integer<RhsDigits, RhsNarrowest> const& rhs)
-                const -> elastic_integer<RhsDigits, RhsNarrowest>
+            _impl::bitwise_not_op, op_value<_impl::wrapper<RhsRep, elastic_tag<RhsDigits, RhsNarrowest>>>> {
+        [[nodiscard]] constexpr auto operator()(
+                _impl::wrapper<RhsRep, elastic_tag<RhsDigits, RhsNarrowest>> const& rhs)
         {
-            using elastic_integer = elastic_integer<RhsDigits, RhsNarrowest>;
+            using elastic_integer = _impl::wrapper<RhsRep, elastic_tag<RhsDigits, RhsNarrowest>>;
             using rep = _impl::rep_of_t<elastic_integer>;
             return _impl::from_rep<elastic_integer>(static_cast<rep>(
                     _impl::to_rep(rhs)

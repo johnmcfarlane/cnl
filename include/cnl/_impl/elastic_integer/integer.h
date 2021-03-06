@@ -8,7 +8,9 @@
 #define CNL_IMPL_ELASTIC_INTEGER_INTEGER_H
 
 #include "../../integer.h"
-#include "declaration.h"
+#include "definition.h"
+
+#include <type_traits>
 
 /// compositional numeric library
 namespace cnl {

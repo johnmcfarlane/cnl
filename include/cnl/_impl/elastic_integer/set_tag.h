@@ -9,7 +9,7 @@
 
 #include "../num_traits/adopt_width.h"
 #include "../num_traits/set_tag.h"
-#include "declaration.h"
+#include "definition.h"
 
 #include <type_traits>
 

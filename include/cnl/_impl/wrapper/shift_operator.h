@@ -29,16 +29,14 @@ namespace cnl {
     };
 
     // wrapper << non-wrapper
-    template<_impl::shift_op Operator, typename LhsRep, tag LhsTag, class Rhs>
-    requires _impl::number_can_wrap<_impl::wrapper<LhsRep, LhsTag>, Rhs>::value struct custom_operator<
-            Operator,
-            op_value<_impl::wrapper<LhsRep, LhsTag>>,
-            op_value<Rhs>> {
+    template<_impl::shift_op Operator, _impl::any_wrapper Lhs, class Rhs>
+    requires _impl::number_can_wrap<Lhs, Rhs>::value struct custom_operator<
+            Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(
-                _impl::wrapper<LhsRep, LhsTag> const& lhs, Rhs const& rhs) const
+                Lhs const& lhs, Rhs const& rhs) const
         {
-            return _impl::from_rep<_impl::wrapper<LhsRep, LhsTag>>(
-                    custom_operator<Operator, op_value<LhsRep, LhsTag>, op_value<Rhs>>{}(
+            return _impl::from_rep<Lhs>(
+                    custom_operator<Operator, op_value<_impl::rep_of_t<Lhs>, _impl::tag_of_t<Lhs>>, op_value<Rhs>>{}(
                             _impl::to_rep(lhs), rhs));
         }
     };

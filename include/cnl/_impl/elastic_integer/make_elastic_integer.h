@@ -8,6 +8,7 @@
 #define CNL_IMPL_ELASTIC_INTEGER_MAKE_ELASTIC_INTEGER_H
 
 #include "../../constant.h"
+#include "../numbers/adopt_signedness.h"
 #include "definition.h"
 #include "digits.h"
 
@@ -23,6 +24,9 @@ namespace cnl {
     }
 
     namespace _impl {
+        template<integer Rep>
+        using narrowest = adopt_signedness_t<int, Rep>;
+
         template<class Narrowest, class Integral>
         struct make_narrowest {
             using type = Narrowest;

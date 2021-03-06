@@ -7,10 +7,12 @@
 #if !defined(CNL_IMPL_ELASTIC_INTEGER_FROM_VALUE_H)
 #define CNL_IMPL_ELASTIC_INTEGER_FROM_VALUE_H
 
+#include "../../constant.h"
+#include "../num_traits/digits.h"
 #include "../num_traits/from_value.h"
 #include "../num_traits/set_width.h"
 #include "../num_traits/width.h"
-#include "declaration.h"
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {

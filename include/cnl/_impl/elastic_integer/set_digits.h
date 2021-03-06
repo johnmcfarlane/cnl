@@ -8,7 +8,7 @@
 #define CNL_IMPL_ELASTIC_INTEGER_SET_DIGITS_H
 
 #include "../num_traits/set_digits.h"
-#include "declaration.h"
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {
