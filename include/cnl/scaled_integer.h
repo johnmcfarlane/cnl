@@ -15,7 +15,6 @@
 #include "_impl/scaled_integer/definition.h"
 #include "_impl/scaled_integer/extras.h"
 #include "_impl/scaled_integer/fixed_point.h"
-#include "_impl/scaled_integer/fraction.h"
 #include "_impl/scaled_integer/from_rep.h"
 #include "_impl/scaled_integer/is_wrapper.h"
 #include "_impl/scaled_integer/math.h"

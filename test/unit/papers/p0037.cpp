@@ -43,18 +43,6 @@ namespace design_decisions {
         static_assert(b == 320);  // 1.25*(1<<8)
     }
 
-    namespace deduction {
-        using cnl::constant;
-        using cnl::scaled_integer;
-
-        constexpr auto a = scaled_integer(0UL);
-        static_assert(is_same_v<decltype(a), scaled_integer<unsigned long, power<>> const>);
-
-        constexpr auto b = scaled_integer(constant<0xFF00000000L>{});
-        static_assert(is_same_v<decltype(b), scaled_integer<int, power<32>> const>);
-        static_assert(to_rep(b) == 0xFF);
-    }
-
     namespace operators {
         using cnl::constant;  // NOLINT(misc-unused-using-decls)
         using cnl::scaled_integer;
@@ -62,7 +50,7 @@ namespace design_decisions {
         constexpr auto a = scaled_integer<long long>(3) + 4.F;
         static_assert(is_same_v<decltype(a), decltype(3.F + 4.F) const>);
 
-        constexpr auto b = scaled_integer(200U) - constant<100L>{};
+        constexpr auto b = cnl::make_scaled_integer(200U) - constant<100L>{};
         static_assert(is_same_v<
                       decltype(b),
                       decltype(scaled_integer<unsigned>(200) - scaled_integer<int>(100)) const>);
@@ -108,7 +96,7 @@ namespace design_decisions {
         using cnl::scaled_integer;
         using std::int64_t;
 
-        constexpr auto i = scaled_integer{fraction{1, 3}};
+        constexpr auto i = cnl::make_scaled_integer(fraction{1, 3});
         static_assert(i == 0.333333333022892475128173828125L);
         static_assert(is_same_v<decltype(i), const scaled_integer<int64_t, power<-31>>>);
 

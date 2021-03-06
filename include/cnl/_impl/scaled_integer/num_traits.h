@@ -10,7 +10,6 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_NUM_TRAITS_H)
 #define CNL_IMPL_SCALED_INTEGER_NUM_TRAITS_H
 
-#include "../../fraction.h"
 #include "definition.h"
 
 #include <algorithm>

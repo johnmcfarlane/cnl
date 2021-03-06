@@ -73,29 +73,12 @@ namespace {
         static_assert(
                 identical(cnl::make_scaled_integer(cnl::make_fraction(n, d)), nq),
                 "cnl::make_scaled_integer(cnl::fraction)");
-        static_assert(
-                identical(nq, cnl::scaled_integer{f}),
-                "cnl::scaled_integer::scaled_integer(fraction) w. CTAD");
 
         // custom-width quotient (must be wide enough to perform widened division)
         constexpr auto cq = cnl::scaled_integer<uint16, cnl::power<-4>>{f};
         static_assert(
                 identical(cnl::scaled_integer<uint16, cnl::power<-4>>{0.1875}, cq),
                 "cnl::scaled_integer::scaled_integer(fraction) w.out CTAD");
-    }
-
-    namespace test_fraction_deduced {
-        constexpr auto third = cnl::make_fraction(test_int{1}, test_int{3});
-
-        constexpr auto named = cnl::quotient(third.numerator, third.denominator);
-        static_assert(
-                identical(
-                        scaled_integer<quot_digits_t<>, cnl::power<-31>>{
-                                0.333333333022892475128173828125L},
-                        named));
-
-        constexpr auto deduced = cnl::scaled_integer{third};
-        static_assert(identical(named, deduced));
     }
 
     namespace test_fraction_specific_int {
@@ -108,7 +91,7 @@ namespace {
                                 0.333333333022892475128173828125L},
                         named));
 
-        constexpr auto deduced = cnl::scaled_integer{third};
+        constexpr auto deduced = cnl::make_scaled_integer(third);
         static_assert(identical(named, deduced));
 
         constexpr auto specific = cnl::scaled_integer<int64, cnl::power<-31>>{third};
@@ -127,7 +110,7 @@ namespace {
                 identical(
                         cnl::scaled_integer<quot_digits_t<int8>, cnl::power<-7>>{0.328125}, named));
 
-        constexpr auto deduced = cnl::scaled_integer{third};
+        constexpr auto deduced = cnl::make_scaled_integer(third);
         static_assert(identical(named, deduced));
 
         constexpr auto specific = cnl::scaled_integer<test_int, cnl::power<-7>>{third};
@@ -145,7 +128,7 @@ namespace {
                                 0.33331298828125},
                         named));
 
-        constexpr auto deduced = cnl::scaled_integer{third};
+        constexpr auto deduced = cnl::make_scaled_integer(third);
         static_assert(identical(named, deduced));
 
         constexpr auto specific = cnl::scaled_integer<uint8, cnl::power<-7>>{third};

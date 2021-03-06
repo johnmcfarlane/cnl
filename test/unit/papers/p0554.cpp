@@ -47,7 +47,7 @@ namespace {
         using cnl::scaled_integer;  // NOLINT(misc-unused-using-decls)
         constexpr elastic_scaled_integer<7, -6> numerator = 1.125;  // 1:6
         constexpr elastic_scaled_integer<5, -3> denominator = 4.;  // 2:3
-        constexpr auto quotient = scaled_integer{fraction{numerator, denominator}};
+        constexpr auto quotient = cnl::make_scaled_integer(fraction{numerator, denominator});
         static_assert(
                 identical(quotient, elastic_scaled_integer<12, -8>{0.28125}),
                 "position_paper test failed");

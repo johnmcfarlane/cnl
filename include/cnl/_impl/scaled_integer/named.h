@@ -10,7 +10,6 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_NAMED_H)
 #define CNL_IMPL_SCALED_INTEGER_NAMED_H
 
-#include "../../fraction.h"
 #include "../num_traits/rep_of.h"
 #include "../num_traits/tag_of.h"
 #include "../scaled/power.h"

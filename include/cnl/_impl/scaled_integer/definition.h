@@ -10,14 +10,8 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_DEFINITION_H)
 #define CNL_IMPL_SCALED_INTEGER_DEFINITION_H
 
-#include "../../fraction.h"
 #include "../../integer.h"
-#include "../../numeric.h"
-#include "../num_traits/digits.h"
-#include "../num_traits/set_digits.h"
-#include "../scaled/inc_dec_operator.h"
 #include "../scaled/power.h"
-#include "../used_digits.h"
 #include "../wrapper.h"
 #include "declaration.h"
 
@@ -94,20 +88,6 @@ namespace cnl {
         template<typename, typename>
         friend struct from_rep;
     };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::scaled_integer::scaled_integer deduction guides
-
-    // same as cnl::make_scaled_integer
-    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    scaled_integer(::cnl::constant<Value>) -> scaled_integer<
-            set_digits_t<
-                    int,
-                    std::max(digits<int>, _impl::used_digits(Value) - trailing_bits(Value))>,
-            power<trailing_bits(Value)>>;
-
-    template<integer Integer>
-    scaled_integer(Integer) -> scaled_integer<Integer, power<>>;
 }
 
 #endif  // CNL_IMPL_SCALED_INTEGER_DEFINITION_H
