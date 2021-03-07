@@ -240,9 +240,11 @@ jobs:
 
         include:
           - compiler: clang-head
+            cxx_extensions: ON
             toolchain: clang.cmake
             container: johnmcfarlane/cnl_ci:clang-head-libstdcpp
           - compiler: gcc-head
+            cxx_extensions: OFF
             toolchain: gcc.cmake
             container: johnmcfarlane/cnl_ci:gcc-head
 
@@ -265,6 +267,7 @@ jobs:
     - name: Configure CNL
       run: |
         cmake \
+          -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx_extensions}} \
           -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
           $GITHUB_WORKSPACE
 
