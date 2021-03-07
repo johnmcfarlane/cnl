@@ -68,8 +68,6 @@ class CnlConan(ConanFile):
                 False: "OFF"
             }[bool(conan_option)]
 
-        std = " -DCMAKE_CXX_STANDARD={}".format(
-            self.settings.compiler.cppstd) if self.settings.compiler.cppstd else ""
         module_path = "-DCMAKE_MODULE_PATH:FILEPATH={}".format(
             self.build_folder)
         gtest_hack = "-DCNL_GTEST_MAIN_TARGET:STRING=GTest::gtest_main"
@@ -81,7 +79,7 @@ class CnlConan(ConanFile):
         sanitize = "-DCNL_SANITIZE={}".format(
             conan_option_to_cmake_boolean(self.options.sanitize))
 
-        self.run(f'cmake {cmake.command_line}{std} {module_path} {gtest_hack} {clang_tidy} {exceptions} {int128} {sanitize} {self.source_folder}')
+        self.run(f'cmake {cmake.command_line} {module_path} {gtest_hack} {clang_tidy} {exceptions} {int128} {sanitize} {self.source_folder}')
     
     def build_phase(self, cmake):
         assert(self.options.target)
