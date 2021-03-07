@@ -45,7 +45,7 @@ namespace cnl {
 
     /// \cond
     template<typename Number>
-    requires(_impl::is_integral<Number> || std::is_floating_point_v<Number> || _impl::is_constant<Number>::value) struct to_rep<Number>
+    requires(_impl::is_integral_v<Number> || std::is_floating_point_v<Number> || _impl::is_constant<Number>::value) struct to_rep<Number>
         : _impl::default_to_rep<Number> {
     };
     /// \endcond
