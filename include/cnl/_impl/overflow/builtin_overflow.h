@@ -74,7 +74,7 @@ namespace cnl {
         template<typename Lhs, typename Rhs>
         struct are_builtin_operands
             : std::integral_constant<
-                      bool, _impl::is_integral<Lhs> && _impl::is_integral<Rhs>> {
+                      bool, _impl::is_integral_v<Lhs> && _impl::is_integral_v<Rhs>> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////

@@ -10,6 +10,8 @@ set(test_sources
         bit.cpp
         cmath.cpp
         cstdint.cpp
+        fixed_point.cpp
+        integer.cpp
         limits.cpp
         num_traits.cpp
         numeric.cpp

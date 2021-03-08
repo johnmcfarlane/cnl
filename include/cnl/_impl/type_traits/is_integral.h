@@ -15,18 +15,24 @@
 namespace cnl {
     namespace _impl {
         template<class T>
-        inline constexpr auto is_integral = std::is_integral_v<T>;
+        struct is_integral : std::is_integral<T> {
+        };
 
 #if defined(CNL_INT128_ENABLED)
         template<>
-        inline constexpr auto is_integral<int128> = true;
+        struct is_integral<int128> : std::true_type {
+        };
 
         template<>
-        inline constexpr auto is_integral<uint128> = true;
+        struct is_integral<uint128> : std::true_type {
+        };
 #endif
 
+        template<class T>
+        inline constexpr auto is_integral_v = is_integral<T>::value;
+
         template<typename T>
-        concept integral = is_integral<T>;
+        concept integral = is_integral_v<T>;
     }
 }
 

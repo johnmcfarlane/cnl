@@ -5,6 +5,6 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief test of the `cnl/cmath.h`
+/// \brief test of `cnl/cmath.h`
 
 #include <cnl/cmath.h>
