@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_ROUNDING_NATIVE_ROUNDING_TAG_H)
 #define CNL_IMPL_ROUNDING_NATIVE_ROUNDING_TAG_H
 
-#include "../operators/native_tag.h"
+#include "../custom_operator/native_tag.h"
 #include "is_rounding_tag.h"
 #include "is_tag.h"
 

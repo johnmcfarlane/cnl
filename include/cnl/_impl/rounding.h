@@ -10,10 +10,10 @@
 #if !defined(CNL_IMPL_ROUNDING_H)
 #define CNL_IMPL_ROUNDING_H
 
+#include "custom_operator/native_tag.h"
+#include "custom_operator/op.h"
 #include "num_traits/from_value.h"
 #include "num_traits/unwrap.h"
-#include "operators/native_tag.h"
-#include "operators/operators.h"
 #include "rounding/convert_operator.h"
 #include "rounding/native_rounding_tag.h"
 #include "rounding/nearest_rounding_tag.h"

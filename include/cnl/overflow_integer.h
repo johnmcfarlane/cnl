@@ -12,12 +12,12 @@
 
 #include "overflow.h"
 
+#include "_impl/custom_operator/definition.h"
+#include "_impl/custom_operator/native_tag.h"
+#include "_impl/custom_operator/tagged.h"
 #include "_impl/num_traits/from_value.h"
 #include "_impl/num_traits/from_value_recursive.h"
 #include "_impl/num_traits/rep_of.h"
-#include "_impl/operators/custom_operator.h"
-#include "_impl/operators/native_tag.h"
-#include "_impl/operators/tagged.h"
 #include "_impl/ostream.h"
 #include "_impl/wrapper.h"
 

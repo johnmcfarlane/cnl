@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_ELASTIC_TAG_POLICY_H)
 #define CNL_IMPL_ELASTIC_TAG_POLICY_H
 
-#include "../operators/operators.h"
+#include "../custom_operator/op.h"
 
 #include <algorithm>
 

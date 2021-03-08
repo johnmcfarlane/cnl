@@ -8,9 +8,9 @@
 #define CNL_IMPL_WRAPPER_UNARY_OPERATOR_H
 
 #include "../config.h"
-#include "../operators/custom_operator.h"
-#include "../operators/native_tag.h"
-#include "../operators/overloads.h"
+#include "../custom_operator/definition.h"
+#include "../custom_operator/native_tag.h"
+#include "../custom_operator/overloads.h"
 #include "definition.h"
 #include "from_rep.h"
 #include "make_wrapper.h"

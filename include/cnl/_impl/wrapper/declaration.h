@@ -8,7 +8,7 @@
 #define CNL_IMPL_WRAPPER_DECLARATION_H
 
 #include "../../integer.h"
-#include "../operators/native_tag.h"
+#include "../custom_operator/native_tag.h"
 
 /// compositional numeric library
 namespace cnl {

@@ -7,12 +7,12 @@
 #if !defined(CNL_ROUNDING_INTEGER_H)
 #define CNL_ROUNDING_INTEGER_H
 
+#include "_impl/custom_operator/tagged.h"
 #include "_impl/num_traits/is_composite.h"
 #include "_impl/num_traits/rep_of.h"
 #include "_impl/num_traits/rounding.h"
 #include "_impl/num_traits/set_rounding.h"
 #include "_impl/num_traits/to_rep.h"
-#include "_impl/operators/tagged.h"
 #include "_impl/rounding.h"
 #include "_impl/rounding/convert_operator.h"
 #include "_impl/rounding/is_rounding_tag.h"

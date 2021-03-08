@@ -14,7 +14,7 @@
 #include <numbers>
 #endif
 
+#include "_impl/custom_operator/tag.h"
 #include "_impl/numbers/signedness.h"
-#include "_impl/operators/tag.h"
 
 #endif  // CNL_NUMBERS_H

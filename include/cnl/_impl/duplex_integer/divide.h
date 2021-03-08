@@ -7,10 +7,10 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_DIVIDE_H)
 #define CNL_IMPL_DUPLEX_INTEGER_DIVIDE_H
 
+#include "../custom_operator/definition.h"
+#include "../custom_operator/native_tag.h"
+#include "../custom_operator/op.h"
 #include "../numbers/set_signedness.h"
-#include "../operators/custom_operator.h"
-#include "../operators/native_tag.h"
-#include "../operators/operators.h"
 #include "../wide_integer/definition.h"
 #include "ctors.h"
 #include "definition.h"

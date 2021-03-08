@@ -9,9 +9,9 @@
 
 #include "../../limits.h"
 #include "../../numeric.h"
+#include "../custom_operator/op.h"
 #include "../num_traits/digits.h"
 #include "../numbers/signedness.h"
-#include "../operators/operators.h"
 #include "../polarity.h"
 
 #include <algorithm>

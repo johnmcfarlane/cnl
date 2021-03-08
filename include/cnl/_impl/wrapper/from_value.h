@@ -8,10 +8,10 @@
 #define CNL_IMPL_WRAPPER_FROM_VALUE_H
 
 #include "../../numeric.h"
+#include "../custom_operator/definition.h"
+#include "../custom_operator/tag.h"
 #include "../num_traits/from_value.h"
 #include "../num_traits/from_value_recursive.h"
-#include "../operators/custom_operator.h"
-#include "../operators/tag.h"
 #include "../type_traits/common_type.h"
 #include "definition.h"
 #include "make_wrapper.h"

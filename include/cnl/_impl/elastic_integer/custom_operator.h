@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_ELASTIC_INTEGER_GENERIC_H)
 #define CNL_IMPL_ELASTIC_INTEGER_GENERIC_H
 
-#include "../operators/custom_operator.h"
+#include "../custom_operator/definition.h"
 #include "definition.h"
 
 #include <algorithm>

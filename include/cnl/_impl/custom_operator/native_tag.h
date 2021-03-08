@@ -10,10 +10,10 @@
 #include "../../constant.h"
 #include "../numbers/set_signedness.h"
 #include "../type_traits/is_integral.h"
-#include "custom_operator.h"
+#include "definition.h"
 #include "homogeneous_deduction_tag_base.h"
 #include "homogeneous_operator_tag_base.h"
-#include "operators.h"
+#include "op.h"
 
 #include <type_traits>
 

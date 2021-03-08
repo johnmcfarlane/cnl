@@ -8,7 +8,7 @@
 #define CNL_IMPL_WRAPPER_NUMERIC_LIMITS_H
 
 #include "../../limits.h"
-#include "../operators/tag.h"
+#include "../custom_operator/tag.h"
 #include "definition.h"
 #include "from_rep.h"
 

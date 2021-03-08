@@ -7,11 +7,11 @@
 #if !defined(CNL_IMPL_WIDE_TAG_DEFINITION_H)
 #define CNL_IMPL_WIDE_TAG_DEFINITION_H
 
+#include "../custom_operator/homogeneous_operator_tag_base.h"
 #include "../duplex_integer/narrowest_integer.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/max_digits.h"
 #include "../num_traits/set_digits.h"
-#include "../operators/homogeneous_operator_tag_base.h"
 #include "declaration.h"
 
 #include <algorithm>

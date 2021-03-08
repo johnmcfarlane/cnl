@@ -10,7 +10,7 @@
 #if !defined(CNL_ROUNDING_H)
 #define CNL_ROUNDING_H
 
-#include "_impl/operators/tagged.h"
+#include "_impl/custom_operator/tagged.h"
 #include "_impl/rounding.h"
 
 #endif  // CNL_ROUNDING_H

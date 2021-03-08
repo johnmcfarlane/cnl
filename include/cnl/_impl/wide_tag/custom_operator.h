@@ -7,14 +7,14 @@
 #if !defined(CNL_IMPL_WIDE_TAG_GENERIC_H)
 #define CNL_IMPL_WIDE_TAG_GENERIC_H
 
+#include "../custom_operator/definition.h"
+#include "../custom_operator/native_tag.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/set_width.h"
 #include "../num_traits/to_rep.h"
 #include "../num_traits/width.h"
 #include "../numbers/set_signedness.h"
 #include "../numbers/signedness.h"
-#include "../operators/custom_operator.h"
-#include "../operators/native_tag.h"
 #include "definition.h"
 #include "is_wide_tag.h"
 

@@ -11,8 +11,8 @@
 #define CNL_IMPL_OPERATORS_OVERLOADS_H
 
 #include "../../arithmetic.h"
-#include "custom_operator.h"
-#include "operators.h"
+#include "definition.h"
+#include "op.h"
 
 /// compositional numeric library
 namespace cnl {

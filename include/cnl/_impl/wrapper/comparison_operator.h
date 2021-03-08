@@ -8,9 +8,9 @@
 #define CNL_IMPL_WRAPPER_COMPARISON_OPERATOR_H
 
 #include "../../floating_point.h"
+#include "../custom_operator/definition.h"
+#include "../custom_operator/overloads.h"
 #include "../num_traits/from_value.h"
-#include "../operators/custom_operator.h"
-#include "../operators/overloads.h"
 #include "definition.h"
 #include "operator_helpers.h"
 

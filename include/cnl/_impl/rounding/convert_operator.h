@@ -8,7 +8,7 @@
 #define CNL_IMPL_ROUNDING_TAGGED_CONVERT_OPERATOR_H
 
 #include "../../limits.h"
-#include "../operators/native_tag.h"
+#include "../custom_operator/native_tag.h"
 #include "native_rounding_tag.h"
 #include "nearest_rounding_tag.h"
 #include "neg_inf_rounding_tag.h"

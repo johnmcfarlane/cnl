@@ -7,7 +7,7 @@
 #if !defined(CNL_ARITHMETIC_H)
 #define CNL_ARITHMETIC_H
 
-#include "_impl/operators/tag.h"
+#include "_impl/custom_operator/tag.h"
 #include "number.h"
 
 #include <type_traits>

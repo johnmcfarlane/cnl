@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_SCALED_BINARY_OPERATOR_H)
 #define CNL_IMPL_SCALED_BINARY_OPERATOR_H
 
+#include "../custom_operator/definition.h"
+#include "../custom_operator/tagged.h"
 #include "../num_traits/scale.h"
-#include "../operators/custom_operator.h"
-#include "../operators/tagged.h"
 #include "definition.h"
 
 #include <algorithm>

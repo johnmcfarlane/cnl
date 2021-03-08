@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_ROUNDING_NEAREST_ROUNDING_TAG_H)
 #define CNL_IMPL_ROUNDING_NEAREST_ROUNDING_TAG_H
 
-#include "../operators/custom_operator.h"
-#include "../operators/native_tag.h"
+#include "../custom_operator/definition.h"
+#include "../custom_operator/native_tag.h"
 #include "is_rounding_tag.h"
 #include "is_tag.h"
 

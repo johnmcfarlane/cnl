@@ -8,8 +8,8 @@
 #define CNL_IMPL_ROUNDING_FLOOR_ROUNDING_TAG_H
 
 #include "../cmath/abs.h"
-#include "../operators/custom_operator.h"
-#include "../operators/native_tag.h"
+#include "../custom_operator/definition.h"
+#include "../custom_operator/native_tag.h"
 #include "is_rounding_tag.h"
 #include "is_tag.h"
 

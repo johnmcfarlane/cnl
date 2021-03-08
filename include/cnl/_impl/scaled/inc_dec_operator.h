@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_SCALED_INC_DEC_OPERATOR_H)
 #define CNL_IMPL_SCALED_INC_DEC_OPERATOR_H
 
-#include "../operators/custom_operator.h"
+#include "../custom_operator/definition.h"
 #include "../power_value.h"
 #include "power.h"
 

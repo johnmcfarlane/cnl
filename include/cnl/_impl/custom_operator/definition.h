@@ -12,8 +12,8 @@
 
 #include "../../arithmetic.h"
 #include "../config.h"
-#include "../operators/tag.h"
-#include "operators.h"
+#include "op.h"
+#include "tag.h"
 
 #include <type_traits>
 

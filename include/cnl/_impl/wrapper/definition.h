@@ -9,9 +9,9 @@
 
 #include <utility>
 
+#include "../custom_operator/definition.h"
+#include "../custom_operator/tagged.h"
 #include "../num_traits/from_value.h"
-#include "../operators/custom_operator.h"
-#include "../operators/tagged.h"
 #include "can_convert_tag_family.h"
 #include "declaration.h"
 #include "is_wrapper.h"
