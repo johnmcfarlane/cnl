@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_WRAPPER_SET_DIGITS_H)
 #define CNL_IMPL_WRAPPER_SET_DIGITS_H
 
+#include "../custom_operator/tag.h"
 #include "../num_traits/set_digits.h"
-#include "../operators/tag.h"
 #include "definition.h"
 
 #include <type_traits>

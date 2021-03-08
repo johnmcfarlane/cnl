@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_WIDE_TAG_IS_TAG_H)
 #define CNL_IMPL_WIDE_TAG_IS_TAG_H
 
-#include "../operators/tag.h"
+#include "../custom_operator/tag.h"
 #include "declaration.h"
 #include "is_wide_tag.h"
 

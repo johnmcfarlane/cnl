@@ -4,7 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/operators/overloads.h>
+#include <cnl/_impl/custom_operator/overloads.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/overflow.h>
 

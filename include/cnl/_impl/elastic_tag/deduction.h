@@ -7,10 +7,10 @@
 #if !defined(CNL_IMPL_ELASTIC_INTEGER_DEDUCTION_H)
 #define CNL_IMPL_ELASTIC_INTEGER_DEDUCTION_H
 
+#include "../custom_operator/homogeneous_deduction_tag_base.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/set_width.h"
 #include "../num_traits/width.h"
-#include "../operators/homogeneous_deduction_tag_base.h"
 #include "declaration.h"
 
 /// compositional numeric library

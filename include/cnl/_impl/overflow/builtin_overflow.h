@@ -8,7 +8,7 @@
 #define CNL_IMPL_OVERFLOW_BUILTIN_OVERFLOW_H
 
 #include "../config.h"
-#include "../operators/operators.h"
+#include "../custom_operator/op.h"
 #include "../polarity.h"
 #include "../type_traits/is_integral.h"
 #include "../unreachable.h"

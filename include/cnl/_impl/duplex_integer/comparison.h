@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_COMPARISON_H)
 #define CNL_IMPL_DUPLEX_INTEGER_COMPARISON_H
 
-#include "../operators/custom_operator.h"
+#include "../custom_operator/definition.h"
 #include "../type_traits/common_type.h"
 #include "definition.h"
 #include "is_duplex_integer.h"

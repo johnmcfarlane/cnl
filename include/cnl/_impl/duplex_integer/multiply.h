@@ -7,9 +7,9 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_MULTIPLY_H)
 #define CNL_IMPL_DUPLEX_INTEGER_MULTIPLY_H
 
+#include "../custom_operator/definition.h"
+#include "../custom_operator/op.h"
 #include "../num_traits/width.h"
-#include "../operators/custom_operator.h"
-#include "../operators/operators.h"
 #include "../type_traits/conditional3.h"
 #include "definition.h"
 #include "digits.h"

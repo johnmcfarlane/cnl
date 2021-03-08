@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_WRAPPER_OPERATOR_HELPERS_H)
 #define CNL_IMPL_WRAPPER_OPERATOR_HELPERS_H
 
-#include "../operators/custom_operator.h"
+#include "../custom_operator/definition.h"
 #include "is_wrapper.h"
 #include "rep_of.h"
 

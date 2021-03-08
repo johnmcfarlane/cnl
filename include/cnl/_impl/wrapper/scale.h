@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_WRAPPER_SCALE_H)
 #define CNL_IMPL_WRAPPER_SCALE_H
 
+#include "../custom_operator/native_tag.h"
 #include "../num_traits/scale.h"
-#include "../operators/native_tag.h"
 #include "definition.h"
 #include "digits.h"
 #include "operators.h"

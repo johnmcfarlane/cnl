@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_OVERFLOW_UNDEFINED_H)
 #define CNL_IMPL_OVERFLOW_UNDEFINED_H
 
-#include "../operators/homogeneous_operator_tag_base.h"
+#include "../custom_operator/homogeneous_operator_tag_base.h"
 #include "../polarity.h"
 #include "../unreachable.h"
 #include "is_overflow_tag.h"

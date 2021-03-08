@@ -8,10 +8,10 @@
 #define CNL_IMPL_ELASTIC_TAG_GENERIC_H
 
 #include "../../constant.h"
+#include "../custom_operator/overloads.h"
 #include "../num_traits/set_digits.h"
 #include "../num_traits/width.h"
 #include "../numbers/set_signedness.h"
-#include "../operators/overloads.h"
 #include "definition.h"
 #include "policy.h"
 

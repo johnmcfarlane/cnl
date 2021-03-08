@@ -8,7 +8,7 @@
 #define CNL_IMPL_OPERATORS_IS_HOMOGENEOUS_OPERATOR_TAG_H
 
 #include "../config.h"
-#include "custom_operator.h"
+#include "definition.h"
 #include "overloads.h"
 
 #include <type_traits>

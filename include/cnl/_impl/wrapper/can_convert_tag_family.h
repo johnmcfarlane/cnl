@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_WRAPPER_CAN_CONVERT_TAG_FAMILY_H)
 #define CNL_IMPL_WRAPPER_CAN_CONVERT_TAG_FAMILY_H
 
-#include "../operators/is_same_tag_family.h"
+#include "../custom_operator/is_same_tag_family.h"
 
 #include <type_traits>
 

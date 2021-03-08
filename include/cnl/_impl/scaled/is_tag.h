@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_SCALED_IS_TAG_H)
 #define CNL_IMPL_SCALED_IS_TAG_H
 
-#include "../operators/tag.h"
+#include "../custom_operator/tag.h"
 #include "declaration.h"
 
 /// compositional numeric library

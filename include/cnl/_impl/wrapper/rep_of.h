@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_WRAPPER_REP_OF_H)
 #define CNL_IMPL_WRAPPER_REP_OF_H
 
-#include "../operators/tag.h"
+#include "../custom_operator/tag.h"
 #include "declaration.h"
 
 #include <type_traits>

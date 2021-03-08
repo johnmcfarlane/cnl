@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_GENERIC_H)
 #define CNL_IMPL_WIDE_INTEGER_GENERIC_H
 
+#include "../custom_operator/definition.h"
 #include "../num_traits/to_rep.h"
-#include "../operators/custom_operator.h"
 #include "definition.h"
 
 #include <type_traits>

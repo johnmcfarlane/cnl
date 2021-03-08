@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_WIDE_TAG_IS_SAME_TAG_FAMILY_H)
 #define CNL_IMPL_WIDE_TAG_IS_SAME_TAG_FAMILY_H
 
-#include "../operators/is_same_tag_family.h"
+#include "../custom_operator/is_same_tag_family.h"
 #include "definition.h"
 
 #include <type_traits>

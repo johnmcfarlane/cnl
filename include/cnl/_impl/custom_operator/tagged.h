@@ -9,9 +9,9 @@
 
 #include "../../constant.h"
 #include "../config.h"
-#include "../operators/tag.h"
-#include "custom_operator.h"
-#include "operators.h"
+#include "../custom_operator/tag.h"
+#include "definition.h"
+#include "op.h"
 
 /// compositional numeric library
 namespace cnl {

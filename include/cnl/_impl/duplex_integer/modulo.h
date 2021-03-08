@@ -8,8 +8,8 @@
 #define CNL_IMPL_DUPLEX_INTEGER_MODULO_H
 
 #include "../../wide_integer.h"
-#include "../operators/custom_operator.h"
-#include "../operators/operators.h"
+#include "../custom_operator/definition.h"
+#include "../custom_operator/op.h"
 #include "definition.h"
 #include "numbers.h"
 

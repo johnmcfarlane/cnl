@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_SHIFT_H)
 #define CNL_IMPL_DUPLEX_INTEGER_SHIFT_H
 
-#include "../operators/custom_operator.h"
-#include "../operators/operators.h"
+#include "../custom_operator/definition.h"
+#include "../custom_operator/op.h"
 #include "definition.h"
 
 /// compositional numeric library
