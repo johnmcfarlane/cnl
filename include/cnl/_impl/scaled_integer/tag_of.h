@@ -8,7 +8,7 @@
 #define CNL_IMPL_SCALED_INTEGER_TAG_OF_H
 
 #include "../num_traits/tag_of.h"
-#include "declaration.h"
+#include "definition.h"
 
 #include <type_traits>
 

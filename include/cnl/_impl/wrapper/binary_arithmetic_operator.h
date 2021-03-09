@@ -56,7 +56,7 @@ namespace cnl {
     requires _impl::number_can_wrap<Lhs, Rhs>::value struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
-            return Operator()(lhs, _impl::from_value<Lhs>(rhs));
+            return Operator()(lhs, from_value<Lhs, Rhs>{}(rhs));
         }
     };
 

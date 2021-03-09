@@ -155,7 +155,7 @@ namespace test_set_signedness {
             cnl::numbers::signedness_v<cnl::numbers::set_signedness_t<elastic_scaled_integer<1, 0, unsigned>, true>>);
 }
 
-namespace test_fraction_deduced {
+namespace test_fraction_make {
     using namespace cnl::literals;
 
     constexpr auto third = cnl::make_fraction(1_elastic, 3_elastic);
@@ -163,7 +163,7 @@ namespace test_fraction_deduced {
     constexpr auto named = cnl::quotient(third.numerator, third.denominator);
     static_assert(identical(cnl::elastic_scaled_integer<3, -2>{0.25}, named));
 
-    constexpr auto deduced = scaled_integer{third};
+    constexpr auto deduced = cnl::make_scaled_integer(third);
     static_assert(identical(named, deduced));
 }
 

@@ -10,16 +10,11 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_DEFINITION_H)
 #define CNL_IMPL_SCALED_INTEGER_DEFINITION_H
 
-#include "../../fraction.h"
 #include "../../integer.h"
-#include "../../numeric.h"
-#include "../num_traits/digits.h"
-#include "../num_traits/set_digits.h"
-#include "../scaled/inc_dec_operator.h"
-#include "../scaled/power.h"
-#include "../used_digits.h"
+#include "../scaled/definition.h"
+#include "../scaled/is_scaled_tag.h"
+#include "../scaled/is_tag.h"
 #include "../wrapper.h"
-#include "declaration.h"
 
 #include <algorithm>
 
@@ -54,60 +49,11 @@ namespace cnl {
     /// fractional bits: \snippet snippets.cpp define a scaled_integer value
 
 #if defined(__GNUG__) && !defined(__clang__)
-    template<integer Rep, scaled_tag Scale>
+    template<integer Rep = int, scaled_tag Scale = power<>>
 #else
-    template<integer Rep, class Scale>
+    template<integer Rep = int, class Scale = power<>>
 #endif
-    class scaled_integer : public _impl::wrapper<Rep, Scale> {
-        using _base = _impl::wrapper<Rep, Scale>;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // functions
-
-    private:
-        // constructor taking representation explicitly using operator++(int)-style trick
-        constexpr scaled_integer(Rep r, int)
-            : _base(r, 0)
-        {
-        }
-
-    public:
-        scaled_integer() = default;
-
-        /// constructor not taking cnl::fraction
-        template<typename Number>
-        constexpr scaled_integer(Number const& n)  // NOLINT(hicpp-explicit-conversions, google-explicit-constructor)
-            : _base(n)
-        {
-        }
-
-        /// copy assignement operator
-        template<typename S>
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
-        constexpr auto& operator=(S const& rhs)
-        {
-            _base::operator=(rhs);
-            return *this;
-        }
-
-        /// creates an instance given the underlying representation value
-        template<typename, typename>
-        friend struct from_rep;
-    };
-
-    ////////////////////////////////////////////////////////////////////////////////
-    // cnl::scaled_integer::scaled_integer deduction guides
-
-    // same as cnl::make_scaled_integer
-    template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    scaled_integer(::cnl::constant<Value>) -> scaled_integer<
-            set_digits_t<
-                    int,
-                    std::max(digits<int>, _impl::used_digits(Value) - trailing_bits(Value))>,
-            power<trailing_bits(Value)>>;
-
-    template<integer Integer>
-    scaled_integer(Integer) -> scaled_integer<Integer, power<>>;
+    using scaled_integer = _impl::wrapper<Rep, Scale>;
 }
 
 #endif  // CNL_IMPL_SCALED_INTEGER_DEFINITION_H

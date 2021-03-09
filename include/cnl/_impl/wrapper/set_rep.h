@@ -9,6 +9,8 @@
 
 #include "../num_traits/set_rep.h"
 #include "definition.h"
+#include "is_wrapper.h"
+#include "tag_of.h"
 
 #include <type_traits>
 

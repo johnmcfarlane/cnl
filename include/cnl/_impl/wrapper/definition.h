@@ -14,6 +14,7 @@
 #include "../num_traits/from_value.h"
 #include "can_convert_tag_family.h"
 #include "declaration.h"
+#include "from_rep.h"
 #include "is_wrapper.h"
 #include "tag_of.h"
 #include "to_rep.h"
@@ -78,6 +79,9 @@ namespace cnl {
 
             template<typename T>
             friend struct cnl::to_rep;
+
+            template<typename, typename>
+            friend struct cnl::from_rep;
 
         private:
             Rep _rep;

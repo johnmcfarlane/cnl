@@ -14,7 +14,7 @@
 #include "../num_traits/fixed_width_scale.h"
 #include "../num_traits/scale.h"
 #include "../power_value.h"
-#include "../scaled_integer/declaration.h"
+#include "../scaled_integer/definition.h"
 #include "is_same_tag_family.h"
 #include "power.h"
 

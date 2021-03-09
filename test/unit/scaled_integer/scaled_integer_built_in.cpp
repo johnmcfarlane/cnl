@@ -27,13 +27,13 @@ namespace test_literals_initialization {
 
     using namespace cnl::literals;
 
-    static_assert(identical(scaled_integer<int, cnl::power<0>>{1}, scaled_integer(1_c)));
-    static_assert(identical(scaled_integer<int, cnl::power<1>>{2}, scaled_integer(2_c)));
-    static_assert(identical(scaled_integer<int, cnl::power<0>>{3}, scaled_integer(3_c)));
-    static_assert(identical(scaled_integer<int, cnl::power<2>>{500}, scaled_integer(500_c)));
+    static_assert(identical(scaled_integer<int, cnl::power<0>>{1}, cnl::make_scaled_integer(1_c)));
+    static_assert(identical(scaled_integer<int, cnl::power<1>>{2}, cnl::make_scaled_integer(2_c)));
+    static_assert(identical(scaled_integer<int, cnl::power<0>>{3}, cnl::make_scaled_integer(3_c)));
+    static_assert(identical(scaled_integer<int, cnl::power<2>>{500}, cnl::make_scaled_integer(500_c)));
     static_assert(identical(
             scaled_integer<int32_t, cnl::power<32>>{INT64_C(0x7fffffff00000000)},
-            scaled_integer(0x7fffffff00000000_c)));
+            cnl::make_scaled_integer(0x7fffffff00000000_c)));
 }
 
 namespace test_literals_constant {
@@ -41,7 +41,7 @@ namespace test_literals_constant {
 
     using namespace cnl::literals;
 
-    constexpr auto kibi = scaled_integer(1024_c);
+    constexpr auto kibi = cnl::make_scaled_integer(1024_c);
     constexpr auto mebi = kibi * 1024_c;
     constexpr auto tebi = mebi * mebi;
     constexpr auto exbi = tebi * mebi;

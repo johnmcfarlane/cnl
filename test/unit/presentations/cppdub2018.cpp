@@ -15,6 +15,7 @@
 #include <filesystem>
 namespace filesystem = std::filesystem;
 
+using cnl::make_scaled_integer;
 using cnl::power;
 using cnl::scaled_integer;
 
@@ -76,7 +77,7 @@ namespace d {
 namespace e {
     static_assert(scaled_integer<unsigned>{1U} < scaled_integer<signed>{-1}, "OK(!)");
 
-    static_assert(scaled_integer{1U} < scaled_integer{-1});
+    static_assert(make_scaled_integer(1U) < make_scaled_integer(-1));
 }
 
 namespace f {
@@ -121,7 +122,7 @@ namespace j2 {
     constexpr auto n = scaled_integer<int16_t, power<-8>>{1.5};
     constexpr auto d = scaled_integer<int16_t, power<-8>>{2.25};
     constexpr auto f = cnl::fraction{n, d};
-    constexpr auto q = scaled_integer{f};
+    constexpr auto q = cnl::make_scaled_integer(f);
     static_assert(identical(scaled_integer<int32_t, power<-15>>{.66666667}, q));
 }
 
@@ -179,17 +180,17 @@ namespace n {
 
 using namespace cnl::literals;
 namespace o {
-    constexpr auto x = scaled_integer{42UL};  // scaled_integer<unsigned long, 0>{42}
+    constexpr auto x = make_scaled_integer(42UL);  // scaled_integer<unsigned long, 0>{42}
     static_assert(cnl::_impl::identical(scaled_integer<unsigned long, power<>>{42}, x));
 
-    constexpr auto z = scaled_integer{128_c};
+    constexpr auto z = make_scaled_integer(128_c);
     static_assert(cnl::_impl::identical(scaled_integer<int, power<7>>{128}, z));
 
-    constexpr auto a = scaled_integer{0b10000000000000000000000000000000000000000_c};
+    constexpr auto a = make_scaled_integer(0b10000000000000000000000000000000000000000_c);
     static_assert(cnl::_impl::identical(
             scaled_integer<int, power<40>>{0b10000000000000000000000000000000000000000L}, a));
 
-    constexpr auto b = scaled_integer{0b11111111111111111111111111111111111111111_c};
+    constexpr auto b = make_scaled_integer(0b11111111111111111111111111111111111111111_c);
     static_assert(cnl::_impl::identical(
             scaled_integer<cnl::int64, power<>>{0b11111111111111111111111111111111111111111L}, b));
 

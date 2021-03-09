@@ -20,30 +20,6 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // heterogeneous operator overloads
 
-    template<_impl::unary_arithmetic_op Operator, typename Rep, int Exponent, int Radix>
-    struct custom_operator<
-            Operator, op_value<scaled_integer<Rep, power<Exponent, Radix>>>> {
-        [[nodiscard]] constexpr auto operator()(
-                scaled_integer<Rep, power<Exponent, Radix>> const& rhs) const
-        {
-            return _impl::from_rep<scaled_integer<
-                    decltype(Operator()(_impl::to_rep(rhs))), power<Exponent, Radix>>>(
-                    Operator()(_impl::to_rep(rhs)));
-        }
-    };
-
-    // comparison between operands with different rep
-    template<_impl::comparison_op Operator, typename LhsRep, typename RhsRep, class Scale>
-    struct custom_operator<
-            Operator, op_value<scaled_integer<LhsRep, Scale>>, op_value<scaled_integer<RhsRep, Scale>>> {
-        [[nodiscard]] constexpr auto operator()(
-                scaled_integer<LhsRep, Scale> const& lhs,
-                scaled_integer<RhsRep, Scale> const& rhs) const
-        {
-            return Operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs));
-        }
-    };
-
     // comparison between operands with different rep and exponent
     template<
             _impl::comparison_op Operator,
@@ -95,20 +71,6 @@ namespace cnl {
 
     ////////////////////////////////////////////////////////////////////////////////
     // shift operators
-
-    // scaled_integer << non-constant
-    // scaled_integer >> non-constant
-    template<_impl::shift_op Operator, typename LhsRep, int LhsExponent, int LhsRadix, typename Rhs>
-    requires(!_impl::is_constant<Rhs>::value) struct custom_operator<
-            Operator,
-            op_value<scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>>,
-            op_value<Rhs>> {
-        using lhs_type = scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>;
-        [[nodiscard]] constexpr auto operator()(lhs_type const& lhs, Rhs const& rhs) const
-        {
-            return _impl::from_rep<lhs_type>(Operator{}(_impl::to_rep(lhs), rhs));
-        }
-    };
 
     // scaled_integer << constant
     template<typename LhsRep, int LhsExponent, int LhsRadix, CNL_IMPL_CONSTANT_VALUE_TYPE RhsValue>

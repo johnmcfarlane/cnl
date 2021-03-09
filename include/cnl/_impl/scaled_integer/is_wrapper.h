@@ -8,7 +8,7 @@
 #define CNL_IMPL_SCALED_INTEGER_IS_WRAPPER_H
 
 #include "../wrapper/is_wrapper.h"
-#include "declaration.h"
+#include "definition.h"
 
 /// compositional numeric library
 namespace cnl {
