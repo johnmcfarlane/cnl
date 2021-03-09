@@ -15,7 +15,8 @@
 #include "../rounding/nearest_rounding_tag.h"
 #include "../rounding/neg_inf_rounding_tag.h"
 #include "../rounding/tie_to_pos_inf_rounding_tag.h"
-#include "declaration.h"
+#include "../scaled/is_scaled_tag.h"
+#include "definition.h"
 #include "from_rep.h"
 
 /// compositional numeric library
@@ -209,7 +210,7 @@ namespace cnl {
         }
     };
 
-    template<integer Input, typename ResultRep, class ResultScale>
+    template<integer Input, integer ResultRep, scaled_tag ResultScale>
     struct custom_operator<
             _impl::convert_op,
             op_value<Input, _impl::native_tag>,
@@ -220,7 +221,7 @@ namespace cnl {
                   op_value<scaled_integer<ResultRep, ResultScale>, tie_to_pos_inf_rounding_tag>> {
     };
 
-    template<typename InputRep, class InputScale, integer Result>
+    template<integer InputRep, scaled_tag InputScale, integer Result>
     struct custom_operator<
             _impl::convert_op,
             op_value<scaled_integer<InputRep, InputScale>, _impl::native_tag>,
@@ -297,7 +298,7 @@ namespace cnl {
         }
     };
 
-    template<integer Input, typename ResultRep, class ResultScale>
+    template<integer Input, integer ResultRep, scaled_tag ResultScale>
     struct custom_operator<
             _impl::convert_op,
             op_value<Input, _impl::native_tag>,
@@ -308,7 +309,7 @@ namespace cnl {
                   op_value<scaled_integer<ResultRep, ResultScale>, neg_inf_rounding_tag>> {
     };
 
-    template<typename InputRep, class InputScale, integer Result>
+    template<integer InputRep, scaled_tag InputScale, integer Result>
     struct custom_operator<
             _impl::convert_op,
             op_value<scaled_integer<InputRep, InputScale>, _impl::native_tag>,

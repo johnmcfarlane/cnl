@@ -138,6 +138,9 @@ namespace cnl {
         template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
         struct is_constant<::cnl::constant<Value>> : std::true_type {
         };
+
+        template<typename T>
+        inline constexpr auto is_constant_v = is_constant<T>::value;
     }
 
     ////////////////////////////////////////////////////////////////////////////////

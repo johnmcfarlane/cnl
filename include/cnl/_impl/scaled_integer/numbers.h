@@ -186,16 +186,4 @@ namespace std {
 
 #endif  // __cpp_­lib_­math_­constants
 
-/// compositional numeric library, numbers header/namespace
-namespace cnl::numbers {
-    template<typename Rep, scaled_tag Tag>
-    struct signedness<scaled_integer<Rep, Tag>> : signedness<Rep> {
-    };
-
-    template<typename Rep, scaled_tag Tag, bool IsSigned>
-    struct set_signedness<scaled_integer<Rep, Tag>, IsSigned>
-        : std::type_identity<scaled_integer<set_signedness_t<Rep, IsSigned>, Tag>> {
-    };
-}
-
 #endif  // CNL_IMPL_SCALED_INTEGER_NUMBERS_H

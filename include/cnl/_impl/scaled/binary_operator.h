@@ -11,6 +11,7 @@
 #include "../custom_operator/tagged.h"
 #include "../num_traits/scale.h"
 #include "definition.h"
+#include "is_scaled_tag.h"
 
 #include <algorithm>
 
@@ -62,6 +63,17 @@ namespace cnl {
             op_value<Lhs, power<LhsExponent, Radix>>,
             op_value<Rhs, power<RhsExponent, Radix>>>
         : Operator {
+    };
+
+    template<_impl::shift_op Operator, typename LhsRep, scaled_tag LhsTag, typename Rhs>
+    requires(!_impl::is_constant<Rhs>::value) struct custom_operator<
+            Operator,
+            op_value<LhsRep, LhsTag>,
+            op_value<Rhs>> {
+        [[nodiscard]] constexpr auto operator()(LhsRep const& lhs, Rhs const& rhs) const
+        {
+            return Operator{}(lhs, rhs);
+        }
     };
 }
 

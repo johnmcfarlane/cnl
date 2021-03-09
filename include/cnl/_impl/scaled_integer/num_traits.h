@@ -10,6 +10,7 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_NUM_TRAITS_H)
 #define CNL_IMPL_SCALED_INTEGER_NUM_TRAITS_H
 
+#include "../scaled/is_scaled_tag.h"
 #include "definition.h"
 
 #include <algorithm>
@@ -35,7 +36,7 @@ namespace cnl {
         : _impl::from_value_simple<scaled_integer<Value, power<0, Radix>>, Value> {
     };
 
-    template<typename Rep, class Scale, typename ValueRep, class ValueScale>
+    template<typename Rep, class Scale, typename ValueRep, scaled_tag ValueScale>
     struct from_value<scaled_integer<Rep, Scale>, scaled_integer<ValueRep, ValueScale>>
         : _impl::from_value_simple<
                   scaled_integer<from_value_t<Rep, ValueRep>, ValueScale>,
