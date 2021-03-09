@@ -23,6 +23,7 @@
 #include "wrapper/numeric_limits.h"
 #include "wrapper/operator_helpers.h"
 #include "wrapper/operators.h"
+#include "wrapper/ostream.h"
 #include "wrapper/rep_of.h"
 #include "wrapper/rounding.h"
 #include "wrapper/scale.h"

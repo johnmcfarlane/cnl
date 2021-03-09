@@ -14,8 +14,6 @@
 #include "tag_of.h"
 #include "to_rep.h"
 
-#include <ostream>
-
 /// compositional numeric library
 namespace cnl {
     // non-wrapper << wrapper
@@ -55,17 +53,6 @@ namespace cnl {
                             _impl::to_rep(lhs), _impl::to_rep(rhs)));
         }
     };
-
-    namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::operator<<(std::ostream& o, cnl::_impl::wrapper const& i)
-
-        template<class Rep, tag Tag>
-        auto& operator<<(std::ostream& o, wrapper<Rep, Tag> const& i)  // NOLINT(modernize-use-trailing-return-type)
-        {
-            return o << to_rep(i);
-        }
-    }
 }
 
 #endif  // CNL_IMPL_WRAPPER_SHIFT_OPERATOR_H

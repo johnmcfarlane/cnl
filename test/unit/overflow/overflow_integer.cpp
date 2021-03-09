@@ -12,11 +12,14 @@
 #endif
 
 #include <cnl/_impl/type_traits/identical.h>
-#include <cnl/overflow_integer.h>
+
+#include <cnl/all.h>
 
 #include "../number_test.h"
 
 #include <gtest/gtest.h>
+
+#include <sstream>
 
 using cnl::overflow_integer;
 using cnl::_impl::identical;
@@ -604,6 +607,16 @@ namespace {
     {
         auto a = cnl::overflow_integer<>{INT_MIN};
         ASSERT_DEATH(a--, "negative overflow");
+    }
+#endif
+
+#if defined(CNL_INT128_ENABLED)
+    TEST(overflow_integer, ostream128)  // NOLINT
+    {
+        std::stringstream out;
+        auto a = cnl::overflow_integer<cnl::int128, cnl::throwing_overflow_tag>{42};
+        out << a;
+        ASSERT_EQ("42", out.str());
     }
 #endif
 }
