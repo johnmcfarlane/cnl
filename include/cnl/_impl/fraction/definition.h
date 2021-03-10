@@ -10,7 +10,7 @@
 #include "../../fixed_point.h"
 #include "../../floating_point.h"
 #include "../../integer.h"
-#include "../../limits.h"
+#include "../../numeric_limits.h"
 #include "../num_traits/set_width.h"
 #include "../type_traits/is_integral.h"
 

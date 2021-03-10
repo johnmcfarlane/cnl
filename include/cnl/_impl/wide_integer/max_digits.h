@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_MAX_DIGITS_H)
 #define CNL_IMPL_WIDE_INTEGER_MAX_DIGITS_H
 
-#include "../../limits.h"
+#include "../../numeric_limits.h"
 #include "../num_traits/max_digits.h"
 #include "definition.h"
 

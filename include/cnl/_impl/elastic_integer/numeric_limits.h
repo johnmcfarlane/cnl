@@ -4,10 +4,10 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_ELASTIC_INTEGER_LIMITS_H)
-#define CNL_IMPL_ELASTIC_INTEGER_LIMITS_H
+#if !defined(CNL_IMPL_ELASTIC_INTEGER_NUMERIC_LIMITS_H)
+#define CNL_IMPL_ELASTIC_INTEGER_NUMERIC_LIMITS_H
 
-#include "../../limits.h"
+#include "../../numeric_limits.h"
 #include "../limits/lowest.h"
 #include "../num_traits/rep_of.h"
 #include "../numbers/signedness.h"
@@ -55,4 +55,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_ELASTIC_INTEGER_LIMITS_H
+#endif  // CNL_IMPL_ELASTIC_INTEGER_NUMERIC_LIMITS_H

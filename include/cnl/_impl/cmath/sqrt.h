@@ -8,7 +8,7 @@
 #define CNL_IMPL_CMATH_SQRT_H
 
 #include "../../integer.h"
-#include "../assert.h"
+#include "../cnl_assert.h"
 #include "../num_traits/digits.h"
 
 /// compositional numeric library

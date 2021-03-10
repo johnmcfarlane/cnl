@@ -8,8 +8,8 @@
 #define CNL_IMPL_TO_CHARS_H
 
 #include "../integer.h"
-#include "assert.h"  // NOLINT(modernize-deprecated-headers, hicpp-deprecated-headers)
-#include "limits.h"  // NOLINT(modernize-deprecated-headers, hicpp-deprecated-headers)
+#include "../numeric_limits.h"
+#include "cnl_assert.h"
 #include "num_traits/digits.h"
 #include "num_traits/rounding.h"
 #include "num_traits/set_rounding.h"

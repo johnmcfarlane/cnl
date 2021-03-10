@@ -4,10 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-// definitions that are directly required by more than one header of the API
-
-#if !defined(CNL_IMPL_ASSERT_H)
-#define CNL_IMPL_ASSERT_H
+#if !defined(CNL_IMPL_CNL_ASSERT_H)
+#define CNL_IMPL_CNL_ASSERT_H
 
 #include "config.h"
 #include "likely.h"
@@ -42,4 +40,4 @@
 #error internal library error
 #endif
 
-#endif  // CNL_IMPL_ASSERT_H
+#endif  // CNL_IMPL_CNL_ASSERT_H

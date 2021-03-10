@@ -6,7 +6,7 @@
 
 #include <cnl/_impl/scaled_integer/numbers.h>
 
-#include <cnl/_impl/assert.h>
+#include <cnl/_impl/cnl_assert.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/scaled_integer.h>
 

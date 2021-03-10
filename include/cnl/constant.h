@@ -16,7 +16,7 @@
 #include "_impl/numbers/signedness.h"
 #include "_impl/parse.h"
 #include "integer.h"
-#include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
+#include "numeric_limits.h"
 
 #include <type_traits>
 
