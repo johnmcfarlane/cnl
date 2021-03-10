@@ -2,6 +2,8 @@ set(
     MISC_FLAGS
     "-Werror -Wall -Wextra -Wpedantic -Wshadow -Wundef -ftemplate-backtrace-limit=0 -fconstexpr-backtrace-limit=0 -fconstexpr-steps=1000000000 -fdiagnostics-color=always -stdlib=libc++"
 )
+
+set(CMAKE_CXX_COMPILER_LAUNCHER "ccache")
 set(CMAKE_EXE_LINKER_FLAGS "-lc++ -lc++abi")
 
 set(EXCEPTION_ENABLED_FLAGS "-fexceptions -frtti")
