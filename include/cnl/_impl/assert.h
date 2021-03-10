@@ -4,8 +4,6 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-// definitions that are directly required by more than one header of the API
-
 #if !defined(CNL_IMPL_ASSERT_H)
 #define CNL_IMPL_ASSERT_H
 
