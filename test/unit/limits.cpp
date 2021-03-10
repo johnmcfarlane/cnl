@@ -5,10 +5,10 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief tests for cnl/limits.h
+/// \brief tests for cnl/numeric_limits.h
 
 #include <cnl/cstdint.h>
-#include <cnl/limits.h>
+#include <cnl/numeric_limits.h>
 
 #include <type_traits>
 

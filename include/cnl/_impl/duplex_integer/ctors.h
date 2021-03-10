@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_CTORS_H
 
 #include "../../floating_point.h"
-#include "../../limits.h"
+#include "../../numeric_limits.h"
 #include "../power_value.h"
 #include "definition.h"
 #include "operators.h"

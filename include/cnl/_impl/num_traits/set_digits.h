@@ -10,7 +10,7 @@
 #if !defined(CNL_IMPL_NUM_TRAITS_SET_DIGITS_H)
 #define CNL_IMPL_NUM_TRAITS_SET_DIGITS_H
 
-#include "../../limits.h"
+#include "../../numeric_limits.h"
 #include "../config.h"
 #include "../cstdint/types.h"
 #include "../numbers/signedness.h"

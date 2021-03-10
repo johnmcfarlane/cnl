@@ -8,7 +8,7 @@
 #define CNL_IMPL_DUPLEX_INTEGER_OPERATORS_H
 
 #include "../../integer.h"
-#include "../../limits.h"
+#include "../../numeric_limits.h"
 #include "../../wide_integer.h"
 #include "../custom_operator/definition.h"
 #include "../custom_operator/op.h"

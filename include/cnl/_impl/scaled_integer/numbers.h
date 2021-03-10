@@ -10,7 +10,7 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_NUMBERS_H)
 #define CNL_IMPL_SCALED_INTEGER_NUMBERS_H
 
-#include "../../limits.h"
+#include "../../numeric_limits.h"
 #include "../used_digits.h"
 #include "definition.h"
 #include "num_traits.h"

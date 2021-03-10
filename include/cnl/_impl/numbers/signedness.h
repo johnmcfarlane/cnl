@@ -10,7 +10,7 @@
 #if !defined(CNL_IMPL_NUMBERS_SIGNEDNESS_H)
 #define CNL_IMPL_NUMBERS_SIGNEDNESS_H
 
-#include "../../limits.h"
+#include "../../numeric_limits.h"
 #include "../config.h"
 #include "../cstdint/types.h"
 #include "../type_traits/is_integral.h"

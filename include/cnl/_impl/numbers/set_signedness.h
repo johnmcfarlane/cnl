@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_NUMBERS_SET_SIGNEDNESS_H)
 #define CNL_IMPL_NUMBERS_SET_SIGNEDNESS_H
 
-#include "../../limits.h"
+#include "../../numeric_limits.h"
 #include "../config.h"
 #include "../cstdint/types.h"
 

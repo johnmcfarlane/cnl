@@ -8,7 +8,7 @@
 #define CNL_IMPL_USED_DIGITS_H
 
 #include "../integer.h"
-#include "../limits.h"
+#include "../numeric_limits.h"
 
 #include <type_traits>
 

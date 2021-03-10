@@ -7,8 +7,8 @@
 /// \file
 /// \brief CNL alternative to \verbatim<limits>\endverbatim with 128-bit support
 
-#if !defined(CNL_LIMITS_H)
-#define CNL_LIMITS_H
+#if !defined(CNL_NUMERIC_LIMITS_H)
+#define CNL_NUMERIC_LIMITS_H
 
 #include "_impl/config.h"
 #include "_impl/cstdint/types.h"
@@ -94,4 +94,4 @@ namespace cnl {
 #endif  // CNL_INT128_ENABLED
 }
 
-#endif  // CNL_LIMITS_H
+#endif  // CNL_NUMERIC_LIMITS_H

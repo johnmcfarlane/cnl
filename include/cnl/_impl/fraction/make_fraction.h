@@ -8,8 +8,8 @@
 #define CNL_IMPL_FRACTION_MAKE_FRACTION_H
 
 #include "../../floating_point.h"
-#include "../../limits.h"
-#include "../assert.h"
+#include "../../numeric_limits.h"
+#include "../cnl_assert.h"
 #include "../numbers/set_signedness.h"
 #include "definition.h"
 

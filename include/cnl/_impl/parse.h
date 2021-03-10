@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_PARSE_H)
 #define CNL_IMPL_PARSE_H
 
-#include "assert.h"  // NOLINT(modernize-deprecated-headers, hicpp-deprecated-headers)
+#include "cnl_assert.h"
 #include "config.h"
 #include "num_traits/digits.h"
 #include "num_traits/max_digits.h"
