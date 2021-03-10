@@ -8,6 +8,7 @@
 #define CNL_IMPL_OSTREAM_H
 
 #include "../cstdint.h"
+#include "config.h"
 #include "to_chars.h"
 
 #include <array>
