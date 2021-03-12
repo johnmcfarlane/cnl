@@ -3,6 +3,8 @@ set(
     "-Werror -Wall -Wextra -Wno-psabi -Wpedantic -Wshadow -Wundef -fconcepts -fconstexpr-ops-limit=134217728 -fdiagnostics-color=always -ftemplate-backtrace-limit=0 -pthread"
 )
 
+set(CMAKE_CXX_COMPILER_LAUNCHER "ccache")
+
 set(EXCEPTION_ENABLED_FLAGS "-fexceptions -frtti")
 set(EXCEPTION_DISABLED_FLAGS "-DBOOST_NO_EXCEPTIONS -DBOOST_NO_RTTI -fno-exceptions -fno-rtti")
 

@@ -135,9 +135,21 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Restore caches
+      uses: actions/cache@v2
+      with:
+        path: |
+          /github/home/.conan/data
+          /github/home/.ccache
+        key: test-${{matrix.name}}-${{github.ref}}-${{github.sha}}
+        restore-keys: |
+          test-${{matrix.name}}-${{github.ref}}-
+          test-${{matrix.name}}-main-
+          test-${{matrix.name}}-
+
     - name: Install Brew packages
       if: ( matrix.os == 'osx' )
-      run: brew install conan gcc@10 ninja
+      run: brew install ccache conan gcc@10 ninja
 
     - name: Install ARMv7 packages
       if: ( matrix.arch == 'armv7' )
@@ -179,6 +191,9 @@ jobs:
         ./test/benchmark/test-benchmark --benchmark_format=csv | tee result.csv \
         "${GITHUB_WORKSPACE}"/test/benchmark/report.py result.csv
 
+    - name: ccache report
+      run: ccache -s
+
   # Build and test on Windows using Conan
   windows-conan-test:
     runs-on: windows-2019
@@ -197,6 +212,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Restore caches
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~\AppData\Local\pip\Cache
+          ~\.conan\data
+          ~\.ccache
+        key: test-${{matrix.arch}}-${{github.ref}}-${{github.sha}}
+        restore-keys: |
+          test-${{matrix.arch}}-${{github.ref}}-
+          test-${{matrix.arch}}-main-
+          test-${{matrix.arch}}-
 
     - name: Initialise Conan
       run: |
@@ -254,6 +282,18 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Restore caches
+      uses: actions/cache@v2
+      with:
+        path: |
+          /github/home/.conan/data
+          /github/home/.ccache
+        key: test-${{matrix.compiler}}-${{github.ref}}-${{github.sha}}
+        restore-keys: |
+          test-${{matrix.compiler}}-${{github.ref}}-
+          test-${{matrix.compiler}}-main-
+          test-${{matrix.compiler}}-
+
     - name: Build and Install GTest
       run: |
         git clone https://github.com/google/googletest.git && \
@@ -276,6 +316,9 @@ jobs:
 
     - name: Test CNL
       run: ctest --output-on-failure
+
+    - name: ccache report
+      run: ccache -s
 
   # Install on mature Linux distro using only CMake
   linux-cmake-install:
