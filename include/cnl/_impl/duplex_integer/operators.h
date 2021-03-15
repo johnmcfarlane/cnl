@@ -246,7 +246,6 @@ namespace cnl {
         // cnl::duplex_integer streaming
 
         template<typename Upper, typename Lower>
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         auto& operator<<(std::ostream& out, duplex_integer<Upper, Lower> const& value)
         {
             return out << cnl::to_chars(value).data();

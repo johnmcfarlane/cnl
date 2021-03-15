@@ -18,7 +18,7 @@
 namespace cnl {
     namespace _impl {
         template<any_wrapper N>
-        auto& operator<<(std::ostream& o, N const& i)  // NOLINT(modernize-use-trailing-return-type)
+        auto& operator<<(std::ostream& o, N const& i)
         {
             return o << to_rep(i);
         }

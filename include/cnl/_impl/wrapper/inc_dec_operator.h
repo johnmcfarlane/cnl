@@ -16,7 +16,6 @@
 namespace cnl {
     template<_impl::prefix_op Operator, _impl::any_wrapper Number>
     struct custom_operator<Operator, op_value<Number>> {
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         constexpr auto& operator()(Number& rhs) const
         {
             custom_operator<Operator, op_value<_impl::rep_of_t<Number>, _impl::tag_of_t<Number>>>{}(

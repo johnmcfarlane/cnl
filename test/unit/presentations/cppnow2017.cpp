@@ -37,7 +37,6 @@ namespace prototypes {
         {
         }
 
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         [[nodiscard]] constexpr auto const& data() const
         {
             return _rep;
