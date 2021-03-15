@@ -29,7 +29,7 @@ class CnlConan(ConanFile):
         "target": None,
         "test_pattern": None,
     }
-    generators = "cmake_find_package"
+    generators = "cmake_paths", "cmake_find_package"
     no_copy_source = True
     requires = "gtest/1.10.0", "benchmark/1.5.2"
 
