@@ -141,6 +141,7 @@ jobs:
         path: |
           /github/home/.conan/data
           /github/home/.ccache
+          /Users/runner/Library/Caches/ccache
         key: test-${{matrix.name}}-${{github.ref}}-${{github.sha}}
         restore-keys: |
           test-${{matrix.name}}-${{github.ref}}-
