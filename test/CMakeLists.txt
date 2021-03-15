@@ -37,8 +37,11 @@ endif ()
 find_package(GTest)
 if (${GTest_FOUND})
     # workaround for github.com/conan-io/conan-center-index/issues/3222
-    set(CNL_GTEST_MAIN_TARGET GTest::Main CACHE STRING "alternative GTest target name")
-
+    if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+        set(CNL_GTEST_MAIN_TARGET GTest::gtest_main CACHE STRING "alternative GTest target name")
+    else()
+        set(CNL_GTEST_MAIN_TARGET GTest::Main CACHE STRING "alternative GTest target name")
+    endif()
     add_subdirectory(unit)
 else ()
     message(STATUS "Google Test is required to build unit tests.")
