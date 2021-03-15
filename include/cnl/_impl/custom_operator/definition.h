@@ -66,7 +66,6 @@ namespace cnl {
             Operator,
             op_value<LhsOperand, LhsTag>,
             op_value<RhsOperand, RhsTag>> {
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         constexpr auto& operator()(LhsOperand& lhs, RhsOperand const& rhs) const
         {
             using compound_assign_operator = cnl::custom_operator<

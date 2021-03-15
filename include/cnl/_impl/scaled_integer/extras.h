@@ -138,14 +138,12 @@ namespace cnl {
     // cnl::scaled_integer streaming - (placeholder implementation)
 
     template<typename Rep, int Exponent, int Radix>
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type)
     auto& operator<<(std::ostream& out, scaled_integer<Rep, power<Exponent, Radix>> const& fp)
     {
         return out << to_chars(fp).data();
     }
 
     template<typename Rep, int Exponent, int Radix>
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type)
     auto& operator>>(std::istream& in, scaled_integer<Rep, power<Exponent, Radix>>& fp)
     {
         long double ld{};

@@ -14,6 +14,7 @@ Checks: >
   -hicpp-signed-bitwise,
   -llvm-namespace-comment,
   -llvmlibc-*,
+  -modernize-use-trailing-return-type,
   -readability-implicit-bool-conversion,
   -readability-magic-numbers,
   -readability-named-parameter,

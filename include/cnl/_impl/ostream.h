@@ -20,7 +20,6 @@ namespace cnl {
 #if defined(CNL_INT128_ENABLED)
         /// \brief output-streaming operator for native signed 128-bit integer
         /// \note must be used in same scope following a `using cnl::operator<<;` directive
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         inline auto& operator<<(std::ostream& out, int128 const n)
         {
             return out << cnl::to_chars(n).data();
@@ -28,7 +27,6 @@ namespace cnl {
 
         /// \brief output-streaming operator for native unsigned 128-bit integer
         /// \note must be used in same scope following a `using cnl::operator<<;` directive
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         inline auto& operator<<(std::ostream& out, uint128 const n)
         {
             return out << cnl::to_chars(n).data();

@@ -17,19 +17,16 @@ namespace cnl {
     struct to_rep<Number> {
         using rep_type = _impl::rep_of_t<Number>;
 
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         [[nodiscard]] constexpr auto& operator()(Number& n) const
         {
             return n._rep;
         }
 
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         [[nodiscard]] constexpr auto const& operator()(Number const& n) const
         {
             return n._rep;
         }
 
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         [[nodiscard]] constexpr auto&& operator()(Number&& n) const
         {
             return std::forward<rep_type>(n._rep);

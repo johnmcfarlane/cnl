@@ -174,19 +174,16 @@ namespace cnl {
         using _number_type =
                 _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>;
 
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         [[nodiscard]] constexpr auto& operator()(_number_type& n) const
         {
             return n;
         };
 
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         [[nodiscard]] constexpr auto const& operator()(_number_type const& n) const
         {
             return n;
         };
 
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         [[nodiscard]] constexpr auto operator()(_number_type&& n) const
         {
             return n;
@@ -198,19 +195,16 @@ namespace cnl {
         using _number_type =
                 _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>;
 
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         [[nodiscard]] constexpr auto& operator()(_number_type& n) const
         {
             return n;
         };
 
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         [[nodiscard]] constexpr auto const& operator()(_number_type const& n) const
         {
             return n;
         };
 
-        // NOLINTNEXTLINE(modernize-use-trailing-return-type)
         [[nodiscard]] constexpr auto operator()(_number_type&& n) const
         {
             return std::move(n);
