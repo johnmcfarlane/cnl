@@ -75,8 +75,10 @@ Optional integration tests use Boost.Multiprecision and Boost.SIMD.
 2. Configure the project for development
 
    ```shell
-   cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PROJECT_cnl_INCLUDE:FILEPATH="$(pwd)"/conan_paths.cmake ..
+   cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PROJECT_cnl_INCLUDE:FILEPATH="$(pwd)"/conan_paths.cmake \ 
+   -DCMAKE_TOOLCHAIN_FILE:FILEPATH="$(pwd)"/../test/toolchain/<toolchain>.cmake ..
    ```
+   For the above select the toolchain appropriately from clang, clang-libc++, gcc, gcc-armv7 or msvc   
 
 3. Build tests:
 
