@@ -2,6 +2,10 @@
     "name": "cnl",
     "description": "C++ library of fixed-precision numeric classes which enhance integers to deliver safer, simpler, cheaper arithmetic types.",
     "version": "1.1.6",
+    "authors": {
+        "name": "John McFarlane",
+        "email": "cnl@john.mcfarlane.name"
+    },
     "license": "BSL-1.0",
     "repository": {
         "type": "git",
