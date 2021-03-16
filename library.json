@@ -1,0 +1,19 @@
+{
+    "name": "cnl",
+    "description": "C++ library of fixed-precision numeric classes which enhance integers to deliver safer, simpler, cheaper arithmetic types.",
+    "version": "1.1.6",
+    "license": "BSL-1.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/johnmcfarlane/cnl.git"
+    },
+    "build": {
+        "includeDir": "include",
+        "libArchive": false
+    },
+    "export": {
+        "include": [
+            "include/*"
+        ]
+    }
+}
