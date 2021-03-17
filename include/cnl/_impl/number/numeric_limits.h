@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_NUMBER_NUMERIC_LIMITS_H)
 #define CNL_IMPL_NUMBER_NUMERIC_LIMITS_H
 
-#include "../../limits.h"
+#include "../../numeric_limits.h"
 #include "definition.h"
 
 /// compositional numeric library

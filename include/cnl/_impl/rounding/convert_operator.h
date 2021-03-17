@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_ROUNDING_TAGGED_CONVERT_OPERATOR_H)
 #define CNL_IMPL_ROUNDING_TAGGED_CONVERT_OPERATOR_H
 
-#include "../../limits.h"
+#include "../../numeric_limits.h"
 #include "../operators/native_tag.h"
 #include "../type_traits/enable_if.h"
 #include "native_rounding_tag.h"

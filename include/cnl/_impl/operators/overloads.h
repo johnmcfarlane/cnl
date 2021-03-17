@@ -10,7 +10,7 @@
 #if !defined(CNL_IMPL_OPERATORS_OVERLOADS_H)
 #define CNL_IMPL_OPERATORS_OVERLOADS_H
 
-#include "../../limits.h"
+#include "../../numeric_limits.h"
 #include "../type_traits/enable_if.h"
 #include "generic.h"
 

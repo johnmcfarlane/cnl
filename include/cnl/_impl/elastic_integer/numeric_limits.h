@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_ELASTIC_INTEGER_LIMITS_H)
 #define CNL_IMPL_ELASTIC_INTEGER_LIMITS_H
 
-#include "../../limits.h"
+#include "../../numeric_limits.h"
 #include "../limits/lowest.h"
 #include "definition.h"
 #include "from_rep.h"

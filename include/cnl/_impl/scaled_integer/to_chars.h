@@ -8,7 +8,7 @@
 #define CNL_IMPL_SCALED_INTEGER_TO_CHARS_H
 
 #include "../../rounding_integer.h"
-#include "../assert.h"
+#include "../cnl_assert.h"
 #include "../num_traits/fixed_width_scale.h"
 #include "../to_chars.h"
 #include "num_traits.h"
