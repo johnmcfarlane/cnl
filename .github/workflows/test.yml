@@ -10,8 +10,26 @@ jobs:
   posix-conan-test:
     strategy:
       matrix:
-        name: [clang-11, osx-gcc-10, gcc-10, clang-10, clang-11-sanitize, armv7]
+        name: [osx-clang-11, clang-11, osx-gcc-10, gcc-10, clang-10, clang-11-sanitize, armv7]
         include:
+          # OS X Clang-11
+          - name: osx-clang-11
+            os: osx
+            compiler: clang
+            version: "11"
+            arch: x86_64
+            build-type: Debug
+            cc: "/usr/local/opt/llvm/bin/clang"
+            clang_tidy: "False"
+            cxx: "/usr/local/opt/llvm/bin/clang++"
+            exceptions: "False"
+            generator: "Unix Makefiles"
+            int128: "True"
+            os-version: macos-10.15
+            sanitize: "False"
+            stdlib: libc++
+            toolchain: clang-libc++.cmake
+
           # Clang-11 (w. Clang-Tidy)
           - name: clang-11
             compiler: clang
@@ -31,7 +49,7 @@ jobs:
             stdlib: libc++
             toolchain: clang-libc++.cmake
 
-          # OS X
+          # OS X GCC-10
           - name: osx-gcc-10
             os: osx
             compiler: gcc
@@ -150,7 +168,7 @@ jobs:
 
     - name: Install Brew packages
       if: ( matrix.os == 'osx' )
-      run: brew install ccache conan gcc@10 ninja
+      run: brew install ccache conan ninja
 
     - name: Install ARMv7 packages
       if: ( matrix.arch == 'armv7' )
