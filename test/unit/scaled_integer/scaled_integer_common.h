@@ -540,19 +540,11 @@ namespace test_set_digits_t {
 #endif  // defined(CNL_INT128_ENABLED) || defined(TEST_WIDE_INTEGER)
 
 #if defined(CNL_INT128_ENABLED)
-#if defined(__GNUC__)
-// GCC complains about __int128 with -pedantic or -pedantic-errors
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpedantic"
-#endif
     static_assert(
             assert_same<
                     cnl::scaled_integer<set_digits_t<long unsigned int, 96U>, cnl::power<-96>>,
                     cnl::set_digits_t<
                             cnl::scaled_integer<long unsigned int, cnl::power<-96>>, 96U>>::value);
-#if defined(__GNUC__)
-#pragma GCC diagnostic pop
-#endif
 #endif  // defined(CNL_INT128_ENABLED)
 }
 
