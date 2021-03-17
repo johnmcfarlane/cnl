@@ -7,6 +7,7 @@
 #if !defined(TEST_NUMBER_TEST_H)
 #define TEST_NUMBER_TEST_H
 
+#include <cnl/floating_point.h>
 #include <cnl/num_traits.h>
 #include <cnl/numeric.h>
 #include <cnl/numeric_limits.h>
@@ -140,12 +141,7 @@ struct number_test {
 
     // would not pass for boost.multiprecision
     static_assert(
-#if defined(CNL_INT128_ENABLED)
-            // std::is_fundamental isn't specialized for __int128
-            std::is_same<value_type, cnl::int128>::value
-                    || std::is_same<value_type, cnl::uint128>::value ||
-#endif
-                    cnl::is_composite<value_type>::value != std::is_fundamental<value_type>::value,
+            cnl::is_composite_v<value_type> != (cnl::is_floating_point_v<value_type> || cnl::_impl::is_integral_v<value_type>),
             "is_composite test failed");
 
     static constexpr auto lowest_from_rep =
