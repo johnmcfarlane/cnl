@@ -41,6 +41,7 @@ class CnlConan(ConanFile):
 
     def build(self):
         cmake = CMake(self, set_cmake_flags=True)
+        cmake.verbose = False
 
         if self.should_configure:
             self.configure_phase(cmake)
