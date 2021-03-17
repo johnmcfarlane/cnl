@@ -117,7 +117,7 @@ jobs:
             cxx: clang++
             exceptions: "True"
             generator: "Ninja"
-            int128: "True"
+            int128: "False"
             linux-container: johnmcfarlane/cnl_ci:clang-11-libcpp
             os-version: ubuntu-20.04
             sanitize: "True"
