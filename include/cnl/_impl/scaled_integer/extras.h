@@ -22,6 +22,7 @@
 #include "to_chars.h"
 #include "type.h"
 
+#include <climits>
 #include <cmath>
 #if defined(CNL_IOSTREAM_ENABLED)
 #include <istream>

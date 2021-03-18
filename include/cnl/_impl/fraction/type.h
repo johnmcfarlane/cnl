@@ -11,6 +11,7 @@
 #include "../type_traits/enable_if.h"
 #include "../type_traits/is_integral.h"
 
+#include <climits>
 #include <type_traits>
 
 /// compositional numeric library
