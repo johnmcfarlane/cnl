@@ -16,6 +16,8 @@
 #include <cnl/fraction.h>
 #include <cnl/scaled_integer.h>
 
+#include <climits>
+
 namespace {  // NOLINT(cert-dcl59-cpp)
     using cnl::_impl::identical;
 

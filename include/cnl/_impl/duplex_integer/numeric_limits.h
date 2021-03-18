@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_NUMERIC_LIMITS_H)
 #define CNL_IMPL_DUPLEX_INTEGER_NUMERIC_LIMITS_H
 
-#include "../../limits.h"
+#include "../../numeric_limits.h"
 #include "../num_traits/from_rep.h"
 #include "ctors.h"
 #include "forward_declaration.h"

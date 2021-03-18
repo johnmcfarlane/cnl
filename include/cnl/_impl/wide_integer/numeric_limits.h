@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_WIDE_INTEGER_NUMERIC_LIMITS_H)
 #define CNL_IMPL_WIDE_INTEGER_NUMERIC_LIMITS_H
 
-#include "../../limits.h"
+#include "../../numeric_limits.h"
 #include "../duplex_integer.h"
 #include "../limits/lowest.h"
 #include "../num_traits/rep.h"

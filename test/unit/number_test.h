@@ -7,7 +7,7 @@
 #if !defined(TEST_NUMBER_TEST_H)
 #define TEST_NUMBER_TEST_H
 
-#include <cnl/limits.h>
+#include <cnl/numeric_limits.h>
 #include <cnl/num_traits.h>
 #include <cnl/numeric.h>
 

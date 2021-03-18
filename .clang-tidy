@@ -1,6 +1,7 @@
 ---
 Checks: >
-  *,
+  -*,
+  llvm-include-order,
   -llvmlibc-*,
   -clang-analyzer-osx.*,
   -cppcoreguidelines-pro-bounds-constant-array-index,

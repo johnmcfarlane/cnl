@@ -17,6 +17,7 @@
 #include "../used_digits.h"
 #include "is_composite.h"
 
+#include <climits>
 #include <type_traits>
 
 namespace cnl {

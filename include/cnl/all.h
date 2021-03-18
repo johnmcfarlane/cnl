@@ -109,10 +109,10 @@
 #include "elastic_scaled_integer.h"
 #include "fixed_point.h"
 #include "fraction.h"
-#include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
 #include "num_traits.h"
 #include "numbers.h"
 #include "numeric.h"
+#include "numeric_limits.h"
 #include "overflow.h"
 #include "overflow_integer.h"
 #include "rounding.h"

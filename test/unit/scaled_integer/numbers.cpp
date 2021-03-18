@@ -4,7 +4,7 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/assert.h>
+#include <cnl/_impl/cnl_assert.h>
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/scaled_integer.h>
 

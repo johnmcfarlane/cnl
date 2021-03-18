@@ -8,8 +8,9 @@
 /// \brief tests for cnl/limits.h
 
 #include <cnl/cstdint.h>
-#include <cnl/limits.h>
+#include <cnl/numeric_limits.h>
 
+#include <climits>
 #include <type_traits>
 
 namespace {

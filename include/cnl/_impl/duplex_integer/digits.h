@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_DUPLEX_INTEGER_DIGITS_H)
 #define CNL_IMPL_DUPLEX_INTEGER_DIGITS_H
 
-#include "../assert.h"
+#include "../cnl_assert.h"
 #include "../num_traits/digits.h"
 #include "forward_declaration.h"
 #include "remove_signedness.h"

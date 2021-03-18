@@ -13,7 +13,7 @@
 #include "_impl/num_traits/adopt_signedness.h"
 #include "elastic_integer.h"
 #include "fixed_point.h"
-#include "limits.h"  // NOLINT(modernize-deprecated-headers,  hicpp-deprecated-headers)
+#include "numeric_limits.h"
 
 #include <type_traits>
 

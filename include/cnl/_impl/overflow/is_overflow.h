@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_OVERFLOW_IS_OVERFLOW_H)
 #define CNL_IMPL_OVERFLOW_IS_OVERFLOW_H
 
-#include "../../limits.h"
 #include "../../numeric.h"
+#include "../../numeric_limits.h"
 #include "../num_traits/digits.h"
 #include "../operators/operators.h"
 #include "../polarity.h"

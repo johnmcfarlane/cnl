@@ -12,6 +12,8 @@
 #include <boost/integer.hpp>
 #endif
 
+#include <climits>
+
 using std::is_same;
 
 namespace sample1 {
