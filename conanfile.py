@@ -34,7 +34,7 @@ class CnlConan(ConanFile):
     requires = "gtest/1.10.0", "benchmark/1.5.2"
 
     scm = {
-        "revision": "main",
+        "revision": "auto",
         "type": "git",
         "url": "https://github.com/johnmcfarlane/cnl.git",
     }
