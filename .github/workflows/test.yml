@@ -183,7 +183,6 @@ jobs:
 
     - name: Initialise Conan
       run: |
-        conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl && \
         conan profile new default --detect && \
         conan profile update settings.compiler=${{matrix.compiler}} default && \
         conan profile update settings.compiler.cppstd=${{matrix.std}} default && \
@@ -238,7 +237,6 @@ jobs:
     - name: Initialise Conan
       run: |
         pip.exe install conan;
-        conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl;
         conan profile new default;
         conan profile update settings.compiler="Visual Studio" default;
         conan profile update settings.os=Windows default;
