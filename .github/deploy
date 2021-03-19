@@ -55,7 +55,8 @@ git checkout gh-pages
 git add .
 if git commit \
   --amend \
-  --message="Documentation v${CNL_VERSION}-${CNL_CHANNEL}"
+  --message="Documentation v${CNL_VERSION}-${CNL_CHANNEL}" \
+  --reset-author
 then
   git push --force
 fi
