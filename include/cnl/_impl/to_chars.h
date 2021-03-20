@@ -17,6 +17,7 @@
 
 #include <array>
 #include <charconv>
+#include <string_view>
 #include <system_error>
 
 /// compositional numeric library
@@ -136,22 +137,32 @@ namespace cnl {
                 first, last, native_rounding_value);
     }
 
-    // overload of cnl::to_chars returning fixed-size array of chars
+    template<int NumChars>
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+    struct to_chars_static_result {
+        std::array<char, NumChars + 1> chars;
+        int length;
+    };
+
+    // variant of cnl::to_chars returning fixed-size array of chars
     // large enough to store any possible result for given input type
     template<typename Number>
-    auto to_chars(Number const& value)
+    auto to_chars_static(Number const& value)
     {
         constexpr auto max_num_chars = _impl::max_to_chars_chars<Number>::value;
 
-        std::array<char, max_num_chars + 1> chars{};
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init,hicpp-member-init)
+        to_chars_static_result<max_num_chars> result;
 
-        auto result = to_chars(chars.data(), chars.data() + max_num_chars, value);
-        CNL_ASSERT(result.ptr > chars.data());
-        CNL_ASSERT(result.ptr <= chars.data() + max_num_chars);
-        CNL_ASSERT(result.ec == std::errc{});
+        auto dynamic_result = to_chars(result.chars.data(), result.chars.data() + max_num_chars, value);
+        CNL_ASSERT(dynamic_result.ptr > result.chars.data());
+        CNL_ASSERT(dynamic_result.ptr <= result.chars.data() + max_num_chars);
+        CNL_ASSERT(dynamic_result.ec == std::errc{});
 
-        *result.ptr = '\0';
-        return chars;
+        *dynamic_result.ptr = '\0';
+        result.length = int(dynamic_result.ptr - result.chars.data());
+
+        return result;
     }
 }
 

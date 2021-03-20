@@ -22,14 +22,14 @@ namespace cnl {
         /// \note must be used in same scope following a `using cnl::operator<<;` directive
         inline auto& operator<<(std::ostream& out, int128 const n)
         {
-            return out << cnl::to_chars(n).data();
+            return out << cnl::to_chars_static(n).chars.data();
         }
 
         /// \brief output-streaming operator for native unsigned 128-bit integer
         /// \note must be used in same scope following a `using cnl::operator<<;` directive
         inline auto& operator<<(std::ostream& out, uint128 const n)
         {
-            return out << cnl::to_chars(n).data();
+            return out << cnl::to_chars_static(n).chars.data();
         }
 #endif
     }
