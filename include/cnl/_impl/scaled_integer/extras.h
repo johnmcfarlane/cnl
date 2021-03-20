@@ -140,7 +140,7 @@ namespace cnl {
     template<typename Rep, int Exponent, int Radix>
     auto& operator<<(std::ostream& out, scaled_integer<Rep, power<Exponent, Radix>> const& fp)
     {
-        return out << to_chars_static(fp).data();
+        return out << to_chars_static(fp).chars.data();
     }
 
     template<typename Rep, int Exponent, int Radix>

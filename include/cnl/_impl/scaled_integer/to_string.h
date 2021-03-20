@@ -17,10 +17,10 @@ namespace cnl {
     using std::to_string;
 
     template<typename Rep, int Exponent>
-    auto to_string(cnl::scaled_integer<Rep, power<Exponent>> const& value) -> std::string
+    auto to_string(cnl::scaled_integer<Rep, power<Exponent>> const& value)
     {
-        auto chars = to_chars_static(value);
-        return chars.data();
+        auto const [chars, length] = to_chars_static(value);
+        return std::string{chars.data(), unsigned(length)};
     }
 }
 
