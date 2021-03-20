@@ -143,7 +143,7 @@ namespace {
         }
     }
 
-    namespace test_operate {
+    namespace test_comparison {
         static_assert(
                 cnl::custom_operator<
                         cnl::_impl::equal_op,
@@ -164,9 +164,7 @@ namespace {
                         cnl::op_value<rounding_integer<>>, cnl::op_value<int>>()(
                         rounding_integer<>{234}, 233),
                 "cnl::numeric_traits<rounding_integer> test failed");
-    }
 
-    namespace test_comparison {
         static_assert(
                 identical(rounding_integer<>{2468}, rounding_integer<>{2468}),
                 "cnl::numeric_traits<rounding_integer> test failed");
