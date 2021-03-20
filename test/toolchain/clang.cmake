@@ -8,7 +8,8 @@ set(CMAKE_CXX_COMPILER_LAUNCHER "ccache")
 set(EXCEPTION_ENABLED_FLAGS "-fexceptions -frtti")
 set(EXCEPTION_DISABLED_FLAGS "-DBOOST_NO_EXCEPTIONS -DBOOST_NO_RTTI -fno-exceptions -fno-rtti")
 
-# Note: enabling CNL_INT128 and CNL_SANITIZE may result in link-time failure
+# Note: enabling CNL_INT128 and CNL_SANITIZE may result in link-time failure.
+# Adding linker flags `-rtlib=compiler-rt` (plus `-lgcc_s` on Linux) helps but is not portable.
 set(INT128_ENABLED_FLAGS "-DCNL_USE_INT128=1")
 set(INT128_DISABLED_FLAGS "-DCNL_USE_INT128=0")
 
