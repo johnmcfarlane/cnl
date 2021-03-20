@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_NUM_TRAITS_SCALE_H)
 #define CNL_IMPL_NUM_TRAITS_SCALE_H
 
+#include "../../integer.h"
 #include "../power_value.h"
-#include "../type_traits/is_integral.h"
 
 namespace cnl {
     template<int Digits, int Radix, class S>
@@ -38,7 +38,7 @@ namespace cnl {
     }
 
     // cnl::scale<..., fundamental-integer>
-    template<int Digits, int Radix, _impl::integral S>
+    template<int Digits, int Radix, integer S>
     struct scale<Digits, Radix, S>
         : _impl::default_scale<Digits, Radix, S> {
     };
