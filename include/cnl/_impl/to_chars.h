@@ -136,10 +136,10 @@ namespace cnl {
                 first, last, native_rounding_value);
     }
 
-    // overload of cnl::to_chars returning fixed-size array of chars
+    // variant of cnl::to_chars returning fixed-size array of chars
     // large enough to store any possible result for given input type
     template<typename Number>
-    auto to_chars(Number const& value)
+    auto to_chars_static(Number const& value)
     {
         constexpr auto max_num_chars = _impl::max_to_chars_chars<Number>::value;
 

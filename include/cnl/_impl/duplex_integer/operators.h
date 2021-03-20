@@ -248,7 +248,7 @@ namespace cnl {
         template<typename Upper, typename Lower>
         auto& operator<<(std::ostream& out, duplex_integer<Upper, Lower> const& value)
         {
-            return out << cnl::to_chars(value).data();
+            return out << cnl::to_chars_static(value).data();
         }
     }
 }

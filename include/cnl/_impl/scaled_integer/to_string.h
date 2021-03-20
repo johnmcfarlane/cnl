@@ -19,7 +19,7 @@ namespace cnl {
     template<typename Rep, int Exponent>
     auto to_string(cnl::scaled_integer<Rep, power<Exponent>> const& value) -> std::string
     {
-        auto chars = to_chars(value);
+        auto chars = to_chars_static(value);
         return chars.data();
     }
 }

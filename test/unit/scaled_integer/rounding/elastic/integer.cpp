@@ -21,7 +21,7 @@ namespace {
     {
         auto expected = std::string{"25.25"};
         auto actual = std::string{
-                cnl::to_chars(scaled_integer_rounding_elastic_integer<24, -20>{25.25}).data()};
+                cnl::to_chars_static(scaled_integer_rounding_elastic_integer<24, -20>{25.25}).data()};
         ASSERT_EQ(expected, actual);
     }
 
