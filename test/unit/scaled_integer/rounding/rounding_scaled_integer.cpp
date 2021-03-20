@@ -4,9 +4,11 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#include <cnl/_impl/type_traits/identical.h>
 #include <cnl/rounding_integer.h>
 #include <cnl/scaled_integer.h>
+
+#include <cnl/_impl/num_traits/to_rep.h>
+#include <cnl/_impl/type_traits/identical.h>
 
 #include <cinttypes>
 
@@ -91,5 +93,20 @@ namespace {
         static_assert(identical(dest_type{0}, dest_type{source_type{0}}));
         static_assert(identical(dest_type{0}, dest_type{source_type{.75}}));
         static_assert(identical(dest_type{1}, dest_type{source_type{1.}}));
+    }
+
+    namespace test_jokes {
+        using nearest_tens =
+                cnl::scaled_integer<cnl::rounding_integer<>, cnl::power<1, 10>>;
+
+        // https://twitter.com/davechannel/status/1163366347843276800
+        constexpr auto expected_cows{20};
+        constexpr auto actual_cows{int{nearest_tens{18}}};
+        static_assert(identical(expected_cows, actual_cows));
+
+        // https://twitter.com/STDeltaShift/status/1372908408651849732
+        constexpr auto expected_sheep{50};
+        constexpr auto actual_sheep{int{nearest_tens{48}}};
+        static_assert(identical(expected_sheep, actual_sheep));
     }
 }

@@ -42,4 +42,16 @@ namespace {
                         cnl::native_rounding_tag,
                         typename cnl::rounding<cnl::elastic_integer<>>::type>::value);
     }
+
+    namespace test_multiply {
+        static_assert(
+                identical(
+                        cnl::_impl::wrapper<
+                                cnl::elastic_integer<13, int>, cnl::nearest_rounding_tag>{42},
+                        cnl::from_value<
+                                cnl::_impl::wrapper<
+                                        cnl::elastic_integer<24, int>, cnl::nearest_rounding_tag>,
+                                cnl::elastic_integer<13, int>>{}(cnl::elastic_integer<13, int>{
+                                42})));
+    }
 }

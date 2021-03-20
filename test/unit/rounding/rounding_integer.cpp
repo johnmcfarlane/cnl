@@ -143,7 +143,7 @@ namespace {
         }
     }
 
-    namespace test_operate {
+    namespace test_comparison {
         static_assert(
                 cnl::custom_operator<
                         cnl::_impl::equal_op,
@@ -164,9 +164,7 @@ namespace {
                         cnl::op_value<rounding_integer<>>, cnl::op_value<int>>()(
                         rounding_integer<>{234}, 233),
                 "cnl::numeric_traits<rounding_integer> test failed");
-    }
 
-    namespace test_comparison {
         static_assert(
                 identical(rounding_integer<>{2468}, rounding_integer<>{2468}),
                 "cnl::numeric_traits<rounding_integer> test failed");
@@ -190,13 +188,25 @@ namespace {
         static_assert(rounding_integer{-0.501} == -1, "cnl::rounding_integer test failed");
     }
 
-    namespace arithmetic {
-        static_assert(
-                identical(rounding_integer<>{3} * rounding_integer<>{7}, rounding_integer<>{21}),
-                "rounding_integer operator*");
+    namespace test_minus {
         static_assert(
                 identical(rounding_integer<int>{-1}, -rounding_integer<char>{1}),
                 "rounding_integer unary operator-");
+    }
+
+    namespace test_multiply {
+        static_assert(identical(
+                rounding_integer<>{21},
+                rounding_integer<>{3} * rounding_integer<>{7}));
+
+        static_assert(
+                identical(
+                        cnl::_impl::wrapper<int, cnl::nearest_rounding_tag>{54},
+                        cnl::custom_operator<
+                                cnl::_impl::multiply_op,
+                                cnl::op_value<cnl::_impl::wrapper<int, cnl::nearest_rounding_tag>>,
+                                cnl::op_value<int>>{}(
+                                cnl::_impl::wrapper<int, cnl::nearest_rounding_tag>{6}, 9)));
     }
 
     namespace divide {
