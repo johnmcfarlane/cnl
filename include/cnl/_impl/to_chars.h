@@ -34,7 +34,7 @@ namespace cnl {
 
         // cnl::_impl::itoc
         template<typename Scalar>
-        auto itoc(Scalar value)
+        [[nodiscard]] constexpr auto itoc(Scalar value)
         {
             static_assert(
                     std::is_same<typename rounding<Scalar>::type, native_rounding_tag>::value,
@@ -45,7 +45,7 @@ namespace cnl {
 
         // cnl::_impl::to_chars_natural
         template<class Integer>
-        auto to_chars_natural(char* ptr, char* last, Integer const& value) -> char*
+        [[nodiscard]] constexpr auto to_chars_natural(char* ptr, char* last, Integer const& value) -> char*
         {
             auto const quotient = value / 10;
 
@@ -101,7 +101,7 @@ namespace cnl {
 
     // partial implementation of std::to_chars overloaded on cnl::duplex_integer
     template<integer Integer>
-    auto to_chars(
+    [[nodiscard]] constexpr auto to_chars(
             char* const first,  // NOLINT(readability-avoid-const-params-in-decls)
             char* const last,  // NOLINT(readability-avoid-const-params-in-decls,readability-non-const-parameter)
             Integer const& value)
@@ -134,7 +134,7 @@ namespace cnl {
     // variant of cnl::to_chars returning fixed-size array of chars
     // large enough to store any possible result for given input type
     template<typename Number>
-    auto to_chars_static(Number const& value)
+    [[nodiscard]] constexpr auto to_chars_static(Number const& value)
     {
         constexpr auto max_num_chars = _impl::max_to_chars_chars<Number>::value;
 
