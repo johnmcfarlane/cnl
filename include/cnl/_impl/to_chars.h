@@ -34,7 +34,7 @@ namespace cnl {
 
         // cnl::_impl::itoc
         template<typename Scalar>
-        auto itoc(Scalar value)
+        [[nodiscard]] constexpr auto itoc(Scalar value)
         {
             static_assert(
                     std::is_same<typename rounding<Scalar>::type, native_rounding_tag>::value,
@@ -45,7 +45,7 @@ namespace cnl {
 
         // cnl::_impl::to_chars_natural
         template<class Integer>
-        auto to_chars_natural(char* ptr, char* last, Integer const& value) -> char*
+        [[nodiscard]] constexpr auto to_chars_natural(char* ptr, char* last, Integer const& value) -> char*
         {
             auto const quotient = value / 10;
 
@@ -74,47 +74,34 @@ namespace cnl {
                     natural_last, natural_last ? std::errc{} : std::errc::value_too_large};
         }
 
-        // cnl::_impl::to_chars_non_zero
-        template<typename Number, bool IsSigned = numbers::signedness_v<Number>>
-        struct to_chars_non_zero;
-
         template<typename Number>
-        struct to_chars_non_zero<Number, false> {
-            auto operator()(char* const first, char* const last, Number const& value) const
-            {
-                // +ve
-                return to_chars_positive(first, last, value);
-            }
-        };
+        [[nodiscard]] constexpr auto
+        to_chars_non_zero(char* const first, char* const last, Number const& value)
+        {
+            if constexpr (numbers::signedness_v<Number>) {
+                if (value < Number{}) {
+                    auto const destination_length = std::distance(first, last);
+                    if (destination_length < 2) {
+                        return std::to_chars_result{last, std::errc::value_too_large};
+                    }
 
-        template<typename Number>
-        struct to_chars_non_zero<Number, true> {
-            auto operator()(char* const first, char* const last, Number const& value) const
-            {
-                if (value > Number{}) {
-                    // +ve
-                    return to_chars_positive(first, last, value);
+                    // -ve
+                    *first = '-';
+
+                    // implementation does not support the most negative number
+                    CNL_ASSERT(-numeric_limits<decltype(-value)>::max() <= value);
+
+                    return to_chars_positive(first + 1, last, -value);
                 }
-
-                auto const destination_length = std::distance(first, last);
-                if (destination_length < 2) {
-                    return std::to_chars_result{last, std::errc::value_too_large};
-                }
-
-                // -ve
-                *first = '-';
-
-                // implementation does not support the most negative number
-                CNL_ASSERT(-numeric_limits<decltype(-value)>::max() <= value);
-
-                return to_chars_positive(first + 1, last, -value);
             }
-        };
+
+            return to_chars_positive(first, last, value);
+        }
     }
 
     // partial implementation of std::to_chars overloaded on cnl::duplex_integer
     template<integer Integer>
-    auto to_chars(
+    [[nodiscard]] constexpr auto to_chars(
             char* const first,  // NOLINT(readability-avoid-const-params-in-decls)
             char* const last,  // NOLINT(readability-avoid-const-params-in-decls,readability-non-const-parameter)
             Integer const& value)
@@ -133,7 +120,7 @@ namespace cnl {
         using native_rounding_type = set_rounding_t<decltype(value), native_rounding_tag>;
         auto const& native_rounding_value = static_cast<native_rounding_type>(value);
 
-        return _impl::to_chars_non_zero<native_rounding_type>{}(
+        return _impl::to_chars_non_zero<native_rounding_type>(
                 first, last, native_rounding_value);
     }
 
@@ -147,7 +134,7 @@ namespace cnl {
     // variant of cnl::to_chars returning fixed-size array of chars
     // large enough to store any possible result for given input type
     template<typename Number>
-    auto to_chars_static(Number const& value)
+    [[nodiscard]] constexpr auto to_chars_static(Number const& value)
     {
         constexpr auto max_num_chars = _impl::max_to_chars_chars<Number>::value;
 
