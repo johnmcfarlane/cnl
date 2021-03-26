@@ -33,6 +33,7 @@ Checks: >
   -modernize-avoid-c-arrays,
   -modernize-concat-nested-namespaces,
   -modernize-unary-static-assert,
+  -readability-avoid-const-params-in-decls,
 
 WarningsAsErrors: '*'
 HeaderFilterRegex: 'include/cnl'

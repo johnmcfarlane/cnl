@@ -65,8 +65,8 @@ namespace cnl {
 
         template<integer Integer>
         auto to_chars_positive(
-                char* const first,  // NOLINT(readability-avoid-const-params-in-decls)
-                char* const last,  // NOLINT(readability-avoid-const-params-in-decls)
+                char* const first,
+                char* const last,
                 Integer const& value) noexcept
         {
             auto const natural_last = to_chars_natural(first, last, value);
@@ -102,8 +102,8 @@ namespace cnl {
     // partial implementation of std::to_chars overloaded on cnl::duplex_integer
     template<integer Integer>
     [[nodiscard]] constexpr auto to_chars(
-            char* const first,  // NOLINT(readability-avoid-const-params-in-decls)
-            char* const last,  // NOLINT(readability-avoid-const-params-in-decls,readability-non-const-parameter)
+            char* const first,
+            char* const last,  // NOLINT(readability-non-const-parameter)
             Integer const& value)
     {
         if (!value) {

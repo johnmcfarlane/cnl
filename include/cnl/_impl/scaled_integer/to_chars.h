@@ -87,7 +87,7 @@ namespace cnl {
         template<typename Rep, int Exponent, int Radix>
         auto to_chars_fractional_specialized(
                 char* first,
-                char const* const last,  // NOLINT(readability-avoid-const-params-in-decls)
+                char const* const last,
                 scaled_integer<Rep, power<Exponent, Radix>> value) requires(integer_digits<scaled_integer<Rep, power<Exponent, Radix>>> >= 4)
         {
             do {
@@ -114,7 +114,7 @@ namespace cnl {
         // case where value doesn't have enough integer digits to hold range, [0..10)
         template<typename Rep, int Exponent, int Radix>
         auto to_chars_fractional_specialized(
-                char* const first,  // NOLINT(readability-avoid-const-params-in-decls)
+                char* const first,
                 char* last,
                 scaled_integer<Rep, power<Exponent, Radix>> const& value) requires(integer_digits<scaled_integer<Rep, power<Exponent, Radix>>> < 4)
         {
