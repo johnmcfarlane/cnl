@@ -10,6 +10,7 @@
 #include "config.h"
 #include "likely.h"
 #include "terminate.h"
+#include "unreachable.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // CNL_ASSUME - hints that a condition *must* be true
@@ -18,9 +19,9 @@
 #define CNL_ASSUME(cond) __assume(cond)
 #elif defined(__GNUC__)
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
-#define CNL_ASSUME(cond) ((cond) ? static_cast<void>(0) : __builtin_unreachable())
+#define CNL_ASSUME(cond) ((cond) ? static_cast<void>(0) : cnl::_impl::unreachable("incorrect assumption"))
 #else
-#define CNL_ASSUME(cond) static_cast<void>((cond) ? 0 : 0)
+#define CNL_ASSUME(cond) static_cast<void>(sizeof(cond) ? 0 : 0)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////

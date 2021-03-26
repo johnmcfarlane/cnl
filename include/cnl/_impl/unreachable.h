@@ -13,7 +13,7 @@
 namespace cnl {
     namespace _impl {
 #if defined(CNL_UNREACHABLE_UB_ENABLED)
-        template<class Result>
+        template<class Result = void>
         constexpr auto unreachable(char const* /*message*/) noexcept -> Result
         {
 #if defined(_MSC_VER)
@@ -29,7 +29,7 @@ namespace cnl {
 #endif
         }
 #else
-        template<class Result>
+        template<class Result = void>
         constexpr Result unreachable(char const* message) noexcept
         {
             return terminate<Result>(message);
