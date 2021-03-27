@@ -22,6 +22,9 @@ namespace cnl {
         template<typename T>
         struct assert_same<T, T> : std::true_type {
         };
+
+        template<typename Expected, typename Actual>
+        inline constexpr auto assert_same_v = assert_same<Expected, Actual>::value;
     }
 }
 

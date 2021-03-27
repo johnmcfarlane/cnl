@@ -65,10 +65,8 @@ namespace cnl {
         }
 
         template<integer Integer>
-        auto to_chars_positive(
-                char* const first,
-                char* const last,
-                Integer const& value) noexcept
+        [[nodiscard]] constexpr auto
+        to_chars_positive(char* const first, char* const last, Integer const& value)
         {
             auto const natural_last = to_chars_natural(first, last, value);
             return std::to_chars_result{

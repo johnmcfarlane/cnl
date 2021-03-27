@@ -21,6 +21,7 @@
 #include "_impl/scaled_integer/named.h"
 #include "_impl/scaled_integer/num_traits.h"
 #include "_impl/scaled_integer/numbers.h"
+#include "_impl/scaled_integer/numeric_limits.h"
 #include "_impl/scaled_integer/operators.h"
 #include "_impl/scaled_integer/rep_of.h"
 #include "_impl/scaled_integer/set_rep.h"
