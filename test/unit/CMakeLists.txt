@@ -13,6 +13,7 @@ set(test_sources
         fixed_point.cpp
         integer.cpp
         limits.cpp
+        narrow_cast.cpp
         num_traits.cpp
         numeric.cpp
         number_test.cpp

@@ -10,6 +10,7 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_OPERATORS_H)
 #define CNL_IMPL_SCALED_INTEGER_OPERATORS_H
 
+#include "../narrow_cast.h"
 #include "../scaled/power.h"
 #include "definition.h"
 
@@ -78,7 +79,7 @@ namespace cnl {
             _impl::shift_left_op,
             op_value<scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>>,
             op_value<constant<RhsValue>>> {
-        using result_type = scaled_integer<LhsRep, power<LhsExponent + int(RhsValue), LhsRadix>>;
+        using result_type = scaled_integer<LhsRep, power<LhsExponent + _impl::narrow_cast<int>(RhsValue), LhsRadix>>;
         [[nodiscard]] constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, LhsRadix>> const& lhs,
                 constant<RhsValue>) const
@@ -93,7 +94,7 @@ namespace cnl {
             _impl::shift_right_op,
             op_value<scaled_integer<LhsRep, power<LhsExponent, LhsRadix>>>,
             op_value<constant<RhsValue>>> {
-        using result_type = scaled_integer<LhsRep, power<LhsExponent - int(RhsValue), LhsRadix>>;
+        using result_type = scaled_integer<LhsRep, power<LhsExponent - _impl::narrow_cast<int>(RhsValue), LhsRadix>>;
         [[nodiscard]] constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, LhsRadix>> const& lhs,
                 constant<RhsValue>) const

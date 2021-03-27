@@ -10,6 +10,7 @@
 #include "../integer.h"
 #include "../numeric_limits.h"
 #include "cnl_assert.h"
+#include "narrow_cast.h"
 #include "num_traits/digits.h"
 #include "num_traits/rounding.h"
 #include "num_traits/set_rounding.h"
@@ -147,7 +148,7 @@ namespace cnl {
         CNL_ASSERT(dynamic_result.ec == std::errc{});
 
         *dynamic_result.ptr = '\0';
-        result.length = int(dynamic_result.ptr - result.chars.data());
+        result.length = _impl::narrow_cast<int>(dynamic_result.ptr - result.chars.data());
 
         return result;
     }
