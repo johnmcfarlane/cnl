@@ -186,18 +186,15 @@ void elastic_example1()
     auto a = elastic_integer<6, int8_t>{63};
 
     // Results of its operations widen as required.
-    auto aa = a * a;
+    [[maybe_unused]] auto aa = a * a;
     static_assert(is_same<decltype(aa), elastic_integer<12, int8_t>>::value);
 
     // Obviously, this type no longer fits in a byte.
     static_assert(sizeof(aa) == 2);
 
     // Addition requires smaller results.
-    auto a2 = a + a;
+    [[maybe_unused]] auto a2 = a + a;
     static_assert(is_same<decltype(a2), elastic_integer<7, int8_t>>::value);
-
-    (void)aa;
-    (void)a2;
 }
 
 using cnl::elastic_scaled_integer;

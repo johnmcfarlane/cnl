@@ -12,6 +12,7 @@
 #include "../../integer.h"
 #include "../../numeric_limits.h"
 #include "../num_traits/set_width.h"
+#include "../ssizeof.h"
 #include "../type_traits/is_integral.h"
 
 #include <type_traits>
@@ -62,12 +63,12 @@ namespace cnl {
         denominator_type denominator = 1;  // NOLINT(misc-non-private-member-variables-in-classes)
     };
 
-    fraction(float)->fraction<_impl::set_width_t<int, int(sizeof(float) * CHAR_BIT)>>;
+    fraction(float)->fraction<_impl::set_width_t<int, _impl::ssizeof<float>() * CHAR_BIT>>;
 
-    fraction(double)->fraction<_impl::set_width_t<int, int(sizeof(double) * CHAR_BIT)>>;
+    fraction(double)->fraction<_impl::set_width_t<int, _impl::ssizeof<double>() * CHAR_BIT>>;
 
 #if defined(CNL_INT128_ENABLED)
-    fraction(long double)->fraction<_impl::set_width_t<int, int(sizeof(long double) * CHAR_BIT)>>;
+    fraction(long double)->fraction<_impl::set_width_t<int, _impl::ssizeof<long double>() * CHAR_BIT>>;
 #endif
 
     template<integer Integer>

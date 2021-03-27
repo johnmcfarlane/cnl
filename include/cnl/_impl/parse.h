@@ -9,6 +9,7 @@
 
 #include "cnl_assert.h"
 #include "config.h"
+#include "narrow_cast.h"
 #include "num_traits/digits.h"
 #include "num_traits/max_digits.h"
 #include "num_traits/set_digits.h"
@@ -32,7 +33,7 @@ namespace cnl {
             while (*it) {
                 it++;
             }
-            return int(it - str);
+            return narrow_cast<int>(it - str);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -189,7 +190,7 @@ namespace cnl {
 
         [[nodiscard]] constexpr auto scan_base(char const* str, bool is_negative, int offset, int length)
         {
-            auto const separators{int(std::count(str, str + length - 1, separator))};
+            auto const separators{narrow_cast<int>(std::count(str, str + length - 1, separator))};
             length -= separators;
             if (str[offset] != '0' || offset + 1 >= length) {
                 static_assert(std::numeric_limits<int32_t>::digits10 == 9);

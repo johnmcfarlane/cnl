@@ -7,8 +7,8 @@
 /// \file
 /// \brief definitions which can be used to configure CNL library
 
-#if !defined(CNL_CONFIG_H)
-#define CNL_CONFIG_H
+#if !defined(CNL_IMPL_CONFIG_H)
+#define CNL_IMPL_CONFIG_H
 
 ////////////////////////////////////////////////////////////////////////////////
 // CNL_DEBUG and CNL_RELEASE macro definitions
@@ -174,4 +174,4 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#endif  // CNL_CONFIG_H
+#endif  // CNL_IMPL_CONFIG_H

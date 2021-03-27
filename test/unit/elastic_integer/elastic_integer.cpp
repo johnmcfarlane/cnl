@@ -9,6 +9,7 @@
 
 #include <cnl/elastic_integer.h>
 
+#include <cnl/_impl/narrow_cast.h>
 #include <cnl/_impl/rounding.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
@@ -521,7 +522,7 @@ namespace {
     namespace test_avg_fn {
         [[nodiscard]] constexpr auto avg(int a, int b)
         {
-            return int((cnl::make_elastic_integer(a) + cnl::make_elastic_integer(b)) / 2);
+            return narrow_cast<int>((cnl::make_elastic_integer(a) + cnl::make_elastic_integer(b)) / 2);
         }
 
         static_assert(avg(INT_MAX, INT_MAX) == INT_MAX, "avg using elastic_integer");
