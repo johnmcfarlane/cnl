@@ -122,9 +122,8 @@ namespace k {
     void f()
     {
         auto n = fixed_point<int, -31>{0.99609375};
-        auto nn = n * n;  // fixed_point<int, -62>{0.9922027587890625};
+        [[maybe_unused]] auto nn = n * n;  // fixed_point<int, -62>{0.9922027587890625};
         static_assert(std::is_same<fixed_point<int, -62>, decltype(nn)>::value);
-        (void)nn;
     }
 }
 

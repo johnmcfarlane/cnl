@@ -130,9 +130,8 @@ namespace k {
     void f()
     {
         auto n = scaled_integer<int, power<-31>>{0.99609375};
-        auto nn = n * n;  // scaled_integer<int, -62>{0.9922027587890625};
+        [[maybe_unused]] auto nn = n * n;  // scaled_integer<int, -62>{0.9922027587890625};
         static_assert(std::is_same<scaled_integer<int, power<-62>>, decltype(nn)>::value);
-        (void)nn;
     }
 }
 
