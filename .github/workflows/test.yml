@@ -82,7 +82,7 @@ jobs:
             int128: "False"
             linux-container: johnmcfarlane/cnl_ci:gcc-10
             os-version: ubuntu-20.04
-            sanitize: "False"
+            sanitize: "True"
             stdlib: libstdc++11
             toolchain: gcc.cmake
 
