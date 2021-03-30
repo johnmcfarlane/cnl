@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Configure, build and run ShellCheck shell script linter over all scripts in project directory
+# run ShellCheck shell script linter over all scripts in project directory
 
 set -euo pipefail
 
