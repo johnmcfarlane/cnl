@@ -50,7 +50,7 @@ cd cnl
 
 CMake scripts are provided.
 
-To build and install CNL on your system:
+* To build and install CNL on your system:
 
 ```sh
 mkdir build && cd build
@@ -58,52 +58,66 @@ cmake ..
 cmake --build . --target install
 ```
 
+Note: you may need user privileges to install the library.
+Alternatively, you can install to user directory using [`CMAKE_INSTALL_PREFIX`](https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html#cmake-install-prefix):
+
+```sh
+mkdir build && cd build
+cmake -DCMAKE_INSTALL_PREFIX:FILE=/home/username/someplace ..
+cmake --build . --target install
+```
+
+Alternatively, CNL is a header-only library so you can simply point to the _include_ directory
+
+```sh
+c++ -isystem /path/to/cnl/include -std=c++20 my_program.cpp
+```
+
+or even include the root header directly in your code:
+
+```c++
+#include "/path/to/cnl/include/cnl/all.h"
+```
+
 ### Test
 
 The test suite uses CMake and depends on Google Test and Google Benchmark.
 Optional integration tests use Boost.Multiprecision and Boost.SIMD.
 
-1. Conan can be used to pull in essential dependencies:
+1. Conan can be used to pull in essential dependencies.
+   This example assumes GCC but other tool chain files are provided:
 
    ```shell
+   cd build
    conan profile new --detect --force default
-   conan profile update settings.compiler.libcxx=libstdc++11 default
-   conan install --build=missing ..
+   conan profile update settings.compiler.libcxx=libstdc++11 default  # GCC only
+   conan profile update settings.compiler.cppstd=20 default
+   conan install --build=missing --env CONAN_CMAKE_TOOLCHAIN_FILE="/full/path/to/cnl/test/toolchain/gcc.cmake" --options test=unit ..
    ```
 
-2. Configure the project for development
+   ... and then configure, build and run unit tests:
 
    ```shell
-   cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PROJECT_cnl_INCLUDE:FILEPATH="$(pwd)"/conan_paths.cmake ..
+   conan build --configure --build --test ..
    ```
 
-3. Build tests:
+2. To run benchmarks, use `--options test=benchmark`...
 
-   ```sh
-   cmake --build . --target test-all
+   ```shell
+   conan install --build=missing --options test=benchmark ..
    ```
 
-4. Run tests:
+   then configure and build
 
-   ```sh
-   ctest -R test-unit
+   ```shell
+   conan build --configure --build ..
    ```
 
-5. Run benchmarks:
+   and finally run explicitly to see the results.
 
-   ```sh
-   ctest -R test-benchmark
+   ```shell
+   ./test/benchmark/test-benchmark
    ```
-
-### Additional build system generation options:
-
-1. To describe CNL build options:
-
-   `cmake -LH ..`
-
-2. Then to apply an option, e.g. to disabled exceptions:
-
-   `cmake -DCNL_EXCEPTIONS=OFF ..`
 
 ### Integration
 
