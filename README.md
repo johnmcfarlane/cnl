@@ -48,7 +48,6 @@ cd cnl
 
 ### Build
 
-The CNL library is comprised of headers found in the [src](src) directory.
 CMake scripts are provided.
 
 To build and install CNL on your system:
