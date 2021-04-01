@@ -6,7 +6,7 @@
 # Example:
 #   mkdir my-build-directory
 #   cd my-build-directory
-#   INT128=False TARGET=test-all CONAN_CMAKE_GENERATOR="Unix Makefiles" path/to/cnl/test/scripts/init-build
+#   INT128=False TEST=all CONAN_CMAKE_GENERATOR="Unix Makefiles" path/to/cnl/test/scripts/init-build
 #   path/to/cnl/test/scripts/test
 
 set -euo pipefail

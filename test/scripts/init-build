@@ -20,8 +20,7 @@ GENERATOR="${GENERATOR:-Ninja}"
 INT128="${INT128:-True}"
 SANITIZE="${SANITIZE:-True}"
 STDLIB="${STDLIB:-libstdc++11}"
-TARGET="${TARGET:-test-all}"
-TEST_PATTERN="${TEST_PATTERN:-^test-unit-}"
+TEST="${TEST:-unit}"
 TOOLCHAIN="${TOOLCHAIN:-gcc.cmake}"
 
 export CC="${CC:-gcc}"
@@ -50,8 +49,7 @@ conan install \
   --options enable_exceptions="${ENABLE_EXCEPTIONS}" \
   --options int128="${INT128}" \
   --options sanitize="${SANITIZE}" \
-  --options target="${TARGET}" \
-  --options test_pattern="${TEST_PATTERN}" \
+  --options test="${TEST}" \
   --profile ./profile \
   "$@" \
   "${cnl_dir}"
