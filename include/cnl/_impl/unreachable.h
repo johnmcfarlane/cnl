@@ -21,11 +21,6 @@ namespace cnl {
             return Result{};
 #elif defined(__GNUC__)
             __builtin_unreachable();
-#else
-// Please let me know of a preprocessor test that can be applied here and
-// any compiler-specific unreachable intrinsic of which you are aware.
-// https://github.com/johnmcfarlane/cnl/issues/new
-#error unsupported compiler
 #endif
         }
 #else
