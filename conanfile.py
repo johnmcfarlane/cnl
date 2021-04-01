@@ -15,6 +15,7 @@ class CnlConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     options = {
         "clang_tidy": [False, True],
+        "cppcheck": [False, True],
         "enable_exceptions": [False, True],
         "int128": [False, True],
         "sanitize": [False, True],
@@ -22,6 +23,7 @@ class CnlConan(ConanFile):
     }
     default_options = {
         "clang_tidy": False,
+        "cppcheck": False,
         "enable_exceptions": True,
         "int128": True,
         "sanitize": False,
@@ -39,9 +41,10 @@ class CnlConan(ConanFile):
 
     def build(self):
         cmake = CMake(self, set_cmake_flags=True)
-        cmake.verbose = False
+        cmake.verbose = True
 
         cmake.definitions["CMAKE_CXX_CLANG_TIDY"] = "clang-tidy" if self.options.clang_tidy else ""
+        cmake.definitions["CMAKE_CXX_CPPCHECK"] = "cppcheck" if self.options.cppcheck else ""
         cmake.definitions["CNL_EXCEPTIONS"] = "ON" if self.options.enable_exceptions else "OFF"
         cmake.definitions["CNL_GTEST_MAIN_TARGET:STRING"] = "GTest::gtest_main"
         cmake.definitions["CNL_INT128"] = "ON" if self.options.int128 else "OFF"
