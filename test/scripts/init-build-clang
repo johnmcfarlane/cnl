@@ -7,6 +7,7 @@ set -euo pipefail
 export CC="${CC:-clang}"
 export COMPILER=clang
 export CXX="${CXX:-clang++}"
+export SANITIZE="${SANITIZE:-False}"
 export TOOLCHAIN="${TOOLCHAIN:-clang.cmake}"
 
 script_dir=$(

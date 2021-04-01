@@ -18,16 +18,14 @@ class CnlConan(ConanFile):
         "enable_exceptions": [False, True],
         "int128": [False, True],
         "sanitize": [False, True],
-        "target": [None, "test-all", "test-benchmark", "test-unit"],
-        "test_pattern": [None, "^test-", "test-benchmark", "^test-unit-"],
+        "test": [None, "unit", "benchmark", "all"]
     }
     default_options = {
         "clang_tidy": False,
         "enable_exceptions": True,
         "int128": True,
         "sanitize": False,
-        "target": None,
-        "test_pattern": None,
+        "test": None,
     }
     generators = "cmake_find_package"
     no_copy_source = True
@@ -43,17 +41,28 @@ class CnlConan(ConanFile):
         cmake = CMake(self, set_cmake_flags=True)
         cmake.verbose = False
 
-        if self.should_configure:
-            self.configure_phase(cmake)
+        cmake.definitions["CMAKE_CXX_CLANG_TIDY"] = "clang-tidy" if self.options.clang_tidy else ""
+        cmake.definitions["CNL_EXCEPTIONS"] = "ON" if self.options.enable_exceptions else "OFF"
+        cmake.definitions["CNL_GTEST_MAIN_TARGET:STRING"] = "GTest::gtest_main"
+        cmake.definitions["CNL_INT128"] = "ON" if self.options.int128 else "OFF"
+        cmake.definitions["CNL_SANITIZE"] = "ON" if self.options.sanitize else "OFF"
 
-        if self.should_build and self.options.target:
-            self.build_phase(cmake)
+        cmake.configure()
 
-        if self.options.target:
+        if self.should_build and self.options.test:
+            cmake.build(target={
+              "unit": "test-unit",
+              "benchmark": "test-benchmark",
+              "all": "test-all"}[str(self.options.test)])
+
+        if self.options.test:
             cmake.install()
 
-        if self.should_test and self.options.test_pattern:
-            self.test_phase();
+        if self.should_test and self.options.test:
+            self.test_phase(cmake, {
+              "unit": "^test-unit-",
+              "benchmark": "test-benchmark",
+              "all": "^test-"}[str(self.options.test)])
 
     def package(self):
         self.copy("include/*.h")
@@ -62,36 +71,9 @@ class CnlConan(ConanFile):
     def package_id(self):
         self.info.header_only()
 
-    def configure_phase(self, cmake):
-        def conan_option_to_cmake_boolean(conan_option: bool):
-            return {
-                True: "ON",
-                False: "OFF"
-            }[bool(conan_option)]
-
-        module_path = "-DCMAKE_MODULE_PATH:FILEPATH={}".format(
-            self.build_folder)
-        gtest_hack = "-DCNL_GTEST_MAIN_TARGET:STRING=GTest::gtest_main"
-        clang_tidy = "-DCMAKE_CXX_CLANG_TIDY=clang-tidy" if self.options.clang_tidy else ""
-        exceptions = "-DCNL_EXCEPTIONS={}".format(
-            conan_option_to_cmake_boolean(self.options.enable_exceptions))
-        int128 = "-DCNL_INT128={}".format(
-            conan_option_to_cmake_boolean(self.options.int128))
-        sanitize = "-DCNL_SANITIZE={}".format(
-            conan_option_to_cmake_boolean(self.options.sanitize))
-
-        self.run(f'cmake {cmake.command_line} {module_path} {gtest_hack} {clang_tidy} {exceptions} {int128} {sanitize} {self.source_folder}')
-    
-    def build_phase(self, cmake):
-        assert(self.options.target)
-        build = "--build {}".format(self.build_folder)
-        target = "--target {}".format(self.options.target)
-
-        self.run(f'cmake {build} {target} {cmake.build_config}')
-    
-    def test_phase(self):
-        assert(self.options.test_pattern)
-        self.run("ctest --output-on-failure --parallel {} --tests-regex {}".format(
-            tools.cpu_count(),
-            self.options.test_pattern
+    def test_phase(self, cmake, test_pattern):
+        parallel = "--parallel {}".format(tools.cpu_count()) if cmake.parallel else ""
+        self.run("ctest --output-on-failure {} --tests-regex {}".format(
+            parallel,
+            test_pattern
         ))
