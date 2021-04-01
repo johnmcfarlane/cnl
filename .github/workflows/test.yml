@@ -373,7 +373,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Run All Tests
+    - name: Run shellcheck
       shell: bash
       run: $GITHUB_WORKSPACE/test/scripts/shellcheck
 
