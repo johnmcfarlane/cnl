@@ -62,7 +62,9 @@ class CnlConan(ConanFile):
             self.test_phase(cmake, {
               "unit": "^test-unit-",
               "benchmark": "test-benchmark",
-              "all": "^test-"}[str(self.options.test)])
+              # "^test-unit-" here instead of "^test-" because benchmarks are of little value
+              # if their results are not output, so they are typically run separate from ctest
+              "all": "^test-unit-"}[str(self.options.test)])
 
     def package(self):
         self.copy("include/*.h")
