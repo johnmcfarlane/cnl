@@ -21,7 +21,7 @@ namespace cnl {
     ///
     /// \headerfile cnl/rounding.h
     /// \sa cnl::rounding_integer,
-    /// cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply, cnl::subtract,
+    /// cnl::convert, cnl::divide, cnl::left_shift, cnl::multiply,
     /// cnl::nearest_rounding_tag
     struct native_rounding_tag
         : _impl::homogeneous_deduction_tag_base
