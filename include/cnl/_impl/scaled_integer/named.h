@@ -37,49 +37,29 @@ namespace cnl {
         return _impl::from_value<scaled_integer<>, Value>(value);
     }
 
-    namespace _impl {
-        template<typename Number>
-        struct scaled_integer_rep {
-            using type = Number;
-        };
-
-        template<typename Rep, int Exponent, int Radix>
-        struct scaled_integer_rep<scaled_integer<Rep, power<Exponent, Radix>>>
-            : scaled_integer_rep<Rep> {
-        };
-
-        template<class Dividend, class Divisor>
-        struct quotient_result {
-            using natural_result = _impl::op_result<_impl::divide_op, Dividend, Divisor>;
-
-            static constexpr int integer_digits = _impl::integer_digits<Dividend> + _impl::fractional_digits<Divisor>;
-            static constexpr int fractional_digits = _impl::fractional_digits<Dividend> + _impl::integer_digits<Divisor>;
-
-            static constexpr auto necessary_digits = integer_digits + fractional_digits;
-            static constexpr auto natural_digits = digits<natural_result>;
-            static constexpr auto result_digits = std::max(necessary_digits, natural_digits);
-
-            using rep_type = set_digits_t<natural_result, result_digits>;
-
-            static constexpr int rep_exponent = -fractional_digits;
-            using scale = power<rep_exponent>;
-
-            using rep = typename scaled_integer_rep<rep_type>::type;
-            using type = scaled_integer<rep, scale>;
-        };
-    }
-
     template<fixed_point Numerator, fixed_point Denominator>
     struct fraction;
 
     template<class Dividend, class Divisor>
-    [[nodiscard]] constexpr auto make_scaled_integer(fraction<Dividend, Divisor> const& f) ->
-            typename _impl::quotient_result<Dividend, Divisor>::type
+    [[nodiscard]] constexpr auto make_scaled_integer(fraction<Dividend, Divisor> const& f)
     {
-        using quotient_result = _impl::quotient_result<Dividend, Divisor>;
-        return _impl::from_rep<typename quotient_result::type>(
-                convert<typename quotient_result::scale, power<>, typename quotient_result::rep>(
-                        f));
+        using natural_result = _impl::op_result<_impl::divide_op, Dividend, Divisor>;
+
+        constexpr int integer_digits = _impl::integer_digits<Dividend> + _impl::fractional_digits<Divisor>;
+        constexpr int fractional_digits = _impl::fractional_digits<Dividend> + _impl::integer_digits<Divisor>;
+
+        constexpr auto necessary_digits = integer_digits + fractional_digits;
+        constexpr auto natural_digits = digits<natural_result>;
+        constexpr auto result_digits = std::max(necessary_digits, natural_digits);
+
+        constexpr int rep_exponent = -fractional_digits;
+        using scale = power<rep_exponent>;
+
+        using rep_type = set_digits_t<natural_result, result_digits>;
+        using rep = decltype(_impl::not_scaled_integer(std::declval<rep_type>()));
+
+        return _impl::from_rep<scaled_integer<rep, scale>>(
+                convert<scale, power<>, rep>(f));
     }
 
     /// \brief calculates the quotient of two \ref scaled_integer values
