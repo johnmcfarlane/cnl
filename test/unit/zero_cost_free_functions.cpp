@@ -25,14 +25,14 @@ static_assert(
                 rounding_overflow_int<>{2} * rounding_overflow_int<>{3},
                 rounding_overflow_int<>{6}));
 
-static_assert(identical(INT_MAX, cnl::multiply<cnl::saturated_overflow_tag>(INT_MAX, INT_MAX)));
+static_assert(identical(INT_MAX, cnl::_impl::custom_operate<cnl::_impl::multiply_op, cnl::saturated_overflow_tag>(INT_MAX, INT_MAX)));
 
 auto bare_saturate(int a, int b)
 {
-    return cnl::multiply<cnl::saturated_overflow_tag>(a, b);
+    return cnl::_impl::custom_operate<cnl::_impl::multiply_op, cnl::saturated_overflow_tag>(a, b);
 }
 
 auto psi_saturate(rounding_overflow_int<> a, rounding_overflow_int<> b)
 {
-    return cnl::multiply<cnl::saturated_overflow_tag>(a, b);
+    return cnl::_impl::custom_operate<cnl::_impl::multiply_op, cnl::saturated_overflow_tag>(a, b);
 }

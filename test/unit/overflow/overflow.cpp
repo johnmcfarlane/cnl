@@ -64,7 +64,7 @@ namespace {
         // multiply
         static_assert(
                 identical(
-                        cnl::multiply<cnl::native_overflow_tag>(UINT16_C(576), INT32_C(22)),
+                        cnl::_impl::custom_operate<cnl::_impl::multiply_op, cnl::native_overflow_tag>(UINT16_C(576), INT32_C(22)),
                         decltype(UINT16_C(576) * INT32_C(22)){12672}));
     }
 
@@ -76,7 +76,7 @@ namespace {
         // multiply
         static_assert(
                 identical(
-                        cnl::multiply<cnl::throwing_overflow_tag>(UINT16_C(576), INT32_C(22)),
+                        cnl::_impl::custom_operate<cnl::_impl::multiply_op, cnl::throwing_overflow_tag>(UINT16_C(576), INT32_C(22)),
                         decltype(UINT16_C(576) * INT32_C(22)){12672}));
     }
 
@@ -145,15 +145,13 @@ namespace {
         // multiply
         static_assert(
                 identical(
-                        cnl::multiply<cnl::saturated_overflow_tag>(UINT16_C(576), INT32_C(22)),
-                        decltype(UINT16_C(576) * INT32_C(22)){12672}),
-                "cnl::multiply test failed");
+                        cnl::_impl::custom_operate<cnl::_impl::multiply_op, cnl::saturated_overflow_tag>(UINT16_C(576), INT32_C(22)),
+                        decltype(UINT16_C(576) * INT32_C(22)){12672}));
         static_assert(
                 identical(
-                        cnl::multiply<cnl::saturated_overflow_tag>(
+                        cnl::_impl::custom_operate<cnl::_impl::multiply_op, cnl::saturated_overflow_tag>(
                                 cnl::numeric_limits<int32_t>::max(), INT32_C(2)),
-                        cnl::numeric_limits<int32_t>::max()),
-                "cnl::multiply test failed");
+                        cnl::numeric_limits<int32_t>::max()));
 
         // compare
         static_assert(
