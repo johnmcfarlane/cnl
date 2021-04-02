@@ -45,10 +45,9 @@ namespace {
         // add
         static_assert(
                 identical(
-                        cnl::add<cnl::native_overflow_tag>(
+                        cnl::_impl::custom_operate<cnl::_impl::add_op, cnl::native_overflow_tag>(
                                 UINT32_C(0xFFFFFFFF), UINT32_C(0x12345678)),
-                        UINT32_C(0xFFFFFFFF) + UINT32_C(0x12345678)),
-                "cnl::add test failed");
+                        UINT32_C(0xFFFFFFFF) + UINT32_C(0x12345678)));
 
         // subtract
         static_assert(
@@ -82,8 +81,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::multiply<cnl::throwing_overflow_tag>(UINT16_C(576), INT32_C(22)),
-                        decltype(UINT16_C(576) * INT32_C(22)){12672}),
-                "cnl::add test failed");
+                        decltype(UINT16_C(576) * INT32_C(22)){12672}));
     }
 
     namespace test_saturated {
@@ -122,15 +120,13 @@ namespace {
                 identical(
                         std::numeric_limits<
                                 decltype(UINT32_C(0xFFFFFFFF) + INT32_C(0x12345678))>::max(),
-                        cnl::add<cnl::saturated_overflow_tag>(
-                                UINT32_C(0xFFFFFFFF), INT32_C(0x12345678))),
-                "cnl::add test failed");
+                        cnl::_impl::custom_operate<cnl::_impl::add_op, cnl::saturated_overflow_tag>(
+                                UINT32_C(0xFFFFFFFF), INT32_C(0x12345678))));
         static_assert(
                 identical(
                         cnl::numeric_limits<decltype(2 + 2U)>::max(),
-                        cnl::add<cnl::saturated_overflow_tag>(
-                                2, cnl::numeric_limits<unsigned>::max())),
-                "cnl::add test failed");
+                        cnl::_impl::custom_operate<cnl::_impl::add_op, cnl::saturated_overflow_tag>(
+                                2, cnl::numeric_limits<unsigned>::max())));
 
         // subtract
         static_assert(
