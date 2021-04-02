@@ -39,10 +39,10 @@ namespace cnl {
     }
 
     namespace _impl {
-        template<_impl::binary_arithmetic_op Operator, tag Tag, typename Lhs, typename Rhs>
-        [[nodiscard]] constexpr auto binary_arithmetic_operate(Lhs const& lhs, Rhs const& rhs)
+        template<op Operator, tag Tag, typename... Operands>
+        [[nodiscard]] constexpr auto custom_operate(Operands const&... operands)
         {
-            return custom_operator<Operator, op_value<Lhs, Tag>, op_value<Rhs, Tag>>{}(lhs, rhs);
+            return custom_operator<Operator, op_value<Operands, Tag>...>{}(operands...);
         }
     }
 
