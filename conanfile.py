@@ -41,7 +41,7 @@ class CnlConan(ConanFile):
 
     def build(self):
         cmake = CMake(self, set_cmake_flags=True)
-        cmake.verbose = True
+        cmake.verbose = False
 
         cmake.definitions["CMAKE_CXX_CLANG_TIDY"] = "clang-tidy" if self.options.clang_tidy else ""
         cmake.definitions["CMAKE_CXX_CPPCHECK"] = "cppcheck" if self.options.cppcheck else ""
