@@ -69,6 +69,9 @@ namespace cnl {
         };
     }
 
+    template<fixed_point Numerator, fixed_point Denominator>
+    struct fraction;
+
     template<class Dividend, class Divisor>
     [[nodiscard]] constexpr auto make_scaled_integer(fraction<Dividend, Divisor> const& f) ->
             typename _impl::quotient_result<Dividend, Divisor>::type

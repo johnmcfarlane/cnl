@@ -20,9 +20,6 @@
 
 /// compositional numeric library
 namespace cnl {
-    template<fixed_point Numerator, fixed_point Denominator>
-    struct fraction;
-
     /// \brief literal real number approximation that uses fixed-point arithmetic
     /// \headerfile cnl/scaled_integer.h
     ///

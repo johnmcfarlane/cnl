@@ -12,6 +12,7 @@
 
 #include "../scaled/is_scaled_tag.h"
 #include "definition.h"
+#include "named.h"
 
 #include <algorithm>
 
