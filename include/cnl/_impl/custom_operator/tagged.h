@@ -23,7 +23,7 @@ namespace cnl {
     /// \param src value to convert from
     /// \return value converted to
     ///
-    /// \sa cnl::divide, cnl::shift_right,
+    /// \sa cnl::shift_right,
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
     template<tag DestTag, tag SrcTag, typename Dest, typename Src>
@@ -46,21 +46,6 @@ namespace cnl {
         }
     }
 
-    /// \brief divides one value by another
-    /// \headerfile cnl/all.h
-    ///
-    /// \tparam Tag specifies the conversion mode, e.g. \ref cnl::native_rounding_tag
-    /// \return the result of `lhs / rhs`
-    ///
-    /// \sa cnl::convert, cnl::shift_right,
-    /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
-    /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
-    template<tag Tag, typename Lhs, typename Rhs>
-    [[nodiscard]] constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
-    {
-        return custom_operator<_impl::divide_op, op_value<Lhs, Tag>, op_value<Rhs, Tag>>{}(lhs, rhs);
-    }
-
     template<tag Tag, typename Lhs, typename Rhs>
     [[nodiscard]] constexpr auto shift_left(Lhs const& lhs, Rhs const& rhs)
     {
@@ -73,7 +58,7 @@ namespace cnl {
     /// \tparam Tag specifies the conversion mode, e.g. \ref cnl::native_overflow_tag
     /// \return the result of `lhs + rhs`
     ///
-    /// \sa cnl::convert, cnl::divide,
+    /// \sa cnl::convert,
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
     template<tag Tag, typename Lhs, typename Rhs>
