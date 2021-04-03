@@ -36,13 +36,12 @@ namespace cnl {
         using rhs_type = scaled_integer<
                 decltype(std::declval<RhsRep>() << constant<shiftage>()),
                 power<LhsExponent, Radix>>;
-        using operator_type = custom_operator<Operator, op_value<lhs_type>, op_value<rhs_type>>;
 
         [[nodiscard]] constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, Radix>> const& lhs,
                 scaled_integer<RhsRep, power<RhsExponent, Radix>> const& rhs) const
         {
-            return operator_type{}(lhs, rhs);
+            return _impl::operate<Operator>{}(lhs_type{lhs}, rhs_type{rhs});
         }
     };
 
@@ -60,13 +59,12 @@ namespace cnl {
                 decltype(std::declval<LhsRep>() << constant<shiftage>()),
                 power<RhsExponent, Radix>>;
         using rhs_type = scaled_integer<RhsRep, power<RhsExponent, Radix>>;
-        using operator_type = custom_operator<Operator, op_value<lhs_type>, op_value<rhs_type>>;
 
         [[nodiscard]] constexpr auto operator()(
                 scaled_integer<LhsRep, power<LhsExponent, Radix>> const& lhs,
                 scaled_integer<RhsRep, power<RhsExponent, Radix>> const& rhs) const
         {
-            return operator_type{}(lhs, rhs);
+            return _impl::operate<Operator>{}(lhs_type{lhs}, rhs_type{rhs});
         }
     };
 

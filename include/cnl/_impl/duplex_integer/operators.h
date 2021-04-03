@@ -123,9 +123,7 @@ namespace cnl {
         [[nodiscard]] constexpr auto operator()(_impl::duplex_integer<Upper, Lower> const& rhs)
                 const -> _impl::duplex_integer<Upper, Lower>
         {
-            return custom_operator<
-                    _impl::bitwise_not_op,
-                    op_value<_impl::duplex_integer<Upper, Lower>>>{}(
+            return _impl::operate<_impl::bitwise_not_op>{}(
                     rhs - _impl::duplex_integer<Upper, Lower>{1});
         }
     };
@@ -143,7 +141,7 @@ namespace cnl {
     requires(!_impl::is_duplex_integer_v<Rhs>) struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
-            return custom_operator<Operator, op_value<Lhs>, op_value<Lhs>>{}(lhs, rhs);
+            return _impl::operate<Operator>{}(lhs, Lhs{rhs});
         }
     };
 
@@ -151,7 +149,7 @@ namespace cnl {
     requires(!_impl::is_duplex_integer_v<Lhs>) struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
-            return custom_operator<Operator, op_value<Rhs>, op_value<Rhs>>{}(lhs, rhs);
+            return _impl::operate<Operator>{}(lhs, rhs);
         }
     };
 
@@ -209,7 +207,7 @@ namespace cnl {
             using common_type = _impl::duplex_integer<
                     _impl::common_type_t<LhsUpper, RhsUpper>,
                     _impl::common_type_t<LhsLower, RhsLower>>;
-            return custom_operator<Operator, op_value<common_type>, op_value<common_type>>{}(lhs, rhs);
+            return _impl::operate<Operator>{}(common_type{lhs}, common_type{rhs});
         }
     };
 

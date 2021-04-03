@@ -13,6 +13,9 @@
 #include "definition.h"
 #include "op.h"
 
+#include <type_traits>
+#include <utility>
+
 /// compositional numeric library
 namespace cnl {
     /// \brief converts a value to a type
@@ -38,11 +41,22 @@ namespace cnl {
     }
 
     namespace _impl {
-        template<op Operator, tag Tag, typename... Operands>
-        [[nodiscard]] constexpr auto custom_operate(Operands const&... operands)
-        {
-            return custom_operator<Operator, op_value<Operands, Tag>...>{}(operands...);
-        }
+        template<op Operator, tag Tag = native_tag>
+        struct operate {
+            template<typename... Operands>
+            [[nodiscard]] constexpr auto operator()(Operands const&... operands) const
+            {
+                return custom_operator<Operator, op_value<Operands, Tag>...>{}(operands...);
+            }
+
+            template<typename... Operands>
+            constexpr auto operator()(Operands&&... operands) const
+            {
+                return custom_operator<
+                        Operator,
+                        op_value<std::remove_cvref_t<Operands>, Tag>...>{}(std::forward<Operands>(operands)...);
+            }
+        };
     }
 }
 

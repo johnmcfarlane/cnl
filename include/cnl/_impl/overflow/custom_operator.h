@@ -144,10 +144,7 @@ namespace cnl {
     struct custom_operator<Operator, op_value<Rhs, OverflowTag>> {
         constexpr auto operator()(Rhs& rhs) const -> Rhs
         {
-            return custom_operator<
-                    typename _impl::pre_to_assign<Operator>::type,
-                    op_value<Rhs, OverflowTag>,
-                    op_value<int, OverflowTag>>{}(rhs, 1);
+            return _impl::operate<typename _impl::pre_to_assign<Operator>::type, OverflowTag>{}(rhs, 1);
         }
     };
 
@@ -156,10 +153,7 @@ namespace cnl {
         constexpr auto operator()(Rhs& rhs) const -> Rhs
         {
             auto copy = rhs;
-            custom_operator<
-                    typename _impl::post_to_assign<Operator>::type,
-                    op_value<Rhs, OverflowTag>,
-                    op_value<int, OverflowTag>>{}(rhs, 1);
+            _impl::operate<typename _impl::post_to_assign<Operator>::type, OverflowTag>{}(rhs, 1);
             return copy;
         }
     };

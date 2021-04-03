@@ -20,15 +20,15 @@ namespace {
         static_assert(
                 identical(
                         cnl::elastic_integer<53>{7000 >> 9},
-                        cnl::_impl::custom_operate<cnl::_impl::shift_right_op, cnl::nearest_rounding_tag, cnl::elastic_integer<62>, cnl::constant<9>>(7000, cnl::constant<9>{})),
-                "shift_right(elastic_integer)");
+                        cnl::_impl::operate<cnl::_impl::shift_right_op, cnl::nearest_rounding_tag>{}(
+                                cnl::elastic_integer<62>{7000}, cnl::constant<9>{})));
 
 #if defined(CNL_INT128_ENABLED)
         static_assert(
                 identical(
                         cnl::elastic_integer<117>{7000 >> 9},
-                        cnl::_impl::custom_operate<cnl::_impl::shift_right_op, cnl::nearest_rounding_tag, cnl::elastic_integer<126>, cnl::constant<9>>(7000, cnl::constant<9>{})),
-                "shift_right(elastic_integer)");
+                        cnl::_impl::operate<cnl::_impl::shift_right_op, cnl::nearest_rounding_tag>{}(
+                                cnl::elastic_integer<126>{7000}, cnl::constant<9>{})));
 #endif
     }
 
