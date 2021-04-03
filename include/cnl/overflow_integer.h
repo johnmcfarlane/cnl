@@ -25,7 +25,14 @@
 
 /// compositional numeric library
 namespace cnl {
-    /// \brief An integer which detects overflow.
+    /// \brief An integer for which out-of-range arithmetic results in overflow
+    /// \headerfile cnl/overflow_integer.h
+    ///
+    /// \tparam Rep the underlying type used to represent the value; defaults to `int`
+    /// \tparam Tag tag specifying the overflow-handling strategy; defaults to \ref undefined_overflow_tag
+    ///
+    /// \sa native_overflow_tag, saturated_overflow_tag, trapping_overflow_tag, undefined_overflow_tag
+
     template<typename Rep = int, overflow_tag Tag = undefined_overflow_tag>
     using overflow_integer = _impl::wrapper<Rep, Tag>;
 

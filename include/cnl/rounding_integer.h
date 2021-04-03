@@ -24,7 +24,14 @@
 
 /// compositional numeric library
 namespace cnl {
-    /// \brief An integer which detects overflow.
+    /// \brief An integer which facilitates different rounding modes
+    /// \headerfile cnl/rounding_integer.h
+    ///
+    /// \tparam Rep the underlying type used to represent the value; defaults to `int`
+    /// \tparam Tag tag specifying the rounding mode; defaults to \ref nearest_rounding_tag
+    ///
+    /// \sa native_rounding_tag, nearest_rounding_tag, neg_inf_rounding_tag, tie_to_pos_inf_rounding_tag
+
     template<typename Rep = int, rounding_tag Tag = nearest_rounding_tag>
     using rounding_integer = _impl::wrapper<Rep, Tag>;
 
