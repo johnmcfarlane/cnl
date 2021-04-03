@@ -24,9 +24,7 @@ namespace cnl {
     /// representation, thus round all values towards minus infinity.
     ///
     /// \headerfile cnl/rounding.h
-    /// \sa cnl::rounding_integer,
-    /// cnl::convert,
-    /// cnl::neg_inf_rounding_tag
+    /// \sa cnl::rounding_integer, cnl::convert, cnl::neg_inf_rounding_tag
     struct neg_inf_rounding_tag
         : _impl::homogeneous_deduction_tag_base
         , _impl::homogeneous_operator_tag_base {

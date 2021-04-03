@@ -26,10 +26,8 @@ namespace cnl {
     /// behavior sanitizers to trap on arithmetic errors.
     ///
     /// \headerfile cnl/overflow.h
-    /// \sa cnl::overflow_integer,
-    /// cnl::convert,
-    /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
-    /// cnl::trapping_overflow_tag
+    /// \sa cnl::overflow_integer, cnl::convert, cnl::native_overflow_tag, cnl::saturated_overflow_tag,
+    /// cnl::throwing_overflow_tag, cnl::trapping_overflow_tag
     struct undefined_overflow_tag
         : _impl::homogeneous_deduction_tag_base
         , _impl::homogeneous_operator_tag_base {
