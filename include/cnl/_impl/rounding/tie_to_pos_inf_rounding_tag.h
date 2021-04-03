@@ -24,7 +24,7 @@ namespace cnl {
     ///
     /// \headerfile cnl/rounding.h
     /// \sa cnl::rounding_integer,
-    /// cnl::convert, cnl::left_shift,
+    /// cnl::convert,
     /// cnl::tie_to_pos_inf_rounding_tag
     struct tie_to_pos_inf_rounding_tag
         : _impl::homogeneous_deduction_tag_base

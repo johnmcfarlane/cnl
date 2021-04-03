@@ -23,8 +23,7 @@ namespace cnl {
     /// \param src value to convert from
     /// \return value converted to
     ///
-    /// \sa cnl::shift_right,
-    /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
+    /// \sa cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
     template<tag DestTag, tag SrcTag, typename Dest, typename Src>
     [[nodiscard]] constexpr auto convert(Src const& src)
@@ -44,27 +43,6 @@ namespace cnl {
         {
             return custom_operator<Operator, op_value<Operands, Tag>...>{}(operands...);
         }
-    }
-
-    template<tag Tag, typename Lhs, typename Rhs>
-    [[nodiscard]] constexpr auto shift_left(Lhs const& lhs, Rhs const& rhs)
-    {
-        return custom_operator<_impl::shift_left_op, op_value<Lhs, Tag>, op_value<Rhs, Tag>>{}(lhs, rhs);
-    }
-
-    /// \brief bitwise left-shifts one value by another
-    /// \headerfile cnl/all.h
-    ///
-    /// \tparam Tag specifies the conversion mode, e.g. \ref cnl::native_overflow_tag
-    /// \return the result of `lhs + rhs`
-    ///
-    /// \sa cnl::convert,
-    /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
-    /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
-    template<tag Tag, typename Lhs, typename Rhs>
-    [[nodiscard]] constexpr auto shift_right(Lhs const& lhs, Rhs const& rhs)
-    {
-        return custom_operator<_impl::shift_right_op, op_value<Lhs, Tag>, op_value<Rhs, Tag>>{}(lhs, rhs);
     }
 }
 

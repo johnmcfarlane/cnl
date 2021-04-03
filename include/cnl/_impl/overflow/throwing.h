@@ -24,7 +24,7 @@ namespace cnl {
     ///
     /// \headerfile cnl/overflow.h
     /// \sa cnl::overflow_integer,
-    /// cnl::convert, cnl::left_shift,
+    /// cnl::convert,
     /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::trapping_overflow_tag,
     /// cnl::undefined_overflow_tag
     struct throwing_overflow_tag

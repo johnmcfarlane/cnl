@@ -171,15 +171,13 @@ namespace {
         static_assert(
                 identical(
                         cnl::numeric_limits<cnl::int16>::max() << 1,
-                        cnl::shift_left<cnl::saturated_overflow_tag>(
-                                cnl::numeric_limits<cnl::int16>::max(), 1)),
-                "cnl::shift_left test failed");
+                        cnl::_impl::custom_operate<cnl::_impl::shift_left_op, cnl::saturated_overflow_tag>(
+                                cnl::numeric_limits<cnl::int16>::max(), 1)));
         static_assert(
                 identical(
                         cnl::numeric_limits<cnl::int32>::max(),
-                        cnl::shift_left<cnl::saturated_overflow_tag>(
-                                cnl::numeric_limits<cnl::int32>::max(), 1)),
-                "cnl::shift_left test failed");
+                        cnl::_impl::custom_operate<cnl::_impl::shift_left_op, cnl::saturated_overflow_tag>(
+                                cnl::numeric_limits<cnl::int32>::max(), 1)));
         static_assert(
                 identical(
                         cnl::numeric_limits<int>::max(),
@@ -194,8 +192,9 @@ namespace {
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
         TEST(overflow, trap)  // NOLINT
         {
+            constexpr auto fn{cnl::_impl::custom_operate<cnl::_impl::shift_left_op, cnl::trapping_overflow_tag, int, int>};
             ASSERT_DEATH(
-                    (void)cnl::shift_left<cnl::trapping_overflow_tag>(-1073741825, 1),
+                    (void)fn(-1073741825, 1),
                     "negative overflow");
         }
 #endif
