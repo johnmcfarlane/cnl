@@ -24,7 +24,7 @@ namespace cnl {
     /// \tparam RoundingTag behavior exhibited on precision loss
     /// \tparam Narrowest narrowest integer with which to represent the value
     ///
-    /// \sa cnl::static_integer
+    /// \sa static_integer
     template<
             int Digits, int Exponent = 0, rounding_tag RoundingTag = nearest_rounding_tag,
             overflow_tag OverflowTag = undefined_overflow_tag, class Narrowest = signed>

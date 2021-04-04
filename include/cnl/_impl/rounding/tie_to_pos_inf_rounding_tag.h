@@ -23,7 +23,7 @@ namespace cnl {
     /// direction and round all other values to their nearest representable value.
     ///
     /// \headerfile cnl/rounding.h
-    /// \sa cnl::rounding_integer, cnl::convert, cnl::tie_to_pos_inf_rounding_tag
+    /// \sa rounding_integer, convert, tie_to_pos_inf_rounding_tag
     struct tie_to_pos_inf_rounding_tag
         : _impl::homogeneous_deduction_tag_base
         , _impl::homogeneous_operator_tag_base {

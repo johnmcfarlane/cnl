@@ -21,13 +21,13 @@ namespace cnl {
     /// \brief converts a value to a type
     /// \headerfile cnl/all.h
     ///
-    /// \tparam DestTag specifies the destination behavior tag, e.g. \ref cnl::native_overflow_tag
-    /// \tparam SrcTag specifies the source behavior tag, e.g. \ref cnl::native_overflow_tag
+    /// \tparam DestTag specifies the destination behavior tag, e.g. \ref native_overflow_tag
+    /// \tparam SrcTag specifies the source behavior tag, e.g. \ref native_overflow_tag
     /// \param src value to convert from
     /// \return value converted to
     ///
-    /// \sa cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
-    /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
+    /// \sa native_overflow_tag, saturated_overflow_tag, throwing_overflow_tag,
+    /// trapping_overflow_tag, undefined_overflow_tag, nearest_rounding_tag
     template<tag DestTag, tag SrcTag, typename Dest, typename Src>
     [[nodiscard]] constexpr auto convert(Src const& src)
     {

@@ -20,7 +20,7 @@ namespace cnl {
     /// Arithmetic operations using this tag should behave the same as equivalent operators.
     ///
     /// \headerfile cnl/rounding.h
-    /// \sa cnl::rounding_integer, cnl::convert, cnl::nearest_rounding_tag
+    /// \sa rounding_integer, convert, nearest_rounding_tag
     struct native_rounding_tag
         : _impl::homogeneous_deduction_tag_base
         , _impl::homogeneous_operator_tag_base {

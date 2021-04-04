@@ -21,8 +21,8 @@ namespace cnl {
     /// range of the result type.
     ///
     /// \headerfile cnl/overflow.h
-    /// \sa cnl::overflow_integer, cnl::convert, cnl::native_overflow_tag, cnl::saturated_overflow_tag,
-    /// cnl::throwing_overflow_tag, cnl::undefined_overflow_tag
+    /// \sa overflow_integer, convert, native_overflow_tag, saturated_overflow_tag,
+    /// throwing_overflow_tag, undefined_overflow_tag
     struct trapping_overflow_tag
         : _impl::homogeneous_deduction_tag_base
         , _impl::homogeneous_operator_tag_base {

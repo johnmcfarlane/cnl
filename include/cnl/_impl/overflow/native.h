@@ -20,8 +20,8 @@ namespace cnl {
     /// Arithmetic operations using this tag should behave the same as equivalent operators.
     ///
     /// \headerfile cnl/overflow.h
-    /// \sa cnl::overflow_integer, cnl::convert, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
-    /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag
+    /// \sa overflow_integer, convert, saturated_overflow_tag, throwing_overflow_tag,
+    /// trapping_overflow_tag, undefined_overflow_tag
     struct native_overflow_tag
         : _impl::homogeneous_deduction_tag_base
         , _impl::homogeneous_operator_tag_base {
