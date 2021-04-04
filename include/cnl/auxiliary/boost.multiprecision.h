@@ -5,8 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file
-/// \brief definitions and specializations that adapt Boost.Multiprecision for use with @ref
-/// cnl::scaled_integer
+/// \brief definitions and specializations that adapt Boost.Multiprecision for use with \ref cnl::scaled_integer
 
 #if !defined(CNL_BOOST_MULTIPRECISION_H)
 #define CNL_BOOST_MULTIPRECISION_H
