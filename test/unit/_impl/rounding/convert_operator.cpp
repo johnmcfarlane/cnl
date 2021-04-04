@@ -15,199 +15,110 @@ using cnl::_impl::identical;
 
 namespace test_convert_nearest_rounding_native_datatypes {
 
-    static_assert(
-            cnl::_impl::identical(
-                    0.123F, cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, float, float>(0.123F)),
-            "cnl::convert<nearest_rounding_tag, cnl::_impl::native_tag, float, float>");
+    static_assert(identical(
+            0.123F,
+            cnl::convert<cnl::nearest_rounding_tag, float>{}(0.123F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    0.125,
-                    cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, double, float>(
-                            0.125F)),
-            "cnl::convert<nearest_rounding_tag, cnl::_impl::native_tag, double, float>");
+    static_assert(identical(
+            0.125,
+            cnl::convert<cnl::nearest_rounding_tag, double>{}(0.125F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    0, cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, int, float>(
-                               -0.125F)),
-            "cnl::convert<nearest_rounding_tag, int, float>");
+    static_assert(identical(
+            0,
+            cnl::convert<cnl::nearest_rounding_tag, int>{}(-0.125F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    1, cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, int, float>(
-                               0.5F)),
-            "cnl::convert<nearest_rounding_tag, int, float>");
+    static_assert(identical(
+            1,
+            cnl::convert<cnl::nearest_rounding_tag, int>{}(0.5F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    0, cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, int, float>(
-                               0.125F)),
-            "cnl::convert<nearest_rounding_tag, cnl::_impl::native_tag, int, float>");
+    static_assert(identical(
+            0,
+            cnl::convert<cnl::nearest_rounding_tag, int>{}(0.125F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    -1, cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, int, float>(
-                                -0.5F)),
-            "cnl::convert<nearest_rounding_tag, int, float>");
+    static_assert(identical(
+            -1,
+            cnl::convert<cnl::nearest_rounding_tag, int>{}(-0.5F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    1, cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, int, float>(
-                               0.725F)),
-            "cnl::convert<nearest_rounding_tag, cnl::_impl::native_tag, int, float>");
+    static_assert(identical(
+            1,
+            cnl::convert<cnl::nearest_rounding_tag, int>{}(0.725F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    -1, cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, int, float>(
-                                -0.725F)),
-            "cnl::convert<nearest_rounding_tag, cnl::_impl::native_tag, int, float>");
+    static_assert(identical(
+            -1,
+            cnl::convert<cnl::nearest_rounding_tag, int>{}(-0.725F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    3,
-                    cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, int, int>(3)),
-            "cnl::convert<nearest_rounding_tag, cnl::_impl::native_tag, int, int>");
+    static_assert(identical(
+            3,
+            cnl::convert<cnl::nearest_rounding_tag, int>{}(3)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    3L,
-                    cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, long, int>(3)),
-            "cnl::convert<nearest_rounding_tag, cnl::_impl::native_tag, long, int>");
+    static_assert(identical(
+            3L,
+            cnl::convert<cnl::nearest_rounding_tag, long>{}(3)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    3.0,
-                    cnl::convert<cnl::nearest_rounding_tag, cnl::_impl::native_tag, double, int>(
-                            3)),
-            "cnl::convert<nearest_rounding_tag, cnl::_impl::native_tag, double, int>");
+    static_assert(identical(
+            3.0,
+            cnl::convert<cnl::nearest_rounding_tag, double>{}(3)));
 }
 
 namespace test_convert_nearest_rounding_elastic_scaled_integer {
     static constexpr auto a = cnl::elastic_scaled_integer<8, -4>{0.3125};
     static constexpr auto b = cnl::convert<
-            cnl::nearest_rounding_tag, cnl::_impl::native_tag, cnl::elastic_scaled_integer<4, -1>,
-            cnl::elastic_scaled_integer<8, -4>>(a);
-    static_assert(
-            identical(cnl::elastic_scaled_integer<4, -1>{0.5}, b),
-            "cnl::convert<nearest_rounding_tag, cnl::_impl::native_tag, elastic_scaled_integer, "
-            "elastic_scaled_integer>");
+            cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<4, -1>>{}(a);
+    static_assert(identical(cnl::elastic_scaled_integer<4, -1>{0.5}, b));
 
     static constexpr auto c = cnl::convert<
-            cnl::nearest_rounding_tag, cnl::_impl::native_tag, cnl::elastic_scaled_integer<4, -2>,
-            cnl::elastic_scaled_integer<8, -4>>(a);
-    static_assert(
-            identical(cnl::elastic_scaled_integer<4, -2>{0.25}, c),
-            "cnl::convert<nearest_rounding_tag, cnl::_impl::native_tag, elastic_scaled_integer, "
-            "elastic_scaled_integer>");
+            cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<4, -2>>{}(a);
+    static_assert(identical(cnl::elastic_scaled_integer<4, -2>{0.25}, c));
 }
 
 namespace test_convert_nearest_rounding_scaled_integer {
     static constexpr auto a = cnl::scaled_integer<int, cnl::power<-4>>{0.3125};
     static constexpr auto b = cnl::convert<
-            cnl::nearest_rounding_tag, cnl::_impl::native_tag,
-            cnl::scaled_integer<int, cnl::power<-1>>, cnl::scaled_integer<int, cnl::power<-4>>>(a);
-    static_assert(
-            identical(cnl::scaled_integer<int, cnl::power<-1>>{0.5}, b),
-            "cnl::convert<nearest_rounding_tag, cnl::_impl::native_tag, scaled_integer, "
-            "scaled_integer>");
+            cnl::nearest_rounding_tag, cnl::scaled_integer<int, cnl::power<-1>>>{}(a);
+    static_assert(identical(cnl::scaled_integer<int, cnl::power<-1>>{0.5}, b));
 
     static constexpr auto c = cnl::convert<
-            cnl::nearest_rounding_tag, cnl::_impl::native_tag,
-            cnl::scaled_integer<int, cnl::power<-2>>, cnl::scaled_integer<int, cnl::power<-4>>>(a);
-    static_assert(
-            identical(cnl::scaled_integer<int, cnl::power<-2>>{0.25}, c),
-            "cnl::convert<nearest_rounding_tag, cnl::_impl::native_tag, scaled_integer, "
-            "scaled_integer>");
+            cnl::nearest_rounding_tag, cnl::scaled_integer<int, cnl::power<-2>>>{}(a);
+    static_assert(identical(cnl::scaled_integer<int, cnl::power<-2>>{0.25}, c));
 }
 
 namespace test_convert_tie_to_pos_inf_rounding_native_datatypes {
 
-    static_assert(
-            cnl::_impl::identical(
-                    0.123F,
-                    cnl::convert<
-                            cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag, float, float>(
-                            0.123F)),
-            "cnl::convert<tie_to_pos_inf_rounding_tag, float, float>");
+    static_assert(identical(
+            0.123F,
+            cnl::convert<cnl::tie_to_pos_inf_rounding_tag, float>{}(0.123F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    0.125, cnl::convert<
-                                   cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag, double,
-                                   float>(0.125F)),
-            "cnl::convert<tie_to_pos_inf_rounding_tag, double, float>");
+    static_assert(identical(
+            0.125, cnl::convert<cnl::tie_to_pos_inf_rounding_tag, double>{}(0.125F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    0,
-                    cnl::convert<
-                            cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag, int, float>(
-                            0.125F)),
-            "cnl::convert<tie_to_pos_inf_rounding_tag, int, float>");
+    static_assert(identical(
+            0, cnl::convert<cnl::tie_to_pos_inf_rounding_tag, int>{}(0.125F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    0,
-                    cnl::convert<
-                            cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag, int, float>(
-                            -0.125F)),
-            "cnl::convert<tie_to_pos_inf_rounding_tag, int, float>");
+    static_assert(identical(
+            0, cnl::convert<cnl::tie_to_pos_inf_rounding_tag, int>{}(-0.125F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    1,
-                    cnl::convert<
-                            cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag, int, float>(
-                            0.5F)),
-            "cnl::convert<tie_to_pos_inf_rounding_tag, int, float>");
+    static_assert(identical(
+            1, cnl::convert<cnl::tie_to_pos_inf_rounding_tag, int>{}(0.5F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    1,
-                    cnl::convert<
-                            cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag, int, float>(
-                            0.725F)),
-            "cnl::convert<tie_to_pos_inf_rounding_tag, int, float>");
+    static_assert(identical(
+            1, cnl::convert<cnl::tie_to_pos_inf_rounding_tag, int>{}(0.725F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    0,
-                    cnl::convert<
-                            cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag, int, float>(
-                            -0.5F)),
-            "cnl::convert<tie_to_pos_inf_rounding_tag, int, float>");
+    static_assert(identical(
+            0, cnl::convert<cnl::tie_to_pos_inf_rounding_tag, int>{}(-0.5F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    -1,
-                    cnl::convert<
-                            cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag, int, float>(
-                            -0.725F)),
-            "cnl::convert<tie_to_pos_inf_rounding_tag, int, float>");
+    static_assert(identical(
+            -1, cnl::convert<cnl::tie_to_pos_inf_rounding_tag, int>{}(-0.725F)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    3,
-                    cnl::convert<
-                            cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag, int, int>(3)),
-            "cnl::convert<tie_to_pos_inf_rounding_tag, int, int>");
+    static_assert(identical(
+            3, cnl::convert<cnl::tie_to_pos_inf_rounding_tag, int>{}(3)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    3L,
-                    cnl::convert<
-                            cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag, long, int>(
-                            3)),
-            "cnl::convert<tie_to_pos_inf_rounding_tag, long, int>");
+    static_assert(identical(
+            3L,
+            cnl::convert<cnl::tie_to_pos_inf_rounding_tag, long>{}(3)));
 
-    static_assert(
-            cnl::_impl::identical(
-                    3.0,
-                    cnl::convert<
-                            cnl::tie_to_pos_inf_rounding_tag, cnl::_impl::native_tag, double, int>(
-                            3)),
-            "cnl::convert<tie_to_pos_inf_rounding_tag, double, int>");
+    static_assert(identical(
+            3.0,
+            cnl::convert<cnl::tie_to_pos_inf_rounding_tag, double>{}(3)));
 }
 
 namespace test_convert_native_rounding {
