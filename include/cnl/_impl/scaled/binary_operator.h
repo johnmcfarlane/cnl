@@ -51,7 +51,7 @@ namespace cnl {
     public:
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
-            return _impl::binary_arithmetic_operate<Operator, _common_power>(
+            return _impl::operate<Operator, _common_power>{}(
                     _impl::scale<_lhs_left_shift, Radix>(lhs),
                     _impl::scale<_rhs_left_shift, Radix>(rhs));
         }

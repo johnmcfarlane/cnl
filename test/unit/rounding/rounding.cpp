@@ -105,53 +105,52 @@ namespace {
         }
 
         namespace divide {
-            static_assert(
-                    identical(-1, cnl::divide<cnl::nearest_rounding_tag>(-990, 661)),
-                    "cnl::divide test failed");
-            static_assert(
-                    identical(2, cnl::divide<cnl::nearest_rounding_tag>(-606, -404)),
-                    "cnl::divide test failed");
-            static_assert(
-                    identical(1, cnl::divide<cnl::nearest_rounding_tag>(8, 9)),
-                    "cnl::divide test failed");
-            static_assert(
-                    identical(-1, cnl::divide<cnl::nearest_rounding_tag>(9, -8)),
-                    "cnl::divide test failed");
-            static_assert(
-                    identical(-2, cnl::divide<cnl::nearest_rounding_tag>(-9, 6)),
-                    "cnl::divide test failed");
-            static_assert(
-                    identical(1, cnl::divide<cnl::nearest_rounding_tag>(-9, -7)),
-                    "cnl::divide test failed");
-            static_assert(
-                    identical(
-                            2, cnl::divide<cnl::nearest_rounding_tag, cnl::uint16, int>(999, 666)),
-                    "cnl::divide test failed");
-            static_assert(
-                    identical(1LL, cnl::divide<cnl::nearest_rounding_tag>(998, 666LL)),
-                    "cnl::divide test failed");
+            static_assert(identical(
+                    -1,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::nearest_rounding_tag>{}(-990, 661)));
+            static_assert(identical(
+                    2,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::nearest_rounding_tag>{}(-606, -404)));
+            static_assert(identical(
+                    1,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::nearest_rounding_tag>{}(8, 9)));
+            static_assert(identical(
+                    -1,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::nearest_rounding_tag>{}(9, -8)));
+            static_assert(identical(
+                    -2,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::nearest_rounding_tag>{}(-9, 6)));
+            static_assert(identical(
+                    1,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::nearest_rounding_tag>{}(-9, -7)));
+            static_assert(identical(
+                    2,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::nearest_rounding_tag>{}(cnl::uint16{999}, 666)));
+            static_assert(identical(
+                    1LL,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::nearest_rounding_tag>{}(998, 666LL)));
         }
 
         namespace shift_right {
-            static_assert(
-                    identical(1 >> 1, cnl::shift_right<cnl::nearest_rounding_tag>(1, 1)),
-                    "cnl::shift_right test failed");
-            static_assert(
-                    identical(1 >> 2, cnl::shift_right<cnl::nearest_rounding_tag>(1, 2)),
-                    "cnl::shift_right test failed");
+            static_assert(identical(
+                    1 >> 1,
+                    cnl::_impl::operate<cnl::_impl::shift_right_op, cnl::nearest_rounding_tag>{}(1, 1)));
+            static_assert(identical(
+                    1 >> 2,
+                    cnl::_impl::operate<cnl::_impl::shift_right_op, cnl::nearest_rounding_tag>{}(1, 2)));
 
-            static_assert(
-                    identical(191 >> 7, cnl::shift_right<cnl::nearest_rounding_tag>(191, 7)),
-                    "cnl::shift_right test failed");
-            static_assert(
-                    identical(192 >> 7, cnl::shift_right<cnl::nearest_rounding_tag>(192, 7)),
-                    "cnl::shift_right test failed");
-            static_assert(
-                    identical(319 >> 7, cnl::shift_right<cnl::nearest_rounding_tag>(319, 7)),
-                    "cnl::shift_right test failed");
-            static_assert(
-                    identical(320 >> 7, cnl::shift_right<cnl::nearest_rounding_tag>(320, 7)),
-                    "cnl::shift_right test failed");
+            static_assert(identical(
+                    191 >> 7,
+                    cnl::_impl::operate<cnl::_impl::shift_right_op, cnl::nearest_rounding_tag>{}(191, 7)));
+            static_assert(identical(
+                    192 >> 7,
+                    cnl::_impl::operate<cnl::_impl::shift_right_op, cnl::nearest_rounding_tag>{}(192, 7)));
+            static_assert(identical(
+                    319 >> 7,
+                    cnl::_impl::operate<cnl::_impl::shift_right_op, cnl::nearest_rounding_tag>{}(319, 7)));
+            static_assert(identical(
+                    320 >> 7,
+                    cnl::_impl::operate<cnl::_impl::shift_right_op, cnl::nearest_rounding_tag>{}(320, 7)));
         }
     }
 
@@ -208,53 +207,52 @@ namespace {
         }
 
         namespace divide {
-            static_assert(
-                    identical(-1, cnl::divide<cnl::tie_to_pos_inf_rounding_tag>(-990, 661)),
-                    "cnl::divide test failed");
-            static_assert(
-                    identical(2, cnl::divide<cnl::tie_to_pos_inf_rounding_tag>(-606, -404)),
-                    "cnl::divide test failed");
-            static_assert(
-                    identical(1, cnl::divide<cnl::tie_to_pos_inf_rounding_tag>(8, 9)),
-                    "cnl::divide test failed");
-            static_assert(
-                    identical(-1, cnl::divide<cnl::tie_to_pos_inf_rounding_tag>(9, -8)),
-                    "cnl::divide test failed");
-            static_assert(
-                    identical(-1, cnl::divide<cnl::tie_to_pos_inf_rounding_tag>(-9, 6)),
-                    "cnl::divide test failed");
-            static_assert(
-                    identical(1, cnl::divide<cnl::tie_to_pos_inf_rounding_tag>(-9, -7)),
-                    "cnl::divide test failed");
-            static_assert(
-                    identical(
-                            2, cnl::divide<cnl::tie_to_pos_inf_rounding_tag, cnl::uint16, int>(
-                                       999, 666)),
-                    "cnl::divide test failed");
-            static_assert(
-                    identical(1LL, cnl::divide<cnl::tie_to_pos_inf_rounding_tag>(998, 666LL)),
-                    "cnl::divide test failed");
+            static_assert(identical(
+                    -1,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::tie_to_pos_inf_rounding_tag>{}(-990, 661)));
+            static_assert(identical(
+                    2,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::tie_to_pos_inf_rounding_tag>{}(-606, -404)));
+            static_assert(identical(
+                    1,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::tie_to_pos_inf_rounding_tag>{}(8, 9)));
+            static_assert(identical(
+                    -1,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::tie_to_pos_inf_rounding_tag>{}(9, -8)));
+            static_assert(identical(
+                    -1,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::tie_to_pos_inf_rounding_tag>{}(-9, 6)));
+            static_assert(identical(
+                    1,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::tie_to_pos_inf_rounding_tag>{}(-9, -7)));
+            static_assert(identical(
+                    2,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::tie_to_pos_inf_rounding_tag>{}(
+                            cnl::uint16{999}, 666)));
+            static_assert(identical(
+                    1LL,
+                    cnl::_impl::operate<cnl::_impl::divide_op, cnl::tie_to_pos_inf_rounding_tag>{}(998, 666LL)));
         }
 
         namespace shift_right {
-            static_assert(
-                    identical(1 >> 1, cnl::shift_right<cnl::tie_to_pos_inf_rounding_tag>(1, 1)),
-                    "cnl::shift_right test failed");
-            static_assert(
-                    identical(1 >> 2, cnl::shift_right<cnl::tie_to_pos_inf_rounding_tag>(1, 2)),
-                    "cnl::shift_right test failed");
-            static_assert(
-                    identical(191 >> 7, cnl::shift_right<cnl::tie_to_pos_inf_rounding_tag>(191, 7)),
-                    "cnl::shift_right test failed");
-            static_assert(
-                    identical(192 >> 7, cnl::shift_right<cnl::tie_to_pos_inf_rounding_tag>(192, 7)),
-                    "cnl::shift_right test failed");
-            static_assert(
-                    identical(319 >> 7, cnl::shift_right<cnl::tie_to_pos_inf_rounding_tag>(319, 7)),
-                    "cnl::shift_right test failed");
-            static_assert(
-                    identical(320 >> 7, cnl::shift_right<cnl::tie_to_pos_inf_rounding_tag>(320, 7)),
-                    "cnl::shift_right test failed");
+            static_assert(identical(
+                    1 >> 1,
+                    cnl::_impl::operate<cnl::_impl::shift_right_op, cnl::tie_to_pos_inf_rounding_tag>{}(1, 1)));
+            static_assert(identical(
+                    1 >> 2,
+                    cnl::_impl::operate<cnl::_impl::shift_right_op, cnl::tie_to_pos_inf_rounding_tag>{}(1, 2)));
+            static_assert(identical(
+                    191 >> 7,
+                    cnl::_impl::operate<cnl::_impl::shift_right_op, cnl::tie_to_pos_inf_rounding_tag>{}(191, 7)));
+            static_assert(identical(
+                    192 >> 7,
+                    cnl::_impl::operate<cnl::_impl::shift_right_op, cnl::tie_to_pos_inf_rounding_tag>{}(192, 7)));
+            static_assert(identical(
+                    319 >> 7,
+                    cnl::_impl::operate<cnl::_impl::shift_right_op, cnl::tie_to_pos_inf_rounding_tag>{}(319, 7)));
+            static_assert(identical(
+                    320 >> 7,
+                    cnl::_impl::operate<cnl::_impl::shift_right_op, cnl::tie_to_pos_inf_rounding_tag>{}(320, 7)));
         }
     }
 }

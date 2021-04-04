@@ -13,6 +13,9 @@
 #include "definition.h"
 #include "op.h"
 
+#include <type_traits>
+#include <utility>
+
 /// compositional numeric library
 namespace cnl {
     /// \brief converts a value to a type
@@ -23,8 +26,7 @@ namespace cnl {
     /// \param src value to convert from
     /// \return value converted to
     ///
-    /// \sa cnl::add, cnl::divide, cnl::shift_right, cnl::multiply, cnl::subtract,
-    /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
+    /// \sa cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
     /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
     template<tag DestTag, tag SrcTag, typename Dest, typename Src>
     [[nodiscard]] constexpr auto convert(Src const& src)
@@ -39,92 +41,22 @@ namespace cnl {
     }
 
     namespace _impl {
-        template<_impl::binary_arithmetic_op Operator, tag Tag, typename Lhs, typename Rhs>
-        [[nodiscard]] constexpr auto binary_arithmetic_operate(Lhs const& lhs, Rhs const& rhs)
-        {
-            return custom_operator<Operator, op_value<Lhs, Tag>, op_value<Rhs, Tag>>{}(lhs, rhs);
-        }
-    }
+        template<op Operator, tag Tag = native_tag>
+        struct operate {
+            template<typename... Operands>
+            [[nodiscard]] constexpr auto operator()(Operands const&... operands) const
+            {
+                return custom_operator<Operator, op_value<Operands, Tag>...>{}(operands...);
+            }
 
-    /// \brief adds two values together
-    /// \headerfile cnl/all.h
-    ///
-    /// \tparam Tag specifies the conversion mode, e.g. \ref cnl::native_overflow_tag
-    /// \return the result of `lhs + rhs`
-    ///
-    /// \sa cnl::convert, cnl::divide, cnl::shift_right, cnl::multiply, cnl::subtract,
-    /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
-    /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
-    template<tag Tag, typename Lhs, typename Rhs>
-    [[nodiscard]] constexpr auto add(Lhs const& lhs, Rhs const& rhs)
-    {
-        return custom_operator<_impl::add_op, op_value<Lhs, Tag>, op_value<Rhs, Tag>>{}(lhs, rhs);
-    }
-
-    /// \brief subtracts one value from another
-    /// \headerfile cnl/all.h
-    ///
-    /// \tparam Tag specifies the conversion mode, e.g. \ref cnl::native_overflow_tag
-    /// \return the result of `lhs - rhs`
-    ///
-    /// \sa cnl::add, cnl::convert, cnl::divide, cnl::shift_right, cnl::multiply,
-    /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
-    /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
-    template<tag Tag, typename Lhs, typename Rhs>
-    [[nodiscard]] constexpr auto subtract(Lhs const& lhs, Rhs const& rhs)
-    {
-        return custom_operator<_impl::subtract_op, op_value<Lhs, Tag>, op_value<Rhs, Tag>>{}(lhs, rhs);
-    }
-
-    /// \brief multiplies one value by another
-    /// \headerfile cnl/all.h
-    ///
-    /// \tparam Tag specifies the conversion mode, e.g. \ref cnl::native_overflow_tag
-    /// \return the result of `lhs + rhs`
-    ///
-    /// \sa cnl::add, cnl::convert, cnl::divide, cnl::subtract, cnl::shift_right,
-    /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
-    /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
-    template<tag Tag, typename Lhs, typename Rhs>
-    [[nodiscard]] constexpr auto multiply(Lhs const& lhs, Rhs const& rhs)
-    {
-        return custom_operator<_impl::multiply_op, op_value<Lhs, Tag>, op_value<Rhs, Tag>>{}(lhs, rhs);
-    }
-
-    /// \brief divides one value by another
-    /// \headerfile cnl/all.h
-    ///
-    /// \tparam Tag specifies the conversion mode, e.g. \ref cnl::native_rounding_tag
-    /// \return the result of `lhs / rhs`
-    ///
-    /// \sa cnl::add, cnl::convert, cnl::shift_right, cnl::multiply, cnl::subtract,
-    /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
-    /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
-    template<tag Tag, typename Lhs, typename Rhs>
-    [[nodiscard]] constexpr auto divide(Lhs const& lhs, Rhs const& rhs)
-    {
-        return custom_operator<_impl::divide_op, op_value<Lhs, Tag>, op_value<Rhs, Tag>>{}(lhs, rhs);
-    }
-
-    template<tag Tag, typename Lhs, typename Rhs>
-    [[nodiscard]] constexpr auto shift_left(Lhs const& lhs, Rhs const& rhs)
-    {
-        return custom_operator<_impl::shift_left_op, op_value<Lhs, Tag>, op_value<Rhs, Tag>>{}(lhs, rhs);
-    }
-
-    /// \brief bitwise left-shifts one value by another
-    /// \headerfile cnl/all.h
-    ///
-    /// \tparam Tag specifies the conversion mode, e.g. \ref cnl::native_overflow_tag
-    /// \return the result of `lhs + rhs`
-    ///
-    /// \sa cnl::add, cnl::convert, cnl::divide, cnl::multiply, cnl::subtract,
-    /// cnl::native_overflow_tag, cnl::saturated_overflow_tag, cnl::throwing_overflow_tag,
-    /// cnl::trapping_overflow_tag, cnl::undefined_overflow_tag, cnl::nearest_rounding_tag
-    template<tag Tag, typename Lhs, typename Rhs>
-    [[nodiscard]] constexpr auto shift_right(Lhs const& lhs, Rhs const& rhs)
-    {
-        return custom_operator<_impl::shift_right_op, op_value<Lhs, Tag>, op_value<Rhs, Tag>>{}(lhs, rhs);
+            template<typename... Operands>
+            constexpr auto operator()(Operands&&... operands) const
+            {
+                return custom_operator<
+                        Operator,
+                        op_value<std::remove_cvref_t<Operands>, Tag>...>{}(std::forward<Operands>(operands)...);
+            }
+        };
     }
 }
 

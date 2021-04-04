@@ -45,10 +45,9 @@ namespace {
         // add
         static_assert(
                 identical(
-                        cnl::add<cnl::native_overflow_tag>(
-                                UINT32_C(0xFFFFFFFF), UINT32_C(0x12345678)),
-                        UINT32_C(0xFFFFFFFF) + UINT32_C(0x12345678)),
-                "cnl::add test failed");
+                        cnl::_impl::operate<cnl::_impl::add_op, cnl::native_overflow_tag>{}(
+                                cnl::uint32(0xFFFFFFFF), cnl::uint32(0x12345678)),
+                        cnl::uint32(0xFFFFFFFF) + cnl::uint32(0x12345678)));
 
         // subtract
         static_assert(
@@ -57,33 +56,32 @@ namespace {
                                 cnl::_impl::subtract_op,
                                 cnl::op_value<cnl::int8, cnl::native_overflow_tag>,
                                 cnl::op_value<cnl::int8, cnl::native_overflow_tag>>()(
-                                INT8_C(0), INT8_C(0)),
-                        0),
-                "cnl::subtract test failed");
-        static_assert(
-                identical(cnl::subtract<cnl::native_overflow_tag>(INT8_C(0), INT8_C(0)), 0),
-                "cnl::subtract test failed");
+                                cnl::int8{40}, cnl::int8{-2}),
+                        cnl::int8{40} - cnl::int8{-2}));
+        static_assert(identical(
+                cnl::_impl::operate<cnl::_impl::subtract_op, cnl::native_overflow_tag>{}(
+                        cnl::int8{-40}, cnl::int8{-82}),
+                cnl::int8{-40} - cnl::int8{-82}));
 
         // multiply
-        static_assert(
-                identical(
-                        cnl::multiply<cnl::native_overflow_tag>(UINT16_C(576), INT32_C(22)),
-                        decltype(UINT16_C(576) * INT32_C(22)){12672}),
-                "cnl::multiply test failed");
+        static_assert(identical(
+                cnl::_impl::operate<cnl::_impl::multiply_op, cnl::native_overflow_tag>{}(
+                        cnl::uint16{576}, cnl::int32{22}),
+                cnl::uint16{576} * cnl::int32{22}));
     }
 
     namespace test_throwing_overflow {
         // subtract
-        static_assert(
-                identical(cnl::subtract<cnl::throwing_overflow_tag>(INT8_C(0), INT8_C(0)), 0),
-                "cnl::subtract test failed");
+        static_assert(identical(
+                cnl::_impl::operate<cnl::_impl::subtract_op, cnl::throwing_overflow_tag>{}(
+                        cnl::int8{40}, cnl::int8{-2}),
+                cnl::int8{40} - cnl::int8{-2}));
 
         // multiply
-        static_assert(
-                identical(
-                        cnl::multiply<cnl::throwing_overflow_tag>(UINT16_C(576), INT32_C(22)),
-                        decltype(UINT16_C(576) * INT32_C(22)){12672}),
-                "cnl::add test failed");
+        static_assert(identical(
+                cnl::_impl::operate<cnl::_impl::multiply_op, cnl::throwing_overflow_tag>{}(
+                        cnl::uint16{576}, cnl::int32{22}),
+                cnl::uint16{576} * cnl::int32{22}));
     }
 
     namespace test_saturated {
@@ -118,54 +116,49 @@ namespace {
                                 cnl::op_value<signed, cnl::saturated_overflow_tag>,
                                 cnl::op_value<unsigned, cnl::saturated_overflow_tag>>()(7, 23U),
                         7 + 23U));
-        static_assert(
-                identical(
-                        std::numeric_limits<
-                                decltype(UINT32_C(0xFFFFFFFF) + INT32_C(0x12345678))>::max(),
-                        cnl::add<cnl::saturated_overflow_tag>(
-                                UINT32_C(0xFFFFFFFF), INT32_C(0x12345678))),
-                "cnl::add test failed");
+        static_assert(identical(
+                std::numeric_limits<
+                        decltype(cnl::uint32{0xFFFFFFFF} + cnl::int32{0x12345678})>::max(),
+                cnl::_impl::operate<cnl::_impl::add_op, cnl::saturated_overflow_tag>{}(
+                        cnl::uint32{0xFFFFFFFF}, cnl::int32{0x12345678})));
         static_assert(
                 identical(
                         cnl::numeric_limits<decltype(2 + 2U)>::max(),
-                        cnl::add<cnl::saturated_overflow_tag>(
-                                2, cnl::numeric_limits<unsigned>::max())),
-                "cnl::add test failed");
+                        cnl::_impl::operate<cnl::_impl::add_op, cnl::saturated_overflow_tag>{}(
+                                2, cnl::numeric_limits<unsigned>::max())));
 
         // subtract
-        static_assert(
-                identical(cnl::subtract<cnl::saturated_overflow_tag>(INT8_C(0), INT8_C(0)), 0),
-                "cnl::subtract test failed");
+        static_assert(identical(
+                cnl::_impl::operate<cnl::_impl::subtract_op, cnl::saturated_overflow_tag>{}(
+                        cnl::int8{40}, cnl::int8{-2}),
+                cnl::int8{40} - cnl::int8{-2}));
 #if defined(_MSC_VER)
 #pragma warning(push)
 #pragma warning(disable : 4308)
 #endif
-        static_assert(
-                identical(cnl::subtract<cnl::saturated_overflow_tag>(0U, -1), 1U),
-                "cnl::subtract test failed");
+        static_assert(identical(
+                cnl::_impl::operate<cnl::_impl::subtract_op, cnl::saturated_overflow_tag>{}(0U, -1),
+                0U - -1));
 #if defined(_MSC_VER)
 #pragma warning(pop)
 #endif
         static_assert(
                 identical(
                         cnl::numeric_limits<int>::max(),
-                        cnl::subtract<cnl::saturated_overflow_tag>(
+                        cnl::_impl::operate<cnl::_impl::subtract_op, cnl::saturated_overflow_tag>{}(
                                 0, cnl::numeric_limits<int>::min())));
 
         // multiply
-        static_assert(
-                identical(
-                        cnl::multiply<cnl::saturated_overflow_tag>(UINT16_C(576), INT32_C(22)),
-                        decltype(UINT16_C(576) * INT32_C(22)){12672}),
-                "cnl::multiply test failed");
-        static_assert(
-                identical(
-                        cnl::multiply<cnl::saturated_overflow_tag>(
-                                cnl::numeric_limits<int32_t>::max(), INT32_C(2)),
-                        cnl::numeric_limits<int32_t>::max()),
-                "cnl::multiply test failed");
+        static_assert(identical(
+                cnl::_impl::operate<cnl::_impl::multiply_op, cnl::saturated_overflow_tag>{}(
+                        cnl::uint16{576}, cnl::int32{22}),
+                cnl::uint16{576} * cnl::int32{22}));
+        static_assert(identical(
+                cnl::_impl::operate<cnl::_impl::multiply_op, cnl::saturated_overflow_tag>{}(
+                        cnl::numeric_limits<int32_t>::max(), cnl::int32{2}),
+                cnl::numeric_limits<int32_t>::max()));
 
-        // compare
+        // convert
         static_assert(
                 identical(
                         cnl::numeric_limits<short>::max(),
@@ -183,15 +176,13 @@ namespace {
         static_assert(
                 identical(
                         cnl::numeric_limits<cnl::int16>::max() << 1,
-                        cnl::shift_left<cnl::saturated_overflow_tag>(
-                                cnl::numeric_limits<cnl::int16>::max(), 1)),
-                "cnl::shift_left test failed");
+                        cnl::_impl::operate<cnl::_impl::shift_left_op, cnl::saturated_overflow_tag>{}(
+                                cnl::numeric_limits<cnl::int16>::max(), 1)));
         static_assert(
                 identical(
                         cnl::numeric_limits<cnl::int32>::max(),
-                        cnl::shift_left<cnl::saturated_overflow_tag>(
-                                cnl::numeric_limits<cnl::int32>::max(), 1)),
-                "cnl::shift_left test failed");
+                        cnl::_impl::operate<cnl::_impl::shift_left_op, cnl::saturated_overflow_tag>{}(
+                                cnl::numeric_limits<cnl::int32>::max(), 1)));
         static_assert(
                 identical(
                         cnl::numeric_limits<int>::max(),
@@ -206,8 +197,9 @@ namespace {
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
         TEST(overflow, trap)  // NOLINT
         {
+            constexpr auto fn{cnl::_impl::operate<cnl::_impl::shift_left_op, cnl::trapping_overflow_tag>{}};
             ASSERT_DEATH(
-                    (void)cnl::shift_left<cnl::trapping_overflow_tag>(-1073741825, 1),
+                    (void)fn(-1073741825, 1),
                     "negative overflow");
         }
 #endif
