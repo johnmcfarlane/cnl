@@ -13,7 +13,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // integer types used as scaled_integer Rep type
 
-using test_int = cnl::overflow_integer<int, cnl::throwing_overflow_tag>;
+using test_int = cnl::overflow_integer<int, cnl::_impl::throwing_overflow_tag>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // perform scaled_integer tests with this type of scaled_integer specialization

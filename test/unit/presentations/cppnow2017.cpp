@@ -20,7 +20,7 @@ using cnl::elastic_integer;
 using cnl::_impl::identical;
 
 template<typename Rep>
-using overflow_integer = cnl::overflow_integer<Rep, cnl::throwing_overflow_tag>;
+using overflow_integer = cnl::overflow_integer<Rep, cnl::_impl::throwing_overflow_tag>;
 
 namespace stl {
     template<typename T>
