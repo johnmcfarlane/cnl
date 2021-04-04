@@ -33,7 +33,7 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::op_value
 
-    /// \brief operand or result of operation;used as Operands parameter of \ref cnl::custom_operator
+    /// \brief operand or result of operation;used as Operands parameter of \ref custom_operator
     /// \tparam Rep type of value handled by custom_operator specialization
     /// \tparam Tag behavior of `Rep` handled by custom_operator specialization
     template<arithmetic Rep, tag Tag = _impl::native_tag>

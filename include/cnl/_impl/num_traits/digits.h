@@ -25,7 +25,7 @@ namespace cnl {
     ///
     /// \note does not include a sign bit
     ///
-    /// \sa cnl::set_digits
+    /// \sa set_digits
     template<typename T>
     inline constexpr int digits = 0;
 

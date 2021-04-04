@@ -24,11 +24,10 @@ namespace cnl {
     /// \headerfile cnl/scaled_integer.h
     ///
     /// \tparam Rep the underlying type used to represent the value; defaults to `int`
-    /// \tparam Exponent the exponent used to scale the integer value; defaults to `0`
-    /// \tparam Radix the base used to scale the integer value; defaults to radix of `Rep`
+    /// \tparam Scale the scale of the value represented with `Rep`; defaults to \ref power
     ///
     /// Uses an integer to approximate a real number.
-    /// Scales the integer by `pow(Radix, Exponent)` to produce the scaled number.
+    /// Scales the integer by a factor specified by `Scale` to produce the scaled number.
     /// By default, represents an `int` with no fractional digits using binary arithmetic.
     ///
     /// \note Currently, only binary support and partial decimal support is tested.

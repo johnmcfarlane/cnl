@@ -278,28 +278,28 @@ namespace cnl {
     }
 
     /// \brief alias to a signed, fixed-size Boost.Multiprecision type
-    /// suitable for specializing \ref cnl::scaled_integer
+    /// suitable for specializing \ref scaled_integer
     ///
     /// \tparam NumDigits number of digits constituting the integer value (excluding sign bit)
-    /// \sa cnl::unsigned_multiprecision, cnl::multiprecision
+    /// \sa unsigned_multiprecision, multiprecision
     template<unsigned NumDigits = digits<int>>
     using signed_multiprecision =
             _sized_integer_impl::number<NumDigits + 1, _bmp::signed_magnitude>;
 
     /// \brief alias to an unsigned, fixed-size Boost.Multiprecision type
-    /// suitable for specializing \ref cnl::scaled_integer
+    /// suitable for specializing \ref scaled_integer
     ///
     /// \tparam NumDigits number of digits constituting the integer value (excluding sign bit)
-    /// \sa cnl::signed_multiprecision, cnl::multiprecision
+    /// \sa signed_multiprecision, multiprecision
     template<unsigned NumDigits = digits<unsigned>>
     using unsigned_multiprecision =
             _sized_integer_impl::number<NumDigits, _bmp::unsigned_magnitude>;
 
     /// \brief alias to a signed, fixed-size Boost.Multiprecision type
-    /// suitable for specializing \ref cnl::scaled_integer
+    /// suitable for specializing \ref scaled_integer
     ///
     /// \tparam NumDigits number of digits constituting the integer value (excluding sign bit)
-    /// \sa cnl::signed_multiprecision, cnl::unsigned_multiprecision
+    /// \sa signed_multiprecision, unsigned_multiprecision
     template<unsigned NumDigits = digits<int>>
     using multiprecision = signed_multiprecision<NumDigits>;
 

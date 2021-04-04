@@ -166,7 +166,7 @@ namespace cnl {
     };
 #endif
 
-    /// \brief Alias to \ref cnl::set_digits.
+    /// \brief Alias to \ref set_digits.
     template<class T, int Digits>
     using set_digits_t = typename set_digits<T, Digits>::type;
 }

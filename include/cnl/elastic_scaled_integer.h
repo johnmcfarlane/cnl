@@ -41,21 +41,21 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::make_elastic_scaled_integer
 
-    /// \brief generate an \ref cnl::elastic_scaled_integer object of given value
+    /// \brief generate an \ref elastic_scaled_integer object of given value
     ///
     /// \tparam Narrowest the narrowest type to use as storage
-    /// in the resultant \ref cnl::elastic_scaled_integer object
+    /// in the resultant \ref elastic_scaled_integer object
     /// \tparam Integral the type of Value
     /// \tparam Value the integer number to be represented
     ///
-    /// \return the given value to be represented using an \ref cnl::elastic_scaled_integer type
+    /// \return the given value to be represented using an \ref elastic_scaled_integer type
     ///
     /// \note The return type is guaranteed to be no larger than is necessary to represent the
     /// value.
     ///
     /// \par Example
     ///
-    /// To define an int-sized object using \ref make_elastic_scaled_integer and \ref cnl::constant
+    /// To define an int-sized object using \ref make_elastic_scaled_integer and \ref constant
     /// \snippet snippets.cpp define an int-sized object using make_elastic_scaled_integer and constant
 
     template<typename Narrowest = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value = 0>
@@ -85,7 +85,7 @@ namespace cnl {
     /// To define a byte-sized object using make_elastic_scaled_integer and _c:
     /// \snippet snippets.cpp define a byte-sized object using \ref make_elastic_scaled_integer and \ref _c
     ///
-    /// \brief generate an \ref cnl::elastic_scaled_integer object of given value
+    /// \brief generate an \ref elastic_scaled_integer object of given value
     template<typename Narrowest = void, typename Integral = int>
     [[nodiscard]] constexpr auto make_elastic_scaled_integer(Integral const& value)
             -> elastic_scaled_integer<
@@ -115,11 +115,11 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::literals::operator "" _elastic
 
-        /// \brief generate an \ref cnl::elastic_scaled_integer object using a literal
+        /// \brief generate an \ref elastic_scaled_integer object using a literal
         ///
         /// \tparam Digits the characters of the literal sequence
         ///
-        /// \return the given value to be represented using an \ref cnl::elastic_scaled_integer type
+        /// \return the given value to be represented using an \ref elastic_scaled_integer type
         ///
         /// \note The return type is guaranteed to be no larger
         /// than is necessary to represent the maximum value of Integral.

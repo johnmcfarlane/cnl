@@ -13,6 +13,14 @@
 
 /// compositional numeric library
 namespace cnl {
+    /// \brief tag representing the scaling of an integer by a fixed factor
+    /// \headerfile cnl/scaled_integer.h
+    ///
+    /// \tparam Exponent the exponent used to scale the integer value; defaults to 0
+    /// \tparam Radix the base used to scale the integer value; defaults to 2
+    ///
+    /// \sa scaled_integer
+
     template<int Exponent, int Radix>
     struct power {
         static_assert(Radix >= 2, "Radix must be two or greater");
