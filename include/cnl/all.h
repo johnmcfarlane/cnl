@@ -140,6 +140,21 @@
  * * replace `int` with \ref cnl::elastic_integer to avoid many such errors at compile-time ([example](https://godbolt.org/z/Knfn39));
  * * consider other \link Composite_Types Composite Types \endlink to find a good balance between efficiency, safety and correctness.
  *
+ * <b>Q:</b> Why do some overflow errors only show up / not show up at run-time?
+ *
+ * <b>A:</b> The preferred methods for signaling overflow errors are by trapping them
+ * and halting the program, by invoking undefined behavior (UB), or the combination of
+ * trapping UB (using a sanitizer).
+ * Trapping inevitably has to occur at run-time because the compiler cannot possibly know
+ * all the values that a program might compute...
+ *
+ * ...except when an expression is evaluated at compile time, e.g. a `constexpr` value.
+ * Such an evaluate is not allowed to exhibit UB,
+ * and therefore the compiler (helpfully) rejects it.
+ *
+ * In the case where CNL is configured to not signal overflow, overflow may go undetected.
+ * And further, in the case that the overflow is UB, the program is defective and \b must be fixed.
+ *
  * */
 
 #if !defined(CNL_ALL_H)
