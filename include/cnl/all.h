@@ -157,6 +157,38 @@
  * In the case where CNL is configured to not signal overflow, overflow may go undetected.
  * And further, in the case that the overflow is UB, the program is defective and \b must be fixed.
  *
+ * \subsection division Fixed-point Division
+ *
+ * <b>Q:</b> Why aren't the results of \ref cnl::scaled_integer division more precise?
+ *
+ * <b>A:</b> Integer and floating-point division are fundamentally different.
+ * Being integer-based, \ref cnl::scaled_integer uses integer division in its '`/`' operator.
+ *
+ * This is surprising to users who expect fixed-point types to behave like floating-point types.
+ * But the floating-point '`/`' operator returns results with a variable exponent — something a
+ * fixed-point type cannot do.
+ *
+ * In comparison, the integer '`/`' operator yields an integer quotient
+ * while the '`%`' operator provides the remainder.
+ * This gives lossless results, provided the remainder is taken into account.
+ * Integer division is more efficient and more versatile.
+ * It's also more intuitive for applications involving discrete values, such as denominations:
+ *
+ * \snippet snippets.cpp scaled_integer division example
+ *
+ * You can read more on the subject in the paper,
+ * [Multiplication and division of fixed-point numbers](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1368r1.html)
+ * by Davis Herring.
+ *
+ * <b>Q:</b> OK, but what if I'm dealing with continuous values?
+ *
+ * <b>A:</b> For now, divide numbers using the \ref cnl::quotient API,
+ * which makes a best guess about the exponent you want,
+ * or consider avoiding division altogether by using the \ref cnl::fraction type.
+ *
+ * Due to popular demand an alternative fixed-point type, which implements 'quasi-exact' division
+ * is planned for a future revision of the library.
+ *
  * */
 
 #if !defined(CNL_ALL_H)
