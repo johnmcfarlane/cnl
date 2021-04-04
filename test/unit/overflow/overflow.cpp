@@ -73,13 +73,13 @@ namespace {
     namespace test_throwing_overflow {
         // subtract
         static_assert(identical(
-                cnl::_impl::operate<cnl::_impl::subtract_op, cnl::throwing_overflow_tag>{}(
+                cnl::_impl::operate<cnl::_impl::subtract_op, cnl::_impl::throwing_overflow_tag>{}(
                         cnl::int8{40}, cnl::int8{-2}),
                 cnl::int8{40} - cnl::int8{-2}));
 
         // multiply
         static_assert(identical(
-                cnl::_impl::operate<cnl::_impl::multiply_op, cnl::throwing_overflow_tag>{}(
+                cnl::_impl::operate<cnl::_impl::multiply_op, cnl::_impl::throwing_overflow_tag>{}(
                         cnl::uint16{576}, cnl::int32{22}),
                 cnl::uint16{576} * cnl::int32{22}));
     }

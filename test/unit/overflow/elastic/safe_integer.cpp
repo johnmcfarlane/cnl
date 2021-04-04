@@ -56,7 +56,7 @@ namespace {
         static_assert(
                 identical(
                         cnl::convert<
-                                cnl::throwing_overflow_tag, cnl::_impl::native_tag,
+                                cnl::_impl::throwing_overflow_tag, cnl::_impl::native_tag,
                                 cnl::elastic_integer<10>>(0),
                         cnl::elastic_integer<10>{0}));
         static_assert(
@@ -137,7 +137,7 @@ namespace {
     }
 
     namespace test_used_digits {
-        using cnl::throwing_overflow_tag;
+        using cnl::_impl::throwing_overflow_tag;
 
         static_assert(
                 cnl::used_digits(cnl::safe_integer<1, throwing_overflow_tag, char>{0}) == 0);
@@ -146,7 +146,7 @@ namespace {
 
     namespace test_leading_bits {
         using cnl::leading_bits;
-        using cnl::throwing_overflow_tag;
+        using cnl::_impl::throwing_overflow_tag;
 
         static_assert(
                 leading_bits(cnl::safe_integer<1, throwing_overflow_tag, char>{0}) == 1,
@@ -281,9 +281,9 @@ struct test_safe_int {
     constexpr static number_test_by_rep<test_subject> instance{};
 };
 
-template struct test_safe_int<1, cnl::throwing_overflow_tag>;
-template struct test_safe_int<5, cnl::throwing_overflow_tag>;
-template struct test_safe_int<21, cnl::throwing_overflow_tag>;
+template struct test_safe_int<1, cnl::_impl::throwing_overflow_tag>;
+template struct test_safe_int<5, cnl::_impl::throwing_overflow_tag>;
+template struct test_safe_int<21, cnl::_impl::throwing_overflow_tag>;
 
 template struct test_safe_int<2, cnl::saturated_overflow_tag>;
 template struct test_safe_int<8, cnl::saturated_overflow_tag>;

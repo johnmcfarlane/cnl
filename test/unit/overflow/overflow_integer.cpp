@@ -33,7 +33,7 @@ template<typename Rep = int>
 using native_integer = overflow_integer<Rep, cnl::native_overflow_tag>;
 
 template<typename Rep = int>
-using throwing_integer = overflow_integer<Rep, cnl::throwing_overflow_tag>;
+using throwing_integer = overflow_integer<Rep, cnl::_impl::throwing_overflow_tag>;
 
 template<typename Rep = int>
 using saturated_integer = overflow_integer<Rep, cnl::saturated_overflow_tag>;
@@ -614,7 +614,7 @@ namespace {
     TEST(overflow_integer, ostream128)  // NOLINT
     {
         std::stringstream out;
-        auto a = cnl::overflow_integer<cnl::int128, cnl::throwing_overflow_tag>{42};
+        auto a = cnl::overflow_integer<cnl::int128, cnl::_impl::throwing_overflow_tag>{42};
         out << a;
         ASSERT_EQ("42", out.str());
     }
@@ -666,5 +666,5 @@ template struct number_test_by_rep_by_tag<
         overflow_integer, cnl::saturated_overflow_tag, test_overflow_int>;
 #if defined(CNL_EXCEPTIONS_ENABLED)
 template struct number_test_by_rep_by_tag<
-        overflow_integer, cnl::throwing_overflow_tag, test_overflow_int>;
+        overflow_integer, cnl::_impl::throwing_overflow_tag, test_overflow_int>;
 #endif
