@@ -17,10 +17,10 @@
 //! [scaled_integer overflow example 1]
 void overflow_example1()
 {
-    // fixed-point variable with value 65,536 * 2^-16
+    // fixed-point value of 65,536 * 2^-16
     auto num = cnl::scaled_integer<int, cnl::power<-16>>{1};
 
-    // fixed-point variable with value 4,294,967,296 * 2^-32
+    // fixed-point value of 4,294,967,296 * 2^-32
     auto square = num * num;
 
     std::cout << square;

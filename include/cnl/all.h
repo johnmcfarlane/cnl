@@ -107,9 +107,11 @@
  *
  * \section FAQ
  *
- * Q: Why do I get completely wrong results when using \ref cnl::scaled_integer?
+ * \subsection overflow Fixed-point Overflow
  *
- * A: Most surprises reported by CNL users occur when a \ref cnl::scaled_integer
+ * <b>Q:</b> Why do calculations using \ref cnl::scaled_integer result in completely wrong results?
+ *
+ * <b>A:</b> Most surprises reported by CNL users occur when a \ref cnl::scaled_integer
  * value exceeds the range that its type can represent. This is normally caused by arithmetic
  * operations (especially multiplication) and from conversion between different scales. It
  * typically results in 'modulo' or overflow behavior.
@@ -119,7 +121,7 @@
  * \snippet ub.cpp scaled_integer overflow example 1
  *
  * \ref cnl::scaled_integer does nothing more here than perform integer multiplication.
- * And the values involved are too great to be stored in an `int` (on a typical system).
+ * But the product is too great to be stored in an `int` (on a typical system).
  * Here is the equivalent operation being performed directly on the `int`:
  *
  * \snippet ub.cpp scaled_integer overflow example 2
@@ -127,12 +129,12 @@
  * This value is too great to be stored in a 32-bit integer. In both cases overflow will occur
  * and the result will not be valid.
  *
- * Q: <b>Why doesn't \ref cnl::scaled_integer prevent/avoid/detect overflow?</b>
+ * <b>Q:</b> Why doesn't \ref cnl::scaled_integer prevent/avoid/detect overflow?
  *
- * A: CNL provides a library of components which each address a single concern. In the case of
- * \ref cnl::scaled_integer, the concern is the approximation of real numbers of arbitrary scale
- * using integers. It does this as efficiently as the chosen integer type allows. In the case of
- * `int`, this is very efficient, but at the expense of being error prone.
+ * <b>A:</b> CNL provides a library of components which each address a single concern.
+ * The concern of \ref cnl::scaled_integer is the approximation of real numbers with integers.
+ * It does this as efficiently as the chosen integer type allows. In the case of
+ * `int`, this is very efficient, but without safety checks.
  *
  * There are several solutions with different tradeoffs including:
  * * sanitizers, which can detect many such errors at runtime ([example](https://godbolt.org/z/GdY6ce));
