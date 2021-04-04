@@ -53,12 +53,10 @@ namespace {
     }
 
     namespace test_comparison {
-        static_assert(
-                identical(
-                        cnl::convert<
-                                cnl::_impl::throwing_overflow_tag, cnl::_impl::native_tag,
-                                cnl::elastic_integer<10>>(0),
-                        cnl::elastic_integer<10>{0}));
+        static_assert(identical(
+                cnl::convert<
+                        cnl::_impl::throwing_overflow_tag, cnl::elastic_integer<10>>{}(0),
+                cnl::elastic_integer<10>{0}));
         static_assert(
                 cnl::safe_integer<10>(0b1010101010) == cnl::safe_integer<10>(0b1010101010));
     }

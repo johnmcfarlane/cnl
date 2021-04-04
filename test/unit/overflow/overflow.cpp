@@ -23,24 +23,15 @@ namespace {
     namespace test_native_overflow {
 
         // convert
-        static_assert(
-                identical(
-                        cnl::uint8{3},
-                        cnl::convert<cnl::native_overflow_tag, cnl::_impl::native_tag, cnl::uint8>(
-                                259)),
-                "cnl::convert test failed");
-        static_assert(
-                identical(
-                        cnl::uint16{65413},
-                        cnl::convert<cnl::native_overflow_tag, cnl::_impl::native_tag, cnl::uint16>(
-                                -123)),
-                "cnl::convert test failed");
-        static_assert(
-                identical(
-                        55,
-                        cnl::convert<cnl::native_overflow_tag, cnl::_impl::native_tag, cnl::int32>(
-                                55)),
-                "cnl::convert test failed");
+        static_assert(identical(
+                cnl::uint8{3},
+                cnl::convert<cnl::native_overflow_tag, cnl::uint8>{}(259)));
+        static_assert(identical(
+                cnl::uint16{65413},
+                cnl::convert<cnl::native_overflow_tag, cnl::uint16>{}(-123)));
+        static_assert(identical(
+                55,
+                cnl::convert<cnl::native_overflow_tag, cnl::int32>{}(55)));
 
         // add
         static_assert(
@@ -86,27 +77,15 @@ namespace {
 
     namespace test_saturated {
         // convert
-        static_assert(
-                identical(
-                        cnl::uint8{255},
-                        cnl::convert<
-                                cnl::saturated_overflow_tag, cnl::_impl::native_tag, cnl::uint8>(
-                                259)),
-                "cnl::convert test failed");
-        static_assert(
-                identical(
-                        cnl::uint16{0},
-                        cnl::convert<
-                                cnl::saturated_overflow_tag, cnl::_impl::native_tag, cnl::uint16>(
-                                -123)),
-                "cnl::convert test failed");
-        static_assert(
-                identical(
-                        55,
-                        cnl::convert<
-                                cnl::saturated_overflow_tag, cnl::_impl::native_tag, cnl::int32>(
-                                55)),
-                "cnl::convert test failed");
+        static_assert(identical(
+                cnl::uint8{255},
+                cnl::convert<cnl::saturated_overflow_tag, cnl::uint8>{}(259)));
+        static_assert(identical(
+                cnl::uint16{0},
+                cnl::convert<cnl::saturated_overflow_tag, cnl::uint16>{}(-123)));
+        static_assert(identical(
+                55,
+                cnl::convert<cnl::saturated_overflow_tag, cnl::int32>{}(55)));
 
         // add
         static_assert(
@@ -159,18 +138,14 @@ namespace {
                 cnl::numeric_limits<int32_t>::max()));
 
         // convert
-        static_assert(
-                identical(
-                        cnl::numeric_limits<short>::max(),
-                        cnl::convert<cnl::saturated_overflow_tag, cnl::_impl::native_tag, short>(
-                                cnl::numeric_limits<double>::max())),
-                "cnl::convert test failed");
-        static_assert(
-                identical(
-                        cnl::numeric_limits<short>::lowest(),
-                        cnl::convert<cnl::saturated_overflow_tag, cnl::_impl::native_tag, short>(
-                                cnl::numeric_limits<double>::lowest())),
-                "cnl::convert test failed");
+        static_assert(identical(
+                cnl::numeric_limits<short>::max(),
+                cnl::convert<cnl::saturated_overflow_tag, short>{}(
+                        cnl::numeric_limits<double>::max())));
+        static_assert(identical(
+                cnl::numeric_limits<short>::lowest(),
+                cnl::convert<cnl::saturated_overflow_tag, short>{}(
+                        cnl::numeric_limits<double>::lowest())));
 
         // shift_left
         static_assert(

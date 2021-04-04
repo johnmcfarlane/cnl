@@ -41,7 +41,7 @@ namespace cnl {
             requires can_convert_tag_family<Tag, RhsTag>::value
                     // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
                     constexpr wrapper(wrapper<RhsRep, RhsTag> const& i)
-                : _rep(convert<Tag, RhsTag, Rep>(to_rep(i)))
+                : _rep(convert<Tag, Rep, RhsTag>{}(to_rep(i)))
             {
             }
 
@@ -50,7 +50,7 @@ namespace cnl {
             requires(!can_convert_tag_family<Tag, tag_of_t<Number>>::value)
                     // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
                     constexpr wrapper(Number const& i)
-                : _rep(convert<Tag, _impl::native_tag, Rep>(i))
+                : _rep(convert<Tag, Rep, _impl::native_tag>{}(i))
             {
             }
 
@@ -59,7 +59,7 @@ namespace cnl {
             requires(!is_wrapper<S>)
                     // NOLINTNEXTLINE(hicpp-explicit-conversions, google-explicit-constructor)
                     constexpr wrapper(S const& s)
-                : _rep(convert<Tag, _impl::native_tag, Rep>(s))
+                : _rep(convert<Tag, Rep, _impl::native_tag>{}(s))
 
             {
             }
@@ -69,7 +69,7 @@ namespace cnl {
                     [[nodiscard]] constexpr explicit
                     operator S() const
             {
-                return convert<_impl::native_tag, Tag, S>(_rep);
+                return convert<_impl::native_tag, S, Tag>{}(_rep);
             }
 
             [[nodiscard]] explicit constexpr operator bool() const

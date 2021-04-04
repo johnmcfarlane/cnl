@@ -59,7 +59,7 @@ namespace cnl {
         using rep = decltype(_impl::not_scaled_integer(std::declval<rep_type>()));
 
         return _impl::from_rep<scaled_integer<rep, scale>>(
-                convert<scale, power<>, rep>(f));
+                convert<scale, rep, power<>>{}(f));
     }
 
     /// \brief calculates the quotient of two \ref scaled_integer values

@@ -14,88 +14,64 @@ namespace {
     namespace test_nearest_round_down {
         static constexpr auto expected = cnl::elastic_scaled_integer<4, -1>{0.5};
         static constexpr auto actual = cnl::convert<
-                cnl::nearest_rounding_tag, cnl::power<>, cnl::elastic_scaled_integer<4, -1>>(
+                cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<4, -1>, cnl::power<>>{}(
                 cnl::elastic_scaled_integer<8, -4>{0.3125});
 
-        static_assert(
-                identical(expected, actual),
-                "cnl::convert<cnl::nearest_rounding_tag, cnl::power<>, cnl::elastic_scaled_integer, "
-                "cnl::elastic_scaled_integer>");
+        static_assert(identical(expected, actual));
     }
 
     namespace test_nearest_round_up {
         static constexpr auto expected = cnl::elastic_scaled_integer<4, -2>{0.25};
         static constexpr auto actual = cnl::convert<
-                cnl::nearest_rounding_tag, cnl::power<>, cnl::elastic_scaled_integer<4, -2>>(
+                cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<4, -2>, cnl::power<>>{}(
                 cnl::elastic_scaled_integer<8, -4>{0.3125});
 
-        static_assert(
-                identical(expected, actual),
-                "cnl::convert<cnl::nearest_rounding_tag, cnl::power<>, cnl::elastic_scaled_integer, "
-                "cnl::elastic_scaled_integer>");
+        static_assert(identical(expected, actual));
     }
 
     namespace elastic_scaled_integer_nearest_rounding {
 
         // Positive
-        static_assert(
-                identical(
-                        cnl::convert<
-                                cnl::nearest_rounding_tag, cnl::_impl::native_tag,
-                                cnl::elastic_scaled_integer<16, 0>>(cnl::elastic_scaled_integer<16, -4>{
-                                5.25}),
-                        cnl::elastic_scaled_integer<16, 0>{5.0}));
+        static_assert(identical(
+                cnl::convert<cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<16, 0>>{}(
+                        cnl::elastic_scaled_integer<16, -4>{5.25}),
+                cnl::elastic_scaled_integer<16, 0>{5.0}));
         static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{5.25}), 84));
         static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, 0>{5.0}), 5));
 
-        static_assert(
-                identical(
-                        cnl::convert<
-                                cnl::nearest_rounding_tag, cnl::_impl::native_tag,
-                                cnl::elastic_scaled_integer<16, 0>>(cnl::elastic_scaled_integer<16, -4>{
-                                5.5}),
-                        cnl::elastic_scaled_integer<16, 0>{6.0}));
+        static_assert(identical(
+                cnl::convert<cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<16, 0>>{}(
+                        cnl::elastic_scaled_integer<16, -4>{5.5}),
+                cnl::elastic_scaled_integer<16, 0>{6.0}));
         static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{5.5}), 88));
         static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, 0>{6.0}), 6));
 
-        static_assert(
-                identical(
-                        cnl::convert<
-                                cnl::nearest_rounding_tag, cnl::_impl::native_tag,
-                                cnl::elastic_scaled_integer<16, -1>>(cnl::elastic_scaled_integer<16, -4>{
-                                5.25}),
-                        cnl::elastic_scaled_integer<16, -1>{5.5}));
+        static_assert(identical(
+                cnl::convert<cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<16, -1>>{}(
+                        cnl::elastic_scaled_integer<16, -4>{5.25}),
+                cnl::elastic_scaled_integer<16, -1>{5.5}));
         static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{5.25}), 84));
         static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -1>{5.5}), 11));
 
         // Negative
-        static_assert(
-                identical(
-                        cnl::convert<
-                                cnl::nearest_rounding_tag, cnl::_impl::native_tag,
-                                cnl::elastic_scaled_integer<16, 0>>(cnl::elastic_scaled_integer<16, -4>{
-                                -5.25}),
-                        cnl::elastic_scaled_integer<16, 0>{-5.0}));
+        static_assert(identical(
+                cnl::convert<cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<16, 0>>{}(
+                        cnl::elastic_scaled_integer<16, -4>{-5.25}),
+                cnl::elastic_scaled_integer<16, 0>{-5.0}));
         static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{-5.25}), -84));
         static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, 0>{-5.0}), -5));
 
-        static_assert(
-                identical(
-                        cnl::convert<
-                                cnl::nearest_rounding_tag, cnl::_impl::native_tag,
-                                cnl::elastic_scaled_integer<16, 0>>(cnl::elastic_scaled_integer<16, -4>{
-                                -5.5}),
-                        cnl::elastic_scaled_integer<16, 0>{-6.0}));
+        static_assert(identical(
+                cnl::convert<cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<16, 0>>{}(
+                        cnl::elastic_scaled_integer<16, -4>{-5.5}),
+                cnl::elastic_scaled_integer<16, 0>{-6.0}));
         static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{-5.5}), -88));
         static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, 0>{-6.0}), -6));
 
-        static_assert(
-                identical(
-                        cnl::convert<
-                                cnl::nearest_rounding_tag, cnl::_impl::native_tag,
-                                cnl::elastic_scaled_integer<16, -1>>(cnl::elastic_scaled_integer<16, -4>{
-                                -5.25}),
-                        cnl::elastic_scaled_integer<16, -1>{-5.5}));
+        static_assert(identical(
+                cnl::convert<cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<16, -1>>{}(
+                        cnl::elastic_scaled_integer<16, -4>{-5.25}),
+                cnl::elastic_scaled_integer<16, -1>{-5.5}));
         static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{-5.25}), -84));
         static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -1>{-5.5}), -11));
     }

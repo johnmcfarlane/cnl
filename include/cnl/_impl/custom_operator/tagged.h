@@ -18,27 +18,29 @@
 
 /// compositional numeric library
 namespace cnl {
-    /// \brief converts a value to a type
+    /// \brief converts a value from one type to another
     /// \headerfile cnl/all.h
     ///
     /// \tparam DestTag specifies the destination behavior tag, e.g. \ref native_overflow_tag
+    /// \tparam Dest specifies the destination type
     /// \tparam SrcTag specifies the source behavior tag, e.g. \ref native_overflow_tag
-    /// \param src value to convert from
-    /// \return value converted to
     ///
     /// \sa native_overflow_tag, saturated_overflow_tag, throwing_overflow_tag,
     /// trapping_overflow_tag, undefined_overflow_tag, nearest_rounding_tag
-    template<tag DestTag, tag SrcTag, typename Dest, typename Src>
-    [[nodiscard]] constexpr auto convert(Src const& src)
-    {
-        return custom_operator<_impl::convert_op, op_value<Src, SrcTag>, op_value<Dest, DestTag>>{}(src);
-    }
+    template<tag DestTag, typename Dest, tag SrcTag = _impl::native_tag>
+    struct convert {
+        template<typename Src>
+        [[nodiscard]] constexpr auto operator()(Src const& src) const
+        {
+            return custom_operator<_impl::convert_op, op_value<Src, SrcTag>, op_value<Dest, DestTag>>{}(src);
+        }
 
-    template<tag DestTag, tag SrcTag, typename Dest, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
-    [[nodiscard]] constexpr auto convert(constant<Value> const& src)
-    {
-        return custom_operator<_impl::convert_op, op_value<decltype(Value), SrcTag>, op_value<Dest, DestTag>>{}(src);
-    }
+        template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+        [[nodiscard]] constexpr auto operator()(constant<Value> const& src) const
+        {
+            return custom_operator<_impl::convert_op, op_value<decltype(Value), SrcTag>, op_value<Dest, DestTag>>{}(src);
+        }
+    };
 
     namespace _impl {
         template<op Operator, tag Tag = native_tag>
