@@ -156,16 +156,6 @@ namespace cnl {
         : _impl::set_digits_integer<T, Digits> {
     };
 
-#if defined(CNL_INT128_ENABLED)
-    template<int Digits>
-    struct set_digits<int128, Digits> : _impl::set_digits_integer<signed, Digits> {
-    };
-
-    template<int Digits>
-    struct set_digits<uint128, Digits> : _impl::set_digits_integer<unsigned, Digits> {
-    };
-#endif
-
     /// \brief Alias to \ref set_digits.
     template<class T, int Digits>
     using set_digits_t = typename set_digits<T, Digits>::type;
