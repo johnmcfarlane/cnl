@@ -20,7 +20,7 @@ namespace cnl {
     struct from_value<elastic_integer<Digits, Narrowest>, Value>
         : _impl::from_value_simple<
                   elastic_integer<
-                          digits<Value>,
+                          digits_v<Value>,
                           _impl::set_width_t<Value, _impl::width<Narrowest>>>,
                   Value> {
     };
@@ -36,7 +36,7 @@ namespace cnl {
     template<int Digits, class Narrowest, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct from_value<elastic_integer<Digits, Narrowest>, constant<Value>>
         : _impl::from_value_simple<
-                  elastic_integer<digits<constant<Value>>, int>, constant<Value>> {
+                  elastic_integer<digits_v<constant<Value>>, int>, constant<Value>> {
     };
 }
 

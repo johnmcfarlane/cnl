@@ -23,7 +23,7 @@ namespace cnl {
         [[nodiscard]] constexpr auto operator()(S const& s) const
         {
             static_assert(
-                    Radix != 2 || digits<S> > -Digits,
+                    Radix != 2 || digits_v<S> > -Digits,
                     "this operation will flush the given value");
 
             return static_cast<S>(scale<Digits, Radix, S>()(s));

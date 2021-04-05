@@ -93,9 +93,9 @@ namespace cnl {
                 auto const lower_lower{_impl::long_multiply<Lower>{}(lhs_lower, rhs_lower)};
                 auto const upper{_impl::sensible_left_shift<result_type>(
                         upper_upper,
-                        digits<LhsLower> + digits<RhsLower>)};
+                        digits_v<LhsLower> + digits_v<RhsLower>)};
                 auto const mid{
-                        (result_type{upper_lower} << digits<LhsLower>)+(result_type{lower_upper} << digits<RhsLower>)};
+                        (result_type{upper_lower} << digits_v<LhsLower>)+(result_type{lower_upper} << digits_v<RhsLower>)};
                 auto const lower{lower_lower};
                 return upper + mid + lower;
             }
@@ -124,8 +124,8 @@ namespace cnl {
             auto const upper_lower{_impl::long_multiply<Upper>{}(lhs_upper, rhs_lower)};
             auto const lower_upper{_impl::long_multiply<Upper>{}(lhs_lower, rhs_upper)};
             auto const lower_lower{_impl::long_multiply<Lower>{}(lhs_lower, rhs_lower)};
-            auto const upper{_impl::sensible_left_shift<_duplex_integer>(upper_upper, digits<Lower> * 2)};
-            auto const mid{(upper_lower + lower_upper) << digits<Lower>};
+            auto const upper{_impl::sensible_left_shift<_duplex_integer>(upper_upper, digits_v<Lower> * 2)};
+            auto const mid{(upper_lower + lower_upper) << digits_v<Lower>};
             auto const lower{lower_lower};
             return upper + mid + lower;
         }

@@ -302,7 +302,7 @@ namespace cnl {
         {
             constexpr auto params{scan_string({Chars...})};
             constexpr auto result_digits{
-                    std::max(digits<Narrowest>, std::min(params.num_bits, max_digits<Narrowest>))};
+                    std::max(digits_v<Narrowest>, std::min(params.num_bits, max_digits<Narrowest>))};
             using result_type = set_digits_t<Narrowest, result_digits>;
 
             return parse_string<

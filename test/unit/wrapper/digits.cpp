@@ -14,5 +14,5 @@
 using cnl::_impl::identical;
 
 namespace {
-    static_assert(identical(cnl::digits<char>, cnl::digits<cnl::_impl::wrapper<char>>));
+    static_assert(identical(cnl::digits_v<char>, cnl::digits_v<cnl::_impl::wrapper<char>>));
 }

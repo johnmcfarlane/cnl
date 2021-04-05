@@ -37,12 +37,12 @@ namespace cnl {
 
     template<_impl::signed_integral T, int Digits>
     struct set_digits<T, Digits> {
-        static_assert(Digits <= digits<intmax>, "digits exceeds widest signed integer");
+        static_assert(Digits <= digits_v<intmax>, "digits exceeds widest signed integer");
     };
 
     template<_impl::unsigned_integral T, int Digits>
     struct set_digits<T, Digits> {
-        static_assert(Digits <= digits<uintmax>, "digits exceeds widest unsigned integer");
+        static_assert(Digits <= digits_v<uintmax>, "digits exceeds widest unsigned integer");
     };
 
     template<_impl::signed_integral T, int Digits>

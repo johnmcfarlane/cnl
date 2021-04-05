@@ -66,15 +66,15 @@ static_assert(
         !cnl::numbers::signedness<cnl::numbers::set_signedness_t<unsigned_multiprecision<10>, false>>::value);
 
 // test cnl::width<{un}signed_multiprecision>
-static_assert(cnl::digits<signed_multiprecision<11>> >= 11);
-static_assert(cnl::digits<unsigned_multiprecision<12>> >= 12);
+static_assert(cnl::digits_v<signed_multiprecision<11>> >= 11);
+static_assert(cnl::digits_v<unsigned_multiprecision<12>> >= 12);
 
 // test cnl::set_digits_t<{un}signed_multiprecision>
-static_assert(cnl::digits<set_digits_t<signed_multiprecision<13>, 57>> >= 57);
-static_assert(cnl::digits<set_digits_t<unsigned_multiprecision<14>, 3>> >= 3);
+static_assert(cnl::digits_v<set_digits_t<signed_multiprecision<13>, 57>> >= 57);
+static_assert(cnl::digits_v<set_digits_t<unsigned_multiprecision<14>, 3>> >= 3);
 
-static_assert(cnl::digits<set_digits_t<signed_multiprecision<120>, 3>> <= cnl::digits<signed_multiprecision<120>>);
-static_assert(cnl::digits<unsigned_multiprecision<128>> >= cnl::digits<set_digits_t<unsigned_multiprecision<128>, 16>>);
+static_assert(cnl::digits_v<set_digits_t<signed_multiprecision<120>, 3>> <= cnl::digits_v<signed_multiprecision<120>>);
+static_assert(cnl::digits_v<unsigned_multiprecision<128>> >= cnl::digits_v<set_digits_t<unsigned_multiprecision<128>, 16>>);
 
 namespace test_to_rep {
     static_assert(
@@ -238,11 +238,11 @@ TEST(scaled_integer_multiprecision, divide)  // NOLINT
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// cnl::digits<boost::multiprecision::number<>>
+// cnl::digits_v<boost::multiprecision::number<>>
 
-static_assert(cnl::digits<unsigned_multiprecision<24>> == 24);
+static_assert(cnl::digits_v<unsigned_multiprecision<24>> == 24);
 
-static_assert(cnl::digits<signed_multiprecision<24>> == 24);
+static_assert(cnl::digits_v<signed_multiprecision<24>> == 24);
 
 ////////////////////////////////////////////////////////////////////////////////
 // bitwise shift with boost::multiprecision and cnl::constant

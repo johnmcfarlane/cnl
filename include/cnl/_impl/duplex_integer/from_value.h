@@ -19,7 +19,7 @@ namespace cnl {
     requires(_impl::is_duplex_integer<Duplex>::value && !_impl::is_duplex_integer<Value>::value) struct from_value<Duplex, Value> {
         [[nodiscard]] constexpr auto operator()(Value const& value) const
                 -> _impl::narrowest_integer_t<
-                        digits<Value>,
+                        digits_v<Value>,
                         _impl::duplex_integer_upper_t<Duplex>>
         {
             return value;

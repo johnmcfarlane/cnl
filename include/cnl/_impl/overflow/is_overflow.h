@@ -33,7 +33,7 @@ namespace cnl {
 
         template<class T>
         struct overflow_digits<T, polarity::negative>
-            : public std::integral_constant<int, cnl::numbers::signedness_v<T> ? digits<T> : 0> {
+            : public std::integral_constant<int, cnl::numbers::signedness_v<T> ? digits_v<T> : 0> {
         };
 
         ////////////////////////////////////////////////////////////////////////////////

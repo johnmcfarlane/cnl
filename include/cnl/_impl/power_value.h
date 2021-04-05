@@ -40,7 +40,7 @@ namespace cnl {
                 using result_numeric_limits = numeric_limits<decltype(
                         decltype(
                                 std::declval<S>()
-                                >> std::declval<constant<digits<S> - 1>>()){1}
+                                >> std::declval<constant<digits_v<S> - 1>>()){1}
                         << constant<Exponent>{})>;
                 static_assert(
                         !std::is_integral<S>::value || !std::is_signed<S>::value
@@ -51,7 +51,7 @@ namespace cnl {
                 // a separate specialization of power for elastic_integer
                 return decltype(
                                std::declval<S>()
-                               >> std::declval<constant<digits<S> - 1>>()){1}
+                               >> std::declval<constant<digits_v<S> - 1>>()){1}
                     << constant<Exponent>{};
             }
         };

@@ -146,11 +146,11 @@ namespace cnl::numbers {
 namespace cnl {
     template<unsigned NumBits>
     inline constexpr int
-            digits<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> = NumBits - 1;
+            digits_v<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> = NumBits - 1;
 
     template<unsigned NumBits>
     inline constexpr int
-            digits<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> = NumBits;
+            digits_v<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> = NumBits;
 
     template<unsigned NumBits, int MinNumDigits>
     struct set_digits<
@@ -216,7 +216,7 @@ namespace cnl {
             _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>,
             Value> {
     private:
-        static constexpr auto _bits = digits<Value> + 1;
+        static constexpr auto _bits = digits_v<Value> + 1;
 
     public:
         [[nodiscard]] constexpr auto operator()(Value const& value) const
@@ -231,7 +231,7 @@ namespace cnl {
             _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>,
             Value> {
     private:
-        static constexpr auto _bits = digits<Value>;
+        static constexpr auto _bits = digits_v<Value>;
 
     public:
         [[nodiscard]] constexpr auto operator()(Value const& value) const
@@ -281,7 +281,7 @@ namespace cnl {
     ///
     /// \tparam NumDigits number of digits constituting the integer value (excluding sign bit)
     /// \sa unsigned_multiprecision, multiprecision
-    template<unsigned NumDigits = digits<int>>
+    template<unsigned NumDigits = digits_v<int>>
     using signed_multiprecision =
             _sized_integer_impl::number<NumDigits + 1, _bmp::signed_magnitude>;
 
@@ -290,7 +290,7 @@ namespace cnl {
     ///
     /// \tparam NumDigits number of digits constituting the integer value (excluding sign bit)
     /// \sa signed_multiprecision, multiprecision
-    template<unsigned NumDigits = digits<unsigned>>
+    template<unsigned NumDigits = digits_v<unsigned>>
     using unsigned_multiprecision =
             _sized_integer_impl::number<NumDigits, _bmp::unsigned_magnitude>;
 
@@ -299,7 +299,7 @@ namespace cnl {
     ///
     /// \tparam NumDigits number of digits constituting the integer value (excluding sign bit)
     /// \sa signed_multiprecision, unsigned_multiprecision
-    template<unsigned NumDigits = digits<int>>
+    template<unsigned NumDigits = digits_v<int>>
     using multiprecision = signed_multiprecision<NumDigits>;
 
     ////////////////////////////////////////////////////////////////////////////////

@@ -43,7 +43,7 @@ namespace cnl {
     private:
         using result_type = set_digits_t<
                 numbers::set_signedness_t<Number, true>,
-                std::max(digits<int>, _impl::used_digits(Value))>;
+                std::max(digits_v<int>, _impl::used_digits(Value))>;
 
     public:
         [[nodiscard]] constexpr auto operator()(constant<Value> const& value) const

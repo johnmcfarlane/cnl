@@ -22,7 +22,7 @@ namespace cnl {
         template<typename Lhs, typename Rhs>
         struct heterogeneous_duplex_modulo_operator {
             using common_type = rep_of_t<wide_integer<
-                    std::max(digits<Lhs>, digits<Rhs>),
+                    std::max(digits_v<Lhs>, digits_v<Rhs>),
                     numbers::set_signedness_t<int, numbers::signedness_v<Lhs> | numbers::signedness_v<Rhs>>>>;
 
             [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const -> Lhs

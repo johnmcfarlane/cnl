@@ -13,7 +13,7 @@
 /// compositional numeric library
 namespace cnl {
     template<int Digits, typename Narrowest>
-    inline constexpr auto digits<wide_integer<Digits, Narrowest>> = Digits;
+    inline constexpr auto digits_v<wide_integer<Digits, Narrowest>> = Digits;
 }
 
 #endif  // CNL_IMPL_WIDE_INTEGER_DIGITS_H

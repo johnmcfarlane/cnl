@@ -146,7 +146,7 @@ namespace cnl {
         using rhs_type = _impl::wrapper<RhsRep, elastic_tag<RhsDigits, RhsNarrowest>>;
         [[nodiscard]] constexpr auto operator()(rhs_type const& rhs) const
         {
-            constexpr auto result_digits = digits<rhs_type>;
+            constexpr auto result_digits = digits_v<rhs_type>;
             using rhs_narrowest = _impl::tag_narrowest_t<_impl::tag_of_t<rhs_type>>;
             using result_narrowest = numbers::set_signedness_t<rhs_narrowest, true>;
             using result_type = elastic_integer<result_digits, result_narrowest>;

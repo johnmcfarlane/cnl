@@ -161,7 +161,7 @@ namespace cnl {
     // numeric traits
 
     template<auto Value>
-    inline constexpr int digits<constant<Value>> = _impl::used_digits((Value < 0) ? -Value : Value);
+    inline constexpr int digits_v<constant<Value>> = _impl::used_digits((Value < 0) ? -Value : Value);
 
     ////////////////////////////////////////////////////////////////////////////////
     // numbers traits

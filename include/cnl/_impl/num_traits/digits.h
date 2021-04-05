@@ -5,7 +5,7 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 /// \file cnl/num_traits.h
-/// \brief definitions supporting \ref cnl::digits
+/// \brief definitions supporting \ref cnl::digits_v
 
 #if !defined(CNL_IMPL_NUM_TRAITS_DIGITS_H)
 #define CNL_IMPL_NUM_TRAITS_DIGITS_H
@@ -27,7 +27,7 @@ namespace cnl {
     ///
     /// \sa set_digits
     template<typename T>
-    inline constexpr int digits = 0;
+    inline constexpr int digits_v = 0;
 
     namespace _impl {
         template<typename Integer>
@@ -35,7 +35,7 @@ namespace cnl {
     }
 
     template<_impl::integral Integer>
-    inline constexpr int digits<Integer> = _impl::fundamental_digits<Integer>;
+    inline constexpr int digits_v<Integer> = _impl::fundamental_digits<Integer>;
 
     namespace _impl {
         // cnl::_impl::fractional_digits
@@ -44,7 +44,7 @@ namespace cnl {
 
         // cnl::_impl::integer_digits
         template<class T>
-        inline constexpr auto integer_digits = digits<T> - fractional_digits<T>;
+        inline constexpr auto integer_digits = digits_v<T> - fractional_digits<T>;
     }
 }
 

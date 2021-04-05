@@ -26,8 +26,8 @@ namespace {
         using result_type = decltype(Op{}(std::declval<Lhs>(), std::declval<Rhs>()));
         using type = cnl::set_digits_t<
                 result_type, std::max(
-                                     cnl::digits<result_type>,
-                                     cnl::digits<Lhs> + cnl::digits<Rhs>)>;
+                                     cnl::digits_v<result_type>,
+                                     cnl::digits_v<Lhs> + cnl::digits_v<Rhs>)>;
     };
 
     template<cnl::_impl::binary_arithmetic_op Op, typename Lhs, typename Rhs = Lhs>

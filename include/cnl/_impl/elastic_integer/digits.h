@@ -13,7 +13,7 @@
 /// compositional numeric library
 namespace cnl {
     template<int Digits, class Narrowest>
-    inline constexpr auto digits<elastic_integer<Digits, Narrowest>> = Digits;
+    inline constexpr auto digits_v<elastic_integer<Digits, Narrowest>> = Digits;
 }
 
 #endif  // CNL_IMPL_ELASTIC_INTEGER_DIGITS_H

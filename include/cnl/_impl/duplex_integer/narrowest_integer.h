@@ -65,7 +65,7 @@ namespace cnl {
         [[nodiscard]] constexpr auto duplex_num_words(int min_digits)
         {
             auto const num_sign_bits = numbers::signedness_v<Word>;
-            auto const word_digits = digits<Word> + num_sign_bits;
+            auto const word_digits = digits_v<Word> + num_sign_bits;
             auto const required_num_words =
                     (min_digits + num_sign_bits + word_digits - 1) / word_digits;
 

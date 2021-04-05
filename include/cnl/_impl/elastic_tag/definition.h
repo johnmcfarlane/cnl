@@ -18,7 +18,7 @@ namespace cnl {
     template<int Digits, typename Narrowest>
     struct elastic_tag {
         // A remarkable property of the elastic_tag is that it's rep type is dependent upon it.
-        using _rep = set_digits_t<Narrowest, std::max(digits<Narrowest>, Digits)>;
+        using _rep = set_digits_t<Narrowest, std::max(digits_v<Narrowest>, Digits)>;
     };
 }
 

@@ -26,7 +26,7 @@ namespace cnl {
         CNL_ASSERT(x >= Integer{0});
 
         auto root = +Integer{0};
-        auto bit = Integer{1} << ((digits<Integer> - 1) & ~1);
+        auto bit = Integer{1} << ((digits_v<Integer> - 1) & ~1);
         auto num = decltype(root + bit){x};
 
         while (bit > num) {
