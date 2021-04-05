@@ -135,7 +135,7 @@ namespace {
     namespace desirata {
         // num_digits
         template<class T>
-        constexpr auto num_digits_v = cnl::digits<T>;
+        constexpr auto num_digits_v = cnl::digits_v<T>;
         static_assert(num_digits_v<int64_t> == 63);
 
         // set_num_digits

@@ -26,7 +26,7 @@ namespace cnl {
     /// the resultant type has Digits set to the sum of the operands.
     ///
     /// \sa elastic_scaled_integer
-    template<int Digits = digits<int>, integer Narrowest = int>
+    template<int Digits = digits_v<int>, integer Narrowest = int>
     using elastic_integer = _impl::wrapper<
             typename elastic_tag<Digits, Narrowest>::_rep,
             elastic_tag<Digits, Narrowest>>;

@@ -15,6 +15,6 @@ using cnl::_impl::identical;
 
 namespace {
     static_assert(
-            identical(cnl::digits<cnl::int8>, cnl::digits<cnl::wide_integer<7>>),
-            "cnl::digits<cnl::wide_integer>");
+            identical(cnl::digits_v<cnl::int8>, cnl::digits_v<cnl::wide_integer<7>>),
+            "cnl::digits_v<cnl::wide_integer>");
 }

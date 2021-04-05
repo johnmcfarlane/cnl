@@ -60,7 +60,7 @@ namespace cnl {
                 Operator, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
             using _duplex_integer = duplex_integer<Upper, Lower>;
 
-            static constexpr auto lower_digits = digits<Lower>;
+            static constexpr auto lower_digits = digits_v<Lower>;
             using wide_lower = set_digits_t<numbers::set_signedness_t<Lower, true>, lower_digits + 1>;
 
             [[nodiscard]] constexpr auto operator()(
@@ -96,7 +96,7 @@ namespace cnl {
             using lhs_upper_word = duplex_integer_upper_t<LhsUpper>;
             using rhs_upper_word = duplex_integer_upper_t<RhsUpper>;
             using common_word = decltype(std::declval<lhs_upper_word>() + std::declval<rhs_upper_word>());
-            static constexpr int max_digits = std::max(digits<lhs_type>, digits<rhs_type>);
+            static constexpr int max_digits = std::max(digits_v<lhs_type>, digits_v<rhs_type>);
             using common_duplex_integer = narrowest_integer_t<max_digits, common_word>;
 
             [[nodiscard]] constexpr auto operator()(

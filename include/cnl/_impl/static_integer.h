@@ -17,13 +17,13 @@
 namespace cnl {
     namespace _impl {
         template<
-                int Digits = digits<int>, rounding_tag RoundingTag = nearest_rounding_tag,
+                int Digits = digits_v<int>, rounding_tag RoundingTag = nearest_rounding_tag,
                 overflow_tag OverflowTag = undefined_overflow_tag, class Narrowest = int>
         using static_integer = overflow_integer<
                 elastic_integer<
                         Digits,
                         rounding_integer<
-                                wide_integer<digits<Narrowest>, Narrowest>, RoundingTag>>,
+                                wide_integer<digits_v<Narrowest>, Narrowest>, RoundingTag>>,
                 OverflowTag>;
 
         template<

@@ -48,7 +48,7 @@ namespace {
             [[nodiscard]] constexpr auto multiply(Operand a, Operand b)
             {
                 // Get the number of digits in the input type.
-                [[nodiscard]] constexpr auto operand_digits = digits<Operand>;
+                [[nodiscard]] constexpr auto operand_digits = digits_v<Operand>;
 
                 // Results of multiplication contain twice the number of digits.
                 [[nodiscard]] constexpr auto result_digits = operand_digits * 2;

@@ -123,11 +123,11 @@ namespace {
     }
 
     namespace test_digits {
-        using cnl::digits;
+        using cnl::digits_v;
         using cnl::set_digits_t;
 
         static_assert(
-                digits<cnl::safe_integer<3>> >= 3,
+                digits_v<cnl::safe_integer<3>> >= 3,
                 "cnl::digits / cnl::set_digits test failed");
         static_assert(
                 identical(set_digits_t<cnl::safe_integer<1>, 3>{6}, cnl::safe_integer<3>{6}),

@@ -27,7 +27,7 @@ namespace cnl {
             [[nodiscard]] constexpr auto rounding_conversion(double d)
             {
                 using one_longer = scaled_integer<
-                        set_digits_t<rep_of_t<ScaledInteger>, digits<ScaledInteger> + 1>,
+                        set_digits_t<rep_of_t<ScaledInteger>, digits_v<ScaledInteger> + 1>,
                         power<tag_of_t<ScaledInteger>::exponent - 1>>;
                 return from_rep<ScaledInteger>(
                         static_cast<rep_of_t<ScaledInteger>>((_impl::to_rep(one_longer{d}) + 1) >> 1));
@@ -38,7 +38,7 @@ namespace cnl {
 
             template<class Input>
             using make_largest_ufraction =
-                    scaled_integer<unsigned_rep<Input>, power<-digits<unsigned_rep<Input>>>>;
+                    scaled_integer<unsigned_rep<Input>, power<-digits_v<unsigned_rep<Input>>>>;
 
             static_assert(
                     std::is_same<
@@ -65,14 +65,14 @@ namespace cnl {
             };
 
             template<typename A, typename B>
-            [[nodiscard]] constexpr auto safe_multiply(A const& a, B const& b) requires(digits<decltype(a * b)> <= digits<A> + digits<B>)
+            [[nodiscard]] constexpr auto safe_multiply(A const& a, B const& b) requires(digits_v<decltype(a * b)> <= digits_v<A> + digits_v<B>)
             {
-                return set_digits_t<A, digits<A> + digits<B>>{a}
-                     * set_digits_t<B, digits<A> + digits<B>>{b};
+                return set_digits_t<A, digits_v<A> + digits_v<B>>{a}
+                     * set_digits_t<B, digits_v<A> + digits_v<B>>{b};
             }
 
             template<typename A, typename B>
-            [[nodiscard]] constexpr auto safe_multiply(A const& a, B const& b) requires(digits<A> + digits<B> <= digits<decltype(a * b)>)
+            [[nodiscard]] constexpr auto safe_multiply(A const& a, B const& b) requires(digits_v<A> + digits_v<B> <= digits_v<decltype(a * b)>)
             {
                 return a * b;
             }
@@ -134,7 +134,7 @@ namespace cnl {
             }
 
             template<class Rep, int Exponent, int Radix>
-            requires(-digits<Rep> < Exponent)
+            requires(-digits_v<Rep> < Exponent)
                     [[nodiscard]] constexpr auto fractional(
                             scaled_integer<Rep, power<Exponent, Radix>> const& x,
                             Rep const& floored)
@@ -143,7 +143,7 @@ namespace cnl {
             }
 
             template<class Rep, int Exponent, int Radix>
-            requires(-digits<Rep> >= Exponent)
+            requires(-digits_v<Rep> >= Exponent)
                     [[nodiscard]] constexpr auto fractional(scaled_integer<Rep, power<Exponent, Radix>> const& x, Rep const&)
             {
                 return x;

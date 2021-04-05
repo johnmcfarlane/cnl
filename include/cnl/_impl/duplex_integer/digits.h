@@ -22,34 +22,34 @@ namespace cnl {
 
         template<typename Result, typename Lhs>
         [[nodiscard]] constexpr auto sensible_right_shift(Lhs const& lhs, int rhs) -> Result
-                requires(digits<Result> <= digits<decltype(lhs >> rhs)>)
+                requires(digits_v<Result> <= digits_v<decltype(lhs >> rhs)>)
         {
             CNL_ASSERT(rhs >= 0);
             using promoted_type = decltype(lhs >> rhs);
             return static_cast<Result>(
-                    (rhs >= digits<promoted_type>)
-                            ? lhs >> (digits<Lhs> - 1) >> 1
+                    (rhs >= digits_v<promoted_type>)
+                            ? lhs >> (digits_v<Lhs> - 1) >> 1
                             : (lhs >> rhs) & static_cast<promoted_type>(~Result{}));
         }
 
         template<typename Result, typename Lhs>
         [[nodiscard]] constexpr auto sensible_right_shift(Lhs const& lhs, int rhs) -> Result
-                requires(digits<Result> > digits<decltype(lhs >> rhs)>)
+                requires(digits_v<Result> > digits_v<decltype(lhs >> rhs)>)
         {
             CNL_ASSERT(rhs >= 0);
             using promoted_type = decltype(lhs >> rhs);
-            return (rhs >= digits<promoted_type>) ? Result{}
-                                                  : static_cast<Result>(lhs >> rhs);
+            return (rhs >= digits_v<promoted_type>) ? Result{}
+                                                    : static_cast<Result>(lhs >> rhs);
         }
 
         template<typename Result, typename Lhs>
         [[nodiscard]] constexpr auto sensible_left_shift(Lhs const& lhs, int rhs) -> Result
-                requires(digits<Result> <= digits<decltype(lhs << rhs)>)
+                requires(digits_v<Result> <= digits_v<decltype(lhs << rhs)>)
         {
             CNL_ASSERT(rhs >= 0);
             using promoted_type = decltype(lhs << rhs);
             using unsigned_type = numbers::set_signedness_t<promoted_type, false>;
-            return (rhs >= digits<promoted_type>)
+            return (rhs >= digits_v<promoted_type>)
                          ? Result{}
                          : static_cast<Result>(
                                  // TODO: Not reproduced locally. Investigate.
@@ -61,7 +61,7 @@ namespace cnl {
 
         template<typename Result, typename Lhs>
         [[nodiscard]] constexpr auto sensible_left_shift(Lhs const& lhs, int rhs) -> Result
-                requires(digits<Result> > digits<decltype(lhs << rhs)>)
+                requires(digits_v<Result> > digits_v<decltype(lhs << rhs)>)
         {
             return sensible_left_shift<Result>(static_cast<Result>(lhs), rhs);
         }
@@ -75,10 +75,10 @@ namespace cnl {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::digits<cnl::_impl::duplex_integer<>>
+    // cnl::digits_v<cnl::_impl::duplex_integer<>>
 
     template<typename Upper, typename Lower>
-    inline constexpr int digits<_impl::duplex_integer<Upper, Lower>> = digits<Upper> + digits<Lower>;
+    inline constexpr int digits_v<_impl::duplex_integer<Upper, Lower>> = digits_v<Upper> + digits_v<Lower>;
 }
 
 #endif  // CNL_IMPL_DUPLEX_INTEGER_DIGITS_H

@@ -55,8 +55,8 @@ namespace cnl {
             Operator,
             op_value<Lhs, elastic_tag<LhsDigits, LhsNarrowest>>,
             op_value<Rhs, elastic_tag<RhsDigits, RhsNarrowest>>> {
-        static_assert(digits<Lhs> >= LhsDigits, "LHS number is not wide enough");
-        static_assert(digits<Rhs> >= RhsDigits, "RHS number is not wide enough");
+        static_assert(digits_v<Lhs> >= LhsDigits, "LHS number is not wide enough");
+        static_assert(digits_v<Rhs> >= RhsDigits, "RHS number is not wide enough");
 
         using result_tag = decltype(Operator{}(
                 std::declval<elastic_tag<LhsDigits, LhsNarrowest>>(),

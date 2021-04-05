@@ -67,7 +67,7 @@ namespace test_from_scaled_integer {
 
     static_assert(
             identical(
-                    cnl::elastic_scaled_integer<cnl::digits<long>, 3, signed>{88},
+                    cnl::elastic_scaled_integer<cnl::digits_v<long>, 3, signed>{88},
                     cnl::make_elastic_scaled_integer(cnl::scaled_integer<long, cnl::power<3>>{88})));
 }
 

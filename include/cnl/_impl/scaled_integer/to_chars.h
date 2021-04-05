@@ -334,7 +334,7 @@ namespace cnl {
             return std::to_chars_result{first + 1, std::errc{}};
         }
 
-        using significand_type = std::conditional_t<(digits<Rep> > digits<int64>), Rep, int64>;
+        using significand_type = std::conditional_t<(digits_v<Rep> > digits_v<int64>), Rep, int64>;
         auto const descaled{_impl::descale<significand_type>(value)};
 
         return _impl::to_chars_non_zero(first, last, descaled);

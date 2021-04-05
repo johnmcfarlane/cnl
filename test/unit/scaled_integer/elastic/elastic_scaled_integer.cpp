@@ -25,7 +25,7 @@ using cnl::make_elastic_scaled_integer;
 // if something broke it may show up here first
 
 namespace {
-    using cnl::digits;
+    using cnl::digits_v;
     using cnl::elastic_integer;
     using cnl::scaled_integer;
     using cnl::set_digits_t;
@@ -52,7 +52,7 @@ namespace {
 #endif
 
     static_assert(
-            digits<set_digits_t<elastic_integer<15, uint8_t>, 22>> == 22,
+            digits_v<set_digits_t<elastic_integer<15, uint8_t>, 22>> == 22,
             "cnl::elastic_integer test failed");
 
     static_assert(
@@ -385,7 +385,7 @@ struct positive_elastic_test : number_test<Elastic> {
     // test elastic_integer type
 
     static_assert(
-            cnl::digits<rep> >= digits,
+            cnl::digits_v<rep> >= digits,
             "not enough digits in rep type to represent elastic_scaled_integer values");
 
     ////////////////////////////////////////////////////////////////////////////////

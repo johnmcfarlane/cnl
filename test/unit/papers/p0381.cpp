@@ -144,17 +144,17 @@ namespace sample5 {
 #endif  // defined(CNL_BOOST_ENABLED)
 
 namespace determining {
-    using cnl::digits;
+    using cnl::digits_v;
 
-    static_assert(digits<uint16_t> == 16, "the digits of uint16_t is exactly 16 bits");
-    static_assert(digits<long long> >= 63, "long long has a digits of at least 64 bits");
-    static_assert(digits<long> >= digits<short>, "short is no longer than long");
+    static_assert(digits_v<uint16_t> == 16, "the digits of uint16_t is exactly 16 bits");
+    static_assert(digits_v<long long> >= 63, "long long has a digits of at least 64 bits");
+    static_assert(digits_v<long> >= digits_v<short>, "short is no longer than long");
     // NOLINTNEXTLINE(misc-redundant-expression)
-    static_assert(digits<wchar_t> >= digits<char>, "a wide character is at least as wide as a character");
+    static_assert(digits_v<wchar_t> >= digits_v<char>, "a wide character is at least as wide as a character");
 }
 
 namespace specifiying {
-    using cnl::digits;
+    using cnl::digits_v;
     using cnl::set_digits_t;
 
     static_assert(
@@ -170,5 +170,5 @@ namespace specifiying {
                     || is_same<set_digits_t<char, 63>, uint64_t>::value,
             "char may or may not be signed so the result may be uint64_t or int64_t");
     static_assert(
-            digits<set_digits_t<int, 10>> >= 10, "result must be at least 10 bits wide");
+            digits_v<set_digits_t<int, 10>> >= 10, "result must be at least 10 bits wide");
 }

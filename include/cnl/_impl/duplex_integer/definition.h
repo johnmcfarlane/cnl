@@ -31,11 +31,11 @@ namespace cnl {
         template<typename Result, typename Upper, typename Lower>
         [[nodiscard]] constexpr auto upper_value(Upper const& upper) -> Result
         {
-            return (digits<Result> <= digits<Lower>)
+            return (digits_v<Result> <= digits_v<Lower>)
                          ? !is_flushed(upper)
                                  ? unreachable<Result>("overflow in narrowing conversion")
                                  : Result{}
-                         : Result(sensible_left_shift<Result>(upper, digits<Lower>));
+                         : Result(sensible_left_shift<Result>(upper, digits_v<Lower>));
         }
 
         // Class duplex_integer is bigendian because this is consistent with std::pair.

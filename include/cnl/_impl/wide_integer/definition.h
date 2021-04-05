@@ -14,7 +14,7 @@
 /// compositional numeric library
 namespace cnl {
     /// \brief An integer of limitless width.
-    template<int Digits = digits<int>, typename Narrowest = int>
+    template<int Digits = digits_v<int>, typename Narrowest = int>
     using wide_integer =
             _impl::wrapper<typename wide_tag<Digits, Narrowest>::rep, wide_tag<Digits, Narrowest>>;
 }

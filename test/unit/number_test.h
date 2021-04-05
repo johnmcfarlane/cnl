@@ -102,20 +102,20 @@ struct number_test {
             "zero-initialized value is not represented using zero");
 
     ////////////////////////////////////////////////////////////////////////////////
-    // cnl::digits / cnl::_impl::set_digits_t
+    // cnl::digits_v / cnl::_impl::set_digits_t
 
     static_assert(
-            cnl::digits<value_type> == cnl::digits<cnl::set_digits_t<value_type, cnl::digits<value_type>>>,
+            cnl::digits_v<value_type> == cnl::digits_v<cnl::set_digits_t<value_type, cnl::digits_v<value_type>>>,
             "cnl::digits / cnl::set_digits test failed");
 
     static_assert(
-            cnl::digits<cnl::set_digits_t<value_type, 3>> >= 3,
+            cnl::digits_v<cnl::set_digits_t<value_type, 3>> >= 3,
             "cnl::digits / cnl::set_digits test failed");
     static_assert(
-            cnl::digits<cnl::set_digits_t<value_type, 9>> >= 9,
+            cnl::digits_v<cnl::set_digits_t<value_type, 9>> >= 9,
             "cnl::digits / cnl::set_digits test failed");
     static_assert(
-            cnl::digits<cnl::set_digits_t<value_type, 63>> > 32,
+            cnl::digits_v<cnl::set_digits_t<value_type, 63>> > 32,
             "cnl::digits / cnl::set_digits test failed");
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -160,10 +160,10 @@ struct number_test {
 
     static_assert(cnl::used_digits(zero) == 0, "used_digits test failed");
     static_assert(
-            cnl::used_digits(max) == cnl::digits<value_type>, "used_digits test failed");
+            cnl::used_digits(max) == cnl::digits_v<value_type>, "used_digits test failed");
 
     static_assert(
-            cnl::leading_bits(zero) == cnl::digits<value_type>, "leading_bits test failed");
+            cnl::leading_bits(zero) == cnl::digits_v<value_type>, "leading_bits test failed");
     static_assert(cnl::leading_bits(max) == 0, "leading_bits test failed");
 };
 

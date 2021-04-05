@@ -26,7 +26,7 @@ namespace cnl {
         // When number can be represented in a single integer
         template<int Digits, typename Narrowest>
         struct wide_tag_rep<Digits, Narrowest, false>
-            : std::type_identity<set_digits_t<Narrowest, std::max(cnl::digits<Narrowest>, Digits)>> {
+            : std::type_identity<set_digits_t<Narrowest, std::max(cnl::digits_v<Narrowest>, Digits)>> {
         };
 
         // when number must be represented using multiple integers

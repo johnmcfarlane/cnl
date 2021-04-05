@@ -15,7 +15,7 @@ namespace cnl {
     namespace _impl {
         template<typename Rep>
         [[nodiscard]] constexpr auto make_wide_integer(Rep const& rep)
-                -> wide_integer<digits<Rep>, adopt_signedness_t<int, Rep>>
+                -> wide_integer<digits_v<Rep>, adopt_signedness_t<int, Rep>>
         {
             return rep;
         }

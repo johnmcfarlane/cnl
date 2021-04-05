@@ -10,139 +10,23 @@
 #if !defined(CNL_IMPL_NUM_TRAITS_SET_DIGITS_H)
 #define CNL_IMPL_NUM_TRAITS_SET_DIGITS_H
 
-#include "../../numeric_limits.h"
 #include "../config.h"
 #include "../cstdint/types.h"
 #include "../numbers/signedness.h"
 #include "../type_traits/is_integral.h"
+#include "digits.h"
 
 namespace cnl {
+    namespace _impl {
+        template<typename T>
+        concept signed_integral = integral<T>&& numbers::signedness_v<T>;
+
+        template<typename T>
+        concept unsigned_integral = integral<T> && !numbers::signedness_v<T>;
+    }
 
     ////////////////////////////////////////////////////////////////////////////////
-    // error: [un]signed_integer_cannot_have<Digits>
-
-    // These types are declared for error reporting purposes only. They arise in
-    // error message when an attempt it made to use set_digits or set_digits_t
-    // to produce an integer that is wider than the widest fundamental integer
-    // types, cnl::intmax and cnl::uintmax.
-
-    template<int NumDigits>
-    struct signed_integer_cannot_have {
-        template<int MaxNumDigits>
-        struct digits_because_maximum_is;
-    };
-    template<int NumDigits>
-    struct unsigned_integer_cannot_have {
-        template<int MaxNumDigits>
-        struct digits_because_maximum_is;
-    };
-
-    namespace _impl {
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::enable_for_range
-
-        template<typename T, int Digits>
-                struct narrower_than : std::integral_constant < bool
-            , std::is_same<T, void>::value ? true : numeric_limits<T>::digits<Digits> {
-        };
-
-        template<typename T, int Digits>
-        struct no_narrower_than
-            : std::integral_constant<
-                      bool,
-                      std::is_same<T, void>::value ? true : numeric_limits<T>::digits >= Digits> {
-        };
-
-        template<int MinNumDigits, class Smaller, class T>
-        inline constexpr bool in_range_v =
-                no_narrower_than<T, MinNumDigits>::value&& narrower_than<Smaller, MinNumDigits>::value;
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::set_digits_signed
-
-        template<int MinNumDigits>
-        struct set_digits_signed;
-
-        template<int MinNumDigits>
-        requires in_range_v<MinNumDigits, void, int8> struct set_digits_signed<MinNumDigits> {
-            using type = int8;
-        };
-
-        template<int MinNumDigits>
-        requires in_range_v<MinNumDigits, int8, int16> struct set_digits_signed<MinNumDigits> {
-            using type = int16;
-        };
-
-        template<int MinNumDigits>
-        requires in_range_v<MinNumDigits, int16, int32> struct set_digits_signed<MinNumDigits> {
-            using type = int32;
-        };
-
-        template<int MinNumDigits>
-        requires in_range_v<MinNumDigits, int32, int64> struct set_digits_signed<MinNumDigits> {
-            using type = int64;
-        };
-
-#if defined(CNL_INT128_ENABLED)
-        template<int MinNumDigits>
-        requires in_range_v<MinNumDigits, int64, int128> struct set_digits_signed<MinNumDigits> {
-            using type = int128;
-        };
-#endif
-
-        template<int MinNumDigits>
-        requires in_range_v<MinNumDigits, intmax, void> struct set_digits_signed<MinNumDigits>
-            : signed_integer_cannot_have<MinNumDigits>::template digits_because_maximum_is<
-                      numeric_limits<intmax>::digits> {
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::set_digits_unsigned
-
-        template<int MinNumDigits>
-        struct set_digits_unsigned;
-
-        template<int MinNumDigits>
-        requires in_range_v<MinNumDigits, void, uint8> struct set_digits_unsigned<MinNumDigits> {
-            using type = uint8;
-        };
-
-        template<int MinNumDigits>
-        requires in_range_v<MinNumDigits, uint8, uint16> struct set_digits_unsigned<MinNumDigits> {
-            using type = uint16;
-        };
-
-        template<int MinNumDigits>
-        requires in_range_v<MinNumDigits, uint16, uint32> struct set_digits_unsigned<MinNumDigits> {
-            using type = uint32;
-        };
-
-        template<int MinNumDigits>
-        requires in_range_v<MinNumDigits, uint32, uint64> struct set_digits_unsigned<MinNumDigits> {
-            using type = uint64;
-        };
-
-#if defined(CNL_INT128_ENABLED)
-        template<int MinNumDigits>
-        requires in_range_v<MinNumDigits, uint64, uint128> struct set_digits_unsigned<MinNumDigits> {
-            using type = uint128;
-        };
-#endif
-
-        template<int MinNumDigits>
-        requires in_range_v<MinNumDigits, uintmax, void> struct set_digits_unsigned<MinNumDigits>
-            : unsigned_integer_cannot_have<MinNumDigits>::template digits_because_maximum_is<
-                      numeric_limits<uintmax>::digits> {
-        };
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // cnl::_impl::set_digits_integer
-
-        template<class Integer, int MinNumDigits>
-        using set_digits_integer = typename std::conditional<
-                numbers::signedness_v<Integer>, set_digits_signed<MinNumDigits>,
-                set_digits_unsigned<MinNumDigits>>::type;
-    }
+    // cnl::_impl::set_digits
 
     /// \brief convert a type to a similar type with the given number of digits
     ///
@@ -151,18 +35,65 @@ namespace cnl {
     template<class T, int Digits>
     struct set_digits;
 
-    template<_impl::integral T, int Digits>
-    struct set_digits<T, Digits>
-        : _impl::set_digits_integer<T, Digits> {
+    template<_impl::signed_integral T, int Digits>
+    struct set_digits<T, Digits> {
+        static_assert(Digits <= digits_v<intmax>, "digits exceeds widest signed integer");
+    };
+
+    template<_impl::unsigned_integral T, int Digits>
+    struct set_digits<T, Digits> {
+        static_assert(Digits <= digits_v<uintmax>, "digits exceeds widest unsigned integer");
+    };
+
+    template<_impl::signed_integral T, int Digits>
+    requires(Digits <= 7) struct set_digits<T, Digits> {
+        using type = int8;
+    };
+
+    template<_impl::unsigned_integral T, int Digits>
+    requires(Digits <= 8) struct set_digits<T, Digits> {
+        using type = uint8;
+    };
+
+    template<_impl::signed_integral T, int Digits>
+    requires(Digits > 7 && Digits <= 15) struct set_digits<T, Digits> {
+        using type = int16;
+    };
+
+    template<_impl::unsigned_integral T, int Digits>
+    requires(Digits > 8 && Digits <= 16) struct set_digits<T, Digits> {
+        using type = uint16;
+    };
+
+    template<_impl::signed_integral T, int Digits>
+    requires(Digits > 15 && Digits <= 31) struct set_digits<T, Digits> {
+        using type = int32;
+    };
+
+    template<_impl::unsigned_integral T, int Digits>
+    requires(Digits > 16 && Digits <= 32) struct set_digits<T, Digits> {
+        using type = uint32;
+    };
+
+    template<_impl::signed_integral T, int Digits>
+    requires(Digits > 31 && Digits <= 63) struct set_digits<T, Digits> {
+        using type = int64;
+    };
+
+    template<_impl::unsigned_integral T, int Digits>
+    requires(Digits > 32 && Digits <= 64) struct set_digits<T, Digits> {
+        using type = uint64;
     };
 
 #if defined(CNL_INT128_ENABLED)
-    template<int Digits>
-    struct set_digits<int128, Digits> : _impl::set_digits_integer<signed, Digits> {
+    template<_impl::signed_integral T, int Digits>
+    requires(Digits > 63 && Digits <= 127) struct set_digits<T, Digits> {
+        using type = int128;
     };
 
-    template<int Digits>
-    struct set_digits<uint128, Digits> : _impl::set_digits_integer<unsigned, Digits> {
+    template<_impl::unsigned_integral T, int Digits>
+    requires(Digits > 64 && Digits <= 128) struct set_digits<T, Digits> {
+        using type = uint128;
     };
 #endif
 

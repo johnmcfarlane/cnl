@@ -143,17 +143,17 @@ namespace {
     }
 
     namespace test_digits_2 {
-        static_assert(cnl::digits<cnl::int8> == 7);
-        static_assert(cnl::digits<cnl::uint8> == 8);
-        static_assert(cnl::digits<cnl::int16> == 15);
-        static_assert(cnl::digits<cnl::uint16> == 16);
-        static_assert(cnl::digits<cnl::int32> == 31);
-        static_assert(cnl::digits<cnl::uint32> == 32);
-        static_assert(cnl::digits<cnl::int64> == 63);
-        static_assert(cnl::digits<cnl::uint64> == 64);
+        static_assert(cnl::digits_v<cnl::int8> == 7);
+        static_assert(cnl::digits_v<cnl::uint8> == 8);
+        static_assert(cnl::digits_v<cnl::int16> == 15);
+        static_assert(cnl::digits_v<cnl::uint16> == 16);
+        static_assert(cnl::digits_v<cnl::int32> == 31);
+        static_assert(cnl::digits_v<cnl::uint32> == 32);
+        static_assert(cnl::digits_v<cnl::int64> == 63);
+        static_assert(cnl::digits_v<cnl::uint64> == 64);
 #if defined(CNL_INT128_ENABLED)
-        static_assert(cnl::digits<cnl::int128> == 127);
-        static_assert(cnl::digits<cnl::uint128> == 128);
+        static_assert(cnl::digits_v<cnl::int128> == 127);
+        static_assert(cnl::digits_v<cnl::uint128> == 128);
 #endif
     }
 

@@ -20,7 +20,7 @@ namespace {
     namespace default_parameters {
         static_assert(
                 // NOLINTNEXTLINE(misc-redundant-expression)
-                cnl::digits<int> == cnl::digits<cnl::static_integer<>>,
+                cnl::digits_v<int> == cnl::digits_v<cnl::static_integer<>>,
                 "cnl::static_integer parameter default test failed");
 
         static_assert(

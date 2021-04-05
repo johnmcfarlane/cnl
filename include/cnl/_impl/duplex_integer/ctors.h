@@ -18,14 +18,14 @@ namespace cnl {
     namespace _impl {
         // cnl::_impl::calculate_lower
         template<typename Lower, typename Integer>
-        requires(digits<Lower> >= digits<Integer>)
+        requires(digits_v<Lower> >= digits_v<Integer>)
                 [[nodiscard]] constexpr auto calculate_lower(Integer const& input) -> Lower
         {
             return Lower(input) & numeric_limits<Lower>::max();
         }
 
         template<typename Lower, typename Integer>
-        requires(digits<Lower> < digits<Integer>)
+        requires(digits_v<Lower> < digits_v<Integer>)
                 [[nodiscard]] constexpr auto calculate_lower(Integer const& input) -> Lower
         {
             return static_cast<Lower>(input & static_cast<Integer>(numeric_limits<Lower>::max()));
@@ -33,20 +33,20 @@ namespace cnl {
 
         // cnl::_impl::calculate upper
         template<typename Upper, typename Lower, typename Integer>
-        requires(digits<Lower> >= digits<Integer>)
+        requires(digits_v<Lower> >= digits_v<Integer>)
                 [[nodiscard]] constexpr auto calculate_upper(Integer const& input) -> Upper
         {
             // sign-friendly flush
             // TODO: Not reproduced locally. Investigate.
             // NOLINTNEXTLINE(clang-analyzer-core.UndefinedBinaryOperatorResult)
-            return static_cast<Upper>((input >> (digits<Integer> - 1)) >> 1);
+            return static_cast<Upper>((input >> (digits_v<Integer> - 1)) >> 1);
         }
 
         template<typename Upper, typename Lower, typename Integer>
-        requires(digits<Lower> < digits<Integer>)
+        requires(digits_v<Lower> < digits_v<Integer>)
                 [[nodiscard]] constexpr auto calculate_upper(Integer const& input) -> Upper
         {
-            return sensible_right_shift<Upper>(input, digits<Lower>);
+            return sensible_right_shift<Upper>(input, digits_v<Lower>);
         }
 
         template<typename Upper, typename Lower>

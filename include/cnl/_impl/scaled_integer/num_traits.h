@@ -22,7 +22,7 @@ namespace cnl {
     // scaled_integer specializations of <num_traits.h> templates
 
     template<typename Rep, class Scale>
-    inline constexpr auto digits<scaled_integer<Rep, Scale>> = digits<Rep>;
+    inline constexpr auto digits_v<scaled_integer<Rep, Scale>> = digits_v<Rep>;
 
     template<typename Rep, class Scale, int MinNumBits>
     struct set_digits<scaled_integer<Rep, Scale>, MinNumBits> {
@@ -59,7 +59,7 @@ namespace cnl {
                   scaled_integer<
                           set_digits_t<
                                   int, std::max(
-                                               digits<int>,
+                                               digits_v<int>,
                                                _impl::used_digits(Value) - trailing_bits(Value))>,
                           power<trailing_bits(Value)>>,
                   constant<Value>> {

@@ -14,7 +14,7 @@
 /// compositional numeric library
 namespace cnl {
     template<typename Rep, tag Tag>
-    inline constexpr auto digits<_impl::wrapper<Rep, Tag>> = digits<Rep>;
+    inline constexpr auto digits_v<_impl::wrapper<Rep, Tag>> = digits_v<Rep>;
 }
 
 #endif  // CNL_IMPL_WRAPPER_DIGITS_H

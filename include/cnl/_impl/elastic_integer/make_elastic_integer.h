@@ -18,9 +18,9 @@
 namespace cnl {
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     [[nodiscard]] constexpr auto make_elastic_integer(constant<Value>)
-            -> elastic_integer<digits<constant<Value>>>
+            -> elastic_integer<digits_v<constant<Value>>>
     {
-        return elastic_integer<digits<constant<Value>>>{Value};
+        return elastic_integer<digits_v<constant<Value>>>{Value};
     }
 
     namespace _impl {
@@ -42,7 +42,7 @@ namespace cnl {
 
         template<class Narrowest, class Integral>
         using make_type =
-                elastic_integer<digits<Integral>, make_narrowest_t<Narrowest, Integral>>;
+                elastic_integer<digits_v<Integral>, make_narrowest_t<Narrowest, Integral>>;
     }
 
     template<class Narrowest = void, class Integral>

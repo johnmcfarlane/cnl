@@ -49,7 +49,7 @@ namespace cnl {
         constexpr int fractional_digits = _impl::fractional_digits<Dividend> + _impl::integer_digits<Divisor>;
 
         constexpr auto necessary_digits = integer_digits + fractional_digits;
-        constexpr auto natural_digits = digits<natural_result>;
+        constexpr auto natural_digits = digits_v<natural_result>;
         constexpr auto result_digits = std::max(necessary_digits, natural_digits);
 
         constexpr int rep_exponent = -fractional_digits;

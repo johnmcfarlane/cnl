@@ -13,7 +13,7 @@
 namespace cnl {
     namespace _impl {
         template<typename T>
-        inline constexpr int width = digits<T> + numbers::signedness_v<T>;
+        inline constexpr int width = digits_v<T> + numbers::signedness_v<T>;
     }
 }
 
