@@ -6,6 +6,8 @@
 
 #include <cnl/elastic_scaled_integer.h>
 
+#include <cnl/_impl/config.h>
+
 #include <gtest/gtest.h>
 
 #include <sstream>

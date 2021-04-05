@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_ELASTIC_INTEGER_OPERATORS_H)
 #define CNL_IMPL_ELASTIC_INTEGER_OPERATORS_H
 
+#include "../config.h"
 #include "../num_traits/to_rep.h"
 #include "definition.h"
 

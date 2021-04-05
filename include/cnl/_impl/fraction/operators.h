@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_FRACTION_OPERATORS_H)
 #define CNL_IMPL_FRACTION_OPERATORS_H
 
+#include "../config.h"
 #include "definition.h"
 #include "make_fraction.h"
 #include "to_string.h"

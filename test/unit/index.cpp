@@ -9,6 +9,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // test_function - run given function and test its output
 
+#include <cnl/_impl/config.h>
+
 #include <gtest/gtest.h>
 #include <iostream>
 
