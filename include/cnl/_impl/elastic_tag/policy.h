@@ -48,7 +48,7 @@ namespace cnl {
 
         template<int LhsDigits, bool LhsIsSigned, int RhsDigits, bool RhsIsSigned>
         struct policy<_impl::modulo_op, LhsDigits, LhsIsSigned, RhsDigits, RhsIsSigned> {
-            static constexpr int digits = LhsDigits;
+            static constexpr int digits = std::min(LhsDigits, RhsDigits);
             static constexpr bool is_signed = LhsIsSigned || RhsIsSigned;
         };
 
