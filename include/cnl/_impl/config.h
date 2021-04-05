@@ -135,21 +135,21 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// CNL_IOSTREAM_ENABLED macro definition
+// CNL_IOSTREAMS_ENABLED macro definition
 
-#if defined(CNL_IOSTREAM_ENABLED)
-#error CNL_IOSTREAM_ENABLED already defined
+#if defined(CNL_IOSTREAMS_ENABLED)
+#error CNL_IOSTREAMS_ENABLED already defined
 #endif
 
-#if defined(CNL_USE_IOSTREAM)
-#if CNL_USE_IOSTREAM
-#define CNL_IOSTREAM_ENABLED
+#if defined(CNL_USE_IOSTREAMS)
+#if CNL_USE_IOSTREAMS
+#define CNL_IOSTREAMS_ENABLED
 #endif
 #elif defined(__STDC_HOSTED__)
 #if __STDC_HOSTED__
-#define CNL_IOSTREAM_ENABLED
+#define CNL_IOSTREAMS_ENABLED
 #else
-// Either CNL_USE_IOSTREAM or __STDC_HOSTED__
+// Either CNL_USE_IOSTREAMS or __STDC_HOSTED__
 // must be defined and set to either 0 or 1.
 #error __STDC_HOSTED__ not defined
 #endif

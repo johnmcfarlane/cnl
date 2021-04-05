@@ -19,7 +19,7 @@
 #include "to_chars.h"
 
 #include <cmath>
-#if defined(CNL_IOSTREAM_ENABLED)
+#if defined(CNL_IOSTREAMS_ENABLED)
 #include <istream>
 #include <ostream>
 #endif
