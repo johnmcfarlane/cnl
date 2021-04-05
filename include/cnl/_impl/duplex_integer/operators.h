@@ -10,6 +10,7 @@
 #include "../../integer.h"
 #include "../../numeric_limits.h"
 #include "../../wide_integer.h"
+#include "../config.h"
 #include "../custom_operator/definition.h"
 #include "../custom_operator/op.h"
 #include "../likely.h"

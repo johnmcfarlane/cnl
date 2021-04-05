@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_WRAPPER_OSTREAM_H)
 #define CNL_IMPL_WRAPPER_OSTREAM_H
 
+#include "../config.h"
 #include "../custom_operator/tag.h"
 #include "../ostream.h"
 #include "is_wrapper.h"

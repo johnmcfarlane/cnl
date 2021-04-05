@@ -6,6 +6,7 @@
 
 #include <cnl/fraction.h>
 
+#include <cnl/_impl/config.h>
 #include <cnl/_impl/type_traits/assert_same.h>
 #include <cnl/_impl/type_traits/identical.h>
 
