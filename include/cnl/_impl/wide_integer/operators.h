@@ -12,14 +12,20 @@
 #include "definition.h"
 #include "set_rep.h"
 
+#if defined(CNL_IOSTREAMS_ENABLED)
+#include <ostream>
+#endif
+
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
+#if defined(CNL_IOSTREAMS_ENABLED)
         template<int Digits, typename Narrowest>
         auto& operator<<(std::ostream& out, wide_integer<Digits, Narrowest> const& value)
         {
             return out << to_rep(value);
         }
+#endif
     }
 }
 

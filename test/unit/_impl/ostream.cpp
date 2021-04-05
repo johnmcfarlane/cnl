@@ -12,7 +12,7 @@
 #include <gtest/gtest.h>
 
 namespace {
-#if defined(CNL_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED) && defined(CNL_IOSTREAMS_ENABLED)
     TEST(ostream, int128_42)  // NOLINT
     {
         using cnl::operator<<;

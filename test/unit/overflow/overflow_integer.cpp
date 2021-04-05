@@ -610,7 +610,7 @@ namespace {
     }
 #endif
 
-#if defined(CNL_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED) && defined(CNL_IOSTREAMS_ENABLED)
     TEST(overflow_integer, ostream128)  // NOLINT
     {
         std::stringstream out;

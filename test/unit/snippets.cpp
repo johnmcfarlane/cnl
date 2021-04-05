@@ -56,6 +56,7 @@ namespace define_a_fast_object_using_elastic_literal {
     //! [define an object using elastic literal]
 }
 
+#if defined(CNL_IOSTREAMS_ENABLED)
 TEST(snippets, scaled_integer_division)  // NOLINT
 {
     std::stringstream cout;
@@ -90,3 +91,4 @@ TEST(snippets, scaled_integer_division)  // NOLINT
 
     ASSERT_EQ("I get 4 candles and €.6 change.\n", cout.str());
 }
+#endif

@@ -219,6 +219,7 @@ namespace {
         ASSERT_EQ("5/7"s, cnl::to_string(cnl::fraction{cnl::int8{5}, cnl::uint8{7}}));
     }
 
+#if defined(CNL_IOSTREAMS_ENABLED)
     TEST(fraction, ostream)  // NOLINT
     {
         using namespace std::literals::string_literals;
@@ -226,4 +227,5 @@ namespace {
         s << cnl::fraction{cnl::int8{5}, cnl::uint8{7}};
         ASSERT_EQ("5/7"s, s.str());
     }
+#endif
 }

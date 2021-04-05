@@ -13,6 +13,7 @@
 
 #include <iostream>
 
+#if defined(CNL_IOSTREAMS_ENABLED)
 ////////////////////////////////////////////////////////////////////////////////
 //! [scaled_integer overflow example 1]
 void overflow_example1()
@@ -47,3 +48,4 @@ TEST(index, faq_overflow_example)  // NOLINT
     ASSERT_DEATH(overflow_example2(), "");
 #endif
 }
+#endif
