@@ -18,6 +18,7 @@ class CnlConan(ConanFile):
         "cppcheck": [False, True],
         "enable_exceptions": [False, True],
         "int128": [False, True],
+        "iostreams": [False, True],
         "sanitize": [False, True],
         "test": [None, "unit", "benchmark", "all"]
     }
@@ -26,6 +27,7 @@ class CnlConan(ConanFile):
         "cppcheck": False,
         "enable_exceptions": True,
         "int128": True,
+        "iostreams": True,
         "sanitize": False,
         "test": None,
     }
@@ -48,6 +50,7 @@ class CnlConan(ConanFile):
         cmake.definitions["CNL_EXCEPTIONS"] = "ON" if self.options.enable_exceptions else "OFF"
         cmake.definitions["CNL_GTEST_MAIN_TARGET:STRING"] = "GTest::gtest_main"
         cmake.definitions["CNL_INT128"] = "ON" if self.options.int128 else "OFF"
+        cmake.definitions["CNL_IOSTREAMS"] = "ON" if self.options.iostreams else "OFF"
         cmake.definitions["CNL_SANITIZE"] = "ON" if self.options.sanitize else "OFF"
 
         cmake.configure()
