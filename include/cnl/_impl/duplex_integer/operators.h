@@ -28,7 +28,9 @@
 #include "set_digits.h"
 #include "shift.h"
 
+#if defined(CNL_IOSTREAMS_ENABLED)
 #include <ostream>
+#endif
 
 /// compositional numeric library
 namespace cnl {
@@ -243,11 +245,13 @@ namespace cnl {
         ////////////////////////////////////////////////////////////////////////////////
         // cnl::duplex_integer streaming
 
+#if defined(CNL_IOSTREAMS_ENABLED)
         template<typename Upper, typename Lower>
         auto& operator<<(std::ostream& out, duplex_integer<Upper, Lower> const& value)
         {
             return out << cnl::to_chars_static(value).chars.data();
         }
+#endif
     }
 }
 

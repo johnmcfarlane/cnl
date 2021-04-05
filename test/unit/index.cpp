@@ -12,6 +12,8 @@
 #include <gtest/gtest.h>
 #include <iostream>
 
+#if defined(CNL_IOSTREAMS_ENABLED)
+
 // calls the given function and checks that it produces the expected output
 void test_function(void (*function)(), char const* output)
 {
@@ -213,3 +215,4 @@ TEST(index, elastic_example)  // NOLINT
     test_function(elastic_example1, "");
     test_function(elastic_example2, "254.00390625\n");
 }
+#endif

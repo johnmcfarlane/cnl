@@ -19,7 +19,6 @@
 #include "_impl/rounding/nearest_rounding_tag.h"
 #include "_impl/wrapper.h"
 
-#include <ostream>
 #include <type_traits>
 
 /// compositional numeric library

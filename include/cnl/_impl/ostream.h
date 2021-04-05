@@ -12,12 +12,14 @@
 #include "to_chars.h"
 
 #include <array>
+#if defined(CNL_IOSTREAMS_ENABLED)
 #include <ostream>
+#endif
 
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-#if defined(CNL_INT128_ENABLED)
+#if defined(CNL_INT128_ENABLED) && defined(CNL_IOSTREAMS_ENABLED)
         /// \brief output-streaming operator for native signed 128-bit integer
         /// \note must be used in same scope following a `using cnl::operator<<;` directive
         inline auto& operator<<(std::ostream& out, int128 const n)

@@ -10,15 +10,19 @@
 #include "../num_traits/to_rep.h"
 #include "definition.h"
 
+#if defined(CNL_IOSTREAMS_ENABLED)
 #include <ostream>
+#endif
 
 /// compositional numeric library
 namespace cnl {
+#if defined(CNL_IOSTREAMS_ENABLED)
     template<int Digits, class Narrowest>
     auto& operator<<(std::ostream& o, elastic_integer<Digits, Narrowest> const& i)
     {
         return o << _impl::to_rep(i);
     }
+#endif
 }
 
 #endif  // CNL_IMPL_ELASTIC_INTEGER_OPERATORS_H

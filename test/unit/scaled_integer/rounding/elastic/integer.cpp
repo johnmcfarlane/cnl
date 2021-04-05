@@ -25,10 +25,12 @@ namespace {
         ASSERT_EQ(expected, actual);
     }
 
+#if defined(CNL_IOSTREAMS_ENABLED)
     TEST(scaled_integer_rounding_elastic_integer, ostream)  // NOLINT
     {
         testing::internal::CaptureStdout();
         std::cout << scaled_integer_rounding_elastic_integer<24, -20>{25.25};
         ASSERT_EQ("25.25", testing::internal::GetCapturedStdout());
     }
+#endif
 }

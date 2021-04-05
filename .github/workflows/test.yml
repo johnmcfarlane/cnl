@@ -25,6 +25,7 @@ jobs:
             exceptions: "False"
             generator: "Unix Makefiles"
             int128: "True"
+            iostreams: "True"
             os-version: macos-10.15
             sanitize: "False"
             stdlib: libc++
@@ -43,6 +44,7 @@ jobs:
             exceptions: "True"
             generator: "Ninja"
             int128: "True"
+            iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:clang-11-libcpp
             os-version: ubuntu-20.04
             sanitize: "False"
@@ -62,6 +64,7 @@ jobs:
             exceptions: "True"
             generator: "Ninja"
             int128: "True"
+            iostreams: "True"
             os-version: macos-10.15
             sanitize: "False"
             stdlib: libstdc++11
@@ -80,6 +83,7 @@ jobs:
             exceptions: "False"
             generator: "Unix Makefiles"
             int128: "False"
+            iostreams: "False"
             linux-container: johnmcfarlane/cnl_ci:gcc-10
             os-version: ubuntu-20.04
             sanitize: "True"
@@ -99,6 +103,7 @@ jobs:
             exceptions: "True"
             generator: "Ninja"
             int128: "True"
+            iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:clang-10-libcpp
             os-version: ubuntu-20.04
             sanitize: "False"
@@ -118,6 +123,7 @@ jobs:
             exceptions: "True"
             generator: "Ninja"
             int128: "False"
+            iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:clang-11-libcpp
             os-version: ubuntu-20.04
             sanitize: "True"
@@ -137,6 +143,7 @@ jobs:
             exceptions: "True"
             generator: "Ninja"
             int128: "False"
+            iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:gcc-10
             os-version: ubuntu-20.04
             sanitize: "False"
@@ -191,6 +198,7 @@ jobs:
           --env CONAN_CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
           --options clang_tidy=${{matrix.clang_tidy}} \
           --options int128=${{matrix.int128}} \
+          --options iostreams=${{matrix.iostreams}} \
           --options enable_exceptions=${{matrix.exceptions}} \
           --options sanitize=${{matrix.sanitize}} \
           --options test=all \

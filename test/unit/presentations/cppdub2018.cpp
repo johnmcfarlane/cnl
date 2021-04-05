@@ -37,11 +37,13 @@ namespace a {
 }
 
 namespace b {
+#if defined(CNL_IOSTREAMS_ENABLED)
     void f()
     {
         auto n = cnl::scaled_integer<int, cnl::power<-8>>{0.25F};
         std::cout << n * 5;  // prints "1.25"
     }
+#endif
 }
 
 namespace c {

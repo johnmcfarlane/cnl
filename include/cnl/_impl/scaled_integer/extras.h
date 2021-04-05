@@ -19,7 +19,7 @@
 #include "to_chars.h"
 
 #include <cmath>
-#if defined(CNL_IOSTREAM_ENABLED)
+#if defined(CNL_IOSTREAMS_ENABLED)
 #include <istream>
 #include <ostream>
 #endif
@@ -137,6 +137,7 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::scaled_integer streaming - (placeholder implementation)
 
+#if defined(CNL_IOSTREAMS_ENABLED)
     template<typename Rep, int Exponent, int Radix>
     auto& operator<<(std::ostream& out, scaled_integer<Rep, power<Exponent, Radix>> const& fp)
     {
@@ -151,6 +152,7 @@ namespace cnl {
         fp = ld;
         return in;
     }
+#endif
 }
 
 #endif  // CNL_IMPL_SCALED_INTEGER_EXTRAS_H

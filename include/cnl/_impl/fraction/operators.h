@@ -11,7 +11,9 @@
 #include "make_fraction.h"
 #include "to_string.h"
 
+#if defined(CNL_IOSTREAMS_ENABLED)
 #include <ostream>
+#endif
 
 /// compositional numeric library
 namespace cnl {
@@ -135,11 +137,13 @@ namespace cnl {
         return lhs.numerator * rhs.denominator >= rhs.numerator * lhs.denominator;
     }
 
+#if defined(CNL_IOSTREAMS_ENABLED)
     template<typename Numerator, typename Denominator>
     auto& operator<<(std::ostream& out, fraction<Numerator, Denominator> const& f)
     {
         return out << to_string(f);
     }
+#endif
 }
 
 #endif  // CNL_IMPL_FRACTION_OPERATORS_H
