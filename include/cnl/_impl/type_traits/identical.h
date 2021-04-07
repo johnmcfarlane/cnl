@@ -7,8 +7,6 @@
 #if !defined(CNL_IMPL_TYPE_TRAITS_IDENTICAL_H)
 #define CNL_IMPL_TYPE_TRAITS_IDENTICAL_H
 
-#include "../config.h"
-
 #include <type_traits>
 
 /// compositional numeric library
