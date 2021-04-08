@@ -62,27 +62,24 @@ namespace {
             "cnl::elastic_integer test failed");
 
     static_assert(
-            identical(elastic_scaled_integer<2, -2>{1.5} << 1, elastic_scaled_integer<2, -2>{3}),
-            "cnl::elastic_scaled_integer test failed");
+            identical(elastic_scaled_integer<2, cnl::power<-2>>{1.5} << 1, elastic_scaled_integer<2, cnl::power<-2>>{3}));
 
     static_assert(
-            identical(elastic_scaled_integer<2, -2>{1.5} << 1, elastic_scaled_integer<2, -2>{3}),
-            "cnl::elastic_scaled_integer test failed");
+            identical(elastic_scaled_integer<2, cnl::power<-2>>{1.5} << 1, elastic_scaled_integer<2, cnl::power<-2>>{3}));
 
     static_assert(
-            identical(elastic_scaled_integer<2, -2>{1.5} >> 1, elastic_scaled_integer<2, -2>{0.75}),
-            "cnl::elastic_scaled_integer test failed");
+            identical(elastic_scaled_integer<2, cnl::power<-2>>{1.5} >> 1, elastic_scaled_integer<2, cnl::power<-2>>{0.75}));
 }
 
 namespace test_from_value {
     static_assert(
             identical(
                     cnl::scaled_integer<unsigned>{42},
-                    cnl::_impl::from_value<elastic_scaled_integer<20, 10>>(42U)));
+                    cnl::_impl::from_value<elastic_scaled_integer<20, cnl::power<10>>>(42U)));
     static_assert(
             identical(
-                    elastic_scaled_integer<20, 0>{cnl::elastic_integer<20>{42}},
-                    cnl::_impl::from_value<elastic_scaled_integer<20, 10>>(cnl::elastic_integer<20>{
+                    elastic_scaled_integer<20, cnl::power<0>>{cnl::elastic_integer<20>{42}},
+                    cnl::_impl::from_value<elastic_scaled_integer<20, cnl::power<10>>>(cnl::elastic_integer<20>{
                             42})));
 }
 
@@ -91,12 +88,10 @@ namespace test_ctor {
     static_assert(
             identical(
                     uint32_t{0x76543210},
-                    uint32_t(elastic_scaled_integer<64, -32, unsigned>{
-                            elastic_scaled_integer<32, 0, unsigned>{0x76543210LL}})),
-            "cnl::elastic_scaled_integer ctor");
+                    uint32_t(elastic_scaled_integer<64, cnl::power<-32>, unsigned>{
+                            elastic_scaled_integer<32, cnl::power<>, unsigned>{0x76543210LL}})));
     static_assert(
-            identical(uint32_t{1}, uint32_t(elastic_scaled_integer<64, -32, unsigned>{1})),
-            "cnl::elastic_scaled_integer ctor");
+            identical(uint32_t{1}, uint32_t(elastic_scaled_integer<64, cnl::power<-32>, unsigned>{1})));
 
     static_assert(
             identical(
@@ -117,8 +112,8 @@ namespace test_ctor {
 
 namespace test_addition {
     static constexpr auto lhs = cnl::elastic_scaled_integer<31>{1};
-    static constexpr auto rhs = cnl::elastic_scaled_integer<40, -31>{1};
-    static constexpr auto expected = cnl::elastic_scaled_integer<63, -31>{2};
+    static constexpr auto rhs = cnl::elastic_scaled_integer<40, cnl::power<-31>>{1};
+    static constexpr auto expected = cnl::elastic_scaled_integer<63, cnl::power<-31>>{2};
     static constexpr auto sum = lhs + rhs;
     static_assert(identical(expected, sum), "cnl::elastic_scaled_integer addition");
 }
@@ -129,30 +124,27 @@ namespace test_division {
 
     static_assert(
             identical(
-                    elastic_scaled_integer<62, -31>{.5},
+                    elastic_scaled_integer<62, cnl::power<-31>>{.5},
                     cnl::quotient(
-                            cnl::elastic_scaled_integer<31, 0>{1},
-                            cnl::elastic_scaled_integer<31, 0>{2})),
-            "cnl::quotient(cnl::elastic_scaled_integer, cnl::elastic_scaled_integer)");
+                            cnl::elastic_scaled_integer<31>{1},
+                            cnl::elastic_scaled_integer<31>{2})));
     static_assert(
             identical(
-                    elastic_scaled_integer<62, -31>{.5},
+                    elastic_scaled_integer<62, cnl::power<-31>>{.5},
                     make_scaled_integer(cnl::make_fraction(
-                            elastic_scaled_integer<31, 0>{1}, elastic_scaled_integer<31, 0>{2}))),
-            "cnl::elastic_scaled_integer division");
+                            elastic_scaled_integer<31>{1}, elastic_scaled_integer<31>{2}))));
 #if defined(CNL_INT128_ENABLED)
     static_assert(
             identical(
-                    elastic_scaled_integer<124, -62>{.5},
+                    elastic_scaled_integer<124, cnl::power<-62>>{.5},
                     make_scaled_integer(cnl::make_fraction(
-                            elastic_scaled_integer<62, 0>{1}, elastic_scaled_integer<62, 0>{2}))),
-            "cnl::elastic_scaled_integer division");
+                            elastic_scaled_integer<62>{1}, elastic_scaled_integer<62>{2}))));
 #endif
 }
 
 namespace test_set_signedness {
     static_assert(
-            cnl::numbers::signedness_v<cnl::numbers::set_signedness_t<elastic_scaled_integer<1, 0, unsigned>, true>>);
+            cnl::numbers::signedness_v<cnl::numbers::set_signedness_t<elastic_scaled_integer<1, cnl::power<0>, unsigned>, true>>);
 }
 
 namespace test_fraction_make {
@@ -161,7 +153,7 @@ namespace test_fraction_make {
     constexpr auto third = cnl::make_fraction(1_elastic, 3_elastic);
 
     constexpr auto named = cnl::quotient(third.numerator, third.denominator);
-    static_assert(identical(cnl::elastic_scaled_integer<3, -2>{0.25}, named));
+    static_assert(identical(cnl::elastic_scaled_integer<3, cnl::power<-2>>{0.25}, named));
 
     constexpr auto deduced = cnl::make_scaled_integer(third);
     static_assert(identical(named, deduced));
@@ -172,8 +164,8 @@ namespace test_fraction_specific_byte {
 
     constexpr auto third = cnl::make_fraction(1_elastic, 3_elastic);
 
-    constexpr auto specific = elastic_scaled_integer<7, -6>{third};
-    static_assert(identical(cnl::elastic_scaled_integer<7, -6>{0.328125}, specific));
+    constexpr auto specific = elastic_scaled_integer<7, cnl::power<-6>>{third};
+    static_assert(identical(cnl::elastic_scaled_integer<7, cnl::power<-6>>{0.328125}, specific));
 }
 
 namespace test_fraction_specific_long {
@@ -181,72 +173,65 @@ namespace test_fraction_specific_long {
 
     constexpr auto third = cnl::make_fraction(1_elastic, 3_elastic);
 
-    constexpr auto specific = cnl::elastic_scaled_integer<63, -60>{third};
+    constexpr auto specific = cnl::elastic_scaled_integer<63, cnl::power<-60>>{third};
 #if defined(_MSC_VER) || defined(__arm__)
     // MSVC's long double is less precise than 63 digits
     static_assert(
             std::is_same<
-                    cnl::elastic_scaled_integer<63, -60>,
-                    cnl::elastic_scaled_integer<63, -60>>::value);
+                    cnl::elastic_scaled_integer<63, cnl::power<-60>>,
+                    cnl::elastic_scaled_integer<63, cnl::power<-60>>>::value);
     static_assert(specific > .333333333333333);
     static_assert(specific < .333333333333334);
 #else
-    static_assert(identical(cnl::elastic_scaled_integer<63, -60>{1.L / 3}, specific));
+    static_assert(identical(cnl::elastic_scaled_integer<63, cnl::power<-60>>{1.L / 3}, specific));
 #endif
 }
 
 namespace test_sqrt {
     static_assert(identical(
-            elastic_scaled_integer<16, -10>(0),
-            sqrt(elastic_scaled_integer<31, -20>(0))));
+            elastic_scaled_integer<16, cnl::power<-10>>(0),
+            sqrt(elastic_scaled_integer<31, cnl::power<-20>>(0))));
     static_assert(identical(
-            elastic_scaled_integer<16, -10>(1.4140625),
-            sqrt(elastic_scaled_integer<31, -20>(2.0))));
+            elastic_scaled_integer<16, cnl::power<-10>>(1.4140625),
+            sqrt(elastic_scaled_integer<31, cnl::power<-20>>(2.0))));
     static_assert(identical(
-            elastic_scaled_integer<16, -10>(2.0),
-            sqrt(elastic_scaled_integer<31, -20>(4.0))));
+            elastic_scaled_integer<16, cnl::power<-10>>(2.0),
+            sqrt(elastic_scaled_integer<31, cnl::power<-20>>(4.0))));
 }
 
 namespace test_floor {
     static_assert(
             identical(
-                    elastic_scaled_integer<5, 0>{13},
-                    cnl::floor(elastic_scaled_integer<10, -5>{13.625})),
-            "floor(elastic_scaled_integer)");
+                    elastic_scaled_integer<5>{13},
+                    cnl::floor(elastic_scaled_integer<10, cnl::power<-5>>{13.625})));
     static_assert(
             identical(
-                    elastic_scaled_integer<5, 0>{-14},
-                    cnl::floor(elastic_scaled_integer<10, -5>{-13.625})),
-            "floor(elastic_scaled_integer)");
+                    elastic_scaled_integer<5>{-14},
+                    cnl::floor(elastic_scaled_integer<10, cnl::power<-5>>{-13.625})));
     static_assert(
             identical(
-                    elastic_scaled_integer<5, 5>{192},
-                    cnl::floor(elastic_scaled_integer<5, 5>{192})),
-            "floor(elastic_scaled_integer)");
+                    elastic_scaled_integer<5, cnl::power<5>>{192},
+                    cnl::floor(elastic_scaled_integer<5, cnl::power<5>>{192})));
 }
 
 namespace test_abs {
     static_assert(
             identical(
-                    elastic_scaled_integer<24, -20>{0.5},
-                    cnl::abs(elastic_scaled_integer<24, -20>{0.5})),
-            "abs(elastic_scaled_integer)");
+                    elastic_scaled_integer<24, cnl::power<-20>>{0.5},
+                    cnl::abs(elastic_scaled_integer<24, cnl::power<-20>>{0.5})));
     static_assert(
             identical(
-                    elastic_scaled_integer<31, -30>{0.5},
-                    cnl::abs(elastic_scaled_integer<31, -30>{0.5})),
-            "abs(elastic_scaled_integer)");
+                    elastic_scaled_integer<31, cnl::power<-30>>{0.5},
+                    cnl::abs(elastic_scaled_integer<31, cnl::power<-30>>{0.5})));
 #if defined(CNL_INT128_ENABLED)
     static_assert(
             identical(
-                    elastic_scaled_integer<63, -30>{0.5},
-                    cnl::abs(elastic_scaled_integer<63, -30>{0.5})),
-            "abs(elastic_scaled_integer)");
+                    elastic_scaled_integer<63, cnl::power<-30>>{0.5},
+                    cnl::abs(elastic_scaled_integer<63, cnl::power<-30>>{0.5})));
     static_assert(
             identical(
-                    elastic_scaled_integer<63, -31>{0.5},
-                    cnl::abs(elastic_scaled_integer<63, -31>{0.5})),
-            "abs(elastic_scaled_integer)");
+                    elastic_scaled_integer<63, cnl::power<-31>>{0.5},
+                    cnl::abs(elastic_scaled_integer<63, cnl::power<-31>>{0.5})));
 #endif
 }
 
@@ -315,28 +300,28 @@ struct print_num_as_error {
 
 namespace test_elastic_constant_literal {
     using cnl::_impl::identical;
-    static_assert(identical(0_elastic, elastic_scaled_integer<1, 0>{0}));
+    static_assert(identical(0_elastic, elastic_scaled_integer<1, cnl::power<0>>{0}));
 
-    static_assert(identical(1_elastic, elastic_scaled_integer<1, 0>{1}));
-    static_assert(identical(-1_elastic, elastic_scaled_integer<1, 0>{-1}));
+    static_assert(identical(1_elastic, elastic_scaled_integer<1, cnl::power<0>>{1}));
+    static_assert(identical(-1_elastic, elastic_scaled_integer<1, cnl::power<0>>{-1}));
 
-    static_assert(identical(2_elastic, elastic_scaled_integer<1, 1>{2}));
-    static_assert(identical(-2_elastic, elastic_scaled_integer<1, 1>{-2}));
+    static_assert(identical(2_elastic, elastic_scaled_integer<1, cnl::power<1>>{2}));
+    static_assert(identical(-2_elastic, elastic_scaled_integer<1, cnl::power<1>>{-2}));
 
-    static_assert(identical(3_elastic, elastic_scaled_integer<2, 0>{3}));
-    static_assert(identical(-3_elastic, elastic_scaled_integer<2, 0>{-3}));
+    static_assert(identical(3_elastic, elastic_scaled_integer<2, cnl::power<0>>{3}));
+    static_assert(identical(-3_elastic, elastic_scaled_integer<2, cnl::power<0>>{-3}));
 
-    static_assert(identical(4_elastic, elastic_scaled_integer<1, 2>{4}));
-    static_assert(identical(-4_elastic, elastic_scaled_integer<1, 2>{-4}));
+    static_assert(identical(4_elastic, elastic_scaled_integer<1, cnl::power<2>>{4}));
+    static_assert(identical(-4_elastic, elastic_scaled_integer<1, cnl::power<2>>{-4}));
 
-    static_assert(identical(6_elastic, elastic_scaled_integer<2, 1>{6}));
-    static_assert(identical(-6_elastic, elastic_scaled_integer<2, 1>{-6}));
+    static_assert(identical(6_elastic, elastic_scaled_integer<2, cnl::power<1>>{6}));
+    static_assert(identical(-6_elastic, elastic_scaled_integer<2, cnl::power<1>>{-6}));
 
-    static_assert(identical(0xAA_elastic, elastic_scaled_integer<7, 1>{0xaa}));
-    static_assert(identical(-0xaa_elastic, elastic_scaled_integer<7, 1>{-0xaa}));
+    static_assert(identical(0xAA_elastic, elastic_scaled_integer<7, cnl::power<1>>{0xaa}));
+    static_assert(identical(-0xaa_elastic, elastic_scaled_integer<7, cnl::power<1>>{-0xaa}));
 
-    static_assert(identical(897341888_elastic, elastic_scaled_integer<24, 6>{897341888}));
-    static_assert(identical(-897341888_elastic, elastic_scaled_integer<24, 6>{-897341888}));
+    static_assert(identical(897341888_elastic, elastic_scaled_integer<24, cnl::power<6>>{897341888}));
+    static_assert(identical(-897341888_elastic, elastic_scaled_integer<24, cnl::power<6>>{-897341888}));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -508,15 +493,15 @@ struct positive_elastic_test : number_test<Elastic> {
 #if !defined(_MSC_VER)
     static_assert(
             identical(
-                    cnl::elastic_scaled_integer<12, -7>{3. / 4},
+                    cnl::elastic_scaled_integer<12, cnl::power<-7>>{3. / 4},
                     cnl::make_scaled_integer(cnl::make_fraction(
-                            cnl::elastic_scaled_integer<10, -5>{1.5}, cnl::elastic_integer<2>{2}))),
+                            cnl::elastic_scaled_integer<10, cnl::power<-5>>{1.5}, cnl::elastic_integer<2>{2}))),
             "operator/ test failed");
     static_assert(
             identical(
-                    cnl::elastic_scaled_integer<12, -5>{4. / 3},
+                    cnl::elastic_scaled_integer<12, cnl::power<-5>>{4. / 3},
                     cnl::make_scaled_integer(cnl::make_fraction(
-                            cnl::elastic_integer<2>{2}, cnl::elastic_scaled_integer<10, -5>{1.5}))),
+                            cnl::elastic_integer<2>{2}, cnl::elastic_scaled_integer<10, cnl::power<-5>>{1.5}))),
             "operator/ test failed");
 #endif
 
@@ -532,22 +517,22 @@ struct positive_elastic_test : number_test<Elastic> {
 
 TEST(elastic_scaled_integer, over_int)  // NOLINT
 {
-    auto q = cnl::elastic_scaled_integer<10, -5>{1.5} / elastic_integer<2>{2};
-    auto e = cnl::elastic_scaled_integer<12, -7>{3. / 4};
+    auto q = cnl::elastic_scaled_integer<10, cnl::power<-5>>{1.5} / elastic_integer<2>{2};
+    auto e = cnl::elastic_scaled_integer<12, cnl::power<-7>>{3. / 4};
     EXPECT_EQ(e, q);
 }
 
 TEST(elastic_scaled_integer, int_over)  // NOLINT
 {
-    auto f = cnl::make_fraction(elastic_integer<2>{2}, elastic_scaled_integer<10, -5>{1.5});
+    auto f = cnl::make_fraction(elastic_integer<2>{2}, elastic_scaled_integer<10, cnl::power<-5>>{1.5});
     auto q = cnl::make_scaled_integer(f);
-    auto e = elastic_scaled_integer<12, -5>{4. / 3};
+    auto e = elastic_scaled_integer<12, cnl::power<-5>>{4. / 3};
     EXPECT_EQ(e, q);
 }
 
 TEST(elastic_scaled_integer, issue_88)  // NOLINT
 {
-    using fix_t = cnl::elastic_scaled_integer<30, -16>;
+    using fix_t = cnl::elastic_scaled_integer<30, cnl::power<-16>>;
     fix_t a = 2.0F;
     fix_t b = 1.0F;
     fix_t c = 1.0F;
@@ -677,12 +662,12 @@ struct elastic_test
     :
     // perform unsigned-specific value tests against unsigned elastic_scaled_integer specialization
     unsigned_elastic_test<
-            elastic_scaled_integer<IntegerDigits + FractionalDigits, -FractionalDigits, unsigned>>
+            elastic_scaled_integer<IntegerDigits + FractionalDigits, cnl::power<-FractionalDigits>, unsigned>>
     ,
 
     // perform negative value tests against signed elastic_scaled_integer specialization
     signed_elastic_test<
-            elastic_scaled_integer<IntegerDigits + FractionalDigits, -FractionalDigits, signed>> {
+            elastic_scaled_integer<IntegerDigits + FractionalDigits, cnl::power<-FractionalDigits>, signed>> {
 };
 
 ////////////////////////////////////////////////////////////////////////////////

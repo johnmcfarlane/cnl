@@ -12,19 +12,19 @@ using cnl::_impl::identical;
 
 namespace {
     namespace test_native_round_down {
-        static constexpr auto expected = cnl::elastic_scaled_integer<4, -1>{0.0};
+        static constexpr auto expected = cnl::elastic_scaled_integer<4, cnl::power<-1>>{0.0};
         static constexpr auto actual = cnl::convert<
-                cnl::native_rounding_tag, cnl::elastic_scaled_integer<4, -1>>{}(
-                cnl::elastic_scaled_integer<8, -4>{0.3125});
+                cnl::native_rounding_tag, cnl::elastic_scaled_integer<4, cnl::power<-1>>>{}(
+                cnl::elastic_scaled_integer<8, cnl::power<-4>>{0.3125});
 
         static_assert(identical(expected, actual));
     }
 
     namespace test_native_round_up {
-        static constexpr auto expected = cnl::elastic_scaled_integer<4, -2>{0.25};
+        static constexpr auto expected = cnl::elastic_scaled_integer<4, cnl::power<-2>>{0.25};
         static constexpr auto actual = cnl::convert<
-                cnl::native_rounding_tag, cnl::elastic_scaled_integer<4, -2>>{}(
-                cnl::elastic_scaled_integer<8, -4>{0.3125});
+                cnl::native_rounding_tag, cnl::elastic_scaled_integer<4, cnl::power<-2>>>{}(
+                cnl::elastic_scaled_integer<8, cnl::power<-4>>{0.3125});
 
         static_assert(identical(expected, actual));
     }
@@ -33,52 +33,52 @@ namespace {
 
         // Positive
         static_assert(identical(
-                cnl::convert<cnl::native_rounding_tag, cnl::elastic_scaled_integer<16, 0>>{}(
-                        cnl::elastic_scaled_integer<16, -4>{5.25}),
-                cnl::elastic_scaled_integer<16, 0>{5.0}));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{5.25}), 84));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, 0>{5.0}), 5));
+                cnl::convert<cnl::native_rounding_tag, cnl::elastic_scaled_integer<16, cnl::power<0>>>{}(
+                        cnl::elastic_scaled_integer<16, cnl::power<-4>>{5.25}),
+                cnl::elastic_scaled_integer<16, cnl::power<0>>{5.0}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-4>>{5.25}), 84));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<0>>{5.0}), 5));
 
         static_assert(identical(
-                cnl::convert<cnl::native_rounding_tag, cnl::elastic_scaled_integer<16, 0>>{}(
-                        cnl::elastic_scaled_integer<16, -4>{5.5}),
-                cnl::elastic_scaled_integer<16, 0>{5.0}));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{5.5}), 88));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, 0>{5.0}), 5));
+                cnl::convert<cnl::native_rounding_tag, cnl::elastic_scaled_integer<16, cnl::power<0>>>{}(
+                        cnl::elastic_scaled_integer<16, cnl::power<-4>>{5.5}),
+                cnl::elastic_scaled_integer<16, cnl::power<0>>{5.0}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-4>>{5.5}), 88));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<0>>{5.0}), 5));
 
         static_assert(identical(
-                cnl::convert<cnl::native_rounding_tag, cnl::elastic_scaled_integer<16, -1>>{}(
-                        cnl::elastic_scaled_integer<16, -4>{5.25}),
-                cnl::elastic_scaled_integer<16, -1>{5.0}));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{5.25}), 84));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -1>{5.0}), 10));
+                cnl::convert<cnl::native_rounding_tag, cnl::elastic_scaled_integer<16, cnl::power<-1>>>{}(
+                        cnl::elastic_scaled_integer<16, cnl::power<-4>>{5.25}),
+                cnl::elastic_scaled_integer<16, cnl::power<-1>>{5.0}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-4>>{5.25}), 84));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-1>>{5.0}), 10));
 
         // Negative
         static_assert(identical(
-                cnl::convert<cnl::native_rounding_tag, cnl::elastic_scaled_integer<16, 0>>{}(
-                        cnl::elastic_scaled_integer<16, -4>{-5.25}),
-                cnl::elastic_scaled_integer<16, 0>{-5.0}));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{-5.25}), -84));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, 0>{-5.0}), -5));
+                cnl::convert<cnl::native_rounding_tag, cnl::elastic_scaled_integer<16, cnl::power<0>>>{}(
+                        cnl::elastic_scaled_integer<16, cnl::power<-4>>{-5.25}),
+                cnl::elastic_scaled_integer<16, cnl::power<0>>{-5.0}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-4>>{-5.25}), -84));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<0>>{-5.0}), -5));
 
         static_assert(identical(
-                cnl::convert<cnl::native_rounding_tag, cnl::elastic_scaled_integer<16, 0>>{}(
-                        cnl::elastic_scaled_integer<16, -4>{-5.5}),
-                cnl::elastic_scaled_integer<16, 0>{-5.0}));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{-5.5}), -88));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, 0>{-5.0}), -5));
+                cnl::convert<cnl::native_rounding_tag, cnl::elastic_scaled_integer<16, cnl::power<0>>>{}(
+                        cnl::elastic_scaled_integer<16, cnl::power<-4>>{-5.5}),
+                cnl::elastic_scaled_integer<16, cnl::power<0>>{-5.0}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-4>>{-5.5}), -88));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<0>>{-5.0}), -5));
 
         static_assert(identical(
-                cnl::convert<cnl::native_rounding_tag, cnl::elastic_scaled_integer<16, -1>>{}(
-                        cnl::elastic_scaled_integer<16, -4>{-5.25}),
-                cnl::elastic_scaled_integer<16, -1>{-5.0}));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{-5.25}), -84));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -1>{-5.0}), -10));
+                cnl::convert<cnl::native_rounding_tag, cnl::elastic_scaled_integer<16, cnl::power<-1>>>{}(
+                        cnl::elastic_scaled_integer<16, cnl::power<-4>>{-5.25}),
+                cnl::elastic_scaled_integer<16, cnl::power<-1>>{-5.0}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-4>>{-5.25}), -84));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-1>>{-5.0}), -10));
     }
 
     namespace elastic_scaled_integer_implicit_conversions {
-        using q4_4 = cnl::elastic_scaled_integer<8, -4>;
-        using q4_1 = cnl::elastic_scaled_integer<5, -1>;
+        using q4_4 = cnl::elastic_scaled_integer<8, cnl::power<-4>>;
+        using q4_1 = cnl::elastic_scaled_integer<5, cnl::power<-1>>;
 
         static_assert(
                 identical(q4_1{0.0}, static_cast<q4_1>(q4_4{0.25})),
@@ -95,9 +95,9 @@ namespace {
     }
 
     namespace elastic_scaled_integer_multiply {
-        using q4_20 = cnl::elastic_scaled_integer<24, -20>;
-        using q4_4 = cnl::elastic_scaled_integer<8, -4>;
-        using q4_1 = cnl::elastic_scaled_integer<5, -1>;
+        using q4_20 = cnl::elastic_scaled_integer<24, cnl::power<-20>>;
+        using q4_4 = cnl::elastic_scaled_integer<8, cnl::power<-4>>;
+        using q4_1 = cnl::elastic_scaled_integer<5, cnl::power<-1>>;
 
         static constexpr auto expected1 = q4_1{0.0};
         static constexpr q4_1 result1 = q4_4{0.5} * q4_4{0.5};
@@ -126,8 +126,8 @@ namespace {
     }
 
     namespace elastic_scaled_integer_divide {
-        using q4_4 = cnl::elastic_scaled_integer<8, -4>;
-        using q4_1 = cnl::elastic_scaled_integer<5, -1>;
+        using q4_4 = cnl::elastic_scaled_integer<8, cnl::power<-4>>;
+        using q4_1 = cnl::elastic_scaled_integer<5, cnl::power<-1>>;
 
         static constexpr auto expected1 = q4_1{1.0};
         static constexpr q4_1 result1 = cnl::quotient(q4_4{0.5}, q4_4{0.5});

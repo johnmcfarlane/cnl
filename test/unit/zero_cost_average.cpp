@@ -67,8 +67,8 @@ constexpr auto average_elastic(float input1, float input2)
     using namespace literals;
 
     // elastic_scaled_integer<31, -16> aliases to scaled_integer<elastic_integer<31, int>, -16>
-    auto fixed1 = elastic_scaled_integer<31, -16>{input1};
-    auto fixed2 = elastic_scaled_integer<31, -16>{input2};
+    auto fixed1 = elastic_scaled_integer<31, power<-16>>{input1};
+    auto fixed2 = elastic_scaled_integer<31, power<-16>>{input2};
 
     // concise, overflow-resistant and zero-cost!
     auto sum = fixed1 + fixed2;
@@ -79,10 +79,10 @@ constexpr auto average_elastic(float input1, float input2)
 using namespace literals;
 using cnl::_impl::identical;
 static_assert(
-        identical(65536_elastic, elastic_scaled_integer<1, 16>{65536}),
+        identical(65536_elastic, elastic_scaled_integer<1, power<16>>{65536}),
         "mistaken comment in average_elastic");
 static_assert(
-        identical(1_elastic / 65536_elastic, elastic_scaled_integer<1, -16>{0.0000152587890625}),
+        identical(1_elastic / 65536_elastic, elastic_scaled_integer<1, power<-16>>{0.0000152587890625}),
         "mistaken comment in average_elastic");
 
 static_assert(

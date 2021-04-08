@@ -35,21 +35,21 @@ namespace {
 
     namespace division {
         using cnl::elastic_scaled_integer;
-        constexpr elastic_scaled_integer<7, -6> numerator = 0.5, denominator = 1.0;
+        constexpr elastic_scaled_integer<7, cnl::power<-6>> numerator = 0.5, denominator = 1.0;
         constexpr auto quotient = numerator / denominator;
         static_assert(
-                identical(quotient, elastic_scaled_integer<7, 0>{0}), "position_paper test failed");
+                identical(quotient, elastic_scaled_integer<7, cnl::power<>>{0}), "position_paper test failed");
     }
 
     namespace division2 {
         using cnl::elastic_scaled_integer;
         using cnl::fraction;  // NOLINT(misc-unused-using-decls)
         using cnl::scaled_integer;  // NOLINT(misc-unused-using-decls)
-        constexpr elastic_scaled_integer<7, -6> numerator = 1.125;  // 1:6
-        constexpr elastic_scaled_integer<5, -3> denominator = 4.;  // 2:3
+        constexpr elastic_scaled_integer<7, cnl::power<-6>> numerator = 1.125;  // 1:6
+        constexpr elastic_scaled_integer<5, cnl::power<-3>> denominator = 4.;  // 2:3
         constexpr auto quotient = cnl::make_scaled_integer(fraction{numerator, denominator});
         static_assert(
-                identical(quotient, elastic_scaled_integer<12, -8>{0.28125}),
+                identical(quotient, elastic_scaled_integer<12, cnl::power<-8>>{0.28125}),
                 "position_paper test failed");
     }
 }

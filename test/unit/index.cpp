@@ -118,7 +118,7 @@ void advanced_arithmetic_example()
     auto named_xx = make_elastic_scaled_integer(x) * make_elastic_scaled_integer(x);
 
     // this type tracks both the number of digits and the exponent to ensure lossless multiplication
-    static_assert(is_same<decltype(named_xx), elastic_scaled_integer<16, -8, unsigned>>::value);
+    static_assert(is_same<decltype(named_xx), elastic_scaled_integer<16, power<-8>, unsigned>>::value);
     cout << named_xx << endl;  // "254.00390625" - also correct but prone to overflow
 }
 //! [advanced arithmetic example]
@@ -204,11 +204,11 @@ void elastic_example2()
 {
     // A type such as elastic_integer can be used to specialize scaled_integer.
     // Now arithmetic operations are more efficient and less error-prone.
-    auto b = elastic_scaled_integer<31, -27, unsigned>{15.9375};
+    auto b = elastic_scaled_integer<31, power<-27>, unsigned>{15.9375};
     auto bb = b * b;
 
     cout << bb << endl;  // "254.00390625"
-    static_assert(is_same<decltype(bb), elastic_scaled_integer<62, -54, unsigned>>::value);
+    static_assert(is_same<decltype(bb), elastic_scaled_integer<62, power<-54>, unsigned>>::value);
 }
 //! [elastic example]
 

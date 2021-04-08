@@ -54,7 +54,7 @@ auto square_scaled_integer(float input)
 auto square_elastic(float input)
 {
     // alias to scaled_integer<elastic_integer<31, int>, -16>
-    auto fixed = elastic_scaled_integer<15, 16>{input};
+    auto fixed = elastic_scaled_integer<15, power<-16>>{input};
 
     // concise, safe and zero-cost!
     auto prod = fixed * fixed;

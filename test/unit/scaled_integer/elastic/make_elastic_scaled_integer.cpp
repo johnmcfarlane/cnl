@@ -22,52 +22,52 @@ static constexpr auto int_digits = cnl::numeric_limits<int>::digits;
 static_assert(
         identical(
                 make_elastic_scaled_integer(cnl::constant<-1>{}),
-                cnl::elastic_scaled_integer<1, 0, int>{-1}),
+                cnl::elastic_scaled_integer<1, cnl::power<0>, int>{-1}),
         "using too many bytes to represent -1");
 static_assert(
-        identical(make_elastic_scaled_integer(-1_c), cnl::elastic_scaled_integer<1, 0, int>{-1}),
+        identical(make_elastic_scaled_integer(-1_c), cnl::elastic_scaled_integer<1, cnl::power<0>, int>{-1}),
         "make_elastic_scaled_integer");
 
 static_assert(
         identical(make_elastic_scaled_integer(123), elastic_scaled_integer<int_digits>{123}),
         "cnl::make_elastic_scaled_integer test failed");
 static_assert(
-        identical(elastic_scaled_integer<32, 0, unsigned>{123U}, make_elastic_scaled_integer(123U)),
+        identical(elastic_scaled_integer<32, cnl::power<0>, unsigned>{123U}, make_elastic_scaled_integer(123U)),
         "cnl::make_elastic_scaled_integer test failed");
 static_assert(
         identical(
                 make_elastic_scaled_integer(0x100000000_c),
-                elastic_scaled_integer<1, 32>{0x100000000ULL}),
+                elastic_scaled_integer<1, cnl::power<32>>{0x100000000ULL}),
         "cnl::make_elastic_scaled_integer test failed");
 static_assert(
         identical(
                 make_elastic_scaled_integer<cnl::uint8>(262143),
                 elastic_scaled_integer<
-                        cnl::numeric_limits<decltype(262143)>::digits, 0, cnl::uint8>{262143}),
+                        cnl::numeric_limits<decltype(262143)>::digits, cnl::power<0>, cnl::uint8>{262143}),
         "cnl::make_elastic_scaled_integer test failed");
 
 static_assert(
-        identical(make_elastic_scaled_integer(cnl::constant<4>{}), elastic_scaled_integer<1, 2>{4}));
-static_assert(identical(make_elastic_scaled_integer(40_c), elastic_scaled_integer<3, 3>{40}));
+        identical(make_elastic_scaled_integer(cnl::constant<4>{}), elastic_scaled_integer<1, cnl::power<2>>{4}));
+static_assert(identical(make_elastic_scaled_integer(40_c), elastic_scaled_integer<3, cnl::power<3>>{40}));
 static_assert(
         identical(
                 make_elastic_scaled_integer(0x123400000000_c),
-                elastic_scaled_integer<11, 34>{0x123400000000}));
+                elastic_scaled_integer<11, cnl::power<34>>{0x123400000000}));
 static_assert(
         identical(
                 make_elastic_scaled_integer<cnl::int8>(9876543),
-                elastic_scaled_integer<31, 0, cnl::int8>{9876543}));
+                elastic_scaled_integer<31, cnl::power<0>, cnl::int8>{9876543}));
 
 namespace test_from_scaled_integer {
     static_assert(
             identical(
-                    cnl::elastic_scaled_integer<16, -8, unsigned>{255.99609375},
+                    cnl::elastic_scaled_integer<16, cnl::power<-8>, unsigned>{255.99609375},
                     cnl::make_elastic_scaled_integer(
                             cnl::scaled_integer<std::uint16_t, cnl::power<-8>>{255.99609375})));
 
     static_assert(
             identical(
-                    cnl::elastic_scaled_integer<cnl::digits_v<long>, 3, signed>{88},
+                    cnl::elastic_scaled_integer<cnl::digits_v<long>, cnl::power<3>, signed>{88},
                     cnl::make_elastic_scaled_integer(cnl::scaled_integer<long, cnl::power<3>>{88})));
 }
 
