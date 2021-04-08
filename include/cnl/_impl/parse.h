@@ -170,7 +170,7 @@ namespace cnl {
         constexpr auto separator{'\''};
 
         [[nodiscard]] constexpr auto scan_msb(
-                char const* str, int length, bool is_negative, int base, int stride, int offset, int max_num_bits)
+                char const* str, bool is_negative, int base, int stride, int offset, int max_num_bits, int num_digits)
         {
             // If most significant digit char is not too great, use a slightly narrower result type.
             // In turn, ensure that large signed numbers don't 'nudge' over to wider types.
@@ -185,29 +185,32 @@ namespace cnl {
                     stride,
                     offset,
                     max_num_bits - (first_digit * 2 < base),
-                    length};
+                    num_digits};
         }
 
         [[nodiscard]] constexpr auto scan_base(char const* str, bool is_negative, int offset, int length)
         {
             auto const separators{narrow_cast<int>(std::count(str, str + length - 1, separator))};
-            length -= separators;
-            if (str[offset] != '0' || offset + 1 >= length) {
+            auto const num_non_separators{length - separators};
+            if (str[offset] != '0' || offset + 1 >= num_non_separators) {
                 static_assert(std::numeric_limits<int32_t>::digits10 == 9);
-                return scan_msb(str, length, is_negative, 10, 18, offset, (length * 3322 + 678) / 1000);
+                auto const num_digits{num_non_separators};
+                return scan_msb(str, is_negative, 10, 18, offset, (num_digits * 3322 + 678) / 1000, num_digits);
             }
             switch (str[offset + 1]) {
             case 'B':
-            case 'b':
-                length -= 2;
-                return scan_msb(str, length, is_negative, 2, 63, offset + 2, length);
+            case 'b': {
+                auto const num_digits{num_non_separators - 2};
+                return scan_msb(str, is_negative, 2, 63, offset + 2, num_digits, num_digits);
+            }
             case 'X':
-            case 'x':
-                length -= 2;
-                return scan_msb(str, length, is_negative, 16, 15, offset + 2, length * 4);
+            case 'x': {
+                auto const num_digits{num_non_separators - 2};
+                return scan_msb(str, is_negative, 16, 15, offset + 2, num_digits * 4, num_digits);
+            }
             default:
-                length -= 1;
-                return scan_msb(str, length, is_negative, 8, 21, offset + 1, length * 3);
+                auto const num_digits{num_non_separators - 1};
+                return scan_msb(str, is_negative, 8, 21, offset + 1, num_digits * 3, num_digits);
             }
         }
 
