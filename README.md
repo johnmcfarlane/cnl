@@ -163,6 +163,18 @@ Examples of projects using CNL:
   * [P0828](http://wg21.link/p0828) - Elastic Integers
   * [P1050](http://wg21.link/p1050) - Fractional Numeric Type
 
+## Alternatives
+
+* Much of the simplicity and efficiency in CNL's API design can be traced back
+  to Matheus Izvekov's [fp](https://github.com/mizvekov/fp) fixed point library.
+* Together with Lawrence Crowl's fixed-point paper, [P0106](https://wg21.link/p0106r0),
+  it lays the groundwork for integer-backed real number approximation that minimizes
+  loss of performance and precision.
+* [fpm](https://github.com/MikeLankamp/fpm) is a fixed-point math library with a
+  high quantity of mathematical functions.
+* [Fixed Point Class](https://www.codeproject.com/Articles/37636/Fixed-Point-Class)
+  is a single-header C++98 solution from Peter Schregle's.
+
 ## Contact Information
 
 All feedback greatly appreciated.
