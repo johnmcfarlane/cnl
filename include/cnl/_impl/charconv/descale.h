@@ -44,10 +44,14 @@ namespace cnl::_impl {
                       return n > Significand{numeric_limits<Significand>::max() / OutRadix};
                   }};
 
-        for (int in_exponent = InExponent; in_exponent != 0;) {
+        for (int in_exponent = InExponent; (in_exponent != 0) || !(output.significand % OutRadix);) {
             if constexpr (InExponent < 0) {
                 if (output.significand % InRadix) {
-                    if (!oob(output.significand)) {
+                    if (oob(output.significand)) {
+                        if (Precise) {
+                            return unreachable<descaled<Significand, OutRadix>>("number cannot be represented in this form");
+                        }
+                    } else {
                         output.significand *= OutRadix;
                         output.exponent--;
                         continue;
@@ -56,19 +60,17 @@ namespace cnl::_impl {
 
                 output.significand /= InRadix;
                 in_exponent++;
-            } else if constexpr (InExponent > 0) {
+            } else {
+                if (!(output.significand % OutRadix)) {
+                    output.significand /= OutRadix;
+                    output.exponent++;
+                    continue;
+                }
+
                 if (!oob(output.significand)) {
                     output.significand *= InRadix;
                     in_exponent--;
                 }
-
-                if (!(output.significand % OutRadix)) {
-                    output.significand /= OutRadix;
-                    output.exponent++;
-                }
-            } else {
-                // prevents compilers from hanging
-                return unreachable<descaled<Significand, OutRadix>>("impossible for condition");
             }
         }
 
