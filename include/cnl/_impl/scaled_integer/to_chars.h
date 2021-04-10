@@ -12,7 +12,6 @@
 #include "../../rounding_integer.h"
 #include "../charconv/constants.h"
 #include "../charconv/descale.h"
-#include "../charconv/to_chars.h"
 #include "../cnl_assert.h"
 #include "../cstdint/types.h"
 #include "../num_traits/fixed_width_scale.h"
@@ -269,7 +268,8 @@ namespace cnl {
         }
 
         using significand_type = std::conditional_t<(digits_v<Rep> > digits_v<int64>), Rep, int64>;
-        auto const descaled{_impl::descale<significand_type>(value)};
+        auto const descaled{_impl::descale<significand_type, 10>(
+                _impl::to_rep(value), power<Exponent, Radix>{})};
 
         return _impl::to_chars_non_zero(first, last, descaled);
     }

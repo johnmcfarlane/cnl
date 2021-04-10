@@ -11,10 +11,8 @@
 #include "../../numeric_limits.h"
 #include "../cstdint/types.h"
 #include "../numbers/signedness.h"
-#include "../scaled/power.h"
-#include "../scaled_integer/definition.h"
+#include "../scaled/declaration.h"
 #include "../unreachable.h"
-#include "../wrapper/to_rep.h"
 
 /// compositional numeric library
 namespace cnl::_impl {
@@ -24,13 +22,17 @@ namespace cnl::_impl {
         int exponent;
     };
 
-    template<integer Significand = int64, int OutRadix = 10, integer Rep = int, int InExponent = 0, int InRadix = 2>
-    [[nodiscard]] constexpr auto descale(scaled_integer<Rep, power<InExponent, InRadix>> const& input)
+    template<
+            integer Significand = int64, int OutRadix = 10,
+            bool Precise = false,
+            int InExponent = 0, int InRadix = 2,
+            integer Rep = int>
+    [[nodiscard]] constexpr auto descale(Rep const& input, power<InExponent, InRadix>)
     {
-        descaled<Significand, OutRadix> output{static_cast<Significand>(_impl::to_rep(input)), 0};
+        descaled<Significand, OutRadix> output{static_cast<Significand>(input), 0};
 
         auto const oob{
-                (input < 0.)
+                (input < Rep{0})
                 ? []([[maybe_unused]] Significand const& n) -> bool {
                       if constexpr (numbers::signedness_v<Significand>) {
                           return n < -numeric_limits<Significand>::max() / OutRadix;
