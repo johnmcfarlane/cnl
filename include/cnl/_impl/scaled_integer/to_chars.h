@@ -142,11 +142,10 @@ namespace cnl {
 
         [[nodiscard]] constexpr auto solve_scientific(descaled_info const& info)
         {
-            auto const num_e_chars{2 - info.exponent_has_sign};
             auto const num_exponent_chars{_impl::ssize(info.exponent_chars)};
 
             auto const unbounded_num_chars{
-                    info.num_significand_digits + _impl::ssizeof(radix_char) + num_e_chars + num_exponent_chars};
+                    info.num_significand_digits + _impl::ssizeof(radix_char) + _impl::ssizeof(e_char) + num_exponent_chars};
             auto const chars_truncated{std::max(0, unbounded_num_chars - info.max_chars)};
 
             return scientific_solution{
