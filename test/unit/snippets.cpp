@@ -30,7 +30,7 @@ namespace define_a_fast_object_using_make_elastic {
 
     static_assert(n == 0xAA, "n now has the value, 1024");
     static_assert(
-            std::is_same<decltype(n), elastic_scaled_integer<7, 1, int> const>::value,
+            std::is_same<decltype(n), elastic_scaled_integer<7, power<1>, int> const>::value,
             "by default make_elastic_scaled_integer uses the most efficient type it can");
     //! [define an int-sized object using make_elastic_scaled_integer and constant]
 }
@@ -41,7 +41,7 @@ namespace define_a_small_object_using_make_elastic {
 
     static_assert(n == 1536, "n now has the value, 1536");
     static_assert(
-            std::is_same<decltype(n), elastic_scaled_integer<2, 9, char> const>::value,
+            std::is_same<decltype(n), elastic_scaled_integer<2, power<9>, char> const>::value,
             "by default make_elastic_scaled_integer uses the most efficient type it can");
     //! [define a byte-sized object using \ref make_elastic_scaled_integer and \ref _c]
 }
@@ -53,7 +53,7 @@ namespace define_a_fast_object_using_elastic_literal {
 
     static_assert(n == 34);
     static_assert(
-            std::is_same<decltype(n), elastic_scaled_integer<5, 1> const>::value,
+            std::is_same<decltype(n), elastic_scaled_integer<5, power<1>> const>::value,
             "type only uses 1 bit of range");
     //! [define an object using elastic literal]
 }

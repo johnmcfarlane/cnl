@@ -61,14 +61,14 @@ namespace test_convert_nearest_rounding_native_datatypes {
 }
 
 namespace test_convert_nearest_rounding_elastic_scaled_integer {
-    static constexpr auto a = cnl::elastic_scaled_integer<8, -4>{0.3125};
+    static constexpr auto a = cnl::elastic_scaled_integer<8, cnl::power<-4>>{0.3125};
     static constexpr auto b = cnl::convert<
-            cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<4, -1>>{}(a);
-    static_assert(identical(cnl::elastic_scaled_integer<4, -1>{0.5}, b));
+            cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<4, cnl::power<-1>>>{}(a);
+    static_assert(identical(cnl::elastic_scaled_integer<4, cnl::power<-1>>{0.5}, b));
 
     static constexpr auto c = cnl::convert<
-            cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<4, -2>>{}(a);
-    static_assert(identical(cnl::elastic_scaled_integer<4, -2>{0.25}, c));
+            cnl::nearest_rounding_tag, cnl::elastic_scaled_integer<4, cnl::power<-2>>>{}(a);
+    static_assert(identical(cnl::elastic_scaled_integer<4, cnl::power<-2>>{0.25}, c));
 }
 
 namespace test_convert_nearest_rounding_scaled_integer {

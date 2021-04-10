@@ -11,6 +11,8 @@
 #define CNL_ELASTIC_SCALED_INTEGER_H
 
 #include "_impl/numbers/adopt_signedness.h"
+#include "_impl/scaled/is_scaled_tag.h"
+#include "_impl/scaled/power.h"
 #include "elastic_integer.h"
 #include "numeric_limits.h"
 #include "scaled_integer.h"
@@ -33,9 +35,9 @@ namespace cnl {
     ///
     /// \sa elastic_integer
 
-    template<int Digits, int Exponent = 0, class Narrowest = signed>
+    template<int Digits, scaled_tag Scale = power<>, class Narrowest = signed>
     using elastic_scaled_integer =
-            scaled_integer<elastic_integer<Digits, Narrowest>, power<Exponent>>;
+            scaled_integer<elastic_integer<Digits, Narrowest>, Scale>;
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +64,7 @@ namespace cnl {
     [[nodiscard]] constexpr auto make_elastic_scaled_integer(constant<Value>)
             -> elastic_scaled_integer<
                     std::max(digits_v<constant<Value>> - trailing_bits(Value), 1),
-                    trailing_bits(Value), Narrowest>
+                    power<trailing_bits(Value)>, Narrowest>
     {
         return Value;
     }
@@ -89,7 +91,7 @@ namespace cnl {
     template<typename Narrowest = void, typename Integral = int>
     [[nodiscard]] constexpr auto make_elastic_scaled_integer(Integral const& value)
             -> elastic_scaled_integer<
-                    numeric_limits<Integral>::digits, 0,
+                    numeric_limits<Integral>::digits, power<>,
                     typename std::conditional<
                             std::is_same<void, Narrowest>::value,
                             _impl::adopt_signedness_t<int, Integral>, Narrowest>::type>
@@ -97,11 +99,10 @@ namespace cnl {
         return {value};
     }
 
-    template<typename Narrowest = void, typename Rep = int, int Exponent = 0, int Radix = 2>
-    [[nodiscard]] constexpr auto make_elastic_scaled_integer(
-            scaled_integer<Rep, power<Exponent, Radix>> const& value)
+    template<typename Narrowest = void, typename Rep = int, scaled_tag Scale = power<>>
+    [[nodiscard]] constexpr auto make_elastic_scaled_integer(scaled_integer<Rep, Scale> const& value)
             -> elastic_scaled_integer<
-                    numeric_limits<Rep>::digits, Exponent,
+                    numeric_limits<Rep>::digits, Scale,
                     typename std::conditional<
                             std::is_same<void, Narrowest>::value,
                             _impl::adopt_signedness_t<int, Rep>, Narrowest>::type>

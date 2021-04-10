@@ -19,47 +19,47 @@ namespace {
         // Positive
         static_assert(identical(
                 cnl::convert<
-                        cnl::neg_inf_rounding_tag, cnl::elastic_scaled_integer<16, 0>>{}(cnl::elastic_scaled_integer<16, -4>{
+                        cnl::neg_inf_rounding_tag, cnl::elastic_scaled_integer<16, cnl::power<0>>>{}(cnl::elastic_scaled_integer<16, cnl::power<-4>>{
                         5.25}),
-                cnl::elastic_scaled_integer<16, 0>{5.0}));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{5.25}), 84));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, 0>{5.0}), 5));
+                cnl::elastic_scaled_integer<16, cnl::power<0>>{5.0}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-4>>{5.25}), 84));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<0>>{5.0}), 5));
 
         static_assert(identical(
-                cnl::convert<cnl::neg_inf_rounding_tag, cnl::elastic_scaled_integer<16, 0>>{}(cnl::elastic_scaled_integer<16, -4>{
+                cnl::convert<cnl::neg_inf_rounding_tag, cnl::elastic_scaled_integer<16, cnl::power<0>>>{}(cnl::elastic_scaled_integer<16, cnl::power<-4>>{
                         5.5}),
-                cnl::elastic_scaled_integer<16, 0>{5.0}));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{5.5}), 88));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, 0>{5.0}), 5));
+                cnl::elastic_scaled_integer<16, cnl::power<0>>{5.0}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-4>>{5.5}), 88));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<0>>{5.0}), 5));
 
         static_assert(identical(
-                cnl::convert<cnl::neg_inf_rounding_tag, cnl::elastic_scaled_integer<16, -1>>{}(cnl::elastic_scaled_integer<16, -4>{
+                cnl::convert<cnl::neg_inf_rounding_tag, cnl::elastic_scaled_integer<16, cnl::power<-1>>>{}(cnl::elastic_scaled_integer<16, cnl::power<-4>>{
                         5.25}),
-                cnl::elastic_scaled_integer<16, -1>{5.0}));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{5.25}), 84));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -1>{5.0}), 10));
+                cnl::elastic_scaled_integer<16, cnl::power<-1>>{5.0}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-4>>{5.25}), 84));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-1>>{5.0}), 10));
 
         // Negative
         static_assert(identical(
-                cnl::convert<cnl::neg_inf_rounding_tag, cnl::elastic_scaled_integer<16, 0>>{}(
-                        cnl::elastic_scaled_integer<16, -4>{-5.25}),
-                cnl::elastic_scaled_integer<16, 0>{-6.0}));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{-5.25}), -84));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, 0>{-6.0}), -6));
+                cnl::convert<cnl::neg_inf_rounding_tag, cnl::elastic_scaled_integer<16, cnl::power<0>>>{}(
+                        cnl::elastic_scaled_integer<16, cnl::power<-4>>{-5.25}),
+                cnl::elastic_scaled_integer<16, cnl::power<0>>{-6.0}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-4>>{-5.25}), -84));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<0>>{-6.0}), -6));
 
         static_assert(identical(
-                cnl::convert<cnl::neg_inf_rounding_tag, cnl::elastic_scaled_integer<16, 0>>{}(
-                        cnl::elastic_scaled_integer<16, -4>{-5.5}),
-                cnl::elastic_scaled_integer<16, 0>{-6.0}));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{-5.5}), -88));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, 0>{-6.0}), -6));
+                cnl::convert<cnl::neg_inf_rounding_tag, cnl::elastic_scaled_integer<16, cnl::power<0>>>{}(
+                        cnl::elastic_scaled_integer<16, cnl::power<-4>>{-5.5}),
+                cnl::elastic_scaled_integer<16, cnl::power<0>>{-6.0}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-4>>{-5.5}), -88));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<0>>{-6.0}), -6));
 
         static_assert(identical(
-                cnl::convert<cnl::neg_inf_rounding_tag, cnl::elastic_scaled_integer<16, -1>>{}(
-                        cnl::elastic_scaled_integer<16, -4>{-5.25}),
-                cnl::elastic_scaled_integer<16, -1>{-5.5}));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -4>{-5.25}), -84));
-        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, -1>{-5.5}), -11));
+                cnl::convert<cnl::neg_inf_rounding_tag, cnl::elastic_scaled_integer<16, cnl::power<-1>>>{}(
+                        cnl::elastic_scaled_integer<16, cnl::power<-4>>{-5.25}),
+                cnl::elastic_scaled_integer<16, cnl::power<-1>>{-5.5}));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-4>>{-5.25}), -84));
+        static_assert(identical(cnl::unwrap(cnl::elastic_scaled_integer<16, cnl::power<-1>>{-5.5}), -11));
     }
 
     template<
