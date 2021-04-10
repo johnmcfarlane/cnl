@@ -8,8 +8,8 @@
 #define CNL_IMPL_OSTREAM_H
 
 #include "../cstdint.h"
+#include "charconv/to_chars.h"
 #include "config.h"
-#include "to_chars.h"
 
 #include <array>
 #if defined(CNL_IOSTREAMS_ENABLED)

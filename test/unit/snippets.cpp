@@ -49,12 +49,13 @@ namespace define_a_small_object_using_make_elastic {
 namespace define_a_fast_object_using_elastic_literal {
     //! [define an object using elastic literal]
     using namespace cnl::literals;
-    constexpr auto n = 34_elastic;
+    constexpr auto n = 3.141_cnl;
 
-    static_assert(n == 34);
+    static_assert(n == 3.141);
     static_assert(
-            std::is_same<decltype(n), elastic_scaled_integer<5, power<1>> const>::value,
-            "type only uses 1 bit of range");
+            std::is_same<
+                    elastic_scaled_integer<12, power<-3, 10>> const,
+                    decltype(n)>::value);
     //! [define an object using elastic literal]
 }
 
@@ -66,14 +67,17 @@ TEST(snippets, scaled_integer_division)  // NOLINT
     //! [scaled_integer division example]
     // How many candles can I buy?
 
-    // Euros have subunits of 100^-1
-    using euros = scaled_integer<int, power<-1, 100>>;
+    // Euros have subunits of 10^-2
+    using euros = scaled_integer<int, power<-2, 10>>;
+
+    // Using the _cnl suffix helps avoid decimal rounding errors
+    using namespace cnl::literals;
 
     // I have €5
     constexpr auto funds{euros{5}};
 
     // Candles cost €1.10¢
-    auto candle_price{euros{1.10}};
+    auto candle_price{euros{1.10_cnl}};
 
     // I can buy 5 / 1.10 = 4 candles; result is a whole number
     auto num_candles{funds / candle_price};
@@ -85,7 +89,7 @@ TEST(snippets, scaled_integer_division)  // NOLINT
     cout << "I get " << num_candles << " candles and €" << change << " change.\n";
     //! [scaled_integer division example]
 
-    static_assert(std::is_same_v<decltype(num_candles), scaled_integer<int, power<0, 100>>>);
+    static_assert(std::is_same_v<decltype(num_candles), scaled_integer<int, power<0, 10>>>);
     ASSERT_EQ(4, num_candles);
 
     static_assert(std::is_same_v<decltype(change), euros>);

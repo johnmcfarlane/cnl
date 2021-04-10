@@ -10,6 +10,8 @@
 #include "../../integer.h"
 #include "../../numeric_limits.h"
 #include "../../rounding_integer.h"
+#include "../charconv/constants.h"
+#include "../charconv/descale.h"
 #include "../cnl_assert.h"
 #include "../cstdint/types.h"
 #include "../num_traits/fixed_width_scale.h"
@@ -17,8 +19,6 @@
 #include "../scaled/power.h"
 #include "../ssize.h"
 #include "../ssizeof.h"
-#include "../to_chars.h"
-#include "../unreachable.h"
 #include "definition.h"
 #include "num_traits.h"
 #include "numbers.h"
@@ -54,72 +54,6 @@ namespace cnl {
             static constexpr auto value =
                     _sign_chars + _integer_chars + _radix_chars + _fractional_chars;
         };
-
-        template<integer Rep, int Radix>
-        struct descaled {
-            Rep significand;
-            int exponent;
-        };
-
-        template<integer Significand = int64, int OutRadix = 10, integer Rep = int, int InExponent = 0, int InRadix = 2>
-        [[nodiscard]] constexpr auto descale(scaled_integer<Rep, power<InExponent, InRadix>> const& input)
-        {
-            descaled<Significand, OutRadix> output{static_cast<Significand>(_impl::to_rep(input)), 0};
-
-            auto const oob{
-                    (input < 0.)
-                    ? []([[maybe_unused]] Significand const& n) -> bool {
-                          if constexpr (numbers::signedness_v<Significand>) {
-                              return n < -numeric_limits<Significand>::max() / OutRadix;
-                          } else {
-                              return unreachable<bool>("negative unsigned integer");
-                          }
-                      }
-                    : [](Significand const& n) {
-                          return n > Significand{numeric_limits<Significand>::max() / OutRadix};
-                      }};
-
-            for (int in_exponent = InExponent; in_exponent != 0;) {
-                if constexpr (InExponent < 0) {
-                    if (output.significand % InRadix) {
-                        if (!oob(output.significand)) {
-                            output.significand *= OutRadix;
-                            output.exponent--;
-                            continue;
-                        }
-                    }
-
-                    output.significand /= InRadix;
-                    in_exponent++;
-                } else if constexpr (InExponent > 0) {
-                    if (!oob(output.significand)) {
-                        output.significand *= InRadix;
-                        in_exponent--;
-                    }
-
-                    if (!(output.significand % OutRadix)) {
-                        output.significand /= OutRadix;
-                        output.exponent++;
-                    }
-                } else {
-                    // prevents compilers from hanging
-                    return unreachable<descaled<Significand, OutRadix>>("impossible for condition");
-                }
-            }
-
-            return output;
-        }
-
-        constexpr auto isdigit(char c)
-        {
-            return c >= '0' && c <= '9';
-        }
-
-        constexpr auto radix_char{'.'};
-        constexpr auto e_char{'e'};
-        constexpr auto plus_char{'+'};
-        constexpr auto minus_char{'-'};
-        constexpr auto zero_char{'0'};
 
         struct descaled_info {
             std::string_view significand_digits;
@@ -207,11 +141,10 @@ namespace cnl {
 
         [[nodiscard]] constexpr auto solve_scientific(descaled_info const& info)
         {
-            auto const num_e_chars{2 - info.exponent_has_sign};
             auto const num_exponent_chars{_impl::ssize(info.exponent_chars)};
 
             auto const unbounded_num_chars{
-                    info.num_significand_digits + _impl::ssizeof(radix_char) + num_e_chars + num_exponent_chars};
+                    info.num_significand_digits + _impl::ssizeof(radix_char) + _impl::ssizeof(e_char) + num_exponent_chars};
             auto const chars_truncated{std::max(0, unbounded_num_chars - info.max_chars)};
 
             return scientific_solution{
@@ -335,7 +268,8 @@ namespace cnl {
         }
 
         using significand_type = std::conditional_t<(digits_v<Rep> > digits_v<int64>), Rep, int64>;
-        auto const descaled{_impl::descale<significand_type>(value)};
+        auto const descaled{_impl::descale<significand_type, 10>(
+                _impl::to_rep(value), power<Exponent, Radix>{})};
 
         return _impl::to_chars_non_zero(first, last, descaled);
     }

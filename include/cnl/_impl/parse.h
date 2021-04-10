@@ -7,6 +7,8 @@
 #if !defined(CNL_IMPL_PARSE_H)
 #define CNL_IMPL_PARSE_H
 
+#include "charconv/constants.h"
+#include "charconv/descale.h"
 #include "cnl_assert.h"
 #include "config.h"
 #include "narrow_cast.h"
@@ -165,12 +167,15 @@ namespace cnl {
             int first_numeral;
             int num_bits;
             int num_digits;
+            int num_fractional_digits;
         };
 
         constexpr auto separator{'\''};
 
         [[nodiscard]] constexpr auto scan_msb(
-                char const* str, int length, bool is_negative, int base, int stride, int offset, int max_num_bits)
+                char const* str, bool is_negative,
+                int base, int stride, int offset,
+                int max_num_bits, int num_digits, int num_fractional_digits)
         {
             // If most significant digit char is not too great, use a slightly narrower result type.
             // In turn, ensure that large signed numbers don't 'nudge' over to wider types.
@@ -178,45 +183,59 @@ namespace cnl {
             // A comprehensive solution would fully optimise width of result type.
             // E.g. 0x00000001 would report num_bits=1, not 31.
             // But this is fast, simple and avoids the pathological case.
-            auto const first_digit_char{str[offset]};
+            auto const first_digit_char{str[offset + (str[offset] == radix_char)]};
             auto const first_digit{make_char_to_digit_positive(base)(first_digit_char)};
             return params{
                     is_negative, base,
                     stride,
                     offset,
                     max_num_bits - (first_digit * 2 < base),
-                    length};
+                    num_digits,
+                    num_fractional_digits};
         }
 
         [[nodiscard]] constexpr auto scan_base(char const* str, bool is_negative, int offset, int length)
         {
-            auto const separators{narrow_cast<int>(std::count(str, str + length - 1, separator))};
-            length -= separators;
-            if (str[offset] != '0' || offset + 1 >= length) {
+            auto const last{str + length};
+            auto const found_radix{std::find(str, last, radix_char)};
+            auto const has_radix{found_radix != last};
+            auto const post_radix{found_radix + has_radix};
+            auto const pre_radix_separators{narrow_cast<int>(std::count(str, found_radix, separator))};
+            auto const post_radix_separators{narrow_cast<int>(std::count(post_radix, last, separator))};
+            auto const num_separators{pre_radix_separators + post_radix_separators};
+            auto const num_non_separators{length - (num_separators + has_radix)};
+            auto const num_fractional_digits{
+                    narrow_cast<int>(std::distance(post_radix, last)) - post_radix_separators};
+
+            auto const is_decimal{str[offset] != '0' || has_radix};
+            if (is_decimal || offset + 1 >= num_non_separators) {
                 static_assert(std::numeric_limits<int32_t>::digits10 == 9);
-                return scan_msb(str, length, is_negative, 10, 18, offset, (length * 3322 + 678) / 1000);
+                auto const num_digits{num_non_separators};
+                return scan_msb(str, is_negative, 10, 18, offset, (num_digits * 3322 + 678) / 1000, num_digits, num_fractional_digits);
             }
             switch (str[offset + 1]) {
             case 'B':
-            case 'b':
-                length -= 2;
-                return scan_msb(str, length, is_negative, 2, 63, offset + 2, length);
+            case 'b': {
+                auto const num_digits{num_non_separators - 2};
+                return scan_msb(str, is_negative, 2, 63, offset + 2, num_digits, num_digits, num_fractional_digits);
+            }
             case 'X':
-            case 'x':
-                length -= 2;
-                return scan_msb(str, length, is_negative, 16, 15, offset + 2, length * 4);
+            case 'x': {
+                auto const num_digits{num_non_separators - 2};
+                return scan_msb(str, is_negative, 16, 15, offset + 2, num_digits * 4, num_digits, num_fractional_digits);
+            }
             default:
-                length -= 1;
-                return scan_msb(str, length, is_negative, 8, 21, offset + 1, length * 3);
+                auto const num_digits{num_non_separators - 1};
+                return scan_msb(str, is_negative, 8, 21, offset + 1, num_digits * 3, num_digits, num_fractional_digits);
             }
         }
 
         [[nodiscard]] inline constexpr auto scan_string(char const* str, int length)
         {
             switch (str[0]) {
-            case '+':
+            case plus_char:
                 return scan_base(str, false, 1, length - 1);
-            case '-':
+            case minus_char:
                 return scan_base(str, true, 1, length - 1);
             default:
                 return scan_base(str, false, 0, length);
@@ -246,7 +265,7 @@ namespace cnl {
                 while (n) {
                     auto const digit{*first++};
                     CNL_ASSERT(digit);
-                    if (digit != separator) {
+                    if (digit != separator && digit != radix_char) {
                         init = scale_op(init) + char_to_digit(digit);
                         n--;
                     }
@@ -298,21 +317,33 @@ namespace cnl {
         }
 
         template<typename Narrowest, char... Chars>
-        [[nodiscard]] constexpr auto parse()
+        [[nodiscard]] constexpr auto parse_real()
         {
             constexpr auto params{scan_string({Chars...})};
             constexpr auto result_digits{
                     std::max(digits_v<Narrowest>, std::min(params.num_bits, max_digits<Narrowest>))};
             using result_type = set_digits_t<Narrowest, result_digits>;
 
-            return parse_string<
-                    result_type,
-                    params.num_digits,
-                    params.is_negative,
-                    params.base,
-                    params.stride,
-                    params.first_numeral,
-                    Chars...>();
+            return descaled<result_type, params.base>{
+                    parse_string<
+                            result_type,
+                            params.num_digits,
+                            params.is_negative,
+                            params.base,
+                            params.stride,
+                            params.first_numeral,
+                            Chars...>(),
+                    -params.num_fractional_digits};
+        }
+
+        template<typename Narrowest, char... Chars>
+        [[nodiscard]] constexpr auto parse()
+        {
+            constexpr auto parsed{parse_real<Narrowest, Chars...>()};
+            static_assert(
+                    parsed.exponent == 0,
+                    "non-integer number");
+            return parsed.significand;
         }
     }
 }

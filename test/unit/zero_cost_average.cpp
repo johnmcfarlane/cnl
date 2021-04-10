@@ -78,12 +78,8 @@ constexpr auto average_elastic(float input1, float input2)
 
 using namespace literals;
 using cnl::_impl::identical;
-static_assert(
-        identical(65536_elastic, elastic_scaled_integer<1, power<16>>{65536}),
-        "mistaken comment in average_elastic");
-static_assert(
-        identical(1_elastic / 65536_elastic, elastic_scaled_integer<1, power<-16>>{0.0000152587890625}),
-        "mistaken comment in average_elastic");
+static_assert(identical(65536_cnl2, elastic_scaled_integer<1, power<16>>{65536}));
+static_assert(identical(1_cnl2 / 65536_cnl2, elastic_scaled_integer<1, power<-16>>{0.0000152587890625}));
 
 static_assert(
         identical(average_integer(32000.125, 27805.75), 29902.9375F),

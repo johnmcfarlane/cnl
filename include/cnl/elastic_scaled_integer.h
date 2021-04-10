@@ -10,6 +10,7 @@
 #if !defined(CNL_ELASTIC_SCALED_INTEGER_H)
 #define CNL_ELASTIC_SCALED_INTEGER_H
 
+#include "_impl/charconv/descale.h"
 #include "_impl/numbers/adopt_signedness.h"
 #include "_impl/scaled/is_scaled_tag.h"
 #include "_impl/scaled/power.h"
@@ -110,11 +111,26 @@ namespace cnl {
         return {value};
     }
 
+    namespace _impl {
+        template<integer auto ParsedSignificand, integer auto ParsedExponent, int ParsedRadix, int UdlRadix>
+        [[nodiscard]] constexpr auto make_from_udl()
+        {
+            constexpr auto descaled{
+                    descale<intmax, UdlRadix, true>(
+                            ParsedSignificand,
+                            power<ParsedExponent, ParsedRadix>{})};
+            constexpr auto rep{make_elastic_integer(constant<descaled.significand>{})};
+            return from_rep<scaled_integer<
+                    decltype(rep),
+                    power<descaled.exponent, descaled.radix>>>(rep);
+        }
+    }
+
     /// \c user-defined literals
     namespace literals {
         ////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////
-        // cnl::literals::operator "" _elastic
+        // cnl::literals::operator "" _cnl
 
         /// \brief generate an \ref elastic_scaled_integer object using a literal
         ///
@@ -127,14 +143,32 @@ namespace cnl {
         ///
         /// \par Example
         ///
-        /// To define an int-sized object with value 1536:
+        /// To define a decimal fixed-point object with value 3.141:
         /// \snippet snippets.cpp define an object using elastic literal
 
         template<char... Chars>
-        [[nodiscard]] constexpr auto operator"" _elastic()
+        [[nodiscard]] constexpr auto operator"" _cnl()
         {
-            return make_elastic_scaled_integer<int>(
-                    constant<_impl::parse<::cnl::intmax, Chars...>()>{});
+            constexpr auto parsed{_impl::parse_real<intmax, Chars...>()};
+            return _impl::make_from_udl<parsed.significand, parsed.exponent, parsed.radix, parsed.radix>();
+        }
+
+        /// \brief generate an \ref elastic_scaled_integer object using a binary literal
+        ///
+        /// \tparam Digits the characters of the literal sequence
+        /// \pre Sequence must be representable using binary fractions. E.g. `0.1_cnl2` cannot be
+        /// represented using binary fixed-point numbers. This will not compile.
+        ///
+        /// \return the given value to be represented using an \ref elastic_scaled_integer type
+        ///
+        /// \note The return type is guaranteed to be no larger
+        /// than is necessary to represent the maximum value of Integral.
+
+        template<char... Chars>
+        [[nodiscard]] constexpr auto operator"" _cnl2()
+        {
+            constexpr auto parsed{_impl::parse_real<intmax, Chars...>()};
+            return _impl::make_from_udl<parsed.significand, parsed.exponent, parsed.radix, 2>();
         }
     }
 }
