@@ -10,6 +10,7 @@
 #include "../../integer.h"
 #include "../../numeric_limits.h"
 #include "../../rounding_integer.h"
+#include "../charconv/constants.h"
 #include "../charconv/descale.h"
 #include "../cnl_assert.h"
 #include "../cstdint/types.h"
@@ -54,17 +55,6 @@ namespace cnl {
             static constexpr auto value =
                     _sign_chars + _integer_chars + _radix_chars + _fractional_chars;
         };
-
-        constexpr auto isdigit(char c)
-        {
-            return c >= '0' && c <= '9';
-        }
-
-        constexpr auto radix_char{'.'};
-        constexpr auto e_char{'e'};
-        constexpr auto plus_char{'+'};
-        constexpr auto minus_char{'-'};
-        constexpr auto zero_char{'0'};
 
         struct descaled_info {
             std::string_view significand_digits;

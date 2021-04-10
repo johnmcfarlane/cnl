@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_PARSE_H)
 #define CNL_IMPL_PARSE_H
 
+#include "charconv/constants.h"
 #include "cnl_assert.h"
 #include "config.h"
 #include "narrow_cast.h"
@@ -217,9 +218,9 @@ namespace cnl {
         [[nodiscard]] inline constexpr auto scan_string(char const* str, int length)
         {
             switch (str[0]) {
-            case '+':
+            case plus_char:
                 return scan_base(str, false, 1, length - 1);
-            case '-':
+            case minus_char:
                 return scan_base(str, true, 1, length - 1);
             default:
                 return scan_base(str, false, 0, length);

@@ -9,6 +9,7 @@
 
 #include "../integer.h"
 #include "../numeric_limits.h"
+#include "charconv/constants.h"
 #include "cnl_assert.h"
 #include "narrow_cast.h"
 #include "num_traits/digits.h"
@@ -40,7 +41,7 @@ namespace cnl {
             static_assert(
                     std::is_same<typename rounding<Scalar>::type, native_rounding_tag>::value,
                     "wrong rounding type");
-            auto c = '0' + static_cast<int>(value);
+            auto c = zero_char + static_cast<int>(value);
             return static_cast<char>(c);
         }
 
@@ -112,7 +113,7 @@ namespace cnl {
             }
 
             // zero
-            *first = '0';
+            *first = _impl::zero_char;
             return std::to_chars_result{first + 1, std::errc{}};
         }
 
