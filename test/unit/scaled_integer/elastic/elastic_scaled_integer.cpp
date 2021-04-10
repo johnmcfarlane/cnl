@@ -17,6 +17,7 @@
 using std::is_same;
 
 using cnl::elastic_scaled_integer;
+using cnl::_impl::identical;
 using namespace cnl::literals;
 using cnl::make_elastic_scaled_integer;
 
@@ -150,7 +151,7 @@ namespace test_set_signedness {
 namespace test_fraction_make {
     using namespace cnl::literals;
 
-    constexpr auto third = cnl::make_fraction(1_elastic, 3_elastic);
+    constexpr auto third = cnl::make_fraction(1_cnl2, 3_cnl2);
 
     constexpr auto named = cnl::quotient(third.numerator, third.denominator);
     static_assert(identical(cnl::elastic_scaled_integer<3, cnl::power<-2>>{0.25}, named));
@@ -162,7 +163,7 @@ namespace test_fraction_make {
 namespace test_fraction_specific_byte {
     using namespace cnl::literals;
 
-    constexpr auto third = cnl::make_fraction(1_elastic, 3_elastic);
+    constexpr auto third = cnl::make_fraction(1_cnl2, 3_cnl2);
 
     constexpr auto specific = elastic_scaled_integer<7, cnl::power<-6>>{third};
     static_assert(identical(cnl::elastic_scaled_integer<7, cnl::power<-6>>{0.328125}, specific));
@@ -171,7 +172,7 @@ namespace test_fraction_specific_byte {
 namespace test_fraction_specific_long {
     using namespace cnl::literals;
 
-    constexpr auto third = cnl::make_fraction(1_elastic, 3_elastic);
+    constexpr auto third = cnl::make_fraction(1_cnl2, 3_cnl2);
 
     constexpr auto specific = cnl::elastic_scaled_integer<63, cnl::power<-60>>{third};
 #if defined(_MSC_VER) || defined(__arm__)
@@ -298,30 +299,108 @@ struct print_num_as_error {
     }
 };  // always overflow
 
-namespace test_elastic_constant_literal {
-    using cnl::_impl::identical;
-    static_assert(identical(0_elastic, elastic_scaled_integer<1, cnl::power<0>>{0}));
+namespace test_literal_decimal_cnl2 {
+    static_assert(identical(00.125_cnl2, elastic_scaled_integer<1, cnl::power<-3>>{00.125}));
+    static_assert(identical(-.125_cnl2, elastic_scaled_integer<1, cnl::power<-3>>{-.125}));
 
-    static_assert(identical(1_elastic, elastic_scaled_integer<1, cnl::power<0>>{1}));
-    static_assert(identical(-1_elastic, elastic_scaled_integer<1, cnl::power<0>>{-1}));
+    static_assert(identical(.25_cnl2, elastic_scaled_integer<1, cnl::power<-2>>{.25}));
+    static_assert(identical(-0.25_cnl2, elastic_scaled_integer<1, cnl::power<-2>>{-0.25}));
 
-    static_assert(identical(2_elastic, elastic_scaled_integer<1, cnl::power<1>>{2}));
-    static_assert(identical(-2_elastic, elastic_scaled_integer<1, cnl::power<1>>{-2}));
+    static_assert(identical(00.5_cnl2, elastic_scaled_integer<1, cnl::power<-1>>{00.5}));
+    static_assert(identical(-.5_cnl2, elastic_scaled_integer<1, cnl::power<-1>>{-.5}));
 
-    static_assert(identical(3_elastic, elastic_scaled_integer<2, cnl::power<0>>{3}));
-    static_assert(identical(-3_elastic, elastic_scaled_integer<2, cnl::power<0>>{-3}));
+    static_assert(identical(.625_cnl2, elastic_scaled_integer<3, cnl::power<-3>>{.625}));
+    static_assert(identical(-0.625_cnl2, elastic_scaled_integer<3, cnl::power<-3>>{-0.625}));
 
-    static_assert(identical(4_elastic, elastic_scaled_integer<1, cnl::power<2>>{4}));
-    static_assert(identical(-4_elastic, elastic_scaled_integer<1, cnl::power<2>>{-4}));
+    static_assert(identical(0.65625_cnl2, elastic_scaled_integer<5, cnl::power<-5>>{0.65625}));
+    static_assert(identical(-00.65625_cnl2, elastic_scaled_integer<5, cnl::power<-5>>{-00.65625}));
 
-    static_assert(identical(6_elastic, elastic_scaled_integer<2, cnl::power<1>>{6}));
-    static_assert(identical(-6_elastic, elastic_scaled_integer<2, cnl::power<1>>{-6}));
+    static_assert(identical(0.75_cnl2, elastic_scaled_integer<2, cnl::power<-2>>{0.75}));
+    static_assert(identical(-000.75_cnl2, elastic_scaled_integer<2, cnl::power<-2>>{-000.75}));
 
-    static_assert(identical(0xAA_elastic, elastic_scaled_integer<7, cnl::power<1>>{0xaa}));
-    static_assert(identical(-0xaa_elastic, elastic_scaled_integer<7, cnl::power<1>>{-0xaa}));
+    static_assert(identical(0_cnl2, elastic_scaled_integer<0, cnl::power<>>{0}));
 
-    static_assert(identical(897341888_elastic, elastic_scaled_integer<24, cnl::power<6>>{897341888}));
-    static_assert(identical(-897341888_elastic, elastic_scaled_integer<24, cnl::power<6>>{-897341888}));
+    static_assert(identical(1_cnl2, elastic_scaled_integer<1, cnl::power<>>{1}));
+    static_assert(identical(-1_cnl2, elastic_scaled_integer<1, cnl::power<>>{-1}));
+
+    static_assert(identical(2_cnl2, elastic_scaled_integer<1, cnl::power<1>>{2}));
+    static_assert(identical(-2_cnl2, elastic_scaled_integer<1, cnl::power<1>>{-2}));
+
+    static_assert(identical(03_cnl2, elastic_scaled_integer<2, cnl::power<>>{03}));
+    static_assert(identical(-3_cnl2, elastic_scaled_integer<2, cnl::power<>>{-3}));
+
+    static_assert(identical(4_cnl2, elastic_scaled_integer<1, cnl::power<2>>{4}));
+    static_assert(identical(-0b100_cnl2, elastic_scaled_integer<1, cnl::power<2>>{-0b100}));
+
+    static_assert(identical(6_cnl2, elastic_scaled_integer<2, cnl::power<1>>{6}));
+    static_assert(identical(-06_cnl2, elastic_scaled_integer<2, cnl::power<1>>{-06}));
+
+    static_assert(identical(42_cnl2, elastic_scaled_integer<5, cnl::power<1>>{42}));
+    static_assert(identical(-42_cnl2, elastic_scaled_integer<5, cnl::power<1>>{-42}));
+
+    static_assert(identical(0xAA_cnl2, elastic_scaled_integer<7, cnl::power<1>>{0xaa}));
+    static_assert(identical(-0xaa_cnl2, elastic_scaled_integer<7, cnl::power<1>>{-0xaa}));
+
+    static_assert(identical(897341888_cnl2, elastic_scaled_integer<24, cnl::power<6>>{897341888}));
+    static_assert(identical(-897341888_cnl2, elastic_scaled_integer<24, cnl::power<6>>{-897341888}));
+}
+
+namespace test_literal_decimal_cnl {
+    static_assert(identical(00.1_cnl, elastic_scaled_integer<1, cnl::power<-1, 10>>{00.1}));
+    static_assert(identical(-.1_cnl, elastic_scaled_integer<1, cnl::power<-1, 10>>{-.1}));
+
+    static_assert(identical(00.125_cnl, elastic_scaled_integer<7, cnl::power<-3, 10>>{00.125}));
+    static_assert(identical(-.125_cnl, elastic_scaled_integer<7, cnl::power<-3, 10>>{-.125}));
+
+    static_assert(identical(.25_cnl, elastic_scaled_integer<5, cnl::power<-2, 10>>{.25}));
+    static_assert(identical(-0.25_cnl, elastic_scaled_integer<5, cnl::power<-2, 10>>{-0.25}));
+
+    static_assert(identical(00.5_cnl, elastic_scaled_integer<3, cnl::power<-1, 10>>{00.5}));
+    static_assert(identical(-.5_cnl, elastic_scaled_integer<3, cnl::power<-1, 10>>{-.5}));
+
+    static_assert(identical(.625_cnl, elastic_scaled_integer<10, cnl::power<-3, 10>>{.625}));
+    static_assert(identical(-0.625_cnl, elastic_scaled_integer<10, cnl::power<-3, 10>>{-0.625}));
+
+    static_assert(identical(0.65625_cnl, elastic_scaled_integer<17, cnl::power<-5, 10>>{0.65625}));
+    static_assert(identical(-00.65625_cnl, elastic_scaled_integer<17, cnl::power<-5, 10>>{-00.65625}));
+
+    static_assert(identical(0.75_cnl, elastic_scaled_integer<7, cnl::power<-2, 10>>{0.75}));
+    static_assert(identical(-000.75_cnl, elastic_scaled_integer<7, cnl::power<-2, 10>>{-000.75}));
+
+    static_assert(identical(0_cnl, elastic_scaled_integer<0, cnl::power<0, 10>>{0}));
+
+    static_assert(identical(1_cnl, elastic_scaled_integer<1, cnl::power<0, 10>>{1}));
+    static_assert(identical(-1_cnl, elastic_scaled_integer<1, cnl::power<0, 10>>{-1}));
+
+    static_assert(identical(2_cnl, elastic_scaled_integer<2, cnl::power<0, 10>>{2}));
+    static_assert(identical(-02_cnl, elastic_scaled_integer<2, cnl::power<0, 8>>{-2}));
+
+    static_assert(identical(07_cnl, elastic_scaled_integer<3, cnl::power<0, 8>>{07}));
+    static_assert(identical(-07_cnl, elastic_scaled_integer<3, cnl::power<0, 8>>{-07}));
+
+    static_assert(identical(010_cnl, elastic_scaled_integer<1, cnl::power<1, 8>>{010}));
+    static_assert(identical(-010_cnl, elastic_scaled_integer<1, cnl::power<1, 8>>{-010}));
+
+    static_assert(identical(9_cnl, elastic_scaled_integer<4, cnl::power<0, 10>>{9}));
+    static_assert(identical(-9_cnl, elastic_scaled_integer<4, cnl::power<0, 10>>{-9}));
+
+    static_assert(identical(10_cnl, elastic_scaled_integer<1, cnl::power<1, 10>>{10}));
+    static_assert(identical(-10_cnl, elastic_scaled_integer<1, cnl::power<1, 10>>{-10}));
+
+    static_assert(identical(0Xf_cnl, elastic_scaled_integer<4, cnl::power<0, 16>>{0Xf}));
+    static_assert(identical(-0xF_cnl, elastic_scaled_integer<4, cnl::power<0, 16>>{-0xF}));
+
+    static_assert(identical(0x10_cnl, elastic_scaled_integer<1, cnl::power<1, 16>>{0x10}));
+    static_assert(identical(-0X10_cnl, elastic_scaled_integer<1, cnl::power<1, 16>>{-0X10}));
+
+    // static_assert(identical(0B101010_cnl, elastic_scaled_integer<1, cnl::power<1>>{0B101010}));
+    // static_assert(identical(-0b101010_cnl, elastic_scaled_integer<1, cnl::power<1>>{-0b101010}));
+
+    static_assert(identical(0xAA_cnl, elastic_scaled_integer<8, cnl::power<0, 16>>{0xaa}));
+    static_assert(identical(-0xaa_cnl, elastic_scaled_integer<8, cnl::power<0, 16>>{-0xaa}));
+
+    static_assert(identical(897341888_cnl, elastic_scaled_integer<30, cnl::power<0, 10>>{897341888}));
+    static_assert(identical(-897341888_cnl, elastic_scaled_integer<30, cnl::power<0, 10>>{-897341888}));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

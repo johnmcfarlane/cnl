@@ -350,6 +350,15 @@ namespace {
             ASSERT_EQ(ex.significand, ac.significand);
             ASSERT_EQ(ex.exponent, ac.exponent);
         }
+
+        TEST(descale, 31_positive_8o)  // NOLINT
+        {
+            auto const ex{cnl::_impl::descaled<int32, 8>{1, 1}};
+            auto const ac{cnl::_impl::descale<int32, 8>(8, cnl::power<0, 8>{})};
+            static_assert(assert_same_v<decltype(ex), decltype(ac)>);
+            ASSERT_EQ(ex.significand, ac.significand);
+            ASSERT_EQ(ex.exponent, ac.exponent);
+        }
     }
 }
 

@@ -199,7 +199,7 @@ namespace o {
     constexpr auto c = make_elastic_integer(2018_c);
     static_assert(cnl::_impl::identical(elastic_integer<11>{2018}, c));
 
-    constexpr auto e = 0x7f000_elastic;
+    constexpr auto e = 0x7f000_cnl2;
     static_assert(cnl::_impl::identical(scaled_integer<elastic_integer<7>, power<12>>{0x7f000}, e));
 
     constexpr auto s = e >> 1_c;

@@ -75,10 +75,10 @@ namespace {
                         cnl::static_integer<19>{2247}));
     }
 
+#if defined(CNL_INT128_ENABLED)
     namespace test_divide {
         using namespace cnl::literals;
 
-#if defined(CNL_INT128_ENABLED)
         static_assert(
                 identical(
                         cnl::static_integer<225>(
@@ -96,7 +96,6 @@ namespace {
                                 100000000000000000000000000000000000000000000000000000000000000000000000000000_wide)
                                 / 3));
 #endif
-#endif
     }
 
     namespace test_shift_left {
@@ -110,6 +109,7 @@ namespace {
             ASSERT_EQ(expected, actual);
         }
     }
+#endif
 
     namespace test_shift_right_native {
         static_assert(

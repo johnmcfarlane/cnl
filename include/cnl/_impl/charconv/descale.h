@@ -20,6 +20,7 @@ namespace cnl::_impl {
     struct descaled {
         Rep significand;
         int exponent;
+        static constexpr int radix = Radix;
     };
 
     template<
@@ -30,6 +31,10 @@ namespace cnl::_impl {
     [[nodiscard]] constexpr auto descale(Rep const& input, power<InExponent, InRadix>)
     {
         descaled<Significand, OutRadix> output{static_cast<Significand>(input), 0};
+
+        if (!input) {
+            return output;
+        }
 
         auto const oob{
                 (input < Rep{0})

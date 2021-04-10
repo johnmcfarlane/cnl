@@ -1,6 +1,6 @@
 set(
     MISC_FLAGS
-    "-Werror -Wall -Wextra -Wpedantic -Wshadow -Wundef -fconcepts -fdiagnostics-color=always -ftemplate-backtrace-limit=0 -pthread -Wno-psabi -march=armv7-a"
+    "-Werror -Wall -Wextra -Wpedantic -Wshadow -Wundef -fconcepts -fconstexpr-ops-limit=1000000000 -fdiagnostics-color=always -ftemplate-backtrace-limit=0 -pthread -Wno-psabi -march=armv7-a"
 )
 
 set(CMAKE_CXX_COMPILER_LAUNCHER "ccache")
