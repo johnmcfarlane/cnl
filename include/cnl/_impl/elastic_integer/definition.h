@@ -14,16 +14,23 @@
 
 /// compositional numeric library
 namespace cnl {
-    /// \brief An integer type with auto-widening operators
+    /// \brief An integer type with auto-widening operators.
     ///
     /// \tparam Digits a count of the number of digits needed to express the number
     /// \tparam Narrowest the most narrow integer type to use for storage
     ///
+    /// Arithmetic operations return numbers with the appropriate number of digits
+    /// necessary to store the correct value, without risk of overflow.
+    /// For instance, when two \ref elastic_integer values are multiplied together,
+    /// the resultant type has Digits set to the sum of the operands' Digits.
+    ///
+    /// \note The lowest value of a signed `elastic_integer` type is the negative of
+    /// its maximum value. E.g. the range of `elastic_integer<7>` is [-127..127],
+    /// and not [-128..127]. This prevents range errors or wasteful stretching or
+    /// Digits that would otherwise occur in relation to `-` and `/` operators.
+    ///
     /// \note The value is stored in an object of \c Narrowest or
     /// \ref set_digits_t<Narrowest, Digits>.
-    /// \note Arithmetic operations result in types with an adjusted Digits parameter accordingly.
-    /// For instance, when two \ref elastic_integer values are multiplied together,
-    /// the resultant type has Digits set to the sum of the operands.
     ///
     /// \sa elastic_scaled_integer
     template<int Digits = digits_v<int>, integer Narrowest = int>
