@@ -6,11 +6,9 @@
 
 #include <cnl/static_integer.h>
 
-#include <cnl/_impl/config.h>
-
 #include <gtest/gtest.h>
 
-#if defined(CNL_INT128_ENABLED)
+#if defined(__SIZEOF_INT128__)
 TEST(static_integer, shift_left)  // NOLINT
 {
     using namespace cnl::literals;
