@@ -104,6 +104,7 @@ set(test_sources
         scaled_integer/rounding/elastic/rounding_elastic_scaled_integer.cpp
         scaled_integer/overflow/elastic/integer.cpp
         static_integer/operators.cpp
+        static_integer/shift_left.cpp
         static_integer/type.cpp
         static_number/426.cpp
         static_number/429.cpp

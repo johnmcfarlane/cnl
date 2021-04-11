@@ -97,18 +97,6 @@ namespace {
                                 / 3));
 #endif
     }
-
-    namespace test_shift_left {
-        using namespace cnl::literals;
-
-        TEST(static_integer, shift_left)  // NOLINT
-        {
-            auto expected = cnl::make_static_integer(
-                    231584178474632390847141970017375815706539969331281128078915168015826259279872_wide);
-            auto actual = cnl::static_integer<260>{1} << 257;
-            ASSERT_EQ(expected, actual);
-        }
-    }
 #endif
 
     namespace test_shift_right_native {
