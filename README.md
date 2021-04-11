@@ -180,5 +180,4 @@ Examples of projects using CNL:
 All feedback greatly appreciated.
 
 * [CNL Issues](https://github.com/johnmcfarlane/cnl/issues)
-* [SG14 forum](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14)
 * [cnl@john.mcfarlane.name](mailto:cnl@john.mcfarlane.name)
