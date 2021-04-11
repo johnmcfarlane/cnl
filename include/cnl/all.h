@@ -176,6 +176,10 @@
  *
  * \snippet snippets.cpp scaled_integer division example
  *
+ * Output:
+ *
+ * > Q: If I have €5 and candles cost €1.1, how many candles can I buy?<br/>A: I get 4 candles and €.6 change.
+ *
  * You can read more on the subject in the paper,
  * [Multiplication and division of fixed-point numbers](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1368r1.html)
  * by Davis Herring.
