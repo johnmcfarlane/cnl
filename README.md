@@ -8,6 +8,13 @@ The Compositional Numeric Library (CNL) is a C++ library of fixed-precision
 numeric classes which enhance integers to deliver safer, simpler, cheaper
 arithmetic types. Documentation can be found [here](http://johnmcfarlane.github.io/cnl/).
 
+CNL is particularly well-suited to:
+
+* compute or energy-constrained environments where FPUs are absent or costly;
+* compute or energy-intensive environments where arithmetic is the bottleneck
+  such as simulations, machine learning applications and DSPs; and
+* domains such as finance where precision is essential.
+
 ## Requirements
 
 The latest version of CNL requires a C++20-compatible tool chain.
@@ -18,22 +25,25 @@ CNL is tested on the following systems:
 
 Tested:
 
-* GCC 5 - 10 / Clang 5 - 11
-* [CMake](https://cmake.org/download/) 3.5.1
+* GCC 10 / Clang 10, 11
+* [CMake](https://cmake.org/download/) 3.16
+* Conan 1.32
 
 ### OS X
 
 Tested:
 
-* GCC 10
-* [CMake](https://cmake.org/download/) 3.5.1
+* GCC 10 / Clang 11
+* [CMake](https://cmake.org/download/) 3.16
+* Conan 1.35
 
 ### Windows
 
 Tested:
 
-* Visual Studio 2019 Version 16.7
+* Visual Studio 2019 Version 16.8
 * [CMake](https://cmake.org/download/) 3.8.0
+* Conan 1.35
 
 ## Instructions
 
@@ -160,10 +170,21 @@ Examples of projects using CNL:
   * [P0828](http://wg21.link/p0828) - Elastic Integers
   * [P1050](http://wg21.link/p1050) - Fractional Numeric Type
 
+## Alternatives
+
+* Much of the simplicity and efficiency in CNL's API design can be traced back
+  to Matheus Izvekov's [fp](https://github.com/mizvekov/fp) fixed point library.
+* Together with Lawrence Crowl's fixed-point paper, [P0106](https://wg21.link/p0106r0),
+  it lays the groundwork for integer-backed real number approximation that minimizes
+  loss of performance and precision.
+* [fpm](https://github.com/MikeLankamp/fpm) is a fixed-point math library with a
+  high quantity of mathematical functions.
+* [Fixed Point Class](https://www.codeproject.com/Articles/37636/Fixed-Point-Class)
+  is a single-header C++98 solution from Peter Schregle's.
+
 ## Contact Information
 
 All feedback greatly appreciated.
 
 * [CNL Issues](https://github.com/johnmcfarlane/cnl/issues)
-* [SG14 forum](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14)
 * [cnl@john.mcfarlane.name](mailto:cnl@john.mcfarlane.name)

@@ -193,6 +193,23 @@
  * Due to popular demand an alternative fixed-point type, which implements 'quasi-exact' division
  * is planned for a future revision of the library.
  *
+ * \subsection limits Elastic Limits
+ *
+ * <b>Q:</b> Why doesn't the `Digits` parameter of types such as \ref cnl::elastic_integer
+ * include the 'sign' bit?
+ *
+ * <b>A:</b> Types, \ref cnl::elastic_integer, \ref cnl::elastic_scaled_integer,
+ * \ref cnl::static_integer and \ref cnl::static_number all have a `Digits` parameter which
+ * specifies how many binary digits the type stores. This corresponds to the number if bits
+ * in the value, *independent of the negated two's complement MSB*. It is the same value expressed
+ * in the `digits` member of \ref std::numeric_limits. It is *not* the same as the width value
+ * found in types such as \ref std::int32_t which are defined in `<cstdint>`.
+ *
+ * One reason to choose digits instead of width is that this value indicates the range of a number
+ * consistently between signed and unsigned types. While confusing to anyone who is used to
+ * dealing in widths (e.g. \ref std::int32_t vs \ref std::uint32_t), it makes the implementation
+ * simpler and reduces the risk of overflow errors.
+ *
  * */
 
 #if !defined(CNL_ALL_H)
