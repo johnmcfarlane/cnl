@@ -45,7 +45,7 @@ namespace cnl {
         }
     };
 
-    // integer -> integer
+    // integer -> integer (same Radix)
     template<integer Input, int SrcExponent, integer Result, int DestExponent, int Radix>
     struct custom_operator<
             _impl::convert_op,
@@ -55,6 +55,33 @@ namespace cnl {
             // when converting *from* scaled_integer
             return static_cast<Result>(_impl::scale<SrcExponent - DestExponent, Radix>(
                     _impl::from_value<Result>(from)));
+        }
+    };
+
+    // integer -> integer (different Ridixes)
+    template<
+            integer Input, int SrcExponent, int SrcRadix,
+            integer Result, int DestExponent, int DestRadix>
+    struct custom_operator<
+            _impl::convert_op,
+            op_value<Input, power<SrcExponent, SrcRadix>>,
+            op_value<Result, power<DestExponent, DestRadix>>> {
+        [[nodiscard]] constexpr auto operator()(Input const& from) const
+        {
+            auto result{_impl::from_value<Result>(from)};
+            if constexpr (SrcExponent > 0) {
+                result = _impl::scale<SrcExponent, SrcRadix>(result);
+            }
+            if constexpr (DestExponent < 0) {
+                result = _impl::scale<-DestExponent, DestRadix>(result);
+            }
+            if constexpr (SrcExponent < 0) {
+                result = _impl::scale<SrcExponent, SrcRadix>(result);
+            }
+            if constexpr (DestExponent > 0) {
+                result = _impl::scale<-DestExponent, DestRadix>(result);
+            }
+            return result;
         }
     };
 
