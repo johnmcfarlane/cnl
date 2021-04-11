@@ -393,8 +393,8 @@ namespace test_literal_decimal_cnl {
     static_assert(identical(0x10_cnl, elastic_scaled_integer<1, cnl::power<1, 16>>{0x10}));
     static_assert(identical(-0X10_cnl, elastic_scaled_integer<1, cnl::power<1, 16>>{-0X10}));
 
-    // static_assert(identical(0B101010_cnl, elastic_scaled_integer<1, cnl::power<1>>{0B101010}));
-    // static_assert(identical(-0b101010_cnl, elastic_scaled_integer<1, cnl::power<1>>{-0b101010}));
+    static_assert(identical(0B101010_cnl, elastic_scaled_integer<5, cnl::power<1>>{0B101010}));
+    static_assert(identical(-0b101010_cnl, elastic_scaled_integer<5, cnl::power<1>>{-0b101010}));
 
     static_assert(identical(0xAA_cnl, elastic_scaled_integer<8, cnl::power<0, 16>>{0xaa}));
     static_assert(identical(-0xaa_cnl, elastic_scaled_integer<8, cnl::power<0, 16>>{-0xaa}));
