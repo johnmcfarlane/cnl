@@ -28,7 +28,7 @@ namespace {
                 7 == cnl::_impl::max_to_chars_chars<scaled_integer<int8, cnl::power<-3>>>::value,
                 "cnl::_impl::max_to_chars_chars");  // -15.875
         static_assert(
-                6 == cnl::_impl::max_to_chars_chars<scaled_integer<uint16, cnl::power<>>>::value,
+                5 == cnl::_impl::max_to_chars_chars<scaled_integer<uint16, cnl::power<>>>::value,
                 "cnl::_impl::max_to_chars_chars");  // 65536
         static_assert(
                 41
@@ -36,7 +36,7 @@ namespace {
                                 cnl::elastic_integer<41>, cnl::power<-38>>>::value,
                 "cnl::_impl::max_to_chars_chars");
         static_assert(
-                45
+                44
                         == cnl::_impl::max_to_chars_chars<
                                 cnl::scaled_integer<int64, cnl::power<-32>>>::value,
                 "cnl::_impl::max_to_chars_chars");  // −2147483647.99999999976716935634613037109375
@@ -226,6 +226,11 @@ namespace {
         TEST(to_chars, scaled_integer_decimal_no_fractional)  // NOLINT
         {
             test<7>("-517523", cnl::scaled_integer<int, cnl::power<0, 10>>(-517523));
+        }
+
+        TEST(to_chars, scaled_integer_decimal_thousandth)  // NOLINT
+        {
+            test<7>(".001", cnl::scaled_integer<int, cnl::power<-3, 10>>(1) / 1000);
         }
 
         TEST(to_chars, scaled_integer_binary_negative_highly_fractional)  // NOLINT
