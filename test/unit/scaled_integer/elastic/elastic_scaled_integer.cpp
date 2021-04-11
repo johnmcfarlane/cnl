@@ -401,6 +401,9 @@ namespace test_literal_decimal_cnl {
 
     static_assert(identical(897341888_cnl, elastic_scaled_integer<30, cnl::power<0, 10>>{897341888}));
     static_assert(identical(-897341888_cnl, elastic_scaled_integer<30, cnl::power<0, 10>>{-897341888}));
+
+    static_assert(0.1 + 0.2 != 0.3);
+    static_assert(0.1_cnl + 0.2_cnl == 0.3_cnl);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
