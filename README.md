@@ -18,22 +18,25 @@ CNL is tested on the following systems:
 
 Tested:
 
-* GCC 5 - 10 / Clang 5 - 11
-* [CMake](https://cmake.org/download/) 3.5.1
+* GCC 10 / Clang 11
+* [CMake](https://cmake.org/download/) 3.16
+* Conan 1.32
 
 ### OS X
 
 Tested:
 
-* GCC 10
-* [CMake](https://cmake.org/download/) 3.5.1
+* GCC 10 / Clang 11
+* [CMake](https://cmake.org/download/) 3.16
+* Conan 1.35
 
 ### Windows
 
 Tested:
 
-* Visual Studio 2019 Version 16.7
+* Visual Studio 2019 Version 16.8
 * [CMake](https://cmake.org/download/) 3.8.0
+* Conan 1.35
 
 ## Instructions
 
