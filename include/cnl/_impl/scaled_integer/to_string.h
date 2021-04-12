@@ -7,6 +7,8 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_TO_STRING_H)
 #define CNL_IMPL_SCALED_INTEGER_TO_STRING_H
 
+#include "../../integer.h"
+#include "../scaled/is_scaled_tag.h"
 #include "definition.h"
 #include "to_chars.h"
 
@@ -16,8 +18,8 @@
 namespace cnl {
     using std::to_string;
 
-    template<typename Rep, int Exponent>
-    auto to_string(cnl::scaled_integer<Rep, power<Exponent>> const& value)
+    template<integer Rep, scaled_tag Scale>
+    auto to_string(cnl::scaled_integer<Rep, Scale> const& value)
     {
         auto const [chars, length] = to_chars_static(value);
         return std::string{chars.data(), unsigned(length)};

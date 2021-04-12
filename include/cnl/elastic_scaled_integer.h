@@ -116,7 +116,7 @@ namespace cnl {
         [[nodiscard]] constexpr auto make_from_udl()
         {
             constexpr auto descaled{
-                    descale<intmax, UdlRadix, true>(
+                    descale<decltype(ParsedSignificand), UdlRadix, true>(
                             ParsedSignificand,
                             power<ParsedExponent, ParsedRadix>{})};
             constexpr auto rep{make_elastic_integer(constant<descaled.significand>{})};

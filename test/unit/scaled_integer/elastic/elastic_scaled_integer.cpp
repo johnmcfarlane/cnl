@@ -346,6 +346,9 @@ namespace test_literal_decimal_cnl2 {
 }
 
 namespace test_literal_decimal_cnl {
+    static_assert(identical(.001_cnl, elastic_scaled_integer<1, cnl::power<-3, 10>>{0.001}));
+    static_assert(identical(-0.001_cnl, elastic_scaled_integer<1, cnl::power<-3, 10>>{-0.001}));
+
     static_assert(identical(00.1_cnl, elastic_scaled_integer<1, cnl::power<-1, 10>>{00.1}));
     static_assert(identical(-.1_cnl, elastic_scaled_integer<1, cnl::power<-1, 10>>{-.1}));
 
@@ -623,6 +626,36 @@ TEST(elastic_scaled_integer, issue_88)  // NOLINT
     EXPECT_EQ(static_cast<float>(c), 1.0F);
     fix_t d = c + a * b;
     EXPECT_EQ(static_cast<float>(d), 3.0F);
+}
+
+TEST(elastic_scaled_integer, to_string_thousand)  // NOLINT
+{
+    auto const n{1000_cnl};
+    static_assert(5 == cnl::_impl::max_to_chars_chars<std::remove_cvref_t<decltype(n)>>::value);
+
+    auto const expected{"1000"};
+    auto const actual{cnl::to_string(1000_cnl)};
+    ASSERT_EQ(expected, actual);
+}
+
+TEST(elastic_scaled_integer, to_string_thousandth)  // NOLINT
+{
+    auto const n{.001_cnl};
+    static_assert(5 == cnl::_impl::max_to_chars_chars<std::remove_cvref_t<decltype(n)>>::value);
+
+    auto const expected{".001"};
+    auto const actual{cnl::to_string(n)};
+    ASSERT_EQ(expected, actual);
+}
+
+TEST(elastic_scaled_integer, to_string_quite_wide)  // NOLINT
+{
+    auto const n{-12345.67890_cnl};
+    static_assert(13 == cnl::_impl::max_to_chars_chars<std::remove_cvref_t<decltype(n)>>::value);
+
+    auto const expected{"-12345.6789"};
+    auto const actual{cnl::to_string(n)};
+    ASSERT_EQ(expected, actual);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
