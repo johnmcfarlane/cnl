@@ -31,7 +31,7 @@ namespace cnl {
     /// avoid overflow
     ///
     /// \tparam Digits the total number of integer and fractional digits stored
-    /// \tparam Exponent the exponent by which the number is scale
+    /// \tparam Scale the scale of the integer; defaults to \ref power
     /// \tparam Narrowest the most narrow integer type to use to represent values
     ///
     /// \sa elastic_integer
