@@ -10,7 +10,7 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_NUM_TRAITS_H)
 #define CNL_IMPL_SCALED_INTEGER_NUM_TRAITS_H
 
-#include "../scaled/is_scaled_tag.h"
+#include "../scaled/power/is_scaled_tag.h"
 #include "definition.h"
 #include "named.h"
 

@@ -11,9 +11,9 @@
 #define CNL_IMPL_SCALED_INTEGER_DEFINITION_H
 
 #include "../../integer.h"
-#include "../scaled/definition.h"
-#include "../scaled/is_scaled_tag.h"
-#include "../scaled/is_tag.h"
+#include "../scaled/power/definition.h"
+#include "../scaled/power/is_scaled_tag.h"
+#include "../scaled/power/is_tag.h"
 #include "../wrapper.h"
 
 #include <algorithm>

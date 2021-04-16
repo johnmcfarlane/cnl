@@ -11,7 +11,7 @@
 #include "../../numeric_limits.h"
 #include "../cstdint/types.h"
 #include "../numbers/signedness.h"
-#include "../scaled/declaration.h"
+#include "../scaled/power/declaration.h"
 #include "../unreachable.h"
 
 /// compositional numeric library

@@ -4,19 +4,18 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_SCALED_CONVERT_OPERATOR_H)
-#define CNL_IMPL_SCALED_CONVERT_OPERATOR_H
+#if !defined(CNL_IMPL_SCALED_POWER_CONVERT_OPERATOR_H)
+#define CNL_IMPL_SCALED_POWER_CONVERT_OPERATOR_H
 
-#include "../../floating_point.h"
-#include "../../fraction.h"
-#include "../../integer.h"
-#include "../custom_operator/native_tag.h"
-#include "../num_traits/fixed_width_scale.h"
-#include "../num_traits/scale.h"
-#include "../power_value.h"
-#include "../scaled_integer/definition.h"
+#include "../../../floating_point.h"
+#include "../../../fraction.h"
+#include "../../../integer.h"
+#include "../../custom_operator/native_tag.h"
+#include "../../num_traits/fixed_width_scale.h"
+#include "../../num_traits/scale.h"
+#include "../../power_value.h"
+#include "../../scaled_integer/definition.h"
 #include "is_same_tag_family.h"
-#include "power.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -154,4 +153,4 @@ namespace cnl {
     };
 }
 
-#endif  // CNL_IMPL_SCALED_CONVERT_OPERATOR_H
+#endif  // CNL_IMPL_SCALED_POWER_CONVERT_OPERATOR_H
