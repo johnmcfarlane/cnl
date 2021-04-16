@@ -15,7 +15,7 @@
 #include "../rounding/nearest_rounding_tag.h"
 #include "../rounding/neg_inf_rounding_tag.h"
 #include "../rounding/tie_to_pos_inf_rounding_tag.h"
-#include "../scaled/is_scaled_tag.h"
+#include "../scaled/power/is_scaled_tag.h"
 #include "definition.h"
 #include "from_rep.h"
 
