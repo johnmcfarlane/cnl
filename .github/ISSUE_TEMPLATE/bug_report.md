@@ -2,10 +2,12 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: ''
+labels: 'bug'
 assignees: ''
 
 ---
+
+* Please see if this bug hasn't already been filed in [the bug list](https://github.com/johnmcfarlane/cnl/issues?q=is%3Aissue+label%3Abug+).
 
 **Describe the bug:**
 
@@ -13,6 +15,7 @@ A clear and concise description of what the bug is including:
 
 * what you were trying to do (install, test, use in another project, etc.)
 * what instructions (if any) you were following.
+* the unexpected behavior you are seeing.
 
 **To Reproduce:**
 
