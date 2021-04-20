@@ -62,19 +62,20 @@ namespace cnl {
 
     template<_impl::binary_arithmetic_op Operator, _impl::any_wrapper Lhs, _impl::any_wrapper Rhs>
     requires(_impl::is_same_tag_family<_impl::tag_of_t<Lhs>, _impl::tag_of_t<Rhs>>::value) struct custom_operator<Operator, op_value<Lhs>, op_value<Rhs>> {
-        using _rep_operator = custom_operator<
-                Operator,
-                op_value<_impl::rep_of_t<Lhs>, _impl::tag_of_t<Lhs>>,
-                op_value<_impl::rep_of_t<Rhs>, _impl::tag_of_t<Rhs>>>;
-        using _result_rep = decltype(_rep_operator{}(
-                _impl::to_rep(std::declval<Lhs>()), _impl::to_rep(std::declval<Rhs>())));
-        using _result_tag = _impl::op_result<Operator, _impl::tag_of_t<Lhs>, _impl::tag_of_t<Rhs>>;
-        using _result_archetype = _impl::set_rep_t<_impl::set_tag_t<Lhs, _result_tag>, _result_rep>;
-
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
-            return _impl::from_rep<_result_archetype>(
-                    _rep_operator{}(_impl::to_rep(lhs), _impl::to_rep(rhs)));
+            auto const lhs_rep{_impl::to_rep(lhs)};
+            auto const rhs_rep{_impl::to_rep(rhs)};
+            using rep_operator = custom_operator<
+                    Operator,
+                    op_value<std::remove_const_t<decltype(lhs_rep)>, _impl::tag_of_t<Lhs>>,
+                    op_value<std::remove_const_t<decltype(rhs_rep)>, _impl::tag_of_t<Rhs>>>;
+            auto const result_rep{rep_operator{}(lhs_rep, rhs_rep)};
+            using result_rep_type = std::remove_const_t<decltype(result_rep)>;
+            using result_tag = _impl::op_result<Operator, _impl::tag_of_t<Lhs>, _impl::tag_of_t<Rhs>>;
+            using result_archetype = _impl::set_rep_t<_impl::set_tag_t<Lhs, result_tag>, result_rep_type>;
+
+            return _impl::from_rep<result_archetype>(result_rep);
         }
     };
 }
