@@ -364,6 +364,15 @@ namespace {
             ASSERT_EQ(ex.significand, ac.significand);
             ASSERT_EQ(ex.exponent, ac.exponent);
         }
+
+        TEST(descale, 63_positive)  // NOLINT
+        {
+            auto const ex{cnl::_impl::descaled<int64, 10>{124434319436550140, -16}};
+            auto const ac{cnl::_impl::descale<int64, 10>(13361033312, cnl::power<-30, 2>{})};
+            static_assert(assert_same_v<decltype(ex), decltype(ac)>);
+            ASSERT_EQ(ex.significand, ac.significand);
+            ASSERT_EQ(ex.exponent, ac.exponent);
+        }
     }
 }
 

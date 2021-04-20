@@ -49,8 +49,9 @@ namespace cnl::_impl {
                       return n > Significand{numeric_limits<Significand>::max() / OutRadix};
                   }};
 
-        for (int in_exponent = InExponent; (in_exponent != 0) || !(output.significand % OutRadix);) {
-            if constexpr (InExponent < 0) {
+        if constexpr (InExponent < 0) {
+            for (int in_exponent = InExponent;
+                 in_exponent != 0 || (Precise && !(output.significand % OutRadix));) {
                 if (output.significand % InRadix) {
                     if (oob(output.significand)) {
                         if (Precise) {
@@ -65,7 +66,10 @@ namespace cnl::_impl {
 
                 output.significand /= InRadix;
                 in_exponent++;
-            } else {
+            }
+        } else {
+            for (int in_exponent = InExponent;
+                 in_exponent != 0 || !(output.significand % OutRadix);) {
                 if (!(output.significand % OutRadix)) {
                     output.significand /= OutRadix;
                     output.exponent++;
