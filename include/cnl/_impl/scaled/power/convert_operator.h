@@ -15,7 +15,6 @@
 #include "../../num_traits/scale.h"
 #include "../../power_value.h"
 #include "../../scaled_integer/definition.h"
-#include "is_same_tag_family.h"
 
 /// compositional numeric library
 namespace cnl {
@@ -102,22 +101,12 @@ namespace cnl {
     // conversion from fraction
 
     namespace _impl {
-        template<typename Number>
-        [[nodiscard]] constexpr auto not_scaled_integer(Number const& n)
-        {
-            return n;
-        }
-
         template<typename Rep, int Exponent, int Radix>
         [[nodiscard]] constexpr auto not_scaled_integer(
                 scaled_integer<Rep, power<Exponent, Radix>> const& f)
         {
             return _impl::to_rep(f);
         }
-
-        template<typename Number>
-        struct exponent : constant<0> {
-        };
 
         template<typename Rep, int Exponent, int Radix>
         struct exponent<scaled_integer<Rep, power<Exponent, Radix>>> : constant<Exponent> {

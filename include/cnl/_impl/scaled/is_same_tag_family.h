@@ -7,7 +7,7 @@
 #if !defined(CNL_IMPL_SCALED_POWER_IS_SAME_TAG_FAMILY_H)
 #define CNL_IMPL_SCALED_POWER_IS_SAME_TAG_FAMILY_H
 
-#include "../../custom_operator/is_same_tag_family.h"
+#include "../custom_operator/is_same_tag_family.h"
 #include "is_scaled_tag.h"
 
 #include <type_traits>
@@ -15,8 +15,8 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<int Exponent1, int Radix1, int Exponent2, int Radix2>
-        struct is_same_tag_family<power<Exponent1, Radix1>, power<Exponent2, Radix2>>
+        template<scaled_tag Tag1, scaled_tag Tag2>
+        struct is_same_tag_family<Tag1, Tag2>
             : std::true_type {
         };
     }

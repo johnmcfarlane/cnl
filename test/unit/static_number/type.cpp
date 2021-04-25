@@ -24,14 +24,14 @@ namespace {
     namespace test_ctor {
         static_assert(
                 identical(
-                        cnl::static_number<20, -10>{1. / 3},
-                        cnl::static_number<20, -10>{cnl::fraction<int>(1, 3)}));
+                        cnl::static_number<20, cnl::power<-10>>{1. / 3},
+                        cnl::static_number<20, cnl::power<-10>>{cnl::fraction<int>(1, 3)}));
         static_assert(
                 identical(
                         cnl::static_number<
-                                5, 0, cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>{31},
+                                5, cnl::power<>, cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>{31},
                         cnl::static_number<
-                                5, 0, cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>{
+                                5, cnl::power<>, cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>{
                                 31.5}));
     }
 
@@ -39,12 +39,20 @@ namespace {
         using namespace cnl::literals;
         static_assert(
                 identical(cnl::make_static_number(cnl::int16{7}), cnl::static_number<15>{7}));
-        static_assert(identical(cnl::make_static_number(444_c), cnl::static_number<7, 2>{444}));
+        // static_assert(identical(
+        //         cnl::make_static_number(444_c),
+        //         cnl::static_number<7, cnl::quasi_exact<2>>{444}));
+        static_assert(identical(
+                cnl::make_static_number(444_c),
+                cnl::static_number<7, cnl::power<2>>{444}));
     }
 
     namespace test_conversion1 {
-        constexpr auto a = cnl::static_number<8, -4>{.4375};
-        constexpr auto b = cnl::static_number<5, -1>{a};
-        static_assert(identical(cnl::static_number<5, -1>{.5}, b));
+        // constexpr auto a = cnl::static_number<8, cnl::quasi_exact<-4>>{.4375};
+        // constexpr auto b = cnl::static_number<5, cnl::quasi_exact<-1>>{a};
+        // static_assert(identical(cnl::static_number<5, cnl::quasi_exact<-1>>{.5}, b));
+        constexpr auto a = cnl::static_number<8, cnl::power<-4>>{.4375};
+        constexpr auto b = cnl::static_number<5, cnl::power<-1>>{a};
+        static_assert(identical(cnl::static_number<5, cnl::power<-1>>{.5}, b));
     }
 }

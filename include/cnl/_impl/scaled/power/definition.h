@@ -19,7 +19,7 @@ namespace cnl {
     /// \tparam Exponent the exponent used to scale the integer value; defaults to 0
     /// \tparam Radix the base used to scale the integer value; defaults to 2
     ///
-    /// \sa scaled_integer
+    /// \sa scaled_integer, quasi_exact
 
     template<int Exponent, int Radix>
     struct power {

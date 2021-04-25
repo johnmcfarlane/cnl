@@ -15,7 +15,7 @@
 #include "../rounding/nearest_rounding_tag.h"
 #include "../rounding/neg_inf_rounding_tag.h"
 #include "../rounding/tie_to_pos_inf_rounding_tag.h"
-#include "../scaled/power/is_scaled_tag.h"
+#include "../scaled/is_scaled_tag.h"
 #include "definition.h"
 #include "from_rep.h"
 
@@ -24,30 +24,29 @@ namespace cnl {
     ////////////////////////////////////////////////////////
     /// cnl::nearest_rounding_tag
 
-    template<typename Input, typename Result, int Radix>
-    struct custom_operator<
+    template<integer Input, typename Result, scaled_tag Scale>
+    requires(_impl::exponent_v<Scale> == 0) struct custom_operator<
             _impl::convert_op,
             op_value<Input, nearest_rounding_tag>,
-            op_value<Result, power<0, Radix>>>
+            op_value<Result, Scale>>
         : custom_operator<
                   _impl::convert_op,
-                  op_value<Input, power<0, Radix>>,
+                  op_value<Input, Scale>,
                   op_value<Result, nearest_rounding_tag>> {
     };
 
     /// \cond
     // conversion between two scaled_integer types where rounding *is* an issue
     template<
-            typename InputRep, int InputExponent,
-            typename ResultRep, int ResultExponent,
-            int Radix>
-    requires(!(ResultExponent <= InputExponent)) struct custom_operator<
+            integer InputRep, scaled_tag InputScale,
+            integer ResultRep, scaled_tag ResultScale>
+    requires(_impl::exponent_v<InputScale> < _impl::exponent_v<ResultScale>) struct custom_operator<
             _impl::convert_op,
-            op_value<scaled_integer<InputRep, power<InputExponent, Radix>>, power<0, Radix>>,
-            op_value<scaled_integer<ResultRep, power<ResultExponent, Radix>>, nearest_rounding_tag>> {
+            op_value<scaled_integer<InputRep, InputScale>, typename InputScale::identity>,
+            op_value<scaled_integer<ResultRep, ResultScale>, nearest_rounding_tag>> {
     private:
-        using _result = scaled_integer<ResultRep, power<ResultExponent, Radix>>;
-        using _input = scaled_integer<InputRep, power<InputExponent, Radix>>;
+        using _result = scaled_integer<ResultRep, ResultScale>;
+        using _input = scaled_integer<InputRep, InputScale>;
 
         [[nodiscard]] static constexpr auto half()
         {
@@ -64,28 +63,30 @@ namespace cnl {
 
     // conversion between two scaled_integer types where rounding *isn't* an issue
     template<
-            typename InputRep, int InputExponent,
-            typename ResultRep, int ResultExponent,
-            int Radix>
-    requires(ResultExponent <= InputExponent) struct custom_operator<
+            integer InputRep, scaled_tag InputScale,
+            integer ResultRep, scaled_tag ResultScale>
+    requires(_impl::exponent_v<ResultScale> <= _impl::exponent_v<InputScale>) struct custom_operator<
             _impl::convert_op,
-            op_value<scaled_integer<InputRep, power<InputExponent, Radix>>, power<0, Radix>>,
-            op_value<scaled_integer<ResultRep, power<ResultExponent, Radix>>, nearest_rounding_tag>> {
+            op_value<scaled_integer<InputRep, InputScale>, typename InputScale::identity>,
+            op_value<scaled_integer<ResultRep, ResultScale>, nearest_rounding_tag>> {
     };
     /// \endcond
 
     // conversion from float to scaled_integer
-    template<floating_point Input, typename ResultRep, int ResultExponent, int ResultRadix>
+    template<floating_point Input, integer ResultRep, scaled_tag ResultScale>
     struct custom_operator<
             _impl::convert_op,
-            op_value<Input, power<0, ResultRadix>>,
-            op_value<scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, nearest_rounding_tag>> {
+            op_value<Input, typename ResultScale::identity>,
+            op_value<scaled_integer<ResultRep, ResultScale>, nearest_rounding_tag>> {
     private:
-        using result = scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>;
+        using result = scaled_integer<ResultRep, ResultScale>;
 
         [[nodiscard]] static constexpr auto half()
         {
-            return _impl::power_value<Input, ResultExponent - 1, ResultRadix>();
+            return _impl::power_value<
+                    Input,
+                    _impl::exponent_v<ResultScale> - 1,
+                    _impl::radix_v<ResultScale>>();
         }
 
     public:
@@ -96,46 +97,46 @@ namespace cnl {
         }
     };
 
-    template<integer Input, typename ResultRep, int ResultExponent, int ResultRadix>
+    template<integer Input, integer ResultRep, scaled_tag ResultScale>
     struct custom_operator<
             _impl::convert_op,
-            op_value<Input, power<0, ResultRadix>>,
-            op_value<scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, nearest_rounding_tag>>
+            op_value<Input, typename ResultScale::identity>,
+            op_value<scaled_integer<ResultRep, ResultScale>, nearest_rounding_tag>>
         : custom_operator<
                   _impl::convert_op,
-                  op_value<scaled_integer<Input>, power<0, ResultRadix>>,
-                  op_value<scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, nearest_rounding_tag>> {
+                  op_value<scaled_integer<Input>, typename ResultScale::identity>,
+                  op_value<scaled_integer<ResultRep, ResultScale>, nearest_rounding_tag>> {
     };
 
-    template<typename InputRep, int InputExponent, int InputRadix, integer Result>
+    template<integer InputRep, scaled_tag InputScale, integer Result>
     struct custom_operator<
             _impl::convert_op,
-            op_value<scaled_integer<InputRep, power<InputExponent, InputRadix>>, power<0, InputRadix>>,
+            op_value<scaled_integer<InputRep, InputScale>, typename InputScale::identity>,
             op_value<Result, nearest_rounding_tag>> {
-        using _input = scaled_integer<InputRep, power<InputExponent, InputRadix>>;
+        using _input = scaled_integer<InputRep, InputScale>;
 
         [[nodiscard]] constexpr auto operator()(_input const& from) const
         {
             return _impl::to_rep(custom_operator<
                                  _impl::convert_op,
-                                 op_value<_input, power<0, InputRadix>>,
+                                 op_value<_input, typename InputScale::identity>,
                                  op_value<scaled_integer<Result>, nearest_rounding_tag>>{}(from));
         }
     };
 
-    template<typename Input, typename ResultRep, int ResultExponent, int ResultRadix>
+    template<typename Input, integer ResultRep, scaled_tag ResultScale>
     struct custom_operator<
             _impl::convert_op,
             op_value<Input, _impl::native_tag>,
-            op_value<scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, nearest_rounding_tag>> {
+            op_value<scaled_integer<ResultRep, ResultScale>, nearest_rounding_tag>> {
 
         [[nodiscard]] constexpr auto
         operator()(Input const& from) const
         {
             return custom_operator<
                     _impl::convert_op,
-                    op_value<Input, power<0, ResultRadix>>,
-                    op_value<scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, nearest_rounding_tag>>{}(from);
+                    op_value<Input, typename ResultScale::identity>,
+                    op_value<scaled_integer<ResultRep, ResultScale>, nearest_rounding_tag>>{}(from);
         }
     };
 
@@ -145,31 +146,29 @@ namespace cnl {
     // conversion between two scaled_integer types where rounding *isn't* an issue
     /// \cond
     template<
-            typename InputRep, int InputExponent,
-            typename ResultRep, int ResultExponent,
-            int Radix>
-    requires(ResultExponent <= InputExponent) struct custom_operator<
+            integer InputRep, scaled_tag InputScale,
+            integer ResultRep, scaled_tag ResultScale>
+    requires(_impl::exponent_v<InputScale> >= _impl::exponent_v<ResultScale>) struct custom_operator<
             _impl::convert_op,
-            op_value<scaled_integer<InputRep, power<InputExponent, Radix>>, _impl::native_tag>,
-            op_value<scaled_integer<ResultRep, power<ResultExponent, Radix>>, tie_to_pos_inf_rounding_tag>>
+            op_value<scaled_integer<InputRep, InputScale>, _impl::native_tag>,
+            op_value<scaled_integer<ResultRep, ResultScale>, tie_to_pos_inf_rounding_tag>>
         : custom_operator<
                   _impl::convert_op,
-                  op_value<scaled_integer<InputRep, power<InputExponent, Radix>>, _impl::native_tag>,
-                  op_value<scaled_integer<ResultRep, power<ResultExponent, Radix>>, native_rounding_tag>> {
+                  op_value<scaled_integer<InputRep, InputScale>, _impl::native_tag>,
+                  op_value<scaled_integer<ResultRep, ResultScale>, native_rounding_tag>> {
     };
 
     // conversion between two scaled_integer types where rounding *is* an issue
     template<
-            typename InputRep, int InputExponent,
-            typename ResultRep, int ResultExponent,
-            int Radix>
-    requires(!(ResultExponent <= InputExponent)) struct custom_operator<
+            integer InputRep, scaled_tag InputScale,
+            integer ResultRep, scaled_tag ResultScale>
+    requires(_impl::exponent_v<InputScale> < _impl::exponent_v<ResultScale>) struct custom_operator<
             _impl::convert_op,
-            op_value<scaled_integer<InputRep, power<InputExponent, Radix>>, _impl::native_tag>,
-            op_value<scaled_integer<ResultRep, power<ResultExponent, Radix>>, tie_to_pos_inf_rounding_tag>> {
+            op_value<scaled_integer<InputRep, InputScale>, _impl::native_tag>,
+            op_value<scaled_integer<ResultRep, ResultScale>, tie_to_pos_inf_rounding_tag>> {
     private:
-        using _result = scaled_integer<ResultRep, power<ResultExponent, Radix>>;
-        using _input = scaled_integer<InputRep, power<InputExponent, Radix>>;
+        using _result = scaled_integer<ResultRep, ResultScale>;
+        using _input = scaled_integer<InputRep, InputScale>;
 
         [[nodiscard]] static constexpr auto half()
         {
@@ -181,7 +180,8 @@ namespace cnl {
         {
             // TODO: unsigned specialization
             return _impl::from_rep<_result>(
-                    _impl::to_rep(from + half()) >> (ResultExponent - InputExponent));
+                    _impl::to_rep(from + half())
+                    >> (_impl::exponent_v<ResultScale> - _impl::exponent_v<InputScale>));
         }
     };
     /// \endcond
@@ -189,17 +189,20 @@ namespace cnl {
     // conversion from float to scaled_integer
     template<
             floating_point Input,
-            typename ResultRep, int ResultExponent, int ResultRadix>
+            integer ResultRep, scaled_tag ResultScale>
     struct custom_operator<
             _impl::convert_op,
             op_value<Input, _impl::native_tag>,
-            op_value<scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, tie_to_pos_inf_rounding_tag>> {
+            op_value<scaled_integer<ResultRep, ResultScale>, tie_to_pos_inf_rounding_tag>> {
     private:
-        using _result = scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>;
+        using _result = scaled_integer<ResultRep, ResultScale>;
 
         [[nodiscard]] static constexpr auto half()
         {
-            return _impl::power_value<Input, ResultExponent - 1, ResultRadix>();
+            return _impl::power_value<
+                    Input,
+                    _impl::exponent_v<ResultScale> - 1,
+                    _impl::radix_v<ResultScale>>();
         }
 
     public:
@@ -243,38 +246,37 @@ namespace cnl {
     // conversion between two scaled_integer types where rounding *isn't* an issue
     /// \cond
     template<
-            typename InputRep, int InputExponent,
-            typename ResultRep, int ResultExponent,
-            int Radix>
-    requires(ResultExponent <= InputExponent) struct custom_operator<
+            integer InputRep, scaled_tag InputScale,
+            integer ResultRep, scaled_tag ResultScale>
+    requires(_impl::exponent_v<ResultScale> <= _impl::exponent_v<InputScale>) struct custom_operator<
             _impl::convert_op,
-            op_value<scaled_integer<InputRep, power<InputExponent, Radix>>, _impl::native_tag>,
-            op_value<scaled_integer<ResultRep, power<ResultExponent, Radix>>, neg_inf_rounding_tag>>
+            op_value<scaled_integer<InputRep, InputScale>, _impl::native_tag>,
+            op_value<scaled_integer<ResultRep, ResultScale>, neg_inf_rounding_tag>>
         : custom_operator<
                   _impl::convert_op,
-                  op_value<scaled_integer<InputRep, power<InputExponent, Radix>>, _impl::native_tag>,
-                  op_value<scaled_integer<ResultRep, power<ResultExponent, Radix>>, native_rounding_tag>> {
+                  op_value<scaled_integer<InputRep, InputScale>, _impl::native_tag>,
+                  op_value<scaled_integer<ResultRep, ResultScale>, native_rounding_tag>> {
     };
 
     // conversion between two scaled_integer types where rounding *is* an issue
     template<
-            typename InputRep, int InputExponent,
-            typename ResultRep, int ResultExponent,
-            int Radix>
-    requires(!(ResultExponent <= InputExponent)) struct custom_operator<
+            integer InputRep, scaled_tag InputScale,
+            integer ResultRep, scaled_tag ResultScale>
+    requires(!(_impl::exponent_v<ResultScale> <= _impl::exponent_v<InputScale>)) struct custom_operator<
             _impl::convert_op,
-            op_value<scaled_integer<InputRep, power<InputExponent, Radix>>, _impl::native_tag>,
-            op_value<scaled_integer<ResultRep, power<ResultExponent, Radix>>, neg_inf_rounding_tag>> {
+            op_value<scaled_integer<InputRep, InputScale>, _impl::native_tag>,
+            op_value<scaled_integer<ResultRep, ResultScale>, neg_inf_rounding_tag>> {
     private:
-        using _result = scaled_integer<ResultRep, power<ResultExponent, Radix>>;
-        using _input = scaled_integer<InputRep, power<InputExponent, Radix>>;
+        using _result = scaled_integer<ResultRep, ResultScale>;
+        using _input = scaled_integer<InputRep, InputScale>;
 
     public:
         [[nodiscard]] constexpr auto operator()(_input const& from) const
         {
             // TODO: unsigned specialization
             return _impl::from_rep<_result>(
-                    _impl::to_rep(from) >> (ResultExponent - InputExponent));
+                    _impl::to_rep(from)
+                    >> (_impl::exponent_v<ResultScale> - _impl::exponent_v<InputScale>));
         }
     };
     /// \endcond
@@ -282,13 +284,13 @@ namespace cnl {
     // conversion from float to scaled_integer
     template<
             floating_point Input,
-            typename ResultRep, int ResultExponent, int ResultRadix>
+            integer ResultRep, scaled_tag ResultScale>
     struct custom_operator<
             _impl::convert_op,
             op_value<Input, _impl::native_tag>,
-            op_value<scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, neg_inf_rounding_tag>> {
+            op_value<scaled_integer<ResultRep, ResultScale>, neg_inf_rounding_tag>> {
     private:
-        using _result = scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>;
+        using _result = scaled_integer<ResultRep, ResultScale>;
 
     public:
         [[nodiscard]] constexpr auto operator()(Input const& from) const
