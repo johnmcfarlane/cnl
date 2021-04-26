@@ -20,14 +20,10 @@ namespace cnl {
 
     namespace _impl {
         template<int Exponent, int Radix>
-        struct exponent<quasi_exact<Exponent, Radix>>
-            : std::integral_constant<int, Exponent> {
-        };
+        inline constexpr auto exponent_v<quasi_exact<Exponent, Radix>> = Exponent;
 
         template<int Exponent, int Radix>
-        struct radix<quasi_exact<Exponent, Radix>>
-            : std::integral_constant<int, Radix> {
-        };
+        inline constexpr auto radix_v<quasi_exact<Exponent, Radix>> = Radix;
     }
 }
 

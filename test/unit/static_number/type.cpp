@@ -39,20 +39,20 @@ namespace {
         using namespace cnl::literals;
         static_assert(
                 identical(cnl::make_static_number(cnl::int16{7}), cnl::static_number<15>{7}));
-        // static_assert(identical(
-        //         cnl::make_static_number(444_c),
-        //         cnl::static_number<7, cnl::quasi_exact<2>>{444}));
         static_assert(identical(
                 cnl::make_static_number(444_c),
-                cnl::static_number<7, cnl::power<2>>{444}));
+                cnl::static_number<7, cnl::CNL_IMPL_DEFAULT_STATIC_NUMBER_SCALE<2>>{444}));
     }
 
     namespace test_conversion1 {
-        // constexpr auto a = cnl::static_number<8, cnl::quasi_exact<-4>>{.4375};
-        // constexpr auto b = cnl::static_number<5, cnl::quasi_exact<-1>>{a};
-        // static_assert(identical(cnl::static_number<5, cnl::quasi_exact<-1>>{.5}, b));
         constexpr auto a = cnl::static_number<8, cnl::power<-4>>{.4375};
         constexpr auto b = cnl::static_number<5, cnl::power<-1>>{a};
         static_assert(identical(cnl::static_number<5, cnl::power<-1>>{.5}, b));
+    }
+
+    namespace test_conversion2 {
+        constexpr auto a = cnl::static_number<8, cnl::quasi_exact<-4>>{.4375};
+        constexpr auto b = cnl::static_number<5, cnl::quasi_exact<-1>>{a};
+        static_assert(identical(cnl::static_number<5, cnl::quasi_exact<-1>>{.5}, b));
     }
 }

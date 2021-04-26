@@ -19,8 +19,7 @@ namespace cnl {
     /// \tparam Exponent the \c Exponent parameter of the generated \ref scaled_integer type
     /// \tparam ArchetypeRep ignored; replaced by \c Rep
     template<integer ArchetypeRep, tag Scale, typename Rep>
-    requires is_scaled_tag_v<Scale>
-    struct from_rep<scaled_integer<ArchetypeRep, Scale>, Rep> {
+    requires is_scaled_tag_v<Scale> struct from_rep<scaled_integer<ArchetypeRep, Scale>, Rep> {
         using result_type =
                 _impl::set_rep_t<scaled_integer<ArchetypeRep, Scale>, Rep>;
         /// \brief generates a \ref scaled_integer equivalent to \c r in type and value

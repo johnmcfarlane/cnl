@@ -54,7 +54,7 @@ namespace cnl {
     {
         static_assert(
                 _impl::radix_v<Scale> == 2, "cnl::floor(scaled_integer<Rep, Scale>) not "
-                            "implemented for exponent<0 && Radix!=2");
+                                            "implemented for exponent<0 && Radix!=2");
 
         /// \cond
         return _impl::from_rep<scaled_integer<Rep, typename Scale::identity>>(

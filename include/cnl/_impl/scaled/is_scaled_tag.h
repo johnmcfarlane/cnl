@@ -7,10 +7,6 @@
 #if !defined(CNL_IMPL_SCALED_IS_SCALED_TAG_H)
 #define CNL_IMPL_SCALED_IS_SCALED_TAG_H
 
-// include/cnl/constant.h
-// include/cnl/_impl/scaled/is_scaled_tag.h
-#include "../..//constant.h"
-
 #include <type_traits>
 
 /// compositional numeric library
@@ -32,19 +28,19 @@ namespace cnl {
             return n;
         }
 
-        template<typename Number>
-        struct exponent : constant<0> {
-        };
+        // template<typename Number>
+        // struct exponent : std::integral_constant<int, 0> {
+        // };
 
-        template<typename Number>
-        struct radix : constant<0> {
-        };
+        // template<typename Number>
+        // struct radix : std::integral_constant<int, 0> {
+        // };
 
-        template<typename Number>
-        inline constexpr auto exponent_v = exponent<Number>::value;
+        template<typename T>
+        inline constexpr auto exponent_v = 0;
 
-        template<typename Number>
-        inline constexpr auto radix_v = radix<Number>::value;
+        template<typename T>
+        inline constexpr auto radix_v = 0;
     }
 
     template<scaled_tag Lhs, scaled_tag Rhs>

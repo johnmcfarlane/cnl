@@ -104,8 +104,12 @@ namespace cnl {
             op_value<scaled_integer<ResultRep, ResultScale>, nearest_rounding_tag>>
         : custom_operator<
                   _impl::convert_op,
-                  op_value<scaled_integer<Input>, typename ResultScale::identity>,
-                  op_value<scaled_integer<ResultRep, ResultScale>, nearest_rounding_tag>> {
+                  op_value<
+                          scaled_integer<Input, typename ResultScale::identity>,
+                          typename ResultScale::identity>,
+                  op_value<
+                          scaled_integer<ResultRep, ResultScale>,
+                          nearest_rounding_tag>> {
     };
 
     template<integer InputRep, scaled_tag InputScale, integer Result>
@@ -119,10 +123,15 @@ namespace cnl {
     public:
         [[nodiscard]] constexpr auto operator()(input const& from) const
         {
-            return _impl::to_rep(custom_operator<
-                                 _impl::convert_op,
-                                 op_value<input, typename InputScale::identity>,
-                                 op_value<scaled_integer<Result>, nearest_rounding_tag>>{}(from));
+            return _impl::to_rep(
+                    custom_operator<
+                            _impl::convert_op,
+                            op_value<
+                                    input,
+                                    typename InputScale::identity>,
+                            op_value<
+                                    scaled_integer<Result, typename InputScale::identity>,
+                                    nearest_rounding_tag>>{}(from));
         }
     };
 
@@ -222,8 +231,12 @@ namespace cnl {
             op_value<scaled_integer<ResultRep, ResultScale>, tie_to_pos_inf_rounding_tag>>
         : custom_operator<
                   _impl::convert_op,
-                  op_value<scaled_integer<Input>, _impl::native_tag>,
-                  op_value<scaled_integer<ResultRep, ResultScale>, tie_to_pos_inf_rounding_tag>> {
+                  op_value<
+                          scaled_integer<Input, typename ResultScale::identity>,
+                          _impl::native_tag>,
+                  op_value<
+                          scaled_integer<ResultRep, ResultScale>,
+                          tie_to_pos_inf_rounding_tag>> {
     };
 
     template<integer InputRep, scaled_tag InputScale, integer Result>
@@ -239,8 +252,12 @@ namespace cnl {
         {
             return _impl::to_rep(custom_operator<
                                  _impl::convert_op,
-                                 op_value<input, _impl::native_tag>,
-                                 op_value<scaled_integer<Result>, tie_to_pos_inf_rounding_tag>>{}(from));
+                                 op_value<
+                                         input,
+                                         _impl::native_tag>,
+                                 op_value<
+                                         scaled_integer<Result, typename InputScale::identity>,
+                                         tie_to_pos_inf_rounding_tag>>{}(from));
         }
     };
 
@@ -311,8 +328,12 @@ namespace cnl {
             op_value<scaled_integer<ResultRep, ResultScale>, neg_inf_rounding_tag>>
         : custom_operator<
                   _impl::convert_op,
-                  op_value<scaled_integer<Input>, _impl::native_tag>,
-                  op_value<scaled_integer<ResultRep, ResultScale>, neg_inf_rounding_tag>> {
+                  op_value<
+                          scaled_integer<Input, typename ResultScale::identity>,
+                          _impl::native_tag>,
+                  op_value<
+                          scaled_integer<ResultRep, ResultScale>,
+                          neg_inf_rounding_tag>> {
     };
 
     template<integer InputRep, scaled_tag InputScale, integer Result>
@@ -328,8 +349,12 @@ namespace cnl {
         {
             return _impl::to_rep(custom_operator<
                                  _impl::convert_op,
-                                 op_value<input, _impl::native_tag>,
-                                 op_value<scaled_integer<Result>, neg_inf_rounding_tag>>{}(from));
+                                 op_value<
+                                         input,
+                                         _impl::native_tag>,
+                                 op_value<
+                                         scaled_integer<Result, typename InputScale::identity>,
+                                         neg_inf_rounding_tag>>{}(from));
         }
     };
 }
