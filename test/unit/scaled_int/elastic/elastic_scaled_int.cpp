@@ -76,7 +76,7 @@ namespace test_from_value {
     static_assert(
             identical(
                     cnl::scaled_integer<unsigned>{42},
-                    cnl::_impl::from_value<elastic_scaled_integer<20, cnl::power<10>>>(42U)));
+                    cnl::_impl::from_value<elastic_scaled_integer<20, cnl::CNL_IMPL_DEFAULT_SCALED_INTEGER_SCALE<10>>>(42U)));
     static_assert(
             identical(
                     elastic_scaled_integer<20, cnl::power<0>>{cnl::elastic_integer<20>{42}},

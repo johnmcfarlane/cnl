@@ -18,14 +18,10 @@ namespace cnl {
 
     namespace _impl {
         template<int Exponent, int Radix>
-        struct exponent<power<Exponent, Radix>>
-            : std::integral_constant<int, Exponent> {
-        };
+        inline constexpr auto exponent_v<power<Exponent, Radix>> = Exponent;
 
         template<int Exponent, int Radix>
-        struct radix<power<Exponent, Radix>> 
-        : std::integral_constant<int, Radix> {
-        };
+        inline constexpr auto radix_v<power<Exponent, Radix>> = Radix;
     }
 }
 

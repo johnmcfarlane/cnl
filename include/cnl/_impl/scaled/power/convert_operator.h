@@ -109,14 +109,13 @@ namespace cnl {
         }
 
         template<typename Rep, int Exponent, int Radix>
-        struct exponent<scaled_integer<Rep, power<Exponent, Radix>>> : constant<Exponent> {
-        };
+        inline constexpr auto exponent_v<scaled_integer<Rep, power<Exponent, Radix>>> = Exponent;
 
         template<class Quotient, class Dividend, class Divisor>
         struct exponent_shift
             : std::integral_constant<
-                      int, _impl::exponent<Dividend>::value - _impl::exponent<Divisor>::value
-                                   - _impl::exponent<Quotient>::value> {
+                      int,
+                      _impl::exponent_v<Dividend> - _impl::exponent_v<Divisor> - _impl::exponent_v<Quotient>> {
         };
     }
 
@@ -130,12 +129,11 @@ namespace cnl {
         [[nodiscard]] constexpr auto operator()(
                 cnl::fraction<SrcNumerator, SrcDenominator> const& from) const
         {
-            static_assert(_impl::exponent<Dest>::value == 0, "TODO");
+            static_assert(_impl::exponent_v<Dest> == 0, "TODO");
 
             return static_cast<Dest>(
                     _impl::fixed_width_scale<
-                            _impl::exponent<SrcNumerator>::value
-                                    - _impl::exponent<SrcDenominator>::value - DestExponent,
+                            _impl::exponent_v<SrcNumerator> - _impl::exponent_v<SrcDenominator> - DestExponent,
                             Radix>(static_cast<Dest>(_impl::not_scaled_integer(from.numerator)))
                     / _impl::not_scaled_integer(from.denominator));
         }

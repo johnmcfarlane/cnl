@@ -10,7 +10,7 @@
 /// \file
 /// \brief file containing definitions related to \ref cnl::static_number
 
-#define CNL_IMPL_DEFAULT_STATIC_NUMBER_SCALE power
+#define CNL_IMPL_DEFAULT_STATIC_NUMBER_SCALE quasi_exact
 
 #include "_impl/scaled/power.h"
 #include "_impl/scaled/quasi_exact.h"

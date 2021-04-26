@@ -18,7 +18,9 @@
 /// compositional numeric library
 namespace cnl {
     template<_impl::binary_op Operator, integer LhsRep, integer RhsRep, scaled_tag Scale>
-    struct custom_operator<Operator, op_value<LhsRep, Scale>, op_value<RhsRep, Scale>>
+    // requires(!std::is_same_v<Operator, _impl::divide_op>)
+    struct
+            custom_operator<Operator, op_value<LhsRep, Scale>, op_value<RhsRep, Scale>>
         : Operator {
     };
 
@@ -52,7 +54,7 @@ namespace cnl {
             constexpr auto lhs_exponent = _impl::exponent_v<LhsScale>;
             constexpr auto rhs_exponent = _impl::exponent_v<RhsScale>;
             constexpr auto common_exponent = std::min(lhs_exponent, rhs_exponent);
-            using common_scale = std::conditional_t<(lhs_exponent<rhs_exponent), LhsScale, RhsScale>;
+            using common_scale = std::conditional_t<(lhs_exponent < rhs_exponent), LhsScale, RhsScale>;
             constexpr auto common_radix = _impl::radix_v<common_scale>;
             constexpr int lhs_left_shift = lhs_exponent - common_exponent;
             constexpr int rhs_left_shift = rhs_exponent - common_exponent;
