@@ -12,6 +12,7 @@
 
 #include "_impl/static_integer.h"
 #include "_impl/wrapper/tag_of.h"
+#include "integer.h"
 #include "scaled_integer.h"
 
 /// compositional numeric library
@@ -27,15 +28,14 @@ namespace cnl {
     /// \sa static_integer
     template<
             int Digits, int Exponent = 0, rounding_tag RoundingTag = nearest_rounding_tag,
-            overflow_tag OverflowTag = undefined_overflow_tag, class Narrowest = signed>
+            overflow_tag OverflowTag = undefined_overflow_tag, integer Narrowest = int>
     using static_number = scaled_integer<
             _impl::static_integer<Digits, RoundingTag, OverflowTag, Narrowest>, power<Exponent>>;
 
     /// \brief constructs a static_number from a given variable
     template<
             rounding_tag RoundingTag = nearest_rounding_tag, overflow_tag OverflowTag = undefined_overflow_tag,
-            class Narrowest = signed, class Input = int>
-
+            integer Narrowest = int, class Input = int>
     [[nodiscard]] constexpr auto make_static_number(Input const& input)
             -> static_number<numeric_limits<Input>::digits, 0, RoundingTag, OverflowTag, Narrowest>
     {
@@ -45,7 +45,7 @@ namespace cnl {
     /// \brief constructs a static_number from a given constant value
     template<
             rounding_tag RoundingTag = _impl::tag_of_t<rounding_integer<>>,
-            overflow_tag OverflowTag = _impl::tag_of_t<overflow_integer<>>, class Narrowest = int,
+            overflow_tag OverflowTag = _impl::tag_of_t<overflow_integer<>>, integer Narrowest = int,
             class Input = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     [[nodiscard]] constexpr auto make_static_number(constant<Value> const&) -> static_number<
             _impl::used_digits(Value) - trailing_bits(Value), trailing_bits(Value), RoundingTag,
