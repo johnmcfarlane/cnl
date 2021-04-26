@@ -19,8 +19,7 @@
 namespace cnl {
     template<_impl::binary_op Operator, integer LhsRep, integer RhsRep, scaled_tag Scale>
     // requires(!std::is_same_v<Operator, _impl::divide_op>)
-    struct
-            custom_operator<Operator, op_value<LhsRep, Scale>, op_value<RhsRep, Scale>>
+    struct custom_operator<Operator, op_value<LhsRep, Scale>, op_value<RhsRep, Scale>>
         : Operator {
     };
 

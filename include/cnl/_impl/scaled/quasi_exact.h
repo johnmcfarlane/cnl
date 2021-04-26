@@ -8,14 +8,14 @@
 #define CNL_IMPL_SCALED_QUASI_EXACT_H
 
 #include "binary_operator.h"
+#include "convert_operator.h"
 #include "is_same_tag_family.h"
 #include "is_scaled_tag.h"
 #include "is_tag.h"
+#include "unary_operator.h"
 #include "quasi_exact/binary_operator.h"
-#include "quasi_exact/convert_operator.h"
 #include "quasi_exact/definition.h"
 #include "quasi_exact/inc_dec_operator.h"
 #include "quasi_exact/is_scaled_tag.h"
-#include "quasi_exact/unary_operator.h"
 
 #endif  // CNL_IMPL_SCALED_QUASI_EXACT_H

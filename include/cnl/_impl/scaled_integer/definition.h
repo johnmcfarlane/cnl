@@ -19,7 +19,7 @@
 
 #include <algorithm>
 
-#define CNL_IMPL_DEFAULT_SCALED_INTEGER_SCALE quasi_exact
+#define CNL_IMPL_DEFAULT_SCALED_INTEGER_SCALE power
 
 /// compositional numeric library
 namespace cnl {
