@@ -8,6 +8,8 @@
 
 #include <gtest/gtest.h>
 
+// can only be compiled with constant evaluation limits raised
+#if defined(CNL_IMPL_ONEROUS_EVALUATION)
 #if defined(__SIZEOF_INT128__)
 TEST(static_integer, shift_left)  // NOLINT
 {
@@ -18,4 +20,5 @@ TEST(static_integer, shift_left)  // NOLINT
     auto actual = cnl::static_integer<260>{1} << 257;
     ASSERT_EQ(expected, actual);
 }
+#endif
 #endif

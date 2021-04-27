@@ -43,7 +43,6 @@ namespace {
         static_assert(identical(cnl::wide_integer<29>{123456789}, 123456789_wide));
 
 #if defined(__clang__) || defined(CNL_INT128_ENABLED)
-        // requires that constexpr-steps is set very high
         static_assert(
                 identical(
                         cnl::wide_integer<182>{1} << 180,

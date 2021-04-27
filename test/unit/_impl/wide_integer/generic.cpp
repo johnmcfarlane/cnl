@@ -70,7 +70,6 @@ namespace {
                 "cnl::wide_integer minus");
 
 #if !defined(_MSC_VER)
-        // requires elevated value of -fconstexpr-steps
         static_assert(
                 identical(
                         cnl::wide_integer<500, int>{-17292375928362489LL},

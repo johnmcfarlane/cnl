@@ -103,11 +103,7 @@ Optional integration tests use Boost.Multiprecision and Boost.SIMD.
    conan profile new --detect --force default
    conan profile update settings.compiler.libcxx=libstdc++11 default  # GCC only
    conan profile update settings.compiler.cppstd=20 default
-   conan install \
-     --build=missing \
-     --env CONAN_CMAKE_TOOLCHAIN_FILE="/full/path/to/cnl/test/toolchain/gcc.cmake" \
-     --options test=unit \
-     ..
+   conan install --build=missing --options test=unit ..
    ```
 
    ... and then configure, build and run unit tests:
