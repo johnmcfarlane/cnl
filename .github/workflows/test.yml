@@ -183,6 +183,7 @@ jobs:
 
     - name: Initialise Conan
       run: |
+        conan config install https://gist.github.com/b3e851895ce33727666f81b7f0d6e761.git && \
         conan profile new default --detect && \
         conan profile update settings.compiler=${{matrix.compiler}} default && \
         conan profile update settings.compiler.libcxx=${{matrix.stdlib}} default && \
