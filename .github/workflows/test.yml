@@ -10,13 +10,13 @@ jobs:
   posix-conan-test:
     strategy:
       matrix:
-        name: [osx-clang-11, clang-11, osx-gcc-10, gcc-10, clang-10, clang-11-sanitize, armv7]
+        name: [osx-clang, clang-11, osx-gcc-10, gcc-10, clang-10, clang-11-sanitize, armv7]
         include:
-          # OS X Clang-11
-          - name: osx-clang-11
+          # OS X Clang (latest)
+          - name: osx-clang
             os: osx
             compiler: clang
-            version: "11"
+            version: "12"
             arch: x86_64
             build-type: Debug
             cc: "/usr/local/opt/llvm/bin/clang"
