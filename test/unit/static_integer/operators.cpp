@@ -79,6 +79,8 @@ namespace {
     namespace test_divide {
         using namespace cnl::literals;
 
+// can only be compiled with constant evaluation limits raised
+#if defined(CNL_IMPL_ONEROUS_EVALUATION)
         static_assert(
                 identical(
                         cnl::static_integer<225>(
@@ -86,6 +88,7 @@ namespace {
                         cnl::make_static_integer(
                                 10000000000000000000000000000000000000000000000000000000000000000000_wide)
                                 / 3));
+#endif
 
 #if defined(__clang__)
         static_assert(
