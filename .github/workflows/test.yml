@@ -183,12 +183,12 @@ jobs:
 
     - name: Initialise Conan
       run: |
-        conan config install https://gist.github.com/b3e851895ce33727666f81b7f0d6e761.git && \
-        conan profile new default --detect && \
-        conan profile update settings.compiler=${{matrix.compiler}} default && \
-        conan profile update settings.compiler.libcxx=${{matrix.stdlib}} default && \
-        conan profile update settings.compiler.version=${{matrix.version}} default && \
-        conan profile update settings.build_type=${{matrix.build-type}} default && \
+        conan config install https://gist.github.com/b3e851895ce33727666f81b7f0d6e761.git
+        conan profile new default --detect
+        conan profile update settings.compiler=${{matrix.compiler}} default
+        conan profile update settings.compiler.libcxx=${{matrix.stdlib}} default
+        conan profile update settings.compiler.version=${{matrix.version}} default
+        conan profile update settings.build_type=${{matrix.build-type}} default
         conan profile update settings.arch=${{matrix.arch}} default
 
     - name: Install dependencies
@@ -322,12 +322,12 @@ jobs:
 
     - name: Build and Install GTest
       run: |
-        git clone https://github.com/google/googletest.git && \
-        cd googletest && \
-        git checkout 3c95bf552405fd0cc63cea0ca2f6c4cd89c8d356 && \
+        git clone https://github.com/google/googletest.git
+        cd googletest
+        git checkout 3c95bf552405fd0cc63cea0ca2f6c4cd89c8d356
         cmake \
           -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
-          . && \
+          .
         cmake --build . --target install
 
     - name: Configure CNL
@@ -372,7 +372,7 @@ jobs:
     - name: Show/test for changes
       shell: bash
       run: |
-        git diff && \
+        git diff
         if [[ `git status --porcelain` ]]; then exit 1; fi
 
   # Test shell scripts
@@ -395,7 +395,7 @@ jobs:
     - name: Run markdownlint
       shell: bash
       run: |
-        sudo snap install mdl && \
+        sudo snap install mdl
         $GITHUB_WORKSPACE/test/scripts/markdownlint
 
   # Test documentation generation
