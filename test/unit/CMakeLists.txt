@@ -11,18 +11,18 @@ set(test_sources
         cmath.cpp
         cstdint.cpp
         fixed_point.cpp
-        integer.cpp
+        int.cpp
         limits.cpp
         narrow_cast.cpp
         num_traits.cpp
         numeric.cpp
         number_test.cpp
         overflow/overflow.cpp
-        overflow/rounding/integer.cpp
+        overflow/rounding/int.cpp
         rounding/rounding.cpp
         _impl/cmath/abs.cpp
         _impl/cmath/sqrt.cpp
-        _impl/elastic_integer/sqrt.cpp
+        _impl/elastic_int/sqrt.cpp
         _impl/num_traits/max_digits.cpp
         _impl/num_traits/adopt_digits.cpp
         _impl/numbers/adopt_signedness.cpp
@@ -41,71 +41,71 @@ set(test_sources
         wrapper/scale.cpp
         wrapper/set_digits.cpp
         wrapper/declaration.cpp
-        scaled_integer/scaled_integer_built_in.cpp
-        scaled_integer/decimal.cpp
-        scaled_integer/numbers.cpp
+        scaled_int/scaled_int_built_in.cpp
+        scaled_int/decimal.cpp
+        scaled_int/numbers.cpp
         fraction/ctors.cpp
         fraction/fraction.cpp
-        elastic_integer/elastic_integer.cpp
-        scaled_integer/extras.cpp
-        overflow/overflow_integer.cpp
+        elastic_int/elastic_int.cpp
+        scaled_int/extras.cpp
+        overflow/overflow_int.cpp
         overflow/overflow_tag.cpp
-        rounding/rounding_integer.cpp
-        _impl/duplex_integer/definition.cpp
-        _impl/duplex_integer/digits.cpp
-        _impl/duplex_integer/from_value.cpp
-        _impl/duplex_integer/numeric_limits.cpp
-        _impl/duplex_integer/operators.cpp
-        _impl/duplex_integer/narrowest_integer.cpp
-        _impl/wide_integer/digits.cpp
-        _impl/wide_integer/from_rep.cpp
-        _impl/wide_integer/from_value.cpp
-        _impl/wide_integer/literals.cpp
-        _impl/wide_integer/make_wide_integer.cpp
-        _impl/wide_integer/numeric_limits.cpp
-        _impl/wide_integer/scale.cpp
-        _impl/wide_integer/set_digits.cpp
-        _impl/wide_integer/definition.cpp
-        _impl/wide_integer/generic.cpp
+        rounding/rounding_int.cpp
+        _impl/duplex_int/definition.cpp
+        _impl/duplex_int/digits.cpp
+        _impl/duplex_int/from_value.cpp
+        _impl/duplex_int/numeric_limits.cpp
+        _impl/duplex_int/operators.cpp
+        _impl/duplex_int/narrowest_int.cpp
+        _impl/wide_int/digits.cpp
+        _impl/wide_int/from_rep.cpp
+        _impl/wide_int/from_value.cpp
+        _impl/wide_int/literals.cpp
+        _impl/wide_int/make_wide_int.cpp
+        _impl/wide_int/numeric_limits.cpp
+        _impl/wide_int/scale.cpp
+        _impl/wide_int/set_digits.cpp
+        _impl/wide_int/definition.cpp
+        _impl/wide_int/generic.cpp
 
         # components in free functions
-        elastic_integer/rounding_integer/rounding_elastic_integer.cpp
-        rounding/scaled_integer/elastic_integer/elastic_scaled_integer.cpp
-        rounding/scaled_integer/elastic_integer/elastic_scaled_integer_tie_to_pos_inf.cpp
-        rounding/scaled_integer/elastic_integer/elastic_scaled_integer_neg_inf.cpp
-        rounding/scaled_integer/elastic_integer/elastic_scaled_integer_nearest.cpp
-        rounding/scaled_integer/scaled_integer.cpp
+        elastic_int/rounding_int/rounding_elastic_int.cpp
+        rounding/scaled_int/elastic_int/native.cpp
+        rounding/scaled_int/elastic_int/tie_to_pos_inf.cpp
+        rounding/scaled_int/elastic_int/neg_inf.cpp
+        rounding/scaled_int/elastic_int/nearest.cpp
+        rounding/scaled_int/scaled_int.cpp
 
         # composites
-        elastic_integer/wide_integer/wide_elastic_integer.cpp
-        scaled_integer/overflow/scaled_integer_native_integer.cpp
-        scaled_integer/overflow/scaled_integer_trapping_integer.cpp
-        scaled_integer/overflow/scaled_integer_throwing_integer.cpp
-        scaled_integer/overflow/scaled_integer_saturated_integer.cpp
-        scaled_integer/rounding/scaled_integer_rounding.cpp
-        scaled_integer/wide_integer/scaled_integer_wide_integer.cpp
-        scaled_integer/wide_integer/scaled_integer_wide_integer_32.cpp
-        scaled_integer/wide_integer/scaled_integer_wide_integer_8.cpp
-        scaled_integer/wrapper/scaled_integer_wrapper.cpp
-        scaled_integer/overflow/undefined_overflow.cpp
-        scaled_integer/rounding/overflow/scaled_integer_rounding_overflow.cpp
-        scaled_integer/rounding/elastic/integer.cpp
-        scaled_integer/elastic/rounding/overflow/426.cpp
-        rounding/elastic_integer/elastic_integer.cpp
-        rounding/overflow/elastic/integer.cpp
-        rounding/wide_integer/wide_integer.cpp
-        scaled_integer/rounding/rounding_scaled_integer.cpp
-        elastic_integer/rounding_integer/set_rounding.cpp
-        elastic_integer/rounding_integer/overflow_integer/rounding_safe_integer.cpp
-        overflow/elastic/safe_integer.cpp
-        overflow/wide/wide_overflow_integer.cpp
-        scaled_integer/elastic/make_elastic_scaled_integer.cpp
-        scaled_integer/elastic/elastic_scaled_integer.cpp
-        scaled_integer/rounding/elastic/rounding_elastic_scaled_integer.cpp
-        scaled_integer/overflow/elastic/integer.cpp
-        static_integer/operators.cpp
-        static_integer/shift_left.cpp
-        static_integer/type.cpp
+        elastic_int/wide_int/wide_elastic_int.cpp
+        scaled_int/overflow/scaled_int_native_int.cpp
+        scaled_int/overflow/scaled_int_trapping_int.cpp
+        scaled_int/overflow/scaled_int_throwing_int.cpp
+        scaled_int/overflow/scaled_int_saturated_int.cpp
+        scaled_int/rounding/scaled_int_rounding.cpp
+        scaled_int/wide_int/scaled_int_wide_int.cpp
+        scaled_int/wide_int/scaled_int_wide_int_32.cpp
+        scaled_int/wide_int/scaled_int_wide_int_8.cpp
+        scaled_int/wrapper/scaled_int_wrapper.cpp
+        scaled_int/overflow/undefined_overflow.cpp
+        scaled_int/rounding/overflow/native.cpp
+        scaled_int/rounding/elastic/int.cpp
+        scaled_int/elastic/rounding/overflow/426.cpp
+        rounding/elastic_int/elastic_int.cpp
+        rounding/overflow/elastic/int.cpp
+        rounding/wide_int/wide_int.cpp
+        scaled_int/rounding/rounding_scaled_int.cpp
+        elastic_int/rounding_int/set_rounding.cpp
+        elastic_int/rounding_int/overflow_int/safe.cpp
+        overflow/elastic/safe_int.cpp
+        overflow/wide/wide_overflow_int.cpp
+        scaled_int/elastic/make_elastic_scaled_int.cpp
+        scaled_int/elastic/elastic_scaled_int.cpp
+        scaled_int/rounding/elastic/rounding_elastic_scaled_int.cpp
+        scaled_int/overflow/elastic/int.cpp
+        static_int/operators.cpp
+        static_int/shift_left.cpp
+        static_int/type.cpp
         static_number/426.cpp
         static_number/429.cpp
         static_number/operators.cpp
@@ -212,7 +212,7 @@ foreach(source ${sample_sources})
     make_test("${source}" "${SAMPLE_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
 endforeach(source)
 
-make_test(scaled_integer/math.cpp "${SAMPLE_CXX_FLAGS}" "")
+make_test(scaled_int/math.cpp "${SAMPLE_CXX_FLAGS}" "")
 
 ######################################################################
 # make test of Boost.Multiprecision integration
