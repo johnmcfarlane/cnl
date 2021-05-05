@@ -9,6 +9,7 @@ jobs:
   # Build and test many combinations on Linux/OS X using Conan
   posix-conan-test:
     strategy:
+      fail-fast: false
       matrix:
         name: [osx-clang, clang-11, osx-gcc-10, gcc-10, clang-10, clang-11-sanitize, armv7]
         include:
@@ -225,6 +226,7 @@ jobs:
   windows-conan-test:
     runs-on: windows-2019
     strategy:
+      fail-fast: false
       matrix:
         arch: [x86_64, x86]
         include:
@@ -289,6 +291,7 @@ jobs:
   # Build and test latest on Linux using only CMake
   linux-cmake-test:
     strategy:
+      fail-fast: false
       matrix:
         compiler: [clang-head, gcc-head]
 

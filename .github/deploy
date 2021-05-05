@@ -64,7 +64,7 @@ popd
 
 # Upload new version of CNL Conan package to Bintray
 conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
-conan user -p "${CONAN_PASS}" -r johnmcfarlane/cnl "${CONAN_USER}"
+conan user -p ${CONAN_PASS} -r johnmcfarlane/cnl "${CONAN_USER}"
 conan install --build=missing "${PROJECT_DIR}"
 conan create \
   --ignore-dirty \
