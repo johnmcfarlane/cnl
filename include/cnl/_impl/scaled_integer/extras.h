@@ -48,23 +48,23 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::floor
 
-    template<class Rep, int Exponent, int Radix>
-    requires(Exponent < 0)
-            [[nodiscard]] constexpr auto floor(scaled_integer<Rep, power<Exponent, Radix>> const& x)
+    template<class Rep, scaled_tag Scale>
+    requires(_impl::exponent_v<Scale> < 0)
+            [[nodiscard]] constexpr auto floor(scaled_integer<Rep, Scale> const& x)
     {
         static_assert(
-                Radix == 2, "cnl::floor(scaled_integer<Rep, power<Exponent, Radix>>) not "
-                            "implemented for Exponent<0 && Radix!=2");
+                _impl::radix_v<Scale> == 2, "cnl::floor(scaled_integer<Rep, Scale>) not "
+                                            "implemented for exponent<0 && Radix!=2");
 
         /// \cond
-        return _impl::from_rep<scaled_integer<Rep, power<0, Radix>>>(
-                _impl::to_rep(x) >> constant<-Exponent>());
+        return _impl::from_rep<scaled_integer<Rep, typename Scale::identity>>(
+                _impl::to_rep(x) >> constant<-_impl::exponent_v<Scale>>());
         /// \endcond
     }
 
-    template<class Rep, int Exponent, int Radix>
-    requires(Exponent >= 0)
-            [[nodiscard]] constexpr auto floor(scaled_integer<Rep, power<Exponent, Radix>> const& x)
+    template<class Rep, scaled_tag Scale>
+    requires(_impl::exponent_v<Scale> >= 0)
+            [[nodiscard]] constexpr auto floor(scaled_integer<Rep, Scale> const& x)
     {
         return x;
     }
@@ -99,53 +99,53 @@ namespace cnl {
         using float_of_same_size = typename float_of_size<_impl::width<T>>::type;
 
         template<
-                typename Rep, int Exponent, int Radix,
+                typename Rep, scaled_tag Scale,
                 _impl::float_of_same_size<Rep> (*F)(_impl::float_of_same_size<Rep>)>
         [[nodiscard]] constexpr auto
-        crib(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
+        crib(scaled_integer<Rep, Scale> const& x) noexcept
         {
             using floating_point = _impl::float_of_same_size<Rep>;
-            return static_cast<scaled_integer<Rep, power<Exponent, Radix>>>(
+            return static_cast<scaled_integer<Rep, Scale>>(
                     F(static_cast<floating_point>(x)));
         }
     }
 
-    template<typename Rep, int Exponent, int Radix>
-    [[nodiscard]] constexpr auto sin(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
+    template<typename Rep, scaled_tag Scale>
+    [[nodiscard]] constexpr auto sin(scaled_integer<Rep, Scale> const& x) noexcept
     {
-        return _impl::crib<Rep, Exponent, Radix, std::sin>(x);
+        return _impl::crib<Rep, Scale, std::sin>(x);
     }
 
-    template<typename Rep, int Exponent, int Radix>
-    [[nodiscard]] constexpr auto cos(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
+    template<typename Rep, scaled_tag Scale>
+    [[nodiscard]] constexpr auto cos(scaled_integer<Rep, Scale> const& x) noexcept
     {
-        return _impl::crib<Rep, Exponent, Radix, std::cos>(x);
+        return _impl::crib<Rep, Scale, std::cos>(x);
     }
 
-    template<typename Rep, int Exponent, int Radix>
-    [[nodiscard]] constexpr auto exp(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
+    template<typename Rep, scaled_tag Scale>
+    [[nodiscard]] constexpr auto exp(scaled_integer<Rep, Scale> const& x) noexcept
     {
-        return _impl::crib<Rep, Exponent, Radix, std::exp>(x);
+        return _impl::crib<Rep, Scale, std::exp>(x);
     }
 
-    template<typename Rep, int Exponent, int Radix>
-    [[nodiscard]] constexpr auto pow(scaled_integer<Rep, power<Exponent, Radix>> const& x) noexcept
+    template<typename Rep, scaled_tag Scale>
+    [[nodiscard]] constexpr auto pow(scaled_integer<Rep, Scale> const& x) noexcept
     {
-        return _impl::crib<Rep, Exponent, Radix, std::pow>(x);
+        return _impl::crib<Rep, Scale, std::pow>(x);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::scaled_integer streaming - (placeholder implementation)
 
 #if defined(CNL_IOSTREAMS_ENABLED)
-    template<typename Rep, int Exponent, int Radix>
-    auto& operator<<(std::ostream& out, scaled_integer<Rep, power<Exponent, Radix>> const& fp)
+    template<typename Rep, scaled_tag Scale>
+    auto& operator<<(std::ostream& out, scaled_integer<Rep, Scale> const& fp)
     {
         return out << to_chars_static(fp).chars.data();
     }
 
-    template<typename Rep, int Exponent, int Radix>
-    auto& operator>>(std::istream& in, scaled_integer<Rep, power<Exponent, Radix>>& fp)
+    template<typename Rep, scaled_tag Scale>
+    auto& operator>>(std::istream& in, scaled_integer<Rep, Scale>& fp)
     {
         long double ld{};
         in >> ld;

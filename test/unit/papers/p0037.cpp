@@ -50,7 +50,7 @@ namespace design_decisions {
         constexpr auto a = scaled_integer<long long>(3) + 4.F;
         static_assert(is_same_v<decltype(a), decltype(3.F + 4.F) const>);
 
-        constexpr auto b = cnl::make_scaled_integer(200U) - constant<100L>{};
+        constexpr auto b = cnl::make_scaled_integer<cnl::CNL_IMPL_DEFAULT_SCALED_INTEGER_SCALE<>>(200U) - constant<100L>{};
         static_assert(is_same_v<
                       decltype(b),
                       decltype(scaled_integer<unsigned>(200) - scaled_integer<int>(100)) const>);

@@ -10,7 +10,8 @@
 #if !defined(CNL_IMPL_SCALED_INTEGER_NUM_TRAITS_H)
 #define CNL_IMPL_SCALED_INTEGER_NUM_TRAITS_H
 
-#include "../scaled/is_scaled_tag.h"
+#include "../scaled/power.h"
+#include "../scaled/quasi_exact.h"
 #include "definition.h"
 #include "named.h"
 
@@ -32,16 +33,19 @@ namespace cnl {
     ////////////////////////////////////////////////////////////////////////////////
     // cnl::from_value<cnl::scaled_integer<>>
 
-    template<typename Rep, int Exponent, int Radix, typename Value>
-    struct from_value<scaled_integer<Rep, power<Exponent, Radix>>, Value>
-        : _impl::from_value_simple<scaled_integer<Value, power<0, Radix>>, Value> {
-    };
-
     template<typename Rep, class Scale, typename ValueRep, scaled_tag ValueScale>
     struct from_value<scaled_integer<Rep, Scale>, scaled_integer<ValueRep, ValueScale>>
         : _impl::from_value_simple<
                   scaled_integer<from_value_t<Rep, ValueRep>, ValueScale>,
                   scaled_integer<ValueRep, ValueScale>> {
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::from_value<cnl::scaled_integer<>, cnl::power<>>
+
+    template<typename Rep, int Exponent, int Radix, typename Value>
+    struct from_value<scaled_integer<Rep, power<Exponent, Radix>>, Value>
+        : _impl::from_value_simple<scaled_integer<Value, power<0, Radix>>, Value> {
     };
 
     template<typename Rep, int Exponent, int Radix, typename Numerator, typename Denominator>
@@ -62,6 +66,36 @@ namespace cnl {
                                                digits_v<int>,
                                                _impl::used_digits(Value) - trailing_bits(Value))>,
                           power<trailing_bits(Value)>>,
+                  constant<Value>> {
+        // same as deduction guide
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // cnl::from_value<cnl::scaled_integer<>, cnl::quasi_exact<>>
+
+    template<typename Rep, int Exponent, int Radix, typename Value>
+    struct from_value<scaled_integer<Rep, quasi_exact<Exponent, Radix>>, Value>
+        : _impl::from_value_simple<scaled_integer<Value, quasi_exact<0, Radix>>, Value> {
+    };
+
+    template<typename Rep, int Exponent, int Radix, typename Numerator, typename Denominator>
+    struct from_value<
+            scaled_integer<Rep, quasi_exact<Exponent, Radix>>, fraction<Numerator, Denominator>> {
+        [[nodiscard]] constexpr auto operator()(fraction<Numerator, Denominator> const& value) const
+        {
+            return make_scaled_integer(value);
+        }
+    };
+
+    template<typename Rep, int Exponent, int Radix, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
+    struct from_value<scaled_integer<Rep, quasi_exact<Exponent, Radix>>, constant<Value>>
+        : _impl::from_value_simple<
+                  scaled_integer<
+                          set_digits_t<
+                                  int, std::max(
+                                               digits_v<int>,
+                                               _impl::used_digits(Value) - trailing_bits(Value))>,
+                          quasi_exact<trailing_bits(Value)>>,
                   constant<Value>> {
         // same as deduction guide
     };

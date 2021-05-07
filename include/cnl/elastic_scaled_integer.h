@@ -12,7 +12,6 @@
 
 #include "_impl/charconv/descale.h"
 #include "_impl/numbers/adopt_signedness.h"
-#include "_impl/scaled/is_scaled_tag.h"
 #include "_impl/scaled/power.h"
 #include "elastic_integer.h"
 #include "numeric_limits.h"

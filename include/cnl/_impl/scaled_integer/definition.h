@@ -11,12 +11,15 @@
 #define CNL_IMPL_SCALED_INTEGER_DEFINITION_H
 
 #include "../../integer.h"
-#include "../scaled/definition.h"
-#include "../scaled/is_scaled_tag.h"
 #include "../scaled/is_tag.h"
+#include "../scaled/power/definition.h"
+#include "../scaled/power/is_scaled_tag.h"
+#include "../scaled/quasi_exact.h"
 #include "../wrapper.h"
 
 #include <algorithm>
+
+#define CNL_IMPL_DEFAULT_SCALED_INTEGER_SCALE power
 
 /// compositional numeric library
 namespace cnl {
@@ -24,7 +27,7 @@ namespace cnl {
     /// \headerfile cnl/scaled_integer.h
     ///
     /// \tparam Rep the underlying type used to represent the value; defaults to `int`
-    /// \tparam Scale the scale of the value represented with `Rep`; defaults to \ref power
+    /// \tparam Scale the scale of the value represented with `Rep`; defaults to \ref CNL_IMPL_DEFAULT_SCALED_INTEGER_SCALE
     ///
     /// Uses an integer to approximate a real number.
     /// Scales the integer by a factor specified by `Scale` to produce the scaled number.
@@ -45,11 +48,20 @@ namespace cnl {
     /// fractional bits: \snippet snippets.cpp define a scaled_integer value
 
 #if defined(__GNUG__) && !defined(__clang__)
-    template<integer Rep = int, scaled_tag Scale = power<>>
+    template<integer Rep = int, scaled_tag Scale = CNL_IMPL_DEFAULT_SCALED_INTEGER_SCALE<>>
 #else
-    template<integer Rep = int, class Scale = power<>>
+    template<integer Rep = int, class Scale = CNL_IMPL_DEFAULT_SCALED_INTEGER_SCALE<>>
 #endif
     using scaled_integer = _impl::wrapper<Rep, Scale>;
+
+    namespace _impl {
+        template<typename Rep, typename Scale>
+        [[nodiscard]] constexpr auto not_scaled_integer(
+                scaled_integer<Rep, Scale> const& f)
+        {
+            return _impl::to_rep(f);
+        }
+    }
 }
 
 #endif  // CNL_IMPL_SCALED_INTEGER_DEFINITION_H

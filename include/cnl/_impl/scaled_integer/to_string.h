@@ -8,7 +8,7 @@
 #define CNL_IMPL_SCALED_INTEGER_TO_STRING_H
 
 #include "../../integer.h"
-#include "../scaled/is_scaled_tag.h"
+#include "../scaled/power/is_scaled_tag.h"
 #include "definition.h"
 #include "to_chars.h"
 
