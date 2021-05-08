@@ -122,7 +122,6 @@ set(sample_sources
         papers/p0037.cpp
         papers/p0381.cpp
         papers/p0675.cpp
-        papers/p0827.cpp
         papers/p0828.cpp
         papers/p0554.cpp
         papers/p1050.cpp
