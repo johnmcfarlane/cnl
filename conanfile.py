@@ -47,6 +47,7 @@ class CnlConan(ConanFile):
 
         cmake.definitions["CMAKE_CXX_CLANG_TIDY"] = "clang-tidy" if self.options.clang_tidy else ""
         cmake.definitions["CMAKE_CXX_CPPCHECK"] = "cppcheck" if self.options.cppcheck else ""
+        cmake.definitions["CMAKE_SKIP_INSTALL_ALL_DEPENDENCY"] = "OFF" if self.options.test else "ON"
         cmake.definitions["CNL_EXCEPTIONS"] = "ON" if self.options.enable_exceptions else "OFF"
         cmake.definitions["CNL_GTEST_MAIN_TARGET:STRING"] = "GTest::gtest_main"
         cmake.definitions["CNL_INT128"] = "ON" if self.options.int128 else "OFF"
