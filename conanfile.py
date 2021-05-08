@@ -62,9 +62,6 @@ class CnlConan(ConanFile):
               "benchmark": "test-benchmark",
               "all": "test-all"}[str(self.options.test)])
 
-        if self.options.test:
-            cmake.install()
-
         if self.should_test and self.options.test:
             self.test_phase(cmake, {
               "unit": "^test-unit-",
@@ -72,6 +69,9 @@ class CnlConan(ConanFile):
               # "^test-unit-" here instead of "^test-" because benchmarks are of little value
               # if their results are not output, so they are typically run separate from ctest
               "all": "^test-unit-"}[str(self.options.test)])
+
+        if self.should_install:
+            cmake.install()
 
     def package(self):
         self.copy("include/*.h")
