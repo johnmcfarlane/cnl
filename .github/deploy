@@ -61,13 +61,3 @@ then
   git push --force
 fi
 popd
-
-# Upload new version of CNL Conan package to Bintray
-conan remote add johnmcfarlane/cnl https://api.bintray.com/conan/johnmcfarlane/cnl
-conan user -p "${CONAN_PASS}" -r johnmcfarlane/cnl "${CONAN_USER}"
-conan install --build=missing "${PROJECT_DIR}"
-conan create \
-  --ignore-dirty \
-  "${PROJECT_DIR}" \
-  "cnl/${CNL_VERSION}@johnmcfarlane/${CNL_CHANNEL}"
-conan upload "cnl/${CNL_VERSION}@johnmcfarlane/${CNL_CHANNEL}" -r johnmcfarlane/cnl
