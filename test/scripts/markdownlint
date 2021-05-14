@@ -17,4 +17,4 @@ find "${PROJECT_DIR}" -name "*.md" | while read -r TEST; do
     "$TEST"
 done
 
-echo shellcheck success
+echo mdl success
