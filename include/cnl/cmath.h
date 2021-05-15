@@ -13,6 +13,7 @@
 
 #include "_impl/cmath/abs.h"
 #include "_impl/cmath/sqrt.h"
+#include "floating_point.h"
 
 #include <cmath>
 
@@ -20,7 +21,10 @@
 namespace cnl {
     using _impl::abs;
 
-    using std::sqrt;
+    [[nodiscard]] constexpr auto sqrt(floating_point auto const& x)
+    {
+        return std::sqrt(x);
+    }
 }
 
 #endif  // CNL_CMATH_H
