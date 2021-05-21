@@ -36,6 +36,7 @@ class CnlConan(ConanFile):
     requires = [
         "benchmark/1.5.2",
         "gtest/1.10.0",
+        "wide-integer/0.0.0@johnmcfarlane/local",
     ]
 
     scm = {

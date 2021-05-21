@@ -13,6 +13,14 @@
 #include <gtest/gtest.h>
 
 namespace {
+    using cnl::_impl::assert_same;
+
+    namespace test_uintwide_t {
+        static_assert(assert_same<
+            std::uint64_t,
+            math::wide_integer::detail::uint_type_helper<64>::exact_unsigned_type>::value);
+    }
+
     namespace test_minus {
         static_assert(
                 identical(

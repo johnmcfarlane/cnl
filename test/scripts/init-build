@@ -33,6 +33,17 @@ conan profile update settings.arch="${ARCH}" ./profile
 conan profile update settings.compiler="${COMPILER}" ./profile
 conan profile update settings.compiler.libcxx="${STDLIB}" ./profile
 
+# wide-integer
+conan install \
+  --build=missing \
+  --profile ./profile \
+  "${cnl_dir}/external/wide-integer"
+conan create \
+  --ignore-dirty \
+  --profile ./profile \
+  "${cnl_dir}/external/wide-integer" \
+  "wide-integer/0.0.0@johnmcfarlane/local"
+
 # get dependencies ready
 conan install \
   --build missing \
