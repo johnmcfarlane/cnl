@@ -27,15 +27,6 @@ export CC="${CC:-gcc}"
 export CONAN_CMAKE_GENERATOR="${GENERATOR}"
 export CXX="${CXX:-g++}"
 
-# Determine CMake toolchain file
-toolchain_dir="${cnl_dir}/test/toolchain"
-export CONAN_CMAKE_TOOLCHAIN_FILE="${toolchain_dir}/${TOOLCHAIN}"
-if [ ! -f "${CONAN_CMAKE_TOOLCHAIN_FILE}" ]; then
-  echo CMake toolchain file, "${CONAN_CMAKE_TOOLCHAIN_FILE}", not found. Valid TOOLCHAIN values:
-  ls -1 "${toolchain_dir}"
-  exit 1
-fi
-
 # create Conan profile in the build directory
 conan profile new --detect ./profile
 conan profile update settings.arch="${ARCH}" ./profile
@@ -53,6 +44,15 @@ conan install \
   --profile ./profile \
   "$@" \
   "${cnl_dir}"
+
+# Determine CMake toolchain file
+toolchain_dir="${cnl_dir}/test/toolchain"
+export CONAN_CMAKE_TOOLCHAIN_FILE="${toolchain_dir}/${TOOLCHAIN}"
+if [ ! -f "${CONAN_CMAKE_TOOLCHAIN_FILE}" ]; then
+  echo CMake toolchain file, "${CONAN_CMAKE_TOOLCHAIN_FILE}", not found. Valid TOOLCHAIN values:
+  ls -1 "${toolchain_dir}"
+  exit 1
+fi
 
 # configure build system
 conan build --configure "${cnl_dir}"
