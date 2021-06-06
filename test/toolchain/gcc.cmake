@@ -1,6 +1,6 @@
 set(
     MISC_FLAGS
-    "-DCNL_IMPL_ONEROUS_EVALUATION -Werror -Wall -Wextra -Wno-psabi -Wpedantic -Wshadow -Wundef -fconcepts -fconstexpr-ops-limit=1000000000 -fdiagnostics-color=always -ftemplate-backtrace-limit=0 -pthread"
+    "-D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -DCNL_IMPL_ONEROUS_EVALUATION -Werror -Wall -Wextra -Wno-psabi -Wpedantic -Wshadow -Wundef -fconcepts -fconstexpr-ops-limit=1000000000 -fdiagnostics-color=always -ftemplate-backtrace-limit=0 -pthread"
 )
 
 set(CMAKE_CXX_COMPILER_LAUNCHER "ccache")
