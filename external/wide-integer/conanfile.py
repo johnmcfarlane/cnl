@@ -15,7 +15,7 @@ class WideIntegerConan(ConanFile):
     generators = "cmake_find_package"
 
     scm = {
-        "revision": "149ec8d70e029a104472df01cc1895b06154da7d",
+        "revision": "cnl-integration",
         "type": "git",
         "url": "https://github.com/johnmcfarlane/wide-integer.git",
     }
