@@ -5,6 +5,7 @@
 The Compositional Numeric Library (CNL) is a C++ library of fixed-precision
 numeric classes which enhance integers to deliver safer, simpler, cheaper
 arithmetic types. Documentation can be found [here](http://johnmcfarlane.github.io/cnl/).
+You can try out CNL on Compiler Explorer [here](https://godbolt.org/z/vzdvYzeqW).
 
 CNL is particularly well-suited to:
 
