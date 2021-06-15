@@ -129,6 +129,15 @@
  * This value is too great to be stored in a 32-bit integer. In both cases overflow will occur
  * and the result will not be valid.
  *
+ * <b>Q:</b> Why do calculations using \ref cnl::scaled_integer result in a `static_assert` error?
+ *
+ * Errors with the message "attempted operation will result in overflow" may be the result
+ * of conversion between types whose ranges do not intersect as described above.
+ * For example, when converting from a 32-bit \ref cnl::scaled_integer to a 64-bit
+ * \ref cnl::scaled_integer, you may find that the 32-bit number is being scaled up or down by 32
+ * bits before being converted to 64-bits. This would result in overflow.
+ * Read on for suggested solutions...
+ *
  * <b>Q:</b> Why doesn't \ref cnl::scaled_integer prevent/avoid/detect overflow?
  *
  * <b>A:</b> CNL provides a library of components which each address a single concern.
