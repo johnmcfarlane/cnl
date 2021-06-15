@@ -28,9 +28,7 @@ namespace cnl {
     /// into a \ref scaled_integer value
     ///
     /// \param value the value from which to make the \ref scaled_integer object
-    ///
-    /// \note This function is deprecated after C++17
-    /// in favor of class template deduction.
+
     template<typename Value>
     [[nodiscard]] constexpr auto make_scaled_integer(Value const& value)
     {
