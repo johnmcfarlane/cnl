@@ -8,10 +8,11 @@
 #define CNL_IMPL_WIDE_TAG_DEFINITION_H
 
 #include "../custom_operator/homogeneous_operator_tag_base.h"
-#include "../duplex_integer/narrowest_integer.h"
 #include "../num_traits/digits.h"
 #include "../num_traits/max_digits.h"
 #include "../num_traits/set_digits.h"
+#include "../numbers/signedness.h"
+#include "../wide-integer.h"
 #include "declaration.h"
 
 #include <algorithm>
@@ -20,7 +21,7 @@
 /// compositional numeric library
 namespace cnl {
     namespace _impl {
-        template<int Digits, typename Narrowest, bool NeedsDuplex>
+        template<int Digits, typename Narrowest, bool NeedsMultiword>
         struct wide_tag_rep;
 
         // When number can be represented in a single integer
@@ -31,12 +32,11 @@ namespace cnl {
 
         // when number must be represented using multiple integers
         template<int Digits, typename Narrowest>
-        struct wide_tag_rep<Digits, Narrowest, true>
-            : std::type_identity<narrowest_integer_t<Digits, Narrowest>> {
+        struct wide_tag_rep<Digits, Narrowest, true> : make_uintwide<Digits, Narrowest> {
         };
 
-        template<int Digits, typename Narrowest, bool NeedsDuplex>
-        using wide_tag_rep_t = typename wide_tag_rep<Digits, Narrowest, NeedsDuplex>::type;
+        template<int Digits, typename Narrowest, bool NeedsMultiword>
+        using wide_tag_rep_t = typename wide_tag_rep<Digits, Narrowest, NeedsMultiword>::type;
     }
 
     template<int Digits, typename Narrowest>

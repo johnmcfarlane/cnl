@@ -25,6 +25,16 @@ namespace {
                     cnl::wide_integer<64, unsigned>{654},
                     cnl::_impl::from_value<cnl::wide_integer<>>(UINT64_C(654))),
             "cnl::from_value<cnl::wide_integer>");
+
+    // using t = cnl::wide_integer<100>;
+    // using tr = typename cnl::rep_of<t>::type;
+    // using tt = typename cnl::tag_of<t>::type;
+    // using actual = cnl::from_value_t<tr, tt>;
+    // static_assert(
+    //         std::is_same_v<
+    //                 void,
+    //                 actual>);
+
     static_assert(
             identical(
                     cnl::wide_integer<100>{123},

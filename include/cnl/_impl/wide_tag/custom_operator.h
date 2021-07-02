@@ -56,7 +56,7 @@ namespace cnl {
 
     template<_impl::unary_arithmetic_op Operator, int Digits, typename Narrowest, class Rhs>
     struct custom_operator<Operator, op_value<Rhs, wide_tag<Digits, Narrowest>>>
-        : custom_operator<Operator, op_value<Rhs, _impl::native_tag>> {
+        : Operator {
     };
 
     template<

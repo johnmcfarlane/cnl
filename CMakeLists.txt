@@ -22,6 +22,9 @@ target_include_directories(
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>)
 
+find_package(wide-integer REQUIRED)
+target_link_libraries(Cnl INTERFACE wide-integer::wide-integer)
+
 install(TARGETS Cnl EXPORT CnlTargets)
 install(DIRECTORY include/ DESTINATION include)
 install(EXPORT CnlTargets
