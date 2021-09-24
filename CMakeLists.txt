@@ -9,9 +9,10 @@ project(cnl)
 
 cmake_minimum_required(VERSION 3.5.1)
 
-include(CTest)
-add_subdirectory("test")
-
+if (NOT ${CMAKE_SKIP_INSTALL_ALL_DEPENDENCY})
+    include(CTest)
+    add_subdirectory("test")
+endif()
 # the CNL library
 add_library(Cnl INTERFACE)
 
