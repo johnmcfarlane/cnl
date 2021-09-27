@@ -33,7 +33,7 @@ set(COMMON_CXX_FLAGS "${MISC_FLAGS} ${EXCEPTION_FLAGS} ${INT128_FLAGS} ${IOSTREA
 set(COMMON_LINK_FLAGS Cnl "${CONAN_LIBS}")
 
 # benchmark tests
-find_package(benchmark)
+find_package(benchmark QUIET)
 if (${benchmark_FOUND})
     add_subdirectory(benchmark)
 else ()
@@ -41,7 +41,7 @@ else ()
 endif ()
 
 # unit tests
-find_package(GTest)
+find_package(GTest QUIET)
 if (${GTest_FOUND})
     # workaround for github.com/conan-io/conan-center-index/issues/3222
     set(CNL_GTEST_MAIN_TARGET GTest::Main CACHE STRING "alternative GTest target name")
