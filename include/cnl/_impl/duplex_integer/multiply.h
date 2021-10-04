@@ -54,10 +54,12 @@ namespace cnl {
         // duplex_integer<int64, int64>
         template<typename Upper, typename Lower>
         struct long_multiply<duplex_integer<Upper, Lower>> {
-            using _duplex_integer = duplex_integer<Upper, Lower>;
+        private:
+            using operand = duplex_integer<Upper, Lower>;
             using result_type =
-                    duplex_integer<_duplex_integer, duplex_integer<Lower, Lower>>;
+                    duplex_integer<operand, duplex_integer<Lower, Lower>>;
 
+        public:
             template<typename LhsUpper, typename LhsLower, typename RhsUpper, typename RhsLower>
             [[nodiscard]] constexpr auto operator()(
                     duplex_integer<LhsUpper, LhsLower> const& lhs,
@@ -108,23 +110,25 @@ namespace cnl {
             _impl::multiply_op,
             op_value<_impl::duplex_integer<Upper, Lower>>,
             op_value<_impl::duplex_integer<Upper, Lower>>> {
-        using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
+    private:
+        using operand = _impl::duplex_integer<Upper, Lower>;
 
+    public:
         [[nodiscard]] constexpr auto operator()(
-                _duplex_integer const& lhs, _duplex_integer const& rhs) const -> _duplex_integer
+                operand const& lhs, operand const& rhs) const -> operand
         {
             return multiply_components(lhs.upper(), lhs.lower(), rhs.upper(), rhs.lower());
         }
 
         [[nodiscard]] static constexpr auto multiply_components(
                 Upper const& lhs_upper, Lower const& lhs_lower, Upper const& rhs_upper,
-                Lower const& rhs_lower) -> _duplex_integer
+                Lower const& rhs_lower) -> operand
         {
             auto const upper_upper{_impl::long_multiply<Upper>{}(lhs_upper, rhs_upper)};
             auto const upper_lower{_impl::long_multiply<Upper>{}(lhs_upper, rhs_lower)};
             auto const lower_upper{_impl::long_multiply<Upper>{}(lhs_lower, rhs_upper)};
             auto const lower_lower{_impl::long_multiply<Lower>{}(lhs_lower, rhs_lower)};
-            auto const upper{_impl::sensible_left_shift<_duplex_integer>(upper_upper, digits_v<Lower> * 2)};
+            auto const upper{_impl::sensible_left_shift<operand>(upper_upper, digits_v<Lower> * 2)};
             auto const mid{(upper_lower + lower_upper) << digits_v<Lower>};
             auto const lower{lower_lower};
             return upper + mid + lower;

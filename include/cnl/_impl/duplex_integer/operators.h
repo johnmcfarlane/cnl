@@ -39,12 +39,14 @@ namespace cnl {
         // default binary arithmetic operator
         template<binary_arithmetic_op Operator, typename Upper, typename Lower>
         struct default_binary_arithmetic_operator {
-            using _duplex_integer = duplex_integer<Upper, Lower>;
+        private:
+            using operand = duplex_integer<Upper, Lower>;
 
+        public:
             [[nodiscard]] constexpr auto operator()(
-                    _duplex_integer const& lhs, _duplex_integer const& rhs) const -> _duplex_integer
+                    operand const& lhs, operand const& rhs) const -> operand
             {
-                return _duplex_integer(
+                return operand(
                         static_cast<Upper>(Operator{}(lhs.upper(), rhs.upper())),
                         static_cast<Lower>(Operator{}(lhs.lower(), rhs.lower())));
             }
@@ -58,13 +60,15 @@ namespace cnl {
         template<binary_arithmetic_op Operator, typename Upper, typename Lower>
         struct first_degree_binary_arithmetic_operator<
                 Operator, duplex_integer<Upper, Lower>, duplex_integer<Upper, Lower>> {
-            using _duplex_integer = duplex_integer<Upper, Lower>;
+        private:
+            using operand = duplex_integer<Upper, Lower>;
 
             static constexpr auto lower_digits = digits_v<Lower>;
             using wide_lower = set_digits_t<numbers::set_signedness_t<Lower, true>, lower_digits + 1>;
 
+        public:
             [[nodiscard]] constexpr auto operator()(
-                    _duplex_integer const& lhs, _duplex_integer const& rhs) const -> _duplex_integer
+                    operand const& lhs, operand const& rhs) const -> operand
             {
                 return from_sums(
                         static_cast<Upper>(Operator{}(lhs.upper(), rhs.upper())),
@@ -72,9 +76,9 @@ namespace cnl {
             }
 
             [[nodiscard]] static constexpr auto from_sums(
-                    Upper const& upper_sum, wide_lower const& lower_sum) -> _duplex_integer
+                    Upper const& upper_sum, wide_lower const& lower_sum) -> operand
             {
-                return _duplex_integer{
+                return operand{
                         static_cast<Upper>(
                                 upper_sum
                                 + static_cast<Upper>(lower_sum >> constant<lower_digits>{})),

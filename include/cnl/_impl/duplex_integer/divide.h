@@ -43,24 +43,26 @@ namespace cnl {
             _impl::divide_op,
             op_value<_impl::duplex_integer<Upper, Lower>>,
             op_value<_impl::duplex_integer<Upper, Lower>>> {
-        using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
-        using _unsigned_duplex_integer = numbers::set_signedness_t<_duplex_integer, false>;
+    private:
+        using duplex_integer = _impl::duplex_integer<Upper, Lower>;
+        using unsigned_duplex_integer = numbers::set_signedness_t<duplex_integer, false>;
 
+    public:
         [[nodiscard]] constexpr auto operator()(
-                _duplex_integer const& lhs, _duplex_integer const& rhs) const -> _duplex_integer
+                duplex_integer const& lhs, duplex_integer const& rhs) const -> duplex_integer
         {
-            return (lhs < _duplex_integer{0}) ? (rhs < _duplex_integer{0})
-                                                      ? non_negative_division(-lhs, -rhs)
-                                                      : -non_negative_division(-lhs, rhs)
-                 : (rhs < _duplex_integer{0}) ? -non_negative_division(lhs, -rhs)
-                                              : non_negative_division(lhs, rhs);
+            return (lhs < duplex_integer{0}) ? (rhs < duplex_integer{0})
+                                                     ? non_negative_division(-lhs, -rhs)
+                                                     : -non_negative_division(-lhs, rhs)
+                 : (rhs < duplex_integer{0}) ? -non_negative_division(lhs, -rhs)
+                                             : non_negative_division(lhs, rhs);
         }
 
         // lifted from:
         // https://github.com/torvalds/linux/blob/5ac94332248ee017964ba368cdda4ce647e3aba7/lib/math/div64.c#L142
         static constexpr auto non_negative_division(
-                _unsigned_duplex_integer const& dividend, _unsigned_duplex_integer const& divisor)
-                -> _unsigned_duplex_integer
+                unsigned_duplex_integer const& dividend, unsigned_duplex_integer const& divisor)
+                -> unsigned_duplex_integer
         {
             auto const high = divisor.upper();
             if (!high) {
@@ -82,7 +84,7 @@ namespace cnl {
 
         static constexpr auto fls(Upper n) -> int
         {
-            auto half_digits = numeric_limits<_duplex_integer>::digits / 2;
+            auto half_digits = numeric_limits<duplex_integer>::digits / 2;
 
             if (!n) {
                 return 0;
@@ -97,21 +99,21 @@ namespace cnl {
 
         // from Linux div64_32
         static constexpr auto div_by_lower(
-                _unsigned_duplex_integer const& dividend, Lower const& divisor)
-                -> _unsigned_duplex_integer
+                unsigned_duplex_integer const& dividend, Lower const& divisor)
+                -> unsigned_duplex_integer
         {
-            _unsigned_duplex_integer rem = dividend;
-            _unsigned_duplex_integer b = divisor;
-            _unsigned_duplex_integer d = 1;
+            unsigned_duplex_integer rem = dividend;
+            unsigned_duplex_integer b = divisor;
+            unsigned_duplex_integer d = 1;
 
             using unsigned_upper = numbers::set_signedness_t<Upper, false>;
             auto high = rem.upper();
 
-            _unsigned_duplex_integer quot = 0;
+            unsigned_duplex_integer quot = 0;
             if (static_cast<unsigned_upper>(high) >= divisor) {
                 high /= divisor;  // NOLINT(clang-analyzer-core.DivideZero)
-                quot = _unsigned_duplex_integer{high, 0};
-                rem -= _unsigned_duplex_integer(high * divisor, 0);
+                quot = unsigned_duplex_integer{high, 0};
+                rem -= unsigned_duplex_integer(high * divisor, 0);
             }
 
             while (b < rem) {

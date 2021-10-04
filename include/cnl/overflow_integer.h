@@ -41,12 +41,13 @@ namespace cnl {
 
     template<int Digits, int Radix, typename Rep, overflow_tag Tag>
     struct scale<Digits, Radix, _impl::wrapper<Rep, Tag>> {
-        using _value_type = _impl::wrapper<Rep, Tag>;
+    private:
+        using value_type = _impl::wrapper<Rep, Tag>;
 
-        [[nodiscard]] constexpr auto operator()(_value_type const& s) const -> decltype(
-                _impl::from_rep<_value_type>(_impl::scale<Digits, Radix>(_impl::to_rep(s))))
+    public:
+        [[nodiscard]] constexpr auto operator()(value_type const& s) const -> decltype(_impl::from_rep<value_type>(_impl::scale<Digits, Radix>(_impl::to_rep(s))))
         {
-            return _impl::default_scale<Digits, Radix, _value_type>{}(s);
+            return _impl::default_scale<Digits, Radix, value_type>{}(s);
         }
     };
 

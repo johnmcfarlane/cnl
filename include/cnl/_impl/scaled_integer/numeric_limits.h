@@ -25,25 +25,26 @@ namespace cnl {
     template<typename Rep, int Exponent, int Radix>
     struct numeric_limits<cnl::scaled_integer<Rep, power<Exponent, Radix>>>
         : numeric_limits<Rep> {
-        // scaled_integer-specific helpers
-        using _value_type = cnl::scaled_integer<Rep, power<Exponent, Radix>>;
-        using _rep_numeric_limits = numeric_limits<Rep>;
+    private:
+        using value_type = cnl::scaled_integer<Rep, power<Exponent, Radix>>;
+        using rep_numeric_limits = numeric_limits<Rep>;
 
+    public:
         // standard members
 
         [[nodiscard]] static constexpr auto min() noexcept
         {
-            return _impl::from_rep<_value_type>(Rep{1});
+            return _impl::from_rep<value_type>(Rep{1});
         }
 
         [[nodiscard]] static constexpr auto max() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep_numeric_limits::max());
+            return _impl::from_rep<value_type>(rep_numeric_limits::max());
         }
 
         [[nodiscard]] static constexpr auto lowest() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep_numeric_limits::lowest());
+            return _impl::from_rep<value_type>(rep_numeric_limits::lowest());
         }
 
         static constexpr bool is_specialized = true;
@@ -52,34 +53,34 @@ namespace cnl {
 
         [[nodiscard]] static constexpr auto epsilon() noexcept
         {
-            return _impl::from_rep<_value_type>(Rep{1});
+            return _impl::from_rep<value_type>(Rep{1});
         }
 
         [[nodiscard]] static constexpr auto round_error() noexcept
         {
-            return _impl::from_rep<_value_type>(Rep{0});
+            return _impl::from_rep<value_type>(Rep{0});
         }
 
         [[nodiscard]] static constexpr auto infinity() noexcept
         {
-            return _impl::from_rep<_value_type>(Rep{0});
+            return _impl::from_rep<value_type>(Rep{0});
         }
 
         [[nodiscard]] static constexpr auto
         quiet_NaN() noexcept  // NOLINT(readability-identifier-naming)
         {
-            return _impl::from_rep<_value_type>(Rep{0});
+            return _impl::from_rep<value_type>(Rep{0});
         }
 
         [[nodiscard]] static constexpr auto
         signaling_NaN() noexcept  // NOLINT(readability-identifier-naming)
         {
-            return _impl::from_rep<_value_type>(Rep{0});
+            return _impl::from_rep<value_type>(Rep{0});
         }
 
         [[nodiscard]] static constexpr auto denorm_min() noexcept
         {
-            return _impl::from_rep<_value_type>(Rep{1});
+            return _impl::from_rep<value_type>(Rep{1});
         }
     };
 }

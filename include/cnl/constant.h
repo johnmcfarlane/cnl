@@ -189,21 +189,23 @@ namespace cnl {
     template<CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     struct numeric_limits<constant<Value>>
         : cnl::numeric_limits<typename constant<Value>::value_type> {
-        using _value_type = typename constant<Value>::value_type;
+    private:
+        using value_type = typename constant<Value>::value_type;
 
+    public:
         [[nodiscard]] static constexpr auto min()
         {
-            return _value_type{};
+            return value_type{};
         }
 
         [[nodiscard]] static constexpr auto max()
         {
-            return _value_type{};
+            return value_type{};
         }
 
         [[nodiscard]] static constexpr auto lowest()
         {
-            return _value_type{};
+            return value_type{};
         }
     };
 }

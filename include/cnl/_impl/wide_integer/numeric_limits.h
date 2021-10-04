@@ -22,31 +22,32 @@ namespace cnl {
     template<int Digits, typename Narrowest>
     struct numeric_limits<wide_integer<Digits, Narrowest>>
         : numeric_limits<_impl::rep_of_t<wide_integer<Digits, Narrowest>>> {
-        static constexpr bool is_integer = true;
+    private:
         // wide_integer-specific helpers
-        using _narrowest_numeric_limits = numeric_limits<Narrowest>;
-        using _value_type = wide_integer<Digits, Narrowest>;
-        using _rep = _impl::rep_of_t<_value_type>;
-        using _rep_numeric_limits = numeric_limits<_rep>;
+        using value_type = wide_integer<Digits, Narrowest>;
+        using rep = _impl::rep_of_t<value_type>;
+        using rep_numeric_limits = numeric_limits<rep>;
+        static_assert(rep_numeric_limits::is_integer);
 
+    public:
         // standard members
         static constexpr int digits = Digits;
 
         [[nodiscard]] static constexpr auto min() noexcept
         {
-            return _value_type{1};
+            return value_type{1};
         }
 
         [[nodiscard]] static constexpr auto max() noexcept
         {
-            return _value_type{
-                    _rep_numeric_limits::max() >> (_rep_numeric_limits::digits - digits)};
+            return value_type{
+                    rep_numeric_limits::max() >> (rep_numeric_limits::digits - digits)};
         }
 
         [[nodiscard]] static constexpr auto lowest() noexcept
         {
-            return _value_type{
-                    _rep_numeric_limits::lowest() >> (_rep_numeric_limits::digits - digits)};
+            return value_type{
+                    rep_numeric_limits::lowest() >> (rep_numeric_limits::digits - digits)};
         }
     };
 

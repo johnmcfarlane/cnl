@@ -158,18 +158,16 @@ CheckOptions:
     value:           lower_case
   - key:             readability-identifier-naming.TypedefCase
     value:           lower_case
-  # "error: invalid case style for type template parameter 'expr-type'" failure to parse concepts?
-  #- key:             readability-identifier-naming.TypeTemplateParameterCase
-  #  value:           CamelCase
+  - key:             readability-identifier-naming.TypeTemplateParameterCase
+    value:           CamelCase
   - key:             readability-identifier-naming.ValueTemplateParameterCase
     value:           CamelCase
   - key:             readability-identifier-naming.TemplateTemplateParameterCase
     value:           lower_case
-  # "error: invalid case style for template parameter 'expr-type'" failure to parse concepts?
-  #- key:             readability-identifier-naming.TemplateParameterCase
-  #  value:           CamelCase
-  #- key:             readability-identifier-naming.TypeAliasCase
-  #  value:           lower_case
+  - key:             readability-identifier-naming.TemplateParameterCase
+    value:           CamelCase
+  - key:             readability-identifier-naming.TypeAliasCase
+    value:           lower_case
   - key:             readability-identifier-naming.MacroDefinitionCase
     value:           UPPER_CASE
   - key:             readability-identifier-naming.ObjcIvarCase
@@ -192,8 +190,8 @@ CheckOptions:
     value:           ''
   - key:             readability-identifier-naming.MemberPrefix
     value:           ''
-  #- key:             readability-identifier-naming.ClassConstantPrefix
-  #  value:           '_'
+  - key:             readability-identifier-naming.ClassConstantPrefix
+    value:           ''
   - key:             readability-identifier-naming.ClassMemberPrefix
     value:           ''
   - key:             readability-identifier-naming.GlobalConstantPrefix

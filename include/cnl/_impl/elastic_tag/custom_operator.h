@@ -61,7 +61,7 @@ namespace cnl {
         using result_tag = decltype(Operator{}(
                 std::declval<elastic_tag<LhsDigits, LhsNarrowest>>(),
                 std::declval<elastic_tag<RhsDigits, RhsNarrowest>>()));
-        using result_rep = typename result_tag::_rep;
+        using result_rep = typename result_tag::rep;
 
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {

@@ -35,7 +35,7 @@ namespace cnl {
     /// \sa elastic_scaled_integer
     template<int Digits = digits_v<int>, integer Narrowest = int>
     using elastic_integer = _impl::wrapper<
-            typename elastic_tag<Digits, Narrowest>::_rep,
+            typename elastic_tag<Digits, Narrowest>::rep,
             elastic_tag<Digits, Narrowest>>;
 }
 

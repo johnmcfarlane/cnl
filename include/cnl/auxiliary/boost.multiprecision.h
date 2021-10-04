@@ -170,20 +170,22 @@ namespace cnl {
 
     template<unsigned NumBits>
     struct to_rep<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>> {
-        using _number_type =
+    private:
+        using number_type =
                 _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::signed_magnitude>>;
 
-        [[nodiscard]] constexpr auto& operator()(_number_type& n) const
+    public:
+        [[nodiscard]] constexpr auto& operator()(number_type& n) const
         {
             return n;
         };
 
-        [[nodiscard]] constexpr auto const& operator()(_number_type const& n) const
+        [[nodiscard]] constexpr auto const& operator()(number_type const& n) const
         {
             return n;
         };
 
-        [[nodiscard]] constexpr auto operator()(_number_type&& n) const
+        [[nodiscard]] constexpr auto operator()(number_type&& n) const
         {
             return n;
         };
@@ -191,20 +193,22 @@ namespace cnl {
 
     template<unsigned NumBits>
     struct to_rep<_bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>> {
-        using _number_type =
+    private:
+        using number_type =
                 _bmp::number<_bmp::cpp_int_backend<NumBits, NumBits, _bmp::unsigned_magnitude>>;
 
-        [[nodiscard]] constexpr auto& operator()(_number_type& n) const
+    public:
+        [[nodiscard]] constexpr auto& operator()(number_type& n) const
         {
             return n;
         };
 
-        [[nodiscard]] constexpr auto const& operator()(_number_type const& n) const
+        [[nodiscard]] constexpr auto const& operator()(number_type const& n) const
         {
             return n;
         };
 
-        [[nodiscard]] constexpr auto operator()(_number_type&& n) const
+        [[nodiscard]] constexpr auto operator()(number_type&& n) const
         {
             return std::move(n);
         };

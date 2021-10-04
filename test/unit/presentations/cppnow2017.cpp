@@ -24,7 +24,7 @@ using overflow_integer = cnl::overflow_integer<Rep, cnl::_impl::throwing_overflo
 
 namespace stl {
     template<typename T>
-    using Composite = map<string, vector<unique_ptr<T>>>;
+    using composite = map<string, vector<unique_ptr<T>>>;
 }
 
 namespace prototypes {
@@ -50,8 +50,8 @@ namespace prototypes {
     class elastic_integer {
         // ...
     private:
-        using Rep = Narrowest;
-        Rep _rep;  // Narrowest or something wider
+        using rep = Narrowest;
+        rep _rep;  // Narrowest or something wider
     };
 
     // good
