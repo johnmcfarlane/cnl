@@ -20,6 +20,7 @@ Checks: >
   -readability-magic-numbers,
   -readability-named-parameter,
   -readability-qualified-auto,
+  -altera-struct-pack-align,
   -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
   -cppcoreguidelines-pro-bounds-constant-array-index,
   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
@@ -34,6 +35,7 @@ Checks: >
   -modernize-concat-nested-namespaces,
   -modernize-unary-static-assert,
   -readability-avoid-const-params-in-decls,
+  -readability-function-cognitive-complexity,
 
 WarningsAsErrors: '*'
 HeaderFilterRegex: 'include/cnl'
