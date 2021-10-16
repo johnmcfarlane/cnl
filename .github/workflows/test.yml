@@ -16,7 +16,7 @@ jobs:
           - name: osx-clang
             os: osx
             compiler: clang
-            version: "12"
+            version: "13"
             arch: x86_64
             build-type: Debug
             cc: "/usr/local/opt/llvm/bin/clang"
@@ -183,7 +183,7 @@ jobs:
 
     - name: Initialise Conan
       run: |
-        conan config install https://gist.github.com/b3e851895ce33727666f81b7f0d6e761.git
+        conan config install $GITHUB_WORKSPACE/.github/settings.yml
         conan profile new default --detect
         conan profile update settings.compiler=${{matrix.compiler}} default
         conan profile update settings.compiler.libcxx=${{matrix.stdlib}} default
@@ -348,7 +348,7 @@ jobs:
 
   # Install on mature Linux distro using only CMake
   linux-cmake-install:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
 

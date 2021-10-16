@@ -35,7 +35,7 @@ class CnlConan(ConanFile):
     no_copy_source = True
     requires = [
         "benchmark/1.5.2",
-        "gtest/1.10.0",
+        "gtest/[~1.11]",
     ]
 
     scm = {
