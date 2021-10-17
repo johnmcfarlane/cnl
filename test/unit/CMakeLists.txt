@@ -3,6 +3,9 @@ enable_testing()
 # source files containing tests of the correctness of CNL;
 # ideally compiles with every warning that CNL user might choose
 set(test_sources
+        # slowest
+        static_int/operators.cpp
+
         # test cnl/all.h
         all.cpp
 
@@ -103,7 +106,6 @@ set(test_sources
         scaled_int/elastic/elastic_scaled_int.cpp
         scaled_int/rounding/elastic/rounding_elastic_scaled_int.cpp
         scaled_int/overflow/elastic/int.cpp
-        static_int/operators.cpp
         static_int/shift_left.cpp
         static_int/type.cpp
         static_number/426.cpp

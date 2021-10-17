@@ -19,14 +19,14 @@ namespace cnl {
     struct numeric_limits<elastic_integer<Digits, Narrowest>> : numeric_limits<Narrowest> {
     private:
         // elastic integer-specific helpers
-        using _value_type = elastic_integer<Digits, Narrowest>;
-        using _rep = _impl::rep_of_t<_value_type>;
-        using _rep_numeric_limits = numeric_limits<_rep>;
+        using value_type = elastic_integer<Digits, Narrowest>;
+        using rep = _impl::rep_of_t<value_type>;
+        using rep_numeric_limits = numeric_limits<rep>;
 
         [[nodiscard]] static constexpr auto rep_max() noexcept
         {
-            return static_cast<_rep>(
-                    _rep_numeric_limits::max() >> (_rep_numeric_limits::digits - digits));
+            return static_cast<rep>(
+                    rep_numeric_limits::max() >> (rep_numeric_limits::digits - digits));
         }
 
     public:
@@ -35,17 +35,17 @@ namespace cnl {
 
         [[nodiscard]] static constexpr auto min() noexcept
         {
-            return _value_type{1};
+            return value_type{1};
         }
 
         [[nodiscard]] static constexpr auto max() noexcept
         {
-            return _value_type{rep_max()};
+            return value_type{rep_max()};
         }
 
         [[nodiscard]] static constexpr auto lowest() noexcept
         {
-            return _value_type{_impl::lowest<_rep, numbers::signedness_v<Narrowest>>()(rep_max())};
+            return value_type{_impl::lowest<rep, numbers::signedness_v<Narrowest>>()(rep_max())};
         }
     };
 

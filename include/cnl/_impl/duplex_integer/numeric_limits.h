@@ -16,27 +16,32 @@
 namespace cnl {
     template<typename Upper, typename Lower>
     struct numeric_limits<_impl::duplex_integer<Upper, Lower>> : numeric_limits<Upper> {
-        static constexpr bool is_integer = true;
-        using _lower_numeric_limits = numeric_limits<Lower>;
-        using _upper_numeric_limits = numeric_limits<Upper>;
-        using _value_type = _impl::duplex_integer<Upper, Lower>;
+    private:
+        using lower_numeric_limits = numeric_limits<Lower>;
+        static_assert(lower_numeric_limits::is_integer);
 
+        using upper_numeric_limits = numeric_limits<Upper>;
+        static_assert(upper_numeric_limits::is_integer);
+
+        using value_type = _impl::duplex_integer<Upper, Lower>;
+
+    public:
         // standard members
-        static constexpr int digits = _lower_numeric_limits::digits + _upper_numeric_limits::digits;
+        static constexpr int digits = lower_numeric_limits::digits + upper_numeric_limits::digits;
 
         [[nodiscard]] static constexpr auto lowest() noexcept
         {
-            return _value_type{numeric_limits<Upper>::lowest(), numeric_limits<Lower>::lowest()};
+            return value_type{numeric_limits<Upper>::lowest(), numeric_limits<Lower>::lowest()};
         }
 
         [[nodiscard]] static constexpr auto min() noexcept
         {
-            return _value_type{numeric_limits<Upper>::min(), numeric_limits<Lower>::min()};
+            return value_type{numeric_limits<Upper>::min(), numeric_limits<Lower>::min()};
         }
 
         [[nodiscard]] static constexpr auto max() noexcept
         {
-            return _value_type{numeric_limits<Upper>::max(), numeric_limits<Lower>::max()};
+            return value_type{numeric_limits<Upper>::max(), numeric_limits<Lower>::max()};
         }
     };
 }

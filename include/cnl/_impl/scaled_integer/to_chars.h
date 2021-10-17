@@ -74,14 +74,14 @@ namespace cnl {
         template<typename Rep, int Exponent, int Radix>
         struct max_to_chars_chars<scaled_integer<Rep, power<Exponent, Radix>>> {
         private:
-            using _scalar = cnl::scaled_integer<Rep, power<Exponent, Radix>>;
+            using scalar = cnl::scaled_integer<Rep, power<Exponent, Radix>>;
 
             // This number is a little pessemistic in the case that Radix != 2.
             static constexpr auto _fractional_digits =
-                    std::max(cnl::_impl::fractional_digits<_scalar>, 0);
+                    std::max(cnl::_impl::fractional_digits<scalar>, 0);
 
-            static constexpr auto _sign_chars = static_cast<int>(cnl::numbers::signedness_v<_scalar>);
-            static constexpr auto _num_significant_integer_bits{cnl::digits_v<_scalar> - _fractional_digits};
+            static constexpr auto _sign_chars = static_cast<int>(cnl::numbers::signedness_v<scalar>);
+            static constexpr auto _num_significant_integer_bits{cnl::digits_v<scalar> - _fractional_digits};
             static constexpr auto _num_trailing_integer_bits{
                     num_digits_to_binary(std::max(0, Exponent), Radix)};
             static constexpr auto _num_integer_bits{

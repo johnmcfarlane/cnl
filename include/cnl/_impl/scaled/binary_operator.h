@@ -44,14 +44,14 @@ namespace cnl {
             op_value<Rhs, power<RhsExponent, Radix>>> {
     private:
         static constexpr int _common_exponent = std::min(LhsExponent, RhsExponent);
-        using _common_power = power<_common_exponent, Radix>;
+        using common_power = power<_common_exponent, Radix>;
         static constexpr int _lhs_left_shift = LhsExponent - _common_exponent;
         static constexpr int _rhs_left_shift = RhsExponent - _common_exponent;
 
     public:
         [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
         {
-            return _impl::operate<Operator, _common_power>{}(
+            return _impl::operate<Operator, common_power>{}(
                     _impl::scale<_lhs_left_shift, Radix>(lhs),
                     _impl::scale<_rhs_left_shift, Radix>(rhs));
         }

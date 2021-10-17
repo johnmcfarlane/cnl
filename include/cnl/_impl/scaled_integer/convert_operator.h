@@ -46,19 +46,19 @@ namespace cnl {
             op_value<scaled_integer<InputRep, power<InputExponent, Radix>>, power<0, Radix>>,
             op_value<scaled_integer<ResultRep, power<ResultExponent, Radix>>, nearest_rounding_tag>> {
     private:
-        using _result = scaled_integer<ResultRep, power<ResultExponent, Radix>>;
-        using _input = scaled_integer<InputRep, power<InputExponent, Radix>>;
+        using result = scaled_integer<ResultRep, power<ResultExponent, Radix>>;
+        using input = scaled_integer<InputRep, power<InputExponent, Radix>>;
 
         [[nodiscard]] static constexpr auto half()
         {
-            return static_cast<_input>(_impl::from_rep<_result>(1)) / 2;
+            return static_cast<input>(_impl::from_rep<result>(1)) / 2;
         }
 
     public:
-        [[nodiscard]] constexpr auto operator()(_input const& from) const
+        [[nodiscard]] constexpr auto operator()(input const& from) const
         {
             // TODO: unsigned specialization
-            return static_cast<_result>(from + ((from >= 0) ? half() : -half()));
+            return static_cast<result>(from + ((from >= 0) ? half() : -half()));
         }
     };
 
@@ -112,13 +112,15 @@ namespace cnl {
             _impl::convert_op,
             op_value<scaled_integer<InputRep, power<InputExponent, InputRadix>>, power<0, InputRadix>>,
             op_value<Result, nearest_rounding_tag>> {
-        using _input = scaled_integer<InputRep, power<InputExponent, InputRadix>>;
+    private:
+        using input = scaled_integer<InputRep, power<InputExponent, InputRadix>>;
 
-        [[nodiscard]] constexpr auto operator()(_input const& from) const
+    public:
+        [[nodiscard]] constexpr auto operator()(input const& from) const
         {
             return _impl::to_rep(custom_operator<
                                  _impl::convert_op,
-                                 op_value<_input, power<0, InputRadix>>,
+                                 op_value<input, power<0, InputRadix>>,
                                  op_value<scaled_integer<Result>, nearest_rounding_tag>>{}(from));
         }
     };
@@ -168,19 +170,19 @@ namespace cnl {
             op_value<scaled_integer<InputRep, power<InputExponent, Radix>>, _impl::native_tag>,
             op_value<scaled_integer<ResultRep, power<ResultExponent, Radix>>, tie_to_pos_inf_rounding_tag>> {
     private:
-        using _result = scaled_integer<ResultRep, power<ResultExponent, Radix>>;
-        using _input = scaled_integer<InputRep, power<InputExponent, Radix>>;
+        using result = scaled_integer<ResultRep, power<ResultExponent, Radix>>;
+        using input = scaled_integer<InputRep, power<InputExponent, Radix>>;
 
         [[nodiscard]] static constexpr auto half()
         {
-            return static_cast<_input>(_impl::from_rep<_result>(1)) / 2;
+            return static_cast<input>(_impl::from_rep<result>(1)) / 2;
         }
 
     public:
-        [[nodiscard]] constexpr auto operator()(_input const& from) const -> _result
+        [[nodiscard]] constexpr auto operator()(input const& from) const -> result
         {
             // TODO: unsigned specialization
-            return _impl::from_rep<_result>(
+            return _impl::from_rep<result>(
                     _impl::to_rep(from + half()) >> (ResultExponent - InputExponent));
         }
     };
@@ -195,7 +197,7 @@ namespace cnl {
             op_value<Input, _impl::native_tag>,
             op_value<scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, tie_to_pos_inf_rounding_tag>> {
     private:
-        using _result = scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>;
+        using result = scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>;
 
         [[nodiscard]] static constexpr auto half()
         {
@@ -206,7 +208,7 @@ namespace cnl {
         [[nodiscard]] constexpr auto operator()(Input const& from) const
         {
             // TODO: unsigned specialization
-            return static_cast<_result>(from + half());
+            return static_cast<result>(from + half());
         }
     };
 
@@ -226,13 +228,15 @@ namespace cnl {
             _impl::convert_op,
             op_value<scaled_integer<InputRep, InputScale>, _impl::native_tag>,
             op_value<Result, tie_to_pos_inf_rounding_tag>> {
-        using _input = scaled_integer<InputRep, InputScale>;
+    private:
+        using input = scaled_integer<InputRep, InputScale>;
 
-        [[nodiscard]] constexpr auto operator()(_input const& from) const
+    public:
+        [[nodiscard]] constexpr auto operator()(input const& from) const
         {
             return _impl::to_rep(custom_operator<
                                  _impl::convert_op,
-                                 op_value<_input, _impl::native_tag>,
+                                 op_value<input, _impl::native_tag>,
                                  op_value<scaled_integer<Result>, tie_to_pos_inf_rounding_tag>>{}(from));
         }
     };
@@ -266,14 +270,14 @@ namespace cnl {
             op_value<scaled_integer<InputRep, power<InputExponent, Radix>>, _impl::native_tag>,
             op_value<scaled_integer<ResultRep, power<ResultExponent, Radix>>, neg_inf_rounding_tag>> {
     private:
-        using _result = scaled_integer<ResultRep, power<ResultExponent, Radix>>;
-        using _input = scaled_integer<InputRep, power<InputExponent, Radix>>;
+        using result = scaled_integer<ResultRep, power<ResultExponent, Radix>>;
+        using input = scaled_integer<InputRep, power<InputExponent, Radix>>;
 
     public:
-        [[nodiscard]] constexpr auto operator()(_input const& from) const
+        [[nodiscard]] constexpr auto operator()(input const& from) const
         {
             // TODO: unsigned specialization
-            return _impl::from_rep<_result>(
+            return _impl::from_rep<result>(
                     _impl::to_rep(from) >> (ResultExponent - InputExponent));
         }
     };
@@ -288,13 +292,13 @@ namespace cnl {
             op_value<Input, _impl::native_tag>,
             op_value<scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>, neg_inf_rounding_tag>> {
     private:
-        using _result = scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>;
+        using result = scaled_integer<ResultRep, power<ResultExponent, ResultRadix>>;
 
     public:
         [[nodiscard]] constexpr auto operator()(Input const& from) const
         {
             // TODO: unsigned specialization
-            return static_cast<_result>(from);
+            return static_cast<result>(from);
         }
     };
 
@@ -314,13 +318,15 @@ namespace cnl {
             _impl::convert_op,
             op_value<scaled_integer<InputRep, InputScale>, _impl::native_tag>,
             op_value<Result, neg_inf_rounding_tag>> {
-        using _input = scaled_integer<InputRep, InputScale>;
+    private:
+        using input = scaled_integer<InputRep, InputScale>;
 
-        [[nodiscard]] constexpr auto operator()(_input const& from) const -> Result
+    public:
+        [[nodiscard]] constexpr auto operator()(input const& from) const -> Result
         {
             return _impl::to_rep(custom_operator<
                                  _impl::convert_op,
-                                 op_value<_input, _impl::native_tag>,
+                                 op_value<input, _impl::native_tag>,
                                  op_value<scaled_integer<Result>, neg_inf_rounding_tag>>{}(from));
         }
     };

@@ -18,23 +18,23 @@ namespace cnl {
             _impl::shift_left_op,
             op_value<_impl::duplex_integer<Upper, Lower>>,
             op_value<Rhs>> {
-        using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
-
-        [[nodiscard]] constexpr auto operator()(_duplex_integer const& lhs, Rhs const& rhs) const
-                -> _duplex_integer
-        {
-            return with_int(lhs, static_cast<int>(rhs));
-        }
-
     private:
-        [[nodiscard]] constexpr auto with_int(_duplex_integer const& lhs, int const& rhs) const
-                -> _duplex_integer
+        using duplex_integer = _impl::duplex_integer<Upper, Lower>;
+        [[nodiscard]] constexpr auto with_int(duplex_integer const& lhs, int const& rhs) const
+                -> duplex_integer
         {
-            return _duplex_integer(
+            return duplex_integer(
                     _impl::sensible_left_shift<Upper>(lhs.upper(), rhs)
                             | _impl::extra_sensible_right_shift<Upper>(
                                     lhs.lower(), _impl::width<Lower> - rhs),
                     _impl::sensible_left_shift<Lower>(lhs.lower(), rhs));
+        }
+
+    public:
+        [[nodiscard]] constexpr auto operator()(duplex_integer const& lhs, Rhs const& rhs) const
+                -> duplex_integer
+        {
+            return with_int(lhs, static_cast<int>(rhs));
         }
     };
 
@@ -43,34 +43,35 @@ namespace cnl {
             _impl::shift_right_op,
             op_value<_impl::duplex_integer<Upper, Lower>>,
             op_value<Rhs>> {
-        using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
-
-        [[nodiscard]] constexpr auto operator()(_duplex_integer const& lhs, Rhs const& rhs) const
-                -> _duplex_integer
-        {
-            return with_int(lhs, static_cast<int>(rhs));
-        }
-
     private:
-        [[nodiscard]] constexpr auto with_int(_duplex_integer const& lhs, int rhs) const
-                -> _duplex_integer
+        using duplex_integer = _impl::duplex_integer<Upper, Lower>;
+
+        [[nodiscard]] constexpr auto with_int(duplex_integer const& lhs, int rhs) const
+                -> duplex_integer
         {
-            return _duplex_integer(calculate_upper(lhs, rhs), calculate_lower(lhs, rhs));
+            return duplex_integer(calculate_upper(lhs, rhs), calculate_lower(lhs, rhs));
         }
 
-        [[nodiscard]] constexpr auto calculate_upper(_duplex_integer const& lhs, int rhs) const
+        [[nodiscard]] constexpr auto calculate_upper(duplex_integer const& lhs, int rhs) const
                 -> Upper
         {
             return _impl::sensible_right_shift<Upper>(lhs.upper(), rhs);
         }
 
-        [[nodiscard]] constexpr auto calculate_lower(_duplex_integer const& lhs, int rhs) const
+        [[nodiscard]] constexpr auto calculate_lower(duplex_integer const& lhs, int rhs) const
                 -> Lower
         {
             return static_cast<Lower>(
                     _impl::sensible_right_shift<Lower>(lhs.lower(), rhs)
                     | _impl::extra_sensible_right_shift<Lower>(
                             lhs.upper(), rhs - _impl::width<Lower>));
+        }
+
+    public:
+        [[nodiscard]] constexpr auto operator()(duplex_integer const& lhs, Rhs const& rhs) const
+                -> duplex_integer
+        {
+            return with_int(lhs, static_cast<int>(rhs));
         }
     };
 }

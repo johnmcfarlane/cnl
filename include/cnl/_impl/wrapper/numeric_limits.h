@@ -16,54 +16,56 @@
 namespace cnl {
     template<typename Rep, tag Tag>
     struct numeric_limits<_impl::wrapper<Rep, Tag>> : cnl::numeric_limits<Rep> {
-        using _value_type = _impl::wrapper<Rep, Tag>;
-        using _rep_numeric_limits = numeric_limits<Rep>;
+    private:
+        using value_type = _impl::wrapper<Rep, Tag>;
+        using rep_numeric_limits = numeric_limits<Rep>;
 
+    public:
         [[nodiscard]] static constexpr auto min() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep_numeric_limits::min());
+            return _impl::from_rep<value_type>(rep_numeric_limits::min());
         }
 
         [[nodiscard]] static constexpr auto max() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep_numeric_limits::max());
+            return _impl::from_rep<value_type>(rep_numeric_limits::max());
         }
 
         [[nodiscard]] static constexpr auto lowest() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep_numeric_limits::lowest());
+            return _impl::from_rep<value_type>(rep_numeric_limits::lowest());
         }
 
         [[nodiscard]] static constexpr auto epsilon() noexcept
         {
-            return _impl::from_rep<_value_type>(_rep_numeric_limits::round_error());
+            return _impl::from_rep<value_type>(rep_numeric_limits::round_error());
         }
 
         [[nodiscard]] static constexpr auto round_error() noexcept
         {
-            return static_cast<_value_type>(_rep_numeric_limits::round_error());
+            return static_cast<value_type>(rep_numeric_limits::round_error());
         }
 
         [[nodiscard]] static constexpr auto infinity() noexcept
         {
-            return static_cast<_value_type>(_rep_numeric_limits::infinity());
+            return static_cast<value_type>(rep_numeric_limits::infinity());
         }
 
         [[nodiscard]] static constexpr auto
         quiet_NaN() noexcept  // NOLINT(readability-identifier-naming)
         {
-            return static_cast<_value_type>(_rep_numeric_limits::quiet_NaN());
+            return static_cast<value_type>(rep_numeric_limits::quiet_NaN());
         }
 
         [[nodiscard]] static constexpr auto
         signaling_NaN() noexcept  // NOLINT(readability-identifier-naming)
         {
-            return static_cast<_value_type>(_rep_numeric_limits::signaling_NaN());
+            return static_cast<value_type>(rep_numeric_limits::signaling_NaN());
         }
 
         [[nodiscard]] static constexpr auto denorm_min() noexcept
         {
-            return static_cast<_value_type>(_rep_numeric_limits::denorm_min());
+            return static_cast<value_type>(rep_numeric_limits::denorm_min());
         }
     };
 

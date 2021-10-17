@@ -30,8 +30,11 @@ namespace cnl {
 
         template<class Number>
         struct composition_depth<Number, true> {
-            using _rep = _impl::rep_of_t<Number>;
-            static constexpr auto value = composition_depth<_rep>::value + 1;
+        private:
+            using rep = _impl::rep_of_t<Number>;
+
+        public:
+            static constexpr auto value = composition_depth<rep>::value + 1;
         };
 
         template<class T>

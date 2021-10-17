@@ -17,10 +17,13 @@
 namespace cnl {
     template<int Digits, int Radix, typename Rep>
     struct scale<Digits, Radix, _impl::wrapper<Rep>> {
-        using _value_type = _impl::wrapper<Rep>;
-        [[nodiscard]] constexpr auto operator()(_value_type const& s) const
+    private:
+        using value_type = _impl::wrapper<Rep>;
+
+    public:
+        [[nodiscard]] constexpr auto operator()(value_type const& s) const
         {
-            return _impl::from_rep<_value_type>(_impl::scale<Digits, Radix>(_impl::to_rep(s)));
+            return _impl::from_rep<value_type>(_impl::scale<Digits, Radix>(_impl::to_rep(s)));
         }
     };
 }

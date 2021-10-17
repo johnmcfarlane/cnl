@@ -39,11 +39,12 @@ namespace cnl {
             _impl::modulo_op,
             op_value<_impl::duplex_integer<Upper, Lower>>,
             op_value<_impl::duplex_integer<Upper, Lower>>> {
-        using _duplex_integer = _impl::duplex_integer<Upper, Lower>;
-        using _unsigned_duplex_integer = numbers::set_signedness_t<_duplex_integer, false>;
+    private:
+        using duplex_integer = _impl::duplex_integer<Upper, Lower>;
 
+    public:
         [[nodiscard]] constexpr auto operator()(
-                _duplex_integer const& lhs, _duplex_integer const& rhs) const -> _duplex_integer
+                duplex_integer const& lhs, duplex_integer const& rhs) const -> duplex_integer
         {
             return lhs - rhs * (lhs / rhs);
         }
