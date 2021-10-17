@@ -46,15 +46,6 @@ Tested:
 
 ## Instructions
 
-### Download
-
-The library is [hosted](https://github.com/johnmcfarlane/cnl) on GitHub:
-
-```shell
-git clone https://github.com/johnmcfarlane/cnl.git
-cd cnl
-```
-
 ### Build
 
 CMake scripts are provided.
