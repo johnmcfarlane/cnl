@@ -26,7 +26,7 @@ constexpr auto average_integer(float input1, float input2)
     auto sum = int64_t{fixed1} + fixed2;
 
     // user must elide the two divisions (averaging and scaling) together
-    return sum / (2 * 65536.F);
+    return float(sum) / (2 * 65536.F);
 }
 
 // the same function using cnl::elastic_integer -

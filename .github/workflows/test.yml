@@ -10,7 +10,7 @@ jobs:
   posix-conan-test:
     strategy:
       matrix:
-        name: [osx-clang, clang-11, osx-gcc-10, gcc-10, clang-10, clang-11-sanitize, armv7]
+        name: [osx-clang, clang-12, osx-gcc-11, gcc-10, clang-10, clang-11, clang-12-sanitize, armv7]
         include:
           # OS X Clang (latest)
           - name: osx-clang
@@ -31,10 +31,10 @@ jobs:
             stdlib: libc++
             toolchain: clang-libc++.cmake
 
-          # Clang-11 (w. Clang-Tidy)
-          - name: clang-11
+          # Clang-12 (w. Clang-Tidy)
+          - name: clang-12
             compiler: clang
-            version: "11"
+            version: "12"
             os: linux
             arch: x86_64
             build-type: Release
@@ -45,22 +45,22 @@ jobs:
             generator: "Ninja"
             int128: "True"
             iostreams: "True"
-            linux-container: johnmcfarlane/cnl_ci:clang-11-libcpp
+            linux-container: johnmcfarlane/cnl_ci:clang-12-libcpp
             os-version: ubuntu-20.04
             sanitize: "False"
             stdlib: libc++
             toolchain: clang-libc++.cmake
 
-          # OS X GCC-10
-          - name: osx-gcc-10
+          # OS X GCC-11
+          - name: osx-gcc-11
             os: osx
             compiler: gcc
-            version: "10"
+            version: "11"
             arch: x86_64
             build-type: Release
-            cc: gcc-10
+            cc: gcc-11
             clang_tidy: "False"
-            cxx: g++-10
+            cxx: g++-11
             exceptions: "True"
             generator: "Ninja"
             int128: "True"
@@ -110,8 +110,8 @@ jobs:
             stdlib: libc++
             toolchain: clang-libc++.cmake
 
-          # Clang-11 (w. ASan + UBSan)
-          - name: clang-11-sanitize
+          # Clang-11
+          - name: clang-11
             compiler: clang
             version: "11"
             os: linux
@@ -122,9 +122,29 @@ jobs:
             cxx: clang++
             exceptions: "True"
             generator: "Ninja"
-            int128: "False"
+            int128: "True"
             iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:clang-11-libcpp
+            os-version: ubuntu-20.04
+            sanitize: "False"
+            stdlib: libc++
+            toolchain: clang-libc++.cmake
+
+          # Clang-12 (w. ASan + UBSan)
+          - name: clang-12-sanitize
+            compiler: clang
+            version: "12"
+            os: linux
+            arch: x86_64
+            build-type: Release
+            cc: clang
+            clang_tidy: "False"
+            cxx: clang++
+            exceptions: "True"
+            generator: "Ninja"
+            int128: "False"
+            iostreams: "True"
+            linux-container: johnmcfarlane/cnl_ci:clang-12-libcpp
             os-version: ubuntu-20.04
             sanitize: "True"
             stdlib: libc++

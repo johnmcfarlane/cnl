@@ -34,7 +34,7 @@ class CnlConan(ConanFile):
     generators = "cmake_find_package"
     no_copy_source = True
     requires = [
-        "benchmark/1.5.2",
+        "benchmark/[~1.6]",
         "gtest/[~1.11]",
     ]
 
