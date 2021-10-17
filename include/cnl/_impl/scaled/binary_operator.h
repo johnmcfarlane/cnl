@@ -4,21 +4,22 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_SCALED_BINARY_OPERATOR_H)
-#define CNL_IMPL_SCALED_BINARY_OPERATOR_H
+#if !defined(CNL_IMPL_SCALED_POWER_BINARY_OPERATOR_H)
+#define CNL_IMPL_SCALED_POWER_BINARY_OPERATOR_H
 
 #include "../custom_operator/definition.h"
 #include "../custom_operator/tagged.h"
 #include "../num_traits/scale.h"
-#include "definition.h"
+// #include "definition.h"
 #include "is_scaled_tag.h"
 
 #include <algorithm>
 
 /// compositional numeric library
 namespace cnl {
-    template<_impl::binary_op Operator, typename Lhs, typename Rhs, int Exponent, int Radix>
-    struct custom_operator<Operator, op_value<Lhs, power<Exponent, Radix>>, op_value<Rhs, power<Exponent, Radix>>>
+    template<_impl::binary_op Operator, integer LhsRep, integer RhsRep, scaled_tag Scale>
+    // requires(!std::is_same_v<Operator, _impl::divide_op>)
+    struct custom_operator<Operator, op_value<LhsRep, Scale>, op_value<RhsRep, Scale>>
         : Operator {
     };
 
@@ -37,44 +38,53 @@ namespace cnl {
         };
     }
 
-    template<_impl::binary_op Operator, typename Lhs, int LhsExponent, int RhsExponent, typename Rhs, int Radix>
-    requires(LhsExponent != RhsExponent && _impl::is_zero_degree<Operator>::value) struct custom_operator<
+    template<
+            _impl::binary_op Operator,
+            integer LhsRep, scaled_tag LhsScale,
+            integer RhsRep, scaled_tag RhsScale>
+    requires(_impl::is_zero_degree<Operator>::value&& _impl::exponent_v<LhsScale> != _impl::exponent_v<RhsScale> && _impl::radix_v<LhsScale> == _impl::radix_v<RhsScale>) struct custom_operator<
             Operator,
-            op_value<Lhs, power<LhsExponent, Radix>>,
-            op_value<Rhs, power<RhsExponent, Radix>>> {
+            op_value<LhsRep, LhsScale>,
+            op_value<RhsRep, RhsScale>> {
     private:
-        static constexpr int _common_exponent = std::min(LhsExponent, RhsExponent);
-        using common_power = power<_common_exponent, Radix>;
-        static constexpr int _lhs_left_shift = LhsExponent - _common_exponent;
-        static constexpr int _rhs_left_shift = RhsExponent - _common_exponent;
-
     public:
-        [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+        [[nodiscard]] constexpr auto operator()(LhsRep const& lhs, RhsRep const& rhs) const
         {
-            return _impl::operate<Operator, common_power>{}(
-                    _impl::scale<_lhs_left_shift, Radix>(lhs),
-                    _impl::scale<_rhs_left_shift, Radix>(rhs));
+            constexpr auto lhs_exponent = _impl::exponent_v<LhsScale>;
+            constexpr auto rhs_exponent = _impl::exponent_v<RhsScale>;
+            constexpr auto common_exponent = std::min(lhs_exponent, rhs_exponent);
+            using common_scale = std::conditional_t<(lhs_exponent < rhs_exponent), LhsScale, RhsScale>;
+            constexpr auto common_radix = _impl::radix_v<common_scale>;
+            constexpr int lhs_left_shift = lhs_exponent - common_exponent;
+            constexpr int rhs_left_shift = rhs_exponent - common_exponent;
+
+            return _impl::operate<Operator, common_scale>{}(
+                    _impl::scale<lhs_left_shift, common_radix>(lhs),
+                    _impl::scale<rhs_left_shift, common_radix>(rhs));
         }
     };
 
-    template<_impl::binary_op Operator, typename Lhs, int LhsExponent, typename Rhs, int RhsExponent, int Radix>
-    requires(LhsExponent != RhsExponent && !_impl::is_zero_degree<Operator>::value) struct custom_operator<
+    template<
+            _impl::binary_op Operator,
+            integer LhsRep, scaled_tag LhsScale,
+            integer RhsRep, scaled_tag RhsScale>
+    requires(!_impl::is_zero_degree<Operator>::value && _impl::exponent_v<LhsScale> != _impl::exponent_v<RhsScale> && _impl::radix_v<LhsScale> == _impl::radix_v<RhsScale>) struct custom_operator<
             Operator,
-            op_value<Lhs, power<LhsExponent, Radix>>,
-            op_value<Rhs, power<RhsExponent, Radix>>>
+            op_value<LhsRep, LhsScale>,
+            op_value<RhsRep, RhsScale>>
         : Operator {
     };
 
-    template<_impl::shift_op Operator, typename LhsRep, scaled_tag LhsTag, typename Rhs>
-    requires(!_impl::is_constant<Rhs>::value) struct custom_operator<
+    template<_impl::shift_op Operator, integer LhsRep, scaled_tag LhsTag, integer RhsRep>
+    requires(!_impl::is_constant<RhsRep>::value) struct custom_operator<
             Operator,
             op_value<LhsRep, LhsTag>,
-            op_value<Rhs>> {
-        [[nodiscard]] constexpr auto operator()(LhsRep const& lhs, Rhs const& rhs) const
+            op_value<RhsRep>> {
+        [[nodiscard]] constexpr auto operator()(LhsRep const& lhs, RhsRep const& rhs) const
         {
             return Operator{}(lhs, rhs);
         }
     };
 }
 
-#endif  // CNL_IMPL_SCALED_BINARY_OPERATOR_H
+#endif  // CNL_IMPL_SCALED_POWER_BINARY_OPERATOR_H

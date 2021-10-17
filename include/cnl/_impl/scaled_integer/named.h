@@ -29,16 +29,16 @@ namespace cnl {
     ///
     /// \param value the value from which to make the \ref scaled_integer object
 
-    template<typename Value>
+    template<scaled_tag Scale = power<>, typename Value = void>
     [[nodiscard]] constexpr auto make_scaled_integer(Value const& value)
     {
-        return _impl::from_value<scaled_integer<>, Value>(value);
+        return _impl::from_value<scaled_integer<int, Scale>, Value>(value);
     }
 
     template<fixed_point Numerator, fixed_point Denominator>
     struct fraction;
 
-    template<class Dividend, class Divisor>
+    template<scaled_tag Scale = power<>, class Dividend = void, class Divisor = void>
     [[nodiscard]] constexpr auto make_scaled_integer(fraction<Dividend, Divisor> const& f)
     {
         using natural_result = _impl::op_result<_impl::divide_op, Dividend, Divisor>;

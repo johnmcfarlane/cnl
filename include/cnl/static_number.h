@@ -10,6 +10,10 @@
 /// \file
 /// \brief file containing definitions related to \ref cnl::static_number
 
+#define CNL_IMPL_DEFAULT_STATIC_NUMBER_SCALE power
+
+#include "_impl/scaled/power.h"
+#include "_impl/scaled/quasi_exact.h"
 #include "_impl/static_integer.h"
 #include "_impl/wrapper/tag_of.h"
 #include "integer.h"
@@ -20,24 +24,24 @@ namespace cnl {
     /// \brief a general-purpose fixed-point real number type
     ///
     /// \tparam Digits number of binary digits
-    /// \tparam Exponent the exponent used to scale the integer value
+    /// \tparam Scale the scale of the integer; defaults to \ref CNL_IMPL_DEFAULT_STATIC_NUMBER_SCALE
     /// \tparam OverflowTag behavior exhibited on out-of-range conditions
     /// \tparam RoundingTag behavior exhibited on precision loss
     /// \tparam Narrowest narrowest integer with which to represent the value
     ///
     /// \sa static_integer
     template<
-            int Digits, int Exponent = 0, rounding_tag RoundingTag = nearest_rounding_tag,
+            int Digits, scaled_tag Scale = CNL_IMPL_DEFAULT_STATIC_NUMBER_SCALE<>, rounding_tag RoundingTag = nearest_rounding_tag,
             overflow_tag OverflowTag = undefined_overflow_tag, integer Narrowest = int>
     using static_number = scaled_integer<
-            _impl::static_integer<Digits, RoundingTag, OverflowTag, Narrowest>, power<Exponent>>;
+            _impl::static_integer<Digits, RoundingTag, OverflowTag, Narrowest>, Scale>;
 
     /// \brief constructs a static_number from a given variable
     template<
             rounding_tag RoundingTag = nearest_rounding_tag, overflow_tag OverflowTag = undefined_overflow_tag,
             integer Narrowest = int, class Input = int>
     [[nodiscard]] constexpr auto make_static_number(Input const& input)
-            -> static_number<numeric_limits<Input>::digits, 0, RoundingTag, OverflowTag, Narrowest>
+            -> static_number<numeric_limits<Input>::digits, CNL_IMPL_DEFAULT_STATIC_NUMBER_SCALE<>, RoundingTag, OverflowTag, Narrowest>
     {
         return input;
     }
@@ -48,7 +52,7 @@ namespace cnl {
             overflow_tag OverflowTag = _impl::tag_of_t<overflow_integer<>>, integer Narrowest = int,
             class Input = int, CNL_IMPL_CONSTANT_VALUE_TYPE Value>
     [[nodiscard]] constexpr auto make_static_number(constant<Value> const&) -> static_number<
-            _impl::used_digits(Value) - trailing_bits(Value), trailing_bits(Value), RoundingTag,
+            _impl::used_digits(Value) - trailing_bits(Value), CNL_IMPL_DEFAULT_STATIC_NUMBER_SCALE<trailing_bits(Value)>, RoundingTag,
             OverflowTag, Narrowest>
     {
         return constant<Value>{};

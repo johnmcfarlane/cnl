@@ -16,7 +16,7 @@
 #include "../cstdint/types.h"
 #include "../num_traits/fixed_width_scale.h"
 #include "../num_traits/to_rep.h"
-#include "../scaled/power.h"
+#include "../scaled/is_scaled_tag.h"
 #include "../ssize.h"
 #include "../ssizeof.h"
 #include "definition.h"
@@ -71,10 +71,10 @@ namespace cnl {
             }
         }
 
-        template<typename Rep, int Exponent, int Radix>
-        struct max_to_chars_chars<scaled_integer<Rep, power<Exponent, Radix>>> {
+        template<integer Rep, scaled_tag Scale>
+        struct max_to_chars_chars<scaled_integer<Rep, Scale>> {
         private:
-            using scalar = cnl::scaled_integer<Rep, power<Exponent, Radix>>;
+            using scalar = cnl::scaled_integer<Rep, Scale>;
 
             // This number is a little pessemistic in the case that Radix != 2.
             static constexpr auto _fractional_digits =
@@ -83,7 +83,7 @@ namespace cnl {
             static constexpr auto _sign_chars = static_cast<int>(cnl::numbers::signedness_v<scalar>);
             static constexpr auto _num_significant_integer_bits{cnl::digits_v<scalar> - _fractional_digits};
             static constexpr auto _num_trailing_integer_bits{
-                    num_digits_to_binary(std::max(0, Exponent), Radix)};
+                    num_digits_to_binary(std::max(0, exponent_v<Scale>), radix_v<Scale>)};
             static constexpr auto _num_integer_bits{
                     _num_significant_integer_bits + _num_trailing_integer_bits};
             static constexpr auto _integer_chars = num_digits_from_binary(_num_integer_bits, 10);
@@ -290,11 +290,11 @@ namespace cnl {
 
     // a partial implementation of std::to_chars overloaded on cnl::scaled_integer;
     // known to exhibit rounding errors; not yet tested with Radix!=2
-    template<integer Rep, int Exponent, int Radix>
+    template<integer Rep, scaled_tag Scale>
     [[nodiscard]] inline constexpr auto to_chars(
             char* const first,
             char* const last,
-            cnl::scaled_integer<Rep, power<Exponent, Radix>> const& value)
+            cnl::scaled_integer<Rep, Scale> const& value)
     {
         if (first == last) {
             // buffer too small to contain "0"
@@ -309,7 +309,7 @@ namespace cnl {
 
         using significand_type = std::conditional_t<(digits_v<Rep> > digits_v<int64>), Rep, int64>;
         auto const descaled{_impl::descale<significand_type, 10>(
-                _impl::to_rep(value), power<Exponent, Radix>{})};
+                _impl::to_rep(value), Scale{})};
 
         return _impl::to_chars_non_zero(first, last, descaled);
     }

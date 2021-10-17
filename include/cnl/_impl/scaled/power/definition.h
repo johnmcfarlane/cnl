@@ -4,8 +4,8 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_IMPL_SCALED_DEFINITION_H)
-#define CNL_IMPL_SCALED_DEFINITION_H
+#if !defined(CNL_IMPL_SCALED_POWER_DEFINITION_H)
+#define CNL_IMPL_SCALED_POWER_DEFINITION_H
 
 #include "declaration.h"
 
@@ -19,7 +19,7 @@ namespace cnl {
     /// \tparam Exponent the exponent used to scale the integer value; defaults to 0
     /// \tparam Radix the base used to scale the integer value; defaults to 2
     ///
-    /// \sa scaled_integer
+    /// \sa scaled_integer, quasi_exact
 
     template<int Exponent, int Radix>
     struct power {
@@ -99,4 +99,4 @@ namespace cnl {
     }
 }
 
-#endif  // CNL_IMPL_SCALED_DEFINITION_H
+#endif  // CNL_IMPL_SCALED_POWER_DEFINITION_H

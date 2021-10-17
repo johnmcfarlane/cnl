@@ -10,8 +10,10 @@
 #include "../../integer.h"
 #include "../../numeric_limits.h"
 #include "../cstdint/types.h"
+#include "../narrow_cast.h"
 #include "../numbers/signedness.h"
-#include "../scaled/declaration.h"
+#include "../scaled/is_scaled_tag.h"
+#include "../scaled/power/declaration.h"
 #include "../unreachable.h"
 
 /// compositional numeric library
@@ -26,9 +28,9 @@ namespace cnl::_impl {
     template<
             integer Significand = int64, int OutRadix = 10,
             bool Precise = false,
-            int InExponent = 0, int InRadix = 2,
+            scaled_tag InScale = power<>,
             integer Rep = int>
-    [[nodiscard]] constexpr auto descale(Rep const& input, power<InExponent, InRadix>)
+    [[nodiscard]] constexpr auto descale(Rep const& input, InScale)
     {
         descaled<Significand, OutRadix> output{static_cast<Significand>(input), 0};
 
@@ -49,10 +51,10 @@ namespace cnl::_impl {
                       return n > Significand{numeric_limits<Significand>::max() / OutRadix};
                   }};
 
-        if constexpr (InExponent < 0) {
-            for (int in_exponent = InExponent;
+        if constexpr (exponent_v<InScale> < 0) {
+            for (int in_exponent = exponent_v<InScale>;
                  in_exponent != 0 || (Precise && !(output.significand % OutRadix));) {
-                if (output.significand % InRadix) {
+                if (output.significand % radix_v<InScale>) {
                     if (oob(output.significand)) {
                         if (Precise) {
                             return unreachable<descaled<Significand, OutRadix>>("number cannot be represented in this form");
@@ -64,11 +66,11 @@ namespace cnl::_impl {
                     }
                 }
 
-                output.significand /= InRadix;
+                output.significand = narrow_cast<Significand>(output.significand / radix_v<InScale>);
                 in_exponent++;
             }
         } else {
-            for (int in_exponent = InExponent;
+            for (int in_exponent = exponent_v<InScale>;
                  in_exponent != 0 || !(output.significand % OutRadix);) {
                 if (!(output.significand % OutRadix)) {
                     output.significand /= OutRadix;
@@ -77,7 +79,7 @@ namespace cnl::_impl {
                 }
 
                 if (!oob(output.significand)) {
-                    output.significand *= InRadix;
+                    output.significand *= radix_v<InScale>;
                     in_exponent--;
                 }
             }

@@ -30,10 +30,10 @@ namespace {
 
     TEST(static_number, pre_increment)  // NOLINT
     {
-        auto a = cnl::static_number<4, -2>{2.75};
+        auto a = cnl::static_number<4, cnl::power<-2>>{2.75};
         auto& b = ++a;
         static_assert(
-                std::is_same<decltype(b), cnl::static_number<4, -2>&>::value,
+                std::is_same<decltype(b), cnl::static_number<4, cnl::power<-2>>&>::value,
                 "static_number pre-increment return value");
         ASSERT_EQ(&b, &a) << "static_number pre-increment return address";
         ASSERT_EQ(3.75, b) << "static_number pre-increment";
@@ -41,10 +41,10 @@ namespace {
 
     TEST(static_number, pre_decrement)  // NOLINT
     {
-        auto a = cnl::static_number<4, -2>{-2.75};
+        auto a = cnl::static_number<4, cnl::power<-2>>{-2.75};
         auto& b = --a;
         static_assert(
-                std::is_same<decltype(b), cnl::static_number<4, -2>&>::value,
+                std::is_same<decltype(b), cnl::static_number<4, cnl::power<-2>>&>::value,
                 "static_number pre-increment return value");
         ASSERT_EQ(&b, &a) << "static_number pre-increment return address";
         ASSERT_EQ(-3.75, b) << "static_number pre-increment";
@@ -52,10 +52,10 @@ namespace {
 
     TEST(static_number, post_increment)  // NOLINT
     {
-        auto a = cnl::static_number<4, -2>{2.75};
+        auto a = cnl::static_number<4, cnl::power<-2>>{2.75};
         auto const& b = a++;
         static_assert(
-                std::is_same<decltype(b), cnl::static_number<4, -2> const&>::value,
+                std::is_same<decltype(b), cnl::static_number<4, cnl::power<-2>> const&>::value,
                 "static_number pre-increment return value");
         ASSERT_NE(&b, &a) << "static_number pre-increment return address";
         ASSERT_EQ(3.75, a) << "static_number pre-increment";
@@ -64,10 +64,10 @@ namespace {
 
     TEST(static_number, post_decrement)  // NOLINT
     {
-        auto a = cnl::static_number<4, -2>{-2.75};
+        auto a = cnl::static_number<4, cnl::power<-2>>{-2.75};
         auto const& b = a--;
         static_assert(
-                std::is_same<decltype(b), cnl::static_number<4, -2> const&>::value,
+                std::is_same<decltype(b), cnl::static_number<4, cnl::power<-2>> const&>::value,
                 "static_number pre-increment return value");
         ASSERT_NE(&b, &a) << "static_number pre-increment return address";
         ASSERT_EQ(-3.75, a) << "static_number pre-increment";
@@ -77,6 +77,7 @@ namespace {
     TEST(static_number, stress)  // NOLINT
     {
         auto expected = 2809;
+        // auto expected = 401;
 
         auto s = cnl::make_static_number<cnl::nearest_rounding_tag, cnl::saturated_overflow_tag>(70)
                / 3;
@@ -85,6 +86,7 @@ namespace {
         auto s2pooten = s2po / 10;
         auto s4pooten = s2pooten * s2pooten;
         auto actual = static_cast<int>(s4pooten);
+        // auto actual = static_cast<int>(s2po);
 
         ASSERT_EQ(expected, actual);
     }
@@ -92,25 +94,25 @@ namespace {
 #if !defined(CNL_UNREACHABLE_UB_ENABLED)
     TEST(static_number, pre_increment_overflow)  // NOLINT
     {
-        auto a = cnl::static_number<4, -2>{3.0};
+        auto a = cnl::static_number<4, cnl::power<-2>>{3.0};
         ASSERT_DEATH(++a, "positive overflow");
     }
 
     TEST(static_number, pre_decrement_overflow)  // NOLINT
     {
-        auto a = cnl::static_number<4, -2>{-3.0};
+        auto a = cnl::static_number<4, cnl::power<-2>>{-3.0};
         ASSERT_DEATH(--a, "negative overflow");
     }
 
     TEST(static_number, post_increment_overflow)  // NOLINT
     {
-        auto a = cnl::static_number<4, -2>{3.0};
+        auto a = cnl::static_number<4, cnl::power<-2>>{3.0};
         ASSERT_DEATH(a++, "positive overflow");
     }
 
     TEST(static_number, post_decrement_overflow)  // NOLINT
     {
-        auto a = cnl::static_number<4, -2>{-3.0};
+        auto a = cnl::static_number<4, cnl::power<-2>>{-3.0};
         ASSERT_DEATH(a--, "negative overflow");
     }
 #endif
