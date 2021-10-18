@@ -4,6 +4,9 @@
 //  (See accompanying file ../../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#if !defined(CNL_BENCHMARK_SAMPLE_FUNCTIONS_H)
+#define CNL_BENCHMARK_SAMPLE_FUNCTIONS_H
+
 #include <cnl/scaled_integer.h>
 
 #include <cmath>
@@ -26,3 +29,5 @@ bool circle_intersect_generic(Real x1, Real y1, Real r1, Real x2, Real y2, Real 
 
     return distance_squared <= touch_distance_squared;
 }
+
+#endif  // CNL_BENCHMARK_SAMPLE_FUNCTIONS_H

@@ -38,7 +38,7 @@ Checks: >
   -readability-function-cognitive-complexity,
 
 WarningsAsErrors: '*'
-HeaderFilterRegex: 'include/cnl'
+HeaderFilterRegex: '.*'
 AnalyzeTemporaryDtors: false
 FormatStyle:     none
 User:            john
@@ -163,7 +163,7 @@ CheckOptions:
   - key:             readability-identifier-naming.ValueTemplateParameterCase
     value:           CamelCase
   - key:             readability-identifier-naming.TemplateTemplateParameterCase
-    value:           lower_case
+    value:           CamelCase
   - key:             readability-identifier-naming.TemplateParameterCase
     value:           CamelCase
   - key:             readability-identifier-naming.TypeAliasCase
