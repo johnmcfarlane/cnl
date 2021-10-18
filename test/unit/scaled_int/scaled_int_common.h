@@ -953,8 +953,8 @@ static_assert(
         "cnl::scaled_integer subtraction test failed");
 static_assert(
         identical(
-                // NOLINTNEXTLINE(misc-redundant-expression)
                 scaled_integer<
+                        // NOLINTNEXTLINE(misc-redundant-expression)
                         decltype(std::declval<int8>() - std::declval<int8>()), cnl::power<-5>>(
                         2.125 - 3.25),
                 scaled_integer<int8, cnl::power<-5>>(2.125)
@@ -1054,8 +1054,8 @@ static_assert(
 // division
 static_assert(
         identical(
-                // NOLINTNEXTLINE(misc-redundant-expression)
                 scaled_integer<
+                        // NOLINTNEXTLINE(misc-redundant-expression)
                         decltype(std::declval<int8>() / std::declval<int8>()), cnl::power<0>>{
                         -15.75},
                 scaled_integer<int8, cnl::power<-1>>{63}
@@ -1069,8 +1069,8 @@ static_assert(
         "cnl::scaled_integer test failed");
 static_assert(
         identical(
-                // NOLINTNEXTLINE(misc-redundant-expression)
                 scaled_integer<
+                        // NOLINTNEXTLINE(misc-redundant-expression)
                         decltype(std::declval<int8>() / std::declval<int8>()), cnl::power<0>>{
                         31.75},
                 scaled_integer<int8, cnl::power<1>>{-255}
@@ -1082,8 +1082,8 @@ static_assert(
 
 static_assert(
         identical(
-                // NOLINTNEXTLINE(misc-redundant-expression)
                 scaled_integer<
+                        // NOLINTNEXTLINE(misc-redundant-expression)
                         decltype(std::declval<int8>() / std::declval<int8>()), cnl::power<0>>{0},
                 scaled_integer<int8, cnl::power<-5>>{2.5}
                         / scaled_integer<int8, cnl::power<-5>>{-4.F}),
@@ -1265,7 +1265,7 @@ namespace test_quotient {
             "cnl::scaled_integer test failed");
     static_assert(
             identical(
-                    cnl::quotient(scaled_integer<uint32, cnl::power<10>>{10240}, uint32{3u}),
+                    cnl::quotient(scaled_integer<uint32, cnl::power<10>>{10240}, uint32{3U}),
                     scaled_integer<uint64, cnl::power<-22>>{3413.3333333}),
             "cnl::scaled_integer division test failed");
     static_assert(
@@ -1496,10 +1496,10 @@ namespace test_natural_arithmetic {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// ScaledIntegerTester
+// scaled_integer_tester
 
 template<class Rep, int Exponent>
-struct ScaledIntegerTesterOutsize {
+struct scaled_integer_tester_outsize {
     using scaled_integer = ::scaled_integer<Rep, cnl::power<Exponent>>;
 
     // Rep
@@ -1566,8 +1566,8 @@ struct ScaledIntegerTesterOutsize {
 // some tests cannot be performed at run-time because
 // they involve bit-shifts that exceed the capacity of the underlying type
 template<class Rep, int Exponent>
-struct ScaledIntegerTester : public ScaledIntegerTesterOutsize<Rep, Exponent> {
-    using super = ScaledIntegerTesterOutsize<Rep, Exponent>;
+struct scaled_integer_tester : public scaled_integer_tester_outsize<Rep, Exponent> {
+    using super = scaled_integer_tester_outsize<Rep, Exponent>;
     using scaled_integer = typename super::scaled_integer;
     static constexpr scaled_integer min = super::min;
 
@@ -1580,26 +1580,26 @@ struct ScaledIntegerTester : public ScaledIntegerTesterOutsize<Rep, Exponent> {
 };
 
 template<typename Rep>
-struct ScaledIntegerRepTester {
-    ScaledIntegerTesterOutsize<Rep, -100> _0;
-    ScaledIntegerTester<Rep, -10> _1;
-    ScaledIntegerTester<Rep, -1> _2;
-    ScaledIntegerTester<Rep, 0> _3;
-    ScaledIntegerTester<Rep, 1> _4;
-    ScaledIntegerTester<Rep, 10> _5;
-    ScaledIntegerTesterOutsize<Rep, 100> _6;
+struct scaled_integer_rep_tester {
+    scaled_integer_tester_outsize<Rep, -100> a;
+    scaled_integer_tester<Rep, -10> b;
+    scaled_integer_tester<Rep, -1> c;
+    scaled_integer_tester<Rep, 0> d;
+    scaled_integer_tester<Rep, 1> e;
+    scaled_integer_tester<Rep, 10> f;
+    scaled_integer_tester_outsize<Rep, 100> g;
 };
 
-template struct ScaledIntegerRepTester<int8>;
-template struct ScaledIntegerRepTester<uint8>;
+template struct scaled_integer_rep_tester<int8>;
+template struct scaled_integer_rep_tester<uint8>;
 
-template struct ScaledIntegerRepTester<int16>;
-template struct ScaledIntegerRepTester<uint16>;
+template struct scaled_integer_rep_tester<int16>;
+template struct scaled_integer_rep_tester<uint16>;
 
-template struct ScaledIntegerRepTester<int32>;
-template struct ScaledIntegerRepTester<uint32>;
+template struct scaled_integer_rep_tester<int32>;
+template struct scaled_integer_rep_tester<uint32>;
 
-template struct ScaledIntegerRepTester<int64>;
-template struct ScaledIntegerRepTester<uint64>;
+template struct scaled_integer_rep_tester<int64>;
+template struct scaled_integer_rep_tester<uint64>;
 
 #endif
