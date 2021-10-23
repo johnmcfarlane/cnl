@@ -1,3 +1,6 @@
+#if defined(__arm__)
+#error __arm__ not defined
+#endif
 
 //          Copyright John McFarlane 2018.
 // Distributed under the Boost Software License, Version 1.0.
