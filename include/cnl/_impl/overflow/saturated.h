@@ -8,7 +8,6 @@
 #define CNL_IMPL_OVERFLOW_SATURATED_H
 
 #include "../polarity.h"
-#include "../terminate.h"
 #include "is_overflow_tag.h"
 #include "is_tag.h"
 #include "overflow_operator.h"

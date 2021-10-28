@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_UNREACHABLE_H)
 #define CNL_IMPL_UNREACHABLE_H
 
+#include "abort.h"
 #include "config.h"
-#include "terminate.h"
 
 namespace cnl {
     namespace _impl {
@@ -27,7 +27,7 @@ namespace cnl {
         template<class Result = void>
         constexpr Result unreachable(char const* message) noexcept
         {
-            return terminate<Result>(message);
+            return abort<Result>(message);
         }
 #endif
     }

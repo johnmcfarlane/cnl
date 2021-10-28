@@ -7,8 +7,8 @@
 #if !defined(CNL_IMPL_OVERFLOW_TRAPPING_H)
 #define CNL_IMPL_OVERFLOW_TRAPPING_H
 
+#include "../abort.h"
 #include "../polarity.h"
-#include "../terminate.h"
 #include "is_overflow_tag.h"
 #include "is_tag.h"
 #include "overflow_operator.h"
@@ -17,7 +17,7 @@
 namespace cnl {
     /// \brief tag to specify trap-on-overflow behavior in arithemtic operations
     ///
-    /// Arithmetic operations using this tag call \ref std::terminate when the result exceeds the
+    /// Arithmetic operations using this tag call \ref std::abort when the result exceeds the
     /// range of the result type.
     ///
     /// \headerfile cnl/overflow.h
@@ -38,14 +38,14 @@ namespace cnl {
             template<typename Destination, typename Source>
             [[nodiscard]] constexpr auto operator()(Source const&) const
             {
-                return terminate<Destination>("positive overflow");
+                return abort<Destination>("positive overflow");
             }
 
             template<class... Operands>
             [[nodiscard]] constexpr auto operator()(
                     Operands const&...) const
             {
-                return terminate<op_result<Operator, Operands...>>("positive overflow");
+                return abort<op_result<Operator, Operands...>>("positive overflow");
             }
         };
 
@@ -54,14 +54,14 @@ namespace cnl {
             template<typename Destination, typename Source>
             [[nodiscard]] constexpr auto operator()(Source const&) const
             {
-                return terminate<Destination>("negative overflow");
+                return abort<Destination>("negative overflow");
             }
 
             template<class... Operands>
             [[nodiscard]] constexpr auto operator()(
                     Operands const&...) const
             {
-                return terminate<op_result<Operator, Operands...>>("negative overflow");
+                return abort<op_result<Operator, Operands...>>("negative overflow");
             }
         };
     }

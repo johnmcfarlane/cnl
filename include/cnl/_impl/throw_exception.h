@@ -7,8 +7,8 @@
 #if !defined(CNL_THROW_EXCEPTION_H)
 #define CNL_THROW_EXCEPTION_H
 
+#include "abort.h"
 #include "config.h"
-#include "terminate.h"
 
 #include <type_traits>
 
@@ -20,7 +20,7 @@ namespace cnl {
 #if defined(CNL_EXCEPTIONS_ENABLED)
             return true ? throw Exception(message) : Result{};
 #else
-            return terminate<Result>(message);
+            return abort<Result>(message);
 #endif
         }
     }
