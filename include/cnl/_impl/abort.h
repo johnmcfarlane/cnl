@@ -4,24 +4,24 @@
 //    (See accompanying file ../LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-#if !defined(CNL_TERMINATE_H)
-#define CNL_TERMINATE_H
+#if !defined(CNL_ABORT_H)
+#define CNL_ABORT_H
 
 #include "config.h"
 
 #include <cstdio>
-#include <exception>
+#include <cstdlib>
 
 namespace cnl {
     namespace _impl {
         template<class Result>
-        [[noreturn]] constexpr auto terminate(char const* message) noexcept -> Result
+        [[noreturn]] constexpr auto abort(char const* message) noexcept -> Result
         {
             std::fputs(message, stderr);
             std::fputc('\n', stderr);
-            std::terminate();
+            std::abort();
         }
     }
 }
 
-#endif  // CNL_TERMINATE_H
+#endif  // CNL_ABORT_H
