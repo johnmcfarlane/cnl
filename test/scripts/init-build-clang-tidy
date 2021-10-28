@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# specialised alternative to init-build-clang runs Clang-Tidy
+
+set -euo pipefail
+
+export CLANG_TIDY="True"
+
+script_dir=$(
+  cd "$(dirname "$0")"
+  pwd
+)
+
+"${script_dir}/init-build-clang" "$@"
