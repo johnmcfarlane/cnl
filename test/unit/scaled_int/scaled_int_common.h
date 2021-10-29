@@ -27,10 +27,10 @@
 
 TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_scaled_integer)  // NOLINT
 {
-    auto lhs = scaled_integer<int32, cnl::power<-16>>(0);
-    lhs = static_cast<scaled_integer<int32, cnl::power<-16>>>(123.456);
     auto expected = scaled_integer<int32, cnl::power<-16>>(123.456);
-    ASSERT_EQ(expected, lhs);
+    auto actual = scaled_integer<int32, cnl::power<-16>>(0);
+    actual = static_cast<scaled_integer<int32, cnl::power<-16>>>(123.456);
+    ASSERT_EQ(expected, actual);
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_floating_point)  // NOLINT
