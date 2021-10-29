@@ -34,7 +34,8 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_UNARY_OPERATOR(OP, NAME) \
     template<class Operand> \
-    requires _impl::wants_generic_ops<Operand> [[nodiscard]] constexpr auto operator OP(Operand const& rhs) \
+    requires _impl::wants_generic_ops<Operand> \
+    [[nodiscard]] constexpr auto operator OP(Operand const& rhs) \
     { \
         return cnl::custom_operator<NAME, cnl::op_value<Operand>>()(rhs); \
     }
@@ -50,7 +51,8 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_BINARY_OPERATOR(OP, NAME) \
     template<cnl::arithmetic LhsOperand, cnl::arithmetic RhsOperand> \
-    requires wants_generic_ops_binary<LhsOperand, RhsOperand> [[nodiscard]] constexpr auto \
+    requires wants_generic_ops_binary<LhsOperand, RhsOperand> \
+    [[nodiscard]] constexpr auto \
     operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
     { \
         return cnl::custom_operator<NAME, cnl::op_value<LhsOperand>, cnl::op_value<RhsOperand>>{}( \
@@ -78,7 +80,8 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_SHIFT_OPERATOR(OP, NAME) \
     template<cnl::arithmetic LhsOperand, cnl::arithmetic RhsOperand> \
-    requires wants_generic_ops_binary<LhsOperand, RhsOperand> [[nodiscard]] constexpr auto \
+    requires wants_generic_ops_binary<LhsOperand, RhsOperand> \
+    [[nodiscard]] constexpr auto \
     operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
     { \
         return cnl::custom_operator<NAME, op_value<LhsOperand>, op_value<RhsOperand>>()(lhs, rhs); \
@@ -93,7 +96,8 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_COMPARISON_OPERATOR(OP, NAME) \
     template<cnl::arithmetic LhsOperand, cnl::arithmetic RhsOperand> \
-    requires wants_generic_ops_binary<LhsOperand, RhsOperand> [[nodiscard]] constexpr auto \
+    requires wants_generic_ops_binary<LhsOperand, RhsOperand> \
+    [[nodiscard]] constexpr auto \
     operator OP(LhsOperand const& lhs, RhsOperand const& rhs) \
     { \
         return cnl::custom_operator<NAME, op_value<LhsOperand>, op_value<RhsOperand>>()(lhs, rhs); \
@@ -145,7 +149,8 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_COMPOUND_ASSIGNMENT_OPERATOR(OP, NAME) \
     template<cnl::arithmetic LhsOperand, cnl::arithmetic RhsOperand> \
-    requires _impl::wants_generic_ops_binary<LhsOperand, RhsOperand> constexpr auto operator OP(LhsOperand& lhs, RhsOperand const& rhs) \
+    requires _impl::wants_generic_ops_binary<LhsOperand, RhsOperand> \
+    constexpr auto operator OP(LhsOperand& lhs, RhsOperand const& rhs) \
     { \
         return cnl::custom_operator< \
                 NAME, op_value<LhsOperand>, op_value<RhsOperand>>()(lhs, rhs); \
@@ -172,7 +177,8 @@ namespace cnl {
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define CNL_DEFINE_COMPOUND_ASSIGNMENT_SHIFT_OPERATOR(OP, NAME) \
     template<cnl::arithmetic LhsOperand, cnl::arithmetic RhsOperand> \
-    requires _impl::wants_generic_ops_binary<LhsOperand, RhsOperand> constexpr auto operator OP(LhsOperand& lhs, RhsOperand const& rhs) \
+    requires _impl::wants_generic_ops_binary<LhsOperand, RhsOperand> \
+    constexpr auto operator OP(LhsOperand& lhs, RhsOperand const& rhs) \
     { \
         return cnl::custom_operator< \
                 NAME, op_value<LhsOperand>, op_value<RhsOperand>>()(lhs, rhs); \

@@ -378,7 +378,7 @@ jobs:
   # Test shell scripts
   clang-format:
     runs-on: ubuntu-20.04
-    container: johnmcfarlane/cnl_ci:clang-11
+    container: johnmcfarlane/cnl_ci:clang-13
     steps:
       - uses: actions/checkout@v2
 

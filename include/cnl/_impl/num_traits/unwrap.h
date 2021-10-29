@@ -25,7 +25,8 @@ namespace cnl {
         };
 
         template<typename Number>
-        requires is_composite_v<Number> struct unwrap<Number> {
+        requires is_composite_v<Number>
+        struct unwrap<Number> {
             [[nodiscard]] constexpr auto operator()(Number const& n) const
             {
                 return unwrap<rep_of_t<Number>>{}(to_rep(n));

@@ -899,9 +899,7 @@ static_assert(
 static_assert(
         identical(
                 scaled_integer<
-                        decltype(
-                                std::declval<test_int>()
-                                + std::declval<uint8>() * std::declval<test_int>()),
+                        decltype(std::declval<test_int>() + std::declval<uint8>() * std::declval<test_int>()),
                         cnl::power<0>>{12288},
                 2048 + scaled_integer<uint8, cnl::power<10>>(10240)),
         "cnl::scaled_integer addition operator test failed");

@@ -38,9 +38,7 @@ namespace cnl {
             [[nodiscard]] constexpr auto operator()() const
             {
                 using result_numeric_limits = numeric_limits<decltype(
-                        decltype(
-                                std::declval<S>()
-                                >> std::declval<constant<digits_v<S> - 1>>()){1}
+                        decltype(std::declval<S>() >> std::declval<constant<digits_v<S> - 1>>()){1}
                         << constant<Exponent>{})>;
                 static_assert(
                         !std::is_integral<S>::value || !std::is_signed<S>::value
@@ -49,9 +47,7 @@ namespace cnl {
 
                 // TODO: This expression is so ugly that it might justify
                 // a separate specialization of power for elastic_integer
-                return decltype(
-                               std::declval<S>()
-                               >> std::declval<constant<digits_v<S> - 1>>()){1}
+                return decltype(std::declval<S>() >> std::declval<constant<digits_v<S> - 1>>()){1}
                     << constant<Exponent>{};
             }
         };

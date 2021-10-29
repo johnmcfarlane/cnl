@@ -23,7 +23,7 @@ namespace cnl {
         };
 
         template<class Tag>
-        concept homogeneous_operator_tag = tag<Tag>&& std::is_base_of_v<homogeneous_operator_tag_base, Tag>;
+        concept homogeneous_operator_tag = tag<Tag> && std::is_base_of_v<homogeneous_operator_tag_base, Tag>;
 
         // 'Boring' tags make use of the generic operator system.
         // For example, when you add two `rounding_nearest_tag` numbers together,

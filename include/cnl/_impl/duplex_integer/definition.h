@@ -56,12 +56,10 @@ namespace cnl {
             constexpr duplex_integer(upper_type const& u, lower_type const& l);
 
             template<integer Number>
-            constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions,
-                    // google-explicit-constructor)
+            constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions,google-explicit-constructor)
 
             template<floating_point Number>
-            constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions,
-                    // google-explicit-constructor)
+            constexpr duplex_integer(Number const& n);  // NOLINT(hicpp-explicit-conversions,google-explicit-constructor)
 
             [[nodiscard]] constexpr auto upper() const -> upper_type const&
             {

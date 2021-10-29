@@ -22,7 +22,8 @@ namespace cnl {
     template<class T>
     concept overflow_tag = _impl::is_overflow_tag<T>::value;
 
-    namespace _impl {
+    namespace _impl
+    {
         template<overflow_tag Tag1, overflow_tag Tag2>
         struct is_same_tag_family<Tag1, Tag2>
             : std::true_type {
