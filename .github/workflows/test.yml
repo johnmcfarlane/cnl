@@ -11,12 +11,12 @@ jobs:
   posix-conan-test:
     strategy:
       matrix:
-        name: [clang-12, clang-12-sanitize, clang-11, clang-10, gcc-10, osx-clang, osx-gcc-11, gcc-10-armv7]
+        name: [clang-head-analyse, gcc-head, clang-13, clang-12, clang-11, clang-10, gcc-11, gcc-10, osx-clang-13, osx-gcc-11, gcc-10-armv7]
         include:
-          # Clang-12 (w. Clang-Tidy)
-          - name: clang-12
+          # Clang HEAD (w. Clang-Tidy, sanitizers)
+          - name: clang-head-analyse
             compiler: clang
-            version: "12"
+            version: "14"
             os: linux
             arch: x86_64
             build-type: Release
@@ -27,16 +27,36 @@ jobs:
             generator: "Ninja"
             int128: "True"
             iostreams: "True"
-            linux-container: johnmcfarlane/cnl_ci:clang-12-libcpp
+            linux-container: johnmcfarlane/cnl_ci:clang-head
             os-version: ubuntu-20.04
-            sanitize: "False"
+            sanitize: "True"
             stdlib: libc++
             toolchain: clang-libc++.cmake
 
-          # Clang-12 (w. ASan + UBSan)
-          - name: clang-12-sanitize
-            compiler: clang
+          # GCC HEAD
+          - name: gcc-head
+            compiler: gcc
             version: "12"
+            os: linux
+            arch: x86_64
+            build-type: Release
+            cc: gcc
+            clang_tidy: "False"
+            cxx: g++
+            exceptions: "True"
+            generator: "Ninja"
+            int128: "True"
+            iostreams: "True"
+            linux-container: johnmcfarlane/cnl_ci:gcc-head
+            os-version: ubuntu-20.04
+            sanitize: "True"
+            stdlib: libstdc++11
+            toolchain: gcc.cmake
+
+          # Clang-13
+          - name: clang-13
+            compiler: clang
+            version: "13"
             os: linux
             arch: x86_64
             build-type: Release
@@ -47,11 +67,31 @@ jobs:
             generator: "Ninja"
             int128: "False"
             iostreams: "True"
-            linux-container: johnmcfarlane/cnl_ci:clang-12-libcpp
+            linux-container: johnmcfarlane/cnl_ci:clang-13-libstdcpp
             os-version: ubuntu-20.04
             sanitize: "True"
-            stdlib: libc++
-            toolchain: clang-libc++.cmake
+            stdlib: libstdc++11
+            toolchain: clang.cmake
+
+          # Clang-12 (Contrary)
+          - name: clang-12
+            compiler: clang
+            version: "12"
+            os: linux
+            arch: x86_64
+            build-type: Debug
+            cc: clang
+            clang_tidy: "False"
+            cxx: clang++
+            exceptions: "True"
+            generator: "Unix Makefiles"
+            int128: "False"
+            iostreams: "False"
+            linux-container: johnmcfarlane/cnl_ci:clang-12-libstdcpp
+            os-version: ubuntu-20.04
+            sanitize: "False"
+            stdlib: libstdc++11
+            toolchain: clang.cmake
 
           # Clang-11
           - name: clang-11
@@ -85,13 +125,33 @@ jobs:
             cxx: clang++
             exceptions: "True"
             generator: "Ninja"
-            int128: "True"
+            int128: "False"
             iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:clang-10-libcpp
             os-version: ubuntu-20.04
-            sanitize: "False"
+            sanitize: "True"
             stdlib: libc++
             toolchain: clang-libc++.cmake
+
+          # GCC-11
+          - name: gcc-11
+            compiler: gcc
+            version: "11"
+            os: linux
+            arch: x86_64
+            build-type: Release
+            cc: gcc-11
+            clang_tidy: "False"
+            cxx: g++-11
+            exceptions: "True"
+            generator: "Ninja"
+            int128: "True"
+            iostreams: "True"
+            linux-container: johnmcfarlane/cnl_ci:gcc-11
+            os-version: ubuntu-20.04
+            sanitize: "True"
+            stdlib: libstdc++11
+            toolchain: gcc.cmake
 
           # GCC-10 (Contrary)
           - name: gcc-10
@@ -109,26 +169,26 @@ jobs:
             iostreams: "False"
             linux-container: johnmcfarlane/cnl_ci:gcc-10
             os-version: ubuntu-20.04
-            sanitize: "True"
+            sanitize: "False"
             stdlib: libstdc++11
             toolchain: gcc.cmake
 
           # OS X Clang (latest)
-          - name: osx-clang
+          - name: osx-clang-13
             os: osx
             compiler: clang
             version: "13"
             arch: x86_64
-            build-type: Debug
+            build-type: Release
             cc: "/usr/local/opt/llvm/bin/clang"
             clang_tidy: "False"
             cxx: "/usr/local/opt/llvm/bin/clang++"
-            exceptions: "False"
-            generator: "Unix Makefiles"
+            exceptions: "True"
+            generator: "Ninja"
             int128: "True"
             iostreams: "True"
             os-version: macos-10.15
-            sanitize: "False"
+            sanitize: "True"
             stdlib: libc++
             toolchain: clang-libc++.cmake
 
@@ -147,12 +207,12 @@ jobs:
             int128: "True"
             iostreams: "True"
             os-version: macos-10.15
-            sanitize: "False"
+            sanitize: "True"
             stdlib: libstdc++11
             toolchain: gcc.cmake
 
           # GCC-10 (for ARMv7)
-          - name: armv7
+          - name: gcc-10-armv7
             arch: armv7
             compiler: gcc
             version: "10"
@@ -167,7 +227,7 @@ jobs:
             iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:gcc-10-arm
             os-version: ubuntu-20.04
-            sanitize: "False"
+            sanitize: "True"
             stdlib: libstdc++11
             toolchain: gcc-armv7.cmake
 
@@ -307,17 +367,17 @@ jobs:
   linux-cmake-test:
     strategy:
       matrix:
-        compiler: [clang-head, gcc-head]
+        compiler: [clang-13-libcpp, gcc-11]
 
         include:
-          - compiler: clang-head
+          - compiler: clang-13-libcpp
             cxx_extensions: "ON"
             toolchain: clang.cmake
-            container: johnmcfarlane/cnl_ci:clang-head-libstdcpp
-          - compiler: gcc-head
+            container: johnmcfarlane/cnl_ci:clang-13-libcpp
+          - compiler: gcc-11
             cxx_extensions: "OFF"
             toolchain: gcc.cmake
-            container: johnmcfarlane/cnl_ci:gcc-head
+            container: johnmcfarlane/cnl_ci:gcc-11
 
     container: ${{matrix.container}}
     runs-on: ubuntu-20.04
