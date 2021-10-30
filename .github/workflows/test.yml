@@ -1,3 +1,4 @@
+---
 name: Test
 
 on: 
@@ -178,64 +179,64 @@ jobs:
     runs-on: ${{matrix.os-version}}
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Restore caches
-      uses: actions/cache@v2
-      with:
-        path: |
-          /github/home/.conan/data
-          /github/home/.ccache
-          /Users/runner/Library/Caches/ccache
-        key: test-${{matrix.name}}-${{github.ref}}-${{github.sha}}
-        restore-keys: |
-          test-${{matrix.name}}-${{github.ref}}-
-          test-${{matrix.name}}-main-
-          test-${{matrix.name}}-
+      - name: Restore caches
+        uses: actions/cache@v2
+        with:
+          path: |
+            /github/home/.conan/data
+            /github/home/.ccache
+            /Users/runner/Library/Caches/ccache
+          key: test-${{matrix.name}}-${{github.ref}}-${{github.sha}}
+          restore-keys: |
+            test-${{matrix.name}}-${{github.ref}}-
+            test-${{matrix.name}}-main-
+            test-${{matrix.name}}-
 
-    - name: Install Brew packages
-      if: ( matrix.os == 'osx' )
-      run: brew install ccache conan ninja
+      - name: Install Brew packages
+        if: ( matrix.os == 'osx' )
+        run: brew install ccache conan ninja
 
-    - name: Initialise Conan
-      run: |
-        conan config install $GITHUB_WORKSPACE/.github/settings.yml
-        conan profile new default --detect
-        conan profile update settings.compiler=${{matrix.compiler}} default
-        conan profile update settings.compiler.libcxx=${{matrix.stdlib}} default
-        conan profile update settings.compiler.version=${{matrix.version}} default
-        conan profile update settings.build_type=${{matrix.build-type}} default
-        conan profile update settings.arch=${{matrix.arch}} default
+      - name: Initialise Conan
+        run: |
+          conan config install $GITHUB_WORKSPACE/.github/settings.yml
+          conan profile new default --detect
+          conan profile update settings.compiler=${{matrix.compiler}} default
+          conan profile update settings.compiler.libcxx=${{matrix.stdlib}} default
+          conan profile update settings.compiler.version=${{matrix.version}} default
+          conan profile update settings.build_type=${{matrix.build-type}} default
+          conan profile update settings.arch=${{matrix.arch}} default
 
-    - name: Install dependencies
-      run: |
-        conan install \
-          --build=missing \
-          --env CONAN_CMAKE_GENERATOR="${{matrix.generator}}" \
-          --env CONAN_CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
-          --options clang_tidy=${{matrix.clang_tidy}} \
-          --options int128=${{matrix.int128}} \
-          --options iostreams=${{matrix.iostreams}} \
-          --options enable_exceptions=${{matrix.exceptions}} \
-          --options sanitize=${{matrix.sanitize}} \
-          --options test=all \
-          $GITHUB_WORKSPACE
+      - name: Install dependencies
+        run: |
+          conan install \
+            --build=missing \
+            --env CONAN_CMAKE_GENERATOR="${{matrix.generator}}" \
+            --env CONAN_CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
+            --options clang_tidy=${{matrix.clang_tidy}} \
+            --options int128=${{matrix.int128}} \
+            --options iostreams=${{matrix.iostreams}} \
+            --options enable_exceptions=${{matrix.exceptions}} \
+            --options sanitize=${{matrix.sanitize}} \
+            --options test=all \
+            $GITHUB_WORKSPACE
 
-    - name: Build tests
-      run: conan build --build --configure $GITHUB_WORKSPACE
+      - name: Build tests
+        run: conan build --build --configure $GITHUB_WORKSPACE
 
-    - name: Test library
-      if: ( matrix.arch != 'armv7' )
-      run: conan build --test $GITHUB_WORKSPACE
+      - name: Test library
+        if: ( matrix.arch != 'armv7' )
+        run: conan build --test $GITHUB_WORKSPACE
 
-    - name: Run benchmarks
-      if: ( matrix.name != 'clang-11' && matrix.arch != 'armv7' )
-      run: |
-        ./test/benchmark/test-benchmark --benchmark_format=csv | tee result.csv \
-        "${GITHUB_WORKSPACE}"/test/benchmark/report.py result.csv
+      - name: Run benchmarks
+        if: ( matrix.name != 'clang-11' && matrix.arch != 'armv7' )
+        run: |
+          ./test/benchmark/test-benchmark --benchmark_format=csv | tee result.csv \
+          "${GITHUB_WORKSPACE}"/test/benchmark/report.py result.csv
 
-    - name: ccache report
-      run: ccache -s
+      - name: ccache report
+        run: ccache -s
 
   # Build and test on Windows using Conan
   windows-conan-test:
@@ -254,53 +255,53 @@ jobs:
             msbuild_property: win32
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Restore caches
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~\AppData\Local\pip\Cache
-          ~\.conan\data
-          ~\.ccache
-        key: test-${{matrix.arch}}-${{github.ref}}-${{github.sha}}
-        restore-keys: |
-          test-${{matrix.arch}}-${{github.ref}}-
-          test-${{matrix.arch}}-main-
-          test-${{matrix.arch}}-
+      - name: Restore caches
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~\AppData\Local\pip\Cache
+            ~\.conan\data
+            ~\.ccache
+          key: test-${{matrix.arch}}-${{github.ref}}-${{github.sha}}
+          restore-keys: |
+            test-${{matrix.arch}}-${{github.ref}}-
+            test-${{matrix.arch}}-main-
+            test-${{matrix.arch}}-
 
-    - name: Initialise Conan
-      run: |
-        pip.exe install conan;
-        conan profile new default;
-        conan profile update settings.compiler="Visual Studio" default;
-        conan profile update settings.compiler.cppstd=20 default;
-        conan profile update settings.os=Windows default;
-        conan profile update settings.arch=${{matrix.arch}} default;
-        conan profile update settings.compiler.version=16 default
+      - name: Initialise Conan
+        run: |
+          pip.exe install conan;
+          conan profile new default;
+          conan profile update settings.compiler="Visual Studio" default;
+          conan profile update settings.compiler.cppstd=20 default;
+          conan profile update settings.os=Windows default;
+          conan profile update settings.arch=${{matrix.arch}} default;
+          conan profile update settings.compiler.version=16 default
 
-    - name: Create build directory
-      run: mkdir ${{runner.workspace}}\build
+      - name: Create build directory
+        run: mkdir ${{runner.workspace}}\build
 
-    - name: Install dependencies
-      working-directory: ${{runner.workspace}}/build
-      run: |
-        conan install `
-          --build=missing `
-          --env CONAN_CMAKE_GENERATOR="Visual Studio 16 2019" `
-          --env CONAN_CMAKE_TOOLCHAIN_FILE="$env:GITHUB_WORKSPACE"\test\toolchain\msvc.cmake `
-          --options enable_exceptions=${{matrix.exceptions}} `
-          --options test=all `
-          --settings build_type=Release `
-          $env:GITHUB_WORKSPACE
+      - name: Install dependencies
+        working-directory: ${{runner.workspace}}/build
+        run: |
+          conan install `
+            --build=missing `
+            --env CONAN_CMAKE_GENERATOR="Visual Studio 16 2019" `
+            --env CONAN_CMAKE_TOOLCHAIN_FILE="$env:GITHUB_WORKSPACE"\test\toolchain\msvc.cmake `
+            --options enable_exceptions=${{matrix.exceptions}} `
+            --options test=all `
+            --settings build_type=Release `
+            $env:GITHUB_WORKSPACE
 
-    - name: Build and run tests
-      working-directory: ${{runner.workspace}}/build
-      run: conan build --build --configure --test $env:GITHUB_WORKSPACE
+      - name: Build and run tests
+        working-directory: ${{runner.workspace}}/build
+        run: conan build --build --configure --test $env:GITHUB_WORKSPACE
 
-    - name: Run benchmarks
-      working-directory: ${{runner.workspace}}/build
-      run: test\benchmark\Release\test-benchmark.exe
+      - name: Run benchmarks
+        working-directory: ${{runner.workspace}}/build
+        run: test\benchmark\Release\test-benchmark.exe
 
   # Build and test latest on Linux using only CMake
   linux-cmake-test:
@@ -310,11 +311,11 @@ jobs:
 
         include:
           - compiler: clang-head
-            cxx_extensions: ON
+            cxx_extensions: "ON"
             toolchain: clang.cmake
             container: johnmcfarlane/cnl_ci:clang-head-libstdcpp
           - compiler: gcc-head
-            cxx_extensions: OFF
+            cxx_extensions: "OFF"
             toolchain: gcc.cmake
             container: johnmcfarlane/cnl_ci:gcc-head
 
@@ -322,114 +323,115 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Restore caches
-      uses: actions/cache@v2
-      with:
-        path: |
-          /github/home/.conan/data
-          /github/home/.ccache
-        key: test-${{matrix.compiler}}-${{github.ref}}-${{github.sha}}
-        restore-keys: |
-          test-${{matrix.compiler}}-${{github.ref}}-
-          test-${{matrix.compiler}}-main-
-          test-${{matrix.compiler}}-
+      - name: Restore caches
+        uses: actions/cache@v2
+        with:
+          path: |
+            /github/home/.conan/data
+            /github/home/.ccache
+          key: test-${{matrix.compiler}}-${{github.ref}}-${{github.sha}}
+          restore-keys: |
+            test-${{matrix.compiler}}-${{github.ref}}-
+            test-${{matrix.compiler}}-main-
+            test-${{matrix.compiler}}-
 
-    - name: Build and Install GTest
-      run: |
-        git clone https://github.com/google/googletest.git
-        cd googletest
-        git checkout 3c95bf552405fd0cc63cea0ca2f6c4cd89c8d356
-        cmake \
-          -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
-          .
-        cmake --build . --target install
+      - name: Build and Install GTest
+        run: |
+          git clone https://github.com/google/googletest.git
+          cd googletest
+          git checkout 3c95bf552405fd0cc63cea0ca2f6c4cd89c8d356
+          cmake \
+            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
+            .
+          cmake --build . --target install
 
-    - name: Configure CNL
-      run: |
-        cmake \
-          -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx_extensions}} \
-          -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
-          $GITHUB_WORKSPACE
+      - name: Configure CNL
+        run: |
+          cmake \
+            -DCMAKE_CXX_EXTENSIONS=${{matrix.cxx_extensions}} \
+            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
+            $GITHUB_WORKSPACE
 
-    - name: Build CNL
-      run: cmake --build $GITHUB_WORKSPACE --target test-all
+      - name: Build CNL
+        run: cmake --build $GITHUB_WORKSPACE --target test-all
 
-    - name: Test CNL
-      run: ctest --output-on-failure
+      - name: Test CNL
+        run: ctest --output-on-failure
 
-    - name: ccache report
-      run: ccache -s
+      - name: ccache report
+        run: ccache -s
 
   # Install on mature Linux distro using only CMake
   linux-cmake-install:
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Configure CNL
-      run: cmake $GITHUB_WORKSPACE
+      - name: Configure CNL
+        run: cmake $GITHUB_WORKSPACE
 
-    - name: Install CNL
-      run: sudo cmake --build $GITHUB_WORKSPACE --target install
+      - name: Install CNL
+        run: sudo cmake --build $GITHUB_WORKSPACE --target install
 
   # Test shell scripts
   clang-format:
     runs-on: ubuntu-20.04
     container: johnmcfarlane/cnl_ci:clang-11
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Format code
-      shell: bash
-      run: $GITHUB_WORKSPACE/test/scripts/clang-format
+      - name: Format code
+        shell: bash
+        run: $GITHUB_WORKSPACE/test/scripts/clang-format
 
-    - name: Show/test for changes
-      shell: bash
-      run: |
-        git diff
-        if [[ `git status --porcelain` ]]; then exit 1; fi
+      - name: Show/test for changes
+        shell: bash
+        run: |
+          git diff
+          if [[ `git status --porcelain` ]]; then exit 1; fi
 
   # Test shell scripts
   shellcheck:
     runs-on: ubuntu-20.04
     container: johnmcfarlane/cnl_ci:base-20.04
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Run shellcheck
-      shell: bash
-      run: $GITHUB_WORKSPACE/test/scripts/shellcheck
+      - name: Run shellcheck
+        shell: bash
+        run: $GITHUB_WORKSPACE/test/scripts/shellcheck
 
   # Test markdown
   markdownlint:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Run markdownlint
-      shell: bash
-      run: |
-        sudo snap install mdl
-        $GITHUB_WORKSPACE/test/scripts/markdownlint
+      - name: Run markdownlint
+        shell: bash
+        run: |
+          sudo snap install mdl
+          $GITHUB_WORKSPACE/test/scripts/markdownlint
 
   # Test documentation generation
   doxygen:
     runs-on: ubuntu-18.04
     container: johnmcfarlane/cnl_ci:gcc-10
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-        submodules: true
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          submodules: true
 
-    - name: Generate documentation
-      shell: bash
-      run: $GITHUB_WORKSPACE/doc/generate
+      - name: Generate documentation
+        shell: bash
+        run: $GITHUB_WORKSPACE/doc/generate
 
-    - name: Upload documentation
-      uses: actions/upload-artifact@v2
-      with:
-        name: documentation
-        path: ${{github.workspace}}/htdocs
+      - name: Upload documentation
+        uses: actions/upload-artifact@v2
+        with:
+          name: documentation
+          path: ${{github.workspace}}/htdocs
+...

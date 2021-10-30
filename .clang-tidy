@@ -70,14 +70,14 @@ CheckOptions:
 
 
   # because _impl isn't technically lower_case
-  #- key:             readability-identifier-naming.NamespaceCase
-  #  value:           lower_case
+  # - key:             readability-identifier-naming.NamespaceCase
+  #   value:           lower_case
   - key:             readability-identifier-naming.InlineNamespaceCase
     value:           lower_case
   - key:             readability-identifier-naming.EnumConstantCase
     value:           lower_case
-  #- key:             readability-identifier-naming.ConstexprVariableCase
-  #  value:           lower_case
+  # - key:             readability-identifier-naming.ConstexprVariableCase
+  #   value:           lower_case
   - key:             readability-identifier-naming.ConstantMemberCase
     value:           lower_case
   - key:             readability-identifier-naming.PrivateMemberCase
@@ -88,18 +88,18 @@ CheckOptions:
     value:           lower_case
   - key:             readability-identifier-naming.MemberCase
     value:           lower_case
-  #- key:             readability-identifier-naming.ClassConstantCase
-  #  value:           lower_case
-  #- key:             readability-identifier-naming.ClassMemberCase
-  #  value:           lower_case
-  #- key:             readability-identifier-naming.GlobalConstantCase
-  #  value:           lower_case
+  # - key:             readability-identifier-naming.ClassConstantCase
+  #   value:           lower_case
+  # - key:             readability-identifier-naming.ClassMemberCase
+  #   value:           lower_case
+  # - key:             readability-identifier-naming.GlobalConstantCase
+  #   value:           lower_case
   - key:             readability-identifier-naming.GlobalConstantPointerCase
     value:           lower_case
   - key:             readability-identifier-naming.GlobalPointerCase
     value:           lower_case
-  #- key:             readability-identifier-naming.GlobalVariableCase
-  #  value:           lower_case
+  # - key:             readability-identifier-naming.GlobalVariableCase
+  #   value:           lower_case
   - key:             readability-identifier-naming.LocalConstantCase
     value:           lower_case
   - key:             readability-identifier-naming.LocalConstantPointerCase
@@ -112,10 +112,10 @@ CheckOptions:
     value:           lower_case
   - key:             readability-identifier-naming.StaticVariableCase
     value:           lower_case
-  #- key:             readability-identifier-naming.ConstantCase
-  #  value:           lower_case
-  #- key:             readability-identifier-naming.VariableCase
-  #  value:           lower_case
+  # - key:             readability-identifier-naming.ConstantCase
+  #   value:           lower_case
+  # - key:             readability-identifier-naming.VariableCase
+  #   value:           lower_case
   - key:             readability-identifier-naming.ConstantParameterCase
     value:           lower_case
   - key:             readability-identifier-naming.ParameterPackCase
@@ -138,16 +138,16 @@ CheckOptions:
     value:           lower_case
   - key:             readability-identifier-naming.GlobalFunctionCase
     value:           lower_case
-  #- key:             readability-identifier-naming.ConstexprFunctionCase
-  #  value:           lower_case
+  # - key:             readability-identifier-naming.ConstexprFunctionCase
+  #   value:           lower_case
   - key:             readability-identifier-naming.FunctionCase
     value:           lower_case
-  #- key:             readability-identifier-naming.ConstexprMethodCase
-  #  value:           lower_case
+  # - key:             readability-identifier-naming.ConstexprMethodCase
+  #   value:           lower_case
   - key:             readability-identifier-naming.VirtualMethodCase
     value:           lower_case
-  #- key:             readability-identifier-naming.ClassMethodCase
-  #  value:           lower_case
+  # - key:             readability-identifier-naming.ClassMethodCase
+  #   value:           lower_case
   - key:             readability-identifier-naming.PrivateMethodCase
     value:           lower_case
   - key:             readability-identifier-naming.ProtectedMethodCase
@@ -377,4 +377,3 @@ CheckOptions:
   - key:             readability-identifier-naming.ObjcIvarSuffix
     value:           ''
 ...
-
