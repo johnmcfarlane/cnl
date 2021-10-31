@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# run yamllint linter over all YAML documents in project directory
+
+set -euo pipefail
+
+PROJECT_DIR=$(
+  cd "$(dirname "$0")"/../..
+  pwd
+)
+
+cd "${PROJECT_DIR}"
+
+find "${PROJECT_DIR}" -name "*.yaml" -or -name "*.yml" -or -name ".clang-*" | while read -r TEST; do
+  yamllint \
+    --config-file "${PROJECT_DIR}/test/scripts/yamllint.yaml" \
+    --strict \
+    "$TEST"
+done
+
+echo yamllint success

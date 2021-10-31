@@ -415,6 +415,18 @@ jobs:
           sudo snap install mdl
           $GITHUB_WORKSPACE/test/scripts/markdownlint
 
+  # Test YAML
+  yamllint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run yamllint
+        shell: bash
+        run: |
+          sudo apt install yamllint
+          $GITHUB_WORKSPACE/test/scripts/yamllint
+
   # Test documentation generation
   doxygen:
     runs-on: ubuntu-18.04
