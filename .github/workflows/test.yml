@@ -11,27 +11,8 @@ jobs:
   posix-conan-test:
     strategy:
       matrix:
-        name: [osx-clang, clang-12, osx-gcc-11, gcc-10, clang-10, clang-11, clang-12-sanitize, armv7]
+        name: [clang-12, clang-12-sanitize, clang-11, clang-10, gcc-10, osx-clang, osx-gcc-11, gcc-10-armv7]
         include:
-          # OS X Clang (latest)
-          - name: osx-clang
-            os: osx
-            compiler: clang
-            version: "13"
-            arch: x86_64
-            build-type: Debug
-            cc: "/usr/local/opt/llvm/bin/clang"
-            clang_tidy: "False"
-            cxx: "/usr/local/opt/llvm/bin/clang++"
-            exceptions: "False"
-            generator: "Unix Makefiles"
-            int128: "True"
-            iostreams: "True"
-            os-version: macos-10.15
-            sanitize: "False"
-            stdlib: libc++
-            toolchain: clang-libc++.cmake
-
           # Clang-12 (w. Clang-Tidy)
           - name: clang-12
             compiler: clang
@@ -47,85 +28,6 @@ jobs:
             int128: "True"
             iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:clang-12-libcpp
-            os-version: ubuntu-20.04
-            sanitize: "False"
-            stdlib: libc++
-            toolchain: clang-libc++.cmake
-
-          # OS X GCC-11
-          - name: osx-gcc-11
-            os: osx
-            compiler: gcc
-            version: "11"
-            arch: x86_64
-            build-type: Release
-            cc: gcc-11
-            clang_tidy: "False"
-            cxx: g++-11
-            exceptions: "True"
-            generator: "Ninja"
-            int128: "True"
-            iostreams: "True"
-            os-version: macos-10.15
-            sanitize: "False"
-            stdlib: libstdc++11
-            toolchain: gcc.cmake
-
-          # GCC-10 (Contrary)
-          - name: gcc-10
-            compiler: gcc
-            version: "10"
-            os: linux
-            arch: x86_64
-            build-type: Debug
-            cc: gcc-10
-            clang_tidy: "False"
-            cxx: g++-10
-            exceptions: "False"
-            generator: "Unix Makefiles"
-            int128: "False"
-            iostreams: "False"
-            linux-container: johnmcfarlane/cnl_ci:gcc-10
-            os-version: ubuntu-20.04
-            sanitize: "True"
-            stdlib: libstdc++11
-            toolchain: gcc.cmake
-
-          # Clang-10
-          - name: clang-10
-            compiler: clang
-            version: "10"
-            os: linux
-            arch: x86_64
-            build-type: Release
-            cc: clang
-            clang_tidy: "False"
-            cxx: clang++
-            exceptions: "True"
-            generator: "Ninja"
-            int128: "True"
-            iostreams: "True"
-            linux-container: johnmcfarlane/cnl_ci:clang-10-libcpp
-            os-version: ubuntu-20.04
-            sanitize: "False"
-            stdlib: libc++
-            toolchain: clang-libc++.cmake
-
-          # Clang-11
-          - name: clang-11
-            compiler: clang
-            version: "11"
-            os: linux
-            arch: x86_64
-            build-type: Release
-            cc: clang
-            clang_tidy: "False"
-            cxx: clang++
-            exceptions: "True"
-            generator: "Ninja"
-            int128: "True"
-            iostreams: "True"
-            linux-container: johnmcfarlane/cnl_ci:clang-11-libcpp
             os-version: ubuntu-20.04
             sanitize: "False"
             stdlib: libc++
@@ -150,6 +52,104 @@ jobs:
             sanitize: "True"
             stdlib: libc++
             toolchain: clang-libc++.cmake
+
+          # Clang-11
+          - name: clang-11
+            compiler: clang
+            version: "11"
+            os: linux
+            arch: x86_64
+            build-type: Release
+            cc: clang
+            clang_tidy: "False"
+            cxx: clang++
+            exceptions: "True"
+            generator: "Ninja"
+            int128: "True"
+            iostreams: "True"
+            linux-container: johnmcfarlane/cnl_ci:clang-11-libcpp
+            os-version: ubuntu-20.04
+            sanitize: "False"
+            stdlib: libc++
+            toolchain: clang-libc++.cmake
+
+          # Clang-10
+          - name: clang-10
+            compiler: clang
+            version: "10"
+            os: linux
+            arch: x86_64
+            build-type: Release
+            cc: clang
+            clang_tidy: "False"
+            cxx: clang++
+            exceptions: "True"
+            generator: "Ninja"
+            int128: "True"
+            iostreams: "True"
+            linux-container: johnmcfarlane/cnl_ci:clang-10-libcpp
+            os-version: ubuntu-20.04
+            sanitize: "False"
+            stdlib: libc++
+            toolchain: clang-libc++.cmake
+
+          # GCC-10 (Contrary)
+          - name: gcc-10
+            compiler: gcc
+            version: "10"
+            os: linux
+            arch: x86_64
+            build-type: Debug
+            cc: gcc-10
+            clang_tidy: "False"
+            cxx: g++-10
+            exceptions: "False"
+            generator: "Unix Makefiles"
+            int128: "False"
+            iostreams: "False"
+            linux-container: johnmcfarlane/cnl_ci:gcc-10
+            os-version: ubuntu-20.04
+            sanitize: "True"
+            stdlib: libstdc++11
+            toolchain: gcc.cmake
+
+          # OS X Clang (latest)
+          - name: osx-clang
+            os: osx
+            compiler: clang
+            version: "13"
+            arch: x86_64
+            build-type: Debug
+            cc: "/usr/local/opt/llvm/bin/clang"
+            clang_tidy: "False"
+            cxx: "/usr/local/opt/llvm/bin/clang++"
+            exceptions: "False"
+            generator: "Unix Makefiles"
+            int128: "True"
+            iostreams: "True"
+            os-version: macos-10.15
+            sanitize: "False"
+            stdlib: libc++
+            toolchain: clang-libc++.cmake
+
+          # OS X GCC-11
+          - name: osx-gcc-11
+            os: osx
+            compiler: gcc
+            version: "11"
+            arch: x86_64
+            build-type: Release
+            cc: gcc-11
+            clang_tidy: "False"
+            cxx: g++-11
+            exceptions: "True"
+            generator: "Ninja"
+            int128: "True"
+            iostreams: "True"
+            os-version: macos-10.15
+            sanitize: "False"
+            stdlib: libstdc++11
+            toolchain: gcc.cmake
 
           # GCC-10 (for ARMv7)
           - name: armv7
