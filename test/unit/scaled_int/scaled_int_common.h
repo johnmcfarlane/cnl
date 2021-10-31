@@ -27,10 +27,10 @@
 
 TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_scaled_integer)  // NOLINT
 {
-    auto lhs = scaled_integer<int32, cnl::power<-16>>(0);
-    lhs = static_cast<scaled_integer<int32, cnl::power<-16>>>(123.456);
     auto expected = scaled_integer<int32, cnl::power<-16>>(123.456);
-    ASSERT_EQ(expected, lhs);
+    auto actual = scaled_integer<int32, cnl::power<-16>>(0);
+    actual = static_cast<scaled_integer<int32, cnl::power<-16>>>(123.456);
+    ASSERT_EQ(expected, actual);
 }
 
 TEST(TOKENPASTE2(TEST_LABEL, copy_assignment), from_floating_point)  // NOLINT
@@ -899,9 +899,7 @@ static_assert(
 static_assert(
         identical(
                 scaled_integer<
-                        decltype(
-                                std::declval<test_int>()
-                                + std::declval<uint8>() * std::declval<test_int>()),
+                        decltype(std::declval<test_int>() + std::declval<uint8>() * std::declval<test_int>()),
                         cnl::power<0>>{12288},
                 2048 + scaled_integer<uint8, cnl::power<10>>(10240)),
         "cnl::scaled_integer addition operator test failed");

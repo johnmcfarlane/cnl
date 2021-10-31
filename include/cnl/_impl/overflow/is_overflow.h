@@ -325,7 +325,8 @@ namespace cnl {
         template<>
         struct is_overflow<shift_left_op, polarity::negative> {
             template<typename Lhs, typename Rhs>
-            requires numbers::signedness_v<Lhs> [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
+            requires numbers::signedness_v<Lhs>
+            [[nodiscard]] constexpr auto operator()(Lhs const& lhs, Rhs const& rhs) const
             {
                 using traits = operator_overflow_traits<shift_left_op, Lhs, Rhs>;
                 return lhs < 0 ? rhs > 0 ? rhs < traits::positive_digits

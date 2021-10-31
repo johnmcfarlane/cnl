@@ -22,7 +22,7 @@ namespace cnl {
         inline constexpr auto is_wide_tag<wide_tag<Digits, Narrowest>> = true;
 
         template<class T>
-        concept any_wide_tag = is_tag<T>&& is_wide_tag<T>;
+        concept any_wide_tag = is_tag<T> && is_wide_tag<T>;
     }
 }
 

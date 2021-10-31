@@ -39,7 +39,8 @@ namespace cnl {
     }
 
     template<int Digits, int Radix, typename Composite>
-    requires is_composite_v<Composite> struct fixed_width_scale<
+    requires is_composite_v<Composite>
+    struct fixed_width_scale<
             Digits, Radix, Composite> {
         [[nodiscard]] constexpr auto operator()(Composite const& s) const
         {

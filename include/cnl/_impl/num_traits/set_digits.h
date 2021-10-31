@@ -19,7 +19,7 @@
 namespace cnl {
     namespace _impl {
         template<typename T>
-        concept signed_integral = integral<T>&& numbers::signedness_v<T>;
+        concept signed_integral = integral<T> && numbers::signedness_v<T>;
 
         template<typename T>
         concept unsigned_integral = integral<T> && !numbers::signedness_v<T>;
