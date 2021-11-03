@@ -17,8 +17,7 @@ namespace cnl {
         constexpr auto unreachable(char const* /*message*/) noexcept -> Result
         {
 #if defined(_MSC_VER)
-            __assume(true);
-            return Result{};
+            __assume(false);
 #elif defined(__GNUC__)
             __builtin_unreachable();
 #endif

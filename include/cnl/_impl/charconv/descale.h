@@ -55,7 +55,7 @@ namespace cnl::_impl {
                 if (output.significand % InRadix) {
                     if (oob(output.significand)) {
                         if (Precise) {
-                            return unreachable<descaled<Significand, OutRadix>>("number cannot be represented in this form");
+                            unreachable<descaled<Significand, OutRadix>>("number cannot be represented in this form");
                         }
                     } else {
                         output.significand *= OutRadix;
