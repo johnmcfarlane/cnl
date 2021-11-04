@@ -126,11 +126,7 @@
 #error CNL_UNREACHABLE_UB_ENABLED already defined
 #endif
 
-#if defined(CNL_USE_UNREACHABLE_UB)
-#if CNL_USE_UNREACHABLE_UB
-#define CNL_UNREACHABLE_UB_ENABLED
-#endif
-#elif defined(CNL_RELEASE)
+#if defined(CNL_RELEASE)
 #define CNL_UNREACHABLE_UB_ENABLED
 #endif
 
