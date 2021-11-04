@@ -134,7 +134,7 @@ namespace {
                                 >> cnl::constant<2>{}));
     }
 
-#if !defined(CNL_UNREACHABLE_UB_ENABLED)
+#if defined(CNL_DEBUG)
     TEST(static_integer, most_negative_number)  // NOLINT
     {
         static_assert(cnl::static_integer<1>{1}, "in-range boundary test");
@@ -189,7 +189,7 @@ namespace {
         ASSERT_EQ(-6, b) << "static_integer pre-increment";
     }
 
-#if !defined(CNL_UNREACHABLE_UB_ENABLED)
+#if defined(CNL_DEBUG)
     TEST(static_integer, pre_increment_overflow)  // NOLINT
     {
         auto a = cnl::static_integer<3>{7};
