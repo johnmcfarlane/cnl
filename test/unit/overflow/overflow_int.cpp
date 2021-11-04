@@ -557,7 +557,7 @@ namespace {
         ASSERT_EQ(INT_MIN + 1, b) << "static_integer pre-increment";
     }
 
-#if !defined(CNL_UNREACHABLE_UB_ENABLED)
+#if defined(CNL_DEBUG)
 
     TEST(overflow_integer, conversion_positive_overflow)  // NOLINT
     {
