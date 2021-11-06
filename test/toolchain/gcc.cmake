@@ -6,5 +6,3 @@ set(
 )
 
 set(INT128_ENABLED_FLAGS "${INT128_ENABLED_FLAGS} -Wno-pedantic")
-
-set(SANITIZE_ENABLED_CXX_FLAGS "${SANITIZE_ENABLED_CXX_FLAGS} -fsanitize-undefined-trap-on-error")
