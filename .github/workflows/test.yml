@@ -10,6 +10,7 @@ jobs:
   # Build and test many combinations on Linux/OS X using Conan
   clang-tidy:
     strategy:
+      fail-fast: false
       matrix:
         int128: ["True", "False"]
 
@@ -71,6 +72,7 @@ jobs:
   # Build and test many combinations on Linux/OS X using Conan
   conan:
     strategy:
+      fail-fast: false
       matrix:
         name: [
           clang-14-libc++, clang-14-libstdc++,
@@ -226,6 +228,7 @@ jobs:
   # Build and test on Windows using Conan
   windows:
     strategy:
+      fail-fast: false
       matrix:
         name: [2022-64, 2022-32, 2019-64, 2019-32]
         include:
