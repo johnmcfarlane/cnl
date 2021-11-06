@@ -30,7 +30,6 @@ if (CNL_SANITIZE)
 endif (CNL_SANITIZE)
 
 set(COMMON_CXX_FLAGS "${MISC_FLAGS} ${EXCEPTION_FLAGS} ${INT128_FLAGS} ${IOSTREAMS_FLAGS}")
-set(COMMON_LINK_FLAGS Cnl "${CONAN_LIBS}")
 
 # benchmark tests
 find_package(benchmark QUIET)

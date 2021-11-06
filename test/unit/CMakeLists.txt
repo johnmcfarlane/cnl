@@ -159,7 +159,7 @@ add_dependencies(test-all test-unit)
 
 add_executable(test-unit-plain all.cpp)
 set_target_properties(test-unit-plain PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS}")
-target_link_libraries(test-unit-plain "${COMMON_LINK_FLAGS}")
+target_link_libraries(test-unit-plain Cnl)
 add_test(test-unit-plain "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test-unit-plain")
 add_gtest_dependency(test-unit-plain)
 add_dependencies(test-unit test-unit-plain)
@@ -179,7 +179,7 @@ function(make_test source compile_flags linker_flags)
     add_executable("${target}" "${source}")
     target_include_directories("${target}" PRIVATE "${CMAKE_CURRENT_LIST_DIR}")
     set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${COMMON_CXX_FLAGS} ${compile_flags}")
-    target_link_libraries("${target}" "${COMMON_LINK_FLAGS}" ${linker_flags})
+    target_link_libraries("${target}" Cnl ${linker_flags})
     add_test("${target}" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${target}")
 
     # Google Test dependency
