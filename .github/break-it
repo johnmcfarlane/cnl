@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ONTO="${1:-origin/main}"
+
+for tool in asan clang-tidy ubsan clang-format doxygen mdl shellcheck yamllint
+do
+  branch="break-it_${tool}"
+  git checkout "${branch}" && git rebase --onto="${ONTO}" "${branch}"^ && git push -f
+done
