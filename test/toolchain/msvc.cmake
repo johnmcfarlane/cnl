@@ -1,4 +1,4 @@
-set(MISC_FLAGS "/W4 /WX /constexpr:steps10000000 /errorReport:prompt /nologo /wd4307")
+set(CNL_CXX_FLAGS "/W4 /WX /constexpr:steps10000000 /errorReport:prompt /nologo /wd4307")
 
 set(EXCEPTION_ENABLED_FLAGS "/GR /EHsc")
 set(EXCEPTION_DISABLED_FLAGS "/GR- -DBOOST_NO_EXCEPTIONS -DBOOST_NO_RTTI")

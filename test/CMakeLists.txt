@@ -1,6 +1,9 @@
 # root test target
 add_custom_target(test-all)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CNL_CXX_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CNL_EXE_LINKER_FLAGS}")
+
 # test customisation flags
 set(CNL_EXCEPTIONS ON CACHE BOOL "compile with exceptions enabled")
 if (CNL_EXCEPTIONS)
@@ -29,7 +32,7 @@ if (CNL_SANITIZE)
     set(SANITIZE_LINKER_FLAGS "${SANITIZE_ENABLED_LINKER_FLAGS}")
 endif (CNL_SANITIZE)
 
-set(COMMON_CXX_FLAGS "${MISC_FLAGS} ${EXCEPTION_FLAGS} ${INT128_FLAGS} ${IOSTREAMS_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXCEPTION_FLAGS} ${INT128_FLAGS} ${IOSTREAMS_FLAGS}")
 
 # benchmark tests
 find_package(benchmark QUIET)
