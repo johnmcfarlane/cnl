@@ -44,7 +44,7 @@ git clone \
 
 # Generate documentation
 rm -rf htdocs/*
-"${PROJECT_DIR}/doc/generate"
+${PROJECT_DIR}/doc/generate
 
 # Push revision of documentation
 pushd htdocs
