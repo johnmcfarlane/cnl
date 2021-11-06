@@ -19,7 +19,12 @@ static_assert(identical(2, cnl::sqrt(4)));
 
 TEST(cmake, sqrt_float)  // NOLINT
 {
-    auto const expected{3.5};
+    auto const expected{new double{3.5}};
     auto const actual{cnl::sqrt(12.25)};
-    ASSERT_EQ(expected, actual);
+    // NOLINTNEXTLINE(clang-analyzer-cplusplus.NewDeleteLeaks)
+    ASSERT_EQ(*expected, actual);
+    if (actual > 42) {
+        // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
+        delete expected;
+    }
 }
