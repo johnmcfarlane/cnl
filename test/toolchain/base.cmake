@@ -1,5 +1,8 @@
+# Note: CMAKE_CXX_FLAGS_INIT wont work here.
+# If CMAKE_CXX_FLAGS is passed in on command line,
+# CMAKE_CXX_FLAGS_INIT is ignored.
 set(
-    MISC_FLAGS
+    CNL_CXX_FLAGS
     "-Werror -Wall -Wextra -Wpedantic -Wshadow -Wundef -fdiagnostics-color=always -ftemplate-backtrace-limit=0"
 )
 
