@@ -69,7 +69,7 @@ jobs:
             iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:clang-13-libstdcpp
             os-version: ubuntu-20.04
-            sanitize: "True"
+            sanitize: "False"
             stdlib: libstdc++11
             toolchain: clang.cmake
 
@@ -89,7 +89,7 @@ jobs:
             iostreams: "False"
             linux-container: johnmcfarlane/cnl_ci:clang-12-libstdcpp
             os-version: ubuntu-20.04
-            sanitize: "False"
+            sanitize: "True"
             stdlib: libstdc++11
             toolchain: clang.cmake
 
@@ -188,7 +188,7 @@ jobs:
             int128: "True"
             iostreams: "True"
             os-version: macos-10.15
-            sanitize: "True"
+            sanitize: "False"
             stdlib: libc++
             toolchain: clang-libc++.cmake
 
@@ -227,7 +227,7 @@ jobs:
             iostreams: "True"
             linux-container: johnmcfarlane/cnl_ci:gcc-10-arm
             os-version: ubuntu-20.04
-            sanitize: "True"
+            sanitize: "False"
             stdlib: libstdc++11
             toolchain: gcc-armv7.cmake
 
