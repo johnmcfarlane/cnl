@@ -154,5 +154,9 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
+// int-to-string macro
+
+#define CNL_STR_HELPER(x) #x  // NOLINT(cppcoreguidelines-macro-usage)
+#define CNL_STR(x) CNL_STR_HELPER(x)  // NOLINT(cppcoreguidelines-macro-usage)
 
 #endif  // CNL_IMPL_CONFIG_H
