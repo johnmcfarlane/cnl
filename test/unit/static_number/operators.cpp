@@ -19,7 +19,7 @@ namespace {
                         cnl::static_number<19>{2247}));
     }
 
-#if !defined(CNL_UNREACHABLE_UB_ENABLED)
+#if defined(CNL_DEBUG)
     TEST(static_number, most_negative_number)  // NOLINT
     {
         static_assert(cnl::static_number<1>{1}, "in-range boundary test");
@@ -89,7 +89,7 @@ namespace {
         ASSERT_EQ(expected, actual);
     }
 
-#if !defined(CNL_UNREACHABLE_UB_ENABLED)
+#if defined(CNL_DEBUG)
     TEST(static_number, pre_increment_overflow)  // NOLINT
     {
         auto a = cnl::static_number<4, -2>{3.0};

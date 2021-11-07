@@ -169,7 +169,7 @@ namespace {
                                 cnl::static_integer<3, cnl::native_rounding_tag>{7})));
     }
 
-#if !defined(CNL_UNREACHABLE_UB_ENABLED)
+#if defined(CNL_DEBUG)
     TEST(static_integer, conversion_overflow_trapping)
     {  // NOLINT
         using si = cnl::static_integer<5>;

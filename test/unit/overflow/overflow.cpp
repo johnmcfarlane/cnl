@@ -169,7 +169,7 @@ namespace {
     }
 
     namespace test_negative_shift_left {
-#if !defined(CNL_UNREACHABLE_UB_ENABLED)
+#if defined(CNL_DEBUG)
         TEST(overflow, trap)  // NOLINT
         {
             constexpr auto fn{cnl::_impl::operate<cnl::_impl::shift_left_op, cnl::trapping_overflow_tag>{}};

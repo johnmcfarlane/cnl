@@ -116,25 +116,6 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// CNL_UNREACHABLE_UB_ENABLED macro definition
-
-// When enabled, cnl::_impl::unreachable exhibits undefined behavior,
-// i.e. the compiler has carte blanche to optimize based on the assumption
-// that no call to cnl::_impl::unreachable will ever be made at run time.
-
-#if defined(CNL_UNREACHABLE_UB_ENABLED)
-#error CNL_UNREACHABLE_UB_ENABLED already defined
-#endif
-
-#if defined(CNL_USE_UNREACHABLE_UB)
-#if CNL_USE_UNREACHABLE_UB
-#define CNL_UNREACHABLE_UB_ENABLED
-#endif
-#elif defined(CNL_RELEASE)
-#define CNL_UNREACHABLE_UB_ENABLED
-#endif
-
-////////////////////////////////////////////////////////////////////////////////
 // CNL_IOSTREAMS_ENABLED macro definition
 
 #if defined(CNL_IOSTREAMS_ENABLED)
@@ -173,5 +154,9 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
+// int-to-string macro
+
+#define CNL_STR_HELPER(x) #x  // NOLINT(cppcoreguidelines-macro-usage)
+#define CNL_STR(x) CNL_STR_HELPER(x)  // NOLINT(cppcoreguidelines-macro-usage)
 
 #endif  // CNL_IMPL_CONFIG_H

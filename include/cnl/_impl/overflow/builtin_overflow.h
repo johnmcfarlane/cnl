@@ -11,7 +11,6 @@
 #include "../custom_operator/op.h"
 #include "../polarity.h"
 #include "../type_traits/is_integral.h"
-#include "../unreachable.h"
 #include "overflow_operator.h"
 
 /// compositional numeric library

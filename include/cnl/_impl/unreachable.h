@@ -12,7 +12,7 @@
 
 namespace cnl {
     namespace _impl {
-#if defined(CNL_UNREACHABLE_UB_ENABLED)
+#if defined(CNL_RELEASE)
         template<class Result = void>
         constexpr auto unreachable(char const* /*message*/) noexcept -> Result
         {

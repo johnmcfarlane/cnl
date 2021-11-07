@@ -9,7 +9,6 @@
 
 #include "../num_traits/rep_of.h"
 #include "../parse.h"
-#include "../unreachable.h"
 #include "custom_operator.h"
 #include "definition.h"
 

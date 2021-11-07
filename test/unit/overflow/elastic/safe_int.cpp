@@ -182,7 +182,7 @@ namespace {
                 identical(cnl::safe_integer<2>{2}, cnl::safe_integer<1>{1} << cnl::constant<1>{}));
     }
 
-#if !defined(CNL_UNREACHABLE_UB_ENABLED)
+#if defined(CNL_DEBUG)
     TEST(safe_integer, conversion_overflow)  // NOLINT
     {
         using si = cnl::safe_integer<5>;
@@ -243,7 +243,7 @@ namespace {
         ASSERT_EQ(-6, b) << "safe_integer pre-increment";
     }
 
-#if !defined(CNL_UNREACHABLE_UB_ENABLED)
+#if defined(CNL_DEBUG)
     TEST(safe_integer, pre_increment_overflow)  // NOLINT
     {
         auto a = cnl::safe_integer<3>{7};
