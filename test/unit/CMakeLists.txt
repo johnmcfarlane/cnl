@@ -168,7 +168,7 @@ add_dependencies(test-unit test-unit-plain)
 
 # given the path to a source file containing gtest tests,
 # creates and returns a target that runs them
-function(make_test source compile_flags linker_flags)
+function(make_test source compile_flags)
 
     # turn source file path into target name (e.g. "foo/bar.cpp" -> "test-unit-foo-bar")
     string(REPLACE ".cpp" "" stripped "${source}")
@@ -178,7 +178,7 @@ function(make_test source compile_flags linker_flags)
     add_executable("${target}" "${source}")
     target_include_directories("${target}" PRIVATE "${CMAKE_CURRENT_LIST_DIR}")
     set_target_properties("${target}" PROPERTIES COMPILE_FLAGS "${compile_flags}")
-    target_link_libraries("${target}" Cnl ${linker_flags})
+    target_link_libraries("${target}" Cnl)
     add_test("${target}" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${target}")
 
     # Google Test dependency
@@ -198,25 +198,25 @@ endfunction(make_test)
 # create tests to verify CNL
 
 foreach(source ${test_sources})
-    make_test("${source}" "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
+    make_test("${source}" "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}")
 endforeach(source)
 
 if (CNL_SANITIZE)
-    make_test(ub.cpp "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
+    make_test(ub.cpp "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}")
 endif(CNL_SANITIZE)
 
 ######################################################################
 # create tests to show off CNL
 
 foreach(source ${sample_sources})
-    make_test("${source}" "${SAMPLE_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
+    make_test("${source}" "${SAMPLE_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}")
 endforeach(source)
 
-make_test(scaled_int/math.cpp "${SAMPLE_CXX_FLAGS}" "")
+make_test(scaled_int/math.cpp "${SAMPLE_CXX_FLAGS}")
 
 ######################################################################
 # make test of Boost.Multiprecision integration
 
 if(Boost_FOUND)
-    make_test(boost.multiprecision.cpp "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}" "${SANITIZE_LINKER_FLAGS}")
+    make_test(boost.multiprecision.cpp "${TEST_CXX_FLAGS} ${SANITIZE_CXX_FLAGS}")
 endif(Boost_FOUND)
