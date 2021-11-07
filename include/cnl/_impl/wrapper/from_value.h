@@ -44,10 +44,13 @@ namespace cnl {
 
     template<class ArchetypeRep, tag ArchetypeTag, class ValueRep, class ValueTag>
     requires(_impl::can_convert_tag_family<ArchetypeTag, ValueTag>::value) struct from_value<
-            _impl::wrapper<ArchetypeRep, ArchetypeTag>, _impl::wrapper<ValueRep, ValueTag>>
-        : _impl::from_value_simple<
+            _impl::wrapper<ArchetypeRep, ArchetypeTag>, _impl::wrapper<ValueRep, ValueTag>> {
+        [[nodiscard]] constexpr auto operator()(auto const& value) const
+        {
+            return _impl::from_value_simple<
                   _impl::wrapper<from_value_t<ArchetypeRep, ValueRep>, ArchetypeTag>,
-                  _impl::wrapper<ValueRep, ValueTag>> {
+                  _impl::wrapper<ValueRep, ValueTag>>()(value);
+        }
     };
     /// \endcond
 

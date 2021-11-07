@@ -12,6 +12,8 @@
 #include <cnl/_impl/type_traits/identical.h>
 #include <cnl/wide_integer.h>
 
+#include <gtest/gtest.h>
+
 using cnl::_impl::identical;
 
 namespace {
@@ -32,4 +34,13 @@ namespace {
     static_assert(
             cnl::numeric_limits<cnl::wide_integer<100>>::lowest()
             < -cnl::numeric_limits<cnl::wide_integer<100>>::max());
+}
+
+TEST(wide_integer_numeric_limits, lowest_max)  // NOLINT
+{
+    using type = cnl::wide_integer<10>;
+    using limits = cnl::numeric_limits<type>;
+    constexpr auto expected{-1-limits::max()};
+    constexpr auto actual{limits::lowest()};
+    ASSERT_EQ(expected, actual);
 }

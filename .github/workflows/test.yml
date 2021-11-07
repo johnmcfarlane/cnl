@@ -10,6 +10,7 @@ jobs:
   # Build and test many combinations on Linux/OS X using Conan
   posix-conan-test:
     strategy:
+      fail-fast: false
       matrix:
         name: [clang-head-analyse, gcc-head, clang-13, clang-12, clang-11, clang-10, gcc-11, gcc-10, osx-clang-13, osx-gcc-11, gcc-10-armv7]
         include:
@@ -240,6 +241,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: 'true'
 
       - name: Restore caches
         uses: actions/cache@v2
@@ -302,6 +305,7 @@ jobs:
   windows-conan-test:
     runs-on: windows-2019
     strategy:
+      fail-fast: false
       matrix:
         arch: [x86_64, x86]
         include:
@@ -366,6 +370,7 @@ jobs:
   # Build and test latest on Linux using only CMake
   linux-cmake-test:
     strategy:
+      fail-fast: false
       matrix:
         compiler: [clang-13-libcpp, gcc-11]
 

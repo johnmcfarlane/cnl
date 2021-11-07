@@ -1,0 +1,4 @@
+[submodule "external/wide-integer"]
+	path = external/wide-integer
+	url = https://github.com/johnmcfarlane/wide-integer.git
+	branch = main

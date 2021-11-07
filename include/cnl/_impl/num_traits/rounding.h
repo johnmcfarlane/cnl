@@ -7,6 +7,7 @@
 #if !defined(CNL_IMPL_NUM_TRAITS_ROUNDING_H)
 #define CNL_IMPL_NUM_TRAITS_ROUNDING_H
 
+#include "../../number.h"
 #include "../rounding/native_rounding_tag.h"
 #include "../rounding/nearest_rounding_tag.h"
 #include "../type_traits/is_integral.h"
@@ -25,7 +26,7 @@ namespace cnl {
     struct rounding<Number&&> : rounding<Number> {
     };
 
-    template<_impl::integral Number>
+    template<number Number>
     struct rounding<Number>
         : std::type_identity<native_rounding_tag> {
     };

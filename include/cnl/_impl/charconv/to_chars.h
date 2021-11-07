@@ -101,7 +101,7 @@ namespace cnl {
         }
     }
 
-    // partial implementation of std::to_chars overloaded on cnl::duplex_integer
+    // partial implementation of std::to_chars overloaded on cnl::integer
     template<integer Integer>
     [[nodiscard]] constexpr auto to_chars(
             char* const first,
