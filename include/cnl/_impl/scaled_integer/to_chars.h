@@ -154,7 +154,7 @@ namespace cnl {
 
             if (solution.trailing_zeros) {
                 out = std::fill_n(out, solution.trailing_zeros, zero_char);
-            } else if (out < std::end(info.output)) {
+            } else if (out < std::end(info.output)) {  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
                 if (solution.has_radix) {
                     *out++ = radix_char;
                 }
@@ -170,7 +170,7 @@ namespace cnl {
 
             CNL_ASSERT(significand_digits_first <= std::end(info.significand_digits));
             CNL_ASSERT(out == std::begin(info.output) + solution.num_chars);
-            CNL_ASSERT(out <= std::end(info.output));
+            CNL_ASSERT(out <= std::end(info.output));  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             return std::to_chars_result{&*out, std::errc{}};
         }
 
@@ -202,7 +202,7 @@ namespace cnl {
 
             // copy part of significand after the period
             while (!isdigit(*out++ = *significand_digits_first++)) {
-                CNL_ASSERT(out < std::end(info.output));
+                CNL_ASSERT(out < std::end(info.output));  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             }
 
             // add the radix point
@@ -224,7 +224,7 @@ namespace cnl {
                     out);
 
             CNL_ASSERT(out == std::begin(info.output) + solution.num_chars);
-            CNL_ASSERT(out <= std::end(info.output));
+            CNL_ASSERT(out <= std::end(info.output));  // NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
             return std::to_chars_result{&*out, std::errc{}};
         }
 
@@ -255,9 +255,9 @@ namespace cnl {
             if (std::tuple{
                         scientific_solution.num_significand_digits,
                         -scientific_solution.num_chars}
-                > std::tuple{
-                        fixed_solution.num_significand_digits,
-                        -fixed_solution.num_chars}) {
+                > std::tuple{// NOLINT(hicpp-use-nullptr,modernize-use-nullptr)
+                             fixed_solution.num_significand_digits,
+                             -fixed_solution.num_chars}) {
                 CNL_ASSERT(scientific_solution.num_significand_digits > 0);
                 return _impl::fill(info, scientific_solution);
             }
