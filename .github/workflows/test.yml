@@ -272,12 +272,11 @@ jobs:
       - name: Initialise Conan
         run: |
           conan config install $GITHUB_WORKSPACE/.github/conan/settings.yml
-          conan profile new default --detect
-          conan profile update settings.compiler=${{matrix.compiler}} default
-          conan profile update settings.compiler.libcxx=${{matrix.stdlib}} default
-          conan profile update settings.compiler.version=${{matrix.version}} default
-          conan profile update settings.build_type=${{matrix.build-type}} default
-          conan profile update settings.arch=${{matrix.arch}} default
+          conan profile update settings.compiler=${{matrix.compiler}} $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
+          conan profile update settings.compiler.libcxx=${{matrix.stdlib}} $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
+          conan profile update settings.compiler.version=${{matrix.version}} $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
+          conan profile update settings.build_type=${{matrix.build-type}} $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
+          conan profile update settings.arch=${{matrix.arch}} $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
 
       - name: Install dependencies
         run: |
@@ -291,6 +290,7 @@ jobs:
             --options enable_exceptions=${{matrix.exceptions}} \
             --options sanitize=${{matrix.sanitize}} \
             --options test=all \
+            --profile $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} \
             $GITHUB_WORKSPACE
 
       - name: Build tests
@@ -346,12 +346,11 @@ jobs:
       - name: Initialise Conan
         run: |
           pip.exe install conan;
-          conan profile new default;
-          conan profile update settings.compiler="Visual Studio" default;
-          conan profile update settings.compiler.cppstd=20 default;
-          conan profile update settings.os=Windows default;
-          conan profile update settings.arch=${{matrix.arch}} default;
-          conan profile update settings.compiler.version=16 default
+          conan profile update settings.compiler="Visual Studio" $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}};
+          conan profile update settings.compiler.cppstd=20 $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}};
+          conan profile update settings.os=Windows $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}};
+          conan profile update settings.arch=${{matrix.arch}} $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}};
+          conan profile update settings.compiler.version=16 $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}}
 
       - name: Create build directory
         run: mkdir ${{runner.workspace}}\build
@@ -366,6 +365,7 @@ jobs:
             --options enable_exceptions=${{matrix.exceptions}} `
             --options test=all `
             --settings build_type=Release `
+            --profile $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} `
             $env:GITHUB_WORKSPACE
 
       - name: Build and run tests
