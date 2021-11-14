@@ -171,7 +171,7 @@ jobs:
             test-${{matrix.arch}}-main-
             test-${{matrix.arch}}-
 
-      - name: Initialise Conan
+      - name: Install Conan
         run: |
           pip.exe install conan;
 
