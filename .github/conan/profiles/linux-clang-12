@@ -16,3 +16,4 @@ sanitize=True
 CC=clang
 CXX=clang++
 CONAN_CMAKE_GENERATOR=Unix Makefiles
+CONAN_CMAKE_TOOLCHAIN_FILE=$PROFILE_DIR/../../../test/toolchain/clang.cmake

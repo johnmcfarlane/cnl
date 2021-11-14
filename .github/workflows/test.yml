@@ -18,75 +18,64 @@ jobs:
             linux-container: johnmcfarlane/cnl_ci:clang-head
             os-version: ubuntu-20.04
             profile: linux-clang-head-analyse
-            toolchain: clang-libc++.cmake
 
           # GCC HEAD
           - name: gcc-head
             linux-container: johnmcfarlane/cnl_ci:gcc-head
             os-version: ubuntu-20.04
             profile: linux-gcc-head
-            toolchain: gcc.cmake
 
           # Clang-13
           - name: clang-13
             linux-container: johnmcfarlane/cnl_ci:clang-13-libstdcpp
             os-version: ubuntu-20.04
             profile: linux-clang-13
-            toolchain: clang.cmake
 
           # Clang-12 (Contrary)
           - name: clang-12
             linux-container: johnmcfarlane/cnl_ci:clang-12-libstdcpp
             os-version: ubuntu-20.04
             profile: linux-clang-12
-            toolchain: clang.cmake
 
           # Clang-11
           - name: clang-11
             linux-container: johnmcfarlane/cnl_ci:clang-11-libcpp
             os-version: ubuntu-20.04
             profile: linux-clang-11
-            toolchain: clang-libc++.cmake
 
           # Clang-10
           - name: clang-10
             linux-container: johnmcfarlane/cnl_ci:clang-10-libcpp
             os-version: ubuntu-20.04
             profile: linux-clang-10
-            toolchain: clang-libc++.cmake
 
           # GCC-11
           - name: gcc-11
             linux-container: johnmcfarlane/cnl_ci:gcc-11
             os-version: ubuntu-20.04
             profile: linux-gcc-11
-            toolchain: gcc.cmake
 
           # GCC-10
           - name: gcc-10
             linux-container: johnmcfarlane/cnl_ci:gcc-10
             os-version: ubuntu-20.04
             profile: linux-gcc-10
-            toolchain: gcc.cmake
 
           # OS X Clang (latest)
           - name: osx-clang-13
             os-version: macos-10.15
             profile: osx-clang-13
-            toolchain: clang-libc++.cmake
 
           # OS X GCC-11
           - name: osx-gcc-11
             os-version: macos-10.15
             profile: osx-gcc-11
-            toolchain: gcc.cmake
 
           # GCC-10 (for ARMv7)
           - name: gcc-10-armv7
             linux-container: johnmcfarlane/cnl_ci:gcc-10-arm
             os-version: ubuntu-20.04
             profile: linux-gcc-10-armv7
-            toolchain: gcc-armv7.cmake
 
     container: ${{matrix.linux-container}}
 
@@ -120,7 +109,6 @@ jobs:
         run: |
           conan install \
             --build=missing \
-            --env CONAN_CMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/test/toolchain/${{matrix.toolchain}} \
             --options test=all \
             --profile $GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} \
             $GITHUB_WORKSPACE
@@ -184,7 +172,6 @@ jobs:
           conan install `
             --build=missing `
             --env CONAN_CMAKE_GENERATOR="Visual Studio 16 2019" `
-            --env CONAN_CMAKE_TOOLCHAIN_FILE="$env:GITHUB_WORKSPACE"\test\toolchain\msvc.cmake `
             --options test=all `
             --settings build_type=Release `
             --profile $env:GITHUB_WORKSPACE/.github/conan/profiles/${{matrix.profile}} `
